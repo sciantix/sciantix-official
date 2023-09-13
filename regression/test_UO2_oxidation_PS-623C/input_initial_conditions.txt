@@ -19,8 +19,8 @@
 0.0	3.0	0.0	0.0	97.0
 #	initial U234 U235 U236 U237 U238 (% of heavy atoms) content
 0.0	0.0	0.0	0.0	0.0	0.0 0.0
-#	initial Xe133 (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
+#	initial Xe133 (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
 0.0	0.0	0.0	0.0	0.0	0.0 0.0
-#	initial Kr85m (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
+#	initial Kr85m (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
 0.0
 #   initial fuel stoichiometry deviation (\)
