@@ -39,9 +39,11 @@ protected:
 	double henry_constant;
 	double resolution_rate;
 	double trapping_rate;
+	double grain_boundary_trapping_rate;
+	double grain_boundary_resolution_rate;
+	double grain_boundary_diffusivity;
 	double nucleation_rate;
 	std::string gas_name;
-	double pore_nucleation_rate;
 	std::vector<double> modes;
 	double production_rate;
 
@@ -97,22 +99,23 @@ public:
 	void setBubbleDiffusivity(int input_value);
 	double getBubbleDiffusivity()
 	{
-		/// Member function to get the bubble diffusivity of the isotope in the fuel matrix
+		/// Member function to get the bubble diffusivity in the fuel matrix
 		return bubble_diffusivity;	
 	}
 
 	void setHeliumDiffusivity(int input_value);
-	double getHeliumDiffusivity()
-	{
-		/// Member function to get the bubble diffusivity of the isotope in the fuel matrix
-		return diffusivity;	
-	}
-
 	void setFissionGasDiffusivity(int input_value);	
-	double getFissionGasDiffusivity()
+	double getDiffusivity()
 	{
 		/// Member function to get the diffusivity of the isotope in the fuel matrix
 		return diffusivity;
+	}
+
+	void setGrainBoundaryHeliumDiffusivity(int input_value);	
+	double getGrainBoundaryDiffusivity()
+	{
+		/// Member function to get the diffusivity of the isotope at the fuel grain boundaries
+		return grain_boundary_diffusivity;
 	}
 
 	void setHenryConstant(double h)
@@ -134,6 +137,13 @@ public:
 		return resolution_rate;
 	}
 
+	void setGrainBoundaryHeliumThermalResolutionRate(int input_value);
+	double getGrainBoundaryHeliumThermalResolutionRate()
+	{
+		/// Member function to get the value of the thermal resolution rate of the isotope from the fuel grain boundaries
+		return grain_boundary_resolution_rate;
+	}
+
 	void setTrappingRate(int input_value);
 	double getTrappingRate()
 	{
@@ -141,20 +151,17 @@ public:
 		return trapping_rate;
 	}
 
+	void setGrainBoundaryHeliumTrappingRate(int input_value);
+	double getGrainBoundaryHeliumTrappingRate()
+	{
+		/// Member function to get the value of the trapping rate of the isotope at the fuel grain boundaries
+		return grain_boundary_trapping_rate;
+	}
+
 	void setNucleationRate(int input_value);
 	double getNucleationRate()
 	{
 		return nucleation_rate;
-	}
-
-	void setPoreNucleationRate(double t)
-	{
-		pore_nucleation_rate = t;
-	}
-
-	double getPoreNucleationRate()
-	{
-		return pore_nucleation_rate;
 	}
 
 	void setProductionRate(int input_value);

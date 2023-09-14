@@ -13,6 +13,7 @@
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
+
 #include "SciantixVariableDeclaration.h"
 #include "SciantixDiffusionModeDeclaration.h"
 

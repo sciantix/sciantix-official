@@ -38,9 +38,9 @@ void HighBurnupStructureFormation()
 		/// iHighBurnupStructureFormation == 0
 		/// ----------------------------------
 		///
-		/// This case corresponds to the no HBS forming in the UO2 fuel matrix.
+		/// This case corresponds to no HBS forming in the UO2 fuel matrix.
 
-		reference += ": not considered.";
+		reference += "HBS not considered.";
 		parameter.push_back(0.0);
 		parameter.push_back(0.0);
 

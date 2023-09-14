@@ -23,5 +23,6 @@
 #include "MapGas.h"
 #include "SystemDeclaration.h"
 #include "MapSystem.h"
+#include "ConstantNumbers.h"
 
 void HighBurnupStructurePorosity();
