@@ -1,5 +1,3 @@
-# sciantix-official
-This repository contains the SCIANTIX code, together with the validation database and regression files.
+# sciantix-official / PATRICIA
+This branch contains the SCIANTIX 2.0 version, under development in the PATRICIA project.
 
-SCIANTIX simulates the behaviour of inert gases (xenon, krypton, and helium) in nuclear fuel, at the scale of a single fuel grain.
-The code can be compiled and used as a standalone tool, or coupled with thermo-mechanical fuel performance codes.
