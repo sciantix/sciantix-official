@@ -29,6 +29,7 @@
 #include "He_in_UO2.h"
 #include "Xe_in_UO2HBS.h"
 #include "Kr_in_UO2HBS.h"
+#include "ConstantNumbers.h"
 
 #include <vector>
 

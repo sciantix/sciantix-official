@@ -25,6 +25,8 @@ void HighBurnupStructurePorosity()
 	int model_index = int(model.size()) - 1;
 	model[model_index].setName("High burnup structure porosity");
 	double porosity_increment = 0.0;
+	
+  const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
 
 	std::string reference;
 	std::vector<double> parameter;
@@ -36,7 +38,7 @@ void HighBurnupStructurePorosity()
 		/// @brief 
 		/// No HBS case - no evolution of HBS porosity
 
-		reference += "not considered";
+		reference += "HBS not considered.";
 		parameter.push_back(0.0);
 		sciantix_variable[sv["HBS porosity"]].setInitialValue(0.0);
 		sciantix_variable[sv["HBS porosity"]].setFinalValue(0.0);
@@ -45,7 +47,6 @@ void HighBurnupStructurePorosity()
 
 	case 1:
 	{
-
 		/// @brief 
 		/// Correlation for the HBS porosity evolution based on Spino et al. 2006 data
 
@@ -67,9 +68,16 @@ void HighBurnupStructurePorosity()
 			porosity_increment = 0.0;
 		}
 
-		reference = "based on Spino et al. 2006 data";
-
+		reference = "TRANSURANUS model, based on data from Spino et al. JNM 354 (2006) 66-84";
 		parameter.push_back(porosity_increment);
+
+		break;
+	}
+
+	case 2:
+	{
+		/// @brief 
+		/// HBS porosity evolution based on Barani et al. - part II (2022)
 
 		break;
 	}

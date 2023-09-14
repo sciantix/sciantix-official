@@ -24,55 +24,44 @@ void SetSystem()
 	{
 		case 0: 
 		{
-			for (int k = 0; k < 10; ++k)
-			{
-				switch (k)
-				{
-					case 0:
-					{
-						Xe_in_UO2();
-						MapSystem();
-						
-						break;
-					}
+			Xe_in_UO2();
+			MapSystem();
 
-					case 1:
-					{
-						Kr_in_UO2();
-						MapSystem();
-						
-						break;
-					}
+			Kr_in_UO2();
+			MapSystem();
+			
+			He_in_UO2();
+			MapSystem();
+			
+			Xe133_in_UO2();
+			MapSystem();
+			
+			Kr85m_in_UO2();
+			MapSystem();
+			
+			break;
+		}
 
-					case 2:
-					{
-						He_in_UO2();
-						MapSystem();
-						
-						break;
-					}
+		case 1:
+		{
+			Xe_in_UO2();
+			MapSystem();
 
-					case 3:
-					{
-						Xe133_in_UO2();
-						MapSystem();
-						
-						break;
-					}
-					
-					case 4:
-					{
-						Kr85m_in_UO2();
-						MapSystem();
-						
-						break;
-					}
+			Kr_in_UO2();
+			MapSystem();
+			
+			He_in_UO2();
+			MapSystem();
+			
+			Xe133_in_UO2();
+			MapSystem();
+			
+			Kr85m_in_UO2();
+			MapSystem();
 
-					default:
-						break;
-				}
-			}
-
+			Xe_in_UO2HBS();
+			MapSystem();
+			
 			break;
 		}
 		
@@ -90,7 +79,7 @@ void System::setBubbleDiffusivity(int input_value)
 	{
 		case 0:
 		{
-			bubble_diffusivity = 0;
+			bubble_diffusivity = 0.0;
 			break;
 		}
 
@@ -119,7 +108,6 @@ void System::setBubbleDiffusivity(int input_value)
 			ErrorMessages::Switch("SetSystem.cpp", "iBubbleDiffusivity", input_value);
 			break;
 	}
-
 }
 
 void System::setFissionGasDiffusivity(int input_value)
@@ -150,7 +138,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 1:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 1 set the fission gas (xenon and krypton) single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 1 set the fission gas (xenon and krypton) single-atom intragranular diffusivity equal to the expression 
 		 * in @ref *Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22*.
 		 * 
 		 */
@@ -162,7 +150,7 @@ void System::setFissionGasDiffusivity(int input_value)
 
 		double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));
 		double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
-		double d3 = 8.0e-40 * fission_rate;
+		double d3 = 2.0e-40 * fission_rate;
 
 		diffusivity = d1 + d2 + d3;
 		diffusivity *= sf_diffusivity;
@@ -173,7 +161,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 2:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 2 set the xenon single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 2 set the xenon single-atom intragranular diffusivity equal to the expression 
 		 * in @ref *Matzke (1980), Radiation Effects, 53, 219-242*.
 		 * 
 		 */
@@ -188,7 +176,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 3:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 3 set the xenon single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 3 set the xenon single-atom intragranular diffusivity equal to the expression 
 		 * in @ref *Turnbull et al., (2010), Background and Derivation of ANS-5.4 Standard Fission Product Release Model*.
 		 * 
 		 */
@@ -211,7 +199,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 4:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 4 set the xenon single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 4 set the xenon single-atom intragranular diffusivity equal to the expression 
 		 * in @ref *iFGDiffusionCoefficient: Ronchi, C. High Temp 45, 552-571 (2007)*.
 		 * 
 		 */
@@ -248,7 +236,8 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 6:
 	{
 		/**
-		 * @brief this case is for 
+		 * @brief this case extends the model by Turnbull (case 1) by accounting for the effect of the fuel stoichiometry deviation,
+		 * via an additional term d4, according to @ref ...
 		 * 
 		 */
 		double x = sciantix_variable[sv["Stoichiometry deviation"]].getFinalValue();
@@ -274,11 +263,10 @@ void System::setFissionGasDiffusivity(int input_value)
 		break;		
 	}
 
-
 	case 99:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 99 set the xenon single-stom intragranular diffusivity to zero.
+		 * @brief iFGDiffusionCoefficient = 99 sets the xenon single-atom intragranular diffusivity to zero.
 		 * 
 		 */
 
@@ -296,12 +284,12 @@ void System::setFissionGasDiffusivity(int input_value)
 
 void System::setHeliumDiffusivity(int input_value)
 {
-
 	/** 
 	 * ### setHeliumDiffusivity
 	 * @brief The intra-granular helium diffusivity within the fuel grain is set according to the input_variable iHeDiffusivity
 	 * 
 	 */
+
 	switch (input_value)
 	{
 	case 0:
@@ -344,11 +332,10 @@ void System::setHeliumDiffusivity(int input_value)
 		break;
 	}
 
-
 	case 3:
 	{
 		/**
-		 * @brief iHeDiffusivity = 2 sets the single gas-atom intra-granular diffusivity equal to the correlation reported in @ref *Z. Talip et al. JNM 445 (2014) 117�127*.
+		 * @brief iHeDiffusivity = 3 sets the single gas-atom intra-granular diffusivity equal to the correlation reported in @ref *Z. Talip et al. JNM 445 (2014) 117-127*.
 		 * 
 		 */
 
@@ -360,7 +347,7 @@ void System::setHeliumDiffusivity(int input_value)
 	case 99:
 	{
 		/**
-		 * @brief iHeDiffusivity = 4 corresponds to a null intra-granular diffusivity value
+		 * @brief iHeDiffusivity = 99 corresponds to a null intra-granular diffusivity value
 		 * 
 		 */
 		
@@ -375,11 +362,92 @@ void System::setHeliumDiffusivity(int input_value)
 	}
 }
 
+void System::setGrainBoundaryHeliumDiffusivity(int input_value)
+{
+	/** 
+	 * ### setGrainBoundaryHeliumDiffusivity
+	 * @brief The inter-granular helium diffusivity within oxide nuclear fuel is set according to the input_variable iGrainBoundaryHeliumDiffusivity
+	 * @ref Giorgi et al., Nuclear Engineering and Technology 54 (2022) 2367-2375
+	 * 
+	 */
+
+	switch (input_value)
+	{
+	case 0:
+	{
+		/**
+		 * @brief iGrainBoundaryHeliumDiffusivity = 0 corresponds to a constant intra-granular diffusivity value
+		 * 
+		 */
+		
+		reference += "iGrainBoundaryHeliumDiffusivity: constant intragranular diffusivity.\n\t";
+		grain_boundary_diffusivity = 1.0e-18 * 1.0e+6;
+		break;
+	}
+
+	case 1:
+	{
+		/**
+		 * @brief iGrainBoundaryHeliumDiffusivity = 1 is the best-estimate correlation, from data available in literature, for samples with no or very limited lattice damage.
+		 * This correlation is also recommended for simulations of helium in UO<sub>2</sub> samples in which **infusion** technique has been adopted.
+		 * The correlation is from @ref *L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271*.
+		 * 
+		 */
+
+		reference += "(no or very limited lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.\n\t";
+		grain_boundary_diffusivity = 2.0e-10 * exp(-24603.4 / history_variable[hv["Temperature"]].getFinalValue()) * 1.0e+3;
+		break;
+	}
+
+	case 2:
+	{
+		/**
+		 * @brief iGrainBoundaryHeliumDiffusivity = 2 is the best-estimate correlation, from data available in literature, for samples with significant lattice damage.
+		 * This correlation is also recommended for simulations of helium in UO<sub>2</sub> samples in which **implantation** technique has been adopted.
+		 * The correlation is from @ref *L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271*.
+		 * 
+		 */
+
+		reference += "(significant lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.\n\t";
+		grain_boundary_diffusivity = 3.3e-10 * exp(-19032.8 / history_variable[hv["Temperature"]].getFinalValue()) * 1.0e+6;
+		break;
+	}
+
+	case 3:
+	{
+		/**
+		 * @brief iGrainBoundaryHeliumDiffusivity = 3 sets the single gas-atom inter-granular diffusivity equal to the correlation reported in @ref *Z. Talip et al. JNM 445 (2014) 117-127*.
+		 * 
+		 */
+
+		reference += "iHeDiffusivity: Z. Talip et al. JNM 445 (2014) 117-127.\n\t";
+		grain_boundary_diffusivity = 1.0e-7 * exp(-30057.9 / history_variable[hv["Temperature"]].getFinalValue()) * 1.0e+6;
+		break;
+	}
+
+	case 99:
+	{
+		/**
+		 * @brief iGrainBoundaryHeliumDiffusivity = 99 corresponds to a null inter-granular diffusivity value
+		 * 
+		 */
+		
+		reference += "iGrainBoundaryHeliumDiffusivity: null intragranular diffusivity.\n\t";
+		grain_boundary_diffusivity = 0.0;
+		break;
+	}
+
+	default:
+		ErrorMessages::Switch("SetSystem.cpp", "iGrainBoundaryHeliumDiffusivity", input_value);
+		break;
+	}
+}
+
 void System::setResolutionRate(int input_value)
 {
 	/** 
 	 * ### setResolutionRate
-	 * @brief The helium intra-granular resolution rate is set according to the input_variable iResolutionRate.
+	 * @brief The gas intra-granular resolution rate is set according to the input_variable iResolutionRate.
 	 * 
 	 */
 
@@ -420,11 +488,11 @@ void System::setResolutionRate(int input_value)
 	case 2:
 	{
 		/**
-		 * @brief iResolutionRate = 2 corresponds to the irradiation-induced intra-granular resolution rate from *P. Losonen, JNM 304 (2002) 29�49*.
+		 * @brief iResolutionRate = 2 corresponds to the irradiation-induced intra-granular resolution rate from *P. Losonen, JNM 304 (2002) 29-49*.
 		 * 
 		 */
 
-		reference += "iResolutionRate: P. Losonen, JNM 304 (2002) 29�49.\n\t";
+		reference += "iResolutionRate: P. Losonen, JNM 304 (2002) 29-49.\n\t";
 		resolution_rate = 3.0e-23 * history_variable[hv["Fission rate"]].getFinalValue();
 		resolution_rate *= sf_resolution_rate;
 
@@ -491,11 +559,105 @@ void System::setResolutionRate(int input_value)
 	resolution_rate *= sf_resolution_rate;
 }
 
+void System::setGrainBoundaryHeliumThermalResolutionRate(int input_value)
+{
+	/** 
+	 * ### setGrainBoundaryHeliumThermalResolutionRate
+	 * @brief The helium inter-granular re-solution rate is set according to the input_variable iGrainBoundaryHeliumThermalResolution.
+	 * 
+	 */
+
+	const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
+	const double boltzmann_constant = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
+
+	double grain_radius = sciantix_variable[sv["Grain radius"]].getFinalValue();
+
+	switch (input_value)
+	{
+	case 0:
+	{
+		/**
+		 * @brief iGrainBoundaryHeliumThermalResolution = 0 corresponds to a constant value for trial, from Talip, Pizzocri and Cognini
+		 * 
+		 */
+
+		// T = 1000K
+    // D = 1.789e-18 m2/s
+    // kH = 2.172e+21 at/m3/Pa
+    // R_b = 2e-9 m
+		grain_boundary_resolution_rate = 3.876e-5;
+		break;
+	}
+
+	case 1:
+	{
+		/**
+		 * @brief iGrainBoundaryHeliumThermalResolution = 1 corresponds to the case of an ideal gas in a bubble: p = n kB T / V, with V = 4/3 Pi R_b^3
+		 * 
+		 */
+
+		double semi_dihed = 50.0 * pi / 180.0;
+    double phi_bubble = 1.0 - 1.5*cos(semi_dihed) + 0.5*pow(cos(semi_dihed), 3);
+    double q = 1.0/(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() * sqrt(pi*sciantix_variable[sv["Intergranular bubble concentration"]].getFinalValue()));
+
+
+    if(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() > 0.0)
+			grain_boundary_resolution_rate = (grain_boundary_diffusivity / log(q))*  boltzmann_constant * pow(sin(semi_dihed), 3) * (henry_constant/1e+6) * history_variable[hv["Temperature"]].getFinalValue() * grain_radius / (2.0 * phi_bubble * pow(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue(), 3));
+
+		else
+			grain_boundary_resolution_rate = 0.0;
+
+		break;
+	}
+
+	case 2:
+	{
+		/**
+		 * @brief iGrainBoundaryHeliumThermalResolution = 2 from Van Brutzel ...
+		 * 
+		 */
+
+		double semi_dihed = 50.0 * pi / 180.0;
+    double phi_bubble = 1 - 1.5*cos(semi_dihed) + 0.5*pow(cos(semi_dihed), 3);
+    double q = 1.0/(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() * sqrt(pi*sciantix_variable[sv["Intergranular bubble concentration"]].getFinalValue()));
+
+    double helium_hard_sphere_diameter = 2.973e-10 * (0.8414 - 0.05 * log (history_variable[hv["Temperature"]].getFinalValue() / 10.985)); // (m)
+    double helium_volume_in_bubble = 7.8e-30; // (m3)                                            
+    double y = pi * pow(helium_hard_sphere_diameter,3) / (6.0 * helium_volume_in_bubble);
+    double compressibility_factor = (1.0 + y + pow(y,2) - pow(y,3)) / (pow(1.0-y,3));
+
+    if(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() > 0.0)
+    	grain_boundary_resolution_rate = (diffusivity / log(q))*  boltzmann_constant * pow(sin(semi_dihed), 3) * (henry_constant/1e+6) * history_variable[hv["Temperature"]].getFinalValue() * grain_radius * compressibility_factor / (2.0 * phi_bubble * pow(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue(), 3));
+
+		else
+			grain_boundary_resolution_rate = 0.0;
+
+		break;
+	}
+
+	case 99:
+	{
+		/**
+		 * @brief iGrainBoundaryHeliumThermalResolution = 99 corresponds to a null inter-granular helium thermal re-solution rate from grain boundaries
+		 * 
+		 */
+
+		reference += "iGrainBoundaryHeliumThermalResolution: Null resolution rate.\n\t";
+		grain_boundary_resolution_rate = 0.0;
+		break;
+	}
+
+	default:
+		ErrorMessages::Switch("SetSystem.cpp", "iGrainBoundaryHeliumThermalResolution", input_value);
+		break;
+	}
+}
+
 void System::setTrappingRate(int input_value)
 {
 	/** 
 	 * ### setTrappingRate
-	 * @brief The krypton intra-granular trapping rate is set according to the input_variable iTrappingRate.
+	 * @brief The gas intra-granular trapping rate is set according to the input_variable iTrappingRate.
 	 * 
 	 */
 	const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
@@ -540,14 +702,13 @@ void System::setTrappingRate(int input_value)
 
 		trapping_rate *= sf_trapping_rate;
 
-
 		break;
 	}
 
 	case 99:
 	{
 		/**
-		 * @brief iTrappingRate = 99 stands for the dummy case with zero trapping rate.
+		 * @brief iTrappingRate = 99 stands for the case with zero trapping rate.
 		 * 
 		 */
 		reference += "iTrappingRate: dummy case with zero trapping rate.\n\t";
@@ -558,6 +719,61 @@ void System::setTrappingRate(int input_value)
 
 	default:
 		ErrorMessages::Switch("SetSystem.cpp", "iTrappingRate", input_value);
+		break;
+	}
+}
+
+void System::setGrainBoundaryHeliumTrappingRate(int input_value)
+{
+	/** 
+	 * ### setGrainBoundaryHeliumTrappingRate
+	 * @brief The helium inter-granular trapping rate is set according to the input_variable iGrainBoundaryHeliumTrappingRate.
+	 * 
+	 */
+	const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
+
+	switch (input_value)
+	{
+	case 0:
+	{
+		/**
+		 * @brief iGrainBoundaryHeliumTrappingRate = 0 corresponds to a constant value for trial, matching the value in iTrappingRate = 0
+		 * 
+		 */
+
+		grain_boundary_trapping_rate = 9.35e-6; // (1/s)
+		break;
+	}
+
+	case 1:
+	{
+		/**
+		 * @brief iGrainBoundaryHeliumTrappingRate = 1 corresponds to the model 
+		 * from @ref *Giorgi et al., Nuclear Engineering and Technology 54 (2022) 2367-2375*
+		 * 
+		 */
+
+		reference += "iGrainBoundaryHeliumTrappingRate: Giorgi et al., Nuclear Engineering and Technology 54 (2022) 2367-2375.\n\t";
+
+		grain_boundary_trapping_rate = 2.0 * pi * grain_boundary_diffusivity * sciantix_variable[sv["Intergranular bubble concentration"]].getFinalValue() / (log(1.0/(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() * sqrt(pi * sciantix_variable[sv["Intergranular bubble concentration"]].getFinalValue()))));
+
+		break;
+	}
+
+	case 99:
+	{
+		/**
+		 * @brief iGrainBoundaryHeliumTrappingRate = 99 stands for the case with zero trapping rate.
+		 * 
+		 */
+		reference += "iGrainBoundaryHeliumTrappingRate: case with zero trapping rate.\n\t";
+
+		grain_boundary_trapping_rate = 0.0;
+		break;
+	}
+
+	default:
+		ErrorMessages::Switch("SetSystem.cpp", "iGrainBoundaryHeliumTrappingRate", input_value);
 		break;
 	}
 }
@@ -641,7 +857,7 @@ void System::setProductionRate(int input_value)
 		 */
 		
 		reference += "Production rate = cumulative yield * fission rate density.\n\t";
-		production_rate = yield * history_variable[hv["Fission rate"]].getFinalValue(); // (at/m3s)
+		production_rate = yield * history_variable[hv["Fission rate"]].getFinalValue(); // (at/m3 s)
 		break;
 	}
 
@@ -670,7 +886,7 @@ void System::setProductionRate(int input_value)
 		// production rate in dproduced / dburnup -> dproduced / time
 		production_rate = 2.0e+21 * sciantix_variable[sv["Burnup"]].getFinalValue() + 3.0e+23; // (at/m3 burnup)
 		if(physics_variable[pv["Time step"]].getFinalValue())
-			production_rate *= sciantix_variable[sv["Specific power"]].getFinalValue() / 86400.0 / physics_variable[pv["Time step"]].getFinalValue();  // (at/m3s)
+			production_rate *= sciantix_variable[sv["Specific power"]].getFinalValue() / 86400.0 / physics_variable[pv["Time step"]].getFinalValue();  // (at/m3 s)
 		else
 			production_rate = 0.0;
 
@@ -687,10 +903,116 @@ void System::setProductionRate(int input_value)
 		 */
 
 		reference += "Constant production rate.\n\t";
-		production_rate = 1e18;
+		production_rate = 1e18; // (at/m3 s)
 
 		break;
 	}
+
+	case 4:
+  {
+    /**
+		 * @brief Surrogate model for **helium production in Am-MOX fuels under MYRRHA "Revision 1.8" irradiation conditions**
+		 * @ref: "Luzzi et al., submitted to Nuclear Engineering and Design (2023)"
+		 * Derived from SCIANTIX burnup module capabilities.
+		 * 
+		 * **Ranges of utilization**
+     * - Fast reactor conditions: (U,Pu)O2 MOX and (U,Pu,Am)O2 MOX fuels
+	   * - Burnup: up to 200 GWd/tHM
+     * - Fission rate: 0.9e19 - 3.0e19 fissions/m3 s
+	   * - Pu concentration: 25-30 wt.%
+     * - Am concentration: 0-5 wt.%
+     * - U235 enrichment/U : 0.711 wt.%
+     * - Temperature: 550-1200 °C
+	   * - O/M : 1.969
+	   * - Fuel density: 10970 kg/m3
+		 * 
+		 */
+		
+		// model coefficients:
+		double A = 3.387e+20;
+		double B = 2.717e+19;
+		double C = 3.528e+20;
+		double D = -9.692e+14;
+		double E = -2.397e14;
+		double F = 2.057e+15;
+		double G = 80.77;
+		double H = 8.864;
+		double I = -1.252e-23;
+		double J = 1.811e-23;
+		double K = -1.970e+25;
+		double X = 2.218e+23;
+
+		double Fdot = history_variable[hv["Fission rate"]].getFinalValue(); // (fissions/m3 s)
+		double time_irr = sciantix_variable[sv["Irradiation time"]].getFinalValue(); // (h)
+		double Am241 = sciantix_variable[sv["Am241"]].getFinalValue(); // (at.% HM)
+
+
+		reference += "Case for helium production rate: Luzzi et al., submitted to Nuclear Engineering and Design (2023).\n\t";
+
+    production_rate = (A* Am241 + B * pow(Am241,2) + C) +
+                       2 * time_irr *(D * Am241 + E * pow(Am241,2) + F) +
+                       Fdot * (G * Am241 + H)+ 2 * time_irr * pow(Fdot,2) * (I * Am241 + J) -
+                       K * Am241 * (Fdot / X) *(((time_irr * Fdot)/X)-1.0)* exp(-(time_irr * Fdot) / X); // (at/m3 h)			
+    production_rate /= 3600.0; // (at/m3 s)
+
+    production_rate *= sf_helium_production_rate;
+    break;
+  }
+
+	case 5:
+  {
+    /**
+		 * @brief Surrogate model for **helium production in fast reactor MOX fuel**
+		 * @ref: "Pizzocri et al., Nuclear Engineering and Technology 55 (2023) 3071-3079"
+     * Derived from SCIANTIX burnup module capabilities.
+		 * 
+		 * **Range of utilization**
+     * - Fast reactor conditions: (U,Pu)O2 MOX and (U,Pu,Am)O2 MOX fuels
+     * - Fission rate: 1e18 - 1e19 fissions/m3 s
+	   * - Pu concentration: 20-50 wt.%
+     * - Am concentration: 0-5 wt.%
+	   * - U235 enrichment/U : 0.711-5 wt.%
+     * - Temperature: 900-1900°C
+     * - O/M : 1.95-2.00
+   	 * - Fuel density: 9325-10970 kg/m3
+		 */
+		 
+		// model coefficients:
+		double A = 6.70e-1;
+		double B = 2.58e-21;
+		double C = -9.01e-1;
+		double D = 2.38e-2;
+		double E = -2.05e-4;
+		double F = 3.12e-5;
+		double G = 6.80e-2;
+		double H = 1.69e-1;
+		double I = 1.85e-1;
+		double S = 34.1;
+
+		double Fdot = history_variable[hv["Fission rate"]].getFinalValue(); // (fissions/m3 s)
+		double time_irr = sciantix_variable[sv["Irradiation time"]].getFinalValue(); // (h)
+    double rho = sciantix_variable[sv["Fuel density"]].getFinalValue(); // (kg/m3)
+
+		double Am241 = sciantix_variable[sv["Am241"]].getFinalValue(); // (at.% HM)
+    double Am242 = sciantix_variable[sv["Am242"]].getFinalValue(); // (at.% HM)
+    double Cm242 = sciantix_variable[sv["Cm242"]].getFinalValue(); // (at.% HM)
+		double Pu = sciantix_variable[sv["Pu"]].getFinalValue(); // (at.% HM)
+
+		reference += "Case for helium production rate: Pizzocri et al., Nuclear Engineering and Technology 55 (2023) 3071-3079.\n\t";
+
+    double P_exponent = B*Fdot + (C*Pu + D*pow(Pu,2) + E*pow(Pu,3)) + F*rho + G*Am241 + H*Am242 + I*Cm242 +S;
+    
+		if (time_irr == 0)
+      production_rate = 1.0e18; // (at/m3 s), from case 3: constant value
+    else
+    {
+      production_rate = A * pow(time_irr,A-1.0) * pow(10.0,P_exponent); // (at/m3 h)
+      production_rate /= 3600.0; // (at/m3 s)
+    }
+
+    production_rate *= sf_helium_production_rate;
+    break;
+  }
 
 	default:
 		ErrorMessages::Switch("SetSystem.cpp", "iHeliumProductionRate", input_value);

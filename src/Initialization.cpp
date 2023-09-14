@@ -54,7 +54,7 @@ void Initialization()
 	// Intragranular similarity ratio
 	Sciantix_variables[64] = 1.0;
 
-	// projection on diffusion modes of the initial conditions
+	// projection on diffusion modes of the initial conditions (currently not done for the inter-granular helium)
 	double initial_condition(0.0);
 	double projection_remainder(0.0);
 	double reconstructed_solution(0.0);

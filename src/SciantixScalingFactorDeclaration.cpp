@@ -26,5 +26,3 @@ double sf_screw_parameter(1.0);
 double sf_span_parameter(1.0);
 double sf_cent_parameter(1.0);
 double sf_helium_production_rate(1.0);
-double sf_temperature(1.0);
-double sf_fission_rate(1.0);

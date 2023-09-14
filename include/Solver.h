@@ -233,7 +233,6 @@ public:
 		}
 	}
 
-
   double QuarticEquation(std::vector<double> parameter)
   {
 		/**
@@ -385,6 +384,94 @@ public:
     }
     return x1;
 	}
+
+	double SpectralDiffusionCylinder(std::vector<double>& initial_condition, int N, double diffusion_coefficient, double domain_radius, double source_term, double time_step)
+	{
+  	/// SpectralDiffusionCylinder
+		/// Solver for the spatially averaged solution of the PDE [dy/dt = D div grad y + S] in cylindicral coordinates (only radial direction)
+		/// We apply a spectral approach in space, projecting the equation on the eigenfunctions of the laplacian operator (Bessel Js).
+		/// We use the first order backward Euler solver in time.
+		/// The number of terms in the expansion, N, is fixed a priori.
+		
+		unsigned short int n(0);
+
+		double diffusion_rate_coeff(0.0);
+		double diffusion_rate(0.0);
+		double source_rate_coeff(0.0);
+		double source_rate(0.0);
+		std::vector<double> time_coefficient(N, 0.0);
+		double projection_coeff(0.0);
+		double solution(0.0);
+
+		const double zJ0[40]  = {2.4048,5.5201,8.6537,11.7915,14.9309,18.0711,21.2116,24.3525,27.4935,30.6346,33.7758,36.9171,40.0584,43.1998,46.3412,49.4826,52.6241,55.7655,58.9070,62.0485,65.1899648,68.33146933,71.4729816,74.61450064,77.75602563,80.89755587,84.03909078,87.18062984,90.32217264,93.46371878,96.60526795,99.74681986,102.8883743,106.0299309,109.1714896,112.3130503,115.4546127,118.5961766,121.7377421,124.8793089};
+		const double zJ02[40] = {5.7832,30.4713,74.8870,139.0403,222.9323,326.5634,449.9335,593.0429,755.8914,938.4791,1140.8060,1362.8722,1604.6775,1866.2220,2147.5057,2448.5287,2769.2908,3109.7922,3470.0328,3850.0125,4249.73151065221,4669.18970077716,5108.38709930765,5567.32370630898,6045.99952183356,6544.41454592383,7062.56877861446,7600.46221993398,8158.09486990606,8735.46672855046,9332.57779588379,9949.42807192008,10586.0175566713,11242.3462501475,11918.4141523576,12614.2212633090,13329.7675830083,14065.0531114611,14820.0778486725,15594.8417946467};
+
+		diffusion_rate_coeff = diffusion_coefficient / pow(domain_radius, 2);
+		source_rate_coeff = 2.0 * source_term;
+
+		for (n = 0; n < N; n++)
+		{
+			diffusion_rate = diffusion_rate_coeff * zJ02[n];
+			source_rate = source_rate_coeff / zJ0[n];
+
+			time_coefficient[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, time_step);
+			initial_condition[n] = time_coefficient[n];
+
+			solution += time_coefficient[n] * (2.0 / zJ0[n]);
+		}
+
+		return solution;
+	}
+
+  void SpectralDiffusionNonEquilibriumCylinder(double& gas_solution, double& gas_bubble, double* initial_condition_gas_solution, double* initial_condition_gas_bubble, int N, double diffusion_coefficient, double resolution_rate, double trapping_rate, double domain_radius, double source_term, double source_term_bubbles, double time_step)
+  {
+    // used for the inter-granular helium behaviour: helium in intergranular solution / bubbles
+		
+		unsigned short int n(0);
+
+    double diffusion_rate_coeff(0.0);
+    double diffusion_rate(0.0);
+    double source_rate_coeff_solution(0.0);
+    double source_rate_coeff_bubbles(0.0);
+    double source_rate_solution(0.0);
+    double source_rate_bubble(0.0);
+    double projection_coeff(0.0);
+    double gas_solution_solution(0.0);
+    double gas_bubble_solution(0.0);
+    double coeff_matrix[4];
+    double initial_conditions[2];
+
+		const double zJ0[40]  = {2.4048,5.5201,8.6537,11.7915,14.9309,18.0711,21.2116,24.3525,27.4935,30.6346,33.7758,36.9171,40.0584,43.1998,46.3412,49.4826,52.6241,55.7655,58.9070,62.0485,65.1899648,68.33146933,71.4729816,74.61450064,77.75602563,80.89755587,84.03909078,87.18062984,90.32217264,93.46371878,96.60526795,99.74681986,102.8883743,106.0299309,109.1714896,112.3130503,115.4546127,118.5961766,121.7377421,124.8793089};
+		const double zJ02[40] = {5.7832,30.4713,74.8870,139.0403,222.9323,326.5634,449.9335,593.0429,755.8914,938.4791,1140.8060,1362.8722,1604.6775,1866.2220,2147.5057,2448.5287,2769.2908,3109.7922,3470.0328,3850.0125,4249.73151065221,4669.18970077716,5108.38709930765,5567.32370630898,6045.99952183356,6544.41454592383,7062.56877861446,7600.46221993398,8158.09486990606,8735.46672855046,9332.57779588379,9949.42807192008,10586.0175566713,11242.3462501475,11918.4141523576,12614.2212633090,13329.7675830083,14065.0531114611,14820.0778486725,15594.8417946467};
+
+    diffusion_rate_coeff = 14.0 * diffusion_coefficient / (4.0 * pow(domain_radius, 2));
+    projection_coeff = 2.0;
+    source_rate_coeff_solution = projection_coeff * source_term;
+    source_rate_coeff_bubbles  = projection_coeff * source_term_bubbles;
+
+    for (n = 0; n < N; n++)
+    {
+      diffusion_rate = diffusion_rate_coeff * zJ02[n];
+      source_rate_solution = source_rate_coeff_solution / zJ0[n];
+      source_rate_bubble   = source_rate_coeff_bubbles / zJ0[n];
+
+      coeff_matrix[0] =  1.0 + ( diffusion_rate + trapping_rate ) * time_step;
+      coeff_matrix[1] =  - resolution_rate * time_step;
+      coeff_matrix[2] =  - trapping_rate * time_step;
+      coeff_matrix[3] =  1.0 +  resolution_rate  * time_step;
+      initial_conditions[0]  =  initial_condition_gas_solution[n] + source_rate_solution * time_step;
+      initial_conditions[1]  =  initial_condition_gas_bubble[n]   + source_rate_bubble   * time_step;
+
+      Solver::Laplace2x2(coeff_matrix, initial_conditions);
+      initial_condition_gas_solution[n] = initial_conditions[0];
+      initial_condition_gas_bubble[n] = initial_conditions[1];
+
+      gas_solution_solution  += initial_conditions[0]  * (projection_coeff / zJ0[n]);
+      gas_bubble_solution    += initial_conditions[1] * (projection_coeff / zJ0[n]);
+    }
+    gas_solution = gas_solution_solution;
+    gas_bubble   = gas_bubble_solution;
+  }
 
 
 	Solver() {}

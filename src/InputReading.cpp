@@ -168,20 +168,19 @@ void InputReading()
 	 * 	0= no model considered,
 	 * 	1= fraction of HBS-restructured volume from Barani et al. (2020)
 	 * 
-	 * iHBS_FGDiffusionCoefficient
-	 * 	0= constant value
-	 * 
 	 * iHighBurnupStructurePorosity
 	 * 	0= no evolution of HBS porosity,
 	 * 	1= HBS porosity evolution based on Spino et al. (2006) data
 	 * 
 	 * iStoichiometryDeviation
-	 * 	0= not considered
-	 * 	1= model for fuel oxidation in steam environment
+	 * 	0= 
+	 * 	1= 
+	 * 	2= 
 	 * 
 	 * iBubbleDiffusivity
-	 * 	0= not considered
-	 * 	1= active
+	 * 	0= 
+	 * 	1= 
+	 * 	2= 
 	 */
 
 	Sciantix_options[0] = ReadOneSetting("iGrainGrowth", input_settings, input_check);
@@ -202,11 +201,14 @@ void InputReading()
 	Sciantix_options[15] = ReadOneSetting("iHeDiffusivity", input_settings, input_check);
 	Sciantix_options[16] = ReadOneSetting("iGrainBoundarySweeping", input_settings, input_check);
 	Sciantix_options[17] = ReadOneSetting("iHighBurnupStructureFormation", input_settings, input_check);
-	Sciantix_options[18] = ReadOneSetting("iHBS_FGDiffusionCoefficient", input_settings, input_check);
-	Sciantix_options[19] = ReadOneSetting("iHighBurnupStructurePorosity", input_settings, input_check);
-	Sciantix_options[20] = ReadOneSetting("iHeliumProductionRate", input_settings, input_check);
-	Sciantix_options[21] = ReadOneSetting("iStoichiometryDeviation", input_settings, input_check);
-	Sciantix_options[22] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
+	Sciantix_options[18] = ReadOneSetting("iHighBurnupStructurePorosity", input_settings, input_check);
+	Sciantix_options[19] = ReadOneSetting("iHeliumProductionRate", input_settings, input_check);
+	Sciantix_options[20] = ReadOneSetting("iStoichiometryDeviation", input_settings, input_check);
+	Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
+	Sciantix_options[22] = ReadOneSetting("iGrainBoundaryHeliumBehaviour",input_settings,input_check);
+	Sciantix_options[23] = ReadOneSetting("iGrainBoundaryHeliumDiffusivity",input_settings,input_check);
+	Sciantix_options[24] = ReadOneSetting("iGrainBoundaryHeliumTrappingRate",input_settings,input_check);
+	Sciantix_options[25] = ReadOneSetting("iGrainBoundaryHeliumThermalResolution",input_settings,input_check);
 	
 	if (!input_initial_conditions.fail())
 	{
@@ -281,6 +283,11 @@ void InputReading()
 		Sciantix_variables[63] = initial_composition_Kr85m[6];
 
 		Sciantix_variables[66] = ReadOneParameter("Initial stoichiometry deviation[0]", input_initial_conditions, input_check);
+
+		Sciantix_variables[79] = ReadOneParameter("Initial composition Am241", input_initial_conditions, input_check);
+		Sciantix_variables[80] = ReadOneParameter("Initial composition Am242", input_initial_conditions, input_check);
+		Sciantix_variables[81] = ReadOneParameter("Initial composition Cm242", input_initial_conditions, input_check);
+		Sciantix_variables[82] = ReadOneParameter("Initial composition Pu", input_initial_conditions, input_check);
 	}
 
 	int n = 0;
@@ -325,8 +332,8 @@ void InputReading()
 		Sciantix_scaling_factors[1] = ReadOneParameter("sf_trapping_rate", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[2] = ReadOneParameter("sf_nucleation_rate", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[3] = ReadOneParameter("sf_diffusivity", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[4] = ReadOneParameter("sf_temperature", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[5] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[4] = ReadOneParameter("sf_screw_parameter", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[5] = ReadOneParameter("sf_span_parameter", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[6] = ReadOneParameter("sf_cent_parameter", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
 	}
