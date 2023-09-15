@@ -129,7 +129,7 @@ def do_gold():
 def do_plot():
   fig, ax = plt.subplots()
 
-  ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 1.0')
+  ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 1.0')
   ax.scatter(gbSwellingWhite, gbSwelling2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
@@ -152,7 +152,7 @@ def do_plot():
   # GOLD vs. SCIANTIX 2.0
   fig, ax = plt.subplots()
 
-  ax.scatter(gbSwellingWhite, gold, c = '#C9C954', edgecolors= '#999AA2', marker = '^', s=20, label='Gold')
+  ax.scatter(gbSwellingWhite, gold, c = '#C9C954', edgecolors= '#999AA2', marker = 'o', s=20, label='Gold')
   ax.scatter(gbSwellingWhite, gbSwelling2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
@@ -215,13 +215,10 @@ def do_plot():
 
   plt.show()
 
-  #######
-  # DATA
-  #######
+  fig, axfig = plt.subplots(1,2)
 
-  fig, ax = plt.subplots()
-
-  ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 1.0')
+  ax = axfig[0]
+  ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 1.0')
   ax.scatter(gbSwellingWhite, gbSwelling2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
@@ -239,15 +236,11 @@ def do_plot():
   ax.set_ylabel('Calculated (%)')
   ax.legend()
 
-  #####################
-  # Boxplot + data
-  #####################
-
-  fig, axfig = plt.subplots(1,2)
-
-  ax = axfig[0]
+  # Box plot
+  ax = axfig[1]
 
   data = [gbSwellingWhite, gbSwelling1, gbSwelling2]
+  # plt.boxplot(data)
 
   bp = ax.boxplot(data, patch_artist = True)
   colors = ['#80C7E6', '#FA82B4', '#98E18D']
@@ -280,49 +273,7 @@ def do_plot():
   ax.get_xaxis().tick_bottom()
   ax.get_yaxis().tick_left()
 
-  ###
-  # Boxplot: Bias
-  ###
-
-  ax = axfig[1]
-
-  error1 = [gbSwelling1[i] - gbSwellingWhite[i] for i in range(len(gbSwellingWhite))]
-  error2 = [gbSwelling2[i] - gbSwellingWhite[i] for i in range(len(gbSwellingWhite))]
-  data   = [error1, error2]
-
-  bp = ax.boxplot(data, patch_artist = True)
-  colors = ['#FA82B4', '#98E18D']
-
-  for patch, color in zip(bp['boxes'], colors):
-    patch.set_facecolor(color)
-
-  for whisker in bp['whiskers']:
-    whisker.set(color ='#8B008B', linewidth = 1.5, linestyle =":")
-
-  for cap in bp['caps']:
-    cap.set(color ='#8B008B', linewidth = 2)
-
-  for median in bp['medians']:
-    median.set(color ='black', linewidth = 2)
-
-  for flier in bp['fliers']:
-    flier.set(marker ='D', color ='#e7298a', alpha = 0.5)
-
-  ax.tick_params(axis='y', which='minor', bottom=False)
-  ax.minorticks_on()
-  ax.grid(which='major', color='k', linestyle='--', alpha=0.2)
-  ax.grid(which='minor', color='k', linestyle=':', alpha=0.2)
-
-  ax.set_xticklabels(['SCIANTIX 1.0', 'SCIANTIX 2.0'])
-  ax.set_ylabel("Error (%)")
-
-  # plt.title("Box plot")
-
-  ax.get_xaxis().tick_bottom()
-  ax.get_yaxis().tick_left()
-
   plt.show()
-
   # plt.savefig("boxplot_gb_swelling.png")
 
 
@@ -378,35 +329,33 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
         do_gold()
 
 
-      row_number = -1
-
       # Retrieve the generated data of Intergranular gas swelling
       interGranularSwellingPos = findSciantixVariablePosition(data, "Intergranular gas swelling (/)")
-      gbSwelling2.append(100*data[row_number,interGranularSwellingPos].astype(float))
+      gbSwelling2.append(100*data[-1,interGranularSwellingPos].astype(float))
 
       # Retrieve the gold data of Intergranular gas swelling
       interGranularSwellingGoldPos = findSciantixVariablePosition(data_gold, "Intergranular gas swelling (/)")
-      gold.append(100*data_gold[row_number,interGranularSwellingGoldPos].astype(float))
+      gold.append(100*data_gold[-1,interGranularSwellingGoldPos].astype(float))
 
       # Retrieve the generated data of Intergranular bubble area (m2)
       bubbleAreaPos = findSciantixVariablePosition(data, "Intergranular bubble area (m2)")
-      bbarea2.append(100*data[row_number,bubbleAreaPos].astype(float))
+      bbarea2.append(100*data[-1,bubbleAreaPos].astype(float))
 
       # Retrieve the gold data of Intergranular bubble area (m2)
       bubbleAreaGoldPos = findSciantixVariablePosition(data_gold, "Intergranular bubble area (m2)")
-      bbarea2_gold.append(100*data_gold[row_number,bubbleAreaGoldPos].astype(float))
+      bbarea2_gold.append(100*data_gold[-1,bubbleAreaGoldPos].astype(float))
 
       # Retrieve the generated data of Fission gas release
       FGRPos = findSciantixVariablePosition(data, "Fission gas release (/)")
-      FGR2.append(100*data[row_number,FGRPos].astype(float))
+      FGR2.append(100*data[-1,FGRPos].astype(float))
 
       # Retrieve the generated data of Intergranular bubble concentration (bub/m2)
       BubConcPos = findSciantixVariablePosition(data, "Intergranular bubble concentration (bub/m2)")
-      bbconc.append(1e-12*data[row_number,BubConcPos].astype(float))
+      bbconc.append(1e-12*data[-1,BubConcPos].astype(float))
 
       # Retrieve the gold data of Intergranular bubble concentration
       BubConcPosGold = findSciantixVariablePosition(data_gold, "Intergranular bubble concentration (bub/m2)")
-      bbconc_gold.append(1e-12*data_gold[row_number,BubConcPosGold].astype(float))
+      bbconc_gold.append(1e-12*data_gold[-1,BubConcPosGold].astype(float))
 
       os.chdir('..')
 
@@ -415,10 +364,6 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
     do_plot()
 
   """ Statistical analysis """
-
-  error1 = [gbSwelling1[i] - gbSwellingWhite[i] for i in range(len(gbSwellingWhite))]
-  error2 = [gbSwelling2[i] - gbSwellingWhite[i] for i in range(len(gbSwellingWhite))]
-
   # Experimental data: mean, median, ...
   print(f"Experimental data - mean: ", np.mean(gbSwellingWhite))
   print(f"Experimental data - median: ", np.median(gbSwellingWhite))
@@ -430,18 +375,12 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
   print(f"SCIANTIX 1.0 - median: ", np.median(gbSwelling1))
   print(f"SCIANTIX 1.0 - Q1: ", np.percentile(gbSwelling1, 25, interpolation = 'midpoint'))
   print(f"SCIANTIX 1.0 - Q3: ", np.percentile(gbSwelling1, 75, interpolation = 'midpoint'))
-  print(f"SCIANTIX 1.0 - Standard error: {np.std(gbSwelling1, ddof=0) / len(gbSwelling1)}")
-  print(f"SCIANTIX 1.0 - 95% CI: {np.mean(gbSwelling1) - 1.96 * np.std(gbSwelling1, ddof=0) / len(gbSwelling1)}, {np.mean(gbSwelling1) + 1.96 * np.std(gbSwelling1, ddof=0) / len(gbSwelling1)}")
-  print(f"SCIANTIX 1.0 - BIAS median: ", np.median(error1))
 
   # SCIANTIX 2.0: mean and median
   print(f"SCIANTIX 2.0 - mean: ", np.mean(gbSwelling2))
   print(f"SCIANTIX 2.0 - median: ", np.median(gbSwelling2))
   print(f"SCIANTIX 2.0 - Q1: ", np.percentile(gbSwelling2, 25, interpolation = 'midpoint'))
   print(f"SCIANTIX 2.0 - Q3: ", np.percentile(gbSwelling2, 75, interpolation = 'midpoint'))
-  print(f"SCIANTIX 2.0 - Standard error: {np.std(gbSwelling2, ddof=0) / len(gbSwelling2)}")
-  print(f"SCIANTIX 2.0 - 95% CI: {np.mean(gbSwelling2) - 1.96 * np.std(gbSwelling2, ddof=0) / len(gbSwelling2)}, {np.mean(gbSwelling2) + 1.96 * np.std(gbSwelling2, ddof=0) / len(gbSwelling2)}")
-  print(f"SCIANTIX 2.0 - BIAS median: ", np.median(error2))
 
   # Median absolute deviations
   deviations_1 = abs(np.array(gbSwellingWhite) - gbSwelling1)

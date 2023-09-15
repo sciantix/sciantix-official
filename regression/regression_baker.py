@@ -92,7 +92,7 @@ def do_plot():
   # SCIANTIX 1.0 vs. SCIANTIX 2.0
   fig, ax = plt.subplots()
 
-  ax.scatter(igSwellingBaker, igSwelling1, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 1.0')
+  ax.scatter(igSwellingBaker, igSwelling1, c = '#FA82B4', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 1.0')
   ax.scatter(igSwellingBaker, igSwelling2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
