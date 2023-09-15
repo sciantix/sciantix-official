@@ -181,6 +181,15 @@ void InputReading()
 	 * 	0= 
 	 * 	1= 
 	 * 	2= 
+	 *
+	 *	iGrainBoundaryHeliumBehaviour
+	 *
+	 *	iGrainBoundaryHeliumDiffusivity
+	 *
+	 *	iGrainBoundaryHeliumTrappingRate
+	 *
+	 *	iGrainBoundaryHeliumThermalResolution
+	 *
 	 */
 
 	Sciantix_options[0] = ReadOneSetting("iGrainGrowth", input_settings, input_check);
