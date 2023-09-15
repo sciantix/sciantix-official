@@ -1,7 +1,7 @@
 Model #0: 	Burnup	The local burnup is calculated from the fission rate density.
 Model #1: 	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
-Model #2: 	High burnup structure formation	: not considered.
-Model #3: 	High burnup structure porosity	not considered
+Model #2: 	High burnup structure formation	HBS not considered.
+Model #3: 	High burnup structure porosity	HBS not considered.
 Model #4: 	Grain growth	Ainscough et al., JNM, 49 (1973) 117-128.
 Model #5: 	Grain-boundary sweeping	Not considered
 Model #6: 	Gas production - Xe in UO2	 
@@ -37,8 +37,10 @@ System #1: 	Kr in UO2	Production rate = cumulative yield * fission rate density.
 	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
 	
 System #2: 	He in UO2	iHeDiffusivity: constant intragranular diffusivity.
+	(no or very limited lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.
 	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
 	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
+	iGrainBoundaryHeliumTrappingRate: Giorgi et al., Nuclear Engineering and Technology 54 (2022) 2367-2375.
 	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
 	No production rate.
 	
@@ -73,9 +75,12 @@ Input setting #14: 	iHelium = 0
 Input setting #15: 	iHeDiffusivity = 0
 Input setting #16: 	iGrainBoundarySweeping = 0
 Input setting #17: 	iHighBurnupStructureFormation = 0
-Input setting #18: 	iHBS_FGDiffusionCoefficient = 0
-Input setting #19: 	iHighBurnupStructurePorosity = 0
-Input setting #20: 	iHeliumProductionRate = 0
-Input setting #21: 	iStoichiometryDeviation = 0
-Input setting #22: 	iBubbleDiffusivity = 0
+Input setting #18: 	iHighBurnupStructurePorosity = 0
+Input setting #19: 	iHeliumProductionRate = 0
+Input setting #20: 	iStoichiometryDeviation = 0
+Input setting #21: 	iBubbleDiffusivity = 0
+Input setting #22: 	iGrainBoundaryHeliumBehaviour = 1
+Input setting #23: 	iGrainBoundaryHeliumDiffusivity = 1
+Input setting #24: 	iGrainBoundaryHeliumTrappingRate = 1
+Input setting #25: 	iGrainBoundaryHeliumThermalResolution = 2
 

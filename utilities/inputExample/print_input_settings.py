@@ -23,7 +23,6 @@ with open('input_settings.txt', 'w') as file:
     file.write('0\t#\tiHeDiffusivity (0= constant value, 1= limited lattice damage, Luzzi et al. (2018), 2= significant lattice damage, Luzzi et al. (2018))\n')
     file.write('0\t#\tiGrainBoundarySweeping (0= no model considered, 1= TRANSURANUS swept volume model)\n')
     file.write('0\t#\tiHighBurnupStructureFormation (0= no model considered, 1= fraction of HBS-restructured volume from Barani et al. (2020))\n')
-    file.write('0\t#\tiHBS_FGDiffusionCoefficient (0= constant value)\n')
     file.write('0\t#\tiHighBurnupStructurePorosity (0= no evolution of HBS porosity, 1= HBS porosity evolution based on Spino et al. (2006) data)\n')
     file.write('0\t#\tiHeliumProductionRate (0= zero production rate, 1= helium from ternary fissions, 2= linear with burnup (FR))\n')
     file.write('0\t#\tiStoichiometryDeviation (0= not considered, 1= Cox et al. 1986, 2= Bittel et al. 1969, 3= Abrefah et al. 1994, 4= Imamura et al. 1997, 5= Langmuir-based approach)\n')
