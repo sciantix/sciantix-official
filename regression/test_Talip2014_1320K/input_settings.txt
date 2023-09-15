@@ -17,7 +17,6 @@
 1	#	iGrainBoundarySweeping (0= no model considered, 1= TRANSURANUS swept volume model)
 0	#	iHighBurnupStructureFormation (0= no model considered, 1= fraction of HBS-restructured volume from Barani et al. (2020))
 0	#	iHBS_FGDiffusionCoefficient (0= constant value)
-0	#	iHBSPorosityEvolution (0= no evolution of HBS porosity, 1= HBS porosity evolution based on Spino et al. (2006) data)
 0	#	iHeliumProductionRate (0= zero production rate, 1= from ternary fissions, 2= linear with burnup)
 0	#	iStoichiometryDeviation (0= not considered, 1= Cox et al., 2= Bittel et al., 3= Abrefah et al., 4= Imamura et al.)
 0 # iBubbleSurfaceDiffusivity

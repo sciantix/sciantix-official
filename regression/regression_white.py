@@ -243,9 +243,7 @@ def do_plot():
   # Boxplot + data
   #####################
 
-  fig, axfig = plt.subplots(1,2)
-
-  ax = axfig[0]
+  fig, ax = plt.subplots()
 
   data = [gbSwellingWhite, gbSwelling1, gbSwelling2]
 
@@ -280,11 +278,11 @@ def do_plot():
   ax.get_xaxis().tick_bottom()
   ax.get_yaxis().tick_left()
 
-  ###
+  ################
   # Boxplot: Bias
-  ###
+  ################
 
-  ax = axfig[1]
+  fig, ax = plt.subplots()
 
   error1 = [gbSwelling1[i] - gbSwellingWhite[i] for i in range(len(gbSwellingWhite))]
   error2 = [gbSwelling2[i] - gbSwellingWhite[i] for i in range(len(gbSwellingWhite))]

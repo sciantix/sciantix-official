@@ -52,8 +52,6 @@ The provided input settings are the **recommended** choice for standard simulati
 
 0	#	iGrainBoundarySweeping (0= no model considered, 1= TRANSURANUS swept volume model)
 
-0	#	iHBS_FGDiffusionCoefficient (0= constant value)
-
 0	#	iHighBurnupStructurePorosity (0= no evolution of HBS porosity, 1= HBS porosity evolution based on Spino et al. (2006) data)
 
 # Input initial conditions

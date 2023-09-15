@@ -125,28 +125,23 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 		++iv_counter;
 
 		input_variable.emplace_back();
-		input_variable[iv_counter].setName("iHBS_FGDiffusionCoefficient");
+		input_variable[iv_counter].setName("iHighBurnupStructurePorosity");
 		input_variable[iv_counter].setValue(Sciantix_options[18]);
 		++iv_counter;
 
 		input_variable.emplace_back();
-		input_variable[iv_counter].setName("iHighBurnupStructurePorosity");
+		input_variable[iv_counter].setName("iHeliumProductionRate");
 		input_variable[iv_counter].setValue(Sciantix_options[19]);
 		++iv_counter;
 
 		input_variable.emplace_back();
-		input_variable[iv_counter].setName("iHeliumProductionRate");
+		input_variable[iv_counter].setName("iStoichiometryDeviation");
 		input_variable[iv_counter].setValue(Sciantix_options[20]);
 		++iv_counter;
 
 		input_variable.emplace_back();
-		input_variable[iv_counter].setName("iStoichiometryDeviation");
-		input_variable[iv_counter].setValue(Sciantix_options[21]);
-		++iv_counter;
-
-		input_variable.emplace_back();
 		input_variable[iv_counter].setName("iBubbleDiffusivity");
-		input_variable[iv_counter].setValue(Sciantix_options[22]);
+		input_variable[iv_counter].setValue(Sciantix_options[21]);
 		++iv_counter;
 	}
 
