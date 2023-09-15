@@ -309,7 +309,7 @@ void InputReading()
 	Fissionrate_input.resize(Input_history_points);
 	Hydrostaticstress_input.resize(Input_history_points);
 		
-	if(Sciantix_options[21] > 0)
+	if(Sciantix_options[20] > 0)
 		Steampressure_input.resize(Input_history_points);
 
 	Time_end_h = Time_input[Input_history_points - 1];
