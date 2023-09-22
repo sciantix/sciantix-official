@@ -28,7 +28,7 @@ SRCEXT      := cpp
 DEPEXT      := d
 OBJEXT      := o
 
-CFLAGS      := -Wall -O -g
+CFLAGS      := -Wall
 LIB         := -lm
 INC         := -I$(INCDIR) -I/usr/local/include #also this may change according to your environment specs
 INCDEP      := -I$(INCDIR)
@@ -38,6 +38,7 @@ OBJECTS     := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.$(OBJE
 
 #####################################################################################
 
+all: CFLAGS += -O2
 all: resources $(TARGET)
 
 remake: cleaner all
@@ -72,4 +73,7 @@ $(BUILDDIR)/%.$(OBJEXT): $(SRCDIR)/%.$(SRCEXT)
 	@rm -f $(BUILDDIR)/$*.$(DEPEXT).tmp
 	@$(RM) -rf $(TARGETDIR)/*.$(SRCEXT)
 
-.PHONY: all remake clean cleaner resources
+debug: CFLAGS += -Og -Wextra
+debug: resources $(TARGET)
+
+.PHONY: all remake clean cleaner resources debug
