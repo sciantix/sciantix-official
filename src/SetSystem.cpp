@@ -376,7 +376,7 @@ void System::setGrainBoundaryHeliumDiffusivity(int input_value)
 	case 0:
 	{
 		/**
-		 * @brief iGrainBoundaryHeliumDiffusivity = 0 corresponds to a constant intra-granular diffusivity value
+		 * @brief iGrainBoundaryHeliumDiffusivity = 0 corresponds to a constant inter-granular diffusivity value
 		 * 
 		 */
 		
@@ -613,7 +613,8 @@ void System::setGrainBoundaryHeliumThermalResolutionRate(int input_value)
 	case 2:
 	{
 		/**
-		 * @brief iGrainBoundaryHeliumThermalResolution = 2 from Van Brutzel ...
+		 * @brief iGrainBoundaryHeliumThermalResolution = 2
+		 * accounting for compressibility factor from Van Brutzel et al., JNM 518 (2019) 431-439
 		 * 
 		 */
 
@@ -668,7 +669,7 @@ void System::setTrappingRate(int input_value)
 	{
 		/**
 		 * @brief iTrappingRate = 0 corresponds to a constant intra-granular trapping rate, equal to 9.35e-6 1/s.
-		 * This value is from @ref *Olander, Wongsawaeng, JNM, 354 (2006), 94-109*.
+		 * This value is from @ref *Olander and Wongsawaeng, JNM 354 (2006) 94-109*.
 		 * 
 		 */
 

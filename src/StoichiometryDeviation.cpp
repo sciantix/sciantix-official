@@ -188,7 +188,7 @@ void StoichiometryDeviation()
        * Range of utilization:
        * - Pure steam
        * - Temperature range: 1073-1473
-       * @ref Imamura and. Une, JNM, 247:131–137, 1997.
+       * @ref Imamura and Une, JNM, 247:131–137, 1997.
        * 
        */
 

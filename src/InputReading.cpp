@@ -173,23 +173,37 @@ void InputReading()
 	 * 	1= HBS porosity evolution based on Spino et al. (2006) data
 	 * 
 	 * iStoichiometryDeviation
-	 * 	0= 
-	 * 	1= 
-	 * 	2= 
+	 * 	0= off
+	 * 	1= Carter and Lay (1970)
+	 * 	2= Bittel et al. (1986)
+	 * 	3= Abrefah et al. (1994)
+	 * 	4= Imamura and Une (1997)
+	 * 	5= Langmuir-based approach - Massih (2018)
+	 * 	6= Langmuir-based approach - Massih (2018) for oxidized rodlets
 	 * 
 	 * iBubbleDiffusivity
-	 * 	0= 
-	 * 	1= 
-	 * 	2= 
-	 *
-	 *	iGrainBoundaryHeliumBehaviour
-	 *
-	 *	iGrainBoundaryHeliumDiffusivity
-	 *
-	 *	iGrainBoundaryHeliumTrappingRate
-	 *
-	 *	iGrainBoundaryHeliumThermalResolution
-	 *
+	 * 	0= off
+	 * 	1= volume diffusivity according to Van Uffelen et al. (2011), based on Evans (1994)
+	 * 
+	 * iGrainBoundaryHeliumBehaviour
+	 * 	0= off
+	 * 	1= on
+	 * 
+	 * iGrainBoundaryHeliumDiffusivity
+	 * 	0= constant value
+	 * 	1= Luzzi et al. (2018) - inter-granular, limited lattice damage
+	 * 	2= Luzzi et al. (2018) - inter-granular, significant lattice damage
+	 * 	3= Talip et al. (2014) - inter-granular
+	 * 
+	 * iGrainBoundaryHeliumTrappingRate
+	 * 	0= constant value
+	 * 	1= Giorgi et al. (2022)
+	 * 
+	 * iGrainBoundaryHeliumThermalResolution
+	 * 	0= constant value
+	 * 	1= Giorgi et al. (2022)
+	 * 	2= Giorgi et al. (2022), accounting for compressibility factor from Van Brutzel et al. (2019)
+	 *  
 	 */
 
 	Sciantix_options[0] = ReadOneSetting("iGrainGrowth", input_settings, input_check);
