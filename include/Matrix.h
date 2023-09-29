@@ -38,6 +38,9 @@ protected:
 	std::string matrix_name;
 	double healing_temperature_threshold;
 	double nucleation_rate;
+	double pore_nucleation_rate;
+	double pore_resolution_rate;
+	double pore_trapping_rate;
 
 public:
 	
@@ -179,6 +182,24 @@ public:
 	{
 		/// Member function to get the nucleation rate of the matrix under irradiation (1/s)
 		return nucleation_rate;
+	}
+
+	void setPoreNucleationRate();
+	double getPoreNucleationRate()
+	{
+		return pore_nucleation_rate;
+	}
+
+	void setPoreResolutionRate();
+	double getPoreResolutionRate()
+	{
+		return pore_resolution_rate;
+	}
+
+	void setPoreTrappingRate();
+	double getPoreTrappingRate()
+	{
+		return pore_trapping_rate;
 	}
 
 	void setGrainRadius(double gr)
