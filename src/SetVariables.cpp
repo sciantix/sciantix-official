@@ -854,15 +854,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[55]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("HBS porosity");
-	sciantix_variable[sv_counter].setUOM("(/)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[56]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[56]);
-	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
-	++sv_counter;
-
+	
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Intragranular similarity ratio");
 	sciantix_variable[sv_counter].setUOM("(/)");
@@ -925,6 +917,110 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("HBS porosity");
+	sciantix_variable[sv_counter].setUOM("(/)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[56]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[56]);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	++sv_counter;
+	
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("HBS pore density");
+	sciantix_variable[sv_counter].setUOM("(pores/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[80]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[80]);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	++sv_counter;
+	
+  sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("HBS pore volume");
+	sciantix_variable[sv_counter].setUOM("(m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[81]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[81]);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	++sv_counter;
+	
+  sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("HBS pore radius");
+	sciantix_variable[sv_counter].setUOM("(m)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[82]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[82]);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	++sv_counter;
+    
+  sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Xe in HBS pores");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[83]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[83]);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	++sv_counter;
+
+  sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Kr in HBS pores");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[84]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[84]);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Fission gas in HBS pores");
+	sciantix_variable[sv_counter].setUOM("(at^2/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[83] + Sciantix_variables[84]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[83] + Sciantix_variables[84]);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Xe in HBS pores - variance");
+	sciantix_variable[sv_counter].setUOM("(at^2/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[85]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[85]);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Xe atoms per HBS pore");
+	sciantix_variable[sv_counter].setUOM("(at/pore)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[86]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[86]);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Kr atoms per HBS pore");
+	sciantix_variable[sv_counter].setUOM("(at/pore)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[87]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[87]);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Fission gas atoms per HBS pore");
+	sciantix_variable[sv_counter].setUOM("(at/pore)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[86] + Sciantix_variables[87]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[86] + Sciantix_variables[87]);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	++sv_counter;
+
+  sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Xe atoms per HBS pore - variance");
+	sciantix_variable[sv_counter].setUOM("(at^2/pore)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[88]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[88]);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	++sv_counter;
+
+  sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Vacancies per HBS pore");
+	sciantix_variable[sv_counter].setUOM("(vac/pore)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[89]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[89]);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
 
 	// ---------------

@@ -35,8 +35,8 @@ void SetMatrix( )
 
 		case 1: 
 		{
-			UO2();
-			MapMatrix();
+			// UO2();
+			// MapMatrix();
 
 			UO2HBS();
 			MapMatrix();
@@ -48,8 +48,6 @@ void SetMatrix( )
 			ErrorMessages::Switch("SetMatrix.cpp", "iFuelMatrix", int(input_variable[iv["iFuelMatrix"]].getValue()));
 			break;
 	}
-
-
 }
 
 void Matrix::setGrainBoundaryMobility(int input_value)
@@ -149,8 +147,72 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value)
 			break;
 		}
 
+  case 5:
+  {
+    /**
+     * @brief iGrainBoundaryVacancyDiffusivity = 5 corresponds to the vacancy diffusivities along HBS grain boundaries.
+     * This model is from @ref Barani et al., JNM 563 (2022) 153627.
+     *
+     */
+
+    grain_boundary_diffusivity = (1.3e-7 * exp(-4.52e-19 /
+			(boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue()))
+    );
+
+    reference += "iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.\n\t";
+    break;
+  }
+
 		default:
 			ErrorMessages::Switch("SetMatrix.cpp", "iGrainBoundaryVacancyDiffusivity", input_value);
 			break;
 	}
+}
+
+void Matrix::setPoreNucleationRate()
+{
+  /**
+   * @brief nucleation rate of HBS pores.
+   * This model is from @ref *Barani et al., JNM 563 (2022) 153627*.
+   *
+   */
+
+  double sf_nucleation_rate_porosity = 1.25e-6;
+
+  pore_nucleation_rate =
+		(5.0e17 * 2.77e-7 * 3.54 * (1.0-sciantix_variable[sv["Restructured volume fraction"]].getFinalValue()) *
+    pow(sciantix_variable[sv["Effective burnup"]].getFinalValue(), 2.54));
+
+  pore_nucleation_rate *= sf_nucleation_rate_porosity;
+}
+
+void Matrix::setPoreResolutionRate()
+{
+  /**
+   * @brief re-solution rate of gas atoms from HBS pores.
+   * This model is from @ref *Barani et al., JNM 563 (2022) 153627*.
+   *
+   */
+  
+	double correction_coefficient = (1.0 - exp(pow( -sciantix_variable[sv["HBS pore radius"]].getFinalValue() / (3.0*3.0*1.0e-9), 3)));
+
+  pore_resolution_rate =
+    2.0e-23 * history_variable[hv["Fission rate"]].getFinalValue() * correction_coefficient *
+    (3.0 * 1.0e-9 / (3.0 * 1.0e-9 + sciantix_variable[sv["HBS pore radius"]].getFinalValue())) *
+    (1.0e-9 / (1.0e-9 + sciantix_variable[sv["HBS pore radius"]].getFinalValue()));
+}
+ 
+void Matrix::setPoreTrappingRate()
+{
+  /**
+   * @brief trapping rate of gas atoms in HBS pores.
+   * This model is from @ref *Barani et al., JNM 563 (2022) 153627*.
+   *
+   */
+
+  const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
+  pore_trapping_rate = 4.0 * pi * matrix[sma["UO2HBS"]].getGrainBoundaryVacancyDiffusivity() *
+    sciantix_variable[sv["Xe at grain boundary"]].getFinalValue() *
+    sciantix_variable[sv["HBS pore radius"]].getFinalValue() *
+    (1.0 + 1.8 * pow(sciantix_variable[sv["HBS porosity"]].getFinalValue(), 1.3));
 }

@@ -26,39 +26,29 @@ void SetSystem()
 		{
 			Xe_in_UO2();
 			MapSystem();
-			
+
 			Kr_in_UO2();
 			MapSystem();
 
 			He_in_UO2();
 			MapSystem();
-		
+
 			Xe133_in_UO2();
 			MapSystem();
-			
+
 			Kr85m_in_UO2();
 			MapSystem();
+						
+			break;
 		}
-		break;
 
 		case 1: 
 		{
-			Xe_in_UO2();
-			MapSystem();
-			
-			Kr_in_UO2();
+			Xe_in_UO2HBS();
 			MapSystem();
 
-			He_in_UO2();
-			MapSystem();
-		
-			Xe133_in_UO2();
-			MapSystem();
-			
-			Kr85m_in_UO2();
-			MapSystem();
+			break;
 		}
-		break;
 		
 		default:
 			break;
