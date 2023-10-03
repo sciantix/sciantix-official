@@ -28,7 +28,7 @@
 #include "Kr85m_in_UO2.h"
 #include "He_in_UO2.h"
 #include "Xe_in_UO2HBS.h"
-ì
+
 #include <vector>
 
 void SetSystem();
