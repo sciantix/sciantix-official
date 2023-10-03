@@ -25,7 +25,7 @@ void HighBurnupStructureFormation()
 
 	int model_index = int(model.size()) - 1;
 
-	model[model_index].setName("High burnup structure formation");
+	model[model_index].setName("High-burnup structure formation");
 
 	std::string reference;
 	std::vector<double> parameter;
