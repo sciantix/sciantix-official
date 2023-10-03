@@ -92,31 +92,6 @@ public:
 		);
 	}
 
-	void HighBurnupStructureFormation()
-	{
-		/// @brief
-		/// HighBurnupStructureEvolution
-		/// HighBurnupStructureEvolution is used to compute the local restructured volume fraction of the fuel,
-		/// in the HBS region.
-		/// This method is called in Sciantix.cpp after the definition of the model HighBurnupStructureFormation.
-
-		if (!int(input_variable[iv["iHighBurnupStructureFormation"]].getValue())) return;
-
-		double coefficient =
-			model[sm["High burnup structure formation"]].getParameter().at(0) *
-			model[sm["High burnup structure formation"]].getParameter().at(1) *
-			pow(sciantix_variable[sv["Effective burnup"]].getFinalValue(), 2.54);
-		
-		sciantix_variable[sv["Restructured volume fraction"]].setFinalValue(
-			solver.Decay(
-				sciantix_variable[sv["Restructured volume fraction"]].getInitialValue(),
-				coefficient,
-				coefficient,
-				sciantix_variable[sv["Effective burnup"]].getIncrement()
-				)
-			);
-	}
-
 	void GasProduction()
 	{
 		/**
@@ -677,6 +652,32 @@ public:
 		}
 	}
 
+
+	void HighBurnupStructureFormation()
+	{
+		/// @brief
+		/// HighBurnupStructureFormation
+		/// HighBurnupStructureFormation is used to compute the local restructured volume fraction of the fuel, in the HBS region.
+
+		if (!int(input_variable[iv["iHighBurnupStructureFormation"]].getValue())) return;
+
+		// Restructuring rate:
+		// df / bu = 3.54 * 2.77e-7 * b^2.54 - 3.54 * 2.77e-7 * b^2.54 * f
+		double coefficient =
+			model[sm["High-burnup structure formation"]].getParameter().at(0) *
+			model[sm["High-burnup structure formation"]].getParameter().at(1) *
+			pow(sciantix_variable[sv["Effective burnup"]].getFinalValue(), 2.54);
+		
+		sciantix_variable[sv["Restructured volume fraction"]].setFinalValue(
+			solver.Decay(
+				sciantix_variable[sv["Restructured volume fraction"]].getInitialValue(),
+				coefficient,
+				coefficient,
+				sciantix_variable[sv["Effective burnup"]].getIncrement()
+				)
+			);
+	}
+
 	void HighBurnupStructurePorosity()
 	{
 		/// @brief
@@ -689,7 +690,7 @@ public:
 		sciantix_variable[sv["HBS porosity"]].setFinalValue(
 			solver.Integrator(
 				sciantix_variable[sv["HBS porosity"]].getInitialValue(),
-				model[sm["High burnup structure porosity"]].getParameter().at(0),
+				model[sm["High-burnup structure porosity"]].getParameter().at(0),
 				sciantix_variable[sv["Burnup"]].getIncrement()
 			)
 		);
