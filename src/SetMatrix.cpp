@@ -35,9 +35,6 @@ void SetMatrix( )
 
 		case 1: 
 		{
-			// UO2();
-			// MapMatrix();
-
 			UO2HBS();
 			MapMatrix();
 
@@ -194,7 +191,7 @@ void Matrix::setPoreResolutionRate()
    *
    */
   
-	double correction_coefficient = (1.0 - exp(pow( -sciantix_variable[sv["HBS pore radius"]].getFinalValue() / (3.0*3.0*1.0e-9), 3)));
+	double correction_coefficient = (1.0 - exp(pow(-sciantix_variable[sv["HBS pore radius"]].getFinalValue() / (3.0*3.0*1.0e-9), 3)));
 
   pore_resolution_rate =
     2.0e-23 * history_variable[hv["Fission rate"]].getFinalValue() * correction_coefficient *
@@ -211,6 +208,7 @@ void Matrix::setPoreTrappingRate()
    */
 
   const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
+	
   pore_trapping_rate = 4.0 * pi * matrix[sma["UO2HBS"]].getGrainBoundaryVacancyDiffusivity() *
     sciantix_variable[sv["Xe at grain boundary"]].getFinalValue() *
     sciantix_variable[sv["HBS pore radius"]].getFinalValue() *
