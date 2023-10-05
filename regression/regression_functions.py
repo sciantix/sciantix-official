@@ -14,11 +14,11 @@ import shutil
 
 """ Defining useful functions"""
 def import_data(filename):
-  """
-  This function import a .txt file into an ndarray
-  """
-  data = np.genfromtxt(filename, dtype= 'str', delimiter='\t')
-  return data
+	"""
+	This function import a .txt file into an ndarray
+	"""
+	data = np.genfromtxt(filename, dtype= 'str', delimiter='\t')
+	return data
 
 def findSciantixVariablePosition(output, variable_name):
   """
