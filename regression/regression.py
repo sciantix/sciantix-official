@@ -66,7 +66,7 @@ def main():
 		# Set the test condition to '0' or '1'
 		test_condition = 1
 
-		# Run regression tests for each regression mode and update the test list and test counts accordingly.
+		# For each execution mode, run the corresponding regression test function and update the test list and test counts accordingly.
 		folderListB, number_of_tests_b, number_of_tests_failed_b = regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
 		folderListW, number_of_tests_w, number_of_tests_failed_w = regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
 		folderListT, number_of_tests_t, number_of_tests_failed_t = regression_talip(wpath, mode_Talip, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
