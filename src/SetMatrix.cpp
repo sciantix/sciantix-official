@@ -185,18 +185,19 @@ void Matrix::setPoreNucleationRate()
 
 void Matrix::setPoreResolutionRate()
 {
-  /**
-   * @brief re-solution rate of gas atoms from HBS pores.
-   * This model is from @ref *Barani et al., JNM 563 (2022) 153627*.
-   *
-   */
-  
-	double correction_coefficient = (1.0 - exp(pow(-sciantix_variable[sv["HBS pore radius"]].getFinalValue() / (3.0*3.0*1.0e-9), 3)));
+	/**
+	 * @brief re-solution rate of gas atoms from HBS pores.
+	 * This model is from @ref *Barani et al., JNM 563 (2022) 153627*.
+	 *
+	 */
 
-  pore_resolution_rate =
-    2.0e-23 * history_variable[hv["Fission rate"]].getFinalValue() * correction_coefficient *
-    (3.0 * 1.0e-9 / (3.0 * 1.0e-9 + sciantix_variable[sv["HBS pore radius"]].getFinalValue())) *
-    (1.0e-9 / (1.0e-9 + sciantix_variable[sv["HBS pore radius"]].getFinalValue()));
+	double correction_coefficient = (1.0 - exp(pow(-sciantix_variable[sv["HBS pore radius"]].getFinalValue() / (9.0e-9), 3)));
+	double b0(2.0e-23 * history_variable[hv["Fission rate"]].getFinalValue());
+
+	pore_resolution_rate =
+		b0 * correction_coefficient *
+		(3.0 * 1.0e-9 / (3.0 * 1.0e-9 + sciantix_variable[sv["HBS pore radius"]].getFinalValue())) *
+		(1.0e-9 / (1.0e-9 + sciantix_variable[sv["HBS pore radius"]].getFinalValue()));
 }
  
 void Matrix::setPoreTrappingRate()

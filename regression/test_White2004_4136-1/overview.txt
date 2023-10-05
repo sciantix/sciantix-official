@@ -1,7 +1,7 @@
 Model #0: 	Burnup	The local burnup is calculated from the fission rate density.
 Model #1: 	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
-Model #2: 	High burnup structure formation	: not considered.
-Model #3: 	High burnup structure porosity	not considered
+Model #2: 	High-burnup structure formation	: not considered.
+Model #3: 	High-burnup structure porosity	not considered
 Model #4: 	Grain growth	Ainscough et al., JNM, 49 (1973) 117-128.
 Model #5: 	Grain-boundary sweeping	Not considered
 Model #6: 	Gas production - Xe in UO2	 
