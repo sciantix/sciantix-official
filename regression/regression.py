@@ -131,7 +131,7 @@ def main():
 			print("\tMODE GOLD == 2: do not use SCIANTIX, check existing results.\n ")
 			print("\tMODE GOLD == 3: do not use SCIANTIX, existing results will be saved as gold results.\n ")
 
-			# Take the user's input for the gold mode.
+			# Take the user's input for the gold mode
 			mode_gold = int(input("Enter MODE GOLD (0, 1, 2, 3)= "))
 
 			# Ask the user to choose an option for the plot mode.
