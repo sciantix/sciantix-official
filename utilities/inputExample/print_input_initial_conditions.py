@@ -30,4 +30,4 @@ with open('input_initial_conditions.txt', 'w') as file:
     file.write('0.0	0.0	0.0	0.0	0.0	0.0 0.0\n')
     file.write('#	initial Kr85m (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released\n')
     file.write('0.0\n')
-    file.write('#   initial fuel stoichiometry deviation (\)')
+    file.write('#	initial fuel stoichiometry deviation (\)')
