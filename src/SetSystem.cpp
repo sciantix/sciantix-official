@@ -124,7 +124,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 1:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 1 set the fission gas (xenon and krypton) single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 1 set the fission gas (xenon and krypton) single-atom intragranular diffusivity equal to the expression 
 		 * in @ref *Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22*.
 		 * 
 		 */
@@ -147,7 +147,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 2:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 2 set the xenon single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 2 set the xenon effective intragranular diffusivity equal to the expression 
 		 * in @ref *Matzke (1980), Radiation Effects, 53, 219-242*.
 		 * 
 		 */
@@ -162,7 +162,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 3:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 3 set the xenon single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 3 set the xenon single-atom intragranular diffusivity equal to the expression 
 		 * in @ref *Turnbull et al., (2010), Background and Derivation of ANS-5.4 Standard Fission Product Release Model*.
 		 * 
 		 */
@@ -185,7 +185,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 4:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 4 set the xenon single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 4 set the xenon single-atom intragranular diffusivity equal to the expression 
 		 * in @ref *iFGDiffusionCoefficient: Ronchi, C. High Temp 45, 552-571 (2007)*.
 		 * 
 		 */
@@ -252,7 +252,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 99:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 99 set the xenon single-stom intragranular diffusivity to zero.
+		 * @brief iFGDiffusionCoefficient = 99 set the xenon single-atom intragranular diffusivity to zero.
 		 * 
 		 */
 
@@ -521,10 +521,10 @@ void System::setTrappingRate(int input_value)
 	case 99:
 	{
 		/**
-		 * @brief iTrappingRate = 99 stands for the dummy case with zero trapping rate.
+		 * @brief iTrappingRate = 99 stands for the case with zero trapping rate.
 		 * 
 		 */
-		reference += "iTrappingRate: dummy case with zero trapping rate.\n\t";
+		reference += "iTrappingRate: case with zero trapping rate.\n\t";
 
 		trapping_rate = 0.0;
 		break;
