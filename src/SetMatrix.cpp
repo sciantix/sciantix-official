@@ -138,7 +138,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value)
 			 * 
 			 */
 
-			grain_boundary_diffusivity = 2.531e-6 * exp(- 5.4794e-19 / (boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue()));
+			grain_boundary_diffusivity = 3.5/5 * 8.86e-6 * exp(- 4.17e4 / history_variable[hv["Temperature"]].getFinalValue());
 			reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.\n\t";
 
 			break;
