@@ -134,35 +134,36 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value)
 		case 2:
 		{
 			/**
-			 * @brief iGrainBoundaryVacancyDiffusivity = 2 corresponds to the correction from @ref Pastore et al., JNM, 456 (2015) 156.
+			 * @brief iGrainBoundaryVacancyDiffusivity = 2 corresponds to the correction from @ref White, JNM, 325 (2004), 61-77
 			 * 
 			 */
 
-			grain_boundary_diffusivity = 8.86e-6 * exp(- 5.75e-19 / (boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue()));
-			reference += "iGrainBoundaryVacancyDiffusivity: from Pastore et al., JNM, 456 (2015) 156.\n\t";
+			grain_boundary_diffusivity = 2.531e-6 * exp(- 5.4794e-19 / (boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue()));
+			reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.\n\t";
 
 			break;
 		}
 
-  case 5:
-  {
-    /**
-     * @brief iGrainBoundaryVacancyDiffusivity = 5 corresponds to the vacancy diffusivities along HBS grain boundaries.
-     * This model is from @ref Barani et al., JNM 563 (2022) 153627.
-     *
-     */
+		case 5:
+		{
+			/**
+			 * @brief iGrainBoundaryVacancyDiffusivity = 5 corresponds to the vacancy diffusivities along HBS grain boundaries.
+			 * This model is from @ref Barani et al., JNM 563 (2022) 153627.
+			 *
+			 */
 
-    grain_boundary_diffusivity = (1.3e-7 * exp(-4.52e-19 /
-			(boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue()))
-    );
+			grain_boundary_diffusivity = (1.3e-7 * exp(-4.52e-19 /
+					(boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue()))
+			);
 
-    reference += "iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.\n\t";
-    break;
-  }
+			reference += "iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.\n\t";
+			break;
+		}
 
 		default:
 			ErrorMessages::Switch("SetMatrix.cpp", "iGrainBoundaryVacancyDiffusivity", input_value);
 			break;
+			
 	}
 }
 
