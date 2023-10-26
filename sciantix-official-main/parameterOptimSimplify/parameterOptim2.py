@@ -209,16 +209,33 @@ def optimization(initial,setInputOutput):
         FRintegral = FRintegral
         RRintegral = RRintegral
         
-        error = abs((FRintegral_exp-FRintegral)/FRintegral_exp) # use this error you can find the optimization is work
+        # error = abs((FRintegral_exp-FRintegral)/FRintegral_exp) # use this error you can find the optimization is work
         # error = abs((FRintegral_exp-FRintegral)/FRintegral_exp)+abs((RRintegral_exp-RRintegral)/RRintegral_exp)
+
+        error = abs((FRsciantix[tMaxExpIndex] - 0.103517702)/0.103517702)
+
         print(f"current error: {error}")
         return error
     results = optimize.minimize(costFunction,sf_selected_initial_value, method = 'SLSQP',bounds=bounds)
     for i in range(4):
         print(f"{sf_selected[i]}:{results.x[i]}")
     print(f"Final error:{results.fun}")
+
+    l = len(sf_selected)
+    for i in range(l):
+        scaling_factors[sf_selected[i]] = results.x[i]
+    file_name = "input_scaling_factors.txt"
+    with open(file_name,'w') as file:
+        for key, value in scaling_factors.items():
+            file.write(f'{value}\n')
+            file.write(f'# scaling factor - {key}\n')
+
+    os.system("./sciantix.x")
+
+
     os.chdir('..')
     os.chdir('..')
+
     return results
 
 def getSelectedVariablesValueFromOutput(variable_selected,source_file):
@@ -313,4 +330,9 @@ def do_plot():
 initial = initialization()
 setInputOutput = forInputOutput()
 optimization(initial, setInputOutput)
+
+
+
+
+
 do_plot()

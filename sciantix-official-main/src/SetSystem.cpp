@@ -335,7 +335,7 @@ void System::setHeliumDiffusivity(int input_value)
 		//diffusivity = * 2.988e-10 * exp(-2.360e4 / history_variable[hv["Temperature"]].getFinalValue());
 		diffusivity.lower_bound = 1.0e-11*exp(-29708.7/history_variable[hv["Temperature"]].getFinalValue());
 		diffusivity.upper_bound = 4.0e-9*exp(-20540.8/history_variable[hv["Temperature"]].getFinalValue());
-		std::cout<< "you fucking stubit" << std::endl;
+		//std::cout<< "you fucking stubit" << std::endl;
 		// if(sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().value > sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().upper_bound || sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().value < sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().lower_bound)
 		// 	{
 		// 		std::cout << "Current He diffusivity: " << sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().value << " at temperature: " << history_variable[hv["Temperature"]].getFinalValue() << " is out of the validation range: \n";
