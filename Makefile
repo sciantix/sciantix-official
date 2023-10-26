@@ -24,7 +24,7 @@ INCDIR      := include
 BUILDDIR    := obj
 TARGETDIR   := bin
 RESDIR      := src
-SRCEXT      := cpp
+SRCEXT      := C
 DEPEXT      := d
 OBJEXT      := o
 
