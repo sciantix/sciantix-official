@@ -620,7 +620,7 @@ class Simulation : public Solver, public Model
 
 		double sigmoid_variable;
 		sigmoid_variable = sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() *
-			exp(1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue());
+			exp(-sciantix_variable[sv["Intergranular fractional intactness"]].getIncrement());
 
 		// Vented fraction
 		sciantix_variable[sv["Intergranular vented fraction"]].setFinalValue(
