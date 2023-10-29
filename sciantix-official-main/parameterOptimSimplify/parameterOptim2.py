@@ -120,6 +120,13 @@ class initialization():
         return self.FRintegral
     def getRRintegral(self):
         return self.RRintegral
+    
+    def setCase(self, name):
+        self.name = name
+
+    # def experimentalData(self, data_name):
+    #     self.expdata = np.gen
+    #     self.
 
 class forInputOutput():
     def __init__(self):
@@ -179,7 +186,7 @@ def optimization(initial,setInputOutput):
     scaling_factors = initial.getScalingFactors()
     sf_selected = initial.getSlectedScalingFactorsName()
     sf_selected_initial_value = initial.getSelectedScalingFactorsInitialValue()
-    sf_selected_bounds = initial.getSelectedScalingFactorsBounds()
+    sf_selected_bounds = initial.sf_selection_bounds()
     bounds = Bounds(sf_selected_bounds[0,:],sf_selected_bounds[1,:])
     tMaxExp = initial.getMaxExpTime()
     FRintegral_exp = initial.getFRintegral()
@@ -210,9 +217,9 @@ def optimization(initial,setInputOutput):
         RRintegral = RRintegral
         
         # error = abs((FRintegral_exp-FRintegral)/FRintegral_exp) # use this error you can find the optimization is work
-        # error = abs((FRintegral_exp-FRintegral)/FRintegral_exp)+abs((RRintegral_exp-RRintegral)/RRintegral_exp)
+        error = abs((FRintegral_exp-FRintegral)/FRintegral_exp)+abs((RRintegral_exp-RRintegral)/RRintegral_exp)
 
-        error = abs((FRsciantix[tMaxExpIndex] - 0.103517702)/0.103517702)
+        # error = abs((FRsciantix[tMaxExpIndex] - 0.103517702)/0.103517702)
 
         print(f"current error: {error}")
         return error
@@ -254,9 +261,6 @@ def getSelectedVariablesValueFromOutput(variable_selected,source_file):
             variablePosition[i] = j[1]
         variable_selected_value[:,i] = data[1:,variablePosition[i]].astype(float)
     return variable_selected_value
-
-
-
 
 def do_plot():
     os.chdir('test_Talip2014_1320K')
@@ -321,10 +325,20 @@ def do_plot():
     return 0
 
 
+# def temperatureToTime(temperatureSequnce,timeSequence, target)
 
 
+def findClosestIndex(source_data, targetValue):
+    differences = [abs(x - targetValue) for x in source_data]
+    index = np.argmin(differences)
+    return index
 
-
+def centered_moving_average(data, window_size):
+    half_window = window_size // 2
+    smoothed_data = np.convolve(data, np.ones(window_size) / window_size, mode='same')
+    smoothed_data[:half_window] = smoothed_data[half_window]
+    smoothed_data[-half_window:] = smoothed_data[-half_window]
+    return smoothed_data
 
 
 initial = initialization()
@@ -332,7 +346,11 @@ setInputOutput = forInputOutput()
 optimization(initial, setInputOutput)
 
 
-
-
-
 do_plot()
+
+# talip1320 = initialization()
+# talip1320.setCase("Talip..")
+
+# optime = class1()
+# talip1320.sf_selection_bounds
+
