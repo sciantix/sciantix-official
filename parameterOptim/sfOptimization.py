@@ -164,7 +164,7 @@ class optimization():
         self.sf_selected_bounds = np.zeros([2,len(self.sf_selected_initial_value)])
         for i in range(len(self.sf_selected)):
             if self.sf_selected[i] == "helium diffusivity pre exponential":
-                self.sf_selected_bounds[0,i] = 0.5
+                self.sf_selected_bounds[0,i] = 0.05
                 self.sf_selected_bounds[1,i] = 19.9
             elif self.sf_selected[i] == "helium diffusivity activation energy":
                 self.sf_selected_bounds[0,i] = 0.835
@@ -224,7 +224,7 @@ class optimization():
             return error
         
 
-        minimum_variation = np.array([0.0001, 0.00001, 0, 0])
+        minimum_variation = np.array([0.0000001, 0.001, 0.001, 0.001])
         def custom_callback(x):
             variations = [abs(x[i] - self.sf_selected_initial_value[i]) for i in range(len(x))]
             return [variations[i] - minimum_variation[i] for i in range(len(x))]
