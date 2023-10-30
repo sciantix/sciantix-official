@@ -381,6 +381,8 @@ temperature_sciantix = coloumnsOutput_nominal[:,1]
 FR_nominal = coloumnsOutput_nominal[:,2]
 RR_nominal = coloumnsOutput_nominal[:,3]
 
+FR_interpolated = Talip1320.FR
+RR_interpolated = Talip1320.RR
 
 FR_new = coloumnOutput_new[:,2]
 RR_new = coloumnOutput_new[:,3]
@@ -394,17 +396,13 @@ plt.subplots_adjust(left=0.1,
                     hspace=0.4)
 
 ax[0].scatter(time_exp, FR_exp, marker = '.', c = '#B3B3B3', label='Data from Talip et al. (2014)')
-# ax[0].plot(time_sciantix, FR_nominal, color = '#98E18D', label='SCIANTIX 2.0 Nominal')
 ax[0].scatter(time_sciantix, FR_nominal,marker = 'x' ,color = '#98E18D', label='SCIANTIX 2.0 Nominal')
-# ax[0].scatter(time, FRexp_smooth, marker= 'x', c = 'red', label = 'smoothed')
-# ax[0].scatter(time, FRexp_smooth_sa, marker= 'x', c = 'green', label = 'smoothed')
-ax[0].scatter(time_sciantix, FR_new, marker = 'x',color = 'red',label = 'interpolated')
-
+ax[0].scatter(time_sciantix, FR_new, marker = 'x',color = 'red',label = 'optimized')
+ax[0].scatter(time_sciantix, FR_interpolated, marker = 'x',color = 'blue',label = 'interpolated')
 axT = ax[0].twinx()
 axT.set_ylabel('Temperature (K)')
 axT.plot(time_sciantix, temperature_sciantix, 'r', linewidth=1, label="Temperature")
-# axT.scatter(time_sciantix, temperature_sciantix, marker = 'o', c= 'r', label="Temperature")
-# ax.set_title(file + ' - Fractional release')
+
 ax[0].set_xlabel('Time (h)')
 ax[0].set_ylabel('Helium fractional release (/)')
 h1, l1 = ax[0].get_legend_handles_labels()
@@ -415,8 +413,8 @@ ax[0].legend(loc = 'upper left')
 """ Plot: Helium release rate """
 ax[1].scatter(temperature_exp, RR_exp, marker = '.', c = '#B3B3B3', label='Data from Talip et al. (2014)')
 ax[1].scatter(temperature_sciantix, RR_nominal, marker = 'x',color = '#98E18D', label='SCIANTIX 2.0 Nominal')
-ax[1].scatter(temperature_sciantix, RR_new, marker = 'x', color = 'red',label = 'interpolated')
-
+ax[1].scatter(temperature_sciantix, RR_new, marker = 'x', color = 'red',label = 'optimized')
+ax[1].scatter(temperature_sciantix, RR_interpolated, marker = 'x', color = 'blue',label = 'interpolated')
 
 
 # ax.set_title(file + ' - Release rate')
