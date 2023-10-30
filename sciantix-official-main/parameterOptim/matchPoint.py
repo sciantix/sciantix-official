@@ -125,9 +125,9 @@ def plateauIdentify(time_history, temperature_history, time):
 #########
 #get data
 #########
-os.chdir("test_Talip2014_1320K")
+# os.chdir("test_Talip2014_1320K")
 # os.chdir("test_Talip2014_1400K_b")
-# os.chdir("test_Talip2014_1400K_c")
+os.chdir("test_Talip2014_1400K_c")
 # os.chdir("test_Talip2014_1600K")
 # os.chdir("test_Talip2014_1800K")
 cloumnsFR  = np.genfromtxt("Talip2014_release_data.txt",dtype = 'float',delimiter='\t')
@@ -167,7 +167,8 @@ temperature_history = history[:,1]
 index_max_time_exp = findClosestIndex_1D(time_sciantix, max(time_exp))
 if time_sciantix[index_max_time_exp] > max(time_exp):
     index_max_time_exp = index_max_time_exp - 1
-
+# temperature_region2_start = temperature_sciantix[index_max_time_exp+1]
+# index_region2_start = findClosestIndex_1D(temperature_exp, temperature_region2_start)
 for i in range(1,index_max_time_exp + 1):
 # for i in range(1,5):
     

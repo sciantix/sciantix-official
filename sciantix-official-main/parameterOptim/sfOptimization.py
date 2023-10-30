@@ -196,6 +196,7 @@ class optimization():
             #         error_related[i] = 1
             #     elif RR_exp[i] == 0 and RR_sciantix[i] == 0:
             #         error_related[i] = 0
+
             #     else:
             #         error_related[i] = abs((RR_exp[i]-RR_sciantix[i])/RR_exp[i])
             # with open("error_related.txt", 'w') as file:
@@ -203,13 +204,17 @@ class optimization():
             #         file.write(f'{error_related[i]}\n')
             # error = np.sum(error_related)
 
-            # error = np.sum(abs((FR_exp-FR_sciantix)/(FR_exp+0.0001)))
-            error = np.sum(abs((RR_exp-RR_sciantix)/(RR_exp+10e18)))
+            error = np.sum(abs((FR_exp-FR_sciantix)/(FR_exp+0.0001)))
+            # error = np.sum(abs((RR_exp-RR_sciantix)/(RR_exp)))
+
+
+
+
             print(f"current error: {error}")
             return error
         
 
-        # minimum_variation = np.array([0.0001, 0.000001, 0, 0])
+        # minimum_variation = np.array([0.0001, 0.00001, 0, 0])
         # def custom_callback(x):
         #     variations = [abs(x[i] - self.sf_selected_initial_value[i]) for i in range(len(x))]
         #     return [variations[i] - minimum_variation[i] for i in range(len(x))]
@@ -344,14 +349,17 @@ def plateauIdentify(time_history, temperature_history, time):
 
 Talip1320 = experiment()
 Talip1320.setCase("test_Talip2014_1320K")
-
 setInputOutput = inputOutput()
-
 Optim = optimization()
 Optim.setScalingFactors("helium diffusivity pre exponential", "helium diffusivity activation energy","henry constant pre exponential","henry constant activation energy")
 Optim.optimization(Talip1320,setInputOutput)
 
 
+
+
+#####
+#plot
+#####
 
 os.chdir("test_Talip2014_1320K")
 cloumnsFR  = np.genfromtxt("Talip2014_release_data.txt",dtype = 'float',delimiter='\t')
@@ -386,10 +394,11 @@ plt.subplots_adjust(left=0.1,
                     hspace=0.4)
 
 ax[0].scatter(time_exp, FR_exp, marker = '.', c = '#B3B3B3', label='Data from Talip et al. (2014)')
-ax[0].plot(time_sciantix, FR_nominal, color = '#98E18D', label='SCIANTIX 2.0 Nominal')
+# ax[0].plot(time_sciantix, FR_nominal, color = '#98E18D', label='SCIANTIX 2.0 Nominal')
+ax[0].scatter(time_sciantix, FR_nominal,marker = 'x' ,color = '#98E18D', label='SCIANTIX 2.0 Nominal')
 # ax[0].scatter(time, FRexp_smooth, marker= 'x', c = 'red', label = 'smoothed')
 # ax[0].scatter(time, FRexp_smooth_sa, marker= 'x', c = 'green', label = 'smoothed')
-ax[0].plot(time_sciantix, FR_new, color = 'red',linestyle = '--',label = 'interpolated')
+ax[0].scatter(time_sciantix, FR_new, marker = 'x',color = 'red',label = 'interpolated')
 
 axT = ax[0].twinx()
 axT.set_ylabel('Temperature (K)')
@@ -405,8 +414,8 @@ ax[0].legend(loc = 'upper left')
 
 """ Plot: Helium release rate """
 ax[1].scatter(temperature_exp, RR_exp, marker = '.', c = '#B3B3B3', label='Data from Talip et al. (2014)')
-ax[1].plot(temperature_sciantix, RR_nominal, color = '#98E18D', label='SCIANTIX 2.0 Nominal')
-ax[1].plot(temperature_sciantix, RR_new, color = 'red',linestyle = '--',label = 'interpolated')
+ax[1].scatter(temperature_sciantix, RR_nominal, marker = 'x',color = '#98E18D', label='SCIANTIX 2.0 Nominal')
+ax[1].scatter(temperature_sciantix, RR_new, marker = 'x', color = 'red',label = 'interpolated')
 
 
 
