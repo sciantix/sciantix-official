@@ -114,7 +114,7 @@ class inputOutput():
     
         os.chdir(folder_name)
         shutil.copy("../input_scaling_factors.txt", os.getcwd())
-        shutil.copy("../sciantix.x", os.getcwd())
+        shutil.copy("../../../bin/sciantix.x", os.getcwd())
         shutil.copy("../input_initial_conditions.txt", os.getcwd())
         shutil.copy("../input_settings.txt", os.getcwd())
         shutil.copy("../input_history.txt", os.getcwd())
@@ -160,7 +160,7 @@ class optimization():
         for arg in args:
             self.sf_selected.append(arg)
         self.sf_selected_initial_value = np.ones([len(self.sf_selected)])
-        self.sf_selected_initial_value = np.array([1.79947,0.998,0.9916,0.979])
+        # self.sf_selected_initial_value = np.array([1.79947,0.998,0.9916,0.979])
         self.sf_selected_bounds = np.zeros([2,len(self.sf_selected_initial_value)])
         for i in range(len(self.sf_selected)):
             if self.sf_selected[i] == "helium diffusivity pre exponential":
@@ -208,12 +208,12 @@ class optimization():
             #     for i in range(len(RR_sciantix)):
             #         file.write(f'{error_related[i]}\n')
             # error = np.sum(error_related)
-            # for i in range(len(FR_sciantix)):
-            #     if FR_exp[i] == 0:
-            #         error_related[i] = 0
-            #     else:
-            #         error_related[i] = abs((FR_exp[i]-FR_sciantix[i])/FR_exp[i])
-            # error = np.sum(error_related)
+            for i in range(len(FR_sciantix)):
+                if FR_exp[i] == 0:
+                    error_related[i] = 0
+                else:
+                    error_related[i] = abs((FR_exp[i]-FR_sciantix[i])/FR_exp[i])
+            error = np.sum(error_related)
 
             # error = np.sum(abs((RR_exp-RR_sciantix)/(RR_exp)))
 
