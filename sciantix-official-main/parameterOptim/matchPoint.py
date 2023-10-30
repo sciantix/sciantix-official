@@ -127,8 +127,8 @@ def plateauIdentify(time_history, temperature_history, time):
 #########
 # os.chdir("test_Talip2014_1320K")
 # os.chdir("test_Talip2014_1400K_b")
-os.chdir("test_Talip2014_1400K_c")
-# os.chdir("test_Talip2014_1600K")
+# os.chdir("test_Talip2014_1400K_c")
+os.chdir("test_Talip2014_1600K")
 # os.chdir("test_Talip2014_1800K")
 cloumnsFR  = np.genfromtxt("Talip2014_release_data.txt",dtype = 'float',delimiter='\t')
 cloumnsRR = np.genfromtxt("Talip2014_rrate_data.txt",dtype = 'float',delimiter='\t')

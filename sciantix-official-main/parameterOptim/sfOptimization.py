@@ -160,6 +160,7 @@ class optimization():
         for arg in args:
             self.sf_selected.append(arg)
         self.sf_selected_initial_value = np.ones([len(self.sf_selected)])
+        self.sf_selected_initial_value = np.array([1.79947,0.998,0.9916,0.979])
         self.sf_selected_bounds = np.zeros([2,len(self.sf_selected_initial_value)])
         for i in range(len(self.sf_selected)):
             if self.sf_selected[i] == "helium diffusivity pre exponential":
@@ -190,10 +191,14 @@ class optimization():
             RR_sciantix = inputOutput.RR_sciantix
             current_sf_selected_value = inputOutput.sf_selected_value
             print(f"current value: {current_sf_selected_value}")
-            # error_related = np.zeros_like(RR_sciantix)
+            error_related = np.zeros_like(FR_sciantix)
+            # error = np.sum(abs(FR_exp/max(FR_exp) - FR_sciantix/max(FR_exp)))
+            error = np.sum(abs(RR_exp/max(RR_exp) - RR_sciantix/max(RR_exp)))
+
+
             # for i in range(len(RR_sciantix)):
             #     if RR_exp[i] == 0 and RR_sciantix[i] !=0:
-            #         error_related[i] = 1
+            #         error_related[i] = abs(RR_sciantix[i]/max(RR_exp))
             #     elif RR_exp[i] == 0 and RR_sciantix[i] == 0:
             #         error_related[i] = 0
 
@@ -203,8 +208,13 @@ class optimization():
             #     for i in range(len(RR_sciantix)):
             #         file.write(f'{error_related[i]}\n')
             # error = np.sum(error_related)
+            # for i in range(len(FR_sciantix)):
+            #     if FR_exp[i] == 0:
+            #         error_related[i] = 0
+            #     else:
+            #         error_related[i] = abs((FR_exp[i]-FR_sciantix[i])/FR_exp[i])
+            # error = np.sum(error_related)
 
-            error = np.sum(abs((FR_exp-FR_sciantix)/(FR_exp+0.0001)))
             # error = np.sum(abs((RR_exp-RR_sciantix)/(RR_exp)))
 
 
@@ -214,13 +224,13 @@ class optimization():
             return error
         
 
-        # minimum_variation = np.array([0.0001, 0.00001, 0, 0])
-        # def custom_callback(x):
-        #     variations = [abs(x[i] - self.sf_selected_initial_value[i]) for i in range(len(x))]
-        #     return [variations[i] - minimum_variation[i] for i in range(len(x))]
+        minimum_variation = np.array([0.0001, 0.00001, 0, 0])
+        def custom_callback(x):
+            variations = [abs(x[i] - self.sf_selected_initial_value[i]) for i in range(len(x))]
+            return [variations[i] - minimum_variation[i] for i in range(len(x))]
 
-        results = optimize.minimize(costFunction,self.sf_selected_initial_value, method = 'SLSQP',bounds=self.bounds)
-        # results = optimize.minimize(costFunction,self.sf_selected_initial_value, method = 'SLSQP',constraints = {'type': 'ineq', 'fun': custom_callback})
+        # results = optimize.minimize(costFunction,self.sf_selected_initial_value, method = 'SLSQP',bounds=self.bounds)
+        results = optimize.minimize(costFunction,self.sf_selected_initial_value, method = 'SLSQP',bounds=self.bounds,constraints = {'type': 'ineq', 'fun': custom_callback})
         for i in range(len(self.sf_selected)):
             scaling_factors[self.sf_selected[i]] = results.x[i]
             print(f"{self.sf_selected[i]}:{results.x[i]}")
