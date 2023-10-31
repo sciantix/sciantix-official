@@ -13,7 +13,7 @@ with open('input_settings.txt', 'w') as file:
     file.write('1\t#\tiTrappingRate (0= constant value, 1= Ham (1958))\n')
     file.write('1\t#\tiNucleationRate (0= constant value, 1= Olander, Wongsawaeng (2006))\n')
     file.write('1\t#\tiOutput (1= default output files)\n')
-    file.write('1\t#\tiGrainBoundaryVacancyDiffusivity (0= constant value, 1= Reynolds and Burton (1979), 2= Pastore et al. (2015))\n')
+    file.write('1\t#\tiGrainBoundaryVacancyDiffusivity (0= constant value, 1= Reynolds and Burton (1979), 2= White (2004) \n')
     file.write('1\t#\tiGrainBoundaryBehaviour (0= no grain boundary bubbles, 1= Pastore et al (2013))\n')
     file.write('1\t#\tiGrainBoundaryMicroCracking (0= no model considered, 1= Barani et al. (2017))\n')
     file.write('0\t#\tiFuelMatrix (0= UO2, 1= UO2 + HBS)\n')
