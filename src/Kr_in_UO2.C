@@ -32,7 +32,7 @@ void Kr_in_UO2()
 	sciantix_system[index].setYield(0.03);
 	sciantix_system[index].setRadiusInLattice(0.21e-9);
 	sciantix_system[index].setVolumeInLattice(matrix[0].getSchottkyVolume());
-	sciantix_system[index].setHenryConstant(0);
+	sciantix_system[index].setHenryConstant(0.0);
 	sciantix_system[index].setProductionRate(1);
 	sciantix_system[index].setFissionGasDiffusivity(int(input_variable[iv["iFGDiffusionCoefficient"]].getValue()));
 	sciantix_system[index].setBubbleDiffusivity(int(input_variable[iv["iBubbleDiffusivity"]].getValue()));

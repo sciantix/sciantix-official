@@ -3,8 +3,8 @@ Model #1: 	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005
 Model #2: 	Environment composition	Lewis et al. JNM 227 (1995) 83-109, D.R. Olander, Nucl. Technol. 74 (1986) 215.
 Model #3: 	UO2 thermochemistry	Blackburn (1973) J. Nucl. Mater., 46, 244-252.
 Model #4: 	Stoichiometry deviation	Carter and Lay, J. Nucl. Mater., 36:77-86, 1970. Abrefah, JNM., 208:98-110, 1994.
-Model #5: 	High burnup structure formation	: not considered.
-Model #6: 	High burnup structure porosity	not considered
+Model #5: 	High-burnup structure formation	: not considered.
+Model #6: 	High-burnup structure porosity	not considered
 Model #7: 	Grain growth	constant grain radius.
 Model #8: 	Grain-boundary sweeping	Not considered
 Model #9: 	Gas production - Xe in UO2	 

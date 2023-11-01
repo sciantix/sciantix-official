@@ -25,7 +25,7 @@ void HighBurnupStructureFormation()
 
 	int model_index = int(model.size()) - 1;
 
-	model[model_index].setName("High burnup structure formation");
+	model[model_index].setName("High-burnup structure formation");
 
 	std::string reference;
 	std::vector<double> parameter;
@@ -43,6 +43,8 @@ void HighBurnupStructureFormation()
 		reference += ": not considered.";
 		parameter.push_back(0.0);
 		parameter.push_back(0.0);
+		parameter.push_back(0.0);
+		parameter.push_back(0.0);
 
 		break;
 	}
@@ -57,14 +59,20 @@ void HighBurnupStructureFormation()
 		/// @ref Barani et al. Journal of Nuclear Materials 539 (2020) 152296
 		/// @param[out] avrami_constant
 		/// @param[out] transformation_rate
+		/// @param[out] resolution_layer_thickness
+		/// @param[out] resolution_critical_distance
 
 		reference += ": Barani et al. Journal of Nuclear Materials 539 (2020) 152296";
 
 		double avrami_constant(3.54);
 		double transformation_rate(2.77e-7);
+		double resolution_layer_thickness = 1.0e-9; //(m)
+		double resolution_critical_distance = 1.0e-9; //(m)
 
 		parameter.push_back(avrami_constant);
 		parameter.push_back(transformation_rate);
+		parameter.push_back(resolution_layer_thickness);
+		parameter.push_back(resolution_critical_distance);
 
 		break;
 	}

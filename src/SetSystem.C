@@ -24,54 +24,28 @@ void SetSystem()
 	{
 		case 0: 
 		{
-			for (int k = 0; k < 10; ++k)
-			{
-				switch (k)
-				{
-					case 0:
-					{
-						Xe_in_UO2();
-						MapSystem();
-						
-						break;
-					}
+			Xe_in_UO2();
+			MapSystem();
 
-					case 1:
-					{
-						Kr_in_UO2();
-						MapSystem();
-						
-						break;
-					}
+			Kr_in_UO2();
+			MapSystem();
 
-					case 2:
-					{
-						He_in_UO2();
-						MapSystem();
-						
-						break;
-					}
+			He_in_UO2();
+			MapSystem();
 
-					case 3:
-					{
-						Xe133_in_UO2();
-						MapSystem();
-						
-						break;
-					}
-					
-					case 4:
-					{
-						Kr85m_in_UO2();
-						MapSystem();
-						
-						break;
-					}
+			Xe133_in_UO2();
+			MapSystem();
 
-					default:
-						break;
-				}
-			}
+			Kr85m_in_UO2();
+			MapSystem();
+						
+			break;
+		}
+
+		case 1: 
+		{
+			Xe_in_UO2HBS();
+			MapSystem();
 
 			break;
 		}
@@ -141,8 +115,8 @@ void System::setFissionGasDiffusivity(int input_value)
 		 */
 		
 		reference += "iFGDiffusionCoefficient: constant diffusivity.\n\t";
-		diffusivity.value = 7e-19;
-		diffusivity.value *= sf_diffusivity;
+		diffusivity = 7e-19;
+		diffusivity *= sf_diffusivity;
 
 		break;
 	}
@@ -150,7 +124,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 1:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 1 set the fission gas (xenon and krypton) single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 1 set the fission gas (xenon and krypton) single-atom intragranular diffusivity equal to the expression 
 		 * in @ref *Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22*.
 		 * 
 		 */
@@ -164,8 +138,8 @@ void System::setFissionGasDiffusivity(int input_value)
 		double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
 		double d3 = 8.0e-40 * fission_rate;
 
-		diffusivity.value = d1 + d2 + d3;
-		diffusivity.value *= sf_diffusivity;
+		diffusivity = d1 + d2 + d3;
+		diffusivity *= sf_diffusivity;
 
 		break;
 	}
@@ -173,14 +147,14 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 2:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 2 set the xenon single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 2 set the xenon effective intragranular diffusivity equal to the expression 
 		 * in @ref *Matzke (1980), Radiation Effects, 53, 219-242*.
 		 * 
 		 */
 
 		reference += "iFGDiffusionCoefficient: Matzke (1980), Radiation Effects, 53, 219-242.\n\t";
-		diffusivity.value = 5.0e-08 * exp(-40262.0 / history_variable[hv["Temperature"]].getFinalValue());
-		diffusivity.value *= sf_diffusivity;
+		diffusivity = 5.0e-08 * exp(-40262.0 / history_variable[hv["Temperature"]].getFinalValue());
+		diffusivity *= sf_diffusivity;
 
 		break;
 	}
@@ -188,7 +162,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 3:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 3 set the xenon single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 3 set the xenon single-atom intragranular diffusivity equal to the expression 
 		 * in @ref *Turnbull et al., (2010), Background and Derivation of ANS-5.4 Standard Fission Product Release Model*.
 		 * 
 		 */
@@ -202,8 +176,8 @@ void System::setFissionGasDiffusivity(int input_value)
 		double d2 = 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
 		double d3 = 2.0e-40 * fission_rate;
 
-		diffusivity.value = d1 + d2 + d3;
-		diffusivity.value *= sf_diffusivity;
+		diffusivity = d1 + d2 + d3;
+		diffusivity *= sf_diffusivity;
 
 		break;
 	}
@@ -211,7 +185,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 4:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 4 set the xenon single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 4 set the xenon single-atom intragranular diffusivity equal to the expression 
 		 * in @ref *iFGDiffusionCoefficient: Ronchi, C. High Temp 45, 552-571 (2007)*.
 		 * 
 		 */
@@ -225,8 +199,8 @@ void System::setFissionGasDiffusivity(int input_value)
 		double d2 = 6.64e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
 		double d3 = 1.2e-39 * fission_rate;
 
-		diffusivity.value = d1 + d2 + d3;
-		diffusivity.value *= sf_diffusivity;
+		diffusivity = d1 + d2 + d3;
+		diffusivity *= sf_diffusivity;
 
 		break;
 	}
@@ -238,8 +212,8 @@ void System::setFissionGasDiffusivity(int input_value)
 		 * 
 		 */
 
-		diffusivity.value = 4.5e-42 * history_variable[hv["Fission rate"]].getFinalValue();
-		diffusivity.value *= sf_diffusivity;
+		diffusivity = 4.5e-42 * history_variable[hv["Fission rate"]].getFinalValue();
+		diffusivity *= sf_diffusivity;
 		
 		reference += "inert fission gases in UO2-HBS.\n\t";
 		break;
@@ -267,9 +241,9 @@ void System::setFissionGasDiffusivity(int input_value)
 
 		double d4 = pow(3e-10,2)*1e13*exp(-27800/temperature)*uranium_vacancies;
 
-		diffusivity.value = d1 + d2 + d3 + d4;
+		diffusivity = d1 + d2 + d3 + d4;
 
-		diffusivity.value *= sf_diffusivity;
+		diffusivity *= sf_diffusivity;
 
 		break;		
 	}
@@ -278,12 +252,12 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 99:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 99 set the xenon single-stom intragranular diffusivity to zero.
+		 * @brief iFGDiffusionCoefficient = 99 set the xenon single-atom intragranular diffusivity to zero.
 		 * 
 		 */
 
 		reference += "iFGDiffusionCoefficient: Test case: zero diffusion coefficient.\n\t";
-		diffusivity.value = 0.0;
+		diffusivity = 0.0;
 
 		break;
 	}
@@ -310,8 +284,9 @@ void System::setHeliumDiffusivity(int input_value)
 		 * @brief iHeDiffusivity = 0 corresponds to a constant intra-granular diffusivity value
 		 * 
 		 */
+		
 		reference += "iHeDiffusivity: constant intragranular diffusivity.\n\t";
-		diffusivity.value = sf_diffusivity_preExp*7e-19;
+		diffusivity = 7e-19;
 		break;
 	}
 
@@ -322,26 +297,10 @@ void System::setHeliumDiffusivity(int input_value)
 		 * This correlation is also recommended for simulations of helium in UO<sub>2</sub> samples in which **infusion** technique has been adopted.
 		 * The correlation is from @ref *L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271*.
 		 * 
-		 * temperature range
-		 * 
-		 * dpa
-		 * 
-		 * helium initial fluence*E(He) 
-		 * 
 		 */
 
 		reference += "(no or very limited lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.\n\t";
-		diffusivity.value = sf_diffusivity_preExp*2.0e-10 * exp(-sf_diffusivity_actEnergy*24603.4 / history_variable[hv["Temperature"]].getFinalValue());
-		//diffusivity = * 2.988e-10 * exp(-2.360e4 / history_variable[hv["Temperature"]].getFinalValue());
-		diffusivity.lower_bound = 1.0e-11*exp(-29708.7/history_variable[hv["Temperature"]].getFinalValue());
-		diffusivity.upper_bound = 4.0e-9*exp(-20540.8/history_variable[hv["Temperature"]].getFinalValue());
-		//std::cout<< "you fucking stubit" << std::endl;
-		// if(sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().value > sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().upper_bound || sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().value < sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().lower_bound)
-		// 	{
-		// 		std::cout << "Current He diffusivity: " << sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().value << " at temperature: " << history_variable[hv["Temperature"]].getFinalValue() << " is out of the validation range: \n";
-		// 		std::cout << "[" << sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().lower_bound << ", " << sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().upper_bound << "]\n" ;
-		// 	}
-
+		diffusivity = sf_diffusivity_preExp * 2.0e-10 * exp(-24603.4 * sf_diffusivity_preExp / history_variable[hv["Temperature"]].getFinalValue());
 		break;
 	}
 
@@ -355,8 +314,7 @@ void System::setHeliumDiffusivity(int input_value)
 		 */
 
 		reference += "(significant lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.\n\t";
-		diffusivity.value = sf_diffusivity_preExp*3.3e-10 * exp(-sf_diffusivity_actEnergy*19032.8 / history_variable[hv["Temperature"]].getFinalValue());
-        //diffusivity = 3.457e-7 * exp(-2.450e4 / history_variable[hv["Temperature"]].getFinalValue());
+		diffusivity = 3.3e-10 * exp(-19032.8 / history_variable[hv["Temperature"]].getFinalValue());
 		break;
 	}
 
@@ -369,7 +327,7 @@ void System::setHeliumDiffusivity(int input_value)
 		 */
 
 		reference += "iHeDiffusivity: Z. Talip et al. JNM 445 (2014) 117-127.\n\t";
-		diffusivity.value = sf_diffusivity_preExp*1.0e-7 * exp(-sf_diffusivity_actEnergy*30057.9 / history_variable[hv["Temperature"]].getFinalValue());
+		diffusivity = 1.0e-7 * exp(-30057.9 / history_variable[hv["Temperature"]].getFinalValue());
 		break;
 	}
 
@@ -381,7 +339,7 @@ void System::setHeliumDiffusivity(int input_value)
 		 */
 		
 		reference += "iHeDiffusivity: null intragranular diffusivity.\n\t";
-		diffusivity.value = 0.0;
+		diffusivity = 0.0;
 		break;
 	}
 
@@ -473,11 +431,11 @@ void System::setResolutionRate(int input_value)
 		double thermal_resolution_rate;
 		if (sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue() > 0.0)
 		{
-			thermal_resolution_rate = 3.0 * sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().value * sciantix_system[sy["He in UO2"]].getHenryConstant().value * boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue() * compressibility_factor / pow(sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue(), 2);
+			thermal_resolution_rate = 3.0 * diffusivity * henry_constant * boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue() * compressibility_factor / pow(sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue(), 2);
 			if (sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue() < (2.0 * radius_in_lattice))
-				thermal_resolution_rate = 3 * sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().value * sciantix_system[sy["He in UO2"]].getHenryConstant().value * boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue() * compressibility_factor / pow(sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue(), 2)
-					- 2.0 * 3.0 * sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().value * sciantix_system[sy["He in UO2"]].getHenryConstant().value * boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue() * compressibility_factor * (sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue() - radius_in_lattice) / pow(radius_in_lattice, 3)
-					+ 3.0 * 3.0 * sciantix_system[sy["He in UO2"]].getHeliumDiffusivity().value * sciantix_system[sy["He in UO2"]].getHenryConstant().value * boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue() * compressibility_factor * pow(sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue() - radius_in_lattice, 2) / pow(radius_in_lattice, 4);
+				thermal_resolution_rate = 3 * diffusivity * henry_constant * boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue() * compressibility_factor / pow(sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue(), 2)
+					- 2.0 * 3.0 * diffusivity * henry_constant * boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue() * compressibility_factor * (sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue() - radius_in_lattice) / pow(radius_in_lattice, 3)
+					+ 3.0 * 3.0 * diffusivity * henry_constant * boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue() * compressibility_factor * pow(sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue() - radius_in_lattice, 2) / pow(radius_in_lattice, 4);
 		}
 		else
 			thermal_resolution_rate = 0.0;
@@ -550,7 +508,7 @@ void System::setTrappingRate(int input_value)
 			trapping_rate = 0.0;
 
 		else
-			trapping_rate = 4.0 * pi * diffusivity.value *
+			trapping_rate = 4.0 * pi * diffusivity *
 			(sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue() + radius_in_lattice) *
 			sciantix_variable[sv["Intragranular bubble concentration"]].getFinalValue();
 
@@ -563,10 +521,10 @@ void System::setTrappingRate(int input_value)
 	case 99:
 	{
 		/**
-		 * @brief iTrappingRate = 99 stands for the dummy case with zero trapping rate.
+		 * @brief iTrappingRate = 99 stands for the case with zero trapping rate.
 		 * 
 		 */
-		reference += "iTrappingRate: dummy case with zero trapping rate.\n\t";
+		reference += "iTrappingRate: case with zero trapping rate.\n\t";
 
 		trapping_rate = 0.0;
 		break;
@@ -714,129 +672,3 @@ void System::setProductionRate(int input_value)
 	}
 
 }
-
-void System::setHenryConstant(int input_value)
-{
-	/**
-	 * setHenryConstant
-	 * @brief Henry constant for other fission gas model can be set according to the input value inputed
-	 *        Henry constant for helium can be set according to the input variable iHeliumHenryConstant.
-	 * 
-	 */
-	switch(input_value)
-	{
-		case 0:
-		/**
-		 * @brief input_value = 0, current model does not consider solubility;
-		 *        iHeliumHenryConstant = 0, helium solubility is considered as 0;
-		 */
-		{
-			henry_constant.value = 0;
-			break;
-		}
-
-		case 1:
-		/**
-		 * @brief iHeliumHenryConstant = 1, only for Helium in single crystal;
-		 * 
-		 */
-		{
-			henry_constant.value = sf_henryConst_preExp *4.1e+18 * exp(-sf_henryConst_actEnergy*7543.5 / history_variable[hv["Temperature"]].getFinalValue());
-			henry_constant.lower_bound = 2.57e17 * exp(-11721/history_variable[hv["Temperature"]].getFinalValue());
-			henry_constant.upper_bound = 6.60e19 * exp(-3249.4/history_variable[hv["Temperature"]].getFinalValue());
-	
-			// if(sciantix_system[sy["He in UO2"]].getHenryConstant().value > sciantix_system[sy["He in UO2"]].getHenryConstant().upper_bound || sciantix_system[sy["He in UO2"]].getHenryConstant().value < sciantix_system[sy["He in UO2"]].getHenryConstant().lower_bound)
-			// {
-			// 	std::cout << "Current Henry constant: " << sciantix_system[sy["He in UO2"]].getHenryConstant().value << " at temperature: " << history_variable[hv["Temperature"]].getFinalValue() << " is out of the validation range: \n";
-			// 	std::cout << "[" << sciantix_system[sy["He in UO2"]].getHenryConstant().lower_bound << ", " << sciantix_system[sy["He in UO2"]].getHenryConstant().upper_bound << "]\n" ;
-			// }
-
-
-
-			break;
-		}
-
-		default:
-		{
-			ErrorMessages::Switch("SetSystem.cpp", "iHeliumHenryConstant", input_value);
-		    break;
-		}
-	}
-}
-// void System::setRangeValidation(int input_value)
-// {
-// 	/**
-// 	 * ### setRangeValidation
-// 	 * @brief the range validation of helium diffusivity and henry constant in U02 is set according to the input_variable iRangeValidation
-// 	 * 
-// 	 */
-// 	switch(input_value)
-// 	{
-// 		case 0:
-// 		{ 
-// 			/**
-// 			 * @brief iRangeValidation = 0, the function of RangeCheck is activated, output the parameter out of the validation range.
-// 			 * 
-// 			 */
-// 			HeDiffBounds HDB;
-// 	        HDB.setArrheniusParameter();
-// 			HDB.setBounds(history_variable[hv["Temperature"]].getFinalValue());
-
-// 			HeHenryBounds HHB;
-// 	        HHB.setArrheniusParameter();
-// 			HHB.setBounds(history_variable[hv["Temperature"]].getFinalValue());
-// 			if(!HDB.isWithinBounds(sciantix_system[sy["He in UO2"]].getHeliumDiffusivity()))
-// 			{
-// 				std::cout << "Warning! Current Helium Diffusivity: " << sciantix_system[sy["He in UO2"]].getHeliumDiffusivity() << " at temperature " <<history_variable[hv["Temperature"]].getFinalValue() <<" is out of the Bounds\n";
-// 				HDB.getBounds();
-// 			}
-// 			if(!HHB.isWithinBounds(sciantix_system[sy["He in UO2"]].getHenryConstant()))
-// 			{	
-// 				std::cout << "Warning! Current Helium Henry constant: " << sciantix_system[sy["He in UO2"]].getHenryConstant() << " at temperature " <<history_variable[hv["Temperature"]].getFinalValue() <<" is out of the Bounds\n";
-// 				HHB.getBounds();
-// 			}
-// 			break;
-
-// 		}
-
-// 		case 1:{
-// 			/**
-// 			 * @brief iRangeValidation = 1, the function of RangeCheck is activated, output the parameter within and out of the validation range.
-// 			 * 
-// 			 */
-// 			HeDiffBounds HDB;
-// 	        HDB.setArrheniusParameter();
-// 			HDB.setBounds(history_variable[hv["Temperature"]].getFinalValue());
-// 			HeHenryBounds HHB;
-// 	        HHB.setArrheniusParameter();
-// 			HHB.setBounds(history_variable[hv["Temperature"]].getFinalValue());
-// 			if(HDB.isWithinBounds(sciantix_system[sy["He in UO2"]].getHeliumDiffusivity())){
-// 				std::cout << "The Helium Diffusivity at temperature " <<history_variable[hv["Temperature"]].getFinalValue() <<" is within the Bounds\n";
-// 			}
-// 			else {
-// 				std::cout << "Warning! Current Helium Diffusivity: " << sciantix_system[sy["He in UO2"]].getHeliumDiffusivity() << " at temperature " <<history_variable[hv["Temperature"]].getFinalValue() <<" is out of the Bounds\n";
-// 				HDB.getBounds();
-// 			}
-// 			if(HHB.isWithinBounds(sciantix_system[sy["He in UO2"]].getHenryConstant())){
-// 				std::cout << "The Helium Henry constant at temperature " <<history_variable[hv["Temperature"]].getFinalValue() <<" is within the Bounds\n";
-// 			}
-// 			else {
-// 				std::cout << "Warning! Current Helium Henry constant: " << sciantix_system[sy["He in UO2"]].getHenryConstant() << " at temperature " <<history_variable[hv["Temperature"]].getFinalValue() <<" is out of the Bounds\n";
-// 				HHB.getBounds();
-// 			}
-// 			break;
-// 		}
-
-// 		case 2:{
-// 			/**
-// 			 * @brief iRangeValidation = 2, switch off the range validation.
-// 			 * 
-// 			 */
-// 			break;
-// 		}
-
-// 		default:
-// 			ErrorMessages::Switch("RangeCheck.h","iRangeValidation",input_value);
-
-// 	}
-// }

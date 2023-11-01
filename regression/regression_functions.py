@@ -14,11 +14,11 @@ import shutil
 
 """ Defining useful functions"""
 def import_data(filename):
-  """
-  This function import a .txt file into an ndarray
-  """
-  data = np.genfromtxt(filename, dtype= 'str', delimiter='\t')
-  return data
+	"""
+	This function import a .txt file into an ndarray
+	"""
+	data = np.genfromtxt(filename, dtype= 'str', delimiter='\t')
+	return data
 
 def findSciantixVariablePosition(output, variable_name):
   """
@@ -56,17 +56,6 @@ def plot(x, y):
 
 def are_files_equal(file1, file2):
   if os.path.exists(file1) is True and os.path.exists(file2) is True:
-    with open(file1, 'r') as f1, open(file2, 'r') as f2:
-      return f1.read() == f2.read()
-  elif os.path.exists(file1) is False:
-    print("ERROR!")
-    print(file1, "not found.")
-  elif os.path.exists(file2) is False:
-    print("ERROR!")
-    print(file2, "not found.")
-
-def are_bounds_files_equal(file1, file2, file3, file4):
-  if os.path.exists(file1) is True and os.path.exists(file2) is True and os.path.exists(file3) is True and os.path.exists(file4):
     with open(file1, 'r') as f1, open(file2, 'r') as f2:
       return f1.read() == f2.read()
   elif os.path.exists(file1) is False:

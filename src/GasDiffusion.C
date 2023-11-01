@@ -42,11 +42,11 @@ void GasDiffusion()
 
 			parameter.push_back(n_modes);
 			if (sciantix_system[i].getResolutionRate() + sciantix_system[i].getTrappingRate() == 0)
-				parameter.push_back(sciantix_system[i].getFissionGasDiffusivity().value * gas[ga[sciantix_system[i].getGasName()]].getPrecursorFactor());
+				parameter.push_back(sciantix_system[i].getFissionGasDiffusivity() * gas[ga[sciantix_system[i].getGasName()]].getPrecursorFactor());
 			else
 				parameter.push_back(
 					sciantix_system[i].getResolutionRate() /
-					(sciantix_system[i].getResolutionRate() + sciantix_system[i].getTrappingRate()) * sciantix_system[i].getFissionGasDiffusivity().value * gas[ga[sciantix_system[i].getGasName()]].getPrecursorFactor() + 
+					(sciantix_system[i].getResolutionRate() + sciantix_system[i].getTrappingRate()) * sciantix_system[i].getFissionGasDiffusivity() * gas[ga[sciantix_system[i].getGasName()]].getPrecursorFactor() + 
 					sciantix_system[i].getTrappingRate() /
 					(sciantix_system[i].getResolutionRate() + sciantix_system[i].getTrappingRate()) * sciantix_system[i].getBubbleDiffusivity() 
 				);
@@ -82,7 +82,7 @@ void GasDiffusion()
 			model[model_index].setRef(reference);
 
 			parameter.push_back(n_modes);
-			parameter.push_back(sciantix_system[i].getFissionGasDiffusivity().value * gas[ga[sciantix_system[i].getGasName()]].getPrecursorFactor());
+			parameter.push_back(sciantix_system[i].getFissionGasDiffusivity() * gas[ga[sciantix_system[i].getGasName()]].getPrecursorFactor());
 			parameter.push_back(sciantix_system[i].getResolutionRate());
 			parameter.push_back(sciantix_system[i].getTrappingRate());
 			parameter.push_back(gas[ga[sciantix_system[i].getGasName()]].getDecayRate());

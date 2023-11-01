@@ -35,21 +35,6 @@ void Sciantix(int Sciantix_options[],
 	Burnup();
 	MapModel();
 	sciantix_simulation.Burnup();
-	
-	// HeDiffBounds HDB;
-	// HDB.setArrheniusParameter();
-	// HDB.setBounds(history_variable[hv["Temperature"]].getFinalValue());
-	// if(HDB.isWithinBounds(history_variable[hv["Temperature"]].getFinalValue())){
-	// 	std::cout << "The Helium Diffusivity at temperature " <<history_variable[hv["Temperature"]].getFinalValue() <<" is within the Bounds\n";
-	// }
-	// else {
-	// 	std::cout << "The Helium Diffusivity at temperature " <<history_variable[hv["Temperature"]].getFinalValue() <<" is out of the Bounds\n";
-	
-	// }
-
-	//std::cout << sciantix_system[sy["He in UO2"]].checkRange() << std::endl;
-
-	//std::cout << sciantix_system[sy["He in UO2"]].getHenryConstant() << std::endl;
 
 	EffectiveBurnup();
 	MapModel();
@@ -109,8 +94,6 @@ void Sciantix(int Sciantix_options[],
 	sciantix_simulation.InterGranularBubbleBehaviour();
 
 	FiguresOfMerit();
-
-    //std::cout << sciantix_system[sy["He in UO2"]].getHenryConstant() << std::endl;
 	
 	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 

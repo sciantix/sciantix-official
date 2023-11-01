@@ -136,7 +136,7 @@ void Output()
 	{
 		overview_file.open(overview_name, std::fstream::in | std::fstream::out | std::fstream::app);
 
-		for (std::vector<Model>::size_type i = 0; i != model.size(); ++i)
+		for (std::vector<Model>::size_type i = 0; i != int(model.size()); ++i)
 		{
 			overview_file << "Model #" << i << ": " << "\t";
 			overview_file << model[i].getName() << "\t";
@@ -148,7 +148,7 @@ void Output()
 		/**
 		 * Printing the matrix
 		 */
-		for (std::vector<Matrix>::size_type i = 0; i != matrix.size(); ++i)
+		for (std::vector<Matrix>::size_type i = 0; i != int(matrix.size()); ++i)
 		{
 			overview_file << "Matrix #" << i << ": " << "\t";
 			overview_file << matrix[i].getName() << "\t";
@@ -157,7 +157,7 @@ void Output()
 
 		overview_file << "\n";
 
-		for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
+		for (std::vector<System>::size_type i = 0; i != int(sciantix_system.size()); ++i)
 		{
 			overview_file << "System #" << i << ": " << "\t";
 			overview_file << sciantix_system[i].getName() << "\t";
@@ -166,7 +166,7 @@ void Output()
 
 		overview_file << "\n";
 
-		for (std::vector<InputVariable>::size_type i = 0; i != input_variable.size(); ++i)
+		for (std::vector<InputVariable>::size_type i = 0; i != int(input_variable.size()); ++i)
 		{
 			overview_file << "Input setting #" << i << ": " << "\t";
 			overview_file << input_variable[i].getName() << " = ";

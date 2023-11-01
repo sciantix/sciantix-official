@@ -26,9 +26,9 @@ class experiment():
         coloumnsOutput_nominal = getSelectedVariablesValueFromOutput(variable_selected,"output.txt")
         history = np.genfromtxt("input_history.txt")
 
-        #############
-        #nomenclature
-        #############
+        ##############
+        # Nomenclature
+        ##############
         Helium_total = 1.68e24
         time_exp  = cloumnsFR[:,0]
         FR_exp = cloumnsFR[:,1]
@@ -114,7 +114,7 @@ class inputOutput():
     
         os.chdir(folder_name)
         shutil.copy("../input_scaling_factors.txt", os.getcwd())
-        shutil.copy("../../../bin/sciantix.x", os.getcwd())
+        shutil.copy("../../../../bin/sciantix.x", os.getcwd())
         shutil.copy("../input_initial_conditions.txt", os.getcwd())
         shutil.copy("../input_settings.txt", os.getcwd())
         shutil.copy("../input_history.txt", os.getcwd())

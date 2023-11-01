@@ -1,7 +1,7 @@
 Model #0: 	Burnup	The local burnup is calculated from the fission rate density.
 Model #1: 	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
-Model #2: 	High burnup structure formation	: not considered.
-Model #3: 	High burnup structure porosity	not considered
+Model #2: 	High-burnup structure formation	: not considered.
+Model #3: 	High-burnup structure porosity	not considered
 Model #4: 	Grain growth	Van Uffelen et al. JNM, 434 (2013) 287–29.
 Model #5: 	Grain-boundary sweeping	TRANSURANUS model
 Model #6: 	Gas production - Xe in UO2	 
@@ -72,10 +72,8 @@ Input setting #14: 	iHelium = 1
 Input setting #15: 	iHeDiffusivity = 1
 Input setting #16: 	iGrainBoundarySweeping = 1
 Input setting #17: 	iHighBurnupStructureFormation = 0
-Input setting #18: 	iHBS_FGDiffusionCoefficient = 0
-Input setting #19: 	iHighBurnupStructurePorosity = 0
-Input setting #20: 	iHeliumProductionRate = 0
-Input setting #21: 	iStoichiometryDeviation = 0
-Input setting #22: 	iBubbleDiffusivity = 0
-Input setting #23: 	iHeliumHenryConstant = 1
+Input setting #18: 	iHighBurnupStructurePorosity = 0
+Input setting #19: 	iHeliumProductionRate = 0
+Input setting #20: 	iStoichiometryDeviation = 0
+Input setting #21: 	iBubbleDiffusivity = 0
 

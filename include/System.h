@@ -25,8 +25,6 @@
 #include "MapHistoryVariable.h"
 #include "ErrorMessages.h"
 #include <cmath>
-#include <iostream>
-//#include "RangeCheck.h"
 
 /// Class derived from Gas and Matrix to include the properties that depend on both the fission gas and the fuel matrix (e.g., Xe covolume)
 
@@ -36,23 +34,9 @@ protected:
 	double yield;
 	double radius_in_lattice;
 	double volume_in_lattice;
-	//double diffusivity;
-	struct Diffusivity{
-		double value;
-		double lower_bound;
-		double upper_bound;
-	};
-	Diffusivity diffusivity;
-
+	double diffusivity;
 	double bubble_diffusivity;
-
-	struct HenryConstant{
-		double value;
-		double lower_bound;
-		double upper_bound;
-	};
-	HenryConstant henry_constant;
-
+	double henry_constant;
 	double resolution_rate;
 	double trapping_rate;
 	double nucleation_rate;
@@ -60,8 +44,6 @@ protected:
 	double pore_nucleation_rate;
 	std::vector<double> modes;
 	double production_rate;
-
-
 
 public:
 	void setYield(double y)
@@ -120,35 +102,30 @@ public:
 	}
 
 	void setHeliumDiffusivity(int input_value);
-	Diffusivity& getHeliumDiffusivity()
+	double getHeliumDiffusivity()
 	{
 		/// Member function to get the bubble diffusivity of the isotope in the fuel matrix
-
 		return diffusivity;	
 	}
 
-
 	void setFissionGasDiffusivity(int input_value);	
-	Diffusivity& getFissionGasDiffusivity()
+	double getFissionGasDiffusivity()
 	{
 		/// Member function to get the diffusivity of the isotope in the fuel matrix
 		return diffusivity;
 	}
 
+	void setHenryConstant(double h)
+	{
+		/// Member function to set the value of the Henry constant
+		henry_constant = h;
+	}
 
-
-	// void setHenryConstant(double h)
-	// {
-	// 	/// Member function to set the value of the Henry constant
-	// 	henry_constant.value = h;
-	// }
-	void setHenryConstant(int input_value);
-	HenryConstant& getHenryConstant()
+	double getHenryConstant()
 	{
 		/// Member function to get the value of the Henry constant
 		return henry_constant;
 	}
-
 
 	void setResolutionRate(int input_value);
 	double getResolutionRate()
@@ -190,9 +167,6 @@ public:
      */		
 		return production_rate;
 	}
-    
-	//void setRangeValidation(int input_value);
-
 
 	System() { }
 	~System() { }

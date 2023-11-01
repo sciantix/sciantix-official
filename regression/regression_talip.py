@@ -11,8 +11,6 @@ This is a python script to execute the regression (running the validation databa
 import os
 import subprocess
 import numpy as np
-import matplotlib
-matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import shutil
 from regression_functions import *
@@ -23,7 +21,7 @@ from regression_functions import *
 
 # Verify the test results
 def check_result(number_of_tests_failed):
-  if are_bounds_files_equal('output.txt', 'output_low.txt', 'output_up.txt', 'output_gold.txt') == True:
+  if are_files_equal('output.txt', 'output_gold.txt') == True:
     print(f"Test passed!\n")
   else:
     print(f"Test failed!\n")
@@ -40,25 +38,12 @@ def check_output(file):
     data = np.zeros(shape=(1, 1))
 
   try :
-    data_low = import_data("output_low.txt")
-  except :
-    print(f"output_low.txt not found in {file}")
-    data_low = np.ones(shape=(1, 1))
-
-  try :
-    data_up = import_data("output_up.txt")
-  except :
-    print(f"output_up.txt not found in {file}")
-    data_up = np.ones(shape=(1, 1))
-
-  try :
     data_gold = import_data("output_gold.txt")
   except :
     print(f"output_gold.txt not found in {file}")
     data_gold = np.ones(shape=(1, 1))
-      
 
-  return data, data_low, data_up, data_gold
+  return data, data_gold
 
 # Execute sciantix in the current test folder
 def do_sciantix():
@@ -89,7 +74,7 @@ def do_gold():
 
 # Plot the regression test results
 def do_plot(heReleasedTalip14000_data, heReleasedRateTalip14000_data, time, temperature, heReleasedFrac, heReleaseRate,
-            timeG, heReleasedFracG, temperatureG, heReleaseRateG, timeB, heReleasedFracLB, heReleasedFracUB, temperatureB, heReleasedRateLB, heReleasedRateUB):
+            timeG, heReleasedFracG, temperatureG, heReleaseRateG):
   fig, ax = plt.subplots(1,2)
 
   plt.subplots_adjust(left=0.1,
@@ -102,9 +87,6 @@ def do_plot(heReleasedTalip14000_data, heReleasedRateTalip14000_data, time, temp
   ax[0].scatter(heReleasedTalip14000_data[:,0], heReleasedTalip14000_data[:,1], marker = '.', c = '#B3B3B3', label='Data from Talip et al. (2014)')
   ax[0].plot(timeG, heReleasedFracG, 'k', label='Cognini et al. (2021)')
   ax[0].plot(time, heReleasedFrac, color = '#98E18D', label='SCIANTIX 2.0')
-  ax[0].plot(timeB, heReleasedFracLB, color = '#7AC5CD', linestyle ='--', label = 'Lower Bound')
-  ax[0].plot(timeB, heReleasedFracUB, color = '#FF7F50', linestyle ='--', label = 'Upper Bound')
-
 
   axT = ax[0].twinx()
   axT.set_ylabel('Temperature (K)')
@@ -115,16 +97,12 @@ def do_plot(heReleasedTalip14000_data, heReleasedRateTalip14000_data, time, temp
   ax[0].set_ylabel('Helium fractional release (/)')
   h1, l1 = ax[0].get_legend_handles_labels()
   h2, l2 = axT.get_legend_handles_labels()
-  # ax[0].legend(h1+h2, l1+l2)
-  ax[0].legend(loc = 'upper left')
+  ax[0].legend(h1+h2, l1+l2)
 
   """ Plot: Helium release rate """
   ax[1].scatter(heReleasedRateTalip14000_data[:,0], heReleasedRateTalip14000_data[:,1], marker = '.', c = '#B3B3B3', label='Data from Talip et al. (2014)')
   ax[1].plot(temperatureG, heReleaseRateG, 'k', label='Cognini et al. (2021)')
   ax[1].plot(temperature, heReleaseRate, color = '#98E18D', label='SCIANTIX 2.0')
-  ax[1].plot(temperatureB, heReleasedRateLB, color = '#7AC5CD', linestyle ='--', label = 'Lower Bound')
-  ax[1].plot(temperatureB, heReleasedRateUB, color = '#FF7F50', linestyle ='--', label = 'Upper Bound')
-  
 
   # ax.set_title(file + ' - Release rate')
   ax[1].set_xlabel('Temperature (K)')
@@ -164,27 +142,27 @@ def regression_talip(wpath, mode_Talip, mode_gold, mode_plot, folderList, number
       if mode_gold == 0:
 
         do_sciantix()
-        data, data_low, data_up, data_gold = check_output(file)
+        data, data_gold = check_output(file)
         number_of_tests_failed = check_result(number_of_tests_failed)
 
       # mode_gold = 1 : Use SCIANTIX / Use GOLD
       if mode_gold == 1:
 
         do_sciantix()
-        data, data_low, data_up, data_gold = check_output(file)
+        data, data_gold = check_output(file)
         print("...golding results.")
         do_gold()
 
       # mode_gold = 2 : Don't use SCIANTIX / Don't use GOLD and check result
       if mode_gold == 2:
 
-        data, data_low, data_up, data_gold = check_output(file)
+        data, data_gold = check_output(file)
         number_of_tests_failed = check_result(number_of_tests_failed)
 
       # mode_gold = 3 : Don't use SCIANTIX / Use GOLD
       if mode_gold == 3:
 
-        data, data_low, data_up, data_gold = check_output(file)
+        data, data_gold = check_output(file)
         print("...golding existing results.")
         do_gold()
 
@@ -224,36 +202,10 @@ def regression_talip(wpath, mode_Talip, mode_gold, mode_plot, folderList, number
       temperatureG = data_Cognini[1:,temperaturePosG].astype(float)
       heReleaseRateG = data_Cognini[1:,heReleasedRatePosG].astype(float)
 
-      # output_low.txt
-      # find indexes
-      timePosB = findSciantixVariablePosition(data_low, "Time (h)")
-      heReleasedPosLB = findSciantixVariablePosition(data_low, "He fractional release (/)")
-      heReleasedRatePosLB = findSciantixVariablePosition(data_low, "He release rate (at/m3 s)")
-      temperaturePosB = findSciantixVariablePosition(data_low, "Temperature (K)")
-
-      # arrays
-      timeB = data_low[1:,timePosB].astype(float)
-      heReleasedFracLB = data_low[1:,heReleasedPosLB].astype(float)
-      temperatureB = data_low[1:,temperaturePosB].astype(float)
-      heReleasedRateLB = data_low[1:,heReleasedRatePosLB].astype(float)
-
-      # output_low.txt
-      heReleasedPosUB = findSciantixVariablePosition(data_up, "He fractional release (/)")
-      heReleasedRatePosUB = findSciantixVariablePosition(data_up, "He release rate (at/m3 s)")
-
-      heReleasedFracUB = data_up[1:,heReleasedPosUB].astype(float)
-      heReleasedRateUB = data_up[1:,heReleasedRatePosUB].astype(float)
-
-
-
-
-
-
-
       # Check if the user has chosen to display the various plots
       if mode_plot == 1:
         do_plot(heReleasedTalip14000_data, heReleasedRateTalip14000_data, time, temperature, heReleasedFrac, heReleaseRate,
-                timeG, heReleasedFracG, temperatureG, heReleaseRateG, timeB, heReleasedFracLB, heReleasedFracUB, temperatureB, heReleasedRateLB, heReleasedRateUB)
+                timeG, heReleasedFracG, temperatureG, heReleaseRateG)
 
 
       os.chdir('..')

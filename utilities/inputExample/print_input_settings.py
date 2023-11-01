@@ -13,7 +13,7 @@ with open('input_settings.txt', 'w') as file:
     file.write('1\t#\tiTrappingRate (0= constant value, 1= Ham (1958))\n')
     file.write('1\t#\tiNucleationRate (0= constant value, 1= Olander, Wongsawaeng (2006))\n')
     file.write('1\t#\tiOutput (1= default output files)\n')
-    file.write('1\t#\tiGrainBoundaryVacancyDiffusivity (0= constant value, 1= Reynolds and Burton (1979), 2= Pastore et al. (2015))\n')
+    file.write('1\t#\tiGrainBoundaryVacancyDiffusivity (0= constant value, 1= Reynolds and Burton (1979), 2= White (2004) \n')
     file.write('1\t#\tiGrainBoundaryBehaviour (0= no grain boundary bubbles, 1= Pastore et al (2013))\n')
     file.write('1\t#\tiGrainBoundaryMicroCracking (0= no model considered, 1= Barani et al. (2017))\n')
     file.write('0\t#\tiFuelMatrix (0= UO2, 1= UO2 + HBS)\n')
@@ -27,4 +27,3 @@ with open('input_settings.txt', 'w') as file:
     file.write('0\t#\tiHeliumProductionRate (0= zero production rate, 1= helium from ternary fissions, 2= linear with burnup (FR))\n')
     file.write('0\t#\tiStoichiometryDeviation (0= not considered, 1= Cox et al. 1986, 2= Bittel et al. 1969, 3= Abrefah et al. 1994, 4= Imamura et al. 1997, 5= Langmuir-based approach)\n')
     file.write('0\t#\tiBubbleDiffusivity (0= not considered, 1= volume diffusivity)')
-    file.write('0\t#\tiHeliumHenryConstant (0= kH==0, 1 = single crystal)')
