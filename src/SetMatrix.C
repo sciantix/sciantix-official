@@ -67,13 +67,10 @@ void Matrix::setGrainBoundaryMobility(int input_value)
 		 * @brief iGrainGrowth = 0 corresponds to a 0 grain-boundary mobility
 		 * 
 		*/
-
 		reference += "no grain-boundary mobility.\n\t";
 		grain_boundary_mobility = 0.0;
-
 		break;
 	}
-
 	case 1:
 	{
 		/** 
@@ -84,34 +81,15 @@ void Matrix::setGrainBoundaryMobility(int input_value)
 		grain_boundary_mobility = 1.455e-8 * exp(- 32114.5 / history_variable[hv["Temperature"]].getFinalValue());
 		break;
 	}
-
 	case 2:		
 	{		
 		/**			
-			 * @brief iGrainBoundaryVacancyDiffusivity = 2 corresponds to the correction from @ref White, JNM, 325 (2004), 61-77			 
+		 * @brief iGrainGrowth = 2 corresponds to the @ref Van Uffelen et al. JNM, 434 (2013) 287–29 grain-boundary mobility
 		 * 			
 		 */			
 
-
-			grain_boundary_diffusivity = 3.5/5 * 8.86e-6 * exp(- 4.17e4 / history_variable[hv["Temperature"]].getFinalValue());			
-			reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.\n\t";			
-
-		break;
-	}
-
-	case 5:	
-	{	
-		/**	
-		* @brief iGrainBoundaryVacancyDiffusivity = 5 corresponds to the vacancy diffusivities along HBS grain boundaries.	
-		* This model is from @ref Barani et al., JNM 563 (2022) 153627.	
-		*	
-		*/	
-
-		grain_boundary_diffusivity = (1.3e-7 * exp(-4.52e-19 /	
-			(boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue()))	
-		);	
-
-			reference += "iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.\n\t";	
+		reference += "Van Uffelen et al. JNM, 434 (2013) 287–29.\n\t";
+		grain_boundary_mobility = 1.360546875e-15 * exp(- 46524.0 / history_variable[hv["Temperature"]].getFinalValue());
 		break;	
 		}
 
@@ -122,8 +100,6 @@ void Matrix::setGrainBoundaryMobility(int input_value)
 }
 
 void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value)
-
-
 {
 	/** 
 	 * ### GrainBoundaryVacancyDiffusivity
@@ -132,7 +108,6 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value)
 	 */
 	
 	const double boltzmann_constant = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
-
 	switch (input_value)
 	{
 	case 0:
@@ -141,47 +116,58 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value)
 		 * @brief iGrainBoundaryVacancyDiffusivity = 0 corresponds to a constant diffusivity value, equal to 1e-30 m^2/s.
 		 * 
 		 */
-
 		grain_boundary_diffusivity = 1e-30;
 		reference += "iGrainBoundaryVacancyDiffusivity: constant value (1e-30 m^2/s).\n\t";
-
 		break;
 	}
-
 	case 1:
 	{
 		/**
 		 * @brief iGrainBoundaryVacancyDiffusivity = 1 corresponds to the relation from @ref Reynolds and Burton, JNM, 82 (1979) 22-25.
 		 * 
 		 */
-
 		grain_boundary_diffusivity = 6.9e-04 * exp(- 5.35e-19 / (boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue()));
 		reference += "iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.\n\t";
-
 		break;
 	}
-
 	case 2:
 	{
 		/**
-		 * @brief iGrainBoundaryVacancyDiffusivity = 2 corresponds to the correction from @ref Pastore et al., JNM, 456 (2015) 156.
+			 * @brief iGrainBoundaryVacancyDiffusivity = 2 corresponds to the correction from @ref White, JNM, 325 (2004), 61-77
+			 * 
+			 */
+
+			grain_boundary_diffusivity = 3.5/5 * 8.86e-6 * exp(- 4.17e4 / history_variable[hv["Temperature"]].getFinalValue());
+			reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.\n\t";
+
+			break;
+		}
+
+		case 5:
+		{
+			/**
+			 * @brief iGrainBoundaryVacancyDiffusivity = 5 corresponds to the vacancy diffusivities along HBS grain boundaries.
+			 * This model is from @ref Barani et al., JNM 563 (2022) 153627.
 		 * 
 		 */
 
-		grain_boundary_diffusivity = 8.86e-6 * exp(- 5.75e-19 / (boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue()));
-		reference += "iGrainBoundaryVacancyDiffusivity: from Pastore et al., JNM, 456 (2015) 156.\n\t";
+			grain_boundary_diffusivity = (1.3e-7 * exp(-4.52e-19 /
+					(boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue()))
+			);
 
+			reference += "iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.\n\t";
 		break;
 	}
 
 	default:
 		ErrorMessages::Switch("SetMatrix.cpp", "iGrainBoundaryVacancyDiffusivity", input_value);
 		break;
+
 	}
 }
 
-void Matrix::setPoreNucleationRate()	void Matrix::setLatticeParameter(double lp)
-{	{
+void Matrix::setPoreNucleationRate()	
+{	
   /**	
    * @brief nucleation rate of HBS pores.	
    * This model is from @ref *Barani et al., JNM 563 (2022) 153627*.	
