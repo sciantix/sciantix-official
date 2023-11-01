@@ -23,20 +23,15 @@
 
 void SetGas()
 {
-	Xenon();
-	MapGas();
-	
-	Krypton();
-	MapGas();
-	
-	Helium();
-	MapGas();
-	Xenon();
-	MapGas();
-	
-	Krypton();
-	MapGas();
-	
-	Helium();
-	MapGas();
+	for (int k = 0; k < 10; ++k)
+	{
+		switch (k)
+		{
+		case 0: Xenon();              MapGas();       break;
+		case 1: Krypton();            MapGas();       break;
+		case 2: Helium();             MapGas();       break;
+
+		default:                                      break;
+		}
+	}
 }
