@@ -652,6 +652,7 @@ public:
 		}
 	}
 
+
 	void HighBurnupStructureFormation()
 	{
 		/// @brief
@@ -687,6 +688,8 @@ public:
 
 		// porosity evolution 
 		sciantix_variable[sv["HBS porosity"]].setFinalValue(
+			solver.Integrator(	
+				sciantix_variable[sv["HBS porosity"]].getInitialValue(),
 			model[sm["High-burnup structure porosity"]].getParameter().at(0),
 				sciantix_variable[sv["Burnup"]].getIncrement()
 			)
@@ -769,6 +772,9 @@ public:
 		if(sciantix_variable[sv["HBS pore density"]].getFinalValue())
 			sciantix_variable[sv["Xe atoms per HBS pore - variance"]].setFinalValue(
 				sciantix_variable[sv["Xe in HBS pores - variance"]].getFinalValue() / sciantix_variable[sv["HBS pore density"]].getFinalValue()
+				
+			);		
+		}
 				
  void StoichiometryDeviation()
  {
