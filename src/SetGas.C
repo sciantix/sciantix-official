@@ -31,12 +31,4 @@ void SetGas()
 	
 	Helium();
 	MapGas();
-	Xenon();
-	MapGas();
-	
-	Krypton();
-	MapGas();
-	
-	Helium();
-	MapGas();
 }
