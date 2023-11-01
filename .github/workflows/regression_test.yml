@@ -6,9 +6,11 @@ name: Python application test
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - ${{ github.ref }}
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - ${{ github.head_ref }}
 
 jobs:
   build:
