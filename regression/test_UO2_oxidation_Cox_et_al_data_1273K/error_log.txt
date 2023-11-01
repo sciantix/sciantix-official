@@ -1,0 +1,2 @@
+Error in SetSystem.cpp.
+The input setting iHeliumProductionRate = 5 is out of range.
