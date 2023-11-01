@@ -71,38 +71,6 @@ void SetSystem()
 
     {
 
-      Xe_in_UO2();
-
-      MapSystem();
-
-
-
-
-      Kr_in_UO2();
-
-      MapSystem();
-
-     
-
-      He_in_UO2();
-
-      MapSystem();
-
-     
-
-      Xe133_in_UO2();
-
-      MapSystem();
-
-     
-
-      Kr85m_in_UO2();
-
-      MapSystem();
-
-
-
-
       Xe_in_UO2HBS();
 
       MapSystem();
@@ -122,7 +90,7 @@ void SetSystem()
       MapSystem();
      
 
-	  Kr_in_UO2Cr();
+      Kr_in_UO2Cr();
 
       MapSystem();
      
@@ -210,7 +178,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 1:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 1 set the fission gas (xenon and krypton) single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 1 set the fission gas (xenon and krypton) single-atom intragranular diffusivity equal to the expression 
 		 * in @ref *Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22*.
 		 * 
 		 */
@@ -222,12 +190,10 @@ void System::setFissionGasDiffusivity(int input_value)
 
 		double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));
 		double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
-		double d3 = 2.0e-40 * fission_rate;
+		double d3 = 8.0e-40 * fission_rate;
 
 		diffusivity = d1 + d2 + d3;
 		diffusivity *= sf_diffusivity;
-
-		std::cout << diffusivity << std::endl;
 
 		break;
 	}
@@ -235,7 +201,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 2:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 2 set the xenon single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 2 set the xenon effective intragranular diffusivity equal to the expression
 		 * in @ref *Matzke (1980), Radiation Effects, 53, 219-242*.
 		 * 
 		 */
@@ -250,7 +216,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 3:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 3 set the xenon single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 3 set the xenon single-atom intragranular diffusivity equal to the expression 
 		 * in @ref *Turnbull et al., (2010), Background and Derivation of ANS-5.4 Standard Fission Product Release Model*.
 		 * 
 		 */
@@ -273,7 +239,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 4:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 4 set the xenon single-stom intragranular diffusivity equal to the expression 
+		 * @brief iFGDiffusionCoefficient = 4 set the xenon single-atom intragranular diffusivity equal to the expression 
 		 * in @ref *iFGDiffusionCoefficient: Ronchi, C. High Temp 45, 552-571 (2007)*.
 		 * 
 		 */
@@ -481,11 +447,11 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 99:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 99 set the xenon single-stom intragranular diffusivity to zero.
+		 * @brief iFGDiffusionCoefficient = 99 set the xenon single-atom intragranular diffusivity to zero.
 		 * 
 		 */
 
-		reference += "iFGDiffusionCoefficient: Test case: zero diffusion coefficient.\n\t";
+		reference += "iFGDiffusionCoefficient: Test dummy case: zero diffusion coefficient.\n\t";
 		diffusivity = 0.0;
 
 		break;
