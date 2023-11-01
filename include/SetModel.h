@@ -47,6 +47,8 @@
 #include "StoichiometryDeviation.h"
 #include "EnvironmentComposition.h"
 #include "UO2Thermochemistry.h"
+#include "Microstructure.h"
+#include "ChromiumSolubility.h"
 
 #include "ErrorMessages.h"
 

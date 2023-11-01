@@ -14,24 +14,25 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-/// This namespace contains relevant numeric constants that can be used in all the code.
+#include "Kr_in_UO2HBS.h"
 
-#ifndef CONSTANT_NUMBERS_H
-#define CONSTANT_NUMBERS_H
+/// Kr_in_UO2HBS
 
-namespace MathConstants
+void Kr_in_UO2HBS()
 {
-	const double pi = 3.141592653589793;
-}
+	sciantix_system.emplace_back();
+	int index = int(sciantix_system.size()) - 1;
 
-namespace PhysicsConstants
-{
-	const double boltzmann_constant = 1.380651e-23; // J/K
-	const double avogadro_number = 6.02214076e23; // at/mol
-	const double molar_mass_Oxigen = 15.999; // g/mol
-	const double molar_mass_Chromium = 51.9961; // g/mol
-	const double calorie = 4.186; // J
-	const double gas_constant = 8.3143; // J/(mol K)
+	sciantix_system[index].setName("Kr in UO2HBS");
+	sciantix_system[index].setGasName("Kr");
+	sciantix_system[index].setYield(0.03);
+	sciantix_system[index].setRadiusInLattice(0.21e-9);     // (m), number from experimental results, assumed equal for Xe and Kr
+	sciantix_system[index].setVolumeInLattice(matrix[sma["UO2HBS"]].getSchottkyVolume());
+	sciantix_system[index].setHenryConstant(0.0);
+	sciantix_system[index].setProductionRate(1);
+	sciantix_system[index].setFissionGasDiffusivity(5);
+	sciantix_system[index].setBubbleDiffusivity(0);
+	sciantix_system[index].setResolutionRate(99);
+	sciantix_system[index].setTrappingRate(99);
+	sciantix_system[index].setNucleationRate(99);
 }
-
-#endif

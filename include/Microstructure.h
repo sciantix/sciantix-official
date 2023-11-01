@@ -10,13 +10,15 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: D. Pizzocri, T. Barani                                                 //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
-#include "MainVariables.h"
-#include <string>
-#include <sstream>
-#include <vector>
-#include <numeric>
 
-void InputReading();
+#include "SciantixVariableDeclaration.h"
+#include "MapSciantixVariable.h"
+#include "ModelDeclaration.h"
+#include "SetMatrix.h"
+#include "MatrixDeclaration.h"
+#include "MapMatrix.h"
+
+void Microstructure();

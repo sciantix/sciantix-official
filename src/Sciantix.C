@@ -23,7 +23,7 @@ void Sciantix(int Sciantix_options[],
 	double Sciantix_diffusion_modes[])
 {
 	SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
-
+	
 	SetGas();
 
 	SetMatrix();
@@ -62,7 +62,7 @@ void Sciantix(int Sciantix_options[],
 	GrainGrowth();
 	MapModel();
 	sciantix_simulation.GrainGrowth();
-
+	
 	GrainBoundarySweeping();
 	MapModel();
 	sciantix_simulation.GrainBoundarySweeping();
@@ -76,7 +76,7 @@ void Sciantix(int Sciantix_options[],
 	IntraGranularBubbleEvolution();
 	MapModel();
 	sciantix_simulation.IntraGranularBubbleBehaviour();
-
+	
 	GasDiffusion();
 	MapModel();
 	sciantix_simulation.GasDiffusion();
@@ -84,7 +84,7 @@ void Sciantix(int Sciantix_options[],
 	GrainBoundaryMicroCracking();
 	MapModel();
 	sciantix_simulation.GrainBoundaryMicroCracking();
-
+	
 	GrainBoundaryVenting();
 	MapModel();
 	sciantix_simulation.GrainBoundaryVenting();
@@ -92,6 +92,12 @@ void Sciantix(int Sciantix_options[],
 	InterGranularBubbleEvolution();
 	MapModel();
 	sciantix_simulation.InterGranularBubbleBehaviour();
+
+	Microstructure();
+	MapModel();
+
+	ChromiumSolubility();
+	MapModel();
 
 	FiguresOfMerit();
 	
