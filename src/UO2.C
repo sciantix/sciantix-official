@@ -40,6 +40,9 @@ void UO2()
 	matrix[index].setGrainRadius(sciantix_variable[sv["Grain radius"]].getFinalValue()); // (m)
 	matrix[index].setHealingTemperatureThreshold(1273.5); // K
 	matrix[index].setGrainBoundaryVacancyDiffusivity(int(input_variable[iv["iGrainBoundaryVacancyDiffusivity"]].getValue())); // (m2/s)
+	matrix[index].setPoreNucleationRate();		
+	matrix[index].setPoreResolutionRate();		
+	matrix[index].setPoreTrappingRate();
 	matrix[index].setLatticeParameter(5.47109-10); // m
 	matrix[index].setTheoreticalDensity(10970.0); // (kg/m3)
 }
