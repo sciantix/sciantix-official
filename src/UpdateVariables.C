@@ -97,6 +97,13 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[76] = sciantix_variable[sv["Chromium precipitate"]].getFinalValue();
 	Sciantix_variables[77] = sciantix_variable[sv["Chromia solution"]].getFinalValue();
 	Sciantix_variables[78] = sciantix_variable[sv["Chromia precipitate"]].getFinalValue();
+	Sciantix_variables[80] = sciantix_variable[sv["HBS pore density"]].getFinalValue();		
+	Sciantix_variables[81] = sciantix_variable[sv["HBS pore volume"]].getFinalValue();		
+	Sciantix_variables[82] = sciantix_variable[sv["HBS pore radius"]].getFinalValue();		
+	Sciantix_variables[83] = sciantix_variable[sv["Xe in HBS pores"]].getFinalValue();		
+	Sciantix_variables[85] = sciantix_variable[sv["Xe in HBS pores - variance"]].getFinalValue();		
+	Sciantix_variables[86] = sciantix_variable[sv["Xe atoms per HBS pore"]].getFinalValue();		
+	Sciantix_variables[88] = sciantix_variable[sv["Xe atoms per HBS pore - variance"]].getFinalValue();
 
 	for (int i = 0; i < n_modes; ++i)
 	{
