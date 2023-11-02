@@ -27,3 +27,4 @@ with open('input_settings.txt', 'w') as file:
     file.write('0\t#\tiHeliumProductionRate (0= zero production rate, 1= helium from ternary fissions, 2= linear with burnup (FR))\n')
     file.write('0\t#\tiStoichiometryDeviation (0= not considered, 1= Cox et al. 1986, 2= Bittel et al. 1969, 3= Abrefah et al. 1994, 4= Imamura et al. 1997, 5= Langmuir-based approach)\n')
     file.write('0\t#\tiBubbleDiffusivity (0= not considered, 1= volume diffusivity)')
+    file.write('0\t#\tiChromiumSolubility (0= Riglet-Martial et al. (2014), 1= optimized coefficients)')
