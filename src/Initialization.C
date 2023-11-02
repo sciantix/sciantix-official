@@ -48,9 +48,6 @@ void Initialization()
 	Sciantix_variables[44] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 237.04873; // U-237
 	Sciantix_variables[45] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 238.05079; // U-238
 
-	// Initial HBS porosity
-	Sciantix_variables[56] = 1.0 - Sciantix_variables[40] / 10970.0;
-
 	// Intragranular similarity ratio
 	Sciantix_variables[64] = 1.0;
 

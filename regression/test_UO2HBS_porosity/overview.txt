@@ -18,6 +18,8 @@ Model #16: 	Gas diffusion - Kr85m in UO2
 Model #17: 	Grain-boundary micro-cracking	from Barani et al. (2017), JNM
 Model #18: 	Grain-boundary venting	not considered.
 Model #19: 	Intergranular bubble evolution	: No model for grain-boundary bubble evolution.
+Model #20: 	Microstructure	T. Cardinaels et al., JNM, 424 (2012) 252-260.
+Model #21: 	Chromium solubility	Riglet-Martial et al., JNM, 447 (2014) 63-72.
 
 Matrix #0: 	UO2	
 	Ainscough et al., JNM, 49 (1973) 117-128.
@@ -77,4 +79,5 @@ Input setting #18: 	iHighBurnupStructurePorosity = 1
 Input setting #19: 	iHeliumProductionRate = 0
 Input setting #20: 	iStoichiometryDeviation = 0
 Input setting #21: 	iBubbleDiffusivity = 0
+Input setting #22: 	iChromiumSolubility = 0
 
