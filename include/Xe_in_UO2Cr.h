@@ -10,13 +10,15 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: D. Pizzocri, T. Barani                                                 //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
-#include "MainVariables.h"
-#include <string>
-#include <sstream>
-#include <vector>
-#include <numeric>
 
-void InputReading();
+#include "SystemDeclaration.h"
+#include "MatrixDeclaration.h"
+#include "MapMatrix.h"
+#include "SciantixScalingFactorDeclaration.h"
+#include "SciantixVariableDeclaration.h"
+#include "MapSciantixVariable.h"
+
+void Xe_in_UO2Cr();

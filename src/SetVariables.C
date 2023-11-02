@@ -30,7 +30,6 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	// Input variable
 	// The vector is used to collect all user input settings relating to the choice of SCIANTIX models
 	// -----------------------------------------------------------------------------------------------
-	
 	int iv_counter(0);
 	if (input_variable.empty())
 	{
@@ -143,6 +142,12 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 		input_variable[iv_counter].setName("iBubbleDiffusivity");
 		input_variable[iv_counter].setValue(Sciantix_options[21]);
 		++iv_counter;
+
+		input_variable.emplace_back();
+		input_variable[iv_counter].setName("iChromiumSolubility");
+		input_variable[iv_counter].setValue(Sciantix_options[22]);
+		++iv_counter;
+
 	}
 
 	MapInputVariable();
@@ -168,9 +173,12 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	bool toOutputStoichiometryDeviation(0);
 	if (input_variable[iv["iStoichiometryDeviation"]].getValue() > 0) toOutputStoichiometryDeviation = 1;
 
-	// ----------------
+	bool toOutputChromiumContent(0);
+	if (input_variable[iv["iFuelMatrix"]].getValue() == 2) toOutputChromiumContent = 1;
+
+	// ----------------------------------------------------------------------------
 	// Physics variable
-	// ----------------
+	// ----------------------------------------------------------------------------
 	
 	int pv_counter(0);
 
@@ -182,10 +190,9 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	physics_variable[pv_counter].setOutput(0);
 	++pv_counter;
 
-	// ----------------
+	// ----------------------------------------------------------------------------
 	// History variable
-	// ----------------
-
+	// ----------------------------------------------------------------------------
 	int hv_counter(0);
 	history_variable.emplace_back();
 	history_variable[hv_counter].setName("Time");
@@ -756,7 +763,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(%)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[69]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[69]);
-	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setOutput(toOutputChromiumContent);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -780,7 +787,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(kg/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[40]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[40]);
-	sciantix_variable[sv_counter].setOutput(0.0);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -854,7 +861,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[55]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
-	
+
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Intragranular similarity ratio");
 	sciantix_variable[sv_counter].setUOM("(/)");
@@ -919,9 +926,81 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
-	// ------------------------------------------------------------------------------------------------
-	// HBS-related variables
-	// ------------------------------------------------------------------------------------------------
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Chromium content");
+	sciantix_variable[sv_counter].setUOM("(µg/g)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[70]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[70]);
+	sciantix_variable[sv_counter].setOutput(toOutputChromiumContent);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Lattice parameter");
+	sciantix_variable[sv_counter].setUOM("(m)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[71]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[71]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Theoretical density");
+	sciantix_variable[sv_counter].setUOM("(kg/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[72]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[72]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Chromium solubility");
+	sciantix_variable[sv_counter].setUOM("(% weight/UO2)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[73]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[73]);
+	sciantix_variable[sv_counter].setOutput(toOutputChromiumContent);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Chromia solubility");
+	sciantix_variable[sv_counter].setUOM("(% weight/UO2)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[74]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[74]);
+	sciantix_variable[sv_counter].setOutput(toOutputChromiumContent);
+	++sv_counter; // 
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Chromium solution");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[75]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[75]);
+	sciantix_variable[sv_counter].setOutput(toOutputChromiumContent);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Chromium precipitate");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[76]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[76]);
+	sciantix_variable[sv_counter].setOutput(toOutputChromiumContent);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Chromia solution");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[77]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[77]);
+	sciantix_variable[sv_counter].setOutput(toOutputChromiumContent);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Chromia precipitate");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[78]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[78]);
+	sciantix_variable[sv_counter].setOutput(toOutputChromiumContent);
+	++sv_counter;
+
+	// ------------------------------------------------------------------------------------------------	
+	// HBS-related variables	
+	// ------------------------------------------------------------------------------------------------	
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("HBS porosity");
@@ -930,32 +1009,35 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[56]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
-	
+
+
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("HBS pore density");
 	sciantix_variable[sv_counter].setUOM("(pores/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[80]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[80]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
-	++sv_counter;
-	
-  sciantix_variable.emplace_back();
+	++sv_counter;		
+
+
+	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("HBS pore volume");
 	sciantix_variable[sv_counter].setUOM("(m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[81]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[81]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
-	
-  sciantix_variable.emplace_back();
+
+
+	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("HBS pore radius");
 	sciantix_variable[sv_counter].setUOM("(m)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[82]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[82]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
-    
-  sciantix_variable.emplace_back();
+
+	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Xe in HBS pores");
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[83]);
@@ -971,6 +1053,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
 
+
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Xe atoms per HBS pore");
 	sciantix_variable[sv_counter].setUOM("(at/pore)");
@@ -979,7 +1062,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
 
-  sciantix_variable.emplace_back();
+
+	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Xe atoms per HBS pore - variance");
 	sciantix_variable[sv_counter].setUOM("(at^2/pore)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[88]);
@@ -987,8 +1071,9 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
 
+	// ------------------------------------------------------------------------------------------------	
 	// ------------------------------------------------------------------------------------------------
-	// ------------------------------------------------------------------------------------------------
+
 
 	// ---------------
 	// Diffusion modes
@@ -1023,6 +1108,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sf_fission_rate = Sciantix_scaling_factors[5];
 	sf_cent_parameter = Sciantix_scaling_factors[6];
 	sf_helium_production_rate = Sciantix_scaling_factors[7];
+	sf_diffusivity_2 = Sciantix_scaling_factors[8];
 
 	// ----
 	// Maps

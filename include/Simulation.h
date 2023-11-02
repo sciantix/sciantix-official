@@ -46,7 +46,7 @@
 
 class Simulation : public Solver, public Model
 {
-	public:
+public:
 
 	void Burnup()
 	{
@@ -290,7 +290,7 @@ class Simulation : public Solver, public Model
 			sciantix_variable[sv["Intragranular similarity ratio"]].setFinalValue(sqrt(sciantix_variable[sv["He in intragranular bubbles"]].getFinalValue() / sciantix_variable[sv["He in intragranular bubbles"]].getInitialValue()));
 		else
 			sciantix_variable[sv["Intragranular similarity ratio"]].setFinalValue(0.0);
-
+			
 	}
 
 	void InterGranularBubbleBehaviour()
@@ -667,7 +667,7 @@ class Simulation : public Solver, public Model
 			model[sm["High-burnup structure formation"]].getParameter().at(0) *
 			model[sm["High-burnup structure formation"]].getParameter().at(1) *
 			pow(sciantix_variable[sv["Effective burnup"]].getFinalValue(), 2.54);
-		
+
 		sciantix_variable[sv["Restructured volume fraction"]].setFinalValue(
 			solver.Decay(
 				sciantix_variable[sv["Restructured volume fraction"]].getInitialValue(),
@@ -688,9 +688,9 @@ class Simulation : public Solver, public Model
 
 		// porosity evolution 
 		sciantix_variable[sv["HBS porosity"]].setFinalValue(
-			solver.Integrator(
+			solver.Integrator(	
 				sciantix_variable[sv["HBS porosity"]].getInitialValue(),
-				model[sm["High-burnup structure porosity"]].getParameter().at(0),
+			model[sm["High-burnup structure porosity"]].getParameter().at(0),
 				sciantix_variable[sv["Burnup"]].getIncrement()
 			)
 		);
@@ -731,7 +731,7 @@ class Simulation : public Solver, public Model
 				sciantix_variable[sv["HBS pore volume"]].getIncrement()
 			)
 		);
-		
+
 		// update of pore volume and pore radius after interconnection by impingement
 		if(sciantix_variable[sv["HBS pore density"]].getFinalValue())
 			sciantix_variable[sv["HBS pore volume"]].setFinalValue(
@@ -772,29 +772,30 @@ class Simulation : public Solver, public Model
 		if(sciantix_variable[sv["HBS pore density"]].getFinalValue())
 			sciantix_variable[sv["Xe atoms per HBS pore - variance"]].setFinalValue(
 				sciantix_variable[sv["Xe in HBS pores - variance"]].getFinalValue() / sciantix_variable[sv["HBS pore density"]].getFinalValue()
+				
 			);		
 		}
-
-void StoichiometryDeviation()
-{
+				
+ void StoichiometryDeviation()
+ {
 	if (!input_variable[iv["iStoichiometryDeviation"]].getValue()) return;
 
-if(history_variable[hv["Temperature"]].getFinalValue() < 1000.0)
-{
-	sciantix_variable[sv["Stoichiometry deviation"]].setConstant();
-	sciantix_variable[sv["Fuel oxygen partial pressure"]].setFinalValue(0.0);
-}
+  if(history_variable[hv["Temperature"]].getFinalValue() < 1000.0)
+  {
+    sciantix_variable[sv["Stoichiometry deviation"]].setConstant();
+    sciantix_variable[sv["Fuel oxygen partial pressure"]].setFinalValue(0.0);
+  }
 
-else if(input_variable[iv["iStoichiometryDeviation"]].getValue() < 5)
-{	
-	sciantix_variable[sv["Stoichiometry deviation"]].setFinalValue(
-	solver.Decay(
-	sciantix_variable[sv["Stoichiometry deviation"]].getInitialValue(),
-		model[sm["Stoichiometry deviation"]].getParameter().at(0),
-		model[sm["Stoichiometry deviation"]].getParameter().at(1),
-		physics_variable[pv["Time step"]].getFinalValue()
-	)
-	);
+  else if(input_variable[iv["iStoichiometryDeviation"]].getValue() < 5)
+  {	
+    sciantix_variable[sv["Stoichiometry deviation"]].setFinalValue(
+      solver.Decay(
+      sciantix_variable[sv["Stoichiometry deviation"]].getInitialValue(),
+          model[sm["Stoichiometry deviation"]].getParameter().at(0),
+          model[sm["Stoichiometry deviation"]].getParameter().at(1),
+          physics_variable[pv["Time step"]].getFinalValue()
+      )
+    );
 	}
 
 	else if(input_variable[iv["iStoichiometryDeviation"]].getValue() > 4)
@@ -814,24 +815,24 @@ else if(input_variable[iv["iStoichiometryDeviation"]].getValue() < 5)
 			history_variable[hv["Temperature"]].getFinalValue()
 			)
 		);
-}
+ }
 
-void UO2Thermochemistry()
-{
+  void UO2Thermochemistry()
+  {
 		if (!input_variable[iv["iStoichiometryDeviation"]].getValue()) return;
 
-	if(history_variable[hv["Temperature"]].getFinalValue() < 1000.0 || sciantix_variable[sv["Gap oxygen partial pressure"]].getFinalValue() == 0)
+    if(history_variable[hv["Temperature"]].getFinalValue() < 1000.0 || sciantix_variable[sv["Gap oxygen partial pressure"]].getFinalValue() == 0)
 			sciantix_variable[sv["Equilibrium stoichiometry deviation"]].setFinalValue(0.0);
 
-	else
-	sciantix_variable[sv["Equilibrium stoichiometry deviation"]].setFinalValue(
-		solver.NewtonBlackburn(
-			model[sm["UO2 thermochemistry"]].getParameter()
+    else
+      sciantix_variable[sv["Equilibrium stoichiometry deviation"]].setFinalValue(
+        solver.NewtonBlackburn(
+        	model[sm["UO2 thermochemistry"]].getParameter()
 				)
-	);
+      );
 	}
 
-	double* getDiffusionModes(std::string gas_name)
+double* getDiffusionModes(std::string gas_name)
 	{	
 		if(gas_name == "Xe")
 			return &modes_initial_conditions[0];

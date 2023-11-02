@@ -29,17 +29,15 @@ void HighBurnupStructureFormation()
 
 	std::string reference;
 	std::vector<double> parameter;
-
-	switch (int(input_variable[iv["iHighBurnupStructureFormation"]].getValue()))
-	{
-	case 0:
-	{
-		/// @brief
-		/// iHighBurnupStructureFormation == 0
-		/// ----------------------------------
-		///
-		/// This case corresponds to the no HBS forming in the UO2 fuel matrix.
-
+	switch (int(input_variable[iv["iHighBurnupStructureFormation"]].getValue()))	
+	{	
+	case 0:	
+	{	
+		/// @brief	
+		/// iHighBurnupStructureFormation == 0	
+		/// ----------------------------------	
+		///	
+		/// This case corresponds to the no HBS forming in the UO2 fuel matrix.	
 		reference += ": not considered.";
 		parameter.push_back(0.0);
 		parameter.push_back(0.0);
@@ -48,13 +46,12 @@ void HighBurnupStructureFormation()
 
 		break;
 	}
-
-	case 1:
-	{
-		/// @brief
-		/// iHighBurnupStructureFormation == 1
-		/// ----------------------------------
-		///
+	case 1:	
+	{	
+		/// @brief	
+		/// iHighBurnupStructureFormation == 1	
+		/// ----------------------------------	
+		///	
 		/// This case calculates the fraction of HBS-restructured volume of the UO2 fuel matrix based on the KJMA approach.
 		/// @ref Barani et al. Journal of Nuclear Materials 539 (2020) 152296
 		/// @param[out] avrami_constant

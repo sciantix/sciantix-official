@@ -21,10 +21,13 @@
 #include "SetVariables.h"
 #include "UO2.h"
 #include "UO2HBS.h"
+#include "UO2Cr.h"
 #include <cmath>
 #include <string>
 #include "GasDeclaration.h"
 #include "MapGas.h"
+#include "InputVariableDeclaration.h"
+#include "MapInputVariable.h"
 
 void SetMatrix();
 

@@ -73,7 +73,6 @@ void IntraGranularBubbleEvolution()
 
 		/// @param[in] nucleation_rate
 		parameter.push_back(sciantix_system[0].getNucleationRate());
-
 		break;
 	}
 
