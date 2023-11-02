@@ -23,20 +23,14 @@
 
 void SetGas()
 {
-	Xenon();
-	MapGas();
-	
-	Krypton();
-	MapGas();
-	
-	Helium();
-	MapGas();
-	Xenon();
-	MapGas();
-	
-	Krypton();
-	MapGas();
-	
-	Helium();
-	MapGas();
+
+Xenon();
+MapGas();
+
+Krypton();
+MapGas();
+
+Helium();
+MapGas();
+
 }

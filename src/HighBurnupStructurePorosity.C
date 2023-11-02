@@ -23,7 +23,7 @@ void HighBurnupStructurePorosity()
 
 	model.emplace_back();
 	int model_index = int(model.size()) - 1;
-	model[model_index].setName("High-burnup structure porosity");
+	model[model_index].setName("High burnup structure porosity");
 	double porosity_increment = 0.0;
 
 	std::string reference;
@@ -60,6 +60,7 @@ void HighBurnupStructurePorosity()
 			else
 				porosity_increment = rate_coefficient;
 		}
+
 		else
 		{
 			sciantix_variable[sv["HBS porosity"]].setInitialValue(0.15);

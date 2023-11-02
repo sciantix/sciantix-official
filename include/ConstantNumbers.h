@@ -28,6 +28,10 @@ namespace PhysicsConstants
 {
 	const double boltzmann_constant = 1.380651e-23; // J/K
 	const double avogadro_number = 6.02214076e23; // at/mol
+	const double molar_mass_Oxigen = 15.999; // g/mol
+	const double molar_mass_Chromium = 51.9961; // g/mol
+	const double calorie = 4.186; // J
+	const double gas_constant = 8.3143; // J/(mol K)
 }
 
 #endif

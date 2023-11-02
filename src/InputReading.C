@@ -176,8 +176,8 @@ void InputReading()
 	 * 	0= not considered
 	 * 	1= model for fuel oxidation in steam environment
 	 * 
-	 * iBubbleDiffusivity
-	 * 	0= not considered
+	 * iBubbleDiffusivity		 
+	 * 	0= not considered		 
 	 * 	1= active
 	 */
 
@@ -203,6 +203,7 @@ void InputReading()
 	Sciantix_options[19] = ReadOneSetting("iHeliumProductionRate", input_settings, input_check);
 	Sciantix_options[20] = ReadOneSetting("iStoichiometryDeviation", input_settings, input_check);
 	Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
+	Sciantix_options[22] = ReadOneSetting("iChromiumSolubility",input_settings,input_check);
 	
 	if (!input_initial_conditions.fail())
 	{
@@ -277,6 +278,8 @@ void InputReading()
 		Sciantix_variables[63] = initial_composition_Kr85m[6];
 
 		Sciantix_variables[66] = ReadOneParameter("Initial stoichiometry deviation[0]", input_initial_conditions, input_check);
+
+		Sciantix_variables[70] = ReadOneParameter("Chromium content[0]", input_initial_conditions, input_check);
 	}
 
 	int n = 0;
@@ -325,6 +328,7 @@ void InputReading()
 		Sciantix_scaling_factors[5] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[6] = ReadOneParameter("sf_cent_parameter", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[8] = ReadOneParameter("sf_diffusivity_2", input_scaling_factors, input_check);
 	}
 	else
 	{
@@ -336,6 +340,7 @@ void InputReading()
 		Sciantix_scaling_factors[5] = 1.0;
 		Sciantix_scaling_factors[6] = 1.0;
 		Sciantix_scaling_factors[7] = 1.0;
+		Sciantix_scaling_factors[8] = 1.0;
 	}
 
 	input_check.close();
