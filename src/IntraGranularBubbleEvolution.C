@@ -152,7 +152,4 @@ void IntraGranularBubbleEvolution()
 
 	model[model_index].setParameter(parameter);
 	model[model_index].setRef(reference);
-
 }
-
-
