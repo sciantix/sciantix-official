@@ -854,7 +854,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[55]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
-	
+
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Intragranular similarity ratio");
 	sciantix_variable[sv_counter].setUOM("(/)");
@@ -939,7 +939,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
 	
-  sciantix_variable.emplace_back();
+	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("HBS pore volume");
 	sciantix_variable[sv_counter].setUOM("(m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[81]);
@@ -947,7 +947,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
 	
-  sciantix_variable.emplace_back();
+	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("HBS pore radius");
 	sciantix_variable[sv_counter].setUOM("(m)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[82]);
@@ -955,7 +955,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
     
-  sciantix_variable.emplace_back();
+	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Xe in HBS pores");
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[83]);
@@ -979,7 +979,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
 
-  	sciantix_variable.emplace_back();
+	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Xe atoms per HBS pore - variance");
 	sciantix_variable[sv_counter].setUOM("(at^2/pore)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[88]);
