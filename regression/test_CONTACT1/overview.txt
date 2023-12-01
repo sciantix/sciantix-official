@@ -21,36 +21,36 @@ Model #19: 	Intergranular bubble evolution	: Pastore et al., NED, 256 (2013) 75-
 
 Matrix #0: 	UO2	
 	Ainscough et al., JNM, 49 (1973) 117-128.
-	iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.
+	iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.
 	
 
 System #0: 	Xe in UO2	Production rate = cumulative yield * fission rate density.
 	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
-	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
+	iResolutionRate: P. Losonen, JNM 304 (2002) 29�49.
 	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
 	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
 	
 System #1: 	Kr in UO2	Production rate = cumulative yield * fission rate density.
 	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
-	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
+	iResolutionRate: P. Losonen, JNM 304 (2002) 29�49.
 	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
 	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
 	
 System #2: 	He in UO2	iHeDiffusivity: constant intragranular diffusivity.
-	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
+	iResolutionRate: P. Losonen, JNM 304 (2002) 29�49.
 	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
 	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
 	No production rate.
 	
 System #3: 	Xe133 in UO2	Production rate = cumulative yield * fission rate density.
 	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
-	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
+	iResolutionRate: P. Losonen, JNM 304 (2002) 29�49.
 	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
 	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
 	
 System #4: 	Kr85m in UO2	Production rate = cumulative yield * fission rate density.
 	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
-	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
+	iResolutionRate: P. Losonen, JNM 304 (2002) 29�49.
 	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
 	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
 	
@@ -59,11 +59,11 @@ Input setting #0: 	iGrainGrowth = 1
 Input setting #1: 	iFGDiffusionCoefficient = 1
 Input setting #2: 	iDiffusionSolver = 1
 Input setting #3: 	iIntraGranularBubbleEvolution = 1
-Input setting #4: 	iResolutionRate = 1
+Input setting #4: 	iResolutionRate = 2
 Input setting #5: 	iTrappingRate = 1
 Input setting #6: 	iNucleationRate = 1
 Input setting #7: 	iOutput = 1
-Input setting #8: 	iGrainBoundaryVacancyDiffusivity = 1
+Input setting #8: 	iGrainBoundaryVacancyDiffusivity = 2
 Input setting #9: 	iGrainBoundaryBehaviour = 1
 Input setting #10: 	iGrainBoundaryMicroCracking = 1
 Input setting #11: 	iFuelMatrix = 0
