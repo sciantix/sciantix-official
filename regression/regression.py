@@ -18,9 +18,10 @@ from regression_white import regression_white
 from regression_talip import regression_talip
 from regression_contact import regression_contact
 from regression_oxidation import regression_oxidation
+from regression_kashibe import regression_kashibe
 from regression_hbs import regression_hbs
 
-# The function `remove_output` is used to remove an existing output file (output.txt) from a specified folder
+# The function `remove_routput` is used to remove an existing output file (output.txt) from a specified folder
 def remove_output(file):
     # Change current working directory to the specified file's directory
     os.chdir(file)
@@ -43,11 +44,11 @@ def main():
 
     # Initialize different variables needed for the execution :
     # - A list 'folderList' to store the names of every test that will be executed. Different variations of this list are initialized for different test types.
-    folderList = folderListB = folderListW = folderListT = folderListC = folderListO = folderListH = []
+    folderList = folderListB = folderListK = folderListW = folderListT = folderListC = folderListO = folderListH = []
     # - Variables to count the number of executed tests. Different counts are maintained for different test types.
-    number_of_tests = number_of_tests_b = number_of_tests_w = number_of_tests_t = number_of_tests_c = number_of_tests_o = number_of_tests_h = 0
+    number_of_tests = number_of_tests_b = number_of_tests_k = number_of_tests_w = number_of_tests_t = number_of_tests_c = number_of_tests_o = number_of_tests_h = 0
     # - Variables to count the number of failed tests. Different counts are maintained for different test types.
-    number_of_tests_failed = number_of_tests_failed_b = number_of_tests_failed_w = number_of_tests_failed_t = number_of_tests_failed_c = number_of_tests_failed_o = number_of_tests_failed_h = 0
+    number_of_tests_failed = number_of_tests_failed_b = number_of_tests_failed_k = number_of_tests_failed_w = number_of_tests_failed_t = number_of_tests_failed_c = number_of_tests_failed_o = number_of_tests_failed_h = 0
 
     # If the environment variable 'GITHUB_ACTIONS' is set to 'true', this means the script is running in a GitHub Actions environment.
     # In this case, specific versions of the variables are set for the pipeline environment with default values.
@@ -57,17 +58,18 @@ def main():
         mode_gold = 0
         mode_plot = 0
         mode_Baker = 1
+        mode_Kashibe = 1
         mode_White = 1
         mode_Talip = 1
         mode_CONTACT = 1
         mode_oxidation = 1
         mode_hbs = 1
-
         # Set the test condition to '0' or '1'
         test_condition = 1
 
-        # For each execution mode, run the corresponding regression test function and update the test list and test counts accordingly.
+        # Run regression tests for each regression mode and update the test list and test counts accordingly.
         folderListB, number_of_tests_b, number_of_tests_failed_b = regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+        folderListK, number_of_tests_k, number_of_tests_failed_k = regression_kashibe(wpath, mode_Kashibe, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
         folderListW, number_of_tests_w, number_of_tests_failed_w = regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
         folderListT, number_of_tests_t, number_of_tests_failed_t = regression_talip(wpath, mode_Talip, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
         folderListC, number_of_tests_c, number_of_tests_failed_c = regression_contact(wpath, mode_CONTACT, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
@@ -75,11 +77,13 @@ def main():
         folderListH, number_of_tests_h, number_of_tests_failed_h = regression_hbs(wpath, mode_hbs, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
 
         # Combine the test lists from the different modes into one comprehensive list.
-        folderList = folderListB + folderListW + folderListT + folderListC + folderListO + folderListH
+        folderList = folderListB + folderListK + folderListW + folderListT + folderListC + folderListO + folderListH
         # Add up the counts of the executed tests from the different modes.
-        number_of_tests = number_of_tests_b + number_of_tests_w + number_of_tests_t + number_of_tests_c + number_of_tests_o + number_of_tests_h
+        number_of_tests = number_of_tests_b +  number_of_tests_k + number_of_tests_w + number_of_tests_t + number_of_tests_c + number_of_tests_o + number_of_tests_h
         # Add up the counts of the failed tests from the different modes.
-        number_of_tests_failed = number_of_tests_failed_b + number_of_tests_failed_w + number_of_tests_failed_t + number_of_tests_failed_c + number_of_tests_failed_o + number_of_tests_failed_h
+        number_of_tests_failed = number_of_tests_failed_b + number_of_tests_failed_k + number_of_tests_failed_w + number_of_tests_failed_t + number_of_tests_failed_c + number_of_tests_failed_o + number_of_tests_failed_h
+
+
 
     # If the environment variable 'GITHUB_ACTIONS' is not set to 'true', this means the script is not running in a GitHub Actions environment. It's being run by a user.
     if os.environ.get('GITHUB_ACTIONS') != 'true':
@@ -98,6 +102,8 @@ def main():
             # For each file in the working directory, if the file is a directory and its name contains 'Baker', 'White', 'Talip', 'CONTACT', or 'oxidation', then run the 'remove_output' function on that file.
             for file in os.listdir(wpath):
                 if "Baker" in file and os.path.isdir(file) is True:
+                    remove_output(file)
+                if "Kashibe" in file and os.path.isdir(file) is True:
                     remove_output(file)
                 if "White" in file and os.path.isdir(file) is True:
                     remove_output(file)
@@ -118,6 +124,7 @@ def main():
 
             # Set the default values for the Baker, White, Talip, Contact, and Oxidation modes.
             mode_Baker = 1
+            mode_Kashibe = 1
             mode_White = 1
             mode_Talip = 1
             mode_CONTACT = 1
@@ -131,7 +138,7 @@ def main():
             print("\tMODE GOLD == 2: do not use SCIANTIX, check existing results.\n ")
             print("\tMODE GOLD == 3: do not use SCIANTIX, existing results will be saved as gold results.\n ")
 
-            # Take the user's input for the gold mode
+            # Take the user's input for the gold mode.
             mode_gold = int(input("Enter MODE GOLD (0, 1, 2, 3)= "))
 
             # Ask the user to choose an option for the plot mode.
@@ -139,6 +146,7 @@ def main():
 
             # For each execution mode (Baker, White, Talip, Contact, Oxidation), run the corresponding regression test function and update the test list and test counts accordingly.
             folderListB, number_of_tests_b, number_of_tests_failed_b = regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+            folderListK, number_of_tests_k, number_of_tests_failed_k = regression_kashibe(wpath, mode_Kashibe, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
             folderListW, number_of_tests_w, number_of_tests_failed_w = regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
             folderListT, number_of_tests_t, number_of_tests_failed_t = regression_talip(wpath, mode_Talip, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
             folderListC, number_of_tests_c, number_of_tests_failed_c = regression_contact(wpath, mode_CONTACT, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
@@ -146,21 +154,21 @@ def main():
             folderListH, number_of_tests_h, number_of_tests_failed_h = regression_hbs(wpath, mode_hbs, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
 
             # Combine the test lists from the different modes into one comprehensive list.
-            folderList = folderListB + folderListW + folderListT + folderListC + folderListO + folderListH
+            folderList = folderListB + folderListK + folderListW + folderListT + folderListC + folderListO + folderListH
             # Add up the counts of the executed tests from the different modes.
-            number_of_tests = number_of_tests_b + number_of_tests_w + number_of_tests_t + number_of_tests_c + number_of_tests_o + number_of_tests_h
+            number_of_tests = number_of_tests_b +  number_of_tests_k + number_of_tests_w + number_of_tests_t + number_of_tests_c + number_of_tests_o + number_of_tests_h
             # Add up the counts of the failed tests from the different modes.
-            number_of_tests_failed = number_of_tests_failed_b + number_of_tests_failed_w + number_of_tests_failed_t + number_of_tests_failed_c + number_of_tests_failed_o + number_of_tests_failed_h
+            number_of_tests_failed = number_of_tests_failed_b + number_of_tests_failed_k + number_of_tests_failed_w + number_of_tests_failed_t + number_of_tests_failed_c + number_of_tests_failed_o + number_of_tests_failed_h
 
         # Case where the user chose values
         if execution_option == 1 :
 
             # Provide options for the user to choose the type of regression test.
             print("Possible regression options \n")
-            print("Baker : 0\nWhite : 1\nTalip : 2\nContact : 3\nOxidation : 4\nHBS : 5\n")
+            print("Baker : 0\nKashibe : 1\nWhite : 2\nTalip : 3\nContact : 4\nOxidation : 5\nHBS : 6\n")
 
             # Take the user's input for the regression type.
-            regression_mode = int(input("Enter the chosen regression (0, 1, 2, 3, 4, 5) = "))
+            regression_mode = int(input("Enter the chosen regression (0, 1, 2, 3, 4, 5, 6) = "))
 
             # Ask the user to choose an option for the gold mode.
             print("Pleast select one option for the GOLD MODE :\n")
@@ -181,22 +189,26 @@ def main():
                 folderList, number_of_tests, number_of_tests_failed = regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
                 print("\nRegression selected : Baker")
             if regression_mode == 1 :
+                mode_Kashibe = 1
+                folderList, number_of_tests, number_of_tests_failed = regression_kashibe(wpath, mode_Kashibe, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+                print("\nRegression selected : Kashibe")
+            if regression_mode == 2 :
                 mode_White = 1
                 folderList, number_of_tests, number_of_tests_failed = regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
                 print("\nRegression selected : White")
-            if regression_mode == 2 :
+            if regression_mode == 3 :
                 mode_Talip = 1
                 folderList, number_of_tests, number_of_tests_failed = regression_talip(wpath, mode_Talip, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
                 print("\nRegression selected : Talip")
-            if regression_mode == 3 :
+            if regression_mode == 4 :
                 mode_CONTACT = 1
                 folderList, number_of_tests, number_of_tests_failed = regression_contact(wpath, mode_CONTACT, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
                 print("\nRegression selected : Contact")
-            if regression_mode == 4 :
+            if regression_mode == 5 :
                 mode_oxidation = 1
                 folderList, number_of_tests, number_of_tests_failed = regression_oxidation(wpath, mode_oxidation, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
                 print("\nRegression selected : Oxidation")
-            if regression_mode == 5 :
+            if regression_mode == 6 :
                 mode_hbs = 1
                 folderList, number_of_tests, number_of_tests_failed = regression_hbs(wpath, mode_hbs, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
                 print("\nRegression selected : HBS")

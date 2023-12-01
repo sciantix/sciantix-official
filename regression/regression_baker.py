@@ -30,6 +30,9 @@ igSwelling2 = []
 igDensityBaker = [8.7, 7.8, 7, 6.4, 5.7, 5.3, 4.8, 4.4, 3.8] #1e23 bub/m3
 igDensity2 = []
 
+igRadiusBaker = [0.55e-9, 0.6e-9, 0.65e-9, 0.70e-9, 0.80e-9, 0.88e-9, 0.98e-9, 1.10e-9, 1.25e-9] 
+igRadius2 = []
+
 FGR2 = []
 
 number_of_tests_failed = 0
@@ -126,6 +129,26 @@ def do_plot():
   ax.plot([0.1, 100],[0.2, 200],'--', color = '#757575')
   ax.set_xlim(0.1, 100)
   ax.set_ylim(0.1, 100)
+
+  ax.set_xscale('log')
+  ax.set_yscale('log')
+
+  # ax.set_title('Intragranular gaseous swelling')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+
+  plt.show()
+
+  fig, ax = plt.subplots()
+
+  ax.scatter(igRadiusBaker, igRadius2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
+
+  ax.plot([0.1e-9, 100e-9],[0.1e-9, 100e-9], '-', color = '#757575')
+  ax.plot([0.1e-9, 100e-9],[0.05e-9, 50e-9],'--', color = '#757575')
+  ax.plot([0.1e-9, 100e-9],[0.2e-9, 200e-9],'--', color = '#757575')
+  ax.set_xlim(0.1e-9, 100e-9)
+  ax.set_ylim(0.1e-9, 100e-9)
 
   ax.set_xscale('log')
   ax.set_yscale('log')
@@ -237,9 +260,11 @@ def regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number
       intraGranularSwellingGoldPos = findSciantixVariablePosition(data_gold, "Intragranular gas swelling (/)")
       gold.append(100*data_gold[-1,intraGranularSwellingGoldPos].astype(float))
 
-      # Retrieve the generated data of Intragranular gas swelling
       pos = findSciantixVariablePosition(data, "Intragranular bubble concentration (bub/m3)")
       igDensity2.append(1e-23*data[-1,pos].astype(float))
+
+      pos = findSciantixVariablePosition(data, "Intragranular bubble radius (m)")
+      igRadius2.append(data[-1,pos].astype(float))
 
       os.chdir('..')
 
