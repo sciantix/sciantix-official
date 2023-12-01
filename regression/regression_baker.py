@@ -19,12 +19,17 @@ from sklearn.linear_model import LinearRegression
 
 """ ------------------- Global Variables ------------------- """
 
-# Intergranular gaseous swelling database from Baker 1977 experiments
+# Intragranular gaseous swelling database from Baker 1977 experiments
 igSwellingBaker = [0.06, 0.07, 0.08, 0.09, 0.12, 0.15, 0.18, 0.24, 0.31]
 # Data from SCIANTIX 1.0
 igSwelling1 = [0.033, 0.048, 0.062, 0.073, 0.079, 0.082, 0.083, 0.084, 0.086]
 # Data generated from SCIANTIX 2.0
 igSwelling2 = []
+
+# Intragranular bubble density from Baker 1977 experiments
+igDensityBaker = [8.7, 7.8, 7, 6.4, 5.7, 5.3, 4.8, 4.4, 3.8] #1e23 bub/m3
+igDensity2 = []
+
 FGR2 = []
 
 number_of_tests_failed = 0
@@ -110,7 +115,27 @@ def do_plot():
   ax.legend()
 
   plt.show()
+  
+  # Data vs. SCIANTIX 2.0
+  fig, ax = plt.subplots()
 
+  ax.scatter(igDensityBaker, igDensity2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
+
+  ax.plot([0.1, 100],[0.1, 100], '-', color = '#757575')
+  ax.plot([0.1, 100],[0.05, 50],'--', color = '#757575')
+  ax.plot([0.1, 100],[0.2, 200],'--', color = '#757575')
+  ax.set_xlim(0.1, 100)
+  ax.set_ylim(0.1, 100)
+
+  ax.set_xscale('log')
+  ax.set_yscale('log')
+
+  # ax.set_title('Intragranular gaseous swelling')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+
+  plt.show()
 
   # GOLD vs. SCIANTIX 2.0
   fig, ax = plt.subplots()
@@ -211,6 +236,10 @@ def regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number
       # Retrieve the gold data of Intragranular gas swelling
       intraGranularSwellingGoldPos = findSciantixVariablePosition(data_gold, "Intragranular gas swelling (/)")
       gold.append(100*data_gold[-1,intraGranularSwellingGoldPos].astype(float))
+
+      # Retrieve the generated data of Intragranular gas swelling
+      pos = findSciantixVariablePosition(data, "Intragranular bubble concentration (bub/m3)")
+      igDensity2.append(1e-23*data[-1,pos].astype(float))
 
       os.chdir('..')
 
