@@ -8,8 +8,8 @@ import matplotlib.pyplot as plt
 subfolder_name = "GSA_output_files"
 option_runSensitivity = False
 samplings = 100
-validation_database = "Baker"
-sciantix_variable = "Intragranular gas swelling (/)"
+validation_database = "White"
+sciantix_variable = "Intergranular gas swelling (/)"
 
 # subfolder_name = "GSA_output_files_white"
 # option_runSensitivity = False
@@ -92,6 +92,18 @@ class globalSensitivityAnalysis():
 
         return bias
     
+    def apply_multi_bias(self, feature, deviation):
+        if feature == "above":
+            bias = random.uniform(1, 1 + deviation)
+        if feature == "around":
+            bias = random.uniform(1 - deviation, 1 + deviation)
+        if feature == "below":
+            bias = random.uniform(1 - deviation, 1)
+        if feature == "log10":
+            bias = random.uniform(10**(-deviation), 10**(deviation))
+
+        return bias
+    
     def validationCase_reference_sensitivity(self):
         # Function to get reference cases
         print("\nRunning: validationCase_reference_sensitivity")
@@ -159,30 +171,110 @@ class globalSensitivityAnalysis():
         for i in range(self.folder_number):
             print("folder_name : ",self.folder_name[i])
             # Create subplots for each folder
-            fig, ax = plt.subplots(1,2)
+            # fig, ax = plt.subplots(1,2)
 
             # Adjust the space between subplots
-            plt.subplots_adjust(left=0.1,
-                                bottom=0.1,
-                                right=0.9,
-                                top=0.9,
-                                wspace=0.34,
-                                hspace=0.4)
+            # plt.subplots_adjust(left=0.1,
+            #                     bottom=0.1,
+            #                     right=0.9,
+            #                     top=0.9,
+            #                     wspace=0.34,
+            #                     hspace=0.4)
 
-            # Scatter plot for the first subplot (Scaling Factor vs Variable Value)
-            ax[0].scatter(self.scaling_factor_map[i][:], self.variable_value_map[i][:], c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label = self.folder_name[i])
-            ax[0].set_xlabel(f"scaling factor - {self.bias_name}")
-            ax[0].set_ylabel(self.variable_name)
-            ax[0].legend()
+            # # Scatter plot for the first subplot (Scaling Factor vs Variable Value)
+            # ax[0].scatter(self.scaling_factor_map[i][:], self.variable_value_map[i][:], c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label = self.folder_name[i])
+            # ax[0].set_xlabel(f"scaling factor - {self.bias_name}")
+            # ax[0].set_ylabel(self.variable_name)
+            # ax[0].legend()
 
-            # Scatter plot for the second subplot (Scaling Factor vs Sensitivity Coefficient)
-            ax[1].scatter(self.scaling_factor_map[i][:], self.sensitivity_coefficient_map[i][:], c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label = self.folder_name[i])
-            ax[1].set_xlabel(f"scaling factor - {self.bias_name}")
-            ax[1].set_ylabel("Sensitivity coefficient")
-            ax[1].legend()
+            # # Scatter plot for the second subplot (Scaling Factor vs Sensitivity Coefficient)
+            # ax[1].scatter(self.scaling_factor_map[i][:], self.sensitivity_coefficient_map[i][:], c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label = self.folder_name[i])
+            # ax[1].set_xlabel(f"scaling factor - {self.bias_name}")
+            # ax[1].set_ylabel("Sensitivity coefficient")
+            # ax[1].legend()
 
             # Display the plot
-            plt.show()
+            # plt.show()
+            # plt.close()
+
+    def validationCase_reference_multi_sensitivity(self):
+        # Function to get reference cases
+        print("\nRunning: validationCase_reference_sensitivity")
+        print(f"Collecting reference outputs and sensitivity for {self.variable_name}, biasing {self.bias_name}, in {self.validation_name} database.\n")
+
+        files_and_directories = os.listdir(self.current_folder)
+        sorted_files_and_directories = sorted(files_and_directories)
+
+        self.reference_value_map = np.zeros(self.folder_number)
+        self.scaling_factor_map = np.zeros((self.folder_number, self.sample_number))
+        self.sensitivity_coefficient_map = np.zeros((self.folder_number, self.sample_number))
+        self.variable_value_map = np.zeros((self.folder_number, self.sample_number))
+
+        i = 0
+        for file in sorted_files_and_directories:
+            if self.validation_name in file and os.path.isdir(file):
+                os.chdir(file)
+                print("Now in folder ", os.getcwd())
+                shutil.copy("../sciantix.x", os.getcwd())
+
+                # reference calculations
+                for key in self.scaling_factors.keys():
+                    self.scaling_factors[key] = 1.0
+
+                with open("input_scaling_factors.txt", 'w') as file:
+                    for key, value in self.scaling_factors.items():
+                        file.write(f'{value}\n')
+                        file.write(f'# scaling factor - {key}\n')
+
+                os.system("./sciantix.x")
+
+                data = np.genfromtxt('output.txt', dtype='str', delimiter='\t')
+                variable_position = findSciantixVariablePosition(data, self.variable_name)
+                self.reference_value_map[i] = data[-1, variable_position].astype(float)
+
+                # sensitivity calculations
+                for j in range(self.sample_number):
+
+                    print(i, j)
+
+                    bias = self.apply_multi_bias("around", 0.1)
+                    self.scaling_factors["resolution rate"] = bias
+
+                    bias = self.apply_multi_bias("around", 0.1)
+                    self.scaling_factors["trapping rate"] = bias
+
+                    bias = self.apply_multi_bias("log10", 1)
+                    self.scaling_factors["diffusivity"] = bias
+
+                    bias = self.apply_multi_bias("below", 0.1)
+                    self.scaling_factors["nucleation rate"] = bias
+
+                    bias = self.apply_multi_bias("around", 0.1)
+                    self.scaling_factors["temperature"] = bias
+
+                    bias = self.apply_multi_bias("around", 0.1)
+                    self.scaling_factors["fission rate"] = bias
+
+                    with open("input_scaling_factors.txt", 'w') as sf_file:
+                        for key, value in self.scaling_factors.items():
+                            sf_file.write(f'{value}\n')
+                            sf_file.write(f'# scaling factor - {key}\n')
+
+                            print(f'# scaling factor - {key}: {value}')
+
+                    os.system("./sciantix.x")
+
+                    self.scaling_factor_map[i][j] = bias
+
+                    data = np.genfromtxt('output.txt', dtype='str', delimiter='\t')
+                    variable_position = findSciantixVariablePosition(data, self.variable_name)
+                    output_value = data[-1, variable_position].astype(float)
+
+                    self.variable_value_map[i][j] = output_value
+                    self.sensitivity_coefficient_map[i][j] = (output_value - self.reference_value_map[i]) / (bias - 1)
+
+                os.chdir('..')
+                i = i + 1
 
     def validationCase_save(self):
 
@@ -208,7 +300,7 @@ class globalSensitivityAnalysis():
         self.variable_value_map = np.load(os.path.join(subfolder_name, f"{self.validation_name}_variable_value_map_{self.bias_name}.npy"))
         self.reference_value_map = np.load(os.path.join(subfolder_name, f"{self.validation_name}_reference_value_map_{self.bias_name}.npy"))
 
-    def globalPLot(self, data):
+    def globalPlot(self, data):
 
             fig, ax = plt.subplots()
             for i in range(self.sample_number):
@@ -226,7 +318,13 @@ class globalSensitivityAnalysis():
             ax.set_xlabel('Experimental (%)')
             ax.set_ylabel('Calculated (%)')
 
+            print("ERROR BAR: ")
+            print(f"{np.min(self.variable_value_map, axis = 1)}, {np.max(self.variable_value_map, axis = 1)}")
+            print("-----------")
+
+
             plt.show()
+            # plt.close()
 
     def globalSensitivityCoefficients(self):
 
@@ -246,14 +344,15 @@ class globalSensitivityAnalysis():
         print("Ranking parameter: ", self.ranking_parameters)
 
         # Create a scatter plot for the global sensitivity coefficients (delta)
-        fig, ax = plt.subplots()
+        # fig, ax = plt.subplots()
 
-        ax.scatter(self.folder_name, self.global_sensitivity_coefficients, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label= self.bias_name)
-        ax.set_ylabel("ΔK/ΔSF")
-        # ax.set_title("ΔK/ΔSF for each Baker Test")
-        ax.legend()
+        # ax.scatter(self.folder_name, self.global_sensitivity_coefficients, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label= self.bias_name)
+        # ax.set_ylabel("ΔK/ΔSF")
+        # # ax.set_title("ΔK/ΔSF for each Baker Test")
+        # ax.legend()
 
-        plt.show()
+        # plt.show()
+        # plt.close()
 
         # Append to a txt file to store the data
         with open('sensitivity_coefficients.txt', 'a') as f:
@@ -293,14 +392,28 @@ def run_sensitivity_analysis(validation_parameters):
         analysis.setValidationParameters(**params)
 
         if(option_runSensitivity == True):
-            analysis.validationCase_reference_sensitivity()
+            # analysis.validationCase_reference_sensitivity()
+            analysis.validationCase_reference_multi_sensitivity()
             analysis.validationCase_save()
         else:
             analysis.validationCase_load()
 
         analysis.validationCase_plot()
         analysis.globalSensitivityCoefficients()
-        analysis.globalPLot([0.06, 0.07, 0.08, 0.09, 0.12, 0.15, 0.18, 0.24, 0.31])
+        # analysis.globalPlot([0.06, 0.07, 0.08, 0.09, 0.12, 0.15, 0.18, 0.24, 0.31])
+        
+        analysis.globalPlot([0.97, 0.68, 0.53, 0.46, 0.17,                   # 4000
+                        0.62, 0.7, 0.44, 0.56, 0.27, 0.16,              # 4004
+                        0.94, 0.57, 0.42, 0.54, 0.27,                   # 4005
+                        1.07, 0.86, 0.63, 0.74, 0.59,                   # 4064
+                        1.25, 1.35, 0.97, 0.79, 0.21,                   # 4065
+                        0.42, 0.16, 0.09,                               # 4135
+                        0.6, 0.62, 0.26, 0.11,                          # 4136
+                        0.26, 0.18,                                     # 4140
+                        0.7, 0.46, 0.43, 0.43,                          # 4162
+                        0.6, 0.59, 0.35, 0.4                            # 4163
+                        ])
+
 
 validation_parameters = [
     {
@@ -339,7 +452,7 @@ validation_parameters = [
         "variable_name": sciantix_variable,
         "validation_name": validation_database,
         "bias_name": "temperature",
-        "deviation": 0.2,
+        "deviation": 0.1,
         "feature": "around",
         "sample_number": samplings
     },
@@ -347,7 +460,7 @@ validation_parameters = [
         "variable_name": sciantix_variable,
         "validation_name": validation_database,
         "bias_name": "fission rate",
-        "deviation": 0.2,
+        "deviation": 0.1,
         "feature": "around",
         "sample_number": samplings
     },
