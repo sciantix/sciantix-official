@@ -370,7 +370,6 @@ class Simulation : public Solver, public Model
 		sciantix_variable[sv["Intergranular bubble radius"]].setFinalValue(
 			0.620350491 * pow(sciantix_variable[sv["Intergranular bubble volume"]].getFinalValue() / (matrix[0].getLenticularShapeFactor()), 1. / 3.));
 
-		// sciantix_variable[sv["Intergranular bubble area"]].setInitialValue(sciantix_variable[sv["Intergranular bubble area"]].getFinalValue());
 		sciantix_variable[sv["Intergranular bubble area"]].setFinalValue(
 			pi * pow(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() * sin(matrix[0].getSemidihedralAngle()), 2));
 
