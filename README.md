@@ -70,8 +70,7 @@ Volume 532,
 152042,
 ISSN 0022-3115,
 https://doi.org/10.1016/j.jnucmat.2020.152042.
-(https://www.sciencedirect.com/science/article/pii/
-S0022311519313868)
+(https://www.sciencedirect.com/science/article/pii/S0022311519313868)
 ```
 
 
