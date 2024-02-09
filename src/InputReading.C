@@ -86,10 +86,22 @@ void InputReading()
 	std::ofstream input_check;
 
 	input_check.open("input_check.txt", std::ios::out);
+	// Abort execution if any of the input files does not exist
 	input_settings.open("input_settings.txt");
+	if (!input_settings) {
+		throw "input_settings.txt";
+	}
 	input_initial_conditions.open("input_initial_conditions.txt");
+	if (!input_initial_conditions) {
+		throw "input_initial_conditions.txt";
+	}
 	input_history.open("input_history.txt");
+	if (!input_history) {
+		throw "input_history.txt";
+	}
+	// This is voluntary so no error if not present
 	input_scaling_factors.open("input_scaling_factors.txt");
+
 
 	/**
 	 * @brief
