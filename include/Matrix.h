@@ -41,6 +41,10 @@ protected:
 	double pore_nucleation_rate;
 	double pore_resolution_rate;
 	double pore_trapping_rate;
+    // Mechanical properties
+    double elastic_modulus;
+    double poisson_ratio;
+    double grain_boundary_fracture_energy;
 
 public:
 	
@@ -230,6 +234,59 @@ public:
 		 * 
 		 */
 		return healing_temperature_threshold;
+	}
+
+
+    // Elastic modulus
+	void setElasticModulus(double e)
+	{
+        /**
+         * @brief Member function to set the elastic (Young) modulus of the material
+        */
+		elastic_modulus = e;
+	}
+
+	double getElasticModulus()
+	{
+        /**
+         * @brief Member function to return the elastic (Young) modulus of the material
+        */
+		return elastic_modulus;
+	}
+
+
+    // Poisson ratio
+	void setPoissonRatio(double v)
+	{
+        /**
+         * @brief Member function to set the Poisson ratio of the material
+        */
+		poisson_ratio = v;
+	}
+
+	double getPoissonRatio()
+	{
+        /**
+         * @brief Member function to return the Poisson ratio of the material
+        */
+		return poisson_ratio;
+	}
+
+    // Grain-boundary fracture energy
+	void setGrainBoundaryFractureEnergy(double v)
+	{
+        /**
+         * @brief Member function to set the grain-boundary fracture energy of the material
+        */
+		grain_boundary_fracture_energy = v;
+	}
+
+	double getGrainBoundaryFractureEnergy()
+	{
+        /**
+         * @brief Member function to return the grain-boundary fracture energy of the material
+        */
+		return grain_boundary_fracture_energy;
 	}
 
 	Matrix() { }

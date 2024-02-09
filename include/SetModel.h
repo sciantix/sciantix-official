@@ -47,6 +47,7 @@
 #include "StoichiometryDeviation.h"
 #include "EnvironmentComposition.h"
 #include "UO2Thermochemistry.h"
+#include "GrainBoundaryRupture.h"
 
 #include "ErrorMessages.h"
 
