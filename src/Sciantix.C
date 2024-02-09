@@ -85,6 +85,9 @@ void Sciantix(int Sciantix_options[],
 	MapModel();
 	sciantix_simulation.GrainBoundaryMicroCracking();
 
+    GrainBoundaryRupture();
+    MapModel();
+
 	GrainBoundaryVenting();
 	MapModel();
 	sciantix_simulation.GrainBoundaryVenting();

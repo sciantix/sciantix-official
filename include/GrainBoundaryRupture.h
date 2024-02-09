@@ -14,45 +14,14 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "GasDeclaration.h"
-#include "ModelDeclaration.h"
-#include "InputVariableDeclaration.h"
-#include "HistoryVariableDeclaration.h"
-#include "MatrixDeclaration.h"
 #include "SciantixVariableDeclaration.h"
-#include "SystemDeclaration.h"
-#include "SolverDeclaration.h"
-#include "PhysicsVariableDeclaration.h"
+#include "HistoryVariableDeclaration.h"
+#include "ModelDeclaration.h"
+#include "MatrixDeclaration.h"
 
-#include "MapInputVariable.h"
-#include "MapHistoryVariable.h"
-#include "MapPhysicsVariable.h"
-#include "MapGas.h"
-#include "MapModel.h"
-#include "MapMatrix.h"
+#include "ConstantNumbers.h"
+
 #include "MapSciantixVariable.h"
-#include "MapSystem.h"
+#include "MapHistoryVariable.h"
 
-#include "GrainGrowth.h"
-#include "GrainBoundarySweeping.h"
-#include "GasProduction.h"
-#include "GasDiffusion.h"
-#include "IntraGranularBubbleEvolution.h"
-#include "Burnup.h"
-#include "EffectiveBurnup.h"
-#include "InterGranularBubbleEvolution.h"
-#include "GrainBoundaryMicroCracking.h"
-#include "GrainBoundaryVenting.h"
-#include "HighBurnupStructureFormation.h"
-#include "StoichiometryDeviation.h"
-#include "EnvironmentComposition.h"
-#include "UO2Thermochemistry.h"
-#include "GrainBoundaryRupture.h"
-
-#include "ErrorMessages.h"
-
-#include <iostream>
-
-#include <cmath>
-
-void SetModel();
+void GrainBoundaryRupture();
