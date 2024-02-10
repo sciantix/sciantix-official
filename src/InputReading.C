@@ -102,9 +102,9 @@ void InputReading()
 			throw "input_history.txt";
 		}
 	}
-	catch(const char* exception)
+	catch(const char* missing_file)
 	{
-		ErrorMessages::MissingInputFile(exception);
+		ErrorMessages::MissingInputFile(missing_file);
 	}
 	
 	// This is voluntary so no error if not present
