@@ -104,11 +104,7 @@ void InputReading()
 	}
 	catch(const char* exception)
 	{
-		// Print error and exit if required input files are not present
-		std::cerr << "ERROR: Missing input file '" << exception << "' \n";
-		std::cerr << "Please check that such file exists in the current working directory.\n";
-		std::cerr << "Execution aborted\n";
-		exit(1);
+		ErrorMessages::MissingInputFile(exception);
 	}
 	
 	// This is voluntary so no error if not present
