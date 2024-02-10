@@ -87,18 +87,30 @@ void InputReading()
 
 	input_check.open("input_check.txt", std::ios::out);
 	// Abort execution if any of the input files does not exist
-	input_settings.open("input_settings.txt");
-	if (!input_settings) {
-		throw "input_settings.txt";
+	try
+	{
+		input_settings.open("input_settings.txt");
+		if (!input_settings) {
+			throw "input_settings.txt";
+		}
+		input_initial_conditions.open("input_initial_conditions.txt");
+		if (!input_initial_conditions) {
+			throw "input_initial_conditions.txt";
+		}
+		input_history.open("input_history.txt");
+		if (!input_history) {
+			throw "input_history.txt";
+		}
 	}
-	input_initial_conditions.open("input_initial_conditions.txt");
-	if (!input_initial_conditions) {
-		throw "input_initial_conditions.txt";
+	catch(const char* exception)
+	{
+		// Print error and exit if required input files are not present
+		std::cerr << "ERROR: Missing input file '" << exception << "' \n";
+		std::cerr << "Please check that such file exists in the current working directory.\n";
+		std::cerr << "Execution aborted\n";
+		exit(1);
 	}
-	input_history.open("input_history.txt");
-	if (!input_history) {
-		throw "input_history.txt";
-	}
+	
 	// This is voluntary so no error if not present
 	input_scaling_factors.open("input_scaling_factors.txt");
 
