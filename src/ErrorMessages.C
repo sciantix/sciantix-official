@@ -23,7 +23,7 @@ namespace ErrorMessages
 	 */
 
 	// Put error file name into constant to avoid repetition
-	const std::string Error_file = "error_log.txt";
+	const std::string Error_file_name = "error_log.txt";
 
 	void MissingInputFile(const char* missing_file)
 	{
@@ -35,8 +35,7 @@ namespace ErrorMessages
 		error_message += "Please check that such file exists in the current working directory.\n";
 		error_message +="Execution aborted\n";
 		// Write error message to the error log
-		std::ofstream Error_log;
-		Error_log.open(Error_file, std::ios::out);
+		std::ofstream Error_log(Error_file_name, std::ios::out);
 		Error_log << error_message << std::endl;
 		// And write it to STDERR as well
 		std::cerr << error_message;
@@ -49,8 +48,7 @@ namespace ErrorMessages
 		 * @brief This function prints an error_log.txt file when an input setting is out of the acceptable range of values.
 		 * 
 		 */
-		std::ofstream Error_log;
-		Error_log.open(Error_file, std::ios::out);
+		std::ofstream Error_log(Error_file_name, std::ios::out);
 		Error_log << "Error in " << routine << "." << std::endl;
 		Error_log << "The input setting " << variable_name << " = " << variable << " is out of range." << std::endl;
 		exit(1);
