@@ -25,10 +25,13 @@ namespace ErrorMessages
 	// Put error file name into constant to avoid repetition
 	const std::string Error_file = "error_log.txt";
 
-	void MissingInputFile(const char* exception)
+	void MissingInputFile(const char* missing_file)
 	{
-		std::string exception_str = exception;
-		std::string error_message = "ERROR: Missing input file '" + exception_str + "' \n";
+		/**
+		 * @brief This function prints an error_log.txt file and STDERR when an input file is does not exist.
+		 * 
+		 */
+		std::string error_message = "ERROR: Missing input file '" + (std::string)missing_file + "' \n";
 		error_message += "Please check that such file exists in the current working directory.\n";
 		error_message +="Execution aborted\n";
 		// Write error message to the error log
