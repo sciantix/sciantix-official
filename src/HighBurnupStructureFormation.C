@@ -78,7 +78,7 @@ void HighBurnupStructureFormation()
 	}
 
 	default:
-		ErrorMessages::Switch("HighBurnupStructureFormation.cpp", "iHighBurnupStructureFormation", int(input_variable[iv["iHighBurnupStructureFormation"]].getValue()));
+		ErrorMessages::Switch(__FILE__, "iHighBurnupStructureFormation", int(input_variable[iv["iHighBurnupStructureFormation"]].getValue()));
 		break;
 	}
 

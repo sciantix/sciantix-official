@@ -59,7 +59,7 @@ void GrainBoundarySweeping()
 	}
 
 	default:
-		ErrorMessages::Switch("GrainBoundarySweeping.cpp", "iGrainBoundarySweeping", int(input_variable[iv["iGrainBoundarySweeping"]].getValue()));
+		ErrorMessages::Switch(__FILE__, "iGrainBoundarySweeping", int(input_variable[iv["iGrainBoundarySweeping"]].getValue()));
 		break;
 	}
 }
