@@ -83,23 +83,19 @@ void InputReading()
 
 	// Abort execution if any of the input files does not exist
 	std::ifstream input_settings("input_settings.txt", std::ios::in);
-	if (!input_settings) {
+	if (!input_settings)
 		ErrorMessages::MissingInputFile("input_settings.txt");
-	}
 
 	std::ifstream input_initial_conditions("input_initial_conditions.txt", std::ios::in);
-	if (!input_initial_conditions) {
+	if (!input_initial_conditions)
 		ErrorMessages::MissingInputFile("input_initial_conditions.txt");
-	}
 
 	std::ifstream input_history("input_history.txt", std::ios::in);
-	if (!input_history) {
+	if (!input_history)
 		ErrorMessages::MissingInputFile("input_history.txt");
-	}
 	
-	// This is voluntary so no error if not present
+	// This is optional so no error if not present
 	std::ifstream input_scaling_factors("input_scaling_factors.txt", std::ios::in);
-
 
 	/**
 	 * @brief
