@@ -309,7 +309,7 @@ void StoichiometryDeviation()
 
     
     default :
-      ErrorMessages::Switch("StoichiometryDeviation.cpp", "iStoichiometryDeviation", int(input_variable[iv["iStoichiometryDeviation"]].getValue()));
+      ErrorMessages::Switch(__FILE__, "iStoichiometryDeviation", int(input_variable[iv["iStoichiometryDeviation"]].getValue()));
       break;
   }
 }

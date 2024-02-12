@@ -100,7 +100,7 @@ void GasDiffusion()
 	}
 
 	default:
-		ErrorMessages::Switch("GasDiffusion.cpp", "iDiffusionSolver", int(input_variable[iv["iDiffusionSolver"]].getValue()));
+		ErrorMessages::Switch(__FILE__, "iDiffusionSolver", int(input_variable[iv["iDiffusionSolver"]].getValue()));
 		break;
 	}
 }

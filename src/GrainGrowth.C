@@ -138,7 +138,7 @@ void GrainGrowth()
 	}
 
 	default:
-		ErrorMessages::Switch("GrainGrowth.cpp", "iGrainGrowth", int(input_variable[iv["iGrainGrowth"]].getValue()));
+		ErrorMessages::Switch(__FILE__, "iGrainGrowth", int(input_variable[iv["iGrainGrowth"]].getValue()));
 		break;
 	}
 	model[model_index].setParameter(parameter);
