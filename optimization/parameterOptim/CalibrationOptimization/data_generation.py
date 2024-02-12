@@ -2,7 +2,7 @@ import numpy as np
 from scipy.stats import gaussian_kde
 
 class DataGeneration:
-    def __init__(self, data_points, probabilities, number_of_new_points, bounds):
+    def __init__(self, data_points, probabilities, number_of_new_points, bounds, bounds_global):
         """
         data_points: n-dimensional points
         densities: corresponding discrete probabilities
@@ -13,7 +13,7 @@ class DataGeneration:
         self.bounds = np.array(bounds)
         self.kde = gaussian_kde(self.data_points.T, weights=self.densities)
         self.number_of_new_points = number_of_new_points
-        self.global_bounds = np.array([[-4.578, 4.578]])
+        self.global_bounds = np.array(bounds_global)
     def _is_dense(self, threshold=1):
         """
         Checks if the current points are dense based on a threshold.
@@ -50,7 +50,7 @@ class DataGeneration:
 
         #### temperary
         exploration_points_2 = np.empty((0, self.data_points.shape[1]))
-        min_bounds_2, max_bounds_2 = -4.578, 4.578
+        min_bounds_2, max_bounds_2 = self.global_bounds[:,0], self.global_bounds[:,1]
         
         num_points_2 = int(num_points - num_points_1)
         while exploration_points_2.shape[0] < num_points_2:

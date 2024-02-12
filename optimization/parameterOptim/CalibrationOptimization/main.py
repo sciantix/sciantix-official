@@ -7,7 +7,6 @@ from bayesian_calibration_pa import BayesianCalibration
 import matplotlib, os, shutil
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 def main():
 
     
@@ -34,7 +33,7 @@ def main():
         mean_values=initial_values, 
         stds=stds,
         initial_sampling_number=501, 
-        time_point=time_points, 
+        time_point=time_points,
         online= True,
         data_points_number=501
     )
