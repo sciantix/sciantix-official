@@ -146,7 +146,7 @@ void IntraGranularBubbleEvolution()
 	}
 
 	default:
-		ErrorMessages::Switch("IntraGranularBubbleEvolution.cpp", "iIntraGranularBubbleEvolution", int(input_variable[iv["iIntraGranularBubbleEvolution"]].getValue()));
+		ErrorMessages::Switch(__FILE__, "iIntraGranularBubbleEvolution", int(input_variable[iv["iIntraGranularBubbleEvolution"]].getValue()));
 		break;
 	}
 
