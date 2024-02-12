@@ -34,10 +34,12 @@ namespace ErrorMessages
 		std::string error_message = "ERROR: Missing input file '" + (std::string)missing_file + "' \n";
 		error_message += "Please check that such file exists in the current working directory.\n";
 		error_message +="Execution aborted\n";
+
 		// Write error message to the error log
 		std::ofstream Error_log(Error_file_name, std::ios::out);
 		Error_log << error_message << std::endl;
-		// And write it to STDERR as well
+		
+        // And write it to STDERR as well
 		std::cerr << error_message;
 		exit(1);
 	}
