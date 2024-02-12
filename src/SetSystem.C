@@ -90,7 +90,7 @@ void System::setBubbleDiffusivity(int input_value)
 		}
 
 		default:
-			ErrorMessages::Switch("SetSystem.cpp", "iBubbleDiffusivity", input_value);
+			ErrorMessages::Switch(__FILE__, "iBubbleDiffusivity", input_value);
 			break;
 	}
 
@@ -263,7 +263,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch("SetSystem.cpp", "iFGDiffusionCoefficient", input_value);
+		ErrorMessages::Switch(__FILE__, "iFGDiffusionCoefficient", input_value);
 		break;
 	}
 }
@@ -344,7 +344,7 @@ void System::setHeliumDiffusivity(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch("SetSystem.cpp", "iHeDiffusivity", input_value);
+		ErrorMessages::Switch(__FILE__, "iHeDiffusivity", input_value);
 		break;
 	}
 }
@@ -459,7 +459,7 @@ void System::setResolutionRate(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch("SetSystem.cpp", "iResolutionRate", input_value);
+		ErrorMessages::Switch(__FILE__, "iResolutionRate", input_value);
 		break;
 	}
 	resolution_rate *= sf_resolution_rate;
@@ -531,7 +531,7 @@ void System::setTrappingRate(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch("SetSystem.cpp", "iTrappingRate", input_value);
+		ErrorMessages::Switch(__FILE__, "iTrappingRate", input_value);
 		break;
 	}
 }
@@ -588,7 +588,7 @@ void System::setNucleationRate(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch("SetSystem.cpp", "inucleation_rate", input_value);
+		ErrorMessages::Switch(__FILE__, "inucleation_rate", input_value);
 		break;
 	}
 }
@@ -667,7 +667,7 @@ void System::setProductionRate(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch("SetSystem.cpp", "iHeliumProductionRate", input_value);
+		ErrorMessages::Switch(__FILE__, "iHeliumProductionRate", input_value);
 		break;
 	}
 

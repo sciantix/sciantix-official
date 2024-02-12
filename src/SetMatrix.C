@@ -42,7 +42,7 @@ void SetMatrix( )
 		}
 		
 		default:
-			ErrorMessages::Switch("SetMatrix.cpp", "iFuelMatrix", int(input_variable[iv["iFuelMatrix"]].getValue()));
+			ErrorMessages::Switch(__FILE__, "iFuelMatrix", int(input_variable[iv["iFuelMatrix"]].getValue()));
 			break;
 	}
 }
@@ -88,7 +88,7 @@ void Matrix::setGrainBoundaryMobility(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch("SetMatrix.cpp", "iGrainGrowth", input_value);
+		ErrorMessages::Switch(__FILE__, "iGrainGrowth", input_value);
 		break;
 	}
 }
@@ -161,7 +161,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value)
 		}
 
 		default:
-			ErrorMessages::Switch("SetMatrix.cpp", "iGrainBoundaryVacancyDiffusivity", input_value);
+			ErrorMessages::Switch(__FILE__, "iGrainBoundaryVacancyDiffusivity", input_value);
 			break;
 			
 	}
