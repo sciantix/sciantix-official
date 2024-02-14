@@ -11,7 +11,7 @@ def findSciantixVariablePosition(output, variable_name):
   giving back its column index in the ndarray
   """
   i,j = np.where(output == variable_name)
-  return int(j)
+  return int(j[0])
 
 class singleSensitivityAnalysis():
     def __init__(self):

@@ -1,12 +1,9 @@
 import numpy as np
-import matplotlib.pyplot as plt
 from user_model import UserModel  # Make sure to import your classes
 from optimization import Optimization
 from domain_reduction import DomainReduction
 from bayesian_calibration_pa import BayesianCalibration
-import matplotlib, os, shutil
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
+import os, shutil
 def main():
 
     
@@ -26,16 +23,16 @@ def main():
     stds = np.array([info['sigma'] for info in params_info.values()])
 
     
-    time_points = np.linspace(0, max(model.time_exp),201)
+    time_points = np.linspace(0, max(model.time_exp),5)
     # Perform Bayesian Calibration
     bc = BayesianCalibration(
         keys=keys,
         mean_values=initial_values, 
         stds=stds,
-        initial_sampling_number=501, 
+        initial_sampling_number=50, 
         time_point=time_points,
         online= True,
-        data_points_number=501
+        data_points_number=50
     )
     
     op = Optimization(

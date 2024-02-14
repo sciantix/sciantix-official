@@ -9,11 +9,14 @@ class DataGeneration:
         bounds: tuple of (min, max) for each dimension
         """
         self.data_points = np.array(data_points)
-        self.densities = np.array(probabilities)
+        self.densities = np.array(probabilities) + 1e-10
         self.bounds = np.array(bounds)
+        # print(self.densities)
+        # print(self.data_points)
         self.kde = gaussian_kde(self.data_points.T, weights=self.densities)
         self.number_of_new_points = number_of_new_points
         self.global_bounds = np.array(bounds_global)
+        # self.global_bounds = np.array([[-4.578, 4.578]])
     def _is_dense(self, threshold=1):
         """
         Checks if the current points are dense based on a threshold.
@@ -51,7 +54,8 @@ class DataGeneration:
         #### temperary
         exploration_points_2 = np.empty((0, self.data_points.shape[1]))
         min_bounds_2, max_bounds_2 = self.global_bounds[:,0], self.global_bounds[:,1]
-        
+        # min_bounds_2, max_bounds_2 = -4.578, 4.578
+
         num_points_2 = int(num_points - num_points_1)
         while exploration_points_2.shape[0] < num_points_2:
             remaining_points_2 = num_points_2 - exploration_points_2.shape[0]

@@ -75,12 +75,12 @@ with open('points_over_time.txt', 'r') as file:
 
 i = 0
 ax = plt.figure().add_subplot(projection='3d')
-while i < 200:
+while i < len(optim_exp):
     d = np.vstack((points_over_time[i], priors_over_time[i])).T
     d_sorted = d[d[:, 0].argsort()]
     ax.plot(d_sorted[:,0], d_sorted[:,1]/np.max(d_sorted[:,1]), zs = optim_exp[i,0], zdir = 'x')
     # ax.scatter(points_over_time[i], priors_over_time[i]/np.max(priors_over_time[i]), zs = optim_exp[i,0], zdir = 'x')
-    i = i + 10
+    i = i + 1
 # plt.scatter(points_over_time[11], priors_over_time[11]/np.max(priors_over_time[0]))
 # # plt.show()
 

@@ -18,6 +18,7 @@ class BayesianCalibration:
                 'sigma': stds[i]
             } for i in range(len(keys))
         }
+        print(params_info.values())
         self.params_info = {key:params_info[key] for key in sorted(params_info)}
         params_grid = np.meshgrid(*[info['range'] for info in self.params_info.values()], indexing = 'ij')
         self.params_grid = {key : grid for key, grid in zip(self.params_info.keys(), params_grid)}
@@ -41,7 +42,7 @@ class BayesianCalibration:
         posteriors_over_time = []
         points_over_time = [self.points]
         bounds_reducted = [op.bounds_dr]
-        bounds_global = [[info['mu']-3 * info['sigma'], info['mu'] + 3* info['sigma']] for info in self.params_info.values()]
+        bounds_global = np.array([[info['mu']-3 * info['sigma'], info['mu'] + 3* info['sigma']] for info in self.params_info.values()])
         optim_folder = 0
         calibration_data = []
         for i in range(1, len(self.time_point)):
@@ -83,8 +84,8 @@ class BayesianCalibration:
             
             bound = dr.transform(op)
             bounds_reducted.append(bound)
-
             data_generator = DataGeneration(points_over_time[-1], posteriors_over_time[-1], self.data_points_number, [value for value in bound.values()], bounds_global)
+            # data_generator = DataGeneration(points_over_time[-1], posteriors_over_time[-1], self.data_points_number, [value for value in bound.values()])
             new_points = data_generator.data_generated()
             new_probabilities = data_generator.probabilities_generated(new_points)
             priors_over_time.append(new_probabilities)
