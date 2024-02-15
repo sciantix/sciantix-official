@@ -18,7 +18,7 @@ class BayesianCalibration:
                 'sigma': stds[i]
             } for i in range(len(keys))
         }
-        print(params_info.values())
+        # print(params_info.values())
         self.params_info = {key:params_info[key] for key in sorted(params_info)}
         params_grid = np.meshgrid(*[info['range'] for info in self.params_info.values()], indexing = 'ij')
         self.params_grid = {key : grid for key, grid in zip(self.params_info.keys(), params_grid)}

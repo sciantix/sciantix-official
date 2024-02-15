@@ -3,6 +3,7 @@ import os
 import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
+from matplotlib import cm
 
 
 params_at_max_prob = np.genfromtxt('params_at_max_prob.txt')
@@ -78,7 +79,7 @@ ax = plt.figure().add_subplot(projection='3d')
 while i < len(optim_exp):
     d = np.vstack((points_over_time[i], priors_over_time[i])).T
     d_sorted = d[d[:, 0].argsort()]
-    ax.plot(d_sorted[:,0], d_sorted[:,1]/np.max(d_sorted[:,1]), zs = optim_exp[i,0], zdir = 'x')
+    ax.plot(d_sorted[:,0], d_sorted[:,1]/np.sum(d_sorted[:,1]), zs = optim_exp[i,0], zdir = 'x')
     # ax.scatter(points_over_time[i], priors_over_time[i]/np.max(priors_over_time[i]), zs = optim_exp[i,0], zdir = 'x')
     i = i + 1
 # plt.scatter(points_over_time[11], priors_over_time[11]/np.max(priors_over_time[0]))
@@ -94,9 +95,61 @@ while i < len(optim_exp):
 # # plt.show()
 ax.set_xlim(0, 3.7)
 ax.set_ylim(-4.8, 4.8)
-ax.set_zlim(0, 1.1)
+# ax.set_zlim(0,1)
 ax.set_xlabel('time')
 ax.set_ylabel('scaling factor')
 ax.set_zlabel('normalized probability')
 # plt.scatter(points_over_time[99], priors_over_time[99]/np.max(priors_over_time[0]))
 plt.show()
+
+
+####color map
+points_over_time = np.asfarray(points_over_time)
+priors_over_time = np.asfarray(priors_over_time)
+time_number = points_over_time.shape[0]
+point_number = points_over_time.shape[1]
+data_cm = np.zeros((point_number * time_number, 3))
+
+for i in range(time_number):
+    data_cm[i*point_number:(i+1)*point_number, 0] = optim_exp[i,0]
+    data_cm[i*point_number:(i+1)*point_number, 1] = points_over_time[i]
+    data_cm[i*point_number:(i+1)*point_number, 2] = priors_over_time[i]
+
+time = data_cm[:,0]
+pt = data_cm[:,1]
+p = data_cm[:,2]
+# p = p.reshape((point_number, time_number))
+alpha_values = (p - np.min(p)) / (np.max(p) - np.min(p))
+# plt.scatter(time, pt, c=p, cmap='viridis', alpha=alpha_values)  # Using viridis colormap, but you can choose any
+plt.scatter(time, pt, c=p, cmap='plasma', alpha= alpha_values) 
+# plt.scatter(time, pt, c=p, cmap='inferno',alpha= alpha_values) 
+# plt.scatter(time, pt, c=p, cmap='magma',alpha= alpha_values)
+# Adding color bar to understand the mapping of y values to colors
+plt.colorbar(label='Probability')
+
+# Labeling axes
+plt.xlabel('Time')
+plt.ylabel('Logarithem scaling factor')
+plt.show()
+
+
+
+##############################
+
+# time_grid, point_grid = np.meshgrid(np.unique(time), np.unique(pt))
+
+# # Interpolate your y values on this grid
+# # This step might need adjustments based on your actual data structure
+# # Simplest interpolation for demonstration
+# from scipy.interpolate import griddata
+# y_grid = griddata((time, pt), p, (time_grid, point_grid), method='cubic')
+
+# # Plot using pcolormesh
+# plt.figure(figsize=(8, 6))
+# c = plt.pcolormesh(time_grid, point_grid, y_grid, cmap='viridis', shading='auto')
+# plt.colorbar(c, label='Y Value')
+
+# plt.xlabel('Time')
+# plt.ylabel('X Value')
+# plt.title('2D Color-Coded Plot by Y Values')
+# plt.show()
