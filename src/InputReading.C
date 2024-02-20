@@ -79,17 +79,23 @@ void InputReading()
 	/// It is highly recommended checking this file, since eventual errors
 	/// are reported in it.
 
-	std::ifstream input_settings;
-	std::ifstream input_initial_conditions;
-	std::ifstream input_history;
-	std::ifstream input_scaling_factors;
-	std::ofstream input_check;
+	std::ofstream input_check("input_check.txt", std::ios::out);
 
-	input_check.open("input_check.txt", std::ios::out);
-	input_settings.open("input_settings.txt");
-	input_initial_conditions.open("input_initial_conditions.txt");
-	input_history.open("input_history.txt");
-	input_scaling_factors.open("input_scaling_factors.txt");
+	// Abort execution if any of the input files does not exist
+	std::ifstream input_settings("input_settings.txt", std::ios::in);
+	if (!input_settings)
+		ErrorMessages::MissingInputFile("input_settings.txt");
+
+	std::ifstream input_initial_conditions("input_initial_conditions.txt", std::ios::in);
+	if (!input_initial_conditions)
+		ErrorMessages::MissingInputFile("input_initial_conditions.txt");
+
+	std::ifstream input_history("input_history.txt", std::ios::in);
+	if (!input_history)
+		ErrorMessages::MissingInputFile("input_history.txt");
+	
+	// This is optional so no error if not present
+	std::ifstream input_scaling_factors("input_scaling_factors.txt", std::ios::in);
 
 	/**
 	 * @brief
@@ -325,10 +331,11 @@ void InputReading()
 		Sciantix_scaling_factors[5] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[6] = ReadOneParameter("sf_cent_parameter", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[8] = ReadOneParameter("sf_diffusivity_preExp",input_scaling_factors, input_check);
-		Sciantix_scaling_factors[9] = ReadOneParameter("sf_diffusivity_actEnergy",input_scaling_factors,input_check);
-		Sciantix_scaling_factors[10] = ReadOneParameter("sf_henryConst_preExp",input_scaling_factors,input_check);
-		Sciantix_scaling_factors[11] = ReadOneParameter("sf_henryConst_actEnergy",input_scaling_factors,input_check);	
+		Sciantix_scaling_factors[8] = ReadOneParameter("sf_diffusivity_preExp", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[9] = ReadOneParameter("sf_diffusivity_actEnergy", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[10] = ReadOneParameter("sf_henryConst_preExp", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[11] = ReadOneParameter("sf_henryConst_actEnergy", input_scaling_factors, input_check);
+
 	}
 	else
 	{
@@ -343,7 +350,8 @@ void InputReading()
 		Sciantix_scaling_factors[8] = 1.0;
 		Sciantix_scaling_factors[9] = 1.0;
 		Sciantix_scaling_factors[10] = 1.0;
-		Sciantix_scaling_factors[11] = 1.0;	
+		Sciantix_scaling_factors[11] = 1.0;
+		
 	}
 
 	input_check.close();

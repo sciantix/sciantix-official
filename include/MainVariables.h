@@ -24,7 +24,7 @@ extern clock_t timer, timer_time_step;
 extern int Sciantix_options[40];
 extern double Sciantix_history[20];
 extern double Sciantix_variables[300];
-extern double Sciantix_scaling_factors[12];
+extern double Sciantix_scaling_factors[10];
 extern double Sciantix_diffusion_modes[1000];
 
 extern long long int Time_step_number;

@@ -20,7 +20,7 @@ from sklearn.linear_model import LinearRegression
 """ ------------------- Global Variables ------------------- """
 
 # Data from SCIANTIX 1.0
-gbSwelling1 = [1.19, 1.16, 1.13, 1.12, 1.29,                   # 4000
+gbSwelling1 = np.array([1.19, 1.16, 1.13, 1.12, 1.29,                   # 4000
                0.91, 0.89, 0.85, 0.79, 0.77, 0.81,             # 4004
                0.89, 0.87, 0.82, 0.76, 0.79,                   # 4005
                1.89, 1.83, 1.68, 1.46, 1.33,                   # 4064
@@ -30,10 +30,10 @@ gbSwelling1 = [1.19, 1.16, 1.13, 1.12, 1.29,                   # 4000
                0.87, 0.86,                                     # 4140
                1.72, 1.69, 1.62, 1.49,                         # 4162
                0.85, 0.84, 0.83, 0.82                          # 4163
-               ]
+               ])
 
 # Intergranular gaseous swelling database from White et al. (2006) experiments
-gbConcWhite = [0.68, 0.80, 1.32, 1.99, 9.00,                   # 4000
+gbConcWhite = np.array([0.68, 0.80, 1.32, 1.99, 9.00,                   # 4000
                1.39, 2.12, 3.55, 1.87, 8.51, 27.90,            # 4004
                1.21, 2.93, 2.57, 2.62, 10.62,                  # 4005
                0.95, 0.87, 1.35, 0.74, 3.51,                   # 4064
@@ -43,10 +43,10 @@ gbConcWhite = [0.68, 0.80, 1.32, 1.99, 9.00,                   # 4000
                1.59, 2.18,                                     # 4140
                3.15, 3.98, 4.92, 5.38,                         # 4162
                2.63, 3.56, 5.19, 5.7                           # 4163
-               ]
+               ])
 
 # Intergranular gaseous swelling database from White et al. (2006) experiments
-gbSwellingWhite = [0.97, 0.68, 0.53, 0.46, 0.17,                   # 4000
+gbSwellingWhite = np.array([0.97, 0.68, 0.53, 0.46, 0.17,                   # 4000
                    0.62, 0.7, 0.44, 0.56, 0.27, 0.16,              # 4004
                    0.94, 0.57, 0.42, 0.54, 0.27,                   # 4005
                    1.07, 0.86, 0.63, 0.74, 0.59,                   # 4064
@@ -56,7 +56,8 @@ gbSwellingWhite = [0.97, 0.68, 0.53, 0.46, 0.17,                   # 4000
                    0.26, 0.18,                                     # 4140
                    0.7, 0.46, 0.43, 0.43,                          # 4162
                    0.6, 0.59, 0.35, 0.4                            # 4163
-                   ]
+                   ])
+
 # Data generated from SCIANTIX 2.0
 gbSwelling2 = []
 FGR2 = []
@@ -150,10 +151,34 @@ def do_plot():
   plt.show()
 
   # GOLD vs. SCIANTIX 2.0
+
+  gbSwellingError = gbSwellingWhite * 0.5
+
   fig, ax = plt.subplots()
 
-  ax.scatter(gbSwellingWhite, gold, c = '#C9C954', edgecolors= '#999AA2', marker = '^', s=20, label='Gold')
-  ax.scatter(gbSwellingWhite, gbSwelling2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
+  igSwellingErrorVertL = np.abs(gbSwelling2 - 100 * np.array([0.00309842, 0.00285444, 0.00545195, 0.00488227, 0.00852239, 0.00365886,
+  0.00546195, 0.00539069, 0.00431081, 0.00592082, 0.00884021, 0.00620528,
+  0.00503128, 0.00311326, 0.00348059, 0.00936053, 0.00933353, 0.00886642,
+  0.00550712, 0.00588977, 0.00455688, 0.00290807, 0.00367743, 0.00308482,
+  0.00364588, 0.00277625, 0.00323535, 0.00452387, 0.00565546, 0.00425832,
+  0.00256492, 0.00268151, 0.00306131, 0.00443654, 0.00410574, 0.00469404,
+  0.00499108, 0.00409438, 0.00604164, 0.00241627, 0.00287818, 0.00199632,
+  0.00384386]))
+
+  igSwellingErrorVertU = np.abs(gbSwelling2 - 100 * np.array([0.03099689, 0.02708617, 0.02566999, 0.02358891, 0.02849684, 0.03614354,
+  0.039007  , 0.03369294, 0.02532625, 0.02945451, 0.02959328, 0.04542349,
+  0.04282425, 0.03530704, 0.03000697, 0.02936561, 0.07399537, 0.08019407,
+  0.0502442 , 0.03672561, 0.05521956, 0.03128393, 0.03287336, 0.03071947,
+  0.02291161, 0.0137135 , 0.03276693, 0.03236039, 0.03020551, 0.01728113,
+  0.01670874, 0.0128458 , 0.01233106, 0.02754019, 0.02443593, 0.01109099,
+  0.01102217, 0.0109665 , 0.01412458, 0.0097558 , 0.00991563, 0.00852714,
+  0.01867004]))
+
+#   ax.scatter(gbSwellingWhite, gold, c = '#C9C954', edgecolors= '#999AA2', marker = '^', s=20, label='Gold')
+#   ax.scatter(gbSwellingWhite, gbSwelling2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
+
+  ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', marker = '^', s=20, label='SCIANTIX 1.0', zorder = 1)
+  ax.errorbar(gbSwellingWhite, gbSwelling2, xerr = gbSwellingError, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), c = 'green', marker = '.', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0', zorder = 2)
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
