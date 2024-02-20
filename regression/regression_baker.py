@@ -25,6 +25,9 @@ igSwellingError = igSwellingBaker * np.sqrt(0.3**2 + 0.5**2)
 
 # Data from SCIANTIX 1.0
 igSwelling1 = np.array([0.033, 0.048, 0.062, 0.073, 0.079, 0.082, 0.083, 0.084, 0.086])
+igRadius1 = np.array([0.515, 0.607, 0.681, 0.733, 0.763, 0.776, 0.782, 0.784, 0.785]) # nm
+igDensity1 = np.array([5.78, 5.14, 4.69, 4.42, 4.27, 4.2, 4.18, 4.17, 4.17]) #10^23 bub/m3
+
 # Data generated from SCIANTIX 2.0
 igSwelling2 = []
 
@@ -105,14 +108,11 @@ def do_plot():
   igSwellingErrorVertU = np.abs(igSwelling2 - 100 * np.array([0.00080405, 0.00091633, 0.00114718, 0.00131682, 0.00165466, 0.00208512, 0.00213937, 0.00227493, 0.00230765]))
   igSwellingErrorVertL = np.abs(igSwelling2 - 100 * np.array([8.118175e-05, 8.636849e-05, 2.183188e-04, 2.499887e-04, 2.726784e-04, 6.693753e-04, 7.426121e-04, 1.282786e-03, 1.475344e-03]))
 
-  # SCIANTIX 1.0 vs. SCIANTIX 2.0: intragranular bubble swelling
+  # SCIANTIX 1.0 vs. SCIANTIX 2.0: intragranular bubble swelling + error bars
   fig, ax = plt.subplots()
 
-#   ax.errorbar(igSwellingBaker, igSwelling1, xerr = 0, yerr=0, c = '#FA82B4', fmt='o', capsize=5, capthick=2, marker = '^', label='SCIANTIX 1.0')
-#   ax.errorbar(x_data, y_data, yerr=error_data, fmt='o', color='blue', capsize=5, capthick=2, ecolor='gray', label='Data points with error bars')
   ax.scatter(igSwellingBaker, igSwelling1, c = '#FA82B4', marker = '^', s=20, label='SCIANTIX 1.0', zorder = 1)
-  ax.errorbar(igSwellingBaker, igSwelling2, xerr = igSwellingError, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), c = 'green', marker = '.', fmt='o', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0', zorder = 2)
-#   ax.scatter(igSwellingBaker, igSwelling2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
+  ax.errorbar(igSwellingBaker, igSwelling2, xerr = igSwellingError, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), c = 'green', marker = '.', fmt='^', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0', zorder = 2)
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
@@ -131,11 +131,11 @@ def do_plot():
 
   plt.show()
   
-  # Data vs. SCIANTIX 2.0: bubble density
+  # Data vs. SCIANTIX 2.0: bubble density + errorbar
   fig, ax = plt.subplots()
 
-  ax.errorbar(igDensityBaker, igDensity2, xerr = igDensityError, c = '#FA82B4', marker = '^', label='SCIANTIX 2.0')
-#   ax.scatter(igDensityBaker, igDensity2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
+  ax.errorbar(igDensityBaker, igDensity1, xerr = igDensityError, c = '#FA82B4', marker = '.', fmt='o', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 1.0')
+  ax.errorbar(igDensityBaker, igDensity2, xerr = igDensityError, c = 'green', marker = '.', fmt='o', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0')
 
   ax.plot([0.1, 100],[0.1, 100], '-', color = '#757575')
   ax.plot([0.1, 100],[0.05, 50],'--', color = '#757575')
@@ -146,7 +146,6 @@ def do_plot():
   ax.set_xscale('log')
   ax.set_yscale('log')
 
-  # ax.set_title('Intragranular gaseous swelling')
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
@@ -154,11 +153,11 @@ def do_plot():
   plt.show()
   plt.close()
 
-  # Data vs. SCIANTIX 2.0: bubble radius
+  # Data vs. SCIANTIX 2.0: bubble radius + errorbar
   fig, ax = plt.subplots()
 
-  ax.errorbar(igRadiusBaker, igRadius2, xerr = igRadiusError, c = '#FA82B4', marker = '^', label='SCIANTIX 2.0')
-#   ax.scatter(igRadiusBaker, igRadius2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
+  ax.errorbar(igRadiusBaker, igRadius1*1e-9, xerr = igRadiusError, c = '#FA82B4', marker = '.', fmt='o', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 1.0')
+  ax.errorbar(igRadiusBaker, igRadius2, xerr = igRadiusError, c = 'green', marker = '.', fmt='o', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0')
 
   ax.plot([0.1e-9, 100e-9],[0.1e-9, 100e-9], '-', color = '#757575')
   ax.plot([0.1e-9, 100e-9],[0.05e-9, 50e-9],'--', color = '#757575')
@@ -177,43 +176,19 @@ def do_plot():
   plt.show()
   plt.close()
 
-  # GOLD vs. SCIANTIX 2.0
-  fig, ax = plt.subplots()
-
-  ax.scatter(igSwellingBaker, gold, c = '#C9C954', edgecolors= '#999AA2', marker = 'o', s=20, label='Gold')
-  ax.scatter(igSwellingBaker, igSwelling2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
-
-  ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
-  ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
-  ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
-
-  ax.set_xlim(1e-2, 1e1)
-  ax.set_ylim(1e-2, 1e1)
-
-  ax.set_xscale('log')
-  ax.set_yscale('log')
-
-  # ax.set_title('Intergranular gaseous swelling')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-
-  plt.show()
-  plt.close()
-
   # Fission gases release plot
-  fig, ax = plt.subplots()
-  ax.scatter(igSwelling2, FGR2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='FGR SCIANTIX 2.0')
+#   fig, ax = plt.subplots()
+#   ax.scatter(igSwelling2, FGR2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='FGR SCIANTIX 2.0')
 
-  ax.set_xscale('log')
-  ax.set_yscale('log')
+#   ax.set_xscale('log')
+#   ax.set_yscale('log')
 
-  ax.set_xlabel('Swelling (%)')
-  ax.set_ylabel('FGR (%)')
-  ax.legend()
+#   ax.set_xlabel('Swelling (%)')
+#   ax.set_ylabel('FGR (%)')
+#   ax.legend()
 
-  plt.show()
-  plt.close()
+#   plt.show()
+#   plt.close()
 
 
 # Main function of the baker regression
