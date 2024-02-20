@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.stats import gaussian_kde
+import copy
 
 class DataGeneration:
     def __init__(self, data_points, probabilities, number_of_new_points, bounds, bounds_global):
@@ -95,6 +96,9 @@ class DataGeneration:
 
         # Ensuring points are within global bounds
         self.new_points = self._within_bounds(new_points.T)
+        while len(self.new_points) < self.number_of_new_points:
+            rest_points = self.kde.resample(self.number_of_new_points-len(self.new_points))
+            self.new_points = np.vstack((self.new_points, rest_points.T))
 
         return self.new_points
 
@@ -110,6 +114,57 @@ class DataGeneration:
         self.normalized_densities = densities / np.sum(densities)
         return self.normalized_densities
     
+    def confidence_boundary(self, confidence_cdf = 0.95, number = 200):
+        
+        number_of_variable = self.global_bounds.shape[0]
+        if number_of_variable == 1:
+            if not hasattr(self, 'normalized_densities'):
+                sf = np.linspace(self.global_bounds[0,0], self.global_bounds[0,1], number)
+                sf.reshape(number, 1)
+                cumulative_density = np.cumsum(self.kde(sf))
+                cumulative_density /= cumulative_density[-1]  # Normalize
+            else:
+                # pdf = {tuple(point): prob for point, prob in zip(self.new_points, self.normalized_densities)}
+                # pdf_sorted = {key: pdf[key] for key in sorted(pdf)}
+                sf = copy.deepcopy(self.new_points)
+                prob = copy.deepcopy(self.normalized_densities)
+                prob = prob.reshape(-1,1)
+                pdf = np.hstack((sf, prob))
+                pdf_sorted = pdf[pdf[:,0].argsort()]
+                
+                cumulative_density = np.cumsum(pdf_sorted[:,1])
+                
+                cumulative_density /= cumulative_density[-1]
+            
+            sf_low = pdf_sorted[np.searchsorted(cumulative_density, (1-confidence_cdf)/2, side = 'left'), 0]
+            sf_high = pdf_sorted[np.searchsorted(cumulative_density, 1- (1-confidence_cdf)/2, side = 'right'),0]
+            confidence_boundary = np.array([[min(sf_low,sf_high)], [max(sf_low, sf_high)]])
+        
+        else:
+            sfs = []
+            for i, bound in enumerate(self.global_bounds):
+                sf = np.linspace(bound[0], bound[1], number)
+                sfs.append(sf)
+            grid = np.meshgrid(*sfs, indexing = 'ij')
+            grid_points = np.vstack([g.ravel() for g in grid]).T
+
+            kde_values = self.kde(grid_points).reshape(grid[0].shape)
+            # kde_values_flat = kde_values.ravel()
+            # threshold_index = int(len(kde_values_flat) * 0.95)
+            # sorted_indices = np.argsort(kde_values_flat)
+            # threshold_value = kde_values_flat[sorted_indices[-threshold_index]]
+
+            # # Everything above this threshold is in the 95% confidence region
+            # confidence_region = kde_values >= threshold_value
+            sorted_kde_values = np.sort(kde_values.ravel())[::-1]
+            cumulative_kde_values = np.cumsum(sorted_kde_values)
+            threshold = sorted_kde_values[np.where(cumulative_kde_values <= cumulative_kde_values[-1] * 0.95)[0][-1]]
+            indices = np.where(kde_values > threshold)
+            confidence_boundary = np.zeros((len(indices), number_of_variable))
+            for j in range(number_of_variable):
+                confidence_boundary[:,j] = grid[j][indices]
+
+        return confidence_boundary
     # @property
     # def data_generated(self):
     #     return self.new_points

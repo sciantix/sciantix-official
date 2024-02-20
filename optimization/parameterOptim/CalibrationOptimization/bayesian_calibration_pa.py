@@ -36,6 +36,7 @@ class BayesianCalibration:
 
     def bayesian_calibration(self, model, op, dr):
         self.setup_directory('Bayesian_calibration')
+        self.setup_directory('Prediction')
         self.calibration_container_path = os.getcwd()
         max_params_over_time, optimized_params = [[info['mu'] for info in self.params_info.values()]], [[info['mu'] for info in self.params_info.values()]]
         priors_over_time = [self.joint_prior.flatten()]
@@ -44,16 +45,61 @@ class BayesianCalibration:
         bounds_reducted = [op.bounds_dr]
         bounds_global = np.array([[info['mu']-3 * info['sigma'], info['mu'] + 3* info['sigma']] for info in self.params_info.values()])
         optim_folder = 0
+        # likelihood = 1
         calibration_data = []
+        predicted_trace = []
         for i in range(1, len(self.time_point)):
             print(f'current time: {self.time_point[i]}')
             t_0 = self.time_point[i-1] if self.online else 0
             sciantix_folder_path = model._independent_sciantix_folder('Bayesian_calibration',optim_folder, t_0, self.time_point[i])
-            observed = model._exp(time_point=self.time_point[i])
+            
+            ##########prediction
+            prediction_sciantix_folder_path = model._independent_sciantix_folder('Prediction', optim_folder, t_0, self.time_point[i])
+            if i == 1:
+                confidence_boundary = np.array([[info['mu'] - 1.96* info['sigma'] for info in self.params_info.values()],
+                                                [info['mu'] + 1.96 * info['sigma'] for info in self.params_info.values()]])
+                # sf_to_run: np.array([sf_nominal, sf_at_max_probability, sf_low, sf_up])
 
+                sf_to_run = np.array([[info['mu'] for info in self.params_info.values()],
+                                      [info['mu'] for info in self.params_info.values()],
+                                      [info['mu'] - 1.96* info['sigma'] for info in self.params_info.values()],
+                                      [info['mu'] + 1.96 * info['sigma'] for info in self.params_info.values()]])
+            else:
+                confidence_boundary = data_generator.confidence_boundary(confidence_cdf=0.95, number=1000)
+                # print(np.array(optimized_params[-1]))
+                # print(np.array(max_params_over_time[-1]))
+                # print(np.array(confidence_boundary[0]))
+                # print(np.array(confidence_boundary[1]))
+                sf_to_run = np.array([[info['mu'] for info in self.params_info.values()],
+                                      np.array(max_params_over_time[-1]),
+                                      np.array(confidence_boundary[0]),
+                                      np.array(confidence_boundary[1])])
+                
+                
+
+                print(f'confidence sf bounds:\n {confidence_boundary}') 
+            # fr_prediction = self.compute_model_values(model, prediction_sciantix_folder_path, confidence_boundary, last_value=False)
+            fr_prediction = self.compute_model_values(model, prediction_sciantix_folder_path, sf_to_run, last_value=False)
+            predicted_trace.append(fr_prediction)
+            np.set_printoptions(threshold=np.inf)
+            with open('predicted_trace.txt', 'w') as file:
+                for j, array in enumerate(predicted_trace):
+                    # Let's add a header for each array for clarity
+                    # Format the array into a string and write it to the file
+                    # We use np.array2string to convert the 2D array into a readable string format
+                    file.write(np.array2string(array, separator=', ') + "\n\n")
+
+            observed = model._exp(time_point=self.time_point[i])
             model_values = self.compute_model_values(model, sciantix_folder_path, points_over_time[-1])
             likelihood = norm.pdf(observed[1], loc = model_values[:,0], scale = observed[2])
+            # if self.online == True:
+            #     likelihood = norm.pdf(observed[1], loc = model_values[:,0], scale = observed[2])
+            # # elif self.online == False and i == 1:
+            # #     likelihood = norm.pdf(observed[1], loc = model_values[:,0], scale = observed[2])
+            # else:
+            #     likelihood = norm.pdf(observed[1], loc = model_values[:,0], scale = observed[2]) * likelihood
             posterior = self.bayesian_update(priors_over_time[-1], likelihood)
+            
             posteriors_over_time.append(posterior)
 
             max_params = self.find_max_params(posterior, points_over_time[-1])
@@ -97,24 +143,39 @@ class BayesianCalibration:
                 file.writelines('\t'.join(str(item) for item in row) + '\n' for row in priors_over_time[:-1])
                 file.write('\t'.join(str(item) for item in priors_over_time[-1]))
 
+
         
         self.max_params_over_time = max_params_over_time
         self.optimized_params = optimized_params
         self.calibration_data = calibration_data
-    
+        self.predicted_trace = predicted_trace
     def setup_directory(self, dirname):
         if os.path.exists(dirname):
             shutil.rmtree(dirname)
         os.makedirs(dirname)
 
-    def compute_model_values(self, model, folder_path, points):
+    def compute_model_values(self, model, folder_path, points, last_value = True):
         model_values = []
 
         for point in points:
             params = {key: value for key, value in zip(self.params_info.keys(), point)}
-            model_value = model._sciantix(folder_path, params)[2:]
-            model_values.append(model_value)
-        model_values = np.array(model_values)
+            if last_value == True:
+                # output the last fr and rr
+                model_value = model._sciantix(folder_path, params, last_value)[2:]
+                model_values.append(model_value)
+            else:
+                # output the whole sequence value of fr
+                print(params)
+                model_value = model._sciantix(folder_path, params, last_value)[:,[0,2]]
+                time = model_value[:,0]
+                fr = model_value[:,1]
+                model_values.append(fr)
+        
+        if last_value == True:
+            model_values = np.array(model_values)
+        else:
+            model_values.insert(0,time)
+            model_values = np.array(model_values).T
         return model_values
 
     def comput_bivariant_likelihood(self, observed, model_values, scale):
@@ -138,6 +199,8 @@ class BayesianCalibration:
             for row in data[:-1]:
                 file.write('\t'.join(map(str, row)) + '\n')
             file.write('\t'.join(map(str, data[-1])))
+
+
 
     @staticmethod
     def bayesian_update(prior, likelihood):

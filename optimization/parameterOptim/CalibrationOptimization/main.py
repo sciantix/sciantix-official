@@ -23,16 +23,16 @@ def main():
     stds = np.array([info['sigma'] for info in params_info.values()])
 
     
-    time_points = np.linspace(0, max(model.time_exp),100)
+    time_points = np.linspace(0, max(model.time_exp),5)
     # Perform Bayesian Calibration
     bc = BayesianCalibration(
         keys=keys,
         mean_values=initial_values, 
         stds=stds,
-        initial_sampling_number=201, 
+        initial_sampling_number=100,
         time_point=time_points,
         online= True,
-        data_points_number=201
+        data_points_number=100
     )
     
     op = Optimization(
@@ -71,6 +71,7 @@ def main():
 
     shutil.rmtree('Optimization')
     shutil.rmtree('Bayesian_calibration')
+    # shutil.rmtree('Prediction')
 
 
 

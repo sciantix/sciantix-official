@@ -168,7 +168,7 @@ class UserModel:
         return os.path.join(destination, forlder_name)
     
 
-    def _sciantix(self, sciantix_folder_path, params:dict):
+    def _sciantix(self, sciantix_folder_path, params:dict, last_value = True):
         """
         params:
             *key: params name
@@ -193,7 +193,10 @@ class UserModel:
 
             subprocess.run(['./sciantix.x'])
             variables = ["Time (h)","Temperature (K)","He fractional release (/)", "He release rate (at/m3 s)"]
-            output_data = self.get_selected_variables_value_from_output_last_line(variables, 'output.txt')
+            if last_value == True:
+                output_data = self.get_selected_variables_value_from_output_last_line(variables, 'output.txt')
+            else:
+                output_data = self.get_selected_variables_value_from_output(variables, 'output.txt')
         return output_data
     
     def _exp(self, time_point):

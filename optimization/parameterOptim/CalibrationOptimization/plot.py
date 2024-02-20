@@ -4,6 +4,26 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from matplotlib import cm
+import re, ast
+
+
+prediction_trace = []
+
+
+# Open the file for reading.
+with open('predicted_trace.txt', 'r') as file:
+    # Read the entire file, this assumes that the file is not too large to fit in memory
+    data = file.read()
+
+    # Split the data by double newlines, which seems to be your separator between arrays
+    array_strings = data.strip().split('\n\n')
+
+    # Iterate over the separated string representations of the arrays
+    for array_string in array_strings:
+        # Use ast.literal_eval to safely evaluate the string as a Python literal
+        array_literal = ast.literal_eval(array_string)
+        # Convert the literal to a numpy array and append to the list of arrays
+        prediction_trace.append(np.array(array_literal, dtype = 'float'))
 
 
 params_at_max_prob = np.genfromtxt('params_at_max_prob.txt')
@@ -37,12 +57,23 @@ else:
 
 
 plt.scatter(talip_data[:,0], talip_data[:,1], marker = '.', c = '#B3B3B3', label='Talip et al. (2014)')
-# plt.plot(optim_exp[:,0], optim_exp[:,1], color = 'g', label = 'optimization')
 
 plt.scatter(optim_exp[:,0], optim_exp[:,1], color = 'g', marker='x', label = 'optimization')
-# plt.plot(optim_exp[:,0], optim_exp[:,2], color = 'r', label = 'experimental')
 plt.scatter(optim_exp[:,0], optim_exp[:,2], facecolor = 'none', edgecolors='r',marker='o', label = 'filtered exp')
 plt.scatter(optim_exp[1:,0], calibration_data[:,2], color = 'black', marker='x', label = 'calibration')
+for i, trace in enumerate(prediction_trace):
+    if i == 0:
+        plt.plot(trace[:,0]+(i)*optim_exp[1,0], trace[:,1], 'g', label = 'Sciantix nomimal')
+        # plt.plot(trace[:,0]+(i)*optim_exp[1,0], trace[:,2], 'b', label = 'Optimized')
+        plt.plot(trace[:,0]+i*optim_exp[1,0], trace[:,2], 'r--', label = 'Prediction: Upper bound')
+        plt.plot(trace[:,0]+i*optim_exp[1,0], trace[:,3], 'b--', label = 'Prediction: Lower bound')
+        plt.fill_between(trace[:,0]+i*optim_exp[1,0], trace[:,2], trace[:,3], color = 'skyblue', alpha = 0.5, label = 'Confidence region')
+    else:
+        plt.plot(trace[:,0]+(i)*optim_exp[1,0], trace[:,1], 'g')
+        # plt.plot(trace[:,0]+(i-1)*optim_exp[1,0], trace[:,2], 'b')
+        plt.plot(trace[:,0]+i*optim_exp[1,0], trace[:,2], 'r--')
+        plt.plot(trace[:,0]+i*optim_exp[1,0], trace[:,3], 'b--')
+        plt.fill_between(trace[:,0]+i*optim_exp[1,0], trace[:,2], trace[:,3], color = 'skyblue', alpha = 0.5)
 plt.xlabel('time / h')
 plt.ylabel('fraction release / -')
 plt.legend()
@@ -73,6 +104,13 @@ with open('points_over_time.txt', 'r') as file:
         # Convert the string representations into the true form of floating-point numbers
         numbers = [float(num) for num in number_strings]
         points_over_time.append(numbers)
+
+
+
+# Now you have a list of numpy arrays, which you can access
+
+
+
 
 i = 0
 ax = plt.figure().add_subplot(projection='3d')
