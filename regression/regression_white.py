@@ -132,8 +132,8 @@ def do_plot():
   # GOLD vs. SCIANTIX 2.0, no error bars
   fig, ax = plt.subplots()
 
-  ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', marker = '^', s=20, label='SCIANTIX 1.0', zorder = 1)
-  ax.scatter(gbSwellingWhite, gbSwelling2, c = 'green', marker = '.', s=20, label='SCIANTIX 2.0', zorder = 2)
+  ax.scatter(gbSwellingWhite, gbSwelling1, edgecolors='#757575', facecolors='red',   marker = '^', s=30, label='SCIANTIX 1.0', zorder = 1)
+  ax.scatter(gbSwellingWhite, gbSwelling2, edgecolors= None, facecolors='green', marker = '.', s=30, label='SCIANTIX 2.0', zorder = 2)
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')

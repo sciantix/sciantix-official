@@ -105,14 +105,14 @@ def do_gold():
 # Plot the regression test results
 def do_plot():
   
-  igSwellingErrorVertU = np.abs(igSwelling2 - 100 * np.array([0.00080405, 0.00091633, 0.00114718, 0.00131682, 0.00165466, 0.00208512, 0.00213937, 0.00227493, 0.00230765]))
-  igSwellingErrorVertL = np.abs(igSwelling2 - 100 * np.array([8.118175e-05, 8.636849e-05, 2.183188e-04, 2.499887e-04, 2.726784e-04, 6.693753e-04, 7.426121e-04, 1.282786e-03, 1.475344e-03]))
+  igSwellingErrorVertU = np.abs(igSwelling2 - 100 * np.array([2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06]))
+  igSwellingErrorVertL = np.abs(igSwelling2 - 100 * np.array([0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503]))
 
   # SCIANTIX 1.0 vs. SCIANTIX 2.0: intragranular bubble swelling + error bars
   fig, ax = plt.subplots()
 
-  ax.scatter(igSwellingBaker, igSwelling1, c = '#FA82B4', marker = '^', s=20, label='SCIANTIX 1.0', zorder = 1)
-  ax.errorbar(igSwellingBaker, igSwelling2, xerr = igSwellingError, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), c = 'green', marker = '.', fmt='^', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0', zorder = 2)
+  ax.scatter(igSwellingBaker, igSwelling1, edgecolors='#757575', facecolors='red',   marker = '^', s=30, label='SCIANTIX 1.0', zorder = 1)
+  ax.errorbar(igSwellingBaker, igSwelling2, xerr = igSwellingError, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), edgecolors= None, color='green', marker = '.', fmt='^', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0', zorder = 2)
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
