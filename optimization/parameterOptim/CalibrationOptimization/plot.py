@@ -1,7 +1,7 @@
 import numpy as np
 import os
 import matplotlib
-matplotlib.use('TkAgg')
+# matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from matplotlib import cm
 import re, ast
@@ -157,13 +157,28 @@ time = data_cm[:,0]
 pt = data_cm[:,1]
 p = data_cm[:,2]
 # p = p.reshape((point_number, time_number))
-alpha_values = (p - np.min(p)) / (np.max(p) - np.min(p))
+p_min, p_max = min(p), max(p)
+alpha_values =(p - p_min) / (p_max - p_min)
+alpha_values = alpha_values.flatten()
 # plt.scatter(time, pt, c=p, cmap='viridis', alpha=alpha_values)  # Using viridis colormap, but you can choose any
-plt.scatter(time, pt, c=p, cmap='plasma', alpha= alpha_values) 
-# plt.scatter(time, pt, c=p, cmap='inferno',alpha= alpha_values) 
-# plt.scatter(time, pt, c=p, cmap='magma',alpha= alpha_values)
-# Adding color bar to understand the mapping of y values to colors
-plt.colorbar(label='Probability')
+# plt.scatter(time, pt, c=p, cmap='plasma', alpha = alpha_values) 
+# # plt.scatter(time, pt, c=p, cmap='inferno',alpha= alpha_values) 
+# # plt.scatter(time, pt, c=p, cmap='magma',alpha= alpha_values)
+# # Adding color bar to understand the mapping of y values to colors
+# plt.colorbar(label='Probability')
+
+
+# Define a colormap and normalize alpha_values to the [0, 1] range
+norm = plt.Normalize(p.min(), p.max())
+cmap = plt.get_cmap('plasma')
+
+# Plot the scatter plot with different colors and transparency levels
+for t, p_value, alpha_value in zip(time, pt, alpha_values):
+    color = cmap(norm(p_value))
+    plt.scatter(t, p_value, c=[color], alpha=alpha_value)
+
+# Add a colorbar for reference
+plt.colorbar(plt.cm.ScalarMappable(norm=norm, cmap=cmap), label='Probability')
 
 # Labeling axes
 plt.xlabel('Time')

@@ -145,9 +145,10 @@ class Optimization:
             dict: Optimized parameter values.
             float: error
         """
-        solution_nm = minimize(cost_function, initial_values, bounds=self.bounds_global,method = 'Nelder-Mead')
+        solution_nm = minimize(cost_function, initial_values,method = 'Nelder-Mead')
         solution_slsqp = minimize(cost_function, initial_values, bounds=self.bounds_global,method = 'SLSQP')
-        solution_powell = minimize(cost_function, initial_values, bounds=self.bounds_global,method = 'Powell')
+        solution_powell = minimize(cost_function, initial_values,method = 'Powell')
+
         error_info = {
             'Nelder-Mead': solution_nm.fun,
             'SLSQP': solution_slsqp.fun,
