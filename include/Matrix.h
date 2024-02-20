@@ -41,9 +41,16 @@ protected:
 	double pore_nucleation_rate;
 	double pore_resolution_rate;
 	double pore_trapping_rate;
+	double bub_conc_limit; 
 
 public:
-	
+
+	void setBubbleConcentrationLimit();
+	double getBubbleConcentrationLimit()
+	{
+		return bub_conc_limit;
+	}
+
 	void setTheoreticalDensity(double m)
 	{
 		/// Member function to set the matrix theoretical density (kg/m3)

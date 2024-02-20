@@ -216,3 +216,21 @@ void Matrix::setPoreTrappingRate()
     sciantix_variable[sv["HBS pore radius"]].getFinalValue() *
     (1.0 + 1.8 * pow(sciantix_variable[sv["HBS porosity"]].getFinalValue(), 1.3));
 }
+
+
+void Matrix::setBubbleConcentrationLimit()
+{
+    // Mod. Elia Cerini 18/01/2024 
+    // Added lower limit for bubble concentration
+    // --------------------------------------------------------------------------------------------------------------
+    // Based on the work of F. Verdolin, S. Novascone, D. Pizzocri, G. Pastore, T. Barani, L. Luzzi,
+    // Modelling fission gas behaviour in fast reactor (U,Pu)O2 fuel with BISON, 2021, Journal of Nuclear Materials
+    // --------------------------------------------------------------------------------------------------------------
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    double n_eqlim = 10;   // Minimum number of bubbles per grain face
+    double n_face = 14;    // Number of grain faces
+    const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
+
+    bub_conc_limit = 0.5 * n_eqlim*n_face/(4*pi*pow(sciantix_variable[sv["Grain radius"]].getFinalValue(),2));
+}
