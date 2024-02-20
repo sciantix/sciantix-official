@@ -44,4 +44,5 @@ void UO2()
 	matrix[index].setPoreNucleationRate();
 	matrix[index].setPoreResolutionRate();
 	matrix[index].setPoreTrappingRate();
+	matrix[index].setBubbleConcentrationLimit(); // (bub/m2)
 }

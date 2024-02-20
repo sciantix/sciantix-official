@@ -332,6 +332,10 @@ class Simulation : public Solver, public Model
 		sciantix_variable[sv["Intergranular bubble concentration"]].setFinalValue(
 			solver.BinaryInteraction(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(), 2.0, dbubble_area));
 
+		// lower limit for bubble concentration
+        if (sciantix_variable[sv["Intergranular bubble concentration"]].getFinalValue() < matrix[0].getBubbleConcentrationLimit())
+            sciantix_variable[sv["Intergranular bubble concentration"]].setFinalValue(matrix[0].getBubbleConcentrationLimit());
+
 		// Conservation
 		for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
 		{
@@ -398,12 +402,33 @@ class Simulation : public Solver, public Model
 
 		if (similarity_ratio < 1.0)
 		{
-			sciantix_variable[sv["Intergranular bubble area"]].rescaleFinalValue(similarity_ratio);
-			sciantix_variable[sv["Intergranular bubble concentration"]].rescaleFinalValue(similarity_ratio);
-			sciantix_variable[sv["Intergranular fractional coverage"]].rescaleFinalValue(pow(similarity_ratio, 2));
-			sciantix_variable[sv["Intergranular bubble volume"]].rescaleFinalValue(pow(similarity_ratio, 1.5));
-			sciantix_variable[sv["Intergranular bubble radius"]].rescaleFinalValue(pow(similarity_ratio, 0.5));
-			sciantix_variable[sv["Intergranular vacancies per bubble"]].rescaleFinalValue(pow(similarity_ratio, 1.5));
+            if (sciantix_variable[sv["Intergranular bubble concentration"]].getFinalValue() < matrix[0].getBubbleConcentrationLimit())
+            {
+                sciantix_variable[sv["Intergranular bubble concentration"]].setFinalValue(matrix[0].getBubbleConcentrationLimit());
+                
+                // Rescaling bubble area in order to have F_c = F_c,sat -> F_c = F_c,sat = N_bub,lim * A_bub,new
+                sciantix_variable[sv["Intergranular bubble area"]].setFinalValue(
+                    sciantix_variable[sv["Intergranular saturation fractional coverage"]].getFinalValue()/matrix[0].getBubbleConcentrationLimit()
+                );
+                
+                // A = pi (r sin) ^2
+                sciantix_variable[sv["Intergranular bubble radius"]].setFinalValue(
+                    1/sin(matrix[0].getSemidihedralAngle()) * sqrt(sciantix_variable[sv["Intergranular bubble area"]].getFinalValue()/pi)
+                );
+                sciantix_variable[sv["Intergranular bubble volume"]].setFinalValue(
+                    4.0/3.0 * pi * pow(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue(),3) * matrix[0].getLenticularShapeFactor()
+                );
+                sciantix_variable[sv["Intergranular fractional coverage"]].rescaleFinalValue(pow(similarity_ratio, 2));
+                sciantix_variable[sv["Intergranular vacancies per bubble"]].rescaleFinalValue(pow(similarity_ratio, 1.5));
+            }
+            else
+            {
+                sciantix_variable[sv["Intergranular bubble area"]].rescaleFinalValue(similarity_ratio);
+                sciantix_variable[sv["Intergranular fractional coverage"]].rescaleFinalValue(pow(similarity_ratio, 2));
+                sciantix_variable[sv["Intergranular bubble volume"]].rescaleFinalValue(pow(similarity_ratio, 1.5));
+                sciantix_variable[sv["Intergranular bubble radius"]].rescaleFinalValue(pow(similarity_ratio, 0.5));
+                sciantix_variable[sv["Intergranular vacancies per bubble"]].rescaleFinalValue(pow(similarity_ratio, 1.5));
+            }
 
 			// New intergranular gas concentration
 			for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
