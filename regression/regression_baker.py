@@ -105,8 +105,8 @@ def do_gold():
 # Plot the regression test results
 def do_plot():
   
-  igSwellingErrorVertU = np.abs(igSwelling2 - 100 * np.array([2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06]))
-  igSwellingErrorVertL = np.abs(igSwelling2 - 100 * np.array([0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503]))
+  igSwellingErrorVertL = np.abs(igSwelling2 - 100 * np.array([2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06]))
+  igSwellingErrorVertU = np.abs(igSwelling2 - 100 * np.array([0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503]))
 
   # SCIANTIX 1.0 vs. SCIANTIX 2.0: intragranular bubble swelling + error bars
   fig, ax = plt.subplots()

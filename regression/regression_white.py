@@ -470,4 +470,9 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
   print(f"SCIANTIX 1.0 - MAD: ", np.median(deviations_1))
   print(f"SCIANTIX 2.0 - MAD: ", np.median(deviations_2))
 
+  # RMSE
+  print(f"SCIANTIX 1.0 - RMSE: ", np.mean(np.array(gbSwellingWhite) - gbSwelling1)**2)
+  print(f"SCIANTIX 2.0 - RMSE: ", np.mean(np.array(gbSwellingWhite) - gbSwelling2)**2)
+  print("\n")
+
   return folderList, number_of_tests, number_of_tests_failed
