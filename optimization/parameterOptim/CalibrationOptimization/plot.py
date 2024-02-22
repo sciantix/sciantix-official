@@ -25,6 +25,7 @@ with open('predicted_trace.txt', 'r') as file:
         # Convert the literal to a numpy array and append to the list of arrays
         prediction_trace.append(np.array(array_literal, dtype = 'float'))
 
+final_optim_fr = np.genfromtxt('final_optim_fr.txt')
 
 params_at_max_prob = np.genfromtxt('params_at_max_prob.txt')
 params_optimized = np.genfromtxt('params_optimized.txt')
@@ -38,6 +39,7 @@ if params == 1:
     plt.scatter(optim_exp[:,0], params_at_max_prob, color = 'b', marker='o')
     plt.plot(optim_exp[:,0], params_optimized, color = 'g', label = 'optimization')
     plt.scatter(optim_exp[:,0], params_optimized, color = 'g', marker='o')
+    plt.plot([optim_exp[0,0], optim_exp[-1,0]], [params_optimized[-1], params_optimized[-1]], color = 'r', label = 'Final Optimized')
     plt.xlabel('time / h')
     plt.ylabel('ln(sf) / -')
     plt.legend()
@@ -65,15 +67,28 @@ for i, trace in enumerate(prediction_trace):
     if i == 0:
         plt.plot(trace[:,0]+(i)*optim_exp[1,0], trace[:,1], 'g', label = 'Sciantix nomimal')
         # plt.plot(trace[:,0]+(i)*optim_exp[1,0], trace[:,2], 'b', label = 'Optimized')
-        plt.plot(trace[:,0]+i*optim_exp[1,0], trace[:,2], 'r--', label = 'Prediction: Upper bound')
-        plt.plot(trace[:,0]+i*optim_exp[1,0], trace[:,3], 'b--', label = 'Prediction: Lower bound')
-        plt.fill_between(trace[:,0]+i*optim_exp[1,0], trace[:,2], trace[:,3], color = 'skyblue', alpha = 0.5, label = 'Confidence region')
+        plt.plot(trace[:,0]+i*optim_exp[1,0], trace[:,2], 'black', label = 'Prediction: Max probability')
+        plt.plot(trace[:,0]+i*optim_exp[1,0], trace[:,3], 'r--', label = 'Prediction: Lower bound')
+        plt.plot(trace[:,0]+i*optim_exp[1,0], trace[:,4], 'b--', label = 'Prediction: Upper bound')
+        plt.fill_between(trace[:,0]+i*optim_exp[1,0], trace[:,3], trace[:,4], color = 'skyblue', alpha = 0.5, label = 'Confidence region')
+        # plt.plot(trace[:,0], trace[:,5], 'r', label = 'Optimization')
+        plt.plot(final_optim_fr[:,0], final_optim_fr[:,2], 'r', label = 'Optimization')
     else:
-        plt.plot(trace[:,0]+(i)*optim_exp[1,0], trace[:,1], 'g')
+        # plt.plot(trace[:,0]+(i-1)*optim_exp[1,0], trace[:,1], 'g')
+        # # plt.plot(trace[:,0]+(i-1)*optim_exp[1,0], trace[:,2], 'b')
+        # plt.plot(trace[:,0]+(i-1)*optim_exp[1,0], trace[:,2], 'black')
+        # plt.plot(trace[:,0]+(i-1)*optim_exp[1,0], trace[:,3], 'r--')
+        # plt.plot(trace[:,0]+(i-1)*optim_exp[1,0], trace[:,4], 'b--')
+        # plt.fill_between(trace[:,0]+(i-1)*optim_exp[1,0], trace[:,3], trace[:,4], color = 'skyblue', alpha = 0.5)
+        
+        plt.plot(trace[:,0], trace[:,1], 'g')
         # plt.plot(trace[:,0]+(i-1)*optim_exp[1,0], trace[:,2], 'b')
-        plt.plot(trace[:,0]+i*optim_exp[1,0], trace[:,2], 'r--')
-        plt.plot(trace[:,0]+i*optim_exp[1,0], trace[:,3], 'b--')
-        plt.fill_between(trace[:,0]+i*optim_exp[1,0], trace[:,2], trace[:,3], color = 'skyblue', alpha = 0.5)
+        plt.plot(trace[:,0], trace[:,2], 'black')
+        plt.plot(trace[:,0], trace[:,3], 'r--')
+        plt.plot(trace[:,0], trace[:,4], 'b--')
+        plt.fill_between(trace[:,0], trace[:,3], trace[:,4], color = 'skyblue', alpha = 0.5)
+        # plt.plot(trace[:,0], trace[:,5], 'r')
+        
 plt.xlabel('time / h')
 plt.ylabel('fraction release / -')
 plt.legend()
@@ -142,48 +157,48 @@ plt.show()
 
 
 ####color map
-points_over_time = np.asfarray(points_over_time)
-priors_over_time = np.asfarray(priors_over_time)
-time_number = points_over_time.shape[0]
-point_number = points_over_time.shape[1]
-data_cm = np.zeros((point_number * time_number, 3))
+# points_over_time = np.asfarray(points_over_time)
+# priors_over_time = np.asfarray(priors_over_time)
+# time_number = points_over_time.shape[0]
+# point_number = points_over_time.shape[1]
+# data_cm = np.zeros((point_number * time_number, 3))
 
-for i in range(time_number):
-    data_cm[i*point_number:(i+1)*point_number, 0] = optim_exp[i,0]
-    data_cm[i*point_number:(i+1)*point_number, 1] = points_over_time[i]
-    data_cm[i*point_number:(i+1)*point_number, 2] = priors_over_time[i]
+# for i in range(time_number):
+#     data_cm[i*point_number:(i+1)*point_number, 0] = optim_exp[i,0]
+#     data_cm[i*point_number:(i+1)*point_number, 1] = points_over_time[i]
+#     data_cm[i*point_number:(i+1)*point_number, 2] = priors_over_time[i]
 
-time = data_cm[:,0]
-pt = data_cm[:,1]
-p = data_cm[:,2]
-# p = p.reshape((point_number, time_number))
-p_min, p_max = min(p), max(p)
-alpha_values =(p - p_min) / (p_max - p_min)
-alpha_values = alpha_values.flatten()
-# plt.scatter(time, pt, c=p, cmap='viridis', alpha=alpha_values)  # Using viridis colormap, but you can choose any
-# plt.scatter(time, pt, c=p, cmap='plasma', alpha = alpha_values) 
-# # plt.scatter(time, pt, c=p, cmap='inferno',alpha= alpha_values) 
-# # plt.scatter(time, pt, c=p, cmap='magma',alpha= alpha_values)
-# # Adding color bar to understand the mapping of y values to colors
-# plt.colorbar(label='Probability')
+# time = data_cm[:,0]
+# pt = data_cm[:,1]
+# p = data_cm[:,2]
+# # p = p.reshape((point_number, time_number))
+# p_min, p_max = min(p), max(p)
+# alpha_values =(p - p_min) / (p_max - p_min)
+# alpha_values = alpha_values.flatten()
+# # plt.scatter(time, pt, c=p, cmap='viridis', alpha=alpha_values)  # Using viridis colormap, but you can choose any
+# # plt.scatter(time, pt, c=p, cmap='plasma', alpha = alpha_values) 
+# # # plt.scatter(time, pt, c=p, cmap='inferno',alpha= alpha_values) 
+# # # plt.scatter(time, pt, c=p, cmap='magma',alpha= alpha_values)
+# # # Adding color bar to understand the mapping of y values to colors
+# # plt.colorbar(label='Probability')
 
 
-# Define a colormap and normalize alpha_values to the [0, 1] range
-norm = plt.Normalize(p.min(), p.max())
-cmap = plt.get_cmap('plasma')
+# # Define a colormap and normalize alpha_values to the [0, 1] range
+# norm = plt.Normalize(p.min(), p.max())
+# cmap = plt.get_cmap('plasma')
 
-# Plot the scatter plot with different colors and transparency levels
-for t, p_value, alpha_value in zip(time, pt, alpha_values):
-    color = cmap(norm(p_value))
-    plt.scatter(t, p_value, c=[color], alpha=alpha_value)
+# # Plot the scatter plot with different colors and transparency levels
+# for t, p_value, alpha_value in zip(time, pt, alpha_values):
+#     color = cmap(norm(p_value))
+#     plt.scatter(t, p_value, c=[color], alpha=alpha_value)
 
-# Add a colorbar for reference
-plt.colorbar(plt.cm.ScalarMappable(norm=norm, cmap=cmap), label='Probability')
+# # Add a colorbar for reference
+# plt.colorbar(plt.cm.ScalarMappable(norm=norm, cmap=cmap), label='Probability')
 
-# Labeling axes
-plt.xlabel('Time')
-plt.ylabel('Logarithem scaling factor')
-plt.show()
+# # Labeling axes
+# plt.xlabel('Time')
+# plt.ylabel('Logarithem scaling factor')
+# plt.show()
 
 
 

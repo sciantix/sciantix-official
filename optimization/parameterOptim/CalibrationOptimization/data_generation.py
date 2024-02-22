@@ -148,7 +148,8 @@ class DataGeneration:
             grid = np.meshgrid(*sfs, indexing = 'ij')
             grid_points = np.vstack([g.ravel() for g in grid]).T
 
-            kde_values = self.kde(grid_points).reshape(grid[0].shape)
+            kde_values = self.kde(grid_points)
+            kde_values = kde_values.reshape(number, number)
             # kde_values_flat = kde_values.ravel()
             # threshold_index = int(len(kde_values_flat) * 0.95)
             # sorted_indices = np.argsort(kde_values_flat)

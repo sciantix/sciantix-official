@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.stats import norm, multivariate_normal
+from scipy.stats import norm, multivariate_normal, uniform
 import os, shutil
 from itertools import product
 from data_generation import DataGeneration
@@ -22,8 +22,8 @@ class BayesianCalibration:
         self.params_info = {key:params_info[key] for key in sorted(params_info)}
         params_grid = np.meshgrid(*[info['range'] for info in self.params_info.values()], indexing = 'ij')
         self.params_grid = {key : grid for key, grid in zip(self.params_info.keys(), params_grid)}
-        # priors = [uniform.pdf(grid, loc = info['mu'] - 3*info['sigma'], scale =6* info['sigma']) for grid, info in zip(self.params_grid.values(), self.params_info.values())]
-        priors = [norm.pdf(grid, loc = info['mu'], scale = info['sigma']) for grid, info in zip(self.params_grid.values(), self.params_info.values())]
+        priors = [uniform.pdf(grid, loc = info['mu'] - 3*info['sigma'], scale =6* info['sigma']) for grid, info in zip(self.params_grid.values(), self.params_info.values())]
+        # priors = [norm.pdf(grid, loc = info['mu'], scale = info['sigma']) for grid, info in zip(self.params_grid.values(), self.params_info.values())]
         joint_prior = np.ones(priors[0].shape)
         for prior in priors:
             joint_prior *= prior
@@ -44,17 +44,18 @@ class BayesianCalibration:
         points_over_time = [self.points]
         bounds_reducted = [op.bounds_dr]
         bounds_global = np.array([[info['mu']-3 * info['sigma'], info['mu'] + 3* info['sigma']] for info in self.params_info.values()])
-        optim_folder = 0
+        optim_folder = [0]
+        # optim_folder_for_prediction = [0] #optim folder at t_(i-2)
         # likelihood = 1
         calibration_data = []
         predicted_trace = []
         for i in range(1, len(self.time_point)):
             print(f'current time: {self.time_point[i]}')
             t_0 = self.time_point[i-1] if self.online else 0
-            sciantix_folder_path = model._independent_sciantix_folder('Bayesian_calibration',optim_folder, t_0, self.time_point[i])
+            sciantix_folder_path = model._independent_sciantix_folder('Bayesian_calibration',optim_folder[-1], t_0, self.time_point[i])
             
             ##########prediction
-            prediction_sciantix_folder_path = model._independent_sciantix_folder('Prediction', optim_folder, t_0, self.time_point[i])
+            # prediction_sciantix_folder_path = model._independent_sciantix_folder('Prediction', optim_folder, t_0, self.time_point[i])
             if i == 1:
                 confidence_boundary = np.array([[info['mu'] - 1.96* info['sigma'] for info in self.params_info.values()],
                                                 [info['mu'] + 1.96 * info['sigma'] for info in self.params_info.values()]])
@@ -64,17 +65,18 @@ class BayesianCalibration:
                                       [info['mu'] for info in self.params_info.values()],
                                       [info['mu'] - 1.96* info['sigma'] for info in self.params_info.values()],
                                       [info['mu'] + 1.96 * info['sigma'] for info in self.params_info.values()]])
+                prediction_sciantix_folder_path = model._independent_sciantix_folder('Prediction', optim_folder[-1], t_0, self.time_point[i])
             else:
                 confidence_boundary = data_generator.confidence_boundary(confidence_cdf=0.95, number=1000)
-                # print(np.array(optimized_params[-1]))
-                # print(np.array(max_params_over_time[-1]))
-                # print(np.array(confidence_boundary[0]))
-                # print(np.array(confidence_boundary[1]))
                 sf_to_run = np.array([[info['mu'] for info in self.params_info.values()],
                                       np.array(max_params_over_time[-1]),
                                       np.array(confidence_boundary[0]),
                                       np.array(confidence_boundary[1])])
-                
+                if self.online == False:
+
+                    prediction_sciantix_folder_path = model._independent_sciantix_folder('Prediction', optim_folder[0], t_0, self.time_point[i])
+                else:
+                    prediction_sciantix_folder_path = model._independent_sciantix_folder('Prediction', optim_folder[i-2], self.time_point[i-2], self.time_point[i])
                 
 
                 print(f'confidence sf bounds:\n {confidence_boundary}') 
@@ -114,7 +116,7 @@ class BayesianCalibration:
             self.write_to_file('calibration_data.txt', calibration_data)
 
             optimize_result = op.optimize(model,t_0,self.time_point[i],optimized_params[-1],bounds_reducted[-1])
-            optim_folder = op.optim_folder
+            optim_folder.append(op.optim_folder)
 
             for key, value in optimize_result.items():
                 if 'pre exponential' in key:
@@ -128,6 +130,15 @@ class BayesianCalibration:
                 file.writelines('\t'.join(str(item) for item in row) + '\n' for row in params_optimized[:-1])
                 file.write('\t'.join(str(item) for item in params_optimized[-1]))
             
+            # if i == len(self.time_point) - 1:
+            #     final_optim_sciantix_path = model._independent_sciantix_folder('Prediction', optim_folder[-1], t_0, self.time_point[i])
+            #     fr_final_optim = self.compute_model_values(model, final_optim_sciantix_path, np.array(optimized_params[-1]), last_value = False)
+            #     np.savetxt('final_optim_fr.txt', fr_final_optim)
+            if i == len(self.time_point) - 1:
+                with model.change_directory(optim_folder[-1], os.getcwd()):
+                    final_optim_fr = model.get_selected_variables_value_from_output(["Time (h)","Temperature (K)","He fractional release (/)"],'output.txt')
+                np.savetxt('final_optim_fr.txt', final_optim_fr)
+
             bound = dr.transform(op)
             bounds_reducted.append(bound)
             data_generator = DataGeneration(points_over_time[-1], posteriors_over_time[-1], self.data_points_number, [value for value in bound.values()], bounds_global)
@@ -149,6 +160,9 @@ class BayesianCalibration:
         self.optimized_params = optimized_params
         self.calibration_data = calibration_data
         self.predicted_trace = predicted_trace
+        
+
+
     def setup_directory(self, dirname):
         if os.path.exists(dirname):
             shutil.rmtree(dirname)
