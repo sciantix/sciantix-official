@@ -39,11 +39,20 @@ void GrainBoundaryRupture()
         double G_gb = matrix[0].getGrainBoundaryFractureEnergy();
 
         // Polynomial fit for the (dimensionless) stress intensity factor
-        // @ref Jernkvist 2019      : Fi = + 0.568Fc + 0.059Fc + 0.5587
-        double factor = CONSTANT_NUMBERS_H::MathConstants::pi * (0.568 * pow(sciantix_variable[sv["Integranular fractional coverage"]].getFinalValue(),2) + 0.059 * sciantix_variable[sv["Integranular fractional coverage"]].getFinalValue() + 0.5587);
+        // @ref Jernkvist 2019      : Fi = + 0.568Fc^2 + 0.059Fc + 0.5587
+        // double factor = CONSTANT_NUMBERS_H::MathConstants::pi * (0.568 * pow(sciantix_variable[sv["Integranular fractional coverage"]].getFinalValue(),2) + 0.059 * sciantix_variable[sv["Integranular fractional coverage"]].getFinalValue() + 0.5587);
+        double factor = (0.568 * pow(sciantix_variable[sv["Integranular fractional coverage"]].getFinalValue(),2) + 0.059 * sciantix_variable[sv["Integranular fractional coverage"]].getFinalValue() + 0.5587);
 
-        double critical_bubble_pressure = - history_variable[hv["Hydrostatic stress"]].getFinalValue() * 1e6 + 2.0 * matrix[0].getSurfaceTension() / sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() + 
-            1 / factor * sqrt(CONSTANT_NUMBERS_H::MathConstants::pi * E * G_gb / ((1.0 - pow(nu, 2)) * sciantix_variable[sv["Integranular bubble radius"]].getFinalValue()));    
+        // double critical_bubble_pressure = - history_variable[hv["Hydrostatic stress"]].getFinalValue() * 1e6 + 2.0 * matrix[0].getSurfaceTension() / sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() + 
+        //     1 / factor * sqrt(CONSTANT_NUMBERS_H::MathConstants::pi * E * G_gb / ((1.0 - pow(nu, 2)) * sciantix_variable[sv["Integranular bubble radius"]].getFinalValue()));    
+
+        // Stress intensity factor ()
+        double K_ic = sqrt(G_gb * E / ((1.0 - pow(nu, 2))));
+
+        double crack_length = 0.0;
+        double p_crack = K_ic / (factor * sqrt(CONSTANT_NUMBERS_H::MathConstants::pi * (sciantix_variable[sv["Integranular bubble radius"]].getFinalValue() + crack_length)));
+
+        double critical_bubble_pressure = p_crack - (2.0 * matrix[0].getSurfaceTension() / sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() - history_variable[hv["Hydrostatic stress"]].getFinalValue() * 1e6);
 
         sciantix_variable[sv["Critical intergranular bubble pressure"]].setFinalValue(critical_bubble_pressure * 1e-6);
 
