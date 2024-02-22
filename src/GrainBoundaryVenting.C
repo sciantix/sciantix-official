@@ -30,19 +30,45 @@ void GrainBoundaryVenting()
 
 	switch (int(input_variable[iv["iGrainBoundaryVenting"]].getValue()))
 	{
-	case 0:
-	{
-		/// @brief
-		/// This case corresponds to no grain boundary venting.
+    case 0:
+    {
+        /**
+         * This case defines the vented fraction triggering the fission gas release
+         *
+        */ 
 
-		reference = "not considered.";
+        // screw parameter
+        const double screw_parameter = 0.1;
 
-		parameter.push_back(0.0);
-		parameter.push_back(0.0);
-		parameter.push_back(0.0);
+        // span parameter
+        const double span_parameter = 10.0;
 
-		break;
-	}
+        // cent parameter
+        const double cent_parameter = 0.43;
+
+		double sigmoid_variable;
+		sigmoid_variable = sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() *
+			exp(-sciantix_variable[sv["Intergranular fractional intactness"]].getIncrement());
+
+		// Vented fraction
+		sciantix_variable[sv["Intergranular vented fraction"]].setFinalValue(
+			1.0 /
+			pow((1.0 + screw_parameter *
+				exp(- span_parameter *
+					(sigmoid_variable - cent_parameter))),
+				(1.0 / screw_parameter))
+		);
+
+		// Venting probability
+		sciantix_variable[sv["Intergranular venting probability"]].setFinalValue(
+			(1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue()) +
+			sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue() * sciantix_variable[sv["Intergranular vented fraction"]].getFinalValue()
+		);
+
+        reference = "Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE";
+
+        break;
+    }
 
 	case 1:
 	{
