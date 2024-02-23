@@ -89,7 +89,7 @@ def do_plot(label_x, label_y, experimental_data_x, experimental_data_y, calculat
 	ax.set_xlabel(label_x)
 	ax.set_ylabel(label_y)
 	ax.plot(experimental_data_x, experimental_data_y, 'o', color = '#B3B3B3', label='Experimental')
-	ax.plot(calculations_x, calculations_y, '--', color = 'black', linewidth = 1, label='SCIANTIX 2.0')
+	ax.plot(calculations_x, calculations_y, color = 'green', linewidth = 1, label='SCIANTIX 2.0')
 	ax.set_frame_on(True)
 	ax.legend()
 	ax.legend(loc='best')
@@ -167,7 +167,7 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot, folderList, number_of_
 			if mode_plot == 1:
 
 				do_plot(
-					'Burnup (GWd tHM${}^{-1}$)',
+					'Effective burnup (MWd kgHM${}^{-1}$)',
 					'Pore number density (pores m${}^{-3}$)',
 					exp_pore_density[:,0],
 					exp_pore_density[:,1],
@@ -176,7 +176,7 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot, folderList, number_of_
 				)
 
 				do_plot(
-					'Burnup (GWd tHM${}^{-1}$)',
+					'Effective burnup (MWd kgHM${}^{-1}$)',
 					'HBS porosity (/)',
 					exp_porosity[:,0],
 					exp_porosity[:,1],
@@ -185,7 +185,7 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot, folderList, number_of_
 				)
 
 				do_plot(
-					'Burnup (GWd tHM${}^{-1}$)',
+					'Effective burnup (MWd kgHM${}^{-1}$)',
 					'Pore radius (m)',
 					exp_pore_radius[:,0],
 					exp_pore_radius[:,1],

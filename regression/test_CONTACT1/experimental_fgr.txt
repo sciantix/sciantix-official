@@ -1,4 +1,4 @@
-Burnup (MWd/kgU)  Fission gas release (/)
+Burnup (MWd/kgU)	Fission gas release (/)
 1.02	0.001977
 1.92	0.001794
 2.38	0.004062
