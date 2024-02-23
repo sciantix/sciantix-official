@@ -2,7 +2,7 @@
 1	#	iFGDiffusionCoefficient (0= constant value, 1= Turnbull et al. (1988))
 1	#	iDiffusionSolver (1= SDA with quasi-stationary hypothesis, 2= SDA without quasi-stationary hypothesis)
 1	#	iIntraGranularBubbleEvolution (1= Pizzocri et al. (2018))
-2	#	iResolutionRate (0= constant value, 1= Turnbull (1971), 2= Losonen (2000), 3= thermal resolution, Cognini et al. (2021))
+1	#	iResolutionRate (0= constant value, 1= Turnbull (1971), 2= Losonen (2000), 3= thermal resolution, Cognini et al. (2021))
 1	#	iTrappingRate (0= constant value, 1= Ham (1958))
 1	#	iNucleationRate (0= constant value, 1= Olander, Wongsawaeng (2006))
 1	#	iOutput (1= default output files)

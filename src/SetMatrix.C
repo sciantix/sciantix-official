@@ -175,7 +175,7 @@ void Matrix::setPoreNucleationRate()
    *
    */
 
-  double sf_nucleation_rate_porosity = 1.25e-6;
+  double sf_nucleation_rate_porosity = 1.25e-6; // from dburnup to dtime
 
   pore_nucleation_rate =
 		(5.0e17 * 2.77e-7 * 3.54 * (1.0-sciantix_variable[sv["Restructured volume fraction"]].getFinalValue()) *
