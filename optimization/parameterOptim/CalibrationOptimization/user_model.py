@@ -1,7 +1,7 @@
 import numpy as np
 import os, shutil, copy, subprocess
 from contextlib import contextmanager
-
+from scipy.interpolate import interp1d
 
 class UserModel:
     """
@@ -73,13 +73,15 @@ class UserModel:
         self.time_history_original = self.history_original[:,0]
         self.temperature_history_original = self.history_original[:,1]
 
-    def _independent_sciantix_folder(self, destination,optim_folder, t_0, t_1):
+    def _independent_sciantix_folder(self, destination,optim_folder, time_points):
         """
         Build a standard sciantix folder with newest sciantix.x and the input files for selected case.
         Return the folder's path
         """
-        t_start = np.round(t_0,3)
-        t_end = np.round(t_1,3)
+        t_start = time_points[0]
+        t_end = time_points[-1]
+        t_start = np.round(t_start,3)
+        t_end = np.round(t_end,3)
         forlder_name = f'from_{t_start}_to_{t_end}'
 
         with self.change_directory(destination, self.code_container):
@@ -97,7 +99,7 @@ class UserModel:
             shutil.copy(self.input_history_path, os.getcwd())
             history_original = copy.deepcopy(self.history_original)
 
-            history_info = self._filter_and_interpolate_matrix(history_original, t_start, t_end)
+            history_info = self._filter_and_interpolate_matrix(history_original, time_points)
             history_info[:,0] = history_info[:,0] - t_start
             ois = 7.8e-30
             if t_start != 0:
@@ -325,7 +327,7 @@ class UserModel:
                 return matrix[i], matrix[i + 1]
         return None
     
-    def _filter_and_interpolate_matrix(self ,matrix, start_time, end_time):
+    def _filter_and_interpolate_matrix(self ,matrix, time_points):
         """
         Create a new matrix filtered by start and end times, including interpolated values at these times.
 
@@ -337,26 +339,55 @@ class UserModel:
         Returns:
         list of lists: The new matrix with rows between and including the interpolated start and end times.
         """
-        new_matrix = []
+        # Original x and y-values
+        x_original = matrix[:, 0]
 
-        # Find points for interpolation at start and end times
-        start_points = self.find_closest_points(matrix, start_time)
-        end_points = self.find_closest_points(matrix, end_time)
+        # New x positions where we want to add points
+        new_x_positions = time_points
+        max_new_x = max(time_points)
+        new_x_positions = new_x_positions[~np.isin(new_x_positions, x_original)]
+        # Initialize an array to hold the new data points
+        new_data_points = np.zeros((len(new_x_positions), matrix.shape[1]))
+        
+        # Fill in the new x positions in the new data points array
+        new_data_points[:, 0] = new_x_positions
 
-        # Interpolate and add start row
-        if start_points:
-            new_matrix.append(self.linear_interpolate(*start_points, start_time)) # use * to unpacke the tuple output from linear_interpolate
+        # Interpolating for each y-value column
+        for i in range(1, matrix.shape[1]):
+            y_original = matrix[:, i]
+            interpolation_func = interp1d(x_original, y_original, kind='linear')
+            
+            # Calculating the new y-values and adding them to the new data points array
+            new_data_points[:, i] = interpolation_func(new_x_positions)
 
-        # Add in-between rows
-        for row in matrix:
-            if start_time < row[0] < end_time:
-                new_matrix.append(row)
+        # Combine old and new data points and sort by the first column (x-values)
+        combined_data = np.vstack((matrix, new_data_points))
+        sorted_combined_data = combined_data[combined_data[:, 0].argsort()]
 
-        # Interpolate and add end row
-        if end_points:
-            new_matrix.append(self.linear_interpolate(*end_points, end_time))
-        new_matrix = np.array(new_matrix)
-        return new_matrix
+        final_data = sorted_combined_data[sorted_combined_data[:, 0] <= max_new_x]
+
+
+        # new_matrix = []
+        # start_time = np.round(time_points[0],3)
+        # end_time = np.round(time_points[-1],3)
+        # # Find points for interpolation at start and end times
+        # start_points = self.find_closest_points(matrix, start_time)
+        # end_points = self.find_closest_points(matrix, end_time)
+
+        # # Interpolate and add start row
+        # if start_points:
+        #     new_matrix.append(self.linear_interpolate(*start_points, start_time)) # use * to unpacke the tuple output from linear_interpolate
+
+        # # Add in-between rows
+        # for row in matrix:
+        #     if start_time < row[0] < end_time:
+        #         new_matrix.append(row)
+
+        # # Interpolate and add end row
+        # if end_points:
+        #     new_matrix.append(self.linear_interpolate(*end_points, end_time))
+        # new_matrix = np.array(new_matrix)
+        return final_data
 
     
     @staticmethod

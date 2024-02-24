@@ -2,8 +2,11 @@ from optimization import Optimization
 from user_model import UserModel
 from domain_reduction import DomainReduction
 import numpy as np
-import os
+import os, shutil
 
+if os.path.exists('Optimization'):
+    shutil.rmtree('Optimization')
+os.makedirs('Optimization')
     # Initialize the UserModel with appropriate parameters
 model = UserModel(
     case_name='test_Talip2014_1600K',
@@ -33,13 +36,14 @@ op = Optimization(
 dr = DomainReduction()
 dr.initialize(op)
 
-time_points = np.linspace(0, max(model.time_exp), 21)
+time_points = np.linspace(0, max(model.time_exp), 20)
+# time_points = np.array([max(model.time_exp)])
 optimized_params = [[info['mu'] for info in params_info.values()]]
 optimized_params_nolog = [[1,1]]
 bounds_reducted = [op.bounds_dr]
 optim_folder = [0]
 for i in range(1,len(time_points)):
-    optimize_result = op.optimize(model,time_points[0],time_points[i],optimized_params[-1],bounds_reducted[-1])
+    optimize_result = op.optimize(model,time_points[:i+1],optimized_params[-1],bounds_reducted[-1])
     optim_folder.append(op.optim_folder)
     optimized_param_nolog = [optimize_result[key] for key in params_info.keys()]
     optimized_params_nolog.append(optimized_param_nolog)

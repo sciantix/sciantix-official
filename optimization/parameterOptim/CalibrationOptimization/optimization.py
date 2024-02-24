@@ -48,7 +48,7 @@ class Optimization:
         else:
             raise ValueError("Invalid method specified")
 
-    def optimize(self, model:UserModel,previous_x, current_x, initial_values, initial_bounds_dr):
+    def optimize(self, model:UserModel,time_point, initial_values, initial_bounds_dr):
         """
         Performs optimization using the specified method.
 
@@ -61,6 +61,8 @@ class Optimization:
         Returns:
             dict: Optimized parameter values.
         """
+        previous_x = np.round(time_point[0],3)
+        current_x = np.round(time_point[-1],3)
         destination_name = 'Optimization'
         if not os.path.exists(destination_name):
             os.makedirs(destination_name)
@@ -79,7 +81,7 @@ class Optimization:
                     previous_optim_path = folder_path
                     break
 
-        self.sciantix_optim_path = model._independent_sciantix_folder(self.optim_container_path,previous_optim_path, previous_x, current_x)
+        self.sciantix_optim_path = model._independent_sciantix_folder(self.optim_container_path,previous_optim_path, time_point)
         cost_function = self._create_cost_function(model,current_x)
         if self.method == 'som':
             optimizer_result, error = self._optimize_som(cost_function, initial_values)

@@ -52,8 +52,11 @@ class BayesianCalibration:
         for i in range(1, len(self.time_point)):
             print(f'current time: {self.time_point[i]}')
             t_0 = self.time_point[i-1] if self.online else 0
-            sciantix_folder_path = model._independent_sciantix_folder('Bayesian_calibration',optim_folder[-1], t_0, self.time_point[i])
-            
+            t_0_index = i-1 if self.online else 0
+            # sciantix_folder_path = model._independent_sciantix_folder('Bayesian_calibration',optim_folder[-1], t_0, self.time_point[i])
+
+            sciantix_folder_path = model._independent_sciantix_folder('Bayesian_calibration',optim_folder[-1], self.time_point[t_0_index:i+1])
+
             ##########prediction
             # prediction_sciantix_folder_path = model._independent_sciantix_folder('Prediction', optim_folder, t_0, self.time_point[i])
             if i == 1:
@@ -65,7 +68,7 @@ class BayesianCalibration:
                                       [info['mu'] for info in self.params_info.values()],
                                       [info['mu'] - 1.96* info['sigma'] for info in self.params_info.values()],
                                       [info['mu'] + 1.96 * info['sigma'] for info in self.params_info.values()]])
-                prediction_sciantix_folder_path = model._independent_sciantix_folder('Prediction', optim_folder[-1], t_0, self.time_point[i])
+                prediction_sciantix_folder_path = model._independent_sciantix_folder('Prediction', optim_folder[-1], self.time_point[t_0_index:i+1])
             else:
                 confidence_boundary = data_generator.confidence_boundary(confidence_cdf=0.95, number=1000)
                 sf_to_run = np.array([[info['mu'] for info in self.params_info.values()],
@@ -74,9 +77,9 @@ class BayesianCalibration:
                                       np.array(confidence_boundary[1])])
                 if self.online == False:
 
-                    prediction_sciantix_folder_path = model._independent_sciantix_folder('Prediction', optim_folder[0], t_0, self.time_point[i])
+                    prediction_sciantix_folder_path = model._independent_sciantix_folder('Prediction', optim_folder[0], self.time_point[0:i+1])
                 else:
-                    prediction_sciantix_folder_path = model._independent_sciantix_folder('Prediction', optim_folder[i-2], self.time_point[i-2], self.time_point[i])
+                    prediction_sciantix_folder_path = model._independent_sciantix_folder('Prediction', optim_folder[i-2], self.time_point[i-2:i+1])
                 
 
                 print(f'confidence sf bounds:\n {confidence_boundary}') 
@@ -115,7 +118,7 @@ class BayesianCalibration:
             calibration_data.append(calib_data)
             self.write_to_file('calibration_data.txt', calibration_data)
 
-            optimize_result = op.optimize(model,t_0,self.time_point[i],optimized_params[-1],bounds_reducted[-1])
+            optimize_result = op.optimize(model,self.time_point[t_0_index:i+1],optimized_params[-1],bounds_reducted[-1])
             optim_folder.append(op.optim_folder)
 
             for key, value in optimize_result.items():

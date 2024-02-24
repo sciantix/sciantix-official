@@ -59,10 +59,6 @@ def log_probability(params_value, params_key, mu, cov, model, x, sciantix_folder
         return -np.inf
     return lp + log_likelihood(params_value,params_key, model, x, sciantix_folder_path)
 
-
-
-
-
 def log_probability_kde(params_value, kde, params_key, model, x, sciantix_folder_path):
     lp = np.log(kde(params_value))
     if not np.isfinite(lp):
@@ -78,8 +74,8 @@ np.random.seed(42)
 time_points = np.linspace(0, max(model.time_exp), 5)
 samples = []
 for i in range(1,len(time_points)):
-    sciantix_folder_path = model._independent_sciantix_folder('Calibration', 0, 0, time_points[i])
-    nll = lambda *args: -log_likelihood(*args)
+    sciantix_folder_path = model._independent_sciantix_folder('Calibration', 0, time_points[0:i+1])
+    nll = lambda *args: -np.exp(log_likelihood(*args))
     initial = initial_values
     soln = minimize(nll, initial, args = (keys, model, time_points[i], sciantix_folder_path))
 
@@ -96,21 +92,26 @@ for i in range(1,len(time_points)):
     np.set_printoptions(threshold=np.inf)
     if i == 1:
         sampler = emcee.EnsembleSampler(nwalkers, ndim, log_probability, args = (keys, mean_values, covariance,  model, time_points[i], sciantix_folder_path))
-        sampler.run_mcmc(pos, 100, progress = True)
-        flat_samples = sampler.get_chain(discard=12, flat=True)
-        
+        sampler.run_mcmc(pos, 5000, progress = True)
+        flat_samples = sampler.get_chain(discard=50, flat=True)
+
     else:
         kde = gaussian_kde(flat_samples)
         sampler = emcee.EnsembleSampler(nwalkers, ndim, log_probability_kde, args = (kde, keys, model, time_points[i], sciantix_folder_path))
-        sampler.run_mcmc(pos, 100, process =True)
-        flat_samples = sampler.get_chain(discard = 12, flat = True)
+        sampler.run_mcmc(pos, 5000, process =True)
+        flat_samples = sampler.get_chain(discard = 50, flat = True)
     samples.append(flat_samples)
-        
-for j in range(len(samples)):
-    fig = corner.corner(
-        samples[j], labels=keys
-    )
-    plt.show()
+    with open('MCMC_samples.txt', 'w') as file:
+        for j, array in enumerate(samples):
+            file.write(np.array2string(array, separator=', ') + "\n\n")
+    tau = sampler.get_autocorr_time()
+    print(tau)
+
+# for j in range(len(samples)):
+#     fig = corner.corner(
+#         samples[j], labels=keys
+#     )
+#     plt.show()
 
 # tau = sampler.get_autocorr_time()
 # print(tau)
