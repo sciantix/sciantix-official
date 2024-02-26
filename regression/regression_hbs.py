@@ -79,12 +79,6 @@ def do_plot(label_x, label_y, experimental_data_x, experimental_data_y, calculat
 
 	# 1st plot
 	fig, ax = plt.subplots(1,1)
-	plt.subplots_adjust(left=0.1,
-						bottom=0.1,
-						right=0.9,
-						top=0.9,
-						wspace=0.34,
-						hspace=0.4)
 
 	ax.set_xlabel(label_x)
 	ax.set_ylabel(label_y)
