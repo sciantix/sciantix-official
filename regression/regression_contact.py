@@ -73,58 +73,80 @@ def do_gold():
     print(f"output.txt not found in {file}")
 
 # Plot the regression test results
-def do_plot(exp_Xe133, exp_Kr85m, calculated_Kr85m_Zullo2022, calculated_Xe133_Zullo2022, time, temperature, burnup, Xe133, Kr85m):
-  fig, ax = plt.subplots(1,2)
-  plt.subplots_adjust(left=0.1,
-                      bottom=0.1,
-                      right=0.9,
-                      top=0.9,
-                      wspace=0.34,
-                      hspace=0.4)
+def do_plot(exp_Xe133, exp_Kr85m, calculated_Kr85m_Zullo2022, calculated_Xe133_Zullo2022, time, temperature, burnup, Xe133, Kr85m, expfgr, fgr):
+  
+  # PLOT Xe133
+  fig, ax = plt.subplots(1,1)
 
-  axT = ax[0].twinx()
+  axT = ax.twinx()
   axT.set_ylabel('Temperature (K)')
   axT.plot(burnup, temperature, 'r-', linewidth = 1, label="Temperature")
   axT.set_zorder(1)
 
-  ax[0].plot(burnup, Xe133, color = '#98E18D', linewidth = 2, label='SCIANTIX 2.0 ${}^{133}$Xe')
-  ax[0].plot(calculated_Xe133_Zullo2022[1:,0].astype(float), calculated_Xe133_Zullo2022[1:,1].astype(float), '--', color = 'black', linewidth = 1, label='Zullo et al. (2022) ${}^{133}$Xe')
-  ax[0].plot(exp_Xe133[1:,0].astype(float), exp_Xe133[1:,1].astype(float), 'o', color = '#B3B3B3', label='Data from IFPE ${}^{133}$Xe')
-  ax[0].set_zorder(2)
-  ax[0].set_frame_on(False)
+  ax.plot(burnup, Xe133, color = '#98E18D', linewidth = 2, label='SCIANTIX 2.0 ${}^{133}$Xe')
+  ax.fill_between(burnup, (Xe133)/5, (Xe133)*5, color='#ffcc80', alpha=0.5, label='x/5 deviation')
+  ax.plot(calculated_Xe133_Zullo2022[1:,0].astype(float), calculated_Xe133_Zullo2022[1:,1].astype(float), '--', color = 'black', linewidth = 1, label='Zullo et al. (2022) ${}^{133}$Xe')
+  ax.plot(exp_Xe133[1:,0].astype(float), exp_Xe133[1:,1].astype(float), 'o', color = '#B3B3B3', label='Data from IFPE ${}^{133}$Xe')
+  ax.set_zorder(2)
+  ax.set_frame_on(False)
 
-  # ax.set_title(file + ' - ${}^{133}$Xe')
-  ax[0].set_xlabel('Burnup (GWd/tU)')
-  ax[0].set_ylabel('Release-to-birth ratio (/)')
-  ax[0].legend()
-  ax[0].set_yscale('log')
-  ax[0].set_ylim(1e-5, 1.0)
+  ax.set_xlabel('Burnup (GWd/tU)')
+  ax.set_ylabel('Release-to-birth ratio (/)')
+  ax.legend()
+  ax.set_yscale('log')
+  ax.set_ylim(1e-5, 1.0)
 
-  h1, l1 = ax[0].get_legend_handles_labels()
+  h1, l1 = ax.get_legend_handles_labels()
   h2, l2 = axT.get_legend_handles_labels()
-  ax[0].legend(h1+h2, l1+l2, loc='lower right')
+  ax.legend(h1+h2, l1+l2, loc='lower right')
 
-  axT = ax[1].twinx()
+  axT = ax.twinx()
   axT.set_ylabel('Temperature (K)')
   axT.plot(burnup, temperature, 'r-', linewidth = 1, label="Temperature")
   axT.set_zorder(1)
 
-  ax[1].plot(burnup, Kr85m, color = '#98E18D', linewidth = 2, label='SCIANTIX 2.0 ${}^{85m}$Kr')
-  ax[1].plot(calculated_Kr85m_Zullo2022[1:,0].astype(float), calculated_Kr85m_Zullo2022[1:,1].astype(float), '--', color = 'black', linewidth = 1, label='Zullo et al. (2022) ${}^{85m}$Kr')
-  ax[1].plot(exp_Kr85m[1:,0].astype(float), exp_Kr85m[1:,1].astype(float), 'o', color = '#B3B3B3', label='Data from IFPE ${}^{85m}$Kr')
-  ax[1].set_zorder(2)
-  ax[1].set_frame_on(False)
+  # Kr85m
+  fig, ax = plt.subplots(1,1)
+
+  axT = ax.twinx()
+  axT.set_ylabel('Temperature (K)')
+  axT.plot(burnup, temperature, 'r-', linewidth = 1, label="Temperature")
+  axT.set_zorder(1)
+
+  ax.plot(burnup, Kr85m, color = '#98E18D', linewidth = 2, label='SCIANTIX 2.0 ${}^{85m}$Kr')
+  ax.fill_between(burnup, (Kr85m)/5, (Kr85m)*5, color='#ffcc80', alpha=0.5, label='x/5 deviation')
+  ax.plot(calculated_Kr85m_Zullo2022[1:,0].astype(float), calculated_Kr85m_Zullo2022[1:,1].astype(float), '--', color = 'black', linewidth = 1, label='Zullo et al. (2022) ${}^{85m}$Kr')
+  ax.plot(exp_Kr85m[1:,0].astype(float), exp_Kr85m[1:,1].astype(float), 'o', color = '#B3B3B3', label='Data from IFPE ${}^{85m}$Kr')
+  ax.set_zorder(2)
+  ax.set_frame_on(False)
 
   # ax.set_title(file + ' - ${}^{85m}$Kr')
-  ax[1].set_xlabel('Burnup (GWd/tU)')
-  ax[1].set_ylabel('Release-to-birth ratio (/)')
-  ax[1].legend()
-  ax[1].set_yscale('log')
-  ax[1].set_ylim(1e-5, 1.0)
+  ax.set_xlabel('Burnup (GWd/tU)')
+  ax.set_ylabel('Release-to-birth ratio (/)')
+  ax.legend()
+  ax.set_yscale('log')
+  ax.set_ylim(1e-5, 1.0)
 
-  h1, l1 = ax[1].get_legend_handles_labels()
+  h1, l1 = ax.get_legend_handles_labels()
   h2, l2 = axT.get_legend_handles_labels()
-  ax[1].legend(h1+h2, l1+l2, loc='lower right')
+  ax.legend(h1+h2, l1+l2, loc='lower right')
+
+  # plt.savefig('CONTACT1_Kr85m.png')
+  plt.show()
+
+  # FISSION GAS PLOT
+  fig, ax = plt.subplots(1,1)
+  
+  axT = ax.twinx()
+  axT.set_ylabel('Temperature (K)')
+  axT.plot(burnup, temperature, 'r-', linewidth = 1, label="Temperature")
+  axT.set_zorder(1)
+
+  ax.plot(burnup, fgr, color = '#98E18D', linewidth = 2, label='SCIANTIX 2.0')
+  ax.plot(expfgr[1:, 0].astype(float), expfgr[1:, 1].astype(float), '--o', color='black', linewidth=1, label='Exp.')
+    
+  ax.set_xlabel('Burnup (GWd/tU)')
+  ax.set_ylabel('Fission gas release (/)')
 
   # plt.savefig('CONTACT1_Kr85m.png')
   plt.show()
@@ -186,6 +208,7 @@ def regression_contact(wpath, mode_CONTACT, mode_gold, mode_plot, folderList, nu
 
       exp_Xe133 = import_data("experimental_RB_Xe133.txt")
       exp_Kr85m = import_data("experimental_RB_Kr85m.txt")
+      exp_FG = import_data("experimental_fgr.txt")
 
       # output.txt
       # find indexes
@@ -194,6 +217,7 @@ def regression_contact(wpath, mode_CONTACT, mode_gold, mode_plot, folderList, nu
       burnupPos = findSciantixVariablePosition(data, "Burnup (MWd/kgUO2)")
       Xe133Pos = findSciantixVariablePosition(data, "Xe133 R/B (/)")
       Kr85mPos = findSciantixVariablePosition(data, "Kr85m R/B (/)")
+      fgr_pos = findSciantixVariablePosition(data, "Fission gas release (/)")
 
       # arrays
       time = data[1:,timePos].astype(float)
@@ -201,6 +225,7 @@ def regression_contact(wpath, mode_CONTACT, mode_gold, mode_plot, folderList, nu
       burnup = data[1:,burnupPos].astype(float) / 0.8814
       Xe133 = data[1:,Xe133Pos].astype(float)
       Kr85m = data[1:,Kr85mPos].astype(float)
+      fgr = data[1:,fgr_pos].astype(float)
 
       # import data
       calculated_Kr85m_Zullo2022 = import_data("calculated_Kr85m_Zullo.txt")
@@ -209,7 +234,7 @@ def regression_contact(wpath, mode_CONTACT, mode_gold, mode_plot, folderList, nu
       # Check if the user has chosen to display the various plots
       if mode_plot == 1:
         do_plot(exp_Xe133, exp_Kr85m, calculated_Kr85m_Zullo2022, calculated_Xe133_Zullo2022,
-                time, temperature, burnup, Xe133, Kr85m)
+                time, temperature, burnup, Xe133, Kr85m, exp_FG, fgr)
 
       """ Statistical analysis """
       # Find common position in the burnup vector
@@ -247,17 +272,16 @@ def regression_contact(wpath, mode_CONTACT, mode_gold, mode_plot, folderList, nu
       # absolute deviations (SCIANTIX 1.0)
       dev_xe133_1 = abs((calculated_Xe133_Zullo2022[indices_1,1].astype(float) - exp_Xe133[1:,1].astype(float)))
       dev_kr85m_1 = abs((calculated_Kr85m_Zullo2022[indices_2,1].astype(float) - exp_Kr85m[1:,1].astype(float)))
-
-      print(f"SCIANTIX 1.0 - Xe133, RMSE = ", mse_xe133_1)
-      print(f"SCIANTIX 2.0 - Xe133, RMSE = ", mse_xe133_2)
-      print(f"SCIANTIX 1.0 - Kr85m, RMSE = ", mse_kr85m_1)
-      print(f"SCIANTIX 2.0 - Kr85m, RMSE = ", mse_kr85m_2)
-      print(f"SCIANTIX 1.0 - Xe133, Median absolute deviations = ", np.median(dev_xe133_1))
-      print(f"SCIANTIX 2.0 - Xe133, Median absolute deviations = ", np.median(dev_xe133_2))
-      print(f"SCIANTIX 1.0 - Kr85m, Median absolute deviations = ", np.median(dev_kr85m_1))
-      print(f"SCIANTIX 2.0 - Kr85m, Median absolute deviations = ", np.median(dev_kr85m_2))
+      print(f"SCIANTIX 1.0 - Xe133, RMSE = {mse_xe133_1:.2e}")
+      print(f"SCIANTIX 2.0 - Xe133, RMSE = {mse_xe133_2:.2e}")
+      print(f"SCIANTIX 1.0 - Kr85m, RMSE = {mse_kr85m_1:.2e}")
+      print(f"SCIANTIX 2.0 - Kr85m, RMSE = {mse_kr85m_2:.2e}")
+      print(f"SCIANTIX 1.0 - Xe133, Median absolute deviations = {np.median(dev_xe133_1):.2e}")
+      print(f"SCIANTIX 2.0 - Xe133, Median absolute deviations = {np.median(dev_xe133_2):.2e}")
+      print(f"SCIANTIX 1.0 - Kr85m, Median absolute deviations = {np.median(dev_kr85m_1):.2e}")
+      print(f"SCIANTIX 2.0 - Kr85m, Median absolute deviations = {np.median(dev_kr85m_2):.2e}")
       print("\n")
-
+      
       os.chdir('..')
 
   return folderList, number_of_tests, number_of_tests_failed

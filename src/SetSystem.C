@@ -90,7 +90,7 @@ void System::setBubbleDiffusivity(int input_value)
 		}
 
 		default:
-			ErrorMessages::Switch("SetSystem.cpp", "iBubbleDiffusivity", input_value);
+			ErrorMessages::Switch(__FILE__, "iBubbleDiffusivity", input_value);
 			break;
 	}
 
@@ -263,7 +263,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch("SetSystem.cpp", "iFGDiffusionCoefficient", input_value);
+		ErrorMessages::Switch(__FILE__, "iFGDiffusionCoefficient", input_value);
 		break;
 	}
 }
@@ -344,7 +344,7 @@ void System::setHeliumDiffusivity(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch("SetSystem.cpp", "iHeDiffusivity", input_value);
+		ErrorMessages::Switch(__FILE__, "iHeDiffusivity", input_value);
 		break;
 	}
 }
@@ -459,7 +459,7 @@ void System::setResolutionRate(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch("SetSystem.cpp", "iResolutionRate", input_value);
+		ErrorMessages::Switch(__FILE__, "iResolutionRate", input_value);
 		break;
 	}
 	resolution_rate *= sf_resolution_rate;
@@ -531,7 +531,7 @@ void System::setTrappingRate(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch("SetSystem.cpp", "iTrappingRate", input_value);
+		ErrorMessages::Switch(__FILE__, "iTrappingRate", input_value);
 		break;
 	}
 }
@@ -588,7 +588,7 @@ void System::setNucleationRate(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch("SetSystem.cpp", "inucleation_rate", input_value);
+		ErrorMessages::Switch(__FILE__, "inucleation_rate", input_value);
 		break;
 	}
 }
@@ -621,32 +621,29 @@ void System::setProductionRate(int input_value)
 
 	case 2:
 	{
-		/**
-		 * @brief Surrogate model derived from **helium production in fast reactor conditions**.
-		 * The helium production rate is fitted with a function linearly dependent on the local burnup.
-	 	 * The default fit is from @ref *A. Cechet et al., Nuclear Engineering and Technology, 53 (2021) 1893-1908*.
-		 * 
-	   * **Default range of utilization of the default fit**
-	   * - Fast reactor conditions: (U,Pu)O<sub>2</sub> MOX fuel in SFR conditions
-	   * - Up to 200 GWd/tHM
-	   * - Pu/HM concentration of 20-40%
-		 * 
-		 * The default fit (hence the helium production rate) can be calibrated by using the dedicated
-		 * scaling factor (to be set in input_scaling_factors.txt).
-		 * 
-		 */
+        /**
+         * @brief Surrogate model derived from **helium production in fast reactor conditions**.
+         * The helium production rate is fitted with a function linearly dependent on the local burnup.
+         * The default fit is from @ref *A. Cechet et al., Nuclear Engineering and Technology, 53 (2021) 1893-1908*.
+         * 
+        * **Default range of utilization of the default fit**
+        * - Fast reactor conditions: (U,Pu)O<sub>2</sub> MOX fuel in SFR conditions
+        * - Up to 200 GWd/tHM
+        * - Pu/HM concentration of 20-40%
+        * 
+        * The default fit (hence the helium production rate) can be calibrated by using the dedicated
+        * scaling factor (to be set in input_scaling_factors.txt).
+        * 
+        */
 
 		reference += "Case for helium production rate: Cechet et al., Nuclear Engineering and Technology, 53 (2021) 1893-1908.\n\t";
 		
-		// specific power = dburnup
+		// specific power = dburnup / dt
 		sciantix_variable[sv["Specific power"]].setFinalValue((history_variable[hv["Fission rate"]].getFinalValue() * (3.12e-17) / sciantix_variable[sv["Fuel density"]].getFinalValue()));
 
-		// production rate in dproduced / dburnup -> dproduced / time
+		// production rate in dproduced / dburnup -> dproduced / dtime
 		production_rate = 2.0e+21 * sciantix_variable[sv["Burnup"]].getFinalValue() + 3.0e+23; // (at/m3 burnup)
-		if(physics_variable[pv["Time step"]].getFinalValue())
-			production_rate *= sciantix_variable[sv["Specific power"]].getFinalValue() / 86400.0 / physics_variable[pv["Time step"]].getFinalValue();  // (at/m3s)
-		else
-			production_rate = 0.0;
+        production_rate *= sciantix_variable[sv["Specific power"]].getFinalValue() / 86400;  // (at/m3s)
 
 		production_rate *= sf_helium_production_rate;
 
@@ -667,7 +664,7 @@ void System::setProductionRate(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch("SetSystem.cpp", "iHeliumProductionRate", input_value);
+		ErrorMessages::Switch(__FILE__, "iHeliumProductionRate", input_value);
 		break;
 	}
 

@@ -74,7 +74,7 @@ void HighBurnupStructurePorosity()
 	}
 
 	default:
-		ErrorMessages::Switch("HighBurnupStructurePorosity.cpp", "HighBurnupStructurePorosity", int(input_variable[iv["HighBurnupStructurePorosity"]].getValue()));
+		ErrorMessages::Switch(__FILE__, "HighBurnupStructurePorosity", int(input_variable[iv["HighBurnupStructurePorosity"]].getValue()));
 		break;
 	}
 

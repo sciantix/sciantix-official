@@ -93,7 +93,7 @@ void GrainBoundaryVenting()
 	}
 
 	default:
-		ErrorMessages::Switch("GrainBoundaryVenting.cpp", "iGrainBoundaryVenting", int(input_variable[iv["iGrainBoundaryVenting"]].getValue()));
+		ErrorMessages::Switch(__FILE__, "iGrainBoundaryVenting", int(input_variable[iv["iGrainBoundaryVenting"]].getValue()));
 		break;
 	}
 
