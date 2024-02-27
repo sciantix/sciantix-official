@@ -10,7 +10,7 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: G. Zullo, G. Petrosillo                                                //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -27,6 +27,10 @@ void UO2Thermochemistry()
    * 
    * @param[out] PO2_x oxygen partial pressure in UO2+x (in atm) 
    * from Blackburn’s relation, @ref *Blackburn (1973) J. Nucl. Mater., 46, 244–252*
+   * 
+   * @author
+   * G. Petrosillo
+   * G. Zullo
    * 
    */
 

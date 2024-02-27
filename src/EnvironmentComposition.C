@@ -10,7 +10,7 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: G. Zullo, G. Petrosillo                                                //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -26,6 +26,10 @@ void EnvironmentComposition()
    * 
    * This is used to estimate to UO2 equilibrium oxygen partial pressure and the equilibrium stoichiometry,
    * if macroscopic models for UO2+x are used.
+   * 
+   * @author
+   * G. Petrosillo
+   * G. Zullo
    * 
    */
 

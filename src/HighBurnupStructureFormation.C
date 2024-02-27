@@ -10,7 +10,7 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: D. Pizzocri, G. Zullo, A. Magni, E. Redaelli                           //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -18,9 +18,14 @@
 
 void HighBurnupStructureFormation()
 {
-	/// @brief
-	/// HighBurnupStructureFormation
-	/// This model describes the formation of a HBS structure in UO2 fuel.
+    /**
+     * @brief HighBurnupStructureFormation
+     * This model describes the formation of a HBS structure in UO2 fuel.
+     * 
+     * @author
+     * A. Magni, E. Redaelli, G. Zullo
+    */
+
 	model.emplace_back();
 
 	int model_index = int(model.size()) - 1;
