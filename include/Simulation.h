@@ -557,7 +557,7 @@ class Simulation : public Solver, public Model
 		sciantix_variable[sv["Intergranular saturation fractional coverage"]].setFinalValue(
 			solver.Decay(
 				sciantix_variable[sv["Intergranular saturation fractional coverage"]].getFinalValue(),
-				model[sm["Grain-boundary micro-cracking"]].getParameter().at(1) * (1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue()),
+				- model[sm["Grain-boundary micro-cracking"]].getParameter().at(1) * (1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue()),
 				0.0,
 				sciantix_variable[sv["Burnup"]].getIncrement()
 			)
@@ -661,7 +661,7 @@ class Simulation : public Solver, public Model
 		if (!int(input_variable[iv["iHighBurnupStructureFormation"]].getValue())) return;
 
 		// Restructuring rate:
-		// df / bu = 3.54 * 2.77e-7 * b^2.54 - 3.54 * 2.77e-7 * b^2.54 * f
+		// dalpha_r / bu = 3.54 * 2.77e-7 (1-alpha_r) b^2.54
 		double coefficient =
 			model[sm["High-burnup structure formation"]].getParameter().at(0) *
 			model[sm["High-burnup structure formation"]].getParameter().at(1) *
@@ -697,7 +697,7 @@ class Simulation : public Solver, public Model
 		if(sciantix_variable[sv["HBS porosity"]].getFinalValue() > 0.15)
 			sciantix_variable[sv["HBS porosity"]].setFinalValue(0.15);
 
-		// evolution of pore number density via pore nucleation and gas re-solution
+		// evolution of pore number density via pore nucleation and re-solution
 		if(sciantix_variable[sv["HBS porosity"]].getFinalValue())
 			sciantix_variable[sv["HBS pore density"]].setFinalValue(
 				solver.Decay(
@@ -710,7 +710,7 @@ class Simulation : public Solver, public Model
 		else
 			sciantix_variable[sv["HBS pore density"]].setFinalValue(0.0);
 
-		// calculation of pore radius based on porosity and pore number density	
+		// calculation of pore volume based on porosity and pore number density	
 		if(sciantix_variable[sv["HBS pore density"]].getFinalValue())
 			sciantix_variable[sv["HBS pore volume"]].setFinalValue(
 				sciantix_variable[sv["HBS porosity"]].getFinalValue() / sciantix_variable[sv["HBS pore density"]].getFinalValue());

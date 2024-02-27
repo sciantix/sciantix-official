@@ -128,10 +128,12 @@ def do_gold():
 
 # Plot the regression test results
 def do_plot():
+  
+  # GOLD vs. SCIANTIX 2.0, no error bars
   fig, ax = plt.subplots()
 
-  ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 1.0')
-  ax.scatter(gbSwellingWhite, gbSwelling2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
+  ax.scatter(gbSwellingWhite, gbSwelling1, edgecolors='#757575', facecolors='red',   marker = '^', s=30, label='SCIANTIX 1.0', zorder = 1)
+  ax.scatter(gbSwellingWhite, gbSwelling2, edgecolors= None, facecolors='green', marker = '.', s=30, label='SCIANTIX 2.0', zorder = 2)
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
@@ -150,12 +152,11 @@ def do_plot():
 
   plt.show()
 
-  # GOLD vs. SCIANTIX 2.0
-
-  gbSwellingError = gbSwellingWhite * 0.5
+  # GOLD vs. SCIANTIX 2.0 + error bars
 
   fig, ax = plt.subplots()
 
+  gbSwellingError = gbSwellingWhite * 0.5
   igSwellingErrorVertL = np.abs(gbSwelling2 - 100 * np.array([0.00309842, 0.00285444, 0.00545195, 0.00488227, 0.00852239, 0.00365886,
   0.00546195, 0.00539069, 0.00431081, 0.00592082, 0.00884021, 0.00620528,
   0.00503128, 0.00311326, 0.00348059, 0.00936053, 0.00933353, 0.00886642,
@@ -173,9 +174,6 @@ def do_plot():
   0.01670874, 0.0128458 , 0.01233106, 0.02754019, 0.02443593, 0.01109099,
   0.01102217, 0.0109665 , 0.01412458, 0.0097558 , 0.00991563, 0.00852714,
   0.01867004]))
-
-#   ax.scatter(gbSwellingWhite, gold, c = '#C9C954', edgecolors= '#999AA2', marker = '^', s=20, label='Gold')
-#   ax.scatter(gbSwellingWhite, gbSwelling2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
 
   ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', marker = '^', s=20, label='SCIANTIX 1.0', zorder = 1)
   ax.errorbar(gbSwellingWhite, gbSwelling2, xerr = gbSwellingError, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), c = 'green', marker = '.', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0', zorder = 2)
@@ -471,5 +469,10 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
   deviations_2 = abs(np.array(gbSwellingWhite) - gbSwelling2)
   print(f"SCIANTIX 1.0 - MAD: ", np.median(deviations_1))
   print(f"SCIANTIX 2.0 - MAD: ", np.median(deviations_2))
+
+  # RMSE
+  print(f"SCIANTIX 1.0 - RMSE: ", np.mean(np.array(gbSwellingWhite) - gbSwelling1)**2)
+  print(f"SCIANTIX 2.0 - RMSE: ", np.mean(np.array(gbSwellingWhite) - gbSwelling2)**2)
+  print("\n")
 
   return folderList, number_of_tests, number_of_tests_failed

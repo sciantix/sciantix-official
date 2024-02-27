@@ -42,7 +42,7 @@ void SetMatrix( )
 		}
 		
 		default:
-			ErrorMessages::Switch("SetMatrix.cpp", "iFuelMatrix", int(input_variable[iv["iFuelMatrix"]].getValue()));
+			ErrorMessages::Switch(__FILE__, "iFuelMatrix", int(input_variable[iv["iFuelMatrix"]].getValue()));
 			break;
 	}
 }
@@ -88,7 +88,7 @@ void Matrix::setGrainBoundaryMobility(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch("SetMatrix.cpp", "iGrainGrowth", input_value);
+		ErrorMessages::Switch(__FILE__, "iGrainGrowth", input_value);
 		break;
 	}
 }
@@ -161,7 +161,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value)
 		}
 
 		default:
-			ErrorMessages::Switch("SetMatrix.cpp", "iGrainBoundaryVacancyDiffusivity", input_value);
+			ErrorMessages::Switch(__FILE__, "iGrainBoundaryVacancyDiffusivity", input_value);
 			break;
 			
 	}
@@ -175,7 +175,7 @@ void Matrix::setPoreNucleationRate()
    *
    */
 
-  double sf_nucleation_rate_porosity = 1.25e-6;
+  double sf_nucleation_rate_porosity = 1.25e-6; // from dburnup to dtime
 
   pore_nucleation_rate =
 		(5.0e17 * 2.77e-7 * 3.54 * (1.0-sciantix_variable[sv["Restructured volume fraction"]].getFinalValue()) *
