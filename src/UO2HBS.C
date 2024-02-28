@@ -29,7 +29,7 @@ void UO2HBS()
 	
 	matrix[index].setName("UO2HBS");
 	matrix[index].setRef("\n\t");
-	matrix[index].setTheoreticalDensity(10970.0); // (kg/m3)
+	matrix[index].setTheoreticalDensity(10960.0); // (kg/m3)
 	matrix[index].setGrainBoundaryMobility(0);
 	matrix[index].setSurfaceTension(0.7); // (N/m)
 	matrix[index].setFFinfluenceRadius(1.0e-9); // (m)

@@ -617,33 +617,12 @@ class Simulation : public Solver, public Model
 	{
 		if (!int(input_variable[iv["iGrainBoundaryVenting"]].getValue())) return;
 
-		double sigmoid_variable;
-		sigmoid_variable = sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() *
-			exp(-sciantix_variable[sv["Intergranular fractional intactness"]].getIncrement());
-
-		// Vented fraction
-		sciantix_variable[sv["Intergranular vented fraction"]].setFinalValue(
-			1.0 /
-			pow((1.0 + model[sm["Grain-boundary venting"]].getParameter().at(0) *
-				exp(-model[sm["Grain-boundary venting"]].getParameter().at(1) *
-					(sigmoid_variable - model[sm["Grain-boundary venting"]].getParameter().at(2)))),
-				(1.0 / model[sm["Grain-boundary venting"]].getParameter().at(0)))
-		);
-
-		// Venting probability
-		sciantix_variable[sv["Intergranular venting probability"]].setFinalValue(
-			(1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue())
-			+ sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue() * sciantix_variable[sv["Intergranular vented fraction"]].getFinalValue()
-		);
-
-		// Gas is vented by subtracting a fraction of the gas concentration at grain boundaries arrived from diffusion
-		// Bf = Bf - p_v * dB
 		for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
 		{
 			sciantix_variable[sv[sciantix_system[i].getGasName() + " at grain boundary"]].setFinalValue(
 				solver.Integrator(
 					sciantix_variable[sv[sciantix_system[i].getGasName() + " at grain boundary"]].getFinalValue(),
-					- sciantix_variable[sv["Intergranular venting probability"]].getFinalValue(),
+					- model[sm["Grain-boundary venting"]].getParameter().at(0),
 					sciantix_variable[sv[sciantix_system[i].getGasName() + " at grain boundary"]].getIncrement()
 				)
 			);
@@ -651,13 +630,8 @@ class Simulation : public Solver, public Model
 		}
 	}
 
-
 	void HighBurnupStructureFormation()
 	{
-		/// @brief
-		/// HighBurnupStructureFormation
-		/// HighBurnupStructureFormation is used to compute the local restructured volume fraction of the fuel, in the HBS region.
-
 		if (!int(input_variable[iv["iHighBurnupStructureFormation"]].getValue())) return;
 
 		// Restructuring rate:
@@ -679,10 +653,6 @@ class Simulation : public Solver, public Model
 
 	void HighBurnupStructurePorosity()
 	{
-		/// @brief
-		/// HighBurnupStructurePorosity is method of simulation which executes the SCIANTIX simulation for the evolution of the porosity of a HBS matrix. 
-		/// This method takes the model parameters, solves the model ODEs and updates the matrix density coherently with the actual porosity.
-
 		if (!int(input_variable[iv["iHighBurnupStructurePorosity"]].getValue())) return;
 
 		// porosity evolution 
@@ -778,22 +748,22 @@ void StoichiometryDeviation()
 {
 	if (!input_variable[iv["iStoichiometryDeviation"]].getValue()) return;
 
-if(history_variable[hv["Temperature"]].getFinalValue() < 1000.0)
-{
-	sciantix_variable[sv["Stoichiometry deviation"]].setConstant();
-	sciantix_variable[sv["Fuel oxygen partial pressure"]].setFinalValue(0.0);
-}
+	if(history_variable[hv["Temperature"]].getFinalValue() < 1000.0)
+	{
+		sciantix_variable[sv["Stoichiometry deviation"]].setConstant();
+		sciantix_variable[sv["Fuel oxygen partial pressure"]].setFinalValue(0.0);
+	}
 
-else if(input_variable[iv["iStoichiometryDeviation"]].getValue() < 5)
-{	
-	sciantix_variable[sv["Stoichiometry deviation"]].setFinalValue(
-	solver.Decay(
-	sciantix_variable[sv["Stoichiometry deviation"]].getInitialValue(),
-		model[sm["Stoichiometry deviation"]].getParameter().at(0),
-		model[sm["Stoichiometry deviation"]].getParameter().at(1),
-		physics_variable[pv["Time step"]].getFinalValue()
-	)
-	);
+	else if(input_variable[iv["iStoichiometryDeviation"]].getValue() < 5)
+	{	
+		sciantix_variable[sv["Stoichiometry deviation"]].setFinalValue(
+		solver.Decay(
+			sciantix_variable[sv["Stoichiometry deviation"]].getInitialValue(),
+				model[sm["Stoichiometry deviation"]].getParameter().at(0),
+				model[sm["Stoichiometry deviation"]].getParameter().at(1),
+				physics_variable[pv["Time step"]].getFinalValue()
+			)
+		);
 	}
 
 	else if(input_variable[iv["iStoichiometryDeviation"]].getValue() > 4)
