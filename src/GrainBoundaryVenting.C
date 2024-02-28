@@ -18,61 +18,72 @@
 
 void GrainBoundaryVenting()
 {
-	model.emplace_back();
-	int model_index = int(model.size()) - 1;
-	model[model_index].setName("Grain-boundary venting");
+    /**
+     * @brief GrainBoundaryVenting() defines models for release mechanisms caused by venting through open porosities
+    */
 
-	std::vector<double> parameter;
-	std::string reference;
+    model.emplace_back();
+    int model_index = int(model.size()) - 1;
+    model[model_index].setName("Grain-boundary venting");
 
-	/// @brief
-	/// These model defines the venting of fission gas from the grain boundaries of the UO2 fuel matrix.
+    std::vector<double> parameter;
+    std::string reference;
 
-	switch (int(input_variable[iv["iGrainBoundaryVenting"]].getValue()))
-	{
-	case 0:
-	{
-		/// @brief
-		/// This case corresponds to no grain boundary venting.
+    switch (int(input_variable[iv["iGrainBoundaryVenting"]].getValue()))
+    {
+    case 0:
+    {
+        /**
+         * @brief Not considered.
+         * 
+        */
 
-		reference = "not considered.";
+        sciantix_variable[sv["Intergranular venting probability"]].setFinalValue(0.0);
+        reference = "not considered.";
 
-		parameter.push_back(0.0);
-		parameter.push_back(0.0);
-		parameter.push_back(0.0);
+        break;
+    }
 
-		break;
-	}
+    case 1:
+    {
+        /**
+         * @brief Release mechanisms quantified via the vented fraction
+         *
+        */
+       
+        // Shape of the sigmoid function
+        const double screw_parameter = 0.1;
+        const double span_parameter = 10.0;
+        const double cent_parameter = 0.43;
 
-	case 1:
-	{
-		/// @brief
-		/// This case defines a set of parameters of the sigmoid function describing the venting probability 
+		double sigmoid_variable;
+		sigmoid_variable = sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() *
+			exp(-sciantix_variable[sv["Intergranular fractional intactness"]].getIncrement());
 
-		// screw parameter
-		const double screw_parameter = 0.1;
-		parameter.push_back(sf_screw_parameter * screw_parameter);
+		// Vented fraction
+		sciantix_variable[sv["Intergranular vented fraction"]].setFinalValue(
+			1.0 / pow( (1.0 + screw_parameter * exp(- span_parameter * (sigmoid_variable - cent_parameter))) , (1.0 / screw_parameter))
+		);
 
-		// span parameter
-		const double span_parameter = 10.0;
-		parameter.push_back(sf_span_parameter * span_parameter);
+        // Venting probability
+        sciantix_variable[sv["Intergranular venting probability"]].setFinalValue(
+            (1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue())
+            + sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue() * sciantix_variable[sv["Intergranular vented fraction"]].getFinalValue()
+        );
 
-		// cent parameter
-		const double cent_parameter = 0.43;
-		parameter.push_back(sf_cent_parameter * cent_parameter);
+        reference = "Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE";
 
-		reference = "from Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE";
+        break;
+    }
 
-		break;
-	}
+    default:
+        ErrorMessages::Switch("GrainBoundaryVenting", "iGrainBoundaryVenting", int(input_variable[iv["iGrainBoundaryVenting"]].getValue()));
+        break;
+    }
 
-	default:
-		ErrorMessages::Switch(__FILE__, "iGrainBoundaryVenting", int(input_variable[iv["iGrainBoundaryVenting"]].getValue()));
-		break;
-	}
+    parameter.push_back(sciantix_variable[sv["Intergranular venting probability"]].getFinalValue());
 
-	model[model_index].setParameter(parameter);
-	model[model_index].setRef(reference);
-
+    model[model_index].setParameter(parameter);
+    model[model_index].setRef(reference);
 }
 

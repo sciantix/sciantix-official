@@ -19,7 +19,7 @@
 void HighBurnupStructurePorosity()
 {
     /**
-     * @brief This routine sets the model for High burnup structure porosity evolutionù
+     * @brief This routine sets the model for High burnup structure porosity evolution
      * @author
      * A. Magni
      * E. Redaelli
@@ -65,6 +65,7 @@ void HighBurnupStructurePorosity()
 			else
 				porosity_increment = rate_coefficient;
 		}
+
 		else
 		{
 			sciantix_variable[sv["HBS porosity"]].setInitialValue(0.15);
