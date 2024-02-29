@@ -37,7 +37,19 @@ def setup_directory(dirname):
         shutil.rmtree(dirname)
     os.makedirs(dirname)
 
-def log_likelihood(params_value, params_key, model, x, sciantix_folder_path):
+# def log_likelihood(params_value, params_key, model, x, sciantix_folder_path):
+#     params = {key:value for key, value in zip(params_key, params_value)}
+#     observation = model._exp(time_point = x)
+#     y_real = observation[1]
+#     y_std = observation[2]
+#     sigma2 = y_std ** 2 
+#     y_model = model._sciantix(sciantix_folder_path, params, last_value = True)[2]
+#     # sigma2 = y_std ** 2 +  y_model ** 2 * np.exp(2 * log_f)
+#     return -0.5 * np.sum((y_real - y_model)**2/sigma2 + np.log(2 * np.pi * sigma2))
+
+def log_likelihood(theta, params_key, model, x, sciantix_folder_path):
+    params_value = theta[:-1]
+    fm = theta[-1]
     params = {key:value for key, value in zip(params_key, params_value)}
     observation = model._exp(time_point = x)
     y_real = observation[1]
@@ -45,25 +57,29 @@ def log_likelihood(params_value, params_key, model, x, sciantix_folder_path):
     sigma2 = y_std ** 2 
     y_model = model._sciantix(sciantix_folder_path, params, last_value = True)[2]
     # sigma2 = y_std ** 2 +  y_model ** 2 * np.exp(2 * log_f)
-    return -0.5 * np.sum((y_real - y_model)**2/sigma2 + np.log(2 * np.pi * sigma2))
+    return -0.5 * np.sum((y_real - np.exp(fm *y_model) * y_model)**2/sigma2 + np.log(2 * np.pi * sigma2))
 
-def log_prior(params_value, mu, cov):
-    diff = params_value - mu
-    if len(params_value) == 1:
+def log_prior(theta, mu, cov):
+    diff = theta - mu
+    if len(theta) == 1:
         return -0.5 * diff ** 2 / cov
     return -0.5 * np.dot(diff, np.linalg.solve(cov, diff))
 
-def log_probability(params_value, params_key, mu, cov, model, x, sciantix_folder_path):
-    lp = log_prior(params_value, mu, cov)
+def log_probability(theta, params_key, mu, cov, model, x, sciantix_folder_path):
+    params_value = theta[:-1]
+    fm = theta[-1]
+    lp = log_prior(theta, mu, cov)
     if not np.isfinite(lp):
         return -np.inf
-    return lp + log_likelihood(params_value,params_key, model, x, sciantix_folder_path)
+    return lp + log_likelihood(theta, params_key, model, x, sciantix_folder_path)
 
-def log_probability_kde(params_value, kde, params_key, model, x, sciantix_folder_path):
+def log_probability_kde(theta, kde, params_key, model, x, sciantix_folder_path):
+    params_value = theta[:-1]
+    fm = theta[-1]
     lp = np.log(kde(params_value))
     if not np.isfinite(lp):
         return -np.inf
-    return lp + log_likelihood(params_value,params_key, model, x, sciantix_folder_path)
+    return lp + log_likelihood(theta, params_key, model, x, sciantix_folder_path)
 
 
 setup_directory('Calibration')
@@ -76,18 +92,23 @@ samples = []
 for i in range(1,len(time_points)):
     sciantix_folder_path = model._independent_sciantix_folder('Calibration', 0, time_points[0:i+1])
     nll = lambda *args: -np.exp(log_likelihood(*args))
-    initial = initial_values
+    initial = np.array([1,0,0])
     soln = minimize(nll, initial, args = (keys, model, time_points[i], sciantix_folder_path))
 
-    pos = soln.x + 1e-4 * np.random.randn(10, len(params_info))
+    pos = soln.x + 1e-4 * np.random.randn(10, len(params_info)+1)
     nwalkers, ndim = pos.shape
-    mean_values = initial_values
+    mean_values = np.array([1,0,0])
     if ndim > 1:
         covariance = np.zeros((ndim, ndim))
-        for i in range(ndim):
-            covariance[i,i] = stds[i] ** 2
+        for j in range(ndim):
+            if j == ndim - 1:
+                covariance[j,j] = 0.1 ** 2
+                break
+            covariance[j,j] = stds[j] ** 2
+
     else:
         covariance = [stds[0] ** 2]
+    print(covariance)
     
     np.set_printoptions(threshold=np.inf)
     if i == 1:
@@ -102,7 +123,7 @@ for i in range(1,len(time_points)):
         flat_samples = sampler.get_chain(discard = 50, flat = True)
     samples.append(flat_samples)
     with open('MCMC_samples.txt', 'w') as file:
-        for j, array in enumerate(samples):
+        for k, array in enumerate(samples):
             file.write(np.array2string(array, separator=', ') + "\n\n")
     tau = sampler.get_autocorr_time()
     print(tau)

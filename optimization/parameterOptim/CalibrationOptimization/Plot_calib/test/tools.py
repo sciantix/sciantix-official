@@ -1,9 +1,12 @@
 import numpy as np
-import corner, ast, os, shutil, subprocess
-import matplotlib.pyplot as plt
+import os, ast, shutil, subprocess
 from contextlib import contextmanager
 from scipy.interpolate import interp1d
-from IPython.display import display, Math
+
+def setup_directory(dirname):
+    if os.path.exists(dirname):
+        shutil.rmtree(dirname)
+    os.makedirs(dirname)
 
 @contextmanager
 def change_directory(destination_directory, original_directory):
@@ -61,18 +64,21 @@ def get_selected_variables_value_from_output(variable_selected, source_file):
     
     return variable_selected_value
 
-def sciantix(sciantix_folder_path, params:dict, last_value = True):
+def sciantix(sciantix_folder_path, params:dict, extraction_way = -1):
     """
     params:
         *key: params name
         *value: value
+    extraction_way:
+        *-1 : last line
+        *0: all
+        *np.array : time points
     return(np.array):
         *t_end
         *temperature @ t_end
         *FR @ t_end
         *RR @ t_end
     """
-    print(params)
     with change_directory(sciantix_folder_path, os.getcwd()):
         scaling_factors = {}
         with open("input_scaling_factors.txt", 'r') as file:
@@ -100,11 +106,19 @@ def sciantix(sciantix_folder_path, params:dict, last_value = True):
 
         subprocess.run(['./sciantix.x'])
         variables = ["Time (h)","Temperature (K)","He fractional release (/)", "He release rate (at/m3 s)"]
-        if last_value == True:
-            output_data = get_selected_variables_value_from_output_last_line(variables, 'output.txt')
+        if isinstance(extraction_way, int) and extraction_way == -1:
+            extracted_data = np.array([get_selected_variables_value_from_output_last_line(variables, 'output.txt')])
+        elif isinstance(extraction_way, int) and extraction_way == 0:
+            extracted_data = get_selected_variables_value_from_output(variables, 'output.txt')
         else:
             output_data = get_selected_variables_value_from_output(variables, 'output.txt')
-    return output_data
+            extracted_data = []
+            for j in range(len(extraction_way)):
+                clostest_point = find_closest_points(output_data, extraction_way[j])
+                value = linear_interpolate(*clostest_point, extraction_way[j])
+                extracted_data.append(value)
+            extracted_data = np.array(extracted_data)
+    return extracted_data
 
 def filter_and_interpolate_matrix(matrix, time_points):
     # Original x and y-values
@@ -136,130 +150,90 @@ def filter_and_interpolate_matrix(matrix, time_points):
 
     return sorted_combined_data
 
-
-
-
-samples = []
-means = []
-time_points = []
-params = []
-calibrated_data = []
-percentiles_data_whole = []
-percentiles_data_step = []
-talip_data = np.genfromtxt('Talip2014_release_data.txt')
-final_optim_fr = np.genfromtxt('final_optim_fr.txt')
-param_key = np.array(['helium diffusivity pre exponential', 'helium diffusivity activation energy'])
-ndim = len(param_key)
-param_key = np.sort(param_key)
-current_path = os.getcwd()
-
-parent_path = os.path.dirname(current_path)
-
-if os.path.exists('Plot_calib'):
-    shutil.rmtree('Plot_calib')
-# os.makedirs('Plot_calib')
-plot_calib_folder = os.path.join(current_path, 'Plot_calib')
-calibration_folder = os.path.join(current_path, 'Calibration')
-case_folder = os.path.join(parent_path, 'test_Talip2014_1600K')
-original_history_path = os.path.join(case_folder, 'input_history.txt')
-original_history = np.genfromtxt(original_history_path, dtype = 'float', delimiter = '\t')
-shutil.copytree(calibration_folder, plot_calib_folder)
-
-folder_name = os.listdir(plot_calib_folder)
-folder_name = np.sort(folder_name)
-print(folder_name)
-
-percentile_value = np.zeros((ndim,3))
-percentiles_step = []
-percentiles_whole = []
-p = [5, 50, 95]
-with open('MCMC_samples_21.txt', 'r') as file:
-    # Read the entire file, this assumes that the file is not too large to fit in memory
-    data = file.read()
-
-    # Split the data by double newlines, which seems to be your separator between arrays
-    array_strings = data.strip().split('\n\n')
-
-    # Iterate over the separated string representations of the arrays
-    for array_string in array_strings:
-        # Use ast.literal_eval to safely evaluate the string as a Python literal
-        array_literal = ast.literal_eval(array_string)
-        # Convert the literal to a numpy array and append to the list of arrays
-        array_number = np.array(array_literal, dtype = 'float')
-        # array_number[:,0] = array_number[:,0][::-1]
-        
-        for j in range(ndim):
-            percentile_value[j,:] = np.percentile(array_number[:,j], p)
-            # print(percentile_value)
-        for k in range(len(percentile_value.T)):
-            percentile_info = {key:value for key, value in zip(param_key, percentile_value.T[k])}
-            percentiles_step.append(percentile_info)
-        percentiles_whole.append(percentiles_step)
-        
-        samples.append(array_number)
-
-        mean = np.mean(array_number, axis = 0)
-        param_info = {key:value for key, value in zip(param_key, mean)}
- 
-        params.append(param_info)
-        means.append(mean)
-# print(means)
-
-for i in range(len(samples)):
-    samples[i][:,1] = np.exp(samples[i][:,1])
-    # fig = corner.corner(samples[i], truths = [0.9821608153667933, 0.9487537911538045], labels = ['sf_Diffu_activation', 'sf_Diffu_preExp'])
-    
-    fig = corner.corner(samples[i], labels = ['sf_actEnergy', 'sf_preExp', 'fm'])
-    plt.show()
-
-for name in folder_name:
-    if name.startswith('from_0.0_to_'):
-        _,_, time_point = name.rpartition('_')
-        time_points.append(float(time_point))
-time_points = np.array(time_points)
-# print(time_points)
-history = filter_and_interpolate_matrix(original_history, time_points)
-for i in range(len(means)):
-    path = os.path.join(plot_calib_folder, folder_name[i])
-    # print(folder_name[i])
-    with change_directory(path, os.getcwd()):
+def independent_sciantix_folder(destination,required_files_path, points_time, prediction = True):
+    points_time = np.round(points_time, 3)
+    # t_start = np.round(points_time[0],3)
+    # t_end = np.round(points_time[-1],3)
+    folder_name = f'from_{points_time[0]}_to_{points_time[-1]}'
+    with change_directory(destination, os.getcwd()):
+        setup_directory(folder_name)
+        os.chdir(folder_name)
+        for i in range(len(required_files_path)):
+            shutil.copy(required_files_path[i], os.getcwd())
+        history_original = np.genfromtxt("input_history.txt",dtype = 'float', delimiter='\t')
+        history = filter_and_interpolate_matrix(history_original, points_time)
+        if prediction == False:
+            history = history[history[:,0]<=points_time[-1]]
+        history[:,0] = history[:,0] - points_time[0]
         with open('input_history.txt', 'w') as file:
             file.writelines('\t'.join(str(item) for item in row) + '\n' for row in history[:-1])
             file.write('\t'.join(str(item) for item in history[-1]))
-        output_data = sciantix(path,params[i],last_value=False)[:,[0,2]]
-        calibrated_data.append(output_data)
+        
+        return os.path.join(destination, folder_name)
 
-        for j in range(len(p)):
-            percentile_data = sciantix(path,percentiles_whole[i][j],last_value=False)[:,[0,2]]
-            percentiles_data_step.append(percentile_data)
-        percentiles_data_whole.append(percentiles_data_step)
+def moving_average(data, window_size):
+    half_window = window_size // 2
+    smoothed_data = np.convolve(data, np.ones(window_size) / window_size, mode='same')
 
+    for i in range(half_window):
+        smoothed_data[i] = np.mean(data[:i+half_window+1])
+        smoothed_data[-i-1] = np.mean(data[-(i+half_window+1):])
+    return smoothed_data
 
+def dynamic_std(data, window_size):
+    half_window = window_size // 2
+    dynamic_std = np.full(data.shape, np.nan)
 
-plt.scatter(talip_data[:,0], talip_data[:,1], marker = '.', c = '#B3B3B3', label='Talip et al. (2014)')
-plt.plot(final_optim_fr[:,0], final_optim_fr[:,2], 'r', label = 'Optimization')
-color = plt.cm.viridis(np.linspace(0,1,len(samples)))
-for i in range(len(samples)):
-    # plt.plot(calibrated_data[i][:,0], calibrated_data[i][:,1]*np.exp(means[i][2]*calibrated_data[i][:,1]), c = color[i], label = f"calibrated_mean@{np.round(time_points[i],3)}")
-    plt.plot(calibrated_data[i][:,0], calibrated_data[i][:,1],c = color[i],linestyle = 'dashdot', label = f"calibrated_mean@{np.round(time_points[i],3)}")
-    
-    plt.axvline(time_points[i], c = color[i], linestyle = 'dashdot')
+    for i in range(len(data)):
+        start = max(0, i - half_window)
+        end = min(len(data), i + half_window + 1)
+        dynamic_std[i] = np.std(data[start:end], ddof=1)  # ddof=1 for sample standard deviation
 
-    for j in range(len(p)):
-        plt.plot(percentiles_data_whole[i][j][:,0], percentiles_data_whole[i][j][:,1], linestyle = 'dashdot', label = f'calibrated_percentile{p[j]}')
-        # plt.plot(percentiles_data_whole[i][j][:,0], percentiles_data_whole[i][j][:,1] * np.exp(means[i][2]* percentiles_data_whole[i][j][:,1]), linestyle = 'dashdot', label = f'calibrated_percentile{p[j]}')
-plt.xlabel('time / h')
-plt.ylabel('helium fraction release /')
-plt.legend()
-plt.title('Helium fraction release with mean diffusivity calibrated at different time')
-plt.show()
+    return dynamic_std
 
+def find_closest_points(matrix, target_time):
+    """
+    Find the two points in the matrix that are closest to the target time, one before and one after.
 
+    Args:
+    matrix (list of lists): The original data matrix.
+    target_time (int or float): The target time to find closest points for.
 
+    Returns:
+    tuple: A tuple containing the two closest points (each a list), or None if no such points exist.
+    """
+    for i in range(len(matrix) - 1):
+        if matrix[i][0] <= target_time <= matrix[i + 1][0]:
+            return matrix[i], matrix[i + 1]
+    return None
 
+def linear_interpolate(point1, point2, target_time):
+    """
+    Perform linear interpolation between two data points.
 
+    Args:
+    point1 (list): The data point before the target time. It should be in the format [time, value1, value2, ...].
+    point2 (list): The data point after the target time, in the same format as point1.
+    target_time (int or float): The time at which we want to interpolate the values.
 
+    Returns:
+    list: Interpolated data point at the target time, in the format [target_time, interpolated_value1, interpolated_value2, ...].
+    """
+    ratio = (target_time - point1[0]) / (point2[0] - point1[0])
+    return [target_time] + [p1 + ratio * (p2 - p1) for p1, p2 in zip(point1[1:], point2[1:])]
 
+def exp_data_process(case_folder):
+    with change_directory(case_folder, os.getcwd()):
+        exp_fr_data  = np.genfromtxt("Talip2014_release_data.txt",dtype = 'float',delimiter='\t')
+        exp_fr_data = exp_fr_data[exp_fr_data[:,0].argsort()]
+        exp_rr_data = np.genfromtxt("Talip2014_rrate_data.txt",dtype = 'float',delimiter='\t')
+        time_exp = exp_fr_data[:,0]
+        temperature_exp = exp_rr_data[:,0]
+        fr_ma = sorted(moving_average(exp_fr_data[:,1],20))
+        # rr_ma = moving_average(exp_rr_data[:,1],5)
+        fr_std = dynamic_std(exp_fr_data[:,1], 20)
+        # rr_from_fr = np.append(np.array([0]), np.diff(fr_ma)/np.diff(time_exp))
 
+        fr_info = np.vstack((time_exp, fr_ma, fr_std)).T
 
-
+    return fr_info

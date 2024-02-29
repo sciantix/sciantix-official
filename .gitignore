@@ -31,6 +31,7 @@
 *.out
 *.app
 *.x
+*.h5
 
 # Backup files
 *.bak
@@ -48,3 +49,4 @@ documentation/
 .vs/
 old_files/
 __pycache__/
+ann/
