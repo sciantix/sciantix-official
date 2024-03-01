@@ -634,7 +634,7 @@ public:
 		sciantix_variable[sv["Intergranular saturation fractional coverage"]].setFinalValue(
 			solver.Decay(
 				sciantix_variable[sv["Intergranular saturation fractional coverage"]].getFinalValue(),
-				model[sm["Grain-boundary micro-cracking"]].getParameter().at(1) * (1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue()),
+				- model[sm["Grain-boundary micro-cracking"]].getParameter().at(1) * (1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue()),
 				0.0,
 				sciantix_variable[sv["Burnup"]].getIncrement()
 			)
