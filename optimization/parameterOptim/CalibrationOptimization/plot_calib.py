@@ -1,5 +1,5 @@
 import numpy as np
-import corner, ast, os, shutil, subprocess
+import corner, ast, os, shutil, subprocess, json
 import matplotlib.pyplot as plt
 from contextlib import contextmanager
 from scipy.interpolate import interp1d
@@ -144,6 +144,7 @@ means = []
 time_points = []
 params = []
 calibrated_data = []
+calibrated_data_da = []
 percentiles_data_whole = []
 percentiles_data_step = []
 talip_data = np.genfromtxt('Talip2014_release_data.txt')
@@ -159,21 +160,21 @@ if os.path.exists('Plot_calib'):
     shutil.rmtree('Plot_calib')
 # os.makedirs('Plot_calib')
 plot_calib_folder = os.path.join(current_path, 'Plot_calib')
-calibration_folder = os.path.join(current_path, 'Calibration')
+# calibration_folder = os.path.join(current_path, 'Calibration')
 case_folder = os.path.join(parent_path, 'test_Talip2014_1600K')
 original_history_path = os.path.join(case_folder, 'input_history.txt')
 original_history = np.genfromtxt(original_history_path, dtype = 'float', delimiter = '\t')
-shutil.copytree(calibration_folder, plot_calib_folder)
+shutil.copytree(case_folder, plot_calib_folder)
 
 folder_name = os.listdir(plot_calib_folder)
 folder_name = np.sort(folder_name)
-print(folder_name)
+
 
 percentile_value = np.zeros((ndim,3))
 percentiles_step = []
 percentiles_whole = []
 p = [5, 50, 95]
-with open('MCMC_samples_21.txt', 'r') as file:
+with open('MCMC_samples_1.62.txt', 'r') as file:
     # Read the entire file, this assumes that the file is not too large to fit in memory
     data = file.read()
 
@@ -205,34 +206,41 @@ with open('MCMC_samples_21.txt', 'r') as file:
         means.append(mean)
 # print(means)
 
+with open('sfs_maxp_da.txt', 'r') as file:
+    sfs_maxp_da = json.load(file)
+# print(sfs_maxp_da)
+
 for i in range(len(samples)):
     samples[i][:,1] = np.exp(samples[i][:,1])
     # fig = corner.corner(samples[i], truths = [0.9821608153667933, 0.9487537911538045], labels = ['sf_Diffu_activation', 'sf_Diffu_preExp'])
     
-    fig = corner.corner(samples[i], labels = ['sf_actEnergy', 'sf_preExp', 'fm'])
+    # fig = corner.corner(samples[i], labels = ['sf_actEnergy', 'sf_preExp', 'fm'])
+    sf_maxp_da = list(sfs_maxp_da[i].values())
+    print(sf_maxp_da)
+    fig = corner.corner(samples[i], labels = ['sf_actEnergy', 'sf_preExp'], quantiles = [0.16, 0.5, 0.84], show_titles = True, title_kwargs = {'fontsize':13}, truths = sf_maxp_da)
     plt.show()
 
-for name in folder_name:
-    if name.startswith('from_0.0_to_'):
-        _,_, time_point = name.rpartition('_')
-        time_points.append(float(time_point))
-time_points = np.array(time_points)
-# print(time_points)
+# for name in folder_name:
+#     if name.startswith('from_0.0_to_'):
+#         _,_, time_point = name.rpartition('_')
+#         time_points.append(float(time_point))
+# time_points = np.array(time_points)
+
+time_points = np.round(np.linspace(0,3.6,21),3)
 history = filter_and_interpolate_matrix(original_history, time_points)
 for i in range(len(means)):
-    path = os.path.join(plot_calib_folder, folder_name[i])
-    # print(folder_name[i])
-    with change_directory(path, os.getcwd()):
+    # path = os.path.join(plot_calib_folder, folder_name[i])
+
+    # with change_directory(path, os.getcwd()):
+    with change_directory(plot_calib_folder, os.getcwd()):
         with open('input_history.txt', 'w') as file:
             file.writelines('\t'.join(str(item) for item in row) + '\n' for row in history[:-1])
             file.write('\t'.join(str(item) for item in history[-1]))
-        output_data = sciantix(path,params[i],last_value=False)[:,[0,2]]
+        output_data = sciantix(plot_calib_folder,params[i],last_value=False)[:,[0,2]]
+        sfs_maxp_da[i]['helium diffusivity pre exponential'] = np.log(sfs_maxp_da[i]['helium diffusivity pre exponential'])
+        output_data_da = sciantix(plot_calib_folder, sfs_maxp_da[i], last_value = False)[:,[0,2]]
         calibrated_data.append(output_data)
-
-        for j in range(len(p)):
-            percentile_data = sciantix(path,percentiles_whole[i][j],last_value=False)[:,[0,2]]
-            percentiles_data_step.append(percentile_data)
-        percentiles_data_whole.append(percentiles_data_step)
+        calibrated_data_da.append(output_data_da)
 
 
 
@@ -241,13 +249,15 @@ plt.plot(final_optim_fr[:,0], final_optim_fr[:,2], 'r', label = 'Optimization')
 color = plt.cm.viridis(np.linspace(0,1,len(samples)))
 for i in range(len(samples)):
     # plt.plot(calibrated_data[i][:,0], calibrated_data[i][:,1]*np.exp(means[i][2]*calibrated_data[i][:,1]), c = color[i], label = f"calibrated_mean@{np.round(time_points[i],3)}")
-    plt.plot(calibrated_data[i][:,0], calibrated_data[i][:,1],c = color[i],linestyle = 'dashdot', label = f"calibrated_mean@{np.round(time_points[i],3)}")
+    plt.plot(calibrated_data[i][:,0], calibrated_data[i][:,1],c = color[i], label = f"calibrated_mean@{np.round(time_points[i+1],3)}")
+    plt.plot(calibrated_data_da[i][:,0], calibrated_data_da[i][:,1],c = color[i],linestyle = 'dashdot', label = f"calibrated_mean_da@{np.round(time_points[i+1],3)}")
     
-    plt.axvline(time_points[i], c = color[i], linestyle = 'dashdot')
+    plt.axvline(time_points[i+1], c = color[i], linestyle = 'dashdot')
 
-    for j in range(len(p)):
-        plt.plot(percentiles_data_whole[i][j][:,0], percentiles_data_whole[i][j][:,1], linestyle = 'dashdot', label = f'calibrated_percentile{p[j]}')
-        # plt.plot(percentiles_data_whole[i][j][:,0], percentiles_data_whole[i][j][:,1] * np.exp(means[i][2]* percentiles_data_whole[i][j][:,1]), linestyle = 'dashdot', label = f'calibrated_percentile{p[j]}')
+    # for j in range(len(p)):
+    #     plt.plot(percentiles_data_whole[i][j][:,0], percentiles_data_whole[i][j][:,1], linestyle = 'dashdot', label = f'calibrated_percentile{p[j]}')
+    #     # plt.plot(percentiles_data_whole[i][j][:,0], percentiles_data_whole[i][j][:,1] * np.exp(means[i][2]* percentiles_data_whole[i][j][:,1]), linestyle = 'dashdot', label = f'calibrated_percentile{p[j]}')
+
 plt.xlabel('time / h')
 plt.ylabel('helium fraction release /')
 plt.legend()

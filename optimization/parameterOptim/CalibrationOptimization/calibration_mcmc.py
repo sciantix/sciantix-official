@@ -52,7 +52,8 @@ class CalibrationMCMC:
             covariance[-1,-1] = 0.005
         samples = []
 
-        for i in range(20,len(points_time)):
+        # for i in range(11,len(points_time)):
+        for i in range(11,len(points_time)):
         # for i in range(1+np.sum(poins_assigned2process[:-1]),np.sum(poins_assigned2process)+1):
             sciantix_folder_path = tools.independent_sciantix_folder('Calibration', required_files_path, points_time[:i+1], prediction = False)
             interpolated_data = self.interpolate(fr_exp_info, points_time[1:i+1])
@@ -89,9 +90,7 @@ class CalibrationMCMC:
                 old_tau = tau
             
             # sampler.run_mcmc(pos, walk_steps, progress = True)
-            with open('MCMC_samples.txt', 'w') as file:
-                for k, array in enumerate(samples):
-                    file.write(np.array2string(array, separator=', ') + "\n\n")
+
             tau = sampler.get_autocorr_time()
             burnin = int(2 * np.max(tau))
             thin = int(0.5 * np.min(tau))
@@ -99,9 +98,10 @@ class CalibrationMCMC:
             lpg_propb_samples = sampler.get_log_prob(discard = burnin, thin = thin, flat = True)
             log_prior_samples = sampler.get_blobs(discard = burnin, thin = thin, flat = True)
             samples.append(flat_samples)
-
+            with open(f'MCMC_samples_{points_time[i]}.txt', 'w') as file:
+                for k, array in enumerate(samples):
+                    file.write(np.array2string(array, separator=', ') + "\n\n")
             
-            print(tau)
 
     @staticmethod
     def _log_prior(theta, mean, covariance):
@@ -171,5 +171,5 @@ cali = CalibrationMCMC(
     params_std=np.array([1.526, 0.1]),
     points_time = np.linspace(0,3.6,21),
     max_walk_steps = 100000,
-    multiplicative_factor = True)
+    multiplicative_factor = False)
 

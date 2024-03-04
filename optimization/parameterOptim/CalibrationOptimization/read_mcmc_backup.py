@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 scaler_input = joblib.load('scaler_input.pkl')
 scaler_output = joblib.load('scaler_output.pkl')
 
-reader = emcee.backends.HDFBackend('backup3.6.h5')
+reader = emcee.backends.HDFBackend('backup1.08.h5')
 
 tau = reader.get_autocorr_time()
 burnin = int(2 * np.max(tau))
@@ -29,9 +29,9 @@ samples_cluster = []
 np.set_printoptions(threshold=np.inf)
 samples_cluster.append(samples)
 
-with open('MCMC_samples_fm.txt', 'w') as file:
-    for k, array in enumerate(samples_cluster):
-        file.write(np.array2string(array, separator=', ') + "\n\n")
+# with open('MCMC_samples_1.08.txt', 'w') as file:
+#     for k, array in enumerate(samples_cluster):
+#         file.write(np.array2string(array, separator=', ') + "\n\n")
 
 # sfs = samples[:,[0,1]]
 # sfs = scaler_input.inverse_transform(sfs)
