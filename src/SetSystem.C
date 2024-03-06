@@ -643,7 +643,7 @@ void System::setProductionRate(int input_value)
 
 		// production rate in dproduced / dburnup -> dproduced / dtime
 		production_rate = 2.0e+21 * sciantix_variable[sv["Burnup"]].getFinalValue() + 3.0e+23; // (at/m3 burnup)
-        production_rate *= sciantix_variable[sv["Specific power"]].getFinalValue() / 86400;  // (at/m3s)
+                production_rate *= sciantix_variable[sv["Specific power"]].getFinalValue() / 86400;  // (at/m3s)
 
 		production_rate *= sf_helium_production_rate;
 
@@ -667,5 +667,4 @@ void System::setProductionRate(int input_value)
 		ErrorMessages::Switch(__FILE__, "iHeliumProductionRate", input_value);
 		break;
 	}
-
 }
