@@ -163,7 +163,6 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value)
 		default:
 			ErrorMessages::Switch(__FILE__, "iGrainBoundaryVacancyDiffusivity", input_value);
 			break;
-			
 	}
 }
 
