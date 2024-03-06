@@ -10,7 +10,7 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: D. Pizzocri, G. Zullo, A. Magni, E. Redaelli                           //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -18,8 +18,13 @@
 
 void HighBurnupStructurePorosity()
 {
-	/// @brief
-	/// This routine sets the model for High burnup structure porosity evolution
+    /**
+     * @brief This routine sets the model for High burnup structure porosity evolution
+     * @author
+     * A. Magni
+     * E. Redaelli
+     * G. Zullo
+    */
 
 	model.emplace_back();
 	int model_index = int(model.size()) - 1;
@@ -60,6 +65,7 @@ void HighBurnupStructurePorosity()
 			else
 				porosity_increment = rate_coefficient;
 		}
+
 		else
 		{
 			sciantix_variable[sv["HBS porosity"]].setInitialValue(0.15);

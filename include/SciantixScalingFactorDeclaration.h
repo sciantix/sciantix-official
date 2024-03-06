@@ -26,3 +26,4 @@ extern double sf_cent_parameter;
 extern double sf_helium_production_rate;
 extern double sf_temperature;
 extern double sf_fission_rate;
+extern double sf_dummy;

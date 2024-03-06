@@ -162,7 +162,6 @@ public:
 		//               domain_radius 
 		//               source_term 
 		//               source_term_bubbles
-		//							 bubble_diffusivity
 
 		unsigned short int n(0);
 		unsigned short int np1(1);

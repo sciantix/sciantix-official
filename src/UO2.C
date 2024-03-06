@@ -28,7 +28,7 @@ void UO2()
 
 	matrix[index].setName("UO2");
 	matrix[index].setRef("\n\t");
-	matrix[index].setTheoreticalDensity(10970.0); // (kg/m3)
+	matrix[index].setTheoreticalDensity(10960.0); // (kg/m3)
 	matrix[index].setGrainBoundaryMobility(int(input_variable[iv["iGrainGrowth"]].getValue()));
 	matrix[index].setSurfaceTension(0.7); // (N/m)
 	matrix[index].setFFinfluenceRadius(1.0e-9); // (m)
@@ -49,5 +49,4 @@ void UO2()
     matrix[index].setElasticModulus(233.4e5 * (1 - 2.752 * (1 - sciantix_variable[sv["Fuel density"]].getFinalValue() / 10960)) * (1 - 1.0915e-4 * history_variable[hv["Temperature"]].getFinalValue())); // (MPa) MATPRO (2003)
     matrix[index].setPoissonRatio(0.316); // (/) MATPRO (2003)
     matrix[index].setGrainBoundaryFractureEnergy(4e-3); // (J/m2) @ref: L. O. Jernkvist EPJ Nuclear Sci. Technol. 5, 11 (2019)
-
 }
