@@ -40,23 +40,20 @@ void GrainBoundaryRupture()
 
         // Polynomial fit for the (dimensionless) stress intensity factor
         // @ref Jernkvist 2019      : Fi = + 0.568Fc^2 + 0.059Fc + 0.5587
-        // double factor = CONSTANT_NUMBERS_H::MathConstants::pi * (0.568 * pow(sciantix_variable[sv["Integranular fractional coverage"]].getFinalValue(),2) + 0.059 * sciantix_variable[sv["Integranular fractional coverage"]].getFinalValue() + 0.5587);
-        double factor = (0.568 * pow(sciantix_variable[sv["Integranular fractional coverage"]].getFinalValue(),2) + 0.059 * sciantix_variable[sv["Integranular fractional coverage"]].getFinalValue() + 0.5587);
-
-        // double critical_bubble_pressure = - history_variable[hv["Hydrostatic stress"]].getFinalValue() * 1e6 + 2.0 * matrix[0].getSurfaceTension() / sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() + 
-        //     1 / factor * sqrt(CONSTANT_NUMBERS_H::MathConstants::pi * E * G_gb / ((1.0 - pow(nu, 2)) * sciantix_variable[sv["Integranular bubble radius"]].getFinalValue()));    
+        double beta = (0.568 * pow(sciantix_variable[sv["Integranular fractional coverage"]].getFinalValue(),2) + 0.059 * sciantix_variable[sv["Integranular fractional coverage"]].getFinalValue() + 0.5587);
 
         // Stress intensity factor ()
-        double K_ic = sqrt(G_gb * E / ((1.0 - pow(nu, 2))));
+        // K_IC = beta * stress * np.sqrt(np.pi * a)
+        // stress = K_IC / (beta * sqrt(pi * a))
 
-        double crack_length = 0.0;
-        double p_crack = K_ic / (factor * sqrt(CONSTANT_NUMBERS_H::MathConstants::pi * (sciantix_variable[sv["Integranular bubble radius"]].getFinalValue() + crack_length)));
+        double K_ic = sqrt(G_gb * E / (1.0 - pow(nu, 2)));
 
-        double critical_bubble_pressure = p_crack - (2.0 * matrix[0].getSurfaceTension() / sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() - history_variable[hv["Hydrostatic stress"]].getFinalValue() * 1e6);
+        double crack_length = 1e-8;
+        double sigma_crack = K_ic / (beta * sqrt(CONSTANT_NUMBERS_H::MathConstants::pi * crack_length));
 
-        sciantix_variable[sv["Critical intergranular bubble pressure"]].setFinalValue(critical_bubble_pressure * 1e-6);
+        sciantix_variable[sv["Critical intergranular bubble pressure"]].setFinalValue(sigma_crack * 1e-6);
 
-        parameter.push_back(critical_bubble_pressure);
+        parameter.push_back(sigma_crack);
 
         model[model_index].setParameter(parameter);
         model[model_index].setRef("Under development");
