@@ -331,6 +331,7 @@ void InputReading()
 		Sciantix_scaling_factors[5] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[6] = ReadOneParameter("sf_cent_parameter", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[8] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
 	}
 	else
 	{
@@ -342,6 +343,7 @@ void InputReading()
 		Sciantix_scaling_factors[5] = 1.0;
 		Sciantix_scaling_factors[6] = 1.0;
 		Sciantix_scaling_factors[7] = 1.0;
+		Sciantix_scaling_factors[8] = 1.0;
 	}
 
 	input_check.close();

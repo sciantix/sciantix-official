@@ -19,7 +19,7 @@
 /// SetVariables
 /// This routine builds the vectors of objects:
 /// - physics_variable
-/// - history_variable 
+/// - history_variable
 /// - sciantix_variable
 /// - input_variable
 /// together with the diffusion modes, the maps, and the scaling factors.
@@ -30,7 +30,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	// Input variable
 	// The vector is used to collect all user input settings relating to the choice of SCIANTIX models
 	// -----------------------------------------------------------------------------------------------
-	
+
 	int iv_counter(0);
 	if (input_variable.empty())
 	{
@@ -188,8 +188,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	// ----------------
 	// History variable
 	// ----------------
-
 	int hv_counter(0);
+
 	history_variable.emplace_back();
 	history_variable[hv_counter].setName("Time");
 	history_variable[hv_counter].setUOM("(h)");
@@ -840,6 +840,14 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[45]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[45]);
 	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("U");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45]);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
