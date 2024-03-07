@@ -144,23 +144,47 @@ class Simulation : public Solver, public Model
 			{
 				case 1:
 				{
-					sciantix_variable[sv[sciantix_system[i].getGasName() + " in grain"]].setFinalValue(
-						solver.SpectralDiffusion(
-							getDiffusionModes(sciantix_system[i].getGasName()),
-							model[sm["Gas diffusion - " + sciantix_system[i].getName()]].getParameter(),
-							physics_variable[pv["Time step"]].getFinalValue()
-						)
-					);
 
-					double equilibrium_fraction(1.0);
-					if ((sciantix_system[i].getResolutionRate() + sciantix_system[i].getTrappingRate()) > 0.0)
-						equilibrium_fraction = sciantix_system[i].getResolutionRate() / (sciantix_system[i].getResolutionRate() + sciantix_system[i].getTrappingRate());
+					double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
+					if(sciantix_system[i].getMatrixName() == "UO2HBS")
+					{
+						sciantix_variable[sv[sciantix_system[i].getGasName() + " in grain"]].setFinalValue(
+							solver.SpectralDiffusion(
+								getDiffusionModes("Xe in UO2HBS"),
+								model[sm["Gas diffusion - " + sciantix_system[i].getName()]].getParameter(),
+								physics_variable[pv["Time step"]].getFinalValue()
+							)
+						);
+					}
+					// Non-HBS fraction
+					else
+					{
+						sciantix_variable[sv[sciantix_system[i].getGasName() + " in grain"]].setFinalValue(
+							solver.SpectralDiffusion(
+								getDiffusionModes(sciantix_system[i].getGasName()),
+								model[sm["Gas diffusion - " + sciantix_system[i].getName()]].getParameter(),
+								physics_variable[pv["Time step"]].getFinalValue()
+							)
+						);
 
-					sciantix_variable[sv[sciantix_system[i].getGasName() + " in intragranular solution"]].setFinalValue(
-						equilibrium_fraction * sciantix_variable[sv[sciantix_system[i].getGasName() + " in grain"]].getFinalValue());
+						sciantix_variable[sv[sciantix_system[i].getGasName() + " in grain"]].setFinalValue(
+							solver.SpectralDiffusion(
+								getDiffusionModes(sciantix_system[i].getGasName()),
+								model[sm["Gas diffusion - " + sciantix_system[i].getName()]].getParameter(),
+								physics_variable[pv["Time step"]].getFinalValue()
+							)
+						);
 
-					sciantix_variable[sv[sciantix_system[i].getGasName() + " in intragranular bubbles"]].setFinalValue(
-						(1.0 - equilibrium_fraction) * sciantix_variable[sv[sciantix_system[i].getGasName() + " in grain"]].getFinalValue());
+						double equilibrium_fraction(1.0);
+						if ((sciantix_system[i].getResolutionRate() + sciantix_system[i].getTrappingRate()) > 0.0)
+							equilibrium_fraction = sciantix_system[i].getResolutionRate() / (sciantix_system[i].getResolutionRate() + sciantix_system[i].getTrappingRate());
+
+						sciantix_variable[sv[sciantix_system[i].getGasName() + " in intragranular solution"]].setFinalValue(
+							equilibrium_fraction * sciantix_variable[sv[sciantix_system[i].getGasName() + " in grain"]].getFinalValue());
+
+						sciantix_variable[sv[sciantix_system[i].getGasName() + " in intragranular bubbles"]].setFinalValue(
+							(1.0 - equilibrium_fraction) * sciantix_variable[sv[sciantix_system[i].getGasName() + " in grain"]].getFinalValue());
+					}
 
 					break;
 				}
@@ -815,8 +839,11 @@ void UO2Thermochemistry()
 		else if(gas_name == "Xe133")
 			return &modes_initial_conditions[9 * 40];
 
-		else // (gas_name == "Kr85m")
+		else if (gas_name == "Kr85m")
 			return &modes_initial_conditions[12 * 40];
+
+		else // if (gas_name == "Xe in UO2HBS")
+			return &modes_initial_conditions[15 * 40];
 	}
 
 	double* getDiffusionModesSolution(std::string gas_name)
@@ -833,7 +860,7 @@ void UO2Thermochemistry()
 		else if(gas_name == "Xe133")
 			return &modes_initial_conditions[10 * 40];
 
-		else // (gas_name == "Kr85m")
+		else if (gas_name == "Kr85m")
 			return &modes_initial_conditions[13 * 40];
 	}
 
@@ -851,7 +878,7 @@ void UO2Thermochemistry()
 		else if(gas_name == "Xe133")
 			return &modes_initial_conditions[11 * 40];
 
-		else // (gas_name == "Kr85m")
+		else if (gas_name == "Kr85m")
 			return &modes_initial_conditions[14 * 40];
 	}
 

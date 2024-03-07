@@ -41,6 +41,7 @@ protected:
 	double trapping_rate;
 	double nucleation_rate;
 	std::string gas_name;
+	std::string matrix_name;
 	double pore_nucleation_rate;
 	std::vector<double> modes;
 	double production_rate;
@@ -80,6 +81,18 @@ public:
 	{
 		/// Member function to get the name of the gas in the matrix
 		return gas_name;
+	}
+
+	void setMatrixName(std::string n)
+	{
+		/// Member function to set the name of the matrix
+		matrix_name = n;
+	}
+
+	std::string getMatrixName()
+	{
+		/// Member function to get the name of the matrix
+		return matrix_name;
 	}
 
 	double getVolumeInLattice()

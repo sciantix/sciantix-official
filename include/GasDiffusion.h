@@ -27,6 +27,8 @@
 #include "GasDeclaration.h"
 #include "MapGas.h"
 #include "SetMatrix.h"
+#include "MatrixDeclaration.h"
+#include "MapMatrix.h"
 
 void GasDiffusion();
 
