@@ -37,15 +37,18 @@ void InterGranularBubbleEvolution()
 	const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
 	const double boltzmann_constant = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
 
-	if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() == 0)
+	switch (int(input_variable[iv["iGrainBoundaryBehaviour"]].getValue()))
+	{
+	case 0:
 	{
 		parameter.push_back(0.0);
 		parameter.push_back(0.0);
 
 		reference += ": No model for grain-boundary bubble evolution.";
+		break;
 	}
 
-	else if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() == 1)
+	case 1:
 	{
 		// Gas is distributed among bubbles
 		// n(at/bub) = c(at/m3) / (N(bub/m2) S/V(1/m))
@@ -124,7 +127,14 @@ void InterGranularBubbleEvolution()
 		parameter.push_back(equilibrium_term);
 
 		reference += ": Pastore et al., NED, 256 (2013) 75-86.";
+
+		break;
 	}
+
+    default:
+        ErrorMessages::Switch(__FILE__, "iGrainBoundaryBehaviour", int(input_variable[iv["iGrainBoundaryBehaviour"]].getValue()));
+        break;
+    }
 
 	model[model_index].setParameter(parameter);
 	model[model_index].setRef(reference);

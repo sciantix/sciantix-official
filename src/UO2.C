@@ -46,7 +46,7 @@ void UO2()
 	matrix[index].setPoreTrappingRate();
 
     // Mechanical properties
-    matrix[index].setElasticModulus(233.4e5 * (1 - 2.752 * (1 - sciantix_variable[sv["Fuel density"]].getFinalValue() / 10960)) * (1 - 1.0915e-4 * history_variable[hv["Temperature"]].getFinalValue())); // (MPa) MATPRO (2003)
+    matrix[index].setElasticModulus(233.4e9 * (1 - 2.752 * (1 - sciantix_variable[sv["Fuel density"]].getFinalValue() / 10960)) * (1 - 1.0915e-4 * history_variable[hv["Temperature"]].getFinalValue())); // (Pa) MATPRO (2003)
     matrix[index].setPoissonRatio(0.316); // (/) MATPRO (2003)
-    matrix[index].setGrainBoundaryFractureEnergy(4e-3); // (J/m2) @ref: L. O. Jernkvist EPJ Nuclear Sci. Technol. 5, 11 (2019)
+    matrix[index].setGrainBoundaryFractureEnergy(2); // (J/m2) @ref: L. O. Jernkvist EPJ Nuclear Sci. Technol. 5, 11 (2019)
 }
