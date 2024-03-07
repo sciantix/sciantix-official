@@ -1,5 +1,5 @@
 iGrainGrowth = 1
-iFGDiffusionCoefficient = 8
+iFGDiffusionCoefficient = 1
 iDiffusionSolver = 1
 iIntraGranularBubbleEvolution = 1
 iResolutionRate = 1
@@ -16,13 +16,12 @@ iHelium = 0
 iHeDiffusivity = 0
 iGrainBoundarySweeping = 0
 iHighBurnupStructureFormation = 0
-iHBS_FGDiffusionCoefficient = 0
 iHighBurnupStructurePorosity = 0
 iHeliumProductionRate = 0
 iStoichiometryDeviation = 0
 iBubbleDiffusivity = 0
 iChromiumSolubility = 1
-Grain radius[0] = 5e-005
+Grain radius[0] = 5e-05
 Initial composition Xe0 = 0
 Initial composition Xe1 = 0
 Initial composition Xe2 = 0
@@ -68,6 +67,6 @@ Initial composition Kr85m5 = 0
 Initial composition Kr85m6 = 0
 Initial stoichiometry deviation[0] = 0
 Chromium content[0] = 2000
-0	600	1e+019	0	
-24000	600	1e+019	0	
-24012	2350	1e+019	0	
+0	600	1e+19	0	
+24000	600	1e+19	0	
+24012	2350	1e+19	0	
