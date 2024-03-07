@@ -1,6 +1,6 @@
 """
 
-This is a python script to execute the regression (running the validation database) of sciantix.
+This is a python script to execute the regression (running the validation database) of SCIANTIX.
 
 @author G. Zullo
 
@@ -19,18 +19,33 @@ from sklearn.linear_model import LinearRegression
 
 """ ------------------- Global Variables ------------------- """
 
-# Intergranular gaseous swelling database from Baker 1977 experiments
-igSwellingBaker = [0.06, 0.07, 0.08, 0.09, 0.12, 0.15, 0.18, 0.24, 0.31]
+# Intragranular gaseous swelling database from Baker 1977 experiments
+igSwellingBaker = np.array([0.06, 0.07, 0.08, 0.09, 0.12, 0.15, 0.18, 0.24, 0.31])
+igSwellingError = igSwellingBaker * np.sqrt(0.3**2 + 0.5**2)
+
 # Data from SCIANTIX 1.0
-igSwelling1 = [0.033, 0.048, 0.062, 0.073, 0.079, 0.082, 0.083, 0.084, 0.086]
+igSwelling1 = np.array([0.033, 0.048, 0.062, 0.073, 0.079, 0.082, 0.083, 0.084, 0.086])
+igRadius1 = np.array([0.515, 0.607, 0.681, 0.733, 0.763, 0.776, 0.782, 0.784, 0.785]) # nm
+igDensity1 = np.array([5.78, 5.14, 4.69, 4.42, 4.27, 4.2, 4.18, 4.17, 4.17]) #10^23 bub/m3
+
 # Data generated from SCIANTIX 2.0
 igSwelling2 = []
+
+# Intragranular bubble density from Baker 1977 experiments
+igDensityBaker = np.array([8.7, 7.8, 7, 6.4, 5.7, 5.3, 4.8, 4.4, 3.8]) #1e23 bub/m3
+igDensityError = igDensityBaker * 0.3
+igDensity2 = []
+
+igRadiusBaker = np.array([0.55e-9, 0.6e-9, 0.65e-9, 0.70e-9, 0.80e-9, 0.88e-9, 0.98e-9, 1.10e-9, 1.25e-9])
+igRadiusError = igRadiusBaker * 0.5
+
+igRadius2 = []
 FGR2 = []
 
 number_of_tests_failed = 0
+
 gold = []
 sample_number = len(igSwelling1)
-
 
 """ ------------------- Functions ------------------- """
 
@@ -89,17 +104,22 @@ def do_gold():
 
 # Plot the regression test results
 def do_plot():
-  # SCIANTIX 1.0 vs. SCIANTIX 2.0
+  
+  igSwellingErrorVertL = np.abs(igSwelling2 - 100 * np.array([2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06]))
+  igSwellingErrorVertU = np.abs(igSwelling2 - 100 * np.array([0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503]))
+
+  # SCIANTIX 1.0 vs. SCIANTIX 2.0: intragranular bubble swelling + error bars
   fig, ax = plt.subplots()
 
-  ax.scatter(igSwellingBaker, igSwelling1, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 1.0')
-  ax.scatter(igSwellingBaker, igSwelling2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
+  ax.scatter(igSwellingBaker, igSwelling1, edgecolors='#757575', facecolors='red',   marker = '^', s=30, label='SCIANTIX 1.0', zorder = 1)
+  ax.errorbar(igSwellingBaker, igSwelling2, xerr = igSwellingError, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), edgecolors= None, color='green', marker = '.', fmt='^', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0', zorder = 2)
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
   ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
-  ax.set_xlim(1e-2, 1e1)
-  ax.set_ylim(1e-2, 1e1)
+
+  ax.set_xlim(0.5e-2, 1e1)
+  ax.set_ylim(0.5e-2, 1e1)
 
   ax.set_xscale('log')
   ax.set_yscale('log')
@@ -110,43 +130,65 @@ def do_plot():
   ax.legend()
 
   plt.show()
-
-
-  # GOLD vs. SCIANTIX 2.0
+  
+  # Data vs. SCIANTIX 2.0: bubble density + errorbar
   fig, ax = plt.subplots()
 
-  ax.scatter(igSwellingBaker, gold, c = '#C9C954', edgecolors= '#999AA2', marker = 'o', s=20, label='Gold')
-  ax.scatter(igSwellingBaker, igSwelling2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
+  ax.errorbar(igDensityBaker, igDensity1, xerr = igDensityError, c = '#FA82B4', marker = '.', fmt='o', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 1.0')
+  ax.errorbar(igDensityBaker, igDensity2, xerr = igDensityError, c = 'green', marker = '.', fmt='o', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0')
 
-  ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
-  ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
-  ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
-
-  ax.set_xlim(1e-2, 1e1)
-  ax.set_ylim(1e-2, 1e1)
+  ax.plot([0.1, 100],[0.1, 100], '-', color = '#757575')
+  ax.plot([0.1, 100],[0.05, 50],'--', color = '#757575')
+  ax.plot([0.1, 100],[0.2, 200],'--', color = '#757575')
+  ax.set_xlim(0.1, 100)
+  ax.set_ylim(0.1, 100)
 
   ax.set_xscale('log')
   ax.set_yscale('log')
 
-  # ax.set_title('Intergranular gaseous swelling')
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
 
   plt.show()
+  plt.close()
 
-  # Fission gases release plot
+  # Data vs. SCIANTIX 2.0: bubble radius + errorbar
   fig, ax = plt.subplots()
-  ax.scatter(igSwelling2, FGR2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='FGR SCIANTIX 2.0')
+
+  ax.errorbar(igRadiusBaker, igRadius1*1e-9, xerr = igRadiusError, c = '#FA82B4', marker = '.', fmt='o', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 1.0')
+  ax.errorbar(igRadiusBaker, igRadius2, xerr = igRadiusError, c = 'green', marker = '.', fmt='o', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0')
+
+  ax.plot([0.1e-9, 100e-9],[0.1e-9, 100e-9], '-', color = '#757575')
+  ax.plot([0.1e-9, 100e-9],[0.05e-9, 50e-9],'--', color = '#757575')
+  ax.plot([0.1e-9, 100e-9],[0.2e-9, 200e-9],'--', color = '#757575')
+  ax.set_xlim(0.1e-9, 100e-9)
+  ax.set_ylim(0.1e-9, 100e-9)
 
   ax.set_xscale('log')
   ax.set_yscale('log')
 
-  ax.set_xlabel('Swelling (%)')
-  ax.set_ylabel('FGR (%)')
+  # ax.set_title('Intragranular gaseous swelling')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
   ax.legend()
 
   plt.show()
+  plt.close()
+
+  # Fission gases release plot
+#   fig, ax = plt.subplots()
+#   ax.scatter(igSwelling2, FGR2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='FGR SCIANTIX 2.0')
+
+#   ax.set_xscale('log')
+#   ax.set_yscale('log')
+
+#   ax.set_xlabel('Swelling (%)')
+#   ax.set_ylabel('FGR (%)')
+#   ax.legend()
+
+#   plt.show()
+#   plt.close()
 
 
 # Main function of the baker regression
@@ -211,6 +253,12 @@ def regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number
       # Retrieve the gold data of Intragranular gas swelling
       intraGranularSwellingGoldPos = findSciantixVariablePosition(data_gold, "Intragranular gas swelling (/)")
       gold.append(100*data_gold[-1,intraGranularSwellingGoldPos].astype(float))
+
+      pos = findSciantixVariablePosition(data, "Intragranular bubble concentration (bub/m3)")
+      igDensity2.append(1e-23*data[-1,pos].astype(float))
+
+      pos = findSciantixVariablePosition(data, "Intragranular bubble radius (m)")
+      igRadius2.append(data[-1,pos].astype(float))
 
       os.chdir('..')
 
