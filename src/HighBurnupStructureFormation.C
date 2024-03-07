@@ -23,7 +23,9 @@ void HighBurnupStructureFormation()
      * This model describes the formation of a HBS structure in UO2 fuel.
      * 
      * @author
-     * A. Magni, E. Redaelli, G. Zullo
+     * A. Magni
+	 * E. Redaelli
+	 * G. Zullo
     */
 
 	model.emplace_back();
@@ -43,7 +45,7 @@ void HighBurnupStructureFormation()
 		/// iHighBurnupStructureFormation == 0
 		/// ----------------------------------
 		///
-		/// This case corresponds to the no HBS forming in the UO2 fuel matrix.
+		/// No HBS forming in the UO2 fuel matrix.
 
 		reference += ": not considered.";
 		parameter.push_back(0.0);
