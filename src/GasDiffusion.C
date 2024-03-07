@@ -50,9 +50,17 @@ void GasDiffusion()
 					sciantix_system[i].getTrappingRate() /
 					(sciantix_system[i].getResolutionRate() + sciantix_system[i].getTrappingRate()) * sciantix_system[i].getBubbleDiffusivity() 
 				);
+			
+			parameter.push_back(matrix[sma[sciantix_system[i].getMatrixName()]].getGrainRadius());
 
-			parameter.push_back(sciantix_variable[sv["Grain radius"]].getFinalValue());
-			parameter.push_back(sciantix_system[i].getProductionRate());
+			double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
+
+			if(sciantix_system[i].getMatrixName() == "UO2HBS")
+				parameter.push_back((1. - alpha)*sciantix_system[i].getProductionRate());
+			// Non-HBS fraction
+			else
+				parameter.push_back(alpha*sciantix_system[i].getProductionRate());
+
 			parameter.push_back(gas[ga[sciantix_system[i].getGasName()]].getDecayRate());
 
 			model[model_index].setParameter(parameter);

@@ -35,6 +35,9 @@ void SetMatrix( )
 
 		case 1: 
 		{
+			UO2();
+			MapMatrix();
+			
 			UO2HBS();
 			MapMatrix();
 
