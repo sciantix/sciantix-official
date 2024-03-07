@@ -25,7 +25,7 @@
 /// together with the diffusion modes, the maps, and the scaling factors.
 
 void SetVariables(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[])
-{
+{	
 	// -----------------------------------------------------------------------------------------------
 	// Input variable
 	// The vector is used to collect all user input settings relating to the choice of SCIANTIX models
@@ -996,6 +996,14 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[78]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[78]);
 	sciantix_variable[sv_counter].setOutput(toOutputChromiumContent);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Diffusion coefficient");
+	sciantix_variable[sv_counter].setUOM("(m2/s)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[90]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[90]);
+	sciantix_variable[sv_counter].setOutput(1);
 	++sv_counter;
 
 	// ------------------------------------------------------------------------------------------------	

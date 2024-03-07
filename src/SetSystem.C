@@ -16,6 +16,74 @@
 
 #include "SetSystem.h"
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <cmath>
+
+// -----------------------------------------------------------------------------------------------
+// Functions for GPs
+// -----------------------------------------------------------------------------------------------
+
+std::vector<std::vector<double>> ReadValuesFromFile(std::ifstream& input_file) 
+{
+    std::vector<std::vector<double>> matrix;
+
+    std::string line;
+    while (std::getline(input_file, line)) {
+        std::istringstream iss(line);
+        std::vector<double> row;
+
+        double value;
+        while (iss >> value) {
+            row.push_back(value);
+        }
+
+        if (!row.empty()) {
+            matrix.push_back(row);
+        }
+    }
+
+    return matrix;
+}
+
+double bilinearInterpolation(const std::vector<std::vector<double>>& matrix,
+							const std::vector<double>& x,
+                            const std::vector<double>& y,
+                            double val1,
+                            double val2) 
+{
+    // Find the index I such that val1 falls between x[I-1] and x[I]
+    int I = 0;
+    while (I < x.size() && x[I] < val1) {
+        I++;
+    }
+
+    // Find the index J such that val2 falls between y[J-1] and y[J]
+    int J = 0;
+    while (J < y.size() && y[J] < val2) {
+        J++;
+    }
+
+    // Bilinear interpolation
+    double x1 = x[I - 1], x2 = x[I];
+    double y1 = y[J - 1], y2 = y[J];
+
+    double Q11 = matrix[I - 1][J - 1];
+    double Q21 = matrix[I][J - 1];
+    double Q12 = matrix[I - 1][J];
+    double Q22 = matrix[I][J];
+
+    double dx = (val1 - x1) / (x2 - x1);
+    double dy = (val2 - y1) / (y2 - y1);
+
+    double result = (1 - dx) * (1 - dy) * Q11 + dx * (1 - dy) * Q21 +
+                    (1 - dx) * dy * Q12 + dx * dy * Q22;
+
+    return result;
+}
+
 /// SetSystem
 
 void SetSystem()
@@ -195,6 +263,8 @@ void System::setFissionGasDiffusivity(int input_value)
 		diffusivity = d1 + d2 + d3;
 		diffusivity *= sf_diffusivity;
 
+		sciantix_variable[sv["Diffusion coefficient"]].setFinalValue(diffusivity);
+
 		break;
 	}
 
@@ -318,7 +388,7 @@ void System::setFissionGasDiffusivity(int input_value)
 
 		double U_content = sciantix_variable[sv["U234"]].getFinalValue() + sciantix_variable[sv["U235"]].getFinalValue() +sciantix_variable[sv["U236"]].getFinalValue() +
 					   	   sciantix_variable[sv["U237"]].getFinalValue() + sciantix_variable[sv["U238"]].getFinalValue(); // (at U/m3)
-						   
+
 		double U_weight = U_content*molar_mass_Uranium/PhysicsConstants::avogadro_number; //(g U/m3)
 		double O2_weight = U_content*2*PhysicsConstants::molar_mass_Oxigen/PhysicsConstants::avogadro_number; //(g O2/m3)
 		double UO2_weight = U_weight + O2_weight; //(g UO2/m3)
@@ -351,19 +421,9 @@ void System::setFissionGasDiffusivity(int input_value)
 		}
 
 		// Calculations to get the amount of Cr in weight %
-		double conv_fact = sciantix_variable[sv["Fuel density"]].getFinalValue() * PhysicsConstants::avogadro_number * 10 * 0.8815 * 100; // to move from atoms/m3 to percentage in atoms (see Initialization.cpp)
-		double molar_mass_Uranium = sciantix_variable[sv["U234"]].getFinalValue()/conv_fact *pow(234.04095,2)+ sciantix_variable[sv["U235"]].getFinalValue()/conv_fact *pow(235.04393,2)+  
-									sciantix_variable[sv["U236"]].getFinalValue()/conv_fact *pow(236.04557,2)+ sciantix_variable[sv["U237"]].getFinalValue()/conv_fact *pow(237.04873,2)+  
-									sciantix_variable[sv["U238"]].getFinalValue()/conv_fact *pow(238.05079,2);
-		double U_content = sciantix_variable[sv["U234"]].getFinalValue() + sciantix_variable[sv["U235"]].getFinalValue() +sciantix_variable[sv["U236"]].getFinalValue() +
-						   sciantix_variable[sv["U237"]].getFinalValue() + sciantix_variable[sv["U238"]].getFinalValue(); // (at U/m3)
-
-		double U_weight = U_content*molar_mass_Uranium/PhysicsConstants::avogadro_number; //(g U/m3)
-		double O2_weight = U_content*2*PhysicsConstants::molar_mass_Oxigen/PhysicsConstants::avogadro_number; //(g O2/m3)
-		double UO2_weight = U_weight + O2_weight; //(g UO2/m3)
 		
-		double dimensional_Factor =  UO2_weight/100/7.2e6;
-		double V_U_concentration = (9/4)*ratio*pow((sciantix_variable[sv["Chromium precipitate"]].getFinalValue() +sciantix_variable[sv["Chromia precipitate"]].getFinalValue()) * dimensional_Factor,2);
+		double dimensional_Factor =  PhysicsConstants::avogadro_number * 7.2e6/PhysicsConstants::molar_mass_Chromium/10;
+		double V_U_concentration = (9/4)*ratio*pow((sciantix_variable[sv["Chromium solution"]].getFinalValue() +sciantix_variable[sv["Chromia solution"]].getFinalValue()) / dimensional_Factor,2);
 		double d1 = 7.6e-10 * exp(-3.5e+4 /temperature);
 		double d2 = 4*1.41e-25*sqrt(history_variable[hv["Fission rate"]].getFinalValue()) * exp(-1.91e-19/temperature/(1.38e-23));
 		double d3 = 8e-40*history_variable[hv["Fission rate"]].getFinalValue();
@@ -372,6 +432,8 @@ void System::setFissionGasDiffusivity(int input_value)
 		diffusivity = d1 +d2 +d3 +d4;
 
 		diffusivity *= sf_diffusivity;
+
+		sciantix_variable[sv["Diffusion coefficient"]].setFinalValue(diffusivity);
 
 		break;
 	}
@@ -419,19 +481,9 @@ void System::setFissionGasDiffusivity(int input_value)
 		}
 
 		// Calculations to get the amount of Cr in weight %
-		double conv_fact = sciantix_variable[sv["Fuel density"]].getFinalValue() * PhysicsConstants::avogadro_number * 10 * 0.8815 * 100; // to move from atoms/m3 to percentage in atoms (see Initialization.cpp)
-		double molar_mass_Uranium = sciantix_variable[sv["U234"]].getFinalValue()/conv_fact *pow(234.04095,2)+ sciantix_variable[sv["U235"]].getFinalValue()/conv_fact *pow(235.04393,2)+  
-									sciantix_variable[sv["U236"]].getFinalValue()/conv_fact *pow(236.04557,2)+ sciantix_variable[sv["U237"]].getFinalValue()/conv_fact *pow(237.04873,2)+  
-									sciantix_variable[sv["U238"]].getFinalValue()/conv_fact *pow(238.05079,2);
-		double U_content = sciantix_variable[sv["U234"]].getFinalValue() + sciantix_variable[sv["U235"]].getFinalValue() +sciantix_variable[sv["U236"]].getFinalValue() +
-						   sciantix_variable[sv["U237"]].getFinalValue() + sciantix_variable[sv["U238"]].getFinalValue(); // (at U/m3)
-
-		double U_weight = U_content*molar_mass_Uranium/PhysicsConstants::avogadro_number; //(g U/m3)
-		double O2_weight = U_content*2*PhysicsConstants::molar_mass_Oxigen/PhysicsConstants::avogadro_number; //(g O2/m3)
-		double UO2_weight = U_weight + O2_weight; //(g UO2/m3)
 		
-		double dimensional_Factor =  UO2_weight/100/7.2e6;
-		double V_U_concentration = ratio*pow((sciantix_variable[sv["Chromium precipitate"]].getFinalValue() +sciantix_variable[sv["Chromia precipitate"]].getFinalValue()) * dimensional_Factor,2);
+		double dimensional_Factor =  PhysicsConstants::avogadro_number * 7.2e6/PhysicsConstants::molar_mass_Chromium/10;
+		double V_U_concentration = 1*ratio*pow((sciantix_variable[sv["Chromium solution"]].getFinalValue() +sciantix_variable[sv["Chromia solution"]].getFinalValue()) / dimensional_Factor,2);
 		double d1 = 7.6e-10 * exp(-3.5e+4 /temperature);
 		double d2 = 4*1.41e-25*sqrt(history_variable[hv["Fission rate"]].getFinalValue()) * exp(-1.91e-19/temperature/(1.38e-23));
 		double d3 = 8e-40*history_variable[hv["Fission rate"]].getFinalValue();
@@ -440,7 +492,59 @@ void System::setFissionGasDiffusivity(int input_value)
 		diffusivity = d1 +d2 +d3 +d4;
 
 		diffusivity *= sf_diffusivity;
+
+		sciantix_variable[sv["Diffusion coefficient"]].setFinalValue(diffusivity);
+
+		break;
 		
+	}
+
+	case 90:
+	{
+		/**
+		 * @brief This is a test case for the correlation update with GPs. The correlation considered is the one described in @ref *Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22*.
+		 * The data considered to update the correlation comes from @ref *Matthews et al Journal of Nuclear Materials 540 (2020)*
+		 * 
+		 */
+
+		// Loading of files generated by GPs for Xe Diffusion Coefficient
+		std::ifstream input_fileU1("UpdatedCorrelation_XeDiffusionCoefficient.txt");
+		std::ifstream input_fileS1("StandardDeviation_XeDiffusionCoefficient.txt");
+		std::vector<std::vector<double>> matrixUpdateXeDiffusionCoefficient = ReadValuesFromFile(input_fileU1);
+		std::vector<std::vector<double>> matrixStdDevXeDiffusionCoefficient = ReadValuesFromFile(input_fileS1);
+
+		// Generate vectors
+		std::vector<double> TT_vector(100);
+		std::vector<double> FF_vector(100);
+
+		double start_TT = 4.0;
+		double end_TT = 9.0;
+		double start_FF = 18.0;
+		double end_FF = 22.0;
+
+		double step_TT = (end_TT - start_TT) / 99;
+		double step_FF = (end_FF - start_FF) / 99;
+
+		// Generate values for TT_plot
+		for (int i = 0; i < 100; ++i) {
+			TT_vector[i] = start_TT + i * step_TT;
+		}
+
+		// Generate values for F_plot
+		for (int i = 0; i < 100; ++i) {
+			FF_vector[i] = start_FF + i * step_FF;
+		}
+
+		// Perform the interpolation
+		double XeDiffusionCoefficientGP = bilinearInterpolation(matrixUpdateXeDiffusionCoefficient, TT_vector, FF_vector, pow(10,4)/history_variable[hv["Temperature"]].getFinalValue(),
+																log10(history_variable[hv["Fission rate"]].getFinalValue()));
+
+		diffusivity = pow(10, XeDiffusionCoefficientGP);
+
+		diffusivity *= sf_diffusivity;
+
+		sciantix_variable[sv["Diffusion coefficient"]].setFinalValue(diffusivity);
+
 		break;
 	}
 	

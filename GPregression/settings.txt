@@ -1,0 +1,1 @@
+1   #   XeDiffusionCoefficient (0 = no update, 1 = Matthews et al. (2020))
