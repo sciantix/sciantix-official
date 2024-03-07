@@ -77,10 +77,12 @@ void GrainBoundaryVenting()
     }
 
     default:
-        ErrorMessages::Switch("GrainBoundaryVenting", "iGrainBoundaryVenting", int(input_variable[iv["iGrainBoundaryVenting"]].getValue()));
+        ErrorMessages::Switch(__FILE__, "iGrainBoundaryVenting", int(input_variable[iv["iGrainBoundaryVenting"]].getValue()));
         break;
     }
 
     parameter.push_back(sciantix_variable[sv["Intergranular venting probability"]].getFinalValue());
 
+    model[model_index].setParameter(parameter);
+    model[model_index].setRef(reference);
 }

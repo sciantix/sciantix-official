@@ -684,7 +684,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Intergranular bubble pressure");
-	sciantix_variable[sv_counter].setUOM("MPa)");
+	sciantix_variable[sv_counter].setUOM("(MPa)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(toOutputFracture);
@@ -692,7 +692,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Critical intergranular bubble pressure");
-	sciantix_variable[sv_counter].setUOM("MPa)");
+	sciantix_variable[sv_counter].setUOM("(MPa)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(toOutputFracture);

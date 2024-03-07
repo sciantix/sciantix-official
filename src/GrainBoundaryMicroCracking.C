@@ -18,7 +18,7 @@
 
 void GrainBoundaryMicroCracking()
 {
-	if (!input_variable[iv["iGrainBoundaryMicroCracking"]].getValue()) return;
+	if (int(input_variable[iv["iGrainBoundaryMicroCracking"]].getValue()) != 1) return;
 
 	model.emplace_back();
 	int model_index = int(model.size()) - 1;
