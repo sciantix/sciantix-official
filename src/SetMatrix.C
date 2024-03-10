@@ -61,7 +61,7 @@ void Matrix::setGrainBoundaryMobility(int input_value)
 		 * 
 		*/
 
-		reference += "no grain-boundary mobility.\n\t";
+		reference += ": Null grain-boundary mobility.\n\t";
 		grain_boundary_mobility = 0.0;
 
 		break;
@@ -73,7 +73,7 @@ void Matrix::setGrainBoundaryMobility(int input_value)
 		 * @brief iGrainGrowth = 1 corresponds to the Ainscough et al. (1973) grain-boundary mobility
 		 * 
 		*/
-		reference += "Ainscough et al., JNM, 49 (1973) 117-128.\n\t";
+		reference += ": Ainscough et al., JNM, 49 (1973) 117-128.\n\t";
 		grain_boundary_mobility = 1.455e-8 * exp(- 32114.5 / history_variable[hv["Temperature"]].getFinalValue());
 		break;
 	}
@@ -85,7 +85,7 @@ void Matrix::setGrainBoundaryMobility(int input_value)
 		 * 
 		*/
 
-		reference += "Van Uffelen et al. JNM, 434 (2013) 287-29.\n\t";
+		reference += ": Van Uffelen et al. JNM, 434 (2013) 287-29.\n\t";
 		grain_boundary_mobility = 1.360546875e-15 * exp(- 46524.0 / history_variable[hv["Temperature"]].getFinalValue());
 		break;
 	}
