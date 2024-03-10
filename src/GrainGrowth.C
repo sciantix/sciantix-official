@@ -64,7 +64,7 @@ void GrainGrowth()
 		 * Note that, the equation for grain growth is written in grain size.
 		*/
 	{
-		reference += "Ainscough et al., JNM, 49 (1973) 117-128.";
+		reference += ": Ainscough et al., JNM, 49 (1973) 117-128.";
 
 		double limiting_grain_radius = 2.23e-03 * (1.56/2.0) * exp(-7620.0 / history_variable[hv["Temperature"]].getFinalValue());
 		double burnup_factor = 1.0 + 2.0 * sciantix_variable[sv["Burnup"]].getFinalValue() / 0.8815;

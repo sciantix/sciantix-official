@@ -32,7 +32,7 @@ void Burnup()
 
 	sciantix_variable[sv["Specific power"]].setFinalValue((history_variable[hv["Fission rate"]].getFinalValue() * (3.12e-17) / sciantix_variable[sv["Fuel density"]].getFinalValue()));
 	
-	std::string reference = "The local burnup is calculated from the fission rate density.";
+	std::string reference = ": The local burnup is calculated from the fission rate density.";
 	std::vector<double> parameter;
 	parameter.push_back(sciantix_variable[sv["Specific power"]].getFinalValue() / 86400.0); // specific power in MW/kg, burnup in MWd/kg
 

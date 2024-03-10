@@ -66,7 +66,7 @@ void IntraGranularBubbleEvolution()
 		/// @param[out] intragranular_bubble_concentration
 		/// @param[out] intragranular_bubble_radius
 		
-		reference += "Pizzocri et al., JNM, 502 (2018) 323-330.";
+		reference += ": Pizzocri et al., JNM, 502 (2018) 323-330.";
 
 		/// @param[in] resolution_rate
 		parameter.push_back(sciantix_system[0].getResolutionRate());
