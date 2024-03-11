@@ -287,6 +287,7 @@ void System::setHeliumDiffusivity(int input_value)
 		
 		reference += "iHeDiffusivity: constant intragranular diffusivity.\n\t";
 		diffusivity = 7e-19;
+		// diffusivity = sf_diffusivity_preExp * 10e-21;
 		break;
 	}
 
@@ -300,7 +301,9 @@ void System::setHeliumDiffusivity(int input_value)
 		 */
 
 		reference += "(no or very limited lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.\n\t";
+		// diffusivity = 4.0e-10 * exp(-27063.3 / history_variable[hv["Temperature"]].getFinalValue());
 		diffusivity = sf_diffusivity_preExp * 2.0e-10 * exp(-24603.4 * sf_diffusivity_actEnergy / history_variable[hv["Temperature"]].getFinalValue());
+		
 		break;
 	}
 
