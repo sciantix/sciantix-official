@@ -8,17 +8,18 @@ import numpy as np
 
 def main():
 
-    case_name = 'test_diffusivity_case'
+    # case_name = 'test_diffusivity_case'
+    case_name = 'test_Talip2014_1320K'
     params_key=np.array(['helium diffusivity pre exponential', 'helium diffusivity activation energy'])
     params_mean=np.array([0,1])
     params_std=np.array([1.526, 0.1])
     num_observed = 31
-    num_calibration = 2
+    num_calibration = 6
     max_walk_steps = 100000
     num_walkers = 4
-    bayI_mcmc = 'off'
+    bayI_mcmc = 'on'
     postP_mcmc = 'on'
-    dataG_da = 'off'
+    dataG_da = 'on'
     bayI_da = 'on'
     true_value = None
     num_per_param = np.array([300, 100])
