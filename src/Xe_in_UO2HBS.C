@@ -27,7 +27,7 @@ void Xe_in_UO2HBS()
 	int index = int(sciantix_system.size()) - 1;
 
 	sciantix_system[index].setName("Xe in UO2HBS");
-	sciantix_system[index].setGasName("Xe");
+	sciantix_system[index].setGasName("XeHBS");
 	sciantix_system[index].setMatrixName("UO2HBS");
 	sciantix_system[index].setYield(0.24);
 	sciantix_system[index].setRadiusInLattice(0.21e-9);

@@ -24,6 +24,8 @@ void GasProduction()
 	int model_index;
 	std::vector<double> parameter;
 
+	std::cout << "GasProduction() - Model" << std::endl;
+
 	for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
 	{
 		model.emplace_back();
@@ -36,6 +38,9 @@ void GasProduction()
 		parameter.push_back(physics_variable[pv["Time step"]].getFinalValue());
 
 		model[model_index].setParameter(parameter);
+
+		std::cout << "sciantix_system[i].getName(): " << sciantix_system[i].getName() << std::endl;
+		std::cout << "sciantix_system[i].getGasName(): " << sciantix_system[i].getGasName() << std::endl;
 
 		parameter.clear();
 	}

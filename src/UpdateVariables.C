@@ -95,10 +95,12 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[85] = sciantix_variable[sv["Xe in HBS pores - variance"]].getFinalValue();
 	Sciantix_variables[86] = sciantix_variable[sv["Xe atoms per HBS pore"]].getFinalValue();
 	Sciantix_variables[88] = sciantix_variable[sv["Xe atoms per HBS pore - variance"]].getFinalValue();
+	Sciantix_variables[90] = sciantix_variable[sv["XeHBS produced"]].getFinalValue();
+	Sciantix_variables[91] = sciantix_variable[sv["XeNonHBS produced"]].getFinalValue();
 
 	for (int i = 0; i < n_modes; ++i)
 	{
-		Sciantix_diffusion_modes[i] = modes_initial_conditions[i];
+		Sciantix_diffusion_modes[i] = modes_initial_conditions[i]; // Xe in UO2
 		Sciantix_diffusion_modes[1 * n_modes + i] = modes_initial_conditions[1 * n_modes + i];
 		Sciantix_diffusion_modes[2 * n_modes + i] = modes_initial_conditions[2 * n_modes + i];
 		Sciantix_diffusion_modes[3 * n_modes + i] = modes_initial_conditions[3 * n_modes + i];
