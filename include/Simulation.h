@@ -98,17 +98,29 @@ class Simulation : public Solver, public Model
 		 * @brief GasProduction computes the gas produced from the production rate.
 		 *
 		 */
+		std::cout << "GasProduction() - Simulation" << std::endl;
 
 		for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
 		{
+			std::cout << "Gas production - " + sciantix_system[i].getName() << std::endl;
+			std::cout << sciantix_system[i].getGasName() + " produced" << std::endl;
+			std::cout << model[sm["Gas production - " + sciantix_system[i].getName()]].getParameter().at(0) << std::endl;
+			std::cout << model[sm["Gas production - " + sciantix_system[i].getName()]].getParameter().at(1) << std::endl;
+
 			sciantix_variable[sv[sciantix_system[i].getGasName() + " produced"]].setFinalValue(
 				solver.Integrator(
 					sciantix_variable[sv[sciantix_system[i].getGasName() + " produced"]].getInitialValue(),
-					model[sm["Gas production - " + sciantix_system[i].getGasName() + " in " + matrix[sma[]].getName()]].getParameter().at(0),
-					model[sm["Gas production - " + sciantix_system[i].getGasName() + " in " + matrix[0].getName()]].getParameter().at(1)
+					model[sm["Gas production - " + sciantix_system[i].getName()]].getParameter().at(0),
+					model[sm["Gas production - " + sciantix_system[i].getName()]].getParameter().at(1)
 				)
 			);
 		}
+		
+		
+		sciantix_variable[sv["Xe produced"]].setFinalValue(
+			sciantix_variable[sv["XeHBS produced"]].getFinalValue() + 
+			sciantix_variable[sv["XeNonHBS produced"]].getFinalValue()
+		);
 	}
 
 	void GasDecay()
@@ -145,7 +157,7 @@ class Simulation : public Solver, public Model
 				case 1:
 				{
 
-					double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
+					// double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
 					if(sciantix_system[i].getMatrixName() == "UO2HBS")
 					{
 						sciantix_variable[sv[sciantix_system[i].getGasName() + " in grain"]].setFinalValue(
@@ -674,6 +686,9 @@ class Simulation : public Solver, public Model
 				sciantix_variable[sv["Effective burnup"]].getIncrement()
 				)
 			);
+		
+		std::cout << "Restructured volume fraction" << std::endl;
+		std::cout << sciantix_variable[sv["Restructured volume fraction"]].getFinalValue() << std::endl;
 	}
 
 	void HighBurnupStructurePorosity()

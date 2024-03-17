@@ -50,6 +50,9 @@ void SetSystem()
 			Xe_in_UO2HBS();
 			MapSystem();
 
+			Xe_in_UO2nonHBS();
+			MapSystem();
+
 			break;
 		}
 		

@@ -14,9 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "Xe_in_UO2.h"
+#include "Xe_in_UO2nonHBS.h"
 
-void Xe_in_UO2()
+void Xe_in_UO2nonHBS()
 {
 
 	/**
@@ -27,14 +27,14 @@ void Xe_in_UO2()
 	sciantix_system.emplace_back();
 	int index = int(sciantix_system.size() - 1);
 
-	sciantix_system[index].setName("Xe in UO2");
-	sciantix_system[index].setGasName("Xe");
-	sciantix_system[index].setMatrixName("UO2");
+	sciantix_system[index].setName("Xe in UO2nonHBS");
+	sciantix_system[index].setGasName("XeNonHBS");
+	sciantix_system[index].setMatrixName("UO2nonHBS");
 	sciantix_system[index].setYield(0.24);
 	sciantix_system[index].setRadiusInLattice(0.21e-9); // (m), from experimental data, assumed equal for Xe and Kr
 	sciantix_system[index].setVolumeInLattice(matrix[0].getSchottkyVolume());
 	sciantix_system[index].setHenryConstant(0.0);
-	sciantix_system[index].setProductionRate(0);
+	sciantix_system[index].setProductionRate(4);
 	sciantix_system[index].setFissionGasDiffusivity(int(input_variable[iv["iFGDiffusionCoefficient"]].getValue()));
 	sciantix_system[index].setBubbleDiffusivity(int(input_variable[iv["iBubbleDiffusivity"]].getValue()));
 	sciantix_system[index].setResolutionRate(int(input_variable[iv["iResolutionRate"]].getValue()));

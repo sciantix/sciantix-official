@@ -67,34 +67,41 @@ void Sciantix(int Sciantix_options[],
 	MapModel();
 	sciantix_simulation.GrainBoundarySweeping();
 
+	// std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
+
 	GasProduction();
+
+	// std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
+
 	MapModel();
 	sciantix_simulation.GasProduction();
 
-	sciantix_simulation.GasDecay();
+	// std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
-	IntraGranularBubbleEvolution();
-	MapModel();
-	sciantix_simulation.IntraGranularBubbleBehaviour();
+	// sciantix_simulation.GasDecay();
 
-	GasDiffusion();
-	MapModel();
-	sciantix_simulation.GasDiffusion();
+	// IntraGranularBubbleEvolution();
+	// MapModel();
+	// sciantix_simulation.IntraGranularBubbleBehaviour();
 
-	GrainBoundaryMicroCracking();
-	MapModel();
-	sciantix_simulation.GrainBoundaryMicroCracking();
+	// GasDiffusion();
+	// MapModel();
+	// sciantix_simulation.GasDiffusion();
 
-    GrainBoundaryRupture();
-    MapModel();
+	// GrainBoundaryMicroCracking();
+	// MapModel();
+	// sciantix_simulation.GrainBoundaryMicroCracking();
 
-	GrainBoundaryVenting();
-	MapModel();
-	sciantix_simulation.GrainBoundaryVenting();
+    // GrainBoundaryRupture();
+    // MapModel();
 
-	InterGranularBubbleEvolution();
-	MapModel();
-	sciantix_simulation.InterGranularBubbleBehaviour();
+	// GrainBoundaryVenting();
+	// MapModel();
+	// sciantix_simulation.GrainBoundaryVenting();
+
+	// InterGranularBubbleEvolution();
+	// MapModel();
+	// sciantix_simulation.InterGranularBubbleBehaviour();
 
 	FiguresOfMerit();
 	
