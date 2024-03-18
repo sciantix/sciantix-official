@@ -34,7 +34,7 @@ void He_in_UO2()
 	sciantix_system[index].setRestructuredMatrix(0);
 	sciantix_system[index].setYield(0.0022); // from ternary fissions
 	sciantix_system[index].setRadiusInLattice(4.73e-11);
-	sciantix_system[index].setVolumeInLattice(matrix[0].getOIS());
+	sciantix_system[index].setVolumeInLattice(matrix[sma["UO2"]].getOIS());
 	sciantix_system[index].setHeliumDiffusivity(int(input_variable[iv["iHeDiffusivity"]].getValue()));
 	sciantix_system[index].setResolutionRate(int(input_variable[iv["iResolutionRate"]].getValue()));
 	sciantix_system[index].setTrappingRate(int(input_variable[iv["iTrappingRate"]].getValue()));

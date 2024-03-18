@@ -277,8 +277,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Xe in grain HBS");
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[91]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[91]);
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[92]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[92]);
 	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
@@ -296,38 +296,6 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[4]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[4]);
 	sciantix_variable[sv_counter].setOutput(1);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("XeNonHBS in intragranular solution");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[94]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[94]);
-	sciantix_variable[sv_counter].setOutput(0);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("XeNonHBS in intragranular bubbles");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[95]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[95]);
-	sciantix_variable[sv_counter].setOutput(0);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("XeHBS in intragranular solution");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[96]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[96]);
-	sciantix_variable[sv_counter].setOutput(0);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("XeHBS in intragranular bubbles");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[97]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[97]);
-	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -651,22 +619,6 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Intragranular XeHBS atoms per bubble");
-	sciantix_variable[sv_counter].setUOM("(at/bub)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[100]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[100]);
-	sciantix_variable[sv_counter].setOutput(0);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Intragranular XeNonHBS atoms per bubble");
-	sciantix_variable[sv_counter].setUOM("(at/bub)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[21]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[21]);
-	sciantix_variable[sv_counter].setOutput(0);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Intragranular Xe atoms per bubble");
 	sciantix_variable[sv_counter].setUOM("(at/bub)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[21]);
@@ -719,22 +671,6 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/bub)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[26]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[26]);
-	sciantix_variable[sv_counter].setOutput(0);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Intergranular XeHBS atoms per bubble");
-	sciantix_variable[sv_counter].setUOM("(at/bub)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[102]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[102]);
-	sciantix_variable[sv_counter].setOutput(0);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Intergranular XeNonHBS atoms per bubble");
-	sciantix_variable[sv_counter].setUOM("(at/bub)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[103]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[103]);
 	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
@@ -1110,6 +1046,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 		modes_initial_conditions[13 * n_modes + i] = Sciantix_diffusion_modes[13 * n_modes + i];
 		modes_initial_conditions[14 * n_modes + i] = Sciantix_diffusion_modes[14 * n_modes + i];
 		modes_initial_conditions[15 * n_modes + i] = Sciantix_diffusion_modes[15 * n_modes + i]; // Xe in UO2HBS
+		modes_initial_conditions[16 * n_modes + i] = Sciantix_diffusion_modes[16 * n_modes + i]; // Xe in UO2HBS - solution
+		modes_initial_conditions[17 * n_modes + i] = Sciantix_diffusion_modes[17 * n_modes + i]; // Xe in UO2HBS - bubbles
 	}
 
 	// ---------------

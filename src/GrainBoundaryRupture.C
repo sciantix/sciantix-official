@@ -34,9 +34,9 @@ void GrainBoundaryRupture()
         model[model_index].setName("Grain-boundary rupture");
         std::vector<double> parameter;
 
-        double E = matrix[0].getElasticModulus();
-        double nu = matrix[0].getPoissonRatio();
-        double G_gb = matrix[0].getGrainBoundaryFractureEnergy();
+        double E = matrix[sma["UO2"]].getElasticModulus();
+        double nu = matrix[sma["UO2"]].getPoissonRatio();
+        double G_gb = matrix[sma["UO2"]].getGrainBoundaryFractureEnergy();
 
         // Polynomial fit for the (dimensionless) stress intensity factor
         // @ref Jernkvist 2019      : Fi = + 0.568Fc^2 + 0.059Fc + 0.5587
@@ -53,7 +53,7 @@ void GrainBoundaryRupture()
         // K_IC = beta * stress * np.sqrt(np.pi * a) --> stress = K_IC / (beta * sqrt(pi * a))
         double sigma_crack = K_IC / (beta * sqrt(CONSTANT_NUMBERS_H::MathConstants::pi * crack_length)); // overpressure
 
-        double p_l = 2.0 * matrix[0].getSurfaceTension() / sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue();
+        double p_l = 2.0 * matrix[sma["UO2"]].getSurfaceTension() / sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue();
 
         sciantix_variable[sv["Critical intergranular bubble pressure"]].setFinalValue((sigma_crack - s_hyd + p_l)*1e-6);
         parameter.push_back(sigma_crack);
