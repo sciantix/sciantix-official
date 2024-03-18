@@ -11,7 +11,6 @@
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
-//                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "GasDiffusion.h"
@@ -24,9 +23,6 @@
  */
 void GasDiffusion()
 {
-	std::cout << "in gas diff\n";
-	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
-
 	switch (static_cast<int>(input_variable[iv["iDiffusionSolver"]].getValue()))
 	{
 		case 1:
@@ -41,7 +37,6 @@ void GasDiffusion()
 			errorHandling();
 			break;
 	}
-	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 }
 
 /**
