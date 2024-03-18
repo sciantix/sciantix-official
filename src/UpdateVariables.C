@@ -97,6 +97,8 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[88] = sciantix_variable[sv["Xe atoms per HBS pore - variance"]].getFinalValue();
 	Sciantix_variables[90] = sciantix_variable[sv["XeHBS produced"]].getFinalValue();
 	Sciantix_variables[91] = sciantix_variable[sv["XeNonHBS produced"]].getFinalValue();
+	Sciantix_variables[92] = sciantix_variable[sv["XeHBS in grain"]].getFinalValue();
+	Sciantix_variables[93] = sciantix_variable[sv["XeNonHBS in grain"]].getFinalValue();
 
 	for (int i = 0; i < n_modes; ++i)
 	{

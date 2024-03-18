@@ -98,15 +98,9 @@ class Simulation : public Solver, public Model
 		 * @brief GasProduction computes the gas produced from the production rate.
 		 *
 		 */
-		std::cout << "GasProduction() - Simulation" << std::endl;
 
 		for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
 		{
-			std::cout << "Gas production - " + sciantix_system[i].getName() << std::endl;
-			std::cout << sciantix_system[i].getGasName() + " produced" << std::endl;
-			std::cout << model[sm["Gas production - " + sciantix_system[i].getName()]].getParameter().at(0) << std::endl;
-			std::cout << model[sm["Gas production - " + sciantix_system[i].getName()]].getParameter().at(1) << std::endl;
-
 			sciantix_variable[sv[sciantix_system[i].getGasName() + " produced"]].setFinalValue(
 				solver.Integrator(
 					sciantix_variable[sv[sciantix_system[i].getGasName() + " produced"]].getInitialValue(),
@@ -116,7 +110,7 @@ class Simulation : public Solver, public Model
 			);
 		}
 		
-		
+
 		sciantix_variable[sv["Xe produced"]].setFinalValue(
 			sciantix_variable[sv["XeHBS produced"]].getFinalValue() + 
 			sciantix_variable[sv["XeNonHBS produced"]].getFinalValue()
@@ -147,6 +141,9 @@ class Simulation : public Solver, public Model
 
 	void GasDiffusion()
 	{
+		std::cout << "Gas diffusion - SIMULATION" << std::endl;
+		// std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
+
 		/// @brief
 		/// GasDiffusion
 		/// This simulation method solves the PDE for the intra-granular gas diffusion within the (ideal) spherical fuel grain.		
@@ -156,7 +153,6 @@ class Simulation : public Solver, public Model
 			{
 				case 1:
 				{
-
 					// double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
 					if(sciantix_system[i].getMatrixName() == "UO2HBS")
 					{
@@ -167,25 +163,27 @@ class Simulation : public Solver, public Model
 								physics_variable[pv["Time step"]].getFinalValue()
 							)
 						);
+
+
+						std::cout << sciantix_system[i].getGasName() + " in grain" << std::endl;
+						std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
+
 					}
 					// Non-HBS fraction
-					else
+					else if (sciantix_system[i].getMatrixName() == "UO2nonHBS")
 					{
 						sciantix_variable[sv[sciantix_system[i].getGasName() + " in grain"]].setFinalValue(
 							solver.SpectralDiffusion(
-								getDiffusionModes(sciantix_system[i].getGasName()),
+								getDiffusionModes("Xe"),
 								model[sm["Gas diffusion - " + sciantix_system[i].getName()]].getParameter(),
 								physics_variable[pv["Time step"]].getFinalValue()
 							)
 						);
 
-						sciantix_variable[sv[sciantix_system[i].getGasName() + " in grain"]].setFinalValue(
-							solver.SpectralDiffusion(
-								getDiffusionModes(sciantix_system[i].getGasName()),
-								model[sm["Gas diffusion - " + sciantix_system[i].getName()]].getParameter(),
-								physics_variable[pv["Time step"]].getFinalValue()
-							)
-						);
+						std::cout << sciantix_system[i].getGasName() + " in grain" << std::endl;
+
+						std::cout << "SSS" << std::endl;
+						std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
 						double equilibrium_fraction(1.0);
 						if ((sciantix_system[i].getResolutionRate() + sciantix_system[i].getTrappingRate()) > 0.0)
@@ -196,7 +194,16 @@ class Simulation : public Solver, public Model
 
 						sciantix_variable[sv[sciantix_system[i].getGasName() + " in intragranular bubbles"]].setFinalValue(
 							(1.0 - equilibrium_fraction) * sciantix_variable[sv[sciantix_system[i].getGasName() + " in grain"]].getFinalValue());
+					
+						std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
+
 					}
+
+					sciantix_variable[sv["Xe in grain"]].setFinalValue(
+						sciantix_variable[sv["XeHBS in grain"]].getFinalValue() + 
+						sciantix_variable[sv["XeNonHBS in grain"]].getFinalValue()
+					);
+					std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
 					break;
 				}
@@ -227,19 +234,25 @@ class Simulation : public Solver, public Model
 					break;
 			}
 		}
-	
+		
+		std::cout << "BALANCE" << std::endl;
+		std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
+
 		// Calculation of the gas concentration arrived at the grain boundary, by mass balance.
 		for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
 		{
-			sciantix_variable[sv[sciantix_system[i].getGasName() + " at grain boundary"]].setFinalValue(
-				sciantix_variable[sv[sciantix_system[i].getGasName() + " produced"]].getFinalValue() -
-				sciantix_variable[sv[sciantix_system[i].getGasName() + " decayed"]].getFinalValue() -
-				sciantix_variable[sv[sciantix_system[i].getGasName() + " in grain"]].getFinalValue() -
-				sciantix_variable[sv[sciantix_system[i].getGasName() + " released"]].getInitialValue()
-			);
+			if(sciantix_system[i].getRestructuredMatrix() == 0)
+			{
+				sciantix_variable[sv[sciantix_system[i].getGasName() + " at grain boundary"]].setFinalValue(
+					sciantix_variable[sv[sciantix_system[i].getGasName() + " produced"]].getFinalValue() -
+					sciantix_variable[sv[sciantix_system[i].getGasName() + " decayed"]].getFinalValue() -
+					sciantix_variable[sv[sciantix_system[i].getGasName() + " in grain"]].getFinalValue() -
+					sciantix_variable[sv[sciantix_system[i].getGasName() + " released"]].getInitialValue()
+				);
 
-			if (sciantix_variable[sv[sciantix_system[i].getGasName() + " at grain boundary"]].getFinalValue() < 0.0)
-				sciantix_variable[sv[sciantix_system[i].getGasName() + " at grain boundary"]].setFinalValue(0.0);
+				if (sciantix_variable[sv[sciantix_system[i].getGasName() + " at grain boundary"]].getFinalValue() < 0.0)
+					sciantix_variable[sv[sciantix_system[i].getGasName() + " at grain boundary"]].setFinalValue(0.0);
+			}
 		}
 
 		/**
@@ -276,6 +289,9 @@ class Simulation : public Solver, public Model
 
 	void IntraGranularBubbleBehaviour()
 	{
+		std::cout << "intra" << std::endl;
+		std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
+
 		/**
 		 * @brief IntraGranularBubbleBehaviour is a method of the object Simulation.
 		 * This method computes concentration and average size of intragranular gas bubbles.
@@ -295,8 +311,13 @@ class Simulation : public Solver, public Model
 		// Atom per bubbles and bubble radius
 		for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
 		{
-			if (gas[ga[sciantix_system[i].getGasName()]].getDecayRate() == 0.0)
+			std::cout << sciantix_system[i].getName() << std::endl;
+			std::cout << "r = " << sciantix_system[i].getRestructuredMatrix() << std::endl;
+
+			if (gas[ga[sciantix_system[i].getGasName()]].getDecayRate() == 0.0 && sciantix_system[i].getRestructuredMatrix() == 0)
 			{
+				std::cout << sciantix_system[i].getGasName() << " in intragranular bubbles" << std::endl;
+
 				if (sciantix_variable[sv["Intragranular bubble concentration"]].getFinalValue() > 0.0)
 					sciantix_variable[sv["Intragranular " + sciantix_system[i].getGasName() + " atoms per bubble"]].setFinalValue(
 						sciantix_variable[sv[sciantix_system[i].getGasName() + " in intragranular bubbles"]].getFinalValue() /
@@ -326,7 +347,7 @@ class Simulation : public Solver, public Model
 			sciantix_variable[sv["Intragranular similarity ratio"]].setFinalValue(sqrt(sciantix_variable[sv["He in intragranular bubbles"]].getFinalValue() / sciantix_variable[sv["He in intragranular bubbles"]].getInitialValue()));
 		else
 			sciantix_variable[sv["Intragranular similarity ratio"]].setFinalValue(0.0);
-
+		std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 	}
 
 	void InterGranularBubbleBehaviour()
@@ -687,8 +708,8 @@ class Simulation : public Solver, public Model
 				)
 			);
 		
-		std::cout << "Restructured volume fraction" << std::endl;
-		std::cout << sciantix_variable[sv["Restructured volume fraction"]].getFinalValue() << std::endl;
+		// std::cout << "Restructured volume fraction" << std::endl;
+		// std::cout << sciantix_variable[sv["Restructured volume fraction"]].getFinalValue() << std::endl;
 	}
 
 	void HighBurnupStructurePorosity()

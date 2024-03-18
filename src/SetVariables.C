@@ -283,6 +283,22 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("XeHBS in grain");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[92]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[92]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("XeNonHBS in grain");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[93]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[93]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Xe in intragranular solution");
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[3]);
@@ -297,6 +313,23 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[4]);
 	sciantix_variable[sv_counter].setOutput(1);
 	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("XeNonHBS in intragranular solution");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[94]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[94]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("XeNonHBS in intragranular bubbles");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[95]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[95]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Xe at grain boundary");

@@ -39,5 +39,6 @@ void Xe_in_UO2HBS()
 	sciantix_system[index].setResolutionRate(99);
 	sciantix_system[index].setTrappingRate(99);
 	sciantix_system[index].setNucleationRate(99);
+	sciantix_system[index].setRestructuredMatrix(1);
 }
 
