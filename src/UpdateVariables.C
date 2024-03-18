@@ -24,7 +24,7 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[1] = sciantix_variable[sv["Xe produced"]].getFinalValue();
 	Sciantix_variables[90] = sciantix_variable[sv["Xe produced in HBS"]].getFinalValue();
 	Sciantix_variables[2] = sciantix_variable[sv["Xe in grain"]].getFinalValue();
-	Sciantix_variables[91] = sciantix_variable[sv["XeHBS in grain"]].getFinalValue();
+	Sciantix_variables[92] = sciantix_variable[sv["Xe in grain HBS"]].getFinalValue();
 	Sciantix_variables[3] = sciantix_variable[sv["Xe in intragranular solution"]].getFinalValue();
 	Sciantix_variables[4] = sciantix_variable[sv["Xe in intragranular bubbles"]].getFinalValue();
 	Sciantix_variables[5] = sciantix_variable[sv["Xe at grain boundary"]].getFinalValue();
@@ -44,15 +44,11 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[19] = sciantix_variable[sv["Intragranular bubble concentration"]].getFinalValue();
 	Sciantix_variables[20] = sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue();
 	Sciantix_variables[21] = sciantix_variable[sv["Intragranular Xe atoms per bubble"]].getFinalValue();
-	Sciantix_variables[100] = sciantix_variable[sv["Intragranular XeHBS atoms per bubble"]].getFinalValue();
-	Sciantix_variables[101] = sciantix_variable[sv["Intragranular XeNonHBS atoms per bubble"]].getFinalValue();
 	Sciantix_variables[22] = sciantix_variable[sv["Intragranular Kr atoms per bubble"]].getFinalValue();
 	Sciantix_variables[23] = sciantix_variable[sv["Intragranular He atoms per bubble"]].getFinalValue();
 	Sciantix_variables[24] = sciantix_variable[sv["Intragranular gas swelling"]].getFinalValue();
 	Sciantix_variables[25] = sciantix_variable[sv["Intergranular bubble concentration"]].getFinalValue();
 	Sciantix_variables[26] = sciantix_variable[sv["Intergranular Xe atoms per bubble"]].getFinalValue();
-	Sciantix_variables[102] = sciantix_variable[sv["Intergranular XeHBS atoms per bubble"]].getFinalValue();
-	Sciantix_variables[103] = sciantix_variable[sv["Intergranular XeNonHBS atoms per bubble"]].getFinalValue();
 	Sciantix_variables[27] = sciantix_variable[sv["Intergranular Kr atoms per bubble"]].getFinalValue();
 	Sciantix_variables[28] = sciantix_variable[sv["Intergranular He atoms per bubble"]].getFinalValue();
 	Sciantix_variables[29] = sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue();
@@ -101,10 +97,6 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[85] = sciantix_variable[sv["Xe in HBS pores - variance"]].getFinalValue();
 	Sciantix_variables[86] = sciantix_variable[sv["Xe atoms per HBS pore"]].getFinalValue();
 	Sciantix_variables[88] = sciantix_variable[sv["Xe atoms per HBS pore - variance"]].getFinalValue();
-	Sciantix_variables[94] = sciantix_variable[sv["XeNonHBS in intragranular solution"]].getFinalValue();
-	Sciantix_variables[95] = sciantix_variable[sv["XeNonHBS in intragranular bubbles"]].getFinalValue();
-	Sciantix_variables[96] = sciantix_variable[sv["XeHBS in intragranular solution"]].getFinalValue();
-	Sciantix_variables[97] = sciantix_variable[sv["XeHBS in intragranular bubbles"]].getFinalValue();
 
 	for (int i = 0; i < n_modes; ++i)
 	{
@@ -124,5 +116,7 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 		Sciantix_diffusion_modes[13 * n_modes + i] = modes_initial_conditions[13 * n_modes + i];
 		Sciantix_diffusion_modes[14 * n_modes + i] = modes_initial_conditions[14 * n_modes + i];
 		Sciantix_diffusion_modes[15 * n_modes + i] = modes_initial_conditions[15 * n_modes + i]; // Xe in UO2 HBS
+		Sciantix_diffusion_modes[16 * n_modes + i] = modes_initial_conditions[16 * n_modes + i]; // Xe in UO2 HBS - solution
+		Sciantix_diffusion_modes[17 * n_modes + i] = modes_initial_conditions[17 * n_modes + i]; // Xe in UO2 HBS - bubbles
 	}
 }

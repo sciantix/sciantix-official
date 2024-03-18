@@ -71,7 +71,7 @@ void GrainGrowth()
 
 		if (sciantix_variable[sv["Grain radius"]].getInitialValue() < limiting_grain_radius / burnup_factor)
 		{
-			double rate_constant = matrix[0].getGrainBoundaryMobility();
+			double rate_constant = matrix[sma["UO2"]].getGrainBoundaryMobility();
 			rate_constant *= (1.0 - burnup_factor / (limiting_grain_radius / (sciantix_variable[sv["Grain radius"]].getFinalValue())));
 
 			parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
@@ -116,7 +116,7 @@ void GrainGrowth()
 
 		if(sciantix_variable[sv["Grain radius"]].getInitialValue() < limiting_grain_radius)
 		{
-			double rate_constant = matrix[0].getGrainBoundaryMobility();
+			double rate_constant = matrix[sma["UO2"]].getGrainBoundaryMobility();
 
 			parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
 			parameter.push_back(1.0);
