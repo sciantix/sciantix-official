@@ -20,6 +20,7 @@ void HighBurnupStructurePorosity()
 {
     /**
      * @brief This routine sets the model for High burnup structure porosity evolution
+	 * 
      * @author
      * A. Magni
      * E. Redaelli
@@ -72,7 +73,7 @@ void HighBurnupStructurePorosity()
 			porosity_increment = 0.0;
 		}
 
-		reference = "based on Spino et al. 2006 data";
+		reference = ": Based on Spino et al. 2006 data";
 
 		parameter.push_back(porosity_increment);
 

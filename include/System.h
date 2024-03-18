@@ -41,11 +41,24 @@ protected:
 	double trapping_rate;
 	double nucleation_rate;
 	std::string gas_name;
+	std::string matrix_name;
+	std::string matrix_type;
 	double pore_nucleation_rate;
 	std::vector<double> modes;
 	double production_rate;
+	bool restructured_matrix;
 
 public:
+	void setRestructuredMatrix(bool y)
+	{
+		restructured_matrix = y;
+	}
+
+	bool getRestructuredMatrix()
+	{
+		return restructured_matrix;
+	}
+
 	void setYield(double y)
 	{
 		/// Member function to set the (cumulative) yield of the fission gas (at/fiss).
@@ -80,6 +93,30 @@ public:
 	{
 		/// Member function to get the name of the gas in the matrix
 		return gas_name;
+	}
+
+	void setMatrixName(std::string n)
+	{
+		/// Member function to set the name of the matrix
+		matrix_name = n;
+	}
+
+	std::string getMatrixName()
+	{
+		/// Member function to get the name of the matrix
+		return matrix_name;
+	}
+
+	void setMatrixType(std::string n)
+	{
+		/// Member function to set the name of the matrix
+		matrix_type = n;
+	}
+
+	std::string getMatrixType()
+	{
+		/// Member function to get the name of the matrix
+		return matrix_type;
 	}
 
 	double getVolumeInLattice()

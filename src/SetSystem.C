@@ -44,6 +44,9 @@ void SetSystem()
 
 		case 1: 
 		{
+			Xe_in_UO2();
+			MapSystem();
+			
 			Xe_in_UO2HBS();
 			MapSystem();
 
@@ -83,7 +86,7 @@ void System::setBubbleDiffusivity(int input_value)
 				double volume_self_diffusivity = 3.0e-5*exp(-4.5/(boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()));
 				double bubble_radius = sciantix_variable[sv["Intragranular bubble radius"]].getInitialValue();
 
-				bubble_diffusivity = 3 * matrix[0].getSchottkyVolume() * volume_self_diffusivity / (4.0 * pi * pow(bubble_radius,3.0));
+				bubble_diffusivity = 3 * matrix[sma["UO2"]].getSchottkyVolume() * volume_self_diffusivity / (4.0 * pi * pow(bubble_radius,3.0));
 			}
 			
 			break;
@@ -215,7 +218,7 @@ void System::setFissionGasDiffusivity(int input_value)
 		diffusivity = 4.5e-42 * history_variable[hv["Fission rate"]].getFinalValue();
 		diffusivity *= sf_diffusivity;
 		
-		reference += "inert fission gases in UO2-HBS.\n\t";
+		reference += "HBS : Inert fission gas diffusivity in UO2-HBS.\n\t";
 		break;
 	}
 
@@ -384,7 +387,7 @@ void System::setResolutionRate(int input_value)
 		 */
 
 		reference += "iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.\n\t";
-		resolution_rate = 2.0 * pi * matrix[0].getFFrange() * pow(matrix[0].getFFinfluenceRadius()
+		resolution_rate = 2.0 * pi * matrix[sma["UO2"]].getFFrange() * pow(matrix[sma["UO2"]].getFFinfluenceRadius()
 			+ sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue(), 2) * history_variable[hv["Fission rate"]].getFinalValue();
 		resolution_rate *= sf_resolution_rate;
 
@@ -417,12 +420,12 @@ void System::setResolutionRate(int input_value)
 		reference += "iResolutionRate: Cognini et al. NET 53 (2021) 562-571.\n\t";
 
 		/// @param irradiation_resolution_rate
-		double irradiation_resolution_rate = 2.0 * pi * matrix[0].getFFrange() * pow(matrix[0].getFFinfluenceRadius()
+		double irradiation_resolution_rate = 2.0 * pi * matrix[sma["UO2"]].getFFrange() * pow(matrix[sma["UO2"]].getFFinfluenceRadius()
 			+ sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue(), 2) * history_variable[hv["Fission rate"]].getFinalValue();
 
 		/// @param compressibility_factor
 		double helium_hard_sphere_diameter = 2.973e-10 * (0.8414 - 0.05 * log(history_variable[hv["Temperature"]].getFinalValue() / 10.985)); // (m)
-		double helium_volume_in_bubble = matrix[0].getOIS(); // 7.8e-30, approximation of saturated nanobubbles
+		double helium_volume_in_bubble = matrix[sma["UO2"]].getOIS(); // 7.8e-30, approximation of saturated nanobubbles
 		double y = pi * pow(helium_hard_sphere_diameter, 3) / (6.0 * helium_volume_in_bubble);
 		double compressibility_factor = (1.0 + y + pow(y, 2) - pow(y, 3)) / (pow(1.0 - y, 3));
 		
@@ -524,7 +527,7 @@ void System::setTrappingRate(int input_value)
 		 * @brief iTrappingRate = 99 stands for the case with zero trapping rate.
 		 * 
 		 */
-		reference += "iTrappingRate: case with zero trapping rate.\n\t";
+		reference += "iTrappingRate: Null trapping rate.\n\t";
 
 		trapping_rate = 0.0;
 		break;
@@ -581,7 +584,7 @@ void System::setNucleationRate(int input_value)
 		 * @brief iNucleationRate = 99 correspond to case with zero nucleation rate.
 		 */
 
-		reference += "iNucleationRate: zero nucleation rate.\n\t";
+		reference += "iNucleationRate: Null nucleation rate.\n\t";
 		nucleation_rate = 0.0;
 
 		break;
@@ -621,20 +624,20 @@ void System::setProductionRate(int input_value)
 
 	case 2:
 	{
-        /**
-         * @brief Surrogate model derived from **helium production in fast reactor conditions**.
-         * The helium production rate is fitted with a function linearly dependent on the local burnup.
-         * The default fit is from @ref *A. Cechet et al., Nuclear Engineering and Technology, 53 (2021) 1893-1908*.
-         * 
-        * **Default range of utilization of the default fit**
-        * - Fast reactor conditions: (U,Pu)O<sub>2</sub> MOX fuel in SFR conditions
-        * - Up to 200 GWd/tHM
-        * - Pu/HM concentration of 20-40%
-        * 
-        * The default fit (hence the helium production rate) can be calibrated by using the dedicated
-        * scaling factor (to be set in input_scaling_factors.txt).
-        * 
-        */
+		/**
+		 * @brief Surrogate model derived from **helium production in fast reactor conditions**.
+		 * The helium production rate is fitted with a function linearly dependent on the local burnup.
+		 * The default fit is from @ref *A. Cechet et al., Nuclear Engineering and Technology, 53 (2021) 1893-1908*.
+		 * 
+		* **Default range of utilization of the default fit**
+		* - Fast reactor conditions: (U,Pu)O<sub>2</sub> MOX fuel in SFR conditions
+		* - Up to 200 GWd/tHM
+		* - Pu/HM concentration of 20-40%
+		* 
+		* The default fit (hence the helium production rate) can be calibrated by using the dedicated
+		* scaling factor (to be set in input_scaling_factors.txt).
+		* 
+		*/
 
 		reference += "Case for helium production rate: Cechet et al., Nuclear Engineering and Technology, 53 (2021) 1893-1908.\n\t";
 		
@@ -643,7 +646,7 @@ void System::setProductionRate(int input_value)
 
 		// production rate in dproduced / dburnup -> dproduced / dtime
 		production_rate = 2.0e+21 * sciantix_variable[sv["Burnup"]].getFinalValue() + 3.0e+23; // (at/m3 burnup)
-                production_rate *= sciantix_variable[sv["Specific power"]].getFinalValue() / 86400;  // (at/m3s)
+				production_rate *= sciantix_variable[sv["Specific power"]].getFinalValue() / 86400;  // (at/m3s)
 
 		production_rate *= sf_helium_production_rate;
 
@@ -660,6 +663,22 @@ void System::setProductionRate(int input_value)
 		reference += "Constant production rate.\n\t";
 		production_rate = 1e18;
 
+		break;
+	}
+
+	case 5:
+	{
+		/**
+		 * @brief Production rate = cumulative yield * fission rate density * HBS volume fraction
+		 * 
+		 */
+
+		double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
+
+		// HBS fraction
+		production_rate = yield * history_variable[hv["Fission rate"]].getFinalValue() * alpha; // (at/m3s)
+	
+		reference += ": Production rate = cumulative yield * fission rate density * HBS volume fraction.\n\t";
 		break;
 	}
 

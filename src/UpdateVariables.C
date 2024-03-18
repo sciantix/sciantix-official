@@ -22,7 +22,9 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 {
 	Sciantix_variables[0] = sciantix_variable[sv["Grain radius"]].getFinalValue();
 	Sciantix_variables[1] = sciantix_variable[sv["Xe produced"]].getFinalValue();
+	Sciantix_variables[90] = sciantix_variable[sv["Xe produced in HBS"]].getFinalValue();
 	Sciantix_variables[2] = sciantix_variable[sv["Xe in grain"]].getFinalValue();
+	Sciantix_variables[92] = sciantix_variable[sv["Xe in grain HBS"]].getFinalValue();
 	Sciantix_variables[3] = sciantix_variable[sv["Xe in intragranular solution"]].getFinalValue();
 	Sciantix_variables[4] = sciantix_variable[sv["Xe in intragranular bubbles"]].getFinalValue();
 	Sciantix_variables[5] = sciantix_variable[sv["Xe at grain boundary"]].getFinalValue();
@@ -98,7 +100,7 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 
 	for (int i = 0; i < n_modes; ++i)
 	{
-		Sciantix_diffusion_modes[i] = modes_initial_conditions[i];
+		Sciantix_diffusion_modes[i] = modes_initial_conditions[i]; // Xe in UO2
 		Sciantix_diffusion_modes[1 * n_modes + i] = modes_initial_conditions[1 * n_modes + i];
 		Sciantix_diffusion_modes[2 * n_modes + i] = modes_initial_conditions[2 * n_modes + i];
 		Sciantix_diffusion_modes[3 * n_modes + i] = modes_initial_conditions[3 * n_modes + i];
@@ -113,5 +115,8 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 		Sciantix_diffusion_modes[12 * n_modes + i] = modes_initial_conditions[12 * n_modes + i];
 		Sciantix_diffusion_modes[13 * n_modes + i] = modes_initial_conditions[13 * n_modes + i];
 		Sciantix_diffusion_modes[14 * n_modes + i] = modes_initial_conditions[14 * n_modes + i];
+		Sciantix_diffusion_modes[15 * n_modes + i] = modes_initial_conditions[15 * n_modes + i]; // Xe in UO2 HBS
+		Sciantix_diffusion_modes[16 * n_modes + i] = modes_initial_conditions[16 * n_modes + i]; // Xe in UO2 HBS - solution
+		Sciantix_diffusion_modes[17 * n_modes + i] = modes_initial_conditions[17 * n_modes + i]; // Xe in UO2 HBS - bubbles
 	}
 }
