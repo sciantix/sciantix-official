@@ -140,9 +140,6 @@ class Simulation : public Solver, public Model
 
 	void GasDiffusion()
 	{
-		std::cout << "in sim gas diff\n";
-		std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
-
     	for (auto& system : sciantix_system)
 		{
 			switch (int(input_variable[iv["iDiffusionSolver"]].getValue()))
@@ -151,8 +148,6 @@ class Simulation : public Solver, public Model
 				{
 					if (system.getRestructuredMatrix() == 0)
 					{
-						std::cout << system.getName() << std::endl;
-						std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 						sciantix_variable[sv[system.getGasName() + " in grain"]].setFinalValue(
 							solver.SpectralDiffusion(
 								getDiffusionModes(system.getGasName()),
@@ -160,13 +155,9 @@ class Simulation : public Solver, public Model
 								physics_variable[pv["Time step"]].getFinalValue()
 							)
 						);
-						std::cout << system.getName() << std::endl;
-						std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 					}
 					else if (system.getRestructuredMatrix() == 1)
 					{
-						std::cout << system.getName() << std::endl;
-						std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 						sciantix_variable[sv[system.getGasName() + " in grain HBS"]].setFinalValue(
 							solver.SpectralDiffusion(
 								getDiffusionModes(system.getGasName()),
@@ -174,11 +165,7 @@ class Simulation : public Solver, public Model
 								physics_variable[pv["Time step"]].getFinalValue()
 							)
 						);
-						std::cout << system.getName() << std::endl;
-						std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 					}
-					std::cout << system.getName() << std::endl;
-					std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 					double equilibrium_fraction(1.0);
 					if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
 						equilibrium_fraction = system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
@@ -190,8 +177,6 @@ class Simulation : public Solver, public Model
 					sciantix_variable[sv[system.getGasName() + " in intragranular bubbles"]].setFinalValue(
 						(1.0 - equilibrium_fraction) * sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue()
 					);
-					std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
-
 					break;
 				}
 
