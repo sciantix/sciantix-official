@@ -22,6 +22,7 @@ void Sciantix(int Sciantix_options[],
 	double Sciantix_scaling_factors[],
 	double Sciantix_diffusion_modes[])
 {
+	std::cout << "beg" << std::endl;
 	SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 
 	SetGas();
@@ -50,14 +51,17 @@ void Sciantix(int Sciantix_options[],
 	StoichiometryDeviation();
 	MapModel();
 	sciantix_simulation.StoichiometryDeviation(); 
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
 	HighBurnupStructureFormation();
 	MapModel();
 	sciantix_simulation.HighBurnupStructureFormation();
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
 	HighBurnupStructurePorosity();
 	MapModel();
 	sciantix_simulation.HighBurnupStructurePorosity();
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
 	GrainGrowth();
 	MapModel();
@@ -66,25 +70,20 @@ void Sciantix(int Sciantix_options[],
 	GrainBoundarySweeping();
 	MapModel();
 	sciantix_simulation.GrainBoundarySweeping();
-
-	// std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
 	GasProduction();
-
-	// std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
-
 	MapModel();
 	sciantix_simulation.GasProduction();
-
 	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
 	sciantix_simulation.GasDecay();
 	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
 	IntraGranularBubbleEvolution();
-	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 	MapModel();
 	sciantix_simulation.IntraGranularBubbleBehaviour();
+
 	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
 	GasDiffusion();
@@ -92,10 +91,15 @@ void Sciantix(int Sciantix_options[],
 
 	MapModel();
 	sciantix_simulation.GasDiffusion();
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
-	// GrainBoundaryMicroCracking();
-	// MapModel();
-	// sciantix_simulation.GrainBoundaryMicroCracking();
+	std::cout << "cracking\n";
+	GrainBoundaryMicroCracking();
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
+
+	MapModel();
+	sciantix_simulation.GrainBoundaryMicroCracking();
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
     // GrainBoundaryRupture();
     // MapModel();
@@ -104,12 +108,16 @@ void Sciantix(int Sciantix_options[],
 	// MapModel();
 	// sciantix_simulation.GrainBoundaryVenting();
 
-	// InterGranularBubbleEvolution();
-	// MapModel();
-	// sciantix_simulation.InterGranularBubbleBehaviour();
+	InterGranularBubbleEvolution();
+	MapModel();
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
+
+	sciantix_simulation.InterGranularBubbleBehaviour();
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
 	FiguresOfMerit();
-	
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
+
 	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
 	Output();

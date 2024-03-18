@@ -25,22 +25,19 @@ void GasProduction()
 
 	for (auto& system : sciantix_system)
 	{
-		if (system.getRestructuredMatrix() == 1)
-		{
-			int model_index = model.size();
+		int model_index = model.size();
 
-			model.emplace_back();
-			model[model_index].setName("Gas production - " + system.getName());
-			model[model_index].setRef(" ");
+		model.emplace_back();
+		model[model_index].setName("Gas production - " + system.getName());
+		model[model_index].setRef(" ");
 
-			double productionRate = system.getProductionRate();
-			double timeStep = physics_variable[pv["Time step"]].getFinalValue();
+		double productionRate = system.getProductionRate();
+		double timeStep = physics_variable[pv["Time step"]].getFinalValue();
 
-			parameter.push_back(productionRate);
-			parameter.push_back(timeStep);
-			model[model_index].setParameter(parameter);
+		parameter.push_back(productionRate);
+		parameter.push_back(timeStep);
+		model[model_index].setParameter(parameter);
 
-			parameter.clear();
-		}
+		parameter.clear();
 	}
 }
