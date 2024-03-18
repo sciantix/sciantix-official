@@ -550,7 +550,7 @@ class Simulation : public Solver, public Model
 		/// GrainBoundaryMicroCracking is method of simulation which executes the SCIANTIX simulation for the grain-boundary micro-cracking induced by a temperature difference. 
 		/// This method calls the related model "Grain-boundary micro-cracking", takes the model parameters and solve the model ODEs.
 
-		if (int(input_variable[iv["iGrainBoundaryMicroCracking"]].getValue()) != 1) return;
+		if (!input_variable[iv["iGrainBoundaryMicroCracking"]].getValue()) return;
 
 		// ODE for the intergranular fractional intactness: this equation accounts for the reduction of the intergranular fractional intactness following a temperature transient
 		// df / dT = - dm/dT f
@@ -650,11 +650,11 @@ class Simulation : public Solver, public Model
 		{
 			if(system.getRestructuredMatrix() == 0)
 			{
-				sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(
+				sciantix_variable[sv[system.getGasName() + " released"]].setFinalValue(
 					sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() -
 					sciantix_variable[sv[system.getGasName() + " decayed"]].getFinalValue() -
 					sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue() -
-					sciantix_variable[sv[system.getGasName() + " released"]].getInitialValue()
+					sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getFinalValue()
 				);
 
 				if (sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getFinalValue() < 0.0)
