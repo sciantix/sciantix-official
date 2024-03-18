@@ -76,17 +76,22 @@ void Sciantix(int Sciantix_options[],
 	MapModel();
 	sciantix_simulation.GasProduction();
 
-	// std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
-	// sciantix_simulation.GasDecay();
+	sciantix_simulation.GasDecay();
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
-	// IntraGranularBubbleEvolution();
-	// MapModel();
-	// sciantix_simulation.IntraGranularBubbleBehaviour();
+	IntraGranularBubbleEvolution();
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
+	MapModel();
+	sciantix_simulation.IntraGranularBubbleBehaviour();
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
-	// GasDiffusion();
-	// MapModel();
-	// sciantix_simulation.GasDiffusion();
+	GasDiffusion();
+	std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
+
+	MapModel();
+	sciantix_simulation.GasDiffusion();
 
 	// GrainBoundaryMicroCracking();
 	// MapModel();

@@ -40,4 +40,5 @@ void Xe_in_UO2()
 	sciantix_system[index].setResolutionRate(int(input_variable[iv["iResolutionRate"]].getValue()));
 	sciantix_system[index].setTrappingRate(int(input_variable[iv["iTrappingRate"]].getValue()));
 	sciantix_system[index].setNucleationRate(int(input_variable[iv["iNucleationRate"]].getValue()));
+	sciantix_system[index].setRestructuredMatrix(0);
 }

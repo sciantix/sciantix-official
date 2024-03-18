@@ -45,8 +45,19 @@ protected:
 	double pore_nucleation_rate;
 	std::vector<double> modes;
 	double production_rate;
+	bool restructured_matrix;
 
 public:
+	void setRestructuredMatrix(bool y)
+	{
+		restructured_matrix = y;
+	}
+
+	bool getRestructuredMatrix()
+	{
+		return restructured_matrix;
+	}
+
 	void setYield(double y)
 	{
 		/// Member function to set the (cumulative) yield of the fission gas (at/fiss).

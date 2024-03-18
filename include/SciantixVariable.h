@@ -19,16 +19,26 @@
 
 #include "PhysicsVariable.h"
 
-/// Derived class for sciantix variables
+/**
+ * @brief Derived class for sciantix variables.
+ *
+ */
 
 class SciantixVariable : virtual public PhysicsVariable
 {
-protected:
-	bool to_output;
+private:
+    bool to_output; ///< Flag indicating whether the variable should be included in output
 
 public:
-	SciantixVariable() { }
-	~SciantixVariable() { }
+    /**
+     * @brief Default constructor.
+     */
+    SciantixVariable() : to_output(false) {}
+
+    /**
+     * @brief Destructor.
+     */
+    virtual ~SciantixVariable() {}
 };
 
 #endif

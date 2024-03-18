@@ -16,21 +16,22 @@
 
 #include "GasDiffusion.h"
 
+/**
+ * @brief Defines models for gas diffusion within the fuel grain.
+ * 
+ * This function computes diffusion models for gas atoms within the fuel grain
+ * using the equivalent Booth approach.
+ */
+
 void GasDiffusion()
 {
-	/**
-	 * @brief This routine defines the models for the diffusion of atoms within the fuel grain.
-	 * The intragranular diffusion exploits the hypothesis of the equivalent Booth approach,
-	 * namely, considering the atom diffusion in a spherical fuel grain.
-	 * 
-	 * 
-	 */
-
 	std::string reference;
-	switch (int(input_variable[iv["iDiffusionSolver"]].getValue()))
+	switch (static_cast<int>(input_variable[iv["iDiffusionSolver"]].getValue()))
 	{
 	case 1:
-	{
+	{	
+		std::cout << "DIFFUSION MODEL" << std::endl;
+
 		int model_index;
 		std::vector<double> parameter;
 		for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
@@ -39,6 +40,14 @@ void GasDiffusion()
 			model_index = int(model.size()) - 1;
 			model[model_index].setName("Gas diffusion - " + sciantix_system[i].getName());
 			model[model_index].setRef(reference);
+
+			std::cout << "Gas diffusion - " + sciantix_system[i].getName() << std::endl;
+			// cosi costruisce 3 sistemi:
+			// Xe in UO2
+			// Xe in UO2 HBS
+			// Xe in UO non HBS
+			// forse devo pensare che ho 2 matrici e 3 sistemi, non una matrice mista che pesa
+			// però devo dirgli di non creare il modello di diffusione per Xe in UO2?
 
 			parameter.push_back(n_modes);
 			if (sciantix_system[i].getResolutionRate() + sciantix_system[i].getTrappingRate() == 0)
@@ -52,14 +61,10 @@ void GasDiffusion()
 				);
 			
 			parameter.push_back(matrix[sma[sciantix_system[i].getMatrixName()]].getGrainRadius());
+			std::cout << matrix[sma[sciantix_system[i].getMatrixName()]].getGrainRadius() << std::endl;
 
-			double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
-
-			if(sciantix_system[i].getMatrixName() == "UO2HBS")
-				parameter.push_back((1. - alpha)*sciantix_system[i].getProductionRate());
-			// Non-HBS fraction
-			else
-				parameter.push_back(alpha*sciantix_system[i].getProductionRate());
+			parameter.push_back(sciantix_system[i].getProductionRate());
+			std::cout << sciantix_system[i].getProductionRate() << std::endl;
 
 			parameter.push_back(gas[ga[sciantix_system[i].getGasName()]].getDecayRate());
 
@@ -108,7 +113,7 @@ void GasDiffusion()
 	}
 
 	default:
-		ErrorMessages::Switch(__FILE__, "iDiffusionSolver", int(input_variable[iv["iDiffusionSolver"]].getValue()));
+		ErrorMessages::Switch(__FILE__, "iDiffusionSolver", static_cast<int>(input_variable[iv["iDiffusionSolver"]].getValue()));
 		break;
 	}
 }

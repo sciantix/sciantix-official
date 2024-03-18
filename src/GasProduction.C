@@ -21,27 +21,26 @@
 
 void GasProduction()
 {
-	int model_index;
 	std::vector<double> parameter;
 
-	std::cout << "GasProduction() - Model" << std::endl;
-
-	for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
+	for (auto& system : sciantix_system)
 	{
-		model.emplace_back();
-		model_index = int(model.size()) - 1;
-		model[model_index].setName("Gas production - " + sciantix_system[i].getName());
+		if (system.getRestructuredMatrix() == 1)
+		{
+			int model_index = model.size();
 
-		model[model_index].setRef(" ");
+			model.emplace_back();
+			model[model_index].setName("Gas production - " + system.getName());
+			model[model_index].setRef(" ");
 
-		parameter.push_back(sciantix_system[i].getProductionRate());
-		parameter.push_back(physics_variable[pv["Time step"]].getFinalValue());
+			double productionRate = system.getProductionRate();
+			double timeStep = physics_variable[pv["Time step"]].getFinalValue();
 
-		model[model_index].setParameter(parameter);
+			parameter.push_back(productionRate);
+			parameter.push_back(timeStep);
+			model[model_index].setParameter(parameter);
 
-		std::cout << "sciantix_system[i].getName(): " << sciantix_system[i].getName() << std::endl;
-		std::cout << "sciantix_system[i].getGasName(): " << sciantix_system[i].getGasName() << std::endl;
-
-		parameter.clear();
+			parameter.clear();
+		}
 	}
 }
