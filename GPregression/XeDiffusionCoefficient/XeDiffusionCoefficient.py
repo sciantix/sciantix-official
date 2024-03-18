@@ -73,9 +73,9 @@ def GPregression_XeDiffusionCoefficient(data, correlation, evaluation_range, l, 
     # Da finire
     Trust_function = 0
     
-    if update_setting == "half":
+    if update_setting == 'half':
         updated_correlation = np.log10(correlation(1e4/gx, 10 ** gy)) + 0.5*mu_s.reshape(gx.shape)
-    elif update_setting == "prog":
+    elif update_setting == 'prog':
         updated_correlation = np.log10(correlation(1e4/gx, 10 ** gy)) - Trust_function* mu_s.reshape(gx.shape)
     else:
         updated_correlation = np.log10(correlation(1e4/gx, 10 ** gy))
@@ -129,8 +129,8 @@ def GPregression_XeDiffusionCoefficient(data, correlation, evaluation_range, l, 
     fig, ax = plt.subplots(subplot_kw={"projection": "3d"},figsize=(10, 10))
 
     ax.plot_surface(gx, gy, updated_correlation , cmap=cm.Blues, label = 'Data Update', alpha=.4)
-    ax.plot_surface(gx, gy, updated_correlation + 2 * std_s.reshape(gx.shape), color='r', alpha=0.2, label = 'Uncertainty buonds')
-    ax.plot_surface(gx, gy, updated_correlation + 2 * std_s.reshape(gx.shape), color='r', alpha=0.2)
+    ax.plot_surface(gx, gy, updated_correlation + 10 * std_s.reshape(gx.shape), color='r', alpha=0.2, label = 'Uncertainty buonds')
+    ax.plot_surface(gx, gy, updated_correlation + 10 * std_s.reshape(gx.shape), color='r', alpha=0.2)
 
     ax.scatter(Tdata, np.log10(Fdata), np.log10(Ddata), c='k', marker='o', alpha=.6, label = 'Data points')
     ax.plot_surface(gx, gy, np.log10(correlation(1e4/gx, 10 ** gy)), cmap=cm.Greens, label = 'Turnbull diffusion coefficient', alpha=0.5)

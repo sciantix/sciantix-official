@@ -28,6 +28,13 @@ igSwelling1 = np.array([0.033, 0.048, 0.062, 0.073, 0.079, 0.082, 0.083, 0.084, 
 igRadius1 = np.array([0.515, 0.607, 0.681, 0.733, 0.763, 0.776, 0.782, 0.784, 0.785]) # nm
 igDensity1 = np.array([5.78, 5.14, 4.69, 4.42, 4.27, 4.2, 4.18, 4.17, 4.17]) #10^23 bub/m3
 
+# Data from SCIANTIX 2.0 Turnbull and GP update
+iXeDiffTurnbull  = np.array([4.275988e-20, 8.863954e-20, 1.885549e-19, 4.235173e-19, 1.018579e-18, 2.549942e-18, 6.346746e-18, 1.518164e-17, 3.434229e-17])
+iXeDiffGPupdated = np.array([6.20967e-20, 1.818894e-19, 4.14139e-19, 1.144568e-18, 3.698875e-18, 1.134597e-17, 3.047513e-17, 7.407139e-17, 1.70611e-16])
+temperature = np.array([1273, 1373, 1473, 1573, 1673, 1773, 1873, 1973, 2073])
+upper_error = 10 * iXeDiffTurnbull
+lower_error = iXeDiffTurnbull *9 / 10
+
 # Data generated from SCIANTIX 2.0
 igSwelling2 = []
 
@@ -131,6 +138,44 @@ def do_plot():
 
   plt.show()
   
+  # SCIANTIX 2.0 Turbull diffusion coefficient vs. SCIANTIX 2.0 GPs updated diffusion coefficient: intragranular bubble swelling
+  fig, ax = plt.subplots(1, 2, figsize=(12, 6))
+
+  ax1 = ax[1]
+  ax1.scatter(igSwellingBaker, gold, edgecolors='#757575', facecolors='red', marker='^', s=50, label='SCIANTIX Turnbull Xe diffusion coefficient', zorder=1)
+  ax1.scatter(igSwellingBaker, igSwelling2, edgecolors='#757575', facecolors='green', marker='.', s=50, label='SCIANTIX updated Xe diffusion coefficient', zorder=2)
+  ax1.plot([1e-3, 1e2], [1e-3, 1e2], '-', color='#757575')
+  ax1.plot([1e-3, 1e2], [2e-3, 2e2], '--', color='#757575')
+  ax1.plot([1e-3, 1e2], [5e-4, 5e1], '--', color='#757575')
+  ax1.set_xlim(1e-2, 1)
+  ax1.set_ylim(1e-2, 1)
+  ax1.set_xscale('log')
+  ax1.set_yscale('log')
+  ax1.set_title('b) Predicted against measured intra-granular gas swelling')
+  ax1.set_xlabel('Experimental (%)')
+  ax1.set_ylabel('Calculated (%)')
+  ax1.legend()
+
+  ax2 = ax[0]
+  
+  ax2.errorbar(10 ** 4 / temperature, iXeDiffTurnbull, yerr=[lower_error, upper_error],edgecolors= None, color='red', marker = '.', fmt='^', capsize=4, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='Turnbull Xe diffusion coefficient', zorder=1)
+  ax2.scatter(10 ** 4 / temperature, iXeDiffGPupdated, edgecolors='#757575', facecolors='green', marker='.', s=50, label='Updated Xe diffusion coefficient', zorder=2)
+  ax2.set_yscale('log')
+  ax2.set_title('a) Turnbull against updated Xe diffusion coefficient ')
+  ax2.set_xlabel('$10^4/T$ (K)')
+  ax2.set_ylabel('Diffusion coefficient ($m^2/s$)')
+  ax2.legend()
+  ax2.grid()
+  
+  ratio = iXeDiffGPupdated/iXeDiffTurnbull
+  
+  print(ratio)
+  print(np.mean(ratio))
+
+  plt.tight_layout()
+  plt.savefig('plot_paper.png')
+  plt.show()
+  
   # Data vs. SCIANTIX 2.0: bubble density + errorbar
   fig, ax = plt.subplots()
 
@@ -176,7 +221,7 @@ def do_plot():
   plt.show()
   plt.close()
 
-  # Fission gases release plot
+# Fission gases release plot
 #   fig, ax = plt.subplots()
 #   ax.scatter(igSwelling2, FGR2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='FGR SCIANTIX 2.0')
 

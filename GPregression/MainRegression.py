@@ -43,12 +43,15 @@ def main():
     if settings[0] == 1:
         from XeDiffusionCoefficient import XeDiffusionCoefficient
         
-        TT_plot = np.array(np.linspace(4,9,100)).reshape(-1,1)
-        F_plot = np.array(np.linspace(18,22,100)).reshape(-1,1)
+        options_file_path = os.path.abspath(os.path.join(wpath, 'XeDiffusionCoefficient', 'XeDiffusionCoefficientOptions.txt'))
+        options = GP_util.load_settings(options_file_path)
+        
+        TT_plot = np.array(np.linspace(options[0],options[1],options[2])).reshape(-1,1)
+        F_plot  = np.array(np.linspace(options[3],options[4],options[5])).reshape(-1,1)
         evaluation_grid = np.column_stack((TT_plot,F_plot))
         
         updated_correlation, std_s = XeDiffusionCoefficient.GPregression_XeDiffusionCoefficient(data = dataXeDiffusionCoefficient, correlation = Correlations.Turnbull_D, evaluation_range = evaluation_grid, 
-                                                                                                l = 0.1, sigma = 1, scaling_factor = 1, DoPlot = False, update_setting = "half")
+                                                                                                l = options[6], sigma = options[7], scaling_factor = options[8], DoPlot = options[9], update_setting = options[10])
         
         updated_correlation = np.transpose(updated_correlation)
         
