@@ -77,7 +77,7 @@ void GrainBoundaryVenting()
     }
 
     default:
-        ErrorMessages::Switch("GrainBoundaryVenting", "iGrainBoundaryVenting", int(input_variable[iv["iGrainBoundaryVenting"]].getValue()));
+        ErrorMessages::Switch(__FILE__, "iGrainBoundaryVenting", int(input_variable[iv["iGrainBoundaryVenting"]].getValue()));
         break;
     }
 
@@ -86,4 +86,3 @@ void GrainBoundaryVenting()
     model[model_index].setParameter(parameter);
     model[model_index].setRef(reference);
 }
-

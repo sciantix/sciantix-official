@@ -36,7 +36,7 @@ void GrainBoundarySweeping()
 		std::vector<double> parameter;
 		parameter.push_back(0.0);
 		model[model_index].setParameter(parameter);
-		model[model_index].setRef("Not considered");
+		model[model_index].setRef(": Not considered");
 
 		break;
 	}
@@ -53,7 +53,7 @@ void GrainBoundarySweeping()
 		/// @param[out] grain_sweeped_volume
 		parameter.push_back(3 * sciantix_variable[sv["Grain radius"]].getIncrement() / sciantix_variable[sv["Grain radius"]].getFinalValue());
 		model[model_index].setParameter(parameter);
-		model[model_index].setRef("TRANSURANUS model");
+		model[model_index].setRef(": TRANSURANUS model");
 
 		break;
 	}

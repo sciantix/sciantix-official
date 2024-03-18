@@ -159,6 +159,9 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	bool toOutputCracking(0);
 	if (input_variable[iv["iGrainBoundaryMicroCracking"]].getValue() != 0) toOutputCracking = 1;
 
+	bool toOutputFracture(0);
+	if (input_variable[iv["iGrainBoundaryMicroCracking"]].getValue() == 2) toOutputFracture = 1;
+
 	bool toOutputGrainBoundary(0);
 	if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() == 1) toOutputGrainBoundary = 1;
 
@@ -256,11 +259,27 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Xe produced in HBS");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[90]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[90]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Xe in grain");
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[2]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[2]);
 	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Xe in grain HBS");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[92]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[92]);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -681,10 +700,18 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Intergranular bubble pressure");
-	sciantix_variable[sv_counter].setUOM("MPa)");
+	sciantix_variable[sv_counter].setUOM("(MPa)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
-	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setOutput(toOutputFracture);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Critical intergranular bubble pressure");
+	sciantix_variable[sv_counter].setUOM("(MPa)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(0.0);
+	sciantix_variable[sv_counter].setOutput(toOutputFracture);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -962,7 +989,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[82]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
-    
+
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Xe in HBS pores");
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
@@ -1003,21 +1030,24 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	// ---------------
 	for (int i = 0; i < n_modes; ++i)
 	{
-		modes_initial_conditions[i] = Sciantix_diffusion_modes[i];
+		modes_initial_conditions[i] = Sciantix_diffusion_modes[i]; // Xe
 		modes_initial_conditions[1 * n_modes + i] = Sciantix_diffusion_modes[1 * n_modes + i];
 		modes_initial_conditions[2 * n_modes + i] = Sciantix_diffusion_modes[2 * n_modes + i];
-		modes_initial_conditions[3 * n_modes + i] = Sciantix_diffusion_modes[3 * n_modes + i];
+		modes_initial_conditions[3 * n_modes + i] = Sciantix_diffusion_modes[3 * n_modes + i]; // Kr
 		modes_initial_conditions[4 * n_modes + i] = Sciantix_diffusion_modes[4 * n_modes + i];
 		modes_initial_conditions[5 * n_modes + i] = Sciantix_diffusion_modes[5 * n_modes + i];
-		modes_initial_conditions[6 * n_modes + i] = Sciantix_diffusion_modes[6 * n_modes + i];
+		modes_initial_conditions[6 * n_modes + i] = Sciantix_diffusion_modes[6 * n_modes + i]; // He
 		modes_initial_conditions[7 * n_modes + i] = Sciantix_diffusion_modes[7 * n_modes + i];
 		modes_initial_conditions[8 * n_modes + i] = Sciantix_diffusion_modes[8 * n_modes + i];
-		modes_initial_conditions[9 * n_modes + i] = Sciantix_diffusion_modes[9 * n_modes + i];
+		modes_initial_conditions[9 * n_modes + i] = Sciantix_diffusion_modes[9 * n_modes + i]; // Xe133
 		modes_initial_conditions[10 * n_modes + i] = Sciantix_diffusion_modes[10 * n_modes + i];
 		modes_initial_conditions[11 * n_modes + i] = Sciantix_diffusion_modes[11 * n_modes + i];
-		modes_initial_conditions[12 * n_modes + i] = Sciantix_diffusion_modes[12 * n_modes + i];
+		modes_initial_conditions[12 * n_modes + i] = Sciantix_diffusion_modes[12 * n_modes + i]; // Kr85m
 		modes_initial_conditions[13 * n_modes + i] = Sciantix_diffusion_modes[13 * n_modes + i];
 		modes_initial_conditions[14 * n_modes + i] = Sciantix_diffusion_modes[14 * n_modes + i];
+		modes_initial_conditions[15 * n_modes + i] = Sciantix_diffusion_modes[15 * n_modes + i]; // Xe in UO2HBS
+		modes_initial_conditions[16 * n_modes + i] = Sciantix_diffusion_modes[16 * n_modes + i]; // Xe in UO2HBS - solution
+		modes_initial_conditions[17 * n_modes + i] = Sciantix_diffusion_modes[17 * n_modes + i]; // Xe in UO2HBS - bubbles
 	}
 
 	// ---------------

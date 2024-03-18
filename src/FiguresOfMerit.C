@@ -79,12 +79,12 @@ void FiguresOfMerit()
     
 	const double boltzmann_constant = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
 
-  // Intergranular bubble pressure p = kTng/Onv
+  // Intergranular bubble pressure p = kTng/Onv (MPa)
   if(sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue())
     sciantix_variable[sv["Intergranular bubble pressure"]].setFinalValue(1e-6 *
       boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue() *
       sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue() /
-      (sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue() * matrix[0].getSchottkyVolume())
+      (sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue() * matrix[sma["UO2"]].getSchottkyVolume())
     );
   else
     sciantix_variable[sv["Intergranular bubble pressure"]].setFinalValue(0.0);

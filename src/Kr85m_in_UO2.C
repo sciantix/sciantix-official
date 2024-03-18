@@ -29,9 +29,12 @@ void Kr85m_in_UO2()
 
 	sciantix_system[index].setName("Kr85m in UO2");
 	sciantix_system[index].setGasName("Kr85m");
+	sciantix_system[index].setMatrixName("UO2");
+	sciantix_system[index].setMatrixType("nonRestructured");
+	sciantix_system[index].setRestructuredMatrix(0);
 	sciantix_system[index].setYield(0.013027);
 	sciantix_system[index].setRadiusInLattice(0.21e-9);
-	sciantix_system[index].setVolumeInLattice(matrix[0].getSchottkyVolume());
+	sciantix_system[index].setVolumeInLattice(matrix[sma["UO2"]].getSchottkyVolume());
 	sciantix_system[index].setHenryConstant(0.0);
 	sciantix_system[index].setProductionRate(1);
 	sciantix_system[index].setFissionGasDiffusivity(int(input_variable[iv["iFGDiffusionCoefficient"]].getValue()));

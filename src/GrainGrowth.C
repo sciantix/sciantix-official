@@ -64,14 +64,14 @@ void GrainGrowth()
 		 * Note that, the equation for grain growth is written in grain size.
 		*/
 	{
-		reference += "Ainscough et al., JNM, 49 (1973) 117-128.";
+		reference += ": Ainscough et al., JNM, 49 (1973) 117-128.";
 
 		double limiting_grain_radius = 2.23e-03 * (1.56/2.0) * exp(-7620.0 / history_variable[hv["Temperature"]].getFinalValue());
 		double burnup_factor = 1.0 + 2.0 * sciantix_variable[sv["Burnup"]].getFinalValue() / 0.8815;
 
 		if (sciantix_variable[sv["Grain radius"]].getInitialValue() < limiting_grain_radius / burnup_factor)
 		{
-			double rate_constant = matrix[0].getGrainBoundaryMobility();
+			double rate_constant = matrix[sma["UO2"]].getGrainBoundaryMobility();
 			rate_constant *= (1.0 - burnup_factor / (limiting_grain_radius / (sciantix_variable[sv["Grain radius"]].getFinalValue())));
 
 			parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
@@ -116,7 +116,7 @@ void GrainGrowth()
 
 		if(sciantix_variable[sv["Grain radius"]].getInitialValue() < limiting_grain_radius)
 		{
-			double rate_constant = matrix[0].getGrainBoundaryMobility();
+			double rate_constant = matrix[sma["UO2"]].getGrainBoundaryMobility();
 
 			parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
 			parameter.push_back(1.0);
