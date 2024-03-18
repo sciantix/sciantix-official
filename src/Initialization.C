@@ -82,6 +82,8 @@ void Initialization()
 		case 12: initial_condition = Sciantix_variables[58]; break;  // Kr85m in grain
 		case 13: initial_condition = Sciantix_variables[59]; break;  // Kr85m in grain - solution
 		case 14: initial_condition = Sciantix_variables[60]; break;  // Kr85m in grain - bubbles
+		
+		case 15: initial_condition = Sciantix_variables[92]; break;  // Xe in UO2 HBS
 
 		default: initial_condition = 0.0; break;
 		}

@@ -53,15 +53,15 @@ void InterGranularBubbleEvolution()
 		// Gas is distributed among bubbles
 		// n(at/bub) = c(at/m3) / (N(bub/m2) S/V(1/m))
 		double n_at(0);
-		for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
+		for (auto& system : sciantix_system)
 		{
-			if (gas[ga[sciantix_system[i].getGasName()]].getDecayRate() == 0.0)
+			if (gas[ga[system.getGasName()]].getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
 			{
-				sciantix_variable[sv["Intergranular " + sciantix_system[i].getGasName() + " atoms per bubble"]].setFinalValue(
-					sciantix_variable[sv[sciantix_system[i].getGasName() + " at grain boundary"]].getFinalValue() /
+				sciantix_variable[sv["Intergranular " + system.getGasName() + " atoms per bubble"]].setFinalValue(
+					sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getFinalValue() /
 					(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue() * (3.0 / sciantix_variable[sv["Grain radius"]].getFinalValue())));
 
-				n_at += sciantix_variable[sv["Intergranular " + sciantix_system[i].getGasName() + " atoms per bubble"]].getFinalValue();
+				n_at += sciantix_variable[sv["Intergranular " + system.getGasName() + " atoms per bubble"]].getFinalValue();
 			}
 		}
 		sciantix_variable[sv["Intergranular atoms per bubble"]].setFinalValue(n_at);
@@ -69,12 +69,12 @@ void InterGranularBubbleEvolution()
 		// Calculation of the bubble dimension
 		// initial volume
 		double vol(0);
-		for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
+		for (auto& system : sciantix_system)
 		{
-			if (gas[ga[sciantix_system[i].getGasName()]].getDecayRate() == 0.0)
+			if (gas[ga[system.getGasName()]].getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
 			{
-				vol += sciantix_variable[sv["Intergranular " + sciantix_system[i].getGasName() + " atoms per bubble"]].getFinalValue() *
-					gas[ga[sciantix_system[i].getGasName()]].getVanDerWaalsVolume();
+				vol += sciantix_variable[sv["Intergranular " + system.getGasName() + " atoms per bubble"]].getFinalValue() *
+					gas[ga[system.getGasName()]].getVanDerWaalsVolume();
 			}
 		}
 		vol += sciantix_variable[sv["Intergranular vacancies per bubble"]].getInitialValue() * matrix[0].getSchottkyVolume();

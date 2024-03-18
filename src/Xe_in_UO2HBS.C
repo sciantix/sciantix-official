@@ -27,8 +27,10 @@ void Xe_in_UO2HBS()
 	int index = int(sciantix_system.size()) - 1;
 
 	sciantix_system[index].setName("Xe in UO2HBS");
-	sciantix_system[index].setGasName("XeHBS");
+	sciantix_system[index].setGasName("Xe");
 	sciantix_system[index].setMatrixName("UO2HBS");
+	sciantix_system[index].setMatrixType("Restructured");
+	sciantix_system[index].setRestructuredMatrix(1);
 	sciantix_system[index].setYield(0.24);
 	sciantix_system[index].setRadiusInLattice(0.21e-9);
 	sciantix_system[index].setVolumeInLattice(matrix[sma["UO2HBS"]].getSchottkyVolume());
@@ -39,6 +41,5 @@ void Xe_in_UO2HBS()
 	sciantix_system[index].setResolutionRate(99);
 	sciantix_system[index].setTrappingRate(99);
 	sciantix_system[index].setNucleationRate(99);
-	sciantix_system[index].setRestructuredMatrix(1);
 }
 

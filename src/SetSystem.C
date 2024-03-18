@@ -44,14 +44,14 @@ void SetSystem()
 
 		case 1: 
 		{
-			// Xe_in_UO2();
-			// MapSystem();
+			Xe_in_UO2();
+			MapSystem();
 			
 			Xe_in_UO2HBS();
 			MapSystem();
 
-			Xe_in_UO2nonHBS();
-			MapSystem();
+			// Xe_in_UO2nonHBS();
+			// MapSystem();
 
 			break;
 		}
