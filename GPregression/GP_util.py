@@ -78,5 +78,29 @@ def vertical_distance_with_uncertainty(points, a, b, c, dc, dz):
     # Return the nominal distances and uncertainties
     return vertical_distances_nominal, uncertainty
 
+def parse_value(value_str):
+    try:
+        # Try converting to int
+        value = int(value_str)
+        return value
+    except ValueError:
+        try:
+            # Try converting to float
+            value = float(value_str)
+            return value
+        except ValueError:
+            # If neither int nor float, return as string
+            return value_str.strip()
 
-
+def load_settings(filepath):
+    settings = []
+    with open(filepath, 'r') as file:
+        for line in file:
+            line = line.strip()
+            if not line:
+                continue
+            parts = line.split('#')
+            value_str = parts[0].strip()
+            value = parse_value(value_str)
+            settings.append(value)
+    return settings
