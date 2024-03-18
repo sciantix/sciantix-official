@@ -49,31 +49,31 @@ void Output()
 	{
 		if (history_variable[hv["Time step number"]].getFinalValue() == 0)
 		{
-			for (std::vector<HistoryVariable>::size_type i = 0; i != history_variable.size(); ++i)
+			for (auto& variable : history_variable)
 			{
-				if (history_variable[i].getOutput())
-					output_file << history_variable[i].getName() << " " << history_variable[i].getUOM() << "\t";
+				if (variable.getOutput())
+					output_file << variable.getName() << " " << variable.getUOM() << "\t";
 			}
-			for (std::vector<SciantixVariable>::size_type i = 0; i != sciantix_variable.size(); ++i)
+			for (auto& variable : sciantix_variable)
 			{
-				if (sciantix_variable[i].getOutput())
-					output_file << sciantix_variable[i].getName() << " " << sciantix_variable[i].getUOM() << "\t";
+				if (variable.getOutput())
+					output_file << variable.getName() << " " << variable.getUOM() << "\t";
 			}
 			output_file << "\n";
 		}
 
 		if ((int)history_variable[hv["Time step number"]].getFinalValue() % 1 == 0)
 		{
-			for (std::vector<HistoryVariable>::size_type i = 0; i != history_variable.size(); ++i)
+			for (auto& variable : history_variable)
 			{
-				if (history_variable[i].getOutput())
-					output_file << std::setprecision(10) << history_variable[i].getFinalValue() << "\t";
+				if (variable.getOutput())
+					output_file << std::setprecision(10) << variable.getFinalValue() << "\t";
 			}
 
-			for (std::vector<SciantixVariable>::size_type i = 0; i != sciantix_variable.size(); ++i)
+			for (auto& variable : sciantix_variable)
 			{
-				if (sciantix_variable[i].getOutput())
-					output_file << std::setprecision(7) << sciantix_variable[i].getFinalValue() << "\t";
+				if (variable.getOutput())
+					output_file << std::setprecision(7) << variable.getFinalValue() << "\t";
 			}
 			output_file << "\n";
 		}
@@ -87,31 +87,27 @@ void Output()
 	{
 		if (history_variable[hv["Time step number"]].getFinalValue() == 0)
 		{
-			for (std::vector<HistoryVariable>::size_type i = 0; i != history_variable.size(); ++i)
+			for (auto& variable : history_variable)
 			{
-				// if (history_variable[i].getOutput())
-					output_file << history_variable[i].getName() << " " << history_variable[i].getUOM() << "\t";
+				output_file << variable.getName() << " " << variable.getUOM() << "\t";
 			}
-			for (std::vector<SciantixVariable>::size_type i = 0; i != sciantix_variable.size(); ++i)
+			for (auto& variable : sciantix_variable)
 			{
-				// if (sciantix_variable[i].getOutput())
-					output_file << sciantix_variable[i].getName() << " " << sciantix_variable[i].getUOM() << "\t";
+					output_file << variable.getName() << " " << variable.getUOM() << "\t";
 			}
 			output_file << "\n";
 		}
 
 		if ((int)history_variable[hv["Time step number"]].getFinalValue() % 1 == 0)
 		{
-			for (std::vector<HistoryVariable>::size_type i = 0; i != history_variable.size(); ++i)
+			for (auto& variable : history_variable)
 			{
-				// if (history_variable[i].getOutput())
-					output_file << std::setprecision(10) << history_variable[i].getFinalValue() << "\t";
+					output_file << std::setprecision(10) << variable.getFinalValue() << "\t";
 			}
 
-			for (std::vector<SciantixVariable>::size_type i = 0; i != sciantix_variable.size(); ++i)
+			for (auto& variable : sciantix_variable)
 			{
-				// if (sciantix_variable[i].getOutput())
-					output_file << std::setprecision(7) << sciantix_variable[i].getFinalValue() << "\t";
+					output_file << std::setprecision(7) << variable.getFinalValue() << "\t";
 			}
 			output_file << "\n";
 		}
@@ -136,11 +132,11 @@ void Output()
 	{
 		overview_file.open(overview_name, std::fstream::in | std::fstream::out | std::fstream::app);
 
-		for (std::vector<Model>::size_type i = 0; i != int(model.size()); ++i)
+		for (auto& model_ : model)
 		{
-			overview_file << "Model #" << i << ": " << "\t";
-			overview_file << model[i].getName() << "\t";
-			overview_file << model[i].getRef() << "\n";
+			overview_file << "Model" << "\t";
+			overview_file << model_.getName() << "\t";
+			overview_file << model_.getRef() << "\n";
 		}
 
 		overview_file << "\n";
@@ -148,39 +144,32 @@ void Output()
 		/**
 		 * Printing the matrix
 		 */
-		for (std::vector<Matrix>::size_type i = 0; i != int(matrix.size()); ++i)
+		for (auto& matrix_ : matrix)
 		{
-			overview_file << "Matrix #" << i << ": " << "\t";
-			overview_file << matrix[i].getName() << "\t";
-			overview_file << matrix[i].getRef() << "\n";
+			overview_file << "Matrix" << "\t";
+			overview_file << matrix_.getName() << "\t";
+			overview_file << matrix_.getRef() << "\n";
 		}
 
 		overview_file << "\n";
 
-		for (std::vector<System>::size_type i = 0; i != int(sciantix_system.size()); ++i)
+		for (auto& system : sciantix_system)
 		{
-			overview_file << "System #" << i << ": " << "\t";
-			overview_file << sciantix_system[i].getName() << "\t";
-			overview_file << sciantix_system[i].getRef() << "\n";
+			overview_file << "System" << "\t";
+			overview_file << system.getName() << "\t";
+			overview_file << system.getRef() << "\n";
 		}
 
 		overview_file << "\n";
 
-		for (std::vector<InputVariable>::size_type i = 0; i != int(input_variable.size()); ++i)
+		for (auto& input_variable_ : input_variable)
 		{
-			overview_file << "Input setting #" << i << ": " << "\t";
-			overview_file << input_variable[i].getName() << " = ";
-			overview_file << input_variable[i].getValue() << "\n";
+			overview_file << "Input setting" << "\t";
+			overview_file << input_variable_.getName() << " = ";
+			overview_file << input_variable_.getValue() << "\n";
 		}
 
 		overview_file << "\n";
-
-		// for (std::vector<SciantixVariable>::size_type i = 0; i != sciantix_variable.size(); ++i)
-		// {
-		// 	overview_file << "Sciantix variable #" << i << ": " << "\t";
-		// 	overview_file << sciantix_variable[i].getName() << " ";
-		// 	overview_file << sciantix_variable[i].getUOM() << "\n";
-		// }
 	}
 	overview_file.close();
 }

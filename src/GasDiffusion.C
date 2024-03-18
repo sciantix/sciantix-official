@@ -66,7 +66,7 @@ void defineSpectralDiffusion1Equation()
 							 (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
 		}
 		parameters.push_back(gasDiffusivity);
-		parameters.push_back(matrix[sma[system.getMatrixName()]].getGrainRadius());
+		parameters.push_back(sciantix_variable[sv["Grain radius"]].getFinalValue());
 		parameters.push_back(system.getProductionRate());
 		parameters.push_back(gas[ga[system.getGasName()]].getDecayRate());
 
