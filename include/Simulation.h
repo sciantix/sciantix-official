@@ -109,14 +109,6 @@ class Simulation : public Solver, public Model
 						model[sm["Gas production - " + system.getName()]].getParameter().at(1)
 					)
 				);
-			else if(system.getRestructuredMatrix() == 1)
-				sciantix_variable[sv[system.getGasName() + " produced in HBS"]].setFinalValue(
-					solver.Integrator(
-						sciantix_variable[sv[system.getGasName() + " produced in HBS"]].getInitialValue(),
-						model[sm["Gas production - " + system.getName()]].getParameter().at(0),
-						model[sm["Gas production - " + system.getName()]].getParameter().at(1)
-					)
-				);
 		}
 	}
 
@@ -204,17 +196,7 @@ class Simulation : public Solver, public Model
 					}
 					else if (system.getRestructuredMatrix() == 1)
 					{
-						initial_value_solution = sciantix_variable[sv[system.getGasName() + " in grain HBS"]].getFinalValue();
-
-						solver.SpectralDiffusionNonEquilibrium(
-							initial_value_solution,
-							initial_value_bubbles,
-							getDiffusionModesSolution(system.getGasName()),
-							getDiffusionModesBubbles(system.getGasName()),
-							model[sm["Gas diffusion - " + system.getName()]].getParameter(),
-							physics_variable[pv["Time step"]].getFinalValue()
-						);
-						sciantix_variable[sv[system.getGasName() + " in grain"]].setFinalValue(initial_value_solution + initial_value_bubbles);
+						sciantix_variable[sv[system.getGasName() + " in grain HBS"]].setFinalValue(0.0);
 					}					
 					break;
 				}
@@ -268,6 +250,94 @@ class Simulation : public Solver, public Model
 		}
 	}
 
+	void HBS_Sweeping()
+	{
+		// dalpha/dbeff = 3.54 * 2.77e-7 * (1 - alpha) b^2.54
+		// double restructuring_rate =
+		// 	model[sm["High-burnup structure formation"]].getParameter().at(0) *
+		// 	model[sm["High-burnup structure formation"]].getParameter().at(1) *
+		// 	pow(sciantix_variable[sv["Effective burnup"]].getFinalValue(), model[sm["High-burnup structure formation"]].getParameter().at(0) - 1) * 
+		// 	(1. - sciantix_variable[sv["Restructured volume fraction"]].getInitialValue());
+
+		// double source(0.), decay(0.);
+
+    	for (auto& system : sciantix_system)
+		{	
+			// if(system.getRestructuredMatrix() == 1)
+			// {
+			// 	if(sciantix_variable[sv["Restructured volume fraction"]].getFinalValue() > 0. && sciantix_variable[sv["Effective burnup"]].getIncrement() > 0.)
+			// 	{
+			// 		// 1/alpha * r.rate
+			// 		decay = restructuring_rate / sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
+			// 		decay = restructuring_rate;
+
+			// 		// dcNR/db * (1 - 1/alpha) + cNR * 1/alpha * r.rate
+			// 		source =
+			// 			decay * sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue() - 
+			// 			sciantix_variable[sv[system.getGasName() + " in grain"]].getIncrement()  / sciantix_variable[sv["Effective burnup"]].getIncrement() * (1. / sciantix_variable[sv["Restructured volume fraction"]].getFinalValue() - 1.);
+	
+			// 		source =
+			// 			restructuring_rate * sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue() - 
+			// 			sciantix_variable[sv[system.getGasName() + " in grain"]].getIncrement()  / sciantix_variable[sv["Effective burnup"]].getIncrement() * (1. - sciantix_variable[sv["Restructured volume fraction"]].getFinalValue());
+			// 	}
+
+			// 	sciantix_variable[sv[system.getGasName() + " in grain HBS"]].resetValue();
+
+			// 	sciantix_variable[sv[system.getGasName() + " in grain HBS"]].setFinalValue(
+			// 		solver.Decay(
+			// 			sciantix_variable[sv[system.getGasName() + " in grain HBS"]].getInitialValue(),
+			// 			decay,
+			// 			source,
+			// 			sciantix_variable[sv["Effective burnup"]].getIncrement()
+			// 		)
+			// 	);
+
+			// 	if(sciantix_variable[sv[system.getGasName() + " in grain HBS"]].getFinalValue() < 0.)
+			// 		sciantix_variable[sv[system.getGasName() + " in grain HBS"]].setFinalValue(0.0);
+
+			// 	sciantix_variable[sv[system.getGasName() + " in grain HBS"]].resetValue();
+
+			// 	for (int i = 0; i < n_modes; ++i)
+			// 	{
+			// 		modes_initial_conditions[15 * 40 + i] =
+			// 			solver.Decay(
+			// 				modes_initial_conditions[15 * 40 + i],
+			// 				decay,
+			// 				source,
+			// 				sciantix_variable[sv["Effective burnup"]].getIncrement()
+			// 			);
+			// 	}
+			// }
+
+			if(system.getRestructuredMatrix() == 1)
+			{
+				if(sciantix_variable[sv["Restructured volume fraction"]].getFinalValue() > 0. && sciantix_variable[sv["Effective burnup"]].getIncrement() > 0.)
+				{
+					sciantix_variable[sv[system.getGasName() + " in grain HBS"]].resetValue();
+					sciantix_variable[sv[system.getGasName() + " in grain HBS"]].setFinalValue(
+						solver.Decay(
+							sciantix_variable[sv[system.getGasName() + " in grain HBS"]].getInitialValue(),
+							1. / sciantix_variable[sv["Restructured volume fraction"]].getFinalValue(),
+							sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue() / sciantix_variable[sv["Restructured volume fraction"]].getFinalValue(),
+							sciantix_variable[sv["Restructured volume fraction"]].getIncrement()
+						)
+					);
+
+					for (int i = 0; i < n_modes; ++i)
+					{
+						modes_initial_conditions[15 * 40 + i] =
+							solver.Decay(
+								modes_initial_conditions[15 * 40 + i],
+								1. / sciantix_variable[sv["Restructured volume fraction"]].getFinalValue(),
+								sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue() / sciantix_variable[sv["Restructured volume fraction"]].getFinalValue(),
+								sciantix_variable[sv["Restructured volume fraction"]].getIncrement()
+							);
+					}
+				}
+			}
+		}
+	}
+
 	void GrainGrowth()
 	{
 		/**
@@ -277,6 +347,8 @@ class Simulation : public Solver, public Model
 		sciantix_variable[sv["Grain radius"]].setFinalValue(
 			solver.QuarticEquation(model[sm["Grain growth"]].getParameter())
 		);
+
+		matrix[sma["UO2"]].setGrainRadius(sciantix_variable[sv["Grain radius"]].getFinalValue());
 	}
 
 	void IntraGranularBubbleBehaviour()
