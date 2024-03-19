@@ -14,7 +14,6 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-
 #include <cmath>
 #include <ConstantNumbers.h>
 #include "MainVariables.h"

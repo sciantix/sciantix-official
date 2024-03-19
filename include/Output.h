@@ -13,29 +13,28 @@
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
+
+#ifndef OUTPUT_H
+#define OUTPUT_H
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <cmath>
 #include <limits>
 #include <map>
-
 #include <sys/stat.h>
-//#include <unistd.h>
 #include <string>
-
 #include "MapSciantixVariable.h"
 #include "Variable.h"
-
 #include "ModelDeclaration.h"
 #include "SystemDeclaration.h"
-
 #include "HistoryVariableDeclaration.h"
 #include "InputVariableDeclaration.h"
-
 #include "MapHistoryVariable.h"
 #include "MapInputVariable.h"
-
 #include "MatrixDeclaration.h"
 
 void Output();
+
+#endif // OUTPUT_H

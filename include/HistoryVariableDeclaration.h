@@ -24,4 +24,4 @@
 
 extern std::vector<HistoryVariable> history_variable;
 
-#endif
+#endif // HISTORY_VARIABLE_DECLARATION_H

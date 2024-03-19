@@ -14,8 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef MAP_MODEL
-#define MAP_MODEL
+#ifndef MAP_MODEL_H
+#define MAP_MODEL_H
 
 #include <map>
 #include <string>
@@ -25,5 +25,5 @@ extern std::map<std::string, int> sm;
 
 void MapModel();
 
-#endif
+#endif // MAP_MODEL_H
 
