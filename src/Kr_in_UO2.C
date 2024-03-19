@@ -18,11 +18,12 @@
 
 void Kr_in_UO2()
 {
-
-	/**
-	 * @brief This function defines the sciantix_system *Krypton in UO<sub>2</sub>* and sets its physical properties.
-	 * 
-	 */
+	// Error handling
+	if (matrix.empty() || input_variable.empty() || sma.find("UO2") == sma.end())
+	{
+		std::cerr << "Error: Required components are not initialized in " << __FILE__  << std::endl;
+		return;
+	}
 
 	sciantix_system.emplace_back();
 	int index = int(sciantix_system.size() - 1);
@@ -30,7 +31,6 @@ void Kr_in_UO2()
 	sciantix_system[index].setName("Kr in UO2");
 	sciantix_system[index].setGasName("Kr");
 	sciantix_system[index].setMatrixName("UO2");
-	sciantix_system[index].setMatrixType("nonRestructured");
 	sciantix_system[index].setRestructuredMatrix(0);
 	sciantix_system[index].setYield(0.03);
 	sciantix_system[index].setRadiusInLattice(0.21e-9);

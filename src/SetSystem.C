@@ -616,7 +616,7 @@ void System::setProductionRate(int input_value)
 		 * @brief Production rate = cumulative yield * fission rate density
 		 * 
 		 */
-		
+
 		reference += "Production rate = cumulative yield * fission rate density.\n\t";
 		production_rate = yield * history_variable[hv["Fission rate"]].getFinalValue(); // (at/m3s)
 		break;

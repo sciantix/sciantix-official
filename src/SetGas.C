@@ -16,11 +16,6 @@
 
 #include "SetGas.h"
 
-/**
- * @brief This routines defines the gas objects
- * 
- */
-
 void SetGas()
 {
 	Xenon();
