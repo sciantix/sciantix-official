@@ -616,7 +616,9 @@ void System::setProductionRate(int input_value)
 		 * @brief Production rate = cumulative yield * fission rate density
 		 * 
 		 */
-		
+
+		production_rate = yield * history_variable[hv["Fission rate"]].getFinalValue();
+
 		reference += "Production rate = cumulative yield * fission rate density.\n\t";
 		production_rate = yield * history_variable[hv["Fission rate"]].getFinalValue(); // (at/m3s)
 		break;
@@ -663,38 +665,6 @@ void System::setProductionRate(int input_value)
 		reference += "Constant production rate.\n\t";
 		production_rate = 1e18;
 
-		break;
-	}
-
-	case 4:
-	{
-		/**
-		 * @brief Production rate = cumulative yield * fission rate density * (1 - HBS volume fraction)
-		 * 
-		 */
-
-		double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
-
-		// Non-HBS fraction
-		production_rate = yield * history_variable[hv["Fission rate"]].getFinalValue() * (1. - alpha); // (at/m3s)
-	
-		reference += ": Production rate = cumulative yield * fission rate density * (1 - HBS volume fraction).\n\t";
-		break;
-	}
-
-	case 5:
-	{
-		/**
-		 * @brief Production rate = cumulative yield * fission rate density * HBS volume fraction
-		 * 
-		 */
-
-		double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
-
-		// HBS fraction
-		production_rate = yield * history_variable[hv["Fission rate"]].getFinalValue() * alpha; // (at/m3s)
-	
-		reference += ": Production rate = cumulative yield * fission rate density * HBS volume fraction.\n\t";
 		break;
 	}
 
