@@ -15,12 +15,6 @@
 
 #include "GasDiffusion.h"
 
-/**
- * @brief Defines models for gas diffusion within the fuel grain.
- * 
- * This function computes diffusion models for gas atoms within the fuel grain
- * based on the selected diffusion solver option.
- */
 void GasDiffusion()
 {
 	switch (static_cast<int>(input_variable[iv["iDiffusionSolver"]].getValue()))
@@ -39,9 +33,6 @@ void GasDiffusion()
 	}
 }
 
-/**
- * @brief Defines diffusion models using the spectral diffusion with one equation.
- */
 void defineSpectralDiffusion1Equation()
 {
 	std::string reference;
@@ -66,7 +57,7 @@ void defineSpectralDiffusion1Equation()
 							 (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
 		}
 		parameters.push_back(gasDiffusivity);
-		parameters.push_back(sciantix_variable[sv["Grain radius"]].getFinalValue());
+		parameters.push_back(matrix[sma[system.getMatrixName()]].getGrainRadius());
 		parameters.push_back(system.getProductionRate());
 		parameters.push_back(gas[ga[system.getGasName()]].getDecayRate());
 
@@ -74,9 +65,6 @@ void defineSpectralDiffusion1Equation()
 	}
 }
 
-/**
- * @brief Defines diffusion models using the spectral diffusion with two equations.
- */
 void defineSpectralDiffusion2Equations()
 {
 	std::string reference;
@@ -94,18 +82,15 @@ void defineSpectralDiffusion2Equations()
 		parameters.push_back(system.getResolutionRate());
 		parameters.push_back(system.getTrappingRate());
 		parameters.push_back(gas[ga[system.getGasName()]].getDecayRate());
-		parameters.push_back(sciantix_variable[sv["Grain radius"]].getFinalValue());
+		parameters.push_back(matrix[sma[system.getMatrixName()]].getGrainRadius());
 		parameters.push_back(system.getProductionRate());
-		parameters.push_back(0.0);  // source_term
+		parameters.push_back(0.0);
 		parameters.push_back(system.getBubbleDiffusivity());
 
 		model[modelIndex].setParameter(parameters);
 	}
 }
 
-/**
- * @brief Handles unsupported diffusion solver options.
- */
 void errorHandling()
 {
 	ErrorMessages::Switch(__FILE__, "iDiffusionSolver", static_cast<int>(input_variable[iv["iDiffusionSolver"]].getValue()));

@@ -14,6 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef SET_GAS_H
+#define SET_GAS_H
+
 #include "GasDeclaration.h"
 #include "MapGas.h"
 #include "Xenon.h"
@@ -21,4 +24,11 @@
 #include "Krypton.h"
 #include <vector>
 
+/**
+ * @brief This routines defines the gas objects
+ * 
+ */
+
 void SetGas();
+
+#endif // SET_GAS_H

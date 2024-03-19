@@ -16,13 +16,11 @@
 
 #include "UO2.h"
 
+/**
+ * @brief Defines the physical properties of the UO2 matrix.
+ */
 void UO2()
 {
-	/**
-	 * @brief This routine defines the physical proprieties of the matrix UO2.
-	 * 
-	 */
-
 	matrix.emplace_back();
 	int index = int(matrix.size()) - 1;
 
@@ -33,7 +31,7 @@ void UO2()
 	matrix[index].setSurfaceTension(0.7); // (N/m)
 	matrix[index].setFFinfluenceRadius(1.0e-9); // (m)
 	matrix[index].setFFrange(6.0e-6); // (m)
-	matrix[index].setSchottkyVolume(4.09e-29);
+	matrix[index].setSchottkyVolume(4.09e-29); // (m3)
 	matrix[index].setOIS(7.8e-30); // (m3)
 	matrix[index].setSemidihedralAngle(0.872664626); // (rad)
 	matrix[index].setGrainBoundaryThickness(5.0e-10); // (m)

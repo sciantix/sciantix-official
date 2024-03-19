@@ -94,7 +94,7 @@ void Sciantix(int Sciantix_options[],
 	sciantix_simulation.InterGranularBubbleBehaviour();
 
 	FiguresOfMerit();
-	
+
 	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
 	Output();

@@ -16,6 +16,4 @@
 
 #include "GasDeclaration.h"
 
-/// GasDeclaration
-
 std::vector<Gas> gas;

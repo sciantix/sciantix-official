@@ -14,6 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef XE_IN_UO2_H
+#define XE_IN_UO2_H
+
 #include "SystemDeclaration.h"
 #include "MatrixDeclaration.h"
 #include "MapMatrix.h"
@@ -21,4 +24,13 @@
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
 
+/**
+ * @brief Sets properties for the "Xenon in UO2" system.
+ * 
+ * This function initializes the properties of the "Xenon in UO2" system
+ * and adds it to the sciantix_system vector.
+ */
+
 void Xe_in_UO2();
+
+#endif // XE_IN_UO2_H

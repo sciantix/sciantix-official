@@ -16,14 +16,6 @@
 
 #include "Burnup.h"
 
-/**
- * @brief Defines the Burnup model.
- * 
- * The Burnup model evaluates the local fuel burnup based on the local power density, derived from the local fission rate density.
- * This calculation is performed within the Simulation::BurnupEvolution() function using the Solver::Integrator.
- * 
- */
-
 void Burnup()
 {
 	model.emplace_back();

@@ -232,50 +232,49 @@ public:
 		}
 	}
 
+	double QuarticEquation(std::vector<double> parameter)
+	{
+			/**
+			 * @brief Solver for the quartic equation ax^4 + bx^3 +cx^2 +dx + e = 0
+			 * with the iterative Newton's method.
+			 * 
+			 * @param parameter.at(0) initial conditions
+			 * @param parameter.at(1) coefficient of x^4
+			 * @param parameter.at(2) coefficient of x^3
+			 * @param parameter.at(3) coefficient of x^2
+			 * @param parameter.at(4) coefficient of x^1
+			 * @param parameter.at(5) coefficient of x^0
+			 * @return x1 solution
+			 */
 
-  double QuarticEquation(std::vector<double> parameter)
-  {
-		/**
-		 * @brief Solver for the quartic equation ax^4 + bx^3 +cx^2 +dx + e = 0
-		 * with the iterative Newton's method.
-		 * 
-		 * @param parameter.at(0) initial conditions
-		 * @param parameter.at(1) coefficient of x^4
-		 * @param parameter.at(2) coefficient of x^3
-		 * @param parameter.at(3) coefficient of x^2
-		 * @param parameter.at(4) coefficient of x^1
-		 * @param parameter.at(5) coefficient of x^0
-		 * @return x1 solution
-		 */
+		double function(0.0);
+		double derivative(0.0);
+		double y1(0.0);
+		unsigned short int iter(0);
+		const double tol(1.0e-3);
+		const unsigned short int max_iter(5);
 
-    double function(0.0);
-    double derivative(0.0);
-    double y1(0.0);
-    unsigned short int iter(0);
-    const double tol(1.0e-3);
-    const unsigned short int max_iter(5);
+			double y0 = parameter.at(0);
+			double a = parameter.at(1);
+			double b = parameter.at(2);
+			double c = parameter.at(3);
+			double d = parameter.at(4);
+			double e = parameter.at(5);
 
-		double y0 = parameter.at(0);
-		double a = parameter.at(1);
-		double b = parameter.at(2);
-		double c = parameter.at(3);
-		double d = parameter.at(4);
-		double e = parameter.at(5);
+		while (iter < max_iter)
+		{
+		function = a*pow(y0, 4) + b*pow(y0, 3) + c*pow(y0, 2) + d*y0 + e;
+		derivative = 4.0*a*pow(y0, 3) + 3.0*b*pow(y0, 2) + 2.0*c*y0 + d;
 
-    while (iter < max_iter)
-    {
-      function = a*pow(y0, 4) + b*pow(y0, 3) + c*pow(y0, 2) + d*y0 + e;
-      derivative = 4.0*a*pow(y0, 3) + 3.0*b*pow(y0, 2) + 2.0*c*y0 + d;
+		y1 = y0 - function/derivative;
+		y0 = y1;
 
-      y1 = y0 - function/derivative;
-      y0 = y1;
+		if(function < tol) return y1;
 
-      if(function < tol) return y1;
-
-      iter++;
-    }
-    return y1;
-  }
+		iter++;
+		}
+		return y1;
+	}
 
 	void modeInitialization(int n_modes, double mode_initial_condition, double* diffusion_modes)
 	{
@@ -306,52 +305,50 @@ public:
 		}
 	}
 
-  double NewtonBlackburn(std::vector<double> parameter)
-  {
+	double NewtonBlackburn(std::vector<double> parameter)
+	{
 		/**
 		 * @brief Solver for the non-linear equation (Blackburn's thermochemical urania model) log(PO2(x)) = 2.0*log(x*(x+2.0)/(1.0-x)) + 108.0*pow(x,2.0) - 32700.0/T + 9.92
 		 * with the iterative Newton's method.
 		 * 
 		 */
 
-    double fun(0.0);
-    double deriv(0.0);
-    double x1(0.0);
-    unsigned short int iter(0);
-    const double tol(1.0e-3);
-    const unsigned short int max_iter(50);
-    
-	  double a = parameter.at(0);
-	  double b = parameter.at(1);
-	  double c = log(parameter.at(2));
+		double fun(0.0);
+		double deriv(0.0);
+		double x1(0.0);
+		unsigned short int iter(0);
+		const double tol(1.0e-3);
+		const unsigned short int max_iter(50);
+		
+		double a = parameter.at(0);
+		double b = parameter.at(1);
+		double c = log(parameter.at(2));
 
-    if(parameter.at(2)==0)
+		if(parameter.at(2)==0)
 			std::cout << "Warning: check NewtonBlackburn solver!" << std::endl;
-    
+		
 		if(a == 0.0)
-    {
-      a = 1.0e-7;
-    } 
+			a = 1.0e-7;
 
-    while (iter < max_iter)
-    {
-      fun =  2.0*log(a*(a+2.0)/(1.0-a)) + 108.0*pow(a,2.0) - 32700.0/b + 9.92 - c;
+		while (iter < max_iter)
+		{
+			fun =  2.0*log(a*(a+2.0)/(1.0-a)) + 108.0*pow(a,2.0) - 32700.0/b + 9.92 - c;
 
-      deriv = 216.0*a + 2.0*(pow(a,2.0)-2.0*a-2.0)/((a-1.0)*a*(2.0+a));
+			deriv = 216.0*a + 2.0*(pow(a,2.0)-2.0*a-2.0)/((a-1.0)*a*(2.0+a));
 
-      x1 = a - fun/deriv;
-      a = x1;
+			x1 = a - fun/deriv;
+			a = x1;
 
-      if(abs(fun)<tol) return x1;
+			if(abs(fun)<tol) return x1;
 
-      iter++;
-    }
-    return x1;
-  }
+			iter++;
+		}
+		return x1;
+	}
 
 	double NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment)
 	{
-		/// Solver for the ODE [y' = K(1-beta*exp(alpha*x)))]
+		/// Solver for the ODE [y' = K(1-beta*exp(alpha*y)))]
 		/// @param parameter[0] = K
 		/// @param parameter[1] = beta
 		/// @param parameter[2] = alpha
@@ -362,27 +359,27 @@ public:
 		double x0 = initial_value;
 		double x00 = initial_value;
 
-    double fun(0.0);
-    double deriv(0.0);
-    double x1(0.0);
-    unsigned short int iter(0);
-    const double tol(1.0e-3);
-    const unsigned short int max_iter(50);
+		double fun(0.0);
+		double deriv(0.0);
+		double x1(0.0);
+		unsigned short int iter(0);
+		const double tol(1.0e-3);
+		const unsigned short int max_iter(50);
 
-    while (iter < max_iter)
-    {
-      fun = x0 - x00 - K * increment + K * beta * exp(alpha * x0) * increment;
+		while (iter < max_iter)
+		{
+		fun = x0 - x00 - K * increment + K * beta * exp(alpha * x0) * increment;
 
-      deriv = 1.0 + K * beta * alpha * exp(alpha * x0) * increment;
+		deriv = 1.0 + K * beta * alpha * exp(alpha * x0) * increment;
 
-      x1 = x0 - fun/deriv;
-      x0 = x1;
+		x1 = x0 - fun/deriv;
+		x0 = x1;
 
-      if(abs(fun)<tol) return x1;
+		if(abs(fun)<tol) return x1;
 
-      iter++;
-    }
-    return x1;
+		iter++;
+		}
+		return x1;
 	}
 
 

@@ -109,14 +109,6 @@ class Simulation : public Solver, public Model
 						model[sm["Gas production - " + system.getName()]].getParameter().at(1)
 					)
 				);
-			else if(system.getRestructuredMatrix() == 1)
-				sciantix_variable[sv[system.getGasName() + " produced in HBS"]].setFinalValue(
-					solver.Integrator(
-						sciantix_variable[sv[system.getGasName() + " produced in HBS"]].getInitialValue(),
-						model[sm["Gas production - " + system.getName()]].getParameter().at(0),
-						model[sm["Gas production - " + system.getName()]].getParameter().at(1)
-					)
-				);
 		}
 	}
 
@@ -204,17 +196,7 @@ class Simulation : public Solver, public Model
 					}
 					else if (system.getRestructuredMatrix() == 1)
 					{
-						initial_value_solution = sciantix_variable[sv[system.getGasName() + " in grain HBS"]].getFinalValue();
-
-						solver.SpectralDiffusionNonEquilibrium(
-							initial_value_solution,
-							initial_value_bubbles,
-							getDiffusionModesSolution(system.getGasName()),
-							getDiffusionModesBubbles(system.getGasName()),
-							model[sm["Gas diffusion - " + system.getName()]].getParameter(),
-							physics_variable[pv["Time step"]].getFinalValue()
-						);
-						sciantix_variable[sv[system.getGasName() + " in grain"]].setFinalValue(initial_value_solution + initial_value_bubbles);
+						sciantix_variable[sv[system.getGasName() + " in grain HBS"]].setFinalValue(0.0);
 					}					
 					break;
 				}
@@ -277,6 +259,8 @@ class Simulation : public Solver, public Model
 		sciantix_variable[sv["Grain radius"]].setFinalValue(
 			solver.QuarticEquation(model[sm["Grain growth"]].getParameter())
 		);
+
+		matrix[sma["UO2"]].setGrainRadius(sciantix_variable[sv["Grain radius"]].getFinalValue());
 	}
 
 	void IntraGranularBubbleBehaviour()

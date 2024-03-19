@@ -16,13 +16,20 @@
 
 #include "MapInputVariable.h"
 
-/// MapInputVariable
-/// Map for InputVariable
-
 std::map<std::string, int> iv;
 
 void MapInputVariable()
 {
-	for (std::vector<InputVariable>::size_type i = 0; i != input_variable.size(); ++i)
-		iv[input_variable[i].getName()] = i;
+    iv.clear();
+
+    if (input_variable.empty())
+    {
+        std::cerr << "Error: input_variable vector is empty." << std::endl;
+        return;
+    }
+
+    for (auto& variable : input_variable)
+    {
+        iv.emplace(variable.getName(), &variable - &input_variable[0]);
+    }
 }

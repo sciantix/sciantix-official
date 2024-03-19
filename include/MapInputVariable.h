@@ -13,8 +13,9 @@
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
-#ifndef MAP_INPUT_VARIABLE
-#define MAP_INPUT_VARIABLE
+
+#ifndef MAP_INPUT_VARIABLE_H
+#define MAP_INPUT_VARIABLE_H
 
 #include <map>
 #include <string>
@@ -24,5 +25,5 @@ extern std::map<std::string, int> iv;
 
 void MapInputVariable();
 
-#endif
+#endif // MAP_INPUT_VARIABLE_H
 
