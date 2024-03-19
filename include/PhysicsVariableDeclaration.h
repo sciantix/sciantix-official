@@ -24,5 +24,5 @@
 
 extern std::vector<PhysicsVariable> physics_variable;
 
-#endif
+#endif // PHYSICS_VARIABLE_DECLARATION_H
 

@@ -22,4 +22,4 @@
 
 extern Solver solver;
 
-#endif
+#endif // SOLVER_DECLARATION_H

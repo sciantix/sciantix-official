@@ -25,4 +25,4 @@ extern std::map<std::string, int> sv;
 
 void MapSciantixVariable();
 
-#endif
+#endif // MAP_SCIANTIX_VARIABLE_H
