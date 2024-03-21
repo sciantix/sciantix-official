@@ -141,14 +141,8 @@ public:
 		/// |dy1/dt = D div grad y1 - gy1 + by2 + S1 - Ly1
 		/// |dy2/dt = Db div grad y2 + gy1 - by2 + S2 - Ly2
 
-		///           ((D div grad - g - L)                       b )
-		///           (         g             (Db div grad -b - L)   )
-
-		/// |dy1/dt = D  div grad y1 - gy1 + by2 + S1 - Ly1
-		/// |dy2/dt = Db div grad y2 + gy1 - by2 + S2 - Ly2
-
-		///           ((D div grad - g - L)                       b )
-		///           (         g             (Db div grad -b - L)   )
+		///           ((D div grad - g - L)                      + b )   + S1
+		///           (        + g            (Db div grad -b - L)   )   + S2
 
 		/// We apply a spectral approach in space, projecting the equation on the eigenfunctions of the laplacian operator.
 		/// We use the first order backward Euler solver in time.
@@ -162,6 +156,7 @@ public:
 		//               domain_radius 
 		//               source_term 
 		//               source_term_bubbles
+		// 				 diffusion_coefficient_bubbles 
 
 		unsigned short int n(0);
 		unsigned short int np1(1);

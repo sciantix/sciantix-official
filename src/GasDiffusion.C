@@ -33,6 +33,10 @@ void GasDiffusion()
 			defineSpectralDiffusion2Equations();
 			break;
 
+		case 3:
+			defineSpectralDiffusionHBS();
+			break;
+
 		default:
 			errorHandling();
 			break;
@@ -101,6 +105,39 @@ void defineSpectralDiffusion2Equations()
 
 		model[modelIndex].setParameter(parameters);
 	}
+}
+
+void defineSpectralDiffusionHBS()
+{
+std::string reference;
+
+	model.emplace_back();
+	int modelIndex = static_cast<int>(model.size()) - 1;
+	model[modelIndex].setName("Gas diffusion - HBS");
+	model[modelIndex].setRef(reference);
+
+	std::vector<double> parameters;
+	parameters.push_back(n_modes);
+	parameters.push_back(sciantix_system[sy["Xe in UO2"]].getFissionGasDiffusivity() / (pow(matrix[sma["UO2"]].getGrainRadius(),2)));
+	// std::cout << sciantix_variable[sv["Restructured volume fraction"]].getIncrement() / physics_variable[pv["Time step"]].getFinalValue() << std::endl;
+	if(physics_variable[pv["Time step"]].getFinalValue())
+	{
+		parameters.push_back(sciantix_variable[sv["Restructured volume fraction"]].getIncrement() / physics_variable[pv["Time step"]].getFinalValue()); // resolution
+		parameters.push_back(sciantix_variable[sv["Restructured volume fraction"]].getIncrement() / physics_variable[pv["Time step"]].getFinalValue()); // trapping
+	}
+	else
+	{
+	parameters.push_back(0.0);
+	parameters.push_back(0.0);
+
+	}
+	parameters.push_back(0.0); // decay
+	parameters.push_back(1.0); // radius
+	parameters.push_back(sciantix_system[sy["Xe in UO2"]].getProductionRate());
+	parameters.push_back(sciantix_system[sy["Xe in UO2HBS"]].getProductionRate());
+	parameters.push_back(sciantix_system[sy["Xe in UO2HBS"]].getFissionGasDiffusivity() / (pow(matrix[sma["UO2HBS"]].getGrainRadius(),2)));
+
+	model[modelIndex].setParameter(parameters);
 }
 
 /**
