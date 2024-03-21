@@ -22,6 +22,7 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 {
 	Sciantix_variables[0] = sciantix_variable[sv["Grain radius"]].getFinalValue();
 	Sciantix_variables[1] = sciantix_variable[sv["Xe produced"]].getFinalValue();
+	Sciantix_variables[100] = sciantix_variable[sv["Xe produced in HBS"]].getFinalValue();
 	Sciantix_variables[2] = sciantix_variable[sv["Xe in grain"]].getFinalValue();
 	Sciantix_variables[92] = sciantix_variable[sv["Xe in grain HBS"]].getFinalValue();
 	Sciantix_variables[3] = sciantix_variable[sv["Xe in intragranular solution"]].getFinalValue();

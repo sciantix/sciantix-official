@@ -617,10 +617,10 @@ void System::setProductionRate(int input_value)
 		 * 
 		 */
 
-		production_rate = yield * history_variable[hv["Fission rate"]].getFinalValue();
+		double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
 
 		reference += "Production rate = cumulative yield * fission rate density.\n\t";
-		production_rate = yield * history_variable[hv["Fission rate"]].getFinalValue(); // (at/m3s)
+		production_rate = (1-alpha) * yield * history_variable[hv["Fission rate"]].getFinalValue(); // (at/m3s)
 		break;
 	}
 
@@ -665,6 +665,20 @@ void System::setProductionRate(int input_value)
 		reference += "Constant production rate.\n\t";
 		production_rate = 1e18;
 
+		break;
+	}
+
+	case 5:
+	{
+		/**
+		 * @brief Production rate = cumulative yield * fission rate density
+		 * 
+		 */
+
+		double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
+
+		reference += "Production rate = cumulative yield * fission rate density.\n\t";
+		production_rate = yield * history_variable[hv["Fission rate"]].getFinalValue() * alpha; // (at/m3s)
 		break;
 	}
 

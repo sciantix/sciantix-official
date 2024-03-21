@@ -49,6 +49,15 @@ void defineSpectralDiffusion1Equation();
 void defineSpectralDiffusion2Equations();
 
 /**
+ * @brief Defines diffusion models using the spectral diffusion with two equations.
+ * 
+ * The first equation for xenon in non-restructured matrix.
+ * The second equation for xenon in restructured matrix.
+ * 
+ */
+void defineSpectralDiffusionHBS();
+
+/**
  * @brief Handles unsupported diffusion solver options.
  */
 void errorHandling();
