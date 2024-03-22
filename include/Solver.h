@@ -134,87 +134,179 @@ public:
 		}
 	}
 
-	void SpectralDiffusionNonEquilibrium(double& gas_solution, double& gas_bubble, double* initial_condition_gas_solution, double* initial_condition_gas_bubble, std::vector<double> parameter, double increment)
+	void SpectralDiffusion2equations(double& gas_1, double& gas_2, double* initial_condition_gas_1, double* initial_condition_gas_2, std::vector<double> parameter, double increment)
 	{
-		/// SpectralDiffusionNonEquilibrium
-		/// Solver for the spatially averaged solution of the systems of PDEs:
-		/// |dy1/dt = D div grad y1 - gy1 + by2 + S1 - Ly1
-		/// |dy2/dt = Db div grad y2 + gy1 - by2 + S2 - Ly2
-
-		///           ((D div grad - g - L)                      + b )   + S1
-		///           (        + g            (Db div grad -b - L)   )   + S2
-
-		/// We apply a spectral approach in space, projecting the equation on the eigenfunctions of the laplacian operator.
-		/// We use the first order backward Euler solver in time.
-		/// The number of terms in the expansion, N, is fixed a priori.
-		// ------------------------------------
-		// parameter --> number of modes
-		//               diffusion_coefficient (D)
-		//               resolution_rate (b)
-		//               trapping_rate (g)
-		//               decay rate (L)
-		//               domain_radius 
-		//               source_term 
-		//               source_term_bubbles
-		// 				 diffusion_coefficient_bubbles 
-
 		unsigned short int n(0);
 		unsigned short int np1(1);
 
-		double bubble_diffusion_rate(0.0);
-		double diffusion_rate_coeff(0.0);
-		double bubble_diffusion_rate_coeff(0.0);
-		double diffusion_rate(0.0);
-		double source_rate_coeff_solution(0.0);
-		double source_rate_coeff_bubbles(0.0);
-		double source_rate_solution(0.0);
-		double source_rate_bubble(0.0);
+		double diffusion_rate1(0.0);
+		double diffusion_rate2(0.0);
+
+		double diffusion_rate_coeff1(0.0);
+		double diffusion_rate_coeff2(0.0);
+
+		double source_rate1(0.0);
+		double source_rate2(0.0);
+
+		double source_rate_coeff_1(0.0);
+		double source_rate_coeff_2(0.0);
+
 		double projection_coeff(0.0);
-		double gas_solution_solution(0.);
-		double gas_bubble_solution(0.);
+
+		double gas_1_solution(0.);
+		double gas_2_solution(0.);
+
 		double coeff_matrix[4];
 		double initial_conditions[2];
+
 		const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
 
-		diffusion_rate_coeff = pow(pi, 2) * parameter.at(1) / pow(parameter.at(5), 2); // pi^2 * D / a^2
-		bubble_diffusion_rate_coeff =  pow(pi, 2) * parameter.at(8) / pow(parameter.at(5), 2); // pi^2 * Db / a^2
-		projection_coeff = -2.0 * sqrt(2.0 / pi);
-		source_rate_coeff_solution = projection_coeff * parameter.at(6); // - 2 sqrt(2/pi) * S1
-		source_rate_coeff_bubbles = projection_coeff * parameter.at(7); // - 2 sqrt(2/pi) * S2
+		diffusion_rate_coeff1 = pow(pi, 2) * parameter.at(1) / pow(parameter.at(3), 2); // pi^2 * D1 / a^2
+		diffusion_rate_coeff2 = pow(pi, 2) * parameter.at(2) / pow(parameter.at(3), 2); // pi^2 * D2 / a^2
+
+		projection_coeff = - 2.0 * sqrt(2.0 / pi);
+
+		source_rate_coeff_1 = projection_coeff * parameter.at(4); // - 2 sqrt(2/pi) * S1
+		source_rate_coeff_2 = projection_coeff * parameter.at(5); // - 2 sqrt(2/pi) * S2
 
 		for (n = 0; n < parameter.at(0); n++)
 		{
 			np1 = n + 1;
 			const double n_coeff = pow(-1.0, np1) / np1;
 
-			diffusion_rate = diffusion_rate_coeff * pow(np1, 2); // pi^2 * D * n^2 / a^2
-			bubble_diffusion_rate = bubble_diffusion_rate_coeff * pow(np1, 2); // pi^2 * Db * n^2 / a^2
-			source_rate_solution = source_rate_coeff_solution * n_coeff; // - 2 sqrt(2/pi) * S * (-1)^n/n
-			source_rate_bubble = source_rate_coeff_bubbles * n_coeff;
+			diffusion_rate1 = diffusion_rate_coeff1 * pow(np1, 2); // pi^2 * D1 * n^2 / a^2
+			diffusion_rate2 = diffusion_rate_coeff2 * pow(np1, 2); // pi^2 * D2 * n^2 / a^2
+			
+			source_rate1 = source_rate_coeff_1 * n_coeff; // - 2 sqrt(2/pi) * S * (-1)^n/n
+			source_rate2 = source_rate_coeff_2 * n_coeff;
 
-			coeff_matrix[0] = 1.0 + (diffusion_rate + parameter.at(3) + parameter.at(4)) * increment; // 1 + (pi^2 * D * n^2 / a^2 + g + L) dt
-			coeff_matrix[1] = -parameter.at(2) * increment; // - b
-			coeff_matrix[2] = -parameter.at(3) * increment; // - g
-			coeff_matrix[3] = 1.0 + (bubble_diffusion_rate + parameter.at(2) + parameter.at(4)) * increment; // 1 + (pi^2 * Db * n^2 / a^2 + b + L) dt
-			initial_conditions[0] = initial_condition_gas_solution[n] + source_rate_solution * increment;
-			initial_conditions[1] = initial_condition_gas_bubble[n] + source_rate_bubble * increment;
+			coeff_matrix[0] = 1.0 + (diffusion_rate1 + parameter.at(7) + parameter.at(8)) * increment;
+			coeff_matrix[1] = - parameter.at(6) * increment;
+			coeff_matrix[2] = - parameter.at(7) * increment;
+			coeff_matrix[3] = 1.0 + (diffusion_rate2 + parameter.at(6) + parameter.at(8)) * increment;
+
+			initial_conditions[0] = initial_condition_gas_1[n] + source_rate1 * increment;
+			initial_conditions[1] = initial_condition_gas_2[n] + source_rate2 * increment;
 
 			Solver::Laplace2x2(coeff_matrix, initial_conditions);
 
-			initial_condition_gas_solution[n] = initial_conditions[0];
-			initial_condition_gas_bubble[n] = initial_conditions[1];
+			initial_condition_gas_1[n] = initial_conditions[0];
+			initial_condition_gas_2[n] = initial_conditions[1];
 
-			gas_solution_solution += projection_coeff * n_coeff * initial_conditions[0] / ((4. / 3.) * pi);
-			gas_bubble_solution += projection_coeff * n_coeff * initial_conditions[1] / ((4. / 3.) * pi);
+			gas_1_solution += projection_coeff * n_coeff * initial_conditions[0] / ((4. / 3.) * pi);
+			gas_2_solution += projection_coeff * n_coeff * initial_conditions[1] / ((4. / 3.) * pi);
 		}
-		gas_solution = gas_solution_solution;
-		gas_bubble = gas_bubble_solution;
+		gas_1 = gas_1_solution;
+		gas_2 = gas_2_solution;
 	}
 
+	void SpectralDiffusion3equations(double& gas_1, double& gas_2, double& gas_3, double* initial_condition_gas_1, double* initial_condition_gas_2, double* initial_condition_gas_3, std::vector<double> parameter, double increment)
+	{
+
+		// parameters.push_back(n_modes);
+		
+		// parameters.push_back(gas[ga["Xe"]].getPrecursorFactor() * sciantix_system[sy["Xe in UO2"]].getFissionGasDiffusivity() / (pow(matrix[sma["UO2"]].getGrainRadius(),2)));
+		// parameters.push_back(0.0);
+		// parameters.push_back(sciantix_system[sy["Xe in UO2HBS"]].getFissionGasDiffusivity() / (pow(matrix[sma["UO2HBS"]].getGrainRadius(),2)));
+		
+		// parameters.push_back(1.0);
+		
+		// parameters.push_back(sciantix_system[sy["Xe in UO2"]].getProductionRate());
+		// parameters.push_back(0.0);
+		// parameters.push_back(sciantix_system[sy["Xe in UO2HBS"]].getProductionRate());
+
+		// parameters.push_back(sciantix_system[sy["Xe in UO2"]].getResolutionRate());
+		// parameters.push_back(sciantix_system[sy["Xe in UO2"]].getTrappingRate());
+		// parameters.push_back(gas[ga["Xe"]].getDecayRate());
+
+
+		unsigned short int n(0);
+		unsigned short int np1(1);
+
+		double diffusion_rate1(0.0);
+		double diffusion_rate2(0.0);
+		double diffusion_rate3(0.0);
+
+		double diffusion_rate_coeff1(0.0);
+		double diffusion_rate_coeff2(0.0);
+		double diffusion_rate_coeff3(0.0);
+
+		double source_rate1(0.0);
+		double source_rate2(0.0);
+		double source_rate3(0.0);
+
+		double source_rate_coeff_1(0.0);
+		double source_rate_coeff_2(0.0);
+		double source_rate_coeff_3(0.0);
+
+		double projection_coeff(0.0);
+
+		double gas_1_solution(0.);
+		double gas_2_solution(0.);
+		double gas_3_solution(0.);
+
+		double coeff_matrix[9];
+		double initial_conditions[3];
+
+		const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
+
+		diffusion_rate_coeff1 = pow(pi, 2) * parameter.at(1) / pow(parameter.at(4), 2); // pi^2 * D1 / a^2
+		diffusion_rate_coeff2 = pow(pi, 2) * parameter.at(2) / pow(parameter.at(4), 2); // pi^2 * D2 / a^2
+		diffusion_rate_coeff3 = pow(pi, 2) * parameter.at(3) / pow(parameter.at(4), 2); // pi^2 * D3 / a^2
+
+		projection_coeff = - 2.0 * sqrt(2.0 / pi);
+
+		source_rate_coeff_1 = projection_coeff * parameter.at(5); // - 2 sqrt(2/pi) * S1
+		source_rate_coeff_2 = projection_coeff * parameter.at(6); // - 2 sqrt(2/pi) * S2
+		source_rate_coeff_3 = projection_coeff * parameter.at(7); // - 2 sqrt(2/pi) * S3
+
+		for (n = 0; n < parameter.at(0); n++)
+		{
+			np1 = n + 1;
+			const double n_coeff = pow(-1.0, np1) / np1;
+
+			diffusion_rate1 = diffusion_rate_coeff1 * pow(np1, 2); // pi^2 * D1 * n^2 / a^2
+			diffusion_rate2 = diffusion_rate_coeff2 * pow(np1, 2); // pi^2 * D2 * n^2 / a^2
+			diffusion_rate3 = diffusion_rate_coeff3 * pow(np1, 2); // pi^2 * D3 * n^2 / a^2			
+			
+			source_rate1 = source_rate_coeff_1 * n_coeff; // - 2 sqrt(2/pi) * S * (-1)^n/n
+			source_rate2 = source_rate_coeff_2 * n_coeff;
+			source_rate3 = source_rate_coeff_3 * n_coeff;
+
+			coeff_matrix[0] = 1.0 + (diffusion_rate1 + parameter.at(9) + parameter.at(10)) * increment;
+			coeff_matrix[1] = - parameter.at(8) * increment;
+			coeff_matrix[2] = 0.0;
+
+			coeff_matrix[3] = - parameter.at(9) * increment;
+			coeff_matrix[4] = 1.0 + (diffusion_rate2 + parameter.at(8) + parameter.at(10)) * increment;
+			coeff_matrix[5] = 0.0;
+		
+			coeff_matrix[6] = 0.0;
+			coeff_matrix[7] = 0.0;
+			coeff_matrix[8] = 1.0 + (diffusion_rate3 + parameter.at(10)) * increment;
+			
+			initial_conditions[0] = initial_condition_gas_1[n] + source_rate1 * increment;
+			initial_conditions[1] = initial_condition_gas_2[n] + source_rate2 * increment;
+			initial_conditions[2] = initial_condition_gas_3[n] + source_rate3 * increment;
+
+			Solver::Laplace3x3(coeff_matrix, initial_conditions);
+
+			initial_condition_gas_1[n] = initial_conditions[0];
+			initial_condition_gas_2[n] = initial_conditions[1];
+			initial_condition_gas_3[n] = initial_conditions[2];
+
+			gas_1_solution += projection_coeff * n_coeff * initial_conditions[0] / ((4. / 3.) * pi);
+			gas_2_solution += projection_coeff * n_coeff * initial_conditions[1] / ((4. / 3.) * pi);
+			gas_3_solution += projection_coeff * n_coeff * initial_conditions[2] / ((4. / 3.) * pi);
+		}
+		gas_1 = gas_1_solution;
+		gas_2 = gas_2_solution;
+		gas_3 = gas_3_solution;
+	}
+
+	/// The function solve a system of two linear equations according to Cramer method.
 	void Laplace2x2(double A[], double b[])
 	{
-		/// Laplace 2x2
-		/// The function solve a system of two linear equations according to Cramer method.
 		double detX(0.0), detY(0.0);
 		double detA = A[0] * A[3] - A[1] * A[2];
 
@@ -224,6 +316,76 @@ public:
 			detY = b[1] * A[0] - b[0] * A[2];
 			b[0] = detX / detA;
 			b[1] = detY / detA;
+		}
+	}
+
+	//The function solve a system of three linear equations according to Cramer method.
+	void Laplace3x3(double A[], double b[])
+	{
+		double detX(0.0), detY(0.0), detZ(0.0);
+		double detA = A[0]*(A[4]*A[8]-A[5]*A[7]) - A[1]*(A[3]*A[8]-A[5]*A[6]) + A[2]*(A[3]*A[7]-A[4]*A[6]);
+
+		if (detA != 0.0)
+		{
+			detX = b[0]*(A[4]*A[8]-A[5]*A[7]) - A[1]*(b[1]*A[8]-A[5]*b[2]) + A[2]*(b[1]*A[7]-A[4]*b[2]);
+			detY = A[0]*(b[1]*A[8]-A[5]*b[2]) - b[0]*(A[3]*A[8]-A[5]*A[6]) + A[2]*(A[3]*b[2]-b[1]*A[6]);
+			detZ = A[0]*(A[4]*b[2]-b[1]*A[7]) - A[1]*(A[3]*b[2]-b[1]*A[6]) + b[0]*(A[3]*A[7]-A[4]*A[6]);
+			b[0] = detX/detA;
+			b[1] = detY/detA;
+			b[2] = detZ/detA;
+		}
+	}
+
+	//The function compute the determinant of a NxN matrix according to Cramer method
+	double det(int N, double A[])
+	{
+		int dim = N*N;
+		// int Nm1 = N-1;
+		double C[(N-1)*(N-1)];
+		double sum = 0.0;
+
+		if (N == 2) {
+			return A[0]*A[3] - A[1]*A[2];
+		}
+		else {
+			for (int i=0; i < N; i++) {
+			int j = 0;
+			for (int z = N; z < dim; z++) {
+				if ((dim-z+i) % N != 0) {
+				C[j] = A[z];
+				j++;
+				}
+			}
+				int r = i/N;
+				int c = i%N;
+				sum += ((r+c)%2==0 ? +1:-1)*A[i]*det(N-1, C);
+			}
+			return sum;
+		}
+	}
+
+	void Laplace(int N, double A[], double b[])
+	{
+		int dim = N*N;
+		double detA = det(N, A);
+		double M[dim];
+		double detX = 0.0;
+		double x[N];
+
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < dim; j++) {
+			if (j%N == i) {
+				M[j] = b[j/N];
+			}
+			else {
+				M[j] = A[j];
+			}
+			}
+			detX = det(N, M);
+			x[i] = detX/detA;
+		}
+		for (int i = 0; i < N; i++) {
+			b[i] = x[i];
 		}
 	}
 

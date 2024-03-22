@@ -116,7 +116,5 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 		Sciantix_diffusion_modes[13 * n_modes + i] = modes_initial_conditions[13 * n_modes + i];
 		Sciantix_diffusion_modes[14 * n_modes + i] = modes_initial_conditions[14 * n_modes + i];
 		Sciantix_diffusion_modes[15 * n_modes + i] = modes_initial_conditions[15 * n_modes + i]; // Xe in UO2 HBS
-		Sciantix_diffusion_modes[16 * n_modes + i] = modes_initial_conditions[16 * n_modes + i]; // Xe in UO2 HBS - solution
-		Sciantix_diffusion_modes[17 * n_modes + i] = modes_initial_conditions[17 * n_modes + i]; // Xe in UO2 HBS - bubbles
 	}
 }

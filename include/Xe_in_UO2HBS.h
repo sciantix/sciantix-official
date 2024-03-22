@@ -21,4 +21,10 @@
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
 
+/// @brief
+/// Xe_in_UO2HBS
+/// ------------
+///
+/// Here, the system "xenon in UO2-HBS" properties (e.g., diffusivity, resolution rate and trapping rate) are set.
+
 void Xe_in_UO2HBS();

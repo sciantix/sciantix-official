@@ -21,4 +21,9 @@
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
 
+/**
+ * @brief This function defines the sciantix_system *133-Xenon in UO<sub>2</sub>* and sets its physical properties.
+ * 
+ */
+
 void Xe133_in_UO2();
