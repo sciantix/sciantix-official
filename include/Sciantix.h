@@ -28,5 +28,6 @@
 #include "Output.h"
 #include "Simulation.h"
 #include "FiguresOfMerit.h"
+#include "SetGPVariables.h"
 
 void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);

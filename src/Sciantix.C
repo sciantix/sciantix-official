@@ -23,6 +23,8 @@ void Sciantix(int Sciantix_options[],
 	double Sciantix_diffusion_modes[])
 {
 	SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
+
+	SetGPVariables();
 	
 	SetGas();
 
