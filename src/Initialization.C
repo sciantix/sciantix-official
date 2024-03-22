@@ -37,7 +37,7 @@ void Initialization()
 	Sciantix_history[10] = Steampressure_input[0];
 
 	// Sciantix_variables initialization
-	Sciantix_variables[25] = 4.0e+13;  // Intergranular_bubble_concentration[0]
+	Sciantix_variables[25] = 2.0e+13;  // Intergranular_bubble_concentration[0]
 	Sciantix_variables[35] = 0.5;      // Intergranular_saturation_fractional_coverage[0]
 	Sciantix_variables[37] = 1.0;      // Intergranular_fractional_intactness[0]
 
