@@ -6,9 +6,9 @@ name: Python application test
 
 on:
   push:
-    branches: [ "development/crDopedFuel" ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ "development/crDopedFuel" ]
+    branches: [ "main" ]
 
 jobs:
   build:
