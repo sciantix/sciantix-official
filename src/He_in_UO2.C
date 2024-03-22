@@ -18,19 +18,12 @@
 
 void He_in_UO2()
 {
-
-	/**
-	 * @brief This function defines the sciantix_system *Helium in UO<sub>2</sub>* and sets its attributes.
-	 * 
-	 */
-
 	sciantix_system.emplace_back();
 	int index = int(sciantix_system.size()) - 1;
 
 	sciantix_system[index].setName("He in UO2");
 	sciantix_system[index].setGasName("He");
 	sciantix_system[index].setMatrixName("UO2");
-	sciantix_system[index].setMatrixType("nonRestructured");
 	sciantix_system[index].setRestructuredMatrix(0);
 	sciantix_system[index].setYield(0.0022); // from ternary fissions
 	sciantix_system[index].setRadiusInLattice(4.73e-11);

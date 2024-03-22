@@ -21,6 +21,9 @@
 #include "MapMatrix.h"
 #include "SciantixScalingFactorDeclaration.h"
 
-/// He_in_UO2
+/**
+ * @brief This function defines the sciantix_system *Helium in UO<sub>2</sub>* and sets its attributes.
+ * 
+ */
 
 void He_in_UO2();

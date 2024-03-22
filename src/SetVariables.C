@@ -1046,8 +1046,6 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 		modes_initial_conditions[13 * n_modes + i] = Sciantix_diffusion_modes[13 * n_modes + i];
 		modes_initial_conditions[14 * n_modes + i] = Sciantix_diffusion_modes[14 * n_modes + i];
 		modes_initial_conditions[15 * n_modes + i] = Sciantix_diffusion_modes[15 * n_modes + i]; // Xe in UO2HBS
-		modes_initial_conditions[16 * n_modes + i] = Sciantix_diffusion_modes[16 * n_modes + i]; // Xe in UO2HBS - solution
-		modes_initial_conditions[17 * n_modes + i] = Sciantix_diffusion_modes[17 * n_modes + i]; // Xe in UO2HBS - bubbles
 	}
 
 	// ---------------
@@ -1061,6 +1059,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sf_fission_rate = Sciantix_scaling_factors[5];
 	sf_cent_parameter = Sciantix_scaling_factors[6];
 	sf_helium_production_rate = Sciantix_scaling_factors[7];
+	sf_dummy = Sciantix_scaling_factors[8];
 
 	// ----
 	// Maps

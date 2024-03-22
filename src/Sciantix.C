@@ -80,7 +80,6 @@ void Sciantix(int Sciantix_options[],
 	GasDiffusion();
 	MapModel();
 	sciantix_simulation.GasDiffusion();
-	// sciantix_simulation.HBS_Sweeping();
 
 	GrainBoundaryMicroCracking();
 	MapModel();

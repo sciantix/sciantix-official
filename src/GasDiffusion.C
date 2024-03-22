@@ -15,12 +15,6 @@
 
 #include "GasDiffusion.h"
 
-/**
- * @brief Defines models for gas diffusion within the fuel grain.
- * 
- * This function computes diffusion models for gas atoms within the fuel grain
- * based on the selected diffusion solver option.
- */
 void GasDiffusion()
 {
 	switch (static_cast<int>(input_variable[iv["iDiffusionSolver"]].getValue()))
@@ -34,7 +28,7 @@ void GasDiffusion()
 			break;
 
 		case 3:
-			defineSpectralDiffusionHBS();
+			defineSpectralDiffusion3Equations();
 			break;
 
 		default:
@@ -43,9 +37,6 @@ void GasDiffusion()
 	}
 }
 
-/**
- * @brief Defines diffusion models using the spectral diffusion with one equation.
- */
 void defineSpectralDiffusion1Equation()
 {
 	std::string reference;
@@ -78,9 +69,6 @@ void defineSpectralDiffusion1Equation()
 	}
 }
 
-/**
- * @brief Defines diffusion models using the spectral diffusion with two equations.
- */
 void defineSpectralDiffusion2Equations()
 {
 	std::string reference;
@@ -93,56 +81,55 @@ void defineSpectralDiffusion2Equations()
 		model[modelIndex].setRef(reference);
 
 		std::vector<double> parameters;
+
 		parameters.push_back(n_modes);
+
 		parameters.push_back(system.getFissionGasDiffusivity() * gas[ga[system.getGasName()]].getPrecursorFactor());
+		parameters.push_back(system.getBubbleDiffusivity());
+
+		parameters.push_back(matrix[sma[system.getMatrixName()]].getGrainRadius());
+
+		parameters.push_back(system.getProductionRate());
+		parameters.push_back(0.0);
+		
 		parameters.push_back(system.getResolutionRate());
 		parameters.push_back(system.getTrappingRate());
 		parameters.push_back(gas[ga[system.getGasName()]].getDecayRate());
-		parameters.push_back(matrix[sma[system.getMatrixName()]].getGrainRadius());
-		parameters.push_back(system.getProductionRate());
-		parameters.push_back(0.0);
-		parameters.push_back(system.getBubbleDiffusivity());
 
 		model[modelIndex].setParameter(parameters);
 	}
 }
 
-void defineSpectralDiffusionHBS()
+void defineSpectralDiffusion3Equations()
 {
-std::string reference;
+	std::string reference;
 
 	model.emplace_back();
 	int modelIndex = static_cast<int>(model.size()) - 1;
-	model[modelIndex].setName("Gas diffusion - HBS");
+	model[modelIndex].setName("Gas diffusion - Xe in UO2 with HBS");
 	model[modelIndex].setRef(reference);
 
 	std::vector<double> parameters;
+
 	parameters.push_back(n_modes);
-	parameters.push_back(sciantix_system[sy["Xe in UO2"]].getFissionGasDiffusivity() / (pow(matrix[sma["UO2"]].getGrainRadius(),2)));
-	// std::cout << sciantix_variable[sv["Restructured volume fraction"]].getIncrement() / physics_variable[pv["Time step"]].getFinalValue() << std::endl;
-	if(physics_variable[pv["Time step"]].getFinalValue())
-	{
-		parameters.push_back(sciantix_variable[sv["Restructured volume fraction"]].getIncrement() / physics_variable[pv["Time step"]].getFinalValue()); // resolution
-		parameters.push_back(sciantix_variable[sv["Restructured volume fraction"]].getIncrement() / physics_variable[pv["Time step"]].getFinalValue()); // trapping
-	}
-	else
-	{
-	parameters.push_back(0.0);
-	parameters.push_back(0.0);
 
-	}
-	parameters.push_back(0.0); // decay
-	parameters.push_back(1.0); // radius
-	parameters.push_back(sciantix_system[sy["Xe in UO2"]].getProductionRate());
-	parameters.push_back(sciantix_system[sy["Xe in UO2HBS"]].getProductionRate());
+	parameters.push_back(gas[ga["Xe"]].getPrecursorFactor() * sciantix_system[sy["Xe in UO2"]].getFissionGasDiffusivity() / (pow(matrix[sma["UO2"]].getGrainRadius(),2)));
+	parameters.push_back(0.0);
 	parameters.push_back(sciantix_system[sy["Xe in UO2HBS"]].getFissionGasDiffusivity() / (pow(matrix[sma["UO2HBS"]].getGrainRadius(),2)));
+	
+	parameters.push_back(1.0);
+	
+	parameters.push_back(sciantix_system[sy["Xe in UO2"]].getProductionRate());
+	parameters.push_back(0.0);
+	parameters.push_back(sciantix_system[sy["Xe in UO2HBS"]].getProductionRate());
 
+	parameters.push_back(sciantix_system[sy["Xe in UO2"]].getResolutionRate());
+	parameters.push_back(sciantix_system[sy["Xe in UO2"]].getTrappingRate());
+	parameters.push_back(gas[ga["Xe"]].getDecayRate());
+	
 	model[modelIndex].setParameter(parameters);
 }
 
-/**
- * @brief Handles unsupported diffusion solver options.
- */
 void errorHandling()
 {
 	ErrorMessages::Switch(__FILE__, "iDiffusionSolver", static_cast<int>(input_variable[iv["iDiffusionSolver"]].getValue()));

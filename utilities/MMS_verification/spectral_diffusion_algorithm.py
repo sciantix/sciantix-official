@@ -81,7 +81,13 @@ def Laplace2x2(A, b):
 		b[1] = detY / detA
 
 def main():
-	n_modes = 10
+
+	num_steps = 1000
+	increment = 0.01
+
+	time_vector = np.arange(num_steps) * increment
+
+	n_modes = 40
 	D1 = 0.1
 	b = 0.0
 	g = 0.0
@@ -93,12 +99,8 @@ def main():
 
 	parameter = [n_modes, D1, b, g, L, a, S1, S2, D2]
 
-	increment = 0.01
 	initial_condition_gas_solution = np.zeros(parameter[0])
 	initial_condition_gas_bubble = np.zeros(parameter[0])
-	
-	num_steps = 1000 
-	time_vector = np.arange(num_steps) * increment
 	
 	gas_solution = np.zeros(num_steps)
 	gas_bubble = np.zeros(num_steps)

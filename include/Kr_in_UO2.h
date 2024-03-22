@@ -22,4 +22,9 @@
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
 
+/**
+ * @brief This function defines the sciantix_system *Krypton in UO<sub>2</sub>* and sets its physical properties.
+ * 
+ */
+
 void Kr_in_UO2();
