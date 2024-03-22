@@ -167,11 +167,6 @@ def do_plot():
   ax2.legend()
   ax2.grid()
   
-  ratio = iXeDiffGPupdated/iXeDiffTurnbull
-  
-  print(ratio)
-  print(np.mean(ratio))
-
   plt.tight_layout()
   plt.savefig('plot_paper.png')
   plt.show()
