@@ -80,7 +80,6 @@ void InputReading()
 	/// are reported in it.
 
 	std::ofstream input_check("input_check.txt", std::ios::out);
-	std::ofstream property_check("property_check.txt", std::ios::out);
 
 	// Abort execution if any of the input files does not exist
 	std::ifstream input_settings("input_settings.txt", std::ios::in);
@@ -94,10 +93,6 @@ void InputReading()
 	std::ifstream input_history("input_history.txt", std::ios::in);
 	if (!input_history)
 		ErrorMessages::MissingInputFile("input_history.txt");
-
-	std::ifstream input_properties("input_properties.txt", std::ios::in);
-	if (!input_properties)
-		ErrorMessages::MissingInputFile("input_properties.txt");
 	
 	// This is optional so no error if not present
 	std::ifstream input_scaling_factors("input_scaling_factors.txt", std::ios::in);
@@ -192,16 +187,16 @@ void InputReading()
 	 * 	1= active
 	 */
 
-	Sciantix_options[0]  = ReadOneSetting("iGrainGrowth", input_settings, input_check);
-	Sciantix_options[1]  = ReadOneSetting("iFGDiffusionCoefficient", input_settings, input_check);
-	Sciantix_options[2]  = ReadOneSetting("iDiffusionSolver", input_settings, input_check);
-	Sciantix_options[3]  = ReadOneSetting("iIntraGranularBubbleEvolution", input_settings, input_check);
-	Sciantix_options[4]  = ReadOneSetting("iResolutionRate", input_settings, input_check);
-	Sciantix_options[5]  = ReadOneSetting("iTrappingRate", input_settings, input_check);
-	Sciantix_options[6]  = ReadOneSetting("iNucleationRate", input_settings, input_check);
-	Sciantix_options[7]  = ReadOneSetting("iOutput", input_settings, input_check);
-	Sciantix_options[8]  = ReadOneSetting("iGrainBoundaryVacancyDiffusivity", input_settings, input_check);
-	Sciantix_options[9]  = ReadOneSetting("iGrainBoundaryBehaviour", input_settings, input_check);
+	Sciantix_options[0] = ReadOneSetting("iGrainGrowth", input_settings, input_check);
+	Sciantix_options[1] = ReadOneSetting("iFGDiffusionCoefficient", input_settings, input_check);
+	Sciantix_options[2] = ReadOneSetting("iDiffusionSolver", input_settings, input_check);
+	Sciantix_options[3] = ReadOneSetting("iIntraGranularBubbleEvolution", input_settings, input_check);
+	Sciantix_options[4] = ReadOneSetting("iResolutionRate", input_settings, input_check);
+	Sciantix_options[5] = ReadOneSetting("iTrappingRate", input_settings, input_check);
+	Sciantix_options[6] = ReadOneSetting("iNucleationRate", input_settings, input_check);
+	Sciantix_options[7] = ReadOneSetting("iOutput", input_settings, input_check);
+	Sciantix_options[8] = ReadOneSetting("iGrainBoundaryVacancyDiffusivity", input_settings, input_check);
+	Sciantix_options[9] = ReadOneSetting("iGrainBoundaryBehaviour", input_settings, input_check);
 	Sciantix_options[10] = ReadOneSetting("iGrainBoundaryMicroCracking", input_settings, input_check);
 	Sciantix_options[11] = ReadOneSetting("iFuelMatrix", input_settings, input_check);
 	Sciantix_options[12] = ReadOneSetting("iGrainBoundaryVenting", input_settings, input_check);
@@ -213,9 +208,7 @@ void InputReading()
 	Sciantix_options[18] = ReadOneSetting("iHighBurnupStructurePorosity", input_settings, input_check);
 	Sciantix_options[19] = ReadOneSetting("iHeliumProductionRate", input_settings, input_check);
 	Sciantix_options[20] = ReadOneSetting("iStoichiometryDeviation", input_settings, input_check);
-	Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings, input_check);
-
-	Property_options[0]  = ReadOneSetting("iElasticModulus",input_properties, property_check);
+	Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
 	
 	if (!input_initial_conditions.fail())
 	{

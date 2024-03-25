@@ -29,4 +29,4 @@
 #include "Simulation.h"
 #include "FiguresOfMerit.h"
 
-void Sciantix(int Sciantix_options[], int Property_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_property[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
+void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);

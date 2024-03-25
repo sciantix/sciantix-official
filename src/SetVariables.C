@@ -21,12 +21,10 @@
 /// - physics_variable
 /// - history_variable
 /// - sciantix_variable
-/// - sciantix_properties
 /// - input_variable
-/// - input_property
 /// together with the diffusion modes, the maps, and the scaling factors.
 
-void SetVariables(int Sciantix_options[], int Property_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_properties[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[])
+void SetVariables(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[])
 {
 	// -----------------------------------------------------------------------------------------------
 	// Input variable
@@ -172,20 +170,6 @@ void SetVariables(int Sciantix_options[], int Property_options[], double Scianti
 
 	bool toOutputStoichiometryDeviation(0);
 	if (input_variable[iv["iStoichiometryDeviation"]].getValue() > 0) toOutputStoichiometryDeviation = 1;
-
-	// -------------------------------------------------------------------------------------------------
-	// Input property
-	// The vector is used to collect all user input settings relating to the choice of material property
-	// -------------------------------------------------------------------------------------------------
-
-	int ip_counter(0);
-	if (input_property.empty())
-	{
-		input_property.emplace_back();
-		input_property[ip_counter].setName("iElasticModulus");
-		input_property[ip_counter].setValue(Property_options[0]);
-		++ip_counter;
-	}
 
 	// ----------------
 	// Physics variable
@@ -1030,19 +1014,6 @@ void SetVariables(int Sciantix_options[], int Property_options[], double Scianti
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
 	++sv_counter;
 
-	// ----------------
-	// Property variable
-	// ----------------
-
-	int sp_counter(0);
-	property_variable.emplace_back();
-	property_variable[sp_counter].setName("Elastic modulus");
-	property_variable[sp_counter].setUOM("(MPa)");
-	property_variable[sp_counter].setInitialValue(Sciantix_properties[0]);
-	property_variable[sp_counter].setFinalValue(Sciantix_properties[0]);
-	property_variable[sp_counter].setOutput(1);
-	++sp_counter;
-
 	// ------------------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------------------
 
@@ -1089,5 +1060,4 @@ void SetVariables(int Sciantix_options[], int Property_options[], double Scianti
 	MapHistoryVariable();
 	MapSciantixVariable();
 	MapPhysicsVariable();
-	MapPropertyVariable();
 }

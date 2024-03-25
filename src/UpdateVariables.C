@@ -18,7 +18,7 @@
 
 /// UpdateVariables
 
-void UpdateVariables(double Sciantix_variables[], double Property_variables[], double Sciantix_diffusion_modes[])
+void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_modes[])
 {
 	Sciantix_variables[0] = sciantix_variable[sv["Grain radius"]].getFinalValue();
 	Sciantix_variables[1] = sciantix_variable[sv["Xe produced"]].getFinalValue();
@@ -96,8 +96,6 @@ void UpdateVariables(double Sciantix_variables[], double Property_variables[], d
 	Sciantix_variables[85] = sciantix_variable[sv["Xe in HBS pores - variance"]].getFinalValue();
 	Sciantix_variables[86] = sciantix_variable[sv["Xe atoms per HBS pore"]].getFinalValue();
 	Sciantix_variables[88] = sciantix_variable[sv["Xe atoms per HBS pore - variance"]].getFinalValue();
-
-	Property_variables[0] = sciantix_variable[sp["Elastic modulus"]].getFinalValue();
 
 	for (int i = 0; i < n_modes; ++i)
 	{

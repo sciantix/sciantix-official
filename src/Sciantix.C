@@ -17,14 +17,12 @@
 #include "Sciantix.h"
 
 void Sciantix(int Sciantix_options[],
-	int Property_options[],
 	double Sciantix_history[],
 	double Sciantix_variables[],
-	double Sciantix_properties[],
 	double Sciantix_scaling_factors[],
 	double Sciantix_diffusion_modes[])
 {
-	SetVariables(Sciantix_options, Property_options, Sciantix_history, Sciantix_variables, Sciantix_properties, Sciantix_scaling_factors, Sciantix_diffusion_modes);
+	SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 
 	SetGas();
 
@@ -97,7 +95,7 @@ void Sciantix(int Sciantix_options[],
 
 	FiguresOfMerit();
 
-	UpdateVariables(Sciantix_variables, Sciantix_properties, Sciantix_diffusion_modes);
+	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
 	Output();
 
