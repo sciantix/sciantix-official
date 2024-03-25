@@ -1,1 +1,0 @@
-1	#	iElasticModulus (0= constant value, 1= Pippo Franco et al. (1945))

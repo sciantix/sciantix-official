@@ -14,13 +14,11 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 #include "SciantixVariableDeclaration.h"
-#include "PropertyVariableDeclaration.h"
 #include "SciantixDiffusionModeDeclaration.h"
 
 #include "MapSciantixVariable.h"
-#include "MapPropertyVariable.h"
 
 #include <vector>
 #include <map>
 
-void UpdateVariables(double Sciantix_variables[], double Property_variables[], double Sciantix_diffusion_modes[]);
+void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_modes[]);
