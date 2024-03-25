@@ -126,7 +126,19 @@ void defineSpectralDiffusion3Equations()
 	parameters.push_back(sciantix_system[sy["Xe in UO2"]].getResolutionRate());
 	parameters.push_back(sciantix_system[sy["Xe in UO2"]].getTrappingRate());
 	parameters.push_back(gas[ga["Xe"]].getDecayRate());
-	
+
+	double sweeping_term(0.0);
+	if(physics_variable[pv["Time step"]].getFinalValue())
+		sweeping_term = 1./(1. - sciantix_variable[sv["Restructured volume fraction"]].getFinalValue()) * sciantix_variable[sv["Restructured volume fraction"]].getIncrement() / physics_variable[pv["Time step"]].getFinalValue();
+
+	if (std::isinf(sweeping_term) || std::isnan(sweeping_term))
+		sweeping_term = 0.0;
+
+	std::cout << sweeping_term << std::endl;
+
+	// exchange 1 --> 3
+	parameters.push_back(sweeping_term);
+
 	model[modelIndex].setParameter(parameters);
 }
 
