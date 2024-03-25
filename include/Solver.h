@@ -177,8 +177,8 @@ public:
 			diffusion_rate1 = diffusion_rate_coeff1 * pow(np1, 2); // pi^2 * D1 * n^2 / a^2
 			diffusion_rate2 = diffusion_rate_coeff2 * pow(np1, 2); // pi^2 * D2 * n^2 / a^2
 			
-			source_rate1 = source_rate_coeff_1 * n_coeff; // - 2 sqrt(2/pi) * S * (-1)^n/n
-			source_rate2 = source_rate_coeff_2 * n_coeff;
+			source_rate1 = source_rate_coeff_1 * n_coeff; // - 2 sqrt(2/pi) * S1 * (-1)^n/n
+			source_rate2 = source_rate_coeff_2 * n_coeff; // - 2 sqrt(2/pi) * S2 * (-1)^n/n
 
 			coeff_matrix[0] = 1.0 + (diffusion_rate1 + parameter.at(7) + parameter.at(8)) * increment;
 			coeff_matrix[1] = - parameter.at(6) * increment;
@@ -202,24 +202,6 @@ public:
 
 	void SpectralDiffusion3equations(double& gas_1, double& gas_2, double& gas_3, double* initial_condition_gas_1, double* initial_condition_gas_2, double* initial_condition_gas_3, std::vector<double> parameter, double increment)
 	{
-
-		// parameters.push_back(n_modes);
-		
-		// parameters.push_back(gas[ga["Xe"]].getPrecursorFactor() * sciantix_system[sy["Xe in UO2"]].getFissionGasDiffusivity() / (pow(matrix[sma["UO2"]].getGrainRadius(),2)));
-		// parameters.push_back(0.0);
-		// parameters.push_back(sciantix_system[sy["Xe in UO2HBS"]].getFissionGasDiffusivity() / (pow(matrix[sma["UO2HBS"]].getGrainRadius(),2)));
-		
-		// parameters.push_back(1.0);
-		
-		// parameters.push_back(sciantix_system[sy["Xe in UO2"]].getProductionRate());
-		// parameters.push_back(0.0);
-		// parameters.push_back(sciantix_system[sy["Xe in UO2HBS"]].getProductionRate());
-
-		// parameters.push_back(sciantix_system[sy["Xe in UO2"]].getResolutionRate());
-		// parameters.push_back(sciantix_system[sy["Xe in UO2"]].getTrappingRate());
-		// parameters.push_back(gas[ga["Xe"]].getDecayRate());
-
-
 		unsigned short int n(0);
 		unsigned short int np1(1);
 
@@ -273,16 +255,16 @@ public:
 			source_rate2 = source_rate_coeff_2 * n_coeff;
 			source_rate3 = source_rate_coeff_3 * n_coeff;
 
-			coeff_matrix[0] = 1.0 + (diffusion_rate1 + parameter.at(9) + parameter.at(10)) * increment;
+			coeff_matrix[0] = 1.0 + (diffusion_rate1 + parameter.at(9) + parameter.at(10) + parameter.at(11)) * increment;
 			coeff_matrix[1] = - parameter.at(8) * increment;
 			coeff_matrix[2] = 0.0;
 
 			coeff_matrix[3] = - parameter.at(9) * increment;
-			coeff_matrix[4] = 1.0 + (diffusion_rate2 + parameter.at(8) + parameter.at(10)) * increment;
+			coeff_matrix[4] = 1.0 + (diffusion_rate2 + parameter.at(8) + parameter.at(10) + parameter.at(11)) * increment;
 			coeff_matrix[5] = 0.0;
 		
-			coeff_matrix[6] = 0.0;
-			coeff_matrix[7] = 0.0;
+			coeff_matrix[6] = - parameter.at(11) * increment;
+			coeff_matrix[7] = - parameter.at(11) * increment;
 			coeff_matrix[8] = 1.0 + (diffusion_rate3 + parameter.at(10)) * increment;
 			
 			initial_conditions[0] = initial_condition_gas_1[n] + source_rate1 * increment;
