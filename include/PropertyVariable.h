@@ -9,24 +9,36 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.0                                                                    //
-//  Year: 2022                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Year: 2024                                                                      //
+//  Authors: G.Nicodemo                                                             //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include <iostream>
-#include <map>
-#include <string>
-#include <vector>
-#include "SetVariables.h"
-#include "MaterialDeclaration.h"
-#include "SetGas.h"
-#include "SetModel.h"
-#include "SetMatrix.h"
-#include "SetSystem.h"
-#include "UpdateVariables.h"
-#include "Output.h"
-#include "Simulation.h"
-#include "FiguresOfMerit.h"
+#ifndef PROPERTY_VARIABLE_H
+#define PROPERTY_VARIABLE_H
 
-void Sciantix(int Sciantix_options[], int Property_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_property[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
+#include "PhysicsVariable.h"
+
+/**
+ * @brief Derived class for property variables.
+ *
+ */
+
+class PropertyVariable : virtual public PhysicsVariable
+{
+private:
+    bool to_output; ///< Flag indicating whether the variable should be included in output
+
+public:
+    /**
+     * @brief Default constructor.
+     */
+    PropertyVariable() : to_output(false) {}
+
+    /**
+     * @brief Destructor.
+     */
+    virtual ~PropertyVariable() {}
+};
+
+#endif

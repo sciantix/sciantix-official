@@ -9,24 +9,20 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.0                                                                    //
-//  Year: 2022                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Year: 2024                                                                      //
+//  Authors: G. Nicodemo                                                            //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include <iostream>
+#ifndef MAP_INPUT_PROPERTY_H
+#define MAP_INPUT_PROPERTY_H
+
 #include <map>
 #include <string>
-#include <vector>
-#include "SetVariables.h"
-#include "MaterialDeclaration.h"
-#include "SetGas.h"
-#include "SetModel.h"
-#include "SetMatrix.h"
-#include "SetSystem.h"
-#include "UpdateVariables.h"
-#include "Output.h"
-#include "Simulation.h"
-#include "FiguresOfMerit.h"
+#include "InputPropertyDeclaration.h"
 
-void Sciantix(int Sciantix_options[], int Property_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_property[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
+extern std::map<std::string, int> ip;
+
+void MapInputProperty();
+
+#endif // MAP_INPUT_PROPERTY_H
