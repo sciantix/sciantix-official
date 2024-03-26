@@ -64,3 +64,62 @@ def are_files_equal(file1, file2):
   elif os.path.exists(file2) is False:
     print("ERROR!")
     print(file2, "not found.")
+
+def sciantix_dictionary(file):
+	data = import_data(file)
+
+	variable_labels = {
+		"t": "Time (h)",
+		"T": "Temperature (K)",
+		"frate": "Fission rate (fiss / m3 s)",
+		"sigma": "Hydrostatic stress (MPa)",
+		"bu": "Burnup (MWd/kgUO2)",
+		"N": "Intergranular bubble concentration (bub/m2)",
+		"n": "Intergranular atoms per bubble (at/bub)",
+		"v": "Intergranular vacancies per bubble (vac/bub)",
+		"rad": "Intergranular bubble radius (m)",
+		"A": "Intergranular bubble area (m2)",
+		"vol": "Intergranular bubble volume (m3)",
+		"fc": "Intergranular fractional coverage (/)",
+		"fcsat": "Intergranular saturation fractional coverage (/)",
+		"f": "Intergranular fractional intactness (/)",
+		"fv": "Intergranular vented fraction (/)",
+		"pv": "Intergranular venting probability (/)",
+		"xe_p": "Xe produced (at/m3)",
+		"xe_pHBS": "Xe produced in HBS (at/m3)",
+		"xe_ig": "Xe in grain (at/m3)",
+		"xe_igHBS": "Xe in grain HBS (at/m3)",
+		"xe_igb": "Xe in intragranular bubbles (at/m3)",
+		"xe_igs": "Xe in intragranular solution (at/m3)",
+		"xe_gb": "Xe at grain boundary (at/m3)",
+		"xe_r": "Xe released (at/m3)",
+		"fgr" : "Fission gas release (/)",
+		"alpha": "Restructured volume fraction (/)",
+		"sv": "Intergranular S/V (1/m)",
+		"swe_gb" : "Intergranular gas swelling (/)",
+		"swe_igb": "Intragranular gas bubble swelling (/)",
+		"swe_igs": "Intragranular gas solution swelling (/)",
+		"a": "Grain radius (m)",
+		"fima": "FIMA (%)",
+	}
+
+	sd = {}
+	label = []
+	name = []
+
+	for var_name, var_label in variable_labels.items():
+		label.append(var_label)
+		name.append(var_name)
+
+	for i in range(len(label)):
+		try:
+			var_index = findSciantixVariablePosition(data, label[i])
+		except:
+			var_index = None
+		if var_index is not None:
+			sd[name[i]] = data[1:, var_index].astype(float)
+		else:
+			sd[name[i]] = np.zeros_like(data[1:, 0].astype(float))
+			print(f"Variable '{label[i]}' not found in the data.")
+	
+	return sd
