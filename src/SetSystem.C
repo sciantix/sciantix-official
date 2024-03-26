@@ -619,8 +619,12 @@ void System::setProductionRate(int input_value)
 
 		double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
 
+		double sf(1.0);
+		if(input_variable[iv["iFuelMatrix"]].getValue() == 1)
+			sf = 1.25;
+
 		reference += "Production rate = cumulative yield * fission rate density * (1 - alpha).\n\t";
-		production_rate = (1.0 - alpha) * yield * history_variable[hv["Fission rate"]].getFinalValue(); // (at/m3s)
+		production_rate = sf * (1.0 - alpha) * yield * history_variable[hv["Fission rate"]].getFinalValue(); // (at/m3s)
 		break;
 	}
 
@@ -678,7 +682,7 @@ void System::setProductionRate(int input_value)
 		double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
 
 		reference += "Production rate = cumulative yield * fission rate density * alpha.\n\t";
-		production_rate = yield * history_variable[hv["Fission rate"]].getFinalValue() * alpha; // (at/m3s)
+		production_rate = 1.25 * yield * history_variable[hv["Fission rate"]].getFinalValue() * alpha; // (at/m3s)
 		break;
 	}
 
