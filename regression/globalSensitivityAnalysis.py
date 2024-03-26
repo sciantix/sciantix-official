@@ -10,7 +10,7 @@ subfolder_name = "GSA_output_files"
 option_runSensitivity = True
 samplings = 50
 validation_database = "Baker"
-sciantix_variable = "Intragranular gas swelling (/)"
+sciantix_variable = "Intragranular gas bubble swelling (/)"
 
 # subfolder_name = "GSA_output_files_white"
 # option_runSensitivity = False

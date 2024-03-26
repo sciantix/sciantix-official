@@ -228,6 +228,30 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot, folderList, number_of_
 				plt.legend(fontsize='medium')
 				plt.tight_layout()
 				plt.show()
+
+				# plot: burnup - fuel swelling
+
+				# Data from Walker
+				data_spino = np.genfromtxt('spino_swelling_data.txt')
+				data_bu = data_spino[1:, 0]
+				data_swe = data_spino[1:, 1]
+				
+				fig, ax1 = plt.subplots()
+				ax1.plot(sd["bu"] / 0.8814, 0.0032 * sd["fima"], color='indianred', linestyle='-.', label='Solid fission products (from Olander correlation)')
+				ax1.plot(sd["bu"] / 0.8814, sd["swe_igs"], color='orchid', linestyle='-.', label='SCIANTIX gas solution')
+				ax1.plot(sd["bu"] / 0.8814, sd["swe_igb"], color='darkgreen', linestyle='-.', label='SCIANTIX gas bubble')
+				ax1.plot(sd["bu"] / 0.8814, sd["swe_igs"] + sd["swe_igb"] + 0.0032 * sd["fima"], color='darkblue', linestyle='-', label='Total')
+				ax1.scatter(data_bu, data_swe, color='navy', edgecolors='black', marker='.', label='Spino et al. data (2005)')
+				ax1.legend(loc='upper right', fontsize='medium')
+				ax1.set_xlabel('Burnup (GWd/tU)', fontsize='large')
+				ax1.set_ylabel('Fuel matrix swelling (/)', color='black', fontsize='large')
+				ax1.set_xlim(0, 145)
+				ax2 = ax1.twinx()
+				ax2.plot(sd["bu"], sd["alpha"], color='gold', linestyle='--', label='Restructured volume fraction (/)')
+				ax2.set_ylabel('Restructured volume fraction (/)', color='black', fontsize='large')
+				plt.legend(fontsize='medium')
+				plt.tight_layout()
+				plt.show()
 			
 			os.chdir('..')
 

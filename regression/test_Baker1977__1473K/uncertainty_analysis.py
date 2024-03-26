@@ -218,7 +218,7 @@ scaling_factors = uncertaintyAnalysis()
 # scaling_factors.readFile_inputScalingFactors()
 # scaling_factors.exectute_inputScalingFactors()
 
-# scaling_factors.readFolders_inputScalingFactors("Intragranular gas swelling (/)")
+# scaling_factors.readFolders_inputScalingFactors("Intragranular gas bubble swelling (/)")
 # scaling_factors.sensitivityCoefficient()
 
 # scaling_factors.plot_inputScalingFactors()

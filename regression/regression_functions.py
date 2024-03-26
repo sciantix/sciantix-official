@@ -97,7 +97,10 @@ def sciantix_dictionary(file):
 		"alpha": "Restructured volume fraction (/)",
 		"sv": "Intergranular S/V (1/m)",
 		"swe_gb" : "Intergranular gas swelling (/)",
+		"swe_igb": "Intragranular gas bubble swelling (/)",
+		"swe_igs": "Intragranular gas solution swelling (/)",
 		"a": "Grain radius (m)",
+		"fima": "FIMA (%)",
 	}
 
 	sd = {}

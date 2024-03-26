@@ -247,11 +247,11 @@ def regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number
       FGR2.append(100*data[-1,FGRPos].astype(float))
 
       # Retrieve the generated data of Intragranular gas swelling
-      intraGranularSwellingPos = findSciantixVariablePosition(data, "Intragranular gas swelling (/)")
+      intraGranularSwellingPos = findSciantixVariablePosition(data, "Intragranular gas bubble swelling (/)")
       igSwelling2.append(100*data[-1,intraGranularSwellingPos].astype(float))
 
       # Retrieve the gold data of Intragranular gas swelling
-      intraGranularSwellingGoldPos = findSciantixVariablePosition(data_gold, "Intragranular gas swelling (/)")
+      intraGranularSwellingGoldPos = findSciantixVariablePosition(data_gold, "Intragranular gas bubble swelling (/)")
       gold.append(100*data_gold[-1,intraGranularSwellingGoldPos].astype(float))
 
       pos = findSciantixVariablePosition(data, "Intragranular bubble concentration (bub/m3)")
