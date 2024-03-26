@@ -73,8 +73,11 @@ class Simulation : public Solver, public Model
 			sciantix_variable[sv["Irradiation time"]].setConstant();
 			
 		sciantix_variable[sv["FIMA"]].setFinalValue(
-			history_variable[hv["Fission rate"]].getFinalValue() * history_variable[hv["Irradiation time"]].getFinalValue() * 3.6e5 / 
-			sciantix_variable[sv["U"]].getFinalValue()
+			solver.Integrator(
+				sciantix_variable[sv["FIMA"]].getInitialValue(),
+				history_variable[hv["Fission rate"]].getFinalValue() * 3.6e5 / sciantix_variable[sv["U"]].getFinalValue(), 
+				sciantix_variable[sv["Irradiation time"]].getIncrement()
+			)
 		);
 	}
 
@@ -240,6 +243,11 @@ class Simulation : public Solver, public Model
 			sciantix_variable[sv["Xe in intragranular solution"]].setFinalValue(initial_value_solution);
 			sciantix_variable[sv["Xe in intragranular bubbles"]].setFinalValue(initial_value_bubbles);
 			sciantix_variable[sv["Xe in grain HBS"]].setFinalValue(initial_value_hbs);
+
+			sciantix_variable[sv["Intragranular gas solution swelling"]].setFinalValue(
+				(sciantix_variable[sv["Xe in intragranular solution"]].getFinalValue() + sciantix_variable[sv["Xe in grain HBS"]].getFinalValue()) *
+				pow(matrix[sma["UO2"]].getLatticeParameter(), 3) / 4
+			);
 		}
 
 		// Calculation of the gas concentration arrived at the grain boundary, by mass balance.
@@ -341,7 +349,7 @@ class Simulation : public Solver, public Model
 
 		// Swelling
 		// 4/3 pi N R^3
-		sciantix_variable[sv["Intragranular gas swelling"]].setFinalValue(4.188790205 *
+		sciantix_variable[sv["Intragranular gas bubble swelling"]].setFinalValue(4.188790205 *
 			pow(sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue(), 3) *
 			sciantix_variable[sv["Intragranular bubble concentration"]].getFinalValue()
 		);
