@@ -165,8 +165,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	bool toOutputGrainBoundary(0);
 	if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() == 1) toOutputGrainBoundary = 1;
 
-	bool toOutputHighBurnupStructureFormation(0);
-	if (input_variable[iv["iHighBurnupStructureFormation"]].getValue() == 1) toOutputHighBurnupStructureFormation = 1;
+	bool toOutputHighBurnupStructure(0);
+	if (input_variable[iv["iHighBurnupStructureFormation"]].getValue() == 1) toOutputHighBurnupStructure = 1;
 
 	bool toOutputStoichiometryDeviation(0);
 	if (input_variable[iv["iStoichiometryDeviation"]].getValue() > 0) toOutputStoichiometryDeviation = 1;
@@ -263,7 +263,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[100]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[100]);
-	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -279,7 +279,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[92]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[92]);
-	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -643,11 +643,19 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Intragranular gas swelling");
+	sciantix_variable[sv_counter].setName("Intragranular gas bubble swelling");
 	sciantix_variable[sv_counter].setUOM("(/)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[24]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[24]);
 	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Intragranular gas solution swelling");
+	sciantix_variable[sv_counter].setUOM("(/)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[68]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[68]);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -783,7 +791,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(%)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[69]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[69]);
-	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -791,7 +799,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(MWd/kgUO2)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[39]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[39]);
-	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -887,7 +895,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(/)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[55]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[55]);
-	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -963,7 +971,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(/)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[56]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[56]);
-	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 	
 	sciantix_variable.emplace_back();
@@ -971,7 +979,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(pores/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[80]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[80]);
-	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 	
 	sciantix_variable.emplace_back();
@@ -979,7 +987,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[81]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[81]);
-	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 	
 	sciantix_variable.emplace_back();
@@ -987,7 +995,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(m)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[82]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[82]);
-	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -995,7 +1003,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[83]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[83]);
-	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1003,7 +1011,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at^2/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[85]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[85]);
-	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1011,7 +1019,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/pore)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[86]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[86]);
-	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1019,7 +1027,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at^2/pore)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[88]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[88]);
-	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructureFormation);
+	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 
 	// ------------------------------------------------------------------------------------------------

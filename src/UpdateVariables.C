@@ -46,7 +46,8 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[21] = sciantix_variable[sv["Intragranular Xe atoms per bubble"]].getFinalValue();
 	Sciantix_variables[22] = sciantix_variable[sv["Intragranular Kr atoms per bubble"]].getFinalValue();
 	Sciantix_variables[23] = sciantix_variable[sv["Intragranular He atoms per bubble"]].getFinalValue();
-	Sciantix_variables[24] = sciantix_variable[sv["Intragranular gas swelling"]].getFinalValue();
+	Sciantix_variables[24] = sciantix_variable[sv["Intragranular gas bubble swelling"]].getFinalValue();
+	Sciantix_variables[68] = sciantix_variable[sv["Intragranular gas solution swelling"]].getFinalValue();
 	Sciantix_variables[25] = sciantix_variable[sv["Intergranular bubble concentration"]].getFinalValue();
 	Sciantix_variables[26] = sciantix_variable[sv["Intergranular Xe atoms per bubble"]].getFinalValue();
 	Sciantix_variables[27] = sciantix_variable[sv["Intergranular Kr atoms per bubble"]].getFinalValue();
@@ -90,6 +91,7 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[65] = sciantix_variable[sv["Irradiation time"]].getFinalValue();
 	Sciantix_variables[66] = sciantix_variable[sv["Stoichiometry deviation"]].getFinalValue();
 	Sciantix_variables[67] = sciantix_variable[sv["Fuel oxygen partial pressure"]].getFinalValue();
+	Sciantix_variables[69] = sciantix_variable[sv["FIMA"]].getFinalValue();
 	Sciantix_variables[80] = sciantix_variable[sv["HBS pore density"]].getFinalValue();
 	Sciantix_variables[81] = sciantix_variable[sv["HBS pore volume"]].getFinalValue();
 	Sciantix_variables[82] = sciantix_variable[sv["HBS pore radius"]].getFinalValue();
