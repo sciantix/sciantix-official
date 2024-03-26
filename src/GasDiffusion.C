@@ -134,8 +134,6 @@ void defineSpectralDiffusion3Equations()
 	if (std::isinf(sweeping_term) || std::isnan(sweeping_term))
 		sweeping_term = 0.0;
 
-	std::cout << sweeping_term << std::endl;
-
 	// exchange 1 --> 3
 	parameters.push_back(sweeping_term);
 
