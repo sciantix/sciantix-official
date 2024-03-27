@@ -237,7 +237,7 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot, folderList, number_of_
 				data_swe = data_spino[1:, 1]
 				
 				fig, ax1 = plt.subplots()
-				ax1.plot(sd["bu"] / 0.8814, 0.0032 * sd["fima"], color='indianred', linestyle='-.', label='Solid fission products (from Olander correlation)')
+				ax1.plot(sd["bu"] / 0.8814, 0.00303 * sd["fima"], color='indianred', linestyle='-.', label='Solid fission products (from Olander correlation)')
 				ax1.plot(sd["bu"] / 0.8814, sd["swe_igs"], color='orchid', linestyle='-.', label='SCIANTIX gas solution')
 				ax1.plot(sd["bu"] / 0.8814, sd["swe_igb"], color='darkgreen', linestyle='-.', label='SCIANTIX gas bubble')
 				ax1.plot(sd["bu"] / 0.8814, sd["swe_igs"] + sd["swe_igb"] + 0.0032 * sd["fima"], color='darkblue', linestyle='-', label='Total')
