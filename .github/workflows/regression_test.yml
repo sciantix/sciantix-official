@@ -6,9 +6,9 @@ name: Python application test
 
 on:
   push:
-    branches: [ "development/gasInducedFragmentation" ]
+    branches: [ "development/hbs_pinn" ]
   pull_request:
-    branches: [ "development/gasInducedFragmentation" ]
+    branches: [ "development/hbs_pinn" ]
 
 jobs:
   build:
