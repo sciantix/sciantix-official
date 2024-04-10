@@ -122,7 +122,7 @@ class BIMCMC:
                 index +=1
 
                 converged = np.all(tau * 100 < sampler.iteration)
-                converged &= np.all(np.abs(old_tau - tau)/tau < 0.01)
+                converged &= np.all(np.abs(old_tau - tau)/tau < 0.05) # relative error threshold 0.01
                 if converged:
                     break
                 old_tau = tau
