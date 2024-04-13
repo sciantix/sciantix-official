@@ -1008,7 +1008,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(m2/s)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[90]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[90]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	// ------------------------------------------------------------------------------------------------	
