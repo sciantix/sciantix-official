@@ -24,5 +24,5 @@
 #	initial Kr85m (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
 0.0
 #   initial fuel stoichiometry deviation (\)
-1000
+2000
 #   chromium content (ppm)

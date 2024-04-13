@@ -2,7 +2,7 @@ Model #0: 	Burnup	The local burnup is calculated from the fission rate density.
 Model #1: 	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
 Model #2: 	High-burnup structure formation	: not considered.
 Model #3: 	High-burnup structure porosity	not considered
-Model #4: 	Grain growth	Ainscough et al., JNM, 49 (1973) 117-128.
+Model #4: 	Grain growth	constant grain radius.
 Model #5: 	Grain-boundary sweeping	Not considered
 Model #6: 	Gas production - Xe in UO2Cr	 
 Model #7: 	Gas production - Kr in UO2Cr	 
@@ -16,7 +16,7 @@ Model #14: 	Microstructure	T. Cardinaels et al., JNM, 424 (2012) 252-260.
 Model #15: 	Chromium solubility	Riglet-Martial et al., JNM, 447 (2014) 63-72.
 
 Matrix #0: 	UO2Cr	
-	Ainscough et al., JNM, 49 (1973) 117-128.
+	no grain-boundary mobility.
 	iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.
 	
 
@@ -26,14 +26,13 @@ System #0: 	Xe in UO2Cr	Production rate = cumulative yield * fission rate densit
 	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
 	
 System #1: 	Kr in UO2Cr	Production rate = cumulative yield * fission rate density.
-	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
 	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
 	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
 	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
 	
 
-Input setting #0: 	iGrainGrowth = 1
-Input setting #1: 	iFGDiffusionCoefficient = 1
+Input setting #0: 	iGrainGrowth = 0
+Input setting #1: 	iFGDiffusionCoefficient = 8
 Input setting #2: 	iDiffusionSolver = 1
 Input setting #3: 	iIntraGranularBubbleEvolution = 1
 Input setting #4: 	iResolutionRate = 1

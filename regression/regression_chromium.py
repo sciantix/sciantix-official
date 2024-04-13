@@ -2,7 +2,7 @@
 
 This is a python script to execute the regression (running the validation database) of sciantix.
 
-@author G. Zullo
+@author G. Nicodemo
 
 """
 
@@ -73,48 +73,56 @@ def do_gold():
     print(f"output.txt not found in {file}")
 
 # Plot the regression test results
-def do_plot(RigletMartial1_data, RigletMartial2_data, Killeen_data, time, temperature, CrContent, FGR, FIMA,
-            timeG, CrContentG, temperatureG, FGRG, FIMAG) :
-  fig, ax = plt.subplots(1,3)
+def do_plot(RigletMartial1_data, RigletMartial2_data, Killeen_data, temperature, CrContent, FGR, FIMA, CrContentG, temperatureG, FGRG, FIMAG):
+  
+  """ Plot: Chromium atoms in UO2 lattice """
+  fig, ax = plt.subplots()
+  
+  conv_factor =  52 * 100 / 6.022e23 / 1.07998e7 
+  print(conv_factor)
 
-  plt.subplots_adjust(left=0.1,
-                      bottom=0.1,
-                      right=0.9,
-                      top=0.9,
-                      wspace=0.34,
-                      hspace=0.4)
-
-  ax[0].scatter(RigletMartial1_data[:,0], marker = '.', c = '#B3B3B3', label='Data from Riglet-Martial et al. (2016)')
-  ax[0].plot(timeG, CrContentG, 'k', label='SCIANTIX GOLD')
-  ax[0].plot(time, CrContent, color = '#98E18D', label='SCIANTIX 2.0')
-
-  axT = ax[0].twinx()
-  axT.set_ylabel('Temperature (K)')
-  axT.plot(time, temperature, 'r', linewidth=1, label="Temperature")
+  ax.scatter(RigletMartial1_data[:,1], RigletMartial1_data[:,0] /conv_factor , marker = '.', c = '#B3B3B3', label='Data from Riglet-Martial et al. (2016)')
+  ax.plot(temperatureG, CrContentG, 'k', label='SCIANTIX GOLD')
+  ax.plot(temperature, CrContent, color = '#98E18D', label='SCIANTIX 2.0')
 
   # ax.set_title(file + ' - Chromium content in the lattice')
-  ax[0].set_xlabel('Time (h)')
-  ax[0].set_ylabel('Chromium content in the lattice (at/m3)')
-  h1, l1 = ax[0].get_legend_handles_labels()
-  h2, l2 = axT.get_legend_handles_labels()
-  ax[0].legend(h1+h2, l1+l2)
+  ax.set_xlabel('Temperature (K)')
+  ax.set_ylabel('Chromium content in the lattice (at/m3)')
+  ax.legend()
+  
+  plt.show()
+  
+  fig, ax = plt.subplots()
+
+  ax.scatter(RigletMartial2_data[:,1], RigletMartial2_data[:,0] / conv_factor, marker = '.', c = '#B3B3B3', label='Data from Riglet-Martial et al. (2016)')
+  ax.plot(temperatureG, CrContentG, 'k', label='SCIANTIX GOLD')
+  ax.plot(temperature, CrContent, color = '#98E18D', label='SCIANTIX 2.0')
+
+  # ax.set_title(file + ' - Chromium content in the lattice')
+  ax.set_xlabel('Temperature (K)')
+  ax.set_ylabel('Chromium content in the lattice (at/m3)')
+  ax.legend()
+  
+  plt.show()
 
   """ Plot: Fission gas release """
-  ax[1].scatter(Killeen_data[:,0], marker = '.', c = '#B3B3B3', label='Data from Killeen et al. (1980)')
-  ax[1].plot(FIMAG, FGRG, 'k', label='SCIANTIX GOLD')
-  ax[1].plot(FIMA, FGR, color = '#98E18D', label='SCIANTIX 2.0')
+  fig, ax = plt.subplots()
+  
+  ax.scatter(Killeen_data[:,1], Killeen_data[:,0]/100, marker = '.', c = '#B3B3B3', label='Data from Killeen et al. (1980)')
+  ax.plot(FIMAG, FGRG, 'k', label='SCIANTIX GOLD')
+  ax.plot(FIMA, FGR, color = '#98E18D', label='SCIANTIX 2.0')
 
   # ax.set_title(file + ' - Release rate')
-  ax[1].set_xlabel('Burnup FIMA (%)')
-  ax[1].set_ylabel('Fission gas release (/)')
-  ax[1].legend()
+  ax.set_xlabel('Burnup FIMA (%)')
+  ax.set_ylabel('Fission gas release (/)')
+  ax.legend()
 
   # plt.savefig(file + '.png')
   plt.show()
 
 
 # Main function of the Chromium regression
-def regression_talip(wpath, mode_Chromium, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
+def regression_chromium(wpath, mode_Chromium, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
 
   # Exit of the function without doing anything
   if mode_Chromium == 0:
@@ -136,7 +144,6 @@ def regression_talip(wpath, mode_Chromium, mode_gold, mode_plot, folderList, num
 
       print(f"Now in folder {file}...")
       number_of_tests += 1
-
 
       # mode_gold = 0 : Use SCIANTIX / Don't use GOLD and check result
       if mode_gold == 0:
@@ -180,7 +187,7 @@ def regression_talip(wpath, mode_Chromium, mode_gold, mode_plot, folderList, num
       FIMAPos = findSciantixVariablePosition(data, "FIMA (%)")
 
       # arrays
-      time = data[1:,timePos].astype(float)
+      #time = data[1:,timePos].astype(float)
       temperature = data[1:,temperaturePos].astype(float)
       CrContent = data[1:,ChromiumContentPos].astype(float) + data[1:,ChromiaContentPos].astype(float)
       FGR = data[1:,FGRPos].astype(float)
@@ -196,7 +203,7 @@ def regression_talip(wpath, mode_Chromium, mode_gold, mode_plot, folderList, num
       FIMAPosG = findSciantixVariablePosition(data_gold, "FIMA (%)")
 
       # arrays
-      timeG = data_gold[1:,timePosG].astype(float)
+      #timeG = data_gold[1:,timePosG].astype(float)
       temperatureG = data_gold[1:,temperaturePosG].astype(float)
       CrContentG = data_gold[1:,ChromiumContentPosG].astype(float) + data_gold[1:,ChromiaContentPosG].astype(float)
       FGRG = data_gold[1:,FGRPosG].astype(float)
@@ -204,9 +211,7 @@ def regression_talip(wpath, mode_Chromium, mode_gold, mode_plot, folderList, num
 
       # Check if the user has chosen to display the various plots
       if mode_plot == 1:
-        do_plot(RigletMartial1_data, RigletMartial2_data, Killeen_data, time, temperature, CrContent, FGR, FIMA,
-                timeG, CrContentG, temperatureG, FGRG, FIMAG) 
-
+        do_plot(RigletMartial1_data, RigletMartial2_data, Killeen_data, temperature, CrContent, FGR, FIMA, CrContentG, temperatureG, FGRG, FIMAG)
 
       os.chdir('..')
 
