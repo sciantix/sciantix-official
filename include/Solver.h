@@ -373,18 +373,18 @@ public:
 
 	double QuarticEquation(std::vector<double> parameter)
 	{
-			/**
-			 * @brief Solver for the quartic equation ax^4 + bx^3 +cx^2 +dx + e = 0
-			 * with the iterative Newton's method.
-			 * 
-			 * @param parameter.at(0) initial conditions
-			 * @param parameter.at(1) coefficient of x^4
-			 * @param parameter.at(2) coefficient of x^3
-			 * @param parameter.at(3) coefficient of x^2
-			 * @param parameter.at(4) coefficient of x^1
-			 * @param parameter.at(5) coefficient of x^0
-			 * @return x1 solution
-			 */
+		/**
+		 * @brief Solver for the quartic equation ax^4 + bx^3 +cx^2 +dx + e = 0
+		 * with the iterative Newton's method.
+		 * 
+		 * @param parameter.at(0) initial conditions
+		 * @param parameter.at(1) coefficient of x^4
+		 * @param parameter.at(2) coefficient of x^3
+		 * @param parameter.at(3) coefficient of x^2
+		 * @param parameter.at(4) coefficient of x^1
+		 * @param parameter.at(5) coefficient of x^0
+		 * @return x1 solution
+		 */
 
 		double function(0.0);
 		double derivative(0.0);
@@ -393,24 +393,24 @@ public:
 		const double tol(1.0e-3);
 		const unsigned short int max_iter(5);
 
-			double y0 = parameter.at(0);
-			double a = parameter.at(1);
-			double b = parameter.at(2);
-			double c = parameter.at(3);
-			double d = parameter.at(4);
-			double e = parameter.at(5);
+		double y0 = parameter.at(0);
+		double a = parameter.at(1);
+		double b = parameter.at(2);
+		double c = parameter.at(3);
+		double d = parameter.at(4);
+		double e = parameter.at(5);
 
 		while (iter < max_iter)
 		{
-		function = a*pow(y0, 4) + b*pow(y0, 3) + c*pow(y0, 2) + d*y0 + e;
-		derivative = 4.0*a*pow(y0, 3) + 3.0*b*pow(y0, 2) + 2.0*c*y0 + d;
+			function = a*pow(y0, 4) + b*pow(y0, 3) + c*pow(y0, 2) + d*y0 + e;
+			derivative = 4.0*a*pow(y0, 3) + 3.0*b*pow(y0, 2) + 2.0*c*y0 + d;
 
-		y1 = y0 - function/derivative;
-		y0 = y1;
+			y1 = y0 - function/derivative;
+			y0 = y1;
 
-		if(function < tol) return y1;
+			if(function < tol) return y1;
 
-		iter++;
+			iter++;
 		}
 		return y1;
 	}
