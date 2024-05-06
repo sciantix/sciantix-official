@@ -14,3 +14,5 @@
 # scaling factor - cent parameter
 1.0
 # scaling factor - helium production rate
+1.0
+# scaling factor - dummy
