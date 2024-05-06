@@ -675,7 +675,7 @@ void System::setProductionRate(int input_value)
 	case 5:
 	{
 		/**
-		 * @brief Production rate = cumulative yield * fission rate density
+		 * @brief Production rate = cumulative yield * fission rate density * HBS volume fraction
 		 * 
 		 */
 

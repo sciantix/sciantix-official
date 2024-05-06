@@ -14,8 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef MAP_SYSTEM
-#define MAP_SYSTEM
+#ifndef MAP_SYSTEM_H
+#define MAP_SYSTEM_H
 
 #include <map>
 #include <string>
@@ -25,5 +25,5 @@ extern std::map<std::string, int> sy;
 
 void MapSystem();
 
-#endif
+#endif // MAP_SYSTEM_H
 

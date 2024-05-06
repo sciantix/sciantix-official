@@ -14,6 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef FIGURES_OF_MERIT_H
+#define FIGURES_OF_MERIT_H
+
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
 #include "PhysicsVariableDeclaration.h"
@@ -25,4 +28,12 @@
 #include "MapMatrix.h"
 #include <cmath>
 
+/**
+ * @brief This routines computes the value of sciantix_variable associated to figures of merit
+ * that are of interest in the output.txt file.
+ * 
+ */
+
 void FiguresOfMerit();
+
+#endif // FIGURES_OF_MERIT_H

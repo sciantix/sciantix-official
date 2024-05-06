@@ -14,8 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef MAP_PHYSICS_VARIABLE
-#define MAP_PHYSICS_VARIABLE
+#ifndef MAP_PHYSICS_VARIABLE_H
+#define MAP_PHYSICS_VARIABLE_H
 
 #include <map>
 #include <string>
@@ -25,5 +25,5 @@ extern std::map<std::string, int> pv;
 
 void MapPhysicsVariable();
 
-#endif
+#endif // MAP_PHYSICS_VARIABLE_H
 

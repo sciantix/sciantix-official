@@ -32,4 +32,4 @@ protected:
 	std::string name;
 };
 
-#endif
+#endif // MATERIAL_H

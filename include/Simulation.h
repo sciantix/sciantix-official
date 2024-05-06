@@ -892,13 +892,10 @@ class Simulation : public Solver, public Model
 	{
 		if(gas_name == "Xe")
 			return &modes_initial_conditions[0];
-
 		else if(gas_name == "Kr")
 			return &modes_initial_conditions[3 * 40];
-
 		else if(gas_name == "He")
 			return &modes_initial_conditions[6 * 40];
-
 		else if(gas_name == "Xe133")
 			return &modes_initial_conditions[9 * 40];
 

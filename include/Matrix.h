@@ -36,12 +36,12 @@ protected:
 	double semidihedral_angle;
 	double lenticular_shape_factor;
 	double grain_radius;
-	std::string matrix_name;
 	double healing_temperature_threshold;
 	double nucleation_rate;
 	double pore_nucleation_rate;
 	double pore_resolution_rate;
 	double pore_trapping_rate;
+	std::string matrix_name;
 
 public:
 	
@@ -78,7 +78,7 @@ public:
 
 	double getSurfaceTension()
 	{
-		/// Member function to get the radius of influence of the fission fragment track (m)
+		/// Member function to get the surface tension of the matrix material (N/m)
 		return surface_tension;
 	}
 
@@ -107,51 +107,45 @@ public:
 	}
 
 	void setGrainBoundaryMobility(int input_value);
-
 	double getGrainBoundaryMobility()
-	{	
-		/**
-		 * @brief Member function to get the mobility of the grain boundaries of the matrix
-		 * @param grain_boundary_mobility (m^2/s)
-		 * 
-		 */
-
+	{
+		/// Member function to get the mobility of the grain boundaries of the matrix.
 		return grain_boundary_mobility;
 	}
 
 	void setFFrange(double r)
 	{
-		/// Member function to set the (average) range of the fission fragments in the matrix (m)
+		/// Member function to set the (average) range of the fission fragments in the matrix (m).
 		ff_range = r;
 	}
 
 	double getFFrange()
 	{
-		/// Member function to get the (average) range of the fission fragments in the matrix (m)
+		/// Member function to get the (average) range of the fission fragments in the matrix (m).
 		return ff_range;
 	}
 
 	void setFFinfluenceRadius(double r)
 	{
-		/// Member function to set the estimated radius of influence of the fission fragment track (m)
+		/// Member function to set the radius of influence of the fission fragment track (m).
 		ff_influence_radius = r;
 	}
 
 	double getFFinfluenceRadius()
 	{
-		/// Member function to get the radius of influence of the fission fragment track (m)
+		/// Member function to get the radius of influence of the fission fragment track (m).
 		return ff_influence_radius;
 	}
 
 	void setSemidihedralAngle(double sda)
 	{
-		/// Member function to set the angle between the tangent to the bubble surface as it contacts the grain boundary and the plane of the grain boundary (semidihedral angle)
+		/// Member function to set the semidihedral angle.
 		semidihedral_angle = sda;
 	}
 
 	double getSemidihedralAngle()
 	{
-		/// Member function to get the angle between the tangent to the bubble surface as it contacts the grain boundary and the plane of the grain boundary (semidihedral angle)
+		/// Member function to get the semidihedral angle.
 		return semidihedral_angle;
 	}
 
@@ -170,79 +164,76 @@ public:
 	void setGrainBoundaryVacancyDiffusivity(int input_value);
 	double getGrainBoundaryVacancyDiffusivity()
 	{
-		/// Member function to get the grain-boundary vacancy diffusivity (m^2/s)
+		/// Member function to get the grain-boundary vacancy diffusivity.
 		return grain_boundary_diffusivity;
 	}
 
 	void setLenticularShapeFactor(double lsf)
 	{
-		/// Member function to set the lenticular shape factor (/)
+		/// Member function to set the lenticular shape factor (/).
 		lenticular_shape_factor = lsf;
 	}
 
 	double getLenticularShapeFactor()
 	{
-		/// Member function to get the lenticular shape factor (/)
+		/// Member function to get the lenticular shape factor (/).
 		return lenticular_shape_factor;
 	}
 
 	void setNucleationRate(double n)
 	{
-		/// Member function to set the nucleation rate of the matrix under irradiation (1/s)
+		/// Member function to set the nucleation rate of the matrix under irradiation (1/s).
 		nucleation_rate = n;
 	}
 
 	double getNucleationRate()
 	{
-		/// Member function to get the nucleation rate of the matrix under irradiation (1/s)
+		/// Member function to get the nucleation rate of the matrix under irradiation (1/s).
 		return nucleation_rate;
 	}
 
 	void setPoreNucleationRate();
 	double getPoreNucleationRate()
 	{
+		/// Member function to get the pore nucleation rate of the matrix.
 		return pore_nucleation_rate;
 	}
 
 	void setPoreResolutionRate();
 	double getPoreResolutionRate()
 	{
+		/// Member function to get the pore resolution rate of the matrix.
 		return pore_resolution_rate;
 	}
 
 	void setPoreTrappingRate();
 	double getPoreTrappingRate()
 	{
+		/// Member function to get the pore trapping rate of the matrix.
 		return pore_trapping_rate;
 	}
 
 	void setGrainRadius(double gr)
 	{
+		/// Member function to set the grain radius of the matrix.
 		grain_radius = gr;
 	}
 
 	double getGrainRadius()
 	{
+		/// Member function to get the grain radius of the matrix.
 		return grain_radius;
 	}
 
 	void setHealingTemperatureThreshold(double t)
 	{
-		/**
-		 * @brief Member function to set the (estimated) temperature limit for complete healing of the extended defects in the fuel matrix.
-		 * @param healing_temperature_threshold temperature (K)
-		 * 
-		 */
+		/// Member function to set the (estimated) temperature limit for complete healing of the extended defects in the fuel matrix (K).
 		healing_temperature_threshold = t;
 	}
 
 	double getHealingTemperatureThreshold()
 	{
-		/**
-		 * @brief Member function to set the (estimated) temperature limit for complete healing of the extended defects in the fuel matrix.
-		 * @param healing_temperature_threshold temperature (K)
-		 * 
-		 */
+		/// Member function to get the (estimated) temperature limit for complete healing of the extended defects in the fuel matrix (K).
 		return healing_temperature_threshold;
 	}
 
@@ -250,4 +241,4 @@ public:
 	~Matrix() { }
 };
 
-#endif
+#endif // MATRIX_H

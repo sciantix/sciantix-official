@@ -13,6 +13,7 @@
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
+
 #ifndef PHYSICS_VARIABLE_H
 #define PHYSICS_VARIABLE_H
 
@@ -107,4 +108,4 @@ public:
 
 };
 
-#endif
+#endif // PHYSICS_VARIABLE_H

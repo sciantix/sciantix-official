@@ -15,6 +15,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef GRAIN_GROWTH_H
+#define GRAIN_GROWTH_H
+
 #include "ModelDeclaration.h"
 #include "MatrixDeclaration.h"
 #include "SciantixVariableDeclaration.h"
@@ -26,4 +29,12 @@
 #include "SetVariables.h"
 #include <string>
 
+/**
+ * @brief This routine defines the model for the grain growth phenomenon.
+ * The choice of the model depends on the input_value iGrainGrowth.
+ * 
+ */
+
 void GrainGrowth();
+
+#endif // GRAIN_GROWTH_H

@@ -159,6 +159,9 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	bool toOutputCracking(0);
 	if (input_variable[iv["iGrainBoundaryMicroCracking"]].getValue() != 0) toOutputCracking = 1;
 
+	bool toOutputFracture(0);
+	if (input_variable[iv["iGrainBoundaryMicroCracking"]].getValue() == 2) toOutputFracture = 1;
+
 	bool toOutputGrainBoundary(0);
 	if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() == 1) toOutputGrainBoundary = 1;
 
@@ -708,7 +711,15 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(MPa)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
-	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setOutput(toOutputFracture);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Critical intergranular bubble pressure");
+	sciantix_variable[sv_counter].setUOM("(MPa)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(0.0);
+	sciantix_variable[sv_counter].setOutput(toOutputFracture);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1043,6 +1054,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 		modes_initial_conditions[13 * n_modes + i] = Sciantix_diffusion_modes[13 * n_modes + i];
 		modes_initial_conditions[14 * n_modes + i] = Sciantix_diffusion_modes[14 * n_modes + i];
 		modes_initial_conditions[15 * n_modes + i] = Sciantix_diffusion_modes[15 * n_modes + i]; // Xe in UO2HBS
+		modes_initial_conditions[16 * n_modes + i] = Sciantix_diffusion_modes[16 * n_modes + i]; // Xe in UO2HBS - solution
+		modes_initial_conditions[17 * n_modes + i] = Sciantix_diffusion_modes[17 * n_modes + i]; // Xe in UO2HBS - bubbles
 	}
 
 	// ---------------
