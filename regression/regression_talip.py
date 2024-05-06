@@ -85,7 +85,7 @@ def do_plot(heReleasedTalip14000_data, heReleasedRateTalip14000_data, time, temp
                       hspace=0.4)
 
   ax[0].scatter(heReleasedTalip14000_data[:,0], heReleasedTalip14000_data[:,1], marker = '.', c = '#B3B3B3', label='Data from Talip et al. (2014)')
-  ax[0].plot(timeG, heReleasedFracG, 'k', label='Cognini et al. (2021)')
+#   ax[0].plot(timeG, heReleasedFracG, 'k', label='Cognini et al. (2021)')
   ax[0].plot(time, heReleasedFrac, color = '#98E18D', label='SCIANTIX 2.0')
 
   axT = ax[0].twinx()
@@ -101,7 +101,7 @@ def do_plot(heReleasedTalip14000_data, heReleasedRateTalip14000_data, time, temp
 
   """ Plot: Helium release rate """
   ax[1].scatter(heReleasedRateTalip14000_data[:,0], heReleasedRateTalip14000_data[:,1], marker = '.', c = '#B3B3B3', label='Data from Talip et al. (2014)')
-  ax[1].plot(temperatureG, heReleaseRateG, 'k', label='Cognini et al. (2021)')
+#   ax[1].plot(temperatureG, heReleaseRateG, 'k', label='Cognini et al. (2021)')
   ax[1].plot(temperature, heReleaseRate, color = '#98E18D', label='SCIANTIX 2.0')
 
   # ax.set_title(file + ' - Release rate')
