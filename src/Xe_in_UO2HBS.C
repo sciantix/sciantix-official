@@ -17,7 +17,14 @@
 #include "Xe_in_UO2HBS.h"
 
 void Xe_in_UO2HBS()
-{
+{	
+	// Error handling
+    if (matrix.empty() || input_variable.empty() || sma.find("UO2HBS") == sma.end())
+    {
+        std::cerr << "Error: Required components are not initialized in " << __FILE__  << std::endl;
+        return;
+    }
+
 	sciantix_system.emplace_back();
 	int index = int(sciantix_system.size()) - 1;
 

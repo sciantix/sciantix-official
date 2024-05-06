@@ -14,8 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef MAP_MATRIX
-#define MAP_MATRIX
+#ifndef MAP_MATRIX_H
+#define MAP_MATRIX_H
 
 #include <map>
 #include <string>
@@ -25,6 +25,6 @@ extern std::map<std::string, int> sma;
 
 void MapMatrix();
 
-#endif
+#endif // MAP_MATRIX_H
 
 

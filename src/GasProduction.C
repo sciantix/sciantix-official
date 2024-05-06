@@ -16,13 +16,12 @@
 
 #include "GasProduction.h"
 
-/// Model: Gas production
-/// This model calculates the concentration of fission gas (Xe+Kr) produced by fission reactions in the fuel
+/**
+ * @brief Calculates the concentration of fission gas (Xe+Kr) produced by fission reactions in the fuel.
+ */
 
 void GasProduction()
 {
-	std::vector<double> parameter;
-
 	for (auto& system : sciantix_system)
 	{
 		int model_index = model.size();
@@ -34,6 +33,7 @@ void GasProduction()
 		double productionRate = system.getProductionRate();
 		double timeStep = physics_variable[pv["Time step"]].getFinalValue();
 
+		std::vector<double> parameter;
 		parameter.push_back(productionRate);
 		parameter.push_back(timeStep);
 		model[model_index].setParameter(parameter);

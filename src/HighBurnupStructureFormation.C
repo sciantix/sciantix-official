@@ -18,16 +18,6 @@
 
 void HighBurnupStructureFormation()
 {
-    /**
-     * @brief HighBurnupStructureFormation
-     * This model describes the formation of a HBS structure in UO2 fuel.
-     * 
-     * @author
-     * A. Magni
-	 * E. Redaelli
-	 * G. Zullo
-    */
-
 	model.emplace_back();
 
 	int model_index = int(model.size()) - 1;

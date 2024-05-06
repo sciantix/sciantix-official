@@ -22,5 +22,5 @@
 
 extern std::vector<Matrix> matrix;
 
-#endif
+#endif // MATRIX_DECLARATION_H
 

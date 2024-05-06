@@ -18,12 +18,6 @@
 
 void FiguresOfMerit()
 {
-  /**
-   * @brief This routines computes the value of sciantix_variable associated to figures of merit
-   * that are of interest in the output.txt file.
-   * 
-   */
-
   /// Fission gas release 
   if (sciantix_variable[sv["Xe produced"]].getFinalValue() + sciantix_variable[sv["Kr produced"]].getFinalValue() > 0.0)
     sciantix_variable[sv["Fission gas release"]].setFinalValue(

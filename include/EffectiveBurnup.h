@@ -14,9 +14,27 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef EFFECTIVE_BURNUP_H
+#define EFFECTIVE_BURNUP_H
+
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
 #include "ModelDeclaration.h"
 #include "SetMatrix.h"
 
+/**
+ * @brief Defines the sciantix model "Effective burnup".
+ * 
+ * This function calculates the local effective burnup based on the local fission rate density and temperature.
+ * 
+ * @ref G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005
+ * 
+ * @author
+ * A. Magni
+ * E. Redaelli
+ * G. Zullo
+*/
+
 void EffectiveBurnup();
+
+#endif // EFFECTIVE_BURNUP_H

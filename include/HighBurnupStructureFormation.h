@@ -14,13 +14,26 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef HIGH_BURNUP_STRUCTURE_FORMATION_H
+#define HIGH_BURNUP_STRUCTURE_FORMATION_H
+
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
 #include "ModelDeclaration.h"
 
+/**
+ * @brief HighBurnupStructureFormation
+ * This model describes the formation of a HBS structure in UO2 fuel.
+ * 
+ * @author
+ * A. Magni
+ * E. Redaelli
+ * G. Zullo
+*/
+
 void HighBurnupStructureFormation();
 
-
+#endif // HIGH_BURNUP_STRUCTURE_FORMATION_H
 
 
 

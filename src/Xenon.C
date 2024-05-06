@@ -16,12 +16,11 @@
 
 #include "Xenon.h"
 
-/// Xenon
-
 void Xenon()
 {
 	gas.emplace_back();
 	int index = int(gas.size()) - 1;
+
 	gas[index].setName("Xe");
 	gas[index].setAtomicNumber(54);
 	gas[index].setMassNumber(135);
@@ -31,6 +30,7 @@ void Xenon()
 
 	gas.emplace_back();
 	++index;
+	
 	gas[index].setName("Xe133");
 	gas[index].setAtomicNumber(54);
 	gas[index].setMassNumber(133);

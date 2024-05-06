@@ -14,7 +14,11 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef XENON_H
+#define XENON_H
+
 #include "GasDeclaration.h"
 
 void Xenon();
 
+#endif // XENON_H

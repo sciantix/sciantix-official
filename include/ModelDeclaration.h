@@ -22,4 +22,4 @@
 
 extern std::vector<Model> model;
 
-#endif
+#endif // MODEL_DECLARATION_H
