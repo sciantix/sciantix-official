@@ -54,7 +54,7 @@ Thank for sticking as much as possible to these guidelines. We appreciate! :)
 (source: https://git-scm.com/docs/git-remote#Documentation/git-remote.txt-empruneem)
 
 - Delete local GIT branches that were deleted on remote repository
-`git branch -vv | grep ': gone]'|  grep -v "\*" | awk '{ print $1; }' | xargs -r git branch -d`
+`git branch -vv | grep ': gone]'|  grep -v "\*" | awk '{ print $1; }' | xargs -r git branch -D`
 'git fetch -p ; git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk '{print $1}' | xargs git branch -d'
 
 (source: https://medium.com/@kcmueller/delete-local-git-branches-that-were-deleted-on-remote-repository-b596b71b530c)

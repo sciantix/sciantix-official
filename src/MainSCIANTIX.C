@@ -46,6 +46,8 @@
 #include <fstream>
 #include <ctime>
 
+void logExecutionTime(double timer, int time_step_number);
+
 int main()
 {
 	InputReading();
@@ -88,9 +90,13 @@ int main()
 
 	timer = clock() - timer;
 
-	Execution_file << std::setprecision(12) << std::scientific << (double)timer / CLOCKS_PER_SEC << "\t" << CLOCKS_PER_SEC << "\t" << (double)timer << "\t" << Time_step_number << std::endl;
+	logExecutionTime((double)timer / CLOCKS_PER_SEC, Time_step_number);
 	Execution_file.close();
 
 	return 0;
+}
 
+void logExecutionTime(double timer, int time_step_number)
+{
+	Execution_file << std::setprecision(12) << std::scientific << timer << "\t" << CLOCKS_PER_SEC << "\t" << (double)timer * CLOCKS_PER_SEC << "\t" << time_step_number << std::endl;
 }

@@ -22,7 +22,6 @@
 
 void GasProduction()
 {
-
 	for (auto& system : sciantix_system)
 	{
 		int model_index = model.size();

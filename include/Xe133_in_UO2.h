@@ -14,15 +14,15 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef XE133_IN_UO2_H
+#define XE133_IN_UO2_H
+
 #include "SystemDeclaration.h"
 #include "MatrixDeclaration.h"
 #include "MapMatrix.h"
 #include "SciantixScalingFactorDeclaration.h"
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
-
-#ifndef XE133_IN_UO2_H
-#define XE133_IN_UO2_H
 
 /**
  * @brief Sets properties for the "Xenon133 in UO2" system.

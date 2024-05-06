@@ -15,7 +15,9 @@ import shutil
 from regression_functions import *
 
 """ ------------------- Global Variables ------------------- """
-
+plt.rcParams['axes.labelsize'] = 16
+plt.rcParams['xtick.labelsize'] = 16
+plt.rcParams['ytick.labelsize'] = 16
 
 """ ------------------- Functions ------------------- """
 
@@ -73,7 +75,7 @@ def do_gold():
     print(f"output.txt not found in {file}")
 
 # Plot the regression test results
-def do_plot(exp_Xe133, exp_Kr85m, calculated_Kr85m_Zullo2022, calculated_Xe133_Zullo2022, time, temperature, burnup, Xe133, Kr85m, expfgr, fgr):
+def do_plot(exp_Xe133, exp_Kr85m, calculated_Kr85m_ANS, calculated_Xe133_ANS, time, temperature, burnup, Xe133, Kr85m, expfgr, fgr, burnup2):
   
   # PLOT Xe133
   fig, ax = plt.subplots(1,1)
@@ -83,9 +85,10 @@ def do_plot(exp_Xe133, exp_Kr85m, calculated_Kr85m_Zullo2022, calculated_Xe133_Z
   axT.plot(burnup, temperature, 'r-', linewidth = 1, label="Temperature")
   axT.set_zorder(1)
 
-  ax.plot(burnup, Xe133, color = '#98E18D', linewidth = 2, label='SCIANTIX 2.0 ${}^{133}$Xe')
+  ax.plot(burnup, Xe133, color = '#98E18D', linewidth = 2, label='SCIANTIX 2.0 ')
   ax.fill_between(burnup, (Xe133)/5, (Xe133)*5, color='#ffcc80', alpha=0.5, label='x/5 deviation')
-  ax.plot(calculated_Xe133_Zullo2022[1:,0].astype(float), calculated_Xe133_Zullo2022[1:,1].astype(float), '--', color = 'black', linewidth = 1, label='Zullo et al. (2022) ${}^{133}$Xe')
+#   ax.plot(calculated_Xe133_Zullo2022[1:,0].astype(float), calculated_Xe133_Zullo2022[1:,1].astype(float), '--', color = 'black', linewidth = 1, label='Zullo et al. (2022) ${}^{133}$Xe')
+  ax.plot(burnup2, calculated_Xe133_ANS[:,1].astype(float), '--', color = 'black', linewidth = 1, label='ANS5.4-2010 ${}^{133}$Xe')  
   ax.plot(exp_Xe133[1:,0].astype(float), exp_Xe133[1:,1].astype(float), 'o', color = '#B3B3B3', label='Data from IFPE ${}^{133}$Xe')
   ax.set_zorder(2)
   ax.set_frame_on(False)
@@ -113,9 +116,10 @@ def do_plot(exp_Xe133, exp_Kr85m, calculated_Kr85m_Zullo2022, calculated_Xe133_Z
   axT.plot(burnup, temperature, 'r-', linewidth = 1, label="Temperature")
   axT.set_zorder(1)
 
-  ax.plot(burnup, Kr85m, color = '#98E18D', linewidth = 2, label='SCIANTIX 2.0 ${}^{85m}$Kr')
+  ax.plot(burnup, Kr85m, color = '#98E18D', linewidth = 2, label='SCIANTIX 2.0')
   ax.fill_between(burnup, (Kr85m)/5, (Kr85m)*5, color='#ffcc80', alpha=0.5, label='x/5 deviation')
-  ax.plot(calculated_Kr85m_Zullo2022[1:,0].astype(float), calculated_Kr85m_Zullo2022[1:,1].astype(float), '--', color = 'black', linewidth = 1, label='Zullo et al. (2022) ${}^{85m}$Kr')
+#   ax.plot(calculated_Kr85m_Zullo2022[1:,0].astype(float), calculated_Kr85m_Zullo2022[1:,1].astype(float), '--', color = 'black', linewidth = 1, label='Zullo et al. (2022) ${}^{85m}$Kr')
+  ax.plot(burnup2, calculated_Kr85m_ANS[:,1].astype(float), '--', color = 'black', linewidth = 1, label='ANS5.4-2010 ${}^{85m}$Kr')  
   ax.plot(exp_Kr85m[1:,0].astype(float), exp_Kr85m[1:,1].astype(float), 'o', color = '#B3B3B3', label='Data from IFPE ${}^{85m}$Kr')
   ax.set_zorder(2)
   ax.set_frame_on(False)
@@ -231,10 +235,15 @@ def regression_contact(wpath, mode_CONTACT, mode_gold, mode_plot, folderList, nu
       calculated_Kr85m_Zullo2022 = import_data("calculated_Kr85m_Zullo.txt")
       calculated_Xe133_Zullo2022 = import_data("calculated_Xe133_Zullo.txt")
 
+      calculated_burnup = import_data("time_burnup.txt")
+      burnup2 = calculated_burnup[:,1].astype(float) * burnup[-1] / calculated_burnup[-1,1].astype(float)
+      calculated_Kr85m_ANS = import_data("ANS54-2010-KR85M.txt")
+      calculated_Xe133_ANS = import_data("ANS54-2010-XE133.txt")
+
       # Check if the user has chosen to display the various plots
       if mode_plot == 1:
-        do_plot(exp_Xe133, exp_Kr85m, calculated_Kr85m_Zullo2022, calculated_Xe133_Zullo2022,
-                time, temperature, burnup, Xe133, Kr85m, exp_FG, fgr)
+        do_plot(exp_Xe133, exp_Kr85m, calculated_Kr85m_ANS, calculated_Xe133_ANS,
+                time, temperature, burnup, Xe133, Kr85m, exp_FG, fgr, burnup2)
 
       """ Statistical analysis """
       # Find common position in the burnup vector

@@ -24,6 +24,7 @@ class Matrix : virtual public Material
 {
 protected:
 	double matrix_density;
+	double lattice_parameter;
 	double grain_boundary_mobility;
 	double ff_range;
 	double ff_influence_radius;
@@ -55,6 +56,19 @@ public:
 		/// Member function to get the matrix theoretical density (kg/m3)
 		return matrix_density;
 	}
+
+	void setLatticeParameter(double m)
+	{
+		/// Member function to set the matrix lattice parameter
+		lattice_parameter = m;
+	}
+
+	double getLatticeParameter()
+	{
+		/// Member function to get the matrix lattice parameter
+		return lattice_parameter;
+	}
+
 
 	void setSurfaceTension(double r)
 	{

@@ -262,100 +262,224 @@ def plot(x_name, y_name, output_filename="output.txt", ax=None, color='blue'):
 
 
 def plot_data(ax, xAxis, data, axisLabel, legendLabel, color, line_style='-', 
-              axis_id='y1', secondary_axes=None, y_limits=None, x_limits=None):
-    """
-    Plots data on the given axis, handling multiple secondary axes and axis limits.
-    Includes the ability to specify the line style.
-    Uses axis_id as a unique identifier for secondary axes.
-    The first secondary axis ('y2') is attached to the main plot frame, 
-    and subsequent secondary axes are pushed to the right.
-    """
-    if secondary_axes is None:
-        secondary_axes = {}
+			  axis_id='y1', secondary_axes=None, y_limits=None, x_limits=None):
+	"""
+	Plots data on the given axis, handling multiple secondary axes and axis limits.
+	Includes the ability to specify the line style.
+	Uses axis_id as a unique identifier for secondary axes.
+	The first secondary axis ('y2') is attached to the main plot frame, 
+	and subsequent secondary axes are pushed to the right.
+	"""
+	if secondary_axes is None:
+		secondary_axes = {}
 
-    if axis_id == 'y1':
-        ax.plot(xAxis, data, label=legendLabel, color=color, linestyle=line_style)
-        ax.set_ylabel(axisLabel, color=color)
-        ax.tick_params(axis='y', labelcolor=color)  # Set tick color for primary y-axis
-        if y_limits:
-            ax.set_ylim(y_limits)
-        if x_limits:
-            ax.set_xlim(x_limits)
-    else:
-        if axis_id not in secondary_axes:
-            new_ax = ax.twinx()
-            secondary_axes[axis_id] = new_ax
-            new_ax.set_ylabel(axisLabel, color=color)
+	if axis_id == 'y1':
+		ax.plot(xAxis, data, label=legendLabel, color=color, linestyle=line_style)
+		ax.set_ylabel(axisLabel, color=color)
+		ax.tick_params(axis='y', labelcolor=color)  # Set tick color for primary y-axis
+		if y_limits:
+			ax.set_ylim(y_limits)
+		if x_limits:
+			ax.set_xlim(x_limits)
+	else:
+		if axis_id not in secondary_axes:
+			new_ax = ax.twinx()
+			secondary_axes[axis_id] = new_ax
+			new_ax.set_ylabel(axisLabel, color=color)
 
-            # Adjust position for additional secondary axes beyond the first one
-            if axis_id != 'y2':
-                ax_position = ax.get_position()
-                new_ax.set_position([ax_position.x0, ax_position.y0, 
-                                     ax_position.width, ax_position.height])
-                offset = 60 * (len(secondary_axes) - 1)  # Offset for additional axes
-                new_ax.spines['right'].set_position(('outward', offset))
+			# Adjust position for additional secondary axes beyond the first one
+			if axis_id != 'y2':
+				ax_position = ax.get_position()
+				new_ax.set_position([ax_position.x0, ax_position.y0, 
+									 ax_position.width, ax_position.height])
+				offset = 60 * (len(secondary_axes) - 1)  # Offset for additional axes
+				new_ax.spines['right'].set_position(('outward', offset))
 
-        existing_ax = secondary_axes[axis_id]
-        existing_ax.plot(xAxis, data, label=legendLabel, color=color, linestyle=line_style)
-        existing_ax.tick_params(axis='y', labelcolor=color)
-        if y_limits:
-            existing_ax.set_ylim(y_limits)
-        if x_limits:
-            existing_ax.set_xlim(x_limits)
+		existing_ax = secondary_axes[axis_id]
+		existing_ax.plot(xAxis, data, label=legendLabel, color=color, linestyle=line_style)
+		existing_ax.tick_params(axis='y', labelcolor=color)
+		if y_limits:
+			existing_ax.set_ylim(y_limits)
+		if x_limits:
+			existing_ax.set_xlim(x_limits)
 
-    return ax, secondary_axes
+	return ax, secondary_axes
 
-def input_history(file):
+def sciantix_dictionary(file):
 	data = import_data(file)
 
-	time = data[1:,findSciantixVariablePosition(data, "Time (h)")].astype(float)
-	temperature = data[1:,findSciantixVariablePosition(data, "Temperature (K)")].astype(float)
-	frate = data[1:,findSciantixVariablePosition(data, "Fission rate (fiss / m3 s)")].astype(float)
-	sigma = data[1:,findSciantixVariablePosition(data, "Hydrostatic stress (MPa)")].astype(float)
+	variable_labels = {
+		"t": "Time (h)",
+		"T": "Temperature (K)",
+		"frate": "Fission rate (fiss / m3 s)",
+		"sigma": "Hydrostatic stress (MPa)",
+		"bu": "Burnup (MWd/kgUO2)",
+		"N": "Intergranular bubble concentration (bub/m2)",
+		"n": "Intergranular atoms per bubble (at/bub)",
+		"v": "Intergranular vacancies per bubble (vac/bub)",
+		"rad": "Intergranular bubble radius (m)",
+		"A": "Intergranular bubble area (m2)",
+		"vol": "Intergranular bubble volume (m3)",
+		"fc": "Intergranular fractional coverage (/)",
+		"fcsat": "Intergranular saturation fractional coverage (/)",
+		"f": "Intergranular fractional intactness (/)",
+		"fv": "Intergranular vented fraction (/)",
+		"pv": "Intergranular venting probability (/)",
+		"xe_p": "Xe produced (at/m3)",
+		"xe_ig": "Xe in grain (at/m3)",
+		"xe_igHBS": "Xe in grain HBS (at/m3)",
+		"xe_igb": "Xe in intragranular bubbles (at/m3)",
+		"xe_igs": "Xe in intragranular solution (at/m3)",
+		"xe_gb": "Xe at grain boundary (at/m3)",
+		"xe_r": "Xe released (at/m3)",
+		"fgr" : "Fission gas release (/)",
+		"alpha": "Restructured volume fraction (/)",
+		"sv": "Intergranular S/V (1/m)",
+		"swe_gb" : "Intergranular gas swelling (/)",
+		"a": "Grain radius (m)",
+	}
 
+	sd = {}
+	label = []
+	name = []
+
+	for var_name, var_label in variable_labels.items():
+		label.append(var_label)
+		name.append(var_name)
+
+	for i in range(len(label)):
+		try:
+			var_index = findSciantixVariablePosition(data, label[i])
+		except:
+			var_index = None
+		if var_index is not None:
+			sd[name[i]] = data[1:, var_index].astype(float)
+		else:
+			sd[name[i]] = np.zeros_like(data[1:, 0].astype(float))
+			print(f"Variable '{label[i]}' not found in the data.")
+	
+	return sd
+
+def plot(sd):
+
+	# Plot : input history
 	fig, ax = plt.subplots() 
 	ax.set_xlabel('Time, h')
 	secondary_axes_1 = {}
-
-	ax, _ = plot_data(ax, time, temperature, 'Temperature (K)', 'T', 'tab:red', '-', 'y1')
-	ax, secondary_axes_1 = plot_data(ax, time, frate, 'Fission rate (fiss / m3 s)', 'F', 'tab:blue','-', 'y2', secondary_axes_1)
-	ax, secondary_axes_1 = plot_data(ax, time, sigma, 'Hydrostatic stress (MPa)', 's_h', 'tab:green','-', 'y3', secondary_axes_1)
+	ax, _ = plot_data(ax, sd["t"], sd["T"], 'Temperature (K)', 'T', 'tab:red', '-', 'y1')
+	ax, secondary_axes_1 = plot_data(ax, sd["t"], sd["frate"], 'Fission rate (fiss / m3 s)', 'F', 'tab:blue','-', 'y2', secondary_axes_1)
+	ax, secondary_axes_1 = plot_data(ax, sd["t"], sd["sigma"], 'Hydrostatic stress (MPa)', 's_h', 'tab:green','-', 'y3', secondary_axes_1)
 	fig.tight_layout()
 
 	plt.show()
 
-def fission_gas(file):
-	# Xe produced (at/m3)	Xe in grain (at/m3)	Xe in intragranular solution (at/m3)	Xe in intragranular bubbles (at/m3)	Xe at grain boundary (at/m3)	Xe released (at/m3)
-	data = import_data(file)
-
-	time = data[1:,findSciantixVariablePosition(data, "Time (h)")].astype(float)
-	temperature = data[1:,findSciantixVariablePosition(data, "Temperature (K)")].astype(float)
-	frate = data[1:,findSciantixVariablePosition(data, "Fission rate (fiss / m3 s)")].astype(float)
-	sigma = data[1:,findSciantixVariablePosition(data, "Hydrostatic stress (MPa)")].astype(float)
-
-	xe_p = data[1:,findSciantixVariablePosition(data, "Xe produced (at/m3)")].astype(float)
-	xe_g = data[1:,findSciantixVariablePosition(data, "Xe in grain (at/m3)")].astype(float)
-	xe_g1 = data[1:,findSciantixVariablePosition(data, "Xe in intragranular solution (at/m3)")].astype(float)
-	xe_g2 = data[1:,findSciantixVariablePosition(data, "Xe in intragranular bubbles (at/m3)")].astype(float)
-	xe_gb = data[1:,findSciantixVariablePosition(data, "Xe at grain boundary (at/m3)")].astype(float)
-	xe_r = data[1:,findSciantixVariablePosition(data, "Xe released (at/m3)")].astype(float)
-
 	# Plot : Xenon
 	fig, ax = plt.subplots() 
 	ax.set_xlabel('Time, h')
-
-	x = time
-	# x = temperature
 	
-	ax.plot(x, xe_p, 	color=colors[0], label="Xe produced (at/m3)")
-	ax.plot(x, xe_g, 	color=colors[1], label="Xe in grain (at/m3)")
-	ax.plot(x, xe_g1, 	color=colors[2], label="Xe in intragranular solution (at/m3)")
-	ax.plot(x, xe_g2, 	color=colors[3], label="Xe in intragranular bubbles (at/m3)")
-	ax.plot(x, xe_gb, 	color=colors[6], label="Xe at grain boundary (at/m3)")
-	ax.plot(x, xe_r, 	color=colors[5], label="Xe released (at/m3)")
+	ax.plot(sd["t"], sd["xe_p"], 		color=colors[0], label="Xe produced (at/m3)")
+	ax.plot(sd["t"], sd["xe_ig"], 	color=colors[1], label="Xe in grain (at/m3)")
+	ax.plot(sd["t"], sd["xe_igs"], 	color=colors[2], label="Xe in intragranular solution (at/m3)")
+	ax.plot(sd["t"], sd["xe_igb"], 	color=colors[3], label="Xe in intragranular bubbles (at/m3)")
+	ax.plot(sd["t"], sd["xe_gb"], 	color=colors[6], label="Xe at grain boundary (at/m3)")
+	ax.plot(sd["t"], sd["xe_r"], 		color=colors[5], label="Xe released (at/m3)")
 	
 	# ax.set_yscale('log')
 	ax.set_ylabel("Xe concentrations")
+	ax.tick_params(axis='y')
+	ax.legend()
+	fig.tight_layout()
+	plt.show()
+
+	# plot: HBS in grain
+	fig, ax1 = plt.subplots()
+
+	ax1.plot(sd["t"], sd["xe_ig"], color='blue', label='xe_ig')
+	ax1.plot(sd["t"], sd["xe_igHBS"], color='green', label='xe_ig_HBS')
+	ax1.set_xlabel('Time')
+	ax1.set_ylabel('Xe in grain', color='black')
+	ax2 = ax1.twinx()
+	ax2.plot(sd["t"], sd["alpha"], color='orange', label='restructured volume fraction')
+	ax2.set_ylabel('alpha', color='black')
+	ax1.legend(loc='upper left')
+	ax2.legend(loc='upper right')
+	plt.show()
+
+	# fig.tight_layout()
+	plt.show()
+
+	# Plot: burnup - gas in grain
+	fig, ax1 = plt.subplots()
+
+	ax1.plot(sd["bu"], sd["xe_ig"], color='green', label='xe_ig')
+	ax1.plot(sd["bu"], sd["xe_igHBS"], color='red', label='xe_igHBS')
+	ax1.set_xlabel('Burnup')
+	ax1.set_ylabel('Xe in grain (at/m${}^3$)', color='black')
+	ax2 = ax1.twinx()
+	ax2.plot(sd["bu"], sd["alpha"], color='orange', label='alpha')
+	ax2.set_ylabel('alpha', color='black')
+	plt.show()
+
+	# fig.tight_layout()
+	plt.show()
+
+	# Plot: N-A
+	fig, ax = plt.subplots() 
+	ax.set_xlabel('Intergranular bubble area ($\mu m^2$)')
+	ax.set_ylabel('Intergranular bubble concentration ($\mu m^{-2}$)')
+	ax.plot(sd["A"]*1e12, sd["N"]*1e-12, color=colors[4])
+	ax.tick_params(axis='y')
+	fig.tight_layout()
+	ax.set_xscale('log')
+	ax.set_yscale('log')
+	ax.set_xlim(1e-3, 10)
+	ax.set_ylim(1e-2, 100)
+	plt.show()
+
+	# Plot: Temperature - Bubble area and concentration
+	fig, ax = plt.subplots() 
+	ax.set_xlabel('Temperature (K)')
+	secondary_axes_1 = {}
+
+	ax, _ = plot_data(ax, sd["T"], sd["A"], 'Intergranular bubble area', 'A', 'tab:red', '-', 'y1')
+	ax, secondary_axes_1 = plot_data(ax, sd["T"], sd["N"], 'Intergranular bubble concentration', 'N', 'tab:blue','-', 'y2', secondary_axes_1)
+
+	# fig.tight_layout()
+	plt.show()
+
+	# Plot: Time - vacancies and atoms
+	fig, ax = plt.subplots() 
+	ax.set_xlabel('Time (h)')
+	secondary_axes_1 = {}
+
+	ax, _ = plot_data(ax, sd["t"], sd["v"], 'Intergranular vacancies per bubble', 'N', 'tab:red', '-', 'y1')
+	ax, secondary_axes_1 = plot_data(ax, sd["t"], sd["n"], 'Intergranular atoms per bubble', 'n_g', 'tab:blue','-', 'y2', secondary_axes_1)
+
+	# fig.tight_layout()
+	plt.show()
+
+	# Plot: Temperature - vacancies and atoms
+	fig, ax = plt.subplots() 
+	ax.set_xlabel('Temperature (K)')
+	secondary_axes_1 = {}
+
+	ax, _ = plot_data(ax, sd["T"], sd["v"], 'Intergranular vacancies per bubble', 'N', 'tab:red', '-', 'y1')
+	ax, secondary_axes_1 = plot_data(ax, sd["T"], sd["n"], 'Intergranular atoms per bubble', 'n_g', 'tab:blue','-', 'y2', secondary_axes_1)
+
+	# fig.tight_layout()
+	plt.show()
+
+	# Plot - Time - Intergranular parameters
+	fig, ax = plt.subplots() 
+	ax.set_xlabel('Time (h)')
+
+	ax.plot(sd["t"], np.ones_like(sd["t"]) * 0.5, color=colors[5], label="Saturation fractional coverage")
+	ax.plot(sd["t"], sd["fc"], 		color=colors[0], label="Intergranular fractional coverage")
+	ax.plot(sd["t"], sd["f"], 		color=colors[1], label="Intergranular fractional intactness")
+	ax.plot(sd["t"], sd["fv"], 		color=colors[2], label="Intergranular vented fraction")
+	ax.plot(sd["t"], sd["pv"], 		color=colors[3], label="Intergranular venting probability")
+	ax.plot(sd["t"], sd["swe_gb"],	color=colors[4], label="Intergranular gas swelling")
+
 	ax.tick_params(axis='y')
 	ax.legend()
 
@@ -363,70 +487,77 @@ def fission_gas(file):
 
 	plt.show()
 
-def intergranular(file):
-	# Intergranular bubble concentration (bub/m2)	Intergranular atoms per bubble (at/bub)	Intergranular vacancies per bubble (vac/bub)	Intergranular bubble radius (m)	Intergranular bubble area (m2)	Intergranular bubble volume (m3)
-	# Intergranular fractional coverage (/)	Intergranular saturation fractional coverage (/)	Intergranular gas swelling (/)	Intergranular fractional intactness (/)	Burnup (MWd/kgUO2)	U235 (at/m3)	U238 (at/m3)	Intergranular S/V (1/m)
-	# Intergranular vented fraction (/)	Intergranular venting probability (/)
+	# PLOT - Temperature - Intergranular parameters
+	fig, ax = plt.subplots() 
+	ax.set_xlabel('Temperature (K)')
 
-	data = import_data(file)
+	ax.plot(sd["T"], np.ones_like(sd["t"]) * 0.5, color=colors[5], label="Saturation fractional coverage")
+	ax.plot(sd["T"], sd["fc"], 		color=colors[0], label="Intergranular fractional coverage")
+	ax.plot(sd["T"], sd["f"], 		color=colors[1], label="Intergranular fractional intactness")
+	ax.plot(sd["T"], sd["fv"], 		color=colors[2], label="Intergranular vented fraction")
+	ax.plot(sd["T"], sd["pv"], 		color=colors[3], label="Intergranular venting probability")
+	ax.plot(sd["T"], sd["swe_gb"],	color=colors[4], label="Intergranular gas swelling")
 
-	time = data[1:,findSciantixVariablePosition(data, "Time (h)")].astype(float)
-	temperature = data[1:,findSciantixVariablePosition(data, "Temperature (K)")].astype(float)
-	frate = data[1:,findSciantixVariablePosition(data, "Fission rate (fiss / m3 s)")].astype(float)
-	sigma = data[1:,findSciantixVariablePosition(data, "Hydrostatic stress (MPa)")].astype(float)
-	bu = data[1:,findSciantixVariablePosition(data, "Burnup (MWd/kgUO2)")].astype(float)/0.8814
-	x1 = data[1:,findSciantixVariablePosition(data, "Intergranular bubble concentration (bub/m2)")].astype(float)
-	x2 = data[1:,findSciantixVariablePosition(data, "Intergranular atoms per bubble (at/bub)")].astype(float)
-	x3 = data[1:,findSciantixVariablePosition(data, "Intergranular vacancies per bubble (vac/bub)")].astype(float)
+	ax.tick_params(axis='y')
+	ax.legend()
 
-	xe_p = data[1:,findSciantixVariablePosition(data, "Xe produced (at/m3)")].astype(float)
+	fig.tight_layout()
 
-	alpha = data[1:,findSciantixVariablePosition(data, "Restructured volume fraction (/)")].astype(float)
-	xe_gb = data[1:,findSciantixVariablePosition(data, "Xe at grain boundary (at/m3)")].astype(float)
-	SV = data[1:,findSciantixVariablePosition(data, "Intergranular S/V (1/m)")].astype(float)
-	vol = data[1:,findSciantixVariablePosition(data, "Intergranular bubble volume (m3)")].astype(float)
-	rad = data[1:,findSciantixVariablePosition(data, "Intergranular bubble radius (m)")].astype(float)
-	fcsat = data[1:,findSciantixVariablePosition(data, "Intergranular saturation fractional coverage (/)")].astype(float)
-	xe_g = data[1:,findSciantixVariablePosition(data, "Xe in grain (at/m3)")].astype(float)
-	# xe_gHBS = data[1:,findSciantixVariablePosition(data, "Xe in grain HBS (at/m3)")].astype(float)
+	plt.show()
 
-	area = data[1:,findSciantixVariablePosition(data, "Intergranular bubble area (m2)")].astype(float)
-	ngb = data[1:,findSciantixVariablePosition(data, "Intergranular bubble concentration (bub/m2)")].astype(float)
-	x = time
+	# PLOT: Vented fraction:Fractional coverage
+	fig, ax = plt.subplots() 
+	ax.set_xlabel('Intergranular fractional coverage')
+	ax.set_ylabel("Intergranular vented fraction")
 
-	# PLOT: HBS in grain
-	# fig, ax1 = plt.subplots()
+	ax.plot(sd["fc"], sd["fv"], color=colors[0], label="Intergranular fractional coverage (/)")
 
-	# ax1.plot(time, xe_g, color='blue', label='xe_g')
-	# ax1.plot(time, xe_gHBS, color='green', label='xe_g1')
-	# ax1.set_xlabel('Time')
-	# ax1.set_ylabel('xe_p, xe_p1, xe_p2', color='black')
-	# ax2 = ax1.twinx()
-	# ax2.plot(time, alpha, color='orange', label='alpha')
-	# ax2.set_ylabel('alpha', color='black')
-	# ax1.legend(loc='upper left')
-	# ax2.legend(loc='upper right')
-	# plt.show()
+	ax.tick_params(axis='y')
+	ax.legend()
 
-	# fig.tight_layout()
-	# plt.show()
+	fig.tight_layout()
 
-	# PLOT: burnup - gas in grain
-	# fig, ax1 = plt.subplots()
+	plt.show()
 
-	# ax1.plot(bu, xe_g, color='green', label='xe_g1')
-	# ax1.plot(bu, xe_gHBS, color='red', label='xe_g2')
-	# ax1.set_xlabel('Burnup')
-	# ax1.set_ylabel('xe_p, xe_p1, xe_p2', color='black')
-	# ax2 = ax1.twinx()
-	# ax2.plot(bu, alpha, color='orange', label='alpha')
-	# ax2.set_ylabel('alpha', color='black')
-	# ax1.legend(loc='upper left')
-	# ax2.legend(loc='upper right')
-	# plt.show()
+	# PLOT: Time:FGR
+	fig, ax = plt.subplots() 
+	ax.plot(sd["t"], sd["fgr"], color=colors[0], label="FGR")
+	ax.tick_params(axis='y')
+	ax.legend()
+	fig.tight_layout()
+	plt.show()
 
-	# fig.tight_layout()
-	# plt.show()
+	# PLOT: Time:burnup
+	fig, ax = plt.subplots() 
+
+	ax.plot(sd["t"], sd["bu"]/0.8814,color=colors[0], label="Burnup")
+
+	ax.tick_params(axis='y')
+	ax.legend()
+
+	fig.tight_layout()
+
+	plt.show()
+
+	# PLOT: S/V and grain radius - temperature
+	fig, ax = plt.subplots() 
+	ax.set_xlabel('Temperature (K)')
+	secondary_axes_1 = {}
+	ax, _ 					= plot_data(ax, sd["t"], sd["sv"], 'S/V (1/m)', 'SV', 'tab:red', '-', 'y1')
+	ax, secondary_axes_1 	= plot_data(ax, sd["t"], sd["a"], 'Grain radius (m)', 'a', 'tab:blue','-', 'y2', secondary_axes_1)
+	fig.tight_layout()
+	plt.show()
+
+	# PLOT: S/V and grain radius - time
+	fig, ax = plt.subplots() 
+	ax.set_xlabel('Time, h')
+	secondary_axes_1 = {}
+
+	ax, _ = plot_data(ax, sd["t"], sd["sv"], 'S/V (1/m)', 'SV', 'tab:red', '-', 'y1')
+	ax, secondary_axes_1 = plot_data(ax, sd["t"], sd["a"], 'Grain radius (m)', 'a', 'tab:blue','-', 'y2', secondary_axes_1)
+	fig.tight_layout()
+
+	plt.show()
 
 	# PLOT MMS
 	# fig, ax = plt.subplots() 
@@ -452,208 +583,24 @@ def intergranular(file):
 
 	# plt.show()
 
-	# PLOT N-A
-	fig, ax = plt.subplots() 
-	ax.set_xlabel('A')
-	ax.set_ylabel('N')
-	ax.plot(area*1e12, ngb*1e-12, color=colors[4])
-	ax.tick_params(axis='y')
-	ax.legend()
-	fig.tight_layout()
-	ax.set_xscale('log')
-	ax.set_yscale('log')
-	ax.set_xlim(1e-3, 10)
-	ax.set_ylim(1e-2, 100)
-	plt.show()
-
-	# PLOT: Temperature:vacancies and atoms
-	fig, ax = plt.subplots() 
-	ax.set_xlabel('Temperature (K)')
-	secondary_axes_1 = {}
-
-	ax, _ = plot_data(ax, temperature, area, 'Intergranular bubble area', 'A', 'tab:red', '-', 'y1')
-	ax, secondary_axes_1 = plot_data(ax, temperature, ngb, 'Intergranular bubble concentration', 'N', 'tab:blue','-', 'y2', secondary_axes_1)
-
-	# fig.tight_layout()
-	plt.show()
-
-	# PLOT: Time:vacancies and atoms
-	fig, ax = plt.subplots() 
-	ax.set_xlabel('Time (h)')
-	secondary_axes_1 = {}
-
-	ax, _ = plot_data(ax, time, x3, 'Intergranular vacancies per bubble', 'N', 'tab:red', '-', 'y1')
-	ax, secondary_axes_1 = plot_data(ax, time, x2, 'Intergranular atoms per bubble', 'n_g', 'tab:blue','-', 'y2', secondary_axes_1)
-
-	# fig.tight_layout()
-	plt.show()
-
-	# PLOT: Temperature:vacancies and atoms
-	fig, ax = plt.subplots() 
-	ax.set_xlabel('Temperature (K)')
-	secondary_axes_1 = {}
-
-	ax, _ = plot_data(ax, temperature, x3, 'Intergranular vacancies per bubble', 'N', 'tab:red', '-', 'y1')
-	ax, secondary_axes_1 = plot_data(ax, temperature, x2, 'Intergranular atoms per bubble', 'n_g', 'tab:blue','-', 'y2', secondary_axes_1)
-
-	# fig.tight_layout()
-	plt.show()
-
-	# PLOT - Time:Intergranular parameters
-	fig, ax = plt.subplots() 
-	ax.set_xlabel('Time (h)')
-
-	x = time
-
-	ax.plot(x, np.ones_like(x) * 0.5, 																					color=colors[5], label="Saturation fractional coverage")
-	ax.plot(x, data[1:,findSciantixVariablePosition(data, "Intergranular fractional coverage (/)")].astype(float), 		color=colors[0], label="Intergranular fractional coverage")
-	ax.plot(x, data[1:,findSciantixVariablePosition(data, "Intergranular fractional intactness (/)")].astype(float), 	color=colors[1], label="Intergranular fractional intactness")
-	ax.plot(x, data[1:,findSciantixVariablePosition(data, "Intergranular vented fraction (/)")].astype(float), 			color=colors[2], label="Intergranular vented fraction")
-	ax.plot(x, data[1:,findSciantixVariablePosition(data, "Intergranular venting probability (/)")].astype(float), 		color=colors[3], label="Intergranular venting probability")
-	ax.plot(x, data[1:,findSciantixVariablePosition(data, "Intergranular gas swelling (/)")].astype(float), 			color=colors[4], label="Intergranular gas swelling")
-
-	ax.tick_params(axis='y')
-	ax.legend()
-
-	fig.tight_layout()
-
-	plt.show()
-
-	# PLOT - Temperature:Intergranular parameters
-	fig, ax = plt.subplots() 
-	ax.set_xlabel('Temperature (K)')
-
-	x = temperature
-
-	ax.plot(x, np.ones_like(x) * 0.5, 																					color=colors[5], label="Saturation fractional coverage")
-	ax.plot(x, data[1:,findSciantixVariablePosition(data, "Intergranular fractional coverage (/)")].astype(float), 		color=colors[0], label="Intergranular fractional coverage")
-	ax.plot(x, data[1:,findSciantixVariablePosition(data, "Intergranular fractional intactness (/)")].astype(float), 	color=colors[1], label="Intergranular fractional intactness")
-	ax.plot(x, data[1:,findSciantixVariablePosition(data, "Intergranular vented fraction (/)")].astype(float), 			color=colors[2], label="Intergranular vented fraction")
-	ax.plot(x, data[1:,findSciantixVariablePosition(data, "Intergranular venting probability (/)")].astype(float), 		color=colors[3], label="Intergranular venting probability")
-	ax.plot(x, data[1:,findSciantixVariablePosition(data, "Intergranular gas swelling (/)")].astype(float), 			color=colors[4], label="Intergranular gas swelling")
-
-	ax.tick_params(axis='y')
-	ax.legend()
-
-	fig.tight_layout()
-
-	plt.show()
-
-	# PLOT: Vented fraction:Fractional coverage
-	fig, ax = plt.subplots() 
-	ax.set_xlabel('Intergranular fractional coverage')
-	ax.set_ylabel("Intergranular vented fraction")
-
-	ax.plot(
-		data[1:,findSciantixVariablePosition(data, "Intergranular fractional coverage (/)")].astype(float),
-		data[1:,findSciantixVariablePosition(data, "Intergranular vented fraction (/)")].astype(float),
-		color=colors[0], label="Intergranular fractional coverage (/)")
-
-	ax.tick_params(axis='y')
-	ax.legend()
-
-	fig.tight_layout()
-
-	plt.show()
-
-	# PLOT: Time:FGR
-	fig, ax = plt.subplots() 
-
-	ax.plot(
-		data[1:,findSciantixVariablePosition(data, "Time (h)")].astype(float),
-		data[1:,findSciantixVariablePosition(data, "Fission gas release (/)")].astype(float),
-		color=colors[0], label="FGR")
-
-	ax.tick_params(axis='y')
-	ax.legend()
-
-	fig.tight_layout()
-
-	plt.show()
-
-	# PLOT: Time:burnup
-	fig, ax = plt.subplots() 
-
-	ax.plot(
-		data[1:,findSciantixVariablePosition(data, "Time (h)")].astype(float),
-		data[1:,findSciantixVariablePosition(data, "Burnup (MWd/kgUO2)")].astype(float)/0.8814,
-		color=colors[0], label="Burnup")
-
-	ax.tick_params(axis='y')
-	ax.legend()
-
-	fig.tight_layout()
-
-	plt.show()
-
-	# PLOT: S/V and grain radius - temperature
-	a = data[1:,findSciantixVariablePosition(data, "Grain radius (m)")].astype(float)
-	x = temperature
-
-	fig, ax = plt.subplots() 
-	ax.set_xlabel('Temperature (K)')
-	secondary_axes_1 = {}
-
-	ax, _ = plot_data(ax, x, SV, 'S/V (1/m)', 'SV', 'tab:red', '-', 'y1')
-	ax, secondary_axes_1 = plot_data(ax, x, a, 'Grain radius (m)', 'a', 'tab:blue','-', 'y2', secondary_axes_1)
-	fig.tight_layout()
-
-	plt.show()
-
-	# PLOT: S/V and grain radius - time
-	SV = data[1:,findSciantixVariablePosition(data, "Intergranular S/V (1/m)")].astype(float)
-	a = data[1:,findSciantixVariablePosition(data, "Grain radius (m)")].astype(float)
-	x = time
-
-	fig, ax = plt.subplots() 
-	ax.set_xlabel('Time, h')
-	secondary_axes_1 = {}
-
-	ax, _ = plot_data(ax, x, SV, 'S/V (1/m)', 'SV', 'tab:red', '-', 'y1')
-	ax, secondary_axes_1 = plot_data(ax, x, a, 'Grain radius (m)', 'a', 'tab:blue','-', 'y2', secondary_axes_1)
-	fig.tight_layout()
-
-	plt.show()
-
-	# PLOT: He fractional releasse
-	# re = data[1:,findSciantixVariablePosition(data, "He fractional release (/)")].astype(float)
-	# x = time
-
-	# fig, ax = plt.subplots() 
-	# ax.set_xlabel('Time, h')
-	# secondary_axes_1 = {}
-
-	# ax, _ = plot_data(ax, x, re, 'He fractional release (/)', 'He', 'tab:red', '-', 'y1')
-	# # ax, secondary_axes_1 = plot_data(ax, x, a, 'Grain radius (m)', 'a', 'tab:blue','-', 'y2', secondary_axes_1)
-	# fig.tight_layout()
-
-	# plt.show()
-
 def main():
 	is_main = int(input("plot mode (1 or 2): "))
 
 	os.system('./sciantix.x > log.sciantix')
 
-	# Check if the file 'output.txt' is in the current working directory.
 	if 'output.txt' in os.listdir(os.getcwd()):
 
 		if is_main == 1:
-			# If the file exists, run the sciantix function with 'output.txt' as the filename and main flag.
 			sciantix('output.txt', is_main)
-			# After the function call, check if the canvas (graphical window) was closed by the user.
 			if canvas_closed:
-				# If the user has closed the window, terminate the Python process.
 				sys.exit()
 
 		elif is_main == 2:
-			input_history('output.txt')
-			fission_gas('output.txt')
-			intergranular('output.txt')
+			dict = sciantix_dictionary('output.txt')
+			plot(dict)
 	else:
-		# If the 'output.txt' file does not exist in the current directory, print an error message.
 		print('No file named "output.txt" found in the current directory')
 
 if __name__ == "__main__":
-	# This is the entry point of the script. When the script is run directly (not imported as a module),
 	main()
 

@@ -28,9 +28,9 @@ SRCEXT      := C
 DEPEXT      := d
 OBJEXT      := o
 
-CFLAGS      := -Wall -O -g
+CFLAGS      := -Wall -O -g # -g: debug flag
 LIB         := -lm
-INC         := -I$(INCDIR) -I/usr/local/include #also this may change according to your environment specs
+INC         := -I$(INCDIR) -I/usr/local/include # also this may change according to your environment specs
 INCDEP      := -I$(INCDIR)
 
 SOURCES     := $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
