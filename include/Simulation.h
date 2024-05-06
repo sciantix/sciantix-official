@@ -73,8 +73,11 @@ class Simulation : public Solver, public Model
 			sciantix_variable[sv["Irradiation time"]].setConstant();
 			
 		sciantix_variable[sv["FIMA"]].setFinalValue(
-			history_variable[hv["Fission rate"]].getFinalValue() * history_variable[hv["Irradiation time"]].getFinalValue() * 3.6e5 / 
-			sciantix_variable[sv["U"]].getFinalValue()
+			solver.Integrator(
+				sciantix_variable[sv["FIMA"]].getInitialValue(),
+				history_variable[hv["Fission rate"]].getFinalValue() * 3.6e5 / sciantix_variable[sv["U"]].getFinalValue(), 
+				sciantix_variable[sv["Irradiation time"]].getIncrement()
+			)
 		);
 	}
 
@@ -109,6 +112,14 @@ class Simulation : public Solver, public Model
 						model[sm["Gas production - " + system.getName()]].getParameter().at(1)
 					)
 				);
+			else if(system.getRestructuredMatrix() == 1)
+				sciantix_variable[sv[system.getGasName() + " produced in HBS"]].setFinalValue(
+					solver.Integrator(
+						sciantix_variable[sv[system.getGasName() + " produced in HBS"]].getInitialValue(),
+						model[sm["Gas production - " + system.getName()]].getParameter().at(0),
+						model[sm["Gas production - " + system.getName()]].getParameter().at(1)
+					)
+				);
 		}
 	}
 
@@ -122,7 +133,7 @@ class Simulation : public Solver, public Model
 					solver.Decay(
 						sciantix_variable[sv[system.getGasName() + " decayed"]].getInitialValue(),
 						gas[ga[system.getGasName()]].getDecayRate(),
-						gas[ga[system.getGasName()]].getDecayRate() * sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue(),
+						gas[ga[system.getGasName()]].getDecayRate() * sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue(), // sarebbe produced + produced in HBS ma le seconde devono esistere per tutte le specie..
 						physics_variable[pv["Time step"]].getFinalValue()
 					)
 				);
@@ -182,7 +193,7 @@ class Simulation : public Solver, public Model
 						initial_value_solution = sciantix_variable[sv[system.getGasName() + " in intragranular solution"]].getFinalValue();
 						initial_value_bubbles  = sciantix_variable[sv[system.getGasName() + " in intragranular bubbles"]].getFinalValue();
 
-						solver.SpectralDiffusionNonEquilibrium(
+						solver.SpectralDiffusion2equations(
 							initial_value_solution,
 							initial_value_bubbles,
 							getDiffusionModesSolution(system.getGasName()),
@@ -200,11 +211,43 @@ class Simulation : public Solver, public Model
 					}					
 					break;
 				}
+	
+				case 3:
+					break;
 
 				default:
 					ErrorMessages::Switch("Simulation.h", "iDiffusionSolver", int(input_variable[iv["iDiffusionSolver"]].getValue()));
 					break;
 			}
+		}
+
+		if (int(input_variable[iv["iDiffusionSolver"]].getValue()) == 3)
+		{
+			double initial_value_solution(0.0), initial_value_bubbles(0.0), initial_value_hbs(0.0);
+
+			initial_value_solution = sciantix_variable[sv["Xe in intragranular solution"]].getFinalValue();
+			initial_value_bubbles = sciantix_variable[sv["Xe in intragranular bubbles"]].getFinalValue();
+			initial_value_hbs  = sciantix_variable[sv["Xe in grain HBS"]].getFinalValue();
+
+			solver.SpectralDiffusion3equations(
+				initial_value_solution,
+				initial_value_bubbles,
+				initial_value_hbs,
+				getDiffusionModesSolution("Xe"),
+				getDiffusionModesBubbles("Xe"),
+				getDiffusionModes("Xe in HBS"),
+				model[sm["Gas diffusion - Xe in UO2 with HBS"]].getParameter(),
+				physics_variable[pv["Time step"]].getFinalValue()
+			);
+			sciantix_variable[sv["Xe in grain"]].setFinalValue(initial_value_solution + initial_value_bubbles);
+			sciantix_variable[sv["Xe in intragranular solution"]].setFinalValue(initial_value_solution);
+			sciantix_variable[sv["Xe in intragranular bubbles"]].setFinalValue(initial_value_bubbles);
+			sciantix_variable[sv["Xe in grain HBS"]].setFinalValue(initial_value_hbs);
+
+			sciantix_variable[sv["Intragranular gas solution swelling"]].setFinalValue(
+				(sciantix_variable[sv["Xe in intragranular solution"]].getFinalValue() + sciantix_variable[sv["Xe in grain HBS"]].getFinalValue()) *
+				pow(matrix[sma["UO2"]].getLatticeParameter(), 3) / 4
+			);
 		}
 
 		// Calculation of the gas concentration arrived at the grain boundary, by mass balance.
@@ -306,7 +349,7 @@ class Simulation : public Solver, public Model
 
 		// Swelling
 		// 4/3 pi N R^3
-		sciantix_variable[sv["Intragranular gas swelling"]].setFinalValue(4.188790205 *
+		sciantix_variable[sv["Intragranular gas bubble swelling"]].setFinalValue(4.188790205 *
 			pow(sciantix_variable[sv["Intragranular bubble radius"]].getFinalValue(), 3) *
 			sciantix_variable[sv["Intragranular bubble concentration"]].getFinalValue()
 		);
@@ -523,8 +566,11 @@ class Simulation : public Solver, public Model
 				break;
 			}
 
+			case 3:
+				break;
+
 			default:
-				ErrorMessages::Switch("Simulation.h", "iDiffusionSolver", int(input_variable[iv["iDiffusionSolver"]].getValue()));
+				// ErrorMessages::Switch("Simulation.h", "iDiffusionSolver", int(input_variable[iv["iDiffusionSolver"]].getValue()));
 				break;
 		}
 	}
@@ -852,10 +898,13 @@ class Simulation : public Solver, public Model
 			return &modes_initial_conditions[6 * 40];
 		else if(gas_name == "Xe133")
 			return &modes_initial_conditions[9 * 40];
+
 		else if (gas_name == "Kr85m")
 			return &modes_initial_conditions[12 * 40];
+			
 		else if (gas_name == "Xe in HBS")
 			return &modes_initial_conditions[15 * 40];
+
 		else
 		{
 			std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes." << std::endl;
@@ -906,8 +955,6 @@ class Simulation : public Solver, public Model
 		else if (gas_name == "Kr85m")
 			return &modes_initial_conditions[14 * 40];
 
-		else if (gas_name == "Xe in HBS")
-			return &modes_initial_conditions[17 * 40];
 		else
 		{
 			std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesBubbles." << std::endl;

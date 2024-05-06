@@ -13,8 +13,7 @@
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
-#include "MatrixDeclaration.h"
 
-/// MatrixDeclaration
+#include "MatrixDeclaration.h"
 
 std::vector<Matrix> matrix;

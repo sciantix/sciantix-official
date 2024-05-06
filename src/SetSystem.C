@@ -117,7 +117,7 @@ void System::setFissionGasDiffusivity(int input_value)
 		 * 
 		 */
 		
-		reference += "iFGDiffusionCoefficient: constant diffusivity.\n\t";
+		reference += "iFGDiffusionCoefficient: constant diffusivity (7e-19 m2/s).\n\t";
 		diffusivity = 7e-19;
 		diffusivity *= sf_diffusivity;
 
@@ -534,7 +534,7 @@ void System::setTrappingRate(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch(__FILE__, "iTrappingRate", input_value);
+		ErrorMessages::Switch(__FILE__, "setTrappingRate", input_value);
 		break;
 	}
 }
@@ -591,7 +591,7 @@ void System::setNucleationRate(int input_value)
 	}
 
 	default:
-		ErrorMessages::Switch(__FILE__, "inucleation_rate", input_value);
+		ErrorMessages::Switch(__FILE__, "setNucleationRate", input_value);
 		break;
 	}
 }
@@ -617,8 +617,14 @@ void System::setProductionRate(int input_value)
 		 * 
 		 */
 
-		reference += "Production rate = cumulative yield * fission rate density.\n\t";
-		production_rate = yield * history_variable[hv["Fission rate"]].getFinalValue(); // (at/m3s)
+		double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
+
+		double sf(1.0);
+		if(input_variable[iv["iFuelMatrix"]].getValue() == 1)
+			sf = 1.25;
+
+		reference += "Production rate = cumulative yield * fission rate density * (1 - alpha).\n\t";
+		production_rate = sf * (1.0 - alpha) * yield * history_variable[hv["Fission rate"]].getFinalValue(); // (at/m3s)
 		break;
 	}
 
@@ -675,15 +681,13 @@ void System::setProductionRate(int input_value)
 
 		double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
 
-		// HBS fraction
-		production_rate = yield * history_variable[hv["Fission rate"]].getFinalValue() * alpha; // (at/m3s)
-	
-		reference += ": Production rate = cumulative yield * fission rate density * HBS volume fraction.\n\t";
+		reference += "Production rate = cumulative yield * fission rate density * alpha.\n\t";
+		production_rate = 1.25 * yield * history_variable[hv["Fission rate"]].getFinalValue() * alpha; // (at/m3s)
 		break;
 	}
 
 	default:
-		ErrorMessages::Switch(__FILE__, "iHeliumProductionRate", input_value);
+		ErrorMessages::Switch(__FILE__, "setProductionRate", input_value);
 		break;
 	}
 }

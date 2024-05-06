@@ -49,6 +49,16 @@ void defineSpectralDiffusion1Equation();
 void defineSpectralDiffusion2Equations();
 
 /**
+ * @brief Defines diffusion models using the spectral diffusion with three equations.
+ * 
+ * The first equation is for xenon in non-restructured matrix - dynamic solution
+ * The second equation is for xenon in non-restructured matrix - intragranular bubbles
+ * The third equation is for xenon in restructured matrix
+ * 
+ */
+void defineSpectralDiffusion3Equations();
+
+/**
  * @brief Handles unsupported diffusion solver options.
  */
 void errorHandling();
