@@ -20,4 +20,6 @@ with open('input_scaling_factors.txt', 'w') as file:
     file.write('1.0\n')
     file.write('# scaling factor - cent parameter\n')
     file.write('1.0\n')
-    file.write('# scaling factor - helium production rate')
+    file.write('# scaling factor - helium production rate\n')
+    file.write('1.0\n')
+    file.write('# scaling factor - dummy')
