@@ -19,7 +19,8 @@
 
 #include "Material.h"
 
-/// Derived class for the fission gases (e.g., xenon, krypton, helium).
+/// Derived class for the gases (e.g., xenon, krypton, helium).
+
 class Gas : virtual public Material
 {
 protected:

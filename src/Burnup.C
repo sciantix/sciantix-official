@@ -16,14 +16,6 @@
 
 #include "Burnup.h"
 
-/**
- * @brief Defines the Burnup model.
- * 
- * The Burnup model evaluates the local fuel burnup based on the local power density, derived from the local fission rate density.
- * This calculation is performed within the Simulation::BurnupEvolution() function using the Solver::Integrator.
- * 
- */
-
 void Burnup()
 {
 	model.emplace_back();
@@ -34,11 +26,11 @@ void Burnup()
 	double fuelDensity = sciantix_variable[sv["Fuel density"]].getFinalValue();
 	double specificPower = fissionRate * (3.12e-17) / fuelDensity;
 
-	double specific_power = specificPower / 86400.0; // specific power in MW/kg, burnup in MWd/kg
-	sciantix_variable[sv["Specific power"]].setFinalValue(specific_power);
+	double burnup = specificPower / 86400.0; // specific power in MW/kg, burnup in MWd/kg
+	sciantix_variable[sv["Specific power"]].setFinalValue(specificPower);
 	
 	std::vector<double> parameter;
-	parameter.push_back(specific_power);
+	parameter.push_back(burnup);
 
 	std::string reference = ": The local burnup is calculated from the fission rate density.";
 

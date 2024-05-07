@@ -16,8 +16,6 @@
 
 #include "SetSystem.h"
 
-/// SetSystem
-
 void SetSystem()
 {
 	switch (int(input_variable[iv["iFuelMatrix"]].getValue()))
@@ -101,11 +99,6 @@ void System::setBubbleDiffusivity(int input_value)
 
 void System::setFissionGasDiffusivity(int input_value)
 {
-	/** 
-	 * ### setFissionGasDiffusivity
-	 * @brief The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFGDiffusionCoefficient
-	 * 
-	 */
 	const double boltzmann_constant = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
 
 	switch (input_value)

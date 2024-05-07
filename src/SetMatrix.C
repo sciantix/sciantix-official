@@ -18,11 +18,6 @@
 
 void SetMatrix( )
 {
-  /**
-   * @brief This routine defines the available options for fuel matrices and their properties.
-   * 
-   */
-
 	switch (int(input_variable[iv["iFuelMatrix"]].getValue()))
 	{
 		case 0: 

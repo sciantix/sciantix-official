@@ -14,6 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef SET_MATRIX_H
+#define SET_MATRIX_H
+
 #include "MatrixDeclaration.h"
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
@@ -28,4 +31,4 @@
 
 void SetMatrix();
 
-
+#endif // SET_MATRIX_H

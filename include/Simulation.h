@@ -50,8 +50,10 @@ class Simulation : public Solver, public Model
 
 	void Burnup()
 	{
-		/// @brief Burnup uses the solver Integrator to computes the fuel burnup from the local power density.
-		/// This method is called in Sciantix.cpp, after the definition of the Burnup model.
+		/**
+		 * Burnup uses the solver Integrator to compute the fuel burnup from the local power density.
+		 * This method is called in Sciantix.C, after the definition of the Burnup model.
+		*/
 		
 		sciantix_variable[sv["Burnup"]].setFinalValue(
 			solver.Integrator(
@@ -85,7 +87,7 @@ class Simulation : public Solver, public Model
 	{
 		/// @brief EffectiveBurnup uses the solver Integrator to computes the effective burnup of the fuel, if the
 		/// criteria on the temperature are required.
-		/// This method is called in Sciantix.cpp after the definition of the effective burnup model.
+		/// This method is called in Sciantix.C after the definition of the effective burnup model.
 		sciantix_variable[sv["Effective burnup"]].setFinalValue(
 			solver.Integrator(
 				sciantix_variable[sv["Effective burnup"]].getInitialValue(),

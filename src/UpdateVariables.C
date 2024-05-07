@@ -16,8 +16,6 @@
 
 #include "UpdateVariables.h"
 
-/// UpdateVariables
-
 void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_modes[])
 {
 	Sciantix_variables[0] = sciantix_variable[sv["Grain radius"]].getFinalValue();

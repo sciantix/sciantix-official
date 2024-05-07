@@ -14,7 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-/// SetSystem
+#ifndef SET_SYSTEM_H
+#define SET_SYSTEM_H
 
 #include "MapSystem.h"
 #include "SystemDeclaration.h"
@@ -28,7 +29,14 @@
 #include "Kr85m_in_UO2.h"
 #include "He_in_UO2.h"
 #include "Xe_in_UO2HBS.h"
-
 #include <vector>
 
 void SetSystem();
+
+// void System::setFissionGasDiffusivity(int input_value)
+/** 
+ * The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFGDiffusionCoefficient
+ * 
+ */
+
+#endif // SET_SYSTEM_H
