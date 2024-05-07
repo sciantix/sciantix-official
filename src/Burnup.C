@@ -38,7 +38,7 @@ void Burnup()
 	sciantix_variable[sv["Specific power"]].setFinalValue(specific_power);
 	
 	std::vector<double> parameter;
-	parameter.push_back(burnup);
+	parameter.push_back(specific_power);
 
 	std::string reference = ": The local burnup is calculated from the fission rate density.";
 
