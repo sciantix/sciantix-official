@@ -20,8 +20,6 @@
 #include <vector>
 #include "HistoryVariable.h"
 
-/// Extern declaration of the history_variable vector
-
 extern std::vector<HistoryVariable> history_variable;
 
 #endif // HISTORY_VARIABLE_DECLARATION_H

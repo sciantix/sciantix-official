@@ -23,6 +23,7 @@
 #include "MapSciantixVariable.h"
 #include "MapHistoryVariable.h"
 
+void EnvironmentComposition();
 /**
  * @brief Evaluates the oxygen partial pressure in an external environment.
  * 
@@ -38,7 +39,5 @@
  * G. Zullo
  * 
  */
-
-void EnvironmentComposition();
 
 #endif // ENVIRONMENT_COMPOSITION_H

@@ -22,6 +22,7 @@
 #include "ModelDeclaration.h"
 #include "SetMatrix.h"
 
+void EffectiveBurnup();
 /**
  * @brief Defines the sciantix model "Effective burnup".
  * 
@@ -34,7 +35,5 @@
  * E. Redaelli
  * G. Zullo
 */
-
-void EffectiveBurnup();
 
 #endif // EFFECTIVE_BURNUP_H

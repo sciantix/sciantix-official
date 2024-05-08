@@ -24,11 +24,6 @@
 #include "Krypton.h"
 #include <vector>
 
-/**
- * @brief This routines defines the gas objects
- * 
- */
-
 void SetGas();
 
 #endif // SET_GAS_H

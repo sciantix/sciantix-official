@@ -218,9 +218,14 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 6:
 	{
 		/**
-		 * @brief this case is for 
+		 * @brief iFGDiffusionCoefficient = 1 sets the fission gas single-atom intragranular diffusivity equal to the expression 
+		 * in @ref *Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22*.
+		 * 
+		 * The fourth term (d4) takes into account the increased diffusivity due to the higher number of uranium vacancies
+		 * in non-stoichiometric fuel, as in @ref *Lidiard, A. B. (1966). Self-diffusion of uranium in UO2. JNM, 19(1), 106–108.*
 		 * 
 		 */
+		
 		double x = sciantix_variable[sv["Stoichiometry deviation"]].getFinalValue();
 		double temperature = history_variable[hv["Temperature"]].getFinalValue();
 		double fission_rate = history_variable[hv["Fission rate"]].getFinalValue();

@@ -51,6 +51,12 @@ void Initialization()
 	// Intragranular similarity ratio
 	Sciantix_variables[64] = 1.0;
 
+  	// Fabrication porosity = Porosity
+    Sciantix_variables[71] = Sciantix_variables[70] = 1.0 - Sciantix_variables[40] / 10960.0;
+
+	// Residual porosity
+	Sciantix_variables[89] = 0.75 * Sciantix_variables[71];
+
 	// projection on diffusion modes of the initial conditions
 	double initial_condition(0.0);
 	double projection_remainder(0.0);

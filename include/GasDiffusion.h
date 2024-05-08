@@ -30,37 +30,37 @@
 #include "MatrixDeclaration.h"
 #include "MapMatrix.h"
 
+void GasDiffusion();
 /**
- * @brief Defines models for gas diffusion within the fuel grain.
+ * Defines models for gas diffusion within the fuel grain.
  * 
  * This function computes diffusion models for gas atoms within the fuel grain
  * based on the selected diffusion solver option.
  */
-void GasDiffusion();
 
-/**
- * @brief Defines diffusion models using the spectral diffusion with one equation.
- */
 void defineSpectralDiffusion1Equation();
-
 /**
- * @brief Defines diffusion models using the spectral diffusion with two equations.
+ * Defines diffusion models using the spectral diffusion with one equation.
  */
-void defineSpectralDiffusion2Equations();
 
+void defineSpectralDiffusion2Equations();
 /**
- * @brief Defines diffusion models using the spectral diffusion with three equations.
+ * Defines diffusion models using the spectral diffusion with two equations.
+ */
+
+void defineSpectralDiffusion3Equations();
+/**
+ * Defines diffusion models using the spectral diffusion with three equations.
  * 
  * The first equation is for xenon in non-restructured matrix - dynamic solution
  * The second equation is for xenon in non-restructured matrix - intragranular bubbles
  * The third equation is for xenon in restructured matrix
  * 
  */
-void defineSpectralDiffusion3Equations();
 
-/**
- * @brief Handles unsupported diffusion solver options.
- */
 void errorHandling();
+/**
+ * Handles unsupported diffusion solver options.
+ */
 
 #endif // GAS_DIFFUSION_H

@@ -28,12 +28,11 @@
 #include "MapMatrix.h"
 #include <cmath>
 
+void FiguresOfMerit();
 /**
  * @brief This routines computes the value of sciantix_variable associated to figures of merit
  * that are of interest in the output.txt file.
  * 
  */
-
-void FiguresOfMerit();
 
 #endif // FIGURES_OF_MERIT_H

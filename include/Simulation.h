@@ -697,7 +697,6 @@ class Simulation : public Solver, public Model
 
 	void GrainBoundaryVenting()
 	{
-
 		if (!int(input_variable[iv["iGrainBoundaryVenting"]].getValue())) return;
 
 		for (auto& system : sciantix_system)
@@ -709,7 +708,7 @@ class Simulation : public Solver, public Model
 					sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getIncrement()
 				)
 			);
-		sciantix_variable[sv[system.getGasName() + " at grain boundary"]].resetValue();
+			sciantix_variable[sv[system.getGasName() + " at grain boundary"]].resetValue();
 		}
 	}
 

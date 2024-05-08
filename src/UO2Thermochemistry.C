@@ -24,10 +24,10 @@ void UO2Thermochemistry()
 	int model_index = int(model.size()) - 1;
 
 	model[model_index].setName("UO2 thermochemistry");
-
+	
 	std::string reference;
 	reference = "Blackburn (1973) J. Nucl. Mater., 46, 244-252.";
-
+	
 	std::vector<double> parameter;
 
 	parameter.push_back(sciantix_variable[sv["Stoichiometry deviation"]].getInitialValue());
@@ -40,9 +40,9 @@ void UO2Thermochemistry()
 
 double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature)
 {
-  double ln_p = 2.0 * log(stoichiometry_deviation*(2.0+stoichiometry_deviation)/(1.0-stoichiometry_deviation))
-    +	108.0*pow(sciantix_variable[sv["Stoichiometry deviation"]].getFinalValue(),2.0)
-    - 32700.0/temperature + 9.92;
+	double ln_p = 2.0 * log(stoichiometry_deviation*(2.0+stoichiometry_deviation)/(1.0-stoichiometry_deviation))
+		+	108.0*pow(sciantix_variable[sv["Stoichiometry deviation"]].getFinalValue(),2.0)
+		- 32700.0/temperature + 9.92;
 
-  return exp(ln_p);
+	return exp(ln_p);
 }

@@ -20,8 +20,6 @@
 #include <vector>
 #include "Material.h"
 
-/// Extern declaration of the material vector.
-
 extern std::vector<Material> material;
 
 #endif // MATERIAL_DECLARATION_H

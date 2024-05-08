@@ -19,8 +19,6 @@
 
 #include "Variable.h"
 
-/// Derived class inherited by Variable
-
 class PhysicsVariable : virtual public Variable
 {
 protected:

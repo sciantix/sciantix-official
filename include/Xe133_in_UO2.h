@@ -24,13 +24,12 @@
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
 
+void Xe133_in_UO2();
 /**
  * @brief Sets properties for the "Xenon133 in UO2" system.
  * 
  * This function initializes the properties of the "Xenon133 in UO2" system
  * and adds it to the sciantix_system vector.
  */
-
-void Xe133_in_UO2();
 
 #endif // XE133_IN_UO2_H

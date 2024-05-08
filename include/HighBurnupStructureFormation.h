@@ -21,6 +21,7 @@
 #include "MapSciantixVariable.h"
 #include "ModelDeclaration.h"
 
+void HighBurnupStructureFormation();
 /**
  * @brief HighBurnupStructureFormation
  * This model describes the formation of a HBS structure in UO2 fuel.
@@ -30,8 +31,6 @@
  * E. Redaelli
  * G. Zullo
 */
-
-void HighBurnupStructureFormation();
 
 #endif // HIGH_BURNUP_STRUCTURE_FORMATION_H
 

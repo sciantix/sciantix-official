@@ -14,6 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef ERROR_MESSAGES_h
+#define ERROR_MESSAGES_h
+
 #include <string>
 #include <iostream>
 #include <cstdlib>
@@ -25,3 +28,5 @@ namespace ErrorMessages
 	void MissingInputFile(const char* exception);
 	void Switch(std::string routine, std::string variable_name, int variable);
 };
+
+#endif // ERROR_MESSAGES_h

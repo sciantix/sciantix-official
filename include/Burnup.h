@@ -22,6 +22,7 @@
 #include "ModelDeclaration.h"
 #include "SetMatrix.h"
 
+void Burnup();
 /**
  * @brief Defines the Burnup model.
  * 
@@ -29,7 +30,5 @@
  * This calculation is performed within the Simulation::BurnupEvolution() function using the Solver::Integrator.
  * 
  */
-
-void Burnup();
 
 #endif // BURNUP_H
