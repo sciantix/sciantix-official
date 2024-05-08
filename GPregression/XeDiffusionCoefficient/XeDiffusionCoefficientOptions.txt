@@ -6,6 +6,6 @@
 100 #   Y number of points
 0.1   #   l hyperparameter
 1   #   sigma hyperparameter
-1   #   noise scaling factor
-True   #   DoPlot
-half   #   Update setting
+1    #   noise scaling factor
+1     #   DoPlot
+prog   #   Update setting

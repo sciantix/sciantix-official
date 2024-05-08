@@ -1,1 +1,2 @@
-1   #   XeDiffusionCoefficient (0 = no update, 1 = Matthews et al. (2020))
+0   #   XeDiffusionCoefficient (0 = no update, 1 = Matthews et al. (2020))
+1   #   MOXMeltingTemperature  (0 = no update, 1 = correlation update)
