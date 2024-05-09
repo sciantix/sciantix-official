@@ -1,0 +1,2 @@
+Input setting #0: 	XeDiffusionCoefficient = 1
+Input setting #1: 	XeDiffusionCoefficient = 0

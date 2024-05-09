@@ -1,0 +1,13 @@
+2       #   X starting-point
+2.05    #   X end-pont
+100     #   X number of points
+0       #   Y starting-point
+1       #   Y end-point
+100     #   Y number of points
+0.01    #   l hyperparameter
+1       #   sigma hyperparameter
+0.1    #   noise scaling factor
+True    #   DoPlot
+prog2  #   Update setting
+5      #   Perturbation index
+True   #   Fixed seed
