@@ -50,7 +50,6 @@ def direct_fit(Tdata, Ddata, Fdata, T_plot, F_plot, l, sigma, scaling_factor, Do
     ax.legend()
     fig.tight_layout()
     plt.savefig('Diffusion Coefficient Fitting')
-    print(DoPlot)
     if DoPlot:
         plt.show()
     
@@ -88,7 +87,7 @@ def GPregression_XeDiffusionCoefficient(data, correlation, evaluation_range, l, 
     
     DoPlot = activate/deactivate plots of weight function and updated regression
     
-    Update setting = to chose how to mange di update, "half" to stay between the correlation and the data, "prog" to stay closer to data if they are far from the correlation
+    Update setting = to chose how to manage the update, "half" to stay between the correlation and the data, "prog" to stay closer to data if they are far from the correlation, "False" to perform a fit of the dataset
     
     """
     # Number of data
@@ -122,7 +121,7 @@ def GPregression_XeDiffusionCoefficient(data, correlation, evaluation_range, l, 
         X_2D_dist = np.column_stack((Tdata, np.log10(Fdata)))
         Y_2D_dist = distances
 
-        noise = 0.001
+        noise = 1
 
         gx, gy = np.meshgrid(T_plot, F_plot)
         X_2D = np.c_[gx.ravel(), gy.ravel()]
@@ -188,8 +187,8 @@ def GPregression_XeDiffusionCoefficient(data, correlation, evaluation_range, l, 
         ax3.set_title('Contour of the weight function')
         ax3.set_xlabel('$10^4/T$')
         ax3.set_ylabel('$\log_{10}(\dot{F})$')
-        cbar = plt.colorbar(contour, ax=ax)
-        cbar.set_label('$\log_{10}(D)$')
+        #cbar = plt.colorbar(contour, ax=ax)
+        #cbar.set_label('$\log_{10}(D)$')
         plt.savefig('Contour of the weight function')
         if DoPlot:
             plt.show()
@@ -202,7 +201,7 @@ def GPregression_XeDiffusionCoefficient(data, correlation, evaluation_range, l, 
         #ax.plot_surface(gx, gy, updated_correlation - 2 * std_s.reshape(gx.shape), color='r', alpha=0.2)
 
         ax.scatter(Tdata, np.log10(Fdata), np.log10(Ddata), c='k', marker='o', alpha=.6, label = 'Data points')
-        ax.plot_surface(gx, gy, np.log10(correlation(1e4/gx, 10 ** gy)), cmap=cm.Greens, label = 'Turnbull diffusion coefficient', alpha=0.5)
+        ax.plot_surface(gx, gy, np.log10(correlation(1e4/gx, 10 ** gy)), cmap=cm.Greens, label = 'Turnbull diffusion coefficient', alpha=0.3)
 
         ax.set_xlabel('$10^4/T$')
         ax.set_ylabel('$\log_{10}(\dot{F})$')
