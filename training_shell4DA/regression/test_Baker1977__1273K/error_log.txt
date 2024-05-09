@@ -1,2 +1,0 @@
-Error in src/SetSystem.C.
-The input setting iFGDiffusionCoefficient = 90 is out of range.
