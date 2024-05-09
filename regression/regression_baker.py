@@ -112,32 +112,6 @@ def do_gold():
 # Plot the regression test results
 def do_plot():
   
-  igSwellingErrorVertL = np.abs(igSwelling2 - 100 * np.array([2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06]))
-  igSwellingErrorVertU = np.abs(igSwelling2 - 100 * np.array([0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503]))
-
-  # SCIANTIX 1.0 vs. SCIANTIX 2.0: intragranular bubble swelling + error bars
-  fig, ax = plt.subplots()
-
-  ax.scatter(igSwellingBaker, igSwelling1, edgecolors='#757575', facecolors='red',   marker = '^', s=30, label='SCIANTIX 1.0', zorder = 1)
-  ax.errorbar(igSwellingBaker, igSwelling2, xerr = igSwellingError, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), edgecolors= None, color='green', marker = '.', fmt='^', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0', zorder = 2)
-
-  ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
-  ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
-  ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
-
-  ax.set_xlim(0.5e-2, 1e1)
-  ax.set_ylim(0.5e-2, 1e1)
-
-  ax.set_xscale('log')
-  ax.set_yscale('log')
-
-  # ax.set_title('Intragranular gaseous swelling')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-
-  plt.show()
-  
   # SCIANTIX 2.0 Turbull diffusion coefficient vs. SCIANTIX 2.0 GPs updated diffusion coefficient: intragranular bubble swelling
   fig, ax = plt.subplots(1, 2, figsize=(12, 6))
 
@@ -168,7 +142,7 @@ def do_plot():
   ax2.grid()
   
   plt.tight_layout()
-  plt.savefig('plot_paper.png')
+  plt.savefig('plot_GPupdate.png')
   plt.show()
   
   # Data vs. SCIANTIX 2.0: bubble density + errorbar
@@ -190,8 +164,8 @@ def do_plot():
   ax.set_ylabel('Calculated (%)')
   ax.legend()
 
-  plt.show()
-  plt.close()
+  #plt.show()
+  #plt.close()
 
   # Data vs. SCIANTIX 2.0: bubble radius + errorbar
   fig, ax = plt.subplots()
@@ -213,8 +187,8 @@ def do_plot():
   ax.set_ylabel('Calculated (%)')
   ax.legend()
 
-  plt.show()
-  plt.close()
+  #plt.show()
+  #plt.close()
 
 # Fission gases release plot
 #   fig, ax = plt.subplots()
