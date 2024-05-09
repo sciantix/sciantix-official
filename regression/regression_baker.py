@@ -18,6 +18,11 @@ import scipy.stats as stats
 from sklearn.linear_model import LinearRegression
 
 """ ------------------- Global Variables ------------------- """
+# Plot condiguration
+plt.rcParams['axes.labelsize'] = 20
+plt.rcParams['xtick.labelsize'] = 20
+plt.rcParams['ytick.labelsize'] = 20
+
 
 # Intragranular gaseous swelling database from Baker 1977 experiments
 igSwellingBaker = np.array([0.06, 0.07, 0.08, 0.09, 0.12, 0.15, 0.18, 0.24, 0.31])
@@ -107,6 +112,30 @@ def do_plot():
   
   igSwellingErrorVertL = np.abs(igSwelling2 - 100 * np.array([2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06]))
   igSwellingErrorVertU = np.abs(igSwelling2 - 100 * np.array([0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503]))
+
+  # SCIANTIX 2.0-gold vs. SCIANTIX 2.0: intragranular bubble swelling
+  fig, ax = plt.subplots()
+
+  ax.scatter(igSwellingBaker, gold, edgecolors='#757575', facecolors='brown',   marker = '^', s=30, label='SCIANTIX 2.0 - Gold', zorder = 1)
+  ax.errorbar(igSwellingBaker, igSwelling2, edgecolors= None, color='green', marker = '.', fmt='^', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0 - Test', zorder = 2)
+
+  ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
+  ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
+  ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
+
+  ax.set_xlim(0.5e-2, 1e1)
+  ax.set_ylim(0.5e-2, 1e1)
+
+  ax.set_xscale('log')
+  ax.set_yscale('log')
+
+  # ax.set_title('Intragranular gaseous swelling')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+  plt.legend(fontsize='large')
+
+  plt.show()
 
   # SCIANTIX 1.0 vs. SCIANTIX 2.0: intragranular bubble swelling + error bars
   fig, ax = plt.subplots()

@@ -181,29 +181,6 @@ void System::setFissionGasDiffusivity(int input_value)
 	case 4:
 	{
 		/**
-		 * @brief iFGDiffusionCoefficient = 4 set the xenon single-atom intragranular diffusivity equal to the expression 
-		 * in @ref *iFGDiffusionCoefficient: Ronchi, C. High Temp 45, 552-571 (2007)*.
-		 * 
-		 */
-
-		reference += "iFGDiffusionCoefficient: Ronchi, C. High Temp 45, 552-571 (2007).\n\t";
-
-		double temperature = history_variable[hv["Temperature"]].getFinalValue();
-		double fission_rate = history_variable[hv["Fission rate"]].getFinalValue();
-
-		double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));
-		double d2 = 6.64e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
-		double d3 = 1.2e-39 * fission_rate;
-
-		diffusivity = d1 + d2 + d3;
-		diffusivity *= sf_diffusivity;
-
-		break;
-	}
-
-	case 5:
-	{
-		/**
 		 * @brief this case is for the UO2HBS. value from @ref Barani et al. Journal of Nuclear Materials 539 (2020) 152296
 		 * 
 		 */
@@ -215,7 +192,7 @@ void System::setFissionGasDiffusivity(int input_value)
 		break;
 	}
 
-	case 6:
+	case 5:
 	{
 		/**
 		 * @brief iFGDiffusionCoefficient = 1 sets the fission gas single-atom intragranular diffusivity equal to the expression 
@@ -247,6 +224,29 @@ void System::setFissionGasDiffusivity(int input_value)
 		diffusivity *= sf_diffusivity;
 
 		break;		
+	}
+
+	case 6:
+	{
+		/**
+		 * @brief this case is for the UO2HBS. value from @ref
+		 * 
+		 */
+
+		double F = history_variable[hv["Fission rate"]].getFinalValue();
+		double T = history_variable[hv["Temperature"]].getFinalValue();
+		
+		double k_eV = 8.6173303e-5;
+		double D_1 = 2.22e-7*exp(-3.26/(k_eV*T)) / (1 + 29*exp(-1.84/(k_eV*T)));
+		double D_2 = 2.82e-22*exp(-2.0/(k_eV*T))*sqrt(F);
+		double D_3 = 8.5e-40*F;
+
+		diffusivity = D_1 + D_2 + D_3;
+
+		diffusivity *= sf_diffusivity;
+		
+		reference += "...\n\t";
+		break;
 	}
 
 
@@ -596,10 +596,6 @@ void System::setNucleationRate(int input_value)
 
 void System::setProductionRate(int input_value)
 {
-	/** 
-	 * ### setProductionRate
-	 * 
-	 */
 	switch (input_value)
 	{
 	case 0:
@@ -610,11 +606,6 @@ void System::setProductionRate(int input_value)
 	}
 	case 1:
 	{
-		/**
-		 * @brief Production rate = cumulative yield * fission rate density
-		 * 
-		 */
-
 		double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
 
 		double sf(1.0);
@@ -670,13 +661,8 @@ void System::setProductionRate(int input_value)
 		break;
 	}
 
-	case 5:
+	case 4:
 	{
-		/**
-		 * @brief Production rate = cumulative yield * fission rate density * HBS volume fraction
-		 * 
-		 */
-
 		double alpha = sciantix_variable[sv["Restructured volume fraction"]].getFinalValue();
 
 		reference += "Production rate = cumulative yield * fission rate density * alpha.\n\t";

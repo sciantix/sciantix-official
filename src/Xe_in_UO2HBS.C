@@ -36,8 +36,8 @@ void Xe_in_UO2HBS()
 	sciantix_system[index].setRadiusInLattice(0.21e-9);
 	sciantix_system[index].setVolumeInLattice(matrix[sma["UO2HBS"]].getSchottkyVolume());
 	sciantix_system[index].setHenryConstant(0.0);
-	sciantix_system[index].setProductionRate(5);
-	sciantix_system[index].setFissionGasDiffusivity(5);
+	sciantix_system[index].setProductionRate(4);
+	sciantix_system[index].setFissionGasDiffusivity(4);
 	sciantix_system[index].setBubbleDiffusivity(0);
 	sciantix_system[index].setResolutionRate(99);
 	sciantix_system[index].setTrappingRate(99);
