@@ -82,8 +82,8 @@ def do_sciantix():
   shutil.copy("../input_scaling_factors.txt", os.getcwd())
 
   # copying and executing sciantix.exe into cwd
-  exe_name = "sciantix.exe" # win
-#   exe_name = "sciantix.x" # linux-ubuntu
+#   exe_name = "sciantix.exe" # win
+  exe_name = "sciantix.x" # linux-ubuntu
 
   shutil.copy("../"+exe_name, os.getcwd())
   os.system("./"+exe_name)
@@ -108,6 +108,29 @@ def do_gold():
 # Plot the regression test results
 def do_plot():
   
+  fig, ax = plt.subplots()
+
+  ax.scatter(igSwellingBaker, gold, edgecolors='#757575', facecolors='red',   marker = '^', s=30, label='SCIANTIX 2.0 - Gold', zorder = 1)
+  ax.scatter(igSwellingBaker, igSwelling2, edgecolors= None, color='green', marker = '.', label='SCIANTIX 2.0 - Test', zorder = 2)
+
+  ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
+  ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
+  ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
+
+  ax.set_xlim(0.5e-2, 1e1)
+  ax.set_ylim(0.5e-2, 1e1)
+
+  ax.set_xscale('log')
+  ax.set_yscale('log')
+
+  # ax.set_title('Intragranular gaseous swelling')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+
+  plt.show()
+
+
   igSwellingErrorVertL = np.abs(igSwelling2 - 100 * np.array([2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06,2.761719e-06]))
   igSwellingErrorVertU = np.abs(igSwelling2 - 100 * np.array([0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503,0.001832503]))
 
