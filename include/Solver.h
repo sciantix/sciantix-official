@@ -710,7 +710,7 @@ public:
 		 */
 		
 		const int dim = 10;
-		std::cout << "Solver ROM 10" << std::endl; 
+		//std::cout << "Solver ROM 10" << std::endl; 
 
 		// System of ODEs for temporal coefficients
 		// dx/dt = D/R^2 matrix_A x + S matrix_B
