@@ -58,6 +58,7 @@ void Initialization()
 	int iteration(0), iteration_max(20), n(0), np1(1), n_modes(40), k(0), K(20);
 	double projection_coeff(0.0);
 	projection_coeff = -sqrt(8.0 / pi);
+	double bases_average_volume[10] = {0.41129530866285, 0.19507084256177, 0.12338078227278, -0.087149181097342, -0.061782439034486, -0.039439246684594, 0.026250420764756, -0.022169230392364, -0.01780182510824, 0.016832900205518};
 
 	for (k = 0; k < K; ++k)
 	{
@@ -98,8 +99,17 @@ void Initialization()
 			{
 				np1 = n + 1;
 				const double n_coeff = pow(-1.0, np1) / np1;
-				Sciantix_diffusion_modes[k * n_modes + n] += projection_coeff * n_coeff * projection_remainder;
-				reconstructed_solution += projection_coeff * n_coeff * Sciantix_diffusion_modes[k * n_modes + n] * 3.0 / (4.0 * pi);
+				if(Sciantix_options[2] == 1 || Sciantix_options[2] == 2)
+				{
+					Sciantix_diffusion_modes[k * n_modes + n] += projection_coeff * n_coeff * projection_remainder;
+					reconstructed_solution += projection_coeff * n_coeff * Sciantix_diffusion_modes[k * n_modes + n] * 3.0 / (4.0 * pi);
+				}
+				else if ((Sciantix_options[2] == 8 && n < 10) || (Sciantix_options[2] == 7 && n < 5))
+				{
+					Sciantix_diffusion_modes[k * n_modes + n] += bases_average_volume[n] * (4.0/3.0 * pi) * projection_remainder; 
+					reconstructed_solution += bases_average_volume[n] * Sciantix_diffusion_modes[k * n_modes + n];
+				}
+
 			}
 			projection_remainder = initial_condition - reconstructed_solution;
 		}

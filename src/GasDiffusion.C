@@ -19,7 +19,7 @@ void GasDiffusion()
 {
 	switch (static_cast<int>(input_variable[iv["iDiffusionSolver"]].getValue()))
 	{
-		case 1:
+		case 1: case 7: case 8:
 			defineSpectralDiffusion1Equation();
 			break;
 
@@ -40,7 +40,7 @@ void GasDiffusion()
 void defineSpectralDiffusion1Equation()
 {
 	std::string reference;
-
+ 
     for (auto& system : sciantix_system)
 	{
 		model.emplace_back();

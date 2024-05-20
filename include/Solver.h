@@ -520,6 +520,300 @@ public:
 		}
 		return x1;
 	}
+    
+
+	void LUGauss(const int N, double * A, double * b)
+    {
+		/**
+		 * @brief LU decomposition, Doolittle algorithm, according to @ref Dahlquist, Germund, Ake Bjorck & Anderson, Ned, Numerical Methods, Prentice Hall, 1974.
+		 * The function performs firstly the LU decomposition of the input matrix (A) storing in it the lower and upper matrixes.
+		 * Then, the system solution is accomplished using the factorized matrix and a backward substitution method.
+		 * The solution is stored and returned in the RHS vector b.
+		 * NB: This function can be used also to perform only the decomposition itslef (i.e., for preconditioning)
+		 * passing a dummy rhs.
+		 * 
+		 * @param[in] N dimension
+		 * @param[in] A matrix of the linear system (in **1d-array form**)
+		 * @param[in] b RHS vector
+		 * 
+		 * @param[out] b solution
+		 * 
+		 */
+
+        int i, j, k, l;
+        double sum = 0.0;
+		std::vector<double> y(N);
+
+        // Decomposition
+        for(k=0;k<N;++k)
+		{
+    	for(j=k;j<N;++j)
+			{
+      	sum=0.;
+        for(l=0;l<k;++l)
+					sum += A[k*N+l] * A[l*N+j];
+        A[k*N+j] = A[k*N+j] - sum;
+        }
+        for(i=k+1;i<N;++i)
+			{
+      	sum = 0.;
+        for(l=0; l<k; ++l)
+				sum += A[i*N+l] * A[l*N+k];
+          A[i*N+k] = (A[i*N+k]-sum) / A[k*N+k];
+        }
+       }
+
+		// System solution
+		for(i=0;i<N;++i)
+			{
+			sum=0.;
+			for(k=0;k<i;++k)
+					sum += A[i*N+k] * y[k];
+		y[i] = b[i] - sum;
+		b[i] = 0.; // to cast solution in the input array b, first set this = 0
+		}
+		for(i=N-1; i>=0; --i)
+			{
+		sum=0.;
+		for(k=i+1;k<N;++k)
+					sum += A[i*N+k] * b[k];
+		b[i] = (y[i]-sum) / A[i*N+i];
+        }
+    } 
+
+
+
+	double ROM_Sphere5(double* initial_condition, std::vector<double> parameter, double increment)
+    { 
+		/**
+		 * @brief Solver for the spatially averaged solution of the PDE [dy/dt = D div grad y + S]
+		 *        We apply a spectral approach in space, projecting the equation on the spatial modes 
+		 *        constructed by means the Proper Orthogonal Decomposition technique (G. Berkooz et al. (1993) 
+		 *        https://doi.org/10.1146/annurev.fl.25.010193.002543). 
+		 *	  We use the first order backward Euler solver in time. 
+		 *    The number of modes adopted is fixed a priori at 5.
+		 *	  From Pizzocri et al. (2023) https://doi.org/10.1016/j.net.2023.07.013 
+		 * @param[in] parameter.at(0) dimension (not used)
+		 * @param[in] parameter.at(1) diffusivity
+		 * @param[in] parameter.at(2) radius of the sphere
+		 * @param[in] parameter.at(3) source term
+		 * @param[in] parameter.at(4) decay rate (not used)
+		 * 
+		 */
+		std::cout << "Solver ROM 5" << std::endl; 
+
+		const int dim = 5;
+
+		// System of ODEs for temporal coefficients
+		// dx/dt = D/R^2 matrix_A x + S matrix_B
+   		
+	  /// @param matrix_A matrix of coefficients
+		double matrix_A[dim][dim] = 
+		{
+			{-10.5567873290090,-5.3064732472182,-3.3280716526395,2.3501142736907,1.6659233785950},
+			{-5.3581471945348,-50.4583397658830,-33.5616140896220,22.8112511126060,16.0836928271950},
+			{-3.5400454660848,-33.9187607249370,-142.9831205876900,110.6987594435100,74.1025248004660},
+			{2.7859250612434,24.1168451798870,112.4203111575800,-321.7483158597200,-259.0064087538400},
+			{2.4480172149492,18.6934083659180,79.4927395489150,-265.1402399821900,-578.9572380978200}
+		};
+
+		/// @param matrix_B vector of coefficients
+		double matrix_B[dim] =
+		{
+			1.7195243191226	,
+			0.8155431162763	,
+			0.5158246426884	,
+			-0.3643492476870,
+			-0.2582971509203
+		};
+
+		/// @param bases_average_volume weighted volume average of the set of bases considered
+		double bases_average_volume[dim] = 
+		{
+			0.41129530866285,
+			0.19507084256177,
+			0.12338078227278,
+			-0.087149181097342,
+			-0.061782439034486
+		};
+	
+		// identity matrix
+		double I[dim][dim];
+		for (int i=0; i<dim; ++i)
+		{
+			for (int j=0; j<dim; ++j)
+			{
+				if (i==j) I[i][j]=1.0;
+				else I[i][j]=0.0;
+			}
+		}
+		
+		// Implicit solution of the system of ODEs for temporal coefficients
+		// (I - D/R^2 matrix_A delta_t) * x_1 = (x_0 + S matrix_B delta_t)
+
+		const double diffusion_rate = parameter.at(1) / (pow(parameter.at(2),2));
+
+		double lhs[dim*dim];
+		double rhs[dim];
+
+		// lhs=(I - D/R^2 matrix_A delta_t)
+		int k=0;
+		for (int i = 0; i < dim; ++i)
+		{
+			for (int j = 0; j < dim; ++j)
+			{
+				lhs[k] = I[i][j] - diffusion_rate * increment * matrix_A[i][j];
+				++k;
+			}
+		}
+
+		// rhs = (x_0 + S matrix_B delta_t)
+		for (int i = 0; i < dim; ++i)
+		{
+			rhs[i] = initial_condition[i] + parameter.at(3) * increment * matrix_B[i];
+		}
+
+		Solver::LUGauss(dim, lhs, rhs);
+
+		for (int i = 0; i < dim; ++i)
+		{
+			initial_condition[i] = rhs[i];
+		}
+		
+		double solution(0.);
+		for (int i = 0; i < dim; ++i)
+		{ 
+			solution += bases_average_volume[i] * rhs[i];
+		}
+		
+		return solution;
+	}	
+
+    double ROM_Sphere10(double* initial_condition, std::vector<double> parameter, double increment)
+    {
+		
+		/**
+		 * @brief Solver for the spatially averaged solution of the PDE [dy/dt = D div grad y + S]
+		 *        We apply a spectral approach in space, projecting the equation on the spatial modes 
+		 *        constructed by means the Proper Orthogonal Decomposition technique (G. Berkooz et al. (1993) 
+		 *        https://doi.org/10.1146/annurev.fl.25.010193.002543). 
+		 *	  We use the first order backward Euler solver in time. 
+		 *        The number of modes adopted is fixed a priori at 10.
+		 *	  From Di Gennaro, "Multi-physics development and application of a reduced order model 
+		 * 	  of fission gas diffusion in fuel performance codes." Master thesis, Politecnico di Milano, 2021. 
+		 * @param[in] parameter.at(0) dimension (not used)
+		 * @param[in] parameter.at(1) diffusivity
+		 * @param[in] parameter.at(2) radius of the sphere
+		 * @param[in] parameter.at(3) source term
+		 * @param[in] parameter.at(4) decay rate (not used)
+		 * 
+		 */
+		
+		const int dim = 10;
+		std::cout << "Solver ROM 10" << std::endl; 
+
+		// System of ODEs for temporal coefficients
+		// dx/dt = D/R^2 matrix_A x + S matrix_B
+   		
+	  /// @param matrix_A matrix of coefficients
+		double matrix_A[dim][dim] = 
+		{
+			{-10.556787329009, -5.3064732472182, -3.3280716526395, 2.3501142736907, 1.665923378595, 1.0633360697322, -0.70785261370886, 0.5970297112339, 0.48066418427119, -0.45286971881565},
+            {-5.3581471945348, -50.458339765883, -33.561614089622, 22.811251112606, 16.083692827195, 10.246297462826, -6.810193552188, 5.7548896447294, 4.5994046993301, -4.3707063962865},
+            {-3.5400454660848, -33.918760724937, -142.98312058769, 110.69875944351, 74.102524800466, 46.57538806633, -30.860162065751, 25.823859681001, 20.879249625902, -19.471144431084},
+            {2.7859250612434, 24.116845179887, 112.42031115758, -321.74831585972, -259.00640875384, -156.62693397849, 102.48624612451, -85.864010477117, -67.960456636593, 65.04332685305},
+			{2.4480172149492, 18.693408365918, 79.492739548915, -265.14023998219, -578.95723809782, -432.30465259752, 280.52935468313, -227.03909194509, -187.24770089165, 174.14192137412},
+			{2.2235536293717, 14.080140361898, 55.187927974064, -170.43458286824, -444.21383634827, -707.70686712461, 553.58941107847, -485.5700640659, -367.98721712359, 385.33613342372},
+			{-1.9890147613692, -11.1459326551, -40.552081845857, 119.47288082985, 300.27451131434, 565.88986629718, -593.12292272217, 554.4479246217, 531.98441396064, -487.28122589426},
+			{1.7449534155617, 9.8173868984077, 35.176703128563, -102.55506183267, -248.53760487628, -500.63708139, 556.91703966938, -1146.0279850325, -469.50563557407, 1140.1585170103},
+			{2.3182041679351, 10.391887148701, 33.74551901412, -91.09250099891, -219.32676402787, -398.44257276116, 548.13720107213, -487.26029091955, -1040.4371477725, 704.69372703568},
+			{-2.497553503587, -11.18157298981, -34.895950470614, 93.767635634499, 218.53175999434, 437.57297629369, -527.72963696754, 1181.4074735961, 735.06025995406, -2465.69731935}
+		};
+
+		/// @param matrix_B vector of coefficients
+		double matrix_B[dim] =
+		{
+			1.7195243191226, 
+			0.81554311627625, 
+			0.51582464268838,
+			-0.364349247687, 
+			-0.25829715092032,
+			-0.16488577033011,
+			0.10974653963097,
+			-0.09268408851984,
+			-0.074425043402282,
+			0.070374207181827 
+		};
+
+		/// @param bases_average_volume weighted volume average of the set of bases considered
+		double bases_average_volume[dim] = 
+		{ 
+			0.41129530866285,
+			0.19507084256177, 
+			0.12338078227278, 
+			-0.087149181097342, 
+			-0.061782439034486, 
+			-0.039439246684594, 
+			0.026250420764756, 
+			-0.022169230392364, 
+			-0.01780182510824, 
+			0.016832900205518
+		};
+	
+		// identity matrix
+		double I[dim][dim];
+		for (int i=0; i<dim; ++i)
+		{
+			for (int j=0; j<dim; ++j)
+			{
+				if (i==j) I[i][j]=1.0;
+				else I[i][j]=0.0;
+			}
+		}
+		
+		// Implicit solution of the system of ODEs for temporal coefficients
+		// (I - D/R^2 matrix_A delta_t) * x_1 = (x_0 + S matrix_B delta_t)
+
+		const double diffusion_rate = parameter.at(1) / (pow(parameter.at(2),2));
+
+		double lhs[dim*dim];
+		double rhs[dim];
+
+		// lhs=(I - D/R^2 matrix_A delta_t)
+		int k=0;
+		for (int i = 0; i < dim; ++i)
+		{
+			for (int j = 0; j < dim; ++j)
+			{
+				lhs[k] = I[i][j] - diffusion_rate * increment * matrix_A[i][j];
+				++k;
+			}
+		}
+
+		// rhs = (x_0 + S matrix_B delta_t)
+		for (int i = 0; i < dim; ++i)
+		{
+			rhs[i] = initial_condition[i] + parameter.at(3) * increment * matrix_B[i];
+		}
+
+		Solver::LUGauss(dim, lhs, rhs);
+
+		for (int i = 0; i < dim; ++i)
+		{
+			initial_condition[i] = rhs[i];
+		}
+		
+		double solution(0.);
+		for (int i = 0; i < dim; ++i)
+		{ 
+			solution += bases_average_volume[i] * rhs[i];
+		}
+		
+		return solution;
+	}
+
+
+
 
 
 	Solver() {}
