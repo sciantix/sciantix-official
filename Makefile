@@ -14,8 +14,8 @@
 #//                                                                                  //
 #//////////////////////////////////////////////////////////////////////////////////////
 
-CC          := g++	# Windows and Linux
-# CC := /opt/homebrew/bin/g++-12	# Mac OS
+# CC          := g++	# Windows and Linux
+CC := /opt/homebrew/bin/g++-13 #MacOS
 
 TARGET      := sciantix.x
 
