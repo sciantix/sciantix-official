@@ -521,6 +521,296 @@ public:
 		return x1;
 	}
 
+    void LUGauss(const int N, double * A, double * b)
+	{
+			/**
+			 * @brief LU decomposition, Doolittle algorithm, according to @ref Dahlquist, Germund, Ake Bjorck & Anderson, Ned, Numerical Methods, Prentice Hall, 1974.
+			 * The function performs firstly the LU decomposition of the input matrix (A) storing in it the lower and upper matrixes.
+			 * Then, the system solution is accomplished using the factorized matrix and a backward substitution method.
+			 * The solution is stored and returned in the RHS vector b.
+			 * NB: This function can be used also to perform only the decomposition itslef (i.e., for preconditioning)
+			 * passing a dummy rhs.
+			 * 
+			 * @param[in] N dimension
+			 * @param[in] A matrix of the linear system (in **1d-array form**)
+			 * @param[in] b RHS vector
+			 * 
+			 * @param[out] b solution
+			 * 
+			 */
+
+		int i, j, k, l;
+		double sum = 0.0;
+			std::vector<double> y(N);
+
+		// Decomposition
+		for(k=0;k<N;++k)
+			{
+			for(j=k;j<N;++j)
+				{
+			sum=0.;
+			for(l=0;l<k;++l)
+						sum += A[k*N+l] * A[l*N+j];
+			A[k*N+j] = A[k*N+j] - sum;
+		}
+		for(i=k+1;i<N;++i)
+				{
+			sum = 0.;
+			for(l=0; l<k; ++l)
+					sum += A[i*N+l] * A[l*N+k];
+			A[i*N+k] = (A[i*N+k]-sum) / A[k*N+k];
+		}
+		}
+
+		// System solution
+		for(i=0;i<N;++i)
+			{
+			sum=0.;
+			for(k=0;k<i;++k)
+					sum += A[i*N+k] * y[k];
+		y[i] = b[i] - sum;
+		b[i] = 0.; // to cast solution in the input array b, first set this = 0
+		}
+		for(i=N-1; i>=0; --i)
+			{
+		sum=0.;
+		for(k=i+1;k<N;++k)
+					sum += A[i*N+k] * b[k];
+		b[i] = (y[i]-sum) / A[i*N+i];
+		}
+	}
+    
+	double ROM_Cylinder(double* initial_condition, std::vector<double> parameter, double increment)
+  	{
+		/**
+		 @brief Solver for the spatially averaged solution of the systems of PDEs: 
+		 *  	  | dy1/dt = D(y2) div grad y1 + S
+		 * 		  | dy2/dt = alpha div grad y2 + Q
+		 *        We apply a spectral approach in space, projecting the equation on the spatial modes 
+		 *        constructed by means the Proper Orthogonal Decomposition technique (G. Berkooz et al. (1993) 
+		 *        https://doi.org/10.1146/annurev.fl.25.010193.002543). 
+		 *	      We use the first order backward Euler solver in time. 
+		 *        The number of modes adopted is fixed a priori at 5.
+		 *	  	  From Di Gennaro, "Multi-physics development and application of a reduced order model 
+		 * 	      of fission gas diffusion in fuel performance codes." Master thesis, Politecnico di Milano, 2021. 
+		 * @param[in] parameter.at(0) number of modes (not used)
+		 * @param[in] parameter.at(1) diffusivity 
+		 * @param[in] parameter.at(2) radius of the cylinder
+		 * @param[in] parameter.at(3) length of the cylinder
+		 * @param[in] parameter.at(4) gas source term
+		 * @param[in] parameter.at(5) thermal diffusivity
+		 * @param[in] parameter.at(6) heat source term
+		 * @param[in] parameter.at(7) temperature Tbc
+		 * @param[in] parameter.at(8) alphaD
+		 * @param[in] parameter.at(9) T0
+		 */
+		std::cout<<"ROM"<<std::endl;
+
+  		std::cout<<"T0 " <<parameter.at(9)<<std::endl;
+		//const double alphaD=2.8708e-19; 
+		//const double D0=3.7691e-17;
+		const double tau=1;  
+		//const double D0=parameter.at(1); //Sbagliato, deve essere il coefficiente di diffusione valutato in T0
+		//const double alphaD_verifica=((2.675e-5 * exp(-35200/parameter.at(9)))/(pow(parameter.at(9),2)))+((9.1858e-21*pow(3e19,0.5)*exp(-13834/parameter.at(9)))/(pow(parameter.at(9),2)));	
+
+		const int dimC = 5;	
+		const int dimT = 2;
+
+		// System of ODEs for temporal coefficients
+		// dx/dt = D/R^2 matrix_A x + S matrix_B
+   		
+	  	/// @param matrix_H matrix of coefficients
+		double matrix_H[dimT][dimT] = 
+		{
+			{-0.20304529410438, -1.794194167602e-08},
+			{-1.7929870999053e-06, -3.0489219756252e-12}
+		};
+		/// @param matrix_J matrix of coefficients
+		double matrix_J[dimT][dimT] = 
+		{
+			{0.86825783440324, 7.6256023299567e-08},
+			{7.6256023299567e-08, 6.6972975757376e-15}
+		};
+		/// @param matrix_K matrix of coefficients
+		double matrix_K[dimT] = 
+		{
+			1.6481835446569, 
+			1.4475414767746e-07
+		};
+		/// @param matrix_L matrix of coefficients
+		double matrix_L[dimT] =
+		{
+			1.7679984122541,
+			1.5612486870281e-07
+		};
+		/// @param matrix_X matrix of coefficients
+		double matrix_X[dimC][dimC] =
+		{
+			{-6.0588405904849, -0.55442526190929, -1.1748960862213, -2.0408266303692, -0.98462195193243},
+			{-0.55442526190929, -7.1078160978739, -2.7803451165549, -5.0532119612755, -2.6557553180605},
+			{-1.1748960862213, -2.7803451165549, -12.282306752809, -12.692227588043, -8.0885514850508},
+			{-2.0408266303692, -5.0532119612754, -12.692227588043, -33.719678611253, -21.793756935823},
+			{-0.9846219519325, -2.6557553180603, -8.0885514850507, -21.793756935823, -29.424122664933},
+		};
+		/// @param matrix_M matrix of coefficients
+		double matrix_M1[dimT][dimC] =
+		{
+			{-3.3167448397705, -0.39855654615366, -0.65152007046976, -1.1220961498771, -0.55429350237106},
+			{-2.9307747786511e-07, -3.5540907077936e-08, -5.5959894072786e-08, -1.0115135843942e-07, -4.6383486633647e-08}
+		};
+		double matrix_M2[dimT][dimC] =
+		{
+			{-0.39861276657875, -3.9379947601031, -1.610478175472, -2.7790840593969, -1.4923657358681},
+			{-3.5549200975414e-08, -3.4642107857274e-07, -1.4442808167543e-07, -2.4400435427347e-07, -1.3347489991105e-07},	
+		};
+		double matrix_M3[dimT][dimC] =
+		{
+			{-0.65143840157028, -1.6105727848578, -6.8030323786372, -7.1133411351016, -4.5025887308793},
+			{-5.594444628151e-08, -1.4445808982336e-07, -5.9957262665645e-07, -6.2912656234903e-07, -3.9688599536526e-07}
+		};
+		double matrix_M4[dimT][dimC] =
+		{
+			{-1.1221601698039, -2.7789971916907, -7.1134147730603, -18.826118358794, -12.271833717811},
+			{-1.011910598978e-07, -2.4399961415127e-07, -6.2917109369193e-07, -1.662455220292e-06, -1.0847410263703e-06}
+		};
+		double matrix_M5[dimT][dimC] =
+		{
+			{-0.55422431250615, -1.4924707937057, -4.5024735079703, -12.271902552323, -16.442330654088},
+			{-4.6347987548628e-08, -1.3352986427034e-07, -3.9687677288179e-07, -1.084792944732e-06, -1.4511395744465e-06},
+		};
+		/// @param matrix_N matrix of coefficients
+		double matrix_N1[dimT][dimC] =
+		{
+			{3.4024663295452e-05, -6.5336675125546e-05, 7.9916746097768e-05, -6.1515813534692e-05, 6.8253532291137e-05},
+			{-1.8398175251547e-10, 2.3361837614538e-10, -2.5357505266544e-10, 1.8130102344894e-10, -2.0743972256264e-10}
+		};
+		double matrix_N2[dimT][dimC] =
+		{
+			{-9.1164064305453e-06, 5.7252837708653e-05, -9.8017051551228e-05, 8.4014916287692e-05, -9.8813604498481e-05},
+			{2.4750272419708e-10, -3.4757892001236e-10, 3.1871695369583e-10, -2.6772422085889e-10, 2.9747314532703e-10}	
+		};
+		/// @param matrix_P matrix of coefficients
+		double matrix_P[dimC] =
+		{
+			1.3560234083996, 
+			0.76473986242105,
+			0.43234289988349, 
+			0.4529914327381, 
+			0.28904896311136,
+		};
+
+
+		/* double basesT_average_volume[dimT] = 
+		{
+			0.56509235729245,
+			4.9901045994017e-08
+		};*/ 
+		double basesC_average_volume[dimC] = 
+		{
+			0.43341581026608,
+			0.24442818985343,
+			0.13818658815554,
+			0.14478632717373,
+			0.092386598769219
+		};
+		
+		// identity matrix
+		double I_C[dimC][dimC], I_T[dimT][dimT];
+  		for (int i=0;i<dimC;++i){
+  	    	  for (int j=0;j<dimC;++j){
+  	          if (i==j) I_C[i][j]=1.0;
+  	     	  else I_C[i][j]=0.0;
+  		}}
+  		for (int i=0;i<dimT;++i){
+  	    	  for (int j=0;j<dimT;++j){
+  	     	  if (i==j) I_T[i][j]=1.0;
+  	     	  else I_T[i][j]=0.0;
+  		}}
+		
+		//Coefficienti Temperatura
+       		const double C1=parameter.at(5)/pow(parameter.at(3),2);                        //Moltiplica H
+       		const double C2=parameter.at(6);                             				   //Moltiplica L
+       		const double C6=(tau*parameter.at(7))/pow(parameter.at(3),2);				   //Moltiplica K
+       		const double C7=tau/pow(parameter.at(3),2);                  				   // Moltiplica J
+       		//Coefficienti Concentrazione
+			const double C3=(parameter.at(1)-parameter.at(8)*parameter.at(9))/pow(parameter.at(2),2);  //Moltiplica X
+       		const double C4=parameter.at(8)/pow(parameter.at(2),2);                       //Moltiplica M e N
+       		const double C5=parameter.at(4);                                              //Moltiplica P
+
+		double lhs_T[dimT*dimT];
+      	double rhs_T[dimT];
+
+		// Implicit solution of the system of ODEs for temporal coefficients
+		// (I - alpha/L^2 delta_t matrix_H - tau_T/L^2 delta_t matrix_J) * x_1 = (x_0 + Q matrix_L delta_t - tau_T T_BC/L^2 delta_t matrix_K)
+		
+		// lhs = (I - alpha/L^2 delta_t matrix_H - tau_T/L^2 delta_t matrix_J)
+		int k=0;
+      		for (int i = 0; i < dimT; ++i) {
+        	  for (int j = 0; j < dimT; ++j) {
+          	  lhs_T[k]=I_T[i][j]-C1*increment*matrix_H[i][j]-C7*increment*matrix_J[i][j];
+          	  ++k;
+      		}}
+      		// rhs = (x_0 + Q matrix_L delta_t - tau_T T_BC/L^2 delta_t matrix_K)
+      		for (int i = 0; i < dimT; ++i) {
+          	  rhs_T[i]=initial_condition[i]+C2*increment*matrix_L[i]-C6*increment*matrix_K[i];
+      		}
+      
+      	Solver::LUGauss(dimT,lhs_T,rhs_T);
+
+
+		// Implicit solution of the system of ODEs for temporal coefficients
+		// (I - 1/R^2 (D0-alphaD T0)matrix_X delta_t - alphaD/R^2 delta_t x' matrix_M - alphaD/R^2 delta_t x' matrix_N) * y_1 	= (y_0 + S matrix_P delta_t)
+
+		double lhs_C[dimC*dimC];
+      	double rhs_C[dimC];
+
+		// lhs = (I - 1/R^2 (D0-alphaD T0)matrix_X delta_t - alphaD/R^2 delta_t x' matrix_M - alphaD/R^2 delta_t x' matrix_N)
+		int z=0;
+      		for (int i = 0; i < dimC; ++i) {
+        	  for (int j = 0; j < dimC; ++j) {
+            	  lhs_C[z]=I_C[i][j]-C3*increment*matrix_X[i][j]; 
+            	    for (int k = 0; k < dimT; ++k)
+             	    {
+                	if(i==0) {lhs_C[z] += -C4*increment*rhs_T[k]*matrix_M1[k][j]-C4*increment*rhs_T[k]*matrix_N1[k][j];}
+                	else if(i==1) {lhs_C[z] += -C4*increment*rhs_T[k]*matrix_M2[k][j]-C4*increment*rhs_T[k]*matrix_N2[k][j];}
+                	else if(i==2) {lhs_C[z] += -C4*increment*rhs_T[k]*matrix_M3[k][j];}
+                	else if(i==3) {lhs_C[z] += -C4*increment*rhs_T[k]*matrix_M4[k][j];}
+                	else if(i==4) {lhs_C[z] += -C4*increment*rhs_T[k]*matrix_M5[k][j];}
+             	    }
+             	    ++z;
+      	        }}
+
+		// rhs = (y_0 + S matrix_P delta_t)
+		int zz=0;
+      		for (int i = dimT; i < dimT+dimC; ++i) {
+          	  rhs_C[zz]=initial_condition[i]+C5*increment*matrix_P[zz];
+          	  ++zz;
+      		}
+		
+		Solver::LUGauss(dimC,lhs_C,rhs_C);
+		
+		for (int i = 0; i < dimT; ++i) {
+        	  initial_condition[i] = rhs_T[i];
+     		}
+      
+      		int zzz=0;
+      		for (int i = dimT; i < dimT+dimC; ++i) {
+        	  initial_condition[i] = rhs_C[zzz];
+        	  ++zzz;
+      		}
+
+		double solution(0.);
+		for (int i = 0; i < dimC; ++i)
+		{ 
+			solution += basesC_average_volume[i] * rhs_C[i];
+		}
+		
+		return solution;
+
+	}
+
+
+
 
 	Solver() {}
 	~Solver() {}

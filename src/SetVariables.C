@@ -1030,6 +1030,39 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
 	++sv_counter;
 
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Grain length");
+	sciantix_variable[sv_counter].setUOM("(m)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[100]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[100]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Thermal diffusivity");
+	sciantix_variable[sv_counter].setUOM("(m2/s)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[101]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[101]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Fission heat");
+	sciantix_variable[sv_counter].setUOM("(K/fiss)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[102]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[102]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("T0");
+	sciantix_variable[sv_counter].setUOM("(K)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[103]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[103]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+
 	// ------------------------------------------------------------------------------------------------
 	// ------------------------------------------------------------------------------------------------
 

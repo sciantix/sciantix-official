@@ -283,6 +283,11 @@ void InputReading()
 		Sciantix_variables[63] = initial_composition_Kr85m[6];
 
 		Sciantix_variables[66] = ReadOneParameter("Initial stoichiometry deviation[0]", input_initial_conditions, input_check);
+
+		Sciantix_variables[100] = ReadOneParameter("Grain length", input_initial_conditions, input_check); //MDG
+		Sciantix_variables[101] = ReadOneParameter("Thermal diffusivity", input_initial_conditions, input_check); //MDG
+		Sciantix_variables[102] = ReadOneParameter("Fission heat", input_initial_conditions, input_check); //MDG
+		Sciantix_variables[103] = ReadOneParameter("T0", input_initial_conditions, input_check); //MDG
 	}
 
 	int n = 0;

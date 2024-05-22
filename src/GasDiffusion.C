@@ -19,16 +19,20 @@ void GasDiffusion()
 {
 	switch (static_cast<int>(input_variable[iv["iDiffusionSolver"]].getValue()))
 	{
-		case 1:
+		case 1:  
 			defineSpectralDiffusion1Equation();
 			break;
 
-		case 2:
+		case 2: 
 			defineSpectralDiffusion2Equations();
 			break;
 
 		case 3:
 			defineSpectralDiffusion3Equations();
+			break;
+		
+		case 9:
+			defineRomCylinder();
 			break;
 
 		default:
@@ -139,6 +143,49 @@ void defineSpectralDiffusion3Equations()
 
 	model[modelIndex].setParameter(parameters);
 }
+
+void defineRomCylinder()
+{
+	std::string reference;
+
+    for (auto& system : sciantix_system)
+	{
+		model.emplace_back();
+		int modelIndex = static_cast<int>(model.size()) - 1;
+		model[modelIndex].setName("Gas diffusion - " + system.getName());
+		model[modelIndex].setRef(reference);
+
+		std::vector<double> parameters;
+		parameters.push_back(n_modes); //0
+		double gasDiffusivity; 
+		if (system.getResolutionRate() + system.getTrappingRate() == 0)
+		{
+			gasDiffusivity = system.getFissionGasDiffusivity() * gas[ga[system.getGasName()]].getPrecursorFactor();
+		}
+		else
+		{
+			gasDiffusivity = (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getFissionGasDiffusivity() * gas[ga[system.getGasName()]].getPrecursorFactor() +
+							 (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
+		}
+		parameters.push_back(gasDiffusivity); //1
+		parameters.push_back(matrix[sma[system.getMatrixName()]].getGrainRadius()); //2
+		parameters.push_back(sciantix_variable[sv["Grain length"]].getFinalValue()); //3 MDG - da aggiungere in Matrix.h 
+		parameters.push_back(system.getYield() * history_variable[hv["Fission rate"]].getFinalValue());//4 MDG source term
+		std::cout<<"yield = " <<system.getYield() <<std::endl;
+
+		parameters.push_back(sciantix_variable[sv["Thermal diffusivity"]].getFinalValue()); //5 MDG thermal diffusivity
+		parameters.push_back(sciantix_variable[sv["Fission heat"]].getFinalValue()*history_variable[hv["Fission rate"]].getFinalValue()); //6 MDG heat source term
+		parameters.push_back(history_variable[hv["Temperature"]].getFinalValue()); //7 MDG temperature
+		parameters.push_back(system.getalphaD()); //8 MDG  alphaD
+        parameters.push_back(sciantix_variable[sv["T0"]].getFinalValue());//9 MDG T0
+
+		parameters.push_back(system.getProductionRate());
+		parameters.push_back(gas[ga[system.getGasName()]].getDecayRate());
+
+		model[modelIndex].setParameter(parameters);
+	}
+}
+
 
 void errorHandling()
 {

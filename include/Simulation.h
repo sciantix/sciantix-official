@@ -211,6 +211,44 @@ class Simulation : public Solver, public Model
 					}					
 					break;
 				}
+
+				case 9:
+				{
+					if (system.getRestructuredMatrix() == 0)
+					{
+						sciantix_variable[sv[system.getGasName() + " in grain"]].setFinalValue(
+							solver.ROM_Cylinder(
+								getDiffusionModes(system.getGasName()),
+								model[sm["Gas diffusion - " + system.getName()]].getParameter(),
+								physics_variable[pv["Time step"]].getFinalValue()
+							)
+						);
+
+						double equilibrium_fraction(1.0);
+						if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
+							equilibrium_fraction = system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
+
+						sciantix_variable[sv[system.getGasName() + " in intragranular solution"]].setFinalValue(
+							equilibrium_fraction * sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue()
+						);
+
+						sciantix_variable[sv[system.getGasName() + " in intragranular bubbles"]].setFinalValue(
+							(1.0 - equilibrium_fraction) * sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue()
+						);
+					}
+					else if (system.getRestructuredMatrix() == 1)
+					{
+						sciantix_variable[sv[system.getGasName() + " in grain HBS"]].setFinalValue(
+							solver.ROM_Cylinder(
+								getDiffusionModes(system.getGasName() + " in HBS"),
+								model[sm["Gas diffusion - " + system.getName()]].getParameter(),
+								physics_variable[pv["Time step"]].getFinalValue()
+							)
+						);
+					}
+					break;
+				}
+
 	
 				case 3:
 					break;

@@ -59,6 +59,12 @@ void defineSpectralDiffusion2Equations();
 void defineSpectralDiffusion3Equations();
 
 /**
+ * @brief MDG
+ */
+void defineRomCylinder();
+
+
+/**
  * @brief Handles unsupported diffusion solver options.
  */
 void errorHandling();

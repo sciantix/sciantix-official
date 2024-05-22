@@ -251,6 +251,31 @@ void System::setFissionGasDiffusivity(int input_value)
 		break;		
 	}
 
+	case 9: 
+	{
+		/**
+		 * @brief this case is for 
+		 * 
+		 */
+		reference += "ROM diffusion coefficient. \n\t";
+		double temperature = sciantix_variable[sv["T0"]].getFinalValue();
+		double fission_rate = history_variable[hv["Fission rate"]].getFinalValue();
+
+		double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));
+		double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
+		double d3 = 8.0e-40 * fission_rate;
+
+		diffusivity = d1 + d2 + d3;
+		diffusivity *= sf_diffusivity;
+		
+		//Derivative 
+		double diff_d1 = ((2.675e-5 * exp(-4.86e-19 / (boltzmann_constant * temperature)))/(pow(temperature,2)));
+		double diff_d2 = ((9.1858e-21*sqrt(fission_rate)*exp(-1.91e-19 / (boltzmann_constant * temperature)))/(pow(temperature,2)));
+		alphaD = diff_d1+diff_d2;
+		break;
+
+	}
+
 
 	case 99:
 	{

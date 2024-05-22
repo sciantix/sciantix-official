@@ -40,6 +40,7 @@ protected:
 	double resolution_rate;
 	double trapping_rate;
 	double nucleation_rate;
+	double alphaD;         //MDG
 	std::string gas_name;
 	std::string matrix_name;
 	double pore_nucleation_rate;
@@ -137,6 +138,12 @@ public:
 	{
 		/// Member function to get the diffusivity of the isotope in the fuel matrix
 		return diffusivity;
+	}
+
+	double getalphaD()//MDG
+	{
+		/// Member function to get the diffusivity of the isotope in the fuel matrix
+		return alphaD;
 	}
 
 	void setHenryConstant(double h)
