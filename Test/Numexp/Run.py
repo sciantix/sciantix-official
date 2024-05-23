@@ -50,7 +50,7 @@ rom10_txt=open('ROM 10.txt',"w+")
 solver = [1,7,8]
 
 
-for kk in range (0,10):  #Numero di storie/cartelle/puntini che comporrano il plot
+for kk in range (0,50):  #Numero di storie/cartelle/puntini che comporrano il plot
     Number_of_step=random.randint(2,7) 
     Temperature=np.zeros(Number_of_step)
     Fission_rate=np.zeros(Number_of_step)
