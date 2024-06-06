@@ -28,6 +28,12 @@
 #include "Kr85m_in_UO2.h"
 #include "He_in_UO2.h"
 #include "Xe_in_UO2HBS.h"
+#include "Xe_in_MOX.h"
+#include "Xe133_in_MOX.h"
+#include "Kr_in_MOX.h"
+#include "Kr85m_in_MOX.h"
+#include "He_in_MOX.h"
+#include "Xe_in_MOX.h"
 
 #include <vector>
 
