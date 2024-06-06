@@ -18,12 +18,13 @@
 #define MATRIX_H
 
 #include "Material.h"
+#include <string>
 
 /// Class for the (fuel) matrix material (e.g., UO2, UO2-HBS, MOX), derived from the class Material
 class Matrix : virtual public Material
 {
 protected:
-	double matrix_density;
+
 	double grain_boundary_mobility;
 	double ff_range;
 	double ff_influence_radius;
@@ -40,21 +41,13 @@ protected:
 	double pore_nucleation_rate;
 	double pore_resolution_rate;
 	double pore_trapping_rate;
-	std::string matrix_name;
+	double enrichment; 
+	double lattice_parameter;
+//	std::string matrix_name;
+	std::string geometry;
+	bool fuel = 1;
 
 public:
-	
-	void setTheoreticalDensity(double m)
-	{
-		/// Member function to set the matrix theoretical density (kg/m3)
-		matrix_density = m;
-	}
-
-	double getTheoreticalDensity()
-	{
-		/// Member function to get the matrix theoretical density (kg/m3)
-		return matrix_density;
-	}
 
 	void setSurfaceTension(double r)
 	{
@@ -102,25 +95,25 @@ public:
 	void setFFrange(double r)
 	{
 		/// Member function to set the (average) range of the fission fragments in the matrix (m).
-		ff_range = r;
+		ff_range = r*fuel;
 	}
 
 	double getFFrange()
 	{
 		/// Member function to get the (average) range of the fission fragments in the matrix (m).
-		return ff_range;
+		return ff_range*fuel;
 	}
 
 	void setFFinfluenceRadius(double r)
 	{
 		/// Member function to set the radius of influence of the fission fragment track (m).
-		ff_influence_radius = r;
+		ff_influence_radius = r*fuel;
 	}
 
 	double getFFinfluenceRadius()
 	{
 		/// Member function to get the radius of influence of the fission fragment track (m).
-		return ff_influence_radius;
+		return ff_influence_radius*fuel;
 	}
 
 	void setSemidihedralAngle(double sda)
@@ -223,6 +216,43 @@ public:
 		return healing_temperature_threshold;
 	}
 
+	void setGeometry(std::string nameGeometry) {
+	
+		geometry = nameGeometry;
+	
+	}
+	
+	std::string getGeometry () {
+	
+		return geometry;
+	
+	}
+	
+	void setMoxPuEnrichment (double enr){
+	
+		enrichment = enr*fuel;
+	
+	}
+	
+	double getMoxPuEnrichment (){
+	
+		
+		return enrichment;
+	
+	}
+	
+	void setLatticeParameter (double latt){
+	
+		lattice_parameter = latt;
+	
+	}
+	
+	double getLatticeParameter (){
+	
+		return lattice_parameter;
+	
+	}	
+	
 	Matrix() { }
 	~Matrix() { }
 };

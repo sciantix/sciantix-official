@@ -21,6 +21,7 @@
 #include "SetVariables.h"
 #include "UO2.h"
 #include "UO2HBS.h"
+#include "MOX.h"
 #include <cmath>
 #include <string>
 #include "GasDeclaration.h"

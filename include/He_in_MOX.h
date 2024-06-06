@@ -14,32 +14,23 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "UO2.h"
+#ifndef HE_IN_MOX_H
+#define HE_IN_MOX_H
+
+#include "SystemDeclaration.h"
+#include "MatrixDeclaration.h"
+#include "SciantixVariableDeclaration.h"
+#include "MapSciantixVariable.h"
+#include "MapMatrix.h"
+#include "SciantixScalingFactorDeclaration.h"
 
 /**
- * @brief Defines the physical properties of the UO2 matrix.
+ * @brief Sets properties for the "Helium in MOX" system.
+ * 
+ * This function initializes the properties of the "Helium in MOX" system
+ * and adds it to the sciantix_system vector.
  */
-void UO2()
-{
-	matrix.emplace_back();
-	int index = int(matrix.size()) - 1;
 
-	matrix[index].setName("UO2");
-	matrix[index].setRef("\n\t");
-	matrix[index].setDensity(10960.0); // (kg/m3)
-	matrix[index].setGrainBoundaryMobility(int(input_variable[iv["iGrainGrowth"]].getValue()));
-	matrix[index].setSurfaceTension(0.7); // (N/m)
-	matrix[index].setFFinfluenceRadius(1.0e-9); // (m)
-	matrix[index].setFFrange(6.0e-6); // (m)
-	matrix[index].setSchottkyVolume(4.09e-29); // (m3)
-	matrix[index].setOIS(7.8e-30); // (m3)
-	matrix[index].setSemidihedralAngle(0.872664626); // (rad)
-	matrix[index].setGrainBoundaryThickness(5.0e-10); // (m)
-	matrix[index].setLenticularShapeFactor(0.168610764);
-	matrix[index].setGrainRadius(sciantix_variable[sv["Grain radius"]].getFinalValue()); // (m)
-	matrix[index].setHealingTemperatureThreshold(1273.15); // K
-	matrix[index].setGrainBoundaryVacancyDiffusivity(int(input_variable[iv["iGrainBoundaryVacancyDiffusivity"]].getValue())); // (m2/s)
-	matrix[index].setPoreNucleationRate();
-	matrix[index].setPoreResolutionRate();
-	matrix[index].setPoreTrappingRate();
-}
+void He_in_MOX();
+
+#endif // HE_IN_MOX_H

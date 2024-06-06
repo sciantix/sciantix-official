@@ -27,9 +27,35 @@ class Material : virtual public Entity
 public:
 	Material() { }
 	~Material() { }
+	
+	void setFuel(bool value) {
+	
+		fuel = value;
+	
+	};
+	
+	bool getFuel (){
+	
+		return fuel;
+	
+	}
+	
+		void setDensity(double m)
+	{
+		/// Member function to set the matrix theoretical density (kg/m3)
+		density = m;
+	}
 
+	double getDensity()
+	{
+		/// Member function to get the matrix theoretical density (kg/m3)
+		return density;
+	}	
+	
 protected:
 	std::string name;
+	bool fuel;
+	double density;
 };
 
 #endif // MATERIAL_H

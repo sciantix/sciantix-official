@@ -16,7 +16,7 @@
 
 #include "SetMatrix.h"
 
-void SetMatrix( )
+void SetMatrix()
 {
   /**
    * @brief This routine defines the available options for fuel matrices and their properties.
@@ -39,6 +39,14 @@ void SetMatrix( )
 			MapMatrix();
 			
 			UO2HBS();
+			MapMatrix();
+
+			break;
+		}
+		
+		case 2: 
+		{
+			MOX(0.05);
 			MapMatrix();
 
 			break;
