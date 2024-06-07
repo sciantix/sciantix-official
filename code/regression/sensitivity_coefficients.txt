@@ -1,0 +1,5 @@
+Current parameter: ['resolution rate', 'trapping rate', 'nucleation rate', 'diffusivity', 'temperature', 'fission rate']
+               test_Baker1977__1273K         test_Baker1977__1373K         test_Baker1977__1473K         test_Baker1977__1573K         test_Baker1977__1673K         test_Baker1977__1773K         test_Baker1977__1873K         test_Baker1977__1973K         test_Baker1977__2073K         
+Σ(ΔK/ΔSF)/T    0.0                           
+Σ(ΔK/ΔSF)/T    0.0                           
+
