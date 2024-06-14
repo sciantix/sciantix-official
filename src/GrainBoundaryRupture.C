@@ -38,7 +38,6 @@ void GrainBoundaryRupture()
     const double boltzmann_constant = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
     const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
 
-
     double E =  matrix[sma["UO2"]].getElasticModulus() * 1e6; // Pa
     double nu =  matrix[sma["UO2"]].getPoissonRatio();
     double G_gb =  matrix[sma["UO2"]].getGrainBoundaryFractureEnergy(); // J/m2
@@ -87,9 +86,11 @@ void GrainBoundaryRupture()
     double bubble_pressure = (boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue() * //Pa
       sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue() /
       (sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue() * matrix[sma["UO2"]].getSchottkyVolume()));
+    sciantix_variable[sv["Intergranular bubble pressure"]].setFinalValue(bubble_pressure*1e-6); //MPa
     
     
     if (history_variable[hv["Temperature"]].getIncrement()!=0){
+        std::cout << "Grain Boundary rupture --------------------------------"<<std::endl;
         std::cout << "Surface tension (J/m2) = "<< matrix[sma["UO2"]].getSurfaceTension() <<std::endl;
         std::cout << "Elastic modulus (GPa) = "<< E*1e-9 <<std::endl;
         std::cout << "Capillary pressure (Pa) = "<< 2.0 * matrix[sma["UO2"]].getSurfaceTension() / sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() <<std::endl;

@@ -17,6 +17,10 @@
 #include "SciantixVariableDeclaration.h"
 #include "HistoryVariableDeclaration.h"
 #include "ModelDeclaration.h"
+#include "MatrixDeclaration.h"
+#include "MapMatrix.h"
+
+#include "ConstantNumbers.h"
 
 #include "MapSciantixVariable.h"
 #include "MapHistoryVariable.h"

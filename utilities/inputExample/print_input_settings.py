@@ -15,7 +15,7 @@ with open('input_settings.txt', 'w') as file:
     file.write('1\t#\tiOutput (1= default output files)\n')
     file.write('1\t#\tiGrainBoundaryVacancyDiffusivity (0= constant value, 1= Reynolds and Burton (1979), 2= White (2004) \n')
     file.write('1\t#\tiGrainBoundaryBehaviour (0= no grain boundary bubbles, 1= Pastore et al (2013))\n')
-    file.write('1\t#\tiGrainBoundaryMicroCracking (0= no model considered, 1= Barani et al. (2017))\n')
+    file.write('1\t#\tiGrainBoundaryMicroCracking (0= no model considered, 1= Barani et al. (2017), 2= Cappellari (2024))\n')
     file.write('0\t#\tiFuelMatrix (0= UO2, 1= UO2 + HBS)\n')
     file.write('0\t#\tiGrainBoundaryVenting (0= no model considered, 1= Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE)\n')
     file.write('0\t#\tiRadioactiveFissionGas (0= not considered)\n')

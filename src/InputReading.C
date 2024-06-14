@@ -145,6 +145,7 @@ void InputReading()
 	 * iGrainBoundaryMicroCracking
 	 * 	0= no model considered,
 	 * 	1= Barani et al. (2017)
+	 * 	2= Cappellari (2024)
 	 * 
 	 * iFuelMatrix
 	 * 	0= UO2,
