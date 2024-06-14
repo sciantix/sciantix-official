@@ -1,3 +1,6 @@
+//this function can be used to define a threshold value above which the iodine 
+// contained at the grain boundaries is released completely outside the grain.
+
 #include "IodineReleaseTreshold.h"
 void IodineReleaseTreshold()
     {
@@ -11,7 +14,5 @@ void IodineReleaseTreshold()
     std::string reference;
     reference = "Cappia (2022) J. Nucl. Mater., 569, 153-881.";
     
-    std::vector<double> parameter;
-
     model[model_index].setRef(reference);
     }

@@ -55,7 +55,7 @@ void Initialization()
 	double initial_condition(0.0);
 	double projection_remainder(0.0);
 	double reconstructed_solution(0.0);
-	int iteration(0), iteration_max(23), n(0), np1(1), n_modes(40), k(0), K(23);
+	int iteration(0), iteration_max(24), n(0), np1(1), n_modes(40), k(0), K(24);
 	double projection_coeff(0.0);
 	projection_coeff = -sqrt(8.0 / pi);
 

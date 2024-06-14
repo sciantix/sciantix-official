@@ -1,3 +1,6 @@
+// this function defines the treshold which the iodine 
+// contained at the grain boundaries is completely released.
+
 #include "ModelDeclaration.h"
 #include "InputVariableDeclaration.h"
 #include "SciantixVariableDeclaration.h"

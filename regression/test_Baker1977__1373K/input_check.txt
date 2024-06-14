@@ -78,7 +78,7 @@ Initial composition I1314 = 0
 Initial composition I1315 = 0
 Initial composition I1316 = 0
 Initial stoichiometry deviation[0] = 0
-0	1373	1e+19	0	
+0	1273	1e+19	0	
 5500	1373	1e+19	0	
 sf_resolution_rate = 1
 sf_trapping_rate = 1
