@@ -74,12 +74,13 @@ class Simulation : public Solver, public Model
 			{
 				sciantix_variable[sv[system.getGasName() + " decayed"]].setFinalValue(
 					solver.Decay(
-						sciantix_variable[sv[system.getGasName() + " decayed"]].getInitialValue(),
+						sciantix_variable[sv[system.getGasName() + " gap"]].getInitialValue(),
 						gas[ga[system.getGasName()]].getDecayRate(),
-						gas[ga[system.getGasName()]].getDecayRate() * sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue(), 
+						0,
 						physics_variable[pv["Time step"]].getFinalValue()
 					)
 				);
+				std::cout << sciantix_variable[sv[system.getGasName() + " decayed"]].getFinalValue() << std::endl;
 			}
 		}
 	}
@@ -100,6 +101,7 @@ class Simulation : public Solver, public Model
 					physics_variable[pv["Time step"]].getFinalValue()
 				)
 			);
+			
 
 		// std::cout << sciantix_variable[sv["Xe gap"]].getFinalValue() << std::endl;
 
@@ -131,25 +133,22 @@ class Simulation : public Solver, public Model
 		// }
 	}
 
-	void GasInCoolant()
+	void GasInCoolant() //release rate = nu*N_gap*Gap_volume
 	{
 		for (auto& system : sciantix_system)
 		{
 			if (sciantix_variable[sv["Gap pressure"]].getFinalValue() > 4 && gas[ga[system.getGasName()]].getName() != "Hydrogen") //estimation of the limit gap presssure from Veschunov
 			{
-				sciantix_variable[sv[system.getGasName() + "concentration coolant"]].setFinalValue(
-					solver.Decay(
-						sciantix_variable[sv[system.getGasName() + "concentration coolant"]].getInitialValue(),
-						gas[ga[system.getGasName()]].getDecayRate(),
-						sciantix_variable[sv[system.getGasName() + "concentration gap"]].getFinalValue()*gas[ga[system.getGasName()]].getReleaseRateCoefficient(),
-						physics_variable[pv["Time step"]].getFinalValue()
-						)
+				sciantix_variable[sv["Xe released"]].setFinalValue(
+					
+						sciantix_variable[sv["Xe gap"]].getFinalValue()*gas[ga["Xe"]].getReleaseRateCoefficient()*sciantix_variable[sv["Gap volume"]].getFinalValue()	
 				);
+				
 			}
 			else
 			{
-				sciantix_variable[sv[system.getGasName() + "concentration coolant"]].setFinalValue(
-					sciantix_variable[sv[system.getGasName() + "concentration coolant"]].getFinalValue()
+				sciantix_variable[sv["Xe released"]].setFinalValue(
+					sciantix_variable[sv["Xe released"]].getFinalValue()
 				);
 				
 			}

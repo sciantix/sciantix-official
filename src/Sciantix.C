@@ -24,6 +24,9 @@ void Sciantix(int Sciantix_options[],
 {
 	SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 
+	SetGas();
+	SetSystem();
+
 	// std::cout << "egalite" << std::endl;
 
 	Simulation sciantix_simulation;
@@ -32,8 +35,11 @@ void Sciantix(int Sciantix_options[],
 	// MapModel();
 
 	sciantix_simulation.GasInGap();
+	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+	//sciantix_simulation.GasDecay();
 
-	// sciantix_simulation.GasInCoolant();
+	sciantix_simulation.GasInCoolant();
+	std::cout << sciantix_variable[sv["Xe released"]].getFinalValue() << std::endl;
 	// sciantix_simulation.CoolantRadiolysis();
 	// sciantix_simulation.ZircaloyOxidation();
 	// sciantix_simulation.PressureEvolution();

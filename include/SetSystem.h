@@ -22,6 +22,7 @@
 #include "PhysicsVariableDeclaration.h"
 #include "GasDeclaration.h"
 #include "MapGas.h"
+#include "Xenon.h"
 
 #include <vector>
 

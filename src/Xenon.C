@@ -27,6 +27,7 @@ void Xenon()
 	gas[index].setVanDerWaalsVolume(8.48e-29);
 	gas[index].setDecayRate(0.0);
 	gas[index].setPrecursorFactor(1.00);
+	gas[index].setReleaseRateCoefficient(2*7.14*pow(10,-6)/4);
 
 	gas.emplace_back();
 	++index;

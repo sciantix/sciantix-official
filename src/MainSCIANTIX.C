@@ -81,6 +81,7 @@ int main()
 		Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 		// std::cout << Time_h << std::endl;
 		// std::cout << Time_end_h << std::endl;
+		//std::cout << sciantix_variable[sv["Xe decayed"]].getFinalValue() << std::endl;
 
 		dTime_h = TimeStepCalculation();
 		Sciantix_history[6] = dTime_h * 3600;
@@ -106,3 +107,4 @@ void logExecutionTime(double timer, int time_step_number)
 {
 	Execution_file << std::setprecision(12) << std::scientific << timer << "\t" << CLOCKS_PER_SEC << "\t" << (double)timer * CLOCKS_PER_SEC << "\t" << time_step_number << std::endl;
 }
+  

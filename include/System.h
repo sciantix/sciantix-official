@@ -31,8 +31,8 @@ class System : virtual public Gas
 {
 protected:
 	std::string gas_name;
-	std::vector<double> modes;
-	double production_rate;
+	//std::vector<double> modes;
+	//double production_rate;
 
 public:
 
@@ -48,16 +48,16 @@ public:
 		return gas_name;
 	}
 
-	void setProductionRate(int input_value);
-	double getProductionRate()
-	{
-    /** @fn double getProductionRate()
-     * @brief Member function to get the production rate of the sciantix_system.
-		 *  
-     * @param production_rate: output
-     */		
-		return production_rate;
-	}
+	// void setProductionRate(int input_value);
+	// double getProductionRate()
+	// {
+    // /** @fn double getProductionRate()
+    //  * @brief Member function to get the production rate of the sciantix_system.
+	// 	 *  
+    //  * @param production_rate: output
+    //  */		
+	// 	return production_rate;
+	// }
 
 	System() { }
 	~System() { }

@@ -30,11 +30,11 @@ void GasProduction()
 		model[model_index].setName("Gas production - " + system.getName());
 		model[model_index].setRef(" ");
 
-		double productionRate = system.getProductionRate();
+		//double productionRate = system.getProductionRate();
 		double timeStep = physics_variable[pv["Time step"]].getFinalValue();
 
 		std::vector<double> parameter;
-		parameter.push_back(productionRate);
+		//parameter.push_back(productionRate);
 		parameter.push_back(timeStep);
 		model[model_index].setParameter(parameter);
 

@@ -119,13 +119,13 @@ public:
 		return precursor_factor;
 	}
 
-	void setReleaseRateCoefficient()
+	void setReleaseRateCoefficient(double h)
 	{
 		/**
 		 * @brief Member function to set the value of the release rate coefficient, for inert noble gas, with a mid-rod defect, in s^-1. (lenght of the fuel element is taken at 4m)
 		 * 
 		 */
-		double release_rate_coefficient(2*7.14*pow(10,-6)/4);
+		release_rate_coefficient = h;
 	}
 
 	double getReleaseRateCoefficient()
