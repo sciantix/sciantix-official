@@ -37,9 +37,9 @@ inline bool if_exist(const std::string& name)
 /// The first columns contain the input_history.txt temporal interpolation performed by InputInerpolation.
 /// The other columns contain the evolution of the sciantix variables.
 /// This function contains different formatting options to print the output.txt file, according to iOutput value.
-void Output()
+void Output(std::string testFilePath)
 {
-	std::string output_name = "output.txt";
+	std::string output_name = testFilePath + "output.txt";
 	std::fstream output_file;
 	output_file.open(output_name, std::fstream::in | std::fstream::out | std::fstream::app);
 
@@ -122,7 +122,7 @@ void Output()
 	 * ### Writing: overview.txt
 	 * 
 	 */
-	std::string overview_name = "overview.txt";
+	std::string overview_name = testFilePath + "overview.txt";
 
 	if (history_variable[hv["Time step number"]].getFinalValue() == 0 && if_exist(overview_name))
 		remove(overview_name.c_str()); // from string to const char*

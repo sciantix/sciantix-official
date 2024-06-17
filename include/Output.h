@@ -35,6 +35,6 @@
 #include "MapInputVariable.h"
 #include "MatrixDeclaration.h"
 
-void Output();
+void Output(std::string testFilePath);
 
 #endif // OUTPUT_H
