@@ -20,7 +20,8 @@ void Sciantix(int Sciantix_options[],
 	double Sciantix_history[],
 	double Sciantix_variables[],
 	double Sciantix_scaling_factors[],
-	double Sciantix_diffusion_modes[])
+	double Sciantix_diffusion_modes[],
+    std::string testFilePath)
 {
 	SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 
@@ -97,7 +98,7 @@ void Sciantix(int Sciantix_options[],
 
 	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
-	Output();
+	Output(testFilePath);
 
 	history_variable.clear();
 	sciantix_variable.clear();
