@@ -91,14 +91,14 @@ void ChromiumSolubility()
 			 *
 			 */
 
-			V_coeff_Cr_lt = -5.948346054563108;
-			U_coeff_Cr_lt =  22989.0;
+			V_coeff_Cr_lt = -5.24961027667847;
+			U_coeff_Cr_lt =  22256.321344636795;
 
 			threshold_temp = 5000; //(K)
-			end_temp = 1500;
+			end_temp = 1500 + 273.15;
 
-			C1 = 0.0017215611636416032;
-			C2 = 1501.8547191537048 ;
+			C1 = 0.004941175257332353;
+			C2 = 1200.2686207610132;
 
 			break;
 		}
@@ -138,7 +138,9 @@ void ChromiumSolubility()
 	Cr2O3_solubility = 100*Cr2O3_solubility * PhysicsConstants::molar_mass_Chromium / ((1-Cr2O3_solubility)*molar_mass_Uranium + Cr2O3_solubility * PhysicsConstants::molar_mass_Chromium + 2* PhysicsConstants::molar_mass_Oxigen ); //(% weight Cr /UO2)
 
 	if (temperature < end_temp)
-		Cr_solubility = 0.11;
+	{
+		Cr_solubility = 0.1051692;
+	}
 	if (Cr2O3_solubility < 0)
 		Cr2O3_solubility = 0;
 
@@ -165,10 +167,10 @@ void ChromiumSolubility()
 
 	// Ration between Cr203 and Cr-metal in the fuel 
 
-	double Cr203_fraction = 1 - exp(C1*(temperature - 273.15) - C1*C2);
+	double Cr203_fraction = 1 - exp(C1*(temperature) - C1*C2);
 
 	if (sciantix_variable[sv["Burnup"]].getFinalValue() <= 30)
-		Cr203_fraction = 1 - exp(C1*((temperature - 273.15) - C2 + 2000*(sciantix_variable[sv["Burnup"]].getFinalValue()-30)/30));
+		Cr203_fraction = 1 - exp(C1*((temperature) - C2 + 2000*(sciantix_variable[sv["Burnup"]].getFinalValue()-30)/30));
 
 	if (Cr203_fraction < 0)
 	{

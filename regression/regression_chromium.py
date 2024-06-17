@@ -73,52 +73,53 @@ def do_gold():
     print(f"output.txt not found in {file}")
 
 # Plot the regression test results
-def do_plot(RigletMartial1_data, RigletMartial2_data, Killeen_data, temperature, CrContent, FGR, FIMA, CrContentG, temperatureG, FGRG, FIMAG):
-  
+def do_plot(case_number, RigletMartial1_data, RigletMartial2_data, Killeen_data, temperature, CrContent, FGR, FIMA, CrContentG, temperatureG, FGRG, FIMAG):
   """ Plot: Chromium atoms in UO2 lattice """
-  fig, ax = plt.subplots()
-  
-  conv_factor =  52 * 100 / 6.022e23 / 1.07998e7 
-  print(conv_factor)
+  if case_number == 2:  # Plot only for case 2
+    fig, ax = plt.subplots()
 
-  ax.scatter(RigletMartial1_data[:,1], RigletMartial1_data[:,0] /conv_factor , marker = '.', c = '#B3B3B3', label='Data from Riglet-Martial et al. (2016)')
-  ax.plot(temperatureG, CrContentG, 'k', label='SCIANTIX GOLD')
-  ax.plot(temperature, CrContent, color = '#98E18D', label='SCIANTIX 2.0')
+    conv_factor = 52 * 100 / 6.022e23 / 1.07998e7
 
-  # ax.set_title(file + ' - Chromium content in the lattice')
-  ax.set_xlabel('Temperature (K)')
-  ax.set_ylabel('Chromium content in the lattice (at/m3)')
-  ax.legend()
-  
-  plt.show()
-  
-  fig, ax = plt.subplots()
+    ax.scatter(RigletMartial1_data[:, 1], RigletMartial1_data[:, 0] / conv_factor, marker='.', c='#B3B3B3',
+                label='Data from Riglet-Martial et al. (2016)')
+    ax.plot(temperatureG, CrContentG, 'k', label='SCIANTIX GOLD')
+    ax.plot(temperature, CrContent, color='#98E18D', label='SCIANTIX 2.0')
 
-  ax.scatter(RigletMartial2_data[:,1], RigletMartial2_data[:,0] / conv_factor, marker = '.', c = '#B3B3B3', label='Data from Riglet-Martial et al. (2016)')
-  ax.plot(temperatureG, CrContentG, 'k', label='SCIANTIX GOLD')
-  ax.plot(temperature, CrContent, color = '#98E18D', label='SCIANTIX 2.0')
+    ax.set_xlabel('Temperature (K)')
+    ax.set_ylabel('Chromium content in the lattice (at/m3)')
+    ax.legend()
 
-  # ax.set_title(file + ' - Chromium content in the lattice')
-  ax.set_xlabel('Temperature (K)')
-  ax.set_ylabel('Chromium content in the lattice (at/m3)')
-  ax.legend()
-  
-  plt.show()
+    plt.show()
 
-  """ Plot: Fission gas release """
-  fig, ax = plt.subplots()
-  
-  ax.scatter(Killeen_data[:,1], Killeen_data[:,0]/100, marker = '.', c = '#B3B3B3', label='Data from Killeen et al. (1980)')
-  ax.plot(FIMAG, FGRG, 'k', label='SCIANTIX GOLD')
-  ax.plot(FIMA, FGR, color = '#98E18D', label='SCIANTIX 2.0')
+  elif case_number == 3:  # Plot only for case 3
+    fig, ax = plt.subplots()
+    
+    conv_factor = 52 * 100 / 6.022e23 / 1.07998e7
 
-  # ax.set_title(file + ' - Release rate')
-  ax.set_xlabel('Burnup FIMA (%)')
-  ax.set_ylabel('Fission gas release (/)')
-  ax.legend()
+    ax.scatter(RigletMartial2_data[:, 1], RigletMartial2_data[:, 0] / conv_factor, marker='.', c='#B3B3B3',
+                label='Data from Riglet-Martial et al. (2016)')
+    ax.plot(temperatureG, CrContentG, 'k', label='SCIANTIX GOLD')
+    ax.plot(temperature, CrContent, color='#98E18D', label='SCIANTIX 2.0')
 
-  # plt.savefig(file + '.png')
-  plt.show()
+    ax.set_xlabel('Temperature (K)')
+    ax.set_ylabel('Chromium content in the lattice (at/m3)')
+    ax.legend()
+
+    plt.show()
+
+  elif case_number == 1:  # Plot only for case 1
+    """ Plot: Fission gas release """
+    fig, ax = plt.subplots()
+
+    ax.scatter(Killeen_data[:, 1], Killeen_data[:, 0] / 100, marker='.', c='#B3B3B3', label='Data from Killeen et al. (1980)')
+    ax.plot(FIMAG, FGRG, 'k', label='SCIANTIX GOLD')
+    ax.plot(FIMA, FGR, color='#98E18D', label='SCIANTIX 2.0')
+
+    ax.set_xlabel('Burnup FIMA (%)')
+    ax.set_ylabel('Fission gas release (/)')
+    ax.legend()
+
+    plt.show()
 
 
 # Main function of the Chromium regression
@@ -136,39 +137,33 @@ def regression_chromium(wpath, mode_Chromium, mode_gold, mode_plot, folderList, 
   #print(sorted_files_and_dirs)
 
   # Iterate over sorted list
+  case_number = 0  # Initialize case number
   for file in sorted_files_and_dirs:
     # Verify on a given folder, if Baker is in it's name
     if "Chromium" in file and os.path.isdir(file):
+      case_number += 1  # Increment case number
       folderList.append(file)
       os.chdir(file)
 
       print(f"Now in folder {file}...")
       number_of_tests += 1
 
-      # mode_gold = 0 : Use SCIANTIX / Don't use GOLD and check result
       if mode_gold == 0:
-
         do_sciantix()
         data, data_gold = check_output(file)
         number_of_tests_failed = check_result(number_of_tests_failed)
 
-      # mode_gold = 1 : Use SCIANTIX / Use GOLD
       if mode_gold == 1:
-
         do_sciantix()
         data, data_gold = check_output(file)
         print("...golding results.")
         do_gold()
 
-      # mode_gold = 2 : Don't use SCIANTIX / Don't use GOLD and check result
       if mode_gold == 2:
-
         data, data_gold = check_output(file)
         number_of_tests_failed = check_result(number_of_tests_failed)
 
-      # mode_gold = 3 : Don't use SCIANTIX / Use GOLD
       if mode_gold == 3:
-
         data, data_gold = check_output(file)
         print("...golding existing results.")
         do_gold()
@@ -187,11 +182,10 @@ def regression_chromium(wpath, mode_Chromium, mode_gold, mode_plot, folderList, 
       FIMAPos = findSciantixVariablePosition(data, "FIMA (%)")
 
       # arrays
-      #time = data[1:,timePos].astype(float)
-      temperature = data[1:,temperaturePos].astype(float)
-      CrContent = data[1:,ChromiumContentPos].astype(float) + data[1:,ChromiaContentPos].astype(float)
-      FGR = data[1:,FGRPos].astype(float)
-      FIMA = data[1:,FIMAPos].astype(float)
+      temperature = data[1:, temperaturePos].astype(float)
+      CrContent = data[1:, ChromiumContentPos].astype(float) + data[1:, ChromiaContentPos].astype(float)
+      FGR = data[1:, FGRPos].astype(float)
+      FIMA = data[1:, FIMAPos].astype(float)
 
       # output_gold.txt
       # find indexes
@@ -203,15 +197,14 @@ def regression_chromium(wpath, mode_Chromium, mode_gold, mode_plot, folderList, 
       FIMAPosG = findSciantixVariablePosition(data_gold, "FIMA (%)")
 
       # arrays
-      #timeG = data_gold[1:,timePosG].astype(float)
-      temperatureG = data_gold[1:,temperaturePosG].astype(float)
-      CrContentG = data_gold[1:,ChromiumContentPosG].astype(float) + data_gold[1:,ChromiaContentPosG].astype(float)
-      FGRG = data_gold[1:,FGRPosG].astype(float)
-      FIMAG = data_gold[1:,FIMAPosG].astype(float)
+      temperatureG = data_gold[1:, temperaturePosG].astype(float)
+      CrContentG = data_gold[1:, ChromiumContentPosG].astype(float) + data_gold[1:, ChromiaContentPosG].astype(float)
+      FGRG = data_gold[1:, FGRPosG].astype(float)
+      FIMAG = data_gold[1:, FIMAPosG].astype(float)
 
       # Check if the user has chosen to display the various plots
       if mode_plot == 1:
-        do_plot(RigletMartial1_data, RigletMartial2_data, Killeen_data, temperature, CrContent, FGR, FIMA, CrContentG, temperatureG, FGRG, FIMAG)
+          do_plot(case_number, RigletMartial1_data, RigletMartial2_data, Killeen_data, temperature, CrContent, FGR, FIMA, CrContentG, temperatureG, FGRG, FIMAG)
 
       os.chdir('..')
 

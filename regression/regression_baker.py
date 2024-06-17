@@ -142,7 +142,7 @@ def do_plot():
   ax2.grid()
   
   plt.tight_layout()
-  plt.savefig('plot_GPupdate.png')
+  #plt.savefig('plot_GPupdate.png')
   plt.show()
   
   # Data vs. SCIANTIX 2.0: bubble density + errorbar

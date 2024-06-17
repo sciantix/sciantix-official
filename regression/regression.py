@@ -222,7 +222,7 @@ def main():
             if regression_mode == 7 :
                 mode_Chromium = 1
                 folderList, number_of_tests, number_of_tests_failed = regression_chromium(wpath, mode_Chromium, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
-                print("\nRegression selected : HBS")
+                print("\nRegression selected : Chromium")
 
     print("MODE GOLD ==", mode_gold, "selected.")
     print("MODE PLOT ==", mode_plot, "selected.\n")
