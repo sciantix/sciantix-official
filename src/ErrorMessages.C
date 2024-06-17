@@ -50,9 +50,8 @@ namespace ErrorMessages
 		 * @brief This function prints an error_log.txt file when an input setting is out of the acceptable range of values.
 		 * 
 		 */
-		std::ofstream Error_log(Error_file_name, std::ios::out);
-		Error_log << "Error in " << routine << "." << std::endl;
+		std::ofstream Error_log(Error_file_name, std::ios::app);
+		Error_log << "Warning in " << routine << "." << std::endl;
 		Error_log << "The input setting " << variable_name << " = " << variable << " is out of range." << std::endl;
-		exit(1);
 	}
 }

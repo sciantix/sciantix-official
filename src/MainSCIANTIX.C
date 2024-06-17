@@ -42,6 +42,7 @@
 #include "InputReading.h"
 #include "Initialization.h"
 #include "TimeStepCalculation.h"
+#include "Bounds.h"
 #include <iostream>
 #include <fstream>
 #include <ctime>
@@ -61,28 +62,28 @@ void logExecutionTime(double timer, int time_step_number);
  */
 int main(int argc, char **argv)
 {
-	std::string testFilePath;
+	std::string testPathFile;
 
 	if (argc < 2) {
         std::cerr << "Warning: No path specified, using current directory." << std::endl;
         std::cout << "Try to use ./sciantix.x ../regression/your-test-file-path/ in the bin directory" << std::endl;
-        testFilePath = "./";
+        testPathFile = "./";
     } else {
-        testFilePath = argv[1];
-        if (testFilePath.back() != '/') {
-            testFilePath += '/';
+        testPathFile = argv[1];
+        if (testPathFile.back() != '/') {
+            testPathFile += '/';
         }
     }
 
-	InputReading(testFilePath);
+	InputReading(testPathFile);
 
 	Initialization();
 
-	std::string outputPath = testFilePath + "output.txt";
+	std::string outputPath = testPathFile + "output.txt";
 
 	remove(outputPath.c_str());
 
-	Execution_file.open(testFilePath + "execution.txt", std::ios::out);
+	Execution_file.open(testPathFile + "execution.txt", std::ios::out);
 
 	timer = clock();
 
@@ -101,7 +102,9 @@ int main(int argc, char **argv)
 		Sciantix_history[9] = Sciantix_history[10];
 		Sciantix_history[10] = InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
 
-		Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes, testFilePath);
+		Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes, testPathFile);
+
+		Configuration::CheckBounds(Sciantix_variables, 300);
 
 		dTime_h = TimeStepCalculation();
 		Sciantix_history[6] = dTime_h * 3600;
