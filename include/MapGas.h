@@ -23,6 +23,12 @@
 
 extern std::map<std::string, int> ga;
 
+/**
+ * \brief Maps gas names to indices for quick access.
+ * 
+ * This function fills a global map linking gas names to their corresponding vector indices.
+ * This allows quick lookup and access during the simulation.
+ */
 void MapGas();
 
 #endif
