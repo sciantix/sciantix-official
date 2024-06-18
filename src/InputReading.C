@@ -24,6 +24,7 @@
 /// The third file contains the initial conditions for the physics variables.
 
 #include "InputReading.h"
+#include "Global.h"
 
 
 
@@ -95,30 +96,30 @@ std::vector<double> ReadSeveralParameters(std::string variable_name, std::ifstre
 	return vector_read;
 }
 
-void InputReading(std::string testFilePath)
+void InputReading()
 {
 	/// Besides the two input files, this routines creates an input_check.txt file
 	/// reporting all the inputs provided in the other files.
 	/// It is highly recommended checking this file, since eventual errors
 	/// are reported in it.
 
-	std::ofstream input_check(testFilePath + "input_check.txt", std::ios::out);
+	std::ofstream input_check(TestPath + "input_check.txt", std::ios::out);
 
 	// Abort execution if any of the input files does not exist
-	std::ifstream input_settings(testFilePath + "input_settings.txt", std::ios::in);
+	std::ifstream input_settings(TestPath + "input_settings.txt", std::ios::in);
 	if (!input_settings)
 		ErrorMessages::MissingInputFile("input_settings.txt");
 
-	std::ifstream input_initial_conditions(testFilePath + "input_initial_conditions.txt", std::ios::in);
+	std::ifstream input_initial_conditions(TestPath + "input_initial_conditions.txt", std::ios::in);
 	if (!input_initial_conditions)
 		ErrorMessages::MissingInputFile("input_initial_conditions.txt");
 
-	std::ifstream input_history(testFilePath + "input_history.txt", std::ios::in);
+	std::ifstream input_history(TestPath + "input_history.txt", std::ios::in);
 	if (!input_history)
 		ErrorMessages::MissingInputFile("input_history.txt");
 	
 	// This is optional so no error if not present
-	std::ifstream input_scaling_factors(testFilePath + "input_scaling_factors.txt", std::ios::in);
+	std::ifstream input_scaling_factors(TestPath + "input_scaling_factors.txt", std::ios::in);
 
 	/**
 	 * @brief

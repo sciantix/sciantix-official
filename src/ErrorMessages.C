@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "ErrorMessages.h"
+#include "Global.h"
 
 namespace ErrorMessages
 {
@@ -36,7 +37,7 @@ namespace ErrorMessages
 		error_message +="Execution aborted\n";
 
 		// Write error message to the error log
-		std::ofstream Error_log(Error_file_name, std::ios::out);
+		std::ofstream Error_log(TestPath + Error_file_name, std::ios::out);
 		Error_log << error_message << std::endl;
 		
         // And write it to STDERR as well
@@ -50,7 +51,7 @@ namespace ErrorMessages
 		 * @brief This function prints an error_log.txt file when an input setting is out of the acceptable range of values.
 		 * 
 		 */
-		std::ofstream Error_log(Error_file_name, std::ios::app);
+		std::ofstream Error_log(TestPath + Error_file_name, std::ios::app);
 		Error_log << "Warning in " << routine << "." << std::endl;
 		Error_log << "The input setting " << variable_name << " = " << variable << " is out of range." << std::endl;
 	}

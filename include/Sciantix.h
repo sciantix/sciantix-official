@@ -40,6 +40,5 @@
  * @param Sciantix_variables Array of doubles representing current variables in the simulation.
  * @param Sciantix_scaling_factors Array of doubles used to scale various parameters within the model.
  * @param Sciantix_diffusion_modes Array of doubles representing diffusion modes used in the simulation.
- * @param testFilePath String representing the file path where the simulation outputs will be written.
  */
-void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[], std::string testFilePath);
+void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
