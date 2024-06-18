@@ -10,42 +10,40 @@
 #//                                                                                  //
 #//  Version: 2.0                                                                    //
 #//  Year: 2022                                                                      //
-#//  Authors: G. Zullo (giovanni.zullo@polimi.it)                                    //
+#//  Authors:                                                                        //
 #//                                                                                  //
 #//////////////////////////////////////////////////////////////////////////////////////
 
-# This CMakeLists.txt file is useful when compiling SCIANTIX with the cmake tool
-# 
-# output:
-#   > build directory with executable in build/Debug/sciantix.exe
-#
-# When using IDE, a CMakeSettings.json could be automatically produced to compile sciantix in a locall out/build/ folder
-# by setting this file as startup element.
-# More information here: (https://learn.microsoft.com/it-it/cpp/build/configure-cmake-debugging-sessions?view=msvc-170)
+# CMake version
+cmake_minimum_required(VERSION 3.14)
 
-cmake_minimum_required(VERSION 3.0.0)
-
-# Name of the project created / existent in visual studio
+# name of the project
 project(sciantix)
 
-# Enable C++ compiler
-enable_language (CXX)
+# Ensure that CMake can find Pybind11
+find_package(pybind11 REQUIRED)
 
-# Specify SCIANTIX directories
-set(include "include/*.h")
-set(src "src/*.C")
+# Include directories for your project
+include_directories(include)
 
-include(CTest)
-enable_testing()
+# Add source files
+file(GLOB SOURCES "src/*.C")
+file(GLOB HEADERS "include/*.h" "include/*.hpp")
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}/include/
+# Add the library target for your project
+add_library(sciantix SHARED ${SOURCES})
+
+# Add the pybind11 module target
+pybind11_add_module(sciantixModule pythonBind/Bindings.cpp)
+
+# Link the main library with the pybind11 module
+target_link_libraries(sciantixModule PRIVATE sciantix)
+
+# Set the output directory for the compiled module
+set_target_properties(sciantixModule PROPERTIES
+    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/python # Name of the folder
+    OUTPUT_NAME "sciantixModule"  # Name of the Outputed Module
 )
 
-file(GLOB SOURCES ${include} ${src})
-add_executable(sciantix ${SOURCES})
-
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-
-include(CPack)
+# Specify C++ standard
+set_property(TARGET sciantix PROPERTY CXX_STANDARD 17)
