@@ -44,6 +44,7 @@
 #include "TimeStepCalculation.h"
 #include "Bounds.h"
 #include "Global.h"
+#include "ErrorMessages.h"
 #include <iostream>
 #include <fstream>
 #include <ctime>
@@ -121,6 +122,7 @@ int main(int argc, char **argv)
 
 	timer = clock() - timer;
 
+	ErrorMessages::writeErrorLog();
 	logExecutionTime((double)timer / CLOCKS_PER_SEC, Time_step_number);
 	Execution_file.close();
 
