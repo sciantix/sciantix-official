@@ -30,8 +30,12 @@
 #include "Gas.h"
 #include "System.h"
 
-/// Derived class for the SCIANTIX models.
-
+/**
+ * @brief Represents the models used in the SCIANTIX simulation.
+ *
+ * The Model class is an integral part of the SCIANTIX simulation software, serving as a base for defining
+ * various simulation models.
+ */
 class Model : public HistoryVariable, public SciantixVariable, public InputVariable, public System
 {
 protected:
@@ -39,21 +43,32 @@ protected:
 	std::vector<double> parameter;
 
 public:
-
+	/**
+	 * @brief Sets the parameters of the model.
+	 * @param p Vector of doubles representing the parameters to be applied to the model.
+	 */
 	void setParameter(std::vector<double> p)
 	{
 		parameter = p;
 	}
 
+	/**
+	 * @brief Retrieves the parameters of the model.
+	 * @return Vector of doubles containing the current parameters of the model.
+	 */
 	std::vector<double> getParameter()
 	{
 		return parameter;
 	}
 
-	// Constructor & destructor
+	/**
+	 * \brief Default constructor for Model class.
+	 */
 	Model() {}
+	/**
+	 * \brief Destructor for Model class.
+	 */
 	~Model() {}
-
 };
 
-#endif
+#endif // MODEL_H

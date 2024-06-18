@@ -30,7 +30,6 @@
  * This function initializes the properties of the "Helium in UO2" system
  * and adds it to the sciantix_system vector.
  */
-
 void He_in_UO2();
 
 #endif // HE_IN_UO2_H

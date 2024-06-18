@@ -19,10 +19,9 @@
 /**
  * @brief Calculates the concentration of fission gas (Xe+Kr) produced by fission reactions in the fuel.
  */
-
 void GasProduction()
 {
-	for (auto& system : sciantix_system)
+	for (auto &system : sciantix_system)
 	{
 		int model_index = model.size();
 
