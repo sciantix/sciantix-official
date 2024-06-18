@@ -18,8 +18,14 @@
 #define ENTITY_H
 #include <string>
 
-/// Base class endowed with the member variable name, inherited by both Variable and Material classes.
-
+/**
+ * \class Entity
+ * \brief Base class for Variable and Material classes, providing common attributes and methods.
+ *
+ * Entity serves as a foundational class that encapsulates common properties such as
+ * a name and a reference, which are used across derived classes. It provides basic
+ * functionalities to set and retrieve these properties.
+ */
 class Entity
 {
 protected:
@@ -27,34 +33,55 @@ protected:
 	std::string name;
 
 public:
+	/**
+	 * \brief Sets the name of the entity.
+	 * @param n The new name to be set for the entity.
+	 */
 	void setName(std::string n)
 	{
 		/// Member function to set the name of the object
 		name = n;
 	}
 
+	/**
+	 * \brief Retrieves the name of the entity.
+	 * @return A string that is the current name of the entity.
+	 */
 	std::string getName()
 	{
 		/// Member function to get the name of the object
 		return name;
 	}
 
+	/**
+	 * \brief Sets a reference for the entity.
+	 * @param n The reference string to be set.
+	 */
 	void setRef(std::string n)
 	{
 		/// Member function to set the reference field of the object
 		reference = n;
 	}
 
+	/**
+	 * \brief Retrieves the reference or identifier of the entity.
+	 * @return A string that is the current reference of the entity.
+	 */
 	std::string getRef()
 	{
 		/// Member function to get the reference field of the object
 		return reference;
 	}
 
+	/**
+	 * \brief Default constructor for the Entity class.
+	 */
+	Entity() {}
 
-	Entity() { }
-	~Entity() { }
-
+	/**
+	 * \brief Destructor for the Entity class.
+	 */
+	~Entity() {}
 };
 
-#endif
+#endif 	// ENTITY_H

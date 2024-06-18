@@ -14,8 +14,18 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef HELIUM_H
+#define HELIUM_H
+
 #include "GasDeclaration.h"
 
+/**
+ * \brief Initializes Helium gas properties.
+ * 
+ * Sets up the Helium gas properties in the simulation, including its atomic number,
+ * Van der Waals volume, decay rate, and precursor factor.
+ */
 void Helium();
 
+#endif // HELIUM_H
 

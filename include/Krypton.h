@@ -15,6 +15,17 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef KRYPTON_H
+#define KRYPTON_H
+
 #include "GasDeclaration.h"
 
+/**
+ * \brief Initializes Krypton gas properties, including isotopes.
+ * 
+ * Sets up the properties of Krypton and its isotopes, detailing atomic numbers,
+ * mass numbers, Van der Waals volumes, decay rates, and precursor factors.
+ */
 void Krypton();
+
+#endif // KRYPTON_H

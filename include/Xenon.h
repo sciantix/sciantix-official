@@ -19,6 +19,12 @@
 
 #include "GasDeclaration.h"
 
+/**
+ * \brief Initializes Xenon gas properties, including isotopes.
+ * 
+ * Sets up the properties of Xenon and its isotopes, detailing atomic numbers,
+ * mass numbers, Van der Waals volumes, decay rates, and precursor factors.
+ */
 void Xenon();
 
 #endif // XENON_H

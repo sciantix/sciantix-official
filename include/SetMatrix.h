@@ -26,6 +26,14 @@
 #include "GasDeclaration.h"
 #include "MapGas.h"
 
+
+/**
+ * \brief Defines the available options for fuel matrices and their properties.
+ *
+ * This function handles the setup of different fuel matrix configurations based on
+ * user input. It configures the properties for standard UO2 or high burnup structure (HBS) 
+ * enhanced UO2 based on the simulation's requirements.
+ */
 void SetMatrix();
 
 

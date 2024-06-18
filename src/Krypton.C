@@ -16,7 +16,6 @@
 
 #include "Krypton.h"
 
-/// Krypton
 
 void Krypton()
 {
