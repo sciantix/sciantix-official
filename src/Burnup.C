@@ -23,7 +23,6 @@
  * This calculation is performed within the Simulation::BurnupEvolution() function using the Solver::Integrator.
  * 
  */
-
 void Burnup()
 {
 	model.emplace_back();

@@ -19,13 +19,20 @@
 
 #include "PhysicsVariable.h"
 
-/// Derived class for history variables used in SCIANTIX as input quantities (time, temperature, fission rate and hydrostatic stress).
-
+/**
+ * @brief Specialized class for tracking historical simulation data within the SCIANTIX framework.
+ */
 class HistoryVariable : virtual public PhysicsVariable
 {
 public:
-	HistoryVariable() { }
-	~HistoryVariable() { }
+	/**
+	 * \brief Default constructor for HistoryVariable class.
+	 */
+	HistoryVariable() {}
+	/**
+	 * \brief Destructor for HistoryVariable class.
+	 */
+	~HistoryVariable() {}
 };
 
-#endif
+#endif // HISTORYVARIABLE_H

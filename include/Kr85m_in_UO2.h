@@ -26,5 +26,4 @@
  * @brief This function defines the sciantix_system *85m-Krypton in UO<sub>2</sub>* and sets its physical properties.
  * 
  */
-
 void Kr85m_in_UO2();

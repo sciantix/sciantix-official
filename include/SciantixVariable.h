@@ -20,10 +20,8 @@
 #include "PhysicsVariable.h"
 
 /**
- * @brief Derived class for sciantix variables.
- *
+ * @brief Extends the PhysicsVariable class to include specific behaviors for variables used in the SCIANTIX simulation framework.
  */
-
 class SciantixVariable : virtual public PhysicsVariable
 {
 private:
@@ -31,14 +29,14 @@ private:
 
 public:
     /**
-     * @brief Default constructor.
+     * @brief Default constructor for the SciantixVariable class.
      */
     SciantixVariable() : to_output(false) {}
 
     /**
-     * @brief Destructor.
+     * @brief Destructor for the SciantixVariable class.
      */
     virtual ~SciantixVariable() {}
 };
 
-#endif
+#endif // SCIANTIXVARIABLE_H
