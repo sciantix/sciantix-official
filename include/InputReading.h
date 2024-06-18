@@ -27,6 +27,5 @@
  * It opens necessary input files, reads configuration and initial condition data, 
  * logs this data for verification, and manages any missing file errors.
  * 
- * @param testFilePath The base path to the directory containing input files.
  */
-void InputReading(std::string testFilePath);
+void InputReading();
