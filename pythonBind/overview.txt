@@ -1,0 +1,74 @@
+Model	Burnup	: The local burnup is calculated from the fission rate density.
+Model	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
+Model	High-burnup structure formation	: not considered.
+Model	High-burnup structure porosity	not considered
+Model	Grain growth	constant grain radius.
+Model	Grain-boundary sweeping	: Not considered
+Model	Gas production - Xe in UO2	 
+Model	Gas production - Kr in UO2	 
+Model	Gas production - He in UO2	 
+Model	Gas production - Xe133 in UO2	 
+Model	Gas production - Kr85m in UO2	 
+Model	Intragranular bubble evolution	No evolution.
+Model	Grain-boundary venting	not considered.
+Model	Intergranular bubble evolution	: No model for grain-boundary bubble evolution.
+
+Matrix	UO2	
+	: Null grain-boundary mobility.
+	iGrainBoundaryVacancyDiffusivity: constant value (1e-30 m^2/s).
+	
+
+System	Xe in UO2	Production rate = cumulative yield * fission rate density * (1 - alpha).
+	iFGDiffusionCoefficient: constant diffusivity (7e-19 m2/s).
+	iResolutionRate: Constant resolution rate from Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
+	iTrappingRate: constant value from Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
+	iNucleationRate: constant value.
+	
+System	Kr in UO2	Production rate = cumulative yield * fission rate density * (1 - alpha).
+	iFGDiffusionCoefficient: constant diffusivity (7e-19 m2/s).
+	iResolutionRate: Constant resolution rate from Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
+	iTrappingRate: constant value from Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
+	iNucleationRate: constant value.
+	
+System	He in UO2	iHeDiffusivity: constant intragranular diffusivity.
+	iResolutionRate: Constant resolution rate from Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
+	iTrappingRate: constant value from Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
+	iNucleationRate: constant value.
+	No production rate.
+	
+System	Xe133 in UO2	Production rate = cumulative yield * fission rate density * (1 - alpha).
+	iFGDiffusionCoefficient: constant diffusivity (7e-19 m2/s).
+	iResolutionRate: Constant resolution rate from Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
+	iTrappingRate: constant value from Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
+	iNucleationRate: constant value.
+	
+System	Kr85m in UO2	Production rate = cumulative yield * fission rate density * (1 - alpha).
+	iFGDiffusionCoefficient: constant diffusivity (7e-19 m2/s).
+	iResolutionRate: Constant resolution rate from Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
+	iTrappingRate: constant value from Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
+	iNucleationRate: constant value.
+	
+
+Input setting	iGrainGrowth = 0
+Input setting	iFGDiffusionCoefficient = 0
+Input setting	iDiffusionSolver = 0
+Input setting	iIntraGranularBubbleEvolution = 0
+Input setting	iResolutionRate = 0
+Input setting	iTrappingRate = 0
+Input setting	iNucleationRate = 0
+Input setting	iOutput = 0
+Input setting	iGrainBoundaryVacancyDiffusivity = 0
+Input setting	iGrainBoundaryBehaviour = 0
+Input setting	iGrainBoundaryMicroCracking = 0
+Input setting	iFuelMatrix = 0
+Input setting	iGrainBoundaryVenting = 0
+Input setting	iRadioactiveFissionGas = 0
+Input setting	iHelium = 0
+Input setting	iHeDiffusivity = 0
+Input setting	iGrainBoundarySweeping = 0
+Input setting	iHighBurnupStructureFormation = 0
+Input setting	iHighBurnupStructurePorosity = 0
+Input setting	iHeliumProductionRate = 0
+Input setting	iStoichiometryDeviation = 0
+Input setting	iBubbleDiffusivity = 0
+

@@ -717,6 +717,7 @@ class Simulation : public Solver, public Model
 
 		// Restructuring rate:
 		// dalpha_r / bu = 3.54 * 2.77e-7 (1-alpha_r) b^2.54
+
 		double coefficient =
 			model[sm["High-burnup structure formation"]].getParameter().at(0) *
 			model[sm["High-burnup structure formation"]].getParameter().at(1) *

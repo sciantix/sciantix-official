@@ -1,6 +1,8 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <pybind11/numpy.h> 
 
+// all the classes
 #include "HistoryVariable.h"
 #include "SciantixVariable.h"
 #include "InputVariable.h"
@@ -13,6 +15,18 @@
 #include "Simulation.h"
 #include "PhysicsVariable.h"
 
+// Sciantix main functions 
+#include "Sciantix.h"
+#include "InputInterpolation.h"
+#include "InputReading.h"
+#include "Initialization.h"
+#include "TimeStepCalculation.h"
+#include "MainVariables.h"
+#include <ctime>
+
+
+
+
 // Import of the namespace
 namespace py = pybind11;
 
@@ -24,6 +38,91 @@ namespace py = pybind11;
  */
 PYBIND11_MODULE(sciantixModule, m)
 {
+    // --- all the attributes : --- //
+
+    m.attr("Time_step_number") = &Time_step_number;
+    m.attr("Time_h") = &Time_h;
+    m.attr("dTime_h") = &dTime_h;
+    m.attr("Time_end_h") = &Time_end_h;
+    m.attr("Time_s") = &Time_s;
+    m.attr("Time_end_s") = &Time_end_s;
+    m.attr("Number_of_time_steps_per_interval") = &Number_of_time_steps_per_interval;
+
+    m.attr("Sciantix_options") = py::array_t<int>({40}, Sciantix_options);
+    m.attr("Sciantix_history") = py::array_t<double>({20}, Sciantix_history);
+    m.attr("Sciantix_variables") = py::array_t<double>({300}, Sciantix_variables);
+    m.attr("Sciantix_scaling_factors") = py::array_t<double>({10}, Sciantix_scaling_factors);
+    m.attr("Sciantix_diffusion_modes") = py::array_t<double>({1000}, Sciantix_diffusion_modes);
+
+    m.attr("Input_history_points") = &Input_history_points;
+    // m.attr("Temperature_input_points") = &Temperature_input_points;
+    // m.attr("Fissionrate_input_points") = &Fissionrate_input_points;
+    // m.attr("Hydrostaticstress_input_points") = &Hydrostaticstress_input_points;
+    //m.attr("Stempressure_input_points") = &Stempressure_input_points;
+
+    m.attr("Time_input") = py::cast(Time_input);
+    m.attr("Temperature_input") = py::cast(Temperature_input);
+    m.attr("Fissionrate_input") = py::cast(Fissionrate_input);
+    m.attr("Hydrostaticstress_input") = py::cast(Hydrostaticstress_input);
+    m.attr("Steampressure_input") = py::cast(Steampressure_input);
+
+
+    // --- all the functions : --- //
+    m.def("SetVariables",[](py::array_t<int> Sciantix_options,py::array_t<double> Sciantix_history ,py::array_t<double> Sciantix_variables, py::array_t<double> Sciantix_scaling_factors,py::array_t<double>Sciantix_diffusion_modes){
+        // Conversion explicite des py::array_t en pointeurs
+        auto buf_options = Sciantix_options.request();
+        auto buf_history = Sciantix_history.request();
+        auto buf_variables = Sciantix_variables.request();
+        auto buf_scaling_factors = Sciantix_scaling_factors.request();
+        auto buf_diffusion_modes = Sciantix_diffusion_modes.request();
+
+        SetVariables(
+            reinterpret_cast<int*>(buf_options.ptr),
+            reinterpret_cast<double*>(buf_history.ptr),
+            reinterpret_cast<double*>(buf_variables.ptr),
+            reinterpret_cast<double*>(buf_scaling_factors.ptr),
+            reinterpret_cast<double*>(buf_diffusion_modes.ptr)
+        );
+    }, py::arg("Sciantix_options"), py::arg("Sciantix_history"), py::arg("Sciantix_variables"), py::arg("Sciantix_scaling_factors"), py::arg("Sciantix_diffusion_modes"));
+
+    m.def("SetGas", &SetGas);
+    m.def("SetMatrix", &SetMatrix);
+    m.def("SetSystem", &SetSystem);
+    m.def("Burnup", &Burnup);
+    m.def("EffectiveBurnup", &EffectiveBurnup);
+    m.def("EnvironmentComposition", &EnvironmentComposition);
+    m.def("UO2Thermochemistry", &UO2Thermochemistry);
+    m.def("StoichiometryDeviation", &StoichiometryDeviation);
+    m.def("HighBurnupStructureFormation", &HighBurnupStructureFormation);
+    m.def("HighBurnupStructurePorosity", &HighBurnupStructurePorosity);
+    m.def("GrainGrowth", &GrainGrowth);
+    m.def("GrainBoundarySweeping", &GrainBoundarySweeping);
+    m.def("GasProduction", &GasProduction);
+    m.def("IntraGranularBubbleEvolution", &IntraGranularBubbleEvolution);
+    m.def("GasDiffusion", &GasDiffusion);
+    m.def("GrainBoundaryMicroCracking", &GrainBoundaryMicroCracking);
+    m.def("GrainBoundaryVenting", &GrainBoundaryVenting);
+    m.def("InterGranularBubbleEvolution", &InterGranularBubbleEvolution);
+    m.def("FiguresOfMerit", &FiguresOfMerit);
+    m.def("UpdateVariables",[](py::array_t<double> Sciantix_variables,py::array_t<double>Sciantix_diffusion_modes){
+        // Conversion explicite des py::array_t en pointeurs
+        auto buf_variables = Sciantix_variables.request();
+        auto buf_diffusion_modes = Sciantix_diffusion_modes.request();
+
+        UpdateVariables(
+            reinterpret_cast<double*>(buf_variables.ptr),
+            reinterpret_cast<double*>(buf_diffusion_modes.ptr)
+        );
+    }, py::arg("Sciantix_variables"), py::arg("Sciantix_diffusion_modes"));
+    m.def("Output", &Output);
+    m.def("MapModel", &MapModel);
+    m.def("InputReading", &InputReading);
+    m.def("Initialization", &Initialization);
+    m.def("InputInterpolation", &InputInterpolation);
+    m.def("TimeStepCalculation", &TimeStepCalculation);;
+
+
+    // --- all the classes : --- //
     py::class_<Entity>(m, "Entity")
         .def(py::init<>())
         .def("getReference", &Entity::getRef)
