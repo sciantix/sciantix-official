@@ -16,10 +16,6 @@
 
 #include "IntraGranularBubbleEvolution.h"
 
-/**
- * @brief IntraGranularBubbleEvolution builds an object Model according to the input_variable "iIntraGranularBubbleEvolution".
- * The models available in this routine determine the calculation of local bubble density and average size.
- */
 void IntraGranularBubbleEvolution()
 {
 	

@@ -103,6 +103,7 @@ namespace Configuration
     /**
      * \brief Check if the variable is in the bounds
      * @param Sciantix_Variables[] Array of double representing current variables in the simulation.
+     * @param size Int for the size of the array
      */
     void CheckBounds(double Sciantix_Variables[], int size)
     {

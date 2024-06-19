@@ -23,6 +23,9 @@
 
 extern std::map<std::string, int> pv;
 
+/**
+ * @brief This routine maps the names of physics variables to their indices in the physics_variable vector.
+ */
 void MapPhysicsVariable();
 
 #endif // MAP_PHYSICS_VARIABLE_H

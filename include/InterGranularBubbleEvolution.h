@@ -27,4 +27,10 @@
 #include <cmath>
 #include "ConstantNumbers.h"
 
+/**
+ * @brief This function contains a choice among possible expressions for the bubble number density and
+ * the bubble radius at grain boundaries. The model considers one-off nucleation,
+ * growth of lenticular bubbles by vacancy absorption and coalescence of bubbles.
+ * [2] White, JNM, 325 (2004) 61-77
+ */
 void InterGranularBubbleEvolution();

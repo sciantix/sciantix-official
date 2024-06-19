@@ -18,8 +18,4 @@
 
 void SetModel()
 {
-	/**
-	 * @brief This function is used to include the headers of the available models, in SetModel.h.
-	 * 
-	 */
 }

@@ -34,7 +34,7 @@ namespace ErrorMessages
 	 * Writes a message to both an error log file and STDERR, then exits the program.
 	 * The function assumes that the missing file is critical and thus stops execution.
 	 */
-	void MissingInputFile(const char* exception);
+	void MissingInputFile(const char* missing_file);
 
 	/**
 	 * @brief Accumulates a warning message about an out-of-range input setting.

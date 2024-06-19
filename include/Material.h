@@ -20,13 +20,21 @@
 #include <string>
 #include "Entity.h"
 
-/// Derived class for the materials used in SCIANTIX (e.g., fuel matrix, fission gas, etc.).
-
+/**
+ * @class Material
+ * @brief Derived class for the materials used in SCIANTIX (e.g., fuel matrix, fission gas, etc.).
+ */
 class Material : virtual public Entity
 {
 public:
-	Material() { }
-	~Material() { }
+	/**
+	 * @brief Default constructor for the Material class.
+	 */
+	Material() {}
+	/**
+	 * Destructor for the Material class.
+	 */
+	~Material() {}
 
 protected:
 	std::string name;

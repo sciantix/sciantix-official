@@ -17,27 +17,17 @@
 #include "Output.h"
 #include "Global.h"
 
-inline bool if_exist(const std::string& name)
+/**
+ * @brief Function to check if a file exists.
+ * @return 0/1
+ * @author G. Zullo
+ */
+inline bool if_exist(const std::string &name)
 {
-	/**
-	 * @brief Function to check if a file exists.
-	 * @return 0/1
-	 * @author G. Zullo
-	 * 
-	 */
 	struct stat buffer;
 	return (stat(name.c_str(), &buffer) == 0);
 }
 
-/// @brief 
-/// Output
-/// This routine prints the output.txt file, that is the file with all the SCIANTIX code calculations.
-/// The output.txt is organized in successive columns, each one starting with their header, name and unit of measure 
-/// of the figure of merit (e.g., Temperature (K)), and then including the temporal evolution of the figure of merit.
-/// 
-/// The first columns contain the input_history.txt temporal interpolation performed by InputInerpolation.
-/// The other columns contain the evolution of the sciantix variables.
-/// This function contains different formatting options to print the output.txt file, according to iOutput value.
 void Output()
 {
 	std::string output_name = TestPath + "output.txt";
@@ -50,12 +40,12 @@ void Output()
 	{
 		if (history_variable[hv["Time step number"]].getFinalValue() == 0)
 		{
-			for (auto& variable : history_variable)
+			for (auto &variable : history_variable)
 			{
 				if (variable.getOutput())
 					output_file << variable.getName() << " " << variable.getUOM() << "\t";
 			}
-			for (auto& variable : sciantix_variable)
+			for (auto &variable : sciantix_variable)
 			{
 				if (variable.getOutput())
 					output_file << variable.getName() << " " << variable.getUOM() << "\t";
@@ -65,13 +55,13 @@ void Output()
 
 		if ((int)history_variable[hv["Time step number"]].getFinalValue() % 1 == 0)
 		{
-			for (auto& variable : history_variable)
+			for (auto &variable : history_variable)
 			{
 				if (variable.getOutput())
 					output_file << std::setprecision(10) << variable.getFinalValue() << "\t";
 			}
 
-			for (auto& variable : sciantix_variable)
+			for (auto &variable : sciantix_variable)
 			{
 				if (variable.getOutput())
 					output_file << std::setprecision(7) << variable.getFinalValue() << "\t";
@@ -82,46 +72,43 @@ void Output()
 
 	/**
 	 * @brief iOutput = 2 prints the complete output.exe file
-	 * 
+	 *
 	 */
 	else if ((int)input_variable[iv["iOutput"]].getValue() == 2)
 	{
 		if (history_variable[hv["Time step number"]].getFinalValue() == 0)
 		{
-			for (auto& variable : history_variable)
+			for (auto &variable : history_variable)
 			{
 				output_file << variable.getName() << " " << variable.getUOM() << "\t";
 			}
-			for (auto& variable : sciantix_variable)
+			for (auto &variable : sciantix_variable)
 			{
-					output_file << variable.getName() << " " << variable.getUOM() << "\t";
+				output_file << variable.getName() << " " << variable.getUOM() << "\t";
 			}
 			output_file << "\n";
 		}
 
 		if ((int)history_variable[hv["Time step number"]].getFinalValue() % 1 == 0)
 		{
-			for (auto& variable : history_variable)
+			for (auto &variable : history_variable)
 			{
-					output_file << std::setprecision(10) << variable.getFinalValue() << "\t";
+				output_file << std::setprecision(10) << variable.getFinalValue() << "\t";
 			}
 
-			for (auto& variable : sciantix_variable)
+			for (auto &variable : sciantix_variable)
 			{
-					output_file << std::setprecision(7) << variable.getFinalValue() << "\t";
+				output_file << std::setprecision(7) << variable.getFinalValue() << "\t";
 			}
 			output_file << "\n";
 		}
 	}
 
-	
-
-
 	output_file.close();
 
 	/**
 	 * ### Writing: overview.txt
-	 * 
+	 *
 	 */
 	std::string overview_name = TestPath + "overview.txt";
 
@@ -133,7 +120,7 @@ void Output()
 	{
 		overview_file.open(overview_name, std::fstream::in | std::fstream::out | std::fstream::app);
 
-		for (auto& model_ : model)
+		for (auto &model_ : model)
 		{
 			overview_file << "Model" << "\t";
 			overview_file << model_.getName() << "\t";
@@ -145,7 +132,7 @@ void Output()
 		/**
 		 * Printing the matrix
 		 */
-		for (auto& matrix_ : matrix)
+		for (auto &matrix_ : matrix)
 		{
 			overview_file << "Matrix" << "\t";
 			overview_file << matrix_.getName() << "\t";
@@ -154,7 +141,7 @@ void Output()
 
 		overview_file << "\n";
 
-		for (auto& system : sciantix_system)
+		for (auto &system : sciantix_system)
 		{
 			overview_file << "System" << "\t";
 			overview_file << system.getName() << "\t";
@@ -163,7 +150,7 @@ void Output()
 
 		overview_file << "\n";
 
-		for (auto& input_variable_ : input_variable)
+		for (auto &input_variable_ : input_variable)
 		{
 			overview_file << "Input setting" << "\t";
 			overview_file << input_variable_.getName() << " = ";
