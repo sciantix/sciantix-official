@@ -22,4 +22,7 @@
 #include "MapSciantixVariable.h"
 #include "MapHistoryVariable.h"
 
+/**
+ * @brief GrainBoundaryVenting() defines models for release mechanisms caused by venting through open porosities
+ */
 void GrainBoundaryVenting();

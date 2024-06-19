@@ -16,11 +16,6 @@
 
 #include "MapSciantixVariable.h"
 
-/**
- * @brief This routines defines the map sv for sciantix_variable
- * 
- */
-
 std::map<std::string, int> sv;
 
 void MapSciantixVariable()

@@ -21,7 +21,6 @@
 #include "SciantixVariable.h"
 
 /// SciantixVariableDeclaration.h
-
 extern std::vector<SciantixVariable> sciantix_variable;
 
 #endif

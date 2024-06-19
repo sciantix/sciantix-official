@@ -26,6 +26,5 @@
  * \brief Handles all input processing for the simulation.
  * It opens necessary input files, reads configuration and initial condition data, 
  * logs this data for verification, and manages any missing file errors.
- * 
  */
 void InputReading();

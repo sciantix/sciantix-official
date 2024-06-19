@@ -44,8 +44,6 @@ public:
 	 */
 	double Integrator(double initial_value, double parameter, double increment)
 	{
-		/// Solver for the ODE [y' = + S]
-		// parameter = source term
 		return initial_value + parameter * increment;
 	}
 
@@ -60,9 +58,6 @@ public:
 	 */
 	double LimitedGrowth(double initial_value, std::vector<double> parameter, double increment)
 	{
-		/// Solver for the ODE [y' = k / y + S]
-		// parameter[0] = growth rate
-		// parameter[1] = source term
 		return 0.5 * ((initial_value + parameter[1] * increment) + sqrt(pow(initial_value + parameter[1] * increment, 2) + 4.0 * parameter[0] * increment));
 	}
 
@@ -72,15 +67,12 @@ public:
 	 *
 	 * @param initial_condition The initial value of the dependent variable.
 	 * @param decay_rate The decay rate.
-	 * @param source_term The source term.
+	 * @param source_term The source.
 	 * @param increment The time increment.
 	 * @return The updated value after solving the ODE.
 	 */
 	double Decay(double initial_condition, double decay_rate, double source_term, double increment)
 	{
-		/// Solver for the ODE [y' = - L y + S]
-		/// 1nd parameter = decay rate
-		/// 2st parameter = source
 		return (initial_condition + source_term * increment) / (1.0 + decay_rate * increment);
 	}
 
@@ -160,7 +152,7 @@ public:
 
 
 	/**
-	 * @brief Computes the dot product of a 1D vector and an array.
+	 * @brief Function to compute the dot product between two arrays (v and u) of size n
 	 *
 	 * @param u The vector.
 	 * @param v The array.
@@ -169,7 +161,6 @@ public:
 	 */
 	double dotProduct1D(std::vector<double> u, double v[], int n)
 	{
-		/// Function to compute the dot product between two arrays (v and u) of size n
 		double result = 0.0;
 		for (int i = 0; i < n; ++i)
 			result += u[i] * v[i];
@@ -188,7 +179,6 @@ public:
 	 */
 	void dotProduct2D(double A[], double v[], int n_rows, const int n_col, double result[])
 	{
-		/// Function to compute the dot product between a matrix and an array
 		std::vector<double> a(n_col);
 		for (int i = 0; i < n_rows; ++i)
 		{
@@ -497,26 +487,20 @@ public:
 	}
 
 	/**
-	 * @brief Solves a quartic equation using Newton's method.
+	 * @brief Solver for the quartic equation ax^4 + bx^3 +cx^2 +dx + e = 0
+	 * with the iterative Newton's method.
 	 *
 	 * @param parameter A vector containing the coefficients of the equation.
-	 * @return The solution to the equation.
+	 * parameter.at(0) initial conditions
+	 * parameter.at(1) coefficient of x^4
+	 * parameter.at(2) coefficient of x^3
+	 * parameter.at(3) coefficient of x^2
+	 * parameter.at(4) coefficient of x^1
+	 * parameter.at(5) coefficient of x^0
+	 * @return x1, the solution to the equation.
 	 */
 	double QuarticEquation(std::vector<double> parameter)
 	{
-		/**
-		 * @brief Solver for the quartic equation ax^4 + bx^3 +cx^2 +dx + e = 0
-		 * with the iterative Newton's method.
-		 *
-		 * @param parameter.at(0) initial conditions
-		 * @param parameter.at(1) coefficient of x^4
-		 * @param parameter.at(2) coefficient of x^3
-		 * @param parameter.at(3) coefficient of x^2
-		 * @param parameter.at(4) coefficient of x^1
-		 * @param parameter.at(5) coefficient of x^0
-		 * @return x1 solution
-		 */
-
 		double function(0.0);
 		double derivative(0.0);
 		double y1(0.0);
@@ -584,19 +568,14 @@ public:
 	}
 
 	/**
-	 * @brief Solves a non-linear equation using Newton's method.
-	 *
+	 * @brief Solver for the non-linear equation (Blackburn's thermochemical urania model) log(PO2(x)) = 2.0*log(x*(x+2.0)/(1.0-x)) + 108.0*pow(x,2.0) - 32700.0/T + 9.92
+	 * with the iterative Newton's method.
+	 * 
 	 * @param parameter A vector containing the parameters of the equation.
 	 * @return The solution to the equation.
 	 */
 	double NewtonBlackburn(std::vector<double> parameter)
 	{
-		/**
-		 * @brief Solver for the non-linear equation (Blackburn's thermochemical urania model) log(PO2(x)) = 2.0*log(x*(x+2.0)/(1.0-x)) + 108.0*pow(x,2.0) - 32700.0/T + 9.92
-		 * with the iterative Newton's method.
-		 *
-		 */
-
 		double fun(0.0);
 		double deriv(0.0);
 		double x1(0.0);
@@ -632,20 +611,20 @@ public:
 	}
 
 	/**
-	 * @brief Solves an ODE using a Newton method-based Langmuir model.
+	 * @brief Solver for the ODE [y' = K(1-beta*exp(alpha*y)))]
 	 *
 	 * @param initial_value The initial value of the dependent variable.
 	 * @param parameter A vector containing the parameters of the ODE.
 	 * @param increment The time increment.
+	 * 
+	 * parameter[0] = K
+	 * parameter[1] = beta
+	 * parameter[2] = alpha
+	 * 
 	 * @return The solution to the ODE.
 	 */
 	double NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment)
 	{
-		/// Solver for the ODE [y' = K(1-beta*exp(alpha*y)))]
-		/// @param parameter[0] = K
-		/// @param parameter[1] = beta
-		/// @param parameter[2] = alpha
-
 		double K = parameter.at(0);
 		double beta = parameter.at(1);
 		double alpha = parameter.at(2);

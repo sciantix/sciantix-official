@@ -16,11 +16,6 @@
 
 #include "GrainBoundarySweeping.h"
 
-/**
- * @brief This routine defines the model the grain-boundary sweeping.
- * If activated, it describes the fraction of intra-granular gas concentration sweeped due to grain growth process.
- *
- */
 void GrainBoundarySweeping()
 {
 	model.emplace_back();

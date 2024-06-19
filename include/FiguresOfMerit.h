@@ -33,7 +33,6 @@
  * that are of interest in the output.txt file.
  * 
  */
-
 void FiguresOfMerit();
 
 #endif // FIGURES_OF_MERIT_H

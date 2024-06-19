@@ -16,15 +16,6 @@
 
 #include "StoichiometryDeviation.h"
 
-/**
- * @brief This routine sets the model to estimate the stoichiometry deviation of the fuel.
- * Currently, UO2+x is considered, under external oxidizing environment.
- *
- * @author
- * G. Petrosillo
- * G. Zullo
- *
- */
 void StoichiometryDeviation()
 {
   if (!input_variable[iv["iStoichiometryDeviation"]].getValue())

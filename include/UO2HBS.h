@@ -26,4 +26,9 @@
 #include "SciantixScalingFactorDeclaration.h"
 #include <cmath>
 
+/**
+ * @brief This routine defines the physical proprieties of the matrix UO2HBS.
+ * UO2HBS: UO2 in case of 100% High Burnup Structure (HBS) conditions.
+ *
+ */
 void UO2HBS();

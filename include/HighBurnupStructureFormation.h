@@ -30,7 +30,6 @@
  * E. Redaelli
  * G. Zullo
 */
-
 void HighBurnupStructureFormation();
 
 #endif // HIGH_BURNUP_STRUCTURE_FORMATION_H

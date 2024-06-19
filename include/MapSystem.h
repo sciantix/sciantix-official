@@ -24,10 +24,7 @@
 extern std::map<std::string, int> sy;
 
 /**
- * @brief Maps each system entity to an index for easy access.
- * 
- * This function initializes a global map where each system entity's name is associated with its index in the
- * 'sciantix_system' vector. This facilitates quick look-up of system entities by name across the application.
+ * @brief This routine maps each system entity to an index for easy access.
  */
 void MapSystem();
 

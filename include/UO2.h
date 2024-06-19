@@ -26,4 +26,7 @@
 #include "SciantixScalingFactorDeclaration.h"
 #include <cmath>
 
+/**
+ * @brief Defines the physical properties of the UO2 matrix.
+ */
 void UO2();
