@@ -10,7 +10,6 @@ void IodineReleaseTreshold()
 
     model.emplace_back();
     int model_index = int(model.size()) - 1;
-le zizi
     model[model_index].setName("IodineReleaseTreshold");
     
     std::string reference;
