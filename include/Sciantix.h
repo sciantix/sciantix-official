@@ -13,7 +13,6 @@
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
-
 #include <iostream>
 #include <map>
 #include <string>

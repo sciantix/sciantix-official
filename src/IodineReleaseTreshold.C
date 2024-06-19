@@ -1,5 +1,7 @@
-//this function can be used to define a threshold value above which the iodine 
-// contained at the grain boundaries is released completely outside the grain.
+// This function can be used to define a threshold value above which the iodine 
+// contained at the grain boundaries (precipitate) is released completely outside 
+// the grain.
+// Here : 1300°C = CsI boiling Point
 
 #include "IodineReleaseTreshold.h"
 void IodineReleaseTreshold()
@@ -8,11 +10,11 @@ void IodineReleaseTreshold()
 
     model.emplace_back();
     int model_index = int(model.size()) - 1;
-
+le zizi
     model[model_index].setName("IodineReleaseTreshold");
     
     std::string reference;
-    reference = "Cappia (2022) J. Nucl. Mater., 569, 153-881.";
+    reference = "Kleykamp (1985) J. Nucl. Mater., 131, 221-246.";
     
     model[model_index].setRef(reference);
     }
