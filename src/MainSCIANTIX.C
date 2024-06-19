@@ -105,8 +105,6 @@ int main(int argc, char **argv)
 
 		Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 
-		// Configuration::CheckBounds(Sciantix_variables, 300);
-
 		dTime_h = TimeStepCalculation();
 		Sciantix_history[6] = dTime_h * 3600;
 
@@ -122,7 +120,6 @@ int main(int argc, char **argv)
 
 	timer = clock() - timer;
 
-	// ErrorMessages::writeErrorLog();
 
 	logExecutionTime((double)timer / CLOCKS_PER_SEC, Time_step_number);
 	Execution_file.close();
