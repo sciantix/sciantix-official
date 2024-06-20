@@ -126,8 +126,23 @@ void GrainBoundaryMicroCracking()
 				std::cout << "Bubble pressure (Pa): "<<bubble_pressure<<std::endl;
 			}
 			
-			double microcrackingfraction = 0.3;
+			double microcrackingfraction = 0.95;
 			parameter.push_back((bubble_pressure-microcrackingfraction*critical_bubble_pressure)/bubble_pressure);
+			
+			if (history_variable[hv["Temperature"]].getIncrement()!=0)
+    		{
+				double bubbleoverpressureincrement = (sciantix_variable[sv["Intergranular bubble pressure"]].getIncrement()-microcrackingfraction*sciantix_variable[sv["Critical intergranular bubble pressure"]].getIncrement())*1e6;
+				std::cout<< sciantix_variable[sv["Intergranular bubble pressure"]].getIncrement()<<std::endl;
+				std::cout<< sciantix_variable[sv["Critical intergranular bubble pressure"]].getIncrement()<<std::endl;
+				double dT = history_variable[hv["Temperature"]].getIncrement();
+				std::cout<< dT<<std::endl;
+				std::cout<<"Find error"<< bubbleoverpressureincrement/bubble_pressure/dT <<std::endl;
+				parameter.push_back(bubbleoverpressureincrement/bubble_pressure/dT);
+			}
+			else 
+			{
+				parameter.push_back(0);
+			}
 			
 			// healing parameter
 			const double healing_parameter = 1.0 / 0.8814; // 1 / (u * burnup)

@@ -131,10 +131,6 @@ void InterGranularBubbleEvolution()
 
 		parameter.push_back(growth_rate);
 		parameter.push_back(equilibrium_term);
-		// for (int row=0;row<rows;++row)
-		// {
-		// 	parameter.push_back(initialx[row]);
-		// }
 
 		reference += ": Pastore et al., NED, 256 (2013) 75-86.";
 
