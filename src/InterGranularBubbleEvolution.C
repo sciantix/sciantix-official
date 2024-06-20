@@ -58,8 +58,7 @@ void InterGranularBubbleEvolution()
 				sciantix_variable[sv["Intergranular " + system.getGasName() + " atoms per bubble"]].setFinalValue(
 					sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getFinalValue() /
 					(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue() * 
-					sciantix_variable[sv["Intergranular S/V"]].getFinalValue()*sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue()/
-					(2-sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue())));
+					sciantix_variable[sv["Intergranular S/V"]].getFinalValue()));
 
 				n_at += sciantix_variable[sv["Intergranular " + system.getGasName() + " atoms per bubble"]].getFinalValue();
 			}
