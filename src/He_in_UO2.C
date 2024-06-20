@@ -32,6 +32,7 @@ void He_in_UO2()
 	sciantix_system[index].setGasName("He");
 	sciantix_system[index].setMatrixName("UO2");
 	sciantix_system[index].setRestructuredMatrix(0);
+	sciantix_system[index].setChemicalBehaviour(0);
 	sciantix_system[index].setYield(0.0022); // from ternary fissions
 	sciantix_system[index].setRadiusInLattice(4.73e-11);
 	sciantix_system[index].setVolumeInLattice(matrix[sma["UO2"]].getOIS());

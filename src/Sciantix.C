@@ -32,8 +32,6 @@ void Sciantix(int Sciantix_options[],
 
 	Simulation sciantix_simulation;
 
-	//std::cout << sciantix_variable[sv["Grain Radius"]].getFinalValue() << std::endl; --> PROBLEM
-
 	Burnup();
 	MapModel();
 	sciantix_simulation.Burnup();
@@ -61,8 +59,6 @@ void Sciantix(int Sciantix_options[],
 	MapModel();
 	sciantix_simulation.HighBurnupStructurePorosity();
 
-	//std::cout << sciantix_variable[sv["Grain Radius"]].getFinalValue() << std::endl; --> INF ?
-
 	GrainGrowth();
 	MapModel();
 	sciantix_simulation.GrainGrowth();
@@ -77,8 +73,11 @@ void Sciantix(int Sciantix_options[],
 	sciantix_simulation.GasDecay();
 
 	IntraGranularBubbleEvolution();
+
 	MapModel();
 	sciantix_simulation.IntraGranularBubbleBehaviour();
+
+	// std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
 
 	GasDiffusion();
 	MapModel();
@@ -88,8 +87,6 @@ void Sciantix(int Sciantix_options[],
 	MapModel();
 	sciantix_simulation.GrainBoundaryMicroCracking();
 
-	// std::cout << sciantix_variable[sv["Grain Radius"]].getFinalValue() << std::endl; --> SMALLER VALUES ?
-
 	GrainBoundaryVenting();
 	MapModel();
 	sciantix_simulation.GrainBoundaryVenting();
@@ -97,8 +94,6 @@ void Sciantix(int Sciantix_options[],
 	InterGranularBubbleEvolution();
 	MapModel();
 	sciantix_simulation.InterGranularBubbleBehaviour();
-
-	// std::cout << sciantix_variable[sv["Grain Radius"]].getFinalValue() << std::endl; --> NO FIRST VALUE ?
 
 	IodineReleaseTreshold();
 	MapModel();
@@ -109,6 +104,8 @@ void Sciantix(int Sciantix_options[],
 	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
 	Output();
+
+	// std::cout << "END" << std::endl;
 
 	history_variable.clear();
 	sciantix_variable.clear();

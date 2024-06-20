@@ -32,6 +32,7 @@ void Xe133_in_UO2()
 	sciantix_system[index].setGasName("Xe133");
 	sciantix_system[index].setMatrixName("UO2");
 	sciantix_system[index].setRestructuredMatrix(0);
+	sciantix_system[index].setChemicalBehaviour(0);
 	sciantix_system[index].setYield(0.066534); // from JEFF-3.3 library
 	sciantix_system[index].setRadiusInLattice(0.21e-9); // (m), number from experimental results, assumed equal for Xe and Kr
 	sciantix_system[index].setVolumeInLattice(matrix[sma["UO2"]].getSchottkyVolume());

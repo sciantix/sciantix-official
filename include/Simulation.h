@@ -328,7 +328,7 @@ class Simulation : public Solver, public Model
 		// Atom per bubbles and bubble radius
 		for (auto& system : sciantix_system)
 		{
-			if (gas[ga[system.getGasName()]].getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
+			if (gas[ga[system.getGasName()]].getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.getChemicalBehaviour())
 			{
 				if (sciantix_variable[sv["Intragranular bubble concentration"]].getFinalValue() > 0.0)
 					sciantix_variable[sv["Intragranular " + system.getGasName() + " atoms per bubble"]].setFinalValue(

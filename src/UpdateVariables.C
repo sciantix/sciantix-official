@@ -112,7 +112,8 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[111] = sciantix_variable[sv["I131 decayed"]].getFinalValue();
 	Sciantix_variables[112] = sciantix_variable[sv["I131 at grain boundary"]].getFinalValue();
 	Sciantix_variables[113] = sciantix_variable[sv["I131 released"]].getFinalValue();
-
+	Sciantix_variables[114] = sciantix_variable[sv["Intragranular I atoms per bubble"]].getFinalValue();
+	Sciantix_variables[115] = sciantix_variable[sv["Intergranular I atoms per bubble"]].getFinalValue();
 
 	for (int i = 0; i < n_modes; ++i)
 	{

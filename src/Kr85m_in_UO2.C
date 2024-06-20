@@ -25,6 +25,7 @@ void Kr85m_in_UO2()
 	sciantix_system[index].setGasName("Kr85m");
 	sciantix_system[index].setMatrixName("UO2");
 	sciantix_system[index].setRestructuredMatrix(0);
+	sciantix_system[index].setChemicalBehaviour(0);
 	sciantix_system[index].setYield(0.013027);
 	sciantix_system[index].setRadiusInLattice(0.21e-9);
 	sciantix_system[index].setVolumeInLattice(matrix[sma["UO2"]].getSchottkyVolume());

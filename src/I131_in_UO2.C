@@ -16,6 +16,7 @@ void I131_in_UO2()
 	sciantix_system[index].setGasName("I131");
 	sciantix_system[index].setMatrixName("UO2");
 	sciantix_system[index].setRestructuredMatrix(0);
+	sciantix_system[index].setChemicalBehaviour(1);
 	sciantix_system[index].setYield(0.03);
 	sciantix_system[index].setRadiusInLattice(0.21e-9);
 	sciantix_system[index].setVolumeInLattice(matrix[sma["UO2"]].getSchottkyVolume());
@@ -23,7 +24,7 @@ void I131_in_UO2()
 	sciantix_system[index].setProductionRate(1);
 	sciantix_system[index].setFissionGasDiffusivity(int(input_variable[iv["iFGDiffusionCoefficient"]].getValue()));
 	sciantix_system[index].setBubbleDiffusivity(int(input_variable[iv["iBubbleDiffusivity"]].getValue()));
-	sciantix_system[index].setResolutionRate(int(input_variable[iv["iResolutionRate"]].getValue()));
-	sciantix_system[index].setTrappingRate(int(input_variable[iv["iTrappingRate"]].getValue()));
-	sciantix_system[index].setNucleationRate(int(input_variable[iv["iNucleationRate"]].getValue()));
+	sciantix_system[index].setResolutionRate(99);
+	sciantix_system[index].setTrappingRate(99);
+	sciantix_system[index].setNucleationRate(99);
 }

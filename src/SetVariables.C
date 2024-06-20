@@ -962,9 +962,11 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
+	// Iodine
+
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("I produced");
-	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[101]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[101]);
 	sciantix_variable[sv_counter].setOutput(1);
@@ -972,7 +974,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("I in grain");
-	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[102]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[102]);
 	sciantix_variable[sv_counter].setOutput(1);
@@ -980,7 +982,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("I in intragranular solution");
-	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[103]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[103]);
 	sciantix_variable[sv_counter].setOutput(1);
@@ -988,7 +990,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("I in intragranular bubbles");
-	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[104]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[104]);
 	sciantix_variable[sv_counter].setOutput(1);
@@ -996,7 +998,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("I at grain boundary");
-	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[105]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[105]);
 	sciantix_variable[sv_counter].setOutput(1);
@@ -1004,7 +1006,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("I released");
-	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[106]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[106]);
 	sciantix_variable[sv_counter].setOutput(1);
@@ -1015,6 +1017,22 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Intragranular I atoms per bubble");
+	sciantix_variable[sv_counter].setUOM("(at/bub)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[114]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[114]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Intergranular I atoms per bubble");
+	sciantix_variable[sv_counter].setUOM("(at/bub)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[115]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[115]);
 	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 

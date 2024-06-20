@@ -46,8 +46,21 @@ protected:
 	std::vector<double> modes;
 	double production_rate;
 	bool restructured_matrix;
+	bool chemical_behaviour;
 
 public:
+
+	void setChemicalBehaviour(bool y)
+	{
+		chemical_behaviour = y;
+	}
+
+	bool getChemicalBehaviour()
+	{
+		return chemical_behaviour;
+	}
+
+
 	void setRestructuredMatrix(bool y)
 	{
 		restructured_matrix = y;
