@@ -1,2 +1,2 @@
-0.0 0.0 0.0 0.0 5.0 15e-6
-#	initial Xe (at/m3) gap, decayed, released, release to coolant, gap pressure, gap volume
+0.0 0.0 0.0 0.0 1.0 15e-6 0.0
+#	initial Xe (at/m3) gap, decayed, released, release to coolant, gap pressure, gap volume, H gap
