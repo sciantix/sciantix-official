@@ -26,6 +26,7 @@ void Sciantix(int Sciantix_options[],
 
 	SetGas();
 	SetSystem();
+	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
 	// std::cout << "egalite" << std::endl;
 
@@ -33,21 +34,38 @@ void Sciantix(int Sciantix_options[],
 	
 	// sciantix_simulation.SheathTemperatureUpdate();
 	// MapModel();
+	// std::cout << "pas de temps" << std::endl;
+	// std::cout << physics_variable[sv["Time step"]].getFinalValue() << std::endl;
 
 	sciantix_simulation.GasInGap();
 	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 	//sciantix_simulation.GasDecay();
 
 	sciantix_simulation.GasInCoolant();
-	std::cout << sciantix_variable[sv["Xe released"]].getFinalValue() << std::endl;
+	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+	sciantix_simulation.CoolantRadiolysis();
+	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+	
+	// sciantix_simulation.ZircaloyOxidation();
+	// UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+	// std::cout << "hydrogène avant fonction" << std::endl;
+	// std::cout << sciantix_variable[sv["H gap"]].getFinalValue() << std::endl;
+
+	// std::cout << "pression avant fonction" << std::endl;
+	// std::cout << sciantix_variable[sv["Gap pressure"]].getFinalValue() << std::endl;
+
+	sciantix_simulation.PressureEvolution();
+	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+	//std::cout << sciantix_variable[sv["Xe released"]].getFinalValue() << std::endl;
 	// sciantix_simulation.CoolantRadiolysis();
 	// sciantix_simulation.ZircaloyOxidation();
 	// sciantix_simulation.PressureEvolution();
 	// sciantix_simulation.GasDecay();
 
 	// FiguresOfMerit();
-
-	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+	
 
 	Output();
 

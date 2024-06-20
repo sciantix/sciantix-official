@@ -61,6 +61,14 @@ int main()
 	timer = clock();
 
 	// std::cout << "france" << std::endl;
+	std::cout << "history" << std::endl;
+	std::cout << Sciantix_history[0] << std::endl;
+	std::cout << Sciantix_history[1] << std::endl;
+	std::cout << Sciantix_history[2] << std::endl;
+	std::cout << Sciantix_history[3] << std::endl;
+	std::cout << Sciantix_history[4] << std::endl;
+	std::cout << Sciantix_history[5] << std::endl;
+	std::cout << Sciantix_history[6] << std::endl;
 
 	while (Time_h <= Time_end_h)
 	{

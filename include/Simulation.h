@@ -46,24 +46,42 @@ class Simulation : public Solver, public Model
 	public:
 
 	void SheathTemperatureUpdate()   //updates the sheath temperature, considering it equal to the system's temperature
-	{
+	{	
 		fuelelement[fe[fuelelement[0].getName()]].setSheathTemperature(history_variable[sv["Temperature"]].getFinalValue());
 	}
 
 	void CoolantRadiolysis()  //term of hydrogen production due to radiolysis evaluated by Lewis (to start) in at/m^3
 	{
-		sciantix_variable[sv["Hydrogen concentration gap"]].setFinalValue(sciantix_variable[sv["Hydrogen produced"]].getFinalValue() + 2.34*pow(10,23)*physics_variable[pv["Time step"]].getFinalValue()); 
+		// std::cout << "concentration avant fonction" << std::endl;
+		// std::cout << sciantix_variable[sv["H gap"]].getFinalValue() << std::endl;
+		sciantix_variable[sv["H gap"]].setFinalValue(sciantix_variable[sv["H gap"]].getFinalValue() + sciantix_variable[sv["H production rate"]].getFinalValue()*physics_variable[pv["Time step"]].getFinalValue()); 
+		// std::cout << "concentration avant update" << std::endl;
+		// std::cout << sciantix_variable[sv["H gap"]].getFinalValue() << std::endl;
 	}
 
 	void ZircaloyOxidation() //term of hydrogen production due to zyrcaloy oxidation evaluated by Lewis (to start) in at/m^3
 	{
-		sciantix_variable[sv["Hydrogen concentration gap"]].setFinalValue(sciantix_variable[sv["Hydrogen produced"]].getFinalValue() + 3.08*pow(10,20)*physics_variable[pv["Time step"]].getFinalValue());
+		sciantix_variable[sv["H gap"]].setFinalValue(sciantix_variable[sv["H gap"]].getFinalValue() + 3.08*pow(10,20)*physics_variable[pv["Time step"]].getFinalValue());
+		std::cout << "oxidation" << std::endl;
 	}
 
 	void PressureEvolution() //considering only hydrogen (Lewis) P=N*k*T with N [at/m^3] 
 	{
-		sciantix_variable[sv["Gap pressure"]].setFinalValue(2*sciantix_variable[sv["Hydrogen concentration gap"]].getFinalValue()*PhysicsConstants::boltzmann_constant*fuelelement[fe[fuelelement[0].getName()]].getSheathTemperature());
-		//factor 2 because the hydrogene concentration is H2 or 
+		// std::cout << "pression initiale" << std::endl;
+		// std::cout << sciantix_variable[sv["Gap pressure"]].getFinalValue() << std::endl;
+		// std::cout << "H production rate" << std::endl;
+		// std::cout << sciantix_variable[sv["H production rate"]].getFinalValue() << std::endl;
+		// std::cout << "terme d'ajout de pression" << std::endl;
+		// std::cout << sciantix_variable[sv["H production rate"]].getFinalValue()*physics_variable[pv["Time step"]].getFinalValue()*PhysicsConstants::boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()*1e-06 << std::endl;
+		sciantix_variable[sv["Gap pressure"]].setFinalValue(sciantix_variable[sv["Gap pressure"]].getFinalValue() + sciantix_variable[sv["H production rate"]].getFinalValue()*physics_variable[pv["Time step"]].getFinalValue()*PhysicsConstants::boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()*1e-06); 
+		// std::cout << "pas de temps" << std::endl;
+		// std::cout << physics_variable[pv["Time step"]].getFinalValue() << std::endl;
+		// std::cout << "puisssance" << std::endl;
+		// std::cout << pow(10.0,-6.0) << std::endl;
+		// std::cout << "temperature" << std::endl;
+		// std::cout << history_variable[hv["Temperature"]].getFinalValue() << std::endl;
+		// std::cout << "pression finale" << std::endl;
+		// std::cout << sciantix_variable[sv["Gap pressure"]].getFinalValue() << std::endl;
 	}
 
 	void GasDecay()
@@ -137,18 +155,17 @@ class Simulation : public Solver, public Model
 	{
 		for (auto& system : sciantix_system)
 		{
-			if (sciantix_variable[sv["Gap pressure"]].getFinalValue() > 4 && gas[ga[system.getGasName()]].getName() != "Hydrogen") //estimation of the limit gap presssure from Veschunov
+			if (sciantix_variable[sv["Gap pressure"]].getFinalValue() > 4.0 && gas[ga[system.getGasName()]].getName() != "Hydrogen") //estimation of the limit gap presssure from Veschunov
 			{
 				sciantix_variable[sv["Xe released"]].setFinalValue(
 					
 						sciantix_variable[sv["Xe gap"]].getFinalValue()*gas[ga["Xe"]].getReleaseRateCoefficient()*sciantix_variable[sv["Gap volume"]].getFinalValue()	
 				);
-				
 			}
 			else
 			{
-				sciantix_variable[sv["Xe released"]].setFinalValue(
-					sciantix_variable[sv["Xe released"]].getFinalValue()
+				sciantix_variable[sv[system.getGasName() + "concentration coolant"]].setFinalValue(
+					sciantix_variable[sv[system.getGasName() + "concentration coolant"]].getFinalValue()
 				);
 				
 			}

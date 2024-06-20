@@ -112,9 +112,13 @@ void InputReading()
 		Sciantix_variables[4] = initial_conditions[3]; //release to coolant
 		std::cout << " fin release" << std::endl;
 		Sciantix_variables[5] = initial_conditions[4]; //gap pressure
-		std::cout << " fin pressure" << std::endl;
+		std::cout << " pression initiale" << std::endl;
+		std::cout << Sciantix_variables[5] << std::endl;
 		Sciantix_variables[6] = initial_conditions[5]; //gap volume
 		std::cout << " fin volume" << std::endl;
+		Sciantix_variables[7] = initial_conditions[6]; //H gap
+		std::cout << " fin hydrogene" << std::endl;
+		std::cout << Sciantix_variables[7] << std::endl;
 	}
 
 	int n = 0;
