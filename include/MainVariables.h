@@ -49,3 +49,55 @@ extern std::vector<double> Temperature_input;
 extern std::vector<double> Fissionrate_input;
 extern std::vector<double> Hydrostaticstress_input;
 extern std::vector<double> Steampressure_input;
+
+int* getSciantixOptions();
+
+double* getSciantixHistory();
+
+double* getSciantixVariables();
+
+double* getSciantixScalingFactors();
+
+double* getSciantixDiffusionModes();
+
+long long int getSciantixTimeStepNumber();
+
+double getSciantixTimeH();
+
+double getSciantixDTimeH();
+
+double getSciantixTimeEndH();
+
+double getSciantixTimeS();
+
+int getSciantixInputHistoryPoints();
+
+std::vector<double>& getSciantixTimeInput();
+
+std::vector<double>& getSciantixTemperatureInput();
+
+std::vector<double>& getSciantixFissionrateInput();
+
+std::vector<double>& getSciantixHydrostaticstressInput();
+
+std::vector<double>& getSciantixSteampressureInput() ;
+
+//void setSciantixOptions(int index, int value);
+
+void setSciantixHistory(int index, double value);
+
+// void setSciantixVariables(int index, double value);
+
+// void setSciantixScalingFactors(int index, double value);
+
+// void setSciantixDiffusionModes(int index, double value);
+
+void setSciantixDTimeH(double value) ;
+
+void setSciantixTimeStepNumber(long long int value);
+
+void setSciantixTimeH(double value);
+
+void setSciantixTimeS(double value);
+
+void setSciantixHist(double sciantix[]);
