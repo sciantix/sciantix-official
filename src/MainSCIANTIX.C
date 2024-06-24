@@ -66,8 +66,7 @@ int main(int argc, char **argv)
 {
 
 	if (argc < 2) {
-        std::cerr << "Warning: No path specified, using current directory." << std::endl;
-        std::cout << "Try to use ./sciantix.x ../regression/your-test-file-path/ in the bin directory" << std::endl;
+        std::cout << "No path specified, using current directory." << std::endl;
         TestPath = "./";
     } else {
         TestPath = argv[1];
