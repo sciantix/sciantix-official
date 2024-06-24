@@ -24,6 +24,9 @@
 /// The third file contains the initial conditions for the physics variables.
 
 #include "InputReading.h"
+#include <mutex>  // Pour std::mutex et std::lock_guard
+
+std::mutex mtx; 
 
 unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
 {
@@ -78,7 +81,7 @@ void InputReading()
 	/// reporting all the inputs provided in the other files.
 	/// It is highly recommended checking this file, since eventual errors
 	/// are reported in it.
-
+	std::lock_guard<std::mutex> lock(mtx);
 	std::ofstream input_check("input_check.txt", std::ios::out);
 
 	// Abort execution if any of the input files does not exist
@@ -346,6 +349,35 @@ void InputReading()
 		Sciantix_scaling_factors[8] = 1.0;
 	}
 
+
+	//  std::cout << "Options:\n";
+    // for(int i = 0; i < 22; ++i) { // Assuming there are 22 options for simplicity
+    //     std::cout << "Option " << i << ": " << Sciantix_options[i] << std::endl;
+    // }
+
+    // Print history settings
+    // std::cout << "History Variables:\n";
+    // for(int i = 0; i < 11; ++i) { // Assuming there are 11 history variables
+    //     std::cout << "History " << i << ": " << Sciantix_history[i] << std::endl;
+    // }
+
+    // // Print variables
+    // std::cout << "Sciantix Variables:\n";
+    // for(int i = 0; i < 300; ++i) { // Assuming there are 300 Sciantix variables
+    //     std::cout << "Variable " << i << ": " << Sciantix_variables[i] << std::endl;
+    // }
+
+    // // Print scaling factors
+    // std::cout << "Scaling Factors:\n";
+    // for(int i = 0; i < 9; ++i) { // Assuming there are 9 scaling factors
+    //     std::cout << "Scaling Factor " << i << ": " << Sciantix_scaling_factors[i] << std::endl;
+    // }
+
+    // // Print diffusion modes
+    // std::cout << "Diffusion Modes:\n";
+    // for(int i = 0; i < 1000; ++i) { // Assuming there are 1000 diffusion modes
+    //     std::cout << "Diffusion Mode " << i << ": " << Sciantix_diffusion_modes[i] << std::endl;
+    // }
 	input_check.close();
 	input_settings.close();
 	input_initial_conditions.close();

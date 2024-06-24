@@ -26,11 +26,17 @@
 
 void SetVariables(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[])
 {
+
+
+	// std::cout << "Sciantix Variables dans setvariables :\n";
+    // for(int i = 0; i < 300; ++i) { 
+    //     std::cout << "Variable " << i << ": " << Sciantix_variables[i] << std::endl;
+    // }
+
 	// -----------------------------------------------------------------------------------------------
 	// Input variable
 	// The vector is used to collect all user input settings relating to the choice of SCIANTIX models
 	// -----------------------------------------------------------------------------------------------
-
 	int iv_counter(0);
 	if (input_variable.empty())
 	{
@@ -144,6 +150,10 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 		input_variable[iv_counter].setValue(Sciantix_options[21]);
 		++iv_counter;
 	}
+    for (int i = 0; i < iv_counter; ++i) {
+        std::cout << input_variable[i].getName() << ": " << input_variable[i].getValue() << std::endl;
+    }
+	
 
 	MapInputVariable();
 
@@ -158,23 +168,18 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	bool toOutputCracking(0);
 	if (input_variable[iv["iGrainBoundaryMicroCracking"]].getValue() != 0) toOutputCracking = 1;
-
 	bool toOutputFracture(0);
 	if (input_variable[iv["iGrainBoundaryMicroCracking"]].getValue() == 2) toOutputFracture = 1;
-
 	bool toOutputGrainBoundary(0);
 	if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() == 1) toOutputGrainBoundary = 1;
-
 	bool toOutputHighBurnupStructure(0);
 	if (input_variable[iv["iHighBurnupStructureFormation"]].getValue() == 1) toOutputHighBurnupStructure = 1;
-
 	bool toOutputStoichiometryDeviation(0);
 	if (input_variable[iv["iStoichiometryDeviation"]].getValue() > 0) toOutputStoichiometryDeviation = 1;
 
 	// ----------------
 	// Physics variable
 	// ----------------
-	
 	int pv_counter(0);
 
 	physics_variable.emplace_back();
@@ -1057,7 +1062,6 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 		modes_initial_conditions[16 * n_modes + i] = Sciantix_diffusion_modes[16 * n_modes + i]; // Xe in UO2HBS - solution
 		modes_initial_conditions[17 * n_modes + i] = Sciantix_diffusion_modes[17 * n_modes + i]; // Xe in UO2HBS - bubbles
 	}
-
 	// ---------------
 	// Scaling factors
 	// ---------------
@@ -1070,11 +1074,15 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sf_cent_parameter = Sciantix_scaling_factors[6];
 	sf_helium_production_rate = Sciantix_scaling_factors[7];
 	sf_dummy = Sciantix_scaling_factors[8];
-
 	// ----
 	// Maps
 	// ----
+	// std::cout << "History Variables:\n";
+    // for(int i = 0; i < 11; ++i) { // Assuming there are 11 history variables
+    //     std::cout << "History " << i << ": " << Sciantix_history[i] << std::endl;
+    // }
 	MapHistoryVariable();
 	MapSciantixVariable();
 	MapPhysicsVariable();
+
 }

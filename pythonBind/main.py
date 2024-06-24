@@ -11,66 +11,51 @@ if module_path not in sys.path:
 
 # importation of the Module
 import sciantixModule
-Sciantix_options = np.array([0] * 40, dtype=np.intc)
-Sciantix_history = np.array([0.0] * 20, dtype=np.float64)
-Sciantix_variables = np.array([0.0] * 300, dtype=np.float64)
-Sciantix_scaling_factors = np.array([1.0] * 10, dtype=np.float64)
-Sciantix_diffusion_modes = np.array([0.0] * 1000 , dtype=np.float64 )
 
-# Utilisation des variables du module sciantixModule
-# Sciantix_options = sciantixModule.Sciantix_options
-# Sciantix_history = sciantixModule.Sciantix_history
-# Sciantix_variables = sciantixModule.Sciantix_variables
-# Sciantix_scaling_factors = sciantixModule.Sciantix_scaling_factors
-# Sciantix_diffusion_modes = sciantixModule.Sciantix_diffusion_modes
+Sciantix_variables = sciantixModule.getVariablesInArray_double()
 
-# Variables pour le suivi du temps et autres paramètres numériques
-Time_step_number = sciantixModule.Time_step_number
-Time_h = sciantixModule.Time_h
-dTime_h = sciantixModule.dTime_h
-Time_end_h = sciantixModule.Time_end_h
-Time_s = sciantixModule.Time_s
-Time_end_s = sciantixModule.Time_end_s
-Number_of_time_steps_per_interval = sciantixModule.Number_of_time_steps_per_interval
-
-# Points d'entrée pour diverses entrées de simulation
-Input_history_points = sciantixModule.Input_history_points
+Sciantix_history = sciantixModule.getHistoryInArray_double()
+Sciantix_diffusion_modes = sciantixModule.getDiffusionModesInArray_double()
+Sciantix_options = sciantixModule.getOptionsInArray_int()
+Sciantix_scaling_factors = sciantixModule.getScalingFactorsInArray_double()
+Time_step_number = sciantixModule.getSciantixTimeStepNumberConversion()
+Time_h = sciantixModule.getSciantixTimeHConversion()
+dTime_h = sciantixModule.getSciantixDTimeHConversion()
+Time_end_h = sciantixModule.getSciantixTimeEndHConversion()
+Time_s = sciantixModule.getSciantixTimeSConversion()
+Input_history_points = sciantixModule.getSciantixInputHistoryPointsConversion()
+Temperature_input = sciantixModule.getSciantixTemperatureInputConversion()
+Fissionrate_input = sciantixModule.getSciantixFissionrateInputConversion()
+Hydrostaticstress_input = sciantixModule.getSciantixHydrostaticstressInputConversion()
+Steampressure_input = sciantixModule.getSciantixSteampressureInputConversion()
 
 
-# Listes pour les données d'entrée, synchronisées avec le module sciantixModule
-Time_input = sciantixModule.Time_input
-Temperature_input = sciantixModule.Temperature_input
-Fissionrate_input = sciantixModule.Fissionrate_input
-Hydrostaticstress_input = sciantixModule.Hydrostaticstress_input
-Steampressure_input = sciantixModule.Steampressure_input
-
-
-
+def getMainVar():
+        sciantixModule.Sciantix_variables = sciantixModule.getVariablesInArray_double()
+        sciantixModule.Sciantix_history = sciantixModule.getHistoryInArray_double()
+        sciantixModule.Sciantix_diffusion_modes = sciantixModule.getDiffusionModesInArray_double()
+        sciantixModule.Sciantix_options = sciantixModule.getOptionsInArray_int()
+        sciantixModule.Sciantix_scaling_factors = sciantixModule.getScalingFactorsInArray_double()
+        sciantixModule.Time_step_number = sciantixModule.getSciantixTimeStepNumberConversion()
+        sciantixModule.Time_h = sciantixModule.getSciantixTimeHConversion()
+        sciantixModule.dTime_h = sciantixModule.getSciantixDTimeHConversion()
+        sciantixModule.Time_end_h = sciantixModule.getSciantixTimeEndHConversion()
+        sciantixModule.Time_s = sciantixModule.getSciantixTimeSConversion()
+        sciantixModule.Input_history_points = sciantixModule.getSciantixInputHistoryPointsConversion()
+        sciantixModule.Temperature_input = sciantixModule.getSciantixTemperatureInputConversion()
+        sciantixModule.Fissionrate_input = sciantixModule.getSciantixFissionrateInputConversion()
+        sciantixModule.Hydrostaticstress_input = sciantixModule.getSciantixHydrostaticstressInputConversion()
+        sciantixModule.Steampressure_input = sciantixModule.getSciantixSteampressureInputConversion()
 
 def Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes):
-    
-    print("Sciantix_options:", Sciantix_options)
-    print("Sciantix_history:", Sciantix_history)
-    print("Sciantix_variables:", Sciantix_variables)
-    print("Sciantix_scaling_factors:", Sciantix_scaling_factors)
-    print("Sciantix_diffusion_modes:", Sciantix_diffusion_modes)
 
-    
-    # Set variables
+    # Set variables Sciantix_options,Sciantix_history,Sciantix_variables,Sciantix_scaling_factors,Sciantix_diffusion_modes = 
     sciantixModule.SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes)
     # Initialize components
+
     sciantixModule.SetGas()
     sciantixModule.SetMatrix()
     sciantixModule.SetSystem()
-    
-    
-    print("Sciantix_options:", Sciantix_options)
-    print("Sciantix_history:", Sciantix_history)
-    print("Sciantix_variables:", Sciantix_variables)
-    print("Sciantix_scaling_factors:", Sciantix_scaling_factors)
-    print("Sciantix_diffusion_modes:", Sciantix_diffusion_modes)
-
-
     # Create a Simulation instance
     sciantix_simulation = sciantixModule.Simulation()
 
@@ -138,19 +123,21 @@ def Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_sc
 
     sciantixModule.FiguresOfMerit()
 
+
     sciantixModule.UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes)
 
     sciantixModule.Output()
 
-    # Clear variables
-    # sciantixModule.history_variable.clear()
-    # sciantixModule.sciantix_variable.clear()
-    # sciantixModule.sciantix_system.clear()
-    # sciantixModule.physics_variable.clear()
-    # sciantixModule.model.clear()
-    # sciantixModule.material.clear()
-    # sciantixModule.gas.clear()
-    # sciantixModule.matrix.clear()
+    #Clear variables
+    sciantixModule.clearHistoryVariable()
+    sciantixModule.clearSciantixVariable()
+    sciantixModule.clearSystem()
+    sciantixModule.clearPhysicsVariable()
+    sciantixModule.clearModel()
+    sciantixModule.clearMaterial()
+    sciantixModule.clearGas()
+    sciantixModule.clearMatrix()
+
 
 
 
@@ -162,46 +149,81 @@ def logExecutionTime(timer, time_step_number):
 
 # Equivalent to MainSCIANTIX.C
 def main():
-    global Time_h, Time_end_h, Time_s, Time_step_number, dTime_h
-
+    
+   
     sciantixModule.InputReading()
+    
     sciantixModule.Initialization()
+
+    getMainVar()
+
+    print(sciantixModule.Sciantix_history)
 
     if os.path.exists("output.txt"):
         os.remove("output.txt")
 
-
-
     timer_start = time.time()
 
-    while Time_h <= Time_end_h:
+    n=1 
+    while sciantixModule.Time_h <= sciantixModule.Time_end_h:
+        
+        Sciantix_history = sciantixModule.getHistoryInArray_double()
+        for i in range (20):
+            if(n==1):
+                print(sciantixModule.Sciantix_history[i])
+                
         Sciantix_history[0] = Sciantix_history[1]
-        Sciantix_history[1] = sciantixModule.InputInterpolation(Time_h, Time_input, Temperature_input, Input_history_points)
+        Sciantix_history[1] = sciantixModule.InputInterpolation(sciantixModule.Time_h, sciantixModule.Time_input, sciantixModule.Temperature_input, sciantixModule.Input_history_points)
         Sciantix_history[2] = Sciantix_history[3]
-        Sciantix_history[3] = sciantixModule.InputInterpolation(Time_h, Time_input, Fissionrate_input, Input_history_points)
+        Sciantix_history[3] = sciantixModule.InputInterpolation(sciantixModule.Time_h, sciantixModule.Time_input, sciantixModule.Fissionrate_input, sciantixModule.Input_history_points)
+        # sciantixModule.setHistory(0, sciantixModule.Sciantix_history[1])
+        # sciantixModule.setHistory(1, sciantixModule.InputInterpolation(sciantixModule.Time_h, sciantixModule.Time_input, sciantixModule.Temperature_input, sciantixModule.Input_history_points))
+        # sciantixModule.setHistory(2, sciantixModule.Sciantix_history[3])
+        # sciantixModule.setHistory(3, sciantixModule.InputInterpolation(sciantixModule.Time_h, sciantixModule.Time_input, sciantixModule.Fissionrate_input, sciantixModule.Input_history_points))
         if Sciantix_history[3] < 0.0:
             Sciantix_history[3] = 0.0
+        # if sciantixModule.Sciantix_history[3] < 0.0:
+        #             sciantixModule.setHistory(3, 0.0)
         Sciantix_history[4] = Sciantix_history[5]
-        Sciantix_history[5] = sciantixModule.InputInterpolation(Time_h, Time_input, Hydrostaticstress_input, Input_history_points)
-        Sciantix_history[7] = Time_h
-        Sciantix_history[8] = float(Time_step_number)
+        Sciantix_history[5] = sciantixModule.InputInterpolation(sciantixModule.Time_h, sciantixModule.Time_input, sciantixModule.Hydrostaticstress_input, sciantixModule.Input_history_points)
+        Sciantix_history[7] = sciantixModule.Time_h
+        Sciantix_history[8] = float(sciantixModule.Time_step_number)
         Sciantix_history[9] = Sciantix_history[10]
-        Sciantix_history[10] = sciantixModule.InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points)
+        Sciantix_history[10] = sciantixModule.InputInterpolation(sciantixModule.Time_h, sciantixModule.Time_input, sciantixModule.Steampressure_input, sciantixModule.Input_history_points)
+        # sciantixModule.setHistory(4, sciantixModule.Sciantix_history[5])
+        # sciantixModule.setHistory(5, sciantixModule.InputInterpolation(sciantixModule.Time_h, sciantixModule.Time_input, sciantixModule.Hydrostaticstress_input, sciantixModule.Input_history_points))
+        # sciantixModule.setHistory(7, sciantixModule.Time_h)
+        # sciantixModule.setHistory(8, float(sciantixModule.Time_step_number))
+        # sciantixModule.setHistory(9, sciantixModule.Sciantix_history[10])
+        # sciantixModule.setHistory(10, sciantixModule.InputInterpolation(sciantixModule.Time_h, sciantixModule.Time_input, sciantixModule.Steampressure_input, sciantixModule.Input_history_points))
 
         # The python Sciantix function
-        Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes)
-        dTime_h = sciantixModule.TimeStepCalculation()
-        Sciantix_history[6] = dTime_h * 3600
-
-        if Time_h < Time_end_h:
-            Time_step_number += 1
-            Time_h += dTime_h
-            Time_s += Sciantix_history[6]
+        Sciantix(sciantixModule.getOptionsInArray_int(), Sciantix_history, sciantixModule.getVariablesInArray_double(), sciantixModule.getScalingFactorsInArray_double(), sciantixModule.getDiffusionModesInArray_double())
+        getMainVar()
+        sciantixModule.setSciantixDTimeH(sciantixModule.TimeStepCalculation())
+        getMainVar()
+        Sciantix_history[6] = sciantixModule.dTime_h * 3600
+        # sciantixModule.setHistory(6, sciantixModule.dTime_h * 3600)
+        
+        if sciantixModule.Time_h < sciantixModule.Time_end_h:
+            sciantixModule.setSciantixTimeStepNumber(sciantixModule.Time_step_number + 1)
+            sciantixModule.setSciantixTimeH(sciantixModule.dTime_h + sciantixModule.Time_h)
+            sciantixModule.setSciantixTimeS(sciantixModule.Time_s + Sciantix_history[6])
         else:
             break
+        
+        
+        for i in range (20):
+            sciantixModule.setHistory(i ,Sciantix_history[i])
 
+        for i in range (20):
+            if(n==1):
+                print(sciantixModule.Sciantix_history[i])
+            
+        n=2
+    
     timer_end = time.time()
-    logExecutionTime(timer_end - timer_start, Time_step_number)
+    logExecutionTime(timer_end - timer_start, sciantixModule.Time_step_number)
 
 
 # Equivalent to MainSCIANTIX.C
