@@ -24,4 +24,6 @@
 
 extern std::vector<Material> material;
 
+std::vector<Material> &getMaterial();
+
 #endif // MATERIAL_DECLARATION_H

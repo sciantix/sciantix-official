@@ -22,4 +22,6 @@
 
 extern std::vector<Gas> gas;
 
+std::vector<Gas> &getGas();
+
 #endif // GAS_DECLARATION_H

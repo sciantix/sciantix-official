@@ -18,7 +18,7 @@
 
 /// UpdateVariables
 
-void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_modes[])
+void UpdateVariables()
 {
 	Sciantix_variables[0] = sciantix_variable[sv["Grain radius"]].getFinalValue();
 	Sciantix_variables[1] = sciantix_variable[sv["Xe produced"]].getFinalValue();

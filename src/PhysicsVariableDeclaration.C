@@ -20,3 +20,7 @@
 
 std::vector<PhysicsVariable> physics_variable;
 
+std::vector<PhysicsVariable> &getPhysicsVariable(){
+    return physics_variable;
+}
+

@@ -20,3 +20,7 @@
 
 std::vector<Model> model;
 
+std::vector<Model> &getModel(){
+    return model;
+}
+

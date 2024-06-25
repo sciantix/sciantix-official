@@ -24,9 +24,7 @@
 /// The third file contains the initial conditions for the physics variables.
 
 #include "InputReading.h"
-#include <mutex>  // Pour std::mutex et std::lock_guard
 
-std::mutex mtx; 
 
 unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
 {
@@ -81,7 +79,6 @@ void InputReading()
 	/// reporting all the inputs provided in the other files.
 	/// It is highly recommended checking this file, since eventual errors
 	/// are reported in it.
-	std::lock_guard<std::mutex> lock(mtx);
 	std::ofstream input_check("input_check.txt", std::ios::out);
 
 	// Abort execution if any of the input files does not exist

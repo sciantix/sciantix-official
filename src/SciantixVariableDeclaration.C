@@ -21,3 +21,7 @@
 std::vector<SciantixVariable> sciantix_variable;
 
 
+std::vector<SciantixVariable>&getSciantixVariable(){
+    return sciantix_variable;
+
+}

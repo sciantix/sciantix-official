@@ -20,5 +20,9 @@
  * @brief This routines declares a material vector
  * 
  */
-
 std::vector<Material> material;
+
+std::vector<Material> &getMaterial(){
+    return material;
+}
+

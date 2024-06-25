@@ -11,7 +11,7 @@ How to use PyBind11 with the sciantix code
 >
 Install pyBind11 : 
 ```python
-pip install pybind11
+pip install "pybind11[global]"
 ```
 <b>Create the build folder and go inside it with this command : </b>
 ```shell

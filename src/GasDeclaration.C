@@ -17,3 +17,7 @@
 #include "GasDeclaration.h"
 
 std::vector<Gas> gas;
+
+std::vector<Gas> &getGas(){
+    return gas;
+}

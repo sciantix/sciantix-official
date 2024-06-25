@@ -95,7 +95,7 @@ void Sciantix(int Sciantix_options[],
 
 	FiguresOfMerit();
 
-	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+	UpdateVariables();
 
 	Output();
 

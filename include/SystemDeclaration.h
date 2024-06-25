@@ -23,4 +23,6 @@
 
 extern std::vector<System> sciantix_system;
 
+std::vector<System> &getSystem();
+
 #endif

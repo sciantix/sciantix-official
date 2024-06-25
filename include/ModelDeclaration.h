@@ -22,4 +22,6 @@
 
 extern std::vector<Model> model;
 
+std::vector<Model> &getModel();
+
 #endif // MODEL_DECLARATION_H

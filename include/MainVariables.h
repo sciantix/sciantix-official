@@ -13,7 +13,6 @@
 //  Authors: D. Pizzocri, T. Barani                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
-
 #include <vector>
 #include <iostream>
 #include <fstream>
@@ -82,15 +81,7 @@ std::vector<double>& getSciantixHydrostaticstressInput();
 
 std::vector<double>& getSciantixSteampressureInput() ;
 
-//void setSciantixOptions(int index, int value);
-
 void setSciantixHistory(int index, double value);
-
-// void setSciantixVariables(int index, double value);
-
-// void setSciantixScalingFactors(int index, double value);
-
-// void setSciantixDiffusionModes(int index, double value);
 
 void setSciantixDTimeH(double value) ;
 
@@ -101,3 +92,12 @@ void setSciantixTimeH(double value);
 void setSciantixTimeS(double value);
 
 void setSciantixHist(double sciantix[]);
+
+//void setSciantixOptions(int index, int value);
+
+
+// void setSciantixVariables(int index, double value);
+
+// void setSciantixScalingFactors(int index, double value);
+
+// void setSciantixDiffusionModes(int index, double value);
