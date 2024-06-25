@@ -17,3 +17,7 @@
 #include "MatrixDeclaration.h"
 
 std::vector<Matrix> matrix;
+
+std::vector<Matrix> &getMatrix(){
+    return matrix;
+}

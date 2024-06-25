@@ -24,5 +24,7 @@
 
 extern std::vector<SciantixVariable> sciantix_variable;
 
+std::vector<SciantixVariable> &getSciantixVariable();
+
 #endif
 

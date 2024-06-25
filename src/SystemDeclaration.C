@@ -18,3 +18,7 @@
 
 /// SystemDeclaration
 std::vector<System> sciantix_system;
+
+std::vector<System> &getSystem(){
+    return sciantix_system;
+}

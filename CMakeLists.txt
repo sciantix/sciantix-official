@@ -34,7 +34,7 @@ file(GLOB HEADERS "include/*.h" "include/*.hpp")
 add_library(sciantix SHARED ${SOURCES})
 
 # Add the pybind11 module target
-pybind11_add_module(sciantixModule pythonBind/Bindings.cpp)
+pybind11_add_module(sciantixModule pythonBind/binds/attributesbind.cpp pythonBind/binds/classbind.cpp pythonBind/binds/functionbind.cpp pythonBind/binds/mainBind.cpp)
 
 # Link the main library with the pybind11 module
 target_link_libraries(sciantixModule PRIVATE sciantix)
