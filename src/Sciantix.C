@@ -77,11 +77,13 @@ void Sciantix(int Sciantix_options[],
 	MapModel();
 	sciantix_simulation.IntraGranularBubbleBehaviour();
 
-	// std::cout << sciantix_variable[sv["Grain radius"]].getFinalValue() << std::endl;
-
 	GasDiffusion();
 	MapModel();
 	sciantix_simulation.GasDiffusion();
+
+	IodineReleaseTreshold();
+	MapModel();
+	sciantix_simulation.IodineReleaseTreshold();
 
 	GrainBoundaryMicroCracking();
 	MapModel();
@@ -95,17 +97,11 @@ void Sciantix(int Sciantix_options[],
 	MapModel();
 	sciantix_simulation.InterGranularBubbleBehaviour();
 
-	IodineReleaseTreshold();
-	MapModel();
-	sciantix_simulation.IodineReleaseTreshold();
-
 	FiguresOfMerit();
 
 	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
 	Output();
-
-	// std::cout << "END" << std::endl;
 
 	history_variable.clear();
 	sciantix_variable.clear();

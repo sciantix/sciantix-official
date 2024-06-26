@@ -19,9 +19,9 @@ Model	Gas diffusion - Xe133 in UO2
 Model	Gas diffusion - Kr85m in UO2	
 Model	Gas diffusion - I in UO2	
 Model	Gas diffusion - I131 in UO2	
+Model	IodineReleaseTreshold	Kleykamp (1985) J. Nucl. Mater., 131, 221-246.
 Model	Grain-boundary venting	not considered.
 Model	Intergranular bubble evolution	: No model for grain-boundary bubble evolution.
-Model	IodineReleaseTreshold	Kleykamp (1985) J. Nucl. Mater., 131, 221-246.
 
 Matrix	UO2	
 	: Van Uffelen et al. JNM, 434 (2013) 287-29.

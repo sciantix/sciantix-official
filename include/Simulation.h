@@ -578,6 +578,16 @@ class Simulation : public Solver, public Model
 		}
 	}
 
+	void IodineReleaseTreshold()
+	{
+		if (history_variable[hv["Temperature"]].getFinalValue() > 1300)
+			{
+			double y = sciantix_variable[sv["I at grain boundary"]].getFinalValue();
+			sciantix_variable[sv["I at grain boundary"]].setFinalValue(0);
+			sciantix_variable[sv["I released"]].setFinalValue(sciantix_variable[sv["I released"]].getFinalValue() + y);
+			}	
+	}
+
 	void GrainBoundaryMicroCracking()
 	{
 		/// GrainBoundaryMicroCracking is method of simulation which executes the SCIANTIX simulation for the grain-boundary micro-cracking induced by a temperature difference. 
@@ -985,16 +995,6 @@ class Simulation : public Solver, public Model
 			std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesBubbles." << std::endl;
 			return nullptr;
 		}
-	}
-
-	void IodineReleaseTreshold()
-	{
-		if (history_variable[hv["Temperature"]].getFinalValue() > 1300)
-			{
-			double y = sciantix_variable[sv["I at grain boundary"]].getFinalValue();
-			sciantix_variable[sv["I at grain boundary"]].setFinalValue(0);
-			sciantix_variable[sv["I released"]].setFinalValue(sciantix_variable[sv["I released"]].getFinalValue() + y);
-			}	
 	}
 
 	Simulation() {}
