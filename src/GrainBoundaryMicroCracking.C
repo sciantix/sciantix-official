@@ -126,7 +126,7 @@ void GrainBoundaryMicroCracking()
 				std::cout << "Bubble pressure (Pa): "<<bubble_pressure<<std::endl;
 			}
 			
-			double microcrackingfraction = 0.80;
+			double microcrackingfraction = 0.90;
 			parameter.push_back((bubble_pressure-microcrackingfraction*critical_bubble_pressure)/bubble_pressure);
 			
 			if (history_variable[hv["Temperature"]].getIncrement()!=0)
@@ -143,6 +143,13 @@ void GrainBoundaryMicroCracking()
 			// healing parameter
 			const double healing_parameter = 1.0 / 0.8814; // 1 / (u * burnup)
 			parameter.push_back(healing_parameter);
+
+			double a =10;
+			double b=50;
+			double baraniparameter = a*b*exp(b*(bubble_pressure-critical_bubble_pressure)/critical_bubble_pressure)/
+				(critical_bubble_pressure*1e-6*pow(1+a*exp(b*(bubble_pressure-critical_bubble_pressure)/critical_bubble_pressure),2));
+			parameter.push_back(baraniparameter);
+			std::cout<<"dm/dp="<<baraniparameter<<std::endl;
 
 			model[model_index].setParameter(parameter);
 			model[model_index].setRef("Under development");
