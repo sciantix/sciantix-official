@@ -1,34 +1,35 @@
 import time
+import sys
 import os
 from sciantix_module import getMainVar, Sciantix, sciantixModule
 
 def logExecutionTime(timer, time_step_number):
-    with open("execution.txt", "a") as execution_file:
+    with open(f"{path}execution.txt", "a") as execution_file:
         execution_file.write(f"{timer:.12e}\t{time.process_time()}\t{timer * time.process_time():.12e}\t{time_step_number}\n")
 
+path = sys.argv[1]
+
+# Equivatent to the MainSCIANTIX.C
 def main():
-    
+    ''' this function is the same as MainSciantix.C but it uses pybind11 
+    '''
+    # Initialisation 
     sciantixModule.InputReading()
     sciantixModule.Initialization()
 
+    # get the main variables
     getMainVar()
-    # print(sciantixModule.Sciantix_history)
 
-    if os.path.exists("output.txt"):
+    # remove output.txt if exists
+    if os.path.exists(f"{path}output.txt"):
         os.remove("output.txt")
 
     timer_start = time.time()
 
-    n = 1 
     while sciantixModule.Time_h <= sciantixModule.Time_end_h:
         
-        s2 = sciantixModule.getVariablesInArray_double()
-        print("zoubaby" ,s2[3])
-
+        # Creation an local variable for sciantix_histroy
         Sciantix_history = sciantixModule.getHistoryInArray_double()
-        for i in range(20):
-            if n == 1:
-                print(sciantixModule.Sciantix_history[i])
 
         Sciantix_history[0] = Sciantix_history[1]
         Sciantix_history[1] = sciantixModule.InputInterpolation(sciantixModule.Time_h, sciantixModule.Time_input, sciantixModule.Temperature_input, sciantixModule.Input_history_points)
@@ -45,11 +46,18 @@ def main():
         Sciantix_history[9] = Sciantix_history[10]
         Sciantix_history[10] = sciantixModule.InputInterpolation(sciantixModule.Time_h, sciantixModule.Time_input, sciantixModule.Steampressure_input, sciantixModule.Input_history_points)
         
+        # Call of the Sciantix Function
         Sciantix(sciantixModule.getOptionsInArray_int(), Sciantix_history, sciantixModule.getVariablesInArray_double(), sciantixModule.getScalingFactorsInArray_double(), sciantixModule.getDiffusionModesInArray_double())
 
+        # Fetch all the global variables 
         getMainVar()
+
+        # time calculation
         sciantixModule.setSciantixDTimeH(sciantixModule.TimeStepCalculation())
+
+        # Fetch all the global variables 
         getMainVar()
+
         Sciantix_history[6] = sciantixModule.dTime_h * 3600
         
         if sciantixModule.Time_h < sciantixModule.Time_end_h:
@@ -61,15 +69,6 @@ def main():
 
         else:
             break
-        
-        for i in range(20):
-            sciantixModule.setHistory(i, Sciantix_history[i])
-
-        for i in range(20):
-            if n == 1:
-                print(sciantixModule.Sciantix_history[i])
-            
-        n = 2
     
     timer_end = time.time()
     logExecutionTime(timer_end - timer_start, sciantixModule.Time_step_number)

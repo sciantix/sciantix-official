@@ -26,13 +26,6 @@
 
 void SetVariables(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[])
 {
-
-
-	// std::cout << "Sciantix Variables dans setvariables :\n";
-    // for(int i = 0; i < 300; ++i) { 
-    //     std::cout << "Variable " << i << ": " << Sciantix_variables[i] << std::endl;
-    // }
-
 	// -----------------------------------------------------------------------------------------------
 	// Input variable
 	// The vector is used to collect all user input settings relating to the choice of SCIANTIX models
@@ -1077,10 +1070,6 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	// ----
 	// Maps
 	// ----
-	// std::cout << "History Variables:\n";
-    // for(int i = 0; i < 11; ++i) { // Assuming there are 11 history variables
-    //     std::cout << "History " << i << ": " << Sciantix_history[i] << std::endl;
-    // }
 	MapHistoryVariable();
 	MapSciantixVariable();
 	MapPhysicsVariable();
