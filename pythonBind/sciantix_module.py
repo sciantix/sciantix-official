@@ -11,24 +11,11 @@ if module_path not in sys.path:
 # importation of the Module
 import sciantixModule
 
-# # Définition des variables globales
-# Sciantix_variables = sciantixModule.getVariablesInArray_double()
-# Sciantix_history = sciantixModule.getHistoryInArray_double()
-# Sciantix_diffusion_modes = sciantixModule.getDiffusionModesInArray_double()
-# Sciantix_options = sciantixModule.getOptionsInArray_int()
-# Sciantix_scaling_factors = sciantixModule.getScalingFactorsInArray_double()
-# Time_step_number = sciantixModule.getSciantixTimeStepNumberConversion()
-# Time_h = sciantixModule.getSciantixTimeHConversion()
-# dTime_h = sciantixModule.getSciantixDTimeHConversion()
-# Time_end_h = sciantixModule.getSciantixTimeEndHConversion()
-# Time_s = sciantixModule.getSciantixTimeSConversion()
-# Input_history_points = sciantixModule.getSciantixInputHistoryPointsConversion()
-# Temperature_input = sciantixModule.getSciantixTemperatureInputConversion()
-# Fissionrate_input = sciantixModule.getSciantixFissionrateInputConversion()
-# Hydrostaticstress_input = sciantixModule.getSciantixHydrostaticstressInputConversion()
-# Steampressure_input = sciantixModule.getSciantixSteampressureInputConversion()
 
 def getMainVar():
+    """This fonction Fetch the values of globals attributs in the C++/C code 
+    """
+    # --- All the global variables to the SciantixModule --- # 
     sciantixModule.Sciantix_variables = sciantixModule.getVariablesInArray_double()
     sciantixModule.Sciantix_history = sciantixModule.getHistoryInArray_double()
     sciantixModule.Sciantix_diffusion_modes = sciantixModule.getDiffusionModesInArray_double()
@@ -56,6 +43,8 @@ def getMainVar():
 
 
 def Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes):
+    """This fonction is the python fonction of the simulation of Sciantix 
+    """
     
     # Set variables
     sciantixModule.SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes)
