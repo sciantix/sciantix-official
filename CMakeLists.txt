@@ -17,7 +17,7 @@
 # This CMakeLists.txt file is useful when compiling SCIANTIX with the cmake tool
 # 
 # output:
-#   > build directory with executable in build/Debug/sciantix.exe
+#   > build directory with executable in build/sciantix.exe
 #
 # When using IDE, a CMakeSettings.json could be automatically produced to compile sciantix in a locall out/build/ folder
 # by setting this file as startup element.
@@ -31,11 +31,11 @@ project(sciantix)
 
 # Function to add all subdirectories of a given path to include directories
 function(add_subdirectory_includes root_dir)
-    file(GLOB SUBDIRS RELATIVE ${root_dir} ${root_dir}/*)
+    file(GLOB SUBDIRS RELATIVE ${root_dir} ${root_dir}/*) # get all files in directory (which is passed in parameter)
     foreach(subdir ${SUBDIRS})
-        if(IS_DIRECTORY ${root_dir}/${subdir})
-            include_directories(${root_dir}/${subdir})
-            add_subdirectory_includes(${root_dir}/${subdir})
+        if(IS_DIRECTORY ${root_dir}/${subdir}) # if file is a directory
+            include_directories(${root_dir}/${subdir})  # include the directory as header directory
+            add_subdirectory_includes(${root_dir}/${subdir})    # exectute the function for the subdirectory (to get all subdirectories of it if any)
         endif()
     endforeach()
 endfunction()
@@ -47,22 +47,34 @@ enable_language (CXX)
 include(CTest)
 enable_testing()
 
-include_directories(${PROJECT_SOURCE_DIR}/include)
 
-# Add all subdirectories in the include folder to the include path
+
+# Include header files
+include_directories(${PROJECT_SOURCE_DIR}/include)
+# Add all subdirectories of the include folder to the include path
 add_subdirectory_includes(${PROJECT_SOURCE_DIR}/include)
 
+
+
+# Include source files
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.C)
 
-# Set custom object file directory
+
+
+# Set custom object file directory (to have all object files in the obj directory)
 set(CMAKE_OBJECT_PATH_PREFIX ${PROJECTSOUR}/obj/)
 
+
+# Add executable sciantix.x (or .exe)
 add_executable(sciantix ${SOURCES})
+if (UNIX)
+    set(CMAKE_EXECUTABLE_SUFFIX ".x")
+endif()
 
-
+# Copy all object files in obj directory by using a custom command
 add_custom_command(TARGET sciantix POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_SOURCE_DIR}/obj
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/CMakeFiles/sciantix.dir/src ${PROJECT_SOURCE_DIR}/obj
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_SOURCE_DIR}/obj # make obj directory
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/CMakeFiles/sciantix.dir/src ${PROJECT_SOURCE_DIR}/obj # copy all object files in it
 )
 
 
