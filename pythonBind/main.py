@@ -1,12 +1,18 @@
 import time
 import os
+import sys 
 from sciantix_module import getMainVar, Sciantix, sciantixModule
 
 def logExecutionTime(timer, time_step_number):
-    with open("execution.txt", "a") as execution_file:
+    with open(f"{path}execution.txt", "a") as execution_file:
         execution_file.write(f"{timer:.12e}\t{time.process_time()}\t{timer * time.process_time():.12e}\t{time_step_number}\n")
 
-
+if len(sys.argv) > 1:
+    path = sys.argv[1]
+else:
+    print("No path specified, using current directory.")
+    path = "./"
+sciantixModule.setTestPath(path)
 
 # Equivatent to the MainSCIANTIX.C
 def main():
@@ -19,8 +25,8 @@ def main():
     getMainVar()
 
     # remove output.txt if exists
-    if os.path.exists("output.txt"):
-        os.remove("output.txt")
+    if os.path.exists(f"{path}output.txt"):
+        os.remove(f"{path}output.txt")
 
     timer_start = time.time()
 

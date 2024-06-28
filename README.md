@@ -1,16 +1,17 @@
-# Development/PyBind11 
+# Development/PyBind11
 
-This branch is used for the implementation of PyBind11 in the sciantix 2.0 code. 
+This branch is used for the implementation of PyBind11 in the sciantix 2.0 code.
 
-How to use PyBind11 with the sciantix code
-> [!NOTE]  
-> install with pip of pyBind11 the global version
-### How to use the code :
+## How to Use PyBind11 with the Sciantix Code
 
-Install pyBind11 : 
-```python
+### Installation
+
+Install PyBind11 using pip:
+
+```sh
 pip install "pybind11[global]"
 ```
+
 <b>Create the build folder and go inside it with this command : </b>
 ```shell
 mkdir build 
@@ -20,17 +21,27 @@ cd build
 <b>For compilation From the Build folder :</b>
 
 ```shell
-cmake .. && make && python3 ../pythonBind/main.py
+cmake .. && make
 ```
 
 <b>All in one : </b>
 
 ```shell
-mkdir build && cd build && cmake .. && make && python3 ../pythonBind/main.py
+mkdir build && cd build && cmake .. && make && cd ../pythonBind/ && python3 ../pythonBindmain.py ../regression/test_Baker1977__1273K/
 ```
-Explantion : 
+<b>Only Python : </b> <br>
+For the `test_Barker1977__1273K`
+```shell
+python3 ../pythonBindmain.py ../regression/test_Baker1977__1273K/
+```
 
-This creates the build folder, inside this folder cmake create the makefile. The module is then compiled with the <u>MakeFile</u>. Then it runs the python <b>Main file</b>.
+### Explanation :
+- Create the build folder: This sets up a separate directory for building the project.<br>
+- Navigate into the build folder: Change the current directory to the newly created build directory.<br>
+- Run cmake and make: CMake generates the necessary Makefile, and make compiles the project. <br>
+
+- Run the Python main file: This command compiles the module and then runs the specified Python script.
+
 
 > [!WARNING]  
->  The inputs files are required in the pythonBind folder in order to execute correctly 
+>  Ensure the input files are present in the pythonBind folder or specify the correct path to the test files to execute the code properly.
