@@ -23,6 +23,9 @@
 
 extern std::map<std::string, int> sm;
 
+/**
+ * @brief This routine initialize the global map sm with model names and their corresponding index.
+ */
 void MapModel();
 
 #endif // MAP_MODEL_H

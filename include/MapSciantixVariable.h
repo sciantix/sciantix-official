@@ -23,6 +23,9 @@
 
 extern std::map<std::string, int> sv;
 
+/**
+ * @brief This routines defines the map sv for sciantix_variable
+ */
 void MapSciantixVariable();
 
 #endif // MAP_SCIANTIX_VARIABLE_H

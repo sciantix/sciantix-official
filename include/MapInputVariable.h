@@ -23,6 +23,9 @@
 
 extern std::map<std::string, int> iv;
 
+/**
+ * @brief This routine maps the names of input variables to their indices in the input_variable vector.
+ */
 void MapInputVariable();
 
 #endif // MAP_INPUT_VARIABLE_H

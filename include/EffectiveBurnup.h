@@ -34,7 +34,6 @@
  * E. Redaelli
  * G. Zullo
 */
-
 void EffectiveBurnup();
 
 #endif // EFFECTIVE_BURNUP_H

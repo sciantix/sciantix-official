@@ -21,4 +21,11 @@
 #include "MapSciantixVariable.h"
 #include "MapHistoryVariable.h"
 
+/**
+ * @brief Function to define the "Grain-boundary micro-cracking" model.
+ * 
+ * This function calculates the microcracking and healing parameters based on the temperature transient and burnup,
+ * and sets these parameters in the model. The microcracking parameter is derived from a function of temperature and burnup,
+ * while the healing parameter is a constant value derived from burnup.
+ */
 void GrainBoundaryMicroCracking();

@@ -16,11 +16,6 @@
 
 #include "MapSystem.h"
 
-/**
- * @brief This routines defines the map sy for sciantix_system
- * 
- */
-
 std::map<std::string, int> sy;
 
 void MapSystem()

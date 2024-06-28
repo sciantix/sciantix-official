@@ -14,16 +14,20 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-/// This namespace contains relevant numeric constants that can be used in all the code.
-
 #ifndef CONSTANT_NUMBERS_H
 #define CONSTANT_NUMBERS_H
 
+/**
+ * @brief Constants for math
+ */
 namespace MathConstants
 {
 	const double pi = 3.141592653589793;
 }
 
+/**
+ * @brief Constants for physics
+ */
 namespace PhysicsConstants
 {
 	const double boltzmann_constant = 1.380651e-23; // J/K

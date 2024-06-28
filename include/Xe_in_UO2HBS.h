@@ -30,7 +30,6 @@
  * This function initializes the properties of the "Xenon in UO2-HBS" system
  * and adds it to the sciantix_system vector.
  */
-
 void Xe_in_UO2HBS();
 
 #endif // XE_IN_UO2HBS_H

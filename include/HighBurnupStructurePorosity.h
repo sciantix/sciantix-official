@@ -24,4 +24,12 @@
 #include "SystemDeclaration.h"
 #include "MapSystem.h"
 
+/**
+ * @brief This routine sets the model for High burnup structure porosity evolution
+ *
+ * @author
+ * A. Magni
+ * E. Redaelli
+ * G. Zullo
+ */
 void HighBurnupStructurePorosity();

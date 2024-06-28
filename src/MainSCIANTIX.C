@@ -24,16 +24,16 @@
  * The modelling of inert gas behaviour is the main aspect considered.
  * Engineering models are used, allowing for future integration in industrial fuel performance codes.
  * Nevertheless, physically-based model are preferred to empirical models.
- * This facilitates the incorporation of information from lower length scale calculations. 
+ * This facilitates the incorporation of information from lower length scale calculations.
  *
- * 
+ *
  * At present, this version of the code is validated against experiments for
  * - intragranular gaseous swelling
  * - intergranular gaseous swelling
  * - helium behaviour and release in annealing conditions
  * - release of radioactive fission gases
  * The validation database is accessible in the *regression* folder.
- * 
+ *
  */
 
 #include "MainVariables.h"
@@ -42,21 +42,48 @@
 #include "InputReading.h"
 #include "Initialization.h"
 #include "TimeStepCalculation.h"
+#include "Bounds.h"
+#include "Global.h"
+#include "ErrorMessages.h"
 #include <iostream>
 #include <fstream>
 #include <ctime>
 
+/**
+ * \brief Logs the execution time of the simulation.
+ * @param timer The total execution time measured in seconds.
+ * @param time_step_number The total number of time steps executed during the simulation.
+ */
 void logExecutionTime(double timer, int time_step_number);
 
-int main()
+/**
+ * \brief Main entry point for the SCIANTIX program.
+ * @param argc Number of command-line arguments.
+ * @param argv Array of command-line arguments, where argv[1] is expected to be the path to the input file.
+ * @return Returns 0 upon successful completion of the program.
+ */
+int main(int argc, char **argv)
 {
+
+	if (argc < 2) {
+        std::cout << "No path specified, using current directory." << std::endl;
+        TestPath = "./";
+    } else {
+        TestPath = argv[1];
+        if (TestPath.back() != '/') {
+            TestPath += '/';
+        }
+    }
+
 	InputReading();
 
 	Initialization();
 
-	remove("output.txt");
+	std::string outputPath = TestPath + "output.txt";
 
-	Execution_file.open("execution.txt", std::ios::out);
+	remove(outputPath.c_str());
+
+	Execution_file.open(TestPath + "execution.txt", std::ios::out);
 
 	timer = clock();
 
@@ -66,7 +93,8 @@ int main()
 		Sciantix_history[1] = InputInterpolation(Time_h, Time_input, Temperature_input, Input_history_points);
 		Sciantix_history[2] = Sciantix_history[3];
 		Sciantix_history[3] = InputInterpolation(Time_h, Time_input, Fissionrate_input, Input_history_points);
-		if (Sciantix_history[3] < 0.0) Sciantix_history[3] = 0.0;
+		if (Sciantix_history[3] < 0.0)
+			Sciantix_history[3] = 0.0;
 		Sciantix_history[4] = Sciantix_history[5];
 		Sciantix_history[5] = InputInterpolation(Time_h, Time_input, Hydrostaticstress_input, Input_history_points);
 		Sciantix_history[7] = Time_h;
@@ -85,10 +113,12 @@ int main()
 			Time_h += dTime_h;
 			Time_s += Sciantix_history[6];
 		}
-		else break;
+		else
+			break;
 	}
 
 	timer = clock() - timer;
+
 
 	logExecutionTime((double)timer / CLOCKS_PER_SEC, Time_step_number);
 	Execution_file.close();

@@ -23,6 +23,9 @@
 
 extern std::map<std::string, int> sy;
 
+/**
+ * @brief This routine maps each system entity to an index for easy access.
+ */
 void MapSystem();
 
 #endif // MAP_SYSTEM_H

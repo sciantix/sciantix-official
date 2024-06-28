@@ -16,9 +16,6 @@
 
 #include "UO2.h"
 
-/**
- * @brief Defines the physical properties of the UO2 matrix.
- */
 void UO2()
 {
 	matrix.emplace_back();

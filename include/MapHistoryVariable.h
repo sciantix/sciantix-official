@@ -23,6 +23,9 @@
 
 extern std::map<std::string, int> hv;
 
+/**
+ * @brief This routine maps the names of history variables to their indices in the history_variable vector.
+ */
 void MapHistoryVariable();
 
 #endif

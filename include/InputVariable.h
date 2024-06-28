@@ -19,28 +19,49 @@
 
 #include "Variable.h"
 
-/// Derived class for the input variables (e.g., input settings for model selection).
+/**
+ * @brief A derived class specifically for handling input variables used in simulations or models.
+ *
+ * This class extends the `Variable` class, providing a structured way to manage input settings,
+ * such as parameters for simulations, ensuring that these inputs can be easily modified and retrieved.
+ */
 class InputVariable : virtual public Variable
 {
 public:
+	/**
+	 * @brief Sets the value of the input variable.
+	 *
+	 * @param v The new value to assign to the input variable.
+	 */
 	void setValue(double v)
 	{
 		/// Member function to set the setting value of the declared object.
 		value = v;
 	}
 
+	/**
+	 * @brief Retrieves the value of the input variable.
+	 *
+	 * @return The current value of the input variable.
+	 */
 	double getValue()
 	{
 		/// Member function to get the setting value of the object.
 		return value;
 	}
 
-	InputVariable() { }
-	~InputVariable() { }
+	/**
+	 * @brief Constructor for InputVariable.
+	 */
+	InputVariable() {}
+
+	/**
+	 * @brief Destructor for InputVariable.
+	 */
+	~InputVariable() {}
 
 protected:
 	double value;
-
 };
 
-#endif
+#endif //INPUT_VARIABLE_H

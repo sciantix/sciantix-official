@@ -21,7 +21,6 @@
 #include "HistoryVariable.h"
 
 /// Extern declaration of the history_variable vector
-
 extern std::vector<HistoryVariable> history_variable;
 
 std::vector<HistoryVariable> &getHistoryVariable();

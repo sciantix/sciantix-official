@@ -22,8 +22,13 @@
 #include <iostream>
 #include "Entity.h"
 
-/// Derived class inherited by PhysicsVariable and InputVariable
-
+/**
+ * \class Variable
+ * \brief Class derived from Entity, inherited by PhysicsVariable and InputVariable.
+ *
+ * The Variable class inherits from Entity and is intended to be the base class for different types
+ * of variables used in a system, encapsulating common attributes such as name and reference.
+ */
 class Variable : virtual public Entity
 {
 protected:
@@ -31,7 +36,13 @@ protected:
 	std::string reference;
 
 public:
+	/**
+	 * \brief Default constructor for the Variable class
+	 */
 	Variable() { }
+	/**
+	 * \brief Destructor for the Variable class
+	 */
 	~Variable() { }
 };
 

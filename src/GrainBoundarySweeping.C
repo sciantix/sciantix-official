@@ -16,12 +16,6 @@
 
 #include "GrainBoundarySweeping.h"
 
-/**
- * @brief This routine defines the model the grain-boundary sweeping.
- * If activated, it describes the fraction of intra-granular gas concentration sweeped due to grain growth process.
- * 
- */
-
 void GrainBoundarySweeping()
 {
 	model.emplace_back();
@@ -46,7 +40,7 @@ void GrainBoundarySweeping()
 		/**
 		 * @brief iGrainBoundarySweeping = 1 considers the fraction of grain swept volume (dV/V = 3 dr / r).
 		 * Then, the fraction of intra-granular gas concentration swept is dC / C = - 3 dr / r
-		 *  
+		 *
 		 */
 
 		std::vector<double> parameter;
