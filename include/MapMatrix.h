@@ -23,6 +23,9 @@
 
 extern std::map<std::string, int> sma;
 
+/**
+ * @brief This routine initialize the global map sma with matrix names and their corresponding index.
+ */
 void MapMatrix();
 
 #endif // MAP_MATRIX_H

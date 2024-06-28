@@ -31,7 +31,6 @@
  * This function initializes the properties of the "Krypton in UO2" system
  * and adds it to the sciantix_system vector.
  */
-
 void Kr_in_UO2();
 
 #endif // KR_IN_UO2_H

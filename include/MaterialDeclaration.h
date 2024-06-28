@@ -21,7 +21,6 @@
 #include "Material.h"
 
 /// Extern declaration of the material vector.
-
 extern std::vector<Material> material;
 
 std::vector<Material> &getMaterial();

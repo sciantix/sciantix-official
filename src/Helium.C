@@ -16,7 +16,6 @@
 
 #include "Helium.h"
 
-/// Helium
 
 void Helium()
 {

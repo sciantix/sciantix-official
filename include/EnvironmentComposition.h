@@ -38,7 +38,6 @@
  * G. Zullo
  * 
  */
-
 void EnvironmentComposition();
 
 #endif // ENVIRONMENT_COMPOSITION_H

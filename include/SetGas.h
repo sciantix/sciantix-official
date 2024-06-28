@@ -25,10 +25,12 @@
 #include <vector>
 
 /**
- * @brief This routines defines the gas objects
+ * \brief Sets up the gas properties in the simulation.
  * 
+ * This function initializes and maps properties for Xenon, Krypton, and Helium gases
+ * used in the simulation. Each gas is set up with specific attributes and then mapped
+ * for easy access throughout the simulation.
  */
-
 void SetGas();
 
 #endif // SET_GAS_H

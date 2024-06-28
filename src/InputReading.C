@@ -24,7 +24,17 @@
 /// The third file contains the initial conditions for the physics variables.
 
 #include "InputReading.h"
+#include "Global.h"
 
+
+
+/**
+ * \brief Read a single setting from the input file.
+ * @param variable_name The name of the variable to be read.
+ * @param input_file Input file stream from which the setting is read.
+ * @param output_file Output file stream where the read setting is logged.
+ * @return An unsigned short int containing the value of the setting.
+ */
 unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
 {
 	char comment;
@@ -36,6 +46,13 @@ unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& inpu
 	return variable;
 }
 
+/**
+ * \brief Read a single parameter from the input file.
+ * @param variable_name The name of the parameter to be read.
+ * @param input_file Input file stream from which the parameter is read.
+ * @param output_file Output file stream where the read parameter is logged.
+ * @return A double containing the value of the parameter.
+ */
 double ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
 {
 	char comment;
@@ -47,6 +64,13 @@ double ReadOneParameter(std::string variable_name, std::ifstream& input_file, st
 	return variable;
 }
 
+/**
+ * \brief Read several parameters from a single line in the input file.
+ * @param variable_name The name for the parameters to be logged.
+ * @param input_file Input file stream from which the parameters are read.
+ * @param output_file Output file stream where the read parameters are logged.
+ * @return A vector of doubles containing the parameters read from the file.
+ */
 std::vector<double> ReadSeveralParameters(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
 {
 	char comment;
@@ -79,23 +103,23 @@ void InputReading()
 	/// It is highly recommended checking this file, since eventual errors
 	/// are reported in it.
 
-	std::ofstream input_check("input_check.txt", std::ios::out);
+	std::ofstream input_check(TestPath + "input_check.txt", std::ios::out);
 
 	// Abort execution if any of the input files does not exist
-	std::ifstream input_settings("input_settings.txt", std::ios::in);
+	std::ifstream input_settings(TestPath + "input_settings.txt", std::ios::in);
 	if (!input_settings)
 		ErrorMessages::MissingInputFile("input_settings.txt");
 
-	std::ifstream input_initial_conditions("input_initial_conditions.txt", std::ios::in);
+	std::ifstream input_initial_conditions(TestPath + "input_initial_conditions.txt", std::ios::in);
 	if (!input_initial_conditions)
 		ErrorMessages::MissingInputFile("input_initial_conditions.txt");
 
-	std::ifstream input_history("input_history.txt", std::ios::in);
+	std::ifstream input_history(TestPath + "input_history.txt", std::ios::in);
 	if (!input_history)
 		ErrorMessages::MissingInputFile("input_history.txt");
 	
 	// This is optional so no error if not present
-	std::ifstream input_scaling_factors("input_scaling_factors.txt", std::ios::in);
+	std::ifstream input_scaling_factors(TestPath + "input_scaling_factors.txt", std::ios::in);
 
 	/**
 	 * @brief

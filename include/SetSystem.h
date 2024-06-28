@@ -31,4 +31,12 @@
 
 #include <vector>
 
+/**
+ * @brief Configures the system based on the selected fuel matrix type.
+ * 
+ * This function initializes and maps system properties depending on the
+ * value set in the input variable "iFuelMatrix". The mappings and initializations
+ * are specific to whether standard UO2 or UO2 with high burnup structure (UO2-HBS)
+ * is being simulated.
+ */
 void SetSystem();

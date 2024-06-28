@@ -15,4 +15,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 #include "MainVariables.h"
 
+/**
+ * @brief This routine calculates the time step length 
+ * by dividing the time intervals provided in input
+ * in a fixed number of time steps (also set by input).
+ */
 double TimeStepCalculation();

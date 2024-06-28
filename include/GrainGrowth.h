@@ -34,7 +34,6 @@
  * The choice of the model depends on the input_value iGrainGrowth.
  * 
  */
-
 void GrainGrowth();
 
 #endif // GRAIN_GROWTH_H

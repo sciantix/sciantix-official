@@ -23,6 +23,9 @@
 
 extern std::map<std::string, int> ga;
 
+/**
+ * \brief This routnine maps the gas names to indices for quick access.
+ */
 void MapGas();
 
 #endif

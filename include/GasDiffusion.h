@@ -32,7 +32,7 @@
 
 /**
  * @brief Defines models for gas diffusion within the fuel grain.
- * 
+ *
  * This function computes diffusion models for gas atoms within the fuel grain
  * based on the selected diffusion solver option.
  */
@@ -50,11 +50,11 @@ void defineSpectralDiffusion2Equations();
 
 /**
  * @brief Defines diffusion models using the spectral diffusion with three equations.
- * 
+ *
  * The first equation is for xenon in non-restructured matrix - dynamic solution
  * The second equation is for xenon in non-restructured matrix - intragranular bubbles
  * The third equation is for xenon in restructured matrix
- * 
+ *
  */
 void defineSpectralDiffusion3Equations();
 

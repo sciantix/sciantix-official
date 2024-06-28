@@ -21,7 +21,6 @@
 #include "PhysicsVariable.h"
 
 /// PhysicsVariableDeclaration.h
-
 extern std::vector<PhysicsVariable> physics_variable;
 
 std::vector<PhysicsVariable> &getPhysicsVariable();
