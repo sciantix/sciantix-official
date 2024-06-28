@@ -15,7 +15,6 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "ErrorMessages.h"
-#include "Global.h"
 
 namespace ErrorMessages
 {
@@ -31,7 +30,7 @@ namespace ErrorMessages
 		error_message += "Execution aborted\n";
 
 		// Write error message to the error log
-		std::ofstream Error_log(TestPath + Error_file_name, std::ios::out);
+		std::ofstream Error_log(Error_file_name, std::ios::out);
 		Error_log << error_message << std::endl;
 
 		// And write it to STDERR as well
@@ -47,7 +46,7 @@ namespace ErrorMessages
 
 	void writeErrorLog()
 	{
-		std::ofstream Error_log(TestPath + Error_file_name, std::ios::app);
+		std::ofstream Error_log(Error_file_name, std::ios::app);
 		Error_log << errorMessages.str();
 		errorMessages.str("");
 	}

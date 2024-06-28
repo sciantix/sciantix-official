@@ -1,6 +1,5 @@
 import sys
 import os
-import numpy as np
 
 # path to the compiled sciantixModule 
 module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'build', 'python'))

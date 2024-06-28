@@ -1,18 +1,16 @@
 import time
-import sys
 import os
 from sciantix_module import getMainVar, Sciantix, sciantixModule
 
 def logExecutionTime(timer, time_step_number):
-    with open(f"{path}execution.txt", "a") as execution_file:
+    with open("execution.txt", "a") as execution_file:
         execution_file.write(f"{timer:.12e}\t{time.process_time()}\t{timer * time.process_time():.12e}\t{time_step_number}\n")
 
-path = sys.argv[1]
+
 
 # Equivatent to the MainSCIANTIX.C
 def main():
-    ''' this function is the same as MainSciantix.C but it uses pybind11 
-    '''
+    ''' this function is the same as MainSciantix.C but it uses pybind11 '''
     # Initialisation 
     sciantixModule.InputReading()
     sciantixModule.Initialization()
@@ -21,7 +19,7 @@ def main():
     getMainVar()
 
     # remove output.txt if exists
-    if os.path.exists(f"{path}output.txt"):
+    if os.path.exists("output.txt"):
         os.remove("output.txt")
 
     timer_start = time.time()
@@ -69,6 +67,10 @@ def main():
 
         else:
             break
+        
+        # set the History 
+        for i in range(20):
+            sciantixModule.setHistory(i, Sciantix_history[i])
     
     timer_end = time.time()
     logExecutionTime(timer_end - timer_start, sciantixModule.Time_step_number)
