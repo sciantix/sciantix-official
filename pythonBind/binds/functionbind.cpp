@@ -198,7 +198,7 @@ void init_functions(py::module_ &m) {
             py::arg("Sciantix_variables"),
             py::arg("Sciantix_scaling_factors"),
             py::arg("Sciantix_diffusion_modes"));
-    
+    m.def("setTestPath", &setTestPath, py::arg("path") );
     m.def("getVariablesInArray_double", &getVariablesInArray_double);
     m.def("getHistoryInArray_double", &getHistoryInArray_double);
     m.def("getDiffusionModesInArray_double", &getDiffusionModesInArray_double);

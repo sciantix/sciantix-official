@@ -5,4 +5,6 @@
 
 extern std::string TestPath; 
 
+void setTestPath( std::string path);
+
 #endif

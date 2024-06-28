@@ -20,6 +20,7 @@
 #include "MaterialDeclaration.h"
 #include "GasDeclaration.h"
 #include "MatrixDeclaration.h"
+#include "Global.h"
 #include <vector>
 
 namespace py = pybind11;
