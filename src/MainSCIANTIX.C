@@ -54,12 +54,6 @@ int main()
 
 	Initialization();
 
-     //   Print history settings
-    std::cout << "History Variables:\n";
-    for(int i = 0; i < 20; ++i) { // Assuming there are 11 history variables
-        std::cout << "History " << i << ": " << Sciantix_history[i] << std::endl;
-    }
-
 	remove("output.txt");
 
 	Execution_file.open("execution.txt", std::ios::out);
@@ -93,61 +87,6 @@ int main()
 		}
 		else break;
 	}
-
-	// // Print variables
-    // std::cout << "Sciantix Variables à la fin :\n";
-    // for(int i = 0; i < 300; ++i) { 
-    //     std::cout << "Variable " << i << ": " << Sciantix_variables[i] << std::endl;
-    // }
-
-    // std::cout << "Sciantix_history à la fin :\n";
-    // for(int i = 0; i < 20; ++i) { 
-    //     std::cout << "Variable " << i << ": " << Sciantix_history[i] << std::endl;
-    // }
-
-    // std::cout << "Sciantix_diffusion_modes à la fin :\n";
-    // for(int i = 0; i < 1000; ++i) { 
-    //     std::cout << "Variable " << i << ": " << Sciantix_diffusion_modes[i] << std::endl;
-    // }
-
-    // std::cout << "Sciantix_options à la fin :\n";
-    // for(int i = 0; i < 40; ++i) { 
-    //     std::cout << "Variable " << i << ": " << Sciantix_options[i] << std::endl;
-    // }
-
-    // std::cout << "Sciantix_scaling_factors à la fin :\n";
-    // for(int i = 0; i < 10; ++i) { 
-    //     std::cout << "Variable " << i << ": " << Sciantix_scaling_factors[i] << std::endl;
-    // }
-
-    // std::cout << "Time_step_number à la fin : " << Time_step_number << std::endl;
-    // std::cout << "Time_h à la fin : " << Time_h << std::endl;
-    // std::cout << "dTime_h à la fin : " << dTime_h << std::endl;
-    // std::cout << "Time_end_h à la fin : " << Time_end_h << std::endl;
-    // std::cout << "Time_s à la fin : " << Time_s << std::endl;
-
-    // std::cout << "input_history_Point " << Input_history_points << std::endl;
-
-    // std::cout << "Temperature_input_points à la fin :\n";
-    // for(int i = 0; i < Temperature_input.size(); ++i) { 
-    //     std::cout << "Point " << i << ": " << Temperature_input[i] << std::endl;
-    // }
-
-    // std::cout << "Fissionrate_input_points à la fin :\n";
-    // for(int i = 0; i < Fissionrate_input.size(); ++i) { 
-    //     std::cout << "Point " << i << ": " << Fissionrate_input[i] << std::endl;
-    // }
-
-    // std::cout << "Hydrostaticstress_input_points à la fin :\n";
-    // for(int i = 0; i < Hydrostaticstress_input.size(); ++i) { 
-    //     std::cout << "Point " << i << ": " << Hydrostaticstress_input[i] << std::endl;
-    // }
-
-    // std::cout << "Steampressure_input_points à la fin :\n";
-    // for(int i = 0; i < Steampressure_input.size(); ++i) { 
-    //     std::cout << "Point " << i << ": " << Steampressure_input[i] << std::endl;
-    // }
-
 
 	timer = clock() - timer;
 
