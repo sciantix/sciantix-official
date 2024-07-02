@@ -27,7 +27,7 @@
  * 
  * This function calculates the local effective burnup based on the local fission rate density and temperature.
  * 
- * @see <a href="../pdf_link/Khvostov_et_al_2005.pdf" target="_blank">G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005</a>.
+ * @see <a href="../../references/pdf_link/Khvostov_et_al_2005.pdf" target="_blank">G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005</a>.
  * 
  * @author
  * A. Magni

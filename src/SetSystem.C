@@ -84,8 +84,8 @@ void System::setBubbleDiffusivity(int input_value)
 			 * Assuming that the bubble motion during irradiation is controlled by the volume diffusion mechanism,
 			 * the bubble diffusivty takes the form Db = (V_atom_in_lattice/bubble_volume) * volume_self_diffusivity
 			 * 
-			 * @see <a href="../pdf_link/Evans_1994.pdf" target="_blank">Evans, JNM 210 (1994) 21-29</a>,
-			 * <a href="../pdf_link/Van_Uffelen_et_al_2013.pdf" target="_blank">Van Uffelen et al. JNM, 434 (2013) 287–29</a>.
+			 * @see <a href="../../references/pdf_link/Evans_1994.pdf" target="_blank">Evans, JNM 210 (1994) 21-29</a>,
+			 * <a href="../../references/pdf_link/Van_Uffelen_et_al_2013.pdf" target="_blank">Van Uffelen et al. JNM, 434 (2013) 287–29</a>.
 			 */
 			
 
@@ -133,7 +133,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	{
 		/**
 		 * @brief iFGDiffusionCoefficient = 1 set the fission gas (xenon and krypton) single-atom intragranular diffusivity equal to the expression
-		 * in <a href="../pdf_link/Turnbull_et_al_1988.pdf" target="_blank">Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22</a>.
+		 * in <a href="../../references/pdf_link/Turnbull_et_al_1988.pdf" target="_blank">Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22</a>.
 		 *
 		 */
 
@@ -156,7 +156,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	{
 		/**
 		 * @brief iFGDiffusionCoefficient = 2 set the xenon effective intragranular diffusivity equal to the expression
-		 * in <a href="../pdf_link/Matzke_1980.pdf" target="_blank">Matzke (1980), Radiation Effects, 53, 219-242</a>.
+		 * in <a href="../../references/pdf_link/Matzke_1980.pdf" target="_blank">Matzke (1980), Radiation Effects, 53, 219-242</a>.
 		 *
 		 */
 
@@ -171,7 +171,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	{
 		/**
 		 * @brief iFGDiffusionCoefficient = 3 set the xenon single-atom intragranular diffusivity equal to the expression
-		 * in <a href="../pdf_link/Turnbull_et_al_2010.pdf" target="_blank">Turnbull et al., (2010), Background and Derivation of ANS-5.4 Standard Fission Product Release Model</a>.
+		 * in <a href="../../references/pdf_link/Turnbull_et_al_2010.pdf" target="_blank">Turnbull et al., (2010), Background and Derivation of ANS-5.4 Standard Fission Product Release Model</a>.
 		 *
 		 */
 
@@ -194,7 +194,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	{
 		/**
 		 * @brief iFGDiffusionCoefficient = 4 set the xenon single-atom intragranular diffusivity equal to the expression
-		 * in <a href="../pdf_link/Ronchi_2007.pdf" target="_blank">Ronchi, C. High Temp 45, 552-571 (2007)</a>.
+		 * in <a href="../../references/pdf_link/Ronchi_2007.pdf" target="_blank">Ronchi, C. High Temp 45, 552-571 (2007)</a>.
 		 *
 		 */
 
@@ -217,7 +217,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	{
 		/**
 		 * @brief this case is for the UO2HBS. 
-		 * @see This value is from <a href="../pdf_link/Barani_et_al_2020.pdf" target="_blank">Barani et al. Journal of Nuclear Materials 539 (2020) 152296</a>.
+		 * @see This value is from <a href="../../references/pdf_link/Barani_et_al_2020.pdf" target="_blank">Barani et al. Journal of Nuclear Materials 539 (2020) 152296</a>.
 		 *
 		 */
 
@@ -303,7 +303,7 @@ void System::setHeliumDiffusivity(int input_value)
 		/**
 		 * @brief iHeDiffusivity = 1 is the best-estimate correlation, from data available in literature, for samples with no or very limited lattice damage.
 		 * This correlation is also recommended for simulations of helium in UO<sub>2</sub> samples in which **infusion** technique has been adopted.
-		 * @see The correlation is from <a href="../pdf_link/Luzzi_et_al_2018.pdf" target="_blank">L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271</a>.
+		 * @see The correlation is from <a href="../../references/pdf_link/Luzzi_et_al_2018.pdf" target="_blank">L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271</a>.
 		 *
 		 */
 
@@ -317,7 +317,7 @@ void System::setHeliumDiffusivity(int input_value)
 		/**
 		 * @brief iHeDiffusivity = 2 is the best-estimate correlation, from data available in literature, for samples with significant lattice damage.
 		 * This correlation is also recommended for simulations of helium in UO<sub>2</sub> samples in which **implantation** technique has been adopted.
-		 * @see The correlation is from <a href="../pdf_link/Luzzi_et_al_2018.pdf" target="_blank">L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271</a>.
+		 * @see The correlation is from <a href="../../references/pdf_link/Luzzi_et_al_2018.pdf" target="_blank">L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271</a>.
 		 *
 		 */
 
@@ -329,7 +329,7 @@ void System::setHeliumDiffusivity(int input_value)
 	case 3:
 	{
 		/**
-		 * @brief iHeDiffusivity = 2 sets the single gas-atom intra-granular diffusivity equal to the correlation reported in <a href="../pdf_link/Talip_et_al_2014.pdf" target="_blank">Z. Talip et al. JNM 445 (2014) 117-127</a>.
+		 * @brief iHeDiffusivity = 2 sets the single gas-atom intra-granular diffusivity equal to the correlation reported in <a href="../../references/pdf_link/Talip_et_al_2014.pdf" target="_blank">Z. Talip et al. JNM 445 (2014) 117-127</a>.
 		 *
 		 */
 
@@ -373,7 +373,7 @@ void System::setResolutionRate(int input_value)
 	{
 		/**
 		 * @brief iResolutionRate = 0 corresponds to a constant intra-granular resolution rate, equal to 0.0001 1/s.
-		 * @see This value is from <a href="../pdf_link/Olander_and_Wongsawaeng_2006.pdf" target="_blank">Olander, Wongsawaeng, JNM, 354 (2006), 94-109</a>.
+		 * @see This value is from <a href="../../references/pdf_link/Olander_and_Wongsawaeng_2006.pdf" target="_blank">Olander, Wongsawaeng, JNM, 354 (2006), 94-109</a>.
 		 *
 		 */
 
@@ -386,7 +386,7 @@ void System::setResolutionRate(int input_value)
 	case 1:
 	{
 		/**
-		 * @brief iResolutionRate = 1 corresponds to the irradiation-induced intra-granular resolution rate from <a href="../pdf_link/Turnbull_1971.pdf" target="_blank">J.A. Turnbull, JNM, 38 (1971), 203</a>.
+		 * @brief iResolutionRate = 1 corresponds to the irradiation-induced intra-granular resolution rate from <a href="../../references/pdf_link/Turnbull_1971.pdf" target="_blank">J.A. Turnbull, JNM, 38 (1971), 203</a>.
 		 *
 		 */
 
@@ -400,7 +400,7 @@ void System::setResolutionRate(int input_value)
 	case 2:
 	{
 		/**
-		 * @brief iResolutionRate = 2 corresponds to the irradiation-induced intra-granular resolution rate from <a href="../pdf_link/Losonen_2002.pdf" target="_blank">P. Losonen, JNM 304 (2002) 29-49</a>.
+		 * @brief iResolutionRate = 2 corresponds to the irradiation-induced intra-granular resolution rate from <a href="../../references/pdf_link/Losonen_2002.pdf" target="_blank">P. Losonen, JNM 304 (2002) 29-49</a>.
 
 		 *
 		 */
@@ -415,7 +415,7 @@ void System::setResolutionRate(int input_value)
 	case 3:
 	{
 		/**
-		 * @brief iResolutionRate = 3 corresponds to the intra-granular resolution rate from <a href="../pdf_link/Cognini_et_al_2021.pdf" target="_blank">Cognini et al. NET 53 (2021) 562-571</a>.
+		 * @brief iResolutionRate = 3 corresponds to the intra-granular resolution rate from <a href="../../references/pdf_link/Cognini_et_al_2021.pdf" target="_blank">Cognini et al. NET 53 (2021) 562-571</a>.
 		 *
 		 * iResolutionRate = 3 includes the helium solubility in the resolution rate, with a thermal resolution term.
 		 *
@@ -484,7 +484,7 @@ void System::setTrappingRate(int input_value)
 	{
 		/**
 		 * @brief iTrappingRate = 0 corresponds to a constant intra-granular trapping rate, equal to 9.35e-6 1/s.
-		 * @see This value is from <a href="../pdf_link/Olander_and_Wongsawaeng_2006.pdf" target="_blank">Olander, Wongsawaeng, JNM, 354 (2006), 94-109</a>.
+		 * @see This value is from <a href="../../references/pdf_link/Olander_and_Wongsawaeng_2006.pdf" target="_blank">Olander, Wongsawaeng, JNM, 354 (2006), 94-109</a>.
 		 *
 		 */
 
@@ -499,7 +499,7 @@ void System::setTrappingRate(int input_value)
 	{
 		/**
 		 * @brief iTrappingRate = 1 corresponds to the intra-granular trapping rate
-		 * @see From <a href="../pdf_link/Ham_1958.pdf" target="_blank">F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351</a>.
+		 * @see From <a href="../../references/pdf_link/Ham_1958.pdf" target="_blank">F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351</a>.
 		 * 
 		 * This formula is based on the assumptions that the trapping centre density is dilute enough.
 		 * g = 4 pi D_s R_b N_b
@@ -567,7 +567,7 @@ void System::setNucleationRate(int input_value)
 	{
 		/**
 		 * @brief iNucleationRate = 1 correspond to expression for intragranular bubble nucleation rate from
-		 * @see <a href="../pdf_link/Olander_and_Wongsawaeng_2006.pdf" target="_blank">Olander, Wongsawaeng, JNM, 354 (2006), 94-109</a>.
+		 * @see <a href="../../references/pdf_link/Olander_and_Wongsawaeng_2006.pdf" target="_blank">Olander, Wongsawaeng, JNM, 354 (2006), 94-109</a>.
 		 *
 		 */
 
@@ -633,7 +633,7 @@ void System::setProductionRate(int input_value)
 		/**
 		 * @brief Surrogate model derived from **helium production in fast reactor conditions**.
 		 * The helium production rate is fitted with a function linearly dependent on the local burnup.
-		 * @see The default fit is from <a href="../pdf_link/Cechet_et_al_2021.pdf" target="_blank">A. Cechet et al., Nuclear Engineering and Technology, 53 (2021) 1893-1908</a>.
+		 * @see The default fit is from <a href="../../references/pdf_link/Cechet_et_al_2021.pdf" target="_blank">A. Cechet et al., Nuclear Engineering and Technology, 53 (2021) 1893-1908</a>.
 		 *
 		 * **Default range of utilization of the default fit**
 		 * - Fast reactor conditions: (U,Pu)O<sub>2</sub> MOX fuel in SFR conditions

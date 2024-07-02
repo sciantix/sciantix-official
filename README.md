@@ -7,7 +7,7 @@ Engineering models are used, allowing for future integration in industrial fuel 
 Nevertheless, physically-based model are preferred to empirical models.
 This facilitates the incorporation of information from lower length scale calculations.
 
- <a href="../pdf_link/Pizzocri_et_al_2020.pdf" target="_blank">Pizzocri et al 2020</a>, <a href="../pdf_link/Zullo_et_al_2023.pdf" target="_blank">Zullo et al 2023</a>.
+ <a href="../../references/pdf_link/Pizzocri_et_al_2020.pdf" target="_blank">Pizzocri et al 2020</a>, <a href="../../references/pdf_link/Zullo_et_al_2023.pdf" target="_blank">Zullo et al 2023</a>.
  
 At present, this version of the code is validated against experiments for
  - intragranular gaseous swelling

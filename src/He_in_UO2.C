@@ -39,7 +39,7 @@ void He_in_UO2()
 	sciantix_system[index].setResolutionRate(int(input_variable[iv["iResolutionRate"]].getValue()));
 	sciantix_system[index].setTrappingRate(int(input_variable[iv["iTrappingRate"]].getValue()));
 	sciantix_system[index].setNucleationRate(int(input_variable[iv["iNucleationRate"]].getValue()));
-	sciantix_system[index].setHenryConstant(4.1e+18 * exp(-7543.5 / history_variable[hv["Temperature"]].getFinalValue())); /// The Henry's constant for helium in UO<sub>2</sub>-single crystal samples is set from best estimate correlation after <a href="../pdf_link/Cognini_et_al_2018.pdf" target="_blank">L. Cognini et al. Nuclear Engineering and Design 340 (2018) 240–244</a>. This correlation is valid in the temperature range 1073-1773 K.
+	sciantix_system[index].setHenryConstant(4.1e+18 * exp(-7543.5 / history_variable[hv["Temperature"]].getFinalValue())); /// The Henry's constant for helium in UO<sub>2</sub>-single crystal samples is set from best estimate correlation after <a href="../../references/pdf_link/Cognini_et_al_2018.pdf" target="_blank">L. Cognini et al. Nuclear Engineering and Design 340 (2018) 240–244</a>. This correlation is valid in the temperature range 1073-1773 K.
 	sciantix_system[index].setProductionRate(int(input_variable[iv["iHeliumProductionRate"]].getValue()));
 	sciantix_system[index].setBubbleDiffusivity(int(input_variable[iv["iBubbleDiffusivity"]].getValue()));
 }
