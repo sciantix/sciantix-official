@@ -31,6 +31,7 @@
  * @brief This function contains a choice among possible expressions for the bubble number density and
  * the bubble radius at grain boundaries. The model considers one-off nucleation,
  * growth of lenticular bubbles by vacancy absorption and coalescence of bubbles.
- * @see [2] <a href="../pdf_link/White_2004.pdf" target="_blank">White, JNM, 325 (2004) 61-77</a>.
+ * @see [2] <a href="../../references/pdf_link/White_2004.pdf" target="_blank">White, JNM, 325 (2004) 61-77</a>,
+<a href="../../references/pdf_link/Pastore_et_al_2013.pdf" target="_blank">Pastore et al., NED, 256 (2013) 75-86</a>.
  */
 void InterGranularBubbleEvolution();

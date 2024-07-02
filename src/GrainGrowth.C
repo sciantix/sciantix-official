@@ -50,7 +50,7 @@ void GrainGrowth()
 
 	case 1:
 		/** @brief iGrainGrowth = 1 considers that the grain growth kinetic is described by the semi-empirical model from
-		 * <a href="../pdf_link/Ainscough_et_al_1973.pdf" target="_blank">Ainscough et al., JNM, 49 (1973) 117-128</a>.
+		 * <a href="../../references/pdf_link/Ainscough_et_al_1973.pdf" target="_blank">Ainscough et al., JNM, 49 (1973) 117-128</a>.
 		 * This model includes essentially two contributions on the grain growth:
 		 * 1. Temperature;
 		 * 2. Burnup (i.e., increasing retarding effect due fission product accumulation).
@@ -92,7 +92,7 @@ void GrainGrowth()
 	case 2 :
 	{
 		/**
-		 * @brief The grain growth kinetic is described according to <a href="../pdf_link/Van_Uffelen_et_al_2013.pdf" target="_blank">Van Uffelen et al. JNM, 434 (2013) 287–29</a>.
+		 * @brief The grain growth kinetic is described according to <a href="../../references/pdf_link/Van_Uffelen_et_al_2013.pdf" target="_blank">Van Uffelen et al. JNM, 434 (2013) 287–29</a>.
 		 * by means of the following equations:
 		 * 1) dD/dt = k/4D^3   if D < Dm
 		 * 2) dD/dt = 0        if D > Dm

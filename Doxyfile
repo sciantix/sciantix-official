@@ -113,7 +113,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = README.md references.md utilities/InputExplanation.md utilities/pdf_link src include
+INPUT                  = README.md references/references.md utilities/InputExplanation.md utilities/pdf_link src include
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.C *.h
 RECURSIVE              = YES

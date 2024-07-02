@@ -26,7 +26,7 @@ void EnvironmentComposition()
 
     // Calculate equilibrium constant using law of mass action for water vapor decomposition
     // @param equilibrium_constant Equilibrium constant for water vapor decomposition (atm)
-    // @see <a href="../pdf_link/Morel_et_al_1994.pdf" target="_blank">Morel et al., CEA, Report NT/DTP/SECC no. DR94-55 (1994)</a>.
+    // @see <a href="../../references/pdf_link/Morel_et_al_1994.pdf" target="_blank">Morel et al., CEA, Report NT/DTP/SECC no. DR94-55 (1994)</a>.
     double equilibrium_constant = exp(-25300.0 / history_variable[hv["Temperature"]].getFinalValue() + 4.64 + 1.04 * (0.0007 * history_variable[hv["Temperature"]].getFinalValue() - 0.2));
 
     // Calculate gap oxygen partial pressure using the calculated equilibrium constant and steam pressure
