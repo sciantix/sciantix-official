@@ -113,7 +113,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = README.md src include
+INPUT                  = README.md references.md utilities/InputExplanation.md utilities/pdf_link src include
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.C *.h
 RECURSIVE              = YES
@@ -156,6 +156,8 @@ HTML_FOOTER            =
 HTML_STYLESHEET        =
 HTML_ALIGN_MEMBERS     = YES
 HTML_DYNAMIC_SECTIONS  = NO
+HTML_EXTRA_STYLESHEET  = documentation/doxygen-awesome.css
+FULL_SIDEBAR = NO
 GENERATE_DOCSET        = NO
 DOCSET_FEEDNAME        = "Doxygen generated docs"
 DOCSET_BUNDLE_ID       = org.doxygen.Project

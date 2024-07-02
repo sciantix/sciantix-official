@@ -27,8 +27,9 @@
  * @param[in] stoichiometry_deviation
  * @param[in] temperature
  *
- * @param[out] PO2_x oxygen partial pressure in UO2+x (in atm)
- * from Blackburn’s relation, @ref *Blackburn (1973) J. Nucl. Mater., 46, 244–252*
+ * @param[out] PO2_x oxygen partial pressure in UO2+x (in atm) from Blackburn’s relation 
+ * @see <a href="../pdf_link/Blackburn_1973.pdf" target="_blank">Blackburn (1973) J. Nucl. Mater., 46, 244–252</a>.
+
  *
  * @author
  * G. Petrosillo
@@ -39,7 +40,8 @@ void UO2Thermochemistry();
 
 /**
  * @brief The oxygen partial pressure in UO2+x fuel as a function of x, i.e., PO2 (x) (in atm) is calculated from Blackburn’s relation
- * @ref Blackburn (1973) J. Nucl. Mater., 46, 244–252.
+ * @see <a href="../pdf_link/Blackburn_1973.pdf" target="_blank">Blackburn (1973) J. Nucl. Mater., 46, 244–252</a>.
+
  *
  * Validity range:
  * - T: 1000 K - 2670 K
