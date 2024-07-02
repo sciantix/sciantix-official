@@ -70,7 +70,7 @@ void Matrix::setGrainBoundaryMobility(int input_value)
 	case 1:
 	{
 		/** 
-		 * @brief iGrainGrowth = 1 corresponds to the Ainscough et al. (1973) grain-boundary mobility
+		 * @brief iGrainGrowth = 1 corresponds to <a href="../pdf_link/Ainscough_et_al_1973.pdf" target="_blank">Ainscough et al., JNM, 49 (1973) 117-128</a>. grain-boundary mobility
 		 * 
 		*/
 		reference += ": Ainscough et al., JNM, 49 (1973) 117-128.\n\t";
@@ -81,7 +81,7 @@ void Matrix::setGrainBoundaryMobility(int input_value)
 	case 2 :
 	{
 		/**
-		 * @brief iGrainGrowth = 2 corresponds to the @ref Van Uffelen et al. JNM, 434 (2013) 287–29 grain-boundary mobility
+		 * @brief iGrainGrowth = 2 corresponds to the <a href="../pdf_link/Van_Uffelen_et_al_2013.pdf" target="_blank">Van Uffelen et al. JNM, 434 (2013) 287–29</a>. grain-boundary mobility
 		 * 
 		*/
 
@@ -124,7 +124,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value)
 		case 1:
 		{
 			/**
-			 * @brief iGrainBoundaryVacancyDiffusivity = 1 corresponds to the relation from @ref Reynolds and Burton, JNM, 82 (1979) 22-25.
+			 * @brief iGrainBoundaryVacancyDiffusivity = 1 corresponds to the relation from <a href="../pdf_link/Reynolds_and_Burton_1979.pdf" target="_blank">Reynolds and Burton, JNM, 82 (1979) 22-25</a>.
 			 * 
 			 */
 
@@ -137,7 +137,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value)
 		case 2:
 		{
 			/**
-			 * @brief iGrainBoundaryVacancyDiffusivity = 2 corresponds to the correction from @ref White, JNM, 325 (2004), 61-77
+			 * @brief iGrainBoundaryVacancyDiffusivity = 2 corresponds to the correction from <a href="../pdf_link/White_and_Tucker_1983.pdf" target="_blank">White, Tucker, Journal of Nuclear Materials, 118 (1983), 1-38</a>.
 			 * 
 			 */
 
@@ -151,7 +151,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value)
 		{
 			/**
 			 * @brief iGrainBoundaryVacancyDiffusivity = 5 corresponds to the vacancy diffusivities along HBS grain boundaries.
-			 * This model is from @ref Barani et al., JNM 563 (2022) 153627.
+			 * @see This model is from <a href="../pdf_link/Barani_et_al_2020.pdf" target="_blank">Barani et al. Journal of Nuclear Materials 539 (2020) 152296</a>.
 			 *
 			 */
 
@@ -173,7 +173,7 @@ void Matrix::setPoreNucleationRate()
 {
 	/**
 	 * @brief nucleation rate of HBS pores.
-	 * This model is from @ref *Barani et al., JNM 563 (2022) 153627*.
+	 * @see This model is from <a href="../pdf_link/Barani_et_al_2020.pdf" target="_blank">Barani et al. Journal of Nuclear Materials 539 (2020) 152296</a>.
 	 *
 	 */
 
@@ -190,7 +190,7 @@ void Matrix::setPoreResolutionRate()
 {
 	/**
 	 * @brief re-solution rate of gas atoms from HBS pores.
-	 * This model is from @ref *Barani et al., JNM 563 (2022) 153627*.
+	 * @see This model is from <a href="../pdf_link/Barani_et_al_2020.pdf" target="_blank">Barani et al. Journal of Nuclear Materials 539 (2020) 152296</a>.
 	 *
 	 */
 
@@ -207,7 +207,7 @@ void Matrix::setPoreTrappingRate()
 {
 	/**
 	 * @brief trapping rate of gas atoms in HBS pores.
-	 * This model is from @ref *Barani et al., JNM 563 (2022) 153627*.
+	 * @see This model is from <a href="../pdf_link/Barani_et_al_2020.pdf" target="_blank">Barani et al. Journal of Nuclear Materials 539 (2020) 152296</a>.
 	 *
 	 */
 

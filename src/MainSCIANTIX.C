@@ -15,24 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 /*!
- * \mainpage SCIANTIX
- *
- * \section Introduction
- *
- * SCIANTIX is a 0D code developed at Politecnico di Milano.
- * The objective of SCIANTIX is to represent the behaviour of a single grain of nuclear fuel.
- * The modelling of inert gas behaviour is the main aspect considered.
- * Engineering models are used, allowing for future integration in industrial fuel performance codes.
- * Nevertheless, physically-based model are preferred to empirical models.
- * This facilitates the incorporation of information from lower length scale calculations.
- *
- *
- * At present, this version of the code is validated against experiments for
- * - intragranular gaseous swelling
- * - intergranular gaseous swelling
- * - helium behaviour and release in annealing conditions
- * - release of radioactive fission gases
- * The validation database is accessible in the *regression* folder.
+
  *
  */
 
@@ -57,7 +40,23 @@
 void logExecutionTime(double timer, int time_step_number);
 
 /**
- * \brief Main entry point for the SCIANTIX program.
+ * \brief Main entry point for the SCIANTIX program. 
+ *
+ * SCIANTIX is a 0D code developed at Politecnico di Milano.
+ * The objective of SCIANTIX is to represent the behaviour of a single grain of nuclear fuel.
+ * The modelling of inert gas behaviour is the main aspect considered.
+ * Engineering models are used, allowing for future integration in industrial fuel performance codes.
+ * Nevertheless, physically-based model are preferred to empirical models.
+ * This facilitates the incorporation of information from lower length scale calculations.
+ *
+ * @see <a href="../pdf_link/Pizzocri_et_al_2020.pdf" target="_blank">Pizzocri et al 2020</a>, <a href="../pdf_link/Zullo_et_al_2023.pdf" target="_blank">Zullo et al 2023</a>.
+ *
+ * At present, this version of the code is validated against experiments for
+ * - intragranular gaseous swelling
+ * - intergranular gaseous swelling
+ * - helium behaviour and release in annealing conditions
+ * - release of radioactive fission gases
+ * The validation database is accessible in the *regression* folder.
  * @param argc Number of command-line arguments.
  * @param argv Array of command-line arguments, where argv[1] is expected to be the path to the input file.
  * @return Returns 0 upon successful completion of the program.
