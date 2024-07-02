@@ -76,8 +76,6 @@ int main()
 		Sciantix_history[0] = Sciantix_history[1];
 		Sciantix_history[1] = InputInterpolation(Time_h, Time_input, Temperature_input, Input_history_points);
 
-		// std::cout << Time_h << std::endl;
-		// std::cout << Time_end_h << std::endl;
 
 		// release rate
 		Sciantix_history[2] = Sciantix_history[3];
@@ -87,9 +85,6 @@ int main()
 		Sciantix_history[5] = static_cast<double>(Time_step_number);
 
 		Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
-		// std::cout << Time_h << std::endl;
-		// std::cout << Time_end_h << std::endl;
-		//std::cout << sciantix_variable[sv["Xe decayed"]].getFinalValue() << std::endl;
 
 		dTime_h = TimeStepCalculation();
 		Sciantix_history[6] = dTime_h * 3600;
@@ -110,6 +105,7 @@ int main()
 
 	return 0;
 }
+
 
 void logExecutionTime(double timer, int time_step_number)
 {
