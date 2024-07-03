@@ -18,6 +18,6 @@ void Iodine()
 	gas[index].setAtomicNumber(53);
 	gas[index].setMassNumber(131);
 	gas[index].setVanDerWaalsVolume(9.33e-29);
-	gas[index].setDecayRate(1.003e-7);
+	gas[index].setDecayRate(9.98e-7);
 	gas[index].setPrecursorFactor(1);
 }

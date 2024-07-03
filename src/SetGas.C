@@ -29,4 +29,7 @@ void SetGas()
 
 	Iodine();
 	MapGas();
+
+	Cesium();
+	MapGas();
 }

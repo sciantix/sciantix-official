@@ -492,8 +492,6 @@ class Simulation : public Solver, public Model
 			}
 		}
 
-		// threshold to put I131 at grain boundary = 0
-
 		// Calculation of the gas concentration arrived at the grain boundary, by mass balance.
 		for (auto& system : sciantix_system)
 		{
@@ -578,6 +576,7 @@ class Simulation : public Solver, public Model
 		}
 	}
 
+	// threshold to put I131 at grain boundary = 0
 	void IodineReleaseTreshold()
 	{
 		if (history_variable[hv["Temperature"]].getFinalValue() > 1300)
@@ -927,6 +926,11 @@ class Simulation : public Solver, public Model
 		else if(gas_name == "I")
 			return &modes_initial_conditions[21 * 40];
 
+		else if (gas_name == "Cs137")
+			return &modes_initial_conditions[24 * 40];
+
+		else if(gas_name == "Cs")
+			return &modes_initial_conditions[27 * 40];
 		else
 		{
 			std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes." << std::endl;
@@ -959,6 +963,12 @@ class Simulation : public Solver, public Model
 
 		else if(gas_name == "I")
 			return &modes_initial_conditions[22 * 40];
+
+		else if (gas_name == "Cs137")
+			return &modes_initial_conditions[25 * 40];
+
+		else if(gas_name == "Cs")
+			return &modes_initial_conditions[28 * 40];
 		
 		else
 		{
@@ -988,7 +998,13 @@ class Simulation : public Solver, public Model
 			return &modes_initial_conditions[20 * 40];
 
 		else if(gas_name == "I")
-			return &modes_initial_conditions[23 * 40];		
+			return &modes_initial_conditions[23 * 40];	
+
+		else if (gas_name == "Cs137")
+			return &modes_initial_conditions[26 * 40];
+
+		else if(gas_name == "Cs")
+			return &modes_initial_conditions[29 * 40];	
 
 		else
 		{
