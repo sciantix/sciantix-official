@@ -52,8 +52,7 @@ void Sciantix(int Sciantix_options[],
 	sciantix_simulation.PressureEvolution();
 	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
-	std::cout << "pression" << std::endl;
-	std::cout << sciantix_variable[sv["Gap pressure"]].getFinalValue() << std::endl;
+	
 
 	
 	

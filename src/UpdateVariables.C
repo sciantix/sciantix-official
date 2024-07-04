@@ -35,4 +35,7 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[16] = sciantix_variable[sv["Cs133 decayed"]].getFinalValue();
 	Sciantix_variables[17] = sciantix_variable[sv["Cs133 released"]].getFinalValue();
 	Sciantix_variables[18] = sciantix_variable[sv["He gap"]].getFinalValue();
+	Sciantix_variables[19] = sciantix_variable[sv["Kr85m gap"]].getFinalValue();
+	Sciantix_variables[20] = sciantix_variable[sv["Kr85m decayed"]].getFinalValue();
+	Sciantix_variables[21] = sciantix_variable[sv["Kr85m released"]].getFinalValue();
 }

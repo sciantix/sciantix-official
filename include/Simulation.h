@@ -49,15 +49,11 @@ class Simulation : public Solver, public Model
 	{
 		double x(0);
 		x = sciantix_variable[sv["He gap"]].getFinalValue();
-		// std::cout << "que helium" << std::endl;
-		// std::cout << x << std::endl;
-		//x = x + sciantix_variable[sv["Xe gap"]].getFinalValue();
+		x = x + sciantix_variable[sv["Xe gap"]].getFinalValue();
 		x = x + sciantix_variable[sv["Xe133 gap"]].getFinalValue();
-		// std::cout << "helium + xenon" << std::endl;
-		// std::cout << x << std::endl;
 		x = x + sciantix_variable[sv["Cs133 gap"]].getFinalValue();
-		// std::cout << "helium + xenon + cesium" << std::endl;
-		// std::cout << x << std::endl;
+		x = x + sciantix_variable[sv["Kr85m gap"]].getFinalValue();
+
 
 		sciantix_variable[sv["Gas in gap"]].setFinalValue(x);
 		// std::cout << "gas in gap" << std::endl;
@@ -143,6 +139,15 @@ class Simulation : public Solver, public Model
 					sciantix_variable[sv["Cs133 gap"]].getFinalValue(),
 					gas[ga["Cs133"]].getReleaseRateCoefficient() + gas[ga["Cs133"]].getDecayRate(),
 					gas[ga["Xe133"]].getDecayRate()*sciantix_variable[sv["Xe133 gap"]].getFinalValue()*sciantix_variable[sv["Gap volume"]].getFinalValue(), // Xe133 decay
+					physics_variable[pv["Time step"]].getFinalValue()
+				)
+			);
+
+		sciantix_variable[sv["Kr85m gap"]].setFinalValue(
+			solver.Decay(
+					sciantix_variable[sv["Kr85m gap"]].getFinalValue(),
+					gas[ga["Kr85m"]].getReleaseRateCoefficient() + gas[ga["Kr85m"]].getDecayRate(),
+					history_variable[hv["Release rate from fuel"]].getFinalValue(), // release rate from the fuel
 					physics_variable[pv["Time step"]].getFinalValue()
 				)
 			);

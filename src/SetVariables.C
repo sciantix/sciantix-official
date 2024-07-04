@@ -100,7 +100,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	history_variable[hv_counter].setUOM("(K)");
 	history_variable[hv_counter].setInitialValue(Sciantix_history[0] * Sciantix_scaling_factors[4]);
 	history_variable[hv_counter].setFinalValue(Sciantix_history[1] * Sciantix_scaling_factors[4]);
-	history_variable[hv_counter].setOutput(1);
+	history_variable[hv_counter].setOutput(0);
 	++hv_counter;
 
 	history_variable.emplace_back();
@@ -108,7 +108,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	history_variable[hv_counter].setUOM("(at/m3 s)");
 	history_variable[hv_counter].setInitialValue(Sciantix_history[2]);
 	history_variable[hv_counter].setFinalValue(Sciantix_history[3]);
-	history_variable[hv_counter].setOutput(1);
+	history_variable[hv_counter].setOutput(0);
 	++hv_counter;
 
 	// history_variable.emplace_back();
@@ -393,7 +393,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[7]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[7]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	
@@ -482,6 +482,30 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[18]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[18]);
 	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Kr85m gap");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[19]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Kr85m decayed");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[20]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Kr85m released");
+	sciantix_variable[sv_counter].setUOM("(at/s)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[21]);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 
