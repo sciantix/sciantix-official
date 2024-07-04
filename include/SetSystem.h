@@ -23,6 +23,7 @@
 #include "GasDeclaration.h"
 #include "MapGas.h"
 #include "Xenon.h"
+#include "Cesium.h"
 
 #include <vector>
 

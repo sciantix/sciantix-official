@@ -70,6 +70,7 @@ int main()
 	std::cout << Sciantix_history[5] << std::endl;
 	std::cout << Sciantix_history[6] << std::endl;
 
+
 	while (Time_h <= Time_end_h)
 	{
 		// temperature

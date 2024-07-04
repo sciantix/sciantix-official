@@ -22,30 +22,22 @@ void Sciantix(int Sciantix_options[],
 	double Sciantix_scaling_factors[],
 	double Sciantix_diffusion_modes[])
 {
-	
-	std::cout << "encore après" << std::endl;
-	std::cout << Sciantix_variables[6] << std::endl;
-
-	SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
-
 	SetGas();
 	SetSystem();
-	//UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+	SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 	
 	Simulation sciantix_simulation;
 	
 	// sciantix_simulation.SheathTemperatureUpdate();
 	// MapModel();
 
-	
-
 	sciantix_simulation.GasInGap();
 	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
 	sciantix_simulation.UpdateGasGap();
 	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
-	std::cout << "encore encore après" << std::endl;
-	std::cout << Sciantix_variables[6] << std::endl;
+	
 	//sciantix_simulation.GasDecay();
 
 	// sciantix_simulation.GasInCoolant();
@@ -60,14 +52,18 @@ void Sciantix(int Sciantix_options[],
 	sciantix_simulation.PressureEvolution();
 	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
+	std::cout << "pression" << std::endl;
+	std::cout << sciantix_variable[sv["Gap pressure"]].getFinalValue() << std::endl;
+
+	
+	
+
 	// sciantix_simulation.CoolantRadiolysis();
 	// sciantix_simulation.ZircaloyOxidation();
 	// sciantix_simulation.PressureEvolution();
 	// sciantix_simulation.GasDecay();
 
 	// FiguresOfMerit();
-	
-
 
 	Output();
 

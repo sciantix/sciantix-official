@@ -28,4 +28,11 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[7] = sciantix_variable[sv["Gap volume"]].getFinalValue();
 	Sciantix_variables[9] = sciantix_variable[sv["H gap"]].getFinalValue();
 	Sciantix_variables[11] = sciantix_variable[sv["Gas in gap"]].getFinalValue();
+	Sciantix_variables[12] = sciantix_variable[sv["Xe133 gap"]].getFinalValue();
+	Sciantix_variables[13] = sciantix_variable[sv["Xe133 decayed"]].getFinalValue();
+	Sciantix_variables[14] = sciantix_variable[sv["Xe133 released"]].getFinalValue();
+	Sciantix_variables[15] = sciantix_variable[sv["Cs133 gap"]].getFinalValue();
+	Sciantix_variables[16] = sciantix_variable[sv["Cs133 decayed"]].getFinalValue();
+	Sciantix_variables[17] = sciantix_variable[sv["Cs133 released"]].getFinalValue();
+	Sciantix_variables[18] = sciantix_variable[sv["He gap"]].getFinalValue();
 }
