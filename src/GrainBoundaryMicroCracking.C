@@ -94,7 +94,7 @@ void GrainBoundaryMicroCracking()
 			
 			// Pcrit = Peq + (1/(pi*F))*Kic*sqrt(pi/radius)*(1/kt)  //Pa
 			double critical_bubble_pressureJ = equilibriumpressure + 
-				(1 / (pi*factorJ)) * sciantix_variable[sv["Fracture toughness"]].getFinalValue()*1e6* sqrt(pi/(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue())) * 1/stressintensification;    
+				(1 / (pi*factorJ)) * sciantix_variable[sv["Fracture toughness"]].getFinalValue()*1e6* sqrt(pi/(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue()*sin(matrix[sma["UO2"]].getSemidihedralAngle()))) * 1/stressintensification;    
 		
 			// THIS WORK
 
@@ -104,7 +104,7 @@ void GrainBoundaryMicroCracking()
 			
 			// Pcrit = Peq + (1-2/(pi*F))*Kic*sqrt(pi/radius)*(1/kt) //Pa
 			double geometrical_factor = 0.38;
-			double fracture_stress = sciantix_variable[sv["Fracture toughness"]].getFinalValue()*1e6*sqrt(pi/sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue())*(1/stressintensification)*(geometrical_factor)*(1-1/(factor*pi*geometrical_factor));
+			double fracture_stress = sciantix_variable[sv["Fracture toughness"]].getFinalValue()*1e6*sqrt(pi/(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue()*sin(matrix[sma["UO2"]].getSemidihedralAngle())))*(1/stressintensification)*(geometrical_factor)*(1-1/(factor*pi*geometrical_factor));
 			double critical_bubble_pressure = equilibriumpressure + fracture_stress;    //Pa
 			
 			sciantix_variable[sv["Fracture stress"]].setFinalValue(fracture_stress*1e-6); //MPa
@@ -114,17 +114,6 @@ void GrainBoundaryMicroCracking()
 			sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue() /
 			(sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue() * matrix[sma["UO2"]].getSchottkyVolume()));
 			sciantix_variable[sv["Intergranular bubble pressure"]].setFinalValue(bubble_pressure*1e-6); //MPa
-			
-			
-			if (history_variable[hv["Temperature"]].getIncrement()!=0){
-				std::cout << "Surface tension (J/m2) = "<< matrix[sma["UO2"]].getSurfaceTension() <<std::endl;
-				std::cout << "Elastic modulus (GPa) = "<< E*1e-9 <<std::endl;
-				std::cout << "Capillary pressure (Pa) = "<< 2.0 * matrix[sma["UO2"]].getSurfaceTension() / sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() <<std::endl;
-				std::cout << "Capillary pressure by  (Jernkvist 2020, Pa) = "<< 2.0 * matrix[sma["UO2"]].getSurfaceTension()*(1-cos(matrix[sma["UO2"]].getSemidihedralAngle()))/ sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() <<std::endl;
-				std::cout << "Critical pressure (Pa): "<<critical_bubble_pressure<<std::endl;
-				std::cout << "Critical pressure Jernkvist (Pa): "<<critical_bubble_pressureJ<<std::endl;
-				std::cout << "Bubble pressure (Pa): "<<bubble_pressure<<std::endl;
-			}
 			
 			double microcrackingfraction = 0.90;
 			parameter.push_back((bubble_pressure-microcrackingfraction*critical_bubble_pressure)/bubble_pressure);
@@ -149,7 +138,16 @@ void GrainBoundaryMicroCracking()
 			double baraniparameter = a*b*exp(b*(bubble_pressure-critical_bubble_pressure)/critical_bubble_pressure)/
 				(critical_bubble_pressure*1e-6*pow(1+a*exp(b*(bubble_pressure-critical_bubble_pressure)/critical_bubble_pressure),2));
 			parameter.push_back(baraniparameter);
-			std::cout<<"dm/dp="<<baraniparameter<<std::endl;
+			
+			std::cout << "Surface tension (J/m2) = "<< matrix[sma["UO2"]].getSurfaceTension() <<std::endl;
+			std::cout << "Elastic modulus (GPa) = "<< E*1e-9 <<std::endl;
+			std::cout << "Grain Boundary Energy (J/m2)= "<< G_gb <<std::endl;
+			std::cout << "Capillary pressure (Pa) = "<< 2.0 * matrix[sma["UO2"]].getSurfaceTension() / sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() <<std::endl;
+			std::cout << "Capillary pressure by  (Jernkvist 2020, Pa) = "<< 2.0 * matrix[sma["UO2"]].getSurfaceTension()*(1-cos(matrix[sma["UO2"]].getSemidihedralAngle()))/ sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() <<std::endl;
+			std::cout << "Critical pressure (Pa): "<<critical_bubble_pressure<<std::endl;
+			std::cout << "Critical pressure Jernkvist (Pa): "<<critical_bubble_pressureJ<<std::endl;
+			std::cout << "Bubble pressure (Pa): "<<bubble_pressure<<std::endl;
+			std::cout << "dm/dp= "<<baraniparameter<<std::endl;
 
 			model[model_index].setParameter(parameter);
 			model[model_index].setRef("Under development");
