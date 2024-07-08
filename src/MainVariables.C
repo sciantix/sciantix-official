@@ -27,7 +27,7 @@ double Sciantix_diffusion_modes[1000];
 long long int Time_step_number(0);
 double  Time_h(0.0), dTime_h(0.0), Time_end_h(0.0); // (h)
 double  Time_s(0.0), Time_end_s(0.0); // (s)
-double  Number_of_time_steps_per_interval(300);
+double  Number_of_time_steps_per_interval(3000);
 
 std::ofstream Output_file;
 std::ofstream Execution_file;
@@ -35,4 +35,7 @@ std::ofstream Execution_file;
 int Input_history_points(1000);
 std::vector<double> Time_input(1000, 0.0);
 std::vector<double> Temperature_input(1000, 0.0);
-std::vector<double> Release_rate_fuel_input(1000, 0.0);
+std::vector<double> Xe_Release_rate_fuel_input(1000, 0.0);
+std::vector<double> Xe133_Release_rate_fuel_input(1000, 0.0);
+std::vector<double> Kr85m_Release_rate_fuel_input(1000, 0.0);
+std::vector<double> Defect_Time_input(1000, 0.0);

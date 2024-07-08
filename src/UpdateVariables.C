@@ -35,7 +35,18 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[16] = sciantix_variable[sv["Cs133 decayed"]].getFinalValue();
 	Sciantix_variables[17] = sciantix_variable[sv["Cs133 released"]].getFinalValue();
 	Sciantix_variables[18] = sciantix_variable[sv["He gap"]].getFinalValue();
-	Sciantix_variables[19] = sciantix_variable[sv["Kr85m gap"]].getFinalValue();
-	Sciantix_variables[20] = sciantix_variable[sv["Kr85m decayed"]].getFinalValue();
-	Sciantix_variables[21] = sciantix_variable[sv["Kr85m released"]].getFinalValue();
+	Sciantix_variables[19] = sciantix_variable[sv["He released"]].getFinalValue();
+	Sciantix_variables[20] = sciantix_variable[sv["Kr85m gap"]].getFinalValue();
+	Sciantix_variables[21] = sciantix_variable[sv["Kr85m decayed"]].getFinalValue();
+	Sciantix_variables[22] = sciantix_variable[sv["Kr85m released"]].getFinalValue();
+	Sciantix_variables[23] = sciantix_variable[sv["Xe coolant"]].getFinalValue();
+	Sciantix_variables[24] = sciantix_variable[sv["Xe133 coolant"]].getFinalValue();
+	Sciantix_variables[25] = sciantix_variable[sv["Non condensable gases partial pressure"]].getFinalValue();
+	Sciantix_variables[26] = sciantix_variable[sv["Water partial pressure"]].getFinalValue();
+	Sciantix_variables[27] = sciantix_variable[sv["Water gap"]].getFinalValue();
+	Sciantix_variables[28] = sciantix_variable[sv["Kr85m coolant"]].getFinalValue();
+	Sciantix_variables[29] = sciantix_variable[sv["H partial pressure"]].getFinalValue();
+	Sciantix_variables[30] = sciantix_variable[sv["Cs133 coolant"]].getFinalValue();
+	Sciantix_variables[31] = sciantix_variable[sv["He coolant"]].getFinalValue();
+
 }

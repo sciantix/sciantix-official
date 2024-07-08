@@ -28,9 +28,18 @@ void Initialization()
 	Sciantix_history[0] = Temperature_input[0];
 	Sciantix_history[1] = Temperature_input[0];
 
-	Sciantix_history[2] = Release_rate_fuel_input[0];
-	Sciantix_history[3] = Release_rate_fuel_input[0];
+	Sciantix_history[2] = Xe_Release_rate_fuel_input[0];
+	Sciantix_history[3] = Xe_Release_rate_fuel_input[0];
+
+	Sciantix_history[4] = Xe133_Release_rate_fuel_input[0];
+	Sciantix_history[5] = Xe133_Release_rate_fuel_input[0];
+
+	Sciantix_history[6] = Kr85m_Release_rate_fuel_input[0];
+	Sciantix_history[7] = Kr85m_Release_rate_fuel_input[0];
 	
-	Sciantix_history[4] = Time_input[0];
-	Sciantix_history[5] = Time_step_number;
+	Sciantix_history[8] = Time_input[0];
+	Sciantix_history[9] = Time_step_number;
+
+	Sciantix_history[11] = Defect_Time_input[0];
+
 }

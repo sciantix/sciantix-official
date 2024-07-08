@@ -69,8 +69,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	physics_variable.emplace_back();
 	physics_variable[pv_counter].setName("Time step"); //dTime_h  * 3600
 	physics_variable[pv_counter].setUOM("(s)");
-	physics_variable[pv_counter].setInitialValue(Sciantix_history[6]);
-	physics_variable[pv_counter].setFinalValue(Sciantix_history[6]);
+	physics_variable[pv_counter].setInitialValue(Sciantix_history[10]);
+	physics_variable[pv_counter].setFinalValue(Sciantix_history[10]);
 	physics_variable[pv_counter].setOutput(0);
 	++pv_counter;
 
@@ -82,16 +82,16 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	history_variable.emplace_back();
 	history_variable[hv_counter].setName("Time");
 	history_variable[hv_counter].setUOM("(h)");
-	history_variable[hv_counter].setInitialValue(Sciantix_history[4]);
-	history_variable[hv_counter].setFinalValue(Sciantix_history[4]);
+	history_variable[hv_counter].setInitialValue(Sciantix_history[8]);
+	history_variable[hv_counter].setFinalValue(Sciantix_history[8]);
 	history_variable[hv_counter].setOutput(1);
 	++hv_counter;
 
 	history_variable.emplace_back();
 	history_variable[hv_counter].setName("Time step number");
 	history_variable[hv_counter].setUOM("(/)");
-	history_variable[hv_counter].setInitialValue(Sciantix_history[5]);
-	history_variable[hv_counter].setFinalValue(Sciantix_history[5]);
+	history_variable[hv_counter].setInitialValue(Sciantix_history[9]);
+	history_variable[hv_counter].setFinalValue(Sciantix_history[9]);
 	history_variable[hv_counter].setOutput(0);
 	++hv_counter;
 
@@ -100,14 +100,38 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	history_variable[hv_counter].setUOM("(K)");
 	history_variable[hv_counter].setInitialValue(Sciantix_history[0] * Sciantix_scaling_factors[4]);
 	history_variable[hv_counter].setFinalValue(Sciantix_history[1] * Sciantix_scaling_factors[4]);
+	history_variable[hv_counter].setOutput(1);
+	++hv_counter;
+
+	history_variable.emplace_back();
+	history_variable[hv_counter].setName("Xe release rate from fuel");
+	history_variable[hv_counter].setUOM("(at/m3 s)");
+	history_variable[hv_counter].setInitialValue(Sciantix_history[2]);
+	history_variable[hv_counter].setFinalValue(Sciantix_history[3]);
 	history_variable[hv_counter].setOutput(0);
 	++hv_counter;
 
 	history_variable.emplace_back();
-	history_variable[hv_counter].setName("Release rate from fuel");
+	history_variable[hv_counter].setName("Xe133 release rate from fuel");
 	history_variable[hv_counter].setUOM("(at/m3 s)");
-	history_variable[hv_counter].setInitialValue(Sciantix_history[2]);
-	history_variable[hv_counter].setFinalValue(Sciantix_history[3]);
+	history_variable[hv_counter].setInitialValue(Sciantix_history[4]);
+	history_variable[hv_counter].setFinalValue(Sciantix_history[5]);
+	history_variable[hv_counter].setOutput(0);
+	++hv_counter;
+
+	history_variable.emplace_back();
+	history_variable[hv_counter].setName("Kr85m release rate from fuel");
+	history_variable[hv_counter].setUOM("(at/m3 s)");
+	history_variable[hv_counter].setInitialValue(Sciantix_history[6]);
+	history_variable[hv_counter].setFinalValue(Sciantix_history[7]);
+	history_variable[hv_counter].setOutput(0);
+	++hv_counter;
+
+	history_variable.emplace_back();
+	history_variable[hv_counter].setName("Defect time");
+	history_variable[hv_counter].setUOM("(h)");
+	history_variable[hv_counter].setInitialValue(Sciantix_history[11]);
+	history_variable[hv_counter].setFinalValue(Sciantix_history[11]);
 	history_variable[hv_counter].setOutput(0);
 	++hv_counter;
 
@@ -142,10 +166,10 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Xe released");
-	sciantix_variable[sv_counter].setUOM("(at/s)");
+	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[3]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[3]);
-	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setOutput(1);
 	++sv_counter;
 
 	// sciantix_variable.emplace_back();
@@ -403,21 +427,14 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[8]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[9]);
-	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setOutput(1);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("H production rate");
 	sciantix_variable[sv_counter].setUOM("(at/m3/s)");
-	sciantix_variable[sv_counter].setInitialValue(2.34e23);
-	sciantix_variable[sv_counter].setFinalValue(2.34e23);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("H release rate");
-	sciantix_variable[sv_counter].setUOM("(at/m3/s)");
-	sciantix_variable[sv_counter].setInitialValue(2.34e23);
-	sciantix_variable[sv_counter].setFinalValue(2.34e23);
+	sciantix_variable[sv_counter].setInitialValue(2.34e20);
+	sciantix_variable[sv_counter].setFinalValue(2.34e20);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -446,10 +463,10 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Xe133 released");
-	sciantix_variable[sv_counter].setUOM("(at/s)");
+	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[14]);
-	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setOutput(1);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -470,17 +487,25 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Cs133 released");
-	sciantix_variable[sv_counter].setUOM("(at/s)");
+	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[17]);
-	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setOutput(1);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("He gap");
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[18]);
+	sciantix_variable[sv_counter].setInitialValue((Sciantix_variables[5]*1e06)/(PhysicsConstants::boltzmann_constant *Sciantix_history[0]));
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[18]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("He released");
+	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[19]);
 	sciantix_variable[sv_counter].setOutput(1);
 	++sv_counter;
 
@@ -488,7 +513,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setName("Kr85m gap");
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[19]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[20]);
 	sciantix_variable[sv_counter].setOutput(1);
 	++sv_counter;
 
@@ -496,17 +521,122 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setName("Kr85m decayed");
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[20]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[21]);
 	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Kr85m released");
-	sciantix_variable[sv_counter].setUOM("(at/s)");
+	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[21]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[22]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Xe coolant");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[23]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Xe133 coolant");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[24]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Non condensable gases partial pressure");
+	sciantix_variable[sv_counter].setUOM("(MPa)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[25]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[25]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Water partial pressure");
+	sciantix_variable[sv_counter].setUOM("(MPa)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[26]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[26]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Water gap");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[27]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[27]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Kr85m coolant");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[28]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("H partial pressure");
+	sciantix_variable[sv_counter].setUOM("(MPa)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[29]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[29]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Cs133 coolant");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[30]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("He coolant");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[31]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Coolant volume");
+	sciantix_variable[sv_counter].setUOM("(m3)");
+	sciantix_variable[sv_counter].setInitialValue(4.8e-03);
+	sciantix_variable[sv_counter].setFinalValue(4.8e-03);
 	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
+
+	// sciantix_variable.emplace_back();
+	// sciantix_variable[sv_counter].setName("Cs133 coolant");
+	// sciantix_variable[sv_counter].setUOM("(at/m3)");
+	// sciantix_variable[sv_counter].setInitialValue(0.0);
+	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[25]);
+	// sciantix_variable[sv_counter].setOutput(1);
+	// ++sv_counter;
+
+	// sciantix_variable.emplace_back();
+	// sciantix_variable[sv_counter].setName("Kr85m coolant");
+	// sciantix_variable[sv_counter].setUOM("(at/m3)");
+	// sciantix_variable[sv_counter].setInitialValue(0.0);
+	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[26]);
+	// sciantix_variable[sv_counter].setOutput(1);
+	// ++sv_counter;
+
+	// sciantix_variable.emplace_back();
+	// sciantix_variable[sv_counter].setName("He coolant");
+	// sciantix_variable[sv_counter].setUOM("(at/m3)");
+	// sciantix_variable[sv_counter].setInitialValue(0.0);
+	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[26]);
+	// sciantix_variable[sv_counter].setOutput(1);
+	// ++sv_counter;
 
 
 
