@@ -8,5 +8,5 @@ Initial conditions3 = 0
 Initial conditions4 = 1
 Initial conditions5 = 1.5e-05
 Initial conditions6 = 0
-0	1000	1e+22	
-100	1000	1e+22	
+0	1000	1e+20	1e+20	1e+20	
+100	1000	1e+20	1e+20	1e+20	

@@ -62,13 +62,22 @@ int main()
 
 	// std::cout << "france" << std::endl;
 	std::cout << "history" << std::endl;
+	std::cout << "temperature" << std::endl;
 	std::cout << Sciantix_history[0] << std::endl;
 	std::cout << Sciantix_history[1] << std::endl;
+	std::cout << "Xe" << std::endl;
 	std::cout << Sciantix_history[2] << std::endl;
 	std::cout << Sciantix_history[3] << std::endl;
+	std::cout << "Xe133" << std::endl;
 	std::cout << Sciantix_history[4] << std::endl;
 	std::cout << Sciantix_history[5] << std::endl;
+	std::cout << "Kr85m" << std::endl;
 	std::cout << Sciantix_history[6] << std::endl;
+	std::cout << Sciantix_history[7] << std::endl;
+	std::cout << "time" << std::endl;
+	std::cout << Sciantix_history[8] << std::endl;
+	std::cout << "time step number" << std::endl;
+	std::cout << Sciantix_history[9] << std::endl;
 
 
 	while (Time_h <= Time_end_h)
@@ -78,23 +87,28 @@ int main()
 		Sciantix_history[1] = InputInterpolation(Time_h, Time_input, Temperature_input, Input_history_points);
 
 
-		// release rate
+		// release rates
 		Sciantix_history[2] = Sciantix_history[3];
-		Sciantix_history[3] = InputInterpolation(Time_h, Time_input, Release_rate_fuel_input, Input_history_points);
+		Sciantix_history[3] = InputInterpolation(Time_h, Time_input, Xe_Release_rate_fuel_input, Input_history_points);
+		Sciantix_history[4] = Sciantix_history[3];
+		Sciantix_history[5] = InputInterpolation(Time_h, Time_input, Xe133_Release_rate_fuel_input, Input_history_points);
+		Sciantix_history[6] = Sciantix_history[3];
+		Sciantix_history[7] = InputInterpolation(Time_h, Time_input, Kr85m_Release_rate_fuel_input, Input_history_points);
 
-		Sciantix_history[4] = Time_h;
-		Sciantix_history[5] = static_cast<double>(Time_step_number);
+		//time
+		Sciantix_history[8] = Time_h;
+		Sciantix_history[9] = static_cast<double>(Time_step_number);
 
 		Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 
 		dTime_h = TimeStepCalculation();
-		Sciantix_history[6] = dTime_h * 3600;
+		Sciantix_history[10] = dTime_h * 3600;
 
 		if (Time_h < Time_end_h)
 		{
 			Time_step_number++;
 			Time_h += dTime_h;
-			Time_s += Sciantix_history[6];
+			Time_s += Sciantix_history[10];
 		}
 		else break;
 	}

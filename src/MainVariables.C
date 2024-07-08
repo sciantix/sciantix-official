@@ -35,4 +35,6 @@ std::ofstream Execution_file;
 int Input_history_points(1000);
 std::vector<double> Time_input(1000, 0.0);
 std::vector<double> Temperature_input(1000, 0.0);
-std::vector<double> Release_rate_fuel_input(1000, 0.0);
+std::vector<double> Xe_Release_rate_fuel_input(1000, 0.0);
+std::vector<double> Xe133_Release_rate_fuel_input(1000, 0.0);
+std::vector<double> Kr85m_Release_rate_fuel_input(1000, 0.0);

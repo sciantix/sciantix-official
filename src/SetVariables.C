@@ -69,8 +69,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	physics_variable.emplace_back();
 	physics_variable[pv_counter].setName("Time step"); //dTime_h  * 3600
 	physics_variable[pv_counter].setUOM("(s)");
-	physics_variable[pv_counter].setInitialValue(Sciantix_history[6]);
-	physics_variable[pv_counter].setFinalValue(Sciantix_history[6]);
+	physics_variable[pv_counter].setInitialValue(Sciantix_history[10]);
+	physics_variable[pv_counter].setFinalValue(Sciantix_history[10]);
 	physics_variable[pv_counter].setOutput(0);
 	++pv_counter;
 
@@ -82,16 +82,16 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	history_variable.emplace_back();
 	history_variable[hv_counter].setName("Time");
 	history_variable[hv_counter].setUOM("(h)");
-	history_variable[hv_counter].setInitialValue(Sciantix_history[4]);
-	history_variable[hv_counter].setFinalValue(Sciantix_history[4]);
+	history_variable[hv_counter].setInitialValue(Sciantix_history[8]);
+	history_variable[hv_counter].setFinalValue(Sciantix_history[8]);
 	history_variable[hv_counter].setOutput(1);
 	++hv_counter;
 
 	history_variable.emplace_back();
 	history_variable[hv_counter].setName("Time step number");
 	history_variable[hv_counter].setUOM("(/)");
-	history_variable[hv_counter].setInitialValue(Sciantix_history[5]);
-	history_variable[hv_counter].setFinalValue(Sciantix_history[5]);
+	history_variable[hv_counter].setInitialValue(Sciantix_history[9]);
+	history_variable[hv_counter].setFinalValue(Sciantix_history[9]);
 	history_variable[hv_counter].setOutput(0);
 	++hv_counter;
 
@@ -104,10 +104,26 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	++hv_counter;
 
 	history_variable.emplace_back();
-	history_variable[hv_counter].setName("Release rate from fuel");
+	history_variable[hv_counter].setName("Xe release rate from fuel");
 	history_variable[hv_counter].setUOM("(at/m3 s)");
 	history_variable[hv_counter].setInitialValue(Sciantix_history[2]);
 	history_variable[hv_counter].setFinalValue(Sciantix_history[3]);
+	history_variable[hv_counter].setOutput(0);
+	++hv_counter;
+
+	history_variable.emplace_back();
+	history_variable[hv_counter].setName("Xe133 release rate from fuel");
+	history_variable[hv_counter].setUOM("(at/m3 s)");
+	history_variable[hv_counter].setInitialValue(Sciantix_history[4]);
+	history_variable[hv_counter].setFinalValue(Sciantix_history[5]);
+	history_variable[hv_counter].setOutput(0);
+	++hv_counter;
+
+	history_variable.emplace_back();
+	history_variable[hv_counter].setName("Kr85m release rate from fuel");
+	history_variable[hv_counter].setUOM("(at/m3 s)");
+	history_variable[hv_counter].setInitialValue(Sciantix_history[6]);
+	history_variable[hv_counter].setFinalValue(Sciantix_history[7]);
 	history_variable[hv_counter].setOutput(0);
 	++hv_counter;
 

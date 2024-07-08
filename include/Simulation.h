@@ -122,32 +122,38 @@ class Simulation : public Solver, public Model
 			solver.Decay(
 					sciantix_variable[sv["Xe gap"]].getInitialValue(),
 					gas[ga["Xe"]].getReleaseRateCoefficient() + gas[ga["Xe"]].getDecayRate(),
-					history_variable[hv["Release rate from fuel"]].getFinalValue(), // release rate from the fuel
-					physics_variable[pv["Time step"]].getFinalValue()
-				)
-			);
-		sciantix_variable[sv["Xe133 gap"]].setFinalValue(
-			solver.Decay(
-					sciantix_variable[sv["Xe133 gap"]].getFinalValue(),
-					gas[ga["Xe133"]].getReleaseRateCoefficient() + gas[ga["Xe133"]].getDecayRate(),
-					history_variable[hv["Release rate from fuel"]].getFinalValue(), // release rate from the fuel
-					physics_variable[pv["Time step"]].getFinalValue()
-				)
-			);
-		sciantix_variable[sv["Cs133 gap"]].setFinalValue(
-			solver.Decay(
-					sciantix_variable[sv["Cs133 gap"]].getFinalValue(),
-					gas[ga["Cs133"]].getReleaseRateCoefficient() + gas[ga["Cs133"]].getDecayRate(),
-					gas[ga["Xe133"]].getDecayRate()*sciantix_variable[sv["Xe133 gap"]].getFinalValue()*sciantix_variable[sv["Gap volume"]].getFinalValue(), // Xe133 decay
+					history_variable[hv["Xe release rate from fuel"]].getFinalValue(), // release rate from the fuel
 					physics_variable[pv["Time step"]].getFinalValue()
 				)
 			);
 
+		// dN / dt = q - (L+E)N  (for now E=0)
+		sciantix_variable[sv["Xe133 gap"]].setFinalValue(
+			solver.Decay(
+					sciantix_variable[sv["Xe133 gap"]].getFinalValue(),
+					gas[ga["Xe133"]].getReleaseRateCoefficient() + gas[ga["Xe133"]].getDecayRate(),
+					history_variable[hv["Xe133 release rate from fuel"]].getFinalValue(), // release rate from the fuel
+					physics_variable[pv["Time step"]].getFinalValue()
+				)
+			);
+
+		// dN / dt = L133Xe*N133Xe - (L+E)N  (for now E=0)
+		sciantix_variable[sv["Cs133 gap"]].setFinalValue(
+			solver.Decay(
+					sciantix_variable[sv["Cs133 gap"]].getFinalValue(),
+					gas[ga["Cs133"]].getReleaseRateCoefficient() + gas[ga["Cs133"]].getDecayRate(),
+					gas[ga["Xe133"]].getDecayRate()*sciantix_variable[sv["Xe133 gap"]].getFinalValue(), // Xe133 decay
+					physics_variable[pv["Time step"]].getFinalValue()
+				)
+			);
+
+		
+		// dN / dt = q - (L+E)N  (for now E=0)
 		sciantix_variable[sv["Kr85m gap"]].setFinalValue(
 			solver.Decay(
 					sciantix_variable[sv["Kr85m gap"]].getFinalValue(),
 					gas[ga["Kr85m"]].getReleaseRateCoefficient() + gas[ga["Kr85m"]].getDecayRate(),
-					history_variable[hv["Release rate from fuel"]].getFinalValue(), // release rate from the fuel
+					history_variable[hv["Kr85m release rate from fuel"]].getFinalValue(), // release rate from the fuel
 					physics_variable[pv["Time step"]].getFinalValue()
 				)
 			);
