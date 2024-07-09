@@ -23,6 +23,7 @@
 #include <vector>
 #include <map>
 #include <string>
+#include <iostream>
 
 class VariableArray
 {
@@ -35,6 +36,8 @@ public:
     VariableArray(std::vector<Variable> data);
     void push(Variable element);
     void clear();
+    Variable operator[](int index);
+    Variable operator[](std::string variable_name);
 };
 
 #endif
