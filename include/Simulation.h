@@ -354,17 +354,8 @@ class Simulation : public Solver, public Model
 		);
 
 		int rows = 4;
-		std::vector<std::vector<double>> matrixGB(rows, std::vector<double>(rows, 0.0));
-		std::vector<double> initialGB(rows, 0.0);
 		
-		// Identity matrix
-		for (int row=0;row<rows;++row)
-		{	
-			matrixGB[row][row]=1.0;
-		}
-
 		std::vector<double> w;
-
 		std::vector<double> Bi;
 		double wBi(0.0);
 
@@ -378,99 +369,57 @@ class Simulation : public Solver, public Model
 			wBi += (gas[ga[system.getGasName()]].getVanDerWaalsVolume()*sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getInitialValue());
 			wBf += (gas[ga[system.getGasName()]].getVanDerWaalsVolume()*sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getFinalValue());
 		}
-
-
-		///NEW Matrix 4x4
-		matrixGB[0][2]=(+wBf/(pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2)*
+		
+		double GBstate[rows*rows];
+		GBstate[0]=1;
+		GBstate[1]=0;
+		GBstate[2]= (+wBf/(pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2)*
 					sciantix_variable[sv["Intergranular S/V"]].getFinalValue()));
-		matrixGB[1][0]=-(sciantix_variable[sv["Intergranular bubble area"]].getInitialValue()*2)/
+		GBstate[3]=0;
+		GBstate[0+rows]=-(sciantix_variable[sv["Intergranular bubble area"]].getInitialValue()*2)/
 			(sciantix_variable[sv["Intergranular bubble volume"]].getInitialValue()*3);
-		matrixGB[2][1]= +2*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2);
-		matrixGB[3][1]=-(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue());
-		matrixGB[3][2]=-(sciantix_variable[sv["Intergranular bubble area"]].getInitialValue());
-		///	
+		GBstate[1+rows]=1;
+		GBstate[2+rows]=0;
+		GBstate[3+rows]=0;
+		GBstate[0+2*rows]=0;
+		GBstate[1+2*rows]=2*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2);;
+		GBstate[2+2*rows]=1;
+		GBstate[3+2*rows]=0;
+		GBstate[0+3*rows]=0;
+		GBstate[1+3*rows]=-(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue());
+		GBstate[2+3*rows]=-(sciantix_variable[sv["Intergranular bubble area"]].getInitialValue());
+		GBstate[3+3*rows]=1;
 
 		///Print matrix and set 0 if nan
-		//std::cout << "Matrix:" << std::endl;
-		for (int i = 0; i < rows; ++i) {
-			for (int j = 0; j < rows; ++j) {
-				if (std::isnan(matrixGB[i][j])) {
-					matrixGB[i][j] = 0.0;
-				}
-				//std::cout << matrixGB[i][j] << "\t";
+		for (int i = 0; i < rows*rows; ++i) {
+			if (std::isnan(GBstate[i])) {
+				GBstate[i] = 0.0;
+				std::cout<<"Warning NAN values in GB state"<<std::endl;
 			}
-			//std::cout << std::endl;
 		}
 
-		
-		///NEW Vector 4x1
-		initialGB[0]=(sciantix_variable[sv["Intergranular bubble volume"]].getInitialValue()
+		double GB[rows];
+		GB[0]=(sciantix_variable[sv["Intergranular bubble volume"]].getInitialValue()
 			+sciantix_variable[sv["Intergranular vacancies per bubble"]].getIncrement() * matrix[sma["UO2"]].getSchottkyVolume())+
 			(2*wBf-wBi)/(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue()*
 			sciantix_variable[sv["Intergranular S/V"]].getFinalValue());
-		initialGB[1]=sciantix_variable[sv["Intergranular bubble area"]].getInitialValue()/3;
-		initialGB[2]=sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue()+
+		GB[1]=sciantix_variable[sv["Intergranular bubble area"]].getInitialValue()/3;
+		GB[2]=sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue()+
 			2*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2)*sciantix_variable[sv["Intergranular bubble area"]].getInitialValue();
-		initialGB[3]=(sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue()-
+		GB[3]=(sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue()-
 			2*sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue()*sciantix_variable[sv["Intergranular bubble area"]].getInitialValue());
 		///
 
 		///Print vector and set 0 if nan
 		//std::cout << "The vector b is: \n"<<std::endl;
 		for (int i = 0; i < rows; ++i) {
-			if (std::isnan(initialGB[i])) {
-				initialGB[i] = 0.0;
-			}
-			//std::cout << initialGB[i] << std::endl;
-		}
-
-		////Solution of Ax=b////
-
-		double compA, tempA, tempb, factorA;
-		for(int i = 0; i < rows; i++){
-			compA = matrixGB[i][i];
-			int q = i;
-					for(int j = i + 1; j < rows; j++)
-					if(fabs(compA) < fabs(matrixGB[j][i])){
-						compA = matrixGB[j][i] ;
-							q = j;
-						}
-			//This if statement checks if A is singular and if so, quits. -> not necessary.
-			// if(fabs(compA) < 0.00001){ 
-			// 	std::cout << "A is singular."<<std::endl;
-			// }
-			for(int k = 0; k < rows; k++)
-			{
-					tempA = matrixGB[q][k];
-					matrixGB[q][k] = matrixGB[i][k];
-					matrixGB[i][k] = tempA;
-			}
-			tempb = initialGB[q];
-			initialGB[q] = initialGB[i];
-			initialGB[i] = tempb;
-			for(int l = i+1; l < rows; l++){
-				factorA = matrixGB[l][i]/matrixGB[i][i];
-					initialGB[l] = initialGB[l] - factorA * initialGB[i];
-					for(int m = 0; m < rows; m++){
-						matrixGB[l][m] = matrixGB[l][m] - factorA * matrixGB[i][m];
-					// if(fabs(matrixGB[l][m]) < 0.00001)
-					// 	matrixGB[l][m] = 0;
-				}
+			if (std::isnan(GB[i])) {
+				GB[i] = 0.0;
+				std::cout<<"Warning NAN values in GB initial values"<<std::endl;
 			}
 		}
-		double x[rows];
-		for(int i = rows-1; i >= 0; i--){
-			x[i] = initialGB[i] / matrixGB[i][i];
-			for(int j = 0; j < i; j++){
-				initialGB[j] = initialGB[j] - matrixGB[j][i]*x[i];
-			}
-		}
-
-		//Prints out the solution vector x.
-		//std::cout << "The solution vector x is: \n"<<std::endl;
-		for (int i = 0; i < rows; i++){
-			//std::cout << x[i] << std::endl;
-		}
+		
+		Laplace(rows, GBstate, GB);
 
 		// Verdolin
 		const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
@@ -479,11 +428,11 @@ class Simulation : public Solver, public Model
 		double Nlim = 0.5*neqlim*nface /(4*pi*pow(sciantix_variable[sv["Grain radius"]].getFinalValue(),2));
 		
 		//NEW substitution
-		sciantix_variable[sv["Intergranular bubble volume"]].setFinalValue(x[0]);
-		sciantix_variable[sv["Intergranular bubble area"]].setFinalValue(x[1]);
+		sciantix_variable[sv["Intergranular bubble volume"]].setFinalValue(GB[0]);
+		sciantix_variable[sv["Intergranular bubble area"]].setFinalValue(GB[1]);
 		if (sciantix_variable[sv["Intergranular bubble area"]].getIncrement()>=0){
-			sciantix_variable[sv["Intergranular bubble concentration"]].setFinalValue(x[2]);
-			sciantix_variable[sv["Intergranular fractional coverage"]].setFinalValue(x[3]);
+			sciantix_variable[sv["Intergranular bubble concentration"]].setFinalValue(GB[2]);
+			sciantix_variable[sv["Intergranular fractional coverage"]].setFinalValue(GB[3]);
 		}
 		else{
 			sciantix_variable[sv["Intergranular bubble concentration"]].setConstant();
@@ -497,7 +446,7 @@ class Simulation : public Solver, public Model
 		}
 
 		if (sciantix_variable[sv["Intergranular bubble concentration"]].getFinalValue()<Nlim){
-			std::cout << "	\nVerdolin limit" << std::endl;
+			std::cout << "	\nVerdolin limit warning" << std::endl;
 			std::cout << "Nlim =    " << Nlim << std::endl;
 			std::cout << "Settings: " << std::endl;
 			std::cout << "bubbles/face =    " << neqlim << std::endl;

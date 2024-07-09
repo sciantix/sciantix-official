@@ -232,50 +232,119 @@ public:
 		}
 	}
 
+	//The function solve a system of three linear equations according to Cramer method.
+	void Laplace3x3(double A[], double b[])
+	{
+		double detX(0.0), detY(0.0), detZ(0.0);
+		double detA = A[0]*(A[4]*A[8]-A[5]*A[7]) - A[1]*(A[3]*A[8]-A[5]*A[6]) + A[2]*(A[3]*A[7]-A[4]*A[6]);
 
-  double QuarticEquation(std::vector<double> parameter)
-  {
-		/**
-		 * @brief Solver for the quartic equation ax^4 + bx^3 +cx^2 +dx + e = 0
-		 * with the iterative Newton's method.
-		 * 
-		 * @param parameter.at(0) initial conditions
-		 * @param parameter.at(1) coefficient of x^4
-		 * @param parameter.at(2) coefficient of x^3
-		 * @param parameter.at(3) coefficient of x^2
-		 * @param parameter.at(4) coefficient of x^1
-		 * @param parameter.at(5) coefficient of x^0
-		 * @return x1 solution
-		 */
+		if (detA != 0.0)
+		{
+			detX = b[0]*(A[4]*A[8]-A[5]*A[7]) - A[1]*(b[1]*A[8]-A[5]*b[2]) + A[2]*(b[1]*A[7]-A[4]*b[2]);
+			detY = A[0]*(b[1]*A[8]-A[5]*b[2]) - b[0]*(A[3]*A[8]-A[5]*A[6]) + A[2]*(A[3]*b[2]-b[1]*A[6]);
+			detZ = A[0]*(A[4]*b[2]-b[1]*A[7]) - A[1]*(A[3]*b[2]-b[1]*A[6]) + b[0]*(A[3]*A[7]-A[4]*A[6]);
+			b[0] = detX/detA;
+			b[1] = detY/detA;
+			b[2] = detZ/detA;
+		}
+	}
 
-    double function(0.0);
-    double derivative(0.0);
-    double y1(0.0);
-    unsigned short int iter(0);
-    const double tol(1.0e-3);
-    const unsigned short int max_iter(5);
+	//The function compute the determinant of a NxN matrix according to Cramer method
+	double det(int N, double A[])
+	{
+		int dim = N*N;
+		// int Nm1 = N-1;
+		double C[(N-1)*(N-1)];
+		double sum = 0.0;
 
-		double y0 = parameter.at(0);
-		double a = parameter.at(1);
-		double b = parameter.at(2);
-		double c = parameter.at(3);
-		double d = parameter.at(4);
-		double e = parameter.at(5);
+		if (N == 2) {
+			return A[0]*A[3] - A[1]*A[2];
+		}
+		else {
+			for (int i=0; i < N; i++) {
+			int j = 0;
+			for (int z = N; z < dim; z++) {
+				if ((dim-z+i) % N != 0) {
+				C[j] = A[z];
+				j++;
+				}
+			}
+				int r = i/N;
+				int c = i%N;
+				sum += ((r+c)%2==0 ? +1:-1)*A[i]*det(N-1, C);
+			}
+			return sum;
+		}
+	}
 
-    while (iter < max_iter)
-    {
-      function = a*pow(y0, 4) + b*pow(y0, 3) + c*pow(y0, 2) + d*y0 + e;
-      derivative = 4.0*a*pow(y0, 3) + 3.0*b*pow(y0, 2) + 2.0*c*y0 + d;
+	void Laplace(int N, double A[], double b[])
+	{
+		int dim = N*N;
+		double detA = det(N, A);
+		double M[dim];
+		double detX = 0.0;
+		double x[N];
 
-      y1 = y0 - function/derivative;
-      y0 = y1;
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < dim; j++) {
+			if (j%N == i) {
+				M[j] = b[j/N];
+			}
+			else {
+				M[j] = A[j];
+			}
+			}
+			detX = det(N, M);
+			x[i] = detX/detA;
+		}
+		for (int i = 0; i < N; i++) {
+			b[i] = x[i];
+		}
+	}
 
-      if(function < tol) return y1;
+	double QuarticEquation(std::vector<double> parameter)
+	{
+			/**
+			 * @brief Solver for the quartic equation ax^4 + bx^3 +cx^2 +dx + e = 0
+			 * with the iterative Newton's method.
+			 * 
+			 * @param parameter.at(0) initial conditions
+			 * @param parameter.at(1) coefficient of x^4
+			 * @param parameter.at(2) coefficient of x^3
+			 * @param parameter.at(3) coefficient of x^2
+			 * @param parameter.at(4) coefficient of x^1
+			 * @param parameter.at(5) coefficient of x^0
+			 * @return x1 solution
+			 */
 
-      iter++;
-    }
-    return y1;
-  }
+		double function(0.0);
+		double derivative(0.0);
+		double y1(0.0);
+		unsigned short int iter(0);
+		const double tol(1.0e-3);
+		const unsigned short int max_iter(5);
+
+			double y0 = parameter.at(0);
+			double a = parameter.at(1);
+			double b = parameter.at(2);
+			double c = parameter.at(3);
+			double d = parameter.at(4);
+			double e = parameter.at(5);
+
+		while (iter < max_iter)
+		{
+		function = a*pow(y0, 4) + b*pow(y0, 3) + c*pow(y0, 2) + d*y0 + e;
+		derivative = 4.0*a*pow(y0, 3) + 3.0*b*pow(y0, 2) + 2.0*c*y0 + d;
+
+		y1 = y0 - function/derivative;
+		y0 = y1;
+
+		if(function < tol) return y1;
+
+		iter++;
+		}
+		return y1;
+	}
 
 	void modeInitialization(int n_modes, double mode_initial_condition, double* diffusion_modes)
 	{
