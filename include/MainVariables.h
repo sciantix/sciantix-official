@@ -44,3 +44,4 @@ extern std::vector<double> Temperature_input;
 extern std::vector<double> Xe_Release_rate_fuel_input;
 extern std::vector<double> Xe133_Release_rate_fuel_input;
 extern std::vector<double> Kr85m_Release_rate_fuel_input;
+extern std::vector<double> Defect_Time_input;

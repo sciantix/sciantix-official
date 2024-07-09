@@ -78,6 +78,8 @@ int main()
 	std::cout << Sciantix_history[8] << std::endl;
 	std::cout << "time step number" << std::endl;
 	std::cout << Sciantix_history[9] << std::endl;
+	std::cout << "defect time" << std::endl;
+	std::cout << Sciantix_history[10] << std::endl;
 
 
 	while (Time_h <= Time_end_h)

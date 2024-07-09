@@ -24,19 +24,65 @@ void Sciantix(int Sciantix_options[],
 {
 	SetGas();
 	SetSystem();
-
 	SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
-	
 	Simulation sciantix_simulation;
+
+	
+	if (history_variable[hv["Time"]].getFinalValue()<=history_variable[hv["Defect time"]].getFinalValue())
+	{
+		std::cout << "case1" << std::endl;
+		sciantix_simulation.GasInGapIntact();
+		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+		sciantix_simulation.UpdateGasGap();
+		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+		sciantix_simulation.PressureEvolution();
+		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+		Output();
+
+		history_variable.clear();
+		sciantix_variable.clear();
+		physics_variable.clear();
+	}
+	else
+	{
+		if (sciantix_variable[sv["Gap pressure"]].getFinalValue()>4.0) //if the limit pressure is reached gas can be released
+		{
+			sciantix_simulation.GasInGapFailed();
+			UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+		}
+		else // if not, gas accumulate in the gap
+		{
+			sciantix_simulation.GasInGapIntact();
+			UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+		}
+		
+		sciantix_simulation.CoolantRadiolysis();
+		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+		sciantix_simulation.UpdateGasGap();
+		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+		sciantix_simulation.PressureEvolution();
+		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+		sciantix_simulation.GasInCoolant();
+		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+		Output();
+
+		history_variable.clear();
+		sciantix_variable.clear();
+		sciantix_system.clear();
+		physics_variable.clear();
+		model.clear();
+		gas.clear();
+	}
 	
 	// sciantix_simulation.SheathTemperatureUpdate();
 	// MapModel();
-
-	sciantix_simulation.GasInGap();
-	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
-
-	sciantix_simulation.UpdateGasGap();
-	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 	
 	//sciantix_simulation.GasDecay();
 
@@ -48,10 +94,6 @@ void Sciantix(int Sciantix_options[],
 	
 	// sciantix_simulation.ZircaloyOxidation();
 	// UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
-
-	sciantix_simulation.PressureEvolution();
-	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
-
 	
 
 	
@@ -63,10 +105,4 @@ void Sciantix(int Sciantix_options[],
 	// sciantix_simulation.GasDecay();
 
 	// FiguresOfMerit();
-
-	Output();
-
-	history_variable.clear();
-	sciantix_variable.clear();
-	physics_variable.clear();
 }

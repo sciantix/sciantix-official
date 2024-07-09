@@ -39,4 +39,6 @@ void Initialization()
 	
 	Sciantix_history[8] = Time_input[0];
 	Sciantix_history[9] = Time_step_number;
+
+	Sciantix_history[11] = Defect_Time_input[0];
 }

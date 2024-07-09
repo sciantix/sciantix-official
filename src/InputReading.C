@@ -132,12 +132,14 @@ void InputReading()
 		input_history >> Xe_Release_rate_fuel_input[n];
 		input_history >> Xe133_Release_rate_fuel_input[n];
 		input_history >> Kr85m_Release_rate_fuel_input[n];
+		input_history >> Defect_Time_input[n];
 
 		input_check << Time_input[n] << "\t";
 		input_check << Temperature_input[n] << "\t";
 		input_check << Xe_Release_rate_fuel_input[n] << "\t";
 		input_check << Xe133_Release_rate_fuel_input[n] << "\t";
 		input_check << Kr85m_Release_rate_fuel_input[n] << "\t";
+		input_check << Defect_Time_input[n] << "\t";
 
 		input_check << std::endl;
 
@@ -150,6 +152,7 @@ void InputReading()
 	Xe_Release_rate_fuel_input.resize(Input_history_points);
 	Xe133_Release_rate_fuel_input.resize(Input_history_points);
 	Kr85m_Release_rate_fuel_input.resize(Input_history_points);
+	Defect_Time_input.resize(Input_history_points);
 	
 	Time_end_h = Time_input[Input_history_points - 1];
 	Time_end_s = Time_end_h * 3600.0;
