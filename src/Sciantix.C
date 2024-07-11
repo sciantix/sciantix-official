@@ -30,7 +30,6 @@ void Sciantix(int Sciantix_options[],
 	
 	if (history_variable[hv["Time"]].getFinalValue()<=history_variable[hv["Defect time"]].getFinalValue())
 	{
-		std::cout << "case1" << std::endl;
 		sciantix_simulation.GasInGapIntact();
 		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
@@ -45,31 +44,84 @@ void Sciantix(int Sciantix_options[],
 		history_variable.clear();
 		sciantix_variable.clear();
 		physics_variable.clear();
+		model.clear();
+		gas.clear();
 	}
 	else
 	{
-		if (sciantix_variable[sv["Gap pressure"]].getFinalValue()>4.0) //if the limit pressure is reached gas can be released
+
+		if (sciantix_variable[sv["Gap pressure"]].getFinalValue()<13.0)
 		{
-			sciantix_simulation.GasInGapFailed();
-			UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+			std::cout << "pas assez de pression" << std::endl;
+
+			sciantix_variable[sv["Water gap"]].setFinalValue(sciantix_variable[sv["Water gap"]].getFinalValue()+((13.0-sciantix_variable[sv["Gap pressure"]].getFinalValue())*1e06)/(PhysicsConstants::boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()));
+
 		}
-		else // if not, gas accumulate in the gap
+		else if (sciantix_variable[sv["Gap pressure"]].getFinalValue()>13.0 && sciantix_variable[sv["Non condensable gases partial pressure"]].getFinalValue()>0.0 && sciantix_variable[sv["Non condensable gases partial pressure"]].getFinalValue()>(sciantix_variable[sv["Gap pressure"]].getFinalValue()-9.45))
 		{
-			sciantix_simulation.GasInGapIntact();
-			UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+			while (sciantix_variable[sv["Non condensable gases partial pressure"]].getFinalValue()>0.0 && sciantix_variable[sv["Non condensable gases partial pressure"]].getFinalValue()>(sciantix_variable[sv["Gap pressure"]].getFinalValue()-9.45))
+			{
+				std::cout << sciantix_variable[sv["Non condensable gases partial pressure"]].getFinalValue() << std::endl;
+				sciantix_simulation.ReleaseRateCoefficient();
+
+				sciantix_simulation.GasInGapFailed();
+				UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+				sciantix_simulation.GasInCoolantWhenRelease();
+				UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+				sciantix_simulation.PressureEvolution();
+				UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+			}
 		}
-		
-		sciantix_simulation.CoolantRadiolysis();
+		else
+		{
+			std::cout << "autre chose" << std::endl;
+			sciantix_variable[sv["Water gap"]].setFinalValue(sciantix_variable[sv["Water gap"]].getFinalValue()-((sciantix_variable[sv["Gap pressure"]].getFinalValue()-13)*1e06)/(PhysicsConstants::boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()));
+		}
 		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
+		sciantix_simulation.PressureEvolution();
+		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+		sciantix_simulation.CoolantRadiolysis();
+		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+		
 		sciantix_simulation.UpdateGasGap();
 		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
 		sciantix_simulation.PressureEvolution();
 		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
-		sciantix_simulation.GasInCoolant();
+		if (sciantix_variable[sv["Non condensable gases partial pressure"]].getFinalValue()>(sciantix_variable[sv["Gap pressure"]].getFinalValue()-9.45)) //if the limit pressure is reached gas can be released
+		{
+			sciantix_simulation.ReleaseRateCoefficient();
+			sciantix_simulation.GasInGapFailed();
+			UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+			sciantix_simulation.GasInCoolantWhenRelease();
+			UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+		}
+		else // if not, gas accumulate in the gap
+		{
+			sciantix_simulation.GasInGapIntact();
+			UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+			sciantix_simulation.GasInCoolant();
+			UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+		}
+
+		sciantix_simulation.UpdateGasGap();
 		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+
+		
+
+		sciantix_simulation.PressureEvolution();
+		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+		
+		
+
+		
 
 		Output();
 

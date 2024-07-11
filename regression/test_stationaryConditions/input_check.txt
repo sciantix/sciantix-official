@@ -1,12 +1,12 @@
 iOutput = 1
 iOption2 = 1
 iOption3 = 1
-Initial conditions0 = 0
+Initial conditions0 = 1000
 Initial conditions1 = 0
 Initial conditions2 = 0
 Initial conditions3 = 0
-Initial conditions4 = 1
+Initial conditions4 = 6
 Initial conditions5 = 1.5e-05
 Initial conditions6 = 0
-0	1000	1e+20	1e+20	1e+20	50	
-100	1000	1e+20	1e+20	1e+20	0	
+0	600	1e+19	1e+19	1e+19	10	
+500	600	1e+19	1e+19	1e+19	0	

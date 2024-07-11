@@ -65,32 +65,43 @@ class Simulation : public Solver, public Model
 
 	void CoolantRadiolysis()  //term of hydrogen production due to radiolysis evaluated by Lewis (to start) in at/m^3
 	{
-
-		sciantix_variable[sv["H gap"]].setFinalValue(
-			solver.Decay(
-					sciantix_variable[sv["H gap"]].getFinalValue(),
-					gas[ga["H"]].getReleaseRateCoefficient(),
-					sciantix_variable[sv["H production rate"]].getFinalValue(), 
-					physics_variable[pv["Time step"]].getFinalValue()
-				)
-			);
-		//sciantix_variable[sv["H gap"]].setFinalValue(sciantix_variable[sv["H gap"]].getFinalValue() + sciantix_variable[sv["H production rate"]].getFinalValue()*physics_variable[pv["Time step"]].getFinalValue()); 
-		
+		if (sciantix_variable[sv["Water gap"]].getFinalValue()>sciantix_variable[sv["H production rate"]].getFinalValue()*physics_variable[pv["Time step"]].getFinalValue())
+		{
+			sciantix_variable[sv["H gap"]].setFinalValue(
+				sciantix_variable[sv["H gap"]].getFinalValue() + sciantix_variable[sv["H production rate"]].getFinalValue()*physics_variable[pv["Time step"]].getFinalValue()
+				);
+			sciantix_variable[sv["Water gap"]].setFinalValue(
+				sciantix_variable[sv["Water gap"]].getFinalValue() - sciantix_variable[sv["H production rate"]].getFinalValue()*physics_variable[pv["Time step"]].getFinalValue()
+				);
+			// sciantix_variable[sv["H gap"]].setFinalValue(
+			// 	solver.Decay(
+			// 			sciantix_variable[sv["H gap"]].getFinalValue(),
+			// 			gas[ga["H"]].getReleaseRateCoefficient(),
+			// 			sciantix_variable[sv["H production rate"]].getFinalValue(), 
+			// 			physics_variable[pv["Time step"]].getFinalValue()
+			// 		)
+			// 	);
+		}		
 	}
 
 	void ZircaloyOxidation() //term of hydrogen production due to zyrcaloy oxidation evaluated by Lewis (to start) in at/m^3
 	{
-		sciantix_variable[sv["H gap"]].setFinalValue(sciantix_variable[sv["H gap"]].getFinalValue() + 3.08*pow(10,20)*physics_variable[pv["Time step"]].getFinalValue());
+		sciantix_variable[sv["H gap"]].setFinalValue(sciantix_variable[sv["H gap"]].getFinalValue() + sciantix_variable[sv["H production rate"]].getFinalValue()*physics_variable[pv["Time step"]].getFinalValue());
 	}
 
 	void PressureEvolution() 
 	{
 
 		sciantix_variable[sv["Gap pressure"]].setFinalValue(
-				sciantix_variable[sv["Gas in gap"]].getFinalValue()*PhysicsConstants::boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()*1e-06
+				(sciantix_variable[sv["Gas in gap"]].getFinalValue()+sciantix_variable[sv["Water gap"]].getFinalValue())*PhysicsConstants::boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()*1e-06
 			);
-		std::cout << "pression" << std::endl;
-		std::cout << sciantix_variable[sv["Gap pressure"]].getFinalValue() << std::endl;
+		
+		sciantix_variable[sv["Water partial pressure"]].setFinalValue(
+			sciantix_variable[sv["Water gap"]].getFinalValue()*PhysicsConstants::boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()*1e-06
+		);
+		sciantix_variable[sv["Non condensable gases partial pressure"]].setFinalValue(
+			(sciantix_variable[sv["Gas in gap"]].getFinalValue()-sciantix_variable[sv["H gap"]].getFinalValue())*PhysicsConstants::boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()*1e-06
+		);
 		
 		//sciantix_variable[sv["Gap pressure"]].setFinalValue(sciantix_variable[sv["H gap"]].getFinalValue()*PhysicsConstants::boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()*1e-06); 
 		
@@ -157,9 +168,14 @@ void GasInGapIntact() //this function computes the evolution of fission gas conc
 				)
 			);
 
-		sciantix_variable[sv["He gap"]].setFinalValue(
+		if (history_variable[hv["Time"]].getFinalValue()==0)
+		{
+			sciantix_variable[sv["He gap"]].setFinalValue(
 			(sciantix_variable[sv["Gap pressure"]].getInitialValue()*1e06)/(PhysicsConstants::boltzmann_constant *history_variable[hv["Temperature"]].getFinalValue())
 			);
+		}
+
+		
 	}
 
 
@@ -168,14 +184,14 @@ void GasInGapIntact() //this function computes the evolution of fission gas conc
 		// dN / dt = q - (L+E)N
 		sciantix_variable[sv["Xe gap"]].setFinalValue(
 			solver.Decay(
-					sciantix_variable[sv["Xe gap"]].getInitialValue(),
+					sciantix_variable[sv["Xe gap"]].getFinalValue(),
 					gas[ga["Xe"]].getReleaseRateCoefficient() + gas[ga["Xe"]].getDecayRate(),
 					history_variable[hv["Xe release rate from fuel"]].getFinalValue(), // release rate from the fuel
 					physics_variable[pv["Time step"]].getFinalValue()
 				)
 			);
 
-		// dN / dt = q - (L+E)N  (for now E=0)
+		// dN / dt = q - (L+E)N
 		sciantix_variable[sv["Xe133 gap"]].setFinalValue(
 			solver.Decay(
 					sciantix_variable[sv["Xe133 gap"]].getFinalValue(),
@@ -185,7 +201,7 @@ void GasInGapIntact() //this function computes the evolution of fission gas conc
 				)
 			);
 
-		// dN / dt = L133Xe*N133Xe - (L+E)N  (for now E=0)
+		// dN / dt = L133Xe*N133Xe - (L+E)N
 		sciantix_variable[sv["Cs133 gap"]].setFinalValue(
 			solver.Decay(
 					sciantix_variable[sv["Cs133 gap"]].getFinalValue(),
@@ -196,7 +212,7 @@ void GasInGapIntact() //this function computes the evolution of fission gas conc
 			);
 
 		
-		// dN / dt = q - (L+E)N  (for now E=0)
+		// dN / dt = q - (L+E)N 
 		sciantix_variable[sv["Kr85m gap"]].setFinalValue(
 			solver.Decay(
 					sciantix_variable[sv["Kr85m gap"]].getFinalValue(),
@@ -214,46 +230,101 @@ void GasInGapIntact() //this function computes the evolution of fission gas conc
 					physics_variable[pv["Time step"]].getFinalValue()
 				)
 			);
+		
+		// sciantix_variable[sv["H gap"]].setFinalValue(
+		// 		sciantix_variable[sv["H gap"]].getFinalValue() - gas[ga["H"]].getReleaseRateCoefficient()*sciantix_variable[sv["H gap"]].getFinalValue()*physics_variable[pv["Time step"]].getFinalValue()
+				
+		// );
 	}
 
-	void GasInCoolant() //release rate = nu*N_gap*Gap_volume
+	void GasInCoolantWhenRelease() //release rate = nu*N_gap [at/m3 s]
 	{
+		//Xe
+		sciantix_variable[sv["Xe released"]].setFinalValue(
+				sciantix_variable[sv["Xe gap"]].getFinalValue()*gas[ga["Xe"]].getReleaseRateCoefficient()	
+		);
 		
-		if (sciantix_variable[sv["Gap pressure"]].getFinalValue() > 4.0) //estimation of the limit gap presssure from Veschunov
-		{
-			//Xe
-			sciantix_variable[sv["Xe released"]].setFinalValue(
-					sciantix_variable[sv["Xe gap"]].getFinalValue()*gas[ga["Xe"]].getReleaseRateCoefficient()*sciantix_variable[sv["Gap volume"]].getFinalValue()	
-			);
 
-			//Xe133
-			sciantix_variable[sv["Xe133 released"]].setFinalValue(
-					sciantix_variable[sv["Xe133 gap"]].getFinalValue()*gas[ga["Xe133"]].getReleaseRateCoefficient()*sciantix_variable[sv["Gap volume"]].getFinalValue()	
-			);
+		sciantix_variable[sv["Xe coolant"]].setFinalValue(
+			solver.Decay(
+					sciantix_variable[sv["Xe coolant"]].getFinalValue(),
+					gas[ga["Xe"]].getDecayRate(),
+					sciantix_variable[sv["Xe released"]].getFinalValue(), // release rate from the gap
+					physics_variable[pv["Time step"]].getFinalValue()
+				)
+		);
 
-			//Cs133
-			sciantix_variable[sv["Cs133 released"]].setFinalValue(
-					sciantix_variable[sv["Cs133 gap"]].getFinalValue()*gas[ga["Cs133"]].getReleaseRateCoefficient()*sciantix_variable[sv["Gap volume"]].getFinalValue()	
-			);
 
-			//Kr85m
-			sciantix_variable[sv["Kr85m released"]].setFinalValue(
-					sciantix_variable[sv["Kr85m gap"]].getFinalValue()*gas[ga["Kr85m"]].getReleaseRateCoefficient()*sciantix_variable[sv["Gap volume"]].getFinalValue()	
-			);
 
-			//He
-			sciantix_variable[sv["He released"]].setFinalValue(
-					sciantix_variable[sv["He gap"]].getFinalValue()*gas[ga["He"]].getReleaseRateCoefficient()*sciantix_variable[sv["Gap volume"]].getFinalValue()	
-			);
+		//Xe133
+		sciantix_variable[sv["Xe133 released"]].setFinalValue(
+				sciantix_variable[sv["Xe133 gap"]].getFinalValue()*gas[ga["Xe133"]].getReleaseRateCoefficient()	
+		);
+		sciantix_variable[sv["Xe133 coolant"]].setFinalValue(
+			solver.Decay(
+					sciantix_variable[sv["Xe133 coolant"]].getFinalValue(),
+					gas[ga["Xe133"]].getDecayRate(),
+					sciantix_variable[sv["Xe133 released"]].getFinalValue(), // release rate from the gap
+					physics_variable[pv["Time step"]].getFinalValue()
+				)
+		);
 
-			//H
-			sciantix_variable[sv["H released"]].setFinalValue(
-					sciantix_variable[sv["H gap"]].getFinalValue()*gas[ga["H"]].getReleaseRateCoefficient()*sciantix_variable[sv["Gap volume"]].getFinalValue()	
-			);
 
-			
-		}
+		//Cs133
+		sciantix_variable[sv["Cs133 released"]].setFinalValue(
+				sciantix_variable[sv["Cs133 gap"]].getFinalValue()*gas[ga["Cs133"]].getReleaseRateCoefficient()	
+		);
 
+		//Kr85m
+		sciantix_variable[sv["Kr85m released"]].setFinalValue(
+				sciantix_variable[sv["Kr85m gap"]].getFinalValue()*gas[ga["Kr85m"]].getReleaseRateCoefficient()	
+		);
+
+		//He
+		sciantix_variable[sv["He released"]].setFinalValue(
+				sciantix_variable[sv["He gap"]].getFinalValue()*gas[ga["He"]].getReleaseRateCoefficient()	
+		);
+
+		//H
+		// sciantix_variable[sv["H released"]].setFinalValue(
+		// 		sciantix_variable[sv["H gap"]].getFinalValue()*gas[ga["H"]].getReleaseRateCoefficient()	
+		// );
+	}
+
+void GasInCoolant() //release rate = nu*N_gap [at/m3 s]
+	{
+		//Xe133
+		sciantix_variable[sv["Xe133 coolant"]].setFinalValue(
+			solver.Decay(
+					sciantix_variable[sv["Xe133 coolant"]].getFinalValue(),
+					gas[ga["Xe133"]].getDecayRate(),
+					0.0, // release rate from the gap
+					physics_variable[pv["Time step"]].getFinalValue()
+				)
+		);
+
+		//Kr85m
+		sciantix_variable[sv["Kr85m coolant"]].setFinalValue(
+			solver.Decay(
+					sciantix_variable[sv["Kr85m coolant"]].getFinalValue(),
+					gas[ga["Kr85m"]].getDecayRate(),
+					0.0, // release rate from the gap
+					physics_variable[pv["Time step"]].getFinalValue()
+				)
+		);
+	}
+
+	void ReleaseRateCoefficient()
+	{
+		gas[ga["Xe"]].setReleaseRateCoefficient(
+			history_variable[hv["Xe release rate from fuel"]].getFinalValue()*PhysicsConstants::boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()/(sciantix_variable[sv["Non condensable gases partial pressure"]].getFinalValue()*1e6)
+		);
+		gas[ga["Xe133"]].setReleaseRateCoefficient(
+			history_variable[hv["Xe133 release rate from fuel"]].getFinalValue()*PhysicsConstants::boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()/(sciantix_variable[sv["Non condensable gases partial pressure"]].getFinalValue()*1e6)
+		);
+		gas[ga["Kr85m"]].setReleaseRateCoefficient(
+			history_variable[hv["Kr85m release rate from fuel"]].getFinalValue()*PhysicsConstants::boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()/(sciantix_variable[sv["Non condensable gases partial pressure"]].getFinalValue()*1e6)
+		);
 	}
 
 	Simulation() {}

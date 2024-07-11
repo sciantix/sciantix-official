@@ -53,6 +53,7 @@ int main()
 	InputReading();
 
 	Initialization();
+	
 
 	remove("output.txt");
 
