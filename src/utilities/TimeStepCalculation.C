@@ -14,20 +14,29 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "ErrorMessages.h"
-#include "MainVariables.h"
-#include <string>
-#include <sstream>
-#include <vector>
-#include <numeric>
+#include "TimeStepCalculation.h"
 
+double TimeStepCalculation( )
+{
+  double time_step(0.0);
 
-/**
- * \brief Handles all input processing for the simulation.
- * It opens necessary input files, reads configuration and initial condition data, 
- * logs this data for verification, and manages any missing file errors.
- */
-void InputReading();
+  // Find the current time interval
+  double lower_bound(0.0), upper_bound(0.0);
+  for (int n=0; n<Input_history_points-1; n++)
+    if (Time_h >= Time_input[n] && Time_h < Time_input[n+1])
+    {
+      lower_bound = Time_input[n];
+      upper_bound = Time_input[n+1];
+    }
 
-void readSettings(std::ifstream &input, std::ofstream &output);
-void readParameters(std::ifstream &input, std::ofstream &output);
+  // Divide the interval in time steps
+  time_step = (upper_bound - lower_bound) / Number_of_time_steps_per_interval;
+
+  if ((Time_h+time_step) > upper_bound)
+    {
+    time_step = upper_bound - Time_h;
+
+    }
+
+  return time_step;
+}

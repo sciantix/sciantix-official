@@ -10,24 +10,31 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: D. Pizzocri, T. Barani                                                 //
+//  Authors: D. Pizzocri, T. Barani.                                                //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "ErrorMessages.h"
 #include "MainVariables.h"
-#include <string>
-#include <sstream>
-#include <vector>
-#include <numeric>
 
+clock_t timer, timer_time_step;
 
-/**
- * \brief Handles all input processing for the simulation.
- * It opens necessary input files, reads configuration and initial condition data, 
- * logs this data for verification, and manages any missing file errors.
- */
-void InputReading();
+int    Sciantix_options[40];
+double Sciantix_history[20];
+double Sciantix_variables[300];
+double Sciantix_scaling_factors[10];
+double Sciantix_diffusion_modes[1000];
 
-void readSettings(std::ifstream &input, std::ofstream &output);
-void readParameters(std::ifstream &input, std::ofstream &output);
+long long int Time_step_number(0);
+double  Time_h(0.0), dTime_h(0.0), Time_end_h(0.0); // (h)
+double  Time_s(0.0), Time_end_s(0.0); // (s)
+double  Number_of_time_steps_per_interval(100);
+
+std::ofstream Output_file;
+std::ofstream Execution_file;
+
+int Input_history_points(1000);
+std::vector<double> Time_input(1000, 0.0);
+std::vector<double> Temperature_input(1000, 0.0);
+std::vector<double> Fissionrate_input(1000, 0.0);
+std::vector<double> Hydrostaticstress_input(1000, 0.0);
+std::vector<double> Steampressure_input(1000, 0.0);

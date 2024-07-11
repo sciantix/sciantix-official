@@ -28,6 +28,3 @@
  * logs this data for verification, and manages any missing file errors.
  */
 void InputReading();
-
-void readSettings(std::ifstream &input, std::ofstream &output);
-void readParameters(std::ifstream &input, std::ofstream &output);

@@ -13,21 +13,11 @@
 //  Authors: D. Pizzocri, T. Barani                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
-
-#include "ErrorMessages.h"
 #include "MainVariables.h"
-#include <string>
-#include <sstream>
-#include <vector>
-#include <numeric>
-
 
 /**
- * \brief Handles all input processing for the simulation.
- * It opens necessary input files, reads configuration and initial condition data, 
- * logs this data for verification, and manages any missing file errors.
+ * @brief This routine calculates the time step length 
+ * by dividing the time intervals provided in input
+ * in a fixed number of time steps (also set by input).
  */
-void InputReading();
-
-void readSettings(std::ifstream &input, std::ofstream &output);
-void readParameters(std::ifstream &input, std::ofstream &output);
+double TimeStepCalculation();
