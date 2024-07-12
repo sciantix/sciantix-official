@@ -28,6 +28,7 @@ protected:
 	double van_der_waals_volume;
 	double decay_rate;
 	double precursor_factor;
+	double GibbsEnergy; 
 
 public:
 	void setAtomicNumber(int y)
@@ -94,6 +95,18 @@ public:
 		 * 
 		 */
 		return precursor_factor;
+	}
+
+	void setGibbsEnergy(double y)
+	{
+		/// Member function to set the atomic number of the fission gas
+		atomic_number = y;
+	}
+
+	double getGibbsEnergy()
+	{
+		/// Member function to get the atomic number of the fission gas
+		return atomic_number;
 	}
 	
 	Gas() { }

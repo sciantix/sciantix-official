@@ -24,6 +24,7 @@
 #include "Krypton.h"
 #include "Iodine.h"
 #include "Cesium.h"
+#include "CesiumIodine.h"
 #include <vector>
 
 /**

@@ -587,6 +587,22 @@ class Simulation : public Solver, public Model
 			}	
 	}
 
+	void CsIFormation()
+	{
+		double V_grain_boundary = 1.0e-6; //(m3)
+		const double perfect_gazes_constant = CONSTANT_NUMBERS_H::PhysicsConstants::perfect_gazes_constant;
+
+		// Partial Pressures of Cs and I
+		sciantix_variable[sv["I Partial Pressure"]].setFinalValue((sciantix_variable[sv["I at grain boundary"]].getFinalValue() * (perfect_gazes_constant) * history_variable[hv["Temperature"]].getFinalValue())/V_grain_boundary);
+		sciantix_variable[sv["Cs Partial Pressure"]].setFinalValue((sciantix_variable[sv["Cs at grain boundary"]].getFinalValue() * PhysicsConstants::perfect_gazes_constant * history_variable[hv["Temperature"]].getFinalValue()) / V_grain_boundary);
+
+		if ( 1e-27 < sciantix_variable[sv["I Partial Pressure"]].getFinalValue()  &&  sciantix_variable[sv["I Partial Pressure"]].getFinalValue() < 1  &&  sciantix_variable[sv["Cs Partial Pressure"]].getFinalValue() < sciantix_variable[sv["I Partial Pressure"]].getFinalValue())
+			{
+			sciantix_variable[sv["CsI produced"]].setFinalValue(sciantix_variable[sv["I at grain boundary"]].getFinalValue() + sciantix_variable[sv["Cs at grain boundary"]].getFinalValue());
+			}
+	}
+
+
 	void GrainBoundaryMicroCracking()
 	{
 		/// GrainBoundaryMicroCracking is method of simulation which executes the SCIANTIX simulation for the grain-boundary micro-cracking induced by a temperature difference. 

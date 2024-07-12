@@ -1,4 +1,4 @@
-// this function defines the treshold where the iodine 
+// This function defines the treshold where the iodine 
 // contained at the grain boundaries is completely released
 
 #include "ModelDeclaration.h"

@@ -11,6 +11,7 @@ void Cesium()
 	gas[index].setVanDerWaalsVolume(1.69e-28);
 	gas[index].setDecayRate(0.0);
 	gas[index].setPrecursorFactor(1);
+	gas[index].setGibbsEnergy(49789.7);
 
 	++index;
 	gas.emplace_back();
@@ -20,4 +21,5 @@ void Cesium()
 	gas[index].setVanDerWaalsVolume(1.69e-28);
 	gas[index].setDecayRate(7.28e-10);
 	gas[index].setPrecursorFactor(1);
+	gas[index].setGibbsEnergy(49789.7);
 }

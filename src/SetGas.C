@@ -32,4 +32,7 @@ void SetGas()
 
 	Cesium();
 	MapGas();
+
+	CesiumIodine();
+	MapGas();
 }

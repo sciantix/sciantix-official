@@ -129,6 +129,10 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[128] = sciantix_variable[sv["Cs137 released"]].getFinalValue();
 	Sciantix_variables[129] = sciantix_variable[sv["Intragranular Cs atoms per bubble"]].getFinalValue();
 	Sciantix_variables[130] = sciantix_variable[sv["Intergranular Cs atoms per bubble"]].getFinalValue();
+	Sciantix_variables[131] = sciantix_variable[sv["CsI produced"]].getFinalValue();
+	Sciantix_variables[132] = sciantix_variable[sv["I Partial Pressure"]].getFinalValue();
+	Sciantix_variables[133] = sciantix_variable[sv["Cs Partial Pressure"]].getFinalValue();
+
 
 
 	for (int i = 0; i < n_modes; ++i)
