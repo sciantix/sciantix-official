@@ -89,10 +89,7 @@ void GrainBoundaryRupture()
     sciantix_variable[sv["Intergranular bubble pressure"]].setFinalValue(bubble_pressure*1e-6); //MPa
     
     double bubbleoverpressure = bubble_pressure-critical_bubble_pressure;
-    // double bubbleoverpressureincrement = (sciantix_variable[sv["Intergranular bubble pressure"]].getIncrement()-sciantix_variable[sv["Critical intergranular bubble pressure"]].getIncrement())*1e6;
-    // double dT = history_variable[hv["Temperature"]].getIncrement();
-    // double dnv_nv = sciantix_variable[sv["Intergranular vacancies per bubble"]].getIncrement()/sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue();
-
+    
     std::cout << "Grain Boundary rupture --------------------------------"<<std::endl;
     if (bubbleoverpressure > 0)
     {
@@ -101,16 +98,7 @@ void GrainBoundaryRupture()
         std::cout << "Critical pressure Jernkvist (Pa): "<<critical_bubble_pressureJ<<std::endl;
         std::cout << "Bubble pressure (Pa): "<<bubble_pressure<<std::endl;
     }
-    // std::cout << "Surface tension (J/m2) = "<< matrix[sma["UO2"]].getSurfaceTension() <<std::endl;
-    // std::cout << "Elastic modulus (GPa) = "<< E*1e-9 <<std::endl;
-    // std::cout << "Capillary pressure (Pa) = "<< 2.0 * matrix[sma["UO2"]].getSurfaceTension() / sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() <<std::endl;
-    // std::cout << "Capillary pressure by  (Jernkvist 2020, Pa) = "<< 2.0 * matrix[sma["UO2"]].getSurfaceTension()*(1-cos(matrix[sma["UO2"]].getSemidihedralAngle()))/ sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue() <<std::endl;
-    // std::cout << "Critical pressure (Pa): "<<critical_bubble_pressure<<std::endl;
-    // std::cout << "Critical pressure Jernkvist (Pa): "<<critical_bubble_pressureJ<<std::endl;
-    // std::cout << "Bubble pressure (Pa): "<<bubble_pressure<<std::endl;
-    // //std::cout << (-(bubbleoverpressureincrement/dT/bubble_pressure)-(bubbleoverpressure/bubble_pressure)*(dnv_nv/dT-1/history_variable[hv["Temperature"]].getIncrement()))*dT<<std::endl;
-    //std::cout << "df"<<-bubbleoverpressureincrement/dT/bubble_pressure+(bubbleoverpressure/bubble_pressure)*(dT/history_variable[hv["Temperature"]].getIncrement())<<std::endl;    
-
+    
     parameter.push_back(critical_bubble_pressure);
 
 	model[model_index].setParameter(parameter);

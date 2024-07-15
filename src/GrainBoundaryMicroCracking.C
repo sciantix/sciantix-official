@@ -16,6 +16,7 @@
 
 #include "GrainBoundaryMicroCracking.h"
 
+
 void GrainBoundaryMicroCracking()
 {
 	if (!input_variable[iv["iGrainBoundaryMicroCracking"]].getValue()) return;
@@ -115,29 +116,21 @@ void GrainBoundaryMicroCracking()
 			(sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue() * matrix[sma["UO2"]].getSchottkyVolume()));
 			sciantix_variable[sv["Intergranular bubble pressure"]].setFinalValue(bubble_pressure*1e-6); //MPa
 			
-			double microcrackingfraction = 0.90;
-			parameter.push_back((bubble_pressure-microcrackingfraction*critical_bubble_pressure)/bubble_pressure);
-			
-			if (history_variable[hv["Temperature"]].getIncrement()!=0)
-    		{
-				double bubbleoverpressureincrement = (sciantix_variable[sv["Intergranular bubble pressure"]].getIncrement()-microcrackingfraction*sciantix_variable[sv["Critical intergranular bubble pressure"]].getIncrement())*1e6;
-				double dT = history_variable[hv["Temperature"]].getIncrement();
-				parameter.push_back(bubbleoverpressureincrement/bubble_pressure/dT);
-			}
-			else 
-			{
-				parameter.push_back(0);
-			}
+			// microcracking parameter
+			// double a=10;
+			// double b=50;
+			double a = 1;
+			double b = 30*sf_cent_parameter;
+			std::cout<<b<<std::endl;
+			double inflection = 0.9;
+			double microcracking_parameter = a*b*exp(b*(bubble_pressure/(inflection*critical_bubble_pressure)-1))/
+				(inflection*critical_bubble_pressure*1e-6*pow(1+a*exp(b*(bubble_pressure/(inflection*critical_bubble_pressure)-1)),2));
+			parameter.push_back(microcracking_parameter);
 
 			// healing parameter
 			const double healing_parameter = 1.0 / 0.8814; // 1 / (u * burnup)
 			parameter.push_back(healing_parameter);
 
-			double a =10;
-			double b=50;
-			double baraniparameter = a*b*exp(b*(bubble_pressure-critical_bubble_pressure)/critical_bubble_pressure)/
-				(critical_bubble_pressure*1e-6*pow(1+a*exp(b*(bubble_pressure-critical_bubble_pressure)/critical_bubble_pressure),2));
-			parameter.push_back(baraniparameter);
 			
 			std::cout << "Surface tension (J/m2) = "<< matrix[sma["UO2"]].getSurfaceTension() <<std::endl;
 			std::cout << "Elastic modulus (GPa) = "<< E*1e-9 <<std::endl;
@@ -147,7 +140,7 @@ void GrainBoundaryMicroCracking()
 			std::cout << "Critical pressure (Pa): "<<critical_bubble_pressure<<std::endl;
 			std::cout << "Critical pressure Jernkvist (Pa): "<<critical_bubble_pressureJ<<std::endl;
 			std::cout << "Bubble pressure (Pa): "<<bubble_pressure<<std::endl;
-			std::cout << "dm/dp= "<<baraniparameter<<std::endl;
+			std::cout << "dm/dp= "<<microcracking_parameter<<std::endl;
 
 			model[model_index].setParameter(parameter);
 			model[model_index].setRef("Under development");
