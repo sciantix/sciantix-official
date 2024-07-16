@@ -21,7 +21,7 @@ jobs:
         run: |
           # source venv/bin/activate
           echo "Compiling SCIANTIX"
-          mkdir build
+          mkdir bin
           cd bin
           cmake ..
           make -j
