@@ -21,17 +21,17 @@ jobs:
         run: |
           # source venv/bin/activate
           echo "Compiling SCIANTIX"
-          mkdir bin
-          cd bin
+          mkdir build
+          cd build
           cmake ..
           make -j
-          echo "in bin"
+          echo "in build"
 
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
           name: compiled-bin
-          path: ./bin
+          path: ./build
 
   test:
     needs: build
