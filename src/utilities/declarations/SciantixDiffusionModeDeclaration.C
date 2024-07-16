@@ -16,7 +16,5 @@
 
 #include "SciantixDiffusionModeDeclaration.h"
 
-/// SciantixDiffusionModeDeclaration
-
 const int n_modes(40);
 double modes_initial_conditions[n_modes * n_modes];

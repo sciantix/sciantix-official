@@ -16,9 +16,4 @@
 
 #include "MaterialDeclaration.h"
 
-/**
- * @brief This routines declares a material vector
- * 
- */
-
 std::vector<Material> material;

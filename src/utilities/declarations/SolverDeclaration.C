@@ -16,5 +16,4 @@
 
 #include "SolverDeclaration.h"
 
-/// SolverDeclaration
 Solver solver;

@@ -16,7 +16,5 @@
 
 #include "InputVariableDeclaration.h"
 
-/// InputVariableDeclaration.h
-
 std::vector<InputVariable> input_variable;
 

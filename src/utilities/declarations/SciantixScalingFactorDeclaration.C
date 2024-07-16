@@ -16,8 +16,6 @@
 
 #include "SciantixScalingFactorDeclaration.h"
 
-/// SciantixScalingFactorDeclaration
-
 double sf_resolution_rate(1.0);
 double sf_trapping_rate(1.0);
 double sf_nucleation_rate(1.0);

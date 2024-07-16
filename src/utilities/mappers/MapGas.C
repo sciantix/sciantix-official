@@ -18,7 +18,6 @@
 
 std::map<std::string, int> ga;
 
-
 void MapGas()
 {
 	for (std::vector<Gas>::size_type i = 0; i != gas.size(); ++i)

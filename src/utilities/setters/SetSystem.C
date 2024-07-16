@@ -16,8 +16,6 @@
 
 #include "SetSystem.h"
 
-/// SetSystem
-
 void SetSystem()
 {
 	switch (int(input_variable[iv["iFuelMatrix"]].getValue()))

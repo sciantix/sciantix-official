@@ -16,7 +16,5 @@
 
 #include "PhysicsVariableDeclaration.h"
 
-/// PhysicsVariableDeclaration.h
-
 std::vector<PhysicsVariable> physics_variable;
 

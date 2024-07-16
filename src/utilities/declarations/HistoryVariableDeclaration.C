@@ -16,10 +16,4 @@
 
 #include "HistoryVariableDeclaration.h"
 
-/// @brief
-/// HistoryVariableDeclaration
-/// --------------------------
-///
-/// This routines declares the vector of objects "history_variables".
-
 std::vector<HistoryVariable> history_variable;

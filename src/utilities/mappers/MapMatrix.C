@@ -16,8 +16,6 @@
 
 #include "MapMatrix.h"
 
-/// MapModel
-
 std::map<std::string, int> sma;
 
 void MapMatrix()

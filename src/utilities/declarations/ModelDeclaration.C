@@ -16,7 +16,5 @@
 
 #include "ModelDeclaration.h"
 
-/// ModelDeclaration
-
 std::vector<Model> model;
 

@@ -16,8 +16,6 @@
 
 #include "MapModel.h"
 
-/// MapModel
-
 std::map<std::string, int> sm;
 
 void MapModel()

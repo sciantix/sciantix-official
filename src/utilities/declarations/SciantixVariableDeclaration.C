@@ -16,8 +16,6 @@
 
 #include "SciantixVariableDeclaration.h"
 
-/// SciantixVariableDeclaration.h
-
 std::vector<SciantixVariable> sciantix_variable;
 
 
