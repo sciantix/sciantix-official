@@ -15,8 +15,6 @@ At present, this version of the code is validated against experiments for
  - helium behaviour and release in annealing conditions
  - release of radioactive fission gases
 The validation database is accessible in the *regression* folder.
-  
-
 
 # Installation
 
@@ -24,9 +22,9 @@ The validation database is accessible in the *regression* folder.
 1. Obtain the code (either by `git clone` or by downloading the `zip`)
 2. Install dependencies
     - Ubuntu: `sudo apt install build-essential`
-3. Compile all by typing `make` in the obtained code directory
+3. Compile all by using `cmake ..` in a new build directory (`mkdir build && cd build && cmake ..`)
     - to utilize more cores, use `make -j`
-    - a directory called `bin` with executable `sciantix.x` should appear
+    - the executable `sciantix.x` should appear in the build directory
 4. (optional) Compile the code documentation by typing `doxygen` in the code directory
     - if `doxygen` is not found, install by `sudo apt install doxygen`
 5. (optional) Run regression tests to verify everything works correctly
