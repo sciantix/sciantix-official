@@ -129,7 +129,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	history_variable.emplace_back();
 	history_variable[hv_counter].setName("Defect time");
-	history_variable[hv_counter].setUOM("(s)");
+	history_variable[hv_counter].setUOM("(h)");
 	history_variable[hv_counter].setInitialValue(Sciantix_history[11]);
 	history_variable[hv_counter].setFinalValue(Sciantix_history[11]);
 	history_variable[hv_counter].setOutput(0);
@@ -433,8 +433,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("H production rate");
 	sciantix_variable[sv_counter].setUOM("(at/m3/s)");
-	sciantix_variable[sv_counter].setInitialValue(3.08e20);
-	sciantix_variable[sv_counter].setFinalValue(3.08e20);
+	sciantix_variable[sv_counter].setInitialValue(2.34e23);
+	sciantix_variable[sv_counter].setFinalValue(2.34e23);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -571,6 +571,22 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[27]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[27]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Kr85m coolant");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[28]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("H partial pressure");
+	sciantix_variable[sv_counter].setUOM("(MPa)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[29]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[29]);
 	sciantix_variable[sv_counter].setOutput(1);
 	++sv_counter;
 
