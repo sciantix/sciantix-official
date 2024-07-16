@@ -10,56 +10,65 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: F. Bastien                                                             //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-
-#ifndef __VARIABLE_ARRAY_H__
-#define __VARIABLE_ARRAY_H__
+#ifndef INPUT_VARIABLE_H
+#define INPUT_VARIABLE_H
 
 #include "Variable.h"
 
-#include <vector>
-#include <map>
-#include <string>
-#include <iostream>
-
-template <class T>
-class VariableArray
+/**
+ * @brief A derived class specifically for handling input variables used in simulations or models.
+ *
+ * This class extends the `Variable` class, providing a structured way to manage input settings,
+ * such as parameters for simulations, ensuring that these inputs can be easily modified and retrieved.
+ */
+class InputVariable : virtual public Variable
 {
-private:
-    std::vector<T> array;
-    std::map<std::string, int> map;
-
 public:
-    VariableArray();
-    VariableArray(std::vector<T> data);
 
-    void push(T element);
-    void clear();
-    bool empty();
+	InputVariable(std::string name, int value)
+	{
+		this->name = name;
+		this->value = value;
+	}
 
-    T operator[](int index);
-    T operator[](std::string variable_name);
+	/**
+	 * @brief Sets the value of the input variable.
+	 *
+	 * @param v The new value to assign to the input variable.
+	 */
+	void setValue(double v)
+	{
+		/// Member function to set the setting value of the declared object.
+		value = v;
+	}
+
+	/**
+	 * @brief Retrieves the value of the input variable.
+	 *
+	 * @return The current value of the input variable.
+	 */
+	double getValue()
+	{
+		/// Member function to get the setting value of the object.
+		return value;
+	}
+
+	/**
+	 * @brief Constructor for InputVariable.
+	 */
+	InputVariable() {}
+
+	/**
+	 * @brief Destructor for InputVariable.
+	 */
+	~InputVariable() {}
+
+protected:
+	double value;
 };
 
-
-
-
-// class VariableArray
-// {
-// private:
-//     std::vector<Variable> array;
-//     std::map<std::string, int> map;
-
-// public:
-//     VariableArray();
-//     VariableArray(std::vector<Variable> data);
-//     void push(Variable element);
-//     void clear();
-//     Variable operator[](int index);
-//     Variable operator[](std::string variable_name);
-// };
-
-#endif
+#endif //INPUT_VARIABLE_H

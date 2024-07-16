@@ -33,7 +33,7 @@ void InputReading()
     // Read inital conditions
     if (!input_initial_conditions.fail())
     {
-        readParameters(input_initial_conditions, input_check);
+        readParameters(input_initial_conditions, input_check, Sciantix_variables);
     }
 
     // Read history
@@ -77,7 +77,7 @@ void InputReading()
     // Read scaling factors
     if (!input_scaling_factors.fail())
     {
-        readParameters(input_scaling_factors, input_check);
+        readParameters(input_scaling_factors, input_check, Sciantix_scaling_factors);
     }
     else
     {
@@ -120,7 +120,7 @@ void readSettings(std::ifstream &input, std::ofstream &output)
 }
 
 
-void readParameters(std::ifstream &input, std::ofstream &output)
+void readParameters(std::ifstream &input, std::ofstream &output, double Sciantix_Array[])
 {
     std::string line;
     std::vector<double> values;
@@ -162,6 +162,6 @@ void readParameters(std::ifstream &input, std::ofstream &output)
     for (int i = 0; i < values.size(); i++)
     {
         output << names[i] << " = " << values[i] << std::endl;
-        Sciantix_variables[i] = values[i];
+        Sciantix_Array[i] = values[i];
     }
 }
