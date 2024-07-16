@@ -55,7 +55,8 @@ void StoichiometryDeviation()
     /**
      * @brief
      * The model for fuel oxidation and stoichimetry deviation evolution is described with a semi-empirical model.
-     * @ref Carter and Lay, J. Nucl. Mater., 36:77–86, 1970.
+     * @see <a href="../../references/pdf_link/Carter_and_Lay_1970.pdf" target="_blank">Carter and Lay, J. Nucl. Mater., 36:77–86, 1970</a>.
+
      * The oxidation rate follows: dx/dt = alpha*(S/V)*[x_eq - x]*(Ph2o^0.5)
      *
      * alpha is the surface exchange coefficient for unirradiated UO2 oxidation obtained by experimments.
@@ -68,8 +69,8 @@ void StoichiometryDeviation()
      * Range of utilization:
      * - Pure steam
      * - Temperature range: 1273-1923
-     * @ref Cox et al. NUREG/CP-0078 (1986), U.S. NRC
-     *
+     * @see <a href="../../references/pdf_link/Cox_et_al_1986.pdf" target="_blank">Cox et al. NUREG/CP-0078 (1986), U.S. NRC</a>.
+
      */
 
     reference += "Carter and Lay, J. Nucl. Mater., 36:77-86, Cox et al. NUREG/CP-0078 (1986), U.S. NRC.";
@@ -93,7 +94,8 @@ void StoichiometryDeviation()
     /**
      * @brief
      * The model for fuel oxidation and stoichimetry deviation evolution is described with a semi-empirical model.
-     * @ref Carter and Lay, J. Nucl. Mater., 36:77–86, 1970.
+     * @see <a href="../../references/pdf_link/Carter_and_Lay_1970.pdf" target="_blank">Carter and Lay, J. Nucl. Mater., 36:77–86, 1970</a>.
+
      * The oxidation rate follows: dx/dt = alpha*(S/V)*[x_eq - x]*(Ph2o^0.5)
      *
      * alpha is the surface exchange coefficient for unirradiated UO2 oxidation obtained by experimments.
@@ -106,7 +108,7 @@ void StoichiometryDeviation()
      * Range of utilization:
      * - Pure steam
      * - Temperature range: 1158-2108
-     * @ref Bittel et al., J. Amer. Ceram. Soc., 52:446–451, 1969, reanalysed by Cox et al. NUREG/CP-0078 (1986), U.S. NRC
+     * @see <a href="../../references/pdf_link/Carter_and_Lay_1970.pdf" target="_blank">Carter and Lay, J. Nucl. Mater., 36:77–86, 1970</a>., reanalysed by <a href="../../references/pdf_link/Cox_et_al_1986.pdf" target="_blank">Cox et al. NUREG/CP-0078 (1986), U.S. NRC</a>.
      *
      */
 
@@ -131,7 +133,7 @@ void StoichiometryDeviation()
     /**
      * @brief
      * The model for fuel oxidation and stoichimetry deviation evolution is described with a semi-empirical model.
-     * @ref Carter and Lay, J. Nucl. Mater., 36:77–86, 1970.
+     * @see <a href="../../references/pdf_link/Carter_and_Lay_1970.pdf" target="_blank">Carter and Lay, J. Nucl. Mater., 36:77–86, 1970</a>.
      * The oxidation rate follows: dx/dt = alpha*(S/V)*[x_eq - x]*(Ph2o^0.5)
      *
      * alpha is the surface exchange coefficient for unirradiated UO2 oxidation obtained by experimments.
@@ -145,7 +147,7 @@ void StoichiometryDeviation()
      * - Pure steam
      * - Polycrystal sample
      * - Temperature range: 1273-1673
-     * @ref Abrefah et al., JNM., 208:98–110, 1994.
+     * @see <a href="../../references/pdf_link/Abrefah_et_al_1994.pdf" target="_blank">Abrefah et al., JNM., 208:98–110, 1994</a>.
      *
      */
 
@@ -170,7 +172,7 @@ void StoichiometryDeviation()
     /**
      * @brief
      * The model for fuel oxidation and stoichimetry deviation evolution is described with a semi-empirical model.
-     * @ref Carter and Lay, J. Nucl. Mater., 36:77–86, 1970.
+     * @see <a href="../../references/pdf_link/Carter_and_Lay_1970.pdf" target="_blank">Carter and Lay, J. Nucl. Mater., 36:77–86, 1970</a>.
      * The oxidation rate follows: dx/dt = alpha*(S/V)*[x_eq - x]*(Ph2o^0.5)
      *
      * alpha is the surface exchange coefficient for unirradiated UO2 oxidation obtained by experiments.
@@ -183,7 +185,7 @@ void StoichiometryDeviation()
      * Range of utilization:
      * - Pure steam
      * - Temperature range: 1073-1473
-     * @ref Imamura and. Une, JNM, 247:131–137, 1997.
+     * @see <a href="../../references/pdf_link/Imamura_and_Une_1997.pdf" target="_blank">Imamura and. Une, JNM, 247:131–137, 1997</a>.
      *
      */
 
@@ -208,7 +210,7 @@ void StoichiometryDeviation()
     /**
      * @brief
      * The model for fuel oxidation and stoichimetry deviation evolution is described with a mechanistic Langmuir-based approach
-     * @ref Massih, A. R. "UO2 fuel oxidation and fission gas release." Swedish Radiation Safety Authority report, Report 2018 (2018): 25.
+     * @see <a href="../../references/pdf_link/Massih_2018.pdf" target="_blank">Massih, A. R. "UO2 fuel oxidation and fission gas release." Swedish Radiation Safety Authority report, Report 2018 (2018): 25</a>.
      * The oxidation rate follows: dx/dt = theta/tau (1 - sqrt(Po2(x)/Po2))
      * In SCIANTIX, the ODE is rewritten as: dx / dt = K (1 - beta * exp(alpha * x))
      *
@@ -255,7 +257,7 @@ void StoichiometryDeviation()
     /**
      * @brief
      * The model for fuel oxidation and stoichimetry deviation evolution is described with a mechanistic Langmuir-based approach
-     * @ref Massih, A. R. "UO2 fuel oxidation and fission gas release." Swedish Radiation Safety Authority report, Report 2018 (2018): 25.
+     * @see <a href="../../references/pdf_link/Massih_2018.pdf" target="_blank">Massih, A. R. "UO2 fuel oxidation and fission gas release." Swedish Radiation Safety Authority report, Report 2018 (2018): 25</a>.
      * The oxidation rate follows: dx/dt = theta/tau (1 - sqrt(Po2(x)/Po2))
      * In SCIANTIX, the ODE is rewritten as: dx / dt = K (1 - beta * exp(alpha * x))
      *

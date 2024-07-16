@@ -60,7 +60,7 @@ void IntraGranularBubbleEvolution()
 		/// ----------------------------------
 		///
 		/// The evolution of small intra-granular bubbles in fuel grains is controlled by bubble nucleation, gas atom trapping, and irradiation-induced gas atom re-solution back in the lattice.
-		/// Description of the model in @ref Pizzocri et al., JNM, 502 (2018) 323-330.
+		/// @see Description of the model in <a href="../../references/pdf_link/Pizzocri_et_al_2018.pdf" target="_blank">Pizzocri et al., JNM, 502 (2018) 323-330</a>.
 		/// @param[out] intragranular_bubble_concentration
 		/// @param[out] intragranular_bubble_radius
 		
@@ -82,7 +82,8 @@ void IntraGranularBubbleEvolution()
 		/// ----------------------------------
 		///
 		/// The evolution of intragranular bubbles is modelled by means of temperature-driven correlations.
-		/// Description of the model in @ref White, Tucker, Journal of Nuclear Materials, 118 (1983), 1-38.
+		/// @see Description of the model in <a href="../../references/pdf_link/White_and_Tucker_1983.pdf" target="_blank">White, Tucker, Journal of Nuclear Materials, 118 (1983), 1-38</a>.
+
 		/// @param[in] local_fuel_temperature
 
 		reference += "White and Tucker, JNM, 118 (1983), 1-38.";

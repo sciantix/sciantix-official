@@ -32,7 +32,6 @@
 /**
  * @brief This routine defines the model for the grain growth phenomenon.
  * The choice of the model depends on the input_value iGrainGrowth.
- * 
  */
 void GrainGrowth();
 

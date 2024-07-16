@@ -1,4 +1,4 @@
-# **Input file example**
+# Input file example
 
 In this folder are reported the three essential input files required from SCIANTIX
 

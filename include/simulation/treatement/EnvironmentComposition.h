@@ -31,7 +31,7 @@
  * This estimation is used to determine the UO2 equilibrium oxygen partial pressure and stoichiometry,
  * in connection with macroscopic models for UO2+x.
  * 
- * @ref Lewis et al. JNM 227 (1995) 83-109
+ * @see <a href="../../references/pdf_link/Lewis_et_al_1995.pdf" target="_blank">Lewis et al. JNM 227 (1995) 83-109</a>.
  * 
  * @author
  * G. Petrosillo
