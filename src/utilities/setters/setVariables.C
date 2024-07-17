@@ -33,7 +33,8 @@ void SetVariables(
     VariableArray<InputVariable> &input_variable,
     VariableArray<PhysicsVariable> &history_variable,
     VariableArray<PhysicsVariable> &sciantix_variable,
-	VariableArray<PhysicsVariable> &physics_variable
+	VariableArray<PhysicsVariable> &physics_variable,
+	std::vector<double> modes_initial_conditions
 	)
 {
 	// -----------------------------------------------------------------------------------------------
@@ -113,12 +114,12 @@ void SetVariables(
 	// ---------------
 	// Diffusion modes
 	// ---------------
-	for (int i = 0; i < n_modes; ++i)
+	for (int i = 0; i < modes_initial_conditions.size(); ++i)
 	{
 		modes_initial_conditions[i] = Sciantix_diffusion_modes[i]; // Xe
 		for (int j = 1; j <= 17; j++)
 		{
-			modes_initial_conditions[j * n_modes + i] = Sciantix_diffusion_modes[j * n_modes + i];	
+			modes_initial_conditions[j * modes_initial_conditions.size() + i] = Sciantix_diffusion_modes[j * modes_initial_conditions.size() + i];	
 		}
 	}
 

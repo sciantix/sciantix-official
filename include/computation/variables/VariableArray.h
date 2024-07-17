@@ -25,6 +25,7 @@
 #include <string>
 #include <iostream>
 
+
 template <class T>
 class VariableArray
 {
@@ -42,24 +43,14 @@ public:
 
     T operator[](int index);
     T operator[](std::string variable_name);
+
+
+    // Iterators to easily make loops on the vector
+    typename std::vector<T>::iterator begin() {return array.begin();}
+    typename std::vector<T>::iterator end() {return array.end();}
+    typename std::vector<T>::const_iterator begin() const {return array.begin();}
+    typename std::vector<T>::const_iterator end() const {return array.end();}
 };
 
-
-
-
-// class VariableArray
-// {
-// private:
-//     std::vector<Variable> array;
-//     std::map<std::string, int> map;
-
-// public:
-//     VariableArray();
-//     VariableArray(std::vector<Variable> data);
-//     void push(Variable element);
-//     void clear();
-//     Variable operator[](int index);
-//     Variable operator[](std::string variable_name);
-// };
 
 #endif
