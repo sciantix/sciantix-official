@@ -14,32 +14,23 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include <vector>
+#ifndef SETSYSTEM_H
+#define SETSYSTEM_H
 
+#include "SciantixArray.h"
 #include "InputVariable.h"
-#include "VariableArray.h"
-#include "initValues.h"
+#include "System.h"
+#include "Matrix.h"
 
 
-/**
- * \brief This routine initializes vectors that hold physics variables, history variables,
- * Sciantix variables, and input variables. It also sets up the diffusion modes,
- * maps, and scaling factors required for the simulation. The function ensures that
- * each variable is correctly initialized based on the model options provided by the user.
- *
- * @param Sciantix_options Array of integers specifying user-selected options for various simulation models.
- * @param Sciantix_history Array of doubles used to store historical variables of the simulation.
- * @param Sciantix_variables Array of doubles representing the current variables in the simulation.
- * @param Sciantix_scaling_factors Array of doubles used for scaling various parameters within the model.
- * @param Sciantix_diffusion_modes Array of doubles that describe diffusion modes used in gas behavior modeling.
- */
-void SetVariables(
-    int Sciantix_options[], 
-    double Sciantix_history[], 
-    double Sciantix_variables[], 
-    double Sciantix_scaling_factors[], 
-    double Sciantix_diffusion_modes[],
-    SciantixArray<InputVariable> &input_variable,
-    SciantixArray<PhysicsVariable> &history_variable,
-    SciantixArray<PhysicsVariable> &sciantix_variable
-    );
+void setSystem(SciantixArray<System> &system, SciantixArray<Matrix> matrix, SciantixArray<InputVariable> &input_variable);
+
+System Xe_in_UO2(SciantixArray matrix, SciantixArray input_variable);
+System Xe_in_UO2HBS(SciantixArray matrix, SciantixArray input_variable);
+System Kr_in_UO2(SciantixArray matrix, SciantixArray input_variable);
+System He_in_UO2(SciantixArray matrix, SciantixArray input_variable);
+System Xe133_in_UO2(SciantixArray matrix, SciantixArray input_variable):
+System Kr85m_in_UO2(SciantixArray matrix, SciantixArray input_variable);
+
+
+#endif // SETSYSTEM_H

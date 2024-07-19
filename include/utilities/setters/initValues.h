@@ -137,7 +137,7 @@ std::vector<PhysicsVariable> initSciantixVariableValues(
         PhysicsVariable("FIMA", "(%)", Sciantix_variables[69], Sciantix_variables[69], toOutputHighBurnupStructure),
         PhysicsVariable("Effective burnup", "(MWd/kgUO2)", Sciantix_variables[39], Sciantix_variables[39], toOutputHighBurnupStructure),
         PhysicsVariable("Irradiation time", "(h)", Sciantix_variables[65], Sciantix_variables[65], 0),
-        PhysicsVariable("Fuel density", "(kg/m3)", Sciantix_variables[40], Sciantix_variables[40], 0.0),
+        PhysicsVariable("Fuel density", "(kg/m3)", Sciantix_variables[40], Sciantix_variables[40], 0),
 
         PhysicsVariable("U", "(at/m3)", Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45], Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45], 0),
         PhysicsVariable("U234", "(at/m3)", Sciantix_variables[41], Sciantix_variables[41], 0),

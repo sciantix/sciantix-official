@@ -2,11 +2,11 @@
 
 
 template <class T>
-VariableArray<T>::VariableArray(){}
+SciantixArray<T>::SciantixArray(){}
 
 
 template <class T>
-VariableArray<T>::VariableArray(std::vector<T> data)
+SciantixArray<T>::SciantixArray(std::vector<T> data)
 {
     array = data;
 
@@ -18,7 +18,7 @@ VariableArray<T>::VariableArray(std::vector<T> data)
 
 
 template <class T>
-void VariableArray<T>::push(T element)
+void SciantixArray<T>::push(T element)
 {
     if (map.find(element.getName()) != map.end())
     {
@@ -33,28 +33,30 @@ void VariableArray<T>::push(T element)
 
 
 template <class T>
-void VariableArray<T>::clear()
+void SciantixArray<T>::clear()
 {
     array.clear();
     map.clear();
 }
 
 template <class T>
-bool VariableArray<T>::empty()
+bool SciantixArray<T>::empty()
 {
     return array.empty();
 }
 
 
+
+
 template <class T>
-T VariableArray<T>::operator[](int index)
+T SciantixArray<T>::operator[](int index)
 {
     return array[index];
 }
 
 
 template <class T>
-T VariableArray<T>::operator[](std::string variable_name)
+T SciantixArray<T>::operator[](std::string variable_name)
 {
     if (map.find(variable_name) == map.end())
     {

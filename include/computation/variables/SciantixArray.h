@@ -27,15 +27,15 @@
 
 
 template <class T>
-class VariableArray
+class SciantixArray
 {
 private:
     std::vector<T> array;
     std::map<std::string, int> map;
 
 public:
-    VariableArray();
-    VariableArray(std::vector<T> data);
+    SciantixArray();
+    SciantixArray(std::vector<T> data);
 
     void push(T element);
     void clear();

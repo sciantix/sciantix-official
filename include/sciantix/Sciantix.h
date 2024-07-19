@@ -18,7 +18,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include "setVariables.h"
+#include "SetVariables.h"
 #include "MaterialDeclaration.h"
 #include "SetGas.h"
 #include "SetModel.h"
@@ -32,7 +32,14 @@
 
 
 // Variable arrays
-VariableArray sciantix_variables;
+SciantixArray sciantix_variable,
+    history_variable,
+    input_variable,
+    physics_variable,
+    sciantix_system,
+    matrix,
+    model,
+    gas;
 
 /**
  * \brief Executes the main Sciantix simulation program.
