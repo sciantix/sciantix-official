@@ -14,6 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef INPUT_INTERPOLATION_H
+#define INPUT_INTERPOLATION_H
+
 #include <vector>
 
 /**
@@ -28,3 +31,6 @@
  * @return The interpolated value at point x.
  */
 double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy, unsigned short int n);
+
+
+#endif // INPUT_INTERPOLATION_H

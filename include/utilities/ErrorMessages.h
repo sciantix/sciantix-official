@@ -14,6 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef ERROR_MESSAGES_H
+#define ERROR_MESSAGES_H
+
 #include <string>
 #include <iostream>
 #include <cstdlib>
@@ -55,3 +58,6 @@ namespace ErrorMessages
 	 */
 	void writeErrorLog();
 };
+
+
+#endif // ERROR_MESSAGES_H

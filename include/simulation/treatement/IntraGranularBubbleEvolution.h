@@ -14,6 +14,12 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+
+#ifndef INTRA_GRANULAR_BUBBLE_EVOLUTION_H
+#define INTRA_GRANULAR_BUBBLE_EVOLUTION_H
+
+
+
 #include "ModelDeclaration.h"
 #include "MapModel.h"
 #include "SciantixVariableDeclaration.h"
@@ -32,3 +38,6 @@
  * The models available in this routine determine the calculation of local bubble density and average size.
  */
 void IntraGranularBubbleEvolution();
+
+
+#endif // INTRA_GRANULAR_BUBBLE_EVOLUTION_H

@@ -14,6 +14,11 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+
+#ifndef INTER_GRANULAR_BUBBLE_EVOLUTION_H
+#define INTER_GRANULAR_BUBBLE_EVOLUTION_H
+
+
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
 #include "ModelDeclaration.h"
@@ -35,3 +40,5 @@
 <a href="../../references/pdf_link/Pastore_et_al_2013.pdf" target="_blank">Pastore et al., NED, 256 (2013) 75-86</a>.
  */
 void InterGranularBubbleEvolution();
+
+#endif // INTER_GRANULAR_BUBBLE_EVOLUTION_H

@@ -13,6 +13,9 @@
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
+#ifndef UPDATE_VARIABLES_H
+#define UPDATE_VARIABLES_H
+
 #include "SciantixVariableDeclaration.h"
 #include "SciantixDiffusionModeDeclaration.h"
 
@@ -31,3 +34,5 @@
  * @param Sciantix_diffusion_modes[] Array to store the Sciantix diffusion modes.
  */
 void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_modes[]);
+
+#endif // UPDATE_VARIABLES_H

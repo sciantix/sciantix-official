@@ -14,6 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef INPUT_READING_H
+#define INPUT_READING_H
+
 #include "ErrorMessages.h"
 #include "MainVariables.h"
 #include <string>
@@ -28,3 +31,5 @@
  * logs this data for verification, and manages any missing file errors.
  */
 void InputReading();
+
+#endif // INPUT_READING_H

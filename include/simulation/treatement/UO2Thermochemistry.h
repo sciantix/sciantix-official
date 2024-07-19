@@ -14,6 +14,11 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+
+#ifndef UO2_THERMOCHEMISTRY_H
+#define UO2_THERMOCHEMISTRY_H
+
+
 #include "SciantixVariableDeclaration.h"
 #include "HistoryVariableDeclaration.h"
 #include "ModelDeclaration.h"
@@ -48,3 +53,6 @@ void UO2Thermochemistry();
  * - x: 0 - 0.25
  */
 double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature);
+
+
+#endif // UO2_THERMOCHEMISTRY_H

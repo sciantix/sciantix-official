@@ -14,6 +14,11 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+
+#ifndef GRAIN_BOUNDARY_VENTING_H
+#define GRAIN_BOUNDARY_VENTING_H
+
+
 #include "SciantixVariableDeclaration.h"
 #include "HistoryVariableDeclaration.h"
 #include "ModelDeclaration.h"
@@ -26,3 +31,6 @@
  * @brief GrainBoundaryVenting() defines models for release mechanisms caused by venting through open porosities
  */
 void GrainBoundaryVenting();
+
+
+#endif // GRAIN_BOUNDARY_VENTING_H

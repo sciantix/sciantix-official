@@ -13,6 +13,9 @@
 //  Authors: D. Pizzocri, T. Barani                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
+#ifndef INITIALIZATION_H
+#define INITIALIZATION_H
+
 
 #include <cmath>
 #include <ConstantNumbers.h>
@@ -23,3 +26,5 @@
  * This function sets up the initial state for the simulation based on provided input values.
  */
 void Initialization();
+
+#endif // INITIALIZATION_H

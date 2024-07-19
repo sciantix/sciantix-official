@@ -14,6 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef SCIANTIX_H
+#define SCIANTIX_H
+
 #include <iostream>
 #include <map>
 #include <string>
@@ -42,3 +45,6 @@
  * @param Sciantix_diffusion_modes Array of doubles representing diffusion modes used in the simulation.
  */
 void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
+
+
+#endif // SCIANTIX_H

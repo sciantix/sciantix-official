@@ -14,6 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef GRAIN_BOUNDARY_MICRO_CRACKING_H
+#define GRAIN_BOUNDARY_MICRO_CRACKING_H
+
 #include "SciantixVariableDeclaration.h"
 #include "HistoryVariableDeclaration.h"
 #include "ModelDeclaration.h"
@@ -29,3 +32,5 @@
  * while the healing parameter is a constant value derived from burnup.
  */
 void GrainBoundaryMicroCracking();
+
+#endif // GRAIN_BOUNDARY_MICRO_CRACKING_H

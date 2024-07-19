@@ -14,6 +14,11 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+
+#ifndef HIGH_BURNUP_STRUCTURE_POROSITY_H
+#define HIGH_BURNUP_STRUCTURE_POROSITY_H
+
+
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
 #include "ModelDeclaration.h"
@@ -33,3 +38,5 @@
  * G. Zullo
  */
 void HighBurnupStructurePorosity();
+
+#endif // HIGH_BURNUP_STRUCTURE_POROSITY_H

@@ -14,6 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef UO2_H
+#define UO2_H
+
 #include "MatrixDeclaration.h"
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
@@ -30,3 +33,5 @@
  * @brief Defines the physical properties of the UO2 matrix.
  */
 void UO2();
+
+#endif // UO2_H

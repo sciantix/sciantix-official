@@ -4,6 +4,10 @@
 #include <fstream>
 #include "ErrorMessages.h"
 
+#ifndef BOUNDS_H
+#define BOUNDS_H
+
+
 namespace Configuration
 {
     struct Bounds
@@ -124,3 +128,5 @@ namespace Configuration
     }
 
 }
+
+#endif // BOUNDS_H

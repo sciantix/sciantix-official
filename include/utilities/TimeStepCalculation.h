@@ -13,6 +13,10 @@
 //  Authors: D. Pizzocri, T. Barani                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
+#ifndef TIME_STEP_CALCULATION_H
+#define TIME_STEP_CALCULATION_H
+
+
 #include "MainVariables.h"
 
 /**
@@ -21,3 +25,5 @@
  * in a fixed number of time steps (also set by input).
  */
 double TimeStepCalculation();
+
+#endif // TIME_STEP_CALCULATION_H

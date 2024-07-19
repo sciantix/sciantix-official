@@ -14,6 +14,10 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef SET_VARIABLES_H
+#define SET_VARIABLES_H
+
+
 #include <vector>
 
 #include "PhysicsVariableDeclaration.h"
@@ -42,3 +46,5 @@
  * @param Sciantix_diffusion_modes Array of doubles that describe diffusion modes used in gas behavior modeling.
  */
 void SetVariables(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
+
+#endif // SET_VARIABLES_H

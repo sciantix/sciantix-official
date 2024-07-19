@@ -14,6 +14,10 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+
+#ifndef GRAIN_BOUNDARY_SWEEPING_H
+#define GRAIN_BOUNDARY_SWEEPING_H
+
 #include "SciantixVariableDeclaration.h"
 #include "ModelDeclaration.h"
 #include "MapSciantixVariable.h"
@@ -24,3 +28,5 @@
  *
  */
 void GrainBoundarySweeping();
+
+#endif // GRAIN_BOUNDARY_SWEEPING_H

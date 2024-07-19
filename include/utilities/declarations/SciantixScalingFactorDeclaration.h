@@ -16,6 +16,10 @@
 
 /// SciantixScalingFactorDeclaration
 
+#ifndef SCIANTIX_SCALING_FACTOR_DECLARATION_H
+#define SCIANTIX_SCALING_FACTOR_DECLARATION_H
+
+
 extern double sf_resolution_rate;
 extern double sf_trapping_rate;
 extern double sf_nucleation_rate;
@@ -27,3 +31,6 @@ extern double sf_helium_production_rate;
 extern double sf_temperature;
 extern double sf_fission_rate;
 extern double sf_dummy;
+
+
+#endif // SCIANTIX_SCALING_FACTOR_DECLARATION_H

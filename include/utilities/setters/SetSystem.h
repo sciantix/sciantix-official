@@ -16,6 +16,9 @@
 
 /// SetSystem
 
+#ifndef SET_SYSTEM_H
+#define SET_SYSTEM_H
+
 #include "MapSystem.h"
 #include "SystemDeclaration.h"
 #include "MapPhysicsVariable.h"
@@ -40,3 +43,5 @@
  * is being simulated.
  */
 void SetSystem();
+
+#endif // SET_SYSTEM_H

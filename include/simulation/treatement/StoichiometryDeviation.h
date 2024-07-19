@@ -14,6 +14,11 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+
+#ifndef STOICHIOMETRY_DEVIATION_H
+#define STOICHIOMETRY_DEVIATION_H
+
+
 #include "ModelDeclaration.h"
 #include "InputVariableDeclaration.h"
 #include "SciantixVariableDeclaration.h"
@@ -32,3 +37,6 @@
  *
  */
 void StoichiometryDeviation( );
+
+
+#endif // STOICHIOMETRY_DEVIATION_H

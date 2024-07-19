@@ -14,6 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef UO2_HBS_H
+#define UO2_HBS_H
+
 #include "MatrixDeclaration.h"
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
@@ -32,3 +35,5 @@
  *
  */
 void UO2HBS();
+
+#endif // UO2_HBS_H

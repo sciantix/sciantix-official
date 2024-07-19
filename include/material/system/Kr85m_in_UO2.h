@@ -15,6 +15,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef KR85M_IN_UO2_H
+#define KR85M_IN_UO2_H
+
 #include "SystemDeclaration.h"
 #include "MatrixDeclaration.h"
 #include "MapMatrix.h"
@@ -27,3 +30,5 @@
  * 
  */
 void Kr85m_in_UO2();
+
+#endif // KR85M_IN_UO2_H

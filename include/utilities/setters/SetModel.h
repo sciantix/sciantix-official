@@ -14,6 +14,10 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef SET_MODEL_H
+#define SET_MODEL_H
+
+
 #include "GasDeclaration.h"
 #include "ModelDeclaration.h"
 #include "InputVariableDeclaration.h"
@@ -58,3 +62,6 @@
  * @brief This function is used to include the headers of the available models, in SetModel.h.
  */
 void SetModel();
+
+
+#endif // SET_MODEL_H
