@@ -12,11 +12,14 @@ if len(sys.argv) > 1:
 else:
     print("No path specified, using current directory.")
     path = "./"
-sciantixModule.setTestPath(path)
 
 # Equivatent to the MainSCIANTIX.C
-def main():
+def main(Path_of_execution):
     ''' this function is the same as MainSciantix.C but it uses pybind11 '''
+
+    # this set the path of execution
+    sciantixModule.setTestPath(Path_of_execution)
+
     # Initialisation 
     sciantixModule.InputReading()
     sciantixModule.Initialization()
@@ -82,4 +85,4 @@ def main():
     logExecutionTime(timer_end - timer_start, sciantixModule.Time_step_number)
 
 if __name__ == "__main__":
-    main()
+    main(path)
