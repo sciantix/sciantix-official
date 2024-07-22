@@ -104,7 +104,7 @@ void GrainBoundaryMicroCracking()
 			double factor = 2*sqrt(pow(sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue(), -0.5)-1);
 			
 			// Pcrit = Peq + (1-2/(pi*F))*Kic*sqrt(pi/radius)*(1/kt) //Pa
-			double geometrical_factor = 0.38;
+			double geometrical_factor = 0.5;
 			double fracture_stress = sciantix_variable[sv["Fracture toughness"]].getFinalValue()*1e6*sqrt(pi/(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue()*sin(matrix[sma["UO2"]].getSemidihedralAngle())))*(1/stressintensification)*(geometrical_factor)*(1-1/(factor*pi*geometrical_factor));
 			double critical_bubble_pressure = equilibriumpressure + fracture_stress;    //Pa
 			
@@ -120,9 +120,10 @@ void GrainBoundaryMicroCracking()
 			// double a=10;
 			// double b=50;
 			double a = 1;
-			double b = 30*sf_cent_parameter;
-			std::cout<<b<<std::endl;
-			double inflection = 0.9;
+			double b = 30*sf_span_parameter;
+			std::cout<<"Span: "<<b<<std::endl;
+			double inflection = 1*sf_cent_parameter;
+			std::cout<<"Inflection point: "<<inflection<<std::endl;
 			double microcracking_parameter = a*b*exp(b*(bubble_pressure/(inflection*critical_bubble_pressure)-1))/
 				(inflection*critical_bubble_pressure*1e-6*pow(1+a*exp(b*(bubble_pressure/(inflection*critical_bubble_pressure)-1)),2));
 			parameter.push_back(microcracking_parameter);
