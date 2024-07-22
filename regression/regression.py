@@ -8,6 +8,7 @@ This is a python script to execute the regression (running the validation databa
 
 """ ------------------- Import requiered depedencies ------------------- """
 import os
+import sys
 import subprocess
 import numpy as np
 import matplotlib.pyplot as plt

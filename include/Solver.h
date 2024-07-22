@@ -52,7 +52,7 @@ public:
 	 * @brief Solves the ODE y' = k / y + S using a limited growth model.
 	 *
 	 * @param initial_value The initial value of the dependent variable.
-	 * @param parameter A vector containing the growth rate and source term.
+	 * @param parameter A vector containing the growth rate [0] and source term [1].
 	 * @param increment The time increment.
 	 * @return The updated value after solving the ODE.
 	 */
@@ -95,6 +95,30 @@ public:
 			return initial_condition = 0.25 * (sqrt(1 + 8 * initial_condition * increment) - 1) / increment;
 		*/
 		return initial_condition / (1.0 + interaction_coefficient * initial_condition * increment);
+	}
+
+	/**
+	 * @brief Solves the ODE y' = -k y**2 using a binary interaction model.
+	 *
+	 * @param initial_condition The initial value of the dependent variable.
+	 * @param interaction_coefficient The interaction coefficient.
+	 * @param increment The time increment.
+	 * @return The updated value after solving the ODE.
+	 */
+	double BinaryInteractionVerification(double initial_condition, double interaction_coefficient, double increment,int mode)
+	/// Solver for the ODE [y' = -k y**2]
+	{
+		if(mode == 0){
+			if(increment == 0.0)
+				return initial_condition;
+			else
+				return initial_condition = 0.25 * (sqrt(1 + 8 * initial_condition * increment) - 1) / increment;
+			
+		}
+		if(mode == 1 ) {
+			return initial_condition / (1.0 + interaction_coefficient * initial_condition * increment);
+		}
+		std::cout << "no correct mode used" ;
 	}
 
 
