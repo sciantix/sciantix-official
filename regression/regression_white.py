@@ -33,6 +33,7 @@ gbSwelling1 = np.array([1.19, 1.16, 1.13, 1.12, 1.29,                   # 4000
                ])
 
 # Intergranular gaseous swelling database from White et al. (2006) experiments
+#########bubble density##############
 gbConcWhite = np.array([0.68, 0.80, 1.32, 1.99, 9.00,                   # 4000
                1.39, 2.12, 3.55, 1.87, 8.51, 27.90,            # 4004
                1.21, 2.93, 2.57, 2.62, 10.62,                  # 4005
@@ -44,8 +45,18 @@ gbConcWhite = np.array([0.68, 0.80, 1.32, 1.99, 9.00,                   # 4000
                3.15, 3.98, 4.92, 5.38,                         # 4162
                2.63, 3.56, 5.19, 5.7                           # 4163
                ])
-
-# Intergranular gaseous swelling database from White et al. (2006) experiments
+gbConcWhitesigma = np.array([0.46, 0.17, 0.24, 0.55, 1.13,                   # 4000
+               0.32,0.90,1.18,0.84,1.55,0,            # 4004
+               0.5,0.97,0.98,1.25,2.16,                  # 4005
+               0.49,0.44,0.73,0.31,1.35,                   # 4064
+               0.08,0.08,0.24,0.35,0,                   # 4065
+               0.51,0.25,0,                               # 4135
+               0.24,0.41,0.56,0.33,                         # 4136
+               0.57,0.47,                                     # 4140
+               0.78,1.27,1.50,1.39,                         # 4162
+               0.73,0.82,1.5,2.06                           # 4163
+               ])
+#########intergranular gas swelling##########
 gbSwellingWhite = np.array([0.97, 0.68, 0.53, 0.46, 0.17,                   # 4000
                    0.62, 0.7, 0.44, 0.56, 0.27, 0.16,              # 4004
                    0.94, 0.57, 0.42, 0.54, 0.27,                   # 4005
@@ -57,16 +68,78 @@ gbSwellingWhite = np.array([0.97, 0.68, 0.53, 0.46, 0.17,                   # 40
                    0.7, 0.46, 0.43, 0.43,                          # 4162
                    0.6, 0.59, 0.35, 0.4                            # 4163
                    ])
-
+gbSwellingWhitesigma = np.array([0.35, 0.12, 0.10, 0.10, 0.04,                   # 4000
+                   0.13, 0.26, 0.11, 0.15, 0.07, 0,              # 4004
+                   0.16,0.20,0.12,0.15,0.02,                   # 4005
+                   0.58,0.32,0.22,0.19,0.26,                   # 4064
+                   0.43,0.30,0.26,0.15,0,                   # 4065
+                   0.19,0.08,0,                               # 4135
+                   0.14,0.19,0.17,0.06,                          # 4136
+                   0.16, 0.10,                                     # 4140
+                   0.26,0.17,0.18,0.22,                          # 4162
+                   0.2,0.18,0.1,0.06                           # 4163
+                   ])
+#gbSwellingWhite *= 2
+#########fractional coverage##########
+FcSwellingWhite = np.array([42.96, 30.20, 27.82, 30.84, 24.09,                   # 4000
+                   33.39,39.28,30.02,39.88,36.71,36.77,              # 4004
+                   39.22,34.71,32.90,43.83,41.72,                   # 4005
+                   40.67,36.98,31.42,45.31,45.92,                   # 4064
+                   49.68,49.51,44.27,44.78,15.80,                   # 4065
+                   22.8,11.5,8.96,                               # 4135
+                   32.0,32.7,18.0,10.0,                          # 4136
+                   16.3,13.4,                                     # 4140
+                   37.11,28.12,30.36,27.74,                          # 4162
+                   34.44,31.95,30.22,36.11                            # 4163
+                   ])
+FcSwellingWhitesigma = np.array([5.95, 3.76, 3.98, 5.24, 0.8,                   # 4000
+                   6.19,6.9, 5.82,7.53,5.12,0,              # 4004
+                   5.90,8.32,8.49,6.30,2.15,                   # 4005
+                   11.51,6.69,6.74,7.66,5.30,                   # 4064
+                   7.42,5.51,6.99,6.02,0,                   # 4065
+                   8.6,2.6,0,                               # 4135
+                   6.0,8.2,8.2,3.5,                          # 4136
+                   7.6,5.2,                                     # 4140
+                   8.95,7.72,7.87,5.57,                          # 4162
+                   8.71,5.12,6.39,6.41                           # 4163
+                   ])
+#########vented fraction##########
+FvSwellingWhite = np.array([55.1,18.8, 7.3, 7.8, 0,                   # 4000
+                   17.0,23.0,3.2,33.7, 0, 0,              # 4004
+                   21.7,25.9,16.3,45.0,0,                   # 4005
+                   32.4,9.6,9.3, 0, 0,                   # 4064
+                   84.0,51.4,63.4,0,0,                   # 4065
+                   15.0,2.9,1.05,                               # 4135
+                   25.5,44.2,24.0,6.5,                          # 4136
+                   9.7,0,                                     # 4140
+                   0,5,1.5,6.3,                          # 4162
+                   10.4,3.0,0,5.0                            # 4163
+                   ])
+FvSwellingWhitesigma = np.array([13.0, 11.4, 2.8, 5.3, 0,                   # 4000
+                   9.1,19.1,1.5,34.3,0,0,              # 4004
+                   14.1,16.6,9.0,14.6,0,                   # 4005
+                   35.7,13.8,11.5, 0, 0,                   # 4064
+                   7.0,16.4,16.8,0,0,                   # 4065
+                   22.4,1.4,1.05,                               # 4135
+                   16.7,27.1,19.7,0.2,                          # 4136
+                   18.3,0,                                     # 4140
+                   0,4.7,2.0,9.0,                          # 4162
+                   10.9,0.8,0,5.5                            # 4163
+                   ])
 # Data generated from SCIANTIX 2.0
 gbSwelling2 = []
 FGR2 = []
 bbarea2 = []
 bbconc = []
 gold = []
+Fc = []
+Fv = []
 
 bbarea2_gold = []
 bbconc_gold = []
+FGR_gold = []
+Fc_gold = []
+Fv_gold = []
 
 sample_number = len(gbSwelling1)
 
@@ -132,8 +205,9 @@ def do_plot():
   # GOLD vs. SCIANTIX 2.0, no error bars
   fig, ax = plt.subplots()
 
-  ax.scatter(gbSwellingWhite, gbSwelling1, edgecolors='#757575', facecolors='red',   marker = '^', s=30, label='SCIANTIX 1.0', zorder = 1)
-  ax.scatter(gbSwellingWhite, gbSwelling2, edgecolors= None, facecolors='green', marker = '.', s=30, label='SCIANTIX 2.0', zorder = 2)
+  #ax.scatter(gbSwellingWhite, gbSwelling1, edgecolors='#757575', facecolors='red',   marker = '^', s=30, label='SCIANTIX 1.0', zorder = 1)
+  ax.scatter(gbSwellingWhite, gbSwelling2, edgecolors= None, facecolors='green', marker = '^', s=30, label='This work', zorder = 1)
+  ax.scatter(gbSwellingWhite, gold, edgecolors = None, facecolors='blue', marker = 'v', s=30, label='SCIANTIX 2.0 - GOLD', zorder = 2)
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
@@ -145,7 +219,7 @@ def do_plot():
   ax.set_xscale('log')
   ax.set_yscale('log')
 
-  # ax.set_title('Intergranular gaseous swelling')
+  ax.set_title('Intergranular gaseous swelling')
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
@@ -175,8 +249,9 @@ def do_plot():
   0.01102217, 0.0109665 , 0.01412458, 0.0097558 , 0.00991563, 0.00852714,
   0.01867004]))
 
-  ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', marker = '^', s=20, label='SCIANTIX 1.0', zorder = 1)
-  ax.errorbar(gbSwellingWhite, gbSwelling2, xerr = gbSwellingError, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), c = 'green', marker = '.', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0', zorder = 2)
+  #ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', marker = '^', s=20, label='SCIANTIX 1.0', zorder = 1)
+  ax.errorbar(gbSwellingWhite, gbSwelling2, xerr = gbSwellingWhitesigma, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work', zorder = 1)
+  ax.scatter(gbSwellingWhite, gold, marker = 'v', s=20, label='SCIANTIX 2.0 - GOLD', zorder = 2)
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
@@ -188,7 +263,7 @@ def do_plot():
   ax.set_xscale('log')
   ax.set_yscale('log')
 
-  # ax.set_title('Intergranular gaseous swelling')
+  ax.set_title('Intergranular gaseous swelling')
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
@@ -198,8 +273,8 @@ def do_plot():
   # GOLD vs. SCIANTIX 2.0 - area
   fig, ax = plt.subplots()
 
-  ax.scatter(gbSwellingWhite, bbarea2_gold, c = '#C9C954', edgecolors= '#999AA2', marker = 'o', s=20, label='Gold')
-  ax.scatter(gbSwellingWhite, bbarea2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
+  ax.scatter(gbSwellingWhite, bbarea2_gold, c = '#C9C954', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0 - GOLD')
+  ax.scatter(gbSwellingWhite, bbarea2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='This work')
 
   ax.set_xscale('log')
   ax.set_yscale('log')
@@ -213,14 +288,60 @@ def do_plot():
   # GOLD vs. SCIANTIX 2.0 - conc
   fig, ax = plt.subplots()
 
-  ax.scatter(gbConcWhite, bbconc_gold, c = '#C9C954', edgecolors= '#999AA2', marker = 'o', s=20, label='Gold')
-  ax.scatter(gbConcWhite, bbconc, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
+  ax.errorbar(gbConcWhite, bbconc, xerr = gbConcWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work', zorder = 1)
+  ax.scatter(gbConcWhite, bbconc_gold, marker = 'v', s=20, label='SCIANTIX 2.0 - GOLD', zorder = 2)
 
   ax.set_xscale('log')
   ax.set_yscale('log')
 
+  ax.plot([1e-3, 1e3],[1e-3, 1e3], '-', color = '#757575')
+  ax.plot([1e-3, 1e3],[2e-3, 2e3],'--', color = '#757575')
+  ax.plot([1e-3, 1e3],[0e-3, 0e3],'--', color = '#757575')
+
+  ax.set_xlim(1e-2, 1e2)
+  ax.set_ylim(1e-2, 1e2)
+
   ax.set_xlabel('Experimental (bub/m2)')
-  ax.set_ylabel('Calculated (mbub/2)')
+  ax.set_ylabel('Calculated (bub/m2)')
+  ax.legend()
+
+  plt.show()
+
+  # GOLD vs. SCIANTIX 2.0 - fractional coverage
+  fig, ax = plt.subplots()
+
+  ax.errorbar(FcSwellingWhite, Fc, xerr = FcSwellingWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work', zorder = 1)
+  ax.scatter(FcSwellingWhite, Fc_gold, marker = 'v', s=20, label='SCIANTIX 2.0 - GOLD', zorder = 2)
+
+
+  ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  ax.plot([0, 100],[20, 120],'--', color = '#757575')
+  ax.plot([0, 100],[-20, 80],'--', color = '#757575')
+
+  ax.set_xlim(0, 100)
+  ax.set_ylim(0, 100)
+
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+
+  plt.show()
+
+  # GOLD vs. SCIANTIX 2.0 - vented fraction
+  fig, ax = plt.subplots()
+
+  ax.errorbar(FvSwellingWhite, Fv, xerr = FvSwellingWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work', zorder = 1)
+  ax.scatter(FvSwellingWhite, Fv_gold, marker = 'v', s=20, label='SCIANTIX 2.0 - GOLD', zorder = 2)
+
+  ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  ax.plot([0, 100],[20, 120],'--', color = '#757575')
+  ax.plot([0, 100],[-20, 80],'--', color = '#757575')
+
+  ax.set_xlim(0, 100)
+  ax.set_ylim(0, 100)
+
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
   ax.legend()
 
   plt.show()
@@ -228,6 +349,7 @@ def do_plot():
   # FGR plot
   fig, ax = plt.subplots()
   ax.scatter(gbSwelling2, FGR2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='FGR SCIANTIX 2.0')
+  ax.scatter(gbSwelling2, FGR_gold, color = 'blue', marker = 'o', s=20, label='FGR SCIANTIX 2.0 - Gold')
 
   ax.set_xscale('log')
   ax.set_yscale('log')
@@ -244,8 +366,9 @@ def do_plot():
 
   fig, ax = plt.subplots()
 
-  ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 1.0')
+  #ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 1.0')
   ax.scatter(gbSwellingWhite, gbSwelling2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
+  ax.scatter(gbSwellingWhite, gold, color = 'blue', marker = 'v', s=20, label='SCIANTIX 2.0 - Gold')
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
@@ -421,6 +544,10 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
       FGRPos = findSciantixVariablePosition(data, "Fission gas release (/)")
       FGR2.append(100*data[row_number,FGRPos].astype(float))
 
+      # Retrieve the gold data of Fission gas release
+      FGRPosGold = findSciantixVariablePosition(data_gold, "Fission gas release (/)")
+      FGR_gold.append(100*data_gold[row_number,FGRPosGold].astype(float))
+
       # Retrieve the generated data of Intergranular bubble concentration (bub/m2)
       BubConcPos = findSciantixVariablePosition(data, "Intergranular bubble concentration (bub/m2)")
       bbconc.append(1e-12*data[row_number,BubConcPos].astype(float))
@@ -428,6 +555,22 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
       # Retrieve the gold data of Intergranular bubble concentration
       BubConcPosGold = findSciantixVariablePosition(data_gold, "Intergranular bubble concentration (bub/m2)")
       bbconc_gold.append(1e-12*data_gold[row_number,BubConcPosGold].astype(float))
+
+      # Retrieve the generated data of Intergranular fractional coverage (-)
+      FcPos = findSciantixVariablePosition(data, "Intergranular fractional coverage (/)")
+      Fc.append(100*data[row_number,FcPos].astype(float))
+
+      # Retrieve the gold data of Intergranular fractional coverage
+      FcPosGold = findSciantixVariablePosition(data_gold, "Intergranular fractional coverage (/)")
+      Fc_gold.append(100*data_gold[row_number,FcPosGold].astype(float))
+
+      # Retrieve the generated data of Intergranular fractional coverage (-)
+      FvPos = findSciantixVariablePosition(data, "Intergranular vented fraction (/)")
+      Fv.append(100*data[row_number,FvPos].astype(float))
+
+      # Retrieve the gold data of Intergranular fractional coverage
+      FvPosGold = findSciantixVariablePosition(data_gold, "Intergranular vented fraction (/)")
+      Fv_gold.append(100*data_gold[row_number,FvPosGold].astype(float))
 
       os.chdir('..')
 
