@@ -27,12 +27,12 @@ void SetGas()
 	Helium();
 	MapGas();
 
-	// Iodine();
-	// MapGas();
+	Iodine();
+	MapGas();
 
-	// Cesium();
-	// MapGas();
+	Cesium();
+	MapGas();
 
-	// CesiumIodine();
-	// MapGas();
+	CesiumIodine();
+	MapGas();
 }

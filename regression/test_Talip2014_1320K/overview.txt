@@ -9,12 +9,16 @@ Model	Gas production - Kr in UO2
 Model	Gas production - He in UO2	 
 Model	Gas production - Xe133 in UO2	 
 Model	Gas production - Kr85m in UO2	 
+Model	Gas production - I in UO2	 
+Model	Gas production - Cs in UO2	 
 Model	Intragranular bubble evolution	Case specific for annealing experiments and helium intragranular behaviour.
 Model	Gas diffusion - Xe in UO2	
 Model	Gas diffusion - Kr in UO2	
 Model	Gas diffusion - He in UO2	
 Model	Gas diffusion - Xe133 in UO2	
 Model	Gas diffusion - Kr85m in UO2	
+Model	Gas diffusion - I in UO2	
+Model	Gas diffusion - Cs in UO2	
 Model	Grain-boundary venting	not considered.
 Model	Intergranular bubble evolution	: No model for grain-boundary bubble evolution.
 
@@ -52,6 +56,18 @@ System	Kr85m in UO2	Production rate = cumulative yield * fission rate density * 
 	iResolutionRate: Cognini et al. NET 53 (2021) 562-571.
 	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
 	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
+	
+System	I in UO2	Production rate = cumulative yield * fission rate density * (1 - alpha).
+	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
+	iResolutionRate: Null resolution rate.
+	iTrappingRate: Null trapping rate.
+	iNucleationRate: Null nucleation rate.
+	
+System	Cs in UO2	Production rate = cumulative yield * fission rate density * (1 - alpha).
+	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
+	iResolutionRate: Null resolution rate.
+	iTrappingRate: Null trapping rate.
+	iNucleationRate: Null nucleation rate.
 	
 
 Input setting	iGrainGrowth = 2

@@ -4,9 +4,8 @@
 
 void Iodine()
 {
-	int index = int(gas.size() - 1);
-
 	gas.emplace_back();
+	int index = int(gas.size() - 1);
 	gas[index].setName("I");
 	gas[index].setAtomicNumber(53);
 	gas[index].setMassNumber(131);
