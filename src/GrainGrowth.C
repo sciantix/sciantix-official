@@ -71,7 +71,7 @@ void GrainGrowth()
 			parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
 			parameter.push_back(0.0);
 			parameter.push_back(0.0);
-			parameter.push_back(1.0); 
+			parameter.push_back(1.0);
 			parameter.push_back(- sciantix_variable[sv["Grain radius"]].getInitialValue());
 			parameter.push_back(- rate_constant * physics_variable[pv["Time step"]].getFinalValue());
 

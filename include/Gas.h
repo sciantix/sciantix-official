@@ -19,7 +19,6 @@
 
 #include "Material.h"
 
-/// Derived class for the fission gases (e.g., xenon, krypton, helium, iodine).
 class Gas : virtual public Material
 {
 protected:
@@ -28,7 +27,7 @@ protected:
 	double van_der_waals_volume;
 	double decay_rate;
 	double precursor_factor;
-	double GibbsEnergy; 
+	double gibbsEnergy; 
 
 public:
 	void setAtomicNumber(int y)
@@ -99,14 +98,12 @@ public:
 
 	void setGibbsEnergy(double y)
 	{
-		/// Member function to set the atomic number of the fission gas
-		atomic_number = y;
+		gibbsEnergy = y;
 	}
 
 	double getGibbsEnergy()
 	{
-		/// Member function to get the atomic number of the fission gas
-		return atomic_number;
+		return gibbsEnergy;
 	}
 	
 	Gas() { }

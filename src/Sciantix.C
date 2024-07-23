@@ -81,15 +81,19 @@ void Sciantix(int Sciantix_options[],
 	MapModel();
 	sciantix_simulation.GasDiffusion();
 
-	IodineReleaseTreshold();
-	MapModel();
-	sciantix_simulation.IodineReleaseTreshold();
+	std::cout << "cc" << std::endl;
+	std::cout << sciantix_variable[sv["Intergranular saturation fractional coverage"]].getFinalValue() << std::endl;
 
-	sciantix_simulation.CsIFormation();
+	// IodineReleaseTreshold();
+	// MapModel();
+	// sciantix_simulation.IodineReleaseTreshold();
+
+	// sciantix_simulation.CsIFormation();
 
 	GrainBoundaryMicroCracking();
 	MapModel();
 	sciantix_simulation.GrainBoundaryMicroCracking();
+	std::cout << sciantix_variable[sv["Intergranular saturation fractional coverage"]].getFinalValue() << std::endl;
 
 	GrainBoundaryVenting();
 	MapModel();

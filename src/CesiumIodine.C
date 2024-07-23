@@ -1,7 +1,5 @@
 #include "CesiumIodine.h"
 
-/// CesiumIodine
-
 void CesiumIodine()
 {
 	gas.emplace_back();
