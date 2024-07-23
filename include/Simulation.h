@@ -944,11 +944,11 @@ class Simulation : public Solver, public Model
 		else if (gas_name == "Xe in HBS")
 			return &modes_initial_conditions[15 * 40];
 
-		//else if(gas_name == "I")
-		//	return &modes_initial_conditions[18 * 40];
+		else if(gas_name == "I")
+			return &modes_initial_conditions[18 * 40];
 
-		//else if(gas_name == "Cs")
-		//	return &modes_initial_conditions[19 * 40];
+		else if(gas_name == "Cs")
+			return &modes_initial_conditions[19 * 40];
 		else
 		{
 			std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes." << std::endl;

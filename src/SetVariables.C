@@ -964,176 +964,175 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	// Iodine
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("I produced");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[101]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[101]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("I produced");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[101]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[101]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("I in grain");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[102]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[102]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("I in grain");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[102]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[102]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("I in intragranular solution");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[103]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[103]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("I in intragranular solution");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[103]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[103]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("I in intragranular bubbles");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[104]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[104]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("I in intragranular bubbles");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[104]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[104]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("I at grain boundary");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[105]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[105]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;	
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("I at grain boundary");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[105]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[105]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;	
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("I released");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[106]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[106]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("I released");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[106]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[106]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("I decayed");
-	// sciantix_variable[sv_counter].setUOM("(at/m3 s)");
-	// sciantix_variable[sv_counter].setInitialValue(0.0);
-	// sciantix_variable[sv_counter].setFinalValue(0.0);
-	// sciantix_variable[sv_counter].setOutput(0);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("I decayed");
+	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(0.0);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("Intragranular I atoms per bubble");
-	// sciantix_variable[sv_counter].setUOM("(at/bub)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[114]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[114]);
-	// sciantix_variable[sv_counter].setOutput(0);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Intragranular I atoms per bubble");
+	sciantix_variable[sv_counter].setUOM("(at/bub)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[114]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[114]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("Intergranular I atoms per bubble");
-	// sciantix_variable[sv_counter].setUOM("(at/bub)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[115]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[115]);
-	// sciantix_variable[sv_counter].setOutput(0);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Intergranular I atoms per bubble");
+	sciantix_variable[sv_counter].setUOM("(at/bub)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[115]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[115]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 	
-	// //Cesium
+	// Cesium
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("Cs produced");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[116]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[116]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Cs produced");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[116]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[116]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("Cs in grain");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[117]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[117]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Cs in grain");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[117]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[117]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("Cs in intragranular solution");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[118]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[118]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Cs in intragranular solution");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[118]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[118]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("Cs in intragranular bubbles");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[119]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[119]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Cs in intragranular bubbles");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[119]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[119]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("Cs at grain boundary");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[120]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[120]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;	
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Cs at grain boundary");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[120]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[120]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;	
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("Cs released");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[121]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[121]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Cs released");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[121]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[121]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("Cs decayed");
-	// sciantix_variable[sv_counter].setUOM("(at/m3 s)");
-	// sciantix_variable[sv_counter].setInitialValue(0.0);
-	// sciantix_variable[sv_counter].setFinalValue(0.0);
-	// sciantix_variable[sv_counter].setOutput(0);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Cs decayed");
+	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(0.0);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("Intragranular Cs atoms per bubble");
-	// sciantix_variable[sv_counter].setUOM("(at/bub)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[129]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[129]);
-	// sciantix_variable[sv_counter].setOutput(0);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Intragranular Cs atoms per bubble");
+	sciantix_variable[sv_counter].setUOM("(at/bub)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[129]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[129]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("Intergranular Cs atoms per bubble");
-	// sciantix_variable[sv_counter].setUOM("(at/bub)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[130]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[130]);
-	// sciantix_variable[sv_counter].setOutput(0);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Intergranular Cs atoms per bubble");
+	sciantix_variable[sv_counter].setUOM("(at/bub)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[130]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[130]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 	
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("CsI produced");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[131]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[131]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("CsI produced");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[131]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[131]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("I Partial Pressure");
-	// sciantix_variable[sv_counter].setUOM("(Pa)");
-	// sciantix_variable[sv_counter].setInitialValue(0.0);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[132]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("I Partial Pressure");
+	sciantix_variable[sv_counter].setUOM("(Pa)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[132]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("Cs Partial Pressure");
-	// sciantix_variable[sv_counter].setUOM("(Pa)");
-	// sciantix_variable[sv_counter].setInitialValue(0.0);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[133]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;
-
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Cs Partial Pressure");
+	sciantix_variable[sv_counter].setUOM("(Pa)");
+	sciantix_variable[sv_counter].setInitialValue(0.0);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[133]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
 
 	// ------------------------------------------------------------------------------------------------
 	// HBS-related variables
@@ -1229,8 +1228,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 		modes_initial_conditions[15 * n_modes + i] = Sciantix_diffusion_modes[15 * n_modes + i]; // Xe in UO2HBS
 		modes_initial_conditions[16 * n_modes + i] = Sciantix_diffusion_modes[16 * n_modes + i]; // Xe in UO2HBS - solution
 		modes_initial_conditions[17 * n_modes + i] = Sciantix_diffusion_modes[17 * n_modes + i]; // Xe in UO2HBS - bubbles
-		// modes_initial_conditions[18 * n_modes + i] = Sciantix_diffusion_modes[18 * n_modes + i]; // I
-		// modes_initial_conditions[19 * n_modes + i] = Sciantix_diffusion_modes[19 * n_modes + i]; // Cs
+		modes_initial_conditions[18 * n_modes + i] = Sciantix_diffusion_modes[18 * n_modes + i]; // I
+		modes_initial_conditions[19 * n_modes + i] = Sciantix_diffusion_modes[19 * n_modes + i]; // Cs
 	}
 
 	// ---------------

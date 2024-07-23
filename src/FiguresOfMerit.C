@@ -47,17 +47,7 @@ void FiguresOfMerit()
   else
     sciantix_variable[sv["Kr85m R/B"]].setFinalValue(0.0);
 
-  // Release-to-birth ratio: I
-  // Note that R/B is not defined with a null fission rate.
-  //   if (sciantix_variable[sv["I produced"]].getFinalValue() - sciantix_variable[sv["I decayed"]].getFinalValue() > 0.0)
-  //   sciantix_variable[sv["I R/B"]].setFinalValue(
-  //     sciantix_variable[sv["I released"]].getFinalValue() /
-  //     (sciantix_variable[sv["I produced"]].getFinalValue() - sciantix_variable[sv["I decayed"]].getFinalValue())
-  //   );
-  // else
-  //   sciantix_variable[sv["I R/B"]].setFinalValue(0.0);
-
-    // Helium fractional release
+  // Helium fractional release
   if (sciantix_variable[sv["He produced"]].getFinalValue() > 0.0)
     sciantix_variable[sv["He fractional release"]].setFinalValue(
       sciantix_variable[sv["He released"]].getFinalValue() /

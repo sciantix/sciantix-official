@@ -10,7 +10,7 @@ void Cs_in_UO2()
 	sciantix_system[index].setMatrixName("UO2");
 	sciantix_system[index].setRestructuredMatrix(0);
 	sciantix_system[index].setChemicalBehaviour(1);
-	sciantix_system[index].setYield(0.03);
+	sciantix_system[index].setYield(0.0);
 	sciantix_system[index].setRadiusInLattice(0.21e-9);
 	sciantix_system[index].setVolumeInLattice(matrix[sma["UO2"]].getSchottkyVolume());
 	sciantix_system[index].setHenryConstant(0.0);
