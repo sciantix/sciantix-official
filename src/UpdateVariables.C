@@ -104,7 +104,8 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[103] = sciantix_variable[sv["I in intragranular solution"]].getFinalValue();
 	Sciantix_variables[104] = sciantix_variable[sv["I in intragranular bubbles"]].getFinalValue();
 	Sciantix_variables[105] = sciantix_variable[sv["I at grain boundary"]].getFinalValue();
-	Sciantix_variables[106] = sciantix_variable[sv["I released"]].getFinalValue();	
+	Sciantix_variables[106] = sciantix_variable[sv["I released"]].getFinalValue();
+	Sciantix_variables[107] = sciantix_variable[sv["I decayed"]].getFinalValue();
 	Sciantix_variables[114] = sciantix_variable[sv["Intragranular I atoms per bubble"]].getFinalValue();
 	Sciantix_variables[115] = sciantix_variable[sv["Intergranular I atoms per bubble"]].getFinalValue();
 	Sciantix_variables[116] = sciantix_variable[sv["Cs produced"]].getFinalValue();
@@ -113,11 +114,12 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[119] = sciantix_variable[sv["Cs in intragranular bubbles"]].getFinalValue();
 	Sciantix_variables[120] = sciantix_variable[sv["Cs at grain boundary"]].getFinalValue();
 	Sciantix_variables[121] = sciantix_variable[sv["Cs released"]].getFinalValue();
+	Sciantix_variables[122] = sciantix_variable[sv["Cs decayed"]].getFinalValue();
 	Sciantix_variables[129] = sciantix_variable[sv["Intragranular Cs atoms per bubble"]].getFinalValue();
 	Sciantix_variables[130] = sciantix_variable[sv["Intergranular Cs atoms per bubble"]].getFinalValue();
 	Sciantix_variables[131] = sciantix_variable[sv["CsI produced"]].getFinalValue();
-	Sciantix_variables[132] = sciantix_variable[sv["I Partial Pressure"]].getFinalValue();
-	Sciantix_variables[133] = sciantix_variable[sv["Cs Partial Pressure"]].getFinalValue();
+	Sciantix_variables[132] = sciantix_variable[sv["I partial pressure"]].getFinalValue();
+	Sciantix_variables[133] = sciantix_variable[sv["Cs partial pressure"]].getFinalValue();
 
 	for (int i = 0; i < n_modes; ++i)
 	{

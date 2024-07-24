@@ -5,7 +5,7 @@ iIntraGranularBubbleEvolution = 1
 iResolutionRate = 1
 iTrappingRate = 1
 iNucleationRate = 1
-iOutput = 1
+iOutput = 2
 iGrainBoundaryVacancyDiffusivity = 1
 iGrainBoundaryBehaviour = 1
 iGrainBoundaryMicroCracking = 1
@@ -39,12 +39,6 @@ Initial composition He2 = 0
 Initial composition He3 = 0
 Initial composition He4 = 0
 Initial composition He5 = 0
-Initial composition I0 = 0
-Initial composition I1 = 0
-Initial composition I2 = 0
-Initial composition I3 = 0
-Initial composition I4 = 0
-Initial composition I5 = 0
 Initial intragranular bubbles0 = 0
 Initial intragranular bubbles1 = 0
 Burn_up[0] = 0
@@ -70,14 +64,6 @@ Initial composition Kr85m3 = 0
 Initial composition Kr85m4 = 0
 Initial composition Kr85m5 = 0
 Initial composition Kr85m6 = 0
-Initial composition I1310 = 0
-Initial composition I1311 = 0
-Initial composition I1312 = 0
-Initial composition I1313 = 0
-Initial composition I1314 = 0
-Initial composition I1315 = 0
-Initial composition I1316 = 0
 Initial stoichiometry deviation[0] = 0
-0	1273	1e+19	0	
-10000	1273	1e+19	0	
-20000	1373	1e+19	0	
+0	1473	1e+19	0	
+5500	1473	1e+19	0	

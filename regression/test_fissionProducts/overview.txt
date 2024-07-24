@@ -10,7 +10,7 @@ Model	Gas production - He in UO2
 Model	Gas production - Xe133 in UO2	 
 Model	Gas production - Kr85m in UO2	 
 Model	Gas production - I in UO2	 
-Model	Gas production - I131 in UO2	 
+Model	Gas production - Cs in UO2	 
 Model	Intragranular bubble evolution	: Pizzocri et al., JNM, 502 (2018) 323-330.
 Model	Gas diffusion - Xe in UO2	
 Model	Gas diffusion - Kr in UO2	
@@ -18,11 +18,10 @@ Model	Gas diffusion - He in UO2
 Model	Gas diffusion - Xe133 in UO2	
 Model	Gas diffusion - Kr85m in UO2	
 Model	Gas diffusion - I in UO2	
-Model	Gas diffusion - I131 in UO2	
+Model	Gas diffusion - Cs in UO2	
 Model	Grain-boundary micro-cracking	from Barani et al. (2017), JNM
 Model	Grain-boundary venting	not considered.
 Model	Intergranular bubble evolution	: Pastore et al., NED, 256 (2013) 75-86.
-Model	IodineReleaseTreshold	Kleykamp (1985) J. Nucl. Mater., 131, 221-246.
 
 Matrix	UO2	
 	: Ainscough et al., JNM, 49 (1973) 117-128.
@@ -65,7 +64,7 @@ System	I in UO2	Production rate = cumulative yield * fission rate density * (1 -
 	iTrappingRate: Null trapping rate.
 	iNucleationRate: Null nucleation rate.
 	
-System	I131 in UO2	Production rate = cumulative yield * fission rate density * (1 - alpha).
+System	Cs in UO2	Production rate = cumulative yield * fission rate density * (1 - alpha).
 	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
 	iResolutionRate: Null resolution rate.
 	iTrappingRate: Null trapping rate.
@@ -79,7 +78,7 @@ Input setting	iIntraGranularBubbleEvolution = 1
 Input setting	iResolutionRate = 1
 Input setting	iTrappingRate = 1
 Input setting	iNucleationRate = 1
-Input setting	iOutput = 1
+Input setting	iOutput = 2
 Input setting	iGrainBoundaryVacancyDiffusivity = 1
 Input setting	iGrainBoundaryBehaviour = 1
 Input setting	iGrainBoundaryMicroCracking = 1

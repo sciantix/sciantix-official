@@ -40,7 +40,6 @@
 #include "MapMatrix.h"
 #include "ConstantNumbers.h"
 #include "UO2Thermochemistry.h"
-#include "IodineReleaseTreshold.h"
 #include <iostream>
 #include <map>
 
@@ -495,6 +494,9 @@ class Simulation : public Solver, public Model
 			}
 		}
 
+		// if (history_variable[hv["Temperature"]].getFinalValue() > 1300)
+		// 	sciantix_variable[sv["I at grain boundary"]].setFinalValue(0);
+
 		// Calculation of the gas concentration arrived at the grain boundary, by mass balance.
 		for (auto& system : sciantix_system)
 		{
@@ -511,6 +513,7 @@ class Simulation : public Solver, public Model
 					sciantix_variable[sv[system.getGasName() + " released"]].setFinalValue(0.0);
 			}
 		}
+
 
 		// Intergranular gaseous swelling
 		sciantix_variable[sv["Intergranular gas swelling"]].setFinalValue(
@@ -579,35 +582,26 @@ class Simulation : public Solver, public Model
 		}
 	}
 
-	// threshold to put I131 at grain boundary = 0
-	void IodineReleaseTreshold()
-	{
-		if (history_variable[hv["Temperature"]].getFinalValue() > 1300)
-			{
-			double y = sciantix_variable[sv["I at grain boundary"]].getFinalValue();
-			sciantix_variable[sv["I at grain boundary"]].setFinalValue(0);
-			sciantix_variable[sv["I released"]].setFinalValue(sciantix_variable[sv["I released"]].getFinalValue() + y);
-			}	
-		// std::cout << "I Partial Pressure: " << sciantix_variable[sv["I Partial Pressure"]].getFinalValue() << std::endl;
-		// std::cout << "Cs Partial Pressure: " << sciantix_variable[sv["Cs Partial Pressure"]].getFinalValue() << std::endl;
-		// std::cout << "I at grain boundary: " << sciantix_variable[sv["I at grain boundary"]].getFinalValue() << std::endl;
-		// std::cout << "Cs at grain boundary: " << sciantix_variable[sv["Cs at grain boundary"]].getFinalValue() << std::endl;
-		// std::cout << "Perfect Gas Constant: " <<  PhysicsConstants::perfect_gazes_constant << std::endl;
-	}
-
 	// Function about the precipitation of CsI at the grain boundary
 	void CsIFormation()
 	{
-		const double Kb = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
+		const double kb = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
 
 		// Partial Pressures of Cs and I
-		sciantix_variable[sv["I Partial Pressure"]].setFinalValue(sciantix_variable[sv["I at grain boundary"]].getFinalValue() * (Kb) * history_variable[hv["Temperature"]].getFinalValue());
-		sciantix_variable[sv["Cs Partial Pressure"]].setFinalValue(sciantix_variable[sv["Cs at grain boundary"]].getFinalValue() * (Kb) * history_variable[hv["Temperature"]].getFinalValue());
+		sciantix_variable[sv["I partial pressure"]].setFinalValue(
+			sciantix_variable[sv["I at grain boundary"]].getFinalValue() * kb * history_variable[hv["Temperature"]].getFinalValue()
+		);
+		
+		sciantix_variable[sv["Cs partial pressure"]].setFinalValue(
+			sciantix_variable[sv["Cs at grain boundary"]].getFinalValue() * kb * history_variable[hv["Temperature"]].getFinalValue()
+		);
 
-		if ( 1e-22 < sciantix_variable[sv["I Partial Pressure"]].getFinalValue()  &&  sciantix_variable[sv["I Partial Pressure"]].getFinalValue() < 10000  &&  sciantix_variable[sv["Cs Partial Pressure"]].getFinalValue() < sciantix_variable[sv["I Partial Pressure"]].getFinalValue()) // pressure in Pa
-			{
-			sciantix_variable[sv["CsI produced"]].setFinalValue(sciantix_variable[sv["I at grain boundary"]].getFinalValue() + sciantix_variable[sv["Cs at grain boundary"]].getFinalValue());
-			}
+		if (sciantix_variable[sv["I partial pressure"]].getFinalValue() < 10000 && sciantix_variable[sv["Cs partial pressure"]].getFinalValue() < sciantix_variable[sv["I partial pressure"]].getFinalValue())
+			sciantix_variable[sv["CsI produced"]].setFinalValue(
+				sciantix_variable[sv["I at grain boundary"]].getFinalValue() + sciantix_variable[sv["Cs at grain boundary"]].getFinalValue()
+			);
+		sciantix_variable[sv["I at grain boundary"]].setFinalValue(0.);
+		sciantix_variable[sv["Cs at grain boundary"]].setFinalValue(0.);
 	}
 
 
