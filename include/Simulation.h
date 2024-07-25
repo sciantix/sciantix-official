@@ -494,8 +494,8 @@ class Simulation : public Solver, public Model
 			}
 		}
 
-		// if (history_variable[hv["Temperature"]].getFinalValue() > 1300)
-		// 	sciantix_variable[sv["I at grain boundary"]].setFinalValue(0);
+	    if (history_variable[hv["Temperature"]].getFinalValue() > 1300)
+	 	sciantix_variable[sv["I at grain boundary"]].setFinalValue(0);
 
 		// Calculation of the gas concentration arrived at the grain boundary, by mass balance.
 		for (auto& system : sciantix_system)
@@ -596,6 +596,7 @@ class Simulation : public Solver, public Model
 			sciantix_variable[sv["Cs at grain boundary"]].getFinalValue() * kb * history_variable[hv["Temperature"]].getFinalValue()
 		);
 
+		// 100000 > PI > 1E-30 and Pcs < 100000 - Pi
 		if (sciantix_variable[sv["I partial pressure"]].getFinalValue() < 10000 && sciantix_variable[sv["Cs partial pressure"]].getFinalValue() < sciantix_variable[sv["I partial pressure"]].getFinalValue())
 		{
 			sciantix_variable[sv["CsI produced"]].setFinalValue(
@@ -604,6 +605,24 @@ class Simulation : public Solver, public Model
 			sciantix_variable[sv["I at grain boundary"]].setFinalValue(0.);
 			sciantix_variable[sv["Cs at grain boundary"]].setFinalValue(0.);
 		}
+	}
+
+
+	// threshold to put I131 and CsI at grain boundary = 0 under certain temperature conditions
+	void ReleaseTreshold()
+	{
+		if (history_variable[hv["Temperature"]].getFinalValue() > 1300)
+			{
+			double y = sciantix_variable[sv["I at grain boundary"]].getFinalValue();
+			sciantix_variable[sv["I at grain boundary"]].setFinalValue(0);
+			sciantix_variable[sv["I released"]].setFinalValue(sciantix_variable[sv["I released"]].getFinalValue() + y);
+
+			double z = sciantix_variable[sv["CsI produced"]].getFinalValue();
+			sciantix_variable[sv["CsI produced"]].setFinalValue(0);
+			sciantix_variable[sv["CsI released"]].setFinalValue(sciantix_variable[sv["CsI released"]].getFinalValue() + z);
+			}	
+			
+		// std::cout << "Burnup" << sciantix_variable[sv["Burnup"]].getFinalValue() << std::endl;
 	}
 
 
