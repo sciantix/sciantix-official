@@ -42,13 +42,7 @@ void SetSystem()
 			I_in_UO2();
 			MapSystem();
 
-			I131_in_UO2();
-			MapSystem();
-
 			Cs_in_UO2();
-			MapSystem();
-
-			Cs137_in_UO2();
 			MapSystem();
 					
 			break;

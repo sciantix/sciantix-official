@@ -104,14 +104,8 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[103] = sciantix_variable[sv["I in intragranular solution"]].getFinalValue();
 	Sciantix_variables[104] = sciantix_variable[sv["I in intragranular bubbles"]].getFinalValue();
 	Sciantix_variables[105] = sciantix_variable[sv["I at grain boundary"]].getFinalValue();
-	Sciantix_variables[106] = sciantix_variable[sv["I released"]].getFinalValue();	
-	Sciantix_variables[107] = sciantix_variable[sv["I131 produced"]].getFinalValue();
-	Sciantix_variables[108] = sciantix_variable[sv["I131 in grain"]].getFinalValue();
-	Sciantix_variables[109] = sciantix_variable[sv["I131 in intragranular solution"]].getFinalValue();
-	Sciantix_variables[110] = sciantix_variable[sv["I131 in intragranular bubbles"]].getFinalValue();
-	Sciantix_variables[111] = sciantix_variable[sv["I131 decayed"]].getFinalValue();
-	Sciantix_variables[112] = sciantix_variable[sv["I131 at grain boundary"]].getFinalValue();
-	Sciantix_variables[113] = sciantix_variable[sv["I131 released"]].getFinalValue();
+	Sciantix_variables[106] = sciantix_variable[sv["I released"]].getFinalValue();
+	Sciantix_variables[107] = sciantix_variable[sv["I decayed"]].getFinalValue();
 	Sciantix_variables[114] = sciantix_variable[sv["Intragranular I atoms per bubble"]].getFinalValue();
 	Sciantix_variables[115] = sciantix_variable[sv["Intergranular I atoms per bubble"]].getFinalValue();
 	Sciantix_variables[116] = sciantix_variable[sv["Cs produced"]].getFinalValue();
@@ -120,19 +114,13 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[119] = sciantix_variable[sv["Cs in intragranular bubbles"]].getFinalValue();
 	Sciantix_variables[120] = sciantix_variable[sv["Cs at grain boundary"]].getFinalValue();
 	Sciantix_variables[121] = sciantix_variable[sv["Cs released"]].getFinalValue();
-	Sciantix_variables[122] = sciantix_variable[sv["Cs137 produced"]].getFinalValue();
-	Sciantix_variables[123] = sciantix_variable[sv["Cs137 in grain"]].getFinalValue();
-	Sciantix_variables[124] = sciantix_variable[sv["Cs137 in intragranular solution"]].getFinalValue();
-	Sciantix_variables[125] = sciantix_variable[sv["Cs137 in intragranular bubbles"]].getFinalValue();
-	Sciantix_variables[126] = sciantix_variable[sv["Cs137 decayed"]].getFinalValue();
-	Sciantix_variables[127] = sciantix_variable[sv["Cs137 at grain boundary"]].getFinalValue();
-	Sciantix_variables[128] = sciantix_variable[sv["Cs137 released"]].getFinalValue();
+	Sciantix_variables[122] = sciantix_variable[sv["Cs decayed"]].getFinalValue();
 	Sciantix_variables[129] = sciantix_variable[sv["Intragranular Cs atoms per bubble"]].getFinalValue();
 	Sciantix_variables[130] = sciantix_variable[sv["Intergranular Cs atoms per bubble"]].getFinalValue();
 	Sciantix_variables[131] = sciantix_variable[sv["CsI produced"]].getFinalValue();
 	Sciantix_variables[132] = sciantix_variable[sv["I Partial Pressure"]].getFinalValue();
 	Sciantix_variables[133] = sciantix_variable[sv["Cs Partial Pressure"]].getFinalValue();
-	Sciantix_variables[134] = sciantix_variable[sv["CsI released"]].getFinalValue();
+	//Sciantix_variables[134] = sciantix_variable[sv["CsI released"]].getFinalValue();
 
 
 
@@ -158,10 +146,10 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 		Sciantix_diffusion_modes[16 * n_modes + i] = modes_initial_conditions[16 * n_modes + i]; // Xe in UO2 HBS - solution
 		Sciantix_diffusion_modes[17 * n_modes + i] = modes_initial_conditions[17 * n_modes + i]; // Xe in UO2 HBS - bubbles
 		Sciantix_diffusion_modes[18 * n_modes + i] = modes_initial_conditions[18 * n_modes + i]; 
-		Sciantix_diffusion_modes[19 * n_modes + i] = modes_initial_conditions[19 * n_modes + i]; 
-		Sciantix_diffusion_modes[20 * n_modes + i] = modes_initial_conditions[20 * n_modes + i]; //I
-		Sciantix_diffusion_modes[18 * n_modes + i] = modes_initial_conditions[18 * n_modes + i]; 
-		Sciantix_diffusion_modes[19 * n_modes + i] = modes_initial_conditions[19 * n_modes + i]; 
-		Sciantix_diffusion_modes[20 * n_modes + i] = modes_initial_conditions[20 * n_modes + i]; //I131
+		Sciantix_diffusion_modes[19 * n_modes + i] = modes_initial_conditions[19 * n_modes + i];
+		Sciantix_diffusion_modes[20 * n_modes + i] = modes_initial_conditions[19 * n_modes + i]; 
+		Sciantix_diffusion_modes[21 * n_modes + i] = modes_initial_conditions[19 * n_modes + i]; 
+		Sciantix_diffusion_modes[22 * n_modes + i] = modes_initial_conditions[19 * n_modes + i]; 
+		Sciantix_diffusion_modes[23 * n_modes + i] = modes_initial_conditions[19 * n_modes + i]; 
 	}
 }

@@ -969,7 +969,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[101]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[101]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -977,7 +977,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[102]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[102]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -985,7 +985,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[103]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[103]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -993,7 +993,15 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[104]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[104]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("I decayed");
+	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[107]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[107]);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1001,7 +1009,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[105]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[105]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;	
 
 	sciantix_variable.emplace_back();
@@ -1009,14 +1017,6 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[106]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[106]);
-	sciantix_variable[sv_counter].setOutput(1);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("I decayed");
-	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
-	sciantix_variable[sv_counter].setInitialValue(0.0);
-	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
@@ -1035,79 +1035,15 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[115]);
 	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("I131 produced");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[107]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[107]);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("I131 in grain");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[108]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[108]);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("I131 in intragranular solution");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[109]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[109]);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("I131 in intragranular bubbles");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[110]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[110]);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("I131 decayed");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[111]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[111]);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("I131 at grain boundary"); // precipitated
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[112]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[112]);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("I131 released");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[113]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[113]);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("I131 R/B");
-	sciantix_variable[sv_counter].setUOM("(/)");
-	sciantix_variable[sv_counter].setInitialValue(0.0);
-	sciantix_variable[sv_counter].setFinalValue(0.0);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	//Césium
+	
+	// Cesium
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Cs produced");
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[116]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[116]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1115,7 +1051,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[117]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[117]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1123,7 +1059,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[118]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[118]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1131,7 +1067,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[119]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[119]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1139,7 +1075,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[120]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[120]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;	
 
 	sciantix_variable.emplace_back();
@@ -1147,14 +1083,14 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[121]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[121]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Cs decayed");
 	sciantix_variable[sv_counter].setUOM("(at/m3 s)");
-	sciantix_variable[sv_counter].setInitialValue(0.0);
-	sciantix_variable[sv_counter].setFinalValue(0.0);
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[122]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[122]);
 	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
@@ -1173,102 +1109,38 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[130]);
 	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Cs137 produced");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[122]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[122]);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Cs137 in grain");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[123]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[123]);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Cs137 in intragranular solution");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[124]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[124]);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Cs137 in intragranular bubbles");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[125]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[125]);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Cs137 decayed");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[126]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[126]);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Cs137 at grain boundary"); // precipitated
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[127]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[127]);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Cs137 released");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[128]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[128]);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Cs137 R/B");
-	sciantix_variable[sv_counter].setUOM("(/)");
-	sciantix_variable[sv_counter].setInitialValue(0.0);
-	sciantix_variable[sv_counter].setFinalValue(0.0);
-	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	++sv_counter;
-
+	
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("CsI produced");
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[131]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[131]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("I Partial Pressure");
+	sciantix_variable[sv_counter].setName("I partial pressure");
 	sciantix_variable[sv_counter].setUOM("(Pa)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[132]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Cs Partial Pressure");
+	sciantix_variable[sv_counter].setName("Cs partial pressure");
 	sciantix_variable[sv_counter].setUOM("(Pa)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[133]);
-	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
-	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("CsI released");
-	sciantix_variable[sv_counter].setUOM("(at/m3)");
-	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[134]);
-	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[134]);
-	sciantix_variable[sv_counter].setOutput(1);
-	++sv_counter;
+	// sciantix_variable.emplace_back();
+	// sciantix_variable[sv_counter].setName("CsI released");
+	// sciantix_variable[sv_counter].setUOM("(at/m3)");
+	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[134]);
+	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[134]);
+	// sciantix_variable[sv_counter].setOutput(1);
+	// ++sv_counter;
 
 	// ------------------------------------------------------------------------------------------------
 	// HBS-related variables
@@ -1366,10 +1238,10 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 		modes_initial_conditions[17 * n_modes + i] = Sciantix_diffusion_modes[17 * n_modes + i]; // Xe in UO2HBS - bubbles
 		modes_initial_conditions[18 * n_modes + i] = Sciantix_diffusion_modes[18 * n_modes + i];
 		modes_initial_conditions[19 * n_modes + i] = Sciantix_diffusion_modes[19 * n_modes + i];
-		modes_initial_conditions[20 * n_modes + i] = Sciantix_diffusion_modes[20 * n_modes + i]; // I
-		modes_initial_conditions[21 * n_modes + i] = Sciantix_diffusion_modes[18 * n_modes + i];
+		modes_initial_conditions[20 * n_modes + i] = Sciantix_diffusion_modes[19 * n_modes + i];
+		modes_initial_conditions[21 * n_modes + i] = Sciantix_diffusion_modes[19 * n_modes + i];
 		modes_initial_conditions[22 * n_modes + i] = Sciantix_diffusion_modes[19 * n_modes + i];
-		modes_initial_conditions[23 * n_modes + i] = Sciantix_diffusion_modes[20 * n_modes + i]; // Cs
+		modes_initial_conditions[23 * n_modes + i] = Sciantix_diffusion_modes[19 * n_modes + i];
 	}
 
 	// ---------------

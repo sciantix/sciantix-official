@@ -40,7 +40,6 @@
 #include "MapMatrix.h"
 #include "ConstantNumbers.h"
 #include "UO2Thermochemistry.h"
-#include "ReleaseTreshold.h"
 #include <iostream>
 #include <map>
 
@@ -495,6 +494,9 @@ class Simulation : public Solver, public Model
 			}
 		}
 
+	    if (history_variable[hv["Temperature"]].getFinalValue() > 1300)
+	 	sciantix_variable[sv["I at grain boundary"]].setFinalValue(0);
+
 		// Calculation of the gas concentration arrived at the grain boundary, by mass balance.
 		for (auto& system : sciantix_system)
 		{
@@ -511,6 +513,7 @@ class Simulation : public Solver, public Model
 					sciantix_variable[sv[system.getGasName() + " released"]].setFinalValue(0.0);
 			}
 		}
+
 
 		// Intergranular gaseous swelling
 		sciantix_variable[sv["Intergranular gas swelling"]].setFinalValue(
@@ -579,20 +582,27 @@ class Simulation : public Solver, public Model
 		}
 	}
 
-
 	// Function about the precipitation of CsI at the grain boundary
 	void CsIFormation()
 	{
-		const double Kb = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
+		const double kb = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
 
 		// Partial Pressures of Cs and I
-		sciantix_variable[sv["I Partial Pressure"]].setFinalValue(sciantix_variable[sv["I at grain boundary"]].getFinalValue() * (Kb) * history_variable[hv["Temperature"]].getFinalValue());
-		sciantix_variable[sv["Cs Partial Pressure"]].setFinalValue(sciantix_variable[sv["Cs at grain boundary"]].getFinalValue() * (Kb) * history_variable[hv["Temperature"]].getFinalValue());
+		sciantix_variable[sv["I partial pressure"]].setFinalValue(
+			sciantix_variable[sv["I at grain boundary"]].getFinalValue() * kb * history_variable[hv["Temperature"]].getFinalValue()
+		);
+		
+		sciantix_variable[sv["Cs partial pressure"]].setFinalValue(
+			sciantix_variable[sv["Cs at grain boundary"]].getFinalValue() * kb * history_variable[hv["Temperature"]].getFinalValue()
+		);
 
-		if ( 1e-22 < sciantix_variable[sv["I Partial Pressure"]].getFinalValue()  &&  sciantix_variable[sv["I Partial Pressure"]].getFinalValue() < 10000  &&  sciantix_variable[sv["Cs Partial Pressure"]].getFinalValue() < sciantix_variable[sv["I Partial Pressure"]].getFinalValue()) // pressure in Pa
-			{
-			sciantix_variable[sv["CsI produced"]].setFinalValue(sciantix_variable[sv["I at grain boundary"]].getFinalValue() + sciantix_variable[sv["Cs at grain boundary"]].getFinalValue());
-			}
+		// 100000 > PI > 1E-30 and Pcs < 100000 - Pi
+		if (sciantix_variable[sv["I partial pressure"]].getFinalValue() < 10000 && sciantix_variable[sv["Cs partial pressure"]].getFinalValue() < sciantix_variable[sv["I partial pressure"]].getFinalValue())
+			sciantix_variable[sv["CsI produced"]].setFinalValue(
+				sciantix_variable[sv["I at grain boundary"]].getFinalValue() + sciantix_variable[sv["Cs at grain boundary"]].getFinalValue()
+			);
+		sciantix_variable[sv["I at grain boundary"]].setFinalValue(0.);
+		sciantix_variable[sv["Cs at grain boundary"]].setFinalValue(0.);
 	}
 
 
@@ -947,17 +957,12 @@ class Simulation : public Solver, public Model
 		else if (gas_name == "Xe in HBS")
 			return &modes_initial_conditions[15 * 40];
 
-		else if (gas_name == "I131")
+		else if(gas_name == "I")
 			return &modes_initial_conditions[18 * 40];
 
-		else if(gas_name == "I")
+		else if(gas_name == "Cs")
 			return &modes_initial_conditions[21 * 40];
 
-		else if (gas_name == "Cs137")
-			return &modes_initial_conditions[24 * 40];
-
-		else if(gas_name == "Cs")
-			return &modes_initial_conditions[27 * 40];
 		else
 		{
 			std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes." << std::endl;
@@ -985,18 +990,12 @@ class Simulation : public Solver, public Model
 		else if (gas_name == "Xe in HBS")
 			return &modes_initial_conditions[16 * 40];
 
-		else if (gas_name == "I131")
+		else if(gas_name == "I")
 			return &modes_initial_conditions[19 * 40];
 
-		else if(gas_name == "I")
+		else if(gas_name == "Cs")
 			return &modes_initial_conditions[22 * 40];
 
-		else if (gas_name == "Cs137")
-			return &modes_initial_conditions[25 * 40];
-
-		else if(gas_name == "Cs")
-			return &modes_initial_conditions[28 * 40];
-		
 		else
 		{
 			std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesSolution." << std::endl;
@@ -1021,17 +1020,14 @@ class Simulation : public Solver, public Model
 		else if (gas_name == "Kr85m")
 			return &modes_initial_conditions[14 * 40];
 
-		else if (gas_name == "I131")
-			return &modes_initial_conditions[20 * 40];
+		else if (gas_name == "Xe in HBS")
+			return &modes_initial_conditions[17 * 40];
 
 		else if(gas_name == "I")
-			return &modes_initial_conditions[23 * 40];	
-
-		else if (gas_name == "Cs137")
-			return &modes_initial_conditions[26 * 40];
+			return &modes_initial_conditions[20 * 40];
 
 		else if(gas_name == "Cs")
-			return &modes_initial_conditions[29 * 40];	
+			return &modes_initial_conditions[23 * 40];
 
 		else
 		{

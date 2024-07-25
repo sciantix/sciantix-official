@@ -81,11 +81,7 @@ void Sciantix(int Sciantix_options[],
 	MapModel();
 	sciantix_simulation.GasDiffusion();
 
-	ReleaseTreshold();
-	MapModel();
-	sciantix_simulation.ReleaseTreshold();
-
-	sciantix_simulation.CsIFormation();
+	// sciantix_simulation.CsIFormation();
 
 	GrainBoundaryMicroCracking();
 	MapModel();

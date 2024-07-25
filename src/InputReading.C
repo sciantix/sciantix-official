@@ -241,24 +241,6 @@ void InputReading()
 		Sciantix_variables[17] = initial_composition_He[4];
 		Sciantix_variables[18] = initial_composition_He[5];
 
-		std::vector<double> initial_composition_I;
-		initial_composition_I = ReadSeveralParameters("Initial composition I", input_initial_conditions, input_check);
-		Sciantix_variables[101] = initial_composition_I[0];
-		Sciantix_variables[102] = initial_composition_I[1];
-		Sciantix_variables[103] = initial_composition_I[2];
-		Sciantix_variables[104] = initial_composition_I[3];
-		Sciantix_variables[105] = initial_composition_I[4];
-		Sciantix_variables[106] = initial_composition_I[5];
-
-		std::vector<double> initial_composition_Cs;
-		initial_composition_Cs = ReadSeveralParameters("Initial composition Cs", input_initial_conditions, input_check);
-		Sciantix_variables[116] = initial_composition_Cs[0];
-		Sciantix_variables[117] = initial_composition_Cs[1];
-		Sciantix_variables[118] = initial_composition_Cs[2];
-		Sciantix_variables[119] = initial_composition_Cs[3];
-		Sciantix_variables[120] = initial_composition_Cs[4];
-		Sciantix_variables[121] = initial_composition_Cs[5];
-
 		std::vector<double> initial_intragranular_bubbles;
 		initial_intragranular_bubbles = ReadSeveralParameters("Initial intragranular bubbles", input_initial_conditions, input_check);
 		Sciantix_variables[19] = initial_intragranular_bubbles[0];
@@ -299,36 +281,31 @@ void InputReading()
 		Sciantix_variables[61] = initial_composition_Kr85m[4];
 		Sciantix_variables[62] = initial_composition_Kr85m[5];
 		Sciantix_variables[63] = initial_composition_Kr85m[6];
-
-		std::vector<double> initial_composition_I131;
-		initial_composition_I131 = ReadSeveralParameters("Initial composition I131", input_initial_conditions, input_check);
-
-		Sciantix_variables[107] = initial_composition_I131[0];
-		Sciantix_variables[108] = initial_composition_I131[1];
-		Sciantix_variables[109] = initial_composition_I131[2];
-		Sciantix_variables[110] = initial_composition_I131[3];
-		Sciantix_variables[111] = initial_composition_I131[4];
-		Sciantix_variables[112] = initial_composition_I131[5];
-		Sciantix_variables[113] = initial_composition_I131[6];
-
-		std::vector<double> initial_composition_Cs137;
-		initial_composition_Cs137 = ReadSeveralParameters("Initial composition Cs137", input_initial_conditions, input_check);
-
-		Sciantix_variables[122] = initial_composition_Cs137[0];
-		Sciantix_variables[123] = initial_composition_Cs137[1];
-		Sciantix_variables[124] = initial_composition_Cs137[2];
-		Sciantix_variables[125] = initial_composition_Cs137[3];
-		Sciantix_variables[126] = initial_composition_Cs137[4];
-		Sciantix_variables[127] = initial_composition_Cs137[5];
-		Sciantix_variables[128] = initial_composition_Cs137[6];
-
-		std::vector<double> initial_composition_CsI;
-		initial_composition_CsI = ReadSeveralParameters("Initial composition I", input_initial_conditions, input_check);
-
-		Sciantix_variables[131] = initial_composition_CsI[0];
-
-
+		
 		Sciantix_variables[66] = ReadOneParameter("Initial stoichiometry deviation[0]", input_initial_conditions, input_check);
+
+		// std::vector<double> initial_composition_I;
+		// initial_composition_I = ReadSeveralParameters("Initial composition I", input_initial_conditions, input_check);
+		// Sciantix_variables[101] = initial_composition_I[0];
+		// Sciantix_variables[102] = initial_composition_I[1];
+		// Sciantix_variables[103] = initial_composition_I[2];
+		// Sciantix_variables[104] = initial_composition_I[3];
+		// Sciantix_variables[105] = initial_composition_I[4];
+		// Sciantix_variables[106] = initial_composition_I[5];
+
+		// std::vector<double> initial_composition_Cs;
+		// initial_composition_Cs = ReadSeveralParameters("Initial composition Cs", input_initial_conditions, input_check);
+		// Sciantix_variables[116] = initial_composition_Cs[0];
+		// Sciantix_variables[117] = initial_composition_Cs[1];
+		// Sciantix_variables[118] = initial_composition_Cs[2];
+		// Sciantix_variables[119] = initial_composition_Cs[3];
+		// Sciantix_variables[120] = initial_composition_Cs[4];
+		// Sciantix_variables[121] = initial_composition_Cs[5];
+
+		// std::vector<double> initial_composition_CsI;
+		// initial_composition_CsI = ReadSeveralParameters("Initial composition I", input_initial_conditions, input_check);
+
+		// Sciantix_variables[131] = initial_composition_CsI[0];
 	}
 
 	int n = 0;
