@@ -495,7 +495,7 @@ class Simulation : public Solver, public Model
 		}
 
 	    if (history_variable[hv["Temperature"]].getFinalValue() > 1300)
-	 	sciantix_variable[sv["I at grain boundary"]].setFinalValue(0);
+	 		sciantix_variable[sv["I at grain boundary"]].setFinalValue(0);
 
 		// Calculation of the gas concentration arrived at the grain boundary, by mass balance.
 		for (auto& system : sciantix_system)
