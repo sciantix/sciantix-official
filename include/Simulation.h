@@ -40,7 +40,7 @@
 #include "MapMatrix.h"
 #include "ConstantNumbers.h"
 #include "UO2Thermochemistry.h"
-#include "IodineReleaseTreshold.h"
+#include "ReleaseTreshold.h"
 #include <iostream>
 #include <map>
 
@@ -579,21 +579,6 @@ class Simulation : public Solver, public Model
 		}
 	}
 
-	// threshold to put I131 at grain boundary = 0
-	void IodineReleaseTreshold()
-	{
-		if (history_variable[hv["Temperature"]].getFinalValue() > 1300)
-			{
-			double y = sciantix_variable[sv["I at grain boundary"]].getFinalValue();
-			sciantix_variable[sv["I at grain boundary"]].setFinalValue(0);
-			sciantix_variable[sv["I released"]].setFinalValue(sciantix_variable[sv["I released"]].getFinalValue() + y);
-			}	
-		// std::cout << "I Partial Pressure: " << sciantix_variable[sv["I Partial Pressure"]].getFinalValue() << std::endl;
-		// std::cout << "Cs Partial Pressure: " << sciantix_variable[sv["Cs Partial Pressure"]].getFinalValue() << std::endl;
-		// std::cout << "I at grain boundary: " << sciantix_variable[sv["I at grain boundary"]].getFinalValue() << std::endl;
-		// std::cout << "Cs at grain boundary: " << sciantix_variable[sv["Cs at grain boundary"]].getFinalValue() << std::endl;
-		// std::cout << "Perfect Gas Constant: " <<  PhysicsConstants::perfect_gazes_constant << std::endl;
-	}
 
 	// Function about the precipitation of CsI at the grain boundary
 	void CsIFormation()
@@ -608,6 +593,24 @@ class Simulation : public Solver, public Model
 			{
 			sciantix_variable[sv["CsI produced"]].setFinalValue(sciantix_variable[sv["I at grain boundary"]].getFinalValue() + sciantix_variable[sv["Cs at grain boundary"]].getFinalValue());
 			}
+	}
+
+
+	// threshold to put I131 and CsI at grain boundary = 0 under certain temperature conditions
+	void ReleaseTreshold()
+	{
+		if (history_variable[hv["Temperature"]].getFinalValue() > 1300)
+			{
+			double y = sciantix_variable[sv["I at grain boundary"]].getFinalValue();
+			sciantix_variable[sv["I at grain boundary"]].setFinalValue(0);
+			sciantix_variable[sv["I released"]].setFinalValue(sciantix_variable[sv["I released"]].getFinalValue() + y);
+
+			double z = sciantix_variable[sv["CsI produced"]].getFinalValue();
+			sciantix_variable[sv["CsI produced"]].setFinalValue(0);
+			sciantix_variable[sv["CsI released"]].setFinalValue(sciantix_variable[sv["CsI released"]].getFinalValue() + z);
+			}	
+			
+		// std::cout << "Burnup" << sciantix_variable[sv["Burnup"]].getFinalValue() << std::endl;
 	}
 
 

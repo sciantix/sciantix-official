@@ -23,7 +23,7 @@ Model	Gas diffusion - I in UO2
 Model	Gas diffusion - I131 in UO2	
 Model	Gas diffusion - Cs in UO2	
 Model	Gas diffusion - Cs137 in UO2	
-Model	IodineReleaseTreshold	Kleykamp (1985) J. Nucl. Mater., 131, 221-246.
+Model	ReleaseTreshold	Kleykamp (1985) J. Nucl. Mater., 131, 221-246.
 Model	Grain-boundary micro-cracking	from Barani et al. (2017), JNM
 Model	Grain-boundary venting	not considered.
 Model	Intergranular bubble evolution	: Pastore et al., NED, 256 (2013) 75-86.

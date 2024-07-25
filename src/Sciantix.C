@@ -81,9 +81,9 @@ void Sciantix(int Sciantix_options[],
 	MapModel();
 	sciantix_simulation.GasDiffusion();
 
-	IodineReleaseTreshold();
+	ReleaseTreshold();
 	MapModel();
-	sciantix_simulation.IodineReleaseTreshold();
+	sciantix_simulation.ReleaseTreshold();
 
 	sciantix_simulation.CsIFormation();
 

@@ -9,4 +9,4 @@
 #include "MapHistoryVariable.h"
 #include "ConstantNumbers.h"
 
-void IodineReleaseTreshold();
+void ReleaseTreshold();

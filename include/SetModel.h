@@ -47,7 +47,7 @@
 #include "StoichiometryDeviation.h"
 #include "EnvironmentComposition.h"
 #include "UO2Thermochemistry.h"
-#include "IodineReleaseTreshold.h"
+#include "ReleaseTreshold.h"
 
 #include "ErrorMessages.h"
 

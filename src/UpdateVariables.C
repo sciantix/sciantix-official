@@ -132,6 +132,8 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[131] = sciantix_variable[sv["CsI produced"]].getFinalValue();
 	Sciantix_variables[132] = sciantix_variable[sv["I Partial Pressure"]].getFinalValue();
 	Sciantix_variables[133] = sciantix_variable[sv["Cs Partial Pressure"]].getFinalValue();
+	Sciantix_variables[134] = sciantix_variable[sv["CsI released"]].getFinalValue();
+
 
 
 
