@@ -22,8 +22,6 @@
 
 void Initialization()
 {
-	const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
-
 	// Sciantix_history initialization
 	Sciantix_history[0] = Temperature_input[0];
 	Sciantix_history[1] = Temperature_input[0];
@@ -57,7 +55,7 @@ void Initialization()
 	double reconstructed_solution(0.0);
 	int iteration(0), iteration_max(20), n(0), np1(1), n_modes(40), k(0), K(20);
 	double projection_coeff(0.0);
-	projection_coeff = -sqrt(8.0 / pi);
+	projection_coeff = -sqrt(8.0 / M_PI);
 
 	for (k = 0; k < K; ++k)
 	{
@@ -99,7 +97,7 @@ void Initialization()
 				np1 = n + 1;
 				const double n_coeff = pow(-1.0, np1) / np1;
 				Sciantix_diffusion_modes[k * n_modes + n] += projection_coeff * n_coeff * projection_remainder;
-				reconstructed_solution += projection_coeff * n_coeff * Sciantix_diffusion_modes[k * n_modes + n] * 3.0 / (4.0 * pi);
+				reconstructed_solution += projection_coeff * n_coeff * Sciantix_diffusion_modes[k * n_modes + n] * 3.0 / (4.0 * M_PI);
 			}
 			projection_remainder = initial_condition - reconstructed_solution;
 		}

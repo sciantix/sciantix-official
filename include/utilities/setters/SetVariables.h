@@ -14,10 +14,13 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef SET_VARIABLE_H
+#define SET_VARIABLE_H
+
 #include <vector>
 
 #include "InputVariable.h"
-#include "VariableArray.h"
+#include "SciantixArray.h"
 #include "initValues.h"
 
 
@@ -35,11 +38,16 @@
  */
 void SetVariables(
     int Sciantix_options[], 
-    double Sciantix_history[], 
-    double Sciantix_variables[], 
-    double Sciantix_scaling_factors[], 
-    double Sciantix_diffusion_modes[],
+	double Sciantix_history[], 
+	double Sciantix_variables[], 
+	double Sciantix_scaling_factors[], 
+	double Sciantix_diffusion_modes[],
     SciantixArray<InputVariable> &input_variable,
     SciantixArray<PhysicsVariable> &history_variable,
-    SciantixArray<PhysicsVariable> &sciantix_variable
-    );
+    SciantixArray<PhysicsVariable> &sciantix_variable,
+	SciantixArray<PhysicsVariable> &physics_variable,
+	std::vector<double> &modes_initial_conditions,
+	SciantixArray<Variable> &scaling_factors
+);
+
+#endif

@@ -14,7 +14,7 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "setVariables.h"
+#include "SetVariables.h"
 
 /// SetVariables
 /// This routine builds the vectors of objects:
@@ -34,7 +34,8 @@ void SetVariables(
     SciantixArray<PhysicsVariable> &history_variable,
     SciantixArray<PhysicsVariable> &sciantix_variable,
 	SciantixArray<PhysicsVariable> &physics_variable,
-	std::vector<double> modes_initial_conditions
+	std::vector<double> &modes_initial_conditions,
+	SciantixArray<Variable> &scaling_factors
 	)
 {
 	// -----------------------------------------------------------------------------------------------
@@ -116,8 +117,7 @@ void SetVariables(
 	// ---------------
 	for (int i = 0; i < modes_initial_conditions.size(); ++i)
 	{
-		modes_initial_conditions[i] = Sciantix_diffusion_modes[i]; // Xe
-		for (int j = 1; j <= 17; j++)
+		for (int j = 0; j <= 17; j++)
 		{
 			modes_initial_conditions[j * modes_initial_conditions.size() + i] = Sciantix_diffusion_modes[j * modes_initial_conditions.size() + i];	
 		}
@@ -126,13 +126,10 @@ void SetVariables(
 	// ---------------
 	// Scaling factors
 	// ---------------
-	sf_resolution_rate = Sciantix_scaling_factors[0];
-	sf_trapping_rate = Sciantix_scaling_factors[1];
-	sf_nucleation_rate = Sciantix_scaling_factors[2];
-	sf_diffusivity = Sciantix_scaling_factors[3];
-	sf_temperature = Sciantix_scaling_factors[4];
-	sf_fission_rate = Sciantix_scaling_factors[5];
-	sf_cent_parameter = Sciantix_scaling_factors[6];
-	sf_helium_production_rate = Sciantix_scaling_factors[7];
-	sf_dummy = Sciantix_scaling_factors[8];
+	int index = 0;
+	for (std::string name : getScalingFactorsNames())
+	{
+		scaling_factors.push(InputVariable(name, Sciantix_scaling_factors[index]));
+		index++;
+	}
 }

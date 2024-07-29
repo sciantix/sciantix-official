@@ -174,3 +174,15 @@ std::vector<PhysicsVariable> initSciantixVariableValues(
 
     return init_sciantix_variable;
 }
+
+
+
+std::vector<std::string> getScalingFactorsNames()
+{
+    std::vector<std::string> names = {
+        "Resolution rate", "Trapping rate", "Nucleation rate", "Diffusivity",
+        "Temperature", "Fission rate", "Cent parameter", "Helium production rate", "Dummy"
+    };
+
+    return names;
+}

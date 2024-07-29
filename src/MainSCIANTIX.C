@@ -37,12 +37,12 @@
  */
 
 #include "MainVariables.h"
-#include "Sciantix.h"
+// #include "Sciantix.h"
 #include "InputInterpolation.h"
 #include "InputReading.h"
 #include "Initialization.h"
 #include "TimeStepCalculation.h"
-#include "Bounds.h"
+// #include "Bounds.h"
 #include "Global.h"
 #include "ErrorMessages.h"
 #include <iostream>
@@ -130,4 +130,10 @@ int main(int argc, char **argv)
 
 
 	return 0;
+}
+
+
+void logExecutionTime(double timer, int time_step_number)
+{
+	Execution_file << std::setprecision(12) << std::scientific << timer << "\t" << CLOCKS_PER_SEC << "\t" << (double)timer * CLOCKS_PER_SEC << "\t" << time_step_number << std::endl;
 }
