@@ -45,6 +45,9 @@ FGR2 = []
 number_of_tests_failed = 0
 
 gold = []
+FGRgold = []
+igDensitygold = []
+igRadiusgold = []
 sample_number = len(igSwelling1)
 
 """ ------------------- Functions ------------------- """
@@ -112,8 +115,9 @@ def do_plot():
   fig, ax = plt.subplots()
 
   ax.scatter(igSwellingBaker, igSwelling1, edgecolors='#757575', facecolors='red',   marker = '^', s=30, label='SCIANTIX 1.0', zorder = 1)
-  ax.errorbar(igSwellingBaker, igSwelling2, xerr = igSwellingError, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), edgecolors= None, color='green', marker = '.', fmt='^', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0', zorder = 2)
-
+  ax.errorbar(igSwellingBaker, igSwelling2, xerr = igSwellingError, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), edgecolors= None, color='green', marker = '.', fmt='^', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0', zorder = 3)
+  ax.scatter(igSwellingBaker, gold, facecolors='blue',  marker = 'v', s=30, label='SCIANTIX 2.0 Gold', zorder = 2)
+  
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
   ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
@@ -136,7 +140,8 @@ def do_plot():
 
   ax.errorbar(igDensityBaker, igDensity1, xerr = igDensityError, c = '#FA82B4', marker = '.', fmt='o', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 1.0')
   ax.errorbar(igDensityBaker, igDensity2, xerr = igDensityError, c = 'green', marker = '.', fmt='o', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0')
-
+  ax.scatter(igDensityBaker, igDensitygold, facecolors='blue',   marker = 'v', label='SCIANTIX 2.0 Gold')
+  
   ax.plot([0.1, 100],[0.1, 100], '-', color = '#757575')
   ax.plot([0.1, 100],[0.05, 50],'--', color = '#757575')
   ax.plot([0.1, 100],[0.2, 200],'--', color = '#757575')
@@ -158,7 +163,8 @@ def do_plot():
 
   ax.errorbar(igRadiusBaker, igRadius1*1e-9, xerr = igRadiusError, c = '#FA82B4', marker = '.', fmt='o', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 1.0')
   ax.errorbar(igRadiusBaker, igRadius2, xerr = igRadiusError, c = 'green', marker = '.', fmt='o', capsize=1, capthick=1, ecolor='#999AA2', elinewidth = 0.6, label='SCIANTIX 2.0')
-
+  ax.scatter(igRadiusBaker, igRadiusgold, facecolors='blue',   marker = 'v', label='SCIANTIX 2.0 Gold')
+  
   ax.plot([0.1e-9, 100e-9],[0.1e-9, 100e-9], '-', color = '#757575')
   ax.plot([0.1e-9, 100e-9],[0.05e-9, 50e-9],'--', color = '#757575')
   ax.plot([0.1e-9, 100e-9],[0.2e-9, 200e-9],'--', color = '#757575')
@@ -177,18 +183,19 @@ def do_plot():
   plt.close()
 
   # Fission gases release plot
-#   fig, ax = plt.subplots()
-#   ax.scatter(igSwelling2, FGR2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='FGR SCIANTIX 2.0')
+  fig, ax = plt.subplots()
+  ax.scatter(igSwelling2, FGR2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='FGR SCIANTIX 2.0')
+  ax.scatter(gold, FGRgold, facecolors='blue',   marker = 'v', s=20, label='SCIANTIX 2.0 Gold')
+  
+  ax.set_xscale('log')
+  ax.set_yscale('log')
 
-#   ax.set_xscale('log')
-#   ax.set_yscale('log')
+  ax.set_xlabel('Swelling (%)')
+  ax.set_ylabel('FGR (%)')
+  ax.legend()
 
-#   ax.set_xlabel('Swelling (%)')
-#   ax.set_ylabel('FGR (%)')
-#   ax.legend()
-
-#   plt.show()
-#   plt.close()
+  plt.show()
+  plt.close()
 
 
 # Main function of the baker regression
@@ -246,6 +253,10 @@ def regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number
       FGRPos = findSciantixVariablePosition(data, "Fission gas release (/)")
       FGR2.append(100*data[-1,FGRPos].astype(float))
 
+      # Retrieve the gold data of Fission gas release
+      FGRGoldPos = findSciantixVariablePosition(data_gold, "Fission gas release (/)")
+      FGRgold.append(100*data_gold[-1,FGRGoldPos].astype(float))
+
       # Retrieve the generated data of Intragranular gas swelling
       intraGranularSwellingPos = findSciantixVariablePosition(data, "Intragranular gas swelling (/)")
       igSwelling2.append(100*data[-1,intraGranularSwellingPos].astype(float))
@@ -257,8 +268,14 @@ def regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number
       pos = findSciantixVariablePosition(data, "Intragranular bubble concentration (bub/m3)")
       igDensity2.append(1e-23*data[-1,pos].astype(float))
 
+      posgold = findSciantixVariablePosition(data_gold, "Intragranular bubble concentration (bub/m3)")
+      igDensitygold.append(1e-23*data_gold[-1,posgold].astype(float))
+
       pos = findSciantixVariablePosition(data, "Intragranular bubble radius (m)")
       igRadius2.append(data[-1,pos].astype(float))
+
+      posgold = findSciantixVariablePosition(data_gold, "Intragranular bubble radius (m)")
+      igRadiusgold.append(data_gold[-1,pos].astype(float))
 
       os.chdir('..')
 
