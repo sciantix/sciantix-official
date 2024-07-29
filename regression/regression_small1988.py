@@ -19,32 +19,29 @@ from sklearn.linear_model import LinearRegression
 
 """ ------------------- Global Variables ------------------- """
 
-# # Data from SCIANTIX 1.0
-# igSwelling1 = [0.033, 0.048]
 # Data generated from SCIANTIX 2.0
-igSwelling2 = []
 FGR2 = []
 
-# Data from Kashibe 1990
-SwellingKashibe = [0, 6.7, 6.5, 7.4, #1600°C annealing, 6-16-23-28 GWd/t, 0 if missing datum
-        8.9, 9.0, 10.4, 0 ##1800°C annealing, 6-16-23-28 GWd/t
+# Data from Small 1988
+
+FGROperational = [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, #Expt A
+                  0.2, 0.2, 0.2, 0.2, 0.2, 0.2, #Expt B
+                  0.2, 0.2, 0.2, #Expt C
+                  0.2, 0.2, 0.2, 0.2 #Expt D
+        ] 
+FGRAnnealing = [0, 0, 3.1, 2.8, 8.8, 11.1, #Expt A
+                7.2, 0, 20.3, 28, 66.9, 62.8, #Expt B
+                5.3, 39.8, 49.9, #Expt C
+                0, 9.6, 21.4, 13.7 #Expt D
         ]
 
-FGROperational = [0.2, 0.8, 21, 21, #6-16-23-28 GWd/t
-        0.2, 0.8, 21, 21 ##6-16-23-28 GWd/t
-        ]
-FGRAnnealing = [0, 5.80, 13.71, 22.26, #1600°C annealing, 6-16-23-28 GWd/t, 0 if missing datum
-        4.45, 13.13, 25.56, 26.89 ##1800°C annealing, 6-16-23-28 GWd/t
-        ]
-FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
+FGRSmall = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
 
 goldFGR = []
-goldSwelling = []
-
 
 number_of_tests_failed = 0
-sample_number = len(igSwelling2)
+sample_number = len(FGR2)
 
 
 """ ------------------- Functions ------------------- """
@@ -107,8 +104,8 @@ def do_plot():
   # Data vs. SCIANTIX 2.0
   fig, ax = plt.subplots()
 
-  ax.scatter(FGRKashibe, FGR2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
-  ax.scatter(FGRKashibe, goldFGR, marker = 'o', s=20, label='Barani (2017)')
+  ax.scatter(FGRSmall, FGR2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
+  ax.scatter(FGRSmall, goldFGR, marker = 'o', s=20, label='Barani (2017)')
   
   print(FGR2)
   print(goldFGR)
@@ -116,8 +113,8 @@ def do_plot():
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
   ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
   
-  ax.set_xlim(0, 80)
-  ax.set_ylim(0, 80)
+  ax.set_xlim(0, 40)
+  ax.set_ylim(0, 40)
 
   ax.set_title('Fission gas release')
   ax.set_xlabel('Experimental (%)')
@@ -126,29 +123,11 @@ def do_plot():
 
   plt.show()
 
-  fig, ax = plt.subplots()
-
-  ax.scatter(SwellingKashibe, igSwelling2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
-  ax.scatter(SwellingKashibe, goldSwelling, marker = 'o', s=20, label='Barani (2017)')
-
-  ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  ax.set_xlim(0, 20)
-  ax.set_ylim(0, 20)
-
-  ax.set_title('Intergranular swelling')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-
-  plt.show()
-
 # Main function of the baker regression
-def regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
+def regression_small1988(wpath, mode_Small1988, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
 
   # Exit of the function without doing anything
-  if mode_Kashibe1990 == 0 :
+  if mode_Small1988 == 0 :
     return folderList, number_of_tests, number_of_tests_failed
 
   # Get list of all files and directories in wpath
@@ -160,7 +139,7 @@ def regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folder
   # Iterate over sorted list
   for file in sorted_files_and_dirs:
     # Verify on a given folder, if Baker is in it's name
-    if "Kashibe1990" in file and os.path.isdir(file):
+    if "Small1988" in file and os.path.isdir(file):
       folderList.append(file)
       os.chdir(file)
 
@@ -202,15 +181,6 @@ def regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folder
       # Retrieve the gold data of Fission gas release
       FGRGoldPos = findSciantixVariablePosition(data_gold, "Fission gas release (/)")
       goldFGR.append(100*data_gold[-1,FGRGoldPos].astype(float))
-
-      # Retrieve the generated data of Intragranular gas swelling
-      igSwellingPos = findSciantixVariablePosition(data, "Intergranular gas swelling (/)")
-      igSwelling2.append(100*data[-1,igSwellingPos].astype(float))
-
-      # Retrieve the gold data of Intragranular gas swelling
-      igSwellingGoldPos = findSciantixVariablePosition(data_gold, "Intergranular gas swelling (/)")
-      goldSwelling.append(100*data_gold[-1,igSwellingGoldPos].astype(float))
-
 
       os.chdir('..')
 
