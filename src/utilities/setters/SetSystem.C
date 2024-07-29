@@ -55,8 +55,8 @@ System Xe_in_UO2(SciantixArray matrix, SciantixArray input_variable)
     System result;
 
     result.setName("Xe in UO2");
-	result.setGasName("Xe");
-	result.setMatrixName("UO2");
+	result.setGas("Xe");
+	result.setMatrix("UO2");
 	result.setRestructuredMatrix(0);
 	result.setYield(0.24);
 	result.setRadiusInLattice(0.21e-9); // (m), from experimental data, assumed equal for Xe and Kr
@@ -84,8 +84,8 @@ System Xe_in_UO2HBS(SciantixArray matrix, SciantixArray input_variable)
     System result;
 
     result.setName("Xe in UO2HBS");
-	result.setGasName("Xe");
-	result.setMatrixName("UO2HBS");
+	result.setGas("Xe");
+	result.setMatrix("UO2HBS");
 	result.setRestructuredMatrix(1);
 	result.setYield(0.24);
 	result.setRadiusInLattice(0.21e-9);
@@ -113,8 +113,8 @@ System Kr_in_UO2(SciantixArray matrix, SciantixArray input_variable)
     System result;
 
     result.setName("Kr in UO2");
-	result.setGasName("Kr");
-	result.setMatrixName("UO2");
+	result.setGas("Kr");
+	result.setMatrix("UO2");
 	result.setRestructuredMatrix(0);
 	result.setYield(0.03);
 	result.setRadiusInLattice(0.21e-9);
@@ -142,8 +142,8 @@ System He_in_UO2(SciantixArray matrix, SciantixArray input_variable)
     System result;
 
     result.setName("He in UO2");
-	result.setGasName("He");
-	result.setMatrixName("UO2");
+	result.setGas("He");
+	result.setMatrix("UO2");
 	result.setRestructuredMatrix(0);
 	result.setYield(0.0022); // from ternary fissions
 	result.setRadiusInLattice(4.73e-11);
@@ -171,8 +171,8 @@ System Xe133_in_UO2(SciantixArray matrix, SciantixArray input_variable)
     System result;
 
     result.setName("Xe133 in UO2");
-	result.setGasName("Xe133");
-	result.setMatrixName("UO2");
+	result.setGas("Xe133");
+	result.setMatrix("UO2");
 	result.setRestructuredMatrix(0);
 	result.setYield(0.066534); // from JEFF-3.3 library
 	result.setRadiusInLattice(0.21e-9); // (m), number from experimental results, assumed equal for Xe and Kr
@@ -193,8 +193,8 @@ System Kr85m_in_UO2(SciantixArray matrix, SciantixArray input_variable)
     System result;
 
     result.setName("Kr85m in UO2");
-	result.setGasName("Kr85m");
-	result.setMatrixName("UO2");
+	result.setGas("Kr85m");
+	result.setMatrix("UO2");
 	result.setRestructuredMatrix(0);
 	result.setYield(0.013027);
 	result.setRadiusInLattice(0.21e-9);
