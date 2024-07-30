@@ -22,18 +22,18 @@ from sklearn.linear_model import LinearRegression
 # Data generated from SCIANTIX 2.0
 FGR2 = []
 
-# Data from Small 1988
+# Data from Small 1985
 
-FGROperational = [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, #Expt A
-                  0.2, 0.2, 0.2, 0.2, 0.2, 0.2, #Expt B
-                  0.2, 0.2, 0.2, #Expt C
-                  0.2, 0.2, 0.2, 0.2 #Expt D
-        ] 
-FGRAnnealing = [0, 0, 3.1, 2.8, 8.8, 11.1, #Expt A
-                7.2, 0, 20.3, 28, 66.9, 62.8, #Expt B
-                5.3, 39.8, 49.9, #Expt C
-                0, 9.6, 21.4, 13.7 #Expt D
-        ]
+FGROperational = [0.5,0.5,0.5,    #1400, 300-600-900 s annealing
+                0.5,0.5,0.5,    #1500, 300-600-900 s annealing
+                0.5,0.5,0.5,    #1600, 300-600-900 s annealing
+                0.5,0.5,0.5  #1700, 300-600-900 s annealing
+              ]
+FGRAnnealing = [0.01,0.01,0.34,    #1400, 300-600-900 s annealing
+                0.58,0.05,0.09,    #1500, 300-600-900 s annealing
+                2.75,1.93,5.30,    #1600, 300-600-900 s annealing
+                10.84,44.50,37.90  #1700, 300-600-900 s annealing
+              ]
 
 FGRSmall = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
@@ -106,7 +106,7 @@ def do_plot():
 
   ax.scatter(FGRSmall, FGR2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
   ax.scatter(FGRSmall, goldFGR, marker = 'o', s=20, label='Barani (2017)')
-
+  
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
   ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
@@ -122,10 +122,10 @@ def do_plot():
   plt.show()
 
 # Main function of the baker regression
-def regression_small1988(wpath, mode_Small1988, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
+def regression_small1985(wpath, mode_Small1985, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
 
   # Exit of the function without doing anything
-  if mode_Small1988 == 0 :
+  if mode_Small1985 == 0 :
     return folderList, number_of_tests, number_of_tests_failed
 
   # Get list of all files and directories in wpath
@@ -137,7 +137,7 @@ def regression_small1988(wpath, mode_Small1988, mode_gold, mode_plot, folderList
   # Iterate over sorted list
   for file in sorted_files_and_dirs:
     # Verify on a given folder, if Baker is in it's name
-    if "Small1988" in file and os.path.isdir(file):
+    if "Small1985" in file and os.path.isdir(file):
       folderList.append(file)
       os.chdir(file)
 

@@ -31,11 +31,11 @@ SwellingKashibe = [0, 6.7, 6.5, 7.4, #1600°C annealing, 6-16-23-28 GWd/t, 0 if 
         ]
 
 FGROperational = [0.2, 0.8, 21, 21, #6-16-23-28 GWd/t
-        0.2, 0.8, 21, 21 ##6-16-23-28 GWd/t
-        ]
-FGRAnnealing = [0, 5.80, 13.71, 22.26, #1600°C annealing, 6-16-23-28 GWd/t, 0 if missing datum
-        4.45, 13.13, 25.56, 26.89 ##1800°C annealing, 6-16-23-28 GWd/t
-        ]
+                  0.2, 0.8, 21, 21 ##6-16-23-28 GWd/t
+                ]
+FGRAnnealing = [0, 05.80/0.75, 13.71/0.75, 22.26, #1600°C annealing, 6-16-23-28 GWd/t, 0 if missing datum
+                14.16, 16.86, 25.3, 25.9 ##1800°C annealing, 6-16-23-28 GWd/t
+                ]
 FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
 
@@ -110,14 +110,12 @@ def do_plot():
   ax.scatter(FGRKashibe, FGR2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
   ax.scatter(FGRKashibe, goldFGR, marker = 'o', s=20, label='Barani (2017)')
   
-  print(FGR2)
-  print(goldFGR)
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
   ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
   
-  ax.set_xlim(0, 80)
-  ax.set_ylim(0, 80)
+  ax.set_xlim(0, 100)
+  ax.set_ylim(0, 100)
 
   ax.set_title('Fission gas release')
   ax.set_xlabel('Experimental (%)')

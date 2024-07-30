@@ -19,23 +19,19 @@ from sklearn.linear_model import LinearRegression
 
 """ ------------------- Global Variables ------------------- """
 
+# # Data from SCIANTIX 1.0
+# igSwelling1 = [0.033, 0.048]
 # Data generated from SCIANTIX 2.0
 FGR2 = []
 
-# Data from Small 1988
-
-FGROperational = [0.2, 0.2, 0.2, 0.2, 0.2, 0.2, #Expt A
-                  0.2, 0.2, 0.2, 0.2, 0.2, 0.2, #Expt B
-                  0.2, 0.2, 0.2, #Expt C
-                  0.2, 0.2, 0.2, 0.2 #Expt D
-        ] 
-FGRAnnealing = [0, 0, 3.1, 2.8, 8.8, 11.1, #Expt A
-                7.2, 0, 20.3, 28, 66.9, 62.8, #Expt B
-                5.3, 39.8, 49.9, #Expt C
-                0, 9.6, 21.4, 13.7 #Expt D
-        ]
-
-FGRSmall = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
+# Data from Kashibe 1991
+FGROperational = [21, 21, #23 GWd/t
+                  21, 21 #28 GWd/t
+                ]
+FGRAnnealing = [5.9, 6.5, #1400°C, 23 GWd/t, Multiple-Single
+                5.9, 7.6  #1400°C, 28 GWd/t, Multiple-Single
+              ]
+FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
 
 goldFGR = []
@@ -104,9 +100,9 @@ def do_plot():
   # Data vs. SCIANTIX 2.0
   fig, ax = plt.subplots()
 
-  ax.scatter(FGRSmall, FGR2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
-  ax.scatter(FGRSmall, goldFGR, marker = 'o', s=20, label='Barani (2017)')
-
+  ax.scatter(FGRKashibe, FGR2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
+  ax.scatter(FGRKashibe, goldFGR, marker = 'o', s=20, label='Barani (2017)')
+  
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
   ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
@@ -122,10 +118,10 @@ def do_plot():
   plt.show()
 
 # Main function of the baker regression
-def regression_small1988(wpath, mode_Small1988, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
+def regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
 
   # Exit of the function without doing anything
-  if mode_Small1988 == 0 :
+  if mode_Kashibe1991 == 0 :
     return folderList, number_of_tests, number_of_tests_failed
 
   # Get list of all files and directories in wpath
@@ -137,7 +133,7 @@ def regression_small1988(wpath, mode_Small1988, mode_gold, mode_plot, folderList
   # Iterate over sorted list
   for file in sorted_files_and_dirs:
     # Verify on a given folder, if Baker is in it's name
-    if "Small1988" in file and os.path.isdir(file):
+    if "Kashibe1991" in file and os.path.isdir(file):
       folderList.append(file)
       os.chdir(file)
 
@@ -179,6 +175,7 @@ def regression_small1988(wpath, mode_Small1988, mode_gold, mode_plot, folderList
       # Retrieve the gold data of Fission gas release
       FGRGoldPos = findSciantixVariablePosition(data_gold, "Fission gas release (/)")
       goldFGR.append(100*data_gold[-1,FGRGoldPos].astype(float))
+
 
       os.chdir('..')
 
