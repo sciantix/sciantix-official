@@ -42,10 +42,9 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
     double source_rate(0.0);
     double projection_coeff(0.0);
     double solution(0.0);
-    const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
 
-    diffusion_rate_coeff = pow(pi, 2) * parameter.at(1) / pow(parameter.at(2), 2);
-    projection_coeff = -2.0 * sqrt(2.0 / pi);
+    diffusion_rate_coeff = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(2), 2);
+    projection_coeff = -2.0 * sqrt(2.0 / M_PI);
     source_rate_coeff = projection_coeff * parameter.at(3);
 
     for (n = 0; n < parameter.at(0); n++)
@@ -58,7 +57,7 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
 
         initial_condition[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);
 
-        solution += projection_coeff * n_coeff * initial_condition[n] / ((4. / 3.) * pi);
+        solution += projection_coeff * n_coeff * initial_condition[n] / ((4. / 3.) * M_PI);
     }
 
     return solution;
@@ -114,12 +113,10 @@ void Solver::SpectralDiffusion2equations(double &gas_1, double &gas_2, double *i
     double coeff_matrix[4];
     double initial_conditions[2];
 
-    const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
+    diffusion_rate_coeff1 = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(3), 2); // pi^2 * D1 / a^2
+    diffusion_rate_coeff2 = pow(M_PI, 2) * parameter.at(2) / pow(parameter.at(3), 2); // pi^2 * D2 / a^2
 
-    diffusion_rate_coeff1 = pow(pi, 2) * parameter.at(1) / pow(parameter.at(3), 2); // pi^2 * D1 / a^2
-    diffusion_rate_coeff2 = pow(pi, 2) * parameter.at(2) / pow(parameter.at(3), 2); // pi^2 * D2 / a^2
-
-    projection_coeff = -2.0 * sqrt(2.0 / pi);
+    projection_coeff = -2.0 * sqrt(2.0 / M_PI);
 
     source_rate_coeff_1 = projection_coeff * parameter.at(4); // - 2 sqrt(2/pi) * S1
     source_rate_coeff_2 = projection_coeff * parameter.at(5); // - 2 sqrt(2/pi) * S2
@@ -148,8 +145,8 @@ void Solver::SpectralDiffusion2equations(double &gas_1, double &gas_2, double *i
         initial_condition_gas_1[n] = initial_conditions[0];
         initial_condition_gas_2[n] = initial_conditions[1];
 
-        gas_1_solution += projection_coeff * n_coeff * initial_conditions[0] / ((4. / 3.) * pi);
-        gas_2_solution += projection_coeff * n_coeff * initial_conditions[1] / ((4. / 3.) * pi);
+        gas_1_solution += projection_coeff * n_coeff * initial_conditions[0] / ((4. / 3.) * M_PI);
+        gas_2_solution += projection_coeff * n_coeff * initial_conditions[1] / ((4. / 3.) * M_PI);
     }
     gas_1 = gas_1_solution;
     gas_2 = gas_2_solution;
@@ -186,13 +183,11 @@ void Solver::SpectralDiffusion3equations(double &gas_1, double &gas_2, double &g
     double coeff_matrix[9];
     double initial_conditions[3];
 
-    const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
+    diffusion_rate_coeff1 = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(4), 2); // pi^2 * D1 / a^2
+    diffusion_rate_coeff2 = pow(M_PI, 2) * parameter.at(2) / pow(parameter.at(4), 2); // pi^2 * D2 / a^2
+    diffusion_rate_coeff3 = pow(M_PI, 2) * parameter.at(3) / pow(parameter.at(4), 2); // pi^2 * D3 / a^2
 
-    diffusion_rate_coeff1 = pow(pi, 2) * parameter.at(1) / pow(parameter.at(4), 2); // pi^2 * D1 / a^2
-    diffusion_rate_coeff2 = pow(pi, 2) * parameter.at(2) / pow(parameter.at(4), 2); // pi^2 * D2 / a^2
-    diffusion_rate_coeff3 = pow(pi, 2) * parameter.at(3) / pow(parameter.at(4), 2); // pi^2 * D3 / a^2
-
-    projection_coeff = -2.0 * sqrt(2.0 / pi);
+    projection_coeff = -2.0 * sqrt(2.0 / M_PI);
 
     source_rate_coeff_1 = projection_coeff * parameter.at(5); // - 2 sqrt(2/pi) * S1
     source_rate_coeff_2 = projection_coeff * parameter.at(6); // - 2 sqrt(2/pi) * S2
@@ -233,9 +228,9 @@ void Solver::SpectralDiffusion3equations(double &gas_1, double &gas_2, double &g
         initial_condition_gas_2[n] = initial_conditions[1];
         initial_condition_gas_3[n] = initial_conditions[2];
 
-        gas_1_solution += projection_coeff * n_coeff * initial_conditions[0] / ((4. / 3.) * pi);
-        gas_2_solution += projection_coeff * n_coeff * initial_conditions[1] / ((4. / 3.) * pi);
-        gas_3_solution += projection_coeff * n_coeff * initial_conditions[2] / ((4. / 3.) * pi);
+        gas_1_solution += projection_coeff * n_coeff * initial_conditions[0] / ((4. / 3.) * M_PI);
+        gas_2_solution += projection_coeff * n_coeff * initial_conditions[1] / ((4. / 3.) * M_PI);
+        gas_3_solution += projection_coeff * n_coeff * initial_conditions[2] / ((4. / 3.) * M_PI);
     }
     gas_1 = gas_1_solution;
     gas_2 = gas_2_solution;
@@ -374,15 +369,13 @@ double Solver::QuarticEquation(std::vector<double> parameter)
 
 void Solver::modeInitialization(int n_modes, double mode_initial_condition, double *diffusion_modes)
 {
-    const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
-
     // projection on diffusion modes of the initial conditions
     double initial_condition(0.0);
     double projection_remainder(0.0);
     double reconstructed_solution(0.0);
     int iteration(0), iteration_max(20), n(0), np1(1);
     double projection_coeff(0.0);
-    projection_coeff = -sqrt(8.0 / pi);
+    projection_coeff = -sqrt(8.0 / M_PI);
 
     initial_condition = mode_initial_condition;
 
@@ -395,7 +388,7 @@ void Solver::modeInitialization(int n_modes, double mode_initial_condition, doub
             np1 = n + 1;
             const double n_coeff = pow(-1.0, np1) / np1;
             diffusion_modes[n] += projection_coeff * n_coeff * projection_remainder;
-            reconstructed_solution += projection_coeff * n_coeff * diffusion_modes[n] * 3.0 / (4.0 * pi);
+            reconstructed_solution += projection_coeff * n_coeff * diffusion_modes[n] * 3.0 / (4.0 * M_PI);
         }
         projection_remainder = initial_condition - reconstructed_solution;
     }
