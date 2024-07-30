@@ -25,6 +25,7 @@
 #include "MapHistoryVariable.h"
 #include "ErrorMessages.h"
 #include <cmath>
+#include <unordered_map>
 
 /**
  * \class System
@@ -48,6 +49,8 @@ protected:
 	std::vector<double> modes;
 	double production_rate;
 	bool restructured_matrix;
+	std::unordered_map<std::string, std::pair<double, double>> bounds;
+	std::unordered_map<std::string, bool> bounded;
 
 public:
 	/**
@@ -319,6 +322,72 @@ public:
 	double getProductionRate()
 	{
 		return production_rate;
+	}
+
+	/**
+	 * \brief Sets the bounds for the variable
+	 * \param minBound The minimum bound
+	 * \param maxBound The maximum bound
+	 * \param var The variable to set
+	 */
+	void setBounds(const std::string &var, double minBound, double maxBound)
+	{
+		bounds[var] = {minBound, maxBound};
+	}
+
+	/**
+	 * \brief Sets whether to check the bounds
+	 * \param check A boolean value indicating whether to check the bounds
+	 * \param var The variable to set
+	 */
+	void setBounded(const std::string &var, bool check)
+	{
+		bounded[var] = check;
+	}
+
+	void isWithinBounds(const std::string &var)
+	{
+		auto itBounds = bounds.find(var);
+		auto itBounded = bounded.find(var);
+		double excess;
+
+		if (itBounds != bounds.end() && itBounded != bounded.end() && itBounded->second)
+		{
+			double minBound = itBounds->second.first;
+			double maxBound = itBounds->second.second;
+			double value;
+
+			if (var == "radius_in_lattice")
+				value = radius_in_lattice;
+			else if (var == "volume_in_lattice")
+				value = volume_in_lattice;
+			else if (var == "diffusivity")
+				value = diffusivity;
+			else if (var == "bubble_diffusivity")
+				value = bubble_diffusivity;
+			else if (var == "resolution_rate")
+				value = resolution_rate;
+			else if (var == "trapping_rate")
+				value = trapping_rate;
+			else if (var == "nucleation_rate")
+				value = nucleation_rate;
+			else if (var == "pore_nucleation_rate")
+				value = pore_nucleation_rate;
+			else if (var == "production_rate")
+				value = production_rate;
+			else return;
+
+			if (value < minBound)
+			{
+				excess = minBound - value;
+				ErrorMessages::errorBounds(var, value, excess);
+			}
+			else if (value > maxBound)
+			{
+				excess = value - maxBound;
+				ErrorMessages::errorBounds(var, value, excess);
+			}
+		}
 	}
 
 	/**

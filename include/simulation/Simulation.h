@@ -545,7 +545,7 @@ public:
 			break;
 
 		default:
-			// ErrorMessages::Switch("Simulation.h", "iDiffusionSolver", int(input_variable[iv["iDiffusionSolver"]].getValue()));
+			ErrorMessages::Switch("Simulation.h", "iDiffusionSolver", int(input_variable[iv["iDiffusionSolver"]].getValue()));
 			break;
 		}
 	}

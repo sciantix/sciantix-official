@@ -97,7 +97,11 @@ void Sciantix(int Sciantix_options[],
 
 	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
+	checkBounds();
+
 	Output();
+
+    ErrorMessages::writeErrorLog();
 
 	history_variable.clear();
 	sciantix_variable.clear();

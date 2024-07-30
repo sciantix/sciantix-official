@@ -31,6 +31,9 @@
 #include "Output.h"
 #include "Simulation.h"
 #include "FiguresOfMerit.h"
+#include "Variable.h"
+#include "ErrorMessages.h"
+#include "CheckBounds.h"
 
 /**
  * \brief Executes the main Sciantix simulation program.

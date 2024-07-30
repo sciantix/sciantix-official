@@ -16,13 +16,26 @@
 
 #include "ErrorMessages.h"
 #include "Global.h"
+#include <map>
+#include "MainVariables.h"
+#include <cstdlib>
 
 namespace ErrorMessages
 {
 
 	// Put error file name into constant to avoid repetition
 	const std::string Error_file_name = "error_log.txt";
+	const std::string Warning_file_name = "warning_log.txt";
 	std::stringstream errorMessages;
+	std::map<std::string, std::pair<int, double>> exceedances;
+
+	void clearErrorLog() {
+        std::ofstream Warning_log(TestPath + Warning_file_name, std::ios::out);
+        // Opening the file in std::ios::out mode without std::ios::app clears the file
+        if (Warning_log.is_open()) {
+            Warning_log.close();
+        }
+    }
 
 	void MissingInputFile(const char *missing_file)
 	{
@@ -45,10 +58,39 @@ namespace ErrorMessages
 		errorMessages << "The input setting " << variable_name << " = " << variable << " is out of range." << std::endl;
 	}
 
+	void errorBounds(std::string variable_name, double value, double excess)
+	{
+		std::ofstream error_log(TestPath + Error_file_name, std::ios::app);
+		switch(Sciantix_options[22]) {
+			case 0:
+				break;
+			case 1:
+				error_log << "Upper bound of Sciantix variable \"" << variable_name << "\" has been exceeded in "
+							"with the deviation being " << excess << "." << std::endl;
+				// we have to leave the program here
+				std::exit(1);
+			case 2:
+				if (exceedances.find(variable_name) == exceedances.end()) {
+					exceedances[variable_name] = {1, excess};
+				} else {
+					exceedances[variable_name].first += 1;
+					if (exceedances[variable_name].second < excess) {
+						exceedances[variable_name].second = excess;
+					}
+				}
+				break;
+			default:
+				break;
+		}
+	}
+
 	void writeErrorLog()
 	{
-		std::ofstream Error_log(TestPath + Error_file_name, std::ios::app);
-		Error_log << errorMessages.str();
-		errorMessages.str("");
+		clearErrorLog();
+		std::ofstream warning_log(TestPath + Warning_file_name, std::ios::app);
+        for (const auto& entry : exceedances) {
+            warning_log << "Upper bound of Sciantix variable \"" << entry.first << "\" has been exceeded in "
+                      << entry.second.first << " instances, with the maximum deviation being " << entry.second.second << "." << std::endl;
+        }
 	}
 }

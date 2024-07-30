@@ -15,6 +15,8 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "UpdateVariables.h"
+#include "Variable.h"
+#include <iostream>
 
 void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_modes[])
 {

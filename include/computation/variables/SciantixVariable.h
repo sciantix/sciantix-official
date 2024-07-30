@@ -26,6 +26,8 @@ class SciantixVariable : virtual public PhysicsVariable
 {
 private:
     bool to_output; ///< Flag indicating whether the variable should be included in output
+    double validation[2]; // Bounds for the variables used in validation
+    bool isValidation; // Flag indicating whether the variable is used for validation 
 
 public:
     /**

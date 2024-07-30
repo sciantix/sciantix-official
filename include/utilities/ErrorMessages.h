@@ -40,7 +40,7 @@ namespace ErrorMessages
 	void MissingInputFile(const char* missing_file);
 
 	/**
-	 * @brief Accumulates a warning message about an out-of-range input setting.
+	 * @brief Accumulates a warning message.
 	 * @param routine The name of the routine where the error occurred.
 	 * @param variable_name The name of the variable that is out of range.
 	 * @param variable The value of the variable that triggered the warning.
@@ -51,12 +51,29 @@ namespace ErrorMessages
 	void Switch(std::string routine, std::string variable_name, int variable);
 
 	/**
+	 * @brief Do nothing or print an error message or accumulates a warning message about an out-of-range input setting.
+	 * Depends on the input_variable iBounds.
+	 * 
+	 * @param variable_name The name of the variable that is out of range.
+	 * @param value The value of the variable that triggered the warning.
+	 * @param excess The excess number
+	 *
+	 */
+	void errorBounds(std::string variable_name, double value, double excess);
+
+
+	/**
 	 * @brief Writes all accumulated error messages to the error log file.
 	 *
 	 * This function should be called to flush all error messages stored in the errorMessages stringstream
 	 * to the error log file at once. This approach minimizes disk I/O operations during runtime.
 	 */
 	void writeErrorLog();
+
+	/**
+	 * @brief Clear the error log file.
+	 */
+	void clearErrorLog();
 };
 
 

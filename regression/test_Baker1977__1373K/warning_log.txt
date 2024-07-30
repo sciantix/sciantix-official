@@ -1,0 +1,91 @@
+Upper bound of Sciantix variable "Burnup" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Effective burnup" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "FIMA" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Fission rate" has been exceeded in 101 instances, with the maximum deviation being 1e+19.
+Upper bound of Sciantix variable "Fuel density" has been exceeded in 101 instances, with the maximum deviation being 10621.
+Upper bound of Sciantix variable "Fuel oxygen partial pressure" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Grain radius" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "HBS pore density" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "HBS pore radius" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "HBS pore volume" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "HBS porosity" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "He at grain boundary" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "He in grain" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "He in intragranular bubbles" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "He in intragranular solution" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "He produced" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "He released" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Hydrostatic stress" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intergranular He atoms per bubble" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intergranular Kr atoms per bubble" has been exceeded in 101 instances, with the maximum deviation being 2.42759e+06.
+Upper bound of Sciantix variable "Intergranular Xe atoms per bubble" has been exceeded in 101 instances, with the maximum deviation being 1.94209e+07.
+Upper bound of Sciantix variable "Intergranular atoms per bubble" has been exceeded in 101 instances, with the maximum deviation being 2.18485e+07.
+Upper bound of Sciantix variable "Intergranular bubble area" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intergranular bubble concentration" has been exceeded in 101 instances, with the maximum deviation being 2e+13.
+Upper bound of Sciantix variable "Intergranular bubble radius" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intergranular bubble volume" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intergranular fractional coverage" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intergranular fractional intactness" has been exceeded in 101 instances, with the maximum deviation being 9.
+Upper bound of Sciantix variable "Intergranular gas swelling" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intergranular saturation fractional coverage" has been exceeded in 101 instances, with the maximum deviation being 9.5.
+Upper bound of Sciantix variable "Intergranular vacancies per bubble" has been exceeded in 101 instances, with the maximum deviation being 3.62871e+09.
+Upper bound of Sciantix variable "Intergranular vented fraction" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intergranular venting probability" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intragranular He atoms per bubble" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intragranular Kr atoms per bubble" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intragranular Xe atoms per bubble" has been exceeded in 52 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intragranular bubble concentration" has been exceeded in 101 instances, with the maximum deviation being 1.32629e+24.
+Upper bound of Sciantix variable "Intragranular bubble radius" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intragranular gas bubble swelling" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intragranular gas solution swelling" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Intragranular similarity ratio" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Irradiation time" has been exceeded in 101 instances, with the maximum deviation being 5480.
+Upper bound of Sciantix variable "Kr at grain boundary" has been exceeded in 101 instances, with the maximum deviation being 1.10706e+24.
+Upper bound of Sciantix variable "Kr in grain" has been exceeded in 101 instances, with the maximum deviation being 3.48174e+24.
+Upper bound of Sciantix variable "Kr in intragranular bubbles" has been exceeded in 101 instances, with the maximum deviation being 1.16369e+24.
+Upper bound of Sciantix variable "Kr in intragranular solution" has been exceeded in 101 instances, with the maximum deviation being 2.31804e+24.
+Upper bound of Sciantix variable "Kr produced" has been exceeded in 101 instances, with the maximum deviation being 5.94e+24.
+Upper bound of Sciantix variable "Kr released" has been exceeded in 101 instances, with the maximum deviation being 1.3512e+24.
+Upper bound of Sciantix variable "Kr85m at grain boundary" has been exceeded in 101 instances, with the maximum deviation being 8.54604e+19.
+Upper bound of Sciantix variable "Kr85m decayed" has been exceeded in 101 instances, with the maximum deviation being 2.57632e+24.
+Upper bound of Sciantix variable "Kr85m in grain" has been exceeded in 101 instances, with the maximum deviation being 2.95281e+21.
+Upper bound of Sciantix variable "Kr85m in intragranular bubbles" has been exceeded in 101 instances, with the maximum deviation being 1.52257e+21.
+Upper bound of Sciantix variable "Kr85m in intragranular solution" has been exceeded in 101 instances, with the maximum deviation being 2.62565e+21.
+Upper bound of Sciantix variable "Kr85m produced" has been exceeded in 101 instances, with the maximum deviation being 2.57935e+24.
+Upper bound of Sciantix variable "Kr85m released" has been exceeded in 101 instances, with the maximum deviation being 6.26976e+19.
+Upper bound of Sciantix variable "Restructured volume fraction" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Steam pressure" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Stoichiometry deviation" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Temperature" has been exceeded in 101 instances, with the maximum deviation being 1353.
+Upper bound of Sciantix variable "Time" has been exceeded in 101 instances, with the maximum deviation being 5480.
+Upper bound of Sciantix variable "Time step number" has been exceeded in 90 instances, with the maximum deviation being 80.
+Upper bound of Sciantix variable "U234" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "U235" has been exceeded in 101 instances, with the maximum deviation being 7.20971e+26.
+Upper bound of Sciantix variable "U236" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "U237" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "U238" has been exceeded in 101 instances, with the maximum deviation being 2.30169e+28.
+Upper bound of Sciantix variable "Xe at grain boundary" has been exceeded in 101 instances, with the maximum deviation being 8.85649e+24.
+Upper bound of Sciantix variable "Xe atoms per HBS pore" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Xe atoms per HBS pore - variance" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Xe in HBS pores" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Xe in HBS pores - variance" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Xe in grain" has been exceeded in 101 instances, with the maximum deviation being 2.78539e+25.
+Upper bound of Sciantix variable "Xe in grain HBS" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Xe in intragranular bubbles" has been exceeded in 101 instances, with the maximum deviation being 9.30955e+24.
+Upper bound of Sciantix variable "Xe in intragranular solution" has been exceeded in 101 instances, with the maximum deviation being 1.85443e+25.
+Upper bound of Sciantix variable "Xe produced" has been exceeded in 101 instances, with the maximum deviation being 4.752e+25.
+Upper bound of Sciantix variable "Xe produced in HBS" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "Xe released" has been exceeded in 101 instances, with the maximum deviation being 1.08096e+25.
+Upper bound of Sciantix variable "Xe133 at grain boundary" has been exceeded in 101 instances, with the maximum deviation being 5.35453e+22.
+Upper bound of Sciantix variable "Xe133 decayed" has been exceeded in 101 instances, with the maximum deviation being 1.27389e+25.
+Upper bound of Sciantix variable "Xe133 in grain" has been exceeded in 101 instances, with the maximum deviation being 3.82232e+23.
+Upper bound of Sciantix variable "Xe133 in intragranular bubbles" has been exceeded in 101 instances, with the maximum deviation being 1.55465e+23.
+Upper bound of Sciantix variable "Xe133 in intragranular solution" has been exceeded in 101 instances, with the maximum deviation being 2.53084e+23.
+Upper bound of Sciantix variable "Xe133 produced" has been exceeded in 101 instances, with the maximum deviation being 1.31737e+25.
+Upper bound of Sciantix variable "Xe133 released" has been exceeded in 101 instances, with the maximum deviation being 4.0238e+22.
+Upper bound of Sciantix variable "bubble_diffusivity" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "diffusivity" has been exceeded in 101 instances, with the maximum deviation being 10.
+Upper bound of Sciantix variable "nucleation_rate" has been exceeded in 101 instances, with the maximum deviation being 5e+20.
+Upper bound of Sciantix variable "production_rate" has been exceeded in 101 instances, with the maximum deviation being 2.4e+18.
+Upper bound of Sciantix variable "resolution_rate" has been exceeded in 101 instances, with the maximum deviation being 9.99962.
+Upper bound of Sciantix variable "trapping_rate" has been exceeded in 101 instances, with the maximum deviation being 10.

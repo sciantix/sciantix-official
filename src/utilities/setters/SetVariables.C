@@ -143,6 +143,11 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 		input_variable[iv_counter].setName("iBubbleDiffusivity");
 		input_variable[iv_counter].setValue(Sciantix_options[21]);
 		++iv_counter;
+		
+		input_variable.emplace_back();
+		input_variable[iv_counter].setName("iBounds");
+		input_variable[iv_counter].setValue(Sciantix_options[22]);
+		++iv_counter;
 	}
 
 	MapInputVariable();
@@ -196,6 +201,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	history_variable[hv_counter].setInitialValue(Sciantix_history[7]);
 	history_variable[hv_counter].setFinalValue(Sciantix_history[7]);
 	history_variable[hv_counter].setOutput(1);
+	history_variable[hv_counter].setBounds(10,20);
+	history_variable[hv_counter].setBounded(true);
 	++hv_counter;
 
 	history_variable.emplace_back();
@@ -204,6 +211,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	history_variable[hv_counter].setInitialValue(Sciantix_history[8]);
 	history_variable[hv_counter].setFinalValue(Sciantix_history[8]);
 	history_variable[hv_counter].setOutput(0);
+	history_variable[hv_counter].setBounds(10,20);
+	history_variable[hv_counter].setBounded(true);
 	++hv_counter;
 
 	history_variable.emplace_back();
@@ -212,6 +221,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	history_variable[hv_counter].setInitialValue(Sciantix_history[0] * Sciantix_scaling_factors[4]);
 	history_variable[hv_counter].setFinalValue(Sciantix_history[1] * Sciantix_scaling_factors[4]);
 	history_variable[hv_counter].setOutput(1);
+	history_variable[hv_counter].setBounds(10,20);
+	history_variable[hv_counter].setBounded(true);
 	++hv_counter;
 
 	history_variable.emplace_back();
@@ -220,6 +231,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	history_variable[hv_counter].setInitialValue(Sciantix_history[2] * Sciantix_scaling_factors[5]);
 	history_variable[hv_counter].setFinalValue(Sciantix_history[3] * Sciantix_scaling_factors[5]);
 	history_variable[hv_counter].setOutput(1);
+	history_variable[hv_counter].setBounds(10,20);
+	history_variable[hv_counter].setBounded(true);
 	++hv_counter;
 
 	history_variable.emplace_back();
@@ -228,6 +241,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	history_variable[hv_counter].setInitialValue(Sciantix_history[4]);
 	history_variable[hv_counter].setFinalValue(Sciantix_history[5]);
 	history_variable[hv_counter].setOutput(1);
+	history_variable[hv_counter].setBounds(10,20);
+	history_variable[hv_counter].setBounded(true);
 	++hv_counter;
 
 	history_variable.emplace_back();
@@ -236,6 +251,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	history_variable[hv_counter].setInitialValue(Sciantix_history[9]);
 	history_variable[hv_counter].setFinalValue(Sciantix_history[10]);
 	history_variable[hv_counter].setOutput(toOutputStoichiometryDeviation);
+	history_variable[hv_counter].setBounds(10,20);
+	history_variable[hv_counter].setBounded(true);
 	++hv_counter;
 
 	// ----------------------------------------------------------------------------
@@ -248,6 +265,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[0]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[0]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -256,6 +275,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[1]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[1]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -264,6 +285,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[100]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[100]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -272,6 +295,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[2]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[2]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -280,6 +305,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[92]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[92]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -288,6 +315,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[3]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[3]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -296,6 +325,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[4]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[4]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -304,6 +335,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[5]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[5]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -312,6 +345,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[6]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[6]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -320,6 +355,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -328,6 +365,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[7]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[7]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -336,6 +375,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[8]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[8]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -344,6 +385,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[9]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[9]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -352,6 +395,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[10]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[10]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -360,6 +405,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[11]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[11]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -368,6 +415,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[12]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[12]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -376,6 +425,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -384,6 +435,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -392,6 +445,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[13]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[13]);
 	sciantix_variable[sv_counter].setOutput(toOutputHelium);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -400,6 +455,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[14]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[14]);
 	sciantix_variable[sv_counter].setOutput(toOutputHelium);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -408,6 +465,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[15]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[15]);
 	sciantix_variable[sv_counter].setOutput(toOutputHelium);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -416,6 +475,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[16]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[16]);
 	sciantix_variable[sv_counter].setOutput(toOutputHelium);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -424,6 +485,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[17]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[17]);
 	sciantix_variable[sv_counter].setOutput(toOutputHelium);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -432,6 +495,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[18]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[18]);
 	sciantix_variable[sv_counter].setOutput(toOutputHelium);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -440,6 +505,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -448,6 +515,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(toOutputHelium);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -456,6 +525,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(toOutputHelium);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -464,6 +535,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[48]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[48]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -472,6 +545,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[49]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[49]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -480,6 +555,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[50]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[50]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -488,6 +565,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[51]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[51]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -496,6 +575,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[52]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[52]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -504,6 +585,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[53]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[53]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -512,6 +595,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[54]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[54]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -520,6 +605,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -528,6 +615,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[57]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[57]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -536,6 +625,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[58]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[58]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -544,6 +635,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[59]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[59]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -552,6 +645,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[60]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[60]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -560,6 +655,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[61]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[61]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -568,6 +665,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[62]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[62]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -576,6 +675,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[63]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[63]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -584,6 +685,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -592,6 +695,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[19]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[19]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -600,6 +705,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[20]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[20]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -608,6 +715,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -616,6 +725,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[21]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[21]);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -624,6 +735,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[22]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[22]);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -632,6 +745,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[23]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[23]);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -640,6 +755,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[21] + Sciantix_variables[22] + Sciantix_variables[23]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[21] + Sciantix_variables[22] + Sciantix_variables[23]);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -648,6 +765,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[24]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[24]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -656,6 +775,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[68]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[68]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -664,6 +785,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[25]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[25]);
 	sciantix_variable[sv_counter].setOutput(toOutputGrainBoundary);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -672,6 +795,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[26]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[26]);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -680,6 +805,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[27]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[27]);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -688,6 +815,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[28]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[28]);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -696,6 +825,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[29]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[29]);
 	sciantix_variable[sv_counter].setOutput(toOutputGrainBoundary);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -704,6 +835,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[30]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[30]);
 	sciantix_variable[sv_counter].setOutput(toOutputGrainBoundary);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -712,6 +845,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(toOutputFracture);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -720,6 +855,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(toOutputFracture);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -728,6 +865,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[31]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[31]);
 	sciantix_variable[sv_counter].setOutput(toOutputGrainBoundary);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -736,6 +875,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[32]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[32]);
 	sciantix_variable[sv_counter].setOutput(toOutputGrainBoundary);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -744,6 +885,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[33]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[33]);
 	sciantix_variable[sv_counter].setOutput(toOutputGrainBoundary);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -752,6 +895,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[34]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[34]);
 	sciantix_variable[sv_counter].setOutput(toOutputGrainBoundary);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -760,6 +905,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[35]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[35]);
 	sciantix_variable[sv_counter].setOutput(toOutputGrainBoundary);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -768,6 +915,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[36]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[36]);
 	sciantix_variable[sv_counter].setOutput(toOutputGrainBoundary);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -776,6 +925,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[37]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[37]);
 	sciantix_variable[sv_counter].setOutput(toOutputCracking);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -784,6 +935,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[38]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[38]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -792,6 +945,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[69]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[69]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -800,6 +955,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[39]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[39]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -808,6 +965,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[65]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[65]);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -816,6 +975,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[40]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[40]);
 	sciantix_variable[sv_counter].setOutput(0.0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -824,6 +985,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45]);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -832,6 +995,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[41]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[41]);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -840,6 +1005,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[42]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[42]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -848,6 +1015,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[43]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[43]);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -856,6 +1025,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[44]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[44]);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -864,6 +1035,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[45]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[45]);
 	sciantix_variable[sv_counter].setOutput(1);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -872,6 +1045,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45]);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -880,6 +1055,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[46]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[46]);
 	sciantix_variable[sv_counter].setOutput(toOutputVenting);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -888,6 +1065,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[47]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[47]);
 	sciantix_variable[sv_counter].setOutput(toOutputVenting);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -896,6 +1075,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[55]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[55]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -904,6 +1085,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[64]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[64]);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -912,6 +1095,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -920,6 +1105,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(toOutputStoichiometryDeviation);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -928,6 +1115,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[66]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[66]);
 	sciantix_variable[sv_counter].setOutput(toOutputStoichiometryDeviation);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -936,6 +1125,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(toOutputStoichiometryDeviation);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -944,6 +1135,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[67]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[67]);
 	sciantix_variable[sv_counter].setOutput(toOutputStoichiometryDeviation);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -952,6 +1145,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(toOutputStoichiometryDeviation);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -960,6 +1155,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
 	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	// ------------------------------------------------------------------------------------------------
@@ -972,6 +1169,9 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[56]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[56]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
+
 	++sv_counter;
 	
 	sciantix_variable.emplace_back();
@@ -980,6 +1180,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[80]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[80]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 	
 	sciantix_variable.emplace_back();
@@ -988,6 +1190,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[81]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[81]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 	
 	sciantix_variable.emplace_back();
@@ -996,6 +1200,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[82]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[82]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1004,6 +1210,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[83]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[83]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1012,6 +1220,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[85]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[85]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1020,6 +1230,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[86]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[86]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1028,6 +1240,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[88]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[88]);
 	sciantix_variable[sv_counter].setOutput(toOutputHighBurnupStructure);
+	sciantix_variable[sv_counter].setBounds(10,20);
+	sciantix_variable[sv_counter].setBounded(true);
 	++sv_counter;
 
 	// ------------------------------------------------------------------------------------------------
