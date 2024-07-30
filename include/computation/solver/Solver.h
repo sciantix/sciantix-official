@@ -21,7 +21,6 @@
 #include <string>
 #include <cmath>
 #include "InputVariable.h"
-#include "ConstantNumbers.h"
 
 /**
  * @brief Class providing solver methods for the SCIANTIX simulation framework.
