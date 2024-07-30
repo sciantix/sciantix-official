@@ -26,10 +26,14 @@ FGR2 = []
 
 # Data from Kashibe 1991
 FGROperational = [21, 21, #23 GWd/t
-                  21, 21 #28 GWd/t
+                  21, 21, #28 GWd/t
+                  21, 21, 21, 21, 21,
+                  21, 21, 21, 21, 21
                 ]
 FGRAnnealing = [5.9, 6.5, #1400°C, 23 GWd/t, Multiple-Single
-                5.9, 7.6  #1400°C, 28 GWd/t, Multiple-Single
+                5.9, 7.6,  #1400°C, 28 GWd/t, Multiple-Single
+                17.8,19.2,24,16.3,19.4, #2073°C 23 GWd/t, rate 1,2,3,4,5
+                28.7,27.1,24,24.47 #2073°C 23 GWd/t, rate 1,2,4,5
               ]
 FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
