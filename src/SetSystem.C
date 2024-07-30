@@ -258,7 +258,7 @@ void System::setFissionGasDiffusivity(int input_value)
 		 * 
 		 */
 		reference += "ROM diffusion coefficient. \n\t";
-		double temperature = sciantix_variable[sv["T0"]].getFinalValue();
+		double temperature = sciantix_variable[sv["T0"]].getFinalValue(); //nel passare da 2000 a 2080 cambia molto
 		double fission_rate = history_variable[hv["Fission rate"]].getFinalValue();
 
 		double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));

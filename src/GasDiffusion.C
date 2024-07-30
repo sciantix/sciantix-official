@@ -175,10 +175,10 @@ void defineRomCylinder()
 
 		parameters.push_back(sciantix_variable[sv["Thermal diffusivity"]].getFinalValue()); //5 MDG thermal diffusivity
 		parameters.push_back(sciantix_variable[sv["Fission heat"]].getFinalValue()*history_variable[hv["Fission rate"]].getFinalValue()); //6 MDG heat source term
-		parameters.push_back(history_variable[hv["Temperature"]].getFinalValue()); //7 MDG temperature
+		parameters.push_back(history_variable[hv["Temperature"]].getFinalValue()); //7 MDG temperature bc
 		parameters.push_back(system.getalphaD()); //8 MDG  alphaD
-        parameters.push_back(history_variable[hv["Temperature"]].getFinalValue());//T0
-        //parameters.push_back(sciantix_variable[sv["T0"]].getFinalValue());//9 MDG T0
+        //parameters.push_back(history_variable[hv["Temperature"]].getFinalValue());//T0
+        parameters.push_back(sciantix_variable[sv["T0"]].getFinalValue());//9 MDG T0
 
 		parameters.push_back(system.getProductionRate());
 		parameters.push_back(gas[ga[system.getGasName()]].getDecayRate());
