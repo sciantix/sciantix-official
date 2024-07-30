@@ -1,0 +1,7650 @@
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    0
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
+Cappellari --------
+Stress intensification factor =5.28901
+Span: 900
+Inflection point: 0.95
+Surface tension (J/m2) = 0.778021
+Elastic modulus (GPa) = -361.025
+Grain Boundary Energy (J/m2)= 1.0002
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): -nan
+Critical pressure Jernkvist (Pa): -nan
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB state
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+Warning NAN values in GB initial values
+	
+GasRelease: intact faces
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+	
+GasRelease: intact faces+microcracking
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+R_i  =    -nan
+R_f  =    -nan
+d_R  =    -nan
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: -nan
