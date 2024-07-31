@@ -32,9 +32,61 @@
  * The Simulation class inherits from Solver and Model classes to utilize their functionalities
  * for simulating complex interactions and processes based on the provided models.
  */
-class Simulation : public Solver, public Model
+class Simulation
 {
+private:
+	SciantixArray<SciantixVariable> sciantix_variable;
+	SciantixArray<SciantixVariable> history_variable;
+	SciantixArray<SciantixVariable> physics_variable;
+	
+	SciantixArray<Model> model;
+	SciantixArray<System> sciantix_system;
+	SciantixArray<Matrix> matrices;
+	SciantixArray<Gas> gas;
+
+	SciantixArray<InputVariable> input_variable;
+	std::vector<double> modes_initial_conditions;
+	SciantixArray<InputVariable> scaling_factors;
+
+	Solver solver;
+
+	Simulation* instance;
+
+
+
+	/**
+	 * \brief Default constructor for the Simulation class
+	 */
+	Simulation() {}
+
+
 public:
+
+	Simulation& getInstance();
+
+
+	void setVariables(
+		int Sciantix_options[], 
+		double Sciantix_history[], 
+		double Sciantix_variables[], 
+		double Sciantix_scaling_factors[], 
+		double Sciantix_diffusion_modes[]
+	);
+
+	void setGas();
+	void setMatrix();
+	void setSystem();
+
+
+	void initialize(
+		int Sciantix_options[], 
+		double Sciantix_history[], 
+		double Sciantix_variables[], 
+		double Sciantix_scaling_factors[], 
+		double Sciantix_diffusion_modes[]
+	);
+
+
 	/**
 	 * @brief Burnup uses the solver Integrator to computes the fuel burnup from the local power density.
 	 * This method is called in Sciantix.cpp, after the definition of the Burnup model.
@@ -208,10 +260,6 @@ public:
 		}
 	}
 
-	/**
-	 * \brief Default constructor for the Simulation class
-	 */
-	Simulation() {}
 	/**
 	 * \brief Destructor for the Simulation class
 	 */

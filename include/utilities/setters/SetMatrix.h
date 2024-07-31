@@ -14,24 +14,15 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef SET_GAS_H
-#define SET_GAS_H
+#ifndef SET_MATRIX_H
+#define SET_MATRIX_H
 
-#include <vector>
-#include "Gas.h"
-#include "SciantixArray.h"
 
-/**
- * \brief Sets up the gas properties in the simulation.
- * 
- * This function initializes and maps properties for Xenon, Krypton, and Helium gases
- * used in the simulation. Each gas is set up with specific attributes and then mapped
- * for easy access throughout the simulation.
- */
-// void setGas(SciantixArray<Gas> &gas);
+Matrix UO2(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> sciantix_variable, 
+	SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> input_variable);
 
-void xenon(SciantixArray<Gas> &gas);
-void krypton(SciantixArray<Gas> &gas);
-void helium(SciantixArray<Gas> &gas);
+Matrix UO2HBS(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> sciantix_variable, 
+	SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> input_variable);
 
-#endif // SET_GAS_H
+
+#endif

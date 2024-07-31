@@ -23,14 +23,23 @@
 #include "Matrix.h"
 
 
-void setSystem(SciantixArray<System> &system, SciantixArray<Matrix> matrix, SciantixArray<InputVariable> &input_variable);
+System Xe_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
+	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors);
 
-System Xe_in_UO2(SciantixArray matrix, SciantixArray input_variable);
-System Xe_in_UO2HBS(SciantixArray matrix, SciantixArray input_variable);
-System Kr_in_UO2(SciantixArray matrix, SciantixArray input_variable);
-System He_in_UO2(SciantixArray matrix, SciantixArray input_variable);
-System Xe133_in_UO2(SciantixArray matrix, SciantixArray input_variable):
-System Kr85m_in_UO2(SciantixArray matrix, SciantixArray input_variable);
+System Xe_in_UO2HBS(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
+	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors);
+
+System Kr_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
+	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors);
+
+System He_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
+	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors);
+
+System Xe133_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
+	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors);
+
+System Kr85m_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
+	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors);
 
 
 #endif // SETSYSTEM_H

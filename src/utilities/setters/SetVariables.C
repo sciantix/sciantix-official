@@ -25,7 +25,7 @@
 /// - input_variable
 /// together with the diffusion modes, and the scaling factors.
 
-void Simulation::SetVariables(
+void Simulation::setVariables(
 	int Sciantix_options[], 
 	double Sciantix_history[], 
 	double Sciantix_variables[], 
