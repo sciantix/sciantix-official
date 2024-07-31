@@ -10,49 +10,19 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: F. Bastien                                                             //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-
-#ifndef __VARIABLE_ARRAY_H__
-#define __VARIABLE_ARRAY_H__
-
-#include "Variable.h"
-
-#include <vector>
-#include <map>
-#include <string>
-#include <iostream>
+#ifndef SET_MATRIX_H
+#define SET_MATRIX_H
 
 
-template <class T>
-class SciantixArray
-{
-private:
-    std::vector<T> array;
-    std::map<std::string, int> map;
+Matrix UO2(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> sciantix_variable, 
+	SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> input_variable);
 
-public:
-    SciantixArray();
-    SciantixArray(std::vector<T> data);
-
-    void push(T element);
-    void clear();
-    bool empty();
-
-    T& operator[](int index);
-    T& operator[](std::string variable_name);
-
-
-    // Iterators to easily make loops on the vector
-    typename std::vector<T>::iterator begin() {return array.begin();}
-    typename std::vector<T>::iterator end() {return array.end();}
-    typename std::vector<T>::const_iterator begin() const {return array.begin();}
-    typename std::vector<T>::const_iterator end() const {return array.end();}
-
-    typename std::vector<T>::iterator find(std::string element_name) {return map[element_name];}
-};
+Matrix UO2HBS(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> sciantix_variable, 
+	SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> input_variable);
 
 
 #endif

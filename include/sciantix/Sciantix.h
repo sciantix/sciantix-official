@@ -22,10 +22,10 @@
 #include "SetGas.h"
 #include "SetMatrix.h"
 #include "SetSystem.h"
-#include "UpdateVariables.h"
-#include "Output.h"
+// #include "UpdateVariables.h"
+// #include "Output.h"
 #include "Simulation.h"
-#include "FiguresOfMerit.h"
+// #include "FiguresOfMerit.h"
 #include "SciantixArray.h"
 
 

@@ -26,7 +26,7 @@
 #include "Constants.h"
 #include "ErrorMessages.h"
 #include "SciantixArray.h"
-#include "PhysicsVariable.h"
+#include "SciantixVariable.h"
 #include "InputVariable.h"
 #include <cmath>
 #include <vector>
@@ -35,7 +35,7 @@
  * \class System
  * \brief Class derived from Gas and Matrix to include the properties that depend on both the fission gas and the fuel matrix (e.g., Xe covolume)
  */
-class System
+class System: public Material
 {
 protected:
 

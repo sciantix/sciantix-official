@@ -28,7 +28,7 @@
  * used in the simulation. Each gas is set up with specific attributes and then mapped
  * for easy access throughout the simulation.
  */
-void setGas(SciantixArray<Gas> &gas);
+// void setGas(SciantixArray<Gas> &gas);
 
 void xenon(SciantixArray<Gas> &gas);
 void krypton(SciantixArray<Gas> &gas);

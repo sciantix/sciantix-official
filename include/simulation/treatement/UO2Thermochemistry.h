@@ -14,11 +14,6 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "SciantixVariableDeclaration.h"
-#include "HistoryVariableDeclaration.h"
-#include "ModelDeclaration.h"
-#include "MapSciantixVariable.h"
-#include "MapHistoryVariable.h"
 
 /**
  * @brief This routine defines the model to evaluate the oxygen partial pressure (in atm) in hyperstoichiometric UO2+x fuel
