@@ -32,7 +32,6 @@ class Variable
 {
 protected:
 	std::string name;
-	std::string reference;
 
 public:
 	/**
@@ -62,26 +61,6 @@ public:
 	{
 		/// Member function to get the name of the object
 		return name;
-	}
-
-	/**
-	 * \brief Sets a reference for the entity.
-	 * @param n The reference string to be set.
-	 */
-	void setRef(std::string n)
-	{
-		/// Member function to set the reference field of the object
-		reference = n;
-	}
-
-	/**
-	 * \brief Retrieves the reference or identifier of the entity.
-	 * @return A string that is the current reference of the entity.
-	 */
-	std::string getRef()
-	{
-		/// Member function to get the reference field of the object
-		return reference;
 	}
 };
 
