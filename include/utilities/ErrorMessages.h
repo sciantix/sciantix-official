@@ -71,9 +71,9 @@ namespace ErrorMessages
 	void writeErrorLog();
 
 	/**
-	 * @brief Clear the error log file.
+	 * @brief Clear the warning log file.
 	 */
-	void clearErrorLog();
+	void clearWarningLog();
 };
 
 

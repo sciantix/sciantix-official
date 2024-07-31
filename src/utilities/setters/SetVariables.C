@@ -290,13 +290,13 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Xe in grain");
+	sciantix_variable[sv_counter].setName("Xe in grain"); 
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[2]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[2]);
 	sciantix_variable[sv_counter].setOutput(1);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -345,8 +345,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[6]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[6]);
 	sciantix_variable[sv_counter].setOutput(1);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -375,8 +375,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[8]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[8]);
 	sciantix_variable[sv_counter].setOutput(1);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -415,8 +415,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[12]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[12]);
 	sciantix_variable[sv_counter].setOutput(1);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -455,8 +455,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[14]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[14]);
 	sciantix_variable[sv_counter].setOutput(toOutputHelium);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -495,8 +495,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[18]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[18]);
 	sciantix_variable[sv_counter].setOutput(toOutputHelium);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -545,8 +545,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[49]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[49]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -595,8 +595,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[54]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[54]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -625,8 +625,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[58]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[58]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -675,8 +675,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[63]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[63]);
 	sciantix_variable[sv_counter].setOutput(toOutputRadioactiveFG);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -690,13 +690,13 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Intragranular bubble concentration");
+	sciantix_variable[sv_counter].setName("Intragranular bubble concentration"); 
 	sciantix_variable[sv_counter].setUOM("(bub/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[19]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[19]);
 	sciantix_variable[sv_counter].setOutput(1);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -705,8 +705,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[20]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[20]);
 	sciantix_variable[sv_counter].setOutput(1);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -765,8 +765,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[24]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[24]);
 	sciantix_variable[sv_counter].setOutput(1);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -785,8 +785,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[25]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[25]);
 	sciantix_variable[sv_counter].setOutput(toOutputGrainBoundary);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -875,8 +875,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[32]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[32]);
 	sciantix_variable[sv_counter].setOutput(toOutputGrainBoundary);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -895,8 +895,8 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[34]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[34]);
 	sciantix_variable[sv_counter].setOutput(toOutputGrainBoundary);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -910,13 +910,13 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Intergranular gas swelling");
+	sciantix_variable[sv_counter].setName("Intergranular gas swelling"); 
 	sciantix_variable[sv_counter].setUOM("(/)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[36]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[36]);
 	sciantix_variable[sv_counter].setOutput(toOutputGrainBoundary);
-	sciantix_variable[sv_counter].setBounds(10,20);
-	sciantix_variable[sv_counter].setBounded(true);
+	sciantix_variable[sv_counter].setValidation(10,20);
+	sciantix_variable[sv_counter].setIsValidation(true);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();

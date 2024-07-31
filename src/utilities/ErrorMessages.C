@@ -29,7 +29,7 @@ namespace ErrorMessages
 	std::stringstream errorMessages;
 	std::map<std::string, std::pair<int, double>> exceedances;
 
-	void clearErrorLog() {
+	void clearWarningLog() {
         std::ofstream Warning_log(TestPath + Warning_file_name, std::ios::out);
         // Opening the file in std::ios::out mode without std::ios::app clears the file
         if (Warning_log.is_open()) {
@@ -86,7 +86,7 @@ namespace ErrorMessages
 
 	void writeErrorLog()
 	{
-		clearErrorLog();
+		clearWarningLog();
 		std::ofstream warning_log(TestPath + Warning_file_name, std::ios::app);
         for (const auto& entry : exceedances) {
             warning_log << "Upper bound of Sciantix variable \"" << entry.first << "\" has been exceeded in "

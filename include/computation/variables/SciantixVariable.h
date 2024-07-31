@@ -25,11 +25,54 @@
 class SciantixVariable : virtual public PhysicsVariable
 {
 private:
-    bool to_output; ///< Flag indicating whether the variable should be included in output
+    bool to_output;       ///< Flag indicating whether the variable should be included in output
     double validation[2]; // Bounds for the variables used in validation
-    bool isValidation; // Flag indicating whether the variable is used for validation 
+    bool isValidation;    // Flag indicating whether the variable is used for validation
 
 public:
+
+/**
+     * \brief Sets the bounds for the variable
+     * \param minBound The minimum bound
+     * \param maxBound The maximum bound
+     */
+    void setValidation(double minBound, double maxBound) {
+        validation[0] = minBound;
+        validation[1] = maxBound;
+    }
+
+    /**
+     * \brief Sets whether to check the bounds of the validation variable
+     * \param check A boolean value indicating whether to check the bounds
+     */
+    void setIsValidation(bool check)
+    {
+        isValidation = check;
+    }
+
+    /**
+     * \brief Checks if a value is within the bounds, calls Switch if not
+     * \param name The name of the variable
+     * \param value The value to check
+     */
+    void isWithinBoundsValidation(double value)
+    {
+        if (isValidation)
+        {
+            double excess = 0.0;
+            if (value < validation[0])
+            {
+                excess = validation[0] - value;
+                ErrorMessages::errorBounds(name + " in validation", value, excess);
+            }
+            else if (value > validation[1])
+            {
+                excess = value - validation[1];
+                ErrorMessages::errorBounds(name + " in validation", value, excess);
+            }
+        }
+    }
+
     /**
      * @brief Default constructor for the SciantixVariable class.
      */
