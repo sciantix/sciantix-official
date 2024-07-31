@@ -1,6 +1,7 @@
 #include "SetGas.h"
+#include "Simulation.h"
 
-void setGas(SciantixArray<Gas> &gas)
+void Simulation::setGas(SciantixArray<Gas> &gas)
 {
     xenon(gas);
     krypton(gas);
