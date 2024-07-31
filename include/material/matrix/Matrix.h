@@ -17,7 +17,13 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include <cmath>
+
 #include "Material.h"
+#include "Constants.h"
+#include "ErrorMessages.h"
+#include "SciantixArray.h"
+#include "SciantixVariable.h"
 
 /**
  * \class Matrix
@@ -47,7 +53,6 @@ protected:
 	double pore_nucleation_rate;
 	double pore_resolution_rate;
 	double pore_trapping_rate;
-	std::string matrix_name;
 
 public:
 	/**
@@ -155,7 +160,7 @@ public:
 	 *
 	 * @param input_value The model selection for grain boundary mobility.
 	 */
-	void setGrainBoundaryMobility(int input_value);
+	void setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVariable> history_variable);
 
 	/**
 	 * \brief Retrieves the mobility of the grain boundaries of the matrix.
@@ -252,7 +257,7 @@ public:
 	 *
 	 * @param input_value The model selection for grain boundary vacancy diffusivity.
 	 */
-	void setGrainBoundaryVacancyDiffusivity(int input_value);
+	void setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable> history_variable);
 
 	/**
 	 * \brief Retrieves the vacancy diffusivity on the grain boundaries.
@@ -310,7 +315,7 @@ public:
 	 * Calculates the nucleation rate based on current simulation parameters and a predefined model.
 	 * The model used is defined by Barani et al., JNM 563 (2022) 153627.
 	 */
-	void setPoreNucleationRate();
+	void setPoreNucleationRate(SciantixArray<SciantixVariable> sciantix_variable);
 
 	/**
 	 * \brief Retrieves the nucleation rate of pores.
@@ -328,7 +333,7 @@ public:
 	 * The re-solution rate is calculated based on current simulation parameters and a model from
 	 * Barani et al., JNM 563 (2022) 153627.
 	 */
-	void setPoreResolutionRate();
+	void setPoreResolutionRate(SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable);
 
 	/**
 	 * \brief Retrieves the resolution rate of gas atoms from pores.
@@ -346,7 +351,7 @@ public:
 	 * The trapping rate is calculated based on current simulation parameters and a model from
 	 * Barani et al., JNM 563 (2022) 153627.
 	 */
-	void setPoreTrappingRate();
+	void setPoreTrappingRate(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> sciantix_variable);
 
 	/**
 	 * \brief Retrieves the trapping rate of gas atoms in pores.

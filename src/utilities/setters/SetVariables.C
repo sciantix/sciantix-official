@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "SetVariables.h"
+#include "Simulation.h"
 
 /// SetVariables
 /// This routine builds the vectors of objects:
@@ -24,19 +25,13 @@
 /// - input_variable
 /// together with the diffusion modes, and the scaling factors.
 
-void SetVariables(
+void Simulation::SetVariables(
 	int Sciantix_options[], 
 	double Sciantix_history[], 
 	double Sciantix_variables[], 
 	double Sciantix_scaling_factors[], 
-	double Sciantix_diffusion_modes[],
-    SciantixArray<InputVariable> &input_variable,
-    SciantixArray<SciantixVariable> &history_variable,
-    SciantixArray<SciantixVariable> &sciantix_variable,
-	SciantixArray<SciantixVariable> &physics_variable,
-	std::vector<double> &modes_initial_conditions,
-	SciantixArray<Variable> &scaling_factors
-	)
+	double Sciantix_diffusion_modes[]
+)
 {
 	// -----------------------------------------------------------------------------------------------
 	// Input variable

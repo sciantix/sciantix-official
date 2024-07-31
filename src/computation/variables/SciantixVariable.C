@@ -1,4 +1,4 @@
-#include "PhysicsVariable.h"
+#include "SciantixVariable.h"
 
 void SciantixVariable::rescaleInitialValue(const double factor)
 {
