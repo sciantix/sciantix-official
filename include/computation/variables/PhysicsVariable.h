@@ -20,13 +20,13 @@
 #include "Variable.h"
 
 /**
- * \class PhysicsVariable
+ * \class SciantixVariable
  * \brief A specialized variable class that extends the Variable class with physical attributes and functionalities.
  *
- * PhysicsVariable includes features such as unit of measure (UOM), final and initial values,
+ * SciantixVariable includes features such as unit of measure (UOM), final and initial values,
  * and mechanisms for adjusting these values through specific operations.
  */
-class PhysicsVariable : virtual public Variable
+class SciantixVariable : virtual public Variable
 {
 protected:
 	std::string uom;
@@ -36,7 +36,7 @@ protected:
 
 public:
 
-	PhysicsVariable(std::string name, std::string uom, double initial_value, double final_value, bool output)
+	SciantixVariable(std::string name, std::string uom, double initial_value, double final_value, bool output)
 	{
 		this->name = name;
 		this->uom = uom;
@@ -128,14 +128,14 @@ public:
 	bool getOutput();
 
 	/**
-	 * @brief Default constructor for PhysicsVariable.
+	 * @brief Default constructor for SciantixVariable.
 	 */
-	PhysicsVariable() {}
+	SciantixVariable() {}
 	
 	/**
-	 * @brief Destructor for PhysicsVariable.
+	 * @brief Destructor for SciantixVariable.
 	 */
-	~PhysicsVariable() {}
+	~SciantixVariable() {}
 };
 
 #endif // PHYSICS_VARIABLE_H

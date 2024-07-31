@@ -41,8 +41,8 @@ public:
     void clear();
     bool empty();
 
-    T operator[](int index);
-    T operator[](std::string variable_name);
+    T& operator[](int index);
+    T& operator[](std::string variable_name);
 
 
     // Iterators to easily make loops on the vector

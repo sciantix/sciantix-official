@@ -23,8 +23,6 @@
 #include <map>
 #include <string>
 
-#include "HistoryVariable.h"
-#include "SciantixVariable.h"
 #include "InputVariable.h"
 #include "Matrix.h"
 #include "Gas.h"
@@ -36,7 +34,7 @@
  * The Model class is an integral part of the SCIANTIX simulation software, serving as a base for defining
  * various simulation models.
  */
-class Model : public HistoryVariable, public SciantixVariable, public InputVariable, public System
+class Model
 {
 protected:
 	std::string overview;

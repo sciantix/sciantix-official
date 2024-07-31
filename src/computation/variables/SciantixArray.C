@@ -1,4 +1,4 @@
-#include "VariableArray.h"
+#include "SciantixArray.h"
 
 
 template <class T>
@@ -49,14 +49,14 @@ bool SciantixArray<T>::empty()
 
 
 template <class T>
-T SciantixArray<T>::operator[](int index)
+T& SciantixArray<T>::operator[](int index)
 {
     return array[index];
 }
 
 
 template <class T>
-T SciantixArray<T>::operator[](std::string variable_name)
+T& SciantixArray<T>::operator[](std::string variable_name)
 {
     if (map.find(variable_name) == map.end())
     {

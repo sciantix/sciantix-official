@@ -1,74 +1,74 @@
 #include "PhysicsVariable.h"
 
-void PhysicsVariable::rescaleInitialValue(const double factor)
+void SciantixVariable::rescaleInitialValue(const double factor)
 {
     // Function to rescale the final value
     initial_value *= factor;
 }
 
-void PhysicsVariable::rescaleFinalValue(const double factor)
+void SciantixVariable::rescaleFinalValue(const double factor)
 {
     // Function to rescale the final value
     final_value *= factor;
 }
 
-void PhysicsVariable::addValue(const double v)
+void SciantixVariable::addValue(const double v)
 {
     // Function to increase final_value by v
     final_value += v;
 }
 
-void PhysicsVariable::setUOM(std::string s)
+void SciantixVariable::setUOM(std::string s)
 {
     uom = s;
 }
 
-std::string PhysicsVariable::getUOM()
+std::string SciantixVariable::getUOM()
 {
     return uom;
 }
 
-void PhysicsVariable::setConstant()
+void SciantixVariable::setConstant()
 {
     final_value = initial_value;
 }
 
-void PhysicsVariable::resetValue()
+void SciantixVariable::resetValue()
 {
     initial_value = final_value;
 }
 
-void PhysicsVariable::setFinalValue(double FinalValue)
+void SciantixVariable::setFinalValue(double FinalValue)
 {
     final_value = FinalValue;
 }
 
-void PhysicsVariable::setInitialValue(double InitialValue)
+void SciantixVariable::setInitialValue(double InitialValue)
 {
     initial_value = InitialValue;
 }
 
-double PhysicsVariable::getFinalValue()
+double SciantixVariable::getFinalValue()
 {
     return final_value;
 }
 
-double PhysicsVariable::getInitialValue()
+double SciantixVariable::getInitialValue()
 {
     return initial_value;
 }
 
-double PhysicsVariable::getIncrement()
+double SciantixVariable::getIncrement()
 {
     return final_value - initial_value;
 }
 
-void PhysicsVariable::setOutput(bool io)
+void SciantixVariable::setOutput(bool io)
 {
     to_output = io;
 }
 
-bool PhysicsVariable::getOutput()
+bool SciantixVariable::getOutput()
 {
     return to_output;
 }
