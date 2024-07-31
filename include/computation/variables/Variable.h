@@ -20,7 +20,6 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "Entity.h"
 
 /**
  * \class Variable
@@ -29,7 +28,7 @@
  * The Variable class inherits from Entity and is intended to be the base class for different types
  * of variables used in a system, encapsulating common attributes such as name and reference.
  */
-class Variable : virtual public Entity
+class Variable
 {
 protected:
 	std::string name;
@@ -44,6 +43,46 @@ public:
 	 * \brief Destructor for the Variable class
 	 */
 	~Variable() { }
+
+	/**
+	 * \brief Sets the name of the entity.
+	 * @param n The new name to be set for the entity.
+	 */
+	void setName(std::string n)
+	{
+		/// Member function to set the name of the object
+		name = n;
+	}
+
+	/**
+	 * \brief Retrieves the name of the entity.
+	 * @return A string that is the current name of the entity.
+	 */
+	std::string getName()
+	{
+		/// Member function to get the name of the object
+		return name;
+	}
+
+	/**
+	 * \brief Sets a reference for the entity.
+	 * @param n The reference string to be set.
+	 */
+	void setRef(std::string n)
+	{
+		/// Member function to set the reference field of the object
+		reference = n;
+	}
+
+	/**
+	 * \brief Retrieves the reference or identifier of the entity.
+	 * @return A string that is the current reference of the entity.
+	 */
+	std::string getRef()
+	{
+		/// Member function to get the reference field of the object
+		return reference;
+	}
 };
 
 #endif

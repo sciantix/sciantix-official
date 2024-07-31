@@ -31,9 +31,9 @@ void SetVariables(
 	double Sciantix_scaling_factors[], 
 	double Sciantix_diffusion_modes[],
     SciantixArray<InputVariable> &input_variable,
-    SciantixArray<PhysicsVariable> &history_variable,
-    SciantixArray<PhysicsVariable> &sciantix_variable,
-	SciantixArray<PhysicsVariable> &physics_variable,
+    SciantixArray<SciantixVariable> &history_variable,
+    SciantixArray<SciantixVariable> &sciantix_variable,
+	SciantixArray<SciantixVariable> &physics_variable,
 	std::vector<double> &modes_initial_conditions,
 	SciantixArray<Variable> &scaling_factors
 	)
@@ -66,7 +66,7 @@ void SetVariables(
 	// Physics variable
 	// ----------------
 	
-	physics_variable.push(PhysicsVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
+	physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
 
 
 	// ----------------
@@ -74,12 +74,12 @@ void SetVariables(
 	// ----------------
 	
 	
-	std::vector<PhysicsVariable> initial_history_values = initHistoryVariableValues(
+	std::vector<SciantixVariable> initial_history_values = initHistoryVariableValues(
 		Sciantix_history,
 		toOutputStoichiometryDeviation
 	);
 
-	for (PhysicsVariable initial_value : initial_history_values)
+	for (SciantixVariable initial_value : initial_history_values)
 	{
 		history_variable.push(initial_value);
 	}
@@ -90,7 +90,7 @@ void SetVariables(
 	// ----------------------------------------------------------------------------
 	
 
-	std::vector<PhysicsVariable> initial_sciantix_values = initSciantixVariableValues(
+	std::vector<SciantixVariable> initial_sciantix_values = initSciantixVariableValues(
 			Sciantix_variables,
 			toOutputRadioactiveFG,
 			toOutputVenting,
@@ -102,7 +102,7 @@ void SetVariables(
 			toOutputStoichiometryDeviation
 		);
 
-	for (PhysicsVariable initial_value : initial_sciantix_values)
+	for (SciantixVariable initial_value : initial_sciantix_values)
 	{
 		sciantix_variable.push(initial_value);
 	}

@@ -21,25 +21,9 @@
 #include <vector>
 #include "Solver.h"
 #include "Model.h"
-#include "MapModel.h"
-#include "MapSciantixVariable.h"
-#include "MapPhysicsVariable.h"
-#include "HistoryVariableDeclaration.h"
-#include "SciantixVariableDeclaration.h"
-#include "ModelDeclaration.h"
-#include "SolverDeclaration.h"
-#include "PhysicsVariableDeclaration.h"
-#include "GasDeclaration.h"
-#include "MapGas.h"
-#include "HighBurnupStructureFormation.h"
-#include "HighBurnupStructurePorosity.h"
-#include "SciantixDiffusionModeDeclaration.h"
-#include "SystemDeclaration.h"
-#include "MapSystem.h"
-#include "MatrixDeclaration.h"
-#include "MapMatrix.h"
-#include "ConstantNumbers.h"
-#include "UO2Thermochemistry.h"
+// #include "HighBurnupStructureFormation.h"
+// #include "HighBurnupStructurePorosity.h"
+// #include "UO2Thermochemistry.h"
 
 /**
  * \class Simulation
