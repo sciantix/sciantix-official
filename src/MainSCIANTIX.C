@@ -87,7 +87,43 @@ int main()
 	{
 		// temperature
 		Sciantix_history[0] = Sciantix_history[1];
-		Sciantix_history[1] = InputInterpolation(Time_h, Time_input, Temperature_input, Input_history_points);
+		if (Sciantix_history[8]<345)
+		{
+			Sciantix_history[1] = 630;
+		}
+		else if (Sciantix_history[8]>345 && Sciantix_history[8]<516)
+		{
+			Sciantix_history[1] = 350;
+		}
+		else if (Sciantix_history[8]>516 && Sciantix_history[8]<600)
+		{
+			Sciantix_history[1] = 630;
+		}
+		else if (Sciantix_history[8]>600 && Sciantix_history[8]<603)
+		{
+			Sciantix_history[1] = 350;
+		}
+		else if (Sciantix_history[8]>603 && Sciantix_history[8]<650)
+		{
+			Sciantix_history[1] = 630;
+		}
+		else if (Sciantix_history[8]>650 && Sciantix_history[8]<653)
+		{
+			Sciantix_history[1] = 350;
+		}
+		else if (Sciantix_history[8]>653 && Sciantix_history[8]<669)
+		{
+			Sciantix_history[1] = 630;
+		}
+		else if (Sciantix_history[8]>669 && Sciantix_history[8]<672)
+		{
+			Sciantix_history[1] = 350;
+		}
+		else if (Sciantix_history[8]>672)
+		{
+			Sciantix_history[1] = 630;
+		}
+		//Sciantix_history[1] = InputInterpolation(Time_h, Time_input, Temperature_input, Input_history_points);
 
 
 		// release rates
