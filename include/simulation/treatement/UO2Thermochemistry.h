@@ -14,6 +14,14 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef UO2_TERHMOCHEMISTRY_H
+#define UO2_TERHMOCHEMISTRY_H
+
+#include <cmath>
+#include "SciantixArray.h"
+#include "SciantixVariable.h"
+#include "InputVariable.h"
+#include "Model.h"
 
 /**
  * @brief This routine defines the model to evaluate the oxygen partial pressure (in atm) in hyperstoichiometric UO2+x fuel
@@ -41,3 +49,5 @@ void UO2Thermochemistry();
  * - x: 0 - 0.25
  */
 double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature);
+
+#endif

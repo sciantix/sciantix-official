@@ -14,23 +14,22 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "GrainBoundarySweeping.h"
+#include "Simulation.h"
 
-void GrainBoundarySweeping()
+void Simulation::GrainBoundarySweeping()
 {
-	model.emplace_back();
-	int model_index = int(model.size()) - 1;
+	Model grain_bound_sweeping;
 
-	model[model_index].setName("Grain-boundary sweeping");
+	grain_bound_sweeping.setName("Grain-boundary sweeping");
 
-	switch (int(input_variable[iv["iGrainBoundarySweeping"]].getValue()))
+	switch (int(input_variable["iGrainBoundarySweeping"].getValue()))
 	{
 	case 0:
 	{
 		std::vector<double> parameter;
 		parameter.push_back(0.0);
-		model[model_index].setParameter(parameter);
-		model[model_index].setRef(": Not considered");
+		grain_bound_sweeping.setParameter(parameter);
+		grain_bound_sweeping.setRef(": Not considered");
 
 		break;
 	}
@@ -45,15 +44,74 @@ void GrainBoundarySweeping()
 
 		std::vector<double> parameter;
 		/// @param[out] grain_sweeped_volume
-		parameter.push_back(3 * sciantix_variable[sv["Grain radius"]].getIncrement() / sciantix_variable[sv["Grain radius"]].getFinalValue());
-		model[model_index].setParameter(parameter);
-		model[model_index].setRef(": TRANSURANUS model");
+		parameter.push_back(3 * sciantix_variable["Grain radius"].getIncrement() / sciantix_variable["Grain radius"].getFinalValue());
+		grain_bound_sweeping.setParameter(parameter);
+		grain_bound_sweeping.setRef(": TRANSURANUS model");
 
 		break;
 	}
 
 	default:
-		ErrorMessages::Switch(__FILE__, "iGrainBoundarySweeping", int(input_variable[iv["iGrainBoundarySweeping"]].getValue()));
+		ErrorMessages::Switch(__FILE__, "iGrainBoundarySweeping", int(input_variable["iGrainBoundarySweeping"].getValue()));
 		break;
 	}
+
+	model.push(grain_bound_sweeping);
+
+
+
+
+
+    // dC / df = - C
+
+    if (!input_variable["Grain-boundary sweeping"].getValue())
+        return;
+
+    // intra-granular gas diffusion modes
+    switch (int(input_variable["iDiffusionSolver"].getValue()))
+    {
+    case 1:
+    {
+        for (int i = 0; i < modes_initial_conditions.size(); ++i)
+        {
+            modes_initial_conditions[6 * 40 + i] =
+                solver.Decay(
+                    modes_initial_conditions[6 * 40 + i],
+                    1.0,
+                    0.0,
+                    model["Grain-boundary sweeping"].getParameter().at(0));
+        }
+
+        break;
+    }
+
+    case 2:
+    {
+        for (int i = 0; i < modes_initial_conditions.size(); ++i)
+        {
+            modes_initial_conditions[7 * 40 + i] =
+                solver.Decay(
+                    modes_initial_conditions[7 * 40 + i],
+                    1.0,
+                    0.0,
+                    model["Grain-boundary sweeping"].getParameter().at(0));
+
+            modes_initial_conditions[8 * 40 + i] =
+                solver.Decay(
+                    modes_initial_conditions[8 * 40 + i],
+                    1.0,
+                    0.0,
+                    model["Grain-boundary sweeping"].getParameter().at(0));
+        }
+
+        break;
+    }
+
+    case 3:
+        break;
+
+    default:
+        // ErrorMessages::Switch("Simulation.h", "iDiffusionSolver", int(input_variable["iDiffusionSolver"].getValue()));
+        break;
+    }
 }

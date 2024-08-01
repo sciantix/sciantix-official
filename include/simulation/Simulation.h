@@ -86,6 +86,7 @@ public:
 		double Sciantix_diffusion_modes[]
 	);
 
+	void execute();
 
 	/**
 	 * @brief Burnup uses the solver Integrator to computes the fuel burnup from the local power density.

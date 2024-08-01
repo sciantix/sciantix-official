@@ -14,19 +14,20 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GAS_PRODUCTION_H
-#define GAS_PRODUCTION_H
+#include "Simulation.h"
 
-#include "ModelDeclaration.h"
-#include "SystemDeclaration.h"
-#include "MapSystem.h"
-#include "MapModel.h"
-#include "PhysicsVariable.h"
-#include "MapPhysicsVariable.h"
-
-/**
- * @brief Calculates the concentration of fission gas (Xe+Kr) produced by fission reactions in the fuel.
- */
-void GasProduction();
-
-#endif // GAS_PRODUCTION_H
+void Simulation::GasDecay()
+{
+    for (auto &system : sciantix_system)
+    {
+        if (gas[system.getGasName()].getDecayRate() > 0.0 && system.getRestructuredMatrix() == 0)
+        {
+            sciantix_variable[system.getGasName() + " decayed"].setFinalValue(
+                solver.Decay(
+                    sciantix_variable[system.getGasName() + " decayed"].getInitialValue(),
+                    gas[system.getGasName()].getDecayRate(),
+                    gas[system.getGasName()].getDecayRate() * sciantix_variable[system.getGasName() + " produced"].getFinalValue(), // sarebbe produced + produced in HBS ma le seconde devono esistere per tutte le specie..
+                    physics_variable["Time step"].getFinalValue()));
+        }
+    }
+}

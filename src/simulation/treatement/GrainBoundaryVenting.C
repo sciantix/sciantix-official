@@ -14,18 +14,17 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "GrainBoundaryVenting.h"
+#include "Simulation.h"
 
-void GrainBoundaryVenting()
+void Simulation::GrainBoundaryVenting()
 {
-    model.emplace_back();
-    int model_index = int(model.size()) - 1;
-    model[model_index].setName("Grain-boundary venting");
+    Model grain_bound_vent_model;
+    grain_bound_vent_model.setName("Grain-boundary venting");
 
     std::vector<double> parameter;
     std::string reference;
 
-    switch (int(input_variable[iv["iGrainBoundaryVenting"]].getValue()))
+    switch (int(input_variable["iGrainBoundaryVenting"].getValue()))
     {
     case 0:
     {
@@ -34,7 +33,7 @@ void GrainBoundaryVenting()
          *
          */
 
-        sciantix_variable[sv["Intergranular venting probability"]].setFinalValue(0.0);
+        sciantix_variable["Intergranular venting probability"].setFinalValue(0.0);
         reference = "not considered.";
 
         break;
@@ -53,16 +52,17 @@ void GrainBoundaryVenting()
         const double cent_parameter = 0.43;
 
         double sigmoid_variable;
-        sigmoid_variable = sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() *
-                           exp(-sciantix_variable[sv["Intergranular fractional intactness"]].getIncrement());
+        sigmoid_variable = sciantix_variable["Intergranular fractional coverage"].getInitialValue() *
+                           exp(-sciantix_variable["Intergranular fractional intactness"].getIncrement());
 
         // Vented fraction
-        sciantix_variable[sv["Intergranular vented fraction"]].setFinalValue(
+        sciantix_variable["Intergranular vented fraction"].setFinalValue(
             1.0 / pow((1.0 + screw_parameter * exp(-span_parameter * (sigmoid_variable - cent_parameter))), (1.0 / screw_parameter)));
 
         // Venting probability
-        sciantix_variable[sv["Intergranular venting probability"]].setFinalValue(
-            (1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue()) + sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue() * sciantix_variable[sv["Intergranular vented fraction"]].getFinalValue());
+        sciantix_variable["Intergranular venting probability"].setFinalValue(
+            (1.0 - sciantix_variable["Intergranular fractional intactness"].getFinalValue()) + sciantix_variable["Intergranular fractional intactness"].getFinalValue() * 
+            sciantix_variable["Intergranular vented fraction"].getFinalValue());
 
         reference = "Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE";
 
@@ -70,12 +70,30 @@ void GrainBoundaryVenting()
     }
 
     default:
-        ErrorMessages::Switch(__FILE__, "iGrainBoundaryVenting", int(input_variable[iv["iGrainBoundaryVenting"]].getValue()));
+        ErrorMessages::Switch(__FILE__, "iGrainBoundaryVenting", int(input_variable["iGrainBoundaryVenting"].getValue()));
         break;
     }
 
-    parameter.push_back(sciantix_variable[sv["Intergranular venting probability"]].getFinalValue());
+    parameter.push_back(sciantix_variable["Intergranular venting probability"].getFinalValue());
 
-    model[model_index].setParameter(parameter);
-    model[model_index].setRef(reference);
+    grain_bound_vent_model.setParameter(parameter);
+    grain_bound_vent_model.setRef(reference);
+
+    model.push(grain_bound_vent_model);
+
+
+
+
+    if (!int(input_variable["iGrainBoundaryVenting"].getValue()))
+        return;
+
+    for (auto &system : sciantix_system)
+    {
+        sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
+            solver.Integrator(
+                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue(),
+                -model["Grain-boundary venting"].getParameter().at(0),
+                sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement()));
+        sciantix_variable[system.getGasName() + " at grain boundary"].resetValue();
+    }
 }

@@ -101,6 +101,8 @@ public:
 	 */
 	void setGas(Gas g);
 
+	Gas getGas();
+
 	/**
 	 * @brief Gets the name of the gas.
 	 * @return Name of the gas.
@@ -111,6 +113,8 @@ public:
 	 * @param n Name of the matrix to set.
 	 */
 	void setMatrix(Matrix m);
+
+	Matrix getMatrix();
 
 	/**
 	 * @brief Gets the name of the matrix.

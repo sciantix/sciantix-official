@@ -40,6 +40,11 @@ void System::setGas(Gas g)
     gas = g;
 }
 
+Gas System::getGas()
+{
+    return gas;
+}
+
 std::string System::getGasName()
 {
     /// Member function to get the name of the gas in the matrix
@@ -50,6 +55,11 @@ void System::setMatrix(Matrix m)
 {
     /// Member function to set the name of the matrix
     matrix = m;
+}
+
+Matrix System::getMatrix()
+{
+    return matrix;
 }
 
 std::string System::getMatrixName()
