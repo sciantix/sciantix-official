@@ -64,17 +64,3 @@ void Simulation::execute()
 
 	InterGranularBubbleBehaviour();
 }
-
-void Simulation::UO2Thermochemistry()
-{
-    if (!input_variable["iStoichiometryDeviation"].getValue())
-        return;
-
-    if (history_variable["Temperature"].getFinalValue() < 1000.0 || sciantix_variable["Gap oxygen partial pressure"].getFinalValue() == 0)
-        sciantix_variable["Equilibrium stoichiometry deviation"].setFinalValue(0.0);
-
-    else
-        sciantix_variable["Equilibrium stoichiometry deviation"].setFinalValue(
-            solver.NewtonBlackburn(
-                model["UO2 thermochemistry"].getParameter()));
-}

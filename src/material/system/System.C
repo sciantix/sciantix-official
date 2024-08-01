@@ -80,8 +80,8 @@ void System::setVolumeInLattice(double v)
     volume_in_lattice = v;
 }
 
-void System::setBubbleDiffusivity(int input_value, SciantixArray<SciantixVariable> sciantix_variable, 
-    SciantixArray<SciantixVariable> history_variable, SciantixArray<Matrix> matrices)
+void System::setBubbleDiffusivity(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, 
+    SciantixArray<SciantixVariable> &history_variable, SciantixArray<Matrix> &matrices)
 {
     switch (input_value)
     {
@@ -129,7 +129,7 @@ double System::getBubbleDiffusivity()
     return bubble_diffusivity;
 }
 
-void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> history_variable)
+void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable)
 {
 
     /**
@@ -215,8 +215,8 @@ double System::getHeliumDiffusivity()
     return diffusivity;
 }
 
-void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVariable> sciantix_variable,
-    SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors)
+void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVariable> &sciantix_variable,
+    SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     /**
      * ### setFissionGasDiffusivity
@@ -404,8 +404,8 @@ double System::getHenryConstant()
     return henry_constant;
 }
 
-void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> sciantix_variable, 
-    SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors, SciantixArray<Matrix> matrices)
+void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, 
+    SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors, SciantixArray<Matrix> &matrices)
 {
     /**
      * ### setResolutionRate
@@ -521,8 +521,8 @@ double System::getResolutionRate()
     return resolution_rate;
 }
 
-void System::setTrappingRate(int input_value, SciantixArray<SciantixVariable> sciantix_variable, 
-    SciantixArray<InputVariable> scaling_factors)
+void System::setTrappingRate(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, 
+    SciantixArray<InputVariable> &scaling_factors)
 {
     /**
      * ### setTrappingRate
@@ -597,8 +597,8 @@ double System::getTrappingRate()
     return trapping_rate;
 }
 
-void System::setNucleationRate(int input_value, SciantixArray<SciantixVariable> history_variable, 
-    SciantixArray<InputVariable> scaling_factors)
+void System::setNucleationRate(int input_value, SciantixArray<SciantixVariable> &history_variable, 
+    SciantixArray<InputVariable> &scaling_factors)
 {
     /**
      * ### setNucleationRate
@@ -670,8 +670,8 @@ double System::getPoreNucleationRate()
     return pore_nucleation_rate;
 }
 
-void System::setProductionRate(int input_value, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> input_variable,
-    SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<InputVariable> scaling_factors)
+void System::setProductionRate(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable,
+    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     /**
      * ### setProductionRate

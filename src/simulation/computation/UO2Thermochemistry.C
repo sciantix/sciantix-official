@@ -14,40 +14,39 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef UO2_TERHMOCHEMISTRY_H
-#define UO2_TERHMOCHEMISTRY_H
+#include "Simulation.h"
 
-#include <cmath>
-#include "SciantixArray.h"
-#include "SciantixVariable.h"
-#include "InputVariable.h"
-#include "Model.h"
+void Simulation::UO2Thermochemistry()
+{
+  if (!input_variable["iStoichiometryDeviation"].getValue())
+    return;
 
-/**
- * @brief This routine defines the model to evaluate the oxygen partial pressure (in atm) in hyperstoichiometric UO2+x fuel
- * as a function of:
- *
- * @param[in] stoichiometry_deviation
- * @param[in] temperature
- *
- * @param[out] PO2_x oxygen partial pressure in UO2+x (in atm)
- * from Blackburn’s relation, @ref *Blackburn (1973) J. Nucl. Mater., 46, 244–252*
- *
- * @author
- * G. Petrosillo
- * G. Zullo
- *
- */
-void UO2Thermochemistry();
+  Model uo2_thermochem_model;
 
-/**
- * @brief The oxygen partial pressure in UO2+x fuel as a function of x, i.e., PO2 (x) (in atm) is calculated from Blackburn’s relation
- * @ref Blackburn (1973) J. Nucl. Mater., 46, 244–252.
- *
- * Validity range:
- * - T: 1000 K - 2670 K
- * - x: 0 - 0.25
- */
-double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature);
+  uo2_thermochem_model.setName("UO2 thermochemistry");
 
-#endif
+  std::string reference;
+  reference = "Blackburn (1973) J. Nucl. Mater., 46, 244-252.";
+
+  std::vector<double> parameter;
+
+  parameter.push_back(sciantix_variable["Stoichiometry deviation"].getInitialValue());
+  parameter.push_back(history_variable["Temperature"].getFinalValue());
+  parameter.push_back(sciantix_variable["Gap oxygen partial pressure"].getFinalValue()); // (atm)
+
+  uo2_thermochem_model.setParameter(parameter);
+  uo2_thermochem_model.setRef(reference);
+
+  model.push(uo2_thermochem_model);
+
+  if (!input_variable["iStoichiometryDeviation"].getValue())
+      return;
+
+  if (history_variable["Temperature"].getFinalValue() < 1000.0 || sciantix_variable["Gap oxygen partial pressure"].getFinalValue() == 0)
+      sciantix_variable["Equilibrium stoichiometry deviation"].setFinalValue(0.0);
+
+  else
+      sciantix_variable["Equilibrium stoichiometry deviation"].setFinalValue(
+          solver.NewtonBlackburn(
+              model["UO2 thermochemistry"].getParameter()));
+}

@@ -16,7 +16,7 @@
 
 #include "Matrix.h"
 
-void Matrix::setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVariable> history_variable)
+void Matrix::setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVariable> &history_variable)
 {
 	switch (input_value)
 	{
@@ -62,7 +62,7 @@ void Matrix::setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVar
 	}
 }
 
-void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable> history_variable)
+void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable)
 {
 	/** 
 	 * ### GrainBoundaryVacancyDiffusivity
@@ -135,7 +135,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
 	}
 }
 
-void Matrix::setPoreNucleationRate(SciantixArray<SciantixVariable> sciantix_variable)
+void Matrix::setPoreNucleationRate(SciantixArray<SciantixVariable> &sciantix_variable)
 {
 	/**
 	 * @brief nucleation rate of HBS pores.
@@ -152,7 +152,7 @@ void Matrix::setPoreNucleationRate(SciantixArray<SciantixVariable> sciantix_vari
 	pore_nucleation_rate *= sf_nucleation_rate_porosity;
 }
 
-void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable)
+void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable)
 {
 	/**
 	 * @brief re-solution rate of gas atoms from HBS pores.
@@ -169,7 +169,7 @@ void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> sciantix_vari
 		(1.0e-9 / (1.0e-9 + sciantix_variable["HBS pore radius"].getFinalValue()));
 }
  
-void Matrix::setPoreTrappingRate(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> sciantix_variable)
+void Matrix::setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable)
 {
 	/**
 	 * @brief trapping rate of gas atoms in HBS pores.

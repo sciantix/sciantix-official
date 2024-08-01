@@ -17,6 +17,7 @@
 #ifndef SET_MATRIX_H
 #define SET_MATRIX_H
 
+#include "Simulation.h"
 
 Matrix UO2(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> sciantix_variable, 
 	SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> input_variable);

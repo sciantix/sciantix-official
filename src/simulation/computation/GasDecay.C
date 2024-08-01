@@ -14,30 +14,20 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "UO2Thermochemistry.h"
+#include "Simulation.h"
 
-void UO2Thermochemistry(SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable,
-  SciantixArray<SciantixVariable> &history_variable, SciantixArray<Model> &model)
+void Simulation::GasDecay()
 {
-
-  if (!input_variable["iStoichiometryDeviation"].getValue())
-    return;
-
-  Model uo2_thermochem_model;
-
-  uo2_thermochem_model.setName("UO2 thermochemistry");
-
-  std::string reference;
-  reference = "Blackburn (1973) J. Nucl. Mater., 46, 244-252.";
-
-  std::vector<double> parameter;
-
-  parameter.push_back(sciantix_variable["Stoichiometry deviation"].getInitialValue());
-  parameter.push_back(history_variable["Temperature"].getFinalValue());
-  parameter.push_back(sciantix_variable["Gap oxygen partial pressure"].getFinalValue()); // (atm)
-
-  uo2_thermochem_model.setParameter(parameter);
-  uo2_thermochem_model.setRef(reference);
-
-  model.push(uo2_thermochem_model);
+    for (auto &system : sciantix_system)
+    {
+        if (system.getGas().getDecayRate() > 0.0 && system.getRestructuredMatrix() == 0)
+        {
+            sciantix_variable[system.getGasName() + " decayed"].setFinalValue(
+                solver.Decay(
+                    sciantix_variable[system.getGasName() + " decayed"].getInitialValue(),
+                    system.getGas().getDecayRate(),
+                    system.getGas().getDecayRate() * sciantix_variable[system.getGasName() + " produced"].getFinalValue(), // sarebbe produced + produced in HBS ma le seconde devono esistere per tutte le specie..
+                    physics_variable["Time step"].getFinalValue()));
+        }
+    }
 }

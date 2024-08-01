@@ -14,20 +14,36 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef GAS_DIFFUSION_H
+#define GAS_DIFFUSION_H
+
 #include "Simulation.h"
 
-void Simulation::GasDecay()
-{
-    for (auto &system : sciantix_system)
-    {
-        if (gas[system.getGasName()].getDecayRate() > 0.0 && system.getRestructuredMatrix() == 0)
-        {
-            sciantix_variable[system.getGasName() + " decayed"].setFinalValue(
-                solver.Decay(
-                    sciantix_variable[system.getGasName() + " decayed"].getInitialValue(),
-                    gas[system.getGasName()].getDecayRate(),
-                    gas[system.getGasName()].getDecayRate() * sciantix_variable[system.getGasName() + " produced"].getFinalValue(), // sarebbe produced + produced in HBS ma le seconde devono esistere per tutte le specie..
-                    physics_variable["Time step"].getFinalValue()));
-        }
-    }
-}
+
+/**
+ * @brief Defines diffusion models using the spectral diffusion with one equation.
+ */
+void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
+
+/**
+ * @brief Defines diffusion models using the spectral diffusion with two equations.
+ */
+void defineSpectralDiffusion2Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
+
+/**
+ * @brief Defines diffusion models using the spectral diffusion with three equations.
+ *
+ * The first equation is for xenon in non-restructured matrix - dynamic solution
+ * The second equation is for xenon in non-restructured matrix - intragranular bubbles
+ * The third equation is for xenon in restructured matrix
+ *
+ */
+void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, 
+	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> physics_variable, int n_modes);
+
+/**
+ * @brief Handles unsupported diffusion solver options.
+ */
+void errorHandling(SciantixArray<InputVariable> input_variable);
+
+#endif // GAS_DIFFUSION_H

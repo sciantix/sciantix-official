@@ -1,3 +1,6 @@
+#ifndef INIT_VALUES_H
+#define INIT_VALUES_H
+
 #include <vector>
 #include "SciantixVariable.h"
 #include "MainVariables.h"
@@ -186,3 +189,6 @@ std::vector<std::string> getScalingFactorsNames()
 
     return names;
 }
+
+
+#endif // INIT_VALUES_H

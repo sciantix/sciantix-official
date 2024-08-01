@@ -34,15 +34,59 @@ private:
     std::map<std::string, int> map;
 
 public:
-    SciantixArray();
-    SciantixArray(std::vector<T> data);
+    SciantixArray(){}
+    SciantixArray(std::vector<T> data)
+    {
+        array = data;
 
-    void push(T element);
-    void clear();
-    bool empty();
+        for (int i = 0; i < data.size(); i++)
+        {
+            map[data[i].getName()] = i;
+        }
+    }
 
-    T& operator[](int index);
-    T& operator[](std::string variable_name);
+    void push(T element)
+    {
+        if (map.find(element.getName()) != map.end())
+        {
+            array[map[element.getName()]] = element;
+        }
+        else 
+        {
+            map[element.getName()] = array.size();
+            array.push_back(element);
+        }    
+    }
+
+    void clear()
+    {
+        array.clear();
+        map.clear();
+    }
+
+    bool empty()
+    {
+        return array.empty();
+    }
+
+
+    T& operator[](int index)
+    {
+        return array[index];
+    }
+
+    T& operator[](std::string variable_name)
+    {
+        if (map.find(variable_name) == map.end())
+        {
+            std::cerr << "Variable " << variable_name << " not defined in the array" << std::endl;
+            exit(-1);
+        }
+        else
+        {
+            return array[map[variable_name]];
+        }
+    }
 
 
     // Iterators to easily make loops on the vector
@@ -51,8 +95,12 @@ public:
     typename std::vector<T>::const_iterator begin() const {return array.begin();}
     typename std::vector<T>::const_iterator end() const {return array.end();}
 
-    typename std::vector<T>::iterator find(std::string element_name) {return map[element_name];}
-};
+    bool isElementPresent(std::string element_name)
+    {
+        if (map.find(element_name) == map.end()) return false;
+        else return true;
+    }
+    };
 
 
 #endif

@@ -21,9 +21,10 @@
 #include <vector>
 #include "Solver.h"
 #include "Model.h"
-// #include "HighBurnupStructureFormation.h"
-// #include "HighBurnupStructurePorosity.h"
-// #include "UO2Thermochemistry.h"
+#include "Matrix.h"
+#include "System.h"
+#include "SciantixArray.h"
+#include "SciantixVariable.h"
 
 /**
  * \class Simulation
