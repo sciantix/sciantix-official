@@ -14,30 +14,7 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include <iostream>
-#include <map>
-#include <string>
-#include <vector>
-#include "SetVariables.h"
-#include "SetGas.h"
-#include "SetMatrix.h"
-#include "SetSystem.h"
-// #include "UpdateVariables.h"
-// #include "Output.h"
-#include "Simulation.h"
-// #include "FiguresOfMerit.h"
-#include "SciantixArray.h"
 
-
-// Variable arrays
-SciantixArray sciantix_variable,
-    history_variable,
-    input_variable,
-    physics_variable,
-    sciantix_system,
-    matrix,
-    model,
-    gas;
 
 /**
  * \brief Executes the main Sciantix simulation program.

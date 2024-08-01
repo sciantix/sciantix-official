@@ -14,30 +14,36 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "UO2Thermochemistry.h"
+#ifndef GAS_DIFFUSION_H
+#define GAS_DIFFUSION_H
 
-void UO2Thermochemistry(SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable,
-  SciantixArray<SciantixVariable> &history_variable, SciantixArray<Model> &model)
-{
+#include "Simulation.h"
 
-  if (!input_variable["iStoichiometryDeviation"].getValue())
-    return;
 
-  Model uo2_thermochem_model;
+/**
+ * @brief Defines diffusion models using the spectral diffusion with one equation.
+ */
+void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
 
-  uo2_thermochem_model.setName("UO2 thermochemistry");
+/**
+ * @brief Defines diffusion models using the spectral diffusion with two equations.
+ */
+void defineSpectralDiffusion2Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
 
-  std::string reference;
-  reference = "Blackburn (1973) J. Nucl. Mater., 46, 244-252.";
+/**
+ * @brief Defines diffusion models using the spectral diffusion with three equations.
+ *
+ * The first equation is for xenon in non-restructured matrix - dynamic solution
+ * The second equation is for xenon in non-restructured matrix - intragranular bubbles
+ * The third equation is for xenon in restructured matrix
+ *
+ */
+void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, 
+	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> physics_variable, int n_modes);
 
-  std::vector<double> parameter;
+/**
+ * @brief Handles unsupported diffusion solver options.
+ */
+void errorHandling(SciantixArray<InputVariable> input_variable);
 
-  parameter.push_back(sciantix_variable["Stoichiometry deviation"].getInitialValue());
-  parameter.push_back(history_variable["Temperature"].getFinalValue());
-  parameter.push_back(sciantix_variable["Gap oxygen partial pressure"].getFinalValue()); // (atm)
-
-  uo2_thermochem_model.setParameter(parameter);
-  uo2_thermochem_model.setRef(reference);
-
-  model.push(uo2_thermochem_model);
-}
+#endif // GAS_DIFFUSION_H

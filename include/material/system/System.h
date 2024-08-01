@@ -19,10 +19,6 @@
 
 #include "Matrix.h"
 #include "Gas.h"
-// #include "InputVariableDeclaration.h"
-// #include "MapInputVariable.h"
-// #include "HistoryVariableDeclaration.h"
-// #include "MapHistoryVariable.h"
 #include "Constants.h"
 #include "ErrorMessages.h"
 #include "SciantixArray.h"
@@ -137,8 +133,8 @@ public:
 	 * @brief Sets the diffusivity of bubbles within the matrix based on input values.
 	 * @param input_value The model selection index for bubble diffusivity.
 	 */
-	void setBubbleDiffusivity(int input_value, SciantixArray<SciantixVariable> sciantix_variable, 
-    	SciantixArray<SciantixVariable> history_variable, SciantixArray<Matrix> matrices);
+	void setBubbleDiffusivity(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, 
+    	SciantixArray<SciantixVariable> &history_variable, SciantixArray<Matrix> &matrices);
 
 	/**
 	 * @brief Retrieves the diffusivity of bubbles within the matrix.
@@ -151,7 +147,7 @@ public:
 	 * The intra-granular helium diffusivity within the fuel grain is set according to the input_variable iHeDiffusivity
 	 * @param input_value The model selection index for helium diffusivity.
 	 */
-	void setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> history_variable);
+	void setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable);
 
 	/**
 	 * @brief Retrieves the helium diffusivity within the matrix.
@@ -164,8 +160,8 @@ public:
 	 * The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFGDiffusionCoefficient
 	 * @param input_value The model selection index for fission gas diffusivity.
 	 */
-	void setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVariable> sciantix_variable,
-    	SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors);
+	void setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVariable> &sciantix_variable,
+    	SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
 
 	/**
 	 * @brief Retrieves the diffusivity of fission gases within the matrix.
@@ -190,8 +186,8 @@ public:
 	 * The helium intra-granular resolution rate is set according to the input_variable iResolutionRate.
 	 * @param input_value The model selection index for setting the resolution rate.
 	 */
-	void setResolutionRate(int input_value, SciantixArray<SciantixVariable> sciantix_variable, 
-    	SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors, SciantixArray<Matrix> matrices);
+	void setResolutionRate(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, 
+    	SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors, SciantixArray<Matrix> &matrices);
 
 	/**
 	 * @brief Retrieves the resolution rate for isotopes from nanobubbles in the matrix.
@@ -204,8 +200,8 @@ public:
 	 * The krypton intra-granular trapping rate is set according to the input_variable iTrappingRate.
 	 * @param input_value The model selection index for setting the trapping rate.
 	 */
-	void setTrappingRate(int input_value, SciantixArray<SciantixVariable> sciantix_variable, 
-    	SciantixArray<InputVariable> scaling_factors);
+	void setTrappingRate(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, 
+    	SciantixArray<InputVariable> &scaling_factors);
 
 	/**
 	 * @brief Retrieves the trapping rate for isotopes in nanobubbles within the matrix.
@@ -218,8 +214,8 @@ public:
 	 * Evaluation of the nucleation rate of intragranular gas bubble inside the UO<sub>2</sub> matrix
 	 * @param input_value The model selection index for nucleation rate.
 	 */
-	void setNucleationRate(int input_value, SciantixArray<SciantixVariable> history_variable, 
-    	SciantixArray<InputVariable> scaling_factors);
+	void setNucleationRate(int input_value, SciantixArray<SciantixVariable> &history_variable, 
+    	SciantixArray<InputVariable> &scaling_factors);
 
 	/**
 	 * @brief Retrieves the nucleation rate.
@@ -243,8 +239,8 @@ public:
 	 * @brief Sets the production rate based on the selected model.
 	 * @param input_value The model selection index for setting the production rate.
 	 */
-	void setProductionRate(int input_value, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> input_variable,
-    	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<InputVariable> scaling_factors);
+	void setProductionRate(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable,
+    	SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors);
 
 	/**
 	 * @brief  Member function to get the production rate of the sciantix_system.

@@ -14,7 +14,7 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "Simulation.h"
+#include "SetMatrix.h"
 
 void Simulation::setMatrix()
 {
@@ -55,7 +55,7 @@ Matrix UO2(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> scian
 	mat.setRef("\n\t");
 	mat.setTheoreticalDensity(10960.0); // (kg/m3)
 	mat.setLatticeParameter(5.47e-10);
-	mat.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()));
+	mat.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);
 	mat.setSurfaceTension(0.7); // (N/m)
 	mat.setFFinfluenceRadius(1.0e-9); // (m)
 	mat.setFFrange(6.0e-6); // (m)
