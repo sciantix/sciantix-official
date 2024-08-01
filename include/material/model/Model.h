@@ -27,6 +27,7 @@
 #include "Matrix.h"
 #include "Gas.h"
 #include "System.h"
+#include "Material.h"
 
 /**
  * @brief Represents the models used in the SCIANTIX simulation.
@@ -34,7 +35,7 @@
  * The Model class is an integral part of the SCIANTIX simulation software, serving as a base for defining
  * various simulation models.
  */
-class Model
+class Model: public Material
 {
 protected:
 	std::string overview;

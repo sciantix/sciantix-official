@@ -14,26 +14,48 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "Burnup.h"
+#include "Simulation.h"
 
-void Burnup()
+void Simulation::Burnup()
 {
-	model.emplace_back();
-	int modelIndex = model.size() - 1;
-	model[modelIndex].setName("Burnup");
+    Model burnup_model;
+    burnup_model.setName("Burnup");
 
-	double fissionRate = history_variable[hv["Fission rate"]].getFinalValue();
-	double fuelDensity = sciantix_variable[sv["Fuel density"]].getFinalValue();
+	double fissionRate = history_variable["Fission rate"].getFinalValue();
+	double fuelDensity = sciantix_variable["Fuel density"].getFinalValue();
 	double specificPower = fissionRate * (3.12e-17) / fuelDensity;
 
 	double burnup = specificPower / 86400.0; // specific power in MW/kg, burnup in MWd/kg
-	sciantix_variable[sv["Specific power"]].setFinalValue(specificPower);
+	sciantix_variable["Specific power"].setFinalValue(specificPower);
 	
 	std::vector<double> parameter;
 	parameter.push_back(burnup);
 
 	std::string reference = ": The local burnup is calculated from the fission rate density.";
 
-	model[modelIndex].setParameter(parameter);
-	model[modelIndex].setRef(reference);
+	burnup_model.setParameter(parameter);
+	burnup_model.setRef(reference);
+    model.push(burnup_model);
+
+
+    sciantix_variable["Burnup"].setFinalValue(
+        solver.Integrator(
+            sciantix_variable["Burnup"].getInitialValue(),
+            model["Burnup"].getParameter().at(0),
+            physics_variable["Time step"].getFinalValue()));
+
+    if (history_variable["Fission rate"].getFinalValue() > 0.0)
+        sciantix_variable["Irradiation time"].setFinalValue(
+            solver.Integrator(
+                sciantix_variable["Irradiation time"].getInitialValue(),
+                1.0 / sciantix_variable["Specific power"].getFinalValue(),
+                24.0 * sciantix_variable["Burnup"].getIncrement()));
+    else
+        sciantix_variable["Irradiation time"].setConstant();
+
+    sciantix_variable["FIMA"].setFinalValue(
+        solver.Integrator(
+            sciantix_variable["FIMA"].getInitialValue(),
+            history_variable["Fission rate"].getFinalValue() * 3.6e5 / sciantix_variable["U"].getFinalValue(),
+            sciantix_variable["Irradiation time"].getIncrement()));
 }

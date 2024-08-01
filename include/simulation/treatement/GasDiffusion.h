@@ -17,18 +17,7 @@
 #ifndef GAS_DIFFUSION_H
 #define GAS_DIFFUSION_H
 
-#include "ModelDeclaration.h"
-#include "MapModel.h"
-#include "SciantixVariableDeclaration.h"
-#include "MapSciantixVariable.h"
-#include "SystemDeclaration.h"
-#include "MapSystem.h"
-#include "SciantixDiffusionModeDeclaration.h"
-#include "GasDeclaration.h"
-#include "MapGas.h"
-#include "SetMatrix.h"
-#include "MatrixDeclaration.h"
-#include "MapMatrix.h"
+#include "Simulation.h"
 
 /**
  * @brief Defines models for gas diffusion within the fuel grain.
@@ -41,12 +30,12 @@ void GasDiffusion();
 /**
  * @brief Defines diffusion models using the spectral diffusion with one equation.
  */
-void defineSpectralDiffusion1Equation();
+void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
 
 /**
  * @brief Defines diffusion models using the spectral diffusion with two equations.
  */
-void defineSpectralDiffusion2Equations();
+void defineSpectralDiffusion2Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
 
 /**
  * @brief Defines diffusion models using the spectral diffusion with three equations.
@@ -56,11 +45,12 @@ void defineSpectralDiffusion2Equations();
  * The third equation is for xenon in restructured matrix
  *
  */
-void defineSpectralDiffusion3Equations();
+void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, 
+	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> physics_variable, int n_modes);
 
 /**
  * @brief Handles unsupported diffusion solver options.
  */
-void errorHandling();
+void errorHandling(SciantixArray<InputVariable> input_variable);
 
 #endif // GAS_DIFFUSION_H

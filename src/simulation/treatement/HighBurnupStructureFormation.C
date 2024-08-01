@@ -14,20 +14,18 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "HighBurnupStructureFormation.h"
+#include "Simulation.h"
 
-void HighBurnupStructureFormation()
+void Simulation::HighBurnupStructureFormation()
 {
-	model.emplace_back();
+	Model high_burnup_struct_form_model;
 
-	int model_index = int(model.size()) - 1;
-
-	model[model_index].setName("High-burnup structure formation");
+	high_burnup_struct_form_model.setName("High-burnup structure formation");
 
 	std::string reference;
 	std::vector<double> parameter;
 
-	switch (int(input_variable[iv["iHighBurnupStructureFormation"]].getValue()))
+	switch (int(input_variable["iHighBurnupStructureFormation"].getValue()))
 	{
 	case 0:
 	{
@@ -75,11 +73,33 @@ void HighBurnupStructureFormation()
 	}
 
 	default:
-		ErrorMessages::Switch(__FILE__, "iHighBurnupStructureFormation", int(input_variable[iv["iHighBurnupStructureFormation"]].getValue()));
+		ErrorMessages::Switch(__FILE__, "iHighBurnupStructureFormation", int(input_variable["iHighBurnupStructureFormation"].getValue()));
 		break;
 	}
 
-	model[model_index].setParameter(parameter);
-	model[model_index].setRef(reference);
+	high_burnup_struct_form_model.setParameter(parameter);
+	high_burnup_struct_form_model.setRef(reference);
 
+	model.push(high_burnup_struct_form_model);
+
+
+
+
+
+    if (!int(input_variable["iHighBurnupStructureFormation"].getValue()))
+        return;
+
+    // Restructuring rate:
+    // dalpha_r / bu = 3.54 * 2.77e-7 (1-alpha_r) b^2.54
+    double coefficient =
+        model["High-burnup structure formation"].getParameter().at(0) *
+        model["High-burnup structure formation"].getParameter().at(1) *
+        pow(sciantix_variable["Effective burnup"].getFinalValue(), 2.54);
+
+    sciantix_variable["Restructured volume fraction"].setFinalValue(
+        solver.Decay(
+            sciantix_variable["Restructured volume fraction"].getInitialValue(),
+            coefficient,
+            coefficient,
+            sciantix_variable["Effective burnup"].getIncrement()));
 }

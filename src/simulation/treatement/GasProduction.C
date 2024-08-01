@@ -14,26 +14,39 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "GasProduction.h"
+#include "Simulation.h"
 
-void GasProduction()
+void Simulation::GasProduction()
 {
-	for (auto &system : sciantix_system)
-	{
-		int model_index = model.size();
-
-		model.emplace_back();
-		model[model_index].setName("Gas production - " + system.getName());
-		model[model_index].setRef(" ");
+    for (auto &system : sciantix_system)
+    {
+        Model gas_prod_model;
+        gas_prod_model.setName("Gas production - " + system.getName());
+		gas_prod_model.setRef(" ");
 
 		double productionRate = system.getProductionRate();
-		double timeStep = physics_variable[pv["Time step"]].getFinalValue();
+		double timeStep = physics_variable["Time step"].getFinalValue();
 
 		std::vector<double> parameter;
 		parameter.push_back(productionRate);
 		parameter.push_back(timeStep);
-		model[model_index].setParameter(parameter);
+		gas_prod_model.setParameter(parameter);
 
 		parameter.clear();
-	}
+        model.push(gas_prod_model);
+
+
+        if (system.getRestructuredMatrix() == 0)
+            sciantix_variable[system.getGasName() + " produced"].setFinalValue(
+                solver.Integrator(
+                    sciantix_variable[system.getGasName() + " produced"].getInitialValue(),
+                    model["Gas production - " + system.getName()].getParameter().at(0),
+                    model["Gas production - " + system.getName()].getParameter().at(1)));
+        else if (system.getRestructuredMatrix() == 1)
+            sciantix_variable[system.getGasName() + " produced in HBS"].setFinalValue(
+                solver.Integrator(
+                    sciantix_variable[system.getGasName() + " produced in HBS"].getInitialValue(),
+                    model["Gas production - " + system.getName()].getParameter().at(0),
+                    model["Gas production - " + system.getName()].getParameter().at(1)));
+    }
 }

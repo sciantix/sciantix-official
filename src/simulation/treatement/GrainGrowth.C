@@ -14,19 +14,17 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "GrainGrowth.h"
+#include "Simulation.h"
 
-void GrainGrowth()
+void Simulation::GrainGrowth()
 {
-	model.emplace_back();
+	Model grain_growth_model;
 
-	int model_index = int(model.size()) - 1;
-
-	model[model_index].setName("Grain growth");
+	grain_growth_model.setName("Grain growth");
 	std::string reference;
 	std::vector<double> parameter;
 
-	switch (int(input_variable[iv["iGrainGrowth"]].getValue()))
+	switch (int(input_variable["iGrainGrowth"].getValue()))
 	{
 	case 0:
 	{
@@ -38,12 +36,12 @@ void GrainGrowth()
 
 		reference += "constant grain radius.";
 
-		parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
+		parameter.push_back(sciantix_variable["Grain radius"].getInitialValue());
 		parameter.push_back(0.0);
 		parameter.push_back(0.0);
 		parameter.push_back(0.0);
 		parameter.push_back(1.0);
-		parameter.push_back(-sciantix_variable[sv["Grain radius"]].getInitialValue());
+		parameter.push_back(-sciantix_variable["Grain radius"].getInitialValue());
 
 		break;
 	}
@@ -60,31 +58,31 @@ void GrainGrowth()
 	{
 		reference += ": Ainscough et al., JNM, 49 (1973) 117-128.";
 
-		double limiting_grain_radius = 2.23e-03 * (1.56/2.0) * exp(-7620.0 / history_variable[hv["Temperature"]].getFinalValue());
-		double burnup_factor = 1.0 + 2.0 * sciantix_variable[sv["Burnup"]].getFinalValue() / 0.8815;
+		double limiting_grain_radius = 2.23e-03 * (1.56/2.0) * exp(-7620.0 / history_variable["Temperature"].getFinalValue());
+		double burnup_factor = 1.0 + 2.0 * sciantix_variable["Burnup"].getFinalValue() / 0.8815;
 
-		if (sciantix_variable[sv["Grain radius"]].getInitialValue() < limiting_grain_radius / burnup_factor)
+		if (sciantix_variable["Grain radius"].getInitialValue() < limiting_grain_radius / burnup_factor)
 		{
-			double rate_constant = matrix[sma["UO2"]].getGrainBoundaryMobility();
-			rate_constant *= (1.0 - burnup_factor / (limiting_grain_radius / (sciantix_variable[sv["Grain radius"]].getFinalValue())));
+			double rate_constant = matrices["UO2"].getGrainBoundaryMobility();
+			rate_constant *= (1.0 - burnup_factor / (limiting_grain_radius / (sciantix_variable["Grain radius"].getFinalValue())));
 
-			parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
+			parameter.push_back(sciantix_variable["Grain radius"].getInitialValue());
 			parameter.push_back(0.0);
 			parameter.push_back(0.0);
 			parameter.push_back(1.0);
-			parameter.push_back(- sciantix_variable[sv["Grain radius"]].getInitialValue());
-			parameter.push_back(- rate_constant * physics_variable[pv["Time step"]].getFinalValue());
+			parameter.push_back(- sciantix_variable["Grain radius"].getInitialValue());
+			parameter.push_back(- rate_constant * physics_variable["Time step"].getFinalValue());
 
 		}
 
 		else
 		{
-			parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
+			parameter.push_back(sciantix_variable["Grain radius"].getInitialValue());
 			parameter.push_back(0.0);
 			parameter.push_back(0.0);
 			parameter.push_back(0.0);
 			parameter.push_back(1.0);
-			parameter.push_back(- sciantix_variable[sv["Grain radius"]].getInitialValue());
+			parameter.push_back(- sciantix_variable["Grain radius"].getInitialValue());
 		}
 		break;
 	}
@@ -104,37 +102,45 @@ void GrainGrowth()
 		 * Dm = limiting grain diameter
 		*/
 
-		double limiting_grain_radius = 3.345e-3 / 2.0 * exp(-7620.0 / history_variable[hv["Temperature"]].getFinalValue()); // (m)
+		double limiting_grain_radius = 3.345e-3 / 2.0 * exp(-7620.0 / history_variable["Temperature"].getFinalValue()); // (m)
 
 		reference += "Van Uffelen et al. JNM, 434 (2013) 287–29.";
 
-		if(sciantix_variable[sv["Grain radius"]].getInitialValue() < limiting_grain_radius)
+		if(sciantix_variable["Grain radius"].getInitialValue() < limiting_grain_radius)
 		{
-			double rate_constant = matrix[sma["UO2"]].getGrainBoundaryMobility();
+			double rate_constant = matrices["UO2"].getGrainBoundaryMobility();
 
-			parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
+			parameter.push_back(sciantix_variable["Grain radius"].getInitialValue());
 			parameter.push_back(1.0);
-			parameter.push_back(- sciantix_variable[sv["Grain radius"]].getInitialValue());
+			parameter.push_back(- sciantix_variable["Grain radius"].getInitialValue());
 			parameter.push_back(0.0);
 			parameter.push_back(0.0);
-			parameter.push_back(- rate_constant * physics_variable[pv["Time step"]].getFinalValue());
+			parameter.push_back(- rate_constant * physics_variable["Time step"].getFinalValue());
 		}
 		else
 		{
-			parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
+			parameter.push_back(sciantix_variable["Grain radius"].getInitialValue());
 			parameter.push_back(0.0);
 			parameter.push_back(0.0);
 			parameter.push_back(0.0);
 			parameter.push_back(1.0);
-			parameter.push_back(- sciantix_variable[sv["Grain radius"]].getInitialValue());
+			parameter.push_back(- sciantix_variable["Grain radius"].getInitialValue());
 		}
 		break;
 	}
 
 	default:
-		ErrorMessages::Switch(__FILE__, "iGrainGrowth", int(input_variable[iv["iGrainGrowth"]].getValue()));
+		ErrorMessages::Switch(__FILE__, "iGrainGrowth", int(input_variable["iGrainGrowth"].getValue()));
 		break;
 	}
-	model[model_index].setParameter(parameter);
-	model[model_index].setRef(reference);
+	grain_growth_model.setParameter(parameter);
+	grain_growth_model.setRef(reference);
+
+	model.push(grain_growth_model);
+
+
+    sciantix_variable["Grain radius"].setFinalValue(
+        solver.QuarticEquation(model["Grain growth"].getParameter()));
+
+    matrices["UO2"].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
 }
