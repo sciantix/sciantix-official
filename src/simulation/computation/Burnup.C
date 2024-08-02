@@ -44,9 +44,6 @@ void Simulation::Burnup()
             sciantix_variable["Burnup"].getInitialValue(),
             model["Burnup"].getParameter().at(0),
             physics_variable["Time step"].getFinalValue()));
-    std::cout << sciantix_variable["Burnup"].getInitialValue() <<
-            model["Burnup"].getParameter().at(0) <<
-            physics_variable["Time step"].getFinalValue() << std::endl;
 
 
     if (history_variable["Fission rate"].getFinalValue() > 0.0)

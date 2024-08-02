@@ -309,21 +309,17 @@ void Simulation::StoichiometryDeviation()
 
 
 
-  std::cout << "here1" << std::endl;
 
     if (!input_variable["iStoichiometryDeviation"].getValue())
         return;
-std::cout << "here2" << std::endl;
     if (history_variable["Temperature"].getFinalValue() < 1000.0)
     {
-        std::cout << "here3" << std::endl;
         sciantix_variable["Stoichiometry deviation"].setConstant();
         sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(0.0);
     }
 
     else if (input_variable["iStoichiometryDeviation"].getValue() < 5)
     {
-                std::cout << "here4" << std::endl;
         sciantix_variable["Stoichiometry deviation"].setFinalValue(
             solver.Decay(
                 sciantix_variable["Stoichiometry deviation"].getInitialValue(),
@@ -334,7 +330,6 @@ std::cout << "here2" << std::endl;
 
     else if (input_variable["iStoichiometryDeviation"].getValue() > 4)
     {
-      std::cout << "here5" << std::endl;
         sciantix_variable["Stoichiometry deviation"].setFinalValue(
             solver.NewtonLangmuirBasedModel(
                 sciantix_variable["Stoichiometry deviation"].getInitialValue(),
@@ -342,7 +337,6 @@ std::cout << "here2" << std::endl;
                 physics_variable["Time step"].getFinalValue()));
     }
 
-    std::cout << "here last" << std::endl;
 
     sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
         BlackburnThermochemicalModel(

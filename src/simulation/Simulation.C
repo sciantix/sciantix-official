@@ -28,13 +28,9 @@ void Simulation::initialize(
 		Sciantix_diffusion_modes
     );
 
-    std::cout << "variable done" << std::endl;
     setGas();
-    std::cout << "gas done" << std::endl;
     setMatrix();
-    std::cout << "matrix done" << std::endl;
     setSystem();
-    std::cout << "system done" << std::endl;
 }
 
 
@@ -48,27 +44,25 @@ void Simulation::execute()
 
 	StoichiometryDeviation(); 
 
-	// HighBurnupStructureFormation();
+	HighBurnupStructureFormation();
 
-	// HighBurnupStructurePorosity();
+	HighBurnupStructurePorosity();
 
-	// GrainGrowth();
+	GrainGrowth();
 
-	// GrainBoundarySweeping();
+	GrainBoundarySweeping();
 
-	// GasProduction();
+	GasProduction();
 
-	// GasDecay();
+	GasDecay();
 
-	// IntraGranularBubbleBehaviour();
+	IntraGranularBubbleBehaviour();
 
-	// GasDiffusion();
+	GasDiffusion();
 
-	// GrainBoundaryMicroCracking();
+	GrainBoundaryMicroCracking();
 
-	// GrainBoundaryVenting();
+	GrainBoundaryVenting();
 
-	// InterGranularBubbleBehaviour();
-    // std::cout << sciantix_variable["Burnup"].getInitialValue() << std::endl;
-
+	InterGranularBubbleBehaviour();
 }

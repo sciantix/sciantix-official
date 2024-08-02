@@ -60,11 +60,9 @@ void Simulation::GrainBoundarySweeping()
 
 
 
-
-
     // dC / df = - C
 
-    if (!input_variable["Grain-boundary sweeping"].getValue())
+    if (!input_variable["iGrainBoundarySweeping"].getValue())
         return;
 
     // intra-granular gas diffusion modes

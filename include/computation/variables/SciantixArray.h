@@ -25,6 +25,8 @@
 #include <string>
 #include <iostream>
 
+#include "SciantixVariable.h"
+
 
 template <class T>
 class SciantixArray

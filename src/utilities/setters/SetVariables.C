@@ -99,7 +99,6 @@ void Simulation::setVariables(
 
 	for (SciantixVariable initial_value : initial_sciantix_values)
 	{
-		// if (initial_value.getName() == "Fuel density") std::cout << "Fuel density : " << initial_value.getFinalValue() << std::endl;
 		sciantix_variable.push(initial_value);
 	}
 

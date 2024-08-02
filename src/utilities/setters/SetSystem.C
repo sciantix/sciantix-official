@@ -47,13 +47,6 @@ void Simulation::setSystem()
 System Xe_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
 	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors)
 {
-    // Error handling
-	if (matrices.empty() || input_variable.empty() || !matrices.isElementPresent("UO2HBS"))
-	{
-		std::cerr << "Error: Required components are not initialized in " << __FILE__  << std::endl;
-		exit(-1);
-	}
-
     System result;
 
     result.setName("Xe in UO2");
@@ -77,13 +70,6 @@ System Xe_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, Scianti
 System Xe_in_UO2HBS(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
 	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors)
 {
-    // Error handling
-    if (matrices.empty() || input_variable.empty() || !matrices.isElementPresent("UO2HBS"))
-    {
-        std::cerr << "Error: Required components are not initialized in " << __FILE__  << std::endl;
-        exit(-1);
-    }
-
     System result;
 
     result.setName("Xe in UO2HBS");
@@ -107,13 +93,6 @@ System Xe_in_UO2HBS(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, Scia
 System Kr_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
 	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors)
 {
-    // Error handling
-	if (matrices.empty() || input_variable.empty() || !matrices.isElementPresent("UO2"))
-	{
-		std::cerr << "Error: Required components are not initialized in " << __FILE__  << std::endl;
-		exit(-1);
-	}
-
     System result;
 
     result.setName("Kr in UO2");
@@ -137,13 +116,6 @@ System Kr_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, Scianti
 System He_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
 	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors)
 {
-    // Error handling
-	if (matrices.empty() || input_variable.empty() || !matrices.isElementPresent("UO2"))
-	{
-		std::cerr << "Error: Required components are not initialized in " << __FILE__  << std::endl;
-		exit(-1);
-	}
-
     System result;
 
     result.setName("He in UO2");
@@ -167,13 +139,6 @@ System He_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, Scianti
 System Xe133_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
 	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors)
 {
-    // Error handling
-	if (matrices.empty() || input_variable.empty() || !matrices.isElementPresent("UO2"))
-	{
-		std::cerr << "Error: Required components are not initialized in " << __FILE__  << std::endl;
-		exit(-1);
-	}
-
     System result;
 
     result.setName("Xe133 in UO2");
