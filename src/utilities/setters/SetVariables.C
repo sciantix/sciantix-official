@@ -43,7 +43,7 @@ void Simulation::setVariables(
 		std::vector<std::string> name_list = getInputVariableNames();
 		for (int i = 0; i < name_list.size(); i++)
 		{
-			input_variable.push(InputVariable(name_list[i], i));
+			input_variable.push(InputVariable(name_list[i], Sciantix_options[i]));
 		}
 	}
 
@@ -99,6 +99,7 @@ void Simulation::setVariables(
 
 	for (SciantixVariable initial_value : initial_sciantix_values)
 	{
+		// if (initial_value.getName() == "Fuel density") std::cout << "Fuel density : " << initial_value.getFinalValue() << std::endl;
 		sciantix_variable.push(initial_value);
 	}
 

@@ -434,9 +434,13 @@ double Solver::NewtonBlackburn(std::vector<double> parameter)
 
 double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment)
 {
+    std::cout << "newton start" << std::endl;
     double K = parameter.at(0);
+    std::cout << "params" << std::endl;
     double beta = parameter.at(1);
+    std::cout << "params" << std::endl;
     double alpha = parameter.at(2);
+    std::cout << "params" << std::endl;
     double x0 = initial_value;
     double x00 = initial_value;
 
@@ -447,8 +451,11 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
     const double tol(1.0e-3);
     const unsigned short int max_iter(50);
 
+    std::cout << "newton loop start" << std::endl;
+
     while (iter < max_iter)
     {
+        std::cout << "newton iter : " << iter << std::endl;
         fun = x0 - x00 - K * increment + K * beta * exp(alpha * x0) * increment;
 
         deriv = 1.0 + K * beta * alpha * exp(alpha * x0) * increment;
@@ -461,5 +468,6 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
 
         iter++;
     }
+    std::cout << "newton done" << std::endl;
     return x1;
 }

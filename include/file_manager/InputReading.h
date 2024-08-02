@@ -29,5 +29,5 @@
  */
 void InputReading();
 
-void readSettings(std::ifstream &input, std::ofstream &output);
+void readSettings(std::ifstream &input, std::ofstream &output, int Sciantix_options[]);
 void readParameters(std::ifstream &input, std::ofstream &output, double Sciantix_Array[]);

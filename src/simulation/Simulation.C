@@ -1,13 +1,15 @@
 #include "Simulation.h"
 
+Simulation* Simulation::instance = nullptr;
 
-Simulation& Simulation::getInstance()
+
+Simulation* Simulation::getInstance()
 {
     if (instance == nullptr)
     {
         instance = new Simulation;
     }
-    return *instance;
+    return instance;
 }
 
 void Simulation::initialize(
@@ -26,9 +28,13 @@ void Simulation::initialize(
 		Sciantix_diffusion_modes
     );
 
+    std::cout << "variable done" << std::endl;
     setGas();
+    std::cout << "gas done" << std::endl;
     setMatrix();
+    std::cout << "matrix done" << std::endl;
     setSystem();
+    std::cout << "system done" << std::endl;
 }
 
 
@@ -42,25 +48,27 @@ void Simulation::execute()
 
 	StoichiometryDeviation(); 
 
-	HighBurnupStructureFormation();
+	// HighBurnupStructureFormation();
 
-	HighBurnupStructurePorosity();
+	// HighBurnupStructurePorosity();
 
-	GrainGrowth();
+	// GrainGrowth();
 
-	GrainBoundarySweeping();
+	// GrainBoundarySweeping();
 
-	GasProduction();
+	// GasProduction();
 
-	GasDecay();
+	// GasDecay();
 
-	IntraGranularBubbleBehaviour();
+	// IntraGranularBubbleBehaviour();
 
-	GasDiffusion();
+	// GasDiffusion();
 
-	GrainBoundaryMicroCracking();
+	// GrainBoundaryMicroCracking();
 
-	GrainBoundaryVenting();
+	// GrainBoundaryVenting();
 
-	InterGranularBubbleBehaviour();
+	// InterGranularBubbleBehaviour();
+    // std::cout << sciantix_variable["Burnup"].getInitialValue() << std::endl;
+
 }

@@ -22,7 +22,6 @@ void Simulation::setMatrix()
    * @brief This routine defines the available options for fuel matrices and their properties.
    * 
    */
-
 	switch (int(input_variable["iFuelMatrix"].getValue()))
 	{
 		case 0: 
@@ -67,7 +66,7 @@ Matrix UO2(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> scian
 	mat.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue()); // (m)
 	mat.setHealingTemperatureThreshold(1273.15); // K
 	mat.setGrainBoundaryVacancyDiffusivity(int(input_variable["iGrainBoundaryVacancyDiffusivity"].getValue()), history_variable); // (m2/s)
-	mat.setPoreNucleationRate(history_variable);
+	mat.setPoreNucleationRate(sciantix_variable);
 	mat.setPoreResolutionRate(sciantix_variable, history_variable);
 	mat.setPoreTrappingRate(matrices, sciantix_variable);
 

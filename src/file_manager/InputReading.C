@@ -27,7 +27,7 @@ void InputReading()
 
 
     // Read settings
-    readSettings(input_settings, input_check);
+    readSettings(input_settings, input_check, Sciantix_options);
     
 
     // Read inital conditions
@@ -98,7 +98,7 @@ void InputReading()
 }
 
 
-void readSettings(std::ifstream &input, std::ofstream &output)
+void readSettings(std::ifstream &input, std::ofstream &output, int Sciantix_options[])
 {
     std::string line;
     int i = 0, comment_pos;
@@ -115,8 +115,8 @@ void readSettings(std::ifstream &input, std::ofstream &output)
         variable = stoi(line.substr(0, comment_pos));
         Sciantix_options[i] = variable;
         output << line.substr(comment_pos + 2, line.find(" ", comment_pos + 2) - comment_pos-2) << " = " << variable << std::endl; 
+        i++;
     }
-    
 }
 
 
