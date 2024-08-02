@@ -1,0 +1,4179 @@
+Warning NAN values in GB state
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 7.36504e+08
+Critical pressure Jernkvist (Pa): 8.81384e+08
+Bubble pressure (Pa): 1.09347e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 6.61721e+08
+Critical pressure Jernkvist (Pa): 7.96721e+08
+Bubble pressure (Pa): 1.19562e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 6.12641e+08
+Critical pressure Jernkvist (Pa): 7.4133e+08
+Bubble pressure (Pa): 1.2868e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 5.78067e+08
+Critical pressure Jernkvist (Pa): 7.02335e+08
+Bubble pressure (Pa): 1.35733e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 5.50211e+08
+Critical pressure Jernkvist (Pa): 6.70933e+08
+Bubble pressure (Pa): 1.42196e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 5.27867e+08
+Critical pressure Jernkvist (Pa): 6.45748e+08
+Bubble pressure (Pa): 1.47658e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 5.09096e+08
+Critical pressure Jernkvist (Pa): 6.24593e+08
+Bubble pressure (Pa): 1.52396e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 4.9305e+08
+Critical pressure Jernkvist (Pa): 6.06512e+08
+Bubble pressure (Pa): 1.56509e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 4.79045e+08
+Critical pressure Jernkvist (Pa): 5.90733e+08
+Bubble pressure (Pa): 1.60142e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 4.66665e+08
+Critical pressure Jernkvist (Pa): 5.76785e+08
+Bubble pressure (Pa): 1.63381e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 4.55594e+08
+Critical pressure Jernkvist (Pa): 5.64313e+08
+Bubble pressure (Pa): 1.66296e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 4.45603e+08
+Critical pressure Jernkvist (Pa): 5.53058e+08
+Bubble pressure (Pa): 1.68938e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 4.36516e+08
+Critical pressure Jernkvist (Pa): 5.42822e+08
+Bubble pressure (Pa): 1.71346e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 4.28195e+08
+Critical pressure Jernkvist (Pa): 5.33451e+08
+Bubble pressure (Pa): 1.73552e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 4.20532e+08
+Critical pressure Jernkvist (Pa): 5.2482e+08
+Bubble pressure (Pa): 1.75582e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 4.13439e+08
+Critical pressure Jernkvist (Pa): 5.16831e+08
+Bubble pressure (Pa): 1.77456e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 4.06842e+08
+Critical pressure Jernkvist (Pa): 5.09402e+08
+Bubble pressure (Pa): 1.79193e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 4.00684e+08
+Critical pressure Jernkvist (Pa): 5.02467e+08
+Bubble pressure (Pa): 1.80808e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.94914e+08
+Critical pressure Jernkvist (Pa): 4.95969e+08
+Bubble pressure (Pa): 1.82313e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.89489e+08
+Critical pressure Jernkvist (Pa): 4.89861e+08
+Bubble pressure (Pa): 1.83719e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.84375e+08
+Critical pressure Jernkvist (Pa): 4.84103e+08
+Bubble pressure (Pa): 1.85036e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.7954e+08
+Critical pressure Jernkvist (Pa): 4.78659e+08
+Bubble pressure (Pa): 1.86272e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.74959e+08
+Critical pressure Jernkvist (Pa): 4.73501e+08
+Bubble pressure (Pa): 1.87434e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.70608e+08
+Critical pressure Jernkvist (Pa): 4.68602e+08
+Bubble pressure (Pa): 1.88529e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.66466e+08
+Critical pressure Jernkvist (Pa): 4.63939e+08
+Bubble pressure (Pa): 1.89562e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.62517e+08
+Critical pressure Jernkvist (Pa): 4.59494e+08
+Bubble pressure (Pa): 1.90537e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.58745e+08
+Critical pressure Jernkvist (Pa): 4.55247e+08
+Bubble pressure (Pa): 1.91461e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.55136e+08
+Critical pressure Jernkvist (Pa): 4.51183e+08
+Bubble pressure (Pa): 1.92336e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.51677e+08
+Critical pressure Jernkvist (Pa): 4.4729e+08
+Bubble pressure (Pa): 1.93165e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.48357e+08
+Critical pressure Jernkvist (Pa): 4.43553e+08
+Bubble pressure (Pa): 1.93954e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.45168e+08
+Critical pressure Jernkvist (Pa): 4.39962e+08
+Bubble pressure (Pa): 1.94703e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.42099e+08
+Critical pressure Jernkvist (Pa): 4.36508e+08
+Bubble pressure (Pa): 1.95416e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.39143e+08
+Critical pressure Jernkvist (Pa): 4.3318e+08
+Bubble pressure (Pa): 1.96096e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.36292e+08
+Critical pressure Jernkvist (Pa): 4.29971e+08
+Bubble pressure (Pa): 1.96744e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.3354e+08
+Critical pressure Jernkvist (Pa): 4.26873e+08
+Bubble pressure (Pa): 1.97363e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.3088e+08
+Critical pressure Jernkvist (Pa): 4.23879e+08
+Bubble pressure (Pa): 1.97954e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.28308e+08
+Critical pressure Jernkvist (Pa): 4.20984e+08
+Bubble pressure (Pa): 1.98519e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.25818e+08
+Critical pressure Jernkvist (Pa): 4.18181e+08
+Bubble pressure (Pa): 1.9906e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.23405e+08
+Critical pressure Jernkvist (Pa): 4.15465e+08
+Bubble pressure (Pa): 1.99578e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.21066e+08
+Critical pressure Jernkvist (Pa): 4.12831e+08
+Bubble pressure (Pa): 2.00074e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.18796e+08
+Critical pressure Jernkvist (Pa): 4.10276e+08
+Bubble pressure (Pa): 2.0055e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.16591e+08
+Critical pressure Jernkvist (Pa): 4.07794e+08
+Bubble pressure (Pa): 2.01007e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.14449e+08
+Critical pressure Jernkvist (Pa): 4.05382e+08
+Bubble pressure (Pa): 2.01446e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.12366e+08
+Critical pressure Jernkvist (Pa): 4.03037e+08
+Bubble pressure (Pa): 2.01867e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.10339e+08
+Critical pressure Jernkvist (Pa): 4.00755e+08
+Bubble pressure (Pa): 2.02273e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.08365e+08
+Critical pressure Jernkvist (Pa): 3.98533e+08
+Bubble pressure (Pa): 2.02663e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.06442e+08
+Critical pressure Jernkvist (Pa): 3.96369e+08
+Bubble pressure (Pa): 2.03038e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.04569e+08
+Critical pressure Jernkvist (Pa): 3.94259e+08
+Bubble pressure (Pa): 2.034e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.02741e+08
+Critical pressure Jernkvist (Pa): 3.92201e+08
+Bubble pressure (Pa): 2.03748e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 3.00958e+08
+Critical pressure Jernkvist (Pa): 3.90193e+08
+Bubble pressure (Pa): 2.04084e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.99217e+08
+Critical pressure Jernkvist (Pa): 3.88233e+08
+Bubble pressure (Pa): 2.04409e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.97517e+08
+Critical pressure Jernkvist (Pa): 3.86319e+08
+Bubble pressure (Pa): 2.04721e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.95856e+08
+Critical pressure Jernkvist (Pa): 3.84448e+08
+Bubble pressure (Pa): 2.05024e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.94232e+08
+Critical pressure Jernkvist (Pa): 3.8262e+08
+Bubble pressure (Pa): 2.05316e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.92644e+08
+Critical pressure Jernkvist (Pa): 3.80831e+08
+Bubble pressure (Pa): 2.05598e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.9109e+08
+Critical pressure Jernkvist (Pa): 3.79082e+08
+Bubble pressure (Pa): 2.05871e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.8957e+08
+Critical pressure Jernkvist (Pa): 3.77369e+08
+Bubble pressure (Pa): 2.06135e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.88081e+08
+Critical pressure Jernkvist (Pa): 3.75692e+08
+Bubble pressure (Pa): 2.06391e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.86623e+08
+Critical pressure Jernkvist (Pa): 3.7405e+08
+Bubble pressure (Pa): 2.06639e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.85195e+08
+Critical pressure Jernkvist (Pa): 3.72441e+08
+Bubble pressure (Pa): 2.06878e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.83794e+08
+Critical pressure Jernkvist (Pa): 3.70863e+08
+Bubble pressure (Pa): 2.07111e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.82422e+08
+Critical pressure Jernkvist (Pa): 3.69317e+08
+Bubble pressure (Pa): 2.07337e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.81075e+08
+Critical pressure Jernkvist (Pa): 3.678e+08
+Bubble pressure (Pa): 2.07555e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.79754e+08
+Critical pressure Jernkvist (Pa): 3.66311e+08
+Bubble pressure (Pa): 2.07768e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.78458e+08
+Critical pressure Jernkvist (Pa): 3.64851e+08
+Bubble pressure (Pa): 2.07974e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.77186e+08
+Critical pressure Jernkvist (Pa): 3.63417e+08
+Bubble pressure (Pa): 2.08174e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.75936e+08
+Critical pressure Jernkvist (Pa): 3.62009e+08
+Bubble pressure (Pa): 2.08368e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.74709e+08
+Critical pressure Jernkvist (Pa): 3.60626e+08
+Bubble pressure (Pa): 2.08557e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.73503e+08
+Critical pressure Jernkvist (Pa): 3.59267e+08
+Bubble pressure (Pa): 2.08741e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.72319e+08
+Critical pressure Jernkvist (Pa): 3.57932e+08
+Bubble pressure (Pa): 2.0892e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.71154e+08
+Critical pressure Jernkvist (Pa): 3.56619e+08
+Bubble pressure (Pa): 2.09094e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.70009e+08
+Critical pressure Jernkvist (Pa): 3.55328e+08
+Bubble pressure (Pa): 2.09263e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.68883e+08
+Critical pressure Jernkvist (Pa): 3.54059e+08
+Bubble pressure (Pa): 2.09428e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.67776e+08
+Critical pressure Jernkvist (Pa): 3.5281e+08
+Bubble pressure (Pa): 2.09589e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.66686e+08
+Critical pressure Jernkvist (Pa): 3.51581e+08
+Bubble pressure (Pa): 2.09745e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.65614e+08
+Critical pressure Jernkvist (Pa): 3.50372e+08
+Bubble pressure (Pa): 2.09898e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.64559e+08
+Critical pressure Jernkvist (Pa): 3.49182e+08
+Bubble pressure (Pa): 2.10047e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.6352e+08
+Critical pressure Jernkvist (Pa): 3.4801e+08
+Bubble pressure (Pa): 2.10192e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.62497e+08
+Critical pressure Jernkvist (Pa): 3.46856e+08
+Bubble pressure (Pa): 2.10333e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.61489e+08
+Critical pressure Jernkvist (Pa): 3.45719e+08
+Bubble pressure (Pa): 2.10472e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.60497e+08
+Critical pressure Jernkvist (Pa): 3.44599e+08
+Bubble pressure (Pa): 2.10607e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.59519e+08
+Critical pressure Jernkvist (Pa): 3.43496e+08
+Bubble pressure (Pa): 2.10739e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.58555e+08
+Critical pressure Jernkvist (Pa): 3.42408e+08
+Bubble pressure (Pa): 2.10867e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.57605e+08
+Critical pressure Jernkvist (Pa): 3.41336e+08
+Bubble pressure (Pa): 2.10993e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.56669e+08
+Critical pressure Jernkvist (Pa): 3.40279e+08
+Bubble pressure (Pa): 2.11116e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.55746e+08
+Critical pressure Jernkvist (Pa): 3.39237e+08
+Bubble pressure (Pa): 2.11237e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.54835e+08
+Critical pressure Jernkvist (Pa): 3.3821e+08
+Bubble pressure (Pa): 2.11355e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.53938e+08
+Critical pressure Jernkvist (Pa): 3.37196e+08
+Bubble pressure (Pa): 2.1147e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.53052e+08
+Critical pressure Jernkvist (Pa): 3.36196e+08
+Bubble pressure (Pa): 2.11583e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.52178e+08
+Critical pressure Jernkvist (Pa): 3.35209e+08
+Bubble pressure (Pa): 2.11693e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.51316e+08
+Critical pressure Jernkvist (Pa): 3.34235e+08
+Bubble pressure (Pa): 2.11801e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.50465e+08
+Critical pressure Jernkvist (Pa): 3.33274e+08
+Bubble pressure (Pa): 2.11907e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.49625e+08
+Critical pressure Jernkvist (Pa): 3.32326e+08
+Bubble pressure (Pa): 2.12011e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.48796e+08
+Critical pressure Jernkvist (Pa): 3.31389e+08
+Bubble pressure (Pa): 2.12113e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.47978e+08
+Critical pressure Jernkvist (Pa): 3.30464e+08
+Bubble pressure (Pa): 2.12213e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.4717e+08
+Critical pressure Jernkvist (Pa): 3.29551e+08
+Bubble pressure (Pa): 2.12311e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.46372e+08
+Critical pressure Jernkvist (Pa): 3.28649e+08
+Bubble pressure (Pa): 2.12407e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.45583e+08
+Critical pressure Jernkvist (Pa): 3.27758e+08
+Bubble pressure (Pa): 2.12501e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.44805e+08
+Critical pressure Jernkvist (Pa): 3.26877e+08
+Bubble pressure (Pa): 2.12594e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.44035e+08
+Critical pressure Jernkvist (Pa): 3.26008e+08
+Bubble pressure (Pa): 2.12685e+09
+Intactness: 1
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =5.28901
+Grain Boundary rupture --------------------------------
+WARNING: critical bubble pressure exceeded
+Critical pressure (Pa): 2.44715e+08
+Critical pressure Jernkvist (Pa): 3.26767e+08
+Bubble pressure (Pa): 2.12685e+09
+Intactness: 1
