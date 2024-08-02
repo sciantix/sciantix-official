@@ -37,12 +37,11 @@
  */
 
 #include "MainVariables.h"
-// #include "Sciantix.h"
+#include "Sciantix.h"
 #include "InputInterpolation.h"
 #include "InputReading.h"
 #include "Initialization.h"
 #include "TimeStepCalculation.h"
-// #include "Bounds.h"
 #include "Global.h"
 #include "ErrorMessages.h"
 #include <iostream>
@@ -105,7 +104,7 @@ int main(int argc, char **argv)
 		Sciantix_history[10] = InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
 
 
-        // TO DO SCIANTIX
+        Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 
 
         dTime_h = TimeStepCalculation();

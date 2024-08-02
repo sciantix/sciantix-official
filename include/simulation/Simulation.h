@@ -51,7 +51,7 @@ private:
 
 	Solver solver;
 
-	Simulation* instance;
+	static Simulation* instance;
 
 
 
@@ -63,7 +63,7 @@ private:
 
 public:
 
-	Simulation& getInstance();
+	static Simulation* getInstance();
 
 
 	void setVariables(
