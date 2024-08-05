@@ -20,15 +20,15 @@ void Simulation::GasDiffusion()
 	switch (static_cast<int>(input_variable["iDiffusionSolver"].getValue()))
 	{
 		case 1:
-			defineSpectralDiffusion1Equation(sciantix_system, model, modes_initial_conditions.size());
+			defineSpectralDiffusion1Equation(sciantix_system, model, n_modes);
 			break;
 
 		case 2:
-			defineSpectralDiffusion2Equations(sciantix_system, model, modes_initial_conditions.size());
+			defineSpectralDiffusion2Equations(sciantix_system, model, n_modes);
 			break;
 
 		case 3:
-			defineSpectralDiffusion3Equations(sciantix_system, model, sciantix_variable, physics_variable, modes_initial_conditions.size());
+			defineSpectralDiffusion3Equations(sciantix_system, model, sciantix_variable, physics_variable, n_modes);
 			break;
 
 		default:
@@ -145,8 +145,15 @@ void Simulation::GasDiffusion()
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " released"].getInitialValue());
 
+            std::cout << sciantix_variable[system.getGasName() + " produced"].getFinalValue() << ", " <<
+                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() << ", " << 
+                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() << ", " <<
+                sciantix_variable[system.getGasName() + " released"].getInitialValue() << std::endl;
+
             if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
                 sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
+            
+            std::cout << "Gas diff : " << sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() << std::endl;
         }
     }
 
@@ -169,6 +176,8 @@ void Simulation::GasDiffusion()
                         sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                         sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
                         sciantix_variable[system.getGasName() + " in grain"].getFinalValue());
+                        
+                    std::cout << "RELEASED diff : " << sciantix_variable[system.getGasName() + " released"].getFinalValue() << std::endl;
                 }
             }
         }
@@ -179,6 +188,7 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
 {
 	std::string reference;
 
+ 
     for (auto& system : sciantix_system)
 	{
 		Model new_model;
@@ -201,6 +211,8 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
 		parameters.push_back(system.getMatrix().getGrainRadius());
 		parameters.push_back(system.getProductionRate());
 		parameters.push_back(system.getGas().getDecayRate());
+
+
 
 		new_model.setParameter(parameters);
 

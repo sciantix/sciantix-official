@@ -83,7 +83,7 @@ std::vector<SciantixVariable> initSciantixVariableValues(
         SciantixVariable("He at grain boundary", "(at/m3)", Sciantix_variables[17], Sciantix_variables[71], toOutputHelium),
         SciantixVariable("He released", "(at/m3)", Sciantix_variables[18], Sciantix_variables[18], toOutputHelium),
         SciantixVariable("He decayed", "(at/m3)", 0.0, 0.0, 0),
-        SciantixVariable("He fractional released", "(/)", 0.0, 0.0, toOutputHelium),
+        SciantixVariable("He fractional release", "(/)", 0.0, 0.0, toOutputHelium),
         SciantixVariable("He release rate", "(at/m3 s)", 0.0, 0.0, toOutputHelium),
 
         SciantixVariable("Xe133 produced", "(at/m3)", Sciantix_variables[48], Sciantix_variables[48], toOutputRadioactiveFG),

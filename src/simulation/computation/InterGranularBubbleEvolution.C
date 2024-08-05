@@ -253,7 +253,8 @@ void Simulation::InterGranularBubbleBehaviour()
         for (auto &system : sciantix_system)
         {
             if (system.getRestructuredMatrix() == 0)
-                sciantix_variable[system.getGasName() + " at grain boundary"].rescaleFinalValue(pow(similarity_ratio, 2.5));
+                {sciantix_variable[system.getGasName() + " at grain boundary"].rescaleFinalValue(pow(similarity_ratio, 2.5));
+                std::cout << "Grain inter bub evo if : " << sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() << std::endl;}
         }
     }
 
@@ -270,6 +271,9 @@ void Simulation::InterGranularBubbleBehaviour()
 
             if (sciantix_variable[system.getGasName() + " released"].getFinalValue() < 0.0)
                 sciantix_variable[system.getGasName() + " released"].setFinalValue(0.0);
+
+            std::cout << "RELEASED inter gran bub behav : " << sciantix_variable[system.getGasName() + " released"].getFinalValue() << std::endl;
+
         }
     }
 

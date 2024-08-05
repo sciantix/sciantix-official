@@ -46,8 +46,10 @@ private:
 	SciantixArray<Gas> gas;
 
 	SciantixArray<InputVariable> input_variable;
-	std::vector<double> modes_initial_conditions;
 	SciantixArray<InputVariable> scaling_factors;
+
+	int n_modes;
+	std::vector<double> modes_initial_conditions;
 
 	Solver solver;
 
@@ -58,7 +60,10 @@ private:
 	/**
 	 * \brief Default constructor for the Simulation class
 	 */
-	Simulation() {}
+	Simulation() {
+		n_modes = 40;
+		modes_initial_conditions.resize(n_modes * n_modes);
+	}
 
 
 public:
@@ -88,6 +93,17 @@ public:
 	);
 
 	void execute();
+
+	void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_modes[]);
+
+	/**
+	 * @brief This routines computes the value of sciantix_variable associated to figures of merit
+	 * that are of interest in the output.txt file.
+	 * 
+	 */
+	void FiguresOfMerit();
+
+	void Output();
 
 	/**
 	 * @brief Burnup uses the solver Integrator to computes the fuel burnup from the local power density.

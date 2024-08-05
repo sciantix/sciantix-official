@@ -132,7 +132,9 @@ void Simulation::GrainBoundaryMicroCracking()
         for (auto &system : sciantix_system)
         {
             if (system.getRestructuredMatrix() == 0)
-                sciantix_variable[system.getGasName() + " at grain boundary"].rescaleFinalValue(pow(similarity_ratio, 2.5));
+                {sciantix_variable[system.getGasName() + " at grain boundary"].rescaleFinalValue(pow(similarity_ratio, 2.5));
+                std::cout << "Grain bound mic crack if : " << sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() << std::endl;
+                }
         }
     }
 
@@ -146,6 +148,9 @@ void Simulation::GrainBoundaryMicroCracking()
                 sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue());
+
+            std::cout << "RELEASED grain micro crack : " << sciantix_variable[system.getGasName() + " released"].getFinalValue() << std::endl;
+            
 
             if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
                 sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
