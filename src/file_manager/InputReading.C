@@ -233,8 +233,6 @@ void InputReading()
 	Sciantix_options[19] = ReadOneSetting("iHeliumProductionRate", input_settings, input_check);
 	Sciantix_options[20] = ReadOneSetting("iStoichiometryDeviation", input_settings, input_check);
 	Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
-
-	std::cout << Sciantix_options[20] << "aaaa" << std::endl;
 	
 	if (!input_initial_conditions.fail())
 	{
