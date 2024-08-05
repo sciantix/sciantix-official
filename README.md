@@ -27,12 +27,12 @@ cmake .. && make
 <b>All in one : </b>
 
 ```shell
-mkdir build && cd build && cmake .. && make && cd ../pythonBind/ && python3 ../pythonBindmain.py ../regression/test_Baker1977__1273K/
+mkdir build && cd build && cmake .. && make && cd ../pythonBind/ && python3 ../pythonBind/main.py ../regression/test_Baker1977__1273K/
 ```
 <b>Only Python : </b> <br>
 For the `test_Barker1977__1273K`
 ```shell
-python3 ../pythonBindmain.py ../regression/test_Baker1977__1273K/
+python3 ../pythonBind/main.py ../regression/test_Baker1977__1273K/
 ```
 
 ### Explanation :
