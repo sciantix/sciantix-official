@@ -13,11 +13,22 @@
 //  Authors: D. Pizzocri, T. Barani                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
-#include "MainVariables.h"
+
+#ifndef TIME_STEP_CALCULATION
+#define TIME_STEP_CALCULATION
+
+#include <vector>
 
 /**
  * @brief This routine calculates the time step length 
  * by dividing the time intervals provided in input
  * in a fixed number of time steps (also set by input).
  */
-double TimeStepCalculation();
+double TimeStepCalculation(
+  int Input_history_points,
+  double Time_h,
+  std::vector<double> Time_input,
+  double  Number_of_time_steps_per_interval
+);
+
+#endif // TIME_STEP_CALCULATION

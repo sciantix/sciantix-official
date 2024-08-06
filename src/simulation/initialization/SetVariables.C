@@ -71,7 +71,8 @@ void Simulation::setVariables(
 	
 	std::vector<SciantixVariable> initial_history_values = initHistoryVariableValues(
 		Sciantix_history,
-		toOutputStoichiometryDeviation
+		toOutputStoichiometryDeviation,
+		Sciantix_scaling_factors
 	);
 
 	for (SciantixVariable initial_value : initial_history_values)

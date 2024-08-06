@@ -3,7 +3,6 @@
 
 #include <vector>
 #include "SciantixVariable.h"
-#include "MainVariables.h"
 
 
 
@@ -25,7 +24,8 @@ std::vector<std::string> getInputVariableNames()
 
 std::vector<SciantixVariable> initHistoryVariableValues(
     double Sciantix_history[],
-    bool toOutputStoichiometryDeviation
+    bool toOutputStoichiometryDeviation,
+    double Sciantix_scaling_factors[]
 )
 {
     std::vector<SciantixVariable> history_variable = {

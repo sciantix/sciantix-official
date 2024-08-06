@@ -14,11 +14,25 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef INITIALIZATION_H
+#define INITIALIZATION_H
+
+#include <iostream>
+#include <vector>
 #include <cmath>
-#include "MainVariables.h"
 
 /**
  * \brief Initializes Sciantix internal variables with initial conditions and interface variables.
  * This function sets up the initial state for the simulation based on provided input values.
  */
-void Initialization();
+void Initialization(
+	double Sciantix_history[],
+	double Sciantix_variables[],
+	double Sciantix_diffusion_modes[],
+	std::vector<double> Temperature_input,
+	std::vector<double> Fissionrate_input,
+	std::vector<double> Hydrostaticstress_input,
+	std::vector<double> Steampressure_input
+);
+
+#endif //INITIALIZATION_H
