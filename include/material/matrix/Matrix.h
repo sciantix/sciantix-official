@@ -34,7 +34,7 @@
  */
 class Matrix : virtual public Material
 {
-protected:
+public:
 	double matrix_density;
 	double lattice_parameter;
 	double grain_boundary_mobility;
@@ -54,7 +54,7 @@ protected:
 	double pore_resolution_rate;
 	double pore_trapping_rate;
 
-public:
+// public:
 	/**
 	 * \brief Sets the theoretical density of the matrix.
 	 * @param m The density to set (kg/m3).
