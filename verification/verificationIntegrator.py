@@ -13,6 +13,8 @@ if module_path not in sys.path:
 import sciantixModule
 
 def main(F, exact_solution):
+    """This fonction do the MMS verification of the Integrator Solver ( y' = + S ) """
+
     # Parameters    
     t0 = 0
     t_end = 1
@@ -63,7 +65,6 @@ def main(F, exact_solution):
     plt.ylabel('Erreur')
     plt.title('Log(Erreur) vs Log(h)')
     plt.grid(True)
-    plt.show()
 
     # plot the solution for the minimum step 
     h_min = min(increments)
@@ -83,7 +84,6 @@ def main(F, exact_solution):
     plt.title('Numerical vs Exact Solution')
     plt.legend()
     plt.grid(True)
-    plt.show()
 
 
     # for test purposes and verification of results 

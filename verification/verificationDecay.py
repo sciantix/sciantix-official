@@ -14,6 +14,8 @@ import sciantixModule
 
 # MMS verifiaction for the solver decay ( dphi/dt = S - Lambda * phi ) 
 def main(L,S,exact_solution):
+    """This fonction do the MMS verification of the Decay Solver ( dphi/dt = S - Lambda * phi )"""
+
     # Parameters    
     t0 = 1
     t_end = 2
@@ -64,7 +66,6 @@ def main(L,S,exact_solution):
     plt.ylabel('Erreur')
     plt.title('Log(Erreur) vs Log(h)')
     plt.grid(True)
-    plt.show()
 
     # plot the solution for the minimum step 
     h_min = min(increments)
@@ -84,7 +85,6 @@ def main(L,S,exact_solution):
     plt.title('Numerical vs Exact Solution')
     plt.legend()
     plt.grid(True)
-    plt.show()
 
     # for test purposes and verification of results 
     def calculate_local_oc(h1, h2, e1, e2):
@@ -104,6 +104,8 @@ def main(L,S,exact_solution):
     plt.title('evolution of the Order of Convergence')
     plt.grid(True)
     plt.show()
+
+    
 
 
 if __name__ == "__main__":

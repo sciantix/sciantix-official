@@ -14,6 +14,7 @@ import sciantixModule
 
 
 def main(k,exact_solution , mode):
+    """This fonction do the MMS verification of the Decay Solver ( dphi/dt = -k * phi**2 )"""
 
     # Parameters    
     t0 = 1
@@ -64,7 +65,6 @@ def main(k,exact_solution , mode):
     plt.ylabel('Erreur')
     plt.title('Log(Erreur) vs Log(h)')
     plt.grid(True)
-    plt.show()
 
     # plot the solution for the minimum step 
     h_min = min(increments)
@@ -84,7 +84,6 @@ def main(k,exact_solution , mode):
     plt.title('Numerical vs Exact Solution')
     plt.legend()
     plt.grid(True)
-    plt.show()
 
     # for test purposes and verification of results 
     def calculate_local_oc(h1, h2, e1, e2):

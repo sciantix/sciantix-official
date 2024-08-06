@@ -154,6 +154,10 @@ public:
 		double solution(0.0);
 		const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
 
+		if (parameter.size() < 5) {
+        	throw std::runtime_error("Parameter vector must contain at least 5 elements.");
+    	}
+
 		diffusion_rate_coeff = pow(pi, 2) * parameter.at(1) / pow(parameter.at(2), 2);
 		projection_coeff = -2.0 * sqrt(2.0 / pi);
 		source_rate_coeff = projection_coeff * parameter.at(3);
