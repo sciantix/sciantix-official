@@ -137,27 +137,7 @@ void init_classes(py::module_ &m) {
         .def("Decay", &Solver::Decay, py::arg("initial_condition"), py::arg("decay_rate"), py::arg("source_term"), py::arg("increment"))
         .def("BinaryInteraction", &Solver::BinaryInteraction, py::arg("initial_condition"), py::arg("interaction_coefficient"), py::arg("increment"))
         .def("BinaryInteractionVerification", &Solver::BinaryInteractionVerification, py::arg("initial_condition"), py::arg("interaction_coefficient"), py::arg("increment"), py::arg("mode"))
-        .def("SpectralDiffusion", [](Solver& self, py::array_t<double> initial_condition,
-                                 py::list parameter,
-                                 double increment) {
-            // Validate input types
-            auto initial_condition_buf = initial_condition.request();
-            if (initial_condition_buf.ndim != 1) {
-                throw std::runtime_error("initial_condition must be 1-dimensional");
-            }
-            
-            // Convert parameter list to std::vector<double>
-            std::vector<double> parameter_vec;
-            for (py::handle item : parameter) {
-                parameter_vec.push_back(item.cast<double>());
-            }
-            
-            // Get pointer to initial_condition data
-            double *initial_condition_ptr = static_cast<double *>(initial_condition_buf.ptr);
-
-            // Call C++ function
-            return self.SpectralDiffusion(initial_condition_ptr, parameter_vec, increment);},
-        py::arg("initial_condition"), py::arg("parameter"), py::arg("increment"))
+        .def("SpectralDiffusion", &Solver::SpectralDiffusion, py::arg("initial_condition"), py::arg("parameter"), py::arg("increment"))
         .def("dotProduct1D", &Solver::dotProduct1D, py::arg("u"), py::arg("v"), py::arg("n"))
         .def("dotProduct2D", &Solver::dotProduct2D, py::arg("A"), py::arg("v"), py::arg("n_rows"), py::arg("n_col"), py::arg("result"))
         .def("SpectralDiffusion2equations", &Solver::SpectralDiffusion2equations, py::arg("gas_1"), py::arg("gas_2"), py::arg("initial_condition_gas_1"), py::arg("initial_condition_gas_2"), py::arg("parameter"), py::arg("increment"))
