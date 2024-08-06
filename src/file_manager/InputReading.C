@@ -96,7 +96,19 @@ std::vector<double> ReadSeveralParameters(std::string variable_name, std::ifstre
 	return vector_read;
 }
 
-void InputReading()
+void InputReading(
+	int Sciantix_options[], 
+	double Sciantix_variables[], 
+	double Sciantix_scaling_factors[],
+	int &Input_history_points,
+	std::vector<double> &Time_input, 
+	std::vector<double> &Temperature_input,
+	std::vector<double> &Fissionrate_input,
+	std::vector<double> &Hydrostaticstress_input,
+	std::vector<double> &Steampressure_input,
+	double &Time_end_h,
+	double &Time_end_s
+	)
 {
 	/// Besides the two input files, this routines creates an input_check.txt file
 	/// reporting all the inputs provided in the other files.

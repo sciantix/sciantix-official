@@ -36,7 +36,6 @@
  *
  */
 
-#include "MainVariables.h"
 #include "Sciantix.h"
 #include "InputInterpolation.h"
 #include "InputReading.h"
@@ -57,12 +56,44 @@ using namespace std;
  * @param timer The total execution time measured in seconds.
  * @param time_step_number The total number of time steps executed during the simulation.
  */
-void logExecutionTime(double timer, int time_step_number);
+void logExecutionTime(double timer, int time_step_number, std::ofstream &Execution_file);
 
 
 
 int main(int argc, char **argv)
 {
+	clock_t timer, timer_time_step;
+
+	int Sciantix_options[40];
+	double Sciantix_history[20];
+	double Sciantix_variables[300];
+	double Sciantix_scaling_factors[10];
+	double Sciantix_diffusion_modes[1000];
+
+	long long int Time_step_number(0);
+	double  Time_h(0.0), dTime_h(0.0), Time_end_h(0.0); // (h)
+	double  Time_s(0.0), Time_end_s(0.0); // (s)
+	double  Number_of_time_steps_per_interval(100);
+
+	std::ofstream Output_file;
+	std::ofstream Execution_file;
+
+	int Input_history_points(1000);
+	int Temperature_input_points;
+	int Fissionrate_input_points;
+	int Hydrostaticstress_input_points;
+	int Stempressure_input_points;
+	std::vector<double> Time_temperature_input;
+	std::vector<double> Time_fissionrate_input;
+	std::vector<double> Time_hydrostaticstress_input;
+	std::vector<double> Time_steampressure_input;
+	std::vector<double> Time_input(1000, 0.0);
+	std::vector<double> Temperature_input(1000, 0.0);
+	std::vector<double> Fissionrate_input(1000, 0.0);
+	std::vector<double> Hydrostaticstress_input(1000, 0.0);
+	std::vector<double> Steampressure_input(1000, 0.0);
+
+
     if (argc < 2) {
         std::cerr << "Warning: No path specified, using current directory." << std::endl;
         std::cout << "Try to use ./sciantix.x ../regression/your-test-file-path/ in the bin directory" << std::endl;
@@ -75,9 +106,29 @@ int main(int argc, char **argv)
     }
 
 
-	InputReading();
+	InputReading(
+		Sciantix_options, 
+		Sciantix_variables, 
+		Sciantix_scaling_factors,
+		Input_history_points,
+		Time_input, 
+		Temperature_input,
+		Fissionrate_input,
+		Hydrostaticstress_input,
+		Steampressure_input,
+		Time_end_h,
+		Time_end_s
+	);
 
-    Initialization();
+    Initialization(
+		Sciantix_history,
+		Sciantix_variables,
+		Sciantix_diffusion_modes,
+		Temperature_input,
+		Fissionrate_input,
+		Hydrostaticstress_input,
+		Steampressure_input
+	);
 
 	std::string outputPath = TestPath + "output.txt";
 
@@ -107,9 +158,13 @@ int main(int argc, char **argv)
         Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 
 
-        dTime_h = TimeStepCalculation();
+        dTime_h = TimeStepCalculation(
+			Input_history_points,
+			Time_h,
+			Time_input,
+			Number_of_time_steps_per_interval
+		);
 		Sciantix_history[6] = dTime_h * 3600;
-		// break;
 
 		if (Time_h < Time_end_h)
 		{
@@ -121,11 +176,10 @@ int main(int argc, char **argv)
 			break;
     }
 
-
     timer = clock() - timer;
 
 
-	logExecutionTime((double)timer / CLOCKS_PER_SEC, Time_step_number);
+	logExecutionTime((double)timer / CLOCKS_PER_SEC, Time_step_number, Execution_file);
 	Execution_file.close();
 
 
@@ -133,7 +187,7 @@ int main(int argc, char **argv)
 }
 
 
-void logExecutionTime(double timer, int time_step_number)
+void logExecutionTime(double timer, int time_step_number, std::ofstream &Execution_file)
 {
 	Execution_file << std::setprecision(12) << std::scientific << timer << "\t" << CLOCKS_PER_SEC << "\t" << (double)timer * CLOCKS_PER_SEC << "\t" << time_step_number << std::endl;
 }
