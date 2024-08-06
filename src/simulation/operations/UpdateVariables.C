@@ -18,87 +18,96 @@
 
 /// UpdateVariables
 
+
+std::map<int, std::string> update_sciantix_variable = {
+	{0, "Grain radius"},
+	{1, "Xe produced"},
+	{100, "Xe produced in HBS"},
+	{2, "Xe in grain"},
+	{92, "Xe in grain HBS"},
+	{3, "Xe in intragranular solution"},
+	{4, "Xe in intragranular bubbles"},
+	{5, "Xe at grain boundary"},
+	{6, "Xe released"},
+	{7, "Kr produced"},
+	{8, "Kr in grain"},
+	{9, "Kr in intragranular solution"},
+	{10, "Kr in intragranular bubbles"},
+	{11, "Kr at grain boundary"},
+	{12, "Kr released"},
+	{13, "He produced"},
+	{14, "He in grain"},
+	{15, "He in intragranular solution"},
+	{16, "He in intragranular bubbles"},
+	{17, "He at grain boundary"},
+	{18, "He released"},
+	{19, "Intragranular bubble concentration"},
+	{20, "Intragranular bubble radius"},
+	{21, "Intragranular Xe atoms per bubble"},
+	{22, "Intragranular Kr atoms per bubble"},
+	{23, "Intragranular He atoms per bubble"},
+	{24, "Intragranular gas bubble swelling"},
+	{68, "Intragranular gas solution swelling"},
+	{25, "Intergranular bubble concentration"},
+	{26, "Intergranular Xe atoms per bubble"},
+	{27, "Intergranular Kr atoms per bubble"},
+	{28, "Intergranular He atoms per bubble"},
+	{29, "Intergranular atoms per bubble"},
+	{30, "Intergranular vacancies per bubble"},
+	{31, "Intergranular bubble radius"},
+	{32, "Intergranular bubble area"},
+	{33, "Intergranular bubble volume"},
+	{34, "Intergranular fractional coverage"},
+	{35, "Intergranular saturation fractional coverage"},
+	{36, "Intergranular gas swelling"},
+	{37, "Intergranular fractional intactness"},
+	{38, "Burnup"},
+	{39, "Effective burnup"},
+	{40, "Fuel density"},
+	{41, "U234"},
+	{42, "U235"},
+	{43, "U236"},
+	{44, "U237"},
+	{45, "U238"},
+	{46, "Intergranular vented fraction"},
+	{47, "Intergranular venting probability"},
+	{48, "Xe133 produced"},
+	{49, "Xe133 in grain"},
+	{50, "Xe133 in intragranular solution"},
+	{51, "Xe133 in intragranular bubbles"},
+	{52, "Xe133 decayed"},
+	{53, "Xe133 at grain boundary"},
+	{54, "Xe133 released"},
+	{55, "Restructured volume fraction"},
+	{56, "HBS porosity"},
+	{57, "Kr85m produced"},
+	{58, "Kr85m in grain"},
+	{59, "Kr85m in intragranular solution"},
+	{60, "Kr85m in intragranular bubbles"},
+	{61, "Kr85m decayed"},
+	{62, "Kr85m at grain boundary"},
+	{63, "Kr85m released"},
+	{64, "Intragranular similarity ratio"},
+	{65, "Irradiation time"},
+	{66, "Stoichiometry deviation"},
+	{67, "Fuel oxygen partial pressure"},
+	{69, "FIMA"},
+	{80, "HBS pore density"},
+	{81, "HBS pore volume"},
+	{82, "HBS pore radius"},
+	{83, "Xe in HBS pores"},
+	{85, "Xe in HBS pores - variance"},
+	{86, "Xe atoms per HBS pore"},
+	{88, "Xe atoms per HBS pore - variance"}
+};
+
+
 void Simulation::UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_modes[])
 {
-	Sciantix_variables[0] = sciantix_variable["Grain radius"].getFinalValue();
-	Sciantix_variables[1] = sciantix_variable["Xe produced"].getFinalValue();
-	Sciantix_variables[100] = sciantix_variable["Xe produced in HBS"].getFinalValue();
-	Sciantix_variables[2] = sciantix_variable["Xe in grain"].getFinalValue();
-	Sciantix_variables[92] = sciantix_variable["Xe in grain HBS"].getFinalValue();
-	Sciantix_variables[3] = sciantix_variable["Xe in intragranular solution"].getFinalValue();
-	Sciantix_variables[4] = sciantix_variable["Xe in intragranular bubbles"].getFinalValue();
-	Sciantix_variables[5] = sciantix_variable["Xe at grain boundary"].getFinalValue();
-	Sciantix_variables[6] = sciantix_variable["Xe released"].getFinalValue();
-	Sciantix_variables[7] = sciantix_variable["Kr produced"].getFinalValue();
-	Sciantix_variables[8] = sciantix_variable["Kr in grain"].getFinalValue();
-	Sciantix_variables[9] = sciantix_variable["Kr in intragranular solution"].getFinalValue();
-	Sciantix_variables[10] = sciantix_variable["Kr in intragranular bubbles"].getFinalValue();
-	Sciantix_variables[11] = sciantix_variable["Kr at grain boundary"].getFinalValue();
-	Sciantix_variables[12] = sciantix_variable["Kr released"].getFinalValue();
-	Sciantix_variables[13] = sciantix_variable["He produced"].getFinalValue();
-	Sciantix_variables[14] = sciantix_variable["He in grain"].getFinalValue();
-	Sciantix_variables[15] = sciantix_variable["He in intragranular solution"].getFinalValue();
-	Sciantix_variables[16] = sciantix_variable["He in intragranular bubbles"].getFinalValue();
-	Sciantix_variables[17] = sciantix_variable["He at grain boundary"].getFinalValue();
-	Sciantix_variables[18] = sciantix_variable["He released"].getFinalValue();
-	Sciantix_variables[19] = sciantix_variable["Intragranular bubble concentration"].getFinalValue();
-	Sciantix_variables[20] = sciantix_variable["Intragranular bubble radius"].getFinalValue();
-	Sciantix_variables[21] = sciantix_variable["Intragranular Xe atoms per bubble"].getFinalValue();
-	Sciantix_variables[22] = sciantix_variable["Intragranular Kr atoms per bubble"].getFinalValue();
-	Sciantix_variables[23] = sciantix_variable["Intragranular He atoms per bubble"].getFinalValue();
-	Sciantix_variables[24] = sciantix_variable["Intragranular gas bubble swelling"].getFinalValue();
-	Sciantix_variables[68] = sciantix_variable["Intragranular gas solution swelling"].getFinalValue();
-	Sciantix_variables[25] = sciantix_variable["Intergranular bubble concentration"].getFinalValue();
-	Sciantix_variables[26] = sciantix_variable["Intergranular Xe atoms per bubble"].getFinalValue();
-	Sciantix_variables[27] = sciantix_variable["Intergranular Kr atoms per bubble"].getFinalValue();
-	Sciantix_variables[28] = sciantix_variable["Intergranular He atoms per bubble"].getFinalValue();
-	Sciantix_variables[29] = sciantix_variable["Intergranular atoms per bubble"].getFinalValue();
-	Sciantix_variables[30] = sciantix_variable["Intergranular vacancies per bubble"].getFinalValue();
-	Sciantix_variables[31] = sciantix_variable["Intergranular bubble radius"].getFinalValue();
-	Sciantix_variables[32] = sciantix_variable["Intergranular bubble area"].getFinalValue();
-	Sciantix_variables[33] = sciantix_variable["Intergranular bubble volume"].getFinalValue();
-	Sciantix_variables[34] = sciantix_variable["Intergranular fractional coverage"].getFinalValue();
-	Sciantix_variables[35] = sciantix_variable["Intergranular saturation fractional coverage"].getFinalValue();
-	Sciantix_variables[36] = sciantix_variable["Intergranular gas swelling"].getFinalValue();
-	Sciantix_variables[37] = sciantix_variable["Intergranular fractional intactness"].getFinalValue();
-	Sciantix_variables[38] = sciantix_variable["Burnup"].getFinalValue();
-	Sciantix_variables[39] = sciantix_variable["Effective burnup"].getFinalValue();
-	Sciantix_variables[40] = sciantix_variable["Fuel density"].getFinalValue();
-	Sciantix_variables[41] = sciantix_variable["U234"].getFinalValue();
-	Sciantix_variables[42] = sciantix_variable["U235"].getFinalValue();
-	Sciantix_variables[43] = sciantix_variable["U236"].getFinalValue();
-	Sciantix_variables[44] = sciantix_variable["U237"].getFinalValue();
-	Sciantix_variables[45] = sciantix_variable["U238"].getFinalValue();
-	Sciantix_variables[46] = sciantix_variable["Intergranular vented fraction"].getFinalValue();
-	Sciantix_variables[47] = sciantix_variable["Intergranular venting probability"].getFinalValue();
-	Sciantix_variables[48] = sciantix_variable["Xe133 produced"].getFinalValue();
-	Sciantix_variables[49] = sciantix_variable["Xe133 in grain"].getFinalValue();
-	Sciantix_variables[50] = sciantix_variable["Xe133 in intragranular solution"].getFinalValue();
-	Sciantix_variables[51] = sciantix_variable["Xe133 in intragranular bubbles"].getFinalValue();
-	Sciantix_variables[52] = sciantix_variable["Xe133 decayed"].getFinalValue();
-	Sciantix_variables[53] = sciantix_variable["Xe133 at grain boundary"].getFinalValue();
-	Sciantix_variables[54] = sciantix_variable["Xe133 released"].getFinalValue();
-	Sciantix_variables[55] = sciantix_variable["Restructured volume fraction"].getFinalValue();
-	Sciantix_variables[56] = sciantix_variable["HBS porosity"].getFinalValue();
-	Sciantix_variables[57] = sciantix_variable["Kr85m produced"].getFinalValue();
-	Sciantix_variables[58] = sciantix_variable["Kr85m in grain"].getFinalValue();
-	Sciantix_variables[59] = sciantix_variable["Kr85m in intragranular solution"].getFinalValue();
-	Sciantix_variables[60] = sciantix_variable["Kr85m in intragranular bubbles"].getFinalValue();
-	Sciantix_variables[61] = sciantix_variable["Kr85m decayed"].getFinalValue();
-	Sciantix_variables[62] = sciantix_variable["Kr85m at grain boundary"].getFinalValue();
-	Sciantix_variables[63] = sciantix_variable["Kr85m released"].getFinalValue();
-	Sciantix_variables[64] = sciantix_variable["Intragranular similarity ratio"].getFinalValue();
-	Sciantix_variables[65] = sciantix_variable["Irradiation time"].getFinalValue();
-	Sciantix_variables[66] = sciantix_variable["Stoichiometry deviation"].getFinalValue();
-	Sciantix_variables[67] = sciantix_variable["Fuel oxygen partial pressure"].getFinalValue();
-	Sciantix_variables[69] = sciantix_variable["FIMA"].getFinalValue();
-	Sciantix_variables[80] = sciantix_variable["HBS pore density"].getFinalValue();
-	Sciantix_variables[81] = sciantix_variable["HBS pore volume"].getFinalValue();
-	Sciantix_variables[82] = sciantix_variable["HBS pore radius"].getFinalValue();
-	Sciantix_variables[83] = sciantix_variable["Xe in HBS pores"].getFinalValue();
-	Sciantix_variables[85] = sciantix_variable["Xe in HBS pores - variance"].getFinalValue();
-	Sciantix_variables[86] = sciantix_variable["Xe atoms per HBS pore"].getFinalValue();
-	Sciantix_variables[88] = sciantix_variable["Xe atoms per HBS pore - variance"].getFinalValue();
+	for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin(); it != update_sciantix_variable.end(); it++)
+	{
+		Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
+	}
 
 
 	for (int i = 0; i < n_modes; ++i)
