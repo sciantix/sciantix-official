@@ -95,6 +95,5 @@ void Simulation::GrainBoundaryVenting()
                 -model["Grain-boundary venting"].getParameter().at(0),
                 sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement()));
         sciantix_variable[system.getGasName() + " at grain boundary"].resetValue();
-        std::cout << "Grain bound venting : " << sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() << std::endl;
     }
 }

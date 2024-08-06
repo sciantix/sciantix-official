@@ -90,7 +90,7 @@ std::vector<SciantixVariable> initSciantixVariableValues(
         SciantixVariable("Xe133 in grain", "(at/m3)", Sciantix_variables[49], Sciantix_variables[49], toOutputRadioactiveFG),
         SciantixVariable("Xe133 in intragranular solution", "(at/m3)", Sciantix_variables[50], Sciantix_variables[50], toOutputRadioactiveFG),
         SciantixVariable("Xe133 in intragranular bubbles", "(at/m3)", Sciantix_variables[51], Sciantix_variables[51], toOutputRadioactiveFG),
-        SciantixVariable("Xe133 decayed", "(at/m3)", Sciantix_variables[51], Sciantix_variables[51], 0),
+        SciantixVariable("Xe133 decayed", "(at/m3)", Sciantix_variables[52], Sciantix_variables[52], toOutputRadioactiveFG),
         SciantixVariable("Xe133 at grain boundary", "(at/m3)", Sciantix_variables[53], Sciantix_variables[53], toOutputRadioactiveFG),
         SciantixVariable("Xe133 released", "(at/m3)", Sciantix_variables[54], Sciantix_variables[54], toOutputRadioactiveFG),
         SciantixVariable("Xe133 R/B", "(/)", 0.0, 0.0, toOutputRadioactiveFG),
@@ -99,9 +99,9 @@ std::vector<SciantixVariable> initSciantixVariableValues(
         SciantixVariable("Kr85m in grain", "(at/m3)", Sciantix_variables[58], Sciantix_variables[58], toOutputRadioactiveFG),
         SciantixVariable("Kr85m in intragranular solution", "(at/m3)", Sciantix_variables[59], Sciantix_variables[59], toOutputRadioactiveFG),
         SciantixVariable("Kr85m in intragranular bubbles", "(at/m3)", Sciantix_variables[60], Sciantix_variables[60], toOutputRadioactiveFG),
-        SciantixVariable("Kr85m decayed", "(at/m3)", Sciantix_variables[61], Sciantix_variables[61], 0),
-        SciantixVariable("Kr85m at grain boundary", "(at/m3)", Sciantix_variables[64], Sciantix_variables[64], toOutputRadioactiveFG),
-        SciantixVariable("Kr85m released", "(at/m3)", Sciantix_variables[65], Sciantix_variables[65], toOutputRadioactiveFG),
+        SciantixVariable("Kr85m decayed", "(at/m3)", Sciantix_variables[61], Sciantix_variables[61], toOutputRadioactiveFG),
+        SciantixVariable("Kr85m at grain boundary", "(at/m3)", Sciantix_variables[62], Sciantix_variables[62], toOutputRadioactiveFG),
+        SciantixVariable("Kr85m released", "(at/m3)", Sciantix_variables[63], Sciantix_variables[63], toOutputRadioactiveFG),
         SciantixVariable("Kr85m R/B", "(/)", 0.0, 0.0, toOutputRadioactiveFG),       
 
 
@@ -148,14 +148,12 @@ std::vector<SciantixVariable> initSciantixVariableValues(
         SciantixVariable("U236", "(at/m3)", Sciantix_variables[43], Sciantix_variables[43], 0),
         SciantixVariable("U237", "(at/m3)", Sciantix_variables[44], Sciantix_variables[44], 0),
         SciantixVariable("U238", "(at/m3)", Sciantix_variables[45], Sciantix_variables[45], 1),
-        SciantixVariable("U", "(at/m3)", Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45], Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45], 0),
 
         SciantixVariable("Intergranular vented fraction", "(/)", Sciantix_variables[46], Sciantix_variables[46], toOutputVenting),
         SciantixVariable("Intergranular venting probability", "(/)", Sciantix_variables[47], Sciantix_variables[47], toOutputVenting),
 
         SciantixVariable("Restructured volume fraction", "(/)", Sciantix_variables[55], Sciantix_variables[55], toOutputHighBurnupStructure),
         SciantixVariable("Intragranular similarity ratio", "(/)", Sciantix_variables[64], Sciantix_variables[64], 0),
-        SciantixVariable("Specific power", "(MW/kg)", 0.0, 0.0, 0),
         SciantixVariable("Gap oxygen partial pressure", "(MPa)", 0.0, 0.0, toOutputStoichiometryDeviation),
         SciantixVariable("Stoichiometry deviation", "(/)", Sciantix_variables[66], Sciantix_variables[66], toOutputStoichiometryDeviation),
         SciantixVariable("Equilibrium stoichiometry deviation", "(/)", 0.0, 0.0, toOutputStoichiometryDeviation),

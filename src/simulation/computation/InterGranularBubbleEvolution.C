@@ -135,6 +135,11 @@ void Simulation::InterGranularBubbleBehaviour()
 
 
 
+
+
+
+
+
     // Vacancy concentration
     sciantix_variable["Intergranular vacancies per bubble"].setFinalValue(
         solver.LimitedGrowth(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue(),
@@ -226,6 +231,7 @@ void Simulation::InterGranularBubbleBehaviour()
     else
         similarity_ratio = 1.0;
 
+    
     if (similarity_ratio < 1.0)
     {
         sciantix_variable["Intergranular bubble area"].rescaleFinalValue(similarity_ratio);
@@ -253,8 +259,7 @@ void Simulation::InterGranularBubbleBehaviour()
         for (auto &system : sciantix_system)
         {
             if (system.getRestructuredMatrix() == 0)
-                {sciantix_variable[system.getGasName() + " at grain boundary"].rescaleFinalValue(pow(similarity_ratio, 2.5));
-                std::cout << "Grain inter bub evo if : " << sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() << std::endl;}
+                sciantix_variable[system.getGasName() + " at grain boundary"].rescaleFinalValue(pow(similarity_ratio, 2.5));
         }
     }
 
@@ -271,8 +276,6 @@ void Simulation::InterGranularBubbleBehaviour()
 
             if (sciantix_variable[system.getGasName() + " released"].getFinalValue() < 0.0)
                 sciantix_variable[system.getGasName() + " released"].setFinalValue(0.0);
-
-            std::cout << "RELEASED inter gran bub behav : " << sciantix_variable[system.getGasName() + " released"].getFinalValue() << std::endl;
 
         }
     }

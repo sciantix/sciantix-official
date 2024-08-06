@@ -69,8 +69,6 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
 	 * @brief The diffusivity of the vacancies on the grain-boundaries is set according to the input_variable iGrainBoundaryVacancyDiffusivity.
 	 * 
 	 */
-	
-	const double boltzmann_constant = boltzmann_constant;
 
 	switch (input_value)
 	{

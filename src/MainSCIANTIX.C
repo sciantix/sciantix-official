@@ -109,6 +109,7 @@ int main(int argc, char **argv)
 
         dTime_h = TimeStepCalculation();
 		Sciantix_history[6] = dTime_h * 3600;
+		// break;
 
 		if (Time_h < Time_end_h)
 		{

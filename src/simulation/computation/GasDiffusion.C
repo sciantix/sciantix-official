@@ -35,7 +35,7 @@ void Simulation::GasDiffusion()
 			errorHandling(input_variable);
 			break;
 	}
-
+ 
     for (auto &system : sciantix_system)
     {
         switch (int(input_variable["iDiffusionSolver"].getValue()))
@@ -124,6 +124,7 @@ void Simulation::GasDiffusion()
             getDiffusionModes("Xe in HBS"),
             model["Gas diffusion - Xe in UO2 with HBS"].getParameter(),
             physics_variable["Time step"].getFinalValue());
+
         sciantix_variable["Xe in grain"].setFinalValue(initial_value_solution + initial_value_bubbles);
         sciantix_variable["Xe in intragranular solution"].setFinalValue(initial_value_solution);
         sciantix_variable["Xe in intragranular bubbles"].setFinalValue(initial_value_bubbles);
@@ -145,15 +146,8 @@ void Simulation::GasDiffusion()
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " released"].getInitialValue());
 
-            std::cout << sciantix_variable[system.getGasName() + " produced"].getFinalValue() << ", " <<
-                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() << ", " << 
-                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() << ", " <<
-                sciantix_variable[system.getGasName() + " released"].getInitialValue() << std::endl;
-
             if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
                 sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
-            
-            std::cout << "Gas diff : " << sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() << std::endl;
         }
     }
 
@@ -176,8 +170,6 @@ void Simulation::GasDiffusion()
                         sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                         sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
                         sciantix_variable[system.getGasName() + " in grain"].getFinalValue());
-                        
-                    std::cout << "RELEASED diff : " << sciantix_variable[system.getGasName() + " released"].getFinalValue() << std::endl;
                 }
             }
         }

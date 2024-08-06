@@ -36,6 +36,9 @@ void Simulation::GasProduction()
         model.push(gas_prod_model);
 
 
+
+
+
         if (system.getRestructuredMatrix() == 0)
             sciantix_variable[system.getGasName() + " produced"].setFinalValue(
                 solver.Integrator(
