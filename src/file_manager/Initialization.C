@@ -102,6 +102,7 @@ void Initialization(
 			reconstructed_solution = 0.0;
 			for (n = 0; n < n_modes; ++n)
 			{
+				if (iteration == 0) Sciantix_diffusion_modes[k * n_modes + n] = 0;
 				np1 = n + 1;
 				const double n_coeff = pow(-1.0, np1) / np1;
 				Sciantix_diffusion_modes[k * n_modes + n] += projection_coeff * n_coeff * projection_remainder;
