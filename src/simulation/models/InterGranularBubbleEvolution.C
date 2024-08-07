@@ -21,7 +21,7 @@
 void Simulation::InterGranularBubbleBehaviour()
 {
 	Model inter_gran_bub_behav_model;
-	Matrix uo2(matrices["UO2"]);
+	Matrix fuel(matrices[0]);
 
 	inter_gran_bub_behav_model.setName("Intergranular bubble evolution");
 	std::string reference;
@@ -68,16 +68,16 @@ void Simulation::InterGranularBubbleBehaviour()
 					system.getGas().getVanDerWaalsVolume();
 			}
 		}
-		vol += sciantix_variable["Intergranular vacancies per bubble"].getInitialValue() * uo2.getSchottkyVolume();
+		vol += sciantix_variable["Intergranular vacancies per bubble"].getInitialValue() * fuel.getSchottkyVolume();
 		sciantix_variable["Intergranular bubble volume"].setInitialValue(vol);
 
 		// initial radius
 		sciantix_variable["Intergranular bubble radius"].setInitialValue(
-			0.620350491 * pow(sciantix_variable["Intergranular bubble volume"].getInitialValue() / (uo2.getLenticularShapeFactor()), 1. / 3.));
+			0.620350491 * pow(sciantix_variable["Intergranular bubble volume"].getInitialValue() / (fuel.getLenticularShapeFactor()), 1. / 3.));
 
 		// initial area
 		sciantix_variable["Intergranular bubble area"].setInitialValue(
-			M_PI * pow(sciantix_variable["Intergranular bubble radius"].getInitialValue() * sin(uo2.getSemidihedralAngle()), 2));
+			M_PI * pow(sciantix_variable["Intergranular bubble radius"].getInitialValue() * sin(fuel.getSemidihedralAngle()), 2));
 
 		// initial fractional coverage  
 		sciantix_variable["Intergranular fractional coverage"].setInitialValue(
@@ -99,15 +99,15 @@ void Simulation::InterGranularBubbleBehaviour()
 			EE * sciantix_variable["Intergranular fractional coverage"].getInitialValue();
 
 		double volume_flow_rate
-			= 2.0 * M_PI * uo2.getGrainBoundaryThickness() * uo2.getGrainBoundaryVacancyDiffusivity() * sink_strength;
+			= 2.0 * M_PI * fuel.getGrainBoundaryThickness() * fuel.getGrainBoundaryVacancyDiffusivity() * sink_strength;
 
 		// Initial value of the growth rate = 2 pi t D n / S V
-		const double growth_rate = volume_flow_rate * sciantix_variable["Intergranular atoms per bubble"].getFinalValue() / uo2.getSchottkyVolume();
+		const double growth_rate = volume_flow_rate * sciantix_variable["Intergranular atoms per bubble"].getFinalValue() / fuel.getSchottkyVolume();
 
 		double equilibrium_pressure(0), equilibrium_term(0);
 		if (sciantix_variable["Intergranular bubble radius"].getInitialValue())
 		{
-			equilibrium_pressure = 2.0 * uo2.getSurfaceTension() / sciantix_variable["Intergranular bubble radius"].getInitialValue() -
+			equilibrium_pressure = 2.0 * fuel.getSurfaceTension() / sciantix_variable["Intergranular bubble radius"].getInitialValue() -
 				history_variable["Hydrostatic stress"].getFinalValue() * 1e6;
 
 			equilibrium_term = -volume_flow_rate * equilibrium_pressure /
@@ -156,16 +156,16 @@ void Simulation::InterGranularBubbleBehaviour()
                     system.getGas().getVanDerWaalsVolume();
         }
     }
-    vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * uo2.getSchottkyVolume();
+    vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * fuel.getSchottkyVolume();
     sciantix_variable["Intergranular bubble volume"].setFinalValue(vol);
 
     // Grain-boundary bubble radius
     sciantix_variable["Intergranular bubble radius"].setFinalValue(
-        0.620350491 * pow(sciantix_variable["Intergranular bubble volume"].getFinalValue() / (uo2.getLenticularShapeFactor()), 1. / 3.));
+        0.620350491 * pow(sciantix_variable["Intergranular bubble volume"].getFinalValue() / (fuel.getLenticularShapeFactor()), 1. / 3.));
 
     // Grain-boundary bubble area
     sciantix_variable["Intergranular bubble area"].setFinalValue(
-        M_PI * pow(sciantix_variable["Intergranular bubble radius"].getFinalValue() * sin(uo2.getSemidihedralAngle()), 2));
+        M_PI * pow(sciantix_variable["Intergranular bubble radius"].getFinalValue() * sin(fuel.getSemidihedralAngle()), 2));
 
     // Grain-boundary bubble coalescence
     double dbubble_area = sciantix_variable["Intergranular bubble area"].getIncrement();
@@ -200,14 +200,14 @@ void Simulation::InterGranularBubbleBehaviour()
             vol += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue() *
                     system.getGas().getVanDerWaalsVolume();
     }
-    vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * uo2.getSchottkyVolume();
+    vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * fuel.getSchottkyVolume();
     sciantix_variable["Intergranular bubble volume"].setFinalValue(vol);
 
     sciantix_variable["Intergranular bubble radius"].setFinalValue(
-        0.620350491 * pow(sciantix_variable["Intergranular bubble volume"].getFinalValue() / (uo2.getLenticularShapeFactor()), 1. / 3.));
+        0.620350491 * pow(sciantix_variable["Intergranular bubble volume"].getFinalValue() / (fuel.getLenticularShapeFactor()), 1. / 3.));
 
     sciantix_variable["Intergranular bubble area"].setFinalValue(
-        M_PI * pow(sciantix_variable["Intergranular bubble radius"].getFinalValue() * sin(uo2.getSemidihedralAngle()), 2));
+        M_PI * pow(sciantix_variable["Intergranular bubble radius"].getFinalValue() * sin(fuel.getSemidihedralAngle()), 2));
 
     // Fractional coverage
     sciantix_variable["Intergranular fractional coverage"].setFinalValue(
