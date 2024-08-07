@@ -34,7 +34,7 @@ void Simulation::setMatrix()
 		case 1: 
 		{
 			matrices.push(UO2(matrices, sciantix_variable, history_variable, input_variable));
-			matrices.push(UO2HBS(matrices, sciantix_variable, history_variable, input_variable));
+			// matrices.push(UO2HBS(matrices, sciantix_variable, history_variable, input_variable));
 
 			break;
 		}

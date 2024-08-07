@@ -45,15 +45,6 @@ public:
 		this->to_output = output;
 	}
 
-	// SciantixVariable(SciantixVariable &var)
-	// {
-	// 	this->name = var.name;
-	// 	this->final_value = var.final_value;
-	// 	this->initial_value = var.initial_value;
-	// 	this->uom = var.uom;
-	// 	this->to_output = var.to_output;
-	// }
-
 	/**
 	 * @brief Rescales the initial value by a specified factor.
 	 * @param factor The multiplier to apply to the initial value.

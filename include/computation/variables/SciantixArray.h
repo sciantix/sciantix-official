@@ -25,6 +25,7 @@
 #include <string>
 #include <iostream>
 
+#include <type_traits> 
 #include "SciantixVariable.h"
 
 
@@ -57,7 +58,7 @@ public:
         {
             map[element.getName()] = array.size();
             array.push_back(element);
-        }    
+        }
     }
 
     void clear()

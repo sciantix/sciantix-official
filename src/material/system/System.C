@@ -472,6 +472,7 @@ void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> 
         /// irradiation_resolution_rate
         double irradiation_resolution_rate = 2.0 * M_PI * matrices["UO2"].getFFrange() * pow(matrices["UO2"].getFFinfluenceRadius() + sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2) * history_variable["Fission rate"].getFinalValue();
 
+
         /// compressibility_factor
         double helium_hard_sphere_diameter = 2.973e-10 * (0.8414 - 0.05 * log(history_variable["Temperature"].getFinalValue() / 10.985)); // (m)
         double helium_volume_in_bubble = matrices["UO2"].getOIS();                                                                         // 7.8e-30, approximation of saturated nanobubbles
@@ -492,6 +493,7 @@ void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> 
 
         resolution_rate = irradiation_resolution_rate + thermal_resolution_rate;
         resolution_rate *= scaling_factors["Resolution rate"].getValue();
+
 
         break;
     }

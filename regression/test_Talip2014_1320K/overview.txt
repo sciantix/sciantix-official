@@ -23,36 +23,11 @@ Matrix	UO2
 	iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.
 	
 
-System	Xe in UO2	Production rate = cumulative yield * fission rate density * (1 - alpha).
-	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
-	iResolutionRate: Cognini et al. NET 53 (2021) 562-571.
-	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
-	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
-	
-System	Kr in UO2	Production rate = cumulative yield * fission rate density * (1 - alpha).
-	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
-	iResolutionRate: Cognini et al. NET 53 (2021) 562-571.
-	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
-	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
-	
-System	He in UO2	(no or very limited lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.
-	iResolutionRate: Cognini et al. NET 53 (2021) 562-571.
-	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
-	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
-	No production rate.
-	
-System	Xe133 in UO2	Production rate = cumulative yield * fission rate density * (1 - alpha).
-	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
-	iResolutionRate: Cognini et al. NET 53 (2021) 562-571.
-	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
-	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
-	
-System	Kr85m in UO2	Production rate = cumulative yield * fission rate density * (1 - alpha).
-	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
-	iResolutionRate: Cognini et al. NET 53 (2021) 562-571.
-	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
-	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
-	
+System	Xe in UO2	
+System	Kr in UO2	
+System	He in UO2	
+System	Xe133 in UO2	
+System	Kr85m in UO2	
 
 Input setting	iGrainGrowth = 2
 Input setting	iFGDiffusionCoefficient = 1

@@ -60,6 +60,8 @@ void Simulation::GrainBoundarySweeping()
 
 
 
+
+
     // dC / df = - C
 
     if (!input_variable["iGrainBoundarySweeping"].getValue())
@@ -70,7 +72,7 @@ void Simulation::GrainBoundarySweeping()
     {
     case 1:
     {
-        for (int i = 0; i < modes_initial_conditions.size(); ++i)
+        for (int i = 0; i < n_modes; ++i)
         {
             modes_initial_conditions[6 * 40 + i] =
                 solver.Decay(
@@ -85,7 +87,7 @@ void Simulation::GrainBoundarySweeping()
 
     case 2:
     {
-        for (int i = 0; i < modes_initial_conditions.size(); ++i)
+        for (int i = 0; i < n_modes; ++i)
         {
             modes_initial_conditions[7 * 40 + i] =
                 solver.Decay(

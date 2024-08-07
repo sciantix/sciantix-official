@@ -121,6 +121,7 @@ System He_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, Scianti
     result.setName("He in UO2");
 	result.setGas(gas["He"]);
 	result.setMatrix(matrices["UO2"]);
+	result.setHenryConstant(4.1e+18 * exp(-7543.5 / history_variable["Temperature"].getFinalValue())); /// The Henry's constant for helium in UO<sub>2</sub>-single crystal samples is set from best estimate correlation after @ref *L. Cognini et al. Nuclear Engineering and Design 340 (2018) 240–244*. This correlation is valid in the temperature range 1073-1773 K.
 	result.setRestructuredMatrix(0);
 	result.setYield(0.0022); // from ternary fissions
 	result.setRadiusInLattice(4.73e-11);
@@ -129,7 +130,6 @@ System He_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, Scianti
 	result.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
 	result.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
 	result.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
-	result.setHenryConstant(4.1e+18 * exp(-7543.5 / history_variable["Temperature"].getFinalValue())); /// The Henry's constant for helium in UO<sub>2</sub>-single crystal samples is set from best estimate correlation after @ref *L. Cognini et al. Nuclear Engineering and Design 340 (2018) 240–244*. This correlation is valid in the temperature range 1073-1773 K.
 	result.setProductionRate(int(input_variable["iHeliumProductionRate"].getValue()), history_variable, input_variable, sciantix_variable, scaling_factors);
 	result.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
 

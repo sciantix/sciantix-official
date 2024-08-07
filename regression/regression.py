@@ -36,7 +36,7 @@ def remove_output(file):
 def main():
 
     # Copy the file 'sciantix.x' from the parent directory's 'bin' folder to the current directory
-    shutil.copy("../bin/sciantix.x", os.getcwd())
+    shutil.copy("../build/sciantix.x", os.getcwd())
 
     # Stock the directory path of the current file
     wpath = os.path.dirname(os.path.realpath(__file__))

@@ -36,6 +36,11 @@ void Simulation::GasDiffusion()
 			break;
 	}
  
+
+
+
+
+
     for (auto &system : sciantix_system)
     {
         switch (int(input_variable["iDiffusionSolver"].getValue()))
@@ -79,6 +84,7 @@ void Simulation::GasDiffusion()
             {
                 initial_value_solution = sciantix_variable[system.getGasName() + " in intragranular solution"].getFinalValue();
                 initial_value_bubbles = sciantix_variable[system.getGasName() + " in intragranular bubbles"].getFinalValue();
+                
 
                 solver.SpectralDiffusion2equations(
                     initial_value_solution,
@@ -87,6 +93,9 @@ void Simulation::GasDiffusion()
                     getDiffusionModesBubbles(system.getGasName()),
                     model["Gas diffusion - " + system.getName()].getParameter(),
                     physics_variable["Time step"].getFinalValue());
+
+
+
                 sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(initial_value_solution);
                 sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(initial_value_bubbles);
                 sciantix_variable[system.getGasName() + " in grain"].setFinalValue(initial_value_solution + initial_value_bubbles);
