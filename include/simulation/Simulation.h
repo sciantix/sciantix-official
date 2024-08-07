@@ -184,6 +184,8 @@ public:
 	 */
 	void StoichiometryDeviation();
 
+	void EnvironmentComposition();
+
 	/**
 	 * @brief Conducts detailed thermochemical calculations for UO2 under specific conditions.
 	 */
