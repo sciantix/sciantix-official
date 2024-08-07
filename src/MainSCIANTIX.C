@@ -60,6 +60,7 @@ int main(int argc, char **argv)
 {
 	clock_t timer, timer_time_step;
 
+	// Main variables
 	int Sciantix_options[40];
 	double Sciantix_history[20];
 	double Sciantix_variables[300];
@@ -89,11 +90,14 @@ int main(int argc, char **argv)
 	std::vector<double> Hydrostaticstress_input(1000, 0.0);
 	std::vector<double> Steampressure_input(1000, 0.0);
 
-    if (argc < 2) {
+    if (argc < 2)
+	{
         std::cerr << "Warning: No path specified, using current directory." << std::endl;
         std::cout << "Try to use ./sciantix.x ../regression/your-test-file-path/ in the working directory" << std::endl;
         TestPath = "./";
-    } else {
+    }
+	else
+	{
         TestPath = argv[1];
         if (TestPath.back() != '/') {
             TestPath += '/';
