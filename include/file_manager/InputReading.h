@@ -10,8 +10,8 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: D. Pizzocri, T. Barani                                                 //
-//                                                                                  //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Contributors: F. Bastien                                                        //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef INPUT_READING_H
