@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "StoichiometryDeviation.h"
+#include "Simulation.h"
 
 void Simulation::StoichiometryDeviation()
 {
@@ -230,6 +231,7 @@ void Simulation::StoichiometryDeviation()
     double gamma = sqrt(exp(-32700.0 / history_variable["Temperature"].getFinalValue() + 9.92) * 1.013e5);
     double rad_c = sqrt(0.0004);
     double beta;
+      std::cout << "Gap oxy : " << sciantix_variable["Gap oxygen partial pressure"].getFinalValue() << std::endl;
 
     if (sciantix_variable["Gap oxygen partial pressure"].getFinalValue() > 0.0)
       beta = rad_c * gamma / sqrt(sciantix_variable["Gap oxygen partial pressure"].getFinalValue() * 1.013e5);
@@ -310,41 +312,49 @@ void Simulation::StoichiometryDeviation()
 
 
 
-    if (!input_variable["iStoichiometryDeviation"].getValue())
-        return;
-    if (history_variable["Temperature"].getFinalValue() < 1000.0)
-    {
-        sciantix_variable["Stoichiometry deviation"].setConstant();
-        sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(0.0);
-    }
+  if (!input_variable.isElementPresent("iStoichiometryDeviation"))
+      return;
+  if (history_variable["Temperature"].getFinalValue() < 1000.0)
+  {
+      sciantix_variable["Stoichiometry deviation"].setConstant();
+      sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(0.0);
+  }
 
-    else if (input_variable["iStoichiometryDeviation"].getValue() < 5)
-    {
-        sciantix_variable["Stoichiometry deviation"].setFinalValue(
-            solver.Decay(
-                sciantix_variable["Stoichiometry deviation"].getInitialValue(),
-                model["Stoichiometry deviation"].getParameter().at(0),
-                model["Stoichiometry deviation"].getParameter().at(1),
-                physics_variable["Time step"].getFinalValue()));
-    }
+  else if (input_variable["iStoichiometryDeviation"].getValue() < 5)
+  {
+      std::cout << sciantix_variable["Stoichiometry deviation"].getInitialValue() << ", " <<
+              model["Stoichiometry deviation"].getParameter().at(0) << ", " <<
+              model["Stoichiometry deviation"].getParameter().at(1) << ", " <<
+              physics_variable["Time step"].getFinalValue() << std::endl;
 
-    else if (input_variable["iStoichiometryDeviation"].getValue() > 4)
-    {
-        sciantix_variable["Stoichiometry deviation"].setFinalValue(
-            solver.NewtonLangmuirBasedModel(
-                sciantix_variable["Stoichiometry deviation"].getInitialValue(),
-                model["Stoichiometry deviation"].getParameter(),
-                physics_variable["Time step"].getFinalValue()));
-    }
+      sciantix_variable["Stoichiometry deviation"].setFinalValue(
+          solver.Decay(
+              sciantix_variable["Stoichiometry deviation"].getInitialValue(),
+              model["Stoichiometry deviation"].getParameter().at(0),
+              model["Stoichiometry deviation"].getParameter().at(1),
+              physics_variable["Time step"].getFinalValue()));
+  }
+
+  else if (input_variable["iStoichiometryDeviation"].getValue() > 4)
+  {
+    std::cout << "Params : " << sciantix_variable["Stoichiometry deviation"].getInitialValue() << ", " <<
+              physics_variable["Time step"].getFinalValue() << std::endl;
+
+      sciantix_variable["Stoichiometry deviation"].setFinalValue(
+          solver.NewtonLangmuirBasedModel(
+              sciantix_variable["Stoichiometry deviation"].getInitialValue(),
+              model["Stoichiometry deviation"].getParameter(),
+              physics_variable["Time step"].getFinalValue()));
+  }
 
 
-    sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
-        BlackburnThermochemicalModel(
-          sciantix_variable["Stoichiometry deviation"].getFinalValue(),
-          history_variable["Temperature"].getFinalValue(),
-          sciantix_variable
-        )
-    );
+  sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
+      BlackburnThermochemicalModel(
+        sciantix_variable["Stoichiometry deviation"].getFinalValue(),
+        history_variable["Temperature"].getFinalValue(),
+        sciantix_variable
+      )
+  );
 }
 
 double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature, SciantixArray<SciantixVariable> &sciantix_variable)

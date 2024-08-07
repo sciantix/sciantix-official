@@ -438,6 +438,7 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
     double K = parameter.at(0);
     double beta = parameter.at(1);
     double alpha = parameter.at(2);
+    std::cout << "Newton" << K << ", " << beta << ", " << alpha << std::endl;
     double x0 = initial_value;
     double x00 = initial_value;
 

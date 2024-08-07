@@ -40,6 +40,8 @@ void Simulation::execute()
 
 	EffectiveBurnup();
 
+	EnvironmentComposition();
+
 	UO2Thermochemistry();
 
 	StoichiometryDeviation(); 
