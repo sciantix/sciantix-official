@@ -10,7 +10,7 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: D. Pizzocri, T. Barani.                                                //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -49,16 +49,12 @@
 
 using namespace std;
 
-
-
 /**
  * \brief Logs the execution time of the simulation.
  * @param timer The total execution time measured in seconds.
  * @param time_step_number The total number of time steps executed during the simulation.
  */
 void logExecutionTime(double timer, int time_step_number, std::ofstream &Execution_file);
-
-
 
 int main(int argc, char **argv)
 {
@@ -93,10 +89,9 @@ int main(int argc, char **argv)
 	std::vector<double> Hydrostaticstress_input(1000, 0.0);
 	std::vector<double> Steampressure_input(1000, 0.0);
 
-
     if (argc < 2) {
         std::cerr << "Warning: No path specified, using current directory." << std::endl;
-        std::cout << "Try to use ./sciantix.x ../regression/your-test-file-path/ in the bin directory" << std::endl;
+        std::cout << "Try to use ./sciantix.x ../regression/your-test-file-path/ in the working directory" << std::endl;
         TestPath = "./";
     } else {
         TestPath = argv[1];
@@ -104,7 +99,6 @@ int main(int argc, char **argv)
             TestPath += '/';
         }
     }
-
 
 	InputReading(
 		Sciantix_options, 
@@ -138,7 +132,6 @@ int main(int argc, char **argv)
 
 	timer = clock();
 
-
     while (Time_h <= Time_end_h)
     {
         Sciantix_history[0] = Sciantix_history[1];
@@ -154,9 +147,7 @@ int main(int argc, char **argv)
 		Sciantix_history[9] = Sciantix_history[10];
 		Sciantix_history[10] = InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
 
-
         Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
-
 
         dTime_h = TimeStepCalculation(
 			Input_history_points,
@@ -165,8 +156,6 @@ int main(int argc, char **argv)
 			Number_of_time_steps_per_interval
 		);
 		Sciantix_history[6] = dTime_h * 3600;
-
-		// break;
 
 		if (Time_h < Time_end_h)
 		{
@@ -180,14 +169,11 @@ int main(int argc, char **argv)
 
     timer = clock() - timer;
 
-
 	logExecutionTime((double)timer / CLOCKS_PER_SEC, Time_step_number, Execution_file);
 	Execution_file.close();
 
-
 	return 0;
 }
-
 
 void logExecutionTime(double timer, int time_step_number, std::ofstream &Execution_file)
 {

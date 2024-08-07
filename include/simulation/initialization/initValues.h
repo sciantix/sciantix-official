@@ -1,10 +1,24 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
+//      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
+//     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
+//      \   \    |  |     |  |   /  /_\  \   |  . `  |     |  |     |  |   >   <    //
+//  .----)   |   |  `----.|  |  /  _____  \  |  |\   |     |  |     |  |  /  .  \   //
+//  |_______/     \______||__| /__/     \__\ |__| \__|     |__|     |__| /__/ \__\  //
+//                                                                                  //
+//  Originally developed by D. Pizzocri & T. Barani                                 //
+//                                                                                  //
+//  Version: 2.0                                                                    //
+//  Year: 2022                                                                      //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Contributors: F. Bastien                                                        //
+//////////////////////////////////////////////////////////////////////////////////////
+
 #ifndef INIT_VALUES_H
 #define INIT_VALUES_H
 
 #include <vector>
 #include "SciantixVariable.h"
-
-
 
 std::vector<std::string> getInputVariableNames()
 {
@@ -19,8 +33,6 @@ std::vector<std::string> getInputVariableNames()
 
     return names;
 }
-
-
 
 std::vector<SciantixVariable> initHistoryVariableValues(
     double Sciantix_history[],

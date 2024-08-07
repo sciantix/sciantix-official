@@ -18,6 +18,6 @@
 #define CONSTANT_NUMBERS_H
 
 const double boltzmann_constant = 1.380651e-23; // J/K
-const double avogadro_number = 6.02214076e23; // at/mol
+const double avogadro_number = 6.02214076e23;   // at/mol
 
 #endif

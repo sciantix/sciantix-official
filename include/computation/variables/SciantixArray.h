@@ -10,10 +10,9 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: F. Bastien                                                             //
-//                                                                                  //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Contributors: F. Bastien                                                        //
 //////////////////////////////////////////////////////////////////////////////////////
-
 
 #ifndef __VARIABLE_ARRAY_H__
 #define __VARIABLE_ARRAY_H__

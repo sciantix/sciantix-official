@@ -1,3 +1,19 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
+//      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
+//     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
+//      \   \    |  |     |  |   /  /_\  \   |  . `  |     |  |     |  |   >   <    //
+//  .----)   |   |  `----.|  |  /  _____  \  |  |\   |     |  |     |  |  /  .  \   //
+//  |_______/     \______||__| /__/     \__\ |__| \__|     |__|     |__| /__/ \__\  //
+//                                                                                  //
+//  Originally developed by D. Pizzocri & T. Barani                                 //
+//                                                                                  //
+//  Version: 2.0                                                                    //
+//  Year: 2022                                                                      //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//                                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////
+
 #include "Solver.h"
 
 double Solver::Integrator(double initial_value, double parameter, double increment)
@@ -19,14 +35,7 @@ double Solver::Decay(double initial_condition, double decay_rate, double source_
 
 
 double Solver::BinaryInteraction(double initial_condition, double interaction_coefficient, double increment)
-/// Solver for the ODE [y' = -k y**2]
 {
-    /*
-    if(increment == 0.0)
-        return initial_condition;
-    else
-        return initial_condition = 0.25 * (sqrt(1 + 8 * initial_condition * increment) - 1) / increment;
-    */
     return initial_condition / (1.0 + interaction_coefficient * initial_condition * increment);
 }
 

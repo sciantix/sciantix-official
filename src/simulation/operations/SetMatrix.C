@@ -11,7 +11,7 @@
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
-//                                                                                  //
+//  Contributors: F. Bastien                                                        //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "SetMatrix.h"
@@ -38,14 +38,6 @@ void Simulation::setMatrix()
 
 			break;
 		}
-		
-
-		case 2: 
-		{
-			matrices.push(UN(matrices, sciantix_variable, history_variable, input_variable));
-
-			break;
-		}
 
 		default:
 			ErrorMessages::Switch(__FILE__, "iFuelMatrix", int(input_variable["iFuelMatrix"].getValue()));
@@ -56,83 +48,55 @@ void Simulation::setMatrix()
 Matrix UO2(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> sciantix_variable, 
 	SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> input_variable)
 {
-	Matrix mat;
+	Matrix matrix;
 
-	mat.setName("UO2");
-	mat.setRef("\n\t");
-	mat.setTheoreticalDensity(10960.0); // (kg/m3)
-	mat.setLatticeParameter(5.47e-10);
-	mat.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);
-	mat.setSurfaceTension(0.7); // (N/m)
-	mat.setFFinfluenceRadius(1.0e-9); // (m)
-	mat.setFFrange(6.0e-6); // (m)
-	mat.setSchottkyVolume(4.09e-29); // (m3)
-	mat.setOIS(7.8e-30); // (m3)
-	mat.setSemidihedralAngle(0.872664626); // (rad)
-	mat.setGrainBoundaryThickness(5.0e-10); // (m)
-	mat.setLenticularShapeFactor(0.168610764);
-	mat.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue()); // (m)
-	mat.setHealingTemperatureThreshold(1273.15); // K
-	mat.setGrainBoundaryVacancyDiffusivity(int(input_variable["iGrainBoundaryVacancyDiffusivity"].getValue()), history_variable); // (m2/s)
-	mat.setPoreNucleationRate(sciantix_variable);
-	mat.setPoreResolutionRate(sciantix_variable, history_variable);
-	mat.setPoreTrappingRate(matrices, sciantix_variable);
+	matrix.setName("UO2");
+	matrix.setRef("\n\t");
+	matrix.setTheoreticalDensity(10960.0); // (kg/m3)
+	matrix.setLatticeParameter(5.47e-10);
+	matrix.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);
+	matrix.setSurfaceTension(0.7); // (N/m)
+	matrix.setFFinfluenceRadius(1.0e-9); // (m)
+	matrix.setFFrange(6.0e-6); // (m)
+	matrix.setSchottkyVolume(4.09e-29); // (m3)
+	matrix.setOIS(7.8e-30); // (m3)
+	matrix.setSemidihedralAngle(0.872664626); // (rad)
+	matrix.setGrainBoundaryThickness(5.0e-10); // (m)
+	matrix.setLenticularShapeFactor(0.168610764);
+	matrix.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue()); // (m)
+	matrix.setHealingTemperatureThreshold(1273.15); // K
+	matrix.setGrainBoundaryVacancyDiffusivity(int(input_variable["iGrainBoundaryVacancyDiffusivity"].getValue()), history_variable); // (m2/s)
+	matrix.setPoreNucleationRate(sciantix_variable);
+	matrix.setPoreResolutionRate(sciantix_variable, history_variable);
+	matrix.setPoreTrappingRate(matrices, sciantix_variable);
 
-    return mat;
-}
-
-Matrix UN(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> sciantix_variable, 
-	SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> input_variable)
-{
-	Matrix mat;
-
-	mat.setName("UN");
-	mat.setRef("\n\t");
-	mat.setTheoreticalDensity(10960.0); // (kg/m3)
-	mat.setLatticeParameter(5.47e-10);
-	mat.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);
-	mat.setSurfaceTension(0.7); // (N/m)
-	mat.setFFinfluenceRadius(1.0e-9); // (m)
-	mat.setFFrange(6.0e-6); // (m)
-	mat.setSchottkyVolume(4.09e-29); // (m3)
-	mat.setOIS(7.8e-30); // (m3)
-	mat.setSemidihedralAngle(0.872664626); // (rad)
-	mat.setGrainBoundaryThickness(5.0e-10); // (m)
-	mat.setLenticularShapeFactor(0.168610764);
-	mat.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue()); // (m)
-	mat.setHealingTemperatureThreshold(1273.15); // K
-	mat.setGrainBoundaryVacancyDiffusivity(int(input_variable["iGrainBoundaryVacancyDiffusivity"].getValue()), history_variable); // (m2/s)
-	mat.setPoreNucleationRate(sciantix_variable);
-	mat.setPoreResolutionRate(sciantix_variable, history_variable);
-	mat.setPoreTrappingRate(matrices, sciantix_variable);
-
-    return mat;
+    return matrix;
 }
 
 Matrix UO2HBS(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> sciantix_variable, 
 	SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> input_variable)
 {
-	Matrix mat;
+	Matrix matrix;
 	
-	mat.setName("UO2HBS");
-	mat.setRef("\n\t");
-	mat.setTheoreticalDensity(10960.0); // (kg/m3)
-	mat.setLatticeParameter(5.47e-10);
-	mat.setGrainBoundaryMobility(0, history_variable);
-	mat.setSurfaceTension(0.7); // (N/m)
-	mat.setFFinfluenceRadius(1.0e-9); // (m)
-	mat.setFFrange(6.0e-6); // (m)
-	mat.setSchottkyVolume(4.09e-29);
-	mat.setOIS(7.8e-30);
-	mat.setSemidihedralAngle(0.0);
-	mat.setGrainBoundaryThickness(0.0);
-	mat.setLenticularShapeFactor(0.168610764);
-	mat.setGrainRadius(150e-9); // (m)
-	mat.setHealingTemperatureThreshold(1273.15); // K
-	mat.setGrainBoundaryVacancyDiffusivity(5, history_variable); // (m2/s)
-	mat.setPoreNucleationRate(sciantix_variable);
-	mat.setPoreResolutionRate(sciantix_variable, history_variable);
-	mat.setPoreTrappingRate(matrices, sciantix_variable);
+	matrix.setName("UO2HBS");
+	matrix.setRef("\n\t");
+	matrix.setTheoreticalDensity(10960.0); // (kg/m3)
+	matrix.setLatticeParameter(5.47e-10);
+	matrix.setGrainBoundaryMobility(0, history_variable);
+	matrix.setSurfaceTension(0.7); // (N/m)
+	matrix.setFFinfluenceRadius(1.0e-9); // (m)
+	matrix.setFFrange(6.0e-6); // (m)
+	matrix.setSchottkyVolume(4.09e-29);
+	matrix.setOIS(7.8e-30);
+	matrix.setSemidihedralAngle(0.0);
+	matrix.setGrainBoundaryThickness(0.0);
+	matrix.setLenticularShapeFactor(0.168610764);
+	matrix.setGrainRadius(150e-9); // (m)
+	matrix.setHealingTemperatureThreshold(1273.15); // K
+	matrix.setGrainBoundaryVacancyDiffusivity(5, history_variable); // (m2/s)
+	matrix.setPoreNucleationRate(sciantix_variable);
+	matrix.setPoreResolutionRate(sciantix_variable, history_variable);
+	matrix.setPoreTrappingRate(matrices, sciantix_variable);
 
-	return mat;
+	return matrix;
 }

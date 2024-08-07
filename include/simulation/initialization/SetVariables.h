@@ -23,7 +23,6 @@
 #include "SciantixArray.h"
 #include "initValues.h"
 
-
 /**
  * \brief This routine initializes vectors that hold physics variables, history variables,
  * Sciantix variables, and input variables. It also sets up the diffusion modes,
