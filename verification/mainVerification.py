@@ -58,22 +58,22 @@ binary_parameters = {
     2: {"k": lambda t: -((t + 1) * np.sin(t) + t * np.cos(t))/ (np.exp(t) * (t * np.sin(t)) ** 2)},
 }
 
-# spectral_parameters = {
-#     0:{
-#         "N_modes" : 5.0 ,
-#        "D" : 0.1,
-#        "r" : 1.0,
-#        "production" : 0.0, 
-#        "loss_rate" : 0.1 * (np.pi **2 - 1),
-#     },
-#     # 1: {
-#     #     "N_modes": 5.0,
-#     #     "D": D,
-#     #     "r": 1.5,
-#     #     "production": S, # S 
-#     #     "loss_rate":  -np.pi**2*D - D + np.pi*D/(r*np.tan(np.pi*r)) + S*np.exp(-D*t)*np.tan(np.pi*t)**2/(2*np.sin(np.pi*r)) + S*np.exp(-D*t)/(2*sin(np.pi*r)) + 2*np.pi*np.sin(np.pi*t)/np.cos(np.pi*t)**3 - 2*np.pi*np.tan(np.pi*t)**3, # L
-#     # },
-# }
+spectral_parameters = {
+    0:{
+        "N_modes" : 5.0 ,
+       "D": lambda t : 1/6(1-np.exp(-t)) ,
+       "r" : 1.0,
+       "production" : 1, 
+       "loss_rate" : lambda t: (-np.exp(-t))/(1-np.exp(-t)),
+    },
+    # 1: {
+    #     "N_modes": 5.0,
+    #     "D": D,
+    #     "r": 1.5,
+    #     "production": S, # S 
+    #     "loss_rate":  -np.pi**2*D - D + np.pi*D/(r*np.tan(np.pi*r)) + S*np.exp(-D*t)*np.tan(np.pi*t)**2/(2*np.sin(np.pi*r)) + S*np.exp(-D*t)/(2*sin(np.pi*r)) + 2*np.pi*np.sin(np.pi*t)/np.cos(np.pi*t)**3 - 2*np.pi*np.tan(np.pi*t)**3, # L
+    # },
+}
 def spectral_parameters_0(r, t, S, D, Nmodes):
     parameters = [5 , 0.1 , 1.0, 0.0, 0.1 * (np.pi **2 - 1) ]
     return parameters
