@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Path to the compiled sciantixModule 
-module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'build', 'python'))
+module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'build', 'python'))
 if module_path not in sys.path:
     # Add the module to the system path
     sys.path.append(module_path)
@@ -12,17 +12,16 @@ if module_path not in sys.path:
 # Importation of the Module
 import sciantixModule
 
-
-def main(k,exact_solution , mode):
-    """This fonction do the MMS verification of the Decay Solver ( dphi/dt = -k * phi**2 )"""
+def main(F, exact_solution):
+    """This fonction do the MMS verification of the Integrator Solver ( y' = + S ) """
 
     # Parameters    
-    t0 = 1
-    t_end = 2
-    phi0 = exact_solution(t0)
+    t0 = 0
+    t_end = 1
+    phi0 = 0
 
     # all the increments 
-    increments = [0.1, 0.05, 0.025, 0.0125, 0.00625, 0.003125]
+    increments = [0.1, 0.05, 0.025, 0.0125, 0.00625 , 0.003125]
 
     # for the plot 
     solutions = []
@@ -30,12 +29,12 @@ def main(k,exact_solution , mode):
 
     # Creating an instance of the Solver
     solver = sciantixModule.Solver()
-    
+
     for h in increments:
         t = t0
         phi = phi0
         while t < t_end:
-            phi = solver.BinaryInteractionVerification(phi,  k(t), h , mode )
+            phi = solver.Integrator(phi, F(t), h)
             t += h
         
         # Verification
@@ -59,6 +58,7 @@ def main(k,exact_solution , mode):
 
     print(f"Order of Convergence: {OC}")
 
+
     plt.figure(figsize=(10, 6))
     plt.loglog(increments, errors, 'bo-')
     plt.xlabel('size of steps of time (h)')
@@ -71,7 +71,7 @@ def main(k,exact_solution , mode):
     t_values = np.arange(t0, t_end + h_min, h_min)
     phi_values = [phi0]
     for t in t_values[1:]:
-        phi_values.append(solver.BinaryInteractionVerification(phi_values[-1], k(t), h_min, mode))
+        phi_values.append(solver.Integrator(phi_values[-1], F(t - h_min), h_min))
 
     t_exact = np.linspace(t0, t_end, 100)
     phi_exact = exact_solution(t_exact)
@@ -84,6 +84,7 @@ def main(k,exact_solution , mode):
     plt.title('Numerical vs Exact Solution')
     plt.legend()
     plt.grid(True)
+
 
     # for test purposes and verification of results 
     def calculate_local_oc(h1, h2, e1, e2):

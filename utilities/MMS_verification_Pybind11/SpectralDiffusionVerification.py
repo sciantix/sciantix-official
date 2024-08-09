@@ -4,67 +4,65 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
-# Ajouter le chemin du module compilé
-module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'build', 'python'))
+# Add the path to the compiled module
+module_path = os.path.abspath(os.path.join(os.path.dirname(__file__),'..', '..', 'build', 'python'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
 import sciantixModule
 
-# Paramètres spectraux
+# Spectral parameters
 spectral_parameters = {
     0: {
         "N_modes": 5.0,
         "D": lambda t: 1/6*(1-np.exp(-t)),
-        "r_max": 1.0,  # Valeur maximale de r
-        "production": 1, 
-        "loss_rate": lambda t: (-np.exp(-t))/(1-np.exp(-t)) if t != 0 else -1e6,  # éviter -inf
+        "r_max": 1.0,  # Maximum value of r
+        "production": 1,
+        "loss_rate": lambda t: (-np.exp(-t))/(1-np.exp(-t)) if t != 0 else -1e6,  # Avoid -inf
     },
 }
 
-# Solution manufacturée
+# Manufactured solution
 def manufactured_solution_spectral_0(r, t, D):
-    return np.exp(-t) * (1 - r**2)
+    return (1 - np.exp(-t)) * (1 - r**2)
 
-# Fonction pour faire varier r en fonction du temps
+# Function to vary r as a function of time
 def r(t, t_final):
     return spectral_parameters[0]["r_max"] * (t / t_final)
 
-# Paramètres pour le solver
+# Parameters for the solver
 def param(t):
     p = spectral_parameters[0]
     D_value = p["D"](t)
-    
     loss_rate_value = p["loss_rate"](t)
-    # Eviter les valeurs non définies
+
+    # Avoid undefined values
     if np.isinf(loss_rate_value) or np.isnan(loss_rate_value):
         loss_rate_value = -1e6
     return [
         p["N_modes"],
         D_value,
-        r(t, t_final),  # Utilisation de la fonction r(t, t_final)
+        r(t, t_final),  # Use the function r(t, t_final)
         p["production"],
         loss_rate_value
     ]
 
-# Initialisation des conditions
+# Initial conditions
 initial_conditions = [0.0] * int(spectral_parameters[0]["N_modes"])
 
-# Paramètres temporels
+# Time parameters
 t_final = 1.0
-dt = 0.1
 increments = [0.1, 0.05, 0.025, 0.0125, 0.00625, 0.003125]
 
-# Initialiser le solver
+# Initialize the solver
 solver = sciantixModule.Solver()
 
 def main(solution, param):
     t0 = 0.0
     t_end = 1.0
-    
-    # Définir les valeurs initiales pour r, S, D, et Nmodes
+
     r_values = np.linspace(0, spectral_parameters[0]["r_max"], 100)
-    
+
     errors = []
     final_numerical_solution = None
 
@@ -72,13 +70,12 @@ def main(solution, param):
         t = t0
         numerical_solutions = []
 
-        while t <= t_end:  # Utiliser <= pour inclure t_end
+        while t <= t_end:  
             current_solutions = []
             for r_value in r_values:
                 current_parameters = param(t)
-                current_D = current_parameters[1] 
-                
-                
+                current_D = current_parameters[1]
+
                 initial_condition = solution(r_value, t, current_D)
                 try:
                     numerical_solution = solver.SpectralDiffusion(initial_condition, current_parameters, float(h))
@@ -87,7 +84,7 @@ def main(solution, param):
                     print(f"Error at r = {r_value}, t = {t}: {e}")
                     print(f"Parameters: {initial_condition}, {current_parameters}, {h}")
                     return
-                
+
             numerical_solutions.append(current_solutions)
             t += h
 
@@ -98,7 +95,7 @@ def main(solution, param):
         errors_per_r = np.abs(np.array(final_numerical_solution) - exact_solutions)
         max_error = np.max(errors_per_r)
         errors.append(max_error)
-        
+
         print(f"Increment: {h}, Max Error: {max_error}")
 
     order_of_convergence = np.polyfit(np.log(increments), np.log(errors), 1)[0]
@@ -137,7 +134,7 @@ def main(solution, param):
     plt.title(f'Comparison of Exact and Numerical Solutions at t = {t_end}')
     plt.legend()
     plt.grid(True)
-    
+
     def calculate_local_oc(h1, h2, e1, e2):
         return np.log(e1 / e2) / np.log(h1 / h2)
 
@@ -155,5 +152,8 @@ def main(solution, param):
     plt.grid(True)
     plt.show()
 
-if __name__ == "__main__":
+def Spectral_Diffusion_verification():
     main(manufactured_solution_spectral_0, param)
+
+if __name__ == "__main__":
+    Spectral_Diffusion_verification()

@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Path to the compiled sciantixModule 
-module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'build', 'python'))
+module_path = os.path.abspath(os.path.join(os.path.dirname(__file__),'..', '..', 'build', 'python'))
 if module_path not in sys.path:
     # Add the module to the system path
     sys.path.append(module_path)
@@ -12,18 +12,18 @@ if module_path not in sys.path:
 # Importation of the Module
 import sciantixModule
 
-
-def main( k , S,exact_solution):
-    """This fonction do the MMS verification of the Limited Growth Solver ( d phi /dt = k / phi + S ) """
+# MMS verifiaction for the solver decay ( dphi/dt = S - Lambda * phi ) 
+def main(L,S,exact_solution):
+    """This fonction do the MMS verification of the Decay Solver ( dphi/dt = S - Lambda * phi )"""
 
     # Parameters    
-    t0 = 0
-    t_end = 1
-    phi0 = 0
-    parameter = []
+    t0 = 1
+    t_end = 2
+    phi0 = exact_solution(t0)
+    
 
     # all the increments 
-    increments = [0.1, 0.05, 0.025, 0.0125, 0.00625 , 0.003125]
+    increments = [0.1, 0.05, 0.025, 0.0125, 0.00625, 0.003125]
 
     # for the plot 
     solutions = []
@@ -36,12 +36,7 @@ def main( k , S,exact_solution):
         t = t0
         phi = phi0
         while t < t_end:
-            # calculation of the parameters
-            current_k = k(t) 
-            current_S = S(t) 
-            parameter = [current_k, current_S]
-
-            phi = solver.LimitedGrowth(phi, parameter, h)
+            phi = solver.Decay(phi, L(t), S(t), h)
             t += h
         
         # Verification
@@ -49,7 +44,7 @@ def main( k , S,exact_solution):
         
         exact = exact_solution(t_end)
         error = abs(numerical_solution - exact)
-        
+
         # added to a list for plot 
         solutions.append(numerical_solution)
         errors.append(error)
@@ -65,10 +60,9 @@ def main( k , S,exact_solution):
 
     print(f"Order of Convergence: {OC}")
 
-
     plt.figure(figsize=(10, 6))
     plt.loglog(increments, errors, 'bo-')
-    plt.xlabel('size of steps of time (h)')
+    plt.xlabel('steps of time (h)')
     plt.ylabel('Erreur')
     plt.title('Log(Erreur) vs Log(h)')
     plt.grid(True)
@@ -78,10 +72,7 @@ def main( k , S,exact_solution):
     t_values = np.arange(t0, t_end + h_min, h_min)
     phi_values = [phi0]
     for t in t_values[1:]:
-        current_k = k(t)  
-        current_S = S(t)  
-        parameter = [current_k, current_S]
-        phi_values.append(solver.LimitedGrowth(phi_values[-1], parameter, h_min))
+        phi_values.append(solver.Decay(phi_values[-1], L(t), S(t), h_min)) 
 
     t_exact = np.linspace(t0, t_end, 100)
     phi_exact = exact_solution(t_exact)
@@ -94,7 +85,6 @@ def main( k , S,exact_solution):
     plt.title('Numerical vs Exact Solution')
     plt.legend()
     plt.grid(True)
-
 
     # for test purposes and verification of results 
     def calculate_local_oc(h1, h2, e1, e2):
@@ -109,11 +99,14 @@ def main( k , S,exact_solution):
     # evolution of OC between steps
     plt.figure(figsize=(10, 6))
     plt.plot(increments[:-1], local_ocs, 'ro-')
-    plt.xlabel('size of steps of time (h)')
+    plt.xlabel('steps of time (h)')
     plt.ylabel('Order of Convergence Local')
     plt.title('evolution of the Order of Convergence')
     plt.grid(True)
     plt.show()
+
+    
+
 
 if __name__ == "__main__":
     print("This file should be run from mainVerification.py")
