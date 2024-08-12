@@ -55,8 +55,6 @@ private:
 
 	static Simulation* instance;
 
-
-
 	/**
 	 * \brief Default constructor for the Simulation class
 	 */
@@ -65,11 +63,9 @@ private:
 		modes_initial_conditions.resize(n_modes * n_modes);
 	}
 
-
 public:
 
 	static Simulation* getInstance();
-
 
 	void setVariables(
 		int Sciantix_options[], 
@@ -83,7 +79,6 @@ public:
 	void setMatrix();
 	void setSystem();
 
-
 	void initialize(
 		int Sciantix_options[], 
 		double Sciantix_history[], 
@@ -95,13 +90,6 @@ public:
 	void execute();
 
 	void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_modes[]);
-
-	/**
-	 * @brief This routines computes the value of sciantix_variable associated to figures of merit
-	 * that are of interest in the output.txt file.
-	 * 
-	 */
-	void FiguresOfMerit();
 
 	void Output();
 
@@ -184,7 +172,7 @@ public:
 	 */
 	void StoichiometryDeviation();
 
-	void EnvironmentComposition();
+	void GapPartialPressure();
 
 	/**
 	 * @brief Conducts detailed thermochemical calculations for UO2 under specific conditions.

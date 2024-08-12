@@ -56,7 +56,7 @@ void Simulation::execute()
 
 	EffectiveBurnup();
 
-	EnvironmentComposition();
+	GapPartialPressure(); // atm partial pressure
 
 	UO2Thermochemistry();
 
@@ -75,6 +75,7 @@ void Simulation::execute()
 	GasDecay();
 
 	IntraGranularBubbleBehaviour();
+
 	GasDiffusion();
 
 	GrainBoundaryMicroCracking();

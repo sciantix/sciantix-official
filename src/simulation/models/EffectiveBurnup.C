@@ -18,8 +18,9 @@
 
 void Simulation::EffectiveBurnup()
 {
-    Model effective_burnup_model;
-    effective_burnup_model.setName("Effective burnup");
+    // Model declaration
+    Model model_;
+    model_.setName("Effective burnup");
 
 	std::string reference;
 	std::vector<double> parameter;
@@ -33,11 +34,11 @@ void Simulation::EffectiveBurnup()
 
 	reference += ": G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.";
 
-	effective_burnup_model.setParameter(parameter);
-	effective_burnup_model.setRef(reference);
-    model.push(effective_burnup_model);
+	model_.setParameter(parameter);
+	model_.setRef(reference);
+    model.push(model_);
 
-
+    // Model resolution
     sciantix_variable["Effective burnup"].setFinalValue(
         solver.Integrator(
             sciantix_variable["Effective burnup"].getInitialValue(),

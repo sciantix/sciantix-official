@@ -22,7 +22,7 @@
 #include <cmath>
 
 /**
- * \brief Initializes Sciantix internal variables with initial conditions and interface variables.
+ * \brief Initializes SCIANTIX internal variables with initial conditions and interface variables.
  * This function sets up the initial state for the simulation based on provided input values.
  */
 void Initialization(

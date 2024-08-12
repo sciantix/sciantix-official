@@ -10,8 +10,8 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: D. Pizzocri, T. Barani.                                                //
-//                                                                                  //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Contributors: F. Bastien                                                        //
 //////////////////////////////////////////////////////////////////////////////////////
 
 /// InputReading
@@ -25,8 +25,6 @@
 
 #include "InputReading.h"
 #include "Global.h"
-
-
 
 /**
  * \brief Read a single setting from the input file.
@@ -132,96 +130,6 @@ void InputReading(
 	
 	// This is optional so no error if not present
 	std::ifstream input_scaling_factors(TestPath + "input_scaling_factors.txt", std::ios::in);
-
-	/**
-	 * @brief
-	 * 
-	 * iGrainGrowth
-	 * 	0= no grain growth,
-	 * 	1= Ainscough et al. (1973), 
-	 * 	2= Van Uffelen et al. (2013)
-	 * 
-	 * iFGDiffusionCoefficient
-	 * 	0= constant value,
-	 * 	1= Turnbull et al. (1988)
-	 * 
-	 * iDiffusionSolver
-	 * 	1= SDA with quasi-stationary hypothesis,
-	 * 	2= SDA without quasi-stationary hypothesis
-	 * 
-	 * iIntraGranularBubbleEvolution
-	 * 	1= Pizzocri et al. (2018),
-	 * 	2= White and Tucker (1983)
-	 * 
-	 * iResolutionRate
-	 * 	0= constant value,
-	 * 	1= Turnbull (1971),
-	 * 	2= Losonen (2000)
-	 * 
-	 * iTrappingRate
-	 * 	0= constant value,
-	 * 	1= Ham (1958)
-	 * 
-	 * iNucleationRate
-	 * 	0= constant value,
-	 * 	1= Olander, Wongsawaeng (2006)
-	 * 
-	 * iOutput
-	 * 	1= print output.txt file
-	 * 
-	 * iGrainBoundaryVacancyDiffusivity
-	 * 	0= constant value,
-	 * 	1= Reynolds and Burton (1979),
-	 * 	2= Pastore et al. (2015)
-	 * 
-	 * iGrainBoundaryBehaviour
-	 * 	0= no grain boundary bubbles,
-	 * 	1= Pastore et al (2013)
-	 * 
-	 * iGrainBoundaryMicroCracking
-	 * 	0= no model considered,
-	 * 	1= Barani et al. (2017)
-	 * 
-	 * iFuelMatrix
-	 * 	0= UO2,
-	 * 	1= UO2 + HBS
-	 * 
-	 * iGrainBoundaryVenting
-	 * 	0= no model considered,
-	 * 	1= Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE
-	 * 
-	 * iRadioactiveFissionGas
-	 * 	0= no model considered,
-	 * 	1= Zullo et al. (2022)
-	 * 
-	 * iHelium
-	 * 	0= no model considered,
-	 * 	1= Cognini et al. (2021)
-	 * 
-	 * iHeDiffusivity
-	 * 	0= constant value,
-	 * 	1= Luzzi et al. (2018)
-	 * 
-	 * iGrainBoundarySweeping
-	 * 	0= no model considered,
-	 * 	1= TRANSURANUS swept volume model
-	 * 
-	 * iHighBurnupStructureFormation
-	 * 	0= no model considered,
-	 * 	1= fraction of HBS-restructured volume from Barani et al. (2020)
-	 * 
-	 * iHighBurnupStructurePorosity
-	 * 	0= no evolution of HBS porosity,
-	 * 	1= HBS porosity evolution based on Spino et al. (2006) data
-	 * 
-	 * iStoichiometryDeviation
-	 * 	0= not considered
-	 * 	1= model for fuel oxidation in steam environment
-	 * 
-	 * iBubbleDiffusivity
-	 * 	0= not considered
-	 * 	1= active
-	 */
 
 	Sciantix_options[0] = ReadOneSetting("iGrainGrowth", input_settings, input_check);
 	Sciantix_options[1] = ReadOneSetting("iFGDiffusionCoefficient", input_settings, input_check);

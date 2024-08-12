@@ -16,12 +16,12 @@
 
 #include "Simulation.h"
 
-void Simulation::EnvironmentComposition()
+void Simulation::GapPartialPressure()
 {
     if (!input_variable["iStoichiometryDeviation"].getValue()) return;
 
-    Model env_comp;
-    env_comp.setName("Environment composition");
+    Model model_;
+    model_.setName("Environment composition");
 
     // Calculate equilibrium constant using law of mass action for water vapor decomposition
     // @param equilibrium_constant Equilibrium constant for water vapor decomposition (atm)
@@ -37,5 +37,5 @@ void Simulation::EnvironmentComposition()
     sciantix_variable["Gap oxygen partial pressure"].setFinalValue(gap_oxygen_partial_pressure); // (atm)
 
     std::string reference = "Lewis et al. JNM 227 (1995) 83-109, D.R. Olander, Nucl. Technol. 74 (1986) 215.";
-    env_comp.setRef(reference);
+    model_.setRef(reference);
 }

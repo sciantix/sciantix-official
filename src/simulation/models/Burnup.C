@@ -18,8 +18,9 @@
 
 void Simulation::Burnup()
 {
-    Model burnup_model;
-    burnup_model.setName("Burnup");
+    // Model declaration
+    Model model_;
+    model_.setName("Burnup");
 
 	double fissionRate = history_variable["Fission rate"].getFinalValue();
 	double fuelDensity = sciantix_variable["Fuel density"].getFinalValue();
@@ -33,18 +34,16 @@ void Simulation::Burnup()
 
 	std::string reference = ": The local burnup is calculated from the fission rate density.";
 
-	burnup_model.setParameter(parameter);
-	burnup_model.setRef(reference);
-    model.push(burnup_model);
+	model_.setParameter(parameter);
+	model_.setRef(reference);
+    model.push(model_);
 
-
-
+    // Model resolution
     sciantix_variable["Burnup"].setFinalValue(
         solver.Integrator(
             sciantix_variable["Burnup"].getInitialValue(),
             model["Burnup"].getParameter().at(0),
             physics_variable["Time step"].getFinalValue()));
-
 
     if (history_variable["Fission rate"].getFinalValue() > 0.0)
         sciantix_variable["Irradiation time"].setFinalValue(

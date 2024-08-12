@@ -1,6 +1,6 @@
 """
 
-This is a python script to execute the regression (running the validation database) of sciantix.
+This is a python script to execute the regression tests of SCIANTIX.
 
 @author G. Zullo
 

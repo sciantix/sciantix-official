@@ -11,7 +11,7 @@
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
-//                                                                                  //
+//  Contributors: F. Bastien                                                        //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef SCIANTIX_H
@@ -20,7 +20,7 @@
 #include "Simulation.h"
 
 /**
- * \brief Executes the main Sciantix simulation program.
+ * \brief Executes the main SCIANTIX simulation program.
  * It runs the setup and execution of various simulation stages,
  * including gas behavior, matrix transformations, environmental interactions,
  * and system updates. It concludes with generating output files and updating the system's history.

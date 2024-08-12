@@ -176,21 +176,6 @@ def do_plot():
   plt.show()
   plt.close()
 
-  # Fission gases release plot
-#   fig, ax = plt.subplots()
-#   ax.scatter(igSwelling2, FGR2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='FGR SCIANTIX 2.0')
-
-#   ax.set_xscale('log')
-#   ax.set_yscale('log')
-
-#   ax.set_xlabel('Swelling (%)')
-#   ax.set_ylabel('FGR (%)')
-#   ax.legend()
-
-#   plt.show()
-#   plt.close()
-
-
 # Main function of the baker regression
 def regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
 

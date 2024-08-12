@@ -14,10 +14,6 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-/// Initialization
-/// This routine initializes Sciantix internal variables with
-/// initial conditions/interface variables
-
 #include "Initialization.h"
 
 void Initialization(
@@ -57,7 +53,7 @@ void Initialization(
 	// Intragranular similarity ratio
 	Sciantix_variables[64] = 1.0;
 
-	// projection on diffusion modes of the initial conditions
+	// Projection on diffusion modes of the initial conditions
 	double initial_condition(0.0);
 	double projection_remainder(0.0);
 	double reconstructed_solution(0.0);
@@ -115,5 +111,4 @@ void Initialization(
 	// Warnings
 	if(Sciantix_variables[38] > 0.0 && Sciantix_variables[65] == 0.0)
 		std::cout << "WARNING - FIMA calculation: Initial fuel burnup > 0 but null initial irradiation time. Check initial irradiation time." << std::endl;
-
 }
