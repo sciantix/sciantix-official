@@ -17,13 +17,11 @@
 #ifndef INPUT_READING_H
 #define INPUT_READING_H
 
-
 #include "ErrorMessages.h"
 #include <string>
 #include <sstream>
 #include <vector>
 #include <numeric>
-
 
 /**
  * \brief Handles all input processing for the simulation.
