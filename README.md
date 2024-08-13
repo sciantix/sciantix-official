@@ -64,8 +64,8 @@ Compile the code documentation by typing `doxygen` in the code directory
     - if `doxygen` is not found, install by `sudo apt install doxygen`
 
 # Theory, papers
- <a href="../../references/pdf_link/Pizzocri_et_al_2020.pdf" target="_blank">Pizzocri et al. 2020</a>,
- <a href="../../references/pdf_link/Zullo_et_al_2023.pdf" target="_blank">Zullo et al. 2023</a>.
+
+<a href="../../references/pdf_link/Zullo_et_al_2023.pdf" target="_blank">Zullo G. et al (2023). Journal of Nuclear Materials, 587, 154744.</a>.
 
 ```
 G. Zullo, D. Pizzocri, L. Luzzi,
@@ -78,6 +78,8 @@ ISSN 0022-3115,
 https://doi.org/10.1016/j.jnucmat.2023.154744.
 (https://www.sciencedirect.com/science/article/pii/S0022311523005111)
 ```
+
+<a href="../../references/pdf_link/Pizzocri_et_al_2020.pdf" target="_blank">Pizzocri D. et al (2020). Journal of Nuclear Materials, 532, 152042.</a>.
 
 ```
 D. Pizzocri, T. Barani, L. Luzzi,
