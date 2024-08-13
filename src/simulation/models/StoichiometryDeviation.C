@@ -36,7 +36,7 @@ void Simulation::StoichiometryDeviation()
     case 0:
     {
         /**
-         * \brief iStoichiometryDeviation = 0 neglects the stoichiometry deviation of the fuel.
+         * @brief iStoichiometryDeviation = 0 neglects the stoichiometry deviation of the fuel.
          *
          */
 
@@ -54,7 +54,7 @@ void Simulation::StoichiometryDeviation()
     case 1:
     {
         /**
-         * \brief
+         * @brief
          * The model for fuel oxidation and stoichimetry deviation evolution is described with a semi-empirical model.
          * @ref Carter and Lay, J. Nucl. Mater., 36:77–86, 1970.
          * The oxidation rate follows: dx/dt = alpha*(S/V)*[x_eq - x]*(Ph2o^0.5)
@@ -92,7 +92,7 @@ void Simulation::StoichiometryDeviation()
     case 2:
     {
         /**
-         * \brief
+         * @brief
          * The model for fuel oxidation and stoichimetry deviation evolution is described with a semi-empirical model.
          * @ref Carter and Lay, J. Nucl. Mater., 36:77–86, 1970.
          * The oxidation rate follows: dx/dt = alpha*(S/V)*[x_eq - x]*(Ph2o^0.5)
@@ -130,7 +130,7 @@ void Simulation::StoichiometryDeviation()
     case 3:
     {
         /**
-         * \brief
+         * @brief
          * The model for fuel oxidation and stoichimetry deviation evolution is described with a semi-empirical model.
          * @ref Carter and Lay, J. Nucl. Mater., 36:77–86, 1970.
          * The oxidation rate follows: dx/dt = alpha*(S/V)*[x_eq - x]*(Ph2o^0.5)
@@ -169,7 +169,7 @@ void Simulation::StoichiometryDeviation()
     case 4:
     {
         /**
-         * \brief
+         * @brief
          * The model for fuel oxidation and stoichimetry deviation evolution is described with a semi-empirical model.
          * @ref Carter and Lay, J. Nucl. Mater., 36:77–86, 1970.
          * The oxidation rate follows: dx/dt = alpha*(S/V)*[x_eq - x]*(Ph2o^0.5)
@@ -207,7 +207,7 @@ void Simulation::StoichiometryDeviation()
     case 5:
     {
         /**
-         * \brief
+         * @brief
          * The model for fuel oxidation and stoichimetry deviation evolution is described with a mechanistic Langmuir-based approach
          * @ref Massih, A. R. "UO2 fuel oxidation and fission gas release." Swedish Radiation Safety Authority report, Report 2018 (2018): 25.
          * The oxidation rate follows: dx/dt = theta/tau (1 - sqrt(Po2(x)/Po2))
@@ -254,7 +254,7 @@ void Simulation::StoichiometryDeviation()
     case 6:
     {
         /**
-         * \brief
+         * @brief
          * The model for fuel oxidation and stoichimetry deviation evolution is described with a mechanistic Langmuir-based approach
          * @ref Massih, A. R. "UO2 fuel oxidation and fission gas release." Swedish Radiation Safety Authority report, Report 2018 (2018): 25.
          * The oxidation rate follows: dx/dt = theta/tau (1 - sqrt(Po2(x)/Po2))

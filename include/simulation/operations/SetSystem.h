@@ -22,6 +22,13 @@
 #include "System.h"
 #include "Matrix.h"
 
+/**
+ * @brief Sets up the system properties in the simulation.
+ * 
+ * @author G. Zullo
+ * @author F. Bastien
+ * 
+ */
 
 System Xe_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
 	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors);

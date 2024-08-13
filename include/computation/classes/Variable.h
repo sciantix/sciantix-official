@@ -22,15 +22,12 @@
 #include <iostream>
 
 /**
- * \class Variable
- * \brief Class derived from Entity, inherited by PhysicsVariable and InputVariable.
- *
- * The Variable class inherits from Entity and is intended to be the base class for different types
- * of variables used in a system, encapsulating common attributes such as name and reference.
+ * @class Variable
+ * @brief The class Variable is intended to be the base class for other of variables,
+ * encapsulating common attributes.
  * 
- * \authors 
- * G. Zullo
- * F. Bastien
+ * @author G. Zullo
+ * 
  */
 class Variable
 {
@@ -39,17 +36,17 @@ protected:
 
 public:
 	/**
-	 * \brief Default constructor for the Variable class
+	 * @brief Default constructor for the Variable class
 	 */
 	Variable() { }
 	/**
-	 * \brief Destructor for the Variable class
+	 * @brief Destructor for the Variable class
 	 */
 	~Variable() { }
 
 	/**
-	 * \brief Sets the name of the entity.
-	 * \param n The new name to be set for the entity.
+	 * @brief Sets the name of the entity.
+	 * @param n The new name to be set for the entity.
 	 */
 	void setName(std::string n)
 	{
@@ -58,7 +55,7 @@ public:
 	}
 
 	/**
-	 * \brief Retrieves the name of the entity.
+	 * @brief Retrieves the name of the entity.
 	 * @return A string that is the current name of the entity.
 	 */
 	std::string getName()

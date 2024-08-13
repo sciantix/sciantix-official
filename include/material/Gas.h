@@ -20,14 +20,13 @@
 #include "Material.h"
 
 /**
- * \class Gas
- * \brief A derived class from Material, specifically for modeling fission gases like xenon, krypton, and helium.
+ * @class Gas
+ * @brief A derived class from Material, specifically for modeling fission gases like xenon, krypton, and helium.
  *
  * This class extends the Material class to include specific properties that are unique to gases used in fission processes,
  * such as atomic number, mass number, Van der Waals volume, decay rate, and a precursor factor.
  * 
- * \authors 
- * G. Zullo
+ * @author G. Zullo
  */
 class Gas : virtual public Material
 {
@@ -40,8 +39,8 @@ protected:
 
 public:
 	/**
-	 * \brief Sets the atomic number of the gas.
-	 * \param y The atomic number to be set.
+	 * @brief Sets the atomic number of the gas.
+	 * @param y The atomic number to be set.
 	 */
 	void setAtomicNumber(int y)
 	{
@@ -50,7 +49,7 @@ public:
 	}
 
 	/**
-	 * \brief Returns the atomic number of the gas.
+	 * @brief Returns the atomic number of the gas.
 	 * @return The atomic number of the gas.
 	 */
 	int getAtomicNumber()
@@ -60,8 +59,8 @@ public:
 	}
 
 	/**
-	 * \brief Sets the mass number of the gas.
-	 * \param y The mass number to be set.
+	 * @brief Sets the mass number of the gas.
+	 * @param y The mass number to be set.
 	 */
 	void setMassNumber(double y)
 	{
@@ -70,7 +69,7 @@ public:
 	}
 
 	/**
-	 * \brief Returns the mass number of the gas.
+	 * @brief Returns the mass number of the gas.
 	 * @return The mass number of the gas.
 	 */
 	double getMassNumber()
@@ -80,8 +79,8 @@ public:
 	}
 
 	/**
-	 * \brief Sets the Van der Waals volume of the gas.
-	 * \param y The Van der Waals volume to be set.
+	 * @brief Sets the Van der Waals volume of the gas.
+	 * @param y The Van der Waals volume to be set.
 	 */
 	void setVanDerWaalsVolume(double y)
 	{
@@ -90,7 +89,7 @@ public:
 	}
 
 	/**
-	 * \brief Returns the Van der Waals volume of the gas.
+	 * @brief Returns the Van der Waals volume of the gas.
 	 * @return The Van der Waals volume of the gas.
 	 */
 	double getVanDerWaalsVolume()
@@ -100,8 +99,8 @@ public:
 	}
 
 	/**
-	 * \brief Sets the decay rate of the gas.
-	 * \param l The decay rate to be set.
+	 * @brief Sets the decay rate of the gas.
+	 * @param l The decay rate to be set.
 	 */
 	void setDecayRate(double l)
 	{
@@ -110,7 +109,7 @@ public:
 	}
 
 	/**
-	 * \brief Returns the decay rate of the gas.
+	 * @brief Returns the decay rate of the gas.
 	 * @return The decay rate of the gas.
 	 */
 	double getDecayRate()
@@ -120,38 +119,38 @@ public:
 	}
 
 	/**
-	 * \brief Sets the precursor factor for nuclear reactions.
-	 * \param h The precursor factor to be set.
+	 * @brief Sets the precursor factor for nuclear reactions.
+	 * @param h The precursor factor to be set.
 	 */
 	void setPrecursorFactor(double h)
 	{
 		/**
-		 * \brief Member function to set the value of the precursor enhancement factor, from input.
+		 * @brief Member function to set the value of the precursor enhancement factor, from input.
 		 *
 		 */
 		precursor_factor = h;
 	}
 
 	/**
-	 * \brief Returns the precursor factor for nuclear reactions.
+	 * @brief Returns the precursor factor for nuclear reactions.
 	 * @return The precursor factor of the gas.
 	 */
 	double getPrecursorFactor()
 	{
 		/**
-		 * \brief Member function to get the value of the precursor enhancement factor.
+		 * @brief Member function to get the value of the precursor enhancement factor.
 		 *
 		 */
 		return precursor_factor;
 	}
 
 	/**
-	 * \brief Default constructor for the Gas class.
+	 * @brief Default constructor for the Gas class.
 	 */
 	Gas() {}
 
 	/**
-	 * \brief Destructor for the Gas class.
+	 * @brief Destructor for the Gas class.
 	 */
 	~Gas() {}
 };

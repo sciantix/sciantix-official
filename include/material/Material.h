@@ -21,60 +21,56 @@
 
 /**
  * @class Material
- * \brief Class for the materials used in SCIANTIX (e.g., fuel matrix, fission gas, etc.).
+ * @brief Class for materials used in SCIANTIX (e.g., fuel matrix, fission gas, etc.).
  * 
- * \authors 
- * G. Zullo
+ * @author G. Zullo
  */
 class Material
 {
 public:
 	/**
-	 * \brief Default constructor for the Material class.
+	 * @brief Default constructor for the Material class.
 	 */
 	Material() {}
+
 	/**
 	 * Destructor for the Material class.
 	 */
 	~Material() {}
 
 	/**
-	 * \brief Sets the name of the entity.
-	 * \param n The new name to be set for the entity.
+	 * @brief Sets the name of the material.
+	 * @param n The new name to be set for the material.
 	 */
 	void setName(std::string n)
 	{
-		/// Member function to set the name of the object
 		name = n;
 	}
 
 	/**
-	 * \brief Retrieves the name of the entity.
-	 * @return A string that is the current name of the entity.
+	 * @brief Retrieves the name of the material.
+	 * @return A string that is the current name of the material.
 	 */
 	std::string getName()
 	{
-		/// Member function to get the name of the object
 		return name;
 	}
 
 	/**
-	 * \brief Sets a reference for the entity.
-	 * \param n The reference string to be set.
+	 * @brief Sets a reference for the material.
+	 * @param n The reference string to be set.
 	 */
 	void setRef(std::string n)
 	{
-		/// Member function to set the reference field of the object
 		reference = n;
 	}
 
 	/**
-	 * \brief Retrieves the reference or identifier of the entity.
-	 * @return A string that is the current reference of the entity.
+	 * @brief Retrieves the reference or identifier of material.
+	 * @return A string that is the current reference.
 	 */
 	std::string getRef()
 	{
-		/// Member function to get the reference field of the object
 		return reference;
 	}
 

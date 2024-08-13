@@ -17,11 +17,10 @@
 #include "Simulation.h"
 
 /**
- * \brief GapPartialPressure() Calculates the oxygen partial pressure in the gap based on a thermo-chemical equilibrium model.
+ * @brief GapPartialPressure() Calculates the oxygen partial pressure in the gap based on a thermo-chemical equilibrium model.
  * 
- * \authors 
- * G. Petrosillo
- * G. Zullo
+ * @author G. Petrosillo
+ * @author G. Zullo
  *
  * \details
  * The equilibrium constant is calculated using the law of mass action for water vapor decomposition.

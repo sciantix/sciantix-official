@@ -30,7 +30,7 @@ void Simulation::HighBurnupStructurePorosity()
 	{
 	case 0:
 	{
-		/// \brief
+		/// @brief
 		/// No HBS case - no evolution of HBS porosity
 
 		reference += "not considered";
@@ -43,7 +43,7 @@ void Simulation::HighBurnupStructurePorosity()
 	case 1:
 	{
 
-		/// \brief
+		/// @brief
 		/// Correlation for the HBS porosity evolution based on Spino et al. 2006 data
 
 		double rate_coefficient = 1.3e-3;

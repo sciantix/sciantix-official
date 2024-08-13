@@ -14,10 +14,74 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef CONSTANT_NUMBERS_H
-#define CONSTANT_NUMBERS_H
+#include "SciantixVariable.h"
 
-const double boltzmann_constant = 1.380651e-23; // J/K
-const double avogadro_number = 6.02214076e23;   // at/mol
+void SciantixVariable::rescaleInitialValue(const double factor)
+{
+    initial_value *= factor;
+}
 
-#endif
+void SciantixVariable::rescaleFinalValue(const double factor)
+{
+    final_value *= factor;
+}
+
+void SciantixVariable::addValue(const double v)
+{
+    final_value += v;
+}
+
+void SciantixVariable::setUOM(std::string s)
+{
+    uom = s;
+}
+
+std::string SciantixVariable::getUOM()
+{
+    return uom;
+}
+
+void SciantixVariable::setConstant()
+{
+    final_value = initial_value;
+}
+
+void SciantixVariable::resetValue()
+{
+    initial_value = final_value;
+}
+
+void SciantixVariable::setFinalValue(double FinalValue)
+{
+    final_value = FinalValue;
+}
+
+void SciantixVariable::setInitialValue(double InitialValue)
+{
+    initial_value = InitialValue;
+}
+
+double SciantixVariable::getFinalValue()
+{
+    return final_value;
+}
+
+double SciantixVariable::getInitialValue()
+{
+    return initial_value;
+}
+
+double SciantixVariable::getIncrement()
+{
+    return final_value - initial_value;
+}
+
+void SciantixVariable::setOutput(bool io)
+{
+    to_output = io;
+}
+
+bool SciantixVariable::getOutput()
+{
+    return to_output;
+}

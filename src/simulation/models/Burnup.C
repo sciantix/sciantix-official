@@ -17,7 +17,7 @@
 #include "Simulation.h"
 
 /**
- * \brief Burnup() calculates the local burnup from fission rate and fuel density.
+ * @brief Burnup() calculates the local burnup from fission rate and fuel density.
  *
  * \details
  * This function calculates the local burnup in MWd/kgUO2 from fission rate and fuel density.

@@ -1,5 +1,5 @@
 """
-\author (G. Zullo)
+@author (G. Zullo)
 This is a python script to write the SCIANTIX default input file "input_initial_conditions.txt".
 
 """

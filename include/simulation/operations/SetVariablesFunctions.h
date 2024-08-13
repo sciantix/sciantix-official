@@ -14,58 +14,108 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INIT_VALUES_H
-#define INIT_VALUES_H
+#ifndef SET_VARIABLES_FUNCTIONS_H
+#define SET_VARIABLES_FUNCTIONS_H
 
 #include <vector>
 #include "SciantixVariable.h"
 
+
+/**
+ * @file SetVariablesFunctions.h
+ * @brief Defines functions used in SetVariables.C.
+ * 
+ * @author F. Bastien
+ * @author G. Zullo
+ */
+
+
+/**
+ * @brief Retrieves the list of input variable names.
+ * @return A vector of strings containing the names of input variables.
+ */
 std::vector<std::string> getInputVariableNames()
 {
-    std::vector<std::string> names = {
-        "iGrainGrowth", "iFGDiffusionCoefficient", "iDiffusionSolver", "iIntraGranularBubbleEvolution", 
-        "iResolutionRate", "iTrappingRate", "iNucleationRate", "iOutput", 
-        "iGrainBoundaryVacancyDiffusivity", "iGrainBoundaryBehaviour", "iGrainBoundaryMicroCracking", 
-        "iFuelMatrix", "iGrainBoundaryVenting", "iRadioactiveFissionGas", "iHelium", 
-        "iHeDiffusivity", "iGrainBoundarySweeping", "iHighBurnupStructureFormation", 
-        "iHighBurnupStructurePorosity", "iHeliumProductionRate", "iStoichiometryDeviation", "iBubbleDiffusivity"
+    std::vector<std::string> names =
+    {
+        "iGrainGrowth",
+        "iFGDiffusionCoefficient",
+        "iDiffusionSolver",
+        "iIntraGranularBubbleEvolution", 
+        "iResolutionRate",
+        "iTrappingRate",
+        "iNucleationRate",
+        "iOutput", 
+        "iGrainBoundaryVacancyDiffusivity",
+        "iGrainBoundaryBehaviour",
+        "iGrainBoundaryMicroCracking", 
+        "iFuelMatrix",
+        "iGrainBoundaryVenting",
+        "iRadioactiveFissionGas",
+        "iHelium", 
+        "iHeDiffusivity",
+        "iGrainBoundarySweeping",
+        "iHighBurnupStructureFormation", 
+        "iHighBurnupStructurePorosity",
+        "iHeliumProductionRate",
+        "iStoichiometryDeviation",
+        "iBubbleDiffusivity"
     };
 
     return names;
 }
 
-std::vector<SciantixVariable> initHistoryVariableValues(
+/**
+ * @brief Initializes the history variables.
+ * @param Sciantix_history An array of history variables.
+ * @param toOutputStoichiometryDeviation A flag indicating whether to consider additional history variables (currently, steam pressure).
+ * @param Sciantix_scaling_factors An array of scaling factors.
+ * @return A vector of SciantixVariable objects initialized with the given history variables.
+ */
+std::vector<SciantixVariable> initializeHistoryVariable(
     double Sciantix_history[],
-    bool toOutputStoichiometryDeviation,
-    double Sciantix_scaling_factors[]
+    double Sciantix_scaling_factors[],
+    bool toOutput
 )
 {
-    std::vector<SciantixVariable> history_variable = {
+    std::vector<SciantixVariable> history_variable =
+    {
         SciantixVariable("Time", "(h)", Sciantix_history[7], Sciantix_history[7], 1),
         SciantixVariable("Time step number", "(/)", Sciantix_history[8], Sciantix_history[8], 0),
         SciantixVariable("Temperature", "(K)", Sciantix_history[0] * Sciantix_scaling_factors[4], Sciantix_history[1] * Sciantix_scaling_factors[4], 1),
         SciantixVariable("Fission rate", "(fiss / m3 s)", Sciantix_history[2] * Sciantix_scaling_factors[5], Sciantix_history[3] * Sciantix_scaling_factors[5], 1),
         SciantixVariable("Hydrostatic stress", "(MPa)", Sciantix_history[4], Sciantix_history[5], 1),
-        SciantixVariable("Steam pressure", "(atm)", Sciantix_history[9], Sciantix_history[10], toOutputStoichiometryDeviation)
+        SciantixVariable("Steam pressure", "(atm)", Sciantix_history[9], Sciantix_history[10], toOutput)
     };
 
     return history_variable;
 }
 
-
-std::vector<SciantixVariable> initSciantixVariableValues(
+/**
+ * @brief Initializes the Sciantix variables with the provided values and flags.
+ * @param Sciantix_variables An array of Sciantix variable values.
+ * @param toOutputRadioactiveFG Flag for outputting radioactive fission gas information.
+ * @param toOutputVenting Flag for outputting venting information.
+ * @param toOutputHelium Flag for outputting helium information.
+ * @param toOutputCracking Flag for outputting cracking information.
+ * @param toOutputGrainBoundary Flag for outputting grain boundary information.
+ * @param toOutputHighBurnupStructure Flag for outputting high burnup structure information.
+ * @param toOutputStoichiometryDeviation Flag for outputting stoichiometry deviation information.
+ * @return A vector of SciantixVariable objects initialized with the given values and flags.
+ */
+std::vector<SciantixVariable> initializeSciantixVariable(
     double Sciantix_variables[], 
     bool toOutputRadioactiveFG,
     bool toOutputVenting,
     bool toOutputHelium,
     bool toOutputCracking,
-    bool toOutputFracture,
     bool toOutputGrainBoundary,
     bool toOutputHighBurnupStructure,
     bool toOutputStoichiometryDeviation
 )
 {
-    std::vector<SciantixVariable> init_sciantix_variable = {
+    std::vector<SciantixVariable> init_sciantix_variable =
+    {
         SciantixVariable("Grain radius", "(m)", Sciantix_variables[0], Sciantix_variables[0], 1),
 
         SciantixVariable("Xe produced", "(at/m3)", Sciantix_variables[1], Sciantix_variables[1], 1),
@@ -116,8 +166,6 @@ std::vector<SciantixVariable> initSciantixVariableValues(
         SciantixVariable("Kr85m released", "(at/m3)", Sciantix_variables[63], Sciantix_variables[63], toOutputRadioactiveFG),
         SciantixVariable("Kr85m R/B", "(/)", 0.0, 0.0, toOutputRadioactiveFG),       
 
-
-
         SciantixVariable("Intragranular bubble concentration", "(bub/m3)", Sciantix_variables[19], Sciantix_variables[19], 1),
         SciantixVariable("Intragranular bubble radius", "(m)", Sciantix_variables[20], Sciantix_variables[20], 1),
         SciantixVariable("Intragranular bubble volume", "(m3)", 0.0, 0.0, 0),
@@ -137,8 +185,8 @@ std::vector<SciantixVariable> initSciantixVariableValues(
         SciantixVariable("Intergranular atoms per bubble", "(at/bub)", Sciantix_variables[29], Sciantix_variables[29], toOutputGrainBoundary),
         SciantixVariable("Intergranular vacancies per bubble", "(vac/bub)", Sciantix_variables[30], Sciantix_variables[30], toOutputGrainBoundary),
 
-        SciantixVariable("Intergranular bubble pressure", "(MPa)", 0.0, 0.0, toOutputFracture),
-        SciantixVariable("Critical intergranular bubble pressure", "(MPa)", 0.0, 0.0, toOutputFracture),
+        SciantixVariable("Intergranular bubble pressure", "(MPa)", 0.0, 0.0, 0),
+        SciantixVariable("Critical intergranular bubble pressure", "(MPa)", 0.0, 0.0, 0),
         SciantixVariable("Intergranular bubble radius", "(m)", Sciantix_variables[31], Sciantix_variables[31], toOutputGrainBoundary),
         SciantixVariable("Intergranular bubble area", "(m2)", Sciantix_variables[32], Sciantix_variables[32], toOutputGrainBoundary),
         SciantixVariable("Intergranular bubble volume", "(m3)", Sciantix_variables[33], Sciantix_variables[33], toOutputGrainBoundary),
@@ -174,7 +222,6 @@ std::vector<SciantixVariable> initSciantixVariableValues(
         SciantixVariable("Fuel oxygen potential", "(KJ/mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
         SciantixVariable("Specific power", "(MW/kg)", 0.0, 0.0, 0),
 
-        // HBS-related variables
         SciantixVariable("HBS porosity", "(/)", Sciantix_variables[56], Sciantix_variables[56], toOutputHighBurnupStructure),
         SciantixVariable("HBS pore density", "(pores/m3)", Sciantix_variables[80], Sciantix_variables[80], toOutputHighBurnupStructure),
         SciantixVariable("HBS pore volume", "(m3)", Sciantix_variables[81], Sciantix_variables[81], toOutputHighBurnupStructure),
@@ -189,16 +236,27 @@ std::vector<SciantixVariable> initSciantixVariableValues(
 }
 
 
-
+/**
+ * @brief Retrieves the list of scaling factors names.
+ * @return A vector of strings containing the names of scaling factors.
+ */
 std::vector<std::string> getScalingFactorsNames()
 {
-    std::vector<std::string> names = {
-        "Resolution rate", "Trapping rate", "Nucleation rate", "Diffusivity",
-        "Temperature", "Fission rate", "Cent parameter", "Helium production rate", "Dummy"
+    std::vector<std::string> names =
+    {
+        "Resolution rate",
+        "Trapping rate",
+        "Nucleation rate",
+        "Diffusivity",
+        "Temperature",
+        "Fission rate",
+        "Cent parameter",
+        "Helium production rate",
+        "Dummy"
     };
 
     return names;
 }
 
 
-#endif // INIT_VALUES_H
+#endif

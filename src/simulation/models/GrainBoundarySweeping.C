@@ -37,13 +37,13 @@ void Simulation::GrainBoundarySweeping()
 	case 1:
 	{
 		/**
-		 * \brief iGrainBoundarySweeping = 1 considers the fraction of grain swept volume (dV/V = 3 dr / r).
+		 * @brief iGrainBoundarySweeping = 1 considers the fraction of grain swept volume (dV/V = 3 dr / r).
 		 * Then, the fraction of intra-granular gas concentration swept is dC / C = - 3 dr / r
 		 *
 		 */
 
 		std::vector<double> parameter;
-		/// \param[out] grain_sweeped_volume
+		/// @param[out] grain_sweeped_volume
 		parameter.push_back(3 * sciantix_variable["Grain radius"].getIncrement() / sciantix_variable["Grain radius"].getFinalValue());
 		grain_bound_sweeping.setParameter(parameter);
 		grain_bound_sweeping.setRef(": TRANSURANUS model");

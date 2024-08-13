@@ -5,8 +5,8 @@ the purposes are:
 	- to plot variables, choosing both x- and y- axes (is_main = 1)
 	- to prepare quantities to be plotted (is_main = 2)
 
-\author: Giovanni Zullo
-\author: C Valot
+@author: Giovanni Zullo
+@author: C Valot
 
 Instructions:
 - run sciantix.py in a folder containing the output.txt file

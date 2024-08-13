@@ -20,13 +20,13 @@
 #include <vector>
 
 /**
- * \brief This routine calculates the time step length 
+ * @brief This routine calculates the time step length 
  * by dividing the time intervals provided in input
  * in a fixed number of time steps (also set by input).
  * 
- * \authors
- * D. Pizzocri
- * T. Barani
+ * @author D. Pizzocri
+ * @author T. Barani
+ * 
  */
 double TimeStepCalculation(
   int Input_history_points,

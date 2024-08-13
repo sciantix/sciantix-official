@@ -17,7 +17,7 @@
 #include "Simulation.h"
 
 /**
- * \brief EffectiveBurnup() calculates the local effective burnup of the fuel.
+ * @brief EffectiveBurnup() calculates the local effective burnup of the fuel.
  *
  * \details
  * The local effective burnup is calculated if the local temperature is lower than a temperature threshold, 

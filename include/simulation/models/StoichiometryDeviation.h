@@ -20,11 +20,10 @@
 #include "Simulation.h"
 
 /**
- * \brief 
+ * @brief Evaluates the deviation in stoichiometry within the nuclear material and its effects.
  * 
- * \authors
- * G. Petrosillo
- * G. Zullo
+ * @author G. Petrosillo
+ * @author G. Zullo
  * 
  */
 

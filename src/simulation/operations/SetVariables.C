@@ -26,106 +26,82 @@
 /// together with the diffusion modes, and the scaling factors.
 
 void Simulation::setVariables(
-	int Sciantix_options[], 
-	double Sciantix_history[], 
-	double Sciantix_variables[], 
-	double Sciantix_scaling_factors[], 
-	double Sciantix_diffusion_modes[]
+    int Sciantix_options[], 
+    double Sciantix_history[], 
+    double Sciantix_variables[], 
+    double Sciantix_scaling_factors[], 
+    double Sciantix_diffusion_modes[]
 )
 {
-	// -----------------------------------------------------------------------------------------------
-	// Input variable
-	// The vector is used to collect all user input settings relating to the choice of SCIANTIX models
-	// -----------------------------------------------------------------------------------------------
-
-	if (input_variable.empty())
-	{
-		std::vector<std::string> name_list = getInputVariableNames();
-		for (int i = 0; i < name_list.size(); i++)
-		{
-			input_variable.push(InputVariable(name_list[i], Sciantix_options[i]));
-		}
-	}
+    // Input variable
+    // The vector is used to collect input settings related to the choice of SCIANTIX models.
+    if (input_variable.empty())
+    {
+        std::vector<std::string> name_list = getInputVariableNames();
+        for (int i = 0; i < name_list.size(); i++)
+        {
+            input_variable.push(InputVariable(name_list[i], Sciantix_options[i]));
+        }
+    }
 
 
-	bool toOutputRadioactiveFG = input_variable["iRadioactiveFissionGas"].getValue() != 0,
-		toOutputVenting = input_variable["iGrainBoundaryVenting"].getValue() != 0,
-		toOutputHelium = input_variable["iHelium"].getValue() != 0,
-		toOutputCracking = input_variable["iGrainBoundaryMicroCracking"].getValue() != 0,
-		toOutputFracture = input_variable["iGrainBoundaryMicroCracking"].getValue() == 2,
-		toOutputGrainBoundary = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
-		toOutputHighBurnupStructure = input_variable["iHighBurnupStructureFormation"].getValue() == 1,
-		toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0;
-
-	// ----------------
-	// Physics variable
-	// ----------------
-	
-	physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
+    // toOutput flags
+    bool toOutputRadioactiveFG = input_variable["iRadioactiveFissionGas"].getValue() != 0,
+        toOutputVenting = input_variable["iGrainBoundaryVenting"].getValue() != 0,
+        toOutputHelium = input_variable["iHelium"].getValue() != 0,
+        toOutputCracking = input_variable["iGrainBoundaryMicroCracking"].getValue() != 0,
+        toOutputGrainBoundary = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
+        toOutputHighBurnupStructure = input_variable["iHighBurnupStructureFormation"].getValue() == 1,
+        toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0;
 
 
-	// ----------------
-	// History variable
-	// ----------------
-	
-	
-	std::vector<SciantixVariable> initial_history_values = initHistoryVariableValues(
-		Sciantix_history,
-		toOutputStoichiometryDeviation,
-		Sciantix_scaling_factors
-	);
-
-	for (SciantixVariable initial_value : initial_history_values)
-	{
-		history_variable.push(initial_value);
-	}
+    // Physics variable	
+    physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
 
 
-	// ----------------------------------------------------------------------------
-	// Sciantix variable
-	// ----------------------------------------------------------------------------
-	
+    // History variable
+    std::vector<SciantixVariable> values = initializeHistoryVariable(
+        Sciantix_history,
+        Sciantix_scaling_factors,
+        toOutputStoichiometryDeviation
+    );
 
-	std::vector<SciantixVariable> initial_sciantix_values = initSciantixVariableValues(
-			Sciantix_variables,
-			toOutputRadioactiveFG,
-			toOutputVenting,
-			toOutputHelium,
-			toOutputCracking,
-			toOutputFracture,
-			toOutputGrainBoundary,
-			toOutputHighBurnupStructure,
-			toOutputStoichiometryDeviation
-		);
+    for (SciantixVariable initial_value : values)
+    {
+        history_variable.push(initial_value);
+    }
 
-	for (SciantixVariable initial_value : initial_sciantix_values)
-	{
-		sciantix_variable.push(initial_value);
-	}
+    // Sciantix variable
+    values = initializeSciantixVariable(
+            Sciantix_variables,
+            toOutputRadioactiveFG,
+            toOutputVenting,
+            toOutputHelium,
+            toOutputCracking,
+            toOutputGrainBoundary,
+            toOutputHighBurnupStructure,
+            toOutputStoichiometryDeviation
+        );
 
+    for (SciantixVariable initial_value : values)
+    {
+        sciantix_variable.push(initial_value);
+    }
 
+    // Diffusion modes
+    for (int i = 0; i < n_modes; ++i)
+    {
+        for (int j = 0; j <= 17; j++)
+        {
+            modes_initial_conditions[j * n_modes + i] = Sciantix_diffusion_modes[j * n_modes + i];	
+        }
+    }
 
-	// ------------------------------------------------------------------------------------------------
-	// ------------------------------------------------------------------------------------------------
-
-	// ---------------
-	// Diffusion modes
-	// ---------------
-	for (int i = 0; i < n_modes; ++i)
-	{
-		for (int j = 0; j <= 17; j++)
-		{
-			modes_initial_conditions[j * n_modes + i] = Sciantix_diffusion_modes[j * n_modes + i];	
-		}
-	}
-
-	// ---------------
-	// Scaling factors
-	// ---------------
-	int index = 0;
-	for (std::string name : getScalingFactorsNames())
-	{
-		scaling_factors.push(InputVariable(name, Sciantix_scaling_factors[index]));
-		index++;
-	}
+    // Scaling factors
+    int index = 0;
+    for (std::string name : getScalingFactorsNames())
+    {
+        scaling_factors.push(InputVariable(name, Sciantix_scaling_factors[index]));
+        index++;
+    }
 }

@@ -20,9 +20,9 @@
 #include <sys/stat.h>
 
 /**
- * \brief Function to check if a file exists.
+ * @brief Function to check if a file exists.
  * @return 0/1
- * \author G. Zullo
+ * @author G. Zullo
  */
 inline bool if_exist(const std::string &name)
 {
@@ -36,7 +36,7 @@ void Simulation::Output()
 	std::fstream output_file;
 	output_file.open(output_name, std::fstream::in | std::fstream::out | std::fstream::app);
 
-	/// \brief
+	/// @brief
 	/// iOutput == 1 --> output.txt organized in columns (header + values).
 	if (int(input_variable["iOutput"].getValue()) == 1)
 	{
@@ -73,7 +73,7 @@ void Simulation::Output()
 	}
 
 	/**
-	 * \brief iOutput = 2 prints the complete output.exe file
+	 * @brief iOutput = 2 prints the complete output.exe file
 	 *
 	 */
 	else if ((int)input_variable["iOutput"].getValue() == 2)

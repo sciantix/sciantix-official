@@ -14,66 +14,26 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INPUT_VARIABLE_H
-#define INPUT_VARIABLE_H
+#ifndef SET_GAS_H
+#define SET_GAS_H
 
-#include "Variable.h"
+#include <vector>
+#include "Gas.h"
+#include "SciantixArray.h"
 
 /**
- * \brief A derived class specifically for handling input variables used in simulations or models.
- *
- * This class extends the `Variable` class, providing a structured way to manage input settings,
- * such as parameters for simulations, ensuring that these inputs can be easily modified and retrieved.
+ * @brief Sets up the gas properties in the simulation.
  * 
- * \authors 
- * G. Zullo
- * F. Bastien
+ * This function initializes and maps properties for Xenon, Krypton, and Helium gases
+ * used in the simulation. Each gas is set up with specific attributes and then mapped
+ * for easy access throughout the simulation.
  * 
+ * @author G. Zullo
+ * @author F. Bastien
  */
-class InputVariable : virtual public Variable
-{
-public:
 
-	InputVariable(std::string name, int value)
-	{
-		this->name = name;
-		this->value = value;
-	}
+void xenon(SciantixArray<Gas> &gas);
+void krypton(SciantixArray<Gas> &gas);
+void helium(SciantixArray<Gas> &gas);
 
-	/**
-	 * \brief Sets the value of the input variable.
-	 *
-	 * \param v The new value to assign to the input variable.
-	 */
-	void setValue(double v)
-	{
-		/// Member function to set the setting value of the declared object.
-		value = v;
-	}
-
-	/**
-	 * \brief Retrieves the value of the input variable.
-	 *
-	 * @return The current value of the input variable.
-	 */
-	double getValue()
-	{
-		/// Member function to get the setting value of the object.
-		return value;
-	}
-
-	/**
-	 * \brief Constructor for InputVariable.
-	 */
-	InputVariable() {}
-
-	/**
-	 * \brief Destructor for InputVariable.
-	 */
-	~InputVariable() {}
-
-protected:
-	double value;
-};
-
-#endif //INPUT_VARIABLE_H
+#endif // SET_GAS_H

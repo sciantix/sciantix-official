@@ -14,77 +14,27 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "SciantixVariable.h"
+#ifndef SET_MATRIX_H
+#define SET_MATRIX_H
 
-void SciantixVariable::rescaleInitialValue(const double factor)
-{
-    // Function to rescale the final value
-    initial_value *= factor;
-}
+#include "Simulation.h"
 
-void SciantixVariable::rescaleFinalValue(const double factor)
-{
-    // Function to rescale the final value
-    final_value *= factor;
-}
+/**
+ * @brief Sets up the matrix properties in the simulation.
+ * 
+ * This function initializes and maps properties for matrices
+ * used in the simulation. Each matrix is set up with specific attributes and then mapped
+ * for easy access throughout the simulation.
+ * 
+ * @author G. Zullo
+ * @author F. Bastien
+ * 
+ */
 
-void SciantixVariable::addValue(const double v)
-{
-    // Function to increase final_value by v
-    final_value += v;
-}
+Matrix UO2(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> sciantix_variable, 
+	SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> input_variable);
 
-void SciantixVariable::setUOM(std::string s)
-{
-    uom = s;
-}
+Matrix UO2HBS(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> sciantix_variable, 
+	SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> input_variable);
 
-std::string SciantixVariable::getUOM()
-{
-    return uom;
-}
-
-void SciantixVariable::setConstant()
-{
-    final_value = initial_value;
-}
-
-void SciantixVariable::resetValue()
-{
-    initial_value = final_value;
-}
-
-void SciantixVariable::setFinalValue(double FinalValue)
-{
-    final_value = FinalValue;
-}
-
-void SciantixVariable::setInitialValue(double InitialValue)
-{
-    initial_value = InitialValue;
-}
-
-double SciantixVariable::getFinalValue()
-{
-    return final_value;
-}
-
-double SciantixVariable::getInitialValue()
-{
-    return initial_value;
-}
-
-double SciantixVariable::getIncrement()
-{
-    return final_value - initial_value;
-}
-
-void SciantixVariable::setOutput(bool io)
-{
-    to_output = io;
-}
-
-bool SciantixVariable::getOutput()
-{
-    return to_output;
-}
+#endif
