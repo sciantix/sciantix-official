@@ -35,25 +35,48 @@ git status
 
 ---
 
-## Building Sciantix on MacOS
+## Building SCIANTIX on macOS
 
-Follow these steps to build Sciantix on a Mac:
+Follow these steps to build SCIANTIX on macOS:
 
-1. **Install Git**: [Download Git for MacOS](https://sourceforge.net/projects/git-osx-installer/files/).
+1. **Install Homebrew and Git**:
+   - **Homebrew**: Install by running the following command in Terminal:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+   - **Git**: Install via Homebrew:
+```bash
+brew install git
+```
 
-2. **Install Homebrew**: [Download and install Homebrew](https://brew.sh).
+2. **Install Dependencies**:
+   - Install CMake and g++ using Homebrew:
+```bash
+brew install cmake g++
+```
 
-3. **Clone Sciantix**: Use the following command to clone the repository:
+3. **Clone the Repository**:
+   - Clone the repository:
+```bash
+gh repo clone sciantix/sciantix-official
+```
 
-   ```bash
-   gh repo clone sciantix/sciantix-official
-   ```
+4. **Build SCIANTIX**:
+   - Create a build directory and navigate into it:
+```bash
+mkdir build && cd build
+```
+  - Configure the build with CMake:
+```bash
+cmake ..
+```
+   - Compile the code (use `-j` to speed up the process):
+```bash
+make -j
+```
 
-4. **Find g++**: Search for `g++` in the Homebrew directory (e.g., `/opt/homebrew/bin/g++-12`).
-
-5. **Update Makefile**: Add the path of `g++` to the Sciantix Makefile (e.g., `CC := /opt/homebrew/bin/g++-12`).
-
-6. **Install Command Line Tools**: Install the command line developer tools, which are usually prompted when you run `make`.
+5. **Locate the Executable**:
+   - Find the `sciantix.x` executable in the `build` directory.
 
 ---
 
@@ -121,4 +144,4 @@ Here are some helpful Git commands for managing your local and remote repositori
 
 ---
 
-This guide should make it easier to follow the process for committing new code and building SCIANTIX on macOS, as well as ensuring consistency in the codebase through syntax guidelines.
+We hope this guide helps simplify the process of committing new code and building SCIANTIX on macOS, while also ensuring consistency in the source code through our syntax guidelines. If you encounter any issues or have suggestions, please feel free to contact the developers.
