@@ -14,74 +14,25 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "SciantixVariable.h"
+#ifndef TIME_STEP_CALCULATION_H
+#define TIME_STEP_CALCULATION_H
 
-void SciantixVariable::rescaleInitialValue(const double factor)
-{
-    initial_value *= factor;
-}
+#include <vector>
 
-void SciantixVariable::rescaleFinalValue(const double factor)
-{
-    final_value *= factor;
-}
+/**
+ * @brief This routine calculates the time step length 
+ * by dividing the time intervals provided in input
+ * in a fixed number of time steps (also set by input).
+ * 
+ * @author D. Pizzocri
+ * @author T. Barani
+ * 
+ */
+double TimeStepCalculation(
+  int Input_history_points,
+  double Time_h,
+  std::vector<double> Time_input,
+  double  Number_of_time_steps_per_interval
+);
 
-void SciantixVariable::addValue(const double v)
-{
-    final_value += v;
-}
-
-void SciantixVariable::setUOM(std::string s)
-{
-    uom = s;
-}
-
-std::string SciantixVariable::getUOM()
-{
-    return uom;
-}
-
-void SciantixVariable::setConstant()
-{
-    final_value = initial_value;
-}
-
-void SciantixVariable::resetValue()
-{
-    initial_value = final_value;
-}
-
-void SciantixVariable::setFinalValue(double FinalValue)
-{
-    final_value = FinalValue;
-}
-
-void SciantixVariable::setInitialValue(double InitialValue)
-{
-    initial_value = InitialValue;
-}
-
-double SciantixVariable::getFinalValue()
-{
-    return final_value;
-}
-
-double SciantixVariable::getInitialValue()
-{
-    return initial_value;
-}
-
-double SciantixVariable::getIncrement()
-{
-    return final_value - initial_value;
-}
-
-void SciantixVariable::setOutput(bool io)
-{
-    to_output = io;
-}
-
-bool SciantixVariable::getOutput()
-{
-    return to_output;
-}
+#endif // TIME_STEP_CALCULATION_H
