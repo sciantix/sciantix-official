@@ -25,13 +25,13 @@
  * including gas behavior, matrix transformations, environmental interactions,
  * and system updates. It concludes with generating output files and updating the system's history.
  *
- * @param Sciantix_options Array of integers specifying simulation options.
- * @param Sciantix_history Array of doubles sets up with the old variables of the simulation.
- * @param Sciantix_variables Array of doubles representing current variables in the simulation.
- * @param Sciantix_scaling_factors Array of doubles used to scale various parameters within the model.
- * @param Sciantix_diffusion_modes Array of doubles representing diffusion modes used in the simulation.
+ * \param Sciantix_options Array of integers specifying simulation options.
+ * \param Sciantix_history Array of doubles sets up with the old variables of the simulation.
+ * \param Sciantix_variables Array of doubles representing current variables in the simulation.
+ * \param Sciantix_scaling_factors Array of doubles used to scale various parameters within the model.
+ * \param Sciantix_diffusion_modes Array of doubles representing diffusion modes used in the simulation.
  * 
- * @authors
+ * \authors
  * D. Pizzocri
  * T. Barani 
  * G. Zullo

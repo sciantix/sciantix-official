@@ -21,16 +21,16 @@
 
 /**
  * @class Material
- * @brief Class for the materials used in SCIANTIX (e.g., fuel matrix, fission gas, etc.).
+ * \brief Class for the materials used in SCIANTIX (e.g., fuel matrix, fission gas, etc.).
  * 
- * @authors 
+ * \authors 
  * G. Zullo
  */
 class Material
 {
 public:
 	/**
-	 * @brief Default constructor for the Material class.
+	 * \brief Default constructor for the Material class.
 	 */
 	Material() {}
 	/**
@@ -40,7 +40,7 @@ public:
 
 	/**
 	 * \brief Sets the name of the entity.
-	 * @param n The new name to be set for the entity.
+	 * \param n The new name to be set for the entity.
 	 */
 	void setName(std::string n)
 	{
@@ -60,7 +60,7 @@ public:
 
 	/**
 	 * \brief Sets a reference for the entity.
-	 * @param n The reference string to be set.
+	 * \param n The reference string to be set.
 	 */
 	void setRef(std::string n)
 	{

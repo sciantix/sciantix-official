@@ -1,5 +1,5 @@
 """
-@author (G. Zullo)
+\author (G. Zullo)
 This is a python script to write the SCIANTIX optional input file "input_scaling_factors.txt".
 
 """
