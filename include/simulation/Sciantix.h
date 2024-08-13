@@ -14,66 +14,28 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INPUT_VARIABLE_H
-#define INPUT_VARIABLE_H
+#ifndef SCIANTIX_H
+#define SCIANTIX_H
 
-#include "Variable.h"
+#include "Simulation.h"
 
 /**
- * \brief A derived class specifically for handling input variables used in simulations or models.
+ * @brief Executes the main SCIANTIX simulation program.
+ * It runs the setup and execution of various simulation stages,
+ * including gas behavior, matrix transformations, environmental interactions,
+ * and system updates. It concludes with generating output files and updating the system's history.
  *
- * This class extends the `Variable` class, providing a structured way to manage input settings,
- * such as parameters for simulations, ensuring that these inputs can be easily modified and retrieved.
+ * @param Sciantix_options Array of integers specifying simulation options.
+ * @param Sciantix_history Array of doubles sets up with the old variables of the simulation.
+ * @param Sciantix_variables Array of doubles representing current variables in the simulation.
+ * @param Sciantix_scaling_factors Array of doubles used to scale various parameters within the model.
+ * @param Sciantix_diffusion_modes Array of doubles representing diffusion modes used in the simulation.
  * 
- * \authors 
- * G. Zullo
- * F. Bastien
+ * @author D. Pizzocri
+ * @author T. Barani
+ * @author G. Zullo
  * 
  */
-class InputVariable : virtual public Variable
-{
-public:
+void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
 
-	InputVariable(std::string name, int value)
-	{
-		this->name = name;
-		this->value = value;
-	}
-
-	/**
-	 * \brief Sets the value of the input variable.
-	 *
-	 * \param v The new value to assign to the input variable.
-	 */
-	void setValue(double v)
-	{
-		/// Member function to set the setting value of the declared object.
-		value = v;
-	}
-
-	/**
-	 * \brief Retrieves the value of the input variable.
-	 *
-	 * @return The current value of the input variable.
-	 */
-	double getValue()
-	{
-		/// Member function to get the setting value of the object.
-		return value;
-	}
-
-	/**
-	 * \brief Constructor for InputVariable.
-	 */
-	InputVariable() {}
-
-	/**
-	 * \brief Destructor for InputVariable.
-	 */
-	~InputVariable() {}
-
-protected:
-	double value;
-};
-
-#endif //INPUT_VARIABLE_H
+#endif // SCIANTIX_H

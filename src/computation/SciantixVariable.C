@@ -14,17 +14,74 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "Sciantix.h"
+#include "SciantixVariable.h"
 
-void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[])
+void SciantixVariable::rescaleInitialValue(const double factor)
 {
-    Simulation* simulation = Simulation::getInstance();
+    initial_value *= factor;
+}
 
-    simulation->initialize(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
+void SciantixVariable::rescaleFinalValue(const double factor)
+{
+    final_value *= factor;
+}
 
-    simulation->execute();
+void SciantixVariable::addValue(const double v)
+{
+    final_value += v;
+}
 
-    simulation->UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+void SciantixVariable::setUOM(std::string s)
+{
+    uom = s;
+}
 
-    simulation->Output();
+std::string SciantixVariable::getUOM()
+{
+    return uom;
+}
+
+void SciantixVariable::setConstant()
+{
+    final_value = initial_value;
+}
+
+void SciantixVariable::resetValue()
+{
+    initial_value = final_value;
+}
+
+void SciantixVariable::setFinalValue(double FinalValue)
+{
+    final_value = FinalValue;
+}
+
+void SciantixVariable::setInitialValue(double InitialValue)
+{
+    initial_value = InitialValue;
+}
+
+double SciantixVariable::getFinalValue()
+{
+    return final_value;
+}
+
+double SciantixVariable::getInitialValue()
+{
+    return initial_value;
+}
+
+double SciantixVariable::getIncrement()
+{
+    return final_value - initial_value;
+}
+
+void SciantixVariable::setOutput(bool io)
+{
+    to_output = io;
+}
+
+bool SciantixVariable::getOutput()
+{
+    return to_output;
 }

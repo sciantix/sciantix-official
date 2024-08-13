@@ -24,9 +24,15 @@
 #include <numeric>
 
 /**
- * \brief Handles all input processing for the simulation.
+ * @brief Handles all input processing for the simulation.
  * It opens necessary input files, reads configuration and initial condition data, 
  * logs this data for verification, and manages any missing file errors.
+ * 
+ * @author D. Pizzocri
+ * @author T. Barani
+ * @author G. Zullo
+ * @author F. Bastien
+ * 
  */
 void InputReading(
 	int Sciantix_options[], 

@@ -33,14 +33,14 @@
 using namespace std;
 
 /**
- * \brief Logs the execution time of the simulation.
- * \param timer The total execution time measured in seconds.
- * \param time_step_number The total number of time steps executed during the simulation.
+ * @brief Logs the execution time of the simulation.
+ * @param timer The total execution time measured in seconds.
+ * @param time_step_number The total number of time steps executed during the simulation.
  */
 void logExecutionTime(double timer, int time_step_number, std::ofstream &Execution_file);
 
 /**
- * \brief Main entry point for the SCIANTIX program. 
+ * @brief Main entry point for the SCIANTIX program. 
  *
  * SCIANTIX is a 0D code developed at Politecnico di Milano.
  * The objective of SCIANTIX is to represent the behaviour of a single grain of nuclear fuel.
@@ -57,8 +57,8 @@ void logExecutionTime(double timer, int time_step_number, std::ofstream &Executi
  * - helium behaviour and release in annealing conditions
  * - release of radioactive fission gases
  * The validation database is accessible in the *regression* folder.
- * \param argc Number of command-line arguments.
- * \param argv Array of command-line arguments, where argv[1] is expected to be the path to the input file.
+ * @param argc Number of command-line arguments.
+ * @param argv Array of command-line arguments, where argv[1] is expected to be the path to the input file.
  * @return Returns 0 upon successful completion of the program.
  */
 int main(int argc, char **argv)
