@@ -11,7 +11,7 @@
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
-//  Contributors: F. Bastien                                                        //
+//                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef INPUT_VARIABLE_H
@@ -24,6 +24,11 @@
  *
  * This class extends the `Variable` class, providing a structured way to manage input settings,
  * such as parameters for simulations, ensuring that these inputs can be easily modified and retrieved.
+ * 
+ * @authors 
+ * G. Zullo
+ * F. Bastien
+ * 
  */
 class InputVariable : virtual public Variable
 {

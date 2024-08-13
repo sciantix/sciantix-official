@@ -21,7 +21,10 @@
 
 /**
  * @class Material
- * @brief Derived class for the materials used in SCIANTIX (e.g., fuel matrix, fission gas, etc.).
+ * @brief Class for the materials used in SCIANTIX (e.g., fuel matrix, fission gas, etc.).
+ * 
+ * @authors 
+ * G. Zullo
  */
 class Material
 {

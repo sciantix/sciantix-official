@@ -11,7 +11,7 @@
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
-//  Contributors: F. Bastien                                                        //
+//                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef SOLVER_h
@@ -28,8 +28,13 @@
  * The Solver class contains various numerical methods to solve differential equations
  * and other mathematical problems encountered in the simulation. These solvers are
  * used in conjunction with models within the Simulation class.
+ * 
+ * @author
+ * D. Pizzocri
+ * T. Barani
+ * G. Zullo
  */
-class Solver : public InputVariable
+class Solver : virtual public InputVariable
 {
 public:
 
