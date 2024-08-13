@@ -15,7 +15,6 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "InputReading.h"
-#include "Global.h"
 
 /**
  * @brief Read a single setting from the input file.

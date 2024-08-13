@@ -19,6 +19,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <fstream>
+#include "MainVariables.h"
 
 /**
  *  @brief Contains functions for error handling in SCIANTIX software.
