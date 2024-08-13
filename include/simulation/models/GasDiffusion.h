@@ -19,7 +19,6 @@
 
 #include "Simulation.h"
 
-
 /**
  * @brief Defines diffusion models using the spectral diffusion with one equation.
  */

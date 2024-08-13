@@ -17,13 +17,7 @@
 #include "Simulation.h"
 
 /**
- * @file EffectiveBurnup.C
- * @brief Calculates the local effective burnup of the fuel.
- * 
- * @authors 
- * Davide Pizzocri
- * Tommaso Barani
- * Giovanni Zullo
+ * @brief EffectiveBurnup() calculates the local effective burnup of the fuel.
  *
  * @details
  * The local effective burnup is calculated if the local temperature is lower than a temperature threshold, 
@@ -31,7 +25,6 @@
  * @ref G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
  * 
  */
-
 void Simulation::EffectiveBurnup()
 {
     // Model declaration

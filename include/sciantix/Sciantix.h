@@ -11,7 +11,7 @@
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
-//  Contributors: F. Bastien                                                        //
+//                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef SCIANTIX_H
@@ -30,8 +30,13 @@
  * @param Sciantix_variables Array of doubles representing current variables in the simulation.
  * @param Sciantix_scaling_factors Array of doubles used to scale various parameters within the model.
  * @param Sciantix_diffusion_modes Array of doubles representing diffusion modes used in the simulation.
+ * 
+ * @authors
+ * D. Pizzocri
+ * T. Barani 
+ * G. Zullo
+ * F. Bastien
  */
 void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
-
 
 #endif // SCIANTIX_H

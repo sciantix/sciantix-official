@@ -21,24 +21,20 @@ double Solver::Integrator(double initial_value, double parameter, double increme
     return initial_value + parameter * increment;
 }
 
-
 double Solver::LimitedGrowth(double initial_value, std::vector<double> parameter, double increment)
 {
     return 0.5 * ((initial_value + parameter[1] * increment) + sqrt(pow(initial_value + parameter[1] * increment, 2) + 4.0 * parameter[0] * increment));
 }
-
 
 double Solver::Decay(double initial_condition, double decay_rate, double source_term, double increment)
 {
     return (initial_condition + source_term * increment) / (1.0 + decay_rate * increment);
 }
 
-
 double Solver::BinaryInteraction(double initial_condition, double interaction_coefficient, double increment)
 {
     return initial_condition / (1.0 + interaction_coefficient * initial_condition * increment);
 }
-
 
 double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> parameter, double increment)
 {
@@ -56,7 +52,6 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
     projection_coeff = -2.0 * sqrt(2.0 / M_PI);
     source_rate_coeff = projection_coeff * parameter.at(3);
 
-
     for (n = 0; n < parameter.at(0); n++)
     {
         np1 = n + 1;
@@ -73,7 +68,6 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
     return solution;
 }
 
-
 double Solver::dotProduct1D(std::vector<double> u, double v[], int n)
 {
     double result = 0.0;
@@ -81,7 +75,6 @@ double Solver::dotProduct1D(std::vector<double> u, double v[], int n)
         result += u[i] * v[i];
     return result;
 }
-
 
 void Solver::dotProduct2D(double A[], double v[], int n_rows, const int n_col, double result[])
 {
@@ -96,7 +89,6 @@ void Solver::dotProduct2D(double A[], double v[], int n_rows, const int n_col, d
         result[i] = dotProduct1D(a, v, n_col);
     }
 }
-
 
 void Solver::SpectralDiffusion2equations(double &gas_1, double &gas_2, double *initial_condition_gas_1, double *initial_condition_gas_2, std::vector<double> parameter, double increment)
 {
@@ -161,7 +153,6 @@ void Solver::SpectralDiffusion2equations(double &gas_1, double &gas_2, double *i
     gas_1 = gas_1_solution;
     gas_2 = gas_2_solution;
 }
-
 
 void Solver::SpectralDiffusion3equations(double &gas_1, double &gas_2, double &gas_3, double *initial_condition_gas_1, double *initial_condition_gas_2, double *initial_condition_gas_3, std::vector<double> parameter, double increment)
 {
@@ -247,7 +238,6 @@ void Solver::SpectralDiffusion3equations(double &gas_1, double &gas_2, double &g
     gas_3 = gas_3_solution;
 }
 
-
 void Solver::Laplace2x2(double A[], double b[])
 {
     double detX(0.0), detY(0.0);
@@ -261,7 +251,6 @@ void Solver::Laplace2x2(double A[], double b[])
         b[1] = detY / detA;
     }
 }
-
 
 void Solver::Laplace3x3(double A[], double b[])
 {
@@ -278,7 +267,6 @@ void Solver::Laplace3x3(double A[], double b[])
         b[2] = detZ / detA;
     }
 }
-
 
 double Solver::det(int N, double A[])
 {
@@ -312,7 +300,6 @@ double Solver::det(int N, double A[])
     }
 }
 
-
 void Solver::Laplace(int N, double A[], double b[])
 {
     int dim = N * N;
@@ -342,7 +329,6 @@ void Solver::Laplace(int N, double A[], double b[])
         b[i] = x[i];
     }
 }
-
 
 double Solver::QuarticEquation(std::vector<double> parameter)
 {
@@ -376,7 +362,6 @@ double Solver::QuarticEquation(std::vector<double> parameter)
     return y1;
 }
 
-
 void Solver::modeInitialization(int n_modes, double mode_initial_condition, double *diffusion_modes)
 {
     // projection on diffusion modes of the initial conditions
@@ -403,7 +388,6 @@ void Solver::modeInitialization(int n_modes, double mode_initial_condition, doub
         projection_remainder = initial_condition - reconstructed_solution;
     }
 }
-
 
 double Solver::NewtonBlackburn(std::vector<double> parameter)
 {
@@ -440,7 +424,6 @@ double Solver::NewtonBlackburn(std::vector<double> parameter)
     }
     return x1;
 }
-
 
 double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment)
 {

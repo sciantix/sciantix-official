@@ -25,6 +25,9 @@
  *
  * This class extends the Material class to include specific properties that are unique to gases used in fission processes,
  * such as atomic number, mass number, Van der Waals volume, decay rate, and a precursor factor.
+ * 
+ * @authors 
+ * G. Zullo
  */
 class Gas : virtual public Material
 {

@@ -17,8 +17,7 @@
 #include "Simulation.h"
 
 /**
- * @file GapPartialPressure.C
- * @brief Calculates the oxygen partial pressure in the gap based on a thermo-chemical equilibrium model.
+ * @brief GapPartialPressure() Calculates the oxygen partial pressure in the gap based on a thermo-chemical equilibrium model.
  * 
  * @authors 
  * Giacomo Petrosillo

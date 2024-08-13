@@ -11,13 +11,22 @@
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
-//  Contributors: F. Bastien                                                        //
+//                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef GLOBAL_H
 #define GLOBAL_H
 
 #include <string>
+
+/**
+ * @file Global.h
+ * @brief Defining a global path TestPath
+ * 
+ * @authors 
+ * F. Bastien
+ * 
+ */
 
 extern std::string TestPath; 
 

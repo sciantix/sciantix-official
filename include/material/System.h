@@ -29,9 +29,12 @@
 
 /**
  * \class System
- * \brief Class derived from Gas and Matrix to include the properties that depend on both the fission gas and the fuel matrix (e.g., Xe covolume)
+ * \brief Class derived from Material to include the properties that depend on both the fission gas and the fuel matrix.
+ * 
+ * @authors 
+ * G. Zullo
  */
-class System: public Material
+class System: virtual public Material
 {
 protected:
 

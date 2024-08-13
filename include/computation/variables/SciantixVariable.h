@@ -11,11 +11,11 @@
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
-//  Contributors: F. Bastien                                                        //
+//                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef PHYSICS_VARIABLE_H
-#define PHYSICS_VARIABLE_H
+#ifndef SCIANTIX_VARIABLE_H
+#define SCIANTIX_VARIABLE_H
 
 #include "Variable.h"
 
@@ -25,6 +25,10 @@
  *
  * SciantixVariable includes features such as unit of measure (UOM), final and initial values,
  * and mechanisms for adjusting these values through specific operations.
+ * 
+ * @authors 
+ * G. Zullo
+ * F. Bastien
  */
 class SciantixVariable : virtual public Variable
 {
@@ -138,4 +142,4 @@ public:
 	~SciantixVariable() {}
 };
 
-#endif // PHYSICS_VARIABLE_H
+#endif

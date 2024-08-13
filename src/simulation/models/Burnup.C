@@ -17,40 +17,33 @@
 #include "Simulation.h"
 
 /**
- * @file Burnup.C
- * @brief Calculates the local burnup from fission rate and fuel density.
- * 
- * @authors 
- * Davide Pizzocri
- * Tommaso Barani
- * Giovanni Zullo
+ * @brief Burnup() calculates the local burnup from fission rate and fuel density.
  *
  * @details
  * This function calculates the local burnup in MWd/kgUO2 from fission rate and fuel density.
  * In addition, the function calculates also the irradiation time and the burnup in FIMA.
  * 
  */
-
 void Simulation::Burnup()
 {
     // Model declaration
     Model model_;
     model_.setName("Burnup");
 
-	double fissionRate = history_variable["Fission rate"].getFinalValue();
-	double fuelDensity = sciantix_variable["Fuel density"].getFinalValue();
-	double specificPower = fissionRate * (3.12e-17) / fuelDensity;
+    double fissionRate = history_variable["Fission rate"].getFinalValue();
+    double fuelDensity = sciantix_variable["Fuel density"].getFinalValue();
+    double specificPower = fissionRate * (3.12e-17) / fuelDensity;
 
-	double burnup = specificPower / 86400.0; // specific power in MW/kg, burnup in MWd/kg
-	sciantix_variable["Specific power"].setFinalValue(specificPower);
-	
-	std::vector<double> parameter;
-	parameter.push_back(burnup);
+    double burnup = specificPower / 86400.0; // specific power in MW/kg, burnup in MWd/kg
+    sciantix_variable["Specific power"].setFinalValue(specificPower);
+    
+    std::vector<double> parameter;
+    parameter.push_back(burnup);
 
-	std::string reference = ": The local burnup is calculated from the fission rate density.";
+    std::string reference = ": The local burnup is calculated from the fission rate density.";
 
-	model_.setParameter(parameter);
-	model_.setRef(reference);
+    model_.setParameter(parameter);
+    model_.setRef(reference);
     model.push(model_);
 
     // Model resolution

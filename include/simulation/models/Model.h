@@ -34,6 +34,10 @@
  *
  * The Model class is an integral part of the SCIANTIX simulation software, serving as a base for defining
  * various simulation models.
+ * 
+ * @authors
+ * G. Zullo
+ * F. Bastien
  */
 class Model: public Material
 {

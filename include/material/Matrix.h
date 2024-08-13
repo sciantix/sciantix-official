@@ -31,6 +31,9 @@
  *
  * This class extends the Material class to incorporate properties specific to nuclear fuel matrices,
  * including physical and nuclear properties like lattice parameters, grain boundary properties, and fission fragment characteristics.
+ * 
+ * @authors 
+ * G. Zullo
  */
 class Matrix : virtual public Material
 {

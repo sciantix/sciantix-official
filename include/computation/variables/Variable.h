@@ -11,7 +11,7 @@
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
-//  Contributors: F. Bastien                                                        //
+//                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef VARIABLE_H
@@ -27,6 +27,10 @@
  *
  * The Variable class inherits from Entity and is intended to be the base class for different types
  * of variables used in a system, encapsulating common attributes such as name and reference.
+ * 
+ * @authors 
+ * G. Zullo
+ * F. Bastien
  */
 class Variable
 {

@@ -26,5 +26,10 @@
  * @param yy Vector of output values corresponding to each xx value.
  * @param n The total number of points in xx and yy.
  * @return The interpolated value at point x.
+ * 
+ * @authors
+ * D. Pizzocri
+ * T. Barani
+ * 
  */
 double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy, unsigned short int n);

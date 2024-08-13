@@ -24,6 +24,12 @@
  *  \brief Contains functions for error handling in SCIANTIX software.
  *
  *  Provides functions to log and manage error messages related to wrong user inputs or internal errors.
+ * 
+ * @authors
+ * D. Pizzocri
+ * T. Barani 
+ * G. Zullo
+ * F. Bastien
  */
 namespace ErrorMessages
 {
