@@ -1,97 +1,103 @@
 # SCIANTIX
 
-SCIANTIX is a 0D code developed at Politecnico di Milano.
-The objective of SCIANTIX is to represent the behaviour of a single grain of nuclear fuel.
-The modelling of fission gases is the main aspect considered.
-Engineering models are used, allowing for integration in industrial fuel performance codes.
-Nevertheless, physics-based model are preferred to empirical models.
-This facilitates the incorporation of information from lower length scale calculations.
+SCIANTIX is a 0D simulation code developed at Politecnico di Milano, designed to model the behavior of a single grain of nuclear fuel, with a particular focus on fission gas behavior. The code primarily uses physics-based models, which enhances the integration of lower-length scale calculations and improves accuracy over empirical models. These engineering models facilitate the code's integration into industrial fuel performance simulations.
 
-At present, this version of the code is validated against experiments for
- - intragranular gaseous swelling.
- - intergranular gaseous swelling
- - helium behaviour and release in annealing conditions
- - release of radioactive fission gases
- - high-burnup structure porosity formation and evolution
+Currently, SCIANTIX is validated against experimental data for the following phenomena:
+- Intragranular gaseous swelling
+- Intergranular gaseous swelling
+- Helium behavior and release under annealing conditions
+- Release of radioactive fission gases
+- Formation and evolution of high-burnup structure (HBS) porosity
 
-The validation database is accessible in the *regression* folder.
+The validation database is available in the `regression` folder.
 
 # Installation
 
-## On Linux
-1. Obtain the code (either by `git clone` or by downloading the `zip`)
-2. Install dependencies
-    - Ubuntu: `sudo apt install build-essential`
-3. Create a build directory (`mkdir build`), enter it (`cd build`) and create a Makefile with cmake tool (`cmake ..`)
-4. Compile the code by typing `make` in the build directory
-    - to utilize more cores, use `make -j`
-    - in the `build` directory, look for the executable `sciantix.x`
+## Linux Installation
 
-## On Windows
+1. **Obtain the Code:** Download the source code by cloning the repository or by downloading the `zip` file.
+2. **Install Dependencies:**
+   - On Ubuntu, run: `sudo apt install build-essential`
+3. **Build the Code:**
+   - Create a build directory: `mkdir build`
+   - Navigate to the build directory: `cd build`
+   - Generate the Makefile with CMake: `cmake ..`
+   - Compile the code: `make`
+   - To speed up the process using multiple cores, use: `make -j`
 
-A possible approach is throught the [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install).
+The compiled executable, `sciantix.x`, will be located in the `build` directory.
 
-1. [Install Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install)
+## Windows Installation
 
-2. Run WSL (by typing `wsl` in `cmd.exe` or as `Ubuntu` application in Start menu). Navigate to the unpacked code directory (possibly by  `cd /mnt/c/...`, where `...` should be changed to code directory path).
+A recommended approach for Windows users is to use the [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install).
 
-3. Follow instructions for Linux from point 2.
+1. **Install WSL:**
+   - Follow the [official installation guide](https://learn.microsoft.com/en-us/windows/wsl/install).
+2. **Run WSL:**
+   - Open WSL by typing `wsl` in `cmd.exe` or by launching the `Ubuntu` application from the Start menu.
+   - Navigate to the code directory using: `cd /mnt/c/...` (replace `...` with your code directory path).
+3. **Follow Linux Installation Instructions:**
+   - Proceed with the Linux installation steps starting from step 2.
 
 # Usage
 
-To run Sciantix, execute call the `sciantix.x` executable inside directory with the input files.
+To run SCIANTIX, execute the `sciantix.x` binary within the directory containing your input files.
 
-Refer to [Input file Explanation](utilities/InputExplanation.md) for input syntax manual.
+Refer to the [Input File Explanation](utilities/InputExplanation.md) for detailed instructions on input syntax.
 
-Some examples of input files can be found
-- in the `regression` directory,
-- in the `utilities/inputExample` directory by running the Python files
-    ```
-    python utilities/inputExample/print_input_initial_conditions.py
-    python utilities/inputExample/print_input_scaling_factors.py
-    python utilities/inputExample/print_input_settings.py
-    ```
+Examples of input files can be found in:
+- The `regression` directory
+- The `utilities/inputExample` directory, by running the following Python scripts:
 
-# Regression
-Run regression tests to verify everything works correctly
-    ```
-    cd regression
-    python regression.py
-    ```
+```sh
+python utilities/inputExample/print_input_initial_conditions.py
+python utilities/inputExample/print_input_scaling_factors.py
+python utilities/inputExample/print_input_settings.py
+```
+
+# Regression Tests
+
+To verify the correct operation of SCIANTIX, run the regression tests:
+
+```sh
+cd regression
+python regression.py
+```
 
 # Documentation
-Compile the code documentation by typing `doxygen` in the code directory
-    - if `doxygen` is not found, install by `sudo apt install doxygen`
 
-# Theory, papers
+To generate the code documentation, run `doxygen` in the root directory of the code:
 
-<a href="../../references/pdf_link/Zullo_et_al_2023.pdf" target="_blank">Zullo G. et al (2023). Journal of Nuclear Materials, 587, 154744.</a>.
+- If Doxygen is not installed, you can install it with: `sudo apt install doxygen`
 
-```
-G. Zullo, D. Pizzocri, L. Luzzi,
-The SCIANTIX code for fission gas behaviour: Status, upgrades, separate-effect validation, and future developments,
-Journal of Nuclear Materials,
-Volume 587,
-2023,
-154744,
-ISSN 0022-3115,
-https://doi.org/10.1016/j.jnucmat.2023.154744.
-(https://www.sciencedirect.com/science/article/pii/S0022311523005111)
-```
+# Theory and References
 
-<a href="../../references/pdf_link/Pizzocri_et_al_2020.pdf" target="_blank">Pizzocri D. et al (2020). Journal of Nuclear Materials, 532, 152042.</a>.
+For a deeper understanding of the SCIANTIX code and its underlying models, refer to the following publications:
 
-```
-D. Pizzocri, T. Barani, L. Luzzi,
-SCIANTIX: A new open source multi-scale code for fission gas behaviour modelling designed for nuclear fuel performance codes,
-Journal of Nuclear Materials,
-Volume 532,
-2020,
-152042,
-ISSN 0022-3115,
-https://doi.org/10.1016/j.jnucmat.2020.152042.
-(https://www.sciencedirect.com/science/article/pii/S0022311519313868)
-```
+- [Zullo G. et al. (2023). Journal of Nuclear Materials, 587, 154744.](../../references/pdf_link/Zullo_et_al_2023.pdf)
 
+  ```
+  G. Zullo, D. Pizzocri, L. Luzzi,
+  The SCIANTIX code for fission gas behaviour: Status, upgrades, separate-effect validation, and future developments,
+  Journal of Nuclear Materials,
+  Volume 587,
+  2023,
+  154744,
+  ISSN 0022-3115,
+  https://doi.org/10.1016/j.jnucmat.2023.154744.
+  (https://www.sciencedirect.com/science/article/pii/S0022311523005111)
+  ```
 
+- [Pizzocri D. et al. (2020). Journal of Nuclear Materials, 532, 152042.](../../references/pdf_link/Pizzocri_et_al_2020.pdf)
 
+  ```
+  D. Pizzocri, T. Barani, L. Luzzi,
+  SCIANTIX: A new open source multi-scale code for fission gas behaviour modelling designed for nuclear fuel performance codes,
+  Journal of Nuclear Materials,
+  Volume 532,
+  2020,
+  152042,
+  ISSN 0022-3115,
+  https://doi.org/10.1016/j.jnucmat.2020.152042.
+  (https://www.sciencedirect.com/science/article/pii/S0022311519313868)
+  ```
