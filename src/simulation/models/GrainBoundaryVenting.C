@@ -29,7 +29,7 @@ void Simulation::GrainBoundaryVenting()
     case 0:
     {
         /**
-         * @brief Not considered.
+         * \brief Not considered.
          *
          */
 
@@ -42,7 +42,7 @@ void Simulation::GrainBoundaryVenting()
     case 1:
     {
         /**
-         * @brief Release mechanisms quantified via the vented fraction
+         * \brief Release mechanisms quantified via the vented fraction
          *
          */
 

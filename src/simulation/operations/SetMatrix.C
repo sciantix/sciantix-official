@@ -19,7 +19,7 @@
 void Simulation::setMatrix()
 {
   /**
-   * @brief This routine defines the available options for fuel matrices and their properties.
+   * \brief This routine defines the available options for fuel matrices and their properties.
    * 
    */
 	switch (int(input_variable["iFuelMatrix"].getValue()))

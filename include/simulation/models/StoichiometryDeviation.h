@@ -20,9 +20,9 @@
 #include "Simulation.h"
 
 /**
- * @brief 
+ * \brief 
  * 
- * @authors
+ * \authors
  * G. Petrosillo
  * G. Zullo
  * 

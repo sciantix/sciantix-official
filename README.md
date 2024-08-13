@@ -1,5 +1,21 @@
-# sciantix-official / main
-The branch 'sciantix-official / main' contains the new sciantix 2.0 version, together with the validation database and regression files.
+# sciantix-official
+
+SCIANTIX is a 0D code developed at Politecnico di Milano.
+The objective of SCIANTIX is to represent the behaviour of a single grain of nuclear fuel.
+The modelling of inert gas behaviour is the main aspect considered.
+Engineering models are used, allowing for future integration in industrial fuel performance codes.
+Nevertheless, physically-based model are preferred to empirical models.
+This facilitates the incorporation of information from lower length scale calculations.
+
+ <a href="../../references/pdf_link/Pizzocri_et_al_2020.pdf" target="_blank">Pizzocri et al 2020</a>, <a href="../../references/pdf_link/Zullo_et_al_2023.pdf" target="_blank">Zullo et al 2023</a>.
+ 
+At present, this version of the code is validated against experiments for
+ - intragranular gaseous swelling
+ - intergranular gaseous swelling
+ - helium behaviour and release in annealing conditions
+ - release of radioactive fission gases
+The validation database is accessible in the *regression* folder.
+  
 
 
 # Installation

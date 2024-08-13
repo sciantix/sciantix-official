@@ -20,12 +20,12 @@
 #include "Variable.h"
 
 /**
- * @brief A derived class specifically for handling input variables used in simulations or models.
+ * \brief A derived class specifically for handling input variables used in simulations or models.
  *
  * This class extends the `Variable` class, providing a structured way to manage input settings,
  * such as parameters for simulations, ensuring that these inputs can be easily modified and retrieved.
  * 
- * @authors 
+ * \authors 
  * G. Zullo
  * F. Bastien
  * 
@@ -41,9 +41,9 @@ public:
 	}
 
 	/**
-	 * @brief Sets the value of the input variable.
+	 * \brief Sets the value of the input variable.
 	 *
-	 * @param v The new value to assign to the input variable.
+	 * \param v The new value to assign to the input variable.
 	 */
 	void setValue(double v)
 	{
@@ -52,7 +52,7 @@ public:
 	}
 
 	/**
-	 * @brief Retrieves the value of the input variable.
+	 * \brief Retrieves the value of the input variable.
 	 *
 	 * @return The current value of the input variable.
 	 */
@@ -63,12 +63,12 @@ public:
 	}
 
 	/**
-	 * @brief Constructor for InputVariable.
+	 * \brief Constructor for InputVariable.
 	 */
 	InputVariable() {}
 
 	/**
-	 * @brief Destructor for InputVariable.
+	 * \brief Destructor for InputVariable.
 	 */
 	~InputVariable() {}
 

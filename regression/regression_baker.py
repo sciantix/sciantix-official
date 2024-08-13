@@ -2,7 +2,7 @@
 
 This is a python script to execute the regression (running the validation database) of SCIANTIX.
 
-@author G. Zullo
+\author G. Zullo
 
 """
 

@@ -29,13 +29,13 @@ void Simulation::IntraGranularBubbleBehaviour()
 	{
 	case 0:
 	{
-		/// @brief
+		/// \brief
 		/// iIntraGranularBubbleEvolution == 0
 		/// ----------------------------------
 		///
 		/// This case assumes constant trial values for the intragranular bubble number density and radius.
-		/// @param[out] intragranular_bubble_concentration
-		/// @param[out] intragranular_bubble_radius
+		/// \param[out] intragranular_bubble_concentration
+		/// \param[out] intragranular_bubble_radius
 
 		reference += "No evolution.";
 
@@ -53,21 +53,21 @@ void Simulation::IntraGranularBubbleBehaviour()
 
 	case 1:
 	{
-		/// @brief
+		/// \brief
 		/// iIntraGranularBubbleEvolution == 1
 		/// ----------------------------------
 		///
 		/// The evolution of small intra-granular bubbles in fuel grains is controlled by bubble nucleation, gas atom trapping, and irradiation-induced gas atom re-solution back in the lattice.
-		/// Description of the model in @ref Pizzocri et al., JNM, 502 (2018) 323-330.
-		/// @param[out] intragranular_bubble_concentration
-		/// @param[out] intragranular_bubble_radius
+		/// @see Description of the model in <a href="../../references/pdf_link/Pizzocri_et_al_2018.pdf" target="_blank">Pizzocri et al., JNM, 502 (2018) 323-330</a>.
+		/// \param[out] intragranular_bubble_concentration
+		/// \param[out] intragranular_bubble_radius
 		
 		reference += ": Pizzocri et al., JNM, 502 (2018) 323-330.";
 
-		/// @param[in] resolution_rate
+		/// \param[in] resolution_rate
 		parameter.push_back(sciantix_system[0].getResolutionRate());
 
-		/// @param[in] nucleation_rate
+		/// \param[in] nucleation_rate
 		parameter.push_back(sciantix_system[0].getNucleationRate());
 
 		break;
@@ -75,13 +75,14 @@ void Simulation::IntraGranularBubbleBehaviour()
 
 	case 2:
 	{
-		/// @brief
+		/// \brief
 		/// iIntraGranularBubbleEvolution == 2
 		/// ----------------------------------
 		///
 		/// The evolution of intragranular bubbles is modelled by means of temperature-driven correlations.
-		/// Description of the model in @ref White, Tucker, Journal of Nuclear Materials, 118 (1983), 1-38.
-		/// @param[in] local_fuel_temperature
+		/// @see Description of the model in <a href="../../references/pdf_link/White_and_Tucker_1983.pdf" target="_blank">White, Tucker, Journal of Nuclear Materials, 118 (1983), 1-38</a>.
+
+		/// \param[in] local_fuel_temperature
 
 		reference += "White and Tucker, JNM, 118 (1983), 1-38.";
 		
@@ -94,7 +95,7 @@ void Simulation::IntraGranularBubbleBehaviour()
 	case 3:
 	{
 		/**
-		 * @brief iIntraGranularBubbleEvolution == 3
+		 * \brief iIntraGranularBubbleEvolution == 3
 		 * 
 		 * The evolution of intragranular bubble concentration, radius and atoms per bubble is described through
 		 * the similarity ratio, based on the evolution of intragranular concentration of gas in bubbles.
@@ -115,13 +116,13 @@ void Simulation::IntraGranularBubbleBehaviour()
 	case 99:
 	{
 		/**
-		 * @brief iIntraGranularBubbleEvolution == 99
+		 * \brief iIntraGranularBubbleEvolution == 99
 		 * No intragranular bubbles.
 		 * 
 		 * To be used with iTrappingRate = 99, iResolutionRate = 99, iNucleationRate = 99.
 		 * 
-		 * @param[out] intragranular_bubble_radius
-		 * @param[out] intragranular_bubble_concentration
+		 * \param[out] intragranular_bubble_radius
+		 * \param[out] intragranular_bubble_concentration
 		 * 
 		 */
 

@@ -20,17 +20,17 @@
 #include "Simulation.h"
 
 /**
- * @brief Defines diffusion models using the spectral diffusion with one equation.
+ * \brief Defines diffusion models using the spectral diffusion with one equation.
  */
 void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
 
 /**
- * @brief Defines diffusion models using the spectral diffusion with two equations.
+ * \brief Defines diffusion models using the spectral diffusion with two equations.
  */
 void defineSpectralDiffusion2Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
 
 /**
- * @brief Defines diffusion models using the spectral diffusion with three equations.
+ * \brief Defines diffusion models using the spectral diffusion with three equations.
  *
  * The first equation is for xenon in non-restructured matrix - dynamic solution
  * The second equation is for xenon in non-restructured matrix - intragranular bubbles
@@ -41,7 +41,7 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
 	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> physics_variable, int n_modes);
 
 /**
- * @brief Handles unsupported diffusion solver options.
+ * \brief Handles unsupported diffusion solver options.
  */
 void errorHandling(SciantixArray<InputVariable> input_variable);
 

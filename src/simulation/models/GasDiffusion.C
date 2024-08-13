@@ -162,7 +162,7 @@ void Simulation::GasDiffusion()
     }
 
     /**
-     * @brief If **iGrainBoundaryBehaviour = 0** (e.g., grain-boundary calculations are neglected),
+     * \brief If **iGrainBoundaryBehaviour = 0** (e.g., grain-boundary calculations are neglected),
      * all the gas arriving at the grain boundary is released.
      *
      */

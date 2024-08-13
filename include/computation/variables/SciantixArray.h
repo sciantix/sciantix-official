@@ -28,16 +28,17 @@
 #include "SciantixVariable.h"
 
 /**
- * @file SciantixArray.h
- * @brief Defines the SciantixArray template class for managing a collection of variables with fast access by name or index.
+ * \file SciantixArray.h
+ * \brief Defines the SciantixArray template class for managing a collection of variables with fast access by name or index.
  * 
- * @authors 
+ * \authors 
  * F. Bastien
+ * G. Zullo
  */
 
 /**
  * @class SciantixArray
- * @brief A template class for managing a collection of variables with fast access by name or index.
+ * \brief A template class for managing a collection of variables with fast access by name or index.
  * 
  * @tparam T The type of elements stored in the array. The type T must have a `getName()` method returning a `std::string`.
  * 
@@ -53,14 +54,14 @@ private:
 
 public:
     /**
-     * @brief Default constructor for the SciantixArray class.
+     * \brief Default constructor for the SciantixArray class.
      */
     SciantixArray(){}
 
     /**
-     * @brief Constructs a SciantixArray from a given vector of elements.
+     * \brief Constructs a SciantixArray from a given vector of elements.
      * 
-     * @param data A vector of elements to initialize the array.
+     * \param data A vector of elements to initialize the array.
      * 
      * The constructor also populates the internal map with the names of the elements and their corresponding indices.
      */
@@ -75,9 +76,9 @@ public:
     }
 
     /**
-     * @brief Adds or replaces an element in the array.
+     * \brief Adds or replaces an element in the array.
      * 
-     * @param element The element to be added or replaced.
+     * \param element The element to be added or replaced.
      * 
      * If an element with the same name already exists in the array, it will be replaced with the new element.
      * Otherwise, the element is added to the end of the array.
@@ -96,7 +97,7 @@ public:
     }
 
     /**
-     * @brief Clears all elements from the array.
+     * \brief Clears all elements from the array.
      * 
      * This method clears both the internal vector and the map, effectively resetting the array.
      */
@@ -107,7 +108,7 @@ public:
     }
 
     /**
-     * @brief Checks if the array is empty.
+     * \brief Checks if the array is empty.
      * 
      * @return true if the array is empty, false otherwise.
      */
@@ -117,9 +118,9 @@ public:
     }
 
     /**
-     * @brief Accesses an element by its index.
+     * \brief Accesses an element by its index.
      * 
-     * @param index The index of the element to access.
+     * \param index The index of the element to access.
      * @return A reference to the element at the specified index.
      */
     T& operator[](int index)
@@ -128,9 +129,9 @@ public:
     }
 
     /**
-     * @brief Accesses an element by its name.
+     * \brief Accesses an element by its name.
      * 
-     * @param variable_name The name of the element to access.
+     * \param variable_name The name of the element to access.
      * @return A reference to the element with the specified name.
      * 
      * If the element is not found, an error message is printed and the program exits.
@@ -149,37 +150,37 @@ public:
     }
 
     /**
-     * @brief Provides an iterator to the beginning of the array.
+     * \brief Provides an iterator to the beginning of the array.
      * 
      * @return An iterator pointing to the first element of the array.
      */
     typename std::vector<T>::iterator begin() {return array.begin();}
 
     /**
-     * @brief Provides an iterator to the end of the array.
+     * \brief Provides an iterator to the end of the array.
      * 
      * @return An iterator pointing to the past-the-end element of the array.
      */
     typename std::vector<T>::iterator end() {return array.end();}
 
     /**
-     * @brief Provides a constant iterator to the beginning of the array.
+     * \brief Provides a constant iterator to the beginning of the array.
      * 
      * @return A constant iterator pointing to the first element of the array.
      */
     typename std::vector<T>::const_iterator begin() const {return array.begin();}
 
     /**
-     * @brief Provides a constant iterator to the end of the array.
+     * \brief Provides a constant iterator to the end of the array.
      * 
      * @return A constant iterator pointing to the past-the-end element of the array.
      */
     typename std::vector<T>::const_iterator end() const {return array.end();}
 
     /**
-     * @brief Checks if an element with the given name is present in the array.
+     * \brief Checks if an element with the given name is present in the array.
      * 
-     * @param element_name The name of the element to check.
+     * \param element_name The name of the element to check.
      * @return true if the element is present, false otherwise.
      */
     bool isElementPresent(std::string element_name)

@@ -26,7 +26,7 @@
  * This class extends the Material class to include specific properties that are unique to gases used in fission processes,
  * such as atomic number, mass number, Van der Waals volume, decay rate, and a precursor factor.
  * 
- * @authors 
+ * \authors 
  * G. Zullo
  */
 class Gas : virtual public Material
@@ -41,7 +41,7 @@ protected:
 public:
 	/**
 	 * \brief Sets the atomic number of the gas.
-	 * @param y The atomic number to be set.
+	 * \param y The atomic number to be set.
 	 */
 	void setAtomicNumber(int y)
 	{
@@ -61,7 +61,7 @@ public:
 
 	/**
 	 * \brief Sets the mass number of the gas.
-	 * @param y The mass number to be set.
+	 * \param y The mass number to be set.
 	 */
 	void setMassNumber(double y)
 	{
@@ -81,7 +81,7 @@ public:
 
 	/**
 	 * \brief Sets the Van der Waals volume of the gas.
-	 * @param y The Van der Waals volume to be set.
+	 * \param y The Van der Waals volume to be set.
 	 */
 	void setVanDerWaalsVolume(double y)
 	{
@@ -101,7 +101,7 @@ public:
 
 	/**
 	 * \brief Sets the decay rate of the gas.
-	 * @param l The decay rate to be set.
+	 * \param l The decay rate to be set.
 	 */
 	void setDecayRate(double l)
 	{
@@ -121,12 +121,12 @@ public:
 
 	/**
 	 * \brief Sets the precursor factor for nuclear reactions.
-	 * @param h The precursor factor to be set.
+	 * \param h The precursor factor to be set.
 	 */
 	void setPrecursorFactor(double h)
 	{
 		/**
-		 * @brief Member function to set the value of the precursor enhancement factor, from input.
+		 * \brief Member function to set the value of the precursor enhancement factor, from input.
 		 *
 		 */
 		precursor_factor = h;
@@ -139,7 +139,7 @@ public:
 	double getPrecursorFactor()
 	{
 		/**
-		 * @brief Member function to get the value of the precursor enhancement factor.
+		 * \brief Member function to get the value of the precursor enhancement factor.
 		 *
 		 */
 		return precursor_factor;

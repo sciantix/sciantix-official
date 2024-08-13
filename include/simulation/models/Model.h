@@ -30,12 +30,12 @@
 #include "Material.h"
 
 /**
- * @brief Represents the models used in the SCIANTIX simulation.
+ * \brief Represents the models used in the SCIANTIX simulation.
  *
  * The Model class is an integral part of the SCIANTIX simulation software, serving as a base for defining
  * various simulation models.
  * 
- * @authors
+ * \authors
  * G. Zullo
  * F. Bastien
  */
@@ -47,8 +47,8 @@ protected:
 
 public:
 	/**
-	 * @brief Sets the parameters of the model.
-	 * @param p Vector of doubles representing the parameters to be applied to the model.
+	 * \brief Sets the parameters of the model.
+	 * \param p Vector of doubles representing the parameters to be applied to the model.
 	 */
 	void setParameter(std::vector<double> p)
 	{
@@ -56,7 +56,7 @@ public:
 	}
 
 	/**
-	 * @brief Retrieves the parameters of the model.
+	 * \brief Retrieves the parameters of the model.
 	 * @return Vector of doubles containing the current parameters of the model.
 	 */
 	std::vector<double> getParameter()

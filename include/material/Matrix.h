@@ -32,7 +32,7 @@
  * This class extends the Material class to incorporate properties specific to nuclear fuel matrices,
  * including physical and nuclear properties like lattice parameters, grain boundary properties, and fission fragment characteristics.
  * 
- * @authors 
+ * \authors 
  * G. Zullo
  */
 class Matrix : virtual public Material
@@ -60,7 +60,7 @@ public:
 // public:
 	/**
 	 * \brief Sets the theoretical density of the matrix.
-	 * @param m The density to set (kg/m3).
+	 * \param m The density to set (kg/m3).
 	 */
 	void setTheoreticalDensity(double m)
 	{
@@ -80,7 +80,7 @@ public:
 
 	/**
 	 * \brief Sets the lattice parameter of the matrix.
-	 * @param m The lattice parameter to set.
+	 * \param m The lattice parameter to set.
 	 */
 	void setLatticeParameter(double m)
 	{
@@ -100,7 +100,7 @@ public:
 
 	/**
 	 * \brief Sets the surface tension of the matrix material.
-	 * @param r The surface tension to set (N/m).
+	 * \param r The surface tension to set (N/m).
 	 */
 	void setSurfaceTension(double r)
 	{
@@ -120,7 +120,7 @@ public:
 
 	/**
 	 * \brief Sets the volume of a Schottky defect in the matrix.
-	 * @param v The volume of the Schottky defect to set (m3).
+	 * \param v The volume of the Schottky defect to set (m3).
 	 */
 	void setSchottkyVolume(double v)
 	{
@@ -140,7 +140,7 @@ public:
 
 	/**
 	 * \brief Sets the volume of an octahedral interstitial site in the matrix.
-	 * @param v The volume to set (m3).
+	 * \param v The volume to set (m3).
 	 */
 	void setOIS(double v)
 	{
@@ -161,7 +161,7 @@ public:
 	/**
 	 * \brief Sets the grain boundary mobility based on the selected model.
 	 *
-	 * @param input_value The model selection for grain boundary mobility.
+	 * \param input_value The model selection for grain boundary mobility.
 	 */
 	void setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVariable> &history_variable);
 
@@ -177,7 +177,7 @@ public:
 
 	/**
 	 * \brief Sets the average range of the fission fragments in the matrix.
-	 * @param r The range to set (m).
+	 * \param r The range to set (m).
 	 */
 	void setFFrange(double r)
 	{
@@ -197,7 +197,7 @@ public:
 
 	/**
 	 * \brief Sets the radius of influence of the fission fragment track.
-	 * @param r The radius to set (m).
+	 * \param r The radius to set (m).
 	 */
 	void setFFinfluenceRadius(double r)
 	{
@@ -217,7 +217,7 @@ public:
 
 	/**
 	 * \brief Sets the semidihedral angle.
-	 * @param sda The semidihedral angle to set.
+	 * \param sda The semidihedral angle to set.
 	 */
 	void setSemidihedralAngle(double sda)
 	{
@@ -237,7 +237,7 @@ public:
 
 	/**
 	 * \brief Sets the thickness of the grain boundary.
-	 * @param gbt The thickness to set (m).
+	 * \param gbt The thickness to set (m).
 	 */
 	void setGrainBoundaryThickness(double gbt)
 	{
@@ -258,7 +258,7 @@ public:
 	/**
 	 * \brief Sets the diffusivity of vacancies on the grain boundaries based on the input model.
 	 *
-	 * @param input_value The model selection for grain boundary vacancy diffusivity.
+	 * \param input_value The model selection for grain boundary vacancy diffusivity.
 	 */
 	void setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable);
 
@@ -274,7 +274,7 @@ public:
 
 	/**
 	 * \brief Sets the lenticular shape factor.
-	 * @param lsf The lenticular shape factor to set (/).
+	 * \param lsf The lenticular shape factor to set (/).
 	 */
 	void setLenticularShapeFactor(double lsf)
 	{
@@ -294,7 +294,7 @@ public:
 
 	/**
 	 * \brief Sets the nucleation rate under irradiation.
-	 * @param n The nucleation rate to set (1/s).
+	 * \param n The nucleation rate to set (1/s).
 	 */
 	void setNucleationRate(double n)
 	{
@@ -368,7 +368,7 @@ public:
 
 	/**
 	 * \brief Sets the grain radius of the matrix.
-	 * @param gr The grain radius to set.
+	 * \param gr The grain radius to set.
 	 */
 	void setGrainRadius(double gr)
 	{
@@ -388,7 +388,7 @@ public:
 
 	/**
 	 * \brief Sets the temperature limit for complete healing of extended defects in the fuel matrix.
-	 * @param t The temperature threshold to set (K).
+	 * \param t The temperature threshold to set (K).
 	 */
 	void setHealingTemperatureThreshold(double t)
 	{

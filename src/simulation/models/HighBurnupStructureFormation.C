@@ -29,7 +29,7 @@ void Simulation::HighBurnupStructureFormation()
 	{
 	case 0:
 	{
-		/// @brief
+		/// \brief
 		/// iHighBurnupStructureFormation == 0
 		/// ----------------------------------
 		///
@@ -46,16 +46,16 @@ void Simulation::HighBurnupStructureFormation()
 
 	case 1:
 	{
-		/// @brief
+		/// \brief
 		/// iHighBurnupStructureFormation == 1
 		/// ----------------------------------
 		///
 		/// This case calculates the fraction of HBS-restructured volume of the UO2 fuel matrix based on the KJMA approach.
-		/// @ref Barani et al. Journal of Nuclear Materials 539 (2020) 152296
-		/// @param[out] avrami_constant
-		/// @param[out] transformation_rate
-		/// @param[out] resolution_layer_thickness
-		/// @param[out] resolution_critical_distance
+		/// @see <a href="../../references/pdf_link/Barani_et_al_2020.pdf" target="_blank">Barani et al. Journal of Nuclear Materials 539 (2020) 152296</a>.
+		/// \param[out] avrami_constant
+		/// \param[out] transformation_rate
+		/// \param[out] resolution_layer_thickness
+		/// \param[out] resolution_critical_distance
 
 		reference += ": Barani et al. Journal of Nuclear Materials 539 (2020) 152296";
 

@@ -23,13 +23,13 @@
 #include "InputVariable.h"
 
 /**
- * @brief Class providing solver methods for the SCIANTIX simulation framework.
+ * \brief Class providing solver methods for the SCIANTIX simulation framework.
  *
  * The Solver class contains various numerical methods to solve differential equations
  * and other mathematical problems encountered in the simulation. These solvers are
  * used in conjunction with models within the Simulation class.
  * 
- * @author
+ * \author
  * D. Pizzocri
  * T. Barani
  * G. Zullo
@@ -39,59 +39,59 @@ class Solver : virtual public InputVariable
 public:
 
 	/**
-	 * @brief Integrates the ODE y' = + S.
+	 * \brief Integrates the ODE y' = + S.
 	 *
-	 * @param initial_value The initial value of the dependent variable.
-	 * @param parameter The source term.
-	 * @param increment The time increment.
+	 * \param initial_value The initial value of the dependent variable.
+	 * \param parameter The source term.
+	 * \param increment The time increment.
 	 * @return The updated value after integration.
 	 */
 	double Integrator(double initial_value, double parameter, double increment);
 
 
 	/**
-	 * @brief Solves the ODE y' = k / y + S using a limited growth model.
+	 * \brief Solves the ODE y' = k / y + S using a limited growth model.
 	 *
-	 * @param initial_value The initial value of the dependent variable.
-	 * @param parameter A vector containing the growth rate and source term.
-	 * @param increment The time increment.
+	 * \param initial_value The initial value of the dependent variable.
+	 * \param parameter A vector containing the growth rate and source term.
+	 * \param increment The time increment.
 	 * @return The updated value after solving the ODE.
 	 */
 	double LimitedGrowth(double initial_value, std::vector<double> parameter, double increment);
 
 
 	/**
-	 * @brief Solves the ODE y' = - L y + S using a decay model.
+	 * \brief Solves the ODE y' = - L y + S using a decay model.
 	 *
-	 * @param initial_condition The initial value of the dependent variable.
-	 * @param decay_rate The decay rate.
-	 * @param source_term The source.
-	 * @param increment The time increment.
+	 * \param initial_condition The initial value of the dependent variable.
+	 * \param decay_rate The decay rate.
+	 * \param source_term The source.
+	 * \param increment The time increment.
 	 * @return The updated value after solving the ODE.
 	 */
 	double Decay(double initial_condition, double decay_rate, double source_term, double increment);
 
 
 	/**
-	 * @brief Solves the ODE y' = -k y**2 using a binary interaction model.
+	 * \brief Solves the ODE y' = -k y**2 using a binary interaction model.
 	 *
-	 * @param initial_condition The initial value of the dependent variable.
-	 * @param interaction_coefficient The interaction coefficient.
-	 * @param increment The time increment.
+	 * \param initial_condition The initial value of the dependent variable.
+	 * \param interaction_coefficient The interaction coefficient.
+	 * \param increment The time increment.
 	 * @return The updated value after solving the ODE.
 	 */
 	double BinaryInteraction(double initial_condition, double interaction_coefficient, double increment);
 
 
 	/**
-	 * @brief Solves the spatially averaged PDE dy/dt = D div grad y + S - L y using a spectral approach.
+	 * \brief Solves the spatially averaged PDE dy/dt = D div grad y + S - L y using a spectral approach.
 	 * We apply a spectral approach in space, projecting the equation on the eigenfunctions of the laplacian operator.
 	 * We use the first order backward Euler solver in time.
 	 * The number of terms in the expansion, N, is fixed a priori.
 	 *
-	 * @param initial_condition The initial conditions for the diffusion modes.
-	 * @param parameter A vector containing the parameters for the diffusion equation.
-	 * @param increment The time increment.
+	 * \param initial_condition The initial conditions for the diffusion modes.
+	 * \param parameter A vector containing the parameters for the diffusion equation.
+	 * \param increment The time increment.
 	 * @return The updated value after solving the PDE.
 	 *
 	 *
@@ -106,95 +106,95 @@ public:
 
 
 	/**
-	 * @brief Function to compute the dot product between two arrays (v and u) of size n
+	 * \brief Function to compute the dot product between two arrays (v and u) of size n
 	 *
-	 * @param u The vector.
-	 * @param v The array.
-	 * @param n The size of the vector and array.
+	 * \param u The vector.
+	 * \param v The array.
+	 * \param n The size of the vector and array.
 	 * @return The dot product result.
 	 */
 	double dotProduct1D(std::vector<double> u, double v[], int n);
 
 
 	/**
-	 * @brief Computes the dot product of a 2D matrix and a 1D array.
+	 * \brief Computes the dot product of a 2D matrix and a 1D array.
 	 *
-	 * @param A The matrix.
-	 * @param v The array.
-	 * @param n_rows The number of rows in the matrix.
-	 * @param n_col The number of columns in the matrix.
-	 * @param result The result array.
+	 * \param A The matrix.
+	 * \param v The array.
+	 * \param n_rows The number of rows in the matrix.
+	 * \param n_col The number of columns in the matrix.
+	 * \param result The result array.
 	 */
 	void dotProduct2D(double A[], double v[], int n_rows, const int n_col, double result[]);
 
 	/**
-	 * @brief Solves two coupled diffusion equations using a spectral approach.
+	 * \brief Solves two coupled diffusion equations using a spectral approach.
 	 *
-	 * @param gas_1 The first gas variable.
-	 * @param gas_2 The second gas variable.
-	 * @param initial_condition_gas_1 Initial conditions for the first gas.
-	 * @param initial_condition_gas_2 Initial conditions for the second gas.
-	 * @param parameter A vector containing the parameters for the diffusion equations.
-	 * @param increment The time increment.
+	 * \param gas_1 The first gas variable.
+	 * \param gas_2 The second gas variable.
+	 * \param initial_condition_gas_1 Initial conditions for the first gas.
+	 * \param initial_condition_gas_2 Initial conditions for the second gas.
+	 * \param parameter A vector containing the parameters for the diffusion equations.
+	 * \param increment The time increment.
 	 */
 	void SpectralDiffusion2equations(double &gas_1, double &gas_2, double *initial_condition_gas_1, double *initial_condition_gas_2, std::vector<double> parameter, double increment);
 
 
 	/**
-	 * @brief Solves three coupled diffusion equations using a spectral approach.
+	 * \brief Solves three coupled diffusion equations using a spectral approach.
 	 *
-	 * @param gas_1 The first gas variable.
-	 * @param gas_2 The second gas variable.
-	 * @param gas_3 The third gas variable.
-	 * @param initial_condition_gas_1 Initial conditions for the first gas.
-	 * @param initial_condition_gas_2 Initial conditions for the second gas.
-	 * @param initial_condition_gas_3 Initial conditions for the third gas.
-	 * @param parameter A vector containing the parameters for the diffusion equations.
-	 * @param increment The time increment.
+	 * \param gas_1 The first gas variable.
+	 * \param gas_2 The second gas variable.
+	 * \param gas_3 The third gas variable.
+	 * \param initial_condition_gas_1 Initial conditions for the first gas.
+	 * \param initial_condition_gas_2 Initial conditions for the second gas.
+	 * \param initial_condition_gas_3 Initial conditions for the third gas.
+	 * \param parameter A vector containing the parameters for the diffusion equations.
+	 * \param increment The time increment.
 	 */
 	void SpectralDiffusion3equations(double &gas_1, double &gas_2, double &gas_3, double *initial_condition_gas_1, double *initial_condition_gas_2, double *initial_condition_gas_3, std::vector<double> parameter, double increment);
 
 	/**
-	 * @brief Solves a system of two linear equations using Cramer's method.
+	 * \brief Solves a system of two linear equations using Cramer's method.
 	 *
-	 * @param A The coefficient matrix.
-	 * @param b The constant terms vector.
+	 * \param A The coefficient matrix.
+	 * \param b The constant terms vector.
 	 */
 	void Laplace2x2(double A[], double b[]);
 
 
 	/**
-	 * @brief Solves a system of three linear equations according to Cramer's method.
+	 * \brief Solves a system of three linear equations according to Cramer's method.
 	 *
-	 * @param A The coefficient matrix.
-	 * @param b The constant terms vector.
+	 * \param A The coefficient matrix.
+	 * \param b The constant terms vector.
 	 */
 	void Laplace3x3(double A[], double b[]);
 
 
 	/**
-	 * @brief Computes the determinant of a NxN matrix according to Cramer's method.
+	 * \brief Computes the determinant of a NxN matrix according to Cramer's method.
 	 *
-	 * @param N The size of the matrix.
-	 * @param A The matrix.
+	 * \param N The size of the matrix.
+	 * \param A The matrix.
 	 * @return The determinant of the matrix.
 	 */
 	double det(int N, double A[]);
 
 	/**
-	 * @brief Solves a system of linear equations using the Laplace method.
+	 * \brief Solves a system of linear equations using the Laplace method.
 	 *
-	 * @param N The size of the matrix.
-	 * @param A The coefficient matrix.
-	 * @param b The constant terms vector.
+	 * \param N The size of the matrix.
+	 * \param A The coefficient matrix.
+	 * \param b The constant terms vector.
 	 */
 	void Laplace(int N, double A[], double b[]);
 
 	/**
-	 * @brief Solver for the quartic equation ax^4 + bx^3 +cx^2 +dx + e = 0
+	 * \brief Solver for the quartic equation ax^4 + bx^3 +cx^2 +dx + e = 0
 	 * with the iterative Newton's method.
 	 *
-	 * @param parameter A vector containing the coefficients of the equation.
+	 * \param parameter A vector containing the coefficients of the equation.
 	 * parameter.at(0) initial conditions
 	 * parameter.at(1) coefficient of x^4
 	 * parameter.at(2) coefficient of x^3
@@ -206,28 +206,28 @@ public:
 	double QuarticEquation(std::vector<double> parameter);
 
 	/**
-	 * @brief Initializes the diffusion modes.
+	 * \brief Initializes the diffusion modes.
 	 *
-	 * @param n_modes The number of diffusion modes.
-	 * @param mode_initial_condition The initial condition for the modes.
-	 * @param diffusion_modes The diffusion modes array.
+	 * \param n_modes The number of diffusion modes.
+	 * \param mode_initial_condition The initial condition for the modes.
+	 * \param diffusion_modes The diffusion modes array.
 	 */
 	void modeInitialization(int n_modes, double mode_initial_condition, double *diffusion_modes);
 
 	/**
-	 * @brief Solver for the non-linear equation (Blackburn's thermochemical urania model) log(PO2(x)) = 2.0*log(x*(x+2.0)/(1.0-x)) + 108.0*pow(x,2.0) - 32700.0/T + 9.92
+	 * \brief Solver for the non-linear equation (Blackburn's thermochemical urania model) log(PO2(x)) = 2.0*log(x*(x+2.0)/(1.0-x)) + 108.0*pow(x,2.0) - 32700.0/T + 9.92
 	 * with the iterative Newton's method.
 	 * 
-	 * @param parameter A vector containing the parameters of the equation.
+	 * \param parameter A vector containing the parameters of the equation.
 	 * @return The solution to the equation.
 	 */
 	double NewtonBlackburn(std::vector<double> parameter);
 	/**
-	 * @brief Solver for the ODE [y' = K(1-beta*exp(alpha*y)))]
+	 * \brief Solver for the ODE [y' = K(1-beta*exp(alpha*y)))]
 	 *
-	 * @param initial_value The initial value of the dependent variable.
-	 * @param parameter A vector containing the parameters of the ODE.
-	 * @param increment The time increment.
+	 * \param initial_value The initial value of the dependent variable.
+	 * \param parameter A vector containing the parameters of the ODE.
+	 * \param increment The time increment.
 	 * 
 	 * parameter[0] = K
 	 * parameter[1] = beta
@@ -238,11 +238,11 @@ public:
 	double NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment);
 
 	/**
-	 * @brief Default constructor for the Solver class.
+	 * \brief Default constructor for the Solver class.
 	 */
 	Solver() {}
 	/**
-	 * @brief Destructor for the Solver class.
+	 * \brief Destructor for the Solver class.
 	 */
 	~Solver() {}
 };

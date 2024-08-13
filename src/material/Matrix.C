@@ -31,7 +31,7 @@ void Matrix::setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVar
     case 1:
     {
         /** 
-         * @brief iGrainGrowth = 1 corresponds to the Ainscough et al. (1973) grain-boundary mobility
+         * \brief iGrainGrowth = 1 corresponds to the Ainscough et al. (1973) grain-boundary mobility
          * 
         */
         reference += ": Ainscough et al., JNM, 49 (1973) 117-128.\n\t";
@@ -42,7 +42,7 @@ void Matrix::setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVar
     case 2 :
     {
         /**
-         * @brief iGrainGrowth = 2 corresponds to the @ref Van Uffelen et al. JNM, 434 (2013) 287–29 grain-boundary mobility
+         * \brief iGrainGrowth = 2 corresponds to the @ref Van Uffelen et al. JNM, 434 (2013) 287–29 grain-boundary mobility
          * 
         */
 
@@ -61,7 +61,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
 {
     /** 
      * ### GrainBoundaryVacancyDiffusivity
-     * @brief The diffusivity of the vacancies on the grain-boundaries is set according to the input_variable iGrainBoundaryVacancyDiffusivity.
+     * \brief The diffusivity of the vacancies on the grain-boundaries is set according to the input_variable iGrainBoundaryVacancyDiffusivity.
      * 
      */
 
@@ -70,7 +70,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
         case 0:
         {
             /**
-             * @brief iGrainBoundaryVacancyDiffusivity = 0 corresponds to a constant diffusivity value, equal to 1e-30 m^2/s.
+             * \brief iGrainBoundaryVacancyDiffusivity = 0 corresponds to a constant diffusivity value, equal to 1e-30 m^2/s.
              * 
              */
 
@@ -83,7 +83,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
         case 1:
         {
             /**
-             * @brief iGrainBoundaryVacancyDiffusivity = 1 corresponds to the relation from @ref Reynolds and Burton, JNM, 82 (1979) 22-25.
+             * \brief iGrainBoundaryVacancyDiffusivity = 1 corresponds to the relation from @ref Reynolds and Burton, JNM, 82 (1979) 22-25.
              * 
              */
 
@@ -96,7 +96,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
         case 2:
         {
             /**
-             * @brief iGrainBoundaryVacancyDiffusivity = 2 corresponds to the correction from @ref White, JNM, 325 (2004), 61-77
+             * \brief iGrainBoundaryVacancyDiffusivity = 2 corresponds to the correction from @ref White, JNM, 325 (2004), 61-77
              * 
              */
 
@@ -109,7 +109,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
         case 5:
         {
             /**
-             * @brief iGrainBoundaryVacancyDiffusivity = 5 corresponds to the vacancy diffusivities along HBS grain boundaries.
+             * \brief iGrainBoundaryVacancyDiffusivity = 5 corresponds to the vacancy diffusivities along HBS grain boundaries.
              * This model is from @ref Barani et al., JNM 563 (2022) 153627.
              *
              */
@@ -131,7 +131,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
 void Matrix::setPoreNucleationRate(SciantixArray<SciantixVariable> &sciantix_variable)
 {
     /**
-     * @brief nucleation rate of HBS pores.
+     * \brief nucleation rate of HBS pores.
      * This model is from @ref *Barani et al., JNM 563 (2022) 153627*.
      *
      */
@@ -148,7 +148,7 @@ void Matrix::setPoreNucleationRate(SciantixArray<SciantixVariable> &sciantix_var
 void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable)
 {
     /**
-     * @brief re-solution rate of gas atoms from HBS pores.
+     * \brief re-solution rate of gas atoms from HBS pores.
      * This model is from @ref *Barani et al., JNM 563 (2022) 153627*.
      *
      */
@@ -165,7 +165,7 @@ void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_var
 void Matrix::setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable)
 {
     /**
-     * @brief trapping rate of gas atoms in HBS pores.
+     * \brief trapping rate of gas atoms in HBS pores.
      * This model is from @ref *Barani et al., JNM 563 (2022) 153627*.
      *
      */

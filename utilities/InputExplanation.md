@@ -1,4 +1,4 @@
-# **Input file example**
+# Input file example
 
 In this folder are reported the three essential input files required from SCIANTIX
 
@@ -109,4 +109,4 @@ In this file, a simplified temperature, fission rate (power), and hydrostatic st
 1.0
 \# scaling factor - helium production rate
 
-In case of any trouble with those files, please contact the main developers (D. Pizzocri, T. Barani and G. Zullo).
+In case of any trouble with those files, please contact the main developers (D. Pizzocri, G. Zullo).

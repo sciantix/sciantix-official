@@ -28,9 +28,9 @@
 
 /**
  * \brief Read a single setting from the input file.
- * @param variable_name The name of the variable to be read.
- * @param input_file Input file stream from which the setting is read.
- * @param output_file Output file stream where the read setting is logged.
+ * \param variable_name The name of the variable to be read.
+ * \param input_file Input file stream from which the setting is read.
+ * \param output_file Output file stream where the read setting is logged.
  * @return An unsigned short int containing the value of the setting.
  */
 unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
@@ -46,9 +46,9 @@ unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& inpu
 
 /**
  * \brief Read a single parameter from the input file.
- * @param variable_name The name of the parameter to be read.
- * @param input_file Input file stream from which the parameter is read.
- * @param output_file Output file stream where the read parameter is logged.
+ * \param variable_name The name of the parameter to be read.
+ * \param input_file Input file stream from which the parameter is read.
+ * \param output_file Output file stream where the read parameter is logged.
  * @return A double containing the value of the parameter.
  */
 double ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
@@ -64,9 +64,9 @@ double ReadOneParameter(std::string variable_name, std::ifstream& input_file, st
 
 /**
  * \brief Read several parameters from a single line in the input file.
- * @param variable_name The name for the parameters to be logged.
- * @param input_file Input file stream from which the parameters are read.
- * @param output_file Output file stream where the read parameters are logged.
+ * \param variable_name The name for the parameters to be logged.
+ * \param input_file Input file stream from which the parameters are read.
+ * \param output_file Output file stream where the read parameters are logged.
  * @return A vector of doubles containing the parameters read from the file.
  */
 std::vector<double> ReadSeveralParameters(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)

@@ -150,7 +150,7 @@ void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariabl
 
     /**
      * ### setHeliumDiffusivity
-     * @brief The intra-granular helium diffusivity within the fuel grain is set according to the input_variable iHeDiffusivity
+     * \brief The intra-granular helium diffusivity within the fuel grain is set according to the input_variable iHeDiffusivity
      *
      */
     switch (input_value)
@@ -158,7 +158,7 @@ void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariabl
     case 0:
     {
         /**
-         * @brief iHeDiffusivity = 0 corresponds to a constant intra-granular diffusivity value
+         * \brief iHeDiffusivity = 0 corresponds to a constant intra-granular diffusivity value
          *
          */
 
@@ -170,7 +170,7 @@ void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariabl
     case 1:
     {
         /**
-         * @brief iHeDiffusivity = 1 is the best-estimate correlation, from data available in literature, for samples with no or very limited lattice damage.
+         * \brief iHeDiffusivity = 1 is the best-estimate correlation, from data available in literature, for samples with no or very limited lattice damage.
          * This correlation is also recommended for simulations of helium in UO<sub>2</sub> samples in which **infusion** technique has been adopted.
          * @see The correlation is from <a href="../../references/pdf_link/Luzzi_et_al_2018.pdf" target="_blank">L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271</a>.
          *
@@ -184,7 +184,7 @@ void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariabl
     case 2:
     {
         /**
-         * @brief iHeDiffusivity = 2 is the best-estimate correlation, from data available in literature, for samples with significant lattice damage.
+         * \brief iHeDiffusivity = 2 is the best-estimate correlation, from data available in literature, for samples with significant lattice damage.
          * This correlation is also recommended for simulations of helium in UO<sub>2</sub> samples in which **implantation** technique has been adopted.
          * @see The correlation is from <a href="../../references/pdf_link/Luzzi_et_al_2018.pdf" target="_blank">L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271</a>.
          *
@@ -198,7 +198,7 @@ void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariabl
     case 3:
     {
         /**
-         * @brief iHeDiffusivity = 2 sets the single gas-atom intra-granular diffusivity equal to the correlation reported in <a href="../../references/pdf_link/Talip_et_al_2014.pdf" target="_blank">Z. Talip et al. JNM 445 (2014) 117-127</a>.
+         * \brief iHeDiffusivity = 2 sets the single gas-atom intra-granular diffusivity equal to the correlation reported in <a href="../../references/pdf_link/Talip_et_al_2014.pdf" target="_blank">Z. Talip et al. JNM 445 (2014) 117-127</a>.
          *
          */
 
@@ -210,7 +210,7 @@ void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariabl
     case 99:
     {
         /**
-         * @brief iHeDiffusivity = 4 corresponds to a null intra-granular diffusivity value
+         * \brief iHeDiffusivity = 4 corresponds to a null intra-granular diffusivity value
          *
          */
 
@@ -236,7 +236,7 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
 {
     /**
      * ### setFissionGasDiffusivity
-     * @brief The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFGDiffusionCoefficient
+     * \brief The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFGDiffusionCoefficient
      *
      */
     switch (input_value)
@@ -244,7 +244,7 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 0:
     {
         /**
-         * @brief iFGDiffusionCoefficient = 0 corresponds to a constant intra-granular diffusivity value, equal to 7e-19 m^2/s.
+         * \brief iFGDiffusionCoefficient = 0 corresponds to a constant intra-granular diffusivity value, equal to 7e-19 m^2/s.
          *
          */
 
@@ -258,7 +258,7 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 1:
     {
         /**
-         * @brief iFGDiffusionCoefficient = 1 set the fission gas (xenon and krypton) single-atom intragranular diffusivity equal to the expression
+         * \brief iFGDiffusionCoefficient = 1 set the fission gas (xenon and krypton) single-atom intragranular diffusivity equal to the expression
          * in <a href="../../references/pdf_link/Turnbull_et_al_1988.pdf" target="_blank">Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22</a>.
          *
          */
@@ -281,7 +281,7 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 2:
     {
         /**
-         * @brief iFGDiffusionCoefficient = 2 set the xenon effective intragranular diffusivity equal to the expression
+         * \brief iFGDiffusionCoefficient = 2 set the xenon effective intragranular diffusivity equal to the expression
          * in <a href="../../references/pdf_link/Matzke_1980.pdf" target="_blank">Matzke (1980), Radiation Effects, 53, 219-242</a>.
          *
          */
@@ -296,7 +296,7 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 3:
     {
         /**
-         * @brief iFGDiffusionCoefficient = 3 set the xenon single-atom intragranular diffusivity equal to the expression
+         * \brief iFGDiffusionCoefficient = 3 set the xenon single-atom intragranular diffusivity equal to the expression
          * in <a href="../../references/pdf_link/Turnbull_et_al_2010.pdf" target="_blank">Turnbull et al., (2010), Background and Derivation of ANS-5.4 Standard Fission Product Release Model</a>.
          *
          */
@@ -319,7 +319,7 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 4:
     {
         /**
-         * @brief iFGDiffusionCoefficient = 4 set the xenon single-atom intragranular diffusivity equal to the expression
+         * \brief iFGDiffusionCoefficient = 4 set the xenon single-atom intragranular diffusivity equal to the expression
          * in <a href="../../references/pdf_link/Ronchi_2007.pdf" target="_blank">Ronchi, C. High Temp 45, 552-571 (2007)</a>.
          *
          */
@@ -342,7 +342,7 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 5:
     {
         /**
-         * @brief this case is for the UO2HBS.
+         * \brief this case is for the UO2HBS.
          * @see This value is from <a href="../../references/pdf_link/Barani_et_al_2020.pdf" target="_blank">Barani et al. Journal of Nuclear Materials 539 (2020) 152296</a>.
          *
          */
@@ -357,7 +357,7 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 6:
     {
         /**
-         * @brief this case is for
+         * \brief this case is for
          *
          */
         double x = sciantix_variable["Stoichiometry deviation"].getFinalValue();
@@ -386,7 +386,7 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 99:
     {
         /**
-         * @brief iFGDiffusionCoefficient = 99 set the xenon single-atom intragranular diffusivity to zero.
+         * \brief iFGDiffusionCoefficient = 99 set the xenon single-atom intragranular diffusivity to zero.
          *
          */
 
@@ -425,7 +425,7 @@ void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> 
 {
     /**
      * ### setResolutionRate
-     * @brief The helium intra-granular resolution rate is set according to the input_variable iResolutionRate.
+     * \brief The helium intra-granular resolution rate is set according to the input_variable iResolutionRate.
      *
      */
 
@@ -434,7 +434,7 @@ void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> 
     case 0:
     {
         /**
-         * @brief iResolutionRate = 0 corresponds to a constant intra-granular resolution rate, equal to 0.0001 1/s.
+         * \brief iResolutionRate = 0 corresponds to a constant intra-granular resolution rate, equal to 0.0001 1/s.
          * @see This value is from <a href="../../references/pdf_link/Olander_and_Wongsawaeng_2006.pdf" target="_blank">Olander, Wongsawaeng, JNM, 354 (2006), 94-109</a>.
          *
          */
@@ -448,7 +448,7 @@ void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> 
     case 1:
     {
         /**
-         * @brief iResolutionRate = 1 corresponds to the irradiation-induced intra-granular resolution rate from <a href="../../references/pdf_link/Turnbull_1971.pdf" target="_blank">J.A. Turnbull, JNM, 38 (1971), 203</a>.
+         * \brief iResolutionRate = 1 corresponds to the irradiation-induced intra-granular resolution rate from <a href="../../references/pdf_link/Turnbull_1971.pdf" target="_blank">J.A. Turnbull, JNM, 38 (1971), 203</a>.
          *
          */
 
@@ -462,7 +462,7 @@ void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> 
     case 2:
     {
         /**
-         * @brief iResolutionRate = 2 corresponds to the irradiation-induced intra-granular resolution rate from <a href="../../references/pdf_link/Losonen_2002.pdf" target="_blank">P. Losonen, JNM 304 (2002) 29-49</a>.
+         * \brief iResolutionRate = 2 corresponds to the irradiation-induced intra-granular resolution rate from <a href="../../references/pdf_link/Losonen_2002.pdf" target="_blank">P. Losonen, JNM 304 (2002) 29-49</a>.
 
          *
          */
@@ -477,7 +477,7 @@ void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> 
     case 3:
     {
         /**
-         * @brief iResolutionRate = 3 corresponds to the intra-granular resolution rate from <a href="../../references/pdf_link/Cognini_et_al_2021.pdf" target="_blank">Cognini et al. NET 53 (2021) 562-571</a>.
+         * \brief iResolutionRate = 3 corresponds to the intra-granular resolution rate from <a href="../../references/pdf_link/Cognini_et_al_2021.pdf" target="_blank">Cognini et al. NET 53 (2021) 562-571</a>.
          *
          * iResolutionRate = 3 includes the helium solubility in the resolution rate, with a thermal resolution term.
          *
@@ -517,7 +517,7 @@ void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> 
     case 99:
     {
         /**
-         * @brief iResolutionRate = 99 corresponds to a null intra-granular resolution rate.
+         * \brief iResolutionRate = 99 corresponds to a null intra-granular resolution rate.
          *
          */
 
@@ -544,7 +544,7 @@ void System::setTrappingRate(int input_value, SciantixArray<SciantixVariable> &s
 {
     /**
      * ### setTrappingRate
-     * @brief The krypton intra-granular trapping rate is set according to the input_variable iTrappingRate.
+     * \brief The krypton intra-granular trapping rate is set according to the input_variable iTrappingRate.
      *
      */
 
@@ -553,7 +553,7 @@ void System::setTrappingRate(int input_value, SciantixArray<SciantixVariable> &s
     case 0:
     {
         /**
-         * @brief iTrappingRate = 0 corresponds to a constant intra-granular trapping rate, equal to 9.35e-6 1/s.
+         * \brief iTrappingRate = 0 corresponds to a constant intra-granular trapping rate, equal to 9.35e-6 1/s.
          * @see This value is from <a href="../../references/pdf_link/Olander_and_Wongsawaeng_2006.pdf" target="_blank">Olander, Wongsawaeng, JNM, 354 (2006), 94-109</a>.
          *
          */
@@ -568,7 +568,7 @@ void System::setTrappingRate(int input_value, SciantixArray<SciantixVariable> &s
     case 1:
     {
         /**
-         * @brief iTrappingRate = 1 corresponds to the intra-granular trapping rate
+         * \brief iTrappingRate = 1 corresponds to the intra-granular trapping rate
          * @see From <a href="../../references/pdf_link/Ham_1958.pdf" target="_blank">F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351</a>.
          *
          * This formula is based on the assumptions that the trapping centre density is dilute enough.
@@ -594,7 +594,7 @@ void System::setTrappingRate(int input_value, SciantixArray<SciantixVariable> &s
     case 99:
     {
         /**
-         * @brief iTrappingRate = 99 stands for the case with zero trapping rate.
+         * \brief iTrappingRate = 99 stands for the case with zero trapping rate.
          *
          */
         reference += "iTrappingRate: Null trapping rate.\n\t";
@@ -620,7 +620,7 @@ void System::setNucleationRate(int input_value, SciantixArray<SciantixVariable> 
 {
     /**
      * ### setNucleationRate
-     * @brief Evaluation of the nucleation rate of intragranular gas bubble inside the UO<sub>2</sub> matrix
+     * \brief Evaluation of the nucleation rate of intragranular gas bubble inside the UO<sub>2</sub> matrix
      *
      */
     /// nucleation_rate
@@ -629,7 +629,7 @@ void System::setNucleationRate(int input_value, SciantixArray<SciantixVariable> 
     case 0:
     {
         /**
-         * @brief iNucleationRate = 0 correspond to the case with constant nucleation rate.
+         * \brief iNucleationRate = 0 correspond to the case with constant nucleation rate.
          *
          */
 
@@ -643,7 +643,7 @@ void System::setNucleationRate(int input_value, SciantixArray<SciantixVariable> 
     case 1:
     {
         /**
-         * @brief iNucleationRate = 1 correspond to expression for intragranular bubble nucleation rate from
+         * \brief iNucleationRate = 1 correspond to expression for intragranular bubble nucleation rate from
          * @see <a href="../../references/pdf_link/Olander_and_Wongsawaeng_2006.pdf" target="_blank">Olander, Wongsawaeng, JNM, 354 (2006), 94-109</a>.
          *
          */
@@ -658,7 +658,7 @@ void System::setNucleationRate(int input_value, SciantixArray<SciantixVariable> 
     case 99:
     {
         /**
-         * @brief iNucleationRate = 99 correspond to case with zero nucleation rate.
+         * \brief iNucleationRate = 99 correspond to case with zero nucleation rate.
          */
 
         reference += "iNucleationRate: Null nucleation rate.\n\t";
@@ -706,7 +706,7 @@ void System::setProductionRate(int input_value, SciantixArray<SciantixVariable> 
     case 1:
     {
         /**
-         * @brief Production rate = cumulative yield * fission rate density
+         * \brief Production rate = cumulative yield * fission rate density
          *
          */
 
@@ -724,7 +724,7 @@ void System::setProductionRate(int input_value, SciantixArray<SciantixVariable> 
     case 2:
     {
         /**
-         * @brief Surrogate model derived from **helium production in fast reactor conditions**.
+         * \brief Surrogate model derived from **helium production in fast reactor conditions**.
          * The helium production rate is fitted with a function linearly dependent on the local burnup.
          * @see The default fit is from <a href="../../references/pdf_link/Cechet_et_al_2021.pdf" target="_blank">A. Cechet et al., Nuclear Engineering and Technology, 53 (2021) 1893-1908</a>.
          *
@@ -755,7 +755,7 @@ void System::setProductionRate(int input_value, SciantixArray<SciantixVariable> 
     case 3:
     {
         /**
-         * @brief Constant production rate
+         * \brief Constant production rate
          *
          */
 
@@ -768,7 +768,7 @@ void System::setProductionRate(int input_value, SciantixArray<SciantixVariable> 
     case 5:
     {
         /**
-         * @brief Production rate = cumulative yield * fission rate density * HBS volume fraction
+         * \brief Production rate = cumulative yield * fission rate density * HBS volume fraction
          *
          */
 

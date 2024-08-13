@@ -28,7 +28,7 @@
  * The Variable class inherits from Entity and is intended to be the base class for different types
  * of variables used in a system, encapsulating common attributes such as name and reference.
  * 
- * @authors 
+ * \authors 
  * G. Zullo
  * F. Bastien
  */
@@ -49,7 +49,7 @@ public:
 
 	/**
 	 * \brief Sets the name of the entity.
-	 * @param n The new name to be set for the entity.
+	 * \param n The new name to be set for the entity.
 	 */
 	void setName(std::string n)
 	{

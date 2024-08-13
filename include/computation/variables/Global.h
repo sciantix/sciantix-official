@@ -20,11 +20,14 @@
 #include <string>
 
 /**
- * @file Global.h
- * @brief Defining a global path TestPath
+ * \file Global.h
+ * \brief Defining a routine for global variables
  * 
- * @authors 
+ * \details It include a global path for error messages.
+ * 
+ * \authors 
  * F. Bastien
+ * G. Zullo
  * 
  */
 
