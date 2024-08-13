@@ -30,10 +30,6 @@ void Matrix::setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVar
 
     case 1:
     {
-        /** 
-         * @brief iGrainGrowth = 1 corresponds to the Ainscough et al. (1973) grain-boundary mobility
-         * 
-        */
         reference += ": Ainscough et al., JNM, 49 (1973) 117-128.\n\t";
         grain_boundary_mobility = 1.455e-8 * exp(- 32114.5 / history_variable["Temperature"].getFinalValue());
         break;
@@ -41,11 +37,6 @@ void Matrix::setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVar
 
     case 2 :
     {
-        /**
-         * @brief iGrainGrowth = 2 corresponds to the @ref Van Uffelen et al. JNM, 434 (2013) 287–29 grain-boundary mobility
-         * 
-        */
-
         reference += ": Van Uffelen et al. JNM, 434 (2013) 287-29.\n\t";
         grain_boundary_mobility = 1.360546875e-15 * exp(- 46524.0 / history_variable["Temperature"].getFinalValue());
         break;
@@ -69,11 +60,6 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
     {
         case 0:
         {
-            /**
-             * @brief iGrainBoundaryVacancyDiffusivity = 0 corresponds to a constant diffusivity value, equal to 1e-30 m^2/s.
-             * 
-             */
-
             grain_boundary_diffusivity = 1e-30;
             reference += "iGrainBoundaryVacancyDiffusivity: constant value (1e-30 m^2/s).\n\t";
 
@@ -82,11 +68,6 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
 
         case 1:
         {
-            /**
-             * @brief iGrainBoundaryVacancyDiffusivity = 1 corresponds to the relation from @ref Reynolds and Burton, JNM, 82 (1979) 22-25.
-             * 
-             */
-
             grain_boundary_diffusivity = 6.9e-04 * exp(- 5.35e-19 / (boltzmann_constant * history_variable["Temperature"].getFinalValue()));
             reference += "iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.\n\t";
 
@@ -95,11 +76,6 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
 
         case 2:
         {
-            /**
-             * @brief iGrainBoundaryVacancyDiffusivity = 2 corresponds to the correction from @ref White, JNM, 325 (2004), 61-77
-             * 
-             */
-
             grain_boundary_diffusivity = 3.5/5 * 8.86e-6 * exp(- 4.17e4 / history_variable["Temperature"].getFinalValue());
             reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.\n\t";
 
@@ -108,12 +84,6 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
 
         case 5:
         {
-            /**
-             * @brief iGrainBoundaryVacancyDiffusivity = 5 corresponds to the vacancy diffusivities along HBS grain boundaries.
-             * This model is from @ref Barani et al., JNM 563 (2022) 153627.
-             *
-             */
-
             grain_boundary_diffusivity = (1.3e-7 * exp(-4.52e-19 /
                     (boltzmann_constant * history_variable["Temperature"].getFinalValue()))
             );

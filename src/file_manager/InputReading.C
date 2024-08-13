@@ -14,15 +14,6 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-/// InputReading
-/// This routine reads the input files.
-/// Sciantix requires three input files:
-/// (1) input_settings.txt
-/// (2) input_history.txt.
-/// (3) input_initial_conditions.txt
-/// The first contains all the model selection variables, whereas the second contains temperature, fission rate and hydrostatic stress as a function of time.
-/// The third file contains the initial conditions for the physics variables.
-
 #include "InputReading.h"
 #include "Global.h"
 

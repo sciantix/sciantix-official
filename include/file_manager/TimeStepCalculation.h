@@ -14,8 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef TIME_STEP_CALCULATION
-#define TIME_STEP_CALCULATION
+#ifndef TIME_STEP_CALCULATION_H
+#define TIME_STEP_CALCULATION_H
 
 #include <vector>
 
@@ -35,4 +35,4 @@ double TimeStepCalculation(
   double  Number_of_time_steps_per_interval
 );
 
-#endif // TIME_STEP_CALCULATION
+#endif // TIME_STEP_CALCULATION_H
