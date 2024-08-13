@@ -16,6 +16,21 @@
 
 #include "Simulation.h"
 
+/**
+ * @file Burnup.C
+ * @brief Calculates the local burnup from fission rate and fuel density.
+ * 
+ * @authors 
+ * Davide Pizzocri
+ * Tommaso Barani
+ * Giovanni Zullo
+ *
+ * @details
+ * This function calculates the local burnup in MWd/kgUO2 from fission rate and fuel density.
+ * In addition, the function calculates also the irradiation time and the burnup in FIMA.
+ * 
+ */
+
 void Simulation::Burnup()
 {
     // Model declaration
