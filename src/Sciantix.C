@@ -34,8 +34,6 @@ void Sciantix(int Sciantix_options[],
 
     sciantix_simulation.Burnup();
 
-    EffectiveBurnup();
-    MapModel();
     sciantix_simulation.EffectiveBurnup();
 
     EnvironmentComposition();
@@ -65,8 +63,6 @@ void Sciantix(int Sciantix_options[],
     MapModel();
     sciantix_simulation.GrainBoundarySweeping();
 
-    GasProduction();
-    MapModel();
     sciantix_simulation.GasProduction();
 
     sciantix_simulation.GasDecay();

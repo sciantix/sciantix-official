@@ -14,26 +14,22 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef EFFECTIVE_BURNUP_H
-#define EFFECTIVE_BURNUP_H
+#include "Simulation.h"
 
-#include "SciantixVariableDeclaration.h"
-#include "MapSciantixVariable.h"
-#include "ModelDeclaration.h"
-#include "SetMatrix.h"
-
-void EffectiveBurnup();
-/**
- * @brief Defines the sciantix model "Effective burnup".
- * 
- * This function calculates the local effective burnup based on the local fission rate density and temperature.
- * 
- * @ref G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005
- * 
- * @author
- * A. Magni
- * E. Redaelli
- * G. Zullo
-*/
-
-#endif // EFFECTIVE_BURNUP_H
+void Simulation::GasDecay()
+{
+    for (auto& system : sciantix_system)
+    {
+        if (gas[ga[system.getGasName()]].getDecayRate() > 0.0 && system.getRestructuredMatrix() == 0)
+        {
+            sciantix_variable[sv[system.getGasName() + " decayed"]].setFinalValue(
+                solver.Decay(
+                    sciantix_variable[sv[system.getGasName() + " decayed"]].getInitialValue(),
+                    gas[ga[system.getGasName()]].getDecayRate(),
+                    gas[ga[system.getGasName()]].getDecayRate() * sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue(), // sarebbe produced + produced in HBS ma le seconde devono esistere per tutte le specie..
+                    physics_variable[pv["Time step"]].getFinalValue()
+                )
+            );
+        }
+    }
+}

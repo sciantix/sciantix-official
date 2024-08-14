@@ -14,27 +14,37 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "EffectiveBurnup.h"
+#include "Simulation.h"
 
-void EffectiveBurnup()
+void Simulation::EffectiveBurnup()
 {
-	model.emplace_back();
-	int model_index = int(model.size()) - 1;
+    model.emplace_back();
+    int model_index = int(model.size()) - 1;
 
-	model[model_index].setName("Effective burnup");
+    model[model_index].setName("Effective burnup");
 
-	std::string reference;
-	std::vector<double> parameter;
+    std::string reference;
+    std::vector<double> parameter;
 
-	const double temperature_threshold = 1273.15;
+    const double temperature_threshold = 1273.15;
 
     if (history_variable[hv["Temperature"]].getFinalValue() <= temperature_threshold || (history_variable[hv["Temperature"]].getFinalValue() > temperature_threshold && history_variable[hv["Temperature"]].getInitialValue() < temperature_threshold))
-		parameter.push_back(sciantix_variable[sv["Specific power"]].getFinalValue() / 86400.0);
-	else
-		parameter.push_back(0.0);
+        parameter.push_back(sciantix_variable[sv["Specific power"]].getFinalValue() / 86400.0);
+    else
+        parameter.push_back(0.0);
 
-	reference += ": G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.";
+    reference += ": G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.";
 
-	model[model_index].setParameter(parameter);
-	model[model_index].setRef(reference);
+    model[model_index].setParameter(parameter);
+    model[model_index].setRef(reference);
+
+    MapModel();
+
+    sciantix_variable[sv["Effective burnup"]].setFinalValue(
+        solver.Integrator(
+            sciantix_variable[sv["Effective burnup"]].getInitialValue(),
+            model[sm["Effective burnup"]].getParameter().at(0),
+            physics_variable[pv["Time step"]].getFinalValue()
+        )
+    );
 }

@@ -14,13 +14,13 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "GasProduction.h"
+#include "Simulation.h"
 
 /**
  * @brief Calculates the concentration of fission gas (Xe+Kr) produced by fission reactions in the fuel.
  */
 
-void GasProduction()
+void Simulation::GasProduction()
 {
 	for (auto& system : sciantix_system)
 	{
@@ -40,4 +40,27 @@ void GasProduction()
 
 		parameter.clear();
 	}
+
+	MapModel();
+
+	for (auto& system : sciantix_system)
+	{	
+		if(system.getRestructuredMatrix() == 0)
+			sciantix_variable[sv[system.getGasName() + " produced"]].setFinalValue(
+				solver.Integrator(
+					sciantix_variable[sv[system.getGasName() + " produced"]].getInitialValue(),
+					model[sm["Gas production - " + system.getName()]].getParameter().at(0),
+					model[sm["Gas production - " + system.getName()]].getParameter().at(1)
+				)
+			);
+		else if(system.getRestructuredMatrix() == 1)
+			sciantix_variable[sv[system.getGasName() + " produced in HBS"]].setFinalValue(
+				solver.Integrator(
+					sciantix_variable[sv[system.getGasName() + " produced in HBS"]].getInitialValue(),
+					model[sm["Gas production - " + system.getName()]].getParameter().at(0),
+					model[sm["Gas production - " + system.getName()]].getParameter().at(1)
+				)
+			);
+	}
+
 }

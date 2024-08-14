@@ -35,10 +35,8 @@
 
 #include "GrainGrowth.h"
 #include "GrainBoundarySweeping.h"
-#include "GasProduction.h"
 #include "GasDiffusion.h"
 #include "IntraGranularBubbleEvolution.h"
-#include "EffectiveBurnup.h"
 #include "InterGranularBubbleEvolution.h"
 #include "GrainBoundaryMicroCracking.h"
 #include "GrainBoundaryVenting.h"

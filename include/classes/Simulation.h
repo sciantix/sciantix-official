@@ -58,65 +58,11 @@ class Simulation : public Solver, public Model
 
     void Burnup();
 
-    void EffectiveBurnup()
-    {
-        /// @brief EffectiveBurnup uses the solver Integrator to computes the effective burnup of the fuel, if the
-        /// criteria on the temperature are required.
-        /// This method is called in Sciantix.C after the definition of the effective burnup model.
-        sciantix_variable[sv["Effective burnup"]].setFinalValue(
-            solver.Integrator(
-                sciantix_variable[sv["Effective burnup"]].getInitialValue(),
-                model[sm["Effective burnup"]].getParameter().at(0),
-                physics_variable[pv["Time step"]].getFinalValue()
-            )
-        );
-    }
+    void EffectiveBurnup();
 
-    void GasProduction()
-    {
-        /**
-         * @brief GasProduction computes the gas produced from the production rate.
-         *
-         */
+    void GasProduction();
 
-        for (auto& system : sciantix_system)
-        {	
-            if(system.getRestructuredMatrix() == 0)
-                sciantix_variable[sv[system.getGasName() + " produced"]].setFinalValue(
-                    solver.Integrator(
-                        sciantix_variable[sv[system.getGasName() + " produced"]].getInitialValue(),
-                        model[sm["Gas production - " + system.getName()]].getParameter().at(0),
-                        model[sm["Gas production - " + system.getName()]].getParameter().at(1)
-                    )
-                );
-            else if(system.getRestructuredMatrix() == 1)
-                sciantix_variable[sv[system.getGasName() + " produced in HBS"]].setFinalValue(
-                    solver.Integrator(
-                        sciantix_variable[sv[system.getGasName() + " produced in HBS"]].getInitialValue(),
-                        model[sm["Gas production - " + system.getName()]].getParameter().at(0),
-                        model[sm["Gas production - " + system.getName()]].getParameter().at(1)
-                    )
-                );
-        }
-    }
-
-    void GasDecay()
-    {
-        for (auto& system : sciantix_system)
-        {
-            if (gas[ga[system.getGasName()]].getDecayRate() > 0.0 && system.getRestructuredMatrix() == 0)
-            {
-                sciantix_variable[sv[system.getGasName() + " decayed"]].setFinalValue(
-                    solver.Decay(
-                        sciantix_variable[sv[system.getGasName() + " decayed"]].getInitialValue(),
-                        gas[ga[system.getGasName()]].getDecayRate(),
-                        gas[ga[system.getGasName()]].getDecayRate() * sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue(), // sarebbe produced + produced in HBS ma le seconde devono esistere per tutte le specie..
-                        physics_variable[pv["Time step"]].getFinalValue()
-                    )
-                );
-            }
-        }
-    }
+    void GasDecay();
 
     void GasDiffusion()
     {
