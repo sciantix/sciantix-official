@@ -32,8 +32,6 @@ void Sciantix(int Sciantix_options[],
 
     Simulation sciantix_simulation;
 
-    Burnup();
-    MapModel();
     sciantix_simulation.Burnup();
 
     EffectiveBurnup();

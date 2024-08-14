@@ -56,40 +56,7 @@ class Simulation : public Solver, public Model
 {
     public:
 
-    void Burnup()
-    {
-        /**
-         * Burnup uses the solver Integrator to compute the fuel burnup from the local power density.
-         * This method is called in Sciantix.C, after the definition of the Burnup model.
-        */
-        
-        sciantix_variable[sv["Burnup"]].setFinalValue(
-            solver.Integrator(
-                sciantix_variable[sv["Burnup"]].getInitialValue(),
-                model[sm["Burnup"]].getParameter().at(0),
-                physics_variable[pv["Time step"]].getFinalValue()
-            )
-        );
-
-        if(history_variable[hv["Fission rate"]].getFinalValue() > 0.0)
-            sciantix_variable[sv["Irradiation time"]].setFinalValue(
-                solver.Integrator(
-                    sciantix_variable[sv["Irradiation time"]].getInitialValue(),
-                    1.0 / sciantix_variable[sv["Specific power"]].getFinalValue(),
-                    24.0 * sciantix_variable[sv["Burnup"]].getIncrement()
-                )
-            );
-        else
-            sciantix_variable[sv["Irradiation time"]].setConstant();
-            
-        sciantix_variable[sv["FIMA"]].setFinalValue(
-            solver.Integrator(
-                sciantix_variable[sv["FIMA"]].getInitialValue(),
-                history_variable[hv["Fission rate"]].getFinalValue() * 3.6e5 / sciantix_variable[sv["U"]].getFinalValue(), 
-                sciantix_variable[sv["Irradiation time"]].getIncrement()
-            )
-        );
-    }
+    void Burnup();
 
     void EffectiveBurnup()
     {

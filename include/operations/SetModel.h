@@ -38,7 +38,6 @@
 #include "GasProduction.h"
 #include "GasDiffusion.h"
 #include "IntraGranularBubbleEvolution.h"
-#include "Burnup.h"
 #include "EffectiveBurnup.h"
 #include "InterGranularBubbleEvolution.h"
 #include "GrainBoundaryMicroCracking.h"

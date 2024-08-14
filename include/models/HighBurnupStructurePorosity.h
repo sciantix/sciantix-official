@@ -18,7 +18,6 @@
 #include "MapSciantixVariable.h"
 #include "ModelDeclaration.h"
 #include "SetMatrix.h"
-#include "Burnup.h"
 #include "GasDeclaration.h"
 #include "MapGas.h"
 #include "SystemDeclaration.h"
