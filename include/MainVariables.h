@@ -10,14 +10,27 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: D. Pizzocri, T. Barani                                                 //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
+
+#ifndef MAIN_VARIABLES_H
+#define MAIN_VARIABLES_H
 
 #include <vector>
 #include <iostream>
 #include <fstream>
 #include <ctime>
+
+/**
+ * @file MainVariables.h
+ * @brief This header file contains declarations for variables that are used in MainSCIANTIX.C.
+ * 
+ * @author D. Pizzocri
+ * @author T. Barani
+ * 
+ */
+
 
 extern clock_t timer, timer_time_step;
 
@@ -49,3 +62,5 @@ extern std::vector<double> Temperature_input;
 extern std::vector<double> Fissionrate_input;
 extern std::vector<double> Hydrostaticstress_input;
 extern std::vector<double> Steampressure_input;
+
+#endif

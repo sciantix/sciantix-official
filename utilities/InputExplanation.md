@@ -1,112 +1,109 @@
-# **Input file example**
+# Input explanation
 
-In this folder are reported the three essential input files required from SCIANTIX
+This folder contains the essential input files required by Sciantix:
 
- - `input_settings.txt` contains the choice of the models and numerical solvers employed in the simulation
- - `input_history.txt` containes the time, temperature (K), fission rate (fiss / m3-s)$, and hydrostatic stress (MPa) as a function of time (hr)
- - `input_initial_conditions.txt` provides the code with several initial conditions
- - `input_scaling_factors.txt`optional file with scaling factors
+- **`input_settings.txt`**: Specifies the models and numerical solvers used in the simulation.
+- **`input_history.txt`**: Includes the time (h), temperature (K), fission rate (fiss/m³-s), and hydrostatic stress (MPa) as a function of time.
+- **`input_initial_conditions.txt`**: Sets initial conditions for the simulation.
+- **`input_scaling_factors.txt`**: (Optional) File for scaling factors.
 
-Below we detail each file content.
+Below is a detailed description of each file.
 
-# Input settings
+---
 
-The provided input settings are the **recommended** choice for standard simulations of uranium dioxide.
+## Input Settings
 
-1 # grain growth -- The default model for grain growth according to *Ainscough et al., J. Nucl. Mater. 49 (1978) 117* is selected.
+The following settings define the models and methods used for the simulation.
 
-1 # fission gas (xenon and krypton) diffusivity -- The selected correlation for single gas atom intra-granular diffusion coefficient is the one by *J.A.Turnbull et al., IWGFPT--32, 1988*. It considers three terms contributing to gas diffusivity, representing thermally activated, irradiation-enhanced, and a-thermal mechanism.
+```plaintext
+1  # iGrainGrowth (0 = no grain growth, 1 = Ainscough et al. (1973), 2 = Van Uffelen et al. (2013))
+1  # iFGDiffusionCoefficient (0 = constant value, 1 = Turnbull et al. (1988))
+1  # iDiffusionSolver (1 = SDA with quasi-stationary hypothesis, 2 = SDA without quasi-stationary hypothesis)
+1  # iIntraGranularBubbleEvolution (1 = Pizzocri et al. (2018))
+1  # iResolutionRate (0 = constant value, 1 = Turnbull (1971), 2 = Losonen (2000), 3 = thermal resolution, Cognini et al. (2021))
+1  # iTrappingRate (0 = constant value, 1 = Ham (1958))
+1  # iNucleationRate (0 = constant value, 1 = Olander, Wongsawaeng (2006))
+1  # iOutput (1 = default output files)
+1  # iGrainBoundaryVacancyDiffusivity (0 = constant value, 1 = Reynolds and Burton (1979), 2 = Pastore et al. (2015))
+1  # iGrainBoundaryBehaviour (0 = no grain boundary bubbles, 1 = Pastore et al. (2013))
+1  # iGrainBoundaryMicroCracking (0 = no model considered, 1 = Barani et al. (2017))
+0  # iFuelMatrix (0 = UO2, 1 = UO2 + HBS)
+0  # iGrainBoundaryVenting (0 = no model considered, 1 = Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE)
+0  # iRadioactiveFissionGas (0 = not considered)
+0  # iHelium (0 = not considered)
+0  # iHeDiffusivity (0 = null value, 1 = limited lattice damage, Luzzi et al. (2018), 2 = significant lattice damage, Luzzi et al. (2018))
+0  # iGrainBoundarySweeping (0 = no model considered, 1 = TRANSURANUS swept volume model)
+0  # iHighBurnupStructureFormation (0 = no model considered, 1 = fraction of HBS-restructured volume from Barani et al. (2020))
+0  # iHighBurnupStructurePorosity (0 = no evolution of HBS porosity, 1 = HBS porosity evolution based on Spino et al. (2006) data)
+0  # iHeliumProductionRate (0 = zero production rate, 1 = helium from ternary fissions, 2 = linear with burnup (FR))
+0  # iStoichiometryDeviation (0 = not considered, 1 = Cox et al. (1986), 2 = Bittel et al. (1969), 3 = Abrefah et al. (1994), 4 = Imamura et al. (1997), 5 = Langmuir-based approach)
+0  # iBubbleDiffusivity (0 = not considered, 1 = volume diffusivity)
+```
 
-1 #  solver for intragranular diffusion -- Intra-granular diffusion equation is solved through a Spectral Diffusion Algoritm. This formulation entails the solution of a single equation for gas populations in the grain, enforcing the so-called effective diffusion coefficient (cfr. *M.V. Speight, Nucl. Sci. Eng. 37 (1969) 180*).
+---
 
-1 #  intragranular bubble evolution -- Selection of mechanistic intra-granular inert gas behaviour model, featuring a direct description of intra-granular bubble nucleation, re-solution, gas trapping into intra-granular bubbles and diffusion towards grain boundaries. The model is taken from *Pizzocri et al., J. Nucl. Mater. 502 (2018) 323*.
+## Input Initial Conditions
 
-1 #  re-solution -- Heterogeneous bubble re-solution mechanism, irradiaion-induced for fission gases, i.e. *en-bloc* destruction of bubbles  interacting with fission fragments. The re-solution rate is calculated according to *J.A. Turnbull, J. Nucl. Mater. 38 (1971), 203*.
+This file sets the initial conditions for various parameters within the simulation.
 
-1 #  trapping -- Trapping rate of single gas atoms into intra-granular bubbles according to the formulation of *F.S. Ham, J. Phys. Chem. Sol., 6 (1958) 335*.
-
-1 #  nucleation -- Heterogeneous nucleation of intra-granular bubbles, i.e. a number of bubbles are created in the wake of fission fragments trails. The rate is calculated according to *Olander and Wongsawaeng, J. Nucl. Mater. 354 (2006), 94*.
-
-1 #  output -- The output of the simulation is provided in a text file (`output.txt`), in which values are separated by **tabs**.
-
-1 #  grain boundary vacancy diffusivity -- Grain-boundary diffusion coefficient of vacancies evaluated according to *G.L.Reynolds and B.Burton, J. Nucl. Mater. 82 (1979) 22*.
-
-1 #  grain boundary behaviour of bubbles -- Inert gas behaviour is **considered**.
-
-
-1 #  intra bubble_radius -- Mechanistic model of inert gas behaviour at grain boundaries. The model is taken from *Pastore et al., Nucl. Eng. Des. 256 (2013) 75* and *Barani et al., J. Nucl. Mater. 486 (2017) 96*. A direct description of lenticular-shaped grain-boundary bubbles is enforced, encompassing their growth due to gas and vacancies inflow, interconnection, and describing as inherently coupled gaseous swelling and fission gas release.
-
-1 #  grain boundary micro-cracking -- Burst release of fission gas during temperature transients is considered, according to the model by *Barani et al., J. Nucl. Mater. 486 (2017) 96*. The model features a semi-empirical description of grain-boundary micro-cracking  and is nested on the general grain-boundary gas behaviour model.
-
-0	#	fuel matrix -- UO2 matrix and properties are considered
-
-0 #  grain boundary venting -- if 1, the gas release consider the contribution from the venting probability calculated according to *Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE*.
-
-0 # hbs formation -- no HBS forming in the UO2 fuel matrix.
-
-0 # radioactive fission gases behaviour 
-
-0	#	iHelium (0= no model considered, 1= Cognini et al. (2021))
-
-0	#	iHeDiffusivity (0= constant value, 1= Luzzi et al. (2018))
-
-0	#	iGrainBoundarySweeping (0= no model considered, 1= TRANSURANUS swept volume model)
-
-0	#	iHighBurnupStructurePorosity (0= no evolution of HBS porosity, 1= HBS porosity evolution based on Spino et al. (2006) data)
-
-# Input initial conditions
-
-In this file, the user can provide initial conditions to some of the SCIANTIX state variables.
-
+```plaintext
 5.0e-06
-\#	initial grain radius (m)
-0.0	0.0	0.0	0.0	0.0	0.0
-\#	initial Xe (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
-0.0	0.0	0.0	0.0	0.0	0.0
-\#	initial Kr (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
-0.0	0.0	0.0	0.0	0.0	0.0
-\#	initial He (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
+# initial grain radius (m)
+0.0 0.0 0.0 0.0 0.0 0.0
+# initial Xe (at/m³) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
+0.0 0.0 0.0 0.0 0.0 0.0
+# initial Kr (at/m³) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
 0.0 0.0
-\# initial intragranular bubble concentration (at/m3), radius (m)
+# initial He (at/m³) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
+0.0 0.0
+# initial intragranular bubble concentration (at/m³), radius (m)
 0.0
-\#	initial fuel burn-up (MWd/kgUO2)
+# initial fuel burn-up (MWd/kgUO2)
 0.0
-\#	initial fuel effective burn-up (MWd/kgUO2)
-10970.0
-\#	initial fuel density (kg/m3)
-0.0	3.0	0.0	0.0	97.0
-\#	initial U234 U235 U236 U237 U238 (% of heavy atoms) content
-0.0	0.0	0.0	0.0	0.0	0.0
-\#	initial Xe133 (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
-0.0	0.0	0.0	0.0	0.0	0.0
-\#	initial Kr85m (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
+# initial fuel effective burn-up (MWd/kgUO2)
+0.0
+# initial irradiation time (h)
+10641.0
+# initial fuel density (kg/m³)
+0.0 3.0 0.0 0.0 97.0
+# initial U234 U235 U236 U237 U238 (% of heavy atoms) content
+0.0 0.0 0.0 0.0 0.0 0.0 0.0
+# initial Xe133 (at/m³) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
+0.0 0.0 0.0 0.0 0.0 0.0 0.0
+# initial Kr85m (at/m³) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
+0.0
+# initial fuel stoichiometry deviation (\)
+```
 
-***
-**PLEASE NOTE** that from the quantities below, it is **mandatory** to put the comment symbol (#) **below** each data series.
-***
+**Note**: Ensure that the comment symbol (`#`) is placed **below** each data series. This is mandatory.
 
-# Input history
-In this file, a simplified temperature, fission rate (power), and hydrostatic stress history is contained. SCIANTIX interpolates the quantities among two consecutive values of each type, if differents. Every time step is internally subdivided in 100 intervals, at which the calculations are executed and outputs are provided. To change this value, the user must modify the source code.
-**TIP**: this list of quantities **should not** terminate with a blank line. It can cause troubles to the input reading especially on UNIX OS. In case you will obtain a blank output file, this is most probably the issue.
-***
+---
 
-# Input scaling factors
+## Input Scaling Factors
 
-1.0
-\# scaling factor - resolution rate
-1.0
-\# scaling factor - trapping rate
-1.0
-\# scaling factor - nucleation rate
-1.0
-\# scaling factor - diffusivity
-1.0
-\# scaling factor - screw parameter
-1.0
-\# scaling factor - span parameter
-1.0
-\# scaling factor - cent parameter
-1.0
-\# scaling factor - helium production rate
+This file contains the scaling factors applied to various model parameters during the simulation.
 
-In case of any trouble with those files, please contact the main developers (D. Pizzocri, T. Barani and G. Zullo).
+```plaintext
+1.0
+# scaling factor - resolution rate
+1.0
+# scaling factor - trapping rate
+1.0
+# scaling factor - nucleation rate
+1.0
+# scaling factor - diffusivity
+1.0
+# scaling factor - temperature
+1.0
+# scaling factor - fission rate
+1.0
+# scaling factor - cent parameter
+1.0
+# scaling factor - helium production rate
+1.0
+# scaling factor - dummy
+```
+
+---
+
+If you experience any issues with these files, please contact the main developers (D. Pizzocri, G. Zullo) for support.

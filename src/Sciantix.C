@@ -17,94 +17,94 @@
 #include "Sciantix.h"
 
 void Sciantix(int Sciantix_options[],
-	double Sciantix_history[],
-	double Sciantix_variables[],
-	double Sciantix_scaling_factors[],
-	double Sciantix_diffusion_modes[])
+    double Sciantix_history[],
+    double Sciantix_variables[],
+    double Sciantix_scaling_factors[],
+    double Sciantix_diffusion_modes[])
 {
-	SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
+    SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 
-	SetGas();
+    SetGas();
 
-	SetMatrix();
+    SetMatrix();
 
-	SetSystem();
+    SetSystem();
 
-	Simulation sciantix_simulation;
+    Simulation sciantix_simulation;
 
-	Burnup();
-	MapModel();
-	sciantix_simulation.Burnup();
+    Burnup();
+    MapModel();
+    sciantix_simulation.Burnup();
 
-	EffectiveBurnup();
-	MapModel();
-	sciantix_simulation.EffectiveBurnup();
+    EffectiveBurnup();
+    MapModel();
+    sciantix_simulation.EffectiveBurnup();
 
-	EnvironmentComposition();
-	MapModel();
+    EnvironmentComposition();
+    MapModel();
 
-	UO2Thermochemistry();
-	MapModel();
-	sciantix_simulation.UO2Thermochemistry();
+    UO2Thermochemistry();
+    MapModel();
+    sciantix_simulation.UO2Thermochemistry();
 
-	StoichiometryDeviation();
-	MapModel();
-	sciantix_simulation.StoichiometryDeviation(); 
+    StoichiometryDeviation();
+    MapModel();
+    sciantix_simulation.StoichiometryDeviation(); 
 
-	HighBurnupStructureFormation();
-	MapModel();
-	sciantix_simulation.HighBurnupStructureFormation();
+    HighBurnupStructureFormation();
+    MapModel();
+    sciantix_simulation.HighBurnupStructureFormation();
 
-	HighBurnupStructurePorosity();
-	MapModel();
-	sciantix_simulation.HighBurnupStructurePorosity();
+    HighBurnupStructurePorosity();
+    MapModel();
+    sciantix_simulation.HighBurnupStructurePorosity();
 
-	GrainGrowth();
-	MapModel();
-	sciantix_simulation.GrainGrowth();
+    GrainGrowth();
+    MapModel();
+    sciantix_simulation.GrainGrowth();
 
-	GrainBoundarySweeping();
-	MapModel();
-	sciantix_simulation.GrainBoundarySweeping();
+    GrainBoundarySweeping();
+    MapModel();
+    sciantix_simulation.GrainBoundarySweeping();
 
-	GasProduction();
-	MapModel();
-	sciantix_simulation.GasProduction();
+    GasProduction();
+    MapModel();
+    sciantix_simulation.GasProduction();
 
-	sciantix_simulation.GasDecay();
+    sciantix_simulation.GasDecay();
 
-	IntraGranularBubbleEvolution();
-	MapModel();
-	sciantix_simulation.IntraGranularBubbleBehaviour();
+    IntraGranularBubbleEvolution();
+    MapModel();
+    sciantix_simulation.IntraGranularBubbleBehaviour();
 
-	GasDiffusion();
-	MapModel();
-	sciantix_simulation.GasDiffusion();
+    GasDiffusion();
+    MapModel();
+    sciantix_simulation.GasDiffusion();
 
-	GrainBoundaryMicroCracking();
-	MapModel();
-	sciantix_simulation.GrainBoundaryMicroCracking();
+    GrainBoundaryMicroCracking();
+    MapModel();
+    sciantix_simulation.GrainBoundaryMicroCracking();
 
-	GrainBoundaryVenting();
-	MapModel();
-	sciantix_simulation.GrainBoundaryVenting();
+    GrainBoundaryVenting();
+    MapModel();
+    sciantix_simulation.GrainBoundaryVenting();
 
-	InterGranularBubbleEvolution();
-	MapModel();
-	sciantix_simulation.InterGranularBubbleBehaviour();
+    InterGranularBubbleEvolution();
+    MapModel();
+    sciantix_simulation.InterGranularBubbleBehaviour();
 
-	FiguresOfMerit();
+    FiguresOfMerit();
 
-	UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+    UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
-	Output();
+    Output();
 
-	history_variable.clear();
-	sciantix_variable.clear();
-	sciantix_system.clear();
-	physics_variable.clear();
-	model.clear();
-	material.clear();
-	gas.clear();
-	matrix.clear();
+    history_variable.clear();
+    sciantix_variable.clear();
+    sciantix_system.clear();
+    physics_variable.clear();
+    model.clear();
+    material.clear();
+    gas.clear();
+    matrix.clear();
 }

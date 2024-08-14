@@ -1,49 +1,58 @@
-#//////////////////////////////////////////////////////////////////////////////////////
-#//       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
-#//      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
-#//     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
-#//      \   \    |  |     |  |   /  /_\  \   |  . `  |     |  |     |  |   >   <    //
-#//  .----)   |   |  `----.|  |  /  _____  \  |  |\   |     |  |     |  |  /  .  \   //
-#//  |_______/     \______||__| /__/     \__\ |__| \__|     |__|     |__| /__/ \__\  //
-#//                                                                                  //
-#//  Originally developed by D. Pizzocri & T. Barani                                 //
-#//                                                                                  //
-#//  Version: 2.0                                                                    //
-#//  Year: 2022                                                                      //
-#//  Authors: G. Zullo (giovanni.zullo@polimi.it)                                    //
-#//                                                                                  //
-#//////////////////////////////////////////////////////////////////////////////////////
-
 # This CMakeLists.txt file is useful when compiling SCIANTIX with the cmake tool
 # 
 # output:
-#   > build directory with executable in build/Debug/sciantix.exe
+#   > build directory with executable in build/sciantix.x
 #
 # When using IDE, a CMakeSettings.json could be automatically produced to compile sciantix in a locall out/build/ folder
 # by setting this file as startup element.
 # More information here: (https://learn.microsoft.com/it-it/cpp/build/configure-cmake-debugging-sessions?view=msvc-170)
+#
+# Author: G. Zullo (giovanni.zullo@polimi.it)
 
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 3.4.0)
 
 # Name of the project created / existent in visual studio
 project(sciantix)
 
+# Function to add all subdirectories of a given path to include directories
+function(add_subdirectory_includes root_dir)
+    file(GLOB SUBDIRS RELATIVE ${root_dir} ${root_dir}/*) # get all files in directory (which is passed in parameter)
+    foreach(subdir ${SUBDIRS})
+        if(IS_DIRECTORY ${root_dir}/${subdir}) # if file is a directory
+            include_directories(${root_dir}/${subdir})  # include the directory as header directory
+            add_subdirectory_includes(${root_dir}/${subdir})    # exectute the function for the subdirectory (to get all subdirectories of it if any)
+        endif()
+    endforeach()
+endfunction()
+
 # Enable C++ compiler
 enable_language (CXX)
-
-# Specify SCIANTIX directories
-set(include "include/*.h")
-set(src "src/*.C")
 
 include(CTest)
 enable_testing()
 
-include_directories(
-    ${CMAKE_SOURCE_DIR}/include/
-)
+# Include header files
+include_directories(${PROJECT_SOURCE_DIR}/include)
+# Add all subdirectories of the include folder to the include path
+add_subdirectory_includes(${PROJECT_SOURCE_DIR}/include)
 
-file(GLOB SOURCES ${include} ${src})
+# Include source files
+file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.C)
+
+# Set custom object file directory (to have all object files in the obj directory)
+set(CMAKE_OBJECT_PATH_PREFIX ${PROJECTSOUR}/obj/)
+
+# Add executable sciantix.x (or .exe)
 add_executable(sciantix ${SOURCES})
+if (UNIX)
+    set(CMAKE_EXECUTABLE_SUFFIX ".x")
+endif()
+
+# Copy all object files in obj directory by using a custom command
+add_custom_command(TARGET sciantix POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_SOURCE_DIR}/obj # make obj directory
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_BINARY_DIR}/CMakeFiles/sciantix.dir/src ${PROJECT_SOURCE_DIR}/obj # copy all object files in it
+)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

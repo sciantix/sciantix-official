@@ -39,7 +39,7 @@ print(f"a = {a_fit}")
 print(f"b = {b_fit}")
 print(f"c = {c_fit}")
 
-x_fit = np.linspace(0.01, 0.3, 100)
+x_fit = np.linspace(0.05, 0.3, 100)
 y_fit = fit_function(x_fit, a_fit, b_fit, c_fit)
 
 plt.scatter(points[:,0], points[:,1], label='Data points')
