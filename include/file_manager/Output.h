@@ -35,6 +35,14 @@
 #include "MapInputVariable.h"
 #include "MatrixDeclaration.h"
 
+/**
+ * @brief This function save the simulation results on output files.
+ * It creates the file output.txt, with the calculations
+ * and the overview.txt, with SCIANTIX model information
+ * 
+ * @author G. Zullo
+ */
+
 void Output();
 
 #endif // OUTPUT_H

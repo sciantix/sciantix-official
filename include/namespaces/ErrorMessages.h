@@ -32,7 +32,6 @@
  * @author T. Barani 
  * @author G. Zullo
  * @author rzehumat
- * @author F. Bastien
  * 
  */
 namespace ErrorMessages

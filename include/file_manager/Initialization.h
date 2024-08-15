@@ -22,7 +22,7 @@
 #include "MainVariables.h"
 
 /**
- * @brief Initializes SCIANTIX internal variables with initial conditions.
+ * @brief Initializes SCIANTIX internal variables from initial conditions.
  * 
  * @author D. Pizzocri
  * @author T. Barani

@@ -102,9 +102,6 @@ void Output()
         }
     }
 
-    
-
-
     output_file.close();
 
     std::string overview_name = "overview.txt";

@@ -23,6 +23,7 @@
 #include "Helium.h"
 #include "Krypton.h"
 #include <vector>
+
 /**
  * @brief Sets up the gas properties in the simulation.
  * 
@@ -31,10 +32,7 @@
  * for easy access throughout the simulation.
  * 
  * @author G. Zullo
- * @author F. Bastien
  */
-
-
 void SetGas();
 
 #endif // SET_GAS_H
