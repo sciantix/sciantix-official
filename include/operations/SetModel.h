@@ -33,14 +33,7 @@
 #include "MapSciantixVariable.h"
 #include "MapSystem.h"
 
-#include "GrainGrowth.h"
-#include "GrainBoundarySweeping.h"
 #include "GasDiffusion.h"
-#include "IntraGranularBubbleEvolution.h"
-#include "InterGranularBubbleEvolution.h"
-#include "StoichiometryDeviation.h"
-#include "EnvironmentComposition.h"
-#include "UO2Thermochemistry.h"
 
 #include "ErrorMessages.h"
 

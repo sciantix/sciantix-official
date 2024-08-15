@@ -14,10 +14,11 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "GrainGrowth.h"
+#include "Simulation.h"
 
-void GrainGrowth()
+void Simulation::GrainGrowth()
 {
+	// Model declaration
 	model.emplace_back();
 
 	int model_index = int(model.size()) - 1;
@@ -137,4 +138,18 @@ void GrainGrowth()
 	}
 	model[model_index].setParameter(parameter);
 	model[model_index].setRef(reference);
+
+	// Model mapping
+	MapModel();
+
+	// Model resolution
+	/**
+	 * @brief ### GrainGrowth
+	 * 
+	 */
+	sciantix_variable[sv["Grain radius"]].setFinalValue(
+		solver.QuarticEquation(model[sm["Grain growth"]].getParameter())
+	);
+
+	matrix[sma["UO2"]].setGrainRadius(sciantix_variable[sv["Grain radius"]].getFinalValue());
 }

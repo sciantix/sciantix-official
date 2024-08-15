@@ -32,7 +32,6 @@
 #include "UpdateVariables.h"
 #include "Output.h"
 #include "Simulation.h"
-#include "FiguresOfMerit.h"
 
 /**
  * @brief Executes the main SCIANTIX simulation program.

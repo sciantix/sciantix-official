@@ -14,35 +14,49 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#include "Simulation.h"
 #include "UO2Thermochemistry.h"
 
-void UO2Thermochemistry()
+void Simulation::UO2Thermochemistry()
 {
-	if (!input_variable[iv["iStoichiometryDeviation"]].getValue()) return;
+    if (!input_variable[iv["iStoichiometryDeviation"]].getValue()) return;
 
-	model.emplace_back();
-	int model_index = int(model.size()) - 1;
+    model.emplace_back();
+    int model_index = int(model.size()) - 1;
 
-	model[model_index].setName("UO2 thermochemistry");
-	
-	std::string reference;
-	reference = "Blackburn (1973) J. Nucl. Mater., 46, 244-252.";
-	
-	std::vector<double> parameter;
+    model[model_index].setName("UO2 thermochemistry");
+    
+    std::string reference;
+    reference = "Blackburn (1973) J. Nucl. Mater., 46, 244-252.";
+    
+    std::vector<double> parameter;
 
-	parameter.push_back(sciantix_variable[sv["Stoichiometry deviation"]].getInitialValue());
-	parameter.push_back(history_variable[hv["Temperature"]].getFinalValue()); 
-	parameter.push_back(sciantix_variable[sv["Gap oxygen partial pressure"]].getFinalValue()); // (atm)
+    parameter.push_back(sciantix_variable[sv["Stoichiometry deviation"]].getInitialValue());
+    parameter.push_back(history_variable[hv["Temperature"]].getFinalValue()); 
+    parameter.push_back(sciantix_variable[sv["Gap oxygen partial pressure"]].getFinalValue()); // (atm)
 
-	model[model_index].setParameter(parameter);
-	model[model_index].setRef(reference);
+    model[model_index].setParameter(parameter);
+    model[model_index].setRef(reference);
+
+    MapModel();
+
+    if (!input_variable[iv["iStoichiometryDeviation"]].getValue()) return;
+    if(history_variable[hv["Temperature"]].getFinalValue() < 1000.0 || sciantix_variable[sv["Gap oxygen partial pressure"]].getFinalValue() == 0)
+        sciantix_variable[sv["Equilibrium stoichiometry deviation"]].setFinalValue(0.0);
+
+    else
+        sciantix_variable[sv["Equilibrium stoichiometry deviation"]].setFinalValue(
+            solver.NewtonBlackburn(
+                model[sm["UO2 thermochemistry"]].getParameter()
+                    )
+        );
 }
 
 double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature)
 {
-	double ln_p = 2.0 * log(stoichiometry_deviation*(2.0+stoichiometry_deviation)/(1.0-stoichiometry_deviation))
-		+	108.0*pow(sciantix_variable[sv["Stoichiometry deviation"]].getFinalValue(),2.0)
-		- 32700.0/temperature + 9.92;
+    double ln_p = 2.0 * log(stoichiometry_deviation*(2.0+stoichiometry_deviation)/(1.0-stoichiometry_deviation))
+        +	108.0*pow(sciantix_variable[sv["Stoichiometry deviation"]].getFinalValue(),2.0)
+        - 32700.0/temperature + 9.92;
 
-	return exp(ln_p);
+    return exp(ln_p);
 }

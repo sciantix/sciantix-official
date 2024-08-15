@@ -14,9 +14,10 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "StoichiometryDeviation.h"
+#include "Simulation.h"
+#include "UO2Thermochemistry.h"
 
-void StoichiometryDeviation()
+void Simulation::StoichiometryDeviation()
 {
   /**
    * @brief This routine sets the model to estimate the stoichiometry deviation of the fuel.
@@ -309,11 +310,58 @@ void StoichiometryDeviation()
 
       break;
     }
-
-
     
     default :
-      ErrorMessages::Switch(__FILE__, "iStoichiometryDeviation", int(input_variable[iv["iStoichiometryDeviation"]].getValue()));
-      break;
-  }
+        ErrorMessages::Switch(__FILE__, "iStoichiometryDeviation", int(input_variable[iv["iStoichiometryDeviation"]].getValue()));
+        break;
+    }
+
+    // Model mapping
+    MapModel();
+
+    // Model resolution
+    if (!input_variable[iv["iStoichiometryDeviation"]].getValue()) return;
+
+    if(history_variable[hv["Temperature"]].getFinalValue() < 1000.0)
+    {
+        sciantix_variable[sv["Stoichiometry deviation"]].setConstant();
+        sciantix_variable[sv["Fuel oxygen partial pressure"]].setFinalValue(0.0);
+    }
+
+    else if(input_variable[iv["iStoichiometryDeviation"]].getValue() < 5)
+    {	
+        sciantix_variable[sv["Stoichiometry deviation"]].setFinalValue(
+        solver.Decay(
+            sciantix_variable[sv["Stoichiometry deviation"]].getInitialValue(),
+                model[sm["Stoichiometry deviation"]].getParameter().at(0),
+                model[sm["Stoichiometry deviation"]].getParameter().at(1),
+                physics_variable[pv["Time step"]].getFinalValue()
+            )
+        );
+    }
+
+    else if(input_variable[iv["iStoichiometryDeviation"]].getValue() > 4)
+    {
+        sciantix_variable[sv["Stoichiometry deviation"]].setFinalValue(
+            solver.NewtonLangmuirBasedModel(
+                sciantix_variable[sv["Stoichiometry deviation"]].getInitialValue(),
+                    model[sm["Stoichiometry deviation"]].getParameter(),
+                    physics_variable[pv["Time step"]].getFinalValue()
+            )
+        );
+    }
+
+    sciantix_variable[sv["Fuel oxygen partial pressure"]].setFinalValue(
+    BlackburnThermochemicalModel(
+        sciantix_variable[sv["Stoichiometry deviation"]].getFinalValue(),
+        history_variable[hv["Temperature"]].getFinalValue()
+        )
+    );
+
+    // Fuel oxygen potential
+    if(sciantix_variable[sv["Fuel oxygen partial pressure"]].getFinalValue() == 0.0)
+        sciantix_variable[sv["Fuel oxygen potential"]].setFinalValue(0.0);
+    else
+        sciantix_variable[sv["Fuel oxygen potential"]].setFinalValue(8.314*1.0e-3*history_variable[hv["Temperature"]].getFinalValue()*log(sciantix_variable[sv["Fuel oxygen partial pressure"]].getFinalValue()/0.1013));
+
 }

@@ -63,4 +63,8 @@ void errorHandling();
  * Handles unsupported diffusion solver options.
  */
 
+double* getDiffusionModes(std::string gas_name);
+double* getDiffusionModesSolution(std::string gas_name);
+double* getDiffusionModesBubbles(std::string gas_name);
+
 #endif // GAS_DIFFUSION_H

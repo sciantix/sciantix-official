@@ -18,6 +18,7 @@
 
 void Simulation::EffectiveBurnup()
 {
+    // Model declaration
     model.emplace_back();
     int model_index = int(model.size()) - 1;
 
@@ -38,8 +39,10 @@ void Simulation::EffectiveBurnup()
     model[model_index].setParameter(parameter);
     model[model_index].setRef(reference);
 
+    // Model mapping
     MapModel();
-
+    
+    // Model resolution
     sciantix_variable[sv["Effective burnup"]].setFinalValue(
         solver.Integrator(
             sciantix_variable[sv["Effective burnup"]].getInitialValue(),

@@ -14,9 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "EnvironmentComposition.h"
+#include "Simulation.h"
 
-void EnvironmentComposition()
+void Simulation::EnvironmentComposition()
 {
 	if (!input_variable[iv["iStoichiometryDeviation"]].getValue()) return;
 
@@ -39,4 +39,6 @@ void EnvironmentComposition()
 
 	std::string reference = "Lewis et al. JNM 227 (1995) 83-109, D.R. Olander, Nucl. Technol. 74 (1986) 215.";
 	model[model_index].setRef(reference);
+
+	MapModel();
 }

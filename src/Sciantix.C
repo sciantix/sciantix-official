@@ -36,50 +36,33 @@ void Sciantix(int Sciantix_options[],
 
     sciantix_simulation.EffectiveBurnup();
 
-    EnvironmentComposition();
-    MapModel();
+    sciantix_simulation.EnvironmentComposition();
 
-    UO2Thermochemistry();
-    MapModel();
     sciantix_simulation.UO2Thermochemistry();
 
-    StoichiometryDeviation();
-    MapModel();
     sciantix_simulation.StoichiometryDeviation(); 
 
     sciantix_simulation.HighBurnupStructureFormation();
 
     sciantix_simulation.HighBurnupStructurePorosity();
 
-    GrainGrowth();
-    MapModel();
     sciantix_simulation.GrainGrowth();
 
-    GrainBoundarySweeping();
-    MapModel();
     sciantix_simulation.GrainBoundarySweeping();
 
     sciantix_simulation.GasProduction();
 
     sciantix_simulation.GasDecay();
 
-    IntraGranularBubbleEvolution();
-    MapModel();
-    sciantix_simulation.IntraGranularBubbleBehaviour();
+    sciantix_simulation.IntraGranularBubbleBehavior();
 
-    GasDiffusion();
-    MapModel();
     sciantix_simulation.GasDiffusion();
 
     sciantix_simulation.GrainBoundaryMicroCracking();
 
     sciantix_simulation.GrainBoundaryVenting();
 
-    InterGranularBubbleEvolution();
-    MapModel();
-    sciantix_simulation.InterGranularBubbleBehaviour();
-
-    FiguresOfMerit();
+    sciantix_simulation.InterGranularBubbleBehavior();
 
     UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
