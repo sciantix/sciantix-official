@@ -15,10 +15,6 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
-#include "SciantixVariableDeclaration.h"
-#include "MapSciantixVariable.h"
-#include "ModelDeclaration.h"
-#include "SetMatrix.h"
 
 void Simulation::Burnup()
 {

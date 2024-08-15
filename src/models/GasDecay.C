@@ -26,7 +26,7 @@ void Simulation::GasDecay()
                 solver.Decay(
                     sciantix_variable[sv[system.getGasName() + " decayed"]].getInitialValue(),
                     gas[ga[system.getGasName()]].getDecayRate(),
-                    gas[ga[system.getGasName()]].getDecayRate() * sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue(), // sarebbe produced + produced in HBS ma le seconde devono esistere per tutte le specie..
+                    gas[ga[system.getGasName()]].getDecayRate() * sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue(),
                     physics_variable[pv["Time step"]].getFinalValue()
                 )
             );

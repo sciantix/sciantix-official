@@ -16,12 +16,9 @@
 
 #include "Simulation.h"
 
-/**
- * @brief Calculates the concentration of fission gas (Xe+Kr) produced by fission reactions in the fuel.
- */
-
 void Simulation::GasProduction()
 {
+	// Model declaration
 	for (auto& system : sciantix_system)
 	{
 		int model_index = model.size();
@@ -41,8 +38,10 @@ void Simulation::GasProduction()
 		parameter.clear();
 	}
 
+	// Mapping the model
 	MapModel();
 
+	// Model resolution
 	for (auto& system : sciantix_system)
 	{	
 		if(system.getRestructuredMatrix() == 0)

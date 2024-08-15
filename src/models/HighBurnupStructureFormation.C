@@ -14,72 +14,93 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "HighBurnupStructureFormation.h"
+#include "Simulation.h"
 
-void HighBurnupStructureFormation()
+void Simulation::HighBurnupStructureFormation()
 {
-	model.emplace_back();
+    model.emplace_back();
 
-	int model_index = int(model.size()) - 1;
+    int model_index = int(model.size()) - 1;
 
-	model[model_index].setName("High-burnup structure formation");
+    model[model_index].setName("High-burnup structure formation");
 
-	std::string reference;
-	std::vector<double> parameter;
+    std::string reference;
+    std::vector<double> parameter;
 
-	switch (int(input_variable[iv["iHighBurnupStructureFormation"]].getValue()))
-	{
-	case 0:
-	{
-		/// @brief
-		/// iHighBurnupStructureFormation == 0
-		/// ----------------------------------
-		///
-		/// No HBS forming in the UO2 fuel matrix.
+    switch (int(input_variable[iv["iHighBurnupStructureFormation"]].getValue()))
+    {
+    case 0:
+    {
+        /// @brief
+        /// iHighBurnupStructureFormation == 0
+        /// ----------------------------------
+        ///
+        /// No HBS forming in the UO2 fuel matrix.
 
-		reference += ": not considered.";
-		parameter.push_back(0.0);
-		parameter.push_back(0.0);
-		parameter.push_back(0.0);
-		parameter.push_back(0.0);
+        reference += ": not considered.";
+        parameter.push_back(0.0);
+        parameter.push_back(0.0);
+        parameter.push_back(0.0);
+        parameter.push_back(0.0);
 
-		break;
-	}
+        break;
+    }
 
-	case 1:
-	{
-		/// @brief
-		/// iHighBurnupStructureFormation == 1
-		/// ----------------------------------
-		///
-		/// This case calculates the fraction of HBS-restructured volume of the UO2 fuel matrix based on the KJMA approach.
-		/// @ref Barani et al. Journal of Nuclear Materials 539 (2020) 152296
-		/// @param[out] avrami_constant
-		/// @param[out] transformation_rate
-		/// @param[out] resolution_layer_thickness
-		/// @param[out] resolution_critical_distance
+    case 1:
+    {
+        /// @brief
+        /// iHighBurnupStructureFormation == 1
+        /// ----------------------------------
+        ///
+        /// This case calculates the fraction of HBS-restructured volume of the UO2 fuel matrix based on the KJMA approach.
+        /// @ref Barani et al. Journal of Nuclear Materials 539 (2020) 152296
+        /// @param[out] avrami_constant
+        /// @param[out] transformation_rate
+        /// @param[out] resolution_layer_thickness
+        /// @param[out] resolution_critical_distance
 
-		reference += ": Barani et al. Journal of Nuclear Materials 539 (2020) 152296";
+        reference += ": Barani et al. Journal of Nuclear Materials 539 (2020) 152296";
 
-		double avrami_constant(3.54);
-		double transformation_rate(2.77e-7);
-		double resolution_layer_thickness = 1.0e-9; //(m)
-		double resolution_critical_distance = 1.0e-9; //(m)
+        double avrami_constant(3.54);
+        double transformation_rate(2.77e-7);
+        double resolution_layer_thickness = 1.0e-9; //(m)
+        double resolution_critical_distance = 1.0e-9; //(m)
 
-		parameter.push_back(avrami_constant);
-		parameter.push_back(transformation_rate);
-		parameter.push_back(resolution_layer_thickness);
-		parameter.push_back(resolution_critical_distance);
+        parameter.push_back(avrami_constant);
+        parameter.push_back(transformation_rate);
+        parameter.push_back(resolution_layer_thickness);
+        parameter.push_back(resolution_critical_distance);
 
-		break;
-	}
+        break;
+    }
 
-	default:
-		ErrorMessages::Switch(__FILE__, "iHighBurnupStructureFormation", int(input_variable[iv["iHighBurnupStructureFormation"]].getValue()));
-		break;
-	}
+    default:
+        ErrorMessages::Switch(__FILE__, "iHighBurnupStructureFormation", int(input_variable[iv["iHighBurnupStructureFormation"]].getValue()));
+        break;
+    }
 
-	model[model_index].setParameter(parameter);
-	model[model_index].setRef(reference);
+    model[model_index].setParameter(parameter);
+    model[model_index].setRef(reference);
 
+
+    MapModel();
+
+
+    if (!int(input_variable[iv["iHighBurnupStructureFormation"]].getValue())) return;
+
+    // Restructuring rate:
+    // dalpha_r / bu = 3.54 * 2.77e-7 (1-alpha_r) b^2.54
+    double coefficient =
+        model[sm["High-burnup structure formation"]].getParameter().at(0) *
+        model[sm["High-burnup structure formation"]].getParameter().at(1) *
+        pow(sciantix_variable[sv["Effective burnup"]].getFinalValue(), 2.54);
+    
+    sciantix_variable[sv["Restructured volume fraction"]].setFinalValue(
+        solver.Decay(
+            sciantix_variable[sv["Restructured volume fraction"]].getInitialValue(),
+            coefficient,
+            coefficient,
+            sciantix_variable[sv["Effective burnup"]].getIncrement()
+            )
+        );
 }

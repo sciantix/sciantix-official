@@ -47,12 +47,8 @@ void Sciantix(int Sciantix_options[],
     MapModel();
     sciantix_simulation.StoichiometryDeviation(); 
 
-    HighBurnupStructureFormation();
-    MapModel();
     sciantix_simulation.HighBurnupStructureFormation();
 
-    HighBurnupStructurePorosity();
-    MapModel();
     sciantix_simulation.HighBurnupStructurePorosity();
 
     GrainGrowth();
@@ -75,12 +71,8 @@ void Sciantix(int Sciantix_options[],
     MapModel();
     sciantix_simulation.GasDiffusion();
 
-    GrainBoundaryMicroCracking();
-    MapModel();
     sciantix_simulation.GrainBoundaryMicroCracking();
 
-    GrainBoundaryVenting();
-    MapModel();
     sciantix_simulation.GrainBoundaryVenting();
 
     InterGranularBubbleEvolution();

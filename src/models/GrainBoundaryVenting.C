@@ -14,14 +14,15 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "GrainBoundaryVenting.h"
+#include "Simulation.h"
 
-void GrainBoundaryVenting()
+void Simulation::GrainBoundaryVenting()
 {
     /**
      * @brief GrainBoundaryVenting() defines models for release mechanisms caused by venting through open porosities
     */
 
+    // Model declaration 
     model.emplace_back();
     int model_index = int(model.size()) - 1;
     model[model_index].setName("Grain-boundary venting");
@@ -85,4 +86,22 @@ void GrainBoundaryVenting()
 
     model[model_index].setParameter(parameter);
     model[model_index].setRef(reference);
+
+    MapModel();
+
+    {
+        if (!int(input_variable[iv["iGrainBoundaryVenting"]].getValue())) return;
+
+        for (auto& system : sciantix_system)
+        {
+            sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(
+                solver.Integrator(
+                    sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getFinalValue(),
+                    - model[sm["Grain-boundary venting"]].getParameter().at(0),
+                    sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getIncrement()
+                )
+            );
+            sciantix_variable[sv[system.getGasName() + " at grain boundary"]].resetValue();
+        }
+    }
 }
