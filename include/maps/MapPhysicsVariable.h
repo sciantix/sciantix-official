@@ -21,6 +21,14 @@
 #include <string>
 #include "PhysicsVariableDeclaration.h"
 
+/**
+ * @brief Contains the declaration of the MapHistoryVariable function and the pv map.
+ * 
+ * The pv map is used to quickly access a physics_variable by its name, storing the index of each physics_variable within the physics_variable vector.
+ * 
+ * @author G. Zullo
+ */
+
 extern std::map<std::string, int> pv;
 
 void MapPhysicsVariable();

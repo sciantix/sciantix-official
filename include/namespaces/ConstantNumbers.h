@@ -14,8 +14,6 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-/// This namespace contains relevant numeric constants that can be used in all the code.
-
 #ifndef CONSTANT_NUMBERS_H
 #define CONSTANT_NUMBERS_H
 

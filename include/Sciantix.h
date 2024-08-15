@@ -18,7 +18,6 @@
 #ifndef SCIANTIX_H
 #define SCIANTIX_H
 
-
 #include <iostream>
 #include <map>
 #include <string>

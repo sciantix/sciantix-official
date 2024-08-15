@@ -10,14 +10,9 @@
 //                                                                                  //
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
-//  Authors: D. Pizzocri, T. Barani.                                                //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
-
-/// InputInterpolator
-/// This function performs the interpolation of the input values,
-/// calculating the current value of an input variable (e.g., temperature)
-/// This algorithm is taken from Numerical recipes
 
 #include "InputInterpolation.h"
 

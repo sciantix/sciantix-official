@@ -26,4 +26,13 @@
 #include "SciantixScalingFactorDeclaration.h"
 #include <cmath>
 
+/**
+ * @brief Sets properties for the UO2-HBS matrix.
+ * 
+ * This function initializes the properties of the UO2-HBS matrix
+ * and adds it to the matrix vector.
+ * 
+ * @author G. Zullo
+ */
+
 void UO2HBS();

@@ -14,26 +14,28 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-/*!
- * \mainpage SCIANTIX
- *
- * \section Introduction
+
+/**
+ * @brief Main entry point for the SCIANTIX program. 
  *
  * SCIANTIX is a 0D code developed at Politecnico di Milano.
  * The objective of SCIANTIX is to represent the behaviour of a single grain of nuclear fuel.
  * The modelling of inert gas behaviour is the main aspect considered.
  * Engineering models are used, allowing for future integration in industrial fuel performance codes.
  * Nevertheless, physically-based model are preferred to empirical models.
- * This facilitates the incorporation of information from lower length scale calculations. 
+ * This facilitates the incorporation of information from lower length scale calculations.
  *
- * 
+ * @see <a href="../../references/pdf_link/Pizzocri_et_al_2020.pdf" target="_blank">Pizzocri et al 2020</a>, <a href="../../references/pdf_link/Zullo_et_al_2023.pdf" target="_blank">Zullo et al 2023</a>.
+ *
  * At present, this version of the code is validated against experiments for
  * - intragranular gaseous swelling
  * - intergranular gaseous swelling
  * - helium behaviour and release in annealing conditions
  * - release of radioactive fission gases
  * The validation database is accessible in the *regression* folder.
- * 
+ * @param argc Number of command-line arguments.
+ * @param argv Array of command-line arguments, where argv[1] is expected to be the path to the input file.
+ * @return Returns 0 upon successful completion of the program.
  */
 
 #include "MainVariables.h"
@@ -42,10 +44,12 @@
 #include "InputReading.h"
 #include "Initialization.h"
 #include "TimeStepCalculation.h"
-#include <iostream>
-#include <fstream>
-#include <ctime>
 
+/**
+ * @brief Logs the execution time of the simulation.
+ * @param timer The total execution time measured in seconds.
+ * @param time_step_number The total number of time steps executed during the simulation.
+ */
 void logExecutionTime(double timer, int time_step_number);
 
 int main()

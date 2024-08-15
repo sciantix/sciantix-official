@@ -21,6 +21,14 @@
 #include <string>
 #include "SciantixVariableDeclaration.h"
 
+/**
+ * @brief Contains the declaration of the MapSciantixVariable function and the sv map.
+ * 
+ * The sv map is used to quickly access a sciantix_variable by its name, storing the index of each sciantix_variable within the sciantix_variable vector.
+ * 
+ * @author G. Zullo
+ */
+
 extern std::map<std::string, int> sv;
 
 void MapSciantixVariable();

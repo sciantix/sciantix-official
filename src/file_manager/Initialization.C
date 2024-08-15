@@ -14,10 +14,6 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-/// Initialization
-/// This routine initializes Sciantix internal variables with
-/// initial conditions/interface variables
-
 #include "Initialization.h"
 
 void Initialization()

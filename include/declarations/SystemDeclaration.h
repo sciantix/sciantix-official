@@ -18,6 +18,7 @@
 #define SYSTEM_DECLARATION_H
 
 #include <vector>
+
 #include "ConstantNumbers.h"
 #include "System.h"
 

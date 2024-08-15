@@ -19,7 +19,6 @@
 
 #include <cmath>
 
-double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature);
 /**
  * @brief The oxygen partial pressure in UO2+x fuel as a function of x, i.e., PO2 (x) (in atm) is calculated from Blackburn’s relation
  * @ref Blackburn (1973) J. Nucl. Mater., 46, 244–252.
@@ -27,6 +26,10 @@ double BlackburnThermochemicalModel(double stoichiometry_deviation, double tempe
  * Validity range:
  * - T: 1000 K - 2670 K
  * - x: 0 - 0.25
+ * 
+ * @author G. Zullo
+ * @author G. Petrosillo
  */
+double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature);
 
 #endif

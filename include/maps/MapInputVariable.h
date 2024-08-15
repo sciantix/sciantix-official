@@ -21,6 +21,15 @@
 #include <string>
 #include "InputVariableDeclaration.h"
 
+/**
+ * @brief Contains the declaration of the MapInputVariable function and the iv map.
+ * 
+ * The iv map is used to quickly access a input_variable by its name, storing the index of each input_variable within the input_variable vector.
+ * 
+ * @author G. Zullo
+ */
+
+
 extern std::map<std::string, int> iv;
 
 void MapInputVariable();

@@ -16,6 +16,7 @@
 
 #ifndef INITIALIZATION_H
 #define INITIALIZATION_H
+
 #include <cmath>
 #include <ConstantNumbers.h>
 #include "MainVariables.h"

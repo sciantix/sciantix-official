@@ -21,6 +21,14 @@
 #include <string>
 #include "ModelDeclaration.h"
 
+/**
+ * @brief Contains the declaration of the MapModel function and the sm map.
+ * 
+ * The sm map is used to quickly access a model by its name, storing the index of each model within the model vector.
+ * 
+ * @author G. Zullo
+ */
+
 extern std::map<std::string, int> sm;
 
 void MapModel();

@@ -17,4 +17,13 @@
 
 #include "GasDeclaration.h"
 
+/**
+ * @brief Sets properties for the Krypton gas.
+ * 
+ * This function initializes the properties of the Krypton gas
+ * and adds it to the gas vector.
+ * 
+ * @author G. Zullo
+ */
+
 void Krypton();

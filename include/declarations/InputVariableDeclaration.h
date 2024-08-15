@@ -20,8 +20,6 @@
 #include <vector>
 #include "InputVariable.h"
 
-/// Extern declaration of the input_variable vector
-
 extern std::vector<InputVariable> input_variable;
 
 #endif

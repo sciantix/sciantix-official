@@ -21,6 +21,14 @@
 #include <string>
 #include "MatrixDeclaration.h"
 
+/**
+ * @brief Contains the declaration of the MapMatrix function and the sma map.
+ * 
+ * The sma map is used to quickly access a matrix by its name, storing the index of each matarix within the matrix vector.
+ * 
+ * @author G. Zullo
+ */
+
 extern std::map<std::string, int> sma;
 
 void MapMatrix();

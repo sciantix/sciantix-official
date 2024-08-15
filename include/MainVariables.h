@@ -20,7 +20,6 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include <ctime>
 
 /**
  * @file MainVariables.h

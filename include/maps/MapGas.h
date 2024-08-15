@@ -21,6 +21,14 @@
 #include <string>
 #include "GasDeclaration.h"
 
+/**
+ * @brief Contains the declaration of the MapGas function and the ga map.
+ * 
+ * The ga map is used to quickly access a gas by its name, storing the index of each gas within the gas vector.
+ * 
+ * @author G. Zullo
+ */
+
 extern std::map<std::string, int> ga;
 
 void MapGas();

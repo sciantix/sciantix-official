@@ -21,6 +21,14 @@
 #include <string>
 #include "SystemDeclaration.h"
 
+/**
+ * @brief Contains the declaration of the MapSystem function and the sy map.
+ * 
+ * The sy map is used to quickly access a system by its name, storing the index of each system within the sciantix_system vector.
+ * 
+ * @author G. Zullo
+ */
+
 extern std::map<std::string, int> sy;
 
 void MapSystem();

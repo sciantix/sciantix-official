@@ -18,7 +18,6 @@
 
 #include <vector>
 
-/// SciantixDiffusionModeDeclaration
 extern const int n_modes;
 extern double modes_initial_conditions[40*40];
 

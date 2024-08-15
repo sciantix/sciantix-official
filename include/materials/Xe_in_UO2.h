@@ -29,6 +29,8 @@
  * 
  * This function initializes the properties of the "Xenon in UO2" system
  * and adds it to the sciantix_system vector.
+ * 
+ * @author G. Zullo
  */
 
 void Xe_in_UO2();

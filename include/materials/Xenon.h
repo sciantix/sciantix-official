@@ -19,6 +19,15 @@
 
 #include "GasDeclaration.h"
 
+/**
+ * @brief Sets properties for the Xenon gas.
+ * 
+ * This function initializes the properties of the Xenon gas
+ * and adds it to the gas vector.
+ * 
+ * @author G. Zullo
+ */
+
 void Xenon();
 
 #endif // XENON_H

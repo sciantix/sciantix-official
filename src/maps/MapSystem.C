@@ -16,15 +16,10 @@
 
 #include "MapSystem.h"
 
-/**
- * @brief This routines defines the map sy for sciantix_system
- * 
- */
-
 std::map<std::string, int> sy;
 
 void MapSystem()
 {
-	for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
-		sy[sciantix_system[i].getName()] = i;
+    for (std::vector<System>::size_type i = 0; i != sciantix_system.size(); ++i)
+        sy[sciantix_system[i].getName()] = i;
 }

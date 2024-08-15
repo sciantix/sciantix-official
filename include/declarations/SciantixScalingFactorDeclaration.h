@@ -14,8 +14,6 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-/// SciantixScalingFactorDeclaration
-
 extern double sf_resolution_rate;
 extern double sf_trapping_rate;
 extern double sf_nucleation_rate;
