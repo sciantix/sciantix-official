@@ -16,7 +16,7 @@
 
 #include "Simulation.h"
 
-void Simulation::EnvironmentComposition()
+void Simulation::GapPartialPressure()
 {
 	if (!input_variable[iv["iStoichiometryDeviation"]].getValue()) return;
 

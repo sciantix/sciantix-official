@@ -36,7 +36,7 @@ void Sciantix(int Sciantix_options[],
 
     sciantix_simulation.EffectiveBurnup();
 
-    sciantix_simulation.EnvironmentComposition();
+    sciantix_simulation.GapPartialPressure();
 
     sciantix_simulation.UO2Thermochemistry();
 
