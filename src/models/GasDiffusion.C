@@ -11,6 +11,7 @@
 //  Version: 2.0                                                                    //
 //  Year: 2022                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
+//                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
@@ -35,6 +36,43 @@ void Simulation::GasDiffusion()
         default:
             errorHandling();
             break;
+    }
+
+    // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
+    for (auto& system : sciantix_system)
+    {
+        if(system.getRestructuredMatrix() == 0)
+        {
+            sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(
+                sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() -
+                sciantix_variable[sv[system.getGasName() + " decayed"]].getFinalValue() -
+                sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue() -
+                sciantix_variable[sv[system.getGasName() + " released"]].getInitialValue()
+            );
+
+            if (sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getFinalValue() < 0.0)
+                sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(0.0);
+        }
+    }
+
+    if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() == 0)
+    {
+        for (auto& system : sciantix_system)
+        {
+            if(system.getRestructuredMatrix() == 0)
+            {
+                {
+                    sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setInitialValue(0.0);
+                    sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(0.0);
+
+                    sciantix_variable[sv[system.getGasName() + " released"]].setFinalValue(
+                        sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() -
+                        sciantix_variable[sv[system.getGasName() + " decayed"]].getFinalValue() -
+                        sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue()
+                    );
+                }
+            }
+        }
     }
 }
 
@@ -109,91 +147,6 @@ void defineSpectralDiffusion1Equation()
             );
         }
     }
-
-    // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
-    for (auto& system : sciantix_system)
-    {
-        if(system.getRestructuredMatrix() == 0)
-        {
-            sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(
-                sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() -
-                sciantix_variable[sv[system.getGasName() + " decayed"]].getFinalValue() -
-                sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue() -
-                sciantix_variable[sv[system.getGasName() + " released"]].getInitialValue()
-            );
-
-            if (sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getFinalValue() < 0.0)
-                sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(0.0);
-        }
-    }
-
-        /**
-         * @brief If **iGrainBoundaryBehaviour = 0** (e.g., grain-boundary calculations are neglected), 
-         * all the gas arriving at the grain boundary is released.
-         * 
-         */
-        if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() == 0)
-        {
-            for (auto& system : sciantix_system)
-            {
-                if(system.getRestructuredMatrix() == 0)
-                {
-                    {
-                        sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setInitialValue(0.0);
-                        sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(0.0);
-
-                        sciantix_variable[sv[system.getGasName() + " released"]].setFinalValue(
-                            sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() -
-                            sciantix_variable[sv[system.getGasName() + " decayed"]].getFinalValue() -
-                            sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue()
-                        );
-                    }
-                }
-            }
-        }
-
-
-    // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
-    for (auto& system : sciantix_system)
-    {
-        if(system.getRestructuredMatrix() == 0)
-        {
-            sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(
-                sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() -
-                sciantix_variable[sv[system.getGasName() + " decayed"]].getFinalValue() -
-                sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue() -
-                sciantix_variable[sv[system.getGasName() + " released"]].getInitialValue()
-            );
-
-            if (sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getFinalValue() < 0.0)
-                sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(0.0);
-        }
-    }
-
-    /**
-     * @brief If **iGrainBoundaryBehaviour = 0** (e.g., grain-boundary calculations are neglected), 
-     * all the gas arriving at the grain boundary is released.
-     * 
-     */
-    if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() == 0)
-    {
-        for (auto& system : sciantix_system)
-        {
-            if(system.getRestructuredMatrix() == 0)
-            {
-                {
-                    sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setInitialValue(0.0);
-                    sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(0.0);
-
-                    sciantix_variable[sv[system.getGasName() + " released"]].setFinalValue(
-                        sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() -
-                        sciantix_variable[sv[system.getGasName() + " decayed"]].getFinalValue() -
-                        sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue()
-                    );
-                }
-            }
-        }
-    }
 }
 
 void defineSpectralDiffusion2Equations()
@@ -254,48 +207,6 @@ void defineSpectralDiffusion2Equations()
             sciantix_variable[sv[system.getGasName() + " in grain HBS"]].setFinalValue(0.0);
         }
     }
-
-    // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
-    for (auto& system : sciantix_system)
-    {
-        if(system.getRestructuredMatrix() == 0)
-        {
-            sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(
-                sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() -
-                sciantix_variable[sv[system.getGasName() + " decayed"]].getFinalValue() -
-                sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue() -
-                sciantix_variable[sv[system.getGasName() + " released"]].getInitialValue()
-            );
-
-            if (sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getFinalValue() < 0.0)
-                sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(0.0);
-        }
-    }
-
-        /**
-         * @brief If **iGrainBoundaryBehaviour = 0** (e.g., grain-boundary calculations are neglected), 
-         * all the gas arriving at the grain boundary is released.
-         * 
-         */
-        if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() == 0)
-        {
-            for (auto& system : sciantix_system)
-            {
-                if(system.getRestructuredMatrix() == 0)
-                {
-                    {
-                        sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setInitialValue(0.0);
-                        sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(0.0);
-
-                        sciantix_variable[sv[system.getGasName() + " released"]].setFinalValue(
-                            sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() -
-                            sciantix_variable[sv[system.getGasName() + " decayed"]].getFinalValue() -
-                            sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue()
-                        );
-                    }
-                }
-            }
-        }
 }
 
 void defineSpectralDiffusion3Equations()
@@ -366,58 +277,8 @@ void defineSpectralDiffusion3Equations()
         (sciantix_variable[sv["Xe in intragranular solution"]].getFinalValue() + sciantix_variable[sv["Xe in grain HBS"]].getFinalValue()) *
         pow(matrix[sma["UO2"]].getLatticeParameter(), 3) / 4
     );
-
-    // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
-    for (auto& system : sciantix_system)
-    {
-        if(system.getRestructuredMatrix() == 0)
-        {
-            sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(
-                sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() -
-                sciantix_variable[sv[system.getGasName() + " decayed"]].getFinalValue() -
-                sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue() -
-                sciantix_variable[sv[system.getGasName() + " released"]].getInitialValue()
-            );
-
-            if (sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getFinalValue() < 0.0)
-                sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(0.0);
-        }
-    }
-
-    /**
-     * @brief If **iGrainBoundaryBehaviour = 0** (e.g., grain-boundary calculations are neglected), 
-     * all the gas arriving at the grain boundary is released.
-     * 
-     */
-    if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() == 0)
-    {
-        for (auto& system : sciantix_system)
-        {
-            if(system.getRestructuredMatrix() == 0)
-            {
-                {
-                    sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setInitialValue(0.0);
-                    sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(0.0);
-
-                    sciantix_variable[sv[system.getGasName() + " released"]].setFinalValue(
-                        sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() -
-                        sciantix_variable[sv[system.getGasName() + " decayed"]].getFinalValue() -
-                        sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue()
-                    );
-                }
-            }
-        }
-    }
 }
 
-
-/**
- * @brief This method returns a pointer to the array of diffusion modes corresponding to the specified gas.
- * 
- * @param gas_name The name of the gas for which diffusion modes are required.
- * @return A pointer to the array of diffusion modes for the specified gas.
- *         Returns nullptr if the gas name is invalid.
- */
 double* getDiffusionModes(std::string gas_name)
 {
     if(gas_name == "Xe")

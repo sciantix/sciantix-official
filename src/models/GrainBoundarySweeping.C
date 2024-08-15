@@ -16,12 +16,6 @@
 
 #include "Simulation.h"
 
-/**
- * @brief This routine defines the model the grain-boundary sweeping.
- * If activated, it describes the fraction of intra-granular gas concentration sweeped due to grain growth process.
- * 
- */
-
 void Simulation::GrainBoundarySweeping()
 {
     model.emplace_back();
@@ -43,12 +37,6 @@ void Simulation::GrainBoundarySweeping()
 
     case 1:
     {
-        /**
-         * @brief iGrainBoundarySweeping = 1 considers the fraction of grain swept volume (dV/V = 3 dr / r).
-         * Then, the fraction of intra-granular gas concentration swept is dC / C = - 3 dr / r
-         *  
-         */
-
         std::vector<double> parameter;
         /// @param[out] grain_sweeped_volume
         parameter.push_back(3 * sciantix_variable[sv["Grain radius"]].getIncrement() / sciantix_variable[sv["Grain radius"]].getFinalValue());
@@ -116,7 +104,7 @@ void Simulation::GrainBoundarySweeping()
             break;
 
         default:
-            // ErrorMessages::Switch("Simulation.h", "iDiffusionSolver", int(input_variable[iv["iDiffusionSolver"]].getValue()));
+            ErrorMessages::Switch(__FILE__, "iDiffusionSolver", int(input_variable[iv["iDiffusionSolver"]].getValue()));
             break;
     }
 }

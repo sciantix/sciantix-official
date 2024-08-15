@@ -18,9 +18,6 @@
 
 void Simulation::IntraGranularBubbleBehavior()
 {
-    /// @brief
-    /// IntraGranularBubbleEvolution builds an object Model according to the input_variable "iIntraGranularBubbleEvolution".
-    /// The models available in this routine determine the calculation of local bubble density and average size.
     model.emplace_back();
     int model_index = int(model.size()) - 1;
 
@@ -33,14 +30,6 @@ void Simulation::IntraGranularBubbleBehavior()
     {
     case 0:
     {
-        /// @brief
-        /// iIntraGranularBubbleEvolution == 0
-        /// ----------------------------------
-        ///
-        /// This case assumes constant trial values for the intragranular bubble number density and radius.
-        /// @param[out] intragranular_bubble_concentration
-        /// @param[out] intragranular_bubble_radius
-
         reference += "No evolution.";
 
         sciantix_variable[sv["Intragranular bubble concentration"]].setInitialValue(7.0e23);
@@ -56,16 +45,7 @@ void Simulation::IntraGranularBubbleBehavior()
     }
 
     case 1:
-    {
-        /// @brief
-        /// iIntraGranularBubbleEvolution == 1
-        /// ----------------------------------
-        ///
-        /// The evolution of small intra-granular bubbles in fuel grains is controlled by bubble nucleation, gas atom trapping, and irradiation-induced gas atom re-solution back in the lattice.
-        /// Description of the model in @ref Pizzocri et al., JNM, 502 (2018) 323-330.
-        /// @param[out] intragranular_bubble_concentration
-        /// @param[out] intragranular_bubble_radius
-        
+    {   
         reference += ": Pizzocri et al., JNM, 502 (2018) 323-330.";
 
         /// @param[in] resolution_rate
@@ -79,14 +59,6 @@ void Simulation::IntraGranularBubbleBehavior()
 
     case 2:
     {
-        /// @brief
-        /// iIntraGranularBubbleEvolution == 2
-        /// ----------------------------------
-        ///
-        /// The evolution of intragranular bubbles is modelled by means of temperature-driven correlations.
-        /// Description of the model in @ref White, Tucker, Journal of Nuclear Materials, 118 (1983), 1-38.
-        /// @param[in] local_fuel_temperature
-
         reference += "White and Tucker, JNM, 118 (1983), 1-38.";
         
         sciantix_variable[sv["Intragranular bubble concentration"]].setInitialValue(1.52e+27 / history_variable[hv["Temperature"]].getFinalValue() - 3.3e+23);
@@ -97,13 +69,6 @@ void Simulation::IntraGranularBubbleBehavior()
 
     case 3:
     {
-        /**
-         * @brief iIntraGranularBubbleEvolution == 3
-         * 
-         * The evolution of intragranular bubble concentration, radius and atoms per bubble is described through
-         * the similarity ratio, based on the evolution of intragranular concentration of gas in bubbles.
-         */
-    
         reference += "Case specific for annealing experiments and helium intragranular behaviour.";
 
         if(physics_variable[pv["Time step"]].getFinalValue() > 0.0)
@@ -118,17 +83,6 @@ void Simulation::IntraGranularBubbleBehavior()
 
     case 99:
     {
-        /**
-         * @brief iIntraGranularBubbleEvolution == 99
-         * No intragranular bubbles.
-         * 
-         * To be used with iTrappingRate = 99, iResolutionRate = 99, iNucleationRate = 99.
-         * 
-         * @param[out] intragranular_bubble_radius
-         * @param[out] intragranular_bubble_concentration
-         * 
-         */
-
         reference += "No intragranular bubbles.";
 
         sciantix_variable[sv["Intragranular bubble concentration"]].setInitialValue(0.0);
@@ -154,12 +108,6 @@ void Simulation::IntraGranularBubbleBehavior()
     model[model_index].setRef(reference);
 
     MapModel();
-
-    /**
-     * @brief IntraGranularBubbleBehaviour is a method of the object Simulation.
-     * This method computes concentration and average size of intragranular gas bubbles.
-     *  
-     */
 
     // dN / dt = - getParameter().at(0) * N + getParameter().at(1)
     sciantix_variable[sv["Intragranular bubble concentration"]].setFinalValue(

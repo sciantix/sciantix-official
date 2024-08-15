@@ -18,138 +18,134 @@
 
 void Simulation::GrainGrowth()
 {
-	// Model declaration
-	model.emplace_back();
+    // Model declaration
+    model.emplace_back();
 
-	int model_index = int(model.size()) - 1;
+    int model_index = int(model.size()) - 1;
 
-	model[model_index].setName("Grain growth");
-	std::string reference;
-	std::vector<double> parameter;
+    model[model_index].setName("Grain growth");
+    std::string reference;
+    std::vector<double> parameter;
 
-	switch (int(input_variable[iv["iGrainGrowth"]].getValue()))
-	{
-	case 0:
-	{
-		/**
-		 * @brief iGrainGrowth = 0 is used to neglect the grain growth.
-		 * The radius of the grain is constant throughout the simulation.
-		 * 
-		*/
+    switch (int(input_variable[iv["iGrainGrowth"]].getValue()))
+    {
+    case 0:
+    {
+        /**
+         * @brief iGrainGrowth = 0 is used to neglect the grain growth.
+         * The radius of the grain is constant throughout the simulation.
+         * 
+        */
 
-		reference += "constant grain radius.";
+        reference += "constant grain radius.";
 
-		parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
-		parameter.push_back(0.0);
-		parameter.push_back(0.0);
-		parameter.push_back(0.0);
-		parameter.push_back(1.0);
-		parameter.push_back(-sciantix_variable[sv["Grain radius"]].getInitialValue());
+        parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
+        parameter.push_back(0.0);
+        parameter.push_back(0.0);
+        parameter.push_back(0.0);
+        parameter.push_back(1.0);
+        parameter.push_back(-sciantix_variable[sv["Grain radius"]].getInitialValue());
 
-		break;
-	}
+        break;
+    }
 
-	case 1:
-		/** @brief iGrainGrowth = 1 considers that the grain growth kinetic is described by the semi-empirical model from
-		 * @ref *Ainscough et al., JNM, 49 (1973) 117-128*.
-		 * This model includes essentially two contributions on the grain growth:
-		 * 1. Temperature;
-		 * 2. Burnup (i.e., increasing retarding effect due fission product accumulation).
-		 * 
-		 * Note that, the equation for grain growth is written in grain size.
-		*/
-	{
-		reference += ": Ainscough et al., JNM, 49 (1973) 117-128.";
+    case 1:
+        /** @brief iGrainGrowth = 1 considers that the grain growth kinetic is described by the semi-empirical model from
+         * @ref *Ainscough et al., JNM, 49 (1973) 117-128*.
+         * This model includes essentially two contributions on the grain growth:
+         * 1. Temperature;
+         * 2. Burnup (i.e., increasing retarding effect due fission product accumulation).
+         * 
+         * Note that, the equation for grain growth is written in grain size.
+        */
+    {
+        reference += ": Ainscough et al., JNM, 49 (1973) 117-128.";
 
-		double limiting_grain_radius = 2.23e-03 * (1.56/2.0) * exp(-7620.0 / history_variable[hv["Temperature"]].getFinalValue());
-		double burnup_factor = 1.0 + 2.0 * sciantix_variable[sv["Burnup"]].getFinalValue() / 0.8815;
+        double limiting_grain_radius = 2.23e-03 * (1.56/2.0) * exp(-7620.0 / history_variable[hv["Temperature"]].getFinalValue());
+        double burnup_factor = 1.0 + 2.0 * sciantix_variable[sv["Burnup"]].getFinalValue() / 0.8815;
 
-		if (sciantix_variable[sv["Grain radius"]].getInitialValue() < limiting_grain_radius / burnup_factor)
-		{
-			double rate_constant = matrix[sma["UO2"]].getGrainBoundaryMobility();
-			rate_constant *= (1.0 - burnup_factor / (limiting_grain_radius / (sciantix_variable[sv["Grain radius"]].getFinalValue())));
+        if (sciantix_variable[sv["Grain radius"]].getInitialValue() < limiting_grain_radius / burnup_factor)
+        {
+            double rate_constant = matrix[sma["UO2"]].getGrainBoundaryMobility();
+            rate_constant *= (1.0 - burnup_factor / (limiting_grain_radius / (sciantix_variable[sv["Grain radius"]].getFinalValue())));
 
-			parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
-			parameter.push_back(0.0);
-			parameter.push_back(0.0);
-			parameter.push_back(1.0);
-			parameter.push_back(- sciantix_variable[sv["Grain radius"]].getInitialValue());
-			parameter.push_back(- rate_constant * physics_variable[pv["Time step"]].getFinalValue());
+            parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
+            parameter.push_back(0.0);
+            parameter.push_back(0.0);
+            parameter.push_back(1.0);
+            parameter.push_back(- sciantix_variable[sv["Grain radius"]].getInitialValue());
+            parameter.push_back(- rate_constant * physics_variable[pv["Time step"]].getFinalValue());
 
-		}
+        }
 
-		else
-		{
-			parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
-			parameter.push_back(0.0);
-			parameter.push_back(0.0);
-			parameter.push_back(0.0);
-			parameter.push_back(1.0);
-			parameter.push_back(- sciantix_variable[sv["Grain radius"]].getInitialValue());
-		}
-		break;
-	}
+        else
+        {
+            parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
+            parameter.push_back(0.0);
+            parameter.push_back(0.0);
+            parameter.push_back(0.0);
+            parameter.push_back(1.0);
+            parameter.push_back(- sciantix_variable[sv["Grain radius"]].getInitialValue());
+        }
+        break;
+    }
 
-	case 2 :
-	{
-		/**
-		 * @brief The grain growth kinetic is described according to @ref Van Uffelen et al. JNM, 434 (2013) 287–29
-		 * by means of the following equations:
-		 * 1) dD/dt = k/4D^3   if D < Dm
-		 * 2) dD/dt = 0        if D > Dm
-		 * where
-		 * D = grain diameter (um)
-		 * k, the rate constant, is
-		 * k =  3.1347e+14 * exp(-46524 / T)  (um^4/h)
-		 * T = temperature (K)
-		 * Dm = limiting grain diameter
-		*/
+    case 2 :
+    {
+        /**
+         * @brief The grain growth kinetic is described according to @ref Van Uffelen et al. JNM, 434 (2013) 287–29
+         * by means of the following equations:
+         * 1) dD/dt = k/4D^3   if D < Dm
+         * 2) dD/dt = 0        if D > Dm
+         * where
+         * D = grain diameter (um)
+         * k, the rate constant, is
+         * k =  3.1347e+14 * exp(-46524 / T)  (um^4/h)
+         * T = temperature (K)
+         * Dm = limiting grain diameter
+        */
 
-		double limiting_grain_radius = 3.345e-3 / 2.0 * exp(-7620.0 / history_variable[hv["Temperature"]].getFinalValue()); // (m)
+        double limiting_grain_radius = 3.345e-3 / 2.0 * exp(-7620.0 / history_variable[hv["Temperature"]].getFinalValue()); // (m)
 
-		reference += "Van Uffelen et al. JNM, 434 (2013) 287–29.";
+        reference += "Van Uffelen et al. JNM, 434 (2013) 287–29.";
 
-		if(sciantix_variable[sv["Grain radius"]].getInitialValue() < limiting_grain_radius)
-		{
-			double rate_constant = matrix[sma["UO2"]].getGrainBoundaryMobility();
+        if(sciantix_variable[sv["Grain radius"]].getInitialValue() < limiting_grain_radius)
+        {
+            double rate_constant = matrix[sma["UO2"]].getGrainBoundaryMobility();
 
-			parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
-			parameter.push_back(1.0);
-			parameter.push_back(- sciantix_variable[sv["Grain radius"]].getInitialValue());
-			parameter.push_back(0.0);
-			parameter.push_back(0.0);
-			parameter.push_back(- rate_constant * physics_variable[pv["Time step"]].getFinalValue());
-		}
-		else
-		{
-			parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
-			parameter.push_back(0.0);
-			parameter.push_back(0.0);
-			parameter.push_back(0.0);
-			parameter.push_back(1.0);
-			parameter.push_back(- sciantix_variable[sv["Grain radius"]].getInitialValue());
-		}
-		break;
-	}
+            parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
+            parameter.push_back(1.0);
+            parameter.push_back(- sciantix_variable[sv["Grain radius"]].getInitialValue());
+            parameter.push_back(0.0);
+            parameter.push_back(0.0);
+            parameter.push_back(- rate_constant * physics_variable[pv["Time step"]].getFinalValue());
+        }
+        else
+        {
+            parameter.push_back(sciantix_variable[sv["Grain radius"]].getInitialValue());
+            parameter.push_back(0.0);
+            parameter.push_back(0.0);
+            parameter.push_back(0.0);
+            parameter.push_back(1.0);
+            parameter.push_back(- sciantix_variable[sv["Grain radius"]].getInitialValue());
+        }
+        break;
+    }
 
-	default:
-		ErrorMessages::Switch(__FILE__, "iGrainGrowth", int(input_variable[iv["iGrainGrowth"]].getValue()));
-		break;
-	}
-	model[model_index].setParameter(parameter);
-	model[model_index].setRef(reference);
+    default:
+        ErrorMessages::Switch(__FILE__, "iGrainGrowth", int(input_variable[iv["iGrainGrowth"]].getValue()));
+        break;
+    }
+    model[model_index].setParameter(parameter);
+    model[model_index].setRef(reference);
 
-	// Model mapping
-	MapModel();
+    // Model mapping
+    MapModel();
 
-	// Model resolution
-	/**
-	 * @brief ### GrainGrowth
-	 * 
-	 */
-	sciantix_variable[sv["Grain radius"]].setFinalValue(
-		solver.QuarticEquation(model[sm["Grain growth"]].getParameter())
-	);
+    // Model resolution
+    sciantix_variable[sv["Grain radius"]].setFinalValue(
+        solver.QuarticEquation(model[sm["Grain growth"]].getParameter())
+    );
 
-	matrix[sma["UO2"]].setGrainRadius(sciantix_variable[sv["Grain radius"]].getFinalValue());
+    matrix[sma["UO2"]].setGrainRadius(sciantix_variable[sv["Grain radius"]].getFinalValue());
 }

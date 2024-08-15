@@ -18,15 +18,6 @@
 
 void Simulation::HighBurnupStructurePorosity()
 {
-    /**
-     * @brief This routine sets the model for High burnup structure porosity evolution
-     * 
-     * @author
-     * A. Magni
-     * E. Redaelli
-     * G. Zullo
-    */
-
     model.emplace_back();
     int model_index = int(model.size()) - 1;
     model[model_index].setName("High-burnup structure porosity");
@@ -39,8 +30,7 @@ void Simulation::HighBurnupStructurePorosity()
     {
     case 0:
     {
-        /// @brief 
-        /// No HBS case - no evolution of HBS porosity
+        // No HBS case - no evolution of HBS porosity
 
         reference += "not considered";
         parameter.push_back(0.0);
@@ -52,8 +42,7 @@ void Simulation::HighBurnupStructurePorosity()
     case 1:
     {
 
-        /// @brief 
-        /// Correlation for the HBS porosity evolution based on Spino et al. 2006 data
+        // Correlation for the HBS porosity evolution based on Spino et al. 2006 data
 
         double rate_coefficient = 1.3e-3;
         double porosity_upper_threshold = 0.15;

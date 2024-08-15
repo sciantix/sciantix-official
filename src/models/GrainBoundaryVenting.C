@@ -18,10 +18,6 @@
 
 void Simulation::GrainBoundaryVenting()
 {
-    /**
-     * @brief GrainBoundaryVenting() defines models for release mechanisms caused by venting through open porosities
-    */
-
     // Model declaration 
     model.emplace_back();
     int model_index = int(model.size()) - 1;
@@ -34,11 +30,6 @@ void Simulation::GrainBoundaryVenting()
     {
     case 0:
     {
-        /**
-         * @brief Not considered.
-         * 
-        */
-
         sciantix_variable[sv["Intergranular venting probability"]].setFinalValue(0.0);
         reference = "not considered.";
 
@@ -47,11 +38,6 @@ void Simulation::GrainBoundaryVenting()
 
     case 1:
     {
-        /**
-         * @brief Release mechanisms quantified via the vented fraction
-         *
-        */
-       
         // Shape of the sigmoid function
         const double screw_parameter = 0.1;
         const double span_parameter = 10.0;

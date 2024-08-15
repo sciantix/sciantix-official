@@ -17,18 +17,17 @@
 #include "Simulation.h"
 #include "UO2Thermochemistry.h"
 
+/**
+ * @brief This routine sets the model to estimate the stoichiometry deviation of the fuel.
+ * Currently, UO2+x is considered, under external oxidizing environment.
+ * 
+ * @author
+ * G. Petrosillo
+ * G. Zullo
+ * 
+ */
 void Simulation::StoichiometryDeviation()
 {
-  /**
-   * @brief This routine sets the model to estimate the stoichiometry deviation of the fuel.
-   * Currently, UO2+x is considered, under external oxidizing environment.
-   * 
-   * @author
-   * G. Petrosillo
-   * G. Zullo
-   * 
-   */
-
 	if (!input_variable[iv["iStoichiometryDeviation"]].getValue()) return;
 
   model.emplace_back();
