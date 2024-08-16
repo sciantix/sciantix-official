@@ -19,6 +19,6 @@
 #include <vector>
 
 extern const int n_modes;
-extern double modes_initial_conditions[40*40];
+extern double modes_initial_conditions[720];
 
 #endif

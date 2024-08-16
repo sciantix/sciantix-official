@@ -48,10 +48,7 @@ void Simulation::IntraGranularBubbleBehavior()
     {   
         reference += ": Pizzocri et al., JNM, 502 (2018) 323-330.";
 
-        /// @param[in] resolution_rate
         parameter.push_back(sciantix_system[0].getResolutionRate());
-
-        /// @param[in] nucleation_rate
         parameter.push_back(sciantix_system[0].getNucleationRate());
 
         break;
