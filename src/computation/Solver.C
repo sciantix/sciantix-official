@@ -38,7 +38,7 @@ double Solver::BinaryInteraction(double initial_condition, double interaction_co
 
 double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> parameter, double increment)
 {
-    unsigned short int n(0);
+    size_t n;;
     unsigned short int np1(1);
 
     double diffusion_rate_coeff(0.0);
@@ -92,7 +92,7 @@ void Solver::dotProduct2D(double A[], double v[], int n_rows, const int n_col, d
 
 void Solver::SpectralDiffusion2equations(double &gas_1, double &gas_2, double *initial_condition_gas_1, double *initial_condition_gas_2, std::vector<double> parameter, double increment)
 {
-    unsigned short int n(0);
+    size_t n;;
     unsigned short int np1(1);
 
     double diffusion_rate1(0.0);
@@ -156,7 +156,7 @@ void Solver::SpectralDiffusion2equations(double &gas_1, double &gas_2, double *i
 
 void Solver::SpectralDiffusion3equations(double &gas_1, double &gas_2, double &gas_3, double *initial_condition_gas_1, double *initial_condition_gas_2, double *initial_condition_gas_3, std::vector<double> parameter, double increment)
 {
-    unsigned short int n(0);
+    size_t n;
     unsigned short int np1(1);
 
     double diffusion_rate1(0.0);
