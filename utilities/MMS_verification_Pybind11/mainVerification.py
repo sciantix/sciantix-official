@@ -21,7 +21,7 @@ functions = {
     2: {
         "name": "F2: t * e^t * sin(t)",
         "F": lambda t: t * np.exp(t) * np.sin(t),
-        "exact": lambda t: 0.5 * np.exp(t)* (t * np.sin(t) - t * np.cos(t) + np.cos(t))- 0.5, # -0.5 
+        "exact": lambda t: 0.5 * np.exp(t)* (t * np.sin(t) - t * np.cos(t) + np.cos(t))- 0.5, # -0.5 is the integration constant
     },
 }
 
@@ -46,13 +46,13 @@ growth_parameters = {
         "S": lambda t: t * np.cos(t)},
 
     2: {
-        "k": lambda t: t ** 2 * np.exp(2 * t) * np.sin(t) ** 2,
+        "k": lambda t: t**2 * np.exp(2 * t) * np.sin(t)**2, 
         "S": lambda t: np.exp(t) * t * np.cos(t),
     },
 }
 
 # Binary interaction solver parameters y' = -k y**2 
-binary_parameters = {
+binary_parameters = { 
     0: {"k": lambda t: -2 / (3 * t ** 3)},
 
     1: {"k": lambda t: -(np.sin(t) + t * np.cos(t)) / (t * np.sin(t)) ** 2},

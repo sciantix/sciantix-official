@@ -63,8 +63,8 @@ def main(L,S,exact_solution):
     plt.figure(figsize=(10, 6))
     plt.loglog(increments, errors, 'bo-')
     plt.xlabel('steps of time (h)')
-    plt.ylabel('Erreur')
-    plt.title('Log(Erreur) vs Log(h)')
+    plt.ylabel('Error')
+    plt.title('Log(error) vs Log(h)')
     plt.grid(True)
 
     # plot the solution for the minimum step 
