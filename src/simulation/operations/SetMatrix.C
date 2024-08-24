@@ -45,8 +45,8 @@ void Simulation::setMatrix()
 	}
 }
 
-Matrix UO2(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> sciantix_variable, 
-	SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> input_variable)
+Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, 
+	SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable)
 {
 	Matrix matrix;
 
@@ -73,8 +73,8 @@ Matrix UO2(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> scian
     return matrix;
 }
 
-Matrix UO2HBS(SciantixArray<Matrix> matrices, SciantixArray<SciantixVariable> sciantix_variable, 
-	SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> input_variable)
+Matrix UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, 
+	SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable)
 {
 	Matrix matrix;
 	

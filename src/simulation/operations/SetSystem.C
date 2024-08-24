@@ -42,8 +42,8 @@ void Simulation::setSystem()
 
 
 
-System Xe_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
-	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors)
+System Xe_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+	SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System result;
 
@@ -65,8 +65,8 @@ System Xe_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, Scianti
     return result;
 }
 
-System Xe_in_UO2HBS(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
-	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors)
+System Xe_in_UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+	SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System result;
 
@@ -88,8 +88,9 @@ System Xe_in_UO2HBS(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, Scia
     return result;
 }
 
-System Kr_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
-	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors)
+
+System Kr_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+	SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System result;
 
@@ -110,9 +111,8 @@ System Kr_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, Scianti
 
     return result;
 }
-
-System He_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
-	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors)
+System He_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+	SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System result;
 
@@ -134,8 +134,8 @@ System He_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, Scianti
     return result;
 }
 
-System Xe133_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
-	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors)
+System Xe133_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+	SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System result;
 
@@ -157,8 +157,8 @@ System Xe133_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, Scia
     return result;
 }
 
-System Kr85m_in_UO2(SciantixArray<Matrix> matrices, SciantixArray<Gas> gas, SciantixArray<InputVariable> input_variable,
-	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> history_variable, SciantixArray<InputVariable> scaling_factors)
+System Kr85m_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+	SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System result;
 

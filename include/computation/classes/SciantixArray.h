@@ -83,13 +83,14 @@ public:
      */
     void push(T element)
     {
-        if (map.find(element.getName()) != map.end())
+        std::map<std::string, int>::iterator pos = map.find(element.getName());
+        if (pos != map.end())
         {
-            array[map[element.getName()]] = element;
+            array[pos->second] = element;
         }
         else 
         {
-            map[element.getName()] = array.size();
+            map.insert(std::pair<std::string, int>(element.getName(), array.size()));
             array.push_back(element);
         }
     }
@@ -136,14 +137,15 @@ public:
      */
     T& operator[](std::string variable_name)
     {
-        if (map.find(variable_name) == map.end())
+        std::map<std::string, int>::iterator pos = map.find(variable_name);
+        if (pos == map.end())
         {
             std::cerr << "Variable " << variable_name << " not defined in the array" << std::endl;
             exit(-1);
         }
         else
         {
-            return array[map[variable_name]];
+            return array[pos->second];
         }
     }
 

@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Sciantix.h"
+#include <chrono>
 
 void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[])
 {
@@ -22,9 +23,12 @@ void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix
 
     simulation->initialize(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 
+    // auto start = std::chrono::steady_clock::now();
     simulation->execute();
 
     simulation->UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 
     simulation->Output();
+    // auto end = std::chrono::steady_clock::now();
+    // std::cout << "Execution time : " << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() << "µs" << std::endl;
 }
