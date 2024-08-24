@@ -103,7 +103,7 @@ std::vector<SciantixVariable> initializeHistoryVariable(
  * @param toOutputStoichiometryDeviation Flag for outputting stoichiometry deviation information.
  * @return A vector of SciantixVariable objects initialized with the given values and flags.
  */
-std::vector<SciantixVariable> *initializeSciantixVariable(
+std::vector<SciantixVariable> initializeSciantixVariable(
     double Sciantix_variables[], 
     bool toOutputRadioactiveFG,
     bool toOutputVenting,
@@ -232,7 +232,7 @@ std::vector<SciantixVariable> *initializeSciantixVariable(
         SciantixVariable("Xe atoms per HBS pore - variance", "(at^2/pore)", Sciantix_variables[88], Sciantix_variables[88], toOutputHighBurnupStructure)
     };
 
-    return &init_sciantix_variable;
+    return init_sciantix_variable;
 }
 
 

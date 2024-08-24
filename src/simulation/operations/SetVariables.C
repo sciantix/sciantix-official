@@ -16,7 +16,6 @@
 
 #include "SetVariables.h"
 #include "Simulation.h"
-#include <chrono>
 
 /// SetVariables
 /// This routine builds the vectors of objects:
@@ -71,10 +70,9 @@ void Simulation::setVariables(
     {
         history_variable.push(initial_value);
     }
-    auto start = std::chrono::steady_clock::now();
 
     // Sciantix variable
-    std::vector<SciantixVariable>* values2 = initializeSciantixVariable(
+    values = initializeSciantixVariable(
             Sciantix_variables,
             toOutputRadioactiveFG,
             toOutputVenting,
@@ -89,7 +87,6 @@ void Simulation::setVariables(
     {
         sciantix_variable.push(initial_value);
     }
-    auto end = std::chrono::steady_clock::now();
 
     // Diffusion modes
     for (int i = 0; i < n_modes; ++i)
@@ -107,6 +104,4 @@ void Simulation::setVariables(
         scaling_factors.push(InputVariable(name, Sciantix_scaling_factors[index]));
         index++;
     }
-    
-    std::cout << "Execution time : " << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() << "µs" << std::endl;
 }
