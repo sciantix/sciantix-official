@@ -29,6 +29,7 @@
 #include <iostream>
 #include <fstream>
 #include <ctime>
+#include <chrono>
 
 using namespace std;
 
@@ -78,6 +79,7 @@ int main(int argc, char **argv)
             TestPath += '/';
         }
     }
+
 
     InputReading(
         Sciantix_options, 
@@ -145,6 +147,7 @@ int main(int argc, char **argv)
         else
             break;
     }
+
 
     timer = clock() - timer;
 
