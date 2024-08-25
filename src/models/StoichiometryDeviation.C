@@ -231,7 +231,6 @@ void Simulation::StoichiometryDeviation()
         double gamma = sqrt(exp(-32700.0 / history_variable["Temperature"].getFinalValue() + 9.92) * 1.013e5);
         double rad_c = sqrt(0.0004);
         double beta;
-          std::cout << "Gap oxy : " << sciantix_variable["Gap oxygen partial pressure"].getFinalValue() << std::endl;
 
         if (sciantix_variable["Gap oxygen partial pressure"].getFinalValue() > 0.0)
           beta = rad_c * gamma / sqrt(sciantix_variable["Gap oxygen partial pressure"].getFinalValue() * 1.013e5);
