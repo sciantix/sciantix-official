@@ -14,69 +14,47 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef MATERIAL_H
-#define MATERIAL_H
+#ifndef GAS_DIFFUSION_H
+#define GAS_DIFFUSION_H
 
-#include <string>
+#include "Simulation.h"
 
 /**
- * @class Material
- * @brief Class for materials used in SCIANTIX (e.g., fuel matrix, fission gas, etc.).
+ * @brief Defines diffusion models using the spectral diffusion with one equation.
+ * 
+ * @author D. Pizzocri
+ * @author T. Barani
+ * @author G. Zullo
+ * 
+ */
+void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
+
+/**
+ * @brief Defines diffusion models using the spectral diffusion with two equations.
+ * 
+ * @author D. Pizzocri
+ * @author T. Barani
+ * @author G. Zullo
+ * 
+ */
+void defineSpectralDiffusion2Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
+
+/**
+ * @brief Defines diffusion models using the spectral diffusion with three equations.
+ *
+ * The first equation is for xenon in non-restructured matrix - dynamic solution
+ * The second equation is for xenon in non-restructured matrix - intragranular bubbles
+ * The third equation is for xenon in restructured matrix
  * 
  * @author G. Zullo
+ *
  */
-class Material
-{
-public:
-	/**
-	 * @brief Default constructor for the Material class.
-	 */
-	Material() {}
+void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, 
+	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> physics_variable, int n_modes);
 
-	/**
-	 * Destructor for the Material class.
-	 */
-	~Material() {}
+/**
+ * @brief Handles unsupported diffusion solver options.
+ */
+void errorHandling(SciantixArray<InputVariable> input_variable);
 
-	/**
-	 * @brief Sets the name of the material.
-	 * @param n The new name to be set for the material.
-	 */
-	void setName(std::string n)
-	{
-		name = n;
-	}
-
-	/**
-	 * @brief Retrieves the name of the material.
-	 * @return A string that is the current name of the material.
-	 */
-	std::string getName()
-	{
-		return name;
-	}
-
-	/**
-	 * @brief Sets a reference for the material.
-	 * @param n The reference string to be set.
-	 */
-	void setRef(std::string n)
-	{
-		reference = n;
-	}
-
-	/**
-	 * @brief Retrieves the reference or identifier of material.
-	 * @return A string that is the current reference.
-	 */
-	std::string getRef()
-	{
-		return reference;
-	}
-
-protected:
-	std::string name;
-	std::string reference;
-};
-
-#endif // MATERIAL_H
+#endif // GAS_DIFFUSION_H
