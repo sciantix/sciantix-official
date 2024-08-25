@@ -9,7 +9,7 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.0                                                                    //
-//  Year: 2022                                                                      //
+//  Year: 2023                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +50,6 @@ public:
 	 */
 	void setName(std::string n)
 	{
-		/// Member function to set the name of the object
 		name = n;
 	}
 
@@ -60,7 +59,6 @@ public:
 	 */
 	std::string getName()
 	{
-		/// Member function to get the name of the object
 		return name;
 	}
 };

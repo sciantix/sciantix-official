@@ -9,7 +9,7 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.0                                                                    //
-//  Year: 2022                                                                      //
+//  Year: 2023                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,6 @@ public:
 	 */
 	void setValue(double v)
 	{
-		/// Member function to set the setting value of the declared object.
 		value = v;
 	}
 
@@ -58,7 +57,6 @@ public:
 	 */
 	double getValue()
 	{
-		/// Member function to get the setting value of the object.
 		return value;
 	}
 

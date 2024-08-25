@@ -14,26 +14,64 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INPUT_INTERPOLATION_H
-#define INPUT_INTERPOLATION_H
+#ifndef MODEL_H
+#define MODEL_H
 
 #include <vector>
+#include <string>
+#include <iterator>
+#include <map>
+#include <string>
+
+#include "InputVariable.h"
+#include "Matrix.h"
+#include "Gas.h"
+#include "System.h"
+#include "Material.h"
 
 /**
- * @brief Interpolates the value of an input variable at a given point using linear interpolation.
- * This function assumes that the input values (xx for positions and yy for values) are sorted and corresponds one-to-one.
- * The interpolation formula used is based on the straight-line equation between two points.
+ * @brief Represents the models used in the SCIANTIX simulation.
  *
- * @param x The point at which we want to interpolate.
- * @param xx Vector of input values representing the x-coordinates at which yy values are defined.
- * @param yy Vector of output values corresponding to each xx value.
- * @param n The total number of points in xx and yy.
- * @return The interpolated value at point x.
+ * The Model class is an integral part of the SCIANTIX simulation software, serving as a base for defining
+ * various simulation models.
  * 
- * @author D. Pizzocri
- * @author T. Barani
+ * @author G. Zullo
+ * @author F. Bastien
  * 
  */
-double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy, unsigned short int n);
+class Model: public Material
+{
+protected:
+	std::string overview;
+	std::vector<double> parameter;
 
-#endif
+public:
+	/**
+	 * @brief Sets the parameters of the model.
+	 * @param p Vector of doubles representing the parameters to be applied to the model.
+	 */
+	void setParameter(std::vector<double> p)
+	{
+		parameter = p;
+	}
+
+	/**
+	 * @brief Retrieves the parameters of the model.
+	 * @return Vector of doubles containing the current parameters of the model.
+	 */
+	std::vector<double> getParameter()
+	{
+		return parameter;
+	}
+
+	/**
+	 * @brief Default constructor for Model class.
+	 */
+	Model() {}
+	/**
+	 * @brief Destructor for Model class.
+	 */
+	~Model() {}
+};
+
+#endif // MODEL_H

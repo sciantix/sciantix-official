@@ -9,7 +9,7 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.0                                                                    //
-//  Year: 2022                                                                      //
+//  Year: 2023                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -34,8 +34,7 @@ void Simulation::Output()
 	std::fstream output_file;
 	output_file.open(output_name, std::fstream::in | std::fstream::out | std::fstream::app);
 
-	/// @brief
-	/// iOutput == 1 --> output.txt organized in columns (header + values).
+    // iOutput == 1 --> output.txt organized in columns (header + values).
 	if (int(input_variable["iOutput"].getValue()) == 1)
 	{
 		if (history_variable["Time step number"].getFinalValue() == 0)
@@ -70,10 +69,7 @@ void Simulation::Output()
 		}
 	}
 
-	/**
-	 * @brief iOutput = 2 prints the complete output.exe file
-	 *
-	 */
+	// iOutput = 2 prints the complete output.exe file
 	else if ((int)input_variable["iOutput"].getValue() == 2)
 	{
 		if (history_variable["Time step number"].getFinalValue() == 0)
@@ -106,10 +102,6 @@ void Simulation::Output()
 
 	output_file.close();
 
-	/**
-	 * ### Writing: overview.txt
-	 *
-	 */
 	std::string overview_name = TestPath + "overview.txt";
 
 	if (history_variable["Time step number"].getFinalValue() == 0 && if_exist(overview_name))
@@ -129,9 +121,6 @@ void Simulation::Output()
 
 		overview_file << "\n";
 
-		/**
-		 * Printing the matrix
-		 */
 		for (auto &matrix_ : matrices)
 		{
 			overview_file << "Matrix" << "\t";

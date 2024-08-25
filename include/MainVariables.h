@@ -14,26 +14,50 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef INPUT_INTERPOLATION_H
-#define INPUT_INTERPOLATION_H
+#ifndef MAIN_VARIABLES_H
+#define MAIN_VARIABLES_H
 
 #include <vector>
+#include <fstream>
 
 /**
- * @brief Interpolates the value of an input variable at a given point using linear interpolation.
- * This function assumes that the input values (xx for positions and yy for values) are sorted and corresponds one-to-one.
- * The interpolation formula used is based on the straight-line equation between two points.
- *
- * @param x The point at which we want to interpolate.
- * @param xx Vector of input values representing the x-coordinates at which yy values are defined.
- * @param yy Vector of output values corresponding to each xx value.
- * @param n The total number of points in xx and yy.
- * @return The interpolated value at point x.
+ * @file MainVariables.h
+ * @brief This header file contains declarations for variables that are used in MainSCIANTIX.C.
  * 
  * @author D. Pizzocri
  * @author T. Barani
+ * @author G. Zullo
  * 
  */
-double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy, unsigned short int n);
+
+extern int Sciantix_options[40];
+extern double Sciantix_history[20];
+extern double Sciantix_variables[300];
+extern double Sciantix_scaling_factors[10];
+extern double Sciantix_diffusion_modes[1000];
+
+extern long long int Time_step_number;
+extern double  Time_h, dTime_h, Time_end_h;
+extern double  Time_s, Time_end_s;
+extern double  Number_of_time_steps_per_interval;
+
+extern std::ofstream Output_file;
+extern std::ofstream Execution_file;
+extern std::string TestPath; 
+
+extern int Input_history_points;
+extern int Temperature_input_points;
+extern int Fissionrate_input_points;
+extern int Hydrostaticstress_input_points;
+extern int Stempressure_input_points;
+extern std::vector<double> Time_temperature_input;
+extern std::vector<double> Time_fissionrate_input;
+extern std::vector<double> Time_hydrostaticstress_input;
+extern std::vector<double> Time_steampressure_input;
+extern std::vector<double> Time_input;
+extern std::vector<double> Temperature_input;
+extern std::vector<double> Fissionrate_input;
+extern std::vector<double> Hydrostaticstress_input;
+extern std::vector<double> Steampressure_input;
 
 #endif

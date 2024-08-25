@@ -9,7 +9,7 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.0                                                                    //
-//  Year: 2022                                                                      //
+//  Year: 2023                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -98,10 +98,12 @@ void InputReading(
 	double &Time_end_s
 	)
 {
-	/// Besides the two input files, this routines creates an input_check.txt file
-	/// reporting all the inputs provided in the other files.
-	/// It is highly recommended checking this file, since eventual errors
-	/// are reported in it.
+    /**
+     * Besides the two input files, this routines creates an input_check.txt file
+     * reporting all the inputs provided in the other files.
+     * It is highly recommended checking this file, since eventual errors
+     * are reported in it.
+     */
 
 	std::ofstream input_check(TestPath + "input_check.txt", std::ios::out);
 
@@ -124,7 +126,7 @@ void InputReading(
 	Sciantix_options[0] = ReadOneSetting("iGrainGrowth", input_settings, input_check);
 	Sciantix_options[1] = ReadOneSetting("iFGDiffusionCoefficient", input_settings, input_check);
 	Sciantix_options[2] = ReadOneSetting("iDiffusionSolver", input_settings, input_check);
-	Sciantix_options[3] = ReadOneSetting("iIntraGranularBubbleEvolution", input_settings, input_check);
+	Sciantix_options[3] = ReadOneSetting("iIntraGranularBubbleBehavior", input_settings, input_check);
 	Sciantix_options[4] = ReadOneSetting("iResolutionRate", input_settings, input_check);
 	Sciantix_options[5] = ReadOneSetting("iTrappingRate", input_settings, input_check);
 	Sciantix_options[6] = ReadOneSetting("iNucleationRate", input_settings, input_check);
