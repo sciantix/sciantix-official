@@ -74,7 +74,7 @@ To generate the code documentation, run `doxygen` in the root directory of the c
 
 For a deeper understanding of the SCIANTIX code and its underlying models, refer to the following publications:
 
-- [Zullo G. et al. (2023). Journal of Nuclear Materials, 587, 154744.](../../references/pdf_link/Zullo_et_al_2023.pdf)
+- [Zullo G. et al. (2023). Journal of Nuclear Materials, 587, 154744.](https://www.sciencedirect.com/science/article/pii/S0022311523005111)
 
   ```
   G. Zullo, D. Pizzocri, L. Luzzi,
@@ -88,7 +88,7 @@ For a deeper understanding of the SCIANTIX code and its underlying models, refer
   (https://www.sciencedirect.com/science/article/pii/S0022311523005111)
   ```
 
-- [Pizzocri D. et al. (2020). Journal of Nuclear Materials, 532, 152042.](../../references/pdf_link/Pizzocri_et_al_2020.pdf)
+- [Pizzocri D. et al. (2020). Journal of Nuclear Materials, 532, 152042.](https://www.sciencedirect.com/science/article/pii/S0022311519313868)
 
   ```
   D. Pizzocri, T. Barani, L. Luzzi,
