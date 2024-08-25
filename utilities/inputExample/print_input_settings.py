@@ -8,7 +8,7 @@ with open('input_settings.txt', 'w') as file:
     file.write('1\t#\tiGrainGrowth (0= no grain growth, 1= Ainscough et al. (1973), 2= Van Uffelen et al. (2013))\n')
     file.write('1\t#\tiFGDiffusionCoefficient (0= constant value, 1= Turnbull et al. (1988))\n')
     file.write('1\t#\tiDiffusionSolver (1= SDA with quasi-stationary hypothesis, 2= SDA without quasi-stationary hypothesis)\n')
-    file.write('1\t#\tiIntraGranularBubbleEvolution (1= Pizzocri et al. (2018))\n')
+    file.write('1\t#\tiIntraGranularBubbleBehavior (1= Pizzocri et al. (2018))\n')
     file.write('1\t#\tiResolutionRate (0= constant value, 1= Turnbull (1971), 2= Losonen (2000), 3= thermal resolution, Cognini et al. (2021))\n')
     file.write('1\t#\tiTrappingRate (0= constant value, 1= Ham (1958))\n')
     file.write('1\t#\tiNucleationRate (0= constant value, 1= Olander, Wongsawaeng (2006))\n')

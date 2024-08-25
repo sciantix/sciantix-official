@@ -27,7 +27,7 @@ System	Xe in UO2HBS
 Input setting	iGrainGrowth = 1
 Input setting	iFGDiffusionCoefficient = 1
 Input setting	iDiffusionSolver = 3
-Input setting	iIntraGranularBubbleEvolution = 1
+Input setting	iIntraGranularBubbleBehavior = 1
 Input setting	iResolutionRate = 1
 Input setting	iTrappingRate = 1
 Input setting	iNucleationRate = 1

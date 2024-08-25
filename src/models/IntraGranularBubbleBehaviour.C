@@ -9,14 +9,14 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.0                                                                    //
-//  Year: 2022                                                                      //
+//  Year: 2023                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
 
-void Simulation::IntraGranularBubbleBehaviour()
+void Simulation::IntraGranularBubbleBehavior()
 {
 	Model intra_gran_bub_behav_model;
 
@@ -25,12 +25,12 @@ void Simulation::IntraGranularBubbleBehaviour()
 	std::string reference;
 	std::vector<double> parameter;
 
-	switch (int(input_variable["iIntraGranularBubbleEvolution"].getValue()))
+	switch (int(input_variable["iIntraGranularBubbleBehavior"].getValue()))
 	{
 	case 0:
 	{
 		/// @brief
-		/// iIntraGranularBubbleEvolution == 0
+		/// iIntraGranularBubbleBehavior == 0
 		/// ----------------------------------
 		///
 		/// This case assumes constant trial values for the intragranular bubble number density and radius.
@@ -54,7 +54,7 @@ void Simulation::IntraGranularBubbleBehaviour()
 	case 1:
 	{
 		/// @brief
-		/// iIntraGranularBubbleEvolution == 1
+		/// iIntraGranularBubbleBehavior == 1
 		/// ----------------------------------
 		///
 		/// The evolution of small intra-granular bubbles in fuel grains is controlled by bubble nucleation, gas atom trapping, and irradiation-induced gas atom re-solution back in the lattice.
@@ -76,7 +76,7 @@ void Simulation::IntraGranularBubbleBehaviour()
 	case 2:
 	{
 		/// @brief
-		/// iIntraGranularBubbleEvolution == 2
+		/// iIntraGranularBubbleBehavior == 2
 		/// ----------------------------------
 		///
 		/// The evolution of intragranular bubbles is modelled by means of temperature-driven correlations.
@@ -95,7 +95,7 @@ void Simulation::IntraGranularBubbleBehaviour()
 	case 3:
 	{
 		/**
-		 * @brief iIntraGranularBubbleEvolution == 3
+		 * @brief iIntraGranularBubbleBehavior == 3
 		 * 
 		 * The evolution of intragranular bubble concentration, radius and atoms per bubble is described through
 		 * the similarity ratio, based on the evolution of intragranular concentration of gas in bubbles.
@@ -116,7 +116,7 @@ void Simulation::IntraGranularBubbleBehaviour()
 	case 99:
 	{
 		/**
-		 * @brief iIntraGranularBubbleEvolution == 99
+		 * @brief iIntraGranularBubbleBehavior == 99
 		 * No intragranular bubbles.
 		 * 
 		 * To be used with iTrappingRate = 99, iResolutionRate = 99, iNucleationRate = 99.
@@ -143,7 +143,7 @@ void Simulation::IntraGranularBubbleBehaviour()
 	}
 
 	default:
-		ErrorMessages::Switch(__FILE__, "iIntraGranularBubbleEvolution", int(input_variable["iIntraGranularBubbleEvolution"].getValue()));
+		ErrorMessages::Switch(__FILE__, "iIntraGranularBubbleBehavior", int(input_variable["iIntraGranularBubbleBehavior"].getValue()));
 		break;
 	}
 

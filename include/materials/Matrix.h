@@ -9,7 +9,7 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.0                                                                    //
-//  Year: 2022                                                                      //
+//  Year: 2023                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -56,14 +56,12 @@ public:
 	double pore_resolution_rate;
 	double pore_trapping_rate;
 
-// public:
 	/**
 	 * @brief Sets the theoretical density of the matrix.
 	 * @param m The density to set (kg/m3).
 	 */
 	void setTheoreticalDensity(double m)
 	{
-		/// Member function to set the matrix theoretical density (kg/m3)
 		matrix_density = m;
 	}
 
@@ -73,7 +71,6 @@ public:
 	 */
 	double getTheoreticalDensity()
 	{
-		/// Member function to get the matrix theoretical density (kg/m3)
 		return matrix_density;
 	}
 
@@ -83,7 +80,6 @@ public:
 	 */
 	void setLatticeParameter(double m)
 	{
-		/// Member function to set the matrix lattice parameter
 		lattice_parameter = m;
 	}
 
@@ -93,7 +89,6 @@ public:
 	 */
 	double getLatticeParameter()
 	{
-		/// Member function to get the matrix lattice parameter
 		return lattice_parameter;
 	}
 
@@ -103,7 +98,6 @@ public:
 	 */
 	void setSurfaceTension(double r)
 	{
-		/// Member function to set the surface tension of the matrix material (N/m)
 		surface_tension = r;
 	}
 
@@ -113,7 +107,6 @@ public:
 	 */
 	double getSurfaceTension()
 	{
-		/// Member function to get the surface tension of the matrix material (N/m)
 		return surface_tension;
 	}
 
@@ -123,7 +116,6 @@ public:
 	 */
 	void setSchottkyVolume(double v)
 	{
-		/// Member function to set the volume of a Schottky volume in the matrix (m3).
 		schottky_defect_volume = v;
 	}
 
@@ -133,7 +125,6 @@ public:
 	 */
 	double getSchottkyVolume()
 	{
-		/// Member function to get the volume of a Schottky volume in the matrix (m3).
 		return schottky_defect_volume;
 	}
 
@@ -143,7 +134,6 @@ public:
 	 */
 	void setOIS(double v)
 	{
-		/// Member function to set the volume of an octahedral interstitial site (OIS) (m3).
 		ois_volume = v;
 	}
 
@@ -153,7 +143,6 @@ public:
 	 */
 	double getOIS()
 	{
-		/// Member function to get the volume of an octahedral interstitial site (OIS) (m3).
 		return ois_volume;
 	}
 
@@ -170,7 +159,6 @@ public:
 	 */
 	double getGrainBoundaryMobility()
 	{
-		/// Member function to get the mobility of the grain boundaries of the matrix.
 		return grain_boundary_mobility;
 	}
 
@@ -180,7 +168,6 @@ public:
 	 */
 	void setFFrange(double r)
 	{
-		/// Member function to set the (average) range of the fission fragments in the matrix (m).
 		ff_range = r;
 	}
 
@@ -190,7 +177,6 @@ public:
 	 */
 	double getFFrange()
 	{
-		/// Member function to get the (average) range of the fission fragments in the matrix (m).
 		return ff_range;
 	}
 
@@ -200,7 +186,6 @@ public:
 	 */
 	void setFFinfluenceRadius(double r)
 	{
-		/// Member function to set the radius of influence of the fission fragment track (m).
 		ff_influence_radius = r;
 	}
 
@@ -210,7 +195,6 @@ public:
 	 */
 	double getFFinfluenceRadius()
 	{
-		/// Member function to get the radius of influence of the fission fragment track (m).
 		return ff_influence_radius;
 	}
 
@@ -220,7 +204,6 @@ public:
 	 */
 	void setSemidihedralAngle(double sda)
 	{
-		/// Member function to set the semidihedral angle.
 		semidihedral_angle = sda;
 	}
 
@@ -230,7 +213,6 @@ public:
 	 */
 	double getSemidihedralAngle()
 	{
-		/// Member function to get the semidihedral angle.
 		return semidihedral_angle;
 	}
 
@@ -240,7 +222,6 @@ public:
 	 */
 	void setGrainBoundaryThickness(double gbt)
 	{
-		/// Member function to set the grain-boundary thickness (m)
 		grain_boundary_thickness = gbt;
 	}
 
@@ -250,7 +231,6 @@ public:
 	 */
 	double getGrainBoundaryThickness()
 	{
-		/// Member function to get the grain-boundary thickness (m)
 		return grain_boundary_thickness;
 	}
 
@@ -267,7 +247,6 @@ public:
 	 */
 	double getGrainBoundaryVacancyDiffusivity()
 	{
-		/// Member function to get the grain-boundary vacancy diffusivity.
 		return grain_boundary_diffusivity;
 	}
 
@@ -277,7 +256,6 @@ public:
 	 */
 	void setLenticularShapeFactor(double lsf)
 	{
-		/// Member function to set the lenticular shape factor (/).
 		lenticular_shape_factor = lsf;
 	}
 
@@ -287,7 +265,6 @@ public:
 	 */
 	double getLenticularShapeFactor()
 	{
-		/// Member function to get the lenticular shape factor (/).
 		return lenticular_shape_factor;
 	}
 
@@ -297,7 +274,6 @@ public:
 	 */
 	void setNucleationRate(double n)
 	{
-		/// Member function to set the nucleation rate of the matrix under irradiation (1/s).
 		nucleation_rate = n;
 	}
 
@@ -307,7 +283,6 @@ public:
 	 */
 	double getNucleationRate()
 	{
-		/// Member function to get the nucleation rate of the matrix under irradiation (1/s).
 		return nucleation_rate;
 	}
 
@@ -325,7 +300,6 @@ public:
 	 */
 	double getPoreNucleationRate()
 	{
-		/// Member function to get the pore nucleation rate of the matrix.
 		return pore_nucleation_rate;
 	}
 
@@ -361,7 +335,6 @@ public:
 	 */
 	double getPoreTrappingRate()
 	{
-		/// Member function to get the pore trapping rate of the matrix.
 		return pore_trapping_rate;
 	}
 
@@ -371,7 +344,6 @@ public:
 	 */
 	void setGrainRadius(double gr)
 	{
-		/// Member function to set the grain radius of the matrix.
 		grain_radius = gr;
 	}
 
@@ -381,7 +353,6 @@ public:
 	*/
 	double getGrainRadius()
 	{
-		/// Member function to get the grain radius of the matrix.
 		return grain_radius;
 	}
 
@@ -391,7 +362,6 @@ public:
 	 */
 	void setHealingTemperatureThreshold(double t)
 	{
-		/// Member function to set the (estimated) temperature limit for complete healing of the extended defects in the fuel matrix (K).
 		healing_temperature_threshold = t;
 	}
 
@@ -401,7 +371,6 @@ public:
 	 */
 	double getHealingTemperatureThreshold()
 	{
-		/// Member function to get the (estimated) temperature limit for complete healing of the extended defects in the fuel matrix (K).
 		return healing_temperature_threshold;
 	}
 
@@ -409,6 +378,7 @@ public:
 	 * @brief Default constructor for the Matrix class.
 	 */
 	Matrix() {}
+
 	/**
 	 * @brief Destructor for the Matrix class.
 	 */

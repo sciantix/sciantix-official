@@ -9,7 +9,7 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.0                                                                    //
-//  Year: 2022                                                                      //
+//  Year: 2023                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -76,7 +76,7 @@ void Simulation::execute()
 
 	GasDecay();
 
-	IntraGranularBubbleBehaviour();
+	IntraGranularBubbleBehavior();
 
 	GasDiffusion();
 
@@ -84,5 +84,5 @@ void Simulation::execute()
 
 	GrainBoundaryVenting();
 
-	InterGranularBubbleBehaviour();
+	InterGranularBubbleBehavior();
 }

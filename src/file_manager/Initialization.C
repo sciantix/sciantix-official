@@ -9,7 +9,7 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.0                                                                    //
-//  Year: 2022                                                                      //
+//  Year: 2023                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -57,7 +57,7 @@ void Initialization(
 	double initial_condition(0.0);
 	double projection_remainder(0.0);
 	double reconstructed_solution(0.0);
-	int iteration(0), iteration_max(20), n(0), np1(1), n_modes(40), k(0), K(20);
+	int iteration(0), iteration_max(20), n(0), np1(1), n_modes(40), k(0), K(18);
 	double projection_coeff(0.0);
 	projection_coeff = -sqrt(8.0 / M_PI);
 

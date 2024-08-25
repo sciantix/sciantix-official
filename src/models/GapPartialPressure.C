@@ -9,27 +9,12 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.0                                                                    //
-//  Year: 2022                                                                      //
+//  Year: 2023                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
-
-/**
- * @brief GapPartialPressure() Calculates the oxygen partial pressure in the gap based on a thermo-chemical equilibrium model.
- * 
- * @author G. Petrosillo
- * @author G. Zullo
- *
- * \details
- * The equilibrium constant is calculated using the law of mass action for water vapor decomposition.
- * The gap oxygen partial pressure is then calculated using this equilibrium constant and the steam pressure.
- * The final value is set in the `Gap oxygen partial pressure` variable.
- * 
- * @ref Morel et al., CEA, Report NT/DTP/SECC no. DR94-55 (1994)
- * @ref Lewis et al. JNM 227 (1995) 83-109, D.R. Olander, Nucl. Technol. 74 (1986) 215.
- */
 
 void Simulation::GapPartialPressure()
 {
