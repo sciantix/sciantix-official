@@ -99,7 +99,7 @@ std::map<int, std::string> update_sciantix_variable = {
 };
 
 
-void Simulation::UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_modes[])
+void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
 {
     for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin(); it != update_sciantix_variable.end(); it++)
     {

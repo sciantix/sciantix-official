@@ -98,9 +98,9 @@ public:
 
     void execute();
 
-    void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_modes[]);
+    void update(double Sciantix_variables[], double Sciantix_diffusion_modes[]);
 
-    void Output();
+    void output();
 
     /**
      * @brief Burnup() calculates the local burnup from fission rate and fuel density.
