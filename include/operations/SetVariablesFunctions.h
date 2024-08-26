@@ -20,20 +20,15 @@
 #include <vector>
 #include "SciantixVariable.h"
 
-
-/**
- * @file SetVariablesFunctions.h
- * @brief Defines functions used in SetVariables.C.
- * 
- * @author F. Bastien
- * @author G. Zullo
- */
-
-
 /**
  * @brief Retrieves the list of input variable names.
  * @return A vector of strings containing the names of input variables.
+ * 
+ * @author F. Bastien
+ * @author G. Zullo
+ * 
  */
+
 std::vector<std::string> getInputVariableNames()
 {
     std::vector<std::string> names =

@@ -132,7 +132,7 @@ public:
 	 * @brief Sets the volume of an octahedral interstitial site in the matrix.
 	 * @param v The volume to set (m3).
 	 */
-	void setOIS(double v)
+	void setOctahedralInterstitialSite(double v)
 	{
 		ois_volume = v;
 	}
@@ -141,7 +141,7 @@ public:
 	 * @brief Retrieves the volume of an octahedral interstitial site in the matrix.
 	 * @return The volume of the OIS (m3).
 	 */
-	double getOIS()
+	double getOctahedralInterstitialSite()
 	{
 		return ois_volume;
 	}
@@ -184,7 +184,7 @@ public:
 	 * @brief Sets the radius of influence of the fission fragment track.
 	 * @param r The radius to set (m).
 	 */
-	void setFFinfluenceRadius(double r)
+	void setFissionFragmentInfluenceRadius(double r)
 	{
 		ff_influence_radius = r;
 	}
@@ -193,7 +193,7 @@ public:
 	 * @brief Retrieves the radius of influence of the fission fragment track.
 	 * @return The radius of influence (m).
 	 */
-	double getFFinfluenceRadius()
+	double getFissionFragmentInfluenceRadius()
 	{
 		return ff_influence_radius;
 	}
@@ -236,7 +236,6 @@ public:
 
 	/**
 	 * @brief Sets the diffusivity of vacancies on the grain boundaries based on the input model.
-	 *
 	 * @param input_value The model selection for grain boundary vacancy diffusivity.
 	 */
 	void setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable);

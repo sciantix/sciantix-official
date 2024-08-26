@@ -30,9 +30,8 @@
 #include "Material.h"
 
 /**
- * @brief Represents the models used in the SCIANTIX simulation.
- *
- * The Model class is an integral part of the SCIANTIX simulation software, serving as a base for defining
+ * @class Model
+ * @brief The Model class is an integral part of the SCIANTIX simulation, serving as a base for defining
  * various simulation models.
  * 
  * @author G. Zullo
@@ -65,11 +64,12 @@ public:
 	}
 
 	/**
-	 * @brief Default constructor for Model class.
+	 * @brief Constructor
 	 */
 	Model() {}
+
 	/**
-	 * @brief Destructor for Model class.
+	 * @brief Destructor
 	 */
 	~Model() {}
 };

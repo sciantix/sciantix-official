@@ -132,12 +132,12 @@ public:
 	bool getOutput();
 
 	/**
-	 * @brief Default constructor for SciantixVariable.
+	 * @brief Constructor
 	 */
 	SciantixVariable() {}
 	
 	/**
-	 * @brief Destructor for SciantixVariable.
+	 * @brief Destructor
 	 */
 	~SciantixVariable() {}
 };

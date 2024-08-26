@@ -29,12 +29,12 @@ class Material
 {
 public:
 	/**
-	 * Default constructor for the Material class.
+	 * Constructor
 	 */
 	Material() {}
 
 	/**
-	 * Destructor for the Material class.
+	 * Destructor
 	 */
 	~Material() {}
 

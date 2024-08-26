@@ -453,7 +453,7 @@ void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> 
          */
 
         reference += "iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.\n\t";
-        resolution_rate = 2.0 * M_PI * matrices["UO2"].getFFrange() * pow(matrices["UO2"].getFFinfluenceRadius() + sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2) * history_variable["Fission rate"].getFinalValue();
+        resolution_rate = 2.0 * M_PI * matrices["UO2"].getFFrange() * pow(matrices["UO2"].getFissionFragmentInfluenceRadius() + sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2) * history_variable["Fission rate"].getFinalValue();
         resolution_rate *= scaling_factors["Resolution rate"].getValue();
 
         break;
@@ -486,12 +486,12 @@ void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> 
         reference += "iResolutionRate: Cognini et al. NET 53 (2021) 562-571.\n\t";
 
         /// irradiation_resolution_rate
-        double irradiation_resolution_rate = 2.0 * M_PI * matrices["UO2"].getFFrange() * pow(matrices["UO2"].getFFinfluenceRadius() + sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2) * history_variable["Fission rate"].getFinalValue();
+        double irradiation_resolution_rate = 2.0 * M_PI * matrices["UO2"].getFFrange() * pow(matrices["UO2"].getFissionFragmentInfluenceRadius() + sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2) * history_variable["Fission rate"].getFinalValue();
 
 
         /// compressibility_factor
         double helium_hard_sphere_diameter = 2.973e-10 * (0.8414 - 0.05 * log(history_variable["Temperature"].getFinalValue() / 10.985)); // (m)
-        double helium_volume_in_bubble = matrices["UO2"].getOIS();                                                                         // 7.8e-30, approximation of saturated nanobubbles
+        double helium_volume_in_bubble = matrices["UO2"].getOctahedralInterstitialSite();                                                                         // 7.8e-30, approximation of saturated nanobubbles
         double y = M_PI * pow(helium_hard_sphere_diameter, 3) / (6.0 * helium_volume_in_bubble);
         double compressibility_factor = (1.0 + y + pow(y, 2) - pow(y, 3)) / (pow(1.0 - y, 3));
 

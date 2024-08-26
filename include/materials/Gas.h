@@ -129,12 +129,12 @@ public:
 	}
 
 	/**
-	 * @brief Default constructor for the Gas class.
+	 * @brief Constructor
 	 */
 	Gas() {}
 
 	/**
-	 * @brief Destructor for the Gas class.
+	 * @brief Destructor
 	 */
 	~Gas() {}
 };

@@ -17,14 +17,6 @@
 #include "SetVariables.h"
 #include "Simulation.h"
 
-/// SetVariables
-/// This routine builds the vectors of objects:
-/// - physics_variable
-/// - history_variable
-/// - sciantix_variable
-/// - input_variable
-/// together with the diffusion modes, and the scaling factors.
-
 void Simulation::setVariables(
     int Sciantix_options[], 
     double Sciantix_history[], 
@@ -34,7 +26,6 @@ void Simulation::setVariables(
 )
 {
     // Input variable
-    // The vector is used to collect input settings related to the choice of SCIANTIX models.
     if (input_variable.empty())
     {
         std::vector<std::string> name_list = getInputVariableNames();
@@ -47,12 +38,12 @@ void Simulation::setVariables(
 
     // toOutput flags
     bool toOutputRadioactiveFG = input_variable["iRadioactiveFissionGas"].getValue() != 0,
-        toOutputVenting = input_variable["iGrainBoundaryVenting"].getValue() != 0,
-        toOutputHelium = input_variable["iHelium"].getValue() != 0,
-        toOutputCracking = input_variable["iGrainBoundaryMicroCracking"].getValue() != 0,
-        toOutputGrainBoundary = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
-        toOutputHighBurnupStructure = input_variable["iHighBurnupStructureFormation"].getValue() == 1,
-        toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0;
+         toOutputVenting = input_variable["iGrainBoundaryVenting"].getValue() != 0,
+         toOutputHelium = input_variable["iHelium"].getValue() != 0,
+         toOutputCracking = input_variable["iGrainBoundaryMicroCracking"].getValue() != 0,
+         toOutputGrainBoundary = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
+         toOutputHighBurnupStructure = input_variable["iHighBurnupStructureFormation"].getValue() == 1,
+         toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0;
 
 
     // Physics variable	
@@ -65,7 +56,6 @@ void Simulation::setVariables(
         Sciantix_scaling_factors,
         toOutputStoichiometryDeviation
     );
-
     for (SciantixVariable initial_value : values)
     {
         history_variable.push(initial_value);

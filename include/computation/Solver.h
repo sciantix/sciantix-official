@@ -33,7 +33,7 @@
  * @author T. Barani
  * @author G. Zullo
  * 
- * @ref <a href="../../references/pdf_link/Pizzocri_et_al_2018.pdf" target="_blank">Pizzocri et al., JNM, 502 (2018) 323-330</a>
+ * @ref <a href="https://www.sciencedirect.com/science/article/pii/S0022311517315039" target="_blank">Pizzocri D. et al (2018). Journal of Nuclear Materials, 502, 323-330.</a>
  * @ref <a href="https://www.sciencedirect.com/science/article/pii/S1738573321006148" target="_blank">Zullo G. et al (2022). Nuclear Engineering and Technology, 54, 1195-1205.</a>
  * 
  */
@@ -241,11 +241,11 @@ public:
 	double NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment);
 
 	/**
-	 * @brief Default constructor for the Solver class.
+	 * @brief Constructor
 	 */
 	Solver() {}
 	/**
-	 * @brief Destructor for the Solver class.
+	 * @brief Destructor
 	 */
 	~Solver() {}
 };
