@@ -20,7 +20,7 @@ void Simulation::IntraGranularBubbleBehavior()
 {
     Model model_;
 
-    model_.setName("Intragranular bubble evolution");
+    model_.setName("Intragranular bubble behavior");
 
     std::string reference;
     std::vector<double> parameter;
@@ -149,8 +149,8 @@ void Simulation::IntraGranularBubbleBehavior()
     sciantix_variable["Intragranular bubble concentration"].setFinalValue(
         solver.Decay(
             sciantix_variable["Intragranular bubble concentration"].getInitialValue(),
-            model["Intragranular bubble evolution"].getParameter().at(0),
-            model["Intragranular bubble evolution"].getParameter().at(1),
+            model["Intragranular bubble behavior"].getParameter().at(0),
+            model["Intragranular bubble behavior"].getParameter().at(1),
             physics_variable["Time step"].getFinalValue()));
 
     // Atom per bubbles and bubble radius

@@ -112,7 +112,7 @@ void Simulation::GasDiffusion()
             break;
 
         default:
-            ErrorMessages::Switch("Simulation.h", "iDiffusionSolver", int(input_variable["iDiffusionSolver"].getValue()));
+            ErrorMessages::Switch(__FILE__, "iDiffusionSolver", int(input_variable["iDiffusionSolver"].getValue()));
             break;
         }
     }
@@ -193,9 +193,9 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
  
     for (auto& system : sciantix_system)
 	{
-		Model new_model;
-		new_model.setName("Gas diffusion - " + system.getName());
-		new_model.setRef(reference);
+		Model model_;
+		model_.setName("Gas diffusion - " + system.getName());
+		model_.setRef(reference);
 
 		std::vector<double> parameters;
 		parameters.push_back(n_modes);
@@ -216,9 +216,9 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
 
 
 
-		new_model.setParameter(parameters);
+		model_.setParameter(parameters);
 
-		model.push(new_model);
+		model.push(model_);
 	}
 }
 
@@ -228,9 +228,9 @@ void defineSpectralDiffusion2Equations(SciantixArray<System> &sciantix_system, S
 
     for (auto& system : sciantix_system)
 	{
-		Model new_model;
-		new_model.setName("Gas diffusion - " + system.getName());
-		new_model.setRef(reference);
+		Model model_;
+		model_.setName("Gas diffusion - " + system.getName());
+		model_.setRef(reference);
 
 		std::vector<double> parameters;
 
@@ -248,8 +248,8 @@ void defineSpectralDiffusion2Equations(SciantixArray<System> &sciantix_system, S
 		parameters.push_back(system.getTrappingRate());
 		parameters.push_back(system.getGas().getDecayRate());
 
-		new_model.setParameter(parameters);
-		model.push(new_model);
+		model_.setParameter(parameters);
+		model.push(model_);
 	}
 }
 
@@ -258,9 +258,9 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
 {
 	std::string reference;
 
-	Model new_model;
-	new_model.setName("Gas diffusion - Xe in UO2 with HBS");
-	new_model.setRef(reference);
+	Model model_;
+	model_.setName("Gas diffusion - Xe in UO2 with HBS");
+	model_.setRef(reference);
 
 	std::vector<double> parameters;
 
@@ -293,8 +293,8 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
 	// exchange 1 --> 3
 	parameters.push_back(sweeping_term);
 
-	new_model.setParameter(parameters);
-	model.push(new_model);
+	model_.setParameter(parameters);
+	model.push(model_);
 }
 
 void errorHandling(SciantixArray<InputVariable> input_variable)
