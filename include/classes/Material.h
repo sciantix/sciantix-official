@@ -14,62 +14,69 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "SetGas.h"
-#include "Simulation.h"
+#ifndef MATERIAL_H
+#define MATERIAL_H
 
-void Simulation::setGas()
+#include <string>
+
+/**
+ * @class Material
+ * @brief Class for materials used in SCIANTIX (e.g., fuel matrix, fission gas, etc.).
+ * 
+ * @author G. Zullo
+ */
+class Material
 {
-    xenon(gas);
-    krypton(gas);
-    helium(gas);
-}
+public:
+	/**
+	 * Constructor
+	 */
+	Material() {}
 
-void xenon(SciantixArray<Gas> &gas)
-{
-    Gas gas_;    
-    gas_.setName("Xe");
-	gas_.setAtomicNumber(54);
-	gas_.setMassNumber(135);
-	gas_.setVanDerWaalsVolume(8.48e-29);
-	gas_.setDecayRate(0.0);
-	gas_.setPrecursorFactor(1.00);
-    gas.push(gas_);
+	/**
+	 * Destructor
+	 */
+	~Material() {}
 
-	gas_.setName("Xe133");
-	gas_.setAtomicNumber(54);
-	gas_.setMassNumber(133);
-	gas_.setVanDerWaalsVolume(8.48e-29);
-	gas_.setDecayRate(1.53e-6);
-	gas_.setPrecursorFactor(1.25);
-    gas.push(gas_);
-}
+	/**
+	 * @brief Sets the name of the material.
+	 * @param n The new name to be set for the material.
+	 */
+	void setName(std::string n)
+	{
+		name = n;
+	}
 
-void krypton(SciantixArray<Gas> &gas)
-{
-    Gas gas_;
-	gas_.setName("Kr");
-	gas_.setAtomicNumber(36);
-	gas_.setVanDerWaalsVolume(6.61e-29);
-	gas_.setDecayRate(0.0);
-	gas_.setPrecursorFactor(1.00);
-    gas.push(gas_);
+	/**
+	 * @brief Retrieves the name of the material.
+	 * @return A string that is the current name of the material.
+	 */
+	std::string getName()
+	{
+		return name;
+	}
 
-	gas_.setName("Kr85m");
-	gas_.setAtomicNumber(36);
-	gas_.setMassNumber(85);
-	gas_.setVanDerWaalsVolume(6.61e-29);
-	gas_.setDecayRate(4.3e-5);
-	gas_.setPrecursorFactor(1.31);
-    gas.push(gas_);
-}
+	/**
+	 * @brief Sets a reference for the material.
+	 * @param n The reference string to be set.
+	 */
+	void setRef(std::string n)
+	{
+		reference = n;
+	}
 
-void helium(SciantixArray<Gas> &gas)
-{
-    Gas gas_;
-	gas_.setName("He");
-	gas_.setAtomicNumber(2);
-	gas_.setVanDerWaalsVolume(9.97e-30);
-	gas_.setDecayRate(0.0);
-	gas_.setPrecursorFactor(1.00);
-    gas.push(gas_);
-}
+	/**
+	 * @brief Retrieves the reference or identifier of material.
+	 * @return A string that is the current reference.
+	 */
+	std::string getRef()
+	{
+		return reference;
+	}
+
+protected:
+	std::string name;
+	std::string reference;
+};
+
+#endif // MATERIAL_H

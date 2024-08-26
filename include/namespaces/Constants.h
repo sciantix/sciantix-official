@@ -14,62 +14,21 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "SetGas.h"
-#include "Simulation.h"
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 
-void Simulation::setGas()
-{
-    xenon(gas);
-    krypton(gas);
-    helium(gas);
-}
+/**
+ * @file Constants.h
+ * @brief Defines fundamental physical constants used in calculations.
+ * 
+ * This file contains definitions of fundamental constants such as the Boltzmann constant and Avogadro's number. 
+ * These constants are commonly used in various scientific and engineering calculations.
+ * 
+ * @author G. Zullo
+ * 
+ */
 
-void xenon(SciantixArray<Gas> &gas)
-{
-    Gas gas_;    
-    gas_.setName("Xe");
-	gas_.setAtomicNumber(54);
-	gas_.setMassNumber(135);
-	gas_.setVanDerWaalsVolume(8.48e-29);
-	gas_.setDecayRate(0.0);
-	gas_.setPrecursorFactor(1.00);
-    gas.push(gas_);
+const double boltzmann_constant = 1.380651e-23; // (J/K)
+const double avogadro_number = 6.02214076e23;   // (at/mol)
 
-	gas_.setName("Xe133");
-	gas_.setAtomicNumber(54);
-	gas_.setMassNumber(133);
-	gas_.setVanDerWaalsVolume(8.48e-29);
-	gas_.setDecayRate(1.53e-6);
-	gas_.setPrecursorFactor(1.25);
-    gas.push(gas_);
-}
-
-void krypton(SciantixArray<Gas> &gas)
-{
-    Gas gas_;
-	gas_.setName("Kr");
-	gas_.setAtomicNumber(36);
-	gas_.setVanDerWaalsVolume(6.61e-29);
-	gas_.setDecayRate(0.0);
-	gas_.setPrecursorFactor(1.00);
-    gas.push(gas_);
-
-	gas_.setName("Kr85m");
-	gas_.setAtomicNumber(36);
-	gas_.setMassNumber(85);
-	gas_.setVanDerWaalsVolume(6.61e-29);
-	gas_.setDecayRate(4.3e-5);
-	gas_.setPrecursorFactor(1.31);
-    gas.push(gas_);
-}
-
-void helium(SciantixArray<Gas> &gas)
-{
-    Gas gas_;
-	gas_.setName("He");
-	gas_.setAtomicNumber(2);
-	gas_.setVanDerWaalsVolume(9.97e-30);
-	gas_.setDecayRate(0.0);
-	gas_.setPrecursorFactor(1.00);
-    gas.push(gas_);
-}
+#endif
