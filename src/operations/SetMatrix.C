@@ -8,7 +8,7 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.0                                                                    //
+//  Version: 2.1                                                                    //
 //  Year: 2023                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
@@ -53,7 +53,7 @@ Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
     matrix_.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);
     matrix_.setSurfaceTension(0.7); // (N/m)
     matrix_.setFissionFragmentInfluenceRadius(1.0e-9); // (m)
-    matrix_.setFFrange(6.0e-6); // (m)
+    matrix_.setFissionFragmentRange(6.0e-6); // (m)
     matrix_.setSchottkyVolume(4.09e-29); // (m3)
     matrix_.setOctahedralInterstitialSite(7.8e-30); // (m3)
     matrix_.setSemidihedralAngle(0.872664626); // (rad)
@@ -81,7 +81,7 @@ Matrix UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &
     matrix_.setGrainBoundaryMobility(0, history_variable);
     matrix_.setSurfaceTension(0.7); // (N/m)
     matrix_.setFissionFragmentInfluenceRadius(1.0e-9); // (m)
-    matrix_.setFFrange(6.0e-6); // (m)
+    matrix_.setFissionFragmentRange(6.0e-6); // (m)
     matrix_.setSchottkyVolume(4.09e-29);
     matrix_.setOctahedralInterstitialSite(7.8e-30);
     matrix_.setSemidihedralAngle(0.0);
