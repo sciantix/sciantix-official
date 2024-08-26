@@ -69,6 +69,11 @@ private:
 
 public:
 
+    /**
+     * @brief Destructor for the Simulation class
+     */
+    ~Simulation() {}
+
     static Simulation* getInstance();
 
     void setVariables(
@@ -370,11 +375,6 @@ public:
             return nullptr;
         }
     }
-
-    /**
-     * @brief Destructor for the Simulation class
-     */
-    ~Simulation() {}
 };
 
 #endif
