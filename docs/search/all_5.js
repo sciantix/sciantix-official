@@ -29,7 +29,7 @@ var searchData=
   ['getlenticularshapefactor_41',['getLenticularShapeFactor',['../class_matrix.html#ac933e1aee228a0f46e14d51005547cb2',1,'Matrix']]],
   ['getmassnumber_42',['getMassNumber',['../class_gas.html#a0b97469d7028b86471f40a15536f9a99',1,'Gas']]],
   ['getmatrixname_43',['getMatrixName',['../class_system.html#addd9188cceb49b4d5a06cf828e43a39d',1,'System']]],
-  ['getname_44',['getName',['../class_variable.html#a63939a8fe4fafe25bb175df35058a6ba',1,'Variable::getName()'],['../class_material.html#a6dd6278a55af611612d999c7d3ab63f3',1,'Material::getName()']]],
+  ['getname_44',['getName',['../class_material.html#a6dd6278a55af611612d999c7d3ab63f3',1,'Material::getName()'],['../class_variable.html#a63939a8fe4fafe25bb175df35058a6ba',1,'Variable::getName()']]],
   ['getnucleationrate_45',['getNucleationRate',['../class_matrix.html#a7dac3cd340122fa20a92e85490935834',1,'Matrix::getNucleationRate()'],['../class_system.html#a373652dc042af738afd19365055133f1',1,'System::getNucleationRate()']]],
   ['getoctahedralinterstitialsite_46',['getOctahedralInterstitialSite',['../class_matrix.html#aecb072f6acaeefc93cc9dc1e82eb504a',1,'Matrix']]],
   ['getoutput_47',['getOutput',['../class_sciantix_variable.html#ae7f2c328ada8798d2f1047c7f3301235',1,'SciantixVariable']]],
