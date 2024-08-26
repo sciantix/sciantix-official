@@ -27,14 +27,6 @@
 #include <type_traits> 
 
 /**
- * @file SciantixArray.h
- * @brief Defines the SciantixArray template class for managing a collection of variables with fast access by name or index.
- * 
- * @author F. Bastien
- * @author G. Zullo
- */
-
-/**
  * @class SciantixArray
  * @brief A template class for managing a collection of variables with fast access by name or index.
  * 
@@ -42,19 +34,28 @@
  * 
  * This class allows for efficient storage, retrieval, and modification of elements by their name or index. It internally uses
  * a `std::vector` for storing the elements and a `std::map` for mapping names to indices for quick lookup.
+ * 
+ * @author F. Bastien
+ * @author G. Zullo
+ * 
  */
 template <class T>
 class SciantixArray
 {
 private:
-    std::vector<T> array; ///< Vector storing the elements of type T.
-    std::map<std::string, int> map; ///< Map for storing the relationship between element names and their indices in the array.
+    std::vector<T> array; // Vector storing the elements of type T
+    std::map<std::string, int> map; // Map for storing the relationship between element names and their indices in the array
 
 public:
     /**
-     * @brief Default constructor for the SciantixArray class.
+     * @brief Constructor
      */
     SciantixArray(){}
+
+	/**
+	 * @brief Destructor
+	 */
+	~SciantixArray() {}
 
     /**
      * @brief Constructs a SciantixArray from a given vector of elements.
@@ -109,7 +110,7 @@ public:
     /**
      * @brief Checks if the array is empty.
      * 
-     * @return true if the array is empty, false otherwise.
+     * @return True if the array is empty, False otherwise.
      */
     bool empty()
     {

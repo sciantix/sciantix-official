@@ -54,6 +54,8 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
 
 /**
  * @brief Handles unsupported diffusion solver options.
+ * 
+ * @author G. Zullo
  */
 void errorHandling(SciantixArray<InputVariable> input_variable);
 

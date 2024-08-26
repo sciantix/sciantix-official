@@ -14,11 +14,6 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-/*!
-
- *
- */
-
 #include "Sciantix.h"
 #include "InputInterpolation.h"
 #include "InputReading.h"
@@ -49,7 +44,8 @@ void logExecutionTime(double timer, int time_step_number, std::ofstream &Executi
  * Nevertheless, physically-based model are preferred to empirical models.
  * This facilitates the incorporation of information from lower length scale calculations.
  *
- * @see <a href="../../references/pdf_link/Pizzocri_et_al_2020.pdf" target="_blank">Pizzocri et al 2020</a>, <a href="../../references/pdf_link/Zullo_et_al_2023.pdf" target="_blank">Zullo et al 2023</a>.
+ * @see <a href="https://www.sciencedirect.com/science/article/pii/S0022311519313868" target="_blank">Pizzocri D. et al (2020). Journal of Nuclear Materials, 532, 152042.</a>
+ * @see <a href="https://www.sciencedirect.com/science/article/pii/S0022311523005111" target="_blank">Zullo G. et al (2023). Journal of Nuclear Materials, 587, 154744.</a>
  *
  * At present, this version of the code is validated against experiments for
  * - intragranular gaseous swelling
@@ -78,7 +74,6 @@ int main(int argc, char **argv)
             TestPath += '/';
         }
     }
-
 
     InputReading(
         Sciantix_options, 

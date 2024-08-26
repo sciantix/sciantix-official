@@ -14,64 +14,34 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef MODEL_H
-#define MODEL_H
+#include "MainVariables.h"
 
-#include <vector>
-#include <string>
-#include <iterator>
-#include <map>
-#include <string>
+int Sciantix_options[40];
+double Sciantix_history[20];
+double Sciantix_variables[300];
+double Sciantix_scaling_factors[10];
+double Sciantix_diffusion_modes[720];
 
-#include "InputVariable.h"
-#include "Matrix.h"
-#include "Gas.h"
-#include "System.h"
-#include "Material.h"
+long long int Time_step_number(0);
+double  Time_h(0.0), dTime_h(0.0), Time_end_h(0.0); // (h)
+double  Time_s(0.0), Time_end_s(0.0); // (s)
+double  Number_of_time_steps_per_interval(100);
 
-/**
- * @class Model
- * @brief The Model class is an integral part of the SCIANTIX simulation, serving as a base for defining
- * various simulation models.
- * 
- * @author G. Zullo
- * @author F. Bastien
- * 
- */
-class Model: public Material
-{
-protected:
-	std::string overview;
-	std::vector<double> parameter;
+std::ofstream Output_file;
+std::ofstream Execution_file;
+std::string TestPath;
 
-public:
-	/**
-	 * @brief Sets the parameters of the model.
-	 * @param p Vector of doubles representing the parameters to be applied to the model.
-	 */
-	void setParameter(std::vector<double> p)
-	{
-		parameter = p;
-	}
-
-	/**
-	 * @brief Retrieves the parameters of the model.
-	 * @return Vector of doubles containing the current parameters of the model.
-	 */
-	std::vector<double> getParameter()
-	{
-		return parameter;
-	}
-
-	/**
-	 * @brief Constructor
-	 */
-	Model() {}
-
-	/**
-	 * @brief Destructor
-	 */
-	~Model() {}
-};
-
-#endif // MODEL_H
+int Input_history_points(1000);
+int Temperature_input_points;
+int Fissionrate_input_points;
+int Hydrostaticstress_input_points;
+int Stempressure_input_points;
+std::vector<double> Time_temperature_input;
+std::vector<double> Time_fissionrate_input;
+std::vector<double> Time_hydrostaticstress_input;
+std::vector<double> Time_steampressure_input;
+std::vector<double> Time_input(1000, 0.0);
+std::vector<double> Temperature_input(1000, 0.0);
+std::vector<double> Fissionrate_input(1000, 0.0);
+std::vector<double> Hydrostaticstress_input(1000, 0.0);
+std::vector<double> Steampressure_input(1000, 0.0);

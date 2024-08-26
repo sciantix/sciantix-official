@@ -64,7 +64,7 @@ private:
      */
     Simulation() {
         n_modes = 40;
-        modes_initial_conditions.resize(n_modes * n_modes);
+        modes_initial_conditions.resize(720);
     }
 
 public:
@@ -157,6 +157,8 @@ public:
     /**
      * @brief Grain growth based on specific model parameters affecting the system's materials.
      * 
+     * @author D. Pizzocri
+     * @author T. Barani
      * @author G. Zullo
      * 
      */
@@ -192,6 +194,7 @@ public:
      * @brief The model considers one-off nucleation, growth of lenticular bubbles by vacancy absorption and coalescence of bubbles.
      *  
      * @ref White, JNM, 325 (2004) 61-77
+     * @ref Pastore, NED, (2013)
      * 
      * @author D. Pizzocri
      * @author T. Barani
