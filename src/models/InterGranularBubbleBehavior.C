@@ -14,8 +14,6 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-
-
 #include "Simulation.h"
 
 void Simulation::InterGranularBubbleBehavior()
