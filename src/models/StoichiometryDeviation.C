@@ -22,31 +22,27 @@ void Simulation::StoichiometryDeviation()
     if (!input_variable["iStoichiometryDeviation"].getValue())
         return;
 
-    Model stoic_devia_model;
+    Model model_;
 
     std::string reference;
     std::vector<double> parameter;
 
     double surface_to_volume = 3 / sciantix_variable["Grain radius"].getFinalValue(); // (1/m)
 
-    stoic_devia_model.setName("Stoichiometry deviation");
+    model_.setName("Stoichiometry deviation");
   
     switch (int(input_variable["iStoichiometryDeviation"].getValue()))
     {
     case 0:
     {
-        /**
-         * @brief iStoichiometryDeviation = 0 neglects the stoichiometry deviation of the fuel.
-         *
-         */
 
         reference += "not considered.";
 
         parameter.push_back(0);
         parameter.push_back(0);
 
-        stoic_devia_model.setParameter(parameter);
-        stoic_devia_model.setRef(reference);
+        model_.setParameter(parameter);
+        model_.setRef(reference);
 
         break;
     }
@@ -83,8 +79,8 @@ void Simulation::StoichiometryDeviation()
         parameter.push_back(decay_rate);
         parameter.push_back(source_rate);
 
-        stoic_devia_model.setParameter(parameter);
-        stoic_devia_model.setRef(reference);
+        model_.setParameter(parameter);
+        model_.setRef(reference);
 
         break;
     }
@@ -121,8 +117,8 @@ void Simulation::StoichiometryDeviation()
         parameter.push_back(decay_rate);
         parameter.push_back(source_rate);
 
-        stoic_devia_model.setParameter(parameter);
-        stoic_devia_model.setRef(reference);
+        model_.setParameter(parameter);
+        model_.setRef(reference);
 
         break;
     }
@@ -160,8 +156,8 @@ void Simulation::StoichiometryDeviation()
         parameter.push_back(decay_rate);
         parameter.push_back(source_rate);
 
-        stoic_devia_model.setParameter(parameter);
-        stoic_devia_model.setRef(reference);
+        model_.setParameter(parameter);
+        model_.setRef(reference);
 
         break;
     }
@@ -198,8 +194,8 @@ void Simulation::StoichiometryDeviation()
         parameter.push_back(decay_rate);
         parameter.push_back(source_rate);
 
-        stoic_devia_model.setParameter(parameter);
-        stoic_devia_model.setRef(reference);
+        model_.setParameter(parameter);
+        model_.setRef(reference);
 
         break;
     }
@@ -244,8 +240,8 @@ void Simulation::StoichiometryDeviation()
         parameter.push_back(beta);
         parameter.push_back(alpha);
 
-        stoic_devia_model.setParameter(parameter);
-        stoic_devia_model.setRef(reference);
+        model_.setParameter(parameter);
+        model_.setRef(reference);
 
         break;
     }
@@ -294,8 +290,8 @@ void Simulation::StoichiometryDeviation()
         parameter.push_back(beta);
         parameter.push_back(alpha);
 
-        stoic_devia_model.setParameter(parameter);
-        stoic_devia_model.setRef(reference);
+        model_.setParameter(parameter);
+        model_.setRef(reference);
 
         break;
     }
@@ -305,7 +301,7 @@ void Simulation::StoichiometryDeviation()
         break;
     }
 
-    model.push(stoic_devia_model);
+    model.push(model_);
 
     if (!input_variable.isElementPresent("iStoichiometryDeviation"))
         return;

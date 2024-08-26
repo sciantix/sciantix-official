@@ -18,9 +18,9 @@
 
 void Simulation::GrainBoundarySweeping()
 {
-	Model grain_bound_sweeping;
+	Model model_;
 
-	grain_bound_sweeping.setName("Grain-boundary sweeping");
+	model_.setName("Grain-boundary sweeping");
 
 	switch (int(input_variable["iGrainBoundarySweeping"].getValue()))
 	{
@@ -28,8 +28,8 @@ void Simulation::GrainBoundarySweeping()
 	{
 		std::vector<double> parameter;
 		parameter.push_back(0.0);
-		grain_bound_sweeping.setParameter(parameter);
-		grain_bound_sweeping.setRef(": Not considered");
+		model_.setParameter(parameter);
+		model_.setRef(": Not considered");
 
 		break;
 	}
@@ -45,8 +45,8 @@ void Simulation::GrainBoundarySweeping()
 		std::vector<double> parameter;
 		/// @param[out] grain_sweeped_volume
 		parameter.push_back(3 * sciantix_variable["Grain radius"].getIncrement() / sciantix_variable["Grain radius"].getFinalValue());
-		grain_bound_sweeping.setParameter(parameter);
-		grain_bound_sweeping.setRef(": TRANSURANUS model");
+		model_.setParameter(parameter);
+		model_.setRef(": TRANSURANUS model");
 
 		break;
 	}
@@ -56,7 +56,7 @@ void Simulation::GrainBoundarySweeping()
 		break;
 	}
 
-	model.push(grain_bound_sweeping);
+	model.push(model_);
 
 
 

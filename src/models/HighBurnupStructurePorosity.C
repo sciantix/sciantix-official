@@ -18,9 +18,9 @@
 
 void Simulation::HighBurnupStructurePorosity()
 {
-	Model high_burnup_struct_poro_model;
+	Model model_;
 
-	high_burnup_struct_poro_model.setName("High-burnup structure porosity");
+	model_.setName("High-burnup structure porosity");
 	double porosity_increment = 0.0;
 
 	std::string reference;
@@ -76,10 +76,10 @@ void Simulation::HighBurnupStructurePorosity()
 		break;
 	}
 
-	high_burnup_struct_poro_model.setParameter(parameter);
-	high_burnup_struct_poro_model.setRef(reference);
+	model_.setParameter(parameter);
+	model_.setRef(reference);
 
-	model.push(high_burnup_struct_poro_model);
+	model.push(model_);
 
 
 

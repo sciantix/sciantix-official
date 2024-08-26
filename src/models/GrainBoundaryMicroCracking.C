@@ -20,8 +20,8 @@ void Simulation::GrainBoundaryMicroCracking()
 {
 	if (!input_variable["iGrainBoundaryMicroCracking"].getValue()) return;
 
-	Model grain_bound_microcrack_model;
-	grain_bound_microcrack_model.setName("Grain-boundary micro-cracking");
+	Model model_;
+	model_.setName("Grain-boundary micro-cracking");
 	std::vector<double> parameter;
 
 	const double dTemperature = history_variable["Temperature"].getIncrement();
@@ -42,10 +42,10 @@ void Simulation::GrainBoundaryMicroCracking()
 	const double healing_parameter = 1.0 / 0.8814; // 1 / (u * burnup)
 	parameter.push_back(healing_parameter);
 
-	grain_bound_microcrack_model.setParameter(parameter);
-	grain_bound_microcrack_model.setRef("from Barani et al. (2017), JNM");
+	model_.setParameter(parameter);
+	model_.setRef("from Barani et al. (2017), JNM");
 
-	model.push(grain_bound_microcrack_model);
+	model.push(model_);
 
 
 

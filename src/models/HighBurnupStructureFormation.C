@@ -18,9 +18,9 @@
 
 void Simulation::HighBurnupStructureFormation()
 {
-	Model high_burnup_struct_form_model;
+	Model model_;
 
-	high_burnup_struct_form_model.setName("High-burnup structure formation");
+	model_.setName("High-burnup structure formation");
 
 	std::string reference;
 	std::vector<double> parameter;
@@ -77,10 +77,10 @@ void Simulation::HighBurnupStructureFormation()
 		break;
 	}
 
-	high_burnup_struct_form_model.setParameter(parameter);
-	high_burnup_struct_form_model.setRef(reference);
+	model_.setParameter(parameter);
+	model_.setRef(reference);
 
-	model.push(high_burnup_struct_form_model);
+	model.push(model_);
 
 
 
