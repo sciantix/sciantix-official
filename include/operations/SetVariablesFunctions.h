@@ -34,7 +34,7 @@ std::vector<std::string> getInputVariableNames()
     std::vector<std::string> names =
     {
         "iGrainGrowth",
-        "iFGDiffusionCoefficient",
+        "iFissionGasDiffusivity",
         "iDiffusionSolver",
         "iIntraGranularBubbleBehavior", 
         "iResolutionRate",

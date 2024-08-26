@@ -18,8 +18,8 @@
 
 void Simulation::GrainBoundaryVenting()
 {
-    Model grain_bound_vent_model;
-    grain_bound_vent_model.setName("Grain-boundary venting");
+    Model model_;
+    model_.setName("Grain-boundary venting");
 
     std::vector<double> parameter;
     std::string reference;
@@ -28,11 +28,6 @@ void Simulation::GrainBoundaryVenting()
     {
     case 0:
     {
-        /**
-         * @brief Not considered.
-         *
-         */
-
         sciantix_variable["Intergranular venting probability"].setFinalValue(0.0);
         reference = "not considered.";
 
@@ -41,11 +36,6 @@ void Simulation::GrainBoundaryVenting()
 
     case 1:
     {
-        /**
-         * @brief Release mechanisms quantified via the vented fraction
-         *
-         */
-
         // Shape of the sigmoid function
         const double screw_parameter = 0.1;
         const double span_parameter = 10.0;
@@ -76,10 +66,10 @@ void Simulation::GrainBoundaryVenting()
 
     parameter.push_back(sciantix_variable["Intergranular venting probability"].getFinalValue());
 
-    grain_bound_vent_model.setParameter(parameter);
-    grain_bound_vent_model.setRef(reference);
+    model_.setParameter(parameter);
+    model_.setRef(reference);
 
-    model.push(grain_bound_vent_model);
+    model.push(model_);
 
 
 

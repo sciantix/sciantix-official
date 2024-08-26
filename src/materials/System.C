@@ -236,7 +236,7 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
 {
     /**
      * ### setFissionGasDiffusivity
-     * @brief The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFGDiffusionCoefficient
+     * @brief The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFissionGasDiffusivity
      *
      */
     switch (input_value)
@@ -244,11 +244,11 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 0:
     {
         /**
-         * @brief iFGDiffusionCoefficient = 0 corresponds to a constant intra-granular diffusivity value, equal to 7e-19 m^2/s.
+         * @brief iFissionGasDiffusivity = 0 corresponds to a constant intra-granular diffusivity value, equal to 7e-19 m^2/s.
          *
          */
 
-        reference += "iFGDiffusionCoefficient: constant diffusivity (7e-19 m2/s).\n\t";
+        reference += "iFissionGasDiffusivity: constant diffusivity (7e-19 m2/s).\n\t";
         diffusivity = 7e-19;
         diffusivity *= scaling_factors["Diffusivity"].getValue();
 
@@ -258,12 +258,12 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 1:
     {
         /**
-         * @brief iFGDiffusionCoefficient = 1 set the fission gas (xenon and krypton) single-atom intragranular diffusivity equal to the expression
+         * @brief iFissionGasDiffusivity = 1 set the fission gas (xenon and krypton) single-atom intragranular diffusivity equal to the expression
          * in <a href="../../references/pdf_link/Turnbull_et_al_1988.pdf" target="_blank">Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22</a>.
          *
          */
 
-        reference += "iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.\n\t";
+        reference += "iFissionGasDiffusivity: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.\n\t";
 
         double temperature = history_variable["Temperature"].getFinalValue();
         double fission_rate = history_variable["Fission rate"].getFinalValue();
@@ -281,12 +281,12 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 2:
     {
         /**
-         * @brief iFGDiffusionCoefficient = 2 set the xenon effective intragranular diffusivity equal to the expression
+         * @brief iFissionGasDiffusivity = 2 set the xenon effective intragranular diffusivity equal to the expression
          * in <a href="../../references/pdf_link/Matzke_1980.pdf" target="_blank">Matzke (1980), Radiation Effects, 53, 219-242</a>.
          *
          */
 
-        reference += "iFGDiffusionCoefficient: Matzke (1980), Radiation Effects, 53, 219-242.\n\t";
+        reference += "iFissionGasDiffusivity: Matzke (1980), Radiation Effects, 53, 219-242.\n\t";
         diffusivity = 5.0e-08 * exp(-40262.0 / history_variable["Temperature"].getFinalValue());
         diffusivity *= scaling_factors["Diffusivity"].getValue();
 
@@ -296,12 +296,12 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 3:
     {
         /**
-         * @brief iFGDiffusionCoefficient = 3 set the xenon single-atom intragranular diffusivity equal to the expression
+         * @brief iFissionGasDiffusivity = 3 set the xenon single-atom intragranular diffusivity equal to the expression
          * in <a href="../../references/pdf_link/Turnbull_et_al_2010.pdf" target="_blank">Turnbull et al., (2010), Background and Derivation of ANS-5.4 Standard Fission Product Release Model</a>.
          *
          */
 
-        reference += "iFGDiffusionCoefficient: Turnbull et al., (2010), Background and Derivation of ANS-5.4 Standard Fission Product Release Model.\n\t";
+        reference += "iFissionGasDiffusivity: Turnbull et al., (2010), Background and Derivation of ANS-5.4 Standard Fission Product Release Model.\n\t";
 
         double temperature = history_variable["Temperature"].getFinalValue();
         double fission_rate = history_variable["Fission rate"].getFinalValue();
@@ -319,12 +319,12 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 4:
     {
         /**
-         * @brief iFGDiffusionCoefficient = 4 set the xenon single-atom intragranular diffusivity equal to the expression
+         * @brief iFissionGasDiffusivity = 4 set the xenon single-atom intragranular diffusivity equal to the expression
          * in <a href="../../references/pdf_link/Ronchi_2007.pdf" target="_blank">Ronchi, C. High Temp 45, 552-571 (2007)</a>.
          *
          */
 
-        reference += "iFGDiffusionCoefficient: Ronchi, C. High Temp 45, 552-571 (2007).\n\t";
+        reference += "iFissionGasDiffusivity: Ronchi, C. High Temp 45, 552-571 (2007).\n\t";
 
         double temperature = history_variable["Temperature"].getFinalValue();
         double fission_rate = history_variable["Fission rate"].getFinalValue();
@@ -386,18 +386,18 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 99:
     {
         /**
-         * @brief iFGDiffusionCoefficient = 99 set the xenon single-atom intragranular diffusivity to zero.
+         * @brief iFissionGasDiffusivity = 99 set the xenon single-atom intragranular diffusivity to zero.
          *
          */
 
-        reference += "iFGDiffusionCoefficient: Test case: zero diffusion coefficient.\n\t";
+        reference += "iFissionGasDiffusivity: Test case: zero diffusion coefficient.\n\t";
         diffusivity = 0.0;
 
         break;
     }
 
     default:
-        ErrorMessages::Switch(__FILE__, "iFGDiffusionCoefficient", input_value);
+        ErrorMessages::Switch(__FILE__, "iFissionGasDiffusivity", input_value);
         break;
     }
 }

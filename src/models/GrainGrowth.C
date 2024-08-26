@@ -18,9 +18,9 @@
 
 void Simulation::GrainGrowth()
 {
-	Model grain_growth_model;
+	Model model_;
 
-	grain_growth_model.setName("Grain growth");
+	model_.setName("Grain growth");
 	std::string reference;
 	std::vector<double> parameter;
 
@@ -133,10 +133,10 @@ void Simulation::GrainGrowth()
 		ErrorMessages::Switch(__FILE__, "iGrainGrowth", int(input_variable["iGrainGrowth"].getValue()));
 		break;
 	}
-	grain_growth_model.setParameter(parameter);
-	grain_growth_model.setRef(reference);
+	model_.setParameter(parameter);
+	model_.setRef(reference);
 
-	model.push(grain_growth_model);
+	model.push(model_);
 
 
     sciantix_variable["Grain radius"].setFinalValue(

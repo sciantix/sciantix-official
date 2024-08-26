@@ -59,7 +59,7 @@ System #4: 	Kr85m in UO2	Production rate = cumulative yield * fission rate densi
 	
 
 Input setting #0: 	iGrainGrowth = 1
-Input setting #1: 	iFGDiffusionCoefficient = 6
+Input setting #1: 	iFissionGasDiffusivity = 6
 Input setting #2: 	iDiffusionSolver = 1
 Input setting #3: 	iIntraGranularBubbleBehavior = 1
 Input setting #4: 	iResolutionRate = 1

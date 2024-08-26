@@ -20,10 +20,10 @@
 
 void Simulation::InterGranularBubbleBehavior()
 {
-	Model inter_gran_bub_behav_model;
+	Model model_;
 	Matrix fuel(matrices[0]);
 
-	inter_gran_bub_behav_model.setName("Intergranular bubble evolution");
+	model_.setName("Intergranular bubble evolution");
 	std::string reference;
 	std::vector<double> parameter;
 
@@ -127,10 +127,10 @@ void Simulation::InterGranularBubbleBehavior()
         break;
     }
 
-	inter_gran_bub_behav_model.setParameter(parameter);
-	inter_gran_bub_behav_model.setRef(reference);
+	model_.setParameter(parameter);
+	model_.setRef(reference);
 
-	model.push(inter_gran_bub_behav_model);
+	model.push(model_);
 
 
 

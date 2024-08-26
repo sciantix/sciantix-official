@@ -21,9 +21,9 @@ void Simulation::UO2Thermochemistry()
     if (!input_variable["iStoichiometryDeviation"].getValue())
         return;
 
-    Model uo2_thermochem_model;
+    Model model_;
 
-    uo2_thermochem_model.setName("UO2 thermochemistry");
+    model_.setName("UO2 thermochemistry");
 
     std::string reference;
     reference = "Blackburn (1973) J. Nucl. Mater., 46, 244-252.";
@@ -34,10 +34,10 @@ void Simulation::UO2Thermochemistry()
     parameter.push_back(history_variable["Temperature"].getFinalValue());
     parameter.push_back(sciantix_variable["Gap oxygen partial pressure"].getFinalValue()); // (atm)
 
-    uo2_thermochem_model.setParameter(parameter);
-    uo2_thermochem_model.setRef(reference);
+    model_.setParameter(parameter);
+    model_.setRef(reference);
 
-    model.push(uo2_thermochem_model);
+    model.push(model_);
 
     if (!input_variable["iStoichiometryDeviation"].getValue())
         return;

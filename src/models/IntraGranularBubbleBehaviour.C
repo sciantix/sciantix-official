@@ -18,139 +18,131 @@
 
 void Simulation::IntraGranularBubbleBehavior()
 {
-	Model intra_gran_bub_behav_model;
+    Model model_;
 
-	intra_gran_bub_behav_model.setName("Intragranular bubble evolution");
+    model_.setName("Intragranular bubble evolution");
 
-	std::string reference;
-	std::vector<double> parameter;
+    std::string reference;
+    std::vector<double> parameter;
 
-	switch (int(input_variable["iIntraGranularBubbleBehavior"].getValue()))
-	{
-	case 0:
-	{
-		/// @brief
-		/// iIntraGranularBubbleBehavior == 0
-		/// ----------------------------------
-		///
-		/// This case assumes constant trial values for the intragranular bubble number density and radius.
-		/// @param[out] intragranular_bubble_concentration
-		/// @param[out] intragranular_bubble_radius
+    switch (int(input_variable["iIntraGranularBubbleBehavior"].getValue()))
+    {
+    case 0:
+    {
+        reference += "No evolution.";
 
-		reference += "No evolution.";
+        sciantix_variable["Intragranular bubble concentration"].setInitialValue(7.0e23);
+        sciantix_variable["Intragranular bubble radius"].setInitialValue(1.0e-9);
 
-		sciantix_variable["Intragranular bubble concentration"].setInitialValue(7.0e23);
-		sciantix_variable["Intragranular bubble radius"].setInitialValue(1.0e-9);
+        sciantix_variable["Intragranular bubble concentration"].setFinalValue(7.0e23);
+        sciantix_variable["Intragranular bubble radius"].setFinalValue(1.0e-9);
 
-		sciantix_variable["Intragranular bubble concentration"].setFinalValue(7.0e23);
-		sciantix_variable["Intragranular bubble radius"].setFinalValue(1.0e-9);
+        parameter.push_back(0.);
+        parameter.push_back(0.);
 
-		parameter.push_back(0.);
-		parameter.push_back(0.);
+        break;
+    }
 
-		break;
-	}
+    case 1:
+    {
+        /// @brief
+        /// iIntraGranularBubbleBehavior == 1
+        /// ----------------------------------
+        ///
+        /// The evolution of small intra-granular bubbles in fuel grains is controlled by bubble nucleation, gas atom trapping, and irradiation-induced gas atom re-solution back in the lattice.
+        /// @see Description of the model in <a href="../../references/pdf_link/Pizzocri_et_al_2018.pdf" target="_blank">Pizzocri et al., JNM, 502 (2018) 323-330</a>.
+        /// @param[out] intragranular_bubble_concentration
+        /// @param[out] intragranular_bubble_radius
+        
+        reference += ": Pizzocri et al., JNM, 502 (2018) 323-330.";
 
-	case 1:
-	{
-		/// @brief
-		/// iIntraGranularBubbleBehavior == 1
-		/// ----------------------------------
-		///
-		/// The evolution of small intra-granular bubbles in fuel grains is controlled by bubble nucleation, gas atom trapping, and irradiation-induced gas atom re-solution back in the lattice.
-		/// @see Description of the model in <a href="../../references/pdf_link/Pizzocri_et_al_2018.pdf" target="_blank">Pizzocri et al., JNM, 502 (2018) 323-330</a>.
-		/// @param[out] intragranular_bubble_concentration
-		/// @param[out] intragranular_bubble_radius
-		
-		reference += ": Pizzocri et al., JNM, 502 (2018) 323-330.";
+        /// @param[in] resolution_rate
+        parameter.push_back(sciantix_system[0].getResolutionRate());
 
-		/// @param[in] resolution_rate
-		parameter.push_back(sciantix_system[0].getResolutionRate());
+        /// @param[in] nucleation_rate
+        parameter.push_back(sciantix_system[0].getNucleationRate());
 
-		/// @param[in] nucleation_rate
-		parameter.push_back(sciantix_system[0].getNucleationRate());
+        break;
+    }
 
-		break;
-	}
+    case 2:
+    {
+        /// @brief
+        /// iIntraGranularBubbleBehavior == 2
+        /// ----------------------------------
+        ///
+        /// The evolution of intragranular bubbles is modelled by means of temperature-driven correlations.
+        /// @see Description of the model in <a href="../../references/pdf_link/White_and_Tucker_1983.pdf" target="_blank">White, Tucker, Journal of Nuclear Materials, 118 (1983), 1-38</a>.
 
-	case 2:
-	{
-		/// @brief
-		/// iIntraGranularBubbleBehavior == 2
-		/// ----------------------------------
-		///
-		/// The evolution of intragranular bubbles is modelled by means of temperature-driven correlations.
-		/// @see Description of the model in <a href="../../references/pdf_link/White_and_Tucker_1983.pdf" target="_blank">White, Tucker, Journal of Nuclear Materials, 118 (1983), 1-38</a>.
+        /// @param[in] local_fuel_temperature
 
-		/// @param[in] local_fuel_temperature
+        reference += "White and Tucker, JNM, 118 (1983), 1-38.";
+        
+        sciantix_variable["Intragranular bubble concentration"].setInitialValue(1.52e+27 / history_variable["Temperature"].getFinalValue() - 3.3e+23);
+        parameter.push_back(0.0);
+        parameter.push_back(0.0);
+        break;
+    }
 
-		reference += "White and Tucker, JNM, 118 (1983), 1-38.";
-		
-		sciantix_variable["Intragranular bubble concentration"].setInitialValue(1.52e+27 / history_variable["Temperature"].getFinalValue() - 3.3e+23);
-		parameter.push_back(0.0);
-		parameter.push_back(0.0);
-		break;
-	}
-
-	case 3:
-	{
-		/**
-		 * @brief iIntraGranularBubbleBehavior == 3
-		 * 
-		 * The evolution of intragranular bubble concentration, radius and atoms per bubble is described through
-		 * the similarity ratio, based on the evolution of intragranular concentration of gas in bubbles.
-		 */
+    case 3:
+    {
+        /**
+         * @brief iIntraGranularBubbleBehavior == 3
+         * 
+         * The evolution of intragranular bubble concentration, radius and atoms per bubble is described through
+         * the similarity ratio, based on the evolution of intragranular concentration of gas in bubbles.
+         */
     
-		reference += "Case specific for annealing experiments and helium intragranular behaviour.";
+        reference += "Case specific for annealing experiments and helium intragranular behaviour.";
 
-		if(physics_variable["Time step"].getFinalValue() > 0.0)
-			parameter.push_back((1.0 / sciantix_variable["Intragranular similarity ratio"].getFinalValue() - 1.0) / physics_variable["Time step"].getFinalValue());
-		else
-			parameter.push_back(0.);
+        if(physics_variable["Time step"].getFinalValue() > 0.0)
+            parameter.push_back((1.0 / sciantix_variable["Intragranular similarity ratio"].getFinalValue() - 1.0) / physics_variable["Time step"].getFinalValue());
+        else
+            parameter.push_back(0.);
 
-		parameter.push_back(0.);
+        parameter.push_back(0.);
 
-		break;
-	}
+        break;
+    }
 
-	case 99:
-	{
-		/**
-		 * @brief iIntraGranularBubbleBehavior == 99
-		 * No intragranular bubbles.
-		 * 
-		 * To be used with iTrappingRate = 99, iResolutionRate = 99, iNucleationRate = 99.
-		 * 
-		 * @param[out] intragranular_bubble_radius
-		 * @param[out] intragranular_bubble_concentration
-		 * 
-		 */
+    case 99:
+    {
+        /**
+         * @brief iIntraGranularBubbleBehavior == 99
+         * No intragranular bubbles.
+         * 
+         * To be used with iTrappingRate = 99, iResolutionRate = 99, iNucleationRate = 99.
+         * 
+         * @param[out] intragranular_bubble_radius
+         * @param[out] intragranular_bubble_concentration
+         * 
+         */
 
-		reference += "No intragranular bubbles.";
+        reference += "No intragranular bubbles.";
 
-		sciantix_variable["Intragranular bubble concentration"].setInitialValue(0.0);
-		sciantix_variable["Intragranular bubble radius"].setInitialValue(0.0);
-		sciantix_variable["Intragranular atoms per bubble"].setInitialValue(0.0);
+        sciantix_variable["Intragranular bubble concentration"].setInitialValue(0.0);
+        sciantix_variable["Intragranular bubble radius"].setInitialValue(0.0);
+        sciantix_variable["Intragranular atoms per bubble"].setInitialValue(0.0);
 
-		sciantix_variable["Intragranular bubble concentration"].setFinalValue(0.0);
-		sciantix_variable["Intragranular bubble radius"].setFinalValue(0.0);
-		sciantix_variable["Intragranular atoms per bubble"].setFinalValue(0.0);
+        sciantix_variable["Intragranular bubble concentration"].setFinalValue(0.0);
+        sciantix_variable["Intragranular bubble radius"].setFinalValue(0.0);
+        sciantix_variable["Intragranular atoms per bubble"].setFinalValue(0.0);
 
-		parameter.push_back(0.);
-		parameter.push_back(0.);
+        parameter.push_back(0.);
+        parameter.push_back(0.);
 
-		break;
-	}
+        break;
+    }
 
-	default:
-		ErrorMessages::Switch(__FILE__, "iIntraGranularBubbleBehavior", int(input_variable["iIntraGranularBubbleBehavior"].getValue()));
-		break;
-	}
+    default:
+        ErrorMessages::Switch(__FILE__, "iIntraGranularBubbleBehavior", int(input_variable["iIntraGranularBubbleBehavior"].getValue()));
+        break;
+    }
 
-	intra_gran_bub_behav_model.setParameter(parameter);
-	intra_gran_bub_behav_model.setRef(reference);
+    model_.setParameter(parameter);
+    model_.setRef(reference);
 
-	model.push(intra_gran_bub_behav_model);
+    model.push(model_);
 
 
     // dN / dt = - getParameter().at(0) * N + getParameter().at(1)

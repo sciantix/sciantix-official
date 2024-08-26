@@ -160,7 +160,7 @@ public:
 
     /**
      * @brief Sets the diffusivity of fission gases within the matrix based on the selected model.
-     * The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFGDiffusionCoefficient
+     * The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFissionGasDiffusivity
      * @param input_value The model selection index for fission gas diffusivity.
      */
     void setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVariable> &sciantix_variable,

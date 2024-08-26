@@ -141,7 +141,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ae8fc2e89ce30eeeb092514e9de320b48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the helium diffusivity within the matrix.  <a href="class_system.html#ae8fc2e89ce30eeeb092514e9de320b48">More...</a><br /></td></tr>
 <tr class="separator:ae8fc2e89ce30eeeb092514e9de320b48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c475aa8dedf9734bf642573323193e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_system.html#a7c475aa8dedf9734bf642573323193e1">setFissionGasDiffusivity</a> (int input_value, <a class="el" href="class_sciantix_array.html">SciantixArray</a>&lt; <a class="el" href="class_sciantix_variable.html">SciantixVariable</a> &gt; &amp;sciantix_variable, <a class="el" href="class_sciantix_array.html">SciantixArray</a>&lt; <a class="el" href="class_sciantix_variable.html">SciantixVariable</a> &gt; &amp;history_variable, <a class="el" href="class_sciantix_array.html">SciantixArray</a>&lt; <a class="el" href="class_input_variable.html">InputVariable</a> &gt; &amp;scaling_factors)</td></tr>
-<tr class="memdesc:a7c475aa8dedf9734bf642573323193e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the diffusivity of fission gases within the matrix based on the selected model. The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFGDiffusionCoefficient.  <a href="class_system.html#a7c475aa8dedf9734bf642573323193e1">More...</a><br /></td></tr>
+<tr class="memdesc:a7c475aa8dedf9734bf642573323193e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the diffusivity of fission gases within the matrix based on the selected model. The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFissionGasDiffusivity.  <a href="class_system.html#a7c475aa8dedf9734bf642573323193e1">More...</a><br /></td></tr>
 <tr class="separator:a7c475aa8dedf9734bf642573323193e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41cb7f78f578633bd245296e7772b975"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_system.html#a41cb7f78f578633bd245296e7772b975">getFissionGasDiffusivity</a> ()</td></tr>
 <tr class="memdesc:a41cb7f78f578633bd245296e7772b975"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves the diffusivity of fission gases within the matrix.  <a href="class_system.html#a41cb7f78f578633bd245296e7772b975">More...</a><br /></td></tr>
@@ -674,7 +674,7 @@ F. Bastien </dd></dl>
       </table>
 </div><div class="memdoc">
 
-<p>Sets the diffusivity of fission gases within the matrix based on the selected model. The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFGDiffusionCoefficient. </p>
+<p>Sets the diffusivity of fission gases within the matrix based on the selected model. The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFissionGasDiffusivity. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">input_value</td><td>The model selection index for fission gas diffusivity. </td></tr>
@@ -683,15 +683,15 @@ F. Bastien </dd></dl>
 </dl>
 <h3><a class="anchor" id="autotoc_md27"></a>
 setFissionGasDiffusivity</h3>
-<p>The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFGDiffusionCoefficient</p>
-<p>iFGDiffusionCoefficient = 0 corresponds to a constant intra-granular diffusivity value, equal to 7e-19 m^2/s.</p>
-<p>iFGDiffusionCoefficient = 1 set the fission gas (xenon and krypton) single-atom intragranular diffusivity equal to the expression in <a href="../../references/pdf_link/Turnbull_et_al_1988.pdf" target="_blank">Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22</a>.</p>
-<p>iFGDiffusionCoefficient = 2 set the xenon effective intragranular diffusivity equal to the expression in <a href="../../references/pdf_link/Matzke_1980.pdf" target="_blank">Matzke (1980), Radiation Effects, 53, 219-242</a>.</p>
-<p>iFGDiffusionCoefficient = 3 set the xenon single-atom intragranular diffusivity equal to the expression in <a href="../../references/pdf_link/Turnbull_et_al_2010.pdf" target="_blank">Turnbull et al., (2010), Background and Derivation of ANS-5.4 Standard Fission Product Release Model</a>.</p>
-<p>iFGDiffusionCoefficient = 4 set the xenon single-atom intragranular diffusivity equal to the expression in <a href="../../references/pdf_link/Ronchi_2007.pdf" target="_blank">Ronchi, C. High Temp 45, 552-571 (2007)</a>.</p>
+<p>The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFissionGasDiffusivity</p>
+<p>iFissionGasDiffusivity = 0 corresponds to a constant intra-granular diffusivity value, equal to 7e-19 m^2/s.</p>
+<p>iFissionGasDiffusivity = 1 set the fission gas (xenon and krypton) single-atom intragranular diffusivity equal to the expression in <a href="../../references/pdf_link/Turnbull_et_al_1988.pdf" target="_blank">Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22</a>.</p>
+<p>iFissionGasDiffusivity = 2 set the xenon effective intragranular diffusivity equal to the expression in <a href="../../references/pdf_link/Matzke_1980.pdf" target="_blank">Matzke (1980), Radiation Effects, 53, 219-242</a>.</p>
+<p>iFissionGasDiffusivity = 3 set the xenon single-atom intragranular diffusivity equal to the expression in <a href="../../references/pdf_link/Turnbull_et_al_2010.pdf" target="_blank">Turnbull et al., (2010), Background and Derivation of ANS-5.4 Standard Fission Product Release Model</a>.</p>
+<p>iFissionGasDiffusivity = 4 set the xenon single-atom intragranular diffusivity equal to the expression in <a href="../../references/pdf_link/Ronchi_2007.pdf" target="_blank">Ronchi, C. High Temp 45, 552-571 (2007)</a>.</p>
 <p>this case is for the UO2HBS. </p><dl class="section see"><dt>See also</dt><dd>This value is from <a href="../../references/pdf_link/Barani_et_al_2020.pdf" target="_blank">Barani et al. Journal of Nuclear Materials 539 (2020) 152296</a>.</dd></dl>
 <p>this case is for</p>
-<p>iFGDiffusionCoefficient = 99 set the xenon single-atom intragranular diffusivity to zero.</p>
+<p>iFissionGasDiffusivity = 99 set the xenon single-atom intragranular diffusivity to zero.</p>
 
 </div>
 </div>

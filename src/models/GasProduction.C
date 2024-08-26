@@ -20,9 +20,9 @@ void Simulation::GasProduction()
 {
     for (auto &system : sciantix_system)
     {
-        Model gas_prod_model;
-        gas_prod_model.setName("Gas production - " + system.getName());
-		gas_prod_model.setRef(" ");
+        Model model_;
+        model_.setName("Gas production - " + system.getName());
+		model_.setRef(" ");
 
 		double productionRate = system.getProductionRate();
 		double timeStep = physics_variable["Time step"].getFinalValue();
@@ -30,10 +30,10 @@ void Simulation::GasProduction()
 		std::vector<double> parameter;
 		parameter.push_back(productionRate);
 		parameter.push_back(timeStep);
-		gas_prod_model.setParameter(parameter);
+		model_.setParameter(parameter);
 
 		parameter.clear();
-        model.push(gas_prod_model);
+        model.push(model_);
 
 
 
