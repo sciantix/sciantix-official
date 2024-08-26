@@ -8,7 +8,7 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.0                                                                    //
+//  Version: 2.1                                                                    //
 //  Year: 2023                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
@@ -453,7 +453,7 @@ void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> 
          */
 
         reference += "iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.\n\t";
-        resolution_rate = 2.0 * M_PI * matrices["UO2"].getFFrange() * pow(matrices["UO2"].getFissionFragmentInfluenceRadius() + sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2) * history_variable["Fission rate"].getFinalValue();
+        resolution_rate = 2.0 * M_PI * matrices["UO2"].getFissionFragmentRange() * pow(matrices["UO2"].getFissionFragmentInfluenceRadius() + sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2) * history_variable["Fission rate"].getFinalValue();
         resolution_rate *= scaling_factors["Resolution rate"].getValue();
 
         break;
@@ -486,7 +486,7 @@ void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> 
         reference += "iResolutionRate: Cognini et al. NET 53 (2021) 562-571.\n\t";
 
         /// irradiation_resolution_rate
-        double irradiation_resolution_rate = 2.0 * M_PI * matrices["UO2"].getFFrange() * pow(matrices["UO2"].getFissionFragmentInfluenceRadius() + sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2) * history_variable["Fission rate"].getFinalValue();
+        double irradiation_resolution_rate = 2.0 * M_PI * matrices["UO2"].getFissionFragmentRange() * pow(matrices["UO2"].getFissionFragmentInfluenceRadius() + sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2) * history_variable["Fission rate"].getFinalValue();
 
 
         /// compressibility_factor

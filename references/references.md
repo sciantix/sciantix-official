@@ -6,6 +6,8 @@
 
 <a href="https://www.sciencedirect.com/science/article/pii/S002231152030427X" target="_blank">Barani T. et al (2020). Journal of Nuclear Materials, 539, 152296.</a>
 
+<a href="https://www.sciencedirect.com/science/article/pii/S0022311522001234" target="_blank">Barani T. et al (2022). Journal of Nuclear Materials, 563, 153627.</a>
+
 <a href="https://doi.org/10.1111/j.1151-2916.1969.tb11976.x" target="_blank">Bittel R. et al (1969). Journal of the American Ceramic Society, 52, 446-451.</a>
 
 <a href="https://www.sciencedirect.com/science/article/abs/pii/002231157390038X" target="_blank">Blackburn P.E. (1973). Journal of Nuclear Materials, 46, 244-252.</a>

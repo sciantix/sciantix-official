@@ -8,7 +8,7 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.0                                                                    //
+//  Version: 2.1                                                                    //
 //  Year: 2023                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
@@ -50,12 +50,6 @@ void Matrix::setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVar
 
 void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable)
 {
-    /** 
-     * ### GrainBoundaryVacancyDiffusivity
-     * @brief The diffusivity of the vacancies on the grain-boundaries is set according to the input_variable iGrainBoundaryVacancyDiffusivity.
-     * 
-     */
-
     switch (input_value)
     {
         case 0:
@@ -117,12 +111,6 @@ void Matrix::setPoreNucleationRate(SciantixArray<SciantixVariable> &sciantix_var
 
 void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable)
 {
-    /**
-     * @brief re-solution rate of gas atoms from HBS pores.
-     * This model is from @ref *Barani et al., JNM 563 (2022) 153627*.
-     *
-     */
-
     double correction_coefficient = (1.0 - exp(pow(-sciantix_variable["HBS pore radius"].getFinalValue() / (9.0e-9), 3)));
     double b0(2.0e-23 * history_variable["Fission rate"].getFinalValue());
 
@@ -134,12 +122,6 @@ void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_var
  
 void Matrix::setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable)
 {
-    /**
-     * @brief trapping rate of gas atoms in HBS pores.
-     * This model is from @ref *Barani et al., JNM 563 (2022) 153627*.
-     *
-     */
-
     pore_trapping_rate = 4.0 * M_PI * grain_boundary_diffusivity *
         sciantix_variable["Xe at grain boundary"].getFinalValue() *
         sciantix_variable["HBS pore radius"].getFinalValue() *
