@@ -23,7 +23,7 @@ void Simulation::InterGranularBubbleBehavior()
 	Model model_;
 	Matrix fuel(matrices[0]);
 
-	model_.setName("Intergranular bubble evolution");
+	model_.setName("Intergranular bubble behavior");
 	std::string reference;
 	std::vector<double> parameter;
 
@@ -143,7 +143,7 @@ void Simulation::InterGranularBubbleBehavior()
     // Vacancy concentration
     sciantix_variable["Intergranular vacancies per bubble"].setFinalValue(
         solver.LimitedGrowth(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue(),
-                                model["Intergranular bubble evolution"].getParameter(),
+                                model["Intergranular bubble behavior"].getParameter(),
                                 physics_variable["Time step"].getFinalValue()));
 
     // Grain-boundary bubble volume
@@ -296,7 +296,7 @@ void Simulation::InterGranularBubbleBehavior()
         sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
         sciantix_variable["Intergranular bubble volume"].getFinalValue());
 
-    /// Fission gas release 
+    // Fission gas release 
     if (sciantix_variable["Xe produced"].getFinalValue() + sciantix_variable["Kr produced"].getFinalValue() > 0.0)
         sciantix_variable["Fission gas release"].setFinalValue(
         (sciantix_variable["Xe released"].getFinalValue() + sciantix_variable["Kr released"].getFinalValue()) /
