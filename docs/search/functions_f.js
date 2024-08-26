@@ -23,7 +23,7 @@ var searchData=
   ['setlenticularshapefactor_308',['setLenticularShapeFactor',['../class_matrix.html#ac243830dff23ca186fb6664ba4f5af07',1,'Matrix']]],
   ['setmassnumber_309',['setMassNumber',['../class_gas.html#a36977c727cb4a4f9dd2fc1a23d2c45e0',1,'Gas']]],
   ['setmatrix_310',['setMatrix',['../class_system.html#ac46efae1ae4010ad50e14674ec82e8d8',1,'System']]],
-  ['setname_311',['setName',['../class_variable.html#a0b4155dbba824f255020051522ee02f0',1,'Variable::setName()'],['../class_material.html#ac06563388f1faf4a58392ce4bdf00491',1,'Material::setName()']]],
+  ['setname_311',['setName',['../class_material.html#ac06563388f1faf4a58392ce4bdf00491',1,'Material::setName()'],['../class_variable.html#a0b4155dbba824f255020051522ee02f0',1,'Variable::setName()']]],
   ['setnucleationrate_312',['setNucleationRate',['../class_matrix.html#abb0015d9d4be841aab39a13adcef402b',1,'Matrix::setNucleationRate()'],['../class_system.html#a2392947effb3fb0515fec9e960fae8a5',1,'System::setNucleationRate()']]],
   ['setoctahedralinterstitialsite_313',['setOctahedralInterstitialSite',['../class_matrix.html#a010abbea9e18b0a7acf03c6e920d8f15',1,'Matrix']]],
   ['setoutput_314',['setOutput',['../class_sciantix_variable.html#a0e408c4c44e29c2dad4cbebce5a0678b',1,'SciantixVariable']]],

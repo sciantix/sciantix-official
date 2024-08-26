@@ -77,6 +77,10 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a80fad3f57dfaf195a36f7bc49bc88279"><td class="memItemLeft" align="right" valign="top"><a id="a80fad3f57dfaf195a36f7bc49bc88279"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulation.html#a80fad3f57dfaf195a36f7bc49bc88279">~Simulation</a> ()</td></tr>
+<tr class="memdesc:a80fad3f57dfaf195a36f7bc49bc88279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor for the <a class="el" href="class_simulation.html" title="Derived class that orchestrates the overall simulation process combining various models and solvers.">Simulation</a> class. <br /></td></tr>
+<tr class="separator:a80fad3f57dfaf195a36f7bc49bc88279"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e659e06b7c7ae3f64deea4bcd2e0565"><td class="memItemLeft" align="right" valign="top"><a id="a2e659e06b7c7ae3f64deea4bcd2e0565"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setVariables</b> (int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[])</td></tr>
 <tr class="separator:a2e659e06b7c7ae3f64deea4bcd2e0565"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,10 +164,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:afadca29c151d20bc438dd44da578ae36"><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulation.html#afadca29c151d20bc438dd44da578ae36">getDiffusionModesBubbles</a> (std::string gas_name)</td></tr>
 <tr class="memdesc:afadca29c151d20bc438dd44da578ae36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieves diffusion modes related to bubbles for a specified gas.  <a href="class_simulation.html#afadca29c151d20bc438dd44da578ae36">More...</a><br /></td></tr>
 <tr class="separator:afadca29c151d20bc438dd44da578ae36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80fad3f57dfaf195a36f7bc49bc88279"><td class="memItemLeft" align="right" valign="top"><a id="a80fad3f57dfaf195a36f7bc49bc88279"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_simulation.html#a80fad3f57dfaf195a36f7bc49bc88279">~Simulation</a> ()</td></tr>
-<tr class="memdesc:a80fad3f57dfaf195a36f7bc49bc88279"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor for the <a class="el" href="class_simulation.html" title="Derived class that orchestrates the overall simulation process combining various models and solvers.">Simulation</a> class. <br /></td></tr>
-<tr class="separator:a80fad3f57dfaf195a36f7bc49bc88279"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -479,13 +479,12 @@ G. Zullo </dd></dl>
 T. Barani </dd>
 <dd>
 G. Zullo </dd></dl>
-<p>iGrainGrowth = 0 is used to neglect the grain growth. The radius of the grain is constant throughout the simulation.</p>
-<p>iGrainGrowth = 1 considers that the grain growth kinetic is described by the semi-empirical model from <a href="../../references/pdf_link/Ainscough_et_al_1973.pdf" target="_blank">Ainscough et al., JNM, 49 (1973) 117-128</a>. This model includes essentially two contributions on the grain growth:</p><ol type="1">
+<p>iGrainGrowth = 1 considers that the grain growth kinetic is described by the semi-empirical model from <a href="https://www.sciencedirect.com/science/article/abs/pii/0022311573900019" target="_blank">Ainscough J.B. et al (1973). Journal of Nuclear Materials, 49, 117-128.</a> This model includes two contributions on the grain growth:</p><ol type="1">
 <li>Temperature;</li>
 <li>Burnup (i.e., increasing retarding effect due fission product accumulation).</li>
 </ol>
 <p>Note that, the equation for grain growth is written in grain size.</p>
-<p>The grain growth kinetic is described according to <a href="../../references/pdf_link/Van_Uffelen_et_al_2013.pdf" target="_blank">Van Uffelen et al. JNM, 434 (2013) 287–29</a>. by means of the following equations: 1) dD/dt = k/4D^3 if D &lt; Dm 2) dD/dt = 0 if D &gt; Dm where D = grain diameter (um) k, the rate constant, is k = 3.1347e+14 * exp(-46524 / T) (um^4/h) T = temperature (K) Dm = limiting grain diameter</p>
+<p>The grain growth kinetic is described according to <a href="https://www.sciencedirect.com/science/article/abs/pii/S0022311512006526" target="_blank">Van Uffelen P. et al (2013). Journal of Nuclear Materials, 434, 287-290.</a> by means of the following equations: 1) dD/dt = k/4D^3 if D &lt; Dm 2) dD/dt = 0 if D &gt; Dm where D = grain diameter (um) k, the rate constant, is k = 3.1347e+14 * exp(-46524 / T) (um^4/h) T = temperature (K) Dm = limiting grain diameter</p>
 
 </div>
 </div>
@@ -576,7 +575,6 @@ G. Zullo </dd></dl>
 T. Barani </dd>
 <dd>
 G. Zullo </dd></dl>
-<p>Fission gas release</p>
 
 </div>
 </div>
@@ -678,7 +676,6 @@ iIntraGranularBubbleBehavior == 2</h2>
 <dl class="section author"><dt>Author</dt><dd>G. Petrosillo </dd>
 <dd>
 G. Zullo </dd></dl>
-<p>iStoichiometryDeviation = 0 neglects the stoichiometry deviation of the fuel.</p>
 <p>The model for fuel oxidation and stoichimetry deviation evolution is described with a semi-empirical model. Carter and Lay, J. Nucl. Mater., 36:77–86, 1970. The oxidation rate follows: dx/dt = alpha*(S/V)*[x_eq - x]*(Ph2o^0.5)</p>
 <p>alpha is the surface exchange coefficient for unirradiated UO2 oxidation obtained by experimments. It is expressed as alpha = A exp(−Q/T). S/V = 3/a (1/m), surface-to-volume ratio of the fuel sample x_eq : equilbrium stoichiometry deviation (evaluated by UO2Thermochemistry model)</p>
 <h3><a class="anchor" id="autotoc_md36"></a>
