@@ -6,11 +6,11 @@ Model	Grain growth	: Ainscough et al., JNM, 49 (1973) 117-128.
 Model	Grain-boundary sweeping	: Not considered
 Model	Gas production - Xe in UO2	 
 Model	Gas production - Xe in UO2HBS	 
-Model	Intragranular bubble evolution	: Pizzocri et al., JNM, 502 (2018) 323-330.
+Model	Intragranular bubble behavior	: Pizzocri et al., JNM, 502 (2018) 323-330.
 Model	Gas diffusion - Xe in UO2 with HBS	
 Model	Grain-boundary micro-cracking	from Barani et al. (2017), JNM
 Model	Grain-boundary venting	not considered.
-Model	Intergranular bubble evolution	: Pastore et al., NED, 256 (2013) 75-86.
+Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
 
 Matrix	UO2	
 	: Ainscough et al., JNM, 49 (1973) 117-128.

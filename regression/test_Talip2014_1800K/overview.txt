@@ -9,14 +9,14 @@ Model	Gas production - Kr in UO2
 Model	Gas production - He in UO2	 
 Model	Gas production - Xe133 in UO2	 
 Model	Gas production - Kr85m in UO2	 
-Model	Intragranular bubble evolution	Case specific for annealing experiments and helium intragranular behaviour.
+Model	Intragranular bubble behavior	Case specific for annealing experiments and helium intragranular behaviour.
 Model	Gas diffusion - Xe in UO2	
 Model	Gas diffusion - Kr in UO2	
 Model	Gas diffusion - He in UO2	
 Model	Gas diffusion - Xe133 in UO2	
 Model	Gas diffusion - Kr85m in UO2	
 Model	Grain-boundary venting	not considered.
-Model	Intergranular bubble evolution	: No model for grain-boundary bubble evolution.
+Model	Intergranular bubble behavior	: No model for grain-boundary bubble evolution.
 
 Matrix	UO2	
 	: Van Uffelen et al. JNM, 434 (2013) 287-29.
