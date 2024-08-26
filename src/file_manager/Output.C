@@ -28,7 +28,7 @@ inline bool if_exist(const std::string &name)
 	return (stat(name.c_str(), &buffer) == 0);
 }
 
-void Simulation::Output()
+void Simulation::output()
 {
 	std::string output_name = TestPath + "output.txt";
 	std::fstream output_file;
