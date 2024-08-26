@@ -14,8 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef CONSTANT_NUMBERS_H
-#define CONSTANT_NUMBERS_H
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 
 /**
  * @file Constants.h
