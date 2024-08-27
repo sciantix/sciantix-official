@@ -106,7 +106,55 @@ Thank you for adhering to these guidelines!
 
 ## Useful Git Commands
 
-Here are some helpful Git commands for managing your local and remote repositories:
+Below are some essential Git commands for effectively managing your local and remote repositories:
+
+### How to Create a New Pull Request
+
+1. **Create and Switch to a New Branch:**
+   ```bash
+   git checkout -b new_repo
+   ```
+
+2. **Make Changes and Commit Them:**
+   - Stage all changes:
+     ```bash
+     git add .
+     ```
+   - Commit the changes:
+     ```bash
+     git commit -m "commit message"
+     ```
+   - Push the new branch to the remote repository:
+     ```bash
+     git push origin new_repo
+     ```
+
+3. **Create a New Pull Request:**
+   - Using GitHub CLI:
+     ```bash
+     gh pr create --base main --head new_repo --title "Title of the pull request" --body "Brief description of the pull request"
+     ```
+
+4. **Check for Reviews or Approvals:**
+   - Ensure the pull request meets the necessary criteria. If the pull request is approved and ready to be merged, update your main branch:
+     ```bash
+     git pull origin main
+     ```
+
+5. **Switch Back to the Main Branch:**
+   ```bash
+   git checkout main
+   ```
+
+6. **Merge the New Branch into Main:**
+   ```bash
+   git merge new_repo
+   ```
+
+7. **Push the Updated Main Branch to Complete the Pull Request:**
+   ```bash
+   git push -u origin main
+   ```
 
 - **Delete old remote Git branches**:
   
