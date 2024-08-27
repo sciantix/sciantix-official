@@ -1,12 +1,5 @@
 # Basic guide
 
-Open your terminal and execute the following commands to clone the code repository:
-
-   ```bash
-   gh repo clone sciantix/sciantix-official
-   cd sciantix
-   ```
-
 ## Instructions for committing new code through a pull request
 
 Follow these steps to commit new code to the SCIANTIX repository:
@@ -62,6 +55,7 @@ Follow these steps to commit new code to the SCIANTIX repository:
 At any time, you can check the status of your work by running:
 
 ```bash
+git fetch
 git status
 ```
 
