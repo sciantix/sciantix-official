@@ -44,7 +44,7 @@ void Simulation::GrainBoundaryMicroCracking()
     parameter.push_back(healing_parameter);
 
     model_.setParameter(parameter);
-    model_.setRef("from Barani et al. (2017), JNM");
+    model_.setRef(" : from Barani et al. (2017), JNM");
 
     model.push(model_);
 

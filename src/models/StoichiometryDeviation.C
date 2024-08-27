@@ -67,7 +67,7 @@ void Simulation::StoichiometryDeviation()
         case 1:
         {
 
-            reference += "Carter and Lay, J. Nucl. Mater., 36:77-86, Cox et al. NUREG/CP-0078 (1986), U.S. NRC.";
+            reference += " : Carter and Lay, J. Nucl. Mater., 36:77-86, Cox et al. NUREG/CP-0078 (1986), U.S. NRC.";
 
             double surface_exchange_coefficient = 0.365 * exp(-23500 / history_variable["Temperature"].getFinalValue());
             double decay_rate = surface_exchange_coefficient * sqrt(history_variable["Steam pressure"].getFinalValue()) * surface_to_volume;
@@ -103,7 +103,7 @@ void Simulation::StoichiometryDeviation()
         case 2:
         {
 
-            reference += "Carter and Lay, J. Nucl. Mater., 36:77-86, 1970. Bittel et al., J. Amer. Ceram. Soc., 52:446-451, 1969.";
+            reference += " : Carter and Lay, J. Nucl. Mater., 36:77-86, 1970. Bittel et al., J. Amer. Ceram. Soc., 52:446-451, 1969.";
 
             double surface_exchange_coefficient = 0.194 * exp(-19900 / history_variable["Temperature"].getFinalValue());
             double decay_rate = surface_exchange_coefficient * sqrt(history_variable["Steam pressure"].getFinalValue()) * (surface_to_volume);
@@ -139,8 +139,7 @@ void Simulation::StoichiometryDeviation()
          */
         case 3:
         {
-
-            reference += "Carter and Lay, J. Nucl. Mater., 36:77-86, 1970. Abrefah, JNM., 208:98-110, 1994.";
+            reference += " : Carter and Lay, J. Nucl. Mater., 36:77-86, 1970. Abrefah, JNM., 208:98-110, 1994.";
 
             double surface_exchange_coefficient = 0.382 * exp(-22080 / history_variable["Temperature"].getFinalValue());
             double decay_rate = surface_exchange_coefficient * sqrt(history_variable["Steam pressure"].getFinalValue()) * (surface_to_volume);
@@ -175,7 +174,7 @@ void Simulation::StoichiometryDeviation()
          */
         case 4:
         {
-            reference += "Carter and Lay, J. Nucl. Mater., 36:77-86, 1970. Imamura and. Une, JNM, 247:131-137, 1997.";
+            reference += " : Carter and Lay, J. Nucl. Mater., 36:77-86, 1970. Imamura and. Une, JNM, 247:131-137, 1997.";
 
             double surface_exchange_coefficient = 0.000341 * exp(-15876 / history_variable["Temperature"].getFinalValue());
             double decay_rate = surface_exchange_coefficient * sqrt(history_variable["Steam pressure"].getFinalValue() / 0.12) * surface_to_volume;
@@ -192,7 +191,7 @@ void Simulation::StoichiometryDeviation()
 
         /**
          * @brief The model for fuel oxidation and stoichimetry deviation evolution is described with a mechanistic Langmuir-based approach
-         * @ref Massih, A. R. "UO2 fuel oxidation and fission gas release." Swedish Radiation Safety Authority report, Report 2018 (2018): 25.
+         * @ref <a href="https://www.stralsakerhetsmyndigheten.se/en/publications/reports/safety-at-nuclear-power-plants/2018/201825/" target="_blank">Massih A.R. (2018). UO2 Fuel Oxidation and Fission Gas Release, Swedish Radiation Safety Authority (SSM).</a>
          * The oxidation rate follows: dx/dt = theta/tau (1 - sqrt(Po2(x)/Po2))
          * In SCIANTIX, the ODE is rewritten as: dx / dt = K (1 - beta * exp(alpha * x))
          *
@@ -205,6 +204,8 @@ void Simulation::StoichiometryDeviation()
          */
         case 5:
         {
+            reference += " : Massih, A. R. UO2 fuel oxidation and fission gas release. Swedish Radiation Safety Authority report, Report 2018 (2018): 25";
+
             double k_star = 1e4 * exp(-21253.0 / history_variable["Temperature"].getFinalValue() - 2.43); // (mol/m2 s)
             double tau_inv = k_star * (surface_to_volume) / 8.0e4;
             double s = 0.023;
@@ -236,11 +237,11 @@ void Simulation::StoichiometryDeviation()
 
         /**
          * @brief The model for fuel oxidation and stoichimetry deviation evolution is described with a mechanistic Langmuir-based approach
-         * @ref Massih, A. R. "UO2 fuel oxidation and fission gas release." Swedish Radiation Safety Authority report, Report 2018 (2018): 25.
+         * @ref <a href="https://www.stralsakerhetsmyndigheten.se/en/publications/reports/safety-at-nuclear-power-plants/2018/201825/" target="_blank">Massih A.R. (2018). UO2 Fuel Oxidation and Fission Gas Release, Swedish Radiation Safety Authority (SSM).</a>
          * The oxidation rate follows: dx/dt = theta/tau (1 - sqrt(Po2(x)/Po2))
          * In SCIANTIX, the ODE is rewritten as: dx / dt = K (1 - beta * exp(alpha * x))
          *
-         * ### iStoichiometryDeviation = 5
+         * ### iStoichiometryDeviation = 6
          *
          * Range of utilization:
          * - Pure steam
@@ -252,6 +253,8 @@ void Simulation::StoichiometryDeviation()
          */
         case 6:
         {
+            reference += " : Massih, A. R. UO2 fuel oxidation and fission gas release. Swedish Radiation Safety Authority report, Report 2018 (2018): 25";
+
             surface_to_volume = 225;
 
             double k_star = 1e4 * exp(-21253.0 / history_variable["Temperature"].getFinalValue() - 2.43); // (mol/m2 s)

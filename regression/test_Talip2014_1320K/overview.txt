@@ -16,7 +16,7 @@ Model	Gas diffusion - Kr85m in UO2
 Model	Intergranular bubble behavior	: No model for grain-boundary bubble evolution.
 
 Matrix	UO2	
-	: Van Uffelen et al. JNM, 434 (2013) 287-29.
+	Van Uffelen et al. JNM, 434 (2013) 287-29.
 	iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.
 	
 

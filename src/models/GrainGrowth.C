@@ -29,7 +29,7 @@ void Simulation::GrainGrowth()
     {
         case 0:
         {
-            reference += "constant grain radius.";
+            reference += " : constant grain radius.";
 
             parameter.push_back(sciantix_variable["Grain radius"].getInitialValue());
             parameter.push_back(0.0);
@@ -51,7 +51,7 @@ void Simulation::GrainGrowth()
          */
         case 1:
         {
-            reference += ": Ainscough et al., JNM, 49 (1973) 117-128.";
+            reference += " : Ainscough et al., JNM, 49 (1973) 117-128.";
 
             double limiting_grain_radius = 2.23e-03 * (1.56/2.0) * exp(-7620.0 / history_variable["Temperature"].getFinalValue());
             double burnup_factor = 1.0 + 2.0 * sciantix_variable["Burnup"].getFinalValue() / 0.8815;

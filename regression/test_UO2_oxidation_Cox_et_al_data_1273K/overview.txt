@@ -1,8 +1,8 @@
 Model	Burnup	: The local burnup is calculated from the fission rate density.
 Model	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
-Model	UO2 thermochemistry	Blackburn (1973) J. Nucl. Mater., 46, 244-252.
-Model	Stoichiometry deviation	
-Model	Grain growth	constant grain radius.
+Model	UO2 thermochemistry	 : Blackburn (1973) J. Nucl. Mater., 46, 244-252.
+Model	Stoichiometry deviation	 : Massih, A. R. UO2 fuel oxidation and fission gas release. Swedish Radiation Safety Authority report, Report 2018 (2018): 25
+Model	Grain growth	 : constant grain radius.
 Model	Gas production - Xe in UO2	 
 Model	Gas production - Kr in UO2	 
 Model	Gas production - He in UO2	 
@@ -14,11 +14,11 @@ Model	Gas diffusion - Kr in UO2
 Model	Gas diffusion - He in UO2	
 Model	Gas diffusion - Xe133 in UO2	
 Model	Gas diffusion - Kr85m in UO2	
-Model	Grain-boundary micro-cracking	from Barani et al. (2017), JNM
+Model	Grain-boundary micro-cracking	 : from Barani et al. (2017), JNM
 Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
 
 Matrix	UO2	
-	: Null grain-boundary mobility.
+	Null grain-boundary mobility.
 	iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.
 	
 

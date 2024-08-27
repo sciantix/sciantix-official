@@ -1,6 +1,6 @@
 Model	Burnup	: The local burnup is calculated from the fission rate density.
 Model	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
-Model	Grain growth	: Ainscough et al., JNM, 49 (1973) 117-128.
+Model	Grain growth	 : Ainscough et al., JNM, 49 (1973) 117-128.
 Model	Gas production - Xe in UO2	 
 Model	Gas production - Kr in UO2	 
 Model	Gas production - He in UO2	 
@@ -12,11 +12,11 @@ Model	Gas diffusion - Kr in UO2
 Model	Gas diffusion - He in UO2	
 Model	Gas diffusion - Xe133 in UO2	
 Model	Gas diffusion - Kr85m in UO2	
-Model	Grain-boundary micro-cracking	from Barani et al. (2017), JNM
+Model	Grain-boundary micro-cracking	 : from Barani et al. (2017), JNM
 Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
 
 Matrix	UO2	
-	: Ainscough et al., JNM, 49 (1973) 117-128.
+	Ainscough et al., JNM, 49 (1973) 117-128.
 	iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.
 	
 
