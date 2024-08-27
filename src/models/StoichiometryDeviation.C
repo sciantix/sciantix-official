@@ -19,9 +19,9 @@
 
 void Simulation::StoichiometryDeviation()
 {
-    if (!input_variable["iStoichiometryDeviation"].getValue())
-        return;
+    if (!input_variable["iStoichiometryDeviation"].getValue()) return;
 
+    // Model declaration
     Model model_;
 
     std::string reference;

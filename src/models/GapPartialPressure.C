@@ -20,6 +20,7 @@ void Simulation::GapPartialPressure()
 {
     if (!input_variable["iStoichiometryDeviation"].getValue()) return;
 
+    // Model declaration
     Model model_;
     model_.setName("Gap partial pressure");
 

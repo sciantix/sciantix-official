@@ -18,6 +18,7 @@
 
 void Simulation::GasDecay()
 {
+    // Model declaration
     for (auto &system : sciantix_system)
     {
         if (system.getGas().getDecayRate() > 0.0 && system.getRestructuredMatrix() == 0)
