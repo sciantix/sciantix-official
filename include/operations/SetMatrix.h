@@ -31,10 +31,8 @@
  * 
  */
 
-Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, 
-	SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable);
+Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable);
 
-Matrix UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, 
-	SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable);
+Matrix UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable);
 
 #endif

@@ -35,7 +35,6 @@ void Simulation::setVariables(
         }
     }
 
-
     // toOutput flags
     bool toOutputRadioactiveFG = input_variable["iRadioactiveFissionGas"].getValue() != 0,
          toOutputVenting = input_variable["iGrainBoundaryVenting"].getValue() != 0,
@@ -45,10 +44,8 @@ void Simulation::setVariables(
          toOutputHighBurnupStructure = input_variable["iHighBurnupStructureFormation"].getValue() == 1,
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0;
 
-
     // Physics variable	
     physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
-
 
     // History variable
     std::vector<SciantixVariable> values = initializeHistoryVariable(
@@ -56,6 +53,7 @@ void Simulation::setVariables(
         Sciantix_scaling_factors,
         toOutputStoichiometryDeviation
     );
+    
     for (SciantixVariable initial_value : values)
     {
         history_variable.push(initial_value);

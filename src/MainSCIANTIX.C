@@ -142,7 +142,6 @@ int main(int argc, char **argv)
             break;
     }
 
-
     timer = clock() - timer;
 
     logExecutionTime((double)timer / CLOCKS_PER_SEC, Time_step_number, Execution_file);
