@@ -24,7 +24,7 @@ void Simulation::Burnup()
 
     double fissionRate = history_variable["Fission rate"].getFinalValue();
     double fuelDensity = sciantix_variable["Fuel density"].getFinalValue();
-    double specificPower = fissionRate * (3.12e-17) / fuelDensity;
+    double specificPower = fissionRate * 3.12e-17 / fuelDensity;
 
     double burnup = specificPower / 86400.0; // specific power in MW/kg, burnup in MWd/kg
     sciantix_variable["Specific power"].setFinalValue(specificPower);

@@ -294,7 +294,7 @@ G. Zullo</dd></dl>
 T. Barani </dd>
 <dd>
 G. Zullo </dd></dl>
-<p>If <b>iGrainBoundaryBehaviour = 0</b> (e.g., grain-boundary calculations are neglected), all the gas arriving at the grain boundary is released.</p>
+<p>If <b>iGrainBoundaryBehaviour = 0</b> (e.g., no grain-boundary bubbles), fission gases at grain boundary is immediately released.</p>
 
 </div>
 </div>
@@ -448,7 +448,7 @@ G. Zullo </dd></dl>
 T. Barani </dd>
 <dd>
 G. Zullo </dd></dl>
-<p>iGrainBoundarySweeping = 1 considers the fraction of grain swept volume (dV/V = 3 dr / r). Then, the fraction of intra-granular gas concentration swept is dC / C = - 3 dr / r</p>
+<p>iGrainBoundarySweeping = 1 considers the fraction of grain swept volume (dV/V = 3 dr / r). Then the fraction of intra-granular gas concentration swept is dC / C = - 3 dr / r</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">grain_sweeped_volume</td><td></td></tr>
@@ -509,21 +509,6 @@ G. Zullo </dd></dl>
 E. Redaelli </dd>
 <dd>
 G. Zullo </dd></dl>
-<h2><a class="anchor" id="autotoc_md32"></a>
-iHighBurnupStructureFormation == 0</h2>
-<p>No HBS forming in the UO2 fuel matrix.</p>
-<h2><a class="anchor" id="autotoc_md33"></a>
-iHighBurnupStructureFormation == 1</h2>
-<p>This case calculates the fraction of HBS-restructured volume of the UO2 fuel matrix based on the KJMA approach. </p><dl class="section see"><dt>See also</dt><dd><a href="../../references/pdf_link/Barani_et_al_2020.pdf" target="_blank">Barani et al. Journal of Nuclear Materials 539 (2020) 152296</a>. </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">avrami_constant</td><td></td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">transformation_rate</td><td></td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">resolution_layer_thickness</td><td></td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">resolution_critical_distance</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -548,8 +533,6 @@ iHighBurnupStructureFormation == 1</h2>
 E. Redaelli </dd>
 <dd>
 G. Zullo </dd></dl>
-<p>No HBS case - no evolution of HBS porosity</p>
-<p>Correlation for the HBS porosity evolution based on Spino et al. 2006 data</p>
 
 </div>
 </div>
@@ -622,38 +605,6 @@ G. Zullo </dd></dl>
 T. Barani </dd>
 <dd>
 G. Zullo </dd></dl>
-<h2><a class="anchor" id="autotoc_md34"></a>
-iIntraGranularBubbleBehavior == 1</h2>
-<p>The evolution of small intra-granular bubbles in fuel grains is controlled by bubble nucleation, gas atom trapping, and irradiation-induced gas atom re-solution back in the lattice. </p><dl class="section see"><dt>See also</dt><dd>Description of the model in <a href="../../references/pdf_link/Pizzocri_et_al_2018.pdf" target="_blank">Pizzocri et al., JNM, 502 (2018) 323-330</a>. </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">intragranular_bubble_concentration</td><td></td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">intragranular_bubble_radius</td><td></td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">resolution_rate</td><td></td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">nucleation_rate</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<h2><a class="anchor" id="autotoc_md35"></a>
-iIntraGranularBubbleBehavior == 2</h2>
-<p>The evolution of intragranular bubbles is modelled by means of temperature-driven correlations. </p><dl class="section see"><dt>See also</dt><dd>Description of the model in <a href="../../references/pdf_link/White_and_Tucker_1983.pdf" target="_blank">White, Tucker, Journal of Nuclear Materials, 118 (1983), 1-38</a>.</dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">local_fuel_temperature</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<p>iIntraGranularBubbleBehavior == 3</p>
-<p>The evolution of intragranular bubble concentration, radius and atoms per bubble is described through the similarity ratio, based on the evolution of intragranular concentration of gas in bubbles.</p>
-<p>iIntraGranularBubbleBehavior == 99 No intragranular bubbles.</p>
-<p>To be used with iTrappingRate = 99, iResolutionRate = 99, iNucleationRate = 99.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">intragranular_bubble_radius</td><td></td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">intragranular_bubble_concentration</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -678,7 +629,7 @@ iIntraGranularBubbleBehavior == 2</h2>
 G. Zullo </dd></dl>
 <p>The model for fuel oxidation and stoichimetry deviation evolution is described with a semi-empirical model. Carter and Lay, J. Nucl. Mater., 36:77–86, 1970. The oxidation rate follows: dx/dt = alpha*(S/V)*[x_eq - x]*(Ph2o^0.5)</p>
 <p>alpha is the surface exchange coefficient for unirradiated UO2 oxidation obtained by experimments. It is expressed as alpha = A exp(−Q/T). S/V = 3/a (1/m), surface-to-volume ratio of the fuel sample x_eq : equilbrium stoichiometry deviation (evaluated by UO2Thermochemistry model)</p>
-<h3><a class="anchor" id="autotoc_md36"></a>
+<h3><a class="anchor" id="autotoc_md32"></a>
 iStoichiometryDeviation = 1</h3>
 <p>Range of utilization:</p><ul>
 <li>Pure steam</li>
@@ -686,7 +637,7 @@ iStoichiometryDeviation = 1</h3>
 </ul>
 <p>The model for fuel oxidation and stoichimetry deviation evolution is described with a semi-empirical model. Carter and Lay, J. Nucl. Mater., 36:77–86, 1970. The oxidation rate follows: dx/dt = alpha*(S/V)*[x_eq - x]*(Ph2o^0.5)</p>
 <p>alpha is the surface exchange coefficient for unirradiated UO2 oxidation obtained by experimments. It is expressed as alpha = A exp(−Q/T). S/V = 3/a (1/m), surface-to-volume ratio of the fuel sample x_eq : equilbrium stoichiometry deviation (evaluated by UO2Thermochemistry model)</p>
-<h3><a class="anchor" id="autotoc_md37"></a>
+<h3><a class="anchor" id="autotoc_md33"></a>
 iStoichiometryDeviation = 2</h3>
 <p>Range of utilization:</p><ul>
 <li>Pure steam</li>
@@ -694,7 +645,7 @@ iStoichiometryDeviation = 2</h3>
 </ul>
 <p>The model for fuel oxidation and stoichimetry deviation evolution is described with a semi-empirical model. Carter and Lay, J. Nucl. Mater., 36:77–86, 1970. The oxidation rate follows: dx/dt = alpha*(S/V)*[x_eq - x]*(Ph2o^0.5)</p>
 <p>alpha is the surface exchange coefficient for unirradiated UO2 oxidation obtained by experimments. It is expressed as alpha = A exp(−Q/T). S/V = 3/a (1/m), surface-to-volume ratio of the fuel sample x_eq : equilbrium stoichiometry deviation (evaluated by UO2Thermochemistry model)</p>
-<h3><a class="anchor" id="autotoc_md38"></a>
+<h3><a class="anchor" id="autotoc_md34"></a>
 iStoichiometryDeviation = 3</h3>
 <p>Range of utilization:</p><ul>
 <li>Pure steam</li>
@@ -703,21 +654,21 @@ iStoichiometryDeviation = 3</h3>
 </ul>
 <p>The model for fuel oxidation and stoichimetry deviation evolution is described with a semi-empirical model. Carter and Lay, J. Nucl. Mater., 36:77–86, 1970. The oxidation rate follows: dx/dt = alpha*(S/V)*[x_eq - x]*(Ph2o^0.5)</p>
 <p>alpha is the surface exchange coefficient for unirradiated UO2 oxidation obtained by experiments. It is expressed as alpha = A exp(−Q/T). S/V = 3/a (1/m), surface-to-volume ratio of the fuel sample x_eq : equilbrium stoichiometry deviation (evaluated by UO2Thermochemistry model)</p>
-<h3><a class="anchor" id="autotoc_md39"></a>
+<h3><a class="anchor" id="autotoc_md35"></a>
 iStoichiometryDeviation = 4</h3>
 <p>Range of utilization:</p><ul>
 <li>Pure steam</li>
 <li>Temperature range: 1073-1473 Imamura and. Une, JNM, 247:131–137, 1997.</li>
 </ul>
 <p>The model for fuel oxidation and stoichimetry deviation evolution is described with a mechanistic Langmuir-based approach Massih, A. R. "UO2 fuel oxidation and fission gas release." Swedish Radiation Safety Authority report, Report 2018 (2018): 25. The oxidation rate follows: dx/dt = theta/tau (1 - sqrt(Po2(x)/Po2)) In SCIANTIX, the ODE is rewritten as: dx / dt = K (1 - beta * exp(alpha * x))</p>
-<h3><a class="anchor" id="autotoc_md40"></a>
+<h3><a class="anchor" id="autotoc_md36"></a>
 iStoichiometryDeviation = 5</h3>
 <p>Range of utilization:</p><ul>
 <li>Pure steam</li>
 <li>Temperature range: 1073-1673 K</li>
 </ul>
 <p>The model for fuel oxidation and stoichimetry deviation evolution is described with a mechanistic Langmuir-based approach Massih, A. R. "UO2 fuel oxidation and fission gas release." Swedish Radiation Safety Authority report, Report 2018 (2018): 25. The oxidation rate follows: dx/dt = theta/tau (1 - sqrt(Po2(x)/Po2)) In SCIANTIX, the ODE is rewritten as: dx / dt = K (1 - beta * exp(alpha * x))</p>
-<h3><a class="anchor" id="autotoc_md41"></a>
+<h3><a class="anchor" id="autotoc_md37"></a>
 iStoichiometryDeviation = 5</h3>
 <p>Range of utilization:</p><ul>
 <li>Pure steam</li>
@@ -766,7 +717,7 @@ G. Zullo </dd></dl>
 <li>src/models/HighBurnupStructureFormation.C</li>
 <li>src/models/HighBurnupStructurePorosity.C</li>
 <li>src/models/InterGranularBubbleBehavior.C</li>
-<li>src/models/IntraGranularBubbleBehaviour.C</li>
+<li>src/models/IntraGranularBubbleBehavior.C</li>
 <li>src/models/StoichiometryDeviation.C</li>
 <li>src/models/UO2Thermochemistry.C</li>
 <li>src/operations/SetGas.C</li>

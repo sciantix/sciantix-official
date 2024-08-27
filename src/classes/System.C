@@ -741,7 +741,9 @@ void System::setProductionRate(int input_value, SciantixArray<SciantixVariable> 
         reference += "Case for helium production rate: Cechet et al., Nuclear Engineering and Technology, 53 (2021) 1893-1908.\n\t";
 
         // specific power = dburnup / dt
-        sciantix_variable["Specific power"].setFinalValue((history_variable["Fission rate"].getFinalValue() * (3.12e-17) / sciantix_variable["Fuel density"].getFinalValue()));
+        sciantix_variable["Specific power"].setFinalValue(
+            history_variable["Fission rate"].getFinalValue() * 3.12e-17 / sciantix_variable["Fuel density"].getFinalValue()
+        );
 
         // production rate in dproduced / dburnup -> dproduced / dtime
         production_rate = 2.0e+21 * sciantix_variable["Burnup"].getFinalValue() + 3.0e+23; // (at/m3 burnup)

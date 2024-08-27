@@ -18,100 +18,96 @@
 
 void Simulation::GrainBoundarySweeping()
 {
-	Model model_;
+    if (!input_variable["iGrainBoundarySweeping"].getValue()) return;
 
-	model_.setName("Grain-boundary sweeping");
+    // Model declaration
+    Model model_;
 
-	switch (int(input_variable["iGrainBoundarySweeping"].getValue()))
-	{
-	case 0:
-	{
-		std::vector<double> parameter;
-		parameter.push_back(0.0);
-		model_.setParameter(parameter);
-		model_.setRef(": Not considered");
+    model_.setName("Grain-boundary sweeping");
 
-		break;
-	}
-
-	case 1:
-	{
-		/**
-		 * @brief iGrainBoundarySweeping = 1 considers the fraction of grain swept volume (dV/V = 3 dr / r).
-		 * Then, the fraction of intra-granular gas concentration swept is dC / C = - 3 dr / r
-		 *
-		 */
-
-		std::vector<double> parameter;
-		/// @param[out] grain_sweeped_volume
-		parameter.push_back(3 * sciantix_variable["Grain radius"].getIncrement() / sciantix_variable["Grain radius"].getFinalValue());
-		model_.setParameter(parameter);
-		model_.setRef(": TRANSURANUS model");
-
-		break;
-	}
-
-	default:
-		ErrorMessages::Switch(__FILE__, "iGrainBoundarySweeping", int(input_variable["iGrainBoundarySweeping"].getValue()));
-		break;
-	}
-
-	model.push(model_);
-
-
-
-
-
-    // dC / df = - C
-
-    if (!input_variable["iGrainBoundarySweeping"].getValue())
-        return;
-
-    // intra-granular gas diffusion modes
-    switch (int(input_variable["iDiffusionSolver"].getValue()))
+    switch (int(input_variable["iGrainBoundarySweeping"].getValue()))
     {
-    case 1:
-    {
-        for (int i = 0; i < n_modes; ++i)
+        case 0:
         {
-            modes_initial_conditions[6 * 40 + i] =
-                solver.Decay(
-                    modes_initial_conditions[6 * 40 + i],
-                    1.0,
-                    0.0,
-                    model["Grain-boundary sweeping"].getParameter().at(0));
+            std::vector<double> parameter;
+            parameter.push_back(0.0);
+            model_.setParameter(parameter);
+            model_.setRef(": Not considered");
+
+            break;
         }
 
-        break;
-    }
-
-    case 2:
-    {
-        for (int i = 0; i < n_modes; ++i)
+        case 1:
         {
-            modes_initial_conditions[7 * 40 + i] =
-                solver.Decay(
-                    modes_initial_conditions[7 * 40 + i],
-                    1.0,
-                    0.0,
-                    model["Grain-boundary sweeping"].getParameter().at(0));
+            /**
+             * @brief iGrainBoundarySweeping = 1 considers the fraction of grain swept volume (dV/V = 3 dr / r).
+             * Then the fraction of intra-granular gas concentration swept is dC / C = - 3 dr / r
+             *
+             */
 
-            modes_initial_conditions[8 * 40 + i] =
-                solver.Decay(
-                    modes_initial_conditions[8 * 40 + i],
-                    1.0,
-                    0.0,
-                    model["Grain-boundary sweeping"].getParameter().at(0));
+            std::vector<double> parameter;
+            /// @param[out] grain_sweeped_volume
+            parameter.push_back(3 * sciantix_variable["Grain radius"].getIncrement() / sciantix_variable["Grain radius"].getFinalValue());
+            model_.setParameter(parameter);
+            model_.setRef(": TRANSURANUS model");
+
+            break;
         }
-
-        break;
-    }
-
-    case 3:
-        break;
 
     default:
-        // ErrorMessages::Switch("Simulation.h", "iDiffusionSolver", int(input_variable["iDiffusionSolver"].getValue()));
+        ErrorMessages::Switch(__FILE__, "iGrainBoundarySweeping", int(input_variable["iGrainBoundarySweeping"].getValue()));
         break;
+    }
+
+    model.push(model_);
+
+    // Model resolution
+    // dC / df = - C
+    switch (int(input_variable["iDiffusionSolver"].getValue()))
+    {
+        case 1:
+        {
+            for (int i = 0; i < n_modes; ++i)
+            {
+                modes_initial_conditions[6 * 40 + i] =
+                    solver.Decay(
+                        modes_initial_conditions[6 * 40 + i],
+                        1.0,
+                        0.0,
+                        model["Grain-boundary sweeping"].getParameter().at(0)
+                    );
+            }
+            break;
+        }
+
+        case 2:
+        {
+            for (int i = 0; i < n_modes; ++i)
+            {
+                modes_initial_conditions[7 * 40 + i] =
+                    solver.Decay(
+                        modes_initial_conditions[7 * 40 + i],
+                        1.0,
+                        0.0,
+                        model["Grain-boundary sweeping"].getParameter().at(0)
+                    );
+
+                modes_initial_conditions[8 * 40 + i] =
+                    solver.Decay(
+                        modes_initial_conditions[8 * 40 + i],
+                        1.0,
+                        0.0,
+                        model["Grain-boundary sweeping"].getParameter().at(0)
+                    );
+            }
+            break;
+        }
+
+        case 3:
+            break;
+
+        default:
+            ErrorMessages::Switch(__FILE__, "iDiffusionSolver", int(input_variable["iDiffusionSolver"].getValue()));
+            break;
     }
 }
