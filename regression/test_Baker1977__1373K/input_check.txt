@@ -5,7 +5,7 @@ iIntraGranularBubbleEvolution = 1
 iResolutionRate = 1
 iTrappingRate = 1
 iNucleationRate = 1
-iOutput = 2
+iOutput = 1
 iGrainBoundaryVacancyDiffusivity = 1
 iGrainBoundaryBehaviour = 1
 iGrainBoundaryMicroCracking = 1
@@ -65,5 +65,14 @@ Initial composition Kr85m4 = 0
 Initial composition Kr85m5 = 0
 Initial composition Kr85m6 = 0
 Initial stoichiometry deviation[0] = 0
-0	673	1e+19	0	
-5500	673	1e+19	0	
+0	1373	1e+19	0	
+5500	1373	1e+19	0	
+sf_resolution_rate = 1
+sf_trapping_rate = 1
+sf_nucleation_rate = 1
+sf_diffusivity = 1
+sf_temperature = 1
+sf_fission_rate = 1
+sf_cent_parameter = 1
+sf_helium_production_rate = 1
+sf_dummy = 1

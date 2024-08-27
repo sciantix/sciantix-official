@@ -597,7 +597,7 @@ class Simulation : public Solver, public Model
 		);
 
 		// 100000 > PI > 1E-30 and Pcs < 100000 - Pi
-		if (sciantix_variable[sv["I partial pressure"]].getFinalValue() < 10000 && sciantix_variable[sv["Cs partial pressure"]].getFinalValue() < sciantix_variable[sv["I partial pressure"]].getFinalValue())
+		if (sciantix_variable[sv["I partial pressure"]].getFinalValue() < 10000 && sciantix_variable[sv["Cs partial pressure"]].getFinalValue() < 10000 - sciantix_variable[sv["I partial pressure"]].getFinalValue())
 		{
 			sciantix_variable[sv["CsI produced"]].setFinalValue(
 				sciantix_variable[sv["I at grain boundary"]].getFinalValue() + sciantix_variable[sv["Cs at grain boundary"]].getFinalValue()

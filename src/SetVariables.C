@@ -1115,7 +1115,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(at/m3)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[131]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[131]);
-	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setOutput(1);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1123,7 +1123,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(Pa)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[132]);
-	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setOutput(1);
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
@@ -1131,16 +1131,16 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setUOM("(Pa)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[133]);
-	sciantix_variable[sv_counter].setOutput(0);
+	sciantix_variable[sv_counter].setOutput(1);
 	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("CsI released");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[134]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[134]);
-	// sciantix_variable[sv_counter].setOutput(1);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("CsI released");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[134]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[134]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
 
 	// ------------------------------------------------------------------------------------------------
 	// HBS-related variables
