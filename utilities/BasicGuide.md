@@ -1,5 +1,7 @@
 # Basic guide
 
+We hope this guide helps simplify the process of committing new code and building SCIANTIX, while also ensuring consistency in the source code through our syntax guidelines. If you encounter any issues or have suggestions, please feel free to contact the developers.
+
 ## Instructions for committing new code through a pull request
 
 Follow these steps to commit new code to the SCIANTIX repository:
@@ -169,5 +171,3 @@ To maintain consistency in the Sciantix codebase, please adhere to the following
 Thank you for adhering to these guidelines!
 
 ---
-
-We hope this guide helps simplify the process of committing new code and building SCIANTIX on macOS, while also ensuring consistency in the source code through our syntax guidelines. If you encounter any issues or have suggestions, please feel free to contact the developers.
