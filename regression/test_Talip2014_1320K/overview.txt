@@ -1,7 +1,5 @@
 Model	Burnup	: The local burnup is calculated from the fission rate density.
 Model	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
-Model	High-burnup structure formation	: not considered.
-Model	High-burnup structure porosity	not considered
 Model	Grain growth	Van Uffelen et al. JNM, 434 (2013) 287–29.
 Model	Grain-boundary sweeping	: TRANSURANUS model
 Model	Gas production - Xe in UO2	 
@@ -15,11 +13,10 @@ Model	Gas diffusion - Kr in UO2
 Model	Gas diffusion - He in UO2	
 Model	Gas diffusion - Xe133 in UO2	
 Model	Gas diffusion - Kr85m in UO2	
-Model	Grain-boundary venting	not considered.
 Model	Intergranular bubble behavior	: No model for grain-boundary bubble evolution.
 
 Matrix	UO2	
-	: Van Uffelen et al. JNM, 434 (2013) 287-29.
+	Van Uffelen et al. JNM, 434 (2013) 287-29.
 	iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.
 	
 
