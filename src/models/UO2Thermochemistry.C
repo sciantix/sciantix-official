@@ -18,15 +18,15 @@
 
 void Simulation::UO2Thermochemistry()
 {
-    if (!input_variable["iStoichiometryDeviation"].getValue())
-        return;
+    if (!input_variable["iStoichiometryDeviation"].getValue()) return;
 
+    // Model declaration
     Model model_;
 
     model_.setName("UO2 thermochemistry");
 
     std::string reference;
-    reference = "Blackburn (1973) J. Nucl. Mater., 46, 244-252.";
+    reference = " : Blackburn (1973) J. Nucl. Mater., 46, 244-252.";
 
     std::vector<double> parameter;
 
@@ -39,14 +39,14 @@ void Simulation::UO2Thermochemistry()
 
     model.push(model_);
 
-    if (!input_variable["iStoichiometryDeviation"].getValue())
-        return;
-
+    // Model resolution
     if (history_variable["Temperature"].getFinalValue() < 1000.0 || sciantix_variable["Gap oxygen partial pressure"].getFinalValue() == 0)
         sciantix_variable["Equilibrium stoichiometry deviation"].setFinalValue(0.0);
 
     else
         sciantix_variable["Equilibrium stoichiometry deviation"].setFinalValue(
             solver.NewtonBlackburn(
-                model["UO2 thermochemistry"].getParameter()));
+                model["UO2 thermochemistry"].getParameter()
+            )
+        );
 }

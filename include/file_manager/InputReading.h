@@ -35,18 +35,18 @@
  * 
  */
 void InputReading(
-	int Sciantix_options[], 
-	double Sciantix_variables[], 
-	double Sciantix_scaling_factors[],
-	int &Input_history_points,
-	std::vector<double> &Time_input, 
-	std::vector<double> &Temperature_input,
-	std::vector<double> &Fissionrate_input,
-	std::vector<double> &Hydrostaticstress_input,
-	std::vector<double> &Steampressure_input,
-	double &Time_end_h,
-	double &Time_end_s
-	);
+    int Sciantix_options[], 
+    double Sciantix_variables[], 
+    double Sciantix_scaling_factors[],
+    int &Input_history_points,
+    std::vector<double> &Time_input, 
+    std::vector<double> &Temperature_input,
+    std::vector<double> &Fissionrate_input,
+    std::vector<double> &Hydrostaticstress_input,
+    std::vector<double> &Steampressure_input,
+    double &Time_end_h,
+    double &Time_end_s
+);
 
 void readSettings(std::ifstream &input, std::ofstream &output, int Sciantix_options[]);
 void readParameters(std::ifstream &input, std::ofstream &output, double Sciantix_Array[]);

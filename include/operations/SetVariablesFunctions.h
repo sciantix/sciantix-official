@@ -253,5 +253,4 @@ std::vector<std::string> getScalingFactorsNames()
     return names;
 }
 
-
 #endif

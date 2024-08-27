@@ -34,44 +34,44 @@ class InputVariable : virtual public Variable
 {
 public:
 
-	InputVariable(std::string name, int value)
-	{
-		this->name = name;
-		this->value = value;
-	}
+    InputVariable(std::string name, int value)
+    {
+        this->name = name;
+        this->value = value;
+    }
 
-	/**
-	 * @brief Sets the value of the input variable.
-	 *
-	 * @param v The new value to assign to the input variable.
-	 */
-	void setValue(double v)
-	{
-		value = v;
-	}
+    /**
+     * @brief Sets the value of the input variable.
+     *
+     * @param v The new value to assign to the input variable.
+     */
+    void setValue(double v)
+    {
+        value = v;
+    }
 
-	/**
-	 * @brief Retrieves the value of the input variable.
-	 *
-	 * @return The current value of the input variable.
-	 */
-	double getValue()
-	{
-		return value;
-	}
+    /**
+     * @brief Retrieves the value of the input variable.
+     *
+     * @return The current value of the input variable.
+     */
+    double getValue()
+    {
+        return value;
+    }
 
-	/**
-	 * @brief Constructor for InputVariable.
-	 */
-	InputVariable() {}
+    /**
+     * @brief Constructor
+     */
+    InputVariable() {}
 
-	/**
-	 * @brief Destructor for InputVariable.
-	 */
-	~InputVariable() {}
+    /**
+     * @brief Destructor
+     */
+    ~InputVariable() {}
 
 protected:
-	double value;
+    double value;
 };
 
 #endif //INPUT_VARIABLE_H
