@@ -1,6 +1,6 @@
 """
-@author (G. Zullo)
 This is a python script to write the SCIANTIX default input file "input_settings.txt".
+@author G. Zullo
 
 """
 
