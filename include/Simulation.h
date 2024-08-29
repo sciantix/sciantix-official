@@ -291,7 +291,7 @@ void GasInGapIntact() //this function computes the evolution of fission gas conc
 
 		//Xe133
 		sciantix_variable[sv["Xe133 released"]].setFinalValue(
-				sciantix_variable[sv["Xe133 gap"]].getFinalValue()*gas[ga["Xe133"]].getReleaseRateCoefficient()
+				sciantix_variable[sv["Xe133 gap"]].getFinalValue()*gas[ga["Xe133"]].getReleaseRateCoefficient()*sciantix_variable[sv["Gap volume"]].getFinalValue()/sciantix_variable[sv["Coolant volume"]].getFinalValue()
 		);
 		sciantix_variable[sv["Xe133 coolant"]].setFinalValue(
 			solver.Decay(
@@ -357,7 +357,7 @@ void GasInCoolant() //release rate = nu*N_gap [at/m3 s]
 					gas[ga["Xe133"]].getDecayRate(),
 					0.0, 
 					physics_variable[pv["Time step"]].getFinalValue()
-				)*sciantix_variable[sv["Gap volume"]].getFinalValue()/sciantix_variable[sv["Coolant volume"]].getFinalValue()
+				)
 		);
 		std::cout << "Xe133 coolant" << std::endl;
 		std::cout << sciantix_variable[sv["Xe133 coolant"]].getFinalValue() << std::endl;
@@ -369,7 +369,7 @@ void GasInCoolant() //release rate = nu*N_gap [at/m3 s]
 					gas[ga["Kr85m"]].getDecayRate(),
 					0.0, 
 					physics_variable[pv["Time step"]].getFinalValue()
-				)*sciantix_variable[sv["Gap volume"]].getFinalValue()/sciantix_variable[sv["Coolant volume"]].getFinalValue()
+				)
 		);
 	}
 

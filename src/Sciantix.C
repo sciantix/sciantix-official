@@ -30,8 +30,6 @@ void Sciantix(int Sciantix_options[],
 	
 	if (history_variable[hv["Time"]].getFinalValue()<history_variable[hv["Defect time"]].getFinalValue())
 	{
-		std::cout << "time1" << std::endl;
-		std::cout << history_variable[hv["Time"]].getFinalValue() << std::endl;
 
 		sciantix_simulation.GasInGapIntact();
 		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
@@ -54,10 +52,6 @@ void Sciantix(int Sciantix_options[],
 	{
 		sciantix_variable[sv["Gap pressure"]].setFinalValue(13.0);
 		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
-
-		std::cout << "pression partielle gaz" << std::endl;
-		std::cout << (sciantix_variable[sv["Gas in gap"]].getFinalValue()*PhysicsConstants::boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()*1e-06) << std::endl;
-		
 
 		sciantix_variable[sv["Water gap"]].setFinalValue((13.0-sciantix_variable[sv["Non condensable gases partial pressure"]].getFinalValue())*1e06/(PhysicsConstants::boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue()));
 		UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
@@ -129,13 +123,12 @@ void Sciantix(int Sciantix_options[],
 
 		if (sciantix_variable[sv["Non condensable gases partial pressure"]].getFinalValue()>(sciantix_variable[sv["Gap pressure"]].getFinalValue()-9.45)) //if the limit pressure is reached gas can be released
 		{
-			std::cout << "différence pression quand relache" << std::endl;
-			std::cout << (sciantix_variable[sv["Gap pressure"]].getFinalValue()-9.45) << std::endl;
 			sciantix_simulation.ReleaseRateCoefficient();
 			sciantix_simulation.GasInGapFailed();
 			UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
 			sciantix_simulation.GasInCoolantWhenRelease();
 			UpdateVariables(Sciantix_variables, Sciantix_diffusion_modes);
+			std::cout << "relache" << std::endl;
 		}
 		else // if not, gas accumulate in the gap and decay in the coolant
 		{

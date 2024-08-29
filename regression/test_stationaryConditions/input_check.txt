@@ -8,5 +8,5 @@ Initial conditions3 = 0
 Initial conditions4 = 6
 Initial conditions5 = 1.5e-05
 Initial conditions6 = 0
-0	600	0	2.9e+16	0	649	
-920	600	0	2.9e+16	0	0	
+0	600	2.9e+16	2.9e+16	0	649	
+920	600	2.9e+16	2.9e+16	0	0	
