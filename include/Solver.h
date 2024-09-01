@@ -276,6 +276,64 @@ public:
 		return y1;
 	}
 
+	double sphericalShellDiffusion (double inner_boundary_concentration, double simulation_timestep, double initial_condition, double diffusion_coefficient, int n_modes, double eigenvalues) {
+
+
+	//The following solver solves the Fourier's equation dc(r, t)/dt = -D*grad^2(c(r, t)) into a spherical shell with null flux at the outer interface
+	//and imposed concentration at the inner interface. The initial condition is f(r) = 0 at the beginning of the simulation and then is obtained step by step.
+	//The idea is to simulate the diffusion of the fission products into the spherical shells of the Triso fuel, and so the inner concentration is obtained as the gas released by the kernel.
+	//Since no data are available for the materials of which such shells are made of, no trapping and resolution are investigated. 
+	//The zero flux external condition aims at simulating a worst case scenario for what concern the mechanical stress due to the fission products pressure on the Triso shell.
+	//References regarding the shape of the solution can be found in "Diffusion of heat in solids" By Carlslaw and Jagger, 1946, Clarendon Press.
+
+	double inner_radius = 250e-6; //[m]
+	double outer_radius = 350e-6; //[m]
+	double spacestep = 1e-7 //[m]
+	double stabilization_time = 1000 //[s]
+	int space_points_number = (outer_radius - inner_radius)/spacestep + 1;
+	std::vector<double> radius_values(space_points_number);
+	std::vector<double> integral(space_points_number);
+	std::vector<double> solution(space_points_number);
+	std::vector<double> next_initial_condition(space_points_number);
+	std::vector<double> sin_term(n_modes);
+
+	for (i = 0; i < space_points_number; ++i){
+		radius_values[i] = inner_radius + spacestep*i;
+		solution[i] = inner_boundary_concentration;
+		next_initial_condition[i] = inner_boundary_concentration;
+	}
+
+    for (size_t mode_counter = 0; mode_counter < eigenvalues.size(); ++mode_counter) {
+        
+        for (int i = 0; i < n_modes; ++i) {
+            sin_term[i] = std::sin(eigenvalues[mode_counter] * (radius_values[i] - radius_values[0]));
+        }
+
+        double trapezoid_sum = 0.0;
+        for (int i = 1; i < space_points_number; ++i) {
+            trapezoid_sum += (spacestep / 2) * ((sin_term[i] * initial_condition[i] * radius_values[i]) +
+                                                (sin_term[i - 1] * initial_condition[i - 1] * radius_values[i - 1]));
+        }
+
+        integral[mode_counter] = trapezoid_sum;
+		for (int i = 0; i < space_points_number; ++i){
+			for(int j = 0; j < n_modes; ++j){
+				solution[i] += (2*inner_boundary_concentration*inner_boundary_concentration/radius_values[i]*(1 + pow(outer_radius*eigenvalues[j], 2))/((outer_radius - inner_radius)*(1 + pow(outer_radius*eigenvalues[j], 2)) - outer_radius)*
+							   sin(eigenvalues(j)*(inner_radius - radius_values[i])) + 2/radius_values[i]*(1 + pow(outer_radius*eigenvalues[j], 2))/((outer_radius - inner_radius)*(1 + pow(outer_radius*eigenvalues[j], 2)) - outer_radius)*
+							   sin(eigenvalues(j)*(inner_radius - radius_values[i]))*integral[j])*exp(-diffusion_coefficient*pow(eigenvalues[j], 2)*stabilization_time);
+				initial_condition[i] += (2*inner_boundary_concentration*inner_boundary_concentration/radius_values[i]*(1 + pow(outer_radius*eigenvalues[j], 2))/((outer_radius - inner_radius)*(1 + pow(outer_radius*eigenvalues[j], 2)) - outer_radius)*
+							   sin(eigenvalues(j)*(inner_radius - radius_values[i])) + 2/radius_values[i]*(1 + pow(outer_radius*eigenvalues[j], 2))/((outer_radius - inner_radius)*(1 + pow(outer_radius*eigenvalues[j], 2)) - outer_radius)*
+							   sin(eigenvalues(j)*(inner_radius - radius_values[i]))*integral[j])*exp(-diffusion_coefficient*pow(eigenvalues[j], 2)*simulation_timestep);
+			}
+		}
+    }
+
+	return solution, initial_condition;
+
+}
+
+	}
+
 	void modeInitialization(int n_modes, double mode_initial_condition, double* diffusion_modes)
 	{
 		const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;

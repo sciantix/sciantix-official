@@ -17,16 +17,13 @@
 #include "MatrixDeclaration.h"
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
-#include "MapMatrix.h"
-#include "SetVariables.h"
-#include "UO2.h"
-#include "UO2HBS.h"
-#include "MOX.h"
+#include "HistoryVariableDeclaration.h"
+#include "MapHistoryVariable.h"
+#include "ModelDeclaration.h"
+#include "SystemDeclaration.h"
+#include "MapSystem.h"
+#include "MapModel.h"
+#include "SciantixScalingFactorDeclaration.h"
 #include <cmath>
-#include <string>
-#include "GasDeclaration.h"
-#include "MapGas.h"
 
-void SetMatrix();
-
-
+void SiC();
