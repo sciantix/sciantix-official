@@ -248,6 +248,9 @@ class Simulation : public Solver, public Model
 				}
 			}
 		}
+
+		//if il modello del triso è attivo
+		//richiamare la funzione associata e popolare delle variabili deidcate.
 	}
 
 	void GrainGrowth()
