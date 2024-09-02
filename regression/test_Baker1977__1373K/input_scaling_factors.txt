@@ -1,0 +1,16 @@
+1.0
+# scaling factor - resolution rate
+1.0
+# scaling factor - trapping rate
+1.0
+# scaling factor - nucleation rate
+1.0
+# scaling factor - diffusivity
+1.0
+# scaling factor - temperature
+1.0
+# scaling factor - fission rate
+1.0
+# scaling factor - cent parameter
+1.0
+# scaling factor - helium production rate
