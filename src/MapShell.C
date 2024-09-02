@@ -14,17 +14,14 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "MatrixDeclaration.h"
-#include "ShellDeclaration.h"
-#include "SciantixVariableDeclaration.h"
-#include "MapSciantixVariable.h"
-#include "HistoryVariableDeclaration.h"
-#include "MapHistoryVariable.h"
-#include "ModelDeclaration.h"
-#include "SystemDeclaration.h"
-#include "MapSystem.h"
-#include "MapModel.h"
-#include "SciantixScalingFactorDeclaration.h"
-#include <cmath>
+#include "MapShell.h"
 
-void SiC();
+/// MapModel
+
+std::map<std::string, int> sma;
+
+void MapShell()
+{
+	for (std::vector<Shell>::size_type i = 0; i != shell.size(); ++i)
+		sma[shell[i].getName()] = i;
+}

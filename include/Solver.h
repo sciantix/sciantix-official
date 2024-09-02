@@ -276,7 +276,7 @@ public:
 		return y1;
 	}
 
-	double sphericalShellDiffusion (double inner_boundary_concentration, double simulation_timestep, double initial_condition, double diffusion_coefficient, int n_modes, double eigenvalues) {
+	void sphericalShellDiffusion (const double& inner_boundary_concentration, const double& simulation_timestep, const double& initial_condition, const double& diffusion_coefficient, const double& eigenvalues, std::vector<double>& solution(space_points_number), std::vector<double>& next_initial_condition(space_points_number), double& mean_volumetric_concentration = inner_boundary_concentration) {
 
 
 	//The following solver solves the Fourier's equation dc(r, t)/dt = -D*grad^2(c(r, t)) into a spherical shell with null flux at the outer interface
@@ -288,14 +288,12 @@ public:
 
 	double inner_radius = 250e-6; //[m]
 	double outer_radius = 350e-6; //[m]
-	double spacestep = 1e-7 //[m]
-	double stabilization_time = 1000 //[s]
+	double spacestep = 1e-7; //[m]
+	double stabilization_time = 1000; //[s]
 	int space_points_number = (outer_radius - inner_radius)/spacestep + 1;
 	std::vector<double> radius_values(space_points_number);
-	std::vector<double> integral(space_points_number);
-	std::vector<double> solution(space_points_number);
-	std::vector<double> next_initial_condition(space_points_number);
-	std::vector<double> sin_term(n_modes);
+	std::vector<double> next_initial_condition(space_points_number, inner_boundary_concentration);
+
 
 	for (i = 0; i < space_points_number; ++i){
 		radius_values[i] = inner_radius + spacestep*i;
@@ -304,35 +302,36 @@ public:
 	}
 
     for (size_t mode_counter = 0; mode_counter < eigenvalues.size(); ++mode_counter) {
-        
-        for (int i = 0; i < n_modes; ++i) {
-            sin_term[i] = std::sin(eigenvalues[mode_counter] * (radius_values[i] - radius_values[0]));
-        }
+		
+		double eigenvalue = eigenvalues[mode_counter];
+		double eigenvalue_squared = eigenvalue * eigenvalue;
+		double solution_exponential_term = exp(-diffusion_coefficient*eigenvalue_squared*stabilization_time);
+		double next_initial_condition_exponential_term = exp(-diffusion_coefficient*eigenvalue_squared*simulation_timestep);
 
-        double trapezoid_sum = 0.0;
+        double integral = 0.0;
+
         for (int i = 1; i < space_points_number; ++i) {
-            trapezoid_sum += (spacestep / 2) * ((sin_term[i] * initial_condition[i] * radius_values[i]) +
-                                                (sin_term[i - 1] * initial_condition[i - 1] * radius_values[i - 1]));
+
+            integral += (spacestep / 2) * ((std::sin(eigenvalues[mode_counter] * (radius_values[i] - radius_values[0])) * initial_condition[i] * radius_values[i]) +
+                                                (std::sin(eigenvalues[mode_counter] * (radius_values[i - 1] - radius_values[0])) * initial_condition[i - 1] * radius_values[i - 1]));
+
         }
 
-        integral[mode_counter] = trapezoid_sum;
+		double multiplying_factor = (1 + pow(outer_radius * eigenvalue, 2)) / ((outer_radius - inner_radius) * (1 + pow(outer_radius * eigenvalue, 2)) - outer_radius);
+
 		for (int i = 0; i < space_points_number; ++i){
-			for(int j = 0; j < n_modes; ++j){
-				solution[i] += (2*inner_boundary_concentration*inner_boundary_concentration/radius_values[i]*(1 + pow(outer_radius*eigenvalues[j], 2))/((outer_radius - inner_radius)*(1 + pow(outer_radius*eigenvalues[j], 2)) - outer_radius)*
-							   sin(eigenvalues(j)*(inner_radius - radius_values[i])) + 2/radius_values[i]*(1 + pow(outer_radius*eigenvalues[j], 2))/((outer_radius - inner_radius)*(1 + pow(outer_radius*eigenvalues[j], 2)) - outer_radius)*
-							   sin(eigenvalues(j)*(inner_radius - radius_values[i]))*integral[j])*exp(-diffusion_coefficient*pow(eigenvalues[j], 2)*stabilization_time);
-				initial_condition[i] += (2*inner_boundary_concentration*inner_boundary_concentration/radius_values[i]*(1 + pow(outer_radius*eigenvalues[j], 2))/((outer_radius - inner_radius)*(1 + pow(outer_radius*eigenvalues[j], 2)) - outer_radius)*
-							   sin(eigenvalues(j)*(inner_radius - radius_values[i])) + 2/radius_values[i]*(1 + pow(outer_radius*eigenvalues[j], 2))/((outer_radius - inner_radius)*(1 + pow(outer_radius*eigenvalues[j], 2)) - outer_radius)*
-							   sin(eigenvalues(j)*(inner_radius - radius_values[i]))*integral[j])*exp(-diffusion_coefficient*pow(eigenvalues[j], 2)*simulation_timestep);
+
+			solution[i] += 2/radius_values[i]*solution_exponential_term*std::sin(eigenvalue*(radius_values[i] - inner_radius))*multiplying_factor*(integral - inner_boundary_concentration*inner_radius/eigenvalue);
+
+			initial_condition[i] += 2/radius_values[i]*next_initial_condition_exponential_term*std::sin(eigenvalue*(radius_values[i] - inner_radius))*multiplying_factor*(integral - inner_boundary_concentration*inner_radius/eigenvalue);
+
+			mean_volumetric_concentration += 6*inner_boundary_concentration/((pow(outer_radius, 3) - pow(inner_radius, 3))*eigenvalue)*solution_exponential_term*multiplying_factor*(integral - inner_boundary_concentration*inner_radius/eigenvalues[mode_counter]);
+
 			}
+
 		}
+
     }
-
-	return solution, initial_condition;
-
-}
-
-	}
 
 	void modeInitialization(int n_modes, double mode_initial_condition, double* diffusion_modes)
 	{

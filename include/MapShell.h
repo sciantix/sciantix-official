@@ -14,17 +14,15 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "MatrixDeclaration.h"
-#include "ShellDeclaration.h"
-#include "SciantixVariableDeclaration.h"
-#include "MapSciantixVariable.h"
-#include "HistoryVariableDeclaration.h"
-#include "MapHistoryVariable.h"
-#include "ModelDeclaration.h"
-#include "SystemDeclaration.h"
-#include "MapSystem.h"
-#include "MapModel.h"
-#include "SciantixScalingFactorDeclaration.h"
-#include <cmath>
+#ifndef MAP_SHELL_H
+#define MAP_SHELL_H
 
-void SiC();
+#include <map>
+#include <string>
+#include "ShellDeclaration.h"
+
+extern std::map<std::string, int> sma;
+
+void MapShell();
+
+#endif // MAP_SHELL_H

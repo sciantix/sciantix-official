@@ -30,7 +30,7 @@ void GasDiffusion()
 		default:
 			errorHandling();
 			break;
-	}
+	
 }
 
 void defineSpectralDiffusion1Equation()

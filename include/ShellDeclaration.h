@@ -14,17 +14,12 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "MatrixDeclaration.h"
-#include "ShellDeclaration.h"
-#include "SciantixVariableDeclaration.h"
-#include "MapSciantixVariable.h"
-#include "HistoryVariableDeclaration.h"
-#include "MapHistoryVariable.h"
-#include "ModelDeclaration.h"
-#include "SystemDeclaration.h"
-#include "MapSystem.h"
-#include "MapModel.h"
-#include "SciantixScalingFactorDeclaration.h"
-#include <cmath>
+#ifndef SHELL_DECLARATION_H
+#define SHELL_DECLARATION_H
 
-void SiC();
+#include <vector>
+#include "Shell.h"
+
+extern std::vector<Shell> shell;
+
+#endif // SHELL_DECLARATION_H
