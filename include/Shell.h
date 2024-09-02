@@ -14,17 +14,48 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "MatrixDeclaration.h"
-#include "ShellDeclaration.h"
-#include "SciantixVariableDeclaration.h"
-#include "MapSciantixVariable.h"
-#include "HistoryVariableDeclaration.h"
-#include "MapHistoryVariable.h"
-#include "ModelDeclaration.h"
-#include "SystemDeclaration.h"
-#include "MapSystem.h"
-#include "MapModel.h"
-#include "SciantixScalingFactorDeclaration.h"
-#include <cmath>
+#ifndef SHELL_H
+#define SHELL_H
 
-void SiC();
+#include "Matrix.h"
+#include <string>
+
+/// Class for Triso shells derived from the Matrix class
+class Shell : public Matrix
+{
+protected:
+
+	double inner_radius;
+	double outer_radius;
+
+public:
+
+	void setInnerRadius(double innerRadius){
+
+		inner_radius = innerRadius;
+
+	}
+
+	double getInnerRadius() const{
+
+		return inner_radius;
+
+	}
+
+	void setOuterRadius(double outerRadius){
+
+		outer_radius = outerRadius;
+
+	}
+
+	double getOuterRadius() const{
+
+		return outer_radius;
+
+	}
+	
+	Shell() { }
+	~Shell() { }
+};
+
+#endif // SHELL_H

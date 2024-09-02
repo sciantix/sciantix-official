@@ -30,6 +30,14 @@ void Sciantix(int Sciantix_options[],
 
 	SetSystem();
 
+	if (int(input_variable[iv["iTriso"]].getValue()) == 1){
+
+		SetShell();
+
+		SetSystemShell();
+
+	}
+
 	Simulation sciantix_simulation;
 
 	Burnup();
