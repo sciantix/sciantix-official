@@ -249,8 +249,25 @@ class Simulation : public Solver, public Model
 			}
 		}
 
-		//if il modello del triso è attivo
-		//richiamare la funzione associata e popolare delle variabili deidcate.
+		if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() != 0)
+		{
+
+			// for (auto& system : shell_system, auto& system2 : sciantix_system)
+			// {
+			// 	sciantix_variable[sv[system.getGasName() + " in Triso shell"]].setInitialValue(0.0);
+			// 	sciantix_variable[sv[system.getGasName() + " in Triso shell"]].setInitialValue(0.0);
+			// 	sciantix_variable[sv[system.getGasName() + " in Triso shell"]].setInitialValue(0.0);
+			// 	sciantix_variable[sv[system.getGasName() + " in Triso shell"]].setInitialValue(0.0);
+			// 	sciantix_variable[sv[system.getGasName() + " in Triso shell"]].setInitialValue(0.0);
+			// 	sciantix_variable[sv[system.getGasName() + " in Triso shell"]].setInitialValue(0.0);
+			// 	sciantix_variable[sv[system.getGasName() + " in Triso shell"]].setInitialValue(0.0);
+				
+			// }
+
+
+		}
+
+		
 	}
 
 	void GrainGrowth()

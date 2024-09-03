@@ -17,9 +17,9 @@
 #ifndef XE_IN_SIC_H
 #define XE_IN_SIC_H
 
-#include "SystemDeclaration.h"
-#include "MatrixDeclaration.h"
-#include "MapMatrix.h"
+#include "SystemShellDeclaration.h"
+#include "ShellDeclaration.h"
+#include "MapShell.h"
 #include "SciantixScalingFactorDeclaration.h"
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"

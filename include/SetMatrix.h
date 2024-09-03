@@ -22,6 +22,7 @@
 #include "UO2.h"
 #include "UO2HBS.h"
 #include "MOX.h"
+#include "SiC.h"
 #include <cmath>
 #include <string>
 #include "GasDeclaration.h"

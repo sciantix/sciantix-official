@@ -31,6 +31,8 @@ void GasDiffusion()
 			errorHandling();
 			break;
 	
+	}
+	
 }
 
 void defineSpectralDiffusion1Equation()

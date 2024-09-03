@@ -17,15 +17,15 @@
 #include "SiC.h"
 
 
-template <typename T, typename V>
-void SiC(V& container)
+template <typename T>
+void SiC(T& container)
 {
     container.emplace_back();
-    T& obj = container.back(); 
+    int index = static_cast<int>(container.size()) - 1; 
 
-    obj.setName("SiC");
-    obj.setRef("\n\t");
-    obj.setDensity(3160); // (kg/m3)
+    container[index].setName("SiC");
+    container[index].setRef("\n\t");
+    container[index].setDensity(3160); // (kg/m3)
     // obj.setGrainBoundaryMobility(int(input_variable[iv["iGrainGrowth"]].getValue()));
     // obj.setSurfaceTension(0.626); // 
     // obj.setFFinfluenceRadius(1.0e-9); // (m)

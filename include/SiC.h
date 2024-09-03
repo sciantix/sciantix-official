@@ -27,4 +27,5 @@
 #include "SciantixScalingFactorDeclaration.h"
 #include <cmath>
 
-void SiC();
+template <typename T>
+void SiC(T& container);

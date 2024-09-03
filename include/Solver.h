@@ -276,7 +276,15 @@ public:
 		return y1;
 	}
 
-	void sphericalShellDiffusion (const double& inner_boundary_concentration, const double& simulation_timestep, const double& initial_condition, const double& diffusion_coefficient, const double& eigenvalues, std::vector<double>& solution(space_points_number), std::vector<double>& next_initial_condition(space_points_number), double& mean_volumetric_concentration = inner_boundary_concentration) {
+	void sphericalShellDiffusion (
+    const double& inner_boundary_concentration, 
+    const double& simulation_timestep,  
+    const double& diffusion_coefficient, 
+    const std::vector<double>& eigenvalues, 
+    std::vector<double>& solution, 
+	const std::vector<double>& initial_condition,
+    std::vector<double>& next_initial_condition, 
+    double& mean_volumetric_concentration)  {
 
 
 	//The following solver solves the Fourier's equation dc(r, t)/dt = -D*grad^2(c(r, t)) into a spherical shell with null flux at the outer interface
@@ -292,13 +300,10 @@ public:
 	double stabilization_time = 1000; //[s]
 	int space_points_number = (outer_radius - inner_radius)/spacestep + 1;
 	std::vector<double> radius_values(space_points_number);
-	std::vector<double> next_initial_condition(space_points_number, inner_boundary_concentration);
+	mean_volumetric_concentration = inner_boundary_concentration;
 
-
-	for (i = 0; i < space_points_number; ++i){
+	for (int i = 0; i < space_points_number; ++i){
 		radius_values[i] = inner_radius + spacestep*i;
-		solution[i] = inner_boundary_concentration;
-		next_initial_condition[i] = inner_boundary_concentration;
 	}
 
     for (size_t mode_counter = 0; mode_counter < eigenvalues.size(); ++mode_counter) {
@@ -312,10 +317,12 @@ public:
 
         for (int i = 1; i < space_points_number; ++i) {
 
-            integral += (spacestep / 2) * ((std::sin(eigenvalues[mode_counter] * (radius_values[i] - radius_values[0])) * initial_condition[i] * radius_values[i]) +
-                                                (std::sin(eigenvalues[mode_counter] * (radius_values[i - 1] - radius_values[0])) * initial_condition[i - 1] * radius_values[i - 1]));
+            integral += (spacestep / 2) * ((std::sin(eigenvalue * (radius_values[i] - radius_values[0])) * initial_condition[i] * radius_values[i]) +
+                                                (std::sin(eigenvalue * (radius_values[i - 1] - radius_values[0])) * initial_condition[i - 1] * radius_values[i - 1]));
 
         }
+
+
 
 		double multiplying_factor = (1 + pow(outer_radius * eigenvalue, 2)) / ((outer_radius - inner_radius) * (1 + pow(outer_radius * eigenvalue, 2)) - outer_radius);
 
@@ -323,7 +330,7 @@ public:
 
 			solution[i] += 2/radius_values[i]*solution_exponential_term*std::sin(eigenvalue*(radius_values[i] - inner_radius))*multiplying_factor*(integral - inner_boundary_concentration*inner_radius/eigenvalue);
 
-			initial_condition[i] += 2/radius_values[i]*next_initial_condition_exponential_term*std::sin(eigenvalue*(radius_values[i] - inner_radius))*multiplying_factor*(integral - inner_boundary_concentration*inner_radius/eigenvalue);
+			next_initial_condition[i] += 2/radius_values[i]*next_initial_condition_exponential_term*std::sin(eigenvalue*(radius_values[i] - inner_radius))*multiplying_factor*(integral - inner_boundary_concentration*inner_radius/eigenvalue);
 
 			mean_volumetric_concentration += 6*inner_boundary_concentration/((pow(outer_radius, 3) - pow(inner_radius, 3))*eigenvalue)*solution_exponential_term*multiplying_factor*(integral - inner_boundary_concentration*inner_radius/eigenvalues[mode_counter]);
 

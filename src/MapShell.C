@@ -18,10 +18,10 @@
 
 /// MapModel
 
-std::map<std::string, int> sma;
+std::map<std::string, int> she;
 
 void MapShell()
 {
 	for (std::vector<Shell>::size_type i = 0; i != shell.size(); ++i)
-		sma[shell[i].getName()] = i;
+		she[shell[i].getName()] = i;
 }
