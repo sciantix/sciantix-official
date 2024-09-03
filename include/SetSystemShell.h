@@ -16,8 +16,8 @@
 
 /// SetSystem
 
-#include "MapSystem.h"
-#include "SystemDeclaration.h"
+#include "MapSystemShell.h"
+#include "SystemShellDeclaration.h"
 #include "MapPhysicsVariable.h"
 #include "PhysicsVariableDeclaration.h"
 #include "GasDeclaration.h"

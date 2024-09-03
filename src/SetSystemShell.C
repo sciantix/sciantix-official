@@ -21,23 +21,22 @@
 void SetSystemShell()
 {
 			Xe_in_SiC();
-			MapSystem();
+			MapSystemShell();
 
 			Kr_in_SiC();
-			MapSystem();
+			MapSystemShell();
 
 			He_in_SiC();
-			MapSystem();
+			MapSystemShell();
 }
 
-void System::setFissionGasDiffusivity(int input_value)
+void SystemShell::setFissionGasDiffusivity(int input_value)
 {
 	/** 
 	 * ### setFissionGasDiffusivity
 	 * @brief The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFGDiffusionCoefficient
 	 * 
 	 */
-	const double boltzmann_constant = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
 
 	switch (input_value)
 	{
@@ -68,7 +67,7 @@ void System::setFissionGasDiffusivity(int input_value)
 	}
 }
 
-void System::setHeliumDiffusivity(int input_value)
+void SystemShell::setHeliumDiffusivity(int input_value)
 {
 
 	/** 

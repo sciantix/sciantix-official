@@ -14,23 +14,18 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "Kr_in_SiC.h"
+#include "ShellDeclaration.h"
+#include "SciantixVariableDeclaration.h"
+#include "MapSciantixVariable.h"
+#include "MapShell.h"
+#include "SetVariables.h"
+#include "UO2.h"
+#include "UO2HBS.h"
+#include "MOX.h"
+#include "SiC.h"
+#include <cmath>
+#include <string>
+#include "GasDeclaration.h"
+#include "MapGas.h"
 
-void Kr_in_SiC()
-{
-	// Error handling
-	if (shell_system.empty() || input_variable.empty() || she.find("SiC") == she.end())
-	{
-		std::cerr << "Error: Required components are not initialized in " << __FILE__  << std::endl;
-		return;
-	}
-
-	shell_system.emplace_back();
-	int index = int(shell_system.size() - 1);
-
-	shell_system[index].setName("Kr in SiC");
-	shell_system[index].setGasName("Kr");
-	shell_system[index].setMatrixName("SiC");
-	shell_system[index].setFissionGasDiffusivity(int(input_variable[iv["iFGDiffusionCoefficient"]].getValue()));
-
-}
+void SetShell();

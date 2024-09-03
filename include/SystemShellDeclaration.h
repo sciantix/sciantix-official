@@ -14,23 +14,13 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "Kr_in_SiC.h"
+#ifndef SYSTEMSHELL_DECLARATION_H
+#define SYSTEMSHELL_DECLARATION_H
 
-void Kr_in_SiC()
-{
-	// Error handling
-	if (shell_system.empty() || input_variable.empty() || she.find("SiC") == she.end())
-	{
-		std::cerr << "Error: Required components are not initialized in " << __FILE__  << std::endl;
-		return;
-	}
+#include <vector>
+#include "ConstantNumbers.h"
+#include "SystemShell.h"
 
-	shell_system.emplace_back();
-	int index = int(shell_system.size() - 1);
+extern std::vector<SystemShell> shell_system;
 
-	shell_system[index].setName("Kr in SiC");
-	shell_system[index].setGasName("Kr");
-	shell_system[index].setMatrixName("SiC");
-	shell_system[index].setFissionGasDiffusivity(int(input_variable[iv["iFGDiffusionCoefficient"]].getValue()));
-
-}
+#endif

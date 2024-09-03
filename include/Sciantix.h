@@ -24,6 +24,8 @@
 #include "SetModel.h"
 #include "SetMatrix.h"
 #include "SetSystem.h"
+#include "SetShell.h"
+#include "SetSystemShell.h"
 #include "UpdateVariables.h"
 #include "Output.h"
 #include "Simulation.h"

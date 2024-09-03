@@ -16,14 +16,14 @@
 
 #include "SetShell.h"
 
-void setShell()
+void SetShell()
 {
   /**
    * @brief This routine defines the available options for the triso and their properties.
    * 
    */
 
-	SiC<Shell>(shell);
+	SiC(shell);
 	MapShell();
 
 }

@@ -17,11 +17,11 @@
 #ifndef HE_IN_SIC_H
 #define HE_IN_SIC_H
 
-#include "SystemDeclaration.h"
-#include "MatrixDeclaration.h"
+#include "SystemShellDeclaration.h"
+#include "ShellDeclaration.h"
 #include "SciantixVariableDeclaration.h"
 #include "MapSciantixVariable.h"
-#include "MapMatrix.h"
+#include "MapShell.h"
 #include "SciantixScalingFactorDeclaration.h"
 
 /**

@@ -19,18 +19,18 @@
 void He_in_SiC()
 {
 	// Error handling
-	if (matrix.empty() || input_variable.empty() || sma.find("SiC") == sma.end())
+	if (shell_system.empty() || input_variable.empty() || she.find("SiC") == she.end())
 	{
 		std::cerr << "Error: Required components are not initialized in " << __FILE__  << std::endl;
 		return;
 	}
 
-	sciantix_system.emplace_back();
-	int index = int(sciantix_system.size()) - 1;
+	shell_system.emplace_back();
+	int index = int(shell_system.size()) - 1;
 
-	sciantix_system[index].setName("He in SiC");
-	sciantix_system[index].setGasName("He");
-	sciantix_system[index].setMatrixName("SiC");
-	sciantix_system[index].setHeliumDiffusivity(int(input_variable[iv["iHeDiffusivity"]].getValue()));
+	shell_system[index].setName("He in SiC");
+	shell_system[index].setGasName("He");
+	shell_system[index].setMatrixName("SiC");
+	shell_system[index].setHeliumDiffusivity(int(input_variable[iv["iHeDiffusivity"]].getValue()));
 
 }

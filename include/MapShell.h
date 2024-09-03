@@ -21,7 +21,7 @@
 #include <string>
 #include "ShellDeclaration.h"
 
-extern std::map<std::string, int> sma;
+extern std::map<std::string, int> she;
 
 void MapShell();
 
