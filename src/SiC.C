@@ -43,3 +43,6 @@ void SiC(T& container)
     // obj.setPoreTrappingRate();
     // obj.setLatticeParameter(4.3596); // [A] 
 }
+
+template void SiC<std::vector<Shell>>(std::vector<Shell>&);
+template void SiC<std::vector<Matrix>>(std::vector<Matrix>&);

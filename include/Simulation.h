@@ -252,17 +252,13 @@ class Simulation : public Solver, public Model
 		if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() != 0)
 		{
 
-			// for (auto& system : shell_system, auto& system2 : sciantix_system)
-			// {
-			// 	sciantix_variable[sv[system.getGasName() + " in Triso shell"]].setInitialValue(0.0);
-			// 	sciantix_variable[sv[system.getGasName() + " in Triso shell"]].setInitialValue(0.0);
-			// 	sciantix_variable[sv[system.getGasName() + " in Triso shell"]].setInitialValue(0.0);
-			// 	sciantix_variable[sv[system.getGasName() + " in Triso shell"]].setInitialValue(0.0);
-			// 	sciantix_variable[sv[system.getGasName() + " in Triso shell"]].setInitialValue(0.0);
-			// 	sciantix_variable[sv[system.getGasName() + " in Triso shell"]].setInitialValue(0.0);
-			// 	sciantix_variable[sv[system.getGasName() + " in Triso shell"]].setInitialValue(0.0);
-				
-			// }
+			for (auto& system : shell_system)
+			{
+				double inner_boundary_concentration = sciantix_variable[sv[system.getGasName() + " released"]].getFinalValue();
+				sciantix_variable[sv[system.getGasName() + " in Triso"]].setFinalValue(
+					solver.sphericalShellDiffusion(inner_boundary_concentration, dTime_h, system.getFissionGasDiffusivity(), system.getModes(), system.getSpatialGrid())
+				)
+			}
 
 
 		}
