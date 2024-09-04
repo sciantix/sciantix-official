@@ -13,22 +13,8 @@
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
-
-#include "MatrixDeclaration.h"
 #include "ShellDeclaration.h"
-#include "Shell.h"
-#include "Matrix.h"
-#include "SciantixVariableDeclaration.h"
-#include "MapSciantixVariable.h"
-#include "HistoryVariableDeclaration.h"
-#include "MapHistoryVariable.h"
-#include "ModelDeclaration.h"
-#include "SystemDeclaration.h"
-#include "MapSystem.h"
-#include "MapSystemShell.h"
-#include "MapModel.h"
-#include "SciantixScalingFactorDeclaration.h"
-#include <cmath>
 
-template <typename T>
-void SiC(T& container);
+/// ShellDeclaration
+
+std::vector<Shell> shell;

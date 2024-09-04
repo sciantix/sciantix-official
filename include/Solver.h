@@ -27,6 +27,10 @@
 
 class Solver : public InputVariable
 {
+protected: 
+
+	std::vector <double> sphericalShellDiffusionIntegrals;
+
 public:
 
 	double Integrator(double initial_value, double parameter, double increment)
@@ -276,69 +280,59 @@ public:
 		return y1;
 	}
 
-	void sphericalShellDiffusion (
+	double sphericalShellDiffusion (
     const double& inner_boundary_concentration, 
     const double& simulation_timestep,  
     const double& diffusion_coefficient, 
-    const std::vector<double>& eigenvalues, 
-    std::vector<double>& solution, 
-	const std::vector<double>& initial_condition,
-    std::vector<double>& next_initial_condition, 
-    double& mean_volumetric_concentration)  {
+    const std::vector<double>& eigenvalues,
+	const double& inner_radius,
+	const double& outer_radius,
+	const double& space_step,
+    const std::vector<double>& spatial_grid)  {
 
 
-	//The following solver solves the Fourier's equation dc(r, t)/dt = -D*grad^2(c(r, t)) into a spherical shell with null flux at the outer interface
-	//and imposed concentration at the inner interface. The initial condition is f(r) = 0 at the beginning of the simulation and then is obtained step by step.
-	//The idea is to simulate the diffusion of the fission products into the spherical shells of the Triso fuel, and so the inner concentration is obtained as the gas released by the kernel.
-	//Since no data are available for the materials of which such shells are made of, no trapping and resolution are investigated. 
-	//The zero flux external condition aims at simulating a worst case scenario for what concern the mechanical stress due to the fission products pressure on the Triso shell.
-	//References regarding the shape of the solution can be found in "Diffusion of heat in solids" By Carlslaw and Jagger, 1946, Clarendon Press.
+		//The following solver solves the Fourier's equation dc(r, t)/dt = -D*grad^2(c(r, t)) into a spherical shell with null flux at the outer interface
+		//and imposed concentration at the inner interface. The initial condition is f(r) = 0 at the beginning of the simulation and then is obtained step by step.
+		//The idea is to simulate the diffusion of the fission products into the spherical shells of the Triso fuel, and so the inner concentration is obtained as the gas released by the kernel.
+		//Since no data are available for the materials of which such shells are made of, no trapping and resolution are investigated. 
+		//The zero flux external condition aims at simulating a worst case scenario for what concern the mechanical stress due to the fission products pressure on the Triso shell.
+		//References regarding the shape of the solution can be found in "Diffusion of heat in solids" By Carlslaw and Jagger, 1946, Clarendon Press.
 
-	double inner_radius = 250e-6; //[m]
-	double outer_radius = 350e-6; //[m]
-	double spacestep = 1e-7; //[m]
-	double stabilization_time = 1000; //[s]
-	int space_points_number = (outer_radius - inner_radius)/spacestep + 1;
-	std::vector<double> radius_values(space_points_number);
-	mean_volumetric_concentration = inner_boundary_concentration;
+		double stabilization_time = 1000; //[s]
+		int space_points_number = (outer_radius - inner_radius)/spacestep + 1;
+		double mean_volumetric_concentration = inner_boundary_concentration; //[at/m^3]
+		std::vector <double> next_initial_condition(spatial_grid.size(), inner_boundary_concentration);
 
-	for (int i = 0; i < space_points_number; ++i){
-		radius_values[i] = inner_radius + spacestep*i;
-	}
+		for (size_t mode_counter = 0; mode_counter < eigenvalues.size(); ++mode_counter) {
+			
+			double eigenvalue = eigenvalues[mode_counter];
+			double eigenvalue_squared = eigenvalue * eigenvalue;
+			double next_initial_condition_exponential_term = exp(-diffusion_coefficient*eigenvalue_squared*simulation_timestep);
+			double multiplying_factor = (1 + pow(outer_radius * eigenvalue, 2)) / ((outer_radius - inner_radius) * (1 + pow(outer_radius * eigenvalue, 2)) - outer_radius);
 
-    for (size_t mode_counter = 0; mode_counter < eigenvalues.size(); ++mode_counter) {
-		
-		double eigenvalue = eigenvalues[mode_counter];
-		double eigenvalue_squared = eigenvalue * eigenvalue;
-		double solution_exponential_term = exp(-diffusion_coefficient*eigenvalue_squared*stabilization_time);
-		double next_initial_condition_exponential_term = exp(-diffusion_coefficient*eigenvalue_squared*simulation_timestep);
+			for (size_t space_counter = 0; space_counter < spatial_grid.size(); ++space_counter){
 
-        double integral = 0.0;
+				next_initial_condition[i] += 2/radius_values[i]*next_initial_condition_exponential_term*std::sin(eigenvalue*(radius_values[i] - inner_radius))*multiplying_factor*(sphericalShellDiffusionIntegrals[mode_counter] - inner_boundary_concentration*inner_radius/eigenvalue);
 
-        for (int i = 1; i < space_points_number; ++i) {
-
-            integral += (spacestep / 2) * ((std::sin(eigenvalue * (radius_values[i] - radius_values[0])) * initial_condition[i] * radius_values[i]) +
-                                                (std::sin(eigenvalue * (radius_values[i - 1] - radius_values[0])) * initial_condition[i - 1] * radius_values[i - 1]));
-
-        }
-
-
-
-		double multiplying_factor = (1 + pow(outer_radius * eigenvalue, 2)) / ((outer_radius - inner_radius) * (1 + pow(outer_radius * eigenvalue, 2)) - outer_radius);
-
-		for (int i = 0; i < space_points_number; ++i){
-
-			solution[i] += 2/radius_values[i]*solution_exponential_term*std::sin(eigenvalue*(radius_values[i] - inner_radius))*multiplying_factor*(integral - inner_boundary_concentration*inner_radius/eigenvalue);
-
-			next_initial_condition[i] += 2/radius_values[i]*next_initial_condition_exponential_term*std::sin(eigenvalue*(radius_values[i] - inner_radius))*multiplying_factor*(integral - inner_boundary_concentration*inner_radius/eigenvalue);
-
-			mean_volumetric_concentration += 6*inner_boundary_concentration/((pow(outer_radius, 3) - pow(inner_radius, 3))*eigenvalue)*solution_exponential_term*multiplying_factor*(integral - inner_boundary_concentration*inner_radius/eigenvalues[mode_counter]);
+				mean_volumetric_concentration += 6*inner_boundary_concentration/((pow(outer_radius, 3) - pow(inner_radius, 3))*eigenvalue)*solution_exponential_term*multiplying_factor*(sphericalShellDiffusionIntegrals[mode_counter] - inner_boundary_concentration*inner_radius/eigenvalues[mode_counter]);
 
 			}
 
 		}
 
-    }
+		for (size_t mode_counter = 0; mode_counter < eigenvalues.size(); ++mode_counter) {
+
+			for (size_t space_counter = 1; space_counter < spatial_grid.size(); ++space_counter) {
+
+			    sphericalShellDiffusionIntegrals[space_counter] += (spacestep / 2) * ((std::sin(eigenvalue * (spatial_grid[spatial_counter] - spatial_grid[0])) * initial_condition[spatial_counter] * spatial_grid[spatial_counter]) +
+			                                        (std::sin(eigenvalue * (spatial_grid[spatial_counter - 1] - spatial_grid[0])) * initial_condition[spatial_counter - 1] * spatial_grid[spatial_counter - 1]));
+			}
+
+		}
+
+		return mean_volumetric_concentration;
+
+	}
 
 	void modeInitialization(int n_modes, double mode_initial_condition, double* diffusion_modes)
 	{
@@ -447,7 +441,7 @@ public:
 	}
 
 
-	Solver() {}
+	Solver() : sphericalShellDiffusionIntegrals(n_modes, 0) {}
 	~Solver() {}
 };
 

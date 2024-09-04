@@ -76,6 +76,18 @@ public:
 		return diffusivity;
 	}
 
+	void setModes(std::vector<double> eigenvalues){
+
+		modes = eigenvalues;
+
+	}
+
+	std::vector<double> getModes(){
+
+		return modes;
+
+	}
+
 	SystemShell() { }
 	~SystemShell() { }
 };
