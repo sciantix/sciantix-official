@@ -19,7 +19,7 @@
 void Kr_in_SiC()
 {
 	// Error handling
-	if (shell_system.empty() || input_variable.empty() || she.find("SiC") == she.end())
+	if (shell.empty() || input_variable.empty() || she.find("SiC") == she.end())
 	{
 		std::cerr << "Error: Required components are not initialized in " << __FILE__  << std::endl;
 		return;
@@ -27,10 +27,23 @@ void Kr_in_SiC()
 
 	shell_system.emplace_back();
 	int index = int(shell_system.size() - 1);
+	std::vector<double> eigenvalues = {
+    13643.6786788094,  46510.3583024376,  78174.4962102496,  109695.340107447,
+    141169.305815557,  172622.096741411,  204063.519204434,  235498.131594515,
+    266928.341819787,  298355.541995401,  329780.593105205,  361204.056292807,
+    392626.312953193,  424047.631378559,  455468.205795254,  486888.180274963,
+    518307.663943590,  549726.740971827,  581145.477323428,  612563.925425893,
+    643982.127473412,  675400.117807626,  706817.924663254,  738235.571467854,
+    769653.077823164,  801070.460255466,  832487.732796002,  863904.907434725,
+    895321.994478496,  926739.002836407,  958155.940248968,  989572.813473631,
+    1020989.62843605,  1052406.39035425,  1083823.10384119,  1115239.77299002,
+    1146656.40144526,  1178072.99246265,  1209489.54895964,  1240906.07355822};
 
 	shell_system[index].setName("Kr in SiC");
 	shell_system[index].setGasName("Kr");
 	shell_system[index].setMatrixName("SiC");
 	shell_system[index].setFissionGasDiffusivity(int(input_variable[iv["iFGDiffusionCoefficient"]].getValue()));
+  	shell_system[index].setModes(eigenvalues);
+	shell_system[index].setSpatialGrid();
 
 }

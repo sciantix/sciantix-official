@@ -48,6 +48,7 @@
 
 int main()
 {
+
 	InputReading();
 
 	Initialization();

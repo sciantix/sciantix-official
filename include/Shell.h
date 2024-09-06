@@ -54,7 +54,7 @@ public:
 
 	}
 	
-	Shell() { }
+	Shell() : inner_radius(2.5e-4), outer_radius(3.5e-4) { }
 	~Shell() { }
 };
 
