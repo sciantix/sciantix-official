@@ -23,17 +23,23 @@ from sklearn.linear_model import LinearRegression
 # igSwelling1 = [0.033, 0.048]
 # Data generated from SCIANTIX 2.0
 FGR2 = []
+FGRBase = []
+FGRBaseGold = []
+BaseTime = [1306,1306,
+            1807,1807,
+            1306,1306,1306,1306,1306,
+            1807,1807,1807,1807]
 
 # Data from Kashibe 1991
-FGROperational = [21, 21, #23 GWd/t
-                  21, 21, #28 GWd/t
-                  21, 21, 21, 21, 21,
-                  21, 21, 21, 21, 21
+FGROperational = [22, 22, #23 GWd/t
+                  43, 43, #28 GWd/t
+                  22, 22, 22, 22, 22,
+                  43, 43, 43, 43
                 ]
 FGRAnnealing = [5.9, 6.5, #1400°C, 23 GWd/t, Multiple-Single
                 5.9, 7.6,  #1400°C, 28 GWd/t, Multiple-Single
-                17.8,19.2,24,16.3,19.4, #2073°C 23 GWd/t, rate 1,2,3,4,5
-                28.7,27.1,24,24.47 #2073°C 23 GWd/t, rate 1,2,4,5
+                17.8,19.2,24,16.3,19.4, #1800°C 23 GWd/t, rate 1,2,3,4,5
+                28.7,27.1,24,24.47 #1800°C 28 GWd/t, rate 1,2,4,5
               ]
 FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
@@ -77,7 +83,6 @@ def do_sciantix():
   # copying input files from the regression folder into the current folder
   shutil.copy("../input_settings.txt", os.getcwd())
   shutil.copy("../input_scaling_factors.txt", os.getcwd())
-
   # copying and executing sciantix.exe into cwd
   shutil.copy("../sciantix.x", os.getcwd())
   os.system("./sciantix.x")
@@ -104,8 +109,8 @@ def do_plot():
   # Data vs. SCIANTIX 2.0
   fig, ax = plt.subplots()
 
-  ax.scatter(FGRKashibe, FGR2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
-  ax.scatter(FGRKashibe, goldFGR, marker = 'o', s=20, label='Barani (2017)')
+  ax.scatter(FGRKashibe, FGR2, c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
+  ax.scatter(FGRKashibe, goldFGR, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -118,12 +123,96 @@ def do_plot():
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
-
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  
+  plt.savefig('FGRTotal-Kashibe1991')
   plt.show()
+
+  fig, ax = plt.subplots()
+
+  FGR2Annealing = []
+  goldFGRAnnealing = []
+  for i in range(len(FGR2)):
+    FGR2Annealing.append(FGR2[i] - FGRBase[i])
+    goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
+    
+  ax.scatter(FGRAnnealing, FGR2Annealing, c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
+  ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
+  
+  ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  
+  ax.set_xlim(0, 50)
+  ax.set_ylim(0, 50)
+
+  ax.set_title('Fission gas release - Annealing phase')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  
+  plt.savefig('FGRAnnealing-Kashibe1991')
+  plt.show()
+
+# FGRAnnealing = [5.9, 6.5, #1400°C, 23 GWd/t, Multiple-Single
+#                 5.9, 7.6,  #1400°C, 28 GWd/t, Multiple-Single
+#                 17.8,19.2,24,16.3,19.4, #1800°C 23 GWd/t, rate 1,2,3,4,5
+#                 28.7,27.1,24,24.47 #1800°C 28 GWd/t, rate 1,2,4,5
+#               ]
+
+  #GOLD vs. SCIANTIX 2.0, no error bars
+  fig, ax = plt.subplots()
+
+  ax.scatter(FGRAnnealing[4:9], FGR2Annealing[4:9],c='#9370DB', marker = '^', s=30,         label='This work - 1800°C - 23 GWd/tU', zorder = 1)
+  ax.scatter(FGRAnnealing[4:9], goldFGRAnnealing[4:9],c='#ff7f0e', marker = '^', s=30,      label='Barani (2017) - 1800°C - 23 GWd/tU', zorder = 2)
+  ax.scatter(FGRAnnealing[9:13], FGR2Annealing[9:13], c = '#9370DB', marker = 'o', s=30,    label='This work - 1800°C - 28 GWd/tU', zorder = 3)
+  ax.scatter(FGRAnnealing[9:13], goldFGRAnnealing[9:13], c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017) - 1800°C - 28 GWd/tU', zorder = 4)
+  
+  ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  
+  ax.set_xlim(0, 40)
+  ax.set_ylim(0, 40)
+
+  ax.set_title('Fission gas release - Annealing phase')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+
+  plt.savefig('FGRAnnealingDiviso-Kashibe1991')
+  plt.show()
+
+   #GOLD vs. SCIANTIX 2.0, no error bars
+  fig, ax = plt.subplots()
+
+  ax.scatter(FGRAnnealing[0:2], FGR2Annealing[0:2],c='#9370DB', marker = '^', s=30,         label='This work - 1400°C - 23 GWd/tU', zorder = 1)
+  ax.scatter(FGRAnnealing[0:2], goldFGRAnnealing[0:2],c='#ff7f0e', marker = '^', s=30,      label='Barani (2017) - 1400°C - 23 GWd/tU', zorder = 2)
+  ax.scatter(FGRAnnealing[2:4], FGR2Annealing[2:4], c = '#9370DB', marker = 'o', s=30,    label='This work - 1400°C - 28 GWd/tU', zorder = 3)
+  ax.scatter(FGRAnnealing[2:4], goldFGRAnnealing[2:4], c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017) - 1400°C - 28 GWd/tU', zorder = 4)
+  
+  ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  
+  ax.set_xlim(0, 40)
+  ax.set_ylim(0, 40)
+
+  ax.set_title('Fission gas release - Annealing phase')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+
+  plt.savefig('FGRAnnealingRamp-Kashibe1991')
+  plt.show()
+
 
 # Main function of the baker regression
 def regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
-
+  k=0
   # Exit of the function without doing anything
   if mode_Kashibe1991 == 0 :
     return folderList, number_of_tests, number_of_tests_failed
@@ -137,7 +226,7 @@ def regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folder
   # Iterate over sorted list
   for file in sorted_files_and_dirs:
     # Verify on a given folder, if Baker is in it's name
-    if "Kashibe1991" in file and os.path.isdir(file):
+    if "_Kashibe1991" in file and os.path.isdir(file):
       folderList.append(file)
       os.chdir(file)
 
@@ -180,6 +269,10 @@ def regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folder
       FGRGoldPos = findSciantixVariablePosition(data_gold, "Fission gas release (/)")
       goldFGR.append(100*data_gold[-1,FGRGoldPos].astype(float))
 
+      # Retrieve the FGR Base
+      FGRBase.append(100*data[BaseTime[k],FGRPos].astype(float))
+      FGRBaseGold.append(100*data_gold[BaseTime[k],FGRGoldPos].astype(float))
+      k +=1
 
       os.chdir('..')
 

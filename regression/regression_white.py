@@ -32,6 +32,17 @@ gbSwelling1 = np.array([1.19, 1.16, 1.13, 1.12, 1.29,                   # 4000
                0.85, 0.84, 0.83, 0.82                          # 4163
                ])
 
+# Data from SCIANTIX 2.0
+gbSwellingVersion2 = np.array([[1.008759, 0.9016631, 0.8823770999999999, 0.989169, 1.594425,
+                                 1.222006, 1.2902069999999999, 1.0737, 0.8442542000000001, 1.229279, 1.483353, 
+                                 1.534709, 1.3644720000000001, 1.044023, 0.9861993, 1.6633269999999998, 
+                                 3.1737420000000003, 2.9696219999999998, 1.959618, 1.266134, 1.52619, 
+                                 0.8161866, 0.8268307, 0.7252712, 0.7110961, 0.7336258, 
+                                 1.7718859999999999, 1.768011, 1.4518069999999998, 
+                                 0.7905798, 0.713208, 0.6000579, 0.561775, 
+                                 1.030289, 0.9827071999999999,
+                                 0.8703542999999999, 0.8268506, 0.7287908, 0.8490229, 
+                                 0.3913363, 0.4385216, 0.3674586, 0.9282204000000001]])
 # Intergranular gaseous swelling database from White et al. (2006) experiments
 #########bubble density##############
 gbConcWhite = np.array([0.68, 0.80, 1.32, 1.99, 9.00,                   # 4000
@@ -134,12 +145,14 @@ bbconc = []
 gold = []
 Fc = []
 Fv = []
+f2 = []
 
 bbarea2_gold = []
 bbconc_gold = []
 FGR_gold = []
 Fc_gold = []
 Fv_gold = []
+fgold = []
 
 sample_number = len(gbSwelling1)
 
@@ -206,9 +219,9 @@ def do_plot():
   fig, ax = plt.subplots()
 
   #ax.scatter(gbSwellingWhite, gbSwelling1, edgecolors='#757575', facecolors='red',   marker = '^', s=30, label='SCIANTIX 1.0', zorder = 1)
-  ax.scatter(gbSwellingWhite, gbSwelling2, edgecolors= None, facecolors='green', marker = '^', s=30, label='This work', zorder = 1)
-  ax.scatter(gbSwellingWhite, gold, edgecolors = None, facecolors='blue', marker = 'v', s=30, label='SCIANTIX 2.0 - GOLD', zorder = 2)
-
+  ax.scatter(gbSwellingWhite, gbSwelling2,c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
+  ax.scatter(gbSwellingWhite, gold, c = '#ff7f0e', marker = 'o', s=30,label='Barani (2017)', zorder = 2, alpha=0.7)
+  
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
   ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
@@ -223,139 +236,206 @@ def do_plot():
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
+  
+  plt.savefig('Swelling-White2004')
   plt.show()
 
-  # GOLD vs. SCIANTIX 2.0 + error bars
-
+  # GOLD vs. SCIANTIX 2.0, no error bars
   fig, ax = plt.subplots()
 
-  gbSwellingError = gbSwellingWhite * 0.5
-  igSwellingErrorVertL = np.abs(gbSwelling2 - 100 * np.array([0.00309842, 0.00285444, 0.00545195, 0.00488227, 0.00852239, 0.00365886,
-  0.00546195, 0.00539069, 0.00431081, 0.00592082, 0.00884021, 0.00620528,
-  0.00503128, 0.00311326, 0.00348059, 0.00936053, 0.00933353, 0.00886642,
-  0.00550712, 0.00588977, 0.00455688, 0.00290807, 0.00367743, 0.00308482,
-  0.00364588, 0.00277625, 0.00323535, 0.00452387, 0.00565546, 0.00425832,
-  0.00256492, 0.00268151, 0.00306131, 0.00443654, 0.00410574, 0.00469404,
-  0.00499108, 0.00409438, 0.00604164, 0.00241627, 0.00287818, 0.00199632,
-  0.00384386]))
+  #ax.scatter(gbSwellingWhite, gbSwelling1, edgecolors='#757575', facecolors='red',   marker = '^', s=30, label='SCIANTIX 1.0', zorder = 1)
+  ax.scatter(gbSwellingWhite, gbSwelling2,c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
+  ax.scatter(gbSwellingWhite, gold, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder = 2, alpha=0.7)
 
-  igSwellingErrorVertU = np.abs(gbSwelling2 - 100 * np.array([0.03099689, 0.02708617, 0.02566999, 0.02358891, 0.02849684, 0.03614354,
-  0.039007  , 0.03369294, 0.02532625, 0.02945451, 0.02959328, 0.04542349,
-  0.04282425, 0.03530704, 0.03000697, 0.02936561, 0.07399537, 0.08019407,
-  0.0502442 , 0.03672561, 0.05521956, 0.03128393, 0.03287336, 0.03071947,
-  0.02291161, 0.0137135 , 0.03276693, 0.03236039, 0.03020551, 0.01728113,
-  0.01670874, 0.0128458 , 0.01233106, 0.02754019, 0.02443593, 0.01109099,
-  0.01102217, 0.0109665 , 0.01412458, 0.0097558 , 0.00991563, 0.00852714,
-  0.01867004]))
+  ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  ax.plot([0, 100],[0.5, 100.5],'--', color = '#757575')
+  ax.plot([0, 100],[-0.5, 99.5],'--', color = '#757575')
 
-  #ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', marker = '^', s=20, label='SCIANTIX 1.0', zorder = 1)
-  ax.errorbar(gbSwellingWhite, gbSwelling2, xerr = gbSwellingWhitesigma, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work', zorder = 1)
-  ax.scatter(gbSwellingWhite, gold, marker = 'v', s=20, label='SCIANTIX 2.0 - GOLD', zorder = 2)
-
-  ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
-  ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
-  ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
-
-  ax.set_xlim(1e-2, 1e1)
-  ax.set_ylim(1e-2, 1e1)
-
-  ax.set_xscale('log')
-  ax.set_yscale('log')
+  ax.set_xlim(0, 5)
+  ax.set_ylim(0, 5)
 
   ax.set_title('Intergranular gaseous swelling')
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
-
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  plt.savefig('Swellinglineare-White2004')
   plt.show()
-
-  # GOLD vs. SCIANTIX 2.0 - area
+  
+  # GOLD vs. SCIANTIX 2.0, no error bars
   fig, ax = plt.subplots()
 
-  ax.scatter(gbSwellingWhite, bbarea2_gold, c = '#C9C954', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0 - GOLD')
-  ax.scatter(gbSwellingWhite, bbarea2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='This work')
+  NewSwelling2 = []
+  NewSwellinggold= []
+  for i in range(len(f2)):
+    NewSwelling2.append(gbSwelling2[i]/f2[i])
+    NewSwellinggold.append(gold[i]/fgold[i])
+    
+  ax.scatter(gbSwellingWhite, NewSwelling2,c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
+  #ax.scatter(gbSwellingWhite, NewSwellinggold, c = '#ff7f0e', marker = 'o', s=30,label='Barani (2017)', zorder = 2, alpha=0.7)
+  #ax.scatter(gbSwellingWhite, gbSwelling1, c='red',   marker = 'p', s=30, label='SCIANTIX 1.0', zorder = 3, alpha=0.7)
+  ax.scatter(gbSwellingWhite, gbSwellingVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+
+  ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
+  ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
+  ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
 
   ax.set_xscale('log')
   ax.set_yscale('log')
 
-  ax.set_xlabel('Experimental swelling(%)')
-  ax.set_ylabel('Calculated bubble area (m2)')
-  ax.legend()
+  ax.set_xlim(1e-2, 1e1)
+  ax.set_ylim(1e-2, 1e1)
 
+  ax.set_title('Intergranular gaseous swelling')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+
+  
+  plt.savefig('SwellingCorretto-White2004')
   plt.show()
+
+  # # GOLD vs. SCIANTIX 2.0 + error bars
+
+  # fig, ax = plt.subplots()
+
+  # gbSwellingError = gbSwellingWhite * 0.5
+  # igSwellingErrorVertL = np.abs(gbSwelling2 - 100 * np.array([0.00309842, 0.00285444, 0.00545195, 0.00488227, 0.00852239, 0.00365886,
+  # 0.00546195, 0.00539069, 0.00431081, 0.00592082, 0.00884021, 0.00620528,
+  # 0.00503128, 0.00311326, 0.00348059, 0.00936053, 0.00933353, 0.00886642,
+  # 0.00550712, 0.00588977, 0.00455688, 0.00290807, 0.00367743, 0.00308482,
+  # 0.00364588, 0.00277625, 0.00323535, 0.00452387, 0.00565546, 0.00425832,
+  # 0.00256492, 0.00268151, 0.00306131, 0.00443654, 0.00410574, 0.00469404,
+  # 0.00499108, 0.00409438, 0.00604164, 0.00241627, 0.00287818, 0.00199632,
+  # 0.00384386]))
+
+  # igSwellingErrorVertU = np.abs(gbSwelling2 - 100 * np.array([0.03099689, 0.02708617, 0.02566999, 0.02358891, 0.02849684, 0.03614354,
+  # 0.039007  , 0.03369294, 0.02532625, 0.02945451, 0.02959328, 0.04542349,
+  # 0.04282425, 0.03530704, 0.03000697, 0.02936561, 0.07399537, 0.08019407,
+  # 0.0502442 , 0.03672561, 0.05521956, 0.03128393, 0.03287336, 0.03071947,
+  # 0.02291161, 0.0137135 , 0.03276693, 0.03236039, 0.03020551, 0.01728113,
+  # 0.01670874, 0.0128458 , 0.01233106, 0.02754019, 0.02443593, 0.01109099,
+  # 0.01102217, 0.0109665 , 0.01412458, 0.0097558 , 0.00991563, 0.00852714,
+  # 0.01867004]))
+
+  # #ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', marker = '^', s=20, label='SCIANTIX 1.0', zorder = 1)
+  # ax.errorbar(gbSwellingWhite, gbSwelling2, xerr = gbSwellingWhitesigma, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work')
+  # ax.scatter(gbSwellingWhite, gold, marker = 'v', s=20, label='SCIANTIX 2.0 - GOLD')
+
+  # ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
+  # ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
+  # ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
+
+  # ax.set_xlim(1e-2, 1e1)
+  # ax.set_ylim(1e-2, 1e1)
+
+  # ax.set_xscale('log')
+  # ax.set_yscale('log')
+
+  # ax.set_title('Intergranular gaseous swelling')
+  # ax.set_xlabel('Experimental (%)')
+  # ax.set_ylabel('Calculated (%)')
+  # ax.legend()
+
+  # plt.show()
+
+  # # GOLD vs. SCIANTIX 2.0 - area
+  # fig, ax = plt.subplots()
+
+  # ax.scatter(gbSwellingWhite, bbarea2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='This work')
+  # ax.scatter(gbSwellingWhite, bbarea2_gold, c = '#C9C954', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0 - GOLD')
+  
+  # ax.set_xscale('log')
+  # ax.set_yscale('log')
+
+  # ax.set_xlabel('Experimental swelling(%)')
+  # ax.set_ylabel('Calculated bubble area (m2)')
+  # ax.legend()
+
+  # plt.show()
 
   # GOLD vs. SCIANTIX 2.0 - conc
   fig, ax = plt.subplots()
 
-  ax.errorbar(gbConcWhite, bbconc, xerr = gbConcWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work', zorder = 1)
-  ax.scatter(gbConcWhite, bbconc_gold, marker = 'v', s=20, label='SCIANTIX 2.0 - GOLD', zorder = 2)
+  #ax.errorbar(gbConcWhite, bbconc, xerr = gbConcWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work', zorder=1)
+  ax.scatter(gbConcWhite, bbconc,c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
+  ax.scatter(gbConcWhite, bbconc_gold, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
 
   ax.set_xscale('log')
   ax.set_yscale('log')
 
   ax.plot([1e-3, 1e3],[1e-3, 1e3], '-', color = '#757575')
   ax.plot([1e-3, 1e3],[2e-3, 2e3],'--', color = '#757575')
-  ax.plot([1e-3, 1e3],[0e-3, 0e3],'--', color = '#757575')
-
+  ax.plot([1e-3, 1e3],[5e-4, 5e2],'--', color = '#757575')
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
   ax.set_xlim(1e-2, 1e2)
   ax.set_ylim(1e-2, 1e2)
 
   ax.set_xlabel('Experimental (bub/m2)')
   ax.set_ylabel('Calculated (bub/m2)')
+  ax.set_title('Bubble concentration')
   ax.legend()
-
+  plt.savefig('BubConc-White2004')
   plt.show()
 
   # GOLD vs. SCIANTIX 2.0 - fractional coverage
   fig, ax = plt.subplots()
 
-  ax.errorbar(FcSwellingWhite, Fc, xerr = FcSwellingWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work', zorder = 1)
-  ax.scatter(FcSwellingWhite, Fc_gold, marker = 'v', s=20, label='SCIANTIX 2.0 - GOLD', zorder = 2)
+  #ax.errorbar(FcSwellingWhite, Fc, xerr = FcSwellingWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work')
+  ax.scatter(FcSwellingWhite, Fc, c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
+  ax.scatter(FcSwellingWhite, Fc_gold,c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
 
 
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[20, 120],'--', color = '#757575')
   ax.plot([0, 100],[-20, 80],'--', color = '#757575')
-
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
   ax.set_xlim(0, 100)
   ax.set_ylim(0, 100)
 
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
+  ax.set_title('Fractional coverage of grain faces')
   ax.legend()
-
+  plt.savefig('Fc-White2004')
   plt.show()
 
   # GOLD vs. SCIANTIX 2.0 - vented fraction
   fig, ax = plt.subplots()
 
-  ax.errorbar(FvSwellingWhite, Fv, xerr = FvSwellingWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work', zorder = 1)
-  ax.scatter(FvSwellingWhite, Fv_gold, marker = 'v', s=20, label='SCIANTIX 2.0 - GOLD', zorder = 2)
+  #ax.errorbar(FvSwellingWhite, Fv, xerr = FvSwellingWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work')
+  ax.scatter(FvSwellingWhite, Fv,c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
+  ax.scatter(FvSwellingWhite, Fv_gold, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)',zorder=2, alpha=0.7)
 
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[20, 120],'--', color = '#757575')
   ax.plot([0, 100],[-20, 80],'--', color = '#757575')
-
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
   ax.set_xlim(0, 100)
   ax.set_ylim(0, 100)
 
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
+  ax.set_title('Vented fraction of grain faces')
   ax.legend()
-
+  
+  plt.savefig('Fv-White2004')
   plt.show()
 
   # FGR plot
   fig, ax = plt.subplots()
-  ax.scatter(gbSwelling2, FGR2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='FGR SCIANTIX 2.0')
-  ax.scatter(gbSwelling2, FGR_gold, color = 'blue', marker = 'o', s=20, label='FGR SCIANTIX 2.0 - Gold')
-
+  ax.scatter(gbSwelling2, FGR2, c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
+  ax.scatter(gbSwelling2, FGR_gold, c = '#ff7f0e', marker = 'o', s=30, label='FGR SCIANTIX 2.0 - Gold')
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
   ax.set_xscale('log')
   ax.set_yscale('log')
 
   ax.set_xlabel('Swelling (%)')
   ax.set_ylabel('FGR (%)')
+
   ax.legend()
 
   plt.show()
@@ -367,9 +447,9 @@ def do_plot():
   fig, ax = plt.subplots()
 
   #ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 1.0')
-  ax.scatter(gbSwellingWhite, gbSwelling2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0')
-  ax.scatter(gbSwellingWhite, gold, color = 'blue', marker = 'v', s=20, label='SCIANTIX 2.0 - Gold')
-
+  ax.scatter(gbSwellingWhite, gbSwelling2, c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
+  ax.scatter(gbSwellingWhite, gold, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)',zorder=2, alpha=0.7)
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
   ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
@@ -383,6 +463,7 @@ def do_plot():
   # ax.set_title('Intergranular gaseous swelling')
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
+  ax.set_title('Intergranular gas swelling')
   ax.legend()
 
   #####################
@@ -531,6 +612,14 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
       # Retrieve the gold data of Intergranular gas swelling
       interGranularSwellingGoldPos = findSciantixVariablePosition(data_gold, "Intergranular gas swelling (/)")
       gold.append(100*data_gold[row_number,interGranularSwellingGoldPos].astype(float))
+
+      # Retrieve the generated data of Intergranular gas swelling
+      interGranularIntactPos = findSciantixVariablePosition(data, "Intergranular fractional intactness (/)")
+      f2.append(data[row_number,interGranularIntactPos].astype(float))
+
+      # Retrieve the gold data of Intergranular gas swelling
+      interGranularIntactGoldPos = findSciantixVariablePosition(data_gold, "Intergranular fractional intactness (/)")
+      fgold.append(data_gold[row_number,interGranularIntactGoldPos].astype(float))
 
       # Retrieve the generated data of Intergranular bubble area (m2)
       bubbleAreaPos = findSciantixVariablePosition(data, "Intergranular bubble area (m2)")

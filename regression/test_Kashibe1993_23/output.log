@@ -1,7 +1,8 @@
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= 1.0002
@@ -70,20 +71,21 @@ d_R  =    0
 R_i  =    0
 R_f  =    0
 d_R  =    0
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -145,20 +147,21 @@ d_R  =    -nan
 R_i  =    0
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -220,20 +223,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -295,20 +299,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -370,20 +375,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -445,20 +451,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -520,20 +527,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -595,20 +603,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -670,20 +679,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -745,20 +755,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -820,20 +831,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -895,20 +907,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -970,20 +983,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -1045,20 +1059,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -1120,20 +1135,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -1195,20 +1211,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -1270,20 +1287,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -1345,20 +1363,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -1420,20 +1439,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -1495,20 +1515,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -1570,20 +1591,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -1645,20 +1667,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -1720,20 +1743,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -1795,20 +1819,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -1870,20 +1895,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -1945,20 +1971,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -2020,20 +2047,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -2095,20 +2123,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -2170,20 +2199,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -2245,20 +2275,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -2320,20 +2351,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -2395,20 +2427,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -2470,20 +2503,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -2545,20 +2579,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -2620,20 +2655,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -2695,20 +2731,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -2770,20 +2807,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -2845,20 +2883,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -2920,20 +2959,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -2995,20 +3035,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -3070,20 +3111,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -3145,20 +3187,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -3220,20 +3263,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -3295,20 +3339,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -3370,20 +3415,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -3445,20 +3491,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -3520,20 +3567,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -3595,20 +3643,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -3670,20 +3719,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -3745,20 +3795,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -3820,20 +3871,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -3895,20 +3947,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -3970,20 +4023,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -4045,20 +4099,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -4120,20 +4175,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -4195,20 +4251,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -4270,20 +4327,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -4345,20 +4403,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -4420,20 +4479,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -4495,20 +4555,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -4570,20 +4631,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -4645,20 +4707,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -4720,20 +4783,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -4795,20 +4859,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -4870,20 +4935,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -4945,20 +5011,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -5020,20 +5087,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -5095,20 +5163,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -5170,20 +5239,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -5245,20 +5315,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -5320,20 +5391,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -5395,20 +5467,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -5470,20 +5543,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -5545,20 +5619,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -5620,20 +5695,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -5695,20 +5771,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -5770,20 +5847,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -5845,20 +5923,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -5920,20 +5999,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -5995,20 +6075,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -6070,20 +6151,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -6145,20 +6227,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -6220,20 +6303,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -6295,20 +6379,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -6370,20 +6455,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -6445,20 +6531,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -6520,20 +6607,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -6595,20 +6683,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -6670,20 +6759,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -6745,20 +6835,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -6820,20 +6911,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -6895,20 +6987,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -6970,20 +7063,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -7045,20 +7139,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -7120,20 +7215,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -7195,20 +7291,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -7270,20 +7367,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -7345,20 +7443,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -7420,20 +7519,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -7495,20 +7595,21 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =5.28901
-Span: 1500
-Inflection point: 0.9
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
 Surface tension (J/m2) = 0.778021
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
-Critical pressure (Pa): -nan
-Critical pressure Jernkvist (Pa): -nan
+Critical pressure (Pa): nan
+Critical pressure Jernkvist (Pa): nan
 Bubble pressure (Pa): -nan
 dm/dp= -nan
 Cappellari --------
@@ -7570,6 +7671,6 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =5.28901
+Stress intensification factor =3.33
 Grain Boundary rupture --------------------------------
 Intactness: -nan

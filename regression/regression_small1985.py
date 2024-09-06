@@ -21,7 +21,12 @@ from sklearn.linear_model import LinearRegression
 
 # Data generated from SCIANTIX 2.0
 FGR2 = []
-
+FGRBase = []
+FGRBaseGold = []
+BaseTime = [202,202,202,
+            202,202,202,
+            202,202,202,
+            202,202,202]
 # Data from Small 1985
 
 FGROperational = [0.5,0.5,0.5,    #1400, 300-600-900 s annealing
@@ -104,8 +109,8 @@ def do_plot():
   # Data vs. SCIANTIX 2.0
   fig, ax = plt.subplots()
 
-  ax.scatter(FGRSmall, FGR2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
-  ax.scatter(FGRSmall, goldFGR, marker = 'o', s=20, label='Barani (2017)')
+  ax.scatter(FGRSmall, FGR2,c = '#9370DB', marker = '^', s=30, label='This work')
+  ax.scatter(FGRSmall, goldFGR, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', alpha=0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -118,12 +123,44 @@ def do_plot():
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
+  
+  plt.savefig('FGRTotal-Small1985')
   plt.show()
+
+  fig, ax = plt.subplots()
+
+  FGR2Annealing = []
+  goldFGRAnnealing = []
+  for i in range(len(FGR2)):
+    FGR2Annealing.append(FGR2[i] - FGRBase[i])
+    goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
+    
+  ax.scatter(FGRAnnealing, FGR2Annealing,c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
+  ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
+  
+  ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  
+  ax.set_xlim(0, 50)
+  ax.set_ylim(0, 50)
+
+  ax.set_title('Fission gas release - Annealing phase')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+
+  
+  plt.savefig('FGRAnnealing-Small1985')
+  plt.show()
+
 
 # Main function of the baker regression
 def regression_small1985(wpath, mode_Small1985, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
-
+  k=0
   # Exit of the function without doing anything
   if mode_Small1985 == 0 :
     return folderList, number_of_tests, number_of_tests_failed
@@ -179,6 +216,11 @@ def regression_small1985(wpath, mode_Small1985, mode_gold, mode_plot, folderList
       # Retrieve the gold data of Fission gas release
       FGRGoldPos = findSciantixVariablePosition(data_gold, "Fission gas release (/)")
       goldFGR.append(100*data_gold[-1,FGRGoldPos].astype(float))
+
+      # Retrieve the FGR Base
+      FGRBase.append(100*data[BaseTime[k],FGRPos].astype(float))
+      FGRBaseGold.append(100*data_gold[BaseTime[k],FGRGoldPos].astype(float))
+      k +=1
 
       os.chdir('..')
 

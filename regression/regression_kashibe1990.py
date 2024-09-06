@@ -24,16 +24,23 @@ from sklearn.linear_model import LinearRegression
 # Data generated from SCIANTIX 2.0
 igSwelling2 = []
 FGR2 = []
+FGRBase = []
+FGRBaseGold = []
+BaseTime = [303,805,1306,1807,
+            303,805,1306,1807]
 
 # Data from Kashibe 1990
-SwellingKashibe = [0, 6.7, 6.5, 7.4, #1600°C annealing, 6-16-23-28 GWd/t, 0 if missing datum
-        8.9, 9.0, 10.4, 0 ##1800°C annealing, 6-16-23-28 GWd/t
+SwellingKashibe = [6, 6.7, 6.5, 7.4, #1600°C annealing, 6-16-23-28 GWd/t, 0 if missing datum
+        8.9, 9.0, 10.4, 10 ##1800°C annealing, 6-16-23-28 GWd/t
         ]
 
-FGROperational = [0.2, 0.8, 21, 21, #6-16-23-28 GWd/t
-                  0.2, 0.8, 21, 21 ##6-16-23-28 GWd/t
+# FGROperational = [0.2, 0.8, 21, 21, #6-16-23-28 GWd/t
+#                   0.2, 0.8, 21, 21 ##6-16-23-28 GWd/t
+#                 ]
+FGROperational = [0.2, 1, 22, 43, #6-16-23-28 GWd/t
+                  0.2, 1, 22, 43 ##6-16-23-28 GWd/t
                 ]
-FGRAnnealing = [0, 05.80/0.75, 13.71/0.75, 22.26, #1600°C annealing, 6-16-23-28 GWd/t, 0 if missing datum
+FGRAnnealing = [05.80/0.75, 05.80/0.75, 13.71/0.75, 22.26, #1600°C annealing, 6-16-23-28 GWd/t, first datum missing
                 14.16, 16.86, 25.3, 25.9 ##1800°C annealing, 6-16-23-28 GWd/t
                 ]
 FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
@@ -42,6 +49,8 @@ FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 goldFGR = []
 goldSwelling = []
 
+f2 = []
+fgold = []
 
 number_of_tests_failed = 0
 sample_number = len(igSwelling2)
@@ -107,8 +116,10 @@ def do_plot():
   # Data vs. SCIANTIX 2.0
   fig, ax = plt.subplots()
 
-  ax.scatter(FGRKashibe, FGR2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
-  ax.scatter(FGRKashibe, goldFGR, marker = 'o', s=20, label='Barani (2017)')
+  ax.scatter(FGRKashibe, FGR2,c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
+  ax.scatter(FGRKashibe, goldFGR, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)',zorder=2, alpha=0.7)
+  #ax.scatter(FGRKashibe[0:7], FGR2[8:15], c = 'red', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
+  #ax.scatter(FGRKashibe[0:7], goldFGR[8:15], marker = 'o',c = 'cyan', s=20, label='Barani (2017)')
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -121,13 +132,43 @@ def do_plot():
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  plt.savefig('FGRTotal-Kashibe1990')
 
-  plt.show()
+  #plt.show()
 
   fig, ax = plt.subplots()
 
-  ax.scatter(SwellingKashibe, igSwelling2, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
-  ax.scatter(SwellingKashibe, goldSwelling, marker = 'o', s=20, label='Barani (2017)')
+  ax.scatter(SwellingKashibe,  igSwelling2, c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
+  ax.scatter(SwellingKashibe,  goldSwelling, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
+  #ax.scatter(SwellingKashibe[0:7], igSwelling2[8:15], c = 'red', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
+  #ax.scatter(SwellingKashibe[0:7], goldSwelling[8:15], marker = 'o',c = 'cyan', s=20, label='Barani (2017)')
+  ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  ax.set_xlim(0, 20)
+  ax.set_ylim(0, 20)
+
+  ax.set_title('Intergranular swelling')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+
+  plt.savefig('Swelling-Kashibe1990')
+  #plt.show()
+
+  # GOLD vs. SCIANTIX 2.0, no error bars
+  fig, ax = plt.subplots()
+
+  NewSwelling2 = []
+  NewSwellinggold= []
+  for i in range(len(f2)):
+    NewSwelling2.append(igSwelling2[i]/f2[i])
+    NewSwellinggold.append(goldSwelling[i]/fgold[i])
+    
+  ax.scatter(SwellingKashibe, NewSwelling2,c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
+  ax.scatter(SwellingKashibe, NewSwellinggold, c = '#ff7f0e', marker = 'o', s=30,label='Barani (2017)', zorder = 2, alpha=0.7)
 
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -139,12 +180,96 @@ def do_plot():
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
+
+  
+  plt.savefig('SwellingCorretto-Kashibe1990')
   plt.show()
+
+ # GOLD vs. SCIANTIX 2.0, no error bars
+  fig, ax = plt.subplots()
+
+  ax.scatter(SwellingKashibe[1:4], NewSwelling2[1:4],c='#9370DB', marker = '^', s=30, label='This work - 1600°C', zorder = 1)
+  ax.scatter(SwellingKashibe[1:4], NewSwellinggold[1:4],c='#ff7f0e', marker = '^', s=30, label='Barani (2017) - 1600°C', zorder = 2)
+  ax.scatter(SwellingKashibe[4:7], NewSwelling2[4:7], c = '#9370DB', marker = 'o', s=30,label='This work - 1800°C', zorder = 3)
+  ax.scatter(SwellingKashibe[4:7], NewSwellinggold[4:7], c = '#ff7f0e', marker = 'o', s=30,label='Barani (2017) - 1800°C', zorder = 4)
+  print(NewSwelling2)
+
+  ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  ax.set_xlim(0, 20)
+  ax.set_ylim(0, 20)
+
+  ax.set_title('Intergranular swelling')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+
+  print(NewSwelling2)
+  print(NewSwellinggold)
+  
+  plt.savefig('SwellingDiviso-Kashibe1990')
+  plt.show()
+
+  fig, ax = plt.subplots()
+
+  FGR2Annealing = []
+  goldFGRAnnealing = []
+  for i in range(len(FGR2)):
+    FGR2Annealing.append(FGR2[i] - FGRBase[i])
+    goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
+    
+  ax.scatter(FGRAnnealing, FGR2Annealing, c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
+  ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
+  
+  ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  
+  ax.set_xlim(0, 40)
+  ax.set_ylim(0, 40)
+
+  ax.set_title('Fission gas release - Annealing phase')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+
+  plt.savefig('FGRAnnealing-Kashibe1990')
+  plt.show()
+
+  #GOLD vs. SCIANTIX 2.0, no error bars
+  fig, ax = plt.subplots()
+
+  ax.scatter(FGRAnnealing[0:4], FGR2Annealing[0:4],c='#9370DB', marker = '^', s=30, label='This work - 1600°C', zorder = 1)
+  ax.scatter(FGRAnnealing[0:4], goldFGRAnnealing[0:4],c='#ff7f0e', marker = '^', s=30, label='Barani (2017) - 1600°C', zorder = 2)
+  ax.scatter(FGRAnnealing[4:8], FGR2Annealing[4:8], c = '#9370DB', marker = 'o', s=30,label='This work - 1800°C', zorder = 3)
+  ax.scatter(FGRAnnealing[4:8], goldFGRAnnealing[4:8], c = '#ff7f0e', marker = 'o', s=30,label='Barani (2017) - 1800°C', zorder = 4)
+
+
+  ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  
+  ax.set_xlim(0, 40)
+  ax.set_ylim(0, 40)
+
+  ax.set_title('Fission gas release - Annealing phase')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+
+  plt.savefig('FGRAnnealingDiviso-Kashibe1990')
+  plt.show()
+    
 
 # Main function of the baker regression
 def regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
-
+  k=0
   # Exit of the function without doing anything
   if mode_Kashibe1990 == 0 :
     return folderList, number_of_tests, number_of_tests_failed
@@ -158,7 +283,7 @@ def regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folder
   # Iterate over sorted list
   for file in sorted_files_and_dirs:
     # Verify on a given folder, if Baker is in it's name
-    if "Kashibe1990" in file and os.path.isdir(file):
+    if "_Kashibe1990" in file and os.path.isdir(file):
       folderList.append(file)
       os.chdir(file)
 
@@ -201,6 +326,11 @@ def regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folder
       FGRGoldPos = findSciantixVariablePosition(data_gold, "Fission gas release (/)")
       goldFGR.append(100*data_gold[-1,FGRGoldPos].astype(float))
 
+      # Retrieve the FGR Base
+      FGRBase.append(100*data[BaseTime[k],FGRPos].astype(float))
+      FGRBaseGold.append(100*data_gold[BaseTime[k],FGRGoldPos].astype(float))
+      k +=1
+
       # Retrieve the generated data of Intragranular gas swelling
       igSwellingPos = findSciantixVariablePosition(data, "Intergranular gas swelling (/)")
       igSwelling2.append(100*data[-1,igSwellingPos].astype(float))
@@ -208,6 +338,14 @@ def regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folder
       # Retrieve the gold data of Intragranular gas swelling
       igSwellingGoldPos = findSciantixVariablePosition(data_gold, "Intergranular gas swelling (/)")
       goldSwelling.append(100*data_gold[-1,igSwellingGoldPos].astype(float))
+
+      # Retrieve the generated data of Intergranular gas swelling
+      interGranularIntactPos = findSciantixVariablePosition(data, "Intergranular fractional intactness (/)")
+      f2.append(data[-1,interGranularIntactPos].astype(float))
+
+      # Retrieve the gold data of Intergranular gas swelling
+      interGranularIntactGoldPos = findSciantixVariablePosition(data_gold, "Intergranular fractional intactness (/)")
+      fgold.append(data_gold[-1,interGranularIntactGoldPos].astype(float))
 
 
       os.chdir('..')

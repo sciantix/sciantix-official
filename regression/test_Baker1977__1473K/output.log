@@ -1,0 +1,6970 @@
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): inf
+Critical pressure Jernkvist (Pa): inf
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Warning NAN values in GB state
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 1
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = inf
+Capillary pressure by  (Jernkvist 2020, Pa) = inf
+Critical pressure (Pa): inf
+Critical pressure Jernkvist (Pa): inf
+Bubble pressure (Pa): -nan
+dm/dp= -nan
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 1
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 9.4412e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 3.37251e+07
+Critical pressure (Pa): 2.73633e+09
+Critical pressure Jernkvist (Pa): 1.23973e+09
+Bubble pressure (Pa): 6.37671e+07
+dm/dp= 1.79234e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    0
+R_f  =    1.4735e+17
+d_R  =    1.4735e+17
+R_i  =    0
+R_f  =    1.84188e+16
+d_R  =    1.84188e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    2.41907e+16
+d_R  =    2.41907e+16
+R_i  =    0
+R_f  =    6.85674e+13
+d_R  =    6.85674e+13
+	
+GasRelease: intact faces
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    0
+R_f  =    1.4735e+17
+d_R  =    1.4735e+17
+R_i  =    0
+R_f  =    1.84188e+16
+d_R  =    1.84188e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    0
+R_f  =    2.41907e+16
+d_R  =    2.41907e+16
+R_i  =    0
+R_f  =    6.85674e+13
+d_R  =    6.85674e+13
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999999
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 6.89604e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.46335e+07
+Critical pressure (Pa): 2.32167e+09
+Critical pressure Jernkvist (Pa): 1.05451e+09
+Bubble pressure (Pa): 3.66823e+07
+dm/dp= 1.45158e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.4735e+17
+R_f  =    2.92744e+17
+d_R  =    1.45394e+17
+R_i  =    1.84188e+16
+R_f  =    3.6593e+16
+d_R  =    1.81742e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.41907e+16
+R_f  =    4.29516e+16
+d_R  =    1.87608e+16
+R_i  =    6.85674e+13
+R_f  =    1.01394e+14
+d_R  =    3.2827e+13
+	
+GasRelease: intact faces
+R_i  =    1.4735e+17
+R_f  =    1.4735e+17
+d_R  =    0
+R_i  =    1.84188e+16
+R_f  =    1.84188e+16
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.41907e+16
+R_f  =    2.41907e+16
+d_R  =    0
+R_i  =    6.85674e+13
+R_f  =    6.85674e+13
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.4735e+17
+R_f  =    2.92744e+17
+d_R  =    1.45394e+17
+R_i  =    1.84188e+16
+R_f  =    3.6593e+16
+d_R  =    1.81742e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.41907e+16
+R_f  =    4.29516e+16
+d_R  =    1.87608e+16
+R_i  =    6.85674e+13
+R_f  =    1.01394e+14
+d_R  =    3.2827e+13
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999999
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.41932e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.93585e+07
+Critical pressure (Pa): 2.04283e+09
+Critical pressure Jernkvist (Pa): 9.31119e+08
+Bubble pressure (Pa): 2.73893e+07
+dm/dp= 1.46373e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.92744e+17
+R_f  =    4.49584e+17
+d_R  =    1.5684e+17
+R_i  =    3.6593e+16
+R_f  =    5.6198e+16
+d_R  =    1.96049e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    4.29516e+16
+R_f  =    5.82085e+16
+d_R  =    1.52569e+16
+R_i  =    1.01394e+14
+R_f  =    1.13327e+14
+d_R  =    1.19321e+13
+	
+GasRelease: intact faces
+R_i  =    2.92744e+17
+R_f  =    2.92744e+17
+d_R  =    0
+R_i  =    3.6593e+16
+R_f  =    3.6593e+16
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    4.29516e+16
+R_f  =    4.29516e+16
+d_R  =    0
+R_i  =    1.01394e+14
+R_f  =    1.01394e+14
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.92744e+17
+R_f  =    4.49584e+17
+d_R  =    1.5684e+17
+R_i  =    3.6593e+16
+R_f  =    5.6198e+16
+d_R  =    1.96049e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    4.29516e+16
+R_f  =    5.82085e+16
+d_R  =    1.52569e+16
+R_i  =    1.01394e+14
+R_f  =    1.13327e+14
+d_R  =    1.19321e+13
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999998
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.55619e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.62753e+07
+Critical pressure (Pa): 1.86184e+09
+Critical pressure Jernkvist (Pa): 8.51e+08
+Bubble pressure (Pa): 2.23875e+07
+dm/dp= 1.4987e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    4.49584e+17
+R_f  =    6.46666e+17
+d_R  =    1.97082e+17
+R_i  =    5.6198e+16
+R_f  =    8.08332e+16
+d_R  =    2.46352e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    5.82085e+16
+R_f  =    7.48014e+16
+d_R  =    1.65929e+16
+R_i  =    1.13327e+14
+R_f  =    1.38053e+14
+d_R  =    2.47264e+13
+	
+GasRelease: intact faces
+R_i  =    4.49584e+17
+R_f  =    4.49584e+17
+d_R  =    0
+R_i  =    5.6198e+16
+R_f  =    5.6198e+16
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    5.82085e+16
+R_f  =    5.82085e+16
+d_R  =    0
+R_i  =    1.13327e+14
+R_f  =    1.13327e+14
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    4.49584e+17
+R_f  =    6.46666e+17
+d_R  =    1.97082e+17
+R_i  =    5.6198e+16
+R_f  =    8.08332e+16
+d_R  =    2.46352e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    5.82085e+16
+R_f  =    7.48014e+16
+d_R  =    1.65929e+16
+R_i  =    1.13327e+14
+R_f  =    1.38053e+14
+d_R  =    2.47264e+13
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999998
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 3.92499e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.40206e+07
+Critical pressure (Pa): 1.71795e+09
+Critical pressure Jernkvist (Pa): 7.87218e+08
+Bubble pressure (Pa): 1.96849e+07
+dm/dp= 1.57891e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    6.46666e+17
+R_f  =    8.7579e+17
+d_R  =    2.29124e+17
+R_i  =    8.08332e+16
+R_f  =    1.09474e+17
+d_R  =    2.86405e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    7.48014e+16
+R_f  =    9.03883e+16
+d_R  =    1.55869e+16
+R_i  =    1.38053e+14
+R_f  =    1.54351e+14
+d_R  =    1.62981e+13
+	
+GasRelease: intact faces
+R_i  =    6.46666e+17
+R_f  =    6.46666e+17
+d_R  =    0
+R_i  =    8.08332e+16
+R_f  =    8.08332e+16
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    7.48014e+16
+R_f  =    7.48014e+16
+d_R  =    0
+R_i  =    1.38053e+14
+R_f  =    1.38053e+14
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    6.46666e+17
+R_f  =    8.7579e+17
+d_R  =    2.29124e+17
+R_i  =    8.08332e+16
+R_f  =    1.09474e+17
+d_R  =    2.86405e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    7.48014e+16
+R_f  =    9.03883e+16
+d_R  =    1.55869e+16
+R_i  =    1.38053e+14
+R_f  =    1.54351e+14
+d_R  =    1.62981e+13
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999998
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 3.46163e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.23654e+07
+Critical pressure (Pa): 1.60477e+09
+Critical pressure Jernkvist (Pa): 7.36792e+08
+Bubble pressure (Pa): 1.77497e+07
+dm/dp= 1.65697e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    8.7579e+17
+R_f  =    1.13524e+18
+d_R  =    2.59454e+17
+R_i  =    1.09474e+17
+R_f  =    1.41906e+17
+d_R  =    3.24318e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    9.03883e+16
+R_f  =    1.04697e+17
+d_R  =    1.43083e+16
+R_i  =    1.54351e+14
+R_f  =    1.67778e+14
+d_R  =    1.3427e+13
+	
+GasRelease: intact faces
+R_i  =    8.7579e+17
+R_f  =    8.7579e+17
+d_R  =    0
+R_i  =    1.09474e+17
+R_f  =    1.09474e+17
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    9.03883e+16
+R_f  =    9.03883e+16
+d_R  =    0
+R_i  =    1.54351e+14
+R_f  =    1.54351e+14
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    8.7579e+17
+R_f  =    1.13524e+18
+d_R  =    2.59454e+17
+R_i  =    1.09474e+17
+R_f  =    1.41906e+17
+d_R  =    3.24318e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    9.03883e+16
+R_f  =    1.04697e+17
+d_R  =    1.43083e+16
+R_i  =    1.54351e+14
+R_f  =    1.67778e+14
+d_R  =    1.3427e+13
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999998
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 3.10509e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.10918e+07
+Critical pressure (Pa): 1.51239e+09
+Critical pressure Jernkvist (Pa): 6.95362e+08
+Bubble pressure (Pa): 1.63411e+07
+dm/dp= 1.73585e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.13524e+18
+R_f  =    1.42147e+18
+d_R  =    2.86222e+17
+R_i  =    1.41906e+17
+R_f  =    1.77683e+17
+d_R  =    3.57777e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.04697e+17
+R_f  =    1.17361e+17
+d_R  =    1.26639e+16
+R_i  =    1.67778e+14
+R_f  =    1.78251e+14
+d_R  =    1.0473e+13
+	
+GasRelease: intact faces
+R_i  =    1.13524e+18
+R_f  =    1.13524e+18
+d_R  =    0
+R_i  =    1.41906e+17
+R_f  =    1.41906e+17
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.04697e+17
+R_f  =    1.04697e+17
+d_R  =    0
+R_i  =    1.67778e+14
+R_f  =    1.67778e+14
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.13524e+18
+R_f  =    1.42147e+18
+d_R  =    2.86222e+17
+R_i  =    1.41906e+17
+R_f  =    1.77683e+17
+d_R  =    3.57777e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.04697e+17
+R_f  =    1.17361e+17
+d_R  =    1.26639e+16
+R_i  =    1.67778e+14
+R_f  =    1.78251e+14
+d_R  =    1.0473e+13
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999998
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 2.82287e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.00836e+07
+Critical pressure (Pa): 1.43542e+09
+Critical pressure Jernkvist (Pa): 6.60575e+08
+Bubble pressure (Pa): 1.52635e+07
+dm/dp= 1.81334e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.42147e+18
+R_f  =    1.73388e+18
+d_R  =    3.12416e+17
+R_i  =    1.77683e+17
+R_f  =    2.16735e+17
+d_R  =    3.9052e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.17361e+17
+R_f  =    1.28565e+17
+d_R  =    1.12044e+16
+R_i  =    1.78251e+14
+R_f  =    1.87498e+14
+d_R  =    9.24695e+12
+	
+GasRelease: intact faces
+R_i  =    1.42147e+18
+R_f  =    1.42147e+18
+d_R  =    0
+R_i  =    1.77683e+17
+R_f  =    1.77683e+17
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.17361e+17
+R_f  =    1.17361e+17
+d_R  =    0
+R_i  =    1.78251e+14
+R_f  =    1.78251e+14
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.42147e+18
+R_f  =    1.73388e+18
+d_R  =    3.12416e+17
+R_i  =    1.77683e+17
+R_f  =    2.16735e+17
+d_R  =    3.9052e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.17361e+17
+R_f  =    1.28565e+17
+d_R  =    1.12044e+16
+R_i  =    1.78251e+14
+R_f  =    1.87498e+14
+d_R  =    9.24695e+12
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999998
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 2.59315e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 9.26305e+06
+Critical pressure (Pa): 1.36986e+09
+Critical pressure Jernkvist (Pa): 6.30695e+08
+Bubble pressure (Pa): 1.44253e+07
+dm/dp= 1.89035e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.73388e+18
+R_f  =    2.07192e+18
+d_R  =    3.38043e+17
+R_i  =    2.16735e+17
+R_f  =    2.58991e+17
+d_R  =    4.22554e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.28565e+17
+R_f  =    1.38468e+17
+d_R  =    9.90306e+15
+R_i  =    1.87498e+14
+R_f  =    1.95776e+14
+d_R  =    8.27807e+12
+	
+GasRelease: intact faces
+R_i  =    1.73388e+18
+R_f  =    1.73388e+18
+d_R  =    0
+R_i  =    2.16735e+17
+R_f  =    2.16735e+17
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.28565e+17
+R_f  =    1.28565e+17
+d_R  =    0
+R_i  =    1.87498e+14
+R_f  =    1.87498e+14
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.73388e+18
+R_f  =    2.07192e+18
+d_R  =    3.38043e+17
+R_i  =    2.16735e+17
+R_f  =    2.58991e+17
+d_R  =    4.22554e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.28565e+17
+R_f  =    1.38468e+17
+d_R  =    9.90306e+15
+R_i  =    1.87498e+14
+R_f  =    1.95776e+14
+d_R  =    8.27807e+12
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999998
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 2.4019e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 8.57988e+06
+Critical pressure (Pa): 1.31303e+09
+Critical pressure Jernkvist (Pa): 6.04557e+08
+Bubble pressure (Pa): 1.37577e+07
+dm/dp= 1.96697e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.07192e+18
+R_f  =    2.43551e+18
+d_R  =    3.63582e+17
+R_i  =    2.58991e+17
+R_f  =    3.04438e+17
+d_R  =    4.54477e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.38468e+17
+R_f  =    1.47264e+17
+d_R  =    8.79575e+15
+R_i  =    1.95776e+14
+R_f  =    2.03399e+14
+d_R  =    7.623e+12
+	
+GasRelease: intact faces
+R_i  =    2.07192e+18
+R_f  =    2.07192e+18
+d_R  =    0
+R_i  =    2.58991e+17
+R_f  =    2.58991e+17
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.38468e+17
+R_f  =    1.38468e+17
+d_R  =    0
+R_i  =    1.95776e+14
+R_f  =    1.95776e+14
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.07192e+18
+R_f  =    2.43551e+18
+d_R  =    3.63582e+17
+R_i  =    2.58991e+17
+R_f  =    3.04438e+17
+d_R  =    4.54477e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.38468e+17
+R_f  =    1.47264e+17
+d_R  =    8.79575e+15
+R_i  =    1.95776e+14
+R_f  =    2.03399e+14
+d_R  =    7.623e+12
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 2.23962e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 8.00019e+06
+Critical pressure (Pa): 1.26303e+09
+Critical pressure Jernkvist (Pa): 5.81339e+08
+Bubble pressure (Pa): 1.32157e+07
+dm/dp= 2.04339e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.43551e+18
+R_f  =    2.82458e+18
+d_R  =    3.89073e+17
+R_i  =    3.04438e+17
+R_f  =    3.53072e+17
+d_R  =    4.86342e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.47264e+17
+R_f  =    1.55116e+17
+d_R  =    7.85244e+15
+R_i  =    2.03399e+14
+R_f  =    2.1048e+14
+d_R  =    7.08053e+12
+	
+GasRelease: intact faces
+R_i  =    2.43551e+18
+R_f  =    2.43551e+18
+d_R  =    0
+R_i  =    3.04438e+17
+R_f  =    3.04438e+17
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.47264e+17
+R_f  =    1.47264e+17
+d_R  =    0
+R_i  =    2.03399e+14
+R_f  =    2.03399e+14
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.43551e+18
+R_f  =    2.82458e+18
+d_R  =    3.89073e+17
+R_i  =    3.04438e+17
+R_f  =    3.53072e+17
+d_R  =    4.86342e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.47264e+17
+R_f  =    1.55116e+17
+d_R  =    7.85244e+15
+R_i  =    2.03399e+14
+R_f  =    2.1048e+14
+d_R  =    7.08053e+12
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 2.09974e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 7.50052e+06
+Critical pressure (Pa): 1.21846e+09
+Critical pressure Jernkvist (Pa): 5.60455e+08
+Bubble pressure (Pa): 1.27674e+07
+dm/dp= 2.11969e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.82458e+18
+R_f  =    3.23928e+18
+d_R  =    4.14702e+17
+R_i  =    3.53072e+17
+R_f  =    4.0491e+17
+d_R  =    5.18378e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.55116e+17
+R_f  =    1.62179e+17
+d_R  =    7.06291e+15
+R_i  =    2.1048e+14
+R_f  =    2.17149e+14
+d_R  =    6.6696e+12
+	
+GasRelease: intact faces
+R_i  =    2.82458e+18
+R_f  =    2.82458e+18
+d_R  =    0
+R_i  =    3.53072e+17
+R_f  =    3.53072e+17
+d_R  =    0
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.55116e+17
+R_f  =    1.55116e+17
+d_R  =    0
+R_i  =    2.1048e+14
+R_f  =    2.1048e+14
+d_R  =    0
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.82458e+18
+R_f  =    3.23928e+18
+d_R  =    4.14702e+17
+R_i  =    3.53072e+17
+R_f  =    4.0491e+17
+d_R  =    5.18378e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.55116e+17
+R_f  =    1.62179e+17
+d_R  =    7.06291e+15
+R_i  =    2.1048e+14
+R_f  =    2.17149e+14
+d_R  =    6.6696e+12
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.97757e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 7.06413e+06
+Critical pressure (Pa): 1.17834e+09
+Critical pressure Jernkvist (Pa): 5.41475e+08
+Bubble pressure (Pa): 1.2391e+07
+dm/dp= 2.19596e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    3.23928e+18
+R_f  =    3.67989e+18
+d_R  =    4.40609e+17
+R_i  =    4.0491e+17
+R_f  =    4.59986e+17
+d_R  =    5.50761e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.62179e+17
+R_f  =    1.68589e+17
+d_R  =    6.40986e+15
+R_i  =    2.17149e+14
+R_f  =    2.23506e+14
+d_R  =    6.35682e+12
+	
+GasRelease: intact faces
+R_i  =    3.23928e+18
+R_f  =    9.09972e+20
+d_R  =    9.06733e+20
+R_i  =    4.0491e+17
+R_f  =    1.13746e+20
+d_R  =    1.13342e+20
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.62179e+17
+R_f  =    3.72985e+19
+d_R  =    3.71363e+19
+R_i  =    2.17149e+14
+R_f  =    5.9744e+16
+d_R  =    5.95268e+16
+	
+GasRelease: intact faces+microcracking
+R_i  =    3.23928e+18
+R_f  =    9.10413e+20
+d_R  =    9.07173e+20
+R_i  =    4.0491e+17
+R_f  =    1.13802e+20
+d_R  =    1.13397e+20
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.62179e+17
+R_f  =    3.73049e+19
+d_R  =    3.71427e+19
+R_i  =    2.17149e+14
+R_f  =    5.97503e+16
+d_R  =    5.95332e+16
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.86969e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 6.67876e+06
+Critical pressure (Pa): 1.14189e+09
+Critical pressure Jernkvist (Pa): 5.24081e+08
+Bubble pressure (Pa): 1.20622e+07
+dm/dp= 2.27147e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    9.10413e+20
+R_f  =    9.10879e+20
+d_R  =    4.66524e+17
+R_i  =    1.13802e+20
+R_f  =    1.1386e+20
+d_R  =    5.83155e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.73049e+19
+R_f  =    3.73107e+19
+d_R  =    5.86217e+15
+R_i  =    5.97503e+16
+R_f  =    5.97564e+16
+d_R  =    6.10498e+12
+	
+GasRelease: intact faces
+R_i  =    9.10413e+20
+R_f  =    9.48126e+21
+d_R  =    8.57085e+21
+R_i  =    1.13802e+20
+R_f  =    1.18516e+21
+d_R  =    1.07136e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.73049e+19
+R_f  =    3.58331e+20
+d_R  =    3.21026e+20
+R_i  =    5.97503e+16
+R_f  =    5.6889e+17
+d_R  =    5.09139e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    9.10413e+20
+R_f  =    9.48173e+21
+d_R  =    8.57132e+21
+R_i  =    1.13802e+20
+R_f  =    1.18522e+21
+d_R  =    1.07141e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.73049e+19
+R_f  =    3.58337e+20
+d_R  =    3.21032e+20
+R_i  =    5.97503e+16
+R_f  =    5.68896e+17
+d_R  =    5.09146e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.77364e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 6.33567e+06
+Critical pressure (Pa): 1.10858e+09
+Critical pressure Jernkvist (Pa): 5.08048e+08
+Bubble pressure (Pa): 1.17178e+07
+dm/dp= 2.3405e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    9.48173e+21
+R_f  =    9.48222e+21
+d_R  =    4.89457e+17
+R_i  =    1.18522e+21
+R_f  =    1.18528e+21
+d_R  =    6.11821e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.58337e+20
+R_f  =    3.58342e+20
+d_R  =    5.29991e+15
+R_i  =    5.68896e+17
+R_f  =    5.68902e+17
+d_R  =    5.73286e+12
+	
+GasRelease: intact faces
+R_i  =    9.48173e+21
+R_f  =    2.1723e+22
+d_R  =    1.22412e+22
+R_i  =    1.18522e+21
+R_f  =    2.71537e+21
+d_R  =    1.53015e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.58337e+20
+R_f  =    7.61519e+20
+d_R  =    4.03183e+20
+R_i  =    5.68896e+17
+R_f  =    1.19903e+18
+d_R  =    6.30139e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    9.48173e+21
+R_f  =    2.17234e+22
+d_R  =    1.22417e+22
+R_i  =    1.18522e+21
+R_f  =    2.71543e+21
+d_R  =    1.53021e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.58337e+20
+R_f  =    7.61525e+20
+d_R  =    4.03188e+20
+R_i  =    5.68896e+17
+R_f  =    1.19904e+18
+d_R  =    6.30145e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.68819e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 6.03043e+06
+Critical pressure (Pa): 1.07822e+09
+Critical pressure Jernkvist (Pa): 4.93322e+08
+Bubble pressure (Pa): 1.14098e+07
+dm/dp= 2.40785e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.17234e+22
+R_f  =    2.1724e+22
+d_R  =    5.11857e+17
+R_i  =    2.71543e+21
+R_f  =    2.71549e+21
+d_R  =    6.39821e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    7.61525e+20
+R_f  =    7.61529e+20
+d_R  =    4.818e+15
+R_i  =    1.19904e+18
+R_f  =    1.19905e+18
+d_R  =    5.405e+12
+	
+GasRelease: intact faces
+R_i  =    2.17234e+22
+R_f  =    3.62998e+22
+d_R  =    1.45764e+22
+R_i  =    2.71543e+21
+R_f  =    4.53748e+21
+d_R  =    1.82205e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    7.61525e+20
+R_f  =    1.1838e+21
+d_R  =    4.22271e+20
+R_i  =    1.19904e+18
+R_f  =    1.85153e+18
+d_R  =    6.52485e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.17234e+22
+R_f  =    3.63003e+22
+d_R  =    1.45769e+22
+R_i  =    2.71543e+21
+R_f  =    4.53754e+21
+d_R  =    1.82211e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    7.61525e+20
+R_f  =    1.1838e+21
+d_R  =    4.22276e+20
+R_i  =    1.19904e+18
+R_f  =    1.85153e+18
+d_R  =    6.5249e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.61155e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 5.75665e+06
+Critical pressure (Pa): 1.05037e+09
+Critical pressure Jernkvist (Pa): 4.79714e+08
+Bubble pressure (Pa): 1.11432e+07
+dm/dp= 2.47502e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    3.63003e+22
+R_f  =    3.63009e+22
+d_R  =    5.34545e+17
+R_i  =    4.53754e+21
+R_f  =    4.53761e+21
+d_R  =    6.68182e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.1838e+21
+R_f  =    1.18381e+21
+d_R  =    4.42864e+15
+R_i  =    1.85153e+18
+R_f  =    1.85154e+18
+d_R  =    5.15001e+12
+	
+GasRelease: intact faces
+R_i  =    3.63003e+22
+R_f  =    5.33617e+22
+d_R  =    1.70613e+22
+R_i  =    4.53754e+21
+R_f  =    6.67021e+21
+d_R  =    2.13266e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.1838e+21
+R_f  =    1.62313e+21
+d_R  =    4.39327e+20
+R_i  =    1.85153e+18
+R_f  =    2.52519e+18
+d_R  =    6.73656e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    3.63003e+22
+R_f  =    5.33622e+22
+d_R  =    1.70619e+22
+R_i  =    4.53754e+21
+R_f  =    6.67028e+21
+d_R  =    2.13273e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.1838e+21
+R_f  =    1.62313e+21
+d_R  =    4.39332e+20
+R_i  =    1.85153e+18
+R_f  =    2.52519e+18
+d_R  =    6.73661e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.54226e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 5.50915e+06
+Critical pressure (Pa): 1.02465e+09
+Critical pressure Jernkvist (Pa): 4.67068e+08
+Bubble pressure (Pa): 1.09092e+07
+dm/dp= 2.54195e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    5.33622e+22
+R_f  =    5.33628e+22
+d_R  =    5.57533e+17
+R_i  =    6.67028e+21
+R_f  =    6.67034e+21
+d_R  =    6.96916e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.62313e+21
+R_f  =    1.62314e+21
+d_R  =    4.11474e+15
+R_i  =    2.52519e+18
+R_f  =    2.5252e+18
+d_R  =    4.95085e+12
+	
+GasRelease: intact faces
+R_i  =    5.33622e+22
+R_f  =    7.30657e+22
+d_R  =    1.97035e+22
+R_i  =    6.67028e+21
+R_f  =    9.13321e+21
+d_R  =    2.46294e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.62313e+21
+R_f  =    2.07819e+21
+d_R  =    4.5506e+20
+R_i  =    2.52519e+18
+R_f  =    3.21945e+18
+d_R  =    6.94256e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    5.33622e+22
+R_f  =    7.30663e+22
+d_R  =    1.97041e+22
+R_i  =    6.67028e+21
+R_f  =    9.13328e+21
+d_R  =    2.46301e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.62313e+21
+R_f  =    2.0782e+21
+d_R  =    4.55064e+20
+R_i  =    2.52519e+18
+R_f  =    3.21945e+18
+d_R  =    6.94261e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.47924e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 5.28401e+06
+Critical pressure (Pa): 1.00079e+09
+Critical pressure Jernkvist (Pa): 4.55267e+08
+Bubble pressure (Pa): 1.07015e+07
+dm/dp= 2.60861e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    7.30663e+22
+R_f  =    7.30668e+22
+d_R  =    5.80829e+17
+R_i  =    9.13328e+21
+R_f  =    9.13335e+21
+d_R  =    7.26036e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.0782e+21
+R_f  =    2.0782e+21
+d_R  =    3.86226e+15
+R_i  =    3.21945e+18
+R_f  =    3.21946e+18
+d_R  =    4.79498e+12
+	
+GasRelease: intact faces
+R_i  =    7.30663e+22
+R_f  =    9.5574e+22
+d_R  =    2.25077e+22
+R_i  =    9.13328e+21
+R_f  =    1.19467e+22
+d_R  =    2.81346e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.0782e+21
+R_f  =    2.54812e+21
+d_R  =    4.69927e+20
+R_i  =    3.21945e+18
+R_f  =    3.93405e+18
+d_R  =    7.14597e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    7.30663e+22
+R_f  =    9.55745e+22
+d_R  =    2.25083e+22
+R_i  =    9.13328e+21
+R_f  =    1.19468e+22
+d_R  =    2.81353e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.0782e+21
+R_f  =    2.54813e+21
+d_R  =    4.69931e+20
+R_i  =    3.21945e+18
+R_f  =    3.93405e+18
+d_R  =    7.14602e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.42161e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 5.07815e+06
+Critical pressure (Pa): 9.78557e+08
+Critical pressure Jernkvist (Pa): 4.44218e+08
+Bubble pressure (Pa): 1.05156e+07
+dm/dp= 2.67493e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    9.55745e+22
+R_f  =    9.55751e+22
+d_R  =    6.04442e+17
+R_i  =    1.19468e+22
+R_f  =    1.19469e+22
+d_R  =    7.55552e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.54813e+21
+R_f  =    2.54813e+21
+d_R  =    3.65978e+15
+R_i  =    3.93405e+18
+R_f  =    3.93406e+18
+d_R  =    4.67314e+12
+	
+GasRelease: intact faces
+R_i  =    9.55745e+22
+R_f  =    1.21113e+23
+d_R  =    2.5538e+22
+R_i  =    1.19468e+22
+R_f  =    1.51391e+22
+d_R  =    3.19225e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.54813e+21
+R_f  =    3.03376e+21
+d_R  =    4.8563e+20
+R_i  =    3.93405e+18
+R_f  =    4.67105e+18
+d_R  =    7.36996e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    9.55745e+22
+R_f  =    1.21113e+23
+d_R  =    2.55386e+22
+R_i  =    1.19468e+22
+R_f  =    1.51391e+22
+d_R  =    3.19232e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.54813e+21
+R_f  =    3.03376e+21
+d_R  =    4.85634e+20
+R_i  =    3.93405e+18
+R_f  =    4.67106e+18
+d_R  =    7.37001e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.36868e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 4.88908e+06
+Critical pressure (Pa): 9.57777e+08
+Critical pressure Jernkvist (Pa): 4.33844e+08
+Bubble pressure (Pa): 1.03474e+07
+dm/dp= 2.74085e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.21113e+23
+R_f  =    1.21114e+23
+d_R  =    6.28348e+17
+R_i  =    1.51391e+22
+R_f  =    1.51392e+22
+d_R  =    7.85435e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.03376e+21
+R_f  =    3.03376e+21
+d_R  =    3.49722e+15
+R_i  =    4.67106e+18
+R_f  =    4.67106e+18
+d_R  =    4.57717e+12
+	
+GasRelease: intact faces
+R_i  =    1.21113e+23
+R_f  =    1.49828e+23
+d_R  =    2.87153e+22
+R_i  =    1.51391e+22
+R_f  =    1.87286e+22
+d_R  =    3.58942e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.03376e+21
+R_f  =    3.534e+21
+d_R  =    5.00242e+20
+R_i  =    4.67106e+18
+R_f  =    5.4293e+18
+d_R  =    7.58243e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.21113e+23
+R_f  =    1.49829e+23
+d_R  =    2.87159e+22
+R_i  =    1.51391e+22
+R_f  =    1.87286e+22
+d_R  =    3.58949e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.03376e+21
+R_f  =    3.53401e+21
+d_R  =    5.00245e+20
+R_i  =    4.67106e+18
+R_f  =    5.4293e+18
+d_R  =    7.58247e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.31988e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 4.71478e+06
+Critical pressure (Pa): 9.38299e+08
+Critical pressure Jernkvist (Pa): 4.24085e+08
+Bubble pressure (Pa): 1.01946e+07
+dm/dp= 2.80634e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.49829e+23
+R_f  =    1.4983e+23
+d_R  =    6.5256e+17
+R_i  =    1.87286e+22
+R_f  =    1.87287e+22
+d_R  =    8.157e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.53401e+21
+R_f  =    3.53401e+21
+d_R  =    3.36725e+15
+R_i  =    5.4293e+18
+R_f  =    5.42931e+18
+d_R  =    4.50209e+12
+	
+GasRelease: intact faces
+R_i  =    1.49829e+23
+R_f  =    1.81922e+23
+d_R  =    3.20929e+22
+R_i  =    1.87286e+22
+R_f  =    2.27403e+22
+d_R  =    4.01162e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.53401e+21
+R_f  =    4.04919e+21
+d_R  =    5.15182e+20
+R_i  =    5.4293e+18
+R_f  =    6.20966e+18
+d_R  =    7.80362e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.49829e+23
+R_f  =    1.81923e+23
+d_R  =    3.20936e+22
+R_i  =    1.87286e+22
+R_f  =    2.27403e+22
+d_R  =    4.0117e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.53401e+21
+R_f  =    4.04919e+21
+d_R  =    5.15185e+20
+R_i  =    5.4293e+18
+R_f  =    6.20967e+18
+d_R  =    7.80366e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.27474e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 4.55355e+06
+Critical pressure (Pa): 9.19996e+08
+Critical pressure Jernkvist (Pa): 4.14887e+08
+Bubble pressure (Pa): 1.00546e+07
+dm/dp= 2.87135e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.81923e+23
+R_f  =    1.81923e+23
+d_R  =    6.77053e+17
+R_i  =    2.27403e+22
+R_f  =    2.27404e+22
+d_R  =    8.46317e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    4.04919e+21
+R_f  =    4.04919e+21
+d_R  =    3.2632e+15
+R_i  =    6.20967e+18
+R_f  =    6.20967e+18
+d_R  =    4.44297e+12
+	
+GasRelease: intact faces
+R_i  =    1.81923e+23
+R_f  =    2.17601e+23
+d_R  =    3.5678e+22
+R_i  =    2.27403e+22
+R_f  =    2.72001e+22
+d_R  =    4.45976e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    4.04919e+21
+R_f  =    4.57962e+21
+d_R  =    5.3043e+20
+R_i  =    6.20967e+18
+R_f  =    7.01285e+18
+d_R  =    8.03186e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.81923e+23
+R_f  =    2.17601e+23
+d_R  =    3.56787e+22
+R_i  =    2.27403e+22
+R_f  =    2.72002e+22
+d_R  =    4.45984e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    4.04919e+21
+R_f  =    4.57962e+21
+d_R  =    5.30433e+20
+R_i  =    6.20967e+18
+R_f  =    7.01286e+18
+d_R  =    8.03191e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.23288e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 4.40398e+06
+Critical pressure (Pa): 9.02763e+08
+Critical pressure Jernkvist (Pa): 4.06204e+08
+Bubble pressure (Pa): 9.92571e+06
+dm/dp= 2.93581e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.17601e+23
+R_f  =    2.17602e+23
+d_R  =    7.01794e+17
+R_i  =    2.72002e+22
+R_f  =    2.72003e+22
+d_R  =    8.77243e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    4.57962e+21
+R_f  =    4.57963e+21
+d_R  =    3.17947e+15
+R_i  =    7.01286e+18
+R_f  =    7.01286e+18
+d_R  =    4.39566e+12
+	
+GasRelease: intact faces
+R_i  =    2.17601e+23
+R_f  =    2.56975e+23
+d_R  =    3.93739e+22
+R_i  =    2.72002e+22
+R_f  =    3.21219e+22
+d_R  =    4.92174e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    4.57962e+21
+R_f  =    5.12378e+21
+d_R  =    5.4416e+20
+R_i  =    7.01286e+18
+R_f  =    7.83669e+18
+d_R  =    8.23833e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.17601e+23
+R_f  =    2.56976e+23
+d_R  =    3.93747e+22
+R_i  =    2.72002e+22
+R_f  =    3.2122e+22
+d_R  =    4.92183e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    4.57962e+21
+R_f  =    5.12379e+21
+d_R  =    5.44163e+20
+R_i  =    7.01286e+18
+R_f  =    7.8367e+18
+d_R  =    8.23838e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.19393e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 4.26488e+06
+Critical pressure (Pa): 8.86506e+08
+Critical pressure Jernkvist (Pa): 3.97998e+08
+Bubble pressure (Pa): 9.80659e+06
+dm/dp= 2.99972e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.56976e+23
+R_f  =    2.56977e+23
+d_R  =    7.26788e+17
+R_i  =    3.2122e+22
+R_f  =    3.21221e+22
+d_R  =    9.08485e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    5.12379e+21
+R_f  =    5.12379e+21
+d_R  =    3.11235e+15
+R_i  =    7.8367e+18
+R_f  =    7.8367e+18
+d_R  =    4.35812e+12
+	
+GasRelease: intact faces
+R_i  =    2.56976e+23
+R_f  =    3.00195e+23
+d_R  =    4.32193e+22
+R_i  =    3.2122e+22
+R_f  =    3.75244e+22
+d_R  =    5.40242e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    5.12379e+21
+R_f  =    5.68107e+21
+d_R  =    5.57279e+20
+R_i  =    7.8367e+18
+R_f  =    8.68033e+18
+d_R  =    8.43632e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.56976e+23
+R_f  =    3.00196e+23
+d_R  =    4.32201e+22
+R_i  =    3.2122e+22
+R_f  =    3.75245e+22
+d_R  =    5.40251e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    5.12379e+21
+R_f  =    5.68107e+21
+d_R  =    5.57282e+20
+R_i  =    7.8367e+18
+R_f  =    8.68033e+18
+d_R  =    8.43637e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.15763e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 4.13521e+06
+Critical pressure (Pa): 8.71145e+08
+Critical pressure Jernkvist (Pa): 3.90233e+08
+Bubble pressure (Pa): 9.69604e+06
+dm/dp= 3.06303e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    3.00196e+23
+R_f  =    3.00197e+23
+d_R  =    7.52008e+17
+R_i  =    3.75245e+22
+R_f  =    3.75246e+22
+d_R  =    9.4001e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    5.68107e+21
+R_f  =    5.68107e+21
+d_R  =    3.05827e+15
+R_i  =    8.68033e+18
+R_f  =    8.68034e+18
+d_R  =    4.3279e+12
+	
+GasRelease: intact faces
+R_i  =    3.00196e+23
+R_f  =    3.47485e+23
+d_R  =    4.72889e+22
+R_i  =    3.75245e+22
+R_f  =    4.34356e+22
+d_R  =    5.91111e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    5.68107e+21
+R_f  =    6.25239e+21
+d_R  =    5.71322e+20
+R_i  =    8.68033e+18
+R_f  =    9.54523e+18
+d_R  =    8.64896e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    3.00196e+23
+R_f  =    3.47486e+23
+d_R  =    4.72896e+22
+R_i  =    3.75245e+22
+R_f  =    4.34357e+22
+d_R  =    5.9112e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    5.68107e+21
+R_f  =    6.25239e+21
+d_R  =    5.71325e+20
+R_i  =    8.68033e+18
+R_f  =    9.54523e+18
+d_R  =    8.649e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.12372e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 4.01407e+06
+Critical pressure (Pa): 8.56609e+08
+Critical pressure Jernkvist (Pa): 3.82879e+08
+Bubble pressure (Pa): 9.59276e+06
+dm/dp= 3.12567e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    3.47486e+23
+R_f  =    3.47486e+23
+d_R  =    7.77379e+17
+R_i  =    4.34357e+22
+R_f  =    4.34358e+22
+d_R  =    9.71724e+16
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    6.25239e+21
+R_f  =    6.2524e+21
+d_R  =    3.01353e+15
+R_i  =    9.54523e+18
+R_f  =    9.54524e+18
+d_R  =    4.30178e+12
+	
+GasRelease: intact faces
+R_i  =    3.47486e+23
+R_f  =    3.98669e+23
+d_R  =    5.11835e+22
+R_i  =    4.34357e+22
+R_f  =    4.98337e+22
+d_R  =    6.39794e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    6.25239e+21
+R_f  =    6.83179e+21
+d_R  =    5.79393e+20
+R_i  =    9.54523e+18
+R_f  =    1.04223e+19
+d_R  =    8.77045e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    3.47486e+23
+R_f  =    3.9867e+23
+d_R  =    5.11843e+22
+R_i  =    4.34357e+22
+R_f  =    4.98338e+22
+d_R  =    6.39804e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    6.25239e+21
+R_f  =    6.83179e+21
+d_R  =    5.79396e+20
+R_i  =    9.54523e+18
+R_f  =    1.04223e+19
+d_R  =    8.7705e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.09198e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 3.90068e+06
+Critical pressure (Pa): 8.42835e+08
+Critical pressure Jernkvist (Pa): 3.75906e+08
+Bubble pressure (Pa): 9.49686e+06
+dm/dp= 3.18776e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    3.9867e+23
+R_f  =    3.98671e+23
+d_R  =    8.03032e+17
+R_i  =    4.98338e+22
+R_f  =    4.98339e+22
+d_R  =    1.00379e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    6.83179e+21
+R_f  =    6.83179e+21
+d_R  =    2.97847e+15
+R_i  =    1.04223e+19
+R_f  =    1.04223e+19
+d_R  =    4.28227e+12
+	
+GasRelease: intact faces
+R_i  =    3.9867e+23
+R_f  =    4.53834e+23
+d_R  =    5.51638e+22
+R_i  =    4.98338e+22
+R_f  =    5.67292e+22
+d_R  =    6.89547e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    6.83179e+21
+R_f  =    7.41849e+21
+d_R  =    5.86696e+20
+R_i  =    1.04223e+19
+R_f  =    1.13103e+19
+d_R  =    8.88037e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    3.9867e+23
+R_f  =    4.53835e+23
+d_R  =    5.51646e+22
+R_i  =    4.98338e+22
+R_f  =    5.67293e+22
+d_R  =    6.89557e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    6.83179e+21
+R_f  =    7.41849e+21
+d_R  =    5.86699e+20
+R_i  =    1.04223e+19
+R_f  =    1.13103e+19
+d_R  =    8.88041e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.06221e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 3.79434e+06
+Critical pressure (Pa): 8.29766e+08
+Critical pressure Jernkvist (Pa): 3.69289e+08
+Bubble pressure (Pa): 9.4075e+06
+dm/dp= 3.24929e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    4.53835e+23
+R_f  =    4.53835e+23
+d_R  =    8.28944e+17
+R_i  =    5.67293e+22
+R_f  =    5.67294e+22
+d_R  =    1.03618e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    7.41849e+21
+R_f  =    7.41849e+21
+d_R  =    2.95096e+15
+R_i  =    1.13103e+19
+R_f  =    1.13103e+19
+d_R  =    4.26774e+12
+	
+GasRelease: intact faces
+R_i  =    4.53835e+23
+R_f  =    5.13199e+23
+d_R  =    5.93643e+22
+R_i  =    5.67293e+22
+R_f  =    6.41499e+22
+d_R  =    7.42053e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    7.41849e+21
+R_f  =    8.01391e+21
+d_R  =    5.95418e+20
+R_i  =    1.13103e+19
+R_f  =    1.22115e+19
+d_R  =    9.01191e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    4.53835e+23
+R_f  =    5.132e+23
+d_R  =    5.93651e+22
+R_i  =    5.67293e+22
+R_f  =    6.415e+22
+d_R  =    7.42064e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    7.41849e+21
+R_f  =    8.01391e+21
+d_R  =    5.95421e+20
+R_i  =    1.13103e+19
+R_f  =    1.22115e+19
+d_R  =    9.01195e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999997
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.03424e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 3.69444e+06
+Critical pressure (Pa): 8.17349e+08
+Critical pressure Jernkvist (Pa): 3.63004e+08
+Bubble pressure (Pa): 9.32359e+06
+dm/dp= 3.31014e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    5.132e+23
+R_f  =    5.13201e+23
+d_R  =    8.55005e+17
+R_i  =    6.415e+22
+R_f  =    6.41501e+22
+d_R  =    1.06876e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    8.01391e+21
+R_f  =    8.01391e+21
+d_R  =    2.92805e+15
+R_i  =    1.22115e+19
+R_f  =    1.22115e+19
+d_R  =    4.25496e+12
+	
+GasRelease: intact faces
+R_i  =    5.132e+23
+R_f  =    5.76692e+23
+d_R  =    6.34927e+22
+R_i  =    6.415e+22
+R_f  =    7.20865e+22
+d_R  =    7.93659e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    8.01391e+21
+R_f  =    8.61512e+21
+d_R  =    6.01208e+20
+R_i  =    1.22115e+19
+R_f  =    1.31214e+19
+d_R  =    9.09861e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    5.132e+23
+R_f  =    5.76693e+23
+d_R  =    6.34935e+22
+R_i  =    6.415e+22
+R_f  =    7.20867e+22
+d_R  =    7.93669e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    8.01391e+21
+R_f  =    8.61512e+21
+d_R  =    6.01211e+20
+R_i  =    1.22115e+19
+R_f  =    1.31214e+19
+d_R  =    9.09866e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 1.00793e+07
+Capillary pressure by  (Jernkvist 2020, Pa) = 3.60044e+06
+Critical pressure (Pa): 8.0554e+08
+Critical pressure Jernkvist (Pa): 3.57029e+08
+Bubble pressure (Pa): 9.24495e+06
+dm/dp= 3.37038e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    5.76693e+23
+R_f  =    5.76694e+23
+d_R  =    8.81264e+17
+R_i  =    7.20867e+22
+R_f  =    7.20868e+22
+d_R  =    1.10158e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    8.61512e+21
+R_f  =    8.61512e+21
+d_R  =    2.90959e+15
+R_i  =    1.31214e+19
+R_f  =    1.31214e+19
+d_R  =    4.24473e+12
+	
+GasRelease: intact faces
+R_i  =    5.76693e+23
+R_f  =    6.44126e+23
+d_R  =    6.74327e+22
+R_i  =    7.20867e+22
+R_f  =    8.05157e+22
+d_R  =    8.42908e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    8.61512e+21
+R_f  =    9.21798e+21
+d_R  =    6.02863e+20
+R_i  =    1.31214e+19
+R_f  =    1.40336e+19
+d_R  =    9.12216e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    5.76693e+23
+R_f  =    6.44127e+23
+d_R  =    6.74335e+22
+R_i  =    7.20867e+22
+R_f  =    8.05158e+22
+d_R  =    8.42919e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    8.61512e+21
+R_f  =    9.21799e+21
+d_R  =    6.02866e+20
+R_i  =    1.31214e+19
+R_f  =    1.40336e+19
+d_R  =    9.1222e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 9.83129e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 3.51186e+06
+Critical pressure (Pa): 7.94296e+08
+Critical pressure Jernkvist (Pa): 3.51344e+08
+Bubble pressure (Pa): 9.17165e+06
+dm/dp= 3.43011e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    6.44127e+23
+R_f  =    6.44128e+23
+d_R  =    9.07835e+17
+R_i  =    8.05158e+22
+R_f  =    8.0516e+22
+d_R  =    1.13479e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    9.21799e+21
+R_f  =    9.21799e+21
+d_R  =    2.89625e+15
+R_i  =    1.40336e+19
+R_f  =    1.40336e+19
+d_R  =    4.23895e+12
+	
+GasRelease: intact faces
+R_i  =    6.44127e+23
+R_f  =    7.15442e+23
+d_R  =    7.13156e+22
+R_i  =    8.05158e+22
+R_f  =    8.94303e+22
+d_R  =    8.91445e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    9.21799e+21
+R_f  =    9.82079e+21
+d_R  =    6.02806e+20
+R_i  =    1.40336e+19
+R_f  =    1.49456e+19
+d_R  =    9.11954e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    6.44127e+23
+R_f  =    7.15443e+23
+d_R  =    7.13165e+22
+R_i  =    8.05158e+22
+R_f  =    8.94304e+22
+d_R  =    8.91457e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    9.21799e+21
+R_f  =    9.8208e+21
+d_R  =    6.02809e+20
+R_i  =    1.40336e+19
+R_f  =    1.49456e+19
+d_R  =    9.11958e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 9.59721e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 3.42824e+06
+Critical pressure (Pa): 7.83577e+08
+Critical pressure Jernkvist (Pa): 3.45931e+08
+Bubble pressure (Pa): 9.10336e+06
+dm/dp= 3.48936e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    7.15443e+23
+R_f  =    7.15444e+23
+d_R  =    9.34744e+17
+R_i  =    8.94304e+22
+R_f  =    8.94305e+22
+d_R  =    1.16843e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    9.8208e+21
+R_f  =    9.8208e+21
+d_R  =    2.88752e+15
+R_i  =    1.49456e+19
+R_f  =    1.49456e+19
+d_R  =    4.23746e+12
+	
+GasRelease: intact faces
+R_i  =    7.15443e+23
+R_f  =    7.90561e+23
+d_R  =    7.51175e+22
+R_i  =    8.94304e+22
+R_f  =    9.88201e+22
+d_R  =    9.38969e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    9.8208e+21
+R_f  =    1.04218e+22
+d_R  =    6.01022e+20
+R_i  =    1.49456e+19
+R_f  =    1.58546e+19
+d_R  =    9.09057e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    7.15443e+23
+R_f  =    7.90562e+23
+d_R  =    7.51184e+22
+R_i  =    8.94304e+22
+R_f  =    9.88202e+22
+d_R  =    9.38981e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    9.8208e+21
+R_f  =    1.04218e+22
+d_R  =    6.01025e+20
+R_i  =    1.49456e+19
+R_f  =    1.58546e+19
+d_R  =    9.09061e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 9.37593e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 3.3492e+06
+Critical pressure (Pa): 7.73348e+08
+Critical pressure Jernkvist (Pa): 3.4077e+08
+Bubble pressure (Pa): 9.03979e+06
+dm/dp= 3.54817e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    7.90562e+23
+R_f  =    7.90563e+23
+d_R  =    9.6203e+17
+R_i  =    9.88202e+22
+R_f  =    9.88203e+22
+d_R  =    1.20254e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.04218e+22
+R_f  =    1.04218e+22
+d_R  =    2.88305e+15
+R_i  =    1.58546e+19
+R_f  =    1.58546e+19
+d_R  =    4.2403e+12
+	
+GasRelease: intact faces
+R_i  =    7.90562e+23
+R_f  =    8.6938e+23
+d_R  =    7.88184e+22
+R_i  =    9.88202e+22
+R_f  =    1.08673e+23
+d_R  =    9.8523e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.04218e+22
+R_f  =    1.10194e+22
+d_R  =    5.97559e+20
+R_i  =    1.58546e+19
+R_f  =    1.67582e+19
+d_R  =    9.03598e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    7.90562e+23
+R_f  =    8.69381e+23
+d_R  =    7.88194e+22
+R_i  =    9.88202e+22
+R_f  =    1.08673e+23
+d_R  =    9.85242e+21
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.04218e+22
+R_f  =    1.10194e+22
+d_R  =    5.97562e+20
+R_i  =    1.58546e+19
+R_f  =    1.67582e+19
+d_R  =    9.03602e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 9.16644e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 3.27437e+06
+Critical pressure (Pa): 7.63576e+08
+Critical pressure Jernkvist (Pa): 3.35847e+08
+Bubble pressure (Pa): 8.98074e+06
+dm/dp= 3.60659e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    8.69381e+23
+R_f  =    8.69382e+23
+d_R  =    9.89736e+17
+R_i  =    1.08673e+23
+R_f  =    1.08673e+23
+d_R  =    1.23717e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.10194e+22
+R_f  =    1.10194e+22
+d_R  =    2.88268e+15
+R_i  =    1.67582e+19
+R_f  =    1.67582e+19
+d_R  =    4.24763e+12
+	
+GasRelease: intact faces
+R_i  =    8.69381e+23
+R_f  =    9.51781e+23
+d_R  =    8.23998e+22
+R_i  =    1.08673e+23
+R_f  =    1.18973e+23
+d_R  =    1.03e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.10194e+22
+R_f  =    1.16119e+22
+d_R  =    5.92475e+20
+R_i  =    1.67582e+19
+R_f  =    1.76539e+19
+d_R  =    8.95671e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    8.69381e+23
+R_f  =    9.51782e+23
+d_R  =    8.24008e+22
+R_i  =    1.08673e+23
+R_f  =    1.18973e+23
+d_R  =    1.03001e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.10194e+22
+R_f  =    1.16119e+22
+d_R  =    5.92477e+20
+R_i  =    1.67582e+19
+R_f  =    1.76539e+19
+d_R  =    8.95675e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 8.96786e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 3.20343e+06
+Critical pressure (Pa): 7.5423e+08
+Critical pressure Jernkvist (Pa): 3.31146e+08
+Bubble pressure (Pa): 8.926e+06
+dm/dp= 3.66466e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    9.51782e+23
+R_f  =    9.51783e+23
+d_R  =    1.01792e+18
+R_i  =    1.18973e+23
+R_f  =    1.18973e+23
+d_R  =    1.2724e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.16119e+22
+R_f  =    1.16119e+22
+d_R  =    2.88635e+15
+R_i  =    1.76539e+19
+R_f  =    1.76539e+19
+d_R  =    4.25969e+12
+	
+GasRelease: intact faces
+R_i  =    9.51782e+23
+R_f  =    1.03763e+24
+d_R  =    8.58485e+22
+R_i  =    1.18973e+23
+R_f  =    1.29704e+23
+d_R  =    1.07311e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.16119e+22
+R_f  =    1.21977e+22
+d_R  =    5.8588e+20
+R_i  =    1.76539e+19
+R_f  =    1.85393e+19
+d_R  =    8.85448e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    9.51782e+23
+R_f  =    1.03763e+24
+d_R  =    8.58495e+22
+R_i  =    1.18973e+23
+R_f  =    1.29704e+23
+d_R  =    1.07312e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.16119e+22
+R_f  =    1.21977e+22
+d_R  =    5.85883e+20
+R_i  =    1.76539e+19
+R_f  =    1.85394e+19
+d_R  =    8.85453e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 8.77934e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 3.13609e+06
+Critical pressure (Pa): 7.45282e+08
+Critical pressure Jernkvist (Pa): 3.26653e+08
+Bubble pressure (Pa): 8.87543e+06
+dm/dp= 3.72244e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.03763e+24
+R_f  =    1.03763e+24
+d_R  =    1.04663e+18
+R_i  =    1.29704e+23
+R_f  =    1.29704e+23
+d_R  =    1.30829e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.21977e+22
+R_f  =    1.21977e+22
+d_R  =    2.89407e+15
+R_i  =    1.85394e+19
+R_f  =    1.85394e+19
+d_R  =    4.27679e+12
+	
+GasRelease: intact faces
+R_i  =    1.03763e+24
+R_f  =    1.12688e+24
+d_R  =    8.92488e+22
+R_i  =    1.29704e+23
+R_f  =    1.4086e+23
+d_R  =    1.11561e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.21977e+22
+R_f  =    1.27766e+22
+d_R  =    5.78863e+20
+R_i  =    1.85394e+19
+R_f  =    1.94139e+19
+d_R  =    8.74585e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.03763e+24
+R_f  =    1.12688e+24
+d_R  =    8.92499e+22
+R_i  =    1.29704e+23
+R_f  =    1.4086e+23
+d_R  =    1.11562e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.21977e+22
+R_f  =    1.27766e+22
+d_R  =    5.78865e+20
+R_i  =    1.85394e+19
+R_f  =    1.94139e+19
+d_R  =    8.7459e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 8.60016e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 3.07208e+06
+Critical pressure (Pa): 7.36708e+08
+Critical pressure Jernkvist (Pa): 3.22354e+08
+Bubble pressure (Pa): 8.82869e+06
+dm/dp= 3.77995e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.12688e+24
+R_f  =    1.12688e+24
+d_R  =    1.07589e+18
+R_i  =    1.4086e+23
+R_f  =    1.4086e+23
+d_R  =    1.34486e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.27766e+22
+R_f  =    1.27766e+22
+d_R  =    2.90527e+15
+R_i  =    1.94139e+19
+R_f  =    1.94139e+19
+d_R  =    4.29826e+12
+	
+GasRelease: intact faces
+R_i  =    1.12688e+24
+R_f  =    1.21935e+24
+d_R  =    9.24658e+22
+R_i  =    1.4086e+23
+R_f  =    1.52418e+23
+d_R  =    1.15582e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.27766e+22
+R_f  =    1.33468e+22
+d_R  =    5.70151e+20
+R_i  =    1.94139e+19
+R_f  =    2.02751e+19
+d_R  =    8.61153e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.12688e+24
+R_f  =    1.21935e+24
+d_R  =    9.24668e+22
+R_i  =    1.4086e+23
+R_f  =    1.52419e+23
+d_R  =    1.15584e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.27766e+22
+R_f  =    1.33468e+22
+d_R  =    5.70154e+20
+R_i  =    1.94139e+19
+R_f  =    2.02751e+19
+d_R  =    8.61157e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 8.42963e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 3.01117e+06
+Critical pressure (Pa): 7.28483e+08
+Critical pressure Jernkvist (Pa): 3.18239e+08
+Bubble pressure (Pa): 8.78575e+06
+dm/dp= 3.83725e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.21935e+24
+R_f  =    1.21935e+24
+d_R  =    1.10577e+18
+R_i  =    1.52419e+23
+R_f  =    1.52419e+23
+d_R  =    1.38221e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.33468e+22
+R_f  =    1.33468e+22
+d_R  =    2.92035e+15
+R_i  =    2.02751e+19
+R_f  =    2.02751e+19
+d_R  =    4.32488e+12
+	
+GasRelease: intact faces
+R_i  =    1.21935e+24
+R_f  =    1.31487e+24
+d_R  =    9.55259e+22
+R_i  =    1.52419e+23
+R_f  =    1.64359e+23
+d_R  =    1.19407e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.33468e+22
+R_f  =    1.3907e+22
+d_R  =    5.6028e+20
+R_i  =    2.02751e+19
+R_f  =    2.11211e+19
+d_R  =    8.45966e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.21935e+24
+R_f  =    1.31488e+24
+d_R  =    9.5527e+22
+R_i  =    1.52419e+23
+R_f  =    1.64359e+23
+d_R  =    1.19409e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.33468e+22
+R_f  =    1.3907e+22
+d_R  =    5.60283e+20
+R_i  =    2.02751e+19
+R_f  =    2.11211e+19
+d_R  =    8.4597e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 8.26713e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.95312e+06
+Critical pressure (Pa): 7.20585e+08
+Critical pressure Jernkvist (Pa): 3.14295e+08
+Bubble pressure (Pa): 8.7465e+06
+dm/dp= 3.89441e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.31488e+24
+R_f  =    1.31488e+24
+d_R  =    1.13636e+18
+R_i  =    1.64359e+23
+R_f  =    1.6436e+23
+d_R  =    1.42045e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.3907e+22
+R_f  =    1.3907e+22
+d_R  =    2.93949e+15
+R_i  =    2.11211e+19
+R_f  =    2.11211e+19
+d_R  =    4.35706e+12
+	
+GasRelease: intact faces
+R_i  =    1.31488e+24
+R_f  =    1.41331e+24
+d_R  =    9.84323e+22
+R_i  =    1.64359e+23
+R_f  =    1.76663e+23
+d_R  =    1.2304e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.3907e+22
+R_f  =    1.44565e+22
+d_R  =    5.49459e+20
+R_i  =    2.11211e+19
+R_f  =    2.19504e+19
+d_R  =    8.29346e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.31488e+24
+R_f  =    1.41331e+24
+d_R  =    9.84335e+22
+R_i  =    1.64359e+23
+R_f  =    1.76664e+23
+d_R  =    1.23042e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.3907e+22
+R_f  =    1.44565e+22
+d_R  =    5.49462e+20
+R_i  =    2.11211e+19
+R_f  =    2.19504e+19
+d_R  =    8.29351e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 8.11211e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.89775e+06
+Critical pressure (Pa): 7.12995e+08
+Critical pressure Jernkvist (Pa): 3.10511e+08
+Bubble pressure (Pa): 8.71085e+06
+dm/dp= 3.95148e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.41331e+24
+R_f  =    1.41331e+24
+d_R  =    1.16773e+18
+R_i  =    1.76664e+23
+R_f  =    1.76664e+23
+d_R  =    1.45967e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.44565e+22
+R_f  =    1.44565e+22
+d_R  =    2.9628e+15
+R_i  =    2.19504e+19
+R_f  =    2.19504e+19
+d_R  =    4.39508e+12
+	
+GasRelease: intact faces
+R_i  =    1.41331e+24
+R_f  =    1.51481e+24
+d_R  =    1.01499e+23
+R_i  =    1.76664e+23
+R_f  =    1.89351e+23
+d_R  =    1.26873e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.44565e+22
+R_f  =    1.49973e+22
+d_R  =    5.40777e+20
+R_i  =    2.19504e+19
+R_f  =    2.27664e+19
+d_R  =    8.15988e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.41331e+24
+R_f  =    1.51481e+24
+d_R  =    1.015e+23
+R_i  =    1.76664e+23
+R_f  =    1.89351e+23
+d_R  =    1.26875e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.44565e+22
+R_f  =    1.49973e+22
+d_R  =    5.4078e+20
+R_i  =    2.19504e+19
+R_f  =    2.27664e+19
+d_R  =    8.15993e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 7.96404e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.84486e+06
+Critical pressure (Pa): 7.05693e+08
+Critical pressure Jernkvist (Pa): 3.06879e+08
+Bubble pressure (Pa): 8.67813e+06
+dm/dp= 4.00838e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.51481e+24
+R_f  =    1.51481e+24
+d_R  =    1.19973e+18
+R_i  =    1.89351e+23
+R_f  =    1.89351e+23
+d_R  =    1.49966e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.49973e+22
+R_f  =    1.49973e+22
+d_R  =    2.98831e+15
+R_i  =    2.27664e+19
+R_f  =    2.27664e+19
+d_R  =    4.43603e+12
+	
+GasRelease: intact faces
+R_i  =    1.51481e+24
+R_f  =    1.61894e+24
+d_R  =    1.04132e+23
+R_i  =    1.89351e+23
+R_f  =    2.02368e+23
+d_R  =    1.30165e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.49973e+22
+R_f  =    1.55258e+22
+d_R  =    5.28551e+20
+R_i  =    2.27664e+19
+R_f  =    2.35637e+19
+d_R  =    7.97256e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.51481e+24
+R_f  =    1.61894e+24
+d_R  =    1.04133e+23
+R_i  =    1.89351e+23
+R_f  =    2.02368e+23
+d_R  =    1.30166e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.49973e+22
+R_f  =    1.55258e+22
+d_R  =    5.28554e+20
+R_i  =    2.27664e+19
+R_f  =    2.35637e+19
+d_R  =    7.9726e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 7.82248e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.79429e+06
+Critical pressure (Pa): 6.98664e+08
+Critical pressure Jernkvist (Pa): 3.0339e+08
+Bubble pressure (Pa): 8.6488e+06
+dm/dp= 4.06529e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.61894e+24
+R_f  =    1.61894e+24
+d_R  =    1.23264e+18
+R_i  =    2.02368e+23
+R_f  =    2.02368e+23
+d_R  =    1.5408e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.55258e+22
+R_f  =    1.55258e+22
+d_R  =    3.01821e+15
+R_i  =    2.35637e+19
+R_f  =    2.35637e+19
+d_R  =    4.4833e+12
+	
+GasRelease: intact faces
+R_i  =    1.61894e+24
+R_f  =    1.72557e+24
+d_R  =    1.06626e+23
+R_i  =    2.02368e+23
+R_f  =    2.15696e+23
+d_R  =    1.33283e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.55258e+22
+R_f  =    1.60417e+22
+d_R  =    5.15885e+20
+R_i  =    2.35637e+19
+R_f  =    2.43415e+19
+d_R  =    7.77871e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.61894e+24
+R_f  =    1.72557e+24
+d_R  =    1.06628e+23
+R_i  =    2.02368e+23
+R_f  =    2.15696e+23
+d_R  =    1.33285e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.55258e+22
+R_f  =    1.60417e+22
+d_R  =    5.15888e+20
+R_i  =    2.35637e+19
+R_f  =    2.43416e+19
+d_R  =    7.77875e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 7.68698e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.74589e+06
+Critical pressure (Pa): 6.91889e+08
+Critical pressure Jernkvist (Pa): 3.00034e+08
+Bubble pressure (Pa): 8.62273e+06
+dm/dp= 4.12228e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.72557e+24
+R_f  =    1.72557e+24
+d_R  =    1.26653e+18
+R_i  =    2.15696e+23
+R_f  =    2.15696e+23
+d_R  =    1.58316e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.60417e+22
+R_f  =    1.60417e+22
+d_R  =    3.0525e+15
+R_i  =    2.43416e+19
+R_f  =    2.43416e+19
+d_R  =    4.53696e+12
+	
+GasRelease: intact faces
+R_i  =    1.72557e+24
+R_f  =    1.83498e+24
+d_R  =    1.09408e+23
+R_i  =    2.15696e+23
+R_f  =    2.29372e+23
+d_R  =    1.3676e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.60417e+22
+R_f  =    1.65482e+22
+d_R  =    5.06486e+20
+R_i  =    2.43416e+19
+R_f  =    2.5105e+19
+d_R  =    7.63458e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.72557e+24
+R_f  =    1.83498e+24
+d_R  =    1.09409e+23
+R_i  =    2.15696e+23
+R_f  =    2.29372e+23
+d_R  =    1.36762e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.60417e+22
+R_f  =    1.65482e+22
+d_R  =    5.06489e+20
+R_i  =    2.43416e+19
+R_f  =    2.5105e+19
+d_R  =    7.63463e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 7.55715e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.69951e+06
+Critical pressure (Pa): 6.85356e+08
+Critical pressure Jernkvist (Pa): 2.96805e+08
+Bubble pressure (Pa): 8.59913e+06
+dm/dp= 4.17917e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.83498e+24
+R_f  =    1.83498e+24
+d_R  =    1.30113e+18
+R_i  =    2.29372e+23
+R_f  =    2.29372e+23
+d_R  =    1.62642e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.65482e+22
+R_f  =    1.65482e+22
+d_R  =    3.08844e+15
+R_i  =    2.5105e+19
+R_f  =    2.5105e+19
+d_R  =    4.59287e+12
+	
+GasRelease: intact faces
+R_i  =    1.83498e+24
+R_f  =    1.94662e+24
+d_R  =    1.1164e+23
+R_i  =    2.29372e+23
+R_f  =    2.43327e+23
+d_R  =    1.39549e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.65482e+22
+R_f  =    1.70412e+22
+d_R  =    4.93021e+20
+R_i  =    2.5105e+19
+R_f  =    2.58479e+19
+d_R  =    7.42887e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.83498e+24
+R_f  =    1.94662e+24
+d_R  =    1.11641e+23
+R_i  =    2.29372e+23
+R_f  =    2.43327e+23
+d_R  =    1.39551e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.65482e+22
+R_f  =    1.70412e+22
+d_R  =    4.93024e+20
+R_i  =    2.5105e+19
+R_f  =    2.58479e+19
+d_R  =    7.42891e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 7.43263e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.65503e+06
+Critical pressure (Pa): 6.7905e+08
+Critical pressure Jernkvist (Pa): 2.93695e+08
+Bubble pressure (Pa): 8.57863e+06
+dm/dp= 4.23622e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    1.94662e+24
+R_f  =    1.94662e+24
+d_R  =    1.33686e+18
+R_i  =    2.43327e+23
+R_f  =    2.43328e+23
+d_R  =    1.67107e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.70412e+22
+R_f  =    1.70412e+22
+d_R  =    3.12898e+15
+R_i  =    2.58479e+19
+R_f  =    2.58479e+19
+d_R  =    4.65556e+12
+	
+GasRelease: intact faces
+R_i  =    1.94662e+24
+R_f  =    2.06063e+24
+d_R  =    1.14011e+23
+R_i  =    2.43327e+23
+R_f  =    2.57579e+23
+d_R  =    1.42514e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.70412e+22
+R_f  =    1.75228e+22
+d_R  =    4.81577e+20
+R_i  =    2.58479e+19
+R_f  =    2.65733e+19
+d_R  =    7.25396e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    1.94662e+24
+R_f  =    2.06063e+24
+d_R  =    1.14013e+23
+R_i  =    2.43327e+23
+R_f  =    2.57579e+23
+d_R  =    1.42516e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.70412e+22
+R_f  =    1.75228e+22
+d_R  =    4.8158e+20
+R_i  =    2.58479e+19
+R_f  =    2.65733e+19
+d_R  =    7.25401e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 7.31309e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.61233e+06
+Critical pressure (Pa): 6.72958e+08
+Critical pressure Jernkvist (Pa): 2.90696e+08
+Bubble pressure (Pa): 8.56069e+06
+dm/dp= 4.29336e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.06063e+24
+R_f  =    2.06063e+24
+d_R  =    1.37355e+18
+R_i  =    2.57579e+23
+R_f  =    2.57579e+23
+d_R  =    1.71693e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.75228e+22
+R_f  =    1.75228e+22
+d_R  =    3.17239e+15
+R_i  =    2.65733e+19
+R_f  =    2.65733e+19
+d_R  =    4.72242e+12
+	
+GasRelease: intact faces
+R_i  =    2.06063e+24
+R_f  =    2.17687e+24
+d_R  =    1.16237e+23
+R_i  =    2.57579e+23
+R_f  =    2.72109e+23
+d_R  =    1.45297e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.75228e+22
+R_f  =    1.79925e+22
+d_R  =    4.69668e+20
+R_i  =    2.65733e+19
+R_f  =    2.72805e+19
+d_R  =    7.07213e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.06063e+24
+R_f  =    2.17687e+24
+d_R  =    1.16239e+23
+R_i  =    2.57579e+23
+R_f  =    2.72109e+23
+d_R  =    1.45298e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.75228e+22
+R_f  =    1.79925e+22
+d_R  =    4.69671e+20
+R_i  =    2.65733e+19
+R_f  =    2.72805e+19
+d_R  =    7.07217e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 7.19822e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.57129e+06
+Critical pressure (Pa): 6.67069e+08
+Critical pressure Jernkvist (Pa): 2.87804e+08
+Bubble pressure (Pa): 8.5453e+06
+dm/dp= 4.35062e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.17687e+24
+R_f  =    2.17687e+24
+d_R  =    1.41128e+18
+R_i  =    2.72109e+23
+R_f  =    2.72109e+23
+d_R  =    1.7641e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.79925e+22
+R_f  =    1.79925e+22
+d_R  =    3.21892e+15
+R_i  =    2.72805e+19
+R_f  =    2.72805e+19
+d_R  =    4.79386e+12
+	
+GasRelease: intact faces
+R_i  =    2.17687e+24
+R_f  =    2.29517e+24
+d_R  =    1.18295e+23
+R_i  =    2.72109e+23
+R_f  =    2.86896e+23
+d_R  =    1.47869e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.79925e+22
+R_f  =    1.84497e+22
+d_R  =    4.57229e+20
+R_i  =    2.72805e+19
+R_f  =    2.79688e+19
+d_R  =    6.88238e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.17687e+24
+R_f  =    2.29517e+24
+d_R  =    1.18297e+23
+R_i  =    2.72109e+23
+R_f  =    2.86896e+23
+d_R  =    1.47871e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.79925e+22
+R_f  =    1.84497e+22
+d_R  =    4.57232e+20
+R_i  =    2.72805e+19
+R_f  =    2.79688e+19
+d_R  =    6.88243e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 7.08775e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.53183e+06
+Critical pressure (Pa): 6.61372e+08
+Critical pressure Jernkvist (Pa): 2.85012e+08
+Bubble pressure (Pa): 8.53245e+06
+dm/dp= 4.40809e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.29517e+24
+R_f  =    2.29517e+24
+d_R  =    1.45018e+18
+R_i  =    2.86896e+23
+R_f  =    2.86896e+23
+d_R  =    1.81272e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.84497e+22
+R_f  =    1.84497e+22
+d_R  =    3.26896e+15
+R_i  =    2.79688e+19
+R_f  =    2.79688e+19
+d_R  =    4.87047e+12
+	
+GasRelease: intact faces
+R_i  =    2.29517e+24
+R_f  =    2.41561e+24
+d_R  =    1.20439e+23
+R_i  =    2.86896e+23
+R_f  =    3.01951e+23
+d_R  =    1.50549e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.84497e+22
+R_f  =    1.88959e+22
+d_R  =    4.46192e+20
+R_i  =    2.79688e+19
+R_f  =    2.86402e+19
+d_R  =    6.71402e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.29517e+24
+R_f  =    2.41561e+24
+d_R  =    1.20441e+23
+R_i  =    2.86896e+23
+R_f  =    3.01951e+23
+d_R  =    1.50551e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.84497e+22
+R_f  =    1.88959e+22
+d_R  =    4.46195e+20
+R_i  =    2.79688e+19
+R_f  =    2.86402e+19
+d_R  =    6.71406e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 6.98142e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.49385e+06
+Critical pressure (Pa): 6.55857e+08
+Critical pressure Jernkvist (Pa): 2.82315e+08
+Bubble pressure (Pa): 8.52178e+06
+dm/dp= 4.46571e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.41561e+24
+R_f  =    2.41561e+24
+d_R  =    1.49011e+18
+R_i  =    3.01951e+23
+R_f  =    3.01951e+23
+d_R  =    1.86264e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.88959e+22
+R_f  =    1.88959e+22
+d_R  =    3.32128e+15
+R_i  =    2.86402e+19
+R_f  =    2.86402e+19
+d_R  =    4.95043e+12
+	
+GasRelease: intact faces
+R_i  =    2.41561e+24
+R_f  =    2.53792e+24
+d_R  =    1.22315e+23
+R_i  =    3.01951e+23
+R_f  =    3.1724e+23
+d_R  =    1.52894e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.88959e+22
+R_f  =    1.93298e+22
+d_R  =    4.33897e+20
+R_i  =    2.86402e+19
+R_f  =    2.92928e+19
+d_R  =    6.52671e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.41561e+24
+R_f  =    2.53792e+24
+d_R  =    1.22317e+23
+R_i  =    3.01951e+23
+R_f  =    3.17241e+23
+d_R  =    1.52896e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.88959e+22
+R_f  =    1.93298e+22
+d_R  =    4.33901e+20
+R_i  =    2.86402e+19
+R_f  =    2.92928e+19
+d_R  =    6.52676e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 6.87897e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.45726e+06
+Critical pressure (Pa): 6.50513e+08
+Critical pressure Jernkvist (Pa): 2.79708e+08
+Bubble pressure (Pa): 8.51346e+06
+dm/dp= 4.52359e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.53792e+24
+R_f  =    2.53793e+24
+d_R  =    1.53129e+18
+R_i  =    3.17241e+23
+R_f  =    3.17241e+23
+d_R  =    1.91412e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.93298e+22
+R_f  =    1.93298e+22
+d_R  =    3.377e+15
+R_i  =    2.92928e+19
+R_f  =    2.92929e+19
+d_R  =    5.03543e+12
+	
+GasRelease: intact faces
+R_i  =    2.53792e+24
+R_f  =    2.6622e+24
+d_R  =    1.24275e+23
+R_i  =    3.17241e+23
+R_f  =    3.32775e+23
+d_R  =    1.55344e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.93298e+22
+R_f  =    1.97528e+22
+d_R  =    4.22942e+20
+R_i  =    2.92928e+19
+R_f  =    2.99288e+19
+d_R  =    6.35981e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.53792e+24
+R_f  =    2.6622e+24
+d_R  =    1.24277e+23
+R_i  =    3.17241e+23
+R_f  =    3.32775e+23
+d_R  =    1.55346e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.93298e+22
+R_f  =    1.97528e+22
+d_R  =    4.22945e+20
+R_i  =    2.92928e+19
+R_f  =    2.99288e+19
+d_R  =    6.35986e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 6.78021e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.42197e+06
+Critical pressure (Pa): 6.45333e+08
+Critical pressure Jernkvist (Pa): 2.77185e+08
+Bubble pressure (Pa): 8.50716e+06
+dm/dp= 4.58167e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.6622e+24
+R_f  =    2.6622e+24
+d_R  =    1.57361e+18
+R_i  =    3.32775e+23
+R_f  =    3.32775e+23
+d_R  =    1.96701e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.97528e+22
+R_f  =    1.97528e+22
+d_R  =    3.43497e+15
+R_i  =    2.99288e+19
+R_f  =    2.99288e+19
+d_R  =    5.12373e+12
+	
+GasRelease: intact faces
+R_i  =    2.6622e+24
+R_f  =    2.78827e+24
+d_R  =    1.26066e+23
+R_i  =    3.32775e+23
+R_f  =    3.48533e+23
+d_R  =    1.57582e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.97528e+22
+R_f  =    2.01643e+22
+d_R  =    4.11487e+20
+R_i  =    2.99288e+19
+R_f  =    3.05474e+19
+d_R  =    6.18547e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.6622e+24
+R_f  =    2.78827e+24
+d_R  =    1.26067e+23
+R_i  =    3.32775e+23
+R_f  =    3.48534e+23
+d_R  =    1.57584e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    1.97528e+22
+R_f  =    2.01643e+22
+d_R  =    4.11491e+20
+R_i  =    2.99288e+19
+R_f  =    3.05474e+19
+d_R  =    6.18552e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999996
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 6.68491e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.38793e+06
+Critical pressure (Pa): 6.40309e+08
+Critical pressure Jernkvist (Pa): 2.74744e+08
+Bubble pressure (Pa): 8.50293e+06
+dm/dp= 4.64004e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.78827e+24
+R_f  =    2.78827e+24
+d_R  =    1.61718e+18
+R_i  =    3.48534e+23
+R_f  =    3.48534e+23
+d_R  =    2.02148e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.01643e+22
+R_f  =    2.01643e+22
+d_R  =    3.49572e+15
+R_i  =    3.05474e+19
+R_f  =    3.05474e+19
+d_R  =    5.21615e+12
+	
+GasRelease: intact faces
+R_i  =    2.78827e+24
+R_f  =    2.91606e+24
+d_R  =    1.27793e+23
+R_i  =    3.48534e+23
+R_f  =    3.64508e+23
+d_R  =    1.59741e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.01643e+22
+R_f  =    2.05646e+22
+d_R  =    4.00294e+20
+R_i  =    3.05474e+19
+R_f  =    3.11489e+19
+d_R  =    6.01518e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.78827e+24
+R_f  =    2.91606e+24
+d_R  =    1.27795e+23
+R_i  =    3.48534e+23
+R_f  =    3.64508e+23
+d_R  =    1.59743e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.01643e+22
+R_f  =    2.05646e+22
+d_R  =    4.00297e+20
+R_i  =    3.05474e+19
+R_f  =    3.11489e+19
+d_R  =    6.01523e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 6.59289e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.35506e+06
+Critical pressure (Pa): 6.35432e+08
+Critical pressure Jernkvist (Pa): 2.72379e+08
+Bubble pressure (Pa): 8.50067e+06
+dm/dp= 4.69871e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    2.91606e+24
+R_f  =    2.91607e+24
+d_R  =    1.66205e+18
+R_i  =    3.64508e+23
+R_f  =    3.64508e+23
+d_R  =    2.07756e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.05646e+22
+R_f  =    2.05646e+22
+d_R  =    3.5591e+15
+R_i  =    3.11489e+19
+R_f  =    3.11489e+19
+d_R  =    5.31248e+12
+	
+GasRelease: intact faces
+R_i  =    2.91606e+24
+R_f  =    3.04561e+24
+d_R  =    1.29545e+23
+R_i  =    3.64508e+23
+R_f  =    3.80701e+23
+d_R  =    1.61931e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.05646e+22
+R_f  =    2.09545e+22
+d_R  =    3.8993e+20
+R_i  =    3.11489e+19
+R_f  =    3.17347e+19
+d_R  =    5.85756e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    2.91606e+24
+R_f  =    3.04561e+24
+d_R  =    1.29547e+23
+R_i  =    3.64508e+23
+R_f  =    3.80701e+23
+d_R  =    1.61933e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.05646e+22
+R_f  =    2.09545e+22
+d_R  =    3.89933e+20
+R_i  =    3.11489e+19
+R_f  =    3.17347e+19
+d_R  =    5.85761e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 6.50398e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.3233e+06
+Critical pressure (Pa): 6.30695e+08
+Critical pressure Jernkvist (Pa): 2.70086e+08
+Bubble pressure (Pa): 8.50017e+06
+dm/dp= 4.75765e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    3.04561e+24
+R_f  =    3.04561e+24
+d_R  =    1.70814e+18
+R_i  =    3.80701e+23
+R_f  =    3.80702e+23
+d_R  =    2.13517e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.09545e+22
+R_f  =    2.09545e+22
+d_R  =    3.62445e+15
+R_i  =    3.17347e+19
+R_f  =    3.17347e+19
+d_R  =    5.41172e+12
+	
+GasRelease: intact faces
+R_i  =    3.04561e+24
+R_f  =    3.17667e+24
+d_R  =    1.31055e+23
+R_i  =    3.80701e+23
+R_f  =    3.97083e+23
+d_R  =    1.63819e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.09545e+22
+R_f  =    2.13331e+22
+d_R  =    3.78631e+20
+R_i  =    3.17347e+19
+R_f  =    3.23033e+19
+d_R  =    5.68588e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    3.04561e+24
+R_f  =    3.17667e+24
+d_R  =    1.31057e+23
+R_i  =    3.80701e+23
+R_f  =    3.97083e+23
+d_R  =    1.63821e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.09545e+22
+R_f  =    2.13331e+22
+d_R  =    3.78635e+20
+R_i  =    3.17347e+19
+R_f  =    3.23033e+19
+d_R  =    5.68593e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 6.41801e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.29259e+06
+Critical pressure (Pa): 6.26091e+08
+Critical pressure Jernkvist (Pa): 2.67863e+08
+Bubble pressure (Pa): 8.50159e+06
+dm/dp= 4.81698e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    3.17667e+24
+R_f  =    3.17667e+24
+d_R  =    1.75567e+18
+R_i  =    3.97083e+23
+R_f  =    3.97084e+23
+d_R  =    2.19459e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.13331e+22
+R_f  =    2.13331e+22
+d_R  =    3.69282e+15
+R_i  =    3.23033e+19
+R_f  =    3.23033e+19
+d_R  =    5.51545e+12
+	
+GasRelease: intact faces
+R_i  =    3.17667e+24
+R_f  =    3.3094e+24
+d_R  =    1.32732e+23
+R_i  =    3.97083e+23
+R_f  =    4.13675e+23
+d_R  =    1.65915e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.13331e+22
+R_f  =    2.17022e+22
+d_R  =    3.69031e+20
+R_i  =    3.23033e+19
+R_f  =    3.28573e+19
+d_R  =    5.54e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    3.17667e+24
+R_f  =    3.3094e+24
+d_R  =    1.32734e+23
+R_i  =    3.97083e+23
+R_f  =    4.13675e+23
+d_R  =    1.65917e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.13331e+22
+R_f  =    2.17022e+22
+d_R  =    3.69035e+20
+R_i  =    3.23033e+19
+R_f  =    3.28573e+19
+d_R  =    5.54006e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 6.33483e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.26288e+06
+Critical pressure (Pa): 6.21616e+08
+Critical pressure Jernkvist (Pa): 2.65706e+08
+Bubble pressure (Pa): 8.50455e+06
+dm/dp= 4.8766e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    3.3094e+24
+R_f  =    3.3094e+24
+d_R  =    1.80444e+18
+R_i  =    4.13675e+23
+R_f  =    4.13675e+23
+d_R  =    2.25555e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.17022e+22
+R_f  =    2.17022e+22
+d_R  =    3.76269e+15
+R_i  =    3.28573e+19
+R_f  =    3.28573e+19
+d_R  =    5.62137e+12
+	
+GasRelease: intact faces
+R_i  =    3.3094e+24
+R_f  =    3.44358e+24
+d_R  =    1.34177e+23
+R_i  =    4.13675e+23
+R_f  =    4.30447e+23
+d_R  =    1.67721e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.17022e+22
+R_f  =    2.20607e+22
+d_R  =    3.58573e+20
+R_i  =    3.28573e+19
+R_f  =    3.33954e+19
+d_R  =    5.38122e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    3.3094e+24
+R_f  =    3.44358e+24
+d_R  =    1.34179e+23
+R_i  =    4.13675e+23
+R_f  =    4.30447e+23
+d_R  =    1.67724e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.17022e+22
+R_f  =    2.20607e+22
+d_R  =    3.58577e+20
+R_i  =    3.28573e+19
+R_f  =    3.33954e+19
+d_R  =    5.38128e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 6.25429e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.23411e+06
+Critical pressure (Pa): 6.17261e+08
+Critical pressure Jernkvist (Pa): 2.63612e+08
+Bubble pressure (Pa): 8.50922e+06
+dm/dp= 4.93663e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    3.44358e+24
+R_f  =    3.44358e+24
+d_R  =    1.85467e+18
+R_i  =    4.30447e+23
+R_f  =    4.30448e+23
+d_R  =    2.31834e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.20607e+22
+R_f  =    2.20607e+22
+d_R  =    3.83509e+15
+R_i  =    3.33954e+19
+R_f  =    3.33954e+19
+d_R  =    5.73106e+12
+	
+GasRelease: intact faces
+R_i  =    3.44358e+24
+R_f  =    3.5792e+24
+d_R  =    1.35621e+23
+R_i  =    4.30447e+23
+R_f  =    4.474e+23
+d_R  =    1.69526e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.20607e+22
+R_f  =    2.24094e+22
+d_R  =    3.48705e+20
+R_i  =    3.33954e+19
+R_f  =    3.39185e+19
+d_R  =    5.23146e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    3.44358e+24
+R_f  =    3.5792e+24
+d_R  =    1.35623e+23
+R_i  =    4.30447e+23
+R_f  =    4.474e+23
+d_R  =    1.69529e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.20607e+22
+R_f  =    2.24094e+22
+d_R  =    3.48709e+20
+R_i  =    3.33954e+19
+R_f  =    3.39185e+19
+d_R  =    5.23151e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 6.17627e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.20624e+06
+Critical pressure (Pa): 6.13023e+08
+Critical pressure Jernkvist (Pa): 2.61577e+08
+Bubble pressure (Pa): 8.51545e+06
+dm/dp= 4.99704e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    3.5792e+24
+R_f  =    3.5792e+24
+d_R  =    1.90632e+18
+R_i  =    4.474e+23
+R_f  =    4.47401e+23
+d_R  =    2.38291e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.24094e+22
+R_f  =    2.24094e+22
+d_R  =    3.9096e+15
+R_i  =    3.39185e+19
+R_f  =    3.39186e+19
+d_R  =    5.84389e+12
+	
+GasRelease: intact faces
+R_i  =    3.5792e+24
+R_f  =    3.71626e+24
+d_R  =    1.37055e+23
+R_i  =    4.474e+23
+R_f  =    4.64532e+23
+d_R  =    1.71318e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.24094e+22
+R_f  =    2.27488e+22
+d_R  =    3.39333e+20
+R_i  =    3.39185e+19
+R_f  =    3.44275e+19
+d_R  =    5.08926e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    3.5792e+24
+R_f  =    3.71626e+24
+d_R  =    1.37057e+23
+R_i  =    4.474e+23
+R_f  =    4.64532e+23
+d_R  =    1.71321e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.24094e+22
+R_f  =    2.27488e+22
+d_R  =    3.39337e+20
+R_i  =    3.39185e+19
+R_f  =    3.44275e+19
+d_R  =    5.08932e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 6.10064e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.17923e+06
+Critical pressure (Pa): 6.08895e+08
+Critical pressure Jernkvist (Pa): 2.596e+08
+Bubble pressure (Pa): 8.52313e+06
+dm/dp= 5.05785e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    3.71626e+24
+R_f  =    3.71626e+24
+d_R  =    1.95939e+18
+R_i  =    4.64532e+23
+R_f  =    4.64533e+23
+d_R  =    2.44924e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.27488e+22
+R_f  =    2.27488e+22
+d_R  =    3.98591e+15
+R_i  =    3.44275e+19
+R_f  =    3.44275e+19
+d_R  =    5.95937e+12
+	
+GasRelease: intact faces
+R_i  =    3.71626e+24
+R_f  =    3.85467e+24
+d_R  =    1.38409e+23
+R_i  =    4.64532e+23
+R_f  =    4.81834e+23
+d_R  =    1.73012e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.27488e+22
+R_f  =    2.30788e+22
+d_R  =    3.30034e+20
+R_i  =    3.44275e+19
+R_f  =    3.49223e+19
+d_R  =    4.94825e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    3.71626e+24
+R_f  =    3.85467e+24
+d_R  =    1.38411e+23
+R_i  =    4.64532e+23
+R_f  =    4.81834e+23
+d_R  =    1.73014e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.27488e+22
+R_f  =    2.30788e+22
+d_R  =    3.30038e+20
+R_i  =    3.44275e+19
+R_f  =    3.49223e+19
+d_R  =    4.94831e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 6.02729e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.15302e+06
+Critical pressure (Pa): 6.04874e+08
+Critical pressure Jernkvist (Pa): 2.57677e+08
+Bubble pressure (Pa): 8.53224e+06
+dm/dp= 5.11907e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    3.85467e+24
+R_f  =    3.85467e+24
+d_R  =    2.01393e+18
+R_i  =    4.81834e+23
+R_f  =    4.81834e+23
+d_R  =    2.51742e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.30788e+22
+R_f  =    2.30788e+22
+d_R  =    4.06414e+15
+R_i  =    3.49223e+19
+R_f  =    3.49223e+19
+d_R  =    6.07771e+12
+	
+GasRelease: intact faces
+R_i  =    3.85467e+24
+R_f  =    3.99437e+24
+d_R  =    1.39696e+23
+R_i  =    4.81834e+23
+R_f  =    4.99296e+23
+d_R  =    1.7462e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.30788e+22
+R_f  =    2.33997e+22
+d_R  =    3.20872e+20
+R_i  =    3.49223e+19
+R_f  =    3.54033e+19
+d_R  =    4.80938e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    3.85467e+24
+R_f  =    3.99437e+24
+d_R  =    1.39698e+23
+R_i  =    4.81834e+23
+R_f  =    4.99296e+23
+d_R  =    1.74622e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.30788e+22
+R_f  =    2.33997e+22
+d_R  =    3.20876e+20
+R_i  =    3.49223e+19
+R_f  =    3.54033e+19
+d_R  =    4.80944e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.95611e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.12759e+06
+Critical pressure (Pa): 6.00954e+08
+Critical pressure Jernkvist (Pa): 2.55806e+08
+Bubble pressure (Pa): 8.54273e+06
+dm/dp= 5.18075e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    3.99437e+24
+R_f  =    3.99437e+24
+d_R  =    2.07001e+18
+R_i  =    4.99296e+23
+R_f  =    4.99296e+23
+d_R  =    2.58751e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.33997e+22
+R_f  =    2.33997e+22
+d_R  =    4.14438e+15
+R_i  =    3.54033e+19
+R_f  =    3.54033e+19
+d_R  =    6.19901e+12
+	
+GasRelease: intact faces
+R_i  =    3.99437e+24
+R_f  =    4.13533e+24
+d_R  =    1.40966e+23
+R_i  =    4.99296e+23
+R_f  =    5.16917e+23
+d_R  =    1.76208e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.33997e+22
+R_f  =    2.37118e+22
+d_R  =    3.12119e+20
+R_i  =    3.54033e+19
+R_f  =    3.58709e+19
+d_R  =    4.67675e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    3.99437e+24
+R_f  =    4.13534e+24
+d_R  =    1.40968e+23
+R_i  =    4.99296e+23
+R_f  =    5.16917e+23
+d_R  =    1.7621e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.33997e+22
+R_f  =    2.37118e+22
+d_R  =    3.12123e+20
+R_i  =    3.54033e+19
+R_f  =    3.58709e+19
+d_R  =    4.67682e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.88699e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.10291e+06
+Critical pressure (Pa): 5.97131e+08
+Critical pressure Jernkvist (Pa): 2.53984e+08
+Bubble pressure (Pa): 8.55453e+06
+dm/dp= 5.24287e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    4.13534e+24
+R_f  =    4.13534e+24
+d_R  =    2.12761e+18
+R_i  =    5.16917e+23
+R_f  =    5.16917e+23
+d_R  =    2.65951e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.37118e+22
+R_f  =    2.37118e+22
+d_R  =    4.22637e+15
+R_i  =    3.58709e+19
+R_f  =    3.58709e+19
+d_R  =    6.32294e+12
+	
+GasRelease: intact faces
+R_i  =    4.13534e+24
+R_f  =    4.27759e+24
+d_R  =    1.42252e+23
+R_i  =    5.16917e+23
+R_f  =    5.34699e+23
+d_R  =    1.77815e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.37118e+22
+R_f  =    2.40157e+22
+d_R  =    3.0392e+20
+R_i  =    3.58709e+19
+R_f  =    3.63262e+19
+d_R  =    4.55257e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    4.13534e+24
+R_f  =    4.27759e+24
+d_R  =    1.42254e+23
+R_i  =    5.16917e+23
+R_f  =    5.34699e+23
+d_R  =    1.77818e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.37118e+22
+R_f  =    2.40157e+22
+d_R  =    3.03925e+20
+R_i  =    3.58709e+19
+R_f  =    3.63262e+19
+d_R  =    4.55264e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.81984e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.07892e+06
+Critical pressure (Pa): 5.93401e+08
+Critical pressure Jernkvist (Pa): 2.52211e+08
+Bubble pressure (Pa): 8.56751e+06
+dm/dp= 5.30544e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    4.27759e+24
+R_f  =    4.27759e+24
+d_R  =    2.1867e+18
+R_i  =    5.34699e+23
+R_f  =    5.34699e+23
+d_R  =    2.73337e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.40157e+22
+R_f  =    2.40157e+22
+d_R  =    4.30973e+15
+R_i  =    3.63262e+19
+R_f  =    3.63262e+19
+d_R  =    6.44887e+12
+	
+GasRelease: intact faces
+R_i  =    4.27759e+24
+R_f  =    4.421e+24
+d_R  =    1.43406e+23
+R_i  =    5.34699e+23
+R_f  =    5.52625e+23
+d_R  =    1.79258e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.40157e+22
+R_f  =    2.43112e+22
+d_R  =    2.95475e+20
+R_i  =    3.63262e+19
+R_f  =    3.67687e+19
+d_R  =    4.4247e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    4.27759e+24
+R_f  =    4.421e+24
+d_R  =    1.43408e+23
+R_i  =    5.34699e+23
+R_f  =    5.52625e+23
+d_R  =    1.7926e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.40157e+22
+R_f  =    2.43112e+22
+d_R  =    2.95479e+20
+R_i  =    3.63262e+19
+R_f  =    3.67687e+19
+d_R  =    4.42477e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.75458e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.05561e+06
+Critical pressure (Pa): 5.8976e+08
+Critical pressure Jernkvist (Pa): 2.50482e+08
+Bubble pressure (Pa): 8.58174e+06
+dm/dp= 5.3685e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    4.421e+24
+R_f  =    4.421e+24
+d_R  =    2.24741e+18
+R_i  =    5.52625e+23
+R_f  =    5.52625e+23
+d_R  =    2.80926e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.43112e+22
+R_f  =    2.43112e+22
+d_R  =    4.395e+15
+R_i  =    3.67687e+19
+R_f  =    3.67687e+19
+d_R  =    6.57764e+12
+	
+GasRelease: intact faces
+R_i  =    4.421e+24
+R_f  =    4.56549e+24
+d_R  =    1.44493e+23
+R_i  =    5.52625e+23
+R_f  =    5.70687e+23
+d_R  =    1.80617e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.43112e+22
+R_f  =    2.45984e+22
+d_R  =    2.87136e+20
+R_i  =    3.67687e+19
+R_f  =    3.71985e+19
+d_R  =    4.29849e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    4.421e+24
+R_f  =    4.5655e+24
+d_R  =    1.44496e+23
+R_i  =    5.52625e+23
+R_f  =    5.70687e+23
+d_R  =    1.8062e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.43112e+22
+R_f  =    2.45984e+22
+d_R  =    2.8714e+20
+R_i  =    3.67687e+19
+R_f  =    3.71985e+19
+d_R  =    4.29856e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.69112e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.03294e+06
+Critical pressure (Pa): 5.86205e+08
+Critical pressure Jernkvist (Pa): 2.48798e+08
+Bubble pressure (Pa): 8.59718e+06
+dm/dp= 5.43209e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    4.5655e+24
+R_f  =    4.5655e+24
+d_R  =    2.30982e+18
+R_i  =    5.70687e+23
+R_f  =    5.70687e+23
+d_R  =    2.88727e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.45984e+22
+R_f  =    2.45984e+22
+d_R  =    4.48229e+15
+R_i  =    3.71985e+19
+R_f  =    3.71985e+19
+d_R  =    6.70941e+12
+	
+GasRelease: intact faces
+R_i  =    4.5655e+24
+R_f  =    4.71121e+24
+d_R  =    1.45716e+23
+R_i  =    5.70687e+23
+R_f  =    5.88901e+23
+d_R  =    1.82145e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.45984e+22
+R_f  =    2.48783e+22
+d_R  =    2.799e+20
+R_i  =    3.71985e+19
+R_f  =    3.76174e+19
+d_R  =    4.18902e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    4.5655e+24
+R_f  =    4.71121e+24
+d_R  =    1.45718e+23
+R_i  =    5.70687e+23
+R_f  =    5.88902e+23
+d_R  =    1.82148e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.45984e+22
+R_f  =    2.48783e+22
+d_R  =    2.79904e+20
+R_i  =    3.71985e+19
+R_f  =    3.76174e+19
+d_R  =    4.18909e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.62938e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 2.01089e+06
+Critical pressure (Pa): 5.82732e+08
+Critical pressure Jernkvist (Pa): 2.47155e+08
+Bubble pressure (Pa): 8.61361e+06
+dm/dp= 5.49614e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    4.71121e+24
+R_f  =    4.71122e+24
+d_R  =    2.37373e+18
+R_i  =    5.88902e+23
+R_f  =    5.88902e+23
+d_R  =    2.96716e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.48783e+22
+R_f  =    2.48783e+22
+d_R  =    4.5705e+15
+R_i  =    3.76174e+19
+R_f  =    3.76175e+19
+d_R  =    6.84252e+12
+	
+GasRelease: intact faces
+R_i  =    4.71121e+24
+R_f  =    4.85812e+24
+d_R  =    1.46907e+23
+R_i  =    5.88902e+23
+R_f  =    6.07265e+23
+d_R  =    1.83634e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.48783e+22
+R_f  =    2.51511e+22
+d_R  =    2.72882e+20
+R_i  =    3.76174e+19
+R_f  =    3.80257e+19
+d_R  =    4.08288e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    4.71121e+24
+R_f  =    4.85812e+24
+d_R  =    1.4691e+23
+R_i  =    5.88902e+23
+R_f  =    6.07265e+23
+d_R  =    1.83637e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.48783e+22
+R_f  =    2.51512e+22
+d_R  =    2.72886e+20
+R_i  =    3.76174e+19
+R_f  =    3.80257e+19
+d_R  =    4.08294e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.56929e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.98942e+06
+Critical pressure (Pa): 5.79338e+08
+Critical pressure Jernkvist (Pa): 2.45553e+08
+Bubble pressure (Pa): 8.63099e+06
+dm/dp= 5.56066e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    4.85812e+24
+R_f  =    4.85813e+24
+d_R  =    2.43917e+18
+R_i  =    6.07265e+23
+R_f  =    6.07266e+23
+d_R  =    3.04896e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.51512e+22
+R_f  =    2.51512e+22
+d_R  =    4.6596e+15
+R_i  =    3.80257e+19
+R_f  =    3.80257e+19
+d_R  =    6.97695e+12
+	
+GasRelease: intact faces
+R_i  =    4.85812e+24
+R_f  =    5.00585e+24
+d_R  =    1.47729e+23
+R_i  =    6.07265e+23
+R_f  =    6.25732e+23
+d_R  =    1.84661e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.51512e+22
+R_f  =    2.54156e+22
+d_R  =    2.64468e+20
+R_i  =    3.80257e+19
+R_f  =    3.84213e+19
+d_R  =    3.95566e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    4.85812e+24
+R_f  =    5.00585e+24
+d_R  =    1.47731e+23
+R_i  =    6.07265e+23
+R_f  =    6.25732e+23
+d_R  =    1.84664e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.51512e+22
+R_f  =    2.54156e+22
+d_R  =    2.64472e+20
+R_i  =    3.80257e+19
+R_f  =    3.84213e+19
+d_R  =    3.95573e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.51078e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.96852e+06
+Critical pressure (Pa): 5.7602e+08
+Critical pressure Jernkvist (Pa): 2.43989e+08
+Bubble pressure (Pa): 8.64963e+06
+dm/dp= 5.62583e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    5.00585e+24
+R_f  =    5.00586e+24
+d_R  =    2.50661e+18
+R_i  =    6.25732e+23
+R_f  =    6.25732e+23
+d_R  =    3.13326e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.54156e+22
+R_f  =    2.54156e+22
+d_R  =    4.75168e+15
+R_i  =    3.84213e+19
+R_f  =    3.84213e+19
+d_R  =    7.11584e+12
+	
+GasRelease: intact faces
+R_i  =    5.00585e+24
+R_f  =    5.15467e+24
+d_R  =    1.48814e+23
+R_i  =    6.25732e+23
+R_f  =    6.44334e+23
+d_R  =    1.86018e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.54156e+22
+R_f  =    2.56733e+22
+d_R  =    2.57702e+20
+R_i  =    3.84213e+19
+R_f  =    3.88067e+19
+d_R  =    3.85341e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    5.00585e+24
+R_f  =    5.15467e+24
+d_R  =    1.48817e+23
+R_i  =    6.25732e+23
+R_f  =    6.44334e+23
+d_R  =    1.86021e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.54156e+22
+R_f  =    2.56733e+22
+d_R  =    2.57707e+20
+R_i  =    3.84213e+19
+R_f  =    3.88067e+19
+d_R  =    3.85349e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999995
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.45379e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.94816e+06
+Critical pressure (Pa): 5.72775e+08
+Critical pressure Jernkvist (Pa): 2.42462e+08
+Bubble pressure (Pa): 8.66917e+06
+dm/dp= 5.69152e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    5.15467e+24
+R_f  =    5.15467e+24
+d_R  =    2.57568e+18
+R_i  =    6.44334e+23
+R_f  =    6.44334e+23
+d_R  =    3.21961e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.56733e+22
+R_f  =    2.56733e+22
+d_R  =    4.84482e+15
+R_i  =    3.88067e+19
+R_f  =    3.88067e+19
+d_R  =    7.25627e+12
+	
+GasRelease: intact faces
+R_i  =    5.15467e+24
+R_f  =    5.30463e+24
+d_R  =    1.49959e+23
+R_i  =    6.44334e+23
+R_f  =    6.63079e+23
+d_R  =    1.87449e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.56733e+22
+R_f  =    2.59249e+22
+d_R  =    2.51544e+20
+R_i  =    3.88067e+19
+R_f  =    3.91827e+19
+d_R  =    3.76038e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    5.15467e+24
+R_f  =    5.30463e+24
+d_R  =    1.49962e+23
+R_i  =    6.44334e+23
+R_f  =    6.63079e+23
+d_R  =    1.87452e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.56733e+22
+R_f  =    2.59249e+22
+d_R  =    2.51549e+20
+R_i  =    3.88067e+19
+R_f  =    3.91827e+19
+d_R  =    3.76046e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999994
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.39824e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.92832e+06
+Critical pressure (Pa): 5.69601e+08
+Critical pressure Jernkvist (Pa): 2.40971e+08
+Bubble pressure (Pa): 8.68949e+06
+dm/dp= 5.75769e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    5.30463e+24
+R_f  =    5.30464e+24
+d_R  =    2.6463e+18
+R_i  =    6.63079e+23
+R_f  =    6.63079e+23
+d_R  =    3.30787e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.59249e+22
+R_f  =    2.59249e+22
+d_R  =    4.93844e+15
+R_i  =    3.91827e+19
+R_f  =    3.91827e+19
+d_R  =    7.3974e+12
+	
+GasRelease: intact faces
+R_i  =    5.30463e+24
+R_f  =    5.45564e+24
+d_R  =    1.5101e+23
+R_i  =    6.63079e+23
+R_f  =    6.81955e+23
+d_R  =    1.88763e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.59249e+22
+R_f  =    2.61701e+22
+d_R  =    2.45267e+20
+R_i  =    3.91827e+19
+R_f  =    3.95493e+19
+d_R  =    3.66558e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    5.30463e+24
+R_f  =    5.45565e+24
+d_R  =    1.51013e+23
+R_i  =    6.63079e+23
+R_f  =    6.81956e+23
+d_R  =    1.88766e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.59249e+22
+R_f  =    2.61702e+22
+d_R  =    2.45272e+20
+R_i  =    3.91827e+19
+R_f  =    3.95493e+19
+d_R  =    3.66565e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999994
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.34409e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.90897e+06
+Critical pressure (Pa): 5.66495e+08
+Critical pressure Jernkvist (Pa): 2.39514e+08
+Bubble pressure (Pa): 8.71064e+06
+dm/dp= 5.82439e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    5.45565e+24
+R_f  =    5.45565e+24
+d_R  =    2.71857e+18
+R_i  =    6.81956e+23
+R_f  =    6.81956e+23
+d_R  =    3.39822e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.61702e+22
+R_f  =    2.61702e+22
+d_R  =    5.03301e+15
+R_i  =    3.95493e+19
+R_f  =    3.95493e+19
+d_R  =    7.53992e+12
+	
+GasRelease: intact faces
+R_i  =    5.45565e+24
+R_f  =    5.60726e+24
+d_R  =    1.51614e+23
+R_i  =    6.81956e+23
+R_f  =    7.00908e+23
+d_R  =    1.89518e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.61702e+22
+R_f  =    2.64075e+22
+d_R  =    2.37333e+20
+R_i  =    3.95493e+19
+R_f  =    3.99038e+19
+d_R  =    3.54577e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    5.45565e+24
+R_f  =    5.60726e+24
+d_R  =    1.51617e+23
+R_i  =    6.81956e+23
+R_f  =    7.00908e+23
+d_R  =    1.89521e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.61702e+22
+R_f  =    2.64075e+22
+d_R  =    2.37338e+20
+R_i  =    3.95493e+19
+R_f  =    3.99039e+19
+d_R  =    3.54584e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999994
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.29127e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.89011e+06
+Critical pressure (Pa): 5.63453e+08
+Critical pressure Jernkvist (Pa): 2.3809e+08
+Bubble pressure (Pa): 8.73298e+06
+dm/dp= 5.89184e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    5.60726e+24
+R_f  =    5.60727e+24
+d_R  =    2.79314e+18
+R_i  =    7.00908e+23
+R_f  =    7.00908e+23
+d_R  =    3.49142e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.64075e+22
+R_f  =    2.64075e+22
+d_R  =    5.13112e+15
+R_i  =    3.99039e+19
+R_f  =    3.99039e+19
+d_R  =    7.68775e+12
+	
+GasRelease: intact faces
+R_i  =    5.60726e+24
+R_f  =    5.75991e+24
+d_R  =    1.5265e+23
+R_i  =    7.00908e+23
+R_f  =    7.19989e+23
+d_R  =    1.90813e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.64075e+22
+R_f  =    2.66391e+22
+d_R  =    2.31642e+20
+R_i  =    3.99039e+19
+R_f  =    4.02498e+19
+d_R  =    3.45988e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    5.60726e+24
+R_f  =    5.75992e+24
+d_R  =    1.52653e+23
+R_i  =    7.00908e+23
+R_f  =    7.19989e+23
+d_R  =    1.90816e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.64075e+22
+R_f  =    2.66391e+22
+d_R  =    2.31648e+20
+R_i  =    3.99039e+19
+R_f  =    4.02499e+19
+d_R  =    3.45995e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999994
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.23974e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.8717e+06
+Critical pressure (Pa): 5.60475e+08
+Critical pressure Jernkvist (Pa): 2.36697e+08
+Bubble pressure (Pa): 8.75603e+06
+dm/dp= 5.95984e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    5.75992e+24
+R_f  =    5.75992e+24
+d_R  =    2.86936e+18
+R_i  =    7.19989e+23
+R_f  =    7.1999e+23
+d_R  =    3.5867e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.66391e+22
+R_f  =    2.66391e+22
+d_R  =    5.22981e+15
+R_i  =    4.02499e+19
+R_f  =    4.02499e+19
+d_R  =    7.83641e+12
+	
+GasRelease: intact faces
+R_i  =    5.75992e+24
+R_f  =    5.91364e+24
+d_R  =    1.53725e+23
+R_i  =    7.19989e+23
+R_f  =    7.39205e+23
+d_R  =    1.92156e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.66391e+22
+R_f  =    2.68655e+22
+d_R  =    2.26385e+20
+R_i  =    4.02499e+19
+R_f  =    4.05879e+19
+d_R  =    3.38056e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    5.75992e+24
+R_f  =    5.91364e+24
+d_R  =    1.53727e+23
+R_i  =    7.19989e+23
+R_f  =    7.39205e+23
+d_R  =    1.92159e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.66391e+22
+R_f  =    2.68655e+22
+d_R  =    2.2639e+20
+R_i  =    4.02499e+19
+R_f  =    4.05879e+19
+d_R  =    3.38064e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999994
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.18945e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.85373e+06
+Critical pressure (Pa): 5.57558e+08
+Critical pressure Jernkvist (Pa): 2.35335e+08
+Bubble pressure (Pa): 8.7797e+06
+dm/dp= 6.02834e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    5.91364e+24
+R_f  =    5.91365e+24
+d_R  =    2.94717e+18
+R_i  =    7.39205e+23
+R_f  =    7.39206e+23
+d_R  =    3.68396e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.68655e+22
+R_f  =    2.68655e+22
+d_R  =    5.32869e+15
+R_i  =    4.05879e+19
+R_f  =    4.05879e+19
+d_R  =    7.98532e+12
+	
+GasRelease: intact faces
+R_i  =    5.91364e+24
+R_f  =    6.06843e+24
+d_R  =    1.54783e+23
+R_i  =    7.39205e+23
+R_f  =    7.58553e+23
+d_R  =    1.93479e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.68655e+22
+R_f  =    2.70868e+22
+d_R  =    2.21306e+20
+R_i  =    4.05879e+19
+R_f  =    4.09183e+19
+d_R  =    3.30396e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    5.91364e+24
+R_f  =    6.06843e+24
+d_R  =    1.54786e+23
+R_i  =    7.39205e+23
+R_f  =    7.58554e+23
+d_R  =    1.93482e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.68655e+22
+R_f  =    2.70868e+22
+d_R  =    2.21311e+20
+R_i  =    4.05879e+19
+R_f  =    4.09183e+19
+d_R  =    3.30404e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999994
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.14034e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.83619e+06
+Critical pressure (Pa): 5.54699e+08
+Critical pressure Jernkvist (Pa): 2.34003e+08
+Bubble pressure (Pa): 8.80396e+06
+dm/dp= 6.09737e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    6.06843e+24
+R_f  =    6.06843e+24
+d_R  =    3.02658e+18
+R_i  =    7.58554e+23
+R_f  =    7.58554e+23
+d_R  =    3.78322e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.70868e+22
+R_f  =    2.70868e+22
+d_R  =    5.42778e+15
+R_i  =    4.09183e+19
+R_f  =    4.09183e+19
+d_R  =    8.13452e+12
+	
+GasRelease: intact faces
+R_i  =    6.06843e+24
+R_f  =    6.22374e+24
+d_R  =    1.55316e+23
+R_i  =    7.58554e+23
+R_f  =    7.77968e+23
+d_R  =    1.94144e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.70868e+22
+R_f  =    2.73012e+22
+d_R  =    2.14325e+20
+R_i  =    4.09183e+19
+R_f  =    4.12382e+19
+d_R  =    3.19865e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    6.06843e+24
+R_f  =    6.22375e+24
+d_R  =    1.55319e+23
+R_i  =    7.58554e+23
+R_f  =    7.77968e+23
+d_R  =    1.94148e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.70868e+22
+R_f  =    2.73012e+22
+d_R  =    2.1433e+20
+R_i  =    4.09183e+19
+R_f  =    4.12382e+19
+d_R  =    3.19873e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999994
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.09239e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.81906e+06
+Critical pressure (Pa): 5.51897e+08
+Critical pressure Jernkvist (Pa): 2.32699e+08
+Bubble pressure (Pa): 8.82927e+06
+dm/dp= 6.16718e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    6.22375e+24
+R_f  =    6.22375e+24
+d_R  =    3.10841e+18
+R_i  =    7.77968e+23
+R_f  =    7.77969e+23
+d_R  =    3.88551e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.73012e+22
+R_f  =    2.73012e+22
+d_R  =    5.53029e+15
+R_i  =    4.12382e+19
+R_f  =    4.12382e+19
+d_R  =    8.28886e+12
+	
+GasRelease: intact faces
+R_i  =    6.22375e+24
+R_f  =    6.37978e+24
+d_R  =    1.56032e+23
+R_i  =    7.77968e+23
+R_f  =    7.97472e+23
+d_R  =    1.9504e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.73012e+22
+R_f  =    2.75096e+22
+d_R  =    2.08399e+20
+R_i  =    4.12382e+19
+R_f  =    4.15491e+19
+d_R  =    3.1093e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    6.22375e+24
+R_f  =    6.37978e+24
+d_R  =    1.56035e+23
+R_i  =    7.77968e+23
+R_f  =    7.97473e+23
+d_R  =    1.95044e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.73012e+22
+R_f  =    2.75096e+22
+d_R  =    2.08404e+20
+R_i  =    4.12382e+19
+R_f  =    4.15491e+19
+d_R  =    3.10938e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999994
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 5.04553e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.80233e+06
+Critical pressure (Pa): 5.4915e+08
+Critical pressure Jernkvist (Pa): 2.31422e+08
+Bubble pressure (Pa): 8.85538e+06
+dm/dp= 6.2377e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    6.37978e+24
+R_f  =    6.37979e+24
+d_R  =    3.19237e+18
+R_i  =    7.97473e+23
+R_f  =    7.97473e+23
+d_R  =    3.99046e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.75096e+22
+R_f  =    2.75096e+22
+d_R  =    5.63482e+15
+R_i  =    4.15491e+19
+R_f  =    4.15491e+19
+d_R  =    8.44619e+12
+	
+GasRelease: intact faces
+R_i  =    6.37978e+24
+R_f  =    6.53683e+24
+d_R  =    1.57042e+23
+R_i  =    7.97473e+23
+R_f  =    8.17103e+23
+d_R  =    1.96303e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.75096e+22
+R_f  =    2.77135e+22
+d_R  =    2.03899e+20
+R_i  =    4.15491e+19
+R_f  =    4.18533e+19
+d_R  =    3.04151e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    6.37978e+24
+R_f  =    6.53683e+24
+d_R  =    1.57046e+23
+R_i  =    7.97473e+23
+R_f  =    8.17104e+23
+d_R  =    1.96307e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.75096e+22
+R_f  =    2.77135e+22
+d_R  =    2.03905e+20
+R_i  =    4.15491e+19
+R_f  =    4.18533e+19
+d_R  =    3.0416e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999994
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.99974e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.78597e+06
+Critical pressure (Pa): 5.46456e+08
+Critical pressure Jernkvist (Pa): 2.30172e+08
+Bubble pressure (Pa): 8.88198e+06
+dm/dp= 6.30876e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    6.53683e+24
+R_f  =    6.53683e+24
+d_R  =    3.27797e+18
+R_i  =    8.17104e+23
+R_f  =    8.17104e+23
+d_R  =    4.09746e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.77135e+22
+R_f  =    2.77135e+22
+d_R  =    5.73931e+15
+R_i  =    4.18533e+19
+R_f  =    4.18533e+19
+d_R  =    8.60345e+12
+	
+GasRelease: intact faces
+R_i  =    6.53683e+24
+R_f  =    6.69487e+24
+d_R  =    1.58038e+23
+R_i  =    8.17104e+23
+R_f  =    8.36858e+23
+d_R  =    1.97547e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.77135e+22
+R_f  =    2.7913e+22
+d_R  =    1.99545e+20
+R_i  =    4.18533e+19
+R_f  =    4.21509e+19
+d_R  =    2.97594e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    6.53683e+24
+R_f  =    6.69487e+24
+d_R  =    1.58041e+23
+R_i  =    8.17104e+23
+R_f  =    8.36859e+23
+d_R  =    1.97552e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.77135e+22
+R_f  =    2.7913e+22
+d_R  =    1.99551e+20
+R_i  =    4.18533e+19
+R_f  =    4.21509e+19
+d_R  =    2.97602e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999994
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.95497e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.76998e+06
+Critical pressure (Pa): 5.43813e+08
+Critical pressure Jernkvist (Pa): 2.28947e+08
+Bubble pressure (Pa): 8.90905e+06
+dm/dp= 6.38037e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    6.69487e+24
+R_f  =    6.69487e+24
+d_R  =    3.36524e+18
+R_i  =    8.36859e+23
+R_f  =    8.36859e+23
+d_R  =    4.20655e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.7913e+22
+R_f  =    2.7913e+22
+d_R  =    5.84382e+15
+R_i  =    4.21509e+19
+R_f  =    4.21509e+19
+d_R  =    8.76068e+12
+	
+GasRelease: intact faces
+R_i  =    6.69487e+24
+R_f  =    6.85389e+24
+d_R  =    1.59019e+23
+R_i  =    8.36859e+23
+R_f  =    8.56736e+23
+d_R  =    1.98774e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.7913e+22
+R_f  =    2.81084e+22
+d_R  =    1.95331e+20
+R_i  =    4.21509e+19
+R_f  =    4.24421e+19
+d_R  =    2.91248e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    6.69487e+24
+R_f  =    6.85389e+24
+d_R  =    1.59023e+23
+R_i  =    8.36859e+23
+R_f  =    8.56737e+23
+d_R  =    1.98778e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.7913e+22
+R_f  =    2.81084e+22
+d_R  =    1.95337e+20
+R_i  =    4.21509e+19
+R_f  =    4.24421e+19
+d_R  =    2.91256e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999994
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.91119e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.75434e+06
+Critical pressure (Pa): 5.41219e+08
+Critical pressure Jernkvist (Pa): 2.27747e+08
+Bubble pressure (Pa): 8.93658e+06
+dm/dp= 6.45254e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    6.85389e+24
+R_f  =    6.8539e+24
+d_R  =    3.4542e+18
+R_i  =    8.56737e+23
+R_f  =    8.56737e+23
+d_R  =    4.31775e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.81084e+22
+R_f  =    2.81084e+22
+d_R  =    5.94838e+15
+R_i  =    4.24421e+19
+R_f  =    4.24422e+19
+d_R  =    8.91798e+12
+	
+GasRelease: intact faces
+R_i  =    6.85389e+24
+R_f  =    7.01322e+24
+d_R  =    1.59323e+23
+R_i  =    8.56737e+23
+R_f  =    8.76652e+23
+d_R  =    1.99153e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.81084e+22
+R_f  =    2.82971e+22
+d_R  =    1.88776e+20
+R_i  =    4.24421e+19
+R_f  =    4.27235e+19
+d_R  =    2.8137e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    6.85389e+24
+R_f  =    7.01322e+24
+d_R  =    1.59326e+23
+R_i  =    8.56737e+23
+R_f  =    8.76652e+23
+d_R  =    1.99158e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.81084e+22
+R_f  =    2.82972e+22
+d_R  =    1.88782e+20
+R_i  =    4.24421e+19
+R_f  =    4.27235e+19
+d_R  =    2.81379e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999994
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.86836e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.73904e+06
+Critical pressure (Pa): 5.38674e+08
+Critical pressure Jernkvist (Pa): 2.26571e+08
+Bubble pressure (Pa): 8.96512e+06
+dm/dp= 6.52563e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    7.01322e+24
+R_f  =    7.01322e+24
+d_R  =    3.54602e+18
+R_i  =    8.76652e+23
+R_f  =    8.76653e+23
+d_R  =    4.43253e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.82972e+22
+R_f  =    2.82972e+22
+d_R  =    6.05728e+15
+R_i  =    4.27235e+19
+R_f  =    4.27235e+19
+d_R  =    9.08179e+12
+	
+GasRelease: intact faces
+R_i  =    7.01322e+24
+R_f  =    7.17316e+24
+d_R  =    1.59943e+23
+R_i  =    8.76652e+23
+R_f  =    8.96645e+23
+d_R  =    1.99929e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.82972e+22
+R_f  =    2.84808e+22
+d_R  =    1.83669e+20
+R_i  =    4.27235e+19
+R_f  =    4.29972e+19
+d_R  =    2.73679e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    7.01322e+24
+R_f  =    7.17317e+24
+d_R  =    1.59947e+23
+R_i  =    8.76652e+23
+R_f  =    8.96646e+23
+d_R  =    1.99934e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.82972e+22
+R_f  =    2.84808e+22
+d_R  =    1.83675e+20
+R_i  =    4.27235e+19
+R_f  =    4.29972e+19
+d_R  =    2.73689e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999993
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.82646e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.72407e+06
+Critical pressure (Pa): 5.36176e+08
+Critical pressure Jernkvist (Pa): 2.25418e+08
+Bubble pressure (Pa): 8.99434e+06
+dm/dp= 6.59948e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    7.17317e+24
+R_f  =    7.17317e+24
+d_R  =    3.64016e+18
+R_i  =    8.96646e+23
+R_f  =    8.96646e+23
+d_R  =    4.5502e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.84808e+22
+R_f  =    2.84808e+22
+d_R  =    6.16822e+15
+R_i  =    4.29972e+19
+R_f  =    4.29972e+19
+d_R  =    9.24865e+12
+	
+GasRelease: intact faces
+R_i  =    7.17317e+24
+R_f  =    7.33405e+24
+d_R  =    1.60881e+23
+R_i  =    8.96646e+23
+R_f  =    9.16756e+23
+d_R  =    2.01102e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.84808e+22
+R_f  =    2.86608e+22
+d_R  =    1.79931e+20
+R_i  =    4.29972e+19
+R_f  =    4.32653e+19
+d_R  =    2.68058e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    7.17317e+24
+R_f  =    7.33405e+24
+d_R  =    1.60885e+23
+R_i  =    8.96646e+23
+R_f  =    9.16756e+23
+d_R  =    2.01106e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.84808e+22
+R_f  =    2.86608e+22
+d_R  =    1.79938e+20
+R_i  =    4.29972e+19
+R_f  =    4.32653e+19
+d_R  =    2.68068e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999993
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.78544e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.70942e+06
+Critical pressure (Pa): 5.33722e+08
+Critical pressure Jernkvist (Pa): 2.24287e+08
+Bubble pressure (Pa): 9.02394e+06
+dm/dp= 6.67391e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    7.33405e+24
+R_f  =    7.33405e+24
+d_R  =    3.73604e+18
+R_i  =    9.16756e+23
+R_f  =    9.16757e+23
+d_R  =    4.67005e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.86608e+22
+R_f  =    2.86608e+22
+d_R  =    6.27899e+15
+R_i  =    4.32653e+19
+R_f  =    4.32653e+19
+d_R  =    9.41522e+12
+	
+GasRelease: intact faces
+R_i  =    7.33405e+24
+R_f  =    7.49586e+24
+d_R  =    1.61806e+23
+R_i  =    9.16756e+23
+R_f  =    9.36982e+23
+d_R  =    2.02258e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.86608e+22
+R_f  =    2.88371e+22
+d_R  =    1.76308e+20
+R_i  =    4.32653e+19
+R_f  =    4.35279e+19
+d_R  =    2.6261e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    7.33405e+24
+R_f  =    7.49586e+24
+d_R  =    1.6181e+23
+R_i  =    9.16756e+23
+R_f  =    9.36983e+23
+d_R  =    2.02263e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.86608e+22
+R_f  =    2.88371e+22
+d_R  =    1.76314e+20
+R_i  =    4.32653e+19
+R_f  =    4.35279e+19
+d_R  =    2.6262e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999993
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.74529e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.69507e+06
+Critical pressure (Pa): 5.31312e+08
+Critical pressure Jernkvist (Pa): 2.23178e+08
+Bubble pressure (Pa): 9.05389e+06
+dm/dp= 6.74894e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    7.49586e+24
+R_f  =    7.49586e+24
+d_R  =    3.83368e+18
+R_i  =    9.36983e+23
+R_f  =    9.36983e+23
+d_R  =    4.7921e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.88371e+22
+R_f  =    2.88371e+22
+d_R  =    6.38964e+15
+R_i  =    4.35279e+19
+R_f  =    4.35279e+19
+d_R  =    9.58158e+12
+	
+GasRelease: intact faces
+R_i  =    7.49586e+24
+R_f  =    7.65858e+24
+d_R  =    1.62719e+23
+R_i  =    9.36983e+23
+R_f  =    9.57322e+23
+d_R  =    2.03398e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.88371e+22
+R_f  =    2.90099e+22
+d_R  =    1.72794e+20
+R_i  =    4.35279e+19
+R_f  =    4.37852e+19
+d_R  =    2.57328e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    7.49586e+24
+R_f  =    7.65858e+24
+d_R  =    1.62723e+23
+R_i  =    9.36983e+23
+R_f  =    9.57323e+23
+d_R  =    2.03403e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.88371e+22
+R_f  =    2.90099e+22
+d_R  =    1.72801e+20
+R_i  =    4.35279e+19
+R_f  =    4.37852e+19
+d_R  =    2.57338e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999993
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.70596e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.68103e+06
+Critical pressure (Pa): 5.28944e+08
+Critical pressure Jernkvist (Pa): 2.22089e+08
+Bubble pressure (Pa): 9.08418e+06
+dm/dp= 6.82456e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    7.65858e+24
+R_f  =    7.65859e+24
+d_R  =    3.93311e+18
+R_i  =    9.57323e+23
+R_f  =    9.57323e+23
+d_R  =    4.91639e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.90099e+22
+R_f  =    2.90099e+22
+d_R  =    6.50025e+15
+R_i  =    4.37852e+19
+R_f  =    4.37853e+19
+d_R  =    9.74786e+12
+	
+GasRelease: intact faces
+R_i  =    7.65858e+24
+R_f  =    7.822e+24
+d_R  =    1.63421e+23
+R_i  =    9.57323e+23
+R_f  =    9.77751e+23
+d_R  =    2.04277e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.90099e+22
+R_f  =    2.91786e+22
+d_R  =    1.68708e+20
+R_i  =    4.37852e+19
+R_f  =    4.40364e+19
+d_R  =    2.51183e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    7.65858e+24
+R_f  =    7.82201e+24
+d_R  =    1.63425e+23
+R_i  =    9.57323e+23
+R_f  =    9.77751e+23
+d_R  =    2.04282e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.90099e+22
+R_f  =    2.91786e+22
+d_R  =    1.68715e+20
+R_i  =    4.37852e+19
+R_f  =    4.40364e+19
+d_R  =    2.51193e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999993
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.66745e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.66727e+06
+Critical pressure (Pa): 5.26618e+08
+Critical pressure Jernkvist (Pa): 2.21021e+08
+Bubble pressure (Pa): 9.11496e+06
+dm/dp= 6.9009e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    7.82201e+24
+R_f  =    7.82201e+24
+d_R  =    4.03474e+18
+R_i  =    9.77751e+23
+R_f  =    9.77752e+23
+d_R  =    5.04343e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.91786e+22
+R_f  =    2.91786e+22
+d_R  =    6.61219e+15
+R_i  =    4.40364e+19
+R_f  =    4.40364e+19
+d_R  =    9.9161e+12
+	
+GasRelease: intact faces
+R_i  =    7.82201e+24
+R_f  =    7.98543e+24
+d_R  =    1.63426e+23
+R_i  =    9.77751e+23
+R_f  =    9.98179e+23
+d_R  =    2.04283e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.91786e+22
+R_f  =    2.9341e+22
+d_R  =    1.62428e+20
+R_i  =    4.40364e+19
+R_f  =    4.42782e+19
+d_R  =    2.41729e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    7.82201e+24
+R_f  =    7.98544e+24
+d_R  =    1.6343e+23
+R_i  =    9.77751e+23
+R_f  =    9.9818e+23
+d_R  =    2.04288e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.91786e+22
+R_f  =    2.9341e+22
+d_R  =    1.62435e+20
+R_i  =    4.40364e+19
+R_f  =    4.42782e+19
+d_R  =    2.41739e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999993
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.62971e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.65379e+06
+Critical pressure (Pa): 5.24331e+08
+Critical pressure Jernkvist (Pa): 2.19973e+08
+Bubble pressure (Pa): 9.14679e+06
+dm/dp= 6.97835e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    7.98544e+24
+R_f  =    7.98544e+24
+d_R  =    4.13996e+18
+R_i  =    9.9818e+23
+R_f  =    9.9818e+23
+d_R  =    5.17495e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.9341e+22
+R_f  =    2.9341e+22
+d_R  =    6.72993e+15
+R_i  =    4.42782e+19
+R_f  =    4.42782e+19
+d_R  =    1.00931e+13
+	
+GasRelease: intact faces
+R_i  =    7.98544e+24
+R_f  =    8.14966e+24
+d_R  =    1.64219e+23
+R_i  =    9.9818e+23
+R_f  =    1.01871e+24
+d_R  =    2.05274e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.9341e+22
+R_f  =    2.95001e+22
+d_R  =    1.59037e+20
+R_i  =    4.42782e+19
+R_f  =    4.45148e+19
+d_R  =    2.36634e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    7.98544e+24
+R_f  =    8.14966e+24
+d_R  =    1.64224e+23
+R_i  =    9.9818e+23
+R_f  =    1.01871e+24
+d_R  =    2.05279e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.9341e+22
+R_f  =    2.95001e+22
+d_R  =    1.59044e+20
+R_i  =    4.42782e+19
+R_f  =    4.45148e+19
+d_R  =    2.36645e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999993
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.59272e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.64058e+06
+Critical pressure (Pa): 5.22083e+08
+Critical pressure Jernkvist (Pa): 2.18944e+08
+Bubble pressure (Pa): 9.17895e+06
+dm/dp= 7.05647e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    8.14966e+24
+R_f  =    8.14967e+24
+d_R  =    4.2472e+18
+R_i  =    1.01871e+24
+R_f  =    1.01871e+24
+d_R  =    5.309e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.95001e+22
+R_f  =    2.95001e+22
+d_R  =    6.84798e+15
+R_i  =    4.45148e+19
+R_f  =    4.45148e+19
+d_R  =    1.02705e+13
+	
+GasRelease: intact faces
+R_i  =    8.14966e+24
+R_f  =    8.31474e+24
+d_R  =    1.65081e+23
+R_i  =    1.01871e+24
+R_f  =    1.03934e+24
+d_R  =    2.06351e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.95001e+22
+R_f  =    2.96561e+22
+d_R  =    1.56011e+20
+R_i  =    4.45148e+19
+R_f  =    4.47469e+19
+d_R  =    2.32092e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    8.14966e+24
+R_f  =    8.31475e+24
+d_R  =    1.65085e+23
+R_i  =    1.01871e+24
+R_f  =    1.03934e+24
+d_R  =    2.06357e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.95001e+22
+R_f  =    2.96561e+22
+d_R  =    1.56018e+20
+R_i  =    4.45148e+19
+R_f  =    4.47469e+19
+d_R  =    2.32102e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999993
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.55647e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.62763e+06
+Critical pressure (Pa): 5.19873e+08
+Critical pressure Jernkvist (Pa): 2.17933e+08
+Bubble pressure (Pa): 9.21139e+06
+dm/dp= 7.13523e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    8.31475e+24
+R_f  =    8.31475e+24
+d_R  =    4.35631e+18
+R_i  =    1.03934e+24
+R_f  =    1.03934e+24
+d_R  =    5.44539e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.96561e+22
+R_f  =    2.96561e+22
+d_R  =    6.96581e+15
+R_i  =    4.47469e+19
+R_f  =    4.47469e+19
+d_R  =    1.04476e+13
+	
+GasRelease: intact faces
+R_i  =    8.31475e+24
+R_f  =    8.48068e+24
+d_R  =    1.65932e+23
+R_i  =    1.03934e+24
+R_f  =    1.06008e+24
+d_R  =    2.07415e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.96561e+22
+R_f  =    2.98092e+22
+d_R  =    1.53071e+20
+R_i  =    4.47469e+19
+R_f  =    4.49746e+19
+d_R  =    2.2768e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    8.31475e+24
+R_f  =    8.48068e+24
+d_R  =    1.65936e+23
+R_i  =    1.03934e+24
+R_f  =    1.06009e+24
+d_R  =    2.0742e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.96561e+22
+R_f  =    2.98092e+22
+d_R  =    1.53078e+20
+R_i  =    4.47469e+19
+R_f  =    4.49746e+19
+d_R  =    2.27691e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999993
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.52092e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.61493e+06
+Critical pressure (Pa): 5.17699e+08
+Critical pressure Jernkvist (Pa): 2.1694e+08
+Bubble pressure (Pa): 9.24408e+06
+dm/dp= 7.21463e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    8.48068e+24
+R_f  =    8.48069e+24
+d_R  =    4.46733e+18
+R_i  =    1.06009e+24
+R_f  =    1.06009e+24
+d_R  =    5.58416e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.98092e+22
+R_f  =    2.98092e+22
+d_R  =    7.08351e+15
+R_i  =    4.49746e+19
+R_f  =    4.49746e+19
+d_R  =    1.06244e+13
+	
+GasRelease: intact faces
+R_i  =    8.48068e+24
+R_f  =    8.64746e+24
+d_R  =    1.66771e+23
+R_i  =    1.06009e+24
+R_f  =    1.08093e+24
+d_R  =    2.08464e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.98092e+22
+R_f  =    2.99594e+22
+d_R  =    1.50215e+20
+R_i  =    4.49746e+19
+R_f  =    4.5198e+19
+d_R  =    2.23395e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    8.48068e+24
+R_f  =    8.64746e+24
+d_R  =    1.66776e+23
+R_i  =    1.06009e+24
+R_f  =    1.08093e+24
+d_R  =    2.0847e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.98092e+22
+R_f  =    2.99594e+22
+d_R  =    1.50223e+20
+R_i  =    4.49746e+19
+R_f  =    4.5198e+19
+d_R  =    2.23405e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999993
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.48605e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.60247e+06
+Critical pressure (Pa): 5.15561e+08
+Critical pressure Jernkvist (Pa): 2.15964e+08
+Bubble pressure (Pa): 9.27701e+06
+dm/dp= 7.29469e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    8.64746e+24
+R_f  =    8.64746e+24
+d_R  =    4.58029e+18
+R_i  =    1.08093e+24
+R_f  =    1.08093e+24
+d_R  =    5.72536e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.99594e+22
+R_f  =    2.99594e+22
+d_R  =    7.20117e+15
+R_i  =    4.5198e+19
+R_f  =    4.5198e+19
+d_R  =    1.08011e+13
+	
+GasRelease: intact faces
+R_i  =    8.64746e+24
+R_f  =    8.81506e+24
+d_R  =    1.676e+23
+R_i  =    1.08093e+24
+R_f  =    1.10188e+24
+d_R  =    2.095e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.99594e+22
+R_f  =    3.01068e+22
+d_R  =    1.4744e+20
+R_i  =    4.5198e+19
+R_f  =    4.54172e+19
+d_R  =    2.19231e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    8.64746e+24
+R_f  =    8.81506e+24
+d_R  =    1.67604e+23
+R_i  =    1.08093e+24
+R_f  =    1.10188e+24
+d_R  =    2.09506e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    2.99594e+22
+R_f  =    3.01068e+22
+d_R  =    1.47447e+20
+R_i  =    4.5198e+19
+R_f  =    4.54173e+19
+d_R  =    2.19242e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999993
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.45186e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.59026e+06
+Critical pressure (Pa): 5.13458e+08
+Critical pressure Jernkvist (Pa): 2.15005e+08
+Bubble pressure (Pa): 9.31019e+06
+dm/dp= 7.3754e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    8.81506e+24
+R_f  =    8.81507e+24
+d_R  =    4.69523e+18
+R_i  =    1.10188e+24
+R_f  =    1.10188e+24
+d_R  =    5.86903e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.01068e+22
+R_f  =    3.01068e+22
+d_R  =    7.31887e+15
+R_i  =    4.54173e+19
+R_f  =    4.54173e+19
+d_R  =    1.09779e+13
+	
+GasRelease: intact faces
+R_i  =    8.81506e+24
+R_f  =    8.9828e+24
+d_R  =    1.67735e+23
+R_i  =    1.10188e+24
+R_f  =    1.12285e+24
+d_R  =    2.09669e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.01068e+22
+R_f  =    3.02495e+22
+d_R  =    1.42636e+20
+R_i  =    4.54173e+19
+R_f  =    4.56293e+19
+d_R  =    2.12008e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    8.81506e+24
+R_f  =    8.9828e+24
+d_R  =    1.6774e+23
+R_i  =    1.10188e+24
+R_f  =    1.12285e+24
+d_R  =    2.09675e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.01068e+22
+R_f  =    3.02495e+22
+d_R  =    1.42643e+20
+R_i  =    4.54173e+19
+R_f  =    4.56293e+19
+d_R  =    2.12019e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999992
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.41831e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.57828e+06
+Critical pressure (Pa): 5.11388e+08
+Critical pressure Jernkvist (Pa): 2.14063e+08
+Bubble pressure (Pa): 9.34412e+06
+dm/dp= 7.45717e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    8.9828e+24
+R_f  =    8.98281e+24
+d_R  =    4.8137e+18
+R_i  =    1.12285e+24
+R_f  =    1.12285e+24
+d_R  =    6.01713e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.02495e+22
+R_f  =    3.02495e+22
+d_R  =    7.44133e+15
+R_i  =    4.56293e+19
+R_f  =    4.56293e+19
+d_R  =    1.11619e+13
+	
+GasRelease: intact faces
+R_i  =    8.9828e+24
+R_f  =    9.15071e+24
+d_R  =    1.67909e+23
+R_i  =    1.12285e+24
+R_f  =    1.14384e+24
+d_R  =    2.09887e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.02495e+22
+R_f  =    3.03876e+22
+d_R  =    1.3813e+20
+R_i  =    4.56293e+19
+R_f  =    4.58345e+19
+d_R  =    2.05237e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    8.9828e+24
+R_f  =    9.15072e+24
+d_R  =    1.67914e+23
+R_i  =    1.12285e+24
+R_f  =    1.14384e+24
+d_R  =    2.09893e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.02495e+22
+R_f  =    3.03876e+22
+d_R  =    1.38137e+20
+R_i  =    4.56293e+19
+R_f  =    4.58345e+19
+d_R  =    2.05248e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999992
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.38539e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.56651e+06
+Critical pressure (Pa): 5.09351e+08
+Critical pressure Jernkvist (Pa): 2.13137e+08
+Bubble pressure (Pa): 9.37875e+06
+dm/dp= 7.53999e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    9.15072e+24
+R_f  =    9.15072e+24
+d_R  =    4.93565e+18
+R_i  =    1.14384e+24
+R_f  =    1.14384e+24
+d_R  =    6.16957e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.03876e+22
+R_f  =    3.03876e+22
+d_R  =    7.56805e+15
+R_i  =    4.58345e+19
+R_f  =    4.58345e+19
+d_R  =    1.13522e+13
+	
+GasRelease: intact faces
+R_i  =    9.15072e+24
+R_f  =    9.31942e+24
+d_R  =    1.68704e+23
+R_i  =    1.14384e+24
+R_f  =    1.16493e+24
+d_R  =    2.1088e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.03876e+22
+R_f  =    3.05233e+22
+d_R  =    1.35666e+20
+R_i  =    4.58345e+19
+R_f  =    4.60361e+19
+d_R  =    2.01545e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    9.15072e+24
+R_f  =    9.31943e+24
+d_R  =    1.68709e+23
+R_i  =    1.14384e+24
+R_f  =    1.16493e+24
+d_R  =    2.10886e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.03876e+22
+R_f  =    3.05233e+22
+d_R  =    1.35673e+20
+R_i  =    4.58345e+19
+R_f  =    4.60361e+19
+d_R  =    2.01556e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999992
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.35307e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.55497e+06
+Critical pressure (Pa): 5.07346e+08
+Critical pressure Jernkvist (Pa): 2.12226e+08
+Bubble pressure (Pa): 9.41356e+06
+dm/dp= 7.6235e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    9.31943e+24
+R_f  =    9.31943e+24
+d_R  =    5.05965e+18
+R_i  =    1.16493e+24
+R_f  =    1.16493e+24
+d_R  =    6.32456e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.05233e+22
+R_f  =    3.05233e+22
+d_R  =    7.69455e+15
+R_i  =    4.60361e+19
+R_f  =    4.60361e+19
+d_R  =    1.15422e+13
+	
+GasRelease: intact faces
+R_i  =    9.31943e+24
+R_f  =    9.48892e+24
+d_R  =    1.69488e+23
+R_i  =    1.16493e+24
+R_f  =    1.18611e+24
+d_R  =    2.11861e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.05233e+22
+R_f  =    3.06566e+22
+d_R  =    1.33268e+20
+R_i  =    4.60361e+19
+R_f  =    4.6234e+19
+d_R  =    1.97952e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    9.31943e+24
+R_f  =    9.48892e+24
+d_R  =    1.69494e+23
+R_i  =    1.16493e+24
+R_f  =    1.18612e+24
+d_R  =    2.11867e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.05233e+22
+R_f  =    3.06566e+22
+d_R  =    1.33276e+20
+R_i  =    4.60361e+19
+R_f  =    4.6234e+19
+d_R  =    1.97964e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999992
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.32134e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.54364e+06
+Critical pressure (Pa): 5.05371e+08
+Critical pressure Jernkvist (Pa): 2.1133e+08
+Bubble pressure (Pa): 9.44855e+06
+dm/dp= 7.70771e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    9.48892e+24
+R_f  =    9.48893e+24
+d_R  =    5.18571e+18
+R_i  =    1.18612e+24
+R_f  =    1.18612e+24
+d_R  =    6.48214e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.06566e+22
+R_f  =    3.06566e+22
+d_R  =    7.82089e+15
+R_i  =    4.6234e+19
+R_f  =    4.62341e+19
+d_R  =    1.17319e+13
+	
+GasRelease: intact faces
+R_i  =    9.48892e+24
+R_f  =    9.65918e+24
+d_R  =    1.70263e+23
+R_i  =    1.18612e+24
+R_f  =    1.2074e+24
+d_R  =    2.12829e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.06566e+22
+R_f  =    3.07875e+22
+d_R  =    1.30934e+20
+R_i  =    4.6234e+19
+R_f  =    4.64285e+19
+d_R  =    1.94457e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    9.48892e+24
+R_f  =    9.65919e+24
+d_R  =    1.70269e+23
+R_i  =    1.18612e+24
+R_f  =    1.2074e+24
+d_R  =    2.12836e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.06566e+22
+R_f  =    3.07875e+22
+d_R  =    1.30942e+20
+R_i  =    4.6234e+19
+R_f  =    4.64285e+19
+d_R  =    1.94468e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999992
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.29018e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.53251e+06
+Critical pressure (Pa): 5.03427e+08
+Critical pressure Jernkvist (Pa): 2.10449e+08
+Bubble pressure (Pa): 9.48372e+06
+dm/dp= 7.79263e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    9.65919e+24
+R_f  =    9.65919e+24
+d_R  =    5.31389e+18
+R_i  =    1.2074e+24
+R_f  =    1.2074e+24
+d_R  =    6.64236e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.07875e+22
+R_f  =    3.07875e+22
+d_R  =    7.94718e+15
+R_i  =    4.64285e+19
+R_f  =    4.64285e+19
+d_R  =    1.19216e+13
+	
+GasRelease: intact faces
+R_i  =    9.65919e+24
+R_f  =    9.83022e+24
+d_R  =    1.71029e+23
+R_i  =    1.2074e+24
+R_f  =    1.22878e+24
+d_R  =    2.13786e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.07875e+22
+R_f  =    3.09162e+22
+d_R  =    1.28662e+20
+R_i  =    4.64285e+19
+R_f  =    4.66196e+19
+d_R  =    1.91055e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    9.65919e+24
+R_f  =    9.83022e+24
+d_R  =    1.71034e+23
+R_i  =    1.2074e+24
+R_f  =    1.22878e+24
+d_R  =    2.13793e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.07875e+22
+R_f  =    3.09162e+22
+d_R  =    1.2867e+20
+R_i  =    4.64285e+19
+R_f  =    4.66196e+19
+d_R  =    1.91067e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999992
+Cappellari --------
+Stress intensification factor =3.33
+Y: 1.33
+Span: 15
+Inflection point: 0.3
+Surface tension (J/m2) = 0.722021
+Elastic modulus (GPa) = 180.185
+Grain Boundary Energy (J/m2)= 0.928212
+Capillary pressure (Pa) = 4.25958e+06
+Capillary pressure by  (Jernkvist 2020, Pa) = 1.52158e+06
+Critical pressure (Pa): 5.01512e+08
+Critical pressure Jernkvist (Pa): 2.09582e+08
+Bubble pressure (Pa): 9.51905e+06
+dm/dp= 7.87827e-08
+Cappellari --------
+	
+GasRelease: microcracking
+R_i  =    9.83022e+24
+R_f  =    9.83023e+24
+d_R  =    5.44422e+18
+R_i  =    1.22878e+24
+R_f  =    1.22878e+24
+d_R  =    6.80528e+17
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.09162e+22
+R_f  =    3.09162e+22
+d_R  =    8.0735e+15
+R_i  =    4.66196e+19
+R_f  =    4.66196e+19
+d_R  =    1.21112e+13
+	
+GasRelease: intact faces
+R_i  =    9.83022e+24
+R_f  =    1.0002e+25
+d_R  =    1.71785e+23
+R_i  =    1.22878e+24
+R_f  =    1.25025e+24
+d_R  =    2.14732e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.09162e+22
+R_f  =    3.10426e+22
+d_R  =    1.2645e+20
+R_i  =    4.66196e+19
+R_f  =    4.68073e+19
+d_R  =    1.87743e+17
+	
+GasRelease: intact faces+microcracking
+R_i  =    9.83022e+24
+R_f  =    1.0002e+25
+d_R  =    1.71791e+23
+R_i  =    1.22878e+24
+R_f  =    1.25025e+24
+d_R  =    2.14738e+22
+R_i  =    0
+R_f  =    0
+d_R  =    0
+R_i  =    3.09162e+22
+R_f  =    3.10426e+22
+d_R  =    1.26458e+20
+R_i  =    4.66196e+19
+R_f  =    4.68073e+19
+d_R  =    1.87755e+17
+Stress intensification factor =3.33
+Grain Boundary rupture --------------------------------
+Intactness: 0.999992

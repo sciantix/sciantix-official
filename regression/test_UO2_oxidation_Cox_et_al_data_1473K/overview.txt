@@ -21,6 +21,7 @@ Model	Gas diffusion - Kr85m in UO2
 Model	Grain-boundary micro-cracking	from Barani et al. (2017), JNM
 Model	Grain-boundary venting	not considered.
 Model	Intergranular bubble evolution	: Pastore et al., NED, 256 (2013) 75-86.
+Model	Grain-boundary rupture	Under development
 
 Matrix	UO2	
 	: Null grain-boundary mobility.

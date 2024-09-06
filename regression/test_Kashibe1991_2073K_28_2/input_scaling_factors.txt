@@ -10,9 +10,11 @@
 # scaling factor - temperature
 1.0
 # scaling factor - fission rate
-0.95
+0.30
 # scaling factor - cent parameter
 1.0
 # scaling factor - helium production rate
-40.0
+15.0
 # scaling factor - span parameter
+1.33
+# scaling factor - geometrical parameter
