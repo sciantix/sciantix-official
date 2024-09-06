@@ -40,6 +40,7 @@
 #include "MapMatrix.h"
 #include "ConstantNumbers.h"
 #include "UO2Thermochemistry.h"
+#include "MainVariables.h"
 
 /// @brief
 /// Derived class representing the operations of SCIANTIX. The conjunction of the models with the implemented solvers results in the simulation.
@@ -221,6 +222,7 @@ class Simulation : public Solver, public Model
 
 				if (sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getFinalValue() < 0.0)
 					sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(0.0);
+
 			}
 		}
 
@@ -231,6 +233,7 @@ class Simulation : public Solver, public Model
 		 */
 		if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() == 0)
 		{
+
 			for (auto& system : sciantix_system)
 			{
 				if(system.getRestructuredMatrix() == 0)
@@ -243,21 +246,22 @@ class Simulation : public Solver, public Model
 							sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() -
 							sciantix_variable[sv[system.getGasName() + " decayed"]].getFinalValue() -
 							sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue()
+
 						);
+
 					}
 				}
 			}
 		}
 
-		if (input_variable[iv["iGrainBoundaryBehaviour"]].getValue() != 0)
+		if (input_variable[iv["iTriso"]].getValue() != 0)
 		{
-
 			for (auto& system : shell_system)
 			{
 				double inner_boundary_concentration = sciantix_variable[sv[system.getGasName() + " released"]].getFinalValue();
 				sciantix_variable[sv[system.getGasName() + " in Triso"]].setFinalValue(
-					solver.sphericalShellDiffusion(inner_boundary_concentration, dTime_h, system.getFissionGasDiffusivity(), system.getModes(), system.getSpatialGrid())
-				)
+					solver.sphericalShellDiffusion(inner_boundary_concentration, physics_variable[pv["Time step"]].getFinalValue(), system.getFissionGasDiffusivity(), system.getModes(), shell[she["SiC"]].getInnerRadius(), shell[she["SiC"]].getOuterRadius(), system.getSpacestep(), system.getSpatialGrid(), sphericalShellDiffusionIntegrals)
+				);
 			}
 
 

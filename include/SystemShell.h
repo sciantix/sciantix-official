@@ -35,6 +35,8 @@ protected:
 	std::string gas_name;
 	std::string matrix_name;
 	std::vector<double> modes;
+	std::vector<double> spatial_grid;
+	double spacestep = 1e-7;
 
 public:
 
@@ -85,6 +87,38 @@ public:
 	std::vector<double> getModes(){
 
 		return modes;
+
+	}
+
+	void setSpacestep (double space_step){
+
+		spacestep = space_step;
+
+	}
+
+	double getSpacestep (){
+
+		return spacestep;
+
+	}
+
+	void setSpatialGrid(){
+
+		std::cout<<"valore del raggio interno: "<<getInnerRadius()<<std::endl;
+		double grid_number_of_points = (outer_radius - inner_radius)/spacestep;
+		spatial_grid.push_back(inner_radius);
+
+		for (size_t space_counter = 1; space_counter <= grid_number_of_points; ++space_counter){
+
+			spatial_grid.push_back(inner_radius + space_counter*spacestep);
+
+		}
+
+	}	
+
+	std::vector<double> getSpatialGrid(){
+
+		return spatial_grid;
 
 	}
 

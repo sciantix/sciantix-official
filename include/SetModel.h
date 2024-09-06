@@ -32,6 +32,7 @@
 #include "MapMatrix.h"
 #include "MapSciantixVariable.h"
 #include "MapSystem.h"
+#include "MapSystemShell.h"
 
 #include "GrainGrowth.h"
 #include "GrainBoundarySweeping.h"

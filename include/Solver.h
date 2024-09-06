@@ -22,14 +22,13 @@
 #include <cmath>
 #include "InputVariable.h"
 #include "ConstantNumbers.h"
+#include "MainVariables.h"
 
 /// Derived class for the SCIANTIX solvers. They are communicated with models within the Simulation class.
 
 class Solver : public InputVariable
 {
 protected: 
-
-	std::vector <double> sphericalShellDiffusionIntegrals;
 
 public:
 
@@ -288,7 +287,8 @@ public:
 	const double& inner_radius,
 	const double& outer_radius,
 	const double& space_step,
-    const std::vector<double>& spatial_grid)  {
+    const std::vector<double>& spatial_grid,
+	std::vector<double>& sphericalShellDiffusionIntegrals)  {
 
 
 		//The following solver solves the Fourier's equation dc(r, t)/dt = -D*grad^2(c(r, t)) into a spherical shell with null flux at the outer interface
@@ -299,20 +299,22 @@ public:
 		//References regarding the shape of the solution can be found in "Diffusion of heat in solids" By Carlslaw and Jagger, 1946, Clarendon Press.
 
 		double stabilization_time = 1000; //[s]
-		int space_points_number = (outer_radius - inner_radius)/spacestep + 1;
 		double mean_volumetric_concentration = inner_boundary_concentration; //[at/m^3]
 		std::vector <double> next_initial_condition(spatial_grid.size(), inner_boundary_concentration);
 
+		std::cout<<"taglia di spatial grid: "<<spatial_grid.size()<<std::endl;
+
 		for (size_t mode_counter = 0; mode_counter < eigenvalues.size(); ++mode_counter) {
-			
+
 			double eigenvalue = eigenvalues[mode_counter];
 			double eigenvalue_squared = eigenvalue * eigenvalue;
 			double next_initial_condition_exponential_term = exp(-diffusion_coefficient*eigenvalue_squared*simulation_timestep);
+			double solution_exponential_term = exp(-diffusion_coefficient*eigenvalue_squared*stabilization_time);
 			double multiplying_factor = (1 + pow(outer_radius * eigenvalue, 2)) / ((outer_radius - inner_radius) * (1 + pow(outer_radius * eigenvalue, 2)) - outer_radius);
 
 			for (size_t space_counter = 0; space_counter < spatial_grid.size(); ++space_counter){
 
-				next_initial_condition[i] += 2/radius_values[i]*next_initial_condition_exponential_term*std::sin(eigenvalue*(radius_values[i] - inner_radius))*multiplying_factor*(sphericalShellDiffusionIntegrals[mode_counter] - inner_boundary_concentration*inner_radius/eigenvalue);
+				next_initial_condition[space_counter] += 2/spatial_grid[space_counter]*next_initial_condition_exponential_term*std::sin(eigenvalue*(spatial_grid[space_counter] - inner_radius))*multiplying_factor*(sphericalShellDiffusionIntegrals[mode_counter] - inner_boundary_concentration*inner_radius/eigenvalue);
 
 				mean_volumetric_concentration += 6*inner_boundary_concentration/((pow(outer_radius, 3) - pow(inner_radius, 3))*eigenvalue)*solution_exponential_term*multiplying_factor*(sphericalShellDiffusionIntegrals[mode_counter] - inner_boundary_concentration*inner_radius/eigenvalues[mode_counter]);
 
@@ -322,10 +324,13 @@ public:
 
 		for (size_t mode_counter = 0; mode_counter < eigenvalues.size(); ++mode_counter) {
 
+			double eigenvalue = eigenvalues[mode_counter];
+
 			for (size_t space_counter = 1; space_counter < spatial_grid.size(); ++space_counter) {
 
-			    sphericalShellDiffusionIntegrals[space_counter] += (spacestep / 2) * ((std::sin(eigenvalue * (spatial_grid[spatial_counter] - spatial_grid[0])) * initial_condition[spatial_counter] * spatial_grid[spatial_counter]) +
-			                                        (std::sin(eigenvalue * (spatial_grid[spatial_counter - 1] - spatial_grid[0])) * initial_condition[spatial_counter - 1] * spatial_grid[spatial_counter - 1]));
+				std::cout<<"valore dell'initial_condition:"<<next_initial_condition[space_counter]<<std::endl;
+			    sphericalShellDiffusionIntegrals[mode_counter] += (space_step / 2) * ((std::sin(eigenvalue * (spatial_grid[space_counter] - spatial_grid[0])) * next_initial_condition[space_counter] * spatial_grid[space_counter]) +
+			                                        (std::sin(eigenvalue * (spatial_grid[space_counter - 1] - spatial_grid[0])) * next_initial_condition[space_counter - 1] * spatial_grid[space_counter - 1]));
 			}
 
 		}
@@ -441,7 +446,7 @@ public:
 	}
 
 
-	Solver() : sphericalShellDiffusionIntegrals(n_modes, 0) {}
+	Solver() {}
 	~Solver() {}
 };
 

@@ -115,4 +115,6 @@ void Sciantix(int Sciantix_options[],
 	material.clear();
 	gas.clear();
 	matrix.clear();
+	shell.clear();
+	shell_system.clear();
 }
