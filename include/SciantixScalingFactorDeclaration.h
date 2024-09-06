@@ -23,6 +23,7 @@ extern double sf_diffusivity;
 extern double sf_screw_parameter;
 extern double sf_span_parameter;
 extern double sf_cent_parameter;
+extern double sf_geometrical_parameter;
 extern double sf_helium_production_rate;
 extern double sf_temperature;
 extern double sf_fission_rate;

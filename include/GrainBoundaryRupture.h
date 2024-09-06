@@ -25,4 +25,5 @@
 #include "MapSciantixVariable.h"
 #include "MapHistoryVariable.h"
 
+#include "SetVariables.h"
 void GrainBoundaryRupture();
