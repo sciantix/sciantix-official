@@ -38,4 +38,4 @@ std::vector<double> Temperature_input(1000, 0.0);
 std::vector<double> Fissionrate_input(1000, 0.0);
 std::vector<double> Hydrostaticstress_input(1000, 0.0);
 std::vector<double> Steampressure_input(1000, 0.0);
-std::vector<double> sphericalShellDiffusionIntegrals(40, 0.0);
+std::vector<std::vector<double>> sphericalShellDiffusionIntegrals(3, std::vector<double>(40, 0.0));

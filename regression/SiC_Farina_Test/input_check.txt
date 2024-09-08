@@ -1,12 +1,12 @@
 iGrainGrowth = 1
-iFGDiffusionCoefficient = 1
+iFGDiffusionCoefficient = 0
 iDiffusionSolver = 1
 iIntraGranularBubbleEvolution = 1
 iResolutionRate = 1
 iTrappingRate = 1
 iNucleationRate = 1
 iOutput = 1
-iGrainBoundaryVacancyDiffusivity = 1
+iGrainBoundaryVacancyDiffusivity = 0
 iGrainBoundaryBehaviour = 0
 iGrainBoundaryMicroCracking = 1
 iFuelMatrix = 0

@@ -49,4 +49,4 @@ extern std::vector<double> Temperature_input;
 extern std::vector<double> Fissionrate_input;
 extern std::vector<double> Hydrostaticstress_input;
 extern std::vector<double> Steampressure_input;
-extern std::vector<double> sphericalShellDiffusionIntegrals;
+extern std::vector<std::vector<double>> sphericalShellDiffusionIntegrals;

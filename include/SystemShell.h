@@ -104,7 +104,6 @@ public:
 
 	void setSpatialGrid(){
 
-		std::cout<<"valore del raggio interno: "<<getInnerRadius()<<std::endl;
 		double grid_number_of_points = (outer_radius - inner_radius)/spacestep;
 		spatial_grid.push_back(inner_radius);
 

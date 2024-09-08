@@ -49,7 +49,6 @@ void SystemShell::setFissionGasDiffusivity(int input_value)
 		
 		reference += "iFGDiffusionCoefficient: constant diffusivity.\n\t";
 		diffusivity = 7e-19;
-		diffusivity *= sf_diffusivity;
 
 		break;
 	}
