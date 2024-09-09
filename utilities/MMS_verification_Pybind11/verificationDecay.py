@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Path to the compiled sciantixModule 
-module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'build', 'python'))
+module_path = os.path.abspath(os.path.join(os.path.dirname(__file__),'..', '..', 'build', 'python'))
 if module_path not in sys.path:
     # Add the module to the system path
     sys.path.append(module_path)
@@ -63,8 +63,8 @@ def main(L,S,exact_solution):
     plt.figure(figsize=(10, 6))
     plt.loglog(increments, errors, 'bo-')
     plt.xlabel('steps of time (h)')
-    plt.ylabel('Erreur')
-    plt.title('Log(Erreur) vs Log(h)')
+    plt.ylabel('Error')
+    plt.title('Log(error) vs Log(h)')
     plt.grid(True)
 
     # plot the solution for the minimum step 
