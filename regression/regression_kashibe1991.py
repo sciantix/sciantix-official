@@ -209,6 +209,60 @@ def do_plot():
   plt.savefig('FGRAnnealingRamp-Kashibe1991')
   plt.show()
 
+  # Difference multiple-single ramp
+  FGR2DeltaRamp = [FGR2Annealing[1] - FGR2Annealing[0], 
+                   FGR2Annealing[3] - FGR2Annealing[2]]
+  FGRDeltaRamp = [FGRAnnealing[1] - FGRAnnealing[0], 
+                  FGRAnnealing[3] - FGRAnnealing[2]]
+  goldFGRDeltaRamp = [goldFGRAnnealing[1] - goldFGRAnnealing[0], 
+                      goldFGRAnnealing[3] - goldFGRAnnealing[2]]
+  
+  # fig, ax = plt.subplots()
+
+  # categories = ['This work', 'Barani (2017)', 'Kashibe et al. (1991)']
+  # val1 = [abs(FGR2DeltaRamp[0]), abs(goldFGRDeltaRamp[0]), abs(FGRDeltaRamp[0])]
+  # val2 = [abs(FGR2DeltaRamp[1]), abs(goldFGRDeltaRamp[1]), abs(FGRDeltaRamp[1])]
+
+  # width = 0.3
+  # y = np.arange(len(categories))
+
+  # plt.barh(y - width/2, val1, 0.8*width, label='23 GWd/tU', color='blue')
+  # plt.barh(y + width/2, val2, 0.8*width, label='28 GWd/tU', color='green')
+
+  # plt.yticks(y, categories)
+  # plt.xlabel('Absolute Difference Between Single and Multiple Ramp Annealing (FGR)')
+  # plt.title('Isothermal and cyclic annealing')
+
+  # plt.legend()
+  # plt.grid(color='gray', linestyle='--', linewidth=0.5)
+  # #plt.savefig('FGRDeltaRamp-Kashibe1991'))
+  # plt.show()
+
+  fig, ax = plt.subplots()
+
+  categories = ['23 GWd/tU', '28 GWd/tU']
+
+  width = 1
+  x = np.array([0, 5])
+
+  plt.barh(x - width, FGR2DeltaRamp, 0.9*width, label='This work', color='#9370DB', edgecolor='#D3D3D3')
+  plt.barh(x, goldFGRDeltaRamp, 0.9*width, label='Barani (2017)', color='#ff7f0e', edgecolor='#D3D3D3')
+  plt.barh(x + width, FGRDeltaRamp, 0.9*width, label='Kashibe (1991)', color='blue', edgecolor='#D3D3D3')
+
+  plt.yticks(x, categories)
+  plt.xlabel('Difference Between Single and Multiple Ramp Annealing (FGR)')
+  plt.title('Isothermal and cyclic annealing')
+
+  plt.legend()
+  
+  plt.axvline(0, color='gray', linestyle='--', linewidth=1)
+  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='x') 
+  plt.minorticks_on()
+  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='x')
+
+  plt.savefig('FGRDeltaRamp-Kashibe1991')
+  plt.show()
+
 
 # Main function of the baker regression
 def regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):

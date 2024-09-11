@@ -191,25 +191,22 @@ def do_plot():
   fig, ax = plt.subplots()
 
   ax.scatter(SwellingKashibe[1:4], NewSwelling2[1:4],c='#9370DB', marker = '^', s=30, label='This work - 1600°C', zorder = 1)
-  ax.scatter(SwellingKashibe[1:4], NewSwellinggold[1:4],c='#ff7f0e', marker = '^', s=30, label='Barani (2017) - 1600°C', zorder = 2)
+  ax.scatter(SwellingKashibe[1:4], NewSwellinggold[1:4],c='#ff7f0e', marker = '^', s=20, label='Barani (2017) - 1600°C', zorder = 2, alpha=0.8)
   ax.scatter(SwellingKashibe[4:7], NewSwelling2[4:7], c = '#9370DB', marker = 'o', s=30,label='This work - 1800°C', zorder = 3)
-  ax.scatter(SwellingKashibe[4:7], NewSwellinggold[4:7], c = '#ff7f0e', marker = 'o', s=30,label='Barani (2017) - 1800°C', zorder = 4)
+  ax.scatter(SwellingKashibe[4:7], NewSwellinggold[4:7], c = '#ff7f0e', marker = 'o', s=20,label='Barani (2017) - 1800°C', zorder = 4, alpha =0.8)
   print(NewSwelling2)
 
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
   ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  ax.set_xlim(0, 20)
-  ax.set_ylim(0, 20)
+  ax.set_xlim(0, 15)
+  ax.set_ylim(0, 15)
 
   ax.set_title('Intergranular swelling')
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
   ax.grid(color='gray', linestyle='--', linewidth=0.5)
-
-  print(NewSwelling2)
-  print(NewSwellinggold)
   
   plt.savefig('SwellingDiviso-Kashibe1990')
   plt.show()
