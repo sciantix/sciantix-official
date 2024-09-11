@@ -109,56 +109,58 @@ def do_gold():
 
 # Plot the regression test results
 def do_plot():
-  # Data vs. SCIANTIX 2.0
-  fig, ax = plt.subplots()
-
-  ax.scatter(FGRKashibe, FGR2, c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
-  ax.scatter(FGRKashibe, goldFGR, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
-  ax.scatter(FGRKashibe, TOtFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
-  ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  
-  ax.set_xlim(0, 100)
-  ax.set_ylim(0, 100)
+  # # FGR totale
+  # fig, ax = plt.subplots()
 
-  ax.set_title('Fission gas release')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  # ax.scatter(FGRKashibe, FGR2, c = '#9370DB', marker = '^', s=40, label='This work', zorder=1)
+  # ax.scatter(FGRKashibe, goldFGR, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
+  # ax.scatter(FGRKashibe, TOtFGRVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
-  plt.savefig('FGRTotal-Kashibe1991')
-  plt.show()
+  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  
+  # ax.set_xlim(0, 100)
+  # ax.set_ylim(0, 100)
 
-  fig, ax = plt.subplots()
+  # ax.set_title('Fission gas release')
+  # ax.set_xlabel('Experimental (%)')
+  # ax.set_ylabel('Calculated (%)')
+  # ax.legend()
+  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  
+  # plt.savefig('FGRTotal-Kashibe1991')
+  # plt.show()
 
   FGR2Annealing = []
   goldFGRAnnealing = []
   for i in range(len(FGR2)):
     FGR2Annealing.append(FGR2[i] - FGRBase[i])
     goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
-    
-  ax.scatter(FGRAnnealing, FGR2Annealing, c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
-  ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
-  ax.scatter(FGRAnnealing, AnnFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
-  
-  ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  
-  ax.set_xlim(0, 50)
-  ax.set_ylim(0, 50)
 
-  ax.set_title('Fission gas release - Annealing phase')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  # # FGR annealing 
+  # fig, ax = plt.subplots()
+
+  # ax.scatter(FGRAnnealing, FGR2Annealing, c = '#9370DB', marker = '^', s=40, label='This work', zorder=1)
+  # ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
+  # ax.scatter(FGRAnnealing, AnnFGRVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
-  plt.savefig('FGRAnnealing-Kashibe1991')
-  plt.show()
+  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  
+  # ax.set_xlim(0, 50)
+  # ax.set_ylim(0, 50)
+
+  # ax.set_title('Fission gas release - Annealing phase')
+  # ax.set_xlabel('Experimental (%)')
+  # ax.set_ylabel('Calculated (%)')
+  # ax.legend()
+  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  
+  # plt.savefig('FGRAnnealing-Kashibe1991')
+  # plt.show()
 
 # FGRAnnealing = [5.9, 6.5, #1400°C, 23 GWd/t, Multiple-Single
 #                 5.9, 7.6,  #1400°C, 28 GWd/t, Multiple-Single
@@ -166,15 +168,15 @@ def do_plot():
 #                 28.7,27.1,24,24.47 #1800°C 28 GWd/t, rate 1,2,4,5
 #               ]
 
-  #GOLD vs. SCIANTIX 2.0, no error bars
+  # FGR annealing
   fig, ax = plt.subplots()
 
-  ax.scatter(FGRAnnealing[4:9], FGR2Annealing[4:9],c='#9370DB', marker = '^', s=30,         label='This work - 1800°C - 23 GWd/tU', zorder = 1)
-  ax.scatter(FGRAnnealing[4:9], goldFGRAnnealing[4:9],c='#ff7f0e', marker = '^', s=30,      label='Barani (2017) - 1800°C - 23 GWd/tU', zorder = 2)
-  ax.scatter(FGRAnnealing[4:9], AnnFGRVersion2[4:9], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
-  ax.scatter(FGRAnnealing[9:13], FGR2Annealing[9:13], c = '#9370DB', marker = 'o', s=30,    label='This work - 1800°C - 28 GWd/tU', zorder = 3)
-  ax.scatter(FGRAnnealing[9:13], goldFGRAnnealing[9:13], c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017) - 1800°C - 28 GWd/tU', zorder = 4)
-  ax.scatter(FGRAnnealing[9:13], AnnFGRVersion2[9:13], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  ax.scatter(FGRAnnealing[4:9], FGR2Annealing[4:9],c='#9370DB', marker = '^', s=40,         label='This work - 23 GWd/tU')
+  ax.scatter(FGRAnnealing[9:13], FGR2Annealing[9:13], facecolors= 'none', edgecolors = '#9370DB', marker = '^', s=40,    label='This work - 28 GWd/tU')
+  #ax.scatter(FGRAnnealing[4:9], goldFGRAnnealing[4:9],c='#ff7f0e', marker = '^', s=40,      label='Barani (2017) - 23 GWd/tU')
+  #ax.scatter(FGRAnnealing[9:13], goldFGRAnnealing[9:13], c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017) - 28 GWd/tU')
+  ax.scatter(FGRAnnealing[4:9], AnnFGRVersion2[4:9], c='green', marker = 'd', s=40, label='SCIANTIX 2.0 - 23 GWd/tU', alpha =0.7)
+  ax.scatter(FGRAnnealing[9:13], AnnFGRVersion2[9:13], facecolors='none', edgecolors = 'green', marker = 'd', s=40, label='SCIANTIX 2.0 - 28 GWd/tU',alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -195,19 +197,19 @@ def do_plot():
    #GOLD vs. SCIANTIX 2.0, no error bars
   fig, ax = plt.subplots()
 
-  ax.scatter(FGRAnnealing[0:2], FGR2Annealing[0:2],c='#9370DB', marker = '^', s=30,         label='This work - 1400°C - 23 GWd/tU', zorder = 1)
-  ax.scatter(FGRAnnealing[0:2], goldFGRAnnealing[0:2],c='#ff7f0e', marker = '^', s=30,      label='Barani (2017) - 1400°C - 23 GWd/tU', zorder = 2)
-  ax.scatter(FGRAnnealing[0:2], AnnFGRVersion2[0:2], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
-  ax.scatter(FGRAnnealing[2:4], FGR2Annealing[2:4], c = '#9370DB', marker = 'o', s=30,    label='This work - 1400°C - 28 GWd/tU', zorder = 3)
-  ax.scatter(FGRAnnealing[2:4], goldFGRAnnealing[2:4], c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017) - 1400°C - 28 GWd/tU', zorder = 4)
-  ax.scatter(FGRAnnealing[2:4], AnnFGRVersion2[2:4], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  ax.scatter(FGRAnnealing[0:2], FGR2Annealing[0:2],c='#9370DB', marker = '^', s=40,         label='This work - 23 GWd/tU')
+  ax.scatter(FGRAnnealing[2:4], FGR2Annealing[2:4], facecolors = 'none', edgecolors = '#9370DB', marker = '^', s=40,    label='This work - 28 GWd/tU')
+  # ax.scatter(FGRAnnealing[0:2], goldFGRAnnealing[0:2],c='#ff7f0e', marker = '^', s=40,      label='Barani (2017) - 1400°C - 23 GWd/tU', zorder = 2)
+  # ax.scatter(FGRAnnealing[2:4], goldFGRAnnealing[2:4], c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017) - 1400°C - 28 GWd/tU', zorder = 4)
+  ax.scatter(FGRAnnealing[0:2], AnnFGRVersion2[0:2], c='green', marker = 'd', s=40, label='SCIANTIX 2.0 - 23 GWd/tU', alpha =0.7)
+  ax.scatter(FGRAnnealing[2:4], AnnFGRVersion2[2:4], facecolors = 'none', edgecolors='green', marker = 'd', s=40, label='SCIANTIX 2.0 - 28 GWd/tU', alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
   ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
   
-  ax.set_xlim(0, 40)
-  ax.set_ylim(0, 40)
+  ax.set_xlim(0, 30)
+  ax.set_ylim(0, 30)
 
   ax.set_title('Fission gas release - Annealing phase')
   ax.set_xlabel('Experimental (%)')
@@ -249,19 +251,18 @@ def do_plot():
   # #plt.savefig('FGRDeltaRamp-Kashibe1991'))
   # plt.show()
 
-  fig, ax = plt.subplots()
+  fig, ax = plt.subplots(figsize=(8, 4))
 
   categories = ['23 GWd/tU', '28 GWd/tU']
 
   width = 1
   x = np.array([0, 5])
 
-  plt.barh(x - width, FGR2DeltaRamp, 0.9*width, label='This work', color='#9370DB', edgecolor='#D3D3D3')
-  plt.barh(x, goldFGRDeltaRamp, 0.9*width, label='Barani (2017)', color='#ff7f0e', edgecolor='#D3D3D3')
-  plt.barh(x + width, FGRDeltaRamp, 0.9*width, label='Kashibe (1991)', color='blue', edgecolor='#D3D3D3')
-  plt.barh(x - 2*width, FGRDeltaRampVersion2, color='green', edgecolor='#D3D3D3',label='SCIANTIX 2.0')
+  #plt.barh(x, goldFGRDeltaRamp, 0.9*width, label='Barani (2017)', color='#ff7f0e', edgecolor='#D3D3D3')
+  plt.barh(x + width, FGRDeltaRamp, 0.9*width, label='Kashibe (1991)', color='lightblue', edgecolor='#D3D3D3')
+  plt.barh(x, FGR2DeltaRamp, 0.9*width, label='This work', color='#9370DB', edgecolor='#D3D3D3')
+  plt.barh(x - width, FGRDeltaRampVersion2, 0.9*width, label='SCIANTIX 2.0', color='green', edgecolor='#D3D3D3')
   
-
   plt.yticks(x, categories)
   plt.xlabel('Difference Between Single and Multiple Ramp Annealing (FGR)')
   plt.title('Isothermal and cyclic annealing')

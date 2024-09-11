@@ -46,8 +46,9 @@ FGRAnnealing = [05.80/0.75, 05.80/0.75, 13.71/0.75, 22.26, #1600°C annealing, 6
 FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
 AnnFGRVersion2 = [7.671459, 25.042722, 13.39244, 13.953050000000005, 13.625053, 30.908262, 21.162490000000005, 22.744110000000006]
-TOtFGRVersion2 = [9.452466, 30.17189, 50.331939999999996, 55.02642, 15.40606, 36.03743, 58.10199, 63.81748]
+TotFGRVersion2 = [9.452466, 30.17189, 50.331939999999996, 55.02642, 15.40606, 36.03743, 58.10199, 63.81748]
 SwellCorrVersion2 = [3.03019, 3.338526, 3.682544, 4.047388, 2.5628729999999997, 2.884574, 3.775009, 4.219698]
+
 goldFGR = []
 goldSwelling = []
 
@@ -115,55 +116,55 @@ def do_gold():
 
 # Plot the regression test results
 def do_plot():
-  # Data vs. SCIANTIX 2.0
-  fig, ax = plt.subplots()
-
-  ax.scatter(FGRKashibe, FGR2,c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
-  ax.scatter(FGRKashibe, goldFGR, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)',zorder=2, alpha=0.7)
-  ax.scatter(FGRKashibe, TOtFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
-  #ax.scatter(FGRKashibe[0:7], FGR2[8:15], c = 'red', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
-  #ax.scatter(FGRKashibe[0:7], goldFGR[8:15], marker = 'o',c = 'cyan', s=20, label='Barani (2017)')
   
-  ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  # # FGR totale
+  # fig, ax = plt.subplots()
+
+  # ax.scatter(FGRKashibe, FGR2,c = '#9370DB', marker = '^', s=40, label='This work', zorder=1)
+  # ax.scatter(FGRKashibe, goldFGR, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)',zorder=2, alpha=0.7)
+  # ax.scatter(FGRKashibe, TotFGRVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
-  ax.set_xlim(0, 100)
-  ax.set_ylim(0, 100)
+  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  
+  # ax.set_xlim(0, 100)
+  # ax.set_ylim(0, 100)
 
-  ax.set_title('Fission gas release')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
-  plt.savefig('FGRTotal-Kashibe1990')
+  # ax.set_title('Fission gas release')
+  # ax.set_xlabel('Experimental (%)')
+  # ax.set_ylabel('Calculated (%)')
+  # ax.legend()
+  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
-  #plt.show()
+  # #plt.savefig('FGRTotal-Kashibe1990')
 
-  fig, ax = plt.subplots()
+  # #plt.show()
 
-  ax.scatter(SwellingKashibe,  igSwelling2, c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
-  ax.scatter(SwellingKashibe,  goldSwelling, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
-  ax.scatter(SwellingKashibe, SwellCorrVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
-  #ax.scatter(SwellingKashibe[0:7], igSwelling2[8:15], c = 'red', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
-  #ax.scatter(SwellingKashibe[0:7], goldSwelling[8:15], marker = 'o',c = 'cyan', s=20, label='Barani (2017)')
-  ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  ax.set_xlim(0, 20)
-  ax.set_ylim(0, 20)
+  # fig, ax = plt.subplots()
 
-  ax.set_title('Intergranular swelling')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  # ax.scatter(SwellingKashibe,  igSwelling2, c = '#9370DB', marker = '^', s=40, label='This work', zorder=1)
+  # ax.scatter(SwellingKashibe,  goldSwelling, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
+  # ax.scatter(SwellingKashibe, SwellCorrVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  
+  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
 
-  plt.savefig('Swelling-Kashibe1990')
-  #plt.show()
+  # ax.set_xlim(0, 20)
+  # ax.set_ylim(0, 20)
 
-  # GOLD vs. SCIANTIX 2.0, no error bars
-  fig, ax = plt.subplots()
+  # ax.set_title('Intergranular swelling')
+  # ax.set_xlabel('Experimental (%)')
+  # ax.set_ylabel('Calculated (%)')
+  # ax.legend()
+  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
+
+  # plt.savefig('Swelling-Kashibe1990')
+  # #plt.show()
+
+  # # Swelling
+  # fig, ax = plt.subplots()
 
   NewSwelling2 = []
   NewSwellinggold= []
@@ -171,40 +172,40 @@ def do_plot():
     NewSwelling2.append(igSwelling2[i]/f2[i])
     NewSwellinggold.append(goldSwelling[i]/fgold[i])
     
-  ax.scatter(SwellingKashibe, NewSwelling2,c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
-  ax.scatter(SwellingKashibe, NewSwellinggold, c = '#ff7f0e', marker = 'o', s=30,label='Barani (2017)', zorder = 2, alpha=0.7)
-  ax.scatter(SwellingKashibe, SwellCorrVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  # ax.scatter(SwellingKashibe, NewSwelling2,c='#9370DB', marker = '^', s=40, label='This work', zorder = 1)
+  # ax.scatter(SwellingKashibe, NewSwellinggold, c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017)', zorder = 2, alpha=0.7)
+  # ax.scatter(SwellingKashibe, SwellCorrVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
-  ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  ax.set_xlim(0, 20)
-  ax.set_ylim(0, 20)
+  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
 
-  ax.set_title('Intergranular swelling')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  # ax.set_xlim(0, 20)
+  # ax.set_ylim(0, 20)
 
-
+  # ax.set_title('Intergranular swelling')
+  # ax.set_xlabel('Experimental (%)')
+  # ax.set_ylabel('Calculated (%)')
+  # ax.legend()
+  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
   
-  plt.savefig('SwellingCorretto-Kashibe1990')
-  plt.show()
+  # #plt.savefig('Swelling-Kashibe1990')
+  # plt.show()
 
- # GOLD vs. SCIANTIX 2.0, no error bars
+  # Swelling at different temperatures
   fig, ax = plt.subplots()
 
-  ax.scatter(SwellingKashibe[1:4], NewSwelling2[1:4],c='#9370DB', marker = '^', s=30, label='This work - 1600°C', zorder = 1)
-  ax.scatter(SwellingKashibe[1:4], NewSwellinggold[1:4],c='#ff7f0e', marker = '^', s=20, label='Barani (2017) - 1600°C', zorder = 2, alpha=0.8)
-  ax.scatter(SwellingKashibe[1:4], SwellCorrVersion2[1:4], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
-  ax.scatter(SwellingKashibe[4:7], NewSwelling2[4:7], c = '#9370DB', marker = 'o', s=30,label='This work - 1800°C', zorder = 3)
-  ax.scatter(SwellingKashibe[4:7], NewSwellinggold[4:7], c = '#ff7f0e', marker = 'o', s=20,label='Barani (2017) - 1800°C', zorder = 4, alpha =0.8)
-  ax.scatter(SwellingKashibe[4:7], SwellCorrVersion2[4:7], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  ax.scatter(SwellingKashibe[1:4], NewSwelling2[1:4],c='#9370DB', marker = '^', s=40, label='This work - 1600°C')
+  ax.scatter(SwellingKashibe[4:7], NewSwelling2[4:7], facecolors= 'none', edgecolors = '#9370DB', marker = '^', s=40,label='This work - 1800°C')
+  #ax.scatter(SwellingKashibe[1:4], NewSwellinggold[1:4],c='#ff7f0e', marker = '^', s=40, label='Barani (2017) - 1600°C',  alpha=0.8)
+  #ax.scatter(SwellingKashibe[4:7], NewSwellinggold[4:7], c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017) - 1800°C',  alpha =0.8)
+  ax.scatter(SwellingKashibe[1:4], SwellCorrVersion2[1:4], c='green', marker = 'd', s=40, label='SCIANTIX 2.0 - 1600°C',  alpha =0.7)
+  ax.scatter(SwellingKashibe[4:7], SwellCorrVersion2[4:7], facecolors= 'none', edgecolors='green', marker = 'd', s=40, label='SCIANTIX 2.0 - 1800°C', alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
   ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+
   ax.set_xlim(0, 15)
   ax.set_ylim(0, 15)
 
@@ -217,43 +218,43 @@ def do_plot():
   plt.savefig('SwellingDiviso-Kashibe1990')
   plt.show()
 
-  fig, ax = plt.subplots()
-
   FGR2Annealing = []
   goldFGRAnnealing = []
   for i in range(len(FGR2)):
     FGR2Annealing.append(FGR2[i] - FGRBase[i])
     goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
-    
-  ax.scatter(FGRAnnealing, FGR2Annealing, c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
-  ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
-  ax.scatter(FGRAnnealing, AnnFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
-  ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  # # FGR annealing
+  # fig, ax = plt.subplots()
+  # ax.scatter(FGRAnnealing, FGR2Annealing, c = '#9370DB', marker = '^', s=40, label='This work', zorder=1)
+  # ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
+  # ax.scatter(FGRAnnealing, AnnFGRVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
-  ax.set_xlim(0, 40)
-  ax.set_ylim(0, 40)
+  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  
+  # ax.set_xlim(0, 40)
+  # ax.set_ylim(0, 40)
 
-  ax.set_title('Fission gas release - Annealing phase')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  # ax.set_title('Fission gas release - Annealing phase')
+  # ax.set_xlabel('Experimental (%)')
+  # ax.set_ylabel('Calculated (%)')
+  # ax.legend()
+  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
-  plt.savefig('FGRAnnealing-Kashibe1990')
-  plt.show()
+  # plt.savefig('FGRAnnealing-Kashibe1990')
+  # plt.show()
 
-  #GOLD vs. SCIANTIX 2.0, no error bars
+  # FGR annealing
   fig, ax = plt.subplots()
 
-  ax.scatter(FGRAnnealing[0:4], FGR2Annealing[0:4],c='#9370DB', marker = '^', s=30, label='This work - 1600°C', zorder = 1)
-  ax.scatter(FGRAnnealing[0:4], goldFGRAnnealing[0:4],c='#ff7f0e', marker = '^', s=30, label='Barani (2017) - 1600°C', zorder = 2)
-  ax.scatter(FGRAnnealing[0:4], AnnFGRVersion2[0:4], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
-  ax.scatter(FGRAnnealing[4:8], FGR2Annealing[4:8], c = '#9370DB', marker = 'o', s=30,label='This work - 1800°C', zorder = 3)
-  ax.scatter(FGRAnnealing[4:8], goldFGRAnnealing[4:8], c = '#ff7f0e', marker = 'o', s=30,label='Barani (2017) - 1800°C', zorder = 4)
-  ax.scatter(FGRAnnealing[4:8], AnnFGRVersion2[4:8], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  ax.scatter(FGRAnnealing[1:4], FGR2Annealing[1:4],c='#9370DB', marker = '^', s=40, label='This work - 1600°C')
+  ax.scatter(FGRAnnealing[4:8], FGR2Annealing[4:8],facecolors= 'none', edgecolors = '#9370DB', marker = '^', s=40,label='This work - 1800°C')
+  # ax.scatter(FGRAnnealing[1:4], goldFGRAnnealing[1:4],c='#ff7f0e', marker = '^', s=40, label='Barani (2017) - 1600°C')
+  # ax.scatter(FGRAnnealing[4:8], goldFGRAnnealing[4:8], c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017) - 1800°C')
+  ax.scatter(FGRAnnealing[1:4], AnnFGRVersion2[1:4], c='green', marker = 'd', s=40, label='SCIANTIX 2.0 - 1600°C', alpha =0.7)
+  ax.scatter(FGRAnnealing[4:8], AnnFGRVersion2[4:8], facecolors='none', edgecolors = 'green', marker = 'd', s=40, label='SCIANTIX 2.0 - 1800°C', alpha =0.7)
   
 
   ax.plot([0, 100],[0, 100], '-', color = '#757575')

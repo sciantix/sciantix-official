@@ -110,31 +110,29 @@ def do_gold():
 
 # Plot the regression test results
 def do_plot():
-  # Data vs. SCIANTIX 2.0
-  fig, ax = plt.subplots()
+  # FGR total
+  # fig, ax = plt.subplots()
 
-  ax.scatter(FGRSmall, FGR2, c = '#9370DB', marker = '^', s=30,label='This work')
-  ax.scatter(FGRSmall, goldFGR, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', alpha=0.7)
-  ax.scatter(FGRSmall, TOtFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  # ax.scatter(FGRSmall, FGR2, c = '#9370DB', marker = '^', s=30,label='This work')
+  # ax.scatter(FGRSmall, goldFGR, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', alpha=0.7)
+  # ax.scatter(FGRSmall, TOtFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
-  ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
   
-  ax.set_xlim(0, 100)
-  ax.set_ylim(0, 100)
+  # ax.set_xlim(0, 100)
+  # ax.set_ylim(0, 100)
 
-  ax.set_title('Fission gas release')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  # ax.set_title('Fission gas release')
+  # ax.set_xlabel('Experimental (%)')
+  # ax.set_ylabel('Calculated (%)')
+  # ax.legend()
+  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
   
-  plt.savefig('FGRTotal-Small1988')
-  plt.show()
-
-  fig, ax = plt.subplots()
+  # plt.savefig('FGRTotal-Small1988')
+  # plt.show()
 
   FGR2Annealing = []
   goldFGRAnnealing = []
@@ -142,9 +140,11 @@ def do_plot():
     FGR2Annealing.append(FGR2[i] - FGRBase[i])
     goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
     
-  ax.scatter(FGRAnnealing, FGR2Annealing,c = '#9370DB', marker = '^', s=30,label='This work', zorder=1)
-  ax.scatter(FGRAnnealing, goldFGRAnnealing,c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
-  ax.scatter(FGRAnnealing, AnnFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+   #FGR annealing
+  fig, ax = plt.subplots()
+  ax.scatter(FGRAnnealing, FGR2Annealing,c = '#9370DB', marker = '^', s=30,label='This work')
+  #ax.scatter(FGRAnnealing, goldFGRAnnealing,c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
+  ax.scatter(FGRAnnealing, AnnFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
