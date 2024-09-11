@@ -42,6 +42,8 @@ FGRAnnealing = [0.01,0.01,0.34,    #1400, 300-600-900 s annealing
 
 FGRSmall = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
+AnnFGRVersion2 = [16.298329999712923, 16.298329999712923, 16.298329999712923, 22.215839999712923, 25.475369999712925, 27.336879999712924, 32.40388999971292, 34.89426999971292, 36.262389999712916, 37.655079999712925, 39.69122999971292, 40.76714999971292]
+TOtFGRVersion2 = [16.29833, 16.29833, 16.29833, 22.21584, 25.47537, 27.33688, 32.403890000000004, 34.89427, 36.262389999999996, 37.655080000000005, 39.69123, 40.76715]
 
 goldFGR = []
 
@@ -111,6 +113,7 @@ def do_plot():
 
   ax.scatter(FGRSmall, FGR2,c = '#9370DB', marker = '^', s=30, label='This work')
   ax.scatter(FGRSmall, goldFGR, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', alpha=0.7)
+  ax.scatter(FGRSmall, TOtFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -139,6 +142,7 @@ def do_plot():
     
   ax.scatter(FGRAnnealing, FGR2Annealing,c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
   ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
+  ax.scatter(FGRAnnealing, AnnFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')

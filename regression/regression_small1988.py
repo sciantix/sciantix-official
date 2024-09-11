@@ -42,6 +42,10 @@ FGRAnnealing = [0, 0, 3.1, 2.8, 8.8, 11.1, #Expt A
 
 FGRSmall = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
+AnnFGRVersion2 =  [20.213013000000004, 28.704663000000004, 33.402063, 20.519613, 39.033473, 40.719743, 30.681779834495295, 38.970599999707446, 43.02848999970745, 45.47409999970745, 47.03757999970745, 48.06757999970745, 20.238650000000003, 24.628509999999995, 30.965970000000002, 27.400672999999998, 32.341823, 35.912853, 30.270893]
+TOtFGRVersion2 = [25.411250000000003, 33.9029, 38.6003, 25.71785, 44.23171, 45.91798, 30.681779999999996, 38.9706, 43.028490000000005, 45.4741, 47.03758, 48.06758, 48.33234, 52.722199999999994, 59.05966, 32.59891, 37.54006, 41.11109, 35.46913]
+
+
 
 goldFGR = []
 
@@ -111,7 +115,8 @@ def do_plot():
 
   ax.scatter(FGRSmall, FGR2, c = '#9370DB', marker = '^', s=30,label='This work')
   ax.scatter(FGRSmall, goldFGR, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', alpha=0.7)
-
+  ax.scatter(FGRSmall, TOtFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
   ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
@@ -139,6 +144,7 @@ def do_plot():
     
   ax.scatter(FGRAnnealing, FGR2Annealing,c = '#9370DB', marker = '^', s=30,label='This work', zorder=1)
   ax.scatter(FGRAnnealing, goldFGRAnnealing,c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
+  ax.scatter(FGRAnnealing, AnnFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')

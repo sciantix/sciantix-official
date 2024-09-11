@@ -46,6 +46,9 @@ FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
 goldFGR = []
 
+AnnFGRVersion2 = [18.023320000000005, 2.2132000000000076, 19.682140000000004, 1.8047499999999985, 14.202690000000004, 14.323930000000004, 14.646620000000006, 15.375080000000004, 17.886880000000005, 14.87368, 19.2245, 16.09091, 18.901650000000004]
+TOtFGRVersion2 = [54.96282, 39.1527, 60.75551, 42.878119999999996, 51.14219, 51.26343, 51.58612, 52.31458, 54.82638, 55.94705, 60.297869999999996, 57.16428, 59.97502]
+
 number_of_tests_failed = 0
 sample_number = len(FGR2)
 
@@ -111,6 +114,7 @@ def do_plot():
 
   ax.scatter(FGRKashibe, FGR2, c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
   ax.scatter(FGRKashibe, goldFGR, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
+  ax.scatter(FGRKashibe, TOtFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -138,6 +142,7 @@ def do_plot():
     
   ax.scatter(FGRAnnealing, FGR2Annealing, c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
   ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
+  ax.scatter(FGRAnnealing, AnnFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -166,8 +171,10 @@ def do_plot():
 
   ax.scatter(FGRAnnealing[4:9], FGR2Annealing[4:9],c='#9370DB', marker = '^', s=30,         label='This work - 1800°C - 23 GWd/tU', zorder = 1)
   ax.scatter(FGRAnnealing[4:9], goldFGRAnnealing[4:9],c='#ff7f0e', marker = '^', s=30,      label='Barani (2017) - 1800°C - 23 GWd/tU', zorder = 2)
+  ax.scatter(FGRAnnealing[4:9], AnnFGRVersion2[4:9], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   ax.scatter(FGRAnnealing[9:13], FGR2Annealing[9:13], c = '#9370DB', marker = 'o', s=30,    label='This work - 1800°C - 28 GWd/tU', zorder = 3)
   ax.scatter(FGRAnnealing[9:13], goldFGRAnnealing[9:13], c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017) - 1800°C - 28 GWd/tU', zorder = 4)
+  ax.scatter(FGRAnnealing[9:13], AnnFGRVersion2[9:13], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -190,8 +197,10 @@ def do_plot():
 
   ax.scatter(FGRAnnealing[0:2], FGR2Annealing[0:2],c='#9370DB', marker = '^', s=30,         label='This work - 1400°C - 23 GWd/tU', zorder = 1)
   ax.scatter(FGRAnnealing[0:2], goldFGRAnnealing[0:2],c='#ff7f0e', marker = '^', s=30,      label='Barani (2017) - 1400°C - 23 GWd/tU', zorder = 2)
+  ax.scatter(FGRAnnealing[0:2], AnnFGRVersion2[0:2], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   ax.scatter(FGRAnnealing[2:4], FGR2Annealing[2:4], c = '#9370DB', marker = 'o', s=30,    label='This work - 1400°C - 28 GWd/tU', zorder = 3)
   ax.scatter(FGRAnnealing[2:4], goldFGRAnnealing[2:4], c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017) - 1400°C - 28 GWd/tU', zorder = 4)
+  ax.scatter(FGRAnnealing[2:4], AnnFGRVersion2[2:4], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -216,6 +225,8 @@ def do_plot():
                   FGRAnnealing[3] - FGRAnnealing[2]]
   goldFGRDeltaRamp = [goldFGRAnnealing[1] - goldFGRAnnealing[0], 
                       goldFGRAnnealing[3] - goldFGRAnnealing[2]]
+  FGRDeltaRampVersion2 = [AnnFGRVersion2[1] - AnnFGRVersion2[0],
+                          AnnFGRVersion2[3] - AnnFGRVersion2[2]]
   
   # fig, ax = plt.subplots()
 
@@ -248,6 +259,8 @@ def do_plot():
   plt.barh(x - width, FGR2DeltaRamp, 0.9*width, label='This work', color='#9370DB', edgecolor='#D3D3D3')
   plt.barh(x, goldFGRDeltaRamp, 0.9*width, label='Barani (2017)', color='#ff7f0e', edgecolor='#D3D3D3')
   plt.barh(x + width, FGRDeltaRamp, 0.9*width, label='Kashibe (1991)', color='blue', edgecolor='#D3D3D3')
+  plt.barh(x - 2*width, FGRDeltaRampVersion2, color='green', edgecolor='#D3D3D3',label='SCIANTIX 2.0')
+  
 
   plt.yticks(x, categories)
   plt.xlabel('Difference Between Single and Multiple Ramp Annealing (FGR)')

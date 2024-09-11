@@ -45,7 +45,9 @@ FGRAnnealing = [05.80/0.75, 05.80/0.75, 13.71/0.75, 22.26, #1600°C annealing, 6
                 ]
 FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
-
+AnnFGRVersion2 = [7.671459, 25.042722, 13.39244, 13.953050000000005, 13.625053, 30.908262, 21.162490000000005, 22.744110000000006]
+TOtFGRVersion2 = [9.452466, 30.17189, 50.331939999999996, 55.02642, 15.40606, 36.03743, 58.10199, 63.81748]
+SwellCorrVersion2 = [3.03019, 3.338526, 3.682544, 4.047388, 2.5628729999999997, 2.884574, 3.775009, 4.219698]
 goldFGR = []
 goldSwelling = []
 
@@ -118,6 +120,7 @@ def do_plot():
 
   ax.scatter(FGRKashibe, FGR2,c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
   ax.scatter(FGRKashibe, goldFGR, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)',zorder=2, alpha=0.7)
+  ax.scatter(FGRKashibe, TOtFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   #ax.scatter(FGRKashibe[0:7], FGR2[8:15], c = 'red', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
   #ax.scatter(FGRKashibe[0:7], goldFGR[8:15], marker = 'o',c = 'cyan', s=20, label='Barani (2017)')
   
@@ -141,6 +144,7 @@ def do_plot():
 
   ax.scatter(SwellingKashibe,  igSwelling2, c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
   ax.scatter(SwellingKashibe,  goldSwelling, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
+  ax.scatter(SwellingKashibe, SwellCorrVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   #ax.scatter(SwellingKashibe[0:7], igSwelling2[8:15], c = 'red', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 2.0')
   #ax.scatter(SwellingKashibe[0:7], goldSwelling[8:15], marker = 'o',c = 'cyan', s=20, label='Barani (2017)')
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
@@ -169,7 +173,8 @@ def do_plot():
     
   ax.scatter(SwellingKashibe, NewSwelling2,c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
   ax.scatter(SwellingKashibe, NewSwellinggold, c = '#ff7f0e', marker = 'o', s=30,label='Barani (2017)', zorder = 2, alpha=0.7)
-
+  ax.scatter(SwellingKashibe, SwellCorrVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
   ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
@@ -192,10 +197,11 @@ def do_plot():
 
   ax.scatter(SwellingKashibe[1:4], NewSwelling2[1:4],c='#9370DB', marker = '^', s=30, label='This work - 1600°C', zorder = 1)
   ax.scatter(SwellingKashibe[1:4], NewSwellinggold[1:4],c='#ff7f0e', marker = '^', s=20, label='Barani (2017) - 1600°C', zorder = 2, alpha=0.8)
+  ax.scatter(SwellingKashibe[1:4], SwellCorrVersion2[1:4], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   ax.scatter(SwellingKashibe[4:7], NewSwelling2[4:7], c = '#9370DB', marker = 'o', s=30,label='This work - 1800°C', zorder = 3)
   ax.scatter(SwellingKashibe[4:7], NewSwellinggold[4:7], c = '#ff7f0e', marker = 'o', s=20,label='Barani (2017) - 1800°C', zorder = 4, alpha =0.8)
-  print(NewSwelling2)
-
+  ax.scatter(SwellingKashibe[4:7], SwellCorrVersion2[4:7], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
   ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
@@ -221,6 +227,7 @@ def do_plot():
     
   ax.scatter(FGRAnnealing, FGR2Annealing, c = '#9370DB', marker = '^', s=30, label='This work', zorder=1)
   ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
+  ax.scatter(FGRAnnealing, AnnFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -243,9 +250,11 @@ def do_plot():
 
   ax.scatter(FGRAnnealing[0:4], FGR2Annealing[0:4],c='#9370DB', marker = '^', s=30, label='This work - 1600°C', zorder = 1)
   ax.scatter(FGRAnnealing[0:4], goldFGRAnnealing[0:4],c='#ff7f0e', marker = '^', s=30, label='Barani (2017) - 1600°C', zorder = 2)
+  ax.scatter(FGRAnnealing[0:4], AnnFGRVersion2[0:4], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   ax.scatter(FGRAnnealing[4:8], FGR2Annealing[4:8], c = '#9370DB', marker = 'o', s=30,label='This work - 1800°C', zorder = 3)
   ax.scatter(FGRAnnealing[4:8], goldFGRAnnealing[4:8], c = '#ff7f0e', marker = 'o', s=30,label='Barani (2017) - 1800°C', zorder = 4)
-
+  ax.scatter(FGRAnnealing[4:8], AnnFGRVersion2[4:8], c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  
 
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
