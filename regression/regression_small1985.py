@@ -111,9 +111,9 @@ def do_plot():
   # # FGRtotal
   # fig, ax = plt.subplots()
 
-  # ax.scatter(FGRSmall, FGR2,c = '#9370DB', marker = '^', s=30, label='This work')
-  # ax.scatter(FGRSmall, goldFGR, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', alpha=0.7)
-  # ax.scatter(FGRSmall, TOtFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  # ax.scatter(FGRSmall, FGR2,c = '#9370DB', marker = '^', s=40, label='This work')
+  # ax.scatter(FGRSmall, goldFGR, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', alpha=0.7)
+  # ax.scatter(FGRSmall, TOtFGRVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
   # ax.plot([0, 100],[0, 100], '-', color = '#757575')
   # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -139,9 +139,9 @@ def do_plot():
     goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
     
   fig, ax = plt.subplots()
-  ax.scatter(FGRAnnealing, FGR2Annealing,c = '#9370DB', marker = '^', s=30, label='This work')
-  #ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
-  ax.scatter(FGRAnnealing, AnnFGRVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', alpha =0.7)
+  ax.scatter(FGRAnnealing, FGR2Annealing,c = '#9370DB', marker = '^', s=40, label='This work')
+  #ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
+  ax.scatter(FGRAnnealing, AnnFGRVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')

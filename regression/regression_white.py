@@ -233,68 +233,68 @@ def do_gold():
 # Plot the regression test results
 def do_plot():
   
-  # GOLD vs. SCIANTIX 2.0, no error bars
-  fig, ax = plt.subplots()
+  # # GOLD vs. SCIANTIX 2.0, no error bars
+  # fig, ax = plt.subplots()
 
-  #ax.scatter(gbSwellingWhite, gbSwelling1, edgecolors='#757575', facecolors='red',   marker = '^', s=30, label='SCIANTIX 1.0', zorder = 1)
-  ax.scatter(gbSwellingWhite, gbSwelling2,c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
-  ax.scatter(gbSwellingWhite, gold, c = '#ff7f0e', marker = 'o', s=30,label='Barani (2017)', zorder = 2, alpha=0.7)
+  # #ax.scatter(gbSwellingWhite, gbSwelling1, edgecolors='#757575', facecolors='red',   marker = '^', s=40, label='SCIANTIX 1.0', zorder = 1)
+  # ax.scatter(gbSwellingWhite, gbSwelling2,c='#9370DB', marker = '^', s=40, label='This work', zorder = 1)
+  # ax.scatter(gbSwellingWhite, gold, c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017)', zorder = 2, alpha=0.7)
   
-  ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
-  ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
-  ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
+  # ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
+  # ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
+  # ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
 
-  ax.set_xlim(1e-2, 1e1)
-  ax.set_ylim(1e-2, 1e1)
+  # ax.set_xlim(1e-2, 1e1)
+  # ax.set_ylim(1e-2, 1e1)
 
-  ax.set_xscale('log')
-  ax.set_yscale('log')
+  # ax.set_xscale('log')
+  # ax.set_yscale('log')
 
-  ax.set_title('Intergranular gaseous swelling')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  # ax.set_title('Intergranular gaseous swelling')
+  # ax.set_xlabel('Experimental (%)')
+  # ax.set_ylabel('Calculated (%)')
+  # ax.legend()
+  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
   
-  plt.savefig('Swelling-White2004')
-  plt.show()
+  # plt.savefig('Swelling-White2004')
+  # plt.show()
 
-  # GOLD vs. SCIANTIX 2.0, no error bars
-  fig, ax = plt.subplots()
+  # # GOLD vs. SCIANTIX 2.0, no error bars
+  # fig, ax = plt.subplots()
 
-  #ax.scatter(gbSwellingWhite, gbSwelling1, edgecolors='#757575', facecolors='red',   marker = '^', s=30, label='SCIANTIX 1.0', zorder = 1)
-  ax.scatter(gbSwellingWhite, gbSwelling2,c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
-  ax.scatter(gbSwellingWhite, gold, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder = 2, alpha=0.7)
+  # #ax.scatter(gbSwellingWhite, gbSwelling1, edgecolors='#757575', facecolors='red',   marker = '^', s=40, label='SCIANTIX 1.0', zorder = 1)
+  # ax.scatter(gbSwellingWhite, gbSwelling2,c='#9370DB', marker = '^', s=40, label='This work', zorder = 1)
+  # ax.scatter(gbSwellingWhite, gold, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder = 2, alpha=0.7)
 
-  ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  ax.plot([0, 100],[0.5, 100.5],'--', color = '#757575')
-  ax.plot([0, 100],[-0.5, 99.5],'--', color = '#757575')
+  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  # ax.plot([0, 100],[0.5, 100.5],'--', color = '#757575')
+  # ax.plot([0, 100],[-0.5, 99.5],'--', color = '#757575')
 
-  ax.set_xlim(0, 5)
-  ax.set_ylim(0, 5)
+  # ax.set_xlim(0, 5)
+  # ax.set_ylim(0, 5)
 
-  ax.set_title('Intergranular gaseous swelling')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
-  plt.savefig('Swellinglineare-White2004')
-  plt.show()
+  # ax.set_title('Intergranular gaseous swelling')
+  # ax.set_xlabel('Experimental (%)')
+  # ax.set_ylabel('Calculated (%)')
+  # ax.legend()
+  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  # plt.savefig('Swellinglineare-White2004')
+  # plt.show()
   
-  # GOLD vs. SCIANTIX 2.0, no error bars
-  fig, ax = plt.subplots()
-
   NewSwelling2 = []
   NewSwellinggold= []
   for i in range(len(f2)):
     NewSwelling2.append(gbSwelling2[i]/f2[i])
     NewSwellinggold.append(gold[i]/fgold[i])
     
-  ax.scatter(gbSwellingWhite, NewSwelling2,c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
-  #ax.scatter(gbSwellingWhite, NewSwellinggold, c = '#ff7f0e', marker = 'o', s=30,label='Barani (2017)', zorder = 2, alpha=0.7)
-  #ax.scatter(gbSwellingWhite, gbSwelling1, c='red',   marker = 'p', s=30, label='SCIANTIX 1.0', zorder = 3, alpha=0.7)
-  ax.scatter(gbSwellingWhite, gbSwellingVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  # corrected swelling log
+  fig, ax = plt.subplots()
+
+  ax.scatter(gbSwellingWhite, NewSwelling2, c='#9370DB', marker = '^', s=40, label='This work')
+  #ax.scatter(gbSwellingWhite, NewSwellinggold, c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017)', zorder = 2, alpha=0.7)
+  #ax.scatter(gbSwellingWhite, gbSwelling1, c='red',   marker = 'p', s=40, label='SCIANTIX 1.0', zorder = 3, alpha=0.7)
+  ax.scatter(gbSwellingWhite, gbSwellingVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', alpha =0.7)
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
@@ -339,9 +339,9 @@ def do_plot():
   # 0.01102217, 0.0109665 , 0.01412458, 0.0097558 , 0.00991563, 0.00852714,
   # 0.01867004]))
 
-  # #ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', marker = '^', s=20, label='SCIANTIX 1.0', zorder = 1)
+  # #ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', marker = '^', s=40, label='SCIANTIX 1.0', zorder = 1)
   # ax.errorbar(gbSwellingWhite, gbSwelling2, xerr = gbSwellingWhitesigma, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work')
-  # ax.scatter(gbSwellingWhite, gold, marker = 'v', s=20, label='SCIANTIX 2.0 - GOLD')
+  # ax.scatter(gbSwellingWhite, gold, marker = 'v', s=40, label='SCIANTIX 2.0 - GOLD')
 
   # ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   # ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
@@ -363,8 +363,8 @@ def do_plot():
   # # GOLD vs. SCIANTIX 2.0 - area
   # fig, ax = plt.subplots()
 
-  # ax.scatter(gbSwellingWhite, bbarea2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20, label='This work')
-  # ax.scatter(gbSwellingWhite, bbarea2_gold, c = '#C9C954', edgecolors= '#999AA2', marker = 'o', s=20, label='SCIANTIX 2.0 - GOLD')
+  # ax.scatter(gbSwellingWhite, bbarea2, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=40, label='This work')
+  # ax.scatter(gbSwellingWhite, bbarea2_gold, c = '#C9C954', edgecolors= '#999AA2', marker = 'o', s=40, label='SCIANTIX 2.0 - GOLD')
   
   # ax.set_xscale('log')
   # ax.set_yscale('log')
@@ -375,13 +375,13 @@ def do_plot():
 
   # plt.show()
 
-  # GOLD vs. SCIANTIX 2.0 - conc
+  # Bubble concentration
   fig, ax = plt.subplots()
 
   #ax.errorbar(gbConcWhite, bbconc, xerr = gbConcWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work', zorder=1)
-  ax.scatter(gbConcWhite, bbconc,c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
-  ax.scatter(gbConcWhite, bbconc_gold, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
-  ax.scatter(gbConcWhite, bbconcVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 3, alpha =0.7)
+  ax.scatter(gbConcWhite, bbconc,c='#9370DB', marker = '^', s=40, label='This work', zorder = 1)
+  #ax.scatter(gbConcWhite, bbconc_gold, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
+  ax.scatter(gbConcWhite, bbconcVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 3, alpha =0.7)
 
   ax.set_xscale('log')
   ax.set_yscale('log')
@@ -404,9 +404,9 @@ def do_plot():
   fig, ax = plt.subplots()
 
   #ax.errorbar(FcSwellingWhite, Fc, xerr = FcSwellingWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work')
-  ax.scatter(FcSwellingWhite, Fc, c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
-  ax.scatter(FcSwellingWhite, Fc_gold,c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)', zorder=2, alpha=0.7)
-  ax.scatter(FcSwellingWhite, FcVersion2, c='green', marker = 'd', s=30, label='SCIANTIX 2.0', zorder = 3, alpha =0.7)
+  ax.scatter(FcSwellingWhite, Fc, c='#9370DB', marker = '^', s=40, label='This work', zorder = 1)
+  #ax.scatter(FcSwellingWhite, Fc_gold,c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
+  ax.scatter(FcSwellingWhite, FcVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 3, alpha =0.7)
 
 
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
@@ -423,42 +423,42 @@ def do_plot():
   plt.savefig('Fc-White2004')
   plt.show()
 
-  # GOLD vs. SCIANTIX 2.0 - vented fraction
-  fig, ax = plt.subplots()
+  # # GOLD vs. SCIANTIX 2.0 - vented fraction
+  # fig, ax = plt.subplots()
 
-  #ax.errorbar(FvSwellingWhite, Fv, xerr = FvSwellingWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work')
-  ax.scatter(FvSwellingWhite, Fv,c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
-  ax.scatter(FvSwellingWhite, Fv_gold, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)',zorder=2, alpha=0.7)
+  # #ax.errorbar(FvSwellingWhite, Fv, xerr = FvSwellingWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work')
+  # ax.scatter(FvSwellingWhite, Fv,c='#9370DB', marker = '^', s=40, label='This work', zorder = 1)
+  # ax.scatter(FvSwellingWhite, Fv_gold, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)',zorder=2, alpha=0.7)
 
-  ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  ax.plot([0, 100],[20, 120],'--', color = '#757575')
-  ax.plot([0, 100],[-20, 80],'--', color = '#757575')
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
-  ax.set_xlim(0, 100)
-  ax.set_ylim(0, 100)
+  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  # ax.plot([0, 100],[20, 120],'--', color = '#757575')
+  # ax.plot([0, 100],[-20, 80],'--', color = '#757575')
+  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  # ax.set_xlim(0, 100)
+  # ax.set_ylim(0, 100)
 
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.set_title('Vented fraction of grain faces')
-  ax.legend()
+  # ax.set_xlabel('Experimental (%)')
+  # ax.set_ylabel('Calculated (%)')
+  # ax.set_title('Vented fraction of grain faces')
+  # ax.legend()
   
-  plt.savefig('Fv-White2004')
-  plt.show()
+  # plt.savefig('Fv-White2004')
+  # plt.show()
 
-  # FGR plot
-  fig, ax = plt.subplots()
-  ax.scatter(gbSwelling2, FGR2, c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
-  ax.scatter(gbSwelling2, FGR_gold, c = '#ff7f0e', marker = 'o', s=30, label='FGR SCIANTIX 2.0 - Gold')
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
-  ax.set_xscale('log')
-  ax.set_yscale('log')
+  # # FGR plot
+  # fig, ax = plt.subplots()
+  # ax.scatter(gbSwelling2, FGR2, c='#9370DB', marker = '^', s=40, label='This work', zorder = 1)
+  # ax.scatter(gbSwelling2, FGR_gold, c = '#ff7f0e', marker = 'o', s=40, label='FGR SCIANTIX 2.0 - Gold')
+  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  # ax.set_xscale('log')
+  # ax.set_yscale('log')
 
-  ax.set_xlabel('Swelling (%)')
-  ax.set_ylabel('FGR (%)')
+  # ax.set_xlabel('Swelling (%)')
+  # ax.set_ylabel('FGR (%)')
 
-  ax.legend()
+  # ax.legend()
 
-  plt.show()
+  # plt.show()
 
   #######
   # DATA
@@ -466,9 +466,9 @@ def do_plot():
 
   fig, ax = plt.subplots()
 
-  #ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=20, label='SCIANTIX 1.0')
-  ax.scatter(gbSwellingWhite, gbSwelling2, c='#9370DB', marker = '^', s=30, label='This work', zorder = 1)
-  ax.scatter(gbSwellingWhite, gold, c = '#ff7f0e', marker = 'o', s=30, label='Barani (2017)',zorder=2, alpha=0.7)
+  #ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', edgecolors= '#999AA2', marker = '^', s=40, label='SCIANTIX 1.0')
+  ax.scatter(gbSwellingWhite, gbSwelling2, c='#9370DB', marker = '^', s=40, label='This work', zorder = 1)
+  ax.scatter(gbSwellingWhite, gold, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)',zorder=2, alpha=0.7)
   ax.grid(color='gray', linestyle='--', linewidth=0.5)
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
