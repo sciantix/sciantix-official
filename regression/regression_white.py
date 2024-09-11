@@ -719,8 +719,13 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
   # Median absolute deviations
   deviations_1 = abs(np.array(gbSwellingWhite) - gbSwelling1)
   deviations_2 = abs(np.array(gbSwellingWhite) - gbSwelling2)
+  deviations_Version2 = abs(np.array(gbSwellingWhite) - gbSwellingVersion2)
+  deviations_gold = abs(np.array(gbSwellingWhite)-gold)
+  
   print(f"SCIANTIX 1.0 - MAD: ", np.median(deviations_1))
-  print(f"SCIANTIX 2.0 - MAD: ", np.median(deviations_2))
+  print(f"This work - MAD: ", np.median(deviations_2))
+  print(f"SCIANTIX 2.0 - MAD: ", np.median(deviations_Version2))
+  print(f"Barani (2017) - MAD: ", np.median(deviations_gold))
 
   # RMSE
   print(f"SCIANTIX 1.0 - RMSE: ", np.mean(np.array(gbSwellingWhite) - gbSwelling1)**2)

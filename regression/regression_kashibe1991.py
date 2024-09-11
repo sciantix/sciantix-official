@@ -275,7 +275,15 @@ def do_plot():
 
   plt.savefig('FGRDeltaRamp-Kashibe1991')
   plt.show()
-
+  
+      # Median absolute deviations
+  deviations_2 = abs(np.array(FGRAnnealing) - np.array(FGR2Annealing))
+  deviations_Version2 = abs(np.array(FGRAnnealing) - np.array(AnnFGRVersion2))
+  deviations_gold = abs(np.array(FGRAnnealing)-np.array(goldFGRAnnealing))
+  
+  print(f"This work - MAD: ", np.median(deviations_2))
+  print(f"SCIANTIX 2.0 - MAD: ", np.median(deviations_Version2))
+  print(f"Barani (2017) - MAD: ", np.median(deviations_gold))
 
 # Main function of the baker regression
 def regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
