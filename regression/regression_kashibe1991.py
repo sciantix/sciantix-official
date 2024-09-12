@@ -264,7 +264,7 @@ def do_plot():
   plt.barh(x - width, FGRDeltaRampVersion2, 0.9*width, label='SCIANTIX 2.0', color='green', edgecolor='#D3D3D3')
   
   plt.yticks(x, categories)
-  plt.xlabel('Difference Between Single and Multiple Ramp Annealing (FGR)')
+  plt.xlabel('Difference between single and multiple ramp annealing (FGR, %)')
   plt.title('Isothermal and cyclic annealing')
 
   plt.legend()
