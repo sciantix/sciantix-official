@@ -858,13 +858,61 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	sciantix_variable[sv_counter].setOutput(0);
 	++sv_counter;
 
-	// sciantix_variable.emplace_back();
-	// sciantix_variable[sv_counter].setName("Pu");
-	// sciantix_variable[sv_counter].setUOM("(at/m3)");
-	// sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[41] + Sciantix_variables[42]);
-	// sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[41] + Sciantix_variables[42]);
-	// sciantix_variable[sv_counter].setOutput(0);
-	// ++sv_counter;
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Pu");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[67] + Sciantix_variables[68] + Sciantix_variables[69] + Sciantix_variables[70] + Sciantix_variables[71]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[67] + Sciantix_variables[68] + Sciantix_variables[69] + Sciantix_variables[70] + Sciantix_variables[71]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Pu238");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[67]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[67]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Pu239");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[68]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[68]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Pu240");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[69]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[69]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Pu241");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[70]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[70]);
+	sciantix_variable[sv_counter].setOutput(0);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("Pu242");
+	sciantix_variable[sv_counter].setUOM("(at/m3)");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[71]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[71]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
+
+	sciantix_variable.emplace_back();
+	sciantix_variable[sv_counter].setName("MOX PuO2 percentage");
+	sciantix_variable[sv_counter].setUOM("/");
+	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[72]);
+	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[72]);
+	sciantix_variable[sv_counter].setOutput(1);
+	++sv_counter;
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("Intergranular vented fraction");
