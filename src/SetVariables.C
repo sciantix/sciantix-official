@@ -908,7 +908,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 
 	sciantix_variable.emplace_back();
 	sciantix_variable[sv_counter].setName("MOX PuO2 percentage");
-	sciantix_variable[sv_counter].setUOM("/");
+	sciantix_variable[sv_counter].setUOM("(/)");
 	sciantix_variable[sv_counter].setInitialValue(Sciantix_variables[72]);
 	sciantix_variable[sv_counter].setFinalValue(Sciantix_variables[72]);
 	sciantix_variable[sv_counter].setOutput(1);

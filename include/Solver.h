@@ -299,7 +299,7 @@ public:
 		//The zero flux external condition aims at simulating a worst case scenario for what concern the mechanical stress due to the fission products pressure on the Triso shell.
 		//References regarding the shape of the solution can be found in "Diffusion of heat in solids" By Carlslaw and Jagger, 1946, Clarendon Press.
 
-		double stabilization_time = 10000; //[s]
+		double stabilization_time = 1e4; //[s]
 		double mean_volumetric_concentration = inner_boundary_concentration; //[at/m^3]
 		std::vector <double> next_initial_condition(spatial_grid.size(), inner_boundary_concentration);
 

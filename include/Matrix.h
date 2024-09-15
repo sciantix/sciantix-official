@@ -45,8 +45,8 @@ protected:
 	double lattice_parameter;
 //	std::string matrix_name;
 	std::string geometry;
-	std::vector<double> initial_uranium_concentration;
-	std::vector<double> initial_plutonium_concentration;
+	std::vector<double> initial_uranium_composition;
+	std::vector<double> initial_plutonium_composition;
 
 public:
 
@@ -254,13 +254,13 @@ public:
 
 	}
 
-	void setInitialplutoniumComposition (const std::vector<double>& initialplutoniumComposition){
+	void setInitialPlutoniumComposition (const std::vector<double>& initialplutoniumComposition){
 
 		initial_plutonium_composition = initialplutoniumComposition;
 
 	}
 
-	const std::vector<double>& getInitialplutoniumComposition (){
+	const std::vector<double>& getInitialPlutoniumComposition (){
 
 		return initial_plutonium_composition;
 
