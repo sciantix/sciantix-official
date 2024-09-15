@@ -66,6 +66,12 @@ Initial composition Kr85m4 = 0
 Initial composition Kr85m5 = 0
 Initial composition Kr85m6 = 0
 Initial stoichiometry deviation[0] = 0
+Initial composition Pu0 = 2.332
+Initial composition Pu1 = 56.873
+Initial composition Pu2 = 26.997
+Initial composition Pu3 = 6.105
+Initial composition Pu4 = 7.693
+Initial PuO2 percentage[0] = 0.9
 0	1273	1e+19	0	
 5500	1273	1e+19	0	
 sf_resolution_rate = 1

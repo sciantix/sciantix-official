@@ -231,7 +231,7 @@ public:
 	
 	void setMoxPuEnrichment (double enr){
 	
-		enrichment = enr*fuel;
+		enrichment = enr;
 	
 	}
 	

@@ -27,14 +27,11 @@ void Xe_in_MOX()
 
 	sciantix_system.emplace_back();
 	int index = int(sciantix_system.size() - 1);
-	double enrichment = matrix[index].getMoxPuEnrichment();
-	std::cout<<enrichment<<std::endl;
-
 	sciantix_system[index].setName("Xe in MOX");
 	sciantix_system[index].setGasName("Xe");
 	sciantix_system[index].setMatrixName("MOX");
 	sciantix_system[index].setRestructuredMatrix(0);
-	sciantix_system[index].setYield(0.24*(1 - enrichment) + 0.23*enrichment);
+	sciantix_system[index].setYield(0.24*(1 - matrix[index].getMoxPuEnrichment()) + 0.23*matrix[index].getMoxPuEnrichment());
 	sciantix_system[index].setRadiusInLattice(0.21e-9); // (m), from experimental data, assumed equal for Xe and Kr
 	sciantix_system[index].setVolumeInLattice(matrix[sma["MOX"]].getSchottkyVolume());
 	sciantix_system[index].setHenryConstant(0.0); //still to be replaced

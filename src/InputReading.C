@@ -284,6 +284,17 @@ void InputReading()
 		Sciantix_variables[63] = initial_composition_Kr85m[6];
 
 		Sciantix_variables[66] = ReadOneParameter("Initial stoichiometry deviation[0]", input_initial_conditions, input_check);
+
+		std::vector<double> initial_composition_Pu;
+		initial_composition_Pu = ReadSeveralParameters("Initial composition Pu", input_initial_conditions, input_check);
+
+		Sciantix_variables[67] = initial_composition_Pu[0]; // Pu-238
+		Sciantix_variables[68] = initial_composition_Pu[1]; // Pu-239
+		Sciantix_variables[69] = initial_composition_Pu[2]; // Pu-240
+		Sciantix_variables[70] = initial_composition_Pu[3]; // Pu-241
+		Sciantix_variables[71] = initial_composition_Pu[4]; // Pu-242
+
+		Sciantix_variables[72] = ReadOneParameter("Initial PuO2 percentage[0]", input_initial_conditions, input_check);
 	}
 
 	int n = 0;
