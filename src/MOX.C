@@ -24,7 +24,14 @@ void MOX(double enrichment)
 	matrix.emplace_back();
 	int index = int(matrix.size()) - 1;
 
-	matrix[index].setMoxPuEnrichment(enrichment);
+	matrix[index].setInitialUraniumComposition({double(sciantix_variable[sv["U235"]].getFinalValue()), 
+												double(sciantix_variable[sv["U238"]].getFinalValue())});
+	matrix[index].setInitialPlutoniumComposition({double(sciantix_variable[sv["Pu238"]].getFinalValue()),
+												 double(sciantix_variable[sv["Pu239"]].getFinalValue()), 
+												 double(sciantix_variable[sv["Pu240"]].getFinalValue()),
+												 double(sciantix_variable[sv["Pu241"]].getFinalValue()), 
+												 double(sciantix_variable[sv["Pu242"]].getFinalValue())});																								 
+	matrix[index].setMoxPuEnrichment(sciantix_variable[sv["MOX PuO2 percentage"]].getFinalValue());
 	matrix[index].setName("MOX");
 	matrix[index].setRef("\n\t");
 	matrix[index].setDensity(10960.0 + 490*enrichment); //(kg/m3) reference from "A review of the thermohpysical properties of MOX and UO2 fuels" by Juan J. Carbajo
