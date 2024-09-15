@@ -19,7 +19,7 @@
 void Xe_in_MOX()
 {
 	// Error handling
-	if (matrix.empty() || input_variable.empty() || sma.find("UO2HBS") == sma.end())
+	if (matrix.empty() || input_variable.empty() || sma.find("MOX") == sma.end())
 	{
 		std::cerr << "Error: Required components are not initialized in " << __FILE__  << std::endl;
 		return;
@@ -27,7 +27,8 @@ void Xe_in_MOX()
 
 	sciantix_system.emplace_back();
 	int index = int(sciantix_system.size() - 1);
-	double enrichment = matrix[index - 1].getMoxPuEnrichment();
+	double enrichment = matrix[index].getMoxPuEnrichment();
+	std::cout<<enrichment<<std::endl;
 
 	sciantix_system[index].setName("Xe in MOX");
 	sciantix_system[index].setGasName("Xe");

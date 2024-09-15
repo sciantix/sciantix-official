@@ -1,4 +1,4 @@
-0	#	iGrainGrowth (0= no grain growth, 1= Ainscough et al. (1973), 2= Van Uffelen et al. (2013))
+1	#	iGrainGrowth (0= no grain growth, 1= Ainscough et al. (1973), 2= Van Uffelen et al. (2013))
 1	#	iFGDiffusionCoefficient (0= constant value, 1= Turnbull et al. (1988))
 1	#	iDiffusionSolver (1= SDA with quasi-stationary hypothesis, 2= SDA without quasi-stationary hypothesis)
 1	#	iIntraGranularBubbleEvolution (1= Pizzocri et al. (2018))
