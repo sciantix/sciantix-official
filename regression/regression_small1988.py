@@ -162,6 +162,123 @@ def do_plot():
   plt.savefig('FGRAnnealing-Small1988')
   plt.show()
 
+    ###########################################################################
+
+  # FGRAnnealing = [0, 0, 3.1, 2.8, 8.8, 11.1, #Expt A
+  #               7.2, 9.3, 20.3, 28, 66.9, 62.8, #Expt B
+  #               5.3, 39.8, 49.9, #Expt C
+  #               0, 9.6, 21.4, 13.7 #Expt D
+  #       ]
+
+  fig, ax = plt.subplots(figsize=(10, 5))
+
+  categories = ['1500°C', '1600°C', '1700°C', '1800°C', '1900°C', '2000°C']
+
+  width = 1
+  x = np.linspace(0,25,6)
+
+  #plt.barh(x, goldFGRDeltaRamp, 0.9*width, label='Barani (2017)', color='#ff7f0e', edgecolor='#D3D3D3')
+  plt.bar(x - width, FGRAnnealing[0:6], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor = 'red')
+  plt.bar(x, FGR2Annealing[0:6], 0.9*width, label='This work', color='#9370DB', edgecolor = '#6A34A2')
+  plt.bar(x + width, AnnFGRVersion2[0:6], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA',  edgecolor='#006400')
+  
+  plt.xticks(x, categories)
+  plt.xlabel('Annealing temperature')
+  plt.title('Experiments A - 18 GWd/tU - 1°C/s - 180 s')
+  plt.ylabel('FGR (%)')
+
+  plt.legend()
+  
+  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
+  plt.minorticks_on()
+  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+
+  plt.savefig('A-Small1988')
+  plt.show()
+
+  fig, ax = plt.subplots(figsize=(10, 5))
+
+  categories = ['1500°C', '1600°C', '1700°C', '1800°C', '1900°C', '2000°C']
+
+  width = 1
+  x = np.linspace(0,25,6)
+
+  #plt.barh(x, goldFGRDeltaRamp, 0.9*width, label='Barani (2017)', color='#ff7f0e', edgecolor='#D3D3D3')
+  plt.bar(x - width, FGRAnnealing[6:12], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor = 'red')
+  plt.bar(x, FGR2Annealing[6:12], 0.9*width, label='This work', color='#9370DB', edgecolor = '#6A34A2')
+  plt.bar(x + width, AnnFGRVersion2[6:12], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA',  edgecolor='#006400')
+  
+  plt.xticks(x, categories)
+  plt.xlabel('Annealing temperature')
+  plt.title('Experiments B - 18 GWd/tU - 12.5°C/s - 1800 s')
+  plt.ylabel('FGR (%)')
+
+  plt.legend()
+  
+  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
+  plt.minorticks_on()
+  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+
+  plt.savefig('B-Small1988')
+  plt.show()
+  
+  fig, ax = plt.subplots(figsize=(10, 5))
+
+  categories = ['1437°C, 1800 s', '1600°C, 300 s', '1600°C, 5000s']
+
+  width = 1
+  x = np.linspace(0,10,3)
+
+  #plt.barh(x, goldFGRDeltaRamp, 0.9*width, label='Barani (2017)', color='#ff7f0e', edgecolor='#D3D3D3')
+  plt.bar(x - width, FGRAnnealing[12:15], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor = 'red')
+  plt.bar(x, FGR2Annealing[12:15], 0.9*width, label='This work', color='#9370DB', edgecolor = '#6A34A2')
+  plt.bar(x + width, AnnFGRVersion2[12:15], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA',  edgecolor='#006400')
+  
+  plt.xticks(x, categories)
+  plt.xlabel('Annealing temperature and time')
+  plt.title('Experiments C - 38 GWd/tU - 12.5°C/s')
+  plt.ylabel('FGR (%)')
+
+  plt.legend()
+  
+  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
+  plt.minorticks_on()
+  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+
+  plt.savefig('C-Small1988')
+  plt.show()
+
+  fig, ax = plt.subplots(figsize=(10, 5))
+
+  categories  = ['1600°C, 180 s', '1700°C, 180 s', '1800°C, 180 s', '2000°C, 0 s']
+
+  width = 1
+  x = np.linspace(0,15,4)
+
+  #plt.barh(x, goldFGRDeltaRamp, 0.9*width, label='Barani (2017)', color='#ff7f0e', edgecolor='#D3D3D3')
+  plt.bar(x - width, FGRAnnealing[15:19], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor = 'red')
+  plt.bar(x, FGR2Annealing[15:19], 0.9*width, label='This work', color='#9370DB', edgecolor = '#6A34A2')
+  plt.bar(x + width, AnnFGRVersion2[15:19], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA',  edgecolor='#006400')
+  
+  plt.xticks(x, categories)
+  plt.xlabel('Annealing temperature and time')
+  plt.title('Experiments D - 18 GWd/tU - 50°C/s')
+  plt.ylabel('FGR (%)')
+
+  plt.legend()
+  
+  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
+  plt.minorticks_on()
+  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+
+  plt.savefig('D-Small1988')
+  plt.show()
+  ###########################################################################
+
           # Median absolute deviations
   deviations_2 = abs(np.array(FGRAnnealing) - np.array(FGR2Annealing))
   deviations_Version2 = abs(np.array(FGRAnnealing) - np.array(AnnFGRVersion2))

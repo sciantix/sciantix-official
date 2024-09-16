@@ -301,18 +301,19 @@ def do_plot():
 
   width = 1
   x = np.array([0,5,10,15])
+  x1 = np.array([5,10,15])
 
-  plt.bar(x - width, FGRAnnealing[0:4], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='#D3D3D3')
+  plt.bar(x1 - width, FGRAnnealing[1:4], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='#D3D3D3')
   plt.bar(x - width, FGRAnnealing[4:8], 0.9*width, label='Une (1990)', color='none', edgecolor='red')
-  plt.bar(x, FGR2Annealing[0:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#D3D3D3')
+  plt.bar(x1, FGR2Annealing[1:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#D3D3D3')
   plt.bar(x, FGR2Annealing[4:8], 0.9*width, label='This work', color='none', edgecolor='#6A34A2')
-  plt.bar(x + width, AnnFGRVersion2[0:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#D3D3D3')
+  plt.bar(x1 + width, AnnFGRVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#D3D3D3')
   plt.bar(x + width, AnnFGRVersion2[4:8], 0.9*width, label='SCIANTIX 2.0', color='none', edgecolor='#006400')
   
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
   plt.xlabel('Burn-up')
-  plt.title('Annealing - Burn-up effect')
+  #plt.title('Annealing - Burn-up effect')
 
   import matplotlib.patches as mpatches
 
@@ -346,18 +347,20 @@ def do_plot():
 
   width = 1
   x = np.array([0,5,10,15])
+  x1  = np.array([5,10,15])
+  x2 = np.array([0,5,10])
 
-  plt.bar(x - width, SwellingKashibe[0:4], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='#D3D3D3')
-  plt.bar(x - width, SwellingKashibe[4:8], 0.9*width, label='Une (1990)', color='none', edgecolor='red')
-  plt.bar(x, NewSwelling2[0:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#D3D3D3')
-  plt.bar(x, NewSwelling2[4:8], 0.9*width, label='This work', color='none', edgecolor='#6A34A2')
-  plt.bar(x + width, SwellCorrVersion2[0:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#D3D3D3')
-  plt.bar(x + width, SwellCorrVersion2[4:8], 0.9*width, label='SCIANTIX 2.0', color='none', edgecolor='#006400')
+  plt.bar(x1 - width, SwellingKashibe[1:4], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='#D3D3D3')
+  plt.bar(x2 - width, SwellingKashibe[4:7], 0.9*width, label='Une (1990)', color='none', edgecolor='red')
+  plt.bar(x1, NewSwelling2[1:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#D3D3D3')
+  plt.bar(x2, NewSwelling2[4:7], 0.9*width, label='This work', color='none', edgecolor='#6A34A2')
+  plt.bar(x1 + width, SwellCorrVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#D3D3D3')
+  plt.bar(x2 + width, SwellCorrVersion2[4:7], 0.9*width, label='SCIANTIX 2.0', color='none', edgecolor='#006400')
   
   plt.xticks(x, categories)
   plt.ylabel('Swelling (%)')
   plt.xlabel('Burn-up')
-  plt.title('Bubble swelling - Burn-up effect')
+  #plt.title('Bubble swelling - Burn-up effect')
   plt.ylim([0,20])
   
   plt.legend(handles=legend_items, loc='best', ncol=2)
@@ -396,7 +399,10 @@ def do_plot():
   print(f"This work - MAD: ", np.median(deviations_2))
   print(f"SCIANTIX 2.0 - MAD: ", np.median(deviations_Version2))
   print(f"Barani (2017) - MAD: ", np.median(deviations_gold))
-    
+  
+  print(FGR2Annealing)
+  print(FGR2)
+  print(f2)
 
 # Main function of the baker regression
 def regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):

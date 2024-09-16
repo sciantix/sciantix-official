@@ -180,7 +180,7 @@ def do_plot():
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
   plt.xlabel('Annealing time')
-  plt.title('Annealing')
+  #plt.title('Annealing')
   
   import matplotlib.patches as mpatches
 
@@ -228,7 +228,7 @@ def do_plot():
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
   plt.xlabel('Annealing time')
-  plt.title('Annealing')
+  #plt.title('Annealing')
   
   # Create line patches for the burnup (23 and 28 GWd/tU)
   T1600_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='1600 °C')
