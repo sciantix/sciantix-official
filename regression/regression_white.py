@@ -61,6 +61,8 @@ bbconcVersion2=np.array([2.327503, 2.715757, 3.097493, 3.507597, 3.729936, 3.351
 bbareaVersion2=np.array([9.91721e-14, 8.590921e-14, 7.659632e-14, 7.075459e-14, 7.70682e-14, 6.824427e-14, 6.498049e-14, 5.641302e-14, 4.664778e-14, 3.828264e-14, 3.403564e-14, 6.55941e-14, 6.149862e-14, 5.291516e-14, 4.139992e-14, 2.98289e-14, 2.738193e-13, 2.531916e-13, 1.947012e-13, 1.379023e-13, 1.093524e-13, 1.702782e-13, 1.569097e-13, 1.339834e-13, 1.172187e-13, 9.732186e-14, 1.574283e-13, 1.572689e-13, 1.44876e-13, 8.773936e-14, 8.261304e-14, 7.389915e-14, 6.599285e-14, 8.485353e-14, 8.253508e-14, 9.729646e-14, 9.266494e-14, 8.899364e-14, 9.94265e-14, 4.68061e-14, 4.568027e-14, 4.233639e-14, 4.32861e-14])
 FcVersion2=np.array([23.082340000000002, 23.33086, 23.72566, 24.81786, 28.745939999999997, 22.87476, 22.95153, 23.23271, 23.81895, 25.209989999999998, 26.26932, 22.902230000000003, 23.019029999999997, 23.349700000000002, 24.24424, 25.43435, 22.52738, 22.60361, 22.855220000000003, 23.40249, 24.025109999999998, 22.99482, 23.10827, 23.421239999999997, 23.697879999999998, 24.06863, 18.289540000000002, 18.29044, 18.331220000000002, 22.87865, 22.9744, 23.28101, 23.96962, 23.93138, 24.03465, 23.54221, 23.6407, 23.94576, 24.867729999999998, 23.53096, 23.57814, 23.94493, 24.81667])
 gbSwellingVersion2=np.array([0.5002392999999999, 0.5286216, 0.5614298, 0.5913142, 0.6577368, 0.4718492, 0.5325112, 0.5277821, 0.4682348, 0.45235600000000004, 0.4411043, 0.5807008, 0.5605583, 0.5007189000000001, 0.484406, 0.4273939, 0.8112339999999999, 0.7732886, 0.8192389, 0.6413467, 0.6954428, 0.532619, 0.6039126, 0.6082799, 0.6540744000000001, 0.5884929, 0.7382939, 0.7379565, 0.7098633, 0.5542372, 0.5400532, 0.5175945000000001, 0.5035907000000001, 0.6556448, 0.6494161, 0.6793336, 0.659971, 0.6016591, 0.8433754, 0.4456284, 0.5078122, 0.43127319999999997, 0.5395618])
+FGRVersion2 = np.array([16.25067, 17.052149999999997, 17.322309999999998, 15.93735, 12.04578, 17.89464, 19.9179, 19.30959, 16.16589, 12.99457, 10.79592, 21.91168, 21.073890000000002, 18.44893, 15.96447, 10.82828, 24.7413, 23.9555, 26.52985, 21.97168, 23.23402, 15.39044, 17.4061, 17.539930000000002, 18.784100000000002, 17.30099, 30.29381, 30.28801, 29.653239999999997, 16.93312, 16.47925, 15.426770000000001, 13.818739999999998, 18.54763, 18.27167, 26.386910000000004, 25.7029, 22.59589, 24.98107, 13.59028, 15.21514, 12.35696, 13.341040000000001])
+
 # Intergranular gaseous swelling database from White et al. (2006) experiments
 #########bubble density##############
 gbConcWhite = np.array([0.68, 0.80, 1.32, 1.99, 9.00,                   # 4000
@@ -154,6 +156,18 @@ FvSwellingWhitesigma = np.array([13.0, 11.4, 2.8, 5.3, 0,                   # 40
                    18.3,0,                                     # 4140
                    0,4.7,2.0,9.0,                          # 4162
                    10.9,0.8,0,5.5                            # 4163
+                   ])
+
+FGRWhite = np.array([1.84, 1.84,1.84, 1.84, 1.84,                   # 4000
+                   0.97,0.97,0.97,0.97,0.97,0.97,              # 4004
+                   0.65,0.65,0.65,0.65,0.65,                   # 4005
+                   1.26,1.26,1.26,1.26,1.26,                   # 4064
+                   6.29,6.29,6.29,6.29,6.29,                   # 4065
+                   0.78,0.78,0.78,                               # 4135
+                   1.52,1.52,1.52,1.52,                          # 4136
+                   2.38,2.38,                                     # 4140
+                   0.41,0.41,0.41,0.41,                          # 4162
+                   0.32,0.32,0.32,0.32                            # 4163
                    ])
 # Data generated from SCIANTIX 2.0
 gbSwelling2 = []
@@ -293,12 +307,12 @@ def do_plot():
   fig, ax = plt.subplots()
   ax.scatter(np.concatenate([gbSwellingWhite[0:16],gbSwellingWhite[39:43]]), np.concatenate([NewSwelling2[0:16],NewSwelling2[39:43]]), c='#9370DB', marker = '^', s=40, label='This work - Fast ramp')
   ax.scatter(gbSwellingWhite[16:39], NewSwelling2[16:39], facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
-  ax.scatter(np.concatenate([gbSwellingWhite[0:16],gbSwellingWhite[39:43]]), np.concatenate([gbSwellingVersion2[0:16],gbSwellingVersion2[39:43]]), c='green', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
-  ax.scatter(gbSwellingWhite[16:39], gbSwellingVersion2[16:39], facecolors = 'none', edgecolors='green', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
+  ax.scatter(np.concatenate([gbSwellingWhite[0:16],gbSwellingWhite[39:43]]), np.concatenate([gbSwellingVersion2[0:16],gbSwellingVersion2[39:43]]), c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
+  ax.scatter(gbSwellingWhite[16:39], gbSwellingVersion2[16:39], facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
   #ax.scatter(gbSwellingWhite, NewSwellinggold, c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017)', zorder = 2, alpha=0.7)
   #ax.scatter(gbSwellingWhite, gbSwelling1, c='red',   marker = 'p', s=40, label='SCIANTIX 1.0', zorder = 3, alpha=0.7)
-  # ax.scatter(gbSwellingWhite[k], NewSwelling2[k], c='red', marker = '^', s=40)
-  # ax.scatter(gbSwellingWhite[k], gbSwellingVersion2[k], c='red', marker = 'd', s=40)
+  #ax.scatter(gbSwellingWhite[26:33], NewSwelling2[26:33], c='red', marker = '^', s=40)
+  #ax.scatter(gbSwellingWhite[26:33], gbSwellingVersion2[26:33], c='red', marker = 'd', s=40)
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
   ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
@@ -319,6 +333,45 @@ def do_plot():
   
   plt.savefig('SwellingCorretto-White2004')
   plt.show()
+
+  # fgr
+  fig, ax = plt.subplots()
+  ax.scatter(np.concatenate([FGRWhite[0:16],FGRWhite[39:43]]), np.concatenate([FGR2[0:16],FGR2[39:43]]), c='#9370DB', marker = '^', s=40, label='This work - Fast ramp')
+  ax.scatter(FGRWhite[16:39], FGR2[16:39], facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
+  ax.scatter(np.concatenate([FGRWhite[0:16],FGRWhite[39:43]]), np.concatenate([FGRVersion2[0:16],FGRVersion2[39:43]]), c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
+  ax.scatter(FGRWhite[16:39], FGRVersion2[16:39], facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
+  
+  ax.plot([0, 1e2],[2.5, 102.5], '-', color = '#757575')
+  ax.plot([0, 1e2],[0, 100],'--', color = '#757575')
+  ax.plot([0, 1e2],[-2.5, 97.5],'--', color = '#757575')
+
+  ax.set_xlim(0,20)
+  ax.set_ylim(0,50)
+
+  ax.set_title('Fission gas release')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+
+  plt.show()
+
+  #   # f
+  # fig, ax = plt.subplots()
+  # ax.scatter(np.concatenate([fgold[0:16],fgold[39:43]]), np.concatenate([f2[0:16],f2[39:43]]), c='#9370DB', marker = '^', s=40, label='This work - Fast ramp')
+  # ax.scatter(fgold[16:39], f2[16:39], facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
+  # ax.scatter(fgold[26:33], f2[26:33], c='red', marker = '^', s=40)
+  
+  # ax.set_xlim(0,1)
+  # ax.set_ylim(0,1)
+
+  # ax.set_title('f')
+  # ax.set_xlabel('Experimental (%)')
+  # ax.set_ylabel('Calculated (%)')
+  # ax.legend()
+  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
+
+  # plt.show()
 
   # # GOLD vs. SCIANTIX 2.0 + error bars
 
@@ -344,7 +397,7 @@ def do_plot():
   # 0.01867004]))
 
   # #ax.scatter(gbSwellingWhite, gbSwelling1, c = '#FA82B4', marker = '^', s=40, label='SCIANTIX 1.0', zorder = 1)
-  # ax.errorbar(gbSwellingWhite, gbSwelling2, xerr = gbSwellingWhitesigma, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work')
+  # ax.errorbar(gbSwellingWhite, gbSwelling2, xerr = gbSwellingWhitesigma, yerr = (igSwellingErrorVertL, igSwellingErrorVertU), c = '#66CDAA', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work')
   # ax.scatter(gbSwellingWhite, gold, marker = 'v', s=40, label='SCIANTIX 2.0 - GOLD')
 
   # ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
@@ -382,14 +435,14 @@ def do_plot():
   # Bubble concentration
   fig, ax = plt.subplots()
 
-  #ax.errorbar(gbConcWhite, bbconc, xerr = gbConcWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work', zorder=1)
+  #ax.errorbar(gbConcWhite, bbconc, xerr = gbConcWhitesigma,c = '#66CDAA', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work', zorder=1)
   #ax.scatter(gbConcWhite, bbconc_gold, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
-  # ax.scatter(gbConcWhite[k], bbconc[k], c='red', marker = '^', s=40)
-  # ax.scatter(gbConcWhite[k], bbconcVersion2[k], c='red', marker = 'd', s=40)
+  #ax.scatter(gbConcWhite[26:33], bbconc[26:33], c='red', marker = '^', s=40)
+  #ax.scatter(gbConcWhite[26:33], bbconcVersion2[26:33], c='red', marker = 'd', s=40)
   ax.scatter(np.concatenate([gbConcWhite[0:16],gbConcWhite[39:43]]), np.concatenate([bbconc[0:16],bbconc[39:43]]), c='#9370DB', marker = '^', s=40, label='This work - Fast ramp')
   ax.scatter(gbConcWhite[16:39], bbconc[16:39], facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
-  ax.scatter(np.concatenate([gbConcWhite[0:16], gbConcWhite[39:43]]), np.concatenate([bbconcVersion2[0:16],bbconcVersion2[39:43]]), c='green', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
-  ax.scatter(gbConcWhite[16:39], bbconcVersion2[16:39], facecolors = 'none', edgecolors='green', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
+  ax.scatter(np.concatenate([gbConcWhite[0:16], gbConcWhite[39:43]]), np.concatenate([bbconcVersion2[0:16],bbconcVersion2[39:43]]), c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
+  ax.scatter(gbConcWhite[16:39], bbconcVersion2[16:39], facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
   
   ax.set_xscale('log')
   ax.set_yscale('log')
@@ -411,14 +464,14 @@ def do_plot():
   # GOLD vs. SCIANTIX 2.0 - fractional coverage
   fig, ax = plt.subplots()
 
-  #ax.errorbar(FcSwellingWhite, Fc, xerr = FcSwellingWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work')
+  #ax.errorbar(FcSwellingWhite, Fc, xerr = FcSwellingWhitesigma,c = '#66CDAA', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work')
   #ax.scatter(FcSwellingWhite, Fc_gold,c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
-  # ax.scatter(FcSwellingWhite[k], Fc[k], c='red', marker = '^', s=40)
-  # ax.scatter(FcSwellingWhite[k], FcVersion2[k], c='red', marker = 'd', s=40)
+  #ax.scatter(FcSwellingWhite[26:33], Fc[26:33], c='red', marker = '^', s=40)
+  #ax.scatter(FcSwellingWhite[26:33], FcVersion2[26:33], c='red', marker = 'd', s=40)
   ax.scatter(np.concatenate([FcSwellingWhite[0:16],FcSwellingWhite[39:43]]), np.concatenate([Fc[0:16],Fc[39:43]]), c='#9370DB', marker = '^', s=40, label='This work - Fast ramp')
   ax.scatter(FcSwellingWhite[16:39], Fc[16:39], facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
-  ax.scatter(np.concatenate([FcSwellingWhite[0:16],FcSwellingWhite[39:43]]), np.concatenate([FcVersion2[0:16],FcVersion2[39:43]]), c='green', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
-  ax.scatter(FcSwellingWhite[16:39], FcVersion2[16:39], facecolors = 'none', edgecolors='green', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
+  ax.scatter(np.concatenate([FcSwellingWhite[0:16],FcSwellingWhite[39:43]]), np.concatenate([FcVersion2[0:16],FcVersion2[39:43]]), c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
+  ax.scatter(FcSwellingWhite[16:39], FcVersion2[16:39], facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
   
 
   # ax.plot([0, 100],[0, 100], '-', color = '#757575')
@@ -444,7 +497,7 @@ def do_plot():
   # # GOLD vs. SCIANTIX 2.0 - vented fraction
   # fig, ax = plt.subplots()
 
-  # #ax.errorbar(FvSwellingWhite, Fv, xerr = FvSwellingWhitesigma,c = 'green', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work')
+  # #ax.errorbar(FvSwellingWhite, Fv, xerr = FvSwellingWhitesigma,c = '#66CDAA', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work')
   # ax.scatter(FvSwellingWhite, Fv,c='#9370DB', marker = '^', s=40, label='This work', zorder = 1)
   # ax.scatter(FvSwellingWhite, Fv_gold, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)',zorder=2, alpha=0.7)
 

@@ -122,7 +122,7 @@ def do_plot():
 
   # ax.scatter(FGRKashibe, FGR2,c = '#9370DB', marker = '^', s=40, label='This work', zorder=1)
   # ax.scatter(FGRKashibe, goldFGR, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)',zorder=2, alpha=0.7)
-  # ax.scatter(FGRKashibe, TotFGRVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  # ax.scatter(FGRKashibe, TotFGRVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
   # ax.plot([0, 100],[0, 100], '-', color = '#757575')
   # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -145,7 +145,7 @@ def do_plot():
 
   # ax.scatter(SwellingKashibe,  igSwelling2, c = '#9370DB', marker = '^', s=40, label='This work', zorder=1)
   # ax.scatter(SwellingKashibe,  goldSwelling, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
-  # ax.scatter(SwellingKashibe, SwellCorrVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  # ax.scatter(SwellingKashibe, SwellCorrVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
   # ax.plot([0, 100],[0, 100], '-', color = '#757575')
   # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -174,7 +174,7 @@ def do_plot():
     
   # ax.scatter(SwellingKashibe, NewSwelling2,c='#9370DB', marker = '^', s=40, label='This work', zorder = 1)
   # ax.scatter(SwellingKashibe, NewSwellinggold, c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017)', zorder = 2, alpha=0.7)
-  # ax.scatter(SwellingKashibe, SwellCorrVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  # ax.scatter(SwellingKashibe, SwellCorrVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
   # ax.plot([0, 100],[0, 100], '-', color = '#757575')
   # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -199,8 +199,8 @@ def do_plot():
   ax.scatter(SwellingKashibe[4:7], NewSwelling2[4:7], facecolors= 'none', edgecolors = '#9370DB', marker = '^', s=40,label='This work - 1800°C')
   #ax.scatter(SwellingKashibe[1:4], NewSwellinggold[1:4],c='#ff7f0e', marker = '^', s=40, label='Barani (2017) - 1600°C',  alpha=0.8)
   #ax.scatter(SwellingKashibe[4:7], NewSwellinggold[4:7], c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017) - 1800°C',  alpha =0.8)
-  ax.scatter(SwellingKashibe[1:4], SwellCorrVersion2[1:4], c='green', marker = 'd', s=40, label='SCIANTIX 2.0 - 1600°C',  alpha =0.7)
-  ax.scatter(SwellingKashibe[4:7], SwellCorrVersion2[4:7], facecolors= 'none', edgecolors='green', marker = 'd', s=40, label='SCIANTIX 2.0 - 1800°C', alpha =0.7)
+  ax.scatter(SwellingKashibe[1:4], SwellCorrVersion2[1:4], c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 1600°C',  alpha =0.7)
+  ax.scatter(SwellingKashibe[4:7], SwellCorrVersion2[4:7], facecolors= 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 1800°C', alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -228,7 +228,7 @@ def do_plot():
   # fig, ax = plt.subplots()
   # ax.scatter(FGRAnnealing, FGR2Annealing, c = '#9370DB', marker = '^', s=40, label='This work', zorder=1)
   # ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
-  # ax.scatter(FGRAnnealing, AnnFGRVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
+  # ax.scatter(FGRAnnealing, AnnFGRVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
   # ax.plot([0, 100],[0, 100], '-', color = '#757575')
   # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -246,6 +246,28 @@ def do_plot():
   # plt.savefig('FGRAnnealing-Kashibe1990')
   # plt.show()
 
+    # FGR annealing
+  fig, ax = plt.subplots()
+
+  ax.scatter(FGRAnnealing, FGR2Annealing,c='#9370DB', marker = '^', s=40, label='This work')
+  ax.scatter(FGRAnnealing, AnnFGRVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', alpha =0.7)
+
+  ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  
+  ax.set_xlim(0, 40)
+  ax.set_ylim(0, 40)
+
+  ax.set_title('Fission gas release - Annealing phase')
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.legend()
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+
+  plt.savefig('FGRAnnealingTotal-Kashibe1990')
+  plt.show()
+
   # FGR annealing
   fig, ax = plt.subplots()
 
@@ -253,8 +275,8 @@ def do_plot():
   ax.scatter(FGRAnnealing[4:8], FGR2Annealing[4:8],facecolors= 'none', edgecolors = '#9370DB', marker = '^', s=40,label='This work - 1800°C')
   # ax.scatter(FGRAnnealing[1:4], goldFGRAnnealing[1:4],c='#ff7f0e', marker = '^', s=40, label='Barani (2017) - 1600°C')
   # ax.scatter(FGRAnnealing[4:8], goldFGRAnnealing[4:8], c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017) - 1800°C')
-  ax.scatter(FGRAnnealing[1:4], AnnFGRVersion2[1:4], c='green', marker = 'd', s=40, label='SCIANTIX 2.0 - 1600°C', alpha =0.7)
-  ax.scatter(FGRAnnealing[4:8], AnnFGRVersion2[4:8], facecolors='none', edgecolors = 'green', marker = 'd', s=40, label='SCIANTIX 2.0 - 1800°C', alpha =0.7)
+  ax.scatter(FGRAnnealing[1:4], AnnFGRVersion2[1:4], c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 1600°C', alpha =0.7)
+  ax.scatter(FGRAnnealing[4:8], AnnFGRVersion2[4:8], facecolors='none', edgecolors = '#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 1800°C', alpha =0.7)
   
 
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
@@ -273,12 +295,91 @@ def do_plot():
   plt.savefig('FGRAnnealingDiviso-Kashibe1990')
   plt.show()
 
+  fig, ax = plt.subplots(figsize=(10,5))
+
+  categories = ['6 GWd/tU', '16 GWd/tU','23 GWd/tU', '28 GWd/tU']
+
+  width = 1
+  x = np.array([0,5,10,15])
+
+  plt.bar(x - width, FGRAnnealing[0:4], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='#D3D3D3')
+  plt.bar(x - width, FGRAnnealing[4:8], 0.9*width, label='Une (1990)', color='none', edgecolor='red')
+  plt.bar(x, FGR2Annealing[0:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#D3D3D3')
+  plt.bar(x, FGR2Annealing[4:8], 0.9*width, label='This work', color='none', edgecolor='#6A34A2')
+  plt.bar(x + width, AnnFGRVersion2[0:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#D3D3D3')
+  plt.bar(x + width, AnnFGRVersion2[4:8], 0.9*width, label='SCIANTIX 2.0', color='none', edgecolor='#006400')
+  
+  plt.xticks(x, categories)
+  plt.ylabel('FGR (%)')
+  plt.xlabel('Burn-up')
+  plt.title('Annealing - Burn-up effect')
+
+  import matplotlib.patches as mpatches
+
+  # Create colored patches for Kashibe, This Work, and SCIANTIX
+  kashibe_patch = mpatches.Patch(facecolor='#FFA07A', edgecolor='red', label='Une (1990)')
+  this_work_patch = mpatches.Patch(facecolor='#9370DB', edgecolor='#6A34A2', label='This work')
+  sciantix_patch = mpatches.Patch(facecolor='#66CDAA', edgecolor='#006400', label='SCIANTIX 2.0')
+
+  # Create line patches for the burnup (23 and 28 GWd/tU)
+  T1600_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='1600 °C')
+  T1800_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='1800 °C', markerfacecolor='none')
+
+  # Combine the patches into a single legend
+  legend_items = [kashibe_patch, this_work_patch, sciantix_patch, T1600_patch, T1800_patch]
+
+  # Create the legend
+  plt.legend(handles=legend_items, loc='best', ncol=2)
+  plt.ylim([0,40])
+  
+  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
+  plt.minorticks_on()
+  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+
+  plt.savefig('FGRSpecifico-Kashibe1990')
+  plt.show()
+  
+  fig, ax = plt.subplots(figsize=(10,5))
+
+  categories = ['6 GWd/tU', '16 GWd/tU','23 GWd/tU', '28 GWd/tU']
+
+  width = 1
+  x = np.array([0,5,10,15])
+
+  plt.bar(x - width, SwellingKashibe[0:4], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='#D3D3D3')
+  plt.bar(x - width, SwellingKashibe[4:8], 0.9*width, label='Une (1990)', color='none', edgecolor='red')
+  plt.bar(x, NewSwelling2[0:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#D3D3D3')
+  plt.bar(x, NewSwelling2[4:8], 0.9*width, label='This work', color='none', edgecolor='#6A34A2')
+  plt.bar(x + width, SwellCorrVersion2[0:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#D3D3D3')
+  plt.bar(x + width, SwellCorrVersion2[4:8], 0.9*width, label='SCIANTIX 2.0', color='none', edgecolor='#006400')
+  
+  plt.xticks(x, categories)
+  plt.ylabel('Swelling (%)')
+  plt.xlabel('Burn-up')
+  plt.title('Bubble swelling - Burn-up effect')
+  plt.ylim([0,20])
+  
+  plt.legend(handles=legend_items, loc='best', ncol=2)
+  
+  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
+  plt.minorticks_on()
+  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+
+  plt.savefig('SwellingSpecifico-Kashibe1990')
+  plt.show()
+
         # Median absolute deviations
   deviations_2 = abs(np.array(FGRAnnealing) - np.array(FGR2Annealing))
   deviations_Version2 = abs(np.array(FGRAnnealing) - np.array(AnnFGRVersion2))
   deviations_gold = abs(np.array(FGRAnnealing)-np.array(goldFGRAnnealing))
   
   print('FGR annealing')
+  print(FGR2Annealing)
+  print(AnnFGRVersion2)
+  print(FGRAnnealing)
+
   print(f"This work - MAD: ", np.median(deviations_2))
   print(f"SCIANTIX 2.0 - MAD: ", np.median(deviations_Version2))
   print(f"Barani (2017) - MAD: ", np.median(deviations_gold))
@@ -289,6 +390,9 @@ def do_plot():
   deviations_gold = abs(np.array(SwellingKashibe)-np.array(NewSwellinggold))
   
   print('Swelling')
+  print(NewSwelling2)
+  print(SwellCorrVersion2)
+  print(SwellingKashibe)
   print(f"This work - MAD: ", np.median(deviations_2))
   print(f"SCIANTIX 2.0 - MAD: ", np.median(deviations_Version2))
   print(f"Barani (2017) - MAD: ", np.median(deviations_gold))
