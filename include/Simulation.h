@@ -254,21 +254,60 @@ class Simulation : public Solver, public Model
 			}
 		}
 
-		int integrals_row_index = 0;
 
 		if (input_variable[iv["iTriso"]].getValue() != 0)
 		{
-			for (auto& system : shell_system)
+
+			int integrals_row_index = 0;
+
+			switch (int(input_variable[iv["iShellSolver"]].getValue()))
 			{
-				double inner_boundary_concentration = sciantix_variable[sv[system.getGasName() + " released"]].getFinalValue();
-				// std::cout<<"valore stazionario: "<<inner_boundary_concentration<<std::endl;
-				sciantix_variable[sv[system.getGasName() + " in Triso"]].setFinalValue(
-					solver.sphericalShellDiffusion(inner_boundary_concentration, (Time_end_h/Number_of_time_steps_per_interval)*3600, system.getFissionGasDiffusivity(), system.getModes(), shell[she["SiC"]].getInnerRadius(), shell[she["SiC"]].getOuterRadius(), system.getSpacestep(), system.getSpatialGrid(), sphericalShellDiffusionIntegrals[integrals_row_index])
-				);
+				case 1: 
+				{
 
-				integrals_row_index ++;
-				// std::cout<<"valore calcolato dopo: "<<sciantix_variable[sv[system.getGasName() + " in Triso"]].getFinalValue()<<std::endl;
+					for (auto& system : shell_system)
+					{
 
+						double inner_boundary_concentration = sciantix_variable[sv[system.getGasName() + " released"]].getFinalValue();
+						sciantix_variable[sv[system.getGasName() + " in Triso"]].setFinalValue(
+							solver.sphericalShellDiffusionPizzocri(inner_boundary_concentration, (Time_end_h/Number_of_time_steps_per_interval)*3600, system.getFissionGasDiffusivity(), system.getModes(), shell[she["SiC"]].getInnerRadius(), shell[she["SiC"]].getOuterRadius(), system.getSpacestep(), system.getSpatialGrid(), sphericalShellDiffusionIntegrals[integrals_row_index])
+						);
+						integrals_row_index ++;
+						
+					}
+					break;
+
+				}
+				
+				case 2: 
+				{
+					for (auto& system : shell_system)
+					{
+
+						double inner_boundary_flux = sciantix_variable[sv[system.getGasName() + " released"]].getFinalValue()/((Time_end_h/Number_of_time_steps_per_interval)*3600)*shell[she["SiC"]].getInnerRadius()/3;
+						if (integrals_row_index == 0){
+
+						}
+						sciantix_variable[sv[system.getGasName() + " in Triso"]].setFinalValue(
+							solver.sphericalShellDiffusionFarina(inner_boundary_flux, (Time_end_h/Number_of_time_steps_per_interval)*3600, system.getFissionGasDiffusivity(), system.getModes(), shell[she["SiC"]].getInnerRadius(), shell[she["SiC"]].getOuterRadius(), system.getSpacestep(), system.getSpatialGrid(), sphericalShellDiffusionIntegrals[integrals_row_index])
+						);
+						
+						integrals_row_index ++;
+						
+					}
+					break;
+
+				}
+
+				default:
+
+				{
+
+					std::cerr << "Error!!! Triso solver not recognized!!!" << std::endl;
+					std::exit(EXIT_FAILURE);
+					break;
+
+				}
 			}
 
 
