@@ -284,7 +284,7 @@ class Simulation : public Solver, public Model
 					for (auto& system : shell_system)
 					{
 
-						double inner_boundary_flux = sciantix_variable[sv[system.getGasName() + " released"]].getFinalValue()/((Time_end_h/Number_of_time_steps_per_interval)*3600)*shell[she["SiC"]].getInnerRadius()/3;
+						double inner_boundary_flux = (sciantix_variable[sv[system.getGasName() + " released"]].getFinalValue() - sciantix_variable[sv[system.getGasName() + " released"]].getInitialValue())/((Time_end_h/Number_of_time_steps_per_interval)*3600)*shell[she["SiC"]].getInnerRadius()/3;
 						if (integrals_row_index == 0){
 
 						}
