@@ -45,8 +45,8 @@ FGRSmall = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 AnnFGRVersion2 =  [20.213013000000004, 28.704663000000004, 33.402063, 20.519613, 39.033473, 40.719743, 30.681779834495295, 38.970599999707446, 43.02848999970745, 45.47409999970745, 47.03757999970745, 48.06757999970745, 20.238650000000003, 24.628509999999995, 30.965970000000002, 27.400672999999998, 32.341823, 35.912853, 30.270893]
 TOtFGRVersion2 = [25.411250000000003, 33.9029, 38.6003, 25.71785, 44.23171, 45.91798, 30.681779999999996, 38.9706, 43.028490000000005, 45.4741, 47.03758, 48.06758, 48.33234, 52.722199999999994, 59.05966, 32.59891, 37.54006, 41.11109, 35.46913]
 
-
-
+f2 = []
+fgold = []
 goldFGR = []
 
 number_of_tests_failed = 0
@@ -186,7 +186,7 @@ def do_plot():
   plt.xlabel('Annealing temperature')
   plt.title('Experiments A - 18 GWd/tU - 1°C/s - 180 s')
   plt.ylabel('FGR (%)')
-
+  plt.ylim([0,70])
   plt.legend()
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
@@ -213,7 +213,7 @@ def do_plot():
   plt.xlabel('Annealing temperature')
   plt.title('Experiments B - 18 GWd/tU - 12.5°C/s - 1800 s')
   plt.ylabel('FGR (%)')
-
+  plt.ylim([0,70])
   plt.legend()
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
@@ -240,7 +240,7 @@ def do_plot():
   plt.xlabel('Annealing temperature and time')
   plt.title('Experiments C - 38 GWd/tU - 12.5°C/s')
   plt.ylabel('FGR (%)')
-
+  plt.ylim([0,70])
   plt.legend()
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
@@ -257,6 +257,9 @@ def do_plot():
 
   width = 1
   x = np.linspace(0,15,4)
+  print(FGRBase)
+  print(f2)
+  print(FGR2Annealing)
 
   #plt.barh(x, goldFGRDeltaRamp, 0.9*width, label='Barani (2017)', color='#ff7f0e', edgecolor='#D3D3D3')
   plt.bar(x - width, FGRAnnealing[15:19], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor = 'red')
@@ -267,7 +270,7 @@ def do_plot():
   plt.xlabel('Annealing temperature and time')
   plt.title('Experiments D - 18 GWd/tU - 50°C/s')
   plt.ylabel('FGR (%)')
-
+  plt.ylim([0,70])
   plt.legend()
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
@@ -351,6 +354,14 @@ def regression_small1988(wpath, mode_Small1988, mode_gold, mode_plot, folderList
       # Retrieve the FGR Base
       FGRBase.append(100*data[BaseTime[k],FGRPos].astype(float))
       FGRBaseGold.append(100*data_gold[BaseTime[k],FGRGoldPos].astype(float))
+
+      # Retrieve the generated data of Intergranular gas swelling
+      interGranularIntactPos = findSciantixVariablePosition(data, "Intergranular fractional intactness (/)")
+      f2.append(data[-1,interGranularIntactPos].astype(float))
+
+      # Retrieve the gold data of Intergranular gas swelling
+      interGranularIntactGoldPos = findSciantixVariablePosition(data_gold, "Intergranular fractional intactness (/)")
+      fgold.append(data_gold[-1,interGranularIntactGoldPos].astype(float))
       k +=1
 
       os.chdir('..')
