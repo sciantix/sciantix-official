@@ -78,7 +78,7 @@ void GrainBoundaryMicroCracking()
 			// Stress intensification at GB tip
 			// kt = 1 + crackdiameter / crackheight
 			//double stressintensification = 1 + 2*sin(matrix[sma["UO2"]].getSemidihedralAngle())/(1-cos(matrix[sma["UO2"]].getSemidihedralAngle()));
-			double stressintensification = 3.33;
+			double stressintensification = 3.25;
 			std::cout << "Stress intensification factor ="<< stressintensification <<std::endl;
 
 			// Equilibrium pressure by capillary pressure and hydrostatic stress
