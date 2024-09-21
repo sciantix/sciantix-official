@@ -130,7 +130,7 @@ def do_plot():
   # ax.legend()
   # ax.grid(color='gray', linestyle='--', linewidth=0.5)
   
-  # plt.savefig('FGRTotal-Kashibe1991')
+  # plt.savefig('Images/FGRTotal-Kashibe1991')
   # plt.show()
 
   FGR2Annealing = []
@@ -164,7 +164,7 @@ def do_plot():
   ax.legend()
   ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
-  plt.savefig('FGRAnnealingTotal-Kashibe1991')
+  plt.savefig('Images/FGRAnnealingTotal-Kashibe1991')
   plt.show()
 
   # # FGR annealing
@@ -190,7 +190,7 @@ def do_plot():
   # ax.legend()
   # ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
-  # plt.savefig('FGRAnnealingDiviso-Kashibe1991')
+  # plt.savefig('Images/FGRAnnealingDiviso-Kashibe1991')
   # plt.show()
 
   #  #GOLD vs. SCIANTIX 2.0, no error bars
@@ -216,18 +216,10 @@ def do_plot():
   # ax.legend()
   # ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
-  # plt.savefig('FGRAnnealingRamp-Kashibe1991')
+  # plt.savefig('Images/FGRAnnealingRamp-Kashibe1991')
   # plt.show()
 
-  # Difference multiple-single ramp
-  FGR2DeltaRamp = [- FGR2Annealing[1] + FGR2Annealing[0], 
-                   - FGR2Annealing[3] + FGR2Annealing[2]]
-  FGRDeltaRamp = [- FGRAnnealing[1] + FGRAnnealing[0], 
-                  - FGRAnnealing[3] + FGRAnnealing[2]]
-  goldFGRDeltaRamp = [- goldFGRAnnealing[1] + goldFGRAnnealing[0], 
-                      - goldFGRAnnealing[3] + goldFGRAnnealing[2]]
-  FGRDeltaRampVersion2 = [- AnnFGRVersion2[1] + AnnFGRVersion2[0],
-                          - AnnFGRVersion2[3] + AnnFGRVersion2[2]]
+
   
   # fig, ax = plt.subplots()
 
@@ -247,80 +239,66 @@ def do_plot():
 
   # plt.legend()
   # plt.grid(color='gray', linestyle='--', linewidth=0.5)
-  # #plt.savefig('FGRDeltaRamp-Kashibe1991'))
+  # #plt.savefig('Images/FGRDeltaRamp-Kashibe1991'))
   # plt.show()
 
-  
-  ###########################################################################
+  #   # Difference multiple-single ramp
+  # FGR2DeltaRamp = [- FGR2Annealing[1] + FGR2Annealing[0], 
+  #                  - FGR2Annealing[3] + FGR2Annealing[2]]
+  # FGRDeltaRamp = [- FGRAnnealing[1] + FGRAnnealing[0], 
+  #                 - FGRAnnealing[3] + FGRAnnealing[2]]
+  # goldFGRDeltaRamp = [- goldFGRAnnealing[1] + goldFGRAnnealing[0], 
+  #                     - goldFGRAnnealing[3] + goldFGRAnnealing[2]]
+  # FGRDeltaRampVersion2 = [- AnnFGRVersion2[1] + AnnFGRVersion2[0],
+  #                         - AnnFGRVersion2[3] + AnnFGRVersion2[2]]
+
+  ########################################################################### BAR PLOTS ##################
+
+  ### FGR multiple - single
+  categories = ['23 GWd/tU \nCyclic ramp', '23 GWd/tU \nIsothermal ramp','28 GWd/tU \nCyclic ramp','28 GWd/tU \nIsothermal ramp']
+  width = 1
+  x = np.array([0, 5, 15,20])
 
   fig, ax = plt.subplots(figsize=(10, 5))
-
-  categories = ['23 GWd/tU', '28 GWd/tU']
-
-  width = 1
-  x = np.array([0, 5])
-
-  #plt.barh(x, goldFGRDeltaRamp, 0.9*width, label='Barani (2017)', color='#ff7f0e', edgecolor='#D3D3D3')
-  plt.bar(x - width, FGRDeltaRamp, 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor = 'red')
-  plt.bar(x, FGR2DeltaRamp, 0.9*width, label='This work', color='#9370DB', edgecolor = '#6A34A2')
-  plt.bar(x + width, FGRDeltaRampVersion2, 0.9*width, label='SCIANTIX 2.0', color='#66CDAA',  edgecolor='#006400')
+  plt.bar(x - width, FGRAnnealing[0:4], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor = 'red')
+  plt.bar(x, FGR2Annealing[0:4], 0.9*width, label='This work', color='#9370DB', edgecolor = '#6A34A2')
+  plt.bar(x + width, AnnFGRVersion2[0:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA',  edgecolor='#006400')
   
   plt.xticks(x, categories)
-  plt.xlabel('Burn-up')
   #plt.title('Difference between multiple and single ramp annealing')
-  plt.ylabel('Cyclic and isothermal ramp difference in FGR (%)')
-
-  plt.legend()
+  plt.ylabel('FGR (%)')
+  plt.legend(loc='best')
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
   plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
   plt.minorticks_on()
   plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
 
-  plt.savefig('FGRDeltaRamp-Kashibe1991')
+  plt.savefig('Images/FGRDeltaRamp-Kashibe1991')
   plt.show()
   
   ###########################################################################
-  fig, ax = plt.subplots(figsize=(10, 5))
+  
 
   categories = ['10 °C/s', '1.7 °C/s','0.5 °C/s', '0.17 °C/s', '0.03 °C/s']
+  categories1 = ['10 °C/s', '1.7 °C/s', '0.17 °C/s', '0.03 °C/s']
   #categories = ['0.03 °C/s', '0.17 °C/s','0.5 °C/s', '1.7 °C/s', '10 °C/s']
 
   width = 1
-  # x = np.array([0,5,10,15,20])
-  # x1 = np.array([0,5,15,20])
-
   x = np.array([20,15,10,5,0])
-  x1 = np.array([20,15,5,0])
+  x1 = np.array([20,15,10,5])
 
-  plt.bar(x - width, FGRAnnealing[4:9], 0.9*width, label='Kashibe (1991) - 23 GWd/tU', color='#FFA07A', edgecolor='#D3D3D3')
-  plt.bar(x1 - width, FGRAnnealing[9:13], 0.9*width, label='Kashibe (1991) - 28 GWd/tU', color='none', edgecolor='red')
-  plt.bar(x, FGR2Annealing[4:9], 0.9*width, label='This work - 23 GWd/tU', color='#9370DB', edgecolor='#D3D3D3')
-  plt.bar(x1, FGR2Annealing[9:13], 0.9*width, label='This work - 28 GWd/tU', color='none', edgecolor='#6A34A2')
-  plt.bar(x + width, AnnFGRVersion2[4:9], 0.9*width, label='SCIANTIX 2.0 - 23 GWd/tU', color='#66CDAA', edgecolor='#D3D3D3')
-  plt.bar(x1 + width, AnnFGRVersion2[9:13], 0.9*width, label='SCIANTIX 2.0 - 28 GWd/tU', color='none', edgecolor='#006400')
+  fig, ax = plt.subplots(figsize=(10, 5))
+  plt.bar(x - width, FGRAnnealing[4:9], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor='red')
+  plt.bar(x, FGR2Annealing[4:9], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
+  plt.bar(x + width, AnnFGRVersion2[4:9], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
   
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
   plt.xlabel('Heating rate')
-  #plt.title('Annealing at 1800°C - Ramp rate effect')
+  plt.title('Annealing at 1800°C - 23 GWd/tU')
   
-  import matplotlib.patches as mpatches
-
-  # Create colored patches for Kashibe, This Work, and SCIANTIX
-  kashibe_patch = mpatches.Patch(facecolor='#FFA07A', edgecolor = 'red',label='Kashibe (1991)')
-  this_work_patch = mpatches.Patch(facecolor='#9370DB', edgecolor = '#6A34A2', label='This work')
-  sciantix_patch = mpatches.Patch(facecolor='#66CDAA', edgecolor='#006400', label='SCIANTIX 2.0')
-
-  # Create line patches for the burnup (23 and 28 GWd/tU)
-  burnup_23_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='23 GWd/tU')
-  burnup_28_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='28 GWd/tU', markerfacecolor='none')
-
-  # Combine the patches into a single legend
-  legend_items = [kashibe_patch, this_work_patch, sciantix_patch, burnup_23_patch, burnup_28_patch]
-
-  # Create the legend
-  plt.legend(handles=legend_items, loc='best', ncol=2)
+  plt.legend(loc='best')
   plt.ylim([0,40])
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
@@ -328,7 +306,27 @@ def do_plot():
   plt.minorticks_on()
   plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
 
-  plt.savefig('FGRSpecifico-Kashibe1991')
+  plt.savefig('Images/FGRSpecifico23-Kashibe1991')
+
+  fig, ax = plt.subplots(figsize=(10, 5))
+  plt.bar(x1 - width, FGRAnnealing[9:13], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor='red')
+  plt.bar(x1, FGR2Annealing[9:13], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
+  plt.bar(x1 + width, AnnFGRVersion2[9:13], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
+  
+  plt.xticks(x1, categories1)
+  plt.ylabel('FGR (%)')
+  plt.xlabel('Heating rate')
+  plt.title('Annealing at 1800°C - 28 GWd/tU')
+  
+  plt.legend(loc='best')
+  plt.ylim([0,40])
+  
+  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
+  plt.minorticks_on()
+  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+
+  plt.savefig('Images/FGRSpecifico28-Kashibe1991')
   plt.show()
   ###########################################################################
 

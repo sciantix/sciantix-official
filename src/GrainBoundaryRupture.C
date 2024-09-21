@@ -75,7 +75,7 @@ void GrainBoundaryRupture()
     double factor = 2*sqrt(pow(sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue(), -0.5)-1);
     
     // Pcrit = Peq + (1-2/(pi*F))*Kic*sqrt(pi/radius)*(1/kt) //Pa
-    double geometrical_factor = sf_geometrical_parameter;
+    double geometrical_factor = 3.28;
     double fracture_stress = sciantix_variable[sv["Fracture toughness"]].getFinalValue()*1e6*sqrt(pi/(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue()*sin(matrix[sma["UO2"]].getSemidihedralAngle())))*(1/stressintensification)*(geometrical_factor)*(1-1/(factor*pi*geometrical_factor));
     double critical_bubble_pressure = equilibriumpressure + fracture_stress;    //Pa
     

@@ -76,6 +76,45 @@ gbConcWhite = np.array([0.68, 0.80, 1.32, 1.99, 9.00,                   # 4000
                3.15, 3.98, 4.92, 5.38,                         # 4162
                2.63, 3.56, 5.19, 5.7                           # 4163
                ])
+
+gbradiusWhite = np.array([0.22, 0.22, 0.18, 0.15, 0.08,                   # 4000
+               0.20, 0.15, 0.13, 0.14, 0.07, 0.04,            # 4004
+               0.21, 0.13, 0.12, 0.11, 0.06,                  # 4005
+               0.27, 0.25, 0.19, 0.20, 0.13,                   # 4064
+               0.28, 0.30, 0.24, 0.16, 0.12,                   # 4065
+               0.16, 0.12, 0.09,                               # 4135
+               0.16, 0.17, 0.12, 0.09,                         # 4136
+               0.11, 0.09,                                     # 4140
+               0.15, 0.12, 0.13, 0.11,                         # 4162
+               0.15, 0.14, 0.12, 0.1                           # 4163
+               ])*1e-6
+
+gblengthWhite = np.array([1.18, 0.47, 0.29, 0.36, 0.04,                   # 4000
+               0.31, 0.44,0.18,0.90,0.22,0.11,            # 4004
+               0.5,0.28,0.49,0.71,0.25,                  # 4005
+               0.76,0.66,0.53,1.66,0.51,                   # 4064
+               2.38,1.5,1.6,1.38,0,                   # 4065
+               0.47,0.15,0.13,                               # 4135
+               0.98,1.34,0.41,0.2,                         # 4136
+               0.28,0.22,                                     # 4140
+               0.15,0.13,0.12,0.06,                         # 4162
+               0.22,0.09,0.09,0.27                          # 4163
+               ])*1e-6
+
+gblobesWhite = np.array([4.2, 2.6, 2.3, 2.3, 2.0,                   # 4000
+               2.3,3.0,2.1,3.2,2.0,2.0,            # 4004
+               2.9,3.1,3.2,3.8,2.2,                  # 4005
+               2.9,2.6,3.0,6.3,3.2,                   # 4064
+               6.3,3.5,4.3,4.2,2.0,                   # 4065
+               3.3,2.0,2.0,                               # 4135
+               4.0,4.2,3.4,2.1,                         # 4136
+               3.1,2.1,                                     # 4140
+               2.1,2.3,2.0,2.0,                         # 4162
+               2.7,2.2,2.1,2.2                         # 4163
+               ])
+
+gbareaWhite = 2*gblengthWhite*gbradiusWhite + gblobesWhite*np.pi*gbradiusWhite**2/2
+
 gbConcWhitesigma = np.array([0.46, 0.17, 0.24, 0.55, 1.13,                   # 4000
                0.32,0.90,1.18,0.84,1.55,0,            # 4004
                0.5,0.97,0.98,1.25,2.16,                  # 4005
@@ -247,7 +286,9 @@ def do_gold():
 # Plot the regression test results
 def do_plot():
   #k=16
-  #print(f2[k])
+  print(f2[16:39])
+  print(f2[0:16])
+  print(f2[39:43])
   # # GOLD vs. SCIANTIX 2.0, no error bars
   # fig, ax = plt.subplots()
 
@@ -272,7 +313,7 @@ def do_plot():
   # ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
   
-  # plt.savefig('Swelling-White2004')
+  # plt.savefig('Images/Swelling-White2004')
   # plt.show()
 
   # # GOLD vs. SCIANTIX 2.0, no error bars
@@ -294,7 +335,7 @@ def do_plot():
   # ax.set_ylabel('Calculated (%)')
   # ax.legend()
   # ax.grid(color='gray', linestyle='--', linewidth=0.5)
-  # plt.savefig('Swellinglineare-White2004')
+  # plt.savefig('Images/Swellinglineare-White2004')
   # plt.show()
   
   NewSwelling2 = []
@@ -331,7 +372,7 @@ def do_plot():
   ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
   
-  plt.savefig('SwellingCorretto-White2004')
+  plt.savefig('Images/SwellingCorretto-White2004')
   plt.show()
 
   # fgr
@@ -435,10 +476,6 @@ def do_plot():
   # Bubble concentration
   fig, ax = plt.subplots()
 
-  #ax.errorbar(gbConcWhite, bbconc, xerr = gbConcWhitesigma,c = '#66CDAA', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work', zorder=1)
-  #ax.scatter(gbConcWhite, bbconc_gold, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
-  #ax.scatter(gbConcWhite[26:33], bbconc[26:33], c='red', marker = '^', s=40)
-  #ax.scatter(gbConcWhite[26:33], bbconcVersion2[26:33], c='red', marker = 'd', s=40)
   ax.scatter(np.concatenate([gbConcWhite[0:16],gbConcWhite[39:43]]), np.concatenate([bbconc[0:16],bbconc[39:43]]), c='#9370DB', marker = '^', s=40, label='This work - Fast ramp')
   ax.scatter(gbConcWhite[16:39], bbconc[16:39], facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
   ax.scatter(np.concatenate([gbConcWhite[0:16], gbConcWhite[39:43]]), np.concatenate([bbconcVersion2[0:16],bbconcVersion2[39:43]]), c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
@@ -458,7 +495,32 @@ def do_plot():
   ax.set_ylabel('Calculated (bub/um2)')
   ax.set_title('Bubble concentration')
   ax.legend()
-  plt.savefig('BubConc-White2004')
+  plt.savefig('Images/BubConc-White2004')
+  plt.show()
+
+    # Bubble area
+  fig, ax = plt.subplots()
+
+  ax.scatter(1e12*np.concatenate([gbareaWhite[0:16],gbareaWhite[39:43]]), 1e12*np.concatenate([bbarea2[0:16],bbarea2[39:43]]), c='#9370DB', marker = '^', s=40, label='This work - Fast ramp')
+  ax.scatter(1e12*np.array(gbareaWhite[16:39]), 1e12*np.array(bbarea2[16:39]), facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
+  ax.scatter(1e12*np.concatenate([gbareaWhite[0:16], gbareaWhite[39:43]]), 1e12*np.concatenate([bbareaVersion2[0:16],bbareaVersion2[39:43]]), c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
+  ax.scatter(1e12*np.array(gbareaWhite[16:39]), 1e12*np.array(bbareaVersion2[16:39]), facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
+  
+  ax.set_xscale('log')
+  ax.set_yscale('log')
+
+  ax.plot([1e-3, 1e3],[1e-3, 1e3], '-', color = '#757575')
+  ax.plot([1e-3, 1e3],[2e-3, 2e3],'--', color = '#757575')
+  ax.plot([1e-3, 1e3],[5e-4, 5e2],'--', color = '#757575')
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  ax.set_xlim(1e-2, 1e1)
+  ax.set_ylim(1e-2, 1e1)
+
+  ax.set_xlabel('Experimental (um2)')
+  ax.set_ylabel('Calculated (um2)')
+  ax.set_title('Bubble area')
+  ax.legend()
+  plt.savefig('Images/BubArea-White2004')
   plt.show()
 
   # GOLD vs. SCIANTIX 2.0 - fractional coverage
@@ -491,7 +553,38 @@ def do_plot():
   ax.set_ylabel('Calculated (%)')
   ax.set_title('Fractional coverage of grain faces')
   ax.legend()
-  plt.savefig('Fc-White2004')
+  plt.savefig('Images/Fc-White2004')
+  plt.show()
+
+    # GOLD vs. SCIANTIX 2.0 - fractional coverage
+  fig, ax = plt.subplots()
+
+  #ax.errorbar(FcSwellingWhite, Fc, xerr = FcSwellingWhitesigma,c = '#66CDAA', fmt='o', capsize=1, ecolor='#999AA2', elinewidth = 0.6, label='This work')
+  #ax.scatter(FcSwellingWhite, Fc_gold,c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
+  #ax.scatter(FcSwellingWhite[26:33], Fc[26:33], c='red', marker = '^', s=40)
+  #ax.scatter(FcSwellingWhite[26:33], FcVersion2[26:33], c='red', marker = 'd', s=40)
+  ax.scatter(np.concatenate([FvSwellingWhite[0:16],FvSwellingWhite[39:43]]), np.concatenate([Fv[0:16],Fv[39:43]]), c='#9370DB', marker = '^', s=40, label='This work - Fast ramp')
+  ax.scatter(FvSwellingWhite[16:39], Fv[16:39], facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
+  
+
+  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  ax.plot([1e-3, 1e3],[1e-3, 1e3], '-', color = '#757575')
+  ax.plot([1e-3, 1e3],[2e-3, 2e3],'--', color = '#757575')
+  ax.plot([1e-3, 1e3],[5e-4, 5e2],'--', color = '#757575')
+  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  ax.set_xlim(1, 100)
+  ax.set_ylim(1, 100)
+  
+  ax.set_xscale('log')
+  ax.set_yscale('log')
+
+  ax.set_xlabel('Experimental (%)')
+  ax.set_ylabel('Calculated (%)')
+  ax.set_title('Vented fraction of grain faces')
+  ax.legend()
+  plt.savefig('Images/Fv-White2004')
   plt.show()
 
   # # GOLD vs. SCIANTIX 2.0 - vented fraction
@@ -513,7 +606,7 @@ def do_plot():
   # ax.set_title('Vented fraction of grain faces')
   # ax.legend()
   
-  # plt.savefig('Fv-White2004')
+  # plt.savefig('Images/Fv-White2004')
   # plt.show()
 
   # # FGR plot

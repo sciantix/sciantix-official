@@ -129,10 +129,8 @@ def do_plot():
   # ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
   
-  # #plt.savefig('FGRTotal-Small1985')
+  # #plt.savefig('Images/FGRTotal-Small1985')
   # plt.show()
-
-  print(FGRBase)
 
   FGR2Annealing = []
   goldFGRAnnealing = []
@@ -158,46 +156,28 @@ def do_plot():
   ax.legend()
   ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
-  plt.savefig('FGRAnnealing-Small1985')
+  plt.savefig('Images/FGRAnnealing-Small1985')
   plt.show()
 
-  ###########################################################################
-  fig, ax = plt.subplots(figsize=(10, 5))
-
+  #################################################################### BARPLOTS ################################
+  
   categories = ['300 s', '600 s','900 s']
 
   width = 1
   x = np.array([0,5,10])
   x1 = np.array([0,5,10])
 
-  plt.bar(x - width, FGRAnnealing[0:3], 0.9*width, label='Small (1985) - 1400°C', color='#FFA07A', edgecolor='#D3D3D3')
-  plt.bar(x1 - width, FGRAnnealing[3:6], 0.9*width, label='Small (1985) - 1500°C', color='none', edgecolor='red')
-  plt.bar(x, FGR2Annealing[0:3], 0.9*width, label='This work - 1400°C', color='#9370DB', edgecolor='#D3D3D3')
-  plt.bar(x1, FGR2Annealing[3:6], 0.9*width, label='This work - 1500°C', color='none', edgecolor='#6A34A2')
-  plt.bar(x + width, AnnFGRVersion2[0:3], 0.9*width, label='SCIANTIX 2.0 - 1400°C', color='#66CDAA', edgecolor='#D3D3D3')
-  plt.bar(x1 + width, AnnFGRVersion2[3:6], 0.9*width, label='SCIANTIX 2.0 - 1500°C', color='none', edgecolor='#006400')
+  fig, ax = plt.subplots(figsize=(10, 5))
+  plt.bar(x - width, FGRAnnealing[0:3], 0.9*width, label='Small (1985)', color='#FFA07A', edgecolor='red')
+  plt.bar(x, FGR2Annealing[0:3], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
+  plt.bar(x + width, AnnFGRVersion2[0:3], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
   
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
   plt.xlabel('Annealing time')
-  #plt.title('Annealing')
-  
-  import matplotlib.patches as mpatches
+  plt.title('Annealing at 1400°C')
 
-  # Create colored patches for Kashibe, This Work, and SCIANTIX
-  small_patch = mpatches.Patch(facecolor='#FFA07A', edgecolor='red', label='Small (1985)')
-  this_work_patch = mpatches.Patch(facecolor='#9370DB',edgecolor='#6A34A2', label='This work')
-  sciantix_patch = mpatches.Patch(facecolor='#66CDAA',edgecolor='#006400', label='SCIANTIX 2.0')
-
-  # Create line patches for the burnup (23 and 28 GWd/tU)
-  T1400_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='1400 °C')
-  T1500_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='1500 °C', markerfacecolor='none')
-
-  # Combine the patches into a single legend
-  legend_items = [small_patch, this_work_patch, sciantix_patch, T1400_patch, T1500_patch]
-
-  # Create the legend
-  plt.legend(handles=legend_items, loc='best', ncol=2)
+  plt.legend(loc='best')
   plt.ylim([1e-3,1e3])
   plt.yscale('log')
   
@@ -206,39 +186,19 @@ def do_plot():
   plt.minorticks_on()
   plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
 
-  plt.savefig('FGRAnnealing1-Small1985')
-  plt.show()
-  ########################################################################### 
-  ###########################################################################
+  plt.savefig('Images/FGRAnnealing1400-Small1985')
+
   fig, ax = plt.subplots(figsize=(10, 5))
-
-  categories = ['300 s', '600 s','900 s']
-
-  width = 1
-  x = np.array([0,5,10])
-  x1 = np.array([0,5,10])
-
-  plt.bar(x - width, FGRAnnealing[6:9], 0.9*width, label='Small (1985) - 1600°C', color='#FFA07A', edgecolor='#D3D3D3')
-  plt.bar(x1 - width, FGRAnnealing[9:12], 0.9*width, label='Small (1985) - 1700°C', color='none', edgecolor='red')
-  plt.bar(x, FGR2Annealing[6:9], 0.9*width, label='This work - 1600°C', color='#9370DB', edgecolor='#D3D3D3')
-  plt.bar(x1, FGR2Annealing[9:12], 0.9*width, label='This work - 1700°C', color='none', edgecolor='#6A34A2')
-  plt.bar(x + width, AnnFGRVersion2[6:9], 0.9*width, label='SCIANTIX 2.0 - 1600°C', color='#66CDAA', edgecolor='#D3D3D3')
-  plt.bar(x1 + width, AnnFGRVersion2[9:12], 0.9*width, label='SCIANTIX 2.0 - 1700°C', color='none', edgecolor='#006400')
+  plt.bar(x1 - width, FGRAnnealing[3:6], 0.9*width, label='Small (1985)', color='#FFA07A', edgecolor='red')
+  plt.bar(x1, FGR2Annealing[3:6], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
+  plt.bar(x1 + width, AnnFGRVersion2[3:6], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
   
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
   plt.xlabel('Annealing time')
-  #plt.title('Annealing')
-  
-  # Create line patches for the burnup (23 and 28 GWd/tU)
-  T1600_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='1600 °C')
-  T1700_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='1700 °C', markerfacecolor='none')
+  plt.title('Annealing at 1500°C')
 
-  # Combine the patches into a single legend
-  legend_items = [small_patch, this_work_patch, sciantix_patch, T1600_patch, T1700_patch]
-
-  # Create the legend
-  plt.legend(handles=legend_items, loc='best', ncol=2)
+  plt.legend(loc='best')
   plt.ylim([1e-3,1e3])
   plt.yscale('log')
   
@@ -247,7 +207,49 @@ def do_plot():
   plt.minorticks_on()
   plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
 
-  plt.savefig('FGRAnnealing2-Small1985')
+  plt.savefig('Images/FGRAnnealing1500-Small1985')
+
+  fig, ax = plt.subplots(figsize=(10, 5))
+  plt.bar(x1 - width, FGRAnnealing[6:9], 0.9*width, label='Small (1985)', color='#FFA07A', edgecolor='red')
+  plt.bar(x1, FGR2Annealing[6:9], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
+  plt.bar(x1 + width, AnnFGRVersion2[6:9], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
+  
+  plt.xticks(x, categories)
+  plt.ylabel('FGR (%)')
+  plt.xlabel('Annealing time')
+  plt.title('Annealing at 1600°C')
+
+  plt.legend(loc='best')
+  plt.ylim([1e-3,1e3])
+  plt.yscale('log')
+  
+  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
+  plt.minorticks_on()
+  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+
+  plt.savefig('Images/FGRAnnealing1600-Small1985')
+
+  fig, ax = plt.subplots(figsize=(10, 5))
+  plt.bar(x1 - width, FGRAnnealing[9:12], 0.9*width, label='Small (1985)', color='#FFA07A', edgecolor='red')
+  plt.bar(x1, FGR2Annealing[9:12], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
+  plt.bar(x1 + width, AnnFGRVersion2[9:12], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
+  
+  plt.xticks(x, categories)
+  plt.ylabel('FGR (%)')
+  plt.xlabel('Annealing time')
+  plt.title('Annealing at 1700°C')
+
+  plt.legend(loc='best')
+  plt.ylim([1e-3,1e3])
+  plt.yscale('log')
+  
+  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
+  plt.minorticks_on()
+  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+
+  plt.savefig('Images/FGRAnnealing1700-Small1985')
   plt.show()
   ###########################################################################
 
@@ -256,10 +258,6 @@ def do_plot():
   deviations_Version2 = abs(np.array(FGRAnnealing) - np.array(AnnFGRVersion2))
   deviations_gold = abs(np.array(FGRAnnealing)-np.array(goldFGRAnnealing))
 
-  print(FGRAnnealing)
-  print(FGR2Annealing)
-  print(AnnFGRVersion2)
-  
   print('FGR annealing')
   print(f"This work - MAD: ", np.median(deviations_2))
   print(f"SCIANTIX 2.0 - MAD: ", np.median(deviations_Version2))

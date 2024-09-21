@@ -30,7 +30,7 @@ void UO2()
 	matrix[index].setRef("\n\t");
 	matrix[index].setTheoreticalDensity(10960.0); // (kg/m3)
 	matrix[index].setGrainBoundaryMobility(int(input_variable[iv["iGrainGrowth"]].getValue()));
-	matrix[index].setSurfaceTension(0.89-1.4*1e-4*(history_variable[hv["Temperature"]].getFinalValue()-273.15)); // (N/m)
+	matrix[index].setSurfaceTension(0.6); // (N/m) Olander / Fundamental aspects...
 	matrix[index].setFFinfluenceRadius(1.0e-9); // (m)
 	matrix[index].setFFrange(6.0e-6); // (m)
 	matrix[index].setSchottkyVolume(4.09e-29);
@@ -47,9 +47,7 @@ void UO2()
 	// Mechanical properties
     matrix[index].setElasticModulus(2.334e5 * (1 - 2.752 * (1 - sciantix_variable[sv["Fuel density"]].getFinalValue() / 10960)) * (1 - 1.0915e-4 * history_variable[hv["Temperature"]].getFinalValue())); // (MPa) MATPRO (1979)
     matrix[index].setPoissonRatio(0.316); // (/) MATPRO (1979)
-	//matrix[index].setGrainBoundaryFractureEnergy((2*(0.89-1.4*1e-4*(history_variable[hv["Temperature"]].getFinalValue()-273.15))*cos(0.872664626))*(1-0.9*(sciantix_variable[sv["Burnup"]].getFinalValue()/36.1))); // (N/m)  surface tension
-	matrix[index].setGrainBoundaryFractureEnergy((2*(0.89-1.4*1e-4*(history_variable[hv["Temperature"]].getFinalValue()-273.15))*cos(0.872664626))*(0.8/(1.0+exp(3*(history_variable[hv["Temperature"]].getFinalValue()-(1773+520*exp(-sciantix_variable[sv["Burnup"]].getFinalValue()/10)))))+0.2)); // (N/m)  surface tension (0.8/(1.0+exp(1*sciantix_variable[sv["Burnup"]].getFinalValue()-20))+0.2)*
-	
+	matrix[index].setGrainBoundaryFractureEnergy(((2*0.6*cos(0.872664626)))*(1-((1-sf_geometrical_parameter)+sf_geometrical_parameter/(1+exp(-0.01*(history_variable[hv["Temperature"]].getFinalValue()-(273+389+1547*exp(-sciantix_variable[sv["Burnup"]].getFinalValue()/64)))))))); // (N/m)  surface tension 
 	//matrix[index].setGrainBoundaryFractureEnergy(4e-3); // (J/m2) @Jernkvist2019
 	//matrix[index].setGrainBoundaryFractureEnergy(2); // (J/m2) @Jernkvist2020
 	//matrix[index].setGrainBoundaryFractureEnergy(-0.1114*sciantix_variable[sv["Burnup"]].getInitialValue()+15.773); // (J/m2) @Henry fitting 2020

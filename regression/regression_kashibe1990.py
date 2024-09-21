@@ -16,6 +16,8 @@ import shutil
 from regression_functions import *
 import scipy.stats as stats
 from sklearn.linear_model import LinearRegression
+import matplotlib.patches as mpatches
+
 
 """ ------------------- Global Variables ------------------- """
 
@@ -137,7 +139,7 @@ def do_plot():
   # ax.legend()
   # ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
-  # #plt.savefig('FGRTotal-Kashibe1990')
+  # #plt.savefig('Images/FGRTotal-Kashibe1990')
 
   # #plt.show()
 
@@ -160,7 +162,7 @@ def do_plot():
   # ax.legend()
   # ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
-  # plt.savefig('Swelling-Kashibe1990')
+  # plt.savefig('Images/Swelling-Kashibe1990')
   # #plt.show()
 
   # # Swelling
@@ -189,7 +191,7 @@ def do_plot():
   # ax.legend()
   # ax.grid(color='gray', linestyle='--', linewidth=0.5)
   
-  # #plt.savefig('Swelling-Kashibe1990')
+  # #plt.savefig('Images/Swelling-Kashibe1990')
   # plt.show()
 
   # Swelling at different temperatures
@@ -215,7 +217,7 @@ def do_plot():
   ax.legend()
   ax.grid(color='gray', linestyle='--', linewidth=0.5)
   
-  plt.savefig('SwellingDiviso-Kashibe1990')
+  plt.savefig('Images/SwellingDiviso-Kashibe1990')
   plt.show()
 
   FGR2Annealing = []
@@ -243,7 +245,7 @@ def do_plot():
   # ax.legend()
   # ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
-  # plt.savefig('FGRAnnealing-Kashibe1990')
+  # plt.savefig('Images/FGRAnnealing-Kashibe1990')
   # plt.show()
 
     # FGR annealing
@@ -265,7 +267,7 @@ def do_plot():
   ax.legend()
   ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
-  plt.savefig('FGRAnnealingTotal-Kashibe1990')
+  plt.savefig('Images/FGRAnnealingTotal-Kashibe1990')
   plt.show()
 
   # FGR annealing
@@ -292,8 +294,10 @@ def do_plot():
   ax.legend()
   ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
-  plt.savefig('FGRAnnealingDiviso-Kashibe1990')
+  plt.savefig('Images/FGRAnnealingDiviso-Kashibe1990')
   plt.show()
+
+  ############################################  BARPLOTS #############################################
 
   fig, ax = plt.subplots(figsize=(10,5))
 
@@ -315,8 +319,7 @@ def do_plot():
   plt.xlabel('Burn-up')
   #plt.title('Annealing - Burn-up effect')
 
-  import matplotlib.patches as mpatches
-
+  
   # Create colored patches for Kashibe, This Work, and SCIANTIX
   kashibe_patch = mpatches.Patch(facecolor='#FFA07A', edgecolor='red', label='Une (1990)')
   this_work_patch = mpatches.Patch(facecolor='#9370DB', edgecolor='#6A34A2', label='This work')
@@ -338,51 +341,113 @@ def do_plot():
   plt.minorticks_on()
   plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
 
-  plt.savefig('FGRSpecifico-Kashibe1990')
+  plt.savefig('Images/FGRSpecifico-Kashibe1990')
   plt.show()
   
-  fig, ax = plt.subplots(figsize=(10,5))
+  ###########FGR##############
 
   categories = ['6 GWd/tU', '16 GWd/tU','23 GWd/tU', '28 GWd/tU']
-
+  categories1 = ['16 GWd/tU','23 GWd/tU', '28 GWd/tU']
+  categories2 = ['6 GWd/tU', '16 GWd/tU','23 GWd/tU']
+  
   width = 1
   x = np.array([0,5,10,15])
-  x1  = np.array([5,10,15])
+  x1 = np.array([5,10,15])
   x2 = np.array([0,5,10])
 
-  plt.bar(x1 - width, SwellingKashibe[1:4], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='#D3D3D3')
-  plt.bar(x2 - width, SwellingKashibe[4:7], 0.9*width, label='Une (1990)', color='none', edgecolor='red')
-  plt.bar(x1, NewSwelling2[1:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#D3D3D3')
-  plt.bar(x2, NewSwelling2[4:7], 0.9*width, label='This work', color='none', edgecolor='#6A34A2')
-  plt.bar(x1 + width, SwellCorrVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#D3D3D3')
-  plt.bar(x2 + width, SwellCorrVersion2[4:7], 0.9*width, label='SCIANTIX 2.0', color='none', edgecolor='#006400')
+  fig, ax = plt.subplots(figsize=(10,5))
+
+  plt.bar(x1 - width, FGRAnnealing[1:4], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='red')
+  plt.bar(x1, FGR2Annealing[1:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
+  plt.bar(x1 + width, AnnFGRVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
   
-  plt.xticks(x, categories)
-  plt.ylabel('Swelling (%)')
+  plt.xticks(x1, categories1)
+  plt.ylabel('FGR (%)')
   plt.xlabel('Burn-up')
-  #plt.title('Bubble swelling - Burn-up effect')
-  plt.ylim([0,20])
-  
-  plt.legend(handles=legend_items, loc='best', ncol=2)
+  plt.title('Annealing at 1600°C')
+  plt.legend(loc='best')
+  plt.ylim([0,40])
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
   plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
   plt.minorticks_on()
   plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
 
-  plt.savefig('SwellingSpecifico-Kashibe1990')
+  plt.savefig('Images/FGRSpecifico1600-Kashibe1990')
+
+  fig, ax = plt.subplots(figsize=(10,5))
+
+  plt.bar(x - width, FGRAnnealing[4:8], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='red')
+  plt.bar(x, FGR2Annealing[4:8], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
+  plt.bar(x + width, AnnFGRVersion2[4:8], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
+  
+  plt.xticks(x, categories)
+  plt.ylabel('FGR (%)')
+  plt.xlabel('Burn-up')
+  plt.title('Annealing at 1800°C')
+  plt.legend(loc='best')
+  plt.ylim([0,40])
+  
+  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
+  plt.minorticks_on()
+  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+
+  plt.savefig('Images/FGRSpecifico1800-Kashibe1990')
   plt.show()
 
-        # Median absolute deviations
+  ######## Swelling ##############
+
+  fig, ax = plt.subplots(figsize=(10,5))
+
+  plt.bar(x1 - width, SwellingKashibe[1:4], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='red')
+  plt.bar(x1, NewSwelling2[1:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
+  plt.bar(x1 + width, SwellCorrVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
+  
+  plt.xticks(x1, categories1)
+  plt.ylabel('Swelling (%)')
+  plt.xlabel('Burn-up')
+  plt.title('Annealing at 1600°C')
+  plt.ylim([0,20])
+  
+  plt.legend(loc='best')
+  
+  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
+  plt.minorticks_on()
+  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+
+  plt.savefig('Images/SwellingSpecifico1600-Kashibe1990')
+
+  fig, ax = plt.subplots(figsize=(10,5))
+
+  plt.bar(x2 - width, SwellingKashibe[4:7], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='red')
+  plt.bar(x2, NewSwelling2[4:7], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
+  plt.bar(x2 + width, SwellCorrVersion2[4:7], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
+  
+  plt.xticks(x2, categories2)
+  plt.ylabel('Swelling (%)')
+  plt.xlabel('Burn-up')
+  plt.title('Annealing at 1800°C')
+  plt.ylim([0,20])
+  
+  plt.legend(loc='best')
+  
+  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
+  plt.minorticks_on()
+  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+
+  plt.savefig('Images/SwellingSpecifico1800-Kashibe1990')
+  plt.show()
+
+
+  ################################# Median absolute deviations ####################################
   deviations_2 = abs(np.array(FGRAnnealing) - np.array(FGR2Annealing))
   deviations_Version2 = abs(np.array(FGRAnnealing) - np.array(AnnFGRVersion2))
   deviations_gold = abs(np.array(FGRAnnealing)-np.array(goldFGRAnnealing))
-  
-  print('FGR annealing')
-  print(FGR2Annealing)
-  print(AnnFGRVersion2)
-  print(FGRAnnealing)
 
+  print('FGR')
   print(f"This work - MAD: ", np.median(deviations_2))
   print(f"SCIANTIX 2.0 - MAD: ", np.median(deviations_Version2))
   print(f"Barani (2017) - MAD: ", np.median(deviations_gold))
@@ -393,17 +458,10 @@ def do_plot():
   deviations_gold = abs(np.array(SwellingKashibe)-np.array(NewSwellinggold))
   
   print('Swelling')
-  print(NewSwelling2)
-  print(SwellCorrVersion2)
-  print(SwellingKashibe)
   print(f"This work - MAD: ", np.median(deviations_2))
   print(f"SCIANTIX 2.0 - MAD: ", np.median(deviations_Version2))
   print(f"Barani (2017) - MAD: ", np.median(deviations_gold))
   
-  print(FGR2Annealing)
-  print(FGR2)
-  print(f2)
-
 # Main function of the baker regression
 def regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
   k=0
