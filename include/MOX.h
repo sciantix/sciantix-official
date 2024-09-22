@@ -26,4 +26,4 @@
 #include "SciantixScalingFactorDeclaration.h"
 #include <cmath>
 
-void MOX(double enrichment);
+void MOX();

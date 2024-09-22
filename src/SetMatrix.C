@@ -46,7 +46,7 @@ void SetMatrix()
 		
 		case 2: 
 		{
-			MOX(0.05);
+			MOX();
 			MapMatrix();
 
 			break;
