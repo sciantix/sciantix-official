@@ -37,7 +37,9 @@ void Initialization()
 	Sciantix_history[10] = Steampressure_input[0];
 
 	// Sciantix_variables initialization
-	Sciantix_variables[25] = 2e+13;  // Intergranular_bubble_concentration[0]
+	Sciantix_variables[25] = 1e+13;  // Intergranular_bubble_concentration[0]
+	std::cout<<"Initial bubble concentration (bub/m2): "<<Sciantix_variables[25]<<std::endl;
+
 	Sciantix_variables[35] = 0.5;      // Intergranular_saturation_fractional_coverage[0]
 	Sciantix_variables[37] = 1.0;      // Intergranular_fractional_intactness[0]
 

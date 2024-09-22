@@ -1,11 +1,12 @@
+Initial bubble concentration (bub/m2): 1e+13
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
-Grain Boundary Energy (J/m2)= 1.0002
+Grain Boundary Energy (J/m2)= 0.763623
 Capillary pressure (Pa) = inf
 Capillary pressure by  (Jernkvist 2020, Pa) = inf
 Critical pressure (Pa): -nan
@@ -71,15 +72,15 @@ d_R  =    0
 R_i  =    0
 R_f  =    0
 d_R  =    0
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -147,15 +148,15 @@ d_R  =    -nan
 R_i  =    0
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -223,15 +224,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -299,15 +300,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -375,15 +376,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -451,15 +452,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -527,15 +528,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -603,15 +604,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -679,15 +680,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -755,15 +756,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -831,15 +832,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -907,15 +908,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -983,15 +984,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -1059,15 +1060,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -1135,15 +1136,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -1211,15 +1212,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -1287,15 +1288,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -1363,15 +1364,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -1439,15 +1440,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -1515,15 +1516,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -1591,15 +1592,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -1667,15 +1668,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -1743,15 +1744,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -1819,15 +1820,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -1895,15 +1896,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -1971,15 +1972,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -2047,15 +2048,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -2123,15 +2124,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -2199,15 +2200,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -2275,15 +2276,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -2351,15 +2352,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -2427,15 +2428,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -2503,15 +2504,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -2579,15 +2580,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -2655,15 +2656,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -2731,15 +2732,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -2807,15 +2808,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -2883,15 +2884,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -2959,15 +2960,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -3035,15 +3036,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -3111,15 +3112,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -3187,15 +3188,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -3263,15 +3264,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -3339,15 +3340,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -3415,15 +3416,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -3491,15 +3492,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -3567,15 +3568,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -3643,15 +3644,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -3719,15 +3720,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -3795,15 +3796,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -3871,15 +3872,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -3947,15 +3948,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -4023,15 +4024,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -4099,15 +4100,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -4175,15 +4176,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -4251,15 +4252,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -4327,15 +4328,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -4403,15 +4404,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -4479,15 +4480,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -4555,15 +4556,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -4631,15 +4632,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -4707,15 +4708,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -4783,15 +4784,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -4859,15 +4860,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -4935,15 +4936,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -5011,15 +5012,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -5087,15 +5088,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -5163,15 +5164,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -5239,15 +5240,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -5315,15 +5316,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -5391,15 +5392,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -5467,15 +5468,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -5543,15 +5544,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -5619,15 +5620,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -5695,15 +5696,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -5771,15 +5772,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -5847,15 +5848,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -5923,15 +5924,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -5999,15 +6000,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -6075,15 +6076,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -6151,15 +6152,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -6227,15 +6228,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -6303,15 +6304,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -6379,15 +6380,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -6455,15 +6456,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -6531,15 +6532,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -6607,15 +6608,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -6683,15 +6684,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -6759,15 +6760,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -6835,15 +6836,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -6911,15 +6912,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -6987,15 +6988,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -7063,15 +7064,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -7139,15 +7140,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -7215,15 +7216,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -7291,15 +7292,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -7367,15 +7368,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -7443,15 +7444,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -7519,15 +7520,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -7595,15 +7596,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -7671,15 +7672,15 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
 Cappellari --------
-Stress intensification factor =3.33
-Y: 1.33
+Stress intensification factor =3.25
+Y: 3.28
 Span: 15
 Inflection point: 0.3
-Surface tension (J/m2) = 0.778021
+Surface tension (J/m2) = 0.6
 Elastic modulus (GPa) = -361.025
 Grain Boundary Energy (J/m2)= nan
 Capillary pressure (Pa) = inf
@@ -7747,6 +7748,6 @@ d_R  =    -nan
 R_i  =    -nan
 R_f  =    -nan
 d_R  =    -nan
-Stress intensification factor =3.33
+Stress intensification factor =3.25
 Grain Boundary rupture --------------------------------
 Intactness: -nan
