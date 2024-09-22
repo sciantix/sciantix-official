@@ -19,7 +19,7 @@
 /**
  * @brief Defines the physical properties of the MOX matrix.
  */
-void MOX(double enrichment)
+void MOX()
 {
 	matrix.emplace_back();
 	int index = int(matrix.size()) - 1;
@@ -34,7 +34,7 @@ void MOX(double enrichment)
 	matrix[index].setMoxPuEnrichment(sciantix_variable[sv["MOX PuO2 percentage"]].getFinalValue());
 	matrix[index].setName("MOX");
 	matrix[index].setRef("\n\t");
-	matrix[index].setDensity(10960.0 + 490*enrichment); //(kg/m3) reference from "A review of the thermohpysical properties of MOX and UO2 fuels" by Juan J. Carbajo
+	matrix[index].setDensity(10960.0 + 490*matrix[index].getMoxPuEnrichment()); //(kg/m3) reference from "A review of the thermohpysical properties of MOX and UO2 fuels" by Juan J. Carbajo
 	matrix[index].setGrainBoundaryMobility(int(input_variable[iv["iGrainGrowth"]].getValue()));
 	matrix[index].setSurfaceTension(0.626); // (N/m) reference from "A methodology to predict a fission gas release ratio of MOX fuel with heterogeneous microstructure" by K. Kitano
 	matrix[index].setFFinfluenceRadius(1.0e-9); // (m)
@@ -50,5 +50,5 @@ void MOX(double enrichment)
 	matrix[index].setPoreNucleationRate();
 	matrix[index].setPoreResolutionRate();
 	matrix[index].setPoreTrappingRate(); // 
-	matrix[index].setLatticeParameter(5.47 - 0.074*enrichment); //
+	matrix[index].setLatticeParameter(5.47 - 0.074*matrix[index].getMoxPuEnrichment()); //
 }
