@@ -27,6 +27,7 @@ protected:
 
 	double inner_radius;
 	double outer_radius;
+	double particle_radius;
 
 public:
 
@@ -53,8 +54,20 @@ public:
 		return outer_radius;
 
 	}
+
+	void setParticleRadius(double particleRadius){
+
+		particle_radius = particleRadius;
+
+	}
+
+	double getParticleRadius() const{
+
+		return particle_radius;
+
+	}
 	
-	Shell() : inner_radius(2.5e-4), outer_radius(3.5e-4) { }
+	Shell() : inner_radius(2.5e-4), outer_radius(3.5e-4), particle_radius(4.65e-4){ }
 	~Shell() { }
 };
 
