@@ -9,7 +9,7 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.1                                                                    //
-//  Year: 2023                                                                      //
+//  Year: 2024                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -42,7 +42,7 @@ void defineSpectralDiffusion2Equations(SciantixArray<System> &sciantix_system, S
 /**
  * @brief Defines diffusion models using the spectral diffusion with three equations.
  *
- * The first equation is for xenon in non-restructured matrix - dynamic solution
+ * The first equation is for xenon in non-restructured matrix - intragranular dynamic solution
  * The second equation is for xenon in non-restructured matrix - intragranular bubbles
  * The third equation is for xenon in restructured matrix
  * 

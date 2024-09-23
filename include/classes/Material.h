@@ -9,7 +9,7 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.1                                                                    //
-//  Year: 2023                                                                      //
+//  Year: 2024                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -28,55 +28,55 @@
 class Material
 {
 public:
-	/**
-	 * Constructor
-	 */
-	Material() {}
+    /**
+     * Constructor
+     */
+    Material() {}
 
-	/**
-	 * Destructor
-	 */
-	~Material() {}
+    /**
+     * Destructor
+     */
+    ~Material() {}
 
-	/**
-	 * @brief Sets the name of the material.
-	 * @param n The new name to be set for the material.
-	 */
-	void setName(std::string n)
-	{
-		name = n;
-	}
+    /**
+     * @brief Sets the name of the material.
+     * @param n The new name to be set for the material.
+     */
+    void setName(std::string n)
+    {
+        name = n;
+    }
 
-	/**
-	 * @brief Retrieves the name of the material.
-	 * @return A string that is the current name of the material.
-	 */
-	std::string getName()
-	{
-		return name;
-	}
+    /**
+     * @brief Retrieves the name of the material.
+     * @return A string that is the current name of the material.
+     */
+    std::string getName()
+    {
+        return name;
+    }
 
-	/**
-	 * @brief Sets a reference for the material.
-	 * @param n The reference string to be set.
-	 */
-	void setRef(std::string n)
-	{
-		reference = n;
-	}
+    /**
+     * @brief Sets a reference for the material.
+     * @param n The reference string to be set.
+     */
+    void setRef(std::string n)
+    {
+        reference = n;
+    }
 
-	/**
-	 * @brief Retrieves the reference or identifier of material.
-	 * @return A string that is the current reference.
-	 */
-	std::string getRef()
-	{
-		return reference;
-	}
+    /**
+     * @brief Retrieves the reference or identifier of material.
+     * @return A string that is the current reference.
+     */
+    std::string getRef()
+    {
+        return reference;
+    }
 
 protected:
-	std::string name;
-	std::string reference;
+    std::string name;
+    std::string reference;
 };
 
 #endif // MATERIAL_H

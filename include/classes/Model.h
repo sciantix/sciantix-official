@@ -9,7 +9,7 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.1                                                                    //
-//  Year: 2023                                                                      //
+//  Year: 2024                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -22,7 +22,6 @@
 #include <iterator>
 #include <map>
 #include <string>
-
 #include "InputVariable.h"
 #include "Matrix.h"
 #include "Gas.h"
@@ -41,37 +40,37 @@
 class Model: public Material
 {
 protected:
-	std::string overview;
-	std::vector<double> parameter;
+    std::string overview;
+    std::vector<double> parameter;
 
 public:
-	/**
-	 * @brief Sets the parameters of the model.
-	 * @param p Vector of doubles representing the parameters to be applied to the model.
-	 */
-	void setParameter(std::vector<double> p)
-	{
-		parameter = p;
-	}
+    /**
+     * @brief Sets the parameters of the model.
+     * @param p Vector of doubles representing the parameters to be applied to the model.
+     */
+    void setParameter(std::vector<double> p)
+    {
+        parameter = p;
+    }
 
-	/**
-	 * @brief Retrieves the parameters of the model.
-	 * @return Vector of doubles containing the current parameters of the model.
-	 */
-	std::vector<double> getParameter()
-	{
-		return parameter;
-	}
+    /**
+     * @brief Retrieves the parameters of the model.
+     * @return Vector of doubles containing the current parameters of the model.
+     */
+    std::vector<double> getParameter()
+    {
+        return parameter;
+    }
 
-	/**
-	 * @brief Constructor
-	 */
-	Model() {}
+    /**
+     * @brief Constructor
+     */
+    Model() {}
 
-	/**
-	 * @brief Destructor
-	 */
-	~Model() {}
+    /**
+     * @brief Destructor
+     */
+    ~Model() {}
 };
 
 #endif // MODEL_H
