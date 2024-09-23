@@ -32,8 +32,8 @@ BaseTime = [303,805,1306,1807,
             303,805,1306,1807]
 
 # Data from Kashibe 1990
-SwellingKashibe = [6, 6.7, 6.5, 7.4, #1600°C annealing, 6-16-23-28 GWd/t, 0 if missing datum
-        8.9, 9.0, 10.4, 10 ##1800°C annealing, 6-16-23-28 GWd/t
+SwellingKashibe = [6, 6.7, 6.5, 7.4, #1873 K annealing, 6-16-23-28 GWd/t, 0 if missing datum
+        8.9, 9.0, 10.4, 10 ##2073 K annealing, 6-16-23-28 GWd/t
         ]
 
 # FGROperational = [0.2, 0.8, 21, 21, #6-16-23-28 GWd/t
@@ -42,14 +42,14 @@ SwellingKashibe = [6, 6.7, 6.5, 7.4, #1600°C annealing, 6-16-23-28 GWd/t, 0 if 
 FGROperational = [0.2, 1, 22, 43, #6-16-23-28 GWd/t
                   0.2, 1, 22, 43 ##6-16-23-28 GWd/t
                 ]
-FGRAnnealing = [05.80/0.75, 05.80/0.75, 13.71/0.75, 22.26, #1600°C annealing, 6-16-23-28 GWd/t, first datum missing
-                14.16, 16.86, 25.3, 25.9 ##1800°C annealing, 6-16-23-28 GWd/t
+FGRAnnealing = [05.80/0.75, 05.80/0.75, 13.71/0.75, 22.26, #1873 K annealing, 6-16-23-28 GWd/t, first datum missing
+                14.16, 16.86, 25.3, 25.9 ##2073 K annealing, 6-16-23-28 GWd/t
                 ]
 FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
-AnnFGRVersion2 = [3.978619, 22.114942, 14.46611, 14.843860000000006, 13.030973, 29.966672000000003, 23.292750000000005, 24.491150000000005]
-TotFGRVersion2 = [5.759626, 27.24411, 48.27921, 53.26035, 14.81198, 35.09584, 57.105850000000004, 62.90764]
-SwellCorrVersion2 = [3.400979, 3.660008, 3.861362, 4.194445, 3.181005, 3.2297, 3.954315, 4.363118]
+AnnFGRVersion2= [4.766109999999999, 22.276422000000004, 14.410939999999997, 14.816500000000005, 14.027773, 30.133302, 23.253659999999996, 24.489089999999997]
+TotFGRVersion2 = [6.547116999999999, 27.405590000000004, 48.30562, 53.24638, 15.80878, 35.26247, 57.14834, 62.918969999999995]
+SwellCorrVersion2 = [3.5032739999999998, 3.690295, 3.880266, 4.211609, 3.373869, 3.2867, 3.9814670000000003, 4.385458]
 
 goldFGR = []
 goldSwelling = []
@@ -197,12 +197,12 @@ def do_plot():
   # Swelling at different temperatures
   fig, ax = plt.subplots()
 
-  ax.scatter(SwellingKashibe[1:4], NewSwelling2[1:4],c='#9370DB', marker = '^', s=40, label='This work - 1600°C')
-  ax.scatter(SwellingKashibe[4:7], NewSwelling2[4:7], facecolors= 'none', edgecolors = '#9370DB', marker = '^', s=40,label='This work - 1800°C')
-  #ax.scatter(SwellingKashibe[1:4], NewSwellinggold[1:4],c='#ff7f0e', marker = '^', s=40, label='Barani (2017) - 1600°C',  alpha=0.8)
-  #ax.scatter(SwellingKashibe[4:7], NewSwellinggold[4:7], c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017) - 1800°C',  alpha =0.8)
-  ax.scatter(SwellingKashibe[1:4], SwellCorrVersion2[1:4], c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 1600°C',  alpha =0.7)
-  ax.scatter(SwellingKashibe[4:7], SwellCorrVersion2[4:7], facecolors= 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 1800°C', alpha =0.7)
+  ax.scatter(SwellingKashibe[1:4], NewSwelling2[1:4],c='#9370DB', marker = '^', s=40, label='This work - 1873 K')
+  ax.scatter(SwellingKashibe[4:7], NewSwelling2[4:7], facecolors= 'none', edgecolors = '#9370DB', marker = '^', s=40,label='This work - 2073 K')
+  #ax.scatter(SwellingKashibe[1:4], NewSwellinggold[1:4],c='#ff7f0e', marker = '^', s=40, label='Barani (2017) - 1873 K',  alpha=0.8)
+  #ax.scatter(SwellingKashibe[4:7], NewSwellinggold[4:7], c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017) - 2073 K',  alpha =0.8)
+  ax.scatter(SwellingKashibe[1:4], SwellCorrVersion2[1:4], c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 1873 K',  alpha =0.7)
+  ax.scatter(SwellingKashibe[4:7], SwellCorrVersion2[4:7], facecolors= 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 2073 K', alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -273,12 +273,12 @@ def do_plot():
   # FGR annealing
   fig, ax = plt.subplots()
 
-  ax.scatter(FGRAnnealing[1:4], FGR2Annealing[1:4],c='#9370DB', marker = '^', s=40, label='This work - 1600°C')
-  ax.scatter(FGRAnnealing[4:8], FGR2Annealing[4:8],facecolors= 'none', edgecolors = '#9370DB', marker = '^', s=40,label='This work - 1800°C')
-  # ax.scatter(FGRAnnealing[1:4], goldFGRAnnealing[1:4],c='#ff7f0e', marker = '^', s=40, label='Barani (2017) - 1600°C')
-  # ax.scatter(FGRAnnealing[4:8], goldFGRAnnealing[4:8], c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017) - 1800°C')
-  ax.scatter(FGRAnnealing[1:4], AnnFGRVersion2[1:4], c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 1600°C', alpha =0.7)
-  ax.scatter(FGRAnnealing[4:8], AnnFGRVersion2[4:8], facecolors='none', edgecolors = '#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 1800°C', alpha =0.7)
+  ax.scatter(FGRAnnealing[1:4], FGR2Annealing[1:4],c='#9370DB', marker = '^', s=40, label='This work - 1873 K')
+  ax.scatter(FGRAnnealing[4:8], FGR2Annealing[4:8],facecolors= 'none', edgecolors = '#9370DB', marker = '^', s=40,label='This work - 2073 K')
+  # ax.scatter(FGRAnnealing[1:4], goldFGRAnnealing[1:4],c='#ff7f0e', marker = '^', s=40, label='Barani (2017) - 1873 K')
+  # ax.scatter(FGRAnnealing[4:8], goldFGRAnnealing[4:8], c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017) - 2073 K')
+  ax.scatter(FGRAnnealing[1:4], AnnFGRVersion2[1:4], c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 1873 K', alpha =0.7)
+  ax.scatter(FGRAnnealing[4:8], AnnFGRVersion2[4:8], facecolors='none', edgecolors = '#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 2073 K', alpha =0.7)
   
 
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
@@ -299,50 +299,50 @@ def do_plot():
 
   ############################################  BARPLOTS #############################################
 
-  fig, ax = plt.subplots(figsize=(10,5))
+  # fig, ax = plt.subplots(figsize=(10,5))
 
-  categories = ['6 GWd/tU', '16 GWd/tU','23 GWd/tU', '28 GWd/tU']
+  # categories = ['6 GWd/tU', '16 GWd/tU','23 GWd/tU', '28 GWd/tU']
 
-  width = 1
-  x = np.array([0,5,10,15])
-  x1 = np.array([5,10,15])
+  # width = 1
+  # x = np.array([0,5,10,15])
+  # x1 = np.array([5,10,15])
 
-  plt.bar(x1 - width, FGRAnnealing[1:4], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='#D3D3D3')
-  plt.bar(x - width, FGRAnnealing[4:8], 0.9*width, label='Une (1990)', color='none', edgecolor='red')
-  plt.bar(x1, FGR2Annealing[1:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#D3D3D3')
-  plt.bar(x, FGR2Annealing[4:8], 0.9*width, label='This work', color='none', edgecolor='#6A34A2')
-  plt.bar(x1 + width, AnnFGRVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#D3D3D3')
-  plt.bar(x + width, AnnFGRVersion2[4:8], 0.9*width, label='SCIANTIX 2.0', color='none', edgecolor='#006400')
+  # plt.bar(x1 - width, FGRAnnealing[1:4], 0.9*width, label='Une et al. (1990)', color='#FFA07A', edgecolor='#D3D3D3')
+  # plt.bar(x - width, FGRAnnealing[4:8], 0.9*width, label='Une et al. (1990)', color='none', edgecolor='red')
+  # plt.bar(x1, FGR2Annealing[1:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#D3D3D3')
+  # plt.bar(x, FGR2Annealing[4:8], 0.9*width, label='This work', color='none', edgecolor='#6A34A2')
+  # plt.bar(x1 + width, AnnFGRVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#D3D3D3')
+  # plt.bar(x + width, AnnFGRVersion2[4:8], 0.9*width, label='SCIANTIX 2.0', color='none', edgecolor='#006400')
   
-  plt.xticks(x, categories)
-  plt.ylabel('FGR (%)')
-  plt.xlabel('Burn-up')
-  #plt.title('Annealing - Burn-up effect')
+  # plt.xticks(x, categories)
+  # plt.ylabel('FGR (%)')
+  # plt.xlabel('Burn-up')
+  # #plt.title('Annealing - Burn-up effect')
 
   
-  # Create colored patches for Kashibe, This Work, and SCIANTIX
-  kashibe_patch = mpatches.Patch(facecolor='#FFA07A', edgecolor='red', label='Une (1990)')
-  this_work_patch = mpatches.Patch(facecolor='#9370DB', edgecolor='#6A34A2', label='This work')
-  sciantix_patch = mpatches.Patch(facecolor='#66CDAA', edgecolor='#006400', label='SCIANTIX 2.0')
+  # # Create colored patches for Kashibe, This Work, and SCIANTIX
+  # kashibe_patch = mpatches.Patch(facecolor='#FFA07A', edgecolor='red', label='Une (1990)')
+  # this_work_patch = mpatches.Patch(facecolor='#9370DB', edgecolor='#6A34A2', label='This work')
+  # sciantix_patch = mpatches.Patch(facecolor='#66CDAA', edgecolor='#006400', label='SCIANTIX 2.0')
 
-  # Create line patches for the burnup (23 and 28 GWd/tU)
-  T1600_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='1600 °C')
-  T1800_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='1800 °C', markerfacecolor='none')
+  # # Create line patches for the burnup (23 and 28 GWd/tU)
+  # T1600_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='1873 K')
+  # T1800_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='2073 K', markerfacecolor='none')
 
-  # Combine the patches into a single legend
-  legend_items = [kashibe_patch, this_work_patch, sciantix_patch, T1600_patch, T1800_patch]
+  # # Combine the patches into a single legend
+  # legend_items = [kashibe_patch, this_work_patch, sciantix_patch, T1600_patch, T1800_patch]
 
-  # Create the legend
-  plt.legend(handles=legend_items, loc='best', ncol=2)
-  plt.ylim([0,40])
+  # # Create the legend
+  # plt.legend(handles=legend_items, loc='best', ncol=2)
+  # plt.ylim([0,40])
   
-  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
-  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
-  plt.minorticks_on()
-  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+  # plt.axhline(0, color='gray', linestyle='--', linewidth=1)
+  # plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
+  # plt.minorticks_on()
+  # plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
 
-  plt.savefig('Images/FGRSpecifico-Kashibe1990')
-  plt.show()
+  # plt.savefig('Images/FGRSpecifico-Kashibe1990')
+  # plt.show()
   
   ###########FGR##############
 
@@ -357,14 +357,14 @@ def do_plot():
 
   fig, ax = plt.subplots(figsize=(10,5))
 
-  plt.bar(x1 - width, FGRAnnealing[1:4], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='red')
+  plt.bar(x1 - width, FGRAnnealing[1:4], 0.9*width, label='Une et al. (1990)', color='#FFA07A', edgecolor='red')
   plt.bar(x1, FGR2Annealing[1:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
   plt.bar(x1 + width, AnnFGRVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
   
   plt.xticks(x1, categories1)
   plt.ylabel('FGR (%)')
   plt.xlabel('Burn-up')
-  plt.title('Annealing at 1600°C')
+  plt.title('Annealing at 1873 K')
   plt.legend(loc='best')
   plt.ylim([0,40])
   
@@ -377,14 +377,14 @@ def do_plot():
 
   fig, ax = plt.subplots(figsize=(10,5))
 
-  plt.bar(x - width, FGRAnnealing[4:8], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='red')
+  plt.bar(x - width, FGRAnnealing[4:8], 0.9*width, label='Une et al. (1990)', color='#FFA07A', edgecolor='red')
   plt.bar(x, FGR2Annealing[4:8], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
   plt.bar(x + width, AnnFGRVersion2[4:8], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
   
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
   plt.xlabel('Burn-up')
-  plt.title('Annealing at 1800°C')
+  plt.title('Annealing at 2073 K')
   plt.legend(loc='best')
   plt.ylim([0,40])
   
@@ -400,14 +400,14 @@ def do_plot():
 
   fig, ax = plt.subplots(figsize=(10,5))
 
-  plt.bar(x1 - width, SwellingKashibe[1:4], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='red')
+  plt.bar(x1 - width, SwellingKashibe[1:4], 0.9*width, label='Une et al. (1990)', color='#FFA07A', edgecolor='red')
   plt.bar(x1, NewSwelling2[1:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
   plt.bar(x1 + width, SwellCorrVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
   
   plt.xticks(x1, categories1)
   plt.ylabel('Swelling (%)')
   plt.xlabel('Burn-up')
-  plt.title('Annealing at 1600°C')
+  plt.title('Annealing at 1873 K')
   plt.ylim([0,20])
   
   plt.legend(loc='best')
@@ -421,14 +421,14 @@ def do_plot():
 
   fig, ax = plt.subplots(figsize=(10,5))
 
-  plt.bar(x2 - width, SwellingKashibe[4:7], 0.9*width, label='Une (1990)', color='#FFA07A', edgecolor='red')
+  plt.bar(x2 - width, SwellingKashibe[4:7], 0.9*width, label='Une et al. (1990)', color='#FFA07A', edgecolor='red')
   plt.bar(x2, NewSwelling2[4:7], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
   plt.bar(x2 + width, SwellCorrVersion2[4:7], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
   
   plt.xticks(x2, categories2)
   plt.ylabel('Swelling (%)')
   plt.xlabel('Burn-up')
-  plt.title('Annealing at 1800°C')
+  plt.title('Annealing at 2073 K')
   plt.ylim([0,20])
   
   plt.legend(loc='best')

@@ -42,8 +42,9 @@ FGRAnnealing = [0.01,0.01,0.34,    #1400, 300-600-900 s annealing
 
 FGRSmall = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
-AnnFGRVersion2=[16.298329999712923, 16.298329999712923, 16.298329999712923, 20.975889999712923, 20.975889999712923, 20.975889999712923, 27.404939999712923, 29.467619999712923, 31.55029999971292, 33.36851999971292, 36.24535999971292, 37.720189999712915]
-TOtFGRVersion2 =[16.29833, 16.29833, 16.29833, 20.97589, 20.97589, 20.97589, 27.40494, 29.46762, 31.550299999999996, 33.368520000000004, 36.24536, 37.720189999999995]
+AnnFGRVersion2 = [16.298329999712923, 16.298329999712923, 16.298329999712923, 20.975889999712923, 20.975889999712923, 20.975889999712923, 27.404939999712923, 29.534419999712924, 31.616749999712923, 33.42794999971292, 36.30904999971292, 37.787189999712915]
+TOtFGRVersion2 = [16.29833, 16.29833, 16.29833, 20.97589, 20.97589, 20.97589, 27.40494, 29.53442, 31.61675, 33.42795, 36.30905, 37.787189999999995]
+
 goldFGR = []
 
 number_of_tests_failed = 0
@@ -167,14 +168,14 @@ def do_plot():
   x1 = np.array([0,5,10])
 
   fig, ax = plt.subplots(figsize=(10, 5))
-  plt.bar(x - width, FGRAnnealing[0:3], 0.9*width, label='Small (1985)', color='#FFA07A', edgecolor='red')
+  plt.bar(x - width, FGRAnnealing[0:3], 0.9*width, label='Small et al. (1985)', color='#FFA07A', edgecolor='red')
   plt.bar(x, FGR2Annealing[0:3], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
   plt.bar(x + width, AnnFGRVersion2[0:3], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
   
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
   plt.xlabel('Annealing time')
-  plt.title('Annealing at 1400°C')
+  plt.title('Annealing at 1673 K')
 
   plt.legend(loc='best')
   plt.ylim([1e-1,1e2])
@@ -188,14 +189,14 @@ def do_plot():
   plt.savefig('Images/FGRAnnealing1400-Small1985')
 
   fig, ax = plt.subplots(figsize=(10, 5))
-  plt.bar(x1 - width, FGRAnnealing[3:6], 0.9*width, label='Small (1985)', color='#FFA07A', edgecolor='red')
+  plt.bar(x1 - width, FGRAnnealing[3:6], 0.9*width, label='Small et al. (1985)', color='#FFA07A', edgecolor='red')
   plt.bar(x1, FGR2Annealing[3:6], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
   plt.bar(x1 + width, AnnFGRVersion2[3:6], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
   
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
   plt.xlabel('Annealing time')
-  plt.title('Annealing at 1500°C')
+  plt.title('Annealing at 1773 K')
 
   plt.legend(loc='best')
   plt.ylim([1e-1,1e2])
@@ -209,14 +210,14 @@ def do_plot():
   plt.savefig('Images/FGRAnnealing1500-Small1985')
 
   fig, ax = plt.subplots(figsize=(10, 5))
-  plt.bar(x1 - width, FGRAnnealing[6:9], 0.9*width, label='Small (1985)', color='#FFA07A', edgecolor='red')
+  plt.bar(x1 - width, FGRAnnealing[6:9], 0.9*width, label='Small et al. (1985)', color='#FFA07A', edgecolor='red')
   plt.bar(x1, FGR2Annealing[6:9], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
   plt.bar(x1 + width, AnnFGRVersion2[6:9], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
   
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
   plt.xlabel('Annealing time')
-  plt.title('Annealing at 1600°C')
+  plt.title('Annealing at 1873 K')
 
   plt.legend(loc='best')
   plt.ylim([1e-1,1e2])
@@ -230,14 +231,14 @@ def do_plot():
   plt.savefig('Images/FGRAnnealing1600-Small1985')
 
   fig, ax = plt.subplots(figsize=(10, 5))
-  plt.bar(x1 - width, FGRAnnealing[9:12], 0.9*width, label='Small (1985)', color='#FFA07A', edgecolor='red')
+  plt.bar(x1 - width, FGRAnnealing[9:12], 0.9*width, label='Small et al. (1985)', color='#FFA07A', edgecolor='red')
   plt.bar(x1, FGR2Annealing[9:12], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
   plt.bar(x1 + width, AnnFGRVersion2[9:12], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
   
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
   plt.xlabel('Annealing time')
-  plt.title('Annealing at 1700°C')
+  plt.title('Annealing at 1973 K')
 
   plt.legend(loc='best')
   plt.ylim([1e-1,1e2])

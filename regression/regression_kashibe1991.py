@@ -36,19 +36,18 @@ FGROperational = [22, 22, #23 GWd/t
                   22, 22, 22, 22, 22,
                   43, 43, 43, 43
                 ]
-FGRAnnealing = [5.9, 6.5, #1400°C, 23 GWd/t, Multiple-Single
-                5.9, 7.6,  #1400°C, 28 GWd/t, Multiple-Single
-                17.8,19.2,24,16.3,19.4, #1800°C 23 GWd/t, rate 1,2,3,4,5
-                28.7,27.1,24,24.47 #1800°C 28 GWd/t, rate 1,2,4,5
+FGRAnnealing = [5.9, 6.5, #1673 K, 23 GWd/t, Multiple-Single
+                5.9, 7.6,  #1673 K, 28 GWd/t, Multiple-Single
+                17.8,19.2,24,16.3,19.4, #2073 K 23 GWd/t, rate 1,2,3,4,5
+                28.7,27.1,24,24.47 #2073 K 28 GWd/t, rate 1,2,4,5
               ]
 FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
 
 goldFGR = []
 
-AnnFGRVersion2 =[19.97972, 2.225370000000005, 21.33899000000001, 1.8233099999999993, 15.463260000000005, 15.594900000000003, 15.946810000000006, 16.748230000000007, 19.56639, 15.933270000000007, 20.60900000000001, 17.22712, 20.27063000000001]
-TOtFGRVersion2 =[53.79282, 36.038470000000004, 59.755480000000006, 40.239799999999995, 49.276360000000004, 49.408, 49.759910000000005, 50.561330000000005, 53.37949, 54.34976, 59.025490000000005, 55.643609999999995, 58.68712000000001]
-
+AnnFGRVersion2=[19.92393, 2.203019999999995, 21.327820000000003, 1.8098300000000052, 15.399250000000002, 15.53067, 15.882220000000004, 16.683809999999994, 19.509350000000005, 15.90567, 20.586550000000003, 17.198940000000007, 20.249330000000008]
+TOtFGRVersion2=[53.81861, 36.097699999999996, 59.7577, 40.23971, 49.29393, 49.42535, 49.776900000000005, 50.578489999999995, 53.404030000000006, 54.33555, 59.01643, 55.628820000000005, 58.679210000000005]
 
 number_of_tests_failed = 0
 sample_number = len(FGR2)
@@ -199,8 +198,8 @@ def do_plot():
 
   # ax.scatter(FGRAnnealing[0:2], FGR2Annealing[0:2],c='#9370DB', marker = '^', s=40,         label='This work - 23 GWd/tU')
   # ax.scatter(FGRAnnealing[2:4], FGR2Annealing[2:4], facecolors = 'none', edgecolors = '#9370DB', marker = '^', s=40,    label='This work - 28 GWd/tU')
-  # # ax.scatter(FGRAnnealing[0:2], goldFGRAnnealing[0:2],c='#ff7f0e', marker = '^', s=40,      label='Barani (2017) - 1400°C - 23 GWd/tU', zorder = 2)
-  # # ax.scatter(FGRAnnealing[2:4], goldFGRAnnealing[2:4], c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017) - 1400°C - 28 GWd/tU', zorder = 4)
+  # # ax.scatter(FGRAnnealing[0:2], goldFGRAnnealing[0:2],c='#ff7f0e', marker = '^', s=40,      label='Barani (2017) - 1673 K - 23 GWd/tU', zorder = 2)
+  # # ax.scatter(FGRAnnealing[2:4], goldFGRAnnealing[2:4], c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017) - 1673 K - 28 GWd/tU', zorder = 4)
   # ax.scatter(FGRAnnealing[0:2], AnnFGRVersion2[0:2], c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 23 GWd/tU', alpha =0.7)
   # ax.scatter(FGRAnnealing[2:4], AnnFGRVersion2[2:4], facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 28 GWd/tU', alpha =0.7)
   
@@ -258,16 +257,17 @@ def do_plot():
   ### FGR multiple - single
   categories = ['23 GWd/tU \nCyclic ramp', '23 GWd/tU \nIsothermal ramp','28 GWd/tU \nCyclic ramp','28 GWd/tU \nIsothermal ramp']
   width = 1
-  x = np.array([0, 5, 15,20])
+  x = np.array([0, 4, 9,13])
 
   fig, ax = plt.subplots(figsize=(10, 5))
-  plt.bar(x - width, FGRAnnealing[0:4], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor = 'red')
+  plt.bar(x - width, FGRAnnealing[0:4], 0.9*width, label='Kashibe et al. (1991)', color='#FFA07A', edgecolor = 'red')
   plt.bar(x, FGR2Annealing[0:4], 0.9*width, label='This work', color='#9370DB', edgecolor = '#6A34A2')
   plt.bar(x + width, AnnFGRVersion2[0:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA',  edgecolor='#006400')
   
   plt.xticks(x, categories)
   #plt.title('Difference between multiple and single ramp annealing')
   plt.ylabel('FGR (%)')
+  plt.xlim([-2,15])
   plt.legend(loc='best')
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
@@ -281,23 +281,23 @@ def do_plot():
   ###########################################################################
   
 
-  categories = ['10 °C/s', '1.7 °C/s','0.5 °C/s', '0.17 °C/s', '0.03 °C/s']
-  categories1 = ['10 °C/s', '1.7 °C/s', '0.17 °C/s', '0.03 °C/s']
-  #categories = ['0.03 °C/s', '0.17 °C/s','0.5 °C/s', '1.7 °C/s', '10 °C/s']
+  categories = ['10 K/s', '1.7 K/s','0.5 K/s', '0.17 K/s', '0.03 K/s']
+  categories1 = ['10 K/s', '1.7 K/s', '0.17 K/s', '0.03 K/s']
+  #categories = ['0.03 K/s', '0.17 K/s','0.5 K/s', '1.7 K/s', '10 K/s']
 
   width = 1
   x = np.array([20,15,10,5,0])
   x1 = np.array([20,15,10,5])
 
   fig, ax = plt.subplots(figsize=(10, 5))
-  plt.bar(x - width, FGRAnnealing[4:9], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor='red')
+  plt.bar(x - width, FGRAnnealing[4:9], 0.9*width, label='Kashibe et al. (1991)', color='#FFA07A', edgecolor='red')
   plt.bar(x, FGR2Annealing[4:9], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
   plt.bar(x + width, AnnFGRVersion2[4:9], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
   
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
   plt.xlabel('Heating rate')
-  plt.title('Annealing at 1800°C - 23 GWd/tU')
+  plt.title('Annealing at 2073 K - 23 GWd/tU')
   
   plt.legend(loc='best')
   plt.ylim([0,40])
@@ -310,14 +310,14 @@ def do_plot():
   plt.savefig('Images/FGRSpecifico23-Kashibe1991')
 
   fig, ax = plt.subplots(figsize=(10, 5))
-  plt.bar(x1 - width, FGRAnnealing[9:13], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor='red')
+  plt.bar(x1 - width, FGRAnnealing[9:13], 0.9*width, label='Kashibe et al. (1991)', color='#FFA07A', edgecolor='red')
   plt.bar(x1, FGR2Annealing[9:13], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
   plt.bar(x1 + width, AnnFGRVersion2[9:13], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
   
   plt.xticks(x1, categories1)
   plt.ylabel('FGR (%)')
   plt.xlabel('Heating rate')
-  plt.title('Annealing at 1800°C - 28 GWd/tU')
+  plt.title('Annealing at 2073 K - 28 GWd/tU')
   
   plt.legend(loc='best')
   plt.ylim([0,40])

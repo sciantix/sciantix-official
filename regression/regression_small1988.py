@@ -42,8 +42,8 @@ FGRAnnealing = [0, 0, 3.1, 2.8, 8.8, 11.1, #Expt A
 
 FGRSmall = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
-AnnFGRVersion2=[19.956243, 24.697283, 29.201822999999997, 19.956243, 36.962433000000004, 39.179843, 23.562809834495297, 35.126469999707425, 40.52662999970743, 43.77165999970743, 45.84210999970743, 47.18250999970743, 23.256110000000003, 28.34175, 35.614050000000006, 24.697283, 27.506953000000003, 32.594963, 28.056343]
-TOtFGRVersion2 = [25.15448, 29.895519999999998, 34.400059999999996, 25.15448, 42.16067, 44.37808, 23.56281, 35.12647, 40.526630000000004, 43.771660000000004, 45.842110000000005, 47.18251, 45.28354, 50.36918, 57.64148, 29.895519999999998, 32.70519, 37.7932, 33.25458]
+AnnFGRVersion2 =[19.956243, 24.697283, 29.256543, 19.956243, 37.023893, 39.245553, 23.6503398344953, 35.19551999970745, 40.598869999707446, 43.849179999707445, 45.92440999970745, 47.26928999970745, 23.231500000000004, 28.313430000000004, 35.59531, 24.697283, 27.560743000000002, 32.649173, 28.056343]
+TOtFGRVersion2=[25.15448, 29.895519999999998, 34.45478, 25.15448, 42.22213, 44.44379, 23.65034, 35.19552, 40.59887, 43.84918, 45.92441, 47.269290000000005, 45.29628, 50.37821, 57.66009, 29.895519999999998, 32.75898, 37.847409999999996, 33.25458]
 f2 = []
 fgold = []
 goldFGR = []
@@ -143,7 +143,7 @@ def do_plot():
   fig, ax = plt.subplots()
   ax.scatter(FGRAnnealing, FGR2Annealing,c = '#9370DB', marker = '^', s=40,label='This work')
   #ax.scatter(FGRAnnealing, goldFGRAnnealing,c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
-  ax.scatter(FGRAnnealing, AnnFGRVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', alpha =0.7)
+  ax.scatter(FGRAnnealing, AnnFGRVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', alpha =0.7)
   
   ax.plot([0, 100],[0, 100], '-', color = '#757575')
   ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
@@ -165,18 +165,18 @@ def do_plot():
 
   ####################################### BARPLOTS #################################
   
-  categories = ['1500°C', '1600°C', '1700°C', '1800°C', '1900°C', '2000°C']
+  categories = ['1773 K', '1873 K', '1973 K', '2073 K', '2173 K', '2273 K']
   width = 1
   x = np.linspace(0,25,6)
 
   fig, ax = plt.subplots(figsize=(10, 5))
-  plt.bar(x - width, FGRAnnealing[0:6], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor = 'red')
+  plt.bar(x - width, FGRAnnealing[0:6], 0.9*width, label='Small ', color='#FFA07A', edgecolor = 'red')
   plt.bar(x, FGR2Annealing[0:6], 0.9*width, label='This work', color='#9370DB', edgecolor = '#6A34A2')
   plt.bar(x + width, AnnFGRVersion2[0:6], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA',  edgecolor='#006400')
   
   plt.xticks(x, categories)
   plt.xlabel('Annealing temperature')
-  plt.title('Experiments A - 18 GWd/tU - 1°C/s - 180 s')
+  plt.title('Experiments A - 18 GWd/tU - 1 K/s - 180 s')
   plt.ylabel('FGR (%)')
   plt.ylim([0,70])
   plt.legend()
@@ -191,13 +191,13 @@ def do_plot():
   fig, ax = plt.subplots(figsize=(10, 5))
 
   #plt.barh(x, goldFGRDeltaRamp, 0.9*width, label='Barani (2017)', color='#ff7f0e', edgecolor='#D3D3D3')
-  plt.bar(x - width, FGRAnnealing[6:12], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor = 'red')
+  plt.bar(x - width, FGRAnnealing[6:12], 0.9*width, label='Small et al. (1988)', color='#FFA07A', edgecolor = 'red')
   plt.bar(x, FGR2Annealing[6:12], 0.9*width, label='This work', color='#9370DB', edgecolor = '#6A34A2')
   plt.bar(x + width, AnnFGRVersion2[6:12], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA',  edgecolor='#006400')
   
   plt.xticks(x, categories)
   plt.xlabel('Annealing temperature')
-  plt.title('Experiments B - 18 GWd/tU - 12.5°C/s - 1800 s')
+  plt.title('Experiments B - 18 GWd/tU - 12.5 K/s - 1800 s')
   plt.ylabel('FGR (%)')
   plt.ylim([0,70])
   plt.legend()
@@ -210,17 +210,17 @@ def do_plot():
   plt.savefig('Images/B-Small1988')
   
   
-  categories = ['1437°C \n1800 s', '1600°C \n300 s', '1600°C \n5000s']
+  categories = ['1710 K \n1800 s', '1873 K \n300 s', '1873 K \n5000s']
   width = 1
   x = np.linspace(0,10,3)
 
   fig, ax = plt.subplots(figsize=(10, 5))
-  plt.bar(x - width, FGRAnnealing[12:15], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor = 'red')
+  plt.bar(x - width, FGRAnnealing[12:15], 0.9*width, label='Small et al. (1988)', color='#FFA07A', edgecolor = 'red')
   plt.bar(x, FGR2Annealing[12:15], 0.9*width, label='This work', color='#9370DB', edgecolor = '#6A34A2')
   plt.bar(x + width, AnnFGRVersion2[12:15], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA',  edgecolor='#006400')
   
   plt.xticks(x, categories)
-  plt.title('Experiments C - 38 GWd/tU - 12.5°C/s')
+  plt.title('Experiments C - 38 GWd/tU - 12.5 K/s')
   plt.ylabel('FGR (%)')
   plt.ylim([0,70])
   plt.legend()
@@ -232,17 +232,17 @@ def do_plot():
 
   plt.savefig('Images/C-Small1988')
 
-  categories  = ['1600°C \n180 s', '1700°C \n180 s', '1800°C \n180 s', '2000°C \n0 s']
+  categories  = ['1873 K \n180 s', '1973 K \n180 s', '2073 K \n180 s', '2273 K \n0 s']
   width = 1
   x = np.linspace(0,15,4)
 
   fig, ax = plt.subplots(figsize=(10, 5))
-  plt.bar(x - width, FGRAnnealing[15:19], 0.9*width, label='Kashibe (1991)', color='#FFA07A', edgecolor = 'red')
+  plt.bar(x - width, FGRAnnealing[15:19], 0.9*width, label='Small et al. (1988)', color='#FFA07A', edgecolor = 'red')
   plt.bar(x, FGR2Annealing[15:19], 0.9*width, label='This work', color='#9370DB', edgecolor = '#6A34A2')
   plt.bar(x + width, AnnFGRVersion2[15:19], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA',  edgecolor='#006400')
   
   plt.xticks(x, categories)
-  plt.title('Experiments D - 18 GWd/tU - 50°C/s')
+  plt.title('Experiments D - 18 GWd/tU - 50 K/s')
   plt.ylabel('FGR (%)')
   plt.ylim([0,70])
   plt.legend()
