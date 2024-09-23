@@ -9,10 +9,13 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.1                                                                    //
-//  Year: 2023                                                                      //
+//  Year: 2024                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
+
+#ifndef ERROR_MESSAGES_H
+#define ERROR_MESSAGES_H
 
 #include <string>
 #include <iostream>
@@ -63,3 +66,5 @@ namespace ErrorMessages
      */
     void writeErrorLog();
 };
+
+#endif

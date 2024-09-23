@@ -9,7 +9,7 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.1                                                                    //
-//  Year: 2023                                                                      //
+//  Year: 2024                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -209,8 +209,7 @@ public:
     void InterGranularBubbleBehavior();
 
     /**
-     * @brief Calculates the sweeping of grain boundaries, particularly how it affects gas concentrations.
-     * Sweeping of the intra-granular gas concentrations.
+     * @brief Calculates the sweeping of grain boundaries, particularly how it affects intragranular gas concentrations.
      * 
      * @author D. Pizzocri
      * @author T. Barani
@@ -220,23 +219,32 @@ public:
     void GrainBoundarySweeping();
 
     /**
-     * @brief GrainBoundaryMicroCracking is method of simulation which executes
-     * the SCIANTIX simulation for the grain-boundary micro-cracking induced by a temperature difference.
-     * This method calls the related model "Grain-boundary micro-cracking", takes the model parameters and solve the model ODEs.
+     * @brief Calculates the fraction of cracked/healed grain-boundary faces after temperature transients,
+     * and the corresponding fission gas released.
+     * 
+     * @author D. Pizzocri
+     * @author T. Barani
+     * @author G. Zullo
+     * 
      */
     void GrainBoundaryMicroCracking();
 
     /**
-     * @brief Handles the venting processes at grain boundaries, potentially releasing gases.
+     * @brief Calculates the amount of gas released due to venting processes.
+     * 
+     * @author D. Pizzocri
+     * @author T. Barani
+     * @author G. Zullo
+     * 
      */
     void GrainBoundaryVenting();
 
     /**
-     * @brief Simulates the formation of high burnup structures within the nuclear fuel.
+     * @brief Calculates the formation of high burnup structures within the nuclear fuel.
      * 
+     * @author G. Zullo
      * @author A. Magni
      * @author E. Redaelli
-     * @author G. Zullo
      * 
      */
     void HighBurnupStructureFormation();

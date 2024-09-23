@@ -1,3 +1,11 @@
+"""
+This script is the equivalent of the SCIANTIX solver SpectralDiffusion2equations in Solver.C/h.
+It can be used for testing purposes.
+
+Author: G. Zullo
+
+"""
+
 import math
 import numpy as np
 import matplotlib.pyplot as plt

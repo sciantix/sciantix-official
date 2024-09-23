@@ -9,7 +9,7 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.1                                                                    //
-//  Year: 2023                                                                      //
+//  Year: 2024                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -98,14 +98,12 @@ std::map<int, std::string> update_sciantix_variable = {
     {88, "Xe atoms per HBS pore - variance"}
 };
 
-
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
 {
     for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin(); it != update_sciantix_variable.end(); it++)
     {
         Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
     }
-
 
     for (int i = 0; i < n_modes; ++i)
     {

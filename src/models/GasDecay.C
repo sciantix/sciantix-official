@@ -9,7 +9,7 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.1                                                                    //
-//  Year: 2023                                                                      //
+//  Year: 2024                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -18,6 +18,7 @@
 
 void Simulation::GasDecay()
 {
+    // Model declaration
     for (auto &system : sciantix_system)
     {
         if (system.getGas().getDecayRate() > 0.0 && system.getRestructuredMatrix() == 0)

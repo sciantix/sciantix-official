@@ -1,35 +1,63 @@
 # Basic guide
 
-## Instructions for Committing New Code
+We hope this guide helps simplify the process of committing new code and building SCIANTIX, while also ensuring consistency in the source code through our syntax guidelines. If you encounter any issues or have suggestions, please feel free to contact the developers.
+
+## Instructions for committing new code through a pull request
 
 Follow these steps to commit new code to the SCIANTIX repository:
 
-1. Open your terminal and execute the following commands:
-
+1. **Create and switch to a new branch:**
    ```bash
-   gh repo clone sciantix/sciantix-official
-   cd sciantix
+   git checkout -b new_branch
    ```
 
-2. Create an issue on GitHub.
+2. **Make changes and commit them:**
+   - Stage all changes:
+     ```bash
+     git add .
+     ```
+   - Commit the changes:
+     ```bash
+     git commit -m "commit message"
+     ```
+   - Push the new branch to the remote repository:
+     ```bash
+     git push origin new_branch
+     ```
 
-3. Proceed with the following commands:
+3. **Create a new pull request:**
+   - Using GitHub CLI:
+     ```bash
+     gh pr create --base main --head new_branch --title "Title of the pull request" --body "Brief description of the pull request"
+     ```
 
+4. **Check for reviews or approvals:**
+   - Ensure the pull request meets the necessary criteria. If the pull request is approved and ready to be merged, update your main branch:
+     ```bash
+     git pull origin main
+     ```
+
+5. **Switch back to the main branch:**
    ```bash
-   git checkout -b <BranchName_#IssueNumber>
-   git add <Files>
-   git commit -m "<CommitMessageEndingIn#IssueNumber>"
-   git pull --rebase upstream version1.0
-   git push origin <BranchName_#IssueNumber>
+   git checkout main
    ```
 
-4. Create a merge request on GitHub.
+6. **Merge the new branch into main:**
+   ```bash
+   git merge new_branch
+   ```
 
-### Check Your Work Status
+7. **Push the updated main branch to complete the pull request:**
+   ```bash
+   git push -u origin main
+   ```
+
+### Check your work status
 
 At any time, you can check the status of your work by running:
 
 ```bash
+git fetch
 git status
 ```
 
@@ -49,13 +77,13 @@ Follow these steps to build SCIANTIX on macOS:
 brew install git
 ```
 
-2. **Install Dependencies**:
+2. **Install dependencies**:
    - Install CMake and g++ using Homebrew:
 ```bash
 brew install cmake g++
 ```
 
-3. **Clone the Repository**:
+3. **Clone the repository**:
    - Clone the repository:
 ```bash
 gh repo clone sciantix/sciantix-official
@@ -75,38 +103,14 @@ cmake ..
 make -j
 ```
 
-5. **Locate the Executable**:
+5. **Locate the executable**:
    - Find the `sciantix.x` executable in the `build` directory.
-
----
-
-## Sciantix Syntax Guidelines
-
-To maintain consistency in the Sciantix codebase, please adhere to the following guidelines:
-
-- **Use extensive names** for functions and variables. Long names are encouraged for clarity.
-- **Variable names** should be in lowercase with words separated by underscores (`_`).
-  - Example: `diffusion_coefficient`
-- **Global variables** should be in uppercase with words separated by underscores (`_`).
-  - Example: `GAS_PRODUCED`
-- **Input integer variables** (used for model selection) should start with an `i`.
-  - Example: `iGasDiffusivity`
-- **Scaling factor variables** should start with `sf_`.
-  - Example: `sf_diffusion_coefficient`
-- **Function names** should be in PascalCase with each word capitalized and no separation signs.
-  - Example: `HeliumDiffusionCoefficient`
-- **File names** should match the name of the primary function they contain.
-- **Documentation comments** in the code with `/**` are meant for inclusion in the Doxygen documentation and should be placed at the beginning of every function.
-- **Regular comments** using `//` should be added liberally throughout the code.
-- **Scientific references** should be added as comments in the code wherever applicable (e.g., parameter values, equations).
-
-Thank you for adhering to these guidelines!
 
 ---
 
 ## Useful Git Commands
 
-Here are some helpful Git commands for managing your local and remote repositories:
+Below are some essential Git commands for effectively managing your local and remote repositories:
 
 - **Delete old remote Git branches**:
   
@@ -144,4 +148,26 @@ Here are some helpful Git commands for managing your local and remote repositori
 
 ---
 
-We hope this guide helps simplify the process of committing new code and building SCIANTIX on macOS, while also ensuring consistency in the source code through our syntax guidelines. If you encounter any issues or have suggestions, please feel free to contact the developers.
+## Sciantix syntax guidelines
+
+To maintain consistency in the Sciantix codebase, please adhere to the following guidelines:
+
+- **Use extensive names** for functions and variables. Long names are encouraged for clarity.
+- **Variable names** should be in lowercase with words separated by underscores (`_`).
+  - Example: `diffusion_coefficient`
+- **Global variables** should be in uppercase with words separated by underscores (`_`).
+  - Example: `GAS_PRODUCED`
+- **Input integer variables** (used for model selection) should start with an `i`.
+  - Example: `iGasDiffusivity`
+- **Scaling factor variables** should start with `sf_`.
+  - Example: `sf_diffusion_coefficient`
+- **Function names** should be in PascalCase with each word capitalized and no separation signs.
+  - Example: `HeliumDiffusionCoefficient`
+- **File names** should match the name of the primary function they contain.
+- **Documentation comments** in the code with `/**` are meant for inclusion in the Doxygen documentation and should be placed at the beginning of every function.
+- **Regular comments** using `//` should be added liberally throughout the code.
+- **Scientific references** should be added as comments in the code wherever applicable (e.g., parameter values, equations).
+
+Thank you for adhering to these guidelines!
+
+---

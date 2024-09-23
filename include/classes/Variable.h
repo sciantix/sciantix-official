@@ -9,7 +9,7 @@
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
 //  Version: 2.1                                                                    //
-//  Year: 2023                                                                      //
+//  Year: 2024                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -32,35 +32,35 @@
 class Variable
 {
 protected:
-	std::string name;
+    std::string name;
 
 public:
-	/**
-	 * @brief Default constructor for the Variable class
-	 */
-	Variable() { }
-	/**
-	 * @brief Destructor for the Variable class
-	 */
-	~Variable() { }
+    /**
+     * @brief Default constructor for the Variable class
+     */
+    Variable() { }
+    /**
+     * @brief Destructor for the Variable class
+     */
+    ~Variable() { }
 
-	/**
-	 * @brief Sets the name of the entity.
-	 * @param n The new name to be set for the entity.
-	 */
-	void setName(std::string n)
-	{
-		name = n;
-	}
+    /**
+     * @brief Sets the name of the entity.
+     * @param n The new name to be set for the entity.
+     */
+    void setName(std::string n)
+    {
+        name = n;
+    }
 
-	/**
-	 * @brief Retrieves the name of the entity.
-	 * @return A string that is the current name of the entity.
-	 */
-	std::string getName()
-	{
-		return name;
-	}
+    /**
+     * @brief Retrieves the name of the entity.
+     * @return A string that is the current name of the entity.
+     */
+    std::string getName()
+    {
+        return name;
+    }
 };
 
 #endif
