@@ -47,8 +47,8 @@ void UO2()
 	// Mechanical properties
     matrix[index].setElasticModulus(2.334e5 * (1 - 2.752 * (1 - sciantix_variable[sv["Fuel density"]].getFinalValue() / 10960)) * (1 - 1.0915e-4 * history_variable[hv["Temperature"]].getFinalValue())); // (MPa) MATPRO (1979)
     matrix[index].setPoissonRatio(0.316); // (/) MATPRO (1979)
-	matrix[index].setGrainBoundaryFractureEnergy(((2*0.6*cos(0.872664626)))*(1-((1-sf_geometrical_parameter)+sf_geometrical_parameter/(1+exp(-0.01*(history_variable[hv["Temperature"]].getFinalValue()-(273+389+1547*exp(-sciantix_variable[sv["Burnup"]].getFinalValue()/64)))))))); // (N/m)  surface tension 
-	//matrix[index].setGrainBoundaryFractureEnergy(4e-3); // (J/m2) @Jernkvist2019
-	//matrix[index].setGrainBoundaryFractureEnergy(2); // (J/m2) @Jernkvist2020
-	//matrix[index].setGrainBoundaryFractureEnergy(-0.1114*sciantix_variable[sv["Burnup"]].getInitialValue()+15.773); // (J/m2) @Henry fitting 2020
+	matrix[index].setGrainBoundaryFractureEnergy(((2*0.6*cos(0.872664626)))*(1- 1/(1+exp(-0.015*(history_variable[hv["Temperature"]].getFinalValue()-(273+sf_geometrical_parameter+389+1547*exp(-sciantix_variable[sv["Burnup"]].getFinalValue()/64))))))); // (N/m)  surface tension 
+	///matrix[index].setGrainBoundaryFractureEnergy(4e-3); // (J/m2) @Jernkvist2019
+	///matrix[index].setGrainBoundaryFractureEnergy(2); // (J/m2) @Jernkvist2020
+	///matrix[index].setGrainBoundaryFractureEnergy(-0.1114*sciantix_variable[sv["Burnup"]].getInitialValue()+15.773); // (J/m2) @Henry fitting 2020
 }
