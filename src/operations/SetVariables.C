@@ -49,7 +49,6 @@ void Simulation::setVariables(
     // Physics variable
     physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
 
-
     // History variable
     std::vector<SciantixVariable> values = initializeHistoryVariable(
         Sciantix_history,
