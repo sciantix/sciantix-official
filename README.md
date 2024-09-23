@@ -27,6 +27,14 @@ The validation database is available in the `regression` folder.
 
 The compiled executable, `sciantix.x`, will be located in the `build` directory.
 
+4. **TRANSURANUS coupling:** The code can be coupled with the v1m1j24 version of TRANSURANUS software package distributed by JRC-EC Karlsruhe.
+
+    In the build folder
+   - Generate the Makefile with CMake: `cmake -DCOUPLING_TU=ON ..`
+   - Compile the code: `make`
+
+The static library, `libsciantix.a`, will be located in the `build` directory.
+
 ## Windows Installation
 
 A recommended approach for Windows users is to use the [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install).
