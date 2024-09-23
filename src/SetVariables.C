@@ -1037,7 +1037,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Mariotte stress triso");
+	sciantix_variable[sv_counter].setName("Mean radial stress triso");
 	sciantix_variable[sv_counter].setUOM("(MPa)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
@@ -1045,7 +1045,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Hoop stress triso");
+	sciantix_variable[sv_counter].setName("Mean hoop stress triso");
 	sciantix_variable[sv_counter].setUOM("(MPa)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);
@@ -1053,7 +1053,7 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 	++sv_counter;
 
 	sciantix_variable.emplace_back();
-	sciantix_variable[sv_counter].setName("Phi stress triso");
+	sciantix_variable[sv_counter].setName("Mean phi stress triso");
 	sciantix_variable[sv_counter].setUOM("(MPa)");
 	sciantix_variable[sv_counter].setInitialValue(0.0);
 	sciantix_variable[sv_counter].setFinalValue(0.0);

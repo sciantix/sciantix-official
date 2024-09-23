@@ -259,9 +259,9 @@ class Simulation : public Solver, public Model
 		{
 
 			int integrals_row_index = 0;
-			double radial_stress = 0;
-			double phi_stress = 0;
-			double hoop_stress = 0;
+			double mean_radial_stress = 0;
+			double mean_phi_stress = 0;
+			double mean_hoop_stress = 0;
 			double pressure = 0; //[MPa]
 
 			switch (int(input_variable[iv["iShellSolver"]].getValue()))
@@ -278,9 +278,19 @@ class Simulation : public Solver, public Model
 						);
 
 						pressure = sciantix_variable[sv[system.getGasName() + " in Triso"]].getFinalValue()/6.022e23*8.3145*1e-6*history_variable[hv["Temperature"]].getFinalValue();; //[MPa]
-						radial_stress += pressure/2;
-						hoop_stress += system.getParticleRadius()*pressure/(2*(system.getParticleRadius() - system.getOuterRadius()));
-						phi_stress += system.getParticleRadius()*pressure/(2*(system.getParticleRadius() - system.getOuterRadius()));
+						mean_radial_stress += pressure * pow(system.getOuterRadius(), 3) / 
+											  (pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) * 
+											  (((pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) / 3.0) - 
+											  pow(system.getParticleRadius(), 3) * log(system.getParticleRadius() / system.getOuterRadius())) / 
+											  ((pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) / 3.0);
+
+						mean_hoop_stress += pressure * pow(system.getOuterRadius(), 3) / 
+                          			   (pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) * 
+                          			   (((pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) / 3.0) + 
+                          		       (pow(system.getParticleRadius(), 3) / 2.0) * log(system.getParticleRadius() / system.getOuterRadius())) / 
+                          			   ((pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) / 3.0);
+;
+						mean_phi_stress = mean_hoop_stress;
 						integrals_row_index ++;
 						
 					}
@@ -305,9 +315,19 @@ class Simulation : public Solver, public Model
 
 
 						pressure = sciantix_variable[sv[system.getGasName() + " in Triso"]].getFinalValue()/6.022e23*8.3145*1e-6*history_variable[hv["Temperature"]].getFinalValue();; //[MPa]
-						radial_stress += pressure/2;
-						hoop_stress += system.getParticleRadius()*pressure/(2*(system.getParticleRadius() - system.getOuterRadius()));
-						phi_stress += system.getParticleRadius()*pressure/(2*(system.getParticleRadius() - system.getOuterRadius()));
+						mean_radial_stress += pressure * pow(system.getOuterRadius(), 3) / 
+											  (pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) * 
+											  (((pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) / 3.0) - 
+											  pow(system.getParticleRadius(), 3) * log(system.getParticleRadius() / system.getOuterRadius())) / 
+											  ((pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) / 3.0);
+
+						mean_hoop_stress += pressure * pow(system.getOuterRadius(), 3) / 
+                          			   (pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) * 
+                          			   (((pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) / 3.0) + 
+                          		       (pow(system.getParticleRadius(), 3) / 2.0) * log(system.getParticleRadius() / system.getOuterRadius())) / 
+                          			   ((pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) / 3.0);
+;
+						mean_phi_stress = mean_hoop_stress;
 						integrals_row_index ++;
 
 
@@ -330,9 +350,9 @@ class Simulation : public Solver, public Model
 				}
 			}
 
-		sciantix_variable[sv["Mariotte stress triso"]].setFinalValue(radial_stress);
-		sciantix_variable[sv["Hoop stress triso"]].setFinalValue(hoop_stress);
-		sciantix_variable[sv["Phi stress triso"]].setFinalValue(phi_stress);
+		sciantix_variable[sv["Mean radial stress triso"]].setFinalValue(mean_radial_stress);
+		sciantix_variable[sv["Mean hoop stress triso"]].setFinalValue(mean_hoop_stress);
+		sciantix_variable[sv["Mean phi stress triso"]].setFinalValue(mean_phi_stress);
 
 		}
 
