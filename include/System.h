@@ -64,27 +64,24 @@ public:
 		yield = y;
 	}
 
-// 	void setYield (const std::vector<double>& initial_plutonium_concentration, const std::vector<double>& initial_uranium_concentration) {
+	void setYield(const std::vector<double>& yieldings_vector, const std::vector<double>& isotopic_percentages_vector, const std::vector<double>& enrichment_vector){
 
-//     std::vector<double> plutonium_decay_constants = {1.0/87.7, 1.0/24100, 1.0/6561, 0.0, 1.0/375000}; // [1/y]
-//     std::vector<double> uranium_decay_constants = {1.0/703800000, 1.0/4468000000}; // [1/y]
-//     double yielding_helium = 0.0022;
-//     double fission_rate = 1e19; //was not able to read fission rate properly. Should be changed. 
+		//Overload of the yielding setter. Averaged yielding in MOX fuel. The yielding of each component is weighted on the relative atomic concentration.
+		//The atomic concentration is expressed through the enrichment (PuO2 and UO2 vs MOX) and the isotopic composition (the specific isotope vs the whole fuel).
 
-//     double cumulative_plutonium_yields_by_decay = 0.0;
-//     double cumulative_uranium_yields_by_decay = 0.0;
+		double numerator = 0;
+		double denominator = 0;
 
-//     for (std::size_t counter = 0; counter < plutonium_decay_constants.size(); counter ++) {
-//         cumulative_plutonium_yields_by_decay += initial_plutonium_concentration[counter] * enrichment * plutonium_decay_constants[counter];
-//     }
+		for (size_t counter = 0; counter <= yieldings_vector.size(); ++counter){
 
-//     for (std::size_t counter = 0; counter < uranium_decay_constants.size(); counter ++) {
-//         cumulative_uranium_yields_by_decay += initial_uranium_concentration[counter] * (1 - enrichment) * uranium_decay_constants[counter];
-//     }
+			numerator += yieldings_vector[counter]*enrichment_vector[counter]*isotopic_percentages_vector[counter];
+			denominator += enrichment_vector[counter]*isotopic_percentages_vector[counter];
 
-//     helium_yielding_in_MOX = cumulative_uranium_yields_by_decay + cumulative_plutonium_yields_by_decay + fission_rate * yielding_helium; // [at/(cm^3*y)]
+		}
 
-// }
+		yield = numerator/denominator;
+
+	}
 
 	double getYield()
 	{

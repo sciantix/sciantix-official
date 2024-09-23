@@ -76,7 +76,7 @@ void Xe_in_SiC()
 	shell_system[index].setName("Xe in SiC");
 	shell_system[index].setGasName("Xe");
 	shell_system[index].setMatrixName("SiC");
-	shell_system[index].setFissionGasDiffusivity(int(input_variable[iv["iFGDiffusionCoefficient"]].getValue()));
+	shell_system[index].setFissionGasDiffusivity(6.3e-8, 0, 222e3, 0, history_variable[hv["Temperature"]].getFinalValue());
 	shell_system[index].setSpatialGrid();
 	
 }

@@ -314,7 +314,7 @@ class Simulation : public Solver, public Model
 						if (system.getGasName() == "Xe"){
 
 
-						pressure = sciantix_variable[sv[system.getGasName() + " in Triso"]].getFinalValue()/6.022e23*8.3145*1e-6*history_variable[hv["Temperature"]].getFinalValue();; //[MPa]
+						pressure = sciantix_variable[sv[system.getGasName() + " in Triso"]].getFinalValue()/6.022e23*8.3145*1e-6*history_variable[hv["Temperature"]].getFinalValue(); //[MPa]
 						mean_radial_stress += pressure * pow(system.getOuterRadius(), 3) / 
 											  (pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) * 
 											  (((pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) / 3.0) - 
