@@ -78,11 +78,11 @@ void Simulation::setVariables(
         sciantix_variable.push(initial_value);
     }
 
-#if defined(COUPLING_TU)
+    #if defined(COUPLING_TU)
 
-  sciantix_variable["Burnup"]setInitialValue(Sciantix_history["Burnup"]);
+        sciantix_variable["Burnup"]setInitialValue(Sciantix_history["Burnup"]);
 
-#endif
+    #endif
 
     // Diffusion modes
     for (int i = 0; i < n_modes; ++i)

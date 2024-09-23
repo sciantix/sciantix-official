@@ -46,16 +46,15 @@ file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.C)
 # Set custom object file directory (to have all object files in the obj directory)
 set(CMAKE_OBJECT_PATH_PREFIX ${PROJECTSOUR}/obj/)
 
-
 # Add executable sciantix.x (or .exe) or create static library
 if(COUPLING_TU)
-  add_library(sciantix STATIC ${SOURCES})
-  set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
+    dd_library(sciantix STATIC ${SOURCES})
+    set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
 else()
-  add_executable(sciantix ${SOURCES})
-  if (UNIX)
-    set(CMAKE_EXECUTABLE_SUFFIX ".x")
-  endif()
+    add_executable(sciantix ${SOURCES})
+    if (UNIX)
+        set(CMAKE_EXECUTABLE_SUFFIX ".x")
+    endif()
 endif()
 
 # Copy all object files in obj directory by using a custom command

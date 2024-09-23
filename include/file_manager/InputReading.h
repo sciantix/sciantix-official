@@ -51,14 +51,7 @@ void InputReading(
 void readSettings(std::ifstream &input, std::ofstream &output, int Sciantix_options[]);
 void readParameters(std::ifstream &input, std::ofstream &output, double Sciantix_Array[]);
 
-unsigned short int ReadOneSetting(
-  std::string variable_name,
-  std::ifstream& input_file,
-  std::ofstream& output_file);
-
-double ReadOneParameter(
-  std::string variable_name,
-  std::ifstream& input_file,
-  std::ofstream& output_file);
+unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
+double ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
 
 #endif // INPUT_READING_H

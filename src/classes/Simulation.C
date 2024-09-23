@@ -38,14 +38,13 @@ void Simulation::initialize(
     double Sciantix_diffusion_modes[]
 )
 {
-  setVariables(
-    Sciantix_options,
-		Sciantix_history,
-		Sciantix_variables,
-		Sciantix_scaling_factors,
-		Sciantix_diffusion_modes
+    setVariables(
+        Sciantix_options,
+        Sciantix_history,
+        Sciantix_variables,
+        Sciantix_scaling_factors,
+        Sciantix_diffusion_modes
     );
-
     setGas();
     setMatrix();
     setSystem();
@@ -54,37 +53,37 @@ void Simulation::initialize(
 
 void Simulation::execute()
 {
-#if !defined(COUPLING_TU)
-  Burnup();
+    #if !defined(COUPLING_TU)
+        Burnup();
 
-	EffectiveBurnup();
-#endif
+        EffectiveBurnup();
+    #endif
 
-	GapPartialPressure();
+    GapPartialPressure();
 
-	UO2Thermochemistry();
+    UO2Thermochemistry();
 
-	StoichiometryDeviation();
+    StoichiometryDeviation();
 
-	HighBurnupStructureFormation();
+    HighBurnupStructureFormation();
 
-	HighBurnupStructurePorosity();
+    HighBurnupStructurePorosity();
 
-	GrainGrowth();
+    GrainGrowth();
 
-	GrainBoundarySweeping();
+    GrainBoundarySweeping();
 
-	GasProduction();
+    GasProduction();
 
-	GasDecay();
+    GasDecay();
 
-	IntraGranularBubbleBehavior();
+    IntraGranularBubbleBehavior();
 
-	GasDiffusion();
+    GasDiffusion();
 
-	GrainBoundaryMicroCracking();
+    GrainBoundaryMicroCracking();
 
-	GrainBoundaryVenting();
+    GrainBoundaryVenting();
 
-	InterGranularBubbleBehavior();
+    InterGranularBubbleBehavior();
 }
