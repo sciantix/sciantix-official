@@ -30,40 +30,10 @@ void SetSystemShell()
 			MapSystemShell();
 }
 
-void SystemShell::setFissionGasDiffusivity(int input_value)
+void SystemShell::setFissionGasDiffusivity(double D1, double D2, double Q1, double Q2, double temperature)
 {
-	/** 
-	 * ### setFissionGasDiffusivity
-	 * @brief The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFGDiffusionCoefficient
-	 * 
-	 */
-
-	switch (input_value)
-	{
-	case 0:
-	{
-		/**
-		 * @brief iFGDiffusionCoefficient = 0 corresponds to a constant intra-granular diffusivity value, equal to 7e-19 m^2/s.
-		 * 
-		 */
-		
-		reference += "iFGDiffusionCoefficient: constant diffusivity.\n\t";
-		diffusivity = 7e-19;
-
-		break;
-	}
-
-	case 1:
-	{
-		//@brief iFGDiffusionCoefficient = 1 set the fission gas diffusivity according to "???" STILL TO BE REPLACED 
-
-		break;
-	}
-
-	default:
-		ErrorMessages::Switch(__FILE__, "iFGDiffusionCoefficient", input_value);
-		break;
-	}
+		reference += "Diffusivities of Ag, Cs, Sr, and Kr in TRISO Fuel Particles and Graphite, Blaise P. Collin.\n\t";
+		diffusivity = D1*exp(-Q1/(8.3145*temperature)) + D2*exp(-Q2/(8.3145*temperature));
 }
 
 void SystemShell::setHeliumDiffusivity(int input_value)

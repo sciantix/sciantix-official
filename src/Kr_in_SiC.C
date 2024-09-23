@@ -76,7 +76,7 @@ void Kr_in_SiC()
 	shell_system[index].setName("Kr in SiC");
 	shell_system[index].setGasName("Kr");
 	shell_system[index].setMatrixName("SiC");
-	shell_system[index].setFissionGasDiffusivity(int(input_variable[iv["iFGDiffusionCoefficient"]].getValue()));
+	shell_system[index].setFissionGasDiffusivity(2.9e-8, 2e5, 291e3, 923e3, history_variable[hv["Temperature"]].getFinalValue());
 	shell_system[index].setSpatialGrid();
 
 }

@@ -71,7 +71,7 @@ public:
 		return diffusivity;	
 	}
 
-	void setFissionGasDiffusivity(int input_value);	
+	void setFissionGasDiffusivity(double D1, double D2, double Q1, double Q2, double temperature);	
 	double getFissionGasDiffusivity()
 	{
 		/// Member function to get the diffusivity of the isotope in the fuel matrix
