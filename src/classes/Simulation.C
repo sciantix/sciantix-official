@@ -31,18 +31,18 @@ Simulation* Simulation::getInstance()
 }
 
 void Simulation::initialize(
-    int Sciantix_options[], 
-    double Sciantix_history[], 
-    double Sciantix_variables[], 
-    double Sciantix_scaling_factors[], 
+    int Sciantix_options[],
+    double Sciantix_history[],
+    double Sciantix_variables[],
+    double Sciantix_scaling_factors[],
     double Sciantix_diffusion_modes[]
 )
 {
-    setVariables(
-        Sciantix_options, 
-		Sciantix_history, 
-		Sciantix_variables, 
-		Sciantix_scaling_factors, 
+  setVariables(
+    Sciantix_options,
+		Sciantix_history,
+		Sciantix_variables,
+		Sciantix_scaling_factors,
 		Sciantix_diffusion_modes
     );
 
@@ -54,15 +54,17 @@ void Simulation::initialize(
 
 void Simulation::execute()
 {
-    Burnup();
+#if !defined(COUPLING_TU)
+  Burnup();
 
 	EffectiveBurnup();
+#endif
 
 	GapPartialPressure();
 
 	UO2Thermochemistry();
 
-	StoichiometryDeviation(); 
+	StoichiometryDeviation();
 
 	HighBurnupStructureFormation();
 

@@ -18,10 +18,10 @@
 #include "Simulation.h"
 
 void Simulation::setVariables(
-    int Sciantix_options[], 
-    double Sciantix_history[], 
-    double Sciantix_variables[], 
-    double Sciantix_scaling_factors[], 
+    int Sciantix_options[],
+    double Sciantix_history[],
+    double Sciantix_variables[],
+    double Sciantix_scaling_factors[],
     double Sciantix_diffusion_modes[]
 )
 {
@@ -46,7 +46,7 @@ void Simulation::setVariables(
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0;
 
 
-    // Physics variable	
+    // Physics variable
     physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
 
 
@@ -78,12 +78,18 @@ void Simulation::setVariables(
         sciantix_variable.push(initial_value);
     }
 
+#if defined(COUPLING_TU)
+
+  sciantix_variable["Burnup"]setInitialValue(Sciantix_history["Burnup"]);
+
+#endif
+
     // Diffusion modes
     for (int i = 0; i < n_modes; ++i)
     {
         for (int j = 0; j <= 17; j++)
         {
-            modes_initial_conditions[j * n_modes + i] = Sciantix_diffusion_modes[j * n_modes + i];	
+            modes_initial_conditions[j * n_modes + i] = Sciantix_diffusion_modes[j * n_modes + i];
         }
     }
 
