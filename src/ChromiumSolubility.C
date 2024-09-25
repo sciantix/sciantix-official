@@ -19,10 +19,10 @@
 void ChromiumSolubility()
 {	
 	/**
-	 * @brief This function defines the sciantix model *ChromiumSolubility*.
+	 * @brief This function defines the Sciantix model *ChromiumSolubility*.
 	 * 
-	 * The model ChromiumSolubility is used to evaluate the cromium solubility accordingly to the temperature and the oxigen content.
-	 * Then the number of oxide chromium atoms is evaluated, accordingly to the oxigen content of the system. 
+	 * The model ChromiumSolubility is used to evaluate the chromium solubility accordingly to the temperature and the oxygen content.
+	 * Then the number of oxide chromium atoms is evaluated, accordingly to the oxygen content of the system. 
 	 * 
 	 * Solubility of Chromium is evaluated as log10(y_Cr) = p*log10(P_O2) + V + U/T
 	 * Coefficients U and V came from experimental fitting, in this way the Gibbs Potential is approximated as a function of 1/T
@@ -33,6 +33,8 @@ void ChromiumSolubility()
 	 * 
 	 */
 
+
+	
 	model.emplace_back();
 
 	int model_index = int(model.size()) - 1;
@@ -87,7 +89,7 @@ void ChromiumSolubility()
 		case 1:
 		{
 			/**
-			 * Optimized coeffients
+			 * Optimized coefficients
 			 *
 			 */
 
