@@ -4,17 +4,11 @@ Model	High-burnup structure formation	: not considered.
 Model	High-burnup structure porosity	not considered
 Model	Grain growth	: Ainscough et al., JNM, 49 (1973) 117-128.
 Model	Grain-boundary sweeping	: Not considered
-Model	Gas production - Xe in MOX	 
 Model	Gas production - Kr in MOX	 
 Model	Gas production - He in MOX	 
-Model	Gas production - Xe133 in MOX	 
-Model	Gas production - Kr85m in MOX	 
 Model	Intragranular bubble evolution	: Pizzocri et al., JNM, 502 (2018) 323-330.
-Model	Gas diffusion - Xe in MOX	
 Model	Gas diffusion - Kr in MOX	
 Model	Gas diffusion - He in MOX	
-Model	Gas diffusion - Xe133 in MOX	
-Model	Gas diffusion - Kr85m in MOX	
 Model	Grain-boundary micro-cracking	from Barani et al. (2017), JNM
 Model	Grain-boundary venting	not considered.
 Model	Intergranular bubble evolution	: Pastore et al., NED, 256 (2013) 75-86.
@@ -24,13 +18,12 @@ Matrix	MOX
 	iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.
 	
 
-System	Xe in MOX	Production rate = cumulative yield * fission rate density.
+System	Kr in MOX	Production rate = cumulative yield * fission rate density.
 	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
 	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
 	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
 	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
-	
-System	Kr in MOX	Production rate = cumulative yield * fission rate density.
+	Production rate = cumulative yield * fission rate density.
 	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
 	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
 	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
@@ -41,18 +34,6 @@ System	He in MOX	iHeDiffusivity: constant intragranular diffusivity.
 	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
 	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
 	No production rate.
-	
-System	Xe133 in MOX	Production rate = cumulative yield * fission rate density.
-	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
-	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
-	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
-	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
-	
-System	Kr85m in MOX	Production rate = cumulative yield * fission rate density.
-	iFGDiffusionCoefficient: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.
-	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
-	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
-	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
 	
 
 Input setting	iGrainGrowth = 1
@@ -77,4 +58,6 @@ Input setting	iHighBurnupStructurePorosity = 0
 Input setting	iHeliumProductionRate = 0
 Input setting	iStoichiometryDeviation = 0
 Input setting	iBubbleDiffusivity = 0
+Input setting	iTriso = 0
+Input setting	iShellSolver = 0
 
