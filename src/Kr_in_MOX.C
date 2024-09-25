@@ -25,7 +25,6 @@ void Kr_in_MOX()
 		return;
 	}
 
-	sciantix_system.emplace_back();
 	int index = int(sciantix_system.size() - 1);
 	sciantix_system[index].setName("Kr in MOX");
 	sciantix_system[index].setGasName("Kr");

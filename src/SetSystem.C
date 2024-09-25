@@ -63,12 +63,6 @@ void SetSystem()
 
 			He_in_MOX();
 			MapSystem();
-
-			Xe133_in_MOX();
-			MapSystem();
-
-			Kr85m_in_MOX();
-			MapSystem();
 						
 			break;
 		}
