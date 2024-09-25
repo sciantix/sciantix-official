@@ -178,7 +178,7 @@ def do_plot():
   plt.title('Annealing at 1673 K')
 
   plt.legend(loc='best')
-  plt.ylim([1e-1,1e2])
+  plt.ylim([1e-2,1.5e2])
   plt.yscale('log')
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
@@ -199,7 +199,7 @@ def do_plot():
   plt.title('Annealing at 1773 K')
 
   plt.legend(loc='best')
-  plt.ylim([1e-1,1e2])
+  plt.ylim([1e-2,1.5e2])
   plt.yscale('log')
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
@@ -220,7 +220,7 @@ def do_plot():
   plt.title('Annealing at 1873 K')
 
   plt.legend(loc='best')
-  plt.ylim([1e-1,1e2])
+  plt.ylim([1e-2,1.5e2])
   plt.yscale('log')
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
@@ -241,7 +241,7 @@ def do_plot():
   plt.title('Annealing at 1973 K')
 
   plt.legend(loc='best')
-  plt.ylim([1e-1,1e2])
+  plt.ylim([1e-2,1.5e2])
   plt.yscale('log')
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
