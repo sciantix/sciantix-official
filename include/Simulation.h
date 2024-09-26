@@ -41,10 +41,13 @@
 #include "ConstantNumbers.h"
 #include "UO2Thermochemistry.h"
 #include "MainVariables.h"
+#include "ANN_gas_production.h"
+
+std::vector<double> ReadSeveralParameters(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
+double ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
 
 /// @brief
 /// Derived class representing the operations of SCIANTIX. The conjunction of the models with the implemented solvers results in the simulation.
-
 class Simulation : public Solver, public Model
 {
 	public:
@@ -94,24 +97,50 @@ class Simulation : public Solver, public Model
 	}
 
 	void GasProduction()
-	{
-		/**
-		 * @brief GasProduction computes the gas produced from the production rate.
-		 *
-		 */
+{
+    /**
+     * @brief GasProduction computes the gas produced from the production rate.
+     */
+    
+    for (auto& system : sciantix_system)
+    {
+        if(system.getRestructuredMatrix() == 0)
+        {
+            if (system.getANN() == 1)
+            {
+                std::ofstream ANN_check("ANN_check.txt", std::ios::out);
+                std::ifstream ANN("ANN.txt", std::ios::in);
+                if (!ANN)
+                    ErrorMessages::MissingInputFile("ANN.txt");
+                
+                sciantix_variable[sv[system.getGasName() + " produced"]].setFinalValue(
+                    ANN_gas_production(
+                        ReadOneParameter("input_maxima", ANN, ANN_check), 
+                        ReadOneParameter("input_minima", ANN, ANN_check), 
+                        ReadOneParameter("input_minima", ANN, ANN_check),
+                        ReadOneParameter("input_minima", ANN, ANN_check),
+                        ReadSeveralParameters("first_layer_weights", ANN, ANN_check),
+                        ReadSeveralParameters("first_layer_biases", ANN, ANN_check),
+                        ReadSeveralParameters("second_layer_weights", ANN, ANN_check),
+                        ReadSeveralParameters("second_layer_bias", ANN, ANN_check),
+                        (Time_end_h / Number_of_time_steps_per_interval) * 3600
+                    )
+                );  // <- Qui ho aggiunto la parentesi mancante
+            }
+        }
+        else
+        {
+            sciantix_variable[sv[system.getGasName() + " produced"]].setFinalValue(
+                solver.Integrator(
+                    sciantix_variable[sv[system.getGasName() + " produced"]].getInitialValue(),
+                    model[sm["Gas production - " + system.getName()]].getParameter().at(0),
+                    model[sm["Gas production - " + system.getName()]].getParameter().at(1)
+                )
+            );
+        }
+    }
+}
 
-    	for (auto& system : sciantix_system)
-		{	
-			if(system.getRestructuredMatrix() == 0)
-				sciantix_variable[sv[system.getGasName() + " produced"]].setFinalValue(
-					solver.Integrator(
-						sciantix_variable[sv[system.getGasName() + " produced"]].getInitialValue(),
-						model[sm["Gas production - " + system.getName()]].getParameter().at(0),
-						model[sm["Gas production - " + system.getName()]].getParameter().at(1)
-					)
-				);
-		}
-	}
 
 	void GasDecay()
 	{
@@ -289,7 +318,7 @@ class Simulation : public Solver, public Model
                           			   (((pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) / 3.0) + 
                           		       (pow(system.getParticleRadius(), 3) / 2.0) * log(system.getParticleRadius() / system.getOuterRadius())) / 
                           			   ((pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) / 3.0);
-;
+
 						mean_phi_stress = mean_hoop_stress;
 						integrals_row_index ++;
 						
@@ -326,7 +355,7 @@ class Simulation : public Solver, public Model
                           			   (((pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) / 3.0) + 
                           		       (pow(system.getParticleRadius(), 3) / 2.0) * log(system.getParticleRadius() / system.getOuterRadius())) / 
                           			   ((pow(system.getParticleRadius(), 3) - pow(system.getOuterRadius(), 3)) / 3.0);
-;
+									   
 						mean_phi_stress = mean_hoop_stress;
 						integrals_row_index ++;
 

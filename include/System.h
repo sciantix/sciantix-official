@@ -46,6 +46,7 @@ protected:
 	std::vector<double> modes;
 	double production_rate;
 	bool restructured_matrix;
+	bool ANN; 
 
 public:
 	void setRestructuredMatrix(bool y)
@@ -211,7 +212,19 @@ public:
 		return production_rate;
 	}
 
-	System() { }
+	void setANN (bool ann){
+
+		ANN = ann;
+
+	}
+
+	bool getANN (){
+
+		return ANN; 
+
+	}
+
+	System() : ANN(0) { }
 	~System() { }
 };
 
