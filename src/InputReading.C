@@ -211,6 +211,7 @@ void InputReading()
 	Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
 	Sciantix_options[22] = ReadOneSetting("iTriso",input_settings,input_check);
 	Sciantix_options[23] = ReadOneSetting("iShellSolver",input_settings,input_check);
+	Sciantix_options[24] = ReadOneSetting("iANNHelium",input_settings,input_check);
 	
 	if (!input_initial_conditions.fail())
 	{

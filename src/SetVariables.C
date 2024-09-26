@@ -153,6 +153,11 @@ void SetVariables(int Sciantix_options[], double Sciantix_history[], double Scia
 		input_variable[iv_counter].setName("iShellSolver");
 		input_variable[iv_counter].setValue(Sciantix_options[23]);
 		++iv_counter;
+
+		input_variable.emplace_back();
+		input_variable[iv_counter].setName("iANNHelium");
+		input_variable[iv_counter].setValue(Sciantix_options[24]);
+		++iv_counter;
 	}
 
 	MapInputVariable();

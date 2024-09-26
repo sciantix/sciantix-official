@@ -25,4 +25,4 @@ double ANN_gas_production (const double& input_maxima,
                            const std::vector<double>& first_layer_bias,
                            const std::vector<double>& second_layer_weights,
                            const std::vector<double>& second_layer_bias,
-                           double& input_data);
+                           double input_data);
