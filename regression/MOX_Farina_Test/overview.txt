@@ -50,7 +50,7 @@ Input setting	iGrainBoundaryMicroCracking = 1
 Input setting	iFuelMatrix = 2
 Input setting	iGrainBoundaryVenting = 0
 Input setting	iRadioactiveFissionGas = 0
-Input setting	iHelium = 0
+Input setting	iHelium = 1
 Input setting	iHeDiffusivity = 0
 Input setting	iGrainBoundarySweeping = 0
 Input setting	iHighBurnupStructureFormation = 0
@@ -60,4 +60,5 @@ Input setting	iStoichiometryDeviation = 0
 Input setting	iBubbleDiffusivity = 0
 Input setting	iTriso = 0
 Input setting	iShellSolver = 0
+Input setting	iANNHelium = 1
 
