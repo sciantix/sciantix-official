@@ -42,11 +42,17 @@ void Initialization()
 	Sciantix_variables[37] = 1.0;      // Intergranular_fractional_intactness[0]
 
 	// https://pubchem.ncbi.nlm.nih.gov/compound/Uranium-235
-	Sciantix_variables[41] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 234.04095; // U-234
-	Sciantix_variables[42] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 235.04393; // U-235
-	Sciantix_variables[43] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 236.04557; // U-236
-	Sciantix_variables[44] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 237.04873; // U-237
-	Sciantix_variables[45] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 238.05079; // U-238
+	Sciantix_variables[41] *= Sciantix_variables[40] * (1 - Sciantix_variables[72]) * 6.022e+24 * 0.8815 / 234.04095; // U-234
+	Sciantix_variables[42] *= Sciantix_variables[40] * (1 - Sciantix_variables[72]) * 6.022e+24 * 0.8815 / 235.04393; // U-235
+	Sciantix_variables[43] *= Sciantix_variables[40] * (1 - Sciantix_variables[72]) * 6.022e+24 * 0.8815 / 236.04557; // U-236
+	Sciantix_variables[44] *= Sciantix_variables[40] * (1 - Sciantix_variables[72]) * 6.022e+24 * 0.8815 / 237.04873; // U-237
+	Sciantix_variables[45] *= Sciantix_variables[40] * (1 - Sciantix_variables[72]) * 6.022e+24 * 0.8815 / 238.05079; // U-238
+
+	Sciantix_variables[67] *= Sciantix_variables[40] * Sciantix_variables[72] * 6.022e24 * 0.882 / 238;
+	Sciantix_variables[68] *= Sciantix_variables[40] * Sciantix_variables[72] * 6.022e24 * 0.882 / 239;
+	Sciantix_variables[69] *= Sciantix_variables[40] * Sciantix_variables[72] * 6.022e24 * 0.882 / 240;
+	Sciantix_variables[70] *= Sciantix_variables[40] * Sciantix_variables[72] * 6.022e24 * 0.882 / 241;
+	Sciantix_variables[71] *= Sciantix_variables[40] * Sciantix_variables[72] * 6.022e24 * 0.882 / 242;
 
 	// Intragranular similarity ratio
 	Sciantix_variables[64] = 1.0;

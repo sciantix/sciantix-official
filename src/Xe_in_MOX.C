@@ -32,8 +32,8 @@ void Xe_in_MOX()
 	sciantix_system[index].setMatrixName("MOX");
 	sciantix_system[index].setRestructuredMatrix(0);
 	sciantix_system[index].setYield({0.2776, 0.30862, 0.28735}, 
-									{matrix[index].getInitialUraniumComposition()[0], matrix[index].getInitialPlutoniumComposition()[1], matrix[index].getInitialPlutoniumComposition()[3]}, 
-									{1 - matrix[index].getMoxPuEnrichment(), matrix[index].getMoxPuEnrichment(), matrix[index].getMoxPuEnrichment()});
+									{matrix[sma["MOX"]].getInitialUraniumComposition()[1], matrix[sma["MOX"]].getInitialPlutoniumComposition()[1], matrix[sma["MOX"]].getInitialPlutoniumComposition()[3]}, 
+									{1 - matrix[sma["MOX"]].getMoxPuEnrichment(), matrix[sma["MOX"]].getMoxPuEnrichment(), matrix[sma["MOX"]].getMoxPuEnrichment()});
 	sciantix_system[index].setRadiusInLattice(0.21e-9); // (m), from experimental data, assumed equal for Xe and Kr
 	sciantix_system[index].setVolumeInLattice(matrix[sma["MOX"]].getSchottkyVolume());
 	sciantix_system[index].setHenryConstant(0.0); //still to be replaced
