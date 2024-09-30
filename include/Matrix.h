@@ -19,6 +19,7 @@
 
 #include "Material.h"
 #include <string>
+#include <iostream>
 
 /// Class for the (fuel) matrix material (e.g., UO2, UO2-HBS, MOX), derived from the class Material
 class Matrix : virtual public Material
@@ -242,9 +243,22 @@ public:
 	
 	}
 
-	void setInitialUraniumComposition (const std::vector<double>& initialUraniumComposition){
+	void setInitialUraniumComposition (const std::vector<double>& initialuraniumComposition){
 
-		initial_uranium_composition = initialUraniumComposition;
+		double sum = 0;
+		initial_uranium_composition.resize(initialuraniumComposition.size(), 0.0);
+
+		for (const double& value : initialuraniumComposition) {
+
+			sum += value; 
+
+		}
+
+		for (size_t counter = 0; counter < initialuraniumComposition.size(); ++counter) {
+			
+			initial_uranium_composition[counter] = initialuraniumComposition[counter]/sum;
+
+		}
 
 	}
 
@@ -256,7 +270,20 @@ public:
 
 	void setInitialPlutoniumComposition (const std::vector<double>& initialplutoniumComposition){
 
-		initial_plutonium_composition = initialplutoniumComposition;
+		double sum = 0;
+		initial_plutonium_composition.resize(initialplutoniumComposition.size(), 0.0);
+
+		for (const double& value : initialplutoniumComposition) {
+
+			sum += value; 
+
+		}
+
+		for (size_t counter = 0; counter < initialplutoniumComposition.size(); ++counter) {
+
+			initial_plutonium_composition[counter] = initialplutoniumComposition[counter]/sum;
+
+		}
 
 	}
 

@@ -113,30 +113,48 @@ class Simulation : public Solver, public Model
                 if (!ANN)
                     ErrorMessages::MissingInputFile("ANN.txt");
                 
+				double input_maxima = ReadOneParameter("input_maxima", ANN, ANN_check);
+				double input_minima = ReadOneParameter("input_minima", ANN, ANN_check);
+				double target_minima = ReadOneParameter("target_minima", ANN, ANN_check);
+				double target_maxima = ReadOneParameter("target_maxima", ANN, ANN_check);
+				double xmax = ReadOneParameter("xmax", ANN, ANN_check);
+				double xmin = ReadOneParameter("xmin", ANN, ANN_check);
+				double ymax = ReadOneParameter("ymax", ANN, ANN_check);
+				double ymin = ReadOneParameter("ymin", ANN, ANN_check);
+				std::vector<double> first_layer_weights = ReadSeveralParameters("first_layer_weights", ANN, ANN_check);
+				std::vector<double> first_layer_bias = ReadSeveralParameters("first_layer_bias", ANN, ANN_check);
+				std::vector<double> second_layer_weights = ReadSeveralParameters("second_layer_weights", ANN, ANN_check);
+				double second_layer_bias = ReadOneParameter("second_layer_bias", ANN, ANN_check);
+
+
                 sciantix_variable[sv[system.getGasName() + " produced"]].setFinalValue(
                     ANN_gas_production(
-                        ReadOneParameter("input_maxima", ANN, ANN_check), 
-                        ReadOneParameter("input_minima", ANN, ANN_check), 
-                        ReadOneParameter("input_minima", ANN, ANN_check),
-                        ReadOneParameter("input_minima", ANN, ANN_check),
-                        ReadSeveralParameters("first_layer_weights", ANN, ANN_check),
-                        ReadSeveralParameters("first_layer_biases", ANN, ANN_check),
-                        ReadSeveralParameters("second_layer_weights", ANN, ANN_check),
-                        ReadSeveralParameters("second_layer_bias", ANN, ANN_check),
-                        (Time_end_h / Number_of_time_steps_per_interval) * 3600
+                        input_maxima, 
+                        input_minima, 
+                        target_maxima,
+                        target_minima,
+						xmin, 
+                        xmax, 
+                        ymin,
+                        ymax,
+                        first_layer_weights,
+						first_layer_bias,
+						second_layer_weights,
+						second_layer_bias,
+                        Time_h * 3600
                     )
-                );  // <- Qui ho aggiunto la parentesi mancante
+                ); 
             }
-        }
-        else
-        {
-            sciantix_variable[sv[system.getGasName() + " produced"]].setFinalValue(
-                solver.Integrator(
-                    sciantix_variable[sv[system.getGasName() + " produced"]].getInitialValue(),
-                    model[sm["Gas production - " + system.getName()]].getParameter().at(0),
-                    model[sm["Gas production - " + system.getName()]].getParameter().at(1)
-                )
-            );
+			else
+        	{
+				sciantix_variable[sv[system.getGasName() + " produced"]].setFinalValue(
+					solver.Integrator(
+						sciantix_variable[sv[system.getGasName() + " produced"]].getInitialValue(),
+						model[sm["Gas production - " + system.getName()]].getParameter().at(0),
+						model[sm["Gas production - " + system.getName()]].getParameter().at(1)
+					)
+				);
+        	}
         }
     }
 }

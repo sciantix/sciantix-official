@@ -73,7 +73,7 @@ public:
 		double numerator = 0;
 		double denominator = 0;
 
-		for (size_t counter = 0; counter <= yieldings_vector.size(); ++counter){
+		for (size_t counter = 0; counter < yieldings_vector.size(); ++counter){
 
 			numerator += yieldings_vector[counter]*enrichment_vector[counter]*isotopic_percentages_vector[counter];
 			denominator += enrichment_vector[counter]*isotopic_percentages_vector[counter];

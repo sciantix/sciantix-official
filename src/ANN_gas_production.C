@@ -14,7 +14,10 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef ANN_GAS_PRODUCTION_H
+#define ANN_GAS_PRODUCTION_H 
 #include "ANN_gas_production.h"
+#include <iostream>
 
 //the following function is an ANN that reproduces the results of the bateman equation systems for the production of helium in a MOX fuel.
 //(pure PuO2 or UO2 can be simulated too, given the right training for the ANN and hence the right input parameters).
@@ -26,26 +29,37 @@ double ANN_gas_production (const double& input_maxima,
                            const double& input_minima, 
                            const double& target_maxima, 
                            const double& target_minima, 
+                           const double& xmin, 
+                           const double& xmax, 
+                           const double& ymin, 
+                           const double& ymax, 
                            const std::vector<double>& first_layer_weights, 
                            const std::vector<double>& first_layer_bias,
                            const std::vector<double>& second_layer_weights,
-                           const std::vector<double>& second_layer_bias,
-                           double& input_data){
+                           const double& second_layer_bias,
+                           double input_data){
 
                             std::vector<double> z(first_layer_weights.size());
                             double output = 0;
 
-                                input_data = (input_data - input_minima) * ((target_maxima - target_minima) / (input_maxima - input_minima)) + target_minima;
+                            input_data = (input_data - input_minima)/(input_maxima - input_minima);
+                            input_data = (input_data - xmin) * ((ymax - ymin) / (xmax - xmin)) + ymin;
+
                                 for (size_t weight_counter = 0; weight_counter < first_layer_weights.size(); ++weight_counter){
 
                                     z[weight_counter] = first_layer_weights[weight_counter] * input_data + first_layer_bias[weight_counter];
                                     z[weight_counter] = 2/(1 + exp(-2*z[weight_counter])) - 1; //"tansig" activation function
-                                    z[weight_counter] = second_layer_weights[weight_counter] * z[weight_counter] + second_layer_bias[weight_counter];
+                                    z[weight_counter] = second_layer_weights[weight_counter] * z[weight_counter] + second_layer_bias;
                                     output += z[weight_counter];
                                     
                                 }
 
-                                output = (output - target_minima) * ((input_maxima - input_minima)/(target_maxima - target_minima)) + input_minima;
+                                output = (output - ymin) * ((xmax - xmin)/(ymax - ymin)) + xmin;
+                                output = (output*(target_maxima - target_minima) + target_minima)*1e6;
+                                if (output < 0)
+                                    output = 0;
                                 return output;
 
                            }
+
+#endif

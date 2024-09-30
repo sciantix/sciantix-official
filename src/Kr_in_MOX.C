@@ -25,14 +25,15 @@ void Kr_in_MOX()
 		return;
 	}
 
+	sciantix_system.emplace_back();
 	int index = int(sciantix_system.size() - 1);
 	sciantix_system[index].setName("Kr in MOX");
 	sciantix_system[index].setGasName("Kr");
 	sciantix_system[index].setMatrixName("MOX");
 	sciantix_system[index].setRestructuredMatrix(0);
 	sciantix_system[index].setYield({0.038072, 0.016618, 0.01241}, 
-									{matrix[index].getInitialUraniumComposition()[0], matrix[index].getInitialPlutoniumComposition()[1], matrix[index].getInitialPlutoniumComposition()[3]}, 
-									{1 - matrix[index].getMoxPuEnrichment(), matrix[index].getMoxPuEnrichment(), matrix[index].getMoxPuEnrichment()});
+									{matrix[sma["MOX"]].getInitialUraniumComposition()[1], matrix[sma["MOX"]].getInitialPlutoniumComposition()[1], matrix[sma["MOX"]].getInitialPlutoniumComposition()[3]}, 
+									{1 - matrix[sma["MOX"]].getMoxPuEnrichment(), matrix[sma["MOX"]].getMoxPuEnrichment(), matrix[sma["MOX"]].getMoxPuEnrichment()});									
 	sciantix_system[index].setRadiusInLattice(0.21e-9); //still to be replaced
 	sciantix_system[index].setVolumeInLattice(matrix[sma["MOX"]].getSchottkyVolume());
 	sciantix_system[index].setHenryConstant(0.0); //still to be replaced
@@ -42,4 +43,5 @@ void Kr_in_MOX()
 	sciantix_system[index].setResolutionRate(int(input_variable[iv["iResolutionRate"]].getValue()));
 	sciantix_system[index].setTrappingRate(int(input_variable[iv["iTrappingRate"]].getValue()));
 	sciantix_system[index].setNucleationRate(int(input_variable[iv["iNucleationRate"]].getValue()));
+
 }

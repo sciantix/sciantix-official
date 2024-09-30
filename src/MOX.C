@@ -24,13 +24,16 @@ void MOX()
 	matrix.emplace_back();
 	int index = int(matrix.size()) - 1;
 
-	matrix[index].setInitialUraniumComposition({double(sciantix_variable[sv["U235"]].getFinalValue()), 
+	matrix[index].setInitialUraniumComposition({double(sciantix_variable[sv["U234"]].getFinalValue()),
+												double(sciantix_variable[sv["U235"]].getFinalValue()), 
+												double(sciantix_variable[sv["U236"]].getFinalValue()),
+												double(sciantix_variable[sv["U237"]].getFinalValue()),
 												double(sciantix_variable[sv["U238"]].getFinalValue())});
 	matrix[index].setInitialPlutoniumComposition({double(sciantix_variable[sv["Pu238"]].getFinalValue()),
 												 double(sciantix_variable[sv["Pu239"]].getFinalValue()), 
 												 double(sciantix_variable[sv["Pu240"]].getFinalValue()),
 												 double(sciantix_variable[sv["Pu241"]].getFinalValue()), 
-												 double(sciantix_variable[sv["Pu242"]].getFinalValue())});																								 
+												 double(sciantix_variable[sv["Pu242"]].getFinalValue())});										 																								 
 	matrix[index].setMoxPuEnrichment(sciantix_variable[sv["MOX PuO2 percentage"]].getFinalValue());
 	matrix[index].setName("MOX");
 	matrix[index].setRef("\n\t");
