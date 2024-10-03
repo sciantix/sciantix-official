@@ -42,6 +42,18 @@ The following settings define the models and methods used for the simulation.
 
 ---
 
+## Input history
+
+Input history defines the conditions imposed to the simulation in terms of duration of the simulated history (in hours, first column), local temperature (in K, second column), local fission rate density (in fission per cubic meter per second), third column and local hydrostatic stress (in MPa, fourth column).
+Between the given rows, the code linearly interpolates with a fixed number of time steps.
+
+```plaintext
+0	1273	1e19	0
+5500	1273	1e19	0
+```
+
+---
+
 ## Input initial conditions
 
 This file sets the initial conditions for various parameters within the simulation.
