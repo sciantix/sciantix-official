@@ -98,6 +98,20 @@ void Matrix::setGrainBoundaryMobility(int input_value)
 		break;
 	}
 
+		case 3 :
+	{
+		/**
+		 * @brief iGrainGrowth = 3 corresponds to the @ref C. Sari, JNM, Vol. 137, pp. 100-106, 1986.
+		 * 
+		*/
+
+		reference += ": C. Sari, JNM, Vol. 137, pp. 100-106, 1986. \n\t";
+		grain_boundary_mobility = 1.360546875e-15 * exp(- 46524.0 / history_variable[hv["Temperature"]].getFinalValue());
+		break;
+
+	}
+		
+
 	default:
 		ErrorMessages::Switch(__FILE__, "iGrainGrowth", input_value);
 		break;
