@@ -1,6 +1,6 @@
 # Input explanation
 
-This folder contains the essential input files required by Sciantix:
+This folder contains the essential input files required by SCIANTIX:
 
 - **`input_settings.txt`**: Specifies the models and numerical solvers used in the simulation.
 - **`input_history.txt`**: Includes the time (h), temperature (K), fission rate (fiss/m³-s), and hydrostatic stress (MPa) as a function of time.
@@ -44,7 +44,7 @@ The following settings define the models and methods used for the simulation.
 
 ## Input history
 
-Input history defines the conditions imposed to the simulation in terms of duration of the simulated history (in hours, first column), local temperature (in K, second column), local fission rate density (in fission per cubic meter per second), third column and local hydrostatic stress (in MPa, fourth column).
+Input history defines the conditions imposed to the simulation in terms of duration of the simulated history (in hours, first column), local temperature (in K, second column), local fission rate density (in fission per cubic meter per second, third column), and local hydrostatic stress (in MPa, fourth column).
 Between the given rows, the code linearly interpolates with a fixed number of time steps.
 
 ```plaintext

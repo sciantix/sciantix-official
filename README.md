@@ -1,6 +1,6 @@
 # SCIANTIX
 
-SCIANTIX is a 0D simulation code developed at Politecnico di Milano, designed to model the behavior of a single grain of nuclear fuel, with a particular focus on fission gas behavior. The code primarily uses physics-based models, which enhances the integration of lower-length scale calculations and improves accuracy over empirical models. These engineering models facilitate the code's integration into industrial fuel performance simulations.
+SCIANTIX is a 0D simulation code developed at Politecnico di Milano, designed to model the behavior of a single grain of nuclear fuel, with a particular focus on fission gas behavior. The code primarily uses physics-based models, which enhances the integration of lower-length scale calculations and improves accuracy over empirical models. The engineering models facilitate the code integration into industrial fuel performance codes.
 
 Currently, SCIANTIX is validated against experimental data for the following phenomena:
 - Intragranular gaseous swelling
@@ -15,29 +15,20 @@ The validation database is available in the `regression` folder.
 
 ## Linux Installation
 
-1. **Obtain the Code:** Download the source code by cloning the repository or by downloading the `zip` file.
+1. **Obtain the Code:** Download the source code by cloning the GitHub repository or by downloading the zip folder.
 2. **Install Dependencies:**
-   - On Ubuntu, run: `sudo apt install build-essential`
+   - On Ubuntu, run: `sudo apt install build-essential cmake`
 3. **Build the Code:**
    - Create a build directory: `mkdir build`
    - Navigate to the build directory: `cd build`
    - Generate the Makefile with CMake: `cmake ..`
-   - Compile the code: `make`
-   - To speed up the process using multiple cores, use: `make -j`
+   - Compile the code: `make` (to speed up the process using multiple cores, use: `make -j`)
 
-The compiled executable, `sciantix.x`, will be located in the `build` directory.
-
-4. **TRANSURANUS coupling:** The code can be coupled with the v1m1j24 version of TRANSURANUS software package distributed by JRC-EC Karlsruhe.
-
-    In the build folder
-   - Generate the Makefile with CMake: `cmake -DCOUPLING_TU=ON ..`
-   - Compile the code: `make`
-
-The static library, `libsciantix.a`, will be located in the `build` directory.
+The compiled executable `sciantix.x` will be located in the `build` directory.
 
 ## Windows Installation
 
-A recommended approach for Windows users is to use the [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install).
+The recommended approach for Windows users is to use the [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install).
 
 1. **Install WSL:**
    - Follow the [official installation guide](https://learn.microsoft.com/en-us/windows/wsl/install).
@@ -47,9 +38,16 @@ A recommended approach for Windows users is to use the [Windows Subsystem for Li
 3. **Follow Linux Installation Instructions:**
    - Proceed with the Linux installation steps starting from step 2.
 
-# Usage
+# Coupling with fuel performance codes
+The code can be coupled with thermo-mechanical fuel performance codes (<a href="https://www.sciencedirect.com/science/article/pii/S0022311524004070" target="_blank">Zullo G. et al (2024). Journal of Nuclear Materials, 601, 155305.</a>). Here, it is detailed that the code can be compiled as a static library and coupled with TRANSURANUS (currently at version v1m1j24) distributed by JRC-EC Karlsruhe To generate SCIANTIX as a static libray, in the build folder:
 
-To run SCIANTIX, execute the `sciantix.x` binary within the directory containing your input files.
+   - Generate the Makefile with CMake: `cmake -DCOUPLING_TU=ON ..`
+   - Compile the code: `make` (or `make -j`)
+
+The static library, `libsciantix.a`, will be located in the `build` directory.
+
+# Usage
+To run SCIANTIX, execute `sciantix.x` within the directory containing your input files, or execute `./sciantix.x /path_to_folder_with_input_files/` in the working directory with the executable.
 
 Refer to the [Input File Explanation](utilities/InputExplanation.md) for detailed instructions on input syntax.
 
@@ -58,9 +56,9 @@ Examples of input files can be found in:
 - The `utilities/inputExample` directory, by running the following Python scripts:
 
 ```sh
-python utilities/inputExample/print_input_initial_conditions.py
-python utilities/inputExample/print_input_scaling_factors.py
-python utilities/inputExample/print_input_settings.py
+python3 utilities/inputExample/print_input_initial_conditions.py
+python3 utilities/inputExample/print_input_scaling_factors.py
+python3 utilities/inputExample/print_input_settings.py
 ```
 
 # Regression Tests
@@ -69,14 +67,12 @@ To verify the correct operation of SCIANTIX, run the regression tests:
 
 ```sh
 cd regression
-python regression.py
+python3 regression.py
 ```
 
 # Documentation
 
-To generate the code documentation, run `doxygen` in the root directory of the code:
-
-- If Doxygen is not installed, you can install it with: `sudo apt install doxygen`
+To generate the code documentation, run `doxygen` in the root directory of the code. The Doxygen software can be installed, e.g., on Linux systems, with `sudo apt install doxygen`.
 
 # Theory and References
 
