@@ -71,3 +71,8 @@
 <a href="https://www.sciencedirect.com/science/article/pii/S1738573321006148" target="_blank">Zullo G. et al (2022). Nuclear Engineering and Technology, 54, 1195-1205.</a>
 
 <a href="https://www.sciencedirect.com/science/article/pii/S0022311523005111" target="_blank">Zullo G. et al (2023). Journal of Nuclear Materials, 587, 154744.</a>
+
+<a href="https://www.sciencedirect.com/science/article/pii/S0022311524004070" target="_blank">Zullo G. et al (2024). Journal of Nuclear Materials, 601, 155305.</a>
+
+<a href="https://www.sciencedirect.com/science/article/pii/S0029549324007027" target="_blank">Zullo G. et al (2024). Nuclear Enginnering and Design, 429, 113602.</a>
+
