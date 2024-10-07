@@ -126,7 +126,6 @@ class Simulation : public Solver, public Model
 				std::vector<double> second_layer_weights = ReadSeveralParameters("second_layer_weights", ANN, ANN_check);
 				double second_layer_bias = ReadOneParameter("second_layer_bias", ANN, ANN_check);
 
-
                 sciantix_variable[sv[system.getGasName() + " produced"]].setFinalValue(
                     ANN_gas_production(
                         input_maxima, 

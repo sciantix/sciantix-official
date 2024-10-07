@@ -1,0 +1,30 @@
+5.0e-6
+#	initial grain radius (m)
+0.0	0.0	0.0	0.0	0.0	0.0
+#	initial Xe (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
+0.0	0.0	0.0	0.0	0.0	0.0
+#	initial Kr (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
+0.0	0.0	0.0	0.0	0.0	0.0
+#	initial He (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
+0.0	0.0
+# initial intragranular bubble concentration (at/m3), radius (m)
+0.0
+#	initial fuel burn-up (MWd/kgUO2)
+0.0
+#	initial fuel effective burn-up (MWd/kgUO2)
+0.0
+#	initial irradiation time (h)
+10641.4 
+#	initial fuel density (kg/m3) according to "A review of the thermohpysical properties of MOX and UO2 fuels" by Juan J. Carbajo (5% porosity included)
+0.0	3.0	0.0	0.0	97.0
+#	initial U234 U235 U236 U237 U238 (% of heavy atoms) content
+0.0	0.0	0.0	0.0	0.0	0.0 0.0
+#	initial Xe133 (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
+0.0	0.0	0.0	0.0	0.0	0.0 0.0
+#	initial Kr85m (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
+0.0
+#   initial fuel stoichiometry deviation (\)
+2.332 56.873 26.997 6.105 7.693
+#   initial Pu238 Pu239 Pu240 Pu241 Pu242 (% of heavy atoms) content
+0.9
+#   initial PuO2 percentage
