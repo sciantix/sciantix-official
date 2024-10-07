@@ -22,6 +22,7 @@ iStoichiometryDeviation = 0
 iBubbleDiffusivity = 0
 iTriso = 1
 iShellSolver = 2
+iANNHelium = 0
 Grain radius[0] = 5e-06
 Initial composition Xe0 = 0
 Initial composition Xe1 = 0

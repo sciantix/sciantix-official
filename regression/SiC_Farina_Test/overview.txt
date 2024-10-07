@@ -79,4 +79,5 @@ Input setting	iStoichiometryDeviation = 0
 Input setting	iBubbleDiffusivity = 0
 Input setting	iTriso = 1
 Input setting	iShellSolver = 2
+Input setting	iANNHelium = 0
 
