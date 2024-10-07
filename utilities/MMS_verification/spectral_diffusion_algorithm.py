@@ -1,6 +1,9 @@
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+# import matplotlib
+# matplotlib.use('TkAgg')  # or 'Qt5Agg' depending on your system
+
 #gas 1 ..> C
 #gas 2 ..> m
 
@@ -53,7 +56,7 @@ def SpectralDiffusion1equation(gas_1, initial_condition_gas_1, parameter, increm
 
 		coeff = 1.0 + (diffusion_rate1) * increment # denomenator when solving the backward euler
 
-		initial_conditions = initial_condition_gas_1[n] + source_rate1 * increment
+		initial_conditions = (initial_condition_gas_1[n] + source_rate1 * increment)/(coeff)
 
 		#Laplace2x2(coeff, initial_conditions) # (A,b)
 
@@ -74,39 +77,39 @@ def SpectralDiffusion1equation(gas_1, initial_condition_gas_1, parameter, increm
 # 		b[0] = detX / detA
 # 		b[1] = detY / detA
 
-def main():
+# def main():
 
-	num_steps = 1000
-	increment = 0.01
+num_steps = 1000
+increment = 0.01
 
-	time_vector = np.arange(num_steps) * increment
+time_vector = np.arange(num_steps) * increment
 
-	# Giovanni's Inputs
-	n_modes = 40
-	D1 = 3.0
-	a = 2.0
-	S1 = 4.0
+# Giovanni's Inputs
+n_modes = 40
+D1 = 3.0
+a = 2.0
+S1 = 4.0
 
-	parameter = [n_modes, D1, a, S1] #We dont need b and g nor teh decay L
+parameter = [n_modes, D1, a, S1] #We dont need b and g nor teh decay L
 
-	initial_condition_gas_1 = np.zeros(parameter[0])
-	
-	gas_1 = np.zeros(num_steps)
-	
-	for i in range(num_steps):
-		SpectralDiffusion1equation(gas_1[i:i+1], initial_condition_gas_1, parameter, increment)
+initial_condition_gas_1 = np.zeros(parameter[0])
 
-	c_eq1 = S1 * a**2 / (15 * D1)
+gas_1 = np.zeros(num_steps)
 
-	plt.plot(time_vector, gas_1, label='Gas 1')
-	plt.axhline(y=c_eq1, linestyle='--', label='Equilibrium Concentration 1')
-	plt.xlabel('Time')
-	plt.ylabel('Concentration')
-	plt.legend()
-	plt.show()
+for i in range(num_steps):
+	SpectralDiffusion1equation(gas_1[i:i+1], initial_condition_gas_1, parameter, increment)
 
-if __name__ == "__main__":
-	main()
+c_eq1 = S1 * a**2 / (15 * D1)
+
+plt.plot(time_vector, gas_1, label='Gas 1')
+plt.axhline(y=c_eq1, linestyle='--', label='Equilibrium Concentration 1')
+plt.xlabel('Time')
+plt.ylabel('Concentration')
+plt.legend()
+plt.show()
+plt.savefig('output.png')  # Saves the plot as a file
+# if __name__ == "__main__":
+# 	main()
 
 # 1 equation scalar decay
 # 2 equations matrix laplace
