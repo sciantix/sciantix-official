@@ -48,7 +48,7 @@ set(CMAKE_OBJECT_PATH_PREFIX ${PROJECTSOUR}/obj/)
 
 # Add executable sciantix.x (or .exe) or create static library
 if(COUPLING_TU)
-    dd_library(sciantix STATIC ${SOURCES})
+    add_library(sciantix STATIC ${SOURCES})
     set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
 else()
     add_executable(sciantix ${SOURCES})
