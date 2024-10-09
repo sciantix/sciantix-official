@@ -53,6 +53,15 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
 	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> physics_variable, int n_modes);
 
 /**
+ * @brief Defines diffusion models using the spectral diffusion with one equation.
+ * 
+ * @author MDG
+ * 
+ */
+void defineDiffusionColumnarGrains(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
+
+
+/**
  * @brief Handles unsupported diffusion solver options.
  * 
  * @author G. Zullo

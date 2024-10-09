@@ -457,4 +457,75 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
     return x1;
 }
 
+using namespace H5;
+
+double Solver::ROM_cylinder(double *initial_condition, std::vector<double> parameter, double increment)
+{
+    hsize_t rows = 0;
+    hsize_t cols = 0; // Variabili per le dimensioni della matrice
+
+    try {
+        // Apri il file HDF5 in modalità lettura
+        H5File file("/Users/martina/Library/CloudStorage/OneDrive-PolitecnicodiMilano/PhD/Git/rom-cylinder_DEIM-POD/offline-online stages/2. DEIM-POD/matrici_RB.h5", H5F_ACC_RDONLY);
+
+        // Accedi ai dataset
+        DataSet dataset_MM_RB = file.openDataSet("MM_RB");
+        DataSet dataset_FF_RB = file.openDataSet("FF_RB");
+        DataSet dataset_KK_RB = file.openDataSet("KK_RB"); // 3D
+        DataSet dataset_AA_RB = file.openDataSet("AA_RB"); // 1D
+        DataSet dataset_ZZ_CO = file.openDataSet("ZZ_CO"); // 1D
+        DataSet dataset_II_CO = file.openDataSet("II_CO");
+
+        // Funzione per ottenere e stampare le dimensioni di un dataset
+        auto printDimensions = [](DataSet &dataset, const std::string &name) {
+            DataSpace dataspace = dataset.getSpace();
+            hsize_t dims[3]; // Supporta fino a 3 dimensioni
+            int ndims = dataspace.getSimpleExtentNdims();
+            
+            if (ndims > 0) {
+                dataspace.getSimpleExtentDims(dims, NULL); // Ottieni le dimensioni
+                std::cout << "Dimensioni di " << name << ": ";
+                for (int i = 0; i < ndims; ++i) {
+                    std::cout << dims[i]; // Stampa ciascuna dimensione
+                    if (i < ndims - 1) std::cout << " x "; // Aggiungi "x" tra le dimensioni
+                }
+                std::cout << std::endl;
+            } else {
+                std::cout << "Il dataset " << name << " non ha dimensioni." << std::endl;
+            }
+        };
+
+        // Stampa le dimensioni di ciascun dataset
+        printDimensions(dataset_MM_RB, "MM_RB");
+        printDimensions(dataset_FF_RB, "FF_RB");
+        printDimensions(dataset_KK_RB, "KK_RB"); // Dataset 3D
+        printDimensions(dataset_AA_RB, "AA_RB"); // Dataset 1D
+        printDimensions(dataset_ZZ_CO, "ZZ_CO"); // Dataset 1D
+        printDimensions(dataset_II_CO, "II_CO");
+
+        // Chiudi i dataset e il file
+        dataset_MM_RB.close();
+        dataset_FF_RB.close();
+        dataset_KK_RB.close();
+        dataset_AA_RB.close();
+        dataset_ZZ_CO.close();
+        dataset_II_CO.close();
+        file.close();
+    } 
+
+    catch (FileIException &error) {
+        error.printErrorStack(); // Cambiato da printError a printErrorStack
+        return -1; // Errore nel file
+    } catch (DataSetIException &error) {
+        error.printErrorStack(); // Cambiato da printError a printErrorStack
+        return -2; // Errore nel dataset
+    } catch (DataSpaceIException &error) {
+        error.printErrorStack(); // Cambiato da printError a printErrorStack
+        return -3; // Errore nello spazio dei dati
+    } catch (...) {
+        std::cerr << "Errore sconosciuto!" << std::endl;
+        return -4; // Errore sconosciuto
+    }
+}
+
 

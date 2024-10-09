@@ -1,4 +1,9 @@
+### Per creare un file in una cartella
 touch <nome file>.<estensione>
+
+### Per compilare ho dovuto re-installare gcc
+brew update
+brew reinstall gcc
 
 ### Per i file Allclean e Allmake: 
 Una volta scaricati dal main li vado a rinominare senza il txt: 

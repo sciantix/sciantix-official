@@ -32,6 +32,11 @@ void Simulation::GasDiffusion()
         case 3:
             defineSpectralDiffusion3Equations(sciantix_system, model, sciantix_variable, physics_variable, n_modes);
             break;
+        
+        case 4:
+            defineDiffusionColumnarGrains(sciantix_system, model, n_modes);
+            break;
+
 
         default:
             errorHandling(input_variable);
@@ -113,6 +118,39 @@ void Simulation::GasDiffusion()
 
         case 3:
             break;
+        
+        case 4: //ROM_cylinder
+        {
+            if (system.getRestructuredMatrix() == 0)
+            {
+                sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
+                    solver.ROM_cylinder(
+                        getDiffusionModes(system.getGasName()),
+                        model["Gas diffusion - " + system.getName()].getParameter(),
+                        physics_variable["Time step"].getFinalValue()
+                    )
+                );
+
+                double equilibrium_fraction(1.0);
+                if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
+                    equilibrium_fraction = system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
+
+                sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
+                    equilibrium_fraction * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
+                );
+
+                sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
+                    (1.0 - equilibrium_fraction) * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
+                );
+            }
+            
+            else if (system.getRestructuredMatrix() == 1)
+            {
+                sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(0.0);
+            }
+            break;
+        }
+
 
         default:
             ErrorMessages::Switch(__FILE__, "iDiffusionSolver", int(input_variable["iDiffusionSolver"].getValue()));
@@ -192,6 +230,36 @@ void Simulation::GasDiffusion()
 }
 
 void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
+{
+    std::string reference;
+
+    for (auto& system : sciantix_system)
+    {
+        Model model_;
+        model_.setName("Gas diffusion - " + system.getName());
+        model_.setRef(reference);
+
+        std::vector<double> parameters;
+        parameters.push_back(n_modes);
+        double gasDiffusivity;
+        if (system.getResolutionRate() + system.getTrappingRate() == 0)
+            gasDiffusivity = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
+        else
+            gasDiffusivity = 
+                (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
+                (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
+
+        parameters.push_back(gasDiffusivity);
+        parameters.push_back(system.getMatrix().getGrainRadius());
+        parameters.push_back(system.getProductionRate());
+        parameters.push_back(system.getGas().getDecayRate());
+
+        model_.setParameter(parameters);
+        model.push(model_);
+    }
+}
+
+void defineDiffusionColumnarGrains(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
 {
     std::string reference;
 

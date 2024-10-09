@@ -21,6 +21,7 @@
 #include <string>
 #include <cmath>
 #include "InputVariable.h"
+#include "H5Cpp.h"
 
 /**
  * @brief Class providing solver methods for the SCIANTIX simulation framework.
@@ -239,6 +240,9 @@ public:
      * @return The solution to the ODE.
      */
     double NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment);
+
+    double ROM_cylinder(double *initial_condition, std::vector<double> parameter, double increment);
+
 
     /**
      * @brief Constructor
