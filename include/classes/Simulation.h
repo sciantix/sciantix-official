@@ -295,6 +295,37 @@ public:
      */
     void UO2Thermochemistry();
 
+	/**
+	 * @brief This function defines the Sciantix model *ChromiumSolubility*.
+	 * 
+     * @details
+	 * The model ChromiumSolubility is used to evaluate the chromium solubility accordingly to the temperature and the oxygen content.
+	 * Then the number of oxide chromium atoms is evaluated, accordingly to the oxygen content of the system. 
+	 * 
+	 * Solubility of Chromium is evaluated as log10(y_Cr) = p*log10(P_O2) + V + U/T
+	 * Coefficients U and V came from experimental fitting, in this way the Gibbs Potential is approximated as a function of 1/T
+	 * Metallic chromium shows two different phases with threshold temperature of 1651 °C
+	 * CrO is expected to be negligible, accordingly to Cr - O phase diagram
+	 * The exchange between Cr-metal phase and Cr-oxide phase is described accordingly to the empirical expression:
+	 * oxide_fraction  = 1 - exp(C1 * T - C1*C2)
+	 * 
+     * @author G. Nicodemo
+     * 
+     * @ref <a href="https://www.sciencedirect.com/science/article/pii/S0022311524004033" target="_blank">Nicodemo G. et al (2024). Journal of Nuclear Materials, 601, 155301.</a>
+	 */
+
+    void ChromiumSolubility();
+
+    /**
+	 * @brief The model Microstructure is used to evaluate the lattice parameter and the theoretical density, accordingly to chromium content.
+	 * 
+     * @author G. Nicodemo
+     * 
+     * @ref <a href="https://www.sciencedirect.com/science/article/pii/S0022311512000943" target="_blank">T. Cardinaels et al (2012), Journal of Nuclear Materials, 424 252-260.</a>
+	 */
+
+    void Microstructure();
+
     /**
      * @brief This method returns a pointer to the array of diffusion modes corresponding to the specified gas.
      * @param gas_name The name of the gas for which diffusion modes are required.

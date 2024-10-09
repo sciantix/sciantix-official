@@ -20,8 +20,9 @@
  * These two functions are also defined in TRANSURANUS, and are essentially required to create the
  * communication channel between the two codes.
  *
+ * @author M. Di Gennaro
  * @author E. Travaglia
- *
+ * 
  */
 
 #ifndef TUSRCCOUPLING_H
@@ -31,9 +32,8 @@
 extern "C"
 {
   #endif
-  void getSciantixOptions(int options[], double scaling_factors[]);
-  void callSciantix(int options[], double history[], double variables[],
-                    double scaling_factors[], double diffusion_modes[]);
+  void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[]);
+  void callSciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
 
   #ifdef __cplusplus
 }

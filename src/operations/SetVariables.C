@@ -42,7 +42,8 @@ void Simulation::setVariables(
          toOutputCracking = input_variable["iGrainBoundaryMicroCracking"].getValue() != 0,
          toOutputGrainBoundary = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
          toOutputHighBurnupStructure = input_variable["iHighBurnupStructureFormation"].getValue() == 1,
-         toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0;
+         toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
+         toOutputChromiumContent = input_variable["iChromiumSolubility"].getValue() > 0;
 
     // Physics variable	
     physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
@@ -68,7 +69,8 @@ void Simulation::setVariables(
             toOutputCracking,
             toOutputGrainBoundary,
             toOutputHighBurnupStructure,
-            toOutputStoichiometryDeviation
+            toOutputStoichiometryDeviation,
+            toOutputChromiumContent
         );
 
     for (SciantixVariable initial_value : values)
@@ -78,7 +80,8 @@ void Simulation::setVariables(
 
     #if defined(COUPLING_TU)
 
-        sciantix_variable["Burnup"]setInitialValue(Sciantix_history["Burnup"]);
+        sciantix_variable["Burnup"].setInitialValue(Sciantix_history[7]);   
+        sciantix_variable["Burnup"].setFinalValue(Sciantix_history[8]); 
 
     #endif
 

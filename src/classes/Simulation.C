@@ -69,6 +69,10 @@ void Simulation::execute()
 
     HighBurnupStructurePorosity();
 
+    Microstructure();
+
+    ChromiumSolubility();
+
     GrainGrowth();
 
     GrainBoundarySweeping();

@@ -10,7 +10,7 @@
 1	#	iGrainBoundaryBehaviour (0= no grain boundary bubbles, 1= Pastore et al (2013))
 1	#	iGrainBoundaryMicroCracking (0= no model considered, 1= Barani et al. (2017))
 1	#	iFuelMatrix (0= UO2, 1= UO2 + HBS)
-0	#	iGrainBoundaryVenting (0= no model considered, 1= Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE)
+1	#	iGrainBoundaryVenting (0= no model considered, 1= Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE)
 0	#	iRadioactiveFissionGas (0= not considered)
 0	#	iHelium (0= not considered)
 0	#	iHeDiffusivity (0= null value, 1= limited lattice damage, Luzzi et al. (2018), 2= significant lattice damage, Luzzi et al. (2018))

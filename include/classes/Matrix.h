@@ -55,6 +55,14 @@ public:
     double pore_nucleation_rate;
     double pore_resolution_rate;
     double pore_trapping_rate;
+    double chromium_content;
+	double chromium_solubility;
+	double Cr2O3_solubility;
+	double chromium_solution;
+	double chromium_precipitate;
+	double chromia_solution;
+	double chromia_precipitate;
+
 
     /**
      * @brief Sets the theoretical density of the matrix.
@@ -373,6 +381,83 @@ public:
     {
         return healing_temperature_threshold;
     }
+
+    void setChromiumContent(double cc)
+	{
+		chromium_content = cc;
+	}
+
+	double getChromiumContent()
+	{	
+		/// Member function to set the chromium content (µg/g)
+		return chromium_content;
+	}
+
+	void setChromiumSolubility(double cs)
+	{
+		chromium_solubility = cs;
+	}
+
+	double getChroimumSolubility()
+	{
+		/// Member function to set the chromium solubility (weight%/UO2)	
+		return chromium_solubility;
+	}
+
+	void setChromiaSolubility(double crs)
+	{
+		Cr2O3_solubility = crs;
+	}
+
+	double getChromiaSolubility()
+	{
+		/// Member function to set the chromia (Cr2O3) solubility (weight%/UO2)	
+		return Cr2O3_solubility;
+	}
+
+	void setChromiumSolution(double cr_sol)
+	{
+		chromium_solution= cr_sol;
+	}
+
+	double getChromiumSolution()
+	{
+		/// Member function to set the chromium solution (kg)	
+		return chromium_solution;
+	}
+
+	void setChromiumPrecipitate(double cr_p)
+	{
+		chromium_precipitate= cr_p;
+	}
+
+	double getChromiumPrecipitate()
+	{
+		/// Member function to set the chromium precipitate (kg)	
+		return chromium_precipitate;
+	}
+
+	void setChromiaSolution(double chromia_sol)
+	{
+		chromia_solution = chromia_sol;
+	}
+
+	double getChromiaSolution()
+	{
+		/// Member function to set the chromia (Cr2O3) solution (kg)	
+		return chromia_solution;
+	}
+
+	void setChromiaPrecipitate(double chromia_p)
+	{
+		chromia_precipitate = chromia_p;
+	}
+
+	double getChromiaPrecipitate()
+	{
+		/// Member function to set the chromia (Cr2O3) precipitate (kg)	
+		return chromia_precipitate;
+	}
 
     /**
      * @brief Constructor
