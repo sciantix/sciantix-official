@@ -71,16 +71,24 @@ def select_coefficients(N_delta_tau, N_M, condition='constant', µ=None):
 N_delta_tau = 1000
 N_M = 40
 
+decay_rate = 9.98e-7 # I131
+decay_rate = 4.3e-5 # Kr85m
 decay_rate = 1.53e-6 # Xe133
+
 a = 5e-6 # radius
 D = 1e-20 # diffusivity
+
+k = 40
+diffusion_rate = np.pi**2 * D * a**(-2) * k**2
+
+print(f"diffusion_rate = {diffusion_rate} 1/s")
 
 mu = decay_rate * a**2 / D
 
 print(f"mu = {mu}")
 
 # Option 1: Using constant conditions
-µ_constant = 10**5
+µ_constant = 10**4
 result_constant = select_coefficients(N_delta_tau, N_M, condition='constant', µ=µ_constant)
 print(f"Fit result (epsilon_hat) for constant conditions (µ = {µ_constant}): {result_constant}")
 
