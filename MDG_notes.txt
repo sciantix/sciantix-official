@@ -1,0 +1,11 @@
+touch <nome file>.<estensione>
+
+### Per i file Allclean e Allmake: 
+Una volta scaricati dal main li vado a rinominare senza il txt: 
+mv Allclean.txt Allclean 
+mv Allmake.txt Allmake 
+Poi devo dare i permessi di esecuzione:
+chmod +x Allclean 
+chmod +x Allmake
+
+
