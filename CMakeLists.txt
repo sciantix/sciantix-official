@@ -27,6 +27,12 @@ endfunction()
 
 # Enable C++ compiler
 enable_language (CXX)
+set(CMAKE_C_COMPILER /opt/homebrew/bin/gcc-14)
+set(CMAKE_CXX_COMPILER /opt/homebrew/bin/g++-14)
+
+# set(CMAKE_C_COMPILER /usr/bin/gcc)
+# set(CMAKE_CXX_COMPILER /usr/bin/g++)
+
 
 # Set option for coupling with TU
 option (COUPLING_TU OFF)
@@ -48,7 +54,7 @@ set(CMAKE_OBJECT_PATH_PREFIX ${PROJECTSOUR}/obj/)
 
 # Add executable sciantix.x (or .exe) or create static library
 if(COUPLING_TU)
-    dd_library(sciantix STATIC ${SOURCES})
+    add_library(sciantix STATIC ${SOURCES})
     set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
 else()
     add_executable(sciantix ${SOURCES})
