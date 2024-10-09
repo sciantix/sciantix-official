@@ -11,6 +11,14 @@
 
 cmake_minimum_required(VERSION 3.4.0)
 
+if(APPLE)
+    message(STATUS "Configuring on macOS, setting custom compilers...")
+    set(CMAKE_C_COMPILER /opt/homebrew/bin/gcc-14)
+    set(CMAKE_CXX_COMPILER /opt/homebrew/bin/g++-14)
+else()
+    message(STATUS "Not on macOS, using default compilers.")
+endif()
+
 # Name of the project created / existent in visual studio
 project(sciantix)
 
@@ -27,12 +35,6 @@ endfunction()
 
 # Enable C++ compiler
 enable_language (CXX)
-set(CMAKE_C_COMPILER /opt/homebrew/bin/gcc-14)
-set(CMAKE_CXX_COMPILER /opt/homebrew/bin/g++-14)
-
-# set(CMAKE_C_COMPILER /usr/bin/gcc)
-# set(CMAKE_CXX_COMPILER /usr/bin/g++)
-
 
 # Set option for coupling with TU
 option (COUPLING_TU OFF)
