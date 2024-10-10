@@ -65,6 +65,7 @@ for i in range(num_steps):
 
 c_eq1 = S1 * a**2 / (15 * D1)
 
+
 plt.plot(time_vector, gas_1, label='Gas ')
 plt.axhline(y=c_eq1, linestyle='--', label='Equilibrium Concentration ')
 plt.title('Linear Source S=yFr/a')
