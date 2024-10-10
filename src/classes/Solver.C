@@ -461,6 +461,7 @@ using namespace H5;
 
 double Solver::ROM_cylinder(double *initial_condition, std::vector<double> parameter, double increment)
 {
+    //     MATRICI  //
     hsize_t rows = 0;
     hsize_t cols = 0; // Variabili per le dimensioni della matrice
 
@@ -513,19 +514,15 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
         file.close();
     } 
 
-    catch (FileIException &error) {
-        error.printErrorStack(); // Cambiato da printError a printErrorStack
-        return -1; // Errore nel file
-    } catch (DataSetIException &error) {
-        error.printErrorStack(); // Cambiato da printError a printErrorStack
-        return -2; // Errore nel dataset
-    } catch (DataSpaceIException &error) {
-        error.printErrorStack(); // Cambiato da printError a printErrorStack
-        return -3; // Errore nello spazio dei dati
-    } catch (...) {
-        std::cerr << "Errore sconosciuto!" << std::endl;
-        return -4; // Errore sconosciuto
-    }
+    catch (Exception &error) {
+    error.printErrorStack();
+    std::cerr << "Errore durante l'accesso ai dati HDF5!" << std::endl;
+}
+
+
+
+
+
 }
 
 

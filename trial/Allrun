@@ -1,0 +1,14 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # run from this directory
+
+echo "copying sciantix executable"
+cp ../build/sciantix.x .
+
+echo "running sciantix"
+./sciantix.x
+
+
+wait
+
+
+echo " End."
