@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "GasDiffusion.h"
+Eigen::MatrixXd old_sol_RB;
 
 void Simulation::GasDiffusion()
 {
@@ -34,7 +35,7 @@ void Simulation::GasDiffusion()
             break;
         
         case 4:
-            defineDiffusionColumnarGrains(sciantix_system, model, n_modes);
+            defineDiffusionColumnarGrains(sciantix_system, model, n_modes, old_sol_RB);
             break;
 
 
@@ -127,7 +128,8 @@ void Simulation::GasDiffusion()
                     solver.ROM_cylinder(
                         getDiffusionModes(system.getGasName()),
                         model["Gas diffusion - " + system.getName()].getParameter(),
-                        physics_variable["Time step"].getFinalValue()
+                        physics_variable["Time step"].getFinalValue(), 
+                        old_sol_RB
                     )
                 );
 
@@ -259,7 +261,7 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
     }
 }
 
-void defineDiffusionColumnarGrains(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
+void defineDiffusionColumnarGrains(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes, Eigen::MatrixXd &old_sol_RB)
 {
     std::string reference;
 

@@ -27,6 +27,7 @@
 
 using namespace std;
 
+
 /**
  * @brief Logs the execution time of the simulation.
  * @param timer The total execution time measured in seconds.

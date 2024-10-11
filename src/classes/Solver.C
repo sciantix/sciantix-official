@@ -458,10 +458,11 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
 }
 
 using namespace H5;
+using namespace std;
 
-double Solver::ROM_cylinder(double *initial_condition, std::vector<double> parameter, double increment)
+double Solver::ROM_cylinder(double *initial_condition, std::vector<double> parameter, double increment, Eigen::MatrixXd &old_sol_RB)
 {
-    //     MATRICI  //
+    //   MATRICI  //
     hsize_t rows = 0;
     hsize_t cols = 0; // Variabili per le dimensioni della matrice
 
@@ -470,12 +471,13 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
         H5File file("/Users/martina/Library/CloudStorage/OneDrive-PolitecnicodiMilano/PhD/Git/rom-cylinder_DEIM-POD/offline-online stages/2. DEIM-POD/matrici_RB.h5", H5F_ACC_RDONLY);
 
         // Accedi ai dataset
-        DataSet dataset_MM_RB = file.openDataSet("MM_RB");
-        DataSet dataset_FF_RB = file.openDataSet("FF_RB");
-        DataSet dataset_KK_RB = file.openDataSet("KK_RB"); // 3D
-        DataSet dataset_AA_RB = file.openDataSet("AA_RB"); // 1D
-        DataSet dataset_ZZ_CO = file.openDataSet("ZZ_CO"); // 1D
-        DataSet dataset_II_CO = file.openDataSet("II_CO");
+        DataSet dataset_MM_RB = file.openDataSet("MM_RB"); //40x40
+        DataSet dataset_FF_RB = file.openDataSet("FF_RB"); //40x1
+        DataSet dataset_KK_RB = file.openDataSet("KK_RB"); // 12x40x40
+        DataSet dataset_AA_RB = file.openDataSet("AA_RB"); // 40
+        DataSet dataset_ZZ_CO = file.openDataSet("ZZ_CO"); // 6
+        DataSet dataset_II_CO = file.openDataSet("II_CO"); // 6x6
+
 
         // Funzione per ottenere e stampare le dimensioni di un dataset
         auto printDimensions = [](DataSet &dataset, const std::string &name) {
@@ -497,12 +499,77 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
         };
 
         // Stampa le dimensioni di ciascun dataset
-        printDimensions(dataset_MM_RB, "MM_RB");
-        printDimensions(dataset_FF_RB, "FF_RB");
-        printDimensions(dataset_KK_RB, "KK_RB"); // Dataset 3D
-        printDimensions(dataset_AA_RB, "AA_RB"); // Dataset 1D
-        printDimensions(dataset_ZZ_CO, "ZZ_CO"); // Dataset 1D
-        printDimensions(dataset_II_CO, "II_CO");
+         cout << "Dimensioni dei dataset:" << endl;
+        printDimensions(dataset_MM_RB, "MM_RB"); //40x40
+        printDimensions(dataset_FF_RB, "FF_RB"); //40x1
+        printDimensions(dataset_KK_RB, "KK_RB"); // 12x40x40
+        printDimensions(dataset_AA_RB, "AA_RB"); // 40
+        printDimensions(dataset_ZZ_CO, "ZZ_CO"); // 6
+        printDimensions(dataset_II_CO, "II_CO"); // 6x6
+
+        // MM_RB
+        DataSpace dataspace_MM_RB = dataset_MM_RB.getSpace();
+        hsize_t dims_MM_RB[2];
+        dataspace_MM_RB.getSimpleExtentDims(dims_MM_RB, NULL);
+        Eigen::MatrixXd MM_RB(dims_MM_RB[0], dims_MM_RB[1]);
+        dataset_MM_RB.read(MM_RB.data(), PredType::NATIVE_DOUBLE); 
+        std::cout << "MM_RB (0,1): " << MM_RB(0,1) << std::endl;
+
+        // FF_RB
+        DataSpace dataspace_FF_RB = dataset_FF_RB.getSpace();
+        hsize_t dims_FF_RB[2];
+        dataspace_FF_RB.getSimpleExtentDims(dims_FF_RB, NULL);
+        Eigen::MatrixXd FF_RB(dims_FF_RB[0], dims_FF_RB[1]);
+        dataset_FF_RB.read(FF_RB.data(), PredType::NATIVE_DOUBLE);
+        std::cout << "FF_RB (1): " << FF_RB(1) << std::endl;
+
+        // KK_RB
+        DataSpace dataspace_KK_RB = dataset_KK_RB.getSpace();
+        hsize_t dims_KK_RB[3];
+        dataspace_KK_RB.getSimpleExtentDims(dims_KK_RB, NULL);
+        //Eigen::Tensor<double, 3> KK_RB(dims_KK_RB[0], dims_KK_RB[1], dims_KK_RB[2]); -> restituisce warning
+        Eigen::Tensor<double, 3> KK_RB(static_cast<Eigen::Index>(dims_KK_RB[0]),
+                                       static_cast<Eigen::Index>(dims_KK_RB[1]),
+                                       static_cast<Eigen::Index>(dims_KK_RB[2]));
+        dataset_KK_RB.read(KK_RB.data(), PredType::NATIVE_DOUBLE);
+        std::cout << "KK_RB (0, 0, 0): " << KK_RB(0, 0, 0) << std::endl;
+
+        // AA_RB
+        DataSpace dataspace_AA_RB = dataset_AA_RB.getSpace();
+        hsize_t dims_AA_RB[1];
+        dataspace_AA_RB.getSimpleExtentDims(dims_AA_RB, NULL);
+        Eigen::VectorXd AA_RB(dims_AA_RB[0]); 
+        dataset_AA_RB.read(AA_RB.data(), PredType::NATIVE_DOUBLE);
+        std::cout << "AA_RB (1): " << AA_RB(1) << std::endl;
+
+        //ZZ_CO
+        DataSpace dataspace_ZZ_CO = dataset_ZZ_CO.getSpace();
+        hsize_t dims_ZZ_CO[1];
+        dataspace_ZZ_CO.getSimpleExtentDims(dims_ZZ_CO, NULL);
+        Eigen::VectorXd ZZ_CO(dims_ZZ_CO[0]);
+        dataset_ZZ_CO.read(ZZ_CO.data(), PredType::NATIVE_DOUBLE);
+        std::cout << "ZZ_CO (1): " << ZZ_CO(1) << std::endl;
+
+        //II_CO
+        DataSpace dataspace_II_CO = dataset_II_CO.getSpace();
+        hsize_t dims_II_CO[2];
+        dataspace_II_CO.getSimpleExtentDims(dims_II_CO, NULL);
+        Eigen::MatrixXd II_CO(dims_II_CO[0], dims_II_CO[1]);
+        dataset_II_CO.read(II_CO.data(), PredType::NATIVE_DOUBLE);
+        II_CO.transposeInPlace();
+        std::cout << "II_CO(0,1): " << II_CO(0,1) << std::endl;
+
+        // Visualizza le dimensioni delle matrici e dei vettori
+        cout << "Dimensioni delle matrici create:" << endl;
+        cout << "Dimensioni di MM_RB: " << MM_RB.rows() << " x " << MM_RB.cols() << endl;
+        cout << "Dimensioni di FF_RB: " << FF_RB.rows() << " x " << FF_RB.cols() << endl;
+        cout << "Dimensioni di KK_RB: " 
+             << KK_RB.dimension(0) << " x " 
+             << KK_RB.dimension(1) << " x " 
+             << KK_RB.dimension(2) << endl;
+        cout << "Dimensioni di AA_RB: " << AA_RB.size() << endl; 
+        cout << "Dimensioni di ZZ_CO: " << ZZ_CO.size() << endl;  
+        cout << "Dimensioni di II_CO: " << II_CO.rows() << " x " << II_CO.cols() << endl;
 
         // Chiudi i dataset e il file
         dataset_MM_RB.close();
@@ -512,14 +579,74 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
         dataset_ZZ_CO.close();
         dataset_II_CO.close();
         file.close();
+
+        // PARAMETRI
+        double RADIUS = 1e-05; 
+        double LENGTH = 1e-03; 
+        double SOURCE_C = 7.2e18; 
+        Eigen::VectorXd WW(6); // 6x1 vector
+        WW << 1.03483679e-16, 2.13899491e-17, 5.64282052e-17, 3.34541840e-17, 8.48893704e-17, 2.54543157e-17;
+        
+        // CALCOLO CC_CO
+        Eigen::MatrixXd temp1 = (II_CO * WW) / (RADIUS * RADIUS);
+        Eigen::MatrixXd temp2 = (II_CO * WW) / (LENGTH * LENGTH); 
+        Eigen::MatrixXd CC_CO = Eigen::MatrixXd::Zero(temp1.rows() + temp2.rows(), temp1.cols());
+        CC_CO << temp1, temp2;
+        std::cout << "Dimensions of CC_CO: " << CC_CO.rows() << "x" << CC_CO.cols() << std::endl;
+        std::cout << "CC_CO(1): " << CC_CO(1) << std::endl;
+
+        //CALCOLO SS_RB
+        Eigen::Tensor<double, 2> CC_CO_tensor(CC_CO.rows(), CC_CO.cols());
+        for (int i = 0; i < CC_CO.rows(); ++i) {
+            for (int j = 0; j < CC_CO.cols(); ++j) {
+                CC_CO_tensor(i, j) = CC_CO(i, j);
+            }
+        }
+        // Calcola SS_RB utilizzando tensordot
+        Eigen::Tensor<double, 3> SS_RB = CC_CO_tensor.contract(KK_RB, Eigen::array<Eigen::IndexPair<int>, 1>{{Eigen::IndexPair<int>(0, 0)}});
+        std::cout << "Dimensions of SS_RB: " << SS_RB.dimension(0) << "x" << SS_RB.dimension(1) << "x" << SS_RB.dimension(2) << std::endl;
+
+        //CALCOLO QQ_RB
+        Eigen::VectorXd QQ_RB = SOURCE_C * FF_RB;
+
+        //LHS and RHS
+        Eigen::MatrixXd SS_RB_matrix(SS_RB.dimension(0) * SS_RB.dimension(1), SS_RB.dimension(2));
+        for (int i = 0; i < SS_RB.dimension(0); ++i) {
+            for (int j = 0; j < SS_RB.dimension(1); ++j) {
+                for (int k = 0; k < SS_RB.dimension(2); ++k) {
+                    SS_RB_matrix(i * SS_RB.dimension(1) + j, k) = SS_RB(i, j, k);
+                }
+            }
+        }
+        std::cout << "SS_RB(0,1): " << SS_RB_matrix(0,1) << std::endl;
+        //increment = 10000; questo corrisponde all'increment di sciantix 
+        std::cout << "increment:" << increment << endl; 
+        Eigen::MatrixXd LHS_RB_static = MM_RB + increment * SS_RB_matrix;
+        Eigen::VectorXd RHS_RB_static = increment * QQ_RB;
+        std::cout << "Dimensioni di LHS_RB_static: " << LHS_RB_static.rows() << " x " << LHS_RB_static.cols() << std::endl;
+        std::cout << "Dimensioni di RHS_RB_static: " << RHS_RB_static.size() << std::endl;
+        std::cout << "LHS_RB_static(0,1): " << LHS_RB_static(0, 1) << std::endl;
+
+        //Eigen::MatrixXd old_sol_RB = Eigen::MatrixXd::Zero(MM_RB.rows(), 1); rappresenta la condizione iniziale
+        if (increment == 0) {
+        old_sol_RB = Eigen::MatrixXd::Zero(MM_RB.rows(), 1);
+        }
+        double reconstructed_solution;
+
+        old_sol_RB = LHS_RB_static.colPivHouseholderQr().solve(RHS_RB_static + MM_RB * old_sol_RB);
+        double value = (AA_RB.transpose() * old_sol_RB)(0, 0);
+        reconstructed_solution = value;
+        std::cout << "reconstructed solution: " << reconstructed_solution << std::endl;
+
+        return reconstructed_solution;
+
+
     } 
 
     catch (Exception &error) {
     error.printErrorStack();
     std::cerr << "Errore durante l'accesso ai dati HDF5!" << std::endl;
-}
-
-
+    }
 
 
 

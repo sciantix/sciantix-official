@@ -17,6 +17,7 @@
 #ifndef GAS_DIFFUSION_H
 #define GAS_DIFFUSION_H
 
+
 #include "Simulation.h"
 
 /**
@@ -58,7 +59,7 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
  * @author MDG
  * 
  */
-void defineDiffusionColumnarGrains(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
+void defineDiffusionColumnarGrains(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes, Eigen::MatrixXd &old_sol_RB);
 
 
 /**

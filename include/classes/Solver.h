@@ -22,6 +22,10 @@
 #include <cmath>
 #include "InputVariable.h"
 #include "H5Cpp.h"
+#include <Eigen/Dense>
+#include <unsupported/Eigen/CXX11/Tensor> //Alternariva a Eigen/Tensor
+//#include <Eigen/Tensor> non funzionava, brew eigen non presenta Tensor
+
 
 /**
  * @brief Class providing solver methods for the SCIANTIX simulation framework.
@@ -241,7 +245,7 @@ public:
      */
     double NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment);
 
-    double ROM_cylinder(double *initial_condition, std::vector<double> parameter, double increment);
+    double ROM_cylinder(double *initial_condition, std::vector<double> parameter, double increment, Eigen::MatrixXd &old_sol_RB);
 
 
     /**

@@ -24,9 +24,11 @@ project(sciantix)
 
 # Trova la libreria HDF5
 find_package(HDF5 REQUIRED COMPONENTS C CXX)
+find_package(Eigen3 REQUIRED)
 
 # Aggiungi include directories per HDF5
 include_directories(${HDF5_INCLUDE_DIRS})
+include_directories(${EIGEN3_INCLUDE_DIR})
 
 # Function to add all subdirectories of a given path to include directories
 function(add_subdirectory_includes root_dir)
