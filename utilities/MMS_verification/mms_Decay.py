@@ -1,9 +1,9 @@
 """
 This script performs the numerical verification via method of manufactured solution (MMS) of the
-SCIANTIX solver "NewtonBlackburn"
+SCIANTIX solver "Decay"
 
 Author: G. Zullo
-Ref: Oberkampf , W. L., Trucano , T. G., and Hirsch , C. (December 21, 2004). "Verification, validation, and predictive capability in computational engineering and physics." ASME. Appl. Mech. Rev. September 2004; 57(5): 345–384. https://doi.org/10.1115/1.1767847
+Ref: Oberkampf , W. L., Trucano , T. G., and Hirsch , C. (December 21, 2004). "Verification, validation, and predictive capability in computational engineering and physics." ASME. Appl. Mech. Rev. September 2004; 57(5): 345-384. https://doi.org/10.1115/1.1767847
 
 """
 

@@ -1,0 +1,6 @@
+cd "${0%/*}" || exit 1
+
+rm -r build
+rm -r obj
+
+find . -type f -name '*:Zone.Identifier' -exec rm -f {} \;
