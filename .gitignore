@@ -38,6 +38,9 @@
 # Mac OS files
 *.DS_Store
 
+#doxygen
+latex
+
 # Folders
 bin/
 obj/
