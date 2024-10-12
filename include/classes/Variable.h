@@ -44,19 +44,11 @@ public:
      */
     ~Variable() { }
 
-    /**
-     * @brief Sets the name of the entity.
-     * @param n The new name to be set for the entity.
-     */
     void setName(std::string n)
     {
         name = n;
     }
 
-    /**
-     * @brief Retrieves the name of the entity.
-     * @return A string that is the current name of the entity.
-     */
     std::string getName()
     {
         return name;

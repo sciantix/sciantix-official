@@ -20,7 +20,6 @@
 
 Simulation* Simulation::instance = nullptr;
 
-
 Simulation* Simulation::getInstance()
 {
     if (instance == nullptr)

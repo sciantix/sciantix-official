@@ -1,8 +1,9 @@
 #include "attributesbind.h"
-
+#include "MainVariables.h"
+#include "Simulation.h"
 
 void init_attributes(py::module_ &m) {
-    
+    // Main variables
     m.attr("Time_step_number") = &Time_step_number;
     m.attr("Time_h") = &Time_h;
     m.attr("dTime_h") = &dTime_h;
@@ -19,19 +20,13 @@ void init_attributes(py::module_ &m) {
 
     m.attr("Input_history_points") = &Input_history_points;
 
-
+    // Time input variables
     m.attr("Time_input") = py::cast(Time_input);
     m.attr("Temperature_input") = py::cast(Temperature_input);
     m.attr("Fissionrate_input") = py::cast(Fissionrate_input);
     m.attr("Hydrostaticstress_input") = py::cast(Hydrostaticstress_input);
     m.attr("Steampressure_input") = py::cast(Steampressure_input);
 
-    m.attr("history_variable") = &history_variable;
-    m.attr("sciantix_variable") = &sciantix_variable;
-    m.attr("sciantix_system") = &sciantix_system;
-    m.attr("physics_variable") = &physics_variable;
-    m.attr("model") = &model;
-    m.attr("material") = &material;
-    m.attr("gas") = &gas;
-    m.attr("matrix") = &matrix;
+    // Access Simulation instance to get variable references
+    Simulation* simInstance = Simulation::getInstance();
 }

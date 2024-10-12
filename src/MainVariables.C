@@ -45,3 +45,24 @@ std::vector<double> Temperature_input(1000, 0.0);
 std::vector<double> Fissionrate_input(1000, 0.0);
 std::vector<double> Hydrostaticstress_input(1000, 0.0);
 std::vector<double> Steampressure_input(1000, 0.0);
+
+
+double* getSciantixVariablesArray() {
+    return Sciantix_variables;  // Assuming Sciantix_variables is defined in MainVariables.h
+}
+
+double* getSciantixHistoryArray() {
+    return Sciantix_history;  // Assuming Sciantix_history is defined in MainVariables.h
+}
+
+double* getSciantixDiffusionModesArray() {
+    return Sciantix_diffusion_modes;  // Assuming Sciantix_diffusion_modes is defined in MainVariables.h
+}
+
+double* getSciantixScalingFactorsArray() {
+    return Sciantix_scaling_factors;  // Assuming Sciantix_scaling_factors is defined in MainVariables.h
+}
+
+int* getSciantixOptionsArray() {
+    return Sciantix_options;  // Assuming Sciantix_options is defined in MainVariables.h
+}
