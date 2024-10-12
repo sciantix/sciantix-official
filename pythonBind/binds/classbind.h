@@ -5,17 +5,15 @@
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
 
-#include "HistoryVariable.h"
 #include "SciantixVariable.h"
 #include "InputVariable.h"
 #include "System.h"
 #include "Model.h"
-#include "Entity.h"
 #include "Matrix.h"
 #include "Material.h"
 #include "Solver.h"
 #include "Simulation.h"
-#include "PhysicsVariable.h"
+#include "SciantixArray.h"
 
 namespace py = pybind11;
 
@@ -25,4 +23,4 @@ namespace py = pybind11;
  */
 void init_classes(py::module_ &m);
 
-#endif // CLASSES_H
+#endif

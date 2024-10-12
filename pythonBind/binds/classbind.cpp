@@ -1,46 +1,74 @@
-
 #include "classbind.h"
 
-void init_classes(py::module_ &m) {
-    
+void init_classes(py::module_ &m)
+{
     // --- all the classes : --- //
-    py::class_<Entity>(m, "Entity")
-        .def(py::init<>())
-        .def("getReference", &Entity::getRef)
-        .def("getName", &Entity::getName)
-        .def("setReference", &Entity::setRef, py::arg("n"))
-        .def("setName", &Entity::setName, py::arg("n"));
+    py::class_<SciantixVariable>(m, "SciantixVariable")
+        .def(py::init<std::string, std::string, double, double, bool>(), 
+             "Create a SciantixVariable",
+             py::arg("name"), py::arg("uom"), py::arg("initial_value"), 
+             py::arg("final_value"), py::arg("output"))
+        .def("rescaleInitialValue", &SciantixVariable::rescaleInitialValue)
+        .def("rescaleFinalValue", &SciantixVariable::rescaleFinalValue)
+        .def("addValue", &SciantixVariable::addValue)
+        .def("setUOM", &SciantixVariable::setUOM)
+        .def("getUOM", &SciantixVariable::getUOM)
+        .def("setConstant", &SciantixVariable::setConstant)
+        .def("resetValue", &SciantixVariable::resetValue)
+        .def("setFinalValue", &SciantixVariable::setFinalValue)
+        .def("setInitialValue", &SciantixVariable::setInitialValue)
+        .def("getFinalValue", &SciantixVariable::getFinalValue)
+        .def("getInitialValue", &SciantixVariable::getInitialValue)
+        .def("getIncrement", &SciantixVariable::getIncrement)
+        .def("setOutput", &SciantixVariable::setOutput)
+        .def("getOutput", &SciantixVariable::getOutput);
 
-    py::class_<Material, Entity>(m, "Material")
+    // Bind SciantixArray
+    py::class_<SciantixArray<SciantixVariable>>(m, "SciantixArray")
+        .def(py::init<>())
+        .def("push", &SciantixArray<SciantixVariable>::push)
+        .def("clear", &SciantixArray<SciantixVariable>::clear)
+        .def("empty", &SciantixArray<SciantixVariable>::empty)
+        .def("__getitem__", [](SciantixArray<SciantixVariable>& array, const std::string& name) {
+            return array[name]; // Use the name to get the variable
+        })
+        .def("__getitem__", [](SciantixArray<SciantixVariable>& array, int index) {
+            return array[index]; // Use the index to get the variable
+        })
+        .def("isElementPresent", &SciantixArray<SciantixVariable>::isElementPresent)
+        .def("begin", [](SciantixArray<SciantixVariable>& array) {
+            return array.begin(); // Adjust if the return type is a complex iterator
+        });
+
+    py::class_<Material>(m, "Material")
         .def(py::init<>());
-
+    
     py::class_<Matrix, Material>(m, "Matrix")
-        .def(py::init<>())
-        .def("setTheoreticalDensity", &Matrix::setTheoreticalDensity, py::arg("m"))
+        .def("setTheoreticalDensity", &Matrix::setTheoreticalDensity)
         .def("getTheoreticalDensity", &Matrix::getTheoreticalDensity)
-        .def("setLatticeParameter", &Matrix::setLatticeParameter, py::arg("m"))
+        .def("setLatticeParameter", &Matrix::setLatticeParameter)
         .def("getLatticeParameter", &Matrix::getLatticeParameter)
-        .def("setSurfaceTension", &Matrix::setSurfaceTension, py::arg("r"))
+        .def("setSurfaceTension", &Matrix::setSurfaceTension)
         .def("getSurfaceTension", &Matrix::getSurfaceTension)
-        .def("setSchottkyVolume", &Matrix::setSchottkyVolume, py::arg("v"))
+        .def("setSchottkyVolume", &Matrix::setSchottkyVolume)
         .def("getSchottkyVolume", &Matrix::getSchottkyVolume)
-        .def("setOIS", &Matrix::setOIS, py::arg("v"))
-        .def("getOIS", &Matrix::getOIS)
+        .def("setOctahedralInterstitialSite", &Matrix::setOctahedralInterstitialSite)
+        .def("getOctahedralInterstitialSite", &Matrix::getOctahedralInterstitialSite)
         .def("setGrainBoundaryMobility", &Matrix::setGrainBoundaryMobility)
         .def("getGrainBoundaryMobility", &Matrix::getGrainBoundaryMobility)
-        .def("setFFrange", &Matrix::setFFrange, py::arg("r"))
-        .def("getFFrange", &Matrix::getFFrange)
-        .def("setFFinfluenceRadius", &Matrix::setFFinfluenceRadius, py::arg("r"))
-        .def("getFFinfluenceRadius", &Matrix::getFFinfluenceRadius)
-        .def("setSemidihedralAngle", &Matrix::setSemidihedralAngle, py::arg("sda"))
+        .def("setFissionFragmentRange", &Matrix::setFissionFragmentRange)
+        .def("getFissionFragmentRange", &Matrix::getFissionFragmentRange)
+        .def("setFissionFragmentInfluenceRadius", &Matrix::setFissionFragmentInfluenceRadius)
+        .def("getFissionFragmentInfluenceRadius", &Matrix::getFissionFragmentInfluenceRadius)
+        .def("setSemidihedralAngle", &Matrix::setSemidihedralAngle)
         .def("getSemidihedralAngle", &Matrix::getSemidihedralAngle)
-        .def("setGrainBoundaryThickness", &Matrix::setGrainBoundaryThickness, py::arg("gbt"))
+        .def("setGrainBoundaryThickness", &Matrix::setGrainBoundaryThickness)
         .def("getGrainBoundaryThickness", &Matrix::getGrainBoundaryThickness)
-        .def("setGrainBoundaryVacancyDiffusivity", &Matrix::setGrainBoundaryVacancyDiffusivity, py::arg("inpput_value"))
+        .def("setGrainBoundaryVacancyDiffusivity", &Matrix::setGrainBoundaryVacancyDiffusivity)
         .def("getGrainBoundaryVacancyDiffusivity", &Matrix::getGrainBoundaryVacancyDiffusivity)
-        .def("setLenticularShapeFactor", &Matrix::setLenticularShapeFactor, py::arg("lsf"))
+        .def("setLenticularShapeFactor", &Matrix::setLenticularShapeFactor)
         .def("getLenticularShapeFactor", &Matrix::getLenticularShapeFactor)
-        .def("setNucleationRate", &Matrix::setNucleationRate, py::arg("n"))
+        .def("setNucleationRate", &Matrix::setNucleationRate)
         .def("getNucleationRate", &Matrix::getNucleationRate)
         .def("setPoreNucleationRate", &Matrix::setPoreNucleationRate)
         .def("getPoreNucleationRate", &Matrix::getPoreNucleationRate)
@@ -48,9 +76,9 @@ void init_classes(py::module_ &m) {
         .def("getPoreResolutionRate", &Matrix::getPoreResolutionRate)
         .def("setPoreTrappingRate", &Matrix::setPoreTrappingRate)
         .def("getPoreTrappingRate", &Matrix::getPoreTrappingRate)
-        .def("setGrainRadius", &Matrix::setGrainRadius, py::arg("gr"))
+        .def("setGrainRadius", &Matrix::setGrainRadius)
         .def("getGrainRadius", &Matrix::getGrainRadius)
-        .def("setHealingTemperatureThreshold", &Matrix::setHealingTemperatureThreshold, py::arg("t"))
+        .def("setHealingTemperatureThreshold", &Matrix::setHealingTemperatureThreshold)
         .def("getHealingTemperatureThreshold", &Matrix::getHealingTemperatureThreshold);
 
     py::class_<Gas>(m, "Gas")
@@ -66,64 +94,44 @@ void init_classes(py::module_ &m) {
         .def("getPrecursorFactor", &Gas::getPrecursorFactor)
         .def("setPrecursorFactor", &Gas::setPrecursorFactor, py::arg("h"));
 
-    py::class_<System, Matrix, Gas>(m, "System")
+    py::class_<System, Material>(m, "System")
         .def(py::init<>())
-        .def("setRestructuredMatrix", &System::setRestructuredMatrix, py::arg("value"))
+        .def("setRestructuredMatrix", &System::setRestructuredMatrix)
         .def("getRestructuredMatrix", &System::getRestructuredMatrix)
-        .def("setYield", &System::setYield, py::arg("yield"))
+        .def("setYield", &System::setYield)
         .def("getYield", &System::getYield)
-        .def("setRadiusInLattice", &System::setRadiusInLattice, py::arg("radius"))
+        .def("setRadiusInLattice", &System::setRadiusInLattice)
         .def("getRadiusInLattice", &System::getRadiusInLattice)
-        .def("setGasName", &System::setGasName, py::arg("name"))
+        .def("getGas", &System::getGas)
         .def("getGasName", &System::getGasName)
-        .def("setMatrixName", &System::setMatrixName, py::arg("name"))
+        .def("setMatrix", &System::setMatrix)
+        .def("getMatrix", &System::getMatrix)
         .def("getMatrixName", &System::getMatrixName)
         .def("getVolumeInLattice", &System::getVolumeInLattice)
-        .def("setVolumeInLattice", &System::setVolumeInLattice, py::arg("volume"))
-        .def("setBubbleDiffusivity", &System::setBubbleDiffusivity, py::arg("input_value"))
+        .def("setVolumeInLattice", &System::setVolumeInLattice)
+        .def("setBubbleDiffusivity", &System::setBubbleDiffusivity)
         .def("getBubbleDiffusivity", &System::getBubbleDiffusivity)
-        .def("setHeliumDiffusivity", &System::setHeliumDiffusivity, py::arg("input_value"))
+        .def("setHeliumDiffusivity", &System::setHeliumDiffusivity)
         .def("getHeliumDiffusivity", &System::getHeliumDiffusivity)
-        .def("setFissionGasDiffusivity", &System::setFissionGasDiffusivity, py::arg("input_value"))
+        .def("setFissionGasDiffusivity", &System::setFissionGasDiffusivity)
         .def("getFissionGasDiffusivity", &System::getFissionGasDiffusivity)
-        .def("setHenryConstant", &System::setHenryConstant, py::arg("constant"))
+        .def("setHenryConstant", &System::setHenryConstant)
         .def("getHenryConstant", &System::getHenryConstant)
-        .def("setResolutionRate", &System::setResolutionRate, py::arg("input_value"))
+        .def("setResolutionRate", &System::setResolutionRate)
         .def("getResolutionRate", &System::getResolutionRate)
-        .def("setTrappingRate", &System::setTrappingRate, py::arg("input_value"))
+        .def("setTrappingRate", &System::setTrappingRate)
         .def("getTrappingRate", &System::getTrappingRate)
-        .def("setNucleationRate", &System::setNucleationRate, py::arg("input_value"))
+        .def("setNucleationRate", &System::setNucleationRate)
         .def("getNucleationRate", &System::getNucleationRate)
-        .def("setPoreNucleationRate", &System::setPoreNucleationRate, py::arg("rate"))
+        .def("setPoreNucleationRate", &System::setPoreNucleationRate)
         .def("getPoreNucleationRate", &System::getPoreNucleationRate)
-        .def("setProductionRate", &System::setProductionRate, py::arg("input_value"))
+        .def("setProductionRate", &System::setProductionRate)
         .def("getProductionRate", &System::getProductionRate);
 
-    py::class_<Variable, Entity>(m, "Variable")
-        .def(py::init<>());
-
-    py::class_<PhysicsVariable, Variable>(m, "PhysicsVariable")
+    py::class_<Variable>(m, "Variable")
         .def(py::init<>())
-        .def("rescaleInitialValue", &PhysicsVariable::rescaleInitialValue, py::arg("factor"))
-        .def("rescaleFinalValue", &PhysicsVariable::rescaleFinalValue, py::arg("factor"))
-        .def("add_value", &PhysicsVariable::addValue, py::arg("v"))
-        .def("set_uom", &PhysicsVariable::setUOM, py::arg("s"))
-        .def("get_uom", &PhysicsVariable::getUOM)
-        .def("set_constant", &PhysicsVariable::setConstant)
-        .def("reset_value", &PhysicsVariable::resetValue)
-        .def("set_final_value", &PhysicsVariable::setFinalValue, py::arg("FinalValue"))
-        .def("get_final_value", &PhysicsVariable::getFinalValue)
-        .def("set_initial_value", &PhysicsVariable::setInitialValue, py::arg("InitialValue"))
-        .def("get_initial_value", &PhysicsVariable::getInitialValue)
-        .def("get_increment", &PhysicsVariable::getIncrement)
-        .def("set_output", &PhysicsVariable::setOutput, py::arg("io"))
-        .def("get_output", &PhysicsVariable::getOutput);
-
-    py::class_<HistoryVariable, PhysicsVariable>(m, "HistoryVariable")
-        .def(py::init<>());
-
-    py::class_<SciantixVariable, PhysicsVariable>(m, "SciantixVariable")
-        .def(py::init<>());
+        .def("setName", &Variable::setName)
+        .def("getName", &Variable::getName);
 
     py::class_<InputVariable, Variable>(m, "InputVariable")
         .def(py::init<>())
@@ -136,7 +144,7 @@ void init_classes(py::module_ &m) {
         .def("LimitedGrowth", &Solver::LimitedGrowth, py::arg("initial_value"), py::arg("parameter"), py::arg("increment"))
         .def("Decay", &Solver::Decay, py::arg("initial_condition"), py::arg("decay_rate"), py::arg("source_term"), py::arg("increment"))
         .def("BinaryInteraction", &Solver::BinaryInteraction, py::arg("initial_condition"), py::arg("interaction_coefficient"), py::arg("increment"))
-        .def("BinaryInteractionVerification", &Solver::BinaryInteractionVerification, py::arg("initial_condition"), py::arg("interaction_coefficient"), py::arg("increment"), py::arg("mode"))
+        // .def("BinaryInteractionVerification", &Solver::BinaryInteractionVerification, py::arg("initial_condition"), py::arg("interaction_coefficient"), py::arg("increment"), py::arg("mode"))
         .def("SpectralDiffusion", &Solver::SpectralDiffusion, py::arg("initial_condition"), py::arg("parameter"), py::arg("increment"))
         .def("dotProduct1D", &Solver::dotProduct1D, py::arg("u"), py::arg("v"), py::arg("n"))
         .def("dotProduct2D", &Solver::dotProduct2D, py::arg("A"), py::arg("v"), py::arg("n_rows"), py::arg("n_col"), py::arg("result"))
@@ -151,22 +159,16 @@ void init_classes(py::module_ &m) {
         .def("NewtonBlackburn", &Solver::NewtonBlackburn, py::arg("parameter"))
         .def("NewtonLangmuirBasedModel", &Solver::NewtonLangmuirBasedModel, py::arg("initial_value"), py::arg("parameter"), py::arg("increment"));
 
-    py::class_<Model, InputVariable, SciantixVariable, HistoryVariable, System>(m, "Model")
-        .def(py::init<>())
-        .def("setParameter", &Model::setParameter,
-            py::arg("p"))
-        .def("getParameter", &Model::getParameter);
-
-    py::class_<Simulation, Model, Solver>(m, "Simulation")
-        .def(py::init<>())
+    py::class_<Simulation>(m, "Simulation")
+        .def_static("getInstance", &Simulation::getInstance, "Gets the singleton instance of Simulation")
         .def("Burnup", &Simulation::Burnup, "Computes the fuel burnup from the local power density.")
         .def("EffectiveBurnup", &Simulation::EffectiveBurnup, "Computes the effective burnup of the fuel.")
         .def("GasProduction", &Simulation::GasProduction, "Computes the gas produced from the production rate.")
         .def("GasDecay", &Simulation::GasDecay, "Computes the decay of gases.")
         .def("GasDiffusion", &Simulation::GasDiffusion, "Computes gas diffusion based on selected models and conditions.")
         .def("GrainGrowth", &Simulation::GrainGrowth, "Calculates grain growth in materials.")
-        .def("IntraGranularBubbleBehaviour", &Simulation::IntraGranularBubbleBehaviour, "Simulates the behavior of intragranular bubbles.")
-        .def("InterGranularBubbleBehaviour", &Simulation::InterGranularBubbleBehaviour, "Simulates the behavior of intergranular bubbles.")
+        .def("IntraGranularBubbleBehavior", &Simulation::IntraGranularBubbleBehavior, "Simulates the behavior of intragranular bubbles.")
+        .def("InterGranularBubbleBehavior", &Simulation::InterGranularBubbleBehavior, "Simulates the behavior of intergranular bubbles.")
         .def("GrainBoundarySweeping", &Simulation::GrainBoundarySweeping, "Processes grain boundary sweeping.")
         .def("GrainBoundaryMicroCracking", &Simulation::GrainBoundaryMicroCracking, "Handles grain boundary microcracking induced by temperature changes.")
         .def("GrainBoundaryVenting", &Simulation::GrainBoundaryVenting, "Processes grain boundary venting.")
@@ -176,6 +178,13 @@ void init_classes(py::module_ &m) {
         .def("UO2Thermochemistry", &Simulation::UO2Thermochemistry, "Manages UO2 thermochemical processes.")
         .def("getDiffusionModes", &Simulation::getDiffusionModes, py::arg("gas_name"), "Returns a pointer to the array of diffusion modes for a specified gas.")
         .def("getDiffusionModesSolution", &Simulation::getDiffusionModesSolution, py::arg("gas_name"), "Returns a pointer to the array of solution diffusion modes for a specified gas.")
-        .def("getDiffusionModesBubbles", &Simulation::getDiffusionModesBubbles, py::arg("gas_name"), "Returns a pointer to the array of bubble diffusion modes for a specified gas.");
-    
+        .def("getDiffusionModesBubbles", &Simulation::getDiffusionModesBubbles, py::arg("gas_name"), "Returns a pointer to the array of bubble diffusion modes for a specified gas.")
+        .def("getHistoryVariable", &Simulation::getHistoryVariable, py::return_value_policy::reference)
+        .def("getSciantixVariable", &Simulation::getSciantixVariable, py::return_value_policy::reference)
+        .def("getPhysicsVariable", &Simulation::getPhysicsVariable, py::return_value_policy::reference)
+        .def("getModel", &Simulation::getModel, py::return_value_policy::reference)
+        .def("getSciantixSystem", &Simulation::getSciantixSystem, py::return_value_policy::reference)
+        .def("getMatrices", &Simulation::getMatrices, py::return_value_policy::reference)
+        .def("getGas", &Simulation::getGas, py::return_value_policy::reference);
 }
+

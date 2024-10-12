@@ -1,174 +1,58 @@
 #include "functionbind.h"
 
-// --- all the clears ---//
-void clearHistoryVariable(){
-    history_variable.clear();
-};
-void clearSciantixVariable(){
-    sciantix_variable.clear();
-};
-void clearSystem(){
-    sciantix_system.clear();
-};
-void clearPhysicsVariable(){
-    physics_variable.clear();
-};
-void clearModel(){
-    model.clear();
-};
-void clearMaterial(){
-    material.clear();
-};
-void clearGas(){
-    gas.clear();
-};
-void clearMatrix(){
-    matrix.clear();
-};
-
 // --- getters --- //
-py::array_t<double> getVariablesInArray_double()
-{
-    double *Sciantix_variables = getSciantixVariables();
+py::array_t<double> getVariablesInArray_double() {
+    double *Sciantix_variables = getSciantixVariablesArray();
     return py::array_t<double>({300}, Sciantix_variables);
 }
-py::array_t<double> getHistoryInArray_double()
-{
-    double *Sciantix_history = getSciantixHistory();
+
+py::array_t<double> getHistoryInArray_double() {
+    double *Sciantix_history = getSciantixHistoryArray();
     return py::array_t<double>({20}, Sciantix_history);
 }
-py::array_t<double> getDiffusionModesInArray_double()
-{
-    double *Sciantix_diffusion_modes = getSciantixDiffusionModes();
-    return py::array_t<double>({1000}, Sciantix_diffusion_modes);
+
+py::array_t<double> getDiffusionModesInArray_double() {
+    double *Sciantix_diffusion_modes = getSciantixDiffusionModesArray();
+    return py::array_t<double>({720}, Sciantix_diffusion_modes);
 }
-py::array_t<double> getScalingFactorsInArray_double()
-{
-    double *Sciantix_scaling_factors = getSciantixScalingFactors();
+
+py::array_t<double> getScalingFactorsInArray_double() {
+    double *Sciantix_scaling_factors = getSciantixScalingFactorsArray();
     return py::array_t<double>({10}, Sciantix_scaling_factors);
 }
-py::array_t<int> getOptionsInArray_int()
-{
-    int *Sciantix_options = getSciantixOptions();
+
+py::array_t<int> getOptionsInArray_int() {
+    int *Sciantix_options = getSciantixOptionsArray();
     return py::array_t<int>({40}, Sciantix_options);
 }
 
-int getSciantixInputHistoryPointsConversion()
-{
-    return getSciantixInputHistoryPoints();
-}
+// void SetVariablesConversion(py::array_t<int> Sciantix_options, 
+//                             py::array_t<double> Sciantix_history, 
+//                             py::array_t<double> Sciantix_variables, 
+//                             py::array_t<double> Sciantix_scaling_factors, 
+//                             py::array_t<double> Sciantix_diffusion_modes)
+// {
+//     // Ensure the input arrays are contiguous and have the correct data type
+//     auto options_buf = Sciantix_options.request();
+//     auto history_buf = Sciantix_history.request();
+//     auto variables_buf = Sciantix_variables.request();
+//     auto scaling_factors_buf = Sciantix_scaling_factors.request();
+//     auto diffusion_modes_buf = Sciantix_diffusion_modes.request();
 
-long long int getSciantixTimeStepNumberConversion()
-{
-    return getSciantixTimeStepNumber();
-}
+//     if (options_buf.ndim != 1 || history_buf.ndim != 1 || variables_buf.ndim != 1 ||
+//         scaling_factors_buf.ndim != 1 || diffusion_modes_buf.ndim != 1) {
+//         throw std::runtime_error("Number of dimensions must be one");
+//     }
 
-double getSciantixTimeHConversion()
-{
-    return getSciantixTimeH();
-}
-double getSciantixDTimeHConversion()
-{
-    return getSciantixDTimeH();
-}
-double getSciantixTimeEndHConversion()
-{
-    return getSciantixTimeEndH();
-}
-double getSciantixTimeSConversion()
-{
-    return getSciantixTimeS();
-}
+//     int *options_ptr = static_cast<int *>(options_buf.ptr);
+//     double *history_ptr = static_cast<double *>(history_buf.ptr);
+//     double *variables_ptr = static_cast<double *>(variables_buf.ptr);
+//     double *scaling_factors_ptr = static_cast<double *>(scaling_factors_buf.ptr);
+//     double *diffusion_modes_ptr = static_cast<double *>(diffusion_modes_buf.ptr);
 
-std::vector<double> &getSciantixTimeInputConversion()
-{
-    return getSciantixTimeInput();
-}
-std::vector<double> &getSciantixTemperatureInputConversion()
-{
-    return getSciantixTemperatureInput();
-}
-std::vector<double> &getSciantixFissionrateInputConversion()
-{
-    return getSciantixFissionrateInput();
-}
-std::vector<double> &getSciantixHydrostaticstressInputConversion()
-{
-    return getSciantixHydrostaticstressInput();
-}
-std::vector<double> &getSciantixSteampressureInputConversion()
-{
-    return getSciantixSteampressureInput();
-}
-
-std::vector<HistoryVariable> &getHistoryVariableConv()
-{
-    return getHistoryVariable();
-}
-
-std::vector<SciantixVariable> &getSciantixVariableConv()
-{
-    return getSciantixVariable();
-}
-
-std::vector<System> &getSystemConv()
-{
-    return getSystem();
-}
-
-std::vector<PhysicsVariable> &getPhysicsVariableConv()
-{
-    return getPhysicsVariable();
-}
-
-std::vector<Model> &getModelConv()
-{
-    return getModel();
-}
-
-std::vector<Material> &getMaterialConv()
-{
-    return getMaterial();
-}
-
-std::vector<Gas> &getGasConv()
-{
-    return getGas();
-}
-
-std::vector<Matrix> &getMatrixConv()
-{
-    return getMatrix();
-}
-
-
-void SetVariablesConversion(py::array_t<int> Sciantix_options, 
-                            py::array_t<double> Sciantix_history, 
-                            py::array_t<double> Sciantix_variables, 
-                            py::array_t<double> Sciantix_scaling_factors, 
-                            py::array_t<double> Sciantix_diffusion_modes)
-{
-    // Ensure the input arrays are contiguous and have the correct data type
-    auto options_buf = Sciantix_options.request();
-    auto history_buf = Sciantix_history.request();
-    auto variables_buf = Sciantix_variables.request();
-    auto scaling_factors_buf = Sciantix_scaling_factors.request();
-    auto diffusion_modes_buf = Sciantix_diffusion_modes.request();
-
-    if (options_buf.ndim != 1 || history_buf.ndim != 1 || variables_buf.ndim != 1 ||
-        scaling_factors_buf.ndim != 1 || diffusion_modes_buf.ndim != 1) {
-        throw std::runtime_error("Number of dimensions must be one");
-    }
-
-    int *options_ptr = static_cast<int *>(options_buf.ptr);
-    double *history_ptr = static_cast<double *>(history_buf.ptr);
-    double *variables_ptr = static_cast<double *>(variables_buf.ptr);
-    double *scaling_factors_ptr = static_cast<double *>(scaling_factors_buf.ptr);
-    double *diffusion_modes_ptr = static_cast<double *>(diffusion_modes_buf.ptr);
-
-    // Call the C++ function with the converted pointers
-    SetVariables(options_ptr, history_ptr, variables_ptr, scaling_factors_ptr, diffusion_modes_ptr);
-}
+//     // Call the C++ function with the converted pointers
+//     SetVariables(options_ptr, history_ptr, variables_ptr, scaling_factors_ptr, diffusion_modes_ptr);
+// }
 
 void UpdateVariablesConversion(py::array_t<double> Sciantix_variables, py::array_t<double> Sciantix_diffusion_modes)
 {
@@ -190,73 +74,192 @@ void UpdateVariablesConversion(py::array_t<double> Sciantix_variables, py::array
 }
 
 
+Matrix convertToMatrix(const pybind11::array_t<double>& array) {
+    auto buf = array.unchecked<2>();
+    size_t rows = buf.shape(0);
+    size_t cols = buf.shape(1);
+    Matrix mat;
+    return mat;
+}
+
 void init_functions(py::module_ &m) {
 
-    m.def("SetVariables", &SetVariablesConversion,
-            py::arg("Sciantix_options"),
-            py::arg("Sciantix_history"),
-            py::arg("Sciantix_variables"),
-            py::arg("Sciantix_scaling_factors"),
-            py::arg("Sciantix_diffusion_modes"));
-    m.def("setTestPath", &setTestPath, py::arg("path") );
-    m.def("getVariablesInArray_double", &getVariablesInArray_double);
-    m.def("getHistoryInArray_double", &getHistoryInArray_double);
-    m.def("getDiffusionModesInArray_double", &getDiffusionModesInArray_double);
-    m.def("getScalingFactorsInArray_double", &getScalingFactorsInArray_double);
-    m.def("getOptionsInArray_int", &getOptionsInArray_int);
-    m.def("getSciantixInputHistoryPointsConversion", &getSciantixInputHistoryPointsConversion);
-    m.def("getSciantixTimeStepNumberConversion", &getSciantixTimeStepNumberConversion);
-    m.def("getSciantixTimeHConversion", &getSciantixTimeHConversion);
-    m.def("getSciantixDTimeHConversion", &getSciantixDTimeHConversion);
-    m.def("getSciantixTimeEndHConversion", &getSciantixTimeEndHConversion);
-    m.def("getSciantixTimeSConversion", &getSciantixTimeSConversion);
-    m.def("getSciantixTimeInputConversion", &getSciantixTimeInputConversion, py::return_value_policy::reference_internal);
-    m.def("getSciantixTemperatureInputConversion", &getSciantixTemperatureInputConversion, py::return_value_policy::reference_internal);
-    m.def("getSciantixFissionrateInputConversion", &getSciantixFissionrateInputConversion, py::return_value_policy::reference_internal);
-    m.def("getSciantixHydrostaticstressInputConversion", &getSciantixHydrostaticstressInputConversion, py::return_value_policy::reference_internal);
-    m.def("getSciantixSteampressureInputConversion", &getSciantixSteampressureInputConversion, py::return_value_policy::reference_internal);
-    m.def("setHistory", &setSciantixHistory, py::arg("index"), py::arg("value"));
-    m.def("setHistoryFull", &setSciantixHist, py::arg("sciantix"));
-    m.def("setSciantixDTimeH", &setSciantixDTimeH, py::arg("value"));
-    m.def("setSciantixTimeStepNumber", &setSciantixTimeStepNumber, py::arg("value"));
-    m.def("setSciantixTimeH", &setSciantixTimeH, py::arg("value"));
-    m.def("setSciantixTimeS", &setSciantixTimeS, py::arg("value"));
+    // Define the setTestPath function
+    m.def("setTestPath", [](const std::string& path) {
+        TestPath = path; // Set the global TestPath variable
+    }, "Set the TestPath variable.");
 
-    m.def("clearHistoryVariable", &clearHistoryVariable );
-    m.def("clearSciantixVariable", &clearSciantixVariable );
-    m.def("clearSystem", &clearSystem );
-    m.def("clearPhysicsVariable", &clearPhysicsVariable );
-    m.def("clearModel", &clearModel );
-    m.def("clearMaterial", &clearMaterial );
-    m.def("clearGas", &clearGas );
-    m.def("clearMatrix", &clearMatrix );
+    // Define the getTestPath function
+    m.def("getTestPath", []() {
+        return TestPath; // Return the current TestPath variable
+    }, "Get the TestPath variable.");
+
+    Simulation* sim_instance = Simulation::getInstance();
+
+    m.def("setSystem", [sim_instance]() {  // Capture sim_instance by value
+        // Access the singleton instance of Simulation
+        if (sim_instance) {
+            sim_instance->setSystem();  // Call the setSystem method on the singleton instance
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    // m.def("SetVariables", &SetVariablesConversion,
+    //         py::arg("Sciantix_options"),
+    //         py::arg("Sciantix_history"),
+    //         py::arg("Sciantix_variables"),
+    //         py::arg("Sciantix_scaling_factors"),
+    //         py::arg("Sciantix_diffusion_modes"));
+
+    m.def("setMatrix", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->setMatrix();
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("setGas", [sim_instance]() {
+        Simulation* sim_instance = Simulation::getInstance();
+        if (sim_instance) {
+            sim_instance->setGas();
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("Burnup", [&sim_instance]() {sim_instance->Burnup();}, "Calculates the burnup.");
 
 
-    m.def("SetGas", &SetGas);
-    m.def("SetMatrix", &SetMatrix);
-    m.def("SetSystem", &SetSystem);
-    m.def("Burnup", &Burnup);
-    m.def("EffectiveBurnup", &EffectiveBurnup);
-    m.def("EnvironmentComposition", &EnvironmentComposition);
-    m.def("UO2Thermochemistry", &UO2Thermochemistry);
-    m.def("StoichiometryDeviation", &StoichiometryDeviation);
-    m.def("HighBurnupStructureFormation", &HighBurnupStructureFormation);
-    m.def("HighBurnupStructurePorosity", &HighBurnupStructurePorosity);
-    m.def("GrainGrowth", &GrainGrowth);
-    m.def("GrainBoundarySweeping", &GrainBoundarySweeping);
-    m.def("GasProduction", &GasProduction);
-    m.def("IntraGranularBubbleEvolution", &IntraGranularBubbleEvolution);
-    m.def("GasDiffusion", &GasDiffusion);
-    m.def("GrainBoundaryMicroCracking", &GrainBoundaryMicroCracking);
-    m.def("GrainBoundaryVenting", &GrainBoundaryVenting);
-    m.def("InterGranularBubbleEvolution", &InterGranularBubbleEvolution);
-    m.def("FiguresOfMerit", &FiguresOfMerit);
-    m.def("UpdateVariables", &UpdateVariables);
-        // py::arg("Sciantix_variables"),
-        // py::arg("Sciantix_diffusion_modes"));
-    m.def("Output", &Output);
-    m.def("MapModel", &MapModel);
-    m.def("InputReading", &InputReading);
+    m.def("EffectiveBurnup", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->EffectiveBurnup();  // Call the member function
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("GapPartialPressure", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->GapPartialPressure();  // Call the member function
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("UO2Thermochemistry", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->UO2Thermochemistry();  // Call the member function
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("StoichiometryDeviation", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->StoichiometryDeviation();  // Call the member function
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("HighBurnupStructureFormation", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->HighBurnupStructureFormation();  // Call the member function
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("HighBurnupStructurePorosity", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->HighBurnupStructurePorosity();  // Call the member function
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("GrainGrowth", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->GrainGrowth();  // Call the member function
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("GrainBoundarySweeping", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->GrainBoundarySweeping();  // Call the member function
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("GasProduction", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->GasProduction();  // Call the member function
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("IntraGranularBubbleBehavior", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->IntraGranularBubbleBehavior();  // Call the member function
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("GasDiffusion", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->GasDiffusion();  // Call the member function
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("GrainBoundaryMicroCracking", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->GrainBoundaryMicroCracking();  // Call the member function
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("GrainBoundaryVenting", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->GrainBoundaryVenting();  // Call the member function
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("InterGranularBubbleBehavior", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->InterGranularBubbleBehavior();  // Call the member function
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("update", [sim_instance](double* Sciantix_variables, double* Sciantix_diffusion_modes) {
+        if (sim_instance) {
+            sim_instance->update(Sciantix_variables, Sciantix_diffusion_modes);  // Call the member function with arguments
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
+    m.def("output", [sim_instance]() {
+        if (sim_instance) {
+            sim_instance->output();  // Call the output method on the singleton instance
+        } else {
+            throw std::runtime_error("Failed to get Simulation instance.");
+        }
+    });
+
     m.def("Initialization", &Initialization);
     m.def("InputInterpolation", &InputInterpolation, 
         py::arg("x"),
@@ -265,30 +268,43 @@ void init_functions(py::module_ &m) {
         py::arg("n"));
 
     m.def("TimeStepCalculation", &TimeStepCalculation);
-    m.def("getSciantixOption", &getSciantixOptions);
-    m.def("getSciantixHistory", &getSciantixHistory);
-    m.def("getSciantixVariables", &getSciantixVariables);
-    m.def("getSciantixScalingFactors", &getSciantixScalingFactors);
-    m.def("getSciantixDiffusionModes", &getSciantixDiffusionModes);
+    m.def("getSciantixOptionArray", &getSciantixOptionsArray);
+    m.def("getSciantixHistoryArray", &getSciantixHistoryArray);
+    m.def("getSciantixVariablesArray", &getSciantixVariablesArray);
+    m.def("getSciantixScalingFactorsArray", &getSciantixScalingFactorsArray);
+    m.def("getSciantixDiffusionModesArray", &getSciantixDiffusionModesArray);
 
-    m.def("getSciantixTimeStepNumber", &getSciantixTimeStepNumber);
-    m.def("getSciantixTimeH", &getSciantixTimeH);
-    m.def("getSciantixDTimeH", &getSciantixDTimeH);
-    m.def("getSciantixTimeEndH", &getSciantixTimeEndH);
-    m.def("getSciantixTimeS", &getSciantixTimeS);
-    m.def("getSciantixInputHistoryPoints", &getSciantixInputHistoryPoints);
-    m.def("getSciantixTimeInput", &getSciantixTimeInput);
-    m.def("getSciantixTemperatureInput", &getSciantixTemperatureInput);
-    m.def("getSciantixFissionrateInput", &getSciantixFissionrateInput);
-    m.def("getSciantixHydrostaticstressInput", &getSciantixHydrostaticstressInput);
-    m.def("getSciantixSteampressureInput", &getSciantixSteampressureInput);
+    // m.def("getSciantixTimeStepNumber", &getSciantixTimeStepNumber);
+    // m.def("getSciantixTimeH", &getSciantixTimeH);
+    // m.def("getSciantixDTimeH", &getSciantixDTimeH);
+    // m.def("getSciantixTimeEndH", &getSciantixTimeEndH);
+    // m.def("getSciantixTimeS", &getSciantixTimeS);
+    // m.def("getSciantixInputHistoryPoints", &getSciantixInputHistoryPoints);
+    // m.def("getSciantixTimeInput", &getSciantixTimeInput);
+    // m.def("getSciantixTemperatureInput", &getSciantixTemperatureInput);
+    // m.def("getSciantixFissionrateInput", &getSciantixFissionrateInput);
+    // m.def("getSciantixHydrostaticstressInput", &getSciantixHydrostaticstressInput);
+    // m.def("getSciantixSteampressureInput", &getSciantixSteampressureInput);
 
-    m.def("getHistoryVariable", &getHistoryVariableConv);
-    m.def("getSciantixVariable", &getSciantixVariableConv);
-    m.def("getSystem", &getSystemConv);
-    m.def("getPhysicsVariable", &getPhysicsVariableConv);
-    m.def("getModel", &getModelConv);
-    m.def("getMaterial", &getMaterialConv);
-    m.def("getGas", &getGasConv);
-    m.def("getMatrix", &getMatrixConv);    
+    // m.def("getHistoryVariable", [sim_instance]() {
+    //     if (sim_instance) {
+    //         // Access the history_variable
+    //         SciantixArray<SciantixVariable>& history_var = sim_instance->getHistoryVariable();
+            
+    //         // Create a vector to hold the data
+    //         std::vector<double> history_data;
+
+    //         // Assuming SciantixArray has an operator[] to access elements
+    //         for (size_t i = 0; i < history_var.size(); ++i) {
+    //             // Assuming SciantixVariable has a way to get the double value
+    //             history_data.push_back(history_var[i].getValue());
+    //         }
+            
+    //         // Return as a NumPy array
+    //         return py::array_t<double>(history_data.size(), history_data.data());
+    //     } else {
+    //         throw std::runtime_error("Failed to get Simulation instance.");
+    //     }
+    // }, "Get the history variable.");
+
 }

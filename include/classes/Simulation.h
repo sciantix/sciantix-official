@@ -383,6 +383,15 @@ public:
             return nullptr;
         }
     }
+
+    // public methods for python binding
+    SciantixArray<SciantixVariable>& getHistoryVariable() {return history_variable;}
+    SciantixArray<SciantixVariable>& getSciantixVariable() {return sciantix_variable;}
+    SciantixArray<SciantixVariable>& getPhysicsVariable() {return physics_variable;}
+    SciantixArray<Model>& getModel() {return model;}
+    SciantixArray<System>& getSciantixSystem() {return sciantix_system;}
+    SciantixArray<Matrix>& getMatrices() {return matrices;}
+    SciantixArray<Gas>& getGas() {return gas;}
 };
 
 #endif

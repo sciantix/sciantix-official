@@ -60,4 +60,10 @@ extern std::vector<double> Fissionrate_input;
 extern std::vector<double> Hydrostaticstress_input;
 extern std::vector<double> Steampressure_input;
 
+double* getSciantixVariablesArray();
+double* getSciantixHistoryArray();
+double* getSciantixScalingFactorsArray();
+double* getSciantixDiffusionModesArray();
+int* getSciantixOptionsArray();
+
 #endif
