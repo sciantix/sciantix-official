@@ -161,6 +161,8 @@ void init_classes(py::module_ &m)
 
     py::class_<Simulation>(m, "Simulation")
         .def_static("getInstance", &Simulation::getInstance, "Gets the singleton instance of Simulation")
+        
+        // Existing bindings
         .def("Burnup", &Simulation::Burnup, "Computes the fuel burnup from the local power density.")
         .def("EffectiveBurnup", &Simulation::EffectiveBurnup, "Computes the effective burnup of the fuel.")
         .def("GasProduction", &Simulation::GasProduction, "Computes the gas produced from the production rate.")
@@ -176,15 +178,27 @@ void init_classes(py::module_ &m)
         .def("HighBurnupStructurePorosity", &Simulation::HighBurnupStructurePorosity, "Calculates the porosity of high burnup structures.")
         .def("StoichiometryDeviation", &Simulation::StoichiometryDeviation, "Manages stoichiometry deviations in materials.")
         .def("UO2Thermochemistry", &Simulation::UO2Thermochemistry, "Manages UO2 thermochemical processes.")
+        
+        // Methods related to diffusion modes
         .def("getDiffusionModes", &Simulation::getDiffusionModes, py::arg("gas_name"), "Returns a pointer to the array of diffusion modes for a specified gas.")
         .def("getDiffusionModesSolution", &Simulation::getDiffusionModesSolution, py::arg("gas_name"), "Returns a pointer to the array of solution diffusion modes for a specified gas.")
         .def("getDiffusionModesBubbles", &Simulation::getDiffusionModesBubbles, py::arg("gas_name"), "Returns a pointer to the array of bubble diffusion modes for a specified gas.")
+
+        // Methods for getting various variables
         .def("getHistoryVariable", &Simulation::getHistoryVariable, py::return_value_policy::reference)
         .def("getSciantixVariable", &Simulation::getSciantixVariable, py::return_value_policy::reference)
         .def("getPhysicsVariable", &Simulation::getPhysicsVariable, py::return_value_policy::reference)
         .def("getModel", &Simulation::getModel, py::return_value_policy::reference)
         .def("getSciantixSystem", &Simulation::getSciantixSystem, py::return_value_policy::reference)
         .def("getMatrices", &Simulation::getMatrices, py::return_value_policy::reference)
-        .def("getGas", &Simulation::getGas, py::return_value_policy::reference);
+        .def("getGas", &Simulation::getGas, py::return_value_policy::reference)
+
+        // Additional methods to bind
+        .def("setVariables", &Simulation::setVariables, "Sets the variables for the simulation.")
+        .def("setGas", &Simulation::setGas, "Sets the gas properties for the simulation.")
+        .def("setMatrix", &Simulation::setMatrix, "Sets the matrix for the simulation.")
+        .def("setSystem", &Simulation::setSystem, "Sets the system for the simulation.")
+        .def("update", &Simulation::update, "Updates the simulation with the latest variables.")
+        .def("output", &Simulation::output, "Print the simulation results.");
 }
 
