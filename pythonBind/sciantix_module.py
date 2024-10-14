@@ -1,34 +1,44 @@
 import sys
 import os
+import sciantixModule
 
+# Ensure the module path is correctly set for importing sciantixModule
 module_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'build', 'python'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-# importation of the Module
-import sciantixModule
 
-def getMainVar():
-    """This function fetches the values of global attributes in the C++/C code."""
-    # Create an instance of the Simulation class
-    sciantix_simulation = sciantixModule.Simulation.getInstance()
+def initialize_simulation(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes):
+    """Initialize the Sciantix simulation using the provided input arrays."""
+    sciantixModule.initialize_simulation(
+        Sciantix_options, 
+        Sciantix_history, 
+        Sciantix_variables, 
+        Sciantix_scaling_factors, 
+        Sciantix_diffusion_modes
+    )
+
+
+def update_simulation(Sciantix_variables, Sciantix_diffusion_modes):
+    """Update the Sciantix simulation with updated variables."""
+    sciantixModule.update_simulation(Sciantix_variables, Sciantix_diffusion_modes)
 
 
 def Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes):
     """This function is the Python function of the simulation of Sciantix."""
-    
-    # Set variables
-    sciantixModule.SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes)
-        
-    # Initialize components
-    sciantixModule.SetGas()
-    sciantixModule.SetMatrix()
-    sciantixModule.SetSystem()
 
-    # Create a Simulation instance
+    # Initialize the Sciantix simulation
+    initialize_simulation(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes)
+
+    # Proceed with the specific simulation steps
     sciantix_simulation = sciantixModule.Simulation.getInstance()
-    
-    # Perform simulation steps
+
+    # Set the various components of the simulation
+    sciantix_simulation.setGas()
+    sciantix_simulation.setMatrix()
+    sciantix_simulation.setSystem()
+
+    # Perform specific physics calculations in the simulation
     sciantix_simulation.Burnup()
     sciantix_simulation.EffectiveBurnup()
     sciantix_simulation.UO2Thermochemistry()
@@ -39,10 +49,14 @@ def Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_sc
     sciantix_simulation.GrainBoundarySweeping()
     sciantix_simulation.GasProduction()
     sciantix_simulation.GasDecay()
-    sciantix_simulation.IntraGranularBubbleBehaviour()
+    sciantix_simulation.IntraGranularBubbleBehavior()
     sciantix_simulation.GasDiffusion()
     sciantix_simulation.GrainBoundaryMicroCracking()
     sciantix_simulation.GrainBoundaryVenting()
-    sciantix_simulation.InterGranularBubbleBehaviour()
+    sciantix_simulation.InterGranularBubbleBehavior()
 
-    getMainVar()
+    # Update the simulation variables and diffusion modes after the physics calculations
+    update_simulation(Sciantix_variables, Sciantix_diffusion_modes)
+
+    # Output the final results of the simulation
+    sciantix_simulation.output()

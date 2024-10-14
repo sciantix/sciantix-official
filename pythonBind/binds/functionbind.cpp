@@ -1,29 +1,46 @@
 #include "functionbind.h"
 
 // --- getters --- //
-py::array_t<double> getVariablesInArray_double() {
-    double *Sciantix_variables = getSciantixVariablesArray();
-    return py::array_t<double>({300}, Sciantix_variables);
+
+void bind_get_history_variable(py::module_ &m)
+{
+    m.def("getHistoryInArray_double", []() -> py::array_t<double> {
+        // Assuming you have a method or a variable in the C++ code that returns the history array
+        double* history_data = getSciantixHistoryArray();  // Function to get the history array pointer
+        return py::array_t<double>({20}, history_data);  // Adjust size (20) based on the actual size of the array
+    });
 }
 
-py::array_t<double> getHistoryInArray_double() {
-    double *Sciantix_history = getSciantixHistoryArray();
-    return py::array_t<double>({20}, Sciantix_history);
+void bind_get_variables(py::module_ &m)
+{
+    m.def("getVariablesInArray_double", []() -> py::array_t<double> {
+        double *Sciantix_variables = getSciantixVariablesArray();  // Fetch the pointer
+        return py::array_t<double>({300}, Sciantix_variables);  // Adjust size (300)
+    });
 }
 
-py::array_t<double> getDiffusionModesInArray_double() {
-    double *Sciantix_diffusion_modes = getSciantixDiffusionModesArray();
-    return py::array_t<double>({720}, Sciantix_diffusion_modes);
+void bind_get_diffusion_modes(py::module_ &m)
+{
+    m.def("getDiffusionModesInArray_double", []() -> py::array_t<double> {
+        double *Sciantix_diffusion_modes = getSciantixDiffusionModesArray();  // Fetch the pointer
+        return py::array_t<double>({720}, Sciantix_diffusion_modes);  // Adjust size (720)
+    });
 }
 
-py::array_t<double> getScalingFactorsInArray_double() {
-    double *Sciantix_scaling_factors = getSciantixScalingFactorsArray();
-    return py::array_t<double>({10}, Sciantix_scaling_factors);
+void bind_get_scaling_factors(py::module_ &m)
+{
+    m.def("getScalingFactorsInArray_double", []() -> py::array_t<double> {
+        double *Sciantix_scaling_factors = getSciantixScalingFactorsArray();  // Fetch the pointer
+        return py::array_t<double>({10}, Sciantix_scaling_factors);  // Adjust size (10)
+    });
 }
 
-py::array_t<int> getOptionsInArray_int() {
-    int *Sciantix_options = getSciantixOptionsArray();
-    return py::array_t<int>({40}, Sciantix_options);
+void bind_get_options(py::module_ &m)
+{
+    m.def("getOptionsInArray_int", []() -> py::array_t<int> {
+        int *Sciantix_options = getSciantixOptionsArray();  // Fetch the pointer
+        return py::array_t<int>({40}, Sciantix_options);  // Adjust size (40)
+    });
 }
 
 // void SetVariablesConversion(py::array_t<int> Sciantix_options, 
@@ -115,15 +132,6 @@ void init_functions(py::module_ &m) {
     m.def("setMatrix", [sim_instance]() {
         if (sim_instance) {
             sim_instance->setMatrix();
-        } else {
-            throw std::runtime_error("Failed to get Simulation instance.");
-        }
-    });
-
-    m.def("setGas", [sim_instance]() {
-        Simulation* sim_instance = Simulation::getInstance();
-        if (sim_instance) {
-            sim_instance->setGas();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -267,7 +275,13 @@ void init_functions(py::module_ &m) {
         py::arg("yy"),
         py::arg("n"));
 
-    m.def("TimeStepCalculation", &TimeStepCalculation);
+    m.def("TimeStepCalculation", &TimeStepCalculation,
+          py::arg("Input_history_points"),
+          py::arg("Time_h"),
+          py::arg("Time_input"),
+          py::arg("Number_of_time_steps_per_interval"),
+          "Calculates the time step in hours.");
+
     m.def("getSciantixOptionArray", &getSciantixOptionsArray);
     m.def("getSciantixHistoryArray", &getSciantixHistoryArray);
     m.def("getSciantixVariablesArray", &getSciantixVariablesArray);
