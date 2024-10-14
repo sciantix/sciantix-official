@@ -464,8 +464,8 @@ class Simulation : public Solver, public Model
 		//SetGPVariables();
 		// Hyperbolic tangent for fitting the GP vented fraction
 		// Fitting function F_v (%) = 26.5261 * (tanh(0.0853 * F_c (%) - 3.0962) + 1)
-		sciantix_variable[sv["Intergranular vented fraction"]].setInitialValue(26.5261 * 1e-2 * (tanh(0.0853 * 100 * sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() - 3.0962) + 1));
-		sciantix_variable[sv["Intergranular vented fraction"]].setFinalValue(26.5261 * 1e-2 * (tanh(0.0853 * 100 * sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() - 3.0962) + 1));
+		sciantix_variable[sv["Intergranular vented fraction"]].setInitialValue(26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() - 2.6002) + 1));
+		sciantix_variable[sv["Intergranular vented fraction"]].setFinalValue(26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() - 2.6002) + 1));
 		
 		sciantix_variable[sv["Intergranular venting probability"]].setInitialValue(
 			(1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue()) + sciantix_variable[sv["Intergranular vented fraction"]].getInitialValue() * sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue()
