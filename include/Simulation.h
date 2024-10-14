@@ -371,6 +371,7 @@ class Simulation : public Solver, public Model
 		}
 		
 		double GBstate[rows*rows];
+		// Volume, Area, Concentration, Fc
 		GBstate[0]=1;
 		GBstate[1]=0;
 		GBstate[2]= (+wBf/(pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2)*
@@ -382,7 +383,8 @@ class Simulation : public Solver, public Model
 		GBstate[2+rows]=0;
 		GBstate[3+rows]=0;
 		GBstate[0+2*rows]=0;
-		GBstate[1+2*rows]=2*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2);;
+		// GBstate[1+2*rows]=2*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2);;
+		GBstate[1+2*rows]=6*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2)/(3+4*sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue());
 		GBstate[2+2*rows]=1;
 		GBstate[3+2*rows]=0;
 		GBstate[0+3*rows]=0;
@@ -404,8 +406,11 @@ class Simulation : public Solver, public Model
 			(2*wBf-wBi)/(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue()*
 			sciantix_variable[sv["Intergranular S/V"]].getFinalValue());
 		GB[1]=sciantix_variable[sv["Intergranular bubble area"]].getInitialValue()/3;
+		// GB[2]=sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue()+
+		// 	2*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2)*sciantix_variable[sv["Intergranular bubble area"]].getInitialValue();
 		GB[2]=sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue()+
-			2*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2)*sciantix_variable[sv["Intergranular bubble area"]].getInitialValue();
+			6*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2)*sciantix_variable[sv["Intergranular bubble area"]].getInitialValue()/(3+4*sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue());
+
 		GB[3]=(sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue()-
 			2*sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue()*sciantix_variable[sv["Intergranular bubble area"]].getInitialValue());
 		///
@@ -440,9 +445,9 @@ class Simulation : public Solver, public Model
 				sciantix_variable[sv["Intergranular bubble concentration"]].getFinalValue()*
 				sciantix_variable[sv["Intergranular bubble area"]].getFinalValue()
 			);
-			//std::cout << "	\nBubble area decreases" << std::endl;
-			//std::cout << "N without oneoff =    " << x[2] << std::endl;
-			//std::cout << "N with oneoff =    " << sciantix_variable[sv["Intergranular bubble concentration"]].getFinalValue() << std::endl;
+			std::cout << "	\nBubble area decreases" << std::endl;
+			std::cout << "N without oneoff =    " << GB[2] << std::endl;
+			std::cout << "N with oneoff =    " << sciantix_variable[sv["Intergranular bubble concentration"]].getFinalValue() << std::endl;
 		}
 
 		if (sciantix_variable[sv["Intergranular bubble concentration"]].getFinalValue()<Nlim){
@@ -456,8 +461,12 @@ class Simulation : public Solver, public Model
 		sciantix_variable[sv["Intergranular bubble radius"]].setFinalValue(
 				0.620350491 * pow(sciantix_variable[sv["Intergranular bubble volume"]].getFinalValue() / (matrix[sma["UO2"]].getLenticularShapeFactor()), 1. / 3.));
 
-		SetGPVariables();
-
+		//SetGPVariables();
+		// Hyperbolic tangent for fitting the GP vented fraction
+		// Fitting function F_v (%) = 26.5261 * (tanh(0.0853 * F_c (%) - 3.0962) + 1)
+		sciantix_variable[sv["Intergranular vented fraction"]].setInitialValue(26.5261 * 1e-2 * (tanh(0.0853 * 100 * sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() - 3.0962) + 1));
+		sciantix_variable[sv["Intergranular vented fraction"]].setFinalValue(26.5261 * 1e-2 * (tanh(0.0853 * 100 * sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() - 3.0962) + 1));
+		
 		sciantix_variable[sv["Intergranular venting probability"]].setInitialValue(
 			(1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue()) + sciantix_variable[sv["Intergranular vented fraction"]].getInitialValue() * sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue()
 		);

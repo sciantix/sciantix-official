@@ -91,7 +91,6 @@ void UpdateVariables(double Sciantix_variables[], double Sciantix_diffusion_mode
 	Sciantix_variables[66] = sciantix_variable[sv["Stoichiometry deviation"]].getFinalValue();
 	Sciantix_variables[67] = sciantix_variable[sv["Fuel oxygen partial pressure"]].getFinalValue();
 	Sciantix_variables[70] = sciantix_variable[sv["Intergranular S/V"]].getFinalValue();
-	Sciantix_variables[71] = sciantix_variable[sv["Intergranular vented fraction derivative"]].getFinalValue();
 	Sciantix_variables[80] = sciantix_variable[sv["HBS pore density"]].getFinalValue();
 	Sciantix_variables[81] = sciantix_variable[sv["HBS pore volume"]].getFinalValue();
 	Sciantix_variables[82] = sciantix_variable[sv["HBS pore radius"]].getFinalValue();

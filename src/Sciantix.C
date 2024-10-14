@@ -24,7 +24,7 @@ void Sciantix(int Sciantix_options[],
 {
 	SetVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 
-	SetGPVariables();
+	// SetGPVariables();
 	
 	SetGas();
 

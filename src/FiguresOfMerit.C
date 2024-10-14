@@ -98,4 +98,7 @@ void FiguresOfMerit()
     sciantix_variable[sv["Intergranular bubble pressure"]].setFinalValue(0.0);
 
   std::cout << "Intactness: " <<sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue() <<std::endl;
+  if (sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() >= sciantix_variable[sv["Intergranular saturation fractional coverage"]].getFinalValue()){
+    std::cout<<"WARNING: Fractional coverage = "<< sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue()<<std::endl;
+  }
 }
