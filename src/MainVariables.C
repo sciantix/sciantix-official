@@ -46,23 +46,27 @@ std::vector<double> Fissionrate_input(1000, 0.0);
 std::vector<double> Hydrostaticstress_input(1000, 0.0);
 std::vector<double> Steampressure_input(1000, 0.0);
 
+double* getSciantixVariablesArray() {return Sciantix_variables;}
+double* getSciantixHistoryArray() {return Sciantix_history;}
+double* getSciantixDiffusionModesArray() {return Sciantix_diffusion_modes;}
+double* getSciantixScalingFactorsArray() {return Sciantix_scaling_factors;}
+int* getSciantixOptionsArray() {return Sciantix_options;}
 
-double* getSciantixVariablesArray() {
-    return Sciantix_variables;  // Assuming Sciantix_variables is defined in MainVariables.h
+// Add debug print statements
+double getTimeEndH() {
+    std::cout << "C (Before InputReading): Time_end_h: " << Time_end_h << std::endl;
+    return Time_end_h;
 }
 
-double* getSciantixHistoryArray() {
-    return Sciantix_history;  // Assuming Sciantix_history is defined in MainVariables.h
+double getTimeEndS() {
+    std::cout << "C (Before InputReading): Time_end_s: " << Time_end_s << std::endl;
+    return Time_end_s;
 }
 
-double* getSciantixDiffusionModesArray() {
-    return Sciantix_diffusion_modes;  // Assuming Sciantix_diffusion_modes is defined in MainVariables.h
+void setTimeEndH(double value) {
+    Time_end_h = value;
 }
 
-double* getSciantixScalingFactorsArray() {
-    return Sciantix_scaling_factors;  // Assuming Sciantix_scaling_factors is defined in MainVariables.h
-}
-
-int* getSciantixOptionsArray() {
-    return Sciantix_options;  // Assuming Sciantix_options is defined in MainVariables.h
+void setTimeEndS(double value) {
+    Time_end_s = value;
 }

@@ -19,6 +19,7 @@
 
 #include <vector>
 #include <fstream>
+#include <iostream>
 
 /**
  * @file MainVariables.h
@@ -60,10 +61,16 @@ extern std::vector<double> Fissionrate_input;
 extern std::vector<double> Hydrostaticstress_input;
 extern std::vector<double> Steampressure_input;
 
+// For python binding 
 double* getSciantixVariablesArray();
 double* getSciantixHistoryArray();
 double* getSciantixScalingFactorsArray();
 double* getSciantixDiffusionModesArray();
 int* getSciantixOptionsArray();
+
+double getTimeEndH();
+double getTimeEndS();
+void setTimeEndH(double value);
+void setTimeEndS(double value);
 
 #endif

@@ -8,8 +8,8 @@ void init_attributes(py::module_ &m) {
     m.attr("Time_h") = &Time_h;
     m.attr("dTime_h") = &dTime_h;
     m.attr("Time_end_h") = &Time_end_h;
-    m.attr("Time_s") = &Time_s;
-    m.attr("Time_end_s") = &Time_end_s;
+    // m.attr("Time_s") = &Time_s;
+    // m.attr("Time_end_s") = &Time_end_s;
     m.attr("Number_of_time_steps_per_interval") = &Number_of_time_steps_per_interval;
 
     m.attr("Sciantix_options") = py::array_t<int>({40}, Sciantix_options);

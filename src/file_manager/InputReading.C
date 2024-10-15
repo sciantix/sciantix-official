@@ -257,6 +257,10 @@ void InputReading(
 	Time_end_h = Time_input[Input_history_points - 1];
 	Time_end_s = Time_end_h * 3600.0;
 
+	// At the beginning of the InputReading function, print the initial values
+	std::cout << "C (Inside InputReading): Time_end_h: " << Time_end_h << std::endl;
+	std::cout << "C (Inside InputReading): Time_end_s: " << Time_end_s << std::endl;
+
 	if (!input_scaling_factors.fail())
 	{
 		Sciantix_scaling_factors[0] = ReadOneParameter("sf_resolution_rate", input_scaling_factors, input_check);
