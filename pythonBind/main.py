@@ -31,12 +31,19 @@ def main(Path_of_execution):
     Fissionrate_input = np.array(sciantixModule.Fissionrate_input, dtype=np.float64)
     Hydrostaticstress_input = np.array(sciantixModule.Hydrostaticstress_input, dtype=np.float64)
     Steampressure_input = np.array(sciantixModule.Steampressure_input, dtype=np.float64)
+    print(Sciantix_options) # updated
+
 
     # Fetch the integer and float variables
     Input_history_points = int(sciantixModule.Input_history_points)
-    Time_end_h = float(sciantixModule.Time_end_h)
-    Time_end_s = float(sciantixModule.Time_end_s)
 
+    # Print the initial values from C++ before calling InputReading
+    Time_end_h = sciantixModule.getTimeEndH()
+    Time_end_s = sciantixModule.getTimeEndS()
+    print(f"P (Before InputReading): Time_end_h: {Time_end_h}")
+    print(f"P (Before InputReading): Time_end_s: {Time_end_s}")
+
+    # Call InputReading with Time_end_h and Time_end_s
     sciantixModule.InputReading(
         Sciantix_options, 
         Sciantix_variables, 
@@ -51,8 +58,16 @@ def main(Path_of_execution):
         Time_end_s
     )
 
-    print(Sciantix_options)
-    print(sciantixModule.Sciantix_options)
+    # After InputReading, get the updated values from C++
+    Time_end_h = sciantixModule.getTimeEndH()
+    Time_end_s = sciantixModule.getTimeEndS()
+    print(f"P (After InputReading): Time_end_h: {Time_end_h}")
+    print(f"P (After InputReading): Time_end_s: {Time_end_s}")
+
+    print(Sciantix_options) # updated
+    sciantixModule.Sciantix_options = Sciantix_options
+    print(sciantixModule.Sciantix_options) # updated
+    # print(Sciantix_variables)
 
     sciantixModule.Initialization(
         Sciantix_history, 
@@ -70,8 +85,8 @@ def main(Path_of_execution):
 
     timer_start = time.time()
 
-    print(sciantixModule.Time_h)
-    print(sciantixModule.Time_end_h)
+    # print(sciantixModule.Time_h)
+    # print(sciantixModule.Time_end_h)
 
     while sciantixModule.Time_h <= sciantixModule.Time_end_h:
 
@@ -106,7 +121,7 @@ def main(Path_of_execution):
 
         Sciantix_history[6] = sciantixModule.dTime_h * 3600
 
-        print(sciantixModule.Time_h)
+        # print(sciantixModule.Time_h)
 
         if sciantixModule.Time_h < sciantixModule.Time_end_h:
             sciantixModule.setSciantixTimeStepNumber(sciantixModule.Time_step_number + 1)

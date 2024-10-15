@@ -1,7 +1,6 @@
 #include "functionbind.h"
 
 // --- getters --- //
-
 void bind_get_history_variable(py::module_ &m)
 {
     m.def("getHistoryInArray_double", []() -> py::array_t<double> {
@@ -42,34 +41,6 @@ void bind_get_options(py::module_ &m)
         return py::array_t<int>({40}, Sciantix_options);  // Adjust size (40)
     });
 }
-
-// void SetVariablesConversion(py::array_t<int> Sciantix_options, 
-//                             py::array_t<double> Sciantix_history, 
-//                             py::array_t<double> Sciantix_variables, 
-//                             py::array_t<double> Sciantix_scaling_factors, 
-//                             py::array_t<double> Sciantix_diffusion_modes)
-// {
-//     // Ensure the input arrays are contiguous and have the correct data type
-//     auto options_buf = Sciantix_options.request();
-//     auto history_buf = Sciantix_history.request();
-//     auto variables_buf = Sciantix_variables.request();
-//     auto scaling_factors_buf = Sciantix_scaling_factors.request();
-//     auto diffusion_modes_buf = Sciantix_diffusion_modes.request();
-
-//     if (options_buf.ndim != 1 || history_buf.ndim != 1 || variables_buf.ndim != 1 ||
-//         scaling_factors_buf.ndim != 1 || diffusion_modes_buf.ndim != 1) {
-//         throw std::runtime_error("Number of dimensions must be one");
-//     }
-
-//     int *options_ptr = static_cast<int *>(options_buf.ptr);
-//     double *history_ptr = static_cast<double *>(history_buf.ptr);
-//     double *variables_ptr = static_cast<double *>(variables_buf.ptr);
-//     double *scaling_factors_ptr = static_cast<double *>(scaling_factors_buf.ptr);
-//     double *diffusion_modes_ptr = static_cast<double *>(diffusion_modes_buf.ptr);
-
-//     // Call the C++ function with the converted pointers
-//     SetVariables(options_ptr, history_ptr, variables_ptr, scaling_factors_ptr, diffusion_modes_ptr);
-// }
 
 void UpdateVariablesConversion(py::array_t<double> Sciantix_variables, py::array_t<double> Sciantix_diffusion_modes)
 {
@@ -121,13 +92,6 @@ void init_functions(py::module_ &m) {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
     });
-
-    // m.def("SetVariables", &SetVariablesConversion,
-    //         py::arg("Sciantix_options"),
-    //         py::arg("Sciantix_history"),
-    //         py::arg("Sciantix_variables"),
-    //         py::arg("Sciantix_scaling_factors"),
-    //         py::arg("Sciantix_diffusion_modes"));
 
     m.def("setMatrix", [sim_instance]() {
         if (sim_instance) {
@@ -287,38 +251,5 @@ void init_functions(py::module_ &m) {
     m.def("getSciantixVariablesArray", &getSciantixVariablesArray);
     m.def("getSciantixScalingFactorsArray", &getSciantixScalingFactorsArray);
     m.def("getSciantixDiffusionModesArray", &getSciantixDiffusionModesArray);
-
-    // m.def("getSciantixTimeStepNumber", &getSciantixTimeStepNumber);
-    // m.def("getSciantixTimeH", &getSciantixTimeH);
-    // m.def("getSciantixDTimeH", &getSciantixDTimeH);
-    // m.def("getSciantixTimeEndH", &getSciantixTimeEndH);
-    // m.def("getSciantixTimeS", &getSciantixTimeS);
-    // m.def("getSciantixInputHistoryPoints", &getSciantixInputHistoryPoints);
-    // m.def("getSciantixTimeInput", &getSciantixTimeInput);
-    // m.def("getSciantixTemperatureInput", &getSciantixTemperatureInput);
-    // m.def("getSciantixFissionrateInput", &getSciantixFissionrateInput);
-    // m.def("getSciantixHydrostaticstressInput", &getSciantixHydrostaticstressInput);
-    // m.def("getSciantixSteampressureInput", &getSciantixSteampressureInput);
-
-    // m.def("getHistoryVariable", [sim_instance]() {
-    //     if (sim_instance) {
-    //         // Access the history_variable
-    //         SciantixArray<SciantixVariable>& history_var = sim_instance->getHistoryVariable();
-            
-    //         // Create a vector to hold the data
-    //         std::vector<double> history_data;
-
-    //         // Assuming SciantixArray has an operator[] to access elements
-    //         for (size_t i = 0; i < history_var.size(); ++i) {
-    //             // Assuming SciantixVariable has a way to get the double value
-    //             history_data.push_back(history_var[i].getValue());
-    //         }
-            
-    //         // Return as a NumPy array
-    //         return py::array_t<double>(history_data.size(), history_data.data());
-    //     } else {
-    //         throw std::runtime_error("Failed to get Simulation instance.");
-    //     }
-    // }, "Get the history variable.");
 
 }

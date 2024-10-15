@@ -12,6 +12,7 @@
 #include "TimeStepCalculation.h"
 #include "MainVariables.h"
 #include "Simulation.h"
+#include "MainVariables.h"
 
 #include <vector>
 

@@ -37,13 +37,6 @@ void update_simulation(
     sim->update(Sciantix_variables_ptr, Sciantix_diffusion_modes_ptr);
 }
 
-
-void bind_get_history_variable(py::module_ &m);
-void bind_get_variables(py::module_ &m);
-void bind_get_diffusion_modes(py::module_ &m);
-void bind_get_scaling_factors(py::module_ &m);
-void bind_get_options(py::module_ &m);
-
 // Define the binding for the main variables
 void bind_main_variables(py::module_ &m) {
     m.attr("Sciantix_options") = py::cast(Sciantix_options, py::return_value_policy::reference);
@@ -59,8 +52,11 @@ void bind_main_variables(py::module_ &m) {
     m.attr("Steampressure_input") = py::cast(&Steampressure_input, py::return_value_policy::reference);
     m.attr("Time_end_h") = py::cast(&Time_end_h, py::return_value_policy::reference);
     m.attr("Time_end_s") = py::cast(&Time_end_s, py::return_value_policy::reference);
+    m.def("getTimeEndH", &getTimeEndH);
+    m.def("setTimeEndH", &setTimeEndH);
+    m.def("getTimeEndS", &getTimeEndS);
+    m.def("setTimeEndS", &setTimeEndS);
 }
-
 
 void bind_input_reading(py::module_ &m)
 {
@@ -75,8 +71,8 @@ void bind_input_reading(py::module_ &m)
            py::array_t<double> Fissionrate_input, 
            py::array_t<double> Hydrostaticstress_input, 
            py::array_t<double> Steampressure_input, 
-           double Time_end_h, 
-           double Time_end_s)
+           double &Time_end_h,  // Pass by reference
+           double &Time_end_s)  // Pass by reference
         {
             // Get mutable data pointers
             auto Sciantix_options_ptr = Sciantix_options.mutable_data();
@@ -110,8 +106,8 @@ void bind_input_reading(py::module_ &m)
                 Fissionrate_input_vec, 
                 Hydrostaticstress_input_vec, 
                 Steampressure_input_vec, 
-                Time_end_h, 
-                Time_end_s
+                Time_end_h,  // Pass by reference
+                Time_end_s   // Pass by reference
             );
         },
         py::arg("Sciantix_options").noconvert(), 
@@ -123,11 +119,10 @@ void bind_input_reading(py::module_ &m)
         py::arg("Fissionrate_input").noconvert(), 
         py::arg("Hydrostaticstress_input").noconvert(), 
         py::arg("Steampressure_input").noconvert(), 
-        py::arg("Time_end_h"), 
-        py::arg("Time_end_s")
+        py::arg("Time_end_h"),  // By reference
+        py::arg("Time_end_s")   // By reference
     );
 }
-
 
 // Define the binding for the Initialization function
 void bind_initialization(py::module_ &m)
@@ -215,5 +210,4 @@ PYBIND11_MODULE(sciantixModule, m)
 
     m.def("initialize_simulation", &initialize_simulation);
     m.def("update_simulation", &update_simulation);
-
 }
