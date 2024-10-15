@@ -15,7 +15,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "GasDiffusion.h"
-Eigen::MatrixXd old_sol_RB;
+//Eigen::MatrixXd old_sol_RB; //MDG
+
+
 
 void Simulation::GasDiffusion()
 {
@@ -35,7 +37,7 @@ void Simulation::GasDiffusion()
             break;
         
         case 4:
-            defineDiffusionColumnarGrains(sciantix_system, model, n_modes, old_sol_RB);
+            defineDiffusionColumnarGrains(sciantix_system, model, n_modes, history_variable);
             break;
 
 
@@ -43,6 +45,14 @@ void Simulation::GasDiffusion()
             errorHandling(input_variable);
             break;
     }
+
+    /*std::cout << "old_sol_RB (GasDiffusion.C):" << std::endl;   //MDG
+    for (int i = 0; i < old_sol_RB.rows(); ++i) {
+        for (int j = 0; j < old_sol_RB.cols(); ++j) {
+        std::cout << old_sol_RB(i, j) << " ";
+    }
+    std::cout << std::endl; // Va a capo dopo ogni riga
+    }*/
 
     // Model resolution
     for (auto &system : sciantix_system)
@@ -53,14 +63,16 @@ void Simulation::GasDiffusion()
         {
             if (system.getRestructuredMatrix() == 0)
             {
-                sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
-                    solver.SpectralDiffusion(
-                        getDiffusionModes(system.getGasName()),
-                        model["Gas diffusion - " + system.getName()].getParameter(),
-                        physics_variable["Time step"].getFinalValue()
-                    )
-                );
-
+                std::cout << system.getName() << std::endl; 
+                if (system.getName() == "Xe in UO2"){
+                    sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
+                        solver.SpectralDiffusion(
+                            getDiffusionModes(system.getGasName()),
+                            model["Gas diffusion - " + system.getName()].getParameter(),
+                            physics_variable["Time step"].getFinalValue()
+                        )
+                    );}
+                
                 double equilibrium_fraction(1.0);
                 if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
                     equilibrium_fraction = system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
@@ -124,15 +136,19 @@ void Simulation::GasDiffusion()
         {
             if (system.getRestructuredMatrix() == 0)
             {
+                std::cout << system.getName() << std::endl; 
+                if (system.getName() == "Xe in UO2"){
                 sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
                     solver.ROM_cylinder(
                         getDiffusionModes(system.getGasName()),
                         model["Gas diffusion - " + system.getName()].getParameter(),
-                        physics_variable["Time step"].getFinalValue(), 
-                        old_sol_RB
+                        physics_variable["Time step"].getFinalValue()
                     )
                 );
 
+                    std::cout << system.getFissionGasDiffusivity()* system.getGas().getPrecursorFactor() << std::endl;
+                }
+                
                 double equilibrium_fraction(1.0);
                 if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
                     equilibrium_fraction = system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
@@ -261,7 +277,7 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
     }
 }
 
-void defineDiffusionColumnarGrains(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes, Eigen::MatrixXd &old_sol_RB)
+void defineDiffusionColumnarGrains(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes, SciantixArray<SciantixVariable> &history_variable) //Ho aggiunto anche sciantix hostory perchè mi serviva il fission rate. 
 {
     std::string reference;
 
@@ -281,10 +297,15 @@ void defineDiffusionColumnarGrains(SciantixArray<System> &sciantix_system, Scian
                 (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
                 (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
 
-        parameters.push_back(gasDiffusivity);
-        parameters.push_back(system.getMatrix().getGrainRadius());
-        parameters.push_back(system.getProductionRate());
-        parameters.push_back(system.getGas().getDecayRate());
+        
+        parameters.push_back(gasDiffusivity);                           //parameter.at(1)
+        parameters.push_back(system.getMatrix().getGrainRadius());      //parameter.at(2)
+        parameters.push_back(system.getProductionRate());               //parameter.at(3): source_C = fission_rate * fission_yield
+        parameters.push_back(Sciantix_variables[100]);                  //parameter.at(4)  columnar grain length
+        parameters.push_back(Sciantix_variables[101]);                                                              //parameter.at(5)  alphaT
+        parameters.push_back(Sciantix_variables[102] * history_variable["Fission rate"].getFinalValue());           //parameter.at(6)  source_T = fission_heat * fission_rate
+        parameters.push_back(Sciantix_variables[103]);                                                              //parameter.at(7)  temperature boundary condition
+        parameters.push_back(history_variable["Fission rate"].getFinalValue());                                     //parameter.at(8)  fission_rate
 
         model_.setParameter(parameters);
         model.push(model_);
