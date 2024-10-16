@@ -70,7 +70,5 @@ int* getSciantixOptionsArray();
 
 double getTimeEndH();
 double getTimeEndS();
-void setTimeEndH(double value);
-void setTimeEndS(double value);
 
 #endif

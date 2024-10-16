@@ -54,19 +54,9 @@ int* getSciantixOptionsArray() {return Sciantix_options;}
 
 // Add debug print statements
 double getTimeEndH() {
-    std::cout << "C (Before InputReading): Time_end_h: " << Time_end_h << std::endl;
     return Time_end_h;
 }
 
 double getTimeEndS() {
-    std::cout << "C (Before InputReading): Time_end_s: " << Time_end_s << std::endl;
     return Time_end_s;
-}
-
-void setTimeEndH(double value) {
-    Time_end_h = value;
-}
-
-void setTimeEndS(double value) {
-    Time_end_s = value;
 }

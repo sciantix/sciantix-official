@@ -53,9 +53,7 @@ void bind_main_variables(py::module_ &m) {
     m.attr("Time_end_h") = py::cast(&Time_end_h, py::return_value_policy::reference);
     m.attr("Time_end_s") = py::cast(&Time_end_s, py::return_value_policy::reference);
     m.def("getTimeEndH", &getTimeEndH);
-    m.def("setTimeEndH", &setTimeEndH);
     m.def("getTimeEndS", &getTimeEndS);
-    m.def("setTimeEndS", &setTimeEndS);
 }
 
 void bind_input_reading(py::module_ &m)
@@ -71,13 +69,16 @@ void bind_input_reading(py::module_ &m)
            py::array_t<double> Fissionrate_input, 
            py::array_t<double> Hydrostaticstress_input, 
            py::array_t<double> Steampressure_input, 
-           double &Time_end_h,  // Pass by reference
-           double &Time_end_s)  // Pass by reference
+           py::array_t<double> Time_end_h,
+           py::array_t<double> Time_end_s)
         {
             // Get mutable data pointers
             auto Sciantix_options_ptr = Sciantix_options.mutable_data();
             auto Sciantix_variables_ptr = Sciantix_variables.mutable_data();
             auto Sciantix_scaling_factors_ptr = Sciantix_scaling_factors.mutable_data();
+
+            double* Time_end_h_ptr = Time_end_h.mutable_data();
+            double* Time_end_s_ptr = Time_end_s.mutable_data();
 
             // Convert numpy arrays to std::vector<double>
             std::vector<double> Time_input_vec(Time_input.size());
@@ -101,13 +102,13 @@ void bind_input_reading(py::module_ &m)
                 Sciantix_variables_ptr, 
                 Sciantix_scaling_factors_ptr, 
                 Input_history_points, 
-                Time_input_vec,  // Pass the vector
+                Time_input_vec,
                 Temperature_input_vec, 
                 Fissionrate_input_vec, 
                 Hydrostaticstress_input_vec, 
                 Steampressure_input_vec, 
-                Time_end_h,  // Pass by reference
-                Time_end_s   // Pass by reference
+                *Time_end_h_ptr,
+                *Time_end_s_ptr
             );
         },
         py::arg("Sciantix_options").noconvert(), 
@@ -119,8 +120,8 @@ void bind_input_reading(py::module_ &m)
         py::arg("Fissionrate_input").noconvert(), 
         py::arg("Hydrostaticstress_input").noconvert(), 
         py::arg("Steampressure_input").noconvert(), 
-        py::arg("Time_end_h"),  // By reference
-        py::arg("Time_end_s")   // By reference
+        py::arg("Time_end_h"),
+        py::arg("Time_end_s")
     );
 }
 
