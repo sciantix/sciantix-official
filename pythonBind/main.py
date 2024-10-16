@@ -21,25 +21,26 @@ def main(Path_of_execution):
     sciantixModule.setTestPath(Path_of_execution)
 
     # Ensure correct data types and convert arrays
-    Sciantix_options = np.array(sciantixModule.Sciantix_options, dtype=np.int32)  # Ensure int32 for Sciantix_options
-    Sciantix_variables = np.array(sciantixModule.Sciantix_variables, dtype=np.float64)  # Ensure float64 for Sciantix_variables
-    Sciantix_scaling_factors = np.array(sciantixModule.Sciantix_scaling_factors, dtype=np.float64)  # Ensure float64 for Sciantix_scaling_factors
+    Sciantix_options = np.array(sciantixModule.Sciantix_options, dtype=np.int32)
+    Sciantix_variables = np.array(sciantixModule.Sciantix_variables, dtype=np.float64)
+    Sciantix_scaling_factors = np.array(sciantixModule.Sciantix_scaling_factors, dtype=np.float64)
     Sciantix_history = np.array(sciantixModule.Sciantix_history, dtype=np.float64)
     Sciantix_diffusion_modes = np.array(sciantixModule.Sciantix_diffusion_modes, dtype=np.float64)
-    Time_input = np.array(sciantixModule.Time_input, dtype=np.float64)  # Ensure float64 for time arrays
+    Time_input = np.array(sciantixModule.Time_input, dtype=np.float64)
     Temperature_input = np.array(sciantixModule.Temperature_input, dtype=np.float64)
     Fissionrate_input = np.array(sciantixModule.Fissionrate_input, dtype=np.float64)
     Hydrostaticstress_input = np.array(sciantixModule.Hydrostaticstress_input, dtype=np.float64)
     Steampressure_input = np.array(sciantixModule.Steampressure_input, dtype=np.float64)
-    print(Sciantix_options) # updated
-
 
     # Fetch the integer and float variables
     Input_history_points = int(sciantixModule.Input_history_points)
 
     # Print the initial values from C++ before calling InputReading
-    Time_end_h = sciantixModule.getTimeEndH()
-    Time_end_s = sciantixModule.getTimeEndS()
+    # Time_end_h = sciantixModule.getTimeEndH()
+    # Time_end_s = sciantixModule.getTimeEndS()
+    Time_end_h = np.array([0.0], dtype=np.float64)  # Initialize with zero or appropriate value
+    Time_end_s = np.array([0.0], dtype=np.float64)  # Initialize with zero or appropriate value
+
     print(f"P (Before InputReading): Time_end_h: {Time_end_h}")
     print(f"P (Before InputReading): Time_end_s: {Time_end_s}")
 
@@ -59,10 +60,8 @@ def main(Path_of_execution):
     )
 
     # After InputReading, get the updated values from C++
-    Time_end_h = sciantixModule.getTimeEndH()
-    Time_end_s = sciantixModule.getTimeEndS()
-    print(f"P (After InputReading): Time_end_h: {Time_end_h}")
-    print(f"P (After InputReading): Time_end_s: {Time_end_s}")
+    print(f"P (After InputReading): Time_end_h: {Time_end_h[0]}")
+    print(f"P (After InputReading): Time_end_s: {Time_end_s[0]}")
 
     print(Sciantix_options) # updated
     sciantixModule.Sciantix_options = Sciantix_options

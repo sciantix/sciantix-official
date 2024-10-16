@@ -42,6 +42,12 @@ void bind_get_options(py::module_ &m)
     });
 }
 
+void bind_time_variables(py::module_ &m) {
+    m.def("getTimeEndH", []() { return Time_end_h; });
+    m.def("getTimeEndS", []() { return Time_end_s; });
+}
+
+
 void UpdateVariablesConversion(py::array_t<double> Sciantix_variables, py::array_t<double> Sciantix_diffusion_modes)
 {
     // Request buffer information for the numpy arrays
@@ -73,21 +79,20 @@ Matrix convertToMatrix(const pybind11::array_t<double>& array) {
 void init_functions(py::module_ &m) {
 
     // Define the setTestPath function
-    m.def("setTestPath", [](const std::string& path) {
-        TestPath = path; // Set the global TestPath variable
+    m.def("setTestPath", [](const std::string& path){
+        TestPath = path;
     }, "Set the TestPath variable.");
 
     // Define the getTestPath function
     m.def("getTestPath", []() {
-        return TestPath; // Return the current TestPath variable
+        return TestPath;
     }, "Get the TestPath variable.");
 
     Simulation* sim_instance = Simulation::getInstance();
 
-    m.def("setSystem", [sim_instance]() {  // Capture sim_instance by value
-        // Access the singleton instance of Simulation
+    m.def("setSystem", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->setSystem();  // Call the setSystem method on the singleton instance
+            sim_instance->setSystem();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -103,10 +108,9 @@ void init_functions(py::module_ &m) {
 
     m.def("Burnup", [&sim_instance]() {sim_instance->Burnup();}, "Calculates the burnup.");
 
-
     m.def("EffectiveBurnup", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->EffectiveBurnup();  // Call the member function
+            sim_instance->EffectiveBurnup();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -114,7 +118,7 @@ void init_functions(py::module_ &m) {
 
     m.def("GapPartialPressure", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->GapPartialPressure();  // Call the member function
+            sim_instance->GapPartialPressure();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -122,7 +126,7 @@ void init_functions(py::module_ &m) {
 
     m.def("UO2Thermochemistry", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->UO2Thermochemistry();  // Call the member function
+            sim_instance->UO2Thermochemistry();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -130,7 +134,7 @@ void init_functions(py::module_ &m) {
 
     m.def("StoichiometryDeviation", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->StoichiometryDeviation();  // Call the member function
+            sim_instance->StoichiometryDeviation();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -138,7 +142,7 @@ void init_functions(py::module_ &m) {
 
     m.def("HighBurnupStructureFormation", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->HighBurnupStructureFormation();  // Call the member function
+            sim_instance->HighBurnupStructureFormation();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -146,7 +150,7 @@ void init_functions(py::module_ &m) {
 
     m.def("HighBurnupStructurePorosity", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->HighBurnupStructurePorosity();  // Call the member function
+            sim_instance->HighBurnupStructurePorosity();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -154,7 +158,7 @@ void init_functions(py::module_ &m) {
 
     m.def("GrainGrowth", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->GrainGrowth();  // Call the member function
+            sim_instance->GrainGrowth();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -162,7 +166,7 @@ void init_functions(py::module_ &m) {
 
     m.def("GrainBoundarySweeping", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->GrainBoundarySweeping();  // Call the member function
+            sim_instance->GrainBoundarySweeping();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -170,7 +174,7 @@ void init_functions(py::module_ &m) {
 
     m.def("GasProduction", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->GasProduction();  // Call the member function
+            sim_instance->GasProduction();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -178,7 +182,7 @@ void init_functions(py::module_ &m) {
 
     m.def("IntraGranularBubbleBehavior", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->IntraGranularBubbleBehavior();  // Call the member function
+            sim_instance->IntraGranularBubbleBehavior();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -186,7 +190,7 @@ void init_functions(py::module_ &m) {
 
     m.def("GasDiffusion", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->GasDiffusion();  // Call the member function
+            sim_instance->GasDiffusion();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -194,7 +198,7 @@ void init_functions(py::module_ &m) {
 
     m.def("GrainBoundaryMicroCracking", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->GrainBoundaryMicroCracking();  // Call the member function
+            sim_instance->GrainBoundaryMicroCracking();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -202,7 +206,7 @@ void init_functions(py::module_ &m) {
 
     m.def("GrainBoundaryVenting", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->GrainBoundaryVenting();  // Call the member function
+            sim_instance->GrainBoundaryVenting();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -210,7 +214,7 @@ void init_functions(py::module_ &m) {
 
     m.def("InterGranularBubbleBehavior", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->InterGranularBubbleBehavior();  // Call the member function
+            sim_instance->InterGranularBubbleBehavior();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -218,7 +222,7 @@ void init_functions(py::module_ &m) {
 
     m.def("update", [sim_instance](double* Sciantix_variables, double* Sciantix_diffusion_modes) {
         if (sim_instance) {
-            sim_instance->update(Sciantix_variables, Sciantix_diffusion_modes);  // Call the member function with arguments
+            sim_instance->update(Sciantix_variables, Sciantix_diffusion_modes);
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -226,7 +230,7 @@ void init_functions(py::module_ &m) {
 
     m.def("output", [sim_instance]() {
         if (sim_instance) {
-            sim_instance->output();  // Call the output method on the singleton instance
+            sim_instance->output();
         } else {
             throw std::runtime_error("Failed to get Simulation instance.");
         }
@@ -251,5 +255,8 @@ void init_functions(py::module_ &m) {
     m.def("getSciantixVariablesArray", &getSciantixVariablesArray);
     m.def("getSciantixScalingFactorsArray", &getSciantixScalingFactorsArray);
     m.def("getSciantixDiffusionModesArray", &getSciantixDiffusionModesArray);
+
+    m.def("getTimeEndH", &getTimeEndH);
+    m.def("getTimeEndS", &getTimeEndS);
 
 }
