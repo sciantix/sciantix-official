@@ -67,9 +67,38 @@ void GrainBoundaryMicroCracking()
 			const double boltzmann_constant = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
 			const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
 
+			////////// BOOTH model ////////
+			double FGRi(0.0), FGRf(0.0), FGRincrement(0.0);
+			
+			double Tf = history_variable[hv["Temperature"]].getFinalValue();
+			double Ff = history_variable[hv["Fission rate"]].getFinalValue();
+
+			double df = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * Tf)) + 4.0 * 1.41e-25 * sqrt(Ff) * exp(-1.91e-19 / (boltzmann_constant * Tf)) + 8.0e-40 * Ff;
+
+			FGRi = pow(sciantix_variable[sv["sourcefraction"]].getInitialValue(),2);//*df/di;
+			if (Ff <= 1e15)
+			{
+				FGRincrement = 36.0 * (df) *physics_variable[pv["Time step"]].getFinalValue()/(pi*pow(sciantix_variable[sv["Grain radius"]].getFinalValue(),2));
+			}
+			else
+			{
+				FGRincrement = 16.0 * (df) *physics_variable[pv["Time step"]].getFinalValue()/(pi*pow(sciantix_variable[sv["Grain radius"]].getFinalValue(),2));
+			}
+			FGRf = pow(FGRi+FGRincrement,0.5);
+			
+			if (FGRf<=0.9)
+			{
+				sciantix_variable[sv["sourcefraction"]].setFinalValue(FGRf);
+			}
+			else
+			{
+				sciantix_variable[sv["sourcefraction"]].setFinalValue(0.9);
+			}
+
 			double E =  matrix[sma["UO2"]].getElasticModulus() * 1e6; // Pa
 			double nu =  matrix[sma["UO2"]].getPoissonRatio();
-			double G_gb =  matrix[sma["UO2"]].getGrainBoundaryFractureEnergy();//*(1-sf_geometrical_parameter*sciantix_variable[sv["sourcefraction"]].getFinalValue()); // J/m2
+
+			double G_gb =  matrix[sma["UO2"]].getGrainBoundaryFractureEnergy()*(1-sciantix_variable[sv["sourcefraction"]].getFinalValue());//*(1-sf_geometrical_parameter*sciantix_variable[sv["sourcefraction"]].getFinalValue()); // J/m2
 
 			// Fracture toughness
 			// K_IC = sqrt(elasticmodulus*grainboundaryenergy/(1-poissonratio**2))
@@ -105,7 +134,7 @@ void GrainBoundaryMicroCracking()
 			
 			// Pcrit = Peq + (1-1/(pi*F))*Kic*sqrt(pi/radius)*(1/kt) //Pa
 			double geometrical_factor = 3.28;
-			double hc = 1/(1-(pi*geometrical_factor*factor));
+			double hc = 1/(1-1/(pi*geometrical_factor*factor));
 
 			//double fracture_stress = sciantix_variable[sv["Fracture toughness"]].getFinalValue()*1e6*sqrt(pi/(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue()*sin(matrix[sma["UO2"]].getSemidihedralAngle())))*(1/stressintensification)*(geometrical_factor)*(1-1/(factor*pi*geometrical_factor));
 			double fracture_stress = sciantix_variable[sv["Fracture toughness"]].getFinalValue()*1e6*sqrt(pi/(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue()*sin(matrix[sma["UO2"]].getSemidihedralAngle())))*(1/stressintensification)*(1/hc)*(1/pi);

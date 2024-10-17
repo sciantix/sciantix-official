@@ -267,20 +267,6 @@ class Simulation : public Solver, public Model
 				}
 			}
 		}
-
-		double FGRi(0.0), FGRf(0.0), FGRincrement(0.0);
-		const double boltzmann_constant = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
-		const double pi = CONSTANT_NUMBERS_H::MathConstants::pi;
-		
-		double Tf = history_variable[hv["Temperature"]].getFinalValue();
-		double Ff = history_variable[hv["Fission rate"]].getFinalValue();
-
-		double df = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * Tf)) + 4.0 * 1.41e-25 * sqrt(Ff) * exp(-1.91e-19 / (boltzmann_constant * Tf)) + 8.0e-40 * Ff;
-
-		FGRi = pow(sciantix_variable[sv["sourcefraction"]].getInitialValue(),2);//*df/di;
-		FGRincrement = 16.0 * (df) *physics_variable[pv["Time step"]].getFinalValue()/(pi*pow(sciantix_variable[sv["Grain radius"]].getFinalValue(),2));
-		FGRf = pow(FGRi+FGRincrement,0.5);
-		sciantix_variable[sv["sourcefraction"]].setFinalValue(FGRf);
 	}
 
 	void GrainGrowth()
@@ -657,7 +643,7 @@ class Simulation : public Solver, public Model
 			{
 				std::cout << "Cappellari --------" <<std::endl;
 				
-				if (sciantix_variable[sv["Intergranular bubble pressure"]].getFinalValue()>0)
+				if (sciantix_variable[sv["Intergranular bubble pressure"]].getFinalValue()>0 && sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue()>0.20)
 				{
 					// std::cout<<"dp = "<<sciantix_variable[sv["Intergranular bubble pressure"]].getIncrement()<<std::endl;
 					// std::cout<<"df ="<<-sciantix_variable[sv["Intergranular bubble pressure"]].getIncrement()*
