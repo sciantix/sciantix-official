@@ -69,7 +69,7 @@ void GrainBoundaryMicroCracking()
 
 			double E =  matrix[sma["UO2"]].getElasticModulus() * 1e6; // Pa
 			double nu =  matrix[sma["UO2"]].getPoissonRatio();
-			double G_gb =  matrix[sma["UO2"]].getGrainBoundaryFractureEnergy(); // J/m2
+			double G_gb =  matrix[sma["UO2"]].getGrainBoundaryFractureEnergy();//*(1-sf_geometrical_parameter*sciantix_variable[sv["sourcefraction"]].getFinalValue()); // J/m2
 
 			// Fracture toughness
 			// K_IC = sqrt(elasticmodulus*grainboundaryenergy/(1-poissonratio**2))

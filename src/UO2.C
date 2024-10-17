@@ -57,7 +57,8 @@ void UO2()
     //matrix[index].setPoissonRatio(0.316); // (/) MATPRO (1979) 
 	matrix[index].setPoissonRatio(0.32); // (/) TU
 
-	matrix[index].setGrainBoundaryFractureEnergy(((2*0.6*cos(0.872664626)))*(1- 1/(1+exp(-0.015*(history_variable[hv["Temperature"]].getFinalValue()-(273+100+389+1547*exp(-sciantix_variable[sv["Burnup"]].getFinalValue()/64))))))); // (N/m)  surface tension 	
+	matrix[index].setGrainBoundaryFractureEnergy(((2*0.6*cos(0.872664626)))); // (N/m)  surface tension 	
+	//matrix[index].setGrainBoundaryFractureEnergy(((2*0.6*cos(0.872664626)))*(1- 1/(1+exp(-0.015*(history_variable[hv["Temperature"]].getFinalValue()-(273+100+389+1547*exp(-sciantix_variable[sv["Burnup"]].getFinalValue()/64))))))); // (N/m)  surface tension 	
 	///matrix[index].setGrainBoundaryFractureEnergy(4e-3); // (J/m2) @Jernkvist2019
 	///matrix[index].setGrainBoundaryFractureEnergy(2); // (J/m2) @Jernkvist2020
 	///matrix[index].setGrainBoundaryFractureEnergy(-0.1114*sciantix_variable[sv["Burnup"]].getInitialValue()+15.773); // (J/m2) @Henry fitting 2020
