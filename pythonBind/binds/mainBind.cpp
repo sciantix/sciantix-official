@@ -77,24 +77,21 @@ void bind_input_reading(py::module_ &m)
             auto Sciantix_variables_ptr = Sciantix_variables.mutable_data();
             auto Sciantix_scaling_factors_ptr = Sciantix_scaling_factors.mutable_data();
 
-            double* Time_end_h_ptr = Time_end_h.mutable_data();
-            double* Time_end_s_ptr = Time_end_s.mutable_data();
+            double *Time_input_ptr = Time_input.mutable_data();
+            double *Temperature_input_ptr = Temperature_input.mutable_data();
+            double *Fissionrate_input_ptr = Fissionrate_input.mutable_data();
+            double *Hydrostaticstress_input_ptr = Hydrostaticstress_input.mutable_data();
+            double *Steampressure_input_ptr = Steampressure_input.mutable_data();
 
             // Convert numpy arrays to std::vector<double>
-            std::vector<double> Time_input_vec(Time_input.size());
-            std::memcpy(Time_input_vec.data(), Time_input.data(), Time_input.size() * sizeof(double));
+            std::vector<double> Time_input_vec(Time_input_ptr, Time_input_ptr + Time_input.size());
+            std::vector<double> Temperature_input_vec(Temperature_input_ptr, Temperature_input_ptr + Temperature_input.size());
+            std::vector<double> Fissionrate_input_vec(Fissionrate_input_ptr, Fissionrate_input_ptr + Fissionrate_input.size());
+            std::vector<double> Hydrostaticstress_input_vec(Hydrostaticstress_input_ptr, Hydrostaticstress_input_ptr + Hydrostaticstress_input.size());
+            std::vector<double> Steampressure_input_vec(Steampressure_input_ptr, Steampressure_input_ptr + Steampressure_input.size());
 
-            std::vector<double> Temperature_input_vec(Temperature_input.size());
-            std::memcpy(Temperature_input_vec.data(), Temperature_input.data(), Temperature_input.size() * sizeof(double));
-
-            std::vector<double> Fissionrate_input_vec(Fissionrate_input.size());
-            std::memcpy(Fissionrate_input_vec.data(), Fissionrate_input.data(), Fissionrate_input.size() * sizeof(double));
-
-            std::vector<double> Hydrostaticstress_input_vec(Hydrostaticstress_input.size());
-            std::memcpy(Hydrostaticstress_input_vec.data(), Hydrostaticstress_input.data(), Hydrostaticstress_input.size() * sizeof(double));
-
-            std::vector<double> Steampressure_input_vec(Steampressure_input.size());
-            std::memcpy(Steampressure_input_vec.data(), Steampressure_input.data(), Steampressure_input.size() * sizeof(double));
+            double* Time_end_h_ptr = Time_end_h.mutable_data();
+            double* Time_end_s_ptr = Time_end_s.mutable_data();
 
             // Call the original C++ InputReading function
             InputReading(
@@ -102,7 +99,7 @@ void bind_input_reading(py::module_ &m)
                 Sciantix_variables_ptr, 
                 Sciantix_scaling_factors_ptr, 
                 Input_history_points, 
-                Time_input_vec,
+                Time_input_vec, 
                 Temperature_input_vec, 
                 Fissionrate_input_vec, 
                 Hydrostaticstress_input_vec, 
@@ -110,17 +107,20 @@ void bind_input_reading(py::module_ &m)
                 *Time_end_h_ptr,
                 *Time_end_s_ptr
             );
+
+            // Update the Python Temperature_input array with new values
+            std::memcpy(Temperature_input_ptr, Temperature_input_vec.data(), Temperature_input_vec.size() * sizeof(double));
         },
         py::arg("Sciantix_options").noconvert(), 
         py::arg("Sciantix_variables").noconvert(), 
         py::arg("Sciantix_scaling_factors").noconvert(), 
         py::arg("Input_history_points"), 
-        py::arg("Time_input").noconvert(), 
-        py::arg("Temperature_input").noconvert(), 
-        py::arg("Fissionrate_input").noconvert(), 
-        py::arg("Hydrostaticstress_input").noconvert(), 
-        py::arg("Steampressure_input").noconvert(), 
-        py::arg("Time_end_h"),
+        py::arg("Time_input"), 
+        py::arg("Temperature_input"), 
+        py::arg("Fissionrate_input"), 
+        py::arg("Hydrostaticstress_input"), 
+        py::arg("Steampressure_input"), 
+        py::arg("Time_end_h"), 
         py::arg("Time_end_s")
     );
 }

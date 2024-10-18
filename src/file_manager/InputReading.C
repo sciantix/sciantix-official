@@ -260,6 +260,7 @@ void InputReading(
 	// At the beginning of the InputReading function, print the initial values
 	std::cout << "C (Inside InputReading): Time_end_h: " << Time_end_h << std::endl;
 	std::cout << "C (Inside InputReading): Time_end_s: " << Time_end_s << std::endl;
+	std::cout << "C (Inside InputReading): Temperature_input: " << Temperature_input[Input_history_points - 1] << std::endl;
 
 	if (!input_scaling_factors.fail())
 	{
