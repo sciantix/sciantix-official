@@ -387,7 +387,14 @@ class Simulation : public Solver, public Model
 		GBstate[3+rows]=0;
 		GBstate[0+2*rows]=0;
 		// GBstate[1+2*rows]=2*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2);;
-		GBstate[1+2*rows]=6*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2)/(3+4*sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue());
+		if (sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() < sciantix_variable[sv["Intergranular saturation fractional coverage"]].getInitialValue())
+		{
+			GBstate[1+2*rows]=6*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2)/(3+4*sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue());
+		}
+		else
+		{
+			GBstate[1+2*rows]=sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue()/sciantix_variable[sv["Intergranular bubble area"]].getInitialValue();
+		}
 		GBstate[2+2*rows]=1;
 		GBstate[3+2*rows]=0;
 		GBstate[0+3*rows]=0;
@@ -411,9 +418,14 @@ class Simulation : public Solver, public Model
 		GB[1]=sciantix_variable[sv["Intergranular bubble area"]].getInitialValue()/3;
 		// GB[2]=sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue()+
 		// 	2*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2)*sciantix_variable[sv["Intergranular bubble area"]].getInitialValue();
-		GB[2]=sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue()+
-			6*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2)*sciantix_variable[sv["Intergranular bubble area"]].getInitialValue()/(3+4*sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue());
-
+		if (sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() < sciantix_variable[sv["Intergranular saturation fractional coverage"]].getInitialValue())
+		{
+			GB[2]=sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue()+ 6*pow(sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue(),2)*sciantix_variable[sv["Intergranular bubble area"]].getInitialValue()/(3+4*sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue());
+		}
+		else
+		{
+			GB[2]=2 * sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue();
+		}
 		GB[3]=(sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue()-
 			2*sciantix_variable[sv["Intergranular bubble concentration"]].getInitialValue()*sciantix_variable[sv["Intergranular bubble area"]].getInitialValue());
 		///

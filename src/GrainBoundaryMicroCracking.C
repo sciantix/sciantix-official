@@ -86,13 +86,13 @@ void GrainBoundaryMicroCracking()
 			}
 			FGRf = pow(FGRi+FGRincrement,0.5);
 			
-			if (FGRf<=0.9)
+			if (FGRf<=0.75)
 			{
 				sciantix_variable[sv["sourcefraction"]].setFinalValue(FGRf);
 			}
 			else
 			{
-				sciantix_variable[sv["sourcefraction"]].setFinalValue(0.9);
+				sciantix_variable[sv["sourcefraction"]].setFinalValue(0.75);
 			}
 
 			double E =  matrix[sma["UO2"]].getElasticModulus() * 1e6; // Pa
