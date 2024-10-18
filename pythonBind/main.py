@@ -26,23 +26,27 @@ def main(Path_of_execution):
     Sciantix_scaling_factors = np.array(sciantixModule.Sciantix_scaling_factors, dtype=np.float64)
     Sciantix_history = np.array(sciantixModule.Sciantix_history, dtype=np.float64)
     Sciantix_diffusion_modes = np.array(sciantixModule.Sciantix_diffusion_modes, dtype=np.float64)
+
     Time_input = np.array(sciantixModule.Time_input, dtype=np.float64)
     Temperature_input = np.array(sciantixModule.Temperature_input, dtype=np.float64)
     Fissionrate_input = np.array(sciantixModule.Fissionrate_input, dtype=np.float64)
     Hydrostaticstress_input = np.array(sciantixModule.Hydrostaticstress_input, dtype=np.float64)
     Steampressure_input = np.array(sciantixModule.Steampressure_input, dtype=np.float64)
 
-    # Fetch the integer and float variables
+    # Time_input_vector = Time_input.tolist()  # Convert numpy array to list
+    # Temperature_input_vector = Temperature_input.tolist()  # Convert numpy array to list
+    # Fissionrate_input_vector = Fissionrate_input.tolist()  # Convert numpy array to list
+    # Hydrostaticstress_input_vector = Hydrostaticstress_input.tolist()  # Convert numpy array to list
+    # Steampressure_input_vector = Steampressure_input.tolist()  # Convert numpy array to list
+
     Input_history_points = int(sciantixModule.Input_history_points)
 
-    # Print the initial values from C++ before calling InputReading
-    # Time_end_h = sciantixModule.getTimeEndH()
-    # Time_end_s = sciantixModule.getTimeEndS()
-    Time_end_h = np.array([0.0], dtype=np.float64)  # Initialize with zero or appropriate value
-    Time_end_s = np.array([0.0], dtype=np.float64)  # Initialize with zero or appropriate value
-
+    Time_end_h = np.array([0.0], dtype=np.float64)
+    Time_end_s = np.array([0.0], dtype=np.float64)
+    
     print(f"P (Before InputReading): Time_end_h: {Time_end_h}")
     print(f"P (Before InputReading): Time_end_s: {Time_end_s}")
+    print(f"P (Before InputReading): Temperature_input: {Temperature_input[-1]}")
 
     # Call InputReading with Time_end_h and Time_end_s
     sciantixModule.InputReading(
@@ -59,14 +63,13 @@ def main(Path_of_execution):
         Time_end_s
     )
 
-    # After InputReading, get the updated values from C++
+    print(f"P (After InputReading): Temperature_input: {Temperature_input[-1]}")
+
     print(f"P (After InputReading): Time_end_h: {Time_end_h[0]}")
     print(f"P (After InputReading): Time_end_s: {Time_end_s[0]}")
 
-    print(Sciantix_options) # updated
+    print(Sciantix_options)
     sciantixModule.Sciantix_options = Sciantix_options
-    print(sciantixModule.Sciantix_options) # updated
-    # print(Sciantix_variables)
 
     sciantixModule.Initialization(
         Sciantix_history, 
