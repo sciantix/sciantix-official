@@ -95,8 +95,8 @@ void Sciantix(int Sciantix_options[],
 	MapModel();
 	sciantix_simulation.InterGranularBubbleBehaviour();
 
-	GrainBoundaryRupture();
-    MapModel();
+	//GrainBoundaryRupture();
+    //MapModel();
 
 	FiguresOfMerit();
 	

@@ -110,12 +110,6 @@ void InterGranularBubbleEvolution()
 			= 2.0 * pi * matrix[sma["UO2"]].getGrainBoundaryThickness() * matrix[sma["UO2"]].getGrainBoundaryVacancyDiffusivity() * sink_strength;
 
 		// Initial value of the growth rate = 2 pi t D n / S V
-		if (history_variable[hv["Temperature"]].getIncrement()!=0){
-			std::cout<< "Temperature increment: "<<history_variable[hv["Temperature"]].getIncrement()<<std::endl;
-			std::cout<< "dp_bubble = "<< (boltzmann_constant * history_variable[hv["Temperature"]].getIncrement() *
-				sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue() /
-				(sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue() * matrix[sma["UO2"]].getSchottkyVolume()))<<std::endl;
-		}
 		const double growth_rate = volume_flow_rate * sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue() / matrix[sma["UO2"]].getSchottkyVolume();
 
 		double equilibrium_pressure(0), equilibrium_term(0);

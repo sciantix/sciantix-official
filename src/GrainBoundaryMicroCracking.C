@@ -97,13 +97,12 @@ void GrainBoundaryMicroCracking()
 
 			double E =  matrix[sma["UO2"]].getElasticModulus() * 1e6; // Pa
 			double nu =  matrix[sma["UO2"]].getPoissonRatio();
-
-			double G_gb =  matrix[sma["UO2"]].getGrainBoundaryFractureEnergy()*(1-sciantix_variable[sv["sourcefraction"]].getFinalValue());//*(1-sf_geometrical_parameter*sciantix_variable[sv["sourcefraction"]].getFinalValue()); // J/m2
+			double accumulationGB = (sciantix_variable[sv["Xe produced"]].getFinalValue() -  sciantix_variable[sv["Xe in grain"]].getFinalValue())/(sciantix_variable[sv["Xe produced"]].getFinalValue());
+			double G_gb =  matrix[sma["UO2"]].getGrainBoundaryFractureEnergy()*(1-accumulationGB);//*(1-sf_geometrical_parameter*sciantix_variable[sv["sourcefraction"]].getFinalValue()); // J/m2
 
 			// Fracture toughness
 			// K_IC = sqrt(elasticmodulus*grainboundaryenergy/(1-poissonratio**2))
 			sciantix_variable[sv["Fracture toughness"]].setFinalValue(sqrt(E * G_gb / (1.0 - pow(nu, 2))) * 1e-6); // (MPa m0.5)
-			
 			// Stress intensification at GB tip
 			// kt = 1 + crackdiameter / crackheight
 			//double stressintensification = 1 + 2*sin(matrix[sma["UO2"]].getSemidihedralAngle())/(1-cos(matrix[sma["UO2"]].getSemidihedralAngle()));
@@ -130,12 +129,15 @@ void GrainBoundaryMicroCracking()
 
 			// Geometrical factor accounting for fractional coverage of the grain face
 			// F = 2*(sqrt(1/sqrt(Fc)-1)
-			double factor = 2*sqrt(pow(sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue(), -0.5)-1);
-			
+			double geometrical_factor = 3.28; // = Y
+			//double factor = 2*sqrt(pow(sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue(), -0.5)-1);
+			double hc(1.0);
+			if (sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue()>0.01)
+			{
+				hc = 1/(1-1/(pi*geometrical_factor*(2*sqrt(pow(sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue(), -0.5)-1))));
+			}
 			// Pcrit = Peq + (1-1/(pi*F))*Kic*sqrt(pi/radius)*(1/kt) //Pa
-			double geometrical_factor = 3.28;
-			double hc = 1/(1-1/(pi*geometrical_factor*factor));
-
+			
 			//double fracture_stress = sciantix_variable[sv["Fracture toughness"]].getFinalValue()*1e6*sqrt(pi/(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue()*sin(matrix[sma["UO2"]].getSemidihedralAngle())))*(1/stressintensification)*(geometrical_factor)*(1-1/(factor*pi*geometrical_factor));
 			double fracture_stress = sciantix_variable[sv["Fracture toughness"]].getFinalValue()*1e6*sqrt(pi/(sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue()*sin(matrix[sma["UO2"]].getSemidihedralAngle())))*(1/stressintensification)*(1/hc)*(1/pi);
 			double critical_bubble_pressure = equilibriumpressure + fracture_stress;    //Pa
@@ -144,7 +146,7 @@ void GrainBoundaryMicroCracking()
 			sciantix_variable[sv["Critical intergranular bubble pressure"]].setFinalValue(critical_bubble_pressure*1e-6); //MPa
 			
 			double bubble_pressure=0;
-			if (sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue() !=0)
+			if (sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue() !=0 && sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue()>= sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue())
 			{
 				bubble_pressure = (boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue() * //Pa
 				sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue() /
@@ -155,7 +157,7 @@ void GrainBoundaryMicroCracking()
 			// microcracking parameter
 			double a = 1;
 			double b = sf_span_parameter;
-			double inflection = 1*sf_cent_parameter;
+			double inflection = sf_cent_parameter;
 			double microcracking_parameter = a*b*exp(b*(bubble_pressure/(inflection*critical_bubble_pressure)-1))/
 				(inflection*critical_bubble_pressure*1e-6*pow(1+a*exp(b*(bubble_pressure/(inflection*critical_bubble_pressure)-1)),2));
 
@@ -165,15 +167,23 @@ void GrainBoundaryMicroCracking()
 			const double healing_parameter = 1.0 / 0.8814; // 1 / (u * burnup)
 			parameter.push_back(healing_parameter);
 
-			std::cout << "Grain Boundary Energy (J/m2)= "<< G_gb <<std::endl;
 			if (bubble_pressure >= critical_bubble_pressure)
 			{
-				std::cout <<"WARNING: critical bubble pressure exceeded"<<std::endl;
-			}    
-			std::cout << "Critical pressure (Pa): "<<critical_bubble_pressure<<std::endl;
-			std::cout << "Bubble pressure (Pa): "<<bubble_pressure<<std::endl;
-			std::cout << "Fractional coverage (/): " <<sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() <<std::endl;
-
+				std::cout <<"WARNING: critical bubble pressure exceeded = "<<bubble_pressure/critical_bubble_pressure<<std::endl;
+			}   
+			if (sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue()>= sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue())
+			{
+				std::cout << "Temperature (K): "<<history_variable[hv["Temperature"]].getFinalValue()<<std::endl;
+				std::cout << "Grain Boundary Energy (J/m2)= "<< G_gb <<std::endl;
+				std::cout << "Vacancies #: "<<sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue()<<std::endl;
+				std::cout << "Atoms #: "<<sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue()<<std::endl;
+				std::cout << "Critical pressure (MPa): "<<critical_bubble_pressure*1e-6<<std::endl;
+				std::cout << "Fracture stress (MPa): "<<fracture_stress*1e-6<<std::endl;
+				std::cout << "Equilibrium pressure (MPa): "<<equilibriumpressure*1e-6<<std::endl;
+				std::cout << "Bubble pressure (MPa): "<<bubble_pressure*1e-6<<std::endl;
+				std::cout << "Fractional coverage (/): " <<sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() <<std::endl;
+			}     
+			
 			model[model_index].setParameter(parameter);
 			model[model_index].setRef("Under development");
 
