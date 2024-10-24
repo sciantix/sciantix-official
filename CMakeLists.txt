@@ -45,7 +45,10 @@ endfunction()
 enable_language (CXX)
 
 # Set option for coupling with TU
-option (COUPLING_TU OFF)
+set(COUPLING_TU OFF)
+add_definitions(-DCOUPLING_TU)
+
+message(STATUS "COUPLING_TU is set to: ${COUPLING_TU}")
 
 # Include CTest
 include(CTest)
