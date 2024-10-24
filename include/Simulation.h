@@ -488,8 +488,6 @@ class Simulation : public Solver, public Model
 			(1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue()) + sciantix_variable[sv["Intergranular vented fraction"]].getFinalValue() * sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue()
 		);
 
-		std::cout << "	\nGasRelease: intact faces+microcracking" << std::endl;
-
 		// dR/dt
 		double source_rate(0.0), decay_rate(0.0);
 		
@@ -652,17 +650,39 @@ class Simulation : public Solver, public Model
 
 			case 2:
 			{
-				if (sciantix_variable[sv["Intergranular bubble pressure"]].getFinalValue()>0)
-				{
-					sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(
-						solver.Decay(
-							sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue(),
-							model[sm["Grain-boundary micro-cracking"]].getParameter().at(0),  
-							0,
-							sciantix_variable[sv["Intergranular bubble pressure"]].getIncrement()
-						)
-					);
-				}
+				// if (sciantix_variable[sv["Intergranular bubble pressure"]].getFinalValue()>0)
+				// {
+				// 	sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(
+				// 		solver.Decay(
+				// 			sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue(),
+				// 			model[sm["Grain-boundary micro-cracking"]].getParameter().at(0),  
+				// 			0,
+				// 			sciantix_variable[sv["Intergranular bubble pressure"]].getIncrement()
+				// 		)
+				// 	);
+				// }
+                double dx =  ((sciantix_variable[sv["Intergranular bubble pressure"]].getIncrement()/sciantix_variable[sv["Critical intergranular bubble pressure"]].getFinalValue())
+                            -
+                            (sciantix_variable[sv["Intergranular bubble pressure"]].getFinalValue()*sciantix_variable[sv["Equilibrium bubble pressure"]].getIncrement())/
+                            (pow(sciantix_variable[sv["Critical intergranular bubble pressure"]].getFinalValue(),2))
+							-
+                            (sciantix_variable[sv["Intergranular bubble pressure"]].getFinalValue()*sciantix_variable[sv["Fracture stress"]].getIncrement())/
+                            (pow(sciantix_variable[sv["Critical intergranular bubble pressure"]].getFinalValue(),2)));
+                if (dx>0 && model[sm["Grain-boundary micro-cracking"]].getParameter().at(0)<=0)
+                {
+                    sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(
+                        solver.Decay(
+                            sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue(),
+                            0,  
+                            model[sm["Grain-boundary micro-cracking"]].getParameter().at(0),
+                            dx
+                        )
+                    );
+                }
+                if (model[sm["Grain-boundary micro-cracking"]].getParameter().at(0)==100)
+                {
+                    sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(0.0);
+                }
 				// ODE for the intergranular fractional intactness: this equation accounts for the healing of the intergranular fractional intactness with burnup
 				// df / dBu = - h f + h
 				sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(

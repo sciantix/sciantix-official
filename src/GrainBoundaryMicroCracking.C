@@ -97,8 +97,8 @@ void GrainBoundaryMicroCracking()
 
 			double E =  matrix[sma["UO2"]].getElasticModulus() * 1e6; // Pa
 			double nu =  matrix[sma["UO2"]].getPoissonRatio();
-			double accumulationGB = (sciantix_variable[sv["Xe produced"]].getFinalValue() -  sciantix_variable[sv["Xe in grain"]].getFinalValue())/(sciantix_variable[sv["Xe produced"]].getFinalValue());
-			double G_gb =  matrix[sma["UO2"]].getGrainBoundaryFractureEnergy()*(1-accumulationGB);//*(1-sf_geometrical_parameter*sciantix_variable[sv["sourcefraction"]].getFinalValue()); // J/m2
+			//double accumulationGB = (sciantix_variable[sv["Xe produced"]].getFinalValue() -  sciantix_variable[sv["Xe in grain"]].getFinalValue())/(sciantix_variable[sv["Xe produced"]].getFinalValue());
+			double G_gb =  matrix[sma["UO2"]].getGrainBoundaryFractureEnergy();//*(1-accumulationGB);//*(1-sf_geometrical_parameter*sciantix_variable[sv["sourcefraction"]].getFinalValue()); // J/m2
 
 			// Fracture toughness
 			// K_IC = sqrt(elasticmodulus*grainboundaryenergy/(1-poissonratio**2))
@@ -145,45 +145,53 @@ void GrainBoundaryMicroCracking()
 			sciantix_variable[sv["Fracture stress"]].setFinalValue(fracture_stress*1e-6); //MPa
 			sciantix_variable[sv["Critical intergranular bubble pressure"]].setFinalValue(critical_bubble_pressure*1e-6); //MPa
 			
-			double bubble_pressure=0;
-			if (sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue() !=0 && sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue()>= sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue())
-			{
-				bubble_pressure = (boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue() * //Pa
-				sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue() /
-				(sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue() * matrix[sma["UO2"]].getSchottkyVolume()));
+			double maxatompervacancy = 1.2;
+			double atompervacancyf = 0.0;
+
+			if (sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue() !=0)
+			{			
+				atompervacancyf = sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue() / sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue();
 			}
+			if (atompervacancyf > maxatompervacancy)
+			{
+				
+				std::cout << "ng/nv= "<<atompervacancyf<<std::endl;
+				std::cout << "Temperature (K): "<<history_variable[hv["Temperature"]].getFinalValue()<<std::endl;
+				std::cout << "Fractional coverage (/): " <<sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() <<std::endl;
+				atompervacancyf=maxatompervacancy;
+			}
+			double bubble_pressure  = (boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue() * atompervacancyf / matrix[sma["UO2"]].getSchottkyVolume()); //Pa
 			sciantix_variable[sv["Intergranular bubble pressure"]].setFinalValue(bubble_pressure*1e-6); //MPa		
 			
 			// microcracking parameter
-			double a = 1;
 			double b = sf_span_parameter;
 			double inflection = sf_cent_parameter;
-			double microcracking_parameter = a*b*exp(b*(bubble_pressure/(inflection*critical_bubble_pressure)-1))/
-				(inflection*critical_bubble_pressure*1e-6*pow(1+a*exp(b*(bubble_pressure/(inflection*critical_bubble_pressure)-1)),2));
-
+			// double microcracking_parameter = a*b*exp(b*(bubble_pressure/(inflection*critical_bubble_pressure)-1))/
+			// 	(inflection*critical_bubble_pressure*1e-6*pow(1+a*exp(b*(bubble_pressure/(inflection*critical_bubble_pressure)-1)),2));
+			// double microcracking_parameter = 1 - 1/(1+a*exp(b*(bubble_pressure/(inflection*critical_bubble_pressure)-1)));
+			double microcracking_parameter = - 2*b*exp(b*(bubble_pressure/critical_bubble_pressure-inflection))/(pow(1+exp(b*(bubble_pressure/critical_bubble_pressure-inflection)),2));
+			if (bubble_pressure>(inflection*critical_bubble_pressure) || critical_bubble_pressure <= 0)
+			{
+				microcracking_parameter = 100;
+			}
 			parameter.push_back(microcracking_parameter);
 
 			// healing parameter
 			const double healing_parameter = 1.0 / 0.8814; // 1 / (u * burnup)
 			parameter.push_back(healing_parameter);
 
-			if (bubble_pressure >= critical_bubble_pressure)
+			if (bubble_pressure >= inflection*critical_bubble_pressure)
 			{
-				std::cout <<"WARNING: critical bubble pressure exceeded = "<<bubble_pressure/critical_bubble_pressure<<std::endl;
-			}   
-			if (sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue()>= sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue())
-			{
+				std::cout << "WARNING: critical bubble pressure exceeded p/pc= "<<bubble_pressure/critical_bubble_pressure<<std::endl;
 				std::cout << "Temperature (K): "<<history_variable[hv["Temperature"]].getFinalValue()<<std::endl;
-				std::cout << "Grain Boundary Energy (J/m2)= "<< G_gb <<std::endl;
-				std::cout << "Vacancies #: "<<sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue()<<std::endl;
-				std::cout << "Atoms #: "<<sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue()<<std::endl;
+				std::cout << "Atoms/Vacancies: "<<atompervacancyf<<std::endl;
 				std::cout << "Critical pressure (MPa): "<<critical_bubble_pressure*1e-6<<std::endl;
 				std::cout << "Fracture stress (MPa): "<<fracture_stress*1e-6<<std::endl;
-				std::cout << "Equilibrium pressure (MPa): "<<equilibriumpressure*1e-6<<std::endl;
 				std::cout << "Bubble pressure (MPa): "<<bubble_pressure*1e-6<<std::endl;
 				std::cout << "Fractional coverage (/): " <<sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() <<std::endl;
-			}     
-			
+				std::cout << "Intactness (/): " <<sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue() <<std::endl;
+			}   
+
 			model[model_index].setParameter(parameter);
 			model[model_index].setRef("Under development");
 

@@ -26,8 +26,7 @@ void FiguresOfMerit()
 
   // Intergranular gaseous swelling
 		sciantix_variable[sv["Intergranular gas swelling"]].setFinalValue(
-      sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue()*
-			sciantix_variable[sv["Intergranular S/V"]].getFinalValue() *
+      sciantix_variable[sv["Intergranular S/V"]].getFinalValue() *
 			sciantix_variable[sv["Intergranular bubble concentration"]].getFinalValue() *
 			sciantix_variable[sv["Intergranular bubble volume"]].getFinalValue()
 		);
@@ -85,17 +84,17 @@ void FiguresOfMerit()
   else
     sciantix_variable[sv["Fuel oxygen potential"]].setFinalValue(8.314*1.0e-3*history_variable[hv["Temperature"]].getFinalValue()*log(sciantix_variable[sv["Fuel oxygen partial pressure"]].getFinalValue()/0.1013));
     
-	const double boltzmann_constant = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
+	//const double boltzmann_constant = CONSTANT_NUMBERS_H::PhysicsConstants::boltzmann_constant;
 
-  // Intergranular bubble pressure p = kTng/Onv (MPa)
-  if(sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue())
-    sciantix_variable[sv["Intergranular bubble pressure"]].setFinalValue(1e-6 *
-      boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue() *
-      sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue() /
-      (sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue() * matrix[sma["UO2"]].getSchottkyVolume())
-    );
-  else
-    sciantix_variable[sv["Intergranular bubble pressure"]].setFinalValue(0.0);
+  // // Intergranular bubble pressure p = kTng/Onv (MPa)
+  // if(sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue())
+  //   sciantix_variable[sv["Intergranular bubble pressure"]].setFinalValue(1e-6 *
+  //     boltzmann_constant * history_variable[hv["Temperature"]].getFinalValue() *
+  //     sciantix_variable[sv["Intergranular atoms per bubble"]].getFinalValue() /
+  //     (sciantix_variable[sv["Intergranular vacancies per bubble"]].getFinalValue() * matrix[sma["UO2"]].getSchottkyVolume())
+  //   );
+  // else
+  //   sciantix_variable[sv["Intergranular bubble pressure"]].setFinalValue(0.0);
 
   std::cout << "Intactness: " <<sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue() <<std::endl;
 }
