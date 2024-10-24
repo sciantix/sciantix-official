@@ -1,5 +1,3 @@
-Model	Burnup	: The local burnup is calculated from the fission rate density.
-Model	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
 Model	Grain growth	 : constant grain radius.
 Model	Gas production - Xe in UO2	 
 Model	Gas production - Kr in UO2	 
