@@ -78,7 +78,9 @@ void Simulation::setVariables(
 
     #if defined(COUPLING_TU)
 
-        sciantix_variable["Burnup"]setInitialValue(Sciantix_history["Burnup"]);
+        //sciantix_variable["Burnup"]setInitialValue(Sciantix_history["Burnup"]); PRIMA c'era questa riga
+        sciantix_variable["Burnup"].setInitialValue(Sciantix_history[7]);   
+        sciantix_variable["Burnup"].setFinalValue(Sciantix_history[8]);     //senza di questa MYRRHA 0.49Am normal operation crasha in Puredi. 
 
     #endif
 

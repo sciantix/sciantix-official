@@ -191,7 +191,9 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Intergranular gas swelling", "(/)", Sciantix_variables[36], Sciantix_variables[36], toOutputGrainBoundary),
         SciantixVariable("Intergranular fractional intactness", "(/)", Sciantix_variables[37], Sciantix_variables[37], toOutputCracking),
 
-        SciantixVariable("Burnup", "(MWd/kgUO2)", Sciantix_variables[38], Sciantix_variables[38], 1),
+        //#if !defined(COUPLING_TU) 
+            SciantixVariable("Burnup", "(MWd/kgUO2)", Sciantix_variables[38], Sciantix_variables[38], 1),
+        //#endif
         SciantixVariable("FIMA", "(%)", Sciantix_variables[69], Sciantix_variables[69], toOutputHighBurnupStructure),
         SciantixVariable("Effective burnup", "(MWd/kgUO2)", Sciantix_variables[39], Sciantix_variables[39], toOutputHighBurnupStructure),
         SciantixVariable("Irradiation time", "(h)", Sciantix_variables[65], Sciantix_variables[65], 0),
@@ -218,6 +220,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Specific power", "(MW/kg)", 0.0, 0.0, 0),
 
         SciantixVariable("HBS porosity", "(/)", Sciantix_variables[56], Sciantix_variables[56], toOutputHighBurnupStructure),
+        SciantixVariable("enriAm241", "(at./at. HM)", Sciantix_variables[79], Sciantix_variables[79], 0),                                   //@changes M. Di Gennaro 
         SciantixVariable("HBS pore density", "(pores/m3)", Sciantix_variables[80], Sciantix_variables[80], toOutputHighBurnupStructure),
         SciantixVariable("HBS pore volume", "(m3)", Sciantix_variables[81], Sciantix_variables[81], toOutputHighBurnupStructure),
         SciantixVariable("HBS pore radius", "(m)", Sciantix_variables[82], Sciantix_variables[82], toOutputHighBurnupStructure),

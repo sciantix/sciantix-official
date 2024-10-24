@@ -21,7 +21,7 @@
  * communication channel between the two codes.
  *
  * @author E. Travaglia
- *
+ * @changes M. Di Gennaro (added Sciantix_ ahead each name)
  */
 
 #ifndef TUSRCCOUPLING_H
@@ -31,9 +31,9 @@
 extern "C"
 {
   #endif
-  void getSciantixOptions(int options[], double scaling_factors[]);
-  void callSciantix(int options[], double history[], double variables[],
-                    double scaling_factors[], double diffusion_modes[]);
+  void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[]);
+  void callSciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[],
+                    double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
 
   #ifdef __cplusplus
 }

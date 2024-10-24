@@ -16,6 +16,7 @@
 
 #include "Simulation.h"
 
+
 std::map<int, std::string> update_sciantix_variable = {
     {0, "Grain radius"},
     {1, "Xe produced"},
@@ -89,6 +90,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {66, "Stoichiometry deviation"},
     {67, "Fuel oxygen partial pressure"},
     {69, "FIMA"},
+    {79, "enriAm241"},         //@changes M. Di Gennaro
     {80, "HBS pore density"},
     {81, "HBS pore volume"},
     {82, "HBS pore radius"},
@@ -96,15 +98,12 @@ std::map<int, std::string> update_sciantix_variable = {
     {85, "Xe in HBS pores - variance"},
     {86, "Xe atoms per HBS pore"},
     {88, "Xe atoms per HBS pore - variance"}
+    
 };
 
+//@changes M. Di Gennaro (moved the map's for below)
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
 {
-    for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin(); it != update_sciantix_variable.end(); it++)
-    {
-        Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
-    }
-
     for (int i = 0; i < n_modes; ++i)
     {
         for (int j = 0; j <= 17; j++)
@@ -112,4 +111,10 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
             Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];	
         }
     }
+
+    for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin(); it != update_sciantix_variable.end(); it++)
+    {
+        Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
+    }
+
 }

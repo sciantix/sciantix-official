@@ -266,6 +266,7 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
         reference += "iFissionGasDiffusivity: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.\n\t";
 
         double temperature = history_variable["Temperature"].getFinalValue();
+        std::cout << "In system = " << temperature << std::endl; 
         double fission_rate = history_variable["Fission rate"].getFinalValue();
 
         double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));
@@ -381,6 +382,23 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
         diffusivity *= scaling_factors["Diffusivity"].getValue();
 
         break;
+    }
+
+    case 7:
+    {
+        /**
+         * @brief iFissionGasDiffusivity = 7 
+         * @changes M. Di Gennaro 
+         *
+         */
+
+        reference += "iFissionGasDiffusivity: fit White (2001).\n\t";
+        diffusivity = 2.949513e-13 * exp(-20487.36244 / history_variable["Temperature"].getFinalValue());
+        diffusivity *= scaling_factors["Diffusivity"].getValue();
+
+        break;
+
+
     }
 
     case 99:
@@ -766,6 +784,55 @@ void System::setProductionRate(int input_value, SciantixArray<SciantixVariable> 
 
         break;
     }
+
+    //--------------------------------- @changes M. Di Gennaro ---------------------------------
+	case 4:
+    {
+        /**
+		 * @brief Surrogate model derived from **helium production in the IPS MYRRHA conditions**.
+		 *
+		 * **Range of utilization**
+         * - Fast reactor conditions: (U,Pu)O<sub>2</sub> MOX and (U,Pu,MA)O<sub>2</sub> MOX fuels in MYRRHA IPS conditions
+	     * - Up to 200 GWd/tHM
+		 * - Fission rate 1.3e19 - 2.2e19 fiss/m3s
+	     * - Pu concentration of 25-30 wt.%
+		 * - Am concentration of 0-5 wt.%
+		 * - U235 enrichment/U of 0.711 wt.% 
+		 * - Temperature 450-950 °C
+		 * - O/M 1.968 
+		 * - Fuel density 10970 kg/m3
+		 */
+
+		 double A = 3.387e+20;
+		 double B = 2.717e+19;
+		 double C = 3.528e+20;
+		 double D = -9.692e+14;
+		 double E = -2.397e14;
+		 double F = 2.057e+15;
+		 double G = 80.77;
+		 double H = 8.864;
+		 double I = -1.252e-23;
+		 double J = 1.811e-23;
+		 double K = -1.970e+25;
+		 double X = 2.218e+23;
+		 double Fdot = history_variable["Fission rate"].getFinalValue(); //(fissions/m3 s)
+		 double t = sciantix_variable["Irradiation time"].getFinalValue();// (h)
+		 double Am = sciantix_variable["enriAm241"].getFinalValue()*100;//(at/at. HM) -> (wt.%)
+         //std::cout << "Burnup in sciantix = " << sciantix_variable["Burnup"].getInitialValue() << std::endl; //controllato che leggesse lo stesso burnup di TU
+
+
+		 reference += "Case for helium production rate: Luzzi et al., ...., (2023).\n\t";
+         production_rate = (A* Am + B * pow(Am,2) + C) +
+                            2 * t *(D * Am + E * pow(Am,2) + F) +
+                            Fdot * (G * Am + H)+ 2 * t * pow(Fdot,2) * (I * Am + J) -
+                            K * Am * (Fdot / X) *(((t * Fdot)/X)-1)* exp(-(t * Fdot) / X); // (at/m3 h)
+         production_rate /= 3600.0; // (at /m3 s)
+
+         production_rate *= scaling_factors["Helium production rate"].getValue();
+         break;
+    }
+    //--------------------------------- M. Di Gennaro ---------------------------
+
 
     case 5:
     {
