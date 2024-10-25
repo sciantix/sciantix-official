@@ -22,14 +22,6 @@ endif()
 # Name of the project created / existent in visual studio
 project(sciantix)
 
-# Trova la libreria HDF5
-find_package(HDF5 REQUIRED COMPONENTS C CXX)
-find_package(Eigen3 REQUIRED)
-
-# Aggiungi include directories per HDF5
-include_directories(${HDF5_INCLUDE_DIRS})
-include_directories(${EIGEN3_INCLUDE_DIR})
-
 # Function to add all subdirectories of a given path to include directories
 function(add_subdirectory_includes root_dir)
     file(GLOB SUBDIRS RELATIVE ${root_dir} ${root_dir}/*) # get all files in directory (which is passed in parameter)
@@ -45,10 +37,7 @@ endfunction()
 enable_language (CXX)
 
 # Set option for coupling with TU
-set(COUPLING_TU OFF)
-add_definitions(-DCOUPLING_TU)
-
-message(STATUS "COUPLING_TU is set to: ${COUPLING_TU}")
+option (COUPLING_TU OFF)
 
 # Include CTest
 include(CTest)
@@ -75,9 +64,6 @@ else()
         set(CMAKE_EXECUTABLE_SUFFIX ".x")
     endif()
 endif()
-
-# Linka le librerie HDF5
-target_link_libraries(sciantix ${HDF5_LIBRARIES})
 
 # Copy all object files in obj directory by using a custom command
 add_custom_command(TARGET sciantix POST_BUILD
