@@ -53,6 +53,6 @@ old_files/
 __pycache__/
 optimization
 GSA_output_files/
+regression/
 *.btxt
 *.npy
-regression/
