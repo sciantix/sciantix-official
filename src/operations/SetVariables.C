@@ -78,7 +78,7 @@ void Simulation::setVariables(
 
     #if defined(COUPLING_TU)
 
-        sciantix_variable["Burnup"]setInitialValue(Sciantix_history["Burnup"]);
+        sciantix_variable["Burnup"].setInitialValue(Sciantix_history[7]);
 
     #endif
 
