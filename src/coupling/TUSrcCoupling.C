@@ -16,34 +16,24 @@
 
 #include "TUSrcCoupling.h"
 #include "Simulation.h"
+#include "Sciantix.h"
 #include "InputReading.h"
 #include <iostream>
 
-/**
- * @brief This is a file required for TRANSURANUS-SCIANTIX coupling.
- * With this file, two functions are defined (getSciantixOptions and callSciantix) in SCIANTIX.
- * These two functions are also defined in TRANSURANUS, and are essentially required to create the
- * communication channel between the two codes.
- *
- * @author E. Travaglia
- *
- */
-
-void callSciantix(int options[], double history[], double variables[], double scaling_factors[], double diffusion_modes[])
+void callSciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[])
 {
     Simulation* simulation = Simulation::getInstance();
 
-    simulation->initialize(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
+    simulation->initialize(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes); 
 
     simulation->execute();
 
-    simulation->update(Sciantix_variables, Sciantix_diffusion_modes);
-
+	simulation->update(Sciantix_variables, Sciantix_diffusion_modes);
 }
 
-void getSciantixOptions(int options[], double scaling_factors[])
+void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[])
 {
- 	  std::ofstream input_check("input_check.txt", std::ios::out);
+ 	std::ofstream input_check("input_check.txt", std::ios::out);
 
 	  // Abort execution if any of the input files does not exist
 	  std::ifstream input_settings("input_settings.txt", std::ios::in);
