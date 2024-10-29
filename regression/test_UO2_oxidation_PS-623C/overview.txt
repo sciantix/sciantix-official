@@ -50,4 +50,5 @@ Input setting	iHighBurnupStructurePorosity = 0
 Input setting	iHeliumProductionRate = 0
 Input setting	iStoichiometryDeviation = 3
 Input setting	iBubbleDiffusivity = 0
+Input setting	iChromiumSolubility = 0
 

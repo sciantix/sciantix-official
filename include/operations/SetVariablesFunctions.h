@@ -54,7 +54,8 @@ std::vector<std::string> getInputVariableNames()
         "iHighBurnupStructurePorosity",
         "iHeliumProductionRate",
         "iStoichiometryDeviation",
-        "iBubbleDiffusivity"
+        "iBubbleDiffusivity",
+        "iChromiumSolubility"
     };
 
     return names;
@@ -106,7 +107,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(
     bool toOutputCracking,
     bool toOutputGrainBoundary,
     bool toOutputHighBurnupStructure,
-    bool toOutputStoichiometryDeviation
+    bool toOutputStoichiometryDeviation,
+    bool toOutputChromiumContent
 )
 {
     std::vector<SciantixVariable> init_sciantix_variable =
@@ -192,7 +194,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Intergranular fractional intactness", "(/)", Sciantix_variables[37], Sciantix_variables[37], toOutputCracking),
 
         SciantixVariable("Burnup", "(MWd/kgUO2)", Sciantix_variables[38], Sciantix_variables[38], 1),
-        SciantixVariable("FIMA", "(%)", Sciantix_variables[69], Sciantix_variables[69], toOutputHighBurnupStructure),
+        SciantixVariable("FIMA", "(%)", Sciantix_variables[69], Sciantix_variables[69], toOutputHighBurnupStructure || toOutputChromiumContent),
         SciantixVariable("Effective burnup", "(MWd/kgUO2)", Sciantix_variables[39], Sciantix_variables[39], toOutputHighBurnupStructure),
         SciantixVariable("Irradiation time", "(h)", Sciantix_variables[65], Sciantix_variables[65], 0),
         SciantixVariable("Fuel density", "(kg/m3)", Sciantix_variables[40], Sciantix_variables[40], 0),
@@ -224,7 +226,19 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Xe in HBS pores", "(at/m3)", Sciantix_variables[83], Sciantix_variables[83], toOutputHighBurnupStructure),
         SciantixVariable("Xe in HBS pores - variance", "(at^2/m3)", Sciantix_variables[85], Sciantix_variables[85], toOutputHighBurnupStructure),
         SciantixVariable("Xe atoms per HBS pore", "(at/pore)", Sciantix_variables[86], Sciantix_variables[86], toOutputHighBurnupStructure),
-        SciantixVariable("Xe atoms per HBS pore - variance", "(at^2/pore)", Sciantix_variables[88], Sciantix_variables[88], toOutputHighBurnupStructure)
+        SciantixVariable("Xe atoms per HBS pore - variance", "(at^2/pore)", Sciantix_variables[88], Sciantix_variables[88], toOutputHighBurnupStructure),
+
+        SciantixVariable("Chromium content", "(µg/g)", Sciantix_variables[150], Sciantix_variables[150], toOutputChromiumContent),
+        SciantixVariable("Lattice parameter", "(m)", Sciantix_variables[151], Sciantix_variables[151], 0),
+        SciantixVariable("Theoretical density", "(kg/m3)", Sciantix_variables[152], Sciantix_variables[152], 0),
+        SciantixVariable("Chromium solubility", "(% weight/UO2)", Sciantix_variables[153], Sciantix_variables[153], toOutputChromiumContent),
+        SciantixVariable("Chromia solubility", "(% weight/UO2)", Sciantix_variables[154], Sciantix_variables[154], toOutputChromiumContent),
+        SciantixVariable("Chromium solution", "(at/m3)", Sciantix_variables[155], Sciantix_variables[155], toOutputChromiumContent),
+        SciantixVariable("Chromium precipitate", "(at/m3)", Sciantix_variables[156], Sciantix_variables[156], toOutputChromiumContent),
+        SciantixVariable("Chromia solution", "(at/m3)", Sciantix_variables[157], Sciantix_variables[157], toOutputChromiumContent),
+        SciantixVariable("Chromia precipitate", "(at/m3)", Sciantix_variables[158], Sciantix_variables[158], toOutputChromiumContent),
+
+        SciantixVariable("Diffusion coefficient", "(m2/s)", Sciantix_variables[160], Sciantix_variables[160], 0),
     };
 
     return init_sciantix_variable;
@@ -243,6 +257,7 @@ std::vector<std::string> getScalingFactorsNames()
         "Trapping rate",
         "Nucleation rate",
         "Diffusivity",
+        "Diffusivity2",
         "Temperature",
         "Fission rate",
         "Cent parameter",
