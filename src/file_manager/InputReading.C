@@ -145,6 +145,7 @@ void InputReading(
 	Sciantix_options[19] = ReadOneSetting("iHeliumProductionRate", input_settings, input_check);
 	Sciantix_options[20] = ReadOneSetting("iStoichiometryDeviation", input_settings, input_check);
 	Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
+	Sciantix_options[22] = ReadOneSetting("iChromiumSolubility",input_settings,input_check);
 	
 	if (!input_initial_conditions.fail())
 	{
@@ -219,6 +220,8 @@ void InputReading(
 		Sciantix_variables[63] = initial_composition_Kr85m[6];
 
 		Sciantix_variables[66] = ReadOneParameter("Initial stoichiometry deviation[0]", input_initial_conditions, input_check);
+
+		Sciantix_variables[150] = ReadOneParameter("Chromium content", input_initial_conditions, input_check);
 	}
 
 	int n = 0;
@@ -263,11 +266,12 @@ void InputReading(
 		Sciantix_scaling_factors[1] = ReadOneParameter("sf_trapping_rate", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[2] = ReadOneParameter("sf_nucleation_rate", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[3] = ReadOneParameter("sf_diffusivity", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[4] = ReadOneParameter("sf_temperature", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[5] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[6] = ReadOneParameter("sf_cent_parameter", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[8] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[4] = ReadOneParameter("sf_diffusivity2", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[5] = ReadOneParameter("sf_temperature", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[6] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[7] = ReadOneParameter("sf_cent_parameter", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[8] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[9] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
 	}
 	else
 	{
@@ -280,6 +284,7 @@ void InputReading(
 		Sciantix_scaling_factors[6] = 1.0;
 		Sciantix_scaling_factors[7] = 1.0;
 		Sciantix_scaling_factors[8] = 1.0;
+		Sciantix_scaling_factors[9] = 1.0;
 	}
 
 	input_check.close();

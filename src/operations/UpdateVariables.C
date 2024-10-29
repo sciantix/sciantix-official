@@ -95,7 +95,17 @@ std::map<int, std::string> update_sciantix_variable = {
     {83, "Xe in HBS pores"},
     {85, "Xe in HBS pores - variance"},
     {86, "Xe atoms per HBS pore"},
-    {88, "Xe atoms per HBS pore - variance"}
+    {88, "Xe atoms per HBS pore - variance"},
+    {150,"Chromium content"},
+    {151,"Lattice parameter"},
+    {152,"Theoretical density"},
+    {153,"Chromium solubility"},
+    {154,"Chromia solubility"},
+    {155,"Chromium solution"},
+    {156,"Chromium precipitate"},
+    {157,"Chromia solution"},
+    {158,"Chromia precipitate"},
+    {160,"Diffusion coefficient"},
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
