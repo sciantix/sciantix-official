@@ -478,9 +478,18 @@ class Simulation : public Solver, public Model
 		//SetGPVariables();
 		// Hyperbolic tangent for fitting the GP vented fraction
 		// Fitting function F_v (%) = 26.5261 * (tanh(0.0853 * F_c (%) - 3.0962) + 1)
-		sciantix_variable[sv["Intergranular vented fraction"]].setInitialValue(26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() - 2.6002) + 1));
-		sciantix_variable[sv["Intergranular vented fraction"]].setFinalValue(26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() - 2.6002) + 1));
 		
+		if (sf_helium_production_rate == 1)
+        {
+            sciantix_variable[sv["Intergranular vented fraction"]].setInitialValue(26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() - 2.6002) + 1));
+		    sciantix_variable[sv["Intergranular vented fraction"]].setFinalValue(26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() - 2.6002) + 1));
+        }
+        else if (sf_helium_production_rate == 2)
+        {
+            sciantix_variable[sv["Intergranular vented fraction"]].setInitialValue(21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() - 3.7250) + 1));
+		    sciantix_variable[sv["Intergranular vented fraction"]].setFinalValue(21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() - 3.7250) + 1));
+        }
+
 		sciantix_variable[sv["Intergranular venting probability"]].setInitialValue(
 			(1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue()) + sciantix_variable[sv["Intergranular vented fraction"]].getInitialValue() * sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue()
 		);
@@ -661,27 +670,41 @@ class Simulation : public Solver, public Model
 				// 		)
 				// 	);
 				// }
-                double dx =  ((sciantix_variable[sv["Intergranular bubble pressure"]].getIncrement()/sciantix_variable[sv["Critical intergranular bubble pressure"]].getFinalValue())
-                            -
-                            (sciantix_variable[sv["Intergranular bubble pressure"]].getFinalValue()*sciantix_variable[sv["Equilibrium bubble pressure"]].getIncrement())/
-                            (pow(sciantix_variable[sv["Critical intergranular bubble pressure"]].getFinalValue(),2))
-							-
-                            (sciantix_variable[sv["Intergranular bubble pressure"]].getFinalValue()*sciantix_variable[sv["Fracture stress"]].getIncrement())/
-                            (pow(sciantix_variable[sv["Critical intergranular bubble pressure"]].getFinalValue(),2)));
-                if (dx>0 && model[sm["Grain-boundary micro-cracking"]].getParameter().at(0)<=0)
+                // double dx =  ((sciantix_variable[sv["Intergranular bubble pressure"]].getIncrement()/sciantix_variable[sv["Critical intergranular bubble pressure"]].getFinalValue())
+                //             -
+                //             (sciantix_variable[sv["Intergranular bubble pressure"]].getFinalValue()*sciantix_variable[sv["Equilibrium bubble pressure"]].getIncrement())/
+                //             (pow(sciantix_variable[sv["Critical intergranular bubble pressure"]].getFinalValue(),2))
+				// 			-
+                //             (sciantix_variable[sv["Intergranular bubble pressure"]].getFinalValue()*sciantix_variable[sv["Fracture stress"]].getIncrement())/
+                //             (pow(sciantix_variable[sv["Critical intergranular bubble pressure"]].getFinalValue(),2)));
+                // if (dx>0 && model[sm["Grain-boundary micro-cracking"]].getParameter().at(0)<=0)
+                // {
+                //     sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(
+                //         solver.Decay(
+                //             sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue(),
+                //             0,  
+                //             model[sm["Grain-boundary micro-cracking"]].getParameter().at(0),
+                //             dx
+                //         )
+                //     );
+                // }
+                // if (model[sm["Grain-boundary micro-cracking"]].getParameter().at(0)==100)
+                // {
+                //     sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(0.0);
+                // }
+				double sigmoid = 1/(1+exp(sf_span_parameter*(model[sm["Grain-boundary micro-cracking"]].getParameter().at(2)-sf_cent_parameter)));
+                
+                if (model[sm["Grain-boundary micro-cracking"]].getParameter().at(2)<0)
                 {
-                    sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(
-                        solver.Decay(
-                            sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue(),
-                            0,  
-                            model[sm["Grain-boundary micro-cracking"]].getParameter().at(0),
-                            dx
-                        )
-                    );
+                    sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(0);
                 }
-                if (model[sm["Grain-boundary micro-cracking"]].getParameter().at(0)==100)
+                else if (sigmoid >= sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue() || std::isnan(sigmoid) || std::isinf(sigmoid))
                 {
-                    sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(0.0);
+                    sciantix_variable[sv["Intergranular fractional intactness"]].setConstant();
+                }
+                else 
+                {
+                    sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(sigmoid);
                 }
 				// ODE for the intergranular fractional intactness: this equation accounts for the healing of the intergranular fractional intactness with burnup
 				// df / dBu = - h f + h
