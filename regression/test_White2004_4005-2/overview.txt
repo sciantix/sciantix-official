@@ -18,7 +18,6 @@ Model	Gas diffusion - Kr85m in UO2
 Model	Grain-boundary micro-cracking	Under development
 Model	Grain-boundary venting	not considered.
 Model	Intergranular bubble evolution	: Pastore et al., NED, 256 (2013) 75-86.
-Model	Grain-boundary rupture	Under development
 
 Matrix	UO2	
 	: Ainscough et al., JNM, 49 (1973) 117-128.
