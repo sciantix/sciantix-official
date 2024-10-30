@@ -16,6 +16,8 @@ import shutil
 from regression_functions import *
 import scipy.stats as stats
 from sklearn.linear_model import LinearRegression
+from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
+
 
 """ ------------------- Global Variables ------------------- """
 
@@ -143,18 +145,40 @@ def do_plot():
   #ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
   ax.scatter(FGRAnnealing, AnnFGRVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', alpha =0.7)
   
-  ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
+  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
+  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
+  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
   
-  ax.set_xlim(0, 50)
-  ax.set_ylim(0, 50)
+  # ax.set_xlim(0, 50)
+  # ax.set_ylim(0, 50)
+
+  r = range(1, 100)
+  ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
+  ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('x2', (1.25, 3), color='k')
+  ax.plot(r, [x * 0.5 for x in r], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('/2', (3, 1.3),  color='k')
+  ax.set_yscale('log')
+  ax.set_xscale('log')
+  # Set ticks and formatter
+  ax.set_xticks([1, 10, 100])
+  ax.xaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
+  ax.set_yticks([1, 10, 100])
+  ax.yaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
+
+  # Adjust ticks for log scale
+  ax.get_xaxis().set_major_formatter(FormatStrFormatter('%d'))
+  ax.get_yaxis().set_major_formatter(FormatStrFormatter('%d'))
+
+  ax.tick_params(axis='both', which='major')
+  ax.set_xlim(1, 100)
+  ax.set_ylim(1, 100)
 
   ax.set_title('Fission gas release - Annealing phase')
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  #ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
   plt.savefig('Images/FGRAnnealing-Small1985')
   plt.show()

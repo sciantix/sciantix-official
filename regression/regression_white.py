@@ -16,6 +16,8 @@ import shutil
 from regression_functions import *
 import scipy.stats as stats
 from sklearn.linear_model import LinearRegression
+from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
+
 
 """ ------------------- Global Variables ------------------- """
 
@@ -361,9 +363,9 @@ def do_plot():
   #ax.scatter(gbSwellingWhite[16:21], NewSwelling2[16:21], c='red', marker = '^', s=40)
   #ax.scatter(gbSwellingWhite[16:21], gbSwellingVersion2[16:21], c='red', marker = 'd', s=40)
 
-  ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
-  ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
-  ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
+  # ax.plot([1e-3, 1e2],[1e-3, 1e2], '-', color = '#757575')
+  # ax.plot([1e-3, 1e2],[2e-3, 2e2],'--', color = '#757575')
+  # ax.plot([1e-3, 1e2],[5e-4, 5e1],'--', color = '#757575')
 
   ax.set_xscale('log')
   ax.set_yscale('log')
@@ -371,37 +373,54 @@ def do_plot():
   ax.set_xlim(1e-2, 1e1)
   ax.set_ylim(1e-2, 1e1)
 
+  ax.plot([1e-3, 1e2],[1e-3, 1e2], color='gray', linestyle='-', linewidth=0.5)
+  ax.plot([1e-3, 1e2],[2e-3, 2e2], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('x2', (1.25e-2, 3e-2), color='k')
+  ax.plot([1e-3, 1e2],[5e-4, 5e1], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('/2', (3e-2, 1.3e-2),  color='k')
+  # Set ticks and formatter
+  ax.set_xticks([1, 10, 100])
+  ax.xaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
+  ax.set_yticks([1, 10, 100])
+  ax.yaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
+
+  # Adjust ticks for log scale
+  ax.get_xaxis().set_major_formatter(FormatStrFormatter('%d'))
+  ax.get_yaxis().set_major_formatter(FormatStrFormatter('%d'))
+
+  ax.tick_params(axis='both', which='major')
+
   ax.set_title('Intergranular gaseous swelling')
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  #ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
   
   plt.savefig('Images/SwellingCorretto-White2004')
   plt.show()
 
-  # fgr
-  fig, ax = plt.subplots()
-  ax.scatter(np.concatenate([FGRWhite[0:16],FGRWhite[39:43]]), np.concatenate([FGR2[0:16],FGR2[39:43]]), c='#9370DB', marker = '^', s=40, label='This work - Fast ramp')
-  ax.scatter(FGRWhite[16:39], FGR2[16:39], facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
-  ax.scatter(np.concatenate([FGRWhite[0:16],FGRWhite[39:43]]), np.concatenate([FGRVersion2[0:16],FGRVersion2[39:43]]), c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
-  ax.scatter(FGRWhite[16:39], FGRVersion2[16:39], facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
+  # # fgr
+  # fig, ax = plt.subplots()
+  # ax.scatter(np.concatenate([FGRWhite[0:16],FGRWhite[39:43]]), np.concatenate([FGR2[0:16],FGR2[39:43]]), c='#9370DB', marker = '^', s=40, label='This work - Fast ramp')
+  # ax.scatter(FGRWhite[16:39], FGR2[16:39], facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
+  # ax.scatter(np.concatenate([FGRWhite[0:16],FGRWhite[39:43]]), np.concatenate([FGRVersion2[0:16],FGRVersion2[39:43]]), c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
+  # ax.scatter(FGRWhite[16:39], FGRVersion2[16:39], facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
   
-  ax.plot([0, 1e2],[2.5, 102.5], '-', color = '#757575')
-  ax.plot([0, 1e2],[0, 100],'--', color = '#757575')
-  ax.plot([0, 1e2],[-2.5, 97.5],'--', color = '#757575')
+  # ax.plot([0, 1e2],[2.5, 102.5], '-', color = '#757575')
+  # ax.plot([0, 1e2],[0, 100],'--', color = '#757575')
+  # ax.plot([0, 1e2],[-2.5, 97.5],'--', color = '#757575')
 
-  ax.set_xlim(0,20)
-  ax.set_ylim(0,50)
+  # ax.set_xlim(0,20)
+  # ax.set_ylim(0,50)
 
-  ax.set_title('Fission gas release')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  # ax.set_title('Fission gas release')
+  # ax.set_xlabel('Experimental (%)')
+  # ax.set_ylabel('Calculated (%)')
+  # ax.legend()
+  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
-  plt.show()
+  # plt.show()
 
   #   # f
   # fig, ax = plt.subplots()
@@ -486,14 +505,26 @@ def do_plot():
   ax.scatter(gbConcWhite[16:39], bbconc[16:39], facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
   ax.scatter(np.concatenate([gbConcWhite[0:16], gbConcWhite[39:43]]), np.concatenate([bbconcVersion2[0:16],bbconcVersion2[39:43]]), c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
   ax.scatter(gbConcWhite[16:39], bbconcVersion2[16:39], facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
-  
   ax.set_xscale('log')
   ax.set_yscale('log')
 
-  ax.plot([1e-3, 1e3],[1e-3, 1e3], '-', color = '#757575')
-  ax.plot([1e-3, 1e3],[2e-3, 2e3],'--', color = '#757575')
-  ax.plot([1e-3, 1e3],[5e-4, 5e2],'--', color = '#757575')
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  ax.plot([1e-3, 1e3],[1e-3, 1e3], color='gray', linestyle='-', linewidth=0.5)
+  ax.plot([1e-3, 1e3],[2e-3, 2e3], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('x2', (1.25e-2, 3e-2), color='k')
+  ax.plot([1e-3, 1e3],[5e-4, 5e2], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('/2', (3e-2, 1.3e-2),  color='k')
+  # Set ticks and formatter
+  ax.set_xticks([1, 10, 100])
+  ax.xaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
+  ax.set_yticks([1, 10, 100])
+  ax.yaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
+
+  # Adjust ticks for log scale
+  ax.get_xaxis().set_major_formatter(FormatStrFormatter('%d'))
+  ax.get_yaxis().set_major_formatter(FormatStrFormatter('%d'))
+
+  ax.tick_params(axis='both', which='major')
+  
   ax.set_xlim(1e-2, 1e2)
   ax.set_ylim(1e-2, 1e2)
 
@@ -512,15 +543,27 @@ def do_plot():
   ax.scatter(1e12*np.concatenate([gbareaWhite[0:16], gbareaWhite[39:43]]), 1e12*np.concatenate([bbareaVersion2[0:16],bbareaVersion2[39:43]]), c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
   ax.scatter(1e12*np.array(gbareaWhite[16:39]), 1e12*np.array(bbareaVersion2[16:39]), facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
   
-  ax.set_xscale('log')
-  ax.set_yscale('log')
+  ax.plot([1e-3, 1e3],[1e-3, 1e3], color='gray', linestyle='-', linewidth=0.5)
+  ax.plot([1e-3, 1e3],[2e-3, 2e3], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('x2', (1.25e-2, 3e-2), color='k')
+  ax.plot([1e-3, 1e3],[5e-4, 5e2], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('/2', (3e-2, 1.3e-2),  color='k')
+  # Set ticks and formatter
+  ax.set_xticks([1, 10, 100])
+  ax.xaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
+  ax.set_yticks([1, 10, 100])
+  ax.yaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
 
-  ax.plot([1e-3, 1e3],[1e-3, 1e3], '-', color = '#757575')
-  ax.plot([1e-3, 1e3],[2e-3, 2e3],'--', color = '#757575')
-  ax.plot([1e-3, 1e3],[5e-4, 5e2],'--', color = '#757575')
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  # Adjust ticks for log scale
+  ax.get_xaxis().set_major_formatter(FormatStrFormatter('%d'))
+  ax.get_yaxis().set_major_formatter(FormatStrFormatter('%d'))
+
+  ax.tick_params(axis='both', which='major')
+  
   ax.set_xlim(1e-2, 1e1)
   ax.set_ylim(1e-2, 1e1)
+  ax.set_xscale('log')
+  ax.set_yscale('log')
 
   ax.set_xlabel('Experimental (um2)')
   ax.set_ylabel('Calculated (um2)')
@@ -542,16 +585,24 @@ def do_plot():
   ax.scatter(FcSwellingWhite[16:39], FcVersion2[16:39], facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
   
 
-  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  ax.plot([1e-3, 1e3],[1e-3, 1e3], '-', color = '#757575')
-  ax.plot([1e-3, 1e3],[2e-3, 2e3],'--', color = '#757575')
-  ax.plot([1e-3, 1e3],[5e-4, 5e2],'--', color = '#757575')
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
-  ax.set_xlim(1, 100)
-  ax.set_ylim(1, 100)
-  
+  ax.plot([1e-3, 1e3],[1e-3, 1e3], color='gray', linestyle='-', linewidth=0.5)
+  ax.plot([1e-3, 1e3],[2e-3, 2e3], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('x2', (1.25e-2, 3e-2), color='k')
+  ax.plot([1e-3, 1e3],[5e-4, 5e2], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('/2', (3e-2, 1.3e-2),  color='k')
+  # Set ticks and formatter
+  ax.set_xticks([1, 10, 100])
+  ax.xaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
+  ax.set_yticks([1, 10, 100])
+  ax.yaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
+
+  # Adjust ticks for log scale
+  ax.get_xaxis().set_major_formatter(FormatStrFormatter('%d'))
+  ax.get_yaxis().set_major_formatter(FormatStrFormatter('%d'))
+
+  ax.tick_params(axis='both', which='major')
+  ax.set_xlim(1, 1e2)
+  ax.set_ylim(1, 1e2)
   ax.set_xscale('log')
   ax.set_yscale('log')
 
@@ -573,13 +624,22 @@ def do_plot():
   ax.scatter(FvSwellingWhite[16:39], Fv[16:39], facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
   
 
-  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  ax.plot([1e-3, 1e3],[1e-3, 1e3], '-', color = '#757575')
-  ax.plot([1e-3, 1e3],[2e-3, 2e3],'--', color = '#757575')
-  ax.plot([1e-3, 1e3],[5e-4, 5e2],'--', color = '#757575')
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
+  ax.plot([1e-3, 1e3],[1e-3, 1e3], color='gray', linestyle='-', linewidth=0.5)
+  ax.plot([1e-3, 1e3],[2e-3, 2e3], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('x2', (1.25e-2, 3e-2), color='k')
+  ax.plot([1e-3, 1e3],[5e-4, 5e2], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('/2', (3e-2, 1.3e-2),  color='k')
+  # Set ticks and formatter
+  ax.set_xticks([1, 10, 100])
+  ax.xaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
+  ax.set_yticks([1, 10, 100])
+  ax.yaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
+
+  # Adjust ticks for log scale
+  ax.get_xaxis().set_major_formatter(FormatStrFormatter('%d'))
+  ax.get_yaxis().set_major_formatter(FormatStrFormatter('%d'))
+
+  ax.tick_params(axis='both', which='major')
   ax.set_xlim(1, 100)
   ax.set_ylim(1, 100)
   
