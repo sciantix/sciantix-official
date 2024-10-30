@@ -348,7 +348,7 @@ def do_plot():
   NewSwelling2 = []
   NewSwellinggold= []
   for i in range(len(f2)):
-    NewSwelling2.append(gbSwelling2[i]/f2[i])
+    NewSwelling2.append(gbSwelling2[i])
     NewSwellinggold.append(gold[i]/fgold[i])
 
   # corrected swelling log
@@ -804,13 +804,17 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
       interGranularSwellingGoldPos = findSciantixVariablePosition(data_gold, "Intergranular gas swelling (/)")
       gold.append(100*data_gold[row_number,interGranularSwellingGoldPos].astype(float))
 
-      # Retrieve the generated data of Intergranular gas swelling
-      interGranularIntactPos = findSciantixVariablePosition(data, "Intergranular fractional intactness (/)")
-      f2.append(data[row_number,interGranularIntactPos].astype(float))
+      try:
+          interGranularIntactPos = findSciantixVariablePosition(data, "Intergranular fractional intactness (/)")
+          f2.append(data[-1,interGranularIntactPos].astype(float))
 
-      # Retrieve the gold data of Intergranular gas swelling
-      interGranularIntactGoldPos = findSciantixVariablePosition(data_gold, "Intergranular fractional intactness (/)")
-      fgold.append(data_gold[row_number,interGranularIntactGoldPos].astype(float))
+          interGranularIntactGoldPos = findSciantixVariablePosition(data_gold, "Intergranular fractional intactness (/)")
+          fgold.append(data_gold[-1,interGranularIntactGoldPos].astype(float))
+      except (KeyError, IndexError, TypeError):
+          # Assign a default value of 1 if the variable is not found
+          print("Variable 'Intergranular fractional intactness' not found, assigning default value of 1...")
+          f2.append(1)
+          fgold.append(1)
 
       # Retrieve the generated data of Intergranular bubble area (m2)
       bubbleAreaPos = findSciantixVariablePosition(data, "Intergranular bubble area (m2)")
