@@ -26,7 +26,8 @@ def SpectralDiffusion1equation(gas_1, initial_condition_gas_1, parameter, increm
 
 	for n in range(int(parameter[0])): #n in range of n_modes
 		np1 = n + 1
-		n_coeff = -(((-1)**np1)/np1)+(((-1)**(np1)-1)/(np1**(3)*pi**(2))) #new one
+		n_coeff = -(((-1)**np1)/np1)+2*(((-1)**(np1)-1)/(np1**(3)*pi**(2))) #Linear Projection
+		n_c = - (-1)**np1 / np1
 		
 
 		diffusion_rate1 = diffusion_rate_coeff1 * np1**2 
@@ -36,7 +37,7 @@ def SpectralDiffusion1equation(gas_1, initial_condition_gas_1, parameter, increm
 		#x(i+1) = (x(i) + <S_k|psi>Dt)/(1+(D*pi^2*k^2/a^2)Dt) | This is the equation below
 		initial_conditions = (initial_condition_gas_1[n] + source_rate1 * increment)/(coeff)
 		initial_condition_gas_1[n] = initial_conditions
-		gas_1_solution += projection_coeff * n_coeff * initial_conditions / ((4.0 / 3.0) * pi) #Volume average
+		gas_1_solution += projection_coeff * n_c * initial_conditions / ((4.0 / 3.0) * pi) #Volume average
 
 	gas_1[0] = gas_1_solution
 
@@ -52,7 +53,7 @@ time_vector = np.arange(num_steps) * increment
 n_modes = 40
 D1 = 3.0
 a = 2.0
-S1 = 5.0
+S1 = 4.0
 
 parameter = [n_modes, D1, a, S1] #We dont need b and g nor the decay L
 
@@ -63,7 +64,7 @@ gas_1 = np.zeros(num_steps)
 for i in range(num_steps):
 	SpectralDiffusion1equation(gas_1[i:i+1], initial_condition_gas_1, parameter, increment)
 
-c_eq1 = S1 * a**2 / (15 * D1)
+c_eq1 = S1 * a**2 / (24 * D1)
 
 
 plt.plot(time_vector, gas_1, label='Gas ')
