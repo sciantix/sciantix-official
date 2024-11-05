@@ -25,7 +25,6 @@ def SpectralDiffusion1equation(gas, initial_condition_gas, parameter, increment)
 		n_coeff = - ((-1)**np1 / np1) * (parameter[2] * parameter[3] + parameter[4]) + (2 * parameter[2] * parameter[3]) * ((-1)**np1 - 1) / (np1**3 * pi**2)
 		n_c = - (-1)**np1 / np1
 		
-
 		diffusion_rate = diffusion_rate_coeff * np1**2 
 		source_rate = projection_coeff * n_coeff
 		coeff = 1.0 + (diffusion_rate) * increment 
