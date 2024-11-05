@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 def SpectralDiffusion1equation(gas, initial_condition_gas, parameter, increment):
 
-#parameter = [n_modes, D1, a, S1] #We dont need b,g, nor L since we're only considering diffusion
+#parameter = [n_modes, D1, a, A, B]
 
 	n = 0
 	np1 = 1
@@ -18,8 +18,6 @@ def SpectralDiffusion1equation(gas, initial_condition_gas, parameter, increment)
 	
 	diffusion_rate_coeff = pi**2 * parameter[1] / parameter[2]**2 # pi^2 * D / a^2
 	projection_coeff = math.sqrt(8.0 / pi)
-	#source_rate_coeff = projection_coeff * parameter[3] # - 2 sqrt(2/pi) * S
-
 
 
 	for n in range(int(parameter[0])): #n in range of n_modes
@@ -51,8 +49,8 @@ n_modes = 40
 D = 3.0
 a = 2.0
 #Source has the shape ( S(r) = A * r + B )
-A = 4.0 / a
-B = 3.0
+A = 0.0
+B = 4.0
 
 parameter = [n_modes, D, a, A, B]
 
