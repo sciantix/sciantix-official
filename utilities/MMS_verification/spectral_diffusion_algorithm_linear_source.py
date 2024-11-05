@@ -1,45 +1,42 @@
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-#In this copy, I will try to add the effect of having S=S(r)
 
-#increment is the time step
-def SpectralDiffusion1equation(gas_1, initial_condition_gas_1, parameter, increment):
+def SpectralDiffusion1equation(gas, initial_condition_gas, parameter, increment):
 
 #parameter = [n_modes, D1, a, S1] #We dont need b,g, nor L since we're only considering diffusion
 
 	n = 0
 	np1 = 1
-	diffusion_rate1 = 0.0
-	diffusion_rate_coeff1 = 0.0
-	source_rate_coeff_1 = 0.0
-	source_rate1 = 0.0
+	diffusion_rate = 0.0
+	diffusion_rate_coeff = 0.0
+	source_rate_coeff = 0.0
+	source_rate = 0.0
 	projection_coeff = 0.0
-	gas_1_solution = 0.0
+	gas_solution = 0.0
 	pi = math.pi
 	
-	diffusion_rate_coeff1 = pi**2 * parameter[1] / parameter[2]**2 # pi^2 * D1 / a^2
+	diffusion_rate_coeff = pi**2 * parameter[1] / parameter[2]**2 # pi^2 * D / a^2
 	projection_coeff = math.sqrt(8.0 / pi)
-	source_rate_coeff_1 = projection_coeff * parameter[3] # - 2 sqrt(2/pi) * S1
+	#source_rate_coeff = projection_coeff * parameter[3] # - 2 sqrt(2/pi) * S
 
 
 
 	for n in range(int(parameter[0])): #n in range of n_modes
 		np1 = n + 1
-		n_coeff = -(((-1)**np1)/np1)+2*(((-1)**(np1)-1)/(np1**(3)*pi**(2))) #Linear Projection
+		n_coeff = - ((-1)**np1 / np1) * (parameter[2] * parameter[3] + parameter[4]) + (2 * parameter[2] * parameter[3]) * ((-1)**np1 - 1) / (np1**3 * pi**2)
 		n_c = - (-1)**np1 / np1
 		
 
-		diffusion_rate1 = diffusion_rate_coeff1 * np1**2 
-		source_rate1 = source_rate_coeff_1 * n_coeff 
-		coeff = 1.0 + (diffusion_rate1) * increment # denomenator when solving the backward euler
+		diffusion_rate = diffusion_rate_coeff * np1**2 
+		source_rate = projection_coeff * n_coeff
+		coeff = 1.0 + (diffusion_rate) * increment 
         
-		#x(i+1) = (x(i) + <S_k|psi>Dt)/(1+(D*pi^2*k^2/a^2)Dt) | This is the equation below
-		initial_conditions = (initial_condition_gas_1[n] + source_rate1 * increment)/(coeff)
-		initial_condition_gas_1[n] = initial_conditions
-		gas_1_solution += projection_coeff * n_c * initial_conditions / ((4.0 / 3.0) * pi) #Volume average
+		initial_conditions = (initial_condition_gas[n] + source_rate * increment)/(coeff)
+		initial_condition_gas[n] = initial_conditions
+		gas_solution += projection_coeff * n_c * initial_conditions / ((4.0 / 3.0) * pi) #Volume average
 
-	gas_1[0] = gas_1_solution
+	gas[0] = gas_solution
 
 
  #def main():
@@ -51,25 +48,27 @@ time_vector = np.arange(num_steps) * increment
 
 # Giovanni's Inputs
 n_modes = 40
-D1 = 3.0
+D = 3.0
 a = 2.0
-S1 = 4.0
+#Source has the shape ( S(r) = A * r + B )
+A = 4.0 / a
+B = 3.0
 
-parameter = [n_modes, D1, a, S1] #We dont need b and g nor the decay L
+parameter = [n_modes, D, a, A, B]
 
-initial_condition_gas_1 = np.zeros(parameter[0])
+initial_condition_gas = np.zeros(parameter[0])
 
-gas_1 = np.zeros(num_steps)
+gas = np.zeros(num_steps)
 
 for i in range(num_steps):
-	SpectralDiffusion1equation(gas_1[i:i+1], initial_condition_gas_1, parameter, increment)
+	SpectralDiffusion1equation(gas[i:i+1], initial_condition_gas, parameter, increment)
 
-c_eq1 = S1 * a**2 / (24 * D1)
+c_eq = (-6 * a**2 / D) * ( -((A * a + B) / 90) + ( a * A / 240)  )
 
 
-plt.plot(time_vector, gas_1, label='Gas ')
-plt.axhline(y=c_eq1, linestyle='--', label='Equilibrium Concentration ')
-plt.title('Linear Source S=yFr/a')
+plt.plot(time_vector, gas, label='Gas ')
+plt.axhline(y=c_eq, linestyle='--', label='Equilibrium Concentration ')
+plt.title(f'Linear Source S(r) = {A}*r + {B}')
 plt.xlabel('Time')
 plt.ylabel('Concentration')
 plt.legend()
