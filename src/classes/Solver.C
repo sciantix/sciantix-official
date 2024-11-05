@@ -47,13 +47,11 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
     double source_rate(0.0);
     double projection_coeff(0.0);
     double solution(0.0);
-    double A = 0;
+    double A = 1e18 / (5e-6);
     double n_coeff = 0;
 
     diffusion_rate_coeff = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(2), 2);
     projection_coeff = sqrt(8.0 / M_PI);
-    // source_rate_coeff = projection_coeff * parameter.at(3);
-
 
     for (n = 0; n < parameter.at(0); n++)
     {
