@@ -65,10 +65,6 @@ void Simulation::execute()
 
     StoichiometryDeviation();
 
-    HighBurnupStructureFormation();
-
-    HighBurnupStructurePorosity();
-
     GrainGrowth();
 
     GrainBoundarySweeping();
@@ -81,9 +77,14 @@ void Simulation::execute()
 
     GasDiffusion();
 
+    HighBurnupStructureFormation();
+
+    HighBurnupStructurePorosity();
+
     GrainBoundaryMicroCracking();
 
     GrainBoundaryVenting();
 
     InterGranularBubbleBehavior();
-}
+
+    }
