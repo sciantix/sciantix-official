@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include <iostream>  // ???
 
 void Simulation::HighBurnupStructurePorosity()
 {
@@ -76,21 +77,22 @@ void Simulation::HighBurnupStructurePorosity()
 
     model.push(model_);
 
-    // Model resolution
-    // porosity evolution
-    sciantix_variable["HBS porosity"].setFinalValue(
-        solver.Integrator(
-            sciantix_variable["HBS porosity"].getInitialValue(),
-            model["High-burnup structure porosity"].getParameter().at(0),
-            sciantix_variable["Burnup"].getIncrement()
-        )
-    );
+    // Model resolution (da quiIiIiIiI)
+    // Balance (farne 1 solo per i due sistemi perchè BG è una regione comune)
 
-    if (sciantix_variable["HBS porosity"].getFinalValue() > 0.15)
-        sciantix_variable["HBS porosity"].setFinalValue(0.15);
+    sciantix_variable["Xe at grain boundary"].setFinalValue(
+                sciantix_variable["Xe produced"].getFinalValue() + sciantix_variable["Xe produced in HBS"].getFinalValue() -
+                sciantix_variable["Xe in HBS pores"].getFinalValue() -
+                sciantix_variable["Xe in grain"].getFinalValue() - sciantix_variable["Xe in grain HBS"].getFinalValue() -
+                sciantix_variable["Xe released"].getInitialValue());
+        
 
-    // evolution of pore number density via pore nucleation and re-solution
-    if (sciantix_variable["HBS porosity"].getFinalValue())
+    std::cout<<"Xe in HBS pores"<<std::endl;
+    std::cout<<sciantix_variable["Xe in HBS pores"].getFinalValue()<<std::endl;
+   
+    
+ // evolution of pore number density via pore nucleation and re-solution (forse va prima del bilancio)
+    //if (sciantix_variable["HBS porosity"].getFinalValue())
         sciantix_variable["HBS pore density"].setFinalValue(
             solver.Decay(
                 sciantix_variable["HBS pore density"].getInitialValue(),
@@ -99,16 +101,25 @@ void Simulation::HighBurnupStructurePorosity()
                 physics_variable["Time step"].getFinalValue()
             )
         );
-    else
-        sciantix_variable["HBS pore density"].setFinalValue(0.0);
+   //else
+        //sciantix_variable["HBS pore density"].setFinalValue(0.0);
+   
 
-    // calculation of pore volume based on porosity and pore number density
     if (sciantix_variable["HBS pore density"].getFinalValue())
-        sciantix_variable["HBS pore volume"].setFinalValue(
-            sciantix_variable["HBS porosity"].getFinalValue() / sciantix_variable["HBS pore density"].getFinalValue()
-        );
+        sciantix_variable["Xe atoms per HBS pore"].setFinalValue(
+            sciantix_variable["Xe in HBS pores"].getFinalValue() / sciantix_variable["HBS pore density"].getFinalValue()
+    );
+   
+    // calculation of pore volume based on vacancies and gas depletion, PER ORA NON ESISTE
+    //sciantix_variable["vacancies per pore"].getFinalValue();
+    //sciantix_variable["Xe in HBS pore"].getFinalValue();
+   // sciantix_variable["HBS pore volume"].setFinalValue(sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * system.getGas().getVanDerWaalsVolume() + 
+    //sciantix_variable["vacancies per pore"].getFinalValue() * fuel_.getSchottkyVolume())
 
+    
     sciantix_variable["HBS pore radius"].setFinalValue(0.620350491 * pow(sciantix_variable["HBS pore volume"].getFinalValue(), (1.0 / 3.0)));
+
+    std::cout<<sciantix_variable["HBS pore radius"].getFinalValue()<<std::endl;
 
     // update of number density of HBS pores: interconnection by impingement
     double limiting_factor =
@@ -157,4 +168,7 @@ void Simulation::HighBurnupStructurePorosity()
         sciantix_variable["Xe atoms per HBS pore - variance"].setFinalValue(
             sciantix_variable["Xe in HBS pores - variance"].getFinalValue() / sciantix_variable["HBS pore density"].getFinalValue()
         );
+        std::cout<<"Xe atoms per HBS pore"<<std::endl;
+    std::cout<<sciantix_variable["Xe atoms per HBS pore"].getFinalValue()<<std::endl; //va copiata in varie parti del codice
+    
 }

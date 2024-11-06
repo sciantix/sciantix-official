@@ -149,9 +149,6 @@ void Simulation::GrainBoundaryMicroCracking()
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue()
             );
-
-            if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
-                sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
         }
     }
 }
