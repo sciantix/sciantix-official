@@ -110,16 +110,36 @@ void Simulation::HighBurnupStructurePorosity()
             sciantix_variable["Xe in HBS pores"].getFinalValue() / sciantix_variable["HBS pore density"].getFinalValue()
     );
    
-    // calculation of pore volume based on vacancies and gas depletion, PER ORA NON ESISTE
-    //sciantix_variable["vacancies per pore"].getFinalValue();
-    //sciantix_variable["Xe in HBS pore"].getFinalValue();
-   // sciantix_variable["HBS pore volume"].setFinalValue(sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * system.getGas().getVanDerWaalsVolume() + 
+    std::cout<<"Xe atoms per HBS pore"<<std::endl;
+    std::cout<<sciantix_variable["Xe atoms per HBS pore"].getFinalValue()<<std::endl; //va copiata in varie parti del codice
+    
+    //calculation of pore volume based only on gas depletion
+    
+    sciantix_variable["HBS pore volume"].setFinalValue(sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * system.getGas().getVanDerWaalsVolume())
     //sciantix_variable["vacancies per pore"].getFinalValue() * fuel_.getSchottkyVolume())
 
-    
     sciantix_variable["HBS pore radius"].setFinalValue(0.620350491 * pow(sciantix_variable["HBS pore volume"].getFinalValue(), (1.0 / 3.0)));
 
+    //calculation of the contribution of vacancies
+    double VacancyDiffusionCoefficient = 8.86e-6 * exp(-5.75e-19 / (boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 1e-39 * history_variable["Fission rate"].getFinalValue();
+    double WignerSeitzCellRadius = 1 / 1.611991954 * pow(sciantix_variable["HBS pore density"].getFinalValue(), (-1.0 / 3.0));
+    double psi = sciantix_variable["HBS pore radius"].getFinalValue() / WignerSeitzCellRadius;
+    double DimensionlessFactor = 10 * psi * (1 + pow(psi, 3)) / (- pow(psi, 6) + 5 * pow(psi, 2) - 9 * psi + 5); 
+    double EquilibriumPressure = 2 / sciantix_variable["Pore radius"].getFinalValue() - history_variable["Hydrostatic stress"].getFinalValue(); 
+    double XeHSDiameter = 4.45e-10 * (0.8542 - 0.03996 * log(history_variable["Temperature"].getFinalValue() / 231.2));
+    double PackingFraction = 0.5235987756 / (pow(XeHSDiameter, 3) * sciantix_variable["Xe in HBS pores"].getFinalValue());
+    double PorePressure = 
+                  sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * boltzmann_constant * history_variable["Temperature"].getFinalValue() *
+                  ((1 + PackingFraction + pow(PackingFraction, 2) - pow(PackingFraction, 3)) / (pow(1 - PackingFraction, 3))) / sciantix_variable["Pore volume"].getFinalValue();
+    
+    std::cout<<"PorePressure"<<std::endl;
+    std::cout<<PorePressure<<std::endl; 
+    //sciantix_variable["Vacancies per HBS pore"].setFinalValue()
+    
+    std::cout<<"HBS pore radius"<<std::endl;
     std::cout<<sciantix_variable["HBS pore radius"].getFinalValue()<<std::endl;
+    std::cout<<"HBS pore volume"<<std::endl;
+    std::cout<<sciantix_variable["HBS pore volume"].getFinalValue()<<std::endl;
 
     // update of number density of HBS pores: interconnection by impingement
     double limiting_factor =
@@ -168,7 +188,5 @@ void Simulation::HighBurnupStructurePorosity()
         sciantix_variable["Xe atoms per HBS pore - variance"].setFinalValue(
             sciantix_variable["Xe in HBS pores - variance"].getFinalValue() / sciantix_variable["HBS pore density"].getFinalValue()
         );
-        std::cout<<"Xe atoms per HBS pore"<<std::endl;
-    std::cout<<sciantix_variable["Xe atoms per HBS pore"].getFinalValue()<<std::endl; //va copiata in varie parti del codice
-    
+       
 }

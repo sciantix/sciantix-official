@@ -95,7 +95,9 @@ std::map<int, std::string> update_sciantix_variable = {
     {83, "Xe in HBS pores"},
     {85, "Xe in HBS pores - variance"},
     {86, "Xe atoms per HBS pore"},
-    {88, "Xe atoms per HBS pore - variance"}
+    {88, "Xe atoms per HBS pore - variance"},
+    {200, "Vacancies per HBS pore"}
+
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
