@@ -27,7 +27,9 @@ def SpectralDiffusion1equation(gas, initial_condition_gas, parameter, increment)
 		
 		diffusion_rate = diffusion_rate_coeff * np1**2 
 		source_rate = projection_coeff * n_coeff
-		coeff = 1.0 + (diffusion_rate) * increment 
+		coeff = 1.0 + (diffusion_rate + parameter[6] + parameter[7]) * increment
+		c = (1 + (parameter[5]+parameter[7] * increment)) / ((1 + (parameter[5]+parameter[7] * increment)) - parameter[5] * parameter[6] * increment**2)
+
         
 		initial_conditions = (initial_condition_gas[n] + source_rate * increment)/(coeff)
 		initial_condition_gas[n] = initial_conditions
@@ -43,15 +45,18 @@ increment = 0.01
 
 time_vector = np.arange(num_steps) * increment
 
-# Giovanni's Inputs
+#Inputs
 n_modes = 40
 D = 3.0
 a = 2.0
+g = 0.0
+b = 0.0
+l = 0.0 
 #Source has the shape ( S(r) = A * r + B )
-A = 0.0
-B = 4.0
+A = 4.0/a
+B = 3.0
 
-parameter = [n_modes, D, a, A, B]
+parameter = [n_modes, D, a, A, B, b, g, l]
 
 initial_condition_gas = np.zeros(parameter[0])
 
@@ -60,7 +65,7 @@ gas = np.zeros(num_steps)
 for i in range(num_steps):
 	SpectralDiffusion1equation(gas[i:i+1], initial_condition_gas, parameter, increment)
 
-c_eq = (-6 * a**2 / D) * ( -((A * a + B) / 90) + ( a * A / 240)  )
+c_eq = (a**2 / D) * ( ((A * a + B) / 15) - ( a * A / 40))
 
 
 plt.plot(time_vector, gas, label='Gas ')
