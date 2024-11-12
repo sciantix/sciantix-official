@@ -92,7 +92,7 @@ def main():
 	D2 = 0.5
 	a = 1.0
   # Source S1(r) = A1 * r + B1
-	A1,B1 = [2.0, 2.0]
+	A1,B1 = [1.0, 2.0]
   # Source S1(r) = A1 * r + B1
 	A2,B2 = [1.0, 3.0]
 	b = 0.0
@@ -110,8 +110,8 @@ def main():
 	for i in range(num_steps):
 		SpectralDiffusion2equations(gas_1[i:i+1], gas_2[i:i+1], initial_condition_gas_1, initial_condition_gas_2, parameter, increment)
 
-	c_eq1 = (-6 * a**2 / D1) * ( -((A1 * a + B1) / 90) + ( a * A1 / 240)  )
-	c_eq2 = (-6 * a**2 / D2) * ( -((A2 * a + B2) / 90) + ( a * A2 / 240)  )
+	c_eq1 = (a**2 / D1) * ( ((A1 * a + B1) / 15) - ( a * A1 / 40)  )
+	c_eq2 = (a**2 / D2) * ( ((A2 * a + B2) / 15) - ( a * A2 / 40)  )
 
 	plt.plot(time_vector, gas_1, color = 'b', label='Gas 1')
 	plt.plot(time_vector, gas_2, color = 'r', label='Gas 2')
