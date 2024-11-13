@@ -50,6 +50,7 @@ void Simulation::GrainBoundaryMicroCracking()
 
     // Model resolution
 
+    
     // ODE for the intergranular fractional intactness
     // This equation accounts for the reduction of the intergranular fractional intactness following a temperature transient
     // df / dT = - dm/dT f
@@ -79,26 +80,33 @@ void Simulation::GrainBoundaryMicroCracking()
             model["Grain-boundary micro-cracking"].getParameter().at(0) * sciantix_variable["Intergranular fractional intactness"].getFinalValue(),
             0.0,
             history_variable["Temperature"].getIncrement()));
+    //std::cout << "microcracking = " << input_variable["iGrainBoundaryMicroCracking"].getValue() << std::endl; 
+    //@changes M. Di Gennaro aggiunto l'if perchè SUPERFACT-1 e SPHERE crashano per problemi di convergenza.
+    if (input_variable["iGrainBoundaryMicroCracking"].getValue() != 2)
+    {
+        // ODE for the intergranular fractional intactness:
+        // This equation accounts for the healing of the intergranular fractional intactness with burnup
+        // df / dBu = - h f + h
+        sciantix_variable["Intergranular fractional intactness"].setFinalValue(
+            solver.Decay(
+                sciantix_variable["Intergranular fractional intactness"].getFinalValue(),
+                model["Grain-boundary micro-cracking"].getParameter().at(1), // 2nd parameter = healing parameter
+                model["Grain-boundary micro-cracking"].getParameter().at(1),
+                sciantix_variable["Burnup"].getIncrement()));
+        //std::cout << "Entra dentro l'healing" << std::endl; 
+        
+        // ODE for the saturation fractional coverage:
+        // This equation accounts for the healing of the intergranular saturation fractional coverage with burnup
+        // dFcsat / dBu = h (1-f) Fcsat
+        sciantix_variable["Intergranular saturation fractional coverage"].setFinalValue(
+            solver.Decay(
+                sciantix_variable["Intergranular saturation fractional coverage"].getFinalValue(),
+                -model["Grain-boundary micro-cracking"].getParameter().at(1) * (1.0 - sciantix_variable["Intergranular fractional intactness"].getFinalValue()),
+                0.0,
+                sciantix_variable["Burnup"].getIncrement()));
+    }
+    //@changes M. Di Gennaro
 
-    // ODE for the intergranular fractional intactness:
-    // This equation accounts for the healing of the intergranular fractional intactness with burnup
-    // df / dBu = - h f + h
-    sciantix_variable["Intergranular fractional intactness"].setFinalValue(
-        solver.Decay(
-            sciantix_variable["Intergranular fractional intactness"].getFinalValue(),
-            model["Grain-boundary micro-cracking"].getParameter().at(1), // 2nd parameter = healing parameter
-            model["Grain-boundary micro-cracking"].getParameter().at(1),
-            sciantix_variable["Burnup"].getIncrement()));
-
-    // ODE for the saturation fractional coverage:
-    // This equation accounts for the healing of the intergranular saturation fractional coverage with burnup
-    // dFcsat / dBu = h (1-f) Fcsat
-    sciantix_variable["Intergranular saturation fractional coverage"].setFinalValue(
-        solver.Decay(
-            sciantix_variable["Intergranular saturation fractional coverage"].getFinalValue(),
-            -model["Grain-boundary micro-cracking"].getParameter().at(1) * (1.0 - sciantix_variable["Intergranular fractional intactness"].getFinalValue()),
-            0.0,
-            sciantix_variable["Burnup"].getIncrement()));
 
     // Re-scaling: to conserve the fractional coverage
     double similarity_ratio;

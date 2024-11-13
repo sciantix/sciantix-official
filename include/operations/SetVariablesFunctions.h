@@ -75,8 +75,8 @@ std::vector<SciantixVariable> initializeHistoryVariable(
 {
     std::vector<SciantixVariable> history_variable =
     {
-        SciantixVariable("Time", "(h)", Sciantix_history[7], Sciantix_history[7], 1),
-        SciantixVariable("Time step number", "(/)", Sciantix_history[8], Sciantix_history[8], 0),
+        SciantixVariable("Time", "(h)", Sciantix_history[7], Sciantix_history[7], 1),             //Con il coupling TU la Sciantix_history[7] sarebbe il burnup iniziale, tanto Time non viene usato 
+        SciantixVariable("Time step number", "(/)", Sciantix_history[8], Sciantix_history[8], 0), //Con il coupling TU la Sciantix_history[7] sarebbe il burnup finale, tanto Time step non viene usato 
         SciantixVariable("Temperature", "(K)", Sciantix_history[0] * Sciantix_scaling_factors[4], Sciantix_history[1] * Sciantix_scaling_factors[4], 1),
         SciantixVariable("Fission rate", "(fiss / m3 s)", Sciantix_history[2] * Sciantix_scaling_factors[5], Sciantix_history[3] * Sciantix_scaling_factors[5], 1),
         SciantixVariable("Hydrostatic stress", "(MPa)", Sciantix_history[4], Sciantix_history[5], 1),
@@ -192,7 +192,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Intergranular fractional intactness", "(/)", Sciantix_variables[37], Sciantix_variables[37], toOutputCracking),
 
         //#if !defined(COUPLING_TU) 
-            SciantixVariable("Burnup", "(MWd/kgUO2)", Sciantix_variables[38], Sciantix_variables[38], 1),
+        SciantixVariable("Burnup", "(MWd/kgUO2)", Sciantix_variables[38], Sciantix_variables[38], 1),
         //#endif
         SciantixVariable("FIMA", "(%)", Sciantix_variables[69], Sciantix_variables[69], toOutputHighBurnupStructure),
         SciantixVariable("Effective burnup", "(MWd/kgUO2)", Sciantix_variables[39], Sciantix_variables[39], toOutputHighBurnupStructure),

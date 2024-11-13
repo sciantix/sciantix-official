@@ -266,7 +266,7 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
         reference += "iFissionGasDiffusivity: Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22.\n\t";
 
         double temperature = history_variable["Temperature"].getFinalValue();
-        std::cout << "In system = " << temperature << std::endl; 
+        //std::cout << "In system = " << temperature << std::endl; 
         double fission_rate = history_variable["Fission rate"].getFinalValue();
 
         double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));
@@ -389,15 +389,15 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
         /**
          * @brief iFissionGasDiffusivity = 7 
          * @changes M. Di Gennaro 
-         *
+         * 
          */
 
+        std::cout << "fit White" << std::endl;
         reference += "iFissionGasDiffusivity: fit White (2001).\n\t";
         diffusivity = 2.949513e-13 * exp(-20487.36244 / history_variable["Temperature"].getFinalValue());
         diffusivity *= scaling_factors["Diffusivity"].getValue();
 
         break;
-
 
     }
 

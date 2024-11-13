@@ -466,22 +466,21 @@ using namespace std;
 double Solver::ROM_cylinder(double *initial_condition, std::vector<double> parameter, double increment)
 {
 
-    
     hsize_t rows = 0;
     hsize_t cols = 0; // Variabili per le dimensioni della matrice
 
     try {
         //////////////////////////////   MATRICI  //////////////////////////////
         // Apriamo il file HDF5 in modalità lettura
-        H5File file("/Users/martina/Library/CloudStorage/OneDrive-PolitecnicodiMilano/PhD/Git/rom-cylinder_DEIM-POD/offline-online stages/Turnbull/2. DEIM-POD/matrici_RB.h5", H5F_ACC_RDONLY);
+        H5File file("/Users/martina/Library/CloudStorage/OneDrive-PolitecnicodiMilano/PhD/Git/rom-cylinder_DEIM-POD/offline-online stages/fit White/2. DEIM-POD/matrici_RB.h5", H5F_ACC_RDONLY);
 
         // Accediamo ai dataset
-        DataSet dataset_MM_RB = file.openDataSet("MM_RB"); //40x40
-        DataSet dataset_FF_RB = file.openDataSet("FF_RB"); //40x1
-        DataSet dataset_KK_RB = file.openDataSet("KK_RB"); // 12x40x40
-        DataSet dataset_AA_RB = file.openDataSet("AA_RB"); // 40
-        DataSet dataset_ZZ_CO = file.openDataSet("ZZ_CO"); // 6
-        DataSet dataset_II_CO = file.openDataSet("II_CO"); // 6x6
+        DataSet dataset_MM_RB = file.openDataSet("MM_RB"); //N_epsilonxN_epsilon
+        DataSet dataset_FF_RB = file.openDataSet("FF_RB"); //N_epsilonx1
+        DataSet dataset_KK_RB = file.openDataSet("KK_RB"); // N_D+N_DxN_epsilonxN_epsilon
+        DataSet dataset_AA_RB = file.openDataSet("AA_RB"); // N_epsilon
+        DataSet dataset_ZZ_CO = file.openDataSet("ZZ_CO"); // N_D
+        DataSet dataset_II_CO = file.openDataSet("II_CO"); // N_DxN_D
 
 
         // Funzione per ottenere e stampare le dimensioni di un dataset
@@ -505,14 +504,15 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
 
         // Stampa le dimensioni di ciascun dataset
         /*cout << "Dimensioni dei dataset:" << endl;
-        printDimensions(dataset_MM_RB, "MM_RB"); //40x40
-        printDimensions(dataset_FF_RB, "FF_RB"); //40x1
-        printDimensions(dataset_KK_RB, "KK_RB"); // 12x40x40
-        printDimensions(dataset_AA_RB, "AA_RB"); // 40
-        printDimensions(dataset_ZZ_CO, "ZZ_CO"); // 6
-        printDimensions(dataset_II_CO, "II_CO"); // 6x6*/
+        printDimensions(dataset_MM_RB, "MM_RB"); //N_epsilonxN_epsilon
+        printDimensions(dataset_FF_RB, "FF_RB"); //N_epsilonx1
+        printDimensions(dataset_KK_RB, "KK_RB"); // N_D+N_D xN_epsilonxN_epsilon
+        printDimensions(dataset_AA_RB, "AA_RB"); // N_epsilon
+        printDimensions(dataset_ZZ_CO, "ZZ_CO"); // N_D
+        printDimensions(dataset_II_CO, "II_CO"); // N_DxN_D
+        */
 
-        // MM_RB - 40x40
+        // MM_RB - N_epsilonxN_epsilon
         DataSpace dataspace_MM_RB = dataset_MM_RB.getSpace();
         hsize_t dims_MM_RB[2];
         dataspace_MM_RB.getSimpleExtentDims(dims_MM_RB, NULL);
@@ -523,7 +523,7 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
         //std::cout << "MM_RB (1,0): " << MM_RB(1,0) << std::endl;
         //std::cout << "MM_RB (1,1): " << MM_RB(1,1) << std::endl;
 
-        // FF_RB - 40
+        // FF_RB - N_epsilon
         DataSpace dataspace_FF_RB = dataset_FF_RB.getSpace();
         hsize_t dims_FF_RB[2];
         dataspace_FF_RB.getSimpleExtentDims(dims_FF_RB, NULL);
@@ -534,7 +534,7 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
         //std::cout << "FF_RB (2): " << FF_RB(2) << std::endl;
         //std::cout << "FF_RB (3): " << FF_RB(3) << std::endl;
 
-        // KK_RB - 12 x 40 x 40
+        // KK_RB - N_D+N_D x N_epsilon x N_epsilon
         DataSpace dataspace_KK_RB = dataset_KK_RB.getSpace();
         hsize_t dims_KK_RB[3];
         dataspace_KK_RB.getSimpleExtentDims(dims_KK_RB, NULL);
@@ -561,7 +561,7 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
 
 
 
-        // AA_RB - 40
+        // AA_RB - N_epsilon
         DataSpace dataspace_AA_RB = dataset_AA_RB.getSpace();
         hsize_t dims_AA_RB[1];
         dataspace_AA_RB.getSimpleExtentDims(dims_AA_RB, NULL);
@@ -571,7 +571,7 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
         std::cout << "AA_RB (" << i << "): " << AA_RB(i) << std::endl;
         }*/
 
-        //ZZ_CO - 6 
+        //ZZ_CO - N_D 
         DataSpace dataspace_ZZ_CO = dataset_ZZ_CO.getSpace();
         hsize_t dims_ZZ_CO[1];
         dataspace_ZZ_CO.getSimpleExtentDims(dims_ZZ_CO, NULL);
@@ -581,7 +581,7 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
         std::cout << "ZZ_CO (" << i << "): " << ZZ_CO(i) << std::endl;
         }*/ //Corretto
 
-        //II_CO - 6x6
+        //II_CO - N_DxN_D
         DataSpace dataspace_II_CO = dataset_II_CO.getSpace();
         hsize_t dims_II_CO[2];
         dataspace_II_CO.getSimpleExtentDims(dims_II_CO, NULL);
@@ -606,6 +606,7 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
         cout << "Dimensioni di AA_RB: " << AA_RB.size() << endl; 
         cout << "Dimensioni di ZZ_CO: " << ZZ_CO.size() << endl;  
         cout << "Dimensioni di II_CO: " << II_CO.rows() << " x " << II_CO.cols() << endl;*/
+        
 
         // Chiudiamo i dataset e il file
         dataset_MM_RB.close();
@@ -618,6 +619,8 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
 
         
         //////////////////////////////   PARAMETRI  //////////////////////////////
+        int N_D = ZZ_CO.size(); 
+        int N_epsilon = AA_RB.size(); 
         double RADIUS = parameter.at(2); 
         double LENGTH = parameter.at(4);
         double SOURCE_C = parameter.at(3);
@@ -627,27 +630,31 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
         double fission_rate = parameter.at(8);
         Eigen::VectorXd TT(ZZ_CO.size()); 
         double boltzmann_constant = 1.380651e-23; 
-        TT = Tbc + (SOURCE_T * LENGTH*LENGTH / ALPHA_T) * (1 - ZZ_CO.array().square()) / 2; 
+        TT = Tbc + (SOURCE_T * LENGTH * LENGTH / ALPHA_T) * (1 - ZZ_CO.array().square()) / 2; 
         /*for (int i = 0; i < TT.rows(); ++i) {
             std::cout << "TT (" << i << "): " << TT(i) << std::endl;
         }*/ // -> Corretto
 
         // Diffusion coefficient
-        Eigen::VectorXd WW(6); // 6x1 vector
+        Eigen::VectorXd WW(N_D); // N_Dx1 vector
+        //double gasDiffusivity = system.getFissionGasDiffusivity(); 
 
         for (int i = 0; i < TT.size(); ++i) {
             double temperature = TT(i);
 
-            // Calcola diffusivity come somma di d1, d2, d3
-            double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));
-            double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
-            double d3 = 8.0e-40 * fission_rate;
-            double diffusivity = d1 + d2 + d3;
+            // Diffusivity Turnbull
+            //double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));
+            //double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
+            //double d3 = 8.0e-40 * fission_rate;
+            //double diffusivity = d1 + d2 + d3;
+
+            //Diffusivity fit White
+            double diffusivity = 2.949513e-13 * exp(-20487.36244 / temperature); //fit White. 
 
             // Assegna il valore di diffusivity a WW
             WW(i) = diffusivity;
         }
-        std::cout << "WW: " << WW.transpose() << std::endl; //-> Corretto
+        //std::cout << "WW: " << WW.transpose() << std::endl; //-> Corretto
 
         //WW << 1.03483679e-16, 2.13899491e-17, 5.64282052e-17, 3.34541840e-17, 8.48893704e-17, 2.54543157e-17;
         

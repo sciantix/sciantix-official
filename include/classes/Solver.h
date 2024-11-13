@@ -25,6 +25,7 @@
 #include <Eigen/Dense>
 #include <unsupported/Eigen/CXX11/Tensor> //Alternariva a Eigen/Tensor
 //#include <Eigen/Tensor> //non funzionava, brew eigen non presenta Tensor
+#include "System.h"
 
 
 /**

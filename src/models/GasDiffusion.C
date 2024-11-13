@@ -63,7 +63,7 @@ void Simulation::GasDiffusion()
         {
             if (system.getRestructuredMatrix() == 0)
             {
-                std::cout << system.getName() << std::endl; 
+                //std::cout << system.getName() << std::endl; 
                 if (system.getName() == "Xe in UO2"){
                     sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
                         solver.SpectralDiffusion(
@@ -134,19 +134,20 @@ void Simulation::GasDiffusion()
         
         case 4: //ROM_cylinder
         {
+            std::cout << "Algoritmo ROM cilindro" << std::endl; 
             if (system.getRestructuredMatrix() == 0)
             {
-                std::cout << system.getName() << std::endl; 
+                //std::cout << system.getName() << std::endl; 
                 if (system.getName() == "Xe in UO2"){
                 sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
                     solver.ROM_cylinder(
                         getDiffusionModes(system.getGasName()),
                         model["Gas diffusion - " + system.getName()].getParameter(),
-                        physics_variable["Time step"].getFinalValue()
+                        physics_variable["Time step"].getFinalValue() 
                     )
                 );
 
-                    std::cout << system.getFissionGasDiffusivity()* system.getGas().getPrecursorFactor() << std::endl;
+                    //std::cout << "gasDiffusivity = " << system.getFissionGasDiffusivity()* system.getGas().getPrecursorFactor() << std::endl;
                 }
                 
                 double equilibrium_fraction(1.0);
@@ -290,9 +291,11 @@ void defineDiffusionColumnarGrains(SciantixArray<System> &sciantix_system, Scian
         std::vector<double> parameters;
         parameters.push_back(n_modes);
         double gasDiffusivity;
+        //history_variable["Temperature"].setFinalValue(99); //Anche se messo qui il file system.C non prende questa temperatura.
+        //std::cout << history_variable["Temperature"].getFinalValue() << std::endl; 
         if (system.getResolutionRate() + system.getTrappingRate() == 0)
             gasDiffusivity = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
-        else
+        else 
             gasDiffusivity = 
                 (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
                 (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
