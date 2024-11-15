@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 def SpectralDiffusion1equation(gas, initial_condition_gas, parameter, increment):
 
-#parameter = [n_modes, D1, a, A, B]
+#parameter = [n_modes, D1, a, A, B, b, g, l]
 
 	n = 0
 	np1 = 1
@@ -28,11 +28,9 @@ def SpectralDiffusion1equation(gas, initial_condition_gas, parameter, increment)
 		diffusion_rate = diffusion_rate_coeff * np1**2 
 		source_rate = projection_coeff * n_coeff
 		coeff = 1.0 + (diffusion_rate + parameter[6] + parameter[7]) * increment
-		c = (1 + parameter[5] * increment) / (coeff * (1 + parameter[5] * increment) - parameter[5] * parameter[6] * increment**2)
 
         
-		#initial_conditions = (initial_condition_gas[n] + source_rate * increment)/(coeff)
-		initial_conditions = (initial_condition_gas[n] + source_rate * increment) * c
+		initial_conditions = (initial_condition_gas[n] + source_rate * increment)/(coeff)
 
 		initial_condition_gas[n] = initial_conditions
 		gas_solution += projection_coeff * n_c * initial_conditions / ((4.0 / 3.0) * pi) #Volume average
@@ -68,7 +66,6 @@ for i in range(num_steps):
 	SpectralDiffusion1equation(gas[i:i+1], initial_condition_gas, parameter, increment)
 
 c_eq = (a**2 / D) * ( ((A * a + B) / 15) - ( a * A / 40))
-#c_eq = (a**2 / D) * ( ((A * a + B) / 15) - ( a * A / 40)) * (1 + g/b)
 
 
 plt.plot(time_vector, gas, label='Gas ')
