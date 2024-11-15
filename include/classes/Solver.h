@@ -249,9 +249,7 @@ public:
      * @param Source The source information S(r) = A * r + B Source = [A B]
      * @return The source projection on the ith spatial mode
      */
-    double SourceProjection(double GrainRadius, double Domain[], double Source[], double SpatialMode_i);
-
-
+    double SourceProjection_i(double GrainRadius, double Domain[], double Source[], double SpatialMode_i);
 
     /**
      * @brief Constructor
