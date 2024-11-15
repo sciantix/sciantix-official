@@ -47,7 +47,6 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
     double source_rate(0.0);
     double projection_coeff(0.0);
     double solution(0.0);
-    //double A = 1e18 / (5e-6);
     double A = 0;
  
     double n_coeff = 0;
@@ -460,4 +459,32 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
         iter++;
     }
     return x1;
+}
+
+
+//New Projection Solver
+double Solver::SourceProjection(double GrainRadius, double Domain[], double Source[], double SpatialMode_i)
+{
+    if (GrainRadius == 0) {
+        // Handle error: GrainRadius cannot be zero.
+        return 0;
+    }
+  //Term 1
+  double proj1 = (pow(GrainRadius,-1) / (pow(SpatialMode_i,3) * pow(M_PI,2))) * 
+  (cos(SpatialMode_i * M_PI * Domain[0] / GrainRadius) * (2 * pow(GrainRadius,2) * 
+  Source[0] - pow(M_PI,2) * pow(SpatialMode_i,2) * Domain[0] * (Source[0] * Domain[0] + Source[1])) + 
+  M_PI * pow(GrainRadius,-0.5) * SpatialMode_i * (2 * Source[0] * Domain[0] + Source[1]) * 
+  sin(SpatialMode_i * M_PI * Domain[0] / GrainRadius));
+  
+  //Term2
+  double proj2 = (pow(GrainRadius,-1) / (pow(SpatialMode_i,3) * pow(M_PI,2))) * 
+  (cos(SpatialMode_i * M_PI * Domain[1] / GrainRadius) * (2 * pow(GrainRadius,2)
+  * Source[0] - pow(M_PI,2) * pow(SpatialMode_i,2) * Domain[1] * (Source[0] * Domain[1] + Source[1])) + 
+  M_PI * pow(GrainRadius,-0.5) * SpatialMode_i * (2 * Source[0] * Domain[1] + Source[1]) * 
+  sin(SpatialMode_i * M_PI * Domain[1] / GrainRadius));
+  
+  //Result
+  double projection = proj2 - proj1;
+  return projection;
+
 }

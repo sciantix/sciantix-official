@@ -240,6 +240,19 @@ public:
      */
     double NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment);
 
+//Newly Added Function SourceProjection
+    /**
+     * @brief Gives the projection of the source present in a certain domain on the spatial mode i
+     *
+     * @param GrainRadius The Grain Radius.
+     * @param Domian The domain where the source is present Domain = [edge1, edge2]
+     * @param Source The source information S(r) = A * r + B Source = [A B]
+     * @return The source projection on the ith spatial mode
+     */
+    double SourceProjection(double GrainRadius, double Domain[], double Source[], double SpatialMode_i);
+
+
+
     /**
      * @brief Constructor
      */
