@@ -78,15 +78,15 @@ def main():
         # Run regression tests for each regression mode and update the test list and test counts accordingly.
         folderListB, number_of_tests_b, number_of_tests_failed_b = regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
         folderListK, number_of_tests_k, number_of_tests_failed_k = regression_kashibe1993(wpath, mode_Kashibe1993, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
-        folderListW, number_of_tests_w, number_of_tests_failed_w = regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+        folderListW, number_of_tests_w, number_of_tests_failed_w, calculated, measured = regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
         folderListT, number_of_tests_t, number_of_tests_failed_t = regression_talip(wpath, mode_Talip, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
         folderListC, number_of_tests_c, number_of_tests_failed_c = regression_contact(wpath, mode_CONTACT, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
         folderListO, number_of_tests_o, number_of_tests_failed_o = regression_oxidation(wpath, mode_oxidation, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
         folderListH, number_of_tests_h, number_of_tests_failed_h = regression_hbs(wpath, mode_hbs, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
-        folderListK1990, number_of_tests_k1990, number_of_tests_failed_k1990 = regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
-        folderListS, number_of_tests_s, number_of_tests_failed_s = regression_small1988(wpath, mode_Small1988, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
-        folderListS1985, number_of_tests_s1985, number_of_tests_failed_s1985 = regression_small1985(wpath, mode_Small1985, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
-        folderListK1991, number_of_tests_k1991, number_of_tests_failed_k1991 = regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+        folderListK1990, number_of_tests_k1990, number_of_tests_failed_k1990, calculatedS, measuredS,  calculatedF, measuredF = regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+        folderListS, number_of_tests_s, number_of_tests_failed_s, calculated, measured = regression_small1988(wpath, mode_Small1988, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+        folderListS1985, number_of_tests_s1985, number_of_tests_failed_s1985, calculated, measured = regression_small1985(wpath, mode_Small1985, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+        folderListK1991, number_of_tests_k1991, number_of_tests_failed_k1991, calculated, measured = regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
         
         # Combine the test lists from the different modes into one comprehensive list.
         folderList = folderListB + folderListK + folderListW + folderListT + folderListC + folderListO + folderListH + folderListK1990 + folderListS + folderListS1985 +folderListK1991
@@ -171,15 +171,15 @@ def main():
             # For each execution mode (Baker, White, Talip, Contact, Oxidation), run the corresponding regression test function and update the test list and test counts accordingly.
             folderListB, number_of_tests_b, number_of_tests_failed_b = regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
             folderListK, number_of_tests_k, number_of_tests_failed_k = regression_kashibe1993(wpath, mode_Kashibe1993, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
-            folderListW, number_of_tests_w, number_of_tests_failed_w = regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+            folderListW, number_of_tests_w, number_of_tests_failed_w, calculated, measured  = regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
             folderListT, number_of_tests_t, number_of_tests_failed_t = regression_talip(wpath, mode_Talip, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
             folderListC, number_of_tests_c, number_of_tests_failed_c = regression_contact(wpath, mode_CONTACT, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
             folderListO, number_of_tests_o, number_of_tests_failed_o = regression_oxidation(wpath, mode_oxidation, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
             folderListH, number_of_tests_h, number_of_tests_failed_h = regression_hbs(wpath, mode_hbs, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
-            folderListK1990, number_of_tests_k1990, number_of_tests_failed_k1990 = regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
-            folderListS, number_of_tests_s, number_of_tests_failed_s = regression_small1988(wpath, mode_Small1988, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
-            folderListS1985, number_of_tests_s1985, number_of_tests_failed_s1985 = regression_small1985(wpath, mode_Small1985, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
-            folderListK1991, number_of_tests_k1991, number_of_tests_failed_k1991 = regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+            folderListK1990, number_of_tests_k1990, number_of_tests_failed_k1990, calculatedS, measuredS,  calculatedF, measuredF = regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+            folderListS, number_of_tests_s, number_of_tests_failed_s, calculated, measured  = regression_small1988(wpath, mode_Small1988, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+            folderListS1985, number_of_tests_s1985, number_of_tests_failed_s1985, calculated, measured  = regression_small1985(wpath, mode_Small1985, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+            folderListK1991, number_of_tests_k1991, number_of_tests_failed_k1991, calculated, measured  = regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
             
             # Combine the test lists from the different modes into one comprehensive list.
             folderList = folderListB + folderListK + folderListW + folderListT + folderListC + folderListO + folderListH + folderListK1990 + folderListS + folderListS1985 + folderListK1991
@@ -222,7 +222,7 @@ def main():
                 print("\nRegression selected : Kashibe 1993")
             if regression_mode == 2 :
                 mode_White = 1
-                folderList, number_of_tests, number_of_tests_failed = regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+                folderList, number_of_tests, number_of_tests_failed, calculated, measured  = regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
                 print("\nRegression selected : White")
             if regression_mode == 3 :
                 mode_Talip = 1
@@ -242,19 +242,19 @@ def main():
                 print("\nRegression selected : HBS")
             if regression_mode == 7 :
                 mode_Kashibe1990 = 1
-                folderList, number_of_tests, number_of_tests_failed = regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+                folderList, number_of_tests, number_of_tests_failed, calculatedS, measuredS,  calculatedF, measuredF = regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
                 print("\nRegression selected : Kashibe 1990")
             if regression_mode == 8 :
                 mode_Small1988 = 1
-                folderList, number_of_tests, number_of_tests_failed = regression_small1988(wpath, mode_Small1988, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+                folderList, number_of_tests, number_of_tests_failed, calculated, measured  = regression_small1988(wpath, mode_Small1988, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
                 print("\nRegression selected : Small 1988")
             if regression_mode == 9 :
                 mode_Small1985 = 1
-                folderList, number_of_tests, number_of_tests_failed = regression_small1985(wpath, mode_Small1985, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+                folderList, number_of_tests, number_of_tests_failed, calculated, measured  = regression_small1985(wpath, mode_Small1985, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
                 print("\nRegression selected : Small 1985")
             if regression_mode == 10 :
                 mode_Kashibe1991 = 1
-                folderList, number_of_tests, number_of_tests_failed = regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
+                folderList, number_of_tests, number_of_tests_failed, calculated, measured  = regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
                 print("\nRegression selected : Kashibe 1991")
 
     print("MODE GOLD ==", mode_gold, "selected.")

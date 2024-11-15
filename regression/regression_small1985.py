@@ -24,6 +24,7 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLoc
 # Data generated from SCIANTIX 2.0
 FGR2 = []
 FGRBase = []
+FGR2Annealing = []
 FGRBaseGold = []
 BaseTime = [202,202,202,
             202,202,202,
@@ -110,76 +111,35 @@ def do_gold():
 
 # Plot the regression test results
 def do_plot():
-  # # FGRtotal
-  # fig, ax = plt.subplots()
-
-  # ax.scatter(FGRSmall, FGR2,c = '#9370DB', marker = '^', s=40, label='This work')
-  # ax.scatter(FGRSmall, goldFGR, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', alpha=0.7)
-  # ax.scatter(FGRSmall, TOtFGRVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
   
-  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  
-  # ax.set_xlim(0, 100)
-  # ax.set_ylim(0, 100)
-
-  # ax.set_title('Fission gas release')
-  # ax.set_xlabel('Experimental (%)')
-  # ax.set_ylabel('Calculated (%)')
-  # ax.legend()
-  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
-
-  
-  # #plt.savefig('Images/FGRTotal-Small1985')
-  # plt.show()
-
-  FGR2Annealing = []
   goldFGRAnnealing = []
   for i in range(len(FGR2)):
     FGR2Annealing.append(FGR2[i] - FGRBase[i])
     goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
     
-  fig, ax = plt.subplots()
+  plt.rcParams.update({'font.size': 14})
+  fig, ax = plt.subplots(figsize=(7, 7))
   ax.scatter(FGRAnnealing, FGR2Annealing,c = '#9370DB', marker = '^', s=40, label='This work')
-  #ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
   ax.scatter(FGRAnnealing, AnnFGRVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', alpha =0.7)
-  
-  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  
-  # ax.set_xlim(0, 50)
-  # ax.set_ylim(0, 50)
 
-  r = range(1, 100)
-  ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
-  ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
-  ax.annotate('x2', (1.25, 3), color='k')
-  ax.plot(r, [x * 0.5 for x in r], color='gray', linestyle='--', linewidth=0.5)
-  ax.annotate('/2', (3, 1.3),  color='k')
-  ax.set_yscale('log')
-  ax.set_xscale('log')
-  # Set ticks and formatter
-  ax.set_xticks([1, 10, 100])
-  ax.xaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
-  ax.set_yticks([1, 10, 100])
-  ax.yaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
 
-  # Adjust ticks for log scale
-  ax.get_xaxis().set_major_formatter(FormatStrFormatter('%d'))
-  ax.get_yaxis().set_major_formatter(FormatStrFormatter('%d'))
+  ax.plot([1e-3, 1e3],[1e-3, 1e3], color='gray', linestyle='-', linewidth=0.5)
+  ax.plot([1e-3, 1e3],[2e-3, 2e3], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('x2', (1.25e-2, 3e-2), color='k')
+  ax.plot([1e-3, 1e3],[5e-4, 5e2], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('/2', (3e-2, 1.3e-2),  color='k')
 
   ax.tick_params(axis='both', which='major')
-  ax.set_xlim(1, 100)
-  ax.set_ylim(1, 100)
+  
+  ax.set_xlim(1e-2, 1e2)
+  ax.set_ylim(1e-2, 1e2)
+  ax.set_yscale('log')
+  ax.set_xscale('log')
 
   ax.set_title('Fission gas release - Annealing phase')
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
-  #ax.grid(color='gray', linestyle='--', linewidth=0.5)
-
   plt.savefig('Images/FGRAnnealing-Small1985')
   plt.show()
 
@@ -191,7 +151,7 @@ def do_plot():
   x = np.array([0,5,10])
   x1 = np.array([0,5,10])
 
-  fig, ax = plt.subplots(figsize=(10, 5))
+  fig, ax = plt.subplots(figsize=(7, 7))
   plt.bar(x - width, FGRAnnealing[0:3], 0.9*width, label='Small et al. (1985)', color='#FFA07A', edgecolor='red')
   plt.bar(x, FGR2Annealing[0:3], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
   plt.bar(x + width, AnnFGRVersion2[0:3], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
@@ -202,8 +162,7 @@ def do_plot():
   plt.title('Annealing at 1673 K')
 
   plt.legend(loc='best')
-  plt.ylim([1e-2,1.5e2])
-  plt.yscale('log')
+  plt.ylim([1,70])
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
   plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
@@ -212,7 +171,7 @@ def do_plot():
 
   plt.savefig('Images/FGRAnnealing1400-Small1985')
 
-  fig, ax = plt.subplots(figsize=(10, 5))
+  fig, ax = plt.subplots(figsize=(7, 7))
   plt.bar(x1 - width, FGRAnnealing[3:6], 0.9*width, label='Small et al. (1985)', color='#FFA07A', edgecolor='red')
   plt.bar(x1, FGR2Annealing[3:6], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
   plt.bar(x1 + width, AnnFGRVersion2[3:6], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
@@ -223,8 +182,7 @@ def do_plot():
   plt.title('Annealing at 1773 K')
 
   plt.legend(loc='best')
-  plt.ylim([1e-2,1.5e2])
-  plt.yscale('log')
+  plt.ylim([1,70])
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
   plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
@@ -233,7 +191,7 @@ def do_plot():
 
   plt.savefig('Images/FGRAnnealing1500-Small1985')
 
-  fig, ax = plt.subplots(figsize=(10, 5))
+  fig, ax = plt.subplots(figsize=(7, 7))
   plt.bar(x1 - width, FGRAnnealing[6:9], 0.9*width, label='Small et al. (1985)', color='#FFA07A', edgecolor='red')
   plt.bar(x1, FGR2Annealing[6:9], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
   plt.bar(x1 + width, AnnFGRVersion2[6:9], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
@@ -244,8 +202,7 @@ def do_plot():
   plt.title('Annealing at 1873 K')
 
   plt.legend(loc='best')
-  plt.ylim([1e-2,1.5e2])
-  plt.yscale('log')
+  plt.ylim([1,70])
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
   plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
@@ -254,7 +211,7 @@ def do_plot():
 
   plt.savefig('Images/FGRAnnealing1600-Small1985')
 
-  fig, ax = plt.subplots(figsize=(10, 5))
+  fig, ax = plt.subplots(figsize=(7, 7))
   plt.bar(x1 - width, FGRAnnealing[9:12], 0.9*width, label='Small et al. (1985)', color='#FFA07A', edgecolor='red')
   plt.bar(x1, FGR2Annealing[9:12], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
   plt.bar(x1 + width, AnnFGRVersion2[9:12], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
@@ -265,8 +222,7 @@ def do_plot():
   plt.title('Annealing at 1973 K')
 
   plt.legend(loc='best')
-  plt.ylim([1e-2,1.5e2])
-  plt.yscale('log')
+  plt.ylim([1,70])
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
   plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
@@ -358,4 +314,4 @@ def regression_small1985(wpath, mode_Small1985, mode_gold, mode_plot, folderList
   if mode_plot == 1:
     do_plot()
 
-  return folderList, number_of_tests, number_of_tests_failed
+  return folderList, number_of_tests, number_of_tests_failed, FGR2Annealing, FGRAnnealing 

@@ -23,6 +23,7 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLoc
 # Data generated from SCIANTIX 2.0
 FGR2 = []
 FGRBase = []
+FGR2Annealing = []
 FGRBaseGold = []
 BaseTime = [303,303,303,303,303,303,
             303,303,303,303,303,303,
@@ -110,69 +111,31 @@ def do_gold():
 
 # Plot the regression test results
 def do_plot():
-  # FGR total
-  # fig, ax = plt.subplots()
 
-  # ax.scatter(FGRSmall, FGR2, c = '#9370DB', marker = '^', s=40,label='This work')
-  # ax.scatter(FGRSmall, goldFGR, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', alpha=0.7)
-  # ax.scatter(FGRSmall, TOtFGRVersion2, c='green', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
-  
-  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  
-  # ax.set_xlim(0, 100)
-  # ax.set_ylim(0, 100)
-
-  # ax.set_title('Fission gas release')
-  # ax.set_xlabel('Experimental (%)')
-  # ax.set_ylabel('Calculated (%)')
-  # ax.legend()
-  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
-
-  
-  # plt.savefig('Images/FGRTotal-Small1988')
-  # plt.show()
-
-  FGR2Annealing = []
   goldFGRAnnealing = []
   for i in range(len(FGR2)):
     FGR2Annealing.append(FGR2[i] - FGRBase[i])
     goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
     
    #FGR annealing
-  fig, ax = plt.subplots()
+  plt.rcParams.update({'font.size': 14})
+  fig, ax = plt.subplots(figsize=(7, 7))
   ax.scatter(FGRAnnealing, FGR2Annealing,c = '#9370DB', marker = '^', s=40,label='This work')
-  #ax.scatter(FGRAnnealing, goldFGRAnnealing,c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
   ax.scatter(FGRAnnealing, AnnFGRVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', alpha =0.7)
-  
-  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  
-  # ax.set_xlim(0, 80)
-  # ax.set_ylim(0, 80)
-  r = range(1, 100)
-  ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
-  ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
-  ax.annotate('x2', (1.25, 3), color='k')
-  ax.plot(r, [x * 0.5 for x in r], color='gray', linestyle='--', linewidth=0.5)
-  ax.annotate('/2', (3, 1.3),  color='k')
-  ax.set_yscale('log')
-  ax.set_xscale('log')
-  # Set ticks and formatter
-  ax.set_xticks([1, 10, 100])
-  ax.xaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
-  ax.set_yticks([1, 10, 100])
-  ax.yaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
 
-  # Adjust ticks for log scale
-  ax.get_xaxis().set_major_formatter(FormatStrFormatter('%d'))
-  ax.get_yaxis().set_major_formatter(FormatStrFormatter('%d'))
+  ax.plot([1e-3, 1e3],[1e-3, 1e3], color='gray', linestyle='-', linewidth=0.5)
+  ax.plot([1e-3, 1e3],[2e-3, 2e3], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('x2', (1.25e-2, 3e-2), color='k')
+  ax.plot([1e-3, 1e3],[5e-4, 5e2], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('/2', (3e-2, 1.3e-2),  color='k')
 
   ax.tick_params(axis='both', which='major')
-  ax.set_xlim(1, 100)
-  ax.set_ylim(1, 100)
+  
+  ax.set_xlim(1, 1e2)
+  ax.set_ylim(1, 1e2)
+  ax.set_yscale('log')
+  ax.set_xscale('log')
+
   ax.set_title('Fission gas release - Annealing phase')
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
@@ -190,14 +153,14 @@ def do_plot():
   width = 1
   x = np.linspace(0,25,6)
 
-  fig, ax = plt.subplots(figsize=(10, 5))
+  fig, ax = plt.subplots(figsize=(7, 7))
   plt.bar(x - width, FGRAnnealing[0:6], 0.9*width, label='Small ', color='#FFA07A', edgecolor = 'red')
   plt.bar(x, FGR2Annealing[0:6], 0.9*width, label='This work', color='#9370DB', edgecolor = '#6A34A2')
   plt.bar(x + width, AnnFGRVersion2[0:6], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA',  edgecolor='#006400')
   
   plt.xticks(x, categories)
   plt.xlabel('Annealing temperature')
-  plt.title('Experiments A - 18 GWd/tU - 1 K/s - 180 s')
+  plt.title('Series A - 18 GWd tU$^{-1}$ - 1 K s$^{-1}$ - 180 s')
   plt.ylabel('FGR (%)')
   plt.ylim([0,70])
   plt.legend()
@@ -209,7 +172,7 @@ def do_plot():
 
   plt.savefig('Images/A-Small1988')
 
-  fig, ax = plt.subplots(figsize=(10, 5))
+  fig, ax = plt.subplots(figsize=(7, 7))
 
   #plt.barh(x, goldFGRDeltaRamp, 0.9*width, label='Barani (2017)', color='#ff7f0e', edgecolor='#D3D3D3')
   plt.bar(x - width, FGRAnnealing[6:12], 0.9*width, label='Small et al. (1988)', color='#FFA07A', edgecolor = 'red')
@@ -218,7 +181,7 @@ def do_plot():
   
   plt.xticks(x, categories)
   plt.xlabel('Annealing temperature')
-  plt.title('Experiments B - 18 GWd/tU - 12.5 K/s - 1800 s')
+  plt.title('Series B - 18 GWd tU$^{-1}$ - 12.5 K s$^{-1}$ - 1800 s')
   plt.ylabel('FGR (%)')
   plt.ylim([0,70])
   plt.legend()
@@ -235,13 +198,13 @@ def do_plot():
   width = 1
   x = np.linspace(0,10,3)
 
-  fig, ax = plt.subplots(figsize=(10, 5))
+  fig, ax = plt.subplots(figsize=(7, 7))
   plt.bar(x - width, FGRAnnealing[12:15], 0.9*width, label='Small et al. (1988)', color='#FFA07A', edgecolor = 'red')
   plt.bar(x, FGR2Annealing[12:15], 0.9*width, label='This work', color='#9370DB', edgecolor = '#6A34A2')
   plt.bar(x + width, AnnFGRVersion2[12:15], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA',  edgecolor='#006400')
   
   plt.xticks(x, categories)
-  plt.title('Experiments C - 38 GWd/tU - 12.5 K/s')
+  plt.title('Series C - 38 GWd tU$^{-1}$ - 12.5 K s$^{-1}$')
   plt.ylabel('FGR (%)')
   plt.ylim([0,70])
   plt.legend()
@@ -257,13 +220,13 @@ def do_plot():
   width = 1
   x = np.linspace(0,15,4)
 
-  fig, ax = plt.subplots(figsize=(10, 5))
+  fig, ax = plt.subplots(figsize=(7, 7))
   plt.bar(x - width, FGRAnnealing[15:19], 0.9*width, label='Small et al. (1988)', color='#FFA07A', edgecolor = 'red')
   plt.bar(x, FGR2Annealing[15:19], 0.9*width, label='This work', color='#9370DB', edgecolor = '#6A34A2')
   plt.bar(x + width, AnnFGRVersion2[15:19], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA',  edgecolor='#006400')
   
   plt.xticks(x, categories)
-  plt.title('Experiments D - 18 GWd/tU - 50 K/s')
+  plt.title('Series D - 18 GWd tU$^{-1}$ - 50 K s$^{-1}$')
   plt.ylabel('FGR (%)')
   plt.ylim([0,70])
   plt.legend()
@@ -365,4 +328,4 @@ def regression_small1988(wpath, mode_Small1988, mode_gold, mode_plot, folderList
   if mode_plot == 1:
     do_plot()
 
-  return folderList, number_of_tests, number_of_tests_failed
+  return folderList, number_of_tests, number_of_tests_failed, FGR2Annealing, FGRAnnealing

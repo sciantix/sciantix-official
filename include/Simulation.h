@@ -489,6 +489,16 @@ class Simulation : public Solver, public Model
             sciantix_variable[sv["Intergranular vented fraction"]].setInitialValue(21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() - 3.7250) + 1));
 		    sciantix_variable[sv["Intergranular vented fraction"]].setFinalValue(21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() - 3.7250) + 1));
         }
+        else if (sf_helium_production_rate == 3)
+        {
+            sciantix_variable[sv["Intergranular vented fraction"]].setInitialValue(0.5 * (erf(50 *(sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() - 0.5)) + 1));
+		    sciantix_variable[sv["Intergranular vented fraction"]].setFinalValue(0.5 * (erf(50 *(sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() - 0.5)) + 1));
+        }
+        else if (sf_helium_production_rate == 4)
+        {
+            sciantix_variable[sv["Intergranular vented fraction"]].setInitialValue(0.0767 * (erf(13.5737 * sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() - 6.8383) + 1) + (-3.3844 * sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() + 0.5476) * -0.1496 * (erf(103.2140 * sciantix_variable[sv["Intergranular fractional coverage"]].getInitialValue() - 51.4163) + 1));
+		    sciantix_variable[sv["Intergranular vented fraction"]].setFinalValue(0.0767 * (erf(13.5737 * sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() - 6.8383) + 1) + (-3.3844 * sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() + 0.5476) * -0.1496 * (erf(103.2140 * sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue() - 51.4163) + 1));
+		}
 
 		sciantix_variable[sv["Intergranular venting probability"]].setInitialValue(
 			(1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue()) + sciantix_variable[sv["Intergranular vented fraction"]].getInitialValue() * sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue()

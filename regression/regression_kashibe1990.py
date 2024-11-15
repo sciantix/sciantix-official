@@ -26,6 +26,7 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLoc
 # igSwelling1 = [0.033, 0.048]
 # Data generated from SCIANTIX 2.0
 igSwelling2 = []
+FGR2Annealing = []
 FGR2 = []
 FGRBase = []
 FGRBaseGold = []
@@ -120,97 +121,20 @@ def do_gold():
 # Plot the regression test results
 def do_plot():
   
-  # # FGR totale
-  # fig, ax = plt.subplots()
-
-  # ax.scatter(FGRKashibe, FGR2,c = '#9370DB', marker = '^', s=40, label='This work', zorder=1)
-  # ax.scatter(FGRKashibe, goldFGR, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)',zorder=2, alpha=0.7)
-  # ax.scatter(FGRKashibe, TotFGRVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
-  
-  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  
-  # ax.set_xlim(0, 100)
-  # ax.set_ylim(0, 100)
-
-  # ax.set_title('Fission gas release')
-  # ax.set_xlabel('Experimental (%)')
-  # ax.set_ylabel('Calculated (%)')
-  # ax.legend()
-  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
-
-  # #plt.savefig('Images/FGRTotal-Kashibe1990')
-
-  # #plt.show()
-
-  # fig, ax = plt.subplots()
-
-  # ax.scatter(SwellingKashibe,  igSwelling2, c = '#9370DB', marker = '^', s=40, label='This work', zorder=1)
-  # ax.scatter(SwellingKashibe,  goldSwelling, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
-  # ax.scatter(SwellingKashibe, SwellCorrVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
-  
-  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-
-  # ax.set_xlim(0, 20)
-  # ax.set_ylim(0, 20)
-
-  # ax.set_title('Intergranular swelling')
-  # ax.set_xlabel('Experimental (%)')
-  # ax.set_ylabel('Calculated (%)')
-  # ax.legend()
-  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
-
-  # plt.savefig('Images/Swelling-Kashibe1990')
-  # #plt.show()
-
-  # # Swelling
-  # fig, ax = plt.subplots()
-
   NewSwelling2 = []
   NewSwellinggold= []
   for i in range(len(f2)):
     NewSwelling2.append(igSwelling2[i])
     NewSwellinggold.append(goldSwelling[i]/fgold[i])
     
-  # ax.scatter(SwellingKashibe, NewSwelling2,c='#9370DB', marker = '^', s=40, label='This work', zorder = 1)
-  # ax.scatter(SwellingKashibe, NewSwellinggold, c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017)', zorder = 2, alpha=0.7)
-  # ax.scatter(SwellingKashibe, SwellCorrVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
-  
-  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-
-  # ax.set_xlim(0, 20)
-  # ax.set_ylim(0, 20)
-
-  # ax.set_title('Intergranular swelling')
-  # ax.set_xlabel('Experimental (%)')
-  # ax.set_ylabel('Calculated (%)')
-  # ax.legend()
-  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
-  
-  # #plt.savefig('Images/Swelling-Kashibe1990')
-  # plt.show()
-
-  # Swelling at different temperatures
-  fig, ax = plt.subplots()
+  plt.rcParams.update({'font.size': 14})
+  fig, ax = plt.subplots(figsize=(7, 7))
 
   ax.scatter(SwellingKashibe[1:4], NewSwelling2[1:4],c='#9370DB', marker = '^', s=40, label='This work - 1873 K')
   ax.scatter(SwellingKashibe[4:7], NewSwelling2[4:7], facecolors= 'none', edgecolors = '#9370DB', marker = '^', s=40,label='This work - 2073 K')
-  #ax.scatter(SwellingKashibe[1:4], NewSwellinggold[1:4],c='#ff7f0e', marker = '^', s=40, label='Barani (2017) - 1873 K',  alpha=0.8)
-  #ax.scatter(SwellingKashibe[4:7], NewSwellinggold[4:7], c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017) - 2073 K',  alpha =0.8)
   ax.scatter(SwellingKashibe[1:4], SwellCorrVersion2[1:4], c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 1873 K',  alpha =0.7)
   ax.scatter(SwellingKashibe[4:7], SwellCorrVersion2[4:7], facecolors= 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 2073 K', alpha =0.7)
   
-  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-
-  # ax.set_xlim(0, 15)
-  # ax.set_ylim(0, 15)
   r = range(1, 100)
   ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
   ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
@@ -219,15 +143,6 @@ def do_plot():
   ax.annotate('/2', (3, 1.3),  color='k')
   ax.set_yscale('log')
   ax.set_xscale('log')
-  # Set ticks and formatter
-  ax.set_xticks([1, 10, 100])
-  ax.xaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
-  ax.set_yticks([1, 10, 100])
-  ax.yaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
-
-  # Adjust ticks for log scale
-  ax.get_xaxis().set_major_formatter(FormatStrFormatter('%d'))
-  ax.get_yaxis().set_major_formatter(FormatStrFormatter('%d'))
 
   ax.tick_params(axis='both', which='major')
   ax.set_xlim(1, 100)
@@ -241,36 +156,13 @@ def do_plot():
   plt.savefig('Images/SwellingDiviso-Kashibe1990')
   plt.show()
 
-  FGR2Annealing = []
   goldFGRAnnealing = []
   for i in range(len(FGR2)):
     FGR2Annealing.append(FGR2[i] - FGRBase[i])
     goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
   
-  # # FGR annealing
-  # fig, ax = plt.subplots()
-  # ax.scatter(FGRAnnealing, FGR2Annealing, c = '#9370DB', marker = '^', s=40, label='This work', zorder=1)
-  # ax.scatter(FGRAnnealing, goldFGRAnnealing, c = '#ff7f0e', marker = 'o', s=40, label='Barani (2017)', zorder=2, alpha=0.7)
-  # ax.scatter(FGRAnnealing, AnnFGRVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', zorder = 4, alpha =0.7)
-  
-  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  
-  # ax.set_xlim(0, 40)
-  # ax.set_ylim(0, 40)
-
-  # ax.set_title('Fission gas release - Annealing phase')
-  # ax.set_xlabel('Experimental (%)')
-  # ax.set_ylabel('Calculated (%)')
-  # ax.legend()
-  # ax.grid(color='gray', linestyle='--', linewidth=0.5)
-
-  # plt.savefig('Images/FGRAnnealing-Kashibe1990')
-  # plt.show()
-
-    # FGR annealing
-  fig, ax = plt.subplots()
+  plt.rcParams.update({'font.size': 14})
+  fig, ax = plt.subplots(figsize=(7, 7))
 
   ax.scatter(FGRAnnealing, FGR2Annealing,c='#9370DB', marker = '^', s=40, label='This work')
   ax.scatter(FGRAnnealing, AnnFGRVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', alpha =0.7)
@@ -291,24 +183,14 @@ def do_plot():
   plt.savefig('Images/FGRAnnealingTotal-Kashibe1990')
   plt.show()
 
-  # FGR annealing
-  fig, ax = plt.subplots()
+  plt.rcParams.update({'font.size': 14})
+  fig, ax = plt.subplots(figsize=(7, 7))
 
   ax.scatter(FGRAnnealing[1:4], FGR2Annealing[1:4],c='#9370DB', marker = '^', s=40, label='This work - 1873 K')
   ax.scatter(FGRAnnealing[4:8], FGR2Annealing[4:8],facecolors= 'none', edgecolors = '#9370DB', marker = '^', s=40,label='This work - 2073 K')
-  # ax.scatter(FGRAnnealing[1:4], goldFGRAnnealing[1:4],c='#ff7f0e', marker = '^', s=40, label='Barani (2017) - 1873 K')
-  # ax.scatter(FGRAnnealing[4:8], goldFGRAnnealing[4:8], c = '#ff7f0e', marker = 'o', s=40,label='Barani (2017) - 2073 K')
   ax.scatter(FGRAnnealing[1:4], AnnFGRVersion2[1:4], c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 1873 K', alpha =0.7)
   ax.scatter(FGRAnnealing[4:8], AnnFGRVersion2[4:8], facecolors='none', edgecolors = '#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 2073 K', alpha =0.7)
   
-  # ax.set_xlim(0, 100)
-  # ax.set_ylim(0, 100)
-  # ax.set_yscale('log')
-  # ax.set_xscale('log')
-  # ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  # ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  # ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-
   r = range(1, 100)
   ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
   ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
@@ -317,16 +199,7 @@ def do_plot():
   ax.annotate('/2', (3, 1.3),  color='k')
   ax.set_yscale('log')
   ax.set_xscale('log')
-  # Set ticks and formatter
-  ax.set_xticks([1, 10, 100])
-  ax.xaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
-  ax.set_yticks([1, 10, 100])
-  ax.yaxis.set_major_formatter(FormatStrFormatter('%1.0f'))
-
-  # Adjust ticks for log scale
-  ax.get_xaxis().set_major_formatter(FormatStrFormatter('%d'))
-  ax.get_yaxis().set_major_formatter(FormatStrFormatter('%d'))
-
+  
   ax.tick_params(axis='both', which='major')
   ax.set_xlim(1, 100)
   ax.set_ylim(1, 100)
@@ -342,9 +215,9 @@ def do_plot():
 
   ############################################  BARPLOTS #############################################
 
-  # fig, ax = plt.subplots(figsize=(10,5))
+  # fig, ax = plt.subplots(figsize=(7, 7))
 
-  # categories = ['6 GWd/tU', '16 GWd/tU','23 GWd/tU', '28 GWd/tU']
+  # categories = ['6 GWd tU$^{-1}$', '16 GWd tU$^{-1}$','23 GWd tU$^{-1}$', '28 GWd tU$^{-1}$']
 
   # width = 1
   # x = np.array([0,5,10,15])
@@ -368,7 +241,7 @@ def do_plot():
   # this_work_patch = mpatches.Patch(facecolor='#9370DB', edgecolor='#6A34A2', label='This work')
   # sciantix_patch = mpatches.Patch(facecolor='#66CDAA', edgecolor='#006400', label='SCIANTIX 2.0')
 
-  # # Create line patches for the burnup (23 and 28 GWd/tU)
+  # # Create line patches for the burnup (23 and 28 GWd tU$^{-1}$)
   # T1600_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='1873 K')
   # T1800_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='2073 K', markerfacecolor='none')
 
@@ -389,16 +262,16 @@ def do_plot():
   
   ###########FGR##############
 
-  categories = ['6 GWd/tU', '16 GWd/tU','23 GWd/tU', '28 GWd/tU']
-  categories1 = ['16 GWd/tU','23 GWd/tU', '28 GWd/tU']
-  categories2 = ['6 GWd/tU', '16 GWd/tU','23 GWd/tU']
+  categories = ['6 GWd tU$^{-1}$', '16 GWd tU$^{-1}$','23 GWd tU$^{-1}$', '28 GWd tU$^{-1}$']
+  categories1 = ['16 GWd tU$^{-1}$','23 GWd tU$^{-1}$', '28 GWd tU$^{-1}$']
+  categories2 = ['6 GWd tU$^{-1}$', '16 GWd tU$^{-1}$','23 GWd tU$^{-1}$']
   
   width = 1
   x = np.array([0,5,10,15])
   x1 = np.array([5,10,15])
   x2 = np.array([0,5,10])
 
-  fig, ax = plt.subplots(figsize=(10,5))
+  fig, ax = plt.subplots(figsize=(7, 7))
 
   plt.bar(x1 - width, FGRAnnealing[1:4], 0.9*width, label='Une et al. (1990)', color='#FFA07A', edgecolor='red')
   plt.bar(x1, FGR2Annealing[1:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
@@ -418,7 +291,7 @@ def do_plot():
 
   plt.savefig('Images/FGRSpecifico1600-Kashibe1990')
 
-  fig, ax = plt.subplots(figsize=(10,5))
+  fig, ax = plt.subplots(figsize=(7, 7))
 
   plt.bar(x - width, FGRAnnealing[4:8], 0.9*width, label='Une et al. (1990)', color='#FFA07A', edgecolor='red')
   plt.bar(x, FGR2Annealing[4:8], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
@@ -441,7 +314,7 @@ def do_plot():
 
   ######## Swelling ##############
 
-  fig, ax = plt.subplots(figsize=(10,5))
+  fig, ax = plt.subplots(figsize=(7, 7))
 
   plt.bar(x1 - width, SwellingKashibe[1:4], 0.9*width, label='Une et al. (1990)', color='#FFA07A', edgecolor='red')
   plt.bar(x1, NewSwelling2[1:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
@@ -462,7 +335,7 @@ def do_plot():
 
   plt.savefig('Images/SwellingSpecifico1600-Kashibe1990')
 
-  fig, ax = plt.subplots(figsize=(10,5))
+  fig, ax = plt.subplots(figsize=(7, 7))
 
   plt.bar(x2 - width, SwellingKashibe[4:7], 0.9*width, label='Une et al. (1990)', color='#FFA07A', edgecolor='red')
   plt.bar(x2, NewSwelling2[4:7], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
@@ -595,4 +468,4 @@ def regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folder
   if mode_plot == 1:
     do_plot()
 
-  return folderList, number_of_tests, number_of_tests_failed
+  return folderList, number_of_tests, number_of_tests_failed, igSwelling2, SwellingKashibe, FGR2Annealing, FGRAnnealing
