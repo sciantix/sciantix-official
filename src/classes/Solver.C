@@ -462,8 +462,8 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
 }
 
 
-//New Projection Solver
-double Solver::SourceProjection(double GrainRadius, double Domain[], double Source[], double SpatialMode_i)
+//New Projection Solver on the spatial mode i
+double Solver::SourceProjection_i(double GrainRadius, double Domain[], double Source[], double SpatialMode_i)
 {
     if (GrainRadius == 0) {
         // Handle error: GrainRadius cannot be zero.
