@@ -16,11 +16,11 @@
 
 #ifndef SOURCE_H
 #define SOURCE_H
-
 #include <string>
 #include <vector>
 #include <iostream>
 #include <cmath>
+#include <algorithm>  // For std::copy
 
 /**
  * @class Source
@@ -32,9 +32,9 @@
 class Source
 {
 public:
-    std::vector<double> NormalizedDomain; // NormalizedDomain = r/a [edge1,edge2,edge3]
-    std::vector<double> Slopes; // [A1, A2, A3]
-    std::vector<double> Intercepts; // [B1, B2, B3]
+    std::vector<double> NormalizedDomain; // NormalizedDomain = r/a [edge1/a,edge2/a,edge3/a,...]
+    std::vector<double> Slopes; // [A1, A2, A3, ...]
+    std::vector<double> Intercepts; // [B1, B2, B3,...]
 
 
     /**
@@ -52,7 +52,7 @@ public:
      */
     double getNormalizedDomain()
     {
-        std::vector<double> NormalizedDomain;
+        double NormalizedDomain;    
     }
 
     /**
