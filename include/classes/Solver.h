@@ -21,6 +21,7 @@
 #include <string>
 #include <cmath>
 #include "InputVariable.h"
+#include "Source.h"
 
 /**
  * @brief Class providing solver methods for the SCIANTIX simulation framework.
@@ -181,6 +182,34 @@ public:
      */
     double SpectralDiffusionLinearSource(double *initial_condition, std::vector<double> parameter, double increment);
 
+// Newly Added Solver for a General Source
+    /**
+     * @brief Solves the spatially averaged PDE dy/dt = D div grad y + S - L y using a spectral approach.
+     * The difference from the SpectralDiffusion Solver is that it solves for a random source S(r) that is a
+     * combination of piecewise linear and piecewise constants.
+     * We apply a spectral approach in space, projecting the equation on the eigenfunctions of the laplacian operator.
+     * We use the first order backward Euler solver in time.
+     * The number of terms in the expansion, N, is fixed a priori.
+     *
+     * @param initial_condition The initial conditions for the diffusion modes.
+     * @param parameter A vector containing the parameters for the diffusion equation.
+     * @param Source Contains all information about the source
+     * @param increment The time increment.
+     * @return The updated value after solving the PDE.
+     *
+     *
+     *  Parameters : [N_modes, D, a , l]
+     * 0 : N_modes
+     * 1 : D
+     * 2 : a - Grain Radius
+     * 3 : Loss term
+     * 
+     * Source : [Domain, Slopes, Intercepts]
+     * Domain: [0,rho1,rho2, a]
+     * Slopes: [A1,A2,A3]
+     * Intercepts [B1,B2,B3]
+     */
+    double SpectralDiffusionGeneralSource(double *initial_condition, std::vector<double> parameter, Source GeneralSource ,double increment);
 
     /**
      * @brief Solves a system of two linear equations using Cramer's method.
@@ -270,7 +299,7 @@ public:
      * @brief Gives the projection of the source present in a certain domain on the spatial mode i
      *
      * @param GrainRadius The Grain Radius.
-     * @param Domian The domain where the source is present Domain = [edge1, edge2]
+     * @param Domian The domain where the source is present Domain = [0,edge1, edge2,a]
      * @param Source The source information S(r) = A * r + B Source = [A B]
      * @return The source projection on the ith spatial mode
      */
