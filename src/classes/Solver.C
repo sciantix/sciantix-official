@@ -116,7 +116,7 @@ double Solver::SpectralDiffusionLinearSource(double *initial_condition, std::vec
 }
 
 //New Added Solver
-double Solver::SpectralDiffusionGeneralSource(double *initial_condition, std::vector<double> parameter, Source GeneralSource ,double increment)
+double Solver::SpectralDiffusionGeneralSource(double *initial_condition, std::vector<double> parameter, Source generalsource ,double increment)
 {
     //parameter [N_modes, D, a, l]
     // GeneralSource contains Domain, Slopes, Intercepts
@@ -129,7 +129,8 @@ double Solver::SpectralDiffusionGeneralSource(double *initial_condition, std::ve
     double source_rate(0.0);
     double projection_coeff(0.0);
     double solution(0.0);
-    double n_coeff = 0;
+    double n_coeff = 0; 
+    
     double Source1[2]; // Source contains two elements [A1,B1]
     double Source2[2]; // Source contains two elements [A2,B2]
     double Source3[2]; // Source contains two elements [A3,B3]
@@ -141,19 +142,19 @@ double Solver::SpectralDiffusionGeneralSource(double *initial_condition, std::ve
     projection_coeff = sqrt(8.0 / M_PI);
     projection_coeff = sqrt(8.0 / M_PI);
     //Domain
-    Domain1[0] = parameter.at(2) * GeneralSource.NormalizedDomain.at(0);
-    Domain1[1] = parameter.at(2)* GeneralSource.NormalizedDomain.at(1);
+    Domain1[0] = parameter.at(2) * generalsource.NormalizedDomain[0];
+    Domain1[1] = parameter.at(2)* generalsource.NormalizedDomain[1];
     Domain2[0] = Domain1[1];
-    Domain2[1] = parameter.at(2)* GeneralSource.NormalizedDomain.at(2);
+    Domain2[1] = parameter.at(2)* generalsource.NormalizedDomain[2];
     Domain3[0] = Domain2[1];
-    Domain3[1] = parameter.at(2)* GeneralSource.NormalizedDomain.at(3);
+    Domain3[1] = parameter.at(2)* generalsource.NormalizedDomain[3];
     //Source
-    Source1[0] = GeneralSource.Slopes.at(0);
-    Source1[1] = GeneralSource.Intercepts.at(0);
-    Source2[0] = GeneralSource.Slopes.at(1);
-    Source2[1] = GeneralSource.Intercepts.at(1);
-    Source3[0] = GeneralSource.Slopes.at(2);
-    Source3[1] = GeneralSource.Intercepts.at(2);
+    Source1[0] = generalsource.Slopes[0];
+    Source1[1] = generalsource.Intercepts[0];
+    Source2[0] = generalsource.Slopes[1];
+    Source2[1] = generalsource.Intercepts[1];
+    Source3[0] = generalsource.Slopes[2];
+    Source3[1] = generalsource.Intercepts[2];
 
     for (n = 0; n < parameter.at(0); n++)
     {
