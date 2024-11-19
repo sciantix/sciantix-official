@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Solver.h"
+#include "Source.h"
 
 double Solver::Integrator(double initial_value, double parameter, double increment)
 {

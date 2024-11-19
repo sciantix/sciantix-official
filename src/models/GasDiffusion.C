@@ -33,6 +33,14 @@ void Simulation::GasDiffusion()
             defineSpectralDiffusion3Equations(sciantix_system, model, sciantix_variable, physics_variable, n_modes);
             break;
 
+        case 4:
+            defineSpectralDiffusionLinearSource1Equation(sciantix_system, model, n_modes);
+            break;
+
+         case 5:
+            defineSpectralDiffusionGeneralSource1Equation(sciantix_system, model, n_modes);
+            break;
+
         default:
             errorHandling(input_variable);
             break;
