@@ -53,6 +53,22 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
 	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> physics_variable, int n_modes);
 
 /**
+ * @brief Defines diffusion models using the spectral diffusion with one equation for a linear source case
+ * 
+ * @author A. Zayat
+ * 
+ */
+void defineSpectralDiffusionLinearSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
+
+/**
+ * @brief Defines diffusion models using the spectral diffusion with one equation for a general source case
+ * 
+ * @author A. Zayat
+ * 
+ */
+void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
+
+/**
  * @brief Handles unsupported diffusion solver options.
  * 
  * @author G. Zullo
