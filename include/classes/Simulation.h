@@ -25,6 +25,7 @@
 #include "System.h"
 #include "SciantixArray.h"
 #include "SciantixVariable.h"
+#include "Source.h"
 
 /**
  * @class Simulation
@@ -51,6 +52,8 @@ private:
 
     SciantixArray<InputVariable> input_variable;
     SciantixArray<InputVariable> scaling_factors;
+
+    Source general_source;
 
     int n_modes;
     std::vector<double> modes_initial_conditions;

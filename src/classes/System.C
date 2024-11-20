@@ -15,6 +15,12 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "System.h"
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include <iostream>
+//Source.h is already included in System.h
 
 void System::setRestructuredMatrix(bool y)
 {
@@ -60,6 +66,7 @@ Gas System::getGas()
 {
     return gas;
 }
+
 
 std::string System::getGasName()
 {
@@ -790,4 +797,24 @@ void System::setProductionRate(int input_value, SciantixArray<SciantixVariable> 
 double System::getProductionRate()
 {
     return production_rate;
+}
+
+
+void System::setSource() //here figure out a way hoe to add the input file source_input
+{
+    general_source.NormalizedDomain.push_back(0);
+    general_source.NormalizedDomain.push_back(0.2);
+    general_source.NormalizedDomain.push_back(0.5);
+    general_source.NormalizedDomain.push_back(1);
+    general_source.Slopes.push_back(1e10/1e-6);
+    general_source.Slopes.push_back(1e10/1e-6);
+    general_source.Slopes.push_back(1e10/1e-6);
+    general_source.Intercepts.push_back(1e18);
+    general_source.Intercepts.push_back(1e18);    
+    general_source.Intercepts.push_back(1e18);    
+}
+
+Source System::getSource()
+{
+    return general_source;
 }

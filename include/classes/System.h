@@ -24,6 +24,7 @@
 #include "SciantixArray.h"
 #include "SciantixVariable.h"
 #include "InputVariable.h"
+#include "Source.h"
 #include <cmath>
 #include <vector>
 
@@ -57,6 +58,7 @@ protected:
 
     Gas gas;
     Matrix matrix;
+    Source general_source; //new added
 
 public:
     /**
@@ -250,6 +252,20 @@ public:
      * @return The current production rate.
      */
     double getProductionRate();
+
+    //New added
+    /**
+     * @brief Sets the source.
+     * @param source source to set.
+     */
+    void setSource();
+    
+    /**
+     * @brief Retrieves the source.
+     * @return the source
+     */
+    Source getSource();
+
     /**
      * @brief Default constructor for the System class.
      */

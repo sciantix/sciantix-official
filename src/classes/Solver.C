@@ -117,7 +117,7 @@ double Solver::SpectralDiffusionLinearSource(double *initial_condition, std::vec
 }
 
 //New Added Solver
-double Solver::SpectralDiffusionGeneralSource(double *initial_condition, std::vector<double> parameter, Source generalsource ,double increment)
+double Solver::SpectralDiffusionGeneralSource(double *initial_condition, std::vector<double> parameter, Source general_source ,double increment)
 {
     //parameter [N_modes, D, a, l]
     // GeneralSource contains Domain, Slopes, Intercepts
@@ -143,19 +143,19 @@ double Solver::SpectralDiffusionGeneralSource(double *initial_condition, std::ve
     projection_coeff = sqrt(8.0 / M_PI);
     projection_coeff = sqrt(8.0 / M_PI);
     //Domain
-    Domain1[0] = parameter.at(2) * generalsource.NormalizedDomain[0];
-    Domain1[1] = parameter.at(2)* generalsource.NormalizedDomain[1];
+    Domain1[0] = parameter.at(2) * general_source.NormalizedDomain[0];
+    Domain1[1] = parameter.at(2)* general_source.NormalizedDomain[1];
     Domain2[0] = Domain1[1];
-    Domain2[1] = parameter.at(2)* generalsource.NormalizedDomain[2];
+    Domain2[1] = parameter.at(2)* general_source.NormalizedDomain[2];
     Domain3[0] = Domain2[1];
-    Domain3[1] = parameter.at(2)* generalsource.NormalizedDomain[3];
+    Domain3[1] = parameter.at(2)* general_source.NormalizedDomain[3];
     //Source
-    Source1[0] = generalsource.Slopes[0];
-    Source1[1] = generalsource.Intercepts[0];
-    Source2[0] = generalsource.Slopes[1];
-    Source2[1] = generalsource.Intercepts[1];
-    Source3[0] = generalsource.Slopes[2];
-    Source3[1] = generalsource.Intercepts[2];
+    Source1[0] = general_source.Slopes[0];
+    Source1[1] = general_source.Intercepts[0];
+    Source2[0] = general_source.Slopes[1];
+    Source2[1] = general_source.Intercepts[1];
+    Source3[0] = general_source.Slopes[2];
+    Source3[1] = general_source.Intercepts[2];
 
     for (n = 0; n < parameter.at(0); n++)
     {
@@ -569,10 +569,13 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
 //New Projection Solver on the spatial mode i
 double Solver::SourceProjection_i(double GrainRadius, double Domain[], double Source[], double SpatialMode_i)
 {
-    if (GrainRadius == 0) {
+    if (!GrainRadius) {
         // Handle error: GrainRadius cannot be zero.
-        return 0;
+        //SCIANTIX will not run of the GrainRadius provided is 0
+        std::cerr << "Error: Grain radius cannot be zero." << std::endl;
+        std::exit(EXIT_FAILURE);
     }
+    
   //Term 1
   double proj1 = (pow(GrainRadius,-1) / (pow(SpatialMode_i,3) * pow(M_PI,2))) * 
   (cos(SpatialMode_i * M_PI * Domain[0] / GrainRadius) * (2 * pow(GrainRadius,2) * 

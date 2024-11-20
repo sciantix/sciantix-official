@@ -17,7 +17,7 @@
 #ifndef GAS_DIFFUSION_H
 #define GAS_DIFFUSION_H
 
-#include "Simulation.h"
+#include "Simulation.h" //Already includes source and solver
 
 /**
  * @brief Defines diffusion models using the spectral diffusion with one equation.
@@ -66,7 +66,7 @@ void defineSpectralDiffusionLinearSource1Equation(SciantixArray<System> &scianti
  * @author A. Zayat
  * 
  */
-void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
+void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model,Source general_source, int n_modes);
 
 /**
  * @brief Handles unsupported diffusion solver options.
