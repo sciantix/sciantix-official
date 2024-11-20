@@ -209,7 +209,7 @@ public:
      * Slopes: [A1,A2,A3]
      * Intercepts [B1,B2,B3]
      */
-    double SpectralDiffusionGeneralSource(double *initial_condition, std::vector<double> parameter, Source generalsource ,double increment);
+    double SpectralDiffusionGeneralSource(double *initial_condition, std::vector<double> parameter, Source general_source ,double increment);
 
     /**
      * @brief Solves a system of two linear equations using Cramer's method.

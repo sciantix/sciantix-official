@@ -33,12 +33,12 @@ void Simulation::GasDiffusion()
             defineSpectralDiffusion3Equations(sciantix_system, model, sciantix_variable, physics_variable, n_modes);
             break;
 
-        case 4:
+        case 4: //New One Added | SDA for a Linear Source
             defineSpectralDiffusionLinearSource1Equation(sciantix_system, model, n_modes);
             break;
 
-         case 5:
-            defineSpectralDiffusionGeneralSource1Equation(sciantix_system, model, n_modes);
+         case 5: //New One Added | SDA for a General Source
+            defineSpectralDiffusionGeneralSource1Equation(sciantix_system, model, general_source, n_modes);
             break;
 
         default:
@@ -89,7 +89,84 @@ void Simulation::GasDiffusion()
 
             break;
         }
+        case 4: //New case for the linear source
+        {
+           if (system.getRestructuredMatrix() == 0)
+            {
+                sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
+                    solver.SpectralDiffusionLinearSource(
+                        getDiffusionModes(system.getGasName()),
+                        model["Gas diffusion - " + system.getName()].getParameter(),
+                        physics_variable["Time step"].getFinalValue()
+                    )
+                );
 
+                double equilibrium_fraction(1.0);
+                if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
+                    equilibrium_fraction = system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
+
+                sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
+                    equilibrium_fraction * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
+                );
+
+                sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
+                    (1.0 - equilibrium_fraction) * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
+                );
+            }
+
+            else if (system.getRestructuredMatrix() == 1)
+            {
+                sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(
+                    solver.SpectralDiffusionLinearSource(
+                        getDiffusionModes(system.getGasName() + " in HBS"),
+                        model["Gas diffusion - " + system.getName()].getParameter(),
+                        physics_variable["Time step"].getFinalValue()
+                    )
+                );
+            }
+
+            break;            
+        }
+        case 5:
+        {
+           if (system.getRestructuredMatrix() == 0)
+            {
+                
+                sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
+                    solver.SpectralDiffusionGeneralSource(
+                        getDiffusionModes(system.getGasName()),
+                        model["Gas diffusion - " + system.getName()].getParameter(),
+                        system.getSource(),
+                        physics_variable["Time step"].getFinalValue()
+                    )
+                );
+
+                double equilibrium_fraction(1.0);
+                if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
+                    equilibrium_fraction = system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
+
+                sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
+                    equilibrium_fraction * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
+                );
+
+                sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
+                    (1.0 - equilibrium_fraction) * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
+                );
+            }
+
+            else if (system.getRestructuredMatrix() == 1)
+            {
+                sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(
+                    solver.SpectralDiffusionLinearSource(
+                        getDiffusionModes(system.getGasName() + " in HBS"),
+                        model["Gas diffusion - " + system.getName()].getParameter(),
+                        physics_variable["Time step"].getFinalValue()
+                    )
+                );
+            }
+
+            break;             
+        }
         case 2:
         {
             double initial_value_solution(0.0), initial_value_bubbles(0.0);
@@ -156,6 +233,7 @@ void Simulation::GasDiffusion()
             (sciantix_variable["Xe in intragranular solution"].getFinalValue() + sciantix_variable["Xe in grain HBS"].getFinalValue()) * pow(matrices["UO2"].getLatticeParameter(), 3) / 4
         );
     }
+
 
     // Calculation of the gas concentration at grain boundary, by mass balance
     for (auto &system : sciantix_system)
