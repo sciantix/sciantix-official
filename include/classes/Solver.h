@@ -170,6 +170,7 @@ public:
      * @param parameter A vector containing the parameters for the diffusion equation.
      * @param increment The time increment.
      * @return The updated value after solving the PDE.
+     * @author A. Zayat
      *
      *
      *  Parameters : [N_modes, D, a , A, B, l]
@@ -193,9 +194,10 @@ public:
      *
      * @param initial_condition The initial conditions for the diffusion modes.
      * @param parameter A vector containing the parameters for the diffusion equation.
-     * @param Source Contains all information about the source
+     * @param general_source Contains all information about the source; it is of the class "source"
      * @param increment The time increment.
      * @return The updated value after solving the PDE.
+     * @author A. Zayat
      *
      *
      *  Parameters : [N_modes, D, a , l]
@@ -299,11 +301,14 @@ public:
      * @brief Gives the projection of the source present in a certain domain on the spatial mode i
      *
      * @param GrainRadius The Grain Radius.
-     * @param Domian The domain where the source is present Domain = [0,edge1, edge2,a]
-     * @param Source The source information S(r) = A * r + B Source = [A B]
+     * @param Domian The domain where the source is present Domain = [r1,r2]
+     * @param Source_Function The source information S(r) = A * r + B Source = [A B]
+     * @param SpatialMode_i The spatial mode we're projecting this source on
      * @return The source projection on the ith spatial mode
+     * @author A. Zayat
+
      */
-    double SourceProjection_i(double GrainRadius, double Domain[], double Source[], double SpatialMode_i);
+    double SourceProjection_i(double GrainRadius, std::vector<double> Domain, std::vector<double> Source_Function, double SpatialMode_i);
 
     /**
      * @brief Constructor

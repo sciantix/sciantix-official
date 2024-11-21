@@ -16,6 +16,7 @@
 
 #include "Solver.h"
 #include "Source.h"
+using namespace std;
 
 double Solver::Integrator(double initial_value, double parameter, double increment)
 {
@@ -87,21 +88,20 @@ double Solver::SpectralDiffusionLinearSource(double *initial_condition, std::vec
     double projection_coeff(0.0);
     double solution(0.0);
     double n_coeff = 0;
-    double Source[2]; // Source contains two elements [A,B]
-    double Domain[2]; // Domain contains two elements [edge1,edge2]
+    std::vector<double> source; // Source contains two elements [A,B]
+    std::vector<double> domain; // Domain contains two elements [edge1,edge2]
 
     diffusion_rate_coeff = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(2), 2);
     projection_coeff = sqrt(8.0 / M_PI);
     projection_coeff = sqrt(8.0 / M_PI);
-    Source[0] = parameter.at(3);
-    Source[1] = parameter.at(4);
-    Domain[0] = parameter.at(0);
-    Domain[1] = parameter.at(2);
+    source = {parameter.at(3), parameter.at(4)}; // [A, B]
+    domain = {0, parameter.at(2)}; // [0, a]
+
 
     for (n = 0; n < parameter.at(0); n++)
     {
         np1 = n + 1;
-        n_coeff = SourceProjection_i(parameter.at(2),Domain, Source, np1);
+        n_coeff = SourceProjection_i(parameter.at(2),domain, source, np1);
 
         const double n_c = - pow(-1.0, np1) / np1;
 
@@ -119,8 +119,8 @@ double Solver::SpectralDiffusionLinearSource(double *initial_condition, std::vec
 //New Added Solver
 double Solver::SpectralDiffusionGeneralSource(double *initial_condition, std::vector<double> parameter, Source general_source ,double increment)
 {
-    //parameter [N_modes, D, a, l]
-    // GeneralSource contains Domain, Slopes, Intercepts
+    // parameter [N_modes, D, a, l]
+    // GeneralSource [NormalizedDomain, Slopes, Intercepts]
     size_t n;
     unsigned short int np1(1);
 
@@ -131,37 +131,58 @@ double Solver::SpectralDiffusionGeneralSource(double *initial_condition, std::ve
     double projection_coeff(0.0);
     double solution(0.0);
     double n_coeff = 0; 
-    
-    double Source1[2]; // Source contains two elements [A1,B1]
-    double Source2[2]; // Source contains two elements [A2,B2]
-    double Source3[2]; // Source contains two elements [A3,B3]
-    double Domain1[2]; // Domain contains two elements [0,edge1]
-    double Domain2[2]; // Domain contains two elements [edge1,edge2]
-    double Domain3[2]; // Domain contains two elements [edge2,a]
+    double NumberofRegions = general_source.Slopes.size(); 
+    std::vector<std::vector<double>> Full_Domain; // vector of vectors of domain
+    std::vector<std::vector<double>> Full_Source; // vector of vectors of source
+
+
+
+    // Fill the Full_Source vector with (ex:3) vectors, each vector contains {A,B} corresponding to how many regions we have
+    for (int i = 0; i < NumberofRegions; ++i) 
+    {
+        for (int j = 0; j < 2; ++j) 
+        {  
+        if (j==0)
+        {
+            Full_Source[i].push_back(general_source.Slopes[i]); // A
+        }
+        else
+        {
+            Full_Source[i].push_back(general_source.Intercepts[i]); // B
+        }
+        }
+    }
+
+    // Fill the Full_Domain vector with size (ex:3) vectors, each vector contains {r1,r2}
+    for (int i = 0; i < NumberofRegions ; ++i) 
+    {
+        for (int j = 0; j < 2; ++j) 
+        {  
+        if (j==0)
+        {
+            Full_Domain[i].push_back(parameter.at(2) * general_source.NormalizedDomain[i]); // edge1
+        }
+        else
+        {
+            Full_Domain[i].push_back(parameter.at(2) * general_source.NormalizedDomain[i+1]); // edge2
+        }
+        }
+    }
 
     diffusion_rate_coeff = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(2), 2);
     projection_coeff = sqrt(8.0 / M_PI);
     projection_coeff = sqrt(8.0 / M_PI);
-    //Domain
-    Domain1[0] = parameter.at(2) * general_source.NormalizedDomain[0];
-    Domain1[1] = parameter.at(2)* general_source.NormalizedDomain[1];
-    Domain2[0] = Domain1[1];
-    Domain2[1] = parameter.at(2)* general_source.NormalizedDomain[2];
-    Domain3[0] = Domain2[1];
-    Domain3[1] = parameter.at(2)* general_source.NormalizedDomain[3];
-    //Source
-    Source1[0] = general_source.Slopes[0];
-    Source1[1] = general_source.Intercepts[0];
-    Source2[0] = general_source.Slopes[1];
-    Source2[1] = general_source.Intercepts[1];
-    Source3[0] = general_source.Slopes[2];
-    Source3[1] = general_source.Intercepts[2];
 
     for (n = 0; n < parameter.at(0); n++)
     {
         np1 = n + 1;
-        n_coeff = SourceProjection_i(parameter.at(2),Domain1, Source1, np1) + SourceProjection_i(parameter.at(2),Domain2, Source2, np1) + SourceProjection_i(parameter.at(2),Domain3, Source3, np1);
-
+        
+        // n_coeff constitutes from the different contributions of the source in each domain
+        for (int i = 0; i < NumberofRegions ; ++i)
+        {
+            n_coeff += SourceProjection_i(parameter.at(2), Full_Domain[i], Full_Source[i], np1);
+        }
+        
         const double n_c = - pow(-1.0, np1) / np1;
 
         diffusion_rate = diffusion_rate_coeff * pow(np1, 2) + parameter.at(3);
@@ -567,7 +588,7 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
 
 
 //New Projection Solver on the spatial mode i
-double Solver::SourceProjection_i(double GrainRadius, double Domain[], double Source[], double SpatialMode_i)
+double Solver::SourceProjection_i(double GrainRadius, std::vector<double> Domain, std::vector<double> Source_Function, double SpatialMode_i)
 {
     if (!GrainRadius) {
         // Handle error: GrainRadius cannot be zero.
@@ -579,15 +600,15 @@ double Solver::SourceProjection_i(double GrainRadius, double Domain[], double So
   //Term 1
   double proj1 = (pow(GrainRadius,-1) / (pow(SpatialMode_i,3) * pow(M_PI,2))) * 
   (cos(SpatialMode_i * M_PI * Domain[0] / GrainRadius) * (2 * pow(GrainRadius,2) * 
-  Source[0] - pow(M_PI,2) * pow(SpatialMode_i,2) * Domain[0] * (Source[0] * Domain[0] + Source[1])) + 
-  M_PI * pow(GrainRadius,-0.5) * SpatialMode_i * (2 * Source[0] * Domain[0] + Source[1]) * 
+  Source_Function[0] - pow(M_PI,2) * pow(SpatialMode_i,2) * Domain[0] * (Source_Function[0] * Domain[0] + Source_Function[1])) + 
+  M_PI * pow(GrainRadius,-0.5) * SpatialMode_i * (2 * Source_Function[0] * Domain[0] + Source_Function[1]) * 
   sin(SpatialMode_i * M_PI * Domain[0] / GrainRadius));
   
   //Term2
   double proj2 = (pow(GrainRadius,-1) / (pow(SpatialMode_i,3) * pow(M_PI,2))) * 
   (cos(SpatialMode_i * M_PI * Domain[1] / GrainRadius) * (2 * pow(GrainRadius,2) * 
-  Source[0] - pow(M_PI,2) * pow(SpatialMode_i,2) * Domain[0] * (Source[0] * Domain[1] + Source[1])) + 
-  M_PI * pow(GrainRadius,-0.5) * SpatialMode_i * (2 * Source[0] * Domain[1] + Source[1]) * 
+  Source_Function[0] - pow(M_PI,2) * pow(SpatialMode_i,2) * Domain[0] * (Source_Function[0] * Domain[1] + Source_Function[1])) + 
+  M_PI * pow(GrainRadius,-0.5) * SpatialMode_i * (2 * Source_Function[0] * Domain[1] + Source_Function[1]) * 
   sin(SpatialMode_i * M_PI * Domain[1] / GrainRadius));
   
   //Result
