@@ -15,7 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Solver.h"
-#include "Source.h"
+
 using namespace std;
 
 double Solver::Integrator(double initial_value, double parameter, double increment)
@@ -50,6 +50,8 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
     double projection_coeff(0.0);
     double solution(0.0);
     double A = 0;
+    std::vector<double> domain = {0,parameter[2]};
+    std::vector<double> source = {0,parameter[3]};
  
     double n_coeff = 0;
 
@@ -59,8 +61,8 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
     for (n = 0; n < parameter.at(0); n++)
     {
         np1 = n + 1;
-        n_coeff = - (pow(-1.0, np1) / np1) * (parameter.at(2) * A + parameter.at(3)) + (2 * parameter.at(2) * A) * (pow(-1.0, np1) - 1) / (pow(np1,3.0) * pow(M_PI, 2));
-
+        //_coeff = - (pow(-1.0, np1) / np1) * (parameter.at(2) * A + parameter.at(3)) + (2 * parameter.at(2) * A) * (pow(-1.0, np1) - 1) / (pow(np1,3.0) * pow(M_PI, 2));
+        n_coeff = SourceProjection_i(parameter.at(2),domain, source,np1);
         const double n_c = - pow(-1.0, np1) / np1;
 
         diffusion_rate = diffusion_rate_coeff * pow(np1, 2) + parameter.at(4);
@@ -92,7 +94,6 @@ double Solver::SpectralDiffusionLinearSource(double *initial_condition, std::vec
     std::vector<double> domain; // Domain contains two elements [edge1,edge2]
 
     diffusion_rate_coeff = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(2), 2);
-    projection_coeff = sqrt(8.0 / M_PI);
     projection_coeff = sqrt(8.0 / M_PI);
     source = {parameter.at(3), parameter.at(4)}; // [A, B]
     domain = {0, parameter.at(2)}; // [0, a]

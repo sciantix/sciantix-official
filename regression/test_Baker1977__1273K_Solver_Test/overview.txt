@@ -14,7 +14,6 @@ Model	Gas diffusion - Xe133 in UO2
 Model	Gas diffusion - Kr85m in UO2	
 Model	Grain-boundary micro-cracking	 : from Barani et al. (2017), JNM
 Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
-Model   General Source Term             : New Algorithm A. Zayat
 
 Matrix	UO2	
 	Ainscough et al., JNM, 49 (1973) 117-128.
