@@ -129,6 +129,10 @@ void Simulation::GasDiffusion()
         }
         case 5:
         {
+            general_source.setNormalizedDomain();
+            general_source.setSlopes();
+            general_source.setIntercepts();
+
            if (system.getRestructuredMatrix() == 0)
             {
                 
@@ -136,7 +140,7 @@ void Simulation::GasDiffusion()
                     solver.SpectralDiffusionGeneralSource(
                         getDiffusionModes(system.getGasName()),
                         model["Gas diffusion - " + system.getName()].getParameter(),
-                        system.getSource(),
+                        general_source,
                         physics_variable["Time step"].getFinalValue()
                     )
                 );
@@ -379,4 +383,78 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
 void errorHandling(SciantixArray<InputVariable> input_variable)
 {
     ErrorMessages::Switch(__FILE__, "iDiffusionSolver", static_cast<int>(input_variable["iDiffusionSolver"].getValue()));
+}
+
+// Newly Added
+// Linear Source
+
+void defineSpectralDiffusionLinearSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
+{
+    std::string reference;
+
+    for (auto& system : sciantix_system)
+    {
+        Model model_;
+        model_.setName("Gas diffusion - " + system.getName());
+        model_.setRef(reference);
+
+        std::vector<double> parameters;
+        parameters.push_back(n_modes);
+        double gasDiffusivity;
+        if (system.getResolutionRate() + system.getTrappingRate() == 0)
+            gasDiffusivity = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
+        else
+            gasDiffusivity = 
+                (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
+                (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
+
+        parameters.push_back(gasDiffusivity);
+        parameters.push_back(system.getMatrix().getGrainRadius());
+        //parameters.push_back(system.getProductionRate() * 1e-07/system.getMatrix().getGrainRadius()); // Slope
+        parameters.push_back(0); // A = 0
+        parameters.push_back(system.getProductionRate()); //Intercept
+        parameters.push_back(system.getGas().getDecayRate());
+
+        model_.setParameter(parameters);
+        model.push(model_);
+    }
+}
+
+// General Source
+
+void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, Source general_source, int n_modes)
+{
+    std::string reference;
+
+    for (auto& system : sciantix_system)
+    {
+        Model model_;
+        model_.setName("Gas diffusion - " + system.getName());
+        model_.setRef(reference);
+
+        std::vector<double> parameters;
+        Source gs;
+
+        parameters.push_back(n_modes);
+        double gasDiffusivity;
+        if (system.getResolutionRate() + system.getTrappingRate() == 0)
+            gasDiffusivity = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
+        else
+            gasDiffusivity = 
+                (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
+                (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
+
+        parameters.push_back(gasDiffusivity);
+        parameters.push_back(system.getMatrix().getGrainRadius());
+        parameters.push_back(system.getGas().getDecayRate());
+
+        model_.setParameter(parameters);
+        model.push(model_);
+        
+        general_source.setNormalizedDomain();
+        general_source.setSlopes();
+        general_source.setIntercepts();
+
+
+    }
 }

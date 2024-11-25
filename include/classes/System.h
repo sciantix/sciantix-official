@@ -58,7 +58,7 @@ protected:
 
     Gas gas;
     Matrix matrix;
-    Source general_source; //new added
+    //Source general_source; //new added
 
 public:
     /**
@@ -253,18 +253,18 @@ public:
      */
     double getProductionRate();
 
-    //New added
-    /**
-     * @brief Sets the source.
-     * @param source source to set.
-     */
-    void setSource();
+    // //New added
+    // /**
+    //  * @brief Sets the source.
+    //  * @param source source to set.
+    //  */
+    // void setSource();
     
-    /**
-     * @brief Retrieves the source.
-     * @return the source
-     */
-    Source getSource();
+    // /**
+    //  * @brief Retrieves the source.
+    //  * @return the source
+    //  */
+    // Source getSource();
 
     /**
      * @brief Default constructor for the System class.

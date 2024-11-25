@@ -20,7 +20,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
-//Source.h is already included in System.h
+
 
 void System::setRestructuredMatrix(bool y)
 {
@@ -800,21 +800,21 @@ double System::getProductionRate()
 }
 
 
-void System::setSource() //here figure out a way hoe to add the input file source_input
-{
-    general_source.NormalizedDomain.push_back(0);
-    general_source.NormalizedDomain.push_back(0.2);
-    general_source.NormalizedDomain.push_back(0.5);
-    general_source.NormalizedDomain.push_back(1);
-    general_source.Slopes.push_back(1e10/1e-6);
-    general_source.Slopes.push_back(1e10/1e-6);
-    general_source.Slopes.push_back(1e10/1e-6);
-    general_source.Intercepts.push_back(1e18);
-    general_source.Intercepts.push_back(1e18);    
-    general_source.Intercepts.push_back(1e18);    
-}
+// void System::setSource() //here figure out a way hoe to add the input file source_input
+// {
+//     general_source.NormalizedDomain.push_back(0);
+//     general_source.NormalizedDomain.push_back(0.2);
+//     general_source.NormalizedDomain.push_back(0.5);
+//     general_source.NormalizedDomain.push_back(1);
+//     general_source.Slopes.push_back(1e10/1e-6);
+//     general_source.Slopes.push_back(1e10/1e-6);
+//     general_source.Slopes.push_back(1e10/1e-6);
+//     general_source.Intercepts.push_back(1e18);
+//     general_source.Intercepts.push_back(1e18);    
+//     general_source.Intercepts.push_back(1e18);    
+// }
 
-Source System::getSource()
-{
-    return general_source;
-}
+// Source System::getSource()
+// {
+//     return general_source;
+// }
