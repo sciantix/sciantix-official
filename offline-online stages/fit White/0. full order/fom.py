@@ -10,17 +10,15 @@ import json
 from FreeFEM import FFmatrix_fread, FFvector_fread
 
 #I valori di default corrispondono al caso implementato in OpenFOAM
-def full_order_solution(RADIUS=1E-5, LENGTH=1E-3, FISSION_RATE=3E+19, FISSION_YIELD=0.24, FUEL_DENSITY = 11040, FUEL_SPECIFIC_HEAT = 400, T_BC=2E+03, C_BC=0.0, FUEL_THERMAL_CONDUCTIVITY = 2.208,TIME_FINAL = 1.00E+07, TIME_DELTA = 1.00E+04):
+def full_order_solution(RADIUS=1E-5, LENGTH=1E-3, FISSION_RATE=3E+19, FISSION_YIELD=0.24, T_BC=2E+03, C_BC=0.0, FUEL_THERMAL_CONDUCTIVITY = 2.208,TIME_FINAL = 1.00E+07, TIME_DELTA = 1.00E+04):
     # Definizione delle costanti 
     N_AVOG = 6.022141E+23  # [-]
     N_BOLT = 1.380649E-23  # [-]
     FISSION_ENERGY = 3.215E-11  # [J/fissions] 
 
-    POWER_DENSITY = FISSION_ENERGY * FISSION_RATE  # q''' [W/m^3]
-    SOURCE_T = POWER_DENSITY / (FUEL_DENSITY * FUEL_SPECIFIC_HEAT)  # [K/s]
+    
     SOURCE_C = FISSION_RATE * FISSION_YIELD  # [atm / (m^3 s)]
-    ALPHA_T = FUEL_THERMAL_CONDUCTIVITY / (FUEL_DENSITY * FUEL_SPECIFIC_HEAT)  # [m^2 / s]
-    GAMMA_T = SOURCE_T * LENGTH**2 / ALPHA_T  # [ - ]
+    GAMMA_T = (FISSION_RATE * FISSION_ENERGY * LENGTH**2)/(FUEL_THERMAL_CONDUCTIVITY)  # [ - ]
 
     # Altre costanti
     T_IC = T_BC
@@ -32,8 +30,8 @@ def full_order_solution(RADIUS=1E-5, LENGTH=1E-3, FISSION_RATE=3E+19, FISSION_YI
         return 2.949513e-13 * np.exp(-20487.36244 / (T_BC + GAMMA_T * (1 - ZZ**2) / 2))
 
     # Caricamento delle coordinate
-    coordinates_Px = FFvector_fread('vv_cc_Px.btxt')
-    coordinates_Pq = FFvector_fread('vv_cc_Pq.btxt')
+    coordinates_Px = FFvector_fread('mesh_utilities/vv_cc_Px.btxt')
+    coordinates_Pq = FFvector_fread('mesh_utilities/vv_cc_Pq.btxt')
 
     # Identificazione dei gradi di libertà
     sFO_Px = coordinates_Px.shape[0]
@@ -51,18 +49,18 @@ def full_order_solution(RADIUS=1E-5, LENGTH=1E-3, FISSION_RATE=3E+19, FISSION_YI
     mask_in_C = [ii for ii in mask_all if ii not in mask_bc_C]
 
     # Importazione delle matrici di massa
-    mass_Px = FFmatrix_fread('ww_mm_Px.btxt')
-    mass_Pq = FFmatrix_fread('ww_mm_Pq.btxt')
+    mass_Px = FFmatrix_fread('mesh_utilities/ww_mm_Px.btxt')
+    mass_Pq = FFmatrix_fread('mesh_utilities/ww_mm_Pq.btxt')
     volume = mass_Px.dot(np.ones(sFO_Px)).dot(np.ones(sFO_Px))
 
     weights_Pq = mass_Pq.diagonal()
     project_Pq = sparse.diags(np.reciprocal(weights_Pq))
 
     # Importazione delle mappe
-    PxtoPquu_C = project_Pq.dot(FFmatrix_fread('ww_uu_Px_Pq.btxt')[:, mask_in_C])
-    PxtoPqdx_C = project_Pq.dot(FFmatrix_fread('ww_dx_Px_Pq.btxt')[:, mask_in_C])
-    PxtoPqdy_C = project_Pq.dot(FFmatrix_fread('ww_dy_Px_Pq.btxt')[:, mask_in_C])
-    PxtoPqdz_C = project_Pq.dot(FFmatrix_fread('ww_dz_Px_Pq.btxt')[:, mask_in_C])
+    PxtoPquu_C = project_Pq.dot(FFmatrix_fread('mesh_utilities/ww_uu_Px_Pq.btxt')[:, mask_in_C])
+    PxtoPqdx_C = project_Pq.dot(FFmatrix_fread('mesh_utilities/ww_dx_Px_Pq.btxt')[:, mask_in_C])
+    PxtoPqdy_C = project_Pq.dot(FFmatrix_fread('mesh_utilities/ww_dy_Px_Pq.btxt')[:, mask_in_C])
+    PxtoPqdz_C = project_Pq.dot(FFmatrix_fread('mesh_utilities/ww_dz_Px_Pq.btxt')[:, mask_in_C])
 
     # Assemblaggio delle matrici
     forc_C = PxtoPquu_C.T.dot(weights_Pq[:, None])
@@ -77,7 +75,7 @@ def full_order_solution(RADIUS=1E-5, LENGTH=1E-3, FISSION_RATE=3E+19, FISSION_YI
     sol_new_C = np.zeros((sFO_Px, N_ITER+1)) 
     average_C = np.zeros(N_ITER)
 
-    with open('Solution.csv', 'w') as f:
+    with open('data/Solution.csv', 'w') as f:
         f.write('Time (s),Average dC (atm/m^3)\n')
 
     for ii in range(N_ITER):
@@ -86,7 +84,7 @@ def full_order_solution(RADIUS=1E-5, LENGTH=1E-3, FISSION_RATE=3E+19, FISSION_YI
         average_C[ii] = inte_C @ sol_new_C[mask_in_C, ii]
         print('Average dC:', average_C[ii], 'atm/m^3\n')
 
-        with open('Solution.csv', 'a') as f:
+        with open('data/Solution.csv', 'a') as f:
             f.write(f'{cur_time},{average_C[ii]}\n')
 
         cur_lhs = mass_C + TIME_DELTA * stiff_C
@@ -100,6 +98,8 @@ def full_order_solution(RADIUS=1E-5, LENGTH=1E-3, FISSION_RATE=3E+19, FISSION_YI
     print('Final time:', final_time, 's')
     print('Average dC:', final_average_dC, 'atm/m^3')
 
-    with open('Solution.csv', 'a') as f:
+    with open('data/Solution.csv', 'a') as f:
         f.write(f'{final_time},{final_average_dC}\n')
+    
+    np.savetxt('data/Concentration_field.csv', sol_new_C[:, :], delimiter=',', fmt='%d')
 
