@@ -220,8 +220,8 @@ void InputReading(
 
 		Sciantix_variables[66] = ReadOneParameter("Initial stoichiometry deviation[0]", input_initial_conditions, input_check);
 		Sciantix_variables[100] = ReadOneParameter("Columnar grain length", input_initial_conditions, input_check);				//MDG
-		Sciantix_variables[101] = ReadOneParameter("alpha_T", input_initial_conditions, input_check);
-		Sciantix_variables[102] = ReadOneParameter("fission_heat", input_initial_conditions, input_check);
+		//Sciantix_variables[101] = ReadOneParameter("Specific_heat", input_initial_conditions, input_check);
+		Sciantix_variables[102] = ReadOneParameter("Thermal_conductivity", input_initial_conditions, input_check);
 		Sciantix_variables[103] = ReadOneParameter("Temperatura boundary condition", input_initial_conditions, input_check);
 
 

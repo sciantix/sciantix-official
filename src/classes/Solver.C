@@ -623,14 +623,14 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
         int N_epsilon = AA_RB.size(); 
         double RADIUS = parameter.at(2); 
         double LENGTH = parameter.at(4);
-        double SOURCE_C = parameter.at(3);
-        double ALPHA_T =  parameter.at(5); 
-        double SOURCE_T= parameter.at(6);
-        double Tbc = parameter.at(7);
-        double fission_rate = parameter.at(8);
+        double SOURCE_C = parameter.at(3);  //Fission rate * fission yield
+        //double ALPHA_T =  parameter.at(5); 
+        //double SOURCE_T= parameter.at(6);
+        double Tbc = parameter.at(6);
+        double fission_rate = parameter.at(7);
         Eigen::VectorXd TT(ZZ_CO.size()); 
         double boltzmann_constant = 1.380651e-23; 
-        TT = Tbc + (SOURCE_T * LENGTH * LENGTH / ALPHA_T) * (1 - ZZ_CO.array().square()) / 2; 
+        TT = Tbc + (parameter.at(5) * LENGTH * LENGTH) * (1 - ZZ_CO.array().square()) / 2; 
         /*for (int i = 0; i < TT.rows(); ++i) {
             std::cout << "TT (" << i << "): " << TT(i) << std::endl;
         }*/ // -> Corretto
@@ -743,7 +743,7 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
 
         int n = LHS_RB_static.rows();
         Eigen::VectorXd initial_condition_vec(n); //Devo per forza creare questo vettore, non posso usare initial_condition[].  
-        //  Riempio il vettore
+        // Riempio il vettore
         for (int i = 0; i < n; ++i) {
             initial_condition_vec(i) = initial_condition[i];
         }

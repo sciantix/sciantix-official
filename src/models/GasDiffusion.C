@@ -305,10 +305,12 @@ void defineDiffusionColumnarGrains(SciantixArray<System> &sciantix_system, Scian
         parameters.push_back(system.getMatrix().getGrainRadius());      //parameter.at(2)
         parameters.push_back(system.getProductionRate());               //parameter.at(3): source_C = fission_rate * fission_yield
         parameters.push_back(Sciantix_variables[100]);                  //parameter.at(4)  columnar grain length
-        parameters.push_back(Sciantix_variables[101]);                                                              //parameter.at(5)  alphaT
-        parameters.push_back(Sciantix_variables[102] * history_variable["Fission rate"].getFinalValue());           //parameter.at(6)  source_T = fission_heat * fission_rate
-        parameters.push_back(Sciantix_variables[103]);                                                              //parameter.at(7)  temperature boundary condition
-        parameters.push_back(history_variable["Fission rate"].getFinalValue());                                     //parameter.at(8)  fission_rate
+        parameters.push_back((3.215E-11 * history_variable["Fission rate"].getFinalValue())/ Sciantix_variables[102]);  //parameter.at(5)  
+        parameters.push_back(Sciantix_variables[103]);                                                              //parameter.at(6)  temperature boundary condition
+        parameters.push_back(history_variable["Fission rate"].getFinalValue());                                     //parameter.at(7)  fission_rate
+        //parameters.push_back(Sciantix_variables[102]/(Sciantix_variables[40]*Sciantix_variables[101]);                                                    //parameter.at(5)  alphaT = k/(rho Cp) 
+        //parameters.push_back((3.215E-11 * history_variable["Fission rate"].getFinalValue(Sciantix_variables[40]*Sciantix_variables[101]))/());           //parameter.at(6)  source_T =  * fission_rate
+       
 
         model_.setParameter(parameters);
         model.push(model_);
