@@ -14,18 +14,15 @@ sys.path.append(os.path.abspath('/Users/martina/Library/CloudStorage/OneDrive-Po
 from FreeFEM import FFmatrix_fread, FFvector_fread
 
 #I valori di default corrispondono al caso implementato in OpenFOAM
-def full_order_solution(RADIUS=1E-5, LENGTH=1E-3, FISSION_RATE=3E+19, FISSION_YIELD=0.24, FUEL_DENSITY = 11040, FUEL_SPECIFIC_HEAT = 400, T_BC=2E+03, C_BC=0.0, FUEL_THERMAL_CONDUCTIVITY = 2.208,TIME_FINAL = 1.00E+07, TIME_DELTA = 1.00E+04):
+def full_order_solution(RADIUS=1E-5, LENGTH=1E-3, FISSION_RATE=3E+19, FISSION_YIELD=0.24, T_BC=2E+03, C_BC=0.0, FUEL_THERMAL_CONDUCTIVITY = 2.208, TIME_FINAL = 1.00E+07, TIME_DELTA = 1.00E+04):
     # Definizione delle costanti 
     N_AVOG = 6.022141E+23  # [-]
     N_BOLT = 1.380649E-23  # [-]
     FISSION_ENERGY = 3.215E-11  # [J/fissions] 
 
-    POWER_DENSITY = FISSION_ENERGY * FISSION_RATE  # q''' [W/m^3]
-    SOURCE_T = POWER_DENSITY / (FUEL_DENSITY * FUEL_SPECIFIC_HEAT)  # [K/s]
     SOURCE_C = FISSION_RATE * FISSION_YIELD  # [atm / (m^3 s)]
-    ALPHA_T = FUEL_THERMAL_CONDUCTIVITY / (FUEL_DENSITY * FUEL_SPECIFIC_HEAT)  # [m^2 / s]
-    GAMMA_T = SOURCE_T * LENGTH**2 / ALPHA_T  # [ - ]
-
+    GAMMA_T = (FISSION_RATE * FISSION_ENERGY * LENGTH**2)/(FUEL_THERMAL_CONDUCTIVITY)
+    
     # Altre costanti
     T_IC = T_BC
     C_IC = C_BC
@@ -36,7 +33,7 @@ def full_order_solution(RADIUS=1E-5, LENGTH=1E-3, FISSION_RATE=3E+19, FISSION_YI
         return 2.949513e-13 * np.exp(-20487.36244 / (T_BC + GAMMA_T * (1 - ZZ**2) / 2))
 
     # Caricamento delle coordinate
-    data_path = os.path.abspath('/Users/martina/Library/CloudStorage/OneDrive-PolitecnicodiMilano/PhD/Git/rom-cylinder_DEIM-POD/offline-online stages/fit White/0. full order')
+    data_path = os.path.abspath('/Users/martina/Library/CloudStorage/OneDrive-PolitecnicodiMilano/PhD/Git/rom-cylinder_DEIM-POD/offline-online stages/fit White/0. full order/mesh_utilities')
     coordinates_Px = FFvector_fread(os.path.join(data_path, 'vv_cc_Px.btxt'))
     coordinates_Pq = FFvector_fread(os.path.join(data_path, 'vv_cc_Pq.btxt'))
 
