@@ -39,11 +39,10 @@ class FiniteElementCylinderSolver(object):
         self.sRB = None
 
     # Define method assembling left-hand-side and right-hand-side:
-    def assemble(self, RADIUS=1E-5, LENGTH=1E-3, F_RATE=3E+19, F_YIELD=0.24, F_ENERGY = 3.215e-11, RHO=11040, CP = 400, T_BC=2E+03, C_BC=0.0, KTH = 2.208, dt=1E+4):
+    def assemble(self, RADIUS=1E-5, LENGTH=1E-3, F_RATE=3E+19, F_YIELD=0.24, F_ENERGY = 3.215e-11, T_BC=2E+03, C_BC=0.0, KTH = 2.208, dt=1E+4):
         
-        Q3 = F_ENERGY * F_RATE
         # Define reference sources intensity:
-        self.sgroup_T = ((Q3/(RHO*CP)) * LENGTH**2) / (KTH/(RHO*CP)) 
+        self.sgroup_T = (F_RATE * F_ENERGY * LENGTH**2)/(KTH)
         self.source_C = F_RATE * F_YIELD 
 
         # Define heat and mass diffusion coefficiets:
@@ -151,11 +150,10 @@ class ReducedBasisCylinderSolver(object):
         self.TT_pr_aa = np.array([[self.KK_right[ii, :, :].T @ self.KK_rietz[jj, :, :] for ii in range(self.sHR)] for jj in range(self.sHR)])
     
     # Define method assembling left-hand-side and right-hand-side:
-    def assemble(self, RADIUS=1E-5, LENGTH=1E-3, F_RATE=3E+19, F_YIELD=0.24, F_ENERGY = 3.215e-11, RHO=11040, CP = 400, T_BC=2E+03, C_BC=0.0, KTH = 2.208, dt=1E+4):
+    def assemble(self, RADIUS=1E-5, LENGTH=1E-3, F_RATE=3E+19, F_YIELD=0.24, F_ENERGY = 3.215e-11, T_BC=2E+03, C_BC=0.0, KTH = 2.208, dt=1E+4):
         
-        Q3 = F_ENERGY * F_RATE
         # Define reference sources intensity:
-        self.sgroup_T = ((Q3/(RHO*CP)) * LENGTH**2) / (KTH/(RHO*CP))  
+        self.sgroup_T = (F_RATE * F_ENERGY * LENGTH**2)/(KTH)
         self.source_C = F_RATE * F_YIELD 
 
         # Define heat and mass diffusion coefficiets:
