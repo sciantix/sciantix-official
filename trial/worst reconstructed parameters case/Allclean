@@ -1,0 +1,9 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # run from this directory
+
+rm sciantix.x
+rm error_log.txt
+rm input_check.txt
+rm output.txt
+rm overview.txt
+rm execution.txt 

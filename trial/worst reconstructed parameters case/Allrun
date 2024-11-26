@@ -1,0 +1,14 @@
+#!/bin/bash
+cd ${0%/*} || exit 1    # run from this directory
+
+echo "copying sciantix executable"
+cp /Users/martina/Library/CloudStorage/OneDrive-PolitecnicodiMilano/PhD/Git/rom-cylinder_DEIM-POD/build/sciantix.x .
+
+echo "running sciantix"
+./sciantix.x
+
+
+wait
+
+
+echo " End."

@@ -1,4 +1,4 @@
-1.0e-05
+1.2036678228038856e-05
 #	initial grain radius (m)
 0.0	0.0	0.0	0.0	0.0	0.0
 #	initial Xe (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
@@ -24,11 +24,9 @@
 #	initial Kr85m (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
 0.0
 #   initial fuel stoichiometry deviation (\)
-1e-03
+0.0008331856977437343
 # Columnar grain length
-5e-07
-# alpha_T
-7.27e-18
-# fission_heat
-2000
+0.955005884878078
+# thermal conductivity
+2042.6504453105797
 # Temperature boundary condition
