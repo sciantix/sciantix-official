@@ -89,6 +89,8 @@ public:
 
     /**
      * @brief Solves the spatially averaged PDE dy/dt = D div grad y + S - L y using a spectral approach.
+     * The difference from the SpectralDiffusion Solver is that it solves for a linear source S(r) = A * r + B
+     * Putting A = 0, we revert back to the normal spectral diffusion solver
      * We apply a spectral approach in space, projecting the equation on the eigenfunctions of the laplacian operator.
      * We use the first order backward Euler solver in time.
      * The number of terms in the expansion, N, is fixed a priori.
@@ -97,14 +99,15 @@ public:
      * @param parameter A vector containing the parameters for the diffusion equation.
      * @param increment The time increment.
      * @return The updated value after solving the PDE.
-     *
+     * @author G. Zullo,  A. Zayat
      *
      *  Parameters :
      * 0 : N_modes
      * 1 : D
      * 2 : r
-     * 3 :production
-     * 4 :loss rate
+     * 3 :slope
+     * 4: production
+     * 5 :loss rate
      */
     double SpectralDiffusion(double *initial_condition, std::vector<double> parameter, double increment);
 
@@ -157,31 +160,6 @@ public:
      * @param increment The time increment.
      */
     void SpectralDiffusion3equations(double &gas_1, double &gas_2, double &gas_3, double *initial_condition_gas_1, double *initial_condition_gas_2, double *initial_condition_gas_3, std::vector<double> parameter, double increment);
-
-// Newly Added Solver for a Linear Source
-    /**
-     * @brief Solves the spatially averaged PDE dy/dt = D div grad y + S - L y using a spectral approach.
-     * The difference from the SpectralDiffusion Solver is that it solves for a linear source S(r) = A * r + B
-     * We apply a spectral approach in space, projecting the equation on the eigenfunctions of the laplacian operator.
-     * We use the first order backward Euler solver in time.
-     * The number of terms in the expansion, N, is fixed a priori.
-     *
-     * @param initial_condition The initial conditions for the diffusion modes.
-     * @param parameter A vector containing the parameters for the diffusion equation.
-     * @param increment The time increment.
-     * @return The updated value after solving the PDE.
-     * @author A. Zayat
-     *
-     *
-     *  Parameters : [N_modes, D, a , A, B, l]
-     * 0 : N_modes
-     * 1 : D
-     * 2 : a - Grain Radius
-     * 3 : Slope A of the the source 
-     * 4 : Production rate, the intercept B of the source
-     * 5 : Loss term
-     */
-    double SpectralDiffusionLinearSource(double *initial_condition, std::vector<double> parameter, double increment);
 
 // Newly Added Solver for a General Source
     /**

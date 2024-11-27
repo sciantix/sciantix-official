@@ -21,7 +21,7 @@ void Simulation::GasDiffusion()
     // Model declaration
     switch (static_cast<int>(input_variable["iDiffusionSolver"].getValue()))
     {
-        case 1:
+        case 1: // Updated to account for a linear source S(r) = A * r + B; A = 0 => the usual SD solver
             defineSpectralDiffusion1Equation(sciantix_system, model, n_modes);
             break;
 
@@ -33,11 +33,7 @@ void Simulation::GasDiffusion()
             defineSpectralDiffusion3Equations(sciantix_system, model, sciantix_variable, physics_variable, n_modes);
             break;
 
-        case 4: //New One Added | SDA for a Linear Source
-            defineSpectralDiffusionLinearSource1Equation(sciantix_system, model, n_modes);
-            break;
-
-         case 5: //New One Added | SDA for a General Source
+         case 4: //New One Added | SDA for a General Source
             defineSpectralDiffusionGeneralSource1Equation(sciantix_system, model, general_source, n_modes);
             break;
 
@@ -89,45 +85,8 @@ void Simulation::GasDiffusion()
 
             break;
         }
-        case 4: //New case for the linear source
-        {
-           if (system.getRestructuredMatrix() == 0)
-            {
-                sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
-                    solver.SpectralDiffusionLinearSource(
-                        getDiffusionModes(system.getGasName()),
-                        model["Gas diffusion - " + system.getName()].getParameter(),
-                        physics_variable["Time step"].getFinalValue()
-                    )
-                );
 
-                double equilibrium_fraction(1.0);
-                if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
-                    equilibrium_fraction = system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
-
-                sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
-                    equilibrium_fraction * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
-                );
-
-                sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
-                    (1.0 - equilibrium_fraction) * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
-                );
-            }
-
-            else if (system.getRestructuredMatrix() == 1)
-            {
-                sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(
-                    solver.SpectralDiffusionLinearSource(
-                        getDiffusionModes(system.getGasName() + " in HBS"),
-                        model["Gas diffusion - " + system.getName()].getParameter(),
-                        physics_variable["Time step"].getFinalValue()
-                    )
-                );
-            }
-
-            break;            
-        }
-        case 5:
+        case 4:
         {
             general_source.setNormalizedDomain();
             general_source.setSlopes();
@@ -161,9 +120,10 @@ void Simulation::GasDiffusion()
             else if (system.getRestructuredMatrix() == 1)
             {
                 sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(
-                    solver.SpectralDiffusionLinearSource(
+                    solver.SpectralDiffusionGeneralSource(
                         getDiffusionModes(system.getGasName() + " in HBS"),
                         model["Gas diffusion - " + system.getName()].getParameter(),
+                        general_source,
                         physics_variable["Time step"].getFinalValue()
                     )
                 );
@@ -281,6 +241,7 @@ void Simulation::GasDiffusion()
     }
 }
 
+ // Updated
 void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
 {
     std::string reference;
@@ -303,7 +264,8 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
 
         parameters.push_back(gasDiffusivity);
         parameters.push_back(system.getMatrix().getGrainRadius());
-        parameters.push_back(system.getProductionRate());
+        parameters.push_back(0); // Slope
+        parameters.push_back(system.getProductionRate()); // Intercept
         parameters.push_back(system.getGas().getDecayRate());
 
         model_.setParameter(parameters);
@@ -386,39 +348,6 @@ void errorHandling(SciantixArray<InputVariable> input_variable)
 }
 
 // Newly Added
-// Linear Source
-
-void defineSpectralDiffusionLinearSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
-{
-    std::string reference;
-
-    for (auto& system : sciantix_system)
-    {
-        Model model_;
-        model_.setName("Gas diffusion - " + system.getName());
-        model_.setRef(reference);
-
-        std::vector<double> parameters;
-        parameters.push_back(n_modes);
-        double gasDiffusivity;
-        if (system.getResolutionRate() + system.getTrappingRate() == 0)
-            gasDiffusivity = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
-        else
-            gasDiffusivity = 
-                (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
-                (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
-
-        parameters.push_back(gasDiffusivity);
-        parameters.push_back(system.getMatrix().getGrainRadius());
-        //parameters.push_back(system.getProductionRate() * 1e-07/system.getMatrix().getGrainRadius()); // Slope
-        parameters.push_back(0); // A = 0
-        parameters.push_back(system.getProductionRate()); //Intercept
-        parameters.push_back(system.getGas().getDecayRate());
-
-        model_.setParameter(parameters);
-        model.push(model_);
-    }
-}
 
 // General Source
 

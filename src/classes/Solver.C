@@ -38,8 +38,9 @@ double Solver::BinaryInteraction(double initial_condition, double interaction_co
     return initial_condition / (1.0 + interaction_coefficient * initial_condition * increment);
 }
 
+// Updated to account for a linear source S(r) = A * r + B
 double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> parameter, double increment)
-{
+{   // parameter [N_modes, D, a, A, B, l]
     size_t n;
     unsigned short int np1(1);
 
@@ -49,11 +50,10 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
     double source_rate(0.0);
     double projection_coeff(0.0);
     double solution(0.0);
-    double A = 0;
-    std::vector<double> domain = {0,parameter[2]};
-    std::vector<double> source = {0,parameter[3]};
- 
     double n_coeff = 0;
+    
+    std::vector<double> domain = {0,parameter.at(2)}; // {0, a}
+    std::vector<double> source = {parameter.at(3),parameter.at(4)}; // {A, B}
 
     diffusion_rate_coeff = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(2), 2);
     projection_coeff = sqrt(8.0 / M_PI);
@@ -61,50 +61,8 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
     for (n = 0; n < parameter.at(0); n++)
     {
         np1 = n + 1;
-        //_coeff = - (pow(-1.0, np1) / np1) * (parameter.at(2) * A + parameter.at(3)) + (2 * parameter.at(2) * A) * (pow(-1.0, np1) - 1) / (pow(np1,3.0) * pow(M_PI, 2));
         n_coeff = SourceProjection_i(parameter.at(2),domain, source,np1);
-        const double n_c = - pow(-1.0, np1) / np1;
-
-        diffusion_rate = diffusion_rate_coeff * pow(np1, 2) + parameter.at(4);
-        source_rate = projection_coeff * n_coeff;
-
-        initial_condition[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);
-
-        solution += projection_coeff * n_c * initial_condition[n] / ((4. / 3.) * M_PI);
-    }
-
-    return solution;
-}
-
-//New Added Solver
-double Solver::SpectralDiffusionLinearSource(double *initial_condition, std::vector<double> parameter, double increment)
-{
-    //parameter [N_modes, D, a, A, B, l]
-    size_t n;
-    unsigned short int np1(1);
-
-    double diffusion_rate_coeff(0.0);
-    double diffusion_rate(0.0);
-    double source_rate_coeff(0.0);
-    double source_rate(0.0);
-    double projection_coeff(0.0);
-    double solution(0.0);
-    double n_coeff = 0;
-    std::vector<double> source; // Source contains two elements [A,B]
-    std::vector<double> domain; // Domain contains two elements [edge1,edge2]
-
-    diffusion_rate_coeff = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(2), 2);
-    projection_coeff = sqrt(8.0 / M_PI);
-    source = {parameter.at(3), parameter.at(4)}; // [A, B]
-    domain = {0, parameter.at(2)}; // [0, a]
-
-
-    for (n = 0; n < parameter.at(0); n++)
-    {
-        np1 = n + 1;
-        n_coeff = SourceProjection_i(parameter.at(2),domain, source, np1);
-
-        const double n_c = - pow(-1.0, np1) / np1;
+        double n_c = - pow(-1.0, np1) / np1;
 
         diffusion_rate = diffusion_rate_coeff * pow(np1, 2) + parameter.at(5);
         source_rate = projection_coeff * n_coeff;
@@ -598,22 +556,16 @@ double Solver::SourceProjection_i(double GrainRadius, std::vector<double> Domain
         std::exit(EXIT_FAILURE);
     }
     
-  //Term 1
-  double proj1 = (pow(GrainRadius,-1) / (pow(SpatialMode_i,3) * pow(M_PI,2))) * 
-  (cos(SpatialMode_i * M_PI * Domain[0] / GrainRadius) * (2 * pow(GrainRadius,2) * 
-  Source_Function[0] - pow(M_PI,2) * pow(SpatialMode_i,2) * Domain[0] * (Source_Function[0] * Domain[0] + Source_Function[1])) + 
-  M_PI * pow(GrainRadius,-0.5) * SpatialMode_i * (2 * Source_Function[0] * Domain[0] + Source_Function[1]) * 
-  sin(SpatialMode_i * M_PI * Domain[0] / GrainRadius));
-  
-  //Term2
-  double proj2 = (pow(GrainRadius,-1) / (pow(SpatialMode_i,3) * pow(M_PI,2))) * 
-  (cos(SpatialMode_i * M_PI * Domain[1] / GrainRadius) * (2 * pow(GrainRadius,2) * 
-  Source_Function[0] - pow(M_PI,2) * pow(SpatialMode_i,2) * Domain[0] * (Source_Function[0] * Domain[1] + Source_Function[1])) + 
-  M_PI * pow(GrainRadius,-0.5) * SpatialMode_i * (2 * Source_Function[0] * Domain[1] + Source_Function[1]) * 
-  sin(SpatialMode_i * M_PI * Domain[1] / GrainRadius));
-  
-  //Result
-  double projection = proj2 - proj1;
-  return projection;
+    // First term calculation (proj1)
+    double proj1 = (pow(GrainRadius, -1) / (pow(SpatialMode_i, 3) * pow(M_PI, 2))) * 
+                   (cos(SpatialMode_i * M_PI * Domain[0] / GrainRadius) * (2 * pow(GrainRadius, 2) * Source_Function[0] - pow(M_PI, 2) * pow(SpatialMode_i, 2) * Domain[0] * (Source_Function[0] * Domain[0] + Source_Function[1])) + 
+                    M_PI * pow(GrainRadius, -0.5) * SpatialMode_i * (2 * Source_Function[0] * Domain[0] + Source_Function[1]) * sin(SpatialMode_i * M_PI * Domain[0] / GrainRadius));
 
+    // Second term calculation (proj2)
+    double proj2 = (pow(GrainRadius, -1) / (pow(SpatialMode_i, 3) * pow(M_PI, 2))) * 
+                   (cos(SpatialMode_i * M_PI * Domain[1] / GrainRadius) * (2 * pow(GrainRadius, 2) * Source_Function[0] - pow(M_PI, 2) * pow(SpatialMode_i, 2) * Domain[1] * (Source_Function[0] * Domain[1] + Source_Function[1])) + 
+                    M_PI * pow(GrainRadius, -0.5) * SpatialMode_i * (2 * Source_Function[0] * Domain[1] + Source_Function[1]) * sin(SpatialMode_i * M_PI * Domain[1] / GrainRadius));
+
+    // Return the difference between proj2 and proj1
+    return proj2 - proj1;
 }
