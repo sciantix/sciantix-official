@@ -21,11 +21,12 @@
 
 /**
  * @brief Defines diffusion models using the spectral diffusion with one equation.
+ * Updated to handle S(r) = A * r + B
  * 
  * @author D. Pizzocri
  * @author T. Barani
  * @author G. Zullo
- * 
+ * @author A. Zayat (Update)
  */
 void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
 
@@ -53,13 +54,6 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
 	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> physics_variable, int n_modes);
 
 //Newly Added
-/**
- * @brief Defines diffusion models using the spectral diffusion with one equation for a linear source case
- * 
- * @author A. Zayat
- * 
- */
-void defineSpectralDiffusionLinearSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
 
 /**
  * @brief Defines diffusion models using the spectral diffusion with one equation for a general source case
