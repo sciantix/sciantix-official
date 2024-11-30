@@ -1,0 +1,46 @@
+load"Element_QF"
+
+real alpha = 1./4;
+
+//int nlayer = 100;
+//func fy = (y<0.5)*((2.-2.*alpha)*y*y+alpha*y) + (y>=0.5)*((2*alpha-2)*y*y+(4-3*alpha)*y+(alpha-1));
+//mesh Th = square(nlayer, nlayer, [x, fy]);
+
+int NN = 100;
+int MM = 100;
+int[int] labs = [0, 0, 0, 0];
+mesh Th = square(NN, MM, [alpha*x+(1-alpha)*x*x*(3-2*x), alpha*y+(1-alpha)*y*y*(3-2*y)], label = labs, flags = 1);
+
+plot(Th, wait = 1);
+savemesh(Th, "mesh_utilities/problem2d.mesh");
+
+
+fespace Vh(Th, P1);
+fespace Uh(Th, FEQF5);
+
+varf Mass(uuh, vvh) = int2d(Th)( uuh * vvh );
+matrix FOmatMMPx = Mass(Vh, Vh);
+ofstream mmMMPxout("mesh_utilities/ww_mm_Px.btxt", binary); mmMMPxout << FOmatMMPx;
+matrix FOmatMMPq = Mass(Uh, Uh);
+ofstream mmMMPqout("mesh_utilities/ww_mm_Pq.btxt", binary); mmMMPqout << FOmatMMPq;
+matrix FOmatPxPq = Mass(Vh, Uh);
+ofstream mmMMPxPqout("mesh_utilities/ww_uu_Px_Pq.btxt", binary); mmMMPxPqout << FOmatPxPq;
+
+varf dxDerivative(uuh, vvh) = int2d(Th)( vvh * dx(uuh) );
+matrix FOmatdxPxPq = dxDerivative(Vh, Uh);
+ofstream mmdxPxPqout("mesh_utilities/ww_dx_Px_Pq.btxt", binary); mmdxPxPqout << FOmatdxPxPq;
+
+varf dyDerivative(uuh, vvh) = int2d(Th)( vvh * dy(uuh) );
+matrix FOmatdyPxPq = dyDerivative(Vh, Uh);
+ofstream mmdyPxPqout("mesh_utilities/ww_dy_Px_Pq.btxt", binary); mmdyPxPqout << FOmatdyPxPq;
+
+
+real[int, int] vvCoPx(Vh.ndof, 2);
+Vh xPx = x; ; vvCoPx(:, 0) = xPx[];
+Vh yPx = y; ; vvCoPx(:, 1) = yPx[];
+ofstream vvCOPx("mesh_utilities/vv_cc_Px.btxt", binary); vvCOPx << vvCoPx;
+
+real[int, int] vvCoPq(Uh.ndof, 2);
+Uh xPq = x; ; vvCoPq(:, 0) = xPq[];
+Uh yPq = y; ; vvCoPq(:, 1) = yPq[];
+ofstream vvCOPq("mesh_utilities/vv_cc_Pq.btxt", binary); vvCOPq << vvCoPq;
