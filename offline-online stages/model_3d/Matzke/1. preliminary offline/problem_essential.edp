@@ -1,0 +1,66 @@
+//In the terminal write: FreeFem++ problem_essential.edp
+load "msh3"
+load "medit"
+load "Element_QF"
+
+real trad = 0.75;
+real alpha = 1./3;
+int nlayer = 10;
+int nsides = 5 * nlayer * pi * 2;
+int ninter = 5 * nlayer * pi * 2 * trad / 4;
+
+func fx = x;
+func fy = y;
+func fz = (z<0.5)*((2.-2.*alpha)*z*z+alpha*z) + (z>=0.5)*((2*alpha-2)*z*z+(4-3*alpha)*z+(alpha-1));
+
+border outer(t=0, 2*pi){x=1.00*cos(t); y=1.00*sin(t); label=1;}
+border inner(t=0, 2*pi){x=trad*cos(t); y=trad*sin(t);}
+
+mesh baseh = buildmesh(outer(nsides) + inner(ninter));
+plot(baseh, wait=1);
+
+int[int] rup=[0,1],  rdown=[0,2], rmid=[1,3];
+
+func zmin = 0;
+func zmax = 1;
+
+mesh3 Th = buildlayers(baseh, nlayer, coef=1., zbound=[zmin,zmax], labelmid=rmid, labelup=rup, labeldown=rdown, transfo=[fx, fy, fz]);
+
+//medit("cylinder",Th,wait=1);
+savemesh(Th, "problem.mesh");
+//plot(Th, cmm="cylinder");
+
+fespace Vh(Th, P2);
+fespace Uh(Th, FEQF53d);
+
+varf Mass(uuh, vvh) = int3d(Th)( uuh * vvh );
+matrix FOmatMMPx = Mass(Vh, Vh);
+ofstream mmMMPxout("ww_mm_Px.btxt", binary); mmMMPxout << FOmatMMPx;
+matrix FOmatMMPq = Mass(Uh, Uh);
+ofstream mmMMPqout("ww_mm_Pq.btxt", binary); mmMMPqout << FOmatMMPq;
+matrix FOmatPxPq = Mass(Vh, Uh);
+ofstream mmMMPxPqout("ww_uu_Px_Pq.btxt", binary); mmMMPxPqout << FOmatPxPq;
+
+varf dxDerivative(uuh, vvh) = int3d(Th)( vvh * dx(uuh) );
+matrix FOmatdxPxPq = dxDerivative(Vh, Uh);
+ofstream mmdxPxPqout("ww_dx_Px_Pq.btxt", binary); mmdxPxPqout << FOmatdxPxPq;
+
+varf dyDerivative(uuh, vvh) = int3d(Th)( vvh * dy(uuh) );
+matrix FOmatdyPxPq = dyDerivative(Vh, Uh);
+ofstream mmdyPxPqout("ww_dy_Px_Pq.btxt", binary); mmdyPxPqout << FOmatdyPxPq;
+
+varf dzDerivative(uuh, vvh) = int3d(Th)( vvh * dz(uuh) );
+matrix FOmatdzPxPq = dzDerivative(Vh, Uh);
+ofstream mmdzPxPqout("ww_dz_Px_Pq.btxt", binary); mmdzPxPqout << FOmatdzPxPq;
+
+real[int, int] vvCoPx(Vh.ndof, 3);
+Vh xPx = x; ; vvCoPx(:, 0) = xPx[];
+Vh yPx = y; ; vvCoPx(:, 1) = yPx[];
+Vh zPx = z; ; vvCoPx(:, 2) = zPx[];
+ofstream vvCOPx("vv_cc_Px.btxt", binary); vvCOPx << vvCoPx;
+
+real[int, int] vvCoPq(Uh.ndof, 3);
+Uh xPq = x; ; vvCoPq(:, 0) = xPq[];
+Uh yPq = y; ; vvCoPq(:, 1) = yPq[];
+Uh zPq = z; ; vvCoPq(:, 2) = zPq[];
+ofstream vvCOPq("vv_cc_Pq.btxt", binary); vvCOPq << vvCoPq;
