@@ -251,8 +251,9 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         Model model_;
         model_.setName("Gas diffusion - " + system.getName());
         model_.setRef(reference);
-
+        
         std::vector<double> parameters;
+
         parameters.push_back(n_modes);
         double gasDiffusivity;
         if (system.getResolutionRate() + system.getTrappingRate() == 0)
@@ -264,10 +265,13 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
 
         parameters.push_back(gasDiffusivity);
         parameters.push_back(system.getMatrix().getGrainRadius());
-        parameters.push_back(0); // Slope
+        
+        // Read slope from the file
+        std::string filename = "../regression/source_slope.txt";  // The filename where the slope is stored
+        double slope = system.setSourceSlope(filename);
+        parameters.push_back(slope); // Slope
         parameters.push_back(system.getProductionRate()); // Intercept
         parameters.push_back(system.getGas().getDecayRate());
-
         model_.setParameter(parameters);
         model.push(model_);
     }

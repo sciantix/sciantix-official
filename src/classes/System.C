@@ -20,6 +20,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <limits>
 
 
 void System::setRestructuredMatrix(bool y)
@@ -798,6 +799,25 @@ double System::getProductionRate()
 {
     return production_rate;
 }
+
+double System::setSourceSlope(const std::string& filename)
+{
+    std::ifstream inputFile(filename);  // Open the file
+    double slope = 0.0;
+
+    // Read the slope value from the file
+    inputFile >> slope;
+
+    // If reading failed, print an error message
+    if (inputFile.fail()) 
+    {
+        return 0;  // Return a default value or handle error as needed (Uniform Source)
+    }
+
+    inputFile.close();  // Close the file
+    return slope;
+}
+
 
 
 // void System::setSource() //here figure out a way hoe to add the input file source_input
