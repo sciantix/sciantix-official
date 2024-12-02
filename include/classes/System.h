@@ -55,7 +55,6 @@ protected:
     std::vector<double> modes;
     double production_rate;
     bool restructured_matrix;
-
     Gas gas;
     Matrix matrix;
     //Source general_source; //new added
@@ -252,6 +251,11 @@ public:
      * @return The current production rate.
      */
     double getProductionRate();
+
+    // Newly Added
+    double setSourceSlope(const std::string& filename);
+
+
 
     // //New added
     // /**
