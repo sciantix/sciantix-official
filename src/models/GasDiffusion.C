@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "GasDiffusion.h"
+#include "SourceReader.h"
 
 void Simulation::GasDiffusion()
 {
@@ -22,7 +23,7 @@ void Simulation::GasDiffusion()
     switch (static_cast<int>(input_variable["iDiffusionSolver"].getValue()))
     {
         case 1: // Updated to account for a linear source S(r) = A * r + B; A = 0 => the usual SD solver
-            defineSpectralDiffusion1Equation(sciantix_system, model, n_modes);
+            defineSpectralDiffusion1Equation(sciantix_system, model, n_modes); // SDA 2.0
             break;
 
         case 2:
@@ -241,7 +242,7 @@ void Simulation::GasDiffusion()
     }
 }
 
- // Updated
+ // Updated 2.0 Version
 void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
 {
     std::string reference;
@@ -266,10 +267,13 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         parameters.push_back(gasDiffusivity);
         parameters.push_back(system.getMatrix().getGrainRadius());
         
-        // Read slope from the file
-        std::string filename = "../regression/source_slope.txt";  // The filename where the slope is stored
-        double slope = system.setSourceSlope(filename);
-        parameters.push_back(slope); // Slope
+        // // Read slope from the file
+        // std::string filename = "../regression/source_slope.txt";  // The filename where the slope is stored
+        // double slope = system.setSourceSlope(filename);
+
+        double Source_slope_input;
+        ReadSourceSlope(Source_slope_input);
+        parameters.push_back(Source_slope_input); // Slope
         parameters.push_back(system.getProductionRate()); // Intercept
         parameters.push_back(system.getGas().getDecayRate());
         model_.setParameter(parameters);
