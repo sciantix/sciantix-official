@@ -1,0 +1,4 @@
+# Slope
+0
+# Intercept
+0

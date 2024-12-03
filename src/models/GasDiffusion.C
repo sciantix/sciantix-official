@@ -267,14 +267,19 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         parameters.push_back(gasDiffusivity);
         parameters.push_back(system.getMatrix().getGrainRadius());
         
-        // // Read slope from the file
-        // std::string filename = "../regression/source_slope.txt";  // The filename where the slope is stored
-        // double slope = system.setSourceSlope(filename);
-
         double Source_slope_input;
-        ReadSourceSlope(Source_slope_input);
+        double Source_intercept_input;
+        ReadSource(Source_slope_input,Source_intercept_input);
         parameters.push_back(Source_slope_input); // Slope
-        parameters.push_back(system.getProductionRate()); // Intercept
+        
+        if (Source_slope_input==0 && Source_intercept_input==0) // Intercept
+        {
+            parameters.push_back(system.getProductionRate()); 
+        }
+        else{parameters.push_back(Source_intercept_input);}
+        
+        
+        //parameters.push_back(system.getProductionRate()); // Intercept
         parameters.push_back(system.getGas().getDecayRate());
         model_.setParameter(parameters);
         model.push(model_);
