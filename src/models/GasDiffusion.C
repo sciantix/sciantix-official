@@ -269,17 +269,20 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         
         double Source_slope_input;
         double Source_intercept_input;
-        ReadSource(Source_slope_input,Source_intercept_input);
+        bool EC;
+
+        ReadSource(Source_slope_input,Source_intercept_input, EC);
         parameters.push_back(Source_slope_input); // Slope
         
-        if (Source_slope_input==0 && Source_intercept_input==0) // Intercept
+        if (EC=false)
         {
-            parameters.push_back(system.getProductionRate()); 
-        }
+            if (Source_slope_input==0 && Source_intercept_input==0) // Intercept
+            {
+                parameters.push_back(system.getProductionRate()); 
+                }
         else{parameters.push_back(Source_intercept_input);}
+        }else{parameters.push_back(system.getProductionRate());}
         
-        
-        //parameters.push_back(system.getProductionRate()); // Intercept
         parameters.push_back(system.getGas().getDecayRate());
         model_.setParameter(parameters);
         model.push(model_);
