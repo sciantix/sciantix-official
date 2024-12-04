@@ -22,14 +22,24 @@
 
 /**
  * @brief Reads the source slope value from the "source.txt" file.
+ * The slope and intercept can be of any value.
+ * SDA 2.0 runs using the values given by the user
+ * If the file is source.txt is missing, SDA 1.0 runs (the previous version of the solver)
+ * If the file contains 0 for both the slope and intercept, it treats it as a missing file
+ * If the slope and intercept are empty, it treats it as a missing file
+ * If the slope is empty, by default it is set to 0
+ * If the intercept is empty, the boolean EC is set to true and so in the solver the intercept will be by default the getProductionRate
+ * 
  * @param Source_slope_input Reference to a double where the source slope value will be stored.
  * @param Source_intercept_input Reference to a double where the source intercept value will be stored.
+ * @param EC Intercept empty boolean
  * @author A. Zayat
  */
-void ReadSource(double &Source_slope_input,double &Source_intercept_input) 
+void ReadSource(double &Source_slope_input,double &Source_intercept_input, bool EC) 
 {
     // Attempt to open the file
     std::ifstream source_file(TestPath + "source.txt", std::ios::in);
+    EC = false;
     
     if (source_file.is_open()) 
     {
@@ -64,6 +74,17 @@ void ReadSource(double &Source_slope_input,double &Source_intercept_input)
             break;
         }
     }
+        // Assign default value to 'slope' if it is still empty
+        if (!ARead) 
+        {
+            Source_slope_input = 0;
+        }
+        // Assign default value to 'intercept' if it is still empty
+        if (!BRead) 
+        {
+            EC = true;
+        }
+        // Close File
         source_file.close();
     } 
     else 
