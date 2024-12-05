@@ -89,10 +89,6 @@ void Simulation::GasDiffusion()
 
         case 4:
         {
-            general_source.setNormalizedDomain();
-            general_source.setSlopes();
-            general_source.setIntercepts();
-
            if (system.getRestructuredMatrix() == 0)
             {
                 
@@ -370,6 +366,8 @@ void errorHandling(SciantixArray<InputVariable> input_variable)
 void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, Source general_source, int n_modes)
 {
     std::string reference;
+    // Parameters {n, D, a, l}
+    // general source {ND, Slopes, Intercepst}
 
     for (auto& system : sciantix_system)
     {
@@ -377,9 +375,10 @@ void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciant
         model_.setName("Gas diffusion - " + system.getName());
         model_.setRef(reference);
 
+        double time;
+        ReadGeneralSourceFile(general_source, time) // This reads the data from the provided file and fills the Source general_source
+        
         std::vector<double> parameters;
-        Source gs;
-
         parameters.push_back(n_modes);
         double gasDiffusivity;
         if (system.getResolutionRate() + system.getTrappingRate() == 0)
@@ -392,14 +391,8 @@ void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciant
         parameters.push_back(gasDiffusivity);
         parameters.push_back(system.getMatrix().getGrainRadius());
         parameters.push_back(system.getGas().getDecayRate());
-
         model_.setParameter(parameters);
         model.push(model_);
-        
-        general_source.setNormalizedDomain();
-        general_source.setSlopes();
-        general_source.setIntercepts();
-
 
     }
 }

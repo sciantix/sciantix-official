@@ -57,7 +57,6 @@ protected:
     bool restructured_matrix;
     Gas gas;
     Matrix matrix;
-    //Source general_source; //new added
 
 public:
     /**
@@ -251,24 +250,6 @@ public:
      * @return The current production rate.
      */
     double getProductionRate();
-
-    // Newly Added
-    double setSourceSlope(const std::string& filename);
-
-
-
-    // //New added
-    // /**
-    //  * @brief Sets the source.
-    //  * @param source source to set.
-    //  */
-    // void setSource();
-    
-    // /**
-    //  * @brief Retrieves the source.
-    //  * @return the source
-    //  */
-    // Source getSource();
 
     /**
      * @brief Default constructor for the System class.
