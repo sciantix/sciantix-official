@@ -35,7 +35,7 @@ void Simulation::GasDiffusion()
             break;
 
          case 4: //New One Added | SDA for a General Source
-            defineSpectralDiffusionGeneralSource1Equation(sciantix_system, model, general_source, n_modes);
+            defineSpectralDiffusionGeneralSource1Equation(sciantix_system, model, n_modes);
             break;
 
         default:
@@ -87,11 +87,45 @@ void Simulation::GasDiffusion()
             break;
         }
 
+        case 2:
+        {
+            double initial_value_solution(0.0), initial_value_bubbles(0.0);
+
+            if (system.getRestructuredMatrix() == 0)
+            {
+                initial_value_solution = sciantix_variable[system.getGasName() + " in intragranular solution"].getFinalValue();
+                initial_value_bubbles = sciantix_variable[system.getGasName() + " in intragranular bubbles"].getFinalValue();
+                
+                solver.SpectralDiffusion2equations(
+                    initial_value_solution,
+                    initial_value_bubbles,
+                    getDiffusionModesSolution(system.getGasName()),
+                    getDiffusionModesBubbles(system.getGasName()),
+                    model["Gas diffusion - " + system.getName()].getParameter(),
+                    physics_variable["Time step"].getFinalValue()
+                );
+
+                sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(initial_value_solution);
+                sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(initial_value_bubbles);
+                sciantix_variable[system.getGasName() + " in grain"].setFinalValue(initial_value_solution + initial_value_bubbles);
+            }
+            else if (system.getRestructuredMatrix() == 1)
+            {
+                sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(0.0);
+            }
+            break;
+        }
+
+        case 3:
+            break;
+        
         case 4:
         {
-           if (system.getRestructuredMatrix() == 0)
-            {
-                
+            double time;
+            Source general_source;  
+            ReadGeneralSourceFile(general_source, time); // This reads the data from the provided file and fills the Source general_source
+            if (system.getRestructuredMatrix() == 0)
+            {    
                 sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
                     solver.SpectralDiffusionGeneralSource(
                         getDiffusionModes(system.getGasName()),
@@ -126,39 +160,9 @@ void Simulation::GasDiffusion()
                 );
             }
 
-            break;             
-        }
-        case 2:
-        {
-            double initial_value_solution(0.0), initial_value_bubbles(0.0);
-
-            if (system.getRestructuredMatrix() == 0)
-            {
-                initial_value_solution = sciantix_variable[system.getGasName() + " in intragranular solution"].getFinalValue();
-                initial_value_bubbles = sciantix_variable[system.getGasName() + " in intragranular bubbles"].getFinalValue();
-                
-                solver.SpectralDiffusion2equations(
-                    initial_value_solution,
-                    initial_value_bubbles,
-                    getDiffusionModesSolution(system.getGasName()),
-                    getDiffusionModesBubbles(system.getGasName()),
-                    model["Gas diffusion - " + system.getName()].getParameter(),
-                    physics_variable["Time step"].getFinalValue()
-                );
-
-                sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(initial_value_solution);
-                sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(initial_value_bubbles);
-                sciantix_variable[system.getGasName() + " in grain"].setFinalValue(initial_value_solution + initial_value_bubbles);
-            }
-            else if (system.getRestructuredMatrix() == 1)
-            {
-                sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(0.0);
-            }
             break;
-        }
 
-        case 3:
-            break;
+        }
 
         default:
             ErrorMessages::Switch(__FILE__, "iDiffusionSolver", int(input_variable["iDiffusionSolver"].getValue()));
@@ -354,31 +358,22 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
     model.push(model_);
 }
 
-void errorHandling(SciantixArray<InputVariable> input_variable)
-{
-    ErrorMessages::Switch(__FILE__, "iDiffusionSolver", static_cast<int>(input_variable["iDiffusionSolver"].getValue()));
-}
-
 // Newly Added
 
 // General Source
 
-void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, Source general_source, int n_modes)
+void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
 {
     std::string reference;
     // Parameters {n, D, a, l}
-    // general source {ND, Slopes, Intercepst}
-
     for (auto& system : sciantix_system)
     {
         Model model_;
         model_.setName("Gas diffusion - " + system.getName());
         model_.setRef(reference);
-
-        double time;
-        ReadGeneralSourceFile(general_source, time) // This reads the data from the provided file and fills the Source general_source
-        
         std::vector<double> parameters;
+        
+
         parameters.push_back(n_modes);
         double gasDiffusivity;
         if (system.getResolutionRate() + system.getTrappingRate() == 0)
@@ -395,4 +390,11 @@ void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciant
         model.push(model_);
 
     }
+}
+
+//
+
+void errorHandling(SciantixArray<InputVariable> input_variable)
+{
+    ErrorMessages::Switch(__FILE__, "iDiffusionSolver", static_cast<int>(input_variable["iDiffusionSolver"].getValue()));
 }

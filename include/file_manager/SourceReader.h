@@ -98,12 +98,10 @@ void ReadSource(double &Source_slope_input,double &Source_intercept_input, bool 
 
 /**
  * @brief Reads the multiregion source values (normalized domain, slopes and intercepts) from the "general_source.txt" file.
- * This reader is a dedicated reader for the SpectralDiffusion_General_Source solver
- * If the file is general_source.txt is missing, the solver doesn't run
- * If the file contains 0s, the solver doesn't run
- * If the file is empty, , the solver doesn't run
+ * This reader is a dedicated reader for the SpectralDiffusion_General_Source solver.
+ * If the file is general_source.txt is missing, the solver doesn't run.
  
- * @param general_slope Reference to a source where the data will be stored
+ * @param general_source Reference to a source where the data will be stored
  * @param time the time at which we have this source functiom
  * @author A. Zayat
  */
@@ -115,7 +113,7 @@ void ReadGeneralSourceFile(Source general_source, double time)
     // Missing file
     if (!source_file.is_open()) 
     {
-        std::cerr << "Error: Unable to open file | File is missing, cannot run: " << filePath << "\n";
+        std::cerr << "Error: Unable to open file | File is missing, cannot run: " << TestPath + "general_source.txt" << "\n";
         exit(EXIT_FAILURE); // Terminate the program with an error code
     }
 
@@ -151,7 +149,7 @@ void ReadGeneralSourceFile(Source general_source, double time)
     {
         general_source.Intercepts.push_back(value);
     }
-
-}
+        
+    }
 
 #endif // SOURCE_READER_H

@@ -61,7 +61,7 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
  * @author A. Zayat
  * 
  */
-void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, Source general_source, int n_modes);
+void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
 
 /**
  * @brief Handles unsupported diffusion solver options.
