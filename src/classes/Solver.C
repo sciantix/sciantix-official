@@ -90,10 +90,11 @@ double Solver::SpectralDiffusionGeneralSource(double *initial_condition, std::ve
     double projection_coeff(0.0);
     double solution(0.0);
     double n_coeff = 0; 
+
     double NumberofRegions = general_source.Slopes.size(); 
     std::vector<std::vector<double>> Full_Domain; // vector of vectors of domain
     std::vector<std::vector<double>> Full_Source; // vector of vectors of source
-
+    //std::cout << "The number of regions is: " << NumberofRegions << std::endl;
 
 
     // Fill the Full_Source vector with (ex:3) vectors, each vector contains {A,B} corresponding to how many regions we have
