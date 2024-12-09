@@ -163,6 +163,20 @@ void Simulation::GasDiffusion()
             if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
                 sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
         }
+        
+        else if (system.getRestructuredMatrix() == 1)
+        {
+            sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
+                sciantix_variable[system.getGasName() + " produced"].getFinalValue() +
+                sciantix_variable[system.getGasName() + " produced in HBS"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " in grain HBS"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " released"].getInitialValue());
+
+            if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
+                sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
+        }        
     }
 
     /**
@@ -176,16 +190,27 @@ void Simulation::GasDiffusion()
         {
             if (system.getRestructuredMatrix() == 0)
             {
-                {
-                    sciantix_variable[system.getGasName() + " at grain boundary"].setInitialValue(0.0);
-                    sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
+                sciantix_variable[system.getGasName() + " at grain boundary"].setInitialValue(0.0);
+                sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
 
-                    sciantix_variable[system.getGasName() + " released"].setFinalValue(
-                        sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
-                        sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                        sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
-                    );
-                }
+                sciantix_variable[system.getGasName() + " released"].setFinalValue(
+                    sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
+                    sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
+                    sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
+                );
+            }
+            
+            else if (system.getRestructuredMatrix() == 1)
+            {
+                sciantix_variable[system.getGasName() + " at grain boundary"].setInitialValue(0.0);
+                sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
+
+                sciantix_variable[system.getGasName() + " released"].setFinalValue(
+                    sciantix_variable[system.getGasName() + " produced"].getFinalValue() +
+                    sciantix_variable[system.getGasName() + " produced in HBS"].getFinalValue() -
+                    sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
+                    sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
+                    sciantix_variable[system.getGasName() + " in grain HBS"].getFinalValue());
             }
         }
     }
