@@ -23,10 +23,10 @@ void Simulation::setSystem()
     {
         case 0:
             sciantix_system.push(Xe_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Kr_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(He_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Xe133_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Kr85m_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+            // sciantix_system.push(Kr_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+            // sciantix_system.push(He_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+            // sciantix_system.push(Xe133_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+            // sciantix_system.push(Kr85m_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             break;
 
         case 1:
