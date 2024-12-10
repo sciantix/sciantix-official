@@ -712,7 +712,7 @@ void System::setProductionRate(int input_value, SciantixArray<SciantixVariable> 
 
         double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
 
-        double sf(1.0);
+        double sf(1.25);
         if (input_variable["iFuelMatrix"].getValue() == 1)
             sf = 1.25;
 
