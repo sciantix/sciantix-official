@@ -47,19 +47,34 @@ void UO2()
 
 	// Mechanical properties
     
+	// Elastic modulus
+	//
+	// MATPRO
 	// matrix[index].setElasticModulus(2.334e5 * (1 - 2.752 * (1 - sciantix_variable[sv["Fuel density"]].getFinalValue() / 10960)) * (1 - 1.0915e-4 * history_variable[hv["Temperature"]].getFinalValue())); // (MPa) MATPRO (1979)
+	//
+	// TU
     matrix[index].setElasticModulus(2.237e5 * (1 - 2.6 * (1 - sciantix_variable[sv["Fuel density"]].getFinalValue() / 10960)) * (1 - 1.394e-4 * (history_variable[hv["Temperature"]].getFinalValue()-273-20)) * (1 - 0.1506 * (1 - exp(-0.035*sciantix_variable[sv["Burnup"]].getFinalValue())))); // (MPa) TU
 	if ((1 - sciantix_variable[sv["Fuel density"]].getFinalValue() / 10960)>=0.2){
 		std::cout<<"WARNING: elastic modulus correlation used outside the validity range for fuel porosity (P<0.2)"<<std::endl;
 		std::cout<<"Porosity P = "<<(1 - sciantix_variable[sv["Fuel density"]].getFinalValue() / 10960)<<std::endl;
 	}
 
+	// Poisson ratio
+	// 
+	// MATPRO
     //matrix[index].setPoissonRatio(0.316); // (/) MATPRO (1979) 
+	//
+	// TU
 	matrix[index].setPoissonRatio(0.32); // (/) TU
 
+	// Grain boundary energy 
+	//
+	// from surface tension
 	//matrix[index].setGrainBoundaryFractureEnergy(((2*0.6*cos(0.872664626)))); // (N/m)  surface tension 	
-	//matrix[index].setGrainBoundaryFractureEnergy(((2*0.6*cos(0.872664626)))*(1- 1/(1+exp(-0.015*(history_variable[hv["Temperature"]].getFinalValue()-(273+100+389+1547*exp(-sciantix_variable[sv["Burnup"]].getFinalValue()/64))))))); // (N/m)  surface tension 	
-	///matrix[index].setGrainBoundaryFractureEnergy(4e-3); // (J/m2) @Jernkvist2019
+	//
+	// from inverse calibration
+	//matrix[index].setGrainBoundaryFractureEnergy(4e-3); // (J/m2) @Jernkvist2019
+	//
+	// from mechanical testing
 	matrix[index].setGrainBoundaryFractureEnergy(2); // (J/m2) @Jernkvist2020
-	///matrix[index].setGrainBoundaryFractureEnergy(-0.1114*sciantix_variable[sv["Burnup"]].getInitialValue()+15.773); // (J/m2) @Henry fitting 2020
 }
