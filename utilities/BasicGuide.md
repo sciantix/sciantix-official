@@ -12,30 +12,40 @@ Follow these steps to commit new code to the SCIANTIX repository:
    ```
 
 2. **Make changes and commit them:**
-   - Stage all changes:
-     ```bash
-     git add .
-     ```
+   - Add files which you want to commit to the staging area:
+   ```bash
+   git add FILE1 FILE2 ...
+   ```
+     or if you want to commit all changed files
+   ```bash
+   git add .
+   ```
+     Sometimes, one might want to commit only some changes of a file (e.g. if there are other changes, which are not relevant for the commit). In such case, use 
+   ```bash
+   git add -p FILE
+   ```
+     which lets you choose, what should be staged.
+
    - Commit the changes:
-     ```bash
-     git commit -m "commit message"
-     ```
+   ```bash
+   git commit -m "commit message"
+   ```
    - Push the new branch to the remote repository:
-     ```bash
-     git push origin new_branch
-     ```
+   ```bash
+   git push origin new_branch
+   ```
 
 3. **Create a new pull request:**
    - Using GitHub CLI:
-     ```bash
-     gh pr create --base main --head new_branch --title "Title of the pull request" --body "Brief description of the pull request"
-     ```
+   ```bash
+   gh pr create --base main --head new_branch --title "Title of the pull request" --body "Brief description of the pull request"
+   ```
 
 4. **Check for reviews or approvals:**
    - Ensure the pull request meets the necessary criteria. If the pull request is approved and ready to be merged, update your main branch:
-     ```bash
-     git pull origin main
-     ```
+   ```bash
+   git pull origin main
+   ```
 
 5. **Switch back to the main branch:**
    ```bash
@@ -85,6 +95,7 @@ brew install cmake g++
 
 3. **Clone the repository**:
    - Clone the repository:
+E
 ```bash
 gh repo clone sciantix/sciantix-official
 ```
@@ -94,7 +105,7 @@ gh repo clone sciantix/sciantix-official
 ```bash
 mkdir build && cd build
 ```
-  - Configure the build with CMake:
+   - Configure the build with CMake:
 ```bash
 cmake ..
 ```
