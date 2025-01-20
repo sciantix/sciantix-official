@@ -667,19 +667,40 @@ class Simulation : public Solver, public Model
 
 			case 2:
 			{
-				double sigmoid = 1/(1+exp(sf_span_parameter*(model[sm["Grain-boundary micro-cracking"]].getParameter().at(0)-sf_cent_parameter)));
+				// double sigmoid = 1/(1+exp(sf_span_parameter*(model[sm["Grain-boundary micro-cracking"]].getParameter().at(0)-sf_cent_parameter)));
                 
-                if (model[sm["Grain-boundary micro-cracking"]].getParameter().at(0)<0)
+                // if (model[sm["Grain-boundary micro-cracking"]].getParameter().at(0)<0)
+                // {
+                //     sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(0);
+                // }
+                // else if (sigmoid >= sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue() || std::isnan(sigmoid) || std::isinf(sigmoid))
+                // {
+                //     sciantix_variable[sv["Intergranular fractional intactness"]].setConstant();
+                // }
+                // else 
+                // {
+                //     sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(sigmoid);
+                // }
+
+				// df = - sigma*F_c*delta / Gc
+
+                if (sciantix_variable[sv["Critical intergranular bubble pressure"]].getFinalValue()<0)
                 {
                     sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(0);
-                }
-                else if (sigmoid >= sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue() || std::isnan(sigmoid) || std::isinf(sigmoid))
+					std::cout << "Complete rupture" <<std::endl;
+				}
+                else
                 {
-                    sciantix_variable[sv["Intergranular fractional intactness"]].setConstant();
-                }
-                else 
-                {
-                    sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(sigmoid);
+					sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(
+						solver.Decay(sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue(),
+							model[sm["Grain-boundary micro-cracking"]].getParameter().at(0), 
+							0.0,
+							sf_span_parameter*0.47*sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue()*1e6
+						)
+					);
+					std::cout<<"Spacing/2 [um] = " <<sf_span_parameter<<std::endl;
+					std::cout<<"Spacing bubbles [um] = " <<0.47*sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue()*1e6<<std::endl;
+					std::cout<<"Bubble pressure [MPa] = " << sciantix_variable[sv["Intergranular bubble pressure"]].getFinalValue()<<std::endl;
                 }
 				// ODE for the intergranular fractional intactness: this equation accounts for the healing of the intergranular fractional intactness with burnup
 				// df / dBu = - h f + h
@@ -709,49 +730,49 @@ class Simulation : public Solver, public Model
 			)
 		);
 
-		// dR/dt
-        double source_rate(0.0), decay_rate(0.0);
+		// // dR/dt
+        // double source_rate(0.0), decay_rate(0.0);
         
-        for (auto& system : sciantix_system)
-        {
-            if (gas[ga[system.getGasName()]].getDecayRate() == 0.0) 
-            {
-                if(physics_variable[pv["Time step"]].getFinalValue())
-                {
-                    source_rate = (1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue()) * (sciantix_variable[sv[system.getGasName() + " produced"]].getIncrement() - sciantix_variable[sv[system.getGasName() + " in grain"]].getIncrement()) / physics_variable[pv["Time step"]].getFinalValue() -
-                            (sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() - sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue()) * sciantix_variable[sv["Intergranular fractional intactness"]].getIncrement() / physics_variable[pv["Time step"]].getFinalValue();
-                }
-                sciantix_variable[sv[system.getGasName() + " released"]].setFinalValue(
-                    solver.Decay(
-                        sciantix_variable[sv[system.getGasName() + " released"]].getInitialValue(),
-                        decay_rate,
-                        source_rate,
-                        physics_variable[pv["Time step"]].getFinalValue()
-                    )
-                );
+        // for (auto& system : sciantix_system)
+        // {
+        //     if (gas[ga[system.getGasName()]].getDecayRate() == 0.0) 
+        //     {
+        //         if(physics_variable[pv["Time step"]].getFinalValue())
+        //         {
+        //             source_rate = (1.0 - sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue()) * (sciantix_variable[sv[system.getGasName() + " produced"]].getIncrement() - sciantix_variable[sv[system.getGasName() + " in grain"]].getIncrement()) / physics_variable[pv["Time step"]].getFinalValue() -
+        //                     (sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() - sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue()) * sciantix_variable[sv["Intergranular fractional intactness"]].getIncrement() / physics_variable[pv["Time step"]].getFinalValue();
+        //         }
+        //         sciantix_variable[sv[system.getGasName() + " released"]].setFinalValue(
+        //             solver.Decay(
+        //                 sciantix_variable[sv[system.getGasName() + " released"]].getInitialValue(),
+        //                 decay_rate,
+        //                 source_rate,
+        //                 physics_variable[pv["Time step"]].getFinalValue()
+        //             )
+        //         );
 
-                if (sciantix_variable[sv[system.getGasName() + " released"]].getIncrement() < 0.0)
-                {
-                        sciantix_variable[sv[system.getGasName() + " released"]].setConstant();
-                }
-            }
-        }
+        //         if (sciantix_variable[sv[system.getGasName() + " released"]].getIncrement() < 0.0)
+        //         {
+        //                 sciantix_variable[sv[system.getGasName() + " released"]].setConstant();
+        //         }
+        //     }
+        // }
 
-        for (auto& system : sciantix_system)
-        {
-            if (gas[ga[system.getGasName()]].getDecayRate() == 0.0) 
-            {
-                sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(
-                sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() -
-                sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue() -
-                sciantix_variable[sv[system.getGasName() + " released"]].getFinalValue()
-            );
+        // for (auto& system : sciantix_system)
+        // {
+        //     if (gas[ga[system.getGasName()]].getDecayRate() == 0.0) 
+        //     {
+        //         sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(
+        //         sciantix_variable[sv[system.getGasName() + " produced"]].getFinalValue() -
+        //         sciantix_variable[sv[system.getGasName() + " in grain"]].getFinalValue() -
+        //         sciantix_variable[sv[system.getGasName() + " released"]].getFinalValue()
+        //     );
 
-            if (sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getFinalValue() < 0.0)
-                sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(0.0);
-            }
+        //     if (sciantix_variable[sv[system.getGasName() + " at grain boundary"]].getFinalValue() < 0.0)
+        //         sciantix_variable[sv[system.getGasName() + " at grain boundary"]].setFinalValue(0.0);
+        //     }
 
-        }
+        // }
 	}
 
 	void GrainBoundaryVenting()

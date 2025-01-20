@@ -151,8 +151,12 @@ void GrainBoundaryMicroCracking()
 			double bubble_pressure  = (boltzmann_constant*history_variable[hv["Temperature"]].getFinalValue() * atompervacancyf / matrix[sma["UO2"]].getSchottkyVolume()); //Pa
 			sciantix_variable[sv["Intergranular bubble pressure"]].setFinalValue(bubble_pressure*1e-6); //MPa		
 			
+			double microcracking_parameter = 0.0;
+			if (bubble_pressure > critical_bubble_pressure && bubble_pressure > equilibriumpressure)
+				microcracking_parameter = (bubble_pressure-equilibriumpressure)*1e-6*sciantix_variable[sv["Intergranular fractional coverage"]].getFinalValue()/G_gb;
+			
 			// Microcracking parameter
-			parameter.push_back(bubble_pressure/critical_bubble_pressure);
+			parameter.push_back(microcracking_parameter);
 
 			// healing parameter
 			const double healing_parameter = 1.0 / 0.8814; // 1 / (u * burnup)
