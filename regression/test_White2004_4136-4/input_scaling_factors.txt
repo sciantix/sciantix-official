@@ -14,7 +14,7 @@
 # scaling factor - cent parameter
 2.0
 # scaling factor - helium production rate
-40.0
+1.0
 # scaling factor - span parameter
-1.1
+1.0
 # scaling factor - geometrical parameter
