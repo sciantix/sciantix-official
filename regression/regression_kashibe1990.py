@@ -6,7 +6,7 @@ This is a python script to execute the regression (running the validation databa
 
 """
 
-""" ------------------- Import requiered depedencies ------------------- """
+""" ------------------- Import requieC2 depedencies ------------------- """
 
 import os
 import subprocess
@@ -30,13 +30,22 @@ FGR2Annealing = []
 FGR2 = []
 FGRBase = []
 FGRBaseGold = []
+bbconc = []
+bbconc_gold = []
 BaseTime = [303,805,1306,1807,
             303,805,1306,1807]
+ListNames = ['1873 K 6 GWd tU$^{-1}$','1873 K 16 GWd tU$^{-1}$','1873 K 23 GWd tU$^{-1}$','1873 K 28 GWd tU$^{-1}$',
+             '2073 K 6 GWd tU$^{-1}$','2073 K 16 GWd tU$^{-1}$','2073 K 23 GWd tU$^{-1}$','2073 K 28 GWd tU$^{-1}$']
+
 
 # Data from Kashibe 1990
-SwellingKashibe = [6, 6.7, 6.5, 7.4, #1873 K annealing, 6-16-23-28 GWd/t, 0 if missing datum
-        8.9, 9.0, 10.4, 10 ##2073 K annealing, 6-16-23-28 GWd/t
+SwellingKashibe = [0, 6.7, 6.5, 7.4, #1873 K annealing, 6-16-23-28 GWd/t, 0 if missing datum
+        8.9, 9.0, 10.4, 0 ##2073 K annealing, 6-16-23-28 GWd/t
         ]
+
+bbConcKashibe = [0, 0, 1.6, (1.4+0.9)/2, #1873 K annealing, 6-16-23-28 GWd/t, 0 if missing datum
+        3, (2.2+1.3)/2, 0, 0 ##2073 K annealing, 6-16-23-28 GWd/t
+        ] #e12
 
 # FGROperational = [0.2, 0.8, 21, 21, #6-16-23-28 GWd/t
 #                   0.2, 0.8, 21, 21 ##6-16-23-28 GWd/t
@@ -130,10 +139,20 @@ def do_plot():
   plt.rcParams.update({'font.size': 14})
   fig, ax = plt.subplots(figsize=(7, 7))
 
-  ax.scatter(SwellingKashibe[1:4], NewSwelling2[1:4],c='#9370DB', marker = '^', s=40, label='This work - 1873 K')
-  ax.scatter(SwellingKashibe[4:7], NewSwelling2[4:7], facecolors= 'none', edgecolors = '#9370DB', marker = '^', s=40,label='This work - 2073 K')
-  ax.scatter(SwellingKashibe[1:4], SwellCorrVersion2[1:4], c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 1873 K',  alpha =0.7)
-  ax.scatter(SwellingKashibe[4:7], SwellCorrVersion2[4:7], facecolors= 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 2073 K', alpha =0.7)
+  ax.errorbar(
+      SwellingKashibe[1:4], NewSwelling2[1:4],
+      elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label='1873 K'
+  )
+
+  ax.errorbar(
+      SwellingKashibe[4:7], NewSwelling2[4:7],
+      elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='2073 K'
+  )
+
+  #ax.scatter(SwellingKashibe[1:4], NewSwelling2[1:4],c='C0', marker = '^', s=40, label='This work - 1873 K')
+  #ax.scatter(SwellingKashibe[4:7], NewSwelling2[4:7], facecolors= 'none', edgecolors = 'C0', marker = '^', s=40,label='This work - 2073 K')
+  #ax.scatter(SwellingKashibe[1:4], SwellCorrVersion2[1:4], c='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - 1873 K',  alpha =0.7)
+  #ax.scatter(SwellingKashibe[4:7], SwellCorrVersion2[4:7], facecolors= 'none', edgecolors='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - 2073 K', alpha =0.7)
   
   r = range(1, 100)
   ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
@@ -160,36 +179,22 @@ def do_plot():
   for i in range(len(FGR2)):
     FGR2Annealing.append(FGR2[i] - FGRBase[i])
     goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
-  
-  plt.rcParams.update({'font.size': 14})
+
   fig, ax = plt.subplots(figsize=(7, 7))
 
-  ax.scatter(FGRAnnealing, FGR2Annealing,c='#9370DB', marker = '^', s=40, label='This work')
-  ax.scatter(FGRAnnealing, AnnFGRVersion2, c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0', alpha =0.7)
+  ax.errorbar(
+      FGRAnnealing[1:4], FGR2Annealing[1:4],
+      elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label='1873 K'
+  )
 
-  ax.plot([0, 100],[0, 100], '-', color = '#757575')
-  ax.plot([0, 100],[2.5, 102.5],'--', color = '#757575')
-  ax.plot([0, 100],[-2.5, 97.5],'--', color = '#757575')
-  
-  ax.set_xlim(0, 40)
-  ax.set_ylim(0, 40)
-
-  ax.set_title('Fission gas release - Annealing phase')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-  ax.grid(color='gray', linestyle='--', linewidth=0.5)
-
-  plt.savefig('Images/FGRAnnealingTotal-Kashibe1990')
-  plt.show()
-
-  plt.rcParams.update({'font.size': 14})
-  fig, ax = plt.subplots(figsize=(7, 7))
-
-  ax.scatter(FGRAnnealing[1:4], FGR2Annealing[1:4],c='#9370DB', marker = '^', s=40, label='This work - 1873 K')
-  ax.scatter(FGRAnnealing[4:8], FGR2Annealing[4:8],facecolors= 'none', edgecolors = '#9370DB', marker = '^', s=40,label='This work - 2073 K')
-  ax.scatter(FGRAnnealing[1:4], AnnFGRVersion2[1:4], c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 1873 K', alpha =0.7)
-  ax.scatter(FGRAnnealing[4:8], AnnFGRVersion2[4:8], facecolors='none', edgecolors = '#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - 2073 K', alpha =0.7)
+  ax.errorbar(
+      FGRAnnealing[4:8], FGR2Annealing[4:8],
+      elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='2073 K'
+  )
+  #ax.scatter(FGRAnnealing[1:4], FGR2Annealing[1:4],c='C0', marker = '^', s=40, label='This work - 1873 K')
+  #ax.scatter(FGRAnnealing[4:8], FGR2Annealing[4:8],facecolors= 'none', edgecolors = 'C0', marker = '^', s=40,label='This work - 2073 K')
+  #ax.scatter(FGRAnnealing[1:4], AnnFGRVersion2[1:4], c='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - 1873 K', alpha =0.7)
+  #ax.scatter(FGRAnnealing[4:8], AnnFGRVersion2[4:8], facecolors='none', edgecolors = 'C2', marker = 'd', s=40, label='SCIANTIX 2.0 - 2073 K', alpha =0.7)
   
   r = range(1, 100)
   ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
@@ -213,6 +218,39 @@ def do_plot():
   plt.savefig('Images/FGRAnnealingDiviso-Kashibe1990')
   plt.show()
 
+  # Bubble concentration
+  fig, ax = plt.subplots(figsize=(7, 7))
+
+  ax.errorbar(
+      bbConcKashibe[2:4], bbconc[2:4],
+      elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label='1873 K'
+  )
+  ax.errorbar(
+      bbConcKashibe[4:6], bbconc[4:6],
+      elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='2073 K'
+  )
+
+  ax.set_xscale('log')
+  ax.set_yscale('log')
+
+  ax.plot([1e-3, 1e3],[1e-3, 1e3], color='gray', linestyle='-', linewidth=0.5)
+  ax.plot([1e-3, 1e3],[2e-3, 2e3], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('x2', (1.25e-1, 3e-1), color='k')
+  ax.plot([1e-3, 1e3],[5e-4, 5e2], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('/2', (3e-1, 1.3e-1),  color='k')
+
+  ax.tick_params(axis='both', which='major')
+  
+  ax.set_xlim(1e-1, 1e2)
+  ax.set_ylim(1e-1, 1e2)
+
+  ax.set_xlabel('Experimental (bub μm$^{-2}$')
+  ax.set_ylabel('Calculated (bub μm$^{-2}$)')
+  ax.set_title('Bubble concentration')
+  ax.legend()
+  plt.savefig('Images/BubConc-Kashibe1990')
+  plt.show()
+
   ############################################  BARPLOTS #############################################
 
   # fig, ax = plt.subplots(figsize=(7, 7))
@@ -223,12 +261,12 @@ def do_plot():
   # x = np.array([0,5,10,15])
   # x1 = np.array([5,10,15])
 
-  # plt.bar(x1 - width, FGRAnnealing[1:4], 0.9*width, label='Une et al. (1990)', color='#FFA07A', edgecolor='#D3D3D3')
-  # plt.bar(x - width, FGRAnnealing[4:8], 0.9*width, label='Une et al. (1990)', color='none', edgecolor='red')
-  # plt.bar(x1, FGR2Annealing[1:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#D3D3D3')
-  # plt.bar(x, FGR2Annealing[4:8], 0.9*width, label='This work', color='none', edgecolor='#6A34A2')
-  # plt.bar(x1 + width, AnnFGRVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#D3D3D3')
-  # plt.bar(x + width, AnnFGRVersion2[4:8], 0.9*width, label='SCIANTIX 2.0', color='none', edgecolor='#006400')
+  # plt.bar(x1 - width, FGRAnnealing[1:4], 0.9*width, label='Une et al. (1990)', color='C2', edgecolor='#D3D3D3')
+  # plt.bar(x - width, FGRAnnealing[4:8], 0.9*width, label='Une et al. (1990)', color='none', edgecolor='C2')
+  # plt.bar(x1, FGR2Annealing[1:4], 0.9*width, label='This work', color='C0', edgecolor='#D3D3D3')
+  # plt.bar(x, FGR2Annealing[4:8], 0.9*width, label='This work', color='none', edgecolor='C0')
+  # plt.bar(x1 + width, AnnFGRVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='C2', edgecolor='#D3D3D3')
+  # plt.bar(x + width, AnnFGRVersion2[4:8], 0.9*width, label='SCIANTIX 2.0', color='none', edgecolor='C2')
   
   # plt.xticks(x, categories)
   # plt.ylabel('FGR (%)')
@@ -236,10 +274,10 @@ def do_plot():
   # #plt.title('Annealing - Burn-up effect')
 
   
-  # # Create colored patches for Kashibe, This Work, and SCIANTIX
-  # kashibe_patch = mpatches.Patch(facecolor='#FFA07A', edgecolor='red', label='Une (1990)')
-  # this_work_patch = mpatches.Patch(facecolor='#9370DB', edgecolor='#6A34A2', label='This work')
-  # sciantix_patch = mpatches.Patch(facecolor='#66CDAA', edgecolor='#006400', label='SCIANTIX 2.0')
+  # # Create coloC2 patches for Kashibe, This Work, and SCIANTIX
+  # kashibe_patch = mpatches.Patch(facecolor='C2', edgecolor='C2', label='Une (1990)')
+  # this_work_patch = mpatches.Patch(facecolor='C0', edgecolor='C0', label='This work')
+  # sciantix_patch = mpatches.Patch(facecolor='C2', edgecolor='C2', label='SCIANTIX 2.0')
 
   # # Create line patches for the burnup (23 and 28 GWd tU$^{-1}$)
   # T1600_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='1873 K')
@@ -273,9 +311,9 @@ def do_plot():
 
   fig, ax = plt.subplots(figsize=(7, 7))
 
-  plt.bar(x1 - width, FGRAnnealing[1:4], 0.9*width, label='Une et al. (1990)', color='#FFA07A', edgecolor='red')
-  plt.bar(x1, FGR2Annealing[1:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
-  plt.bar(x1 + width, AnnFGRVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
+  plt.bar(x1 - width, FGRAnnealing[1:4], 0.9*width, label='Une et al. (1990)', color='C1', edgecolor='C1')
+  plt.bar(x1, FGR2Annealing[1:4], 0.9*width, label='This work', color='C0', edgecolor='C0')
+  plt.bar(x1 + width, AnnFGRVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='C2', edgecolor='C2')
   
   plt.xticks(x1, categories1)
   plt.ylabel('FGR (%)')
@@ -293,9 +331,9 @@ def do_plot():
 
   fig, ax = plt.subplots(figsize=(7, 7))
 
-  plt.bar(x - width, FGRAnnealing[4:8], 0.9*width, label='Une et al. (1990)', color='#FFA07A', edgecolor='red')
-  plt.bar(x, FGR2Annealing[4:8], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
-  plt.bar(x + width, AnnFGRVersion2[4:8], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
+  plt.bar(x - width, FGRAnnealing[4:8], 0.9*width, label='Une et al. (1990)', color='C1', edgecolor='C1')
+  plt.bar(x, FGR2Annealing[4:8], 0.9*width, label='This work', color='C0', edgecolor='C0')
+  plt.bar(x + width, AnnFGRVersion2[4:8], 0.9*width, label='SCIANTIX 2.0', color='C2', edgecolor='C2')
   
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
@@ -316,9 +354,9 @@ def do_plot():
 
   fig, ax = plt.subplots(figsize=(7, 7))
 
-  plt.bar(x1 - width, SwellingKashibe[1:4], 0.9*width, label='Une et al. (1990)', color='#FFA07A', edgecolor='red')
-  plt.bar(x1, NewSwelling2[1:4], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
-  plt.bar(x1 + width, SwellCorrVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
+  plt.bar(x1 - width, SwellingKashibe[1:4], 0.9*width, label='Une et al. (1990)', color='C1', edgecolor='C1')
+  plt.bar(x1, NewSwelling2[1:4], 0.9*width, label='This work', color='C0', edgecolor='C0')
+  plt.bar(x1 + width, SwellCorrVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='C2', edgecolor='C2')
   
   plt.xticks(x1, categories1)
   plt.ylabel('Swelling (%)')
@@ -337,9 +375,9 @@ def do_plot():
 
   fig, ax = plt.subplots(figsize=(7, 7))
 
-  plt.bar(x2 - width, SwellingKashibe[4:7], 0.9*width, label='Une et al. (1990)', color='#FFA07A', edgecolor='red')
-  plt.bar(x2, NewSwelling2[4:7], 0.9*width, label='This work', color='#9370DB', edgecolor='#6A34A2')
-  plt.bar(x2 + width, SwellCorrVersion2[4:7], 0.9*width, label='SCIANTIX 2.0', color='#66CDAA', edgecolor='#006400')
+  plt.bar(x2 - width, SwellingKashibe[4:7], 0.9*width, label='Une et al. (1990)', color='C1', edgecolor='C1')
+  plt.bar(x2, NewSwelling2[4:7], 0.9*width, label='This work', color='C0', edgecolor='C0')
+  plt.bar(x2 + width, SwellCorrVersion2[4:7], 0.9*width, label='SCIANTIX 2.0', color='C2', edgecolor='C2')
   
   plt.xticks(x2, categories2)
   plt.ylabel('Swelling (%)')
@@ -359,9 +397,9 @@ def do_plot():
 
 
   ################################# Median absolute deviations ####################################
-  deviations_2 = abs(np.array(FGRAnnealing) - np.array(FGR2Annealing))
-  deviations_Version2 = abs(np.array(FGRAnnealing) - np.array(AnnFGRVersion2))
-  deviations_gold = abs(np.array(FGRAnnealing)-np.array(goldFGRAnnealing))
+  deviations_2 = abs(np.array(FGRAnnealing[1:8]) - np.array(FGR2Annealing[1:8]))
+  deviations_Version2 = abs(np.array(FGRAnnealing[1:8]) - np.array(AnnFGRVersion2[1:8]))
+  deviations_gold = abs(np.array(FGRAnnealing[1:8])-np.array(goldFGRAnnealing[1:8]))
 
   print('FGR')
   print(f"This work - MAD: ", np.median(deviations_2))
@@ -369,14 +407,34 @@ def do_plot():
   print(f"Barani (2017) - MAD: ", np.median(deviations_gold))
 
         # Median absolute deviations
-  deviations_2 = abs(np.array(SwellingKashibe) - np.array(NewSwelling2))
-  deviations_Version2 = abs(np.array(SwellingKashibe) - np.array(SwellCorrVersion2))
-  deviations_gold = abs(np.array(SwellingKashibe)-np.array(NewSwellinggold))
+  deviations_2 = abs(np.array(SwellingKashibe[1:7]) - np.array(NewSwelling2[1:7]))
+  deviations_Version2 = abs(np.array(SwellingKashibe[1:7]) - np.array(SwellCorrVersion2[1:7]))
+  deviations_gold = abs(np.array(SwellingKashibe[1:7])-np.array(NewSwellinggold[1:7]))
   
   print('Swelling')
   print(f"This work - MAD: ", np.median(deviations_2))
   print(f"SCIANTIX 2.0 - MAD: ", np.median(deviations_Version2))
   print(f"Barani (2017) - MAD: ", np.median(deviations_gold))
+
+  ######################################################à
+
+  for i in np.arange(1,7):
+    if SwellingKashibe[i] > 2 * NewSwelling2[i] or SwellingKashibe[i] < 0.5 * NewSwelling2[i]:
+        print('Swelling')
+        print(i)
+        print(ListNames[i])
+
+  for i in np.arange(1,8):
+    if FGRAnnealing[i] > 2 * FGR2Annealing[i] or FGRAnnealing[i] < 0.5 * FGR2Annealing[i]:
+        print('FGR')
+        print(i)
+        print(ListNames[i])
+
+  #FGR base
+  print('FGR base')
+  print('This work ', FGRBase)
+  print('exp', FGROperational)
+          
   
 # Main function of the baker regression
 def regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
@@ -441,6 +499,14 @@ def regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folder
       FGRBase.append(100*data[BaseTime[k],FGRPos].astype(float))
       FGRBaseGold.append(100*data_gold[BaseTime[k],FGRGoldPos].astype(float))
       k +=1
+
+      # Retrieve the generated data of Intergranular bubble concentration (bub/m2)
+      BubConcPos = findSciantixVariablePosition(data, "Intergranular bubble concentration (bub/m2)")
+      bbconc.append(1e-12*data[-1,BubConcPos].astype(float))
+
+      # Retrieve the gold data of Intergranular bubble concentration
+      BubConcPosGold = findSciantixVariablePosition(data_gold, "Intergranular bubble concentration (bub/m2)")
+      bbconc_gold.append(1e-12*data_gold[-1,BubConcPosGold].astype(float))
 
       # Retrieve the generated data of Intragranular gas swelling
       igSwellingPos = findSciantixVariablePosition(data, "Intergranular gas swelling (/)")

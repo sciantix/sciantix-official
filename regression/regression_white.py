@@ -6,7 +6,7 @@ This is a python script to execute the regression (running the validation databa
 
 """
 
-""" ------------------- Import requiered depedencies ------------------- """
+""" ------------------- Import requieC3 depedencies ------------------- """
 
 import os
 import subprocess
@@ -20,7 +20,17 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLoc
 
 
 """ ------------------- Global Variables ------------------- """
-
+ListNames = ['4000-1','4000-2','4000-3','4000-4','4000-5',
+             '4004-1','4004-2','4004-3','4004-4','4004-5','4004-6',
+             '4005-1','4005-2','4005-3','4005-4','4005-5',
+             '4064-1','4064-2','4064-3','4064-4','4064-5',
+             '4065-1','4065-2','4065-3','4065-4','4065-5',
+             '4135-1','4135-2','4135-3',
+             '4136-1','4136-2','4136-3','4136-4',
+             '4140-1','4140-2',
+             '4162-1','4162-2','4163-3','4162-4',
+             '4163-1','4163-2','4163-3','4163-4'
+             ]
 # Data from SCIANTIX 1.0
 gbSwelling1 = np.array([1.19, 1.16, 1.13, 1.12, 1.29,                   # 4000
                0.91, 0.89, 0.85, 0.79, 0.77, 0.81,             # 4004
@@ -158,6 +168,7 @@ gbSwellingWhitesigma = np.array([0.35, 0.12, 0.10, 0.10, 0.04,                  
                    0.2,0.18,0.1,0.06                           # 4163
                    ])
 gbSwellingWhite *= 2
+gbSwellingWhitesigma *= 2
 #########fractional coverage##########
 FcSwellingWhite = np.array([42.96, 30.20, 27.82, 30.84, 24.09,                   # 4000
                    33.39,39.28,30.02,39.88,36.71,36.77,              # 4004
@@ -306,18 +317,39 @@ def do_plot():
 
   # corrected swelling log
   plt.rcParams.update({'font.size': 14})
+
   fig, ax = plt.subplots(figsize=(7, 7))
   plt.rcParams.update({'font.size': 14})
-  ax.scatter(np.concatenate([gbSwellingWhite[0:16],gbSwellingWhite[39:43]]), np.concatenate([NewSwelling2[0:16],NewSwelling2[39:43]]), c='#9370DB', marker = '^', s=40, label='This work - Fast ramp')
-  ax.scatter(gbSwellingWhite[16:39], NewSwelling2[16:39], facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
-  ax.scatter(np.concatenate([gbSwellingWhite[0:16],gbSwellingWhite[39:43]]), np.concatenate([gbSwellingVersion2[0:16],gbSwellingVersion2[39:43]]), c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
-  ax.scatter(gbSwellingWhite[16:39], gbSwellingVersion2[16:39], facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
+  # Fast ramp
+  ax.errorbar(
+      np.concatenate([gbSwellingWhite[0:16], gbSwellingWhite[39:43]]),
+      np.concatenate([NewSwelling2[0:16], NewSwelling2[39:43]]),
+      xerr=np.concatenate([gbSwellingWhitesigma[0:16], gbSwellingWhitesigma[39:43]]),
+      elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label='Fast ramp'
+  )
+
+  # Slow ramp
+  ax.errorbar(
+      gbSwellingWhite[16:39], NewSwelling2[16:39],
+      xerr=gbSwellingWhitesigma[16:39],
+      elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='Slow ramp'
+  )
+
+  # Long hold
+  ax.errorbar(
+      gbSwellingWhite[26:35], NewSwelling2[26:35],
+      xerr=gbSwellingWhitesigma[26:35],
+      elinewidth=0.5, linewidth=0.5, color='C3', fmt='o', label='Long hold'
+  )
+
+  #ax.scatter(np.concatenate([gbSwellingWhite[0:16],gbSwellingWhite[39:43]]), np.concatenate([gbSwellingVersion2[0:16],gbSwellingVersion2[39:43]]), c='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
+  #ax.scatter(gbSwellingWhite[16:39], gbSwellingVersion2[16:39], facecolors = 'none', edgecolors='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
 
   ax.plot([1e-3, 1e2],[1e-3, 1e2], color='gray', linestyle='-', linewidth=0.5)
   ax.plot([1e-3, 1e2],[2e-3, 2e2], color='gray', linestyle='--', linewidth=0.5)
-  ax.annotate('x2', (1.25e-2, 3e-2), color='k')
+  ax.annotate('x2', (1.25e-1, 3e-1), color='k')
   ax.plot([1e-3, 1e2],[5e-4, 5e1], color='gray', linestyle='--', linewidth=0.5)
-  ax.annotate('/2', (3e-2, 1.3e-2),  color='k')
+  ax.annotate('/2', (3e-1, 1.3e-1),  color='k')
   # Set ticks and formatter
 
   ax.tick_params(axis='both', which='major')
@@ -338,19 +370,40 @@ def do_plot():
 
   # Bubble concentration
   fig, ax = plt.subplots(figsize=(7, 7))
-  plt.rcParams.update({'font.size': 14})
-  ax.scatter(np.concatenate([gbConcWhite[0:16],gbConcWhite[39:43]]), np.concatenate([bbconc[0:16],bbconc[39:43]]), c='#9370DB', marker = '^', s=40, label='This work - Fast ramp')
-  ax.scatter(gbConcWhite[16:39], bbconc[16:39], facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
-  ax.scatter(np.concatenate([gbConcWhite[0:16], gbConcWhite[39:43]]), np.concatenate([bbconcVersion2[0:16],bbconcVersion2[39:43]]), c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
-  ax.scatter(gbConcWhite[16:39], bbconcVersion2[16:39], facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
+
+    # Fast ramp
+  ax.errorbar(
+      np.concatenate([gbConcWhite[0:16], gbConcWhite[39:43]]),
+      np.concatenate([bbconc[0:16], bbconc[39:43]]),
+      xerr=np.concatenate([gbConcWhitesigma[0:16], gbConcWhitesigma[39:43]]),
+      elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label='Fast ramp'
+  )
+
+  # Slow ramp
+  ax.errorbar(
+      gbConcWhite[16:39], bbconc[16:39],
+      xerr=gbConcWhitesigma[16:39],
+      elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='Slow ramp'
+  )
+
+  # Long hold
+  ax.errorbar(
+      gbConcWhite[26:35], bbconc[26:35],
+      xerr=gbConcWhitesigma[26:35],
+      elinewidth=0.5, linewidth=0.5, color='C3', fmt='o', label='Long hold'
+  )
+  #ax.scatter(np.concatenate([gbConcWhite[0:16],gbConcWhite[39:43]]), np.concatenate([bbconc[0:16],bbconc[39:43]]), c='C0', marker = '^', s=40, label='This work - Fast ramp')
+  #ax.scatter(gbConcWhite[16:39], bbconc[16:39], facecolors='none', edgecolors='C0', marker = '^', s=40, label='This work - Slow ramp')
+  #ax.scatter(np.concatenate([gbConcWhite[0:16], gbConcWhite[39:43]]), np.concatenate([bbconcVersion2[0:16],bbconcVersion2[39:43]]), c='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
+  #ax.scatter(gbConcWhite[16:39], bbconcVersion2[16:39], facecolors = 'none', edgecolors='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
   ax.set_xscale('log')
   ax.set_yscale('log')
 
   ax.plot([1e-3, 1e3],[1e-3, 1e3], color='gray', linestyle='-', linewidth=0.5)
   ax.plot([1e-3, 1e3],[2e-3, 2e3], color='gray', linestyle='--', linewidth=0.5)
-  ax.annotate('x2', (1.25e-2, 3e-2), color='k')
+  ax.annotate('x2', (1.25e-1, 3e-1), color='k')
   ax.plot([1e-3, 1e3],[5e-4, 5e2], color='gray', linestyle='--', linewidth=0.5)
-  ax.annotate('/2', (3e-2, 1.3e-2),  color='k')
+  ax.annotate('/2', (3e-1, 1.3e-1),  color='k')
 
   ax.tick_params(axis='both', which='major')
   
@@ -366,11 +419,28 @@ def do_plot():
 
     # Bubble area
   fig, ax = plt.subplots(figsize=(7, 7))
-  plt.rcParams.update({'font.size': 14})
-  ax.scatter(1e12*np.concatenate([gbareaWhite[0:16],gbareaWhite[39:43]]), 1e12*np.concatenate([bbarea2[0:16],bbarea2[39:43]]), c='#9370DB', marker = '^', s=40, label='This work - Fast ramp')
-  ax.scatter(1e12*np.array(gbareaWhite[16:39]), 1e12*np.array(bbarea2[16:39]), facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
-  ax.scatter(1e12*np.concatenate([gbareaWhite[0:16], gbareaWhite[39:43]]), 1e12*np.concatenate([bbareaVersion2[0:16],bbareaVersion2[39:43]]), c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
-  ax.scatter(1e12*np.array(gbareaWhite[16:39]), 1e12*np.array(bbareaVersion2[16:39]), facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
+    # Fast ramp
+  ax.errorbar(
+      1e12*np.concatenate([gbareaWhite[0:16], gbareaWhite[39:43]]),
+      1e12*np.concatenate([bbarea2[0:16], bbarea2[39:43]]),
+      elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label='Fast ramp'
+  )
+
+  # Slow ramp
+  ax.errorbar(
+      1e12*np.array(gbareaWhite[16:39]), 1e12*np.array(bbarea2[16:39]),
+      elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='Slow ramp'
+  )
+
+  # Long hold
+  ax.errorbar(
+      1e12*np.array(gbareaWhite[26:35]), 1e12*np.array(bbarea2[26:35]),
+      elinewidth=0.5, linewidth=0.5, color='C3', fmt='o', label='Long hold'
+  )
+  #ax.scatter(1e12*np.concatenate([gbareaWhite[0:16],gbareaWhite[39:43]]), 1e12*np.concatenate([bbarea2[0:16],bbarea2[39:43]]), c='C0', marker = '^', s=40, label='This work - Fast ramp')
+  #ax.scatter(1e12*np.array(gbareaWhite[16:39]), 1e12*np.array(bbarea2[16:39]), facecolors='none', edgecolors='C0', marker = '^', s=40, label='This work - Slow ramp')
+  #ax.scatter(1e12*np.concatenate([gbareaWhite[0:16], gbareaWhite[39:43]]), 1e12*np.concatenate([bbareaVersion2[0:16],bbareaVersion2[39:43]]), c='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
+  #ax.scatter(1e12*np.array(gbareaWhite[16:39]), 1e12*np.array(bbareaVersion2[16:39]), facecolors = 'none', edgecolors='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
   
   ax.plot([1e-3, 1e3],[1e-3, 1e3], color='gray', linestyle='-', linewidth=0.5)
   ax.plot([1e-3, 1e3],[2e-3, 2e3], color='gray', linestyle='--', linewidth=0.5)
@@ -393,11 +463,31 @@ def do_plot():
 
   # GOLD vs. SCIANTIX 2.0 - fractional coverage
   fig, ax = plt.subplots(figsize=(7, 7))
-  plt.rcParams.update({'font.size': 14})
-  ax.scatter(np.concatenate([FcSwellingWhite[0:16],FcSwellingWhite[39:43]]), np.concatenate([Fc[0:16],Fc[39:43]]), c='#9370DB', marker = '^', s=40, label='This work - Fast ramp')
-  ax.scatter(FcSwellingWhite[16:39], Fc[16:39], facecolors='none', edgecolors='#9370DB', marker = '^', s=40, label='This work - Slow ramp')
-  ax.scatter(np.concatenate([FcSwellingWhite[0:16],FcSwellingWhite[39:43]]), np.concatenate([FcVersion2[0:16],FcVersion2[39:43]]), c='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
-  ax.scatter(FcSwellingWhite[16:39], FcVersion2[16:39], facecolors = 'none', edgecolors='#66CDAA', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
+    # Fast ramp
+  ax.errorbar(
+      np.concatenate([FcSwellingWhite[0:16], FcSwellingWhite[39:43]]),
+      np.concatenate([Fc[0:16], Fc[39:43]]),
+      xerr=np.concatenate([FcSwellingWhitesigma[0:16], FcSwellingWhitesigma[39:43]]),
+      elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label='Fast ramp'
+  )
+
+  # Slow ramp
+  ax.errorbar(
+      FcSwellingWhite[16:39], Fc[16:39],
+      xerr=FcSwellingWhitesigma[16:39],
+      elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='Slow ramp'
+  )
+
+  # Long hold
+  ax.errorbar(
+      FcSwellingWhite[26:35], Fc[26:35],
+      xerr=FcSwellingWhitesigma[26:35],
+      elinewidth=0.5, linewidth=0.5, color='C3', fmt='o', label='Long hold'
+  )
+  #ax.scatter(np.concatenate([FcSwellingWhite[0:16],FcSwellingWhite[39:43]]), np.concatenate([Fc[0:16],Fc[39:43]]), c='C0', marker = '^', s=40, label='This work - Fast ramp')
+  #ax.scatter(FcSwellingWhite[16:39], Fc[16:39], facecolors='none', edgecolors='C0', marker = '^', s=40, label='This work - Slow ramp')
+  #ax.scatter(np.concatenate([FcSwellingWhite[0:16],FcSwellingWhite[39:43]]), np.concatenate([FcVersion2[0:16],FcVersion2[39:43]]), c='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
+  #ax.scatter(FcSwellingWhite[16:39], FcVersion2[16:39], facecolors = 'none', edgecolors='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
   
 
   ax.plot([1e-3, 1e3],[1e-3, 1e3], color='gray', linestyle='-', linewidth=0.5)
@@ -584,5 +674,11 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
   print(f"SCIANTIX 1.0 - RMSE: ", np.mean(np.array(gbSwellingWhite) - gbSwelling1)**2)
   print(f"SCIANTIX 2.0 - RMSE: ", np.mean(np.array(gbSwellingWhite) - gbSwelling2)**2)
   print("\n")
+
+  for i in range(len(gbSwellingWhite)):
+      if gbSwellingWhite[i] > 2 * gbSwelling2[i] or gbSwellingWhite[i] < 0.5 * gbSwelling2[i]:
+          print(i)
+          print(ListNames[i])
+          
 
   return folderList, number_of_tests, number_of_tests_failed, gbSwelling2, gbSwellingWhite
