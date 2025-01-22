@@ -251,53 +251,6 @@ def do_plot():
   plt.savefig('Images/BubConc-Kashibe1990')
   plt.show()
 
-  ############################################  BARPLOTS #############################################
-
-  # fig, ax = plt.subplots(figsize=(7, 7))
-
-  # categories = ['6 GWd tU$^{-1}$', '16 GWd tU$^{-1}$','23 GWd tU$^{-1}$', '28 GWd tU$^{-1}$']
-
-  # width = 1
-  # x = np.array([0,5,10,15])
-  # x1 = np.array([5,10,15])
-
-  # plt.bar(x1 - width, FGRAnnealing[1:4], 0.9*width, label='Une et al. (1990)', color='C2', edgecolor='#D3D3D3')
-  # plt.bar(x - width, FGRAnnealing[4:8], 0.9*width, label='Une et al. (1990)', color='none', edgecolor='C2')
-  # plt.bar(x1, FGR2Annealing[1:4], 0.9*width, label='This work', color='C0', edgecolor='#D3D3D3')
-  # plt.bar(x, FGR2Annealing[4:8], 0.9*width, label='This work', color='none', edgecolor='C0')
-  # plt.bar(x1 + width, AnnFGRVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='C2', edgecolor='#D3D3D3')
-  # plt.bar(x + width, AnnFGRVersion2[4:8], 0.9*width, label='SCIANTIX 2.0', color='none', edgecolor='C2')
-  
-  # plt.xticks(x, categories)
-  # plt.ylabel('FGR (%)')
-  # plt.xlabel('Burn-up')
-  # #plt.title('Annealing - Burn-up effect')
-
-  
-  # # Create coloC2 patches for Kashibe, This Work, and SCIANTIX
-  # kashibe_patch = mpatches.Patch(facecolor='C2', edgecolor='C2', label='Une (1990)')
-  # this_work_patch = mpatches.Patch(facecolor='C0', edgecolor='C0', label='This work')
-  # sciantix_patch = mpatches.Patch(facecolor='C2', edgecolor='C2', label='SCIANTIX 2.0')
-
-  # # Create line patches for the burnup (23 and 28 GWd tU$^{-1}$)
-  # T1600_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='1873 K')
-  # T1800_patch = plt.Line2D([0], [0], color='black', linestyle='none', marker='s', markersize=10, label='2073 K', markerfacecolor='none')
-
-  # # Combine the patches into a single legend
-  # legend_items = [kashibe_patch, this_work_patch, sciantix_patch, T1600_patch, T1800_patch]
-
-  # # Create the legend
-  # plt.legend(handles=legend_items, loc='best', ncol=2)
-  # plt.ylim([0,40])
-  
-  # plt.axhline(0, color='gray', linestyle='--', linewidth=1)
-  # plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
-  # plt.minorticks_on()
-  # plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
-
-  # plt.savefig('Images/FGRSpecifico-Kashibe1990')
-  # plt.show()
-  
   ###########FGR##############
 
   categories = ['6 GWd tU$^{-1}$', '16 GWd tU$^{-1}$','23 GWd tU$^{-1}$', '28 GWd tU$^{-1}$']
@@ -311,16 +264,19 @@ def do_plot():
 
   fig, ax = plt.subplots(figsize=(7, 7))
 
-  plt.bar(x1 - width, FGRAnnealing[1:4], 0.9*width, label='Une et al. (1990)', color='C1', edgecolor='C1')
-  plt.bar(x1, FGR2Annealing[1:4], 0.9*width, label='This work', color='C0', edgecolor='C0')
-  plt.bar(x1 + width, AnnFGRVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='C2', edgecolor='C2')
-  
+  FGR_values = FGRAnnealing[1:4]
+  FGR_err = [np.array(FGR_values) / 2, np.array(FGR_values) * 2]
+
+  plt.errorbar(x1, FGR_values, yerr=FGR_err, fmt='o', label='Une et al. (1990)', color='C1')
+  plt.errorbar(x1, FGR2Annealing[1:4], fmt='s', label='This work', color='C0')
+
   plt.xticks(x1, categories1)
   plt.ylabel('FGR (%)')
   plt.xlabel('Burn-up')
   plt.title('Annealing at 1873 K')
   plt.legend(loc='best')
-  plt.ylim([0,40])
+  plt.xlim([3,17])
+  plt.ylim([0,1e2])
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
   plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
@@ -331,16 +287,19 @@ def do_plot():
 
   fig, ax = plt.subplots(figsize=(7, 7))
 
-  plt.bar(x - width, FGRAnnealing[4:8], 0.9*width, label='Une et al. (1990)', color='C1', edgecolor='C1')
-  plt.bar(x, FGR2Annealing[4:8], 0.9*width, label='This work', color='C0', edgecolor='C0')
-  plt.bar(x + width, AnnFGRVersion2[4:8], 0.9*width, label='SCIANTIX 2.0', color='C2', edgecolor='C2')
-  
+  FGR_values = FGRAnnealing[4:8]
+  FGR_err = [np.array(FGR_values) / 2, np.array(FGR_values) * 2]
+
+  plt.errorbar(x, FGR_values, yerr=FGR_err, fmt='o', label='Une et al. (1990)', color='C1')
+  plt.errorbar(x, FGR2Annealing[4:8], fmt='s', label='This work', color='C0')
+
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
   plt.xlabel('Burn-up')
   plt.title('Annealing at 2073 K')
   plt.legend(loc='best')
-  plt.ylim([0,40])
+  plt.xlim([-2,17])
+  plt.ylim([0,1e2])
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
   plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
@@ -354,15 +313,18 @@ def do_plot():
 
   fig, ax = plt.subplots(figsize=(7, 7))
 
-  plt.bar(x1 - width, SwellingKashibe[1:4], 0.9*width, label='Une et al. (1990)', color='C1', edgecolor='C1')
-  plt.bar(x1, NewSwelling2[1:4], 0.9*width, label='This work', color='C0', edgecolor='C0')
-  plt.bar(x1 + width, SwellCorrVersion2[1:4], 0.9*width, label='SCIANTIX 2.0', color='C2', edgecolor='C2')
-  
+  SW_values = SwellingKashibe[1:4]
+  SW_err = [np.array(SW_values) / 2, np.array(SW_values) * 2]
+
+  plt.errorbar(x1, SW_values, yerr=SW_err, fmt='o', label='Une et al. (1990)', color='C1')
+  plt.errorbar(x1, NewSwelling2[1:4], fmt='s', label='This work', color='C0')
+
   plt.xticks(x1, categories1)
   plt.ylabel('Swelling (%)')
   plt.xlabel('Burn-up')
   plt.title('Annealing at 1873 K')
-  plt.ylim([0,20])
+  plt.ylim([1e-1,1e2])
+  plt.yscale('log')
   
   plt.legend(loc='best')
   
@@ -375,16 +337,19 @@ def do_plot():
 
   fig, ax = plt.subplots(figsize=(7, 7))
 
-  plt.bar(x2 - width, SwellingKashibe[4:7], 0.9*width, label='Une et al. (1990)', color='C1', edgecolor='C1')
-  plt.bar(x2, NewSwelling2[4:7], 0.9*width, label='This work', color='C0', edgecolor='C0')
-  plt.bar(x2 + width, SwellCorrVersion2[4:7], 0.9*width, label='SCIANTIX 2.0', color='C2', edgecolor='C2')
-  
+  SW_values = SwellingKashibe[4:7]
+  SW_err = [np.array(SW_values) / 2, np.array(SW_values) * 2]
+
+  plt.errorbar(x2, SW_values, yerr=SW_err, fmt='o', label='Une et al. (1990)', color='C1')
+  plt.errorbar(x2, NewSwelling2[4:7], fmt='s', label='This work', color='C0')
+
   plt.xticks(x2, categories2)
   plt.ylabel('Swelling (%)')
   plt.xlabel('Burn-up')
   plt.title('Annealing at 2073 K')
-  plt.ylim([0,20])
-  
+  plt.xlim([-2,12])
+  plt.ylim([1e-1,1e2])
+  plt.yscale('log')
   plt.legend(loc='best')
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)

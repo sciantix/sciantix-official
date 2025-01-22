@@ -232,16 +232,16 @@ def do_plot():
   x = np.array([0, 4])
 
   fig, ax = plt.subplots(figsize=(7, 7))
-  data = np.array([(FGRAnnealing[0]-FGRAnnealing[1])*100/FGRAnnealing[1], (FGRAnnealing[2]-FGRAnnealing[3])*100/FGRAnnealing[3]])
-  data2 = np.array([(FGR2Annealing[0]-FGR2Annealing[1])*100/FGR2Annealing[1], (FGR2Annealing[2]-FGR2Annealing[3])*100/FGR2Annealing[3]])
-  dataBar = np.array([(AnnFGRVersion2[0]-AnnFGRVersion2[1])*100/AnnFGRVersion2[1], (AnnFGRVersion2[2]-AnnFGRVersion2[3])*100/AnnFGRVersion2[3]])
+  data = np.array([(FGRAnnealing[0]-FGRAnnealing[1]), (FGRAnnealing[2]-FGRAnnealing[3])])
+  data2 = np.array([(FGR2Annealing[0]-FGR2Annealing[1]), (FGR2Annealing[2]-FGR2Annealing[3])])
+  dataBar = np.array([(AnnFGRVersion2[0]-AnnFGRVersion2[1]), (AnnFGRVersion2[2]-AnnFGRVersion2[3])])
   plt.bar(x - width, data, 0.9*width, label='Kashibe et al. (1991)', color='C1', edgecolor = 'C1')
   plt.bar(x,data2, 0.9*width, label='This work', color='C0', edgecolor = 'C0')
   plt.bar(x + width,  dataBar, 0.9*width, label='SCIANTIX 2.0', color='C2',  edgecolor='C2')
   
   plt.xticks(x, categories)
   #plt.title('Difference between multiple and single ramp annealing')
-  plt.ylabel('FGR deviation between cyclic and isothermal (%)')
+  plt.ylabel('FGR difference between cyclic and isothermal (%)')
   plt.legend(loc='best')
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
@@ -264,17 +264,20 @@ def do_plot():
   x1 = np.array([20,15,10,5])
 
   fig, ax = plt.subplots(figsize=(7, 7))
-  plt.bar(x - width, FGRAnnealing[4:9], 0.9*width, label='Kashibe et al. (1991)', color='C1', edgecolor='C1')
-  plt.bar(x, FGR2Annealing[4:9], 0.9*width, label='This work', color='C0', edgecolor='C0')
-  plt.bar(x + width, AnnFGRVersion2[4:9], 0.9*width, label='SCIANTIX 2.0', color='C2', edgecolor='C2')
-  
+  FGR_values = FGRAnnealing[4:9]
+  FGR_err = [np.array(FGR_values) / 2, np.array(FGR_values) * 2]
+
+  plt.errorbar(x, FGR_values, yerr=FGR_err, fmt='o', label='Kashibe et al. (1991)', color='C1')
+  plt.errorbar(x, FGR2Annealing[4:9], fmt='s', label='This work', color='C0')
+
   plt.xticks(x, categories)
   plt.ylabel('FGR (%)')
   plt.xlabel('Heating rate')
   plt.title('Annealing at 2073 K - 23 GWd tU$^{-1}$')
   
   plt.legend(loc='best')
-  plt.ylim([0,40])
+  plt.xlim([-2,22])
+  plt.ylim([0,1e2])
   
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
   plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
@@ -284,18 +287,20 @@ def do_plot():
   plt.savefig('Images/FGRSpecifico23-Kashibe1991')
 
   fig, ax = plt.subplots(figsize=(7, 7))
-  plt.bar(x1 - width, FGRAnnealing[9:13], 0.9*width, label='Kashibe et al. (1991)', color='C1', edgecolor='C1')
-  plt.bar(x1, FGR2Annealing[9:13], 0.9*width, label='This work', color='C0', edgecolor='C0')
-  plt.bar(x1 + width, AnnFGRVersion2[9:13], 0.9*width, label='SCIANTIX 2.0', color='C2', edgecolor='C2')
-  
+  FGR_values = FGRAnnealing[9:13]
+  FGR_err = [np.array(FGR_values) / 2, np.array(FGR_values) * 2]
+
+  plt.errorbar(x1, FGR_values, yerr=FGR_err, fmt='o', label='Kashibe et al. (1991)', color='C1')
+  plt.errorbar(x1, FGR2Annealing[9:13], fmt='s', label='This work', color='C0')
+
   plt.xticks(x1, categories1)
   plt.ylabel('FGR (%)')
   plt.xlabel('Heating rate')
   plt.title('Annealing at 2073 K - 28 GWd tU$^{-1}$')
   
   plt.legend(loc='best')
-  plt.ylim([0,40])
-  
+  plt.xlim([3,22])
+  plt.ylim([0,1e2])
   plt.axhline(0, color='gray', linestyle='--', linewidth=1)
   plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
   plt.minorticks_on()
