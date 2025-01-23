@@ -6,7 +6,7 @@
 1	#	iTrappingRate (0= constant value, 1= Ham (1958))
 1	#	iNucleationRate (0= constant value, 1= Olander, Wongsawaeng (2006))
 1	#	iOutput (1= default output files)
-1	#	iGrainBoundaryVacancyDiffusivity (0= constant value, 1= Reynolds and Burton (1979), 2= Pastore et al. (2015))
+2	#	iGrainBoundaryVacancyDiffusivity (0= constant value, 1= Reynolds and Burton (1979), 2= Pastore et al. (2015))
 1	#	iGrainBoundaryBehaviour (0= no grain boundary bubbles, 1= Pastore et al (2013))
 0	#	iGrainBoundaryMicroCracking (0= no model considered, 1= Barani et al. (2017))
 1	#	iFuelMatrix (0= UO2, 1= UO2 + HBS)
