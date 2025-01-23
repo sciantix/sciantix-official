@@ -108,13 +108,13 @@ void Simulation::HighBurnupStructurePorosity()
 
     initial_conditions[0] = sciantix_variable["HBS pore density"].getInitialValue() + matrices["UO2HBS"].getPoreNucleationRate() * physics_variable["Time step"].getFinalValue();
     initial_conditions[1] = sciantix_variable["Xe in HBS pores"].getInitialValue() + 2.0 * matrices["UO2HBS"].getPoreNucleationRate() * physics_variable["Time step"].getFinalValue();
-    initial_conditions[2] = sciantix_variable["Xe atoms per HBS pore - variance"].getInitialValue() + matrices["UO2HBS"].getPoreNucleationRate() *(pow(sciantix_variable["Xe atoms per HBS pore"].getFinalValue() - 2.0 , 2.0)) * physics_variable["Time step"].getFinalValue();
+    initial_conditions[2] = sciantix_variable["Xe in HBS pores - variance"].getInitialValue() + matrices["UO2HBS"].getPoreNucleationRate() *(pow(sciantix_variable["Xe atoms per HBS pore"].getFinalValue() - 2.0 , 2.0)) * physics_variable["Time step"].getFinalValue();
 
     solver.Laplace3x3(coeff_matrix, initial_conditions);
 
     sciantix_variable["HBS pore density"].setFinalValue(initial_conditions[0]);
     sciantix_variable["Xe in HBS pores"].setFinalValue(initial_conditions[1]);
-    sciantix_variable["Xe atoms per HBS pore - variance"].setFinalValue(initial_conditions[2]);
+    sciantix_variable["Xe in HBS pores - variance"].setFinalValue(initial_conditions[2]);
 
     sciantix_variable["trapping rate hbs"].setFinalValue(matrices["UO2HBS"].getPoreTrappingRate());
 
@@ -180,7 +180,9 @@ void Simulation::HighBurnupStructurePorosity()
     sciantix_variable["HBS pore radius"].setInitialValue(0.620350491 * pow(sciantix_variable["HBS pore volume"].getInitialValue(), (1.0 / 3.0)));
 
     //calculation of the contribution of vacancies
-    double VacancyDiffusionCoefficient = 8.86e-6 * exp(-5.75e-19 / (boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 1e-39 * history_variable["Fission rate"].getFinalValue();
+    // double VacancyDiffusionCoefficient = 8.86e-6 * exp(-5.75e-19 / (boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 1e-39 * history_variable["Fission rate"].getFinalValue();
+    double VacancyDiffusionCoefficient = matrices["UO2HBS"].getGrainBoundaryVacancyDiffusivity();
+
     double WignerSeitzCellRadius = 1 / 1.611991954 * pow(sciantix_variable["HBS pore density"].getFinalValue(), (-1.0 / 3.0));
     double psi = sciantix_variable["HBS pore radius"].getInitialValue() / WignerSeitzCellRadius;
     double DimensionlessFactor = 10 * psi * (1 + pow(psi, 3)) / (- pow(psi, 6) + 5 * pow(psi, 2) - 9 * psi + 5); 
@@ -196,8 +198,8 @@ void Simulation::HighBurnupStructurePorosity()
     PorePressure = 
         sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * boltzmann_constant * history_variable["Temperature"].getFinalValue() * ((1 + PackingFraction + pow(PackingFraction, 2) - pow(PackingFraction, 3)) / (pow(1 - PackingFraction, 3))) / sciantix_variable["HBS pore volume"].getInitialValue();
     
-    std::cout<<"PorePressure = " << PorePressure<<std::endl; 
-    std::cout<<"EquilibriumPressure = " << EquilibriumPressure<<std::endl;
+    // std::cout<<"PorePressure = " << PorePressure<<std::endl; 
+    // std::cout<<"EquilibriumPressure = " << EquilibriumPressure<<std::endl;
     
     if(DimensionlessFactor)
         sciantix_variable["Vacancies per HBS pore"].setFinalValue(
