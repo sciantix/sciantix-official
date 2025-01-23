@@ -225,7 +225,9 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Xe in HBS pores - variance", "(at^2/m3)", Sciantix_variables[85], Sciantix_variables[85], toOutputHighBurnupStructure),
         SciantixVariable("Xe atoms per HBS pore", "(at/pore)", Sciantix_variables[86], Sciantix_variables[86], toOutputHighBurnupStructure),
         SciantixVariable("Xe atoms per HBS pore - variance", "(at^2/pore)", Sciantix_variables[88], Sciantix_variables[88], toOutputHighBurnupStructure),
-        SciantixVariable("Vacancies per HBS pore", "(vac/pore)", Sciantix_variables[200], Sciantix_variables[200], 1)
+        SciantixVariable("Vacancies per HBS pore", "(vac/pore)", Sciantix_variables[200], Sciantix_variables[200], 1),
+
+        SciantixVariable("trapping rate hbs", "(1/s)", Sciantix_variables[120], Sciantix_variables[120], 1)
     
     };
 
