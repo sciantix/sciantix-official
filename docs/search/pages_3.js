@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['sciantix_359',['SCIANTIX',['../index.html',1,'']]]
+  ['sciantix_377',['SCIANTIX',['../index.html',1,'']]]
 ];
