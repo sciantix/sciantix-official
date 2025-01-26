@@ -8,7 +8,6 @@ Model	Gas production - Xe in UO2HBS
 Model	Intragranular bubble behavior	: Pizzocri et al., JNM, 502 (2018) 323-330.
 Model	Gas diffusion - Xe in UO2 with HBS	
 Model	Grain-boundary micro-cracking	 : from Barani et al. (2017), JNM
-Model	Grain-boundary venting	Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE
 Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
 
 Matrix	UO2	
@@ -35,7 +34,7 @@ Input setting	iGrainBoundaryVacancyDiffusivity = 1
 Input setting	iGrainBoundaryBehaviour = 1
 Input setting	iGrainBoundaryMicroCracking = 1
 Input setting	iFuelMatrix = 1
-Input setting	iGrainBoundaryVenting = 1
+Input setting	iGrainBoundaryVenting = 0
 Input setting	iRadioactiveFissionGas = 0
 Input setting	iHelium = 0
 Input setting	iHeDiffusivity = 0
