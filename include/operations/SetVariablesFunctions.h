@@ -56,6 +56,10 @@ std::vector<std::string> getInputVariableNames()
         "iStoichiometryDeviation",
         "iBubbleDiffusivity",
         "iChromiumSolubility"
+        "iFuel"
+        "iElasticModulus"
+        "iPoissonRatio"
+        "iThermalConductivity"
     };
 
     return names;
@@ -239,6 +243,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Chromia precipitate", "(at/m3)", Sciantix_variables[158], Sciantix_variables[158], toOutputChromiumContent),
 
         SciantixVariable("Diffusion coefficient", "(m2/s)", Sciantix_variables[160], Sciantix_variables[160], 0),
+        SciantixVariable("Plutonium fraction", "(/)", Sciantix_variables[161], Sciantix_variables[161], 0),
     };
 
     return init_sciantix_variable;

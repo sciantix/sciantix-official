@@ -127,3 +127,124 @@ void Matrix::setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<
         sciantix_variable["HBS pore radius"].getFinalValue() *
         (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
 }
+
+void Matrix::setElasticModulus(int input_value, SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable)
+{
+    switch (input_value)
+	{
+        case 0:
+        {
+            /// @brief
+            /// iElasticModulus == 0
+            /// ----------------------------------
+            ///
+            /// This case assumes constant trial value for the fuel elastic modulus
+
+            const double E0 = 223700; //(MPa) 
+
+            elastic_modulus = E0;
+
+            break;
+        }
+
+        case 1:
+        {
+            /// @brief
+            /// iElasticModulus == 1
+            /// ----------------------------------
+            ///
+            /// This case assumes a value of the fuel elastic modulus accordingly to Lassmann and Moreno (1977)
+
+            const double E0 = 223700; //(MPa) 
+
+            double porosity = 1 - sciantix_variable["Fuel density"].getFinalValue()/matrix_density;
+
+            elastic_modulus = E0 * (1 - 2.6 * porosity) * (1 - 1.394e-4 * (history_variable["Temperature"].getFinalValue() - 273.15 - 20)) * 
+                                    (1 - 0.1506 * (1 - exp(-0.035 * sciantix_variable["Burnup"].getFinalValue())));
+
+            break;
+        }
+    }
+}
+
+void Matrix::setPoissonRatio(int input_value)
+{
+    switch (input_value)
+	{
+        case 0:
+        {
+            /// @brief
+            /// iElasticModulus == 0
+            /// ----------------------------------
+            ///
+            /// This case assumes constant value for the fuel poisson ratio accordingly to MATPRO (1977)
+
+            poisson_ratio = 0.316;
+
+            break;
+        }
+    }
+}
+
+void Matrix::setThermalConductivity(int input_value, SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable)
+{
+    switch (input_value)
+	{
+        case 0:
+        {
+            /// @brief
+            /// iThermalConductivity == 0
+            /// ----------------------------------
+            ///
+            /// This case assumes constant trial value for the fuel thermal conductivity
+
+            thermal_conductivity = 2;
+
+            break;
+        }
+
+        case 1:
+        {
+            /// @brief
+            /// iThermalConductivity == 1
+            /// ----------------------------------
+            ///
+            /// This case assumes constant trial value for the fuel thermal conductivity accordingly to MATPRO (1977)
+
+            thermal_conductivity = 0.316;
+
+            break;
+        }
+
+        case 2:
+        {
+            /// @brief
+            /// iThermalConductivity == 2
+            /// ----------------------------------
+            ///
+            /// This case assumes constant trial value for the MOX fuel thermal conductivity accordingly to Magni et al. (2020)
+
+            double A_0  = 0.01926;
+            double A_x  = 1.06e-6;
+            double A_pu = 2.63e-8;
+            double A    = A_0 + A_x * sciantix_variable["Stoichiometry deviation"].getFinalValue() + A_pu * sciantix_variable["Plutonium fraction"].getFinalValue();
+
+            double B_0  = 2.39e-4;
+            double B_pu = 1.37e-13;
+            double B    = B_0 + B_pu * sciantix_variable["Plutonium fraction"].getFinalValue(); 
+
+            double D    = 5.27e9;
+            double E    = 17109.5;
+
+            double porosity = 1 - matrix_density / sciantix_variable["Fuel density"].getFinalValue();
+
+            double k_0 = (1/(A + B * history_variable["Temperature"].getFinalValue()) + D/pow(history_variable["Temperature"].getFinalValue(),2) * exp(-E/history_variable["Temperature"].getFinalValue())) * pow((1 - porosity), 2.5);
+            double k_inf = 1.755;
+
+            thermal_conductivity = k_inf + (k_0 - k_inf)*exp(- sciantix_variable["Burnup"].getFinalValue()/128.75);
+
+            break;
+        }
+
+    }
+}
