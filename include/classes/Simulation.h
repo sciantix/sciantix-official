@@ -20,6 +20,7 @@
 #include <cmath>
 #include <vector>
 #include "Solver.h"
+#include "Fuel.h"
 #include "Model.h"
 #include "Matrix.h"
 #include "System.h"
@@ -44,6 +45,7 @@ private:
     SciantixArray<SciantixVariable> history_variable;
     SciantixArray<SciantixVariable> physics_variable;
     
+    SciantixArray<Fuel> fuels;
     SciantixArray<Model> model;
     SciantixArray<System> sciantix_system;
     SciantixArray<Matrix> matrices;
@@ -85,6 +87,7 @@ public:
     );
 
     void setGas();
+    void setFuel();
     void setMatrix();
     void setSystem();
 

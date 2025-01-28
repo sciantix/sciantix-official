@@ -69,6 +69,9 @@ Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
 	matrix_.setChromiumPrecipitate(0); // (at/m3)
 	matrix_.setChromiaSolution(0); // (at/m3)
 	matrix_.setChromiaPrecipitate(0); // (at/m3)
+    matrix_.setElasticModulus(int(input_variable["iElasticModulus"].getValue()), matrices, sciantix_variable, history_variable);
+    matrix_.setPoissonRatio(int(input_variable["iPoissonRatio"].getValue()));
+    matrix_.setThermalConductivity(int(input_variable["iThermalConductivity"].getValue()), matrices, sciantix_variable, history_variable);
 
     return matrix_;
 }
@@ -97,6 +100,9 @@ Matrix UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &
     matrix_.setPoreNucleationRate(sciantix_variable);
     matrix_.setPoreResolutionRate(sciantix_variable, history_variable);
     matrix_.setPoreTrappingRate(matrices, sciantix_variable);
+    matrix_.setElasticModulus(int(input_variable["iElasticModulus"].getValue()), matrices, sciantix_variable, history_variable);
+    matrix_.setPoissonRatio(int(input_variable["iPoissonRatio"].getValue()));
+    matrix_.setThermalConductivity(int(input_variable["iThermalConductivity"].getValue()), matrices, sciantix_variable, history_variable);
 
     return matrix_;
 }

@@ -63,6 +63,9 @@ public:
 	double chromia_solution;
 	double chromia_precipitate;
 
+	double elastic_modulus;
+	double poisson_ratio;
+    double thermal_conductivity;
 
     /**
      * @brief Sets the theoretical density of the matrix.
@@ -458,6 +461,51 @@ public:
 		/// Member function to set the chromia (Cr2O3) precipitate (kg)	
 		return chromia_precipitate;
 	}
+
+    /**
+     * @brief Sets the elastic modulus.
+     * @param input_value The correlation selection for the elastic modulus.
+     */
+    void setElasticModulus(int input_value, SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variables, SciantixArray<SciantixVariable> &history_variable);
+
+    /**
+     * @brief Retrieves the elastic modulus.
+     * @return The elastic modulus to set (GPa).
+     */
+    double getElasticModulus()
+    {
+        return elastic_modulus;
+    }
+
+    /**
+     * @brief Sets the Poisson ratio.
+     * @param input_value The correlation selection for the Poisson ratio.
+     */
+    void setPoissonRatio(int input_value);
+
+    /**
+     * @brief Retrieves Poisson ratio.
+     * @return The Poisson ratio to set.
+     */
+    double getPoissonRatio()
+    {
+        return poisson_ratio;
+    }
+
+    /**
+     * @brief Sets the thermal conductivity.
+     * @param input_value The correlation selection for the thermal consuctivity.
+     */
+    void setThermalConductivity(int input_value, SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variables, SciantixArray<SciantixVariable> &history_variable);
+
+    /**
+     * @brief Retrieves the thermal conductivity.
+     * @return thermal conductivity to set (W/m K).
+     */
+    double getThermalConductivity()
+    {
+        return thermal_conductivity;
+    }
 
     /**
      * @brief Constructor

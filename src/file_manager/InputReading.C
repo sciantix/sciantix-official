@@ -146,6 +146,10 @@ void InputReading(
 	Sciantix_options[20] = ReadOneSetting("iStoichiometryDeviation", input_settings, input_check);
 	Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
 	Sciantix_options[22] = ReadOneSetting("iChromiumSolubility",input_settings,input_check);
+	Sciantix_options[23] = ReadOneSetting("iFuel",input_settings,input_check);
+	Sciantix_options[24] = ReadOneSetting("iElasticModulus",input_settings,input_check);
+	Sciantix_options[25] = ReadOneSetting("iPoissonRatio",input_settings,input_check);
+	Sciantix_options[26] = ReadOneSetting("iThermalConductivity",input_settings,input_check);
 	
 	if (!input_initial_conditions.fail())
 	{
@@ -222,6 +226,8 @@ void InputReading(
 		Sciantix_variables[66] = ReadOneParameter("Initial stoichiometry deviation[0]", input_initial_conditions, input_check);
 
 		Sciantix_variables[150] = ReadOneParameter("Chromium content", input_initial_conditions, input_check);
+
+		Sciantix_variables[161] = ReadOneParameter("Plutonium fraction", input_initial_conditions, input_check);
 	}
 
 	int n = 0;
