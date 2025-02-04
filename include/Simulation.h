@@ -695,13 +695,10 @@ class Simulation : public Solver, public Model
 						solver.Decay(sciantix_variable[sv["Intergranular fractional intactness"]].getInitialValue(),
 							model[sm["Grain-boundary micro-cracking"]].getParameter().at(0), 
 							0.0,
-							sf_span_parameter*0.47*sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue()*1e6
+							(1-cos(matrix[sma["UO2"]].getSemidihedralAngle()))*sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue()*1e6
 						)
 					);
-					std::cout<<"Spacing/2 [um] = " <<sf_span_parameter<<std::endl;
-					std::cout<<"Spacing bubbles [um] = " <<0.47*sciantix_variable[sv["Intergranular bubble radius"]].getFinalValue()*1e6<<std::endl;
-					std::cout<<"Bubble pressure [MPa] = " << sciantix_variable[sv["Intergranular bubble pressure"]].getFinalValue()<<std::endl;
-                }
+				}
 				// ODE for the intergranular fractional intactness: this equation accounts for the healing of the intergranular fractional intactness with burnup
 				// df / dBu = - h f + h
 				sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(

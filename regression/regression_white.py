@@ -17,7 +17,7 @@ from regression_functions import *
 import scipy.stats as stats
 from sklearn.linear_model import LinearRegression
 from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLocator)
-
+from matplotlib.ticker import (LogLocator, LogFormatter, FuncFormatter)
 
 """ ------------------- Global Variables ------------------- """
 ListNames = ['4000-1','4000-2','4000-3','4000-4','4000-5',
@@ -74,7 +74,10 @@ BBconc = [2.287386, 2.670786, 3.050348, 3.466033, 3.69896, 3.326356, 3.505684, 4
 BBarea = [1.009114e-13, 8.735575e-14, 7.778015e-14, 7.160307e-14, 7.771358e-14, 6.876821e-14, 6.546949e-14, 5.679548e-14, 4.690895e-14, 3.844911e-14, 3.420191e-14, 6.607908e-14, 6.193175e-14, 5.324007e-14, 4.159464e-14, 2.994387e-14, 2.779648e-13, 2.569561e-13, 1.975083e-13, 1.39627e-13, 1.105857e-13, 1.76833e-13, 1.629085e-13, 1.388596e-13, 1.212853e-13, 1.002697e-13, 1.609855e-13, 1.608243e-13, 1.480818e-13, 8.942154e-14, 8.416434e-14, 7.523943e-14, 6.70574e-14, 8.630468e-14, 8.392706e-14, 9.893432e-14, 9.417338e-14, 9.057567e-14, 1.020457e-13, 4.74862e-14, 4.634312e-14, 4.289968e-14, 4.376229e-14]
 Fc = [23.082330000000002, 23.33085, 23.72566, 24.81786, 28.745939999999997, 22.87475, 22.95153, 23.23271, 23.81895, 25.209989999999998, 26.322699999999998, 22.902230000000003, 23.019029999999997, 23.349700000000002, 24.24424, 25.476219999999998, 22.52738, 22.60361, 22.855220000000003, 23.40249, 24.025109999999998, 22.99482, 23.10827, 23.421239999999997, 23.697879999999998, 24.06863, 18.28815, 18.28905, 18.32981, 22.87761, 22.97335, 23.27999, 23.96864, 23.9312, 24.03446, 23.54221, 23.6407, 23.94576, 24.867729999999998, 23.53096, 23.57814, 23.94493, 24.81667]
 FGR = [16.28839, 17.09694, 17.37122, 15.979769999999998, 12.076099999999999, 17.914369999999998, 19.94121, 19.335649999999998, 16.1911, 13.018569999999999, 10.79592, 21.93493, 21.09765, 18.47281, 15.989529999999998, 10.82828, 24.70989, 23.92744, 26.50783, 21.96474, 23.23658, 15.38274, 17.40516, 17.55492, 18.81633, 17.35152, 30.27805, 30.27229, 29.64293, 16.98567, 16.53569, 15.485389999999999, 13.8739, 18.60472, 18.33091, 26.419120000000003, 25.738860000000003, 22.63026, 25.02742, 13.658129999999998, 15.29403, 12.42412, 13.404720000000001]
-SW = [0.5046069, 0.5330534, 0.5657517, 0.5948491, 0.6604851, 0.473657, 0.5345111, 0.5295682, 0.4695437, 0.4533384, 0.4430789, 0.5828436, 0.5625288, 0.5022538, 0.4855439, 0.4289218, 0.8173517, 0.7790159, 0.8251233, 0.6453449, 0.6993537, 0.5427738, 0.6153484, 0.6192498000000001, 0.6653234, 0.5973389, 0.7465315, 0.7461945, 0.7176193, 0.5594996, 0.5450752, 0.5222441, 0.5076155, 0.6612224, 0.6548643, 0.6850275, 0.6653209999999999, 0.6069834, 0.8544117, 0.44885430000000004, 0.5114833, 0.43413280000000004, 0.5425215]
+#SW = [0.5046069, 0.5330534, 0.5657517, 0.5948491, 0.6604851, 0.473657, 0.5345111, 0.5295682, 0.4695437, 0.4533384, 0.4430789, 0.5828436, 0.5625288, 0.5022538, 0.4855439, 0.4289218, 0.8173517, 0.7790159, 0.8251233, 0.6453449, 0.6993537, 0.5427738, 0.6153484, 0.6192498000000001, 0.6653234, 0.5973389, 0.7465315, 0.7461945, 0.7176193, 0.5594996, 0.5450752, 0.5222441, 0.5076155, 0.6612224, 0.6548643, 0.6850275, 0.6653209999999999, 0.6069834, 0.8544117, 0.44885430000000004, 0.5114833, 0.43413280000000004, 0.5425215]
+
+SW = [0.4807149, 0.5061325, 0.5355774, 0.5655364, 0.6373828, 0.45893160000000005, 0.5172988, 0.5112292, 0.45213830000000005, 0.44072599999999995, 0.4585477, 0.5652815, 0.5447206, 0.4848695, 0.4684657, 0.4887323, 0.8099508, 0.7716721, 0.8145247, 0.6347471, 0.6874132, 0.5321062, 0.602669, 0.6056888, 0.6494001, 0.5790637000000001, 0.7354021, 0.7350637, 0.706366, 0.5394888, 0.5239209, 0.49943150000000003, 0.48803470000000004, 0.6404367999999999, 0.6335798, 0.6573399, 0.6374654000000001, 0.5814253, 0.8276218999999999, 0.4271179, 0.48652870000000004, 0.4137432, 0.5273566000000001]
+
 bbconcVersion2=np.array(BBconc)
 bbareaVersion2=np.array(BBarea)
 FcVersion2 = np.array(Fc)
@@ -316,10 +319,10 @@ def do_plot():
     NewSwellinggold.append(gold[i]/fgold[i])
 
   # corrected swelling log
-  plt.rcParams.update({'font.size': 14})
-
-  fig, ax = plt.subplots(figsize=(7, 7))
-  plt.rcParams.update({'font.size': 14})
+  plt.rcParams.update({'font.size': 18})
+  plt.rcParams.update({'lines.markersize': 6})  # Corrected parameter for marker size
+  plt.rcParams.update({'lines.linewidth': 2}) 
+  fig, ax = plt.subplots(figsize=(8, 8))
   # Fast ramp
   ax.errorbar(
       np.concatenate([gbSwellingWhite[0:16], gbSwellingWhite[39:43]]),
@@ -342,28 +345,20 @@ def do_plot():
       elinewidth=0.5, linewidth=0.5, color='C3', fmt='o', label='Long hold'
   )
 
-  #ax.scatter(np.concatenate([gbSwellingWhite[0:16],gbSwellingWhite[39:43]]), np.concatenate([gbSwellingVersion2[0:16],gbSwellingVersion2[39:43]]), c='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
-  #ax.scatter(gbSwellingWhite[16:39], gbSwellingVersion2[16:39], facecolors = 'none', edgecolors='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
-
   ax.plot([1e-3, 1e2],[1e-3, 1e2], color='gray', linestyle='-', linewidth=0.5)
   ax.plot([1e-3, 1e2],[2e-3, 2e2], color='gray', linestyle='--', linewidth=0.5)
   ax.annotate('x2', (1.25e-1, 3e-1), color='k')
   ax.plot([1e-3, 1e2],[5e-4, 5e1], color='gray', linestyle='--', linewidth=0.5)
   ax.annotate('/2', (3e-1, 1.3e-1),  color='k')
-  # Set ticks and formatter
 
-  ax.tick_params(axis='both', which='major')
   ax.set_xscale('log')
   ax.set_yscale('log')
   ax.set_xlim(1e-1, 1e1)
   ax.set_ylim(1e-1, 1e1)
 
-  ax.set_title('Intergranular gaseous swelling')
-  ax.set_xlabel('Experimental (%)')
-  ax.set_ylabel('Calculated (%)')
-  ax.legend()
-  #ax.grid(color='gray', linestyle='--', linewidth=0.5)
-
+  ax.set_xlabel('Experimental swelling (%)')
+  ax.set_ylabel('Calculated swelling (%)')
+  ax.legend(frameon=False)
   
   plt.savefig('Images/SwellingCorretto-White2004')
   plt.show()
@@ -392,10 +387,6 @@ def do_plot():
       xerr=gbConcWhitesigma[26:35],
       elinewidth=0.5, linewidth=0.5, color='C3', fmt='o', label='Long hold'
   )
-  #ax.scatter(np.concatenate([gbConcWhite[0:16],gbConcWhite[39:43]]), np.concatenate([bbconc[0:16],bbconc[39:43]]), c='C0', marker = '^', s=40, label='This work - Fast ramp')
-  #ax.scatter(gbConcWhite[16:39], bbconc[16:39], facecolors='none', edgecolors='C0', marker = '^', s=40, label='This work - Slow ramp')
-  #ax.scatter(np.concatenate([gbConcWhite[0:16], gbConcWhite[39:43]]), np.concatenate([bbconcVersion2[0:16],bbconcVersion2[39:43]]), c='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - Fast ramp', alpha =0.7)
-  #ax.scatter(gbConcWhite[16:39], bbconcVersion2[16:39], facecolors = 'none', edgecolors='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - Slow ramp', alpha =0.7)
   ax.set_xscale('log')
   ax.set_yscale('log')
 
@@ -414,7 +405,7 @@ def do_plot():
   ax.set_ylabel('Calculated (bub μm$^{-2}$)')
   ax.set_title('Bubble concentration')
   ax.legend()
-  plt.savefig('Images/BubConc-White2004')
+  #plt.savefig('Images/BubConc-White2004')
   plt.show()
 
     # Bubble area
@@ -458,7 +449,7 @@ def do_plot():
   ax.set_ylabel('Calculated (μm$^{2}$)')
   ax.set_title('Bubble area')
   ax.legend()
-  plt.savefig('Images/BubArea-White2004')
+  #plt.savefig('Images/BubArea-White2004')
   plt.show()
 
   # GOLD vs. SCIANTIX 2.0 - fractional coverage
@@ -506,7 +497,7 @@ def do_plot():
   ax.set_ylabel('Calculated (%)')
   ax.set_title('Fractional coverage of grain faces')
   ax.legend()
-  plt.savefig('Images/Fc-White2004')
+  #plt.savefig('Images/Fc-White2004')
   plt.show()
 
 

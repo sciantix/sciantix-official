@@ -58,9 +58,11 @@ FGRAnnealing = [05.80/0.75, 05.80/0.75, 13.71/0.75, 22.26, #1873 K annealing, 6-
                 ]
 FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
-AnnFGRVersion2 = [3.3759655, 18.121944, 25.802892999999997, 27.482639, 7.9969505, 22.887864, 29.635942999999994, 31.023039000000004]
-TotFGRVersion2 = [3.962144, 19.88403, 30.75867, 35.62334, 8.583129, 24.64995, 34.591719999999995, 39.163740000000004]
-SwellCorrVersion2 = [2.8560209999999997, 3.322382, 3.027343, 3.039617, 2.33974, 2.753497, 2.909748, 3.0331580000000002]
+#AnnFGRVersion2 = [3.3759655, 18.121944, 25.802892999999997, 27.482639, 7.9969505, 22.887864, 29.635942999999994, 31.023039000000004]
+#TotFGRVersion2 = [3.962144, 19.88403, 30.75867, 35.62334, 8.583129, 24.64995, 34.591719999999995, 39.163740000000004]
+#SwellCorrVersion2 = [2.8560209999999997, 3.322382, 3.027343, 3.039617, 2.33974, 2.753497, 2.909748, 3.0331580000000002]
+AnnFGRVersion2 = [4.7349653, 19.668812, 28.485477999999997, 25.453490000000002, 8.6988863, 23.891092, 32.412018, 29.411369999999998]
+SwellCorrVersion2 = [2.684515, 3.156465, 2.967756, 3.068872, 2.137713, 2.589207, 2.9052830000000003, 3.136377]
 
 goldFGR = []
 goldSwelling = []
@@ -149,11 +151,6 @@ def do_plot():
       elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='2073 K'
   )
 
-  #ax.scatter(SwellingKashibe[1:4], NewSwelling2[1:4],c='C0', marker = '^', s=40, label='This work - 1873 K')
-  #ax.scatter(SwellingKashibe[4:7], NewSwelling2[4:7], facecolors= 'none', edgecolors = 'C0', marker = '^', s=40,label='This work - 2073 K')
-  #ax.scatter(SwellingKashibe[1:4], SwellCorrVersion2[1:4], c='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - 1873 K',  alpha =0.7)
-  #ax.scatter(SwellingKashibe[4:7], SwellCorrVersion2[4:7], facecolors= 'none', edgecolors='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - 2073 K', alpha =0.7)
-  
   r = range(1, 100)
   ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
   ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
@@ -172,7 +169,6 @@ def do_plot():
   ax.set_ylabel('Calculated (%)')
   ax.legend()
   
-  plt.savefig('Images/SwellingDiviso-Kashibe1990')
   plt.show()
 
   goldFGRAnnealing = []
@@ -180,7 +176,10 @@ def do_plot():
     FGR2Annealing.append(FGR2[i] - FGRBase[i])
     goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
 
-  fig, ax = plt.subplots(figsize=(7, 7))
+  plt.rcParams.update({'font.size': 18})
+  plt.rcParams.update({'lines.markersize': 6})  # Corrected parameter for marker size
+  plt.rcParams.update({'lines.linewidth': 2}) 
+  fig, ax = plt.subplots(figsize=(8, 8))
 
   ax.errorbar(
       FGRAnnealing[1:4], FGR2Annealing[1:4],
@@ -191,11 +190,7 @@ def do_plot():
       FGRAnnealing[4:8], FGR2Annealing[4:8],
       elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='2073 K'
   )
-  #ax.scatter(FGRAnnealing[1:4], FGR2Annealing[1:4],c='C0', marker = '^', s=40, label='This work - 1873 K')
-  #ax.scatter(FGRAnnealing[4:8], FGR2Annealing[4:8],facecolors= 'none', edgecolors = 'C0', marker = '^', s=40,label='This work - 2073 K')
-  #ax.scatter(FGRAnnealing[1:4], AnnFGRVersion2[1:4], c='C2', marker = 'd', s=40, label='SCIANTIX 2.0 - 1873 K', alpha =0.7)
-  #ax.scatter(FGRAnnealing[4:8], AnnFGRVersion2[4:8], facecolors='none', edgecolors = 'C2', marker = 'd', s=40, label='SCIANTIX 2.0 - 2073 K', alpha =0.7)
-  
+
   r = range(1, 100)
   ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
   ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
@@ -209,13 +204,11 @@ def do_plot():
   ax.set_xlim(1, 100)
   ax.set_ylim(1, 100)
 
-
   ax.set_title('Fission gas release - Annealing phase')
   ax.set_xlabel('Experimental (%)')
   ax.set_ylabel('Calculated (%)')
   ax.legend()
 
-  plt.savefig('Images/FGRAnnealingDiviso-Kashibe1990')
   plt.show()
 
   # Bubble concentration
@@ -248,7 +241,7 @@ def do_plot():
   ax.set_ylabel('Calculated (bub μm$^{-2}$)')
   ax.set_title('Bubble concentration')
   ax.legend()
-  plt.savefig('Images/BubConc-Kashibe1990')
+  #plt.savefig('Images/BubConc-Kashibe1990')
   plt.show()
 
   ###########FGR##############
@@ -257,107 +250,150 @@ def do_plot():
   categories1 = ['16 GWd tU$^{-1}$','23 GWd tU$^{-1}$', '28 GWd tU$^{-1}$']
   categories2 = ['6 GWd tU$^{-1}$', '16 GWd tU$^{-1}$','23 GWd tU$^{-1}$']
   
-  width = 1
-  x = np.array([0,5,10,15])
-  x1 = np.array([5,10,15])
-  x2 = np.array([0,5,10])
+  ListNames = ['1873 K 6 GWd tU$^{-1}$','1873 K 16 GWd tU$^{-1}$','1873 K 23 GWd tU$^{-1}$','1873 K 28 GWd tU$^{-1}$',
+             '2073 K 6 GWd tU$^{-1}$','2073 K 16 GWd tU$^{-1}$','2073 K 23 GWd tU$^{-1}$','2073 K 28 GWd tU$^{-1}$']
 
-  fig, ax = plt.subplots(figsize=(7, 7))
+  T1873_index = [0,1,2,3]
+  T2073_index = [4,5,6,7]
 
-  FGR_values = FGRAnnealing[1:4]
-  FGR_err = [np.array(FGR_values) / 2, np.array(FGR_values) * 2]
+  burnup6_index = [0,4]  # Indici per burnup 23
+  burnup16_index = [1,5]  # Indici per burnup 28
+  burnup23_index = [2,6]  # Indici per burnup 23
+  burnup28_index = [3,7]  # Indici per burnup 28
 
-  plt.errorbar(x1, FGR_values, yerr=FGR_err, fmt='o', label='Une et al. (1990)', color='C1')
-  plt.errorbar(x1, FGR2Annealing[1:4], fmt='s', label='This work', color='C0')
+  FGRyes = [1,2,3,4,5,6,7]
+  SWyes =[1,2,3,4,5,6]
+  plt.rcParams.update({'font.size': 18})
+  plt.rcParams.update({'lines.markersize': 6})  # Corrected parameter for marker size
+  plt.rcParams.update({'lines.linewidth': 2}) 
+  fig, ax = plt.subplots(figsize=(8, 8))
 
-  plt.xticks(x1, categories1)
-  plt.ylabel('FGR (%)')
-  plt.xlabel('Burn-up')
-  plt.title('Annealing at 1873 K')
-  plt.legend(loc='best')
-  plt.xlim([3,17])
-  plt.ylim([0,1e2])
-  
-  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
-  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
-  plt.minorticks_on()
-  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+  # Burnup 6 con cerchi
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(T2073_index, burnup6_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(T2073_index, burnup6_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C0', fmt='^', label='Burnup 6, T=2073 K')
 
-  plt.savefig('Images/FGRSpecifico1600-Kashibe1990')
+  # Burnup 16 con cerchi
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(T1873_index, burnup16_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(T1873_index, burnup16_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='Burnup 16, T=1873 K')
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(T2073_index, burnup16_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(T2073_index, burnup16_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C2', fmt='^', label='Burnup 16, T=2073 K')
 
-  fig, ax = plt.subplots(figsize=(7, 7))
+  # Burnup 23 con cerchi
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(T1873_index, burnup23_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(T1873_index, burnup23_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C3', fmt='o', label='Burnup 23, T=1873 K')
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(T2073_index, burnup23_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(T2073_index, burnup23_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C3', fmt='^', label='Burnup 23, T=2073 K')
 
-  FGR_values = FGRAnnealing[4:8]
-  FGR_err = [np.array(FGR_values) / 2, np.array(FGR_values) * 2]
+  # Burnup 28 con cerchi
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(T1873_index, burnup28_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(T1873_index, burnup28_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C4', fmt='o', label='Burnup 28, T=1873 K')
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(T2073_index, burnup28_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(T2073_index, burnup28_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C4', fmt='^', label='Burnup 28, T=2073 K')
 
-  plt.errorbar(x, FGR_values, yerr=FGR_err, fmt='o', label='Une et al. (1990)', color='C1')
-  plt.errorbar(x, FGR2Annealing[4:8], fmt='s', label='This work', color='C0')
+  # Linee guida
+  r = range(1, 100)
+  ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
+  ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('x2', (1.25, 3), color='k')
+  ax.plot(r, [x * 0.5 for x in r], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('/2', (3, 1.3),  color='k')
 
-  plt.xticks(x, categories)
-  plt.ylabel('FGR (%)')
-  plt.xlabel('Burn-up')
-  plt.title('Annealing at 2073 K')
-  plt.legend(loc='best')
-  plt.xlim([-2,17])
-  plt.ylim([0,1e2])
-  
-  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
-  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
-  plt.minorticks_on()
-  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+  # Impostazioni scala logaritmica
+  ax.set_yscale('log')
+  ax.set_xscale('log')
+  ax.tick_params(axis='both', which='major')
+  ax.set_xlim(1, 100)
+  ax.set_ylim(1, 100)
 
-  plt.savefig('Images/FGRSpecifico1800-Kashibe1990')
+  # Legenda intelligente
+  custom_lines = [
+      plt.Line2D([0], [0], color='k', marker='o', linestyle='', markersize=8, label='T = 1873 K'),
+      plt.Line2D([0], [0], color='k', marker='^', linestyle='', markersize=8, label='T = 2073 K'),
+      plt.Line2D([0], [0], color='C0', marker='s', linestyle='', markersize=8, label='6 GWd tU$^{-1}$'),
+      plt.Line2D([0], [0], color='C2', marker='s', linestyle='', markersize=8, label='16 GWd tU$^{-1}$'),
+      plt.Line2D([0], [0], color='C3', marker='s', linestyle='', markersize=8, label='23 GWd tU$^{-1}$'),
+      plt.Line2D([0], [0], color='C4', marker='s', linestyle='', markersize=8, label='28 GWd tU$^{-1}$')
+  ]
+  ax.legend(handles=custom_lines, loc='best', frameon=False)
+
+  # Titoli e legende
+  ax.set_xlabel('FGR experimental (%)')
+  ax.set_ylabel('FGR calculated (%)')
+
+  plt.tight_layout()
+  plt.savefig('Images/FGR-Kashibe1990')
   plt.show()
 
-  ######## Swelling ##############
+  plt.rcParams.update({'font.size': 18})
+  plt.rcParams.update({'lines.markersize': 6})  # Corrected parameter for marker size
+  plt.rcParams.update({'lines.linewidth': 2}) 
+  fig, ax = plt.subplots(figsize=(8, 8))
 
-  fig, ax = plt.subplots(figsize=(7, 7))
+  # Burnup 6 con cerchi
+  ax.errorbar(np.array(SwellingKashibe)[np.intersect1d(T2073_index, burnup6_index)], 
+              np.array(NewSwelling2)[np.intersect1d(T2073_index, burnup6_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C0', fmt='^', label='Burnup 6, T=2073 K')
 
-  SW_values = SwellingKashibe[1:4]
-  SW_err = [np.array(SW_values) / 2, np.array(SW_values) * 2]
+  # Burnup 16 con cerchi
+  ax.errorbar(np.array(SwellingKashibe)[np.intersect1d(T1873_index, burnup16_index)], 
+              np.array(NewSwelling2)[np.intersect1d(T1873_index, burnup16_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='Burnup 16, T=1873 K')
+  ax.errorbar(np.array(SwellingKashibe)[np.intersect1d(T2073_index, burnup16_index)], 
+              np.array(NewSwelling2)[np.intersect1d(T2073_index, burnup16_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C2', fmt='^', label='Burnup 16, T=2073 K')
 
-  plt.errorbar(x1, SW_values, yerr=SW_err, fmt='o', label='Une et al. (1990)', color='C1')
-  plt.errorbar(x1, NewSwelling2[1:4], fmt='s', label='This work', color='C0')
+  # Burnup 23 con cerchi
+  ax.errorbar(np.array(SwellingKashibe)[np.intersect1d(T1873_index, burnup23_index)], 
+              np.array(NewSwelling2)[np.intersect1d(T1873_index, burnup23_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C3', fmt='o', label='Burnup 23, T=1873 K')
+  ax.errorbar(np.array(SwellingKashibe)[np.intersect1d(T2073_index, burnup23_index)], 
+              np.array(NewSwelling2)[np.intersect1d(T2073_index, burnup23_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C3', fmt='^', label='Burnup 23, T=2073 K')
 
-  plt.xticks(x1, categories1)
-  plt.ylabel('Swelling (%)')
-  plt.xlabel('Burn-up')
-  plt.title('Annealing at 1873 K')
-  plt.ylim([1e-1,1e2])
-  plt.yscale('log')
+  # Burnup 28 con cerchi
+  ax.errorbar(np.array(SwellingKashibe)[np.intersect1d(T1873_index, burnup28_index)], 
+              np.array(NewSwelling2)[np.intersect1d(T1873_index, burnup28_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C4', fmt='o', label='Burnup 28, T=1873 K')
   
-  plt.legend(loc='best')
-  
-  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
-  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
-  plt.minorticks_on()
-  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+  # Linee guida
+  r = range(1, 100)
+  ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
+  ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('x2', (1.25, 3), color='k')
+  ax.plot(r, [x * 0.5 for x in r], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('/2', (3, 1.3),  color='k')
 
-  plt.savefig('Images/SwellingSpecifico1600-Kashibe1990')
+  # Impostazioni scala logaritmica
+  ax.set_yscale('log')
+  ax.set_xscale('log')
+  ax.tick_params(axis='both', which='major')
+  ax.set_xlim(1, 100)
+  ax.set_ylim(1, 100)
 
-  fig, ax = plt.subplots(figsize=(7, 7))
+  # Legenda intelligente
+  custom_lines = [
+      plt.Line2D([0], [0], color='k', marker='o', linestyle='', markersize=8, label='T = 1873 K'),
+      plt.Line2D([0], [0], color='k', marker='^', linestyle='', markersize=8, label='T = 2073 K'),
+      plt.Line2D([0], [0], color='C0', marker='s', linestyle='', markersize=8, label='6 GWd tU$^{-1}$'),
+      plt.Line2D([0], [0], color='C2', marker='s', linestyle='', markersize=8, label='16 GWd tU$^{-1}$'),
+      plt.Line2D([0], [0], color='C3', marker='s', linestyle='', markersize=8, label='23 GWd tU$^{-1}$'),
+      plt.Line2D([0], [0], color='C4', marker='s', linestyle='', markersize=8, label='28 GWd tU$^{-1}$')
+  ]
+  ax.legend(handles=custom_lines, loc='best', frameon=False)
 
-  SW_values = SwellingKashibe[4:7]
-  SW_err = [np.array(SW_values) / 2, np.array(SW_values) * 2]
+  # Titoli e legende
+  ax.set_xlabel('Experimental swelling (%)')
+  ax.set_ylabel('Calculated swelling (%)')
 
-  plt.errorbar(x2, SW_values, yerr=SW_err, fmt='o', label='Une et al. (1990)', color='C1')
-  plt.errorbar(x2, NewSwelling2[4:7], fmt='s', label='This work', color='C0')
-
-  plt.xticks(x2, categories2)
-  plt.ylabel('Swelling (%)')
-  plt.xlabel('Burn-up')
-  plt.title('Annealing at 2073 K')
-  plt.xlim([-2,12])
-  plt.ylim([1e-1,1e2])
-  plt.yscale('log')
-  plt.legend(loc='best')
-  
-  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
-  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
-  plt.minorticks_on()
-  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
-
-  plt.savefig('Images/SwellingSpecifico1800-Kashibe1990')
+  plt.tight_layout()
+  plt.savefig('Images/Swelling-Kashibe1990')
   plt.show()
 
 

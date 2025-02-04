@@ -1,2014 +1,505 @@
 Initial bubble concentration (bub/m2): 2.5e+13
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0
-Bubble pressure [MPa] = 0
 Warning NAN values in GB state
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0
-Bubble pressure [MPa] = 0
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.00672298
-Bubble pressure [MPa] = 58.9172
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.00933887
-Bubble pressure [MPa] = 36.7589
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0117034
-Bubble pressure [MPa] = 29.4543
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0137341
-Bubble pressure [MPa] = 25.5162
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0156853
-Bubble pressure [MPa] = 23.5894
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0175217
-Bubble pressure [MPa] = 22.2386
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0192732
-Bubble pressure [MPa] = 21.2557
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0209475
-Bubble pressure [MPa] = 20.4821
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0225593
-Bubble pressure [MPa] = 19.8686
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0241186
-Bubble pressure [MPa] = 19.3704
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0256348
-Bubble pressure [MPa] = 18.9588
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0271152
-Bubble pressure [MPa] = 18.6112
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0285661
-Bubble pressure [MPa] = 18.3118
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0299925
-Bubble pressure [MPa] = 18.0493
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0313988
-Bubble pressure [MPa] = 17.8154
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0327884
-Bubble pressure [MPa] = 17.6038
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0341644
-Bubble pressure [MPa] = 17.4099
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0355293
-Bubble pressure [MPa] = 17.23
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.036885
-Bubble pressure [MPa] = 17.0613
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0382332
-Bubble pressure [MPa] = 16.9011
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0395753
-Bubble pressure [MPa] = 16.7474
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0409123
-Bubble pressure [MPa] = 16.5983
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0422449
-Bubble pressure [MPa] = 16.452
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0435736
-Bubble pressure [MPa] = 16.3069
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0448988
-Bubble pressure [MPa] = 16.1614
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0462204
-Bubble pressure [MPa] = 16.0141
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0475383
-Bubble pressure [MPa] = 15.8635
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0488522
-Bubble pressure [MPa] = 15.7084
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0501616
-Bubble pressure [MPa] = 15.5477
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0514659
-Bubble pressure [MPa] = 15.3805
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0527642
-Bubble pressure [MPa] = 15.2062
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0540557
-Bubble pressure [MPa] = 15.0245
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0553395
-Bubble pressure [MPa] = 14.8354
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0566148
-Bubble pressure [MPa] = 14.6391
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0578805
-Bubble pressure [MPa] = 14.4363
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0591359
-Bubble pressure [MPa] = 14.2278
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0603802
-Bubble pressure [MPa] = 14.0146
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0616127
-Bubble pressure [MPa] = 13.798
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0628329
-Bubble pressure [MPa] = 13.5793
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0640405
-Bubble pressure [MPa] = 13.3598
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0652351
-Bubble pressure [MPa] = 13.141
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0664168
-Bubble pressure [MPa] = 12.9241
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0675854
-Bubble pressure [MPa] = 12.7104
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0687414
-Bubble pressure [MPa] = 12.5009
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0698848
-Bubble pressure [MPa] = 12.2967
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0710162
-Bubble pressure [MPa] = 12.0987
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0721362
-Bubble pressure [MPa] = 11.9074
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0732452
-Bubble pressure [MPa] = 11.7235
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.074344
-Bubble pressure [MPa] = 11.5474
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0754333
-Bubble pressure [MPa] = 11.3794
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0765139
-Bubble pressure [MPa] = 11.2197
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0775866
-Bubble pressure [MPa] = 11.0683
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0786523
-Bubble pressure [MPa] = 10.9254
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0797117
-Bubble pressure [MPa] = 10.7909
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0807659
-Bubble pressure [MPa] = 10.6645
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0818156
-Bubble pressure [MPa] = 10.5463
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0828617
-Bubble pressure [MPa] = 10.4359
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0839052
-Bubble pressure [MPa] = 10.3331
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0849467
-Bubble pressure [MPa] = 10.2377
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0859872
-Bubble pressure [MPa] = 10.1493
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0870275
-Bubble pressure [MPa] = 10.0677
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0880683
-Bubble pressure [MPa] = 9.99259
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0891106
-Bubble pressure [MPa] = 9.92358
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0901549
-Bubble pressure [MPa] = 9.86039
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.091202
-Bubble pressure [MPa] = 9.80268
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0922527
-Bubble pressure [MPa] = 9.75014
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0933076
-Bubble pressure [MPa] = 9.70243
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0943673
-Bubble pressure [MPa] = 9.65924
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0954325
-Bubble pressure [MPa] = 9.62025
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0965163
-Bubble pressure [MPa] = 9.74655
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0975924
-Bubble pressure [MPa] = 9.7113
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0986768
-Bubble pressure [MPa] = 9.83438
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0997653
-Bubble pressure [MPa] = 9.95743
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.100848
-Bubble pressure [MPa] = 10.0805
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.101925
-Bubble pressure [MPa] = 10.2035
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.102996
-Bubble pressure [MPa] = 10.3265
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.104061
-Bubble pressure [MPa] = 10.4496
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.105121
-Bubble pressure [MPa] = 10.5727
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.106175
-Bubble pressure [MPa] = 10.6958
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.107223
-Bubble pressure [MPa] = 10.819
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.108253
-Bubble pressure [MPa] = 10.7877
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.109289
-Bubble pressure [MPa] = 10.9083
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.110331
-Bubble pressure [MPa] = 11.0289
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.111367
-Bubble pressure [MPa] = 11.1496
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.112398
-Bubble pressure [MPa] = 11.2704
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.113423
-Bubble pressure [MPa] = 11.3912
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.114443
-Bubble pressure [MPa] = 11.5121
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.115457
-Bubble pressure [MPa] = 11.6331
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.116466
-Bubble pressure [MPa] = 11.7542
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.117471
-Bubble pressure [MPa] = 11.8754
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.118456
-Bubble pressure [MPa] = 11.8485
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.119448
-Bubble pressure [MPa] = 11.9675
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.120446
-Bubble pressure [MPa] = 12.0865
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.121439
-Bubble pressure [MPa] = 12.2057
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.122426
-Bubble pressure [MPa] = 12.325
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.123409
-Bubble pressure [MPa] = 12.4444
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.124388
-Bubble pressure [MPa] = 12.5639
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.125361
-Bubble pressure [MPa] = 12.6834
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.12633
-Bubble pressure [MPa] = 12.8031
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127295
-Bubble pressure [MPa] = 12.9229
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127258
-Bubble pressure [MPa] = 12.9218
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127296
-Bubble pressure [MPa] = 12.9208
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127334
-Bubble pressure [MPa] = 12.9198
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127372
-Bubble pressure [MPa] = 12.9188
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.12741
-Bubble pressure [MPa] = 12.9178
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127449
-Bubble pressure [MPa] = 12.9168
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127487
-Bubble pressure [MPa] = 12.9158
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127526
-Bubble pressure [MPa] = 12.9205
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127565
-Bubble pressure [MPa] = 12.9253
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127604
-Bubble pressure [MPa] = 12.93
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127643
-Bubble pressure [MPa] = 12.9348
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127682
-Bubble pressure [MPa] = 12.9395
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127722
-Bubble pressure [MPa] = 12.9442
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127761
-Bubble pressure [MPa] = 12.949
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.1278
-Bubble pressure [MPa] = 12.9537
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127839
-Bubble pressure [MPa] = 12.9585
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127878
-Bubble pressure [MPa] = 12.9632
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127917
-Bubble pressure [MPa] = 12.9622
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127956
-Bubble pressure [MPa] = 12.967
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.127995
-Bubble pressure [MPa] = 12.9717
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128034
-Bubble pressure [MPa] = 12.9765
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128073
-Bubble pressure [MPa] = 12.9812
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128112
-Bubble pressure [MPa] = 12.9859
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128152
-Bubble pressure [MPa] = 12.9907
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128191
-Bubble pressure [MPa] = 12.9954
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.12823
-Bubble pressure [MPa] = 13.0002
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128269
-Bubble pressure [MPa] = 13.0049
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128308
-Bubble pressure [MPa] = 13.0096
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128347
-Bubble pressure [MPa] = 13.0144
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128386
-Bubble pressure [MPa] = 13.0191
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128425
-Bubble pressure [MPa] = 13.0239
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128465
-Bubble pressure [MPa] = 13.0286
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128504
-Bubble pressure [MPa] = 13.0334
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128542
-Bubble pressure [MPa] = 13.0324
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128581
-Bubble pressure [MPa] = 13.0371
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.12862
-Bubble pressure [MPa] = 13.0418
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128659
-Bubble pressure [MPa] = 13.0466
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128698
-Bubble pressure [MPa] = 13.0513
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128737
-Bubble pressure [MPa] = 13.0561
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128776
-Bubble pressure [MPa] = 13.0608
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128815
-Bubble pressure [MPa] = 13.0655
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128854
-Bubble pressure [MPa] = 13.0703
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128893
-Bubble pressure [MPa] = 13.075
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128932
-Bubble pressure [MPa] = 13.0797
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.128971
-Bubble pressure [MPa] = 13.0845
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.12901
-Bubble pressure [MPa] = 13.0892
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129049
-Bubble pressure [MPa] = 13.094
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129088
-Bubble pressure [MPa] = 13.0987
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129127
-Bubble pressure [MPa] = 13.1034
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129166
-Bubble pressure [MPa] = 13.1025
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129204
-Bubble pressure [MPa] = 13.1072
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129243
-Bubble pressure [MPa] = 13.1119
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129282
-Bubble pressure [MPa] = 13.1167
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129321
-Bubble pressure [MPa] = 13.1214
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.12936
-Bubble pressure [MPa] = 13.1261
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129399
-Bubble pressure [MPa] = 13.1309
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129438
-Bubble pressure [MPa] = 13.1356
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129477
-Bubble pressure [MPa] = 13.1403
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129516
-Bubble pressure [MPa] = 13.1451
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129555
-Bubble pressure [MPa] = 13.1498
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129594
-Bubble pressure [MPa] = 13.1545
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129633
-Bubble pressure [MPa] = 13.1593
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129672
-Bubble pressure [MPa] = 13.164
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129711
-Bubble pressure [MPa] = 13.1688
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.12975
-Bubble pressure [MPa] = 13.1735
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129788
-Bubble pressure [MPa] = 13.1725
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129826
-Bubble pressure [MPa] = 13.1772
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129865
-Bubble pressure [MPa] = 13.182
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129904
-Bubble pressure [MPa] = 13.1867
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129943
-Bubble pressure [MPa] = 13.1914
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.129982
-Bubble pressure [MPa] = 13.1962
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130021
-Bubble pressure [MPa] = 13.2009
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.13006
-Bubble pressure [MPa] = 13.2056
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130099
-Bubble pressure [MPa] = 13.2104
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130137
-Bubble pressure [MPa] = 13.2151
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130176
-Bubble pressure [MPa] = 13.2198
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130215
-Bubble pressure [MPa] = 13.2246
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130254
-Bubble pressure [MPa] = 13.2293
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130293
-Bubble pressure [MPa] = 13.234
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130332
-Bubble pressure [MPa] = 13.2388
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.13037
-Bubble pressure [MPa] = 13.2435
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130409
-Bubble pressure [MPa] = 13.2425
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130447
-Bubble pressure [MPa] = 13.2473
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130486
-Bubble pressure [MPa] = 13.252
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130525
-Bubble pressure [MPa] = 13.2567
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130564
-Bubble pressure [MPa] = 13.2615
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130602
-Bubble pressure [MPa] = 13.2662
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130641
-Bubble pressure [MPa] = 13.2709
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.13068
-Bubble pressure [MPa] = 13.2756
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130719
-Bubble pressure [MPa] = 13.2804
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130757
-Bubble pressure [MPa] = 13.2851
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130796
-Bubble pressure [MPa] = 13.2898
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130835
-Bubble pressure [MPa] = 13.2946
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130874
-Bubble pressure [MPa] = 13.2993
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130912
-Bubble pressure [MPa] = 13.304
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.130951
-Bubble pressure [MPa] = 13.3088
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.13099
-Bubble pressure [MPa] = 13.3135
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131028
-Bubble pressure [MPa] = 13.3125
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131066
-Bubble pressure [MPa] = 13.3173
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131105
-Bubble pressure [MPa] = 13.3984
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131102
-Bubble pressure [MPa] = 13.4748
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131102
-Bubble pressure [MPa] = 13.5512
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131102
-Bubble pressure [MPa] = 13.6276
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131102
-Bubble pressure [MPa] = 13.704
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131102
-Bubble pressure [MPa] = 13.7804
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131102
-Bubble pressure [MPa] = 13.8568
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131103
-Bubble pressure [MPa] = 13.9332
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131103
-Bubble pressure [MPa] = 14.0096
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131103
-Bubble pressure [MPa] = 14.086
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131103
-Bubble pressure [MPa] = 14.1624
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131104
-Bubble pressure [MPa] = 14.2388
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131104
-Bubble pressure [MPa] = 14.3152
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131104
-Bubble pressure [MPa] = 14.3916
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131105
-Bubble pressure [MPa] = 14.468
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131106
-Bubble pressure [MPa] = 14.5443
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131106
-Bubble pressure [MPa] = 14.6207
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131107
-Bubble pressure [MPa] = 14.697
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131108
-Bubble pressure [MPa] = 14.7733
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131109
-Bubble pressure [MPa] = 14.8497
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.13111
-Bubble pressure [MPa] = 14.9259
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131112
-Bubble pressure [MPa] = 15.0022
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131113
-Bubble pressure [MPa] = 15.0785
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131115
-Bubble pressure [MPa] = 15.1547
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131117
-Bubble pressure [MPa] = 15.2309
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.13112
-Bubble pressure [MPa] = 15.307
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131122
-Bubble pressure [MPa] = 15.3831
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131125
-Bubble pressure [MPa] = 15.4592
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131129
-Bubble pressure [MPa] = 15.5352
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131133
-Bubble pressure [MPa] = 15.6112
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131137
-Bubble pressure [MPa] = 15.687
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131142
-Bubble pressure [MPa] = 15.7628
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131148
-Bubble pressure [MPa] = 15.8386
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131154
-Bubble pressure [MPa] = 15.9142
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131161
-Bubble pressure [MPa] = 15.9897
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131169
-Bubble pressure [MPa] = 16.0651
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131178
-Bubble pressure [MPa] = 16.1403
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131188
-Bubble pressure [MPa] = 16.2155
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.1312
-Bubble pressure [MPa] = 16.2904
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131212
-Bubble pressure [MPa] = 16.3651
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131226
-Bubble pressure [MPa] = 16.4397
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131242
-Bubble pressure [MPa] = 16.514
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.13126
-Bubble pressure [MPa] = 16.588
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.13128
-Bubble pressure [MPa] = 16.6618
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131301
-Bubble pressure [MPa] = 16.7352
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131326
-Bubble pressure [MPa] = 16.8083
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131353
-Bubble pressure [MPa] = 16.8809
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131383
-Bubble pressure [MPa] = 16.9532
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131416
-Bubble pressure [MPa] = 17.025
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131453
-Bubble pressure [MPa] = 17.0962
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131494
-Bubble pressure [MPa] = 17.1669
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131539
-Bubble pressure [MPa] = 17.2369
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131588
-Bubble pressure [MPa] = 17.3062
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131643
-Bubble pressure [MPa] = 17.3748
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131703
-Bubble pressure [MPa] = 17.4426
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.13177
-Bubble pressure [MPa] = 17.5094
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131843
-Bubble pressure [MPa] = 17.5752
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.131923
-Bubble pressure [MPa] = 17.64
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.13201
-Bubble pressure [MPa] = 17.7036
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.132107
-Bubble pressure [MPa] = 17.7659
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.132212
-Bubble pressure [MPa] = 17.8268
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.132327
-Bubble pressure [MPa] = 17.8863
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.132453
-Bubble pressure [MPa] = 17.9441
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.13259
-Bubble pressure [MPa] = 18.0002
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.132739
-Bubble pressure [MPa] = 18.0545
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.132902
-Bubble pressure [MPa] = 18.1067
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.133078
-Bubble pressure [MPa] = 18.1568
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.13327
-Bubble pressure [MPa] = 18.2046
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.133478
-Bubble pressure [MPa] = 18.2499
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.133703
-Bubble pressure [MPa] = 18.2927
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.133947
-Bubble pressure [MPa] = 18.3327
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.13421
-Bubble pressure [MPa] = 18.3698
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.134493
-Bubble pressure [MPa] = 18.4038
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.134795
-Bubble pressure [MPa] = 18.3754
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.13512
-Bubble pressure [MPa] = 18.4026
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.135474
-Bubble pressure [MPa] = 18.4262
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.135853
-Bubble pressure [MPa] = 18.4462
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.136259
-Bubble pressure [MPa] = 18.4622
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.136694
-Bubble pressure [MPa] = 18.4743
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.137158
-Bubble pressure [MPa] = 18.4823
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.137652
-Bubble pressure [MPa] = 18.4859
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.138179
-Bubble pressure [MPa] = 18.4852
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.138738
-Bubble pressure [MPa] = 18.4801
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.139332
-Bubble pressure [MPa] = 18.4704
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.139961
-Bubble pressure [MPa] = 18.4561
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.140626
-Bubble pressure [MPa] = 18.4371
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.141328
-Bubble pressure [MPa] = 18.4135
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.142069
-Bubble pressure [MPa] = 18.3852
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.142848
-Bubble pressure [MPa] = 18.3523
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.143666
-Bubble pressure [MPa] = 18.3147
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.144524
-Bubble pressure [MPa] = 18.2726
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.145422
-Bubble pressure [MPa] = 18.2261
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.146361
-Bubble pressure [MPa] = 18.1751
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.147327
-Bubble pressure [MPa] = 17.9489
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.148336
-Bubble pressure [MPa] = 17.8902
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.149396
-Bubble pressure [MPa] = 17.8277
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.150495
-Bubble pressure [MPa] = 17.7615
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.151634
-Bubble pressure [MPa] = 17.6918
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.152812
-Bubble pressure [MPa] = 17.6187
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.154028
-Bubble pressure [MPa] = 17.5426
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155282
-Bubble pressure [MPa] = 17.4002
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155283
-Bubble pressure [MPa] = 17.4002
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155283
-Bubble pressure [MPa] = 17.4001
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155284
-Bubble pressure [MPa] = 17.4
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155284
-Bubble pressure [MPa] = 17.4
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155285
-Bubble pressure [MPa] = 17.3999
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155285
-Bubble pressure [MPa] = 17.3999
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155286
-Bubble pressure [MPa] = 17.3998
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155286
-Bubble pressure [MPa] = 17.3998
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155287
-Bubble pressure [MPa] = 17.3997
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155287
-Bubble pressure [MPa] = 17.3996
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155288
-Bubble pressure [MPa] = 17.3996
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155288
-Bubble pressure [MPa] = 17.3995
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155289
-Bubble pressure [MPa] = 17.3995
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155289
-Bubble pressure [MPa] = 17.3994
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.15529
-Bubble pressure [MPa] = 17.3994
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.15529
-Bubble pressure [MPa] = 17.3993
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155291
-Bubble pressure [MPa] = 17.3992
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155291
-Bubble pressure [MPa] = 17.3992
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155292
-Bubble pressure [MPa] = 17.3991
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155292
-Bubble pressure [MPa] = 17.3991
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155293
-Bubble pressure [MPa] = 17.399
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155293
-Bubble pressure [MPa] = 17.3989
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155294
-Bubble pressure [MPa] = 17.3989
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155294
-Bubble pressure [MPa] = 17.3988
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155295
-Bubble pressure [MPa] = 17.3988
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155295
-Bubble pressure [MPa] = 17.3987
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155296
-Bubble pressure [MPa] = 17.3987
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155296
-Bubble pressure [MPa] = 17.3986
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155297
-Bubble pressure [MPa] = 17.3985
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155297
-Bubble pressure [MPa] = 17.3985
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155298
-Bubble pressure [MPa] = 17.3984
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155298
-Bubble pressure [MPa] = 17.3984
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155299
-Bubble pressure [MPa] = 17.3983
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155299
-Bubble pressure [MPa] = 17.3983
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.1553
-Bubble pressure [MPa] = 17.3982
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.1553
-Bubble pressure [MPa] = 17.3981
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155301
-Bubble pressure [MPa] = 17.3981
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155301
-Bubble pressure [MPa] = 17.398
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155302
-Bubble pressure [MPa] = 17.398
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155302
-Bubble pressure [MPa] = 17.3979
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155303
-Bubble pressure [MPa] = 17.3978
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155303
-Bubble pressure [MPa] = 17.3978
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155304
-Bubble pressure [MPa] = 17.3977
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155304
-Bubble pressure [MPa] = 17.3977
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155305
-Bubble pressure [MPa] = 17.3976
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155305
-Bubble pressure [MPa] = 17.3976
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155306
-Bubble pressure [MPa] = 17.3975
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155306
-Bubble pressure [MPa] = 17.3974
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155307
-Bubble pressure [MPa] = 17.3974
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155307
-Bubble pressure [MPa] = 17.3973
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155308
-Bubble pressure [MPa] = 17.3973
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155308
-Bubble pressure [MPa] = 17.3972
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155309
-Bubble pressure [MPa] = 17.3971
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155309
-Bubble pressure [MPa] = 17.3971
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.15531
-Bubble pressure [MPa] = 17.397
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.15531
-Bubble pressure [MPa] = 17.397
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155311
-Bubble pressure [MPa] = 17.3969
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155311
-Bubble pressure [MPa] = 17.3969
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155312
-Bubble pressure [MPa] = 17.3968
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155312
-Bubble pressure [MPa] = 17.3967
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155313
-Bubble pressure [MPa] = 17.3967
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155313
-Bubble pressure [MPa] = 17.3966
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155314
-Bubble pressure [MPa] = 17.3966
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155314
-Bubble pressure [MPa] = 17.3965
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155315
-Bubble pressure [MPa] = 17.3965
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155315
-Bubble pressure [MPa] = 17.3964
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155316
-Bubble pressure [MPa] = 17.3963
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155316
-Bubble pressure [MPa] = 17.3963
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155317
-Bubble pressure [MPa] = 17.3962
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155317
-Bubble pressure [MPa] = 17.3962
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155318
-Bubble pressure [MPa] = 17.3961
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155318
-Bubble pressure [MPa] = 17.396
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155318
-Bubble pressure [MPa] = 17.396
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155319
-Bubble pressure [MPa] = 17.3959
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155319
-Bubble pressure [MPa] = 17.3959
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.15532
-Bubble pressure [MPa] = 17.3958
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.15532
-Bubble pressure [MPa] = 17.3958
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155321
-Bubble pressure [MPa] = 17.3957
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155321
-Bubble pressure [MPa] = 17.3956
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155322
-Bubble pressure [MPa] = 17.3956
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155322
-Bubble pressure [MPa] = 17.3955
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155323
-Bubble pressure [MPa] = 17.3955
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155323
-Bubble pressure [MPa] = 17.3954
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155324
-Bubble pressure [MPa] = 17.3954
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155324
-Bubble pressure [MPa] = 17.3953
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155325
-Bubble pressure [MPa] = 17.3952
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155325
-Bubble pressure [MPa] = 17.3952
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155326
-Bubble pressure [MPa] = 17.3951
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155326
-Bubble pressure [MPa] = 17.3951
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155327
-Bubble pressure [MPa] = 17.395
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155327
-Bubble pressure [MPa] = 17.3949
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155328
-Bubble pressure [MPa] = 17.3949
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155328
-Bubble pressure [MPa] = 17.3948
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155329
-Bubble pressure [MPa] = 17.3948
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155329
-Bubble pressure [MPa] = 17.3947
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.15533
-Bubble pressure [MPa] = 17.3947
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.15533
-Bubble pressure [MPa] = 17.3946
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155331
-Bubble pressure [MPa] = 17.3945
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155331
-Bubble pressure [MPa] = 17.3945
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155332
-Bubble pressure [MPa] = 17.3944
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155332
-Bubble pressure [MPa] = 17.3944
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155332
-Bubble pressure [MPa] = 17.267
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155403
-Bubble pressure [MPa] = 17.1314
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155465
-Bubble pressure [MPa] = 16.9971
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155518
-Bubble pressure [MPa] = 16.8638
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155563
-Bubble pressure [MPa] = 16.7315
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155603
-Bubble pressure [MPa] = 16.5999
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155636
-Bubble pressure [MPa] = 16.469
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155665
-Bubble pressure [MPa] = 16.3388
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.15569
-Bubble pressure [MPa] = 16.209
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.15571
-Bubble pressure [MPa] = 16.0797
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155728
-Bubble pressure [MPa] = 15.9507
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155743
-Bubble pressure [MPa] = 15.8221
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155756
-Bubble pressure [MPa] = 15.6938
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155767
-Bubble pressure [MPa] = 15.5656
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155776
-Bubble pressure [MPa] = 15.4377
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155783
-Bubble pressure [MPa] = 15.3099
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155789
-Bubble pressure [MPa] = 15.1823
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155795
-Bubble pressure [MPa] = 15.0548
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155799
-Bubble pressure [MPa] = 14.9274
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155803
-Bubble pressure [MPa] = 14.8001
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155806
-Bubble pressure [MPa] = 14.6728
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155808
-Bubble pressure [MPa] = 14.5456
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.15581
-Bubble pressure [MPa] = 14.4184
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155812
-Bubble pressure [MPa] = 14.2913
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155813
-Bubble pressure [MPa] = 14.1642
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155814
-Bubble pressure [MPa] = 14.0372
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155815
-Bubble pressure [MPa] = 13.9101
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155816
-Bubble pressure [MPa] = 13.7831
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155816
-Bubble pressure [MPa] = 13.6561
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155817
-Bubble pressure [MPa] = 13.5291
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155817
-Bubble pressure [MPa] = 13.4021
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155817
-Bubble pressure [MPa] = 13.2751
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155817
-Bubble pressure [MPa] = 13.1482
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 13.0212
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 12.8942
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 12.7673
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 12.6403
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 12.5134
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 12.3864
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 12.2594
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 12.1325
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 12.0055
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 11.8786
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 11.7516
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 11.6247
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 11.4977
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 11.3708
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 11.2438
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 11.1169
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 10.9899
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 10.863
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 10.736
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 10.609
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 10.4821
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 10.3551
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 10.2282
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 10.1012
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 9.97428
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 9.84733
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 9.72038
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 9.59342
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 9.46647
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 9.33952
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 9.21256
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 9.08561
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 8.95866
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 8.8317
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 8.70475
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 8.5778
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 8.45085
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 8.32389
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 8.19694
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 8.06999
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 7.94303
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 7.81608
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 7.68913
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 7.56217
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 7.43522
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 7.30827
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 7.18131
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 7.05436
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 6.92741
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 6.80046
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 6.6735
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 6.54655
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 6.4196
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 6.29264
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 6.16569
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 6.03874
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 5.91178
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 5.78483
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 5.65788
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 5.53092
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 5.40397
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 5.27702
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 5.15007
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 5.02311
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 4.89616
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 4.76921
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.155818
-Bubble pressure [MPa] = 4.64225
-Intactness: 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1

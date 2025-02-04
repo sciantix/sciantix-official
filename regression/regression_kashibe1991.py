@@ -47,6 +47,16 @@ FGROperational = [22, 22, #23 GWd/t
                   22, 22, 22, 22, 22,
                   43, 43, 43, 43
                 ]
+
+rates1_index = [4,9]
+rates2_index = [5,10]
+rates3_index = [6]
+rates4_index = [7,11]
+rates5_index = [8,12]
+
+multiple_index = [0,2]
+single_index = [1,3]
+
 FGRAnnealing = [5.9, 6.5, #1673 K, 23 GWd/t, Multiple-Single
                 5.9, 7.6,  #1673 K, 28 GWd/t, Multiple-Single
                 17.8,19.2,24,16.3,19.4, #2073 K 23 GWd/t, rate 1,2,3,4,5
@@ -57,8 +67,9 @@ FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
 goldFGR = []
 
-AnnFGRVersion2 = [26.360673, 15.394722999999999, 27.777869000000003, 17.329698999999998, 26.708422999999996, 26.511993, 26.398673, 26.536173, 27.567633000000004, 28.178779, 29.951309000000002, 28.050109, 29.045229]
-TOtFGRVersion2 = [31.31645, 20.3505, 35.91857, 25.470399999999998, 31.664199999999997, 31.46777, 31.35445, 31.491950000000003, 32.523410000000005, 36.31948, 38.09201, 36.19081, 37.18593]
+# AnnFGRVersion2 = [26.360673, 15.394722999999999, 27.777869000000003, 17.329698999999998, 26.708422999999996, 26.511993, 26.398673, 26.536173, 27.567633000000004, 28.178779, 29.951309000000002, 28.050109, 29.045229]
+# TOtFGRVersion2 = [31.31645, 20.3505, 35.91857, 25.470399999999998, 31.664199999999997, 31.46777, 31.35445, 31.491950000000003, 32.523410000000005, 36.31948, 38.09201, 36.19081, 37.18593]
+AnnFGRVersion2 = [29.136158, 18.587508, 25.929739999999995, 15.078479999999999, 29.150538, 29.096078000000002, 29.115388, 29.368258, 30.495478000000002, 25.859740000000002, 28.133049999999997, 26.247030000000002, 27.447410000000005]
 
 number_of_tests_failed = 0
 sample_number = len(FGR2)
@@ -127,8 +138,10 @@ def do_plot():
     goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
 
   # FGR annealing
-  plt.rcParams.update({'font.size': 14})
-  fig, ax = plt.subplots(figsize=(7, 7))
+  plt.rcParams.update({'font.size': 18})
+  plt.rcParams.update({'lines.markersize': 6})  # Corrected parameter for marker size
+  plt.rcParams.update({'lines.linewidth': 2}) 
+  fig, ax = plt.subplots(figsize=(8, 8))
   ax.errorbar(
       np.concatenate([FGRAnnealing[0:2],FGRAnnealing[4:9]]),
       np.concatenate([FGR2Annealing[0:2],FGR2Annealing[4:9]]),
@@ -139,11 +152,6 @@ def do_plot():
       np.concatenate([FGR2Annealing[2:4],FGR2Annealing[9:13]]),
       elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='28 GWd tU$^{-1}$'
   )
-  #ax.scatter(np.concatenate([FGRAnnealing[0:2],FGRAnnealing[4:9]]),np.concatenate([FGR2Annealing[0:2],FGR2Annealing[4:9]]),c='C0', marker = '^', s=40,         label='This work - 23 GWd tU$^{-1}$')
-  #ax.scatter(np.concatenate([FGRAnnealing[2:4],FGRAnnealing[9:13]]),np.concatenate([FGR2Annealing[2:4],FGR2Annealing[9:13]]), facecolors = 'none', edgecolors = 'C0', marker = '^', s=40,    label='This work - 28 GWd tU$^{-1}$')
-  #ax.scatter(np.concatenate([FGRAnnealing[0:2],FGRAnnealing[4:9]]),np.concatenate([AnnFGRVersion2[0:2],AnnFGRVersion2[4:9]]), c='C1', marker = 'd', s=40, label='SCIANTIX 2.0 - 23 GWd tU$^{-1}$', alpha =0.7)
-  #ax.scatter(np.concatenate([FGRAnnealing[2:4],FGRAnnealing[9:13]]),np.concatenate([AnnFGRVersion2[2:4],AnnFGRVersion2[9:13]]), facecolors = 'none', edgecolors='C1', marker = 'd', s=40, label='SCIANTIX 2.0 - 28 GWd tU$^{-1}$', alpha =0.7)
-
   r = range(1, 100)
   ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
   ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
@@ -163,7 +171,6 @@ def do_plot():
   ax.legend()
   #ax.grid(color='gray', linestyle='--', linewidth=0.5)
 
-  plt.savefig('Images/FGRAnnealingTotal-Kashibe1991')
   plt.show()
 
   # Bubble concentration
@@ -197,117 +204,94 @@ def do_plot():
   ax.set_ylabel('Calculated (bub μm$^{-2}$)')
   ax.set_title('Bubble concentration')
   ax.legend()
-  plt.savefig('Images/BubConc-Kashibe1990')
+  #plt.savefig('Images/BubConc-Kashibe1990')
   plt.show()
 
+   # FGR annealing
+  categories = ['10 K s$^{-1}$', '1.7 K s$^{-1}$','0.5 K s$^{-1}$', '0.17 K s$^{-1}$', '0.03 K s$^{-1}$']
 
-  ########################################################################### BAR PLOTS ##################
+  rates1_index = [4, 9]
+  rates2_index = [5, 10]
+  rates3_index = [6]
+  rates4_index = [7, 11]
+  rates5_index = [8, 12]
 
-  ### FGR multiple - single
-  categories = ['23 GWd tU$^{-1}$ \nCyclic', '23 GWd tU$^{-1}$ \nIsothermal','28 GWd tU$^{-1}$ \nCyclic','28 GWd tU$^{-1}$ \nIsothermal']
-  width = 1
-  x = np.array([0, 4, 9,13])
+  burnup23_index = [4, 5, 6, 7, 8]  # Indici per burnup 23
+  burnup28_index = [9, 10, 11, 12]  # Indici per burnup 28
 
-  fig, ax = plt.subplots(figsize=(7, 7))
-  plt.bar(x - width, FGRAnnealing[0:4], 0.9*width, label='Kashibe et al. (1991)', color='C1', edgecolor = 'C1')
-  plt.bar(x, FGR2Annealing[0:4], 0.9*width, label='This work', color='C0', edgecolor = 'C0')
-  plt.bar(x + width, AnnFGRVersion2[0:4], 0.9*width, label='SCIANTIX 2.0', color='C2',  edgecolor='C2')
-  
-  plt.xticks(x, categories)
-  #plt.title('Difference between multiple and single ramp annealing')
-  plt.ylabel('FGR (%)')
-  plt.xlim([-2,15])
-  plt.legend(loc='best')
-  
-  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
-  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
-  plt.minorticks_on()
-  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
-  plt.savefig('Images/FGRDeltaRamp-Kashibe1991')
-  plt.show()
+  plt.rcParams.update({'font.size': 18})
+  plt.rcParams.update({'lines.markersize': 6})  # Corrected parameter for marker size
+  plt.rcParams.update({'lines.linewidth': 2}) 
+  fig, ax = plt.subplots(figsize=(8, 8))
 
-  ## FGR multiple - single
-  categories = ['23 GWd tU$^{-1}$','28 GWd tU$^{-1}$']
-  width = 1
-  x = np.array([0, 4])
+  # Burnup 23 con pallini
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(rates1_index, burnup23_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(rates1_index, burnup23_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label=f'{categories[0]} (Burnup 23)')
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(rates2_index, burnup23_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(rates2_index, burnup23_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label=f'{categories[1]} (Burnup 23)')
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(rates3_index, burnup23_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(rates3_index, burnup23_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C3', fmt='o', label=f'{categories[2]} (Burnup 23)')
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(rates4_index, burnup23_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(rates4_index, burnup23_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C4', fmt='o', label=f'{categories[3]} (Burnup 23)')
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(rates5_index, burnup23_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(rates5_index, burnup23_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C5', fmt='o', label=f'{categories[4]} (Burnup 23)')
 
-  fig, ax = plt.subplots(figsize=(7, 7))
-  data = np.array([(FGRAnnealing[0]-FGRAnnealing[1]), (FGRAnnealing[2]-FGRAnnealing[3])])
-  data2 = np.array([(FGR2Annealing[0]-FGR2Annealing[1]), (FGR2Annealing[2]-FGR2Annealing[3])])
-  dataBar = np.array([(AnnFGRVersion2[0]-AnnFGRVersion2[1]), (AnnFGRVersion2[2]-AnnFGRVersion2[3])])
-  plt.bar(x - width, data, 0.9*width, label='Kashibe et al. (1991)', color='C1', edgecolor = 'C1')
-  plt.bar(x,data2, 0.9*width, label='This work', color='C0', edgecolor = 'C0')
-  plt.bar(x + width,  dataBar, 0.9*width, label='SCIANTIX 2.0', color='C2',  edgecolor='C2')
-  
-  plt.xticks(x, categories)
-  #plt.title('Difference between multiple and single ramp annealing')
-  plt.ylabel('FGR difference between cyclic and isothermal (%)')
-  plt.legend(loc='best')
-  
-  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
-  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
-  plt.minorticks_on()
-  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
+  # Burnup 28 con triangoli
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(rates1_index, burnup28_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(rates1_index, burnup28_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C0', fmt='^', label=f'{categories[0]} (Burnup 28)')
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(rates2_index, burnup28_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(rates2_index, burnup28_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C2', fmt='^', label=f'{categories[1]} (Burnup 28)')
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(rates3_index, burnup28_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(rates3_index, burnup28_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C3', fmt='^', label=f'{categories[2]} (Burnup 28)')
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(rates4_index, burnup28_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(rates4_index, burnup28_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C4', fmt='^', label=f'{categories[3]} (Burnup 28)')
+  ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(rates5_index, burnup28_index)], 
+              np.array(FGR2Annealing)[np.intersect1d(rates5_index, burnup28_index)], 
+              elinewidth=0.5, linewidth=0.5, color='C5', fmt='^', label=f'{categories[4]} (Burnup 28)')
 
-  plt.savefig('Images/FGRDeltarampdeviation-Kashibe1991')
+  # Linee guida
+  r = range(1, 100)
+  ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
+  ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('x2', (1.25, 3), color='k')
+  ax.plot(r, [x * 0.5 for x in r], color='gray', linestyle='--', linewidth=0.5)
+  ax.annotate('/2', (3, 1.3),  color='k')
+
+  # Impostazioni scala logaritmica
+  ax.set_yscale('log')
+  ax.set_xscale('log')
+  ax.tick_params(axis='both', which='major')
+  ax.set_xlim(1, 100)
+  ax.set_ylim(1, 100)
+
+  # Titoli e legende
+  ax.set_xlabel('FGR experimental (%)')
+  ax.set_ylabel('FGR calculated (%)')
+  # Legenda intelligente
+  custom_lines = [plt.Line2D([0], [0], color='k', marker='o', linestyle='', markersize=8, label='23 GWd tU$^{-1}$'),
+                  plt.Line2D([0], [0], color='k', marker='^', linestyle='', markersize=8, label='28 GWd tU$^{-1}$'),
+                  plt.Line2D([0], [0], color='C0', marker='s', linestyle='', markersize=8, label=categories[0]),
+                  plt.Line2D([0], [0], color='C2', marker='s', linestyle='', markersize=8, label=categories[1]),
+                  plt.Line2D([0], [0], color='C3', marker='s', linestyle='', markersize=8, label=categories[2]),
+                  plt.Line2D([0], [0], color='C4', marker='s', linestyle='', markersize=8, label=categories[3]),
+                  plt.Line2D([0], [0], color='C5', marker='s', linestyle='', markersize=8, label=categories[4])]
+  ax.legend(handles=custom_lines, loc='best', frameon=False)
+  plt.tight_layout()
+  plt.savefig('Images/FGRRate_Kashibe1991')
   plt.show()
 
   
   ###########################################################################
   
-  categories = ['10 K s$^{-1}$', '1.7 K s$^{-1}$','0.5 K s$^{-1}$', '0.17 K s$^{-1}$', '0.03 K s$^{-1}$']
-  categories1 = ['10 K s$^{-1}$', '1.7 K s$^{-1}$', '0.17 K s$^{-1}$', '0.03 K s$^{-1}$']
-  #categories = ['0.03 K s$^{-1}$', '0.17 K s$^{-1}$','0.5 K s$^{-1}$', '1.7 K s$^{-1}$', '10 K s$^{-1}$']
-
-  width = 1
-  x = np.array([20,15,10,5,0])
-  x1 = np.array([20,15,10,5])
-
-  fig, ax = plt.subplots(figsize=(7, 7))
-  FGR_values = FGRAnnealing[4:9]
-  FGR_err = [np.array(FGR_values) / 2, np.array(FGR_values) * 2]
-
-  plt.errorbar(x, FGR_values, yerr=FGR_err, fmt='o', label='Kashibe et al. (1991)', color='C1')
-  plt.errorbar(x, FGR2Annealing[4:9], fmt='s', label='This work', color='C0')
-
-  plt.xticks(x, categories)
-  plt.ylabel('FGR (%)')
-  plt.xlabel('Heating rate')
-  plt.title('Annealing at 2073 K - 23 GWd tU$^{-1}$')
-  
-  plt.legend(loc='best')
-  plt.xlim([-2,22])
-  plt.ylim([0,1e2])
-  
-  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
-  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
-  plt.minorticks_on()
-  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
-
-  plt.savefig('Images/FGRSpecifico23-Kashibe1991')
-
-  fig, ax = plt.subplots(figsize=(7, 7))
-  FGR_values = FGRAnnealing[9:13]
-  FGR_err = [np.array(FGR_values) / 2, np.array(FGR_values) * 2]
-
-  plt.errorbar(x1, FGR_values, yerr=FGR_err, fmt='o', label='Kashibe et al. (1991)', color='C1')
-  plt.errorbar(x1, FGR2Annealing[9:13], fmt='s', label='This work', color='C0')
-
-  plt.xticks(x1, categories1)
-  plt.ylabel('FGR (%)')
-  plt.xlabel('Heating rate')
-  plt.title('Annealing at 2073 K - 28 GWd tU$^{-1}$')
-  
-  plt.legend(loc='best')
-  plt.xlim([3,22])
-  plt.ylim([0,1e2])
-  plt.axhline(0, color='gray', linestyle='--', linewidth=1)
-  plt.grid(color='gray', linestyle='--', linewidth=0.5, axis='y') 
-  plt.minorticks_on()
-  plt.grid(which='minor', color='lightgray', linestyle=':', linewidth=0.3, axis='y')
-
-  plt.savefig('Images/FGRSpecifico28-Kashibe1991')
-  plt.show()
   ###########################################################################
 
       # Median absolute deviations

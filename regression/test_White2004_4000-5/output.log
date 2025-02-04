@@ -1,3522 +1,1383 @@
 Initial bubble concentration (bub/m2): 2.5e+13
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0
-Bubble pressure [MPa] = 0
 Warning NAN values in GB state
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0
-Bubble pressure [MPa] = 0
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.00544976
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.00671533
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.00777773
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.00868104
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.00953027
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0103045
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0110306
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0117132
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0123627
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0129834
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.01358
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0141552
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0147118
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0152516
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0157764
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0162878
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0167869
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0172749
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0177526
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0182208
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0186804
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0191318
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0195758
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0200127
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0204431
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0208674
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0212859
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.021699
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.022107
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0225102
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0229088
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0233032
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0236934
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0240798
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0244626
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0248418
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0252177
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0255904
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0259601
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0263269
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.026691
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0270524
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0274112
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0277677
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0281219
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0284738
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0288236
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0291713
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0295171
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0298609
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.030203
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0305433
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0308819
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0312188
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0315542
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.031888
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0322204
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0325514
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.032881
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0332092
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0335362
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0338619
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0341864
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0345097
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0348319
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0351529
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0354729
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0357918
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0361096
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0364265
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0367423
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0370572
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0373711
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0376841
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0379962
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0383074
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0386177
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0389271
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0392357
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0395434
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0398502
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0401563
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0404614
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0407658
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0410693
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.041372
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0416739
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0419749
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0422752
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0425746
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0428732
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0431709
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0434678
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0437639
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0440591
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0443535
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0446471
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0449397
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0452315
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455224
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453418
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453457
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453481
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453505
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453529
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453553
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453577
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453601
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453625
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453649
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453672
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453696
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.045372
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453744
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453768
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453792
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453816
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.045384
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453864
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453888
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453911
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453935
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453959
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453983
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454007
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454031
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454055
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454079
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454103
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454127
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.045415
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454174
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454198
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454222
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454246
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.045427
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454294
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454318
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454342
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454365
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454389
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454413
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454437
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454461
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454485
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454509
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454533
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454556
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.045458
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454604
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454628
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454652
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454676
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.04547
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454724
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454748
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454771
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454795
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454819
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454843
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454867
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454891
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454915
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454939
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454962
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454986
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.045501
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455034
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455058
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455082
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455106
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455129
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455153
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455177
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455201
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455225
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455249
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455273
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455297
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.045532
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455344
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455368
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455392
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455416
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.045544
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455464
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455487
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455511
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455535
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455559
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455583
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455607
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455631
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455654
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455678
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455702
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455726
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.045575
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455774
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455798
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455821
-Bubble pressure [MPa] = 362.21
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455806
-Bubble pressure [MPa] = 364.678
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455806
-Bubble pressure [MPa] = 367.145
-Intactness: 1
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455806
-Bubble pressure [MPa] = 369.613
-Intactness: 0.325277
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0357479
-Bubble pressure [MPa] = 62.5582
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325278
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 62.9731
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325278
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 63.3879
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325278
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 63.8028
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325278
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 64.2177
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325278
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 64.6326
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325278
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 65.0475
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325278
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 65.4624
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325278
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 65.8773
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325278
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 66.2922
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325279
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 66.7071
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325279
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 67.122
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325279
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 67.5369
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325279
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 67.9518
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325279
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 68.3667
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325279
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 68.7816
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325279
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 69.1965
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325279
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 69.6114
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32528
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 70.0263
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32528
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 70.4412
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32528
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 70.8561
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32528
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 71.271
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32528
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 71.6858
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32528
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 72.1007
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32528
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 72.5156
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325281
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 72.9305
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325281
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 73.3454
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325281
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 73.7603
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325281
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309168
-Bubble pressure [MPa] = 74.1752
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325281
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309169
-Bubble pressure [MPa] = 74.59
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325281
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309169
-Bubble pressure [MPa] = 75.0049
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325282
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309169
-Bubble pressure [MPa] = 75.4198
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325282
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309169
-Bubble pressure [MPa] = 75.8346
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325282
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309169
-Bubble pressure [MPa] = 76.2494
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325282
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309169
-Bubble pressure [MPa] = 76.6643
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325282
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309169
-Bubble pressure [MPa] = 77.0791
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325282
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309169
-Bubble pressure [MPa] = 77.4939
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325283
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309169
-Bubble pressure [MPa] = 77.9086
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325283
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.030917
-Bubble pressure [MPa] = 78.3234
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325283
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.030917
-Bubble pressure [MPa] = 78.7381
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325283
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.030917
-Bubble pressure [MPa] = 79.1527
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325283
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309171
-Bubble pressure [MPa] = 79.5673
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325283
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309171
-Bubble pressure [MPa] = 79.9819
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325284
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309171
-Bubble pressure [MPa] = 80.3964
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325284
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309172
-Bubble pressure [MPa] = 80.8109
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325284
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309173
-Bubble pressure [MPa] = 81.2252
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325284
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309173
-Bubble pressure [MPa] = 81.6395
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325284
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309174
-Bubble pressure [MPa] = 82.0536
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325284
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309175
-Bubble pressure [MPa] = 82.4677
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325285
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309176
-Bubble pressure [MPa] = 82.8816
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325285
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309177
-Bubble pressure [MPa] = 83.2953
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325285
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309179
-Bubble pressure [MPa] = 83.7088
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325285
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309181
-Bubble pressure [MPa] = 84.1221
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325285
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309183
-Bubble pressure [MPa] = 84.5351
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325286
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309185
-Bubble pressure [MPa] = 84.9479
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325286
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309187
-Bubble pressure [MPa] = 85.3603
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325286
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.030919
-Bubble pressure [MPa] = 85.7724
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325286
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309194
-Bubble pressure [MPa] = 86.184
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325286
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309198
-Bubble pressure [MPa] = 86.5951
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325287
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309202
-Bubble pressure [MPa] = 87.0057
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325287
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309207
-Bubble pressure [MPa] = 87.4156
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325287
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309213
-Bubble pressure [MPa] = 87.8248
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325287
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309219
-Bubble pressure [MPa] = 88.2332
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325287
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309226
-Bubble pressure [MPa] = 88.6407
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325288
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309234
-Bubble pressure [MPa] = 89.0471
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325288
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309244
-Bubble pressure [MPa] = 89.4524
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325288
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309254
-Bubble pressure [MPa] = 89.8563
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325288
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309266
-Bubble pressure [MPa] = 90.2588
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325289
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.030928
-Bubble pressure [MPa] = 90.6596
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325289
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309295
-Bubble pressure [MPa] = 91.0585
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325289
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309312
-Bubble pressure [MPa] = 91.4553
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325289
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309331
-Bubble pressure [MPa] = 91.8498
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325289
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309353
-Bubble pressure [MPa] = 92.2416
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32529
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309377
-Bubble pressure [MPa] = 92.6305
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32529
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309404
-Bubble pressure [MPa] = 93.0162
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32529
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309435
-Bubble pressure [MPa] = 93.3981
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32529
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309469
-Bubble pressure [MPa] = 93.776
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325291
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309507
-Bubble pressure [MPa] = 94.1494
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325291
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309549
-Bubble pressure [MPa] = 94.5178
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325291
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309596
-Bubble pressure [MPa] = 94.8806
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325291
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309649
-Bubble pressure [MPa] = 95.2373
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325291
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309708
-Bubble pressure [MPa] = 95.5871
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325292
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309773
-Bubble pressure [MPa] = 95.9294
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325292
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309845
-Bubble pressure [MPa] = 96.2634
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325292
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0309926
-Bubble pressure [MPa] = 96.5883
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325292
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0310015
-Bubble pressure [MPa] = 96.9032
-Intactness: 0.325293
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0310113
-Bubble pressure [MPa] = 97.207
-Intactness: 0.325293
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0310222
-Bubble pressure [MPa] = 97.4986
-Intactness: 0.325293
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0310342
-Bubble pressure [MPa] = 97.7771
-Intactness: 0.325293
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0310475
-Bubble pressure [MPa] = 98.041
-Intactness: 0.325294
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0310622
-Bubble pressure [MPa] = 98.2891
-Intactness: 0.325294
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0310783
-Bubble pressure [MPa] = 98.52
-Intactness: 0.325294
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0310961
-Bubble pressure [MPa] = 98.7321
-Intactness: 0.325294
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0311156
-Bubble pressure [MPa] = 98.9239
-Intactness: 0.325295
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.031137
-Bubble pressure [MPa] = 99.0936
-Intactness: 0.325295
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0311605
-Bubble pressure [MPa] = 99.2395
-Intactness: 0.325295
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0311862
-Bubble pressure [MPa] = 99.3597
-Intactness: 0.325296
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0312144
-Bubble pressure [MPa] = 99.0508
-Intactness: 0.325296
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0312144
-Bubble pressure [MPa] = 99.0508
-Intactness: 0.325301
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0317237
-Bubble pressure [MPa] = 93.7333
-Intactness: 0.325306
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0322012
-Bubble pressure [MPa] = 89.1493
-Intactness: 0.325311
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0326514
-Bubble pressure [MPa] = 85.147
-Intactness: 0.325316
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0330776
-Bubble pressure [MPa] = 81.6146
-Intactness: 0.325322
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0334827
-Bubble pressure [MPa] = 78.4683
-Intactness: 0.325327
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0338691
-Bubble pressure [MPa] = 75.6435
-Intactness: 0.325332
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0342386
-Bubble pressure [MPa] = 73.0897
-Intactness: 0.325337
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0345929
-Bubble pressure [MPa] = 70.7668
-Intactness: 0.325342
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0349335
-Bubble pressure [MPa] = 68.6424
-Intactness: 0.325348
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0352615
-Bubble pressure [MPa] = 66.6903
-Intactness: 0.325353
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0355781
-Bubble pressure [MPa] = 64.8886
-Intactness: 0.325358
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.035884
-Bubble pressure [MPa] = 63.2192
-Intactness: 0.325363
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0361802
-Bubble pressure [MPa] = 61.667
-Intactness: 0.325368
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0364674
-Bubble pressure [MPa] = 60.219
-Intactness: 0.325374
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0367461
-Bubble pressure [MPa] = 58.8642
-Intactness: 0.325379
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.037017
-Bubble pressure [MPa] = 57.5932
-Intactness: 0.325384
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0372805
-Bubble pressure [MPa] = 56.3977
-Intactness: 0.325389
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0375371
-Bubble pressure [MPa] = 55.2708
-Intactness: 0.325394
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0377873
-Bubble pressure [MPa] = 54.2061
-Intactness: 0.3254
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0380313
-Bubble pressure [MPa] = 53.1983
-Intactness: 0.325405
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0382697
-Bubble pressure [MPa] = 52.2425
-Intactness: 0.32541
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0385025
-Bubble pressure [MPa] = 51.3344
-Intactness: 0.325415
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0387303
-Bubble pressure [MPa] = 50.4703
-Intactness: 0.32542
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0389531
-Bubble pressure [MPa] = 49.6467
-Intactness: 0.325426
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0391713
-Bubble pressure [MPa] = 48.8607
-Intactness: 0.325431
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0393851
-Bubble pressure [MPa] = 48.1095
-Intactness: 0.325436
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0395947
-Bubble pressure [MPa] = 47.3907
-Intactness: 0.325441
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0398002
-Bubble pressure [MPa] = 46.7019
-Intactness: 0.325446
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0400019
-Bubble pressure [MPa] = 46.0413
-Intactness: 0.325452
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0401999
-Bubble pressure [MPa] = 45.4069
-Intactness: 0.325457
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0403944
-Bubble pressure [MPa] = 44.7971
-Intactness: 0.325462
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0405856
-Bubble pressure [MPa] = 44.2104
-Intactness: 0.325467
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0407735
-Bubble pressure [MPa] = 43.6454
-Intactness: 0.325472
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0409582
-Bubble pressure [MPa] = 43.1007
-Intactness: 0.325478
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.04114
-Bubble pressure [MPa] = 42.5753
-Intactness: 0.325483
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0413189
-Bubble pressure [MPa] = 42.068
-Intactness: 0.325488
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0414951
-Bubble pressure [MPa] = 41.5778
-Intactness: 0.325493
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0416685
-Bubble pressure [MPa] = 41.1037
-Intactness: 0.325498
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0418394
-Bubble pressure [MPa] = 40.645
-Intactness: 0.325504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0420078
-Bubble pressure [MPa] = 40.2009
-Intactness: 0.325509
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0421737
-Bubble pressure [MPa] = 39.7705
-Intactness: 0.325514
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0423374
-Bubble pressure [MPa] = 39.3532
-Intactness: 0.325519
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0424988
-Bubble pressure [MPa] = 38.9484
-Intactness: 0.325524
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.042658
-Bubble pressure [MPa] = 38.5554
-Intactness: 0.32553
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0428151
-Bubble pressure [MPa] = 38.1737
-Intactness: 0.325535
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0429701
-Bubble pressure [MPa] = 37.8028
-Intactness: 0.32554
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0431232
-Bubble pressure [MPa] = 37.4422
-Intactness: 0.325545
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0432743
-Bubble pressure [MPa] = 37.0914
-Intactness: 0.32555
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0434236
-Bubble pressure [MPa] = 36.75
-Intactness: 0.325556
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0435711
-Bubble pressure [MPa] = 36.4175
-Intactness: 0.325561
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0437167
-Bubble pressure [MPa] = 36.0937
-Intactness: 0.325566
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0438607
-Bubble pressure [MPa] = 35.7781
-Intactness: 0.325571
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.044003
-Bubble pressure [MPa] = 35.4705
-Intactness: 0.325576
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0441436
-Bubble pressure [MPa] = 35.1703
-Intactness: 0.325582
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0442827
-Bubble pressure [MPa] = 34.8775
-Intactness: 0.325587
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0444202
-Bubble pressure [MPa] = 34.5917
-Intactness: 0.325592
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0445563
-Bubble pressure [MPa] = 34.3126
-Intactness: 0.325597
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0446908
-Bubble pressure [MPa] = 34.0399
-Intactness: 0.325602
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0448239
-Bubble pressure [MPa] = 33.7735
-Intactness: 0.325608
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0449557
-Bubble pressure [MPa] = 33.5131
-Intactness: 0.325613
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.045086
-Bubble pressure [MPa] = 33.2585
-Intactness: 0.325618
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0452151
-Bubble pressure [MPa] = 33.0094
-Intactness: 0.325623
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0453428
-Bubble pressure [MPa] = 32.7657
-Intactness: 0.325628
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0454693
-Bubble pressure [MPa] = 32.5271
-Intactness: 0.325634
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0455945
-Bubble pressure [MPa] = 32.2936
-Intactness: 0.325639
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0457185
-Bubble pressure [MPa] = 32.0649
-Intactness: 0.325644
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0458414
-Bubble pressure [MPa] = 31.8409
-Intactness: 0.325649
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.045963
-Bubble pressure [MPa] = 31.6214
-Intactness: 0.325654
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0460836
-Bubble pressure [MPa] = 31.4062
-Intactness: 0.32566
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.046203
-Bubble pressure [MPa] = 31.1953
-Intactness: 0.325665
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0463213
-Bubble pressure [MPa] = 30.9884
-Intactness: 0.32567
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0464386
-Bubble pressure [MPa] = 30.7856
-Intactness: 0.325675
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0465548
-Bubble pressure [MPa] = 30.5865
-Intactness: 0.325681
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.04667
-Bubble pressure [MPa] = 30.3912
-Intactness: 0.325686
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0467842
-Bubble pressure [MPa] = 30.1995
-Intactness: 0.325691
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0468974
-Bubble pressure [MPa] = 30.0113
-Intactness: 0.325696
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0470097
-Bubble pressure [MPa] = 29.8265
-Intactness: 0.325701
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.047121
-Bubble pressure [MPa] = 29.645
-Intactness: 0.325707
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0472313
-Bubble pressure [MPa] = 29.4666
-Intactness: 0.325712
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0473408
-Bubble pressure [MPa] = 29.2914
-Intactness: 0.325717
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0474494
-Bubble pressure [MPa] = 29.1192
-Intactness: 0.325722
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0475571
-Bubble pressure [MPa] = 28.9499
-Intactness: 0.325727
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0476639
-Bubble pressure [MPa] = 28.7835
-Intactness: 0.325733
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0477699
-Bubble pressure [MPa] = 28.6199
-Intactness: 0.325738
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0478751
-Bubble pressure [MPa] = 28.4589
-Intactness: 0.325743
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0479794
-Bubble pressure [MPa] = 28.3006
-Intactness: 0.325748
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0480829
-Bubble pressure [MPa] = 28.1448
-Intactness: 0.325753
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0481857
-Bubble pressure [MPa] = 27.9916
-Intactness: 0.325759
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0482877
-Bubble pressure [MPa] = 27.8407
-Intactness: 0.325764
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0483889
-Bubble pressure [MPa] = 27.6922
-Intactness: 0.325769
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0484893
-Bubble pressure [MPa] = 27.546
-Intactness: 0.325774
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0485891
-Bubble pressure [MPa] = 27.402
-Intactness: 0.325779
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0486881
-Bubble pressure [MPa] = 27.2603
-Intactness: 0.325785
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0487864
-Bubble pressure [MPa] = 27.1206
-Intactness: 0.32579
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0488839
-Bubble pressure [MPa] = 26.9831
-Intactness: 0.325795
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0489808
-Bubble pressure [MPa] = 26.8475
-Intactness: 0.3258
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0490771
-Bubble pressure [MPa] = 26.714
-Intactness: 0.325805
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0491726
-Bubble pressure [MPa] = 26.5824
-Intactness: 0.325811
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0492675
-Bubble pressure [MPa] = 26.4526
-Intactness: 0.325816
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493617
-Bubble pressure [MPa] = 26.3247
-Intactness: 0.325816
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493615
-Bubble pressure [MPa] = 26.218
-Intactness: 0.325816
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493663
-Bubble pressure [MPa] = 26.105
-Intactness: 0.325816
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493706
-Bubble pressure [MPa] = 25.9926
-Intactness: 0.325817
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493745
-Bubble pressure [MPa] = 25.8807
-Intactness: 0.325817
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493781
-Bubble pressure [MPa] = 25.7694
-Intactness: 0.325817
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493813
-Bubble pressure [MPa] = 25.6586
-Intactness: 0.325817
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493843
-Bubble pressure [MPa] = 25.5482
-Intactness: 0.325818
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493869
-Bubble pressure [MPa] = 25.4382
-Intactness: 0.325818
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493893
-Bubble pressure [MPa] = 25.3286
-Intactness: 0.325818
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493915
-Bubble pressure [MPa] = 25.2193
-Intactness: 0.325819
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493935
-Bubble pressure [MPa] = 25.1102
-Intactness: 0.325819
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493952
-Bubble pressure [MPa] = 25.0015
-Intactness: 0.325819
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493968
-Bubble pressure [MPa] = 24.893
-Intactness: 0.325819
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493983
-Bubble pressure [MPa] = 24.7847
-Intactness: 0.32582
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0493996
-Bubble pressure [MPa] = 24.6767
-Intactness: 0.32582
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494007
-Bubble pressure [MPa] = 24.5688
-Intactness: 0.32582
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494018
-Bubble pressure [MPa] = 24.461
-Intactness: 0.32582
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494027
-Bubble pressure [MPa] = 24.3534
-Intactness: 0.325821
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494036
-Bubble pressure [MPa] = 24.246
-Intactness: 0.325821
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494043
-Bubble pressure [MPa] = 24.1386
-Intactness: 0.325821
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.049405
-Bubble pressure [MPa] = 24.0314
-Intactness: 0.325821
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494056
-Bubble pressure [MPa] = 23.9242
-Intactness: 0.325822
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494062
-Bubble pressure [MPa] = 23.8172
-Intactness: 0.325822
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494066
-Bubble pressure [MPa] = 23.7102
-Intactness: 0.325822
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494071
-Bubble pressure [MPa] = 23.6033
-Intactness: 0.325822
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494075
-Bubble pressure [MPa] = 23.4964
-Intactness: 0.325823
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494078
-Bubble pressure [MPa] = 23.3897
-Intactness: 0.325823
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494081
-Bubble pressure [MPa] = 23.2829
-Intactness: 0.325823
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494084
-Bubble pressure [MPa] = 23.1762
-Intactness: 0.325823
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494086
-Bubble pressure [MPa] = 23.0695
-Intactness: 0.325824
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494088
-Bubble pressure [MPa] = 22.9629
-Intactness: 0.325824
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.049409
-Bubble pressure [MPa] = 22.8563
-Intactness: 0.325824
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494092
-Bubble pressure [MPa] = 22.7497
-Intactness: 0.325824
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494093
-Bubble pressure [MPa] = 22.6432
-Intactness: 0.325824
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494094
-Bubble pressure [MPa] = 22.5366
-Intactness: 0.325825
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494096
-Bubble pressure [MPa] = 22.4301
-Intactness: 0.325825
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494097
-Bubble pressure [MPa] = 22.3236
-Intactness: 0.325825
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494098
-Bubble pressure [MPa] = 22.2171
-Intactness: 0.325825
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494098
-Bubble pressure [MPa] = 22.1107
-Intactness: 0.325826
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494099
-Bubble pressure [MPa] = 22.0042
-Intactness: 0.325826
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.04941
-Bubble pressure [MPa] = 21.8978
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325826
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.04941
-Bubble pressure [MPa] = 21.7913
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325826
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494101
-Bubble pressure [MPa] = 21.6849
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325826
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494101
-Bubble pressure [MPa] = 21.5784
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325827
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494101
-Bubble pressure [MPa] = 21.472
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325827
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494102
-Bubble pressure [MPa] = 21.3656
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325827
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494102
-Bubble pressure [MPa] = 21.2592
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325827
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494102
-Bubble pressure [MPa] = 21.1528
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325827
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494102
-Bubble pressure [MPa] = 21.0464
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325828
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494103
-Bubble pressure [MPa] = 20.9399
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325828
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494103
-Bubble pressure [MPa] = 20.8335
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325828
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494103
-Bubble pressure [MPa] = 20.7271
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325828
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494103
-Bubble pressure [MPa] = 20.6207
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325828
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494103
-Bubble pressure [MPa] = 20.5143
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325829
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494103
-Bubble pressure [MPa] = 20.4079
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325829
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494103
-Bubble pressure [MPa] = 20.3015
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325829
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494103
-Bubble pressure [MPa] = 20.1951
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325829
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494103
-Bubble pressure [MPa] = 20.0887
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325829
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494103
-Bubble pressure [MPa] = 19.9823
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32583
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494103
-Bubble pressure [MPa] = 19.8759
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32583
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494103
-Bubble pressure [MPa] = 19.7695
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32583
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494103
-Bubble pressure [MPa] = 19.6631
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32583
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 19.5567
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32583
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 19.4503
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32583
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 19.3439
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325831
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 19.2375
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325831
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 19.1311
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325831
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 19.0247
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325831
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 18.9183
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325831
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 18.8119
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325831
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 18.7055
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325832
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 18.5991
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325832
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 18.4927
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325832
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 18.3862
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325832
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 18.2798
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325832
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 18.1734
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325832
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 18.067
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325833
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 17.9606
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325833
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 17.8542
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325833
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 17.7478
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325833
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 17.6414
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325833
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 17.535
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325833
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 17.4286
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325833
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 17.3222
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325834
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 17.2158
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325834
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 17.1094
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325834
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 17.003
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325834
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 16.8966
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325834
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 16.7901
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325834
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 16.6837
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325834
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 16.5773
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325835
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 16.4709
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325835
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 16.3645
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325835
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 16.2581
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325835
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 16.1517
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325835
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 16.0453
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325835
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 15.9389
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325835
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 15.8325
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325835
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 15.7261
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325835
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 15.6197
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325836
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 15.6197
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325836
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 15.6197
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325842
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 15.6198
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325849
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 15.6199
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325855
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 15.6201
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325862
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 15.6202
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325869
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494104
-Bubble pressure [MPa] = 15.6204
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325875
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494105
-Bubble pressure [MPa] = 15.6205
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325882
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494105
-Bubble pressure [MPa] = 15.6206
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325888
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494105
-Bubble pressure [MPa] = 15.6208
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325895
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494105
-Bubble pressure [MPa] = 15.6209
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325902
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494105
-Bubble pressure [MPa] = 15.621
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325908
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494105
-Bubble pressure [MPa] = 15.6212
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325915
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494105
-Bubble pressure [MPa] = 15.6213
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325921
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494105
-Bubble pressure [MPa] = 15.6215
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325928
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494105
-Bubble pressure [MPa] = 15.6216
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325935
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494106
-Bubble pressure [MPa] = 15.6217
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325941
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494106
-Bubble pressure [MPa] = 15.6219
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325948
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494106
-Bubble pressure [MPa] = 15.622
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325954
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494106
-Bubble pressure [MPa] = 15.6222
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325961
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494106
-Bubble pressure [MPa] = 15.6223
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325967
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494106
-Bubble pressure [MPa] = 15.6224
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325974
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494106
-Bubble pressure [MPa] = 15.6226
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325981
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494106
-Bubble pressure [MPa] = 15.6227
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325987
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494107
-Bubble pressure [MPa] = 15.6229
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.325994
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494107
-Bubble pressure [MPa] = 15.623
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494107
-Bubble pressure [MPa] = 15.6231
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326007
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494107
-Bubble pressure [MPa] = 15.6233
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326014
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494107
-Bubble pressure [MPa] = 15.6234
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32602
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494107
-Bubble pressure [MPa] = 15.6235
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326027
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494107
-Bubble pressure [MPa] = 15.6237
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326033
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494107
-Bubble pressure [MPa] = 15.6238
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32604
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494107
-Bubble pressure [MPa] = 15.624
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326047
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494108
-Bubble pressure [MPa] = 15.6241
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326053
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494108
-Bubble pressure [MPa] = 15.6242
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32606
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494108
-Bubble pressure [MPa] = 15.6244
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326066
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494108
-Bubble pressure [MPa] = 15.6245
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326073
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494108
-Bubble pressure [MPa] = 15.6247
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32608
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494108
-Bubble pressure [MPa] = 15.6248
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326086
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494108
-Bubble pressure [MPa] = 15.6249
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326093
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494108
-Bubble pressure [MPa] = 15.6251
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326099
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494109
-Bubble pressure [MPa] = 15.6252
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326106
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494109
-Bubble pressure [MPa] = 15.6254
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326113
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494109
-Bubble pressure [MPa] = 15.6255
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326119
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494109
-Bubble pressure [MPa] = 15.6256
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326126
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494109
-Bubble pressure [MPa] = 15.6258
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326132
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494109
-Bubble pressure [MPa] = 15.6259
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326139
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494109
-Bubble pressure [MPa] = 15.626
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326146
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494109
-Bubble pressure [MPa] = 15.6262
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326152
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494109
-Bubble pressure [MPa] = 15.6263
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326159
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.049411
-Bubble pressure [MPa] = 15.6265
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326165
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.049411
-Bubble pressure [MPa] = 15.6266
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326172
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.049411
-Bubble pressure [MPa] = 15.6267
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326178
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.049411
-Bubble pressure [MPa] = 15.6269
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326185
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.049411
-Bubble pressure [MPa] = 15.627
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326192
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.049411
-Bubble pressure [MPa] = 15.6272
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326198
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.049411
-Bubble pressure [MPa] = 15.6273
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326205
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.049411
-Bubble pressure [MPa] = 15.6274
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326211
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494111
-Bubble pressure [MPa] = 15.6276
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326218
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494111
-Bubble pressure [MPa] = 15.6277
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326225
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494111
-Bubble pressure [MPa] = 15.6278
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326231
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494111
-Bubble pressure [MPa] = 15.628
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326238
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494111
-Bubble pressure [MPa] = 15.6281
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326244
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494111
-Bubble pressure [MPa] = 15.6283
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326251
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494111
-Bubble pressure [MPa] = 15.6284
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326258
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494111
-Bubble pressure [MPa] = 15.6285
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326264
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494111
-Bubble pressure [MPa] = 15.6287
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326271
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494112
-Bubble pressure [MPa] = 15.6288
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326277
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494112
-Bubble pressure [MPa] = 15.6289
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326284
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494112
-Bubble pressure [MPa] = 15.6291
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326291
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494112
-Bubble pressure [MPa] = 15.6292
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326297
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494112
-Bubble pressure [MPa] = 15.6294
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326304
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494112
-Bubble pressure [MPa] = 15.6295
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32631
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494112
-Bubble pressure [MPa] = 15.6296
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326317
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494112
-Bubble pressure [MPa] = 15.6298
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326324
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494113
-Bubble pressure [MPa] = 15.6299
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32633
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494113
-Bubble pressure [MPa] = 15.6301
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326337
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494113
-Bubble pressure [MPa] = 15.6302
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326343
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494113
-Bubble pressure [MPa] = 15.6303
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32635
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494113
-Bubble pressure [MPa] = 15.6305
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326356
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494113
-Bubble pressure [MPa] = 15.6306
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326363
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494113
-Bubble pressure [MPa] = 15.6307
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.32637
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494113
-Bubble pressure [MPa] = 15.6309
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326376
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494113
-Bubble pressure [MPa] = 15.631
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326383
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494114
-Bubble pressure [MPa] = 15.6312
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326389
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494114
-Bubble pressure [MPa] = 15.6313
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326396
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494114
-Bubble pressure [MPa] = 15.6314
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326403
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494114
-Bubble pressure [MPa] = 15.6316
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326409
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494114
-Bubble pressure [MPa] = 15.6317
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326416
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494114
-Bubble pressure [MPa] = 15.6319
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326422
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494114
-Bubble pressure [MPa] = 15.632
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326429
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494114
-Bubble pressure [MPa] = 15.6321
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326436
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494115
-Bubble pressure [MPa] = 15.6323
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326442
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494115
-Bubble pressure [MPa] = 15.6324
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326449
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494115
-Bubble pressure [MPa] = 15.6325
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326455
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494115
-Bubble pressure [MPa] = 15.6327
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326462
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494115
-Bubble pressure [MPa] = 15.6328
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326469
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494115
-Bubble pressure [MPa] = 15.633
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326475
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494115
-Bubble pressure [MPa] = 15.6331
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326482
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494115
-Bubble pressure [MPa] = 15.6332
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326488
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494115
-Bubble pressure [MPa] = 15.6334
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326495
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 15.6335
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326495
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 15.5607
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326495
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 15.4878
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326495
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 15.415
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326495
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 15.3421
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326496
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 15.2693
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326496
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 15.1964
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326496
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 15.1236
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326496
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 15.0507
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326496
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 14.9779
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326497
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 14.905
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326497
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 14.8322
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326497
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 14.7594
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326497
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 14.6865
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326497
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 14.6137
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326497
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 14.5408
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326498
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 14.468
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326498
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 14.3951
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326498
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 14.3223
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326498
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 14.2494
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326498
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 14.1766
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326498
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 14.1037
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326499
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 14.0309
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326499
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 13.958
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326499
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 13.8852
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326499
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 13.8123
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326499
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 13.7395
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326499
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 13.6666
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.3265
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 13.5938
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.3265
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 13.521
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.3265
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 13.4481
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.3265
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 13.3753
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.3265
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 13.3024
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.3265
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 13.2296
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.3265
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 13.1567
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.3265
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 13.0839
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326501
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 13.011
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326501
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 12.9382
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326501
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 12.8653
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326501
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 12.7925
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326501
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 12.7196
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326501
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 12.6468
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326501
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 12.5739
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326501
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 12.5011
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326502
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 12.4282
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326502
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 12.3554
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326502
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 12.2825
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326502
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 12.2097
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326502
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 12.1368
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326502
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 12.064
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326502
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 11.9911
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326502
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 11.9183
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326502
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 11.8454
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326503
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 11.7726
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326503
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 11.6997
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326503
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 11.6269
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326503
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 11.554
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326503
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 11.4812
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326503
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 11.4083
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326503
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 11.3355
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326503
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 11.2627
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326503
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 11.1898
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326503
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 11.117
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326503
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 11.0441
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326503
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 10.9713
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 10.8984
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 10.8256
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 10.7527
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 10.6799
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 10.607
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 10.5342
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 10.4613
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 10.3885
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 10.3156
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 10.2428
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 10.1699
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 10.0971
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 10.0242
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 9.95136
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 9.87851
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 9.80566
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 9.73281
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 9.65996
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 9.58711
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326504
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 9.51426
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 9.44141
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 9.36856
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 9.29571
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 9.22286
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 9.15001
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 9.07716
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 9.00431
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 8.93146
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 8.85861
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 8.78576
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 8.71291
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 8.64006
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 8.56721
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 8.49436
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 8.42151
-Source rate = Xe
-Source rate = Kr
-Intactness: 0.326505
-Spacing/2 [um] = 1
-Spacing bubbles [um] = 0.0494116
-Bubble pressure [MPa] = 8.34866
-Intactness: 0.326505
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 1
+Intactness = 0.38812
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38812
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38812
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38812
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388121
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388121
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388121
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388121
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388121
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388121
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388121
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388121
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388121
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388122
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388122
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388122
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388122
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388122
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388122
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388122
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388122
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388123
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388123
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388123
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388123
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388123
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388123
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388123
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388123
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388124
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388124
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388124
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388124
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388124
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388124
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388124
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388125
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388125
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388125
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388125
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388125
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388125
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388126
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388126
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388126
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388126
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388126
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388126
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388127
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388127
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388127
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388127
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388127
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388127
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388128
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388128
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388128
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388128
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388128
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388128
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388129
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388129
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388129
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388129
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388129
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38813
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38813
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38813
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38813
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38813
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388131
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388131
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388131
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388131
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388131
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388132
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388132
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388132
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388132
+Intactness = 0.388132
+Intactness = 0.388133
+Intactness = 0.388133
+Intactness = 0.388133
+Intactness = 0.388133
+Intactness = 0.388134
+Intactness = 0.388134
+Intactness = 0.388134
+Intactness = 0.388134
+Intactness = 0.388134
+Intactness = 0.388135
+Intactness = 0.388135
+Intactness = 0.388135
+Intactness = 0.388135
+Intactness = 0.388136
+Intactness = 0.388136
+Intactness = 0.388136
+Intactness = 0.388136
+Intactness = 0.388137
+Intactness = 0.388137
+Intactness = 0.388141
+Intactness = 0.388146
+Intactness = 0.388151
+Intactness = 0.388155
+Intactness = 0.38816
+Intactness = 0.388165
+Intactness = 0.38817
+Intactness = 0.388174
+Intactness = 0.388179
+Intactness = 0.388184
+Intactness = 0.388188
+Intactness = 0.388193
+Intactness = 0.388198
+Intactness = 0.388203
+Intactness = 0.388207
+Intactness = 0.388212
+Intactness = 0.388217
+Intactness = 0.388221
+Intactness = 0.388226
+Intactness = 0.388231
+Intactness = 0.388236
+Intactness = 0.38824
+Intactness = 0.388245
+Intactness = 0.38825
+Intactness = 0.388254
+Intactness = 0.388259
+Intactness = 0.388264
+Intactness = 0.388269
+Intactness = 0.388273
+Intactness = 0.388278
+Intactness = 0.388283
+Intactness = 0.388288
+Intactness = 0.388292
+Intactness = 0.388297
+Intactness = 0.388302
+Intactness = 0.388306
+Intactness = 0.388311
+Intactness = 0.388316
+Intactness = 0.388321
+Intactness = 0.388325
+Intactness = 0.38833
+Intactness = 0.388335
+Intactness = 0.388339
+Intactness = 0.388344
+Intactness = 0.388349
+Intactness = 0.388354
+Intactness = 0.388358
+Intactness = 0.388363
+Intactness = 0.388368
+Intactness = 0.388372
+Intactness = 0.388377
+Intactness = 0.388382
+Intactness = 0.388387
+Intactness = 0.388391
+Intactness = 0.388396
+Intactness = 0.388401
+Intactness = 0.388405
+Intactness = 0.38841
+Intactness = 0.388415
+Intactness = 0.38842
+Intactness = 0.388424
+Intactness = 0.388429
+Intactness = 0.388434
+Intactness = 0.388438
+Intactness = 0.388443
+Intactness = 0.388448
+Intactness = 0.388453
+Intactness = 0.388457
+Intactness = 0.388462
+Intactness = 0.388467
+Intactness = 0.388472
+Intactness = 0.388476
+Intactness = 0.388481
+Intactness = 0.388486
+Intactness = 0.38849
+Intactness = 0.388495
+Intactness = 0.3885
+Intactness = 0.388505
+Intactness = 0.388509
+Intactness = 0.388514
+Intactness = 0.388519
+Intactness = 0.388523
+Intactness = 0.388528
+Intactness = 0.388533
+Intactness = 0.388538
+Intactness = 0.388542
+Intactness = 0.388547
+Intactness = 0.388552
+Intactness = 0.388556
+Intactness = 0.388561
+Intactness = 0.388566
+Intactness = 0.388571
+Intactness = 0.388575
+Intactness = 0.38858
+Intactness = 0.388585
+Intactness = 0.388589
+Intactness = 0.388594
+Intactness = 0.388599
+Intactness = 0.388604
+Intactness = 0.388608
+Intactness = 0.388608
+Intactness = 0.388609
+Intactness = 0.388609
+Intactness = 0.388609
+Intactness = 0.388609
+Intactness = 0.38861
+Intactness = 0.38861
+Intactness = 0.38861
+Intactness = 0.38861
+Intactness = 0.388611
+Intactness = 0.388611
+Intactness = 0.388611
+Intactness = 0.388611
+Intactness = 0.388612
+Intactness = 0.388612
+Intactness = 0.388612
+Intactness = 0.388612
+Intactness = 0.388612
+Intactness = 0.388613
+Intactness = 0.388613
+Intactness = 0.388613
+Intactness = 0.388613
+Intactness = 0.388614
+Intactness = 0.388614
+Intactness = 0.388614
+Intactness = 0.388614
+Intactness = 0.388615
+Intactness = 0.388615
+Intactness = 0.388615
+Intactness = 0.388615
+Intactness = 0.388615
+Intactness = 0.388616
+Intactness = 0.388616
+Intactness = 0.388616
+Intactness = 0.388616
+Intactness = 0.388616
+Intactness = 0.388617
+Intactness = 0.388617
+Intactness = 0.388617
+Intactness = 0.388617
+Intactness = 0.388617
+Intactness = 0.388618
+Intactness = 0.388618
+Intactness = 0.388618
+Intactness = 0.388618
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388618
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388619
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388619
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388619
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388619
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388619
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388619
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38862
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38862
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38862
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38862
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38862
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388621
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388621
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388621
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388621
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388621
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388621
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388622
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388622
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388622
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388622
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388622
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388622
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388622
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388623
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388623
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388623
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388623
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388623
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388623
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388623
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388624
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388624
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388624
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388624
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388624
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388624
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388624
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388624
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388625
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388625
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388625
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388625
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388625
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388625
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388625
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388625
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388626
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388626
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388626
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388626
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388626
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388626
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388626
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388626
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388626
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388632
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388638
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388644
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38865
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388656
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388662
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388668
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388674
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38868
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388686
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388692
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388698
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388704
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38871
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388716
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388722
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388728
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388734
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38874
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388746
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388752
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388758
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388764
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38877
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388776
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388782
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388788
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388794
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.3888
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388806
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388812
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388818
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388824
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38883
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388836
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388842
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388848
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388854
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38886
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388866
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388871
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388877
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388883
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388889
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388895
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388901
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388907
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388913
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388919
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388925
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388931
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388937
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388943
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388949
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388955
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388961
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388967
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388973
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388979
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388985
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388991
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.388997
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389003
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389009
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389015
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389021
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389027
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389033
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389039
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389045
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389051
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389057
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389063
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389069
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389075
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389081
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389087
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389093
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389099
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389105
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389111
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389117
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389123
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389129
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389135
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389141
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389146
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389152
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389158
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389164
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38917
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389176
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389182
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389188
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389194
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.3892
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389206
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389212
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389218
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389224
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389224
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389224
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389225
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389225
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389225
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389225
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389225
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389225
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389226
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389226
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389226
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389226
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389226
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389226
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389227
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389227
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389227
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389227
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389227
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389227
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389227
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389228
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389228
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389228
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389228
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389228
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389228
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389228
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389229
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389229
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389229
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389229
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389229
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389229
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389229
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389229
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38923
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38923
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38923
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38923
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38923
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38923
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38923
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38923
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38923
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.38923
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389231
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389231
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389231
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389231
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389231
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389231
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389231
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389231
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389231
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389231
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389231
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389232
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+Source rate = Xe
+Source rate = Kr
+Intactness = 0.389233
+	
+Bubble area decreases
+N without oneoff =    1.04191e+13
+N with oneoff =    1.04191e+13
+Intactness = 0.389233
