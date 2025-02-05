@@ -150,6 +150,14 @@ public:
     void GasDecay();
 
     /**
+     * @brief GasReleased computes the gas released to the rod free volume
+     *
+     * @author E. Cappellari
+     * 
+     */
+    void GasRelease();
+
+    /**
      * @brief Handles the intragranular gas diffusion problem.
      * 
      * @author D. Pizzocri

@@ -63,6 +63,10 @@ public:
 	double chromia_solution;
 	double chromia_precipitate;
 
+    // Mechanical properties
+    double elastic_modulus;
+    double poisson_ratio;
+    double grain_boundary_fracture_energy;
 
     /**
      * @brief Sets the theoretical density of the matrix.
@@ -457,6 +461,45 @@ public:
 	{
 		/// Member function to set the chromia (Cr2O3) precipitate (kg)	
 		return chromia_precipitate;
+	}
+
+	void setElasticModulus(double e)
+	{
+        // Member function to set the elastic (Young) modulus of the material (MPa)
+		elastic_modulus = e;
+	}
+
+	double getElasticModulus()
+	{
+        // Member function to return the elastic (Young) modulus of the material (MPa)
+		return elastic_modulus;
+	}
+
+
+    // Poisson ratio
+	void setPoissonRatio(double v)
+	{
+        // Member function to set the Poisson ratio of the material
+		poisson_ratio = v;
+	}
+
+	double getPoissonRatio()
+	{
+        // Member function to return the Poisson ratio of the material
+		return poisson_ratio;
+	}
+
+    // Grain-boundary fracture energy
+	void setGrainBoundaryFractureEnergy(double v)
+	{
+        // Member function to set the grain-boundary fracture energy of the material (J/m2)
+		grain_boundary_fracture_energy = v;
+	}
+
+	double getGrainBoundaryFractureEnergy()
+	{
+        // Member function to return the grain-boundary fracture energy of the material (J/m2)
+		return grain_boundary_fracture_energy;
 	}
 
     /**

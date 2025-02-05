@@ -70,6 +70,29 @@ Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
 	matrix_.setChromiaSolution(0); // (at/m3)
 	matrix_.setChromiaPrecipitate(0); // (at/m3)
 
+    // Mechanical properties
+    
+	// Elastic modulus
+    matrix_.setElasticModulus(2.237e5 * (1 - 2.6 * (1 - sciantix_variable["Fuel density"].getFinalValue() / 10960)) * (1 - 1.394e-4 * (history_variable["Temperature"].getFinalValue()-273-20)) * (1 - 0.1506 * (1 - exp(-0.035*sciantix_variable["Burnup"].getFinalValue())))); // (MPa) TU
+	if ((1 - sciantix_variable["Fuel density"].getFinalValue() / 10960)>=0.2){
+		std::cout<<"WARNING: elastic modulus correlation used outside the validity range for fuel porosity (P<0.2)"<<std::endl;
+		std::cout<<"Porosity P = "<<(1 - sciantix_variable["Fuel density"].getFinalValue() / 10960)<<std::endl;
+	}
+
+	// Poisson ratio
+	matrix_.setPoissonRatio(0.32); // (/) TU
+
+	// Grain boundary energy 
+	//
+	// from surface tension
+	//matrix[index].setGrainBoundaryFractureEnergy(((2*0.6*cos(0.872664626)))); // (N/m)  surface tension 	
+	//
+	// from inverse calibration
+	//matrix[index].setGrainBoundaryFractureEnergy(4e-3); // (J/m2) @Jernkvist2019
+	//
+	// from mechanical testing
+	matrix_.setGrainBoundaryFractureEnergy(2); // (J/m2) @Jernkvist2020
+
     return matrix_;
 }
 
