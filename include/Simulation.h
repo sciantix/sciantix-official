@@ -687,7 +687,7 @@ class Simulation : public Solver, public Model
                 if (sciantix_variable[sv["Critical intergranular bubble pressure"]].getFinalValue()<0)
                 {
                     sciantix_variable[sv["Intergranular fractional intactness"]].setFinalValue(0);
-					std::cout << "Complete rupture" <<std::endl;
+					std::cout << "Warning: complete rupture" <<std::endl;
 				}
                 else
                 {

@@ -12,7 +12,7 @@ from regression_kashibe1991 import regression_kashibe1991
 from regression_small1988 import regression_small1988
 from regression_small1985 import regression_small1985
 
-markers = ('o', 'v', '^', 'v', '<', '>', 's', 'X', '*', 'D', 'd', 'x', 'p', 'P')
+markers = ('o', '^', 's', '<', '>', 'v', 'X', '*', 'D', 'd', 'x', 'p', 'P')
 colors = ('C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6', 'C7', 'C8', 'C9', 'C10', 'C11', 'C12', 'C13', 'C14')
 
 # Stock the directory path of the current file
@@ -42,9 +42,9 @@ folderListK1991, number_of_tests_k1991, number_of_tests_failed_k1991,  K1991_cal
 # K1990sw_sciantix = [2.884116, 3.305821, 3.079794, 3.156879, 2.379956, 2.760294, 3.0336410000000003, 3.2374140000000002]
 # K1991fgr_sciantix = [30.280442999999998, 18.449363, 28.83652, 16.956160000000004, 30.351973, 30.281223000000004, 30.286963, 30.562013, 31.829783, 28.78143, 31.27055, 29.19088, 30.507150000000003]
 white_sciantix = [0.4807149, 0.5061325, 0.5355774, 0.5655364, 0.6373828, 0.45893160000000005, 0.5172988, 0.5112292, 0.45213830000000005, 0.44072599999999995, 0.4585477, 0.5652815, 0.5447206, 0.4848695, 0.4684657, 0.4887323, 0.8099508, 0.7716721, 0.8145247, 0.6347471, 0.6874132, 0.5321062, 0.602669, 0.6056888, 0.6494001, 0.5790637000000001, 0.7354021, 0.7350637, 0.706366, 0.5394888, 0.5239209, 0.49943150000000003, 0.48803470000000004, 0.6404367999999999, 0.6335798, 0.6573399, 0.6374654000000001, 0.5814253, 0.8276218999999999, 0.4271179, 0.48652870000000004, 0.4137432, 0.5273566000000001]
-K1990fgr_sciantix = [4.7349653, 19.668812, 28.485477999999997, 25.453490000000002, 8.6988863, 23.891092, 32.412018, 29.411369999999998]
-K1990sw_sciantix = [2.684515, 3.156465, 2.967756, 3.068872, 2.137713, 2.589207, 2.9052830000000003, 3.136377]
-K1991fgr_sciantix = [29.136158, 18.587508, 25.929739999999995, 15.078479999999999, 29.150538, 29.096078000000002, 29.115388, 29.368258, 30.495478000000002, 25.859740000000002, 28.133049999999997, 26.247030000000002, 27.447410000000005]
+K1990fgr_sciantix = [4.7349513000000005, 19.668761999999997, 27.74164, 24.88153, 8.6988853, 23.891071999999998, 31.68827, 28.887140000000006]
+K1990sw_sciantix = [2.6845190000000003, 3.1564740000000002, 2.973836, 3.082197, 2.137718, 2.5892180000000002, 2.913462, 3.15285]
+K1991fgr_sciantix = [28.410859999999996, 17.83658, 25.389330000000005, 14.450880000000002, 28.393400000000003, 28.34806, 28.376190000000005, 28.63582, 29.7709, 25.276210000000003, 27.588310000000003, 25.69226, 26.91145]
 
 # Plot fgr
 plt.rcParams.update({'font.size': 18})
@@ -113,8 +113,11 @@ fig, ax = plt.subplots(figsize=(11,8))
 ax.scatter([], [], facecolors='black', marker=markers[0], label="This work")
 ax.scatter([], [], facecolors='none', edgecolors='black', marker=markers[1], label="SCIANTIX 2.0")
 ax.scatter([], [], marker='', label="\n")
-ax.scatter(White_expsw, White_calcsw, s=30, label='White et al. (2004)', marker = markers[0], color = colors[0])
-ax.scatter(K1990_expsw, K1990_calcsw, s=30, label='Une et al. (1990)', marker = markers[0], color = colors[2])
+ax.scatter([], [], facecolors=colors[0], marker=markers[2], label="White et al. (2004)")
+ax.scatter([], [], facecolors=colors[2], marker=markers[2], label="Une et al. (1990)")
+ax.scatter([], [], marker='', label="\n")
+ax.scatter(White_expsw, White_calcsw, s=30, label='', marker = markers[0], color = colors[0])
+ax.scatter(K1990_expsw, K1990_calcsw, s=30, label='', marker = markers[0], color = colors[2])
 ax.scatter(White_expsw, white_sciantix, s=30, label='', marker = markers[1], edgecolors = colors[0], facecolors='none')
 ax.scatter(K1990_expsw, K1990sw_sciantix, s=30, label='', marker = markers[1], edgecolors = colors[2], facecolors='none')
 
@@ -146,8 +149,11 @@ fig, ax = plt.subplots(figsize=(11,8))
 ax.scatter([], [], facecolors='black', marker=markers[0], label="This work")
 ax.scatter([], [], facecolors='none', edgecolors='black', marker=markers[1], label="SCIANTIX 2.0")
 ax.scatter([], [], marker='', label="\n")
-ax.scatter(K1990_expfgr, K1990_calcfgr, s=30, label='Une et al. (1990)', marker = markers[0], color = colors[2])
-ax.scatter(K1991_expfgr, K1991_calcfgr, s=30, label='Kashibe et al. (1991)', marker = markers[0], color = colors[3])
+ax.scatter([], [], facecolors=colors[2], marker=markers[2], label="Une et al. (1990)")
+ax.scatter([], [], facecolors=colors[3], marker=markers[2], label="Kashibe et al. (1991)")
+ax.scatter([], [], marker='', label="\n")
+ax.scatter(K1990_expfgr, K1990_calcfgr, s=30, label='', marker = markers[0], color = colors[2])
+ax.scatter(K1991_expfgr, K1991_calcfgr, s=30, label='', marker = markers[0], color = colors[3])
 ax.scatter(K1990_expfgr, K1990fgr_sciantix, s=30, label='', marker = markers[1], edgecolors = colors[2], facecolors='none')
 ax.scatter(K1991_expfgr, K1991fgr_sciantix, s=30, label='', marker = markers[1], edgecolors = colors[3], facecolors='none')
 

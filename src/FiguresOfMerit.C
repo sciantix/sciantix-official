@@ -95,6 +95,4 @@ void FiguresOfMerit()
   //   );
   // else
   //   sciantix_variable[sv["Intergranular bubble pressure"]].setFinalValue(0.0);
-
-  std::cout << "Intactness = " <<sciantix_variable[sv["Intergranular fractional intactness"]].getFinalValue() <<std::endl;
 }
