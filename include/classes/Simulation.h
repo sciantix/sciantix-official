@@ -237,6 +237,15 @@ public:
      */
     void GrainBoundaryMicroCracking();
 
+
+    /**
+     * @brief Calculates the fuel densification.
+     * 
+     * @author A. Pagani
+     * 
+     */
+    void Densification();
+
     /**
      * @brief Calculates the amount of gas released due to venting processes.
      * 
@@ -247,6 +256,10 @@ public:
      */
     void GrainBoundaryVenting();
 
+    double openPorosity(double fabrication_porosity);
+
+    double athermalVentingFactor(double open_p, double theta, double p, double l, double bu, double T, double F);
+    
     /**
      * @brief Calculates the formation of high burnup structures within the nuclear fuel.
      * 

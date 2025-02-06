@@ -32,7 +32,7 @@ void Simulation::GrainBoundaryMicroCracking()
     {
         case 0:
         {
-            reference = "not considered.";
+            reference = ": not considered.";
 
             break;
         }
@@ -59,7 +59,7 @@ void Simulation::GrainBoundaryMicroCracking()
             const double healing_parameter = 1.0 / 0.8814; // 1 / (u * burnup)
             parameter.push_back(healing_parameter);
 
-            reference = "Barani et al. (2017), JNM";
+            reference = ": Barani et al. (2017), JNM";
 
             break;
         }
@@ -132,10 +132,14 @@ void Simulation::GrainBoundaryMicroCracking()
 			const double healing_parameter = 1.0 / 0.8814; // 1 / (u * burnup)
 			parameter.push_back(healing_parameter);
 
-            reference = "Cappellari (Under Development)";
+            reference = ": Cappellari (Under Development)";
 
             break;
         }
+
+        default:
+            ErrorMessages::Switch(__FILE__, "iGrainBoundaryMicroCracking", int(input_variable["iGrainBoundaryMicroCracking"].getValue()));
+            break;
     }
 
     model_.setParameter(parameter);
