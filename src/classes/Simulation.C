@@ -59,6 +59,8 @@ void Simulation::execute()
         EffectiveBurnup();
     #endif
 
+    Densification();
+
     GapPartialPressure();
 
     UO2Thermochemistry();
