@@ -142,7 +142,7 @@ void Simulation::InterGranularBubbleBehavior()
         )
     );
 
-    switch (int(input_variable["iDiffusionBasedRelease"].getValue()))
+    switch (int(input_variable["iReleaseMode"].getValue()))
     {
         case 0:
         {
@@ -272,15 +272,6 @@ void Simulation::InterGranularBubbleBehavior()
         }
         case 1:
         {
-            double vol(0);
-            for (auto &system : sciantix_system)
-            {
-                if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-                {
-                    vol += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue() * system.getGas().getVanDerWaalsVolume();
-                }
-            }
-
             double gasvolume_i(0.0);
             double gasvolume_f(0.0);
             for (auto& system : sciantix_system) 
@@ -301,7 +292,11 @@ void Simulation::InterGranularBubbleBehavior()
 		    grainboundary_statematrix[3] = 0.0;
 
             // Area
-            grainboundary_statematrix[4+0] = - ( 2.0 / 3.0 ) * sciantix_variable["Intergranular bubble area"].getInitialValue() / sciantix_variable["Intergranular bubble volume"].getInitialValue();
+            if (sciantix_variable["Intergranular bubble volume"].getInitialValue() > 0.0)
+                grainboundary_statematrix[4+0] = - ( 2.0 / 3.0 ) * sciantix_variable["Intergranular bubble area"].getInitialValue() / sciantix_variable["Intergranular bubble volume"].getInitialValue();
+            else
+                grainboundary_statematrix[4+0] = 0.0;
+
             grainboundary_statematrix[4+1] = 1.0;
             grainboundary_statematrix[4+2] = 0.0;
             grainboundary_statematrix[4+3] = 0.0;
@@ -329,7 +324,7 @@ void Simulation::InterGranularBubbleBehavior()
             for (int i = 0; i < 4*4; ++i) {
                 if (std::isnan(grainboundary_statematrix[i])) {
                     grainboundary_statematrix[i] = 0.0;
-                    //std::cout<<"Warning: nan value in grain boundary state matrix due to null area and/or volume"<<std::endl;
+                    std::cout<<"Warning: nan value in grain boundary state matrix"<<std::endl;
                 }
             }
             
@@ -354,7 +349,7 @@ void Simulation::InterGranularBubbleBehavior()
             for (int i = 0; i < 4; ++i) {
                 if (std::isnan(grainboundary_input[i])) {
                     grainboundary_input[i] = 0.0;
-                    //std::cout<<"Warning: nan values in grain boundary input due to null area"<<std::endl;
+                    std::cout<<"Warning: nan values in grain boundary input"<<std::endl;
                 }
             }
 		
@@ -372,29 +367,28 @@ void Simulation::InterGranularBubbleBehavior()
             {
                 sciantix_variable["Intergranular bubble concentration"].setConstant();
                 sciantix_variable["Intergranular fractional coverage"].setFinalValue(sciantix_variable["Intergranular bubble concentration"].getFinalValue() * sciantix_variable["Intergranular bubble area"].getFinalValue());
-
-                //std::cout << "Warning: bubble area decreases" << std::endl;
+                std::cout << "Warning: bubble area decreases" << std::endl;
             }
 
             sciantix_variable["Intergranular bubble radius"].setFinalValue(
                     0.620350491 * pow(sciantix_variable["Intergranular bubble volume"].getFinalValue() / (fuel_.getLenticularShapeFactor()), 1. / 3.));
 
 
-            // Vented fraction for the intact faces
+            // Vented fraction * intact faces
 		    double ventingtunnels_i = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 3.7250) + 1)) * sciantix_variable["Intergranular fractional intactness"].getFinalValue();
 		    double ventingtunnels_f = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) + 1)) * sciantix_variable["Intergranular fractional intactness"].getInitialValue();
 
             // Atoms at grain boundary
-            double source(0.0), n_at(0.0);
+            double n_at(0.0);
             
             for (auto& system : sciantix_system)
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
-                    source = ventingtunnels_f * sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement() + 
-                             sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() * (ventingtunnels_f-ventingtunnels_i);
-
-                    sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() - source);
+                    sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
+                        sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() - 
+                        ventingtunnels_f * sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement() - 
+                        sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() * (ventingtunnels_f-ventingtunnels_i));
                 
                     sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].setFinalValue(
                         sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() /
