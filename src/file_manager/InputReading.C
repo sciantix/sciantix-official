@@ -147,7 +147,7 @@ void InputReading(
 	Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
 	Sciantix_options[22] = ReadOneSetting("iChromiumSolubility",input_settings,input_check);
 	Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);	
-	Sciantix_options[24] = ReadOneSetting("iDiffusionBasedRelease", input_settings, input_check);
+	Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
 	
 	if (!input_initial_conditions.fail())
 	{

@@ -32,6 +32,10 @@ void Simulation::GrainBoundaryMicroCracking()
     {
         case 0:
         {
+            parameter.push_back(0.0);
+            parameter.push_back(0.0);
+            parameter.push_back(0.0);
+
             reference = ": not considered.";
 
             break;
@@ -78,7 +82,7 @@ void Simulation::GrainBoundaryMicroCracking()
 			// Stress intensification at GB tip
 			//
 			// By theoretical calculations: kt = 1 + crackdiameter / crackheight
-			//double stressintensification = 1 + 2*sin(fuel_.getSemidihedralAngle())/(1-cos(fuel_.getSemidihedralAngle()));
+			// double stressintensification = 1 + 2*sin(fuel_.getSemidihedralAngle())/(1-cos(fuel_.getSemidihedralAngle()));
 			//
 			// By ABAQUS 3D fitting: kt = 3.25
 			double stressintensification = 3.25; 
@@ -90,23 +94,24 @@ void Simulation::GrainBoundaryMicroCracking()
 			
 			// Geometrical factor accounting for fractional coverage of the grain face h(F_c, Y)
 			// defined only if F_c > 0 otherwise tends to 1. 
-			double geometrical_factor = 3.28; // = Y
-			double hc(1.0);
-			if (sciantix_variable["Intergranular fractional coverage"].getFinalValue()>0.01)
+			double Y = 3.28;
+			double h(1.0);
+			if (sciantix_variable["Intergranular fractional coverage"].getFinalValue() > 0.01)
 			{
-				hc = 1/(1-1/(M_PI*geometrical_factor*(2*sqrt(pow(sciantix_variable["Intergranular fractional coverage"].getFinalValue(), -0.5)-1))));
+				h = pow( 1.0 - 1.0 / ( M_PI * Y * ( 2.0 * sqrt(pow(sciantix_variable["Intergranular fractional coverage"].getFinalValue(), -0.5) - 1.0))), - 1.0);
 			}
 
 			// Pcrit = Peq + fracture stress
 			//
-			// fracture stress = (1-1/(pi*F))*Kic*sqrt(pi/radius)*(1/kt) //Pa
-			double fracture_stress = K_IC*1e6*sqrt(1/(M_PI*sciantix_variable["Intergranular bubble radius"].getFinalValue()*sin(fuel_.getSemidihedralAngle())))*(1/stressintensification)*(1/hc);
+			// fracture stress = Kic*sqrt(1/pi*radius)*(1/kt) //Pa
+			double fracture_stress = K_IC * 1e6 / ( stressintensification * h * sqrt( M_PI * sciantix_variable["Intergranular bubble radius"].getFinalValue() * sin(fuel_.getSemidihedralAngle())));
 			// Critical pressure: 
 			double critical_bubble_pressure = equilibriumpressure + fracture_stress;   //Pa
 			
 			// Upper limit for atom-to-vacancy ratio:  it limits the pressure value
 			double maxatompervacancy = 1.0;
 			double atompervacancyf = 0.0;
+
 			if (sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() !=0)
 			{			
 				atompervacancyf = sciantix_variable["Intergranular atoms per bubble"].getFinalValue() / sciantix_variable["Intergranular vacancies per bubble"].getFinalValue();
@@ -117,16 +122,16 @@ void Simulation::GrainBoundaryMicroCracking()
 			}
 
 			// Bubble gas pressure
-			double bubble_pressure  = (boltzmann_constant*history_variable["Temperature"].getFinalValue() * atompervacancyf / fuel_.getSchottkyVolume()); //Pa
+			double bubble_pressure  = (boltzmann_constant * history_variable["Temperature"].getFinalValue() * atompervacancyf / fuel_.getSchottkyVolume()); //Pa
 			
 			double microcracking_parameter = 0.0;
 			if (bubble_pressure > critical_bubble_pressure && bubble_pressure > equilibriumpressure)
-				microcracking_parameter = (bubble_pressure-equilibriumpressure)*sciantix_variable["Intergranular fractional coverage"].getFinalValue()/G;
+				microcracking_parameter = ( bubble_pressure - equilibriumpressure ) * sciantix_variable["Intergranular fractional coverage"].getFinalValue() / G;
 			
 			// Microcracking parameter
 			parameter.push_back(microcracking_parameter);
             // Increment in opening surface (0 to minor-axis bubble radius)
-            parameter.push_back((1-cos(fuel_.getSemidihedralAngle()))*sciantix_variable["Intergranular bubble radius"].getFinalValue());
+            parameter.push_back(( 1.0 - cos(fuel_.getSemidihedralAngle()) ) * sciantix_variable["Intergranular bubble radius"].getFinalValue());
 
 			// healing parameter from Barani et al.(2017)
 			const double healing_parameter = 1.0 / 0.8814; // 1 / (u * burnup)
@@ -162,32 +167,27 @@ void Simulation::GrainBoundaryMicroCracking()
     );
 
     // Gas inventory and grain boundary storage capability affected: change in fractional coverage and saturation fractional coverage
-    switch (int(input_variable["iGrainBoundaryMicroCracking"].getValue()))
+    if (input_variable["iGrainBoundaryMicroCracking"].getValue() == 1)
     {
-        case 1:
-        {
-            // ODE for the intergranular fractional coverage:
-            // This equation accounts for the reduction of the intergranular fractional coverage following a transient
-            // dFc = + Fc df
-            sciantix_variable["Intergranular fractional coverage"].setFinalValue(
-                solver.Decay(sciantix_variable["Intergranular fractional coverage"].getInitialValue(),
-                                1.0,
-                                0.0,
-                                -sciantix_variable["Intergranular fractional intactness"].getIncrement())); //Increment of interest
+        // ODE for the intergranular fractional coverage:
+        // This equation accounts for the reduction of the intergranular fractional coverage following a transient
+        // dFc = + Fc df
+        sciantix_variable["Intergranular fractional coverage"].setFinalValue(
+            solver.Decay(sciantix_variable["Intergranular fractional coverage"].getInitialValue(),
+                            1.0,
+                            0.0,
+                            -sciantix_variable["Intergranular fractional intactness"].getIncrement())); //Increment of interest
 
-            // ODE for the saturation fractional coverage:
-            // This equation accounts for the reduction of the intergranular saturation fractional coverage following a transient
-            // dFcsat = + Fcsat df
-            sciantix_variable["Intergranular saturation fractional coverage"].setFinalValue(
-                solver.Decay(
-                    sciantix_variable["Intergranular saturation fractional coverage"].getInitialValue(),
-                    1.0,
-                    0.0,
-                    -sciantix_variable["Intergranular fractional intactness"].getIncrement()));
-
-            break;
-        }
-    }
+        // ODE for the saturation fractional coverage:
+        // This equation accounts for the reduction of the intergranular saturation fractional coverage following a transient
+        // dFcsat = + Fcsat df
+        sciantix_variable["Intergranular saturation fractional coverage"].setFinalValue(
+            solver.Decay(
+                sciantix_variable["Intergranular saturation fractional coverage"].getInitialValue(),
+                1.0,
+                0.0,
+                -sciantix_variable["Intergranular fractional intactness"].getIncrement()));
+    } 
 
     // ODE for the intergranular fractional intactness:
     // This equation accounts for the healing of the intergranular fractional intactness with burnup
@@ -200,24 +200,23 @@ void Simulation::GrainBoundaryMicroCracking()
             sciantix_variable["Burnup"].getIncrement()));
 
     // Gas inventory and grain boundary storage capability affected: change in fractional coverage and saturation fractional coverage
-    switch (int(input_variable["iGrainBoundaryMicroCracking"].getValue()))
+    if (input_variable["iGrainBoundaryMicroCracking"].getValue() == 1)
+    {
+        // ODE for the saturation fractional coverage:
+        // This equation accounts for the healing of the intergranular saturation fractional coverage with burnup
+        // dFcsat / dBu = h (1-f) Fcsat
+        sciantix_variable["Intergranular saturation fractional coverage"].setFinalValue(
+            solver.Decay(
+                sciantix_variable["Intergranular saturation fractional coverage"].getFinalValue(),
+                -model["Grain-boundary micro-cracking"].getParameter().at(2) * (1.0 - sciantix_variable["Intergranular fractional intactness"].getFinalValue()),
+                0.0,
+                sciantix_variable["Burnup"].getIncrement()));
+    }
+
+    switch (int(input_variable["iReleaseMode"].getValue()))
     {
         case 0:
         {
-            break;
-        }
-        case 1:
-        {
-            // ODE for the saturation fractional coverage:
-            // This equation accounts for the healing of the intergranular saturation fractional coverage with burnup
-            // dFcsat / dBu = h (1-f) Fcsat
-            sciantix_variable["Intergranular saturation fractional coverage"].setFinalValue(
-                solver.Decay(
-                    sciantix_variable["Intergranular saturation fractional coverage"].getFinalValue(),
-                    -model["Grain-boundary micro-cracking"].getParameter().at(2) * (1.0 - sciantix_variable["Intergranular fractional intactness"].getFinalValue()),
-                    0.0,
-                    sciantix_variable["Burnup"].getIncrement()));
-
             // Re-scaling: to conserve the fractional coverage
             double similarity_ratio;
 
@@ -261,16 +260,17 @@ void Simulation::GrainBoundaryMicroCracking()
         case 2:
         {
             // Atoms at grain boundary
-            double source(0.0), n_at(0.0);
+            double n_at(0.0);
             
             for (auto& system : sciantix_system)
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-                {
-                    source = sciantix_variable["Intergranular fractional intactness"].getFinalValue() * sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement() + 
-                        sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() * sciantix_variable["Intergranular fractional intactness"].getIncrement();
-                
-                    sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() + source);
+                {                
+                    sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
+                        sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() +
+                        sciantix_variable["Intergranular fractional intactness"].getFinalValue() * sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement() + 
+                        sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() * sciantix_variable["Intergranular fractional intactness"].getIncrement()
+                    );
                 
                     sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].setInitialValue(
                         sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() /
