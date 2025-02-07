@@ -142,6 +142,11 @@ void Simulation::InterGranularBubbleBehavior()
         )
     );
 
+    // Model declaration
+    Model model2_;
+    model2_.setName("Release mode");
+    std::string reference2;
+
     switch (int(input_variable["iReleaseMode"].getValue()))
     {
         case 0:
@@ -268,6 +273,8 @@ void Simulation::InterGranularBubbleBehavior()
                 }
             }
 
+            reference2 += ": similarity ratio.";
+
             break;
         }
         case 1:
@@ -367,7 +374,7 @@ void Simulation::InterGranularBubbleBehavior()
             {
                 sciantix_variable["Intergranular bubble concentration"].setConstant();
                 sciantix_variable["Intergranular fractional coverage"].setFinalValue(sciantix_variable["Intergranular bubble concentration"].getFinalValue() * sciantix_variable["Intergranular bubble area"].getFinalValue());
-                std::cout << "Warning: bubble area decreases" << std::endl;
+                //std::cout << "Warning: bubble area decreases" << std::endl;
             }
 
             sciantix_variable["Intergranular bubble radius"].setFinalValue(
@@ -399,9 +406,13 @@ void Simulation::InterGranularBubbleBehavior()
             }
             sciantix_variable["Intergranular atoms per bubble"].setFinalValue(n_at);
 
+            reference2 += ": Cappellari (Under Development)";
             break;
         }
     }
+
+    model2_.setRef(reference2);
+    model.push(model2_);
 
     // Intergranular bubble pressure p = kTng/Onv (MPa)
     if(sciantix_variable["Intergranular vacancies per bubble"].getFinalValue())
