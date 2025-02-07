@@ -382,8 +382,8 @@ void Simulation::InterGranularBubbleBehavior()
 
 
             // Vented fraction * intact faces
-		    double ventingtunnels_i = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 3.7250) + 1)) * sciantix_variable["Intergranular fractional intactness"].getFinalValue();
-		    double ventingtunnels_f = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) + 1)) * sciantix_variable["Intergranular fractional intactness"].getInitialValue();
+		    double ventingtunnels_i = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 3.7250) + 1)) * sciantix_variable["Intergranular fractional intactness"].getInitialValue();
+		    double ventingtunnels_f = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) + 1)) * sciantix_variable["Intergranular fractional intactness"].getFinalValue();
 
             // Atoms at grain boundary
             double n_at(0.0);
