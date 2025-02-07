@@ -56,7 +56,8 @@ std::vector<std::string> getInputVariableNames()
         "iStoichiometryDeviation",
         "iBubbleDiffusivity",
         "iChromiumSolubility",
-        "iDensification"
+        "iDensification",
+        "iDiffusionBasedRelease"
     };
 
     return names;
