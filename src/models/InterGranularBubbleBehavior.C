@@ -395,7 +395,7 @@ void Simulation::InterGranularBubbleBehavior()
                     sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
                         sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() - 
                         ventingtunnels_f * sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement() - 
-                        sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() * (ventingtunnels_f-ventingtunnels_i));
+                        sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() * (ventingtunnels_f-ventingtunnels_i));
                 
                     sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].setFinalValue(
                         sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() /
