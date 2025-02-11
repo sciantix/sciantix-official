@@ -257,19 +257,38 @@ void Simulation::GrainBoundaryMicroCracking()
 
             break;
         }
-        case 2:
+        case 1:
         {
             // Atoms at grain boundary
             double n_at(0.0);
+
+            double source(0.0), decay_microcracking(0.0);
+            double timestep = physics_variable["Time step"].getFinalValue();
             
             for (auto& system : sciantix_system)
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {                
+                    if(timestep)
+                    {
+                        source = sciantix_variable["Intergranular fractional intactness"].getInitialValue()*
+                                    ( sciantix_variable[system.getGasName() + " produced"].getIncrement() - sciantix_variable[system.getGasName() + " decayed"].getIncrement() - sciantix_variable[system.getGasName() + " in grain"].getIncrement() )
+                                    / timestep;
+                        decay_microcracking = - sciantix_variable["Intergranular fractional intactness"].getIncrement()/timestep;
+
+                        if (decay_microcracking < 0 )
+                        {
+                            decay_microcracking = 0.0;
+                        }
+                    }
+                
                     sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-                        sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() +
-                        sciantix_variable["Intergranular fractional intactness"].getFinalValue() * sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement() + 
-                        sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() * sciantix_variable["Intergranular fractional intactness"].getIncrement()
+                        solver.Decay(
+                            sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue(),
+                            decay_microcracking,
+                            source,
+                            timestep
+                        )
                     );
                 
                     sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].setInitialValue(
@@ -282,23 +301,6 @@ void Simulation::GrainBoundaryMicroCracking()
             sciantix_variable["Intergranular atoms per bubble"].setInitialValue(n_at);
 
             break;
-        }
-    }
-
-    // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
-    for (auto &system : sciantix_system)
-    {
-        if (system.getRestructuredMatrix() == 0)
-        {
-            sciantix_variable[system.getGasName() + " released"].setFinalValue(
-                sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue()
-            );
-
-            if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
-                sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
         }
     }
 }

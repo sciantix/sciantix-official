@@ -288,6 +288,8 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
 
         reference += "iFissionGasDiffusivity: Matzke (1980), Radiation Effects, 53, 219-242.\n\t";
         diffusivity = 5.0e-08 * exp(-40262.0 / history_variable["Temperature"].getFinalValue());
+        if (diffusivity < 1e-25)
+            diffusivity = 1e-25;
         diffusivity *= scaling_factors["Diffusivity"].getValue();
 
         break;

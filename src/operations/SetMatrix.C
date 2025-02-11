@@ -22,13 +22,13 @@ void Simulation::setMatrix()
     {
         case 0: 
         {
-            matrices.push(UO2(matrices, sciantix_variable, history_variable, input_variable));
+            matrices.push(UO2(matrices, sciantix_variable, history_variable, input_variable, scaling_factors));
             break;
         }
 
         case 1: 
         {
-            matrices.push(UO2(matrices, sciantix_variable, history_variable, input_variable));
+            matrices.push(UO2(matrices, sciantix_variable, history_variable, input_variable, scaling_factors));
             matrices.push(UO2HBS(matrices, sciantix_variable, history_variable, input_variable));
             break;
         }
@@ -40,7 +40,7 @@ void Simulation::setMatrix()
 }
 
 Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, 
-    SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable)
+    SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable, SciantixArray<InputVariable> &scaling_factor)
 {
     Matrix matrix_;
 
@@ -91,7 +91,7 @@ Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
 	//matrix[index].setGrainBoundaryFractureEnergy(4e-3); // (J/m2) @Jernkvist2019
 	//
 	// from mechanical testing
-	matrix_.setGrainBoundaryFractureEnergy(2); // (J/m2) @Jernkvist2020
+	matrix_.setGrainBoundaryFractureEnergy(2*scaling_factor["Dummy"].getValue()); // (J/m2) @Jernkvist2020
 
     return matrix_;
 }

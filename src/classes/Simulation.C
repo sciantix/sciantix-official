@@ -57,9 +57,9 @@ void Simulation::execute()
         Burnup();
 
         EffectiveBurnup();
-    #endif
 
-    Densification();
+        Densification();
+    #endif
 
     GapPartialPressure();
 
