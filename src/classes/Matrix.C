@@ -119,7 +119,7 @@ void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_var
         (3.0 * 1.0e-9 / (3.0 * 1.0e-9 + sciantix_variable["HBS pore radius"].getFinalValue())) *
         (1.0e-9 / (1.0e-9 + sciantix_variable["HBS pore radius"].getFinalValue()));
 }
-
+ 
 void Matrix::setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable)
 {
     pore_trapping_rate = 4.0 * M_PI * grain_boundary_diffusivity *

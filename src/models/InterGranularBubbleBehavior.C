@@ -382,20 +382,57 @@ void Simulation::InterGranularBubbleBehavior()
 
 
             // Vented fraction * intact faces
-		    double ventingtunnels_i = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 3.7250) + 1)) * sciantix_variable["Intergranular fractional intactness"].getInitialValue();
-		    double ventingtunnels_f = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) + 1)) * sciantix_variable["Intergranular fractional intactness"].getFinalValue();
 
+            //double ventingtunnels_i = (26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 2.6002) + 1)) * sciantix_variable["Intergranular fractional intactness"].getInitialValue();
+		    //double ventingtunnels_f = (26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 2.6002) + 1)) * sciantix_variable["Intergranular fractional intactness"].getFinalValue();
+        
+		    double phi_i = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 3.7250) + 1));
+		    double phi_f = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) + 1));
             // Atoms at grain boundary
             double n_at(0.0);
+
+            double source(0.0), decay_microcracking(0.0), decay_venting(0.0), decay_ig(0.0);
+            double timestep = physics_variable["Time step"].getFinalValue();
             
             for (auto& system : sciantix_system)
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-                {
+                {                
+                    if(timestep)
+                    {
+                        source = ( (1-phi_i) * sciantix_variable["Intergranular fractional intactness"].getInitialValue() - sciantix_variable["Intergranular venting probability"].getInitialValue())*
+                                    ( sciantix_variable[system.getGasName() + " produced"].getIncrement() - sciantix_variable[system.getGasName() + " decayed"].getIncrement() - sciantix_variable[system.getGasName() + " in grain"].getIncrement() )
+                                    / timestep;
+
+                        decay_microcracking = - sciantix_variable["Intergranular fractional intactness"].getIncrement()/timestep;
+                        decay_venting = sciantix_variable["Intergranular venting probability"].getIncrement()/timestep;
+                        decay_ig = ( + sciantix_variable["Intergranular fractional intactness"].getIncrement()*phi_f
+                        + sciantix_variable["Intergranular fractional intactness"].getFinalValue()*(phi_f-phi_i))/timestep;
+        
+                        if (decay_microcracking < 0 )
+                        {
+                            decay_microcracking = 0.0;
+                        }
+        
+                        if (decay_venting < 0 )
+                        {
+                            decay_venting = 0.0;
+                        }
+
+                        if (decay_ig < 0 )
+                        {
+                            decay_ig = 0.0;
+                        }
+                    }
+                
                     sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-                        sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() - 
-                        ventingtunnels_f * sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement() - 
-                        sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() * (ventingtunnels_f-ventingtunnels_i));
+                        solver.Decay(
+                            sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue(),
+                            decay_microcracking+decay_venting+decay_ig,
+                            source,
+                            timestep
+                        )
+                    );
                 
                     sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].setFinalValue(
                         sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() /
@@ -422,73 +459,4 @@ void Simulation::InterGranularBubbleBehavior()
         );
     else
         sciantix_variable["Intergranular bubble pressure"].setFinalValue(0.0);
-
-    // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
-    for (auto &system : sciantix_system)
-    {
-        if (system.getRestructuredMatrix() == 0)
-        {
-            sciantix_variable[system.getGasName() + " released"].setFinalValue(
-                sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue()
-            );
-
-            if (sciantix_variable[system.getGasName() + " released"].getFinalValue() < 0.0)
-                sciantix_variable[system.getGasName() + " released"].setFinalValue(0.0);
-        }
-    }
-
-    // Intergranular gaseous swelling
-    sciantix_variable["Intergranular gas swelling"].setFinalValue(
-        3 / sciantix_variable["Grain radius"].getFinalValue() *
-        sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
-        sciantix_variable["Intergranular bubble volume"].getFinalValue()
-    );
-
-    // Fission gas release 
-    if (sciantix_variable["Xe produced"].getFinalValue() + sciantix_variable["Kr produced"].getFinalValue() > 0.0)
-        sciantix_variable["Fission gas release"].setFinalValue(
-            (sciantix_variable["Xe released"].getFinalValue() + sciantix_variable["Kr released"].getFinalValue()) /
-            (sciantix_variable["Xe produced"].getFinalValue() + sciantix_variable["Kr produced"].getFinalValue())
-        );
-    else
-        sciantix_variable["Fission gas release"].setFinalValue(0.0);
-
-    // Release-to-birth ratio: Xe133
-    // Note that R/B is not defined with a null fission rate.
-    if (sciantix_variable["Xe133 produced"].getFinalValue() - sciantix_variable["Xe133 decayed"].getFinalValue() > 0.0)
-        sciantix_variable["Xe133 R/B"].setFinalValue(
-            sciantix_variable["Xe133 released"].getFinalValue() /
-            (sciantix_variable["Xe133 produced"].getFinalValue() - sciantix_variable["Xe133 decayed"].getFinalValue())
-        );
-    else
-        sciantix_variable["Xe133 R/B"].setFinalValue(0.0);
-
-    // Release-to-birth ratio: Kr85m
-    // Note that R/B is not defined with a null fission rate.
-    if (sciantix_variable["Kr85m produced"].getFinalValue() - sciantix_variable["Kr85m decayed"].getFinalValue() > 0.0)
-        sciantix_variable["Kr85m R/B"].setFinalValue(
-            sciantix_variable["Kr85m released"].getFinalValue() /
-            (sciantix_variable["Kr85m produced"].getFinalValue() - sciantix_variable["Kr85m decayed"].getFinalValue())
-        );
-    else
-        sciantix_variable["Kr85m R/B"].setFinalValue(0.0);
-
-    // Helium fractional release
-    if (sciantix_variable["He produced"].getFinalValue() > 0.0)
-        sciantix_variable["He fractional release"].setFinalValue(
-            sciantix_variable["He released"].getFinalValue() / sciantix_variable["He produced"].getFinalValue()
-        );
-    else
-        sciantix_variable["He fractional release"].setFinalValue(0.0);
-
-    // Helium release rate
-    if (physics_variable["Time step"].getFinalValue() > 0.0)
-        sciantix_variable["He release rate"].setFinalValue(
-            sciantix_variable["He released"].getIncrement() / physics_variable["Time step"].getFinalValue()
-        );
-    else
-        sciantix_variable["He release rate"].setFinalValue(0.0);
 }
