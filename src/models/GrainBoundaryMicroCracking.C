@@ -126,7 +126,9 @@ void Simulation::GrainBoundaryMicroCracking()
 			
 			double microcracking_parameter = 0.0;
 			if (bubble_pressure > critical_bubble_pressure && bubble_pressure > equilibriumpressure)
-				microcracking_parameter = ( bubble_pressure - equilibriumpressure ) * sciantix_variable["Intergranular fractional coverage"].getFinalValue() / G;
+            {
+                microcracking_parameter = ( bubble_pressure - equilibriumpressure ) * sciantix_variable["Intergranular fractional coverage"].getFinalValue() / G;
+            }
 			
 			// Microcracking parameter
 			parameter.push_back(microcracking_parameter);
