@@ -264,7 +264,6 @@ std::vector<std::string> getScalingFactorsNames()
         "Trapping rate",
         "Nucleation rate",
         "Diffusivity",
-        "Diffusivity2",
         "Temperature",
         "Fission rate",
         "Cent parameter",

@@ -169,7 +169,7 @@ void Simulation::GrainBoundaryMicroCracking()
     );
 
     // Gas inventory and grain boundary storage capability affected: change in fractional coverage and saturation fractional coverage
-    if (input_variable["iGrainBoundaryMicroCracking"].getValue() == 1)
+    if (input_variable["iReleaseMode"].getValue() == 0)
     {
         // ODE for the intergranular fractional coverage:
         // This equation accounts for the reduction of the intergranular fractional coverage following a transient
@@ -202,7 +202,7 @@ void Simulation::GrainBoundaryMicroCracking()
             sciantix_variable["Burnup"].getIncrement()));
 
     // Gas inventory and grain boundary storage capability affected: change in fractional coverage and saturation fractional coverage
-    if (input_variable["iGrainBoundaryMicroCracking"].getValue() == 1)
+    if (input_variable["iReleaseMode"].getValue() == 0)
     {
         // ODE for the saturation fractional coverage:
         // This equation accounts for the healing of the intergranular saturation fractional coverage with burnup
