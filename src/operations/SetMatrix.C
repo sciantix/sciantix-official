@@ -91,7 +91,7 @@ Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
 	//matrix[index].setGrainBoundaryFractureEnergy(4e-3); // (J/m2) @Jernkvist2019
 	//
 	// from mechanical testing
-	matrix_.setGrainBoundaryFractureEnergy(2*scaling_factor["Dummy"].getValue()); // (J/m2) @Jernkvist2020
+	matrix_.setGrainBoundaryFractureEnergy(2); // (J/m2) @Jernkvist2020
 
     return matrix_;
 }
