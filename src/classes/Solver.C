@@ -55,6 +55,7 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
     std::vector<double> domain = {0,parameter.at(2)}; // {0, a}
     std::vector<double> source = {parameter.at(3),parameter.at(4)}; // {A, B}
 
+
     diffusion_rate_coeff = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(2), 2);
     projection_coeff = sqrt(8.0 / M_PI);
 
@@ -62,6 +63,7 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
     {
         np1 = n + 1;
         n_coeff = SourceProjection_i(parameter.at(2),domain, source,np1);
+
         double n_c = - pow(-1.0, np1) / np1;
 
         diffusion_rate = diffusion_rate_coeff * pow(np1, 2) + parameter.at(5);
@@ -76,10 +78,11 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
 }
 
 //New Added Solver
-double Solver::SpectralDiffusionGeneralSource(double *initial_condition, std::vector<double> parameter, Source general_source ,double increment)
+double Solver::SpectralDiffusionNUS(double *initial_condition, std::vector<double> parameter, Source non_uniform_source ,double increment)
 {
     // parameter [N_modes, D, a, l]
-    // GeneralSource [NormalizedDomain, Slopes, Intercepts]
+    // Non Uniform Source is of class Source that has: NormalizedDomain, Slopes and Intercepts
+    
     size_t n;
     unsigned short int np1(1);
 
@@ -91,58 +94,38 @@ double Solver::SpectralDiffusionGeneralSource(double *initial_condition, std::ve
     double solution(0.0);
     double n_coeff = 0; 
 
-    double NumberofRegions = general_source.Slopes.size(); 
-    std::vector<std::vector<double>> Full_Domain; // vector of vectors of domain
-    std::vector<std::vector<double>> Full_Source; // vector of vectors of source
-    //std::cout << "The number of regions is: " << NumberofRegions << std::endl;
+    double NumberofRegions = non_uniform_source.Slopes.size(); // Obtains the number of regions
 
+    std::vector<std::vector<double>> Full_Domain(NumberofRegions, std::vector<double>(2)); 
+    std::vector<std::vector<double>> Full_Source(NumberofRegions, std::vector<double>(2));
 
-    // Fill the Full_Source vector with (ex:3) vectors, each vector contains {A,B} corresponding to how many regions we have
-    for (int i = 0; i < NumberofRegions; ++i) 
+    // Fill Full_Source
+    for (size_t i = 0; i < NumberofRegions; ++i) 
     {
-        for (int j = 0; j < 2; ++j) 
-        {  
-        if (j==0)
-        {
-            Full_Source[i].push_back(general_source.Slopes[i]); // A
-        }
-        else
-        {
-            Full_Source[i].push_back(general_source.Intercepts[i]); // B
-        }
-        }
+        Full_Source[i][0] = non_uniform_source.Slopes[i];     // A
+        Full_Source[i][1] = non_uniform_source.Intercepts[i]; // B
     }
 
-    // Fill the Full_Domain vector with size (ex:3) vectors, each vector contains {r1,r2}
-    for (int i = 0; i < NumberofRegions ; ++i) 
+    // Fill Full_Domain
+    for (size_t i = 0; i < NumberofRegions; ++i) 
     {
-        for (int j = 0; j < 2; ++j) 
-        {  
-        if (j==0)
-        {
-            Full_Domain[i].push_back(parameter.at(2) * general_source.NormalizedDomain[i]); // edge1
-        }
-        else
-        {
-            Full_Domain[i].push_back(parameter.at(2) * general_source.NormalizedDomain[i+1]); // edge2
-        }
-        }
+        Full_Domain[i][0] = parameter.at(2) * non_uniform_source.NormalizedDomain[i]; // edge1
+        Full_Domain[i][1] = parameter.at(2) * non_uniform_source.NormalizedDomain[i+1]; // edge2
     }
+
 
     diffusion_rate_coeff = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(2), 2);
-    projection_coeff = sqrt(8.0 / M_PI);
     projection_coeff = sqrt(8.0 / M_PI);
 
     for (n = 0; n < parameter.at(0); n++)
     {
         np1 = n + 1;
         
-        // n_coeff constitutes from the different contributions of the source in each domain
-        for (int i = 0; i < NumberofRegions ; ++i)
+        n_coeff = 0;
+        for (size_t k = 0; k < NumberofRegions; ++k) 
         {
-            n_coeff += SourceProjection_i(parameter.at(2), Full_Domain[i], Full_Source[i], np1);
+            n_coeff += SourceProjection_i(parameter.at(2), Full_Domain[k], Full_Source[k], np1);
         }
-        
         const double n_c = - pow(-1.0, np1) / np1;
 
         diffusion_rate = diffusion_rate_coeff * pow(np1, 2) + parameter.at(3);
@@ -547,7 +530,7 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
 }
 
 
-//New Projection Solver on the spatial mode i
+//New Source Projection Function on the spatial mode i
 double Solver::SourceProjection_i(double GrainRadius, std::vector<double> Domain, std::vector<double> Source_Function, double SpatialMode_i)
 {
     if (!GrainRadius) {

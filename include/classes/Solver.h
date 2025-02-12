@@ -89,8 +89,8 @@ public:
 
     /**
      * @brief Solves the spatially averaged PDE dy/dt = D div grad y + S - L y using a spectral approach.
-     * The difference from the SpectralDiffusion Solver is that it solves for a linear source S(r) = A * r + B
-     * Putting A = 0, we revert back to the normal spectral diffusion solver
+     * This updated version solves for a linear source S(r) = A * r + B.
+     * Putting A = 0, we revert back to the default spectral diffusion solver.
      * We apply a spectral approach in space, projecting the equation on the eigenfunctions of the laplacian operator.
      * We use the first order backward Euler solver in time.
      * The number of terms in the expansion, N, is fixed a priori.
@@ -99,14 +99,14 @@ public:
      * @param parameter A vector containing the parameters for the diffusion equation.
      * @param increment The time increment.
      * @return The updated value after solving the PDE.
-     * @author G. Zullo,  A. Zayat
+     * @author G. Zullo,  A. Zayat(Update)
      *
      *  Parameters :
      * 0 : N_modes
      * 1 : D
      * 2 : r
      * 3 :slope
-     * 4: production
+     * 4: production (intercept)
      * 5 :loss rate
      */
     double SpectralDiffusion(double *initial_condition, std::vector<double> parameter, double increment);
@@ -161,35 +161,34 @@ public:
      */
     void SpectralDiffusion3equations(double &gas_1, double &gas_2, double &gas_3, double *initial_condition_gas_1, double *initial_condition_gas_2, double *initial_condition_gas_3, std::vector<double> parameter, double increment);
 
-// Newly Added Solver for a General Source
+// Newly Added Solver for a Non Uniform Source (Quasi-stationary hypothesis)
     /**
      * @brief Solves the spatially averaged PDE dy/dt = D div grad y + S - L y using a spectral approach.
-     * The difference from the SpectralDiffusion Solver is that it solves for a random source S(r) that is a
-     * combination of piecewise linear and piecewise constants.
+     * The difference from the SpectralDiffusion Solver is that it solves for a non uniform source S(r) that is a combination of piecewise linear and piecewise constant functions.
      * We apply a spectral approach in space, projecting the equation on the eigenfunctions of the laplacian operator.
      * We use the first order backward Euler solver in time.
      * The number of terms in the expansion, N, is fixed a priori.
      *
      * @param initial_condition The initial conditions for the diffusion modes.
      * @param parameter A vector containing the parameters for the diffusion equation.
-     * @param general_source Contains all information about the source; it is of the class "source"
+     * @param non_uniform_source Contains all information about the source; it is of the class "source"
      * @param increment The time increment.
      * @return The updated value after solving the PDE.
      * @author A. Zayat
      *
      *
-     *  Parameters : [N_modes, D, a , l]
+     * Parameters : [N_modes, D, a , l]
      * 0 : N_modes
      * 1 : D
      * 2 : a - Grain Radius
      * 3 : Loss term
      * 
      * Source : [Domain, Slopes, Intercepts]
-     * Domain: [0,rho1,rho2, a]
-     * Slopes: [A1,A2,A3]
-     * Intercepts [B1,B2,B3]
+     * Domain: [0,rho1,rho2, 1] (example)
+     * Slopes: [A1,A2,A3] (example)
+     * Intercepts [B1,B2,B3] (example)
      */
-    double SpectralDiffusionGeneralSource(double *initial_condition, std::vector<double> parameter, Source general_source ,double increment);
+    double SpectralDiffusionNUS(double *initial_condition, std::vector<double> parameter, Source non_uniform_source ,double increment);
 
     /**
      * @brief Solves a system of two linear equations using Cramer's method.
@@ -276,7 +275,7 @@ public:
 
 //Newly Added Function SourceProjection
     /**
-     * @brief Gives the projection of the source present in a certain domain on the spatial mode i
+     * @brief Gives the projection of the linear source present in a certain domain on the spatial mode i.
      *
      * @param GrainRadius The Grain Radius.
      * @param Domian The domain where the source is present Domain = [r1,r2]

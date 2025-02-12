@@ -1,4 +1,1 @@
-# Slope
-0
-# Intercept
-0
+0 1e30

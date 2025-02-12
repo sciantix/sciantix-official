@@ -26,7 +26,6 @@
  * @author D. Pizzocri
  * @author T. Barani
  * @author G. Zullo
- * @author A. Zayat (Update)
  */
 void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
 
@@ -56,12 +55,12 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
 //Newly Added
 
 /**
- * @brief Defines diffusion models using the spectral diffusion with one equation for a general source case
+ * @brief Defines diffusion models using the spectral diffusion with one equation for a non uniform source case
  * 
  * @author A. Zayat
  * 
  */
-void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
+void defineSpectralDiffusionNUS1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
 
 /**
  * @brief Handles unsupported diffusion solver options.
