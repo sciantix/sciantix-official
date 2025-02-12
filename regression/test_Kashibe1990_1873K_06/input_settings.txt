@@ -8,7 +8,7 @@
 1    #    iOutput (1= default output files)
 1    #    iGrainBoundaryVacancyDiffusivity (0= constant value, 1= Reynolds and Burton (1979), 2= White (2004))
 1    #    iGrainBoundaryBehaviour (0= no grain boundary bubbles, 1= Pastore et al (2013))
-1    #    iGrainBoundaryMicroCracking (0= no model considered, 1= Barani et al. (2017))
+0    #    iGrainBoundaryMicroCracking (0= no model considered, 1= Barani et al. (2017))
 0    #    iFuelMatrix (0= UO2, 1= UO2 + HBS)
 0    #    iGrainBoundaryVenting (0= no model considered, 1= Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE)
 0    #    iRadioactiveFissionGas (0= not considered)
@@ -22,4 +22,5 @@
 0    #    iBubbleDiffusivity (0= not considered, 1= volume diffusivity)
 0    #    iChromiumSolubility
 0    #    iDensification
-0    #    iReleaseMode
+1    #    iReleaseMode
+0    #    iCoalescence
