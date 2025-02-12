@@ -22,7 +22,7 @@ void Simulation::GasDiffusion()
     // Model declaration
     switch (static_cast<int>(input_variable["iDiffusionSolver"].getValue()))
     {
-        case 1: // Updated to account for a linear source S(r) = A * r + B; A = 0 => the usual SD solver
+        case 1: // Updated to account for a linear source S(r) = A * r + B; A = 0 => SDA 1.0
             defineSpectralDiffusion1Equation(sciantix_system, model, n_modes); // SDA 2.0
             break;
 
@@ -34,8 +34,8 @@ void Simulation::GasDiffusion()
             defineSpectralDiffusion3Equations(sciantix_system, model, sciantix_variable, physics_variable, n_modes);
             break;
 
-         case 4: //New One Added | SDA for a General Source
-            defineSpectralDiffusionGeneralSource1Equation(sciantix_system, model, n_modes);
+         case 4: //New One Added | SDA for a Non Uniform Source
+            defineSpectralDiffusionNUS1Equation(sciantix_system, model, n_modes);
             break;
 
         default:
@@ -122,15 +122,16 @@ void Simulation::GasDiffusion()
         case 4:
         {
             double time;
-            Source general_source;  
-            ReadGeneralSourceFile(general_source, time); // This reads the data from the provided file and fills the Source general_source
+            Source non_uniform_source;  
+            ReadNonUniformSource(non_uniform_source, time); // This reads the data from the provided file and fills the Source general_source
+
             if (system.getRestructuredMatrix() == 0)
             {    
                 sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
-                    solver.SpectralDiffusionGeneralSource(
+                    solver.SpectralDiffusionNUS(
                         getDiffusionModes(system.getGasName()),
                         model["Gas diffusion - " + system.getName()].getParameter(),
-                        general_source,
+                        non_uniform_source,
                         physics_variable["Time step"].getFinalValue()
                     )
                 );
@@ -151,10 +152,10 @@ void Simulation::GasDiffusion()
             else if (system.getRestructuredMatrix() == 1)
             {
                 sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(
-                    solver.SpectralDiffusionGeneralSource(
+                    solver.SpectralDiffusionNUS(
                         getDiffusionModes(system.getGasName() + " in HBS"),
                         model["Gas diffusion - " + system.getName()].getParameter(),
-                        general_source,
+                        non_uniform_source,
                         physics_variable["Time step"].getFinalValue()
                     )
                 );
@@ -267,24 +268,22 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         parameters.push_back(gasDiffusivity);
         parameters.push_back(system.getMatrix().getGrainRadius());
         
-        double Source_slope_input;
-        double Source_intercept_input;
-        bool EC;
+        double Source_slope_input; // Slope
+        double Source_intercept_input; // Intercept
 
-        ReadSource(Source_slope_input,Source_intercept_input, EC);
+        ReadSource(Source_slope_input,Source_intercept_input);
         parameters.push_back(Source_slope_input); // Slope
-        
-        if (EC=false)
-        {
-            if (Source_slope_input==0 && Source_intercept_input==0) // Intercept
+
+        if (Source_slope_input==0 && Source_intercept_input==0) // Intercept
             {
                 parameters.push_back(system.getProductionRate()); 
                 }
         else{parameters.push_back(Source_intercept_input);}
-        }else{parameters.push_back(system.getProductionRate());}
+
         
         parameters.push_back(system.getGas().getDecayRate());
         model_.setParameter(parameters);
+
         model.push(model_);
     }
 }
@@ -360,9 +359,9 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
 
 // Newly Added
 
-// General Source
+// Non Uniform Source
 
-void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
+void defineSpectralDiffusionNUS1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
 {
     std::string reference;
     // Parameters {n, D, a, l}
@@ -388,6 +387,7 @@ void defineSpectralDiffusionGeneralSource1Equation(SciantixArray<System> &sciant
         parameters.push_back(system.getGas().getDecayRate());
         model_.setParameter(parameters);
         model.push(model_);
+
 
     }
 }
