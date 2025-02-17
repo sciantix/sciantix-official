@@ -372,7 +372,8 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
         double G = exp(-35800 / temperature);
         double uranium_vacancies = 0.0;
 
-        uranium_vacancies = S / pow(G, 2.0) * (0.5 * pow(x, 2.0) + G + 0.5 * pow((pow(x, 4.0) + 4 * G * pow(x, 2.0)), 0.5));
+        double x2 = pow(x, 2.0);
+        uranium_vacancies = S / pow(G, 2.0) * (0.5 * x2 + G + 0.5 * pow((x2 * (4 * G + x2)), 0.5));
 
         double d4 = pow(3e-10, 2) * 1e13 * exp(-27800 / temperature) * uranium_vacancies;
 
@@ -424,7 +425,7 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
 		 * 
 		 */
 		double temperature = history_variable["Temperature"].getFinalValue();
-		double ratio = 0.00000000000136534225*pow(temperature,4) - 0.00000001306453509674*pow(temperature,3) + 0.00004692883297786190*pow(temperature,2) - 0.07522412500091140000*temperature + 45.6665146884581;
+		double ratio = 45.6665146884581 + temperature * (-0.07522412500091140000 + temperature * (0.00004692883297786190 + temperature * (-0.00000001306453509674 + temperature * 0.00000000000136534225)));
 			
 		if (temperature < 1564.5901639344263)
 		{
@@ -484,7 +485,8 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
 		 * 
 		 */
 		double temperature = history_variable["Temperature"].getFinalValue();
-		double ratio = 0.00000000000136534225*pow(temperature,4) - 0.00000001306453509674*pow(temperature,3) + 0.00004692883297786190*pow(temperature,2) - 0.07522412500091140000*temperature + 45.6665146884581;
+        // Horner's method
+		double ratio = 45.6665146884581 + temperature * (-0.07522412500091140000 + temperature * (0.00004692883297786190 + temperature * (-0.00000001306453509674 + temperature * 0.00000000000136534225)));
 			
 		if (temperature < 1564.5901639344263)
 		{
@@ -619,7 +621,7 @@ void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> 
         double helium_hard_sphere_diameter = 2.973e-10 * (0.8414 - 0.05 * log(history_variable["Temperature"].getFinalValue() / 10.985)); // (m)
         double helium_volume_in_bubble = matrices["UO2"].getOctahedralInterstitialSite();                                                                         // 7.8e-30, approximation of saturated nanobubbles
         double y = M_PI * pow(helium_hard_sphere_diameter, 3) / (6.0 * helium_volume_in_bubble);
-        double compressibility_factor = (1.0 + y + pow(y, 2) - pow(y, 3)) / (pow(1.0 - y, 3));
+        double compressibility_factor = (1.0 + y * (1.0 + y * (1.0 - y))) / (pow(1.0 - y, 3));
 
         /// thermal_resolution_rate
         // thermal_resolution_rate = 3 D k_H k_B T Z / R_b^2

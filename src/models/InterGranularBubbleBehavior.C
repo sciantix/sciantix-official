@@ -93,12 +93,14 @@ void Simulation::InterGranularBubbleBehavior()
             const double DD = -99.993;
             const double EE = 20.594;
 
+            // Horner's method
             double sink_strength = 0.4054 +
-                AA * pow(sciantix_variable["Intergranular fractional coverage"].getInitialValue(), 5) +
-                BB * pow(sciantix_variable["Intergranular fractional coverage"].getInitialValue(), 4) +
-                CC * pow(sciantix_variable["Intergranular fractional coverage"].getInitialValue(), 3) +
-                DD * pow(sciantix_variable["Intergranular fractional coverage"].getInitialValue(), 2) +
-                EE * sciantix_variable["Intergranular fractional coverage"].getInitialValue();
+                sciantix_variable["Intergranular fractional coverage"].getInitialValue() * (EE + 
+                sciantix_variable["Intergranular fractional coverage"].getInitialValue() * (DD + 
+                sciantix_variable["Intergranular fractional coverage"].getInitialValue() * (CC + 
+                sciantix_variable["Intergranular fractional coverage"].getInitialValue() * (BB + 
+                sciantix_variable["Intergranular fractional coverage"].getInitialValue() *  AA
+            ))));
 
             double volume_flow_rate
                 = 2.0 * M_PI * fuel_.getGrainBoundaryThickness() * fuel_.getGrainBoundaryVacancyDiffusivity() * sink_strength;
