@@ -348,8 +348,9 @@ double Solver::QuarticEquation(std::vector<double> parameter)
 
     while (iter < max_iter)
     {
-        function = a * pow(y0, 4) + b * pow(y0, 3) + c * pow(y0, 2) + d * y0 + e;
-        derivative = 4.0 * a * pow(y0, 3) + 3.0 * b * pow(y0, 2) + 2.0 * c * y0 + d;
+        // Horner's method
+        function = e + y0 * (d + y0 * (c + y0 * (b + y0 * a)));
+        derivative = d + y0 * (2.0 * c + y0 * (3.0 * b + y0 * 4.0 * a));
 
         y1 = y0 - function / derivative;
         y0 = y1;
