@@ -35,6 +35,7 @@ protected:
     double mass_number;
     double van_der_waals_volume;
     double decay_rate;
+    double chemically_active;
     double precursor_factor;
 
 public:
@@ -108,6 +109,24 @@ public:
     double getDecayRate()
     {
         return decay_rate;
+    }
+
+    /**
+     * @brief
+     * @param g
+     */
+    void setChemicallyActive(double g)
+    {
+        chemically_active = g;
+    }
+
+    /**
+     * @brief 
+     * @return 
+     */
+    double getChemicallyActive()
+    {
+        return chemically_active;
     }
 
     /**

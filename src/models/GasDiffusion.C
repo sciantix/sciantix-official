@@ -152,11 +152,24 @@ void Simulation::GasDiffusion()
     // Calculation of the gas concentration at grain boundary, by mass balance
     for (auto &system : sciantix_system)
     {
-        if (system.getRestructuredMatrix() == 0)
+        if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 0.0)
         {
             sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
                 sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " released"].getInitialValue());
+
+            if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
+                sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
+        }
+
+        if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1.0)
+        {
+            sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
+                sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " reacted"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " released"].getInitialValue());
 
@@ -174,7 +187,7 @@ void Simulation::GasDiffusion()
     {
         for (auto &system : sciantix_system)
         {
-            if (system.getRestructuredMatrix() == 0)
+            if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 0.0)
             {
                 {
                     sciantix_variable[system.getGasName() + " at grain boundary"].setInitialValue(0.0);
@@ -183,6 +196,21 @@ void Simulation::GasDiffusion()
                     sciantix_variable[system.getGasName() + " released"].setFinalValue(
                         sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                         sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
+                        sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
+                    );
+                }
+            }
+
+            if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1.0)
+            {
+                {
+                    sciantix_variable[system.getGasName() + " at grain boundary"].setInitialValue(0.0);
+                    sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
+
+                    sciantix_variable[system.getGasName() + " released"].setFinalValue(
+                        sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
+                        sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
+                        sciantix_variable[system.getGasName() + " reacted"].getFinalValue() -
                         sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
                     );
                 }

@@ -35,12 +35,14 @@ void xenon(SciantixArray<Gas> &gas)
     gas_.setMassNumber(135);
     gas_.setVanDerWaalsVolume(8.48e-29);
     gas_.setDecayRate(0.0);
+    gas_.setChemicallyActive(0.0);
     gas_.setPrecursorFactor(1.00);
     gas.push(gas_);
 
     gas_.setName("Xe133");
     gas_.setMassNumber(133);
     gas_.setDecayRate(1.53e-6);
+    gas_.setChemicallyActive(0.0);
     gas_.setPrecursorFactor(1.25);
     gas.push(gas_);
 }
@@ -52,12 +54,14 @@ void krypton(SciantixArray<Gas> &gas)
     gas_.setAtomicNumber(36);
     gas_.setVanDerWaalsVolume(6.61e-29);
     gas_.setDecayRate(0.0);
+    gas_.setChemicallyActive(0.0);
     gas_.setPrecursorFactor(1.00);
     gas.push(gas_);
 
     gas_.setName("Kr85m");
     gas_.setMassNumber(85);
     gas_.setDecayRate(4.3e-5);
+    gas_.setChemicallyActive(0.0);
     gas_.setPrecursorFactor(1.31);
     gas.push(gas_);
 }
@@ -69,6 +73,7 @@ void helium(SciantixArray<Gas> &gas)
     gas_.setAtomicNumber(2);
     gas_.setVanDerWaalsVolume(9.97e-30);
     gas_.setDecayRate(0.0);
+    gas_.setChemicallyActive(0.0);
     gas_.setPrecursorFactor(1.00);
     gas.push(gas_);
 }
@@ -82,6 +87,7 @@ void caesium(SciantixArray<Gas> &gas)
     gas_.setAtomicNumber(55);
     gas_.setVanDerWaalsVolume(1.69e-28);
     gas_.setDecayRate(0.0); //stable
+    gas_.setChemicallyActive(1.0);
     gas_.setPrecursorFactor(1.00);
     gas.push(gas_);
     //system_.setYield(0.066534);
@@ -95,6 +101,7 @@ void iodine(SciantixArray<Gas> &gas)
     gas_.setAtomicNumber(53);
     gas_.setVanDerWaalsVolume(9.33e-29);
     gas_.setDecayRate(0.0); // stable
+    gas_.setChemicallyActive(1.0);
     gas_.setPrecursorFactor(1.00);
     gas.push(gas_);
     //system_.setYield(0.001241);
@@ -106,6 +113,7 @@ void caesiumiodine(SciantixArray<Gas> &gas)
     gas_.setName("CsI");
     gas_.setVanDerWaalsVolume(9.33e-29 + 1.69e-28);
     gas_.setDecayRate(0.0); // stable
+    gas_.setChemicallyActive(1.0);
     gas_.setPrecursorFactor(1.00);
     gas.push(gas_);
     //system_.setYield(0.001241);

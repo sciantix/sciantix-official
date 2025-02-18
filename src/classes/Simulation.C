@@ -85,6 +85,8 @@ void Simulation::execute()
 
     GasDiffusion();
 
+    CsIProduction();
+
     GrainBoundaryMicroCracking();
 
     GrainBoundaryVenting();
