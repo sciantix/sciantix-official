@@ -16,7 +16,8 @@
 
 #include "Simulation.h"
 
-std::map<int, std::string> update_sciantix_variable = {
+std::map<int, std::string> update_sciantix_variable = 
+{   
     {0, "Grain radius"},
     {1, "Xe produced"},
     {100, "Xe produced in HBS"},
@@ -96,6 +97,33 @@ std::map<int, std::string> update_sciantix_variable = {
     {85, "Xe in HBS pores - variance"},
     {86, "Xe atoms per HBS pore"},
     {88, "Xe atoms per HBS pore - variance"},
+    {101, "Cs produced"},
+    {102, "Cs in grain"},
+    {103, "Cs in intragranular solution"},
+    {104, "Cs in intragranular bubbles"},
+    {105, "Cs at grain boundary"},
+    {106, "Cs released"},
+    {107, "Cs bounded"},
+    {108, "Intragranular Cs atoms per bubble"},
+    {109, "Intergranular Cs atoms per bubble"},
+    {111, "I produced"},
+    {112, "I in grain"},
+    {113, "I in intragranular solution"},
+    {114, "I in intragranular bubbles"},
+    {115, "I at grain boundary"},
+    {116, "I released"},
+    {117, "I bounded"},
+    {118, "Intragranular I atoms per bubble"},
+    {119, "Intergranular I atoms per bubble"},
+    {121, "CsI produced"},
+    {122, "CsI in grain"},
+    {123, "CsI in intragranular solution"},
+    {124, "CsI in intragranular bubbles"},
+    {125, "CsI at grain boundary"},
+    {126, "CsI released"},
+    {127, "CsI bounded"},
+    {128, "Intragranular CsI atoms per bubble"},
+    {129, "Intergranular CsI atoms per bubble"},
     {150,"Chromium content"},
     {151,"Lattice parameter"},
     {152,"Theoretical density"},
@@ -112,7 +140,7 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
 {
     for (int i = 0; i < n_modes; ++i)
     {
-        for (int j = 0; j <= 17; j++)
+        for (int j = 0; j <= 27; j++)
         {
             Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];	
         }
