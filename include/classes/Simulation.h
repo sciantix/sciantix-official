@@ -64,7 +64,7 @@ private:
      */
     Simulation() {
         n_modes = 40;
-        modes_initial_conditions.resize(720);
+        modes_initial_conditions.resize(1120);
     }
 
 public:
@@ -348,6 +348,15 @@ public:
         else if (gas_name == "Xe in HBS")
             return &modes_initial_conditions[15 * 40];
 
+        else if (gas_name == "Cs")
+            return &modes_initial_conditions[18 * 40];
+            
+        else if (gas_name == "I")
+            return &modes_initial_conditions[21 * 40];
+            
+        else if (gas_name == "CsI")
+            return &modes_initial_conditions[24 * 40];
+
         else
         {
             std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes." << std::endl;
@@ -379,6 +388,15 @@ public:
 
         else if (gas_name == "Xe in HBS")
             return &modes_initial_conditions[16 * 40];
+
+        else if (gas_name == "Cs")
+            return &modes_initial_conditions[19 * 40];
+            
+        else if (gas_name == "I")
+            return &modes_initial_conditions[22 * 40];
+            
+        else if (gas_name == "CsI")
+            return &modes_initial_conditions[25 * 40];
         else
         {
             std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesSolution." << std::endl;
@@ -407,7 +425,18 @@ public:
 
         else if (gas_name == "Kr85m")
             return &modes_initial_conditions[14 * 40];
+        
+        else if (gas_name == "Xe in HBS")
+            return &modes_initial_conditions[17 * 40];
 
+        else if (gas_name == "Cs")
+            return &modes_initial_conditions[20 * 40];
+            
+        else if (gas_name == "I")
+            return &modes_initial_conditions[23 * 40];
+            
+        else if (gas_name == "CsI")
+            return &modes_initial_conditions[26 * 40];
         else
         {
             std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesBubbles." << std::endl;
