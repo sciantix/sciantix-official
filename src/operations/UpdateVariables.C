@@ -16,8 +16,7 @@
 
 #include "Simulation.h"
 
-std::map<int, std::string> update_sciantix_variable = 
-{   
+std::map<int, std::string> update_sciantix_variable = {
     {0, "Grain radius"},
     {1, "Xe produced"},
     {100, "Xe produced in HBS"},
@@ -103,7 +102,7 @@ std::map<int, std::string> update_sciantix_variable =
     {104, "Cs in intragranular bubbles"},
     {105, "Cs at grain boundary"},
     {106, "Cs released"},
-    {107, "Cs bounded"},
+    {107, "Cs reacted"},
     {108, "Intragranular Cs atoms per bubble"},
     {109, "Intergranular Cs atoms per bubble"},
     {111, "I produced"},
@@ -112,7 +111,7 @@ std::map<int, std::string> update_sciantix_variable =
     {114, "I in intragranular bubbles"},
     {115, "I at grain boundary"},
     {116, "I released"},
-    {117, "I bounded"},
+    {117, "I reacted"},
     {118, "Intragranular I atoms per bubble"},
     {119, "Intergranular I atoms per bubble"},
     {121, "CsI produced"},
@@ -121,7 +120,7 @@ std::map<int, std::string> update_sciantix_variable =
     {124, "CsI in intragranular bubbles"},
     {125, "CsI at grain boundary"},
     {126, "CsI released"},
-    {127, "CsI bounded"},
+    {127, "CsI reacted"},
     {128, "Intragranular CsI atoms per bubble"},
     {129, "Intergranular CsI atoms per bubble"},
     {150,"Chromium content"},

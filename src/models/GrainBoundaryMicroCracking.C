@@ -141,7 +141,7 @@ void Simulation::GrainBoundaryMicroCracking()
     // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
     for (auto &system : sciantix_system)
     {
-        if (system.getRestructuredMatrix() == 0)
+        if (system.getRestructuredMatrix() == 0 && gas[system.getGasName()].getChemicallyActive() == 0.0)
         {
             sciantix_variable[system.getGasName() + " released"].setFinalValue(
                 sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
@@ -150,6 +150,18 @@ void Simulation::GrainBoundaryMicroCracking()
                 sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue()
             );
 
+            if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
+                sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
+        }
+        if (system.getRestructuredMatrix() == 0 && gas[system.getGasName()].getChemicallyActive() == 1.0)
+        {
+            sciantix_variable[system.getGasName() + " released"].setFinalValue(
+                sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " reacted"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue()
+            );
             if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
                 sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
         }

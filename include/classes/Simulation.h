@@ -160,6 +160,14 @@ public:
     void GasDiffusion();
 
     /**
+     * @brief Produces CsI at grain boundary.
+     * 
+     * @author E. Cappellari
+     * 
+     */
+    void CsIProduction();
+
+    /**
      * @brief Grain growth based on specific model parameters affecting the system's materials.
      * 
      * @author D. Pizzocri

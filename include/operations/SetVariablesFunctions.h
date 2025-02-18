@@ -170,7 +170,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Cs at grain boundary", "(at/m3)", Sciantix_variables[105], Sciantix_variables[105], 1),
         SciantixVariable("Cs released", "(at/m3)", Sciantix_variables[106], Sciantix_variables[106], 1),
         SciantixVariable("Cs decayed", "(at/m3)", 0.0, 0.0, 0),
-        SciantixVariable("Cs bounded", "(at/m3)", Sciantix_variables[107], Sciantix_variables[107], 1),
+        SciantixVariable("Cs reacted", "(at/m3)", Sciantix_variables[107], Sciantix_variables[107], 1),
         SciantixVariable("Intragranular Cs atoms per bubble", "(at/bub)", Sciantix_variables[108], Sciantix_variables[108], 0),
         SciantixVariable("Intergranular Cs atoms per bubble", "(at/bub)", Sciantix_variables[109], Sciantix_variables[109], 0),
 
@@ -181,7 +181,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("I at grain boundary", "(at/m3)", Sciantix_variables[115], Sciantix_variables[115], 1),
         SciantixVariable("I released", "(at/m3)", Sciantix_variables[116], Sciantix_variables[116], 1),
         SciantixVariable("I decayed", "(at/m3)", 0.0, 0.0, 0),
-        SciantixVariable("I bounded", "(at/m3)", Sciantix_variables[117], Sciantix_variables[117], 1),
+        SciantixVariable("I reacted", "(at/m3)", Sciantix_variables[117], Sciantix_variables[117], 1),
         SciantixVariable("Intragranular I atoms per bubble", "(at/bub)", Sciantix_variables[118], Sciantix_variables[118], 0),
         SciantixVariable("Intergranular I atoms per bubble", "(at/bub)", Sciantix_variables[119], Sciantix_variables[119], 0),
 
@@ -192,7 +192,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("CsI at grain boundary", "(at/m3)", Sciantix_variables[125], Sciantix_variables[125], 1),
         SciantixVariable("CsI released", "(at/m3)", Sciantix_variables[126], Sciantix_variables[126], 1),
         SciantixVariable("CsI decayed", "(at/m3)", 0.0, 0.0, 0),
-        SciantixVariable("CsI bounded", "(at/m3)", Sciantix_variables[127], Sciantix_variables[127], 1),
+        SciantixVariable("CsI reacted", "(at/m3)", Sciantix_variables[127], Sciantix_variables[127], 1),
         SciantixVariable("Intragranular CsI atoms per bubble", "(at/bub)", Sciantix_variables[128], Sciantix_variables[128], 0),
         SciantixVariable("Intergranular CsI atoms per bubble", "(at/bub)", Sciantix_variables[129], Sciantix_variables[129], 0),
 
