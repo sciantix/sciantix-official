@@ -79,17 +79,6 @@ void Simulation::HighBurnupStructurePorosity()
     model.push(model_);
 
     // Model resolution (da quiIiIiIiI)
-    // Balance (farne 1 solo per i due sistemi perchè BG è una regione comune)
-
-    // evolution of pore number density via pore nucleation and re-solution 
-    // sciantix_variable["HBS pore density"].setFinalValue(
-    //     solver.Decay(
-    //         sciantix_variable["HBS pore density"].getInitialValue(),
-    //         matrices["UO2HBS"].getPoreResolutionRate(),
-    //         matrices["UO2HBS"].getPoreNucleationRate(),
-    //         physics_variable["Time step"].getFinalValue()
-    //     )
-    // );
 
     double coeff_matrix[9];
     double initial_conditions[3];
@@ -117,40 +106,15 @@ void Simulation::HighBurnupStructurePorosity()
     sciantix_variable["Xe in HBS pores - variance"].setFinalValue(initial_conditions[2]);
 
     sciantix_variable["trapping rate hbs"].setFinalValue(matrices["UO2HBS"].getPoreTrappingRate());
+    sciantix_variable["re-solution rate hbs"].setFinalValue(matrices["UO2HBS"].getPoreResolutionRate());
+    sciantix_variable["nucleation rate hbs"].setFinalValue(matrices["UO2HBS"].getPoreNucleationRate());
 
-    //stamparsi resolutione trapping e nucleation rate
-    // std::cout<<"Resolution Rate"<<std::endl;
-    // std::cout<<matrices["UO2HBS"].getPoreResolutionRate()<<std::endl;
-    // std::cout<<"Trapping Rate"<<std::endl;
-    // std::cout<<matrices["UO2HBS"].getPoreTrappingRate()<<std::endl;
-    // std::cout<<"Nucleation Rate"<<std::endl;
-    // std::cout<<matrices["UO2HBS"].getPoreNucleationRate()<<std::endl;
-
-    // average (at/m^3) of gas atoms in HBS pores
-    // sciantix_variable["Xe in HBS pores"].setFinalValue(
-    //     solver.Integrator(
-    //         sciantix_variable["Xe in HBS pores"].getInitialValue(),
-    //         2.0 * matrices["UO2HBS"].getPoreNucleationRate() + sciantix_variable["HBS pore density"].getFinalValue() * (matrices["UO2HBS"].getPoreTrappingRate() - matrices["UO2HBS"].getPoreResolutionRate()),
-    //         physics_variable["Time step"].getFinalValue()
-    //     )
-    // );
-
-    //  sciantix_variable["Xe at grain boundary"].setFinalValue(
-    //             sciantix_variable["Xe produced"].getFinalValue() + sciantix_variable["Xe produced in HBS"].getFinalValue() -
-    //             sciantix_variable["Xe in HBS pores"].getFinalValue() -
-    //             sciantix_variable["Xe in grain"].getFinalValue() - sciantix_variable["Xe in grain HBS"].getFinalValue() -
-    //             sciantix_variable["Xe released"].getInitialValue());
-
-    // std::cout<<"Xe in HBS pores"<<std::endl;
-    // std::cout<<sciantix_variable["Xe in HBS pores"].getFinalValue()<<std::endl;
 
     if (sciantix_variable["HBS pore density"].getFinalValue())
         sciantix_variable["Xe atoms per HBS pore"].setFinalValue(
             sciantix_variable["Xe in HBS pores"].getFinalValue() / sciantix_variable["HBS pore density"].getFinalValue()
     );
    
-    // std::cout<<"Xe atoms per HBS pore"<<std::endl;
-    // std::cout<<sciantix_variable["Xe atoms per HBS pore"].getFinalValue()<<std::endl; 
     
     //calculation of pore volume 
     // VDW volume
@@ -198,8 +162,8 @@ void Simulation::HighBurnupStructurePorosity()
     PorePressure = 
         sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * boltzmann_constant * history_variable["Temperature"].getFinalValue() * ((1 + PackingFraction + pow(PackingFraction, 2) - pow(PackingFraction, 3)) / (pow(1 - PackingFraction, 3))) / sciantix_variable["HBS pore volume"].getInitialValue();
     
-    // std::cout<<"PorePressure = " << PorePressure<<std::endl; 
-    // std::cout<<"EquilibriumPressure = " << EquilibriumPressure<<std::endl;
+    std::cout<<"PorePressure = " << PorePressure<<std::endl; 
+    std::cout<<"EquilibriumPressure = " << EquilibriumPressure<<std::endl;
     
     if(DimensionlessFactor)
         sciantix_variable["Vacancies per HBS pore"].setFinalValue(
@@ -229,7 +193,7 @@ void Simulation::HighBurnupStructurePorosity()
    double limiting_factor =
        (2.0 - sciantix_variable["HBS porosity"].getFinalValue()) / (2.0 * pow(1.0 - sciantix_variable["HBS porosity"].getFinalValue(), 3.0));
 
-    double pore_interconnection_rate = 4.0 * limiting_factor;
+    double pore_interconnection_rate = - 4.0 * limiting_factor;
     sciantix_variable["HBS pore density"].setFinalValue(
         solver.BinaryInteraction(
            sciantix_variable["HBS pore density"].getFinalValue(),
@@ -238,15 +202,6 @@ void Simulation::HighBurnupStructurePorosity()
        )
    );
 
-    // update of pore volume and pore radius after interconnection by impingement (non so se invece sia meglio fare update della porosità)
-    
-//    sciantix_variable["Xe in HBS pores - variance"].setFinalValue(
-//        solver.Integrator(
-//            sciantix_variable["Xe in HBS pores - variance"].getInitialValue(),
-//             matrices["UO2"].getPoreTrappingRate() * sciantix_variable["HBS pore density"].getFinalValue() - matrices["UO2"].getPoreResolutionRate() * sciantix_variable["HBS pore density"].getFinalValue() + matrices["UO2"].getPoreNucleationRate() * pow((sciantix_variable["Xe atoms per HBS pore"].getFinalValue() - 2.0), 2.0),
-//             physics_variable["Time step"].getFinalValue()
-//         )
-//    );
 
     if (sciantix_variable["HBS pore density"].getFinalValue())
        sciantix_variable["Xe atoms per HBS pore - variance"].setFinalValue(
