@@ -97,6 +97,8 @@ std::map<int, std::string> update_sciantix_variable = {
     {86, "Xe atoms per HBS pore"},
     {88, "Xe atoms per HBS pore - variance"},
     {120, "trapping rate hbs"},
+    {121, "nucleation rate hbs"},
+    {122, "re-solution rate hbs"},
     {200, "Vacancies per HBS pore"}
 
 };
