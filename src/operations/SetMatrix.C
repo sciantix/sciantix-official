@@ -73,10 +73,10 @@ Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
     // Mechanical properties
     
 	// Elastic modulus
-    matrix_.setElasticModulus(2.237e5 * (1 - 2.6 * (1 - sciantix_variable["Fuel density"].getFinalValue() / 10960)) * (1 - 1.394e-4 * (history_variable["Temperature"].getFinalValue()-273-20)) * (1 - 0.1506 * (1 - exp(-0.035*sciantix_variable["Burnup"].getFinalValue())))); // (MPa) TU
-	if ((1 - sciantix_variable["Fuel density"].getFinalValue() / 10960)>=0.2){
+    matrix_.setElasticModulus(2.237e5 * (1 - 2.6 * sciantix_variable["Porosity"].getFinalValue()) * (1 - 1.394e-4 * (history_variable["Temperature"].getFinalValue()-273-20)) * (1 - 0.1506 * (1 - exp(-0.035*sciantix_variable["Burnup"].getFinalValue())))); // (MPa) TU
+	if (sciantix_variable["Porosity"].getFinalValue() >= 0.2){
 		std::cout<<"WARNING: elastic modulus correlation used outside the validity range for fuel porosity (P<0.2)"<<std::endl;
-		std::cout<<"Porosity P = "<<(1 - sciantix_variable["Fuel density"].getFinalValue() / 10960)<<std::endl;
+		std::cout<<"Porosity P = "<<sciantix_variable["Porosity"].getFinalValue()<<std::endl;
 	}
 
 	// Poisson ratio
@@ -92,6 +92,7 @@ Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
 	//
 	// from mechanical testing
 	matrix_.setGrainBoundaryFractureEnergy(2); // (J/m2) @Jernkvist2020
+    matrix_.setShearModulus(matrix_.getElasticModulus() / ( 2 * ( 1 + matrix_.getPoissonRatio() ) )); // (MPa)
 
     return matrix_;
 }
@@ -120,6 +121,30 @@ Matrix UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &
     matrix_.setPoreNucleationRate(sciantix_variable);
     matrix_.setPoreResolutionRate(sciantix_variable, history_variable);
     matrix_.setPoreTrappingRate(matrices, sciantix_variable);
+
+    // Mechanical properties
+    
+	// Elastic modulus
+    matrix_.setElasticModulus(2.237e5 * (1 - 2.6 * sciantix_variable["HBS porosity"].getFinalValue()) * (1 - 1.394e-4 * (history_variable["Temperature"].getFinalValue()-273-20)) * (1 - 0.1506 * (1 - exp(-0.035*sciantix_variable["Burnup"].getFinalValue())))); // (MPa) TU
+	if (sciantix_variable["HBS porosity"].getFinalValue()>=0.2){
+		std::cout<<"WARNING: elastic modulus correlation used outside the validity range for fuel porosity (P<0.2)"<<std::endl;
+		std::cout<<"Porosity P (/) = "<< sciantix_variable["HBS porosity"].getFinalValue() <<std::endl;
+	}
+
+	// Poisson ratio
+	matrix_.setPoissonRatio(0.32); // (/) TU
+
+	// Grain boundary energy 
+	//
+	// from surface tension
+	//matrix[index].setGrainBoundaryFractureEnergy(((2*0.6*cos(0.872664626)))); // (N/m)  surface tension 	
+	//
+	// from inverse calibration
+	//matrix[index].setGrainBoundaryFractureEnergy(4e-3); // (J/m2) @Jernkvist2019
+	//
+	// from mechanical testing
+	matrix_.setGrainBoundaryFractureEnergy(2); // (J/m2) @Jernkvist2020
+    matrix_.setShearModulus(matrix_.getElasticModulus() / ( 2 * ( 1 + matrix_.getPoissonRatio() ) )); // (MPa)
 
     return matrix_;
 }

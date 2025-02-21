@@ -67,6 +67,7 @@ public:
     double elastic_modulus;
     double poisson_ratio;
     double grain_boundary_fracture_energy;
+    double shear_modulus;
 
     /**
      * @brief Sets the theoretical density of the matrix.
@@ -500,6 +501,18 @@ public:
 	{
         // Member function to return the grain-boundary fracture energy of the material (J/m2)
 		return grain_boundary_fracture_energy;
+	}
+
+    void setShearModulus(double g)
+	{
+        // Member function to set the shear modulus of the material (MPa)
+		shear_modulus = g;
+	}
+
+	double getShearModulus()
+	{
+        // Member function to return the shear modulus of the material (MPa)
+		return shear_modulus;
 	}
 
     /**
