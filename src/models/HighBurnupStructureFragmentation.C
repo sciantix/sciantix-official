@@ -18,6 +18,8 @@
 
 void Simulation::HighBurnupStructureFragmentation()
 {
+    if (!int(input_variable["iHighBurnupStructurePorosity"].getValue())) return;
+    
     // pore pressure - Hard Spheres Equation of state HS-EoS as propored by Carnhan-Starling
     double Xe_HS_diameter = 4.45e-10 * ( 0.8542 - 0.03996 * log(history_variable["Temperature"].getFinalValue()/231.2) ); // Brearley and MacInnes
     
