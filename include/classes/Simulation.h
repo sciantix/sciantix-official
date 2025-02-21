@@ -281,6 +281,14 @@ public:
     void HighBurnupStructurePorosity();
 
     /**
+     * @brief Models the fragmentation of high burnup structures.
+     * 
+     * @author E. Cappellari (Under development)
+     * 
+     */
+    void HighBurnupStructureFragmentation();
+
+    /**
      * @brief Evaluates the deviation in stoichiometry within the nuclear material and its effects.
      * 
      * @author G. Petrosillo

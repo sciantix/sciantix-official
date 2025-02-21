@@ -87,6 +87,8 @@ void Simulation::execute()
 
     GasDiffusion();
 
+    HighBurnupStructureFragmentation();
+
     GrainBoundaryMicroCracking();
 
     GrainBoundaryVenting();
