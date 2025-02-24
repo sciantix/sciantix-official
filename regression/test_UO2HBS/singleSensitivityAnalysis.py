@@ -79,7 +79,9 @@ class singleSensitivityAnalysis():
             shutil.copy("../input_settings.txt", os.getcwd())
             shutil.copy("../input_history.txt", os.getcwd())
 
-            bias = random.uniform(1 - self.deviation, 1 + self.deviation)
+            # bias = random.uniform(1 - self.deviation, 1 + self.deviation)
+            bias = random.uniform(1, 1 + self.deviation)
+
             self.scaling_factors[self.bias_name] = bias
 
             with open("input_scaling_factors.txt", 'w') as file:
