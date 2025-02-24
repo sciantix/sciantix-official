@@ -85,7 +85,9 @@ void Simulation::execute()
 
     GasDiffusion();
 
-    CsIProduction();
+    setPhaseDiagram();
+
+    //CsIProduction();
 
     GrainBoundaryMicroCracking();
 

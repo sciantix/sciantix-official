@@ -160,6 +160,14 @@ public:
     void GasDiffusion();
 
     /**
+     * @brief Upload of the phase diagram.
+     * 
+     * @author E. Cappellari
+     * 
+     */
+    void setPhaseDiagram();
+
+    /**
      * @brief Produces CsI at grain boundary.
      * 
      * @author E. Cappellari
