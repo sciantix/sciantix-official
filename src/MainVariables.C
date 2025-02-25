@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "MainVariables.h"
+#include "Source.h"
 
 int Sciantix_options[40];
 double Sciantix_history[20];

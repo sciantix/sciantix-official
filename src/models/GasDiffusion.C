@@ -16,6 +16,7 @@
 
 #include "GasDiffusion.h"
 #include "SourceReader.h"
+#include "SourceHandler.h"
 
 void Simulation::GasDiffusion()
 {
@@ -121,9 +122,14 @@ void Simulation::GasDiffusion()
         
         case 4:
         {
-            double time;
             Source non_uniform_source;  
-            ReadNonUniformSource(non_uniform_source, time); // This reads the data from the provided file and fills the Source general_source
+            ReadNonUniformSource(non_uniform_source);
+
+            std::vector<Source> sources;
+            std::vector<Source> isources;
+            loadSourcesFromFile(sources);
+            isources = sourceInterpolation(sources, 100);
+            writeToFile(isources);
 
             if (system.getRestructuredMatrix() == 0)
             {    
