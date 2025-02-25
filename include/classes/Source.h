@@ -16,28 +16,38 @@
 
 #ifndef SOURCE_H
 #define SOURCE_H
-#include <string>
-#include <vector>
 #include <iostream>
-#include <cmath>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include <limits>
+#include "MainVariables.h"
+
 
 
 
 /**
- * @class Source
- * @brief Contains all information about the non uniform source: the normalized domain, the slopes and intercepts.
- * Each region: [r_i , r_i+1] has the corresponding source function S_i(r) = A_i * r + B_i.
- * The Slopes and Intercepts are of size N while the Normalized Domain is of size N+1.
- * example:  Normalized Domain = [0,rho1,rho2,1] | Slopes = [A1, A2, A3] | Intercepts = [B1, B2, B3].
+ * 
+ * The Source class stores the data related to a non-uniform source, which includes:
+ * - The time at which the source is defined.
+ * - The normalized domain (ND) which is a set of radial positions (scaled).
+ * - The slopes of the source function (used for each region).
+ * - The intercepts of the source function (used for each region).
+ * 
+ * Each part of the source is defined with a time and associated values for ND, slopes, and intercepts.
+ *
  * @author A. Zayat
  */
 
- class Source
+class Source
 {
 public:
-    std::vector<double> NormalizedDomain; // NormalizedDomain = r/a [0,edge1/a,edge2/a,edge3/a,...,1]
-    std::vector<double> Slopes; // [A1, A2, A3,...,Af]
-    std::vector<double> Intercepts; // [B1, B2, B3,...,Bf]
+    double time;                          ///< Time at which we have this non-uniform source
+    std::vector<double> NormalizedDomain; ///< NormalizedDomain = r/a [0, edge1/a, edge2/a, edge3/a, ..., 1]
+    std::vector<double> Slopes;           ///< Source function slopes for each region
+    std::vector<double> Intercepts;       ///< Source function intercepts for each region
+
     
     /**
      * @brief Constructor
@@ -48,7 +58,5 @@ public:
      * @brief Destructor
      */
     ~Source() {}
-
 };
-
 #endif // SOURCE_H

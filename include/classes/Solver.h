@@ -183,7 +183,8 @@ public:
      * 2 : a - Grain Radius
      * 3 : Loss term
      * 
-     * Source : [Domain, Slopes, Intercepts]
+     * Source : [time, Domain, Slopes, Intercepts]
+     * time : at which we have the current source
      * Domain: [0,rho1,rho2, 1] (example)
      * Slopes: [A1,A2,A3] (example)
      * Intercepts [B1,B2,B3] (example)

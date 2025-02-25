@@ -91,7 +91,7 @@ void ReadSource(double &Source_slope_input, double &Source_intercept_input)
  * @param time the time at which we have this source functiom
  * @author A. Zayat
  */
-void ReadNonUniformSource(Source &non_uniform_source, double &time)
+void ReadNonUniformSource(Source &non_uniform_source)
 {
     // Attempt to open the file
     std::ifstream source_file(TestPath + "non_uniform_source.txt", std::ios::in);
@@ -109,7 +109,7 @@ void ReadNonUniformSource(Source &non_uniform_source, double &time)
 
     // Parse the time
     std::getline(ss, token, '#');
-    time = std::stod(token);
+    non_uniform_source.time = std::stod(token);
 
     // Parse Normalized Domain
     std::getline(ss, token, '#');
