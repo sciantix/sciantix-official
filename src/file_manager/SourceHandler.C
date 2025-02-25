@@ -24,6 +24,7 @@
 #include "SourceHandler.h"
 #include "MainVariables.h"
 
+
 void loadSourcesFromFile(std::vector<Source> &sources)
 {
     std::ifstream source_file(TestPath + "non_uniform_source.txt", std::ios::in);
@@ -229,3 +230,35 @@ Source getCurrentSource(const std::vector<Source>& sources, double t_current) {
     return finalSource;
 }
 Source& getNonUniformSource();
+
+void computeAndSaveSourcesToFile(const std::vector<Source>& sources, const std::string& outputFilePath, double scale_factor, double step) 
+{
+    std::ofstream outFile(outputFilePath);
+
+    if (!outFile.is_open()) {
+        std::cerr << "Error: Unable to open output file " << outputFilePath << std::endl;
+        return;
+    }
+
+    for (const auto& source : sources) {
+        outFile << "Time: " << source.time << " s\n";
+        outFile << "r (micron)\tS (at/m^3.s)\n";
+
+        for (size_t i = 0; i < source.NormalizedDomain.size() - 1; ++i) {
+            double nd_start = source.NormalizedDomain[i];
+            double nd_end = source.NormalizedDomain[i + 1];
+            double A = source.Slopes[i];
+            double B = source.Intercepts[i];
+
+            // Modified loop condition to include the endpoint
+            for (double nd = nd_start; nd < nd_end + step; nd += step) {
+                double r = nd * scale_factor;
+                double S = A * r + B;
+                outFile << r << "\t" << S << "\n";
+            }
+        }
+        outFile << "\n"; // Separate time instances
+    }
+
+    outFile.close();
+}
