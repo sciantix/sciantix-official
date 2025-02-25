@@ -26,6 +26,7 @@
 #include <fstream>
 #include <ctime>
 
+
 using namespace std;
 
 /**
@@ -107,6 +108,7 @@ int main(int argc, char **argv)
     isources = sourceInterpolation(sources, 100);
     //Create Output
     writeToFile(isources);
+    computeAndSaveSourcesToFile(sources, TestPath + "source_shape.txt", 5e-6, 0.01);
 
 
     std::string outputPath = TestPath + "output.txt";
@@ -116,6 +118,7 @@ int main(int argc, char **argv)
     Execution_file.open(TestPath + "execution.txt", std::ios::out);
 
     timer = clock();
+
 
     while (Time_h <= Time_end_h)
     {

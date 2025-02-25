@@ -59,4 +59,5 @@ void writeToFile(const std::vector<Source>& sources);
  */
 Source getCurrentSource(const std::vector<Source>& sources, double time);
 
+void computeAndSaveSourcesToFile(const std::vector<Source>& sources, const std::string& outputFilePath, double scale_factor, double step);
 #endif // SOURCEHANDLER_H
