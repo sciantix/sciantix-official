@@ -271,7 +271,7 @@ void InputReading(
 		Sciantix_scaling_factors[6] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[7] = ReadOneParameter("sf_cent_parameter", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[8] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[9] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[9] = ReadOneParameter("sf_henry_constant", input_scaling_factors, input_check);
 	}
 	else
 	{
