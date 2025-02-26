@@ -190,7 +190,8 @@ System Cs_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Cs"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(6.227860e-02 + 6.765883e-2*1.52e-6/(1+1.90e-22*3e13) + 6.723289e-2*2.09e-5/(1+2.72e-18*3e13)); // from TRANSURANUS 
+    //system_.setYield(6.227860e-02 + 6.765883e-2/(1+1.90e-22*3e13/1.52e-6) + 6.723289e-2/(1+2.72e-18*3e13/2.09e-5)); // from TRANSURANUS 
+    system_.setYield(0.226); //Cs+Rb by Olander 1976
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -213,7 +214,8 @@ System I_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sciant
     system_.setGas(gas["I"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.001241+0.008137+0.02921); //sum of cumulative fission yield of I129, I131, I127
+    //system_.setYield(0.001241+0.008137+0.02921); //sum of cumulative fission yield of I129, I131, I127
+    system_.setYield(0.012); //I+Te by Olander 1976
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
