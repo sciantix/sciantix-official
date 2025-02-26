@@ -24,7 +24,7 @@ void Simulation::setGas()
     helium(gas);
     caesium(gas);
     iodine(gas);
-    caesiumiodine(gas);
+    //caesiumiodine(gas);
 }
 
 void xenon(SciantixArray<Gas> &gas)
@@ -107,17 +107,17 @@ void iodine(SciantixArray<Gas> &gas)
     //system_.setYield(0.001241);
 }
 
-void caesiumiodine(SciantixArray<Gas> &gas) 
-{
-    Gas gas_;
-    gas_.setName("CsI");
-    gas_.setVanDerWaalsVolume(9.33e-29 + 1.69e-28);
-    gas_.setDecayRate(0.0); // stable
-    gas_.setChemicallyActive(1.0);
-    gas_.setPrecursorFactor(1.00);
-    gas.push(gas_);
-    //system_.setYield(0.001241);
-}
+// void caesiumiodine(SciantixArray<Gas> &gas) 
+// {
+//     Gas gas_;
+//     gas_.setName("CsI");
+//     gas_.setVanDerWaalsVolume(9.33e-29 + 1.69e-28);
+//     gas_.setDecayRate(0.0); // stable
+//     gas_.setChemicallyActive(1.0);
+//     gas_.setPrecursorFactor(1.00);
+//     gas.push(gas_);
+//     //system_.setYield(0.001241);
+// }
 
 // // Data from JEFF-3.3 if not specified, to be verified the volumes
 

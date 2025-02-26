@@ -28,7 +28,5 @@
 #	initial Cs (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released, bounded
 0.0	0.0	0.0	0.0	0.0	0.0 0.0
 #	initial I (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released, bounded
-0.0	0.0	0.0	0.0	0.0	0.0 0.0
-#	initial CsI (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released, bounded
 1000
 #   Cr content (ppm)
