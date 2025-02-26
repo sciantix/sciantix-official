@@ -114,15 +114,15 @@ std::map<int, std::string> update_sciantix_variable = {
     {117, "I reacted"},
     {118, "Intragranular I atoms per bubble"},
     {119, "Intergranular I atoms per bubble"},
-    {121, "CsI produced"},
-    {122, "CsI in grain"},
-    {123, "CsI in intragranular solution"},
-    {124, "CsI in intragranular bubbles"},
-    {125, "CsI at grain boundary"},
-    {126, "CsI released"},
-    {127, "CsI reacted"},
-    {128, "Intragranular CsI atoms per bubble"},
-    {129, "Intergranular CsI atoms per bubble"},
+    {121, "CsI"},
+    {122, "CsO2"},
+    {123, "Cs2O2"},
+    {124, "Cs2O"},
+    // {125, "CsI at grain boundary"},
+    // {126, "CsI released"},
+    // {127, "CsI reacted"},
+    // {128, "Intragranular CsI atoms per bubble"},
+    // {129, "Intergranular CsI atoms per bubble"},
     {150,"Chromium content"},
     {151,"Lattice parameter"},
     {152,"Theoretical density"},
@@ -139,7 +139,7 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
 {
     for (int i = 0; i < n_modes; ++i)
     {
-        for (int j = 0; j <= 27; j++)
+        for (int j = 0; j <= 24; j++)
         {
             Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];	
         }

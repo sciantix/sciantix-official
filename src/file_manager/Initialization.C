@@ -97,9 +97,9 @@ void Initialization(
 		case 22: initial_condition = Sciantix_variables[113]; break;  // I in grain - solution
 		case 23: initial_condition = Sciantix_variables[114]; break;  // I in grain - bubbles
 
-		case 24: initial_condition = Sciantix_variables[122]; break;  // CsI in grain
-		case 25: initial_condition = Sciantix_variables[123]; break;  // CsI in grain - solution
-		case 26: initial_condition = Sciantix_variables[124]; break;  // CsI in grain - bubbles
+		// case 24: initial_condition = Sciantix_variables[122]; break;  // CsI in grain
+		// case 25: initial_condition = Sciantix_variables[123]; break;  // CsI in grain - solution
+		// case 26: initial_condition = Sciantix_variables[124]; break;  // CsI in grain - bubbles
 
 		default: initial_condition = 0.0; break;
 		}

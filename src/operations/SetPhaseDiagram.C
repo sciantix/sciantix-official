@@ -88,7 +88,7 @@ std::string phase_finding(double log_P_I, double log_P_Cs, double log_P_O2, cons
 }
 void Simulation::setPhaseDiagram()
 {
-    std::string filename = "../../output.txt";
+    std::string filename = "../output.txt";
     std::vector<DataPoint> dataset = loadData(filename);
 
     double Temperature = history_variable["Temperature"].getFinalValue();
