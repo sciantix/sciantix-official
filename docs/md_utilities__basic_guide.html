@@ -66,32 +66,48 @@ $(function() {
 <div class="title">Basic guide </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md9"></a>
-Instructions for Committing New Code</h1>
+<div class="textblock"><p>We hope this guide helps simplify the process of committing new code and building SCIANTIX, while also ensuring consistency in the source code through our syntax guidelines. If you encounter any issues or have suggestions, please feel free to contact the developers.</p>
+<h1><a class="anchor" id="autotoc_md10"></a>
+Instructions for committing new code through a pull request</h1>
 <p>Follow these steps to commit new code to the SCIANTIX repository:</p>
 <ol type="1">
-<li>Open your terminal and execute the following commands:</li>
+<li><b>Create and switch to a new branch:</b> <div class="fragment"><div class="line">git checkout -b new_branch</div>
+</div><!-- fragment --></li>
+<li><b>Make changes and commit them:</b><ul>
+<li>Add files which you want to commit to the staging area: <div class="fragment"><div class="line">git add FILE1 FILE2 ...</div>
+</div><!-- fragment --> or if you want to commit all changed files <div class="fragment"><div class="line">git add .</div>
+</div><!-- fragment --> Sometimes, one might want to commit only some changes of a file (e.g. if there are other changes, which are not relevant for the commit). In such case, use <div class="fragment"><div class="line">git add -p FILE</div>
+</div><!-- fragment --> which lets you choose, what should be staged.</li>
+<li>Commit the changes: <div class="fragment"><div class="line">git commit -m &quot;commit message&quot;</div>
+</div><!-- fragment --></li>
+<li>Push the new branch to the remote repository: <div class="fragment"><div class="line">git push origin new_branch</div>
+</div><!-- fragment --></li>
+</ul>
+</li>
+<li><b>Create a new pull request:</b><ul>
+<li>Using GitHub CLI: <div class="fragment"><div class="line">gh pr create --base main --head new_branch --title &quot;Title of the pull request&quot; --body &quot;Brief description of the pull request&quot;</div>
+</div><!-- fragment --></li>
+</ul>
+</li>
+<li><b>Check for reviews or approvals:</b><ul>
+<li>Ensure the pull request meets the necessary criteria. If the pull request is approved and ready to be merged, update your main branch: <div class="fragment"><div class="line">git pull origin main</div>
+</div><!-- fragment --></li>
+</ul>
+</li>
+<li><b>Switch back to the main branch:</b> <div class="fragment"><div class="line">git checkout main</div>
+</div><!-- fragment --></li>
+<li><b>Merge the new branch into main:</b> <div class="fragment"><div class="line">git merge new_branch</div>
+</div><!-- fragment --></li>
+<li><b>Push the updated main branch to complete the pull request:</b> <div class="fragment"><div class="line">git push -u origin main</div>
+</div><!-- fragment --></li>
 </ol>
-<div class="fragment"><div class="line">gh repo clone sciantix/sciantix-official</div>
-<div class="line">cd sciantix</div>
-</div><!-- fragment --><ol type="1">
-<li>Create an issue on GitHub.</li>
-<li>Proceed with the following commands:</li>
-</ol>
-<div class="fragment"><div class="line">git checkout -b &lt;BranchName_#IssueNumber&gt;</div>
-<div class="line">git add &lt;Files&gt;</div>
-<div class="line">git commit -m &quot;&lt;CommitMessageEndingIn#IssueNumber&gt;&quot;</div>
-<div class="line">git pull --rebase upstream version1.0</div>
-<div class="line">git push origin &lt;BranchName_#IssueNumber&gt;</div>
-</div><!-- fragment --><ol type="1">
-<li>Create a merge request on GitHub.</li>
-</ol>
-<h2><a class="anchor" id="autotoc_md10"></a>
-Check Your Work Status</h2>
+<h2><a class="anchor" id="autotoc_md11"></a>
+Check your work status</h2>
 <p>At any time, you can check the status of your work by running:</p>
-<div class="fragment"><div class="line">git status</div>
+<div class="fragment"><div class="line">git fetch</div>
+<div class="line">git status</div>
 </div><!-- fragment --><hr  />
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md13"></a>
 Building SCIANTIX on macOS</h1>
 <p>Follow these steps to build SCIANTIX on macOS:</p>
 <ol type="1">
@@ -102,33 +118,57 @@ Building SCIANTIX on macOS</h1>
 </div><!-- fragment --></li>
 </ul>
 </li>
-<li><b>Install Dependencies</b>:<ul>
+<li><b>Install dependencies</b>:<ul>
 <li>Install CMake and g++ using Homebrew: <div class="fragment"><div class="line">brew install cmake g++</div>
 </div><!-- fragment --></li>
 </ul>
 </li>
-<li><b>Clone the Repository</b>:<ul>
-<li>Clone the repository: <div class="fragment"><div class="line">gh repo clone sciantix/sciantix-official</div>
+<li><b>Clone the repository</b>:<ul>
+<li>Clone the repository: E <div class="fragment"><div class="line">gh repo clone sciantix/sciantix-official</div>
 </div><!-- fragment --></li>
 </ul>
 </li>
 <li><b>Build SCIANTIX</b>:<ul>
 <li>Create a build directory and navigate into it: <div class="fragment"><div class="line">mkdir build &amp;&amp; cd build</div>
 </div><!-- fragment --></li>
-</ul>
-</li>
-</ol>
-<p>Configure the build with CMake: </p><div class="fragment"><div class="line">cmake ..</div>
-</div><!-- fragment --><ul>
+<li>Configure the build with CMake: <div class="fragment"><div class="line">cmake ..</div>
+</div><!-- fragment --></li>
 <li>Compile the code (use <code>-j</code> to speed up the process): <div class="fragment"><div class="line">make -j</div>
 </div><!-- fragment --></li>
 </ul>
-<p><b>Locate the Executable</b>:</p><ul>
+</li>
+<li><b>Locate the executable</b>:<ul>
 <li>Find the <code>sciantix.x</code> executable in the <code>build</code> directory.</li>
 </ul>
+</li>
+</ol>
 <hr  />
-<h1><a class="anchor" id="autotoc_md14"></a>
-Sciantix Syntax Guidelines</h1>
+<h1><a class="anchor" id="autotoc_md15"></a>
+Useful Git Commands</h1>
+<p>Below are some essential Git commands for effectively managing your local and remote repositories:</p>
+<ul>
+<li><b>Delete old remote Git branches</b>:</li>
+</ul>
+<div class="fragment"><div class="line">git remote prune origin</div>
+</div><!-- fragment --><p><a href="https://git-scm.com/docs/git-remote#Documentation/git-remote.txt-empruneem">Source</a></p>
+<ul>
+<li><b>Delete local Git branches that were deleted on the remote repository</b>:</li>
+</ul>
+<div class="fragment"><div class="line">git branch -vv | grep &#39;: gone]&#39; | grep -v &quot;\*&quot; | awk &#39;{ print $1; }&#39; | xargs -r git branch -D</div>
+</div><!-- fragment --><p>Alternative command:</p>
+<div class="fragment"><div class="line">git fetch -p; git branch -r | awk &#39;{print $1}&#39; | egrep -v -f /dev/fd/0 &lt;(git branch -vv | grep origin) | awk &#39;{print $1}&#39; | xargs git branch -d</div>
+</div><!-- fragment --><p><a href="https://medium.com/@kcmueller/delete-local-git-branches-that-were-deleted-on-remote-repository-b596b71b530c">Source</a></p>
+<ul>
+<li><b>Delete the most recent local commit (not pushed to origin)</b>:</li>
+</ul>
+<div class="fragment"><div class="line">git reset HEAD~1</div>
+</div><!-- fragment --><ul>
+<li><b>Clear Git cache</b>:</li>
+</ul>
+<div class="fragment"><div class="line">git rm -r --cached .</div>
+</div><!-- fragment --><hr  />
+<h1><a class="anchor" id="autotoc_md17"></a>
+Sciantix syntax guidelines</h1>
 <p>To maintain consistency in the Sciantix codebase, please adhere to the following guidelines:</p>
 <ul>
 <li><b>Use extensive names</b> for functions and variables. Long names are encouraged for clarity.</li>
@@ -159,32 +199,7 @@ Sciantix Syntax Guidelines</h1>
 </ul>
 <p>Thank you for adhering to these guidelines!</p>
 <hr  />
-<h1><a class="anchor" id="autotoc_md16"></a>
-Useful Git Commands</h1>
-<p>Here are some helpful Git commands for managing your local and remote repositories:</p>
-<ul>
-<li><b>Delete old remote Git branches</b>:</li>
-</ul>
-<div class="fragment"><div class="line">git remote prune origin</div>
-</div><!-- fragment --><p><a href="https://git-scm.com/docs/git-remote#Documentation/git-remote.txt-empruneem">Source</a></p>
-<ul>
-<li><b>Delete local Git branches that were deleted on the remote repository</b>:</li>
-</ul>
-<div class="fragment"><div class="line">git branch -vv | grep &#39;: gone]&#39; | grep -v &quot;\*&quot; | awk &#39;{ print $1; }&#39; | xargs -r git branch -D</div>
-</div><!-- fragment --><p>Alternative command:</p>
-<div class="fragment"><div class="line">git fetch -p; git branch -r | awk &#39;{print $1}&#39; | egrep -v -f /dev/fd/0 &lt;(git branch -vv | grep origin) | awk &#39;{print $1}&#39; | xargs git branch -d</div>
-</div><!-- fragment --><p><a href="https://medium.com/@kcmueller/delete-local-git-branches-that-were-deleted-on-remote-repository-b596b71b530c">Source</a></p>
-<ul>
-<li><b>Delete the most recent local commit (not pushed to origin)</b>:</li>
-</ul>
-<div class="fragment"><div class="line">git reset HEAD~1</div>
-</div><!-- fragment --><ul>
-<li><b>Clear Git cache</b>:</li>
-</ul>
-<div class="fragment"><div class="line">git rm -r --cached .</div>
-</div><!-- fragment --><hr  />
-<p>We hope this guide helps simplify the process of committing new code and building SCIANTIX on macOS, while also ensuring consistency in the source code through our syntax guidelines. If you encounter any issues or have suggestions, please feel free to contact the developers. </p>
-</div></div><!-- contents -->
+ </div></div><!-- contents -->
 </div><!-- PageDoc -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
