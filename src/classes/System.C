@@ -145,7 +145,7 @@ double System::getBubbleDiffusivity()
     return bubble_diffusivity;
 }
 
-void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable)
+void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
 
     /**
@@ -223,6 +223,8 @@ void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariabl
         ErrorMessages::Switch(__FILE__, "iHeDiffusivity", input_value);
         break;
     }
+
+    diffusivity *= scaling_factors["Diffusivity"].getValue();
 }
 
 double System::getHeliumDiffusivity()

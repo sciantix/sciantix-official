@@ -262,7 +262,7 @@ std::vector<std::string> getScalingFactorsNames()
         "Fission rate",
         "Cent parameter",
         "Helium production rate",
-        "Dummy"
+        "Henry's constant"
     };
 
     return names;

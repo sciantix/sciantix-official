@@ -150,7 +150,7 @@ public:
      * The intra-granular helium diffusivity within the fuel grain is set according to the input_variable iHeDiffusivity
      * @param input_value The model selection index for helium diffusivity.
      */
-    void setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable);
+    void setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
 
     /**
      * @brief Retrieves the helium diffusivity within the matrix.
