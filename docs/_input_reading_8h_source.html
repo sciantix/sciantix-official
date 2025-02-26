@@ -94,21 +94,21 @@ $(function() {
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;numeric&gt;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">void</span> InputReading(</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">int</span> Sciantix_options[], </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">double</span> Sciantix_variables[], </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">int</span> Sciantix_options[],</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="keywordtype">double</span> Sciantix_variables[],</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">double</span> Sciantix_scaling_factors[],</div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">int</span> &amp;Input_history_points,</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    std::vector&lt;double&gt; &amp;Time_input, </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    std::vector&lt;double&gt; &amp;Time_input,</div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    std::vector&lt;double&gt; &amp;Temperature_input,</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    std::vector&lt;double&gt; &amp;Fissionrate_input,</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    std::vector&lt;double&gt; &amp;Hydrostaticstress_input,</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    std::vector&lt;double&gt; &amp;Steampressure_input,</div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">double</span> &amp;Time_end_h,</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">double</span> &amp;Time_end_s</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    );</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">void</span> readSettings(std::ifstream &amp;input, std::ofstream &amp;output, <span class="keywordtype">int</span> Sciantix_options[]);</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">void</span> readParameters(std::ifstream &amp;input, std::ofstream &amp;output, <span class="keywordtype">double</span> Sciantix_Array[]);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keywordtype">unsigned</span> <span class="keywordtype">short</span> <span class="keywordtype">int</span> ReadOneSetting(std::string variable_name, std::ifstream&amp; input_file, std::ofstream&amp; output_file);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keywordtype">double</span> ReadOneParameter(std::string variable_name, std::ifstream&amp; input_file, std::ofstream&amp; output_file);</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// INPUT_READING_H</span></div>
 </div><!-- fragment --></div><!-- contents -->
