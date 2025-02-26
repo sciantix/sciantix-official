@@ -137,7 +137,7 @@ void Simulation::GasDiffusion()
                     solver.SpectralDiffusionNUS(
                         getDiffusionModes(system.getGasName()),
                         model["Gas diffusion - " + system.getName()].getParameter(),
-                        non_uniform_source,
+                        isources.at(history_variable["Time step number"].getFinalValue()),
                         physics_variable["Time step"].getFinalValue()
                     )
                 );
@@ -377,7 +377,6 @@ void defineSpectralDiffusionNUS1Equation(SciantixArray<System> &sciantix_system,
         model_.setName("Gas diffusion - " + system.getName());
         model_.setRef(reference);
         std::vector<double> parameters;
-        
 
         parameters.push_back(n_modes);
         double gasDiffusivity;
