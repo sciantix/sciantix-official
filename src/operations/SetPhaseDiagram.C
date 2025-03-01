@@ -20,6 +20,8 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <string>
+#include <map>     
 #include <cmath>
 #include <limits>
 
@@ -29,8 +31,8 @@ void Simulation::SetPhaseDiagram()
     // std::vector<DataPoint> dataset = loadData(filename);
 
     double Temperature = history_variable["Temperature"].getFinalValue();
-    double Cs = sciantix_variable["Cs at grain boundary"].getFinalValue();
-    double I = sciantix_variable["I at grain boundary"].getFinalValue();
+    double Cs = sciantix_variable["Cs at grain boundary"].getFinalValue() + sciantix_variable["Cs reacted"].getFinalValue();
+    double I = sciantix_variable["I at grain boundary"].getFinalValue() + sciantix_variable["I reacted"].getFinalValue();
 
     // Chevalier 2002
     double dG_O2 = - 1084.9112*1e3 - Temperature * 77.02744; // J mol-1
@@ -43,13 +45,19 @@ void Simulation::SetPhaseDiagram()
     // std::string phase = phase_finding(log_P_I, log_P_Cs, log_P_O2, dataset);
     // std::cout << "The dominant phase is: " << phase << std::endl;
 
-    double new_set_f = SetStablePhase(Temperature, log_P_Cs, log_P_I, log_P_O2);
-    // sciantix_variable["Cs at grain boundary"].setFinalValue(0);
-    // sciantix_variable["Cs reacted"].addValue(Cs);
-    // sciantix_variable["I at grain boundary"].setFinalValue(0);
-    // sciantix_variable["I reacted"].addValue(I);
-    // sciantix_variable["CsI at grain boundary"].addValue(Cs+I);
-    // sciantix_variable["CsI produced"].addValue(Cs+I);
+    StablePhaseResult Update = Simulation::SetStablePhase(Temperature, log_P_Cs, log_P_I, log_P_O2);
+    
+    sciantix_variable["Cs at grain boundary"].setFinalValue(Update.new_set[0]);
+    sciantix_variable["I at grain boundary"].setFinalValue(Update.new_set[1]);
+    sciantix_variable["Cs reacted"].setFinalValue(Cs - Update.new_set[0]);
+    sciantix_variable["I reacted"].setFinalValue(I - Update.new_set[1]);
+    if (!Update.right_bounded.empty()) {
+        std::cout << Update.right_bounded[0] << std::endl;
+        sciantix_variable[Update.right_bounded[0]].setFinalValue(Update.compound);
+    } else {
+        std::cout << "right_bounded è vuoto" << std::endl;
+    }
+    
 
     return;
 }
@@ -79,7 +87,7 @@ double K_eq(double T, double A, double B, double C, double D, double E)
     return std::exp(- delta_g(T, A, B, C, D, E) / (gas_constant * T));
 }
 
-double Simulation::SetStablePhase(double Temperature, double logCs, double logO2, double logI)
+Simulation::StablePhaseResult Simulation::SetStablePhase(double Temperature, double logCs, double logO2, double logI)
 {
     // Build the equilibria dictionary (using a map)
     std::map<std::string, Reaction> equilibria;
@@ -239,6 +247,7 @@ double Simulation::SetStablePhase(double Temperature, double logCs, double logO2
     }
 
     std::vector<double> new_set(3);
+    double L_max = 0;
     // If a valid phase is found, compute BG_values, L_max and new_set
     if (min_phase != "Cs + I + O2") {
         // BG_values: [ (10^logCs)/(R*T), (10^logI)/(R*T), (10^logO2)/(R*T) ]
@@ -261,7 +270,7 @@ double Simulation::SetStablePhase(double Temperature, double logCs, double logO2
         }
 
         // L_max is the minimum of the L_max_values
-        double L_max = std::numeric_limits<double>::infinity();
+        L_max = std::numeric_limits<double>::infinity();
         for (double val : L_max_values) {
             if (val < L_max)
                 L_max = val;
@@ -293,7 +302,24 @@ double Simulation::SetStablePhase(double Temperature, double logCs, double logO2
             new_set[i] = BG_values[i];
         }
     }
-    return new_set[0], new_set[1], new_set[2];
+    
+    // Build the result structure
+    StablePhaseResult result;
+    result.new_set = new_set;
+    
+    // If a valid reaction was found, include its right_bounded species; otherwise, return an empty vector.
+    if (min_phase != "Cs + I + O2")
+    {
+        result.right_bounded = equilibria_Temperature[min_phase].right_bounded;
+        result.compound = L_max;
+    }
+    else
+    {
+        result.right_bounded = {};
+        result.compound = 0.0;  
+    }
+    
+    return result;
 }
 
 // struct DataPoint {
