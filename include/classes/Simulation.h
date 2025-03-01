@@ -19,6 +19,7 @@
 
 #include <cmath>
 #include <vector>
+#include <string>
 #include "Solver.h"
 #include "Model.h"
 #include "Matrix.h"
@@ -167,21 +168,19 @@ public:
      */
     void SetPhaseDiagram();
 
+    struct StablePhaseResult {
+        std::vector<double> new_set;          // Computed new set values
+        std::vector<std::string> right_bounded; 
+        double compound; // Right bounded species of the stable reaction
+    };
+
         /**
      * @brief Get the stable phase in the phase diagram.
      * 
      * @author E. Cappellari
      * 
      */
-    double SetStablePhase(double Temperature, double logCs, double logO2, double logI);
-
-    // /**
-    //  * @brief Produces CsI at grain boundary.
-    //  * 
-    //  * @author E. Cappellari
-    //  * 
-    //  */
-    // void CsIProduction();
+    StablePhaseResult SetStablePhase(double Temperature, double logCs, double logO2, double logI);
 
     /**
      * @brief Grain growth based on specific model parameters affecting the system's materials.
@@ -377,9 +376,6 @@ public:
             
         else if (gas_name == "I")
             return &modes_initial_conditions[21 * 40];
-            
-        // else if (gas_name == "CsI")
-        //     return &modes_initial_conditions[24 * 40];
 
         else
         {
@@ -419,8 +415,6 @@ public:
         else if (gas_name == "I")
             return &modes_initial_conditions[22 * 40];
             
-        // else if (gas_name == "CsI")
-        //     return &modes_initial_conditions[25 * 40];
         else
         {
             std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesSolution." << std::endl;
@@ -459,8 +453,6 @@ public:
         else if (gas_name == "I")
             return &modes_initial_conditions[23 * 40];
             
-        // else if (gas_name == "CsI")
-        //     return &modes_initial_conditions[26 * 40];
         else
         {
             std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesBubbles." << std::endl;

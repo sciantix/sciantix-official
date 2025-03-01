@@ -241,16 +241,6 @@ void InputReading(
 		Sciantix_variables[116] = initial_composition_I[5];
 		Sciantix_variables[117] = initial_composition_I[6];
 
-		// std::vector<double> initial_composition_CsI;
-		// initial_composition_CsI = ReadSeveralParameters("Initial composition CsI", input_initial_conditions, input_check);
-		// Sciantix_variables[121] = initial_composition_CsI[0];
-		// Sciantix_variables[122] = initial_composition_CsI[1];
-		// Sciantix_variables[123] = initial_composition_CsI[2];
-		// Sciantix_variables[124] = initial_composition_CsI[3];
-		// Sciantix_variables[125] = initial_composition_CsI[4];
-		// Sciantix_variables[126] = initial_composition_CsI[5];
-		// Sciantix_variables[127] = initial_composition_CsI[6];
-
 		Sciantix_variables[150] = ReadOneParameter("Chromium content", input_initial_conditions, input_check);
 	}
 

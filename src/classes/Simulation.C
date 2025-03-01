@@ -87,8 +87,6 @@ void Simulation::execute()
 
     SetPhaseDiagram();
 
-    //CsIProduction();
-
     GrainBoundaryMicroCracking();
 
     GrainBoundaryVenting();
