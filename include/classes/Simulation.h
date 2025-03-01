@@ -160,12 +160,20 @@ public:
     void GasDiffusion();
 
     /**
-     * @brief Upload of the phase diagram.
+     * @brief Thermochemistry module for the grain boundary.
      * 
      * @author E. Cappellari
      * 
      */
-    void setPhaseDiagram();
+    void SetPhaseDiagram();
+
+        /**
+     * @brief Get the stable phase in the phase diagram.
+     * 
+     * @author E. Cappellari
+     * 
+     */
+    double SetStablePhase(double Temperature, double logCs, double logO2, double logI);
 
     // /**
     //  * @brief Produces CsI at grain boundary.

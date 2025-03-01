@@ -85,7 +85,7 @@ void Simulation::execute()
 
     GasDiffusion();
 
-    setPhaseDiagram();
+    SetPhaseDiagram();
 
     //CsIProduction();
 
