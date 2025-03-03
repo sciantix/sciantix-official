@@ -72,7 +72,7 @@ void Simulation::HighBurnupStructureFormation()
     // Restructuring rate:
     // dalpha_r / bu = 3.54 * 2.77e-7 (1-alpha_r) b^2.54
     double coefficient =
-        model["High-burnup structure formation"].getParameter().at(0) *
+        model["High-burnup structure formation"].getParameter().at(0) * pow(0.8814, - 3.54) *
         model["High-burnup structure formation"].getParameter().at(1) *
         pow(sciantix_variable["Effective burnup"].getFinalValue(), 2.54);
 
