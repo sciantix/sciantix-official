@@ -252,7 +252,7 @@ void InputReading(
 		input_history >> Fissionrate_input[n];
 		input_history >> Hydrostaticstress_input[n];
 
-		if(Sciantix_options[20] > 0)
+		if(Sciantix_options[20] > 0 && Sciantix_options[20] < 7)
 			input_history >> Steampressure_input[n];
 
 		input_check << Time_input[n] << "\t";
@@ -260,7 +260,7 @@ void InputReading(
 		input_check << Fissionrate_input[n] << "\t";
 		input_check << Hydrostaticstress_input[n] << "\t";
 
-		if(Sciantix_options[20] > 0)
+		if(Sciantix_options[20] > 0 && Sciantix_options[20] < 7)
 			input_check << Steampressure_input[n] << "\t";
 
 		input_check << std::endl;
@@ -274,7 +274,7 @@ void InputReading(
 	Fissionrate_input.resize(Input_history_points);
 	Hydrostaticstress_input.resize(Input_history_points);
 		
-	if(Sciantix_options[20] > 0)
+	if(Sciantix_options[20] > 0 && Sciantix_options[20] < 7)
 		Steampressure_input.resize(Input_history_points);
 
 	Time_end_h = Time_input[Input_history_points - 1];

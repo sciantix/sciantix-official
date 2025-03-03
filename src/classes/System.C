@@ -357,26 +357,29 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
     case 6:
     {
         /**
-         * @brief this case is for
+         * @brief this case is from Killeen and Turnbull to account for the stoichiometry deviation in UO2.
+         * @ref <a href="https://www.stralsakerhetsmyndigheten.se/en/publications/reports/safety-at-nuclear-power-plants/2018/201825/" target="_blank">Massih A.R. (2018). UO2 Fuel Oxidation and Fission Gas Release, Swedish Radiation Safety Authority (SSM).</a>
          *
          */
         double x = sciantix_variable["Stoichiometry deviation"].getFinalValue();
         double temperature = history_variable["Temperature"].getFinalValue();
         double fission_rate = history_variable["Fission rate"].getFinalValue();
 
-        double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));
-        double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
-        double d3 = 8.0e-40 * fission_rate;
+        double d1 = 7.6e-10 * exp(- 35000 / temperature);
+        double d3 = 2.0e-40 * fission_rate;
 
         double S = exp(-74100 / temperature);
         double G = exp(-35800 / temperature);
-        double uranium_vacancies = 0.0;
+        double uranium_vacancies = 0.0; // oxidation-induced vacancy concentration
+        double irradiation_vacancies = 0.0; // irradiation-induced vacancy concentration
+        double vacancy_jump_rate = 1e13 * exp(-27800 / temperature);
 
         uranium_vacancies = S / pow(G, 2.0) * (0.5 * pow(x, 2.0) + G + 0.5 * pow((pow(x, 4.0) + 4 * G * pow(x, 2.0)), 0.5));
+        irradiation_vacancies = (1e15 * pow(3e-10,2) + 100 * uranium_vacancies) / (2*100) * (pow(1.0 + (4.0 * 2e-4 * 100)/(vacancy_jump_rate * pow(1e15 * pow(3e-10, 2) + 100 * uranium_vacancies, 2.0)), 0.5) - 1.0);
 
-        double d4 = pow(3e-10, 2) * 1e13 * exp(-27800 / temperature) * uranium_vacancies;
+        double d4 = pow(3e-10, 2) * vacancy_jump_rate * (uranium_vacancies + irradiation_vacancies);
 
-        diffusivity = d1 + d2 + d3 + d4;
+        diffusivity = d1 + d3 + d4;
 
         diffusivity *= scaling_factors["Diffusivity"].getValue();
 
