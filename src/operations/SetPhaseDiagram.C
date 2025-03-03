@@ -27,6 +27,7 @@
 
 void Simulation::SetPhaseDiagram()
 {
+    if (input_variable["iStoichiometryDeviation"].getValue() != 7) return;
     // std::string filename = "../output.txt";
     // std::vector<DataPoint> dataset = loadData(filename);
 
@@ -35,12 +36,12 @@ void Simulation::SetPhaseDiagram()
     double I = sciantix_variable["I at grain boundary"].getFinalValue() + sciantix_variable["I reacted"].getFinalValue();
 
     // Chevalier 2002
-    double dG_O2 = - 1084.9112*1e3 - Temperature * 77.02744; // J mol-1
-    double log_P_O2 = - log10(exp(- dG_O2 / ( gas_constant * Temperature)));
+    //double dG_O2 = - 1084.9112*1e3 - Temperature * 77.02744; // J mol-1
+    double log_P_O2 = log10(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue()*10); //bar
     std::cout << log_P_O2 << std::endl;
 
-    double log_P_I = log10(I*boltzmann_constant*Temperature);
-    double log_P_Cs = log10(Cs*boltzmann_constant*Temperature);
+    double log_P_I = log10(I*boltzmann_constant*Temperature*10);
+    double log_P_Cs = log10(Cs*boltzmann_constant*Temperature*10);
 
     // std::string phase = phase_finding(log_P_I, log_P_Cs, log_P_O2, dataset);
     // std::cout << "The dominant phase is: " << phase << std::endl;
@@ -84,7 +85,7 @@ double delta_g(double T, double A, double B, double C, double D, double E)
 // Equilibrium constant K_eq(T) = exp(-ΔG/(R*T))
 double K_eq(double T, double A, double B, double C, double D, double E) 
 {
-    return std::exp(- delta_g(T, A, B, C, D, E) / (gas_constant * T));
+    return std::exp(- delta_g(T, A, B, C, D, E) / (boltzmann_constant * T));
 }
 
 Simulation::StablePhaseResult Simulation::SetStablePhase(double Temperature, double logCs, double logO2, double logI)
@@ -252,9 +253,9 @@ Simulation::StablePhaseResult Simulation::SetStablePhase(double Temperature, dou
     if (min_phase != "Cs + I + O2") {
         // BG_values: [ (10^logCs)/(R*T), (10^logI)/(R*T), (10^logO2)/(R*T) ]
         std::vector<double> BG_values(3);
-        BG_values[0] = std::pow(10.0, logCs) / (gas_constant * Temperature);
-        BG_values[1] = std::pow(10.0, logI)  / (gas_constant * Temperature);
-        BG_values[2] = std::pow(10.0, logO2) / (gas_constant * Temperature);
+        BG_values[0] = std::pow(10.0, logCs) / (10 * boltzmann_constant * Temperature);
+        BG_values[1] = std::pow(10.0, logI)  / (10 * boltzmann_constant * Temperature);
+        BG_values[2] = std::pow(10.0, logO2) / (10 * boltzmann_constant * Temperature);
 
         // Stoichiometric coefficients for the chosen reaction
         const Reaction& rxn = equilibria_Temperature[min_phase];
@@ -293,9 +294,9 @@ Simulation::StablePhaseResult Simulation::SetStablePhase(double Temperature, dou
     {
         std::cout << "No stable phase found, min_phase: " << min_phase << std::endl;
         std::vector<double> BG_values(3);
-        BG_values[0] = std::pow(10.0, logCs) / (gas_constant * Temperature);
-        BG_values[1] = std::pow(10.0, logI)  / (gas_constant * Temperature);
-        BG_values[2] = std::pow(10.0, logO2) / (gas_constant * Temperature);
+        BG_values[0] = std::pow(10.0, logCs) / (10 * boltzmann_constant * Temperature);
+        BG_values[1] = std::pow(10.0, logI)  / (10 * boltzmann_constant * Temperature);
+        BG_values[2] = std::pow(10.0, logO2) / (10 * boltzmann_constant * Temperature);
         
         // new_set = BG_values + v_values * L_max (elementwise)
         for (int i = 0; i < 3; ++i) {

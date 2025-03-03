@@ -286,6 +286,37 @@ void Simulation::StoichiometryDeviation()
             break;
         }
 
+        /**
+         * @brief The model for fuel oxidation as the net effect of burnup.
+         * @ref https://doi.org/10.1016/0022-3115(79)90154-5 
+         * ### iStoichiometryDeviation = 7
+         * 
+         * The Kleykamp's relation holds provided there is no internal oxidation of Zr-alloy cladding, its validity range is limited to burnup < 5 FIMA.
+         * Nevertheless the work of Spino and Peerani indicates that the relation holds up to 10 FIMA.
+         * 
+         * J. Spino and P. Peerani. Oxygen stoichiometry shift of irradiated LWR-fuels at high burnups: Review of data and alternative interpretation of recently published results. J. Nucl. Mater., 375:8–25, 2008.
+         *
+         */
+        case 7:
+        {
+            reference += " : H. Kleykamp, The chemical state of LWR high-power rods under irradiation, Journal of Nuclear Materials (1979)";
+            double burnup = sciantix_variable["FIMA"].getFinalValue();
+            if (burnup > 5)
+            {
+                std::cout << "WARNING: The model is valid for burnup < 5 FIMA." << std::endl; 
+                std::cout << "Burnup (%) = " << burnup << std::endl;
+            }
+            double coefficient = 0.0013;
+
+            parameter.push_back(burnup);
+            parameter.push_back(coefficient);
+
+            model_.setParameter(parameter);
+            model_.setRef(reference);
+
+            break;
+        }
+
         default:
             ErrorMessages::Switch(__FILE__, "iStoichiometryDeviation", int(input_variable["iStoichiometryDeviation"].getValue()));
             break;
@@ -314,7 +345,8 @@ void Simulation::StoichiometryDeviation()
         );
     }
 
-    else if (input_variable["iStoichiometryDeviation"].getValue() > 4)
+    else if (input_variable["iStoichiometryDeviation"].getValue() > 4 && input_variable["iStoichiometryDeviation"].getValue() < 7)
+    {
         sciantix_variable["Stoichiometry deviation"].setFinalValue(
             solver.NewtonLangmuirBasedModel(
                 sciantix_variable["Stoichiometry deviation"].getInitialValue(),
@@ -322,6 +354,16 @@ void Simulation::StoichiometryDeviation()
                 physics_variable["Time step"].getFinalValue()
             )
         );
+    }
+
+    if (input_variable["iStoichiometryDeviation"].getValue() == 7)
+    {
+        sciantix_variable["Stoichiometry deviation"].setFinalValue(
+            model["Stoichiometry deviation"].getParameter().at(1) * model["Stoichiometry deviation"].getParameter().at(0)   
+        );
+    }
+
+    if (sciantix_variable["Stoichiometry deviation"].getFinalValue() == 0) return;
 
     sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
         BlackburnThermochemicalModel(
