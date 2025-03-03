@@ -34,6 +34,11 @@ void Simulation::SetPhaseDiagram()
     double Temperature = history_variable["Temperature"].getFinalValue();
     double Cs = sciantix_variable["Cs at grain boundary"].getFinalValue() + sciantix_variable["Cs reacted"].getFinalValue();
     double I = sciantix_variable["I at grain boundary"].getFinalValue() + sciantix_variable["I reacted"].getFinalValue();
+    
+    sciantix_variable["CsI"].setFinalValue(0);
+    sciantix_variable["CsO2"].setFinalValue(0);    
+    sciantix_variable["Cs2O2"].setFinalValue(0);
+    sciantix_variable["Cs2O"].setFinalValue(0);
 
     // Chevalier 2002
     //double dG_O2 = - 1084.9112*1e3 - Temperature * 77.02744; // J mol-1
