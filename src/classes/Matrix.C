@@ -150,9 +150,7 @@ void Matrix::setPoreNucleationRate(SciantixArray<SciantixVariable> &sciantix_var
 
     double sf_nucleation_rate_porosity = 1.25e-6; // from dburnup to dtime
 
-    pore_nucleation_rate =
-            (5.0e17 * 2.77e-7 * 3.54 * (1.0-sciantix_variable["Restructured volume fraction"].getFinalValue()) *
-        pow(sciantix_variable["Effective burnup"].getFinalValue(), 2.54));
+    pore_nucleation_rate = (5.0e17 * 2.77e-7 * 3.54 * (1.0 - sciantix_variable["Restructured volume fraction"].getFinalValue()) * pow(sciantix_variable["Effective burnup"].getFinalValue()/0.8814, 2.54));
 
     pore_nucleation_rate *= sf_nucleation_rate_porosity;
 }
