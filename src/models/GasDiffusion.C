@@ -172,6 +172,7 @@ void Simulation::GasDiffusion()
                 sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " in grain HBS"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " in HBS pores"].getInitialValue() -
                 sciantix_variable[system.getGasName() + " released"].getInitialValue());
 
             if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
@@ -210,7 +211,9 @@ void Simulation::GasDiffusion()
                     sciantix_variable[system.getGasName() + " produced in HBS"].getFinalValue() -
                     sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
                     sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
-                    sciantix_variable[system.getGasName() + " in grain HBS"].getFinalValue());
+                    sciantix_variable[system.getGasName() + " in grain HBS"].getFinalValue() -
+                    sciantix_variable[system.getGasName() + " in HBS pores"].getInitialValue()
+                );
             }
         }
     }

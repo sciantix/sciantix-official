@@ -164,7 +164,7 @@ void Simulation::HighBurnupStructurePorosity()
     
     // Equilibrium term 
     double EquilibriumTerm(0);
-    EquilibriumTerm = -volume_flow_rate * EquilibriumPressure / (boltzmann_constant * history_variable["Temperature"].getFinalValue());
+    EquilibriumTerm = - volume_flow_rate * EquilibriumPressure / (boltzmann_constant * history_variable["Temperature"].getFinalValue());
     
     parameter_2.push_back(growth_rate);
     parameter_2.push_back(EquilibriumTerm);
@@ -201,6 +201,7 @@ void Simulation::HighBurnupStructurePorosity()
        (2.0 - sciantix_variable["HBS porosity"].getFinalValue()) / (2.0 * pow(1.0 - sciantix_variable["HBS porosity"].getFinalValue(), 3.0));
 
     double pore_interconnection_rate = 4.0 * limiting_factor;
+    
     sciantix_variable["HBS pore density"].setFinalValue(
         solver.BinaryInteraction(
             sciantix_variable["HBS pore density"].getFinalValue(),
