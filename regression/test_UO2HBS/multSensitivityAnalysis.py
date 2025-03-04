@@ -69,8 +69,8 @@ class multiSensitivityAnalysis():
             # Update scaling factors for the selected factors
             for bias_name in self.bias_names:
                 # Generate random bias; change to symmetric variation if desired:
-                # bias = random.uniform(1, 1 + self.deviation)
-                bias = random.uniform(1 - self.deviation, 1 + self.deviation)
+                bias = random.uniform(1, 1 + self.deviation)
+                # bias = random.uniform(1 - self.deviation, 1 + self.deviation)
                 self.scaling_factors[bias_name] = bias
             
             # Write the updated scaling factors to file in the case folder

@@ -66,7 +66,7 @@ $(function() {
 <div class="title">SCIANTIX </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README"></a> SCIANTIX is a 0D simulation code developed at Politecnico di Milano, designed to model the behavior of a single grain of nuclear fuel, with a particular focus on fission gas behavior. The code primarily uses physics-based models, which enhances the integration of lower-length scale calculations and improves accuracy over empirical models. These engineering models facilitate the code's integration into industrial fuel performance simulations.</p>
+<div class="textblock"><p><a class="anchor" id="md_README"></a> SCIANTIX is a 0D simulation code developed at Politecnico di Milano, designed to model the behavior of a single grain of nuclear fuel, with a particular focus on fission gas behavior. The code primarily uses physics-based models, which enhances the integration of lower-length scale calculations and improves accuracy over empirical models. The engineering models facilitate the code integration into industrial fuel performance codes.</p>
 <p>Currently, SCIANTIX is validated against experimental data for the following phenomena:</p><ul>
 <li>Intragranular gaseous swelling</li>
 <li>Intergranular gaseous swelling</li>
@@ -80,24 +80,23 @@ Installation</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Linux Installation</h2>
 <ol type="1">
-<li><b>Obtain the Code:</b> Download the source code by cloning the repository or by downloading the <code>zip</code> file.</li>
+<li><b>Obtain the Code:</b> Download the source code by cloning the GitHub repository or by downloading the zip folder.</li>
 <li><b>Install Dependencies:</b><ul>
-<li>On Ubuntu, run: <code>sudo apt install build-essential</code></li>
+<li>On Ubuntu, run: <code>sudo apt install build-essential cmake</code></li>
 </ul>
 </li>
 <li><b>Build the Code:</b><ul>
 <li>Create a build directory: <code>mkdir build</code></li>
 <li>Navigate to the build directory: <code>cd build</code></li>
 <li>Generate the Makefile with CMake: <code>cmake ..</code></li>
-<li>Compile the code: <code>make</code></li>
-<li>To speed up the process using multiple cores, use: <code>make -j</code></li>
+<li>Compile the code: <code>make</code> (to speed up the process using multiple cores, use: <code>make -j</code>)</li>
 </ul>
 </li>
 </ol>
-<p>The compiled executable, <code>sciantix.x</code>, will be located in the <code>build</code> directory.</p>
+<p>The compiled executable <code>sciantix.x</code> will be located in the <code>build</code> directory.</p>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Windows Installation</h2>
-<p>A recommended approach for Windows users is to use the <a href="https://learn.microsoft.com/en-us/windows/wsl/install">Windows Subsystem for Linux (WSL)</a>.</p>
+<p>The recommended approach for Windows users is to use the <a href="https://learn.microsoft.com/en-us/windows/wsl/install">Windows Subsystem for Linux (WSL)</a>.</p>
 <ol type="1">
 <li><b>Install WSL:</b><ul>
 <li>Follow the <a href="https://learn.microsoft.com/en-us/windows/wsl/install">official installation guide</a>.</li>
@@ -114,28 +113,33 @@ Windows Installation</h2>
 </li>
 </ol>
 <h1><a class="anchor" id="autotoc_md4"></a>
+Coupling with fuel performance codes</h1>
+<p>The code can be coupled with thermo-mechanical fuel performance codes (<a href="https://www.sciencedirect.com/science/article/pii/S0022311524004070" target="_blank">Zullo G. et al (2024). Journal of Nuclear Materials, 601, 155305.</a>). Here, it is detailed that the code can be compiled as a static library and coupled with TRANSURANUS (currently at version v1m1j24) distributed by JRC-EC Karlsruhe To generate SCIANTIX as a static libray, in the build folder:</p>
+<ul>
+<li>Generate the Makefile with CMake: <code>cmake -DCOUPLING_TU=ON ..</code></li>
+<li>Compile the code: <code>make</code> (or <code>make -j</code>)</li>
+</ul>
+<p>The static library, <code>libsciantix.a</code>, will be located in the <code>build</code> directory.</p>
+<h1><a class="anchor" id="autotoc_md5"></a>
 Usage</h1>
-<p>To run SCIANTIX, execute the <code>sciantix.x</code> binary within the directory containing your input files.</p>
+<p>To run SCIANTIX, execute <code>sciantix.x</code> within the directory containing your input files, or execute <code>./sciantix.x /path_to_folder_with_input_files/</code> in the working directory with the executable.</p>
 <p>Refer to the <a class="el" href="md_utilities__input_explanation.html">Input File Explanation</a> for detailed instructions on input syntax.</p>
 <p>Examples of input files can be found in:</p><ul>
 <li>The <code>regression</code> directory</li>
 <li>The <code>utilities/inputExample</code> directory, by running the following Python scripts:</li>
 </ul>
-<div class="fragment"><div class="line">python utilities/inputExample/print_input_initial_conditions.py</div>
-<div class="line">python utilities/inputExample/print_input_scaling_factors.py</div>
-<div class="line">python utilities/inputExample/print_input_settings.py</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md5"></a>
+<div class="fragment"><div class="line">python3 utilities/inputExample/print_input_initial_conditions.py</div>
+<div class="line">python3 utilities/inputExample/print_input_scaling_factors.py</div>
+<div class="line">python3 utilities/inputExample/print_input_settings.py</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md6"></a>
 Regression Tests</h1>
 <p>To verify the correct operation of SCIANTIX, run the regression tests:</p>
 <div class="fragment"><div class="line">cd regression</div>
-<div class="line">python regression.py</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md6"></a>
+<div class="line">python3 regression.py</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md7"></a>
 Documentation</h1>
-<p>To generate the code documentation, run <code>doxygen</code> in the root directory of the code:</p>
-<ul>
-<li>If Doxygen is not installed, you can install it with: <code>sudo apt install doxygen</code></li>
-</ul>
-<h1><a class="anchor" id="autotoc_md7"></a>
+<p>To generate the code documentation, run <code>doxygen</code> in the root directory of the code. The Doxygen software can be installed, e.g., on Linux systems, with <code>sudo apt install doxygen</code>.</p>
+<h1><a class="anchor" id="autotoc_md8"></a>
 Theory and References</h1>
 <p>For a deeper understanding of the SCIANTIX code and its underlying models, refer to the following publications:</p>
 <ul>

@@ -47,7 +47,8 @@ public:
     double schottky_defect_volume;
     double ois_volume;
     double grain_boundary_thickness;
-    double grain_boundary_diffusivity;
+    double grain_boundary_vacancy_diffusivity;
+    double grain_boundary_single_atom_diffusivity;
     double semidihedral_angle;
     double lenticular_shape_factor;
     double grain_radius;
@@ -247,7 +248,22 @@ public:
      */
     double getGrainBoundaryVacancyDiffusivity()
     {
-        return grain_boundary_diffusivity;
+        return grain_boundary_vacancy_diffusivity;
+    }
+
+    /**
+     * @brief Sets the diffusivity of single atoms on the grain boundaries based on the input model.
+     * @param input_value The model selection for grain boundary single atoms diffusivity.
+     */
+    void setGrainBoundarySingleAtomDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<SciantixVariable> &sciantix_variable);
+
+    /**
+     * @brief Retrieves the single atom diffusivity on the grain boundaries.
+     * @return The grain boundary single atom diffusivity.
+     */
+    double getGrainBoundarySingleAtomDiffusivity()
+    {
+        return grain_boundary_single_atom_diffusivity;
     }
 
     /**

@@ -4,17 +4,19 @@ Model	Grain growth	 : Ainscough et al., JNM, 49 (1973) 117-128.
 Model	Gas production - Xe in UO2	 
 Model	Gas production - Xe in UO2HBS	 
 Model	Intragranular bubble behavior	: Pizzocri et al., JNM, 502 (2018) 323-330.
-Model	Gas diffusion - Xe in UO2 with HBS	
 Model	High-burnup structure formation	: Barani et al. Journal of Nuclear Materials 539 (2020) 152296
+Model	Gas diffusion - Xe in UO2 with HBS	
 Model	High-burnup structure porosity	: Based on Spino et al. 2006 data
 Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
 
 Matrix	UO2	
 	Ainscough et al., JNM, 49 (1973) 117-128.
-	iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.
+	iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004)
+	iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.
 	
 Matrix	UO2HBS	
 	Null grain-boundary mobility.
+	iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77 / BARANI HBS part 2, 2022
 	iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.
 	
 
@@ -22,7 +24,7 @@ System	Xe in UO2
 System	Xe in UO2HBS	
 
 Input setting	iGrainGrowth = 1
-Input setting	iFissionGasDiffusivity = 2
+Input setting	iFissionGasDiffusivity = 1
 Input setting	iDiffusionSolver = 3
 Input setting	iIntraGranularBubbleBehavior = 1
 Input setting	iResolutionRate = 1

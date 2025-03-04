@@ -133,7 +133,11 @@ def sciantix_dictionary(file):
         "xe_igs": "Xe in intragranular solution (at/m3)",
         "xe_gb": "Xe at grain boundary (at/m3)",
         "xe_gb": "Xe released (at/m3)",
-        "xe_po": "Xe in HBS pores (at/m3)"
+        "xe_po": "Xe in HBS pores (at/m3)",
+        "tr": "trapping rate hbs (1/s)",
+        "nu": "nucleation rate hbs (1/s)",
+        "re": "re-solution rate hbs (1/s)",
+
     }
 
     sd = {}
@@ -197,14 +201,20 @@ def plot(sd):
 
     fig, ax1 = plt.subplots()
     ax1.set_xlabel('Burnup (MWd/kgUO2)')
-    
     ax1.plot(sd["bu"], sd["xe_ig"], label="xe_ig")
     ax1.plot(sd["bu"], sd["xe_igHBS"], label="xe_igHBS")
     ax1.plot(sd["bu"], sd["xe_gb"], label="xe_gb")
     ax1.plot(sd["bu"], sd["xe_po"], label="xe_po")
-
     ax1.legend()
+    fig.tight_layout()
+    plt.show()
 
+    fig, ax1 = plt.subplots()
+    ax1.set_xlabel('Burnup (MWd/kgUO2)')
+    ax1.plot(sd["bu"], sd["tr"], label="tr")
+    ax2 = ax1.twinx()
+    ax2.plot(sd["bu"], sd["re"], label="re")
+    fig.legend()
     fig.tight_layout()
     plt.show()
 
