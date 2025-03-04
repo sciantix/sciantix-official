@@ -207,7 +207,7 @@ void Simulation::HighBurnupStructurePorosity()
             sciantix_variable["HBS pore density"].getFinalValue(),
             pore_interconnection_rate,
             sciantix_variable["HBS pore volume"].getIncrement()
-       )
+        )
     );
 
     if (sciantix_variable["HBS pore density"].getFinalValue())

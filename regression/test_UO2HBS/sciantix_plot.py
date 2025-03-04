@@ -125,7 +125,15 @@ def sciantix_dictionary(file):
         "bu": "Burnup (MWd/kgUO2)",
         "Np": "HBS pore density (pores/m3)",
         "r": "HBS pore radius (m)",
-        "P": "HBS porosity (/)"
+        "P": "HBS porosity (/)",
+        "xe_p": "Xe produced (at/m3)",
+        "xe_ig": "Xe in grain (at/m3)",
+        "xe_igHBS": "Xe in grain HBS (at/m3)",
+        "xe_igb": "Xe in intragranular bubbles (at/m3)",
+        "xe_igs": "Xe in intragranular solution (at/m3)",
+        "xe_gb": "Xe at grain boundary (at/m3)",
+        "xe_gb": "Xe released (at/m3)",
+        "xe_po": "Xe in HBS pores (at/m3)"
     }
 
     sd = {}
@@ -186,6 +194,20 @@ def plot(sd):
         colors=['tab:red', 'tab:blue'],
         secondary_y=True
     )
+
+    fig, ax1 = plt.subplots()
+    ax1.set_xlabel('Burnup (MWd/kgUO2)')
+    
+    ax1.plot(sd["bu"], sd["xe_ig"], label="xe_ig")
+    ax1.plot(sd["bu"], sd["xe_igHBS"], label="xe_igHBS")
+    ax1.plot(sd["bu"], sd["xe_gb"], label="xe_gb")
+    ax1.plot(sd["bu"], sd["xe_po"], label="xe_po")
+
+    ax1.legend()
+
+    fig.tight_layout()
+    plt.show()
+
 
 def main():
     data_dict = sciantix_dictionary('output.txt')

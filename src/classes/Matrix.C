@@ -48,7 +48,7 @@ void Matrix::setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVar
     }
 }
 
-void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable)
+void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<SciantixVariable> &sciantix_variable)
 {
     switch (input_value)
     {
@@ -65,6 +65,11 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
             grain_boundary_diffusivity = 6.9e-04 * exp(- 5.35e-19 / (boltzmann_constant * history_variable["Temperature"].getFinalValue()));
             reference += "iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.\n\t";
 
+            double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
+            double hbs_correction = sin(4.0 * (1. - alpha) * M_PI / 180.0 + 40.0 * alpha * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
+
+            grain_boundary_diffusivity *= hbs_correction;
+
             break;
         }
 
@@ -72,6 +77,11 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
         {
             grain_boundary_diffusivity = 3.5/5 * 8.86e-6 * exp(- 4.17e4 / history_variable["Temperature"].getFinalValue());
             reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.\n\t";
+
+            double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
+            double hbs_correction = sin(4.0 * (1. - alpha) * M_PI / 180.0 + 40.0 * alpha * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
+
+            grain_boundary_diffusivity *= hbs_correction;
 
             break;
         }
@@ -81,6 +91,11 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
             grain_boundary_diffusivity = (1.3e-7 * exp(-4.52e-19 /
                     (boltzmann_constant * history_variable["Temperature"].getFinalValue()))
             );
+
+            double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
+            double hbs_correction = sin(4.0 * (1. - alpha) * M_PI / 180.0 + 40.0 * alpha * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
+
+            grain_boundary_diffusivity *= hbs_correction;
 
             reference += "iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.\n\t";
             break;
