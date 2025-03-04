@@ -104,7 +104,7 @@ void Simulation::InterGranularBubbleBehavior()
                 = 2.0 * M_PI * fuel_.getGrainBoundaryThickness() * fuel_.getGrainBoundaryVacancyDiffusivity() * sink_strength;
 
             // Initial value of the growth rate = 2 pi t D n / S V
-            const double growth_rate = volume_flow_rate * sciantix_variable["Intergranular atoms per bubble"].getFinalValue() / fuel_.getSchottkyVolume();
+            double growth_rate = volume_flow_rate * sciantix_variable["Intergranular atoms per bubble"].getFinalValue() / fuel_.getSchottkyVolume();
 
             double equilibrium_pressure(0), equilibrium_term(0);
             if (sciantix_variable["Intergranular bubble radius"].getInitialValue())
