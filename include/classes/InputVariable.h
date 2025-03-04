@@ -34,7 +34,7 @@ class InputVariable : virtual public Variable
 {
 public:
 
-    InputVariable(std::string name, int value)
+    InputVariable(std::string name, double value)
     {
         this->name = name;
         this->value = value;

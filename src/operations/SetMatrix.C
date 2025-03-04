@@ -22,14 +22,14 @@ void Simulation::setMatrix()
     {
         case 0: 
         {
-            matrices.push(UO2(matrices, sciantix_variable, history_variable, input_variable));
+            matrices.push(UO2(matrices, sciantix_variable, history_variable, input_variable, scaling_factors));
             break;
         }
 
         case 1: 
         {
-            matrices.push(UO2(matrices, sciantix_variable, history_variable, input_variable));
-            matrices.push(UO2HBS(matrices, sciantix_variable, history_variable, input_variable));
+            matrices.push(UO2(matrices, sciantix_variable, history_variable, input_variable, scaling_factors));
+            matrices.push(UO2HBS(matrices, sciantix_variable, history_variable, input_variable, scaling_factors));
             break;
         }
 
@@ -40,7 +40,7 @@ void Simulation::setMatrix()
 }
 
 Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, 
-    SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable)
+    SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     Matrix matrix_;
 
@@ -61,14 +61,14 @@ Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
     matrix_.setHealingTemperatureThreshold(1273.15); // K
     matrix_.setGrainBoundaryVacancyDiffusivity(int(input_variable["iGrainBoundaryVacancyDiffusivity"].getValue()), history_variable, sciantix_variable); // (m2/s)
     matrix_.setPoreNucleationRate(sciantix_variable);
-    matrix_.setPoreResolutionRate(sciantix_variable, history_variable);
-    matrix_.setPoreTrappingRate(matrices, sciantix_variable);
+    matrix_.setPoreResolutionRate(sciantix_variable, history_variable, scaling_factors);
+    matrix_.setPoreTrappingRate(matrices, sciantix_variable, scaling_factors);
 
     return matrix_;
 }
 
 Matrix UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, 
-    SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable)
+    SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     Matrix matrix_;
     
@@ -89,8 +89,8 @@ Matrix UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &
     matrix_.setHealingTemperatureThreshold(1273.15); // K
     matrix_.setGrainBoundaryVacancyDiffusivity(5, history_variable, sciantix_variable); // (m2/s)
     matrix_.setPoreNucleationRate(sciantix_variable);
-    matrix_.setPoreResolutionRate(sciantix_variable, history_variable);
-    matrix_.setPoreTrappingRate(matrices, sciantix_variable);
+    matrix_.setPoreResolutionRate(sciantix_variable, history_variable, scaling_factors);
+    matrix_.setPoreTrappingRate(matrices, sciantix_variable, scaling_factors);
 
     return matrix_;
 }

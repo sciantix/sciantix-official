@@ -24,6 +24,7 @@
 #include "ErrorMessages.h"
 #include "SciantixArray.h"
 #include "SciantixVariable.h"
+#include "InputVariable.h"
 
 /**
  * @class Matrix
@@ -310,7 +311,7 @@ public:
      * The re-solution rate is calculated based on current simulation parameters and a model from
      * Barani et al., JNM 563 (2022) 153627.
      */
-    void setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable);
+    void setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
 
     /**
      * @brief Retrieves the resolution rate of gas atoms from pores.
@@ -327,7 +328,7 @@ public:
      * The trapping rate is calculated based on current simulation parameters and a model from
      * Barani et al., JNM 563 (2022) 153627.
      */
-    void setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable);
+    void setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors);
 
     /**
      * @brief Retrieves the trapping rate of gas atoms in pores.
