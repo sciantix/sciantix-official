@@ -147,7 +147,7 @@ void Simulation::HighBurnupStructurePorosity()
 
     double VacancyDiffusionCoefficient = matrices["UO2HBS"].getGrainBoundaryVacancyDiffusivity();
 
-    double WignerSeitzCellRadius = 1.0 / 1.611991954 * pow(sciantix_variable["HBS pore density"].getFinalValue(), (-1.0 / 3.0));
+    double WignerSeitzCellRadius = 1.0 / 1.611991954 * pow(sciantix_variable["HBS pore density"].getFinalValue(), (- 1.0 / 3.0));
     double psi = sciantix_variable["HBS pore radius"].getInitialValue() / WignerSeitzCellRadius;
     double DimensionlessFactor = 10.0 * psi * (1 + pow(psi, 3.0)) / ( - pow(psi, 6.0) + 5.0 * pow(psi, 2.0) - 9.0 * psi + 5.0); 
 
