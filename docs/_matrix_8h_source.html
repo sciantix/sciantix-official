@@ -94,241 +94,252 @@ $(function() {
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &quot;ErrorMessages.h&quot;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="preprocessor">#include &quot;SciantixArray.h&quot;</span></div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#include &quot;SciantixVariable.h&quot;</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00037"></a><span class="lineno"><a class="line" href="class_matrix.html">   37</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_matrix.html">Matrix</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="class_material.html">Material</a></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;{</div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="keywordtype">double</span> matrix_density;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">double</span> lattice_parameter;</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">double</span> grain_boundary_mobility;</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">double</span> ff_range;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">double</span> ff_influence_radius;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">double</span> surface_tension;</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">double</span> schottky_defect_volume;</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">double</span> ois_volume;</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">double</span> grain_boundary_thickness;</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">double</span> grain_boundary_diffusivity;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">double</span> semidihedral_angle;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">double</span> lenticular_shape_factor;</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">double</span> grain_radius;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">double</span> healing_temperature_threshold;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">double</span> nucleation_rate;</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">double</span> pore_nucleation_rate;</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">double</span> pore_resolution_rate;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">double</span> pore_trapping_rate;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="class_matrix.html#ad9672371c37ef80da2351f06aa7d63d5">   63</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#ad9672371c37ef80da2351f06aa7d63d5">setTheoreticalDensity</a>(<span class="keywordtype">double</span> m)</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    {</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        matrix_density = m;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="class_matrix.html#a06c129a7c37bcb4af167f322892fbcc0">   72</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a06c129a7c37bcb4af167f322892fbcc0">getTheoreticalDensity</a>()</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        <span class="keywordflow">return</span> matrix_density;</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    }</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="class_matrix.html#a1573f1263639bd2ad1e105d173055e3c">   81</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a1573f1263639bd2ad1e105d173055e3c">setLatticeParameter</a>(<span class="keywordtype">double</span> m)</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    {</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        lattice_parameter = m;</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    }</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno"><a class="line" href="class_matrix.html#a896e9198382ed62a91f92c91ac87efcb">   90</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a896e9198382ed62a91f92c91ac87efcb">getLatticeParameter</a>()</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    {</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        <span class="keywordflow">return</span> lattice_parameter;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    }</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="class_matrix.html#a9a400f2dbdb347ed275546d72724d014">   99</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a9a400f2dbdb347ed275546d72724d014">setSurfaceTension</a>(<span class="keywordtype">double</span> r)</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    {</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        surface_tension = r;</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    }</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno"><a class="line" href="class_matrix.html#a51dbbe07e308212347b3330c35c1ea19">  108</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a51dbbe07e308212347b3330c35c1ea19">getSurfaceTension</a>()</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    {</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        <span class="keywordflow">return</span> surface_tension;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="class_matrix.html#a1f86e8cd111f19cbcdc3e859db73d2ed">  117</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a1f86e8cd111f19cbcdc3e859db73d2ed">setSchottkyVolume</a>(<span class="keywordtype">double</span> v)</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    {</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;        schottky_defect_volume = v;</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    }</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="class_matrix.html#a002cc5fac27f81aa6a41f90066de3096">  126</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a002cc5fac27f81aa6a41f90066de3096">getSchottkyVolume</a>()</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    {</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;        <span class="keywordflow">return</span> schottky_defect_volume;</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    }</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00135"></a><span class="lineno"><a class="line" href="class_matrix.html#a010abbea9e18b0a7acf03c6e920d8f15">  135</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a010abbea9e18b0a7acf03c6e920d8f15">setOctahedralInterstitialSite</a>(<span class="keywordtype">double</span> v)</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    {</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;        ois_volume = v;</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    }</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
-<div class="line"><a name="l00144"></a><span class="lineno"><a class="line" href="class_matrix.html#aecb072f6acaeefc93cc9dc1e82eb504a">  144</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#aecb072f6acaeefc93cc9dc1e82eb504a">getOctahedralInterstitialSite</a>()</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    {</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;        <span class="keywordflow">return</span> ois_volume;</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    }</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a47e7a7f020d13aa6c0406b43e6bde859">setGrainBoundaryMobility</a>(<span class="keywordtype">int</span> input_value, <a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;history_variable);</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno"><a class="line" href="class_matrix.html#a0f1edc15747e6594f5f0853766e4b04d">  160</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a0f1edc15747e6594f5f0853766e4b04d">getGrainBoundaryMobility</a>()</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    {</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;        <span class="keywordflow">return</span> grain_boundary_mobility;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    }</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
-<div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="class_matrix.html#ac4c3796da1f931629d0438c9cc20731c">  169</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#ac4c3796da1f931629d0438c9cc20731c">setFissionFragmentRange</a>(<span class="keywordtype">double</span> r)</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    {</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;        ff_range = r;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    }</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
-<div class="line"><a name="l00178"></a><span class="lineno"><a class="line" href="class_matrix.html#a19f2df5da1429c31db35bcd022cff768">  178</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a19f2df5da1429c31db35bcd022cff768">getFissionFragmentRange</a>()</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    {</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;        <span class="keywordflow">return</span> ff_range;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    }</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno"><a class="line" href="class_matrix.html#aefc4bd29dcb27ce6e03cf800f59e6c1d">  187</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#aefc4bd29dcb27ce6e03cf800f59e6c1d">setFissionFragmentInfluenceRadius</a>(<span class="keywordtype">double</span> r)</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    {</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;        ff_influence_radius = r;</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    }</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
-<div class="line"><a name="l00196"></a><span class="lineno"><a class="line" href="class_matrix.html#a99a2b1fcd2a2c5bab4215932d8e82baa">  196</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a99a2b1fcd2a2c5bab4215932d8e82baa">getFissionFragmentInfluenceRadius</a>()</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    {</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;        <span class="keywordflow">return</span> ff_influence_radius;</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    }</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
-<div class="line"><a name="l00205"></a><span class="lineno"><a class="line" href="class_matrix.html#accebe75c3f29db48edf0a2e820f2f062">  205</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#accebe75c3f29db48edf0a2e820f2f062">setSemidihedralAngle</a>(<span class="keywordtype">double</span> sda)</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    {</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;        semidihedral_angle = sda;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    }</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
-<div class="line"><a name="l00214"></a><span class="lineno"><a class="line" href="class_matrix.html#a0cf8f4bda2883f67c30d7e180116e892">  214</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a0cf8f4bda2883f67c30d7e180116e892">getSemidihedralAngle</a>()</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160;    {</div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;        <span class="keywordflow">return</span> semidihedral_angle;</div>
-<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    }</div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160; </div>
-<div class="line"><a name="l00223"></a><span class="lineno"><a class="line" href="class_matrix.html#a89fe9efdb9de2e180e84215823800478">  223</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a89fe9efdb9de2e180e84215823800478">setGrainBoundaryThickness</a>(<span class="keywordtype">double</span> gbt)</div>
-<div class="line"><a name="l00224"></a><span class="lineno">  224</span>&#160;    {</div>
-<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;        grain_boundary_thickness = gbt;</div>
-<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    }</div>
-<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160; </div>
-<div class="line"><a name="l00232"></a><span class="lineno"><a class="line" href="class_matrix.html#abc0b4821b599cb004bec4f85d6e899ba">  232</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#abc0b4821b599cb004bec4f85d6e899ba">getGrainBoundaryThickness</a>()</div>
-<div class="line"><a name="l00233"></a><span class="lineno">  233</span>&#160;    {</div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;        <span class="keywordflow">return</span> grain_boundary_thickness;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    }</div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160; </div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a7b3300eb280323c66e1e2ccaf0c94914">setGrainBoundaryVacancyDiffusivity</a>(<span class="keywordtype">int</span> input_value, <a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;history_variable);</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00247"></a><span class="lineno"><a class="line" href="class_matrix.html#a709673cc74fcbe016e657c13ddf0d509">  247</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a709673cc74fcbe016e657c13ddf0d509">getGrainBoundaryVacancyDiffusivity</a>()</div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160;    {</div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;        <span class="keywordflow">return</span> grain_boundary_diffusivity;</div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    }</div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
-<div class="line"><a name="l00256"></a><span class="lineno"><a class="line" href="class_matrix.html#ac243830dff23ca186fb6664ba4f5af07">  256</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#ac243830dff23ca186fb6664ba4f5af07">setLenticularShapeFactor</a>(<span class="keywordtype">double</span> lsf)</div>
-<div class="line"><a name="l00257"></a><span class="lineno">  257</span>&#160;    {</div>
-<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;        lenticular_shape_factor = lsf;</div>
-<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    }</div>
-<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
-<div class="line"><a name="l00265"></a><span class="lineno"><a class="line" href="class_matrix.html#ac933e1aee228a0f46e14d51005547cb2">  265</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#ac933e1aee228a0f46e14d51005547cb2">getLenticularShapeFactor</a>()</div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    {</div>
-<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;        <span class="keywordflow">return</span> lenticular_shape_factor;</div>
-<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160;    }</div>
-<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
-<div class="line"><a name="l00274"></a><span class="lineno"><a class="line" href="class_matrix.html#abb0015d9d4be841aab39a13adcef402b">  274</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#abb0015d9d4be841aab39a13adcef402b">setNucleationRate</a>(<span class="keywordtype">double</span> n)</div>
-<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;    {</div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;        nucleation_rate = n;</div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;    }</div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
-<div class="line"><a name="l00283"></a><span class="lineno"><a class="line" href="class_matrix.html#a7dac3cd340122fa20a92e85490935834">  283</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a7dac3cd340122fa20a92e85490935834">getNucleationRate</a>()</div>
-<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;    {</div>
-<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;        <span class="keywordflow">return</span> nucleation_rate;</div>
-<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    }</div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160; </div>
-<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#aa59ada6545c24a4fd5201a0ce7501931">setPoreNucleationRate</a>(<a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;sciantix_variable);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#include &quot;InputVariable.h&quot;</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="class_matrix.html">   38</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_matrix.html">Matrix</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="class_material.html">Material</a></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <span class="keywordtype">double</span> matrix_density;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keywordtype">double</span> lattice_parameter;</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keywordtype">double</span> grain_boundary_mobility;</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">double</span> ff_range;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">double</span> ff_influence_radius;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keywordtype">double</span> surface_tension;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">double</span> schottky_defect_volume;</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <span class="keywordtype">double</span> ois_volume;</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="keywordtype">double</span> grain_boundary_thickness;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">double</span> grain_boundary_vacancy_diffusivity;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">double</span> grain_boundary_single_atom_diffusivity;</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">double</span> semidihedral_angle;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">double</span> lenticular_shape_factor;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <span class="keywordtype">double</span> grain_radius;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">double</span> healing_temperature_threshold;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">double</span> nucleation_rate;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">double</span> pore_nucleation_rate;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keywordtype">double</span> pore_resolution_rate;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">double</span> pore_trapping_rate;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="class_matrix.html#ad9672371c37ef80da2351f06aa7d63d5">   65</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#ad9672371c37ef80da2351f06aa7d63d5">setTheoreticalDensity</a>(<span class="keywordtype">double</span> m)</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        matrix_density = m;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="class_matrix.html#a06c129a7c37bcb4af167f322892fbcc0">   74</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a06c129a7c37bcb4af167f322892fbcc0">getTheoreticalDensity</a>()</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    {</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        <span class="keywordflow">return</span> matrix_density;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    }</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="class_matrix.html#a1573f1263639bd2ad1e105d173055e3c">   83</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a1573f1263639bd2ad1e105d173055e3c">setLatticeParameter</a>(<span class="keywordtype">double</span> m)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    {</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        lattice_parameter = m;</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    }</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="class_matrix.html#a896e9198382ed62a91f92c91ac87efcb">   92</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a896e9198382ed62a91f92c91ac87efcb">getLatticeParameter</a>()</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        <span class="keywordflow">return</span> lattice_parameter;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    }</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="class_matrix.html#a9a400f2dbdb347ed275546d72724d014">  101</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a9a400f2dbdb347ed275546d72724d014">setSurfaceTension</a>(<span class="keywordtype">double</span> r)</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    {</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        surface_tension = r;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    }</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="class_matrix.html#a51dbbe07e308212347b3330c35c1ea19">  110</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a51dbbe07e308212347b3330c35c1ea19">getSurfaceTension</a>()</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    {</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;        <span class="keywordflow">return</span> surface_tension;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;    }</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="class_matrix.html#a1f86e8cd111f19cbcdc3e859db73d2ed">  119</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a1f86e8cd111f19cbcdc3e859db73d2ed">setSchottkyVolume</a>(<span class="keywordtype">double</span> v)</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    {</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        schottky_defect_volume = v;</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    }</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="class_matrix.html#a002cc5fac27f81aa6a41f90066de3096">  128</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a002cc5fac27f81aa6a41f90066de3096">getSchottkyVolume</a>()</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    {</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;        <span class="keywordflow">return</span> schottky_defect_volume;</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    }</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00137"></a><span class="lineno"><a class="line" href="class_matrix.html#a010abbea9e18b0a7acf03c6e920d8f15">  137</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a010abbea9e18b0a7acf03c6e920d8f15">setOctahedralInterstitialSite</a>(<span class="keywordtype">double</span> v)</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    {</div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;        ois_volume = v;</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    }</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
+<div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="class_matrix.html#aecb072f6acaeefc93cc9dc1e82eb504a">  146</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#aecb072f6acaeefc93cc9dc1e82eb504a">getOctahedralInterstitialSite</a>()</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    {</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;        <span class="keywordflow">return</span> ois_volume;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    }</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a47e7a7f020d13aa6c0406b43e6bde859">setGrainBoundaryMobility</a>(<span class="keywordtype">int</span> input_value, <a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;history_variable);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno"><a class="line" href="class_matrix.html#a0f1edc15747e6594f5f0853766e4b04d">  162</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a0f1edc15747e6594f5f0853766e4b04d">getGrainBoundaryMobility</a>()</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    {</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;        <span class="keywordflow">return</span> grain_boundary_mobility;</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    }</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
+<div class="line"><a name="l00171"></a><span class="lineno"><a class="line" href="class_matrix.html#ac4c3796da1f931629d0438c9cc20731c">  171</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#ac4c3796da1f931629d0438c9cc20731c">setFissionFragmentRange</a>(<span class="keywordtype">double</span> r)</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    {</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;        ff_range = r;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    }</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
+<div class="line"><a name="l00180"></a><span class="lineno"><a class="line" href="class_matrix.html#a19f2df5da1429c31db35bcd022cff768">  180</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a19f2df5da1429c31db35bcd022cff768">getFissionFragmentRange</a>()</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    {</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;        <span class="keywordflow">return</span> ff_range;</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    }</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
+<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="class_matrix.html#aefc4bd29dcb27ce6e03cf800f59e6c1d">  189</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#aefc4bd29dcb27ce6e03cf800f59e6c1d">setFissionFragmentInfluenceRadius</a>(<span class="keywordtype">double</span> r)</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    {</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;        ff_influence_radius = r;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    }</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
+<div class="line"><a name="l00198"></a><span class="lineno"><a class="line" href="class_matrix.html#a99a2b1fcd2a2c5bab4215932d8e82baa">  198</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a99a2b1fcd2a2c5bab4215932d8e82baa">getFissionFragmentInfluenceRadius</a>()</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    {</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;        <span class="keywordflow">return</span> ff_influence_radius;</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    }</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
+<div class="line"><a name="l00207"></a><span class="lineno"><a class="line" href="class_matrix.html#accebe75c3f29db48edf0a2e820f2f062">  207</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#accebe75c3f29db48edf0a2e820f2f062">setSemidihedralAngle</a>(<span class="keywordtype">double</span> sda)</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    {</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;        semidihedral_angle = sda;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    }</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
+<div class="line"><a name="l00216"></a><span class="lineno"><a class="line" href="class_matrix.html#a0cf8f4bda2883f67c30d7e180116e892">  216</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a0cf8f4bda2883f67c30d7e180116e892">getSemidihedralAngle</a>()</div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160;    {</div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;        <span class="keywordflow">return</span> semidihedral_angle;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    }</div>
+<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
+<div class="line"><a name="l00225"></a><span class="lineno"><a class="line" href="class_matrix.html#a89fe9efdb9de2e180e84215823800478">  225</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a89fe9efdb9de2e180e84215823800478">setGrainBoundaryThickness</a>(<span class="keywordtype">double</span> gbt)</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160;    {</div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;        grain_boundary_thickness = gbt;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    }</div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
+<div class="line"><a name="l00234"></a><span class="lineno"><a class="line" href="class_matrix.html#abc0b4821b599cb004bec4f85d6e899ba">  234</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#abc0b4821b599cb004bec4f85d6e899ba">getGrainBoundaryThickness</a>()</div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;    {</div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;        <span class="keywordflow">return</span> grain_boundary_thickness;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    }</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#aa5fa10c113e192db5ec5c7e225ed294a">setGrainBoundaryVacancyDiffusivity</a>(<span class="keywordtype">int</span> input_value, <a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;history_variable, <a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;sciantix_variable);</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
+<div class="line"><a name="l00249"></a><span class="lineno"><a class="line" href="class_matrix.html#a709673cc74fcbe016e657c13ddf0d509">  249</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a709673cc74fcbe016e657c13ddf0d509">getGrainBoundaryVacancyDiffusivity</a>()</div>
+<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;    {</div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;        <span class="keywordflow">return</span> grain_boundary_vacancy_diffusivity;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    }</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a46ef7164edf435b3b5ae78b2a364b3e6">setGrainBoundarySingleAtomDiffusivity</a>(<span class="keywordtype">int</span> input_value, <a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;history_variable, <a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;sciantix_variable);</div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
+<div class="line"><a name="l00264"></a><span class="lineno"><a class="line" href="class_matrix.html#ac3a764b98837a51263f8d30bb06403cb">  264</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#ac3a764b98837a51263f8d30bb06403cb">getGrainBoundarySingleAtomDiffusivity</a>()</div>
+<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;    {</div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;        <span class="keywordflow">return</span> grain_boundary_single_atom_diffusivity;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160;    }</div>
+<div class="line"><a name="l00268"></a><span class="lineno">  268</span>&#160; </div>
+<div class="line"><a name="l00273"></a><span class="lineno"><a class="line" href="class_matrix.html#ac243830dff23ca186fb6664ba4f5af07">  273</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#ac243830dff23ca186fb6664ba4f5af07">setLenticularShapeFactor</a>(<span class="keywordtype">double</span> lsf)</div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160;    {</div>
+<div class="line"><a name="l00275"></a><span class="lineno">  275</span>&#160;        lenticular_shape_factor = lsf;</div>
+<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160;    }</div>
+<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160; </div>
+<div class="line"><a name="l00282"></a><span class="lineno"><a class="line" href="class_matrix.html#ac933e1aee228a0f46e14d51005547cb2">  282</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#ac933e1aee228a0f46e14d51005547cb2">getLenticularShapeFactor</a>()</div>
+<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160;    {</div>
+<div class="line"><a name="l00284"></a><span class="lineno">  284</span>&#160;        <span class="keywordflow">return</span> lenticular_shape_factor;</div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;    }</div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
+<div class="line"><a name="l00291"></a><span class="lineno"><a class="line" href="class_matrix.html#abb0015d9d4be841aab39a13adcef402b">  291</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#abb0015d9d4be841aab39a13adcef402b">setNucleationRate</a>(<span class="keywordtype">double</span> n)</div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;    {</div>
+<div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160;        nucleation_rate = n;</div>
+<div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    }</div>
 <div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160; </div>
-<div class="line"><a name="l00302"></a><span class="lineno"><a class="line" href="class_matrix.html#ac64c2a6419564a0b0ee6812bd1f6b185">  302</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#ac64c2a6419564a0b0ee6812bd1f6b185">getPoreNucleationRate</a>()</div>
-<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    {</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;        <span class="keywordflow">return</span> pore_nucleation_rate;</div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    }</div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a97f9ed269ee89f29c7684a0c8784c8b3">setPoreResolutionRate</a>(<a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;sciantix_variable, <a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;history_variable);</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; </div>
-<div class="line"><a name="l00319"></a><span class="lineno"><a class="line" href="class_matrix.html#a9fa806a97761781a07206a416475bb46">  319</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a9fa806a97761781a07206a416475bb46">getPoreResolutionRate</a>()</div>
+<div class="line"><a name="l00300"></a><span class="lineno"><a class="line" href="class_matrix.html#a7dac3cd340122fa20a92e85490935834">  300</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a7dac3cd340122fa20a92e85490935834">getNucleationRate</a>()</div>
+<div class="line"><a name="l00301"></a><span class="lineno">  301</span>&#160;    {</div>
+<div class="line"><a name="l00302"></a><span class="lineno">  302</span>&#160;        <span class="keywordflow">return</span> nucleation_rate;</div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    }</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160; </div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#aa59ada6545c24a4fd5201a0ce7501931">setPoreNucleationRate</a>(<a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;sciantix_variable);</div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
+<div class="line"><a name="l00319"></a><span class="lineno"><a class="line" href="class_matrix.html#ac64c2a6419564a0b0ee6812bd1f6b185">  319</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#ac64c2a6419564a0b0ee6812bd1f6b185">getPoreNucleationRate</a>()</div>
 <div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    {</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        <span class="keywordflow">return</span> pore_resolution_rate;</div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;        <span class="keywordflow">return</span> pore_nucleation_rate;</div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    }</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160; </div>
-<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#ab1145275605b9c26df74f2e5903348d4">setPoreTrappingRate</a>(<a class="code" href="class_sciantix_array.html">SciantixArray&lt;Matrix&gt;</a> &amp;matrices, <a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;sciantix_variable);</div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a74747275d468e1657c738d7ba0999123">setPoreResolutionRate</a>(<a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;sciantix_variable, <a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;history_variable, <a class="code" href="class_sciantix_array.html">SciantixArray&lt;InputVariable&gt;</a> &amp;scaling_factors);</div>
 <div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
-<div class="line"><a name="l00336"></a><span class="lineno"><a class="line" href="class_matrix.html#a9f6e13fad2aef372533476656b415560">  336</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a9f6e13fad2aef372533476656b415560">getPoreTrappingRate</a>()</div>
+<div class="line"><a name="l00336"></a><span class="lineno"><a class="line" href="class_matrix.html#a9fa806a97761781a07206a416475bb46">  336</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a9fa806a97761781a07206a416475bb46">getPoreResolutionRate</a>()</div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    {</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        <span class="keywordflow">return</span> pore_trapping_rate;</div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;        <span class="keywordflow">return</span> pore_resolution_rate;</div>
 <div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    }</div>
 <div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160; </div>
-<div class="line"><a name="l00345"></a><span class="lineno"><a class="line" href="class_matrix.html#a6c2797c111b4d77370a24f9197e397fb">  345</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a6c2797c111b4d77370a24f9197e397fb">setGrainRadius</a>(<span class="keywordtype">double</span> gr)</div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    {</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;        grain_radius = gr;</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    }</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160; </div>
-<div class="line"><a name="l00354"></a><span class="lineno"><a class="line" href="class_matrix.html#acd563740b65230646358ea64679481e1">  354</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#acd563740b65230646358ea64679481e1">getGrainRadius</a>()</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    {</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;        <span class="keywordflow">return</span> grain_radius;</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    }</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160; </div>
-<div class="line"><a name="l00363"></a><span class="lineno"><a class="line" href="class_matrix.html#a771a05878c684596f48b104cffccdefd">  363</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a771a05878c684596f48b104cffccdefd">setHealingTemperatureThreshold</a>(<span class="keywordtype">double</span> t)</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    {</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;        healing_temperature_threshold = t;</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    }</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160; </div>
-<div class="line"><a name="l00372"></a><span class="lineno"><a class="line" href="class_matrix.html#abf31fbcc5d0ecee71b3ac0de1d362a17">  372</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#abf31fbcc5d0ecee71b3ac0de1d362a17">getHealingTemperatureThreshold</a>()</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    {</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;        <span class="keywordflow">return</span> healing_temperature_threshold;</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    }</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160; </div>
-<div class="line"><a name="l00380"></a><span class="lineno"><a class="line" href="class_matrix.html#a2dba13c45127354c9f75ef576f49269b">  380</a></span>&#160;    <a class="code" href="class_matrix.html#a2dba13c45127354c9f75ef576f49269b">Matrix</a>() {}</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160; </div>
-<div class="line"><a name="l00385"></a><span class="lineno"><a class="line" href="class_matrix.html#a9b1c3627f573d78a2f08623fdfef990f">  385</a></span>&#160;    <a class="code" href="class_matrix.html#a9b1c3627f573d78a2f08623fdfef990f">~Matrix</a>() {}</div>
-<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;};</div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160; </div>
-<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// MATRIX_H</span></div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a911f4fc0801e50aaa95b502fc07e08f3">setPoreTrappingRate</a>(<a class="code" href="class_sciantix_array.html">SciantixArray&lt;Matrix&gt;</a> &amp;matrices, <a class="code" href="class_sciantix_array.html">SciantixArray&lt;SciantixVariable&gt;</a> &amp;sciantix_variable, <a class="code" href="class_sciantix_array.html">SciantixArray&lt;InputVariable&gt;</a> &amp;scaling_factors);</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160; </div>
+<div class="line"><a name="l00353"></a><span class="lineno"><a class="line" href="class_matrix.html#a9f6e13fad2aef372533476656b415560">  353</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#a9f6e13fad2aef372533476656b415560">getPoreTrappingRate</a>()</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    {</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;        <span class="keywordflow">return</span> pore_trapping_rate;</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    }</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160; </div>
+<div class="line"><a name="l00362"></a><span class="lineno"><a class="line" href="class_matrix.html#a6c2797c111b4d77370a24f9197e397fb">  362</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a6c2797c111b4d77370a24f9197e397fb">setGrainRadius</a>(<span class="keywordtype">double</span> gr)</div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    {</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;        grain_radius = gr;</div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    }</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160; </div>
+<div class="line"><a name="l00371"></a><span class="lineno"><a class="line" href="class_matrix.html#acd563740b65230646358ea64679481e1">  371</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#acd563740b65230646358ea64679481e1">getGrainRadius</a>()</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    {</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;        <span class="keywordflow">return</span> grain_radius;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    }</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
+<div class="line"><a name="l00380"></a><span class="lineno"><a class="line" href="class_matrix.html#a771a05878c684596f48b104cffccdefd">  380</a></span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_matrix.html#a771a05878c684596f48b104cffccdefd">setHealingTemperatureThreshold</a>(<span class="keywordtype">double</span> t)</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    {</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;        healing_temperature_threshold = t;</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    }</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160; </div>
+<div class="line"><a name="l00389"></a><span class="lineno"><a class="line" href="class_matrix.html#abf31fbcc5d0ecee71b3ac0de1d362a17">  389</a></span>&#160;    <span class="keywordtype">double</span> <a class="code" href="class_matrix.html#abf31fbcc5d0ecee71b3ac0de1d362a17">getHealingTemperatureThreshold</a>()</div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    {</div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;        <span class="keywordflow">return</span> healing_temperature_threshold;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    }</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160; </div>
+<div class="line"><a name="l00397"></a><span class="lineno"><a class="line" href="class_matrix.html#a2dba13c45127354c9f75ef576f49269b">  397</a></span>&#160;    <a class="code" href="class_matrix.html#a2dba13c45127354c9f75ef576f49269b">Matrix</a>() {}</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160; </div>
+<div class="line"><a name="l00402"></a><span class="lineno"><a class="line" href="class_matrix.html#a9b1c3627f573d78a2f08623fdfef990f">  402</a></span>&#160;    <a class="code" href="class_matrix.html#a9b1c3627f573d78a2f08623fdfef990f">~Matrix</a>() {}</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;};</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160; </div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// MATRIX_H</span></div>
 <div class="ttc" id="a_constants_8h_html"><div class="ttname"><a href="_constants_8h.html">Constants.h</a></div><div class="ttdoc">Defines fundamental physical constants used in calculations.</div></div>
 <div class="ttc" id="aclass_material_html"><div class="ttname"><a href="class_material.html">Material</a></div><div class="ttdoc">Class for materials used in SCIANTIX (e.g., fuel matrix, fission gas, etc.).</div><div class="ttdef"><b>Definition:</b> Material.h:29</div></div>
-<div class="ttc" id="aclass_matrix_html"><div class="ttname"><a href="class_matrix.html">Matrix</a></div><div class="ttdoc">Represents the fuel matrix material such as UO2, UO2-HBS, or MOX, derived from the Material class.</div><div class="ttdef"><b>Definition:</b> Matrix.h:38</div></div>
-<div class="ttc" id="aclass_matrix_html_a002cc5fac27f81aa6a41f90066de3096"><div class="ttname"><a href="class_matrix.html#a002cc5fac27f81aa6a41f90066de3096">Matrix::getSchottkyVolume</a></div><div class="ttdeci">double getSchottkyVolume()</div><div class="ttdoc">Retrieves the volume of a Schottky defect in the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:126</div></div>
-<div class="ttc" id="aclass_matrix_html_a010abbea9e18b0a7acf03c6e920d8f15"><div class="ttname"><a href="class_matrix.html#a010abbea9e18b0a7acf03c6e920d8f15">Matrix::setOctahedralInterstitialSite</a></div><div class="ttdeci">void setOctahedralInterstitialSite(double v)</div><div class="ttdoc">Sets the volume of an octahedral interstitial site in the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:135</div></div>
-<div class="ttc" id="aclass_matrix_html_a06c129a7c37bcb4af167f322892fbcc0"><div class="ttname"><a href="class_matrix.html#a06c129a7c37bcb4af167f322892fbcc0">Matrix::getTheoreticalDensity</a></div><div class="ttdeci">double getTheoreticalDensity()</div><div class="ttdoc">Retrieves the theoretical density of the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:72</div></div>
-<div class="ttc" id="aclass_matrix_html_a0cf8f4bda2883f67c30d7e180116e892"><div class="ttname"><a href="class_matrix.html#a0cf8f4bda2883f67c30d7e180116e892">Matrix::getSemidihedralAngle</a></div><div class="ttdeci">double getSemidihedralAngle()</div><div class="ttdoc">Retrieves the semidihedral angle.</div><div class="ttdef"><b>Definition:</b> Matrix.h:214</div></div>
-<div class="ttc" id="aclass_matrix_html_a0f1edc15747e6594f5f0853766e4b04d"><div class="ttname"><a href="class_matrix.html#a0f1edc15747e6594f5f0853766e4b04d">Matrix::getGrainBoundaryMobility</a></div><div class="ttdeci">double getGrainBoundaryMobility()</div><div class="ttdoc">Retrieves the mobility of the grain boundaries of the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:160</div></div>
-<div class="ttc" id="aclass_matrix_html_a1573f1263639bd2ad1e105d173055e3c"><div class="ttname"><a href="class_matrix.html#a1573f1263639bd2ad1e105d173055e3c">Matrix::setLatticeParameter</a></div><div class="ttdeci">void setLatticeParameter(double m)</div><div class="ttdoc">Sets the lattice parameter of the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:81</div></div>
-<div class="ttc" id="aclass_matrix_html_a19f2df5da1429c31db35bcd022cff768"><div class="ttname"><a href="class_matrix.html#a19f2df5da1429c31db35bcd022cff768">Matrix::getFissionFragmentRange</a></div><div class="ttdeci">double getFissionFragmentRange()</div><div class="ttdoc">Retrieves the average range of the fission fragments in the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:178</div></div>
-<div class="ttc" id="aclass_matrix_html_a1f86e8cd111f19cbcdc3e859db73d2ed"><div class="ttname"><a href="class_matrix.html#a1f86e8cd111f19cbcdc3e859db73d2ed">Matrix::setSchottkyVolume</a></div><div class="ttdeci">void setSchottkyVolume(double v)</div><div class="ttdoc">Sets the volume of a Schottky defect in the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:117</div></div>
-<div class="ttc" id="aclass_matrix_html_a2dba13c45127354c9f75ef576f49269b"><div class="ttname"><a href="class_matrix.html#a2dba13c45127354c9f75ef576f49269b">Matrix::Matrix</a></div><div class="ttdeci">Matrix()</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> Matrix.h:380</div></div>
+<div class="ttc" id="aclass_matrix_html"><div class="ttname"><a href="class_matrix.html">Matrix</a></div><div class="ttdoc">Represents the fuel matrix material such as UO2, UO2-HBS, or MOX, derived from the Material class.</div><div class="ttdef"><b>Definition:</b> Matrix.h:39</div></div>
+<div class="ttc" id="aclass_matrix_html_a002cc5fac27f81aa6a41f90066de3096"><div class="ttname"><a href="class_matrix.html#a002cc5fac27f81aa6a41f90066de3096">Matrix::getSchottkyVolume</a></div><div class="ttdeci">double getSchottkyVolume()</div><div class="ttdoc">Retrieves the volume of a Schottky defect in the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:128</div></div>
+<div class="ttc" id="aclass_matrix_html_a010abbea9e18b0a7acf03c6e920d8f15"><div class="ttname"><a href="class_matrix.html#a010abbea9e18b0a7acf03c6e920d8f15">Matrix::setOctahedralInterstitialSite</a></div><div class="ttdeci">void setOctahedralInterstitialSite(double v)</div><div class="ttdoc">Sets the volume of an octahedral interstitial site in the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:137</div></div>
+<div class="ttc" id="aclass_matrix_html_a06c129a7c37bcb4af167f322892fbcc0"><div class="ttname"><a href="class_matrix.html#a06c129a7c37bcb4af167f322892fbcc0">Matrix::getTheoreticalDensity</a></div><div class="ttdeci">double getTheoreticalDensity()</div><div class="ttdoc">Retrieves the theoretical density of the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:74</div></div>
+<div class="ttc" id="aclass_matrix_html_a0cf8f4bda2883f67c30d7e180116e892"><div class="ttname"><a href="class_matrix.html#a0cf8f4bda2883f67c30d7e180116e892">Matrix::getSemidihedralAngle</a></div><div class="ttdeci">double getSemidihedralAngle()</div><div class="ttdoc">Retrieves the semidihedral angle.</div><div class="ttdef"><b>Definition:</b> Matrix.h:216</div></div>
+<div class="ttc" id="aclass_matrix_html_a0f1edc15747e6594f5f0853766e4b04d"><div class="ttname"><a href="class_matrix.html#a0f1edc15747e6594f5f0853766e4b04d">Matrix::getGrainBoundaryMobility</a></div><div class="ttdeci">double getGrainBoundaryMobility()</div><div class="ttdoc">Retrieves the mobility of the grain boundaries of the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:162</div></div>
+<div class="ttc" id="aclass_matrix_html_a1573f1263639bd2ad1e105d173055e3c"><div class="ttname"><a href="class_matrix.html#a1573f1263639bd2ad1e105d173055e3c">Matrix::setLatticeParameter</a></div><div class="ttdeci">void setLatticeParameter(double m)</div><div class="ttdoc">Sets the lattice parameter of the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:83</div></div>
+<div class="ttc" id="aclass_matrix_html_a19f2df5da1429c31db35bcd022cff768"><div class="ttname"><a href="class_matrix.html#a19f2df5da1429c31db35bcd022cff768">Matrix::getFissionFragmentRange</a></div><div class="ttdeci">double getFissionFragmentRange()</div><div class="ttdoc">Retrieves the average range of the fission fragments in the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:180</div></div>
+<div class="ttc" id="aclass_matrix_html_a1f86e8cd111f19cbcdc3e859db73d2ed"><div class="ttname"><a href="class_matrix.html#a1f86e8cd111f19cbcdc3e859db73d2ed">Matrix::setSchottkyVolume</a></div><div class="ttdeci">void setSchottkyVolume(double v)</div><div class="ttdoc">Sets the volume of a Schottky defect in the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:119</div></div>
+<div class="ttc" id="aclass_matrix_html_a2dba13c45127354c9f75ef576f49269b"><div class="ttname"><a href="class_matrix.html#a2dba13c45127354c9f75ef576f49269b">Matrix::Matrix</a></div><div class="ttdeci">Matrix()</div><div class="ttdoc">Constructor.</div><div class="ttdef"><b>Definition:</b> Matrix.h:397</div></div>
+<div class="ttc" id="aclass_matrix_html_a46ef7164edf435b3b5ae78b2a364b3e6"><div class="ttname"><a href="class_matrix.html#a46ef7164edf435b3b5ae78b2a364b3e6">Matrix::setGrainBoundarySingleAtomDiffusivity</a></div><div class="ttdeci">void setGrainBoundarySingleAtomDiffusivity(int input_value, SciantixArray&lt; SciantixVariable &gt; &amp;history_variable, SciantixArray&lt; SciantixVariable &gt; &amp;sciantix_variable)</div><div class="ttdoc">Sets the diffusivity of single atoms on the grain boundaries based on the input model.</div><div class="ttdef"><b>Definition:</b> Matrix.C:109</div></div>
 <div class="ttc" id="aclass_matrix_html_a47e7a7f020d13aa6c0406b43e6bde859"><div class="ttname"><a href="class_matrix.html#a47e7a7f020d13aa6c0406b43e6bde859">Matrix::setGrainBoundaryMobility</a></div><div class="ttdeci">void setGrainBoundaryMobility(int input_value, SciantixArray&lt; SciantixVariable &gt; &amp;history_variable)</div><div class="ttdoc">Sets the grain boundary mobility based on the selected model.</div><div class="ttdef"><b>Definition:</b> Matrix.C:19</div></div>
-<div class="ttc" id="aclass_matrix_html_a51dbbe07e308212347b3330c35c1ea19"><div class="ttname"><a href="class_matrix.html#a51dbbe07e308212347b3330c35c1ea19">Matrix::getSurfaceTension</a></div><div class="ttdeci">double getSurfaceTension()</div><div class="ttdoc">Retrieves the surface tension of the matrix material.</div><div class="ttdef"><b>Definition:</b> Matrix.h:108</div></div>
-<div class="ttc" id="aclass_matrix_html_a6c2797c111b4d77370a24f9197e397fb"><div class="ttname"><a href="class_matrix.html#a6c2797c111b4d77370a24f9197e397fb">Matrix::setGrainRadius</a></div><div class="ttdeci">void setGrainRadius(double gr)</div><div class="ttdoc">Sets the grain radius of the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:345</div></div>
-<div class="ttc" id="aclass_matrix_html_a709673cc74fcbe016e657c13ddf0d509"><div class="ttname"><a href="class_matrix.html#a709673cc74fcbe016e657c13ddf0d509">Matrix::getGrainBoundaryVacancyDiffusivity</a></div><div class="ttdeci">double getGrainBoundaryVacancyDiffusivity()</div><div class="ttdoc">Retrieves the vacancy diffusivity on the grain boundaries.</div><div class="ttdef"><b>Definition:</b> Matrix.h:247</div></div>
-<div class="ttc" id="aclass_matrix_html_a771a05878c684596f48b104cffccdefd"><div class="ttname"><a href="class_matrix.html#a771a05878c684596f48b104cffccdefd">Matrix::setHealingTemperatureThreshold</a></div><div class="ttdeci">void setHealingTemperatureThreshold(double t)</div><div class="ttdoc">Sets the temperature limit for complete healing of extended defects in the fuel matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:363</div></div>
-<div class="ttc" id="aclass_matrix_html_a7b3300eb280323c66e1e2ccaf0c94914"><div class="ttname"><a href="class_matrix.html#a7b3300eb280323c66e1e2ccaf0c94914">Matrix::setGrainBoundaryVacancyDiffusivity</a></div><div class="ttdeci">void setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray&lt; SciantixVariable &gt; &amp;history_variable)</div><div class="ttdoc">Sets the diffusivity of vacancies on the grain boundaries based on the input model.</div><div class="ttdef"><b>Definition:</b> Matrix.C:51</div></div>
-<div class="ttc" id="aclass_matrix_html_a7dac3cd340122fa20a92e85490935834"><div class="ttname"><a href="class_matrix.html#a7dac3cd340122fa20a92e85490935834">Matrix::getNucleationRate</a></div><div class="ttdeci">double getNucleationRate()</div><div class="ttdoc">Retrieves the nucleation rate under irradiation.</div><div class="ttdef"><b>Definition:</b> Matrix.h:283</div></div>
-<div class="ttc" id="aclass_matrix_html_a896e9198382ed62a91f92c91ac87efcb"><div class="ttname"><a href="class_matrix.html#a896e9198382ed62a91f92c91ac87efcb">Matrix::getLatticeParameter</a></div><div class="ttdeci">double getLatticeParameter()</div><div class="ttdoc">Retrieves the lattice parameter of the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:90</div></div>
-<div class="ttc" id="aclass_matrix_html_a89fe9efdb9de2e180e84215823800478"><div class="ttname"><a href="class_matrix.html#a89fe9efdb9de2e180e84215823800478">Matrix::setGrainBoundaryThickness</a></div><div class="ttdeci">void setGrainBoundaryThickness(double gbt)</div><div class="ttdoc">Sets the thickness of the grain boundary.</div><div class="ttdef"><b>Definition:</b> Matrix.h:223</div></div>
-<div class="ttc" id="aclass_matrix_html_a97f9ed269ee89f29c7684a0c8784c8b3"><div class="ttname"><a href="class_matrix.html#a97f9ed269ee89f29c7684a0c8784c8b3">Matrix::setPoreResolutionRate</a></div><div class="ttdeci">void setPoreResolutionRate(SciantixArray&lt; SciantixVariable &gt; &amp;sciantix_variable, SciantixArray&lt; SciantixVariable &gt; &amp;history_variable)</div><div class="ttdoc">Sets the resolution rate of gas atoms from HBS pores.</div><div class="ttdef"><b>Definition:</b> Matrix.C:112</div></div>
-<div class="ttc" id="aclass_matrix_html_a99a2b1fcd2a2c5bab4215932d8e82baa"><div class="ttname"><a href="class_matrix.html#a99a2b1fcd2a2c5bab4215932d8e82baa">Matrix::getFissionFragmentInfluenceRadius</a></div><div class="ttdeci">double getFissionFragmentInfluenceRadius()</div><div class="ttdoc">Retrieves the radius of influence of the fission fragment track.</div><div class="ttdef"><b>Definition:</b> Matrix.h:196</div></div>
-<div class="ttc" id="aclass_matrix_html_a9a400f2dbdb347ed275546d72724d014"><div class="ttname"><a href="class_matrix.html#a9a400f2dbdb347ed275546d72724d014">Matrix::setSurfaceTension</a></div><div class="ttdeci">void setSurfaceTension(double r)</div><div class="ttdoc">Sets the surface tension of the matrix material.</div><div class="ttdef"><b>Definition:</b> Matrix.h:99</div></div>
-<div class="ttc" id="aclass_matrix_html_a9b1c3627f573d78a2f08623fdfef990f"><div class="ttname"><a href="class_matrix.html#a9b1c3627f573d78a2f08623fdfef990f">Matrix::~Matrix</a></div><div class="ttdeci">~Matrix()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> Matrix.h:385</div></div>
-<div class="ttc" id="aclass_matrix_html_a9f6e13fad2aef372533476656b415560"><div class="ttname"><a href="class_matrix.html#a9f6e13fad2aef372533476656b415560">Matrix::getPoreTrappingRate</a></div><div class="ttdeci">double getPoreTrappingRate()</div><div class="ttdoc">Retrieves the trapping rate of gas atoms in pores.</div><div class="ttdef"><b>Definition:</b> Matrix.h:336</div></div>
-<div class="ttc" id="aclass_matrix_html_a9fa806a97761781a07206a416475bb46"><div class="ttname"><a href="class_matrix.html#a9fa806a97761781a07206a416475bb46">Matrix::getPoreResolutionRate</a></div><div class="ttdeci">double getPoreResolutionRate()</div><div class="ttdoc">Retrieves the resolution rate of gas atoms from pores.</div><div class="ttdef"><b>Definition:</b> Matrix.h:319</div></div>
-<div class="ttc" id="aclass_matrix_html_aa59ada6545c24a4fd5201a0ce7501931"><div class="ttname"><a href="class_matrix.html#aa59ada6545c24a4fd5201a0ce7501931">Matrix::setPoreNucleationRate</a></div><div class="ttdeci">void setPoreNucleationRate(SciantixArray&lt; SciantixVariable &gt; &amp;sciantix_variable)</div><div class="ttdoc">Sets the nucleation rate of pores in high burnup structures (HBS).</div><div class="ttdef"><b>Definition:</b> Matrix.C:95</div></div>
-<div class="ttc" id="aclass_matrix_html_ab1145275605b9c26df74f2e5903348d4"><div class="ttname"><a href="class_matrix.html#ab1145275605b9c26df74f2e5903348d4">Matrix::setPoreTrappingRate</a></div><div class="ttdeci">void setPoreTrappingRate(SciantixArray&lt; Matrix &gt; &amp;matrices, SciantixArray&lt; SciantixVariable &gt; &amp;sciantix_variable)</div><div class="ttdoc">Sets the trapping rate of gas atoms in HBS pores.</div><div class="ttdef"><b>Definition:</b> Matrix.C:123</div></div>
-<div class="ttc" id="aclass_matrix_html_abb0015d9d4be841aab39a13adcef402b"><div class="ttname"><a href="class_matrix.html#abb0015d9d4be841aab39a13adcef402b">Matrix::setNucleationRate</a></div><div class="ttdeci">void setNucleationRate(double n)</div><div class="ttdoc">Sets the nucleation rate under irradiation.</div><div class="ttdef"><b>Definition:</b> Matrix.h:274</div></div>
-<div class="ttc" id="aclass_matrix_html_abc0b4821b599cb004bec4f85d6e899ba"><div class="ttname"><a href="class_matrix.html#abc0b4821b599cb004bec4f85d6e899ba">Matrix::getGrainBoundaryThickness</a></div><div class="ttdeci">double getGrainBoundaryThickness()</div><div class="ttdoc">Retrieves the thickness of the grain boundary.</div><div class="ttdef"><b>Definition:</b> Matrix.h:232</div></div>
-<div class="ttc" id="aclass_matrix_html_abf31fbcc5d0ecee71b3ac0de1d362a17"><div class="ttname"><a href="class_matrix.html#abf31fbcc5d0ecee71b3ac0de1d362a17">Matrix::getHealingTemperatureThreshold</a></div><div class="ttdeci">double getHealingTemperatureThreshold()</div><div class="ttdoc">Retrieves the temperature limit for complete healing of extended defects.</div><div class="ttdef"><b>Definition:</b> Matrix.h:372</div></div>
-<div class="ttc" id="aclass_matrix_html_ac243830dff23ca186fb6664ba4f5af07"><div class="ttname"><a href="class_matrix.html#ac243830dff23ca186fb6664ba4f5af07">Matrix::setLenticularShapeFactor</a></div><div class="ttdeci">void setLenticularShapeFactor(double lsf)</div><div class="ttdoc">Sets the lenticular shape factor.</div><div class="ttdef"><b>Definition:</b> Matrix.h:256</div></div>
-<div class="ttc" id="aclass_matrix_html_ac4c3796da1f931629d0438c9cc20731c"><div class="ttname"><a href="class_matrix.html#ac4c3796da1f931629d0438c9cc20731c">Matrix::setFissionFragmentRange</a></div><div class="ttdeci">void setFissionFragmentRange(double r)</div><div class="ttdoc">Sets the average range of the fission fragments in the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:169</div></div>
-<div class="ttc" id="aclass_matrix_html_ac64c2a6419564a0b0ee6812bd1f6b185"><div class="ttname"><a href="class_matrix.html#ac64c2a6419564a0b0ee6812bd1f6b185">Matrix::getPoreNucleationRate</a></div><div class="ttdeci">double getPoreNucleationRate()</div><div class="ttdoc">Retrieves the nucleation rate of pores.</div><div class="ttdef"><b>Definition:</b> Matrix.h:302</div></div>
-<div class="ttc" id="aclass_matrix_html_ac933e1aee228a0f46e14d51005547cb2"><div class="ttname"><a href="class_matrix.html#ac933e1aee228a0f46e14d51005547cb2">Matrix::getLenticularShapeFactor</a></div><div class="ttdeci">double getLenticularShapeFactor()</div><div class="ttdoc">Retrieves the lenticular shape factor.</div><div class="ttdef"><b>Definition:</b> Matrix.h:265</div></div>
-<div class="ttc" id="aclass_matrix_html_accebe75c3f29db48edf0a2e820f2f062"><div class="ttname"><a href="class_matrix.html#accebe75c3f29db48edf0a2e820f2f062">Matrix::setSemidihedralAngle</a></div><div class="ttdeci">void setSemidihedralAngle(double sda)</div><div class="ttdoc">Sets the semidihedral angle.</div><div class="ttdef"><b>Definition:</b> Matrix.h:205</div></div>
-<div class="ttc" id="aclass_matrix_html_acd563740b65230646358ea64679481e1"><div class="ttname"><a href="class_matrix.html#acd563740b65230646358ea64679481e1">Matrix::getGrainRadius</a></div><div class="ttdeci">double getGrainRadius()</div><div class="ttdoc">Retrieves the grain radius of the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:354</div></div>
-<div class="ttc" id="aclass_matrix_html_ad9672371c37ef80da2351f06aa7d63d5"><div class="ttname"><a href="class_matrix.html#ad9672371c37ef80da2351f06aa7d63d5">Matrix::setTheoreticalDensity</a></div><div class="ttdeci">void setTheoreticalDensity(double m)</div><div class="ttdoc">Sets the theoretical density of the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:63</div></div>
-<div class="ttc" id="aclass_matrix_html_aecb072f6acaeefc93cc9dc1e82eb504a"><div class="ttname"><a href="class_matrix.html#aecb072f6acaeefc93cc9dc1e82eb504a">Matrix::getOctahedralInterstitialSite</a></div><div class="ttdeci">double getOctahedralInterstitialSite()</div><div class="ttdoc">Retrieves the volume of an octahedral interstitial site in the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:144</div></div>
-<div class="ttc" id="aclass_matrix_html_aefc4bd29dcb27ce6e03cf800f59e6c1d"><div class="ttname"><a href="class_matrix.html#aefc4bd29dcb27ce6e03cf800f59e6c1d">Matrix::setFissionFragmentInfluenceRadius</a></div><div class="ttdeci">void setFissionFragmentInfluenceRadius(double r)</div><div class="ttdoc">Sets the radius of influence of the fission fragment track.</div><div class="ttdef"><b>Definition:</b> Matrix.h:187</div></div>
+<div class="ttc" id="aclass_matrix_html_a51dbbe07e308212347b3330c35c1ea19"><div class="ttname"><a href="class_matrix.html#a51dbbe07e308212347b3330c35c1ea19">Matrix::getSurfaceTension</a></div><div class="ttdeci">double getSurfaceTension()</div><div class="ttdoc">Retrieves the surface tension of the matrix material.</div><div class="ttdef"><b>Definition:</b> Matrix.h:110</div></div>
+<div class="ttc" id="aclass_matrix_html_a6c2797c111b4d77370a24f9197e397fb"><div class="ttname"><a href="class_matrix.html#a6c2797c111b4d77370a24f9197e397fb">Matrix::setGrainRadius</a></div><div class="ttdeci">void setGrainRadius(double gr)</div><div class="ttdoc">Sets the grain radius of the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:362</div></div>
+<div class="ttc" id="aclass_matrix_html_a709673cc74fcbe016e657c13ddf0d509"><div class="ttname"><a href="class_matrix.html#a709673cc74fcbe016e657c13ddf0d509">Matrix::getGrainBoundaryVacancyDiffusivity</a></div><div class="ttdeci">double getGrainBoundaryVacancyDiffusivity()</div><div class="ttdoc">Retrieves the vacancy diffusivity on the grain boundaries.</div><div class="ttdef"><b>Definition:</b> Matrix.h:249</div></div>
+<div class="ttc" id="aclass_matrix_html_a74747275d468e1657c738d7ba0999123"><div class="ttname"><a href="class_matrix.html#a74747275d468e1657c738d7ba0999123">Matrix::setPoreResolutionRate</a></div><div class="ttdeci">void setPoreResolutionRate(SciantixArray&lt; SciantixVariable &gt; &amp;sciantix_variable, SciantixArray&lt; SciantixVariable &gt; &amp;history_variable, SciantixArray&lt; InputVariable &gt; &amp;scaling_factors)</div><div class="ttdoc">Sets the resolution rate of gas atoms from HBS pores.</div><div class="ttdef"><b>Definition:</b> Matrix.C:160</div></div>
+<div class="ttc" id="aclass_matrix_html_a771a05878c684596f48b104cffccdefd"><div class="ttname"><a href="class_matrix.html#a771a05878c684596f48b104cffccdefd">Matrix::setHealingTemperatureThreshold</a></div><div class="ttdeci">void setHealingTemperatureThreshold(double t)</div><div class="ttdoc">Sets the temperature limit for complete healing of extended defects in the fuel matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:380</div></div>
+<div class="ttc" id="aclass_matrix_html_a7dac3cd340122fa20a92e85490935834"><div class="ttname"><a href="class_matrix.html#a7dac3cd340122fa20a92e85490935834">Matrix::getNucleationRate</a></div><div class="ttdeci">double getNucleationRate()</div><div class="ttdoc">Retrieves the nucleation rate under irradiation.</div><div class="ttdef"><b>Definition:</b> Matrix.h:300</div></div>
+<div class="ttc" id="aclass_matrix_html_a896e9198382ed62a91f92c91ac87efcb"><div class="ttname"><a href="class_matrix.html#a896e9198382ed62a91f92c91ac87efcb">Matrix::getLatticeParameter</a></div><div class="ttdeci">double getLatticeParameter()</div><div class="ttdoc">Retrieves the lattice parameter of the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:92</div></div>
+<div class="ttc" id="aclass_matrix_html_a89fe9efdb9de2e180e84215823800478"><div class="ttname"><a href="class_matrix.html#a89fe9efdb9de2e180e84215823800478">Matrix::setGrainBoundaryThickness</a></div><div class="ttdeci">void setGrainBoundaryThickness(double gbt)</div><div class="ttdoc">Sets the thickness of the grain boundary.</div><div class="ttdef"><b>Definition:</b> Matrix.h:225</div></div>
+<div class="ttc" id="aclass_matrix_html_a911f4fc0801e50aaa95b502fc07e08f3"><div class="ttname"><a href="class_matrix.html#a911f4fc0801e50aaa95b502fc07e08f3">Matrix::setPoreTrappingRate</a></div><div class="ttdeci">void setPoreTrappingRate(SciantixArray&lt; Matrix &gt; &amp;matrices, SciantixArray&lt; SciantixVariable &gt; &amp;sciantix_variable, SciantixArray&lt; InputVariable &gt; &amp;scaling_factors)</div><div class="ttdoc">Sets the trapping rate of gas atoms in HBS pores.</div><div class="ttdef"><b>Definition:</b> Matrix.C:173</div></div>
+<div class="ttc" id="aclass_matrix_html_a99a2b1fcd2a2c5bab4215932d8e82baa"><div class="ttname"><a href="class_matrix.html#a99a2b1fcd2a2c5bab4215932d8e82baa">Matrix::getFissionFragmentInfluenceRadius</a></div><div class="ttdeci">double getFissionFragmentInfluenceRadius()</div><div class="ttdoc">Retrieves the radius of influence of the fission fragment track.</div><div class="ttdef"><b>Definition:</b> Matrix.h:198</div></div>
+<div class="ttc" id="aclass_matrix_html_a9a400f2dbdb347ed275546d72724d014"><div class="ttname"><a href="class_matrix.html#a9a400f2dbdb347ed275546d72724d014">Matrix::setSurfaceTension</a></div><div class="ttdeci">void setSurfaceTension(double r)</div><div class="ttdoc">Sets the surface tension of the matrix material.</div><div class="ttdef"><b>Definition:</b> Matrix.h:101</div></div>
+<div class="ttc" id="aclass_matrix_html_a9b1c3627f573d78a2f08623fdfef990f"><div class="ttname"><a href="class_matrix.html#a9b1c3627f573d78a2f08623fdfef990f">Matrix::~Matrix</a></div><div class="ttdeci">~Matrix()</div><div class="ttdoc">Destructor.</div><div class="ttdef"><b>Definition:</b> Matrix.h:402</div></div>
+<div class="ttc" id="aclass_matrix_html_a9f6e13fad2aef372533476656b415560"><div class="ttname"><a href="class_matrix.html#a9f6e13fad2aef372533476656b415560">Matrix::getPoreTrappingRate</a></div><div class="ttdeci">double getPoreTrappingRate()</div><div class="ttdoc">Retrieves the trapping rate of gas atoms in pores.</div><div class="ttdef"><b>Definition:</b> Matrix.h:353</div></div>
+<div class="ttc" id="aclass_matrix_html_a9fa806a97761781a07206a416475bb46"><div class="ttname"><a href="class_matrix.html#a9fa806a97761781a07206a416475bb46">Matrix::getPoreResolutionRate</a></div><div class="ttdeci">double getPoreResolutionRate()</div><div class="ttdoc">Retrieves the resolution rate of gas atoms from pores.</div><div class="ttdef"><b>Definition:</b> Matrix.h:336</div></div>
+<div class="ttc" id="aclass_matrix_html_aa59ada6545c24a4fd5201a0ce7501931"><div class="ttname"><a href="class_matrix.html#aa59ada6545c24a4fd5201a0ce7501931">Matrix::setPoreNucleationRate</a></div><div class="ttdeci">void setPoreNucleationRate(SciantixArray&lt; SciantixVariable &gt; &amp;sciantix_variable)</div><div class="ttdoc">Sets the nucleation rate of pores in high burnup structures (HBS).</div><div class="ttdef"><b>Definition:</b> Matrix.C:143</div></div>
+<div class="ttc" id="aclass_matrix_html_aa5fa10c113e192db5ec5c7e225ed294a"><div class="ttname"><a href="class_matrix.html#aa5fa10c113e192db5ec5c7e225ed294a">Matrix::setGrainBoundaryVacancyDiffusivity</a></div><div class="ttdeci">void setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray&lt; SciantixVariable &gt; &amp;history_variable, SciantixArray&lt; SciantixVariable &gt; &amp;sciantix_variable)</div><div class="ttdoc">Sets the diffusivity of vacancies on the grain boundaries based on the input model.</div><div class="ttdef"><b>Definition:</b> Matrix.C:51</div></div>
+<div class="ttc" id="aclass_matrix_html_abb0015d9d4be841aab39a13adcef402b"><div class="ttname"><a href="class_matrix.html#abb0015d9d4be841aab39a13adcef402b">Matrix::setNucleationRate</a></div><div class="ttdeci">void setNucleationRate(double n)</div><div class="ttdoc">Sets the nucleation rate under irradiation.</div><div class="ttdef"><b>Definition:</b> Matrix.h:291</div></div>
+<div class="ttc" id="aclass_matrix_html_abc0b4821b599cb004bec4f85d6e899ba"><div class="ttname"><a href="class_matrix.html#abc0b4821b599cb004bec4f85d6e899ba">Matrix::getGrainBoundaryThickness</a></div><div class="ttdeci">double getGrainBoundaryThickness()</div><div class="ttdoc">Retrieves the thickness of the grain boundary.</div><div class="ttdef"><b>Definition:</b> Matrix.h:234</div></div>
+<div class="ttc" id="aclass_matrix_html_abf31fbcc5d0ecee71b3ac0de1d362a17"><div class="ttname"><a href="class_matrix.html#abf31fbcc5d0ecee71b3ac0de1d362a17">Matrix::getHealingTemperatureThreshold</a></div><div class="ttdeci">double getHealingTemperatureThreshold()</div><div class="ttdoc">Retrieves the temperature limit for complete healing of extended defects.</div><div class="ttdef"><b>Definition:</b> Matrix.h:389</div></div>
+<div class="ttc" id="aclass_matrix_html_ac243830dff23ca186fb6664ba4f5af07"><div class="ttname"><a href="class_matrix.html#ac243830dff23ca186fb6664ba4f5af07">Matrix::setLenticularShapeFactor</a></div><div class="ttdeci">void setLenticularShapeFactor(double lsf)</div><div class="ttdoc">Sets the lenticular shape factor.</div><div class="ttdef"><b>Definition:</b> Matrix.h:273</div></div>
+<div class="ttc" id="aclass_matrix_html_ac3a764b98837a51263f8d30bb06403cb"><div class="ttname"><a href="class_matrix.html#ac3a764b98837a51263f8d30bb06403cb">Matrix::getGrainBoundarySingleAtomDiffusivity</a></div><div class="ttdeci">double getGrainBoundarySingleAtomDiffusivity()</div><div class="ttdoc">Retrieves the single atom diffusivity on the grain boundaries.</div><div class="ttdef"><b>Definition:</b> Matrix.h:264</div></div>
+<div class="ttc" id="aclass_matrix_html_ac4c3796da1f931629d0438c9cc20731c"><div class="ttname"><a href="class_matrix.html#ac4c3796da1f931629d0438c9cc20731c">Matrix::setFissionFragmentRange</a></div><div class="ttdeci">void setFissionFragmentRange(double r)</div><div class="ttdoc">Sets the average range of the fission fragments in the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:171</div></div>
+<div class="ttc" id="aclass_matrix_html_ac64c2a6419564a0b0ee6812bd1f6b185"><div class="ttname"><a href="class_matrix.html#ac64c2a6419564a0b0ee6812bd1f6b185">Matrix::getPoreNucleationRate</a></div><div class="ttdeci">double getPoreNucleationRate()</div><div class="ttdoc">Retrieves the nucleation rate of pores.</div><div class="ttdef"><b>Definition:</b> Matrix.h:319</div></div>
+<div class="ttc" id="aclass_matrix_html_ac933e1aee228a0f46e14d51005547cb2"><div class="ttname"><a href="class_matrix.html#ac933e1aee228a0f46e14d51005547cb2">Matrix::getLenticularShapeFactor</a></div><div class="ttdeci">double getLenticularShapeFactor()</div><div class="ttdoc">Retrieves the lenticular shape factor.</div><div class="ttdef"><b>Definition:</b> Matrix.h:282</div></div>
+<div class="ttc" id="aclass_matrix_html_accebe75c3f29db48edf0a2e820f2f062"><div class="ttname"><a href="class_matrix.html#accebe75c3f29db48edf0a2e820f2f062">Matrix::setSemidihedralAngle</a></div><div class="ttdeci">void setSemidihedralAngle(double sda)</div><div class="ttdoc">Sets the semidihedral angle.</div><div class="ttdef"><b>Definition:</b> Matrix.h:207</div></div>
+<div class="ttc" id="aclass_matrix_html_acd563740b65230646358ea64679481e1"><div class="ttname"><a href="class_matrix.html#acd563740b65230646358ea64679481e1">Matrix::getGrainRadius</a></div><div class="ttdeci">double getGrainRadius()</div><div class="ttdoc">Retrieves the grain radius of the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:371</div></div>
+<div class="ttc" id="aclass_matrix_html_ad9672371c37ef80da2351f06aa7d63d5"><div class="ttname"><a href="class_matrix.html#ad9672371c37ef80da2351f06aa7d63d5">Matrix::setTheoreticalDensity</a></div><div class="ttdeci">void setTheoreticalDensity(double m)</div><div class="ttdoc">Sets the theoretical density of the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:65</div></div>
+<div class="ttc" id="aclass_matrix_html_aecb072f6acaeefc93cc9dc1e82eb504a"><div class="ttname"><a href="class_matrix.html#aecb072f6acaeefc93cc9dc1e82eb504a">Matrix::getOctahedralInterstitialSite</a></div><div class="ttdeci">double getOctahedralInterstitialSite()</div><div class="ttdoc">Retrieves the volume of an octahedral interstitial site in the matrix.</div><div class="ttdef"><b>Definition:</b> Matrix.h:146</div></div>
+<div class="ttc" id="aclass_matrix_html_aefc4bd29dcb27ce6e03cf800f59e6c1d"><div class="ttname"><a href="class_matrix.html#aefc4bd29dcb27ce6e03cf800f59e6c1d">Matrix::setFissionFragmentInfluenceRadius</a></div><div class="ttdeci">void setFissionFragmentInfluenceRadius(double r)</div><div class="ttdoc">Sets the radius of influence of the fission fragment track.</div><div class="ttdef"><b>Definition:</b> Matrix.h:189</div></div>
 <div class="ttc" id="aclass_sciantix_array_html"><div class="ttname"><a href="class_sciantix_array.html">SciantixArray&lt; SciantixVariable &gt;</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

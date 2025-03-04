@@ -54,7 +54,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
     {
         case 0:
         {
-            grain_boundary_diffusivity = 1e-30;
+            grain_boundary_vacancy_diffusivity = 1e-30;
             reference += "iGrainBoundaryVacancyDiffusivity: constant value (1e-30 m^2/s).\n\t";
 
             break;
@@ -62,42 +62,41 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
 
         case 1:
         {
-            grain_boundary_diffusivity = 6.9e-04 * exp(- 5.35e-19 / (boltzmann_constant * history_variable["Temperature"].getFinalValue()));
+            grain_boundary_vacancy_diffusivity = 6.9e-04 * exp(- 5.35e-19 / (boltzmann_constant * history_variable["Temperature"].getFinalValue()));
             reference += "iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.\n\t";
 
             double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
             double hbs_correction = sin(4.0 * (1. - alpha) * M_PI / 180.0 + 40.0 * alpha * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
 
-            grain_boundary_diffusivity *= hbs_correction;
+            grain_boundary_vacancy_diffusivity *= hbs_correction;
 
             break;
         }
+
 
         case 2:
         {
-            grain_boundary_diffusivity = 3.5/5 * 8.86e-6 * exp(- 4.17e4 / history_variable["Temperature"].getFinalValue());
-            reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.\n\t";
+            grain_boundary_vacancy_diffusivity = 3.5/5.0 * 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue()));
+            reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004)\n\t";
 
             double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
             double hbs_correction = sin(4.0 * (1. - alpha) * M_PI / 180.0 + 40.0 * alpha * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
 
-            grain_boundary_diffusivity *= hbs_correction;
+            grain_boundary_vacancy_diffusivity *= hbs_correction;
 
             break;
         }
 
-        case 5:
+        case 3:
         {
-            grain_boundary_diffusivity = (1.3e-7 * exp(-4.52e-19 /
-                    (boltzmann_constant * history_variable["Temperature"].getFinalValue()))
-            );
+            grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 1e-39 * history_variable["Fission rate"].getFinalValue();
+            reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77 / BARANI HBS part 2, 2022\n\t";
 
             double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
             double hbs_correction = sin(4.0 * (1. - alpha) * M_PI / 180.0 + 40.0 * alpha * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
 
-            grain_boundary_diffusivity *= hbs_correction;
+            grain_boundary_vacancy_diffusivity *= hbs_correction;
 
-            reference += "iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.\n\t";
             break;
         }
 
@@ -106,6 +105,40 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
             break;
     }
 }
+
+void Matrix::setGrainBoundarySingleAtomDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<SciantixVariable> &sciantix_variable)
+{
+    switch (input_value)
+    {
+        case 0:
+        {
+            grain_boundary_single_atom_diffusivity = 1e-30;
+            reference += "GrainBoundarySingleAtomDiffusivity: constant value (1e-30 m^2/s).\n\t";
+
+            break;
+        }
+
+        case 1:
+        {
+            // SINGLE-ATOM
+            grain_boundary_single_atom_diffusivity = (1.3e-7 * exp(-4.52e-19 /
+                    (boltzmann_constant * history_variable["Temperature"].getFinalValue()))
+            );
+
+            double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
+            double hbs_correction = sin(4.0 * (1. - alpha) * M_PI / 180.0 + 40.0 * alpha * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
+
+            grain_boundary_single_atom_diffusivity *= hbs_correction;
+
+            reference += "iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.\n\t";
+            break;
+        }
+
+        default:
+            break;
+    }
+}
+
 
 void Matrix::setPoreNucleationRate(SciantixArray<SciantixVariable> &sciantix_variable)
 {
@@ -139,7 +172,7 @@ void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_var
  
 void Matrix::setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors)
 {
-    pore_trapping_rate = 1.0 * 4.0 * M_PI * grain_boundary_diffusivity *
+    pore_trapping_rate = 1.0 * 4.0 * M_PI * grain_boundary_single_atom_diffusivity *
         sciantix_variable["Xe at grain boundary"].getFinalValue() *
         sciantix_variable["HBS pore radius"].getFinalValue() *
         (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
