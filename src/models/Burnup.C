@@ -26,7 +26,7 @@ void Simulation::Burnup()
     double fuelDensity = sciantix_variable["Fuel density"].getFinalValue(); // kgUO2 / m3
     double specificPower = fissionRate * 3.12e-17 / fuelDensity;
 
-    double burnup = specificPower / 86400.0; // specific power in MW/kgUo2, burnup in MWd/kgUO2
+    double burnup = specificPower / 86400.0; // specific power in MW/kgUO2, burnup in MWd/kgUO2
     sciantix_variable["Specific power"].setFinalValue(specificPower);
     
     std::vector<double> parameter;

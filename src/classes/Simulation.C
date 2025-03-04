@@ -75,9 +75,9 @@ void Simulation::execute()
 
     IntraGranularBubbleBehavior();
 
-    GasDiffusion();
-
     HighBurnupStructureFormation();
+
+    GasDiffusion();
 
     HighBurnupStructurePorosity();
 

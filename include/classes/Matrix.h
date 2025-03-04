@@ -238,7 +238,7 @@ public:
      * @brief Sets the diffusivity of vacancies on the grain boundaries based on the input model.
      * @param input_value The model selection for grain boundary vacancy diffusivity.
      */
-    void setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable);
+    void setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<SciantixVariable> &sciantix_variable);
 
     /**
      * @brief Retrieves the vacancy diffusivity on the grain boundaries.
