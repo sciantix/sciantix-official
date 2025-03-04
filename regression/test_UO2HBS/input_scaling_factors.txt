@@ -10,9 +10,9 @@
 # scaling factor - temperature
 1.0
 # scaling factor - fission rate
-1.0
-# scaling factor - cent parameter
+0.9
+# scaling factor - hbs resolution
 1.0
 # scaling factor - helium production rate
-1.0
-# scaling factor - dummy
+0.8
+# scaling factor - hbs trapping

@@ -135,12 +135,12 @@ void Simulation::HighBurnupStructurePorosity()
 
     //sciantix_variable["vacancies per pore"].getFinalValue() * fuel_.getSchottkyVolume())
 
-    sciantix_variable["HBS pore volume"].setInitialValue(
+    sciantix_variable["HBS pore volume"].setFinalValue(
         sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * gasVolumeInPore + 
         sciantix_variable["Vacancies per HBS pore"].getInitialValue() * matrices["UO2HBS"].getSchottkyVolume()
     ); 
 
-    sciantix_variable["HBS pore radius"].setInitialValue(0.620350491 * pow(sciantix_variable["HBS pore volume"].getInitialValue(), (1.0 / 3.0)));
+    sciantix_variable["HBS pore radius"].setInitialValue(0.620350491 * pow(sciantix_variable["HBS pore volume"].getFinalValue(), (1.0 / 3.0)));
 
     // calculation of the contribution of vacancies
     std::vector<double> parameter_2;

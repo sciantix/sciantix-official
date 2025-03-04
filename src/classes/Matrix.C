@@ -124,7 +124,7 @@ void Matrix::setPoreNucleationRate(SciantixArray<SciantixVariable> &sciantix_var
     pore_nucleation_rate *= sf_nucleation_rate_porosity;
 }
 
-void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable)
+void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     double correction_coefficient = (1.0 - exp(pow(-sciantix_variable["HBS pore radius"].getFinalValue() / (9e-9), 3)));
     double b0(2.0e-23 * history_variable["Fission rate"].getFinalValue());
@@ -133,12 +133,16 @@ void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_var
         b0 * correction_coefficient *
         (3.0 * 1.0e-9 / (3.0 * 1.0e-9 + sciantix_variable["HBS pore radius"].getFinalValue())) *
         (1.0e-9 / (1.0e-9 + sciantix_variable["HBS pore radius"].getFinalValue()));
+
+    pore_resolution_rate *= scaling_factors["Cent parameter"].getValue();
 }
  
-void Matrix::setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable)
+void Matrix::setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     pore_trapping_rate = 1.0 * 4.0 * M_PI * grain_boundary_diffusivity *
         sciantix_variable["Xe at grain boundary"].getFinalValue() *
         sciantix_variable["HBS pore radius"].getFinalValue() *
         (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
+
+    pore_trapping_rate *= scaling_factors["Dummy"].getValue();
 }
