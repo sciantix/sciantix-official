@@ -147,8 +147,8 @@ void Simulation::HighBurnupStructurePorosity()
     if(DimensionlessFactor)
     {
         volume_flow_rate = 2.0 * M_PI * WignerSeitzCellRadius * matrices["UO2HBS"].getGrainBoundaryVacancyDiffusivity() / DimensionlessFactor;
-        growth_rate = 1e3 * volume_flow_rate * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * ((1.0 + PackingFraction + pow(PackingFraction, 2.0) - pow(PackingFraction, 3.0)) / (pow(1.0 - PackingFraction, 3.0))) / matrices["UO2HBS"].getSchottkyVolume();
-        equilibrium_term = - 1e-3 * volume_flow_rate * equilibrium_pressure / (boltzmann_constant * history_variable["Temperature"].getFinalValue());
+        growth_rate = volume_flow_rate * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * ((1.0 + PackingFraction + pow(PackingFraction, 2.0) - pow(PackingFraction, 3.0)) / (pow(1.0 - PackingFraction, 3.0))) / matrices["UO2HBS"].getSchottkyVolume();
+        equilibrium_term = - volume_flow_rate * equilibrium_pressure / (boltzmann_constant * history_variable["Temperature"].getFinalValue());
         
         parameter_2.push_back(growth_rate);
         parameter_2.push_back(equilibrium_term);
