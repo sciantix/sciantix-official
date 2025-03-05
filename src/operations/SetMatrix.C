@@ -78,7 +78,7 @@ Matrix UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &
     matrix_.setTheoreticalDensity(10960.0); // (kg/m3)
     matrix_.setLatticeParameter(5.47e-10);
     matrix_.setGrainBoundaryMobility(0, history_variable);
-    matrix_.setSurfaceTension(1.0); // (N/m)
+    matrix_.setSurfaceTension(1.0e-3); // (N/m)
     matrix_.setFissionFragmentInfluenceRadius(1.0e-9); // (m)
     matrix_.setFissionFragmentRange(6.0e-6); // (m)
     matrix_.setSchottkyVolume(4.09e-29);
