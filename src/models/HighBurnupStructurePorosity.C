@@ -131,24 +131,24 @@ void Simulation::HighBurnupStructurePorosity()
     // Calculation of the contribution of vacancies
     std::vector<double> parameter_2;
 
-    double VacancyDiffusionCoefficient = matrices["UO2HBS"].getGrainBoundaryVacancyDiffusivity();
-
-    double WignerSeitzCellRadius = pow(3.0 / (4.0 * M_PI * sciantix_variable["HBS pore density"].getFinalValue()), (1.0 / 3.0));
-    double psi = sciantix_variable["HBS pore radius"].getInitialValue() / WignerSeitzCellRadius;
-    double DimensionlessFactor = 10.0 * psi * (1 + pow(psi, 3.0)) / ( - pow(psi, 6.0) + 5.0 * pow(psi, 2.0) - 9.0 * psi + 5.0); 
-
+    double WignerSeitzCellRadius(0.0), psi(0.0);
     double equilibrium_pressure(0.0);
-
-    if(sciantix_variable["HBS pore radius"].getInitialValue())
-        equilibrium_pressure = 2.0 * matrices["UO2HBS"].getSurfaceTension() / sciantix_variable["HBS pore radius"].getInitialValue() - history_variable["Hydrostatic stress"].getFinalValue() * 1e6;
-    
     double volume_flow_rate(0.0), growth_rate(0.0), equilibrium_term(0);
+
+    if(sciantix_variable["HBS pore density"].getFinalValue())
+    {
+        WignerSeitzCellRadius = pow(3.0 / (4.0 * M_PI * sciantix_variable["HBS pore density"].getFinalValue()), (1.0 / 3.0));
+        psi = sciantix_variable["HBS pore radius"].getInitialValue() / WignerSeitzCellRadius;
+    }
+    double DimensionlessFactor = 10.0 * psi * (1 + pow(psi, 3.0)) / (-pow(psi, 6.0) + 5.0 * pow(psi, 2.0) - 9.0 * psi + 5.0); 
+
+    if(sciantix_variable["HBS pore radius"].getInitialValue()) equilibrium_pressure = 2.0 * matrices["UO2HBS"].getSurfaceTension() / sciantix_variable["HBS pore radius"].getInitialValue() - history_variable["Hydrostatic stress"].getFinalValue() * 1e6;
     
     if(DimensionlessFactor)
     {
-        volume_flow_rate = 2.0 * M_PI * WignerSeitzCellRadius * VacancyDiffusionCoefficient / DimensionlessFactor;
-        growth_rate = volume_flow_rate * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * ((1.0 + PackingFraction + pow(PackingFraction, 2.0) - pow(PackingFraction, 3.0)) / (pow(1.0 - PackingFraction, 3.0))) / matrices["UO2HBS"].getSchottkyVolume();
-        equilibrium_term = - volume_flow_rate * equilibrium_pressure / (boltzmann_constant * history_variable["Temperature"].getFinalValue());
+        volume_flow_rate = 2.0 * M_PI * WignerSeitzCellRadius * matrices["UO2HBS"].getGrainBoundaryVacancyDiffusivity() / DimensionlessFactor;
+        growth_rate = 1e3 * volume_flow_rate * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * ((1.0 + PackingFraction + pow(PackingFraction, 2.0) - pow(PackingFraction, 3.0)) / (pow(1.0 - PackingFraction, 3.0))) / matrices["UO2HBS"].getSchottkyVolume();
+        equilibrium_term = - 1e-3 * volume_flow_rate * equilibrium_pressure / (boltzmann_constant * history_variable["Temperature"].getFinalValue());
         
         parameter_2.push_back(growth_rate);
         parameter_2.push_back(equilibrium_term);
@@ -159,25 +159,20 @@ void Simulation::HighBurnupStructurePorosity()
         parameter_2.push_back(0.0);
     }
 
-    // print vacancies per pore
-    std::cout << "Vacancies per pore: " << sciantix_variable["Vacancies per HBS pore"].getFinalValue() << std::endl;
-
-    // print equilibrium pressure
-    std::cout << "Equilibrium pressure: " << equilibrium_pressure << std::endl;
+    // print wigner seitz cell radius
+    // std::cout << "Wigner Seitz Cell Radius: " << WignerSeitzCellRadius << std::endl;
+    // std::cout << "psi: " << psi << std::endl;
+    // std::cout << "Dimensionless Factor: " << DimensionlessFactor << std::endl;
+    // std::cout << "Equilibrium Pressure: " << equilibrium_pressure << std::endl;
+    // std::cout << "Volume Flow Rate: " << volume_flow_rate << std::endl;
     
-    // print pore pressure
-    std::cout << "Pore pressure: " << sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * (boltzmann_constant * history_variable["Temperature"].getFinalValue()) * ((1.0 + PackingFraction + pow(PackingFraction, 2.0) - pow(PackingFraction, 3.0)) / (pow(1.0 - PackingFraction, 3.0))) / (matrices["UO2HBS"].getSchottkyVolume() * sciantix_variable["Vacancies per HBS pore"].getFinalValue()) << std::endl;
-    
-    if(DimensionlessFactor)
-        sciantix_variable["Vacancies per HBS pore"].setFinalValue(
-            solver.LimitedGrowth(
-                sciantix_variable["Vacancies per HBS pore"].getInitialValue(),
-                parameter_2,
-                physics_variable["Time step"].getFinalValue()
-            )
-        );
-    else
-        sciantix_variable["Vacancies per HBS pore"].setFinalValue(0.0);
+    sciantix_variable["Vacancies per HBS pore"].setFinalValue(
+        solver.LimitedGrowth(
+            sciantix_variable["Vacancies per HBS pore"].getInitialValue(),
+            parameter_2,
+            physics_variable["Time step"].getFinalValue()
+        )
+    );
 
     // HBS pore volume
     sciantix_variable["HBS pore volume"].setFinalValue(
