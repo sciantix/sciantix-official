@@ -15,8 +15,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+
 #include "Solver.h"
-//#include <iostream>  // aggiunta 
+#include <iostream>
 
 void Simulation::HighBurnupStructurePorosity()
 {
@@ -115,51 +116,35 @@ void Simulation::HighBurnupStructurePorosity()
             sciantix_variable["Xe in HBS pores"].getFinalValue() / sciantix_variable["HBS pore density"].getFinalValue()
     );
    
-    //calculation of pore volume 
-    // VDW volume
+    // HBS pore volume 
     double XeHSDiameter = 4.45e-10 * (0.8542 - 0.03996 * log(history_variable["Temperature"].getFinalValue() / 231.2));
-    double PackingFraction = 0.5235987756 * (pow(XeHSDiameter, 3) * sciantix_variable["Xe in HBS pores"].getFinalValue());
-    double gasVolumeInPore(0.0);
-    if(sciantix_variable["Xe in HBS pores"].getFinalValue() > 0.0) gasVolumeInPore = PackingFraction / sciantix_variable["Xe in HBS pores"].getFinalValue();
+    double PackingFraction = M_PI / 6.0 * pow(XeHSDiameter, 3) * sciantix_variable["Xe in HBS pores"].getFinalValue();
+    double gasVolumeInPore = M_PI / 6.0 * pow(XeHSDiameter, 3);
 
-    // std::cout << "Gas volume" << std::endl;
-    // std::cout <<gasVolumeInPore<< std::endl;
-
-    // sciantix_system["Xe in UO2HBS"].getGas().setVanDerWaalsVolume(
-    //     PackingFraction / sciantix_variable["Xe in HBS pores"].getFinalValue()
-    // );
-    
-    // std::cout << "omega calcolato" << std::endl;
-    // std::cout << sciantix_system["Xe in UO2HBS"].getGas().getVanDerWaalsVolume() << std::endl;
-    // std::cout << PackingFraction / sciantix_variable["Xe in HBS pores"].getFinalValue() << std::endl;
-
-    //sciantix_variable["vacancies per pore"].getFinalValue() * fuel_.getSchottkyVolume())
-
-    sciantix_variable["HBS pore volume"].setFinalValue(
+    sciantix_variable["HBS pore volume"].setInitialValue(
         sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * gasVolumeInPore + 
         sciantix_variable["Vacancies per HBS pore"].getInitialValue() * matrices["UO2HBS"].getSchottkyVolume()
     ); 
 
-    sciantix_variable["HBS pore radius"].setInitialValue(0.620350491 * pow(sciantix_variable["HBS pore volume"].getFinalValue(), (1.0 / 3.0)));
+    sciantix_variable["HBS pore radius"].setInitialValue(0.620350491 * pow(sciantix_variable["HBS pore volume"].getInitialValue(), (1.0 / 3.0)));
 
-    // calculation of the contribution of vacancies
+    // Calculation of the contribution of vacancies
     std::vector<double> parameter_2;
 
     double VacancyDiffusionCoefficient = matrices["UO2HBS"].getGrainBoundaryVacancyDiffusivity();
 
-    double WignerSeitzCellRadius = 1.0 / 1.611991954 * pow(sciantix_variable["HBS pore density"].getFinalValue(), (- 1.0 / 3.0));
+    double WignerSeitzCellRadius = pow(3.0 / (4.0 * M_PI * sciantix_variable["HBS pore density"].getFinalValue()), (1.0 / 3.0));
     double psi = sciantix_variable["HBS pore radius"].getInitialValue() / WignerSeitzCellRadius;
     double DimensionlessFactor = 10.0 * psi * (1 + pow(psi, 3.0)) / ( - pow(psi, 6.0) + 5.0 * pow(psi, 2.0) - 9.0 * psi + 5.0); 
 
     double equilibrium_pressure(0.0);
-    if(sciantix_variable["HBS pore radius"].getInitialValue()) equilibrium_pressure = 2.0 * matrices["UO2HBS"].getSurfaceTension() / sciantix_variable["HBS pore radius"].getInitialValue() - history_variable["Hydrostatic stress"].getFinalValue() * 1e6; 
 
-    // std::cout << sciantix_variable["Xe atoms per HBS pore"].getFinalValue() << std::endl;
-    // std::cout << sciantix_variable["HBS pore volume"].getInitialValue() << std::endl;
-
-    double volume_flow_rate(0.0), growth_rate(0.0), equilibrium_term(0.0);
+    if(sciantix_variable["HBS pore radius"].getInitialValue())
+        equilibrium_pressure = 2.0 * matrices["UO2HBS"].getSurfaceTension() / sciantix_variable["HBS pore radius"].getInitialValue() - history_variable["Hydrostatic stress"].getFinalValue() * 1e6;
     
-    if(DimensionlessFactor > 0.0)
+    double volume_flow_rate(0.0), growth_rate(0.0), equilibrium_term(0);
+    
+    if(DimensionlessFactor)
     {
         volume_flow_rate = 2.0 * M_PI * WignerSeitzCellRadius * VacancyDiffusionCoefficient / DimensionlessFactor;
         growth_rate = volume_flow_rate * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * ((1.0 + PackingFraction + pow(PackingFraction, 2.0) - pow(PackingFraction, 3.0)) / (pow(1.0 - PackingFraction, 3.0))) / matrices["UO2HBS"].getSchottkyVolume();
@@ -174,13 +159,16 @@ void Simulation::HighBurnupStructurePorosity()
         parameter_2.push_back(0.0);
     }
 
-    // std::cout << growth_rate << std::endl;
-    // std::cout << equilibrium_term << std::endl;
+    // print vacancies per pore
+    std::cout << "Vacancies per pore: " << sciantix_variable["Vacancies per HBS pore"].getFinalValue() << std::endl;
 
-    //std::cout<<"PorePressure = " << PorePressure<<std::endl; 
-    //std::cout<<"EquilibriumPressure = " << EquilibriumPressure<<std::endl;
+    // print equilibrium pressure
+    std::cout << "Equilibrium pressure: " << equilibrium_pressure << std::endl;
     
-    if(DimensionlessFactor > 0.0)
+    // print pore pressure
+    std::cout << "Pore pressure: " << sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * (boltzmann_constant * history_variable["Temperature"].getFinalValue()) * ((1.0 + PackingFraction + pow(PackingFraction, 2.0) - pow(PackingFraction, 3.0)) / (pow(1.0 - PackingFraction, 3.0))) / (matrices["UO2HBS"].getSchottkyVolume() * sciantix_variable["Vacancies per HBS pore"].getFinalValue()) << std::endl;
+    
+    if(DimensionlessFactor)
         sciantix_variable["Vacancies per HBS pore"].setFinalValue(
             solver.LimitedGrowth(
                 sciantix_variable["Vacancies per HBS pore"].getInitialValue(),
@@ -191,53 +179,51 @@ void Simulation::HighBurnupStructurePorosity()
     else
         sciantix_variable["Vacancies per HBS pore"].setFinalValue(0.0);
 
-    // if(sciantix_variable["Vacancies per HBS pore"].getFinalValue() < 0.0) sciantix_variable["Vacancies per HBS pore"].setFinalValue(0.0);
+    // HBS pore volume
+    sciantix_variable["HBS pore volume"].setFinalValue(
+        sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * gasVolumeInPore + sciantix_variable["Vacancies per HBS pore"].getFinalValue() *  matrices["UO2HBS"].getSchottkyVolume()
+    );
 
-    sciantix_variable["HBS pore volume"].setFinalValue(sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * gasVolumeInPore + sciantix_variable["Vacancies per HBS pore"].getFinalValue() *  matrices["UO2HBS"].getSchottkyVolume());
-    sciantix_variable["HBS pore radius"].setFinalValue(0.620350491 * pow(sciantix_variable["HBS pore volume"].getFinalValue(), (1.0 / 3.0)));
-    
-    // std::cout<<"HBS pore radius"<<std::endl;
-    // std::cout<<sciantix_variable["HBS pore radius"].getFinalValue()<<std::endl;
-    // std::cout<<"HBS pore volume"<<std::endl;
-    // std::cout<<sciantix_variable["HBS pore volume"].getFinalValue()<<std::endl;
+    sciantix_variable["HBS pore radius"].setFinalValue(
+        0.620350491 * pow(sciantix_variable["HBS pore volume"].getFinalValue(), 1. / 3.)
+    );
 
-    // calculation of the porosity 
-    sciantix_variable["HBS porosity"].setFinalValue(sciantix_variable["HBS pore volume"].getFinalValue() * sciantix_variable["HBS pore density"].getFinalValue());
-
-    // update of number density of HBS pores: interconnection by impingement
+    // Interconnection by impingement
     double limiting_factor =
        (2.0 - sciantix_variable["HBS porosity"].getFinalValue()) / (2.0 * pow(1.0 - sciantix_variable["HBS porosity"].getFinalValue(), 3.0));
 
     double pore_interconnection_rate = 4.0 * limiting_factor;
-    
+
+    sciantix_variable["HBS pore density"].resetValue();
     sciantix_variable["HBS pore density"].setFinalValue(
         solver.BinaryInteraction(
-            sciantix_variable["HBS pore density"].getFinalValue(),
+            sciantix_variable["HBS pore density"].getInitialValue(),
             pore_interconnection_rate,
             sciantix_variable["HBS pore volume"].getIncrement()
         )
     );
 
-    // Conservation 
-    
-    if (sciantix_variable["HBS pore density"].getFinalValue())
-
+    // Conservation
+    if(sciantix_variable["HBS pore density"].getFinalValue())
     {
-      sciantix_variable["Xe atoms per HBS pore"].rescaleFinalValue(
-      sciantix_variable["HBS pore density"].getInitialValue() / sciantix_variable["HBS pore density"].getFinalValue());
+        sciantix_variable["Xe atoms per HBS pore"].rescaleFinalValue(
+            sciantix_variable["HBS pore density"].getInitialValue() / sciantix_variable["HBS pore density"].getFinalValue()
+        );
 
-      sciantix_variable["Vacancies per HBS pore"].rescaleFinalValue(
-      sciantix_variable["HBS pore density"].getInitialValue() / sciantix_variable["HBS pore density"].getFinalValue());
+        sciantix_variable["Vacancies per HBS pore"].rescaleFinalValue(
+            sciantix_variable["HBS pore density"].getInitialValue() / sciantix_variable["HBS pore density"].getFinalValue()
+        );
+
+        sciantix_variable["HBS pore volume"].setFinalValue(sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * gasVolumeInPore + sciantix_variable["Vacancies per HBS pore"].getFinalValue() *  matrices["UO2HBS"].getSchottkyVolume());
+
+        sciantix_variable["HBS pore radius"].setFinalValue(
+            0.620350491 * pow(sciantix_variable["HBS pore volume"].getFinalValue(), 1. / 3.)
+        );
     }
 
-    double vol = 0.0;
-        vol += sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * gasVolumeInPore;
-        
-        vol += sciantix_variable["Vacancies per HBS pore"].getFinalValue() * matrices["UO2HBS"].getSchottkyVolume();
-
-    sciantix_variable["HBS pore volume"].setFinalValue(vol);
-    sciantix_variable["HBS pore radius"].setFinalValue(0.620350491 * pow(sciantix_variable["HBS pore volume"].getFinalValue(), (1.0 / 3.0)));
-    
+    sciantix_variable["HBS porosity"].setFinalValue(
+        sciantix_variable["HBS pore volume"].getFinalValue() * sciantix_variable["HBS pore density"].getFinalValue()
+    );
 
     if (sciantix_variable["HBS pore density"].getFinalValue())
         sciantix_variable["Xe atoms per HBS pore - variance"].setFinalValue(
