@@ -89,7 +89,6 @@ void caesium(SciantixArray<Gas> &gas)
     gas_.setChemicallyActive(1.0);
     gas_.setPrecursorFactor(1.00);
     gas.push(gas_);
-    //system_.setYield(0.066534);
 }
 
 void iodine(SciantixArray<Gas> &gas) 
@@ -103,7 +102,6 @@ void iodine(SciantixArray<Gas> &gas)
     gas_.setChemicallyActive(1.0);
     gas_.setPrecursorFactor(1.00);
     gas.push(gas_);
-    //system_.setYield(0.001241);
 }
 
 // // Data from JEFF-3.3 if not specified, to be verified the volumes

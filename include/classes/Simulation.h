@@ -180,7 +180,7 @@ public:
      * @author E. Cappellari
      * 
      */
-    StablePhaseResult SetStablePhase(double Temperature, double logCs, double logO2, double logI);
+    StablePhaseResult SetStablePhase(double Temperature, double logCs, double logO2, double logI, double Pressure);
 
     /**
      * @brief Grain growth based on specific model parameters affecting the system's materials.
