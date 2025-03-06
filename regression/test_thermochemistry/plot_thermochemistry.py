@@ -34,7 +34,7 @@ max_burnup = max(data['No Thermochemistry']['Burnup (MWd/kgUO2)'].max(),
 x_margin = max_burnup * 0.1
 
 # Create side-by-side plots
-fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+fig, axes = plt.subplots(1, 3, figsize=(15, 8))
 
 # Plot R/B
 for j, label in enumerate(rb_labels):
@@ -75,67 +75,46 @@ axes[0].legend(handles=(thermo_legend))
 axes[1].legend(handles=(thermo_legend))
 axes[2].legend(handles=(thermo_legend))
 
+N = 3
 for j, label in enumerate(rb_labels):
     dataset = 'With Thermochemistry'
     x_values = data[dataset]['Burnup (MWd/kgUO2)']
     y_values = data[dataset][label + ' R/B']
-
-    # Prendi l'ultimo punto della curva
-    last_x = x_values.iloc[-1]
-    last_y = y_values.iloc[-1]
-
-    # Offset verticale basato sull'indice per evitare sovrapposizioni
-    offset = (j - len(rb_labels) / 2) * 15  # Offset verticale
-
+    last_x = x_values.iloc[-1-N*j]
+    last_y = y_values.iloc[-1-N*j]
     axes[0].annotate(label, 
                         (last_x, last_y), 
                         textcoords="offset points", 
-                        xytext=(offset, 2),  
-                        ha='left', 
+                        xytext=(0, 0),  
+                        ha='right',
                         color=colors[j],  
                         fontsize=10)
 for j, label in enumerate(reacted_labels):
     dataset = 'With Thermochemistry'
     x_values = data[dataset]['Burnup (MWd/kgUO2)']
     y_values = data[dataset][label + ' reacted']
-
-    # Prendi l'ultimo punto della curva
-    last_x = x_values.iloc[-1]
-    last_y = y_values.iloc[-1]
-
-    # Offset verticale basato sull'indice per evitare sovrapposizioni
-    offset = (j - len(reacted_labels) / 2) * 15  # Offset verticale
-
+    last_x = x_values.iloc[-1-N*j]
+    last_y = y_values.iloc[-1-N*j]
     axes[1].annotate(label, 
                         (last_x, last_y), 
                         textcoords="offset points", 
-                        xytext=(offset, 2),  
-                        ha='left', 
+                        xytext=(0, 0),  
+                        ha='right',
                         color=colors[j],  
                         fontsize=10)
 for j, label in enumerate(pr_labels):
     dataset = 'With Thermochemistry'
     x_values = data[dataset]['Burnup (MWd/kgUO2)']
     y_values = data[dataset][label]
-
-    # Prendi l'ultimo punto della curva
-    last_x = x_values.iloc[-1]
-    last_y = y_values.iloc[-1]
-
-    # Offset verticale basato sull'indice per evitare sovrapposizioni
-    offset = (j - len(pr_labels) / 2) * 15  # Offset verticale
-
+    last_x = x_values.iloc[-1-N*j]
+    last_y = y_values.iloc[-1-N*j]
     axes[2].annotate(label, 
                         (last_x, last_y), 
                         textcoords="offset points", 
-                        xytext=(offset, 2),  
-                        ha='left', 
+                        xytext=(0, 0),  
+                        ha='right',
                         color=colors[j],  
                         fontsize=10)
-         
-for ax in axes:
-    ax.set_xlim(0, max_burnup + x_margin)  # Espande l'asse X
-
 plt.tight_layout()
 plt.savefig("results/ReleasedtoBirth.png")
 
