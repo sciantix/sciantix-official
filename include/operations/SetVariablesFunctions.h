@@ -185,10 +185,10 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Intragranular I atoms per bubble", "(at/bub)", Sciantix_variables[118], Sciantix_variables[118], 0),
         SciantixVariable("Intergranular I atoms per bubble", "(at/bub)", Sciantix_variables[119], Sciantix_variables[119], 0),
 
-        SciantixVariable("CsI", "(1/m3)", Sciantix_variables[121], Sciantix_variables[121], 1),
-        SciantixVariable("CsO2", "(1/m3)", Sciantix_variables[122], Sciantix_variables[122], 1),
-        SciantixVariable("Cs2O2", "(1/m3)", Sciantix_variables[123], Sciantix_variables[123], 1),
-        SciantixVariable("Cs2O", "(1/m3)", Sciantix_variables[124], Sciantix_variables[124], 1),
+        SciantixVariable("CsI", "(1/m3)", 0,0, 1),
+        SciantixVariable("CsO2", "(1/m3)", 0,0, 1),
+        SciantixVariable("Cs2O2", "(1/m3)", 0,0, 1),
+        SciantixVariable("Cs2O", "(1/m3)", 0,0, 1),
         
         SciantixVariable("Intragranular bubble concentration", "(bub/m3)", Sciantix_variables[19], Sciantix_variables[19], 1),
         SciantixVariable("Intragranular bubble radius", "(m)", Sciantix_variables[20], Sciantix_variables[20], 1),

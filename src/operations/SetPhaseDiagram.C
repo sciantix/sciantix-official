@@ -34,6 +34,14 @@ void Simulation::SetPhaseDiagram()
     double Temperature = history_variable["Temperature"].getFinalValue();
     double Cs = sciantix_variable["Cs at grain boundary"].getFinalValue() + sciantix_variable["Cs reacted"].getFinalValue();
     double I = sciantix_variable["I at grain boundary"].getFinalValue() + sciantix_variable["I reacted"].getFinalValue();
+
+    // Intergranular bubble pressure p = kTng/Onv (bar)
+    double bubble_pressure;
+    if(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue())
+        bubble_pressure = (1e-5 * boltzmann_constant *  Temperature * sciantix_variable["Intergranular atoms per bubble"].getInitialValue()/(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue() * matrices["UO2"].getSchottkyVolume()));
+    else
+        bubble_pressure = 1.0;
+
     
     sciantix_variable["CsI"].setFinalValue(0);
     sciantix_variable["CsO2"].setFinalValue(0);    
@@ -42,21 +50,19 @@ void Simulation::SetPhaseDiagram()
 
     // Chevalier 2002
     //double dG_O2 = - 1084.9112*1e3 - Temperature * 77.02744; // J mol-1
-    double log_P_O2 = log10(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue()*10); //bar
-    std::cout << log_P_O2 << std::endl;
+    double log_P_O2 = log10(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue()*10/bubble_pressure); // MPa -> bar
 
-    double log_P_I = log10(I*boltzmann_constant*Temperature*10);
-    double log_P_Cs = log10(Cs*boltzmann_constant*Temperature*10);
+    double log_P_I = log10(I*boltzmann_constant*Temperature*1e-5/bubble_pressure); // Pa -> bar
+    double log_P_Cs = log10(Cs*boltzmann_constant*Temperature*1e-5/bubble_pressure); // Pa -> bar
 
-    // std::string phase = phase_finding(log_P_I, log_P_Cs, log_P_O2, dataset);
-    // std::cout << "The dominant phase is: " << phase << std::endl;
+    std::cout << log_P_Cs << log_P_O2 << log_P_I <<std::endl;     
 
-    StablePhaseResult Update = Simulation::SetStablePhase(Temperature, log_P_Cs, log_P_I, log_P_O2);
+    StablePhaseResult Update = Simulation::SetStablePhase(Temperature, log_P_Cs, log_P_O2, log_P_I, bubble_pressure);
     
     sciantix_variable["Cs at grain boundary"].setFinalValue(Update.new_set[0]);
-    sciantix_variable["I at grain boundary"].setFinalValue(Update.new_set[1]);
+    sciantix_variable["I at grain boundary"].setFinalValue(Update.new_set[2]);
     sciantix_variable["Cs reacted"].setFinalValue(Cs - Update.new_set[0]);
-    sciantix_variable["I reacted"].setFinalValue(I - Update.new_set[1]);
+    sciantix_variable["I reacted"].setFinalValue(I - Update.new_set[2]);
     if (!Update.right_bounded.empty()) {
         std::cout << Update.right_bounded[0] << std::endl;
         sciantix_variable[Update.right_bounded[0]].setFinalValue(Update.compound);
@@ -93,7 +99,7 @@ double K_eq(double T, double A, double B, double C, double D, double E)
     return std::exp(- delta_g(T, A, B, C, D, E) / (boltzmann_constant * T));
 }
 
-Simulation::StablePhaseResult Simulation::SetStablePhase(double Temperature, double logCs, double logO2, double logI)
+Simulation::StablePhaseResult Simulation::SetStablePhase(double Temperature, double logCs, double logO2, double logI, double Pressure)
 {
     // Build the equilibria dictionary (using a map)
     std::map<std::string, Reaction> equilibria;
@@ -258,19 +264,19 @@ Simulation::StablePhaseResult Simulation::SetStablePhase(double Temperature, dou
     if (min_phase != "Cs + I + O2") {
         // BG_values: [ (10^logCs)/(R*T), (10^logI)/(R*T), (10^logO2)/(R*T) ]
         std::vector<double> BG_values(3);
-        BG_values[0] = std::pow(10.0, logCs) / (10 * boltzmann_constant * Temperature);
-        BG_values[1] = std::pow(10.0, logI)  / (10 * boltzmann_constant * Temperature);
-        BG_values[2] = std::pow(10.0, logO2) / (10 * boltzmann_constant * Temperature);
+        BG_values[0] = pow(10.0, logCs) * Pressure / (1e-5 * boltzmann_constant * Temperature);
+        BG_values[1] = pow(10.0, logO2) * Pressure / (1e-5 * boltzmann_constant * Temperature);
+        BG_values[2] = pow(10.0, logI) * Pressure / (1e-5 * boltzmann_constant * Temperature);
 
         // Stoichiometric coefficients for the chosen reaction
         const Reaction& rxn = equilibria_Temperature[min_phase];
-        std::vector<double> v_values = { rxn.Cs, rxn.I, rxn.O2 };
+        std::vector<double> v_values = { rxn.Cs, rxn.O2, rxn.I };
 
         // Compute L_max values for each element (taking care of division by zero)
         std::vector<double> L_max_values(3);
         for (int i = 0; i < 3; ++i) {
             if (v_values[i] != 0)
-                L_max_values[i] = -BG_values[i] / v_values[i];
+                L_max_values[i] = - BG_values[i] / v_values[i];
             else
                 L_max_values[i] = std::numeric_limits<double>::infinity();
         }
@@ -289,6 +295,11 @@ Simulation::StablePhaseResult Simulation::SetStablePhase(double Temperature, dou
 
         // Output the new_set values
         std::cout << "Min_phase: " << min_phase << std::endl;
+        std::cout << "Before: ";
+        for (double val : BG_values) {
+            std::cout << val << " ";
+        }
+        std::cout << std::endl;
         std::cout << "New set values: ";
         for (double val : new_set) {
             std::cout << val << " ";
@@ -299,9 +310,9 @@ Simulation::StablePhaseResult Simulation::SetStablePhase(double Temperature, dou
     {
         std::cout << "No stable phase found, min_phase: " << min_phase << std::endl;
         std::vector<double> BG_values(3);
-        BG_values[0] = std::pow(10.0, logCs) / (10 * boltzmann_constant * Temperature);
-        BG_values[1] = std::pow(10.0, logI)  / (10 * boltzmann_constant * Temperature);
-        BG_values[2] = std::pow(10.0, logO2) / (10 * boltzmann_constant * Temperature);
+        BG_values[0] = pow(10.0, logCs) * Pressure / (1e-5 * boltzmann_constant * Temperature);
+        BG_values[1] = pow(10.0, logO2) * Pressure / (1e-5 * boltzmann_constant * Temperature);
+        BG_values[2] = pow(10.0, logI) * Pressure / (1e-5 * boltzmann_constant * Temperature);
         
         // new_set = BG_values + v_values * L_max (elementwise)
         for (int i = 0; i < 3; ++i) {

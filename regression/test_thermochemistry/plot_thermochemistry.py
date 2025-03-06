@@ -14,6 +14,10 @@ for label in data:
     data[label]['Kr R/B'] = 100 * data[label]['Kr released (at/m3)'] / data[label]['Kr produced (at/m3)']
     data[label]['Cs reacted'] = 100 * data[label]['Cs reacted (at/m3)'] / data[label]['Cs produced (at/m3)']    
     data[label]['I reacted'] = 100 * data[label]['I reacted (at/m3)'] / data[label]['Cs produced (at/m3)']
+    data[label]['CsI'] = 100 * data[label]['CsI (1/m3)'] / data[label]['Cs produced (at/m3)']      
+    data[label]['CsO2'] = 100 * data[label]['CsO2 (1/m3)'] / data[label]['Cs produced (at/m3)'] 
+    data[label]['Cs2O'] = 100 * data[label]['Cs2O (1/m3)'] / data[label]['Cs produced (at/m3)']  
+    data[label]['Cs2O2'] = 100 * data[label]['Cs2O2 (1/m3)'] / data[label]['Cs produced (at/m3)']   
 
 # Define colors and labels
 rb_labels = ['Cs R/B', 'I R/B', 'Xe R/B', 'Kr R/B']
@@ -59,3 +63,29 @@ plt.grid(True)
 plt.tight_layout()
 plt.savefig("results/Stoichiometry.png")
 
+# Create side-by-side plots
+pr_labels = ['CsI', 'Cs2O2', 'CsO2', 'Cs2O']
+fig, axes = plt.subplots(1, 2, figsize=(14, 7))
+
+# Plot R/B
+for j, label in enumerate(pr_labels):
+    dataset = 'With Thermochemistry'
+    axes[0].plot(data[dataset]['Burnup (MWd/kgUO2)'], data[dataset][label], linestyle=linestyles[dataset], color=colors[j], label=f'{label} ({dataset})')
+axes[0].set_xlabel('Burnup (MWd/kgUO2)')
+axes[0].set_ylabel('Percentage (%)')
+axes[0].set_title('Comparison of Produced Percentages with respect to Cs production')
+axes[0].legend()
+axes[0].grid(True)
+
+# Plot Reacted
+for j, label in enumerate(reacted_labels):
+    dataset = 'With Thermochemistry' 
+    axes[1].plot(data[dataset]['Burnup (MWd/kgUO2)'], data[dataset][label], linestyle=linestyles[dataset], color=colors[j+2], label=f'{label} ({dataset})')
+axes[1].set_xlabel('Burnup (MWd/kgUO2)')
+axes[1].set_ylabel('Percentage (%)')
+axes[1].set_title('Comparison of Reacted Percentages')
+axes[1].legend()
+axes[1].grid(True)
+
+plt.tight_layout()
+plt.savefig("results/Created.png")
