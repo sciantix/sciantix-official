@@ -182,6 +182,10 @@ void Simulation::HighBurnupStructurePorosity()
             );
         
             // HBS pore interconnection by impingement
+            sciantix_variable["HBS porosity"].setFinalValue(
+                sciantix_variable["HBS pore volume"].getFinalValue() * sciantix_variable["HBS pore density"].getFinalValue()
+            );
+        
             double limiting_factor =
                (2.0 - sciantix_variable["HBS porosity"].getFinalValue()) / (2.0 * pow(1.0 - sciantix_variable["HBS porosity"].getFinalValue(), 3.0));
         
