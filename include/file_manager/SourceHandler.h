@@ -57,7 +57,11 @@ void writeToFile(const std::vector<Source>& sources);
  * @param time The specific time for which the source value is requested.
  * @return The interpolated source value at the given time.
  */
-Source getCurrentSource(const std::vector<Source>& sources, double time);
 
 void computeAndSaveSourcesToFile(const std::vector<Source>& sources, const std::string& outputFilePath, double scale_factor, double step);
+
+Source getCurrentSource(const std::vector<Source>& isources, double currentTimeStep);
+
 #endif // SOURCEHANDLER_H
+
+

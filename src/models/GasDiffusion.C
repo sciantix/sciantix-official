@@ -122,22 +122,24 @@ void Simulation::GasDiffusion()
         
         case 4:
         {
-            Source non_uniform_source;  
-            ReadNonUniformSource(non_uniform_source);
-
             std::vector<Source> sources;
             std::vector<Source> isources;
             loadSourcesFromFile(sources);
-            isources = sourceInterpolation(sources, 100);
+            isources = sourceInterpolation(sources, Number_of_time_steps_per_interval+1);
             writeToFile(isources);
+            computeAndSaveSourcesToFile(sources,TestPath + "source_shape.txt", 5e-6, 0.01);
 
             if (system.getRestructuredMatrix() == 0)
             {    
+
+                // std::cout<<history_variable["Time step number"].getFinalValue()<<std::endl;
+                // std::cout<<isources.size()<<std::endl;
+
                 sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
                     solver.SpectralDiffusionNUS(
                         getDiffusionModes(system.getGasName()),
                         model["Gas diffusion - " + system.getName()].getParameter(),
-                        non_uniform_source,
+                        isources.at(history_variable["Time step number"].getFinalValue()),
                         physics_variable["Time step"].getFinalValue()
                     )
                 );
@@ -161,7 +163,7 @@ void Simulation::GasDiffusion()
                     solver.SpectralDiffusionNUS(
                         getDiffusionModes(system.getGasName() + " in HBS"),
                         model["Gas diffusion - " + system.getName()].getParameter(),
-                        non_uniform_source,
+                        isources.at(history_variable["Time step number"].getFinalValue()),
                         physics_variable["Time step"].getFinalValue()
                     )
                 );
