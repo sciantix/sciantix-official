@@ -379,7 +379,6 @@ void defineSpectralDiffusionNUS1Equation(SciantixArray<System> &sciantix_system,
         model_.setName("Gas diffusion - " + system.getName());
         model_.setRef(reference);
         std::vector<double> parameters;
-        
 
         parameters.push_back(n_modes);
         double gasDiffusivity;
