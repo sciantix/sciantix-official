@@ -81,50 +81,61 @@ void loadSourcesFromFile(std::vector<Source> &sources)
 /**
  * @brief Linear interpolation function for NormalizedDomain, Slopes, and Intercepts between time instances
  * @param sources The source vector containing Source objects with time and corresponding data
- * @param num_steps The number of steps to interpolate between two time instances
+ * @param total_steps The number of steps to interpolate along the entire time period
  * @return A vector of Source objects with interpolated values
  */
-std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int num_steps)
+std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int total_steps)
 {
     std::vector<Source> interpolated_sources;
+    if (sources.empty()) return interpolated_sources;
 
-    for (size_t i = 0; i < sources.size() - 1; ++i)
+    // Define global time range
+    double t_min = sources.front().time;
+    double t_max = sources.back().time;
+    double time_step = (t_max - t_min) / (total_steps - 1);
+
+    // Generate 100 equally spaced time points
+    for (int i = 0; i < total_steps; ++i)
     {
-        const Source &start = sources[i];
-        const Source &end = sources[i + 1];
+        double t = t_min + i * time_step;
+        
+        // Find the interval [start, end] that contains t
+        size_t idx = 0;
+        while (idx < sources.size() - 1 && sources[idx + 1].time < t)
+            ++idx;
 
-        double time_step = (end.time - start.time) / num_steps;
+        const Source &start = sources[idx];
+        const Source &end = sources[std::min(idx + 1, sources.size() - 1)];
 
-        for (int j = 0; j <= num_steps; ++j)
+        // Compute interpolation factor
+        double alpha = (t - start.time) / (end.time - start.time);
+
+        // Interpolate source values
+        Source interpolated_source;
+        interpolated_source.time = t;
+
+        // Interpolate NormalizedDomain
+        interpolated_source.NormalizedDomain.clear();
+        for (size_t k = 0; k < start.NormalizedDomain.size(); ++k)
         {
-            Source interpolated_source;
-            interpolated_source.time = start.time + j * time_step;
-
-            // Interpolate NormalizedDomain (we assume it's the same across all time steps for each region)
-            interpolated_source.NormalizedDomain.clear();
-            for (size_t k = 0; k < start.NormalizedDomain.size(); ++k)
-            {
-                double domain_interp = start.NormalizedDomain[k] + (end.NormalizedDomain[k] - start.NormalizedDomain[k]) * j / num_steps;
-                interpolated_source.NormalizedDomain.push_back(domain_interp);
-            }
-
-            // Interpolate Slopes and Intercepts
-            interpolated_source.Slopes.clear();
-            interpolated_source.Intercepts.clear();
-
-            for (size_t k = 0; k < start.Slopes.size(); ++k)
-            {
-                double slope_interp = start.Slopes[k] + (end.Slopes[k] - start.Slopes[k]) * j / num_steps;
-                double intercept_interp = start.Intercepts[k] + (end.Intercepts[k] - start.Intercepts[k]) * j / num_steps;
-
-                interpolated_source.Slopes.push_back(slope_interp);
-                interpolated_source.Intercepts.push_back(intercept_interp);
-            }
-
-            interpolated_sources.push_back(interpolated_source);
+            double domain_interp = start.NormalizedDomain[k] + alpha * (end.NormalizedDomain[k] - start.NormalizedDomain[k]);
+            interpolated_source.NormalizedDomain.push_back(domain_interp);
         }
-    }
 
+        // Interpolate Slopes and Intercepts
+        interpolated_source.Slopes.clear();
+        interpolated_source.Intercepts.clear();
+        for (size_t k = 0; k < start.Slopes.size(); ++k)
+        {
+            double slope_interp = start.Slopes[k] + alpha * (end.Slopes[k] - start.Slopes[k]);
+            double intercept_interp = start.Intercepts[k] + alpha * (end.Intercepts[k] - start.Intercepts[k]);
+            interpolated_source.Slopes.push_back(slope_interp);
+            interpolated_source.Intercepts.push_back(intercept_interp);
+        }
+
+        interpolated_sources.push_back(interpolated_source);
+    }
+    
     return interpolated_sources;
 }
 
@@ -206,31 +217,6 @@ void writeToFile(const std::vector<Source>& interpolatedSources) {
     outFile.close();
 }
 
-// Function to get the final values based on current time step
-Source getCurrentSource(const std::vector<Source>& sources, double t_current) {
-    // Variable to store the best match (time <= t_current)
-    Source finalSource;
-    finalSource.time = 0;
-    finalSource.NormalizedDomain = {};
-    finalSource.Slopes = {};
-    finalSource.Intercepts = {};
-
-    // Iterate over the sources and find the one with the largest time <= t_current
-    for (const auto& source : sources) {
-        if (source.time <= t_current) {
-            finalSource = source;  // Store the source if it's a match
-        }
-    }
-
-    // If no match is found (no source time is <= t_current), we return an empty source
-    if (finalSource.NormalizedDomain.empty()) {
-        std::cerr << "Error: No source found with time <= " << t_current << std::endl;
-    }
-
-    return finalSource;
-}
-Source& getNonUniformSource();
-
 void computeAndSaveSourcesToFile(const std::vector<Source>& sources, const std::string& outputFilePath, double scale_factor, double step) 
 {
     std::ofstream outFile(outputFilePath);
@@ -261,4 +247,16 @@ void computeAndSaveSourcesToFile(const std::vector<Source>& sources, const std::
     }
 
     outFile.close();
+}
+
+// Function to get the current source based on the current time step and isources vector
+Source getCurrentSource(const std::vector<Source>& isources, size_t currentIndex) {
+    // Ensure the index is within bounds
+    if (currentIndex >= isources.size()) {
+        std::cerr << "Error: Index out of bounds (" << currentIndex << ")" << std::endl;
+        return {}; // Return an empty Source if the index is invalid
+    }
+
+    // Return the source at the current index
+    return isources[currentIndex];
 }

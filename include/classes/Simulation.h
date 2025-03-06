@@ -53,8 +53,6 @@ private:
     SciantixArray<InputVariable> input_variable;
     SciantixArray<InputVariable> scaling_factors;
 
-    Source general_source;
-
     int n_modes;
     std::vector<double> modes_initial_conditions;
 
