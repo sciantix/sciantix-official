@@ -18,11 +18,11 @@
 #define SOURCEHANDLER_H
 
 /**
- * 
+ *
  * This file contains functions for handling source data in Sciantix.
  * It includes loading source data from a file, interpolating values, printing
- * the data, writing results to a file, and retrieving specific values at given times.
- * 
+ * the data, and writing results to a file.
+ *
  * @author A. Zayat
  */
 
@@ -33,24 +33,24 @@
  * @param sources A reference to a vector of Source objects.
  * @note The file format should match expected input values.
  */
-void loadSourcesFromFile(std::vector<Source>& sources);
+void loadSourcesFromFile(std::vector<Source> &sources);
 /**
  * @brief Performs interpolation on the provided sources to create smoother data.
  * @param sources A constant reference to the input source data.
  * @param interpolation_size Number of intermediate points to generate.
  * @return A vector containing interpolated Source objects.
  */
-std::vector<Source> sourceInterpolation(const std::vector<Source>& sources, int interpolation_size);
+std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int interpolation_size);
 /**
  * @brief Prints the interpolated sources for debugging.
  * @param sources A constant reference to the source data to print.
  */
-void printInterpolatedSources(const std::vector<Source>& sources);
+void printInterpolatedSources(const std::vector<Source> &sources);
 /**
  * @brief Writes the processed source data to an output file.
  * @param sources A constant reference to the source data to be written.
  */
-void writeToFile(const std::vector<Source>& sources);
+void writeToFile(const std::vector<Source> &sources);
 /**
  * @brief Retrieves the current value of a source at a given time.
  * @param sources A constant reference to a vector of Source objects.
@@ -58,10 +58,6 @@ void writeToFile(const std::vector<Source>& sources);
  * @return The interpolated source value at the given time.
  */
 
-void computeAndSaveSourcesToFile(const std::vector<Source>& sources, const std::string& outputFilePath, double scale_factor, double step);
-
-Source getCurrentSource(const std::vector<Source>& isources, double currentTimeStep);
+void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::string &outputFilePath, double scale_factor, double step);
 
 #endif // SOURCEHANDLER_H
-
-
