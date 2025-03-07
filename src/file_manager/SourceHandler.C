@@ -14,7 +14,6 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -23,7 +22,6 @@
 #include <iomanip> // for setting precision
 #include "SourceHandler.h"
 #include "MainVariables.h"
-
 
 void loadSourcesFromFile(std::vector<Source> &sources)
 {
@@ -78,16 +76,11 @@ void loadSourcesFromFile(std::vector<Source> &sources)
     }
 }
 
-/**
- * @brief Linear interpolation function for NormalizedDomain, Slopes, and Intercepts between time instances
- * @param sources The source vector containing Source objects with time and corresponding data
- * @param total_steps The number of steps to interpolate along the entire time period
- * @return A vector of Source objects with interpolated values
- */
 std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int total_steps)
 {
     std::vector<Source> interpolated_sources;
-    if (sources.empty()) return interpolated_sources;
+    if (sources.empty())
+        return interpolated_sources;
 
     // Define global time range
     double t_min = sources.front().time;
@@ -98,7 +91,7 @@ std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int 
     for (int i = 0; i < total_steps; ++i)
     {
         double t = t_min + i * time_step;
-        
+
         // Find the interval [start, end] that contains t
         size_t idx = 0;
         while (idx < sources.size() - 1 && sources[idx + 1].time < t)
@@ -135,14 +128,10 @@ std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int 
 
         interpolated_sources.push_back(interpolated_source);
     }
-    
+
     return interpolated_sources;
 }
 
-/**
- * @brief Prints all the interpolated source data
- * @param interpolated_sources The interpolated source data to print
- */
 void printInterpolatedSources(const std::vector<Source> &interpolated_sources)
 {
     for (const auto &source : interpolated_sources)
@@ -170,76 +159,90 @@ void printInterpolatedSources(const std::vector<Source> &interpolated_sources)
         std::cout << std::endl;
     }
 }
-void writeToFile(const std::vector<Source>& interpolatedSources) {
+
+void writeToFile(const std::vector<Source> &interpolatedSources)
+{
     // Define the output file path using the TestPath
     std::string outputFile = TestPath + "source_output.txt";
 
     // Open the output file for writing
     std::ofstream outFile(outputFile);
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open())
+    {
         std::cerr << "Error: Unable to open output file " << outputFile << std::endl;
         return;
     }
 
     // Loop through the interpolated sources and write the data to the file
-    for (const auto& source : interpolatedSources) {
+    for (const auto &source : interpolatedSources)
+    {
         // Write time and normalized domain
         outFile << source.time << " # ";
-        for (size_t i = 0; i < source.NormalizedDomain.size(); ++i) {
+        for (size_t i = 0; i < source.NormalizedDomain.size(); ++i)
+        {
             outFile << source.NormalizedDomain[i];
-            if (i != source.NormalizedDomain.size() - 1) {
-                outFile << " ";  // Separate values with space
+            if (i != source.NormalizedDomain.size() - 1)
+            {
+                outFile << " "; // Separate values with space
             }
         }
         outFile << " # ";
 
         // Write slopes
-        for (size_t i = 0; i < source.Slopes.size(); ++i) {
+        for (size_t i = 0; i < source.Slopes.size(); ++i)
+        {
             outFile << source.Slopes[i];
-            if (i != source.Slopes.size() - 1) {
-                outFile << " ";  // Separate values with space
+            if (i != source.Slopes.size() - 1)
+            {
+                outFile << " "; // Separate values with space
             }
         }
         outFile << " # ";
 
         // Write intercepts
-        for (size_t i = 0; i < source.Intercepts.size(); ++i) {
+        for (size_t i = 0; i < source.Intercepts.size(); ++i)
+        {
             outFile << source.Intercepts[i];
-            if (i != source.Intercepts.size() - 1) {
-                outFile << " ";  // Separate values with space
+            if (i != source.Intercepts.size() - 1)
+            {
+                outFile << " "; // Separate values with space
             }
         }
-        outFile << " " << std::endl;  // Add new line at the end of each entry
+        outFile << " " << std::endl; // Add new line at the end of each entry
     }
 
     // Close the file after writing
     outFile.close();
 }
 
-void computeAndSaveSourcesToFile(const std::vector<Source>& sources, const std::string& outputFilePath, double scale_factor, double step) 
+void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::string &outputFilePath, double scale_factor, double step)
 {
     std::ofstream outFile(outputFilePath);
 
-    if (!outFile.is_open()) {
+    if (!outFile.is_open())
+    {
         std::cerr << "Error: Unable to open output file " << outputFilePath << std::endl;
         return;
     }
 
-    for (const auto& source : sources) {
+    for (const auto &source : sources)
+    {
         outFile << "Time: " << source.time << " s\n";
         outFile << "r (micron)\tS (at/m^3.s)\n";
 
-        for (size_t i = 0; i < source.NormalizedDomain.size() - 1; ++i) {
+        for (size_t i = 0; i < source.NormalizedDomain.size() - 1; ++i)
+        {
             double nd_start = source.NormalizedDomain[i];
             double nd_end = source.NormalizedDomain[i + 1];
             double A = source.Slopes[i];
             double B = source.Intercepts[i];
 
             // Modified loop condition to include the endpoint
-            for (double nd = nd_start; nd < nd_end + step; nd += step) {
+            for (double nd = nd_start; nd < nd_end + step; nd += step)
+            {
                 double r = nd * scale_factor;
-                double S = A * r + B;
+                double S = A * r * 1e-6 + B;
                 outFile << r << "\t" << S << "\n";
             }
         }
@@ -247,16 +250,4 @@ void computeAndSaveSourcesToFile(const std::vector<Source>& sources, const std::
     }
 
     outFile.close();
-}
-
-// Function to get the current source based on the current time step and isources vector
-Source getCurrentSource(const std::vector<Source>& isources, size_t currentIndex) {
-    // Ensure the index is within bounds
-    if (currentIndex >= isources.size()) {
-        std::cerr << "Error: Index out of bounds (" << currentIndex << ")" << std::endl;
-        return {}; // Return an empty Source if the index is invalid
-    }
-
-    // Return the source at the current index
-    return isources[currentIndex];
 }

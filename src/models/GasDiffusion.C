@@ -127,13 +127,10 @@ void Simulation::GasDiffusion()
             loadSourcesFromFile(sources);
             isources = sourceInterpolation(sources, Number_of_time_steps_per_interval+1);
             writeToFile(isources);
-            computeAndSaveSourcesToFile(sources,TestPath + "source_shape.txt", 5e-6, 0.01);
+            computeAndSaveSourcesToFile(sources,TestPath + "source_shape.txt", 5, 0.01);
 
             if (system.getRestructuredMatrix() == 0)
             {    
-
-                // std::cout<<history_variable["Time step number"].getFinalValue()<<std::endl;
-                // std::cout<<isources.size()<<std::endl;
 
                 sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
                     solver.SpectralDiffusionNUS(

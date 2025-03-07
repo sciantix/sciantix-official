@@ -100,16 +100,6 @@ int main(int argc, char **argv)
         Hydrostaticstress_input,
         Steampressure_input
     );
-    // Read Source File
-    //std::vector<Source> sources;
-    //loadSourcesFromFile(sources);
-    // Interpolate Source File
-    //std::vector<Source> isources;
-    //isources = sourceInterpolation(sources, 100);
-    //Create Output
-    //writeToFile(isources);
-    //computeAndSaveSourcesToFile(sources, TestPath + "source_shape.txt", 5e-6, 0.01);
-
 
     std::string outputPath = TestPath + "output.txt";
 
@@ -135,9 +125,6 @@ int main(int argc, char **argv)
         Sciantix_history[9] = Sciantix_history[10];
         Sciantix_history[10] = InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
 
-        // Current Source
-        //Source current_source;
-        //current_source = getCurrentSource(isources,Time_h);
         
         Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 
