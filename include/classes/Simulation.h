@@ -166,21 +166,21 @@ public:
      * @author E. Cappellari
      * 
      */
-    void SetPhaseDiagram();
+    void SetPhaseDiagram2();
 
-    struct StablePhaseResult {
-        std::vector<double> new_set;          // Computed new set values
-        std::vector<std::string> right_bounded; 
-        double compound; // Right bounded species of the stable reaction
-    };
+    // struct StablePhaseResult {
+    //     std::vector<double> new_set;          // Computed new set values
+    //     std::vector<std::string> right_bounded; 
+    //     double compound; // Right bounded species of the stable reaction
+    // };
 
-        /**
-     * @brief Get the stable phase in the phase diagram.
-     * 
-     * @author E. Cappellari
-     * 
-     */
-    StablePhaseResult SetStablePhase(double Temperature, double logCs, double logO2, double logI, double Pressure);
+    //     /**
+    //  * @brief Get the stable phase in the phase diagram.
+    //  * 
+    //  * @author E. Cappellari
+    //  * 
+    //  */
+    // StablePhaseResult SetStablePhase(double Temperature, double logCs, double logO2, double logI, double Pressure);
 
     /**
      * @brief Grain growth based on specific model parameters affecting the system's materials.

@@ -1,0 +1,179 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
+//      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
+//     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
+//      \   \    |  |     |  |   /  /_\  \   |  . `  |     |  |     |  |   >   <    //
+//  .----)   |   |  `----.|  |  /  _____  \  |  |\   |     |  |     |  |  /  .  \   //
+//  |_______/     \______||__| /__/     \__\ |__| \__|     |__|     |__| /__/ \__\  //
+//                                                                                  //
+//  Originally developed by D. Pizzocri & T. Barani                                 //
+//                                                                                  //
+//  Version: 2.0                                                                    //
+//  Year: 2022                                                                      //
+//  Authors: D. Pizzocri, G. Zullo, G. Nicodemo                                     //
+//                                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////
+
+#include "Simulation.h"
+
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
+#include <map>     
+#include <cmath>
+#include <limits>
+#include <string>
+#include <json/json.h>
+
+void Simulation::SetPhaseDiagram2()
+{
+    if (input_variable["iStoichiometryDeviation"].getValue() != 7) return;
+
+    double Temperature = history_variable["Temperature"].getFinalValue();
+    double bubble_pressure;
+    if(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue())
+        bubble_pressure = ( boltzmann_constant *  Temperature * sciantix_variable["Intergranular atoms per bubble"].getInitialValue()/(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue() * matrices["UO2"].getSchottkyVolume()));
+    else
+        bubble_pressure = 1.0;
+
+
+    // 1. Create the input file
+    std::ofstream inputFile("./../../thermochimica-master/inputs/input.ti");
+    if (!inputFile) {
+        std::cerr << "Error: Cannot create input file!" << std::endl;
+        return;
+    }
+    inputFile << "! Initialize variables:\n";
+    inputFile << "pressure          = " << bubble_pressure << "\n";
+    inputFile << "temperature       = " << history_variable["Temperature"].getFinalValue() << "\n";
+
+    for (auto &system : sciantix_system)
+    {
+        if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1)
+        {
+            inputFile << "mass(" << system.getGas().getAtomicNumber() << ")           = " << sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue() << "\n";
+        }
+    }
+
+    inputFile <<  "temperature unit  = K \n";
+    inputFile <<  "pressure unit     = Pa\n";
+    inputFile <<  "mass unit         = atoms\n";
+     
+    inputFile << "data file         = ../../thermochimica-master/data/CsI-Pham.dat\n";
+    inputFile << "\n! Specify output and debug modes:\nprint mode        = 0\ndebug mode        = .FALSE.\nreinit            = .TRUE.\nwrite json        = .TRUE.";
+
+    inputFile.close();
+
+    std::cout << "Input file written successfully.\n";
+
+    // 2. Execute the external script
+    int status = std::system("./../../thermochimica-master/bin/InputScriptMode ../../thermochimica-master/inputs/input.ti");
+    if (status != 0) {
+        std::cerr << "Error: Execution of ./InputScriptMode failed!\n";
+        return;
+    }
+
+    // 3a. Read from JSON file 
+    std::ifstream jsonFile("../../thermochimica-master/outputs/thermoout.json");
+    if (!jsonFile) {
+        std::cerr << "Error: Cannot open json!" << std::endl;
+        return;
+    }
+
+    Json::Value root;
+    jsonFile >> root;
+    
+    std::cout << "------gas ideal----" << std::endl; 
+    Json::Value &solution = root["1"]["solution phases"]["gas_ideal"];
+
+    if (solution["moles"].asDouble() != 0.0) {
+
+        const Json::Value &species = solution["species"];
+        for (const auto &specie : species.getMemberNames()) {
+            double moles = species[specie]["moles"].asDouble();
+            if (moles == 0.0) continue;
+            std::cout << specie << ": " << moles << " moles\n";
+        }
+        std::cout << "*******************" << std::endl; 
+        const Json::Value &elements = solution["elements"];
+        for (const auto &element : elements.getMemberNames()) {
+            double moles = elements[element]["moles"].asDouble();
+            if (moles == 0.0) continue;
+            std::cout << element << ": " << moles << " moles\n";
+        }
+        std::cout << "*******************" << std::endl; 
+
+    }
+
+    std::cout << "------liquid----" << std::endl; 
+    Json::Value &liquidsolution = root["1"]["solution phases"]["LIQUID"];
+
+    if (liquidsolution["moles"].asDouble() != 0.0) {
+
+        const Json::Value &species = liquidsolution["species"];
+        for (const auto &specie : species.getMemberNames()) {
+            double moles = species[specie]["moles"].asDouble();
+            if (moles == 0.0) continue;
+            std::cout << specie << ": " << moles << " moles\n";
+        }
+        std::cout << "*******************" << std::endl; 
+        const Json::Value &elements = liquidsolution["elements"];
+        for (const auto &element : elements.getMemberNames()) {
+            double moles = elements[element]["moles"].asDouble();
+            if (moles == 0.0) continue;
+            std::cout << element << ": " << moles << " moles\n";
+        }
+        std::cout << "*******************" << std::endl; 
+
+    }
+        
+
+
+    
+    // std::cout << "-----------------" << std::endl; 
+
+    // Json::Value &solution = root["1"]["solution phases"];
+    // for (const auto &phase : solution.getMemberNames()) {
+    //     // Skip the phase if its "moles" value is 0.0
+    //     if (solution[phase]["moles"].asDouble() == 0.0) continue;
+        
+    //     std::cout << phase << std::endl;
+    //     std::cout << "*******************" << std::endl; 
+    
+    //     // Access the species for this phase
+    //     const Json::Value &species = solution[phase]["species"];
+    //     for (const auto &specie : species.getMemberNames()) {
+    //         double moles = species[specie]["moles"].asDouble();
+    //         // Skip the species if its "moles" value is 0.0
+    //         if (moles == 0.0) continue;
+    //         std::cout << specie << ": " << moles << " moles\n";
+    //     }
+    //     std::cout << "*******************" << std::endl; 
+    // }
+    // std::cout << "-----------------" << std::endl; 
+    
+    std::cout << "------PURE CONDENSED PHASES----" << std::endl; 
+    
+    Json::Value &condensed = root["1"]["pure condensed phases"];
+    for (const auto &phase : condensed.getMemberNames()) {
+        
+        if (condensed[phase]["moles"].asDouble() == 0.0) continue;
+        
+        std::cout << phase << std::endl;
+        std::cout << "*******************" << std::endl; 
+    
+        // Access the "elements" for this phase
+        const Json::Value &elements = condensed[phase]["elements"];
+        for (const auto &element : elements.getMemberNames()) {
+            double moles = elements[element]["moles of element in phase"].asDouble();
+            // Skip the element if its moles value is 0.0
+            if (moles == 0.0) continue;
+            std::cout << element << ": " << moles << " moles\n";
+        }
+        std::cout << "*******************" << std::endl; 
+    }
+    std::cout << "-----------------" << std::endl;
+    return;
+}
