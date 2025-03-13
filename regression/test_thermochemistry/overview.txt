@@ -35,7 +35,7 @@ System	Cs in UO2
 System	I in UO2	
 
 Input setting	iGrainGrowth = 1
-Input setting	iFissionGasDiffusivity = 6
+Input setting	iFissionGasDiffusivity = 1
 Input setting	iDiffusionSolver = 1
 Input setting	iIntraGranularBubbleBehavior = 1
 Input setting	iResolutionRate = 1
@@ -56,5 +56,6 @@ Input setting	iHighBurnupStructurePorosity = 0
 Input setting	iHeliumProductionRate = 0
 Input setting	iStoichiometryDeviation = 7
 Input setting	iBubbleDiffusivity = 0
-Input setting	iChromiumSolubility = 0
+Input setting	iChromiumSolubility = 1
+Input setting	iThermochimica = 1
 
