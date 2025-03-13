@@ -53,7 +53,9 @@ void Simulation::SetPhaseDiagram2()
     {
         if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1)
         {
-            inputFile << "mass(" << system.getGas().getAtomicNumber() << ")           = " << sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue() << "\n";
+            double gasatomsavailable = ((sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() + sciantix_variable[system.getGasName() + " reacted"].getFinalValue())  /
+                                        (sciantix_variable["Intergranular bubble concentration"].getFinalValue() * (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+            inputFile << "mass(" << system.getGas().getAtomicNumber() << ")           = " << gasatomsavailable << "\n";
         }
     }
 
@@ -95,16 +97,21 @@ void Simulation::SetPhaseDiagram2()
             double moles = species[specie]["moles"].asDouble();
             if (moles == 0.0) continue;
             std::cout << specie << ": " << moles << " moles\n";
+            sciantix_variable[specie + " - gas_ideal"].setFinalValue(moles);
         }
         std::cout << "*******************" << std::endl; 
         const Json::Value &elements = solution["elements"];
         for (const auto &element : elements.getMemberNames()) {
-            double moles = elements[element]["moles"].asDouble();
+            double moles = elements[element]["moles of element in phase"].asDouble();
             if (moles == 0.0) continue;
             std::cout << element << ": " << moles << " moles\n";
+            double gasatomsavailable = ((sciantix_variable[element + " at grain boundary"].getFinalValue() + sciantix_variable[element + " reacted"].getFinalValue())  /
+                                        (sciantix_variable["Intergranular bubble concentration"].getFinalValue() * (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+            double gasatomsupdate = moles*avogadro_number; 
+            sciantix_variable[ element + " reacted"].setFinalValue((gasatomsavailable - gasatomsupdate)*(sciantix_variable["Intergranular bubble concentration"].getFinalValue() * (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+            sciantix_variable[ element + " at grain boundary"].setFinalValue(gasatomsupdate*(sciantix_variable["Intergranular bubble concentration"].getFinalValue() * (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
         }
         std::cout << "*******************" << std::endl; 
-
     }
 
     std::cout << "------liquid----" << std::endl; 
@@ -117,6 +124,7 @@ void Simulation::SetPhaseDiagram2()
             double moles = species[specie]["moles"].asDouble();
             if (moles == 0.0) continue;
             std::cout << specie << ": " << moles << " moles\n";
+            sciantix_variable[specie + " - LIQUID"].setFinalValue(moles);
         }
         std::cout << "*******************" << std::endl; 
         const Json::Value &elements = liquidsolution["elements"];
@@ -129,31 +137,6 @@ void Simulation::SetPhaseDiagram2()
 
     }
         
-
-
-    
-    // std::cout << "-----------------" << std::endl; 
-
-    // Json::Value &solution = root["1"]["solution phases"];
-    // for (const auto &phase : solution.getMemberNames()) {
-    //     // Skip the phase if its "moles" value is 0.0
-    //     if (solution[phase]["moles"].asDouble() == 0.0) continue;
-        
-    //     std::cout << phase << std::endl;
-    //     std::cout << "*******************" << std::endl; 
-    
-    //     // Access the species for this phase
-    //     const Json::Value &species = solution[phase]["species"];
-    //     for (const auto &specie : species.getMemberNames()) {
-    //         double moles = species[specie]["moles"].asDouble();
-    //         // Skip the species if its "moles" value is 0.0
-    //         if (moles == 0.0) continue;
-    //         std::cout << specie << ": " << moles << " moles\n";
-    //     }
-    //     std::cout << "*******************" << std::endl; 
-    // }
-    // std::cout << "-----------------" << std::endl; 
-    
     std::cout << "------PURE CONDENSED PHASES----" << std::endl; 
     
     Json::Value &condensed = root["1"]["pure condensed phases"];
@@ -161,8 +144,9 @@ void Simulation::SetPhaseDiagram2()
         
         if (condensed[phase]["moles"].asDouble() == 0.0) continue;
         
-        std::cout << phase << std::endl;
+        std::cout << phase << ": " << condensed[phase]["moles"].asDouble() << " moles\n";
         std::cout << "*******************" << std::endl; 
+        sciantix_variable[phase + " - pure condensed phases"].setFinalValue(condensed[phase]["moles"].asDouble());
     
         // Access the "elements" for this phase
         const Json::Value &elements = condensed[phase]["elements"];
