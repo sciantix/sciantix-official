@@ -29,7 +29,7 @@
 
 void Simulation::SetPhaseDiagram2()
 {
-    if (input_variable["iStoichiometryDeviation"].getValue() != 7) return;
+    if (input_variable["iThermochimica"].getValue() == 0) return;
 
     double Temperature = history_variable["Temperature"].getFinalValue();
     double bubble_pressure;

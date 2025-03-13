@@ -55,7 +55,8 @@ std::vector<std::string> getInputVariableNames()
         "iHeliumProductionRate",
         "iStoichiometryDeviation",
         "iBubbleDiffusivity",
-        "iChromiumSolubility"
+        "iChromiumSolubility",
+        "iThermochimica"
     };
 
     return names;
@@ -97,6 +98,7 @@ std::vector<SciantixVariable> initializeHistoryVariable(
  * @param toOutputGrainBoundary Flag for outputting grain boundary information.
  * @param toOutputHighBurnupStructure Flag for outputting high burnup structure information.
  * @param toOutputStoichiometryDeviation Flag for outputting stoichiometry deviation information.
+ * @param toOutputThermochimica Flag for outputting thermochimica results.
  * @return A vector of SciantixVariable objects initialized with the given values and flags.
  */
 std::vector<SciantixVariable> initializeSciantixVariable(
@@ -108,7 +110,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(
     bool toOutputGrainBoundary,
     bool toOutputHighBurnupStructure,
     bool toOutputStoichiometryDeviation,
-    bool toOutputChromiumContent
+    bool toOutputChromiumContent,
+    bool toOutputThermochimica
 )
 {
     std::vector<SciantixVariable> init_sciantix_variable =
@@ -185,22 +188,22 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Intragranular I atoms per bubble", "(at/bub)", Sciantix_variables[118], Sciantix_variables[118], 0),
         SciantixVariable("Intergranular I atoms per bubble", "(at/bub)", Sciantix_variables[119], Sciantix_variables[119], 0),
         
-        SciantixVariable("I - gas_ideal","(mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
-        SciantixVariable("I2 - gas_ideal","(mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
-        SciantixVariable("Cs - gas_ideal","(mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
-        SciantixVariable("Cs2 - gas_ideal","(mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
-        SciantixVariable("CsI - gas_ideal","(mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
-        SciantixVariable("Cs2I2 - gas_ideal","(mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
+        SciantixVariable("I - gas_ideal","(mol)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("I2 - gas_ideal","(mol)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("Cs - gas_ideal","(mol)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("Cs2 - gas_ideal","(mol)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("CsI - gas_ideal","(mol)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("Cs2I2 - gas_ideal","(mol)", 0.0, 0.0, toOutputThermochimica),
 
-        SciantixVariable("I2 - LIQUID","(mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
-        SciantixVariable("Cs - LIQUID","(mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
-        SciantixVariable("CsI - LIQUID","(mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
+        SciantixVariable("I2 - LIQUID","(mol)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("Cs - LIQUID","(mol)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("CsI - LIQUID","(mol)", 0.0, 0.0, toOutputThermochimica),
 
-        SciantixVariable("I2_s(s) - pure condensed phases","(mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
-        SciantixVariable("Cs_bcc_a2(s) - pure condensed phases","(mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
-        SciantixVariable("CsI_csi_b2(s) - pure condensed phases","(mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
-        SciantixVariable("CsI3_csi3(s) - pure condensed phases","(mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
-        SciantixVariable("CsI4_csi4(s) - pure condensed phases","(mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
+        SciantixVariable("I2_s(s) - pure condensed phases","(mol)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("Cs_bcc_a2(s) - pure condensed phases","(mol)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("CsI_csi_b2(s) - pure condensed phases","(mol)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("CsI3_csi3(s) - pure condensed phases","(mol)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("CsI4_csi4(s) - pure condensed phases","(mol)", 0.0, 0.0, toOutputThermochimica),
         
         SciantixVariable("Intragranular bubble concentration", "(bub/m3)", Sciantix_variables[19], Sciantix_variables[19], 1),
         SciantixVariable("Intragranular bubble radius", "(m)", Sciantix_variables[20], Sciantix_variables[20], 1),
