@@ -85,6 +85,7 @@ axes[0].set_ylabel('Released atoms to birth (/)')
 axes[0].set_title('Release to birth')
 axes[0].grid(True)
 axes[0].set_xlim([xlim_o,xlim_i])
+axes[0].set_ylim([0,1])
 
 ax_temp_0 = axes[0].twinx()
 for dataset in data:
@@ -101,6 +102,7 @@ axes[1].set_ylabel('Available atoms to birth (/)')
 axes[1].set_title('Available to birth')
 axes[1].grid(True)
 axes[1].set_xlim([xlim_o,xlim_i])
+axes[1].set_ylim([0,1])
 
 ax_temp_0 = axes[1].twinx()
 dataset = "With Thermochemistry"
@@ -117,6 +119,7 @@ axes[2].set_ylabel('Reacted atoms to available (/)')
 axes[2].set_title('Reacted to available')
 axes[2].grid(True)
 axes[2].set_xlim([xlim_o,xlim_i])
+axes[2].set_ylim([0,1])
 
 ax_temp_0 = axes[2].twinx()
 dataset = "With Thermochemistry"
@@ -149,6 +152,7 @@ axes[0].set_ylabel('Released atoms to birth (/)')
 axes[0].set_title('Release to birth')
 axes[0].grid(True)
 axes[0].set_xlim([xlim_i,xlim_f])
+axes[0].set_ylim([0,1])
 
 if time_1900 is not None:
     axes[0].axvline(x=time_1900, color='red', linestyle=':', label='1900K')
@@ -168,6 +172,7 @@ axes[1].set_ylabel('Available atoms to birth (/)')
 axes[1].set_title('Available to birth')
 axes[1].grid(True)
 axes[1].set_xlim([xlim_i,xlim_f])
+axes[1].set_ylim([0,1])
 
 if time_1900 is not None:
     axes[1].axvline(x=time_1900, color='red', linestyle=':', label='1900K')
@@ -187,6 +192,7 @@ axes[2].set_ylabel('Reacted atoms to available (/)')
 axes[2].set_title('Reacted to available')
 axes[2].grid(True)
 axes[2].set_xlim([xlim_i,xlim_f])
+axes[2].set_ylim([0,1])
 
 if time_1900 is not None:
     axes[2].axvline(x=time_1900, color='red', linestyle=':', label='1900K')
@@ -266,10 +272,13 @@ plt.savefig(folder_path +"/Products.png")
 ############################################### PLOT RELEASED VS TEMPERATURA ####################################
 
 # Experimental data
-mass_sample = 20e-6  # kg
+mass_sample = 10e-6  # kg
 amu = 1.660539e-27  # kg
 density = 10641.0  # kg/m3
 volume_sample = mass_sample / density
+print('------------------------------------------')
+print('Experimental data')
+print(f'Sample mass {round(mass_sample*1e6)} mg, volume {round(volume_sample*1e9,3)} mm3')
 
 # Load additional experimental data
 additional_data = {
@@ -324,7 +333,6 @@ for i, dataset in enumerate(additional_data):
 plt.vlines(x=1900, ymin = 1e-13, ymax=1e-9, color='red', linestyle=':', label='1900K')
 plt.ylim([1e-13, 1e-9])
 
-# Configure plot
 plt.xlabel('Temperature (K)')
 plt.ylabel('Release quantity (kg/s)')
 plt.yscale('log')
@@ -333,7 +341,6 @@ plt.grid(True)
 plt.legend()
 plt.tight_layout()
 
-# Save and show plot
 plt.savefig(folder_path + "/Released_vs_Temperature.png")
 plt.show()
 
@@ -376,7 +383,6 @@ for i, dataset in enumerate(additional_data):
     cumulative_release_exp = cumtrapz_custom(exp_df['Release quantity (kg/s)'].values, time_sec)
     cumulative_release_exp /= cumulative_release_exp[-1]
     
-    # Per il plot usiamo la temperatura associata ad ogni misurazione
     plt.plot(
         exp_df['Temperature (K)'],
         cumulative_release_exp,
@@ -388,15 +394,11 @@ for i, dataset in enumerate(additional_data):
 
 plt.vlines(x=1900, ymin = 0, ymax=1, color='red', linestyle=':', label='1900K')
 plt.ylim([0,1])
-
-# Configurazione del plot
 plt.xlabel('Temperature (K)')
 plt.ylabel('Cumulative release (/)')
 plt.title('Comparison with experimental data')
 plt.grid(True)
 plt.legend()
 plt.tight_layout()
-
-# Salva e mostra il plot
 plt.savefig(folder_path + "/Cumulative_Release_Comparison.png")
 plt.show()
