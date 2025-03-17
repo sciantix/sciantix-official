@@ -7,6 +7,8 @@
 1.0
 # scaling factor - diffusivity
 1.0
+# scaling factor - diffusivity2
+1.0
 # scaling factor - temperature
 1.0
 # scaling factor - fission rate
@@ -14,5 +16,5 @@
 # scaling factor - cent parameter
 1.0
 # scaling factor - helium production rate
-1.0
+1e5
 # scaling factor - dummy

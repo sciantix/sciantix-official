@@ -11,8 +11,8 @@ def modify_input_settings(value):
     with open(input_file, 'r') as file:
         lines = file.readlines()
     
-    # Modify line 21 (index 22) by replacing the first character
-    lines[22] = value + lines[22][1:]
+    # Modify line 22 (index23) by replacing the first character
+    lines[23] = value + lines[23][1:]
     
     with open(input_file, 'w') as file:
         file.writelines(lines)
@@ -25,11 +25,11 @@ def run_sciantix(output_name):
 shutil.copy("../../build/sciantix.x", ".")
 
 # Run with no thermochemistry
-modify_input_settings("0")
+modify_input_settings("1")
 run_sciantix("output_nochemistry.txt")
 
 # Run with thermochemistry
-modify_input_settings("1")
+modify_input_settings("2")
 run_sciantix("output_chemistry.txt")
 
 # Run thermochemistry script
