@@ -46,7 +46,16 @@ void Simulation::SetPhaseDiagram2()
         return;
     }
     inputFile << "! Initialize variables:\n";
-    inputFile << "pressure          = " << bubble_pressure << "\n";
+
+    if (input_variable["iThermochimica"].getValue() == 1)
+    {
+        inputFile << "pressure          = " << bubble_pressure << "\n";
+    }
+    else if (input_variable["iThermochimica"].getValue() == 2)
+    {
+        inputFile << "pressure          = " << scaling_factors["Dummy"].getValue() << "\n";
+    }
+    
     inputFile << "temperature       = " << history_variable["Temperature"].getFinalValue() << "\n";
 
     for (auto &system : sciantix_system)
