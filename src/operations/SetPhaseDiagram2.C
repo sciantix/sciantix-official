@@ -129,7 +129,7 @@ void Simulation::SetPhaseDiagram2()
         std::cout << "*******************" << std::endl; 
         const Json::Value &elements = liquidsolution["elements"];
         for (const auto &element : elements.getMemberNames()) {
-            double moles = elements[element]["moles"].asDouble();
+            double moles = elements[element]["moles of element in phase"].asDouble();
             if (moles == 0.0) continue;
             std::cout << element << ": " << moles << " moles\n";
         }
@@ -152,7 +152,6 @@ void Simulation::SetPhaseDiagram2()
         const Json::Value &elements = condensed[phase]["elements"];
         for (const auto &element : elements.getMemberNames()) {
             double moles = elements[element]["moles of element in phase"].asDouble();
-            // Skip the element if its moles value is 0.0
             if (moles == 0.0) continue;
             std::cout << element << ": " << moles << " moles\n";
         }
