@@ -4,7 +4,7 @@
 # scaling factor - trapping rate
 1.0
 # scaling factor - nucleation rate
-1.0
+0.1
 # scaling factor - diffusivity
 1.0
 # scaling factor - diffusivity2
@@ -16,5 +16,5 @@
 # scaling factor - cent parameter
 1.0
 # scaling factor - helium production rate
-1e6
+1e3
 # scaling factor - dummy
