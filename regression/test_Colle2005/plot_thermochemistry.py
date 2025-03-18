@@ -29,9 +29,9 @@ print('Stoichiometry deviation (/) = ', data['With Thermochemistry']['Stoichiome
 # Define classes
 inert_gases = ['Xe', 'Kr']
 volatile_fps = ['Cs', 'I']
-gas_ideal = ['I - gas_ideal (mol)', 'I2 - gas_ideal (mol)', 'Cs - gas_ideal (mol)', 'Cs2 - gas_ideal (mol)', 'CsI - gas_ideal (mol)', 'Cs2I2 - gas_ideal (mol)']
-liquid = ['I2 - LIQUID (mol)', 'Cs - LIQUID (mol)', 'CsI - LIQUID (mol)']
-pure_condensed = ['I2_s(s) - pure condensed phases (mol)','Cs_bcc_a2(s) - pure condensed phases (mol)','CsI_csi_b2(s) - pure condensed phases (mol)','CsI3_csi3(s) - pure condensed phases (mol)','CsI4_csi4(s) - pure condensed phases (mol)']
+gas_ideal = ['I - gas_ideal - GB (mol)', 'I2 - gas_ideal - GB (mol)', 'Cs - gas_ideal - GB (mol)', 'Cs2 - gas_ideal - GB (mol)', 'CsI - gas_ideal - GB (mol)', 'Cs2I2 - gas_ideal - GB (mol)']
+liquid = ['I2 - LIQUID - GB (mol)', 'Cs - LIQUID - GB (mol)', 'CsI - LIQUID - GB (mol)']
+pure_condensed = ['I2_s(s) - pure condensed phases - GB (mol)','Cs_bcc_a2(s) - pure condensed phases - GB (mol)','CsI_csi_b2(s) - pure condensed phases - GB (mol)','CsI3_csi3(s) - pure condensed phases - GB (mol)','CsI4_csi4(s) - pure condensed phases - GB (mol)']
 
 all_gases =  volatile_fps + inert_gases
 all_products = gas_ideal + liquid + pure_condensed
@@ -41,25 +41,122 @@ colors = ['dodgerblue', 'darkorange', 'forestgreen', 'crimson', 'hotpink', 'gold
           'mediumpurple', 'saddlebrown', 'deepskyblue', 'darkolivegreen', 'limegreen', 'darkcyan', 'orangered']
 linestyles = {'No Thermochemistry': '--', 'With Thermochemistry': '-'}
 
+N = 600
+
 # Compute derived quantities
 for dataset in data:
     for label in all_gases:
         data[dataset][label + ' released/birth'] = data[dataset][label + ' released (at/m3)']/data[dataset][label + ' produced (at/m3)']
+
+    #for label in inert_gases:
+        #print(label, dataset, data[dataset].loc[N, label + ' produced (at/m3)'], data[dataset].loc[N, label + ' released (at/m3)'], data[dataset].loc[N, label + ' at grain boundary (at/m3)'], data[dataset].loc[N, label + ' in grain (at/m3)'])
+    
     for label in volatile_fps:
-        data[dataset][label + ' available/birth'] = (data[dataset][label + ' reacted (at/m3)']+ data[dataset][label + ' at grain boundary (at/m3)'])/data[dataset][label + ' produced (at/m3)']
-        data[dataset][label + ' reacted/birth'] = data[dataset][label + ' reacted (at/m3)']/data[dataset][label + ' produced (at/m3)']
+        data[dataset][label + ' available/birth'] = (data[dataset][label + ' reacted - GB (at/m3)']+ data[dataset][label + ' at grain boundary (at/m3)'])/data[dataset][label + ' produced (at/m3)']
+        data[dataset][label + ' reacted/birth'] = data[dataset][label + ' reacted - GB (at/m3)']/data[dataset][label + ' produced (at/m3)']
         data[dataset][label + ' reacted/available'] = data[dataset][label + ' reacted/birth']/data[dataset][label + ' available/birth']
+        print(label, dataset, data[dataset].loc[N, label + ' produced (at/m3)'], 
+              data[dataset].loc[N, label + ' released (at/m3)'], 
+              data[dataset].loc[N, label + ' at grain boundary (at/m3)'], data[dataset].loc[N, label + ' reacted - GB (at/m3)'],
+              data[dataset].loc[N, label + ' in grain (at/m3)'], data[dataset].loc[N, label + ' reacted - IG (at/m3)'])
+        print(label, dataset, data[dataset].loc[N, label + ' produced (at/m3)'] -
+              data[dataset].loc[N, label + ' released (at/m3)'] -
+              data[dataset].loc[N, label + ' at grain boundary (at/m3)'] - data[dataset].loc[N, label + ' reacted - GB (at/m3)'] - 
+              data[dataset].loc[N, label + ' in grain (at/m3)'] -  data[dataset].loc[N, label + ' reacted - IG (at/m3)'])
+    
 
 if 'At grain boundary (mol)' not in data['With Thermochemistry'].columns:
     data['With Thermochemistry']['At grain boundary (mol)'] = 0  
 for label in volatile_fps:
-    data['With Thermochemistry']['At grain boundary (mol)'] += (1/avogadronumber)*(data['With Thermochemistry'][label+' at grain boundary (at/m3)'] + data['With Thermochemistry'][label+' reacted (at/m3)'])/(data['With Thermochemistry']['Intergranular bubble concentration (bub/m2)'] * 3/ data['With Thermochemistry']['Grain radius (m)'])
+    data['With Thermochemistry']['At grain boundary (mol)'] += (1/avogadronumber)*(data['With Thermochemistry'][label+' at grain boundary (at/m3)'] + data['With Thermochemistry'][label+' reacted - GB (at/m3)'])/(data['With Thermochemistry']['Intergranular bubble concentration (bub/m2)'] * 3/ data['With Thermochemistry']['Grain radius (m)'])
 
 for label in all_products:
     data['With Thermochemistry'][label + ' produced/available'] = data['With Thermochemistry'][label]/data['With Thermochemistry']['At grain boundary (mol)']
 
 ####################################### Comparison with experimetal data at 1900 K ########################################
 mask_RAMP = data['With Thermochemistry']['Time (h)'] >= xlim_i
+
+#################################### quantitative #################################
+label_x = 'Time (h)'
+xlim_o = min(data['With Thermochemistry'][label_x])
+xlim_f = max(data['With Thermochemistry'][label_x])
+
+fig, axes = plt.subplots(1, 2, figsize=(18, 8))
+
+label = 'Cs'
+dataset = "With Thermochemistry"
+axes[0].plot(data[dataset][label_x], data[dataset][label + ' produced (at/m3)'], 
+        linestyle=linestyles[dataset], label='Produced')
+axes[0].plot(data[dataset][label_x], data[dataset][label + ' in grain (at/m3)'], 
+        linestyle=linestyles[dataset], label='In grain')
+axes[0].plot(data[dataset][label_x], data[dataset][label + ' reacted - IG (at/m3)'], 
+        linestyle=linestyles[dataset], label='Reacted - IG')
+axes[0].plot(data[dataset][label_x], data[dataset][label + ' at grain boundary (at/m3)'], 
+        linestyle=linestyles[dataset], label='At grain boundary')
+axes[0].plot(data[dataset][label_x], data[dataset][label + ' reacted - GB (at/m3)'], 
+        linestyle=linestyles[dataset], label='Reacted - GB')
+axes[0].plot(data[dataset][label_x], data[dataset][label + ' released (at/m3)'], 
+        linestyle=linestyles[dataset], label='Released')
+axes[0].set_xlabel(label_x)
+axes[0].set_ylabel('Atoms (at/m3)')
+axes[0].set_xlim([xlim_o,xlim_i])
+
+axes[1].plot(data[dataset][label_x], data[dataset][label + ' produced (at/m3)'], 
+        linestyle=linestyles[dataset], label='Produced')
+axes[1].plot(data[dataset][label_x], data[dataset][label + ' in grain (at/m3)'], 
+        linestyle=linestyles[dataset],  label='In grain')
+axes[1].plot(data[dataset][label_x], data[dataset][label + ' reacted - IG (at/m3)'], 
+        linestyle=linestyles[dataset], label='Reacted - IG')
+axes[1].plot(data[dataset][label_x], data[dataset][label + ' at grain boundary (at/m3)'], 
+        linestyle=linestyles[dataset], label='At grain boundary')
+axes[1].plot(data[dataset][label_x], data[dataset][label + ' reacted - GB (at/m3)'], 
+        linestyle=linestyles[dataset], label='Reacted - GB')
+axes[1].plot(data[dataset][label_x], data[dataset][label + ' released (at/m3)'], 
+        linestyle=linestyles[dataset], label='Released')
+axes[1].set_xlabel(label_x)
+axes[1].set_ylabel('Atoms (at/m3)')
+axes[1].set_xlim([xlim_i,xlim_f])
+
+plt.legend()
+
+fig, axes = plt.subplots(1, 2, figsize=(18, 8))
+
+label = 'Cs'
+dataset = "No Thermochemistry"
+axes[0].plot(data[dataset][label_x], data[dataset][label + ' produced (at/m3)'], 
+        linestyle=linestyles[dataset], label='Produced')
+axes[0].plot(data[dataset][label_x], data[dataset][label + ' in grain (at/m3)'], 
+        linestyle=linestyles[dataset], label='In grain')
+axes[0].plot(data[dataset][label_x], data[dataset][label + ' reacted - IG (at/m3)'], 
+        linestyle=linestyles[dataset], label='Reacted - IG')
+axes[0].plot(data[dataset][label_x], data[dataset][label + ' at grain boundary (at/m3)'], 
+        linestyle=linestyles[dataset], label='At grain boundary')
+axes[0].plot(data[dataset][label_x], data[dataset][label + ' reacted - GB (at/m3)'], 
+        linestyle=linestyles[dataset], label='Reacted - GB')
+axes[0].plot(data[dataset][label_x], data[dataset][label + ' released (at/m3)'], 
+        linestyle=linestyles[dataset], label='Released')
+axes[0].set_xlabel(label_x)
+axes[0].set_ylabel('Atoms (at/m3)')
+axes[0].set_xlim([xlim_o,xlim_i])
+
+axes[1].plot(data[dataset][label_x], data[dataset][label + ' produced (at/m3)'], 
+        linestyle=linestyles[dataset], label='Produced')
+axes[1].plot(data[dataset][label_x], data[dataset][label + ' in grain (at/m3)'], 
+        linestyle=linestyles[dataset],  label='In grain')
+axes[1].plot(data[dataset][label_x], data[dataset][label + ' reacted - IG (at/m3)'], 
+        linestyle=linestyles[dataset], label='Reacted - IG')
+axes[1].plot(data[dataset][label_x], data[dataset][label + ' at grain boundary (at/m3)'], 
+        linestyle=linestyles[dataset], label='At grain boundary')
+axes[1].plot(data[dataset][label_x], data[dataset][label + ' reacted - GB (at/m3)'], 
+        linestyle=linestyles[dataset], label='Reacted - GB')
+axes[1].plot(data[dataset][label_x], data[dataset][label + ' released (at/m3)'], 
+        linestyle=linestyles[dataset], label='Released')
+axes[1].set_xlabel(label_x)
+axes[1].set_ylabel('Atoms (at/m3)')
+axes[1].set_xlim([xlim_i,xlim_f])
+
+plt.legend()
+plt.show()
 
 #################################### VS TIME #################################
 label_x = 'Time (h)'

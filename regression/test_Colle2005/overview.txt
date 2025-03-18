@@ -57,5 +57,5 @@ Input setting	iHeliumProductionRate = 0
 Input setting	iStoichiometryDeviation = 7
 Input setting	iBubbleDiffusivity = 1
 Input setting	iChromiumSolubility = 0
-Input setting	iThermochimica = 2
+Input setting	iThermochimica = 3
 
