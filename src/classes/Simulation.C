@@ -81,6 +81,8 @@ void Simulation::execute()
 
     GasDecay();
 
+    SetPhaseDiagram1();
+
     IntraGranularBubbleBehavior();
 
     GasDiffusion();

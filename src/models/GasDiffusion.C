@@ -166,10 +166,24 @@ void Simulation::GasDiffusion()
 
         if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1.0)
         {
+            double GrainContent = sciantix_variable[system.getGasName() + " in grain"].getFinalValue();
+            sciantix_variable[system.getGasName() + " reacted - IG"].setFinalValue(sciantix_variable["x reacted - IG"].getFinalValue() * GrainContent);
+            sciantix_variable[system.getGasName() + " in grain"].setFinalValue((1 - sciantix_variable["x reacted - IG"].getFinalValue()) * GrainContent);
+
+            double GrainRelease = (sciantix_variable[system.getGasName() + " produced"].getIncrement() - 
+                                    sciantix_variable[system.getGasName() + " decayed"].getIncrement() - 
+                                    sciantix_variable[system.getGasName() + " in grain"].getIncrement() - 
+                                    sciantix_variable[system.getGasName() + " reacted - IG"].getIncrement());
+            if (GrainRelease < 0.0)
+                GrainRelease = 0.0;
+            sciantix_variable[system.getGasName() + " reacted - IG"].addValue(sciantix_variable["x reacted - IG"].getFinalValue() * GrainRelease);
+            
+            
             sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
                 sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " reacted"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " reacted - IG"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " released"].getInitialValue());
 
@@ -210,7 +224,8 @@ void Simulation::GasDiffusion()
                     sciantix_variable[system.getGasName() + " released"].setFinalValue(
                         sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                         sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                        sciantix_variable[system.getGasName() + " reacted"].getFinalValue() -
+                        sciantix_variable[system.getGasName() + " reacted - IG"].getFinalValue() -
+                        sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue() -
                         sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
                     );
                 }
