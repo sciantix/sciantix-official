@@ -161,6 +161,14 @@ public:
     void GasDiffusion();
 
     /**
+     * @brief Thermochemistry module for the intergranular bubbles.
+     * 
+     * @author E. Cappellari
+     * 
+     */
+    void SetPhaseDiagram1();
+
+    /**
      * @brief Thermochemistry module for the grain boundary.
      * 
      * @author E. Cappellari

@@ -27,17 +27,12 @@
 #include <string>
 #include <json/json.h>
 
-void Simulation::SetPhaseDiagram2()
+void Simulation::SetPhaseDiagram1()
 {
-    if (input_variable["iThermochimica"].getValue() == 0) return;
+    if (input_variable["iThermochimica"].getValue() < 3) return;
 
     double Temperature = history_variable["Temperature"].getFinalValue();
-    double bubble_pressure;
-    if(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue())
-        bubble_pressure = ( boltzmann_constant *  Temperature * sciantix_variable["Intergranular atoms per bubble"].getInitialValue()/(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue() * matrices["UO2"].getSchottkyVolume()));
-    else
-        bubble_pressure = 1.0;
-
+    double bubble_pressure = scaling_factors["Dummy"].getValue();
 
     // 1. Create the input file
     std::ofstream inputFile("./../../thermochimica-master/inputs/input.ti");
@@ -45,25 +40,28 @@ void Simulation::SetPhaseDiagram2()
         std::cerr << "Error: Cannot create input file!" << std::endl;
         return;
     }
-    inputFile << "! Initialize variables:\n";
 
-    if (input_variable["iThermochimica"].getValue() == 1)
-    {
-        inputFile << "pressure          = " << bubble_pressure << "\n";
-    }
-    else if (input_variable["iThermochimica"].getValue() > 1)
-    {
-        inputFile << "pressure          = " << scaling_factors["Dummy"].getValue() << "\n";
-    }
-    
+    inputFile << "! Initialize variables:\n";
+    inputFile << "pressure          = " << bubble_pressure << "\n";
     inputFile << "temperature       = " << history_variable["Temperature"].getFinalValue() << "\n";
 
     for (auto &system : sciantix_system)
     {
         if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1)
         {
-            double gasatomsavailable = ((sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() + sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue())  /
-                                        (sciantix_variable["Intergranular bubble concentration"].getFinalValue() * (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+            double equilibrium_fraction(1.0);
+            if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
+                equilibrium_fraction = system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
+            
+            double gasatomsavailable = (sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
+                    sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
+                    sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue() - 
+                    sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() -
+                    sciantix_variable[system.getGasName() + " released"].getInitialValue()) * 
+                    (4 * M_PI * pow( sciantix_variable["Grain radius"].getFinalValue(),3) / 3.0);
+
+            gasatomsavailable *= (1.0 - equilibrium_fraction);
+
             inputFile << "mass(" << system.getGas().getAtomicNumber() << ")           = " << gasatomsavailable << "\n";
         }
     }
@@ -96,7 +94,7 @@ void Simulation::SetPhaseDiagram2()
     Json::Value root;
     jsonFile >> root;
     
-    std::cout << "INTERGRANULAR BEHAVIOUR" << std::endl;
+    std::cout << "INTRAGRANULAR BEHAVIOUR" << std::endl;
     std::cout << "------gas ideal----" << std::endl; 
     Json::Value &solution = root["1"]["solution phases"]["gas_ideal"];
 
@@ -107,7 +105,6 @@ void Simulation::SetPhaseDiagram2()
             double moles = species[specie]["moles"].asDouble();
             if (moles == 0.0) continue;
             std::cout << specie << ": " << moles << " moles\n";
-            sciantix_variable[specie + " - gas_ideal - GB"].setFinalValue(moles);
         }
         std::cout << "*******************" << std::endl; 
         const Json::Value &elements = solution["elements"];
@@ -115,11 +112,30 @@ void Simulation::SetPhaseDiagram2()
             double moles = elements[element]["moles of element in phase"].asDouble();
             if (moles == 0.0) continue;
             std::cout << element << ": " << moles << " moles\n";
-            double gasatomsavailable = ((sciantix_variable[element + " at grain boundary"].getFinalValue() + sciantix_variable[element + " reacted - GB"].getFinalValue())  /
-                                        (sciantix_variable["Intergranular bubble concentration"].getFinalValue() * (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+
+            double equilibrium_fraction(1.0);
+
+            for (auto &system : sciantix_system)
+            {
+                if (system.getGasName() == element)
+                {
+                    if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
+                        equilibrium_fraction = system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
+                }
+            }
+
+            double gasatomsavailable = (sciantix_variable[element + " produced"].getFinalValue() -
+                    sciantix_variable[element + " decayed"].getFinalValue() -
+                    sciantix_variable[element + " reacted - GB"].getFinalValue() - 
+                    sciantix_variable[element + " at grain boundary"].getFinalValue() -
+                    sciantix_variable[element + " released"].getInitialValue()) * 
+                    (4 * M_PI * pow( sciantix_variable["Grain radius"].getFinalValue(),3) / 3.0);
+
+            gasatomsavailable *= (1.0 - equilibrium_fraction);
             double gasatomsupdate = moles*avogadro_number; 
-            sciantix_variable[ element + " reacted - GB"].setFinalValue((gasatomsavailable - gasatomsupdate)*(sciantix_variable["Intergranular bubble concentration"].getFinalValue() * (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
-            sciantix_variable[ element + " at grain boundary"].setFinalValue(gasatomsupdate*(sciantix_variable["Intergranular bubble concentration"].getFinalValue() * (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+            sciantix_variable["x reacted - IG"].setFinalValue((gasatomsavailable - gasatomsupdate)/ gasatomsavailable);
+            sciantix_variable[ element + " reacted - IG"].setFinalValue((gasatomsavailable - gasatomsupdate)/(4 * M_PI * pow( sciantix_variable["Grain radius"].getFinalValue(),3) / 3.0));
+            sciantix_variable[ element + " in grain"].setFinalValue((gasatomsupdate)/(4 * M_PI * pow( sciantix_variable["Grain radius"].getFinalValue(),3) / 3.0));
         }
         std::cout << "*******************" << std::endl; 
     }
@@ -134,7 +150,7 @@ void Simulation::SetPhaseDiagram2()
             double moles = species[specie]["moles"].asDouble();
             if (moles == 0.0) continue;
             std::cout << specie << ": " << moles << " moles\n";
-            sciantix_variable[specie + " - LIQUID - GB"].setFinalValue(moles);
+            sciantix_variable[specie + " - LIQUID - IG"].setFinalValue(moles);
         }
         std::cout << "*******************" << std::endl; 
         const Json::Value &elements = liquidsolution["elements"];
@@ -156,7 +172,7 @@ void Simulation::SetPhaseDiagram2()
         
         std::cout << phase << ": " << condensed[phase]["moles"].asDouble() << " moles\n";
         std::cout << "*******************" << std::endl; 
-        sciantix_variable[phase + " - pure condensed phases - GB"].setFinalValue(condensed[phase]["moles"].asDouble());
+        sciantix_variable[phase + " - pure condensed phases - IG"].setFinalValue(condensed[phase]["moles"].asDouble());
     
         // Access the "elements" for this phase
         const Json::Value &elements = condensed[phase]["elements"];

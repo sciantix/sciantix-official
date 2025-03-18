@@ -158,7 +158,8 @@ void Simulation::GrainBoundaryMicroCracking()
             sciantix_variable[system.getGasName() + " released"].setFinalValue(
                 sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " reacted"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " reacted - IG"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue()
             );
