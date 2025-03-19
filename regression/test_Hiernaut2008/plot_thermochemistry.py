@@ -2,10 +2,17 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 import pandas as pd
 import numpy as np
+import os
+import glob
 
 folder_path = "results"
 avogadronumber = 6.02214e23
-xlim_i = 54000
+xlim_i = 53400
+
+# Remove previous plots
+png_files = glob.glob(os.path.join(folder_path, "*.png"))
+for file in png_files:
+    os.remove(file)
 
 # Load data
 data = {}
@@ -22,34 +29,58 @@ print('Stoichiometry deviation (/) = ', data['With Thermochemistry']['Stoichiome
 # Define classes
 inert_gases = ['Xe', 'Kr']
 volatile_fps = ['Cs', 'I']
-gas_ideal = ['I - gas_ideal (mol)', 'I2 - gas_ideal (mol)', 'Cs - gas_ideal (mol)', 'Cs2 - gas_ideal (mol)', 'CsI - gas_ideal (mol)', 'Cs2I2 - gas_ideal (mol)']
-liquid = ['I2 - LIQUID (mol)', 'Cs - LIQUID (mol)', 'CsI - LIQUID (mol)']
-pure_condensed = ['I2_s(s) - pure condensed phases (mol)','Cs_bcc_a2(s) - pure condensed phases (mol)','CsI_csi_b2(s) - pure condensed phases (mol)','CsI3_csi3(s) - pure condensed phases (mol)','CsI4_csi4(s) - pure condensed phases (mol)']
+gas_ideal_GB = ['I - gas_ideal - GB (mol)', 'I2 - gas_ideal - GB (mol)', 'Cs - gas_ideal - GB (mol)', 'Cs2 - gas_ideal - GB (mol)', 'CsI - gas_ideal - GB (mol)', 'Cs2I2 - gas_ideal - GB (mol)']
+liquid_GB = ['I2 - LIQUID - GB (mol)', 'Cs - LIQUID - GB (mol)', 'CsI - LIQUID - GB (mol)']
+pure_condensed_GB = ['I2_s(s) - pure condensed phases - GB (mol)','Cs_bcc_a2(s) - pure condensed phases - GB (mol)','CsI_csi_b2(s) - pure condensed phases - GB (mol)','CsI3_csi3(s) - pure condensed phases - GB (mol)','CsI4_csi4(s) - pure condensed phases - GB (mol)']
+
+gas_ideal_IG = ['I - gas_ideal - IG (mol)', 'I2 - gas_ideal - IG (mol)', 'Cs - gas_ideal - IG (mol)', 'Cs2 - gas_ideal - IG (mol)', 'CsI - gas_ideal - IG (mol)', 'Cs2I2 - gas_ideal - IG (mol)']
+liquid_IG = ['I2 - LIQUID - IG (mol)', 'Cs - LIQUID - IG (mol)', 'CsI - LIQUID - IG (mol)']
+pure_condensed_IG = ['I2_s(s) - pure condensed phases - IG (mol)','Cs_bcc_a2(s) - pure condensed phases - IG (mol)','CsI_csi_b2(s) - pure condensed phases - IG (mol)','CsI3_csi3(s) - pure condensed phases - IG (mol)','CsI4_csi4(s) - pure condensed phases - IG (mol)']
 
 all_gases =  volatile_fps + inert_gases
-all_products = gas_ideal + liquid + pure_condensed
+all_products_GB = gas_ideal_GB + liquid_GB + pure_condensed_GB
+all_products_IG = gas_ideal_IG + liquid_IG + pure_condensed_IG
 
 # Define style
 colors = ['dodgerblue', 'darkorange', 'forestgreen', 'crimson', 'hotpink', 'gold', 'slategray',
           'mediumpurple', 'saddlebrown', 'deepskyblue', 'darkolivegreen', 'limegreen', 'darkcyan', 'orangered']
 linestyles = {'No Thermochemistry': '--', 'With Thermochemistry': '-'}
 
+N = 60
+
 # Compute derived quantities
 for dataset in data:
     for label in all_gases:
         data[dataset][label + ' released/birth'] = data[dataset][label + ' released (at/m3)']/data[dataset][label + ' produced (at/m3)']
+
+    #for label in inert_gases:
+        #print(label, dataset, data[dataset].loc[N, label + ' produced (at/m3)'], data[dataset].loc[N, label + ' released (at/m3)'], data[dataset].loc[N, label + ' at grain boundary (at/m3)'], data[dataset].loc[N, label + ' in grain (at/m3)'])
+    
     for label in volatile_fps:
-        data[dataset][label + ' available/birth'] = (data[dataset][label + ' reacted (at/m3)']+ data[dataset][label + ' at grain boundary (at/m3)'])/data[dataset][label + ' produced (at/m3)']
-        data[dataset][label + ' reacted/birth'] = data[dataset][label + ' reacted (at/m3)']/data[dataset][label + ' produced (at/m3)']
+        data[dataset][label + ' available/birth'] = (data[dataset][label + ' reacted - GB (at/m3)']+ data[dataset][label + ' at grain boundary (at/m3)'])/data[dataset][label + ' produced (at/m3)']
+        data[dataset][label + ' reacted/birth'] = data[dataset][label + ' reacted - GB (at/m3)']/data[dataset][label + ' produced (at/m3)']
         data[dataset][label + ' reacted/available'] = data[dataset][label + ' reacted/birth']/data[dataset][label + ' available/birth']
+        print(label, dataset, data[dataset].loc[N, label + ' produced (at/m3)'], 
+              data[dataset].loc[N, label + ' released (at/m3)'], 
+              data[dataset].loc[N, label + ' at grain boundary (at/m3)'], data[dataset].loc[N, label + ' reacted - GB (at/m3)'],
+              data[dataset].loc[N, label + ' in grain (at/m3)'], data[dataset].loc[N, label + ' reacted - IG (at/m3)'])
+        print(label, dataset, data[dataset].loc[N, label + ' produced (at/m3)'] -
+              data[dataset].loc[N, label + ' released (at/m3)'] -
+              data[dataset].loc[N, label + ' at grain boundary (at/m3)'] - data[dataset].loc[N, label + ' reacted - GB (at/m3)'] - 
+              data[dataset].loc[N, label + ' in grain (at/m3)'] -  data[dataset].loc[N, label + ' reacted - IG (at/m3)'])
+    
 
 if 'At grain boundary (mol)' not in data['With Thermochemistry'].columns:
     data['With Thermochemistry']['At grain boundary (mol)'] = 0  
+    data['With Thermochemistry']['In grain (mol)'] = 0
 for label in volatile_fps:
-    data['With Thermochemistry']['At grain boundary (mol)'] += (1/avogadronumber)*(data['With Thermochemistry'][label+' at grain boundary (at/m3)'] + data['With Thermochemistry'][label+' reacted (at/m3)'])/(data['With Thermochemistry']['Intergranular bubble concentration (bub/m2)'] * 3/ data['With Thermochemistry']['Grain radius (m)'])
+    data['With Thermochemistry']['At grain boundary (mol)'] += (1/avogadronumber)*(data['With Thermochemistry'][label+' at grain boundary (at/m3)'] + data['With Thermochemistry'][label+' reacted - GB (at/m3)'])/(data['With Thermochemistry']['Intergranular bubble concentration (bub/m2)'] * 3/ data['With Thermochemistry']['Grain radius (m)'])
+    data['With Thermochemistry']['In grain (mol)'] += (1/avogadronumber)*(data['With Thermochemistry'][label+' in grain (at/m3)'] + data['With Thermochemistry'][label+' reacted - IG (at/m3)']) * (4/3 * 3.1415 * data['With Thermochemistry']['Grain radius (m)']**3)
 
-for label in all_products:
-    data['With Thermochemistry'][label + ' produced/available'] = data['With Thermochemistry'][label]/data['With Thermochemistry']['At grain boundary (mol)']
+for label in all_products_GB:
+    data['With Thermochemistry'][label + ' produced/available - GB'] = data['With Thermochemistry'][label]/data['With Thermochemistry']['At grain boundary (mol)']
+for label in all_products_IG:
+    data['With Thermochemistry'][label + ' produced/available - IG'] = data['With Thermochemistry'][label]/data['With Thermochemistry']['In grain (mol)']
 
 ####################################### Comparison with experimetal data at 1900 K ########################################
 mask_1900 = data['With Thermochemistry']['Temperature (K)'] >= 1900
@@ -69,206 +100,199 @@ else:
 print(f"Cs experimental (%): {round(30)}")
 print(f"I experimental (%): {round(20)}")
 
-#################################### VS TIME #################################
+#################################### quantitative #################################
 label_x = 'Time (h)'
 xlim_o = min(data['With Thermochemistry'][label_x])
 xlim_f = max(data['With Thermochemistry'][label_x])
 
-fig, axes = plt.subplots(1, 3, figsize=(15, 6))
+colors_element = {
+    'Produced': 'dodgerblue',
+    'In grain': 'darkorange',
+    'At grain boundary': 'forestgreen',
+    'Released': 'crimson',
+    'Reacted - GB': 'hotpink',
+    'Reacted - IG': 'gold'
+}
 
-for j, label in enumerate(all_gases):
-    for dataset in data:
-        axes[0].plot(data[dataset][label_x], data[dataset][label + ' released/birth'], 
-                     linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
-axes[0].set_xlabel(label_x)
-axes[0].set_ylabel('Released atoms to birth (/)')
-axes[0].set_title('Release to birth')
-axes[0].grid(True)
+def plot_species(data, label, ax, dataset):
+    """ Plotta i dati per una specie specifica (Xe o Cs) """
+    linestyle = linestyles[dataset]
+    
+    ax.plot(data[dataset]['Time (h)'], data[dataset][label + ' produced (at/m3)'], 
+            linestyle=linestyle, color=colors_element['Produced'], label='Produced')
+    ax.plot(data[dataset]['Time (h)'], data[dataset][label + ' in grain (at/m3)'], 
+            linestyle=linestyle, color=colors_element['In grain'], label='In grain')
+    ax.plot(data[dataset]['Time (h)'], data[dataset][label + ' at grain boundary (at/m3)'], 
+            linestyle=linestyle, color=colors_element['At grain boundary'], label='At grain boundary')
+    ax.plot(data[dataset]['Time (h)'], data[dataset][label + ' released (at/m3)'], 
+            linestyle=linestyle, color=colors_element['Released'], label='Released')
+    
+    # Aggiungi reacted solo per Cs
+    if label in volatile_fps:
+        ax.plot(data[dataset]['Time (h)'], data[dataset][label + ' reacted - GB (at/m3)'], 
+                linestyle=linestyle, color=colors_element['Reacted - GB'], label='Reacted - GB')
+        ax.plot(data[dataset]['Time (h)'], data[dataset][label + ' reacted - IG (at/m3)'], 
+                linestyle=linestyle, color=colors_element['Reacted - IG'], label='Reacted - IG')
+    
+    ax.set_xlabel('Time (h)')
+    ax.set_ylabel('Atoms (at/m3)')
+    ax.legend()
+
+fig, axes = plt.subplots(1, 3, figsize=(18, 8))
+
+for dataset in ['With Thermochemistry', 'No Thermochemistry']:
+    plot_species(data, 'Xe', axes[0], dataset)
+    plot_species(data, 'Cs', axes[1], dataset)
+    plot_species(data, 'I', axes[2], dataset)
+    # ax_temp_0 = axes[0].twinx()
+    # linestyle = linestyles[dataset]
+    # ax_temp_0.plot(data[dataset]['Time (h)'], data[dataset]['Intergranular fractional coverage (/)'], 
+    #                linestyle=linestyle, color='grey', linewidth = 1)
+
 axes[0].set_xlim([xlim_o,xlim_i])
-axes[0].set_ylim([0,1])
-
-ax_temp_0 = axes[0].twinx()
-for dataset in data:
-    ax_temp_0.plot(data[dataset][label_x], data[dataset]['Temperature (K)'], 
-                   linestyle='dashed', color='black', alpha=0.3, label='Temperature (K)')
-ax_temp_0.set_ylabel('Temperature (K)')
-
-for j, label in enumerate(volatile_fps):
-    dataset = "With Thermochemistry"
-    axes[1].plot(data[dataset][label_x], data[dataset][label + ' available/birth'], 
-                     linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
-axes[1].set_xlabel(label_x)
-axes[1].set_ylabel('Available atoms to birth (/)')
-axes[1].set_title('Available to birth')
-axes[1].grid(True)
 axes[1].set_xlim([xlim_o,xlim_i])
-axes[1].set_ylim([0,1])
-
-ax_temp_0 = axes[1].twinx()
-dataset = "With Thermochemistry"
-ax_temp_0.plot(data[dataset][label_x], data[dataset]['Temperature (K)'], 
-                   linestyle='dashed', color='black', alpha=0.3, label='Temperature (K)')
-ax_temp_0.set_ylabel('Temperature (K)')
-
-for j, label in enumerate(volatile_fps):
-    dataset = "With Thermochemistry"
-    axes[2].plot(data[dataset][label_x], data[dataset][label + ' reacted/available'], 
-                     linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
-axes[2].set_xlabel(label_x)
-axes[2].set_ylabel('Reacted atoms to available (/)')
-axes[2].set_title('Reacted to available')
-axes[2].grid(True)
 axes[2].set_xlim([xlim_o,xlim_i])
-axes[2].set_ylim([0,1])
+axes[0].set_title('Xe')
+axes[1].set_title('Cs')
+axes[2].set_title('I')
 
-ax_temp_0 = axes[2].twinx()
-dataset = "With Thermochemistry"
-ax_temp_0.plot(data[dataset][label_x], data[dataset]['Temperature (K)'], 
-                   linestyle='dashed', color='black', alpha=0.3, label='Temperature (K)')
-ax_temp_0.set_ylabel('Temperature (K)')
+plt.savefig(folder_path +"/XeCs_base.png")
+plt.show()
 
-species_legend1 = [mlines.Line2D([], [], color=colors[j], marker='o', label=all_gases[j]) for j in range(len(all_gases))]
-species_legend2 = [mlines.Line2D([], [], color=colors[j], marker='o', label=volatile_fps[j]) for j in range(len(volatile_fps))]
-species_legend3 = [mlines.Line2D([], [], color=colors[j], marker='o', label=volatile_fps[j]) for j in range(len(volatile_fps))]
-thermo_legend = [mlines.Line2D([], [], color='black', linestyle=linestyles[dataset], label=dataset) for dataset in linestyles]
+fig, axes = plt.subplots(1, 3, figsize=(18, 8))
 
-# Add legends to the figure
-axes[0].legend(handles=(thermo_legend + species_legend1))
-axes[1].legend(handles=(thermo_legend + species_legend2))
-axes[2].legend(handles=(thermo_legend + species_legend3))
+for dataset in ['With Thermochemistry', 'No Thermochemistry']:
+    plot_species(data, 'Xe', axes[0], dataset)
+    plot_species(data, 'Cs', axes[1], dataset)
+    plot_species(data, 'I', axes[2], dataset)
+    # ax_temp_0 = axes[0].twinx()
+    # linestyle = linestyles[dataset]
+    # ax_temp_0.plot(data[dataset]['Time (h)'], data[dataset]['Intergranular fractional coverage (/)'], 
+    #                linestyle=linestyle, color='grey', linewidth = 1)
 
-plt.tight_layout()
-plt.savefig(folder_path +"/vsTime1.png")
-#plt.show()
-
-fig, axes = plt.subplots(1, 3, figsize=(15, 6))
-
-for j, label in enumerate(all_gases):
-    for dataset in data:
-        axes[0].plot(data[dataset][label_x], data[dataset][label + ' released/birth'], 
-                     linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
-axes[0].set_xlabel(label_x)
-axes[0].set_ylabel('Released atoms to birth (/)')
-axes[0].set_title('Release to birth')
-axes[0].grid(True)
 axes[0].set_xlim([xlim_i,xlim_f])
-axes[0].set_ylim([0,1])
-
-if time_1900 is not None:
-    axes[0].axvline(x=time_1900, color='red', linestyle=':', label='1900K')
-
-ax_temp_0 = axes[0].twinx()
-for dataset in data:
-    ax_temp_0.plot(data[dataset][label_x], data[dataset]['Temperature (K)'], 
-                   linestyle='dashed', color='black', alpha=0.3, label='Temperature (K)')
-ax_temp_0.set_ylabel('Temperature (K)')
-
-for j, label in enumerate(volatile_fps):
-    dataset = "With Thermochemistry"
-    axes[1].plot(data[dataset][label_x], data[dataset][label + ' available/birth'], 
-                     linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
-axes[1].set_xlabel(label_x)
-axes[1].set_ylabel('Available atoms to birth (/)')
-axes[1].set_title('Available to birth')
-axes[1].grid(True)
 axes[1].set_xlim([xlim_i,xlim_f])
-axes[1].set_ylim([0,1])
-
-if time_1900 is not None:
-    axes[1].axvline(x=time_1900, color='red', linestyle=':', label='1900K')
-
-ax_temp_0 = axes[1].twinx()
-dataset = "With Thermochemistry"
-ax_temp_0.plot(data[dataset][label_x], data[dataset]['Temperature (K)'], 
-                   linestyle='dashed', color='black', alpha=0.3, label='Temperature (K)')
-ax_temp_0.set_ylabel('Temperature (K)')
-
-for j, label in enumerate(volatile_fps):
-    dataset = "With Thermochemistry"
-    axes[2].plot(data[dataset][label_x], data[dataset][label + ' reacted/available'], 
-                     linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
-axes[2].set_xlabel(label_x)
-axes[2].set_ylabel('Reacted atoms to available (/)')
-axes[2].set_title('Reacted to available')
-axes[2].grid(True)
 axes[2].set_xlim([xlim_i,xlim_f])
-axes[2].set_ylim([0,1])
+axes[0].set_title('Xe')
+axes[1].set_title('Cs')
+axes[2].set_title('I')
+plt.savefig(folder_path +"/XeCs_annealing.png")
+plt.show()
 
-if time_1900 is not None:
-    axes[2].axvline(x=time_1900, color='red', linestyle=':', label='1900K')
-
-ax_temp_0 = axes[2].twinx()
-dataset = "With Thermochemistry"
-ax_temp_0.plot(data[dataset][label_x], data[dataset]['Temperature (K)'], 
-                   linestyle='dashed', color='black', alpha=0.3, label='Temperature (K)')
-ax_temp_0.set_ylabel('Temperature (K)')
-
-species_legend1 = [mlines.Line2D([], [], color=colors[j], marker='o', label=all_gases[j]) for j in range(len(all_gases))]
-species_legend2 = [mlines.Line2D([], [], color=colors[j], marker='o', label=volatile_fps[j]) for j in range(len(volatile_fps))]
-species_legend3 = [mlines.Line2D([], [], color=colors[j], marker='o', label=volatile_fps[j]) for j in range(len(volatile_fps))]
-thermo_legend = [mlines.Line2D([], [], color='black', linestyle=linestyles[dataset], label=dataset) for dataset in linestyles]
-
-# Add legends to the figure
-axes[0].legend(handles=(thermo_legend + species_legend1))
-axes[1].legend(handles=(thermo_legend + species_legend2))
-axes[2].legend(handles=(thermo_legend + species_legend3))
-
-plt.tight_layout()
-plt.savefig(folder_path +"/vsTime2.png")
-#plt.show()
 
 ############################################### PRODUCED ####################################
 
-fig, axes = plt.subplots(1, 2, figsize=(15, 6))
+fig, axes = plt.subplots(1, 2, figsize=(18, 8))
 
-for j, label in enumerate(all_products):
+for j, label in enumerate(all_products_GB):
     dataset = "With Thermochemistry"
-    if data[dataset][label + ' produced/available'].max() > 0.001:
-        axes[0].plot(data[dataset][label_x], data[dataset][label + ' produced/available'], 
+    if data[dataset][label].max() > 0:
+        axes[0].plot(data[dataset][label_x], data[dataset][label], 
                         linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
 axes[0].set_xlabel(label_x)
-axes[0].set_ylabel('Produced to available (/)')
-axes[0].set_title('Produced to available')
-axes[0].grid(True)
+axes[0].set_ylabel('Produced (mol)')
 axes[0].set_xlim([xlim_o,xlim_i])
-axes[0].set_ylim([0,1])
-
-if time_1900 is not None:
-    axes[0].axvline(x=time_1900, color='red', linestyle=':', label='1900K')
-axes[0].legend()
+axes[0].legend(frameon = False,loc='upper left')
 
 ax_temp_0 = axes[0].twinx()
-dataset = "With Thermochemistry"
-ax_temp_0.plot(data[dataset][label_x], data[dataset]['Temperature (K)'], 
-                   linestyle='dashed', color='black', alpha=0.3, label='Temperature (K)')
+for dataset in data:
+    ax_temp_0.plot(data[dataset][label_x], data[dataset]['Temperature (K)'], 
+                   linestyle='-.', color='grey', linewidth = 1, label='Temperature (K)')
 ax_temp_0.set_ylabel('Temperature (K)')
 
-for j, label in enumerate(all_products):
-    dataset = "With Thermochemistry"
-    if data[dataset][label + ' produced/available'].max() > 0.001:
-        axes[1].plot(data[dataset][label_x], data[dataset][label + ' produced/available'], 
-                     linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
-axes[1].set_xlabel(label_x)
-axes[1].set_ylabel('Produced to available (/)')
-axes[1].set_title('Produced to available')
-axes[1].grid(True)
-axes[1].set_xlim([xlim_i,xlim_f])
-axes[1].set_ylim([0,1])
+x_middle = (xlim_o + xlim_i) / 2
+closest_idx = (np.abs(data[dataset][label_x] - x_middle)).argmin()
+y_middle = data[dataset]['Temperature (K)'][closest_idx]
 
-if time_1900 is not None:
-    axes[1].axvline(x=time_1900, color='red', linestyle=':', label='1900K')
-axes[1].legend()
+
+ax_temp_0.annotate('T vs t', xy=(x_middle + 0.1 * (xlim_i - xlim_o), y_middle), xytext=(x_middle + 0.1 * (xlim_i - xlim_o), y_middle + 100),
+                    fontsize=12, color='grey', arrowprops=dict(arrowstyle='->', color='grey'))
+
+for j, label in enumerate(all_products_GB):
+    dataset = "With Thermochemistry"
+    if data[dataset][label].max() > 0:
+        axes[1].plot(data[dataset][label_x], data[dataset][label], 
+                    linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
+axes[1].set_xlabel(label_x)
+axes[1].set_ylabel('Produced (mol)')
+axes[1].set_xlim([xlim_i,xlim_f])
+axes[1].legend(frameon = False,loc='upper left')
 
 ax_temp_0 = axes[1].twinx()
-dataset = "With Thermochemistry"
-ax_temp_0.plot(data[dataset][label_x], data[dataset]['Temperature (K)'], 
-                   linestyle='dashed', color='black', alpha=0.3, label='Temperature (K)')
+for dataset in data:
+    ax_temp_0.plot(data[dataset][label_x], data[dataset]['Temperature (K)'], 
+                   linestyle='-.', color='grey', linewidth = 1, label='Temperature (K)')
 ax_temp_0.set_ylabel('Temperature (K)')
 
-plt.tight_layout()
-plt.savefig(folder_path +"/Products.png")
-#plt.show()
+x_middle = (xlim_o + xlim_i) / 2
+closest_idx = (np.abs(data[dataset][label_x] - x_middle)).argmin()
+y_middle = data[dataset]['Temperature (K)'][closest_idx]
 
+
+ax_temp_0.annotate('T vs t', xy=(x_middle + 0.1 * (xlim_i - xlim_o), y_middle), xytext=(x_middle + 0.1 * (xlim_i - xlim_o), y_middle + 100),
+                    fontsize=12, color='grey', arrowprops=dict(arrowstyle='->', color='grey'))
+
+plt.title('Products at GB')
+plt.tight_layout()
+plt.savefig(folder_path +"/Products_GB.png")
+plt.show()
+
+############################################### PRODUCED ####################################
+
+fig, axes = plt.subplots(1, 2, figsize=(18, 8))
+
+for j, label in enumerate(all_products_IG):
+    dataset = "With Thermochemistry"
+    if data[dataset][label].max() > 0:
+        axes[0].plot(data[dataset][label_x], data[dataset][label], 
+                        linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
+axes[0].set_xlabel(label_x)
+axes[0].set_ylabel('Produced (mol)')
+axes[0].set_xlim([xlim_o,xlim_i])
+axes[0].legend(frameon = False,loc='upper left')
+
+ax_temp_0 = axes[0].twinx()
+for dataset in data:
+    ax_temp_0.plot(data[dataset][label_x], data[dataset]['Temperature (K)'], 
+                   linestyle='-.', color='grey', linewidth = 1, label='Temperature (K)')
+ax_temp_0.set_ylabel('Temperature (K)')
+
+x_middle = (xlim_o + xlim_i) / 2
+closest_idx = (np.abs(data[dataset][label_x] - x_middle)).argmin()
+y_middle = data[dataset]['Temperature (K)'][closest_idx]
+
+
+ax_temp_0.annotate('T vs t', xy=(x_middle + 0.1 * (xlim_i - xlim_o), y_middle), xytext=(x_middle + 0.1 * (xlim_i - xlim_o), y_middle + 100),
+                    fontsize=12, color='grey', arrowprops=dict(arrowstyle='->', color='grey'))
+
+for j, label in enumerate(all_products_IG):
+    dataset = "With Thermochemistry"
+    if data[dataset][label].max() > 0:
+        axes[1].plot(data[dataset][label_x], data[dataset][label], 
+                     linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
+axes[1].set_xlabel(label_x)
+axes[1].set_ylabel('Produced (mol)')
+axes[1].set_xlim([xlim_i,xlim_f])
+axes[1].legend(frameon = False,loc='upper left')
+
+ax_temp_0 = axes[1].twinx()
+for dataset in data:
+    ax_temp_0.plot(data[dataset][label_x], data[dataset]['Temperature (K)'], 
+                   linestyle='-.', color='grey', linewidth = 1, label='Temperature (K)')
+ax_temp_0.set_ylabel('Temperature (K)')
+
+x_middle = (xlim_o + xlim_i) / 2
+closest_idx = (np.abs(data[dataset][label_x] - x_middle)).argmin()
+y_middle = data[dataset]['Temperature (K)'][closest_idx]
+
+
+ax_temp_0.annotate('T vs t', xy=(x_middle + 0.1 * (xlim_i - xlim_o), y_middle), xytext=(x_middle + 0.1 * (xlim_i - xlim_o), y_middle + 100),
+                    fontsize=12, color='grey', arrowprops=dict(arrowstyle='->', color='grey'))
+
+plt.title('Products at IG')
+plt.tight_layout()
+plt.savefig(folder_path +"/Products_IG.png")
+plt.show()
 ############################################### PLOT RELEASED VS TEMPERATURA ####################################
 
 # Experimental data

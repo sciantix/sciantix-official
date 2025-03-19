@@ -1,5 +1,5 @@
 iGrainGrowth = 1
-iFissionGasDiffusivity = 6
+iFissionGasDiffusivity = 3
 iDiffusionSolver = 1
 iIntraGranularBubbleBehavior = 1
 iResolutionRate = 0
@@ -21,7 +21,7 @@ iHeliumProductionRate = 0
 iStoichiometryDeviation = 7
 iBubbleDiffusivity = 1
 iChromiumSolubility = 0
-iThermochimica = 2
+iThermochimica = 3
 Grain radius[0] = 4e-06
 Initial composition Xe0 = 0
 Initial composition Xe1 = 0
@@ -82,11 +82,10 @@ Initial composition I4 = 0
 Initial composition I5 = 0
 Initial composition I6 = 0
 Chromium content = 0
-0	800	1e+19	0	
-53500	800	1e+19	0	
-53500	800	0	0	
-54000	300	0	0	
-54014	2800	0	0	
+0	800	1e+19	0	1e+06	
+53400	800	1e+19	0	1e+06	
+53400.1	300	0	0	1000	
+53414.1	2800	0	0	1000	
 sf_resolution_rate = 1
 sf_trapping_rate = 1
 sf_nucleation_rate = 1
@@ -96,4 +95,4 @@ sf_temperature = 1
 sf_fission_rate = 1
 sf_cent_parameter = 1
 sf_helium_production_rate = 1
-sf_dummy = 100000
+sf_dummy = 1000

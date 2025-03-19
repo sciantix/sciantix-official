@@ -13,6 +13,7 @@ SAMPLE
  - The irradiated fuel samples were small pieces of 1 mm3 volume taken from the periphery of a pellet;
 THERMAL ANNEALING
  - stepwise heating up to 2800K, taken from Fig.4.
+ - pressure 1e3 Pa
 
 RESULTS
 Fig. 4. Fractional release by vaporisation of representative irradiated fuel components under vacuum, starting from end of life conditions.
