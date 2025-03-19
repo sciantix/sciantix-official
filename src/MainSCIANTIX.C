@@ -106,9 +106,13 @@ int main(int argc, char **argv)
     Execution_file.open(TestPath + "execution.txt", std::ios::out);
 
     timer = clock();
-
+    
+    std::vector<double> interpolated_times;  // Declare the vector
     while (Time_h <= Time_end_h)
     {
+        // Store the interpolated time value
+        interpolated_times.push_back(Time_h);
+        
         Sciantix_history[0] = Sciantix_history[1];
         Sciantix_history[1] = InputInterpolation(Time_h, Time_input, Temperature_input, Input_history_points);
         Sciantix_history[2] = Sciantix_history[3];
@@ -123,7 +127,6 @@ int main(int argc, char **argv)
         Sciantix_history[10] = InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
 
         Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
-
         dTime_h = TimeStepCalculation(
             Input_history_points,
             Time_h,
@@ -140,6 +143,13 @@ int main(int argc, char **argv)
         }
         else
             break;
+        
+        std::ofstream interp_log(TestPath + "interpolated_times.txt");
+        for (double time : interpolated_times)
+        {
+            interp_log << time << "\n";
+        }
+        interp_log.close();
     }
 
     timer = clock() - timer;

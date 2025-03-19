@@ -104,9 +104,8 @@ public:
      * 2 : r
      * 3 :production
      * 4 :loss rate
-     * 5 :time
      */
-    double SpectralDiffusion(double *initial_condition, std::vector<double> parameter, double increment);
+    double SpectralDiffusion(double *initial_condition, std::vector<double> parameter, double increment, double time, double D);
 
 
     /**
