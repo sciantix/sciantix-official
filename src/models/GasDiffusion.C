@@ -47,8 +47,6 @@ void Simulation::GasDiffusion()
         case 1:
         {
             std::vector<double> interpolated_times;
-            std::vector<double> D;
-
             interpolateTimes(TestPath + "times.txt", interpolated_times);
 
             if (system.getRestructuredMatrix() == 0)
@@ -58,8 +56,8 @@ void Simulation::GasDiffusion()
                         getDiffusionModes(system.getGasName()),
                         model["Gas diffusion - " + system.getName()].getParameter(),
                         physics_variable["Time step"].getFinalValue(),
-                        interpolated_times[history_variable["Time step"].getFinalValue()],
-                        D[history_variable["Time step"].getFinalValue()]
+                        interpolated_times[history_variable["Time step number"].getFinalValue()],
+                        1-interpolated_times[history_variable["Time step number"].getFinalValue()]
                     )
                 );
 
@@ -83,8 +81,8 @@ void Simulation::GasDiffusion()
                         getDiffusionModes(system.getGasName() + " in HBS"),
                         model["Gas diffusion - " + system.getName()].getParameter(),
                         physics_variable["Time step"].getFinalValue(),
-                        interpolated_times[history_variable["Time step"].getFinalValue()],
-                        D[history_variable["Time step"].getFinalValue()]
+                        interpolated_times[history_variable["Time step number"].getFinalValue()],
+                        1-interpolated_times[history_variable["Time step number"].getFinalValue()]
                     )
                 );
             }

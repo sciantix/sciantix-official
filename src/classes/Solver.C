@@ -69,7 +69,7 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
 
         initial_condition[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);
 
-        solution += projection_coeff * n_coeff * initial_condition[n] / ((4. / 3.) * M_PI);
+        solution += projection_coeff * n_coeff * initial_condition[n] / ((4. / 3.) * M_PI *pow(parameter.at(2), 1.5) );
     }
 
     return solution;
