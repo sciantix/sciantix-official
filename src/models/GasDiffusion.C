@@ -202,19 +202,21 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         model_.setRef(reference);
 
         std::vector<double> parameters;
-        parameters.push_back(n_modes);
-        double gasDiffusivity;
-        if (system.getResolutionRate() + system.getTrappingRate() == 0)
-            gasDiffusivity = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
-        else
-            gasDiffusivity = 
-                (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
-                (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
+        parameters.push_back(n_modes); // 0
+        //double gasDiffusivity;
+        //if (system.getResolutionRate() + system.getTrappingRate() == 0)
+            //gasDiffusivity = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
+        //else
+            //gasDiffusivity = 
+              //  (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
+                //(system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
 
-        parameters.push_back(gasDiffusivity);
-        parameters.push_back(system.getMatrix().getGrainRadius());
-        parameters.push_back(system.getProductionRate());
-        parameters.push_back(system.getGas().getDecayRate());
+        //parameters.push_back(gasDiffusivity);
+        parameters.push_back(1); //1
+        parameters.push_back(system.getMatrix().getGrainRadius()); //2
+        parameters.push_back(system.getProductionRate()); //3
+        parameters.push_back(system.getGas().getDecayRate()); //4
+        parameters.push_back(1); //5
 
         model_.setParameter(parameters);
         model.push(model_);
