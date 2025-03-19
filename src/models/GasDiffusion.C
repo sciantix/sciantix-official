@@ -169,6 +169,9 @@ void Simulation::GasDiffusion()
             double GrainContent = sciantix_variable[system.getGasName() + " in grain"].getFinalValue();
             sciantix_variable[system.getGasName() + " reacted - IG"].setFinalValue(sciantix_variable["x reacted - IG"].getFinalValue() * GrainContent);
             sciantix_variable[system.getGasName() + " in grain"].setFinalValue((1 - sciantix_variable["x reacted - IG"].getFinalValue()) * GrainContent);
+            sciantix_variable[system.getGasName() + " in intragranular solution"].rescaleFinalValue(1 - sciantix_variable["x reacted - IG"].getFinalValue());
+            sciantix_variable[system.getGasName() + " in intragranular bubbles"].rescaleFinalValue(1 - sciantix_variable["x reacted - IG"].getFinalValue());
+
 
             double GrainRelease = (sciantix_variable[system.getGasName() + " produced"].getIncrement() - 
                                     sciantix_variable[system.getGasName() + " decayed"].getIncrement() - 

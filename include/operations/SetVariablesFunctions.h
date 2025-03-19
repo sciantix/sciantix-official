@@ -82,7 +82,8 @@ std::vector<SciantixVariable> initializeHistoryVariable(
         SciantixVariable("Temperature", "(K)", Sciantix_history[0] * Sciantix_scaling_factors[4], Sciantix_history[1] * Sciantix_scaling_factors[4], 1),
         SciantixVariable("Fission rate", "(fiss / m3 s)", Sciantix_history[2] * Sciantix_scaling_factors[5], Sciantix_history[3] * Sciantix_scaling_factors[5], 1),
         SciantixVariable("Hydrostatic stress", "(MPa)", Sciantix_history[4], Sciantix_history[5], 1),
-        SciantixVariable("Steam pressure", "(atm)", Sciantix_history[9], Sciantix_history[10], toOutput)
+        SciantixVariable("Steam pressure", "(atm)", Sciantix_history[9], Sciantix_history[10], toOutput),
+        SciantixVariable("THERMOCHIMICA pressure", "(Pa)", Sciantix_history[11], Sciantix_history[12], 1)
     };
 
     return history_variable;
@@ -190,7 +191,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Intragranular I atoms per bubble", "(at/bub)", Sciantix_variables[118], Sciantix_variables[118], 0),
         SciantixVariable("Intergranular I atoms per bubble", "(at/bub)", Sciantix_variables[119], Sciantix_variables[119], 0),
 
-        SciantixVariable("x reacted - IG","(m/)", 0.0, 0.0, 0),       
+        SciantixVariable("x reacted - IG","(/)", 0.0, 0.0, 1),       
                 
         SciantixVariable("I - gas_ideal - IG","(mol)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("I2 - gas_ideal - IG","(mol)", 0.0, 0.0, toOutputThermochimica),
