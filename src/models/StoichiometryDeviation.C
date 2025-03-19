@@ -301,11 +301,11 @@ void Simulation::StoichiometryDeviation()
         {
             reference += " : H. Kleykamp, The chemical state of LWR high-power rods under irradiation, Journal of Nuclear Materials (1979)";
             double burnup = sciantix_variable["FIMA"].getFinalValue();
-            if (burnup > 5)
-            {
-                std::cout << "WARNING: The model is valid for burnup < 5 FIMA." << std::endl; 
-                std::cout << "Burnup (%) = " << burnup << std::endl;
-            }
+            // if (burnup > 5)
+            // {
+            //     std::cout << "WARNING: The model is valid for burnup < 5 FIMA." << std::endl; 
+            //     std::cout << "Burnup (%) = " << burnup << std::endl;
+            // }
             double coefficient = 0.0013;
 
             parameter.push_back(burnup);

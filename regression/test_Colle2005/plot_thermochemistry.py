@@ -7,7 +7,7 @@ import glob
 
 folder_path = "results"
 avogadronumber = 6.02214e23
-xlim_i = 54000
+xlim_i = 53400
 
 # Remove previous plots
 png_files = glob.glob(os.path.join(folder_path, "*.png"))
@@ -46,7 +46,7 @@ colors = ['dodgerblue', 'darkorange', 'forestgreen', 'crimson', 'hotpink', 'gold
           'mediumpurple', 'saddlebrown', 'deepskyblue', 'darkolivegreen', 'limegreen', 'darkcyan', 'orangered']
 linestyles = {'No Thermochemistry': '--', 'With Thermochemistry': '-'}
 
-N = 600
+N = 60
 
 # Compute derived quantities
 for dataset in data:
@@ -123,11 +123,12 @@ def plot_species(data, label, ax, dataset):
     ax.set_ylabel('Atoms (at/m3)')
     ax.legend()
 
-fig, axes = plt.subplots(1, 2, figsize=(18, 8))
+fig, axes = plt.subplots(1, 3, figsize=(18, 8))
 
 for dataset in ['With Thermochemistry', 'No Thermochemistry']:
     plot_species(data, 'Xe', axes[0], dataset)
     plot_species(data, 'Cs', axes[1], dataset)
+    plot_species(data, 'I', axes[2], dataset)
     # ax_temp_0 = axes[0].twinx()
     # linestyle = linestyles[dataset]
     # ax_temp_0.plot(data[dataset]['Time (h)'], data[dataset]['Intergranular fractional coverage (/)'], 
@@ -135,16 +136,20 @@ for dataset in ['With Thermochemistry', 'No Thermochemistry']:
 
 axes[0].set_xlim([xlim_o,xlim_i])
 axes[1].set_xlim([xlim_o,xlim_i])
+axes[2].set_xlim([xlim_o,xlim_i])
 axes[0].set_title('Xe')
 axes[1].set_title('Cs')
+axes[2].set_title('I')
+
 plt.savefig(folder_path +"/XeCs_base.png")
 plt.show()
 
-fig, axes = plt.subplots(1, 2, figsize=(18, 8))
+fig, axes = plt.subplots(1, 3, figsize=(18, 8))
 
 for dataset in ['With Thermochemistry', 'No Thermochemistry']:
     plot_species(data, 'Xe', axes[0], dataset)
     plot_species(data, 'Cs', axes[1], dataset)
+    plot_species(data, 'I', axes[2], dataset)
     # ax_temp_0 = axes[0].twinx()
     # linestyle = linestyles[dataset]
     # ax_temp_0.plot(data[dataset]['Time (h)'], data[dataset]['Intergranular fractional coverage (/)'], 
@@ -152,15 +157,17 @@ for dataset in ['With Thermochemistry', 'No Thermochemistry']:
 
 axes[0].set_xlim([xlim_i,xlim_f])
 axes[1].set_xlim([xlim_i,xlim_f])
+axes[2].set_xlim([xlim_i,xlim_f])
 axes[0].set_title('Xe')
 axes[1].set_title('Cs')
+axes[2].set_title('I')
 plt.savefig(folder_path +"/XeCs_annealing.png")
 plt.show()
 
 
 ############################################### PRODUCED ####################################
 
-fig, axes = plt.subplots(1, 2, figsize=(15, 6))
+fig, axes = plt.subplots(1, 2, figsize=(18, 8))
 
 for j, label in enumerate(all_products_GB):
     dataset = "With Thermochemistry"
@@ -217,7 +224,7 @@ plt.show()
 
 ############################################### PRODUCED ####################################
 
-fig, axes = plt.subplots(1, 2, figsize=(15, 6))
+fig, axes = plt.subplots(1, 2, figsize=(18, 8))
 
 for j, label in enumerate(all_products_IG):
     dataset = "With Thermochemistry"
@@ -296,7 +303,7 @@ isotope_data = {
     'Xe': {'element': 'Xe', 'atomic_mass': 131} 
 }
 
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(18, 6))
 
 
 for isotope, properties in isotope_data.items():
