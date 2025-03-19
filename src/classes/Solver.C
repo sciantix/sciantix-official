@@ -36,7 +36,7 @@ double Solver::BinaryInteraction(double initial_condition, double interaction_co
     return initial_condition / (1.0 + interaction_coefficient * initial_condition * increment);
 }
 
-double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> parameter, double increment)
+double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> parameter, double increment, double time, double D)
 {
     //Parameters :
      //0 : N_modes (k)
@@ -44,7 +44,6 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
      //2 : r (a)
      //3 :production (F): not needed for the verification
      //4 :loss rate also not needed
-     //5 :time
 
     size_t n;
     unsigned short int np1(1);
@@ -56,7 +55,7 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
     double projection_coeff(0.0);
     double solution(0.0);
 
-    diffusion_rate_coeff = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(2), 2); // pi^2*D/a^2 (lambda/k^2)
+    diffusion_rate_coeff = pow(M_PI, 2) * D / pow(parameter.at(2), 2); // pi^2*D/a^2 (lambda/k^2)
     projection_coeff = -sqrt(8.0 / M_PI);
     //source_rate_coeff = projection_coeff * parameter.at(3);
 
@@ -66,7 +65,7 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
         const double n_coeff = pow(-1.0, np1) / np1; // (-1)^k/k
 
         diffusion_rate = diffusion_rate_coeff * pow(np1, 2); // k^2*pi^2*D/a^2
-        source_rate = 12*pow(-1.0, np1)*sqrt(2)*pow(parameter.at(2), 1.5)*parameter.at(5)*(-2*pow(parameter.at(2), 2)-pow(M_PI, 2)*pow(np1, 2)*parameter.at(5)*(1-parameter.at(5)))/(pow(M_PI, 2.5)*pow(np1, 3));
+        source_rate = 12*pow(-1.0, np1)*sqrt(2)*pow(parameter.at(2), 1.5)*time*(-2*pow(parameter.at(2), 2)-pow(M_PI, 2)*pow(np1, 2)*time*(1-time))/(pow(M_PI, 2.5)*pow(np1, 3));
 
         initial_condition[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);
 

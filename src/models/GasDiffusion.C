@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "GasDiffusion.h"
+#include "TimeManager.h"
 
 void Simulation::GasDiffusion()
 {
@@ -45,13 +46,20 @@ void Simulation::GasDiffusion()
         {
         case 1:
         {
+            std::vector<double> interpolated_times;
+            std::vector<double> D;
+
+            interpolateTimes(TestPath + "times.txt", interpolated_times);
+
             if (system.getRestructuredMatrix() == 0)
             {
                 sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
                     solver.SpectralDiffusion(
                         getDiffusionModes(system.getGasName()),
                         model["Gas diffusion - " + system.getName()].getParameter(),
-                        physics_variable["Time step"].getFinalValue()
+                        physics_variable["Time step"].getFinalValue(),
+                        interpolated_times[history_variable["Time step"].getFinalValue()],
+                        D[history_variable["Time step"].getFinalValue()]
                     )
                 );
 
@@ -74,7 +82,9 @@ void Simulation::GasDiffusion()
                     solver.SpectralDiffusion(
                         getDiffusionModes(system.getGasName() + " in HBS"),
                         model["Gas diffusion - " + system.getName()].getParameter(),
-                        physics_variable["Time step"].getFinalValue()
+                        physics_variable["Time step"].getFinalValue(),
+                        interpolated_times[history_variable["Time step"].getFinalValue()],
+                        D[history_variable["Time step"].getFinalValue()]
                     )
                 );
             }
@@ -203,20 +213,18 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
 
         std::vector<double> parameters;
         parameters.push_back(n_modes); // 0
-        //double gasDiffusivity;
-        //if (system.getResolutionRate() + system.getTrappingRate() == 0)
-            //gasDiffusivity = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
-        //else
-            //gasDiffusivity = 
-              //  (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
-                //(system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
+        double gasDiffusivity;
+        if (system.getResolutionRate() + system.getTrappingRate() == 0)
+            gasDiffusivity = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
+        else
+            gasDiffusivity = 
+               (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
+                (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
 
-        //parameters.push_back(gasDiffusivity);
-        parameters.push_back(1); //1
+        parameters.push_back(gasDiffusivity); //1
         parameters.push_back(system.getMatrix().getGrainRadius()); //2
         parameters.push_back(system.getProductionRate()); //3
         parameters.push_back(system.getGas().getDecayRate()); //4
-        parameters.push_back(1); //5
 
         model_.setParameter(parameters);
         model.push(model_);
