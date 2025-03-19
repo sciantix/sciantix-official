@@ -191,7 +191,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Intragranular I atoms per bubble", "(at/bub)", Sciantix_variables[118], Sciantix_variables[118], 0),
         SciantixVariable("Intergranular I atoms per bubble", "(at/bub)", Sciantix_variables[119], Sciantix_variables[119], 0),
 
-        SciantixVariable("x reacted - IG","(/)", 0.0, 0.0, 1),       
+        SciantixVariable("Cs reacted fraction - IG","(/)", 0, 0, 0),     
+        SciantixVariable("I reacted fraction - IG","(/)", 0, 0, 0),       
                 
         SciantixVariable("I - gas_ideal - IG","(mol)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("I2 - gas_ideal - IG","(mol)", 0.0, 0.0, toOutputThermochimica),

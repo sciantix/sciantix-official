@@ -167,10 +167,11 @@ void Simulation::GasDiffusion()
         if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1.0)
         {
             double GrainContent = sciantix_variable[system.getGasName() + " in grain"].getFinalValue();
-            sciantix_variable[system.getGasName() + " reacted - IG"].setFinalValue(sciantix_variable["x reacted - IG"].getFinalValue() * GrainContent);
-            sciantix_variable[system.getGasName() + " in grain"].setFinalValue((1 - sciantix_variable["x reacted - IG"].getFinalValue()) * GrainContent);
-            sciantix_variable[system.getGasName() + " in intragranular solution"].rescaleFinalValue(1 - sciantix_variable["x reacted - IG"].getFinalValue());
-            sciantix_variable[system.getGasName() + " in intragranular bubbles"].rescaleFinalValue(1 - sciantix_variable["x reacted - IG"].getFinalValue());
+            double x = sciantix_variable[ system.getGasName() + " reacted fraction - IG"].getFinalValue();
+            sciantix_variable[system.getGasName() + " reacted - IG"].setFinalValue(x * GrainContent);
+            sciantix_variable[system.getGasName() + " in grain"].rescaleFinalValue(1 - x);
+            sciantix_variable[system.getGasName() + " in intragranular solution"].rescaleFinalValue(1 - x);
+            sciantix_variable[system.getGasName() + " in intragranular bubbles"].rescaleFinalValue(1 - x);
 
 
             double GrainRelease = (sciantix_variable[system.getGasName() + " produced"].getIncrement() - 
@@ -179,7 +180,7 @@ void Simulation::GasDiffusion()
                                     sciantix_variable[system.getGasName() + " reacted - IG"].getIncrement());
             if (GrainRelease < 0.0)
                 GrainRelease = 0.0;
-            sciantix_variable[system.getGasName() + " reacted - IG"].addValue(sciantix_variable["x reacted - IG"].getFinalValue() * GrainRelease);
+            sciantix_variable[system.getGasName() + " reacted - IG"].addValue(x * GrainRelease);
             
             
             sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
