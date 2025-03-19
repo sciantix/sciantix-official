@@ -32,11 +32,19 @@ void Simulation::SetPhaseDiagram2()
     if (input_variable["iThermochimica"].getValue() == 0) return;
 
     double Temperature = history_variable["Temperature"].getFinalValue();
-    double bubble_pressure;
-    if(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue())
-        bubble_pressure = ( boltzmann_constant *  Temperature * sciantix_variable["Intergranular atoms per bubble"].getInitialValue()/(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue() * matrices["UO2"].getSchottkyVolume()));
-    else
-        bubble_pressure = 1.0;
+
+    double pressure = 0.0;
+    if (input_variable["iThermochimica"].getValue() == 1)
+    {
+        if(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue())
+            pressure = ( boltzmann_constant *  Temperature * sciantix_variable["Intergranular atoms per bubble"].getInitialValue()/(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue() * matrices["UO2"].getSchottkyVolume()));
+        else
+            pressure = 1.0;
+    }
+    else if (input_variable["iThermochimica"].getValue() > 1)
+    {
+        pressure = history_variable["THERMOCHIMICA pressure"].getFinalValue();
+    }
 
 
     // 1. Create the input file
@@ -47,15 +55,7 @@ void Simulation::SetPhaseDiagram2()
     }
     inputFile << "! Initialize variables:\n";
 
-    if (input_variable["iThermochimica"].getValue() == 1)
-    {
-        inputFile << "pressure          = " << bubble_pressure << "\n";
-    }
-    else if (input_variable["iThermochimica"].getValue() > 1)
-    {
-        inputFile << "pressure          = " << scaling_factors["Dummy"].getValue() << "\n";
-    }
-    
+    inputFile << "pressure          = " << pressure << "\n";    
     inputFile << "temperature       = " << history_variable["Temperature"].getFinalValue() << "\n";
 
     for (auto &system : sciantix_system)

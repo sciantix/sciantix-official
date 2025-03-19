@@ -36,7 +36,8 @@ void Initialization(
     std::vector<double> Temperature_input,
     std::vector<double> Fissionrate_input,
     std::vector<double> Hydrostaticstress_input,
-    std::vector<double> Steampressure_input
+    std::vector<double> Steampressure_input,
+    std::vector<double> THERMOCHIMICApressure_input
 );
 
 #endif //INITIALIZATION_H

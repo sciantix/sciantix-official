@@ -25,7 +25,7 @@ def run_sciantix(output_name):
 shutil.copy("../../build/sciantix.x", ".")
 
 # Run with no thermochemistry
-modify_input_settings("2")
+modify_input_settings("0")
 run_sciantix("output_nochemistry.txt")
 
 # Run with thermochemistry

@@ -32,7 +32,9 @@ void Simulation::SetPhaseDiagram1()
     if (input_variable["iThermochimica"].getValue() < 3) return;
 
     double Temperature = history_variable["Temperature"].getFinalValue();
-    double bubble_pressure = scaling_factors["Dummy"].getValue();
+
+    double pressure = history_variable["THERMOCHIMICA pressure"].getFinalValue();
+    pressure *= scaling_factors["Dummy"].getValue();
 
     // 1. Create the input file
     std::ofstream inputFile("./../../thermochimica-master/inputs/input.ti");
@@ -42,7 +44,7 @@ void Simulation::SetPhaseDiagram1()
     }
 
     inputFile << "! Initialize variables:\n";
-    inputFile << "pressure          = " << bubble_pressure << "\n";
+    inputFile << "pressure          = " << pressure << "\n";
     inputFile << "temperature       = " << history_variable["Temperature"].getFinalValue() << "\n";
 
     for (auto &system : sciantix_system)
