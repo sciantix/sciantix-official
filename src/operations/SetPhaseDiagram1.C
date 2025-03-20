@@ -79,7 +79,7 @@ void Simulation::SetPhaseDiagram1()
     inputFile <<  "pressure unit     = Pa\n";
     inputFile <<  "mass unit         = atoms\n";
      
-    inputFile << "data file         = ../../thermochimica-master/data/CsI-Pham.dat\n";
+    inputFile << "data file         = ../../thermochimica-master/data/CsITe.dat\n";
     inputFile << "\n! Specify output and debug modes:\nprint mode        = 0\ndebug mode        = .FALSE.\nreinit            = .FALSE.\nwrite json        = .TRUE.";
 
     inputFile.close();
@@ -104,18 +104,15 @@ void Simulation::SetPhaseDiagram1()
     jsonFile >> root;
     
     //std::cout << "INTRAGRANULAR BEHAVIOUR" << std::endl;
-    //std::cout << "------gas ideal----" << std::endl; 
-    Json::Value &solution = root["1"]["solution phases"]["gas_ideal"];
 
-    const Json::Value &species = solution["species"];
+    Json::Value &gsolution = root["1"]["solution phases"]["GAS_IDEAL"];
+
+    const Json::Value &species = gsolution["species"];
     for (const auto &specie : species.getMemberNames()) {
-        double moles = species[specie]["moles"].asDouble();
-        if (moles == 0.0) continue;
-        //std::cout << specie << ": " << moles << " moles\n";
-        sciantix_variable[specie + " - gas_ideal - IG"].setFinalValue(moles);
+        sciantix_variable[specie + " - GAS_IDEAL - IG"].setFinalValue(species[specie]["moles"].asDouble());
     }
-    //std::cout << "*******************" << std::endl; 
-    const Json::Value &elements = solution["elements"];
+    
+    const Json::Value &elements = gsolution["elements"];
     for (const auto &element : elements.getMemberNames()) {
         double moles = elements[element]["moles of element in phase"].asDouble();
         //std::cout << element << ": " << moles << " moles\n";
@@ -146,52 +143,38 @@ void Simulation::SetPhaseDiagram1()
         sciantix_variable[ element + " in intragranular solution"].rescaleFinalValue(1 - x);
         sciantix_variable[ element + " in intragranular bubbles"].rescaleFinalValue(1 - x);
     }
-    //std::cout << "*******************" << std::endl; 
-
-    //std::cout << "------liquid----" << std::endl; 
-    Json::Value &liquidsolution = root["1"]["solution phases"]["LIQUID"];
-
-    if (liquidsolution["moles"].asDouble() != 0.0) {
-
-        const Json::Value &species = liquidsolution["species"];
-        for (const auto &specie : species.getMemberNames()) {
-            double moles = species[specie]["moles"].asDouble();
-            if (moles == 0.0) continue;
-            //std::cout << specie << ": " << moles << " moles\n";
-            sciantix_variable[specie + " - LIQUID - IG"].setFinalValue(moles);
-        }
-        //std::cout << "*******************" << std::endl; 
-        const Json::Value &elements = liquidsolution["elements"];
-        for (const auto &element : elements.getMemberNames()) {
-            double moles = elements[element]["moles of element in phase"].asDouble();
-            if (moles == 0.0) continue;
-            //std::cout << element << ": " << moles << " moles\n";
-        }
-        //std::cout << "*******************" << std::endl; 
-
-    }
-        
-    //std::cout << "------PURE CONDENSED PHASES----" << std::endl; 
     
+    Json::Value &lsolution = root["1"]["solution phases"]["LIQUID"];
+
+    if (lsolution["moles"].asDouble() != 0.0) {
+        const Json::Value &species = lsolution["species"];
+        for (const auto &specie : species.getMemberNames()) {
+            sciantix_variable[specie + " - LIQUID - IG"].setFinalValue(species[specie]["moles"].asDouble());
+        }
+    }
+
+    Json::Value &lisolution = root["1"]["solution phases"]["LIQUID_IONIC"];
+
+    if (lisolution["moles"].asDouble() != 0.0) {
+        const Json::Value &species = lisolution["species"];
+        for (const auto &specie : species.getMemberNames()) {
+            sciantix_variable[specie + " - LIQUID_IONIC - IG"].setFinalValue(species[specie]["moles"].asDouble());
+        }
+    }
+
+    Json::Value &fccsolution = root["1"]["solution phases"]["FCC_A1"];
+
+    if (fccsolution["moles"].asDouble() != 0.0) {
+        const Json::Value &species = fccsolution["species"];
+        for (const auto &specie : species.getMemberNames()) {
+            sciantix_variable[specie + " - FCC_A1 - IG"].setFinalValue(species[specie]["moles"].asDouble());
+        }
+    }
+
     Json::Value &condensed = root["1"]["pure condensed phases"];
     for (const auto &phase : condensed.getMemberNames()) {
-        
-        if (condensed[phase]["moles"].asDouble() == 0.0) continue;
-        
-        //std::cout << phase << ": " << condensed[phase]["moles"].asDouble() << " moles\n";
-        //std::cout << "*******************" << std::endl; 
         sciantix_variable[phase + " - pure condensed phases - IG"].setFinalValue(condensed[phase]["moles"].asDouble());
-    
-        // Access the "elements" for this phase
-        const Json::Value &elements = condensed[phase]["elements"];
-        for (const auto &element : elements.getMemberNames()) {
-            double moles = elements[element]["moles of element in phase"].asDouble();
-            if (moles == 0.0) continue;
-            //std::cout << element << ": " << moles << " moles\n";
-        }
-        //std::cout << "*******************" << std::endl; 
     }
-    //std::cout << "-----------------" << std::endl;
 
     const char* oldFileName = "../../thermochimica-master/outputs/thermoout.json";
     const char* newFileName = "../../thermochimica-master/outputs/thermoout_IG.json";

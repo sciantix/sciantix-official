@@ -28,59 +28,124 @@ print('Stoichiometry deviation (/) = ', data['With Thermochemistry']['Stoichiome
 
 # Define classes
 inert_gases = ['Xe', 'Kr']
-volatile_fps = ['Cs', 'I']
-gas_ideal_GB = ['I - gas_ideal - GB (mol)', 'I2 - gas_ideal - GB (mol)', 'Cs - gas_ideal - GB (mol)', 'Cs2 - gas_ideal - GB (mol)', 'CsI - gas_ideal - GB (mol)', 'Cs2I2 - gas_ideal - GB (mol)']
-liquid_GB = ['I2 - LIQUID - GB (mol)', 'Cs - LIQUID - GB (mol)', 'CsI - LIQUID - GB (mol)']
-pure_condensed_GB = ['I2_s(s) - pure condensed phases - GB (mol)','Cs_bcc_a2(s) - pure condensed phases - GB (mol)','CsI_csi_b2(s) - pure condensed phases - GB (mol)','CsI3_csi3(s) - pure condensed phases - GB (mol)','CsI4_csi4(s) - pure condensed phases - GB (mol)']
+volatile_fps = ['Cs', 'I', 'Te']
 
-gas_ideal_IG = ['I - gas_ideal - IG (mol)', 'I2 - gas_ideal - IG (mol)', 'Cs - gas_ideal - IG (mol)', 'Cs2 - gas_ideal - IG (mol)', 'CsI - gas_ideal - IG (mol)', 'Cs2I2 - gas_ideal - IG (mol)']
-liquid_IG = ['I2 - LIQUID - IG (mol)', 'Cs - LIQUID - IG (mol)', 'CsI - LIQUID - IG (mol)']
-pure_condensed_IG = ['I2_s(s) - pure condensed phases - IG (mol)','Cs_bcc_a2(s) - pure condensed phases - IG (mol)','CsI_csi_b2(s) - pure condensed phases - IG (mol)','CsI3_csi3(s) - pure condensed phases - IG (mol)','CsI4_csi4(s) - pure condensed phases - IG (mol)']
+GAS_IDEAL_IG = [
+    "I - GAS_IDEAL - IG (mol)", "I2 - GAS_IDEAL - IG (mol)", "Cs - GAS_IDEAL - IG (mol)",
+    "Cs2 - GAS_IDEAL - IG (mol)", "CsI - GAS_IDEAL - IG (mol)", "Cs2I2 - GAS_IDEAL - IG (mol)",
+    "Cs2Te - GAS_IDEAL - IG (mol)", "Cs2Te2 - GAS_IDEAL - IG (mol)", "Cs2Te3 - GAS_IDEAL - IG (mol)",
+    "CsTe - GAS_IDEAL - IG (mol)", "CsTe2 - GAS_IDEAL - IG (mol)", "Te - GAS_IDEAL - IG (mol)",
+    "Te2 - GAS_IDEAL - IG (mol)", "Te3 - GAS_IDEAL - IG (mol)", "Te4 - GAS_IDEAL - IG (mol)",
+    "Te5 - GAS_IDEAL - IG (mol)", "Te6 - GAS_IDEAL - IG (mol)", "Te7 - GAS_IDEAL - IG (mol)"
+]
+
+LIQUID_IG = [
+    "I2 - LIQUID - IG (mol)", "Cs - LIQUID - IG (mol)", "CsI - LIQUID - IG (mol)"
+]
+
+LIQUID_IONIC_IG = [
+    "Cs+:Va - LIQUID_IONIC - IG (mol)", "Cs2Te - LIQUID_IONIC - IG (mol)", "Te - LIQUID_IONIC - IG (mol)"
+]
+
+FCC_A1_IG = [
+    "Cs:Te - FCC_A1 - IG (mol)", "Cs:Va - FCC_A1 - IG (mol)"
+]
+
+PURE_CONDENSED_PHASES_IG = [
+    "I2_s(s) - pure condensed phases - IG (mol)", "Cs_bcc_a2(s) - pure condensed phases - IG (mol)",
+    "CsI_csi_b2(s) - pure condensed phases - IG (mol)", "CsI3_csi3(s) - pure condensed phases - IG (mol)",
+    "CsI4_csi4(s) - pure condensed phases - IG (mol)", "Cs_bcc_a2_2(s) - pure condensed phases - IG (mol)",
+    "Cs2Te_b(s) - pure condensed phases - IG (mol)", "CsTe_b(s) - pure condensed phases - IG (mol)",
+    "Cs2Te(s) - pure condensed phases - IG (mol)", "Cs2Te3(s) - pure condensed phases - IG (mol)",
+    "Cs2Te5(s) - pure condensed phases - IG (mol)", "Cs5Te3(s) - pure condensed phases - IG (mol)",
+    "CsTe(s) - pure condensed phases - IG (mol)", "CsTe4(s) - pure condensed phases - IG (mol)",
+    "Cs_hcp_a3(s) - pure condensed phases - IG (mol)", "Cs_hex_a8(s) - pure condensed phases - IG (mol)"
+]
+
+GAS_IDEAL_GB = [
+    "I - GAS_IDEAL - GB (mol)", "I2 - GAS_IDEAL - GB (mol)", "Cs - GAS_IDEAL - GB (mol)",
+    "Cs2 - GAS_IDEAL - GB (mol)", "CsI - GAS_IDEAL - GB (mol)", "Cs2I2 - GAS_IDEAL - GB (mol)",
+    "Cs2Te - GAS_IDEAL - GB (mol)", "Cs2Te2 - GAS_IDEAL - GB (mol)", "Cs2Te3 - GAS_IDEAL - GB (mol)",
+    "CsTe - GAS_IDEAL - GB (mol)", "CsTe2 - GAS_IDEAL - GB (mol)", "Te - GAS_IDEAL - GB (mol)",
+    "Te2 - GAS_IDEAL - GB (mol)", "Te3 - GAS_IDEAL - GB (mol)", "Te4 - GAS_IDEAL - GB (mol)",
+    "Te5 - GAS_IDEAL - GB (mol)", "Te6 - GAS_IDEAL - GB (mol)", "Te7 - GAS_IDEAL - GB (mol)"
+]
+
+LIQUID_GB = [
+    "I2 - LIQUID - GB (mol)", "Cs - LIQUID - GB (mol)", "CsI - LIQUID - GB (mol)"
+]
+
+LIQUID_IONIC_GB = [
+    "Cs+:Va - LIQUID_IONIC - GB (mol)", "Cs2Te - LIQUID_IONIC - GB (mol)", "Te - LIQUID_IONIC - GB (mol)"
+]
+
+FCC_A1_GB = [
+    "Cs:Te - FCC_A1 - GB (mol)", "Cs:Va - FCC_A1 - GB (mol)"
+]
+
+PURE_CONDENSED_PHASES_GB = [
+    "I2_s(s) - pure condensed phases - GB (mol)", "Cs_bcc_a2(s) - pure condensed phases - GB (mol)",
+    "CsI_csi_b2(s) - pure condensed phases - GB (mol)", "CsI3_csi3(s) - pure condensed phases - GB (mol)",
+    "CsI4_csi4(s) - pure condensed phases - GB (mol)", "Cs_bcc_a2_2(s) - pure condensed phases - GB (mol)",
+    "Cs2Te_b(s) - pure condensed phases - GB (mol)", "CsTe_b(s) - pure condensed phases - GB (mol)",
+    "Cs2Te(s) - pure condensed phases - GB (mol)", "Cs2Te3(s) - pure condensed phases - GB (mol)",
+    "Cs2Te5(s) - pure condensed phases - GB (mol)", "Cs5Te3(s) - pure condensed phases - GB (mol)",
+    "CsTe(s) - pure condensed phases - GB (mol)", "CsTe4(s) - pure condensed phases - GB (mol)",
+    "Cs_hcp_a3(s) - pure condensed phases - GB (mol)", "Cs_hex_a8(s) - pure condensed phases - GB (mol)"
+]
 
 all_gases =  volatile_fps + inert_gases
-all_products_GB = gas_ideal_GB + liquid_GB + pure_condensed_GB
-all_products_IG = gas_ideal_IG + liquid_IG + pure_condensed_IG
+all_products_GB = GAS_IDEAL_GB + LIQUID_GB + LIQUID_IONIC_GB + FCC_A1_GB + PURE_CONDENSED_PHASES_GB
+all_products_IG = GAS_IDEAL_IG + LIQUID_IG + LIQUID_IONIC_IG + FCC_A1_IG + PURE_CONDENSED_PHASES_IG
 
 # Define style
-colors = ['dodgerblue', 'darkorange', 'forestgreen', 'crimson', 'hotpink', 'gold', 'slategray',
-          'mediumpurple', 'saddlebrown', 'deepskyblue', 'darkolivegreen', 'limegreen', 'darkcyan', 'orangered']
+colors = [
+    'dodgerblue', 'darkorange', 'forestgreen', 'crimson', 'hotpink', 'gold', 'slategray',
+    'mediumpurple', 'saddlebrown', 'deepskyblue', 'darkolivegreen', 'limegreen', 'darkcyan', 'orangered',
+    'mediumseagreen', 'royalblue', 'peru', 'deeppink', 'lightcoral', 'darkslategray', 'mediumvioletred',
+    'cadetblue', 'chocolate', 'yellowgreen', 'indigo', 'maroon', 'steelblue', 'lightseagreen',
+    'dodgerblue', 'darkorange', 'forestgreen', 'crimson', 'hotpink', 'gold', 'slategray',
+    'mediumpurple', 'saddlebrown', 'deepskyblue', 'darkolivegreen', 'limegreen', 'darkcyan', 'orangered',
+    'mediumseagreen', 'royalblue', 'peru', 'deeppink', 'lightcoral', 'darkslategray', 'mediumvioletred',
+    'cadetblue', 'chocolate', 'yellowgreen', 'indigo', 'maroon', 'steelblue', 'lightseagreen'
+]
 linestyles = {'No Thermochemistry': '--', 'With Thermochemistry': '-'}
 
 N = 60
 
-# Compute derived quantities
-for dataset in data:
-    for label in all_gases:
-        data[dataset][label + ' released/birth'] = data[dataset][label + ' released (at/m3)']/data[dataset][label + ' produced (at/m3)']
+# # Compute derived quantities
+# for dataset in data:
+#     for label in all_gases:
+#         data[dataset][label + ' released/birth'] = data[dataset][label + ' released (at/m3)']/data[dataset][label + ' produced (at/m3)']
 
-    #for label in inert_gases:
-        #print(label, dataset, data[dataset].loc[N, label + ' produced (at/m3)'], data[dataset].loc[N, label + ' released (at/m3)'], data[dataset].loc[N, label + ' at grain boundary (at/m3)'], data[dataset].loc[N, label + ' in grain (at/m3)'])
+#     #for label in inert_gases:
+#         #print(label, dataset, data[dataset].loc[N, label + ' produced (at/m3)'], data[dataset].loc[N, label + ' released (at/m3)'], data[dataset].loc[N, label + ' at grain boundary (at/m3)'], data[dataset].loc[N, label + ' in grain (at/m3)'])
     
-    for label in volatile_fps:
-        data[dataset][label + ' available/birth'] = (data[dataset][label + ' reacted - GB (at/m3)']+ data[dataset][label + ' at grain boundary (at/m3)'])/data[dataset][label + ' produced (at/m3)']
-        data[dataset][label + ' reacted/birth'] = data[dataset][label + ' reacted - GB (at/m3)']/data[dataset][label + ' produced (at/m3)']
-        data[dataset][label + ' reacted/available'] = data[dataset][label + ' reacted/birth']/data[dataset][label + ' available/birth']
-        print(label, dataset, data[dataset].loc[N, label + ' produced (at/m3)'], 
-              data[dataset].loc[N, label + ' released (at/m3)'], 
-              data[dataset].loc[N, label + ' at grain boundary (at/m3)'], data[dataset].loc[N, label + ' reacted - GB (at/m3)'],
-              data[dataset].loc[N, label + ' in grain (at/m3)'], data[dataset].loc[N, label + ' reacted - IG (at/m3)'])
-        print(label, dataset, data[dataset].loc[N, label + ' produced (at/m3)'] -
-              data[dataset].loc[N, label + ' released (at/m3)'] -
-              data[dataset].loc[N, label + ' at grain boundary (at/m3)'] - data[dataset].loc[N, label + ' reacted - GB (at/m3)'] - 
-              data[dataset].loc[N, label + ' in grain (at/m3)'] -  data[dataset].loc[N, label + ' reacted - IG (at/m3)'])
+#     for label in volatile_fps:
+#         data[dataset][label + ' available/birth'] = (data[dataset][label + ' reacted - GB (at/m3)']+ data[dataset][label + ' at grain boundary (at/m3)'])/data[dataset][label + ' produced (at/m3)']
+#         data[dataset][label + ' reacted/birth'] = data[dataset][label + ' reacted - GB (at/m3)']/data[dataset][label + ' produced (at/m3)']
+#         data[dataset][label + ' reacted/available'] = data[dataset][label + ' reacted/birth']/data[dataset][label + ' available/birth']
+#         print(label, dataset, data[dataset].loc[N, label + ' produced (at/m3)'], 
+#               data[dataset].loc[N, label + ' released (at/m3)'], 
+#               data[dataset].loc[N, label + ' at grain boundary (at/m3)'], data[dataset].loc[N, label + ' reacted - GB (at/m3)'],
+#               data[dataset].loc[N, label + ' in grain (at/m3)'], data[dataset].loc[N, label + ' reacted - IG (at/m3)'])
+#         print(label, dataset, data[dataset].loc[N, label + ' produced (at/m3)'] -
+#               data[dataset].loc[N, label + ' released (at/m3)'] -
+#               data[dataset].loc[N, label + ' at grain boundary (at/m3)'] - data[dataset].loc[N, label + ' reacted - GB (at/m3)'] - 
+#               data[dataset].loc[N, label + ' in grain (at/m3)'] -  data[dataset].loc[N, label + ' reacted - IG (at/m3)'])
     
 
-if 'At grain boundary (mol)' not in data['With Thermochemistry'].columns:
-    data['With Thermochemistry']['At grain boundary (mol)'] = 0  
-    data['With Thermochemistry']['In grain (mol)'] = 0
-for label in volatile_fps:
-    data['With Thermochemistry']['At grain boundary (mol)'] += (1/avogadronumber)*(data['With Thermochemistry'][label+' at grain boundary (at/m3)'] + data['With Thermochemistry'][label+' reacted - GB (at/m3)'])/(data['With Thermochemistry']['Intergranular bubble concentration (bub/m2)'] * 3/ data['With Thermochemistry']['Grain radius (m)'])
-    data['With Thermochemistry']['In grain (mol)'] += (1/avogadronumber)*(data['With Thermochemistry'][label+' in grain (at/m3)'] + data['With Thermochemistry'][label+' reacted - IG (at/m3)']) * (4/3 * 3.1415 * data['With Thermochemistry']['Grain radius (m)']**3)
+# if 'At grain boundary (mol)' not in data['With Thermochemistry'].columns:
+#     data['With Thermochemistry']['At grain boundary (mol)'] = 0  
+#     data['With Thermochemistry']['In grain (mol)'] = 0
+# for label in volatile_fps:
+#     data['With Thermochemistry']['At grain boundary (mol)'] += (1/avogadronumber)*(data['With Thermochemistry'][label+' at grain boundary (at/m3)'] + data['With Thermochemistry'][label+' reacted - GB (at/m3)'])/(data['With Thermochemistry']['Intergranular bubble concentration (bub/m2)'] * 3/ data['With Thermochemistry']['Grain radius (m)'])
+#     data['With Thermochemistry']['In grain (mol)'] += (1/avogadronumber)*(data['With Thermochemistry'][label+' in grain (at/m3)'] + data['With Thermochemistry'][label+' reacted - IG (at/m3)']) * (4/3 * 3.1415 * data['With Thermochemistry']['Grain radius (m)']**3)
 
-for label in all_products_GB:
-    data['With Thermochemistry'][label + ' produced/available - GB'] = data['With Thermochemistry'][label]/data['With Thermochemistry']['At grain boundary (mol)']
-for label in all_products_IG:
-    data['With Thermochemistry'][label + ' produced/available - IG'] = data['With Thermochemistry'][label]/data['With Thermochemistry']['In grain (mol)']
+# for label in all_products_GB:
+#     data['With Thermochemistry'][label + ' produced/available - GB'] = data['With Thermochemistry'][label]/data['With Thermochemistry']['At grain boundary (mol)']
+# for label in all_products_IG:
+#     data['With Thermochemistry'][label + ' produced/available - IG'] = data['With Thermochemistry'][label]/data['With Thermochemistry']['In grain (mol)']
 
 ####################################### Comparison with experimetal data at 1900 K ########################################
 mask_RAMP = data['With Thermochemistry']['Time (h)'] >= xlim_i
@@ -103,8 +168,9 @@ def plot_species(data, label, ax, dataset):
     """ Plotta i dati per una specie specifica (Xe o Cs) """
     linestyle = linestyles[dataset]
     
-    ax.plot(data[dataset]['Time (h)'], data[dataset][label + ' produced (at/m3)'], 
-            linestyle=linestyle, color=colors_element['Produced'], label='Produced')
+    if dataset == 'With Thermochemistry':
+        ax.plot(data[dataset]['Time (h)'], data[dataset][label + ' produced (at/m3)'], 
+                linestyle=linestyle, color=colors_element['Produced'], label='Produced')
     ax.plot(data[dataset]['Time (h)'], data[dataset][label + ' in grain (at/m3)'], 
             linestyle=linestyle, color=colors_element['In grain'], label='In grain')
     ax.plot(data[dataset]['Time (h)'], data[dataset][label + ' at grain boundary (at/m3)'], 
@@ -114,42 +180,44 @@ def plot_species(data, label, ax, dataset):
     
     # Aggiungi reacted solo per Cs
     if label in volatile_fps:
-        ax.plot(data[dataset]['Time (h)'], data[dataset][label + ' reacted - GB (at/m3)'], 
-                linestyle=linestyle, color=colors_element['Reacted - GB'], label='Reacted - GB')
-        ax.plot(data[dataset]['Time (h)'], data[dataset][label + ' reacted - IG (at/m3)'], 
-                linestyle=linestyle, color=colors_element['Reacted - IG'], label='Reacted - IG')
+        if dataset == 'With Thermochemistry':
+            ax.plot(data[dataset]['Time (h)'], data[dataset][label + ' reacted - GB (at/m3)'], 
+                    linestyle=linestyle, color=colors_element['Reacted - GB'], label='Reacted - GB')
+            ax.plot(data[dataset]['Time (h)'], data[dataset][label + ' reacted - IG (at/m3)'], 
+                    linestyle=linestyle, color=colors_element['Reacted - IG'], label='Reacted - IG')
     
     ax.set_xlabel('Time (h)')
     ax.set_ylabel('Atoms (at/m3)')
     ax.legend()
 
-fig, axes = plt.subplots(1, 3, figsize=(18, 8))
+fig, axes = plt.subplots(1,4, figsize=(18, 8))
 
 for dataset in ['With Thermochemistry', 'No Thermochemistry']:
     plot_species(data, 'Xe', axes[0], dataset)
     plot_species(data, 'Cs', axes[1], dataset)
     plot_species(data, 'I', axes[2], dataset)
-    # ax_temp_0 = axes[0].twinx()
-    # linestyle = linestyles[dataset]
-    # ax_temp_0.plot(data[dataset]['Time (h)'], data[dataset]['Intergranular fractional coverage (/)'], 
-    #                linestyle=linestyle, color='grey', linewidth = 1)
-
+    plot_species(data, 'Te', axes[3], dataset)
+    
 axes[0].set_xlim([xlim_o,xlim_i])
 axes[1].set_xlim([xlim_o,xlim_i])
 axes[2].set_xlim([xlim_o,xlim_i])
+axes[3].set_xlim([xlim_o,xlim_i])
 axes[0].set_title('Xe')
 axes[1].set_title('Cs')
 axes[2].set_title('I')
+axes[3].set_title('Te')
 
+plt.tight_layout()
 plt.savefig(folder_path +"/XeCs_base.png")
 plt.show()
 
-fig, axes = plt.subplots(1, 3, figsize=(18, 8))
+fig, axes = plt.subplots(1, 4, figsize=(18, 8))
 
 for dataset in ['With Thermochemistry', 'No Thermochemistry']:
     plot_species(data, 'Xe', axes[0], dataset)
     plot_species(data, 'Cs', axes[1], dataset)
     plot_species(data, 'I', axes[2], dataset)
+    plot_species(data, 'Te', axes[3], dataset)
     # ax_temp_0 = axes[0].twinx()
     # linestyle = linestyles[dataset]
     # ax_temp_0.plot(data[dataset]['Time (h)'], data[dataset]['Intergranular fractional coverage (/)'], 
@@ -158,9 +226,13 @@ for dataset in ['With Thermochemistry', 'No Thermochemistry']:
 axes[0].set_xlim([xlim_i,xlim_f])
 axes[1].set_xlim([xlim_i,xlim_f])
 axes[2].set_xlim([xlim_i,xlim_f])
+axes[3].set_xlim([xlim_i,xlim_f])
 axes[0].set_title('Xe')
 axes[1].set_title('Cs')
 axes[2].set_title('I')
+axes[3].set_title('Te')
+
+plt.tight_layout()
 plt.savefig(folder_path +"/XeCs_annealing.png")
 plt.show()
 
@@ -293,25 +365,27 @@ print(f'Sample mass {round(mass_sample*1e6)} mg, volume {round(volume_sample*1e9
 additional_data = {
     'Cs': pd.read_csv('data_notoxidised/Cs.txt', sep=';'),
     'I': pd.read_csv('data_notoxidised/I.txt', sep=';'),
-    'Xe': pd.read_csv('data_notoxidised/Xe.txt', sep=';')
+    'Xe': pd.read_csv('data_notoxidised/Xe.txt', sep=';'),
+    'Te': pd.read_csv('data_notoxidised/Te.txt', sep=';')
 }
 
 # Define isotopes and related properties
 isotope_data = {
     'Cs': {'element': 'Cs', 'atomic_mass': 137},
     'I': {'element': 'I', 'atomic_mass': 129},
-    'Xe': {'element': 'Xe', 'atomic_mass': 131} 
+    'Xe': {'element': 'Xe', 'atomic_mass': 131},
+     'Te': {'element': 'Te', 'atomic_mass': 127} 
 }
 
-plt.figure(figsize=(18, 6))
+plt.figure(figsize=(15, 6))
 
 
 for isotope, properties in isotope_data.items():
     element = properties['element']
 
-    for dataset in data:
+    for dataset in ['With Thermochemistry']:
         cumulative_release_sim = (
-            (data[dataset][f'{element} released (at/m3)'] - data[dataset].loc[mask_RAMP.idxmax(),f'{element} released (at/m3)'])/(data[dataset].iloc[-1][f'{element} produced (at/m3)'] - data[dataset].loc[mask_RAMP.idxmax(),f'{element} released (at/m3)'])
+            (data[dataset][f'{element} released (at/m3)'] - data[dataset].loc[mask_RAMP.idxmax(),f'{element} released (at/m3)'])/(data[dataset].iloc[-1][f'{element} released (at/m3)'] - data[dataset].loc[mask_RAMP.idxmax(),f'{element} released (at/m3)'])
         )
         
         sim_filtered = data[dataset][data[dataset]['Time (h)'] > xlim_i]
@@ -344,7 +418,7 @@ plt.title('Comparison with experimental data')
 handles, labels = plt.gca().get_legend_handles_labels()
 legend_markers = [plt.Line2D([0], [0], marker='o', linestyle='--', color='black', label='Colle (2005)' )]
 legend_lines = [plt.Line2D([0], [0], linestyle='-', color='black', label='Simulation w THERMOCHIMICA'),
-                plt.Line2D([0], [0], linestyle='--', color='black', label='Simulazioni w\o THERMOCHIMICA'),
+                #plt.Line2D([0], [0], linestyle='--', color='black', label='Simulazioni w\o THERMOCHIMICA'),
                 plt.Line2D([0], [0], linestyle=':', color='tab:red', label='UO2 sublimation onset')]
 legend_colors = [plt.Line2D([0], [0], marker='o', linestyle='', color=colors[list(isotope_data.keys()).index(isotope)], label=f'{isotope}') for isotope, properties in isotope_data.items()]
 

@@ -37,6 +37,6 @@ void krypton(SciantixArray<Gas> &gas);
 void helium(SciantixArray<Gas> &gas);
 void caesium(SciantixArray<Gas> &gas);
 void iodine(SciantixArray<Gas> &gas);
-//void caesiumiodine(SciantixArray<Gas> &gas);
+void tellurium(SciantixArray<Gas> &gas);
 
 #endif // SET_GAS_H

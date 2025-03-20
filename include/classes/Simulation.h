@@ -65,7 +65,7 @@ private:
      */
     Simulation() {
         n_modes = 40;
-        modes_initial_conditions.resize(1000);
+        modes_initial_conditions.resize(1120);
     }
 
 public:
@@ -384,6 +384,9 @@ public:
             
         else if (gas_name == "I")
             return &modes_initial_conditions[21 * 40];
+        
+        else if (gas_name == "Te")
+            return &modes_initial_conditions[24 * 40];
 
         else
         {
@@ -422,6 +425,9 @@ public:
             
         else if (gas_name == "I")
             return &modes_initial_conditions[22 * 40];
+
+        else if (gas_name == "Te")
+            return &modes_initial_conditions[25 * 40];
             
         else
         {
@@ -460,6 +466,9 @@ public:
             
         else if (gas_name == "I")
             return &modes_initial_conditions[23 * 40];
+        
+        else if (gas_name == "Te")
+            return &modes_initial_conditions[26 * 40];
             
         else
         {

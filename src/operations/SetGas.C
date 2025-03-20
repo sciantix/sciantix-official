@@ -24,6 +24,7 @@ void Simulation::setGas()
     helium(gas);
     caesium(gas);
     iodine(gas);
+    tellurium(gas);
 }
 
 void xenon(SciantixArray<Gas> &gas)
@@ -95,7 +96,6 @@ void iodine(SciantixArray<Gas> &gas)
 {
     Gas gas_;
     gas_.setName("I");
-    gas_.setMassNumber(127);
     gas_.setAtomicNumber(53);
     gas_.setVanDerWaalsVolume(3.25e-29); // 4/3 * PI * pow(198e-12, 3) from the van der waals radius
     gas_.setDecayRate(0.0); // stable
@@ -104,6 +104,17 @@ void iodine(SciantixArray<Gas> &gas)
     gas.push(gas_);
 }
 
+void tellurium(SciantixArray<Gas> &gas) 
+{
+    Gas gas_;
+    gas_.setName("Te");
+    gas_.setAtomicNumber(52);
+    gas_.setVanDerWaalsVolume(3.66e-29); // 4/3 * PI * pow(206e-12, 3) from the van der waals radius
+    gas_.setDecayRate(0.0); // stable
+    gas_.setChemicallyActive(1.0);
+    gas_.setPrecursorFactor(1.00);
+    gas.push(gas_);
+}
 // // Data from JEFF-3.3 if not specified, to be verified the volumes
 
 // void caesium(SciantixArray<Gas> &gas) //Cs 134, 137

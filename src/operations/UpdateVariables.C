@@ -116,6 +116,16 @@ std::map<int, std::string> update_sciantix_variable = {
     {118, "Intragranular I atoms per bubble"},
     {119, "Intergranular I atoms per bubble"},
     {120, "I reacted - IG"},
+    {121, "Te produced"},
+    {122, "Te in grain"},
+    {123, "Te in intragranular solution"},
+    {124, "Te in intragranular bubbles"},
+    {125, "Te at grain boundary"},
+    {126, "Te released"},
+    {127, "Te reacted - GB"},
+    {128, "Intragranular Te atoms per bubble"},
+    {129, "Intergranular Te atoms per bubble"},
+    {130, "Te reacted - IG"},
     {150,"Chromium content"},
     {151,"Lattice parameter"},
     {152,"Theoretical density"},
@@ -132,7 +142,7 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
 {
     for (int i = 0; i < n_modes; ++i)
     {
-        for (int j = 0; j <= 24; j++)
+        for (int j = 0; j <= 27; j++)
         {
             Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];	
         }
