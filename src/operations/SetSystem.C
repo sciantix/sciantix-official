@@ -29,6 +29,7 @@ void Simulation::setSystem()
             sciantix_system.push(Kr85m_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Cs_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));            
             sciantix_system.push(I_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Te_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             break;
             break;
 
@@ -189,7 +190,8 @@ System Cs_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Cs"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(6.227860e-02 + 6.765883e-2/(1+1.90e-22*3e13/1.52e-6) + 6.723289e-2/(1+2.72e-18*3e13/2.09e-5)); // from TRANSURANUS 
+    system_.setYield(0.15); //JEFF 3.1 data +  TRANSURANUS
+    //system_.setYield(6.227860e-02 + 6.765883e-2/(1+1.90e-22*3e13/1.52e-6) + 6.723289e-2/(1+2.72e-18*3e13/2.09e-5)); // from TRANSURANUS 
     //system_.setYield(0.226); //Cs+Rb by Olander 1976 for fast spectrum
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
@@ -213,7 +215,33 @@ System I_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sciant
     system_.setGas(gas["I"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.001241+0.008137+0.02921); //sum of cumulative fission yield of I129, I131, I127
+    system_.setYield(0.04); //JEFF 3.1 data
+    //system_.setYield(0.001241+0.008137+0.02921); //sum of cumulative fission yield of I129, I131, I127
+    //system_.setYield(0.012); //I+Te by Olander 1976 for fast spectrum
+    system_.setRadiusInLattice(0.21e-9);
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
+    system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
+    system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
+    system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
+    system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
+
+    return system_;
+}
+
+System Te_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+
+    system_.setName("Te in UO2");
+    system_.setGas(gas["Te"]);
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0.03); //JEFF 3.1 data
+    //system_.setYield(0.001241+0.008137+0.02921); //sum of cumulative fission yield of I129, I131, I127
     //system_.setYield(0.012); //I+Te by Olander 1976 for fast spectrum
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
