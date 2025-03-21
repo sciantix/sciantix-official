@@ -85,7 +85,9 @@ public:
      */
     double BinaryInteraction(double initial_condition, double interaction_coefficient, double increment);
 
-
+    
+    
+    // The Spectral diffusion solver has been updated to handle the new manufactured solution and it's corresponding source
     /**
      * @brief Solves the spatially averaged PDE dy/dt = D div grad y + S - L y using a spectral approach.
      * We apply a spectral approach in space, projecting the equation on the eigenfunctions of the laplacian operator.
@@ -95,6 +97,8 @@ public:
      * @param initial_condition The initial conditions for the diffusion modes.
      * @param parameter A vector containing the parameters for the diffusion equation.
      * @param increment The time increment.
+     * @param time the current time instant we're at
+     * @param D teh manufactured diffusion coefficient
      * @return The updated value after solving the PDE.
      *
      *

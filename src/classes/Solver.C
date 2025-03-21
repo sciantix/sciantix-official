@@ -36,6 +36,7 @@ double Solver::BinaryInteraction(double initial_condition, double interaction_co
     return initial_condition / (1.0 + interaction_coefficient * initial_condition * increment);
 }
 
+// The Spectral diffusion solver has been updated to handle the new manufactured solution and it's corresponding source
 double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> parameter, double increment, double time, double D)
 {
     //Parameters :
@@ -45,6 +46,8 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
      //3 :production (F): not needed for the verification
      //4 :loss rate also not needed
 
+     // time is the current time instant we're at
+     // D is the manufactured Diffusion coefficient (the current version is D = 1-t)
     size_t n;
     unsigned short int np1(1);
 
@@ -57,7 +60,6 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
 
     diffusion_rate_coeff = pow(M_PI, 2) * D / pow(parameter.at(2), 2); // pi^2*D/a^2 (lambda/k^2)
     projection_coeff = -sqrt(8.0 / M_PI);
-    //source_rate_coeff = projection_coeff * parameter.at(3);
 
     for (n = 0; n < parameter.at(0); n++)
     {
@@ -65,7 +67,8 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
         const double n_coeff = pow(-1.0, np1) / np1; // (-1)^k/k
 
         diffusion_rate = diffusion_rate_coeff * pow(np1, 2); // k^2*pi^2*D/a^2
-        source_rate = 12*pow(-1.0, np1)*sqrt(2)*pow(parameter.at(2), 1.5)*time*(-2*pow(parameter.at(2), 2)-pow(M_PI, 2)*pow(np1, 2)*time*(1-time))/(pow(M_PI, 2.5)*pow(np1, 3));
+        //source_rate = 12*pow(-1.0, np1)*sqrt(2)*pow(parameter.at(2), 3.5)*time*(-pow(M_PI, 2)*pow(np1,2)*time-2*time-2)/(pow(M_PI, 2.5)*pow(np1, 3)*(time+1));
+        source_rate = 12*pow(-1.0, np1)*sqrt(2)*pow(parameter.at(2), 1.5)*time*(-2*pow(parameter.at(2),2)-pow(M_PI, 2)*pow(np1,2)*time*(1-time))/(pow(M_PI, 2.5)*pow(np1, 3));
 
         initial_condition[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);
 
