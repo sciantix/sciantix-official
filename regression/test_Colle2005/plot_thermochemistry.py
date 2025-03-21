@@ -7,7 +7,7 @@ import glob
 
 folder_path = "results"
 avogadronumber = 6.02214e23
-xlim_i = 53400
+xlim_i = 53400.100
 
 # Remove previous plots
 png_files = glob.glob(os.path.join(folder_path, "*.png"))
@@ -101,17 +101,27 @@ all_products_IG = GAS_IDEAL_IG + LIQUID_IG + LIQUID_IONIC_IG + FCC_A1_IG + PURE_
 # Define style
 colors = [
     'dodgerblue', 'darkorange', 'forestgreen', 'crimson', 'hotpink', 'gold', 'slategray',
-    'mediumpurple', 'saddlebrown', 'deepskyblue', 'darkolivegreen', 'limegreen', 'darkcyan', 'orangered',
-    'mediumseagreen', 'royalblue', 'peru', 'deeppink', 'lightcoral', 'darkslategray', 'mediumvioletred',
-    'cadetblue', 'chocolate', 'yellowgreen', 'indigo', 'maroon', 'steelblue', 'lightseagreen',
-    'dodgerblue', 'darkorange', 'forestgreen', 'crimson', 'hotpink', 'gold', 'slategray',
-    'mediumpurple', 'saddlebrown', 'deepskyblue', 'darkolivegreen', 'limegreen', 'darkcyan', 'orangered',
-    'mediumseagreen', 'royalblue', 'peru', 'deeppink', 'lightcoral', 'darkslategray', 'mediumvioletred',
-    'cadetblue', 'chocolate', 'yellowgreen', 'indigo', 'maroon', 'steelblue', 'lightseagreen'
+    'mediumpurple', 'saddlebrown', 'deepskyblue', 'darkolivegreen', 'limegreen', 'darkcyan',
+    'orangered', 'mediumseagreen', 'royalblue', 'peru', 'deeppink', 'lightcoral', 'darkslategray',
+    'mediumvioletred', 'cadetblue', 'chocolate', 'yellowgreen', 'indigo', 'maroon', 'steelblue',
+    'lightseagreen', 'cornflowerblue', 'firebrick', 'turquoise', 'darkmagenta', 'olivedrab',
+    'tomato', 'orchid', 'goldenrod', 'lawngreen', 'seagreen', 'slateblue', 'palevioletred',
+    'darkkhaki', 'rosybrown', 'lightsteelblue', 'teal', 'midnightblue', 'sienna', 'plum',
+    'darkred', 'mediumturquoise', 'lightsalmon', 'darkblue', 'chartreuse', 'palegreen',
+    'lightcoral', 'thistle', 'mediumspringgreen', 'mediumslateblue', 'fuchsia', 'navy',
+    'bisque', 'gainsboro', 'powderblue', 'peachpuff', 'lightcyan'
 ]
+
 linestyles = {'No Thermochemistry': '--', 'With Thermochemistry': '-'}
 
-N = 60
+data['With Thermochemistry']['IG total (mol)'] = 0
+for label in all_products_IG:
+    data['With Thermochemistry']['IG total (mol)'] += data['With Thermochemistry'][label]
+
+data['With Thermochemistry']['GB total (mol)'] = 0
+for label in all_products_GB:
+    data['With Thermochemistry']['GB total (mol)'] += data['With Thermochemistry'][label]
+
 
 # # Compute derived quantities
 # for dataset in data:
@@ -188,7 +198,8 @@ def plot_species(data, label, ax, dataset):
     
     ax.set_xlabel('Time (h)')
     ax.set_ylabel('Atoms (at/m3)')
-    ax.legend()
+    if dataset == 'With Thermochemistry':
+        ax.legend(frameon = False,loc='upper left')
 
 fig, axes = plt.subplots(1,4, figsize=(18, 8))
 
@@ -243,11 +254,13 @@ fig, axes = plt.subplots(1, 2, figsize=(18, 8))
 
 for j, label in enumerate(all_products_GB):
     dataset = "With Thermochemistry"
-    if data[dataset][label].max() > 0:
-        axes[0].plot(data[dataset][label_x], data[dataset][label], 
+    x = data[dataset][label]/data[dataset]["GB total (mol)"]
+    x = np.nan_to_num(x, nan=0)
+    if max(x) > 0.01:
+        axes[0].plot(data[dataset][label_x],x , 
                         linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
 axes[0].set_xlabel(label_x)
-axes[0].set_ylabel('Produced (mol)')
+axes[0].set_ylabel('Mole fraction (/)')
 axes[0].set_xlim([xlim_o,xlim_i])
 axes[0].legend(frameon = False,loc='upper left')
 
@@ -267,11 +280,13 @@ ax_temp_0.annotate('T vs t', xy=(x_middle + 0.1 * (xlim_i - xlim_o), y_middle), 
 
 for j, label in enumerate(all_products_GB):
     dataset = "With Thermochemistry"
-    if data[dataset][label].max() > 0:
-        axes[1].plot(data[dataset][label_x], data[dataset][label], 
+    x = data[dataset][label]/data[dataset]["GB total (mol)"]
+    x = np.nan_to_num(x, nan=0)
+    if max(x) > 0.01:
+        axes[1].plot(data[dataset][label_x], x, 
                     linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
 axes[1].set_xlabel(label_x)
-axes[1].set_ylabel('Produced (mol)')
+axes[1].set_ylabel('Mole fraction (/)')
 axes[1].set_xlim([xlim_i,xlim_f])
 axes[1].legend(frameon = False,loc='upper left')
 
@@ -300,11 +315,13 @@ fig, axes = plt.subplots(1, 2, figsize=(18, 8))
 
 for j, label in enumerate(all_products_IG):
     dataset = "With Thermochemistry"
-    if data[dataset][label].max() > 0:
-        axes[0].plot(data[dataset][label_x], data[dataset][label], 
+    x = data[dataset][label]/data[dataset]["IG total (mol)"]
+    x = np.nan_to_num(x, nan=0)
+    if max(x) > 0.01:
+        axes[0].plot(data[dataset][label_x], x, 
                         linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
 axes[0].set_xlabel(label_x)
-axes[0].set_ylabel('Produced (mol)')
+axes[0].set_ylabel('Mole fraction (/)')
 axes[0].set_xlim([xlim_o,xlim_i])
 axes[0].legend(frameon = False,loc='upper left')
 
@@ -324,11 +341,13 @@ ax_temp_0.annotate('T vs t', xy=(x_middle + 0.1 * (xlim_i - xlim_o), y_middle), 
 
 for j, label in enumerate(all_products_IG):
     dataset = "With Thermochemistry"
-    if data[dataset][label].max() > 0:
-        axes[1].plot(data[dataset][label_x], data[dataset][label], 
+    x = data[dataset][label]/data[dataset]["IG total (mol)"]
+    x = np.nan_to_num(x, nan=0)
+    if max(x) > 0.01:
+        axes[1].plot(data[dataset][label_x],x, 
                      linestyle=linestyles[dataset], color=colors[j], label=f'{label}')
 axes[1].set_xlabel(label_x)
-axes[1].set_ylabel('Produced (mol)')
+axes[1].set_ylabel('Mole fraction (/)')
 axes[1].set_xlim([xlim_i,xlim_f])
 axes[1].legend(frameon = False,loc='upper left')
 
@@ -377,13 +396,13 @@ isotope_data = {
      'Te': {'element': 'Te', 'atomic_mass': 127} 
 }
 
-plt.figure(figsize=(15, 6))
+plt.figure(figsize=(10, 6))
 
 
 for isotope, properties in isotope_data.items():
     element = properties['element']
 
-    for dataset in ['With Thermochemistry']:
+    for dataset in data:
         cumulative_release_sim = (
             (data[dataset][f'{element} released (at/m3)'] - data[dataset].loc[mask_RAMP.idxmax(),f'{element} released (at/m3)'])/(data[dataset].iloc[-1][f'{element} released (at/m3)'] - data[dataset].loc[mask_RAMP.idxmax(),f'{element} released (at/m3)'])
         )
@@ -404,22 +423,26 @@ for isotope, properties in isotope_data.items():
         additional_data[element]['Release/birth (/)'],
         marker='o',
         linestyle='--',
+        linewidth=0.5,
         color=colors[list(isotope_data.keys()).index(isotope)],
         label=f'Exp. {isotope} {dataset}'
     )
 
-plt.vlines(x = 2020, ymin = 0, ymax = 1, color = 'tab:red', linestyle = ':', label = 'UO2 Vaporisation onset')
+#plt.vlines(x = 2020, ymin = 0, ymax = 1, color = 'tab:red', linestyle = ':', label = 'UO2 Vaporisation onset')
 
 plt.xlabel('Temperature (K)')
 plt.ylabel('Cumulative release (/)')
+plt.xlim([800, 2773])
 plt.ylim([0,1])
+plt.axvspan(2020, plt.xlim()[1], color='gray', alpha=0.2, label="UO2 Vaporisation")
+plt.text(2200, plt.ylim()[1] * 0.2, "UO2 vaporisation", color='gray', fontsize=12)
 plt.title('Comparison with experimental data')
 
 handles, labels = plt.gca().get_legend_handles_labels()
 legend_markers = [plt.Line2D([0], [0], marker='o', linestyle='--', color='black', label='Colle (2005)' )]
 legend_lines = [plt.Line2D([0], [0], linestyle='-', color='black', label='Simulation w THERMOCHIMICA'),
-                #plt.Line2D([0], [0], linestyle='--', color='black', label='Simulazioni w\o THERMOCHIMICA'),
-                plt.Line2D([0], [0], linestyle=':', color='tab:red', label='UO2 sublimation onset')]
+                plt.Line2D([0], [0], linestyle='--', color='black', label='Simulazioni w\o THERMOCHIMICA')]
+                #plt.Line2D([0], [0], linestyle=':', color='tab:red', label='UO2 sublimation onset')]
 legend_colors = [plt.Line2D([0], [0], marker='o', linestyle='', color=colors[list(isotope_data.keys()).index(isotope)], label=f'{isotope}') for isotope, properties in isotope_data.items()]
 
 plt.legend(handles= legend_colors +legend_markers + legend_lines, loc='upper left', frameon=False)
