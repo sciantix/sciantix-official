@@ -107,11 +107,8 @@ int main(int argc, char **argv)
 
     timer = clock();
     
-    std::vector<double> interpolated_times;  // Declare the vector
     while (Time_h <= Time_end_h)
     {
-        // Store the interpolated time value
-        interpolated_times.push_back(Time_h);
         
         Sciantix_history[0] = Sciantix_history[1];
         Sciantix_history[1] = InputInterpolation(Time_h, Time_input, Temperature_input, Input_history_points);
@@ -143,13 +140,7 @@ int main(int argc, char **argv)
         }
         else
             break;
-        
-        std::ofstream interp_log(TestPath + "interpolated_times.txt");
-        for (double time : interpolated_times)
-        {
-            interp_log << time << "\n";
-        }
-        interp_log.close();
+    
     }
 
     timer = clock() - timer;
