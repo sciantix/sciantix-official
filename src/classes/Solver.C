@@ -38,7 +38,7 @@ double Solver::BinaryInteraction(double initial_condition, double interaction_co
 
 // The Spectral diffusion solver has been updated to handle the new manufactured solution and it's corresponding source
 double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> parameter, double increment, double time, double D)
-{
+{   //Manufactured solution: C(r,t) = (a^2-r^2)*exp(0.005*t)
     //Parameters :
      //0 : N_modes (k)
      //1 : D
@@ -47,7 +47,7 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
      //4 :loss rate also not needed
 
      // time is the current time instant we're at
-     // D is the manufactured Diffusion coefficient (the current version is D = 1-t)
+     // D is the manufactured Diffusion coefficient (the current version is D = exp(-0.001*t))
     size_t n;
     unsigned short int np1(1);
 
@@ -67,8 +67,12 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
         const double n_coeff = pow(-1.0, np1) / np1; // (-1)^k/k
 
         diffusion_rate = diffusion_rate_coeff * pow(np1, 2); // k^2*pi^2*D/a^2
-        //source_rate = 12*pow(-1.0, np1)*sqrt(2)*pow(parameter.at(2), 3.5)*time*(-pow(M_PI, 2)*pow(np1,2)*time-2*time-2)/(pow(M_PI, 2.5)*pow(np1, 3)*(time+1));
-        source_rate = 12*pow(-1.0, np1)*sqrt(2)*pow(parameter.at(2), 1.5)*time*(-2*pow(parameter.at(2),2)-pow(M_PI, 2)*pow(np1,2)*time*(1-time))/(pow(M_PI, 2.5)*pow(np1, 3));
+        //source_rate = 12*pow(-1.0, np1)*sqrt(2)*pow(parameter.at(2), 1.5)*time*(-2*pow(parameter.at(2),2)-pow(M_PI, 2)*pow(np1,2)*time*(1-time))/(pow(M_PI, 2.5)*pow(np1, 3));
+        source_rate = 2 * sqrt(2) * sqrt(M_PI) * (
+            -0.03 * pow(-1,np1) * pow(parameter.at(2),4) * exp(0.005 * time) / (pow(M_PI,3) * pow(np1,3))
+            - 6.0 * pow(-1,np1) * pow(parameter.at(2),2) * exp(0.004 * time) / (M_PI * np1)
+        ) / sqrt(parameter.at(2));
+
 
         initial_condition[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);
 
