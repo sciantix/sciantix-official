@@ -59,7 +59,7 @@ void Simulation::GasDiffusion()
                         model["Gas diffusion - " + system.getName()].getParameter(),
                         physics_variable["Time step"].getFinalValue(),
                         interpolated_times[history_variable["Time step number"].getFinalValue()], //t
-                        1-interpolated_times[history_variable["Time step number"].getFinalValue()] //D =1-t
+                        exp(-0.001*interpolated_times[history_variable["Time step number"].getFinalValue()]) //D = exp(-0.001*t)
                     )
                 );
 
@@ -84,7 +84,7 @@ void Simulation::GasDiffusion()
                         model["Gas diffusion - " + system.getName()].getParameter(),
                         physics_variable["Time step"].getFinalValue(),
                         interpolated_times[history_variable["Time step number"].getFinalValue()],
-                        1-interpolated_times[history_variable["Time step number"].getFinalValue()]
+                        exp(-0.001*interpolated_times[history_variable["Time step number"].getFinalValue()])
                     )
                 );
             }
@@ -211,12 +211,11 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         model_.setName("Gas diffusion - " + system.getName());
         model_.setRef(reference);
         
-        double n_bins = Number_of_time_steps_per_interval;
         std::vector<double> times;
         readFirstColumn(TestPath + "input_history.txt",times);
         std::vector<double> interpolated_times;
-        std::vector<double> C_M(n_bins+1);
-        interpolateTimes(times, interpolated_times,n_bins);
+        std::vector<double> C_M(Number_of_time_steps_per_interval+1);
+        interpolateTimes(times, interpolated_times,Number_of_time_steps_per_interval);
 
         std::vector<double> parameters;
         parameters.push_back(n_modes); // 0
@@ -233,9 +232,11 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         parameters.push_back(system.getProductionRate()); //3
         parameters.push_back(system.getGas().getDecayRate()); //4
 
-        for (int i = 0; i <= n_bins; ++i)
+        // Manufactured Solution
+
+        for (int i = 0; i <= Number_of_time_steps_per_interval; ++i)
         {
-            C_M[i] = 0.4 * pow(parameters.at(2),2) * pow(interpolated_times[i],2);
+            C_M[i] = 0.4 * pow(parameters.at(2),2) * exp(0.005*interpolated_times[i]);
         }
         writeInterpolatedTimes(TestPath + "manufactured_solution.txt",interpolated_times,C_M);
         model_.setParameter(parameters);
