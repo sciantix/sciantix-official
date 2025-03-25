@@ -1,4 +1,4 @@
-Time (s)	Manufactured Solution (at/m³)
+Time (h)	Manufactured Solution (at/m³)
 0.000000000000	0.000000000010
 55.000000000000	0.000000000013
 110.000000000000	0.000000000017
