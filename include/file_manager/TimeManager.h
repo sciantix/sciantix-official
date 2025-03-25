@@ -87,7 +87,7 @@ return;
 }
 
 // Write the header
-output_file << "Time (s)\tManufactured Solution (at/m³)\n";
+output_file << "Time (h)\tManufactured Solution (at/m³)\n";
 
 // Write time values and corresponding interpolated times
 for (size_t i = 0; i < time.size(); ++i)
