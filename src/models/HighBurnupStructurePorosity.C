@@ -153,7 +153,7 @@ void Simulation::HighBurnupStructurePorosity()
             {
                 volume_flow_rate = 2.0 * M_PI * fuel_.getGrainBoundaryThickness() * fuel_.getGrainBoundaryVacancyDiffusivity() * DimensionlessFactor;
                 // volume_flow_rate = 2.0 * M_PI * WignerSeitzCellRadius * fuel_.getGrainBoundaryVacancyDiffusivity() / DimensionlessFactor;
-                growth_rate = volume_flow_rate * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * ((1.0 + PackingFraction + pow(PackingFraction, 2.0) - pow(PackingFraction, 3.0)) / (pow(1.0 - PackingFraction, 3.0))) / fuel_.getSchottkyVolume();
+                growth_rate = 1000 * volume_flow_rate * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * ((1.0 + PackingFraction + pow(PackingFraction, 2.0) - pow(PackingFraction, 3.0)) / (pow(1.0 - PackingFraction, 3.0))) / fuel_.getSchottkyVolume();
                 equilibrium_term = - volume_flow_rate * equilibrium_pressure / (boltzmann_constant * history_variable["Temperature"].getFinalValue());
                 
                 parameter.push_back(growth_rate);
