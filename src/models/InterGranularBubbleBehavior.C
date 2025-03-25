@@ -106,10 +106,18 @@ void Simulation::InterGranularBubbleBehavior()
             // Initial value of the growth rate = 2 pi t D n / S V
             const double growth_rate = volume_flow_rate * sciantix_variable["Intergranular atoms per bubble"].getFinalValue() / fuel_.getSchottkyVolume();
 
+            double surfacetension = fuel_.getSurfaceTension();
+
+            if (input_variable["iGrainBoundaryMicroCracking"].getValue() == 2)
+            {
+                surfacetension *= (1 - cos(fuel_.getSemidihedralAngle()));
+            }
+
+
             double equilibrium_pressure(0), equilibrium_term(0);
             if (sciantix_variable["Intergranular bubble radius"].getInitialValue())
             {
-                equilibrium_pressure = 2.0 * fuel_.getSurfaceTension() / sciantix_variable["Intergranular bubble radius"].getInitialValue() - history_variable["Hydrostatic stress"].getFinalValue() * 1e6;
+                equilibrium_pressure = 2.0 * surfacetension / sciantix_variable["Intergranular bubble radius"].getInitialValue() - history_variable["Hydrostatic stress"].getFinalValue() * 1e6;
 
                 equilibrium_term = -volume_flow_rate * equilibrium_pressure / (boltzmann_constant * history_variable["Temperature"].getFinalValue());
             }
@@ -386,12 +394,13 @@ void Simulation::InterGranularBubbleBehavior()
             //double ventingtunnels_i = (26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 2.6002) + 1)) * sciantix_variable["Intergranular fractional intactness"].getInitialValue();
 		    //double ventingtunnels_f = (26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 2.6002) + 1)) * sciantix_variable["Intergranular fractional intactness"].getFinalValue();
         
+            //double phi_i = 0.5 * (erf(50 *(sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 0.5)) + 1);
+		    //double phi_f = 0.5 * (erf(50 *(sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 0.5)) + 1);
+    
 		    double phi_i = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 3.7250) + 1));
 		    double phi_f = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) + 1));
             // Atoms at grain boundary
             double n_at(0.0);
-
-            double source(0.0), decay_microcracking(0.0), decay_venting(0.0), decay_ig(0.0);
             double timestep = physics_variable["Time step"].getFinalValue();
             
             for (auto& system : sciantix_system)
@@ -400,39 +409,27 @@ void Simulation::InterGranularBubbleBehavior()
                 {                
                     if(timestep)
                     {
-                        source = ( (1-phi_i) * sciantix_variable["Intergranular fractional intactness"].getInitialValue() - sciantix_variable["Intergranular venting probability"].getInitialValue())*
-                                    ( sciantix_variable[system.getGasName() + " produced"].getIncrement() - sciantix_variable[system.getGasName() + " decayed"].getIncrement() - sciantix_variable[system.getGasName() + " in grain"].getIncrement() )
-                                    / timestep;
-
-                        decay_microcracking = - sciantix_variable["Intergranular fractional intactness"].getIncrement()/timestep;
-                        decay_venting = sciantix_variable["Intergranular venting probability"].getIncrement()/timestep;
-                        decay_ig = ( + sciantix_variable["Intergranular fractional intactness"].getIncrement()*phi_f
-                        + sciantix_variable["Intergranular fractional intactness"].getFinalValue()*(phi_f-phi_i))/timestep;
-        
-                        if (decay_microcracking < 0 )
+                        // Bf = Bf - (pv * dB) - Bfdpv
+                        
+                        double pv_i = phi_i * sciantix_variable["Intergranular fractional intactness"].getInitialValue() + (1 - sciantix_variable["Intergranular fractional intactness"].getInitialValue());
+                        double pv_f = phi_f * sciantix_variable["Intergranular fractional intactness"].getFinalValue() + (1 - sciantix_variable["Intergranular fractional intactness"].getFinalValue());
+                        double dpv = pv_f - pv_i;
+                        if (dpv < 0.0)
                         {
-                            decay_microcracking = 0.0;
+                            dpv = 0.0;
                         }
-        
-                        if (decay_venting < 0 )
+                        for (auto& system : sciantix_system)
                         {
-                            decay_venting = 0.0;
-                        }
-
-                        if (decay_ig < 0 )
-                        {
-                            decay_ig = 0.0;
+                            sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
+                                solver.Integrator(
+                                    (1 - dpv) * sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue(),
+                                    - pv_f,
+                                    sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement()
+                                )
+                            );
+                            //sciantix_variable[system.getGasName() + " at grain boundary"].resetValue();
                         }
                     }
-                
-                    sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-                        solver.Decay(
-                            sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue(),
-                            decay_microcracking+decay_venting+decay_ig,
-                            source,
-                            timestep
-                        )
-                    );
                 
                     sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].setFinalValue(
                         sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() /

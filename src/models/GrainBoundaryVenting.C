@@ -106,53 +106,16 @@ void Simulation::GrainBoundaryVenting()
 
     model.push(model_);
 
-    // Atoms at grain boundary
-    double n_at(0.0);
-
-    double source(0.0), decay_microcracking(0.0), decay_venting(0.0);
-    double timestep = physics_variable["Time step"].getFinalValue();
-    
     for (auto& system : sciantix_system)
     {
-        if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-        {                
-            if(timestep)
-            {
-                source = ( sciantix_variable["Intergranular fractional intactness"].getInitialValue() - sciantix_variable["Intergranular venting probability"].getInitialValue())*
-                            ( sciantix_variable[system.getGasName() + " produced"].getIncrement() - sciantix_variable[system.getGasName() + " decayed"].getIncrement() - sciantix_variable[system.getGasName() + " in grain"].getIncrement() )
-                            / timestep;
-                decay_microcracking = - sciantix_variable["Intergranular fractional intactness"].getIncrement()/timestep;
-                decay_venting = sciantix_variable["Intergranular venting probability"].getIncrement()/timestep;
-
-                if (decay_microcracking < 0 )
-                {
-                    decay_microcracking = 0.0;
-                }
-
-                if (decay_venting < 0 )
-                {
-                    decay_venting = 0.0;
-                }
-
-            }
-        
-            sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-                solver.Decay(
-                    sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue(),
-                    decay_microcracking + decay_venting,
-                    source,
-                    timestep
-                )
-            );
-        
-            sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].setInitialValue(
-                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() /
-                (sciantix_variable["Intergranular bubble concentration"].getInitialValue() * (3.0 / sciantix_variable["Grain radius"].getInitialValue())));
-
-            n_at += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getInitialValue();
-        }
+        sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
+            solver.Integrator(
+                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue(),
+                - sciantix_variable["Intergranular venting probability"].getFinalValue(),
+                sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement()
+            )
+        );
     }
-    sciantix_variable["Intergranular atoms per bubble"].setInitialValue(n_at);
 }
 
 double Simulation::athermalVentingFactor(double open_p, double theta, double p, double l, double bu, double T, double F)

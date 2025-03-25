@@ -215,94 +215,44 @@ void Simulation::GrainBoundaryMicroCracking()
                 sciantix_variable["Burnup"].getIncrement()));
     }
 
-    switch (int(input_variable["iReleaseMode"].getValue()))
+    if (input_variable["iReleaseMode"].getValue() == 0)
     {
-        case 0:
+        // Re-scaling: to conserve the fractional coverage
+        double similarity_ratio;
+
+        if (sciantix_variable["Intergranular fractional coverage"].getInitialValue() > 0.0)
+            similarity_ratio = sqrt(sciantix_variable["Intergranular fractional coverage"].getFinalValue() / sciantix_variable["Intergranular fractional coverage"].getInitialValue());
+        else
+            similarity_ratio = 1.0;
+
+        if (similarity_ratio < 1.0)
         {
-            // Re-scaling: to conserve the fractional coverage
-            double similarity_ratio;
+            sciantix_variable["Intergranular bubble area"].rescaleInitialValue(similarity_ratio);
+            sciantix_variable["Intergranular bubble concentration"].rescaleInitialValue(similarity_ratio);
+            sciantix_variable["Intergranular fractional coverage"].rescaleInitialValue(pow(similarity_ratio, 2));
+            sciantix_variable["Intergranular bubble volume"].rescaleInitialValue(pow(similarity_ratio, 1.5));
+            sciantix_variable["Intergranular bubble radius"].rescaleInitialValue(pow(similarity_ratio, 0.5));
+            sciantix_variable["Intergranular vacancies per bubble"].rescaleInitialValue(pow(similarity_ratio, 1.5));
 
-            if (sciantix_variable["Intergranular fractional coverage"].getInitialValue() > 0.0)
-                similarity_ratio = sqrt(sciantix_variable["Intergranular fractional coverage"].getFinalValue() / sciantix_variable["Intergranular fractional coverage"].getInitialValue());
-            else
-                similarity_ratio = 1.0;
-
-            if (similarity_ratio < 1.0)
+            for (auto &system : sciantix_system)
             {
-                sciantix_variable["Intergranular bubble area"].rescaleInitialValue(similarity_ratio);
-                sciantix_variable["Intergranular bubble concentration"].rescaleInitialValue(similarity_ratio);
-                sciantix_variable["Intergranular fractional coverage"].rescaleInitialValue(pow(similarity_ratio, 2));
-                sciantix_variable["Intergranular bubble volume"].rescaleInitialValue(pow(similarity_ratio, 1.5));
-                sciantix_variable["Intergranular bubble radius"].rescaleInitialValue(pow(similarity_ratio, 0.5));
-                sciantix_variable["Intergranular vacancies per bubble"].rescaleInitialValue(pow(similarity_ratio, 1.5));
-
-                for (auto &system : sciantix_system)
-                {
-                    if (gas[system.getGasName()].getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-                        sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].rescaleInitialValue(pow(similarity_ratio, 1.5));
-                }
-
-                double n_at(0);
-                for (auto &system : sciantix_system)
-                {
-                    if (gas[system.getGasName()].getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-                        n_at += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getInitialValue();
-                }
-                sciantix_variable["Intergranular atoms per bubble"].setInitialValue(n_at);
-
-                for (auto &system : sciantix_system)
-                {
-                    if (system.getRestructuredMatrix() == 0)
-                        sciantix_variable[system.getGasName() + " at grain boundary"].rescaleFinalValue(pow(similarity_ratio, 2.5));
-                }
+                if (gas[system.getGasName()].getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
+                    sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].rescaleInitialValue(pow(similarity_ratio, 1.5));
             }
 
-            break;
-        }
-        case 1:
-        {
-            // Atoms at grain boundary
-            double n_at(0.0);
-
-            double source(0.0), decay_microcracking(0.0);
-            double timestep = physics_variable["Time step"].getFinalValue();
-            
-            for (auto& system : sciantix_system)
+            double n_at(0);
+            for (auto &system : sciantix_system)
             {
-                if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-                {                
-                    if(timestep)
-                    {
-                        source = sciantix_variable["Intergranular fractional intactness"].getInitialValue()*
-                                    ( sciantix_variable[system.getGasName() + " produced"].getIncrement() - sciantix_variable[system.getGasName() + " decayed"].getIncrement() - sciantix_variable[system.getGasName() + " in grain"].getIncrement() )
-                                    / timestep;
-                        decay_microcracking = - sciantix_variable["Intergranular fractional intactness"].getIncrement()/timestep;
-
-                        if (decay_microcracking < 0 )
-                        {
-                            decay_microcracking = 0.0;
-                        }
-                    }
-                
-                    sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-                        solver.Decay(
-                            sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue(),
-                            decay_microcracking,
-                            source,
-                            timestep
-                        )
-                    );
-                
-                    sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].setInitialValue(
-                        sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() /
-                        (sciantix_variable["Intergranular bubble concentration"].getInitialValue() * (3.0 / sciantix_variable["Grain radius"].getInitialValue())));
-
+                if (gas[system.getGasName()].getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                     n_at += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getInitialValue();
-                }
             }
             sciantix_variable["Intergranular atoms per bubble"].setInitialValue(n_at);
 
-            break;
+            for (auto &system : sciantix_system)
+            {
+                if (system.getRestructuredMatrix() == 0)
+                    sciantix_variable[system.getGasName() + " at grain boundary"].rescaleFinalValue(pow(similarity_ratio, 2.5));
+            }
         }
     }
 }
