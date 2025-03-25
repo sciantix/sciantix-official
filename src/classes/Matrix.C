@@ -161,7 +161,7 @@ void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_var
     double b0(2.0e-23 * history_variable["Fission rate"].getFinalValue());
 
     pore_resolution_rate =
-        b0 * correction_coefficient *
+        b0 *
         (3.0 * 1.0e-9 / (3.0 * 1.0e-9 + sciantix_variable["HBS pore radius"].getFinalValue())) *
         (1.0e-9 / (1.0e-9 + sciantix_variable["HBS pore radius"].getFinalValue()));
 
