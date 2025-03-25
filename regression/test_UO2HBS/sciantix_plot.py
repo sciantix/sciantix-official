@@ -1,123 +1,63 @@
 """
-sciantix_plot.py is a Python script to plot default Sciantix (standalone) quantities
+sciantix_plot.py – Plot default Sciantix (standalone) quantities
 
-Instructions:
-- Run sciantix_plot.py in a folder containing the output.txt file.
-
+Run this script in a folder containing the output.txt file.
 @author: Giovanni Zullo
 """
 
-# Importing necessary libraries
 import numpy as np
 import os
 import logging
-import tkinter as tk
-from tkinter import messagebox
 import matplotlib.pyplot as plt
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.figure import Figure
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Color palette for plots
-colors = ["blue", "red", "green", "orange", "purple", "brown", "pink", "gray", "olive", "cyan"]
+# Constants
+FILENAME = 'output.txt'
+COLORS = ["blue", "red", "green", "orange", "purple", "brown", "pink", "gray", "olive", "cyan"]
 
-def is_output_here(filename):
-    """
-    Check if a given file is present in the current folder.
-    """
+# ======================
+# File and Data Handling
+# ======================
+
+def check_file_exists(filename):
+    """Check if a file exists in the current directory."""
     if os.path.isfile(filename):
         return True
-    logging.error(f"{filename} not found!")
+    logging.error(f"{filename} not found in the current directory.")
     return False
 
 def import_data(filename):
-    """
-    This function imports a .txt file into an ndarray.
-    """
-    if not is_output_here(filename):
-        logging.error(f"File {filename} not found in the directory.")
-        return None  # Return None if file not found
-    
+    """Import tab-separated text data into a NumPy array."""
+    if not check_file_exists(filename):
+        return None
     try:
-        data = np.genfromtxt(filename, dtype='str', delimiter='\t')  # Convert the file data to numpy array
-        return data
+        return np.genfromtxt(filename, dtype='str', delimiter='\t')
     except Exception as e:
-        logging.error(f"Error reading {filename}: {str(e)}")
+        logging.error(f"Error reading {filename}: {e}")
         return None
 
-def find_sciantix_variable_position(output, variable_name):
-    """
-    This function gets the output.txt file and the variable name,
-    giving back its column index in the ndarray.
-    """
+def get_variable_column_index(output, variable_name):
+    """Return the column index for a given variable label."""
     try:
-        i, j = np.where(output == variable_name)  # Find index where variable_name exists in 'output'
-        return int(j)  # Return the column index
-    except:
-        logging.error(f"Variable {variable_name} not found in the output data.")
+        _, col_indices = np.where(output == variable_name)
+        return int(col_indices[0])
+    except IndexError:
+        logging.warning(f"Variable '{variable_name}' not found in output.")
         return None
 
-def working_dir(path):
-    """
-    This function receives the path of the folder that contains the sciantix file "output.txt".
-    If output.txt is in the same folder of sciantix.py, it is not necessary to use this function.
-    """
-    os.chdir(path)  # Change the current working directory to 'path'
-    logging.info(f"Working directory set to: {path}")
-    return None
+# ===================
+# Sciantix Dictionary
+# ===================
 
-def plot_data(ax, xAxis, data, axisLabel, legendLabel, color, line_style='-', 
-              axis_id='y1', secondary_axes=None, y_limits=None, x_limits=None):
-    """
-    Plots data on the given axis, handling multiple secondary axes and axis limits.
-    Includes the ability to specify the line style.
-    Uses axis_id as a unique identifier for secondary axes.
-    The first secondary axis ('y2') is attached to the main plot frame, 
-    and subsequent secondary axes are pushed to the right.
-    """
-    if secondary_axes is None:
-        secondary_axes = {}
-
-    if axis_id == 'y1':
-        ax.plot(xAxis, data, label=legendLabel, color=color, linestyle=line_style)
-        ax.set_ylabel(axisLabel, color=color)
-        ax.tick_params(axis='y', labelcolor=color)  # Set tick color for primary y-axis
-        if y_limits:
-            ax.set_ylim(y_limits)
-        if x_limits:
-            ax.set_xlim(x_limits)
-    else:
-        if axis_id not in secondary_axes:
-            new_ax = ax.twinx()
-            secondary_axes[axis_id] = new_ax
-            new_ax.set_ylabel(axisLabel, color=color)
-
-            # Adjust position for additional secondary axes beyond the first one
-            if axis_id != 'y2':
-                ax_position = ax.get_position()
-                new_ax.set_position([ax_position.x0, ax_position.y0, 
-                                     ax_position.width, ax_position.height])
-                offset = 60 * (len(secondary_axes) - 1)  # Offset for additional axes
-                new_ax.spines['right'].set_position(('outward', offset))
-
-        existing_ax = secondary_axes[axis_id]
-        existing_ax.plot(xAxis, data, label=legendLabel, color=color, linestyle=line_style)
-        existing_ax.tick_params(axis='y', labelcolor=color)
-        if y_limits:
-            existing_ax.set_ylim(y_limits)
-        if x_limits:
-            existing_ax.set_xlim(x_limits)
-
-    return ax, secondary_axes
-
-def sciantix_dictionary(file):
-    data = import_data(file)
-    if data is None:
+def sciantix_dictionary(filename):
+    """Build dictionary with Sciantix variable names mapped to their data arrays."""
+    raw_data = import_data(filename)
+    if raw_data is None:
         return {}
 
-    variable_labels = {
+    labels = {
         "t": "Time (h)",
         "T": "Temperature (K)",
         "frate": "Fission rate (fiss / m3 s)",
@@ -131,97 +71,109 @@ def sciantix_dictionary(file):
         "xe_igHBS": "Xe in grain HBS (at/m3)",
         "xe_igb": "Xe in intragranular bubbles (at/m3)",
         "xe_igs": "Xe in intragranular solution (at/m3)",
-        "xe_gb": "Xe at grain boundary (at/m3)",
-        "xe_gb": "Xe released (at/m3)",
+        "xe_gb": "Xe at grain boundary (at/m3)",  # Note: 'xe_gb' appears twice, use one label
         "xe_po": "Xe in HBS pores (at/m3)",
         "tr": "trapping rate hbs (1/s)",
         "nu": "nucleation rate hbs (1/s)",
-        "re": "re-solution rate hbs (1/s)",
-
+        "re": "re-solution rate hbs (1/s)"
     }
 
-    sd = {}
-    label = []
-    name = []
-
-    for var_name, var_label in variable_labels.items():
-        label.append(var_label)
-        name.append(var_name)
-
-    for i in range(len(label)):
+    data_dict = {}
+    for var, label in labels.items():
+        idx = get_variable_column_index(raw_data, label)
         try:
-            var_index = find_sciantix_variable_position(data, label[i])
-        except:
-            var_index = None
-        if var_index is not None:
-            sd[name[i]] = data[1:, var_index].astype(float)
-        else:
-            sd[name[i]] = np.zeros_like(data[1:, 0].astype(float))
-            logging.warning(f"Variable '{label[i]}' not found in the data.")
-    
-    return sd
+            data_dict[var] = raw_data[1:, idx].astype(float) if idx is not None else np.zeros_like(raw_data[1:, 0], dtype=float)
+        except Exception as e:
+            logging.warning(f"Error processing variable '{var}': {e}")
+            data_dict[var] = np.zeros_like(raw_data[1:, 0], dtype=float)
 
-def create_plot(x_data, y_data, xlabel, ylabel, legends, colors, title=None, secondary_y=False):
-    """
-    Utility function to create plots.
-    """
+    return data_dict
+
+# =============
+# Plot Functions
+# =============
+
+def create_dual_axis_plot(x, y1, y2, xlabel, y1_label, y2_label, y1_color, y2_color, title=None):
+    """Create a dual-axis plot."""
     fig, ax1 = plt.subplots()
+    ax1.plot(x, y1, color=y1_color, label=y1_label)
     ax1.set_xlabel(xlabel)
-    ax1.set_ylabel(ylabel, color=colors[0])
-    
-    # Primary plot
-    ax1.plot(x_data, y_data[0], color=colors[0], label=legends[0])
-    ax1.tick_params(axis='y', labelcolor=colors[0])
-    
-    if secondary_y:
-        ax2 = ax1.twinx()
-        ax2.set_ylabel(legends[1], color=colors[1])
-        ax2.plot(x_data, y_data[1], color=colors[1], label=legends[1])
-        ax2.tick_params(axis='y', labelcolor=colors[1])
-    
-    # Add legend and title
-    ax1.legend(loc='upper left')
-    if secondary_y:
-        ax2.legend(loc='upper right')
+    ax1.set_ylabel(y1_label, color=y1_color)
+    ax1.tick_params(axis='y', labelcolor=y1_color)
+
+    ax2 = ax1.twinx()
+    ax2.plot(x, y2, color=y2_color, label=y2_label)
+    ax2.set_ylabel(y2_label, color=y2_color)
+    ax2.tick_params(axis='y', labelcolor=y2_color)
+
+    if title:
+        plt.title(title)
+
+    fig.tight_layout()
+    plt.show()
+
+def create_multi_plot(x, y_list, labels, xlabel, ylabel, colors, title=None):
+    """Create a multi-line plot."""
+    fig, ax = plt.subplots()
+    for i, y in enumerate(y_list):
+        ax.plot(x, y, label=labels[i], color=colors[i % len(colors)])
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.legend()
     if title:
         plt.title(title)
     fig.tight_layout()
     plt.show()
 
-def plot(sd):
-    create_plot(
-        x_data=sd["bu"], 
-        y_data=[sd["Np"], sd["r"]],
-        xlabel='Burnup (MWd/kgUO2)',
-        ylabel='HBS pore density (pores/m3)',
-        legends=['HBS pore density (pores/m3)', 'HBS pore radius (m)'],
-        colors=['tab:red', 'tab:blue'],
-        secondary_y=True
+def plot_sciantix(data):
+    """Plot predefined Sciantix quantities."""
+    # HBS pore density and radius
+    create_dual_axis_plot(
+        x=data["bu"], 
+        y1=data["Np"], 
+        y2=data["r"],
+        xlabel="Burnup (MWd/kgUO2)", 
+        y1_label="HBS pore density (pores/m3)", 
+        y2_label="HBS pore radius (m)", 
+        y1_color='tab:red', 
+        y2_color='tab:blue',
+        title="HBS Pore Evolution"
     )
 
-    fig, ax1 = plt.subplots()
-    ax1.set_xlabel('Burnup (MWd/kgUO2)')
-    ax1.plot(sd["bu"], sd["xe_ig"], label="xe_ig")
-    ax1.plot(sd["bu"], sd["xe_igHBS"], label="xe_igHBS")
-    ax1.plot(sd["bu"], sd["xe_gb"], label="xe_gb")
-    ax1.plot(sd["bu"], sd["xe_po"], label="xe_po")
-    ax1.legend()
-    fig.tight_layout()
-    plt.show()
+    # Xenon distribution
+    create_multi_plot(
+        x=data["bu"], 
+        y_list=[data["xe_ig"], data["xe_igHBS"], data["xe_gb"], data["xe_po"]],
+        labels=["Xe in grain", "Xe in grain HBS", "Xe at grain boundary", "Xe in HBS pores"],
+        xlabel="Burnup (MWd/kgUO2)", 
+        ylabel="Concentration (at/m3)",
+        colors=COLORS,
+        title="Xenon Distribution"
+    )
 
-    fig, ax1 = plt.subplots()
-    ax1.set_xlabel('Burnup (MWd/kgUO2)')
-    ax1.plot(sd["bu"], sd["tr"], label="tr")
-    ax2 = ax1.twinx()
-    ax2.plot(sd["bu"], sd["re"], label="re")
-    fig.legend()
-    fig.tight_layout()
-    plt.show()
+    # Trapping vs Re-solution rate
+    create_dual_axis_plot(
+        x=data["bu"], 
+        y1=data["tr"], 
+        y2=data["re"],
+        xlabel="Burnup (MWd/kgUO2)", 
+        y1_label="Trapping rate (1/s)", 
+        y2_label="Re-solution rate (1/s)", 
+        y1_color='tab:green', 
+        y2_color='tab:orange',
+        title="HBS Trapping vs Re-solution Rate"
+    )
 
+# =====
+# Main
+# =====
 
 def main():
-    data_dict = sciantix_dictionary('output.txt')
-    plot(data_dict)
+    data = sciantix_dictionary(FILENAME)
+    if data:
+        plot_sciantix(data)
+    else:
+        logging.error("No data available to plot.")
 
 if __name__ == "__main__":
     main()
