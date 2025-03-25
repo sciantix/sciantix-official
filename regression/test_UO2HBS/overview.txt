@@ -7,8 +7,9 @@ Model	Gas production - Xe in UO2
 Model	Gas production - Xe in UO2HBS	 
 Model	Intragranular bubble behavior	: Pizzocri et al., JNM, 502 (2018) 323-330.
 Model	Gas diffusion - Xe in UO2 with HBS	
-Model	Grain-boundary micro-cracking	 : from Barani et al. (2017), JNM
+Model	Grain-boundary micro-cracking	: Barani et al. (2017), JNM
 Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
+Model	Release mode	: similarity ratio.
 
 Matrix	UO2	
 	Ainscough et al., JNM, 49 (1973) 117-128.
@@ -45,4 +46,6 @@ Input setting	iHeliumProductionRate = 0
 Input setting	iStoichiometryDeviation = 0
 Input setting	iBubbleDiffusivity = 0
 Input setting	iChromiumSolubility = 0
+Input setting	iDensification = 0
+Input setting	iReleaseMode = 0
 

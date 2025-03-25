@@ -14,6 +14,7 @@ Model	Gas diffusion - He in UO2
 Model	Gas diffusion - Xe133 in UO2	
 Model	Gas diffusion - Kr85m in UO2	
 Model	Intergranular bubble behavior	: No model for grain-boundary bubble evolution.
+Model	Release mode	: similarity ratio.
 
 Matrix	UO2	
 	Van Uffelen et al. JNM, 434 (2013) 287-29.
@@ -49,4 +50,6 @@ Input setting	iHeliumProductionRate = 0
 Input setting	iStoichiometryDeviation = 0
 Input setting	iBubbleDiffusivity = 0
 Input setting	iChromiumSolubility = 0
+Input setting	iDensification = 0
+Input setting	iReleaseMode = 0
 
