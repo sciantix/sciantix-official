@@ -16,6 +16,8 @@
 
 <a href="https://www.sciencedirect.com/science/article/pii/S1738573320309451" target="_blank">Cechet A. et al (2021). Nuclear Engineering and Technology, 53, 1893-1908.</a>
 
+<a href="https://www.sciencedirect.com/science/article/pii/S0022311515301616" target="_blank">Claisse A. and Van Uffelen P., (2015). Journal of Nuclear Materials, 466, 351-356.</a>
+
 <a href="https://www.sciencedirect.com/science/article/pii/S0029549318304606" target="_blank">Cognini L. et al (2018). Nuclear Engineering and Design, 340, 240-244.</a>
 
 <a href="https://www.sciencedirect.com/science/article/pii/S1738573320303557" target="_blank">Cognini L. et al (2021). Nuclear Engineering and Technology, 53, 562-571.</a>
@@ -64,6 +66,8 @@
 
 <a href="https://www.sciencedirect.com/science/article/abs/pii/S0022311512006526" target="_blank">Van Uffelen P. et al (2013). Journal of Nuclear Materials, 434, 287-290.</a>
 
+<a href="https://researchportal.sckcen.be/en/publications/contribution-to-the-modelling-of-fission-gas-release-in-light-wat" target="_blank">Van Uffelen P. (2002). PhD thesis, SCK•CEN Reports; No. BLG-907, SCK CEN.</a>
+
 <a href="https://www.sciencedirect.com/science/article/abs/pii/0022311583901769" target="_blank">White R.M. and Tucker P.G. (1983). Journal of Nuclear Materials, 118, 1-38.</a>
 
 <a href="https://www.sciencedirect.com/science/article/pii/S0022311503004616" target="_blank">White R.M. (2004). Journal of Nuclear Materials, 325, 61-77.</a>
@@ -75,4 +79,3 @@
 <a href="https://www.sciencedirect.com/science/article/pii/S0022311524004070" target="_blank">Zullo G. et al (2024). Journal of Nuclear Materials, 601, 155305.</a>
 
 <a href="https://www.sciencedirect.com/science/article/pii/S0029549324007027" target="_blank">Zullo G. et al (2024). Nuclear Enginnering and Design, 429, 113602.</a>
-

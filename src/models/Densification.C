@@ -43,7 +43,7 @@ void Simulation::Densification()
             parameter.push_back(2.0);
             parameter.push_back(0.006*exp(0.002*history_variable["Temperature"].getFinalValue()));
 
-            reference = ": Fit from P. Van Uffelen PhD thesis (2002) athermal release analysis.";
+            reference = ": Fit from Van Uffelen, P. (2002), PhD thesis, SCK•CEN Reports No. BLG-907";
 
             break;
         }

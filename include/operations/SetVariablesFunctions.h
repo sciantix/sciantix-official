@@ -210,6 +210,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
 
         SciantixVariable("Intergranular vented fraction", "(/)", Sciantix_variables[46], Sciantix_variables[46], toOutputVenting),
         SciantixVariable("Intergranular venting probability", "(/)", Sciantix_variables[47], Sciantix_variables[47], toOutputVenting),
+        
         SciantixVariable("Porosity", "(/)", Sciantix_variables[70], Sciantix_variables[70], toOutputVenting),
         SciantixVariable("Fabrication porosity", "(/)", Sciantix_variables[71], Sciantix_variables[71], toOutputVenting),
         SciantixVariable("Open porosity", "(/)", Sciantix_variables[72], Sciantix_variables[72], toOutputVenting),

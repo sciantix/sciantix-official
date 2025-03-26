@@ -80,10 +80,6 @@ void Simulation::GrainBoundaryMicroCracking()
             double K_IC = sqrt(E * G / (1.0 - pow(nu, 2))) * 1e-6; // (MPa m0.5)
 			
 			// Stress intensification at GB tip
-			//
-			// By theoretical calculations: kt = 1 + crackdiameter / crackheight
-			// double stressintensification = 1 + 2*sin(fuel_.getSemidihedralAngle())/(1-cos(fuel_.getSemidihedralAngle()));
-			//
 			// By ABAQUS 3D fitting: kt = 3.25
 			double stressintensification = 3.25; 
 
@@ -108,7 +104,7 @@ void Simulation::GrainBoundaryMicroCracking()
 			// Critical pressure: 
 			double critical_bubble_pressure = equilibriumpressure + fracture_stress;   //Pa
 			
-			// Upper limit for atom-to-vacancy ratio:  it limits the pressure value
+			// Upper limit for atom-to-vacancy ratio to limit the pressure value
 			double maxatompervacancy = 1.0;
 			double atompervacancyf = 0.0;
 
@@ -139,7 +135,7 @@ void Simulation::GrainBoundaryMicroCracking()
 			const double healing_parameter = 1.0 / 0.8814; // 1 / (u * burnup)
 			parameter.push_back(healing_parameter);
 
-            reference = ": Cappellari (Under Development)";
+            reference = ": Cappellari et al., JNM, (2025, under review); healing from Barani et al. (2017), JNM";
 
             break;
         }
