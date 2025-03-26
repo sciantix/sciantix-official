@@ -12,13 +12,13 @@ Model	Gas diffusion - Kr in UO2
 Model	Gas diffusion - He in UO2	
 Model	Gas diffusion - Xe133 in UO2	
 Model	Gas diffusion - Kr85m in UO2	
+Model	Grain-boundary micro-cracking	: Cappellari et al., JNM, (2025, under review); healing from Barani et al. (2017), JNM
 Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
-Model	Coalescence model	: White (2004).
-Model	Release model	: Cappellari (Under Development)
+Model	Release mode	 coalescence from Pastore et al., NED, 256 (2013), 75-86. release model from Cappellari et al., JNM, (2025, under review), Gaussian Process Regression lower bound
 
 Matrix	UO2	
 	Ainscough et al., JNM, 49 (1973) 117-128.
-	iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.
+	iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.
 	
 
 System	Xe in UO2	
@@ -35,9 +35,9 @@ Input setting	iResolutionRate = 1
 Input setting	iTrappingRate = 1
 Input setting	iNucleationRate = 1
 Input setting	iOutput = 1
-Input setting	iGrainBoundaryVacancyDiffusivity = 1
+Input setting	iGrainBoundaryVacancyDiffusivity = 2
 Input setting	iGrainBoundaryBehaviour = 1
-Input setting	iGrainBoundaryMicroCracking = 0
+Input setting	iGrainBoundaryMicroCracking = 2
 Input setting	iFuelMatrix = 0
 Input setting	iGrainBoundaryVenting = 0
 Input setting	iRadioactiveFissionGas = 0
@@ -52,5 +52,4 @@ Input setting	iBubbleDiffusivity = 0
 Input setting	iChromiumSolubility = 0
 Input setting	iDensification = 0
 Input setting	iReleaseMode = 1
-Input setting	iCoalescence = 0
 
