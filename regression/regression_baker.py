@@ -148,7 +148,7 @@ def regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number
     sorted_files_and_dirs = sorted(files_and_dirs)
 
     for file in sorted_files_and_dirs:
-        if "Baker" in file and os.path.isdir(file):
+        if "Baker1977__" in file and os.path.isdir(file):
             folderList.append(file)
             os.chdir(file)
             print(f"Now in folder {file}...")

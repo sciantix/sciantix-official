@@ -66,6 +66,7 @@ void Simulation::GrainBoundaryVenting()
         case 2:
         {
             double open_porosity = openPorosity(sciantix_variable["Fabrication porosity"].getFinalValue());
+            sciantix_variable["Open porosity"].setFinalValue(open_porosity);
 
             sciantix_variable["Intergranular venting probability"].setFinalValue(1.54 * sqrt(open_porosity));
 

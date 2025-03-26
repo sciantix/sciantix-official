@@ -113,6 +113,8 @@ def regression_kashibe1993(wpath, mode_Kashibe1993, mode_gold, mode_plot, folder
 
     for file in sorted_files_and_dirs:
         if "Kashibe1993" in file and os.path.isdir(file):
+            if "Kashibe1993__" in file:
+                continue
             folderList.append(file)
             os.chdir(file)
             print(f"Now in folder {file}...")
