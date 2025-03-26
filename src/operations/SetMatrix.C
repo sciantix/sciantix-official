@@ -71,27 +71,13 @@ Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
 	matrix_.setChromiaPrecipitate(0); // (at/m3)
 
     // Mechanical properties
-    
-	// Elastic modulus
-    matrix_.setElasticModulus(2.237e5 * (1 - 2.6 * sciantix_variable["Porosity"].getFinalValue()) * (1 - 1.394e-4 * (history_variable["Temperature"].getFinalValue()-273-20)) * (1 - 0.1506 * (1 - exp(-0.035*sciantix_variable["Burnup"].getFinalValue())))); // (MPa) TU
+    matrix_.setElasticModulus(2.237e5 * (1 - 2.6 * sciantix_variable["Porosity"].getFinalValue()) * (1 - 1.394e-4 * (history_variable["Temperature"].getFinalValue()-273-20)) * (1 - 0.1506 * (1 - exp(-0.035*sciantix_variable["Burnup"].getFinalValue())))); // (MPa) TRANSURANUS manual
 	if (sciantix_variable["Porosity"].getFinalValue() >= 0.2){
 		std::cout<<"WARNING: elastic modulus correlation used outside the validity range for fuel porosity (P<0.2)"<<std::endl;
 		std::cout<<"Porosity P = "<<sciantix_variable["Porosity"].getFinalValue()<<std::endl;
 	}
-
-	// Poisson ratio
-	matrix_.setPoissonRatio(0.32); // (/) TU
-
-	// Grain boundary energy 
-	//
-	// from surface tension
-	//matrix[index].setGrainBoundaryFractureEnergy(((2*0.6*cos(0.872664626)))); // (N/m)  surface tension 	
-	//
-	// from inverse calibration
-	//matrix[index].setGrainBoundaryFractureEnergy(4e-3); // (J/m2) @Jernkvist2019
-	//
-	// from mechanical testing
-	matrix_.setGrainBoundaryFractureEnergy(2); // (J/m2) @Jernkvist2020
+	matrix_.setPoissonRatio(0.32); // (/) TRANSURANUS manual
+	matrix_.setGrainBoundaryFractureEnergy(2); // (J/m2) Jernkvist, L.O. (2020). A review of analytical criteria for fission gas induced fragmentation of oxide fuel in accident conditions. Progress in Nuclear Energy, 119, 103188.
     matrix_.setShearModulus(matrix_.getElasticModulus() / ( 2 * ( 1 + matrix_.getPoissonRatio() ) )); // (MPa)
 
     return matrix_;
@@ -123,27 +109,13 @@ Matrix UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &
     matrix_.setPoreTrappingRate(matrices, sciantix_variable);
 
     // Mechanical properties
-    
-	// Elastic modulus
-    matrix_.setElasticModulus(2.237e5 * (1 - 2.6 * sciantix_variable["HBS porosity"].getFinalValue()) * (1 - 1.394e-4 * (history_variable["Temperature"].getFinalValue()-273-20)) * (1 - 0.1506 * (1 - exp(-0.035*sciantix_variable["Burnup"].getFinalValue())))); // (MPa) TU
+    matrix_.setElasticModulus(2.237e5 * (1 - 2.6 * sciantix_variable["HBS porosity"].getFinalValue()) * (1 - 1.394e-4 * (history_variable["Temperature"].getFinalValue()-273-20)) * (1 - 0.1506 * (1 - exp(-0.035*sciantix_variable["Burnup"].getFinalValue())))); // (MPa) TRANSURANUS manual
 	if (sciantix_variable["HBS porosity"].getFinalValue()>=0.2){
 		std::cout<<"WARNING: elastic modulus correlation used outside the validity range for fuel porosity (P<0.2)"<<std::endl;
 		std::cout<<"Porosity P (/) = "<< sciantix_variable["HBS porosity"].getFinalValue() <<std::endl;
 	}
-
-	// Poisson ratio
-	matrix_.setPoissonRatio(0.32); // (/) TU
-
-	// Grain boundary energy 
-	//
-	// from surface tension
-	//matrix[index].setGrainBoundaryFractureEnergy(((2*0.6*cos(0.872664626)))); // (N/m)  surface tension 	
-	//
-	// from inverse calibration
-	//matrix[index].setGrainBoundaryFractureEnergy(4e-3); // (J/m2) @Jernkvist2019
-	//
-	// from mechanical testing
-	matrix_.setGrainBoundaryFractureEnergy(2); // (J/m2) @Jernkvist2020
+	matrix_.setPoissonRatio(0.32); // (/) TRANSURANUS manual
+	matrix_.setGrainBoundaryFractureEnergy(2); // (J/m2) Jernkvist, L.O. (2020). A review of analytical criteria for fission gas induced fragmentation of oxide fuel in accident conditions. Progress in Nuclear Energy, 119, 103188.
     matrix_.setShearModulus(matrix_.getElasticModulus() / ( 2 * ( 1 + matrix_.getPoissonRatio() ) )); // (MPa)
 
     return matrix_;
