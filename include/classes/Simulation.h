@@ -208,10 +208,12 @@ public:
      *  
      * @ref White, JNM, 325 (2004) 61-77
      * @ref Pastore, NED, (2013)
+     * @ref Cappellari, JNM (2025, under review)
      * 
      * @author D. Pizzocri
      * @author T. Barani
      * @author G. Zullo
+     * @author E. Cappellari
      * 
      */
     void InterGranularBubbleBehavior();
@@ -233,6 +235,7 @@ public:
      * @author D. Pizzocri
      * @author T. Barani
      * @author G. Zullo
+     * @author E. Cappellari
      * 
      */
     void GrainBoundaryMicroCracking();
@@ -242,6 +245,7 @@ public:
      * @brief Calculates the fuel densification.
      * 
      * @author A. Pagani
+     * @author E. Cappellari
      * 
      */
     void Densification();
@@ -252,6 +256,7 @@ public:
      * @author D. Pizzocri
      * @author T. Barani
      * @author G. Zullo
+     * @author E. Cappellari
      * 
      */
     void GrainBoundaryVenting();
@@ -262,6 +267,7 @@ public:
      * @return the open porosity, i.e. the system of percolated networks framing the grain.
      * 
      * @author A. Pagani
+     * @author E. Cappellari
      */
     double openPorosity(double fabrication_porosity);
 
@@ -278,6 +284,7 @@ public:
      *          including its dependency on the grain-edge inclination angle.
      * 
      * @author A. Pagani
+     * @author E. Cappellari
      */
     double athermalVentingFactor(double open_porosity, double theta, double porosity, double grain_edge_lenght, double burnup, double temperature, double fission_rate);
     
