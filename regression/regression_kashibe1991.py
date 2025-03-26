@@ -8,6 +8,7 @@ This is a python script to execute the regression (running the validation databa
 
 import os
 import subprocess
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import shutil
@@ -83,73 +84,6 @@ def do_plot():
       FGR2Annealing.append(FGR2[i] - FGRBase[i])
       goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
 
-    # FGR annealing
-    fig, ax = plt.subplots(figsize=(8, 8))
-    ax.errorbar(
-        np.concatenate([FGRAnnealing[0:2],FGRAnnealing[4:9]]),
-        np.concatenate([FGR2Annealing[0:2],FGR2Annealing[4:9]]),
-        elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label='23 GWd tU$^{-1}$'
-    )
-    ax.errorbar(
-        np.concatenate([FGRAnnealing[2:4],FGRAnnealing[9:13]]),
-        np.concatenate([FGR2Annealing[2:4],FGR2Annealing[9:13]]),
-        elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='28 GWd tU$^{-1}$'
-    )
-    r = range(1, 100)
-    ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
-    ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
-    ax.annotate('x2', (1.25, 3), color='k')
-    ax.plot(r, [x * 0.5 for x in r], color='gray', linestyle='--', linewidth=0.5)
-    ax.annotate('/2', (3, 1.3),  color='k')
-    ax.set_yscale('log')
-    ax.set_xscale('log')
-    
-    ax.tick_params(axis='both', which='major')
-    ax.set_xlim(1, 100)
-    ax.set_ylim(1, 100)
-
-    ax.set_title('Fission gas release - Annealing phase')
-    ax.set_xlabel('Experimental (%)')
-    ax.set_ylabel('Calculated (%)')
-    ax.legend()
-    #ax.grid(color='gray', linestyle='--', linewidth=0.5)
-
-    plt.show()
-
-    # Bubble concentration
-    fig, ax = plt.subplots(figsize=(7, 7))
-    ax.errorbar(
-        np.concatenate([bbConcKashibe[0:2],bbConcKashibe[4:9]]),
-        np.concatenate([bbconc[0:2],bbconc[4:9]]),
-        elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label='23 GWd tU$^{-1}$'
-    )
-    ax.errorbar(
-        np.concatenate([bbConcKashibe[2:4],bbConcKashibe[9:13]]),
-        np.concatenate([bbconc[2:4],bbconc[9:13]]),
-        elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='28 GWd tU$^{-1}$'
-    )
-
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-
-    ax.plot([1e-3, 1e3],[1e-3, 1e3], color='gray', linestyle='-', linewidth=0.5)
-    ax.plot([1e-3, 1e3],[2e-3, 2e3], color='gray', linestyle='--', linewidth=0.5)
-    ax.annotate('x2', (1.25e-1, 3e-1), color='k')
-    ax.plot([1e-3, 1e3],[5e-4, 5e2], color='gray', linestyle='--', linewidth=0.5)
-    ax.annotate('/2', (3e-1, 1.3e-1),  color='k')
-
-    ax.tick_params(axis='both', which='major')
-    
-    ax.set_xlim(1e-1, 1e2)
-    ax.set_ylim(1e-1, 1e2)
-
-    ax.set_xlabel('Experimental (bub μm$^{-2}$')
-    ax.set_ylabel('Calculated (bub μm$^{-2}$)')
-    ax.set_title('Bubble concentration')
-    ax.legend()
-    plt.show()
-
-    # FGR annealing
     categories = ['10 K s$^{-1}$', '1.7 K s$^{-1}$','0.5 K s$^{-1}$', '0.17 K s$^{-1}$', '0.03 K s$^{-1}$']
 
     rates1_index = [4, 9]
@@ -158,15 +92,11 @@ def do_plot():
     rates4_index = [7, 11]
     rates5_index = [8, 12]
 
-    burnup23_index = [4, 5, 6, 7, 8]  # Indici per burnup 23
-    burnup28_index = [9, 10, 11, 12]  # Indici per burnup 28
+    burnup23_index = [4, 5, 6, 7, 8]
+    burnup28_index = [9, 10, 11, 12]  
 
-    plt.rcParams.update({'font.size': 18})
-    plt.rcParams.update({'lines.markersize': 6})  # Corrected parameter for marker size
-    plt.rcParams.update({'lines.linewidth': 2}) 
     fig, ax = plt.subplots(figsize=(8, 8))
 
-    # Burnup 23 con pallini
     ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(rates1_index, burnup23_index)], 
                 np.array(FGR2Annealing)[np.intersect1d(rates1_index, burnup23_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label=f'{categories[0]} (Burnup 23)')
@@ -182,8 +112,7 @@ def do_plot():
     ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(rates5_index, burnup23_index)], 
                 np.array(FGR2Annealing)[np.intersect1d(rates5_index, burnup23_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C5', fmt='o', label=f'{categories[4]} (Burnup 23)')
-
-    # Burnup 28 con triangoli
+    
     ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(rates1_index, burnup28_index)], 
                 np.array(FGR2Annealing)[np.intersect1d(rates1_index, burnup28_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C0', fmt='^', label=f'{categories[0]} (Burnup 28)')
@@ -200,7 +129,6 @@ def do_plot():
                 np.array(FGR2Annealing)[np.intersect1d(rates5_index, burnup28_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C5', fmt='^', label=f'{categories[4]} (Burnup 28)')
 
-    # Linee guida
     r = range(1, 100)
     ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
     ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
@@ -208,17 +136,16 @@ def do_plot():
     ax.plot(r, [x * 0.5 for x in r], color='gray', linestyle='--', linewidth=0.5)
     ax.annotate('/2', (3, 1.3),  color='k')
 
-    # Impostazioni scala logaritmica
     ax.set_yscale('log')
     ax.set_xscale('log')
     ax.tick_params(axis='both', which='major')
     ax.set_xlim(1, 100)
     ax.set_ylim(1, 100)
 
-    # Titoli e legende
+
     ax.set_xlabel('FGR experimental (%)')
     ax.set_ylabel('FGR calculated (%)')
-    # Legenda intelligente
+
     custom_lines = [plt.Line2D([0], [0], color='k', marker='o', linestyle='', markersize=8, label='23 GWd tU$^{-1}$'),
                     plt.Line2D([0], [0], color='k', marker='^', linestyle='', markersize=8, label='28 GWd tU$^{-1}$'),
                     plt.Line2D([0], [0], color='C0', marker='s', linestyle='', markersize=8, label=categories[0]),
@@ -230,6 +157,7 @@ def do_plot():
     plt.tight_layout()
     plt.show()
 
+    subprocess.run([sys.executable, "regression_kashibe1991_2.py"])  # For Windows/Linux/macOS
     
     ###########################################################################
     

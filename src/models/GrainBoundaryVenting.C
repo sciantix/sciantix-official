@@ -69,7 +69,7 @@ void Simulation::GrainBoundaryVenting()
 
             sciantix_variable["Intergranular venting probability"].setFinalValue(1.54 * sqrt(open_porosity));
 
-            reference = ": Athermal release";
+            reference = ": Claisse and Van Uffelen, JNM, 466 (2015): 351-356.";
             break;
         }
 
@@ -90,7 +90,7 @@ void Simulation::GrainBoundaryVenting()
                 )
             );
 
-            reference = ": Athermal release - Pagani";
+            reference = ": Pagani et al., JNM, (2025, under review)";
             break;
         }
 		
@@ -118,7 +118,7 @@ void Simulation::GrainBoundaryVenting()
     }
 }
 
-double Simulation::athermalVentingFactor(double open_p, double theta, double p, double l, double bu, double T, double F)
+double Simulation::athermalVentingFactor(double open_porosity, double theta, double porosity, double grain_edge_lenght, double burnup, double temperature, double fission_rate)
     {
         double i_offset[] = {1.67557472604624,0.0200027413864773,3.78023892133081e-06,0.0242517088661909,336.502196086807,2.58669442083626e+17};
         double i_gain[] = { 2.72859602857881,28.5730418805038,277276.473200955,0.0400202848104835,0.00163773486033113, 2.27129465494893e-20 };
@@ -143,7 +143,7 @@ double Simulation::athermalVentingFactor(double open_p, double theta, double p, 
         double o_gain = 2.14099254432474;
         double o_min = -1;
 
-        double input[] = { theta,  p,  l,  bu,  T,  F };
+        double input[] = { theta,  porosity,  grain_edge_lenght,  burnup,  temperature,  fission_rate };
 
         // Dimension
         const int n_neurons(10);
@@ -174,7 +174,7 @@ double Simulation::athermalVentingFactor(double open_p, double theta, double p, 
 
         oo = (oo - o_min) / o_gain + o_offset;
 
-        double athermal_venting = 1.54 * sqrt(open_p);
+        double athermal_venting = 1.54 * sqrt(open_porosity);
         return oo * athermal_venting;
     }
 

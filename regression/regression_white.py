@@ -447,45 +447,6 @@ def do_plot():
     ax.legend()
     plt.show()
 
-      # Bubble area
-    fig, ax = plt.subplots(figsize=(7, 7))
-      # Fast ramp
-    ax.errorbar(
-        1e12*np.concatenate([gbareaWhite[0:16], gbareaWhite[39:43]]),
-        1e12*np.concatenate([bbarea2[0:16], bbarea2[39:43]]),
-        elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label='Fast ramp'
-    )
-
-    # Slow ramp
-    ax.errorbar(
-        1e12*np.array(gbareaWhite[16:39]), 1e12*np.array(bbarea2[16:39]),
-        elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='Slow ramp'
-    )
-
-    # Long hold
-    ax.errorbar(
-        1e12*np.array(gbareaWhite[26:35]), 1e12*np.array(bbarea2[26:35]),
-        elinewidth=0.5, linewidth=0.5, color='C3', fmt='o', label='Long hold'
-    )
-
-    ax.plot([1e-3, 1e3],[1e-3, 1e3], color='gray', linestyle='-', linewidth=0.5)
-    ax.plot([1e-3, 1e3],[2e-3, 2e3], color='gray', linestyle='--', linewidth=0.5)
-    ax.annotate('x2', (1.25e-2, 3e-2), color='k')
-    ax.plot([1e-3, 1e3],[5e-4, 5e2], color='gray', linestyle='--', linewidth=0.5)
-    ax.annotate('/2', (3e-2, 1.3e-2),  color='k')
-    ax.tick_params(axis='both', which='major')
-    
-    ax.set_xlim(1e-2, 1e1)
-    ax.set_ylim(1e-2, 1e1)
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-
-    ax.set_xlabel('Experimental (m$^{2}$)')
-    ax.set_ylabel('Calculated (m$^{2}$)')
-    ax.set_title('Bubble area')
-    ax.legend()
-    plt.show()
-
 # Main function of the white regression
 def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
 

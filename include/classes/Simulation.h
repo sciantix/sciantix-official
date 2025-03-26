@@ -150,7 +150,7 @@ public:
     void GasDecay();
 
     /**
-     * @brief GasReleased computes the gas released to the rod free volume
+     * @brief Calculates the gas released to the rod free volume.
      *
      * @author E. Cappellari
      * 
@@ -256,9 +256,30 @@ public:
      */
     void GrainBoundaryVenting();
 
+    /**
+     * @brief Calculates the open porosity of the fuel.
+     * @param fabrication_porosity the as-fabricated porosity which decreases during irradiation due to densification.
+     * @return the open porosity, i.e. the system of percolated networks framing the grain.
+     * 
+     * @author A. Pagani
+     */
     double openPorosity(double fabrication_porosity);
 
-    double athermalVentingFactor(double open_p, double theta, double p, double l, double bu, double T, double F);
+        /**
+     * @brief Calculates a corrective factor for the athermal fission gas release.
+     * @param open_porosity the open porosity of the fuel.
+     * @param theta the grain-edge inclination angle.
+     * @param porosity the as-fabricated porosity.
+     * @param grain_edge_lenght the grain-edge lenght.
+     * @param burnup the fuel burn-up.
+     * @param temperature the fuel temperature given as input.
+     * @param fission_rate the fission rate given as input.
+     * @return the athermal venting factor to correct athermal release for the real shape of gas flux within the grain
+     *          including its dependency on the grain-edge inclination angle.
+     * 
+     * @author A. Pagani
+     */
+    double athermalVentingFactor(double open_porosity, double theta, double porosity, double grain_edge_lenght, double burnup, double temperature, double fission_rate);
     
     /**
      * @brief Calculates the formation of high burnup structures within the nuclear fuel.

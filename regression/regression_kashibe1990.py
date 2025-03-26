@@ -79,113 +79,10 @@ sample_number = len(igSwelling2)
 
 def do_plot():
     
-    plt.rcParams.update({'font.size': 14})
-    fig, ax = plt.subplots(figsize=(7, 7))
-
-    ax.errorbar(
-        SwellingKashibe[1:4], igSwelling2[1:4],
-        elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label='1873 K'
-    )
-
-    ax.errorbar(
-        SwellingKashibe[4:7], igSwelling2[4:7],
-        elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='2073 K'
-    )
-
-    r = range(1, 100)
-    ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
-    ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
-    ax.annotate('x2', (1.25, 3), color='k')
-    ax.plot(r, [x * 0.5 for x in r], color='gray', linestyle='--', linewidth=0.5)
-    ax.annotate('/2', (3, 1.3),  color='k')
-    ax.set_yscale('log')
-    ax.set_xscale('log')
-
-    ax.tick_params(axis='both', which='major')
-    ax.set_xlim(1, 100)
-    ax.set_ylim(1, 100)
-
-    ax.set_title('Intergranular swelling')
-    ax.set_xlabel('Experimental (%)')
-    ax.set_ylabel('Calculated (%)')
-    ax.legend()
-    
-    plt.show()
-
     goldFGRAnnealing = []
     for i in range(len(FGR2)):
       FGR2Annealing.append(FGR2[i] - FGRBase[i])
       goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
-
-    plt.rcParams.update({'font.size': 18})
-    plt.rcParams.update({'lines.markersize': 6})  # Corrected parameter for marker size
-    plt.rcParams.update({'lines.linewidth': 2}) 
-    fig, ax = plt.subplots(figsize=(8, 8))
-
-    ax.errorbar(
-        FGRAnnealing[1:4], FGR2Annealing[1:4],
-        elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label='1873 K'
-    )
-
-    ax.errorbar(
-        FGRAnnealing[4:8], FGR2Annealing[4:8],
-        elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='2073 K'
-    )
-
-    r = range(1, 100)
-    ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
-    ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
-    ax.annotate('x2', (1.25, 3), color='k')
-    ax.plot(r, [x * 0.5 for x in r], color='gray', linestyle='--', linewidth=0.5)
-    ax.annotate('/2', (3, 1.3),  color='k')
-    ax.set_yscale('log')
-    ax.set_xscale('log')
-    
-    ax.tick_params(axis='both', which='major')
-    ax.set_xlim(1, 100)
-    ax.set_ylim(1, 100)
-
-    ax.set_title('Fission gas release - Annealing phase')
-    ax.set_xlabel('Experimental (%)')
-    ax.set_ylabel('Calculated (%)')
-    ax.legend()
-
-    plt.show()
-
-    # Bubble concentration
-    fig, ax = plt.subplots(figsize=(7, 7))
-
-    ax.errorbar(
-        bbConcKashibe[2:4], bbconc[2:4],
-        elinewidth=0.5, linewidth=0.5, color='C0', fmt='o', label='1873 K'
-    )
-    ax.errorbar(
-        bbConcKashibe[4:6], bbconc[4:6],
-        elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='2073 K'
-    )
-
-    ax.set_xscale('log')
-    ax.set_yscale('log')
-
-    ax.plot([1e-3, 1e3],[1e-3, 1e3], color='gray', linestyle='-', linewidth=0.5)
-    ax.plot([1e-3, 1e3],[2e-3, 2e3], color='gray', linestyle='--', linewidth=0.5)
-    ax.annotate('x2', (1.25e-1, 3e-1), color='k')
-    ax.plot([1e-3, 1e3],[5e-4, 5e2], color='gray', linestyle='--', linewidth=0.5)
-    ax.annotate('/2', (3e-1, 1.3e-1),  color='k')
-
-    ax.tick_params(axis='both', which='major')
-    
-    ax.set_xlim(1e-1, 1e2)
-    ax.set_ylim(1e-1, 1e2)
-
-    ax.set_xlabel('Experimental (bub μm$^{-2}$')
-    ax.set_ylabel('Calculated (bub μm$^{-2}$)')
-    ax.set_title('Bubble concentration')
-    ax.legend()
-    #plt.savefig('Images/BubConc-Kashibe1990')
-    plt.show()
-
-    ###########FGR##############
 
     categories = ['6 GWd tU$^{-1}$', '16 GWd tU$^{-1}$','23 GWd tU$^{-1}$', '28 GWd tU$^{-1}$']
     categories1 = ['16 GWd tU$^{-1}$','23 GWd tU$^{-1}$', '28 GWd tU$^{-1}$']
@@ -197,24 +94,20 @@ def do_plot():
     T1873_index = [0,1,2,3]
     T2073_index = [4,5,6,7]
 
-    burnup6_index = [0,4]  # Indici per burnup 23
-    burnup16_index = [1,5]  # Indici per burnup 28
-    burnup23_index = [2,6]  # Indici per burnup 23
-    burnup28_index = [3,7]  # Indici per burnup 28
+    burnup6_index = [0,4]
+    burnup16_index = [1,5]
+    burnup23_index = [2,6]
+    burnup28_index = [3,7] 
 
     FGRyes = [1,2,3,4,5,6,7]
     SWyes =[1,2,3,4,5,6]
-    plt.rcParams.update({'font.size': 18})
-    plt.rcParams.update({'lines.markersize': 6})  # Corrected parameter for marker size
-    plt.rcParams.update({'lines.linewidth': 2}) 
+
     fig, ax = plt.subplots(figsize=(8, 8))
 
-    # Burnup 6 con cerchi
     ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(T2073_index, burnup6_index)], 
                 np.array(FGR2Annealing)[np.intersect1d(T2073_index, burnup6_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C0', fmt='^', label='Burnup 6, T=2073 K')
 
-    # Burnup 16 con cerchi
     ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(T1873_index, burnup16_index)], 
                 np.array(FGR2Annealing)[np.intersect1d(T1873_index, burnup16_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='Burnup 16, T=1873 K')
@@ -222,7 +115,6 @@ def do_plot():
                 np.array(FGR2Annealing)[np.intersect1d(T2073_index, burnup16_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C2', fmt='^', label='Burnup 16, T=2073 K')
 
-    # Burnup 23 con cerchi
     ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(T1873_index, burnup23_index)], 
                 np.array(FGR2Annealing)[np.intersect1d(T1873_index, burnup23_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C3', fmt='o', label='Burnup 23, T=1873 K')
@@ -230,7 +122,6 @@ def do_plot():
                 np.array(FGR2Annealing)[np.intersect1d(T2073_index, burnup23_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C3', fmt='^', label='Burnup 23, T=2073 K')
 
-    # Burnup 28 con cerchi
     ax.errorbar(np.array(FGRAnnealing)[np.intersect1d(T1873_index, burnup28_index)], 
                 np.array(FGR2Annealing)[np.intersect1d(T1873_index, burnup28_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C4', fmt='o', label='Burnup 28, T=1873 K')
@@ -238,7 +129,6 @@ def do_plot():
                 np.array(FGR2Annealing)[np.intersect1d(T2073_index, burnup28_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C4', fmt='^', label='Burnup 28, T=2073 K')
 
-    # Linee guida
     r = range(1, 100)
     ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
     ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
@@ -246,14 +136,12 @@ def do_plot():
     ax.plot(r, [x * 0.5 for x in r], color='gray', linestyle='--', linewidth=0.5)
     ax.annotate('/2', (3, 1.3),  color='k')
 
-    # Impostazioni scala logaritmica
     ax.set_yscale('log')
     ax.set_xscale('log')
     ax.tick_params(axis='both', which='major')
     ax.set_xlim(1, 100)
     ax.set_ylim(1, 100)
 
-    # Legenda intelligente
     custom_lines = [
         plt.Line2D([0], [0], color='k', marker='o', linestyle='', markersize=8, label='T = 1873 K'),
         plt.Line2D([0], [0], color='k', marker='^', linestyle='', markersize=8, label='T = 2073 K'),
@@ -271,17 +159,12 @@ def do_plot():
     plt.tight_layout()
     plt.show()
 
-    plt.rcParams.update({'font.size': 18})
-    plt.rcParams.update({'lines.markersize': 6})  # Corrected parameter for marker size
-    plt.rcParams.update({'lines.linewidth': 2}) 
     fig, ax = plt.subplots(figsize=(8, 8))
 
-    # Burnup 6 con cerchi
     ax.errorbar(np.array(SwellingKashibe)[np.intersect1d(T2073_index, burnup6_index)], 
                 np.array(igSwelling2)[np.intersect1d(T2073_index, burnup6_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C0', fmt='^', label='Burnup 6, T=2073 K')
 
-    # Burnup 16 con cerchi
     ax.errorbar(np.array(SwellingKashibe)[np.intersect1d(T1873_index, burnup16_index)], 
                 np.array(igSwelling2)[np.intersect1d(T1873_index, burnup16_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C2', fmt='o', label='Burnup 16, T=1873 K')
@@ -289,7 +172,6 @@ def do_plot():
                 np.array(igSwelling2)[np.intersect1d(T2073_index, burnup16_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C2', fmt='^', label='Burnup 16, T=2073 K')
 
-    # Burnup 23 con cerchi
     ax.errorbar(np.array(SwellingKashibe)[np.intersect1d(T1873_index, burnup23_index)], 
                 np.array(igSwelling2)[np.intersect1d(T1873_index, burnup23_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C3', fmt='o', label='Burnup 23, T=1873 K')
@@ -297,12 +179,10 @@ def do_plot():
                 np.array(igSwelling2)[np.intersect1d(T2073_index, burnup23_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C3', fmt='^', label='Burnup 23, T=2073 K')
 
-    # Burnup 28 con cerchi
     ax.errorbar(np.array(SwellingKashibe)[np.intersect1d(T1873_index, burnup28_index)], 
                 np.array(igSwelling2)[np.intersect1d(T1873_index, burnup28_index)], 
                 elinewidth=0.5, linewidth=0.5, color='C4', fmt='o', label='Burnup 28, T=1873 K')
-    
-    # Linee guida
+
     r = range(1, 100)
     ax.plot(r, r, color='gray', linestyle='-', linewidth=0.5)
     ax.plot(r, [x * 2 for x in r], color='gray', linestyle='--', linewidth=0.5)
@@ -310,14 +190,12 @@ def do_plot():
     ax.plot(r, [x * 0.5 for x in r], color='gray', linestyle='--', linewidth=0.5)
     ax.annotate('/2', (3, 1.3),  color='k')
 
-    # Impostazioni scala logaritmica
     ax.set_yscale('log')
     ax.set_xscale('log')
     ax.tick_params(axis='both', which='major')
     ax.set_xlim(1, 100)
     ax.set_ylim(1, 100)
 
-    # Legenda intelligente
     custom_lines = [
         plt.Line2D([0], [0], color='k', marker='o', linestyle='', markersize=8, label='T = 1873 K'),
         plt.Line2D([0], [0], color='k', marker='^', linestyle='', markersize=8, label='T = 2073 K'),
@@ -328,7 +206,6 @@ def do_plot():
     ]
     ax.legend(handles=custom_lines, loc='best', frameon=False)
 
-    # Titoli e legende
     ax.set_xlabel('Experimental swelling (%)')
     ax.set_ylabel('Calculated swelling (%)')
 
