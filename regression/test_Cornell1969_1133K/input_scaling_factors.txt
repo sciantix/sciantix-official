@@ -11,7 +11,7 @@
 1.0
 # scaling factor - fission rate
 1.0
-# scaling factor - cent parameter
+# scaling factor - diffusion-based release (Cappellari et al., JNM, (2025, under review), 1 = Low release, 2 = Mean production, 3 = Saturation threshold at 50% fractional coverage)
 1.0
 # scaling factor - helium production rate
 1.0
