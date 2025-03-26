@@ -14,7 +14,7 @@ Model	Gas diffusion - Xe133 in UO2
 Model	Gas diffusion - Kr85m in UO2	
 Model	Grain-boundary micro-cracking	: Barani et al. (2017), JNM
 Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
-Model	Release mode	: similarity ratio.
+Model	Release mode	 coalescence from White, JNM, 325 (2004), 61-77; release from Pastore et al., NED, 256 (2013), 75-86.
 
 Matrix	UO2	
 	Ainscough et al., JNM, 49 (1973) 117-128.
