@@ -67,11 +67,10 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
         const double n_coeff = pow(-1.0, np1) / np1; // (-1)^k/k
 
         diffusion_rate = diffusion_rate_coeff * pow(np1, 2); // k^2*pi^2*D/a^2
-        //source_rate = 12*pow(-1.0, np1)*sqrt(2)*pow(parameter.at(2), 1.5)*time*(-2*pow(parameter.at(2),2)-pow(M_PI, 2)*pow(np1,2)*time*(1-time))/(pow(M_PI, 2.5)*pow(np1, 3));
         source_rate = 2 * sqrt(2) * sqrt(M_PI) * (
             -0.03 * pow(-1,np1) * pow(parameter.at(2),4) * exp(0.005 * time) / (pow(M_PI,3) * pow(np1,3))
             - 6.0 * pow(-1,np1) * pow(parameter.at(2),2) * exp(0.004 * time) / (M_PI * np1)
-        ) / sqrt(parameter.at(2));
+        ) / sqrt(parameter.at(2)); //get this expression from source_projection.py
 
 
         initial_condition[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);

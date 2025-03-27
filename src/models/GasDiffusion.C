@@ -232,7 +232,7 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         parameters.push_back(system.getProductionRate()); //3
         parameters.push_back(system.getGas().getDecayRate()); //4
 
-        // Manufactured Solution
+        // Manufactured Solution // get this expression from volume_averaged_manufatured_solution.py
 
         for (int i = 0; i <= Number_of_time_steps_per_interval; ++i)
         {
