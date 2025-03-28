@@ -1,6 +1,6 @@
 iGrainGrowth = 1
 iFissionGasDiffusivity = 1
-iDiffusionSolver = 4
+iDiffusionSolver = 2
 iIntraGranularBubbleBehavior = 1
 iResolutionRate = 1
 iTrappingRate = 1
@@ -17,7 +17,7 @@ iHeDiffusivity = 0
 iGrainBoundarySweeping = 0
 iHighBurnupStructureFormation = 0
 iHighBurnupStructurePorosity = 0
-iHeliumProductionRate = 0
+iHeliumProductionRate = 1
 iStoichiometryDeviation = 0
 iBubbleDiffusivity = 0
 Grain radius[0] = 5e-06

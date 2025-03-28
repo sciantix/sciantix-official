@@ -288,6 +288,8 @@ public:
      */
     double SourceProjection_i(double GrainRadius, std::vector<double> Domain, std::vector<double> Source_Function, double SpatialMode_i);
 
+
+
     /**
      * @brief Constructor
      */
