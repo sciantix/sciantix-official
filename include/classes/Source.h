@@ -22,6 +22,7 @@
 #include <vector>
 #include <string>
 #include <limits>
+#include <algorithm>
 #include "MainVariables.h"
 
 
@@ -49,6 +50,31 @@ public:
     std::vector<double> Intercepts;       ///< Source function intercepts for each region
 
     
+    
+    /**
+     * @brief Gives the spatial averaged value of the fission rate (Fdot)
+     * @param GrainRadius 
+     * @param source source shape
+     */
+    double Source_Volume_Average(double GrainRadius, Source source)
+    {
+        double NumberofRegions = source.Slopes.size(); // Obtains the number of regions
+        double VA;
+        std::vector<double> domain;
+
+        std::transform(source.NormalizedDomain.begin(), source.NormalizedDomain.end(), domain.begin(),
+                   [GrainRadius](double x) { return x * GrainRadius; });
+        
+
+        for (size_t j = 0; j < NumberofRegions; ++j)
+        {
+            VA += ((3/4)*source.Slopes[j]*pow(domain[j+1],4)/pow(GrainRadius,3)) + source.Intercepts[j]*pow(domain[j+1]/GrainRadius,3)
+            - ((3/4)*source.Slopes[j]*pow(domain[j],4)/pow(GrainRadius,3)) + source.Intercepts[j]*pow(domain[j]/GrainRadius,3)
+            ;
+        }
+        return VA;
+    }
+
     /**
      * @brief Constructor
      */

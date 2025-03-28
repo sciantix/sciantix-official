@@ -21,6 +21,7 @@
 #include <string>
 #include <iostream>
 #include <limits>
+#include <algorithm>
 
 
 void System::setRestructuredMatrix(bool y)
@@ -798,4 +799,124 @@ void System::setProductionRate(int input_value, SciantixArray<SciantixVariable> 
 double System::getProductionRate()
 {
     return production_rate;
+}
+
+void System::setProductionRateNUS(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable,
+    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors, Source &NUS_source)
+{
+    /**
+     * ### setProductionRate
+     *
+     */
+    switch (input_value)
+    {
+    case 0:
+    {
+        reference += "No production rate.\n\t";
+        double no = 0;
+        //production rate in this case is of type source, and so we return a vector of slopes and intercepts with 0s
+        
+        std::transform(NUS_source.Slopes.begin(), NUS_source.Slopes.end(), production_rate_NUS.Slopes.begin(),
+                   [no](double x) { return x * no; });
+        std::transform(NUS_source.Intercepts.begin(), NUS_source.Intercepts.end(), production_rate_NUS.Intercepts.begin(),
+        [no](double x) { return x * no; });
+
+        break;
+    }
+    case 1:
+    {
+        /**
+         * @brief Production rate = cumulative yield * fission rate density
+         *
+         */
+
+        double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
+        double sf(1.0);
+        if (input_variable["iFuelMatrix"].getValue() == 1)
+            sf = 1.25;
+
+        reference += "Production rate = cumulative yield * fission rate density * (1 - alpha).\n\t";
+        production_rate_NUS.NormalizedDomain = NUS_source.NormalizedDomain; 
+        for (int i = 0; i < NUS_source.Slopes.size(); i++) {
+            production_rate_NUS.Slopes[i] *= sf * (1.0 - alpha) * yield * NUS_source.Slopes[i]; // (at/m3s)
+            production_rate_NUS.Intercepts[i] *= sf * (1.0 - alpha) * yield * NUS_source.Intercepts[i]; // (at/m3s)
+        }
+        break;
+    }
+
+    case 2:
+    {
+        /**
+         * @brief Surrogate model derived from **helium production in fast reactor conditions**.
+         * The helium production rate is fitted with a function linearly dependent on the local burnup.
+         * @see The default fit is from <a href="../../references/pdf_link/Cechet_et_al_2021.pdf" target="_blank">A. Cechet et al., Nuclear Engineering and Technology, 53 (2021) 1893-1908</a>.
+         *
+         * **Default range of utilization of the default fit**
+         * - Fast reactor conditions: (U,Pu)O<sub>2</sub> MOX fuel in SFR conditions
+         * - Up to 200 GWd/tHM
+         * - Pu/HM concentration of 20-40%
+         *
+         * The default fit (hence the helium production rate) can be calibrated by using the dedicated
+         * scaling factor (to be set in input_scaling_factors.txt).
+         *
+         */
+
+        reference += "Case for helium production rate: Cechet et al., Nuclear Engineering and Technology, 53 (2021) 1893-1908.\n\t";
+
+        // specific power = dburnup / dt
+        sciantix_variable["Specific power"].setFinalValue(
+            NUS_source.Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(),NUS_source) * 3.12e-17 / sciantix_variable["Fuel density"].getFinalValue()
+        );
+
+        // production rate in dproduced / dburnup -> dproduced / dtime
+        production_rate = 2.0e+21 * sciantix_variable["Burnup"].getFinalValue() + 3.0e+23; // (at/m3 burnup)
+        production_rate *= sciantix_variable["Specific power"].getFinalValue() / 86400;    // (at/m3s)
+
+        production_rate *= scaling_factors["Helium production rate"].getValue();
+
+        break;
+    }
+
+    case 3:
+    {
+        /**
+         * @brief Same production rate for all gases // needed maybe during implantation
+         *
+         */
+
+        reference += "Constant production rate.\n\t";
+        production_rate_NUS.NormalizedDomain = NUS_source.NormalizedDomain;
+        production_rate_NUS.Slopes = NUS_source.Slopes;
+        production_rate_NUS.Intercepts = NUS_source.Intercepts;
+
+        break;
+    }
+
+    case 5:
+    {
+        /**
+         * @brief Production rate = cumulative yield * fission rate density * HBS volume fraction
+         *
+         */
+
+        double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
+
+        reference += "Production rate = cumulative yield * fission rate density * alpha.\n\t";
+        production_rate_NUS.NormalizedDomain = NUS_source.NormalizedDomain; 
+        for (int i = 0; i < NUS_source.Slopes.size(); i++) {
+            production_rate_NUS.Slopes[i] *= 1.25 * yield *  NUS_source.Slopes[i]; // (at/m3s)
+            production_rate_NUS.Intercepts[i] *= 1.25 * yield * NUS_source.Intercepts[i]; // (at/m3s)
+        }
+        break;
+    }
+
+    default:
+        ErrorMessages::Switch(__FILE__, "setProductionRate", input_value);
+        break;
+    }
+}
+
+Source System::getProductionRateNUS()
+{
+    return production_rate_NUS;
 }
