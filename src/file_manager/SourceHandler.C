@@ -85,7 +85,7 @@ std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int 
     // Define global time range
     double t_min = sources.front().time;
     double t_max = sources.back().time;
-    double time_step = (t_max - t_min) / (total_steps - 1);
+    double time_step = (t_max - t_min) / (total_steps-1);
 
     // Generate 100 equally spaced time points
     for (int i = 0; i < total_steps; ++i)
@@ -132,9 +132,9 @@ std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int 
     return interpolated_sources;
 }
 
-void printInterpolatedSources(const std::vector<Source> &interpolated_sources)
+void printSources(const std::vector<Source> &sources)
 {
-    for (const auto &source : interpolated_sources)
+    for (const auto &source : sources)
     {
         std::cout << "Time: " << source.time << std::endl;
         std::cout << "Normalized Domain: ";
@@ -160,7 +160,33 @@ void printInterpolatedSources(const std::vector<Source> &interpolated_sources)
     }
 }
 
-void writeToFile(const std::vector<Source> &interpolatedSources)
+void printSource(const Source &source)
+{
+    std::cout << "Time: " << source.time << std::endl;
+
+    std::cout << "Normalized Domain: ";
+    for (const auto &val : source.NormalizedDomain)
+    {
+        std::cout << val << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "Slopes: ";
+    for (const auto &val : source.Slopes)
+    {
+        std::cout << val << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "Intercepts: ";
+    for (const auto &val : source.Intercepts)
+    {
+        std::cout << val << " ";
+    }
+    std::cout << std::endl;
+}
+
+void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRadius)
 {
     // Define the output file path using the TestPath
     std::string outputFile = TestPath + "source_output.txt";
@@ -174,18 +200,24 @@ void writeToFile(const std::vector<Source> &interpolatedSources)
         return;
     }
 
+    // Write header line
+    outFile << "t (h) # Normalized Domain (-) # Slopes (at/m2.s) # Intercepts (at/m3.s) # Volume Average (at/m3.s)\n";
+
     // Loop through the interpolated sources and write the data to the file
     for (const auto &source : interpolatedSources)
     {
-        // Write time and normalized domain
+        // Compute volume average
+        double volumeAverage = Source_Volume_Average(GrainRadius, source);
+
+        // Write time
         outFile << source.time << " # ";
+
+        // Write domain
         for (size_t i = 0; i < source.NormalizedDomain.size(); ++i)
         {
             outFile << source.NormalizedDomain[i];
             if (i != source.NormalizedDomain.size() - 1)
-            {
                 outFile << " "; // Separate values with space
-            }
         }
         outFile << " # ";
 
@@ -194,9 +226,7 @@ void writeToFile(const std::vector<Source> &interpolatedSources)
         {
             outFile << source.Slopes[i];
             if (i != source.Slopes.size() - 1)
-            {
                 outFile << " "; // Separate values with space
-            }
         }
         outFile << " # ";
 
@@ -205,18 +235,19 @@ void writeToFile(const std::vector<Source> &interpolatedSources)
         {
             outFile << source.Intercepts[i];
             if (i != source.Intercepts.size() - 1)
-            {
                 outFile << " "; // Separate values with space
-            }
         }
-        outFile << " " << std::endl; // Add new line at the end of each entry
+
+        // Write volume average in the last column
+        outFile << " # " << volumeAverage << "\n";
     }
 
     // Close the file after writing
     outFile.close();
 }
 
-void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::string &outputFilePath, double scale_factor, double step)
+
+void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::string &outputFilePath, double step, double GrainRadius)
 {
     std::ofstream outFile(outputFilePath);
 
@@ -228,9 +259,14 @@ void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::
 
     for (const auto &source : sources)
     {
-        outFile << "Time: " << source.time << " s\n";
+        // Compute volume average for the current source
+        double volumeAverage = Source_Volume_Average(GrainRadius, source);
+
+        // Write the time and the volume average
+        outFile << "Time: " << source.time << " s # Volume Average: " << volumeAverage << " at/m^3.s\n";
         outFile << "r (micron)\tS (at/m^3.s)\n";
 
+        // Loop through the source's normalized domain and compute S
         for (size_t i = 0; i < source.NormalizedDomain.size() - 1; ++i)
         {
             double nd_start = source.NormalizedDomain[i];
@@ -241,13 +277,71 @@ void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::
             // Modified loop condition to include the endpoint
             for (double nd = nd_start; nd < nd_end + step; nd += step)
             {
-                double r = nd * scale_factor;
-                double S = A * r * 1e-6 + B;
-                outFile << r << "\t" << S << "\n";
+                double r = nd * GrainRadius * 1e6;
+                double S = A * r * 1e-6 + B; // Compute source value S
+                outFile << r << "\t" << S << "\n"; // Write r and S to file
             }
         }
         outFile << "\n"; // Separate time instances
     }
 
     outFile.close();
+}
+
+
+
+
+double Source_Volume_Average(double GrainRadius, Source source)
+{
+    double NumberofRegions = source.Slopes.size(); // Number of regions
+    double VA = 0.0;  // Initialize the volume average
+
+    // Vector to store the domains
+    std::vector<double> domain(source.NormalizedDomain.size());
+
+    // Adjust NormalizedDomain to match with the grain radius
+    std::transform(source.NormalizedDomain.begin(), source.NormalizedDomain.end(), domain.begin(),
+                   [GrainRadius](double x) { return x * GrainRadius; });
+
+    // Loop through all the regions and calculate the integral for each domain
+    for (size_t j = 0; j < NumberofRegions; ++j)
+    {
+        if (j + 1 >= domain.size()) // Make sure we're not accessing out-of-bounds elements
+        {
+            std::cerr << "Error: Trying to access out-of-bounds domain at index " << j << std::endl;
+            return -1.0;  // Return an error code for segmentation fault
+        }
+
+        // Calculate the integration for A * r + B over r^2 in the domain [r0, r1]
+        double r0 = domain[j];
+        double r1 = domain[j + 1];
+
+        double A = source.Slopes[j];
+        double B = source.Intercepts[j];
+
+        // Calculate the integrals for A * r + B over r^2 in the domain [r0, r1]
+        double integral = A * (pow(r1, 4) - pow(r0, 4)) / 4.0 + B * (pow(r1, 3) - pow(r0, 3)) / 3.0;
+        double volume = (pow(r1, 3) - pow(r0, 3)) / 3.0;
+
+        // Accumulate the results
+        VA += integral;
+    }
+
+    // Calculate the total volume by summing all volume elements
+    double totalVolume = 0.0;
+    for (size_t j = 0; j < NumberofRegions; ++j)
+    {
+        if (j + 1 >= domain.size()) // Ensure no out-of-bounds access
+        {
+            std::cerr << "Error: Trying to access out-of-bounds domain at index " << j << std::endl;
+            return -1.0;  // Return error code
+        }
+
+        double r0 = domain[j];
+        double r1 = domain[j + 1];
+        totalVolume += (pow(r1, 3) - pow(r0, 3)) / 3.0;
+    }
+
+    // Return the spherical volume average
+    return VA / totalVolume;
 }

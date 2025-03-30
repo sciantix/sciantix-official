@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "InputReading.h"
+#include "SourceHandler.h"
 
 /**
  * @brief Read a single setting from the input file.
@@ -95,7 +96,8 @@ void InputReading(
 	std::vector<double> &Hydrostaticstress_input,
 	std::vector<double> &Steampressure_input,
 	double &Time_end_h,
-	double &Time_end_s
+	double &Time_end_s,
+	std::vector<Source> &sources_input
 	)
 {
     /**
@@ -145,6 +147,7 @@ void InputReading(
 	Sciantix_options[19] = ReadOneSetting("iHeliumProductionRate", input_settings, input_check);
 	Sciantix_options[20] = ReadOneSetting("iStoichiometryDeviation", input_settings, input_check);
 	Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
+	loadSourcesFromFile(sources_input);
 	
 	if (!input_initial_conditions.fail())
 	{

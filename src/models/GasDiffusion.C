@@ -122,13 +122,8 @@ void Simulation::GasDiffusion()
         
         case 4:
         {
-            std::vector<Source> sources;
-            std::vector<Source> isources;
-            loadSourcesFromFile(sources);
-            isources = sourceInterpolation(sources, Number_of_time_steps_per_interval+1);
-            writeToFile(isources);
-            computeAndSaveSourcesToFile(sources,TestPath + "source_shape.txt", 5, 0.01);
-
+            writeToFile(sources_interp, sciantix_variable["Grain radius"].getFinalValue());
+            computeAndSaveSourcesToFile(sources_input,TestPath + "source_shape.txt", 0.01, sciantix_variable["Grain radius"].getFinalValue());
             if (system.getRestructuredMatrix() == 0)
             {    
 
@@ -136,7 +131,7 @@ void Simulation::GasDiffusion()
                     solver.SpectralDiffusionNUS(
                         getDiffusionModes(system.getGasName()),
                         model["Gas diffusion - " + system.getName()].getParameter(),
-                        isources.at(history_variable["Time step number"].getFinalValue()),
+                        system.getProductionRateNUS(),
                         physics_variable["Time step"].getFinalValue()
                     )
                 );
@@ -160,7 +155,7 @@ void Simulation::GasDiffusion()
                     solver.SpectralDiffusionNUS(
                         getDiffusionModes(system.getGasName() + " in HBS"),
                         model["Gas diffusion - " + system.getName()].getParameter(),
-                        isources.at(history_variable["Time step number"].getFinalValue()),
+                        system.getProductionRateNUS(),
                         physics_variable["Time step"].getFinalValue()
                     )
                 );
@@ -277,13 +272,16 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         double Source_intercept_input; // Intercept
 
         ReadSource(Source_slope_input,Source_intercept_input);
-        parameters.push_back(Source_slope_input); // Slope
+        // parameters.push_back(Source_slope_input); // Slope
+        parameters.push_back(0); // Slope
 
-        if (Source_slope_input==0 && Source_intercept_input==0) // Intercept
-            {
-                parameters.push_back(system.getProductionRate()); 
-                }
-        else{parameters.push_back(Source_intercept_input);}
+
+        // if (Source_slope_input==0 && Source_intercept_input==0) // Intercept
+        //     {
+        //         parameters.push_back(system.getProductionRate()); 
+        //         }
+        // else{parameters.push_back(Source_intercept_input);}
+        parameters.push_back(system.getProductionRate());
 
         
         parameters.push_back(system.getGas().getDecayRate());

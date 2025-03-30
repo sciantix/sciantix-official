@@ -15,7 +15,6 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "MainVariables.h"
-#include "Source.h"
 
 int Sciantix_options[40];
 double Sciantix_history[20];
@@ -46,3 +45,6 @@ std::vector<double> Temperature_input(1000, 0.0);
 std::vector<double> Fissionrate_input(1000, 0.0);
 std::vector<double> Hydrostaticstress_input(1000, 0.0);
 std::vector<double> Steampressure_input(1000, 0.0);
+std::vector<Source> sources_input;
+std::vector<Source> sources_interp;
+

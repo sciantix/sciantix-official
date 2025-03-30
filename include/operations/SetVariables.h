@@ -22,6 +22,7 @@
 #include "InputVariable.h"
 #include "SciantixArray.h"
 #include "SetVariablesFunctions.h"
+#include "Source.h"
 
 /**
  * @brief This routine initializes vectors that hold physics variables, history variables,
@@ -52,7 +53,8 @@ void SetVariables(
     SciantixArray<SciantixVariable> &sciantix_variable,
 	SciantixArray<SciantixVariable> &physics_variable,
 	std::vector<double> &modes_initial_conditions,
-	SciantixArray<Variable> &scaling_factors
+	SciantixArray<Variable> &scaling_factors,
+	std::vector<Source> sourcesinput
 );
 
 #endif

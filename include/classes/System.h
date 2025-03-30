@@ -57,7 +57,7 @@ protected:
     bool restructured_matrix;
     Gas gas;
     Matrix matrix;
-    Source source;
+    Source NUS_source;
     Source production_rate_NUS;
 
 public:
@@ -257,8 +257,8 @@ public:
      * @brief Sets the production rate based on the selected model.
      * @param input_value The model selection index for setting the production rate.
      */
-    void setProductionRateNUS(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable,
-        SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors, Source &NUS_source);
+    void setProductionRateNUS(int input_value, SciantixArray<InputVariable> &input_variable,
+        SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors,SciantixArray<SciantixVariable> &history_variable ,std::vector<Source> &sourcesinput);
 
             /**
      * @brief  Member function to get the production rate of the sciantix_system.

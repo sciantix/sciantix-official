@@ -49,9 +49,11 @@ private:
     SciantixArray<System> sciantix_system;
     SciantixArray<Matrix> matrices;
     SciantixArray<Gas> gas;
+    Source NUS_source;
 
     SciantixArray<InputVariable> input_variable;
     SciantixArray<InputVariable> scaling_factors;
+    std::vector<Source> sourcesinput;
 
     int n_modes;
     std::vector<double> modes_initial_conditions;
@@ -378,4 +380,4 @@ public:
     }
 };
 
-#endif
+#endif // SIMULATION_H

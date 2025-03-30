@@ -88,7 +88,8 @@ int main(int argc, char **argv)
         Hydrostaticstress_input,
         Steampressure_input,
         Time_end_h,
-        Time_end_s
+        Time_end_s,
+        sources_input
     );
 
     Initialization(
@@ -109,6 +110,7 @@ int main(int argc, char **argv)
 
     timer = clock();
 
+    sources_interp = sourceInterpolation(sources_input, Number_of_time_steps_per_interval+1);
 
     while (Time_h <= Time_end_h)
     {
