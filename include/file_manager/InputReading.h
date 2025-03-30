@@ -18,6 +18,7 @@
 #define INPUT_READING_H
 
 #include "ErrorMessages.h"
+#include "Source.h"
 #include <string>
 #include <sstream>
 #include <vector>
@@ -45,7 +46,8 @@ void InputReading(
     std::vector<double> &Hydrostaticstress_input,
     std::vector<double> &Steampressure_input,
     double &Time_end_h,
-    double &Time_end_s
+    double &Time_end_s,
+    std::vector<Source> &sources_input
 );
 
 void readSettings(std::ifstream &input, std::ofstream &output, int Sciantix_options[]);

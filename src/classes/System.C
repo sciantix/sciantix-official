@@ -22,6 +22,7 @@
 #include <iostream>
 #include <limits>
 #include <algorithm>
+#include <SourceHandler.h>
 
 
 void System::setRestructuredMatrix(bool y)
@@ -798,11 +799,12 @@ void System::setProductionRate(int input_value, SciantixArray<SciantixVariable> 
 
 double System::getProductionRate()
 {
+    // std::cout<<production_rate<<std::endl;
     return production_rate;
 }
 
-void System::setProductionRateNUS(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable,
-    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors, Source &NUS_source)
+void System::setProductionRateNUS(int input_value, SciantixArray<InputVariable> &input_variable,
+    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors, SciantixArray<SciantixVariable> &history_variable, std::vector<Source> &sourcesinput)
 {
     /**
      * ### setProductionRate
@@ -813,13 +815,21 @@ void System::setProductionRateNUS(int input_value, SciantixArray<SciantixVariabl
     case 0:
     {
         reference += "No production rate.\n\t";
-        double no = 0;
-        //production rate in this case is of type source, and so we return a vector of slopes and intercepts with 0s
-        
-        std::transform(NUS_source.Slopes.begin(), NUS_source.Slopes.end(), production_rate_NUS.Slopes.begin(),
-                   [no](double x) { return x * no; });
-        std::transform(NUS_source.Intercepts.begin(), NUS_source.Intercepts.end(), production_rate_NUS.Intercepts.begin(),
-        [no](double x) { return x * no; });
+        double factor = 0;
+        const auto& source = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+        // Ensure production_rate_NUS has correct sizes
+        production_rate_NUS.time = source.time;
+        production_rate_NUS.NormalizedDomain = source.NormalizedDomain;
+        production_rate_NUS.Slopes.resize(source.Slopes.size());  
+        production_rate_NUS.Intercepts.resize(source.Intercepts.size());
+
+        // Scale slopes
+        std::transform(source.Slopes.begin(), source.Slopes.end(), production_rate_NUS.Slopes.begin(),
+                    [factor](double x) { return x * factor; }); //(at/m4.s)
+
+        // Scale intercepts 
+        std::transform(source.Intercepts.begin(), source.Intercepts.end(), production_rate_NUS.Intercepts.begin(),
+                    [factor](double x) { return x * factor; }); //(at/m3.s)
 
         break;
     }
@@ -836,11 +846,21 @@ void System::setProductionRateNUS(int input_value, SciantixArray<SciantixVariabl
             sf = 1.25;
 
         reference += "Production rate = cumulative yield * fission rate density * (1 - alpha).\n\t";
-        production_rate_NUS.NormalizedDomain = NUS_source.NormalizedDomain; 
-        for (int i = 0; i < NUS_source.Slopes.size(); i++) {
-            production_rate_NUS.Slopes[i] *= sf * (1.0 - alpha) * yield * NUS_source.Slopes[i]; // (at/m3s)
-            production_rate_NUS.Intercepts[i] *= sf * (1.0 - alpha) * yield * NUS_source.Intercepts[i]; // (at/m3s)
-        }
+        double factor = sf * (1-alpha) * yield; 
+        const auto& source = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+        // Ensure production_rate_NUS has correct sizes
+        production_rate_NUS.time = source.time;
+        production_rate_NUS.NormalizedDomain = source.NormalizedDomain;
+        production_rate_NUS.Slopes.resize(source.Slopes.size());  
+        production_rate_NUS.Intercepts.resize(source.Intercepts.size());  
+
+        // Scale slopes
+        std::transform(source.Slopes.begin(), source.Slopes.end(), production_rate_NUS.Slopes.begin(),
+                    [factor](double x) { return x * factor; }); //(at/m4.s)
+
+        // Scale intercepts 
+        std::transform(source.Intercepts.begin(), source.Intercepts.end(), production_rate_NUS.Intercepts.begin(),
+                    [factor](double x) { return x * factor; }); //(at/m3.s)
         break;
     }
 
@@ -865,7 +885,7 @@ void System::setProductionRateNUS(int input_value, SciantixArray<SciantixVariabl
 
         // specific power = dburnup / dt
         sciantix_variable["Specific power"].setFinalValue(
-            NUS_source.Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(),NUS_source) * 3.12e-17 / sciantix_variable["Fuel density"].getFinalValue()
+            Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(),sourcesinput.at(history_variable["Time step number"].getFinalValue())) * 3.12e-17 / sciantix_variable["Fuel density"].getFinalValue()
         );
 
         // production rate in dproduced / dburnup -> dproduced / dtime
@@ -885,9 +905,10 @@ void System::setProductionRateNUS(int input_value, SciantixArray<SciantixVariabl
          */
 
         reference += "Constant production rate.\n\t";
-        production_rate_NUS.NormalizedDomain = NUS_source.NormalizedDomain;
-        production_rate_NUS.Slopes = NUS_source.Slopes;
-        production_rate_NUS.Intercepts = NUS_source.Intercepts;
+        production_rate_NUS.time = sourcesinput.at(history_variable["Time step number"].getFinalValue()).time;
+        production_rate_NUS.NormalizedDomain = sourcesinput.at(history_variable["Time step number"].getFinalValue()).NormalizedDomain;
+        production_rate_NUS.Slopes = sourcesinput.at(history_variable["Time step number"].getFinalValue()).Slopes;
+        production_rate_NUS.Intercepts = sourcesinput.at(history_variable["Time step number"].getFinalValue()).Intercepts;
 
         break;
     }
@@ -898,15 +919,27 @@ void System::setProductionRateNUS(int input_value, SciantixArray<SciantixVariabl
          * @brief Production rate = cumulative yield * fission rate density * HBS volume fraction
          *
          */
-
         double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
-
         reference += "Production rate = cumulative yield * fission rate density * alpha.\n\t";
-        production_rate_NUS.NormalizedDomain = NUS_source.NormalizedDomain; 
-        for (int i = 0; i < NUS_source.Slopes.size(); i++) {
-            production_rate_NUS.Slopes[i] *= 1.25 * yield *  NUS_source.Slopes[i]; // (at/m3s)
-            production_rate_NUS.Intercepts[i] *= 1.25 * yield * NUS_source.Intercepts[i]; // (at/m3s)
-        }
+        
+        const auto& source = sourcesinput.at(history_variable["Time step number"].getFinalValue());
+        double factor = 1.25 * yield * alpha;
+
+        // Ensure production_rate_NUS has correct sizes
+        production_rate_NUS.time = source.time;
+        production_rate_NUS.NormalizedDomain = source.NormalizedDomain;
+        production_rate_NUS.Slopes.resize(source.Slopes.size());  
+        production_rate_NUS.Intercepts.resize(source.Intercepts.size());  
+
+        // Scale slopes
+        std::transform(source.Slopes.begin(), source.Slopes.end(), production_rate_NUS.Slopes.begin(),
+                    [factor](double x) { return x * factor; }); //(at/m4.s)
+
+        // Scale intercepts
+        std::transform(source.Intercepts.begin(), source.Intercepts.end(), production_rate_NUS.Intercepts.begin(),
+                    [factor](double x) { return x *factor; }); //(at/m3.s)
+
+        
         break;
     }
 

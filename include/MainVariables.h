@@ -17,6 +17,7 @@
 #ifndef MAIN_VARIABLES_H
 #define MAIN_VARIABLES_H
 
+#include "Source.h"
 #include <vector>
 #include <fstream>
 
@@ -59,5 +60,7 @@ extern std::vector<double> Temperature_input;
 extern std::vector<double> Fissionrate_input;
 extern std::vector<double> Hydrostaticstress_input;
 extern std::vector<double> Steampressure_input;
+extern std::vector<Source> sources_input;
+extern std::vector<Source> sources_interp;
 
 #endif

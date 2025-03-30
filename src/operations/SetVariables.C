@@ -92,4 +92,9 @@ void Simulation::setVariables(
         scaling_factors.push(InputVariable(name, Sciantix_scaling_factors[index]));
         index++;
     }
+
+    // Source
+    sourcesinput = sources_interp; //sourcesinput used in the simulation should be the interpolated sources
+
+
 }

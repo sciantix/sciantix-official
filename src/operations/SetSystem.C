@@ -22,16 +22,16 @@ void Simulation::setSystem()
     switch ((int)input_variable["iFuelMatrix"].getValue())
     {
         case 0:
-            sciantix_system.push(Xe_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Kr_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(He_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Xe133_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Kr85m_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Xe_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors, sourcesinput));
+            sciantix_system.push(Kr_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors, sourcesinput));
+            sciantix_system.push(He_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors, sourcesinput));
+            sciantix_system.push(Xe133_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors, sourcesinput));
+            sciantix_system.push(Kr85m_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors, sourcesinput));
             break;
 
         case 1:
-            sciantix_system.push(Xe_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Xe_in_UO2HBS(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Xe_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors, sourcesinput));
+            sciantix_system.push(Xe_in_UO2HBS(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors, sourcesinput));
             break;
 
         default:
@@ -40,7 +40,7 @@ void Simulation::setSystem()
 }
 
 System Xe_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
-    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors, std::vector<Source> &sourcesinput)
 {
     System system_;
 
@@ -52,7 +52,10 @@ System Xe_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setRadiusInLattice(0.21e-9); // (m), from experimental data, assumed equal for Xe and Kr
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
-    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors); //Uniform Source
+
+    system_.setProductionRateNUS(1, input_variable, sciantix_variable, scaling_factors, history_variable, sourcesinput); // NUS
+    
     system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
@@ -63,7 +66,7 @@ System Xe_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
 }
 
 System Xe_in_UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
-    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors, std::vector<Source> &sourcesinput)
 {
     System system_;
 
@@ -76,6 +79,7 @@ System Xe_in_UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
     system_.setVolumeInLattice(matrices["UO2HBS"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(5, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setProductionRateNUS(5, input_variable, sciantix_variable, scaling_factors, history_variable, sourcesinput); // NUS
     system_.setFissionGasDiffusivity(5, sciantix_variable, history_variable, scaling_factors);
     system_.setBubbleDiffusivity(0, sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(99, sciantix_variable, history_variable, scaling_factors, matrices);
@@ -86,7 +90,7 @@ System Xe_in_UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
 }
 
 System Kr_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
-    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors, std::vector<Source> &sourcesinput)
 {
     System system_;
 
@@ -99,6 +103,7 @@ System Kr_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setProductionRateNUS(1, input_variable, sciantix_variable, scaling_factors, history_variable, sourcesinput);
     system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
@@ -109,7 +114,7 @@ System Kr_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
 }
 
 System He_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
-    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors, std::vector<Source> &sourcesinput)
 {
     System system_;
 
@@ -126,13 +131,14 @@ System He_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
     system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
     system_.setProductionRate(int(input_variable["iHeliumProductionRate"].getValue()), history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setProductionRateNUS(int(input_variable["iHeliumProductionRate"].getValue()), input_variable, sciantix_variable, scaling_factors, history_variable, sourcesinput);
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
 
     return system_;
 }
 
 System Xe133_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
-    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors, std::vector<Source> &sourcesinput)
 {
     System system_;
 
@@ -145,6 +151,7 @@ System Xe133_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setProductionRateNUS(1, input_variable, sciantix_variable, scaling_factors,history_variable, sourcesinput);
     system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
@@ -155,7 +162,7 @@ System Xe133_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
 }
 
 System Kr85m_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
-    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors, std::vector<Source> &sourcesinput)
 {
     System system_;
 
@@ -168,6 +175,7 @@ System Kr85m_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setProductionRateNUS(1, input_variable, sciantix_variable, scaling_factors, history_variable, sourcesinput);
     system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);

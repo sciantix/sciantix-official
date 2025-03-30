@@ -45,12 +45,20 @@ std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int 
  * @brief Prints the interpolated sources for debugging.
  * @param sources A constant reference to the source data to print.
  */
-void printInterpolatedSources(const std::vector<Source> &sources);
+void printSources(const std::vector<Source> &sources);
+
+/**
+ * @brief Prints the interpolated sources for debugging.
+ * @param source A constant reference to the source data to print.
+ */
+void printSource(const Source &source);
+
+
 /**
  * @brief Writes the processed source data to an output file.
  * @param sources A constant reference to the source data to be written.
  */
-void writeToFile(const std::vector<Source> &sources);
+void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRadius);
 /**
  * @brief Retrieves the current value of a source at a given time.
  * @param sources A constant reference to a vector of Source objects.
@@ -58,6 +66,13 @@ void writeToFile(const std::vector<Source> &sources);
  * @return The interpolated source value at the given time.
  */
 
-void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::string &outputFilePath, double scale_factor, double step);
+ void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::string &outputFilePath, double step, double GrainRadius);
+
+/**
+     * @brief Gives the spatial averaged value of the fission rate (Fdot)
+     * @param GrainRadius 
+     * @param source source shape
+     */
+double Source_Volume_Average(double GrainRadius, Source source);
 
 #endif // SOURCEHANDLER_H
