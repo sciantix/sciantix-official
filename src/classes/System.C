@@ -145,82 +145,86 @@ double System::getBubbleDiffusivity()
     return bubble_diffusivity;
 }
 
-void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, 
+    SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
-
-    /**
-     * ### setHeliumDiffusivity
-     * @brief The intra-granular helium diffusivity within the fuel grain is set according to the input_variable iHeDiffusivity
-     *
-     */
+/**
+* ### setHeliumDiffusivity
+* @brief The intra-granular helium diffusivity within the fuel grain is set according to the input_variable iHeDiffusivity
+*/
     switch (input_value)
     {
-    case 0:
-    {
+        case 0:
+        {
         /**
-         * @brief iHeDiffusivity = 0 corresponds to a constant intra-granular diffusivity value
-         *
-         */
-
-        reference += "iHeDiffusivity: constant intragranular diffusivity.\n\t";
-        diffusivity = 7e-19;
+        * @brief iHeDiffusivity = 0 corresponds to a constant intra-granular diffusivity value
+        */
+            reference += "iHeDiffusivity: constant intragranular diffusivity.\n\t";
+            diffusivity = 7e-19;
         break;
-    }
+        }    
 
-    case 1:
-    {
+        case 1:
+        {
         /**
-         * @brief iHeDiffusivity = 1 is the best-estimate correlation, from data available in literature, for samples with no or very limited lattice damage.
-         * This correlation is also recommended for simulations of helium in UO<sub>2</sub> samples in which **infusion** technique has been adopted.
-         * @see The correlation is from <a href="../../references/pdf_link/Luzzi_et_al_2018.pdf" target="_blank">L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271</a>.
-         *
-         */
-
-        reference += "(no or very limited lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.\n\t";
-        diffusivity = 2.0e-10 * exp(-24603.4 / history_variable["Temperature"].getFinalValue());
+        * @brief iHeDiffusivity = 1: Best-estimate correlation for no or very limited lattice damage.
+        * @see L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.
+        */
+            reference += "(no or very limited lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.\n\t";
+            diffusivity = 2.0e-10 * exp(-24603.4 / history_variable["Temperature"].getFinalValue());
         break;
-    }
+        }
 
-    case 2:
-    {
+        case 2:
+        {
         /**
-         * @brief iHeDiffusivity = 2 is the best-estimate correlation, from data available in literature, for samples with significant lattice damage.
-         * This correlation is also recommended for simulations of helium in UO<sub>2</sub> samples in which **implantation** technique has been adopted.
-         * @see The correlation is from <a href="../../references/pdf_link/Luzzi_et_al_2018.pdf" target="_blank">L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271</a>.
-         *
-         */
-
-        reference += "(significant lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.\n\t";
-        diffusivity = 3.3e-10 * exp(-19032.8 / history_variable["Temperature"].getFinalValue());
+        * @brief iHeDiffusivity = 2: Best-estimate correlation for significant lattice damage.
+        * @see L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.
+        */
+            reference += "(significant lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.\n\t";
+            diffusivity = 3.3e-10 * exp(-19032.8 / history_variable["Temperature"].getFinalValue());
         break;
-    }
+        }
 
-    case 3:
-    {
+        case 3:
+        {
         /**
-         * @brief iHeDiffusivity = 2 sets the single gas-atom intra-granular diffusivity equal to the correlation reported in <a href="../../references/pdf_link/Talip_et_al_2014.pdf" target="_blank">Z. Talip et al. JNM 445 (2014) 117-127</a>.
-         *
-         */
-
-        reference += "iHeDiffusivity: Z. Talip et al. JNM 445 (2014) 117-127.\n\t";
-        diffusivity = 1.0e-7 * exp(-30057.9 / history_variable["Temperature"].getFinalValue());
+        * @brief iHeDiffusivity = 3: Correlation from Z. Talip et al., JNM 445 (2014) 117-127.
+        */
+            reference += "iHeDiffusivity: Z. Talip et al. JNM 445 (2014) 117-127.\n\t";
+            diffusivity = 1.0e-7 * exp(-30057.9 / history_variable["Temperature"].getFinalValue());
         break;
-    }
+        }
 
-    case 99:
-    {
+        case 4:
+        {
         /**
-         * @brief iHeDiffusivity = 4 corresponds to a null intra-granular diffusivity value
-         *
-         */
+        * @brief iHeDiffusivity = 4: Correlation from Z. Talip et al., JNM 445 (2014) 117-127, 
+        * including an additional term due to oxygen vacancy.
+        */
+            double x = sciantix_variable["Stoichiometry deviation"].getFinalValue();
+            double D_0 = 1e-4 * exp(-29708.7 / history_variable["Temperature"].getFinalValue()); 
 
-        reference += "iHeDiffusivity: null intragranular diffusivity.\n\t";
-        diffusivity = 0.0;
+            if (x < 0) {
+                diffusivity = D_0 + 6.4e-7 * abd(x) * exp(-6266.7 / history_variable["Temperature"].getFinalValue());
+            } else {
+                diffusivity = D_0 + 1.3e-7 * abs(x) * exp(-6266.7 / history_variable["Temperature"].getFinalValue());
+            }
         break;
-    }
+        }
 
-    default:
-        ErrorMessages::Switch(__FILE__, "iHeDiffusivity", input_value);
+        case 99:
+        {
+        /**
+        * @brief iHeDiffusivity = 99: Null intra-granular diffusivity.
+        */
+            reference += "iHeDiffusivity: null intragranular diffusivity.\n\t";
+            diffusivity = 0.0;
+        break;
+        }
+            
+        default:
+            ErrorMessages::Switch(__FILE__, "iHeDiffusivity", input_value);
         break;
     }
 
@@ -229,9 +233,10 @@ void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariabl
 
 double System::getHeliumDiffusivity()
 {
-    /// Member function to get the bubble diffusivity of the isotope in the fuel matrix
-    return diffusivity;
+/// @brief Member function to get the bubble diffusivity of the isotope in the fuel matrix.
+return diffusivity;
 }
+
 
 void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVariable> &sciantix_variable,
     SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)

@@ -121,7 +121,7 @@ System He_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setYield(0.0022); // from ternary fissions
     system_.setRadiusInLattice(4.73e-11);
     system_.setVolumeInLattice(matrices["UO2"].getOctahedralInterstitialSite());
-    system_.setHeliumDiffusivity(int(input_variable["iHeDiffusivity"].getValue()), history_variable, scaling_factors);
+    system_.setHeliumDiffusivity(int(input_variable["iHeDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
     system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
     system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);

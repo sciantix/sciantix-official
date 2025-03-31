@@ -145,12 +145,14 @@ public:
      */
     double getBubbleDiffusivity();
 
+    void setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+
     /**
      * @brief Sets the helium diffusivity within the matrix based on the selected model.
      * The intra-granular helium diffusivity within the fuel grain is set according to the input_variable iHeDiffusivity
      * @param input_value The model selection index for helium diffusivity.
      */
-    void setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+    void setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
 
     /**
      * @brief Retrieves the helium diffusivity within the matrix.
