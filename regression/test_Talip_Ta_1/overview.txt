@@ -1,0 +1,55 @@
+Model	Burnup	: The local burnup is calculated from the fission rate density.
+Model	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
+Model	UO2 thermochemistry	 : Blackburn (1973) J. Nucl. Mater., 46, 244-252.
+Model	Stoichiometry deviation	 : Carter and Lay, J. Nucl. Mater., 36:77-86, Cox et al. NUREG/CP-0078 (1986), U.S. NRC.
+Model	Grain growth	Van Uffelen et al. JNM, 434 (2013) 287–29.
+Model	Grain-boundary sweeping	: TRANSURANUS model
+Model	Gas production - Xe in UO2	 
+Model	Gas production - Kr in UO2	 
+Model	Gas production - He in UO2	 
+Model	Gas production - Xe133 in UO2	 
+Model	Gas production - Kr85m in UO2	 
+Model	Intragranular bubble behavior	Case specific for annealing experiments and helium intragranular behaviour.
+Model	Gas diffusion - Xe in UO2	
+Model	Gas diffusion - Kr in UO2	
+Model	Gas diffusion - He in UO2	
+Model	Gas diffusion - Xe133 in UO2	
+Model	Gas diffusion - Kr85m in UO2	
+Model	Grain-boundary venting	Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE
+Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
+
+Matrix	UO2	
+	Van Uffelen et al. JNM, 434 (2013) 287-29.
+	iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.
+	
+
+System	Xe in UO2	
+System	Kr in UO2	
+System	He in UO2	
+System	Xe133 in UO2	
+System	Kr85m in UO2	
+
+Input setting	iGrainGrowth = 2
+Input setting	iFissionGasDiffusivity = 1
+Input setting	iDiffusionSolver = 2
+Input setting	iIntraGranularBubbleBehavior = 3
+Input setting	iResolutionRate = 3
+Input setting	iTrappingRate = 1
+Input setting	iNucleationRate = 1
+Input setting	iOutput = 1
+Input setting	iGrainBoundaryVacancyDiffusivity = 1
+Input setting	iGrainBoundaryBehaviour = 1
+Input setting	iGrainBoundaryMicroCracking = 0
+Input setting	iFuelMatrix = 0
+Input setting	iGrainBoundaryVenting = 1
+Input setting	iRadioactiveFissionGas = 0
+Input setting	iHelium = 1
+Input setting	iHeDiffusivity = 2
+Input setting	iGrainBoundarySweeping = 1
+Input setting	iHighBurnupStructureFormation = 0
+Input setting	iHighBurnupStructurePorosity = 0
+Input setting	iHeliumProductionRate = 0
+Input setting	iStoichiometryDeviation = 1
+Input setting	iBubbleDiffusivity = 1
+Input setting	iChromiumSolubility = 0
+

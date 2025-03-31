@@ -14,9 +14,9 @@
 #	initial fuel effective burn-up (MWd/kgUO2)
 0.0
 #	initial irradiation time (h)
-10311.8
+10970.0
 #	initial fuel density (kg/m3)
-0.0	1.0	0.0	0.0	99.0
+0.0055	0.7323	0.0	0.0	99.262
 #	initial U234 U235 U236 U237 U238 (% of heavy atoms) content
 0.0	0.0	0.0	0.0	0.0	0.0 0.0
 #	initial Xe133 (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
