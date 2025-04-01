@@ -1,0 +1,341 @@
+
+new Y
+
+@$ ==========================================================
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$ step1.OCM
+@$ Calculating property diagrams for a High Speed Steel (HSS)
+@$ ==========================================================
+@$
+@&
+
+set echo
+
+r t ./steel1
+
+set c t=1200 p=1e5 n=1 w(c)=.009 w(cr)=.045, w(mo)=.1,w(si)=.001 w(v)=.009
+
+@$ Enter a composition set for the MC carbide (FCC)
+@$ This is convenient to specify an additional pre/suffix 
+amend phase fcc comp_set y
+MC
+
+NONE
+<.1
+NONE
+<.1
+NONE
+>.5
+<.2
+
+@$ Set the default constitution for the FCC to be austenite
+amend phase fcc default
+<.2
+NONE
+<.2
+<.1
+<.2
+<.2
+>.5
+
+@$ Enter a composition set for the M2C carbide (HCP)
+amend phase hcp comp_set y M2C ,
+NONE
+NONE
+NONE
+NONE
+NONE
+>.5
+<.2
+
+@$ We will later plot the heat capacity, enter this as a
+@$ "dot derivative"
+ent sym cp=hm.t;
+
+@&
+@$--------------------------------------------------------
+
+c e
+
+l r 1
+
+@$ Note that there are two FCC phases and the second, 
+@$ with prefix MC, is a cubic carbide with mainly VC
+@&
+@$--------------------------------------------------------------
+
+l r 4
+
+@$ list the results using mass fractions
+@&
+@$ The next command will make several additional equilibrium
+@$ calculation and with +/-5% variation of the contitiona
+@$ to give an estimate the uncertainties of the result
+
+l est-acc
+
+@$ First a list of phases which are close to beoome stebl
+@$ The a list of phases if the condition is changed
+@$ Then a list of the variation of chemical potentials/RT
+@$ and the max/min values of the Gibbs energy and entropy
+@$ Finall the min/max values of the amount of each phase.
+@$ A negative value means the phase may not be stable
+
+@&
+
+@$ Now we calculate how the system changes with T
+
+set axis 1 T 800 1800 10
+
+l ax
+
+@&
+
+step
+
+
+
+
+@$ The step command indicates whenever there is a phase change
+@&
+@$---------------------------------------------------------
+
+l line
+
+@$ Listing of all equilibria calculated by step
+@&
+
+l eq
+
+@$ list of all node points with phase changes
+@&
+@$ Plot the phase amounts
+plot
+T
+NP(*)
+title
+step 1 fig 1
+render
+
+
+@&
+@$ move the line identification (keys) outside the plot
+plot
+
+
+?
+position outside right
+
+text
+1200 0.6 2 0 High Speed Steel
+title step 1 fig 2
+@$ Change the font!
+font
+garamond
+16
+@$ Add symbols on lines, 1o means a symbol plotted at every 9th calculation
+extra line
+10
+render
+
+
+@&
+@$ Plot the Cr content in all stable phases
+plot
+T
+w(*,cr)
+title step 1 fig 3
+@$ restore font to default
+font
+arial
+16
+render
+
+@&
+@$ Plot the fractions in the MC_FCC phase
+@$ NOTE fractions plotted only in the stable range!!!
+plot
+T
+w(mc_fcc,*)
+text 1000 0.2 1 0
+Plotted only in stable range of the MC carbide
+title step 1 fig 4
+render
+
+
+@$ Fractions plotted only in the stable range of the MC carbide
+@&
+
+@$ Plot the fractions in the BCC phase
+plot
+T
+w(bcc,*)
+text 1000 0.4 1 0
+Plotted in stable ranges of the bcc phase only
+pos left
+
+title step 1 fig 5
+render
+
+@$ NOTE fractions plotted only in the stable range!!!
+@$ I will try to add the composition as dashed i metastable range
+@&
+@$ Plot the enthalpy variation
+plot
+T
+H
+title step 1 fig 6
+render
+
+
+@&
+@$ Plot the heat capacity
+@$ There is a problem with the heat capacity calculation
+@$ when there is a phase chage.
+plot
+T
+cp
+title step 1 fig 7
+render
+
+@&
+@$ scaling of y axis and setting larger axis text
+plot
+T
+cp
+axis
+y
+Heat capacity J/mol/K
+scale
+y
+N
+0
+300
+title step 1 fig 8
+
+
+
+@$ The plotted cp include latent heat
+@&
+@$ Plotting as PDF or PNG can be done in the gnuplot window
+@$ The list the available graphic devices are redundant
+@$
+@$ enter gnu
+@$
+@$ Finally plot the driving force of all phases.  Stable phases has
+@$ driving force zero, those closest to become stable are close to zero
+
+plot
+
+dgm(#)
+title step 1 fig 9
+
+
+
+@&
+
+plot
+
+
+title step1 fig 10
+scale y n
+-0.3
+0
+
+set inter
+
+
+@$ This is clearly too many phases, only a few are interesting
+@$ However, to select them we have to recalculate the step with just the phases
+@$ we think are interesting, the other set as suspended.
+@$ That means more or less all phases except the different carbides
+@$ and maybe some intermetallic phases.
+
+set stat ph *=sus
+
+set stat ph liq fcc bcc hcp m23c6 m7c3 m6c ksi m3c2 m5c2 mc_eta mc_shp=e 0
+
+@$ Note that FCC is the austenite and FCC#2 is the MC cubic carbide.
+@$ HCP is the M2C hexagonal carbide.
+
+@&
+
+l c
+
+c e
+
+l,,,,
+
+
+
+@&
+
+step
+
+
+
+@&
+
+plot
+
+dgm(#)
+@$ Move the position of the line keys to bottom left
+position
+bottom left
+12
+@$ Add symbols on the lines to make them easier to identify
+extra line 10
+title step 1 fig 11
+
+
+
+@$ There are some irregularites for the FCC phase at high T
+@$ as it switches between metallic austenite and cubic carbide phase
+
+@&
+@$ Scale up to see those closest to be stable
+
+
+plot
+
+
+scale
+Y
+N
+-0.2
+0
+title step 1 fig 12
+
+@$ Note the DGM of the BCC phase, it is stable at high T
+@$ and comes back at low T
+
+@&
+@$ We still have the same set of stable phases
+
+plot
+
+np(*)
+title step 1 fig 13
+
+
+
+
+set inter
+

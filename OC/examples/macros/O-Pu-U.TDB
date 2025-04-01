@@ -1,0 +1,682 @@
+$ Database extracted from USER_14798975_12 2021-10-28 13:16
+
+ ELEMENT /-   ELECTRON_GAS              0.0000E+00   0.0000E+00   0.0000E+00 !
+ ELEMENT VA   VACUUM                    0.0000E+00   0.0000E+00   0.0000E+00 !
+ ELEMENT O    GAS_1/2_MOLE_O2           1.5999E+01   4.3410E+03   1.0252E+02 !
+ ELEMENT PU   SIMPLE_MONOCLINIC         2.4406E+02   6.9020E+03   5.4461E+01 !
+ ELEMENT U    ORTHORHOMBIC_A20          2.3803E+02   6.3640E+03   5.0200E+01 !
+
+ SPECIES O-2                            O1/-2 !
+ SPECIES O2                             O2 !
+ SPECIES O2-2                           O2/-2 !
+ SPECIES O3                             O3 !
+ SPECIES PU+3                           PU1/+3 !
+ SPECIES PU+4                           PU1/+4 !
+ SPECIES PUO                            O1PU1 !
+ SPECIES PUO2                           O2PU1 !
+ SPECIES U+3                            U1/+3 !
+ SPECIES U+4                            U1/+4 !
+ SPECIES U+5                            U1/+5 !
+ SPECIES U+6                            U1/+6 !
+ SPECIES UO                             O1U1 !
+ SPECIES UO2                            O2U1 !
+ SPECIES UO3                            O3U1 !
+
+ DEFINE_SYSTEM_DEFAULT ELEMENT 2 !
+
+ DEFAULT_COMMAND  RESTORE_PHASE GAS !
+ DEFAULT_COMMAND  DEFINE_SYSTEM_ELEMENT VA /- !
+
+ TYPE_DEF % SEQ * !
+ TYPE_DEF ' GES A_P_D @ MAGNETIC -1.0 4.00000E-01 !
+ TYPE_DEF * GES A_P_D @ MAGNETIC -3.0 2.80000E-01 !
+ TYPE_DEF + GES A_P_D HCP_A3 MAGNETIC -3.0 2.80000E-01 !
+
+ FUNCTION G3OO                 298.15 +G3OV#+GHSEROO#;         6000 N !
+ FUNCTION G3OV                 298.15 +G4OV#-G4VV#+G3VV#;      6000 N !
+ FUNCTION G3VV                 298.15 +GUO15#-1.5*GHSEROO#
+     +1.12467*R#*T;                                            6000 N !
+ FUNCTION G4OO                 298.15 +G4OV#+GHSEROO#;         6000 N !
+ FUNCTION G4OV                 298.15 +GUO2S#;                 6000 N !
+ FUNCTION G4VV                 298.15 +G4OV#-2*GHSEROO#+545210.5; 6000 N !
+ FUNCTION G5OO                 298.15 +G5OV#+GHSEROO#;         6000 N !
+ FUNCTION G5OV                 298.15 +GUO25#-0.5*GHSEROO#
+     +0.69315*R#*T;                                            6000 N !
+ FUNCTION G5VV                 298.15 +G5OV#-2*GHSEROO#+700000; 6000 N !
+ FUNCTION GASU                 298.15 +523164.925+13.603288*T
+     -32.513*T*LN(T)+0.01126565*T**2-2.43328E-6*T**3+151130*T**-1; 900 Y
+     +541065.13-173.693179*T-5.336*T*LN(T)-0.00723615*T**2-4.306E-8*T**3
+     -2072960*T**-1;                                           2100 Y
+     +605452.662-512.542339*T+38.748*T*LN(T)-0.0208079*T**2+7.5045E-7*T**3
+     -1.9886375E7*T**-1;                                       4500 Y
+     -41328.1657+1300.29089*T-176.856*T*LN(T)+0.0113664*T**2
+     -1.56178333E-7*T**3+3.4654725E8*T**-1;                    9200 Y
+     +410972.67+537.324611*T-92.012*T*LN(T)+0.0043702*T**2
+     -4.90033333E-8*T**3-9.957285E7*T**-1;                     9200.01 N !
+ FUNCTION GBCCPU               298.15 -1358.984+116.603882*T
+     -27.094*T*LN(T)-0.009105*T**2+2.061667E-6*T**3+20863*T**-1; 745 Y
+     -2890.817+156.878957*T-33.72*T*LN(T);                     956 Y
+     +29313.619-132.788248*T+6.921*T*LN(T)-0.02023305*T**2
+     +1.426922E-6*T**3-4469245*T**-1;                          2071 Y
+     -15400.585+227.42186*T-42.248*T*LN(T);                    6000 N 91Din !
+ FUNCTION GBCCUU               298.15 -752.767+131.5381*T-27.5152*T*LN(T)
+     -0.00835595*T**2+9.67907E-7*T**3+204611*T**-1;            1049 Y
+     -4698.365+202.685635*T-38.2836*T*LN(T);                   6000 N 91Din !
+ FUNCTION GFCCPU               298.15 -3920.781+127.586536*T
+     -28.4781*T*LN(T)-0.0054035*T**2;                          990 Y
+     +3528.208+41.52572*T-15.7351*T*LN(T)-0.0154772*T**2+1.524942E-6*T**3
+     -864940*T**-1;                                            1464 Y
+     -12865.948+226.18075*T-42.248*T*LN(T);                    6000 N 91Din !
+ FUNCTION GFCCUU               298.15 -3407.734+130.955151*T
+     -26.9182*T*LN(T)+0.00125156*T**2-4.42605E-6*T**3+38568*T**-1; 955 Y
+     -17521.8+292.121093*T-48.66*T*LN(T);                      6000 N 91Din !
+ FUNCTION GHCPUU               298.15 +GBCCUU#+5000;           6000 N PURE4 !
+ FUNCTION GHSEROO              298.15 -3480.87-25.503038*T-11.136*T*LN(T)
+     -0.005098888*T**2+6.61846E-7*T**3-38365*T**-1;            1000 Y
+     -6568.763+12.65988*T-16.8138*T*LN(T)-5.95798E-4*T**2+6.781E-9*T**3
+     +262905*T**-1;                                            3300 Y
+     -13986.728+31.259625*T-18.9536*T*LN(T)-4.25243E-4*T**2+1.0721E-8*T**3
+     +4383200*T**-1;                                           6000 N !
+ FUNCTION GHSERPU              298.15 -7396.309+80.301382*T
+     -18.1258*T*LN(T)-0.02241*T**2;                            400 Y
+     -16605.962+236.786603*T-42.4187*T*LN(T)-0.00134493*T**2
+     +2.63443E-7*T**3+579325*T**-1;                            944 Y
+     -14462.156+232.961553*T-42.248*T*LN(T);                   6000 N !
+ FUNCTION GHSERUU              298.15 -8407.734+130.955151*T
+     -26.9182*T*LN(T)+0.00125156*T**2-4.42605E-6*T**3+38568*T**-1; 955 Y
+     -22521.8+292.121093*T-48.66*T*LN(T);                      6000 N !
+ FUNCTION GLIQPU               298.15 +6608.1-12.5133*T
+     +GHSERPU#;                                                6000 N 91Din !
+ FUNCTION GLIQUU               298.15 +3947.766+120.631251*T
+     -26.9182*T*LN(T)+0.00125156*T**2-4.42605E-6*T**3+38568*T**-1; 955 Y
+     -10166.3+281.797193*T-48.66*T*LN(T);                      6000 N !
+ FUNCTION GPU2O3S              298.15 -1658471.4251-295.555729189*T
+     +38.63916*T*LN(T)-0.2750007*T**2+7.79827167E-5*T**3
+     -1479357.5*T**-1;                                         400 Y
+     -1702523.7151+677.000903811*T-122.9535*T*LN(T)-0.014273645*T**2
+     -3.27260333E-11*T**3+750595*T**-1;                        2358 Y
+     -1804198.0551+1284.907269811*T-200*T*LN(T)+4.1974775E-16*T**2
+     -1.3924665E-20*T**3+2.016497E-6*T**-1;                    6000 N 11GUE !
+ FUNCTION GPU3V                298.15 +GPUO15#-1.5*GHSEROO#
+     +1.12467*R#*T;                                            6000 N !
+ FUNCTION GPUO15               298.15 +0.5*GPU2O3S#+3817.7;    6000 N 11GUE !
+ FUNCTION GPUO2                298.15 -1099562.8+505.428856*T
+     -83.31922*T*LN(T)-0.00584178*T**2-2.29241167E-11*T**3
+     +913506*T**-1;                                            6000 N 11GUE !
+ FUNCTION GTETUU               298.15 -5156.136+106.976316*T
+     -22.841*T*LN(T)-0.01084475*T**2+2.7889E-8*T**3+81944*T**-1; 941.5 Y
+     -14327.309+244.16802*T-42.9278*T*LN(T);                   6000 N 91Din !
+ FUNCTION GU3O8                298.15 -3674804.49+1600.50059*T
+     -276.747749*T*LN(T)-0.0136644165*T**2+2036667.44*T**-1;   6000 N !
+ FUNCTION GU4O9S1              298.15 -4621329.3+1786.83274*T
+     -311.20912*T*LN(T)-0.0311301013*T**2+1741269.49*T**-1;    6000 N !
+ FUNCTION GU4O9S3              298.15 +GU4O9S1#+2684.25-7.5602*T; 6000 N !
+ FUNCTION GUO15                298.15 +GUO2S#-0.5*GHSEROO#+747127
+     -70.22618*T;                                              6000 N !
+ FUNCTION GUO25                298.15 +GUO2S#+0.5*GHSEROO#-58351.62
+     +39.67611*T;                                              6000 N !
+ FUNCTION GUO2L                298.15 +LOWLIQ#; 2600 Y O2ULIQ#; 6000 N 11GUE !
+ FUNCTION GUO2POT              298.15 -359898+56.43*T+0.33333*GHSERUU#
+     +0.66667*GHSEROO#;                                        6000 N COU !
+ FUNCTION GUO2S                298.15 -1118940.2+554.00559*T
+     -93.268*T*LN(T)+0.0101704254*T**2-2.03335671E-6*T**3
+     +1091073.7*T**-1;                                         6000 N !
+ FUNCTION LOWLIQ               298.15 G4OV#+79775-25.0114*T
+     -2.62269566E-21*T**7;                                     6000 N 11GUE !
+ FUNCTION O2GAS                298.15 -6960.69252-51.1831473*T
+     -22.25862*T*LN(T)-0.01023867*T**2+1.339947E-6*T**3
+     -76749.55*T**-1;                                          900 Y
+     -13136.0172+24.743296*T-33.55726*T*LN(T)-0.0012348985*T**2
+     +1.66943333E-8*T**3+539886*T**-1;                         3700 Y
+     +14154.6461-51.4854586*T-24.47978*T*LN(T)-0.002634759*T**2
+     +6.01544333E-8*T**3-1.5120935E7*T**-1;                    9600 Y
+     -314316.628+515.068037*T-87.56143*T*LN(T)+0.0025787245*T**2
+     -1.878765E-8*T**3+2.9052515E8*T**-1;                      18500 Y
+     -108797.175+288.483019*T-63.737*T*LN(T)+0.0014375*T**2-9.0E-9*T**3
+     +0.25153895*T**-1;                                        18500.01 N !
+ FUNCTION O2ULIQ               298.15 -1590418+3618.8*T-480*T*LN(T)
+     +0.07*T**2-1.0E-6*T**3;                                   6000 N 11GUE !
+ FUNCTION O3GAS                298.15 +130696.944-37.9096651*T
+     -27.58118*T*LN(T)-0.02763076*T**2+4.60539333E-6*T**3
+     +99530.45*T**-1;                                          400 Y
+     +114760.623+176.626736*T-60.10286*T*LN(T)+0.00206456*T**2
+     -5.17486667E-7*T**3+1572175*T**-1;                        1300 Y
+     +49468.3958+710.094819*T-134.3696*T*LN(T)+0.039707355*T**2
+     -4.10457667E-6*T**3+1.236225E7*T**-1;                     2100 Y
+     +866367.075-3566.80563*T+421.2001*T*LN(T)-0.1284109*T**2
+     +5.44768833E-6*T**3-2.1304835E8*T**-1;                    2800 Y
+     +409416.384-1950.70834*T+223.4437*T*LN(T)-0.0922361*T**2
+     +4.306855E-6*T**3-2.158987E7*T**-1;                       3500 Y
+     -1866338.6+6101.13383*T-764.8435*T*LN(T)+0.09852775*T**2
+     -2.59784667E-6*T**3+9.610855E8*T**-1;                     4900 Y
+     +97590.0432+890.79836*T-149.9608*T*LN(T)+0.01283575*T**2
+     -3.555105E-7*T**3-2.1699975E8*T**-1;                      6000 N !
+ FUNCTION OGAS                 298.15 +243206.494-20.8612587*T
+     -21.01555*T*LN(T)+1.2687055E-4*T**2-1.23131283E-8*T**3
+     -42897.09*T**-1;                                          2950 Y
+     +252301.423-52.0847285*T-17.21188*T*LN(T)-5.413565E-4*T**2
+     +7.64520667E-9*T**3-3973170.5*T**-1;                      6000 N !
+ FUNCTION PUGAS                298.15 +342384.474-43.117293*T
+     -20.30369*T*LN(T)+0.004361944*T**2-4.196665E-6*T**3
+     -40656.38*T**-1;                                          500 Y
+     +348176.952-149.678011*T-3.216571*T*LN(T)-0.017818755*T**2
+     +1.14424717E-6*T**3-405372.75*T**-1;                      1000 Y
+     +358979.665-233.202672*T+8.216251*T*LN(T)-0.0225555*T**2
+     +1.4126845E-6*T**3-2190253.5*T**-1;                       2000 Y
+     +251181.98+397.043295*T-75.00843*T*LN(T)+0.00595168*T**2
+     -4.15198333E-7*T**3+2.3940665E7*T**-1;                    3200 Y
+     +538268.521-759.796803*T+69.56718*T*LN(T)-0.026257465*T**2
+     +9.247795E-7*T**3-8.237845E7*T**-1;                       4700 Y
+     -455390.692+1948.02049*T-251.164*T*LN(T)+0.01987852*T**2
+     -3.22796833E-7*T**3+4.9645555E8*T**-1;                    7600 Y
+     +430311.346+352.921981*T-72.15296*T*LN(T)+0.0037501715*T**2
+     -4.95895E-8*T**3-3.278732E8*T**-1;                        7600.01 N !
+ FUNCTION PUO2GAS              298.15 -433949.625247104+191.117833941062*T
+     -70.29021*T*LN(T)+0.006730005*T**2-1.51097966666667E-6*T**3
+     +1.16953916666667E-10*T**4+240537.3*T**-1;                1500 Y
+     -418186.792130849+47.3497490972286*T-49.85911*T*LN(T)-0.00573298*T**2
+     +2.45380166666667E-7*T**3+7.12978916666666E-13*T**4
+     -2060372.5*T**-1;                                         6000 N !
+ FUNCTION PUOGAS               298.15 -61250.7813137375-67.753724722626*T
+     -25.39529*T*LN(T)-0.027128*T**2+6.04248333333333E-6*T**3
+     -5.39170833333333E-10*T**4-18606.35*T**-1;                1200 Y
+     -92998.0639120041+291.250331838687*T-78.23663*T*LN(T)+0.01368435*T**2
+     -1.12984333333333E-6*T**3+3.67271666666667E-11*T**4
+     +3522860*T**-1;                                           6000 N !
+ FUNCTION RTLNP                298.15 +R#*T*LN(1.0E-5*P);      6000 N !
+ FUNCTION UO2GAS               298.15 -477055.31336+30.72281*T
+     -44.35744*T*LN(T)-0.018817925*T**2+3.859271667E-6*T**3
+     -4.58556667E-10*T**4+37425.465*T**-1;                     1500 Y
+     -483042.47900423+128.845815908842*T-59.57586*T*LN(T)-0.0026962*T**2
+     -1.57719683E-8*T**3+8.572691667E-12*T**4+315972.55*T**-1; 6000 N !
+ FUNCTION UO3GAS               298.15 -813296.059+27.96369718*T
+     -46.69199*T*LN(T)-0.047347135*T**2+1.58195016666667E-5*T**3
+     -2.84654166666667E-9*T**4+139692.15*T**-1;                900 Y
+     -827058.82646+248.93278318*T-81.70962*T*LN(T)-0.001004739*T**2
+     +1.8508416667E-7*T**3-1.8022825E-11*T**4+1290177.5*T**-1; 6000 N !
+ FUNCTION UOGAS                298.15 7058.467+16.66929*T-38.48092*T*LN(T)
+     -0.01650935*T**2+6.741983333E-6*T**3-1.22913333E-9*T**4
+     +257767*T**-1;                                            1300 Y
+     10617.823+76.40548083*T-50.04939*T*LN(T)+0.0090553*T**2
+     -2.0628666E-6*T**3+1.42865E-10*T**4-1254735*T**-1;        6000 N !
+
+
+ PHASE ALPHA_PU %         1 1  !
+ CONST ALPHA_PU           : PU : !
+
+
+ PHASE BCC_A2   %'        2 1 3 > g-U, e-Pu, g-Am, g-Np, W, Cr, a-Fe.
+ Becomes a set of BCC_B2 if defined !
+ CONST BCC_A2             : PU% U VA : O VA% : !
+
+
+ PHASE BETA_PU  %         1 1  !
+ CONST BETA_PU            : PU U : !
+
+
+ PHASE C1_MO2:I %         3 1 2 1 > ZrO2 PuO2 UO2 !
+ CONST C1_MO2:I           : PU+3 PU+4% U+3 U+4% U+5 : O-2% VA : O-2 VA% : !
+
+
+ PHASE DELTA_NPU %        1 1 intermediate phase in Np-U !
+ CONST DELTA_NPU          : U : !
+
+
+ PHASE DHCP     %         2 1 0.5 > alpha-Am, alpha-La, alpha-Nd !
+ CONST DHCP               : PU : O VA : !
+
+
+ PHASE DIAMOND_A4 %       1 1 > Si !
+ CONST DIAMOND_A4         : O : !
+
+
+ PHASE ETA_PHASE %        1 1 > stable in Pu-U, Np-Pu !
+ CONST ETA_PHASE          : PU U : !
+
+
+ PHASE FCC_A1   %*        2 1 1 > d_Pu, b-Am, g-Fe, Ni, also MC. Becomes a
+ set of FCC_ORD if it is defined !
+ CONST FCC_A1             : PU U : O VA : !
+
+
+ PHASE GAMMA_PU %         1 1  !
+ CONST GAMMA_PU           : PU : !
+
+
+ PHASE GAS:G    %         1 1  !
+ CONST GAS:G              : O O2 O3 PU PUO PUO2 U UO UO2 UO3 : !
+
+
+ PHASE HCP_A3   %+        2 1 0.5 > a-Ti, a-Zr, Re, Ru, also (Mo,W)2C !
+ CONST HCP_A3             : PU U : O VA : !
+
+
+ PHASE LIQUID:Y %         2 1 1  !
+ CONST LIQUID:Y           : PU+3 U+4 : O-2 VA O PUO2 : !
+
+
+ PHASE ORTHORHOMBIC_A20 % 1 1 > alpha-U !
+ CONST ORTHORHOMBIC_A20   : PU U% : !
+
+
+ PHASE ORTHO_AC %         1 1 > alpha-Np !
+ CONST ORTHO_AC           : PU U : !
+
+
+ PHASE PU2O3    %         2 2 3 > Pu2O3 Am2O3 !
+ CONST PU2O3              : PU : O : !
+
+
+ PHASE PUO152   %         2 1 1.52  !
+ CONST PUO152             : PU : O : !
+
+
+ PHASE PUO161   %         3 2 3 1 > prototype Mn2O3 !
+ CONST PUO161             : PU+3 PU+4 : O-2 : O-2 VA : !
+
+
+ PHASE TETA     %         2 6 1  !
+ CONST TETA               : PU : PU : !
+
+
+ PHASE TETRAGONAL_A6 %    1 1 > delta prime Pu !
+ CONST TETRAGONAL_A6      : PU : !
+
+
+ PHASE TETRAGONAL_U %     1 1 > beta-U !
+ CONST TETRAGONAL_U       : PU U% : !
+
+
+ PHASE TETRAG_AD %        1 1 > beta-Np !
+ CONST TETRAG_AD          : PU U : !
+
+
+ PHASE U3O8_S1  %         2 8 3  !
+ CONST U3O8_S1            : O : U : !
+
+
+ PHASE U3O8_S2  %         2 8 3  !
+ CONST U3O8_S2            : O : U : !
+
+
+ PHASE U3O8_S3  %         2 8 3  !
+ CONST U3O8_S3            : O : U : !
+
+
+ PHASE U3O8_S4  %         2 8 3  !
+ CONST U3O8_S4            : O : U : !
+
+
+ PHASE U4O9_S1  %         2 9 4  !
+ CONST U4O9_S1            : O : U : !
+
+
+ PHASE U4O9_S2  %         2 9 4  !
+ CONST U4O9_S2            : O : U : !
+
+
+ PHASE U4O9_S3:I %        2 9 4  !
+ CONST U4O9_S3:I          : O-2 : U+4 U+5 : !
+
+
+ PHASE UC2_C11A %         2 1 2  !
+ CONST UC2_C11A           : U : O VA : !
+
+
+ PHASE UO3      %         2 3 1  !
+ CONST UO3                : O : U : !
+
+
+ PHASE UZR_DELTA %        2 1 2 > UZr2, NpZr2, TiU2 !
+ CONST UZR_DELTA          : U : U : !
+
+
+ PHASE ZETA_PHASE %       1 1 > low temperature intermediate phase in Pu-U !
+ CONST ZETA_PHASE         : PU U : !
+
+
+ PHASE ZRO2_TETR:I %      2 1 2  !
+ CONST ZRO2_TETR:I        : U+4 : O-2 : !
+
+
+
+$ ========
+ PARAM G(BCC_A2,VA:VA;0)       298.15 +0.1*T;                  6000 N 20LK11 !
+
+
+$ ==== [O] ====
+ PARAM G(BCC_A2,VA:O;0)        298.15 +3*GHSEROO#+1000000;     6000 N 20LK11 !
+
+ PARAM G(DIAMOND_A4,O;0)       298.15 +GHSEROO#+30000;         6000 N 92HAL1 !
+
+ PARAM G(GAS,O2;0)             298.15 +O2GAS#+RTLNP#;          6000 N O2Gas !
+ PARAM G(GAS,O3;0)             298.15 +O3GAS#+RTLNP#;          6000 N O3Gas !
+ PARAM G(GAS,O;0)              298.15 +OGAS#+RTLNP#;           6000 N OGas !
+
+ PARAM G(LIQUID,O;0)           298.15 +GHSEROO#-2648.9+31.44*T; 6000 N 91Din !
+
+
+$ ==== [Pu] ====
+ PARAM G(ALPHA_PU,PU;0)        298.15 +GHSERPU#;               6000 N 91Din !
+
+ PARAM G(BCC_A2,PU:VA;0)       298.15 GBCCPU#;                 6000 N 91Din !
+ PARAM L(BCC_A2,PU,VA:VA;0)    298.15 +200000;                 6000 N 20LK11 !
+
+ PARAM G(BETA_PU,PU;0)         298.15 -4873.654+123.249151*T
+     -27.416*T*LN(T)-0.00653*T**2;                             679.5 Y
+     +2435.094+43.566585*T-15.7351*T*LN(T)-0.0154772*T**2+1.524942E-6*T**3
+     -864940*T**-1;                                            1464 Y
+  -13959.062+228.22162*T-42.248*T*LN(T);                    6000 N 91Din !
+
+ PARAM G(C1_MO2,PU+3:VA:VA;0)  298.15 +GPU3V#;                 6000 N 11GUE !
+ PARAM G(C1_MO2,PU+4:VA:VA;0)  298.15 +GPUO2#-2*GHSEROO#;      6000 N 11GUE !
+ PARAM L(C1_MO2,PU+3,PU+4:VA:VA;0) 298.15 9781.91663
+     +3.06205226*T;                                            6000 N 11GUE !
+ PARAM L(C1_MO2,PU+3,PU+4:VA:VA;1) 298.15 -17507.4723
+     +5.46572624*T;                                            6000 N 11GUE !
+
+ PARAM G(DHCP,PU:VA;0)         298.15 +6000+GHSERPU#;          6000 N AmPu !
+
+ PARAM G(ETA_PHASE,PU;0)       298.15 GBCCPU#-2760+4*T;        6000 N NpPu !
+
+ PARAM G(FCC_A1,PU:VA;0)       298.15 GFCCPU#;                 6000 N 91Din !
+
+ PARAM G(GAMMA_PU,PU;0)        298.15 -16766.303+419.402655*T
+     -77.5802*T*LN(T)+0.0816415*T**2-2.8103833E-5*T**3
+     +574825*T**-1;                                            487.9 Y
+     -2942.77+88.325069*T-22.0233*T*LN(T)-0.0114795*T**2;      593.9 Y
+     -9336.967+160.314641*T-32.3405*T*LN(T)-0.0070383*T**2+6.92887E-7*T**3
+     +630600*T**-1;                                            1179 Y
+     -12435.75+226.13162*T-42.248*T*LN(T);                     6000 N 91Din !
+
+ PARAM G(GAS,PU;0)             298.15 +PUGAS#+RTLNP#;          6000 N PuGas !
+
+ PARAM G(HCP_A3,PU:VA;0)       298.15 5000+GBCCPU#;            6000 N 06Kur !
+
+ PARAM G(LIQUID,PU+3:VA;0)     298.15 GLIQPU#;                 6000 N 91Din !
+
+ PARAM G(ORTHORHOMBIC_A20,PU;0) 298.15 GHSERPU#+2026;          6000 N 99Kur !
+
+ PARAM G(ORTHO_AC,PU;0)        298.15 +GHSERPU#+2600-4.7*T;    6000 N NpPu !
+
+ PARAM G(TETA,PU:PU;0)         298.15 +35000+7*GHSERPU#;       6000 N 06Kur !
+
+ PARAM G(TETRAGONAL_A6,PU;0)   298.15 -496.178+54.586547*T-16.43*T*LN(T)
+     -0.024006*T**2+5.166667E-6*T**3-158470*T**-1;             736 Y
+     -6122.307+173.35008*T-35.56*T*LN(T);                      757 Y
+     +3982.078+63.890352*T-19.756*T*LN(T)-0.00937295*T**2+6.59882E-7*T**3
+     -1112565*T**-1;                                           2157 Y
+     -15200.539+228.05641*T-42.248*T*LN(T);                    6000 N 91Din !
+
+ PARAM G(TETRAGONAL_U,PU;0)    298.15 GFCCPU#+227.5;           6000 N 99Kur !
+
+ PARAM G(TETRAG_AD,PU;0)       298.15 +GHSERPU#+4160-7.36*T;   6000 N NpPu !
+
+ PARAM G(ZETA_PHASE,PU;0)      298.15 GBCCPU#+500;             6000 N 99Kur !
+
+
+$ ==== [U] ====
+ PARAM G(BCC_A2,U:VA;0)        298.15 GBCCUU#;                 6000 N 91Din !
+ PARAM L(BCC_A2,U,VA:VA;0)     298.15 +161700;                 6000 N 20LK11 !
+
+ PARAM G(BETA_PU,U;0)          298.15 +GHSERUU#+2000;          6000 N 99Kur !
+
+ PARAM G(C1_MO2,U+3:VA:VA;0)   298.15 +G3VV#;                  6000 N 11GUE !
+ PARAM G(C1_MO2,U+4:VA:VA;0)   298.15 +G4VV#;                  6000 N 11GUE !
+ PARAM G(C1_MO2,U+5:VA:VA;0)   298.15 +G5VV#;                  6000 N 11GUE !
+
+ PARAM G(DELTA_NPU,U;0)        298.15 337.8+GHSERUU#;          6000 N KUR10b !
+
+ PARAM G(ETA_PHASE,U;0)        298.15 GTETUU#+229.2;           6000 N 99Kur !
+
+ PARAM G(FCC_A1,U:VA;0)        298.15 GFCCUU#;                 6000 N 91Din !
+
+ PARAM G(GAS,U;0)              298.15 +GASU#+RTLNP#;           6000 N UGas !
+
+ PARAM G(HCP_A3,U:VA;0)        298.15 GHCPUU#;                 6000 N PURE4 !
+
+ PARAM G(LIQUID,U+4:VA;0)      298.15 +GLIQUU#;                6000 N 91Din !
+
+ PARAM G(ORTHORHOMBIC_A20,U;0) 298.15 +GHSERUU#;               6000 N 91Din !
+
+ PARAM G(ORTHO_AC,U;0)         298.15 2814.7+GHSERUU#;         6000 N KUR10b !
+
+ PARAM G(TETRAGONAL_U,U;0)     298.15 GTETUU#;                 6000 N 91Din !
+
+ PARAM G(TETRAG_AD,U;0)        298.15 260.4+GTETUU#;           6000 N KUR10b !
+
+ PARAM G(UC2_C11A,U:VA;0)      298.15 +GFCCUU#;                6000 N 11GUE !
+
+ PARAM G(UZR_DELTA,U:U;0)      298.15 5000+3*GHSERUU#;         6000 N 99Kur !
+
+ PARAM G(ZETA_PHASE,U;0)       298.15 GBCCUU#+322.1;           6000 N 99Kur !
+
+
+$ ==== [O, Pu] ====
+ PARAM G(BCC_A2,PU:O;0)        298.15 100000+GBCCUU#+3*GHSEROO#; 6000 N 08ND !
+
+ PARAM G(C1_MO2,PU+3:O-2:O-2;0) 298.15 +GPU3V#+2*GHSEROO#+80*T; 6000 N 11GUE !
+ PARAM G(C1_MO2,PU+3:O-2:VA;0) 298.15 +GPU3V#+2*GHSEROO#;      6000 N 11GUE !
+ PARAM G(C1_MO2,PU+3:VA:O-2;0) 298.15 +GPU3V#+GHSEROO#+80*T;   6000 N 11GUE !
+ PARAM G(C1_MO2,PU+4:O-2:O-2;0) 298.15 +GPUO2#+GHSEROO#+80*T;  6000 N 11GUE !
+ PARAM G(C1_MO2,PU+4:O-2:VA;0) 298.15 +GPUO2#;                 6000 N 11GUE !
+ PARAM G(C1_MO2,PU+4:VA:O-2;0) 298.15 +GPUO2#-GHSEROO#+80*T;   6000 N 11GUE !
+ PARAM L(C1_MO2,PU+3,PU+4:O-2:VA;0) 298.15 +9781.91663
+     +3.06205226*T;                                            6000 N 11GUE !
+ PARAM L(C1_MO2,PU+3,PU+4:O-2:VA;1) 298.15 -17507.4723
+     +5.46572624*T;                                            6000 N 11GUE !
+
+ PARAM G(DHCP,PU:O;0)          298.15 50000+GHSERPU#
+     +0.5*GHSEROO#;                                            6000 N 14ND !
+
+ PARAM G(FCC_A1,PU:O;0)        298.15 +0.3333*GPU2O3S#+0.33333*GHSERPU#
+     +6540;                                                    6000 N 12GUE !
+ PARAM L(FCC_A1,PU:O,VA;0)     298.15 +100000;                 6000 N 11GUE !
+
+ PARAM G(GAS,PUO2;0)           298.15 -16000+PUO2GAS#+RTLNP#; 6000 N PuO2Gas !
+ PARAM G(GAS,PUO;0)            298.15 +PUOGAS#+RTLNP#;         6000 N PuOGas !
+
+ PARAM G(HCP_A3,PU:O;0)        298.15 100000+GHCPUU#
+     +0.5*GHSEROO#;                                            6000 N 08ND !
+
+ PARAM G(LIQUID,PU+3:O-2;0)    298.15 +GPU2O3S#+72000-30.187*T; 6000 N 21FOU !
+ PARAM G(LIQUID,PUO2;0)        298.15 +GPUO2#+68320-22.3*T;    6000 N 21FOU !
+ PARAM L(LIQUID,PU+3:O-2,PUO2;0) 298.15 +60000;                6000 N 11GUE !
+ PARAM L(LIQUID,PU+3:O-2,PUO2;1) 298.15 +0;                    6000 N 21FOU !
+ PARAM L(LIQUID,PU+3:O-2,VA;0) 298.15 +77451.8+23.4798*T;      6000 N 11GUE !
+ PARAM L(LIQUID,PU+3:O-2,VA;1) 298.15 -20231.6017;             6000 N 11GUE !
+
+ PARAM G(PU2O3,PU:O;0)         298.15 +GPU2O3S#;               6000 N 11GUE !
+
+ PARAM G(PUO152,PU:O;0)        298.15 -861515.829+345.426853*T
+     -62.351*T*LN(T)-0.007085*T**2-1.6625E-11*T**3
+     +396830*T**-1;                                            6000 N 11GUE !
+
+ PARAM G(PUO161,PU+3:O-2:O-2;0) 298.15 +2*GPUO15#+GHSEROO#-8220
+     +6.35403272*T;                                            6000 N 11GUE !
+ PARAM G(PUO161,PU+3:O-2:VA;0) 298.15 +2*GPUO15#-8220
+     +6.35403272*T;                                            6000 N 11GUE !
+ PARAM G(PUO161,PU+4:O-2:O-2;0) 298.15 +2*GPUO2#+18772-6*T;    6000 N 11GUE !
+ PARAM G(PUO161,PU+4:O-2:VA;0) 298.15 +2*GPUO2#-GHSEROO#+18772
+     -6*T;                                                     6000 N 11GUE !
+ PARAM L(PUO161,PU+3,PU+4:O-2:O-2;0) 298.15 -725.5+15.8*T;     6000 N 11GUE !
+ PARAM L(PUO161,PU+3,PU+4:O-2:VA;0) 298.15 -725.5+15.8*T;      6000 N 11GUE !
+
+
+$ ==== [O, U] ====
+ PARAM G(BCC_A2,U:O;0)         298.15 GBCCUU#+3*GHSEROO#
+     +200000;                                                  6000 N REFQUA !
+
+ PARAM G(C1_MO2,U+3:O-2:O-2;0) 298.15 +G3OO#;                  6000 N 11GUE !
+ PARAM G(C1_MO2,U+3:O-2:VA;0)  298.15 +G3OV#;                  6000 N 11GUE !
+ PARAM G(C1_MO2,U+3:VA:O-2;0)  298.15 100000;                  6000 N 11GUE !
+ PARAM G(C1_MO2,U+4:O-2:O-2;0) 298.15 +G4OO#;                  6000 N 11GUE !
+ PARAM G(C1_MO2,U+4:O-2:VA;0)  298.15 +G4OV#;                  6000 N 11GUE !
+ PARAM G(C1_MO2,U+4:VA:O-2;0)  298.15 100000;                  6000 N 11GUE !
+ PARAM G(C1_MO2,U+5:O-2:O-2;0) 298.15 +G5OO#;                  6000 N 11GUE !
+ PARAM G(C1_MO2,U+5:O-2:VA;0)  298.15 +G5OV#;                  6000 N 11GUE !
+ PARAM G(C1_MO2,U+5:VA:O-2;0)  298.15 100000;                  6000 N 11GUE !
+ PARAM L(C1_MO2,U+3,U+4:O-2:VA;0) 298.15 40133.7;              6000 N 11GUE !
+ PARAM L(C1_MO2,U+3,U+4:O-2:VA;1) 298.15 1076.4;               6000 N 11GUE !
+ PARAM L(C1_MO2,U+4,U+5:O-2:O-2;0) 298.15 -124936.9-21.6838*T; 6000 N 11GUE !
+
+ PARAM G(FCC_A1,U:O;0)         298.15 -504526+100*T+GHSEROO#
+     +GHSERUU#;                                                6000 N COU !
+
+ PARAM G(GAS,UO2;0)            298.15 +UO2GAS#+RTLNP#;         6000 N UO2Gas !
+ PARAM G(GAS,UO3;0)            298.15 +UO3GAS#+RTLNP#;         6000 N UO3Gas !
+ PARAM G(GAS,UO;0)             298.15 +UOGAS#+RTLNP#;          6000 N UOGas !
+
+ PARAM G(HCP_A3,U:O;0)         298.15 GHCPUU#+0.5*GHSEROO#
+     +100000;                                                  6000 N 06ND !
+
+ PARAM G(LIQUID,U+4:O-2;0)     298.15 +2*GUO2L#;               6000 N 11GUE !
+ PARAM L(LIQUID,U+4:O,O-2;0)   298.15 -370000;                 6000 N 11GUE !
+ PARAM L(LIQUID,U+4:O-2,VA;0)  298.15 1773475.9-516*T;         6000 N 11GUE !
+ PARAM L(LIQUID,U+4:O-2,VA;1)  298.15 46774.9-120.37888*T;     6000 N 11GUE !
+ PARAM L(LIQUID,U+4:O-2,VA;2)  298.15 -500000;                 6000 N 11GUE !
+
+ PARAM G(U3O8_S1,O:U;0)        298.15 +GU3O8#;                 6000 N 11GUE !
+
+ PARAM G(U3O8_S2,O:U;0)        298.15 +GU3O8#+135
+     -0.279503106*T;                                           6000 N U3O8HT !
+
+ PARAM G(U3O8_S3,O:U;0)        298.15 +GU3O8#+283
+     -0.540066486*T;                                           6000 N U3O8HT !
+
+ PARAM G(U3O8_S4,O:U;0)        298.15 +GU3O8#+597
+     -0.918379739*T;                                           6000 N U3O8HT !
+
+ PARAM G(U4O9_S1,O:U;0)        298.15 +GU4O9S1#;               6000 N 11GUE !
+
+ PARAM G(U4O9_S2,O:U;0)        298.15 +GU4O9S1#+2594
+     -7.45402299*T;                                            6000 N U4O9HT !
+
+ PARAM G(U4O9_S3,O-2:U+4;0)    298.15 +GU4O9S3#+23.0527167*T;  6000 N U4O9HT !
+ PARAM G(U4O9_S3,O-2:U+5;0)    298.15 +GU4O9S3#+23.0527167*T;  6000 N U4O9HT !
+
+ PARAM G(UC2_C11A,U:O;0)       298.15 +3*GUO2POT#+100000;      6000 N COU !
+
+ PARAM G(UO3,O:U;0)            298.15 -1260394.62+616.475675*T
+     -105.7368*T*LN(T)+0.0104274*T**2-3.18099167E-6*T**3
+     +868736*T**-1;                                            6000 N UO3S !
+
+ PARAM G(ZRO2_TETR,U+4:O-2;0)  298.15 G4OV#+40000;             6000 N 13QUA !
+
+
+$ ==== [Pu, U] ====
+ PARAM G(BCC_A2,PU,U:VA;0)     298.15 -5062.29112;             6000 N 99Kur !
+ PARAM G(BCC_A2,PU,U:VA;1)     298.15 +506.824025;             6000 N 99Kur !
+
+ PARAM G(BETA_PU,PU,U;0)       298.15 -2550;                   6000 N 99Kur !
+
+ PARAM L(C1_MO2,PU+3,U+4:VA:VA;0) 298.15 -300000;              6000 N 11GUE !
+
+ PARAM L(ETA_PHASE,PU,U;0)     298.15 -6200;                   6000 N ETA10 !
+
+ PARAM G(FCC_A1,PU,U:VA;0)     298.15 3620;                    6000 N 99Kur !
+
+ PARAM G(HCP_A3,PU,U:VA;0)     298.15 3620;                    6000 N 99Kur !
+
+ PARAM L(LIQUID,PU+3,U+4:VA;0) 298.15 4751.56808-12.0013383*T; 6000 N 99Kur !
+ PARAM L(LIQUID,PU+3,U+4:VA;1) 298.15 -2284.31116;             6000 N 99Kur !
+
+ PARAM G(ORTHORHOMBIC_A20,PU,U;0) 298.15 -9581.367;            6000 N 99Kur !
+
+ PARAM G(TETRAGONAL_U,PU,U;0)  298.15 -4870.71946;             6000 N 99Kur !
+
+ PARAM L(ZETA_PHASE,PU,U;0)    298.15 -64447.5652+67.9547219*T; 6000 N 99Kur !
+ PARAM L(ZETA_PHASE,PU,U;1)    298.15 -4517.90294+21.6469999*T; 6000 N 99Kur !
+ PARAM L(ZETA_PHASE,PU,U;2)    298.15 7968.53141+4.78514067*T; 6000 N 99Kur !
+
+
+$ ==== [O, Pu, U] ====
+ PARAM L(C1_MO2,PU+3,U+4:O-2:VA;0) 298.15 -150000;             6000 N 11GUE !
+ PARAM L(C1_MO2,PU+4,U+3:O-2:VA;0) 298.15 +20000;              6000 N 11GUE !
+ PARAM L(C1_MO2,PU+4,U+4:O-2:VA;0) 298.15 -20000;              6000 N 11GUE !
+ PARAM L(C1_MO2,PU+4,U+5:O-2:*;0) 298.15 -80000;               6000 N 11GUE !
+
+ PARAM L(LIQUID,PU+3,U+4:O-2,VA;0) 298.15 +480000-670*T;       6000 N 21FOU !
+ PARAM L(LIQUID,U+4:O-2,PUO2;0) 298.15 +1075600-360*T;         6000 N 21FOU !
+ PARAM L(LIQUID,U+4:O-2,PUO2;1) 298.15 -55000;                 6000 N 21FOU !
+
+ ASSESSED_SYSTEMS
+ O-Pu-U( TDB -* +GAS +LIQUID +BCC_A2 +FCC_A1 +ALPHA_PU +BETA_PU +GAMMA_PU
+         +TETRAGONAL_A6 +C1_MO2 +PU2O3 +PUO161 +PUO152 +ORTHORHOMBIC_A20
+         +TETRAGONAL_U +U4O9_S1 +U4O9_S2 +U4O9_S3 +U3O8_S1 +U3O8_S2
+         +U3O8_S3 +U3O8_S4 +UO3 +ZETA_PHASE +ETA_PHASE ;G5
+         C_S:LIQUID/U+4,PU+3:O-2 MAJ:LIQUID/U+4,PU+3:VA ;P3 STP:.5/.2/2
+         STP:.1/.25/-2/2 )
+ O-Pu( TDB -* +GAS +LIQUID +BCC_A2 +FCC_A1 +ALPHA_PU +BETA_PU +GAMMA_PU
+         +TETRAGONAL_A6 +C1_MO2 +PU2O3 +PUO161 +PUO152 ;G5
+         C_S:LIQUID/PU+3:O-2 MAJ:LIQUID/PU+3:VA C_S:C1_MO2/PU+3:O-2:VA
+         MAJ:C1_MO2/PU+4:O-2:VA ;P3 TMM:300/4500 STP:.35/700/1
+         STP:.8/2200/-1 )
+ O-U( TDB -* +GAS +LIQUID +ORTHORHOMBIC_A20 +TETRAGONAL_U +BCC_A2 +C1_MO2
+         +U4O9_S1 +U4O9_S2 +U4O9_S3 +U3O8_S1 +U3O8_S2 +U3O8_S3 +U3O8_S4
+         +UO3 ;G5 C_S:LIQUID/U+4:O-2 MAJ:LIQUID/U+4:VA ;P3 TMM:300/4500
+         STP:.8/2500/1 STP:.3/1500/1 STP:.9/500/1 )
+ Pu-U( TDB -* +GAS +LIQUID +FCC_A1 +BCC_A2 +ALPHA_PU +BETA_PU +GAMMA_PU
+         +TETRAGONAL_A6 +ORTHORHOMBIC_A20 +TETRAGONAL_U +ZETA_PHASE
+         +ETA_PHASE ;P3 TMM:300/3000 STP:.51/1000/-2/2 )
+  !
+
+ LIST_OF_REFERENCES
+ NUMBER      SOURCE
+ 06Kur       'M. Kurata, private communication 2006; Pu-Zr'
+ 06ND        'fixing some PARAMs of low importance'
+ 08ND        'PARAMs for metastable compounds, Nathalie Dupin, Fuelbase 2008'
+ 11GUE       'C. Gueneau, N. Dupin, B. Sundman, C. Martial, J.-C. Dumas,
+             S. Gosse, S. Chatain, F. De Bruycker, D. Manara, R.J.M.
+             Konings, J. Nucl. Mat. 419 (1-3), 145-167 (2011); C-O-Pu-U'
+ 12GUE       'Correction due to missprint in 11GUE; C-O-Pu'
+ 13QUA       'A. Quaini, C. Gueneau, 2013, provisional; Fe-O-U-Zr'
+ 14ND        'N. Dupin, fixing PARAMs for metastable states, model
+             inconsistencies; october 2014 '
+ 20LK11      'L. Kjellqvist, TAFID project (2020), tentative vacancy
+             fraction in pure BCC metals.'
+ 21FOU       'P. Fouquet-Metivier, C. Gueneau, P. Martin, Revision of
+             liquid, to be submitted to Calphad (2021); Pu-O, Pu-U-O'
+ 91Din       'A T Dinsdale, SGTE Data for Pure Elements, Calphad 15(1991)4
+             p 317-425; also in NPL Report DMA(A)195 Rev. August 1990'
+ 92HAL1      'B. Hallstedt, Calphad, 16 (1992), 53-61; Si-O'
+ 99Kur       'M. Kurata, Calphad, 23 (3-4), 305-337 1999'
+ AmPu        'N. Dupin, Contrat CEA 4000294936/P5B73 Am-Pu Fuelbase,
+             january 2008'
+ COU         'C. Gueneau, CEA Saclay; C-O-U'
+ ETA10       'Eta modified in Pu-U in order to use a single model for this
+             phase in U-Pu and Np-Pu, ND 2010'
+ KUR10b      'M. Kurata, Am, Np, Fe systems, to be published, e-mail to ND
+             2010 feb 21'
+ NpPu        'N. Dupin, Contrat CEA 4000294936/P5B73 Np-Pu Fuelbase,
+             february 2008'
+ O2Gas       'O2<G> T.C.R.A.S. Class: 1 OXYGEN <DIATOMIC GAS>, from SSUB'
+ O3Gas       'O3<G> T.C.R.A.S. Class: 4 OZONE <GAS>, from SSUB'
+ OGas        'O1<G> JANAF 1982; ASSESSMENT DATED 3/77 SGTE OXYGEN
+             <MONATOMIC GAS>, from SSUB'
+ PuGas       'PU1<G> T.C.R.A.S. Class: 4 PLUTONIUM <GAS>, from SSUB'
+ PuO2Gas     'O2PU1<G> T.C.R.A.S. Class: 7 PLUTONIUM DIOXIDE <GAS>, from
+             SSUB, id to Tbase'
+ PuOGas      'O1PU1<G> T.C.R.A.S. Class: 6, from SSUB, id to Tbase'
+ PURE4       'SGTE unary database version 4.4'
+ REFQUA      'A. Quaini et al., J. Nucl. Mater. 501 (2018) 104-131; U-Zr-O'
+ U3O8HT      'SSUB 3-URANIUM 8-OXIDE : M.H.Rand March 1994, taken from
+             Cordfunke. In the fuelbase, the expression relative to the
+             alpha form has been kept identical to SSUB for the higher
+             temperatures forms but the alpha form expression has been
+             modified in 11GUE'
+ U4O9HT      'SSUB 4-URANIUM 9-OXIDE : M.H.Rand March 1994, taken from
+             Cordfunke. In the fuelbase, the expression relative to the
+             alpha form has been kept identical to SSUB for beta and to
+             08GUE for gamma but the alpha form expression has been
+             modified in 11GUE'
+ UGas        'U1<G> T.C.R.A.S Class: 4 Data provided by T.C.R.A.S. in
+             2000, from SSUB'
+ UO2Gas      'O2U1<G> T.C.R.A.S. Class: 6 URANIUM DIOXIDE <GAS>, from
+             SSUB, slightly different of Tbase'
+ UO3Gas      'O3U1<G> T.C.R.A.S Class: 6 Data provided by T.C.R.A.S. in
+             2000, from SSUB, different of Tbase'
+ UO3S        'O3U1 T.C.R.A.S. Class: 7 URANIUM TRIOXIDE, from SSUB'
+ UOGas       'O1U1<G> T.C.R.A.S Class: 6 Data provided by T.C.R.A.S. in
+             2000, from SSUB, different of Tbase'
+  !

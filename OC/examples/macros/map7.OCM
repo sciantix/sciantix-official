@@ -1,0 +1,188 @@
+new Y
+@$ =============================================================
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$ map7.OCM
+@$ Calculate an isopleth for a HSS
+@$ =============================================================
+@&
+
+set echo
+
+r t ./steel1 c cr fe mo v
+
+@$ There will be a cubic carbide stable in this system
+@$ create a composition set of the fcc phase for that
+amend phase 
+fcc
+
+Y
+MC
+
+NONE
+<.5
+
+>.5
+>.5
+<.5
+
+@$ amend the default composition also of the austenite
+amend phase
+fcc
+default
+<.1
+>.5
+<.1
+<.1
+<.1
+>.9
+
+@&
+@$ calculate a first equilibrium at 1200 where we have both fcc phases 
+
+set reference C graph
+
+
+
+
+@$ Startpoint change needed for new gridminimizer, same diagram
+set c t=1300 p=1e5 n=1 w%(c)=0.8 w%(cr)=5, w%(mo)=8 w%(v)=1
+
+@$ It is important that the grid minimizer provide gridpoints with small
+@$ amounts of alloying elements !!!
+
+
+c e
+
+l r 4
+
+@&
+
+set axis 1 w%(c) 0 2 ,,,
+set axis 2 T 800 1800 25
+
+l ax
+
+@&
+
+map
+
+
+@$ You may get a buffer overflow error here
+@$ but there is not yet any way saving of results on file implemented
+@$ Until then you have to restrict yourself to smaller diagrams
+@&
+
+
+plot
+
+
+title map 7 fig 1
+
+@&
+@$ Some lines are still missing but the invariants are OK
+@$ There is a need for several automatic startpoints
+@$ add some labels
+
+plot
+
+
+title map 7 fig 2
+scale x
+n
+0
+2
+@$ Position of keys, Size of font must be on separate line!
+pos
+bottom left
+12
+@$ Label some areas
+text
+0.7 1150
+.8
+0
+y
+
+text
+n
+0.4 1050
+.8
+0
+y
+
+text
+n .55 1300 .8 0 y 
+
+text
+n .5 1470 .8 0 y
+
+text 
+n 0.1 1450 .8 0 y
+
+text 
+n 0.8 1580 .8 0 y
+
+
+@&
+@$ We can list all calculated equilibria
+
+l l
+
+@&
+
+@$ or all node points
+
+l eq
+
+plot
+
+
+scale y
+n
+1500
+1700
+scale x
+n
+0
+1
+text
+n 0.3 1670 .8 0 y
+
+title map 7 fig 3
+
+
+
+@&
+
+plot
+
+
+scale y
+n
+1000
+1350
+scale x
+n
+0
+2
+title map7 fig 4
+
+
+set inter
+

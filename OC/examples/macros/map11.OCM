@@ -1,0 +1,125 @@
+new Y
+@$=================================================================
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$ map11.OCM
+@$ Calculation of the Cr-Fe binary
+@$=================================================================
+@&
+
+set echo
+
+@$ 3 separate parts, now using 3 start equilibria
+@$
+
+r t ./steel1
+cr fe
+ 
+set c t=600 p=1e5 n=1 x(cr)=.2
+c e
+l
+RESULTS
+1
+
+@&
+
+set ref cr bcc * ,,
+
+set ref fe bcc * ,,
+
+set ax 1 x(cr)
+0
+1
+.025
+
+set ax 2 t
+400
+2300
+25
+
+@$ Set this as start point with a direction
+set as_start 0
+
+@&
+@$ Add one more start point for the gamma loop
+
+set c t=1400 x(cr)=.1
+
+c e
+
+@$ in this case the direction is important
+set as_start 1
+
+@$ Add one more for the liquidus
+
+set c t=2000
+
+c e
+
+set as_start -2
+
+
+@&
+@$ To avoid metastable bcc/sigma line
+
+set adv map
+2
+
+
+@&
+
+map
+
+
+plot
+X(*,CR)
+T
+title map 11 fig 1
+RENDER
+
+@$
+@$ This diagram will sometimes have a metastable
+@$ extrapolation of the sigma+bcc lines because the
+@$ two bcc phases merges at hight T and the 3-phase line
+@$ is not found when lowering the T.  
+@$ And/or it may have an invariant indicated at the congruent transition!
+@&
+
+
+plot
+
+
+text
+0.46
+1000
+.8
+0
+n
+{/Symbol s}
+text n .03 1300 .8 0 y 
+
+text n .4 1400 .8 0 y 
+
+text n .2 2000 .8 0 y 
+
+title map 11 fig 2
+
+
+@&
+set interactive

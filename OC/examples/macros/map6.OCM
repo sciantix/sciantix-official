@@ -1,0 +1,123 @@
+new Y
+@$ ===========================================================
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$ map6.OCM
+@$ Calculate an isopleth for Cr-Fe-Ni at 8 mass% Ni
+@$ ===========================================================
+@&
+
+set echo
+
+r t ./saf2507
+cr fe ni
+ 
+set c t=1200 p=1e5 w(cr)=.2 w(ni)=.08 n=1
+
+c e
+l
+
+4
+
+@&
+
+set ax 1 w(cr) 0 1 0.01
+set ax 2 t 800 2200 25
+
+
+map
+
+
+@&
+
+plot
+w(CR)
+T
+title map 6 fig 1
+render
+ 
+ 
+@$ All lines at at w(cr)=0.92 at the rght because there is 8% Ni
+
+@$ A line in the lower middle end above 800 K, add a start point
+
+set c w(cr)=.3 t=1000
+
+c e
+
+map
+n
+
+@$ now plot
+@&
+@$ add some labels
+plot
+
+
+scale y n 800 2200
+title map 6 fig 2
+text 
+0.1 2000
+.9
+0
+y
+
+text n
+.5 1500 .9 0 y
+
+text n
+.05 1200 .9 0 y
+
+text n
+.46 1160 .9 0 y
+{/Symbol s}
+text n
+.75 1200 .9 0 y
+
+
+@&
+
+plot
+
+
+title map 6 fig 3
+scale y
+n
+1700
+1800
+
+
+@&
+plot
+
+
+title map 6 fig 4
+scale y
+n
+1150
+1250
+
+
+
+@&
+ set interactive

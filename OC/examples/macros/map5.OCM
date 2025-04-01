@@ -1,0 +1,175 @@
+new Y
+@$ ===============================================================
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$ map5.OCM
+@$ Calculate the phase diagram for Fe-Mo
+@$ ===============================================================
+@&
+
+set echo
+
+r t ./steel1
+fe mo
+
+@&
+@$------------------------------------------------------------------------
+@$ Create an extra composition set for BCC ... not really necessay
+
+amend phase
+bcc
+comp
+Y
+FE
+
+>.5
+<.1
+
+amend phase
+bcc
+def
+<.1
+>.5
+
+
+@&
+@$--------------------------------------------------------------------
+@$ Set conditions
+
+set cond t=2000 p=1e5 n=1 x(mo)=.7
+
+c e
+
+l r 1
+
+@&
+@$--------------------------------------------------------------------
+@$ Set axis for phase diagram
+
+set ax 1 x(mo) 0 1 ,,
+set ax 2 t 300 3000 25
+
+l ax
+
+l sh
+
+
+@&
+@$--------------------------------------------------------------------
+
+map
+
+
+@&
+@$--------------------------------------------------------------------
+@$ Plot the diagram
+plot
+x(*,mo)
+T
+title map 5 fig 1
+render
+
+
+@&
+
+@$--------------------------------------------------------------------
+@$ we must calculate the gamma loop separately
+
+set c t=1400 x(mo)=.002
+
+c e
+
+l,,,,,
+
+@&
+@$--------------------------------------------------------------------
+
+map 
+N
+
+
+plot
+x(*,mo)
+T
+position bottom right
+
+title map 5 fig 2
+render
+
+
+@&
+@$ Set range (scaling) of T
+plot
+x(*,mo)
+T
+scale y
+N
+1400
+1900
+title map5 fig 3
+render
+
+@&
+
+@$ Add some labels
+
+plot
+
+
+title map 5 fig 4
+text 
+.5 1700
+.8
+0
+y
+
+text
+n .4 1530 .8 0 y
+
+text n .1 1850 .8 0 y
+
+text n .36 1650 .8 0 n
+R
+
+@&
+@$ Change to greek phase names
+plot
+
+
+title map 5 fig 5
+text
+y 
+4
+{/Symbol s}
+
+
+
+
+text
+y
+3
+{/Symbol m}
+
+
+
+
+
+
+
+@&
+set inter
