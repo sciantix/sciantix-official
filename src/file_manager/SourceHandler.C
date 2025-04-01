@@ -85,7 +85,7 @@ std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int 
     // Define global time range
     double t_min = sources.front().time;
     double t_max = sources.back().time;
-    double time_step = (t_max - t_min) / (total_steps-1);
+    double time_step = (t_max - t_min) / (total_steps - 1);
 
     // Generate 100 equally spaced time points
     for (int i = 0; i < total_steps; ++i)
@@ -246,7 +246,6 @@ void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRad
     outFile.close();
 }
 
-
 void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::string &outputFilePath, double step, double GrainRadius)
 {
     std::ofstream outFile(outputFilePath);
@@ -278,7 +277,7 @@ void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::
             for (double nd = nd_start; nd < nd_end + step; nd += step)
             {
                 double r = nd * GrainRadius * 1e6;
-                double S = A * r * 1e-6 + B; // Compute source value S
+                double S = A * r * 1e-6 + B;       // Compute source value S
                 outFile << r << "\t" << S << "\n"; // Write r and S to file
             }
         }
@@ -288,20 +287,18 @@ void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::
     outFile.close();
 }
 
-
-
-
 double Source_Volume_Average(double GrainRadius, Source source)
 {
     double NumberofRegions = source.Slopes.size(); // Number of regions
-    double VA = 0.0;  // Initialize the volume average
+    double VA = 0.0;                               // Initialize the volume average
 
     // Vector to store the domains
     std::vector<double> domain(source.NormalizedDomain.size());
 
     // Adjust NormalizedDomain to match with the grain radius
     std::transform(source.NormalizedDomain.begin(), source.NormalizedDomain.end(), domain.begin(),
-                   [GrainRadius](double x) { return x * GrainRadius; });
+                   [GrainRadius](double x)
+                   { return x * GrainRadius; });
 
     // Loop through all the regions and calculate the integral for each domain
     for (size_t j = 0; j < NumberofRegions; ++j)
@@ -309,7 +306,7 @@ double Source_Volume_Average(double GrainRadius, Source source)
         if (j + 1 >= domain.size()) // Make sure we're not accessing out-of-bounds elements
         {
             std::cerr << "Error: Trying to access out-of-bounds domain at index " << j << std::endl;
-            return -1.0;  // Return an error code for segmentation fault
+            return -1.0; // Return an error code for segmentation fault
         }
 
         // Calculate the integration for A * r + B over r^2 in the domain [r0, r1]
@@ -334,7 +331,7 @@ double Source_Volume_Average(double GrainRadius, Source source)
         if (j + 1 >= domain.size()) // Ensure no out-of-bounds access
         {
             std::cerr << "Error: Trying to access out-of-bounds domain at index " << j << std::endl;
-            return -1.0;  // Return error code
+            return -1.0; // Return error code
         }
 
         double r0 = domain[j];

@@ -101,3 +101,6 @@ For a deeper understanding of the SCIANTIX code and its underlying models, refer
   https://doi.org/10.1016/j.jnucmat.2020.152042.
   (https://www.sciencedirect.com/science/article/pii/S0022311519313868)
   ```
+
+  # NUS SOLVER MINI GUIDE
+https://polimi365-my.sharepoint.com/:b:/g/personal/10884872_polimi_it/EfY-DTI-Q2xKuCZuFo5bu-ABKdMiYspqGhmM8k1Yn_dYFg?e=cbpELv
