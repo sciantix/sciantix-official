@@ -39,7 +39,7 @@ void Simulation::SetPhaseDiagram2()
         if(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue())
             pressure = ( boltzmann_constant *  Temperature * sciantix_variable["Intergranular atoms per bubble"].getInitialValue()/(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue() * matrices["UO2"].getSchottkyVolume()));
         else
-            pressure = 1.0;
+            pressure = 1e5;
     }
     else if (input_variable["iThermochimica"].getValue() > 1)
     {

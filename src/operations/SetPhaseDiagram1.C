@@ -58,8 +58,8 @@ void Simulation::SetPhaseDiagram1()
             
             double gasatomsavailable = (sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                     sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                    sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue() - 
-                    sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() -
+                    sciantix_variable[system.getGasName() + " reacted - GB"].getInitialValue() - 
+                    sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() -
                     sciantix_variable[system.getGasName() + " released"].getInitialValue()) * 
                     (4 * M_PI * pow( sciantix_variable["Grain radius"].getFinalValue(),3) / 3.0);
 
@@ -103,8 +103,6 @@ void Simulation::SetPhaseDiagram1()
     Json::Value root;
     jsonFile >> root;
     
-    //std::cout << "INTRAGRANULAR BEHAVIOUR" << std::endl;
-
     Json::Value &gsolution = root["1"]["solution phases"]["GAS_IDEAL"];
 
     const Json::Value &species = gsolution["species"];
@@ -129,19 +127,16 @@ void Simulation::SetPhaseDiagram1()
         // }
         double gasatomsavailable = (sciantix_variable[element + " produced"].getFinalValue() -
                 sciantix_variable[element + " decayed"].getFinalValue() -
-                sciantix_variable[element + " reacted - GB"].getFinalValue() - 
-                sciantix_variable[element + " at grain boundary"].getFinalValue() -
+                sciantix_variable[element + " reacted - GB"].getInitialValue() - 
+                sciantix_variable[element + " at grain boundary"].getInitialValue() -
                 sciantix_variable[element + " released"].getInitialValue()) * 
                 (4 * M_PI * pow( sciantix_variable["Grain radius"].getFinalValue(),3) / 3.0);
 
         // gasatomsavailable *= (1.0 - equilibrium_fraction);
         double gasatomsupdate = moles*avogadro_number; 
         double x = 1 - gasatomsupdate / gasatomsavailable; // reacted
+        if (x<0) x = 0;
         sciantix_variable[ element + " reacted fraction - IG"].setFinalValue(x);
-        sciantix_variable[ element + " reacted - IG"].setFinalValue( x * gasatomsavailable/(4 * M_PI * pow( sciantix_variable["Grain radius"].getFinalValue(),3) / 3.0));
-        sciantix_variable[ element + " in grain"].setFinalValue( (1 - x) * gasatomsavailable/(4 * M_PI * pow( sciantix_variable["Grain radius"].getFinalValue(),3) / 3.0));
-        sciantix_variable[ element + " in intragranular solution"].rescaleFinalValue(1 - x);
-        sciantix_variable[ element + " in intragranular bubbles"].rescaleFinalValue(1 - x);
     }
     
     Json::Value &lsolution = root["1"]["solution phases"]["LIQUID"];
@@ -183,6 +178,32 @@ void Simulation::SetPhaseDiagram1()
     if (std::rename(oldFileName, newFileName) != 0) {
         std::cerr << "Error: Renaming file failed!\n";
         return;
+    }
+
+    // Model declaration
+    for (auto &system : sciantix_system)
+    {
+        if (system.getGas().getChemicallyActive() == 1.0 && system.getRestructuredMatrix() == 0)
+        {
+            double gasatomsavailable = (sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " reacted - GB"].getInitialValue() - 
+                sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() -
+                sciantix_variable[system.getGasName() + " released"].getInitialValue());
+
+            double xi = sciantix_variable[ system.getGasName() + " reacted - IG"].getInitialValue()/gasatomsavailable;
+            if (std::isnan(xi)) xi = 0.0; 
+            double xf = sciantix_variable[ system.getGasName() + " reacted fraction - IG"].getFinalValue();
+            if (std::isnan(xf)) xf = 0.0; 
+            
+            sciantix_variable[system.getGasName() + " reacted - IG"].setFinalValue(
+                solver.Decay(
+                    sciantix_variable[system.getGasName() + " reacted - IG"].getInitialValue(),
+                    0,
+                    gasatomsavailable,
+                    (xf - xi)
+                ));
+        }
     }
 
     return;

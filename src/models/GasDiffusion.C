@@ -22,7 +22,7 @@ void Simulation::GasDiffusion()
     switch (static_cast<int>(input_variable["iDiffusionSolver"].getValue()))
     {
         case 1:
-            defineSpectralDiffusion1Equation(sciantix_system, model, n_modes);
+            defineSpectralDiffusion1Equation(sciantix_system, model, n_modes, sciantix_variable);
             break;
 
         case 2:
@@ -165,24 +165,7 @@ void Simulation::GasDiffusion()
         }
 
         if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1.0)
-        {
-            double GrainContent = sciantix_variable[system.getGasName() + " in grain"].getFinalValue();
-            double x = sciantix_variable[ system.getGasName() + " reacted fraction - IG"].getFinalValue();
-            sciantix_variable[system.getGasName() + " reacted - IG"].setFinalValue(x * GrainContent);
-            sciantix_variable[system.getGasName() + " in grain"].rescaleFinalValue(1 - x);
-            sciantix_variable[system.getGasName() + " in intragranular solution"].rescaleFinalValue(1 - x);
-            sciantix_variable[system.getGasName() + " in intragranular bubbles"].rescaleFinalValue(1 - x);
-
-
-            double GrainRelease = (sciantix_variable[system.getGasName() + " produced"].getIncrement() - 
-                                    sciantix_variable[system.getGasName() + " decayed"].getIncrement() - 
-                                    sciantix_variable[system.getGasName() + " in grain"].getIncrement() - 
-                                    sciantix_variable[system.getGasName() + " reacted - IG"].getIncrement());
-            if (GrainRelease < 0.0)
-                GrainRelease = 0.0;
-            sciantix_variable[system.getGasName() + " reacted - IG"].addValue(x * GrainRelease);
-            
-            
+        {            
             sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
                 sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
@@ -238,7 +221,7 @@ void Simulation::GasDiffusion()
     }
 }
 
-void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
+void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes, SciantixArray<SciantixVariable> sciantix_variable)
 {
     std::string reference;
 
@@ -262,6 +245,11 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         parameters.push_back(system.getMatrix().getGrainRadius());
         parameters.push_back(system.getProductionRate());
         parameters.push_back(system.getGas().getDecayRate());
+
+        if (system.getGas().getChemicallyActive() == 1)
+            parameters.push_back(-sciantix_variable[system.getGasName() + " reacted - IG"].getIncrement());
+        else
+            parameters.push_back(0);
 
         model_.setParameter(parameters);
         model.push(model_);
