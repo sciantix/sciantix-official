@@ -19,7 +19,7 @@
 
 /**
  *
- * This file contains functions for handling source data in Sciantix.
+ * This file contains functions for handling the non uniform source data in Sciantix.
  * It includes loading source data from a file, interpolating values, printing
  * the data, and writing results to a file.
  *
@@ -34,6 +34,7 @@
  * @note The file format should match expected input values.
  */
 void loadSourcesFromFile(std::vector<Source> &sources);
+
 /**
  * @brief Performs interpolation on the provided sources to create smoother data.
  * @param sources A constant reference to the input source data.
@@ -41,38 +42,39 @@ void loadSourcesFromFile(std::vector<Source> &sources);
  * @return A vector containing interpolated Source objects.
  */
 std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int interpolation_size);
+
 /**
- * @brief Prints the interpolated sources for debugging.
- * @param sources A constant reference to the source data to print.
+ * @brief Prints the sources for debugging.
+ * @param sources A constant reference to a vector containing data of class "source" to print.
  */
 void printSources(const std::vector<Source> &sources);
 
 /**
- * @brief Prints the interpolated sources for debugging.
+ * @brief Prints the source for debugging.
  * @param source A constant reference to the source data to print.
  */
 void printSource(const Source &source);
 
-
 /**
- * @brief Writes the processed source data to an output file.
- * @param sources A constant reference to the source data to be written.
+ * @brief Writes the processed source data to an output file in the same format as the input file with an extra column for the average value of the source across the grain.
+ * @param sources A constant reference to the sources data to be written.
+ * @param GrainRadius The grain radius is used to compute the volume averaged value of the source across the grain.
  */
 void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRadius);
-/**
- * @brief Retrieves the current value of a source at a given time.
- * @param sources A constant reference to a vector of Source objects.
- * @param time The specific time for which the source value is requested.
- * @return The interpolated source value at the given time.
- */
 
+/**
+ * @brief Retrieves the current shape of a source across the grain radius at a given time as well as the volume averaged value of the source across the grain.
+ * @param sources A constant reference to a vector of Source objects.
+ * @param time The specific time for which the source shape is requested.
+ * @param GrainRadius
+ */
  void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::string &outputFilePath, double step, double GrainRadius);
 
-/**
-     * @brief Gives the spatial averaged value of the fission rate (Fdot)
-     * @param GrainRadius 
-     * @param source source shape
-     */
-double Source_Volume_Average(double GrainRadius, Source source);
+ /**
+  * @brief Gives the spatial averaged value of the fission rate (Fdot)
+  * @param GrainRadius
+  * @param source
+  */
+ double Source_Volume_Average(double GrainRadius, Source source);
 
 #endif // SOURCEHANDLER_H

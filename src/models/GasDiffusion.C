@@ -124,6 +124,7 @@ void Simulation::GasDiffusion()
         {
             writeToFile(sources_interp, sciantix_variable["Grain radius"].getFinalValue());
             computeAndSaveSourcesToFile(sources_input,TestPath + "source_shape.txt", 0.01, sciantix_variable["Grain radius"].getFinalValue());
+
             if (system.getRestructuredMatrix() == 0)
             {    
 
@@ -243,7 +244,6 @@ void Simulation::GasDiffusion()
     }
 }
 
- // Updated 2.0 Version
 void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
 {
     std::string reference;
@@ -253,9 +253,8 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         Model model_;
         model_.setName("Gas diffusion - " + system.getName());
         model_.setRef(reference);
-        
-        std::vector<double> parameters;
 
+        std::vector<double> parameters;
         parameters.push_back(n_modes);
         double gasDiffusivity;
         if (system.getResolutionRate() + system.getTrappingRate() == 0)
@@ -267,26 +266,10 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
 
         parameters.push_back(gasDiffusivity);
         parameters.push_back(system.getMatrix().getGrainRadius());
-        
-        double Source_slope_input; // Slope
-        double Source_intercept_input; // Intercept
-
-        ReadSource(Source_slope_input,Source_intercept_input);
-        // parameters.push_back(Source_slope_input); // Slope
-        parameters.push_back(0); // Slope
-
-
-        // if (Source_slope_input==0 && Source_intercept_input==0) // Intercept
-        //     {
-        //         parameters.push_back(system.getProductionRate()); 
-        //         }
-        // else{parameters.push_back(Source_intercept_input);}
         parameters.push_back(system.getProductionRate());
-
-        
         parameters.push_back(system.getGas().getDecayRate());
-        model_.setParameter(parameters);
 
+        model_.setParameter(parameters);
         model.push(model_);
     }
 }
@@ -368,6 +351,7 @@ void defineSpectralDiffusionNUS1Equation(SciantixArray<System> &sciantix_system,
 {
     std::string reference;
     // Parameters {n, D, a, l}
+    // The source data is within the solver (case 4)
     for (auto& system : sciantix_system)
     {
         Model model_;
