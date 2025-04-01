@@ -1,0 +1,373 @@
+set echo
+
+r sel t tafid-v14.tdb
+
+u pu zr mo tc ru rh pd he cs i te ba sr la gd ce o ,
+gas liquid bamoo4 c1-mo2 cs2moo4-s2 fcc hcp morh3 perovskite pyrochlore srmoo4 ,,,
+
+$ reject pd8te3 et pd20te7 trop stables qui posent problem
+
+set ref o gas * 1e5
+
+set adv , 3
+
+set c t=1000 p=30e5 n=1
+
+
+set c x(u)=1.6157E-1
+set c x(pu)=1.3219E-1
+set c x(zr)=5.7974E-3
+set c x(mo)=6.3652E-3
+set c x(tc)=1.6436E-3
+set c x(ru)=6.5743E-3
+set c x(rh)=1.7332E-3
+set c x(pd)=4.9905E-3
+set c x(he)=7.8294E-3
+set c x(cs)=6.4548E-3
+set c x(i)=5.3790E-4
+set c x(te)=1.1057E-3
+set c x(ba)=2.0321E-3
+set c x(sr)=1.0758E-3
+set c x(la)=2.2413E-3
+set c x(ce)=4.8411E-3
+$ + Nd
+set c x(gd)=6.3054E-3
+$s-c x(o)=6.4672E-1
+	
+
+ent sym om=x(c1-mo2,o)/(1-x(c1-mo2,o));
+ent sym muo2=2*mu(o);
+ent sym cpc1=hms(c1_mo2).t;
+ent sym cpgas=hms(gas).t;
+ent sym ncpgas=cpgas*np(gas);
+ent sym cpliq2=hms(liquid_auto#2).t;
+ent sym liq2=cpliq2*NP(LIQUID_AUTO#2);
+
+ent sym cpliq3=hms(liquid_auto#3).t;
+ent sym liq3=cpliq3*NP(LIQUID_AUTO#3);
+
+ent sym cphcp=hms(hcp).t;
+
+ent sym cp=hms.t;
+ent sym cpt=cp-ncpgas;
+
+
+c e
+
+$add 1>
+$add -1>
+
+
+set ax 1 t 1000 3100 10
+
+@$ save .OCU
+$save
+$unf
+$caprix-moyen-141222-quat
+$y
+
+
+step , no
+
+set adv , 3
+
+set c t=1000
+c e
+
+set adv , 3
+
+step , no
+
+set c t=1050
+c e
+
+step , no
+
+set adv , 3
+
+set c t=1070
+c e
+
+step , no
+
+set adv , 3
+
+set c t=1100
+c e
+
+step , no
+
+set adv , 3
+
+set c t=1200
+c e
+
+step , no
+
+set adv , 3
+
+set c t=1300
+c e
+
+step , no
+
+set adv , 3
+
+set c t=1440
+c e
+
+step , no
+
+set adv , 3
+
+set c t=1500
+c e
+
+step , no
+
+set adv , 3
+
+set c t=1600
+c e
+
+step , no
+
+set c t=1800
+c e
+
+step , no
+
+set c t=2000
+c e
+
+step , no
+
+set c t=2500
+c e
+
+step , no
+
+set c t=2750
+c e
+
+step , no
+
+set c t=2763
+c e
+
+step , no
+
+set c t=3000
+c e
+
+step , no
+
+
+plot
+t
+np(*)
+title
+CAPRIX average
+scale
+y n 0 1
+scale
+x n 1100 3100
+axis-label
+x T(K)
+axis-label
+y Phase mole fraction
+position
+top left
+10
+output
+np-caprix-aver
+render
+
+plot
+t
+np(*)
+title
+CAPRIX average
+scale
+y n 0 .1
+scale
+x n 1100 3100
+axis-label
+x T(K)
+axis-label
+y Phase mole fraction
+position
+top left
+10
+render
+
+plot
+t
+np(*)
+title
+CAPRIX average
+scale
+y n 0 .05
+scale
+x n 1000 2000
+axis-label
+x T(K)
+axis-label
+y Phase mole fraction
+position
+top left
+10
+render
+
+
+plot
+t
+cp
+title
+CAPRIX average
+scale
+y n 0 1500
+scale
+x n 1000 3100
+axis-label
+x T(K)
+axis-label
+y Heat capacity (J.mol-1 at.K-1)
+position
+off
+output
+cp-caprix-aver
+render
+
+plot
+t
+cp
+title
+CAPRIX average
+scale
+y n 0 80
+scale
+x n 1100 3100
+axis-label
+x T(K)
+axis-label
+y Heat capacity (J.mol-1 at.K-1)
+position
+top left
+10
+render
+
+plot
+t
+cpgas
+title
+CAPRIX average
+scale
+y n 0 80
+scale
+x n 1100 3100
+axis-label
+x T(K)
+axis-label
+y Heat capacity (J.mol-1 at.K-1)
+position
+top left
+10
+render
+
+plot
+t
+cpt
+title
+CAPRIX average
+scale
+y n 0 80
+scale
+x n 1100 3100
+axis-label
+x T(K)
+axis-label
+y Heat capacity (J.mol-1 at.K-1)
+position
+top left
+10
+render
+
+plot
+t
+hms
+title
+CAPRIX average
+scale
+y n -34e4 -20e4
+scale
+x n 1000 3100
+axis-label
+x T(K)
+axis-label
+y Enthalpy (J.mol-1 at)
+position
+top left
+10
+output
+hms-caprix-aver
+render
+
+plot
+t
+hms
+title
+CAPRIX average
+scale
+y n -34e4 -20e4
+scale
+x n 1000 3100
+axis-label
+x T(K)
+axis-label
+y Enthalpy (J.mol-1 at)
+position
+off
+output
+hm-caprix-aver
+render
+
+plot
+t
+muo2
+title
+CAPRIX average
+scale
+y n -50e4 0
+scale
+x n 1000 3100
+axis-label
+x T(K)
+axis-label
+y Oxygen potential (J.mol-1 at.K-1)
+position
+off
+output
+muo2-caprix-aver
+render
+
+plot
+t
+om
+title
+CAPRIX average
+scale
+y n 1.94 2.01
+scale
+x n 1000 3100
+axis-label
+x T(K)
+axis-label
+y O/M of the oxide matrix
+position
+off
+output
+om-caprix-aver
+render
+
+set inter

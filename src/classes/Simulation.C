@@ -61,6 +61,8 @@ void Simulation::execute()
 
     GapPartialPressure();
 
+    OCcall();
+
     UO2Thermochemistry();
 
     StoichiometryDeviation();

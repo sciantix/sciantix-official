@@ -1,0 +1,339 @@
+@$===================================================================
+@$===================================================================
+@$======= step 4: fit Cp of the Laves phase
+@$===================================================================
+@$===================================================================
+@$ Back from the break ...
+
+new Y
+
+set echo
+
+r u ./opttest2-cumg4
+
+@&
+@$ List previous results
+
+l opt
+
+@&
+@$ Ensure all expeimental equilibria has zero weight
+set wei 0 *
+
+@&
+@$ list the data for the Laves phas
+
+l ph laves_c15 data
+
+@&
+
+set opt_var 42 -10
+
+@$ Estimate a start value for the coefficient of the T*ln(T) term 
+@$ This value can be critical for the convergence in the beginning
+@$ and a bad estimate can complicate the calculations.
+@&
+
+set wei 1 CP15_F
+
+@$ Select experiments
+@&
+
+list active
+
+@$ And list them
+@& Remove eq 3 as we do not fit data below 298.15 K
+
+set wei 0 3
+
+
+list active
+
+
+@&
+
+calc all n 1
+
+c a n 1
+
+@$ And calculate them
+@$ Sometimes there are problems, several calculate all may help
+@&
+
+opt 100
+
+@&
+
+l opt
+
+@&
+
+macro ./opttest2-plot-cplaves
+
+@$---------------------------------------------------------
+@$ There is a strange maximum of the Cp at low T.  Why?
+@$ Check the constitution of the Laves phase
+@$---------------------------------------------------------
+@&
+
+plot
+T
+y(laves,*)
+
+
+@$--------------------------------------------------------------------
+@$ The constitution to totally wrong, we should have almost pure Cu in first
+@$ sublattice at all T.
+@$ The drastic change in constitution gives a big contribution to Cp
+@$ because when entropy change so does Cp!
+@&
+@$ We must set a the enthalpy of fromation of the Laves phase
+@$ to enshuring that we have Cu in first and Mg in second
+@$--------------------------------------------------------------------
+
+l ph laves data
+
+
+set opt_fix 40 -300000
+
+@& Set the T-independent parameter to a large negative value
+@&
+
+macro ./opttest2-plot-cplaves
+
+@&
+@$--------------------------------------------------------
+@$ There is still a maximum but at a higher T
+@$ Check how the constitution varies!
+@$--------------------------------------------------------
+plot
+T
+y(laves,*)
+
+@$--------------------------------------------------------------------
+@$ Now we have the correct constitution at least up to the melting point
+@$--------------------------------------------------------------------
+@&
+
+opt 0
+
+@$--------------------------------------------------------------------
+@$ Frequently many errors here ... we have to recalculate all equilibria
+@$ using the global gridminimizer
+@$--------------------------------------------------------------------
+@&
+
+@$ set inter
+
+@$========================================
+@$ Use calc all with grid minimizer
+
+c a y 1
+
+
+opt 0
+
+@$ Sometimes error still here for equilibrium 4
+@& 
+
+sel eq 4 
+
+calc ph laves
+1
+n
+1
+0
+
+@$ and calculate the equilibrium
+
+c n
+
+l,,,,,
+
+@$ This is OK.  If you have errors in other equilibria
+@$ try to fix them in the same way.
+@&
+
+@$ Otherwise try to calculate all again
+
+c a n 1
+
+@$ Now no errors.
+
+@$ If you have more problem maybe stop the macro or add commands here
+@$ set inter
+@&
+
+@$--------------------------------------------------------------------
+@$ Fit very bad, use more parameters
+@$ Here the start values of the parameters are critical
+@$ Consider that A43 is multipled with T**2, A44 with T**(-1)
+@$ and A45 with T**3
+@$--------------------------------------------------------------------
+
+set opt_var 43 .01
+set opt_var 44 1000
+set opt_var 45 .0001
+
+list opt coef
+
+@&
+
+c a n 1
+
+@&
+@$---------------------------------------------------------------------
+@$ Check one equilibrium that constitution is OK, Cu in first, Mg in second
+@$---------------------------------------------------------------------
+
+sel eq 4
+l , 2
+
+@$---------------------------------------------------------------------
+@$ The constitution is reasonable for thie equilibrium
+@$---------------------------------------------------------------------
+@&
+@$ now optimize A42-A45
+
+opt 100
+
+l opt
+
+@&
+@$ now include equilibrium 3 when parameters better
+
+sel eq 3
+c ph lav 1
+N
+1
+1e-12
+
+
+c n
+
+l ,,,,
+
+@$ The heat capacity negative !!! add it
+@&
+
+set wei 1
+
+
+@&
+@$ and run one more time
+
+opt 100
+
+l opt
+
+
+
+@$ set inter
+@$--------------------------------------------------------------
+@$ The sum or errors does not decrease, plot to check
+@$--------------------------------------------------------------
+@&
+
+mac ./opttest2-plot-cplaves
+
+@&
+@$---------------------------------------------------------
+@$ The Cp is OK but increase too mich at high T
+@$ Add a Cp estimation at high T (by phonon calculation)
+@$---------------------------------------------------------
+
+sel eq 125
+
+l,,,
+
+set wei 1
+
+
+c e
+
+l,,,,
+
+c sym cpm2
+
+@$ This heat capacity is calculated by DFT
+@&
+
+list active
+
+
+@$ set inter
+
+@$---------------------------------------------------------
+@$ By adding this extimated Cp we can lower the Cp at high T
+@$---------------------------------------------------------
+@&
+
+opt 100
+
+@&
+
+l opt short
+
+@&
+@$ Plot the Cp
+
+mac ./opttest2-plot-cplaves
+
+
+@$ We have a reasonable fit to Cp
+@&
+@$---------------------------------------------------------
+@$ Use the AMEND OPT Y command to set the current values as start values
+@$ and optimize again.  This is important if the coefficents have
+@$ changed a lot
+@$---------------------------------------------------------
+
+amend opt y
+
+@&
+
+opt 100
+
+@&
+
+l opt
+
+
+@&
+@$ Finally plot again and check the constitution
+
+mac ./opttest2-plot-cplaves
+
+@&
+
+plot
+T
+y(laves,*)
+
+
+
+@$---------------------------------------------------------
+@$ The constitution is perfectly ordered at all T
+@$---------------------------------------------------------
+@&
+@$ Clean up for next step
+
+set opt_fix 0-99
+
+l opt
+
+set wei 0 *
+
+del step_map_result
+
+@$---------------------------------------------------------
+@$ Do not forget to remove STEP and MAP results before saving!
+@$---------------------------------------------------------
+@&
+
+save unf ./opttest2-cumg5
+Y
+
+set inter
+
+

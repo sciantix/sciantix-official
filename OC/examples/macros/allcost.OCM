@@ -1,0 +1,140 @@
+new Y
+@$ ==============================================================
+@$
+@$
+@$
+@$
+@$
+@$ This macro calculates some equilibria in a multicomponent system
+@$ using the largest free databases I have, cost507 for light alloys
+@$ which has 20 elements and 191 phases
+@$ 
+@$ This database is from 1997 and NOT VERY HIGH QUALITY
+@$ 
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$ allcost.OCM
+@$ 
+@$ ==============================================================
+
+set echo
+
+r t ./cost507R
+
+
+@&
+
+@$ This should try to enter >9 composition sets
+
+set c t=2000 p=1e5 n=1 
+
+set c w(b)=.001 w(c)=.004 w(ce)=.002 w(cr)=0.0002 w(cu)=.02 w(fe)=0.0001
+
+set c w(li)=.0006 w(mg)=.03 w(mn)=.0002 w(n)=0.001 w(nd)=.01 w(ni)=.01 
+
+set c w(si)=.07 w(sn)=.003 w(ti)=.002 w(v)=.0008 w(y)=.00014
+
+set c w(zn)=.06 w(zr)=.007
+
+l c
+
+@$ Set small grid to speed up calculations
+@$ set adv small DEPRECIATED COMMAND
+
+set adv grid 0
+
+@&
+@$ Just calculate with gridmin, some warnings
+
+c g
+
+@&
+@$ A short listing of the 20 phases selected by gridmin
+
+l sh p
+
+
+@$ Note several composition set for the liquid
+@&
+@$ Then calculate the full equilibrium using this start point
+
+c n
+
+@&
+
+l,,,,,
+
+@$ Only the AlN solid stable together with the liquid
+@$ NOTE THE DATABASE IS NOT RELIABLE FOR THIS SYSTEM
+debug symbol g -1.4480613E5
+@&
+@$ Then calculte a full equilibrium at 1000 K
+
+set c t=1000
+
+c e
+
+@$ Sometimes it does not converge here because competing liquids ... try again
+@&
+
+c e
+
+
+debug symbol g -5.2815596E+04
+
+@$ Numerical problems can always occur.
+@$ If you have a presistant problem please provide database and macro file
+@$ to the OC team
+@&
+
+l,,,,,
+
+
+
+@$ NOTE THE DATABASE IS NOT RELIABLE FOR THIS SYSTEM
+
+@&
+
+l sh p
+
+@$ NOTE THE DATABASE IS NOT RELIABLE FOR THIS SYSTEM
+@&
+@$ Calculate at a lower T
+
+set c t=500
+
+c e
+
+l,,,,
+
+@$ NOTE THE DATABASE IS NOT RELIABLE FOR THIS SYSTEM
+@$ Testing result
+debug symbol g -2.3254708E4
+@&
+
+l sh p
+
+@$ NOTE THE DATABASE IS NOT RELIABLE FOR THIS SYSTEM
+
+@&
+@$ Added test of the command CALCULATE BOSSES_METHOD
+@$ This may be useful if there are convergence problems
+
+c b-m
+
+
+
+
+@$ Testing result, same as before!
+debug symbol g -2.3254708E4
+
+set inter
+
+@$ gprof oc5prof.exe gmon.out > output_file.txt

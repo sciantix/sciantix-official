@@ -1,0 +1,292 @@
+@$
+new Y
+@$===============================================================
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$ Macro showing calculation of equilibrium diagram,
+@$ paraequilibrium and tzero line for the same system
+@$
+@$ Same as TC example 23 (but not same database)
+@$
+@$ macro file at oc/oc6/
+@&
+@$===============================================================
+@$ 
+
+set echo
+
+
+@$ Use Bengt Hallstedt's special database for cast iron
+@$ Using read selected to avoid graphite and all carbides except cementite
+@$ read selected tdb ./iron4cd
+@$ fe mn c si
+
+@$ fcc bcc cementit
+
+read tdb ./iron4cd
+fe mn c si
+
+
+@$ ignore the warnings ...
+@&
+
+l sh a
+
+
+@$ Normally graphite is never formed in steel
+set st ph gra=dor
+
+@&
+@$ Conditions for a low alloyed steel
+
+set c t=1000 p=1e5 n=1 w(mn)=0.015 w(si)=.003 w(c)=.001
+c e
+
+l , 4
+
+
+@$ Set reference states for C and Fe
+set ref c gra * 1e5
+
+set ref fe bcc * 1e5
+
+@$ Set axis to calculate the equilibrium isopleth
+
+set ax 1 w(c) 0 0.02 0.0005
+set ax 2 t 750 1200 10
+
+@&
+
+map
+
+
+@&
+plot
+
+
+title map Fe-Mn-Si-C Fig 1a
+
+
+@&
+@$ For plotting one can use T_C, in degrees Celsius
+plot
+w%(c)
+T_C
+scale x n 0 1
+scale y n 500 900
+title map-epz Fig 1b
+@$ label the FCC region
+text 
+.4
+840
+2
+0
+N
+FCC
+@$ Label the FCC+BCC+CEMENTITE
+text
+N
+.65
+710
+.8
+2
+N
+FCC+BCC+CEMENTITE
+text
+N
+.65
+600
+.8
+0
+N
+BCC+CEMENTITE
+out ./map-epz1
+y
+
+@$===========================================
+@$
+@$ Calculate a paraequilibrium diagram between fcc and bcc
+@$ Suspend all phases except fcc and bcc
+@$ set st ph *=sus
+set st ph fcc bcc=ent 0
+
+@$ Use "c n" using previous results and
+@$ to avoid creating additional composition sets
+c n
+
+l,,,,
+
+
+@$
+@&
+@$ Prepare to calculate a paraequilibrium fcc/bcc at this T
+set st ph *=sus
+set st ph fcc bcc=ent 1
+
+c n
+
+l,,,,,
+
+@&
+@$ Now calculate the para equilibrium just for C
+@$ because C can diffuse must faster than Mn and Si
+calc para
+fcc
+bcc
+c
+
+
+@&
+l,,,,
+
+
+@$ The composition of the two phases is listed
+@$ Compare with the full equilibrium above (sometimes called ortho-equil)
+@$ Note the content of Mn and Si are the same in bcc and fcc
+@$ The Gibbs energy is higher, -43869.0 J/mol
+@$ as it is not the stable equilibrium.
+@&
+
+@$ set an axis to calculate the paraequilibrium for various T
+@$ Remove the second axis
+set ax 1 t 750 1200 5
+set ax 2 none
+
+@&
+@$ First y is to delete previous map results, 
+@$ second y that we have done all necessary things
+step para
+y
+y
+fcc
+bcc
+C
+
+
+
+@$ The step command calculates the carbon contenet
+@$ in bcc and fcc with same carbon activity and
+@$ same fractions of Mn and Si, i.e. the para-equilibrium
+@&
+
+plot
+
+
+Title step-epz Fig 2a
+
+
+@&
+
+@$ Scale the x-axis
+plot
+w%(*,c)
+T_C
+scale x n 0 1
+scale y n 500 900
+text
+.15
+800
+.8
+-23
+FCC paraequilibrium line
+Title step-epz Fig 2b
+
+@$ ==============================================================
+@$ Overlay the carbon solubility curves, in fcc and bcc with the phase diagram
+@&
+@$ Append this on the previous diagram
+
+plot
+
+
+app ./map-epz1
+Title step-epz Fig 3
+out ./epzpdpara
+y
+
+
+@$ This is the paraequilibrium lines together with the equilibrium diagram
+@$ The paraequilibrium solubility lines are inside
+@$ the stable two-phase region fcc/bcc
+
+@&
+
+@$================================================
+@$ Finally calculate the tzero line with equal
+@$ Gibbs energy for FCC and BCC
+@$ This is the limit for diffusionless transformation (martensite)
+
+l c
+
+
+c tz
+fcc
+bcc
+1
+
+@$ The last line with "1" means release the condition on T
+@&
+
+@$ For the tzero diagram the axis must be w(c) !!
+set ax 1 w(c) 0 .008 .0001
+
+step tz
+y
+y
+fcc
+bcc
+
+
+
+@&
+
+plot
+w%(c)
+T_C
+text
+.39
+620
+.8
+-33
+T-zero line
+Title T-zero Fig 4
+out ./tzero-noG-nucleation
+
+@$ We have plotted the Tzero line with a label
+@$ *************************************
+@&
+
+@$
+@$ Now plot all together, the phase diagram,
+@$ the paraequilibrium lines and the tzero line
+
+plot
+
+
+scale x n 0 1
+scale y n 500 900
+Title step-epz Fig 5
+app ./epzpdpara
+
+
+
+@$ This diagran gives some indication of possible transitions
+@$ because carbon can diffuse rapidly even at low T
+
+
+set inter
+

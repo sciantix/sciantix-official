@@ -1,0 +1,152 @@
+new Y
+@$ ====================================================================
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$
+@$ map10.OCM
+@$ Calculating the isothermal section at 1200 K for Cr-Fe-Ni
+@$ ====================================================================
+@&
+
+set echo
+
+r t ./saf2507
+fe cr ni
+
+set c t=1200 p=1e5 n=1 x(cr)=.45 x(ni)=.5
+
+set ref cr bcc * ,,
+
+set ref ni fcc * ,,
+
+c e
+
+l,,,,
+
+
+@&
+
+set ax 1 x(cr) 0 1 ,,,,
+
+set ax 2 x(ni) 0 1 ,,,,
+
+map
+
+
+@$ this diagram has no potential axis, that requires some special care
+@&
+
+@$ The graphics for this kind of diagram is not fully developed 
+@$ The lines for the invariants are missing
+@$ Some graphical options set by user are ignored
+
+plot
+
+
+title map 10 fig 1
+
+@&
+plot
+
+
+text
+0.47
+0.07
+.8
+0
+n
+{/Symbol s}
+text n 0.6 0.02 .8 0 y
+
+text n 0.2 0.5 .8 0 y
+
+title map 10 fig 2
+
+
+@&
+plot
+
+
+extra tie_line 2
+title map 10 fig 3
+
+
+@&
+@$ Testing Gibbs triangle
+
+plot
+
+
+extra gibbs
+
+text n 0.51 0.25 .8 -48 y
+
+title map 10 fig 4
+
+
+@&
+@$ scale plots a whole square
+
+plot
+
+
+scale x
+n
+0
+.5
+title map 10 fig 5
+
+
+
+@&
+@$ Changing the plot axis reinitiates all plot options !!??
+
+plot
+
+x(*,fe)
+title map 10 fig 6
+
+
+@&
+@$ It looks a bit nicer as Gibbs triangle
+
+plot
+
+
+extra gibbs
+y
+extra tie
+3
+title map 10 fig 7
+
+
+@&
+@$ Finally plot activity lines
+
+plot
+ac(cr)
+ac(ni)
+
+
+
+
+set inter
+
+

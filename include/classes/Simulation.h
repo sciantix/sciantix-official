@@ -326,6 +326,8 @@ public:
 
     void Microstructure();
 
+    void OCcall();
+
     /**
      * @brief This method returns a pointer to the array of diffusion modes corresponding to the specified gas.
      * @param gas_name The name of the gas for which diffusion modes are required.
