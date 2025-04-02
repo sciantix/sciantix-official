@@ -512,6 +512,40 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
 		break;
 	}
 
+    case 11:
+    {
+        /**
+         * @brief iFissionGasDiffusivity = 11 set the Cesium diffusivity (HP for Te)
+         *
+         */
+
+        reference += "Diffusivity for Cs (Busker, 2000)\n\t";
+        double temperature = history_variable["Temperature"].getFinalValue();
+		if (temperature < 1673)
+            diffusivity = 1e-4 * 1.5e-3*exp(-4.5/boltzmann_constant_ev/temperature);
+        else
+            diffusivity = 1e-4 * 2.6e-1 * exp(-4.6/boltzmann_constant_ev/temperature);
+
+        break;
+    }
+
+    case 12:
+    {
+        /**
+         * @brief iFissionGasDiffusivity = 12 set the Iodine diffusivity
+         *
+         */
+
+        reference += "Diffusivity for Iodine (Busker, 2000)\n\t";
+        double temperature = history_variable["Temperature"].getFinalValue();
+		if (temperature < 1700)
+            diffusivity = 1e-4 * 1.2e-9*exp(-2.1/boltzmann_constant_ev/temperature);
+        else
+            diffusivity = 1e-4 * 4.3 * exp(-5.4/boltzmann_constant_ev/temperature);
+
+        break;
+    }
+
     case 99:
     {
         /**
