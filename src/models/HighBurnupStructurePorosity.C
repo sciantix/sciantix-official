@@ -89,13 +89,13 @@ void Simulation::HighBurnupStructurePorosity()
             coeff_matrix[1] = 0.0;
             coeff_matrix[2] = 0.0;
         
-            coeff_matrix[3] = - (fuel_.getPoreTrappingRate() - fuel_.getPoreResolutionRate()) * physics_variable["Time step"].getFinalValue();
-            coeff_matrix[4] = 1.0;
+            coeff_matrix[3] = - (fuel_.getPoreTrappingRate()) * physics_variable["Time step"].getFinalValue();
+            coeff_matrix[4] = 1 + fuel_.getPoreResolutionRate() * physics_variable["Time step"].getFinalValue();
             coeff_matrix[5] = 0.0;
         
-            coeff_matrix[6] = - (fuel_.getPoreTrappingRate() - fuel_.getPoreResolutionRate()) * physics_variable["Time step"].getFinalValue();
+            coeff_matrix[6] = - (fuel_.getPoreTrappingRate()) * physics_variable["Time step"].getFinalValue();
             coeff_matrix[7] = 0.0;
-            coeff_matrix[8] = 1.0;
+            coeff_matrix[8] = 1 + fuel_.getPoreResolutionRate() * physics_variable["Time step"].getFinalValue();
 
             initial_conditions[0] = sciantix_variable["HBS pore density"].getInitialValue() + fuel_.getPoreNucleationRate() * physics_variable["Time step"].getFinalValue();
             initial_conditions[1] = sciantix_variable["Xe in HBS pores"].getInitialValue() + 2.0 * fuel_.getPoreNucleationRate() * physics_variable["Time step"].getFinalValue();
@@ -108,45 +108,45 @@ void Simulation::HighBurnupStructurePorosity()
             sciantix_variable["Xe in HBS pores - variance"].setFinalValue(initial_conditions[2]); // B
 
             // trasferimento da gb a pori con alfa
-            sciantix_variable["Xe at grain boundary"].setFinalValue(
-                sciantix_variable["Xe produced"].getFinalValue() +
-                sciantix_variable["Xe produced in HBS"].getFinalValue() -
-                sciantix_variable["Xe decayed"].getFinalValue() -
-                sciantix_variable["Xe in grain"].getFinalValue() -
-                sciantix_variable["Xe in grain HBS"].getFinalValue() -
-                sciantix_variable["Xe in HBS pores"].getFinalValue() -
-                sciantix_variable["Xe released"].getInitialValue());
+            // sciantix_variable["Xe at grain boundary"].setFinalValue(
+            //     sciantix_variable["Xe produced"].getFinalValue() +
+            //     sciantix_variable["Xe produced in HBS"].getFinalValue() -
+            //     sciantix_variable["Xe decayed"].getFinalValue() -
+            //     sciantix_variable["Xe in grain"].getFinalValue() -
+            //     sciantix_variable["Xe in grain HBS"].getFinalValue() -
+            //     sciantix_variable["Xe in HBS pores"].getFinalValue() -
+            //     sciantix_variable["Xe released"].getInitialValue());
 
-            if (sciantix_variable["Xe at grain boundary"].getFinalValue() < 0.0)
-                sciantix_variable["Xe at grain boundary"].setFinalValue(0.0);
+            // if (sciantix_variable["Xe at grain boundary"].getFinalValue() < 0.0)
+            //     sciantix_variable["Xe at grain boundary"].setFinalValue(0.0);
 
-            double sweeping_term(0.0);
-            if(physics_variable["Time step"].getFinalValue())
-                sweeping_term = 1./(1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) * sciantix_variable["Restructured volume fraction"].getIncrement() / physics_variable["Time step"].getFinalValue();
+            // double sweeping_term(0.0);
+            // if(physics_variable["Time step"].getFinalValue())
+            //     sweeping_term = 1./(1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) * sciantix_variable["Restructured volume fraction"].getIncrement() / physics_variable["Time step"].getFinalValue();
         
-            if (std::isinf(sweeping_term) || std::isnan(sweeping_term))
-                sweeping_term = 0.0;
+            // if (std::isinf(sweeping_term) || std::isnan(sweeping_term))
+            //     sweeping_term = 0.0;
 
-            double XeGB = sciantix_variable["Xe at grain boundary"].getFinalValue();
+            // double XeGB = sciantix_variable["Xe at grain boundary"].getFinalValue();
 
-            sciantix_variable["Xe at grain boundary"].setFinalValue(
-                solver.Integrator(
-                    sciantix_variable["Xe at grain boundary"].getFinalValue(),
-                    - XeGB * sweeping_term * 0.05,
-                    physics_variable["Time step"].getFinalValue()
-                )
-            );
+            // sciantix_variable["Xe at grain boundary"].setFinalValue(
+            //     solver.Integrator(
+            //         sciantix_variable["Xe at grain boundary"].getFinalValue(),
+            //         - XeGB * sweeping_term * 0.05,
+            //         physics_variable["Time step"].getFinalValue()
+            //     )
+            // );
 
-            if (sciantix_variable["Xe at grain boundary"].getFinalValue() < 0.0)
-                sciantix_variable["Xe at grain boundary"].setFinalValue(0.0);
+            // if (sciantix_variable["Xe at grain boundary"].getFinalValue() < 0.0)
+            //     sciantix_variable["Xe at grain boundary"].setFinalValue(0.0);
 
-            sciantix_variable["Xe in HBS pores"].setFinalValue(
-                solver.Integrator(
-                    sciantix_variable["Xe in HBS pores"].getFinalValue(),
-                    + XeGB * sweeping_term * 0.05,
-                    physics_variable["Time step"].getFinalValue()
-                )
-            );
+            // sciantix_variable["Xe in HBS pores"].setFinalValue(
+            //     solver.Integrator(
+            //         sciantix_variable["Xe in HBS pores"].getFinalValue(),
+            //         + XeGB * sweeping_term * 0.05,
+            //         physics_variable["Time step"].getFinalValue()
+            //     )
+            // );
 
             // Provisional variables
             sciantix_variable["trapping rate hbs"].setFinalValue(fuel_.getPoreTrappingRate());
