@@ -124,7 +124,6 @@ void System::setBubbleDiffusivity(int input_value, SciantixArray<SciantixVariabl
              * <a href="../../references/pdf_link/Van_Uffelen_et_al_2013.pdf" target="_blank">Van Uffelen et al. JNM, 434 (2013) 287–29</a>.
              */
 
-            double boltzmann_constant_ev = 8.62e-5; //eV/K
             double volume_self_diffusivity = 3.0e-5 * exp(-4.5 / (boltzmann_constant_ev * history_variable["Temperature"].getFinalValue()));
             double bubble_radius = sciantix_variable["Intragranular bubble radius"].getInitialValue();
 
