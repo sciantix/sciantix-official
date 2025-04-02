@@ -44,6 +44,7 @@ void Simulation::SetPhaseDiagram2()
     else if (input_variable["iThermochimica"].getValue() > 1)
     {
         pressure = history_variable["THERMOCHIMICA pressure"].getFinalValue();
+        pressure *= scaling_factors["Dummy"].getValue();
     }
 
 
