@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['addvalue_0',['addValue',['../class_sciantix_variable.html#a8b35806967a16899d4ed4219544e6094',1,'SciantixVariable']]]
+  ['1_0',['iStoichiometryDeviation = 1',['..//home/giovanni/sciantix-official/src/models/StoichiometryDeviation.C#autotoc_md43',1,'']]]
 ];
