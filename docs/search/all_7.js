@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['input_20explanation_82',['Input explanation',['../md_utilities__input_explanation.html',1,'']]],
-  ['inputvariable_83',['InputVariable',['../class_input_variable.html',1,'InputVariable'],['../class_input_variable.html#a338489c23a85a6270b79cd21d23497a0',1,'InputVariable::InputVariable()']]],
-  ['integrator_84',['Integrator',['../class_solver.html#a0d391a055dc4f24bad1006834e929160',1,'Solver']]],
-  ['intergranularbubblebehavior_85',['InterGranularBubbleBehavior',['../class_simulation.html#a542b7a5bb56cdde2cc033038cad919d7',1,'Simulation']]],
-  ['intragranularbubblebehavior_86',['IntraGranularBubbleBehavior',['../class_simulation.html#a45a0d6c1d3712be2c126360dc51cb416',1,'Simulation']]],
-  ['iselementpresent_87',['isElementPresent',['../class_sciantix_array.html#ac94f5c2cc94c0b0ec171ba7deb5399b3',1,'SciantixArray']]]
+  ['basic_20guide_0',['Basic guide',['../md_utilities_2_basic_guide.html',1,'']]],
+  ['begin_1',['begin',['../class_sciantix_array.html#a5a18887a5ab82057b02fabe892943192',1,'SciantixArray::begin()'],['../class_sciantix_array.html#a2f5aa795ec9ebfe5a7104dbd1d2579e8',1,'SciantixArray::begin() const']]],
+  ['binaryinteraction_2',['BinaryInteraction',['../class_solver.html#a28963638acc359af6547e66164568aed',1,'Solver']]],
+  ['building_20sciantix_20on_20macos_3',['Building SCIANTIX on macOS',['../md_utilities_2_basic_guide.html#autotoc_md13',1,'']]],
+  ['burnup_4',['Burnup',['../class_simulation.html#a5bae49af9bf27d0a2783efc0a1810db7',1,'Simulation']]]
 ];
