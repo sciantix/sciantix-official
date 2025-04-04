@@ -1,30 +1,30 @@
+# Build Artifacts
+
 # Prerequisites
 *.d
 
-# Compiled Object files
-*.slo
-*.lo
+# Compiled Object Files
 *.o
 *.obj
+*.lo
+*.slo
 
 # Precompiled Headers
 *.gch
 *.pch
 
-# Compiled Dynamic libraries
+# Compiled Libraries
 *.so
 *.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
+*.dll       # Dynamic
 *.a
 *.lib
+*.la
+*.lai       # Static
+
+# Fortran Module Files
+*.mod
+*.smod
 
 # Executables
 *.exe
@@ -32,24 +32,26 @@
 *.app
 *.x
 
-# Backup files
+# Development Environment
+
+# IDE / Editor folders
+.vscode/
+.vs/
+
+# Python
+__pycache__/
+
+# Backup and temporary files
 *.bak
 
-# Mac OS files
-*.DS_Store
+# macOS
+.DS_Store
 
-#doxygen
-latex
-
-# Folders
+# Project-specific folders to ignore
 bin/
 obj/
 build/
 out/
-documentation/
-.vscode/
-.vs/
-old_files/
-__pycache__/
-optimization
-GSA_output_files/
+
+# Doxygen
+latex/
