@@ -712,9 +712,11 @@ void System::setProductionRate(int input_value, SciantixArray<SciantixVariable> 
 
         double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
 
-        double sf(1.25);
+        double sf(1.00);
         if (input_variable["iFuelMatrix"].getValue() == 1)
+        {
             sf = 1.25;
+        }
 
         reference += "Production rate = cumulative yield * fission rate density * (1 - alpha).\n\t";
         production_rate = sf * (1.0 - alpha) * yield * history_variable["Fission rate"].getFinalValue(); // (at/m3s)

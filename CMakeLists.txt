@@ -9,12 +9,12 @@
 #
 # Author: G. Zullo (giovanni.zullo@polimi.it)
 
-cmake_minimum_required(VERSION 3.4.0)
+cmake_minimum_required(VERSION 3.5.0)
 
 if(APPLE)
     message(STATUS "Configuring on macOS, setting custom compilers...")
-    set(CMAKE_C_COMPILER /opt/homebrew/bin/gcc-14)
-    set(CMAKE_CXX_COMPILER /opt/homebrew/bin/g++-14)
+    set(CMAKE_C_COMPILER /opt/homebrew/bin/gcc-13)
+    set(CMAKE_CXX_COMPILER /opt/homebrew/bin/g++-13)
 else()
     message(STATUS "Not on macOS, using default compilers.")
 endif()
