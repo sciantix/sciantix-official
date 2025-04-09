@@ -171,7 +171,7 @@ void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariabl
         * @see L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.
         */
             reference += "(no or very limited lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.\n\t";
-            diffusivity = 2.0e-10 * exp(-24603.4 / history_variable["Temperature"].getFinalValue());
+            diffusivity = 2.0e-10 * exp(-24603.4 / history_variable["Temperature"].getFinalValue());; 
         break;
         }
 
@@ -199,20 +199,50 @@ void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariabl
         case 4:
         {
         /**
-        * @brief iHeDiffusivity = 4: Correlation from Z. Talip et al., JNM 445 (2014) 117-127, 
-        * including an additional term due to oxygen vacancy.
+        * @brief iHeDiffusivity = 4: Correlation from E. Yakub et al., JNM 400 (2010) 189–195, 
+        * including stoichiometric deviation, x.
+        * Reminder: This model will not be used since the order of magnitude is different from empirical method which cannot provide a 
         */
             double x = sciantix_variable["Stoichiometry deviation"].getFinalValue();
             double D_0 = 1e-4 * exp(-29708.7 / history_variable["Temperature"].getFinalValue()); 
 
             if (x < 0) {
-                diffusivity = D_0 + 6.4e-7 * abd(x) * exp(-6266.7 / history_variable["Temperature"].getFinalValue());
+                diffusivity = D_0 + 6.4e-7 * abs(x) * exp(-6266.7 / history_variable["Temperature"].getFinalValue());
             } else {
                 diffusivity = D_0 + 1.3e-7 * abs(x) * exp(-6266.7 / history_variable["Temperature"].getFinalValue());
             }
         break;
         }
 
+        case 5:
+        {
+        /**
+        * @brief iHeDiffusivity = 5: temporary implemented.  
+        * Reminder: The order of magnitude of this diffusion coefficient is modified as similar as Luzzis' models. And the same ratio is also applied to the non-stoicchiometric term.
+        * The scale down ratio is 1:3E-5.
+        */
+            double Boltzmann_constant_eV = 8.617e-5;
+            double x = sciantix_variable["Stoichiometry deviation"].getFinalValue();
+            double D_0 = 3e-9 * exp(-29708.7 / history_variable["Temperature"].getFinalValue()); 
+            /* define enthalpy with respect to its stoichiometric deviation
+            */
+           double H_1;
+           if (x < 0) {
+            H_1 = 3.5 * exp(-157.3039 * pow(x - 0.0500, 2)) + 0.1918;
+           } else {
+            H_1 = 7.1155e23 * exp(-27.333 * (2+x)) + 1.2747;
+           }           
+
+            if (x < 0) {
+                diffusivity = D_0 + 1.92e-11 * abs(x) * exp(-H_1 / (Boltzmann_constant_eV * T));
+            } else if (x > 0) {
+                diffusivity = D_0 + 3.9e-12 * abs(x) * exp(-H_1 / (Boltzmann_constant_eV * T));
+            } else {
+                diffusivity = D_0;
+            }      
+        break;
+        }
+ 
         case 99:
         {
         /**
@@ -234,7 +264,7 @@ void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariabl
 double System::getHeliumDiffusivity()
 {
 /// @brief Member function to get the bubble diffusivity of the isotope in the fuel matrix.
-return diffusivity;
+    return diffusivity;
 }
 
 
