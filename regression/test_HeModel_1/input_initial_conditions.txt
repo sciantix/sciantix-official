@@ -1,4 +1,4 @@
-5.0e-06
+5.0e-6
 #	initial grain radius (m)
 0.0	0.0	0.0	0.0	0.0	0.0
 #	initial Xe (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
@@ -6,7 +6,7 @@
 #	initial Kr (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
 1.683e24	1.683e24	1.6e24	8.3e22	0.0	0.0
 #	initial He (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
-2.08e+20  1.0e-9
+2.08e+20  2.0e-9
 # initial intragranular bubble concentration (at/m3), radius (m)
 0.0
 #	initial fuel burn-up (MWd/kgUO2)

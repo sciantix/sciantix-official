@@ -1,5 +1,5 @@
 iGrainGrowth = 2
-iFissionGasDiffusivity = 0
+iFissionGasDiffusivity = 1
 iDiffusionSolver = 2
 iIntraGranularBubbleBehavior = 3
 iResolutionRate = 3
@@ -41,7 +41,7 @@ Initial composition He3 = 8.3e+22
 Initial composition He4 = 0
 Initial composition He5 = 0
 Initial intragranular bubbles0 = 2.08e+20
-Initial intragranular bubbles1 = 1e-09
+Initial intragranular bubbles1 = 2e-09
 Burn_up[0] = 0
 Effective_burn_up[0] = 0
 Irradiation_time[0] = 0
@@ -68,12 +68,12 @@ Initial composition Kr85m6 = 0
 Initial stoichiometry deviation[0] = 0
 Chromium content = 4.94066e-324
 0	400	0	0	
-0.417	1073	0	0	
-1.417	1073	0	0	
+0.417	1673	0	0	
+1.417	1673	0	0	
 sf_resolution_rate = 1
 sf_trapping_rate = 1
 sf_nucleation_rate = 1
-sf_diffusivity = 1.3
+sf_diffusivity = 0.019
 sf_diffusivity2 = 1
 sf_temperature = 1
 sf_fission_rate = 1
