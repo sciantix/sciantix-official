@@ -6,7 +6,7 @@ iResolutionRate = 1
 iTrappingRate = 1
 iNucleationRate = 1
 iOutput = 1
-iGrainBoundaryVacancyDiffusivity = 2
+iGrainBoundaryVacancyDiffusivity = 1
 iGrainBoundaryBehaviour = 1
 iGrainBoundaryMicroCracking = 1
 iFuelMatrix = 0
@@ -100,6 +100,8 @@ Chromium content = 0
 30100	2413.33	1.09996e+18	0	
 30100	2406.67	2.92396e+17	0	
 30100	2400	7.23545e+16	0	
+30100	1500	7.23545e+16	0	
+30100	1100	7.23545e+16	0	
 sf_resolution_rate = 1
 sf_trapping_rate = 1
 sf_nucleation_rate = 1

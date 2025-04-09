@@ -17,7 +17,7 @@ Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
 
 Matrix	UO2	
 	Ainscough et al., JNM, 49 (1973) 117-128.
-	iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.
+	iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.
 	
 
 System	Xe in UO2	
@@ -34,7 +34,7 @@ Input setting	iResolutionRate = 1
 Input setting	iTrappingRate = 1
 Input setting	iNucleationRate = 1
 Input setting	iOutput = 1
-Input setting	iGrainBoundaryVacancyDiffusivity = 2
+Input setting	iGrainBoundaryVacancyDiffusivity = 1
 Input setting	iGrainBoundaryBehaviour = 1
 Input setting	iGrainBoundaryMicroCracking = 1
 Input setting	iFuelMatrix = 0

@@ -57,13 +57,13 @@ void Simulation::output()
 			for (auto &variable : history_variable)
 			{
 				if (variable.getOutput())
-					output_file << std::setprecision(10) << variable.getFinalValue() << "\t";
+					output_file << std::setprecision(20) << variable.getFinalValue() << "\t";
 			}
 
 			for (auto &variable : sciantix_variable)
 			{
 				if (variable.getOutput())
-					output_file << std::setprecision(7) << variable.getFinalValue() << "\t";
+					output_file << std::setprecision(20) << variable.getFinalValue() << "\t";
 			}
 			output_file << "\n";
 		}
@@ -89,12 +89,12 @@ void Simulation::output()
 		{
 			for (auto &variable : history_variable)
 			{
-				output_file << std::setprecision(10) << variable.getFinalValue() << "\t";
+				output_file << std::fixed << std::setprecision(10) << variable.getFinalValue() << "\t";
 			}
 
 			for (auto &variable : sciantix_variable)
 			{
-				output_file << std::setprecision(7) << variable.getFinalValue() << "\t";
+				output_file << std::fixed << std::setprecision(7) << variable.getFinalValue() << "\t";
 			}
 			output_file << "\n";
 		}
