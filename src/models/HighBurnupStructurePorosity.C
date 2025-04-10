@@ -89,8 +89,8 @@ void Simulation::HighBurnupStructurePorosity()
             coeff_matrix[1] = 0.0;
             coeff_matrix[2] = 0.0;
         
-            coeff_matrix[3] = - (fuel_.getPoreTrappingRate() - fuel_.getPoreResolutionRate()) * physics_variable["Time step"].getFinalValue();
-            coeff_matrix[4] = 1.0;
+            coeff_matrix[3] = - fuel_.getPoreTrappingRate() * physics_variable["Time step"].getFinalValue();
+            coeff_matrix[4] = 1.0 + fuel_.getPoreResolutionRate() * physics_variable["Time step"].getFinalValue();
             coeff_matrix[5] = 0.0;
         
             coeff_matrix[6] = - (fuel_.getPoreTrappingRate() - fuel_.getPoreResolutionRate()) * physics_variable["Time step"].getFinalValue();
