@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# ============================
+# Clean script for the project
+# ============================
+
+echo "🧹 Cleaning up build and object directories..."
+
+# Remove 'obj' and 'build' directories if they exist
+[ -d "obj" ] && rm -r obj && echo "🗑️  Removed 'obj' directory."
+[ -d "build" ] && rm -r build && echo "🗑️  Removed 'build' directory."
+
+echo "✅ Clean complete!"
