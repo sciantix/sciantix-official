@@ -22,7 +22,8 @@ void Simulation::setVariables(
     double Sciantix_history[], 
     double Sciantix_variables[], 
     double Sciantix_scaling_factors[], 
-    double Sciantix_diffusion_modes[]
+    double Sciantix_diffusion_modes[],
+    double Sciantix_diffusion_modes_NUS[]
 )
 {
     // Input variable
@@ -85,6 +86,15 @@ void Simulation::setVariables(
         }
     }
 
+    // Diffusion modes NUS
+    for (int i = 0; i < n_modes; ++i)
+    {
+        for (int j = 0; j <= 17; j++)
+        {
+            modes_initial_conditions_NUS[j * n_modes + i] = Sciantix_diffusion_modes_NUS[j * n_modes + i];	
+        }
+    }
+
     // Scaling factors
     int index = 0;
     for (std::string name : getScalingFactorsNames())
@@ -95,6 +105,4 @@ void Simulation::setVariables(
 
     // Source
     sourcesinput = sources_interp; //sourcesinput used in the simulation should be the interpolated sources
-
-
 }

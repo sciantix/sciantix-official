@@ -98,7 +98,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {88, "Xe atoms per HBS pore - variance"}
 };
 
-void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
+void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[],double Sciantix_diffusion_modes_NUS[])
 {
     for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin(); it != update_sciantix_variable.end(); it++)
     {
@@ -110,6 +110,15 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
         for (int j = 0; j <= 17; j++)
         {
             Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];	
+        }
+    }
+   
+    //NUS
+    for (int i = 0; i < n_modes; ++i)
+    {
+        for (int j = 0; j <= 17; j++)
+        {
+            Sciantix_diffusion_modes_NUS[j * n_modes + i] = modes_initial_conditions_NUS[j * n_modes + i];	
         }
     }
 }

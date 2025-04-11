@@ -48,13 +48,16 @@ void SetVariables(
 	double Sciantix_variables[], 
 	double Sciantix_scaling_factors[], 
 	double Sciantix_diffusion_modes[],
+	double Sciantix_diffusion_modes_NUS[],
     SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &history_variable,
     SciantixArray<SciantixVariable> &sciantix_variable,
 	SciantixArray<SciantixVariable> &physics_variable,
 	std::vector<double> &modes_initial_conditions,
+	std::vector<double> &modes_initial_conditions_NUS,
 	SciantixArray<Variable> &scaling_factors,
-	std::vector<Source> sourcesinput
+	std::vector<Source> sourcesinput,
+	std::vector<Source> initial_distribution
 );
 
 #endif

@@ -36,6 +36,8 @@ extern double Sciantix_history[20];
 extern double Sciantix_variables[300];
 extern double Sciantix_scaling_factors[10];
 extern double Sciantix_diffusion_modes[720];
+extern double Sciantix_diffusion_modes_NUS[720];
+
 
 extern long long int Time_step_number;
 extern double  Time_h, dTime_h, Time_end_h;
@@ -62,5 +64,6 @@ extern std::vector<double> Hydrostaticstress_input;
 extern std::vector<double> Steampressure_input;
 extern std::vector<Source> sources_input;
 extern std::vector<Source> sources_interp;
+extern std::vector<Source> initial_distribution;
 
 #endif

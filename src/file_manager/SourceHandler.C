@@ -23,9 +23,9 @@
 #include "SourceHandler.h"
 #include "MainVariables.h"
 
-void loadSourcesFromFile(std::vector<Source> &sources)
+void loadSourcesFromFile(const std::string &filePath, std::vector<Source> &sources)
 {
-    std::ifstream source_file(TestPath + "non_uniform_source.txt", std::ios::in);
+    std::ifstream source_file(TestPath + filePath, std::ios::in);
 
     if (!source_file.is_open())
     {
@@ -76,57 +76,53 @@ void loadSourcesFromFile(std::vector<Source> &sources)
     }
 }
 
-std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int total_steps)
+std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int points_per_interval)
 {
     std::vector<Source> interpolated_sources;
     if (sources.empty())
         return interpolated_sources;
 
-    // Define global time range
-    double t_min = sources.front().time;
-    double t_max = sources.back().time;
-    double time_step = (t_max - t_min) / (total_steps - 1);
+    // Copy the first source exactly
+    interpolated_sources.push_back(sources.front());
 
-    // Generate 100 equally spaced time points
-    for (int i = 0; i < total_steps; ++i)
+    // Iterate over each interval between given source points
+    for (size_t i = 0; i < sources.size() - 1; ++i)
     {
-        double t = t_min + i * time_step;
+        const Source &start = sources[i];
+        const Source &end = sources[i + 1];
 
-        // Find the interval [start, end] that contains t
-        size_t idx = 0;
-        while (idx < sources.size() - 1 && sources[idx + 1].time < t)
-            ++idx;
+        double time_step = (end.time - start.time) / (points_per_interval);
 
-        const Source &start = sources[idx];
-        const Source &end = sources[std::min(idx + 1, sources.size() - 1)];
-
-        // Compute interpolation factor
-        double alpha = (t - start.time) / (end.time - start.time);
-
-        // Interpolate source values
-        Source interpolated_source;
-        interpolated_source.time = t;
-
-        // Interpolate NormalizedDomain
-        interpolated_source.NormalizedDomain.clear();
-        for (size_t k = 0; k < start.NormalizedDomain.size(); ++k)
+        // Generate interpolated points between start and end
+        for (int j = 1; j < points_per_interval; ++j)
         {
-            double domain_interp = start.NormalizedDomain[k] + alpha * (end.NormalizedDomain[k] - start.NormalizedDomain[k]);
-            interpolated_source.NormalizedDomain.push_back(domain_interp);
+            double t = start.time + j * time_step;
+            double alpha = (t - start.time) / (end.time - start.time);
+
+            Source interpolated_source;
+            interpolated_source.time = t;
+
+            // Interpolate NormalizedDomain
+            interpolated_source.NormalizedDomain.resize(start.NormalizedDomain.size());
+            for (size_t k = 0; k < start.NormalizedDomain.size(); ++k)
+            {
+                interpolated_source.NormalizedDomain[k] = start.NormalizedDomain[k] + alpha * (end.NormalizedDomain[k] - start.NormalizedDomain[k]);
+            }
+
+            // Interpolate Slopes and Intercepts
+            interpolated_source.Slopes.resize(start.Slopes.size());
+            interpolated_source.Intercepts.resize(start.Intercepts.size());
+            for (size_t k = 0; k < start.Slopes.size(); ++k)
+            {
+                interpolated_source.Slopes[k] = start.Slopes[k] + alpha * (end.Slopes[k] - start.Slopes[k]);
+                interpolated_source.Intercepts[k] = start.Intercepts[k] + alpha * (end.Intercepts[k] - start.Intercepts[k]);
+            }
+
+            interpolated_sources.push_back(interpolated_source);
         }
 
-        // Interpolate Slopes and Intercepts
-        interpolated_source.Slopes.clear();
-        interpolated_source.Intercepts.clear();
-        for (size_t k = 0; k < start.Slopes.size(); ++k)
-        {
-            double slope_interp = start.Slopes[k] + alpha * (end.Slopes[k] - start.Slopes[k]);
-            double intercept_interp = start.Intercepts[k] + alpha * (end.Intercepts[k] - start.Intercepts[k]);
-            interpolated_source.Slopes.push_back(slope_interp);
-            interpolated_source.Intercepts.push_back(intercept_interp);
-        }
-
-        interpolated_sources.push_back(interpolated_source);
+        // Push the exact end source to maintain the original points
+        interpolated_sources.push_back(end);
     }
 
     return interpolated_sources;
@@ -266,7 +262,7 @@ void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::
         outFile << "r (micron)\tS (at/m^3.s)\n";
 
         // Loop through the source's normalized domain and compute S
-        for (size_t i = 0; i < source.NormalizedDomain.size() - 1; ++i)
+        for (size_t i = 0; i < source.Slopes.size(); ++i)
         {
             double nd_start = source.NormalizedDomain[i];
             double nd_end = source.NormalizedDomain[i + 1];
@@ -277,7 +273,7 @@ void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::
             for (double nd = nd_start; nd < nd_end + step; nd += step)
             {
                 double r = nd * GrainRadius * 1e6;
-                double S = A * r * 1e-6 + B;       // Compute source value S
+                double S = A * r * 1e-06 + B;       // Compute source value S
                 outFile << r << "\t" << S << "\n"; // Write r and S to file
             }
         }
@@ -289,56 +285,32 @@ void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::
 
 double Source_Volume_Average(double GrainRadius, Source source)
 {
-    double NumberofRegions = source.Slopes.size(); // Number of regions
-    double VA = 0.0;                               // Initialize the volume average
+    size_t NumberofRegions = source.Slopes.size(); // Number of regions
+    double VA = 0.0;  // Initialize the volume average
+    double totalVolume = 0.0;
 
-    // Vector to store the domains
+    if (NumberofRegions < 1) return 0.0; // Early exit for invalid input
+
+    // Convert normalized domain to actual radii
     std::vector<double> domain(source.NormalizedDomain.size());
-
-    // Adjust NormalizedDomain to match with the grain radius
     std::transform(source.NormalizedDomain.begin(), source.NormalizedDomain.end(), domain.begin(),
-                   [GrainRadius](double x)
-                   { return x * GrainRadius; });
+                   [GrainRadius](double x) { return x * GrainRadius; });
 
-    // Loop through all the regions and calculate the integral for each domain
+    // Compute volume integral and total volume
     for (size_t j = 0; j < NumberofRegions; ++j)
     {
-        if (j + 1 >= domain.size()) // Make sure we're not accessing out-of-bounds elements
-        {
-            std::cerr << "Error: Trying to access out-of-bounds domain at index " << j << std::endl;
-            return -1.0; // Return an error code for segmentation fault
-        }
-
-        // Calculate the integration for A * r + B over r^2 in the domain [r0, r1]
         double r0 = domain[j];
         double r1 = domain[j + 1];
 
         double A = source.Slopes[j];
         double B = source.Intercepts[j];
 
-        // Calculate the integrals for A * r + B over r^2 in the domain [r0, r1]
         double integral = A * (pow(r1, 4) - pow(r0, 4)) / 4.0 + B * (pow(r1, 3) - pow(r0, 3)) / 3.0;
         double volume = (pow(r1, 3) - pow(r0, 3)) / 3.0;
 
-        // Accumulate the results
         VA += integral;
+        totalVolume += volume;
     }
 
-    // Calculate the total volume by summing all volume elements
-    double totalVolume = 0.0;
-    for (size_t j = 0; j < NumberofRegions; ++j)
-    {
-        if (j + 1 >= domain.size()) // Ensure no out-of-bounds access
-        {
-            std::cerr << "Error: Trying to access out-of-bounds domain at index " << j << std::endl;
-            return -1.0; // Return error code
-        }
-
-        double r0 = domain[j];
-        double r1 = domain[j + 1];
-        totalVolume += (pow(r1, 3) - pow(r0, 3)) / 3.0;
-    }
-
-    // Return the spherical volume average
-    return VA / totalVolume;
+    return (totalVolume != 0.0) ? (VA / totalVolume) : 0.0;
 }

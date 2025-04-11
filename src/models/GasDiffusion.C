@@ -17,6 +17,7 @@
 #include "GasDiffusion.h"
 #include "SourceReader.h"
 #include "SourceHandler.h"
+#include "Solver.h"
 
 void Simulation::GasDiffusion()
 {
@@ -50,7 +51,7 @@ void Simulation::GasDiffusion()
         switch (int(input_variable["iDiffusionSolver"].getValue()))
         {
         case 1:
-        {
+        { 
             if (system.getRestructuredMatrix() == 0)
             {
                 sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
@@ -123,17 +124,18 @@ void Simulation::GasDiffusion()
         case 4:
         {
             writeToFile(sources_interp, sciantix_variable["Grain radius"].getFinalValue());
-            computeAndSaveSourcesToFile(sources_input,TestPath + "source_shape.txt", 0.01, sciantix_variable["Grain radius"].getFinalValue());
-
+            computeAndSaveSourcesToFile(sources_input,TestPath + "source_shape.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
+            
             if (system.getRestructuredMatrix() == 0)
             {    
 
                 sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
                     solver.SpectralDiffusionNUS(
-                        getDiffusionModes(system.getGasName()),
+                        getDiffusionModes_NUS(system.getGasName()),
                         model["Gas diffusion - " + system.getName()].getParameter(),
-                        system.getProductionRateNUS(),
-                        physics_variable["Time step"].getFinalValue()
+                        system.getProductionRateNUS(), //Source
+                        physics_variable["Time step"].getFinalValue(),
+                        0 //NonSym factor
                     )
                 );
 
@@ -154,10 +156,11 @@ void Simulation::GasDiffusion()
             {
                 sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(
                     solver.SpectralDiffusionNUS(
-                        getDiffusionModes(system.getGasName() + " in HBS"),
+                        getDiffusionModes_NUS(system.getGasName() + " in HBS"),
                         model["Gas diffusion - " + system.getName()].getParameter(),
                         system.getProductionRateNUS(),
-                        physics_variable["Time step"].getFinalValue()
+                        physics_variable["Time step"].getFinalValue(),
+                        0 //NonSym factor
                     )
                 );
             }
@@ -350,7 +353,7 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
 void defineSpectralDiffusionNUS1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
 {
     std::string reference;
-    // Parameters {n, D, a, l}
+    // Parameters {n, D, a, l, f}
     // The source data is within the solver (case 4)
     for (auto& system : sciantix_system)
     {
@@ -361,12 +364,12 @@ void defineSpectralDiffusionNUS1Equation(SciantixArray<System> &sciantix_system,
 
         parameters.push_back(n_modes);
         double gasDiffusivity;
-        if (system.getResolutionRate() + system.getTrappingRate() == 0)
-            gasDiffusivity = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
+        if (system.getResolutionRateNUS() + system.getTrappingRate() == 0)
+            gasDiffusivity = system.getFissionGasDiffusivityNUS() * system.getGas().getPrecursorFactor();
         else
             gasDiffusivity = 
-                (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
-                (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
+                (system.getResolutionRateNUS() / (system.getResolutionRateNUS() + system.getTrappingRate())) * system.getFissionGasDiffusivityNUS() * system.getGas().getPrecursorFactor() +
+                (system.getTrappingRate() / (system.getResolutionRateNUS() + system.getTrappingRate())) * system.getBubbleDiffusivity();
 
         parameters.push_back(gasDiffusivity);
         parameters.push_back(system.getMatrix().getGrainRadius());

@@ -49,14 +49,15 @@ private:
     SciantixArray<System> sciantix_system;
     SciantixArray<Matrix> matrices;
     SciantixArray<Gas> gas;
-    Source NUS_source;
-
+    
     SciantixArray<InputVariable> input_variable;
     SciantixArray<InputVariable> scaling_factors;
     std::vector<Source> sourcesinput;
 
     int n_modes;
     std::vector<double> modes_initial_conditions;
+    std::vector<double> modes_initial_conditions_NUS;
+
 
     Solver solver;
 
@@ -68,6 +69,7 @@ private:
     Simulation() {
         n_modes = 40;
         modes_initial_conditions.resize(720);
+        modes_initial_conditions_NUS.resize(720);
     }
 
 public:
@@ -84,7 +86,9 @@ public:
         double Sciantix_history[], 
         double Sciantix_variables[], 
         double Sciantix_scaling_factors[], 
-        double Sciantix_diffusion_modes[]
+        double Sciantix_diffusion_modes[],
+        double Sciantix_diffusion_modes_NUS[]
+
     );
 
     void setGas();
@@ -96,12 +100,14 @@ public:
         double Sciantix_history[], 
         double Sciantix_variables[], 
         double Sciantix_scaling_factors[], 
-        double Sciantix_diffusion_modes[]
+        double Sciantix_diffusion_modes[],
+        double Sciantix_diffusion_modes_NUS[]
+
     );
 
     void execute();
 
-    void update(double Sciantix_variables[], double Sciantix_diffusion_modes[]);
+    void update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_diffusion_modes_NUS[]);
 
     void output();
 
@@ -371,6 +377,80 @@ public:
 
         else if (gas_name == "Kr85m")
             return &modes_initial_conditions[14 * 40];
+
+        else
+        {
+            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesBubbles." << std::endl;
+            return nullptr;
+        }
+    }
+
+    double *getDiffusionModes_NUS(std::string gas_name)
+    {
+        if (gas_name == "Xe")
+            return &modes_initial_conditions_NUS[0];
+        else if (gas_name == "Kr")
+            return &modes_initial_conditions_NUS[3 * 40];
+        else if (gas_name == "He")
+            return &modes_initial_conditions_NUS[6 * 40];
+        else if (gas_name == "Xe133")
+            return &modes_initial_conditions_NUS[9 * 40];
+
+        else if (gas_name == "Kr85m")
+            return &modes_initial_conditions_NUS[12 * 40];
+
+        else if (gas_name == "Xe in HBS")
+            return &modes_initial_conditions_NUS[15 * 40];
+
+        else
+        {
+            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes." << std::endl;
+            return nullptr;
+        }
+    }
+
+    double *getDiffusionModesSolution_NUS(std::string gas_name)
+    {
+        if (gas_name == "Xe")
+            return &modes_initial_conditions_NUS[1 * 40];
+
+        else if (gas_name == "Kr")
+            return &modes_initial_conditions_NUS[4 * 40];
+
+        else if (gas_name == "He")
+            return &modes_initial_conditions_NUS[7 * 40];
+
+        else if (gas_name == "Xe133")
+            return &modes_initial_conditions_NUS[10 * 40];
+
+        else if (gas_name == "Kr85m")
+            return &modes_initial_conditions_NUS[13 * 40];
+
+        else if (gas_name == "Xe in HBS")
+            return &modes_initial_conditions_NUS[16 * 40];
+        else
+        {
+            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesSolution." << std::endl;
+            return nullptr;
+        }
+    }
+
+    double *getDiffusionModesBubbles_NUS(std::string gas_name)
+    {
+        if (gas_name == "Xe")
+            return &modes_initial_conditions_NUS[2 * 40];
+
+        else if (gas_name == "Kr")
+            return &modes_initial_conditions_NUS[5 * 40];
+
+        else if (gas_name == "He")
+            return &modes_initial_conditions_NUS[8 * 40];
+
+        else if (gas_name == "Xe133")
+            return &modes_initial_conditions_NUS[11 * 40];
+
+        else if (gas_name == "Kr85m")
+            return &modes_initial_conditions_NUS[14 * 40];
 
         else
         {

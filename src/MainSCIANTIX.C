@@ -89,13 +89,15 @@ int main(int argc, char **argv)
         Steampressure_input,
         Time_end_h,
         Time_end_s,
-        sources_input
+        sources_input,
+        initial_distribution
     );
 
     Initialization(
         Sciantix_history,
         Sciantix_variables,
         Sciantix_diffusion_modes,
+        Sciantix_diffusion_modes_NUS,
         Temperature_input,
         Fissionrate_input,
         Hydrostaticstress_input,
@@ -103,14 +105,14 @@ int main(int argc, char **argv)
     );
 
     std::string outputPath = TestPath + "output.txt";
-
+    
     remove(outputPath.c_str());
 
     Execution_file.open(TestPath + "execution.txt", std::ios::out);
 
     timer = clock();
 
-    sources_interp = sourceInterpolation(sources_input, Number_of_time_steps_per_interval+1);
+    sources_interp = sourceInterpolation(sources_input, Number_of_time_steps_per_interval);
 
     while (Time_h <= Time_end_h)
     {
@@ -128,7 +130,7 @@ int main(int argc, char **argv)
         Sciantix_history[10] = InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
 
         
-        Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
+        Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes, Sciantix_diffusion_modes_NUS);
 
         dTime_h = TimeStepCalculation(
             Input_history_points,
