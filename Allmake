@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# ============================
+# Build script for the project
+# ============================
+
+# Create and enter build directory
+echo "🔧 Creating build directory..."
+mkdir -p build
+cd build
+
+# Run CMake configuration
+echo "📦 Configuring with CMake..."
+cmake ..
+
+# Compile the project with parallel jobs
+echo "🚀 Building the project..."
+make -j$(nproc)
+
+# Return to the root directory
+cd ..
+
+echo "✅ Build completed successfully!"

@@ -9,7 +9,7 @@
 #
 # Author: G. Zullo (giovanni.zullo@polimi.it)
 
-cmake_minimum_required(VERSION 3.4.0)
+cmake_minimum_required(VERSION 3.5.0)
 
 # Name of the project created / existent in visual studio
 project(sciantix)
