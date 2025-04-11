@@ -33,7 +33,7 @@
  * @param sources A reference to a vector of Source objects.
  * @note The file format should match expected input values.
  */
-void loadSourcesFromFile(std::vector<Source> &sources);
+void loadSourcesFromFile(const std::string &filePath, std::vector<Source> &sources);
 
 /**
  * @brief Performs interpolation on the provided sources to create smoother data.

@@ -189,7 +189,7 @@ public:
      * Slopes: [A1,A2,A3] (example)
      * Intercepts [B1,B2,B3] (example)
      */
-    double SpectralDiffusionNUS(double *initial_condition, std::vector<double> parameter, Source non_uniform_source ,double increment);
+    double SpectralDiffusionNUS(double *initial_condition, std::vector<double> parameter, Source non_uniform_source ,double increment, int factor);
 
     /**
      * @brief Solves a system of two linear equations using Cramer's method.
@@ -288,6 +288,14 @@ public:
      */
     double SourceProjection_i(double GrainRadius, std::vector<double> Domain, std::vector<double> Source_Function, double SpatialMode_i);
 
+    /**
+     * @brief Function only used for the purpose of Rodeo Pilot Project
+     * Correction factor to account for the non-sym of the sample used in the experiment
+     * @author A. Zayat
+
+     */
+    double NonSym(int input);
+    
     /**
      * @brief Constructor
      */

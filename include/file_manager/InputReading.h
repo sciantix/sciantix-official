@@ -47,7 +47,8 @@ void InputReading(
     std::vector<double> &Steampressure_input,
     double &Time_end_h,
     double &Time_end_s,
-    std::vector<Source> &sources_input
+    std::vector<Source> &sources_input,
+    std::vector<Source> &initial_distribution
 );
 
 void readSettings(std::ifstream &input, std::ofstream &output, int Sciantix_options[]);

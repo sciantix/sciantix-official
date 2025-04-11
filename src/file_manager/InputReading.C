@@ -97,7 +97,8 @@ void InputReading(
 	std::vector<double> &Steampressure_input,
 	double &Time_end_h,
 	double &Time_end_s,
-	std::vector<Source> &sources_input
+	std::vector<Source> &sources_input,
+    std::vector<Source> &initial_distribution
 	)
 {
     /**
@@ -147,7 +148,9 @@ void InputReading(
 	Sciantix_options[19] = ReadOneSetting("iHeliumProductionRate", input_settings, input_check);
 	Sciantix_options[20] = ReadOneSetting("iStoichiometryDeviation", input_settings, input_check);
 	Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
-	loadSourcesFromFile(sources_input);
+
+	loadSourcesFromFile("non_uniform_source.txt",sources_input);
+	loadSourcesFromFile("initial_distribution.txt", initial_distribution);
 	
 	if (!input_initial_conditions.fail())
 	{

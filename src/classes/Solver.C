@@ -72,7 +72,7 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
 }
 
 //New Added Solver
-double Solver::SpectralDiffusionNUS(double *initial_condition, std::vector<double> parameter, Source non_uniform_source ,double increment)
+double Solver::SpectralDiffusionNUS(double *initial_condition, std::vector<double> parameter, Source non_uniform_source ,double increment, int factor)
 {
     // parameter [N_modes, D, a, l]
     // Non Uniform Source is of class Source that has: NormalizedDomain, Slopes and Intercepts
@@ -86,7 +86,7 @@ double Solver::SpectralDiffusionNUS(double *initial_condition, std::vector<doubl
     double source_rate(0.0);
     double projection_coeff(0.0);
     double solution(0.0);
-    double n_coeff = 0; 
+    double n_coeff = 0;
 
     double NumberofRegions = non_uniform_source.Slopes.size(); // Obtains the number of regions
 
@@ -127,7 +127,7 @@ double Solver::SpectralDiffusionNUS(double *initial_condition, std::vector<doubl
 
         initial_condition[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);
 
-        solution += projection_coeff * n_c * initial_condition[n] / ((4. / 3.) * M_PI);
+        solution += NonSym(factor)* projection_coeff * n_c * initial_condition[n] / ((4. / 3.) * M_PI);
     }
 
     return solution;
@@ -546,4 +546,16 @@ double Solver::SourceProjection_i(double GrainRadius, std::vector<double> Domain
 
     // Return the difference between proj2 and proj1
     return proj2 - proj1;
+}
+
+double Solver::NonSym(int input)
+{
+    double theta1 = 0;
+    double theta2 = M_PI;
+    double phi1 = 0;
+    double phi2 = M_PI / 8;
+
+    double f = (cos(theta1) - cos(theta2)) * (phi2 - phi1) / (4 * M_PI);
+
+    return input ? f : 1.0;
 }

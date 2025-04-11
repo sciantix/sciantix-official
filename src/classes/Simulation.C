@@ -35,7 +35,8 @@ void Simulation::initialize(
     double Sciantix_history[], 
     double Sciantix_variables[], 
     double Sciantix_scaling_factors[], 
-    double Sciantix_diffusion_modes[]
+    double Sciantix_diffusion_modes[],
+	double Sciantix_diffusion_modes_NUS[]
 )
 {
     setVariables(
@@ -43,7 +44,8 @@ void Simulation::initialize(
 		Sciantix_history, 
 		Sciantix_variables, 
 		Sciantix_scaling_factors, 
-		Sciantix_diffusion_modes
+		Sciantix_diffusion_modes,
+		Sciantix_diffusion_modes_NUS
     );
 
     setGas();
