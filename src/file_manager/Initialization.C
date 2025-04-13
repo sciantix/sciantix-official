@@ -61,16 +61,20 @@ void Initialization(
 	// Projection on diffusion modes of the initial conditions
 	double initial_condition(0.0);
 	
+	//initial_condition_NUS is a Source which is why initialization is like this
 	Source null_source;
 	null_source.time = 0;
 	null_source.NormalizedDomain.resize(2, 0.0);
 	null_source.Slopes.resize(1, 0.0);
 	null_source.Intercepts.resize(1, 0.0);
+	
 	Source initial_condition_NUS = null_source;
 
+	//Uniform
 	double projection_remainder(0.0);
 	double reconstructed_solution(0.0);
 	
+	//NUS
 	double projection_remainder_NUS(0.0);
 	double reconstructed_solution_NUS(0.0);
 
@@ -78,55 +82,55 @@ void Initialization(
 	double projection_coeff(0.0);
 	projection_coeff = -sqrt(8.0 / M_PI);
 
-	// for (k = 0; k < K; ++k)
-	// {
-	// 	switch (k)
-	// 	{
-	// 	case 0: initial_condition = Sciantix_variables[2];  break;  // Xe in grain
-	// 	case 1: initial_condition = Sciantix_variables[3];  break;  // Xe in grain - solution
-	// 	case 2: initial_condition = Sciantix_variables[4];  break;  // Xe in grain - bubbles
+	for (k = 0; k < K; ++k)
+	{
+		switch (k)
+		{
+		case 0: initial_condition = Sciantix_variables[2];  break;  // Xe in grain
+		case 1: initial_condition = Sciantix_variables[3];  break;  // Xe in grain - solution
+		case 2: initial_condition = Sciantix_variables[4];  break;  // Xe in grain - bubbles
 
-	// 	case 3: initial_condition = Sciantix_variables[8];  break;  // Kr in grain
-	// 	case 4: initial_condition = Sciantix_variables[9];  break;  // Kr in grain - solution
-	// 	case 5: initial_condition = Sciantix_variables[10]; break;  // Kr in grain - bubbles
+		case 3: initial_condition = Sciantix_variables[8];  break;  // Kr in grain
+		case 4: initial_condition = Sciantix_variables[9];  break;  // Kr in grain - solution
+		case 5: initial_condition = Sciantix_variables[10]; break;  // Kr in grain - bubbles
 
-	// 	case 6: initial_condition = Sciantix_variables[14]; break;  // He in grain
-	// 	case 7: initial_condition = Sciantix_variables[15]; break;  // He in grain - solution
-	// 	case 8: initial_condition = Sciantix_variables[16]; break;  // He in grain - bubbles
+		case 6: initial_condition = Sciantix_variables[14]; break;  // He in grain
+		case 7: initial_condition = Sciantix_variables[15]; break;  // He in grain - solution
+		case 8: initial_condition = Sciantix_variables[16]; break;  // He in grain - bubbles
 
-	// 	case 9: initial_condition = Sciantix_variables[49]; break;  // Xe133 in grain
-	// 	case 10: initial_condition = Sciantix_variables[50]; break;  // Xe133 in grain - solution
-	// 	case 11: initial_condition = Sciantix_variables[51]; break;  // Xe133 in grain - bubbles
+		case 9: initial_condition = Sciantix_variables[49]; break;  // Xe133 in grain
+		case 10: initial_condition = Sciantix_variables[50]; break;  // Xe133 in grain - solution
+		case 11: initial_condition = Sciantix_variables[51]; break;  // Xe133 in grain - bubbles
 
-	// 	case 12: initial_condition = Sciantix_variables[58]; break;  // Kr85m in grain
-	// 	case 13: initial_condition = Sciantix_variables[59]; break;  // Kr85m in grain - solution
-	// 	case 14: initial_condition = Sciantix_variables[60]; break;  // Kr85m in grain - bubbles
+		case 12: initial_condition = Sciantix_variables[58]; break;  // Kr85m in grain
+		case 13: initial_condition = Sciantix_variables[59]; break;  // Kr85m in grain - solution
+		case 14: initial_condition = Sciantix_variables[60]; break;  // Kr85m in grain - bubbles
 		
-	// 	case 15: initial_condition = Sciantix_variables[92]; break;  // Xe in UO2 HBS
-	// 	case 16: initial_condition = Sciantix_variables[93]; break;  // Xe in UO2 HBS - solution
-	// 	case 17: initial_condition = Sciantix_variables[94]; break;  // Xe in UO2 HBS - bubbles
+		case 15: initial_condition = Sciantix_variables[92]; break;  // Xe in UO2 HBS
+		case 16: initial_condition = Sciantix_variables[93]; break;  // Xe in UO2 HBS - solution
+		case 17: initial_condition = Sciantix_variables[94]; break;  // Xe in UO2 HBS - bubbles
 
-	// 	default: initial_condition = 0.0; break;
-	// 	}
+		default: initial_condition = 0.0; break;
+		}
 
-	// 	projection_remainder = initial_condition;
-	// 	for (iteration = 0; iteration < iteration_max; ++iteration)
-	// 	{
-	// 		reconstructed_solution = 0.0;
-	// 		for (n = 0; n < n_modes; ++n)
-	// 		{
-	// 			if (iteration == 0) Sciantix_diffusion_modes[k * n_modes + n] = 0;
-	// 			np1 = n + 1;
-	// 			const double n_coeff = pow(-1.0, np1) / np1;
-	// 			Sciantix_diffusion_modes[k * n_modes + n] += projection_coeff * n_coeff * projection_remainder;
-	// 			reconstructed_solution += projection_coeff * n_coeff * Sciantix_diffusion_modes[k * n_modes + n] * 3.0 / (4.0 * M_PI);
-	// 		}
-	// 		projection_remainder = initial_condition - reconstructed_solution;
-	// 	}
-	// }
+		projection_remainder = initial_condition;
+		for (iteration = 0; iteration < iteration_max; ++iteration)
+		{
+			reconstructed_solution = 0.0;
+			for (n = 0; n < n_modes; ++n)
+			{
+				if (iteration == 0) Sciantix_diffusion_modes[k * n_modes + n] = 0;
+				np1 = n + 1;
+				const double n_coeff = pow(-1.0, np1) / np1;
+				Sciantix_diffusion_modes[k * n_modes + n] += projection_coeff * n_coeff * projection_remainder;
+				reconstructed_solution += projection_coeff * n_coeff * Sciantix_diffusion_modes[k * n_modes + n] * 3.0 / (4.0 * M_PI);
+			}
+			projection_remainder = initial_condition - reconstructed_solution;
+		}
+	}
 
 	//NUS SOLVER
-	for (k = 0; k < 1; ++k)
+	for (k = 0; k < K; ++k)
 	{
 		switch (k)
 		{
@@ -157,51 +161,47 @@ void Initialization(
 		default: initial_condition_NUS = null_source; break;
 		}
 		
-		projection_coeff = sqrt(8.0 / M_PI);
-
 		double NumberofRegions = initial_condition_NUS.Slopes.size();
 		std::vector<std::vector<double>> domain(NumberofRegions, std::vector<double>(2)); 
 		std::vector<std::vector<double>> source(NumberofRegions, std::vector<double>(2));
 		Solver solver;
+
 	
-		// Fill Full_Source
+		// Fill source
 		for (size_t i = 0; i < NumberofRegions; ++i) 
 		{
 			source[i][0] = initial_condition_NUS.Slopes[i];     // A
 			source[i][1] = initial_condition_NUS.Intercepts[i]; // B
 		}
-	
-		// Fill Full_Domain
+
+		// Fill domain
 		for (size_t i = 0; i < NumberofRegions; ++i) 
 		{
 			domain[i][0] = Sciantix_variables[0] * initial_condition_NUS.NormalizedDomain[i]; // edge1
 			domain[i][1] = Sciantix_variables[0] * initial_condition_NUS.NormalizedDomain[i+1]; // edge2
 		}
-	
-		projection_remainder_NUS = Source_Volume_Average(Sciantix_variables[0], initial_condition_NUS);
 		
-		for (iteration = 0; iteration < 2; ++iteration)
+		projection_remainder_NUS = Source_Volume_Average(Sciantix_variables[0], initial_condition_NUS);
+		for (iteration = 0; iteration < iteration_max; ++iteration)
 		{
 			reconstructed_solution_NUS = 0.0;
 			for (n = 0; n < n_modes; ++n)
 			{
 				if (iteration == 0) Sciantix_diffusion_modes_NUS[k * n_modes + n] = 0;
 				np1 = n + 1;
+				double n_c = 0;
 				
-				double n_coeff = 0;
-				for (size_t x = 0; x < initial_condition_NUS.Slopes.size(); ++x) 
+				for(size_t x = 0; x < NumberofRegions; ++x)
 				{
-					n_coeff += solver.SourceProjection_i(Sciantix_variables[0], domain[x], source[x], np1);
+					n_c += solver.SourceProjection_i(Sciantix_variables[0], domain[x], source[x], np1);
 				}
-				double n_c = pow(-1.0, np1) / np1;
-				
-				std::cout << Sciantix_diffusion_modes_NUS[k * n_modes + n] << std::endl;
+				const double n_coeff = pow(-1.0, np1) / np1;
 
-				Sciantix_diffusion_modes_NUS[k * n_modes + n] += projection_coeff * n_coeff * projection_remainder_NUS;
-				reconstructed_solution_NUS += projection_coeff * n_c * Sciantix_diffusion_modes_NUS[k * n_modes + n] * 3.0 / (4.0 * M_PI);
+				Sciantix_diffusion_modes_NUS[k * n_modes + n] += - 0.05*projection_coeff * n_c;
+				reconstructed_solution_NUS+= projection_coeff * n_coeff * Sciantix_diffusion_modes_NUS[k * n_modes + n] * 3.0 / (4.0 * M_PI);
 			}
-			projection_remainder_NUS = Source_Volume_Average(Sciantix_variables[0], initial_condition_NUS) - reconstructed_solution_NUS;
-		}
+			projection_remainder_NUS =Source_Volume_Average(Sciantix_variables[0],initial_condition_NUS) - reconstructed_solution_NUS;
+		}		
 	}		
 
 	

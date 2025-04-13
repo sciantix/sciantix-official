@@ -76,6 +76,7 @@ double Solver::SpectralDiffusionNUS(double *initial_condition, std::vector<doubl
 {
     // parameter [N_modes, D, a, l]
     // Non Uniform Source is of class Source that has: NormalizedDomain, Slopes and Intercepts
+    // NormalizedDomain is of size N while the slopes and intercepts are of size N-1
     
     size_t n;
     unsigned short int np1(1);
