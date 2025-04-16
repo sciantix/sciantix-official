@@ -132,18 +132,18 @@ void Simulation::HighBurnupStructurePorosity()
             sciantix_variable["Xe at grain boundary"].setFinalValue(
                 solver.Integrator(
                     sciantix_variable["Xe at grain boundary"].getFinalValue(),
-                    - XeGB * sweeping_term * 0.05,
+                    - XeGB * sweeping_term * 1,
                     physics_variable["Time step"].getFinalValue()
                 )
             );
 
             if (sciantix_variable["Xe at grain boundary"].getFinalValue() < 0.0)
                 sciantix_variable["Xe at grain boundary"].setFinalValue(0.0);
-
+   
             sciantix_variable["Xe in HBS pores"].setFinalValue(
                 solver.Integrator(
                     sciantix_variable["Xe in HBS pores"].getFinalValue(),
-                    + XeGB * sweeping_term * 0.05,
+                    + XeGB * sweeping_term * 1,
                     physics_variable["Time step"].getFinalValue()
                 )
             );
@@ -183,8 +183,8 @@ void Simulation::HighBurnupStructurePorosity()
             {
                 WignerSeitzCellRadius = pow(3.0 / (4.0 * M_PI * sciantix_variable["HBS pore density"].getFinalValue()), (1.0 / 3.0));
                 psi = sciantix_variable["HBS pore radius"].getInitialValue() / WignerSeitzCellRadius;
-                // DimensionlessFactor =  10.0 * psi * (1 + pow(psi, 3.0)) / (-pow(psi, 6.0) + 5.0 * pow(psi, 2.0) - 9.0 * psi + 5.0);
-                DimensionlessFactor = 3.0 / fuel_.getGrainRadius() * WignerSeitzCellRadius * 8.0 * psi * (1.-pow(psi,3)) / (- pow(psi, 5.0) + 2.0 * pow(psi, 3.0) + 4.0 * pow(psi, 2.0) - 9.0 * psi + 4.0);
+                DimensionlessFactor =  10.0 * psi * (1 + pow(psi, 3.0)) / (-pow(psi, 6.0) + 5.0 * pow(psi, 2.0) - 9.0 * psi + 5.0);
+                //DimensionlessFactor = 3.0 / fuel_.getGrainRadius() * WignerSeitzCellRadius * 8.0 * psi * (1.-pow(psi,3)) / (- pow(psi, 5.0) + 2.0 * pow(psi, 3.0) + 4.0 * pow(psi, 2.0) - 9.0 * psi + 4.0);
             }
         
             // double N_grains = pow(WignerSeitzCellRadius,3) - pow(sciantix_variable["HBS pore radius"].getInitialValue(),3) / pow(fuel_.getGrainRadius(),3);
@@ -193,8 +193,8 @@ void Simulation::HighBurnupStructurePorosity()
             
             if(DimensionlessFactor)
             {
-                volume_flow_rate = 2.0 * M_PI * fuel_.getGrainBoundaryThickness() * fuel_.getGrainBoundaryVacancyDiffusivity() * DimensionlessFactor;
-                // volume_flow_rate = 2.0 * M_PI * WignerSeitzCellRadius * fuel_.getGrainBoundaryVacancyDiffusivity() / DimensionlessFactor;
+                //volume_flow_rate = 2.0 * M_PI * fuel_.getGrainBoundaryThickness() * fuel_.getGrainBoundaryVacancyDiffusivity() * DimensionlessFactor;
+                volume_flow_rate = 2.0 * M_PI * WignerSeitzCellRadius * fuel_.getGrainBoundaryVacancyDiffusivity() / DimensionlessFactor;
                 growth_rate = volume_flow_rate * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * Z_compr / fuel_.getSchottkyVolume();
                 equilibrium_term = - volume_flow_rate * equilibrium_pressure / (boltzmann_constant * history_variable["Temperature"].getFinalValue());
                 
