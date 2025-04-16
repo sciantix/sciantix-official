@@ -166,17 +166,46 @@ void Simulation::GasDiffusion()
         
         else if (system.getRestructuredMatrix() == 1)
         {
-            sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-                sciantix_variable[system.getGasName() + " produced"].getFinalValue() +
-                sciantix_variable[system.getGasName() + " produced in HBS"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " in grain HBS"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " in HBS pores"].getInitialValue() -
-                sciantix_variable[system.getGasName() + " released"].getInitialValue());
+            double source_ig(0.0);
+            if(physics_variable["Time step"].getFinalValue())
+            {
+                source_ig = (1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) * 
+                    (sciantix_variable[system.getGasName() + " produced"].getIncrement() +
+                    sciantix_variable[system.getGasName() + " produced in HBS"].getIncrement() -
+                    sciantix_variable[system.getGasName() + " decayed"].getIncrement() -
+                    sciantix_variable[system.getGasName() + " in grain"].getIncrement() -
+                    sciantix_variable[system.getGasName() + " in grain HBS"].getIncrement() -
+                    sciantix_variable[system.getGasName() + " in HBS pores"].getIncrement() -
+                    sciantix_variable[system.getGasName() + " released"].getIncrement()) / physics_variable["Time step"].getFinalValue();
+            }
 
-            if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
-                sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
+            double sweeping_term(0.0);
+            if(physics_variable["Time step"].getFinalValue())
+                sweeping_term = 1./(1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) * sciantix_variable["Restructured volume fraction"].getIncrement() / physics_variable["Time step"].getFinalValue();
+        
+            if (std::isinf(sweeping_term) || std::isnan(sweeping_term))
+                sweeping_term = 0.0;
+
+            sciantix_variable["Xe at grain boundary"].setFinalValue(
+                solver.Decay(
+                    sciantix_variable["Xe at grain boundary"].getInitialValue(),
+                    sweeping_term,
+                    source_ig,
+                    physics_variable["Time step"].getFinalValue()
+                )
+            );
+
+            if (sciantix_variable["Xe at grain boundary"].getFinalValue() < 0.0)
+            sciantix_variable["Xe at grain boundary"].setFinalValue(0.0);
+
+            sciantix_variable["Xe in HBS pores"].setInitialValue(
+                sciantix_variable["Xe produced"].getFinalValue() +
+                sciantix_variable["Xe produced in HBS"].getFinalValue() -
+                sciantix_variable["Xe decayed"].getFinalValue() -
+                sciantix_variable["Xe in grain"].getFinalValue() -
+                sciantix_variable["Xe in grain HBS"].getFinalValue() -
+                sciantix_variable["Xe at grain boundary"].getFinalValue() -
+                sciantix_variable["Xe released"].getInitialValue());
         }        
     }
 
