@@ -127,7 +127,7 @@ void Matrix::setGrainBoundarySingleAtomDiffusivity(int input_value, SciantixArra
 
             double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
             double hbs_correction = sin(4.0 * (1. - alpha) * M_PI / 180.0 + 40.0 * alpha * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
-
+                        
             grain_boundary_single_atom_diffusivity *= hbs_correction;
 
             reference += "iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.\n\t";
@@ -150,7 +150,10 @@ void Matrix::setPoreNucleationRate(SciantixArray<SciantixVariable> &sciantix_var
 
     double sf_nucleation_rate_porosity = 1.25e-6; // from dburnup to dtime
 
-    pore_nucleation_rate = (5.0e17 * 2.77e-7 * 3.54 * (1.0 - sciantix_variable["Restructured volume fraction"].getFinalValue()) * pow(sciantix_variable["Effective burnup"].getFinalValue()/0.8814, 2.54));
+    double avrami_constant(3.54);
+    double transformation_rate(2.77e-7);
+
+    pore_nucleation_rate = (5.0e17 * transformation_rate * avrami_constant * (1.0 - sciantix_variable["Restructured volume fraction"].getFinalValue()) * pow(sciantix_variable["Effective burnup"].getFinalValue()/0.8814, avrami_constant - 1.));
 
     pore_nucleation_rate *= sf_nucleation_rate_porosity;
 }
@@ -170,10 +173,12 @@ void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_var
  
 void Matrix::setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors)
 {
-    pore_trapping_rate = 4.0 * M_PI * grain_boundary_single_atom_diffusivity *
-        sciantix_variable["Xe at grain boundary"].getFinalValue() *
-        sciantix_variable["HBS pore radius"].getFinalValue() *
-        (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
+    // pore_trapping_rate = 4.0 * M_PI * grain_boundary_single_atom_diffusivity *
+    //     sciantix_variable["Xe at grain boundary"].getFinalValue() *
+    //     sciantix_variable["HBS pore radius"].getFinalValue() * 
+    //     (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
 
-    pore_trapping_rate *= scaling_factors["Dummy"].getValue();
+    // pore_trapping_rate *= scaling_factors["Dummy"].getValue();
+
+    pore_trapping_rate = 0.0;
 }
