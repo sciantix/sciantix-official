@@ -78,7 +78,7 @@ void Initialization(
 	double projection_remainder_NUS(0.0);
 	double reconstructed_solution_NUS(0.0);
 
-	int iteration(0), iteration_max(20), n(0), np1(1), n_modes(40), k(0), K(18);
+	int iteration(0), iteration_max(20), n(0), np1(1), n_modes(40), k(0), K(1);
 	double projection_coeff(0.0);
 	projection_coeff = -sqrt(8.0 / M_PI);
 
@@ -180,28 +180,18 @@ void Initialization(
 			domain[i][0] = Sciantix_variables[0] * initial_condition_NUS.NormalizedDomain[i]; // edge1
 			domain[i][1] = Sciantix_variables[0] * initial_condition_NUS.NormalizedDomain[i+1]; // edge2
 		}
-		
-		projection_remainder_NUS = Source_Volume_Average(Sciantix_variables[0], initial_condition_NUS);
-		for (iteration = 0; iteration < iteration_max; ++iteration)
-		{
-			reconstructed_solution_NUS = 0.0;
-			for (n = 0; n < n_modes; ++n)
-			{
-				if (iteration == 0) Sciantix_diffusion_modes_NUS[k * n_modes + n] = 0;
-				np1 = n + 1;
-				double n_c = 0;
-				
-				for(size_t x = 0; x < NumberofRegions; ++x)
-				{
-					n_c += solver.SourceProjection_i(Sciantix_variables[0], domain[x], source[x], np1);
-				}
-				const double n_coeff = pow(-1.0, np1) / np1;
 
-				Sciantix_diffusion_modes_NUS[k * n_modes + n] += - 0.05*projection_coeff * n_c;
-				reconstructed_solution_NUS+= projection_coeff * n_coeff * Sciantix_diffusion_modes_NUS[k * n_modes + n] * 3.0 / (4.0 * M_PI);
+		for (n = 0; n < n_modes; ++n)
+		{
+			np1 = n + 1;
+			double n_c = 0;
+			for (size_t x = 0; x < NumberofRegions; ++x)
+			{
+				n_c += solver.SourceProjection_i(Sciantix_variables[0], domain[x], source[x], np1);
 			}
-			projection_remainder_NUS =Source_Volume_Average(Sciantix_variables[0],initial_condition_NUS) - reconstructed_solution_NUS;
-		}		
+			const double n_coeff = pow(-1.0, np1) / np1;
+			Sciantix_diffusion_modes_NUS[k * n_modes + n] = -projection_coeff * n_c;
+		}
 	}		
 
 	
