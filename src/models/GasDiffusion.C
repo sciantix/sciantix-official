@@ -152,6 +152,19 @@ void Simulation::GasDiffusion()
     // Calculation of the gas concentration at grain boundary, by mass balance
     for (auto &system : sciantix_system)
     {
+        double decay_vaporisation = pow( sciantix_variable["Grain radius"].getFinalValue() / sciantix_variable["Grain radius"].getInitialValue(), 3);
+        if (decay_vaporisation > 1.0)
+            decay_vaporisation = 1.0;
+        else if (decay_vaporisation < 0.0)
+            decay_vaporisation = 0.0;
+        
+        sciantix_variable[system.getGasName() + " released"].setInitialValue(
+            sciantix_variable[system.getGasName() + " released"].getInitialValue() +
+            sciantix_variable[system.getGasName() + " in grain"].getInitialValue() * (1 - decay_vaporisation)
+        );
+        sciantix_variable[system.getGasName() + " released"].setConstant();
+
+
         if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 0.0)
         {
             sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
@@ -250,6 +263,14 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
             parameters.push_back(-sciantix_variable[system.getGasName() + " reacted - IG"].getIncrement());
         else
             parameters.push_back(0);
+        
+            
+        double decay_vaporisation = pow( sciantix_variable["Grain radius"].getFinalValue() / sciantix_variable["Grain radius"].getInitialValue(), 3);
+        if (decay_vaporisation > 1.0)
+            decay_vaporisation = 1.0;
+        else if (decay_vaporisation < 0.0)
+            decay_vaporisation = 0.0;
+        parameters.push_back(decay_vaporisation);
 
         model_.setParameter(parameters);
         model.push(model_);
