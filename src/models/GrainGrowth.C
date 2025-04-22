@@ -138,5 +138,31 @@ void Simulation::GrainGrowth()
     sciantix_variable["Grain radius"].setFinalValue(
         solver.QuarticEquation(model["Grain growth"].getParameter()));
 
+    // Vaporisation
+
+    double T =  history_variable["Temperature"].getFinalValue();
+    
+    double massuo2 = 270e-3; //kg/mol
+    double uo2volume = massuo2/10960.0;  // m³/mol
+    double dg_uo2 = 567000 - T * 150; //J/mol
+    double p_uo2 = exp( - dg_uo2/ (gas_constant * T));
+    double p_sys = history_variable["THERMOCHIMICA pressure"].getFinalValue(); //Pa
+    double clausing_factor = 1 - sciantix_variable["Fuel density"].getFinalValue()/matrices["UO2"].getTheoreticalDensity(); // Clausing factor
+
+    double grainradius = solver.Integrator(
+        sciantix_variable["Grain radius"].getFinalValue(),
+        - uo2volume * clausing_factor / pow(2 * M_PI * massuo2 * gas_constant * T, 0.5) * (p_uo2 * p_sys),
+        physics_variable["Time step"].getFinalValue()
+    );
+    
+    if (grainradius > 0.0)
+    {
+        sciantix_variable["Grain radius"].setFinalValue(grainradius);
+    }
+    else
+    {
+        "Warning: The grain radius is negative. The vaporisation model is not valid.";
+    }
+
     matrices["UO2"].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
 }
