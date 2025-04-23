@@ -83,13 +83,11 @@ void Simulation::GrainVaporisation()
     if (grainradius > 0.0) sciantix_variable["Grain radius"].setFinalValue(grainradius);
     else std::cout<<"Warning: The grain radius is negative. The vaporisation model is not valid."<<std::endl;
 
-    if (grainradius < 3e-6) input_variable["iGrainBoundaryBehaviour"].setValue(0);
-
     matrices["UO2"].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
 
     for (auto &system : sciantix_system)
     {
-        double UO2vaporisation = (
+        double UO2vaporisation_IG = (
             sciantix_variable[system.getGasName() + " in grain"].getInitialValue() - 
             solver.Decay(
                 sciantix_variable[system.getGasName() + " in grain"].getInitialValue(),
@@ -99,8 +97,18 @@ void Simulation::GrainVaporisation()
             )
         );
 
+        double UO2vaporisation_GB = (
+            sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() - 
+            solver.Decay(
+                sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue(),
+                1.0,
+                0.0,
+                - 3 * sciantix_variable["Grain radius"].getIncrement() / sciantix_variable["Grain radius"].getFinalValue()
+            )
+        );
+
         sciantix_variable[system.getGasName() + " released"].setInitialValue(
-            sciantix_variable[system.getGasName() + " released"].getInitialValue() + UO2vaporisation
+            sciantix_variable[system.getGasName() + " released"].getInitialValue() + UO2vaporisation_IG + UO2vaporisation_GB
         );
         sciantix_variable[system.getGasName() + " released"].setConstant();
     }

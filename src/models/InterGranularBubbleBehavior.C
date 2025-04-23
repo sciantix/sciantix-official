@@ -26,8 +26,6 @@ void Simulation::InterGranularBubbleBehavior()
     std::string reference;
     std::vector<double> parameter;
 
-    if (input_variable["iGrainBoundaryBehaviour"].getValue() == 0) return;
-
     switch (int(input_variable["iGrainBoundaryBehaviour"].getValue()))
     {
         case 0:
