@@ -75,6 +75,14 @@ void Simulation::GrainBoundaryMicroCracking()
 			double nu =  fuel_.getPoissonRatio();
 			double G =  fuel_.getGrainBoundaryFractureEnergy(); // J/m2
 
+            if (sciantix_variable["Intergranular bubble radius"].getFinalValue() == 0)
+            {
+                parameter.push_back(0.0);
+                parameter.push_back(0.0);
+			    parameter.push_back(1.0 / 0.8814);
+                break;
+            }; // m
+
 			// Fracture toughness
 			// K_IC = sqrt(elasticmodulus*grainboundaryenergy/(1-poissonratio**2))
             double K_IC = sqrt(E * G / (1.0 - pow(nu, 2))) * 1e-6; // (MPa m0.5)
