@@ -136,6 +136,8 @@ std::map<int, std::string> update_sciantix_variable = {
     {157,"Chromia solution"},
     {158,"Chromia precipitate"},
     {160,"Diffusion coefficient"},
+    {161,"U vapour"},
+    {162,"O vapour"},
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])

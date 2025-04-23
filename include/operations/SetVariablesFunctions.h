@@ -253,7 +253,6 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("CsTe4(s) - pure condensed phases - IG","(mol)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("Cs_hcp_a3(s) - pure condensed phases - IG","(mol)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("Cs_hex_a8(s) - pure condensed phases - IG","(mol)", 0.0, 0.0, toOutputThermochimica),
-
                   
         SciantixVariable("I - GAS_IDEAL - GB","(mol)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("I2 - GAS_IDEAL - GB","(mol)", 0.0, 0.0, toOutputThermochimica),
@@ -378,6 +377,9 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Chromia precipitate", "(at/m3)", Sciantix_variables[158], Sciantix_variables[158], toOutputChromiumContent),
 
         SciantixVariable("Diffusion coefficient", "(m2/s)", Sciantix_variables[160], Sciantix_variables[160], 0),
+
+        SciantixVariable("U vapour", "(mol)", Sciantix_variables[161], Sciantix_variables[161], 1),
+        SciantixVariable("O vapour", "(mol)", Sciantix_variables[162], Sciantix_variables[162], 1),
     };
 
     return init_sciantix_variable;

@@ -75,6 +75,8 @@ void Simulation::execute()
 
     GrainGrowth();
 
+    GrainVaporisation();
+
     GrainBoundarySweeping();
 
     GasProduction();
