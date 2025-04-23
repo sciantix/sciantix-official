@@ -199,6 +199,15 @@ public:
      * 
      */
     void GrainGrowth();
+
+    /**
+     * @brief Grain vaporisation.
+     * 
+     * @author E. Cappellari
+     * 
+     */
+    void GrainVaporisation();
+    
     
     /**
      * @brief Evolution models for intra-granular bubbles in fuel grains based on the value of iIntraGranularBubbleBehavior.
