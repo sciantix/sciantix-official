@@ -44,22 +44,7 @@ void Simulation::GasDiffusion()
         switch (int(input_variable["iDiffusionSolver"].getValue()))
         {
         case 1:
-        {
-            double UO2vaporisation = (
-                sciantix_variable[system.getGasName() + " in grain"].getInitialValue() - 
-                solver.Decay(
-                    sciantix_variable[system.getGasName() + " in grain"].getInitialValue(),
-                    1.0,
-                    0.0,
-                    model["Gas diffusion - " + system.getName()].getParameter()[6]
-                )
-            );
-
-            sciantix_variable[system.getGasName() + " released"].setInitialValue(
-                sciantix_variable[system.getGasName() + " released"].getInitialValue() + UO2vaporisation
-            );
-            sciantix_variable[system.getGasName() + " released"].setConstant();
-    
+        {    
             if (system.getRestructuredMatrix() == 0)
             {
                 sciantix_variable[system.getGasName() + " in grain"].setFinalValue(

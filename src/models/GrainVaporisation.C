@@ -86,4 +86,22 @@ void Simulation::GrainVaporisation()
     if (grainradius < 3e-6) input_variable["iGrainBoundaryBehaviour"].setValue(0);
 
     matrices["UO2"].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
+
+    for (auto &system : sciantix_system)
+    {
+        double UO2vaporisation = (
+            sciantix_variable[system.getGasName() + " in grain"].getInitialValue() - 
+            solver.Decay(
+                sciantix_variable[system.getGasName() + " in grain"].getInitialValue(),
+                1.0,
+                0.0,
+                - 3 * sciantix_variable["Grain radius"].getIncrement() / sciantix_variable["Grain radius"].getFinalValue()
+            )
+        );
+
+        sciantix_variable[system.getGasName() + " released"].setInitialValue(
+            sciantix_variable[system.getGasName() + " released"].getInitialValue() + UO2vaporisation
+        );
+        sciantix_variable[system.getGasName() + " released"].setConstant();
+    }
 }
