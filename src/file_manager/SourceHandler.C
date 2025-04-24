@@ -197,7 +197,7 @@ void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRad
     }
 
     // Write header line
-    outFile << "t (h) # Normalized Domain (-) # Slopes (at/m2.s) # Intercepts (at/m3.s) # Volume Average (at/m3.s)\n";
+    outFile << "t (h)\tNormalized Domain (-)\tSlopes (at/m2.s)\tIntercepts (at/m3.s)\tVolume Average (at/m3.s)\n";
 
     // Loop through the interpolated sources and write the data to the file
     for (const auto &source : interpolatedSources)
@@ -206,7 +206,7 @@ void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRad
         double volumeAverage = Source_Volume_Average(GrainRadius, source);
 
         // Write time
-        outFile << source.time << " # ";
+        outFile << source.time << "\t";
 
         // Write domain
         for (size_t i = 0; i < source.NormalizedDomain.size(); ++i)
@@ -215,7 +215,7 @@ void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRad
             if (i != source.NormalizedDomain.size() - 1)
                 outFile << " "; // Separate values with space
         }
-        outFile << " # ";
+        outFile << "\t";
 
         // Write slopes
         for (size_t i = 0; i < source.Slopes.size(); ++i)
@@ -224,7 +224,7 @@ void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRad
             if (i != source.Slopes.size() - 1)
                 outFile << " "; // Separate values with space
         }
-        outFile << " # ";
+        outFile << "\t";
 
         // Write intercepts
         for (size_t i = 0; i < source.Intercepts.size(); ++i)
@@ -235,7 +235,7 @@ void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRad
         }
 
         // Write volume average in the last column
-        outFile << " # " << volumeAverage << "\n";
+        outFile << "\t" << volumeAverage << "\n";
     }
 
     // Close the file after writing

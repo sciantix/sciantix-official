@@ -56,35 +56,35 @@ void Simulation::initialize(
 
 void Simulation::execute()
 {
-    Burnup();
+    // Burnup();
 
-	EffectiveBurnup();
+	// EffectiveBurnup();
 
-	GapPartialPressure();
+	// GapPartialPressure();
 
-	UO2Thermochemistry();
+	// UO2Thermochemistry();
 
-	StoichiometryDeviation(); 
+	// StoichiometryDeviation(); 
 
-	HighBurnupStructureFormation();
+	// HighBurnupStructureFormation();
 
-	HighBurnupStructurePorosity();
+	// HighBurnupStructurePorosity();
 
-	GrainGrowth();
+	// GrainGrowth();
 
-	GrainBoundarySweeping();
+	// GrainBoundarySweeping();
 
 	GasProduction();
 
-	GasDecay();
+	// GasDecay();
 
-	IntraGranularBubbleBehavior();
+	// IntraGranularBubbleBehavior();
 
 	GasDiffusion();
 
-	GrainBoundaryMicroCracking();
+	// GrainBoundaryMicroCracking();
 
-	GrainBoundaryVenting();
+	// GrainBoundaryVenting();
 
-	InterGranularBubbleBehavior();
+	// InterGranularBubbleBehavior();
 }
