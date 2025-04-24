@@ -123,7 +123,7 @@ void Simulation::GasDiffusion()
         
         case 4:
         {
-            writeToFile(sources_interp, sciantix_variable["Grain radius"].getFinalValue());
+            // writeToFile(sources_interp, sciantix_variable["Grain radius"].getFinalValue());
             computeAndSaveSourcesToFile(sources_input,TestPath + "source_shape.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
             
             if (system.getRestructuredMatrix() == 0)
