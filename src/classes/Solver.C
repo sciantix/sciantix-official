@@ -535,18 +535,27 @@ double Solver::SourceProjection_i(double GrainRadius, std::vector<double> Domain
         std::exit(EXIT_FAILURE);
     }
     
-    // First term calculation (proj1)
-    double proj1 = (pow(GrainRadius, -1) / (pow(SpatialMode_i, 3) * pow(M_PI, 2))) * 
-                   (cos(SpatialMode_i * M_PI * Domain[0] / GrainRadius) * (2 * pow(GrainRadius, 2) * Source_Function[0] - pow(M_PI, 2) * pow(SpatialMode_i, 2) * Domain[0] * (Source_Function[0] * Domain[0] + Source_Function[1])) + 
-                    M_PI * pow(GrainRadius, -0.5) * SpatialMode_i * (2 * Source_Function[0] * Domain[0] + Source_Function[1]) * sin(SpatialMode_i * M_PI * Domain[0] / GrainRadius));
+    int i = SpatialMode_i;
+    double a = GrainRadius;
+    double A = Source_Function[0];
+    double B = Source_Function[1];
+    double r0 = Domain[0];
+    double r1 = Domain[1];
+    double pi = M_PI;
 
-    // Second term calculation (proj2)
-    double proj2 = (pow(GrainRadius, -1) / (pow(SpatialMode_i, 3) * pow(M_PI, 2))) * 
-                   (cos(SpatialMode_i * M_PI * Domain[1] / GrainRadius) * (2 * pow(GrainRadius, 2) * Source_Function[0] - pow(M_PI, 2) * pow(SpatialMode_i, 2) * Domain[1] * (Source_Function[0] * Domain[1] + Source_Function[1])) + 
-                    M_PI * pow(GrainRadius, -0.5) * SpatialMode_i * (2 * Source_Function[0] * Domain[1] + Source_Function[1]) * sin(SpatialMode_i * M_PI * Domain[1] / GrainRadius));
+    // First term calculation (proj0)
+    double proj0 = (2 * A * a * a * std::cos(pi * i * r0 / a) +
+                    pi * a * i * (2 * A * r0 + B) * std::sin(pi * i * r0 / a) -
+                    pi * pi * i * i * r0 * (A * r0 + B) * std::cos(pi * i * r0 / a)) /
+                   (a * pi * pi * i * i * i);
 
-    // Return the difference between proj2 and proj1
-    return proj2 - proj1;
+    // Second term calculation (proj1)
+    double proj1 = (2 * A * a * a * std::cos(pi * i * r1 / a) +
+                    pi * a * i * (2 * A * r1 + B) * std::sin(pi * i * r1 / a) -
+                    pi * pi * i * i * r1 * (A * r1 + B) * std::cos(pi * i * r1 / a)) /
+                   (a * pi * pi * i * i * i);
+
+    return proj1 - proj0;
 }
 
 double Solver::NonSym(int input)
