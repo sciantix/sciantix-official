@@ -89,12 +89,12 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
 
         case 3:
         {
-           //grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 1e-39 * history_variable["Fission rate"].getFinalValue();
+           grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 1e-39 * history_variable["Fission rate"].getFinalValue();
     
            //grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 5e-41 * history_variable["Fission rate"].getFinalValue();
 
            //Jernkvist vacanzy diffusivity
-           grain_boundary_vacancy_diffusivity = 6.9e-4 * exp(-38770 / history_variable["Temperature"].getFinalValue()) + 5.64e-25 * sqrt(history_variable["Fission rate"].getFinalValue()) * exp(-13800 / history_variable["Temperature"].getFinalValue()) + 1e-39 * history_variable["Fission rate"].getFinalValue();
+           //grain_boundary_vacancy_diffusivity = 6.9e-4 * exp(-38770 / history_variable["Temperature"].getFinalValue()) + 5.64e-25 * sqrt(history_variable["Fission rate"].getFinalValue()) * exp(-13800 / history_variable["Temperature"].getFinalValue()) + 1e-39 * history_variable["Fission rate"].getFinalValue();
             
             reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77 / BARANI HBS part 2, 2022\n\t";
 
@@ -136,7 +136,7 @@ void Matrix::setGrainBoundarySingleAtomDiffusivity(int input_value, SciantixArra
             double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
             double hbs_correction = sin(4.0 * (1. - alpha) * M_PI / 180.0 + 40.0 * alpha * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
                         
-            grain_boundary_single_atom_diffusivity *= hbs_correction;
+            //grain_boundary_single_atom_diffusivity *= hbs_correction;
 
             reference += "iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.\n\t";
             break;
