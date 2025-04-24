@@ -180,8 +180,8 @@ void Simulation::GasDiffusion()
             }
 
             double sweeping_term(0.0);
-            if(physics_variable["Time step"].getFinalValue())
-                sweeping_term = 1./(1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) * sciantix_variable["Restructured volume fraction"].getIncrement() / physics_variable["Time step"].getFinalValue();
+            // if(physics_variable["Time step"].getFinalValue())
+            //     sweeping_term = 1./(1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) * sciantix_variable["Restructured volume fraction"].getIncrement() / physics_variable["Time step"].getFinalValue();
         
             if (std::isinf(sweeping_term) || std::isnan(sweeping_term))
                 sweeping_term = 0.0;
