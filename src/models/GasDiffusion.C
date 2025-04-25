@@ -178,18 +178,11 @@ void Simulation::GasDiffusion()
                     sciantix_variable[system.getGasName() + " in HBS pores"].getIncrement() -
                     sciantix_variable[system.getGasName() + " released"].getIncrement()) / physics_variable["Time step"].getFinalValue();
             }
-
-            double sweeping_term(0.0);
-            // if(physics_variable["Time step"].getFinalValue())
-            //     sweeping_term = 1./(1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) * sciantix_variable["Restructured volume fraction"].getIncrement() / physics_variable["Time step"].getFinalValue();
         
-            if (std::isinf(sweeping_term) || std::isnan(sweeping_term))
-                sweeping_term = 0.0;
-
             sciantix_variable["Xe at grain boundary"].setFinalValue(
                 solver.Decay(
                     sciantix_variable["Xe at grain boundary"].getInitialValue(),
-                    sweeping_term,
+                    0.0,
                     source_ig,
                     physics_variable["Time step"].getFinalValue()
                 )
