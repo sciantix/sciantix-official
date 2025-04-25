@@ -82,13 +82,11 @@ void Simulation::HighBurnupStructurePorosity()
 
             pore_trapping_rate *= scaling_factors["Dummy"].getValue();
             
-            
             double sf_nucleation_rate_porosity = 1.25e-6; 
             double avrami_constant = 3.54; 
             double transformation_rate = 2.77e-7; 
             double pore_nucleation_rate = (5.0e17 * transformation_rate * avrami_constant * (1.0 - sciantix_variable["Restructured volume fraction"].getFinalValue())* pow(sciantix_variable["Effective burnup"].getFinalValue()/0.8814, avrami_constant - 1.));
             pore_nucleation_rate *= sf_nucleation_rate_porosity;
-
 
             double correction_coefficient = (1.0 - exp(pow(-sciantix_variable["HBS pore radius"].getFinalValue() / (20e-9), 3)));
             double b0(2.0e-23 * history_variable["Fission rate"].getFinalValue());
@@ -105,8 +103,6 @@ void Simulation::HighBurnupStructurePorosity()
             // <a href="https://www.sciencedirect.com/science/article/pii/S0022311522001234" target="_blank">Barani T. et al (2022). Journal of Nuclear Materials, 563, 153627.</a>
 
             reference = ": Barani T. et al (2020). Journal of Nuclear Materials, 539, 152296. Barani T. et al (2022). Journal of Nuclear Materials, 563, 153627 (linear model).";
-
-            // matrices["UO2HBS"].setPoreTrappingRate(matrices, sciantix_variable, scaling_factors);
 
             // Solution of the linear model for Np (pore density), A (1st moment), B (2nd moment)
             double coeff_matrix[9];
