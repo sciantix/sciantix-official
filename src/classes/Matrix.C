@@ -91,8 +91,6 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
         {
            grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 1e-39 * history_variable["Fission rate"].getFinalValue();
     
-           //grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 5e-41 * history_variable["Fission rate"].getFinalValue();
-
            //Jernkvist vacanzy diffusivity
            //grain_boundary_vacancy_diffusivity = 6.9e-4 * exp(-38770 / history_variable["Temperature"].getFinalValue()) + 5.64e-25 * sqrt(history_variable["Fission rate"].getFinalValue()) * exp(-13800 / history_variable["Temperature"].getFinalValue()) + 1e-39 * history_variable["Fission rate"].getFinalValue();
             
