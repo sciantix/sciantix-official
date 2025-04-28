@@ -76,12 +76,13 @@ void Simulation::HighBurnupStructurePorosity()
         case 2:
         {   
             double pore_trapping_rate = 4.0 * M_PI * fuel_.getGrainBoundarySingleAtomDiffusivity() *
-                sciantix_variable["Xe at grain boundary"].getFinalValue() *
+                sciantix_variable["Xe at grain boundary HBS"].getFinalValue() *
                 sciantix_variable["HBS pore radius"].getFinalValue() * 
                 (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
 
             pore_trapping_rate *= scaling_factors["Dummy"].getValue();
             
+            // pore_trapping_rate = matrices["UO2HBS"].getPoreTrappingRate();
             
             double sf_nucleation_rate_porosity = 1.25e-6; 
             double avrami_constant = 3.54; 
@@ -90,7 +91,7 @@ void Simulation::HighBurnupStructurePorosity()
             pore_nucleation_rate *= sf_nucleation_rate_porosity;
 
 
-            double correction_coefficient = (1.0 - exp(pow(-sciantix_variable["HBS pore radius"].getFinalValue() / (20e-9), 3)));
+            double correction_coefficient = (1.0 - exp(pow(-sciantix_variable["HBS pore radius"].getFinalValue() / (9e-9), 3)));
             double b0(2.0e-23 * history_variable["Fission rate"].getFinalValue());
         
             double pore_resolution_rate =
@@ -120,9 +121,9 @@ void Simulation::HighBurnupStructurePorosity()
             coeff_matrix[4] = 1.0 + pore_resolution_rate * physics_variable["Time step"].getFinalValue();
             coeff_matrix[5] = 0.0;
         
-            coeff_matrix[6] = - (pore_trapping_rate - pore_resolution_rate) * physics_variable["Time step"].getFinalValue();
+            coeff_matrix[6] = - pore_trapping_rate * physics_variable["Time step"].getFinalValue();
             coeff_matrix[7] = 0.0;
-            coeff_matrix[8] = 1.0;
+            coeff_matrix[8] = 1.0 + pore_resolution_rate * physics_variable["Time step"].getFinalValue();
 
             initial_conditions[0] = sciantix_variable["HBS pore density"].getInitialValue() + pore_nucleation_rate * physics_variable["Time step"].getFinalValue();
             initial_conditions[1] = sciantix_variable["Xe in HBS pores"].getInitialValue() + 2.0 * pore_nucleation_rate * physics_variable["Time step"].getFinalValue();

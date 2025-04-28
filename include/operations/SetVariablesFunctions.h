@@ -120,6 +120,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Xe in intragranular solution", "(at/m3)", Sciantix_variables[3], Sciantix_variables[3], 1),
         SciantixVariable("Xe in intragranular bubbles", "(at/m3)", Sciantix_variables[4], Sciantix_variables[4], 1),
         SciantixVariable("Xe at grain boundary", "(at/m3)", Sciantix_variables[5], Sciantix_variables[5], 1),
+        SciantixVariable("Xe at grain boundary HBS", "(at/m3)", Sciantix_variables[123], Sciantix_variables[123], 1),
         SciantixVariable("Xe released", "(at/m3)", Sciantix_variables[6], Sciantix_variables[6], 1),
         SciantixVariable("Xe decayed", "(at/m3)", 0.0, 0.0, 0),
 
