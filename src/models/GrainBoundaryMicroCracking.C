@@ -152,15 +152,7 @@ void Simulation::GrainBoundaryMicroCracking()
         }
         else if (system.getRestructuredMatrix() == 1)
         {
-            sciantix_variable[system.getGasName() + " released"].setFinalValue(
-                sciantix_variable[system.getGasName() + " produced"].getFinalValue() +
-                sciantix_variable[system.getGasName() + " produced in HBS"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " in grain HBS"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " in HBS pores"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue()
-            );  
+            
         }
     }
 }
