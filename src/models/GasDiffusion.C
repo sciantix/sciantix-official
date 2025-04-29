@@ -154,34 +154,30 @@ void Simulation::GasDiffusion()
     {
         if (system.getRestructuredMatrix() == 0)
         {
-            sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
+            sciantix_variable[system.getGasName() + " at grain boundary"].setInitialValue(
                 sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " released"].getInitialValue());
 
-            if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
-                sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
+            if (sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() < 0.0)
+                sciantix_variable[system.getGasName() + " at grain boundary"].setInitialValue(0.0);
         }
         
         else if (system.getRestructuredMatrix() == 1)
         {
-            double source_ig(0.0);
-            if(physics_variable["Time step"].getFinalValue())
-            {
-                source_ig = (1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) * 
-                    (sciantix_variable[system.getGasName() + " produced"].getIncrement() +
-                    sciantix_variable[system.getGasName() + " produced in HBS"].getIncrement() -
-                    sciantix_variable[system.getGasName() + " decayed"].getIncrement() -
-                    sciantix_variable[system.getGasName() + " in grain"].getIncrement() -
-                    sciantix_variable[system.getGasName() + " in grain HBS"].getIncrement() -
-                    sciantix_variable[system.getGasName() + " in HBS pores"].getIncrement() -
-                    sciantix_variable[system.getGasName() + " released"].getIncrement()) / physics_variable["Time step"].getFinalValue();
-            }
+            sciantix_variable[system.getGasName() + " at grain boundary HBS"].setInitialValue(
+                sciantix_variable[system.getGasName() + " produced in HBS"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " in grain HBS"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " in HBS pores"].getInitialValue()
+            );
+
+            if (sciantix_variable[system.getGasName() + " at grain boundary HBS"].getInitialValue() < 0.0)
+                sciantix_variable[system.getGasName() + " at grain boundary HBS"].setInitialValue(0.0);
 
             double sweeping_term(0.0);
-            // if(physics_variable["Time step"].getFinalValue())
-            //     sweeping_term = 1./(1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) * sciantix_variable["Restructured volume fraction"].getIncrement() / physics_variable["Time step"].getFinalValue();
+            if(physics_variable["Time step"].getFinalValue())
+               sweeping_term = 1./(1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) * sciantix_variable["Restructured volume fraction"].getIncrement() / physics_variable["Time step"].getFinalValue();
         
             if (std::isinf(sweeping_term) || std::isnan(sweeping_term))
                 sweeping_term = 0.0;
@@ -190,13 +186,19 @@ void Simulation::GasDiffusion()
                 solver.Decay(
                     sciantix_variable["Xe at grain boundary"].getInitialValue(),
                     sweeping_term,
-                    source_ig,
+                    0.0,
                     physics_variable["Time step"].getFinalValue()
                 )
             );
 
-            if (sciantix_variable["Xe at grain boundary"].getFinalValue() < 0.0)
-            sciantix_variable["Xe at grain boundary"].setFinalValue(0.0);
+            sciantix_variable["Xe at grain boundary HBS"].setFinalValue(
+                solver.Decay(
+                    sciantix_variable["Xe at grain boundary HBS"].getInitialValue(),
+                    0.0,
+                    sweeping_term * sciantix_variable["Xe at grain boundary"].getInitialValue(),
+                    physics_variable["Time step"].getFinalValue()
+                )
+            );
 
             // HBS grain
             sciantix_variable["Xe in HBS pores"].setInitialValue(
