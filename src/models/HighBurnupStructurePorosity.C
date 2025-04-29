@@ -105,11 +105,24 @@ void Simulation::HighBurnupStructurePorosity()
             if (std::isinf(sweeping_term) || std::isnan(sweeping_term))
                 sweeping_term = 0.0;
 
-            double source_ig = sciantix_variable["Xe produced"].getIncrement() -
-                sciantix_variable["Xe in grain"].getIncrement();
+            double source_ig(0.0);
+            if(physics_variable["Time step"].getFinalValue())
+            {
+                source_ig =  
+                    (sciantix_variable["Xe produced"].getIncrement() +
+                    sciantix_variable["Xe produced in HBS"].getIncrement() -
+                    sciantix_variable["Xe decayed"].getIncrement() -
+                    sciantix_variable["Xe in grain"].getIncrement() -
+                    sciantix_variable["Xe in grain HBS"].getIncrement() -
+                    sciantix_variable["Xe in HBS pores"].getIncrement() -
+                    sciantix_variable["Xe released"].getIncrement());
+            }
+
+            double source_ig_HBS = sciantix_variable["Restructured volume fraction"].getFinalValue() * source_ig;
+
+            source_ig = (1 - sciantix_variable["Restructured volume fraction"].getFinalValue()) * source_ig;
     
-            double source_ig_HBS = sciantix_variable["Xe produced in HBS"].getIncrement() -
-                sciantix_variable["Xe in grain HBS"].getIncrement();
+
         
             // pore_resolution_rate *= scaling_factors["Cent parameter"].getValue();
 
