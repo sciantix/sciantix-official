@@ -113,7 +113,6 @@ void Matrix::setGrainBoundarySingleAtomDiffusivity(int input_value, SciantixArra
 
         case 1:
         {
-            // SINGLE-ATOM
             grain_boundary_single_atom_diffusivity = (1.3e-7 * exp(-4.52e-19 /
                     (boltzmann_constant * history_variable["Temperature"].getFinalValue()))
             );
