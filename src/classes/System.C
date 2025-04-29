@@ -171,7 +171,7 @@ void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariabl
         * @see L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.
         */
             reference += "(no or very limited lattice damage) L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.\n\t";
-            diffusivity = 2.0e-10 * exp(-24603.4 / history_variable["Temperature"].getFinalValue());; 
+            diffusivity = 2.0e-10 * exp(-24603.4 / history_variable["Temperature"].getFinalValue()); 
         break;
         }
 
@@ -193,6 +193,7 @@ void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariabl
         */
             reference += "iHeDiffusivity: Z. Talip et al. JNM 445 (2014) 117-127.\n\t";
             diffusivity = 1.0e-7 * exp(-30057.9 / history_variable["Temperature"].getFinalValue());
+            std::cout << diffusivity << std::endl;
         break;
         }
 
@@ -203,47 +204,117 @@ void System::setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariabl
         * including stoichiometric deviation, x.
         * Reminder: This model will not be used since the order of magnitude is different from empirical method which cannot provide a 
         */
+            
+
             double x = sciantix_variable["Stoichiometry deviation"].getFinalValue();
             double D_0 = 1e-4 * exp(-29708.7 / history_variable["Temperature"].getFinalValue()); 
 
-            if (x < 0) {
-                diffusivity = D_0 + 6.4e-7 * abs(x) * exp(-6266.7 / history_variable["Temperature"].getFinalValue());
-            } else {
-                diffusivity = D_0 + 1.3e-7 * abs(x) * exp(-6266.7 / history_variable["Temperature"].getFinalValue());
+            if (x < 0) 
+            {
+                diffusivity = D_0 + 6.4e-7 * (-x) * exp(-6266.7 / history_variable["Temperature"].getFinalValue());
+            } else 
+            {
+                diffusivity = D_0 + 1.3e-7 * (x) * exp(-6266.7 / history_variable["Temperature"].getFinalValue());
             }
-        break;
+            break;
         }
 
         case 5:
         {
-        /**
-        * @brief iHeDiffusivity = 5: temporary implemented.  
-        * Reminder: The order of magnitude of this diffusion coefficient is modified as similar as Luzzis' models. And the same ratio is also applied to the non-stoicchiometric term.
-        * The scale down ratio is 1:3E-5.
-        */
-            double Boltzmann_constant_eV = 8.617e-5;
-            double x = sciantix_variable["Stoichiometry deviation"].getFinalValue();
-            double D_0 = 3e-9 * exp(-29708.7 / history_variable["Temperature"].getFinalValue()); 
-            /* define enthalpy with respect to its stoichiometric deviation
-            */
-           double H_1;
-           if (x < 0) {
-            H_1 = 3.5 * exp(-157.3039 * pow(x - 0.0500, 2)) + 0.1918;
-           } else {
-            H_1 = 7.1155e23 * exp(-27.333 * (2+x)) + 1.2747;
-           }           
+            /**
+            * @brief iHeDiffusivity = 5: This model now is using Matzke mode which the stoichiometric deviation will contribute to the pre-exponential diffusivity.
+            * When x=0, it will use Luzzi's no or very limited damage sample.
+            * @see L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.
+            * @see Yakub E. et al (2010).Journal of Nuclear Materials, 400, 189-195.
 
-            if (x < 0) {
-                diffusivity = D_0 + 1.92e-11 * abs(x) * exp(-H_1 / (Boltzmann_constant_eV * T));
-            } else if (x > 0) {
-                diffusivity = D_0 + 3.9e-12 * abs(x) * exp(-H_1 / (Boltzmann_constant_eV * T));
-            } else {
+            */
+
+            double Boltzmann_constant_eV = 8.6173e-5;
+            double x = sciantix_variable["Stoichiometry deviation"].getFinalValue();
+            double D_0 = 2.0e-10 * exp(-24603.4 / history_variable["Temperature"].getFinalValue()); 
+            double T = history_variable["Temperature"].getFinalValue();        
+
+            /* define enthalpy with respect to its stoichiometric deviation
+            *The enthalpy can only be determined within the range of x from -0.1 to 0.1.
+            *1.28E-12
+            */  
+            
+            /*This part is to define a ratio to scale down the diffusivity at particular temperature*/
+            //double SDF = -0.000006728 * pow(T,3) + 0.0476758506 * pow(T,2) - 59.9680989 * T + 22038.4311;
+            //std::cout << SDF << std::endl;
+
+            if (x < 0)
+            {
+                diffusivity = D_0 + 3.2e-15 * (-x) * exp(-6266.7 / history_variable["Temperature"].getFinalValue());
+                //std::cout << diffusivity << std::endl;
+            }
+            else if (x > 0)
+            {
+                diffusivity = D_0 + 6.5e-16 * x * exp(-6266.7 / history_variable["Temperature"].getFinalValue());
+                std::cout << diffusivity << std::endl;
+            }
+            else
+            {
                 diffusivity = D_0;
             }      
-        break;
+
+            break;
         }
  
-        case 99:
+        case 6:
+        {
+            /**
+            * @brief iHeDiffusivity = 6: This model is mixing Luzzi's stoichiometric model with Yakub's down scale nonstoichiometric model.  
+            * Reminder: The order of magnitude of this diffusion coefficient is modified as similar as Luzzis' models. And the same ratio is also applied to the non-stoicchiometric term.
+            * The scale down ratio is 1:9E-3.
+            * This model can only be used for damaged sample 
+            * @see L. Luzzi et al., Nuclear Engineering and Design, 330 (2018) 265-271.
+            * @see Yakub E. et al (2010).Journal of Nuclear Materials, 400, 189-195.
+
+            */
+
+            double Boltzmann_constant_eV = 8.6173e-5;
+            double x = sciantix_variable["Stoichiometry deviation"].getFinalValue();
+            double D_0 = 3.3e-10 * exp(-19032.8 / history_variable["Temperature"].getFinalValue()); 
+            double T = history_variable["Temperature"].getFinalValue(); 
+            double H_1;
+            if (x < 0) 
+            {
+                H_1 = 3.5 * exp(-157.3039 * pow(x - 0.0500, 2)) + 0.1918;
+            }
+            else
+            {
+                H_1 = 7.1155e23 * exp(-27.333 * (2+x)) + 1.2747;
+            }          
+
+            double D_1;
+            if (x < 0)
+            {
+                D_1 = pow(10, -10.85 + 1.5 * log10(-x));
+            }
+            else
+            {
+                D_1 = pow(10, -10.85 + 1.5 * log10(x));
+            }
+
+            /* define enthalpy with respect to its stoichiometric deviation
+            *The enthalpy can only be determined within the range of x from -0.1 to 0.1.
+            */  
+
+            if (x != 0)
+            {
+                diffusivity = D_1 * exp(-H_1 / (Boltzmann_constant_eV * T));
+                // std::cout << diffusivity << std::endl;
+            }
+            else
+            {
+                diffusivity = D_0;
+            }      
+
+            break;
+        }
+
+         case 99:
         {
         /**
         * @brief iHeDiffusivity = 99: Null intra-granular diffusivity.

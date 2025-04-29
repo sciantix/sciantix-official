@@ -66,14 +66,18 @@ Initial composition Kr85m4 = 0
 Initial composition Kr85m5 = 0
 Initial composition Kr85m6 = 0
 Initial stoichiometry deviation[0] = 0.1
-Chromium content = 4.94066e-324
+Chromium content = 9.88131e-324
 0	400	0	0	0	
-0.486	1073	0	0	0	
-1.486	1073	0	0	0	
+0.069	440	0	0	0	
+0.139	750	0	0	0	
+0.208	950	0	0	0	
+0.278	1040	0	0	0	
+0.347	1073	0	0	0	
+1.085	1073	0	0	0	
 sf_resolution_rate = 1
 sf_trapping_rate = 1
 sf_nucleation_rate = 1
-sf_diffusivity = 1
+sf_diffusivity = 0.15
 sf_diffusivity2 = 1
 sf_temperature = 1
 sf_fission_rate = 1

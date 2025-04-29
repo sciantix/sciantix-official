@@ -4,7 +4,7 @@
 # scaling factor - trapping rate
 1.0
 # scaling factor - nucleation rate
-1.0
+0.15
 # scaling factor - diffusivity
 1.0
 # scaling factor - diffusivity2

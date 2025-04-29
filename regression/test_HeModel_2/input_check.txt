@@ -13,7 +13,7 @@ iFuelMatrix = 0
 iGrainBoundaryVenting = 0
 iRadioactiveFissionGas = 0
 iHelium = 1
-iHeDiffusivity = 1
+iHeDiffusivity = 2
 iGrainBoundarySweeping = 1
 iHighBurnupStructureFormation = 0
 iHighBurnupStructurePorosity = 0
@@ -68,7 +68,7 @@ Initial composition Kr85m6 = 0
 Initial stoichiometry deviation[0] = 0
 Chromium content = 9.88131e-324
 0	1073	1e+19	0	
-5500	1073	1e+19	0	
+5500	1074	1e+19	0	
 sf_resolution_rate = 1
 sf_trapping_rate = 1
 sf_nucleation_rate = 1

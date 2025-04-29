@@ -7,21 +7,21 @@ iTrappingRate = 1
 iNucleationRate = 1
 iOutput = 1
 iGrainBoundaryVacancyDiffusivity = 1
-iGrainBoundaryBehaviour = 0
-iGrainBoundaryMicroCracking = 0
+iGrainBoundaryBehaviour = 1
+iGrainBoundaryMicroCracking = 1
 iFuelMatrix = 0
-iGrainBoundaryVenting = 0
+iGrainBoundaryVenting = 1
 iRadioactiveFissionGas = 0
 iHelium = 1
 iHeDiffusivity = 2
 iGrainBoundarySweeping = 1
 iHighBurnupStructureFormation = 0
 iHighBurnupStructurePorosity = 0
-iHeliumProductionRate = 1
-iStoichiometryDeviation = 1
-iBubbleDiffusivity = 1
+iHeliumProductionRate = 0
+iStoichiometryDeviation = 0
+iBubbleDiffusivity = 0
 iChromiumSolubility = 0
-Grain radius[0] = 5e-06
+Grain radius[0] = 9e-06
 Initial composition Xe0 = 0
 Initial composition Xe1 = 0
 Initial composition Xe2 = 0
@@ -34,14 +34,14 @@ Initial composition Kr2 = 0
 Initial composition Kr3 = 0
 Initial composition Kr4 = 0
 Initial composition Kr5 = 0
-Initial composition He0 = 0
-Initial composition He1 = 0
-Initial composition He2 = 0
-Initial composition He3 = 0
+Initial composition He0 = 2.55e+21
+Initial composition He1 = 2.53e+21
+Initial composition He2 = 2.55e+21
+Initial composition He3 = 2e+19
 Initial composition He4 = 0
 Initial composition He5 = 0
-Initial intragranular bubbles0 = 2.08e+13
-Initial intragranular bubbles1 = 1e-09
+Initial intragranular bubbles0 = 2.08e+20
+Initial intragranular bubbles1 = 2e-09
 Burn_up[0] = 0
 Effective_burn_up[0] = 0
 Irradiation_time[0] = 0
@@ -67,21 +67,14 @@ Initial composition Kr85m5 = 0
 Initial composition Kr85m6 = 0
 Initial stoichiometry deviation[0] = 0
 Chromium content = 9.88131e-324
-0	400	0	0	0	
-0.61	1623	0	0	0	
-0.612	1623	0	0	0.00495	
-0.618	1623	0	0	0.00495	
-0.619	1623	0	0	0	
-0.62	400	0	0	0	
-0.621	400	1e+19	0	0	
-6	400	1e+19	0	0	
-6.001	400	0	0	0	
-6.5	1073	0	0	0	
-7.5	1073	0	0	0	
+0	300	0	0	
+0.25	1173	0	0	
+1.25	1173	0	0	
+1.45	300	0	0	
 sf_resolution_rate = 1
 sf_trapping_rate = 1
 sf_nucleation_rate = 1
-sf_diffusivity = 1
+sf_diffusivity = 10
 sf_diffusivity2 = 1
 sf_temperature = 1
 sf_fission_rate = 1
