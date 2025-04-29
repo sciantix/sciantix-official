@@ -86,7 +86,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
             
             reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77 / BARANI HBS part 2, 2022\n\t";
 
-            double hbs_correction = sin(40.0 * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
+            double hbs_correction = sin((1 - sciantix_variable["Restructured volume fraction"].getFinalValue()) * 4.0 * M_PI / 180.0 + sciantix_variable["Restructured volume fraction"].getFinalValue() * 40.0 * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
             
             grain_boundary_vacancy_diffusivity *= hbs_correction;
 
