@@ -116,10 +116,8 @@ void Matrix::setGrainBoundarySingleAtomDiffusivity(int input_value, SciantixArra
             grain_boundary_single_atom_diffusivity = (1.3e-7 * exp(-4.52e-19 /
                     (boltzmann_constant * history_variable["Temperature"].getFinalValue()))
             );
-
-            double hbs_correction = sin(40.0 * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
                         
-            grain_boundary_single_atom_diffusivity *= hbs_correction;
+            grain_boundary_single_atom_diffusivity;
 
             reference += "iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.\n\t";
             break;
