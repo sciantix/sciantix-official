@@ -289,6 +289,14 @@ void Simulation::InterGranularBubbleBehavior()
                 sciantix_variable[system.getGasName() + " in HBS pores"].getFinalValue()
             );
 
+            // sciantix_variable[system.getGasName() + " released"].setFinalValue(
+            //     sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
+            //     sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
+            //     sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
+            //     sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue()
+            // );
+
+
             if (sciantix_variable[system.getGasName() + " released"].getFinalValue() < 0.0)
                 sciantix_variable[system.getGasName() + " released"].setFinalValue(0.0);
         }
