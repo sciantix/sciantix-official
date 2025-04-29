@@ -68,6 +68,8 @@
 
 <a href="https://www.sciencedirect.com/science/article/pii/S0022311503004616" target="_blank">White R.M. (2004). Journal of Nuclear Materials, 325, 61-77.</a>
 
+<a href="https://www.sciencedirect.com/science/article/pii/S0022311510000863" target="_blank">Yakub E. et al (2010).Journal of Nuclear Materials, 400, 189-195.</a>
+
 <a href="https://www.sciencedirect.com/science/article/pii/S1738573321006148" target="_blank">Zullo G. et al (2022). Nuclear Engineering and Technology, 54, 1195-1205.</a>
 
 <a href="https://www.sciencedirect.com/science/article/pii/S0022311523005111" target="_blank">Zullo G. et al (2023). Journal of Nuclear Materials, 587, 154744.</a>
