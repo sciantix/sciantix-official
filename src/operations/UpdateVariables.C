@@ -25,6 +25,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {3, "Xe in intragranular solution"},
     {4, "Xe in intragranular bubbles"},
     {5, "Xe at grain boundary"},
+    {123, "Xe at grain boundary HBS"},
     {6, "Xe released"},
     {7, "Kr produced"},
     {8, "Kr in grain"},
