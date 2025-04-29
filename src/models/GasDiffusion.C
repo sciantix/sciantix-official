@@ -149,45 +149,6 @@ void Simulation::GasDiffusion()
         );
     }
 
-    // Calculation of the gas concentration at grain boundary, after intra-granular diffusion, by mass balance
-    for (auto &system : sciantix_system)
-    {       
-        // Sweeping from grain boundary non-HBS to HBS
-        double sweeping_term(0.0);
-        if(physics_variable["Time step"].getFinalValue())
-            sweeping_term = 1./(1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) * sciantix_variable["Restructured volume fraction"].getIncrement() / physics_variable["Time step"].getFinalValue();
-    
-        if (std::isinf(sweeping_term) || std::isnan(sweeping_term))
-            sweeping_term = 0.0;
-
-        double coeff_matrix[4];
-        double initial_conditions[2];
-
-        double source_ig = sciantix_variable[system.getGasName() + " produced"].getIncrement() -
-            sciantix_variable[system.getGasName() + " in grain"].getIncrement();
-
-        double source_ig_HBS = sciantix_variable[system.getGasName() + " produced in HBS"].getIncrement() -
-            sciantix_variable[system.getGasName() + " in grain HBS"].getIncrement();
-
-        coeff_matrix[0] = 1 + sweeping_term * physics_variable["Time step"].getFinalValue();
-        coeff_matrix[1] = 0.0;
-        coeff_matrix[2] = - sweeping_term * physics_variable["Time step"].getFinalValue();
-        coeff_matrix[3] = 1.0;
-
-        initial_conditions[0] = sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() + source_ig;
-        initial_conditions[1] = sciantix_variable[system.getGasName() + " at grain boundary HBS"].getInitialValue() + source_ig_HBS;
-
-        solver.Laplace2x2(coeff_matrix, initial_conditions);
-
-        sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(initial_conditions[0]);
-        sciantix_variable[system.getGasName() + " at grain boundary HBS"].setFinalValue(initial_conditions[1]);
-
-        if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
-            sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
-        if (sciantix_variable[system.getGasName() + " at grain boundary HBS"].getFinalValue() < 0.0)
-            sciantix_variable[system.getGasName() + " at grain boundary HBS"].setFinalValue(0.0);
-    }
-
     /**
      * @brief If **iGrainBoundaryBehaviour = 0** (e.g., no grain-boundary bubbles),
      * fission gases at grain boundary is immediately released.
