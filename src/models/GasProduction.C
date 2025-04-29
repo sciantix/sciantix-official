@@ -25,9 +25,7 @@ void Simulation::GasProduction()
         model_.setName("Gas production - " + system.getName());
         model_.setRef(" ");
 
-        system.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
         double productionRate = system.getProductionRate();
-        
         double timeStep = physics_variable["Time step"].getFinalValue();
 
         std::vector<double> parameter;

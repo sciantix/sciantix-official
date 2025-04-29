@@ -7,6 +7,7 @@ Model	Gas production - Xe in UO2HBS
 Model	Intragranular bubble behavior	: Pizzocri et al., JNM, 502 (2018) 323-330.
 Model	Gas diffusion - Xe in UO2 with HBS	
 Model	High-burnup structure porosity	: Barani T. et al (2020). Journal of Nuclear Materials, 539, 152296. Barani T. et al (2022). Journal of Nuclear Materials, 563, 153627 (linear model).
+Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
 
 Matrix	UO2	
 	Ainscough et al., JNM, 49 (1973) 117-128.
