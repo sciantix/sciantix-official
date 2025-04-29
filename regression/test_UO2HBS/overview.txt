@@ -1,10 +1,10 @@
 Model	Burnup	: The local burnup is calculated from the fission rate density.
 Model	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
+Model	High-burnup structure formation	: Barani et al. Journal of Nuclear Materials 539 (2020) 152296
 Model	Grain growth	 : Ainscough et al., JNM, 49 (1973) 117-128.
 Model	Gas production - Xe in UO2	 
 Model	Gas production - Xe in UO2HBS	 
 Model	Intragranular bubble behavior	: Pizzocri et al., JNM, 502 (2018) 323-330.
-Model	High-burnup structure formation	: Barani et al. Journal of Nuclear Materials 539 (2020) 152296
 Model	Gas diffusion - Xe in UO2 with HBS	
 Model	High-burnup structure porosity	: Barani T. et al (2020). Journal of Nuclear Materials, 539, 152296. Barani T. et al (2022). Journal of Nuclear Materials, 563, 153627 (linear model).
 Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
