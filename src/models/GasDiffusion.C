@@ -198,6 +198,7 @@ void Simulation::GasDiffusion()
             if (sciantix_variable["Xe at grain boundary"].getFinalValue() < 0.0)
             sciantix_variable["Xe at grain boundary"].setFinalValue(0.0);
 
+            // HBS grain
             sciantix_variable["Xe in HBS pores"].setInitialValue(
                 sciantix_variable["Xe produced"].getFinalValue() +
                 sciantix_variable["Xe produced in HBS"].getFinalValue() -
