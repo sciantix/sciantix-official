@@ -101,7 +101,7 @@ void Simulation::HighBurnupStructurePorosity()
 
             double sweeping_term(0.0);
             if(physics_variable["Time step"].getFinalValue())
-                sweeping_term = 1./(1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) * sciantix_variable["Restructured volume fraction"].getIncrement() / physics_variable["Time step"].getFinalValue();
+                // sweeping_term = 1./(1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) * sciantix_variable["Restructured volume fraction"].getIncrement() / physics_variable["Time step"].getFinalValue();
         
             if (std::isinf(sweeping_term) || std::isnan(sweeping_term))
                 sweeping_term = 0.0;
@@ -181,8 +181,8 @@ void Simulation::HighBurnupStructurePorosity()
             sciantix_variable["HBS pore density"].setFinalValue(initial_conditions[0]); // Np
             sciantix_variable["Xe in HBS pores"].setFinalValue(initial_conditions[1]);  // A
             sciantix_variable["Xe in HBS pores - variance"].setFinalValue(initial_conditions[2]); // B
-            sciantix_variable["Xe at grain boundary"].setFinalValue(initial_conditions[3]); // C
-            sciantix_variable["Xe at grain boundary HBS"].setFinalValue(initial_conditions[4]); // C
+            sciantix_variable["Xe at grain boundary"].setFinalValue(initial_conditions[3]); // CGB
+            sciantix_variable["Xe at grain boundary HBS"].setFinalValue(initial_conditions[4]); // CGBHBS
 
             if (sciantix_variable["Xe at grain boundary"].getFinalValue() < 0.0)
             sciantix_variable["Xe at grain boundary"].setFinalValue(0.0);
