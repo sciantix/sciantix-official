@@ -123,6 +123,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Xe at grain boundary HBS", "(at/m3)", Sciantix_variables[123], Sciantix_variables[123], 1),
         SciantixVariable("Xe released", "(at/m3)", Sciantix_variables[6], Sciantix_variables[6], 1),
         SciantixVariable("Xe decayed", "(at/m3)", 0.0, 0.0, 0),
+        SciantixVariable("Xe in HBS pores", "(at/m3)", Sciantix_variables[83], Sciantix_variables[83], toOutputHighBurnupStructure),
 
         SciantixVariable("Kr produced", "(at/m3)", Sciantix_variables[7], Sciantix_variables[7], 1),
         SciantixVariable("Kr in grain", "(at/m3)", Sciantix_variables[8], Sciantix_variables[8], 1),
@@ -222,7 +223,6 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("HBS pore density", "(pores/m3)", Sciantix_variables[80], Sciantix_variables[80], toOutputHighBurnupStructure),
         SciantixVariable("HBS pore volume", "(m3)", Sciantix_variables[81], Sciantix_variables[81], toOutputHighBurnupStructure),
         SciantixVariable("HBS pore radius", "(m)", Sciantix_variables[82], Sciantix_variables[82], toOutputHighBurnupStructure),
-        SciantixVariable("Xe in HBS pores", "(at/m3)", Sciantix_variables[83], Sciantix_variables[83], toOutputHighBurnupStructure),
         SciantixVariable("Xe in HBS pores - variance", "(at^2/m3)", Sciantix_variables[85], Sciantix_variables[85], toOutputHighBurnupStructure),
         SciantixVariable("Xe atoms per HBS pore", "(at/pore)", Sciantix_variables[86], Sciantix_variables[86], toOutputHighBurnupStructure),
         SciantixVariable("Xe atoms per HBS pore - variance", "(at^2/pore)", Sciantix_variables[88], Sciantix_variables[88], toOutputHighBurnupStructure),
