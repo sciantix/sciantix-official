@@ -59,6 +59,8 @@ void Simulation::execute()
         EffectiveBurnup();
     #endif
 
+    HighBurnupStructureFormation();
+
     GapPartialPressure();
 
     UO2Thermochemistry();
@@ -74,8 +76,6 @@ void Simulation::execute()
     GasDecay();
 
     IntraGranularBubbleBehavior();
-
-    HighBurnupStructureFormation();
 
     GasDiffusion();
 

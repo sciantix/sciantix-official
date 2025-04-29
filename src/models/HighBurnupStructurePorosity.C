@@ -157,10 +157,10 @@ void Simulation::HighBurnupStructurePorosity()
             coeff_matrix[24] = 1.0;
     
             initial_conditions[0] = sciantix_variable["HBS pore density"].getInitialValue() + 2 * pore_nucleation_rate * physics_variable["Time step"].getFinalValue();
-            initial_conditions[1] = sciantix_variable["Xe in HBS pores"].getInitialValue() + 4.0 * pore_nucleation_rate * physics_variable["Time step"].getFinalValue();
+            initial_conditions[1] = sciantix_variable["Xe in HBS pores"].getInitialValue() + source_ig_HBS + 4.0 * pore_nucleation_rate * physics_variable["Time step"].getFinalValue();
             initial_conditions[2] = sciantix_variable["Xe in HBS pores - variance"].getInitialValue() + 2 * pore_nucleation_rate * pow(sciantix_variable["Xe atoms per HBS pore"].getFinalValue() - 2.0 , 2.0) * physics_variable["Time step"].getFinalValue();
             initial_conditions[3] = sciantix_variable["Xe at grain boundary"].getInitialValue() + source_ig - 2.0 * pore_nucleation_rate * physics_variable["Time step"].getFinalValue();
-            initial_conditions[4] = sciantix_variable["Xe at grain boundary HBS"].getInitialValue() + source_ig_HBS - 2.0 * pore_nucleation_rate * physics_variable["Time step"].getFinalValue();
+            initial_conditions[4] = sciantix_variable["Xe at grain boundary HBS"].getInitialValue() - 2.0 * pore_nucleation_rate * physics_variable["Time step"].getFinalValue();
 
             solver.Laplace(5, coeff_matrix, initial_conditions);
         
