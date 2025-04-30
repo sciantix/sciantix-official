@@ -79,13 +79,17 @@ void Simulation::GrainVaporisation()
     }
 
 
-    double flux_u = p_sys * pow(2 * M_PI * gas_constant * T, -0.5) * (p_uo/pow(molarmassuo, 0.5) + p_uo2/pow(molarmassuo2, 0.5) + p_uo3/pow(molarmassuo3, 0.5)); // Missing U single
-    double flux_o = p_sys * pow(2 * M_PI * gas_constant * T, -0.5) * (p_uo/pow(molarmassuo, 0.5) + 2 * p_uo2/pow(molarmassuo2, 0.5) + 3 * p_uo3/pow(molarmassuo3, 0.5) + 2 * p_o2/pow(molarmasso2, 0.5)); // Missing O single
+    //double flux_u = p_sys * pow(2 * M_PI * gas_constant * T, -0.5) * (p_uo/pow(molarmassuo, 0.5) + p_uo2/pow(molarmassuo2, 0.5) + p_uo3/pow(molarmassuo3, 0.5)); // Missing U single
+    //double flux_o = p_sys * pow(2 * M_PI * gas_constant * T, -0.5) * (p_uo/pow(molarmassuo, 0.5) + 2 * p_uo2/pow(molarmassuo2, 0.5) + 3 * p_uo3/pow(molarmassuo3, 0.5) + 2 * p_o2/pow(molarmasso2, 0.5)); // Missing O single
 
-    double grainradius_i = sciantix_variable["Grain radius"].getFinalValue();
+    double flux_o2 = p_sys * pow(2 * M_PI * gas_constant * T, -0.5) * (p_o2/pow(molarmasso2, 0.5));
+    double flux_uo = p_sys * pow(2 * M_PI * gas_constant * T, -0.5) * (p_uo/pow(molarmassuo, 0.5));
+    double flux_uo2 = p_sys * pow(2 * M_PI * gas_constant * T, -0.5) * (p_uo2/pow(molarmassuo2, 0.5));
+    double flux_uo3 = p_sys * pow(2 * M_PI * gas_constant * T, -0.5) * (p_uo3/pow(molarmassuo3, 0.5));
+
     double grainradius_f = solver.Integrator(
         sciantix_variable["Grain radius"].getFinalValue(),
-        - molarvolume * (flux_u + flux_o)/3,
+        - molarvolume * flux_uo2,
         physics_variable["Time step"].getFinalValue()
     );
 
@@ -93,6 +97,8 @@ void Simulation::GrainVaporisation()
     else std::cout<<"Warning: The grain radius is negative. The vaporisation model is not valid."<<std::endl;
 
     matrices["UO2"].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
+
+    if (sciantix_variable["Grain radius"].getIncrement() > 0) return;
 
     for (auto &system : sciantix_system)
     {
@@ -102,7 +108,7 @@ void Simulation::GrainVaporisation()
                 sciantix_variable[system.getGasName() + " in grain"].getInitialValue(),
                 1.0,
                 0.0,
-                - 3 * sciantix_variable["Grain radius"].getIncrement() / grainradius_i
+                - 3 * sciantix_variable["Grain radius"].getIncrement() / sciantix_variable["Grain radius"].getInitialValue()
             )
         );
 
@@ -112,7 +118,7 @@ void Simulation::GrainVaporisation()
                 sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue(),
                 1.0,
                 0.0,
-                - 3 * sciantix_variable["Grain radius"].getIncrement() / grainradius_i
+                - 3 * sciantix_variable["Grain radius"].getIncrement() / sciantix_variable["Grain radius"].getInitialValue()
             )
         );
 
@@ -122,26 +128,49 @@ void Simulation::GrainVaporisation()
         sciantix_variable[system.getGasName() + " released"].setConstant();
     }
 
-    sciantix_variable["U vapour"].setFinalValue(
+    // sciantix_variable["U vapour"].setFinalValue(
+    //     solver.Integrator(
+    //         sciantix_variable["U vapour"].getInitialValue(),
+    //         + flux_u * 4 * M_PI * pow(grainradius_i, 2),
+    //         physics_variable["Time step"].getFinalValue()
+    //     )
+    // );
+    sciantix_variable["O2 vapour"].setFinalValue(
         solver.Integrator(
-            sciantix_variable["U vapour"].getInitialValue(),
-            + flux_u * 4 * M_PI * pow(grainradius_i, 2),
+            sciantix_variable["O2 vapour"].getInitialValue(),
+            + flux_o2 * 4 * M_PI * pow(sciantix_variable["Grain radius"].getInitialValue(), 2),
             physics_variable["Time step"].getFinalValue()
         )
     );
-    sciantix_variable["O vapour"].setFinalValue(
+    sciantix_variable["UO vapour"].setFinalValue(
         solver.Integrator(
-            sciantix_variable["O vapour"].getInitialValue(),
-            + flux_o * 4 * M_PI * pow(grainradius_i, 2),
+            sciantix_variable["UO vapour"].getInitialValue(),
+            + flux_uo * 4 * M_PI * pow(sciantix_variable["Grain radius"].getInitialValue(), 2),
+            physics_variable["Time step"].getFinalValue()
+        )
+    );
+    sciantix_variable["UO2 vapour"].setFinalValue(
+        solver.Integrator(
+            sciantix_variable["UO2 vapour"].getInitialValue(),
+            + flux_uo2 * 4 * M_PI * pow(sciantix_variable["Grain radius"].getInitialValue(), 2),
+            physics_variable["Time step"].getFinalValue()
+        )
+    );
+    sciantix_variable["UO3 vapour"].setFinalValue(
+        solver.Integrator(
+            sciantix_variable["UO3 vapour"].getInitialValue(),
+            + flux_uo3 * 4 * M_PI * pow(sciantix_variable["Grain radius"].getInitialValue(), 2),
             physics_variable["Time step"].getFinalValue()
         )
     );
 
-    double U = (4/3 * M_PI * pow(grainradius_i, 3))/molarvolume;
+    double dnu = sciantix_variable["UO vapour"].getIncrement() + sciantix_variable["UO2 vapour"].getIncrement() + sciantix_variable["UO3 vapour"].getIncrement(); 
+    double dno = sciantix_variable["UO vapour"].getIncrement() + 2*sciantix_variable["UO2 vapour"].getIncrement() + 3*sciantix_variable["UO3 vapour"].getIncrement() + 2*sciantix_variable["O2 vapour"].getIncrement(); 
+    double U = (4/3 * M_PI * pow(sciantix_variable["Grain radius"].getInitialValue(), 3))/molarvolume;
     double xf = solver.Decay(
         x,
-        sciantix_variable["U vapour"].getIncrement()/(U + sciantix_variable["U vapour"].getIncrement()),
-        (2* sciantix_variable["U vapour"].getIncrement() -  sciantix_variable["O vapour"].getIncrement())/ (U+sciantix_variable["U vapour"].getIncrement()),
+        dnu/(U + dnu),
+        (2*dnu -  dno)/ (U+dnu),
         1.0
     );
 

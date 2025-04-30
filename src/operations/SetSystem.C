@@ -190,7 +190,8 @@ System Cs_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Cs"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.15); //JEFF 3.1 data +  TRANSURANUS
+    //system_.setYield(0.15); //JEFF 3.1 data +  TRANSURANUS
+    system_.setYield(0.07);
     //system_.setYield(6.227860e-02 + 6.765883e-2/(1+1.90e-22*3e13/1.52e-6) + 6.723289e-2/(1+2.72e-18*3e13/2.09e-5)); // from TRANSURANUS 
     //system_.setYield(0.226); //Cs+Rb by Olander 1976 for fast spectrum
     system_.setRadiusInLattice(0.21e-9);
