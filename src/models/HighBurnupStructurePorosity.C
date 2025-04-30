@@ -92,7 +92,6 @@ void Simulation::HighBurnupStructurePorosity()
             pore_nucleation_rate *= sf_nucleation_rate_porosity;
             
             // Resolution rate
-            double correction_coefficient = (1.0 - exp(pow(-sciantix_variable["HBS pore radius"].getFinalValue() / (9e-9), 3)));
             double b0(2.0e-23 * history_variable["Fission rate"].getFinalValue());
             double pore_resolution_rate =
             b0 *
@@ -123,9 +122,10 @@ void Simulation::HighBurnupStructurePorosity()
             sweeping_term * sciantix_variable["Xe in grain"].getFinalValue();
 
             // surface-to-volume ratios
-            double S_gb_V = 3. / sciantix_variable["Grain radius"].getFinalValue();
+            double S_gb_V_NR = 3. / sciantix_variable["Grain radius"].getFinalValue() * (1. - sciantix_variable["Restructured volume fraction"].getFinalValue());
+            double S_gb_V_HBS = 3. / matrices["UO2HBS"].getGrainRadius() * sciantix_variable["Restructured volume fraction"].getFinalValue();
             double S_p_V = 4.*M_PI* pow(sciantix_variable["HBS pore radius"].getFinalValue(),2)*sciantix_variable["HBS pore density"].getFinalValue();
-            double w_p = S_p_V / S_gb_V;
+            double w_p = S_p_V / (S_gb_V_HBS + S_gb_V_NR);
 
             reference = ": Barani T. et al (2020). Journal of Nuclear Materials, 539, 152296. Barani T. et al (2022). Journal of Nuclear Materials, 563, 153627 (linear model).";
 
@@ -217,8 +217,8 @@ void Simulation::HighBurnupStructurePorosity()
             {
                 WignerSeitzCellRadius = pow(3.0 / (4.0 * M_PI * sciantix_variable["HBS pore density"].getFinalValue()), (1.0 / 3.0));
                 psi = sciantix_variable["HBS pore radius"].getInitialValue() / WignerSeitzCellRadius;
-                DimensionlessFactor =  10.0 * psi * (1 + pow(psi, 3.0)) / (-pow(psi, 6.0) + 5.0 * pow(psi, 2.0) - 9.0 * psi + 5.0);
-                //DimensionlessFactor = 3.0 / fuel_.getGrainRadius() * WignerSeitzCellRadius * 8.0 * psi * (1.-pow(psi,3)) / (- pow(psi, 5.0) + 2.0 * pow(psi, 3.0) + 4.0 * pow(psi, 2.0) - 9.0 * psi + 4.0);
+                // DimensionlessFactor =  10.0 * psi * (1 + pow(psi, 3.0)) / (-pow(psi, 6.0) + 5.0 * pow(psi, 2.0) - 9.0 * psi + 5.0);
+                DimensionlessFactor = 3.0 / fuel_.getGrainRadius() * WignerSeitzCellRadius * 8.0 * psi * (1.-pow(psi,3)) / (- pow(psi, 5.0) + 2.0 * pow(psi, 3.0) + 4.0 * pow(psi, 2.0) - 9.0 * psi + 4.0);
             }
         
             // double N_grains = pow(WignerSeitzCellRadius,3) - pow(sciantix_variable["HBS pore radius"].getInitialValue(),3) / pow(fuel_.getGrainRadius(),3);
@@ -227,7 +227,6 @@ void Simulation::HighBurnupStructurePorosity()
             
             if(DimensionlessFactor)
             {
-                //volume_flow_rate = 2.0 * M_PI * fuel_.getGrainBoundaryThickness() * fuel_.getGrainBoundaryVacancyDiffusivity() * DimensionlessFactor;
                 volume_flow_rate = 2.0 * M_PI * WignerSeitzCellRadius * fuel_.getGrainBoundaryVacancyDiffusivity() / DimensionlessFactor;
                 growth_rate = volume_flow_rate * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * Z_compr / fuel_.getSchottkyVolume();
                 equilibrium_term = - volume_flow_rate * equilibrium_pressure / (boltzmann_constant * history_variable["Temperature"].getFinalValue());
