@@ -57,6 +57,8 @@ void Simulation::execute()
         Burnup();
 
         EffectiveBurnup();
+
+        Densification();
     #endif
 
     GapPartialPressure();
@@ -96,4 +98,6 @@ void Simulation::execute()
     GrainBoundaryVenting();
 
     InterGranularBubbleBehavior();
+
+    GasRelease();
 }

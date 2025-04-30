@@ -131,6 +131,25 @@ public:
     void dotProduct2D(double A[], double v[], int n_rows, const int n_col, double result[]);
 
     /**
+     * @brief Solves two coupled diffusion equations using a spectral approach in cylindrical coordinates (only radial direction)
+     * 
+     * @param gas_solution The gas variable in solution.
+     * @param gas_bubble The gas variable in bubble.
+     * @param initial_condition_gas_solution Initial conditions for the gas in solution.
+     * @param initial_condition_gas_bubble Initial conditions for the gas in bubbles.
+     * @param N The number of diffusion modes.
+     * @param diffusion_coefficient The diffusion coefficient (at grain boundary).
+     * @param resolution_rate The resolution rate.
+     * @param trapping_rate The trapping rate.
+     * @param domain_radius The grain radius (domain).
+     * @param source_term_solution The source term for the gas in solution.
+     * @param source_term_bubbles The source term for the gas in bubbles.
+     * @param time_step The time step for the simulation.
+     */
+    void SpectralDiffusionNonEquilibriumCylinder(double& gas_solution, double& gas_bubble, double* initial_condition_gas_solution, double* initial_condition_gas_bubble, int N, double diffusion_coefficient, double resolution_rate, double trapping_rate, double domain_radius, double source_term_solution, double source_term_bubbles, double time_step);
+
+
+    /**
      * @brief Solves two coupled diffusion equations using a spectral approach.
      *
      * @param gas_1 The first gas variable.

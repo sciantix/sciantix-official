@@ -89,6 +89,11 @@ std::map<int, std::string> update_sciantix_variable = {
     {66, "Stoichiometry deviation"},
     {67, "Fuel oxygen partial pressure"},
     {69, "FIMA"},
+    {70, "Porosity"},
+    {71, "Fabrication porosity"},
+    {72, "Open porosity"},
+    {73, "Residual porosity"},
+    {74, "Densification factor"},
     {80, "HBS pore density"},
     {81, "HBS pore volume"},
     {82, "HBS pore radius"},
@@ -137,7 +142,10 @@ std::map<int, std::string> update_sciantix_variable = {
     {158,"Chromia precipitate"},
     {160,"Diffusion coefficient"},
     {161,"U vapour"},
-    {162,"O vapour"},
+    {162,"O2 vapour"},
+    {163,"UO vapour"},
+    {164,"UO2 vapour"},
+    {165,"UO3 vapour"},
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])

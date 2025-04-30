@@ -60,7 +60,12 @@ void Initialization(
 	Sciantix_variables[101] = Sciantix_variables[102] = Sciantix_variables[103] = Sciantix_variables[104] = Sciantix_variables[105] = Sciantix_variables[106] = Sciantix_variables[107] = Sciantix_variables[108] = Sciantix_variables[109] = Sciantix_variables[110] =  0.0;
 	Sciantix_variables[111] = Sciantix_variables[112] = Sciantix_variables[113] = Sciantix_variables[114] = Sciantix_variables[115] = Sciantix_variables[116] = Sciantix_variables[117] = Sciantix_variables[118] = Sciantix_variables[119] = Sciantix_variables[120] =  0.0;
 	Sciantix_variables[121] = Sciantix_variables[122] = Sciantix_variables[123] = Sciantix_variables[124] = Sciantix_variables[125] = Sciantix_variables[126] = Sciantix_variables[127] = Sciantix_variables[128] = Sciantix_variables[129] = Sciantix_variables[130] =  0.0;
-
+	// Fabrication porosity = Porosity
+	Sciantix_variables[71] = Sciantix_variables[70] = 1.0 - Sciantix_variables[40] / 10960.0;
+	
+	// Residual porosity
+	Sciantix_variables[73] = 0.75 * Sciantix_variables[71];
+	
 	// Projection on diffusion modes of the initial conditions
 	double initial_condition(0.0);
 	double projection_remainder(0.0);
