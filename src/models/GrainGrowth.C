@@ -138,5 +138,7 @@ void Simulation::GrainGrowth()
     sciantix_variable["Grain radius"].setFinalValue(
         solver.QuarticEquation(model["Grain growth"].getParameter()));
 
+    sciantix_variable["Grain radius"].resetValue();
+
     matrices["UO2"].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
 }

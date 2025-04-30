@@ -64,9 +64,12 @@ void Simulation::SetPhaseDiagram2()
     {
         if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1)
         {
-            double gasatomsavailable = ((sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() + sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue())  /
-                                        (sciantix_variable["Intergranular bubble concentration"].getFinalValue() * (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
-
+            double gasatomsavailable = (sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " reacted - IG"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " released"].getInitialValue());
+            
             if (gasatomsavailable > 0.0){
                 nogas = false;
             }
@@ -117,11 +120,18 @@ void Simulation::SetPhaseDiagram2()
     for (const auto &element : elements.getMemberNames()) {
         double moles = elements[element]["moles of element in phase"].asDouble();
         //std::cout << element << ": " << moles << " moles\n";
-        double gasatomsavailable = ((sciantix_variable[element + " at grain boundary"].getFinalValue() + sciantix_variable[element + " reacted - GB"].getFinalValue())  /
-                                    (sciantix_variable["Intergranular bubble concentration"].getFinalValue() * (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+        double gasatomsavailable = (sciantix_variable[element + " produced"].getFinalValue() -
+                    sciantix_variable[element + " decayed"].getFinalValue() -
+                    sciantix_variable[element + " reacted - IG"].getFinalValue() -
+                    sciantix_variable[element + " in grain"].getFinalValue() -
+                    sciantix_variable[element + " released"].getInitialValue());
         double gasatomsupdate = moles*avogadro_number; 
-        sciantix_variable[ element + " reacted - GB"].setFinalValue((gasatomsavailable - gasatomsupdate)*(sciantix_variable["Intergranular bubble concentration"].getFinalValue() * (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
-        sciantix_variable[ element + " at grain boundary"].setFinalValue(gasatomsupdate*(sciantix_variable["Intergranular bubble concentration"].getFinalValue() * (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+
+        double alpha(0.00);
+        //sciantix_variable[ element + " precipitated"].setFinalValue(alpha*(gasatomsavailable - gasatomsupdate));
+        sciantix_variable[ element + " reacted - GB"].setFinalValue((1-alpha)*(gasatomsavailable - gasatomsupdate));
+        sciantix_variable[ element + " at grain boundary"].setFinalValue((1-alpha)*gasatomsupdate);
+        //sciantix_variable[ element + " released"].addValue((alpha)*gasatomsupdate);
     }
     
     Json::Value &lsolution = root["1"]["solution phases"]["LIQUID"];
