@@ -56,6 +56,8 @@ std::vector<std::string> getInputVariableNames()
         "iStoichiometryDeviation",
         "iBubbleDiffusivity",
         "iChromiumSolubility",
+        "iDensification",
+        "iReleaseMode",
         "iThermochimica"
     };
 
@@ -335,7 +337,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("FIMA", "(%)", Sciantix_variables[69], Sciantix_variables[69], toOutputHighBurnupStructure || toOutputChromiumContent),
         SciantixVariable("Effective burnup", "(MWd/kgUO2)", Sciantix_variables[39], Sciantix_variables[39], toOutputHighBurnupStructure),
         SciantixVariable("Irradiation time", "(h)", Sciantix_variables[65], Sciantix_variables[65], 0),
-        SciantixVariable("Fuel density", "(kg/m3)", Sciantix_variables[40], Sciantix_variables[40], 0),
+        SciantixVariable("Fuel density", "(kg/m3)", Sciantix_variables[40], Sciantix_variables[40], 1),
 
         SciantixVariable("U", "(at/m3)", Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45], Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45], 0),
         SciantixVariable("U234", "(at/m3)", Sciantix_variables[41], Sciantix_variables[41], 0),
@@ -346,6 +348,12 @@ std::vector<SciantixVariable> initializeSciantixVariable(
 
         SciantixVariable("Intergranular vented fraction", "(/)", Sciantix_variables[46], Sciantix_variables[46], toOutputVenting),
         SciantixVariable("Intergranular venting probability", "(/)", Sciantix_variables[47], Sciantix_variables[47], toOutputVenting),
+        
+        SciantixVariable("Porosity", "(/)", Sciantix_variables[70], Sciantix_variables[70], toOutputVenting),
+        SciantixVariable("Fabrication porosity", "(/)", Sciantix_variables[71], Sciantix_variables[71], toOutputVenting),
+        SciantixVariable("Open porosity", "(/)", Sciantix_variables[72], Sciantix_variables[72], toOutputVenting),
+        SciantixVariable("Residual porosity", "(/)", Sciantix_variables[73], Sciantix_variables[73], toOutputVenting),
+        SciantixVariable("Densification factor", "(/)", Sciantix_variables[74], Sciantix_variables[74], toOutputVenting),
 
         SciantixVariable("Restructured volume fraction", "(/)", Sciantix_variables[55], Sciantix_variables[55], toOutputHighBurnupStructure),
         SciantixVariable("Intragranular similarity ratio", "(/)", Sciantix_variables[64], Sciantix_variables[64], 0),
@@ -379,7 +387,10 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Diffusion coefficient", "(m2/s)", Sciantix_variables[160], Sciantix_variables[160], 0),
 
         SciantixVariable("U vapour", "(mol)", Sciantix_variables[161], Sciantix_variables[161], 1),
-        SciantixVariable("O vapour", "(mol)", Sciantix_variables[162], Sciantix_variables[162], 1),
+        SciantixVariable("O2 vapour", "(mol)", Sciantix_variables[162], Sciantix_variables[162], 1),
+        SciantixVariable("UO vapour", "(mol)", Sciantix_variables[163], Sciantix_variables[163], 1),
+        SciantixVariable("UO2 vapour", "(mol)", Sciantix_variables[164], Sciantix_variables[164], 1),
+        SciantixVariable("UO3 vapour", "(mol)", Sciantix_variables[165], Sciantix_variables[165], 1),
     };
 
     return init_sciantix_variable;

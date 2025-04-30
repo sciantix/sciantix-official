@@ -65,7 +65,9 @@ void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[
     Sciantix_options[20] = ReadOneSetting("iStoichiometryDeviation", input_settings, input_check);
     Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
 	Sciantix_options[22] = ReadOneSetting("iChromiumSolubility",input_settings,input_check);
-	Sciantix_options[23] = ReadOneSetting("iThermochimica",input_settings,input_check);
+	Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
+	Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
+	Sciantix_options[25] = ReadOneSetting("iThermochimica",input_settings,input_check);
 
 if (!input_scaling_factors.fail())
 	{
