@@ -79,7 +79,13 @@ void Simulation::HighBurnupStructurePorosity()
                    (sciantix_variable["Xe at grain boundary HBS"].getFinalValue()) *
                    sciantix_variable["HBS pore radius"].getFinalValue() * 
                    (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3)) * 
-                   sin(40.0 * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
+                   sin(4.0 * M_PI / 180.0 * (1 - sciantix_variable["Restructured volume fraction"].getFinalValue()) + sciantix_variable["Restructured volume fraction"].getFinalValue() * 40.0 * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
+            
+            pore_trapping_rate_HBS = 4.0 * M_PI * fuel_.getGrainBoundarySingleAtomDiffusivity() *
+                (sciantix_variable["Xe at grain boundary HBS"].getFinalValue()) *
+                sciantix_variable["HBS pore radius"].getFinalValue() * 
+                (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3)) * 
+                sin(40.0 * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
 
             double pore_trapping_rate = 4.0 * M_PI * fuel_.getGrainBoundarySingleAtomDiffusivity() *
                    (sciantix_variable["Xe at grain boundary"].getFinalValue()) *
@@ -92,7 +98,7 @@ void Simulation::HighBurnupStructurePorosity()
             double pore_nucleation_rate = (5.0e17 * transformation_rate * avrami_constant * (1.0 - sciantix_variable["Restructured volume fraction"].getFinalValue())* pow(sciantix_variable["Effective burnup"].getFinalValue()/0.8814, avrami_constant - 1.));
             pore_nucleation_rate *= sf_nucleation_rate_porosity;
             
-            // double correction_coefficient = (1.0 - exp(pow(-sciantix_variable["HBS pore radius"].getFinalValue() / (9e-9), 3)));
+            double correction_coefficient = (1.0 - exp(pow(-sciantix_variable["HBS pore radius"].getFinalValue() / (9e-9), 3)));
             double b0(2.0e-23 * history_variable["Fission rate"].getFinalValue());
             double pore_resolution_rate =
                 b0 *
@@ -105,6 +111,17 @@ void Simulation::HighBurnupStructurePorosity()
         
             if (std::isinf(sweeping_term) || std::isnan(sweeping_term))
                 sweeping_term = 0.0;
+
+            double flux_from_HBS_grain = 
+                sciantix_variable["Xe produced"].getIncrement() +
+                sciantix_variable["Xe produced in HBS"].getIncrement() -
+                sciantix_variable["Xe in grain"].getIncrement() -
+                sciantix_variable["Xe in grain HBS"].getIncrement() - 
+                (1 - sciantix_variable["Restructured volume fraction"].getFinalValue()) * (
+                sciantix_variable["Xe produced"].getIncrement() +
+                sciantix_variable["Xe produced in HBS"].getIncrement() -
+                sciantix_variable["Xe in grain"].getIncrement() -
+                sciantix_variable["Xe in grain HBS"].getIncrement());
 
             double source_ig(0.0);
             source_ig =  
@@ -129,7 +146,7 @@ void Simulation::HighBurnupStructurePorosity()
             coeff_matrix[3] = 0.0;
             coeff_matrix[4] = 0.0;
 
-            coeff_matrix[5] = - (pore_trapping_rate_HBS + pore_trapping_rate) * physics_variable["Time step"].getFinalValue();
+            coeff_matrix[5] = - pore_trapping_rate_HBS * physics_variable["Time step"].getFinalValue();
             coeff_matrix[6] = 1.0 + pore_resolution_rate * physics_variable["Time step"].getFinalValue();
             coeff_matrix[7] = 0.0;
             coeff_matrix[8] = 0.0;
@@ -141,7 +158,7 @@ void Simulation::HighBurnupStructurePorosity()
             coeff_matrix[13] = 0.0;
             coeff_matrix[14] = 0.0;
 
-            coeff_matrix[15] = pore_trapping_rate * physics_variable["Time step"].getFinalValue() * (1.0 - sciantix_variable["Restructured volume fraction"].getFinalValue());
+            coeff_matrix[15] = pore_trapping_rate_HBS * physics_variable["Time step"].getFinalValue() * (1.0 - sciantix_variable["Restructured volume fraction"].getFinalValue());
             coeff_matrix[16] = - pore_resolution_rate * physics_variable["Time step"].getFinalValue() * (1.0 - sciantix_variable["Restructured volume fraction"].getFinalValue());
             coeff_matrix[17] = 0.0;
             coeff_matrix[18] = 1 + sweeping_term * physics_variable["Time step"].getFinalValue();
@@ -154,7 +171,7 @@ void Simulation::HighBurnupStructurePorosity()
             coeff_matrix[24] = 1.0;
     
             initial_conditions[0] = sciantix_variable["HBS pore density"].getInitialValue() + pore_nucleation_rate * physics_variable["Time step"].getFinalValue();
-            initial_conditions[1] = sciantix_variable["Xe in HBS pores"].getInitialValue() + 2.0 * pore_nucleation_rate * physics_variable["Time step"].getFinalValue();
+            initial_conditions[1] = sciantix_variable["Xe in HBS pores"].getInitialValue() + flux_from_HBS_grain + 2.0 * pore_nucleation_rate * physics_variable["Time step"].getFinalValue();
             initial_conditions[2] = sciantix_variable["Xe in HBS pores - variance"].getInitialValue() + pore_nucleation_rate * pow(sciantix_variable["Xe atoms per HBS pore"].getFinalValue() - 2.0 , 2.0) * physics_variable["Time step"].getFinalValue();
             initial_conditions[3] = sciantix_variable["Xe at grain boundary"].getInitialValue() + source_ig - 2.0 * pore_nucleation_rate * physics_variable["Time step"].getFinalValue() * (1.0 - sciantix_variable["Restructured volume fraction"].getFinalValue());
             initial_conditions[4] = sciantix_variable["Xe at grain boundary HBS"].getInitialValue() + source_ig_HBS - 2.0 * pore_nucleation_rate * physics_variable["Time step"].getFinalValue() * sciantix_variable["Restructured volume fraction"].getFinalValue();
