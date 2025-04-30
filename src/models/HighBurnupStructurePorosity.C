@@ -76,16 +76,11 @@ void Simulation::HighBurnupStructurePorosity()
         case 2:
         {   
             double pore_trapping_rate_HBS = 4.0 * M_PI * fuel_.getGrainBoundarySingleAtomDiffusivity() *
-                   (sciantix_variable["Xe at grain boundary HBS"].getFinalValue()) *
+                   sciantix_variable["Xe at grain boundary HBS"].getFinalValue() *
                    sciantix_variable["HBS pore radius"].getFinalValue() * 
                    (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3)) * 
-                   sin(40.0 * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
-
-            double pore_trapping_rate = 4.0 * M_PI * fuel_.getGrainBoundarySingleAtomDiffusivity() *
-                   (sciantix_variable["Xe at grain boundary"].getFinalValue()) *
-                   sciantix_variable["HBS pore radius"].getFinalValue() * 
-                   (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
-
+                   sin(40.0 * M_PI / 180.0) / sin(4.0 * M_PI / 180.0) * 400000;
+                   
             double sf_nucleation_rate_porosity = 1.25e-6; 
             double avrami_constant = 3.54; 
             double transformation_rate = 2.77e-7; 
