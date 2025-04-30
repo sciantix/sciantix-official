@@ -29,7 +29,7 @@ modify_input_settings("0")
 run_sciantix("output_nochemistry.txt")
 
 # Run with thermochemistry
-modify_input_settings("3")
+modify_input_settings("2")
 run_sciantix("output_chemistry.txt")
 
 # Run thermochemistry script

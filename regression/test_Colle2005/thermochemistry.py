@@ -12,7 +12,7 @@ def modify_input_settings(value):
         lines = file.readlines()
     
     # Modify line 22 (index23) by replacing the first character
-    lines[23] = value + lines[23][1:]
+    lines[25] = value + lines[25][1:]
     
     with open(input_file, 'w') as file:
         file.writelines(lines)

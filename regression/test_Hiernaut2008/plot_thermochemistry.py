@@ -7,7 +7,7 @@ import glob
 
 folder_path = "results"
 avogadronumber = 6.02214e23
-xlim_i = 53400.100
+xlim_i = 53400.099
 
 # Remove previous plots
 png_files = glob.glob(os.path.join(folder_path, "*.png"))
@@ -264,7 +264,27 @@ plt.tight_layout()
 plt.savefig(folder_path +"/XeCs_annealing.png")
 plt.show()
 
+##################################### irradiation history ########################
+fig, axes = plt.subplots(1, 2, figsize=(18, 8))
 
+dataset = "With Thermochemistry"
+x = 'Temperature (K)'
+axes[0].plot(data[dataset][label_x],data[dataset][x] , 
+                    linestyle=linestyles[dataset])
+axes[0].set_xlabel(label_x)
+axes[0].set_ylabel(x)
+axes[0].set_xlim([xlim_o,xlim_i])
+
+axes[1].plot(data[dataset][label_x],data[dataset][x], 
+                    linestyle=linestyles[dataset])
+axes[1].set_xlabel(label_x)
+axes[1].set_ylabel(x)
+axes[1].set_xlim([xlim_i,xlim_f])
+
+plt.title('Sample temperature history')
+plt.tight_layout()
+plt.savefig(folder_path +"/Temperature.png")
+plt.show()
 ############################################### PRODUCED ####################################
 
 fig, axes = plt.subplots(1, 2, figsize=(18, 8))
@@ -527,4 +547,25 @@ plt.legend(handles= legend_colors +legend_markers + legend_lines, loc='upper lef
 
 plt.tight_layout()
 plt.savefig(folder_path + "/Cumulative_Release_Comparison.png")
+plt.show()
+
+plt.figure(figsize=(15,8))
+
+for isotope, properties in isotope_data.items():
+    element = properties['element']
+    plt.plot(
+        data["With Thermochemistry"]["Temperature (K)"],
+        data["With Thermochemistry"][f'{element} released (at/m3)']/data["With Thermochemistry"][f'Cs released (at/m3)'],
+        color=colors[list(isotope_data.keys()).index(isotope)],
+        label=f'{isotope}'
+    )
+plt.xlabel('Temperature (K)')
+plt.ylabel('Release quantity with respect to Cs (/)')
+plt.title('Simulation')
+plt.legend()
+plt.xlim([300, 2800])
+plt.ylim([0,1])
+plt.tight_layout()
+
+plt.savefig(folder_path + "/Sim_ratio.png")
 plt.show()

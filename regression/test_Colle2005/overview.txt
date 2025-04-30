@@ -20,12 +20,13 @@ Model	Gas diffusion - Kr85m in UO2
 Model	Gas diffusion - Cs in UO2	
 Model	Gas diffusion - I in UO2	
 Model	Gas diffusion - Te in UO2	
-Model	Grain-boundary micro-cracking	 : from Barani et al. (2017), JNM
+Model	Grain-boundary micro-cracking	: Barani et al. (2017), JNM
 Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
+Model	Release mode	 coalescence from White, JNM, 325 (2004), 61-77; release from Pastore et al., NED, 256 (2013), 75-86.
 
 Matrix	UO2	
 	Ainscough et al., JNM, 49 (1973) 117-128.
-	iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.
+	iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.
 	
 
 System	Xe in UO2	
@@ -38,14 +39,14 @@ System	I in UO2
 System	Te in UO2	
 
 Input setting	iGrainGrowth = 1
-Input setting	iFissionGasDiffusivity = 3
+Input setting	iFissionGasDiffusivity = 1
 Input setting	iDiffusionSolver = 1
 Input setting	iIntraGranularBubbleBehavior = 1
-Input setting	iResolutionRate = 0
-Input setting	iTrappingRate = 0
+Input setting	iResolutionRate = 1
+Input setting	iTrappingRate = 1
 Input setting	iNucleationRate = 1
 Input setting	iOutput = 1
-Input setting	iGrainBoundaryVacancyDiffusivity = 1
+Input setting	iGrainBoundaryVacancyDiffusivity = 2
 Input setting	iGrainBoundaryBehaviour = 1
 Input setting	iGrainBoundaryMicroCracking = 1
 Input setting	iFuelMatrix = 0
@@ -60,5 +61,7 @@ Input setting	iHeliumProductionRate = 0
 Input setting	iStoichiometryDeviation = 7
 Input setting	iBubbleDiffusivity = 1
 Input setting	iChromiumSolubility = 0
-Input setting	iThermochimica = 3
+Input setting	iDensification = 0
+Input setting	iReleaseMode = 0
+Input setting	iThermochimica = 2
 
