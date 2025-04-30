@@ -7,6 +7,8 @@
 1.0
 # scaling factor - diffusivity
 1.0
+# scaling factor - diffusivity2
+1.0
 # scaling factor - temperature
 1.0
 # scaling factor - fission rate
