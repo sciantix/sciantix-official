@@ -82,6 +82,7 @@ void Initialization(
 	double projection_coeff(0.0);
 	projection_coeff = -sqrt(8.0 / M_PI);
 
+	//Uniform
 	for (k = 0; k < K; ++k)
 	{
 		switch (k)
@@ -132,65 +133,76 @@ void Initialization(
 	//NUS SOLVER
 	for (k = 0; k < K; ++k)
 	{
-		switch (k)
+		if (ICfile)
 		{
-		case 0: initial_condition_NUS = initial_distribution.at(0) ;  break;  // Xe in grain
-		case 1: initial_condition_NUS = initial_distribution.at(1);  break;  // Xe in grain - solution
-		case 2: initial_condition_NUS = initial_distribution.at(2);  break;  // Xe in grain - bubbles 
-
-		case 3: initial_condition_NUS = initial_distribution.at(3);  break;  // Kr in grain
-		case 4: initial_condition_NUS = initial_distribution.at(4);  break;  // Kr in grain - solution
-		case 5: initial_condition_NUS = initial_distribution.at(5); break;  // Kr in grain - bubbles
-
-		case 6: initial_condition_NUS = initial_distribution.at(6); break;  // He in grain
-		case 7: initial_condition_NUS = initial_distribution.at(7); break;  // He in grain - solution
-		case 8: initial_condition_NUS = initial_distribution.at(8); break;  // He in grain - bubbles
-
-		case 9: initial_condition_NUS = initial_distribution.at(9); break;  // Xe133 in grain
-		case 10: initial_condition_NUS = initial_distribution.at(10); break;  // Xe133 in grain - solution
-		case 11: initial_condition_NUS = initial_distribution.at(11); break;  // Xe133 in grain - bubbles
-
-		case 12: initial_condition_NUS = initial_distribution.at(12); break;  // Kr85m in grain
-		case 13: initial_condition_NUS = initial_distribution.at(13); break;  // Kr85m in grain - solution
-		case 14: initial_condition_NUS = initial_distribution.at(14); break;  // Kr85m in grain - bubbles
-		
-		case 15: initial_condition_NUS = initial_distribution.at(15); break;  // Xe in UO2 HBS
-		case 16: initial_condition_NUS = initial_distribution.at(16); break;  // Xe in UO2 HBS - solution
-		case 17: initial_condition_NUS = initial_distribution.at(17); break;  // Xe in UO2 HBS - bubbles
-
-		default: initial_condition_NUS = null_source; break;
-		}
-		
-		double NumberofRegions = initial_condition_NUS.Slopes.size();
-		std::vector<std::vector<double>> domain(NumberofRegions, std::vector<double>(2)); 
-		std::vector<std::vector<double>> source(NumberofRegions, std::vector<double>(2));
-		Solver solver;
-
+			// same code as your current NUS solver
+			initial_condition_NUS = (k < initial_distribution.size()) ? initial_distribution.at(k) : null_source;
 	
-		// Fill source
-		for (size_t i = 0; i < NumberofRegions; ++i) 
-		{
-			source[i][0] = initial_condition_NUS.Slopes[i];     // A
-			source[i][1] = initial_condition_NUS.Intercepts[i]; // B
-		}
-
-		// Fill domain
-		for (size_t i = 0; i < NumberofRegions; ++i) 
-		{
-			domain[i][0] = Sciantix_variables[0] * initial_condition_NUS.NormalizedDomain[i]; // edge1
-			domain[i][1] = Sciantix_variables[0] * initial_condition_NUS.NormalizedDomain[i+1]; // edge2
-		}
-
-		for (n = 0; n < n_modes; ++n)
-		{
-			np1 = n + 1;
-			double n_c = 0;
-			for (size_t x = 0; x < NumberofRegions; ++x)
+			double NumberofRegions = initial_condition_NUS.Slopes.size();
+			std::vector<std::vector<double>> domain(NumberofRegions, std::vector<double>(2));
+			std::vector<std::vector<double>> source(NumberofRegions, std::vector<double>(2));
+			Solver solver;
+	
+			for (size_t i = 0; i < NumberofRegions; ++i)
 			{
-				n_c += solver.SourceProjection_i(Sciantix_variables[0], domain[x], source[x], np1);
+				source[i][0] = initial_condition_NUS.Slopes[i];
+				source[i][1] = initial_condition_NUS.Intercepts[i];
+				domain[i][0] = Sciantix_variables[0] * initial_condition_NUS.NormalizedDomain[i];
+				domain[i][1] = Sciantix_variables[0] * initial_condition_NUS.NormalizedDomain[i + 1];
 			}
-			const double n_coeff = pow(-1.0, np1) / np1;
-			Sciantix_diffusion_modes_NUS[k * n_modes + n] = -projection_coeff * n_c;
+	
+			for (n = 0; n < n_modes; ++n)
+			{
+				np1 = n + 1;
+				double n_c = 0;
+				for (size_t x = 0; x < NumberofRegions; ++x)
+				{
+					n_c += solver.SourceProjection_i(Sciantix_variables[0], domain[x], source[x], np1);
+				}
+				const double n_coeff = pow(-1.0, np1) / np1;
+				Sciantix_diffusion_modes_NUS[k * n_modes + n] = -projection_coeff * n_c;
+			}
+		}
+		else
+		{
+			// fallback: use uniform initial condition
+			switch (k)
+			{
+			case 0:  initial_condition = Sciantix_variables[2]; break;
+			case 1:  initial_condition = Sciantix_variables[3]; break;
+			case 2:  initial_condition = Sciantix_variables[4]; break;
+			case 3:  initial_condition = Sciantix_variables[8]; break;
+			case 4:  initial_condition = Sciantix_variables[9]; break;
+			case 5:  initial_condition = Sciantix_variables[10]; break;
+			case 6:  initial_condition = Sciantix_variables[14]; break;
+			case 7:  initial_condition = Sciantix_variables[15]; break;
+			case 8:  initial_condition = Sciantix_variables[16]; break;
+			case 9:  initial_condition = Sciantix_variables[49]; break;
+			case 10: initial_condition = Sciantix_variables[50]; break;
+			case 11: initial_condition = Sciantix_variables[51]; break;
+			case 12: initial_condition = Sciantix_variables[58]; break;
+			case 13: initial_condition = Sciantix_variables[59]; break;
+			case 14: initial_condition = Sciantix_variables[60]; break;
+			case 15: initial_condition = Sciantix_variables[92]; break;
+			case 16: initial_condition = Sciantix_variables[93]; break;
+			case 17: initial_condition = Sciantix_variables[94]; break;
+			default: initial_condition = 0.0; break;
+			}
+	
+			projection_remainder = initial_condition;
+			for (iteration = 0; iteration < iteration_max; ++iteration)
+			{
+				reconstructed_solution = 0.0;
+				for (n = 0; n < n_modes; ++n)
+				{
+					if (iteration == 0) Sciantix_diffusion_modes_NUS[k * n_modes + n] = 0;
+					np1 = n + 1;
+					const double n_coeff = pow(-1.0, np1) / np1;
+					Sciantix_diffusion_modes_NUS[k * n_modes + n] += projection_coeff * n_coeff * projection_remainder;
+					reconstructed_solution += projection_coeff * n_coeff * Sciantix_diffusion_modes_NUS[k * n_modes + n] * 3.0 / (4.0 * M_PI);
+				}
+				projection_remainder = initial_condition - reconstructed_solution;
+			}
 		}
 	}		
 

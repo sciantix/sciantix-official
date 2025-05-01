@@ -148,10 +148,14 @@ void InputReading(
 	Sciantix_options[19] = ReadOneSetting("iHeliumProductionRate", input_settings, input_check);
 	Sciantix_options[20] = ReadOneSetting("iStoichiometryDeviation", input_settings, input_check);
 	Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
+	Sciantix_options[22] = ReadOneSetting("iNUSOutput",input_settings,input_check);
+	Sciantix_options[23] = ReadOneSetting("iNonSym",input_settings,input_check);
 
 	loadSourcesFromFile("non_uniform_source.txt",sources_input);
-	loadSourcesFromFile("initial_distribution.txt", initial_distribution);
-	
+	loadICFromFile("initial_distribution.txt", initial_distribution,ICfile);
+	visualization = Sciantix_options[22];
+	iNonSym = Sciantix_options[23];
+
 	if (!input_initial_conditions.fail())
 	{
 		Sciantix_variables[0] = ReadOneParameter("Grain radius[0]", input_initial_conditions, input_check);

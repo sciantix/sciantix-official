@@ -50,5 +50,8 @@ std::vector<double> Steampressure_input(1000, 0.0);
 std::vector<Source> sources_input;
 std::vector<Source> sources_interp;
 std::vector<Source> initial_distribution;
+bool ICfile;
+double visualization;
+double iNonSym;
 
 
