@@ -123,8 +123,12 @@ void Simulation::GasDiffusion()
         
         case 4:
         {
-            // writeToFile(sources_interp, sciantix_variable["Grain radius"].getFinalValue());
-            computeAndSaveSourcesToFile(sources_input,TestPath + "source_shape.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
+            if (visualization ==1)
+            {
+                writeToFile(sources_interp, sciantix_variable["Grain radius"].getFinalValue());
+                computeAndSaveSourcesToFile(sources_input,TestPath + "source_shape.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
+                computeAndSaveICToFile(initial_distribution,TestPath + "ic_shape.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
+            }
             
             if (system.getRestructuredMatrix() == 0)
             {    
@@ -135,13 +139,13 @@ void Simulation::GasDiffusion()
                         model["Gas diffusion - " + system.getName()].getParameter(),
                         system.getProductionRateNUS(), //Source
                         physics_variable["Time step"].getFinalValue(),
-                        0 //NonSym factor
+                        iNonSym //NonSym factor
                     )
                 );
 
                 double equilibrium_fraction(1.0);
-                if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
-                    equilibrium_fraction = system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
+                if ((system.getResolutionRateNUS() + system.getTrappingRate()) > 0.0)
+                    equilibrium_fraction = system.getResolutionRateNUS() / (system.getResolutionRateNUS() + system.getTrappingRate());
 
                 sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
                     equilibrium_fraction * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
@@ -160,7 +164,7 @@ void Simulation::GasDiffusion()
                         model["Gas diffusion - " + system.getName()].getParameter(),
                         system.getProductionRateNUS(),
                         physics_variable["Time step"].getFinalValue(),
-                        0 //NonSym factor
+                        iNonSym //NonSym factor
                     )
                 );
             }

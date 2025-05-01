@@ -65,5 +65,8 @@ extern std::vector<double> Steampressure_input;
 extern std::vector<Source> sources_input;
 extern std::vector<Source> sources_interp;
 extern std::vector<Source> initial_distribution;
+extern bool ICfile;
+extern double visualization;
+extern double iNonSym;
 
 #endif

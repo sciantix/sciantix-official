@@ -34,6 +34,8 @@
  * @note The file format should match expected input values.
  */
 void loadSourcesFromFile(const std::string &filePath, std::vector<Source> &sources);
+void loadICFromFile(const std::string &filePath, std::vector<Source> &ics, bool &fileFound);
+
 
 /**
  * @brief Performs interpolation on the provided sources to create smoother data.
@@ -69,8 +71,12 @@ void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRad
  * @param GrainRadius
  */
  void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::string &outputFilePath, double step, double GrainRadius);
-
- /**
+ void computeAndSaveICToFile(const std::vector<Source> &ics,
+    const std::string &outputFilePath,
+    double step,
+    double GrainRadius);
+ 
+    /**
   * @brief Gives the spatial averaged value of the fission rate (Fdot)
   * @param GrainRadius
   * @param source
