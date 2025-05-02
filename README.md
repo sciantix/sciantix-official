@@ -103,4 +103,4 @@ For a deeper understanding of the SCIANTIX code and its underlying models, refer
   ```
 
   # NUS SOLVER MINI GUIDE
-https://polimi365-my.sharepoint.com/:b:/g/personal/10884872_polimi_it/EfY-DTI-Q2xKuCZuFo5bu-ABKdMiYspqGhmM8k1Yn_dYFg?e=cbpELv
+https://polimi365-my.sharepoint.com/:b:/g/personal/10884872_polimi_it/EUT-2KKVWdBNgbRhSLts3LYB44YjGkc51bAKPb6uTe0oHg?e=YH19AK
