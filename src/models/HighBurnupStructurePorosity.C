@@ -74,7 +74,7 @@ void Simulation::HighBurnupStructurePorosity()
         }
 
         case 2:
-        {   
+        {            
             // Trapping rate (HBS), Gosele approximated formula
             double pore_trapping_rate_HBS = 0.0;
             double porosity = sciantix_variable["HBS porosity"].getFinalValue();
@@ -83,28 +83,10 @@ void Simulation::HighBurnupStructurePorosity()
             double R_pore = sciantix_variable["HBS pore radius"].getFinalValue();
             pore_trapping_rate_HBS =
                 4.0 * M_PI * D_gb * c_gb * R_pore * (1.0 + 1.8 * pow(porosity, 1.3));
-                
-            // Trapping rate (HBS), Gosele full formula (fitted)
-            // double pore_trapping_rate_HBS = 0.0;
-            // double porosity = sciantix_variable["HBS porosity"].getFinalValue();
-            // double R_pore = sciantix_variable["HBS pore radius"].getFinalValue();
-            // if (porosity > 0.0)
-            // {
-            //     const double a = 0.87;
-            //     const double b = 0.49;
-            
-            //     double kappa_0 = (a * pow(porosity, b)) / (1.0 - pow(porosity, 1.0 / 3.0));
-            
-            //     double D_gb = fuel_.getGrainBoundarySingleAtomDiffusivity() * sin(40.0 * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
-            //     double c_gb = sciantix_variable["Xe at grain boundary HBS"].getFinalValue();
-            
-            //     pore_trapping_rate_HBS =
-            //         4.0 * M_PI * D_gb * c_gb * R_pore * (kappa_0 * kappa_0) / (3.0 * pow(porosity, 1.0 / 3.0));
-            // }            
-            
+                           
             // Nucleation rate
-            double avrami_constant = 3.54; 
-            double transformation_rate = 2.77e-7; 
+            double avrami_constant = model["High-burnup structure formation"].getParameter().at(0);
+            double transformation_rate = model["High-burnup structure formation"].getParameter().at(1);
             double pore_nucleation_rate =
             (5.0e17 * transformation_rate * avrami_constant * (1.0 - sciantix_variable["Restructured volume fraction"].getFinalValue())* pow(sciantix_variable["Effective burnup"].getFinalValue()/0.8814, avrami_constant - 1.));
             // from d_alpha/d_burnup -> d_alpha/d_time
@@ -114,11 +96,14 @@ void Simulation::HighBurnupStructurePorosity()
                 pore_nucleation_rate = 0.0;
             
             // Resolution rate
+            double resolution_layer_thickness = model["High-burnup structure formation"].getParameter().at(2);
+            double resolution_critical_distance =model["High-burnup structure formation"].getParameter().at(3);
+            
             double b0(2.0e-23 * history_variable["Fission rate"].getFinalValue());
             double pore_resolution_rate =
-            b0 *
-            (3.0 * 1.0e-9 / (3.0 * 1.0e-9 + sciantix_variable["HBS pore radius"].getFinalValue())) *
-            (1.0e-9 / (1.0e-9 + sciantix_variable["HBS pore radius"].getFinalValue()));
+            b0 * 
+            (3.0 * resolution_critical_distance / (3.0 * resolution_critical_distance + sciantix_variable["HBS pore radius"].getFinalValue())) *
+            (resolution_layer_thickness / (resolution_layer_thickness + sciantix_variable["HBS pore radius"].getFinalValue()));
             
             // Sweeping term
             double sweeping_term(0.0);
@@ -133,7 +118,7 @@ void Simulation::HighBurnupStructurePorosity()
             gas_in_gb_from_grain = 
             sciantix_variable["Xe produced"].getIncrement() -
             sciantix_variable["Xe in grain"].getIncrement() -
-            sweeping_term * sciantix_variable["Xe in grain"].getFinalValue();
+            sweeping_term * sciantix_variable["Xe in grain"].getInitialValue();
 
             // from HBS grains to HBS grain-boundary (gas in solution in HBS grain boundary)
             // = - D nabla^2 G_HBS
@@ -141,7 +126,7 @@ void Simulation::HighBurnupStructurePorosity()
             gas_in_pores_from_hbs_grain = 
             sciantix_variable["Xe produced in HBS"].getIncrement() -
             sciantix_variable["Xe in grain HBS"].getIncrement() +
-            sweeping_term * sciantix_variable["Xe in grain"].getFinalValue();
+            sweeping_term * sciantix_variable["Xe in grain"].getInitialValue();
 
             // surface-to-volume ratios
             double N_pore = sciantix_variable["HBS pore density"].getFinalValue();
@@ -149,6 +134,7 @@ void Simulation::HighBurnupStructurePorosity()
             double S_p_V = 4.0 * M_PI * R_pore * R_pore * N_pore;
             double S_gb_V = 3.0 / R_grain;
             double w_p = S_p_V / S_gb_V;
+            w_p = 1.0;
             
             reference = ": Barani T. et al (2020). Journal of Nuclear Materials, 539, 152296. Barani T. et al (2022). Journal of Nuclear Materials, 563, 153627 (linear model).";
 
@@ -177,7 +163,7 @@ void Simulation::HighBurnupStructurePorosity()
             coeff_matrix[15] = 0.0;
             coeff_matrix[16] = 0.0;
             coeff_matrix[17] = 0.0;
-            coeff_matrix[18] = 1 + sweeping_term * physics_variable["Time step"].getFinalValue();
+            coeff_matrix[18] = 1.0 + sweeping_term * physics_variable["Time step"].getFinalValue();
             coeff_matrix[19] = 0.0;
 
             coeff_matrix[20] = pore_trapping_rate_HBS * physics_variable["Time step"].getFinalValue();
