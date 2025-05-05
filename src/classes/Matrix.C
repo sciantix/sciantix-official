@@ -110,9 +110,9 @@ void Matrix::setGrainBoundarySingleAtomDiffusivity(int input_value, SciantixArra
         case 1:
         {
             // Barani et al. 2022, HBS part II
-            grain_boundary_single_atom_diffusivity = (1.3e-7 * exp(- 2.82 /
-                (8.62e-5 * history_variable["Temperature"].getFinalValue()))
-            );
+            // grain_boundary_single_atom_diffusivity = (1.3e-7 * exp(- 2.82 /
+            //     (8.62e-5 * history_variable["Temperature"].getFinalValue()))
+            // );
             
             // Liu et al. 2023 (https://www.osti.gov/servlets/purl/1969379/)
             // tilt S5
@@ -126,9 +126,9 @@ void Matrix::setGrainBoundarySingleAtomDiffusivity(int input_value, SciantixArra
             // );
         
             // twist S5
-            // grain_boundary_single_atom_diffusivity = (1.1e-9 * exp(- 0.39 /
-            //         (8.62e-5 * history_variable["Temperature"].getFinalValue()))
-            // );
+            grain_boundary_single_atom_diffusivity = (1.1e-9 * exp(- 0.39 /
+                    (8.62e-5 * history_variable["Temperature"].getFinalValue()))
+            );
 
             // Xia et al. (2022) https://www.mdpi.com/2075-4701/12/5/763
             // grain_boundary_single_atom_diffusivity = (2.0e-8 * exp(- 1.4 /

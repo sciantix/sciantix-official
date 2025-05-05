@@ -43,5 +43,7 @@ void Simulation::EffectiveBurnup()
         solver.Integrator(
             sciantix_variable["Effective burnup"].getInitialValue(),
             model["Effective burnup"].getParameter().at(0),
-            physics_variable["Time step"].getFinalValue()));
+            physics_variable["Time step"].getFinalValue()
+        )
+    );
 }

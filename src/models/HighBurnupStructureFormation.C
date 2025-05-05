@@ -47,8 +47,8 @@ void Simulation::HighBurnupStructureFormation()
 
             double avrami_constant(3.54);
             double transformation_rate(2.77e-7);
-            double resolution_layer_thickness = 1.0e-9; //(m)
-            double resolution_critical_distance = 1.0e-9; //(m)
+            double resolution_layer_thickness = 1.0e-9; // (m)
+            double resolution_critical_distance = 1.0e-9; // (m)
 
             parameter.push_back(avrami_constant);
             parameter.push_back(transformation_rate);
