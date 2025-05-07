@@ -81,7 +81,7 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
         {
             double hbs_correction = sin(40.0 * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);            
             
-            grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 1e-39 * history_variable["Fission rate"].getFinalValue();
+            grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue()))+ 5e-41 * history_variable["Fission rate"].getFinalValue();
             grain_boundary_vacancy_diffusivity *= hbs_correction;
             
             reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77 / BARANI HBS part 2, 2022\n\t";
@@ -126,14 +126,15 @@ void Matrix::setGrainBoundarySingleAtomDiffusivity(int input_value, SciantixArra
             // );
         
             // twist S5
-            grain_boundary_single_atom_diffusivity = (1.1e-9 * exp(- 0.39 /
-                    (8.62e-5 * history_variable["Temperature"].getFinalValue()))
-            );
+            // grain_boundary_single_atom_diffusivity = (1.1e-9 * exp(- 0.39 /
+            // (8.62e-5 * history_variable["Temperature"].getFinalValue()))
+            // );
 
             // Xia et al. (2022) https://www.mdpi.com/2075-4701/12/5/763
-            // grain_boundary_single_atom_diffusivity = (2.0e-8 * exp(- 1.4 /
-            //     (8.62e-5 * history_variable["Temperature"].getFinalValue()))
-            // );
+            grain_boundary_single_atom_diffusivity = (2.0e-8 * exp(- 1.4 /
+                (8.62e-5 * history_variable["Temperature"].getFinalValue()))
+            );
+        
 
             reference += "iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.\n\t";
             break;
