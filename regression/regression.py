@@ -124,8 +124,11 @@ def main():
 
             # Run the selected regression test
             mode_name, regression_func = regression_modules[regression_mode]
-            folderList, tests_count, tests_failed_count = regression_func(
+            regression_file = regression_func(
                 wpath, 1, mode_gold, mode_plot, [], 0, 0)
+            folderList = regression_file[0]
+            tests_count = regression_file[1]
+            tests_failed_count = regression_file[2]
             total_tests += tests_count
             total_tests_failed += tests_failed_count
             print(f"\nRegression selected: {mode_name}")

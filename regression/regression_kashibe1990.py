@@ -51,22 +51,16 @@ bbConcKashibe = [0, 0, 1.6, (1.4+0.9)/2, #1873 K annealing, 6-16-23-28 GWd/t, 0 
         3, (2.2+1.3)/2, 0, 0 ##2073 K annealing, 6-16-23-28 GWd/t
         ] #e12
 
-# FGROperational = [0.2, 0.8, 21, 21, #6-16-23-28 GWd/t
-#                   0.2, 0.8, 21, 21 ##6-16-23-28 GWd/t
-#                 ]
-FGROperational = [0.2, 1, 22, 43, #6-16-23-28 GWd/t
-                  0.2, 1, 22, 43 ##6-16-23-28 GWd/t
-                ]
 FGRAnnealing = [05.80/0.75, 05.80/0.75, 13.71/0.75, 22.26, #1873 K annealing, 6-16-23-28 GWd/t, first datum missing
                 14.16, 16.86, 25.3, 25.9 ##2073 K annealing, 6-16-23-28 GWd/t
                 ]
-FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
 AnnFGRVersion2 = [4.7349513000000005, 19.668761999999997, 27.74164, 24.88153, 8.6988853, 23.891071999999998, 31.68827, 28.887140000000006]
 SwellCorrVersion2 = [2.6845190000000003, 3.1564740000000002, 2.973836, 3.082197, 2.137718, 2.5892180000000002, 2.913462, 3.15285]
 
 goldFGR = []
 goldSwelling = []
+goldFGRAnnealing = []
 
 f2 = []
 fgold = []
@@ -79,7 +73,6 @@ sample_number = len(igSwelling2)
 
 def do_plot():
     
-    goldFGRAnnealing = []
     for i in range(len(FGR2)):
       FGR2Annealing.append(FGR2[i] - FGRBase[i])
       goldFGRAnnealing.append(goldFGR[i] - FGRBaseGold[i])
@@ -222,7 +215,7 @@ def do_plot():
     print(f"This work - MAD: ", np.median(deviations_2))
     print(f"Gold - MAD: ", np.median(deviations_gold))
 
-          # Median absolute deviations
+    # Median absolute deviations
     deviations_2 = abs(np.array(SwellingKashibe[1:7]) - np.array(igSwelling2[1:7]))
     deviations_gold = abs(np.array(SwellingKashibe[1:7])-np.array(goldSwelling[1:7]))
     
@@ -271,12 +264,12 @@ def regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folder
             number_of_tests += 1
 
             if mode_gold == 0:
-                do_sciantix_only()
+                do_sciantix()
                 data, data_gold = check_output(file)
                 number_of_tests_failed = check_result(number_of_tests_failed)
 
             elif mode_gold == 1:
-                do_sciantix_only()
+                do_sciantix()
                 data, data_gold = check_output(file)
                 print("...golding results.")
                 do_gold()
@@ -323,4 +316,4 @@ def regression_kashibe1990(wpath, mode_Kashibe1990, mode_gold, mode_plot, folder
     if mode_plot == 1:
       do_plot()
 
-    return folderList, number_of_tests, number_of_tests_failed
+    return folderList, number_of_tests, number_of_tests_failed, igSwelling2[1:7], SwellingKashibe[1:7], goldSwelling[1:7], FGR2Annealing[1:8], FGRAnnealing[1:8],goldFGRAnnealing[1:8]

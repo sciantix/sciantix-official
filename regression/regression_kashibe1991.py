@@ -46,13 +46,6 @@ bbConcKashibe = [0, 0, 0, 0,
                  (10+6.5+3.3+3.5)/4,0,0,0,0,
                  (2.2+3.1)/2, (4.4+5.9)/2, 0,0] #e12
 
-# Data from Kashibe 1991
-FGROperational = [22, 22, #23 GWd/t
-                  43, 43, #28 GWd/t
-                  22, 22, 22, 22, 22,
-                  43, 43, 43, 43
-                ]
-
 rates1_index = [4,9]
 rates2_index = [5,10]
 rates3_index = [6]
@@ -67,7 +60,6 @@ FGRAnnealing = [5.9, 6.5, #1673 K, 23 GWd/t, Multiple-Single
                 17.8,19.2,24,16.3,19.4, #2073 K 23 GWd/t, rate 1,2,3,4,5
                 28.7,27.1,24,24.47 #2073 K 28 GWd/t, rate 1,2,4,5
               ]
-FGRKashibe = [op + ann for op, ann in zip(FGROperational, FGRAnnealing)]
 
 goldFGR = []
 goldFGRAnnealing = []
@@ -170,12 +162,6 @@ def do_plot():
     print(f"This work - MAD: ", np.median(deviations_2))
     print(f"Gold - MAD: ", np.median(deviations_gold))
 
-    ###########################
-    for i in range(len(FGR2Annealing)):
-      if FGRAnnealing[i] > 2 * FGR2Annealing[i] or FGRAnnealing[i] < 0.5 * FGR2Annealing[i]:
-          print(i)
-          print(ListNames[i])
-
 # Main function of the baker regression
 def regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
     k=0
@@ -212,12 +198,12 @@ def regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folder
             number_of_tests += 1
 
             if mode_gold == 0:
-                do_sciantix_only()
+                do_sciantix()
                 data, data_gold = check_output(file)
                 number_of_tests_failed = check_result(number_of_tests_failed)
 
             elif mode_gold == 1:
-                do_sciantix_only()
+                do_sciantix()
                 data, data_gold = check_output(file)
                 print("...golding results.")
                 do_gold()
@@ -257,4 +243,4 @@ def regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folder
     if mode_plot == 1:
       do_plot()
 
-    return folderList, number_of_tests, number_of_tests_failed
+    return folderList, number_of_tests, number_of_tests_failed, FGR2Annealing, FGRAnnealing, goldFGRAnnealing

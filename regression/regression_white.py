@@ -580,4 +580,5 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
     print(f"SCIANTIX 2.0 - RMSE: ", np.mean(np.array(gbSwellingWhite) - gbSwelling2)**2)
     print("\n")
 
-    return folderList, number_of_tests, number_of_tests_failed
+
+    return folderList, number_of_tests, number_of_tests_failed, gbSwelling2, gbSwellingWhite, gold
