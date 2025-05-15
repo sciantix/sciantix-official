@@ -49,12 +49,10 @@ System Xe_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.24);
-    //system_.setYield(0);
     system_.setRadiusInLattice(0.21e-9); // (m), from experimental data, assumed equal for Xe and Kr
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors); //Uniform Source
-    //system_.setProductionRate(0, history_variable, input_variable, sciantix_variable, scaling_factors); //Uniform Source
     system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
@@ -79,15 +77,12 @@ System Xe_in_UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
     system_.setMatrix(matrices["UO2HBS"]);
     system_.setRestructuredMatrix(1);
     system_.setYield(0.24);
-    // system_.setYield(0);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2HBS"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(5, history_variable, input_variable, sciantix_variable, scaling_factors);
-    // system_.setProductionRate(0, history_variable, input_variable, sciantix_variable, scaling_factors);
     system_.setFissionGasDiffusivity(5, sciantix_variable, history_variable, scaling_factors);
     system_.setFissionGasDiffusivity(0, sciantix_variable, history_variable, scaling_factors);
-    // system_.setBubbleDiffusivity(0, sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(99, sciantix_variable, history_variable, scaling_factors, matrices);
     system_.setTrappingRate(99, sciantix_variable, scaling_factors);
     system_.setNucleationRate(99, history_variable, scaling_factors);
@@ -111,12 +106,10 @@ System Kr_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.03);
-    // system_.setYield(0);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
-    // system_.setProductionRate(0, history_variable, input_variable, sciantix_variable, scaling_factors);
     system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
@@ -142,7 +135,6 @@ System He_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setHenryConstant(4.1e+18 * exp(-7543.5 / history_variable["Temperature"].getFinalValue())); /// The Henry's constant for helium in UO<sub>2</sub>-single crystal samples is set from best estimate correlation after @ref *L. Cognini et al. Nuclear Engineering and Design 340 (2018) 240–244*. This correlation is valid in the temperature range 1073-1773 K.
     system_.setRestructuredMatrix(0);
     system_.setYield(0.0022); // from ternary fissions
-    // system_.setYield(1); // from ternary fissions
     system_.setRadiusInLattice(4.73e-11);
     system_.setVolumeInLattice(matrices["UO2"].getOctahedralInterstitialSite());
     system_.setHeliumDiffusivity(int(input_variable["iHeDiffusivity"].getValue()), history_variable);
@@ -169,13 +161,11 @@ System Xe133_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
     system_.setGas(gas["Xe133"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    // system_.setYield(0); // from JEFF-3.3 library
     system_.setYield(0.066534); // from JEFF-3.3 library
     system_.setRadiusInLattice(0.21e-9); // (m), number from experimental results, assumed equal for Xe and Kr
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
-    // system_.setProductionRate(0, history_variable, input_variable, sciantix_variable, scaling_factors);
     system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
@@ -200,12 +190,10 @@ System Kr85m_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.013027);
-    // system_.setYield(0);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
-    // system_.setProductionRate(0, history_variable, input_variable, sciantix_variable, scaling_factors);
     system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);

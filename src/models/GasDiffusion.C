@@ -123,13 +123,18 @@ void Simulation::GasDiffusion()
         
         case 4:
         {
-            if (visualization ==1)
+            if (visualization == 1)
             {
                 writeToFile(sources_interp, sciantix_variable["Grain radius"].getFinalValue());
-                computeAndSaveSourcesToFile(sources_input,TestPath + "source_shape.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
-                computeAndSaveICToFile(initial_distribution,TestPath + "ic_shape.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
+                computeAndSaveSourcesToFile(sources_input, TestPath + "source_shape.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
+                computeAndSaveICToFile(initial_distribution, TestPath + "ic_shape.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
+
+                if (animation == 1)
+                {
+                    computeAndSaveSourcesToFile(sources_interp, TestPath + "source_gif.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
+                }
             }
-            
+
             if (system.getRestructuredMatrix() == 0)
             {    
 
