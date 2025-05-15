@@ -20,6 +20,7 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <Source.h>
 
 /**
  * @brief Initializes SCIANTIX internal variables with initial conditions.

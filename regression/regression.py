@@ -10,6 +10,7 @@ import subprocess
 import numpy as np
 import matplotlib.pyplot as plt
 import shutil
+import sys
 
 from regression_baker import regression_baker
 from regression_white import regression_white

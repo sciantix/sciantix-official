@@ -15,16 +15,26 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "SourceHandler.h"
+#include "MainVariables.h"
 
 void Simulation::Burnup()
 {
     // Model declaration
     Model model_;
     model_.setName("Burnup");
-
+    double fR;
     double fissionRate = history_variable["Fission rate"].getFinalValue();
+    double fissionRateNUS = Source_Volume_Average(sciantix_variable["Grain radius"].getFinalValue(), sources_interp[Time_step_number]);
     double fuelDensity = sciantix_variable["Fuel density"].getFinalValue();
-    double specificPower = fissionRate * 3.12e-17 / fuelDensity;
+
+    if (Sciantix_options[2] == 4)
+    {
+        fR = fissionRateNUS;
+    }
+    else{fR = fissionRate;}
+    
+    double specificPower = fR * 3.12e-17 / fuelDensity;
 
     double burnup = specificPower / 86400.0; // specific power in MW/kg, burnup in MWd/kg
     sciantix_variable["Specific power"].setFinalValue(specificPower);
@@ -45,7 +55,7 @@ void Simulation::Burnup()
             model["Burnup"].getParameter().at(0),
             physics_variable["Time step"].getFinalValue()));
 
-    if (history_variable["Fission rate"].getFinalValue() > 0.0)
+    if (fR > 0.0)
         sciantix_variable["Irradiation time"].setFinalValue(
             solver.Integrator(
                 sciantix_variable["Irradiation time"].getInitialValue(),
@@ -57,6 +67,6 @@ void Simulation::Burnup()
     sciantix_variable["FIMA"].setFinalValue(
         solver.Integrator(
             sciantix_variable["FIMA"].getInitialValue(),
-            history_variable["Fission rate"].getFinalValue() * 3.6e5 / sciantix_variable["U"].getFinalValue(),
+            fR * 3.6e5 / sciantix_variable["U"].getFinalValue(),
             sciantix_variable["Irradiation time"].getIncrement()));
 }

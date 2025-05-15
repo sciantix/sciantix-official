@@ -67,6 +67,7 @@ extern std::vector<Source> sources_interp;
 extern std::vector<Source> initial_distribution;
 extern bool ICfile;
 extern double visualization;
+extern double animation;
 extern double iNonSym;
 
 #endif

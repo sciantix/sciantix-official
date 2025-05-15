@@ -149,12 +149,14 @@ void InputReading(
 	Sciantix_options[20] = ReadOneSetting("iStoichiometryDeviation", input_settings, input_check);
 	Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
 	Sciantix_options[22] = ReadOneSetting("iNUSOutput",input_settings,input_check);
-	Sciantix_options[23] = ReadOneSetting("iNonSym",input_settings,input_check);
+	Sciantix_options[23] = ReadOneSetting("iNUSAnimation",input_settings,input_check);
+	Sciantix_options[24] = ReadOneSetting("iNonSym",input_settings,input_check);
 
 	loadSourcesFromFile("non_uniform_source.txt",sources_input);
-	loadICFromFile("initial_distribution.txt", initial_distribution,ICfile);
+	loadICFromFile("initial_distribution.txt", initial_distribution, ICfile);
 	visualization = Sciantix_options[22];
-	iNonSym = Sciantix_options[23];
+	animation = Sciantix_options[23];
+	iNonSym = Sciantix_options[24];
 
 	if (!input_initial_conditions.fail())
 	{

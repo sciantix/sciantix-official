@@ -21,6 +21,7 @@ iHeliumProductionRate = 0
 iStoichiometryDeviation = 0
 iBubbleDiffusivity = 0
 iNUSOutput = 1
+iNUSAnimation = 1
 iNonSym = 0
 Grain radius[0] = 5e-06
 Initial composition Xe0 = 0

@@ -132,54 +132,55 @@ void loadICFromFile(const std::string &filePath, std::vector<Source> &ics, bool 
 std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int points_per_interval)
 {
     std::vector<Source> interpolated_sources;
-    if (sources.empty())
+    if (sources.empty() || points_per_interval < 1)
         return interpolated_sources;
 
-    // Copy the first source exactly
-    interpolated_sources.push_back(sources.front());
-
-    // Iterate over each interval between given source points
     for (size_t i = 0; i < sources.size() - 1; ++i)
     {
         const Source &start = sources[i];
         const Source &end = sources[i + 1];
 
-        double time_step = (end.time - start.time) / (points_per_interval);
-
-        // Generate interpolated points between start and end
-        for (int j = 1; j < points_per_interval; ++j)
+        if (start.Slopes.size() != end.Slopes.size() ||
+            start.Intercepts.size() != end.Intercepts.size() ||
+            start.NormalizedDomain.size() != end.NormalizedDomain.size())
         {
-            double t = start.time + j * time_step;
-            double alpha = (t - start.time) / (end.time - start.time);
-
-            Source interpolated_source;
-            interpolated_source.time = t;
-
-            // Interpolate NormalizedDomain
-            interpolated_source.NormalizedDomain.resize(start.NormalizedDomain.size());
-            for (size_t k = 0; k < start.NormalizedDomain.size(); ++k)
-            {
-                interpolated_source.NormalizedDomain[k] = start.NormalizedDomain[k] + alpha * (end.NormalizedDomain[k] - start.NormalizedDomain[k]);
-            }
-
-            // Interpolate Slopes and Intercepts
-            interpolated_source.Slopes.resize(start.Slopes.size());
-            interpolated_source.Intercepts.resize(start.Intercepts.size());
-            for (size_t k = 0; k < start.Slopes.size(); ++k)
-            {
-                interpolated_source.Slopes[k] = start.Slopes[k] + alpha * (end.Slopes[k] - start.Slopes[k]);
-                interpolated_source.Intercepts[k] = start.Intercepts[k] + alpha * (end.Intercepts[k] - start.Intercepts[k]);
-            }
-
-            interpolated_sources.push_back(interpolated_source);
+            std::cerr << "[ERROR] Mismatched source segment sizes at t = " << start.time << "\n";
+            exit(EXIT_FAILURE);
         }
 
-        // Push the exact end source to maintain the original points
-        interpolated_sources.push_back(end);
+        double delta_time = end.time - start.time;
+        double time_step = delta_time / points_per_interval;
+
+        for (int j = 0; j <= points_per_interval; ++j)  // include both start and end
+        {
+            double t = start.time + j * time_step;
+            double alpha = (t - start.time) / delta_time;
+
+            Source s;
+            s.time = t;
+
+            size_t n = start.NormalizedDomain.size();
+            s.NormalizedDomain.resize(n);
+            for (size_t k = 0; k < n; ++k)
+                s.NormalizedDomain[k] = start.NormalizedDomain[k] + alpha * (end.NormalizedDomain[k] - start.NormalizedDomain[k]);
+
+            size_t m = start.Slopes.size();
+            s.Slopes.resize(m);
+            s.Intercepts.resize(m);
+            for (size_t k = 0; k < m; ++k)
+            {
+                s.Slopes[k] = start.Slopes[k] + alpha * (end.Slopes[k] - start.Slopes[k]);
+                s.Intercepts[k] = start.Intercepts[k] + alpha * (end.Intercepts[k] - start.Intercepts[k]);
+            }
+
+            interpolated_sources.push_back(s);
+        }
     }
 
     return interpolated_sources;
 }
+
+
 
 void printSources(const std::vector<Source> &sources)
 {

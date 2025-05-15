@@ -504,6 +504,7 @@ double System::getFissionGasDiffusivity()
     /// Member function to get the diffusivity of the isotope in the fuel matrix
     return diffusivity;
 }
+
 // NEWLY ADDED
 void System::setFissionGasDiffusivityNUS(int input_value, SciantixArray<SciantixVariable> &sciantix_variable,
     SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors, std::vector<Source> &sourcesinput)
@@ -909,9 +910,9 @@ void System::setResolutionRateNUS(int input_value, SciantixArray<SciantixVariabl
         double thermal_resolution_rate;
         if (sciantix_variable["Intragranular bubble radius"].getFinalValue() > 0.0)
         {
-            thermal_resolution_rate = 3.0 * diffusivity * henry_constant * boltzmann_constant * history_variable["Temperature"].getFinalValue() * compressibility_factor / pow(sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2);
+            thermal_resolution_rate = 3.0 * diffusivity_NUS * henry_constant * boltzmann_constant * history_variable["Temperature"].getFinalValue() * compressibility_factor / pow(sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2);
             if (sciantix_variable["Intragranular bubble radius"].getFinalValue() < (2.0 * radius_in_lattice))
-                thermal_resolution_rate = 3 * diffusivity * henry_constant * boltzmann_constant * history_variable["Temperature"].getFinalValue() * compressibility_factor / pow(sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2) - 2.0 * 3.0 * diffusivity * henry_constant * boltzmann_constant * history_variable["Temperature"].getFinalValue() * compressibility_factor * (sciantix_variable["Intragranular bubble radius"].getFinalValue() - radius_in_lattice) / pow(radius_in_lattice, 3) + 3.0 * 3.0 * diffusivity * henry_constant * boltzmann_constant * history_variable["Temperature"].getFinalValue() * compressibility_factor * pow(sciantix_variable["Intragranular bubble radius"].getFinalValue() - radius_in_lattice, 2) / pow(radius_in_lattice, 4);
+                thermal_resolution_rate = 3 * diffusivity_NUS * henry_constant * boltzmann_constant * history_variable["Temperature"].getFinalValue() * compressibility_factor / pow(sciantix_variable["Intragranular bubble radius"].getFinalValue(), 2) - 2.0 * 3.0 * diffusivity_NUS * henry_constant * boltzmann_constant * history_variable["Temperature"].getFinalValue() * compressibility_factor * (sciantix_variable["Intragranular bubble radius"].getFinalValue() - radius_in_lattice) / pow(radius_in_lattice, 3) + 3.0 * 3.0 * diffusivity_NUS * henry_constant * boltzmann_constant * history_variable["Temperature"].getFinalValue() * compressibility_factor * pow(sciantix_variable["Intragranular bubble radius"].getFinalValue() - radius_in_lattice, 2) / pow(radius_in_lattice, 4);
         }
         else
             thermal_resolution_rate = 0.0;
@@ -939,7 +940,7 @@ void System::setResolutionRateNUS(int input_value, SciantixArray<SciantixVariabl
         ErrorMessages::Switch(__FILE__, "iResolutionRate", input_value);
         break;
     }
-    resolution_rate *= scaling_factors["Resolution rate"].getValue();
+    resolution_rate_NUS *= scaling_factors["Resolution rate"].getValue();
 }
 
 double System::getResolutionRateNUS()

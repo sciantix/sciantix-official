@@ -52,6 +52,7 @@ std::vector<Source> sources_interp;
 std::vector<Source> initial_distribution;
 bool ICfile;
 double visualization;
+double animation;
 double iNonSym;
 
 

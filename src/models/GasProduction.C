@@ -35,7 +35,7 @@ void Simulation::GasProduction()
 
         std::vector<double> parameter;
 
-        if (int(input_variable["iDiffusionSolver"].getValue())==4)
+        if (int(input_variable["iDiffusionSolver"].getValue()) == 4)
             parameter.push_back(SVA);
         else
             parameter.push_back(productionRate);
