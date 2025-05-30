@@ -5,8 +5,7 @@ import os
 
 app = Flask(__name__)
 
-# Configura i dati della tua repo
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")  # oppure scrivilo direttamente per test
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 GITHUB_REPO = "sciantix/sciantix-official"
 BRANCH = "main"
 
