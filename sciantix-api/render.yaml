@@ -4,5 +4,5 @@ services:
     env: python
     plan: free
     rootDir: sciantix-api
-    buildCommand: pip install -r ../requirements.txt
+    buildCommand: pip install -r requirements.txt
     startCommand: python3 sciantix_api.py
