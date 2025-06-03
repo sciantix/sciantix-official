@@ -54,3 +54,5 @@ __pycache__/
 optimization
 GSA_output_files/
 regression/
+offline-online stages/model_3d/**/*.btxt
+offline-online stages/model_3d/**/*.npy
