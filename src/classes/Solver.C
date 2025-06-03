@@ -463,6 +463,14 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
 using namespace H5;
 using namespace std;
 
+Eigen::VectorXd solve_lu(const Eigen::MatrixXd& LHS, const Eigen::VectorXd& RHS) {
+    // Decomposizione LU
+    Eigen::PartialPivLU<Eigen::MatrixXd> lu_decomp(LHS);
+    // Risoluzione del sistema LHS * x = RHS
+    return lu_decomp.solve(RHS);
+}
+
+
 double Solver::ROM_cylinder(double *initial_condition, std::vector<double> parameter, double increment)
 {
 
@@ -472,7 +480,7 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
     try {
         //////////////////////////////   MATRICI  //////////////////////////////
         // Apriamo il file HDF5 in modalità lettura
-        H5File file("/Users/martina/Library/CloudStorage/OneDrive-PolitecnicodiMilano/PhD/Git/rom-cylinder_DEIM-POD/offline-online stages/fit White/2. DEIM-POD/matrici_RB.h5", H5F_ACC_RDONLY);
+        H5File file("/Users/martina/Library/CloudStorage/OneDrive-PolitecnicodiMilano/PhD/Git/rom-cylinder_DEIM-POD/offline-online stages/model_2d/checkpoint/step_190/matrici_RB.h5", H5F_ACC_RDONLY);
 
         // Accediamo ai dataset
         DataSet dataset_MM_RB = file.openDataSet("MM_RB"); //N_epsilonxN_epsilon
@@ -643,13 +651,13 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
             double temperature = TT(i);
 
             // Diffusivity Turnbull
-            //double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));
-            //double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
-            //double d3 = 8.0e-40 * fission_rate;
-            //double diffusivity = d1 + d2 + d3;
+            double d1 = 7.6e-10 * exp(-4.86e-19 / (boltzmann_constant * temperature));
+            double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
+            double d3 = 8.0e-40 * fission_rate;
+            double diffusivity = d1 + d2 + d3;
 
             //Diffusivity fit White
-            double diffusivity = 2.949513e-13 * exp(-20487.36244 / temperature); //fit White. 
+            //double diffusivity = 2.949513e-13 * exp(-20487.36244 / temperature); //fit White. 
 
             // Assegna il valore di diffusivity a WW
             WW(i) = diffusivity;
@@ -741,19 +749,20 @@ double Solver::ROM_cylinder(double *initial_condition, std::vector<double> param
         std::cout << reconstructed_solution(ii) << std::endl;
         }*/ //Il risultato combacia con python
 
-        int n = LHS_RB_static.rows();
-        Eigen::VectorXd initial_condition_vec(n); //Devo per forza creare questo vettore, non posso usare initial_condition[].  
+        Eigen::VectorXd initial_condition_vec(LHS_RB_static.rows()); 
         // Riempio il vettore
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < LHS_RB_static.rows(); ++i) {
             initial_condition_vec(i) = initial_condition[i];
         }
+        Eigen::VectorXd RHS_with_previous_solution = RHS_RB_static + MM_RB * initial_condition_vec;
 
-        initial_condition_vec = LHS_RB_static.colPivHouseholderQr().solve(RHS_RB_static + MM_RB * initial_condition_vec);
+        //initial_condition_vec = LHS_RB_static.colPivHouseholderQr().solve(RHS_RB_static + MM_RB * initial_condition_vec);
+        initial_condition_vec = solve_lu(LHS_RB_static, RHS_with_previous_solution);
         double value = (AA_RB.transpose() * initial_condition_vec)(0, 0);
         double reconstructed_solution = value;
-        std::cout << "reconstructed solution: " << reconstructed_solution << std::endl;
+        //std::cout << "reconstructed solution: " << reconstructed_solution << std::endl;
         //  Riempio initial condition per il time step successivo. 
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < LHS_RB_static.rows(); ++i) {
             initial_condition[i] = initial_condition_vec(i);
         }
 
