@@ -25,7 +25,7 @@ System	Xe133 in UO2
 System	Kr85m in UO2	
 
 Input setting	iGrainGrowth = 0
-Input setting	iFissionGasDiffusivity = 7
+Input setting	iFissionGasDiffusivity = 1
 Input setting	iDiffusionSolver = 4
 Input setting	iIntraGranularBubbleBehavior = 1
 Input setting	iResolutionRate = 1

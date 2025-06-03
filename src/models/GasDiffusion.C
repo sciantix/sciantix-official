@@ -134,7 +134,7 @@ void Simulation::GasDiffusion()
         
         case 4: //ROM_cylinder
         {
-            std::cout << "Algoritmo ROM cilindro" << std::endl; 
+            //std::cout << "Algoritmo ROM cilindro" << std::endl; 
             if (system.getRestructuredMatrix() == 0)
             {
                 //std::cout << system.getName() << std::endl; 
