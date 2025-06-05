@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "SourceHandler.h"
 
 void Simulation::GrainBoundarySweeping()
 {
@@ -105,7 +106,29 @@ void Simulation::GrainBoundarySweeping()
 
         case 3:
             break;
+        
+        case 4:
+        {
+            for (int i = 0; i < n_modes; ++i)
+            {
+                modes_initial_conditions_NUS[7 * 40 + i] =
+                    solver.Decay(
+                        modes_initial_conditions_NUS[7 * 40 + i],
+                        1.0,
+                        0.0,
+                        model["Grain-boundary sweeping"].getParameter().at(0)
+                    );
 
+                modes_initial_conditions_NUS[8 * 40 + i] =
+                    solver.Decay(
+                        modes_initial_conditions_NUS[8 * 40 + i],
+                        1.0,
+                        0.0,
+                        model["Grain-boundary sweeping"].getParameter().at(0)
+                    );
+            }
+            break;
+        }
         default:
             ErrorMessages::Switch(__FILE__, "iDiffusionSolver", int(input_variable["iDiffusionSolver"].getValue()));
             break;

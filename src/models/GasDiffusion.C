@@ -128,6 +128,7 @@ void Simulation::GasDiffusion()
                 writeToFile(sources_interp, sciantix_variable["Grain radius"].getFinalValue());
                 computeAndSaveSourcesToFile(sources_input, TestPath + "source_shape.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
                 computeAndSaveICToFile(initial_distribution, TestPath + "ic_shape.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
+                
 
                 if (animation == 1)
                 {
@@ -155,7 +156,7 @@ void Simulation::GasDiffusion()
                 sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
                     equilibrium_fraction * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
                 );
-
+                
                 sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
                     (1.0 - equilibrium_fraction) * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
                 );
@@ -213,23 +214,24 @@ void Simulation::GasDiffusion()
         );
     }
 
-
+    
     // Calculation of the gas concentration at grain boundary, by mass balance
     for (auto &system : sciantix_system)
     {
         if (system.getRestructuredMatrix() == 0)
-        {
+        {   
             sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
                 sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " released"].getInitialValue());
-
+                sciantix_variable[system.getGasName() + " released"].getInitialValue() -
+                0);
+            
             if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
                 sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
         }
     }
-
+    
     /**
      * @brief If **iGrainBoundaryBehaviour = 0** (e.g., no grain-boundary bubbles),
      * fission gases at grain boundary is immediately released.
