@@ -69,5 +69,6 @@ extern bool ICfile;
 extern double visualization;
 extern double animation;
 extern double iNonSym;
+extern double GBresolve;
 
 #endif

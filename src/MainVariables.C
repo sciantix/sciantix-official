@@ -54,5 +54,7 @@ bool ICfile;
 double visualization;
 double animation;
 double iNonSym;
+double GBresolve;
+
 
 

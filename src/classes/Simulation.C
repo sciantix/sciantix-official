@@ -78,6 +78,8 @@ void Simulation::execute()
 
 	GasDecay();
 
+	GrainBoundarySource();
+	
 	IntraGranularBubbleBehavior();
 
 	GasDiffusion();

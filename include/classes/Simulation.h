@@ -159,6 +159,15 @@ public:
     void GasDecay();
 
     /**
+     * @brief Fixes the mass balance issue at the grain coundary for the reolution problem.
+     * 
+     * @author A. Zayat
+     * 
+     */
+    void GrainBoundarySource();
+
+
+    /**
      * @brief Handles the intragranular gas diffusion problem.
      * 
      * @author D. Pizzocri
