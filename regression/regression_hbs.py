@@ -16,12 +16,11 @@ from regression_functions import *
 
 """ ------------------- Global Variables ------------------- """
 # Plot configuration
-font_size = 10
+font_size = 11
 
 plt.rcParams['axes.labelsize'] = font_size
 plt.rcParams['xtick.labelsize'] = font_size
 plt.rcParams['ytick.labelsize'] = font_size
-
 """ ------------------- Functions ------------------- """
 
 def do_plot(label_x, label_y, experimental_data_x, experimental_data_y, calculations_x, calculations_y, model_x=None, model_y=None):
@@ -151,14 +150,16 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot, folderList, number_of_
                 fig, ax = plt.subplots()
                 ax.set_xlabel('Effective burnup (MWd kgHM${}^{-1}$)')
                 ax.set_ylabel('Pore number density (pores m${}^{-3}$)')
-                ax.plot(exp_pore_density[:,0], exp_pore_density[:,1], 'o', color='#B3B3B3', label='Cappia (2016)')
-                ax.plot(exp_pore_density_2[:,0], exp_pore_density_2[:,1], 's', color='red', label='Spino (2006), $Bu_{AV}= 67$ MWd/kgU')
-                ax.plot(exp_pore_density_3[:,0], exp_pore_density_3[:,1], 's', color='green', label='Spino (2006), $Bu_{AV}= 80$ MWd/kgU')
-                ax.plot(exp_pore_density_4[:,0], exp_pore_density_4[:,1], 's', color='blue', label='Spino (2006), $Bu_{AV}= 98$ MWd/kgU')
-                ax.plot(burnup, poreDensity, color='green', linewidth=1.5, label='This work')
-                ax.plot(model_bu, model_density, '-', color='purple', label='Barani (2022)')
-                ax.plot(old_model_bu, old_model_density, '-', color='blue', label='SCIANTIX 2.0')
-                ax.legend(loc='best')
+                ax.plot(exp_pore_density[:,0], exp_pore_density[:,1], 'o', color='#B3B3B3', markersize=6, label='Cappia (2016)')
+                ax.plot(exp_pore_density_2[:,0], exp_pore_density_2[:,1], 's', color='red', markersize=5, label='Spino (2006), $Bu_{AV}= 67$ MWd/kgU')
+                ax.plot(exp_pore_density_3[:,0], exp_pore_density_3[:,1], 's', color='green', markersize=5, label='Spino (2006), $Bu_{AV}= 80$ MWd/kgU')
+                ax.plot(exp_pore_density_4[:,0], exp_pore_density_4[:,1], 's', color='blue', markersize=5, label='Spino (2006), $Bu_{AV}= 98$ MWd/kgU')
+                ax.plot(burnup, poreDensity, color='green', linewidth=2.0, label='This work')
+                ax.plot(model_bu, model_density, '-', color='purple', linewidth=2.0, label='Barani (2022)')
+                ax.plot(old_model_bu, old_model_density, '-', color='blue', linewidth=2.0, label='SCIANTIX 2.0')
+                ax.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.7)
+                ax.legend(loc='upper right', frameon=False, fontsize=10)
+                #ax.legend(loc='best')
                 plt.tight_layout()
                 plt.show()
 
