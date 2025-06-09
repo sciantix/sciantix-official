@@ -81,7 +81,10 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
         {
             double hbs_correction = sin(40.0 * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);            
             
-            grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue()))+ 5e-41 * history_variable["Fission rate"].getFinalValue();
+            grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 5e-41 * history_variable["Fission rate"].getFinalValue();
+            //grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 1e-39 * history_variable["Fission rate"].getFinalValue();
+            //grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue()));
+            
             grain_boundary_vacancy_diffusivity *= hbs_correction;
             
             reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77 / BARANI HBS part 2, 2022\n\t";
