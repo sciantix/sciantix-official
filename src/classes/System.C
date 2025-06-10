@@ -520,12 +520,18 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
          */
 
         reference += "Diffusivity for Cs (Busker, 2000)\n\t";
-        double temperature = history_variable["Temperature"].getFinalValue();
-		if (temperature < 1673)
-            diffusivity = 1e-4 * 1.5e-3*exp(-4.5/boltzmann_constant_ev/temperature);
-        else
-            diffusivity = 1e-4 * 2.6e-1 * exp(-4.6/boltzmann_constant_ev/temperature);
 
+        double temperature = history_variable["Temperature"].getFinalValue();
+        double fission_rate = history_variable["Fission rate"].getFinalValue();
+
+        double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
+        double d3 = 8.0e-40 * fission_rate;
+
+		if (temperature < 1673)
+            double d1 = 1e-4 * 1.5e-3*exp(-4.5/boltzmann_constant_ev/temperature);
+        else
+            double d1 = 1e-4 * 2.6e-1 * exp(-4.6/boltzmann_constant_ev/temperature);
+                
         break;
     }
 
@@ -537,11 +543,17 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
          */
 
         reference += "Diffusivity for Iodine (Busker, 2000)\n\t";
+
         double temperature = history_variable["Temperature"].getFinalValue();
+        double fission_rate = history_variable["Fission rate"].getFinalValue();
+
+        double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
+        double d3 = 8.0e-40 * fission_rate;
+
 		if (temperature < 1700)
-            diffusivity = 1e-4 * 1.2e-9*exp(-2.1/boltzmann_constant_ev/temperature);
+            double d1 = 1e-4 * 1.2e-9*exp(-2.1/boltzmann_constant_ev/temperature);
         else
-            diffusivity = 1e-4 * 4.3 * exp(-5.4/boltzmann_constant_ev/temperature);
+            double d1 = 1e-4 * 4.3 * exp(-5.4/boltzmann_constant_ev/temperature);
 
         break;
     }

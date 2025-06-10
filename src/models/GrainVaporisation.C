@@ -112,20 +112,33 @@ void Simulation::GrainVaporisation()
             )
         );
 
+        double bubblethickness = ( 1.0 - cos(matrices["UO2"].getSemidihedralAngle()) ) * sciantix_variable["Intergranular bubble radius"].getFinalValue();
         double UO2vaporisation_GB = (
             sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() - 
             solver.Decay(
                 sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue(),
                 1.0,
                 0.0,
-                - 3 * sciantix_variable["Grain radius"].getIncrement() / sciantix_variable["Grain radius"].getInitialValue()
+                (sciantix_variable["Initial grain radius"].getFinalValue() - sciantix_variable["Grain radius"].getFinalValue()) / bubblethickness
             )
         );
+
+        if (UO2vaporisation_IG < 0.0)
+            UO2vaporisation_IG = 0.0;
+        if (UO2vaporisation_GB < 0.0)
+            UO2vaporisation_GB = 0.0;
 
         sciantix_variable[system.getGasName() + " released"].setInitialValue(
             sciantix_variable[system.getGasName() + " released"].getInitialValue() + UO2vaporisation_IG + UO2vaporisation_GB
         );
         sciantix_variable[system.getGasName() + " released"].setConstant();
+    }
+
+    if (sciantix_variable["Xe at grain boundary"].getInitialValue() <= 0.0)
+    {
+        input_variable["iGrainBoundaryMicroCracking"].setValue(0);
+        input_variable["iGrainBoundaryBehaviour"].setValue(0);
+        input_variable["iGrainBoundaryVenting"].setValue(0);
     }
 
     // sciantix_variable["U vapour"].setFinalValue(
@@ -135,6 +148,8 @@ void Simulation::GrainVaporisation()
     //         physics_variable["Time step"].getFinalValue()
     //     )
     // );
+    double Uinitial = (4/3 * M_PI * pow(sciantix_variable["Initial grain radius"].getFinalValue(), 3))/molarvolume;
+
     sciantix_variable["O2 vapour"].setFinalValue(
         solver.Integrator(
             sciantix_variable["O2 vapour"].getInitialValue(),
@@ -142,6 +157,11 @@ void Simulation::GrainVaporisation()
             physics_variable["Time step"].getFinalValue()
         )
     );
+    if (sciantix_variable["O2 vapour"].getFinalValue() > Uinitial)
+    {
+        sciantix_variable["O2 vapour"].setConstant();
+    }
+
     sciantix_variable["UO vapour"].setFinalValue(
         solver.Integrator(
             sciantix_variable["UO vapour"].getInitialValue(),
@@ -149,6 +169,11 @@ void Simulation::GrainVaporisation()
             physics_variable["Time step"].getFinalValue()
         )
     );
+    if (sciantix_variable["UO vapour"].getFinalValue() > Uinitial)
+    {
+        sciantix_variable["UO vapour"].setConstant();
+    }
+
     sciantix_variable["UO2 vapour"].setFinalValue(
         solver.Integrator(
             sciantix_variable["UO2 vapour"].getInitialValue(),
@@ -156,6 +181,11 @@ void Simulation::GrainVaporisation()
             physics_variable["Time step"].getFinalValue()
         )
     );
+    if (sciantix_variable["UO2 vapour"].getFinalValue() > Uinitial)
+    {
+        sciantix_variable["UO2 vapour"].setConstant();
+    }
+
     sciantix_variable["UO3 vapour"].setFinalValue(
         solver.Integrator(
             sciantix_variable["UO3 vapour"].getInitialValue(),
@@ -163,10 +193,16 @@ void Simulation::GrainVaporisation()
             physics_variable["Time step"].getFinalValue()
         )
     );
+    if (sciantix_variable["UO3 vapour"].getFinalValue() > Uinitial)
+    {
+        sciantix_variable["UO3 vapour"].setConstant();
+    }
 
     double dnu = sciantix_variable["UO vapour"].getIncrement() + sciantix_variable["UO2 vapour"].getIncrement() + sciantix_variable["UO3 vapour"].getIncrement(); 
     double dno = sciantix_variable["UO vapour"].getIncrement() + 2*sciantix_variable["UO2 vapour"].getIncrement() + 3*sciantix_variable["UO3 vapour"].getIncrement() + 2*sciantix_variable["O2 vapour"].getIncrement(); 
     double U = (4/3 * M_PI * pow(sciantix_variable["Grain radius"].getInitialValue(), 3))/molarvolume;
+    
+
     double xf = solver.Decay(
         x,
         dnu/(U + dnu),

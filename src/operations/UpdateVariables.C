@@ -146,6 +146,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {163,"UO vapour"},
     {164,"UO2 vapour"},
     {165,"UO3 vapour"},
+    {170,"Initial grain radius"},
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
