@@ -22,11 +22,14 @@ from matplotlib.ticker import (MultipleLocator, FormatStrFormatter, AutoMinorLoc
 
 """ ------------------- Global Variables ------------------- """
 # Plot configuration
-font_size = 10
+font_size = 18
 
 plt.rcParams['axes.labelsize'] = font_size
 plt.rcParams['xtick.labelsize'] = font_size
 plt.rcParams['ytick.labelsize'] = font_size
+plt.rcParams['font.size'] = font_size
+plt.rcParams['legend.fontsize'] = font_size 
+plt.rcParams['lines.markersize'] = 8
 
 # Data generated from SCIANTIX 2.0
 igSwelling2 = []
@@ -150,6 +153,7 @@ def do_plot():
     ax.set_ylabel('FGR calculated (%)')
 
     plt.tight_layout()
+    #plt.savefig('FGR-Kashibe1990.png')
     plt.show()
 
     fig, ax = plt.subplots(figsize=(8, 8))
@@ -203,6 +207,7 @@ def do_plot():
     ax.set_ylabel('Calculated swelling (%)')
 
     plt.tight_layout()
+    #plt.savefig('Swelling-Kashibe1990.png')
     plt.show()
 
 
@@ -222,10 +227,6 @@ def do_plot():
     print('Swelling')
     print(f"This work - MAD: ", np.median(deviations_2))
     print(f"Gold - MAD: ", np.median(deviations_gold))
-    #FGR base
-    print('FGR base')
-    print('This work ', FGRBase)
-    print('exp', FGROperational)
           
   
 # Main function of the baker regression

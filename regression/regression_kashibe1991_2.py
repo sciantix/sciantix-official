@@ -1,6 +1,15 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# Plot configuration
+font_size = 18
+
+plt.rcParams['axes.labelsize'] = font_size
+plt.rcParams['xtick.labelsize'] = font_size
+plt.rcParams['ytick.labelsize'] = font_size
+plt.rcParams['font.size'] = font_size
+plt.rcParams['legend.fontsize'] = font_size 
+plt.rcParams['lines.markersize'] = 8
 # Simulation data
 data1 = pd.read_csv('test_Kashibe1991_1673K_23_Multiple/output.txt', delimiter='\t')
 data2 = pd.read_csv('test_Kashibe1991_1673K_23_Single/output.txt', delimiter='\t')
@@ -106,6 +115,7 @@ custom_lines = [plt.Line2D([0], [0], color='C2', linestyle='-', label='FGR calcu
                 plt.Line2D([0], [0], color='k', linestyle='-',  label='FGR experimental (%)')]
 ax.legend(handles=custom_lines, loc='lower right', frameon=False)
 plt.tight_layout()
+#plt.savefig('FGRRamp23_Kashibe1991.png')
 plt.show()
 
 
@@ -229,4 +239,5 @@ custom_lines = [plt.Line2D([0], [0], color='C2', linestyle='-',  label='FGR calc
                 plt.Line2D([0], [0], color='k', linestyle='-', label='FGR experimental (%)')]
 ax.legend(handles=custom_lines, loc='lower right', frameon=False)
 plt.tight_layout()
+#plt.savefig('FGRRamp28_Kashibe1991.png')
 plt.show()

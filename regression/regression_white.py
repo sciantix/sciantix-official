@@ -21,11 +21,14 @@ from matplotlib.ticker import (LogLocator, LogFormatter, FuncFormatter)
 
 """ ------------------- Global Variables ------------------- """
 # Plot configuration
-font_size = 10
+font_size = 18
 
 plt.rcParams['axes.labelsize'] = font_size
 plt.rcParams['xtick.labelsize'] = font_size
 plt.rcParams['ytick.labelsize'] = font_size
+plt.rcParams['font.size'] = font_size
+plt.rcParams['legend.fontsize'] = font_size 
+plt.rcParams['lines.markersize'] = 8
 
 ListNames = ['4000-1','4000-2','4000-3','4000-4','4000-5',
              '4004-1','4004-2','4004-3','4004-4','4004-5','4004-6',
@@ -194,6 +197,9 @@ gold = []
 
 bbarea2_gold = []
 bbconc_gold = []
+
+bubblepressure = []
+temperature_atmaxbp =[]
 
 sample_number = len(gbSwelling1)
 
@@ -400,7 +406,9 @@ def do_plot():
 
     ax.set_xlabel('Experimental swelling (%)')
     ax.set_ylabel('Calculated swelling (%)')
+    #plt.savefig('SwellingCorretto-White2004.png')
     ax.legend(frameon=False)
+    #plt.savefig('SwellingCorretto-White2004.png')
     plt.show()
 
     # Bubble concentration
@@ -445,6 +453,39 @@ def do_plot():
     ax.set_ylabel('Calculated (bub μm$^{-2}$)')
     ax.set_title('Bubble concentration')
     ax.legend()
+    
+    plt.show()
+
+    # Bubble concentration
+    fig, ax = plt.subplots(figsize=(7, 7))
+
+      # Fast ramp
+    ax.scatter(
+        np.concatenate([temperature_atmaxbp[0:16], temperature_atmaxbp[39:43]]),
+        np.concatenate([bubblepressure[0:16], bubblepressure[39:43]]),
+        color='C0', marker='o', label='Fast ramp'
+    )
+
+    # Slow ramp
+    ax.scatter(
+        temperature_atmaxbp[16:39], bubblepressure[16:39],
+        color='C2', marker='o', label='Slow ramp'
+    )
+
+    # Long hold
+    ax.scatter(
+        temperature_atmaxbp[26:35], bubblepressure[26:35],
+         color='C3', marker='o', label='Long hold'
+    )
+
+
+    ax.legend()
+    ax.set_xlabel("Temperature (K)")
+    ax.set_ylabel("Intergranular bubble pressure (MPa)")
+    ax.set_title("Intergranular bubble pressure")
+    ax.legend()
+    #plt.savefig('BubblePressureWhite.png')
+
     plt.show()
 
 # Main function of the white regression
@@ -530,6 +571,27 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
             # Retrieve the gold data of Intergranular bubble concentration
             BubConcPosGold = findSciantixVariablePosition(data_gold, "Intergranular bubble concentration (bub/m2)")
             bbconc_gold.append(1e-12*data_gold[row_number,BubConcPosGold].astype(float))
+
+            # Retrieve the gold data of Intergranular bubble concentration
+            bp_idx    = findSciantixVariablePosition(data, "Intergranular bubble pressure (MPa)")
+            bu_idx    = findSciantixVariablePosition(data, "Temperature (K)")
+
+            if bp_idx is None or bu_idx is None:
+                raise KeyError("Required column not found")
+
+            # 2. Slice out the numeric portion (skip header row) and cast to float
+            pressures = data[1:, bp_idx].astype(float)
+            temperatures   = data[1:, bu_idx].astype(float)
+
+            # 3. Find index of the maximum pressure
+            imax = np.argmax(pressures)
+
+            # 4. Retrieve both values
+            max_pressure = float(pressures[imax])
+            temperature_at_max = float(temperatures[imax])
+
+            bubblepressure.append(max_pressure)
+            temperature_atmaxbp.append(temperature_at_max)
 
             os.chdir('..')
 

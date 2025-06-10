@@ -18,11 +18,14 @@ from sklearn.linear_model import LinearRegression
 
 """ ------------------- Global Variables ------------------- """
 # Plot configuration
-font_size = 10
+font_size = 18
 
 plt.rcParams['axes.labelsize'] = font_size
 plt.rcParams['xtick.labelsize'] = font_size
 plt.rcParams['ytick.labelsize'] = font_size
+plt.rcParams['font.size'] = font_size
+plt.rcParams['legend.fontsize'] = font_size 
+plt.rcParams['lines.markersize'] = 8
 
 # Data generated from SCIANTIX 2.0
 FGR2 = []
@@ -147,6 +150,7 @@ def do_plot():
                     plt.Line2D([0], [0], color='C5', marker='s', linestyle='', markersize=8, label=categories[4])]
     ax.legend(handles=custom_lines, loc='best', frameon=False)
     plt.tight_layout()
+    #plt.savefig('FGRRate_Kashibe1991.png')
     plt.show()
 
     subprocess.run([sys.executable, "regression_kashibe1991_2.py"])  # For Windows/Linux/macOS
