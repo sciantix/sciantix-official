@@ -128,6 +128,8 @@ void Simulation::SetPhaseDiagram2()
         double gasatomsupdate = moles*avogadro_number; 
 
         double alpha(0.00);
+        if ((gasatomsavailable - gasatomsupdate) < 0.0)
+            gasatomsupdate = gasatomsavailable;
         //sciantix_variable[ element + " precipitated"].setFinalValue(alpha*(gasatomsavailable - gasatomsupdate));
         sciantix_variable[ element + " reacted - GB"].setFinalValue((1-alpha)*(gasatomsavailable - gasatomsupdate));
         sciantix_variable[ element + " at grain boundary"].setFinalValue((1-alpha)*gasatomsupdate);
