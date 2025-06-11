@@ -135,10 +135,9 @@ void Simulation::GasDiffusion()
                     computeAndSaveSourcesToFile(sources_interp, TestPath + "source_gif.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
                 }
             }
-
             if (system.getRestructuredMatrix() == 0)
             {    
-
+            
                 sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
                     solver.SpectralDiffusionNUS(
                         getDiffusionModes_NUS(system.getGasName()),
@@ -148,6 +147,11 @@ void Simulation::GasDiffusion()
                         iNonSym //NonSym factor
                     )
                 );
+               
+                // ✅ Add the gas resolved from grain boundary
+                sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
+                    sciantix_variable[system.getGasName() + " in grain"].getFinalValue() + GBresolve);
+
 
                 double equilibrium_fraction(1.0);
                 if ((system.getResolutionRateNUS() + system.getTrappingRate()) > 0.0)

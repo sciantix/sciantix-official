@@ -83,4 +83,6 @@ void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRad
   */
  double Source_Volume_Average(double GrainRadius, Source source);
 
+std::vector<Source> subtractResolutionFromSource(const std::vector<Source>& fullSource, double a, double delta);
+
 #endif // SOURCEHANDLER_H

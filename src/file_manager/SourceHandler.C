@@ -82,7 +82,7 @@ void loadICFromFile(const std::string &filePath, std::vector<Source> &ics, bool 
 
     if (!source_file.is_open())
     {
-        std::cerr << "Default: Uniform Initial Conditions | File is missing: " << filePath << "\n";
+        std::cerr << "Default Case: Uniform Initial Conditions | File is missing: " << filePath << "\n";
         fileFound = false;
         return;
     }
@@ -470,4 +470,32 @@ double Source_Volume_Average(double GrainRadius, Source source)
     }
 
     return (totalVolume != 0.0) ? (VA / totalVolume) : 0.0;
+}
+
+std::vector<Source> subtractResolutionFromSource(const std::vector<Source>& fullSource, double a, double delta)
+{
+    std::vector<Source> corrected = fullSource;
+
+    for (auto& src : corrected)
+    {
+        if (src.NormalizedDomain.size() < 2 || src.Slopes.size() != src.Intercepts.size())
+        {
+            std::cerr << "[ERROR] Mismatched source segment sizes at t = " << src.time << std::endl;
+            continue;
+        }
+
+        double r_start = (a - delta) / a;
+
+        for (size_t i = 0; i < src.Slopes.size(); ++i)
+        {
+            double seg_start = src.NormalizedDomain[i];
+            if (seg_start >= r_start)
+            {
+                src.Slopes[i] = src.Slopes[0];
+                src.Intercepts[i] = src.Intercepts[0];
+            }
+        }
+    }
+
+    return corrected;
 }
