@@ -154,6 +154,7 @@ void InputReading(
 	if (!input_initial_conditions.fail())
 	{
 		Sciantix_variables[0] = ReadOneParameter("Grain radius[0]", input_initial_conditions, input_check);
+		Sciantix_variables[170] = Sciantix_variables[0];
 
 		std::vector<double> initial_composition_Xe;
 		initial_composition_Xe = ReadSeveralParameters("Initial composition Xe", input_initial_conditions, input_check);

@@ -123,19 +123,37 @@ void Simulation::GrainVaporisation()
             )
         );
 
+        double UO2vaporisation_reacted(0);
+        if (system.getGas().getChemicallyActive() == 1.0)
+        {
+            UO2vaporisation_reacted = (
+                sciantix_variable[system.getGasName() + " reacted - GB"].getInitialValue() - 
+                solver.Decay(
+                    sciantix_variable[system.getGasName() + " reacted - GB"].getInitialValue(),
+                    1.0,
+                    0.0,
+                    (sciantix_variable["Initial grain radius"].getFinalValue() - sciantix_variable["Grain radius"].getFinalValue()) / bubblethickness
+                )
+            );
+        }
+
+
         if (UO2vaporisation_IG < 0.0)
             UO2vaporisation_IG = 0.0;
         if (UO2vaporisation_GB < 0.0)
             UO2vaporisation_GB = 0.0;
+        if (UO2vaporisation_reacted < 0.0)
+            UO2vaporisation_reacted = 0.0;
 
         sciantix_variable[system.getGasName() + " released"].setInitialValue(
-            sciantix_variable[system.getGasName() + " released"].getInitialValue() + UO2vaporisation_IG + UO2vaporisation_GB
+            sciantix_variable[system.getGasName() + " released"].getInitialValue() + UO2vaporisation_IG + UO2vaporisation_GB + UO2vaporisation_reacted
         );
         sciantix_variable[system.getGasName() + " released"].setConstant();
     }
 
     if (sciantix_variable["Xe at grain boundary"].getInitialValue() <= 0.0)
     {
+        input_variable["iThermochimica"].setValue(0);
         input_variable["iGrainBoundaryMicroCracking"].setValue(0);
         input_variable["iGrainBoundaryBehaviour"].setValue(0);
         input_variable["iGrainBoundaryVenting"].setValue(0);
