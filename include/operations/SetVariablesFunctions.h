@@ -391,6 +391,16 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("UO vapour", "(mol)", Sciantix_variables[163], Sciantix_variables[163], 1),
         SciantixVariable("UO2 vapour", "(mol)", Sciantix_variables[164], Sciantix_variables[164], 1),
         SciantixVariable("UO3 vapour", "(mol)", Sciantix_variables[165], Sciantix_variables[165], 1),
+
+    //     SciantixVariable("Cs in intergranular solution", "(at/m3)", Sciantix_variables[171], Sciantix_variables[171], 1),
+    //     SciantixVariable("Te in intergranular solution", "(at/m3)", Sciantix_variables[172], Sciantix_variables[172], 1),
+    //     SciantixVariable("I in intergranular solution", "(at/m3)", Sciantix_variables[173], Sciantix_variables[173], 1),
+    //     SciantixVariable("Cs in intergranular bubbles", "(at/m3)", Sciantix_variables[174], Sciantix_variables[174], 1),
+    //     SciantixVariable("Te in intergranular bubbles", "(at/m3)", Sciantix_variables[175], Sciantix_variables[175], 1),
+    //     SciantixVariable("I in intergranular bubbles", "(at/m3)", Sciantix_variables[176], Sciantix_variables[176], 1),
+        
+        SciantixVariable("Initial grain radius", "(mol)", Sciantix_variables[170], Sciantix_variables[170], 0),
+
     };
 
     return init_sciantix_variable;

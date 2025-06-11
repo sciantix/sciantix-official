@@ -166,16 +166,21 @@ void Simulation::GasDiffusion()
 
         if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1.0)
         {            
-            sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
+            sciantix_variable[system.getGasName() + " reacted - GB"].setFinalValue(
                 sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " reacted - IG"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " released"].getInitialValue());
 
-            if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
-                sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
+            
+            if (sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue() < 0.0)
+                sciantix_variable[system.getGasName() + " reacted - GB"].setFinalValue(0.0);
+
+            //sciantix_variable[system.getGasName()+" in intergranular bubbles"].setFinalValue(sciantix_variable[system.getGasName()+" at grain boundary"].getFinalValue() * sciantix_variable["Intergranular fractional coverage"].getFinalValue());
+            //sciantix_variable[system.getGasName()+" in intergranular solution"].setFinalValue(sciantix_variable[system.getGasName()+" at grain boundary"].getFinalValue() * (1.0 - sciantix_variable["Intergranular fractional coverage"].getFinalValue()));
+
         }
     }
 

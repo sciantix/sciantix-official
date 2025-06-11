@@ -87,6 +87,7 @@ void caesium(SciantixArray<Gas> &gas)
     gas_.setAtomicNumber(55);
     gas_.setVanDerWaalsVolume(1.69e-28); // 4/3 * PI * pow(343e-12, 3) from the van der waals radius
     gas_.setDecayRate(0.0); //stable
+    gas_.setMassNumber(133);
     gas_.setChemicallyActive(1.0);
     gas_.setPrecursorFactor(1.00);
     gas.push(gas_);
@@ -99,6 +100,7 @@ void iodine(SciantixArray<Gas> &gas)
     gas_.setAtomicNumber(53);
     gas_.setVanDerWaalsVolume(3.25e-29); // 4/3 * PI * pow(198e-12, 3) from the van der waals radius
     gas_.setDecayRate(0.0); // stable
+    gas_.setMassNumber(127);
     gas_.setChemicallyActive(1.0);
     gas_.setPrecursorFactor(1.00);
     gas.push(gas_);
@@ -111,6 +113,7 @@ void tellurium(SciantixArray<Gas> &gas)
     gas_.setAtomicNumber(52);
     gas_.setVanDerWaalsVolume(3.66e-29); // 4/3 * PI * pow(206e-12, 3) from the van der waals radius
     gas_.setDecayRate(0.0); // stable
+    gas_.setMassNumber(127);
     gas_.setChemicallyActive(1.0);
     gas_.setPrecursorFactor(1.00);
     gas.push(gas_);
