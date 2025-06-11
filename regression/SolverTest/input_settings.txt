@@ -23,3 +23,4 @@
 0	#	iNUSOutput (0= Visulaization Disabled, 1= Visulaization Enabled)
 0   #	iNUSAnimation (0= Visulaization Disabled, 1= Visulaization Enabled)
 0	#	iNonSym (0= Sphere, 1= Implantation Geometry)
+1   #   iGrainBoundaryResolution (0 = off, 1 = on)

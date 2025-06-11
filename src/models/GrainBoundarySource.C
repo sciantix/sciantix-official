@@ -66,12 +66,12 @@ void Simulation::GrainBoundarySource()
         double x = a-d;
         double ResolutionLayerVolume = (4.0 / 3.0) * M_PI * (pow(a,3) - pow(d,3));
         double GrainVolume = (4.0 / 3.0) * M_PI * pow(a,3);
+        double R = ResolutionLayerVolume/GrainVolume;
         
         // This gives how much we should remove from the grain boundaries
         double timestep = physics_variable["Time step"].getFinalValue(); //already in seconds
         double GBResolutionSourceNet = (GBSource.Intercepts[0] - fission_rate.Intercepts[0]) * timestep;
 
-        GBresolve = GBResolutionSourceNet;
-
+        GBresolve = GBResolutionSourceNet*R;
     }
 }

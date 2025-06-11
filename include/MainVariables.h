@@ -64,6 +64,8 @@ extern std::vector<double> Hydrostaticstress_input;
 extern std::vector<double> Steampressure_input;
 extern std::vector<Source> sources_input;
 extern std::vector<Source> sources_interp;
+extern std::vector<Source> sources_correct;
+
 extern std::vector<Source> initial_distribution;
 extern bool ICfile;
 extern double visualization;

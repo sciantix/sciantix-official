@@ -104,5 +104,12 @@ void Simulation::setVariables(
     }
 
     // Source
-    sourcesinput = sources_interp; //sourcesinput used in the simulation should be the interpolated sources
+       if (Sciantix_options[25] == 1)
+    {
+        sourcesinput = sources_correct;
+    }
+    else
+    {
+        sourcesinput = sources_interp; // sourcesinput used in the simulation should be the interpolated sources}
+    }
 }

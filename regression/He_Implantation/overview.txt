@@ -1,13 +1,18 @@
+Model	Burnup	: The local burnup is calculated from the fission rate density.
+Model	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
+Model	Grain growth	 : constant grain radius.
 Model	Gas production - Xe in UO2	 
 Model	Gas production - Kr in UO2	 
 Model	Gas production - He in UO2	 
 Model	Gas production - Xe133 in UO2	 
 Model	Gas production - Kr85m in UO2	 
+Model	Intragranular bubble behavior	: Pizzocri et al., JNM, 502 (2018) 323-330.
 Model	Gas diffusion - Xe in UO2	
 Model	Gas diffusion - Kr in UO2	
 Model	Gas diffusion - He in UO2	
 Model	Gas diffusion - Xe133 in UO2	
 Model	Gas diffusion - Kr85m in UO2	
+Model	Intergranular bubble behavior	: No model for grain-boundary bubble evolution.
 
 Matrix	UO2	
 	Null grain-boundary mobility.
@@ -21,11 +26,11 @@ System	Xe133 in UO2
 System	Kr85m in UO2	
 
 Input setting	iGrainGrowth = 0
-Input setting	iFissionGasDiffusivity = 99
-Input setting	iDiffusionSolver = 4
+Input setting	iFissionGasDiffusivity = 0
+Input setting	iDiffusionSolver = 1
 Input setting	iIntraGranularBubbleBehavior = 1
 Input setting	iResolutionRate = 0
-Input setting	iTrappingRate = 99
+Input setting	iTrappingRate = 0
 Input setting	iNucleationRate = 0
 Input setting	iOutput = 1
 Input setting	iGrainBoundaryVacancyDiffusivity = 0
@@ -35,7 +40,7 @@ Input setting	iFuelMatrix = 0
 Input setting	iGrainBoundaryVenting = 0
 Input setting	iRadioactiveFissionGas = 0
 Input setting	iHelium = 1
-Input setting	iHeDiffusivity = 0
+Input setting	iHeDiffusivity = 1
 Input setting	iGrainBoundarySweeping = 0
 Input setting	iHighBurnupStructureFormation = 0
 Input setting	iHighBurnupStructurePorosity = 0
