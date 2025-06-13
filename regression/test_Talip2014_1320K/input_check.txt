@@ -1,6 +1,6 @@
 iGrainGrowth = 2
 iFissionGasDiffusivity = 1
-iDiffusionSolver = 2
+iDiffusionSolver = 4
 iIntraGranularBubbleBehavior = 3
 iResolutionRate = 3
 iTrappingRate = 1
@@ -24,7 +24,7 @@ iNUSOutput = 0
 iNUSAnimation = 0
 iNonSym = 0
 iGrainBoundaryResolution = 0
-Grain radius[0] = 5e-06
+Grain radius[0] = 0.005
 Initial composition Xe0 = 0
 Initial composition Xe1 = 0
 Initial composition Xe2 = 0

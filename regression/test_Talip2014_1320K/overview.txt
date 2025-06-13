@@ -28,7 +28,7 @@ System	Kr85m in UO2
 
 Input setting	iGrainGrowth = 2
 Input setting	iFissionGasDiffusivity = 1
-Input setting	iDiffusionSolver = 2
+Input setting	iDiffusionSolver = 4
 Input setting	iIntraGranularBubbleBehavior = 3
 Input setting	iResolutionRate = 3
 Input setting	iTrappingRate = 1
