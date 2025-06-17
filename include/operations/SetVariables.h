@@ -55,7 +55,7 @@ void SetVariables(
 	SciantixArray<SciantixVariable> &physics_variable,
 	std::vector<double> &modes_initial_conditions,
 	SciantixArray<Variable> &scaling_factors,
-	SciantixArray<SciantixVariable> &thermochemistry_variable
+	SciantixArray<ThermochemistryVariable> &thermochemistry_variable
 );
 
 #endif

@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include <json/json.h>
 
 std::map<int, std::string> update_sciantix_variable = {
     {0, "Grain radius"},
@@ -149,9 +150,46 @@ std::map<int, std::string> update_sciantix_variable = {
     {170,"Initial grain radius"},
 };
 
-std::map<int, std::string> update_thermochemistry_variable = {
-    {0, "Iodio"}
+std::map<int, std::string> updateThermochemistryVariable()
+{
+    std::map<int, std::string> thermochemistry_variable;
+
+    std::vector<std::string> locations;
+    
+    locations.push_back("in grain");
+    locations.push_back("at grain boundary");
+    locations.push_back("in the gap");
+    
+    // Read from JSON file the compounds of interest
+    const std::string jsonPath = "../../thermochimica-master/outputs/ThermochemistryVariable.json";
+    std::ifstream jsonFile(jsonPath);
+    if (!jsonFile) {
+        std::cerr << "Error: Cannot open JSON output: " << jsonPath << std::endl;
+    }
+
+    Json::Value root;
+    jsonFile >> root;
+
+    int index = 0;
+
+    for (const auto& phase : root.getMemberNames())
+    {
+        for (const auto& compound : root[phase].getMemberNames())
+        {
+            for (const auto& location : locations)
+            {
+                std::string label = compound + " (" + phase + ", " + location + ")";
+                thermochemistry_variable[index] = label;
+
+                ++index;
+            }
+        }
+    }
+    return thermochemistry_variable;
 };
+
+std::map<int, std::string> update_thermochemistry_variable = updateThermochemistryVariable();
+
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[])
 {
