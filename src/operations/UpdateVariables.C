@@ -149,7 +149,11 @@ std::map<int, std::string> update_sciantix_variable = {
     {170,"Initial grain radius"},
 };
 
-void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
+std::map<int, std::string> update_thermochemistry_variable = {
+    {0, "Iodio"}
+};
+
+void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[])
 {
     for (int i = 0; i < n_modes; ++i)
     {
@@ -162,5 +166,10 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
     for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin(); it != update_sciantix_variable.end(); it++)
     {
         Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
+    }
+
+    for (std::map<int, std::string>::iterator it = update_thermochemistry_variable.begin(); it != update_thermochemistry_variable.end(); it++)
+    {
+        Sciantix_thermochemistry[it->first] = thermochemistry_variable[it->second].getFinalValue();
     }
 }

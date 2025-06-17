@@ -22,7 +22,8 @@ void Simulation::setVariables(
     double Sciantix_history[],
     double Sciantix_variables[],
     double Sciantix_scaling_factors[],
-    double Sciantix_diffusion_modes[]
+    double Sciantix_diffusion_modes[],
+    double Sciantix_thermochemistry[]
 )
 {
     // Input variable
@@ -79,6 +80,18 @@ void Simulation::setVariables(
     {
         sciantix_variable.push(initial_value);
     }
+
+    // Sciantix variable
+    values = initializeThermochemistryVariable(
+            Sciantix_thermochemistry,
+            toOutputThermochimica
+    );
+    
+    for (SciantixVariable initial_value : values)
+    {
+        thermochemistry_variable.push(initial_value);
+    }
+    
 
     #if defined(COUPLING_TU)
 

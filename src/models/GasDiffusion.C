@@ -178,9 +178,6 @@ void Simulation::GasDiffusion()
             if (sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue() < 0.0)
                 sciantix_variable[system.getGasName() + " reacted - GB"].setFinalValue(0.0);
 
-            //sciantix_variable[system.getGasName()+" in intergranular bubbles"].setFinalValue(sciantix_variable[system.getGasName()+" at grain boundary"].getFinalValue() * sciantix_variable["Intergranular fractional coverage"].getFinalValue());
-            //sciantix_variable[system.getGasName()+" in intergranular solution"].setFinalValue(sciantix_variable[system.getGasName()+" at grain boundary"].getFinalValue() * (1.0 - sciantix_variable["Intergranular fractional coverage"].getFinalValue()));
-
         }
     }
 

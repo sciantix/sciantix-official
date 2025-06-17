@@ -44,6 +44,7 @@ private:
     SciantixArray<SciantixVariable> sciantix_variable;
     SciantixArray<SciantixVariable> history_variable;
     SciantixArray<SciantixVariable> physics_variable;
+    SciantixArray<SciantixVariable> thermochemistry_variable;
     
     SciantixArray<Model> model;
     SciantixArray<System> sciantix_system;
@@ -82,7 +83,8 @@ public:
         double Sciantix_history[], 
         double Sciantix_variables[], 
         double Sciantix_scaling_factors[], 
-        double Sciantix_diffusion_modes[]
+        double Sciantix_diffusion_modes[],
+        double Sciantix_thermochemistry[]
     );
 
     void setGas();
@@ -94,12 +96,13 @@ public:
         double Sciantix_history[], 
         double Sciantix_variables[], 
         double Sciantix_scaling_factors[], 
-        double Sciantix_diffusion_modes[]
+        double Sciantix_diffusion_modes[],
+        double Sciantix_thermochemistry[]
     );
 
     void execute();
 
-    void update(double Sciantix_variables[], double Sciantix_diffusion_modes[]);
+    void update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[]);
 
     void output();
 
