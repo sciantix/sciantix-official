@@ -35,7 +35,6 @@ void Simulation::SetPhaseDiagram2()
             if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1.0)
             {
                 sciantix_variable[system.getGasName() + " at grain boundary"].addValue(sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue());
-                std::cout << "SHIFT: "<<sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue()<<std::endl;
                 sciantix_variable[system.getGasName() + " reacted - GB"].setFinalValue(0);
             }
         }
@@ -158,10 +157,9 @@ void Simulation::SetPhaseDiagram2()
             }
         }
 
-        double conc = sciantix_variable["Intergranular bubble concentration"].getFinalValue();
-        double radius = sciantix_variable["Intergranular bubble radius"].getFinalValue();
-        double trapRate = 2.0 * M_PI * D_gb * conc/ log(1.0 / (radius * sqrt(M_PI * conc)));
-        std::cout << "Trapping rate: "<< trapRate<<std::endl;
+        // double conc = sciantix_variable["Intergranular bubble concentration"].getFinalValue();
+        // double radius = sciantix_variable["Intergranular bubble radius"].getFinalValue();
+        // double trapRate = 2.0 * M_PI * D_gb * conc/ log(1.0 / (radius * sqrt(M_PI * conc)));
                 
         // Evaporation kinetics 
         double relativeVolume = (available-updateAtoms)*boltzmann_constant*temperature/pressure;
@@ -169,13 +167,18 @@ void Simulation::SetPhaseDiagram2()
         if (relativeVolume)
             Langmuir = pow(gas_constant*temperature/(2*M_PI*MM), 0.5)*4*M_PI*pow(sciantix_variable["Grain radius"].getFinalValue(),2)/relativeVolume;
 
-        std::cout << "Langmuir rate:"<<Langmuir<<std::endl;
-        
         double excesssol = (sciantix_variable[elem + " reacted - GB"].getFinalValue() - (available - updateAtoms));
         double excessgb = (sciantix_variable[elem + " at grain boundary"].getFinalValue() - (updateAtoms));
         
         double Rate = Langmuir;
-        if (Rate*physics_variable["Time step"].getFinalValue()>1) std::cout<<"WARNING";
+        if (Rate*physics_variable["Time step"].getFinalValue()>1) 
+        {
+            std::cout<<"WARNING: Langmuir rate cut"<<std::endl;
+            if (physics_variable["Time step"].getFinalValue())
+                Rate = 1/physics_variable["Time step"].getFinalValue();
+            else
+                Rate = 0;
+        }
 
         if (excesssol > 0)
         {

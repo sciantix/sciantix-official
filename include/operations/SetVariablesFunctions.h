@@ -405,6 +405,29 @@ std::vector<SciantixVariable> initializeSciantixVariable(
 
     return init_sciantix_variable;
 }
+    
+std::vector<SciantixVariable> initializeThermochemistryVariable(
+    double Sciantix_thermochemistry[],
+    bool toOutputThermochimica
+)
+{
+    std::vector<SciantixVariable> init_thermochemistry_variable =
+    {        
+        SciantixVariable("Iodio","(mol)",Sciantix_thermochemistry[0], Sciantix_thermochemistry[0], 1),
+        // for (const auto &species : thermochemical_species_database)
+        // {
+        //     init_thermochemistry_variable.emplace_back(
+        //         species.name,
+        //         "mol",
+        //         Sciantix_thermochemistry[species.index],
+        //         Sciantix_thermochemistry[species.index],
+        //         toOutputThermochemica
+        //     );
+        // }
+    };
+
+    return init_thermochemistry_variable;
+}
 
 
 /**

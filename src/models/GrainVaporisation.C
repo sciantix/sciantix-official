@@ -228,16 +228,5 @@ void Simulation::GrainVaporisation()
         1.0
     );
 
-    // if (xf < 0)
-    // {     
-    //     std::cout<<"temperature "<<T<<std::endl;
-    //     std::cout<<"stoichiometry "<<x<<std::endl;
-    //     std::cout<<"stoichiometry f "<<xf<<std::endl;
-    //     std::cout<<"uo "<<(p_uo/pow(molarmassuo, 0.5))<<std::endl;
-    //     std::cout<<"uo2 "<<(p_uo2/pow(molarmassuo2, 0.5))<<std::endl;
-    //     std::cout<<"uo3 "<<(p_uo3/pow(molarmassuo3, 0.5))<<std::endl;
-    //     std::cout<<"o2 "<<(p_o2/pow(molarmasso2, 0.5))<<std::endl;
-    // }
-
     sciantix_variable["Stoichiometry deviation"].setFinalValue(xf);
 }

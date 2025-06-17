@@ -30,12 +30,13 @@
  * @param Sciantix_variables Array of doubles representing current variables in the simulation.
  * @param Sciantix_scaling_factors Array of doubles used to scale various parameters within the model.
  * @param Sciantix_diffusion_modes Array of doubles representing diffusion modes used in the simulation.
+ * @param Sciantix_thermochemistry Array of doubles representing the variables related to the thermochemistry module.
  * 
  * @author D. Pizzocri
  * @author T. Barani
  * @author G. Zullo
  * 
  */
-void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
+void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[]);
 
 #endif // SCIANTIX_H

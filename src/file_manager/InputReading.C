@@ -88,6 +88,7 @@ void InputReading(
 	int Sciantix_options[], 
 	double Sciantix_variables[], 
 	double Sciantix_scaling_factors[],
+	double Sciantix_thermochemistry[],
 	int &Input_history_points,
 	std::vector<double> &Time_input, 
 	std::vector<double> &Temperature_input,
