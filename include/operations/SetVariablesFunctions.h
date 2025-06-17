@@ -19,6 +19,9 @@
 
 #include <vector>
 #include "SciantixVariable.h"
+#include "ThermochemistryVariable.h"
+#include <json/json.h>
+#include <fstream>
 
 /**
  * @brief Retrieves the list of input variable names.
@@ -314,24 +317,24 @@ std::vector<SciantixVariable> initializeSciantixVariable(
 
         SciantixVariable("Intragranular gas bubble swelling", "(/)", Sciantix_variables[24], Sciantix_variables[24], 1),
         SciantixVariable("Intragranular gas solution swelling", "(/)", Sciantix_variables[68], Sciantix_variables[68], toOutputHighBurnupStructure),
-        SciantixVariable("Intergranular bubble concentration", "(bub/m2)", Sciantix_variables[25], Sciantix_variables[25], toOutputGrainBoundary),
+        SciantixVariable("Intergranular bubble concentration", "(bub/m2)", Sciantix_variables[25], Sciantix_variables[25], 1),
 
         SciantixVariable("Intergranular Xe atoms per bubble", "(at/bub)", Sciantix_variables[26], Sciantix_variables[26], 0),
         SciantixVariable("Intergranular Kr atoms per bubble", "(at/bub)", Sciantix_variables[27], Sciantix_variables[27], 0),
         SciantixVariable("Intergranular He atoms per bubble", "(at/bub)", Sciantix_variables[28], Sciantix_variables[28], 0),
-        SciantixVariable("Intergranular atoms per bubble", "(at/bub)", Sciantix_variables[29], Sciantix_variables[29], toOutputGrainBoundary),
-        SciantixVariable("Intergranular vacancies per bubble", "(vac/bub)", Sciantix_variables[30], Sciantix_variables[30], toOutputGrainBoundary),
+        SciantixVariable("Intergranular atoms per bubble", "(at/bub)", Sciantix_variables[29], Sciantix_variables[29], 1),
+        SciantixVariable("Intergranular vacancies per bubble", "(vac/bub)", Sciantix_variables[30], Sciantix_variables[30], 1),
 
         SciantixVariable("Intergranular bubble pressure", "(MPa)", 0.0, 0.0, 0),
         SciantixVariable("Critical intergranular bubble pressure", "(MPa)", 0.0, 0.0, 0),
-        SciantixVariable("Intergranular bubble radius", "(m)", Sciantix_variables[31], Sciantix_variables[31], toOutputGrainBoundary),
-        SciantixVariable("Intergranular bubble area", "(m2)", Sciantix_variables[32], Sciantix_variables[32], toOutputGrainBoundary),
-        SciantixVariable("Intergranular bubble volume", "(m3)", Sciantix_variables[33], Sciantix_variables[33], toOutputGrainBoundary),
+        SciantixVariable("Intergranular bubble radius", "(m)", Sciantix_variables[31], Sciantix_variables[31], 1),
+        SciantixVariable("Intergranular bubble area", "(m2)", Sciantix_variables[32], Sciantix_variables[32], 1),
+        SciantixVariable("Intergranular bubble volume", "(m3)", Sciantix_variables[33], Sciantix_variables[33], 1),
 
-        SciantixVariable("Intergranular fractional coverage", "(/)", Sciantix_variables[34], Sciantix_variables[34], toOutputGrainBoundary), 
-        SciantixVariable("Intergranular saturation fractional coverage", "(/)", Sciantix_variables[35], Sciantix_variables[35], toOutputGrainBoundary),
-        SciantixVariable("Intergranular gas swelling", "(/)", Sciantix_variables[36], Sciantix_variables[36], toOutputGrainBoundary),
-        SciantixVariable("Intergranular fractional intactness", "(/)", Sciantix_variables[37], Sciantix_variables[37], toOutputCracking),
+        SciantixVariable("Intergranular fractional coverage", "(/)", Sciantix_variables[34], Sciantix_variables[34], 1), 
+        SciantixVariable("Intergranular saturation fractional coverage", "(/)", Sciantix_variables[35], Sciantix_variables[35], 1),
+        SciantixVariable("Intergranular gas swelling", "(/)", Sciantix_variables[36], Sciantix_variables[36], 1),
+        SciantixVariable("Intergranular fractional intactness", "(/)", Sciantix_variables[37], Sciantix_variables[37], 1),
 
         SciantixVariable("Burnup", "(MWd/kgUO2)", Sciantix_variables[38], Sciantix_variables[38], 1),
         SciantixVariable("FIMA", "(%)", Sciantix_variables[69], Sciantix_variables[69], toOutputHighBurnupStructure || toOutputChromiumContent),
@@ -392,13 +395,6 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("UO2 vapour", "(mol)", Sciantix_variables[164], Sciantix_variables[164], 1),
         SciantixVariable("UO3 vapour", "(mol)", Sciantix_variables[165], Sciantix_variables[165], 1),
 
-    //     SciantixVariable("Cs in intergranular solution", "(at/m3)", Sciantix_variables[171], Sciantix_variables[171], 1),
-    //     SciantixVariable("Te in intergranular solution", "(at/m3)", Sciantix_variables[172], Sciantix_variables[172], 1),
-    //     SciantixVariable("I in intergranular solution", "(at/m3)", Sciantix_variables[173], Sciantix_variables[173], 1),
-    //     SciantixVariable("Cs in intergranular bubbles", "(at/m3)", Sciantix_variables[174], Sciantix_variables[174], 1),
-    //     SciantixVariable("Te in intergranular bubbles", "(at/m3)", Sciantix_variables[175], Sciantix_variables[175], 1),
-    //     SciantixVariable("I in intergranular bubbles", "(at/m3)", Sciantix_variables[176], Sciantix_variables[176], 1),
-        
         SciantixVariable("Initial grain radius", "(mol)", Sciantix_variables[170], Sciantix_variables[170], 0),
 
     };
@@ -406,25 +402,59 @@ std::vector<SciantixVariable> initializeSciantixVariable(
     return init_sciantix_variable;
 }
     
-std::vector<SciantixVariable> initializeThermochemistryVariable(
+std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
     double Sciantix_thermochemistry[],
     bool toOutputThermochimica
 )
-{
-    std::vector<SciantixVariable> init_thermochemistry_variable =
-    {        
-        SciantixVariable("Iodio","(mol)",Sciantix_thermochemistry[0], Sciantix_thermochemistry[0], 1),
-        // for (const auto &species : thermochemical_species_database)
-        // {
-        //     init_thermochemistry_variable.emplace_back(
-        //         species.name,
-        //         "mol",
-        //         Sciantix_thermochemistry[species.index],
-        //         Sciantix_thermochemistry[species.index],
-        //         toOutputThermochemica
-        //     );
-        // }
-    };
+{   
+    std::vector<ThermochemistryVariable> init_thermochemistry_variable;
+
+    std::vector<std::string> locations;
+    
+    locations.push_back("in grain");
+    locations.push_back("at grain boundary");
+    locations.push_back("in the gap");
+    
+    // Read from JSON file the compounds of interest
+    const std::string jsonPath = "../../thermochimica-master/outputs/ThermochemistryVariable.json";
+    std::ifstream jsonFile(jsonPath);
+    if (!jsonFile) {
+        std::cerr << "Error: Cannot open JSON output: " << jsonPath << std::endl;
+    }
+
+    Json::Value root;
+    jsonFile >> root;
+
+    // Counter to index Sciantix_thermochemistry
+    int index = 0;
+
+    for (const auto& phase : root.getMemberNames())
+    {
+        for (const auto& compound : root[phase].getMemberNames())
+        {
+            for (const auto& location : locations)
+            {
+                std::map<std::string, int> stoichiometry;
+                for (const auto& element : root[phase][compound].getMemberNames()) {
+                    stoichiometry[element] = root[phase][compound][element].asInt();
+                } 
+
+                init_thermochemistry_variable.emplace_back(
+                    ThermochemistryVariable(
+                        compound + " (" + phase + ", " + location + ")", // name
+                        "(mol/m3)",                           // unit
+                        Sciantix_thermochemistry[index],     // initial_value
+                        Sciantix_thermochemistry[index],     // final_value
+                        phase,                               // phase
+                        location,                            // location
+                        stoichiometry,                       // stoichiometry
+                        toOutputThermochimica                // output flag
+                    )
+                );
+                ++index;
+            }
+        }
+    }
 
     return init_thermochemistry_variable;
 }

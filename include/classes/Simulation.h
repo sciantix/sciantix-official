@@ -26,6 +26,7 @@
 #include "System.h"
 #include "SciantixArray.h"
 #include "SciantixVariable.h"
+#include "ThermochemistryVariable.h"
 
 /**
  * @class Simulation
@@ -44,7 +45,7 @@ private:
     SciantixArray<SciantixVariable> sciantix_variable;
     SciantixArray<SciantixVariable> history_variable;
     SciantixArray<SciantixVariable> physics_variable;
-    SciantixArray<SciantixVariable> thermochemistry_variable;
+    SciantixArray<ThermochemistryVariable> thermochemistry_variable;
     
     SciantixArray<Model> model;
     SciantixArray<System> sciantix_system;
