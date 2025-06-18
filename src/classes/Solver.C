@@ -60,11 +60,14 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
         diffusion_rate = diffusion_rate_coeff * pow(np1, 2) + parameter.at(4);
         source_rate = source_rate_coeff * n_coeff;
         
+        // Reacted in grain
+        initial_condition[n] = Solver::Integrator(initial_condition[n], - n_coeff*projection_coeff*parameter.at(5), 1);
+        initial_condition[n] = std::max(initial_condition[n], 0.0);
+        // Vaporized from grain
         initial_condition[n] = Solver::Decay(initial_condition[n], 1.0, 0.0, parameter.at(6));
 
         initial_condition[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);
 
-        initial_condition[n] = Solver::Integrator(initial_condition[n], n_coeff*projection_coeff*parameter.at(5), 1);
 
         solution += projection_coeff * n_coeff * initial_condition[n] / ((4. / 3.) * M_PI);
     }
