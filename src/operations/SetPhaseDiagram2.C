@@ -43,6 +43,7 @@ void Simulation::SetPhaseDiagram2()
     }
 
     Matrix fuel(matrices[0]);
+    std::string location = "at grain boundary";
 
     // Set state variables: temperature, pressure
     double temperature = history_variable["Temperature"].getFinalValue();
@@ -77,7 +78,7 @@ void Simulation::SetPhaseDiagram2()
     for (auto &system : sciantix_system)
     {
         if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1)
-        {       
+        {   
             std::string gasName = system.getGasName();
             double gasatomsavailable = (
                 sciantix_variable[gasName + " produced"].getFinalValue() -
@@ -101,7 +102,7 @@ void Simulation::SetPhaseDiagram2()
     inputFile << "temperature unit  = K\n"
               << "pressure unit     = Pa\n"
               << "mass unit         = atoms\n"
-              << "data file         = ../../thermochimica-master/data/CsITe.dat\n"
+              << "data file         = ../../thermochimica-master/data/CsITe_Clean.dat\n"
               << "! Specify output and debug modes:\n"
               << "print mode        = 0\n"
               << "debug mode        = .FALSE.\n"
@@ -128,103 +129,103 @@ void Simulation::SetPhaseDiagram2()
     Json::Value root;
     jsonFile >> root;
 
-    // GAS_IDEAL solution
-    const Json::Value& gasSol = root["1"]["solution phases"]["GAS_IDEAL"];
-    // species
-    for (const auto& name : gasSol["species"].getMemberNames()) {
-        double moles = gasSol["species"][name]["moles"].asDouble();
-        sciantix_variable[name + " - GAS_IDEAL - GB"].setFinalValue(moles);
+    const Json::Value& SolutionPhases = root["1"]["solution phases"];
+    for (const auto& phase : SolutionPhases.getMemberNames())
+    {
+        for (const auto& compound : SolutionPhases[phase]["species"].getMemberNames())
+        {
+            double moles = SolutionPhases[phase]["species"][compound]["moles"].asDouble();
+            thermochemistry_variable[compound + " (" + phase + ", " + location + ")"].setFinalValue(moles);
+        }
+    }
+
+    const Json::Value& Condensed = root["1"]["pure condensed phases"];
+    for (const auto& compound : Condensed.getMemberNames())
+    {
+        double moles = Condensed[compound]["moles"].asDouble();
+        std::string phase = "pure_condensed";
+        thermochemistry_variable[compound + " (" + phase + ", " + location + ")"].setFinalValue(moles);
+
     }
 
     // elements: update gas atoms and grain boundary variables
-    for (const auto& elem : gasSol["elements"].getMemberNames()) {
-        double moles = gasSol["elements"][elem]["moles of element in phase"].asDouble();
-        double available = sciantix_variable[elem + " produced"].getFinalValue()
-                         - sciantix_variable[elem + " decayed"].getFinalValue()
-                         - sciantix_variable[elem + " reacted - IG"].getFinalValue()
-                         - sciantix_variable[elem + " in grain"].getFinalValue()
-                         - sciantix_variable[elem + " released"].getInitialValue();
+    for (const auto& element : SolutionPhases["gas"]["elements"].getMemberNames()) {
+        double moles = SolutionPhases["gas"]["elements"][element]["moles of element in phase"].asDouble();
+        double available = (sciantix_variable[element + " produced"].getFinalValue()
+                            - sciantix_variable[element + " decayed"].getFinalValue()
+                            - sciantix_variable[element + " reacted - IG"].getFinalValue()
+                            - sciantix_variable[element + " in grain"].getFinalValue()
+                            - sciantix_variable[element + " released"].getInitialValue());
         double updateAtoms = std::min(available, moles * avogadro_number);
 
-        // Trapping kinetics 
-        double D_gb = 0.0;
-        double MM = 0.0;
-        for (auto& system : sciantix_system) {
-            if (system.getGasName() == elem) {
-                D_gb = system.getFissionGasDiffusivity();
-                MM = system.getGas().getMassNumber() * 1e-3;
-                break;
+        bool kinetics = false;
+        if (kinetics)
+        {
+            // Trapping kinetics 
+            double D_gb = 0.0;
+            double MM = 0.0;
+            for (auto& system : sciantix_system) {
+                if (system.getGasName() == element) {
+                    D_gb = system.getFissionGasDiffusivity();
+                    MM = system.getGas().getMassNumber() * 1e-3;
+                    break;
+                }
             }
-        }
 
-        // double conc = sciantix_variable["Intergranular bubble concentration"].getFinalValue();
-        // double radius = sciantix_variable["Intergranular bubble radius"].getFinalValue();
-        // double trapRate = 2.0 * M_PI * D_gb * conc/ log(1.0 / (radius * sqrt(M_PI * conc)));
-                
-        // Evaporation kinetics 
-        double relativeVolume = (available-updateAtoms)*boltzmann_constant*temperature/pressure;
-        double Langmuir(0);
-        if (relativeVolume)
-            Langmuir = pow(gas_constant*temperature/(2*M_PI*MM), 0.5)*4*M_PI*pow(sciantix_variable["Grain radius"].getFinalValue(),2)/relativeVolume;
-
-        double excesssol = (sciantix_variable[elem + " reacted - GB"].getFinalValue() - (available - updateAtoms));
-        double excessgb = (sciantix_variable[elem + " at grain boundary"].getFinalValue() - (updateAtoms));
-        
-        double Rate = Langmuir;
-        if (Rate*physics_variable["Time step"].getFinalValue()>1) 
-        {
-            std::cout<<"WARNING: Langmuir rate cut"<<std::endl;
-            if (physics_variable["Time step"].getFinalValue())
-                Rate = 1/physics_variable["Time step"].getFinalValue();
-            else
-                Rate = 0;
-        }
-
-        if (excesssol > 0)
-        {
-            double newReacted = solver.Decay(
-                sciantix_variable[elem + " reacted - GB"].getFinalValue(),
-                Rate,
-                Rate * (available - updateAtoms),
-                physics_variable["Time step"].getFinalValue()
-            );
+            // double conc = sciantix_variable["Intergranular bubble concentration"].getFinalValue();
+            // double radius = sciantix_variable["Intergranular bubble radius"].getFinalValue();
+            // double trapRate = 2.0 * M_PI * D_gb * conc/ log(1.0 / (radius * sqrt(M_PI * conc)));
                     
-            sciantix_variable[elem + " reacted - GB"].setFinalValue(newReacted);
-            sciantix_variable[elem + " at grain boundary"].setFinalValue(available - newReacted);
-        }
-        else if (excessgb > 0)
-        {
-            double newReacted = solver.Decay(
-                sciantix_variable[elem + " reacted - GB"].getFinalValue(),
-                0.0,
-                Rate * (excessgb),
-                physics_variable["Time step"].getFinalValue()
-            );
-                    
-            sciantix_variable[elem + " reacted - GB"].setFinalValue(newReacted);
-            sciantix_variable[elem + " at grain boundary"].setFinalValue(available - newReacted);
-        }
-    }
+            // Evaporation kinetics 
+            double relativeVolume = (available-updateAtoms)*boltzmann_constant*temperature/pressure;
+            double Langmuir(0);
+            if (relativeVolume)
+                Langmuir = pow(gas_constant*temperature/(2*M_PI*MM), 0.5)*4*M_PI*pow(sciantix_variable["Grain radius"].getFinalValue(),2)/relativeVolume;
 
-    
-    // Other phases: LIQUID, LIQUID_IONIC, FCC_A1, pure condensed
-    const std::vector<std::string> phases = {"LIQUID", "LIQUID_IONIC", "FCC_A1"};
-    for (const auto& ph : phases) {
-        const Json::Value& sol = root["1"]["solution phases"][ph];
-        if (sol["moles"].asDouble() > 0.0) {
-            for (const auto& name : sol["species"].getMemberNames()) {
-                double moles = sol["species"][name]["moles"].asDouble();
-                sciantix_variable[name + " - " + ph + " - GB"].setFinalValue(moles);
+            double excesssol = (sciantix_variable[element + " reacted - GB"].getFinalValue() - (available - updateAtoms));
+            double excessgb = (sciantix_variable[element + " at grain boundary"].getFinalValue() - (updateAtoms));
+            
+            double Rate = Langmuir;
+            if (Rate*physics_variable["Time step"].getFinalValue()>1) 
+            {
+                std::cout<<"WARNING: Langmuir rate cut"<<std::endl;
+                if (physics_variable["Time step"].getFinalValue())
+                    Rate = 1/physics_variable["Time step"].getFinalValue();
+                else
+                    Rate = 0;
             }
+
+            double newReacted = 0.0;
+            if (excesssol > 0)
+            {
+                newReacted = solver.Decay(
+                    sciantix_variable[element + " reacted - GB"].getFinalValue(),
+                    Rate,
+                    Rate * (available - updateAtoms),
+                    physics_variable["Time step"].getFinalValue()
+                );
+            }
+            else if (excessgb > 0)
+            {
+                newReacted = solver.Decay(
+                    sciantix_variable[element + " reacted - GB"].getFinalValue(),
+                    0.0,
+                    Rate * (excessgb),
+                    physics_variable["Time step"].getFinalValue()
+                );
+            }
+
+            sciantix_variable[element + " reacted - GB"].setFinalValue(newReacted);
+            sciantix_variable[element + " at grain boundary"].setFinalValue(available - newReacted);
+        }
+        else
+        {
+            // No kinetics, just update the variable
+            sciantix_variable[element + " at grain boundary"].setFinalValue(updateAtoms);
+            sciantix_variable[element + " reacted - GB"].setFinalValue(available - updateAtoms);
         }
     }
 
-    const Json::Value& condensed = root["1"]["pure condensed phases"];
-    for (const auto& ph : condensed.getMemberNames()) {
-        double moles = condensed[ph]["moles"].asDouble();
-        sciantix_variable[ph + " - pure condensed phases - GB"].setFinalValue(moles);
-    }
-    
     // Rename output file for grain boundary
     std::rename(
         "../../thermochimica-master/outputs/thermoout.json",
