@@ -142,11 +142,8 @@ std::map<int, std::string> update_sciantix_variable = {
     {157,"Chromia solution"},
     {158,"Chromia precipitate"},
     {160,"Diffusion coefficient"},
-    {161,"U vapour"},
-    {162,"O2 vapour"},
-    {163,"UO vapour"},
-    {164,"UO2 vapour"},
-    {165,"UO3 vapour"},
+    {161,"Uranium content"},
+    {162,"Oxygen content"},
     {170,"Initial grain radius"},
 };
 
@@ -172,19 +169,25 @@ std::map<int, std::string> updateThermochemistryVariable()
 
     int index = 0;
 
-    for (const auto& phase : root.getMemberNames())
+    for (const auto& type : root.getMemberNames())
     {
-        for (const auto& compound : root[phase].getMemberNames())
+        for (const auto& phase : root[type].getMemberNames())
         {
-            for (const auto& location : locations)
+            for (const auto& compound : root[type][phase].getMemberNames())
             {
-                std::string label = compound + " (" + phase + ", " + location + ")";
-                thermochemistry_variable[index] = label;
+                auto locations_to_use = (type == "matrix") ? std::vector<std::string>{"matrix"} : locations;
+            
+                for (const auto& location : locations_to_use)
+                {
+                    std::string label = compound + " (" + phase + ", " + location + ")";
+                    thermochemistry_variable[index] = label;
 
-                ++index;
+                    ++index;
+                }
             }
         }
     }
+    
     return thermochemistry_variable;
 };
 

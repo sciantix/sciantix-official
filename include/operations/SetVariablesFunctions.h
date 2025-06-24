@@ -290,13 +290,9 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Chromia precipitate", "(at/m3)", Sciantix_variables[158], Sciantix_variables[158], toOutputChromiumContent),
 
         SciantixVariable("Diffusion coefficient", "(m2/s)", Sciantix_variables[160], Sciantix_variables[160], 0),
-
-        SciantixVariable("U vapour", "(mol)", Sciantix_variables[161], Sciantix_variables[161], 1),
-        SciantixVariable("O2 vapour", "(mol)", Sciantix_variables[162], Sciantix_variables[162], 1),
-        SciantixVariable("UO vapour", "(mol)", Sciantix_variables[163], Sciantix_variables[163], 1),
-        SciantixVariable("UO2 vapour", "(mol)", Sciantix_variables[164], Sciantix_variables[164], 1),
-        SciantixVariable("UO3 vapour", "(mol)", Sciantix_variables[165], Sciantix_variables[165], 1),
-
+        SciantixVariable("Uranium content", "(mol/grain)", Sciantix_variables[161], Sciantix_variables[161], 1),
+        SciantixVariable("Oxygen content", "(mol/grain)", Sciantix_variables[162], Sciantix_variables[162], 1),
+        
         SciantixVariable("Initial grain radius", "(mol)", Sciantix_variables[170], Sciantix_variables[170], 0),
 
     };
@@ -330,30 +326,38 @@ std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
     // Counter to index Sciantix_thermochemistry
     int index = 0;
 
-    for (const auto& phase : root.getMemberNames())
+    for (const auto& type : root.getMemberNames())
     {
-        for (const auto& compound : root[phase].getMemberNames())
+        for (const auto& phase : root[type].getMemberNames())
         {
-            for (const auto& location : locations)
+            for (const auto& compound : root[type][phase].getMemberNames())
             {
                 std::map<std::string, int> stoichiometry;
-                for (const auto& element : root[phase][compound].getMemberNames()) {
-                    stoichiometry[element] = root[phase][compound][element].asInt();
+                for (const auto& element : root[type][phase][compound].getMemberNames()) {
+                    stoichiometry[element] = root[type][phase][compound][element].asInt();
                 } 
 
-                init_thermochemistry_variable.emplace_back(
-                    ThermochemistryVariable(
-                        compound + " (" + phase + ", " + location + ")", // name
-                        "(mol/m3)",                           // unit
-                        Sciantix_thermochemistry[index],     // initial_value
-                        Sciantix_thermochemistry[index],     // final_value
-                        phase,                               // phase
-                        location,                            // location
-                        stoichiometry,                       // stoichiometry
-                        toOutputThermochimica                // output flag
-                    )
-                );
-                ++index;
+                auto locations_to_use = (type == "matrix") ? std::vector<std::string>{"matrix"} : locations;
+
+                std::string uom = "(mol/m3)" ;
+                if (type == "matrix") uom = "(mol/grain)"; 
+
+                for (const auto& location : locations_to_use)
+                {
+                    init_thermochemistry_variable.emplace_back(
+                        ThermochemistryVariable(
+                            compound + " (" + phase + ", " + location + ")", // name
+                            uom,                           // unit
+                            Sciantix_thermochemistry[index],     // initial_value
+                            Sciantix_thermochemistry[index],     // final_value
+                            phase,                               // phase
+                            location,                            // location
+                            stoichiometry,                       // stoichiometry
+                            toOutputThermochimica                // output flag
+                        )
+                    );
+                    ++index;
+                }
             }
         }
     }
