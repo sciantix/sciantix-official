@@ -365,6 +365,13 @@ void Simulation::StoichiometryDeviation()
                 model["Stoichiometry deviation"].getParameter().at(0)   
             )
         );
+
+        // reduced Uranium content
+        sciantix_variable["Uranium content"].addValue( 
+            - sciantix_variable["Oxygen content"].getFinalValue()
+            *sciantix_variable["Stoichiometry deviation"].getIncrement()
+            *pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2)
+        );
     }
 
     if (sciantix_variable["Stoichiometry deviation"].getFinalValue() == 0) return;

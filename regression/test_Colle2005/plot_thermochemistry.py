@@ -45,16 +45,17 @@ thermochemistry_data = pd.read_csv(folder_path + '/thermochemistry_output_chemis
 thermochemistry = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
 
 for col in thermochemistry_data.columns:
-    if "(" not in col or "mol/m3" not in col:
+    if "(" not in col or "mol" not in col:
         continue
 
-    match = re.match(r"(.+)\s+\(([^,]+),\s*([^)]+)\)\s*\(mol/m3\)", col)
+    # Match: Nome (fase, posizione) (unità)
+    match = re.match(r"(.+)\s+\(([^,]+),\s*([^)]+)\)\s*\((mol/m3|mol/grain)\)", col)
 
     if not match:
         print(f"Colonna non riconosciuta: {col}")
         continue
 
-    compound, phase, position = match.groups()
+    compound, phase, position, unit = match.groups()
     compound = compound.strip()
     phase = phase.strip().lower()
     position = position.strip().lower()
@@ -344,7 +345,15 @@ def plot_products(location, phases = ['gas', 'liquid', 'liquid_ionic', 'fcc_a1',
             values = np.nan_to_num(values, nan=0)
             if label_x == 'Temperature (K)':
                 values = values[mask]
-            concentration = np.divide(values, total_location, out=np.zeros_like(values), where=total_location != 0)
+            values = values.astype(float)
+            total_location = total_location.astype(float)
+            concentration = np.divide(
+                values,
+                total_location,
+                out=np.zeros_like(values),
+                where=total_location != 0
+            )
+
             concentration = np.nan_to_num(concentration, nan=0)
             
             if max(concentration) > threshold:
@@ -653,96 +662,58 @@ plt.plot(
     label='Exp. UO'
 )
 
-fuelporosity =  1 - data["With Thermochemistry"].iloc[0]["Fuel density (kg/m3)"]/10960
-molarvolume = fuelporosity*(270.03e-3/data["With Thermochemistry"].iloc[0]["Fuel density (kg/m3)"])
-molesU = (4/3 * np.pi * pow(data["With Thermochemistry"].iloc[0]["Grain radius (m)"], 3))/molarvolume
+position = "matrix"
+phase = "vapour"
 
-filtered = data[dataset][data["With Thermochemistry"]['UO2 vapour (mol)'] <= molesU]
-filtered = filtered.index
-filtered = filtered[-1]
-print(filtered)
+# Assumendo che thermochemistry_data abbia una colonna Temperature (K)
+temperature = thermochemistry_data["Temperature (K)"].values
+time = thermochemistry_data["Time (h)"].values
+xx = temperature
+xlabel = "Temperature (K)"
+plt.figure(figsize=(8,6))
 
-Utot = data[dataset].iloc[-1]['UO vapour (mol)'] + data[dataset].iloc[-1]['U vapour (mol)'] + data[dataset].iloc[-1]['UO2 vapour (mol)'] + data[dataset].iloc[-1]['UO3 vapour (mol)']
-for dataset in ["With Thermochemistry"]:
+for compound, values in thermochemistry[position][phase].items():
     plt.plot(
-        data[dataset]['Temperature (K)'],
-        (data[dataset]['U vapour (mol)'])/Utot,
-        linestyle='-',
-        label='Calculated U'
-    )
-    plt.plot(
-        data[dataset]['Temperature (K)'],
-        (data[dataset]['O2 vapour (mol)'])/Utot,
-        linestyle='-',
-        label='Calculated O2'
-    )
-    plt.plot(
-        data[dataset]['Temperature (K)'],
-        (data[dataset]['UO vapour (mol)'])/Utot,
-        linestyle='-',
-        label='Calculated UO'
-    )
-    plt.plot(
-        data[dataset]['Temperature (K)'],
-        (data[dataset]['UO2 vapour (mol)'])/Utot,
-        linestyle='-',
-        label='Calculated UO2'
-    )
-    plt.plot(
-        data[dataset]['Temperature (K)'],
-        (data[dataset]['UO3 vapour (mol)'])/Utot,
-        linestyle='-',
-        label='Calculated UO3'
+        xx,
+        values,
+        label=f'{compound} ({phase}, {position})'
     )
 
-
-plt.yscale('log')
-plt.ylim([1e-2, 1])
-plt.xlabel('Temperature (K)')
-plt.ylabel('Cumulative release (/)')
+plt.xlabel(xlabel)
+plt.ylabel('Concentration (mol/m3)')
+plt.title(f'Compounds in phase "{phase}" at position "{position}"')
 plt.legend()
 plt.tight_layout()
-plt.savefig(folder_path + "/Vaporisation_log.png")
+filename = "NewVap"
+plt.savefig(folder_path + "/" + filename + ".png")
 
+position = "matrix"
+phase = "solid"
 
-plt.figure(figsize=(8, 8))
+plt.figure(figsize=(8,6))
 
-plt.plot(
-    uo2_data['Temperature (K)'],
-    uo2_data['Release/birth (/)'],
-    marker='o',
-    linestyle='--',
-    linewidth=0.5,
-    color='grey',
-    label='Exp. UO2'
-)
-
-plt.plot(
-    uo_data['Temperature (K)'],
-    uo_data['Release/birth (/)'],
-    marker='o',
-    linestyle='--',
-    linewidth=0.5,
-    color='black',
-    label='Exp. UO'
-)
-
-for dataset in ["With Thermochemistry"]:
+for compound, values in thermochemistry[position][phase].items():
     plt.plot(
-        data[dataset]['Temperature (K)'],
-        (data[dataset]['UO vapour (mol)']/data[dataset].iloc[-1]['UO vapour (mol)']),
-        linestyle='-',
-        label='Calculated UO'
-    )
-    plt.plot(
-        data[dataset]['Temperature (K)'],
-        (data[dataset]['UO2 vapour (mol)']/data[dataset].iloc[-1]['UO2 vapour (mol)']),
-        linestyle='-',
-        label='Calculated UO2'
+        xx,
+        values,
+        label=f'{compound} ({phase}, {position})'
     )
 
-plt.xlabel('Temperature (K)')
-plt.ylabel('Cumulative release (/)')
+plt.xlabel(xlabel)
+plt.ylabel('Concentration (mol/m3)')
+plt.title(f'Compounds in phase "{phase}" at position "{position}"')
 plt.legend()
 plt.tight_layout()
-plt.savefig(folder_path + "/Vaporisation.png")
+filename = "NewVap_sol"
+plt.savefig(folder_path + "/" + filename + ".png")
+
+plt.figure(figsize=(8,6))
+
+plt.plot(data['With Thermochemistry'][xlabel], data['With Thermochemistry']["Oxygen content (mol/grain)"], label= "Oxygen content (mol/grain)")
+plt.plot(data['With Thermochemistry'][xlabel], data['With Thermochemistry']["Uranium content (mol/grain)"], label= "Uranium content (mol/grain)")
+plt.xlabel(xlabel)
+plt.ylabel('Concentration (mol/m3)')
+plt.legend()
+plt.tight_layout()
+filename = "NewVap2"
+plt.savefig(folder_path + "/" + filename + ".png")

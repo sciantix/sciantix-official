@@ -20,6 +20,7 @@ def modify_input_settings(value):
 # Function to run sciantix and save output
 def run_sciantix(output_name):
     subprocess.run("./sciantix.x", shell=True, check=True)
+    shutil.move("thermochemistry_output.txt", f"{results_dir}/thermochemistry_{output_name}")
     shutil.move("output.txt", f"{results_dir}/{output_name}")
     shutil.move("input_check.txt", f"{results_dir}/input_check_{output_name}")
 

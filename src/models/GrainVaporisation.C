@@ -18,105 +18,136 @@
 
 void Simulation::GrainVaporisation()
 {
-    double T =  history_variable["Temperature"].getFinalValue();
+    Matrix fuel(matrices[0]);
+
+    double temperature = history_variable["Temperature"].getFinalValue(); // K
     double x = sciantix_variable["Stoichiometry deviation"].getFinalValue();
-    double p_sys = history_variable["THERMOCHIMICA pressure"].getFinalValue(); //Pa
+    double pressure = history_variable["THERMOCHIMICA pressure"].getFinalValue(); // Pa
 
-    if (p_sys >= 1e6) return;
-
-    double molarmassuo =  254.02e-3; // kg/mol
-    double molarmassuo2 = 270.03e-3; // kg/mol
-    double molarmassuo3 = 286.03e-3; // kg/mol
-    double molarmasso2 = 2 * 16.00e-3; // kg/mol
-
-    double fuelporosity = 1 - sciantix_variable["Fuel density"].getFinalValue()/matrices["UO2"].getTheoreticalDensity();
-
-    // Constants form Olander (Blackburn's model)
-    double p_uo = exp(- 49.5/(T/1000) + 11.9);
-    double p_uo2 = exp(- 74.0/(T/1000) + 19.9);
-    double p_uo3 = exp(- 44.0/(T/1000) + 11.9);
-
-    double p_o2 = sciantix_variable["Fuel oxygen partial pressure"].getFinalValue()*1e6; //Pa
-    // double g_o2boundary = - 266700 + 16.5*T; // LINDEMER
-
-    double molarvolume =  fuelporosity *(molarmassuo2/sciantix_variable["Fuel density"].getFinalValue()); //HP of same volume removed
+    // Blackburn for UO2 fuel
+    double n_u(0), n_u2(0), n_u4(0), n_u6(0), n_o(0), n_o2(2 + x);
+    if ((sciantix_variable["Oxygen content"].getFinalValue() > 0) && (sciantix_variable["Uranium content"].getFinalValue() > 0))
+    {
+        // Stoichiometry regime
+        const double epsilon = 1e-6; // Tolerance
+        bool is_hypo = (x < - epsilon);
+        bool is_hyper = (x > epsilon);
+        bool is_stoichiometric = (std::abs(x) <= epsilon);
+        
+        // Constants from Blackburn's model, 1973
+        if (is_hypo)
+        {
+            n_u2 = (- x);
+            n_u4 = (1 + x);
+        }
+        else if (is_hyper)
+        {
+            n_u4 = (1 - x);
+            n_u6 = (x);
+        }
+        else if (is_stoichiometric) n_u4 = 1;
+    }
+    else if ((sciantix_variable["Oxygen content"].getFinalValue() <= 0) && (sciantix_variable["Uranium content"].getFinalValue() > 0)) n_u = 1;
+    else if ((sciantix_variable["Oxygen content"].getFinalValue() > 0) && (sciantix_variable["Uranium content"].getFinalValue() <= 0)) n_o = 1;
+    else return;
     
-    if (x < -1e-6 && x > -1) // hypostoichiometric
+    thermochemistry_variable["UO (solid, matrix)"].setFinalValue(n_u2*sciantix_variable["Uranium content"].getFinalValue());
+    thermochemistry_variable["UO2 (solid, matrix)"].setFinalValue(n_u4*sciantix_variable["Uranium content"].getFinalValue());
+    thermochemistry_variable["UO3 (solid, matrix)"].setFinalValue(n_u6*sciantix_variable["Uranium content"].getFinalValue());
+    thermochemistry_variable["U (solid, matrix)"].setFinalValue(n_u*sciantix_variable["Uranium content"].getFinalValue());
+    thermochemistry_variable["O2 (solid, matrix)"].setFinalValue(n_o/2*sciantix_variable["Oxygen content"].getFinalValue());
+
+    // Knudsen cell setup: skip if pressure is too high
+    if (pressure >= 1e6) return;
+    if (sciantix_variable["Grain radius"].getFinalValue() == 0) return;
+
+    // Constants form Olander (Fundamental aspects of nuclear reactor fuel elements, Blackburn's model, Table 11.1 pag 158)
+    double p_uo  = n_o2 * n_u2 * exp(- 49500/temperature + 11.9);
+    double p_uo2 = pow(n_o2, 2) * n_u4 * exp(- 74000/temperature + 19.9);
+    double p_uo3 = pow(n_o2, 3) * n_u6 * exp(- 44000/temperature + 11.9);
+    double p_u   = n_u * exp(- 58000/temperature + 13.5);
+    double p_o2 = pow(n_o, 2) * exp((- 897000 + 224.8*temperature)/(gas_constant*temperature));
+
+    struct VapourCompound {
+        double partialpressure;
+        std::string solidname;
+        std::map <std::string, double> stoichiometry;
+    };
+
+    std::map<std::string, VapourCompound> vapourdata = {
+        {"U (vapour, matrix)",  {p_u,   "U (solid, matrix)", {{"U", n_u}}}},
+        {"O2 (vapour, matrix)", {p_o2,  "O2 (solid, matrix)", {{"O", n_o}}}},
+        {"UO (vapour, matrix)", {p_uo,  "UO (solid, matrix)", {{"U", n_u2},{"O", n_o2}}}},
+        {"UO2 (vapour, matrix)",{p_uo2, "UO2 (solid, matrix)", {{"U", n_u4},{"O", n_o2}}}},
+        {"UO3 (vapour, matrix)",{p_uo3, "UO3 (solid, matrix)", {{"U", n_u6},{"O", n_o2}}}}
+    };
+
+    double surface = 4 * M_PI * pow(sciantix_variable["Grain radius"].getFinalValue(),2);
+
+    double volumetric_flux(0.0);
+    for (auto &compound : thermochemistry_variable)
     {
-        p_uo *= pow(2 + x, 1) * (- x);
-        p_uo2 *= pow(2 + x, 2) * (1 + x);
-        p_uo3 *= pow(2 + x, 3) * 0;
-        p_o2 = pow(exp(- 78300/T + 13.6) * pow( (- x) / ((2 + x)*(1 + x)), -1) ,2);
-        
-        // LINDEMER
-        // p_o2 = exp((-1300000 + 225.7*T - 3*gas_constant*T*log( - 1.5* x/(pow( 1 - x, 2/3)*pow(1 + 0.5*x, 1/3))))/(gas_constant*T));
-    }
-    else if (x > 1e-6 && x < 1)// hyperstoichiometric
-    {
-        p_uo *= pow(2 + x, 1) * 0;
-        p_uo2 *= pow(2 + x, 2) * (1 - x);
-        p_uo3 *= pow(2 + x, 3) * x;
-        p_o2 = pow(exp(- 16400/T + 5) * pow( (1 - x) / ((2 + x) * x), -1), 2);
-        
-        // LINDEMER
-        // p_o2 = exp((- 360000 + 214*T + 4*gas_constant*T*log( 2* x * (1 - 2*x)/(pow( 1 - 4*x, 2))))/(gas_constant*T));
-        // if (gas_constant*T*log(p_o2) > g_o2boundary)
-        //     p_o2 = exp((- 312800 + 126*T + 2*gas_constant*T*log( x * pow(1 - 2*x, 2)/(pow( 1 - 3*x, 3))))/(gas_constant*T));
-    }
-    else if (x < 1e-6 && x > - 1e-6) // stoichiometric
-    {
-        p_uo *= 0;
-        p_uo2 *= pow(2, 2);
-        p_uo3 *= 0;
-        p_o2 = 0;
+        if ((compound.getPhase() == "vapour") && (compound.getLocation() == "matrix"))
+        {
+            std::string name = compound.getName();
+            auto it = vapourdata.find(name);
+            if (it == vapourdata.end())
+            {
+                std::cerr << "Warning: compound '" << compound.getName() << "' not found. Skipping.\n";
+                continue;
+            }
+            const VapourCompound &data = it->second;
 
-        // LINDEMER
-        p_o2 = exp((- 897000 + 224.8*T)/(gas_constant*T));
-    }
-    else
-    {
-        std::cout<<"Warning: The stoichiometry is out of range. The vaporisation model is not valid."<<std::endl;
+            double molar_mass_i = MolarMass(compound)*1e-3; //kg/mol
+            double conversion_factor = 1e5/pressure; // atm --> pascal 
+            double flux_i =  pow(2 * M_PI * gas_constant * temperature, -0.5) * (data.partialpressure*conversion_factor/pow(molar_mass_i, 0.5)); // mol m-2 s-1
+            double increment = flux_i*surface*physics_variable["Time step"].getFinalValue(); // mol
+            
+            double mol_u = compound.getStoichiometry().find("U")->second;
+            double mol_o = compound.getStoichiometry().find("O")->second;
+
+            increment = std::min(increment, thermochemistry_variable[data.solidname].getFinalValue());
+            compound.setFinalValue(compound.getInitialValue() + increment);
+
+            sciantix_variable["Uranium content"].addValue(- mol_u*increment);
+            sciantix_variable["Oxygen content"].addValue(- mol_o*increment);
+            
+            volumetric_flux += (molar_mass_i/sciantix_variable["Fuel density"].getFinalValue())*increment/surface;
+        }
     }
 
+    double removeterm(0); 
+    if ((sciantix_variable["Oxygen content"].getFinalValue() > 0) && (sciantix_variable["Uranium content"].getFinalValue() > 0)) 
+        removeterm = (sciantix_variable["Uranium content"].getFinalValue()*sciantix_variable["Oxygen content"].getIncrement() - sciantix_variable["Oxygen content"].getFinalValue()*sciantix_variable["Uranium content"].getIncrement())/pow(sciantix_variable["Uranium content"].getFinalValue(),2);
+    sciantix_variable["Stoichiometry deviation"].setFinalValue(x + removeterm);
 
-    //double flux_u = p_sys * pow(2 * M_PI * gas_constant * T, -0.5) * (p_uo/pow(molarmassuo, 0.5) + p_uo2/pow(molarmassuo2, 0.5) + p_uo3/pow(molarmassuo3, 0.5)); // Missing U single
-    //double flux_o = p_sys * pow(2 * M_PI * gas_constant * T, -0.5) * (p_uo/pow(molarmassuo, 0.5) + 2 * p_uo2/pow(molarmassuo2, 0.5) + 3 * p_uo3/pow(molarmassuo3, 0.5) + 2 * p_o2/pow(molarmasso2, 0.5)); // Missing O single
+    if (volumetric_flux > 0); sciantix_variable["Grain radius"].setFinalValue(sciantix_variable["Grain radius"].getFinalValue() - volumetric_flux);
 
-    double flux_o2 = p_sys * pow(2 * M_PI * gas_constant * T, -0.5) * (p_o2/pow(molarmasso2, 0.5));
-    double flux_uo = p_sys * pow(2 * M_PI * gas_constant * T, -0.5) * (p_uo/pow(molarmassuo, 0.5));
-    double flux_uo2 = p_sys * pow(2 * M_PI * gas_constant * T, -0.5) * (p_uo2/pow(molarmassuo2, 0.5));
-    double flux_uo3 = p_sys * pow(2 * M_PI * gas_constant * T, -0.5) * (p_uo3/pow(molarmassuo3, 0.5));
+    if (sciantix_variable["Grain radius"].getFinalValue() <= 0) sciantix_variable["Grain radius"].setFinalValue(0.0);
 
-    double grainradius_f = solver.Integrator(
-        sciantix_variable["Grain radius"].getFinalValue(),
-        - molarvolume * flux_uo2,
-        physics_variable["Time step"].getFinalValue()
-    );
+    fuel.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
 
-    if (grainradius_f > 0.0) sciantix_variable["Grain radius"].setFinalValue(grainradius_f);
-    else std::cout<<"Warning: The grain radius is negative. The vaporisation model is not valid."<<std::endl;
-
-    matrices["UO2"].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
-
-    if (sciantix_variable["Grain radius"].getIncrement() > 0) return;
+    if (sciantix_variable["Grain radius"].getIncrement() >= 0) return; // grain growth > vaporisation
 
     for (auto &system : sciantix_system)
     {
+        std::string gas = system.getGasName();
+
         double UO2vaporisation_IG = (
-            sciantix_variable[system.getGasName() + " in grain"].getInitialValue() - 
+            sciantix_variable[gas + " in grain"].getInitialValue() -
             solver.Decay(
-                sciantix_variable[system.getGasName() + " in grain"].getInitialValue(),
+                sciantix_variable[gas + " in grain"].getInitialValue(),
                 1.0,
                 0.0,
                 - 3 * sciantix_variable["Grain radius"].getIncrement() / sciantix_variable["Grain radius"].getInitialValue()
             )
         );
 
-        double bubblethickness = ( 1.0 - cos(matrices["UO2"].getSemidihedralAngle()) ) * sciantix_variable["Intergranular bubble radius"].getFinalValue();
+        double bubblethickness = ( 1.0 - cos(fuel.getSemidihedralAngle()) ) * sciantix_variable["Intergranular bubble radius"].getFinalValue();
         double UO2vaporisation_GB = (
-            sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue() - 
+            sciantix_variable[gas + " at grain boundary"].getInitialValue() -
             solver.Decay(
-                sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue(),
+                sciantix_variable[gas + " at grain boundary"].getInitialValue(),
                 1.0,
                 0.0,
                 (sciantix_variable["Initial grain radius"].getFinalValue() - sciantix_variable["Grain radius"].getFinalValue()) / bubblethickness
@@ -127,9 +158,9 @@ void Simulation::GrainVaporisation()
         if (system.getGas().getChemicallyActive() == 1.0)
         {
             UO2vaporisation_reacted = (
-                sciantix_variable[system.getGasName() + " reacted - GB"].getInitialValue() - 
+                sciantix_variable[gas + " reacted - GB"].getInitialValue() -
                 solver.Decay(
-                    sciantix_variable[system.getGasName() + " reacted - GB"].getInitialValue(),
+                    sciantix_variable[gas + " reacted - GB"].getInitialValue(),
                     1.0,
                     0.0,
                     (sciantix_variable["Initial grain radius"].getFinalValue() - sciantix_variable["Grain radius"].getFinalValue()) / bubblethickness
@@ -137,18 +168,14 @@ void Simulation::GrainVaporisation()
             );
         }
 
+        if (UO2vaporisation_IG < 0.0) UO2vaporisation_IG = 0.0;
+        if (UO2vaporisation_GB < 0.0) UO2vaporisation_GB = 0.0;
+        if (UO2vaporisation_reacted < 0.0) UO2vaporisation_reacted = 0.0;
 
-        if (UO2vaporisation_IG < 0.0)
-            UO2vaporisation_IG = 0.0;
-        if (UO2vaporisation_GB < 0.0)
-            UO2vaporisation_GB = 0.0;
-        if (UO2vaporisation_reacted < 0.0)
-            UO2vaporisation_reacted = 0.0;
-
-        sciantix_variable[system.getGasName() + " released"].setInitialValue(
-            sciantix_variable[system.getGasName() + " released"].getInitialValue() + UO2vaporisation_IG + UO2vaporisation_GB + UO2vaporisation_reacted
+        sciantix_variable[gas + " released"].setInitialValue(
+            sciantix_variable[gas + " released"].getInitialValue() + UO2vaporisation_IG + UO2vaporisation_GB + UO2vaporisation_reacted
         );
-        sciantix_variable[system.getGasName() + " released"].setConstant();
+        sciantix_variable[gas + " released"].setConstant();
     }
 
     if (sciantix_variable["Xe at grain boundary"].getInitialValue() <= 0.0)
@@ -158,75 +185,81 @@ void Simulation::GrainVaporisation()
         input_variable["iGrainBoundaryBehaviour"].setValue(0);
         input_variable["iGrainBoundaryVenting"].setValue(0);
     }
+}
 
-    // sciantix_variable["U vapour"].setFinalValue(
-    //     solver.Integrator(
-    //         sciantix_variable["U vapour"].getInitialValue(),
-    //         + flux_u * 4 * M_PI * pow(grainradius_i, 2),
-    //         physics_variable["Time step"].getFinalValue()
-    //     )
-    // );
-    double Uinitial = (4/3 * M_PI * pow(sciantix_variable["Initial grain radius"].getFinalValue(), 3))/molarvolume;
+double Simulation::MolarMass(ThermochemistryVariable& compound) // g/mol
+{
+    // Implement the molar mass calculation based on the compound's stoichiometry
+    double molar_mass = 0.0;
 
-    sciantix_variable["O2 vapour"].setFinalValue(
-        solver.Integrator(
-            sciantix_variable["O2 vapour"].getInitialValue(),
-            + flux_o2 * 4 * M_PI * pow(sciantix_variable["Grain radius"].getInitialValue(), 2),
-            physics_variable["Time step"].getFinalValue()
-        )
-    );
-    if (sciantix_variable["O2 vapour"].getFinalValue() > Uinitial)
+    double conv_fact = sciantix_variable["Fuel density"].getFinalValue() * avogadro_number * 10 * 0.8815 * 100; // to move from atoms/m3 to percentage in atoms (see Initialization.cpp)
+	double molar_mass_Uranium = sciantix_variable["U234"].getFinalValue()/conv_fact *pow(234.04095,2)+ sciantix_variable["U235"].getFinalValue()/conv_fact *pow(235.04393,2)+
+								sciantix_variable["U236"].getFinalValue()/conv_fact *pow(236.04557,2)+ sciantix_variable["U237"].getFinalValue()/conv_fact *pow(237.04873,2)+
+								sciantix_variable["U238"].getFinalValue()/conv_fact *pow(238.05079,2);
+
+    // Iterate through the stoichiometry map to calculate the molar mass
+    for (const auto& element : compound.getStoichiometry())
     {
-        sciantix_variable["O2 vapour"].setConstant();
+        const std::string& element_name = element.first;
+        int number_of_atoms = element.second;
+
+        if (element_name == "U")
+            molar_mass += molar_mass_Uranium * number_of_atoms;
+        else if (element_name == "O")
+            molar_mass += molar_mass_Oxygen * number_of_atoms;
+        else
+        {
+            for (auto& system : sciantix_system)
+            {
+                if (system.getGasName() == element_name)
+                    molar_mass += system.getGas().getAtomicNumber() * number_of_atoms;
+            }
+        }
     }
 
-    sciantix_variable["UO vapour"].setFinalValue(
-        solver.Integrator(
-            sciantix_variable["UO vapour"].getInitialValue(),
-            + flux_uo * 4 * M_PI * pow(sciantix_variable["Grain radius"].getInitialValue(), 2),
-            physics_variable["Time step"].getFinalValue()
-        )
-    );
-    if (sciantix_variable["UO vapour"].getFinalValue() > Uinitial)
+    return molar_mass;
+}
+
+double Simulation::MolarVolume(ThermochemistryVariable& compound, Matrix& fuel) //m3/mol
+{
+    // Implement the molar volume calculation based on the compound's stoichiometry
+    double molar_volume = 0.0;
+    double molar_mass = 0.0;
+    double total_atoms = 0.0;
+    double theoretical_density = 0.0;
+
+    double lattice_parameter = fuel.getLatticeParameter(); // in meters
+
+    double conv_fact = sciantix_variable["Fuel density"].getFinalValue() * avogadro_number * 10 * 0.8815 * 100; // to move from atoms/m3 to percentage in atoms (see Initialization.cpp)
+	double molar_mass_Uranium = sciantix_variable["U234"].getFinalValue()/conv_fact *pow(234.04095,2)+ sciantix_variable["U235"].getFinalValue()/conv_fact *pow(235.04393,2)+
+								sciantix_variable["U236"].getFinalValue()/conv_fact *pow(236.04557,2)+ sciantix_variable["U237"].getFinalValue()/conv_fact *pow(237.04873,2)+
+								sciantix_variable["U238"].getFinalValue()/conv_fact *pow(238.05079,2);
+
+    // Iterate through the stoichiometry map to calculate the molar volume
+    for (const auto& element : compound.getStoichiometry())
     {
-        sciantix_variable["UO vapour"].setConstant();
+        const std::string& element_name = element.first;
+        int number_of_atoms = element.second;
+
+        if (element_name == "U")
+            molar_mass += molar_mass_Uranium * number_of_atoms;
+        else if (element_name == "O")
+            molar_mass += molar_mass_Oxygen * number_of_atoms;
+        else
+        {
+            for (auto& system : sciantix_system)
+            {
+                if (system.getGasName() == element_name)
+                    molar_mass += system.getGas().getAtomicNumber() * number_of_atoms;
+            }
+        }
+
+        total_atoms += number_of_atoms;
     }
 
-    sciantix_variable["UO2 vapour"].setFinalValue(
-        solver.Integrator(
-            sciantix_variable["UO2 vapour"].getInitialValue(),
-            + flux_uo2 * 4 * M_PI * pow(sciantix_variable["Grain radius"].getInitialValue(), 2),
-            physics_variable["Time step"].getFinalValue()
-        )
-    );
-    if (sciantix_variable["UO2 vapour"].getFinalValue() > Uinitial)
-    {
-        sciantix_variable["UO2 vapour"].setConstant();
-    }
+    theoretical_density = (12 * molar_mass / (total_atoms * avogadro_number * pow(lattice_parameter, 3))); // (g/m3)
 
-    sciantix_variable["UO3 vapour"].setFinalValue(
-        solver.Integrator(
-            sciantix_variable["UO3 vapour"].getInitialValue(),
-            + flux_uo3 * 4 * M_PI * pow(sciantix_variable["Grain radius"].getInitialValue(), 2),
-            physics_variable["Time step"].getFinalValue()
-        )
-    );
-    if (sciantix_variable["UO3 vapour"].getFinalValue() > Uinitial)
-    {
-        sciantix_variable["UO3 vapour"].setConstant();
-    }
+    molar_volume =  molar_mass/theoretical_density;
 
-    double dnu = sciantix_variable["UO vapour"].getIncrement() + sciantix_variable["UO2 vapour"].getIncrement() + sciantix_variable["UO3 vapour"].getIncrement(); 
-    double dno = sciantix_variable["UO vapour"].getIncrement() + 2*sciantix_variable["UO2 vapour"].getIncrement() + 3*sciantix_variable["UO3 vapour"].getIncrement() + 2*sciantix_variable["O2 vapour"].getIncrement(); 
-    double U = (4/3 * M_PI * pow(sciantix_variable["Grain radius"].getInitialValue(), 3))/molarvolume;
-    
-
-    double xf = solver.Decay(
-        x,
-        dnu/(U + dnu),
-        (2*dnu -  dno)/ (U+dnu),
-        1.0
-    );
-
-    sciantix_variable["Stoichiometry deviation"].setFinalValue(xf);
+    return molar_volume;
 }
