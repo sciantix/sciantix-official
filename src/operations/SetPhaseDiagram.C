@@ -96,8 +96,6 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
     
     if (root["Settings"]["module"].asString() == "THERMOCHIMICA")
     {
-        std::cout << "THERMOCHIMICA is selected." << std::endl;
-
         std::string directoryPath = "./../../thermochimica-master";
         std::string inputPath = "/inputs/thermoin.ti";
         std::string outputPath = "/outputs/thermoout";
@@ -301,8 +299,6 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
     }
     else if (root["Settings"]["module"].asString() == "OPENCALPHAD")
     {
-        std::cout << "OPENCALPHAD is selected." << std::endl;
-
         std::string directoryPath = "./../../../opencalphad/";
         std::string inputPath = "inputs/thermoin.OCM";
         std::string outputPath = "outputs/thermoout";

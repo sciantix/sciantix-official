@@ -37,7 +37,7 @@ void Simulation::initialize(
     double Sciantix_scaling_factors[],
     double Sciantix_diffusion_modes[],
     double Sciantix_thermochemistry[],
-    std::string Sciantix_thermochemistry_options[]
+    std::vector<std::vector<std::string>> Sciantix_thermochemistry_options
 )
 {
     setVariables(

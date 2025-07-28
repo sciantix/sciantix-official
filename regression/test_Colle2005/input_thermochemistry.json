@@ -1,18 +1,18 @@
 {
   "Settings":
   {
-    "module": "OPENCALPHAD",
+    "module": "THERMOCHIMICA",
     "fission_products":
     {
-      "elements":{"Cs":{"atomicnumber":55}, "I":{"atomicnumber":53}, "Te":{"atomicnumber":52}},
-      "database":"CsITe_fake",
-      "location":["in grain", "at grain boundaries", "in the gap"]
+      "elements": {"Cs":{"atomicnumber":55}, "I":{"atomicnumber":53}, "Te":{"atomicnumber":52}},
+      "database":"CsITe_Clean",
+      "location": {"in grain":{},"at grain boundaries":{},"in the gap":{}}
     },
     "matrix":
     {
-      "elements":{"U":{"atomicnumber": 92}, "O":{"atomicnumber":8}},
+      "elements": {"U":{"atomicnumber": 92}, "O":{"atomicnumber":8}},
       "database":"papapa",
-      "location":["matrix"]
+      "location": {"matrix":{}}
     },
     "_comments":
      {
