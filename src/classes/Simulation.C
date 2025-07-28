@@ -36,7 +36,8 @@ void Simulation::initialize(
     double Sciantix_variables[],
     double Sciantix_scaling_factors[],
     double Sciantix_diffusion_modes[],
-    double Sciantix_thermochemistry[]
+    double Sciantix_thermochemistry[],
+    std::string Sciantix_thermochemistry_options[]
 )
 {
     setVariables(
@@ -45,7 +46,8 @@ void Simulation::initialize(
         Sciantix_variables,
         Sciantix_scaling_factors,
         Sciantix_diffusion_modes,
-        Sciantix_thermochemistry
+        Sciantix_thermochemistry,
+        Sciantix_thermochemistry_options
     );
     setGas();
     setMatrix();
@@ -87,13 +89,13 @@ void Simulation::execute()
 
     GasDecay();
 
-    SetPhaseDiagram1();
+    SetPhaseDiagram("in grain");
 
     IntraGranularBubbleBehavior();
 
     GasDiffusion();
 
-    SetPhaseDiagram2();
+    SetPhaseDiagram("at grain boundary");
 
     GrainBoundaryMicroCracking();
 

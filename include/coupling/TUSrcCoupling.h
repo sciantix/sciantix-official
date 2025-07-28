@@ -14,6 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#include <string>
+
 /**
  * @brief This is a file required for TRANSURANUS-SCIANTIX coupling.
  * With this file, two functions are defined (getSciantixOptions and callSciantix) in SCIANTIX.
@@ -33,7 +35,7 @@ extern "C"
 {
   #endif
   void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[]);
-  void callSciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[]);
+  void callSciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[], std::string Sciantix_thermochemistry_options[]);
 
   #ifdef __cplusplus
 }

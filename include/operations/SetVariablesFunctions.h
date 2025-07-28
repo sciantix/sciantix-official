@@ -20,8 +20,6 @@
 #include <vector>
 #include "SciantixVariable.h"
 #include "ThermochemistryVariable.h"
-#include <json/json.h>
-#include <fstream>
 
 /**
  * @brief Retrieves the list of input variable names.
@@ -301,8 +299,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
 }
     
 std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
-    double Sciantix_thermochemistry[],
-    bool toOutputThermochimica
+    double Sciantix_thermochemistry[]
 )
 {   
     std::vector<ThermochemistryVariable> init_thermochemistry_variable;
@@ -314,14 +311,16 @@ std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
     locations.push_back("in the gap");
     
     // Read from JSON file the compounds of interest
-    const std::string jsonPath = "../../thermochimica-master/outputs/ThermochemistryVariable.json";
+    std::string jsonPath = "./input_thermochemistry.json";
+
     std::ifstream jsonFile(jsonPath);
     if (!jsonFile) {
-        std::cerr << "Error: Cannot open JSON output: " << jsonPath << std::endl;
+        std::cerr << "Error: Cannot open thermochemistry input: " << jsonPath << std::endl;
     }
 
     Json::Value root;
     jsonFile >> root;
+    root = root["Compounds"];
 
     // Counter to index Sciantix_thermochemistry
     int index = 0;
@@ -353,7 +352,7 @@ std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
                             phase,                               // phase
                             location,                            // location
                             stoichiometry,                       // stoichiometry
-                            toOutputThermochimica                // output flag
+                            1                                   // output flag
                         )
                     );
                     ++index;

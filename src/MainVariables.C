@@ -22,6 +22,7 @@ double Sciantix_variables[300];
 double Sciantix_scaling_factors[10];
 double Sciantix_diffusion_modes[1120];
 double Sciantix_thermochemistry[300];
+std::string Sciantix_thermochemistry_options[10];
 
 long long int Time_step_number(0);
 double  Time_h(0.0), dTime_h(0.0), Time_end_h(0.0); // (h)

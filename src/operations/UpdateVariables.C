@@ -158,7 +158,8 @@ std::map<int, std::string> updateThermochemistryVariable()
     locations.push_back("in the gap");
     
     // Read from JSON file the compounds of interest
-    const std::string jsonPath = "../../thermochimica-master/outputs/ThermochemistryVariable.json";
+    std::string jsonPath = "./input_thermochemistry.json";
+
     std::ifstream jsonFile(jsonPath);
     if (!jsonFile) {
         std::cerr << "Error: Cannot open JSON output: " << jsonPath << std::endl;
@@ -166,18 +167,19 @@ std::map<int, std::string> updateThermochemistryVariable()
 
     Json::Value root;
     jsonFile >> root;
+    root = root["Compounds"];
 
     int index = 0;
 
-    for (const auto& type : root.getMemberNames())
+    for (auto& type : root.getMemberNames())
     {
-        for (const auto& phase : root[type].getMemberNames())
+        for (auto& phase : root[type].getMemberNames())
         {
-            for (const auto& compound : root[type][phase].getMemberNames())
+            for (auto& compound : root[type][phase].getMemberNames())
             {
                 auto locations_to_use = (type == "matrix") ? std::vector<std::string>{"matrix"} : locations;
             
-                for (const auto& location : locations_to_use)
+                for (auto& location : locations_to_use)
                 {
                     std::string label = compound + " (" + phase + ", " + location + ")";
                     thermochemistry_variable[index] = label;

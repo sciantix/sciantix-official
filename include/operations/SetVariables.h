@@ -35,6 +35,7 @@
  * @param Sciantix_scaling_factors Array of doubles used for scaling various parameters within the model.
  * @param Sciantix_diffusion_modes Array of doubles that describe diffusion modes used in gas behavior modeling.
  * @param Sciantix_thermochemistry Array of doubles representing the variables related to the thermochemistry module.
+ * @param Sciantix_thermochemistry_options Array of string representing the options for the thermochemistry module.
  * 
  * @author D. Pizzocri
  * @author T. Barani
@@ -49,6 +50,7 @@ void SetVariables(
 	double Sciantix_scaling_factors[], 
 	double Sciantix_diffusion_modes[],
 	double Sciantix_thermochemistry[],
+	std::string Sciantix_thermochemistry_options[],
     SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &history_variable,
     SciantixArray<SciantixVariable> &sciantix_variable,

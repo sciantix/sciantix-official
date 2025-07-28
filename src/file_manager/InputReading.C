@@ -89,6 +89,7 @@ void InputReading(
 	double Sciantix_variables[], 
 	double Sciantix_scaling_factors[],
 	double Sciantix_thermochemistry[],
+	std::string Sciantix_thermochemistry_options[],
 	int &Input_history_points,
 	std::vector<double> &Time_input, 
 	std::vector<double> &Temperature_input,
@@ -304,4 +305,26 @@ void InputReading(
 	input_initial_conditions.close();
 	input_history.close();
 	input_scaling_factors.close();
+
+	if (Sciantix_options[25] > 0) // Thermochemistry module is needed
+	{
+		std::string inputPath = TestPath + "input_thermochemistry.json";
+    
+        std::ifstream jsonFile(inputPath);
+		if (!jsonFile) {
+			std::cerr << "Error: Cannot open thermochemistry input file: " << inputPath << std::endl;
+		}
+
+		Json::Value root;
+		jsonFile >> root;
+		
+		Sciantix_thermochemistry_options[0] = root["Settings"]["module"].asString();
+		Sciantix_thermochemistry_options[1] = root["Settings"]["fission_products"]["database"].asString();
+		Sciantix_thermochemistry_options[2] = root["Settings"]["matrix"]["database"].asString();
+		
+		std::cout<<"Initialization:"<<std::endl;
+		std::cout<<Sciantix_thermochemistry_options[0]<<std::endl;
+		std::cout<<Sciantix_thermochemistry_options[1]<<std::endl;
+		std::cout<<Sciantix_thermochemistry_options[2]<<std::endl;
+	}
 }
