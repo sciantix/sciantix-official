@@ -16,11 +16,11 @@
 
 #include "Sciantix.h"
 
-void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[])
+void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[], std::string Sciantix_thermochemistry_options[])
 {
     Simulation* simulation = Simulation::getInstance();
 
-    simulation->initialize(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes, Sciantix_thermochemistry);
+    simulation->initialize(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes, Sciantix_thermochemistry, Sciantix_thermochemistry_options);
 
     simulation->execute();
 

@@ -18,7 +18,10 @@
 #define THERMOCHEMISTRY_VARIABLE_H
 
 #include "Variable.h"
-#include <map>   
+#include <map>  
+#include <json/json.h>
+#include <fstream>
+
 
 /**
  * @class ThermochemistryVariable

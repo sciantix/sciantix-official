@@ -83,8 +83,7 @@ void Simulation::setVariables(
 
     // Sciantix variable
     std::vector<ThermochemistryVariable> values_th = initializeThermochemistryVariable(
-            Sciantix_thermochemistry,
-            toOutputThermochimica
+            Sciantix_thermochemistry
     );
     
     for (ThermochemistryVariable initial_value : values_th)

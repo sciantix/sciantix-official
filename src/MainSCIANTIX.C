@@ -80,6 +80,7 @@ int main(int argc, char **argv)
         Sciantix_variables, 
         Sciantix_scaling_factors,
         Sciantix_thermochemistry,
+        Sciantix_thermochemistry_options,
         Input_history_points,
         Time_input, 
         Temperature_input,
@@ -96,6 +97,7 @@ int main(int argc, char **argv)
         Sciantix_variables,
         Sciantix_diffusion_modes,
         Sciantix_thermochemistry,
+        Sciantix_thermochemistry_options,
         Temperature_input,
         Fissionrate_input,
         Hydrostaticstress_input,
@@ -128,7 +130,7 @@ int main(int argc, char **argv)
         Sciantix_history[11] = Sciantix_history[12];
         Sciantix_history[12] = InputInterpolation(Time_h, Time_input, THERMOCHIMICApressure_input, Input_history_points);
 
-        Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes, Sciantix_thermochemistry);
+        Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes, Sciantix_thermochemistry, Sciantix_thermochemistry_options);
 
         dTime_h = TimeStepCalculation(
             Input_history_points,

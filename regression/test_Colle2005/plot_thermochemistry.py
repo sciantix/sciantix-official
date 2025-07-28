@@ -585,7 +585,7 @@ for isotope, properties in isotope_data.items():
             cumulative_release_sim,
             linestyle=linestyles[dataset],
             color=colors[list(isotope_data.keys()).index(isotope)],
-            label=f'Sim. {isotope} {dataset}'
+            label=f'Sim. {isotope}'
         )
 
     plt.plot(
@@ -595,7 +595,7 @@ for isotope, properties in isotope_data.items():
         linestyle='--',
         linewidth=0.5,
         color=colors[list(isotope_data.keys()).index(isotope)],
-        label=f'Exp. {isotope} {dataset}'
+        label=f'Exp. {isotope}'
     )
 
 
@@ -609,14 +609,23 @@ plt.plot(
     label='Exp. UO2'
 )
 
-for dataset in ['With Thermochemistry']:
+# for dataset in ['With Thermochemistry']:
+#     plt.plot(
+#         data[dataset]['Temperature (K)'],
+#         1 - (data[dataset]['Grain radius (m)']/data[dataset]['Grain radius (m)'].max())**3,
+#         linestyle='-',
+#         color='grey',
+#         label='Calculated UO2'
+#     )
+
+for compound, values in thermochemistry[position][phase].items():
+    temperature = thermochemistry_data["Temperature (K)"].values
     plt.plot(
-        data[dataset]['Temperature (K)'],
-        1 - (data[dataset]['Grain radius (m)']/data[dataset]['Grain radius (m)'].max())**3,
-        linestyle='-',
-        color='grey',
-        label='Calculated UO2'
+        temperature,
+        values/max(values),
+        label=f'Sim. {compound}'
     )
+
 
 print(1 - (data[dataset].iloc[-1]['Grain radius (m)']/data[dataset]['Grain radius (m)'].max())**3)
 plt.xlabel('Temperature (K)')
@@ -635,7 +644,7 @@ legend_colors2 = [plt.Line2D([0], [0], marker='o', linestyle='--', color='grey',
 
 plt.yscale('log')
 plt.ylim([1e-2, 1])
-plt.legend(handles= legend_colors + legend_colors2 + legend_lines, loc='upper left', frameon=False)
+plt.legend(loc='upper left', frameon=False)#handles= legend_colors + legend_colors2 + legend_lines, loc='upper left', frameon=False)
 plt.savefig(folder_path + "/Cumulative_Release_Comparison_log.png")
 #plt.show()
 
@@ -708,7 +717,6 @@ filename = "NewVap_sol"
 plt.savefig(folder_path + "/" + filename + ".png")
 
 plt.figure(figsize=(8,6))
-
 plt.plot(data['With Thermochemistry'][xlabel], data['With Thermochemistry']["Oxygen content (mol/grain)"], label= "Oxygen content (mol/grain)")
 plt.plot(data['With Thermochemistry'][xlabel], data['With Thermochemistry']["Uranium content (mol/grain)"], label= "Uranium content (mol/grain)")
 plt.xlabel(xlabel)

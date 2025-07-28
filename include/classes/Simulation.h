@@ -85,7 +85,8 @@ public:
         double Sciantix_variables[], 
         double Sciantix_scaling_factors[], 
         double Sciantix_diffusion_modes[],
-        double Sciantix_thermochemistry[]
+        double Sciantix_thermochemistry[],
+        std::string Sciantix_thermochemistry_options[]
     );
 
     void setGas();
@@ -98,7 +99,8 @@ public:
         double Sciantix_variables[], 
         double Sciantix_scaling_factors[], 
         double Sciantix_diffusion_modes[],
-        double Sciantix_thermochemistry[]
+        double Sciantix_thermochemistry[],
+        std::string Sciantix_thermochemistry_options[]
     );
 
     void execute();
@@ -173,20 +175,21 @@ public:
     void GasDiffusion();
 
     /**
-     * @brief Thermochemistry module for the grain.
+     * @brief Thermochemistry module, specific for a certain location.
      * 
      * @author E. Cappellari
      * 
      */
-    void SetPhaseDiagram1();
+    void SetPhaseDiagram(std::string location);
 
     /**
-     * @brief Thermochemistry module for the grain boundary.
+     * @brief Function to couple SCIANTIX with a Thermochemistry code.
+     * It writes the input, runs the code, reads and store the output in SCIANTIX thermochemistry variables.
      * 
      * @author E. Cappellari
      * 
      */
-    void SetPhaseDiagram2();
+    void CallThermochemistryModule(double pressure, double temperature, std::string location, SciantixArray<SciantixVariable> &sciantix_variable);
 
     // struct StablePhaseResult {
     //     std::vector<double> new_set;          // Computed new set values
