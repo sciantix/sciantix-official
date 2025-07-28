@@ -22,7 +22,7 @@
 #include <string>
 
 
-void callSciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[], std::string Sciantix_thermochemistry_options[])
+void callSciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[], std::vector<std::vector<std::string>> Sciantix_thermochemistry_options)
 {
     Simulation* simulation = Simulation::getInstance();
 

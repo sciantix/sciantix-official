@@ -50,7 +50,7 @@ void SetVariables(
 	double Sciantix_scaling_factors[], 
 	double Sciantix_diffusion_modes[],
 	double Sciantix_thermochemistry[],
-	std::string Sciantix_thermochemistry_options[],
+	std::vector<std::vector<std::string>> Sciantix_thermochemistry_options,
     SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &history_variable,
     SciantixArray<SciantixVariable> &sciantix_variable,

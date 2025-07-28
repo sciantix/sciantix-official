@@ -89,7 +89,7 @@ void InputReading(
 	double Sciantix_variables[], 
 	double Sciantix_scaling_factors[],
 	double Sciantix_thermochemistry[],
-	std::string Sciantix_thermochemistry_options[],
+	std::vector<std::vector<std::string>> Sciantix_thermochemistry_options,
 	int &Input_history_points,
 	std::vector<double> &Time_input, 
 	std::vector<double> &Temperature_input,
@@ -318,13 +318,30 @@ void InputReading(
 		Json::Value root;
 		jsonFile >> root;
 		
-		Sciantix_thermochemistry_options[0] = root["Settings"]["module"].asString();
-		Sciantix_thermochemistry_options[1] = root["Settings"]["fission_products"]["database"].asString();
-		Sciantix_thermochemistry_options[2] = root["Settings"]["matrix"]["database"].asString();
+		std::cout<<"here"<<std::endl;
+		Sciantix_thermochemistry_options.resize(10);
+		Sciantix_thermochemistry_options[0].push_back(root["Settings"]["module"].asString());
 		
-		std::cout<<"Initialization:"<<std::endl;
-		std::cout<<Sciantix_thermochemistry_options[0]<<std::endl;
-		std::cout<<Sciantix_thermochemistry_options[1]<<std::endl;
-		std::cout<<Sciantix_thermochemistry_options[2]<<std::endl;
+		// Fission products
+		for (auto& fp : root["Settings"]["fission_products"]["elements"].getMemberNames())
+        	Sciantix_thermochemistry_options[1].push_back(fp);
+		Sciantix_thermochemistry_options[2].push_back(root["Settings"]["fission_products"]["database"].asString());
+		for (auto& loc : root["Settings"]["fission_products"]["location"].getMemberNames())
+        	Sciantix_thermochemistry_options[3].push_back(loc);
+
+		// Matrix
+		for (auto& mat : root["Settings"]["matrix"]["elements"].getMemberNames())
+        	Sciantix_thermochemistry_options[4].push_back(mat);
+		Sciantix_thermochemistry_options[5].push_back(root["Settings"]["matrix"]["database"].asString());
+		for (auto& loc : root["Settings"]["matrix"]["location"].getMemberNames())
+        	Sciantix_thermochemistry_options[6].push_back(loc);
+
+		for (int i = 0; i < 7; ++i) {
+			std::cout << "Option[" << i << "]: ";
+			for (const auto& val : Sciantix_thermochemistry_options[i])
+				std::cout << val << " ";
+			std::cout << std::endl;
+		}
+
 	}
 }
