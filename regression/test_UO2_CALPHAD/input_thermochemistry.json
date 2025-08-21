@@ -1,0 +1,132 @@
+{
+  "Settings":
+  {
+    "KC":false,
+    "fission_products":
+    {
+      "elements": {"Cs":{"atomicnumber":55}, "I":{"atomicnumber":53}, "Te":{"atomicnumber":52}},
+      "module": "No",
+      "database":"CsITe_Clean",
+      "location": {"at grain boundary":{}}
+    },
+    "matrix":
+    {
+      "elements": {"U":{"atomicnumber": 92}, "O":{"atomicnumber":8}},
+      "module": "OPENCALPHAD",
+      "database":"OU",
+      "location": {"matrix":{}}
+    },
+    "_comments":
+     {
+      "available_modules": "OPENCALPHAD, THERMOCHIMICA",
+      "available_databases_OPENCALPHAD": "CsITe_fake, OU",
+      "available_databases_THERMOCHIMICA": "CsITe_Clean",
+      "available_locations": "in grain, at grain boundary, in the gap, matrix"
+     }
+  },
+  "Compounds":
+  {
+    "fission_products": {
+      "gas": {
+        "I": {"I": 1},
+        "I2": {"I": 2},
+        "Cs": {"Cs": 1},
+        "Cs2": {"Cs": 2},
+        "CsI": {"Cs": 1, "I": 1},
+        "Cs2I2": {"Cs": 2, "I": 2},
+        "Cs2Te": {"Cs": 2, "Te": 1},
+        "Cs2Te2": {"Cs": 2, "Te": 2},
+        "Cs2Te3": {"Cs": 2, "Te": 3},
+        "CsTe": {"Cs": 1, "Te": 1},
+        "CsTe2": {"Cs": 1, "Te": 2},
+        "Te": {"Te": 1},
+        "Te2": {"Te": 2},
+        "Te3": {"Te": 3},
+        "Te4": {"Te": 4},
+        "Te5": {"Te": 5},
+        "Te6": {"Te": 6},
+        "Te7": {"Te": 7}
+      },
+      "liquid": {
+        "Cs": {"Cs": 1},
+        "I": {"I": 1},
+        "Te": {"Te": 1},
+        "CsI": {"Cs": 1, "I": 1},
+        "I2": {"I": 2}
+      },
+      "liquid_ionic": {
+        "Cs+:Va": {"Cs": 1},
+        "Cs2Te": {"Cs": 2, "Te": 1},
+        "Te": {"Te": 1}
+      },
+      "fcc_a1": {
+        "Cs:Te": {"Cs": 1, "Te": 1},
+        "Cs:Va": {"Cs": 1}
+      },
+      "pure_condensed": {
+        "I2_s(s)": {"I": 2},
+        "Cs_bcc_a2(s)": {"Cs": 1},
+        "CsI_csi_b2(s)": {"Cs": 1, "I": 1},
+        "CsI3_csi3(s)": {"Cs": 1, "I": 3},
+        "CsI4_csi4(s)": {"Cs": 1, "I": 4},
+        "Cs_bcc_a2_2(s)": {"Cs": 1},
+        "Cs2Te_b(s)": {"Cs": 2, "Te": 1},
+        "CsTe_b(s)": {"Cs": 1, "Te": 1},
+        "Cs2Te(s)": {"Cs": 2, "Te": 1},
+        "Cs2Te3(s)": {"Cs": 2, "Te": 3},
+        "Cs2Te5(s)": {"Cs": 2, "Te": 5},
+        "Cs5Te3(s)": {"Cs": 5, "Te": 3},
+        "CsTe(s)": {"Cs": 1, "Te": 1},
+        "CsTe4(s)": {"Cs": 1, "Te": 4},
+        "Cs_hcp_a3(s)": {"Cs": 1},
+        "Cs_hex_a8(s)": {"Cs": 1}
+      }
+    },
+    "matrix": 
+    {
+      "solid":{
+        "U": {"U": 1},
+        "O2": {"O": 2},
+        "UO": {"U": 1, "O": 1},
+        "UO2": {"U": 1, "O": 2},
+        "UO3": {"U": 1, "O": 3}
+      },
+      "vapour":{
+        "U": {"U": 1},
+        "O2": {"O": 2},
+        "UO": {"U": 1, "O": 1},
+        "UO2": {"U": 1, "O": 2},
+        "UO3": {"U": 1, "O": 3}
+      },
+      "gas": {
+        "O": {"O": 1},
+        "O2": {"O": 2},
+        "O3": {"O": 3},
+        "U": {"U": 1},
+        "UO": {"U": 1, "O": 1},
+        "UO2": {"U": 1, "O": 2},
+        "UO3": {"U": 1, "O": 3}
+      },
+      "ionic_liquid": {
+        "UO2:Va": {"U": 1, "O": 2},
+        "U": {"U": 1},
+        "O": {"O": 1}
+      },
+      "condensed": {
+        "UO3": {"U": 1, "O": 3},
+        "U4O9_S1": {"U": 4, "O": 9},
+        "U4O9_S2": {"U": 4, "O": 9},
+        "U4O9_S3": {"U": 4, "O": 9},
+        "U3O8_S1": {"U": 3, "O": 8},
+        "U3O8_S2": {"U": 3, "O": 8},
+        "U3O8_S3": {"U": 3, "O": 8},
+        "U3O8_S4": {"U": 3, "O": 8},
+        "TETRAGONAL_U": {"U": 1},
+        "ORTHORHOMBIC_A20": {"U": 1},
+        "FCC_A1": {"U": 1, "O": 1},
+        "C1_MO2": {"U": 1, "O": 1},
+        "BCC_A2": {"U": 1, "O": 1}
+      }
+    }
+  }
+}
