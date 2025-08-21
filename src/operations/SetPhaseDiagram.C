@@ -31,6 +31,8 @@ void Simulation::SetPhaseDiagram(std::string location)
 {
     double temperature(0);
     double pressure(0);
+    double oxygenfraction(std::nan("")); // Oxygen fraction defined only for location = matrix
+    
     if (location == "in grain")
     {
         if (input_variable["iThermochimica"].getValue() < 3) return;
@@ -69,20 +71,33 @@ void Simulation::SetPhaseDiagram(std::string location)
             pressure = history_variable["THERMOCHIMICA pressure"].getFinalValue() * scaling_factors["Dummy"].getValue();
         }
     }
+    else if (location == "matrix")
+    {
+        if (input_variable["iThermochimica"].getValue() < 1) 
+        {
+            GrainVaporisation(true); 
+            return; 
+        }
+
+        temperature = history_variable["Temperature"].getFinalValue();
+        pressure = history_variable["THERMOCHIMICA pressure"].getFinalValue() * scaling_factors["Dummy"].getValue();
+        double stoicdev = sciantix_variable["Stoichiometry deviation"].getFinalValue();
+        oxygenfraction = (stoicdev + 2.0)/(1 + stoicdev + 2.0);
+    }
     else
     {
         std::cout<<"Location not yet modelled: "<<location<<std::endl;
         return;
     }
 
-    CallThermochemistryModule(pressure, temperature, location, sciantix_variable);
+    CallThermochemistryModule(pressure, temperature, location, sciantix_variable, oxygenfraction);
 
     return;
 
 }
 
 
-void Simulation::CallThermochemistryModule(double pressure, double temperature, std::string location, SciantixArray<SciantixVariable> &sciantix_variable)
+void Simulation::CallThermochemistryModule(double pressure, double temperature, std::string location, SciantixArray<SciantixVariable> &sciantix_variable, double oxygenfraction)
 {
     std::string inputPath = "./input_thermochemistry.json";
     
@@ -93,13 +108,17 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
 
     Json::Value root;
     jsonFile >> root;
-    
-    if (root["Settings"]["module"].asString() == "THERMOCHIMICA")
+
+    std::string module = root["Settings"]["fission_products"]["module"].asString();
+    if (location == "matrix") module = root["Settings"]["matrix"]["module"].asString();
+
+    if (module == "THERMOCHIMICA")
     {
         std::string directoryPath = "./../../thermochimica-master";
         std::string inputPath = "/inputs/thermoin.ti";
         std::string outputPath = "/outputs/thermoout";
         std::string dataPath = "../../thermochimica-master/data/" + root["Settings"]["fission_products"]["database"].asString();
+        if (location == "matrix") dataPath = "../../thermochimica-master/data/" + root["Settings"]["matrix"]["database"].asString();
         std::string exePath = directoryPath + "/bin/InputScriptMode " + directoryPath + inputPath;
         
         // 1. Write input file
@@ -113,37 +132,51 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
         inputFile << "pressure          = " << pressure << "\n";
         inputFile << "temperature       = " << temperature << "\n";
 
-        bool nogas = true;
+        bool noatoms = true;
 
-        const Json::Value& elements = root["Settings"]["fission_products"]["elements"];
-        for (auto& gasName : elements.getMemberNames())
+        Json::Value& elements = root["Settings"]["fission_products"]["elements"];
+        if (location == "matrix")
+            elements = root["Settings"]["matrix"]["elements"];
+
+        for (auto& elementName : elements.getMemberNames())
         {
-            double gasatomsavailable(0);
+            double atomsavailable(0);
             if (location == "in grain") 
-                gasatomsavailable = (
-                    sciantix_variable[gasName + " produced"].getInitialValue() -
-                    sciantix_variable[gasName + " decayed"].getInitialValue() -
-                    sciantix_variable[gasName + " reacted - GB"].getInitialValue() -
-                    sciantix_variable[gasName + " at grain boundary"].getInitialValue() -
-                    sciantix_variable[gasName + " released"].getInitialValue()
+                atomsavailable = (
+                    sciantix_variable[elementName + " produced"].getInitialValue() -
+                    sciantix_variable[elementName + " decayed"].getInitialValue() -
+                    sciantix_variable[elementName + " reacted - GB"].getInitialValue() -
+                    sciantix_variable[elementName + " at grain boundary"].getInitialValue() -
+                    sciantix_variable[elementName + " released"].getInitialValue()
                 );
             else if (location =="at grain boundary")
-                gasatomsavailable = (
-                    sciantix_variable[gasName + " produced"].getFinalValue() -
-                    sciantix_variable[gasName + " decayed"].getFinalValue() -
-                    sciantix_variable[gasName + " reacted - IG"].getFinalValue() -
-                    sciantix_variable[gasName + " in grain"].getFinalValue() -
-                    sciantix_variable[gasName + " released"].getInitialValue()
+                atomsavailable = (
+                    sciantix_variable[elementName + " produced"].getFinalValue() -
+                    sciantix_variable[elementName + " decayed"].getFinalValue() -
+                    sciantix_variable[elementName + " reacted - IG"].getFinalValue() -
+                    sciantix_variable[elementName + " in grain"].getFinalValue() -
+                    sciantix_variable[elementName + " released"].getInitialValue()
                 );
+            else if (location == "matrix")
+                atomsavailable = 1; 
+                // (sciantix_variable["Uranium content"].getFinalValue() + sciantix_variable["Oxygen content"].getFinalValue()); 
+                // For matrix, we consider Uranium and Oxygen content, these are MOLES/grain not atoms
             else
                 std::cout<<"Location not yet modelled: "<<location<<std::endl;
 
-            if (gasatomsavailable > 0.0) nogas = false;
+            if (atomsavailable > 0.0) noatoms = false;
 
-            inputFile << "mass(" << elements[gasName]["atomicnumber"].asInt() << ")           = " << gasatomsavailable << "\n";
+            if (location == "matrix")
+            {
+                inputFile << "n="<<atomsavailable<<" x(o)=" << oxygenfraction << " ";
+                std::cout<<"WARNING: to be developed"<<std::endl;
+                break;
+            }
+            else
+                inputFile << "mass(" << elements[elementName]["atomicnumber"].asInt() << ")           = " << atomsavailable << "\n";
         }
 
-        if (nogas) return;
+        if (noatoms) return;
 
         inputFile << "temperature unit  = K\n"
                 << "pressure unit     = Pa\n"
@@ -203,7 +236,24 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
             thermochemistry_variable[compound + " (" + phase + ", " + location + ")"].setFinalValue(moles);
 
         }
+        if (location == "matrix")
+        {
+            Matrix fuel(matrices[0]);
+            if ((SolutionPhases.isMember("gas")) && (SolutionPhases["gas"].isObject()) && (!SolutionPhases["gas"].empty()))
+            {
+                double total_moles = sciantix_variable["Uranium content"].getFinalValue() + sciantix_variable["Oxygen content"].getFinalValue();
+                double mol_u = SolutionPhases["gas"]["elements"]["U"]["moles of element in phase"].asDouble()*total_moles;
+                double mol_o = SolutionPhases["gas"]["elements"]["O"]["moles of element in phase"].asDouble()*total_moles;
+                sciantix_variable["Uranium content"].addValue(- mol_u);
+                sciantix_variable["Oxygen content"].addValue(- mol_o);
 
+                sciantix_variable["Grain radius"].setFinalValue(sciantix_variable["Grain radius"].getFinalValue() * pow((total_moles - mol_u - mol_o)/total_moles, 1.0/3.0));
+
+                GrainVaporisation(false);
+            }
+            std::cout<<"Vaporized matrix! active vaporisation module"<<std::endl;
+            return;
+        }
         // elements: update gas atoms and grain boundary variables
         for (auto& element : elements.getMemberNames()) {
             double moles(0);
@@ -297,13 +347,14 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
         }
 
     }
-    else if (root["Settings"]["module"].asString() == "OPENCALPHAD")
+    else if (module == "OPENCALPHAD")
     {
         std::string directoryPath = "./../../../opencalphad/";
         std::string inputPath = "inputs/thermoin.OCM";
         std::string outputPath = "outputs/thermoout";
         std::string parserPath = "parse_oc_output_to_json.py";
         std::string dataPath = "./../data/" + root["Settings"]["fission_products"]["database"].asString();
+        if (location == "matrix") dataPath = "./../data/" + root["Settings"]["matrix"]["database"].asString();
         std::string exePath = directoryPath + "oc6P " + directoryPath + inputPath;
         
         // 1. Write input file
@@ -318,37 +369,49 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
         inputFile << "r t " <<dataPath<<"\n";
         inputFile << "\nset c t=" << temperature << " p="<<pressure<<" ";
 
-        bool nogas = true;
+        bool noatoms = true;
         
-        const Json::Value& elements = root["Settings"]["fission_products"]["elements"];
-        for (auto& gasName : elements.getMemberNames())
+        Json::Value& elements = root["Settings"]["fission_products"]["elements"];
+        if (location == "matrix")
+            elements = root["Settings"]["matrix"]["elements"];
+
+        for (auto& elementName : elements.getMemberNames())
         {
-            double gasatomsavailable(0);
+            double atomsavailable(0);
             if (location == "in grain") 
-                gasatomsavailable = (
-                    sciantix_variable[gasName + " produced"].getInitialValue() -
-                    sciantix_variable[gasName + " decayed"].getInitialValue() -
-                    sciantix_variable[gasName + " reacted - GB"].getInitialValue() -
-                    sciantix_variable[gasName + " at grain boundary"].getInitialValue() -
-                    sciantix_variable[gasName + " released"].getInitialValue()
+                atomsavailable = (
+                    sciantix_variable[elementName + " produced"].getInitialValue() -
+                    sciantix_variable[elementName + " decayed"].getInitialValue() -
+                    sciantix_variable[elementName + " reacted - GB"].getInitialValue() -
+                    sciantix_variable[elementName + " at grain boundary"].getInitialValue() -
+                    sciantix_variable[elementName + " released"].getInitialValue()
                 );
             else if (location =="at grain boundary")
-                gasatomsavailable = (
-                    sciantix_variable[gasName + " produced"].getFinalValue() -
-                    sciantix_variable[gasName + " decayed"].getFinalValue() -
-                    sciantix_variable[gasName + " reacted - IG"].getFinalValue() -
-                    sciantix_variable[gasName + " in grain"].getFinalValue() -
-                    sciantix_variable[gasName + " released"].getInitialValue()
+                atomsavailable = (
+                    sciantix_variable[elementName + " produced"].getFinalValue() -
+                    sciantix_variable[elementName + " decayed"].getFinalValue() -
+                    sciantix_variable[elementName + " reacted - IG"].getFinalValue() -
+                    sciantix_variable[elementName + " in grain"].getFinalValue() -
+                    sciantix_variable[elementName + " released"].getInitialValue()
                 );
+            else if (location == "matrix")
+                atomsavailable = 1;// sciantix_variable["Uranium content"].getFinalValue() + sciantix_variable["Oxygen content"].getFinalValue(); 
+                // For matrix, we consider Uranium and Oxygen content, these are MOLES/grain not atoms
             else
                 std::cout<<"Location not yet modelled: "<<location<<std::endl;
+            
+            if (atomsavailable > 0.0) noatoms = false;
 
-            if (gasatomsavailable > 0.0) nogas = false;
-
-            inputFile << "n(" << gasName << ")=" << gasatomsavailable/avogadro_number << " ";
+            if (location == "matrix")
+            {
+                inputFile << "n="<<atomsavailable<<" x(o)=" << oxygenfraction << " ";
+                break;
+            }
+            else
+                inputFile << "n(" << elementName << ")=" << atomsavailable/avogadro_number << " ";
         }
 
-        if (nogas) return;
+        if (noatoms) return;
 
         inputFile << "\n\nc e\n\n";
         inputFile << "l /out=./../"<<outputPath<<".DAT r 1\n\n"; 
@@ -413,6 +476,25 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
             }
         }
 
+        if (location == "matrix")
+        {
+            Matrix fuel(matrices[0]);
+            if ((SolutionPhases.isMember("gas")) && (SolutionPhases["gas"].isObject()) && (!SolutionPhases["gas"].empty()))
+            {
+                double total_moles = sciantix_variable["Uranium content"].getFinalValue() + sciantix_variable["Oxygen content"].getFinalValue();
+                double mol_u = SolutionPhases["gas"]["elements"]["U"]["moles of element in phase"].asDouble()*total_moles;
+                double mol_o = SolutionPhases["gas"]["elements"]["O"]["moles of element in phase"].asDouble()*total_moles;
+                sciantix_variable["Uranium content"].addValue(- mol_u);
+                sciantix_variable["Oxygen content"].addValue(- mol_o);
+
+                sciantix_variable["Grain radius"].setFinalValue(sciantix_variable["Grain radius"].getFinalValue() * pow((total_moles - mol_u - mol_o)/total_moles, 1.0/3.0));
+
+                GrainVaporisation(false);
+            }
+            std::cout<<"Vaporized matrix! active vaporisation module"<<std::endl;
+            return;
+        }
+
         // elements: update gas atoms and grain boundary variables
         for (auto& element : elements.getMemberNames()) {
             double moles(0);
@@ -427,7 +509,6 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
                     - sciantix_variable[element + " at grain boundary"].getInitialValue()
                     - sciantix_variable[element + " released"].getInitialValue()
                 );
-            
             else if (location =="at grain boundary")
                 available = (sciantix_variable[element + " produced"].getFinalValue()
                     - sciantix_variable[element + " decayed"].getFinalValue()
@@ -503,5 +584,32 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
             else
                 std::cout<<"Location not yet modelled: "<<location<<std::endl;    
         }
+    }
+    else
+    {
+        if (location == "in grain") return;
+        else if (location == "at grain boundary")
+        {
+            for (auto &system : sciantix_system)
+            {
+                if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1.0)
+                {
+                    sciantix_variable[system.getGasName() + " at grain boundary"].addValue(sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue());
+                    sciantix_variable[system.getGasName() + " reacted - GB"].setFinalValue(0);
+                }
+            }
+            return;
+        }
+        else if (location == "matrix")
+        {
+            GrainVaporisation(true);  
+            return;
+        }
+        else
+        {
+            std::cout<<"Location not yet modelled: "<<location<<std::endl;
+            return;
+        }
+        return;
     }
 }

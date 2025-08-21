@@ -69,9 +69,7 @@ void Initialization(
 	Sciantix_variables[73] = 0.75 * Sciantix_variables[71];
 
 	// U and O content
-	double avogadro_number = 6.02214076e23;   // (at/mol)
-	double volume = 4/3 * M_PI* pow(Sciantix_variables[0],3);
-	Sciantix_variables[161] = volume * Sciantix_variables[40] * 1/(270e-3);
+	Sciantix_variables[161] = Sciantix_variables[40]/(270e-3);
 	Sciantix_variables[162] = (2 + Sciantix_variables[66])*Sciantix_variables[161];
 	
 	// Projection on diffusion modes of the initial conditions
