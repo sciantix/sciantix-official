@@ -188,7 +188,6 @@ void Simulation::GrainVaporisation(bool thermochemistry_module)
 
     if (sciantix_variable["Xe at grain boundary"].getInitialValue() <= 0.0)
     {
-        input_variable["iThermochimica"].setValue(0);
         input_variable["iGrainBoundaryMicroCracking"].setValue(0);
         input_variable["iGrainBoundaryBehaviour"].setValue(0);
         input_variable["iGrainBoundaryVenting"].setValue(0);
