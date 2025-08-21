@@ -189,7 +189,7 @@ public:
      * @author E. Cappellari
      * 
      */
-    void CallThermochemistryModule(double pressure, double temperature, std::string location, SciantixArray<SciantixVariable> &sciantix_variable);
+    void CallThermochemistryModule(double pressure, double temperature, std::string location, SciantixArray<SciantixVariable> &sciantix_variable, double oxygenfraction);
 
     // struct StablePhaseResult {
     //     std::vector<double> new_set;          // Computed new set values
@@ -239,7 +239,7 @@ public:
      * @author E. Cappellari
      * 
      */
-    void GrainVaporisation();
+    void GrainVaporisation(bool thermochemistry_module);
     
     
     /**

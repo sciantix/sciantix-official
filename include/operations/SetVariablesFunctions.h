@@ -288,8 +288,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Chromia precipitate", "(at/m3)", Sciantix_variables[158], Sciantix_variables[158], toOutputChromiumContent),
 
         SciantixVariable("Diffusion coefficient", "(m2/s)", Sciantix_variables[160], Sciantix_variables[160], 0),
-        SciantixVariable("Uranium content", "(mol/grain)", Sciantix_variables[161], Sciantix_variables[161], 1),
-        SciantixVariable("Oxygen content", "(mol/grain)", Sciantix_variables[162], Sciantix_variables[162], 1),
+        SciantixVariable("Uranium content", "(mol/m3)", Sciantix_variables[161], Sciantix_variables[161], 1),
+        SciantixVariable("Oxygen content", "(mol/m3)", Sciantix_variables[162], Sciantix_variables[162], 1),
         
         SciantixVariable("Initial grain radius", "(mol)", Sciantix_variables[170], Sciantix_variables[170], 0),
 
@@ -338,15 +338,12 @@ std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
 
                 auto locations_to_use = (type == "matrix") ? std::vector<std::string>{"matrix"} : locations;
 
-                std::string uom = "(mol/m3)" ;
-                if (type == "matrix") uom = "(mol/grain)"; 
-
                 for (const auto& location : locations_to_use)
                 {
                     init_thermochemistry_variable.emplace_back(
                         ThermochemistryVariable(
                             compound + " (" + phase + ", " + location + ")", // name
-                            uom,                           // unit
+                            "(mol/m3)",                           // unit
                             Sciantix_thermochemistry[index],     // initial_value
                             Sciantix_thermochemistry[index],     // final_value
                             phase,                               // phase

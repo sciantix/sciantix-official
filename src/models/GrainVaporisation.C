@@ -16,113 +16,120 @@
 
 #include "Simulation.h"
 
-void Simulation::GrainVaporisation()
+void Simulation::GrainVaporisation(bool thermochemistry_module)
 {
     Matrix fuel(matrices[0]);
 
     double temperature = history_variable["Temperature"].getFinalValue(); // K
     double x = sciantix_variable["Stoichiometry deviation"].getFinalValue();
     double pressure = history_variable["THERMOCHIMICA pressure"].getFinalValue(); // Pa
-
-    // Blackburn for UO2 fuel
-    double n_u(0), n_u2(0), n_u4(0), n_u6(0), n_o(0), n_o2(2 + x);
-    if ((sciantix_variable["Oxygen content"].getFinalValue() > 0) && (sciantix_variable["Uranium content"].getFinalValue() > 0))
-    {
-        // Stoichiometry regime
-        const double epsilon = 1e-6; // Tolerance
-        bool is_hypo = (x < - epsilon);
-        bool is_hyper = (x > epsilon);
-        
-        // Constants from Blackburn's model, 1973
-        if (is_hypo)
-        {
-            n_u2 = (- x);
-            n_u4 = (1 + x);
-        }
-        else
-        {
-            n_u4 = (1 - x);
-            n_u6 = (x);
-        }
-    }
-    else if ((sciantix_variable["Oxygen content"].getFinalValue() <= 0) && (sciantix_variable["Uranium content"].getFinalValue() > 0)) n_u = 1;
-    else if ((sciantix_variable["Oxygen content"].getFinalValue() > 0) && (sciantix_variable["Uranium content"].getFinalValue() <= 0)) n_o = 1;
-    else return;
+    double initial_total_moles = sciantix_variable["Uranium content"].getFinalValue() + sciantix_variable["Oxygen content"].getFinalValue();
     
-    thermochemistry_variable["UO (solid, matrix)"].setFinalValue(n_u2*sciantix_variable["Uranium content"].getFinalValue());
-    thermochemistry_variable["UO2 (solid, matrix)"].setFinalValue(n_u4*sciantix_variable["Uranium content"].getFinalValue());
-    thermochemistry_variable["UO3 (solid, matrix)"].setFinalValue(n_u6*sciantix_variable["Uranium content"].getFinalValue());
-    thermochemistry_variable["U (solid, matrix)"].setFinalValue(n_u*sciantix_variable["Uranium content"].getFinalValue());
-    thermochemistry_variable["O2 (solid, matrix)"].setFinalValue(n_o/2*sciantix_variable["Oxygen content"].getFinalValue());
-
-    // Knudsen cell setup: skip if pressure is too high
-    if (pressure >= 1e6) return;
-
-    // Constants form Olander (Fundamental aspects of nuclear reactor fuel elements, Blackburn's model, Table 11.1 pag 158)
-    double p_uo  = n_o2 * n_u2 * exp(- 49500/temperature + 11.9);
-    double p_uo2 = pow(n_o2, 2) * n_u4 * exp(- 74000/temperature + 19.9);
-    double p_uo3 = pow(n_o2, 3) * n_u6 * exp(- 44000/temperature + 11.9);
-    double p_u   = n_u * exp(- 58000/temperature + 13.5);
-    double p_o2 = pow(n_o, 2) * exp((- 897000 + 224.8*temperature)/(gas_constant*temperature));
-
-    struct VapourCompound {
-        double partialpressure;
-        std::string solidname;
-        std::map <std::string, double> stoichiometry;
-    };
-
-    std::map<std::string, VapourCompound> vapourdata = {
-        {"U (vapour, matrix)",  {p_u,   "U (solid, matrix)", {{"U", n_u}}}},
-        {"O2 (vapour, matrix)", {p_o2,  "O2 (solid, matrix)", {{"O", n_o}}}},
-        {"UO (vapour, matrix)", {p_uo,  "UO (solid, matrix)", {{"U", n_u2},{"O", n_o2}}}},
-        {"UO2 (vapour, matrix)",{p_uo2, "UO2 (solid, matrix)", {{"U", n_u4},{"O", n_o2}}}},
-        {"UO3 (vapour, matrix)",{p_uo3, "UO3 (solid, matrix)", {{"U", n_u6},{"O", n_o2}}}}
-    };
-
-    double volumetric_flux(0.0);
-    for (auto &compound : thermochemistry_variable)
+    if (thermochemistry_module)
     {
-        if ((compound.getPhase() == "vapour") && (compound.getLocation() == "matrix"))
+        // Blackburn for UO2 fuel
+        double n_u(0), n_u2(0), n_u4(0), n_u6(0), n_o(0), n_o2(2 + x);
+        if ((sciantix_variable["Oxygen content"].getFinalValue() > 0) && (sciantix_variable["Uranium content"].getFinalValue() > 0))
         {
-            std::string name = compound.getName();
-            auto it = vapourdata.find(name);
-            if (it == vapourdata.end())
+            // Stoichiometry regime
+            const double epsilon = 1e-6; // Tolerance
+            bool is_hypo = (x < - epsilon);
+
+            // Constants from Blackburn's model, 1973
+            if (is_hypo)
             {
-                std::cerr << "Warning: compound '" << compound.getName() << "' not found. Skipping.\n";
-                continue;
+                n_u2 = (- x);
+                n_u4 = (1 + x);
             }
-            const VapourCompound &data = it->second;
-
-            double molar_mass_i = MolarMass(compound)*1e-3; //kg/mol
-            double conversion_factor = 1e5/pressure; // atm --> pascal 
-            double flux_i =  pow(2 * M_PI * gas_constant * temperature, -0.5) * (data.partialpressure*conversion_factor/pow(molar_mass_i, 0.5)); // mol m-2 s-1
-            double increment = flux_i*surface*physics_variable["Time step"].getFinalValue(); // mol
-            
-            double mol_u = compound.getStoichiometry().find("U")->second;
-            double mol_o = compound.getStoichiometry().find("O")->second;
-
-            increment = std::min(increment, thermochemistry_variable[data.solidname].getFinalValue());
-            if (mol_u != 0) increment = std::min(increment, sciantix_variable["Uranium content"].getFinalValue()/mol_u);
-            if (mol_o != 0) increment = std::min(increment, sciantix_variable["Oxygen content"].getFinalValue()/mol_o);
-            
-            if ((increment/surface) > 0)
+            else
             {
-                compound.setFinalValue(compound.getInitialValue() + increment);
-
-                sciantix_variable["Uranium content"].addValue(- mol_u*increment);
-                sciantix_variable["Oxygen content"].addValue(- mol_o*increment);
-
-                volumetric_flux += (molar_mass_i/sciantix_variable["Fuel density"].getFinalValue())*increment/surface;
+                n_u4 = (1 - x);
+                n_u6 = (x);
             }
         }
+        else if ((sciantix_variable["Oxygen content"].getFinalValue() <= 0) && (sciantix_variable["Uranium content"].getFinalValue() > 0)) n_u = 1;
+        else if ((sciantix_variable["Oxygen content"].getFinalValue() > 0) && (sciantix_variable["Uranium content"].getFinalValue() <= 0)) n_o = 1;
+        
+        thermochemistry_variable["UO (solid, matrix)"].setFinalValue(n_u2*sciantix_variable["Uranium content"].getFinalValue());
+        thermochemistry_variable["UO2 (solid, matrix)"].setFinalValue(n_u4*sciantix_variable["Uranium content"].getFinalValue());
+        thermochemistry_variable["UO3 (solid, matrix)"].setFinalValue(n_u6*sciantix_variable["Uranium content"].getFinalValue());
+        thermochemistry_variable["U (solid, matrix)"].setFinalValue(n_u*sciantix_variable["Uranium content"].getFinalValue());
+        thermochemistry_variable["O2 (solid, matrix)"].setFinalValue(n_o/2*sciantix_variable["Oxygen content"].getFinalValue());
+
+        // Knudsen cell setup: skip if pressure is too high
+        if (pressure >= 1e6) return;
+
+        // Constants form Olander (Fundamental aspects of nuclear reactor fuel elements, Blackburn's model, Table 11.1 pag 158)
+        double p_uo  = n_o2 * n_u2 * exp(- 49500/temperature + 11.9);
+        double p_uo2 = pow(n_o2, 2) * n_u4 * exp(- 74000/temperature + 19.9);
+        double p_uo3 = pow(n_o2, 3) * n_u6 * exp(- 44000/temperature + 11.9);
+        double p_u   = n_u * exp(- 58000/temperature + 13.5);
+        double p_o2 = pow(n_o, 2) * exp((- 897000 + 224.8*temperature)/(gas_constant*temperature));
+
+        struct VapourCompound {
+            double partialpressure;
+            std::string solidname;
+            std::map <std::string, double> stoichiometry;
+        };
+
+        std::map<std::string, VapourCompound> vapourdata = {
+            {"U (vapour, matrix)",  {p_u,   "U (solid, matrix)", {{"U", n_u}}}},
+            {"O2 (vapour, matrix)", {p_o2,  "O2 (solid, matrix)", {{"O", n_o}}}},
+            {"UO (vapour, matrix)", {p_uo,  "UO (solid, matrix)", {{"U", n_u2},{"O", n_o2}}}},
+            {"UO2 (vapour, matrix)",{p_uo2, "UO2 (solid, matrix)", {{"U", n_u4},{"O", n_o2}}}},
+            {"UO3 (vapour, matrix)",{p_uo3, "UO3 (solid, matrix)", {{"U", n_u6},{"O", n_o2}}}}
+        };
+
+        for (auto &compound : thermochemistry_variable)
+        {
+            if ((compound.getPhase() == "vapour") && (compound.getLocation() == "matrix"))
+            {
+                std::string name = compound.getName();
+                auto it = vapourdata.find(name);
+                if (it == vapourdata.end())
+                {
+                    std::cerr << "Warning: compound '" << compound.getName() << "' not found. Skipping.\n";
+                    continue;
+                }
+                const VapourCompound &data = it->second;
+
+                double molar_mass_i = MolarMass(compound)*1e-3; //kg/mol
+                double flux_i =  pow(2 * M_PI * gas_constant * temperature, -0.5) * (data.partialpressure*pressure/pow(molar_mass_i, 0.5)); // mol m-2 s-1
+                
+                auto sto = compound.getStoichiometry();
+                double mol_u(0.0), mol_o(0.0);
+                if (sto.find("U") != sto.end()) mol_u = sto["U"];
+                if (sto.find("O") != sto.end()) mol_o = sto["O"];
+
+                double fraction_i(0);
+                if (mol_u != 0) fraction_i = (thermochemistry_variable[data.solidname].getFinalValue()/sciantix_variable["Uranium content"].getFinalValue() * mol_u);
+                else if (mol_o != 0) fraction_i = (thermochemistry_variable[data.solidname].getFinalValue()/sciantix_variable["Oxygen content"].getFinalValue()  * mol_o);
+                double porosity = 1 - sciantix_variable["Fuel density"].getFinalValue() / fuel.getTheoreticalDensity(); // porosity of the matrix
+                double surfacetovolume = (3/sciantix_variable["Grain radius"].getFinalValue()) * fraction_i * porosity; // only a portion of the surface is available to the compound
+                double increment = flux_i*surfacetovolume*physics_variable["Time step"].getFinalValue(); 
+                increment = std::min(increment, thermochemistry_variable[data.solidname].getFinalValue());
+                if (mol_u != 0) increment = std::min(increment, sciantix_variable["Uranium content"].getFinalValue()/mol_u);
+                if (mol_o != 0) increment = std::min(increment, sciantix_variable["Oxygen content"].getFinalValue()/mol_o);
+                
+                if (increment > 0)
+                {
+                    compound.setFinalValue(compound.getInitialValue() + increment);
+                    thermochemistry_variable[data.solidname].setFinalValue(thermochemistry_variable[data.solidname].getFinalValue() - increment);
+
+                    sciantix_variable["Uranium content"].addValue(- mol_u*increment);
+                    sciantix_variable["Oxygen content"].addValue(- mol_o*increment);
+                }
+            }
+        }
+        double final_total_moles = sciantix_variable["Uranium content"].getFinalValue() + sciantix_variable["Oxygen content"].getFinalValue();
+
+        sciantix_variable["Grain radius"].setFinalValue(sciantix_variable["Grain radius"].getFinalValue() * pow(final_total_moles/initial_total_moles, 1.0/3.0));
     }
 
-    double removeterm(0); 
     if ((sciantix_variable["Oxygen content"].getFinalValue() > 0) && (sciantix_variable["Uranium content"].getFinalValue() > 0)) 
-        removeterm = (sciantix_variable["Uranium content"].getFinalValue()*sciantix_variable["Oxygen content"].getIncrement() - sciantix_variable["Oxygen content"].getFinalValue()*sciantix_variable["Uranium content"].getIncrement())/pow(sciantix_variable["Uranium content"].getFinalValue(),2);
-    sciantix_variable["Stoichiometry deviation"].setFinalValue(x + removeterm);
-
-    if (volumetric_flux > 0); sciantix_variable["Grain radius"].setFinalValue(sciantix_variable["Grain radius"].getFinalValue() - volumetric_flux);
+        sciantix_variable["Stoichiometry deviation"].setFinalValue(sciantix_variable["Oxygen content"].getFinalValue()/sciantix_variable["Uranium content"].getFinalValue() - 2);
+    else
+        sciantix_variable["Stoichiometry deviation"].setFinalValue(0);
 
     if (sciantix_variable["Grain radius"].getFinalValue() <= 0) sciantix_variable["Grain radius"].setFinalValue(0.0);
 
@@ -185,6 +192,7 @@ void Simulation::GrainVaporisation()
         input_variable["iGrainBoundaryMicroCracking"].setValue(0);
         input_variable["iGrainBoundaryBehaviour"].setValue(0);
         input_variable["iGrainBoundaryVenting"].setValue(0);
+        input_variable["iGrainGrowth"].setValue(0);
     }
 }
 

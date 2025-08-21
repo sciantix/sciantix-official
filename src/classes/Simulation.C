@@ -81,7 +81,7 @@ void Simulation::execute()
 
     GrainGrowth();
 
-    GrainVaporisation();
+    SetPhaseDiagram("matrix");
 
     GrainBoundarySweeping();
 
@@ -104,4 +104,6 @@ void Simulation::execute()
     InterGranularBubbleBehavior();
 
     GasRelease();
+
+    //SetPhaseDiagram("in the gap");
 }
