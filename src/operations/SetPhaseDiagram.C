@@ -43,7 +43,7 @@ void Simulation::SetPhaseDiagram(std::string location)
     }
     else if (location == "at grain boundary")
     {
-        if (input_variable["iThermochimica"].getValue() == 0) 
+        if (input_variable["iThermochimica"].getValue() == 0 || sciantix_variable["Xe at grain boundary"].getInitialValue() <= 0.0) 
         {
             for (auto &system : sciantix_system)
             {
@@ -111,6 +111,7 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
 
     std::string module = root["Settings"]["fission_products"]["module"].asString();
     if (location == "matrix") module = root["Settings"]["matrix"]["module"].asString();
+    bool KC = root["Settings"]["KC"].asBool();
 
     if (module == "THERMOCHIMICA")
     {
@@ -244,9 +245,11 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
                 double total_moles = sciantix_variable["Uranium content"].getFinalValue() + sciantix_variable["Oxygen content"].getFinalValue();
                 double mol_u = SolutionPhases["gas"]["elements"]["U"]["moles of element in phase"].asDouble()*total_moles;
                 double mol_o = SolutionPhases["gas"]["elements"]["O"]["moles of element in phase"].asDouble()*total_moles;
-                sciantix_variable["Uranium content"].addValue(- mol_u);
-                sciantix_variable["Oxygen content"].addValue(- mol_o);
-
+                if (KC)
+                { 
+                    sciantix_variable["Uranium content"].addValue(- mol_u);
+                    sciantix_variable["Oxygen content"].addValue(- mol_o);
+                }
                 sciantix_variable["Grain radius"].setFinalValue(sciantix_variable["Grain radius"].getFinalValue() * pow((total_moles - mol_u - mol_o)/total_moles, 1.0/3.0));
 
                 GrainVaporisation(false);
@@ -436,6 +439,7 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
                 elements_str += ",";
         }
         elements_str += "]";
+        std::cout << "Elements: " << elements_str << std::endl;
 
         std::string pythonCommand = "python3 "+ directoryPath + parserPath + " " + directoryPath + outputPath +".DAT " + directoryPath + outputPath + ".json "+ elements_str;
         int pyStatus = std::system(pythonCommand.c_str());
@@ -484,9 +488,11 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
                 double total_moles = sciantix_variable["Uranium content"].getFinalValue() + sciantix_variable["Oxygen content"].getFinalValue();
                 double mol_u = SolutionPhases["gas"]["elements"]["U"]["moles of element in phase"].asDouble()*total_moles;
                 double mol_o = SolutionPhases["gas"]["elements"]["O"]["moles of element in phase"].asDouble()*total_moles;
-                sciantix_variable["Uranium content"].addValue(- mol_u);
-                sciantix_variable["Oxygen content"].addValue(- mol_o);
-
+                if (KC)
+                { 
+                    sciantix_variable["Uranium content"].addValue(- mol_u);
+                    sciantix_variable["Oxygen content"].addValue(- mol_o);
+                }
                 sciantix_variable["Grain radius"].setFinalValue(sciantix_variable["Grain radius"].getFinalValue() * pow((total_moles - mol_u - mol_o)/total_moles, 1.0/3.0));
 
                 GrainVaporisation(false);
