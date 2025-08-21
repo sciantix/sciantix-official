@@ -1,3 +1,4 @@
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 import pandas as pd
@@ -11,13 +12,20 @@ folder_path = "results"
 avogadronumber = 6.02214e23
 xlim_i = 53400.101
 
-plt.rcParams.update({
-    'font.size': 12,           # dimensione base del font
-    'axes.titlesize': 16,      # dimensione del titolo dell'asse
-    'axes.labelsize': 16,      # dimensione delle etichette degli assi
-    'xtick.labelsize': 12,     # dimensione delle etichette dei tick sull'asse x
-    'ytick.labelsize': 12,     # idem per y
-    'legend.fontsize': 12,     # dimensione della legenda
+mpl.rcParams.update({
+    "font.family": "arial",
+    "font.size": 20,
+    "axes.labelsize": 18,
+    "axes.titlesize": 18,
+    "xtick.labelsize": 15,
+    "ytick.labelsize": 15,
+    "legend.fontsize": 15,
+    "figure.dpi": 300,
+    "axes.grid": True,
+    "grid.alpha": 0.3,
+    "grid.linestyle": "--",
+    "lines.linewidth": 2,
+    "lines.markersize": 6,
 })
 
 # Remove previous plots
@@ -49,7 +57,7 @@ for col in thermochemistry_data.columns:
         continue
 
     # Match: Nome (fase, posizione) (unità)
-    match = re.match(r"(.+)\s+\(([^,]+),\s*([^)]+)\)\s*\((mol/m3|mol/grain)\)", col)
+    match = re.match(r"(.+)\s+\(([^,]+),\s*([^)]+)\)\s*\((mol/m3|mol/m3)\)", col)
 
     if not match:
         print(f"Colonna non riconosciuta: {col}")
@@ -167,7 +175,7 @@ def plot_species(data, label, ax, dataset, show_legend=False):
     return None, None
 
 def plot_four_species(fig_name, time_range):
-    fig, axes = plt.subplots(1, 4, figsize=(18, 5))
+    fig, axes = plt.subplots(1, 4, figsize=(20, 5))
     
     all_handles, all_labels = None, None
     for i, spec in enumerate(species_list):
@@ -182,7 +190,7 @@ def plot_four_species(fig_name, time_range):
     fig.savefig(folder_path + "/" + fig_name)
 
 def plot_all_species_two_rows(fig_name, xlims):
-    fig, axes = plt.subplots(2, 5, figsize=(20, 7))
+    fig, axes = plt.subplots(2, 5, figsize=(20, 8))
 
     
     dataset = "With Thermochemistry"
@@ -233,7 +241,7 @@ def plot_all_species_two_rows(fig_name, xlims):
 plot_all_species_two_rows("XeCs_tot.png", [(xlim_o, xlim_i), (xlim_i, xlim_f)])
 
 ##################################### stoichiometry ########################
-fig, axes = plt.subplots(1, 2, figsize=(18, 8))
+fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
 dataset = "With Thermochemistry"
 x = 'Stoichiometry deviation (/)'
@@ -255,7 +263,7 @@ plt.tight_layout()
 plt.savefig(folder_path +"/stoic.png")
 
 ##################################### fractional coverage ########################
-fig, axes = plt.subplots(1, 2, figsize=(18, 8))
+fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
 dataset = "With Thermochemistry"
 x = 'Intergranular fractional coverage (/)'
@@ -275,7 +283,7 @@ plt.savefig(folder_path +"/Fc.png")
 #plt.show()
 
 ##################################### grain radius ########################
-fig, axes = plt.subplots(1, 2, figsize=(18, 8))
+fig, axes = plt.subplots(1, 2, figsize=(14, 6))
 
 dataset = "With Thermochemistry"
 x = 'Grain radius (m)'
@@ -294,7 +302,7 @@ plt.tight_layout()
 plt.savefig(folder_path +"/aradius.png")
 #plt.show()
 ##################################### temperature ########################
-fig, axes = plt.subplots(1, 2, figsize=(8, 3))
+fig, axes = plt.subplots(1, 2, figsize=(10, 5))
 
 dataset = "With Thermochemistry"
 x = 'Temperature (K)'
@@ -308,7 +316,6 @@ axes[0].set_ylim([500, 3000])
 axes[1].plot(data[dataset][label_x],data[dataset][x], 
                     linestyle=linestyles[dataset])
 axes[1].set_xlabel(label_x)
-axes[1].set_ylabel(x)
 axes[1].set_xlim([xlim_i,xlim_f])
 axes[1].set_ylim([500, 3000])
 
@@ -318,9 +325,33 @@ plt.tight_layout()
 plt.savefig(folder_path +"/Temperature.png")
 #plt.show()
 ############################################### PRODUCED ####################################
-def plot_products(location, phases = ['gas', 'liquid', 'liquid_ionic', 'fcc_a1', 'pure_condensed'], initial=xlim_o, middle=xlim_i, final=xlim_f, label_x = 'Time (h)',threshold = 0.01):
-    fig, axes = plt.subplots(1, 2 if label_x == 'Time (h)' else 1, figsize=(18, 8) if label_x == 'Time (h)' else (10, 8))
 
+# Dizionario di mapping: chiave originale -> nome leggibile
+pretty_labels = {
+    "Cs2I2": r"Cs$_2$I$_2$",
+    "Cs2Te": r"Cs$_2$Te",
+    "Cs2Te2": r"Cs$_2$Te$_2$",
+    "Cs2Te(s)": r"Cs$_2$Te (s)",
+    "Cs2Te3(s)": r"Cs$_2$Te$_3$ (s)",
+    "Cs2Te5(s)": r"Cs$_2$Te$_5$ (s)",
+    "Cs2Te_b(s)": r"Cs$_2$Te (b, s)",
+    "Cs5Te3(s)": r"Cs$_5$Te$_3$ (s)",
+    "CsI3_csi3(s)": r"CsI$_3$ (s)",
+    "CsI4_csi4(s)": r"CsI$_4$ (s)",
+    "CsI_csi_b2(s)": r"CsI (b2, s)",
+    "CsTe(s)": r"CsTe (s)",
+    "CsTe4(s)": r"CsTe$_4$ (s)",
+    "CsTe_b(s)": r"CsTe (b, s)",
+    "Cs_bcc_a2(s)": r"Cs (bcc, a2)",
+    "Cs_bcc_a2_2(s)": r"Cs (bcc, a2')",
+    "Cs_hcp_a3(s)": r"Cs (hcp, a3)",
+    "Cs_hex_a8(s)": r"Cs (hex, a8)",
+    "I2_s(s)": r"I$_2$ (s)"
+}
+
+
+def plot_products(location, phases = ['gas', 'liquid', 'liquid_ionic', 'fcc_a1', 'pure_condensed'], initial=xlim_o, middle=xlim_i, final=xlim_f, label_x = 'Time (h)',threshold = 0.01):
+    fig, axes = plt.subplots(1, 2 if label_x == 'Time (h)' else 1, figsize=(14, 6) if label_x == 'Time (h)' else (10, 6))
 
     if label_x == 'Temperature (K)':
         mask = (thermochemistry_data['Time (h)'] >= middle) & (thermochemistry_data['Time (h)'] <= final)
@@ -363,7 +394,7 @@ def plot_products(location, phases = ['gas', 'liquid', 'liquid_ionic', 'fcc_a1',
 
                 color = compound_colors[compound]
                 linestyle = '--' if phase == 'gas' else '-'
-                label = compound
+                label = pretty_labels.get(compound, compound)  # se non trova usa l'originale
 
                 plot_target = [axes] if label_x == 'Temperature (K)' else [axes[0], axes[1]]
 
@@ -383,7 +414,7 @@ def plot_products(location, phases = ['gas', 'liquid', 'liquid_ionic', 'fcc_a1',
         for ax in axes:
             ax.set_ylabel('Mole fraction (/)')
             ax.set_ylim([0, 1])
-            ax.legend(frameon=False, loc='upper left')
+            ax.legend(frameon=False, loc='center left',  bbox_to_anchor=(1.01, 0.5))
             ax_temp = ax.twinx()
             ax_temp.plot(thermochemistry_data[label_x], thermochemistry_data['Temperature (K)'],
                          linestyle='--', color='grey', linewidth=0.5)
@@ -392,7 +423,7 @@ def plot_products(location, phases = ['gas', 'liquid', 'liquid_ionic', 'fcc_a1',
         axes.set_xlabel('Temperature (K)')
         axes.set_ylabel('Mole fraction (/)')
         axes.set_ylim([0, 1])
-        axes.legend(frameon=False, loc='upper left')
+        axes.legend(frameon=False, loc='center left',  bbox_to_anchor=(1.01, 0.5))
         
     fig.suptitle('Products ' + location)
     fig.tight_layout()
@@ -407,6 +438,7 @@ plot_products('in grain')
 plot_products('at grain boundary')
 plot_products('in the gap')
 plot_products('at grain boundary', label_x='Temperature (K)')
+plot_products('matrix', phases = ['gas', 'ionic_liquid', 'condensed'])
 # ############################################### PRODUCED ####################################
 
 
@@ -494,7 +526,7 @@ isotope_data = {
      'Te': {'element': 'Te', 'atomic_mass': 127} 
 }
 
-plt.figure(figsize=(8, 8))
+plt.figure(figsize=(8, 6))
 
 
 for isotope, properties in isotope_data.items():
@@ -566,7 +598,7 @@ plt.tight_layout()
 plt.savefig(folder_path + "/Cumulative_Release_Comparison.png")
 #plt.show()
 
-plt.figure(figsize=(10,8))
+plt.figure(figsize=(10,6))
 
 
 for isotope, properties in isotope_data.items():
@@ -598,6 +630,25 @@ for isotope, properties in isotope_data.items():
         label=f'Exp. {isotope}'
     )
 
+# for dataset in ['With Thermochemistry']:
+#     plt.plot(
+#         data[dataset]['Temperature (K)'],
+#         1 - (data[dataset]['Grain radius (m)']/data[dataset]['Grain radius (m)'].max())**3,
+#         linestyle='-',
+#         color='grey',
+#         label='Calculated UO2'
+#     )
+
+for compound, values in thermochemistry[position][phase].items():
+    if compound != "UO2": continue
+    temperature = thermochemistry_data["Temperature (K)"].values
+    plt.plot(
+        temperature,
+        values/max(values),
+        label=f'Sim. {compound}',
+        color="gray"
+    )
+
 
 plt.plot(
     uo2_data['Temperature (K)'],
@@ -609,22 +660,6 @@ plt.plot(
     label='Exp. UO2'
 )
 
-# for dataset in ['With Thermochemistry']:
-#     plt.plot(
-#         data[dataset]['Temperature (K)'],
-#         1 - (data[dataset]['Grain radius (m)']/data[dataset]['Grain radius (m)'].max())**3,
-#         linestyle='-',
-#         color='grey',
-#         label='Calculated UO2'
-#     )
-
-for compound, values in thermochemistry[position][phase].items():
-    temperature = thermochemistry_data["Temperature (K)"].values
-    plt.plot(
-        temperature,
-        values/max(values),
-        label=f'Sim. {compound}'
-    )
 
 
 print(1 - (data[dataset].iloc[-1]['Grain radius (m)']/data[dataset]['Grain radius (m)'].max())**3)
@@ -645,11 +680,13 @@ legend_colors2 = [plt.Line2D([0], [0], marker='o', linestyle='--', color='grey',
 plt.yscale('log')
 plt.ylim([1e-2, 1])
 plt.legend(loc='upper left', frameon=False)#handles= legend_colors + legend_colors2 + legend_lines, loc='upper left', frameon=False)
+plt.legend(frameon=False, loc='center left',  bbox_to_anchor=(1.01, 0.5))
+plt.tight_layout()
 plt.savefig(folder_path + "/Cumulative_Release_Comparison_log.png")
 #plt.show()
 
 
-plt.figure(figsize=(8, 8))
+plt.figure(figsize=(8, 6))
 
 plt.plot(
     uo2_data['Temperature (K)'],
@@ -717,8 +754,8 @@ filename = "NewVap_sol"
 plt.savefig(folder_path + "/" + filename + ".png")
 
 plt.figure(figsize=(8,6))
-plt.plot(data['With Thermochemistry'][xlabel], data['With Thermochemistry']["Oxygen content (mol/grain)"], label= "Oxygen content (mol/grain)")
-plt.plot(data['With Thermochemistry'][xlabel], data['With Thermochemistry']["Uranium content (mol/grain)"], label= "Uranium content (mol/grain)")
+plt.plot(data['With Thermochemistry'][xlabel], data['With Thermochemistry']["Oxygen content (mol/m3)"], label= "Oxygen content (mol/m3)")
+plt.plot(data['With Thermochemistry'][xlabel], data['With Thermochemistry']["Uranium content (mol/m3)"], label= "Uranium content (mol/m3)")
 plt.xlabel(xlabel)
 plt.ylabel('Concentration (mol/m3)')
 plt.legend()

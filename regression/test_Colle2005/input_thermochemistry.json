@@ -1,17 +1,19 @@
 {
   "Settings":
   {
-    "module": "THERMOCHIMICA",
+    "KC":true,
     "fission_products":
     {
       "elements": {"Cs":{"atomicnumber":55}, "I":{"atomicnumber":53}, "Te":{"atomicnumber":52}},
+      "module": "THERMOCHIMICA",
       "database":"CsITe_Clean",
-      "location": {"in grain":{},"at grain boundaries":{},"in the gap":{}}
+      "location": {"at grain boundary":{}}
     },
     "matrix":
     {
       "elements": {"U":{"atomicnumber": 92}, "O":{"atomicnumber":8}},
-      "database":"papapa",
+      "module": "NO",
+      "database":"OU",
       "location": {"matrix":{}}
     },
     "_comments":
@@ -19,7 +21,7 @@
       "available_modules": "OPENCALPHAD, THERMOCHIMICA",
       "available_databases_OPENCALPHAD": "CsITe_fake, OU",
       "available_databases_THERMOCHIMICA": "CsITe_Clean",
-      "available_locations": "in grain, at grain boundaries, in the gap, matrix"
+      "available_locations": "in grain, at grain boundary, in the gap, matrix"
      }
   },
   "Compounds":
@@ -95,6 +97,35 @@
         "UO": {"U": 1, "O": 1},
         "UO2": {"U": 1, "O": 2},
         "UO3": {"U": 1, "O": 3}
+      },
+      "gas": {
+        "O": {"O": 1},
+        "O2": {"O": 2},
+        "O3": {"O": 3},
+        "U": {"U": 1},
+        "UO": {"U": 1, "O": 1},
+        "UO2": {"U": 1, "O": 2},
+        "UO3": {"U": 1, "O": 3}
+      },
+      "ionic_liquid": {
+        "UO2:Va": {"U": 1, "O": 2},
+        "U": {"U": 1},
+        "O": {"O": 1}
+      },
+      "condensed": {
+        "UO3": {"U": 1, "O": 3},
+        "U4O9_S1": {"U": 4, "O": 9},
+        "U4O9_S2": {"U": 4, "O": 9},
+        "U4O9_S3": {"U": 4, "O": 9},
+        "U3O8_S1": {"U": 3, "O": 8},
+        "U3O8_S2": {"U": 3, "O": 8},
+        "U3O8_S3": {"U": 3, "O": 8},
+        "U3O8_S4": {"U": 3, "O": 8},
+        "TETRAGONAL_U": {"U": 1},
+        "ORTHORHOMBIC_A20": {"U": 1},
+        "FCC_A1": {"U": 1, "O": 1},
+        "C1_MO2": {"U": 1, "O": 1},
+        "BCC_A2": {"U": 1, "O": 1}
       }
     }
   }
