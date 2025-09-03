@@ -1,0 +1,95 @@
+Property: GrainBoundaryMobility
+ Correlation:
+ Category: Model
+ Title: Null grain-boundary mobility
+ Module: Matrix
+ Variables: T
+ Coefficients:
+ Units: GrainBoundaryMobility:
+ Equations:
+      - GrainBoundaryMobility =0;
+ Correlation:
+ Category: Model
+ Title: Ainscough et al., JNM, 49 (1973) 117-128
+ Module: Matrix
+ Variables: T
+ Coefficients: A=1.455e-8, B=32114.5
+ Units: A: B: GrainBoundaryMobility: T:K
+ Equations:
+      - GrainBoundaryMobility =A*exp(((-B)/T));
+ Correlation:
+ Category: Model
+ Title: Van Uffelen et al. JNM, 434 (2013) 287-29
+ Module: Matrix
+ Variables: T
+ Coefficients: A=1.360546875e-15, B=46524.0
+ Units: A: B: GrainBoundaryMobility: T:K
+ Equations:
+      - GrainBoundaryMobility =A*exp(((-B)/T));
+Property: GrainBoundaryVacancyDiffusivity
+ Correlation:
+ Category: Model
+ Title: Constant value
+ Module: Matrix
+ Variables: T
+ Coefficients:
+ Units: GrainBoundaryVacancyDiffusivity:m²/s
+ Equations:
+      - GrainBoundaryVacancyDiffusivity =1e-30;
+ Correlation:
+ Category: Model
+ Title: Reynolds and Burton, JNM, 82 (1979) 22-25
+ Module: Matrix
+ Variables: T
+ Coefficients: A=6.9e-04, B=5.35e-19
+ Units: A:m²/s B:J GrainBoundaryVacancyDiffusivity:m²/s T:K
+ Equations:
+      - GrainBoundaryVacancyDiffusivity =A*exp(((-B)/(kb*T)));
+ Correlation:
+ Category: Model
+ Title: White, JNM, 325 (2004), 61-77.
+ Module: Matrix
+ Variables: T
+ Coefficients: A=8.86e-6, B=4.17e4
+ Units: A: B: GrainBoundaryVacancyDiffusivity: T:K
+ Equations:
+      - GrainBoundaryVacancyDiffusivity =A*C*exp(((-B)/T));
+ Correlation:
+ Category: Model
+ Title: Barani et al., JNM 563 (2022) 153627
+ Module: Matrix
+ Variables: T
+ Coefficients: A=1.3e-7, B=4.52e-19
+ Units: A: B: GrainBoundaryVacancyDiffusivity: T:K
+ Equations:
+      - GrainBoundaryVacancyDiffusivity =A*exp(((-B)/(kb*T)));
+Property: PoreNucleationRate
+ Correlation:
+ Category: Model
+ Title: Barani et al., JNM 563 (2022) 153627
+ Module: Matrix
+ Variables: T
+ Coefficients: A=5.0e17, B=2.77e-7, C=3.54, D=2.54, E=1.25e-6
+ Units: A: B: C: D: E: PoreNucleationRate: T:K
+ Equations:
+      - PoreNucleationRate =(A*B*C*(1-RestructuredVolumeFraction)*pow(EffectiveBurnup,D))*E;
+Property: PoreResolutionRate
+ Correlation:
+ Category: Model
+ Title: Inconnue
+ Module: Matrix
+ Variables: HBS FissionRate
+ Coefficients: A=1.0e-9, B=2.0e-23
+ Units: A: B: HBS:K PoreResolutionRate:
+ Equations:
+      - PoreResolutionRate =(1-pow((exp((HBSPoreRadius/(9*A)))),3))*B*FissionRate*((3*A)/(3*A+HBSPoreRadius))*(A/(A*HBSPoreRadius));
+Property: PoreTrappingRate
+ Correlation:
+ Category: Model
+ Title: Inconnue
+ Module: Matrix
+ Variables: XeAtGrainBoundary HBSPoreRadius HBSPorosity
+ Coefficients:
+ Units: PoreTrappingRate:
+ Equations:
+      - PoreTrappingRate =4.0*pi*GrainBoundaryVacancyDiffusivity*XeAtGrainBroundary*HBSPoreRadius*(1.0+1.8*pow(HBSPorosity,1.3));

@@ -1,0 +1,19 @@
+T=history_variable["Temperature"].getFinalValue()
+t=history_variable["time"].getFinalValue()
+dt=history_variable["Time step number"].getFinalValue()
+P=history_variable["Steam pressure"].getFinalValue()
+FissionRate=history_variable["Fission rate"].getFinalValue()
+
+
+RestructuredVolumeFraction=sciantix_variable["Restructured volume fraction"].getFinalValue()
+EffectiveBurnup=sciantix_variable["Effective burnup"].getFinalValue()
+HBSPoreRadius=sciantix_variable["HBS pore radius"].getFinalValue()
+HBSPorosity=sciantix_variable["HBS porosity"].getFinalValue()
+XeAtGrainBroundary=sciantix_variable["Xe at grain boundary"].getFinalValue()
+
+
+kb=boltzmann_constant
+Na=avogadro_number
+cal=calorie
+R=gas_constant
+pi=M_PI

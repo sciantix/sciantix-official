@@ -1,0 +1,29 @@
+For GrainBoundaryMobility, Unit :,
+- T was assumed as history_variable["Temperature"].getFinalValue(). Unit : K
+- A was assumed as a parameter. Unit: ?
+- B was assumed as a parameter. Unit: ?
+
+For GrainBoundaryVacancyDiffusivity, Unit :m²/s,
+- T was assumed as history_variable["Temperature"].getFinalValue(). Unit : K
+- A was assumed as a parameter. Unit: m²/s
+- B was assumed as a parameter. Unit: J
+
+For PoreNucleationRate, Unit :,
+- T was assumed as history_variable["Temperature"].getFinalValue(). Unit : K
+- A was assumed as a parameter. Unit: ?
+- B was assumed as a parameter. Unit: ?
+- C was assumed as a parameter. Unit: ?
+- D was assumed as a parameter. Unit: ?
+- E was assumed as a parameter. Unit: ?
+
+For PoreResolutionRate, Unit :,
+- HBS was assumed as HBS. Unit : K
+- FissionRate was assumed as history_variable["Fission rate"].getFinalValue(). Unit : 
+- A was assumed as a parameter. Unit: ?
+- B was assumed as a parameter. Unit: ?
+
+For PoreTrappingRate, Unit :,
+- XeAtGrainBoundary was assumed as XeAtGrainBoundary. Unit : 
+- HBSPoreRadius was assumed as sciantix_variable["HBS pore radius"].getFinalValue(). Unit : 
+- HBSPorosity was assumed as sciantix_variable["HBS porosity"].getFinalValue(). Unit : 
+

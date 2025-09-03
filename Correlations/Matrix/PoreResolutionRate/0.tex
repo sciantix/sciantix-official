@@ -1,0 +1,20 @@
+@article{
+title = {Inconnue},
+}
+
+\begin{tabular}{|l|l|l|l|}
+    \hline
+    Key & Value & Units & Type \\
+    \hline
+    A & 1.0e-9 &  & Parameter\\
+    B & 2.0e-23 & & Parameter\\
+    HBS &   & K    & Variable\\
+    Fission Rate & & & Variable\\
+    g &   &  & Property\\
+    \hline
+\end{tabular}
+
+\begin{equation}
+g(HBS,FissionRate)=(1-(\exp(\frac{HBSPoreRadius}{9*A}))^3)\cdot B\cdot FissionRate \cdot \frac{3\cdot A}{3\cdot A + HBSPoreRadius } \cdot \frac{A}{A\cdot HBSPoreRadius}
+\end{equation}
+

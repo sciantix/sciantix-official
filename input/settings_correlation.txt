@@ -1,0 +1,5 @@
+1 # GrainBoundaryMobility
+1 # GrainBoundaryVacancyDiffusivity
+0 # PoreNucleationRate
+0 # PoreResolutionRate
+0 # PoreTrappingRate

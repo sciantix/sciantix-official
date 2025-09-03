@@ -1,0 +1,70 @@
+This project is designed to convert formatted LaTeX files into correlation files usable by the Sciantix code. Here is a short user guide:
+
+LaTeX file format:
+
+    Make sure your LaTeX file is formatted as follows:
+
+    - A BibTeX reference in the following form:
+
+    @article{PIZZOCRI2025113741,
+    title = {A multi-fidelity multi-scale methodology to accelerate development of fuel performance codes},
+    journal = {Nuclear Engineering and Design},
+    volume = {432},
+    pages = {113741},
+    year = {2025},
+    issn = {0029-5493},
+    doi = {https://doi.org/10.1016/j.nucengdes.2024.113741},
+    url = {https://www.sciencedirect.com/science/article/pii/S0029549324008410},
+    author = {D. Pizzocri and G. Zullo and G. Petrosillo and L. Luzzi and F. Feria and L.E. Herranz},
+    keywords = {Multi-scale, Multi-fidelity, Machine learning, Fuel performance, Fission gas behaviour},
+    abstract = {Multi-scale methodologies have been developed and applied successfully in the frame of nuclear fuel performance analyses, but the complexity of the tools involved hinders their extensive application. Gaps in modelling capabilities of specific input/outputs in particular limits code-to-code communication. In this work, we propose a multi-fidelity methodology to tackle this issue. The application presented here concerns the inclusion of a meso-scale module describing fission gas behaviour (SCIANTIX) in a fuel performance code (FRAPCON). A critical input parameter of the meso-scale module, the local hydro-static stress in the fuel, is not predicted by such fuel performance code, hence limiting this coupling. This gap is filled by using a second fuel performance code (TRANSURANUS) to construct a virtual dataset of local hydro-static stress values, on which an artificial neural network is trained and included in the FRAPCON/SCIANTIX coupled suite. This multi-fidelity methodology is demonstrated by simulating the Risø AN3 irradiation experiment.}
+    }
+
+    - A data table containing the property, coefficients and variables with their respective units using the following pattern:
+
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+    Key & Value & Units & Type \\
+    \hline
+    A & 3 & mK/W & Parameter\\
+    B & 6 &  m/W & Parameter \\
+    C & 9 & m/W  & Parameter \\
+    T &   & K    & Variable\\
+    k &   & W/mK & Property\\
+    \hline
+    \end{tabular}
+
+    - The correlation must be included in your document inside an equation block:
+
+    \begin{equation}
+    k(T)=\frac{1}{A+B \cdot T}
+    \end{equation}
+
+Naming the .tex file:
+
+    Follow the alphabetical order of folders already established so as not to disrupt the selection order.
+    Fill in the correlation registry to keep track of which correlation is selected.
+
+Where to place your .tex file:
+
+    The Correlation folder is made up of subfolders corresponding to different classes (Matrix, Gas, ...),
+    and each subfolder contains different properties of the class. You must place your .tex file in the appropriate folder
+    or create the folder if it does not already exist.
+
+How to select correlations:
+
+    In the "input" folder, you will find a file named "settings_correlation.txt" that allows you to select the correlations you want.
+    The variable name in this file must match the filename of the property. Note that correlation selection starts at index 0.
+
+What is the output of the program:
+
+    The generated correlations are stored in the "generated_correlation" folder.
+    To check the quality of these translations, a file named "interpretation_report.txt" is created in the "output" folder.
+    If you notice that your variable is misinterpreted, please update the mapping file:
+    "variable_mapping.txt" in the input folder.
+
+How to use the project:
+
+    Compilation:    make clean
+                    make
+    Execution:      ./ProcessCorrelation
