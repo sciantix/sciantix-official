@@ -1,0 +1,40 @@
+Property: GrainBoundaryMobility
+Module: Matrix
+Title: Ainscough et al., JNM, 49 (1973) 117-128
+Variables: T
+Coefficients: A=1.455e-8, B=32114.5
+Equation: GrainBoundaryMobility =A*exp(((-B)/T));
+Units: A:,B:,GrainBoundaryMobility:,T:K,
+---
+Property: GrainBoundaryVacancyDiffusivity
+Module: Matrix
+Title: Reynolds and Burton, JNM, 82 (1979) 22-25
+Variables: T
+Coefficients: A=6.9e-04, B=5.35e-19
+Equation: GrainBoundaryVacancyDiffusivity =A*exp(((-B)/(kb*T)));
+Units: A:m²/s,B:J,GrainBoundaryVacancyDiffusivity:m²/s,T:K,
+---
+Property: PoreNucleationRate
+Module: Matrix
+Title: Barani et al., JNM 563 (2022) 153627
+Variables: T
+Coefficients: A=5.0e17, B=2.77e-7, C=3.54, D=2.54, E=1.25e-6
+Equation: PoreNucleationRate =(A*B*C*(1-RestructuredVolumeFraction)*pow(EffectiveBurnup,D))*E;
+Units: A:,B:,C:,D:,E:,PoreNucleationRate:,T:K,
+---
+Property: PoreResolutionRate
+Module: Matrix
+Title: Inconnue
+Variables: HBS,FissionRate
+Coefficients: A=1.0e-9, B=2.0e-23
+Equation: PoreResolutionRate =(1-pow((exp((HBSPoreRadius/(9*A)))),3))*B*FissionRate*((3*A)/(3*A+HBSPoreRadius))*(A/(A*HBSPoreRadius));
+Units: A:,B:,HBS:K,PoreResolutionRate:,
+---
+Property: PoreTrappingRate
+Module: Matrix
+Title: Inconnue
+Variables: XeAtGrainBoundary,HBSPoreRadius,HBSPorosity
+Coefficients: 
+Equation: PoreTrappingRate =4.0*pi*GrainBoundaryVacancyDiffusivity*XeAtGrainBroundary*HBSPoreRadius*(1.0+1.8*pow(HBSPorosity,1.3));
+Units: PoreTrappingRate:,
+---
