@@ -49,7 +49,10 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 add_subdirectory_includes(${PROJECT_SOURCE_DIR}/include)
 
 # Include source files
-file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.C)
+file(GLOB_RECURSE SOURCES
+    ${PROJECT_SOURCE_DIR}/src/*.C
+    ${PROJECT_SOURCE_DIR}/src/*.cpp
+)
 
 # Set custom object file directory (to have all object files in the obj directory)
 set(CMAKE_OBJECT_PATH_PREFIX ${PROJECTSOUR}/obj/)
