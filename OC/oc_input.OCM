@@ -1,6 +1,6 @@
 r t ./OU
 
-set c t=1273 p=1e5 n=1 x(o)=0.666667
+set c t=1623 p=1e5 n=1 x(o)=0.686355
 
 c e
 

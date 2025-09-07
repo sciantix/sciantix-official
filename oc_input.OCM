@@ -1,9 +1,0 @@
-r t ./OU
-
-set c t=1273 p=1e5 n=1 x(o)=0.666667
-
-c e
-
-list results 2
-
-fin

@@ -1,0 +1,1012 @@
+
+==============================
+Time = 0 s
+Temperature = 1473 K
+Stoichiometry deviation = 0
+Oxygen fraction = 0.666667
+>> Gibbs free energy G = -429613 J, Enthalpy H = -329620 J
+>> Component O : Moles=0.66667 , x=0.66667 , mu/RT=-36.222 , activity=1.8576e-16
+>> Component U : Moles=0.33333 , x=0.33333 , mu/RT=-32.791 , activity=5.744e-15
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 2.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0
+Oxygen fraction = 0.666667
+>> Gibbs free energy G = -429613 J, Enthalpy H = -329620 J
+>> Component O : Moles=0.66667 , x=0.66667 , mu/RT=-36.222 , activity=1.8576e-16
+>> Component U : Moles=0.33333 , x=0.33333 , mu/RT=-32.791 , activity=5.744e-15
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.024435
+Oxygen fraction = 0.66936
+>> Gibbs free energy G = -428677 J, Enthalpy H = -327880 J
+>> Component O : Moles=0.66936 , x=0.66936 , mu/RT=-23.236 , activity=8.1033e-11
+>> Component U : Moles=0.33064 , x=0.33064 , mu/RT=-58.821 , activity=2.8478e-26
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 7.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.0487621
+Oxygen fraction = 0.671998
+>> Gibbs free energy G = -427457 J, Enthalpy H = -326160 J
+>> Component O : Moles=0.672 , x=0.672 , mu/RT=-22.007 , activity=2.7691e-10
+>> Component U : Moles=0.328 , x=0.328 , mu/RT=-61.321 , activity=2.3372e-27
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 10 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.0728775
+Oxygen fraction = 0.674572
+>> Gibbs free energy G = -426189 J, Enthalpy H = -324560 J
+>> Component O : Moles=0.67457 , x=0.67457 , mu/RT=-21.451 , activity=4.8291e-10
+>> Component U : Moles=0.32543 , x=0.32543 , mu/RT=-62.466 , activity=7.4341e-28
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 12.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.096584
+Oxygen fraction = 0.677064
+>> Gibbs free energy G = -424918 J, Enthalpy H = -323060 J
+>> Component O : Moles=0.67706 , x=0.67706 , mu/RT=-21.063 , activity=7.1177e-10
+>> Component U : Moles=0.32294 , x=0.32294 , mu/RT=-63.275 , activity=3.3117e-28
+>> Phase C1_MO2#1 : mole fraction = 1
+>> Phase C1_MO2_AUTO#2 : mole fraction = 0
+
+==============================
+Time = 15 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.119521
+Oxygen fraction = 0.679438
+>> Gibbs free energy G = -423675 J, Enthalpy H = -321660 J
+>> Component O : Moles=0.67944 , x=0.67944 , mu/RT=-20.695 , activity=1.0291e-09
+>> Component U : Moles=0.32056 , x=0.32056 , mu/RT=-64.052 , activity=1.5223e-28
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 17.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.141082
+Oxygen fraction = 0.681638
+>> Gibbs free energy G = -422490 J, Enthalpy H = -320390 J
+>> Component O : Moles=0.68164 , x=0.68164 , mu/RT=-20.297 , activity=1.5319e-09
+>> Component U : Moles=0.31836 , x=0.31836 , mu/RT=-64.9 , activity=6.5215e-29
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 20 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.160384
+Oxygen fraction = 0.683583
+>> Gibbs free energy G = -421412 J, Enthalpy H = -319280 J
+>> Component O : Moles=0.68358 , x=0.68358 , mu/RT=-19.873 , activity=2.3398e-09
+>> Component U : Moles=0.31642 , x=0.31642 , mu/RT=-65.811 , activity=2.6224e-29
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 22.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.176456
+Oxygen fraction = 0.685184
+>> Gibbs free energy G = -420499 J, Enthalpy H = -318370 J
+>> Component O : Moles=0.68518 , x=0.68518 , mu/RT=-19.462 , activity=3.5307e-09
+>> Component U : Moles=0.31482 , x=0.31482 , mu/RT=-66.703 , activity=1.0745e-29
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 25 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.188695
+Oxygen fraction = 0.686392
+>> Gibbs free energy G = -419792 J, Enthalpy H = -317670 J
+>> Component O : Moles=0.68639 , x=0.68639 , mu/RT=-19.109 , activity=5.0255e-09
+>> Component U : Moles=0.31361 , x=0.31361 , mu/RT=-67.474 , activity=4.9724e-30
+>> Phase C1_MO2#1 : mole fraction = 1
+>> Phase C1_MO2_AUTO#2 : mole fraction = 0
+
+==============================
+Time = 27.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.19724
+Oxygen fraction = 0.68723
+>> Gibbs free energy G = -419291 J, Enthalpy H = -317190 J
+>> Component O : Moles=0.68723 , x=0.68723 , mu/RT=-18.841 , activity=6.5709e-09
+>> Component U : Moles=0.31277 , x=0.31277 , mu/RT=-68.062 , activity=2.7618e-30
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 30 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.202821
+Oxygen fraction = 0.687775
+>> Gibbs free energy G = -418961 J, Enthalpy H = -316880 J
+>> Component O : Moles=0.68777 , x=0.68778 , mu/RT=-18.655 , activity=7.9072e-09
+>> Component U : Moles=0.31222 , x=0.31222 , mu/RT=-68.469 , activity=1.8379e-30
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 32.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.206315
+Oxygen fraction = 0.688115
+>> Gibbs free energy G = -418753 J, Enthalpy H = -316680 J
+>> Component O : Moles=0.68811 , x=0.68811 , mu/RT=-18.536 , activity=8.9145e-09
+>> Component U : Moles=0.31189 , x=0.31189 , mu/RT=-68.733 , activity=1.411e-30
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 35 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.20845
+Oxygen fraction = 0.688323
+>> Gibbs free energy G = -418624 J, Enthalpy H = -316560 J
+>> Component O : Moles=0.68832 , x=0.68832 , mu/RT=-18.461 , activity=9.6093e-09
+>> Component U : Moles=0.31168 , x=0.31168 , mu/RT=-68.899 , activity=1.1955e-30
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 37.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.209737
+Oxygen fraction = 0.688448
+>> Gibbs free energy G = -418547 J, Enthalpy H = -316490 J
+>> Component O : Moles=0.68845 , x=0.68845 , mu/RT=-18.415 , activity=1.0059e-08
+>> Component U : Moles=0.31155 , x=0.31155 , mu/RT=-69 , activity=1.0806e-30
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 40 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.210508
+Oxygen fraction = 0.688523
+>> Gibbs free energy G = -418501 J, Enthalpy H = -316450 J
+>> Component O : Moles=0.68852 , x=0.68852 , mu/RT=-18.387 , activity=1.0341e-08
+>> Component U : Moles=0.31148 , x=0.31148 , mu/RT=-69.061 , activity=1.0165e-30
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 42.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.210967
+Oxygen fraction = 0.688567
+>> Gibbs free energy G = -418473 J, Enthalpy H = -316420 J
+>> Component O : Moles=0.68857 , x=0.68857 , mu/RT=-18.371 , activity=1.0511e-08
+>> Component U : Moles=0.31143 , x=0.31143 , mu/RT=-69.097 , activity=9.8054e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 45 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.21124
+Oxygen fraction = 0.688594
+>> Gibbs free energy G = -418456 J, Enthalpy H = -316400 J
+>> Component O : Moles=0.68859 , x=0.68859 , mu/RT=-18.361 , activity=1.0617e-08
+>> Component U : Moles=0.31141 , x=0.31141 , mu/RT=-69.119 , activity=9.5901e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 47.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211402
+Oxygen fraction = 0.68861
+>> Gibbs free energy G = -418447 J, Enthalpy H = -316400 J
+>> Component O : Moles=0.68861 , x=0.68861 , mu/RT=-18.355 , activity=1.0681e-08
+>> Component U : Moles=0.31139 , x=0.31139 , mu/RT=-69.133 , activity=9.4646e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 50 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211499
+Oxygen fraction = 0.688619
+>> Gibbs free energy G = -418441 J, Enthalpy H = -316390 J
+>> Component O : Moles=0.68862 , x=0.68862 , mu/RT=-18.351 , activity=1.0717e-08
+>> Component U : Moles=0.31138 , x=0.31138 , mu/RT=-69.14 , activity=9.3946e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 52.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211556
+Oxygen fraction = 0.688624
+>> Gibbs free energy G = -418438 J, Enthalpy H = -316390 J
+>> Component O : Moles=0.68862 , x=0.68862 , mu/RT=-18.35 , activity=1.0737e-08
+>> Component U : Moles=0.31138 , x=0.31138 , mu/RT=-69.144 , activity=9.3559e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 55 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.21159
+Oxygen fraction = 0.688628
+>> Gibbs free energy G = -418435 J, Enthalpy H = -316390 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.348 , activity=1.0753e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.147 , activity=9.3251e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 57.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.21161
+Oxygen fraction = 0.68863
+>> Gibbs free energy G = -418434 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0761e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.149 , activity=9.3097e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 60 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211622
+Oxygen fraction = 0.688631
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0765e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.15 , activity=9.302e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 62.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211629
+Oxygen fraction = 0.688631
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0765e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.15 , activity=9.302e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 65 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211633
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 67.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211635
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 70 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211637
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 72.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211638
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 75 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211638
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 77.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211638
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 80 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 82.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 85 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 87.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 90 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 92.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 95 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 97.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 100 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 102.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 105 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 107.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 110 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 112.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 115 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 117.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 120 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 122.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 125 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 127.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 130 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 132.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 135 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 137.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 140 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 142.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 145 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 147.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 150 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 152.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 155 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 157.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 160 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 162.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 165 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 167.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 170 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 172.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 175 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 177.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 180 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 182.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 185 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 187.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 190 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 192.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 195 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 197.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 200 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 202.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 205 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 207.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 210 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 212.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 215 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 217.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 220 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 222.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 225 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 227.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 230 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 232.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 235 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 237.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 240 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 242.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 245 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 247.5 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
+
+==============================
+Time = 250 s
+Temperature = 1473 K
+Stoichiometry deviation = 0.211639
+Oxygen fraction = 0.688632
+>> Gibbs free energy G = -418433 J, Enthalpy H = -316380 J
+>> Component O : Moles=0.68863 , x=0.68863 , mu/RT=-18.347 , activity=1.0769e-08
+>> Component U : Moles=0.31137 , x=0.31137 , mu/RT=-69.151 , activity=9.2943e-31
+>> Phase C1_MO2#1 : mole fraction = 1
