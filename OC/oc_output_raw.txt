@@ -1,0 +1,90 @@
+
+Open Calphad (OC) software version   6.078 , linked 2024-11-07
+with command line monitor version 71
+
+This program is available with a GNU General Public License.
+either version 2 of the License, or any later version.
+It includes the General Thermodynamic Package, version GTP-3.30,
+Hillert's equilibrium calculation algorithm version HMS-3.0 ,
+step/map/plot software version SMP-2.30 using GNUPLOT 5.2 graphics.
+Numerical routines are extracted from LAPACK and BLAS and
+the assessment procedure uses LMDIF from ANL.
+
+Linked with OpenMp for parallel execution
+ Warning, no environment variable OCHOME and no help file
+ Working directory is: /home/giovanni/Desktop/PHD/SCIANTIX/sciantix-official/OC
+--->OC6: 3E Database file extention is: ".tdb"
+Database has  2 elements: O  U 
+Give the elements to select, finish with empty line
+Select elements /all/: All elements selected
+3E reading database file: OU.TDB
+
+Out of    43 model parameters    43 have been entered
+
+
+There are    14 bibliographic references
+REF174          'O1<G> JANAF 1982; ASSESSMENT DATED 3/77 SGTE OXYGEN 
+                 <MONATOMIC GAS>, from SSUB'
+REF175          'O2<G> T.C.R.A.S. Class: 1 OXYGEN <DIATOMIC GAS>, from SSUB'
+REF176          'O3<G> T.C.R.A.S. Class: 4 OZONE <GAS>, from SSUB'
+REF160          'U1<G> T.C.R.A.S Class: 4 Data provided by T.C.R.A.S. in 
+                 2000, from SSUB'
+REF208          'O1U1<G> T.C.R.A.S Class: 6 Data provided by T.C.R.A.S. in 
+                 2000, from SSUB, different of Tbase'
+REF209          'O2U1<G> T.C.R.A.S. Class: 6 URANIUM DIOXIDE <GAS>, from 
+                 SSUB, slightly different of Tbase'
+REF210          'O3U1<G> T.C.R.A.S Class: 6 Data provided by T.C.R.A.S. in 
+                 2000, from SSUB, different of Tbase'
+REF425          'C. Guéneau, N. Dupin, B. Sundman, C. Martial, J.-C. Dumas, 
+                 S. Gossé,2 S. Chatain, F. De Bruycker, D. Manara, R.J.M. 
+                 Konings, J. Nucl. Mat. 419 (1-3), 145-167 (2011); C-O-Pu-U'
+REF10           'A T Dinsdale, SGTE Data for Pure Elements, Calphad 15(1991)4 
+                 p 317-425; also in NPL Report DMA(A)195 Rev. August 1990'
+REF70           'fixing some parameters of low importance'
+REF0            '*** Not set by database or user'
+REF212          'SSUB 3-URANIUM 8-OXIDE : M.H.Rand March 1994, taken from 
+                 Cordfunke. In the fuelbase, the expression relative to the 
+                 alpha form has been kept identical to SSUB for the higher 
+                 temperatures forms but the alpha form expression has been 
+                 modified in 11GUE'
+REF213          'SSUB 4-URANIUM 9-OXIDE : M.H.Rand March 1994, taken from 
+                 Cordfunke. In the fuelbase, the expression relative to the 
+                 alpha form has been kept identical to SSUB for beta and to 
+                 08GUE for gamma but the alpha form expression has been 
+                 modified in 11GUE'
+REF211          'O3U1 T.C.R.A.S. Class: 7 URANIUM TRIOXIDE, from SSUB'
+
+--->OC6:--->OC6:--->OC6: 3Y Composition set(s) created:            1
+Gridmin:     961 points   3.20E-03 s and       1 clockcycles, T= 1623.00
+ 3Y leaving global_gridmin
+Phase change iteration:     5  +UO3
+Phase change iteration:     6  -C1_MO2#1
+Equilibrium result:  32 its,  4.0420E-03 s,      4 cc, GS= -4.3042876E+05 J/mol
+--->OC6:--->OC6:
+Output for equilibrium:   1, DEFAULT_EQUILIBRIUM          2025.09.07
+Conditions .................................................:
+  1:T=1623, 2:P=100000, 3:N=1, 4:X(O)=0.686355
+ Degrees of freedom are   0
+
+Some global data, reference state SER ......................:
+T=   1623.00 K (  1349.85 C), P=  1.0000E+05 Pa, V=  0.0000E+00 m3
+N=   1.0000E+00 moles, B=   8.5638E+01 g, RT=   1.3494E+04 J/mol
+G= -4.30429E+05 J, G/N=-4.3043E+05 J/mol, H=-3.1329E+05 J, S= 7.217E+01 J/K
+
+Some data for components ...................................:
+Component name    Moles      Mole-fr  Chem.pot/RT  Activities  Ref.state
+O                 6.8635E-01  0.68635 -1.8090E+01  1.3925E-08  SER (default)   
+U                 3.1365E-01  0.31365 -6.2111E+01  1.0604E-27  SER (default)   
+
+Some data for phases .......................................:
+Name                Status Moles      Volume    Form.Units Cmp/FU dGm/RT  Comp:
+C1_MO2#1................ E  1.000E+00  0.00E+00  3.14E-01    3.19  0.00E+00  X:
+ O      6.86355E-01  U      3.13645E-01
+Constitution: Sublattice  1 with     3 constituents and     1.000000 sites
+ U+4    6.23310E-01  U+5    3.76663E-01  U+3    2.69567E-05
+              Sublattice  2 with     2 constituents and     2.000000 sites
+ O-2    1.00000E+00  VA     1.36625E-10
+              Sublattice  3 with     2 constituents and     1.000000 sites
+ VA     8.11682E-01  O-2    1.88318E-01
+
+--->OC6:--->OC6:
