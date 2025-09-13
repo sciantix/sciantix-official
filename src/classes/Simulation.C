@@ -105,5 +105,5 @@ void Simulation::execute()
 
     GasRelease();
 
-    //SetPhaseDiagram("in the gap");
+    SetPhaseDiagram("in the gap");
 }
