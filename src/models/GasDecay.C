@@ -18,6 +18,8 @@
 
 void Simulation::GasDecay()
 {
+    if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;
+    
     // Model declaration
     for (auto &system : sciantix_system)
     {

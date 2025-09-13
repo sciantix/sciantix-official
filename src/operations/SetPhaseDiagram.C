@@ -29,6 +29,7 @@
 
 void Simulation::SetPhaseDiagram(std::string location)
 {
+    if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;
     double temperature(0);
     double pressure(0);
     double oxygenfraction(std::nan("")); // Oxygen fraction defined only for location = matrix

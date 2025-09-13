@@ -18,6 +18,8 @@
 
 void Simulation::IntraGranularBubbleBehavior()
 {
+    if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;
+    
     // Model declaration
     Model model_;
 

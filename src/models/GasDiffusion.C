@@ -18,6 +18,8 @@
 
 void Simulation::GasDiffusion()
 {
+    if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;
+    
     // Model declaration
     switch (static_cast<int>(input_variable["iDiffusionSolver"].getValue()))
     {

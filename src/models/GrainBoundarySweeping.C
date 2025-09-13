@@ -19,7 +19,8 @@
 void Simulation::GrainBoundarySweeping()
 {
     if (!input_variable["iGrainBoundarySweeping"].getValue()) return;
-
+    if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;
+    
     // Model declaration
     Model model_;
 
