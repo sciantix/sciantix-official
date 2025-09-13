@@ -71,6 +71,12 @@ void Simulation::SetPhaseDiagram(std::string location)
             pressure = history_variable["THERMOCHIMICA pressure"].getFinalValue() * scaling_factors["Dummy"].getValue();
         }
     }
+    else if (location == "in the gap")
+    {
+        if (sciantix_variable["Fission gas release"].getFinalValue() < 0.01) return;
+        temperature = history_variable["Temperature"].getFinalValue();
+        pressure = history_variable["THERMOCHIMICA pressure"].getFinalValue() * scaling_factors["Dummy"].getValue();
+    }
     else if (location == "matrix")
     {
         if (input_variable["iThermochimica"].getValue() < 1) 
@@ -112,6 +118,12 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
     std::string module = root["Settings"]["fission_products"]["module"].asString();
     if (location == "matrix") module = root["Settings"]["matrix"]["module"].asString();
     bool KC = root["Settings"]["KC"].asBool();
+    if (KC == true && history_variable["Time"].getFinalValue() < root["Settings"]["KC time"].asDouble()) KC == false;
+    if (location == "in the gap" && root["Settings"]["fission_products"]["gap settings"].asBool() && KC == false)
+    {
+        temperature = root["Settings"]["fission_products"]["gap temperature"].asDouble();
+        pressure = root["Settings"]["fission_products"]["gap pressure"].asDouble();
+    }
 
     if (module == "THERMOCHIMICA")
     {
@@ -158,6 +170,8 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
                     sciantix_variable[elementName + " in grain"].getFinalValue() -
                     sciantix_variable[elementName + " released"].getInitialValue()
                 );
+            else if (location == "in the gap")
+                atomsavailable = sciantix_variable[elementName + " released"].getFinalValue();
             else if (location == "matrix")
                 atomsavailable = 1; 
                 // (sciantix_variable["Uranium content"].getFinalValue() + sciantix_variable["Oxygen content"].getFinalValue()); 
@@ -254,10 +268,10 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
 
                 GrainVaporisation(false);
             }
-            std::cout<<"Vaporized matrix! active vaporisation module"<<std::endl;
             return;
         }
         // elements: update gas atoms and grain boundary variables
+        if (location == "in the gap") return;
         for (auto& element : elements.getMemberNames()) {
             double moles(0);
             if ((SolutionPhases.isMember("gas")) && (SolutionPhases["gas"].isObject()) && (!SolutionPhases["gas"].empty()))
