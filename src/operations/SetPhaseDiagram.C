@@ -117,6 +117,7 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
     jsonFile >> root;
 
     std::string module = root["Settings"]["fission_products"]["module"].asString();
+    bool kinetics = root["Settings"]["Langmuir"].asBool();
     if (location == "matrix") module = root["Settings"]["matrix"]["module"].asString();
     bool KC = root["Settings"]["KC"].asBool();
     if (KC == true && history_variable["Time"].getFinalValue() < root["Settings"]["KC time"].asDouble()) KC == false;
@@ -303,7 +304,6 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
                 sciantix_variable[ element + " reacted - IG"].setFinalValue(available - updateAtoms);            
             else if (location =="at grain boundary")
             {
-                bool kinetics = false;
                 if (kinetics)
                 {
                     // Trapping kinetics 
@@ -312,52 +312,27 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
                     for (auto& system : sciantix_system) {
                         if (system.getGasName() == element) {
                             D_gb = system.getFissionGasDiffusivity();
-                            MM = system.getGas().getMassNumber() * 1e-3;
+                            MM = system.getGas().getMassNumber() * 1e-3; // kg/mol
                             break;
                         }
                     }
+      
+                    // Geometry
+                    double surface = 4.0 * M_PI * pow(sciantix_variable["Grain radius"].getFinalValue(),2);
+                    if (sciantix_variable["Intergranular bubble area"].getFinalValue() > 0.0)
+                        surface = sciantix_variable["Intergranular bubble area"].getFinalValue();
+                    double surfacetovolume = surface/((4.0/3.0)*M_PI*pow(sciantix_variable["Grain radius"].getFinalValue(),3));
+                    double coefficient = root["Settings"]["Langmuir coefficient"].asDouble();
+                    // Rate coefficient 
+                    double Langmuir = coefficient*pow(gas_constant * temperature /(2 * M_PI * MM), 0.5)*(surfacetovolume); // s-1
+                    updateAtoms = updateAtoms - (updateAtoms - sciantix_variable[element + " at grain boundary"].getFinalValue())*exp(- Langmuir*physics_variable["Time step"].getFinalValue());
 
-                    // double conc = sciantix_variable["Intergranular bubble concentration"].getFinalValue();
-                    // double radius = sciantix_variable["Intergranular bubble radius"].getFinalValue();
-                    // double trapRate = 2.0 * M_PI * D_gb * conc/ log(1.0 / (radius * sqrt(M_PI * conc)));
-                            
-                    // Evaporation kinetics 
-                    double relativeVolume = (available-updateAtoms)*boltzmann_constant*temperature/pressure;
-                    double Langmuir(0);
-                    if (relativeVolume)
-                        Langmuir = pow(gas_constant*temperature*2*M_PI*MM, -0.5)*4*M_PI*pow(sciantix_variable["Grain radius"].getFinalValue(),2)*pressure*avogadro_number/(available-updateAtoms);
-
-                    double excesssol = (sciantix_variable[element + " reacted - GB"].getFinalValue() - (available - updateAtoms));
-                    double excessgb = (sciantix_variable[element + " at grain boundary"].getFinalValue() - (updateAtoms));
-                    
-                    double Rate = Langmuir;
-                    if (Rate*physics_variable["Time step"].getFinalValue()>1) 
-                    {
-                        std::cout<<"WARNING: Langmuir rate cut at "<<temperature<<std::endl;
-                        if (physics_variable["Time step"].getFinalValue())
-                            Rate = 1/physics_variable["Time step"].getFinalValue();
-                        else
-                            Rate = 0;
-                    }
-
-                    double newReacted = 0.0;
-                    if (excesssol > 0)
-                        newReacted = sciantix_variable[element + " reacted - GB"].getFinalValue() - Rate*physics_variable["Time step"].getFinalValue()*excesssol;
-                    else if (excessgb > 0)
-                        newReacted = sciantix_variable[element + " reacted - GB"].getFinalValue() + Rate*physics_variable["Time step"].getFinalValue()*excessgb;   
-                    
-                    if (newReacted < 0) newReacted = 0;
-                    if (newReacted > available) newReacted = available;
-
-                    sciantix_variable[element + " reacted - GB"].setFinalValue(newReacted);
-                    sciantix_variable[element + " at grain boundary"].setFinalValue(available - newReacted);
+                    if (updateAtoms < 0.0) updateAtoms = 0.0;
+                    if (updateAtoms > available) updateAtoms = available;
                 }
-                else
-                {
-                    // No kinetics, just update the variable
-                    sciantix_variable[element + " at grain boundary"].setFinalValue(updateAtoms);
-                    sciantix_variable[element + " reacted - GB"].setFinalValue(available - updateAtoms);
-                }    
+
+                sciantix_variable[element + " at grain boundary"].setFinalValue(updateAtoms);
+                sciantix_variable[element + " reacted - GB"].setFinalValue(available - updateAtoms);   
             }
             else
                 std::cout<<"Location not yet modelled: "<<location<<std::endl;
@@ -546,7 +521,6 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
                 sciantix_variable[ element + " reacted - IG"].setFinalValue(available - updateAtoms);            
             else if (location =="at grain boundary")
             {
-                bool kinetics = false;
                 if (kinetics)
                 {
                     // Trapping kinetics 
@@ -555,52 +529,27 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
                     for (auto& system : sciantix_system) {
                         if (system.getGasName() == element) {
                             D_gb = system.getFissionGasDiffusivity();
-                            MM = system.getGas().getMassNumber() * 1e-3;
+                            MM = system.getGas().getMassNumber() * 1e-3; // kg/mol
                             break;
                         }
                     }
+      
+                    // Geometry
+                    double surface = 4.0 * M_PI * pow(sciantix_variable["Grain radius"].getFinalValue(),2);
+                    if (sciantix_variable["Intergranular bubble area"].getFinalValue() > 0.0)
+                        surface = sciantix_variable["Intergranular bubble area"].getFinalValue();
+                    double surfacetovolume = surface/((4.0/3.0)*M_PI*pow(sciantix_variable["Grain radius"].getFinalValue(),3));
+                    double coefficient = root["Settings"]["Langmuir coefficient"].asDouble();
+                    // Rate coefficient 
+                    double Langmuir = coefficient*pow(gas_constant * temperature /(2 * M_PI * MM), 0.5)*(surfacetovolume); // s-1
+                    updateAtoms = updateAtoms - (updateAtoms - sciantix_variable[element + " at grain boundary"].getFinalValue())*exp(- Langmuir*physics_variable["Time step"].getFinalValue());
 
-                    // double conc = sciantix_variable["Intergranular bubble concentration"].getFinalValue();
-                    // double radius = sciantix_variable["Intergranular bubble radius"].getFinalValue();
-                    // double trapRate = 2.0 * M_PI * D_gb * conc/ log(1.0 / (radius * sqrt(M_PI * conc)));
-                            
-                    // Evaporation kinetics 
-                    double relativeVolume = (available-updateAtoms)*boltzmann_constant*temperature/pressure;
-                    double Langmuir(0);
-                    if (relativeVolume)
-                        Langmuir = pow(gas_constant*temperature*2*M_PI*MM, -0.5)*4*M_PI*pow(sciantix_variable["Grain radius"].getFinalValue(),2)*pressure*avogadro_number/(available-updateAtoms);
-
-                    double excesssol = (sciantix_variable[element + " reacted - GB"].getFinalValue() - (available - updateAtoms));
-                    double excessgb = (sciantix_variable[element + " at grain boundary"].getFinalValue() - (updateAtoms));
-                    
-                    double Rate = Langmuir;
-                    if (Rate*physics_variable["Time step"].getFinalValue()>1) 
-                    {
-                        std::cout<<"WARNING: Langmuir rate cut at "<<temperature<<std::endl;
-                        if (physics_variable["Time step"].getFinalValue())
-                            Rate = 1/physics_variable["Time step"].getFinalValue();
-                        else
-                            Rate = 0;
-                    }
-
-                    double newReacted = 0.0;
-                    if (excesssol > 0)
-                        newReacted = sciantix_variable[element + " reacted - GB"].getFinalValue() - Rate*physics_variable["Time step"].getFinalValue()*excesssol;
-                    else if (excessgb > 0)
-                        newReacted = sciantix_variable[element + " reacted - GB"].getFinalValue() + Rate*physics_variable["Time step"].getFinalValue()*excessgb;   
-                    
-                    if (newReacted < 0) newReacted = 0;
-                    if (newReacted > available) newReacted = available;
-
-                    sciantix_variable[element + " reacted - GB"].setFinalValue(newReacted);
-                    sciantix_variable[element + " at grain boundary"].setFinalValue(available - newReacted);
+                    if (updateAtoms < 0.0) updateAtoms = 0.0;
+                    if (updateAtoms > available) updateAtoms = available;
                 }
-                else
-                {
-                    // No kinetics, just update the variable
-                    sciantix_variable[element + " at grain boundary"].setFinalValue(updateAtoms);
-                    sciantix_variable[element + " reacted - GB"].setFinalValue(available - updateAtoms);
-                }    
+
+                sciantix_variable[element + " at grain boundary"].setFinalValue(updateAtoms);
+                sciantix_variable[element + " reacted - GB"].setFinalValue(available - updateAtoms);    
             }
             else
                 std::cout<<"Location not yet modelled: "<<location<<std::endl;    
