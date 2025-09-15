@@ -64,6 +64,9 @@ void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[
     Sciantix_options[19] = ReadOneSetting("iHeliumProductionRate", input_settings, input_check);
     Sciantix_options[20] = ReadOneSetting("iStoichiometryDeviation", input_settings, input_check);
     Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
+	Sciantix_options[22] = ReadOneSetting("iChromiumSolubility",input_settings,input_check);
+	Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
+	Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
 
 if (!input_scaling_factors.fail())
 	{
@@ -73,7 +76,7 @@ if (!input_scaling_factors.fail())
 		Sciantix_scaling_factors[3] = ReadOneParameter("sf_diffusivity", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[4] = ReadOneParameter("sf_temperature", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[5] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[6] = ReadOneParameter("sf_cent_parameter", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[6] = ReadOneParameter("sf_diffusion_based_release", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[8] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
 	}

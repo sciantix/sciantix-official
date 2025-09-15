@@ -124,7 +124,8 @@ void System::setBubbleDiffusivity(int input_value, SciantixArray<SciantixVariabl
              * <a href="../../references/pdf_link/Van_Uffelen_et_al_2013.pdf" target="_blank">Van Uffelen et al. JNM, 434 (2013) 287–29</a>.
              */
 
-            double volume_self_diffusivity = 3.0e-5 * exp(-4.5 / (boltzmann_constant_eV * history_variable["Temperature"].getFinalValue()));
+            double boltzmann_constant_ev = 8.62e-5; //eV/K
+            double volume_self_diffusivity = 3.0e-5 * exp(-4.5 / (boltzmann_constant_ev * history_variable["Temperature"].getFinalValue()));
             double bubble_radius = sciantix_variable["Intragranular bubble radius"].getInitialValue();
 
             bubble_diffusivity = 3 * matrices["UO2"].getSchottkyVolume() * volume_self_diffusivity / (4.0 * M_PI * pow(bubble_radius, 3.0));
@@ -288,6 +289,8 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
 
         reference += "iFissionGasDiffusivity: Matzke (1980), Radiation Effects, 53, 219-242.\n\t";
         diffusivity = 5.0e-08 * exp(-40262.0 / history_variable["Temperature"].getFinalValue());
+        if (diffusivity < 1e-25)
+            diffusivity = 1e-25;
         diffusivity *= scaling_factors["Diffusivity"].getValue();
 
         break;

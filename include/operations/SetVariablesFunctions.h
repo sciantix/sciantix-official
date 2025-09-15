@@ -55,7 +55,9 @@ std::vector<std::string> getInputVariableNames()
         "iHeliumProductionRate",
         "iStoichiometryDeviation",
         "iBubbleDiffusivity",
-        "iChromiumSolubility"
+        "iChromiumSolubility",
+        "iDensification",
+        "iReleaseMode"
     };
 
     return names;
@@ -182,7 +184,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Intergranular atoms per bubble", "(at/bub)", Sciantix_variables[29], Sciantix_variables[29], toOutputGrainBoundary),
         SciantixVariable("Intergranular vacancies per bubble", "(vac/bub)", Sciantix_variables[30], Sciantix_variables[30], toOutputGrainBoundary),
 
-        SciantixVariable("Intergranular bubble pressure", "(MPa)", 0.0, 0.0, 0),
+        SciantixVariable("Intergranular bubble pressure", "(MPa)", 0.0, 0.0, 1),
         SciantixVariable("Critical intergranular bubble pressure", "(MPa)", 0.0, 0.0, 0),
         SciantixVariable("Intergranular bubble radius", "(m)", Sciantix_variables[31], Sciantix_variables[31], toOutputGrainBoundary),
         SciantixVariable("Intergranular bubble area", "(m2)", Sciantix_variables[32], Sciantix_variables[32], toOutputGrainBoundary),
@@ -208,6 +210,12 @@ std::vector<SciantixVariable> initializeSciantixVariable(
 
         SciantixVariable("Intergranular vented fraction", "(/)", Sciantix_variables[46], Sciantix_variables[46], toOutputVenting),
         SciantixVariable("Intergranular venting probability", "(/)", Sciantix_variables[47], Sciantix_variables[47], toOutputVenting),
+        
+        SciantixVariable("Porosity", "(/)", Sciantix_variables[70], Sciantix_variables[70], toOutputVenting),
+        SciantixVariable("Fabrication porosity", "(/)", Sciantix_variables[71], Sciantix_variables[71], toOutputVenting),
+        SciantixVariable("Open porosity", "(/)", Sciantix_variables[72], Sciantix_variables[72], toOutputVenting),
+        SciantixVariable("Residual porosity", "(/)", Sciantix_variables[73], Sciantix_variables[73], toOutputVenting),
+        SciantixVariable("Densification factor", "(/)", Sciantix_variables[74], Sciantix_variables[74], toOutputVenting),
 
         SciantixVariable("Restructured volume fraction", "(/)", Sciantix_variables[55], Sciantix_variables[55], toOutputHighBurnupStructure),
         SciantixVariable("Intragranular similarity ratio", "(/)", Sciantix_variables[64], Sciantix_variables[64], 0),
@@ -257,10 +265,9 @@ std::vector<std::string> getScalingFactorsNames()
         "Trapping rate",
         "Nucleation rate",
         "Diffusivity",
-        "Diffusivity2",
         "Temperature",
         "Fission rate",
-        "Cent parameter",
+        "Diffusion-based release",
         "Helium production rate",
         "Dummy"
     };
