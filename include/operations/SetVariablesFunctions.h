@@ -345,7 +345,7 @@ std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
                             compound + " (" + phase + ", " + location + ")", // name
                             "(mol/m3)",                           // unit
                             Sciantix_thermochemistry[index],     // initial_value
-                            Sciantix_thermochemistry[index],     // final_value
+                            0,     // final_value
                             phase,                               // phase
                             location,                            // location
                             stoichiometry,                       // stoichiometry
