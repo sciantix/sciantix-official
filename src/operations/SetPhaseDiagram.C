@@ -29,13 +29,14 @@
 
 void Simulation::SetPhaseDiagram(std::string location)
 {
-    if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;
     double temperature(0);
     double pressure(0);
     double oxygenfraction(std::nan("")); // Oxygen fraction defined only for location = matrix
     
     if (location == "in grain")
     {
+        if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;
+
         if (input_variable["iThermochimica"].getValue() < 3) return;
 
         temperature = history_variable["Temperature"].getFinalValue();
@@ -44,6 +45,8 @@ void Simulation::SetPhaseDiagram(std::string location)
     }
     else if (location == "at grain boundary")
     {
+        if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;
+
         if (input_variable["iThermochimica"].getValue() == 0 || sciantix_variable["Xe at grain boundary"].getInitialValue() <= 0.0) 
         {
             for (auto &system : sciantix_system)
@@ -74,7 +77,9 @@ void Simulation::SetPhaseDiagram(std::string location)
     }
     else if (location == "in the gap")
     {
-        if (sciantix_variable["Fission gas release"].getFinalValue() < 0.01) return;
+        double FGR = ((sciantix_variable["Xe released"].getFinalValue() + sciantix_variable["Kr released"].getFinalValue()) /
+                        (sciantix_variable["Xe produced"].getFinalValue() + sciantix_variable["Kr produced"].getFinalValue()));
+        if (FGR < 0.01) return;
         temperature = history_variable["Temperature"].getFinalValue();
         pressure = history_variable["THERMOCHIMICA pressure"].getFinalValue() * scaling_factors["Dummy"].getValue();
     }

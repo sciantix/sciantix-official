@@ -18,6 +18,8 @@
 
 void Simulation::GrainVaporisation(bool thermochemistry_module)
 {
+    if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;
+    
     Matrix fuel(matrices[0]);
 
     double temperature = history_variable["Temperature"].getFinalValue(); // K
