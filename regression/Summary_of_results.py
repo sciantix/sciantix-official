@@ -11,14 +11,48 @@ from regression_white import regression_white
 from regression_kashibe1990 import regression_kashibe1990
 from regression_kashibe1991 import regression_kashibe1991
 
-# labelnew = r"$50$ bubbles/$\mu\mathrm{m}^2$"
-# labelold = r"$25$ bubbles/$\mu\mathrm{m}^2$"
+# This is a code to summarize the results of the different regression tests for swelling and FGR.
+# It generates summary plots comparing calculated vs experimental values for swelling and FGR.
+# It is the result of the work done of the following manuscript:
+# "On a physics-based model of grain-boundary bubbles overpressurisation and its effects on fuel fragmentation"
+# Authors: Elisa Cappellari, Davide Pizzocri, Giovanni Zullo, Giovanni Nicodemo, Sophie Deanesi, Lelio Luzzi
+# Affiliation: Politecnico di Milano, Department of Energy, Via La Masa 34, 20156, Milan, Italy
+# and 
+# Authors: Paul Van Uffelen, Arndt Schubert. 
+# Affiliation: European Commission, Joint Research Centre, Directorate for Nuclear Safety and Security, P.O. Box 2340, 76125, Karlsruhe, Germany
 
-# labelnew = "Reynolds and Burton (1979)"
-# labelold = "White (2004)"
-
-# labelnew = r"3 J/$\mathrm{m}^2$"
-# labelold = r"2 J/$\mathrm{m}^2$"
+# Please note that to obtain same results as the ones presented in the manuscript, the following input files need to be used:
+# 
+# 1    #    iGrainGrowth (0= no grain growth, 1= Ainscough et al. (1973), 2= Van Uffelen et al. (2013))
+# 1    #    iFissionGasDiffusivity (0= constant value, 1= Turnbull et al. (1988))
+# 2    #    iDiffusionSolver (1= SDA with quasi-stationary hypothesis, 2= SDA without quasi-stationary hypothesis)
+# 1    #    iIntraGranularBubbleBehavior (1= Pizzocri et al. (2018))
+# 1    #    iResolutionRate (0= constant value, 1= Turnbull (1971), 2= Losonen (2000), 3= thermal resolution, Cognini et al. (2021))
+# 1    #    iTrappingRate (0= constant value, 1= Ham (1958))
+# 1    #    iNucleationRate (0= constant value, 1= Olander, Wongsawaeng (2006))
+# 1    #    iOutput (1= default output files)
+# 2    #    iGrainBoundaryVacancyDiffusivity (0= constant value, 1= Reynolds and Burton (1979), 2= White (2004))
+# 1    #    iGrainBoundaryBehaviour (0= no grain boundary bubbles, 1= Pastore et al (2013))
+# 2    #    iGrainBoundaryMicroCracking (0= no model considered, 1= Barani et al. (2017), 2= Cappellari et al. (2025))
+# 0    #    iFuelMatrix (0= UO2, 1= UO2 + HBS)
+# 0    #    iGrainBoundaryVenting (0= no model considered, 1= Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE, 2 = Claisse and Van Uffelen (2015), 3= Pagani et al.(2025))
+# 0    #    iRadioactiveFissionGas (0= not considered)
+# 0    #    iHelium (0= not considered)
+# 0    #    iHeDiffusivity (0= null value, 1= limited lattice damage, Luzzi et al. (2018), 2= significant lattice damage, Luzzi et al. (2018))
+# 0    #    iGrainBoundarySweeping (0= no model considered, 1= TRANSURANUS swept volume model)
+# 0    #    iHighBurnupStructureFormation (0= no model considered, 1= fraction of HBS-restructured volume from Barani et al. (2020))
+# 0    #    iHighBurnupStructurePorosity (0= no evolution of HBS porosity, 1= HBS porosity evolution based on Spino et al. (2006) data)
+# 0    #    iHeliumProductionRate (0= zero production rate, 1= helium from ternary fissions, 2= linear with burnup (FR))
+# 0    #    iStoichiometryDeviation (0= not considered, 1= Cox et al. 1986, 2= Bittel et al. 1969, 3= Abrefah et al. 1994, 4= Imamura et al. 1997, 5= Langmuir-based approach)
+# 1    #    iBubbleDiffusivity (0= not considered, 1= volume diffusivity)
+# 0    #    iChromiumSolubility
+# 0    #    iDensification (0 = not considered, 1 = Fit from Van Uffelen, P. (2002), PhD thesis.)
+# 1    #    iReleaseMode (0 = coalescence by White (2004), saturation threshold of fractional coverage Pastore et al (2013), 1= coalescence by Pastore et al (2013), Cappellari et al. (2025))
+#
+# And the following parameters must be changed:
+# Sciantix_variables[25] = 2.5e+13;  // Intergranular_bubble_concentration[0]
+# matrix_.setSurfaceTension(0.6); // (N/m)
+    
 labelnew = "This work"
 labelold = "SCIANTIX 2.0"
 
@@ -40,7 +74,7 @@ number_of_tests_failed = number_of_tests_failed_w = number_of_tests_failed_t = n
 
 mode_reg = 1
 mode_plot = 1
-mode_gold = 2
+mode_gold = 0
 folderListW, number_of_tests_w, number_of_tests_failed_w, White_calcsw, White_expsw, white_sciantix = regression_white(wpath, mode_reg, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
 folderListK1990, number_of_tests_k1990, number_of_tests_failed_k1990, K1990_calcsw, K1990_expsw, K1990sw_sciantix,  K1990_calcfgr, K1990_expfgr, K1990fgr_sciantix = regression_kashibe1990(wpath, mode_reg, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
 folderListK1991, number_of_tests_k1991, number_of_tests_failed_k1991,  K1991_calcfgr, K1991_expfgr, K1991fgr_sciantix = regression_kashibe1991(wpath, mode_reg, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed)
