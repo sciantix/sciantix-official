@@ -17,6 +17,7 @@
 #include "GasDiffusion.h"
 #include "TimeManager.h"
 
+
 void Simulation::GasDiffusion()
 {
     // Model declaration
@@ -59,7 +60,7 @@ void Simulation::GasDiffusion()
                         model["Gas diffusion - " + system.getName()].getParameter(),
                         physics_variable["Time step"].getFinalValue(),
                         interpolated_times[history_variable["Time step number"].getFinalValue()], //t
-                        exp(-0.001*interpolated_times[history_variable["Time step number"].getFinalValue()]) //D = exp(-0.001*t)
+                        1 //D = 1
                     )
                 );
 
@@ -84,7 +85,7 @@ void Simulation::GasDiffusion()
                         model["Gas diffusion - " + system.getName()].getParameter(),
                         physics_variable["Time step"].getFinalValue(),
                         interpolated_times[history_variable["Time step number"].getFinalValue()],
-                        exp(-0.001*interpolated_times[history_variable["Time step number"].getFinalValue()])
+                        1
                     )
                 );
             }
@@ -215,6 +216,9 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         readFirstColumn(TestPath + "input_history.txt",times);
         std::vector<double> interpolated_times;
         std::vector<double> C_M(Number_of_time_steps_per_interval+1);
+        std::vector<double> S_M(Number_of_time_steps_per_interval+1);
+        std::vector<double> J_M(Number_of_time_steps_per_interval+1);
+
         interpolateTimes(times, interpolated_times,Number_of_time_steps_per_interval);
 
         std::vector<double> parameters;
@@ -236,9 +240,12 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
 
         for (int i = 0; i <= Number_of_time_steps_per_interval; ++i)
         {
-            C_M[i] = 0.4 * pow(parameters.at(2),2) * exp(0.005*interpolated_times[i]);
+            C_M[i] = 0.4 * pow(parameters.at(2),2) * sin(interpolated_times[i]);
+            S_M[i] = 0.4 * pow(parameters.at(2),2) * cos(interpolated_times[i]) + 6*sin(interpolated_times[i]);
         }
         writeInterpolatedTimes(TestPath + "manufactured_solution.txt",interpolated_times,C_M);
+        writeInterpolatedTimes(TestPath + "gasproductionrate_solution.txt",interpolated_times,S_M);
+        
         model_.setParameter(parameters);
         model.push(model_);
     }

@@ -26,6 +26,7 @@
 #include "SciantixArray.h"
 #include "SciantixVariable.h"
 
+
 /**
  * @class Simulation
  * @brief Derived class that orchestrates the overall simulation process combining various models and solvers.
@@ -63,8 +64,8 @@ private:
      * @brief Default constructor for the Simulation class
      */
     Simulation() {
-        n_modes = 20;
-        modes_initial_conditions.resize(480);
+        n_modes = 40;
+        modes_initial_conditions.resize(720);
     }
 
 public:
@@ -297,9 +298,9 @@ public:
         if (gas_name == "Xe")
             return &modes_initial_conditions[0];
         else if (gas_name == "Kr")
-            return &modes_initial_conditions[3 * 20];
+            return &modes_initial_conditions[3 * 40];
         else if (gas_name == "He")
-            return &modes_initial_conditions[6 * 20];
+            return &modes_initial_conditions[6 * 40];
         else if (gas_name == "Xe133")
             return &modes_initial_conditions[9 * 40];
 
@@ -307,7 +308,7 @@ public:
             return &modes_initial_conditions[12 * 40];
 
         else if (gas_name == "Xe in HBS")
-            return &modes_initial_conditions[15 * 20];
+            return &modes_initial_conditions[15 * 40];
 
         else
         {
@@ -324,22 +325,22 @@ public:
     double *getDiffusionModesSolution(std::string gas_name)
     {
         if (gas_name == "Xe")
-            return &modes_initial_conditions[1 * 20];
+            return &modes_initial_conditions[1 * 40];
 
         else if (gas_name == "Kr")
-            return &modes_initial_conditions[4 * 20];
+            return &modes_initial_conditions[4 * 40];
 
         else if (gas_name == "He")
-            return &modes_initial_conditions[7 * 20];
+            return &modes_initial_conditions[7 * 40];
 
         else if (gas_name == "Xe133")
-            return &modes_initial_conditions[10 * 40];
+            return &modes_initial_conditions[10 *40];
 
         else if (gas_name == "Kr85m")
             return &modes_initial_conditions[13 * 40];
 
         else if (gas_name == "Xe in HBS")
-            return &modes_initial_conditions[16 * 20];
+            return &modes_initial_conditions[16 * 40];
         else
         {
             std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesSolution." << std::endl;
@@ -355,13 +356,13 @@ public:
     double *getDiffusionModesBubbles(std::string gas_name)
     {
         if (gas_name == "Xe")
-            return &modes_initial_conditions[2 * 20];
+            return &modes_initial_conditions[2 * 40];
 
         else if (gas_name == "Kr")
-            return &modes_initial_conditions[5 * 20];
+            return &modes_initial_conditions[5 * 40];
 
         else if (gas_name == "He")
-            return &modes_initial_conditions[8 * 20];
+            return &modes_initial_conditions[8 * 40];
 
         else if (gas_name == "Xe133")
             return &modes_initial_conditions[11 * 40];
