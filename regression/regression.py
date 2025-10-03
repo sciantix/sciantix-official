@@ -20,6 +20,7 @@ from regression_kashibe import regression_kashibe
 from regression_hbs import regression_hbs
 from regression_chromium import regression_chromium
 from regression_cornell import regression_cornell
+from regression_baker_GPR import regression_baker_GPR
 
 def remove_output(file):
     os.chdir(file)
@@ -67,7 +68,8 @@ def main():
         ('oxidation', regression_oxidation),
         ('HBS', regression_hbs),
         ('Chromium', regression_chromium),
-        ('Cornell', regression_cornell)
+        ('Cornell', regression_cornell),
+        ('GPR', regression_baker_GPR)
     ]
 
     # Check if running in GitHub Actions environment
@@ -91,7 +93,7 @@ def main():
 
         # Option 2: Remove all output files
         if execution_option == 2:
-            directories = ["Baker", "Kashibe", "White", "Talip", "CONTACT", "oxidation", "HBS", "Chromium", "Cornell"]
+            directories = ["Baker", "Kashibe", "White", "Talip", "CONTACT", "oxidation", "HBS", "Chromium", "Cornell", "GPR"]
             for file in os.listdir(wpath):
                 if any(dir_name in file for dir_name in directories) and os.path.isdir(file):
                     remove_output(file)
@@ -114,7 +116,7 @@ def main():
             print("Possible regression options \n")
             for i, (name, _) in enumerate(regression_modules):
                 print(f"{name} : {i}")
-            regression_mode = int(input("Enter the chosen regression (0, 1, 2, 3, 4, 5, 6, 7, 8) = "))
+            regression_mode = int(input("Enter the chosen regression (0, 1, 2, 3, 4, 5, 6, 7, 8, 9) = "))
 
             mode_gold, mode_plot = get_mode_selections()
 
