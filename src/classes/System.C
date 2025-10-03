@@ -509,6 +509,23 @@ void System::setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVar
 		break;
 	}
 
+	case 90:
+	{
+		/**
+		 * @brief This is a test case for the correlation update with GPs. The correlation considered is the one described in @ref *Turnbull et al (1988), IWGFPT-32, Preston, UK, Sep 18-22*.
+		 * The data considered to update the correlation comes from @ref *Matthews et al Journal of Nuclear Materials 540 (2020)*
+		 * 
+		 */
+
+		diffusivity = sciantix_variable["Diffusion coefficient"].getFinalValue();
+
+		diffusivity *= scaling_factors["Diffusivity"].getValue();
+
+		sciantix_variable["Diffusion coefficient"].setFinalValue(diffusivity);
+
+		break;
+	}
+
     case 99:
     {
         /**

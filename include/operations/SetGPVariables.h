@@ -8,35 +8,35 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Version: 2.0                                                                    //
+//  Year: 2022                                                                      //
+//  Authors: D. Pizzocri, G. Zullo, G. Nicodemo                                     //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#ifndef SET_GPVARIABLE_H
+#define SET_GPVARIABLE_H
+
 #include <vector>
-#include "SciantixVariable.h"
 
-std::vector<std::string> getInputVariableNames();
+#include "InputVariable.h"
+#include "SciantixArray.h"
+#include "SetVariablesFunctions.h"
 
+/**
+ * @brief Updates gas properties from GPR.
+ * 
+ * @author G. Nicodemo
+ */
 
-std::vector<SciantixVariable> initializeHistoryVariable(
-    double Sciantix_history[],
-    double Sciantix_scaling_factors[],
-    bool toOutput
+void SetGPVariables(
+    int Sciantix_options[], 
+	double Sciantix_history[], 
+	double Sciantix_variables[], 
+    SciantixArray<InputVariable> &input_variable,
+    SciantixArray<SciantixVariable> &history_variable,
+    SciantixArray<SciantixVariable> &sciantix_variable,
+    SciantixArray<SciantixVariable> &physics_variable
 );
 
-std::vector<SciantixVariable> initializeSciantixVariable(
-    double Sciantix_variables[],
-    bool toOutputRadioactiveFG,
-    bool toOutputVenting,
-    bool toOutputHelium,
-    bool toOutputCracking,
-    bool toOutputGrainBoundary,
-    bool toOutputHighBurnupStructure,
-    bool toOutputStoichiometryDeviation,
-    bool toOutputChromiumContent
-);
-
-std::vector<std::string> getScalingFactorsNames();
-
+#endif
