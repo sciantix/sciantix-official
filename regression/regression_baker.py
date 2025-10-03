@@ -179,6 +179,7 @@ def regression_baker(wpath, mode_Baker, mode_gold, mode_plot, folderList, number
 
             intraGranularSwellingPos = findSciantixVariablePosition(data, "Intragranular gas bubble swelling (/)")
             intraGranularSwellingSciantix2.append(100 * data[-1, intraGranularSwellingPos].astype(float))
+            print(f"Intragranular swelling: {intraGranularSwellingSciantix2[-1]} %")
 
             intraGranularSwellingGoldPos = findSciantixVariablePosition(data_gold, "Intragranular gas bubble swelling (/)")
             gold.append(100 * data_gold[-1, intraGranularSwellingGoldPos].astype(float))
