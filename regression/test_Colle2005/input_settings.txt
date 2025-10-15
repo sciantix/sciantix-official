@@ -23,4 +23,4 @@
 0    #    iChromiumSolubility
 0    #    iDensification
 0    #    iReleaseMode
-2    #    iThermochimica
+0    #    iThermochimica
