@@ -9,12 +9,12 @@
 #
 # Author: G. Zullo (giovanni.zullo@polimi.it)
 
-cmake_minimum_required(VERSION 3.4.0)
+cmake_minimum_required(VERSION 3.5.0)
 
 if(APPLE)
-    message(STATUS "Configuring on macOS, setting custom compilers...")
-    set(CMAKE_C_COMPILER /opt/homebrew/bin/gcc-14)
-    set(CMAKE_CXX_COMPILER /opt/homebrew/bin/g++-14)
+    message(STATUS "Configuring on macOS, using clang compilers...")
+    set(CMAKE_C_COMPILER /usr/bin/clang)
+    set(CMAKE_CXX_COMPILER /usr/bin/clang++)
 else()
     message(STATUS "Not on macOS, using default compilers.")
 endif()
@@ -35,6 +35,10 @@ endfunction()
 
 # Enable C++ compiler
 enable_language (CXX)
+
+# Set C++ standard to C++11
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Set option for coupling with TU
 option (COUPLING_TU OFF)
