@@ -22,6 +22,7 @@
 #include <cstdlib>
 #include <iomanip>
 #include <fstream>
+#include <sstream> 
 #include "MainVariables.h"
 
 /**
