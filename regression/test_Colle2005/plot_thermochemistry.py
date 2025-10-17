@@ -72,7 +72,7 @@ for col in thermochemistry_data.columns:
 
 def total_phase_at_position(location, phase):
     for compound, values in thermochemistry[location][phase].items():
-        total = np.zeros_like(values)
+        total = np.zeros_like(values, dtype=float)
         break
     else:
         raise ValueError(f"Nessun composto trovato per {location}, {phase}")
