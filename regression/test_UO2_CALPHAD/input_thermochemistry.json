@@ -2,6 +2,7 @@
   "Settings":
   {
     "KC":false,
+    "Langmuir":false,
     "fission_products":
     {
       "elements": {"Cs":{"atomicnumber":55}, "I":{"atomicnumber":53}, "Te":{"atomicnumber":52}},
