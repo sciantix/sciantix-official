@@ -22,7 +22,7 @@
 #	initial Xe133 (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
 0.0	0.0	0.0	0.0	0.0	0.0 0.0
 #	initial Kr85m (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
-1.99
+0.5
 #   initial fuel stoichiometry deviation (\)
 0
 #   Cr content (ppm)
