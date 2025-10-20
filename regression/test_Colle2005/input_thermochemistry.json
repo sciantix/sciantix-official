@@ -2,12 +2,18 @@
   "Settings":
   {
     "KC":true,
+    "KC time": 53400.099,
+    "Langmuir":true,
+    "Langmuir coefficient": 1e-7,
     "fission_products":
     {
       "elements": {"Cs":{"atomicnumber":55}, "I":{"atomicnumber":53}, "Te":{"atomicnumber":52}},
       "module": "THERMOCHIMICA",
       "database":"CsITe_Clean",
-      "location": {"at grain boundary":{}}
+      "location": {"at grain boundary":{}, "in the gap":{}},
+      "gap settings": true,
+      "gap temperature": 600,
+      "gap pressure": 1000000
     },
     "matrix":
     {

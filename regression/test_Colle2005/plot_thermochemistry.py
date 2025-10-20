@@ -10,7 +10,7 @@ from collections import defaultdict
 
 folder_path = "results"
 avogadronumber = 6.02214e23
-xlim_i = 53400.101
+xlim_i = 53400.9
 
 mpl.rcParams.update({
     "font.family": "arial",
@@ -72,13 +72,13 @@ for col in thermochemistry_data.columns:
 
 def total_phase_at_position(location, phase):
     for compound, values in thermochemistry[location][phase].items():
-        total = np.zeros_like(values)
+        total = np.zeros_like(values, dtype=float)
         break
     else:
         raise ValueError(f"Nessun composto trovato per {location}, {phase}")
 
     for compound, values in thermochemistry[location][phase].items():
-        values = np.nan_to_num(values, nan=0)
+        values = np.nan_to_num(values, nan=0.0)
         total += values
     return total
 
@@ -239,6 +239,19 @@ def plot_all_species_two_rows(fig_name, xlims):
     fig.savefig(folder_path + "/" + fig_name)
 
 plot_all_species_two_rows("XeCs_tot.png", [(xlim_o, xlim_i), (xlim_i, xlim_f)])
+fig, ax = plt.subplots(1,1, figsize=(7,6))
+plot_species(data, "I", ax, 'With Thermochemistry')
+plt.xlim([xlim_i, xlim_f])
+plt.savefig("Iodine.png")
+
+fig, ax = plt.subplots(1,1, figsize=(7,6))
+plt.plot(data['With Thermochemistry']["Time (h)"], data['With Thermochemistry']["Temperature (K)"])
+plt.ylabel("Temperature (K)")
+plt.xlabel("Time (h)")
+plt.xlim([xlim_i, xlim_f])
+plt.savefig("temperature.png")
+
+
 
 ##################################### stoichiometry ########################
 fig, axes = plt.subplots(1, 2, figsize=(14, 6))
@@ -351,7 +364,7 @@ pretty_labels = {
 
 
 def plot_products(location, phases = ['gas', 'liquid', 'liquid_ionic', 'fcc_a1', 'pure_condensed'], initial=xlim_o, middle=xlim_i, final=xlim_f, label_x = 'Time (h)',threshold = 0.01):
-    fig, axes = plt.subplots(1, 2 if label_x == 'Time (h)' else 1, figsize=(14, 6) if label_x == 'Time (h)' else (10, 6))
+    fig, axes = plt.subplots(1, 2 if label_x == 'Time (h)' else 1, figsize=(14, 6) if label_x == 'Time (h)' else (8, 6))
 
     if label_x == 'Temperature (K)':
         mask = (thermochemistry_data['Time (h)'] >= middle) & (thermochemistry_data['Time (h)'] <= final)
@@ -411,10 +424,11 @@ def plot_products(location, phases = ['gas', 'liquid', 'liquid_ionic', 'fcc_a1',
         axes[1].set_xlabel(label_x)
         axes[0].set_xlim([initial, middle])
         axes[1].set_xlim([middle, final])
+        axes[1].legend(frameon=False, loc='center left',  bbox_to_anchor=(1.01, 0.5))
+            
         for ax in axes:
             ax.set_ylabel('Mole fraction (/)')
             ax.set_ylim([0, 1])
-            ax.legend(frameon=False, loc='center left',  bbox_to_anchor=(1.01, 0.5))
             ax_temp = ax.twinx()
             ax_temp.plot(thermochemistry_data[label_x], thermochemistry_data['Temperature (K)'],
                          linestyle='--', color='grey', linewidth=0.5)
@@ -434,7 +448,6 @@ def plot_products(location, phases = ['gas', 'liquid', 'liquid_ionic', 'fcc_a1',
     fig.savefig(folder_path + "/" + filename + ".png")
     plt.close(fig)
 
-plot_products('in grain')
 plot_products('at grain boundary')
 plot_products('in the gap')
 plot_products('at grain boundary', label_x='Temperature (K)')
@@ -642,9 +655,10 @@ for isotope, properties in isotope_data.items():
 for compound, values in thermochemistry[position][phase].items():
     if compound != "UO2": continue
     temperature = thermochemistry_data["Temperature (K)"].values
+    norm = max(values) 
     plt.plot(
         temperature,
-        values/max(values),
+        values/norm,
         label=f'Sim. {compound}',
         color="gray"
     )
@@ -667,7 +681,7 @@ plt.xlabel('Temperature (K)')
 plt.ylabel('Cumulative release (/)')
 plt.xlim([750, 2773])
 plt.ylim([0,1])
-plt.title('Comparison with experimental data, Colle (2005)')
+#plt.title('Comparison with experimental data, Colle (2005)')
 
 handles, labels = plt.gca().get_legend_handles_labels()
 legend_markers = [plt.Line2D([0], [0], marker='o', linestyle='--', color='black', label='Colle (2005)' )]
@@ -677,8 +691,8 @@ legend_colors = [plt.Line2D([0], [0], marker='o', linestyle='--', color=colors[l
 legend_colors2 = [plt.Line2D([0], [0], marker='o', linestyle='--', color='grey', label=f'Experimental UO2')]
 
 
-plt.yscale('log')
-plt.ylim([1e-2, 1])
+#plt.yscale('log')
+plt.ylim([0, 1])
 plt.legend(loc='upper left', frameon=False)#handles= legend_colors + legend_colors2 + legend_lines, loc='upper left', frameon=False)
 plt.legend(frameon=False, loc='center left',  bbox_to_anchor=(1.01, 0.5))
 plt.tight_layout()
