@@ -29,10 +29,14 @@
 
 void Simulation::SetPhaseDiagram(std::string location)
 {
+    // MOX 
+    std::string fuel_matrix_name = "UO2";
+    if ((int)input_variable["iFuelMatrix"].getValue() == 2)
+        fuel_matrix_name = "MOX";
+
     double temperature(0);
     double pressure(0);
     double oxygenfraction(std::nan("")); // Oxygen fraction defined only for location = matrix
-    
     if (location == "in grain")
     {
         if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;
@@ -66,7 +70,7 @@ void Simulation::SetPhaseDiagram(std::string location)
         if (input_variable["iThermochimica"].getValue() == 1)
         {
             if (sciantix_variable["Intergranular vacancies per bubble"].getInitialValue())
-                pressure = ( boltzmann_constant *  temperature * sciantix_variable["Intergranular atoms per bubble"].getInitialValue()/(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue() * matrices["UO2"].getSchottkyVolume()));
+                pressure = ( boltzmann_constant *  temperature * sciantix_variable["Intergranular atoms per bubble"].getInitialValue()/(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue() * matrices[fuel_matrix_name].getSchottkyVolume()));
             else
                 pressure = 1e5;
         }
@@ -134,11 +138,11 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
 
     if (module == "THERMOCHIMICA")
     {
-        std::string directoryPath = "./../../thermochimica-master";
+        std::string directoryPath = "./../../thermochimica";
         std::string inputPath = "/inputs/thermoin.ti";
         std::string outputPath = "/outputs/thermoout";
-        std::string dataPath = "../../thermochimica-master/data/" + root["Settings"]["fission_products"]["database"].asString();
-        if (location == "matrix") dataPath = "../../thermochimica-master/data/" + root["Settings"]["matrix"]["database"].asString();
+        std::string dataPath = "../../thermochimica/data/" + root["Settings"]["fission_products"]["database"].asString();
+        if (location == "matrix") dataPath = "../../thermochimica/data/" + root["Settings"]["matrix"]["database"].asString();
         std::string exePath = directoryPath + "/bin/InputScriptMode " + directoryPath + inputPath;
         
         // 1. Write input file

@@ -21,6 +21,13 @@ void Simulation::GrainGrowth()
     // Model declaration
     Model model_;
 
+    // MOX
+        
+    std::string fuel_matrix_name = "UO2";
+    if ((int)input_variable["iFuelMatrix"].getValue() == 2)
+        fuel_matrix_name = "MOX";
+
+
     model_.setName("Grain growth");
     std::string reference;
     std::vector<double> parameter;
@@ -58,7 +65,7 @@ void Simulation::GrainGrowth()
 
             if (sciantix_variable["Grain radius"].getInitialValue() < limiting_grain_radius / burnup_factor)
             {
-                double rate_constant = matrices["UO2"].getGrainBoundaryMobility();
+                double rate_constant = matrices[fuel_matrix_name].getGrainBoundaryMobility();
                 rate_constant *= (1.0 - burnup_factor / (limiting_grain_radius / (sciantix_variable["Grain radius"].getFinalValue())));
 
                 parameter.push_back(sciantix_variable["Grain radius"].getInitialValue());
@@ -103,7 +110,7 @@ void Simulation::GrainGrowth()
 
             if(sciantix_variable["Grain radius"].getInitialValue() < limiting_grain_radius)
             {
-                double rate_constant = matrices["UO2"].getGrainBoundaryMobility();
+                double rate_constant = matrices[fuel_matrix_name].getGrainBoundaryMobility();
 
                 parameter.push_back(sciantix_variable["Grain radius"].getInitialValue());
                 parameter.push_back(1.0);
@@ -140,5 +147,5 @@ void Simulation::GrainGrowth()
 
     sciantix_variable["Grain radius"].resetValue();
 
-    matrices["UO2"].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
+    matrices[fuel_matrix_name].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
 }

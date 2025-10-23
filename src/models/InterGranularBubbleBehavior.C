@@ -22,6 +22,11 @@ void Simulation::InterGranularBubbleBehavior()
     Model model_;
     Matrix fuel_(matrices[0]);
 
+    //MOX
+    std::string fuel_matrix_name = "UO2";
+    if ((int)input_variable["iFuelMatrix"].getValue() == 2)
+        fuel_matrix_name = "MOX";
+
     model_.setName("Intergranular bubble behavior");
     std::string reference;
     std::vector<double> parameter;
@@ -653,7 +658,7 @@ void Simulation::InterGranularBubbleBehavior()
     if(sciantix_variable["Intergranular vacancies per bubble"].getFinalValue())
         sciantix_variable["Intergranular bubble pressure"].setFinalValue(
             1e-6 * boltzmann_constant * history_variable["Temperature"].getFinalValue() * sciantix_variable["Intergranular atoms per bubble"].getFinalValue() /
-            (sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * matrices["UO2"].getSchottkyVolume())
+            (sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * matrices[fuel_matrix_name].getSchottkyVolume())
         );
     else
         sciantix_variable["Intergranular bubble pressure"].setFinalValue(0.0);

@@ -22,6 +22,11 @@ void Simulation::ChromiumSolubility()
     Model model_;
     model_.setName("Chromium solubility");
 
+	// MOX
+	std::string fuel_matrix_name = "UO2";
+	if ((int)input_variable["iFuelMatrix"].getValue() == 2)
+    	fuel_matrix_name = "MOX";
+
     std::string reference;
     reference += "Riglet-Martial et al., JNM, 447 (2014) 63-72.";
 
@@ -193,12 +198,12 @@ void Simulation::ChromiumSolubility()
 	sciantix_variable["Chromia solution"].setFinalValue(Cr203_solution);
 	sciantix_variable["Chromia precipitate"].setFinalValue(Cr2O3_precipitate);
 
-	matrices["UO2"].setChromiumSolubility(Cr_solubility);
-	matrices["UO2"].setChromiaSolubility(Cr2O3_solubility);
-	matrices["UO2"].setChromiumSolution(Cr_solution);
-	matrices["UO2"].setChromiumPrecipitate(Cr_precipitate);
-	matrices["UO2"].setChromiaSolution(Cr203_solution);
-	matrices["UO2"].setChromiaPrecipitate(Cr2O3_precipitate);
+	matrices[fuel_matrix_name].setChromiumSolubility(Cr_solubility);
+	matrices[fuel_matrix_name].setChromiaSolubility(Cr2O3_solubility);
+	matrices[fuel_matrix_name].setChromiumSolution(Cr_solution);
+	matrices[fuel_matrix_name].setChromiumPrecipitate(Cr_precipitate);
+	matrices[fuel_matrix_name].setChromiaSolution(Cr203_solution);
+	matrices[fuel_matrix_name].setChromiaPrecipitate(Cr2O3_precipitate);
 
 	model_.setRef(reference);
 }

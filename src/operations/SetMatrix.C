@@ -33,6 +33,13 @@ void Simulation::setMatrix()
             break;
         }
 
+        case 2: 
+        {
+            matrices.push(MOX(matrices, sciantix_variable, history_variable, input_variable));
+            break;
+        }
+
+
         default:
             ErrorMessages::Switch(__FILE__, "iFuelMatrix", int(input_variable["iFuelMatrix"].getValue()));
             break;
@@ -117,6 +124,65 @@ Matrix UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &
 	matrix_.setPoissonRatio(0.32); // (/) TRANSURANUS manual
 	matrix_.setGrainBoundaryFractureEnergy(2); // (J/m2) Jernkvist, L.O. (2020). A review of analytical criteria for fission gas induced fragmentation of oxide fuel in accident conditions. Progress in Nuclear Energy, 119, 103188.
     matrix_.setShearModulus(matrix_.getElasticModulus() / ( 2 * ( 1 + matrix_.getPoissonRatio() ) )); // (MPa)
+
+    return matrix_;
+}
+
+// MOX
+
+Matrix MOX(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, 
+    SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable)
+{ 
+    Matrix matrix_;
+
+    matrix_.setName("MOX");
+    matrix_.setRef("\n\t");
+    // matrix_.setInitialUraniumComposition({ 
+       // double(sciantix_variable["U234"].getFinalValue()),
+       // double(sciantix_variable["U235"].getFinalValue()),
+       // double(sciantix_variable["U236"].getFinalValue()),
+       // double(sciantix_variable["U237"].getFinalValue()),
+        // double(sciantix_variable["U238"].getFinalValue())
+    // });
+    // matrix_.setInitialPlutoniumComposition({
+        // double(sciantix_variable["Pu238"].getFinalValue()),
+        // double(sciantix_variable["Pu239"].getFinalValue()),
+        // double(sciantix_variable["Pu240"].getFinalValue()),
+        // double(sciantix_variable["Pu241"].getFinalValue()),
+        // double(sciantix_variable["Pu242"].getFinalValue())
+    // });
+
+    // arricchimento Pu
+    // matrix_.setMoxPuEnrichment(sciantix_variable["MOX PuO2 percentage"].getFinalValue());
+
+     // densità teorica [kg/m3], formula presa dal codice originale
+    matrix_.setTheoreticalDensity(10960.0 + 490 * 0.20); /// 20% PuO2 (kg/m3)
+
+    // parametri microstrutturali / termici
+    matrix_.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);
+    matrix_.setSurfaceTension(0.626); // N/m (reference Kitano)
+    matrix_.setFissionFragmentInfluenceRadius(1.0e-9); // m
+    matrix_.setFissionFragmentRange(6.0e-6); // m
+    matrix_.setSchottkyVolume(4.09e-29); // m3
+    matrix_.setOctahedralInterstitialSite(7.8e-30); // m3 (verificare fonte)
+    matrix_.setSemidihedralAngle(0.97); // rad
+    matrix_.setGrainBoundaryThickness(5.0e-10); // m
+    matrix_.setLenticularShapeFactor(0.168610764); // function
+
+    // lattice parameter: converto in metri
+    // formula originale: 5.47 - 0.074 * enrichment  [Å]
+    matrix_.setLatticeParameter(5.47e-10 - 0.074e-10 * 0.20); // 20% PuO2 (m)
+
+    matrix_.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue()); // m
+    matrix_.setHealingTemperatureThreshold((2744.0 + 273.15) / 2.0); // K (come nel codice originario: half of the melting temperature by now)
+
+    // diffusività vacanze al bordo di grano (aggiornato con history_variable)
+    matrix_.setGrainBoundaryVacancyDiffusivity(int(input_variable["iGrainBoundaryVacancyDiffusivity"].getValue()), history_variable); // m2/s
+
+    // pori (uso le versioni aggiornate come in UO2)
+    matrix_.setPoreNucleationRate(sciantix_variable);
+    matrix_.setPoreResolutionRate(sciantix_variable, history_variable);
+    matrix_.setPoreTrappingRate(matrices, sciantix_variable);
 
     return matrix_;
 }
