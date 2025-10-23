@@ -22,6 +22,11 @@ void Simulation::Microstructure()
     Model model_;
     model_.setName("Microstructure");
 
+	// MOX
+	std::string fuel_matrix_name = "UO2";
+	if ((int)input_variable["iFuelMatrix"].getValue() == 2)
+    	fuel_matrix_name = "MOX";
+
     std::string reference;
     reference += "T. Cardinaels et al., JNM, 424 (2012) 252-260.";
 
@@ -42,6 +47,6 @@ void Simulation::Microstructure()
 
 	sciantix_variable["Lattice parameter"].setFinalValue(lattice_parameter);
 	sciantix_variable["Theoretical density"].setFinalValue(theoretical_density);
-	matrices["UO2"].setLatticeParameter(lattice_parameter);
-	matrices["UO2"].setTheoreticalDensity(theoretical_density);
+	matrices[fuel_matrix_name].setLatticeParameter(lattice_parameter);
+	matrices[fuel_matrix_name].setTheoreticalDensity(theoretical_density);
 }

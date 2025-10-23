@@ -40,6 +40,12 @@ void Simulation::GasDiffusion()
             break;
     }
 
+    // MOX
+        
+        std::string fuel_matrix_name = "UO2";
+        if ((int)input_variable["iFuelMatrix"].getValue() == 2)
+            fuel_matrix_name = "MOX";
+
     // Model resolution
     for (auto &system : sciantix_system)
     {
@@ -147,7 +153,7 @@ void Simulation::GasDiffusion()
         sciantix_variable["Xe in grain HBS"].setFinalValue(initial_value_hbs);
 
         sciantix_variable["Intragranular gas solution swelling"].setFinalValue(
-            (sciantix_variable["Xe in intragranular solution"].getFinalValue() + sciantix_variable["Xe in grain HBS"].getFinalValue()) * pow(matrices["UO2"].getLatticeParameter(), 3) / 4
+            (sciantix_variable["Xe in intragranular solution"].getFinalValue() + sciantix_variable["Xe in grain HBS"].getFinalValue()) * pow(matrices[fuel_matrix_name].getLatticeParameter(), 3) / 4
         );
     }
 
