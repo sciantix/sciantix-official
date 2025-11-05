@@ -56,6 +56,14 @@ void Initialization(
 	Sciantix_variables[44] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 237.04873; // U-237
 	Sciantix_variables[45] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 238.05079; // U-238
 
+    // https://pubchem.ncbi.nlm.nih.gov/compound/Plutonium-239
+    Sciantix_variables[171] *= Sciantix_variables[40] * Sciantix_variables[177] * 6.022e24 * 0.882 / 238; // Pu-238
+	Sciantix_variables[172] *= Sciantix_variables[40] * Sciantix_variables[177] * 6.022e24 * 0.882 / 239; // Pu-239
+	Sciantix_variables[173] *= Sciantix_variables[40] * Sciantix_variables[177] * 6.022e24 * 0.882 / 240; // Pu-240
+	Sciantix_variables[174] *= Sciantix_variables[40] * Sciantix_variables[177] * 6.022e24 * 0.882 / 241; // Pu-241
+	Sciantix_variables[175] *= Sciantix_variables[40] * Sciantix_variables[177] * 6.022e24 * 0.882 / 242; // Pu-242
+
+
 	// Intragranular similarity ratio
 	Sciantix_variables[64] = 1.0;
 

@@ -137,28 +137,39 @@ Matrix MOX(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
 
     matrix_.setName("MOX");
     matrix_.setRef("\n\t");
-    // matrix_.setInitialUraniumComposition({ 
-       // double(sciantix_variable["U234"].getFinalValue()),
-       // double(sciantix_variable["U235"].getFinalValue()),
-       // double(sciantix_variable["U236"].getFinalValue()),
-       // double(sciantix_variable["U237"].getFinalValue()),
-        // double(sciantix_variable["U238"].getFinalValue())
-    // });
-    // matrix_.setInitialPlutoniumComposition({
-        // double(sciantix_variable["Pu238"].getFinalValue()),
-        // double(sciantix_variable["Pu239"].getFinalValue()),
-        // double(sciantix_variable["Pu240"].getFinalValue()),
-        // double(sciantix_variable["Pu241"].getFinalValue()),
-        // double(sciantix_variable["Pu242"].getFinalValue())
-    // });
 
-    // arricchimento Pu
-    // matrix_.setMoxPuEnrichment(sciantix_variable["MOX PuO2 percentage"].getFinalValue());
+    
+    double q = sciantix_variable["q"].getFinalValue(); // q ratio (Olander, 1976) defines MOX composition
 
-     // densità teorica [kg/m3], formula presa dal codice originale
-    matrix_.setTheoreticalDensity(10960.0 + 490 * 0.20); /// 20% PuO2 (kg/m3)
+    // Pu and U fractions from q = Pu / (U + Pu)
+    double Pu_fraction = q; // mole fraction of Pu
+    double U_fraction  = 1.0 - q; // mole fraction of U
 
-    // parametri microstrutturali / termici
+
+    // isotopic composition
+    matrix_.setInitialUraniumComposition({ 
+        U_fraction * double(sciantix_variable["U234"].getFinalValue()),
+        U_fraction * double(sciantix_variable["U235"].getFinalValue()),
+        U_fraction * double(sciantix_variable["U236"].getFinalValue()),
+        U_fraction * double(sciantix_variable["U237"].getFinalValue()),
+        U_fraction * double(sciantix_variable["U238"].getFinalValue())
+    });
+
+    matrix_.setInitialPlutoniumComposition({
+        Pu_fraction * double(sciantix_variable["Initial composition Pu238"].getFinalValue()),
+        Pu_fraction * double(sciantix_variable["Initial composition Pu239"].getFinalValue()),
+        Pu_fraction * double(sciantix_variable["Initial composition Pu240"].getFinalValue()),
+        Pu_fraction * double(sciantix_variable["Initial composition Pu241"].getFinalValue()),
+        Pu_fraction * double(sciantix_variable["Initial composition Pu242"].getFinalValue())
+    });
+
+     // Pu enrichment (q)
+    matrix_.setMoxPuEnrichment(Pu_fraction);
+
+     // theoretical density [kg/m3], formula from the original code MOX.C
+    matrix_.setTheoreticalDensity(10960.0 + 490 * 0.20); // 20% PuO2 (kg/m3)
+
+    // microstructural and thermal parameters
     matrix_.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);
     matrix_.setSurfaceTension(0.626); // N/m (reference Kitano)
     matrix_.setFissionFragmentInfluenceRadius(1.0e-9); // m
@@ -169,17 +180,17 @@ Matrix MOX(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
     matrix_.setGrainBoundaryThickness(5.0e-10); // m
     matrix_.setLenticularShapeFactor(0.168610764); // function
 
-    // lattice parameter: converto in metri
-    // formula originale: 5.47 - 0.074 * enrichment  [Å]
+    // lattice parameter: convertion in [m]
+    // original formula: 5.47 - 0.074 * enrichment  [Å]
     matrix_.setLatticeParameter(5.47e-10 - 0.074e-10 * 0.20); // 20% PuO2 (m)
 
     matrix_.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue()); // m
-    matrix_.setHealingTemperatureThreshold((2744.0 + 273.15) / 2.0); // K (come nel codice originario: half of the melting temperature by now)
+    matrix_.setHealingTemperatureThreshold((2744.0 + 273.15) / 2.0); // K (as original code: half of the melting temperature by now)
 
-    // diffusività vacanze al bordo di grano (aggiornato con history_variable)
+    // grain boundary vacancy diffusivity (updated with history_variable)
     matrix_.setGrainBoundaryVacancyDiffusivity(int(input_variable["iGrainBoundaryVacancyDiffusivity"].getValue()), history_variable); // m2/s
 
-    // pori (uso le versioni aggiornate come in UO2)
+    // pores (using the updated versions as in UO₂)
     matrix_.setPoreNucleationRate(sciantix_variable);
     matrix_.setPoreResolutionRate(sciantix_variable, history_variable);
     matrix_.setPoreTrappingRate(matrices, sciantix_variable);

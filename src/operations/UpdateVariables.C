@@ -145,6 +145,12 @@ std::map<int, std::string> update_sciantix_variable = {
     {161,"Uranium content"},
     {162,"Oxygen content"},
     {170,"Initial grain radius"},
+    {171,"Initial composition Pu238"},
+    {172,"Initial composition Pu239"},
+    {173,"Initial composition Pu240"},
+    {174,"Initial composition Pu241"},
+    {175,"Initial composition Pu242"},
+    {177,"q"},
 };
 
 std::map<int, std::string> updateThermochemistryVariable()
