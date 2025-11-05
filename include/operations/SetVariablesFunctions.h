@@ -249,6 +249,15 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("U237", "(at/m3)", Sciantix_variables[44], Sciantix_variables[44], 0),
         SciantixVariable("U238", "(at/m3)", Sciantix_variables[45], Sciantix_variables[45], 1),
 
+        // MOX Pu composition and ratio
+        SciantixVariable("Initial composition Pu238", "(at/m3)", Sciantix_variables[171], Sciantix_variables[171], 1),
+        SciantixVariable("Initial composition Pu239", "(at/m3)", Sciantix_variables[172], Sciantix_variables[172], 1),
+        SciantixVariable("Initial composition Pu240", "(at/m3)", Sciantix_variables[173], Sciantix_variables[173], 1),
+        SciantixVariable("Initial composition Pu241", "(at/m3)", Sciantix_variables[174], Sciantix_variables[174], 1),
+        SciantixVariable("Initial composition Pu242", "(at/m3)", Sciantix_variables[175], Sciantix_variables[175], 1),
+        SciantixVariable("q", "(-)", Sciantix_variables[177], Sciantix_variables[177], 1),
+
+
         SciantixVariable("Intergranular vented fraction", "(/)", Sciantix_variables[46], Sciantix_variables[46], toOutputVenting),
         SciantixVariable("Intergranular venting probability", "(/)", Sciantix_variables[47], Sciantix_variables[47], toOutputVenting),
         
