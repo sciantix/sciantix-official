@@ -231,11 +231,11 @@ void InputReading(
 		Sciantix_variables[150] = ReadOneParameter("Chromium content", input_initial_conditions, input_check);
 
 		// Initial Pu composition
-		Sciantix_variables[171] = ReadOneParameter("Initial composition Pu238", input_initial_conditions, input_check);
-		Sciantix_variables[172] = ReadOneParameter("Initial composition Pu239", input_initial_conditions, input_check);
-		Sciantix_variables[173] = ReadOneParameter("Initial composition Pu240", input_initial_conditions, input_check);
-		Sciantix_variables[174] = ReadOneParameter("Initial composition Pu241", input_initial_conditions, input_check);
-		Sciantix_variables[175] = ReadOneParameter("Initial composition Pu242", input_initial_conditions, input_check);
+		Sciantix_variables[171] = ReadOneParameter("Pu238", input_initial_conditions, input_check);
+		Sciantix_variables[172] = ReadOneParameter("Pu239", input_initial_conditions, input_check);
+		Sciantix_variables[173] = ReadOneParameter("Pu240", input_initial_conditions, input_check);
+		Sciantix_variables[174] = ReadOneParameter("Pu241", input_initial_conditions, input_check);
+		Sciantix_variables[175] = ReadOneParameter("Pu242", input_initial_conditions, input_check);
 	
 		Sciantix_variables[177] = ReadOneParameter("q", input_initial_conditions, input_check);
 	}
