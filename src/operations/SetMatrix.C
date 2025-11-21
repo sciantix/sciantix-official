@@ -156,11 +156,11 @@ Matrix MOX(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
     });
 
     matrix_.setInitialPlutoniumComposition({
-        Pu_fraction * double(sciantix_variable["Initial composition Pu238"].getFinalValue()),
-        Pu_fraction * double(sciantix_variable["Initial composition Pu239"].getFinalValue()),
-        Pu_fraction * double(sciantix_variable["Initial composition Pu240"].getFinalValue()),
-        Pu_fraction * double(sciantix_variable["Initial composition Pu241"].getFinalValue()),
-        Pu_fraction * double(sciantix_variable["Initial composition Pu242"].getFinalValue())
+        Pu_fraction * double(sciantix_variable["Pu238"].getFinalValue()),
+        Pu_fraction * double(sciantix_variable["Pu239"].getFinalValue()),
+        Pu_fraction * double(sciantix_variable["Pu240"].getFinalValue()),
+        Pu_fraction * double(sciantix_variable["Pu241"].getFinalValue()),
+        Pu_fraction * double(sciantix_variable["Pu242"].getFinalValue())
     });
 
      // Pu enrichment (q)
