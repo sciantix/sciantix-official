@@ -26,10 +26,132 @@ bool System::getRestructuredMatrix()
     return restructured_matrix;
 }
 
-void System::setYield(double y)
+void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
 {
-    /// Member function to set the (cumulative) yield of the fission gas (at/fiss).
-    yield = y;
+    double q = sciantix_variable["q"].getFinalValue();
+
+    double U234 = sciantix_variable["U234"].getFinalValue();
+    double U235 = sciantix_variable["U235"].getFinalValue();
+    double U236 = sciantix_variable["U236"].getFinalValue();
+    double U237 = sciantix_variable["U237"].getFinalValue();
+    double U238 = sciantix_variable["U238"].getFinalValue();
+
+    double U_tot = U234 + U235 + U236 + U237 + U238;
+    double fU234 = 0.0, fU235 = 0.0, fU236 = 0.0, fU237 = 0.0, fU238 = 0.0;
+    if (U_tot > 0.0)
+    {
+        fU234 = U234 / U_tot;
+        fU235 = U235 / U_tot;
+        fU236 = U236 / U_tot;
+        fU237 = U237 / U_tot;
+        fU238 = U238 / U_tot;
+    }
+
+    double Pu238 = sciantix_variable["Pu238"].getFinalValue();
+    double Pu239 = sciantix_variable["Pu239"].getFinalValue();
+    double Pu240 = sciantix_variable["Pu240"].getFinalValue();
+    double Pu241 = sciantix_variable["Pu241"].getFinalValue();
+    double Pu242 = sciantix_variable["Pu242"].getFinalValue();
+
+    double Pu_tot = Pu238 + Pu239 + Pu240 + Pu241 + Pu242;
+    double fPu238 = 0.0, fPu239 = 0.0, fPu240 = 0.0, fPu241 = 0.0, fPu242 = 0.0;
+    if (Pu_tot > 0.0)
+    {
+        fPu238 = Pu238 / Pu_tot;
+        fPu239 = Pu239 / Pu_tot;
+        fPu240 = Pu240 / Pu_tot;
+        fPu241 = Pu241 / Pu_tot;
+        fPu242 = Pu242 / Pu_tot;
+    }
+
+    // https://www-nds.iaea.org/wimsd/fpyield.htm
+    double YU234 = 0.0, YU235 = 0.0, YU236 = 0.0, YU237 = 0.0, YU238 = 0.0;
+    double YPu238 = 0.0, YPu239 = 0.0, YPu240 = 0.0, YPu241 = 0.0, YPu242 = 0.0;
+
+    std::string gas_name = this->getGasName();
+
+    if (gas_name == "Xe")
+    {
+        // Xe-131
+        YU235  = 2.8973e-02;
+        YU238  = 3.2878e-02;
+        YPu238 = 3.9158e-02;
+        YPu239 = 3.8568e-02;
+        YPu240 = 3.4617e-02;
+        YPu241 = 3.1010e-02;
+        YPu242 = 3.0408e-02;
+    }
+    else if (gas_name == "Kr")
+    {
+        // Kr-83
+        YU235  = 5.3558e-03;
+        YU238  = 3.9366e-03;
+        YPu238 = 3.7834e-03;
+        YPu239 = 2.9713e-03;
+        YPu240 = 2.3321e-03;
+        YPu241 = 2.0129e-03;
+        YPu242 = 1.7261e-03;
+    }
+    else if (gas_name == "Cs")
+    {
+        // Cs-137
+        YU235  = 6.3429e-02;
+        YU238  = 6.2259e-02;
+        YPu238 = 6.5790e-02;
+        YPu239 = 6.7092e-02;
+        YPu240 = 6.6973e-02;
+        YPu241 = 6.8184e-02;
+        YPu242 = 6.5203e-02;
+    }
+    else if (gas_name == "I")
+    {
+        // I-135
+        YU235  = 6.2900e-02;
+        YU238  = 7.0147e-02;
+        YPu238 = 5.7400e-02;
+        YPu239 = 6.5354e-02;
+        YPu240 = 6.8468e-02;
+        YPu241 = 6.9543e-02;
+        YPu242 = 6.9520e-02;
+    }
+    else if (gas_name == "Te")
+    {
+        // Te-127
+        YU235  = 2.8043e-04;
+        YU238  = 2.3883e-04;
+        YPu238 = 6.4669e-04;
+        YPu239 = 8.8600e-04;
+        YPu240 = 6.9736e-04;
+        YPu241 = 4.0693e-04;
+        YPu242 = 4.6932e-04;
+    }
+    else if (gas_name == "He")
+    {
+        // indipendent from q
+        yield = 0.0022;
+        return;
+    }
+    else if (gas_name == "Xe133")
+    {
+        yield = 0.066534;
+        return;
+    }
+    else if (gas_name == "Kr85m")
+    {
+        yield = 0.013027;
+        return;
+    }
+    else
+    {
+        return;
+    }
+
+    double Y_U_mean  = fU234 * YU234 + fU235 * YU235 + fU236 * YU236 + fU237 * YU237 + fU238 * YU238;
+    double Y_Pu_mean = fPu238 * YPu238 + fPu239 * YPu239 + fPu240 * YPu240 + fPu241 * YPu241 + fPu242 * YPu242;
+
+    double Y_eff = (1.0 - q) * Y_U_mean + q * Y_Pu_mean;
+
+    yield = Y_eff;
 }
 
 double System::getYield()
@@ -37,6 +159,7 @@ double System::getYield()
     /// Member function to get the (cumulative) yield of the fission gas (at/fiss).
     return yield;
 }
+
 
 void System::setRadiusInLattice(double r)
 {
