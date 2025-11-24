@@ -63,7 +63,7 @@ System Xe_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Xe"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.24);
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(0.21e-9); // (m), from experimental data, assumed equal for Xe and Kr
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -86,7 +86,7 @@ System Xe_in_UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
     system_.setGas(gas["Xe"]);
     system_.setMatrix(matrices["UO2HBS"]);
     system_.setRestructuredMatrix(1);
-    system_.setYield(0.24);
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2HBS"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -109,7 +109,7 @@ System Kr_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Kr"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.03);
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -133,7 +133,7 @@ System He_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setMatrix(matrices["UO2"]);
     system_.setHenryConstant(4.1e+18 * exp(-7543.5 / history_variable["Temperature"].getFinalValue())); /// The Henry's constant for helium in UO<sub>2</sub>-single crystal samples is set from best estimate correlation after @ref *L. Cognini et al. Nuclear Engineering and Design 340 (2018) 240–244*. This correlation is valid in the temperature range 1073-1773 K.
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.0022); // from ternary fissions
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(4.73e-11);
     system_.setVolumeInLattice(matrices["UO2"].getOctahedralInterstitialSite());
     system_.setHeliumDiffusivity(int(input_variable["iHeDiffusivity"].getValue()), history_variable);
@@ -155,7 +155,7 @@ System Xe133_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
     system_.setGas(gas["Xe133"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.066534); // from JEFF-3.3 library
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(0.21e-9); // (m), number from experimental results, assumed equal for Xe and Kr
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -178,7 +178,7 @@ System Kr85m_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
     system_.setGas(gas["Kr85m"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.013027);
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -201,10 +201,7 @@ System Cs_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Cs"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    //system_.setYield(0.15); //JEFF 3.1 data +  TRANSURANUS
-    system_.setYield(0.07);
-    //system_.setYield(6.227860e-02 + 6.765883e-2/(1+1.90e-22*3e13/1.52e-6) + 6.723289e-2/(1+2.72e-18*3e13/2.09e-5)); // from TRANSURANUS 
-    //system_.setYield(0.226); //Cs+Rb by Olander 1976 for fast spectrum
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -227,9 +224,7 @@ System I_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sciant
     system_.setGas(gas["I"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.04); //JEFF 3.1 data
-    //system_.setYield(0.001241+0.008137+0.02921); //sum of cumulative fission yield of I129, I131, I127
-    //system_.setYield(0.012); //I+Te by Olander 1976 for fast spectrum
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -252,7 +247,7 @@ System Te_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Te"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.03); //JEFF 3.1 data
+    system_.setYield(sciantix_variable);
     //system_.setYield(0.001241+0.008137+0.02921); //sum of cumulative fission yield of I129, I131, I127
     //system_.setYield(0.012); //I+Te by Olander 1976 for fast spectrum
     system_.setRadiusInLattice(0.21e-9);
@@ -279,7 +274,7 @@ System Xe_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Xe"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.24); // JEFF-3.3; similar values for ²³⁵U and ²³⁹Pu
+    system_.setYield(sciantix_variable); 
     system_.setRadiusInLattice(0.21e-9); // (m), from experimental data, assumed equal for Xe and Kr, equal to UO2
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0); // Rest, 1992; Walker, 1977 for Xe and Kr typical value is 10^-7
@@ -302,7 +297,7 @@ System Kr_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Kr"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.03); // JEFF-3.3.
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(0.21e-9); // (m), from experimental data, assumed equal for Xe and Kr, equal to UO2
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0); // Rest, 1992; Walker, 1977 for Xe and Kr typical value is 10^-7
@@ -326,7 +321,7 @@ System He_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setMatrix(matrices["MOX"]);
     system_.setHenryConstant(4.1e+18 * exp(-7543.5 / history_variable["Temperature"].getFinalValue())); // from Matzke, JNM 65 (1977) 89-106, correlation used for UO2 and MOX
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.0022); // from ternary fissions, indipendent from the type of matrix
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(4.73e-11); // (m), value of UO₂, valid also for MOX
     system_.setVolumeInLattice(matrices["MOX"].getOctahedralInterstitialSite());
     system_.setHeliumDiffusivity(int(input_variable["iHeDiffusivity"].getValue()), history_variable);
@@ -348,7 +343,7 @@ System Xe133_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
     system_.setGas(gas["Xe133"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.066534); // reference value from JEFF-3.3
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(0.21e-9); // (m), from experimental data, assumed equal for Xe and Kr, equal to UO2
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0); // Rest, 1992; Walker, 1977 for Xe and Kr typical value is 10^-7
@@ -371,7 +366,7 @@ System Kr85m_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
     system_.setGas(gas["Kr85m"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.013027); // from UO₂, as initial guess
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(0.21e-9); // (m), from experimental data, assumed equal for Xe and Kr, equal to UO2
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0); // Rest, 1992; Walker, 1977 for Xe and Kr typical value is 10^-7
@@ -394,7 +389,7 @@ System Cs_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Cs"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.0665); // from JEFF-3.3; similar for ²³⁵U and ²³⁹Pu fission (MOX)
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -417,7 +412,7 @@ System I_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sciant
     system_.setGas(gas["I"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.03); // JEFF-3.3; ENDF/B-VIII; NEA 2019
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -440,7 +435,7 @@ System Te_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Te"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.04); // JEFF-3.3; ENDF/B-VIII; NEA 2019
+    system_.setYield(sciantix_variable);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);

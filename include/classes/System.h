@@ -75,7 +75,7 @@ public:
      * @brief Sets the cumulative yield of the fission gas.
      * @param y Yield to set (atoms per fission).
      */
-    void setYield(double y);
+    void setYield(SciantixArray<SciantixVariable> &sciantix_variable);
 
     /**
      * @brief Gets the cumulative yield of the fission gas.
