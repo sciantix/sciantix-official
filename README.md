@@ -1,5 +1,9 @@
 # SCIANTIX
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17748425.svg)](https://doi.org/10.5281/zenodo.17748425)
+![CI](https://github.com/sciantix/sciantix-official/actions/workflows/ci.yml/badge.svg)
+![codeql](https://github.com/sciantix/sciantix-official/actions/workflows/codeql.yml/badge.svg)
+![paper build](https://github.com/sciantix/sciantix-official/actions/workflows/paper.yml/badge.svg)
+
 
 SCIANTIX is a 0D simulation code developed at Politecnico di Milano, designed to model the behavior of a single grain of nuclear fuel, with a particular focus on fission gas behavior. The code primarily uses physics-based models, which enhances the integration of lower-length scale calculations and improves accuracy over empirical models. The engineering models facilitate the code integration into industrial fuel performance codes.
 
@@ -18,7 +22,7 @@ Recommended requirements:
 
 - C++17 compatible compiler (tested: GCC ≥ 9, Clang ≥ 10)
 - CMake ≥ 3.6
-- Linux, WSL, or Mac OS
+- Ubuntu ≥ 20.04, MacOS Ventura, Windows 10/11 via WSL2 (tested)
 
 ## Linux Installation
 
@@ -98,6 +102,7 @@ Please cite SCIANTIX using the Zenodo DOI associated with the v2.2.1 release:
 ```
 
 We also encourage citing the scientific publications associated with SCIANTIX, listed below and in `references/references.md`, when relevant.
+Citation metadata is also available in the `CITATION.cff` file.
 
 # Theory and References
 
