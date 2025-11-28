@@ -2,13 +2,13 @@
 # Test 1: compiling the source code and building the executable
 # Test 2: performing the regression tests.
 
-name: Python application test
+name: Build and Regression Tests
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "joss_paper" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "joss_paper" ]
 
 jobs:
   build:
@@ -45,8 +45,8 @@ jobs:
           name: compiled-build
           path: ./build
 
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: 3.8
 
