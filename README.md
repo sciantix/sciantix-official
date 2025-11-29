@@ -1,9 +1,10 @@
 # SCIANTIX
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17748425.svg)](https://doi.org/10.5281/zenodo.17748425)
-![CI](https://github.com/sciantix/sciantix-official/actions/workflows/ci.yml/badge.svg)
+![Build](https://github.com/sciantix/sciantix-official/actions/workflows/build.yml/badge.svg)
+![Tests](https://github.com/sciantix/sciantix-official/actions/workflows/test.yml/badge.svg)
+
 ![codeql](https://github.com/sciantix/sciantix-official/actions/workflows/codeql.yml/badge.svg)
 ![paper build](https://github.com/sciantix/sciantix-official/actions/workflows/paper.yml/badge.svg)
-
 
 SCIANTIX is a 0D simulation code developed at Politecnico di Milano, designed to model the behavior of a single grain of nuclear fuel, with a particular focus on fission gas behavior. The code primarily uses physics-based models, which enhances the integration of lower-length scale calculations and improves accuracy over empirical models. The engineering models facilitate the code integration into industrial fuel performance codes.
 
