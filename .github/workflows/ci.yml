@@ -1,0 +1,57 @@
+name: Build and regression tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build SCIANTIX
+        run: |
+          echo "Compiling SCIANTIX"
+          mkdir build
+          cd build
+          cmake ..
+          make -j
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sciantix-build
+          path: build
+
+  regression:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: sciantix-build
+          path: build
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.8"
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy matplotlib scipy scikit-learn
+
+      - name: Run regression tests
+        run: |
+          chmod +x build/sciantix.x
+          cd regression
+          python3 regression.py
