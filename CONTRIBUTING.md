@@ -13,17 +13,16 @@ Please include:
 
 ## Development workflow
 1. Fork the repository.
-2. Create a feature branch:
+2. Create a new branch:
 ```
 
-git checkout -b feature_name
+git checkout -b new_name
 
 ```
-3. Make your changes with clear, focused commits.
+3. Make your changes with clear commits.
 4. Ensure that:
 - the code compiles,
-- regression tests pass,
-- new behaviour is covered by tests.
+- regression tests pass or new behaviour is covered by tests.
 5. Open a Pull Request against `main`.
 
 ## Coding style
@@ -37,11 +36,9 @@ Before submitting a PR, run:
 
 ```
 
-python regression/run_regression.py
+python regression/regression.py
 
 ```
-
-All tests must pass.
 
 ## Documentation
 Any new model, variable or option must be documented in:
