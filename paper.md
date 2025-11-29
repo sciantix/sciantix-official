@@ -16,9 +16,9 @@ authors:
     affiliation: 1
   - name: Aya Zayat
     affiliation: 1
-  - name: Davide Pizzocri
-    affiliation: 1
   - name: Lelio Luzzi
+    affiliation: 1
+  - name: Davide Pizzocri
     affiliation: 1
 
 affiliations:
@@ -30,64 +30,48 @@ bibliography: paper.bib
 ---
 
 # Summary
-
-SCIANTIX is an open-source meso-scale code for the behaviour of gaseous fission products in nuclear fuel. It models the evolution of fission gas atoms and bubbles from the intra-granular scale to the grain boundaries, as well as helium and high-burnup structure (HBS) porosity. The code is written in modern C++ and is designed as a stand-alone 0D grain-scale solver that can be coupled to thermo-mechanical fuel performance codes.
-
-The code implements physics-based models for intra-granular diffusion, trapping and resolution, grain-boundary saturation and venting, bubble growth and coalescence, and HBS porosity formation. These models are validated against dedicated separate-effect experiments and integral rod tests. SCIANTIX has been applied in multiple research and industrial projects and has been coupled with fuel performance codes for light water reactor and fast reactor conditions [@Pizzocri2020; @Zullo2023; @Zullo2024].
+SCIANTIX is an open-source multi-scale code for modelling fission gas behaviour in oxide nuclear fuel, together with the relevant microstructural phenomena. The code behaves as a 0D meso-scale solver implementing physics-based rate-theory models, designed to be either a stand-alone tool for separate-effect calculations or a module embedded in engineering thermo-mechanical fuel performance codes (FPCs). Compared with empirical approaches used in FPCs, SCIANTIX solves evolutionary equations for stable and radioactive intra-granular gas diffusion, trapping, re-solution, grain-boundary bubble evolution, diffusional and burst release, helium behaviour and high-burnup structure (HBS) porosity. The code adopts verified numerical solvers and includes a regression suite to ensure reproducibility.
 
 # Statement of need
+Engineering FPCs typically rely on empirical correlations for modelling fission gas release and gaseous swelling. The underlying physical processes are commonly described using classical rate-theory formulations [@Forsberg1985a; @Forsberg1985b], which are often simplified in engineering codes for robustness and computational speed. These implementations are usually calibrated for specific datasets or reactor conditions and are rarely available as open-source software, limiting reproducibility and research efforts for new fuel designs or irradiation scenarios.
 
-Fuel performance codes used by industry, research laboratories and safety authorities require models for fission gas release, swelling, helium behaviour and porosity that are numerically verified and validated against experimental data. Conventional industrial tools rely on semi-empirical correlations applicable to standard datasets, limiting their predictive capability when exploring new conditions such as high burnup, different microstructures, or alternative fuel and cladding materials.
-
-The behaviour of fission gas in nuclear fuel has traditionally been described using simplified correlations implemented in engineering codes. These approaches typically build upon classical rate-theory formulations [@Forsberg1985a; @Forsberg1985b] but introduce simplifications for robustness and computational speed.
-
-SCIANTIX addresses this gap by providing:
-
-- a dedicated, modular meso-scale solver independent of any specific fuel performance code;
-- physics-based models for fission gas, helium and HBS behaviour, rooted in established rate-theory formulations;
-- a clear C++ API suitable for integration into external thermo-mechanical solvers;
-- a regression test suite and a separate-effect validation database ensuring reproducibility.
-
-The primary users of SCIANTIX are developers of fuel performance tools and researchers working on nuclear fuel behaviour who require a transparent and physically based meso-scale description of fission gas evolution.
+SCIANTIX addresses these limitations by providing:
+1. An open-source physics-based meso-scale module, independent of any specific FPC [@Pizzocri2020].
+2. A modular C++ architecture enabling extensions and direct coupling to external multi-physics solvers [@Zullo2023].
+3. Numerical verification through the Method of Manufactured Solutions (MMS) for all employed solvers.
+4. A regression testing suite, covering intra-/inter-granular swelling, HBS porosity, helium and radioactive gas release.
+5. A clear API, already used for online coupling with FPCs such as TRANSURANUS, FRAPCON/FRAPTRAN and OFFBEAT [@Zullo2024].
 
 # Software description
 
 ## Implementation
-
-SCIANTIX is implemented in modern C++ with an object-oriented architecture. The code is organised into core model classes, numerical routines, input/output utilities and a stand-alone driver. The build system uses CMake. The repository includes:
-
-- the SCIANTIX library and stand-alone executable (`sciantix.x`);
-- a complete regression test suite with reference outputs;
-- documentation generated via Doxygen;
-- examples and utilities for generating input and analysing output.
+The SCIANTIX 2.0 architecture adopts:
+* Object-oriented structure (matrix, gas, systems, models and solvers as independent classes).
+* Solver–model separation, enabling independent MMS verification and separate-effect model validations.
+* Spectral diffusion solver, providing a meshless method with controlled numerical error for Booth-type diffusion problems.
+* First-order L-stable implicit time integrators.
+* Segregated operator-splitting scheme, ensuring CPU-time compatibility with online coupling to engineering-scale codes.
 
 ## Functionality
-
-SCIANTIX adopts a 0D rate-theory approach, advancing internal state variables at each timestep to describe:
-
-- intra-granular fission gas atoms, trapping and resolution;
-- inter-granular saturation and release;
-- bubble growth, coalescence and swelling;
-- HBS porosity evolution;
-- helium behaviour under irradiation and annealing.
-
-SCIANTIX can run as a stand-alone solver or be embedded in an external code through its C++ API.
+SCIANTIX models:
+* intra-granular diffusion, trapping and irradiation-induced re-solution;
+* nucleation and growth of intra-granular bubbles;
+* grain-boundary bubble growth, coalescence, saturation and burst release;
+* HBS formation and porosity evolution;
+* helium diffusion, solubility, trapping and thermal re-solution;
+* release of short-lived radioactive fission gases (diffusion–decay with first-precursor enhancement).
 
 # Verification and Validation
+The numerical solvers are verified using the Method of Manufactured Solutions [@Oberkampf2004; @Zullo2022], with verification tests available in the repository. Separate-effect validation reproduces the datasets used in the SCIANTIX publications [@Pizzocri2020; @Zullo2023], without parameter tuning and using published models and parameters.
 
-The code has been validated against a dedicated database of experiments and integral tests, covering:
-
-- intra- and inter-granular swelling;
-- fission gas release in steady and transient conditions;
-- helium annealing tests;
-- HBS porosity and bubble size distribution measurements.
-
-In addition to validation, SCIANTIX undergoes numerical verification through the Method of Manufactured Solutions [@Oberkampf2004], together with regression tests ensuring that solutions remain consistent under refactoring.
-
-The repository provides a full regression suite that reproduces the published validation database, allowing users to verify correctness and reproducibility. SCIANTIX has been used in multiple European research projects and coupled to fuel performance codes [@Pizzocri2020; @Zullo2023; @Zullo2024].
+# Research efforts and ongoing developments
+SCIANTIX is continuously developed within international research projects. Current development directions include:
+* digital-twin workflows, where SCIANTIX provides fast physics-based evaluations of He behaviour for real-time monitoring;
+* reduced-order models (ROMs) enabling fast surrogate modelling of complex multi-scale phenomena (e.g., diffusion in non-spherical geometries);
+* machine-learning assisted developments, including Gaussian Process regression for automatic correlation update;
+* generalisation to volatile fission products, including thermo-chemical evaluations.
 
 # Acknowledgements
-
-The authors acknowledge contributions from collaborators providing experimental data, validation and feedback during development.
+The authors acknowledge contributions from collaborators providing feedback and support during development.
 
 # References
