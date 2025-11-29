@@ -6,20 +6,6 @@ version: "2.2.1"
 doi: "10.5281/zenodo.17748425"
 date-released: "2025-11-28"
 
-authors:
-  - family-names: "Zullo"
-    given-names: "Giovanni"
-  - family-names: "Cappellari"
-    given-names: "Elisa"
-  - family-names: "Nicodemo"
-    given-names: "Giovanni"
-  - family-names: "Aya"
-    given-names: "Zayat"
-  - family-names: "Pizzocri"
-    given-names: "Davide"
-  - family-names: "Luzzi"
-    given-names: "Lelio"
-
 references:
   - type: article
     authors:
