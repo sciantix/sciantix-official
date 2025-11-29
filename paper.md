@@ -8,6 +8,8 @@ tags:
   - mesoscale modelling
 
 authors:
+  - name: Davide Pizzocri
+    affiliation: 1
   - name: Giovanni Zullo
     affiliation: 1
   - name: Elisa Cappellari
@@ -17,8 +19,6 @@ authors:
   - name: Aya Zayat
     affiliation: 1
   - name: Lelio Luzzi
-    affiliation: 1
-  - name: Davide Pizzocri
     affiliation: 1
 
 affiliations:
