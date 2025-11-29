@@ -7,6 +7,10 @@ on:
       - "paper.bib"
       - ".github/workflows/paper.yml"
   pull_request:
+    paths:
+      - "paper.md"
+      - "paper.bib"
+      - ".github/workflows/paper.yml"
 
 jobs:
   paper:
@@ -23,8 +27,11 @@ jobs:
           journal: joss
           paper-path: paper.md
 
+      - name: List generated files
+        run: ls -R .
+
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v4
         with:
           name: joss-paper
-          path: paper.pdf
+          path: paper/paper.pdf
