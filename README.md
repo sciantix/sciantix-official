@@ -91,7 +91,6 @@ Please cite SCIANTIX using the Zenodo DOI associated with the v2.2.1 release:
 ### BibTeX
 ```bibtex
 @software{SCIANTIX_2024,
-  author       = {Zullo, Giovanni and Cappellari, Elisa and Nicodemo, Giovanni and Pizzocri, Davide and Luzzi, Lelio},
   title        = {SCIANTIX},
   year         = {2024},
   publisher    = {Zenodo},
