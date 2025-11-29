@@ -1,8 +1,6 @@
 # SCIANTIX
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17748425.svg)](https://doi.org/10.5281/zenodo.17748425)
-![Build](https://github.com/sciantix/sciantix-official/actions/workflows/build.yml/badge.svg)
-![Tests](https://github.com/sciantix/sciantix-official/actions/workflows/test.yml/badge.svg)
-
+![CI](https://github.com/sciantix/sciantix-official/actions/workflows/ci.yml/badge.svg)
 ![codeql](https://github.com/sciantix/sciantix-official/actions/workflows/codeql.yml/badge.svg)
 ![paper build](https://github.com/sciantix/sciantix-official/actions/workflows/paper.yml/badge.svg)
 
