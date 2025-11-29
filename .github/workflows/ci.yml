@@ -1,14 +1,33 @@
-name: Regression tests
+name: Build and regression tests
 
 on:
-  workflow_run:
-    workflows: ["Build SCIANTIX"]
-    types:
-      - completed
+  push:
+  pull_request:
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build SCIANTIX
+        run: |
+          echo "Compiling SCIANTIX"
+          mkdir build
+          cd build
+          cmake ..
+          make -j
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sciantix-build
+          path: build
+
   regression:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
@@ -24,9 +43,9 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.8'
+          python-version: "3.8"
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install numpy matplotlib scipy scikit-learn
