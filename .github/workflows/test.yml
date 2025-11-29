@@ -3,6 +3,7 @@ name: Regression tests
 on:
   push:
   pull_request:
+  
   workflow_run:
     workflows: [ "Build SCIANTIX" ]
     types:
