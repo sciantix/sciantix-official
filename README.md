@@ -1,4 +1,8 @@
 # SCIANTIX
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17748425.svg)](https://doi.org/10.5281/zenodo.17748425)
+![CI](https://github.com/sciantix/sciantix-official/actions/workflows/ci.yml/badge.svg)
+![codeql](https://github.com/sciantix/sciantix-official/actions/workflows/codeql.yml/badge.svg)
+![paper](https://github.com/sciantix/sciantix-official/actions/workflows/paper.yml/badge.svg)
 
 SCIANTIX is a 0D simulation code developed at Politecnico di Milano, designed to model the behavior of a single grain of nuclear fuel, with a particular focus on fission gas behavior. The code primarily uses physics-based models, which enhances the integration of lower-length scale calculations and improves accuracy over empirical models. The engineering models facilitate the code integration into industrial fuel performance codes.
 
@@ -12,6 +16,12 @@ Currently, SCIANTIX is validated against experimental data for the following phe
 The validation database is available in the `regression` folder.
 
 # Installation
+
+Recommended requirements:
+
+- C++17 compatible compiler (tested: GCC ≥ 9, Clang ≥ 10)
+- CMake ≥ 3.6
+- Ubuntu ≥ 20.04, MacOS Ventura, Windows 10/11 via WSL2 (tested)
 
 ## Linux Installation
 
@@ -39,7 +49,7 @@ The recommended approach for Windows users is to use the [Windows Subsystem for 
    - Proceed with the Linux installation steps starting from step 2.
 
 # Coupling with fuel performance codes
-The code can be coupled with thermo-mechanical fuel performance codes (<a href="https://www.sciencedirect.com/science/article/pii/S0022311524004070" target="_blank">Zullo G. et al (2024). Journal of Nuclear Materials, 601, 155305.</a>). Here, it is detailed that the code can be compiled as a static library and coupled with TRANSURANUS (currently at version v1m1j24) distributed by JRC-EC Karlsruhe To generate SCIANTIX as a static libray, in the build folder:
+The code can be coupled with thermo-mechanical fuel performance codes (<a href="https://www.sciencedirect.com/science/article/pii/S0022311524004070" target="_blank">Zullo G. et al (2024). Journal of Nuclear Materials, 601, 155305.</a>). Here, it is detailed that the code can be compiled as a static library and coupled with TRANSURANUS, distributed by JRC-EC Karlsruhe. To generate SCIANTIX as a static library, in the build folder:
 
    - Generate the Makefile with CMake: `cmake -DCOUPLING_TU=ON ..`
    - Compile the code: `make` (or `make -j`)
@@ -74,34 +84,70 @@ python3 regression.py
 
 To generate the code documentation, run `doxygen` in the root directory of the code. The Doxygen software can be installed, e.g., on Linux systems, with `sudo apt install doxygen`.
 
+# How to cite
+
+Please cite SCIANTIX using the Zenodo DOI associated with the v2.2.1 release:
+
+### BibTeX
+```bibtex
+@software{SCIANTIX_2024,
+  author       = {Zullo, Giovanni and Cappellari, Elisa and Nicodemo, Giovanni and Pizzocri, Davide and Luzzi, Lelio},
+  title        = {SCIANTIX},
+  year         = {2024},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.17748425},
+  url          = {https://doi.org/10.5281/zenodo.17748425}
+}
+```
+
+We also encourage citing the scientific publications associated with SCIANTIX, listed below and in `references/references.md`, when relevant.
+Citation metadata is also available in the `CITATION.cff` file.
+
 # Theory and References
 
 For a deeper understanding of the SCIANTIX code and its underlying models, refer to the following publications:
 
 - [Zullo G. et al. (2023). Journal of Nuclear Materials, 587, 154744.](https://www.sciencedirect.com/science/article/pii/S0022311523005111)
 
-  ```
-  G. Zullo, D. Pizzocri, L. Luzzi,
-  The SCIANTIX code for fission gas behaviour: Status, upgrades, separate-effect validation, and future developments,
-  Journal of Nuclear Materials,
-  Volume 587,
-  2023,
-  154744,
-  ISSN 0022-3115,
-  https://doi.org/10.1016/j.jnucmat.2023.154744.
-  (https://www.sciencedirect.com/science/article/pii/S0022311523005111)
-  ```
+```bibtex
+@article{Zullo2023,
+   author    = {Zullo, Giovanni and Pizzocri, Davide and Luzzi, Lelio},
+   title     = {The SCIANTIX code for fission gas behaviour: Status, upgrades, separate-effect validation, and future developments},
+   journal   = {Journal of Nuclear Materials},
+   volume    = {587},
+   pages     = {154744},
+   year      = {2023},
+   issn      = {0022-3115},
+   doi       = {10.1016/j.jnucmat.2023.154744},
+   url       = {https://www.sciencedirect.com/science/article/pii/S0022311523005111}
+   }
+```
 
 - [Pizzocri D. et al. (2020). Journal of Nuclear Materials, 532, 152042.](https://www.sciencedirect.com/science/article/pii/S0022311519313868)
 
-  ```
-  D. Pizzocri, T. Barani, L. Luzzi,
-  SCIANTIX: A new open source multi-scale code for fission gas behaviour modelling designed for nuclear fuel performance codes,
-  Journal of Nuclear Materials,
-  Volume 532,
-  2020,
-  152042,
-  ISSN 0022-3115,
-  https://doi.org/10.1016/j.jnucmat.2020.152042.
-  (https://www.sciencedirect.com/science/article/pii/S0022311519313868)
-  ```
+```bibtex
+@article{Pizzocri2020,
+   author    = {Pizzocri, Davide and Barani, Tommaso and Luzzi, Lelio},
+   title     = {SCIANTIX: A new open source multi-scale code for fission gas behaviour modelling designed for nuclear fuel performance codes},
+   journal   = {Journal of Nuclear Materials},
+   volume    = {532},
+   pages     = {152042},
+   year      = {2020},
+   issn      = {0022-3115},
+   doi       = {10.1016/j.jnucmat.2020.152042},
+   url       = {https://www.sciencedirect.com/science/article/pii/S0022311519313868}
+   }
+```
+
+# Authors
+
+SCIANTIX is developed and maintained by:
+
+- Giovanni Zullo
+- Elisa Cappellari
+- Giovanni Nicodemo
+- Aya Zayat
+- Davide Pizzocri
+- Lelio Luzzi
+
+Politecnico di Milano, Nuclear Engineering Division.

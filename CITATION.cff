@@ -1,0 +1,54 @@
+cff-version: 1.2.0
+message: "If you use SCIANTIX in your research, please cite the software and related publications."
+
+title: "SCIANTIX"
+version: "2.2.1"
+doi: "10.5281/zenodo.17748425"
+date-released: "2025-11-28"
+
+authors:
+  - family-names: "Zullo"
+    given-names: "Giovanni"
+  - family-names: "Cappellari"
+    given-names: "Elisa"
+  - family-names: "Nicodemo"
+    given-names: "Giovanni"
+  - family-names: "Aya"
+    given-names: "Zayat"
+  - family-names: "Pizzocri"
+    given-names: "Davide"
+  - family-names: "Luzzi"
+    given-names: "Lelio"
+
+references:
+  - type: article
+    authors:
+      - family-names: "Zullo"
+        given-names: "Giovanni"
+      - family-names: "Pizzocri"
+        given-names: "Davide"
+      - family-names: "Luzzi"
+        given-names: "Lelio"
+    title: "The SCIANTIX code for fission gas behaviour: Status, upgrades, separate-effect validation, and future developments"
+    year: 2023
+    journal: "Journal of Nuclear Materials"
+    volume: "587"
+    pages: "154744"
+    doi: "10.1016/j.jnucmat.2023.154744"
+    url: "https://www.sciencedirect.com/science/article/pii/S0022311523005111"
+
+  - type: article
+    authors:
+      - family-names: "Pizzocri"
+        given-names: "Davide"
+      - family-names: "Barani"
+        given-names: "Tommaso"
+      - family-names: "Luzzi"
+        given-names: "Lelio"
+    title: "SCIANTIX: A new open source multi-scale code for fission gas behaviour modelling designed for nuclear fuel performance codes"
+    year: 2020
+    journal: "Journal of Nuclear Materials"
+    volume: "532"
+    pages: "152042"
+    doi: "10.1016/j.jnucmat.2020.152042"
+    url: "https://www.sciencedirect.com/science/article/pii/S0022311519313868"
