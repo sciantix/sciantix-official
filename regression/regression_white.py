@@ -578,7 +578,7 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
                 bp_idx = findSciantixVariablePosition(data, "Intergranular bubble pressure (MPa)")
                 pressureplot = True
             except Exception as e:
-                print(f"Error: {e}")
+                # print(f"Error: {e}")
                 pressureplot = False
                 bp_idx = 0
 

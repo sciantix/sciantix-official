@@ -51,9 +51,11 @@ def get_mode_selections():
 
 " ------------------- Main part -------------------"
 def main():
-    shutil.copy("../build/sciantix.x", os.getcwd())
-
     wpath = os.path.dirname(os.path.realpath(__file__))
+    exe_src = os.path.abspath(os.path.join(wpath, "../build/sciantix.x"))
+    exe_dst = os.path.join(wpath, "sciantix.x")
+
+    shutil.copy(exe_src, exe_dst)
     os.chdir(wpath)
 
     folderList = []
