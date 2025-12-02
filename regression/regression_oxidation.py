@@ -93,7 +93,7 @@ def do_plot(time, temperature, stiochiometryDeviation, stiochiometryDeviationDat
   h2, l2 = axT.get_legend_handles_labels()
   ax.legend(h1+h2, l1+l2)
 
-  # plt.savefig(file + ' - Stoichiometry deviation.png')
+  plt.savefig(file + ' - Stoichiometry deviation.png')
   plt.show()
 
 

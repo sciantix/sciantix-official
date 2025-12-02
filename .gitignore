@@ -1,55 +1,91 @@
-# Prerequisites
-*.d
+########################################
+# Generic build artifacts
+########################################
 
-# Compiled Object files
-*.slo
-*.lo
+# Object files
 *.o
 *.obj
+*.lo
+*.slo
 
-# Precompiled Headers
+# Dependency files
+*.d
+
+# Precompiled headers
 *.gch
 *.pch
 
-# Compiled Dynamic libraries
+# Static / shared libraries
+*.a
+*.la
+*.lai
+*.lib
 *.so
 *.dylib
 *.dll
 
-# Fortran module files
+# Fortran modules
 *.mod
 *.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
 
 # Executables
 *.exe
 *.out
 *.app
 *.x
+sciantix.x
 
-# Backup files
-*.bak
 
-# Mac OS files
-*.DS_Store
+########################################
+# CMake
+########################################
 
-#doxygen
-latex
-
-# Folders
-bin/
-obj/
 build/
-out/
-documentation/
+obj/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+Makefile
+
+
+########################################
+# Doxygen & Sphinx generated content
+########################################
+
+docs/build/
+docs/doxygen/
+latex/
+
+
+########################################
+# Python
+########################################
+
+__pycache__/
+*.pyc
+
+
+########################################
+# Editors / IDEs
+########################################
+
 .vscode/
 .vs/
-old_files/
-__pycache__/
-optimization
-GSA_output_files/
+
+
+########################################
+# OS / misc junk
+########################################
+
+*.bak
+.DS_Store
+Testing/
+
+
+########################################
+# Project-specific
+########################################
+
+bin/
+out/
