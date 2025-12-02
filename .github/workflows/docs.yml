@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
+    - name: Checkout repository
       uses: actions/checkout@v4
 
     - name: Set up Python
@@ -17,19 +17,19 @@ jobs:
       with:
         python-version: "3.12"
 
-    - name: Install system deps (Doxygen)
+    - name: Install system dependencies (Doxygen)
       run: |
         sudo apt-get update
         sudo apt-get install -y doxygen
 
-    - name: Install Python deps (Sphinx stack)
+    - name: Install Python dependencies (Sphinx stack)
       run: |
-        pip install --upgrade pip
+        python -m pip install --upgrade pip
         pip install sphinx breathe exhale sphinx_rtd_theme
 
-    - name: Build docs (Sphinx + Doxygen)
-      working-directory: ./docs
-      run: make html
+    - name: Build documentation (Sphinx + Doxygen)
+      run: |
+        sphinx-build -b html docs/source docs/build/html
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
