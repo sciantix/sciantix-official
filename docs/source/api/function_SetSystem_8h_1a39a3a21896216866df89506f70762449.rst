@@ -1,0 +1,14 @@
+.. _exhale_function_SetSystem_8h_1a39a3a21896216866df89506f70762449:
+
+Function He_in_UO2
+==================
+
+- Defined in :ref:`file_include_operations_SetSystem.h`
+
+
+Function Documentation
+----------------------
+
+
+.. doxygenfunction:: He_in_UO2(SciantixArray<Matrix>&, SciantixArray<Gas>&, SciantixArray<InputVariable>&, SciantixArray<SciantixVariable>&, SciantixArray<SciantixVariable>&, SciantixArray<InputVariable>&)
+   :project: SCIANTIX
