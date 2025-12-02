@@ -3,7 +3,7 @@ import argparse
 
 from regression.baker.baker import run_baker
 from regression.cornell.cornell import run_cornell
-
+from regression.white.white import run_white
 
 def run_all_baker(base_path: str = None, mode_gold: int = 0):
     if base_path is None:
@@ -35,6 +35,21 @@ def run_all_cornell(base_path: str = None, mode_gold: int = 0):
     return results
 
 
+def run_all_white(base_path=None, mode_gold=0):
+    if base_path is None:
+        base_path = os.path.join(os.path.dirname(__file__), "white")
+
+    results = []
+    for name in sorted(os.listdir(base_path)):
+        if "White" in name:
+            case_dir = os.path.join(base_path, name)
+            if os.path.isdir(case_dir):
+                print(f"Running White case: {name}")
+                ok = run_white(case_dir, mode_gold)
+                results.append((name, ok))
+    return results
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="SCIANTIX regression test runner"
@@ -53,6 +68,12 @@ def main():
     )
 
     parser.add_argument(
+        "--white",
+        action="store_true",
+        help="run White regression tests"
+    )
+
+    parser.add_argument(
         "--all",
         action="store_true",
         help="run ALL regression tests"
@@ -67,7 +88,7 @@ def main():
 
     args = parser.parse_args()
 
-    if not (args.baker or args.cornell or args.all):
+    if not (args.baker or args.cornell or args.white or args.all):
         args.all = True
 
     results = []
@@ -77,6 +98,9 @@ def main():
 
     if args.cornell or args.all:
         results.extend(run_all_cornell(mode_gold=args.mode_gold))
+
+    if args.white or args.all:
+        results.extend(run_all_white(mode_gold=args.mode_gold))
 
     print("\n=== RESULTS ===")
     for name, ok in results:
