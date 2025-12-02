@@ -62,9 +62,9 @@ def main():
 
     regression_modules = [
         ('Baker', regression_baker),
-        ('Kashibe 1990', regression_kashibe1990),
-        ('Kashibe 1991', regression_kashibe1991),
-        ('Kashibe 1993', regression_kashibe1993),
+        # ('Kashibe 1990', regression_kashibe1990),
+        # ('Kashibe 1991', regression_kashibe1991),
+        # ('Kashibe 1993', regression_kashibe1993),
         ('White', regression_white),
         ('Talip', regression_talip),
         ('CONTACT', regression_contact),
