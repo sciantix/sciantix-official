@@ -6,7 +6,7 @@ extensions = []
 templates_path = ['_templates']
 exclude_patterns = []
 html_theme = 'alabaster'
-html_static_path = ['_static']
+html_static_path = []
 
 import os
 import subprocess
@@ -21,13 +21,25 @@ extensions = [
 
 html_theme = "sphinx_rtd_theme"
 
+# -- Run Doxygen so that Breathe/Exhale can see the XML -----------------
+# Root della repo: docs/source -> .. (docs) -> .. (root)
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+doxyfile = os.path.join(root_dir, "Doxyfile")
+
+if os.path.exists(doxyfile):
+    try:
+        subprocess.check_call(["doxygen", "Doxyfile"], cwd=root_dir)
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(f"Doxygen failed with exit code {e.returncode}")
+else:
+    raise RuntimeError(f"Doxyfile not found at {doxyfile}")
+
 # Breathe config
 breathe_projects = {
     "SCIANTIX": "../doxygen/xml"
 }
 breathe_default_project = "SCIANTIX"
 
-# Exhale config
 exhale_args = {
     "containmentFolder": "./api",
     "rootFileName": "index_api.rst",
@@ -35,12 +47,3 @@ exhale_args = {
     "doxygenStripFromPath": "../..",
     "createTreeView": True,
 }
-
-def run_doxygen(app):
-    if app.builder.name != "html":
-        return
-    root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-    subprocess.check_call(["doxygen", "Doxyfile"], cwd=root_dir)
-
-def setup(app):
-    app.connect("builder-inited", run_doxygen)
