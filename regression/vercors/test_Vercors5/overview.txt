@@ -1,84 +1,57 @@
-Model #0: 	Burnup	The local burnup is calculated from the fission rate density.
-Model #1: 	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
-Model #2: 	Environment composition	Lewis et al. JNM 227 (1995) 83-109, D.R. Olander, Nucl. Technol. 74 (1986) 215.
-Model #3: 	UO2 thermochemistry	Blackburn (1973) J. Nucl. Mater., 46, 244-252.
-Model #4: 	Stoichiometry deviation	
-Model #5: 	High burnup structure formation	: not considered.
-Model #6: 	High burnup structure porosity	not considered
-Model #7: 	Grain growth	Ainscough et al., JNM, 49 (1973) 117-128.
-Model #8: 	Grain-boundary sweeping	Not considered
-Model #9: 	Gas production - Xe in UO2	 
-Model #10: 	Gas production - Kr in UO2	 
-Model #11: 	Gas production - He in UO2	 
-Model #12: 	Gas production - Xe133 in UO2	 
-Model #13: 	Gas production - Kr85m in UO2	 
-Model #14: 	Intragranular bubble evolution	Pizzocri et al., JNM, 502 (2018) 323-330.
-Model #15: 	Gas diffusion - Xe in UO2	
-Model #16: 	Gas diffusion - Kr in UO2	
-Model #17: 	Gas diffusion - He in UO2	
-Model #18: 	Gas diffusion - Xe133 in UO2	
-Model #19: 	Gas diffusion - Kr85m in UO2	
-Model #20: 	Grain-boundary micro-cracking	from Barani et al. (2017), JNM
-Model #21: 	Grain-boundary venting	not considered.
-Model #22: 	Intergranular bubble evolution	: Pastore et al., NED, 256 (2013) 75-86.
+Model	Burnup	: The local burnup is calculated from the fission rate density.
+Model	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
+Model	UO2 thermochemistry	 : Blackburn (1973) J. Nucl. Mater., 46, 244-252.
+Model	Stoichiometry deviation	 : Massih, A. R. UO2 fuel oxidation and fission gas release. Swedish Radiation Safety Authority report, Report 2018 (2018): 25
+Model	Grain growth	 : constant grain radius.
+Model	Gas production - Xe in UO2	 
+Model	Gas production - Kr in UO2	 
+Model	Gas production - He in UO2	 
+Model	Gas production - Xe133 in UO2	 
+Model	Gas production - Kr85m in UO2	 
+Model	Intragranular bubble behavior	: Pizzocri et al., JNM, 502 (2018) 323-330.
+Model	Gas diffusion - Xe in UO2	
+Model	Gas diffusion - Kr in UO2	
+Model	Gas diffusion - He in UO2	
+Model	Gas diffusion - Xe133 in UO2	
+Model	Gas diffusion - Kr85m in UO2	
+Model	Grain-boundary micro-cracking	: Barani et al. (2017), JNM
+Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
+Model	Release mode	 coalescence from White, JNM, 325 (2004), 61-77; release from Pastore et al., NED, 256 (2013), 75-86.
 
-Matrix #0: 	UO2	
-	Ainscough et al., JNM, 49 (1973) 117-128.
-	iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.
-	
-Matrix #1: 	UO2HBS	
-	no grain-boundary mobility.
-	iGrainBoundaryVacancyDiffusivity: constant value (1e-30 m^2/s).
+Matrix	UO2	
+	Null grain-boundary mobility.
+	iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.
 	
 
-System #0: 	Xe in UO2	Production rate = cumulative yield * fission rate density.
-	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
-	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
-	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
-	
-System #1: 	Kr in UO2	Production rate = cumulative yield * fission rate density.
-	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
-	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
-	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
-	
-System #2: 	He in UO2	iHeDiffusivity: constant intragranular diffusivity.
-	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
-	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
-	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
-	No production rate.
-	
-System #3: 	Xe133 in UO2	Production rate = cumulative yield * fission rate density.
-	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
-	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
-	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
-	
-System #4: 	Kr85m in UO2	Production rate = cumulative yield * fission rate density.
-	iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.
-	iTrappingRate: F.S. Ham, Journal of Physics and Chemistry of Solids, 6 (1958) 335-351.
-	iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.
-	
+System	Xe in UO2	
+System	Kr in UO2	
+System	He in UO2	
+System	Xe133 in UO2	
+System	Kr85m in UO2	
 
-Input setting #0: 	iGrainGrowth = 1
-Input setting #1: 	iFissionGasDiffusivity = 6
-Input setting #2: 	iDiffusionSolver = 1
-Input setting #3: 	iIntraGranularBubbleBehavior = 1
-Input setting #4: 	iResolutionRate = 1
-Input setting #5: 	iTrappingRate = 1
-Input setting #6: 	iNucleationRate = 1
-Input setting #7: 	iOutput = 1
-Input setting #8: 	iGrainBoundaryVacancyDiffusivity = 1
-Input setting #9: 	iGrainBoundaryBehaviour = 1
-Input setting #10: 	iGrainBoundaryMicroCracking = 1
-Input setting #11: 	iFuelMatrix = 0
-Input setting #12: 	iGrainBoundaryVenting = 0
-Input setting #13: 	iRadioactiveFissionGas = 0
-Input setting #14: 	iHelium = 0
-Input setting #15: 	iHeDiffusivity = 0
-Input setting #16: 	iGrainBoundarySweeping = 0
-Input setting #17: 	iHighBurnupStructureFormation = 0
-Input setting #18: 	iHBS_FGDiffusionCoefficient = 0
-Input setting #19: 	iHighBurnupStructurePorosity = 0
-Input setting #20: 	iHeliumProductionRate = 0
-Input setting #21: 	iStoichiometryDeviation = 6
-Input setting #22: 	iBubbleDiffusivity = 1
+Input setting	iGrainGrowth = 0
+Input setting	iFissionGasDiffusivity = 6
+Input setting	iDiffusionSolver = 2
+Input setting	iIntraGranularBubbleBehavior = 1
+Input setting	iResolutionRate = 1
+Input setting	iTrappingRate = 1
+Input setting	iNucleationRate = 1
+Input setting	iOutput = 1
+Input setting	iGrainBoundaryVacancyDiffusivity = 2
+Input setting	iGrainBoundaryBehaviour = 1
+Input setting	iGrainBoundaryMicroCracking = 1
+Input setting	iFuelMatrix = 0
+Input setting	iGrainBoundaryVenting = 0
+Input setting	iRadioactiveFissionGas = 0
+Input setting	iHelium = 0
+Input setting	iHeDiffusivity = 0
+Input setting	iGrainBoundarySweeping = 0
+Input setting	iHighBurnupStructureFormation = 0
+Input setting	iHighBurnupStructurePorosity = 0
+Input setting	iHeliumProductionRate = 0
+Input setting	iStoichiometryDeviation = 6
+Input setting	iBubbleDiffusivity = 1
+Input setting	iChromiumSolubility = 0
+Input setting	iDensification = 0
+Input setting	iReleaseMode = 0
 

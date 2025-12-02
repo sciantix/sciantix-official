@@ -5,99 +5,52 @@ from regression.baker.baker import run_baker
 from regression.cornell.cornell import run_cornell
 from regression.white.white import run_white
 
-# Per gli altri gruppi dovrai creare moduli run_XXX analoghi
-# per ora uso un placeholder generico che usa compare_outputs
-from regression.core.common import run_sciantix, compare_outputs, make_gold
-from regression.core.parser import SciantixOutput
+from regression.kashibe.kashibe import run_kashibe
+from regression.talip.talip import run_talip
+from regression.oxidation.oxidation import run_oxidation
+from regression.chromium.chromium import run_chromium
+from regression.contact.contact import run_contact
+from regression.hbs.hbs import run_hbs
+from regression.vercors.vercors import run_vercors
+
 
 REGRESSION_ROOT = os.path.dirname(__file__)
 
 
-def generic_run(case_dir: str, mode_gold: int = 0):
+def scan_and_run(group_name: str, prefix: str, func, mode_gold: int):
     """
-    Runner generico per gruppi ancora non implementati.
-    Sostituibile in futuro da moduli dedicati.
+    Cerca i test nella sottocartella regression/<group_name>/.
     """
-    if mode_gold in (0, 1):
-        run_sciantix(case_dir)
-        if mode_gold == 1:
-            make_gold(case_dir)
-            return True
-        return compare_outputs(case_dir)
-
-    if mode_gold == 2:
-        return compare_outputs(case_dir)
-
-    if mode_gold == 3:
-        make_gold(case_dir)
-        return True
-
-
-def run_from_pattern(pattern: str, mode_gold: int = 0, func=None):
-    """
-    Cerca test nella cartella regression/ usando il prefisso pattern.
-    func = funzione dedicata (es. run_baker), altrimenti generic_run
-    """
-    if func is None:
-        func = generic_run
-
+    base_path = os.path.join(REGRESSION_ROOT, group_name)
     results = []
-    for name in sorted(os.listdir(REGRESSION_ROOT)):
-        if name.startswith(pattern):
-            case_dir = os.path.join(REGRESSION_ROOT, name)
+
+    if not os.path.isdir(base_path):
+        print(f"Missing directory: {base_path}")
+        return results
+
+    for name in sorted(os.listdir(base_path)):
+        if name.startswith(prefix):
+            case_dir = os.path.join(base_path, name)
             if os.path.isdir(case_dir):
-                print(f"Running {pattern} case: {name}")
+                print(f"Running {group_name} case: {name}")
                 ok = func(case_dir, mode_gold)
-                results.append((name, ok))
+                results.append((f"{group_name}/{name}", ok))
+
     return results
 
 
-def run_all_baker(mode_gold=0):
-    return run_from_pattern("test_Baker", mode_gold, func=run_baker)
+# gruppi
+def run_all_baker(mode_gold):      return scan_and_run("baker",      "test_Baker",      run_baker,      mode_gold)
+def run_all_cornell(mode_gold):    return scan_and_run("cornell",    "test_Cornell",    run_cornell,    mode_gold)
+def run_all_white(mode_gold):      return scan_and_run("white",      "test_White",      run_white,      mode_gold)
+def run_all_kashibe(mode_gold):    return scan_and_run("kashibe",    "test_Kashibe",    run_kashibe,    mode_gold)
+def run_all_talip(mode_gold):      return scan_and_run("talip",      "test_Talip",      run_talip,      mode_gold)
+def run_all_oxidation(mode_gold):  return scan_and_run("oxidation",  "test_UO2_oxidation", run_oxidation, mode_gold)
+def run_all_chromium(mode_gold):   return scan_and_run("chromium",   "test_Chromium",   run_chromium,   mode_gold)
+def run_all_contact(mode_gold):    return scan_and_run("contact",    "test_CONTACT",    run_contact,    mode_gold)
+def run_all_hbs(mode_gold):        return scan_and_run("hbs",        "test_UO2HBS",     run_hbs,        mode_gold)
+def run_all_vercors(mode_gold):    return scan_and_run("vercors",    "test_Vercors",    run_vercors,    mode_gold)
 
-def run_all_cornell(mode_gold=0):
-    return run_from_pattern("test_GPR__", mode_gold, func=run_cornell)
-
-def run_all_white(mode_gold=0):
-    return run_from_pattern("test_White", mode_gold, func=run_white)
-
-
-# ========================
-# NUOVI GRUPPI
-# ========================
-
-def run_all_kashibe(mode_gold=0):
-    return (
-        run_from_pattern("test_Kashibe1990", mode_gold) +
-        run_from_pattern("test_Kashibe1991", mode_gold) +
-        run_from_pattern("test_Kashibe1993", mode_gold)
-    )
-
-def run_all_talip(mode_gold=0):
-    return run_from_pattern("test_Talip", mode_gold)
-
-def run_all_oxidation(mode_gold=0):
-    return run_from_pattern("test_UO2_oxidation", mode_gold)
-
-def run_all_chromium(mode_gold=0):
-    return run_from_pattern("test_Chromium", mode_gold)
-
-def run_all_contact(mode_gold=0):
-    return run_from_pattern("test_CONTACT", mode_gold)
-
-def run_all_hbs(mode_gold=0):
-    return run_from_pattern("test_UO2HBS", mode_gold)
-
-def run_all_vercors(mode_gold=0):
-    return run_from_pattern("test_Vercors", mode_gold)
-
-def run_all_pulse(mode_gold=0):
-    return run_from_pattern("test_powerPulse", mode_gold)
-
-
-# ========================
-# MAIN + argparse
-# ========================
 
 def main():
     parser = argparse.ArgumentParser(description="SCIANTIX regression test runner")
@@ -112,14 +65,13 @@ def main():
     parser.add_argument("--contact", action="store_true")
     parser.add_argument("--hbs", action="store_true")
     parser.add_argument("--vercors", action="store_true")
-    parser.add_argument("--pulse", action="store_true")
     parser.add_argument("--all", action="store_true")
 
     parser.add_argument(
         "--mode-gold",
         type=int,
         default=0,
-        help="0=run+compare, 1=run+gold, 2=compare only, 3=gold only"
+        help="0=run+compare, 1=run+gold, 2=compare, 3=gold only"
     )
 
     args = parser.parse_args()
@@ -127,48 +79,26 @@ def main():
     if not any([
         args.baker, args.cornell, args.white, args.kashibe, args.talip,
         args.oxidation, args.chromium, args.contact, args.hbs,
-        args.vercors, args.pulse, args.all
+        args.vercors, args.all
     ]):
         args.all = True
 
     results = []
 
-    if args.baker or args.all:
-        results.extend(run_all_baker(args.mode_gold))
-
-    if args.cornell or args.all:
-        results.extend(run_all_cornell(args.mode_gold))
-
-    if args.white or args.all:
-        results.extend(run_all_white(args.mode_gold))
-
-    if args.kashibe or args.all:
-        results.extend(run_all_kashibe(args.mode_gold))
-
-    if args.talip or args.all:
-        results.extend(run_all_talip(args.mode_gold))
-
-    if args.oxidation or args.all:
-        results.extend(run_all_oxidation(args.mode_gold))
-
-    if args.chromium or args.all:
-        results.extend(run_all_chromium(args.mode_gold))
-
-    if args.contact or args.all:
-        results.extend(run_all_contact(args.mode_gold))
-
-    if args.hbs or args.all:
-        results.extend(run_all_hbs(args.mode_gold))
-
-    if args.vercors or args.all:
-        results.extend(run_all_vercors(args.mode_gold))
-
-    if args.pulse or args.all:
-        results.extend(run_all_pulse(args.mode_gold))
+    if args.baker or args.all:        results.extend(run_all_baker(args.mode_gold))
+    if args.cornell or args.all:      results.extend(run_all_cornell(args.mode_gold))
+    if args.white or args.all:        results.extend(run_all_white(args.mode_gold))
+    if args.kashibe or args.all:      results.extend(run_all_kashibe(args.mode_gold))
+    if args.talip or args.all:        results.extend(run_all_talip(args.mode_gold))
+    if args.oxidation or args.all:    results.extend(run_all_oxidation(args.mode_gold))
+    if args.chromium or args.all:     results.extend(run_all_chromium(args.mode_gold))
+    if args.contact or args.all:      results.extend(run_all_contact(args.mode_gold))
+    if args.hbs or args.all:          results.extend(run_all_hbs(args.mode_gold))
+    if args.vercors or args.all:      results.extend(run_all_vercors(args.mode_gold))
 
     print("\n=== RESULTS ===")
     for name, ok in results:
-        print(f"{name:<40} {'PASS' if ok else 'FAIL'}")
+        print(f"{name:<60} {'PASS' if ok else 'FAIL'}")
 
 
 if __name__ == "__main__":
