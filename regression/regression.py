@@ -5,7 +5,7 @@ This is a python script to execute the regression (running the validation databa
 """
 
 """ ------------------- Import required dependencies ------------------- """
-import os
+import os, sys
 import subprocess
 import numpy as np
 import matplotlib.pyplot as plt
@@ -16,7 +16,9 @@ from regression_white import regression_white
 from regression_talip import regression_talip
 from regression_contact import regression_contact
 from regression_oxidation import regression_oxidation
-from regression_kashibe import regression_kashibe
+from regression_kashibe1993 import regression_kashibe1993
+from regression_kashibe1990 import regression_kashibe1990
+from regression_kashibe1991 import regression_kashibe1991
 from regression_hbs import regression_hbs
 from regression_chromium import regression_chromium
 from regression_cornell import regression_cornell
@@ -49,9 +51,11 @@ def get_mode_selections():
 
 " ------------------- Main part -------------------"
 def main():
-    shutil.copy("../build/sciantix.x", os.getcwd())
-
     wpath = os.path.dirname(os.path.realpath(__file__))
+    exe_src = os.path.abspath(os.path.join(wpath, "../build/sciantix.x"))
+    exe_dst = os.path.join(wpath, "sciantix.x")
+
+    shutil.copy(exe_src, exe_dst)
     os.chdir(wpath)
 
     folderList = []
@@ -60,7 +64,9 @@ def main():
 
     regression_modules = [
         ('Baker', regression_baker),
-        ('Kashibe', regression_kashibe),
+        # ('Kashibe 1990', regression_kashibe1990),
+        # ('Kashibe 1991', regression_kashibe1991),
+        # ('Kashibe 1993', regression_kashibe1993),
         ('White', regression_white),
         ('Talip', regression_talip),
         ('CONTACT', regression_contact),
@@ -80,7 +86,7 @@ def main():
         # Run all regression tests with default modes
         for name, func in regression_modules:
             folderList_part, tests_count, tests_failed_count = func(
-                wpath, 1, mode_gold, mode_plot, [], 0, 0)
+                wpath, 1, mode_gold, mode_plot, [], 0, 0) [0:3]
             folderList += folderList_part
             total_tests += tests_count
             total_tests_failed += tests_failed_count
@@ -91,7 +97,7 @@ def main():
 
         # Option 2: Remove all output files
         if execution_option == 2:
-            directories = ["Baker", "Kashibe", "White", "Talip", "CONTACT", "oxidation", "HBS", "Chromium", "Cornell"]
+            directories = ["Baker", "Kashibe 1990", "Kashibe 1991", "Kashibe 1993", "White", "Talip", "CONTACT", "oxidation", "HBS", "Chromium", "Cornell"]
             for file in os.listdir(wpath):
                 if any(dir_name in file for dir_name in directories) and os.path.isdir(file):
                     remove_output(file)
@@ -104,7 +110,7 @@ def main():
             # Run all regression tests with default modes
             for name, func in regression_modules:
                 folderList_part, tests_count, tests_failed_count = func(
-                    wpath, 1, mode_gold, mode_plot, [], 0, 0)
+                    wpath, 1, mode_gold, mode_plot, [], 0, 0) [0:3]
                 folderList += folderList_part
                 total_tests += tests_count
                 total_tests_failed += tests_failed_count
@@ -120,8 +126,11 @@ def main():
 
             # Run the selected regression test
             mode_name, regression_func = regression_modules[regression_mode]
-            folderList, tests_count, tests_failed_count = regression_func(
+            regression_file = regression_func(
                 wpath, 1, mode_gold, mode_plot, [], 0, 0)
+            folderList = regression_file[0]
+            tests_count = regression_file[1]
+            tests_failed_count = regression_file[2]
             total_tests += tests_count
             total_tests_failed += tests_failed_count
             print(f"\nRegression selected: {mode_name}")
