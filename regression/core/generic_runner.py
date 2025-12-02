@@ -1,6 +1,6 @@
 import os
 import shutil
-from regression.core.common import run_sciantix, load_output, load_gold
+from regression.core.common import clean_case_dir, run_sciantix, load_output, load_gold
 from regression.core.compare import compare_outputs
 
 
@@ -57,5 +57,8 @@ def run_group(group_name: str, prefix: str, mode_gold: int):
 
         ok = compare_outputs(out, gold, abs_tol=1e-8, rel_tol=1e-6)
         results.append((f"{group_name}/{name}", ok))
+
+        # clean
+        clean_case_dir(case, mode_gold)
 
     return results
