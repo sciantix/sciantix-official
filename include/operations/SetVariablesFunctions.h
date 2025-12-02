@@ -184,7 +184,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Intergranular atoms per bubble", "(at/bub)", Sciantix_variables[29], Sciantix_variables[29], toOutputGrainBoundary),
         SciantixVariable("Intergranular vacancies per bubble", "(vac/bub)", Sciantix_variables[30], Sciantix_variables[30], toOutputGrainBoundary),
 
-        SciantixVariable("Intergranular bubble pressure", "(MPa)", 0.0, 0.0, 1),
+        SciantixVariable("Intergranular bubble pressure", "(MPa)", 0.0, 0.0, 0),
         SciantixVariable("Critical intergranular bubble pressure", "(MPa)", 0.0, 0.0, 0),
         SciantixVariable("Intergranular bubble radius", "(m)", Sciantix_variables[31], Sciantix_variables[31], toOutputGrainBoundary),
         SciantixVariable("Intergranular bubble area", "(m2)", Sciantix_variables[32], Sciantix_variables[32], toOutputGrainBoundary),

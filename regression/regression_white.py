@@ -205,7 +205,7 @@ sample_number = len(gbSwelling1)
 
 
 """ ------------------- Functions ------------------- """
-def do_plot():
+def do_plot(pressureplot = False):
     """Generate plots comparing experimental data with results."""
 
     # GOLD vs. SCIANTIX 2.0 + error bars
@@ -414,7 +414,7 @@ def do_plot():
     # Bubble concentration
     fig, ax = plt.subplots(figsize=(7, 7))
 
-      # Fast ramp
+    # Fast ramp
     ax.errorbar(
         np.concatenate([gbConcWhite[0:16], gbConcWhite[39:43]]),
         np.concatenate([bbconc[0:16], bbconc[39:43]]),
@@ -456,37 +456,38 @@ def do_plot():
     
     plt.show()
 
-    # Bubble concentration
-    fig, ax = plt.subplots(figsize=(7, 7))
+    if pressureplot == True:
+      # Bubble concentration
+      fig, ax = plt.subplots(figsize=(7, 7))
 
-      # Fast ramp
-    ax.scatter(
-        np.concatenate([temperature_atmaxbp[0:16], temperature_atmaxbp[39:43]]),
-        np.concatenate([bubblepressure[0:16], bubblepressure[39:43]]),
-        color='C0', marker='o', label='Fast ramp'
-    )
+        # Fast ramp
+      ax.scatter(
+          np.concatenate([temperature_atmaxbp[0:16], temperature_atmaxbp[39:43]]),
+          np.concatenate([bubblepressure[0:16], bubblepressure[39:43]]),
+          color='C0', marker='o', label='Fast ramp'
+      )
 
-    # Slow ramp
-    ax.scatter(
-        temperature_atmaxbp[16:39], bubblepressure[16:39],
-        color='C2', marker='o', label='Slow ramp'
-    )
+      # Slow ramp
+      ax.scatter(
+          temperature_atmaxbp[16:39], bubblepressure[16:39],
+          color='C2', marker='o', label='Slow ramp'
+      )
 
-    # Long hold
-    ax.scatter(
-        temperature_atmaxbp[26:35], bubblepressure[26:35],
-         color='C3', marker='o', label='Long hold'
-    )
+      # Long hold
+      ax.scatter(
+          temperature_atmaxbp[26:35], bubblepressure[26:35],
+          color='C3', marker='o', label='Long hold'
+      )
 
 
-    ax.legend()
-    ax.set_xlabel("Temperature (K)")
-    ax.set_ylabel("Intergranular bubble pressure (MPa)")
-    ax.set_title("Intergranular bubble pressure")
-    ax.legend()
-    #plt.savefig('BubblePressureWhite.png')
+      ax.legend()
+      ax.set_xlabel("Temperature (K)")
+      ax.set_ylabel("Intergranular bubble pressure (MPa)")
+      ax.set_title("Intergranular bubble pressure")
+      ax.legend()
+      #plt.savefig('BubblePressureWhite.png')
 
-    plt.show()
+      plt.show()
 
 # Main function of the white regression
 def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number_of_tests, number_of_tests_failed):
@@ -573,9 +574,16 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
             bbconc_gold.append(1e-12*data_gold[row_number,BubConcPosGold].astype(float))
 
             # Retrieve the gold data of Intergranular bubble concentration
-            bp_idx    = findSciantixVariablePosition(data, "Intergranular bubble pressure (MPa)")
-            bu_idx    = findSciantixVariablePosition(data, "Temperature (K)")
+            try:
+                bp_idx = findSciantixVariablePosition(data, "Intergranular bubble pressure (MPa)")
+                pressureplot = True
+            except Exception as e:
+                print(f"Error: {e}")
+                pressureplot = False
+                bp_idx = 0
 
+            bu_idx = findSciantixVariablePosition(data, "Temperature (K)")
+            
             if bp_idx is None or bu_idx is None:
                 raise KeyError("Required column not found")
 
@@ -597,7 +605,7 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
 
     # Check if the user has chosen to display the various plots
     if mode_plot == 1:
-      do_plot()
+      do_plot(pressureplot)
 
     """ Statistical analysis """
 
