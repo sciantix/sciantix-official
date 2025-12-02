@@ -1,0 +1,186 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Listing for File Solver.h &mdash; SCIANTIX 2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c4a36953"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+      <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SCIANTIX
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index_api.html">SCIANTIX API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SCIANTIX</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Program Listing for File Solver.h</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/program_listing_file_include_classes_Solver.h.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="program-listing-for-file-solver-h">
+<span id="program-listing-file-include-classes-solver-h"></span><h1>Program Listing for File Solver.h<a class="headerlink" href="#program-listing-for-file-solver-h" title="Link to this heading"></a></h1>
+<p>↰ <a class="reference internal" href="file_include_classes_Solver.h.html#file-include-classes-solver-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">include/classes/Solver.h</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">//       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //</span>
+<span class="c1">//      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //</span>
+<span class="c1">//     |   (----`|  ,----&#39;|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //</span>
+<span class="c1">//      \   \    |  |     |  |   /  /_\  \   |  . `  |     |  |     |  |   &gt;   &lt;    //</span>
+<span class="c1">//  .----)   |   |  `----.|  |  /  _____  \  |  |\   |     |  |     |  |  /  .  \   //</span>
+<span class="c1">//  |_______/     \______||__| /__/     \__\ |__| \__|     |__|     |__| /__/ \__\  //</span>
+<span class="c1">//                                                                                  //</span>
+<span class="c1">//  Originally developed by D. Pizzocri &amp; T. Barani                                 //</span>
+<span class="c1">//                                                                                  //</span>
+<span class="c1">//  Version: 2.1                                                                    //</span>
+<span class="c1">//  Year: 2024                                                                      //</span>
+<span class="c1">//  Authors: D. Pizzocri, G. Zullo.                                                 //</span>
+<span class="c1">//                                                                                  //</span>
+
+<span class="cp">#ifndef SOLVER_h</span>
+<span class="cp">#define SOLVER_h</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;vector&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;string&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cmath&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;InputVariable.h&quot;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Solver</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">InputVariable</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">Integrator</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">initial_value</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">parameter</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">increment</span><span class="p">);</span>
+
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">LimitedGrowth</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">initial_value</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">parameter</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">increment</span><span class="p">);</span>
+
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">Decay</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">initial_condition</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">decay_rate</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">source_term</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">increment</span><span class="p">);</span>
+
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">BinaryInteraction</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">initial_condition</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">interaction_coefficient</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">increment</span><span class="p">);</span>
+
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">SpectralDiffusion</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">initial_condition</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">parameter</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">increment</span><span class="p">);</span>
+
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">dotProduct1D</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">v</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">dotProduct2D</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">A</span><span class="p">[],</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">v</span><span class="p">[],</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n_rows</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n_col</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">result</span><span class="p">[]);</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SpectralDiffusion2equations</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">&amp;</span><span class="n">gas_1</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">&amp;</span><span class="n">gas_2</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">initial_condition_gas_1</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">initial_condition_gas_2</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">parameter</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">increment</span><span class="p">);</span>
+
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">SpectralDiffusion3equations</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">&amp;</span><span class="n">gas_1</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">&amp;</span><span class="n">gas_2</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">&amp;</span><span class="n">gas_3</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">initial_condition_gas_1</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">initial_condition_gas_2</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">initial_condition_gas_3</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">parameter</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">increment</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Laplace2x2</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">A</span><span class="p">[],</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">b</span><span class="p">[]);</span>
+
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Laplace3x3</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">A</span><span class="p">[],</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">b</span><span class="p">[]);</span>
+
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">det</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">A</span><span class="p">[]);</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">Laplace</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">A</span><span class="p">[],</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">b</span><span class="p">[]);</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">QuarticEquation</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">parameter</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">modeInitialization</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n_modes</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">mode_initial_condition</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">diffusion_modes</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">NewtonBlackburn</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">parameter</span><span class="p">);</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">NewtonLangmuirBasedModel</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">initial_value</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">parameter</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">increment</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">Solver</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">    </span><span class="o">~</span><span class="n">Solver</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<span class="p">};</span>
+
+<span class="cp">#endif </span><span class="c1">// SOLVER_H</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, giozu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

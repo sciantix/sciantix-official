@@ -1,0 +1,465 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Program Listing for File Matrix.h &mdash; SCIANTIX 2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c4a36953"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+      <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SCIANTIX
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index_api.html">SCIANTIX API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SCIANTIX</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Program Listing for File Matrix.h</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/program_listing_file_include_classes_Matrix.h.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="program-listing-for-file-matrix-h">
+<span id="program-listing-file-include-classes-matrix-h"></span><h1>Program Listing for File Matrix.h<a class="headerlink" href="#program-listing-for-file-matrix-h" title="Link to this heading"></a></h1>
+<p>↰ <a class="reference internal" href="file_include_classes_Matrix.h.html#file-include-classes-matrix-h"><span class="std std-ref">Return to documentation for file</span></a> (<code class="docutils literal notranslate"><span class="pre">include/classes/Matrix.h</span></code>)</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">//       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //</span>
+<span class="c1">//      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //</span>
+<span class="c1">//     |   (----`|  ,----&#39;|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //</span>
+<span class="c1">//      \   \    |  |     |  |   /  /_\  \   |  . `  |     |  |     |  |   &gt;   &lt;    //</span>
+<span class="c1">//  .----)   |   |  `----.|  |  /  _____  \  |  |\   |     |  |     |  |  /  .  \   //</span>
+<span class="c1">//  |_______/     \______||__| /__/     \__\ |__| \__|     |__|     |__| /__/ \__\  //</span>
+<span class="c1">//                                                                                  //</span>
+<span class="c1">//  Originally developed by D. Pizzocri &amp; T. Barani                                 //</span>
+<span class="c1">//                                                                                  //</span>
+<span class="c1">//  Version: 2.1                                                                    //</span>
+<span class="c1">//  Year: 2024                                                                      //</span>
+<span class="c1">//  Authors: D. Pizzocri, G. Zullo.                                                 //</span>
+<span class="c1">//                                                                                  //</span>
+
+<span class="cp">#ifndef MATRIX_H</span>
+<span class="cp">#define MATRIX_H</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cmath&gt;</span>
+
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;Material.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;Constants.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;ErrorMessages.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;SciantixArray.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;SciantixVariable.h&quot;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Matrix</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">virtual</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">Material</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">matrix_density</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">lattice_parameter</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">grain_boundary_mobility</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">ff_range</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">ff_influence_radius</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">surface_tension</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">schottky_defect_volume</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">ois_volume</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">grain_boundary_thickness</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">grain_boundary_diffusivity</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">semidihedral_angle</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">lenticular_shape_factor</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">grain_radius</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">healing_temperature_threshold</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">nucleation_rate</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">pore_nucleation_rate</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">pore_resolution_rate</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">pore_trapping_rate</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">chromium_content</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">chromium_solubility</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">Cr2O3_solubility</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">chromium_solution</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">chromium_precipitate</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">chromia_solution</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">chromia_precipitate</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// Mechanical properties</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">elastic_modulus</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">poisson_ratio</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">grain_boundary_fracture_energy</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">shear_modulus</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setTheoreticalDensity</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">m</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">matrix_density</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getTheoreticalDensity</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">matrix_density</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setLatticeParameter</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">m</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">lattice_parameter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getLatticeParameter</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">lattice_parameter</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setSurfaceTension</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">r</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">surface_tension</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getSurfaceTension</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">surface_tension</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setSchottkyVolume</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">v</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">schottky_defect_volume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getSchottkyVolume</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">schottky_defect_volume</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setOctahedralInterstitialSite</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">v</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ois_volume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getOctahedralInterstitialSite</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ois_volume</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setGrainBoundaryMobility</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">input_value</span><span class="p">,</span><span class="w"> </span><span class="n">SciantixArray</span><span class="o">&lt;</span><span class="n">SciantixVariable</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">history_variable</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getGrainBoundaryMobility</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">grain_boundary_mobility</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setFissionFragmentRange</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">r</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ff_range</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getFissionFragmentRange</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ff_range</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setFissionFragmentInfluenceRadius</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">r</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">ff_influence_radius</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">r</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getFissionFragmentInfluenceRadius</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ff_influence_radius</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setSemidihedralAngle</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">sda</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">semidihedral_angle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sda</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getSemidihedralAngle</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">semidihedral_angle</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setGrainBoundaryThickness</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">gbt</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">grain_boundary_thickness</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gbt</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getGrainBoundaryThickness</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">grain_boundary_thickness</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setGrainBoundaryVacancyDiffusivity</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">input_value</span><span class="p">,</span><span class="w"> </span><span class="n">SciantixArray</span><span class="o">&lt;</span><span class="n">SciantixVariable</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">history_variable</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getGrainBoundaryVacancyDiffusivity</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">grain_boundary_diffusivity</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setLenticularShapeFactor</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">lsf</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">lenticular_shape_factor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lsf</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getLenticularShapeFactor</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">lenticular_shape_factor</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setNucleationRate</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">n</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">nucleation_rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getNucleationRate</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">nucleation_rate</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setPoreNucleationRate</span><span class="p">(</span><span class="n">SciantixArray</span><span class="o">&lt;</span><span class="n">SciantixVariable</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sciantix_variable</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getPoreNucleationRate</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">pore_nucleation_rate</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setPoreResolutionRate</span><span class="p">(</span><span class="n">SciantixArray</span><span class="o">&lt;</span><span class="n">SciantixVariable</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sciantix_variable</span><span class="p">,</span><span class="w"> </span><span class="n">SciantixArray</span><span class="o">&lt;</span><span class="n">SciantixVariable</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">history_variable</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getPoreResolutionRate</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">pore_resolution_rate</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setPoreTrappingRate</span><span class="p">(</span><span class="n">SciantixArray</span><span class="o">&lt;</span><span class="n">Matrix</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">matrices</span><span class="p">,</span><span class="w"> </span><span class="n">SciantixArray</span><span class="o">&lt;</span><span class="n">SciantixVariable</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">sciantix_variable</span><span class="p">);</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getPoreTrappingRate</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">pore_trapping_rate</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setGrainRadius</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">gr</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">grain_radius</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">gr</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getGrainRadius</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">grain_radius</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setHealingTemperatureThreshold</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">t</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">healing_temperature_threshold</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">t</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getHealingTemperatureThreshold</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">healing_temperature_threshold</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setChromiumContent</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">cc</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">chromium_content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cc</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getChromiumContent</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">chromium_content</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setChromiumSolubility</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">cs</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">chromium_solubility</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cs</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getChroimumSolubility</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">chromium_solubility</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setChromiaSolubility</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">crs</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">Cr2O3_solubility</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">crs</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getChromiaSolubility</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Cr2O3_solubility</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setChromiumSolution</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">cr_sol</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">chromium_solution</span><span class="o">=</span><span class="w"> </span><span class="n">cr_sol</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getChromiumSolution</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">chromium_solution</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setChromiumPrecipitate</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">cr_p</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">chromium_precipitate</span><span class="o">=</span><span class="w"> </span><span class="n">cr_p</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getChromiumPrecipitate</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">chromium_precipitate</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setChromiaSolution</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">chromia_sol</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">chromia_solution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">chromia_sol</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getChromiaSolution</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">chromia_solution</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setChromiaPrecipitate</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">chromia_p</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="n">chromia_precipitate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">chromia_p</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getChromiaPrecipitate</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">chromia_precipitate</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setElasticModulus</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">e</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Member function to set the elastic (Young) modulus of the material (MPa)</span>
+<span class="w">        </span><span class="n">elastic_modulus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">e</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getElasticModulus</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Member function to return the elastic (Young) modulus of the material (MPa)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">elastic_modulus</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+
+<span class="w">    </span><span class="c1">// Poisson ratio</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setPoissonRatio</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">v</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Member function to set the Poisson ratio of the material</span>
+<span class="w">        </span><span class="n">poisson_ratio</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getPoissonRatio</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Member function to return the Poisson ratio of the material</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">poisson_ratio</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="c1">// Grain-boundary fracture energy</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setGrainBoundaryFractureEnergy</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">v</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Member function to set the grain-boundary fracture energy of the material (J/m2)</span>
+<span class="w">        </span><span class="n">grain_boundary_fracture_energy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getGrainBoundaryFractureEnergy</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Member function to return the grain-boundary fracture energy of the material (J/m2)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">grain_boundary_fracture_energy</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setShearModulus</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">g</span><span class="p">)</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Member function to set the shear modulus of the material (MPa)</span>
+<span class="w">        </span><span class="n">shear_modulus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">g</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="nf">getShearModulus</span><span class="p">()</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// Member function to return the shear modulus of the material (MPa)</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">shear_modulus</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">Matrix</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="w">    </span><span class="o">~</span><span class="n">Matrix</span><span class="p">()</span><span class="w"> </span><span class="p">{}</span>
+<span class="p">};</span>
+
+<span class="cp">#endif </span><span class="c1">// MATRIX_H</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, giozu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

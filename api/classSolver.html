@@ -1,0 +1,475 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class Solver &mdash; SCIANTIX 2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c4a36953"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+      <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class System" href="classSystem.html" />
+    <link rel="prev" title="Class Simulation" href="classSimulation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SCIANTIX
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index_api.html">SCIANTIX API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index_api.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index_api.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index_api.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index_api.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index_api.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="classGas.html">Class Gas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classInputVariable.html">Class InputVariable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classMaterial.html">Class Material</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classMatrix.html">Class Matrix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classModel.html">Class Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classSciantixArray.html">Template Class SciantixArray</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classSciantixVariable.html">Class SciantixVariable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classSimulation.html">Class Simulation</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Class Solver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classSystem.html">Class System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVariable.html">Class Variable</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index_api.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index_api.html#variables">Variables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SCIANTIX</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index_api.html">SCIANTIX API reference</a></li>
+      <li class="breadcrumb-item active">Class Solver</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classSolver.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-solver">
+<span id="exhale-class-classsolver"></span><h1>Class Solver<a class="headerlink" href="#class-solver" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_include_classes_Solver.h.html#file-include-classes-solver-h"><span class="std std-ref">File Solver.h</span></a></p></li>
+</ul>
+<section id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Link to this heading"></a></h2>
+<section id="base-type">
+<h3>Base Type<a class="headerlink" href="#base-type" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">InputVariable</span></code> (<a class="reference internal" href="classInputVariable.html#exhale-class-classinputvariable"><span class="std std-ref">Class InputVariable</span></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv46Solver">
+<span id="_CPPv36Solver"></span><span id="_CPPv26Solver"></span><span id="Solver"></span><span class="target" id="classSolver"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Solver</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="classInputVariable.html#_CPPv413InputVariable" title="InputVariable"><span class="n"><span class="pre">InputVariable</span></span></a><a class="headerlink" href="#_CPPv46Solver" title="Link to this definition"></a><br /></dt>
+<dd><p>Class providing solver methods for the SCIANTIX simulation framework. </p>
+<p>The <a class="reference internal" href="#classSolver"><span class="std std-ref">Solver</span></a> class contains various numerical methods to solve differential equations and other mathematical problems encountered in the simulation. These solvers are used in conjunction with models within the <a class="reference internal" href="classSimulation.html#classSimulation"><span class="std std-ref">Simulation</span></a> class.</p>
+<p><a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0022311517315039">Pizzocri D. et al (2018). Journal of Nuclear Materials, 502, 323-330.</a> <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1738573321006148">Zullo G. et al (2022). Nuclear Engineering and Technology, 54, 1195-1205.</a> <dl class="simple">
+<dt><strong>Author</strong></dt><dd><p>D. Pizzocri </p>
+</dd>
+<dt><strong>Author</strong></dt><dd><p>T. Barani </p>
+</dd>
+<dt><strong>Author</strong></dt><dd><p>G. Zullo</p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver10IntegratorEddd">
+<span id="_CPPv3N6Solver10IntegratorEddd"></span><span id="_CPPv2N6Solver10IntegratorEddd"></span><span id="Solver::Integrator__double.double.double"></span><span class="target" id="classSolver_1a0d391a055dc4f24bad1006834e929160"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Integrator</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">initial_value</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">parameter</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">increment</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver10IntegratorEddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Integrates the ODE y’ = + S. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initial_value</strong> – The initial value of the dependent variable. </p></li>
+<li><p><strong>parameter</strong> – The source term. </p></li>
+<li><p><strong>increment</strong> – The time increment. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated value after integration. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver13LimitedGrowthEdNSt6vectorIdEEd">
+<span id="_CPPv3N6Solver13LimitedGrowthEdNSt6vectorIdEEd"></span><span id="_CPPv2N6Solver13LimitedGrowthEdNSt6vectorIdEEd"></span><span id="Solver::LimitedGrowth__double.std::vector:double:.double"></span><span class="target" id="classSolver_1ace41327facd881aecc8158c2e71e9b3e"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">LimitedGrowth</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">initial_value</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">parameter</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">increment</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver13LimitedGrowthEdNSt6vectorIdEEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Solves the ODE y’ = k / y + S using a limited growth model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initial_value</strong> – The initial value of the dependent variable. </p></li>
+<li><p><strong>parameter</strong> – A vector containing the growth rate and source term. </p></li>
+<li><p><strong>increment</strong> – The time increment. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated value after solving the ODE. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver5DecayEdddd">
+<span id="_CPPv3N6Solver5DecayEdddd"></span><span id="_CPPv2N6Solver5DecayEdddd"></span><span id="Solver::Decay__double.double.double.double"></span><span class="target" id="classSolver_1a95ec73236f416d00891193d54160ac0b"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Decay</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">initial_condition</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">decay_rate</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">source_term</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">increment</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver5DecayEdddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Solves the ODE y’ = - L y + S using a decay model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initial_condition</strong> – The initial value of the dependent variable. </p></li>
+<li><p><strong>decay_rate</strong> – The decay rate. </p></li>
+<li><p><strong>source_term</strong> – The source. </p></li>
+<li><p><strong>increment</strong> – The time increment. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated value after solving the ODE. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver17BinaryInteractionEddd">
+<span id="_CPPv3N6Solver17BinaryInteractionEddd"></span><span id="_CPPv2N6Solver17BinaryInteractionEddd"></span><span id="Solver::BinaryInteraction__double.double.double"></span><span class="target" id="classSolver_1a28963638acc359af6547e66164568aed"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">BinaryInteraction</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">initial_condition</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">interaction_coefficient</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">increment</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver17BinaryInteractionEddd" title="Link to this definition"></a><br /></dt>
+<dd><p>Solves the ODE y’ = -k y**2 using a binary interaction model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initial_condition</strong> – The initial value of the dependent variable. </p></li>
+<li><p><strong>interaction_coefficient</strong> – The interaction coefficient. </p></li>
+<li><p><strong>increment</strong> – The time increment. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated value after solving the ODE. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver17SpectralDiffusionEPdNSt6vectorIdEEd">
+<span id="_CPPv3N6Solver17SpectralDiffusionEPdNSt6vectorIdEEd"></span><span id="_CPPv2N6Solver17SpectralDiffusionEPdNSt6vectorIdEEd"></span><span id="Solver::SpectralDiffusion__doubleP.std::vector:double:.double"></span><span class="target" id="classSolver_1acd7491499784c62a8a754e493e60bb9b"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SpectralDiffusion</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">initial_condition</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">parameter</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">increment</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver17SpectralDiffusionEPdNSt6vectorIdEEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Solves the spatially averaged PDE dy/dt = D div grad y + S - L y using a spectral approach. We apply a spectral approach in space, projecting the equation on the eigenfunctions of the laplacian operator. We use the first order backward Euler solver in time. The number of terms in the expansion, N, is fixed a priori. </p>
+<p>
+Parameters : 0 : N_modes 1 : D 2 : r 3 :production 4 :loss rate </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initial_condition</strong> – The initial conditions for the diffusion modes. </p></li>
+<li><p><strong>parameter</strong> – A vector containing the parameters for the diffusion equation. </p></li>
+<li><p><strong>increment</strong> – The time increment. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated value after solving the PDE.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver12dotProduct1DENSt6vectorIdEEA_di">
+<span id="_CPPv3N6Solver12dotProduct1DENSt6vectorIdEEA_di"></span><span id="_CPPv2N6Solver12dotProduct1DENSt6vectorIdEEA_di"></span><span id="Solver::dotProduct1D__std::vector:double:.doubleA.i"></span><span class="target" id="classSolver_1ad0fe8b2725720309deddfbcc29b113be"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dotProduct1D</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">u</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver12dotProduct1DENSt6vectorIdEEA_di" title="Link to this definition"></a><br /></dt>
+<dd><p>Function to compute the dot product between two arrays (v and u) of size n. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> – The vector. </p></li>
+<li><p><strong>v</strong> – The array. </p></li>
+<li><p><strong>n</strong> – The size of the vector and array. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The dot product result. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver12dotProduct2DEA_dA_diKiA_d">
+<span id="_CPPv3N6Solver12dotProduct2DEA_dA_diKiA_d"></span><span id="_CPPv2N6Solver12dotProduct2DEA_dA_diKiA_d"></span><span id="Solver::dotProduct2D__doubleA.doubleA.i.iC.doubleA"></span><span class="target" id="classSolver_1a08fcf46a3cd80586d704d995ce688782"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">dotProduct2D</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">A</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n_rows</span></span>, <span class="k"><span class="pre">const</span></span><span class="w"> </span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n_col</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">result</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver12dotProduct2DEA_dA_diKiA_d" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the dot product of a 2D matrix and a 1D array. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – The matrix. </p></li>
+<li><p><strong>v</strong> – The array. </p></li>
+<li><p><strong>n_rows</strong> – The number of rows in the matrix. </p></li>
+<li><p><strong>n_col</strong> – The number of columns in the matrix. </p></li>
+<li><p><strong>result</strong> – The result array. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver27SpectralDiffusion2equationsERdRdPdPdNSt6vectorIdEEd">
+<span id="_CPPv3N6Solver27SpectralDiffusion2equationsERdRdPdPdNSt6vectorIdEEd"></span><span id="_CPPv2N6Solver27SpectralDiffusion2equationsERdRdPdPdNSt6vectorIdEEd"></span><span id="Solver::SpectralDiffusion2equations__doubleR.doubleR.doubleP.doubleP.std::vector:double:.double"></span><span class="target" id="classSolver_1aa7c5d3df28562d7b881fef51c9608fcc"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SpectralDiffusion2equations</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">gas_1</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">gas_2</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">initial_condition_gas_1</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">initial_condition_gas_2</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">parameter</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">increment</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver27SpectralDiffusion2equationsERdRdPdPdNSt6vectorIdEEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Solves two coupled diffusion equations using a spectral approach. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gas_1</strong> – The first gas variable. </p></li>
+<li><p><strong>gas_2</strong> – The second gas variable. </p></li>
+<li><p><strong>initial_condition_gas_1</strong> – Initial conditions for the first gas. </p></li>
+<li><p><strong>initial_condition_gas_2</strong> – Initial conditions for the second gas. </p></li>
+<li><p><strong>parameter</strong> – A vector containing the parameters for the diffusion equations. </p></li>
+<li><p><strong>increment</strong> – The time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver27SpectralDiffusion3equationsERdRdRdPdPdPdNSt6vectorIdEEd">
+<span id="_CPPv3N6Solver27SpectralDiffusion3equationsERdRdRdPdPdPdNSt6vectorIdEEd"></span><span id="_CPPv2N6Solver27SpectralDiffusion3equationsERdRdRdPdPdPdNSt6vectorIdEEd"></span><span id="Solver::SpectralDiffusion3equations__doubleR.doubleR.doubleR.doubleP.doubleP.doubleP.std::vector:double:.double"></span><span class="target" id="classSolver_1ab092d12e8a6a334f722bc60644d43e01"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">SpectralDiffusion3equations</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">gas_1</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">gas_2</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">gas_3</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">initial_condition_gas_1</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">initial_condition_gas_2</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">initial_condition_gas_3</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">parameter</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">increment</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver27SpectralDiffusion3equationsERdRdRdPdPdPdNSt6vectorIdEEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Solves three coupled diffusion equations using a spectral approach. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gas_1</strong> – The first gas variable. </p></li>
+<li><p><strong>gas_2</strong> – The second gas variable. </p></li>
+<li><p><strong>gas_3</strong> – The third gas variable. </p></li>
+<li><p><strong>initial_condition_gas_1</strong> – Initial conditions for the first gas. </p></li>
+<li><p><strong>initial_condition_gas_2</strong> – Initial conditions for the second gas. </p></li>
+<li><p><strong>initial_condition_gas_3</strong> – Initial conditions for the third gas. </p></li>
+<li><p><strong>parameter</strong> – A vector containing the parameters for the diffusion equations. </p></li>
+<li><p><strong>increment</strong> – The time increment. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver10Laplace2x2EA_dA_d">
+<span id="_CPPv3N6Solver10Laplace2x2EA_dA_d"></span><span id="_CPPv2N6Solver10Laplace2x2EA_dA_d"></span><span id="Solver::Laplace2x2__doubleA.doubleA"></span><span class="target" id="classSolver_1ace1ef999e94748535c1b5e1c221494b8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Laplace2x2</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">A</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver10Laplace2x2EA_dA_d" title="Link to this definition"></a><br /></dt>
+<dd><p>Solves a system of two linear equations using Cramer’s method. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – The coefficient matrix. </p></li>
+<li><p><strong>b</strong> – The constant terms vector. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver10Laplace3x3EA_dA_d">
+<span id="_CPPv3N6Solver10Laplace3x3EA_dA_d"></span><span id="_CPPv2N6Solver10Laplace3x3EA_dA_d"></span><span id="Solver::Laplace3x3__doubleA.doubleA"></span><span class="target" id="classSolver_1a86f637ce83d11aac66e4335852f008b6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Laplace3x3</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">A</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver10Laplace3x3EA_dA_d" title="Link to this definition"></a><br /></dt>
+<dd><p>Solves a system of three linear equations according to Cramer’s method. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – The coefficient matrix. </p></li>
+<li><p><strong>b</strong> – The constant terms vector. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver3detEiA_d">
+<span id="_CPPv3N6Solver3detEiA_d"></span><span id="_CPPv2N6Solver3detEiA_d"></span><span id="Solver::det__i.doubleA"></span><span class="target" id="classSolver_1a0de0b4e8649f37dfbe579cf165ef9fd7"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">det</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">N</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">A</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver3detEiA_d" title="Link to this definition"></a><br /></dt>
+<dd><p>Computes the determinant of a NxN matrix according to Cramer’s method. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> – The size of the matrix. </p></li>
+<li><p><strong>A</strong> – The matrix. </p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The determinant of the matrix. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver7LaplaceEiA_dA_d">
+<span id="_CPPv3N6Solver7LaplaceEiA_dA_d"></span><span id="_CPPv2N6Solver7LaplaceEiA_dA_d"></span><span id="Solver::Laplace__i.doubleA.doubleA"></span><span class="target" id="classSolver_1a91b6f97d65f36aa53bb02ee7f2babc28"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Laplace</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">N</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">A</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">b</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">]</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver7LaplaceEiA_dA_d" title="Link to this definition"></a><br /></dt>
+<dd><p>Solves a system of linear equations using the Laplace method. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N</strong> – The size of the matrix. </p></li>
+<li><p><strong>A</strong> – The coefficient matrix. </p></li>
+<li><p><strong>b</strong> – The constant terms vector. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver15QuarticEquationENSt6vectorIdEE">
+<span id="_CPPv3N6Solver15QuarticEquationENSt6vectorIdEE"></span><span id="_CPPv2N6Solver15QuarticEquationENSt6vectorIdEE"></span><span id="Solver::QuarticEquation__std::vector:double:"></span><span class="target" id="classSolver_1adf676f1300e7ea977a4b9fcd9a1c7312"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">QuarticEquation</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">parameter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver15QuarticEquationENSt6vectorIdEE" title="Link to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#classSolver"><span class="std std-ref">Solver</span></a> for the quartic equation ax^4 + bx^3 +cx^2 +dx + e = 0 with the iterative Newton’s method. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parameter</strong> – A vector containing the coefficients of the equation. parameter.at(0) initial conditions parameter.at(1) coefficient of x^4 parameter.at(2) coefficient of x^3 parameter.at(3) coefficient of x^2 parameter.at(4) coefficient of x^1 parameter.at(5) coefficient of x^0 </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>x1, the solution to the equation. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver18modeInitializationEidPd">
+<span id="_CPPv3N6Solver18modeInitializationEidPd"></span><span id="_CPPv2N6Solver18modeInitializationEidPd"></span><span id="Solver::modeInitialization__i.double.doubleP"></span><span class="target" id="classSolver_1a30fea619a08d60ef30ca0377ee2e67a9"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">modeInitialization</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n_modes</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">mode_initial_condition</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="p"><span class="pre">*</span></span><span class="n sig-param"><span class="pre">diffusion_modes</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver18modeInitializationEidPd" title="Link to this definition"></a><br /></dt>
+<dd><p>Initializes the diffusion modes. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_modes</strong> – The number of diffusion modes. </p></li>
+<li><p><strong>mode_initial_condition</strong> – The initial condition for the modes. </p></li>
+<li><p><strong>diffusion_modes</strong> – The diffusion modes array. </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver15NewtonBlackburnENSt6vectorIdEE">
+<span id="_CPPv3N6Solver15NewtonBlackburnENSt6vectorIdEE"></span><span id="_CPPv2N6Solver15NewtonBlackburnENSt6vectorIdEE"></span><span id="Solver::NewtonBlackburn__std::vector:double:"></span><span class="target" id="classSolver_1a630fc3cb7ab9c3ea14f72f8eaa8cdaa6"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NewtonBlackburn</span></span></span><span class="sig-paren">(</span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">parameter</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver15NewtonBlackburnENSt6vectorIdEE" title="Link to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#classSolver"><span class="std std-ref">Solver</span></a> for the non-linear equation (Blackburn’s thermochemical urania model) log(PO2(x)) = 2.0*log(x*(x+2.0)/(1.0-x)) + 108.0*pow(x,2.0) - 32700.0/T + 9.92 with the iterative Newton’s method. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parameter</strong> – A vector containing the parameters of the equation. </p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The solution to the equation. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver24NewtonLangmuirBasedModelEdNSt6vectorIdEEd">
+<span id="_CPPv3N6Solver24NewtonLangmuirBasedModelEdNSt6vectorIdEEd"></span><span id="_CPPv2N6Solver24NewtonLangmuirBasedModelEdNSt6vectorIdEEd"></span><span id="Solver::NewtonLangmuirBasedModel__double.std::vector:double:.double"></span><span class="target" id="classSolver_1a951414b895d043125081253b5d4670a8"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">NewtonLangmuirBasedModel</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">initial_value</span></span>, <span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">parameter</span></span>, <span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">increment</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver24NewtonLangmuirBasedModelEdNSt6vectorIdEEd" title="Link to this definition"></a><br /></dt>
+<dd><p><a class="reference internal" href="#classSolver"><span class="std std-ref">Solver</span></a> for the ODE [y’ = K(1-beta*exp(alpha*y)))]. </p>
+<p>
+parameter[0] = K parameter[1] = beta parameter[2] = alpha</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initial_value</strong> – The initial value of the dependent variable. </p></li>
+<li><p><strong>parameter</strong> – A vector containing the parameters of the ODE. </p></li>
+<li><p><strong>increment</strong> – The time increment.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The solution to the ODE. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Solver6SolverEv">
+<span id="_CPPv3N6Solver6SolverEv"></span><span id="_CPPv2N6Solver6SolverEv"></span><span id="Solver::Solver"></span><span class="target" id="classSolver_1a9dfe7ae9ce617e8a6398be34284c907a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Solver</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Solver6SolverEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6SolverD0Ev">
+<span id="_CPPv3N6SolverD0Ev"></span><span id="_CPPv2N6SolverD0Ev"></span><span id="Solver::~Solver"></span><span class="target" id="classSolver_1aba52d3c92fafceb6fe39f937f2d73db3"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~Solver</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6SolverD0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classSimulation.html" class="btn btn-neutral float-left" title="Class Simulation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classSystem.html" class="btn btn-neutral float-right" title="Class System" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, giozu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

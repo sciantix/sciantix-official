@@ -1,0 +1,540 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Full API &mdash; SCIANTIX 2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c4a36953"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+      <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SCIANTIX
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index_api.html">SCIANTIX API reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SCIANTIX</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Full API</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/unabridged_orphan.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="full-api">
+<h1>Full API<a class="headerlink" href="#full-api" title="Link to this heading"></a></h1>
+<section id="directories">
+<h2>Directories<a class="headerlink" href="#directories" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dir_include.html">Directory include</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dir_include.html#subdirectories">Subdirectories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dir_include.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dir_include_classes.html">Directory classes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dir_include_classes.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dir_include_coupling.html">Directory coupling</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dir_include_coupling.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dir_include_file_manager.html">Directory file_manager</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dir_include_file_manager.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dir_include_models.html">Directory models</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dir_include_models.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dir_include_namespaces.html">Directory namespaces</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dir_include_namespaces.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dir_include_operations.html">Directory operations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dir_include_operations.html#files">Files</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="files">
+<h2>Files<a class="headerlink" href="#files" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_namespaces_Constants.h.html">File Constants.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_namespaces_Constants.h.html#definition-include-namespaces-constants-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/namespaces/Constants.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_namespaces_Constants.h.html">Program Listing for File Constants.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_namespaces_Constants.h.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_namespaces_Constants.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_namespaces_Constants.h.html#variables">Variables</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_namespaces_ErrorMessages.h.html">File ErrorMessages.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_namespaces_ErrorMessages.h.html#definition-include-namespaces-errormessages-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/namespaces/ErrorMessages.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_namespaces_ErrorMessages.h.html">Program Listing for File ErrorMessages.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_namespaces_ErrorMessages.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_namespaces_ErrorMessages.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_namespaces_ErrorMessages.h.html#namespaces">Namespaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_namespaces_ErrorMessages.h.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_classes_Gas.h.html">File Gas.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Gas.h.html#definition-include-classes-gas-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/classes/Gas.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_classes_Gas.h.html">Program Listing for File Gas.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Gas.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Gas.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Gas.h.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_models_GasDiffusion.h.html">File GasDiffusion.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_models_GasDiffusion.h.html#definition-include-models-gasdiffusion-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/models/GasDiffusion.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_models_GasDiffusion.h.html">Program Listing for File GasDiffusion.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_models_GasDiffusion.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_models_GasDiffusion.h.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_file_manager_Initialization.h.html">File Initialization.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_file_manager_Initialization.h.html#definition-include-file-manager-initialization-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/file_manager/Initialization.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_file_manager_Initialization.h.html">Program Listing for File Initialization.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_file_manager_Initialization.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_file_manager_Initialization.h.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_file_manager_InputInterpolation.h.html">File InputInterpolation.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_file_manager_InputInterpolation.h.html#definition-include-file-manager-inputinterpolation-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/file_manager/InputInterpolation.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_file_manager_InputInterpolation.h.html">Program Listing for File InputInterpolation.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_file_manager_InputInterpolation.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_file_manager_InputInterpolation.h.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_file_manager_InputReading.h.html">File InputReading.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_file_manager_InputReading.h.html#definition-include-file-manager-inputreading-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/file_manager/InputReading.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_file_manager_InputReading.h.html">Program Listing for File InputReading.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_file_manager_InputReading.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_file_manager_InputReading.h.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_classes_InputVariable.h.html">File InputVariable.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_InputVariable.h.html#definition-include-classes-inputvariable-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/classes/InputVariable.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_classes_InputVariable.h.html">Program Listing for File InputVariable.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_InputVariable.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_InputVariable.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_InputVariable.h.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_MainVariables.h.html">File MainVariables.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_MainVariables.h.html#definition-include-mainvariables-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/MainVariables.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_MainVariables.h.html">Program Listing for File MainVariables.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_MainVariables.h.html#detailed-description">Detailed Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_MainVariables.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_MainVariables.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_MainVariables.h.html#variables">Variables</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_classes_Material.h.html">File Material.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Material.h.html#definition-include-classes-material-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/classes/Material.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_classes_Material.h.html">Program Listing for File Material.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Material.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Material.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Material.h.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_classes_Matrix.h.html">File Matrix.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Matrix.h.html#definition-include-classes-matrix-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/classes/Matrix.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_classes_Matrix.h.html">Program Listing for File Matrix.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Matrix.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Matrix.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Matrix.h.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_classes_Model.h.html">File Model.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Model.h.html#definition-include-classes-model-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/classes/Model.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_classes_Model.h.html">Program Listing for File Model.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Model.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Model.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Model.h.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_Sciantix.h.html">File Sciantix.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_Sciantix.h.html#definition-include-sciantix-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/Sciantix.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_Sciantix.h.html">Program Listing for File Sciantix.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_Sciantix.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_Sciantix.h.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_classes_SciantixArray.h.html">File SciantixArray.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_SciantixArray.h.html#definition-include-classes-sciantixarray-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/classes/SciantixArray.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_classes_SciantixArray.h.html">Program Listing for File SciantixArray.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_SciantixArray.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_SciantixArray.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_SciantixArray.h.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_classes_SciantixVariable.h.html">File SciantixVariable.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_SciantixVariable.h.html#definition-include-classes-sciantixvariable-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/classes/SciantixVariable.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_classes_SciantixVariable.h.html">Program Listing for File SciantixVariable.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_SciantixVariable.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_SciantixVariable.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_SciantixVariable.h.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_operations_SetGas.h.html">File SetGas.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetGas.h.html#definition-include-operations-setgas-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/operations/SetGas.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_operations_SetGas.h.html">Program Listing for File SetGas.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetGas.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetGas.h.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_operations_SetMatrix.h.html">File SetMatrix.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetMatrix.h.html#definition-include-operations-setmatrix-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/operations/SetMatrix.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_operations_SetMatrix.h.html">Program Listing for File SetMatrix.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetMatrix.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetMatrix.h.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_operations_SetSystem.h.html">File SetSystem.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetSystem.h.html#definition-include-operations-setsystem-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/operations/SetSystem.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_operations_SetSystem.h.html">Program Listing for File SetSystem.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetSystem.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetSystem.h.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_operations_SetVariables.h.html">File SetVariables.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetVariables.h.html#definition-include-operations-setvariables-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/operations/SetVariables.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_operations_SetVariables.h.html">Program Listing for File SetVariables.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetVariables.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetVariables.h.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_operations_SetVariablesFunctions.h.html">File SetVariablesFunctions.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetVariablesFunctions.h.html#definition-include-operations-setvariablesfunctions-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/operations/SetVariablesFunctions.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_operations_SetVariablesFunctions.h.html">Program Listing for File SetVariablesFunctions.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetVariablesFunctions.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetVariablesFunctions.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_operations_SetVariablesFunctions.h.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_classes_Simulation.h.html">File Simulation.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Simulation.h.html#definition-include-classes-simulation-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/classes/Simulation.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_classes_Simulation.h.html">Program Listing for File Simulation.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Simulation.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Simulation.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Simulation.h.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_classes_Solver.h.html">File Solver.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Solver.h.html#definition-include-classes-solver-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/classes/Solver.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_classes_Solver.h.html">Program Listing for File Solver.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Solver.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Solver.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Solver.h.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_models_StoichiometryDeviation.h.html">File StoichiometryDeviation.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_models_StoichiometryDeviation.h.html#definition-include-models-stoichiometrydeviation-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/models/StoichiometryDeviation.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_models_StoichiometryDeviation.h.html">Program Listing for File StoichiometryDeviation.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_models_StoichiometryDeviation.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_models_StoichiometryDeviation.h.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_classes_System.h.html">File System.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_System.h.html#definition-include-classes-system-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/classes/System.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_classes_System.h.html">Program Listing for File System.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_System.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_System.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_System.h.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_file_manager_TimeStepCalculation.h.html">File TimeStepCalculation.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_file_manager_TimeStepCalculation.h.html#definition-include-file-manager-timestepcalculation-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/file_manager/TimeStepCalculation.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_file_manager_TimeStepCalculation.h.html">Program Listing for File TimeStepCalculation.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_file_manager_TimeStepCalculation.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_file_manager_TimeStepCalculation.h.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_coupling_TUSrcCoupling.h.html">File TUSrcCoupling.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_coupling_TUSrcCoupling.h.html#definition-include-coupling-tusrccoupling-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/coupling/TUSrcCoupling.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_coupling_TUSrcCoupling.h.html">Program Listing for File TUSrcCoupling.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_coupling_TUSrcCoupling.h.html#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="file_include_classes_Variable.h.html">File Variable.h</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Variable.h.html#definition-include-classes-variable-h">Definition (<code class="docutils literal notranslate"><span class="pre">include/classes/Variable.h</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="program_listing_file_include_classes_Variable.h.html">Program Listing for File Variable.h</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Variable.h.html#includes">Includes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Variable.h.html#included-by">Included By</a></li>
+<li class="toctree-l2"><a class="reference internal" href="file_include_classes_Variable.h.html#classes">Classes</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, giozu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

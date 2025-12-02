@@ -1,0 +1,611 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class System &mdash; SCIANTIX 2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c4a36953"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+      <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class Variable" href="classVariable.html" />
+    <link rel="prev" title="Class Solver" href="classSolver.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SCIANTIX
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index_api.html">SCIANTIX API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index_api.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index_api.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index_api.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index_api.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index_api.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="classGas.html">Class Gas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classInputVariable.html">Class InputVariable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classMaterial.html">Class Material</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classMatrix.html">Class Matrix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classModel.html">Class Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classSciantixArray.html">Template Class SciantixArray</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classSciantixVariable.html">Class SciantixVariable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classSimulation.html">Class Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classSolver.html">Class Solver</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Class System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVariable.html">Class Variable</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index_api.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index_api.html#variables">Variables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SCIANTIX</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index_api.html">SCIANTIX API reference</a></li>
+      <li class="breadcrumb-item active">Class System</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classSystem.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-system">
+<span id="exhale-class-classsystem"></span><h1>Class System<a class="headerlink" href="#class-system" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_include_classes_System.h.html#file-include-classes-system-h"><span class="std std-ref">File System.h</span></a></p></li>
+</ul>
+<section id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Link to this heading"></a></h2>
+<section id="base-type">
+<h3>Base Type<a class="headerlink" href="#base-type" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">Material</span></code> (<a class="reference internal" href="classMaterial.html#exhale-class-classmaterial"><span class="std std-ref">Class Material</span></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv46System">
+<span id="_CPPv36System"></span><span id="_CPPv26System"></span><span id="System"></span><span class="target" id="classSystem"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">System</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="classMaterial.html#_CPPv48Material" title="Material"><span class="n"><span class="pre">Material</span></span></a><a class="headerlink" href="#_CPPv46System" title="Link to this definition"></a><br /></dt>
+<dd><p>Class derived from <a class="reference internal" href="classMaterial.html#classMaterial"><span class="std std-ref">Material</span></a> to include the properties that depend on both the fission gas and the fuel matrix. </p>
+<p><dl class="simple">
+<dt><strong>Author</strong></dt><dd><p>G. Zullo </p>
+</dd>
+<dt><strong>Author</strong></dt><dd><p>F. Bastien </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System21setRestructuredMatrixEb">
+<span id="_CPPv3N6System21setRestructuredMatrixEb"></span><span id="_CPPv2N6System21setRestructuredMatrixEb"></span><span id="System::setRestructuredMatrix__b"></span><span class="target" id="classSystem_1a0605e34a41f9e049bb87c37b649323ef"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setRestructuredMatrix</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">y</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System21setRestructuredMatrixEb" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the matrix restructuring status. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>y</strong> – True if the matrix is restructured, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System21getRestructuredMatrixEv">
+<span id="_CPPv3N6System21getRestructuredMatrixEv"></span><span id="_CPPv2N6System21getRestructuredMatrixEv"></span><span id="System::getRestructuredMatrix"></span><span class="target" id="classSystem_1a8fdd7e0d752047670fe3b70238bfb420"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getRestructuredMatrix</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System21getRestructuredMatrixEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the restructuring status of the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True if the matrix is restructured, false otherwise. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System8setYieldEd">
+<span id="_CPPv3N6System8setYieldEd"></span><span id="_CPPv2N6System8setYieldEd"></span><span id="System::setYield__double"></span><span class="target" id="classSystem_1a3ac5bef06ec2c87ee5d8e71bf5fa01d6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setYield</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">y</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System8setYieldEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the cumulative yield of the fission gas. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>y</strong> – Yield to set (atoms per fission). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System8getYieldEv">
+<span id="_CPPv3N6System8getYieldEv"></span><span id="_CPPv2N6System8getYieldEv"></span><span id="System::getYield"></span><span class="target" id="classSystem_1a528e6d77984dbc53ebd0ed52e08de5c8"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getYield</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System8getYieldEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the cumulative yield of the fission gas. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Yield of the gas (atoms per fission). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System18setRadiusInLatticeEd">
+<span id="_CPPv3N6System18setRadiusInLatticeEd"></span><span id="_CPPv2N6System18setRadiusInLatticeEd"></span><span id="System::setRadiusInLattice__double"></span><span class="target" id="classSystem_1ab76cf945f6cedb2ed0f1144907d30a3d"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setRadiusInLattice</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System18setRadiusInLatticeEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the radius of the fission gas atom in the matrix lattice. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> – Radius to set (meters). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System18getRadiusInLatticeEv">
+<span id="_CPPv3N6System18getRadiusInLatticeEv"></span><span id="_CPPv2N6System18getRadiusInLatticeEv"></span><span id="System::getRadiusInLattice"></span><span class="target" id="classSystem_1a4d744359e37208ffabb10186546e844b"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getRadiusInLattice</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System18getRadiusInLatticeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the radius of the fission gas atom in the matrix lattice. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Radius of the gas atom (meters). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System6setGasE3Gas">
+<span id="_CPPv3N6System6setGasE3Gas"></span><span id="_CPPv2N6System6setGasE3Gas"></span><span id="System::setGas__Gas"></span><span class="target" id="classSystem_1a55c2f7154afc13588a1358fe97bd4558"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setGas</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classGas.html#_CPPv43Gas" title="Gas"><span class="n"><span class="pre">Gas</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">g</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System6setGasE3Gas" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the name of the gas. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> – Name of the gas to set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System6getGasEv">
+<span id="_CPPv3N6System6getGasEv"></span><span id="_CPPv2N6System6getGasEv"></span><span id="System::getGas"></span><span class="target" id="classSystem_1aa369d29718590d4a155ebcccd6589ceb"></span><a class="reference internal" href="classGas.html#_CPPv43Gas" title="Gas"><span class="n"><span class="pre">Gas</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getGas</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System6getGasEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System10getGasNameEv">
+<span id="_CPPv3N6System10getGasNameEv"></span><span id="_CPPv2N6System10getGasNameEv"></span><span id="System::getGasName"></span><span class="target" id="classSystem_1a240425c8737467ca975ec1cfd44e147d"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getGasName</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System10getGasNameEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the name of the gas. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Name of the gas. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System9setMatrixE6Matrix">
+<span id="_CPPv3N6System9setMatrixE6Matrix"></span><span id="_CPPv2N6System9setMatrixE6Matrix"></span><span id="System::setMatrix__Matrix"></span><span class="target" id="classSystem_1ac46efae1ae4010ad50e14674ec82e8d8"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setMatrix</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classMatrix.html#_CPPv46Matrix" title="Matrix"><span class="n"><span class="pre">Matrix</span></span></a><span class="w"> </span><span class="n sig-param"><span class="pre">m</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System9setMatrixE6Matrix" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the name of the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> – Name of the matrix to set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System9getMatrixEv">
+<span id="_CPPv3N6System9getMatrixEv"></span><span id="_CPPv2N6System9getMatrixEv"></span><span id="System::getMatrix"></span><span class="target" id="classSystem_1a13ff0067641a4dc76a0cd8f1908ce740"></span><a class="reference internal" href="classMatrix.html#_CPPv46Matrix" title="Matrix"><span class="n"><span class="pre">Matrix</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getMatrix</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System9getMatrixEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System13getMatrixNameEv">
+<span id="_CPPv3N6System13getMatrixNameEv"></span><span id="_CPPv2N6System13getMatrixNameEv"></span><span id="System::getMatrixName"></span><span class="target" id="classSystem_1addd9188cceb49b4d5a06cf828e43a39d"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getMatrixName</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System13getMatrixNameEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the name of the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Name of the matrix. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System18getVolumeInLatticeEv">
+<span id="_CPPv3N6System18getVolumeInLatticeEv"></span><span id="_CPPv2N6System18getVolumeInLatticeEv"></span><span id="System::getVolumeInLattice"></span><span class="target" id="classSystem_1a64918308f072a6d81ada807c5efda349"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getVolumeInLattice</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System18getVolumeInLatticeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Gets the volume occupied by the gas in the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Volume occupied by the gas. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System18setVolumeInLatticeEd">
+<span id="_CPPv3N6System18setVolumeInLatticeEd"></span><span id="_CPPv2N6System18setVolumeInLatticeEd"></span><span id="System::setVolumeInLattice__double"></span><span class="target" id="classSystem_1a40420312d54e9bdac35a89c6bbc16fd6"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setVolumeInLattice</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System18setVolumeInLatticeEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the volume occupied by the gas in the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>v</strong> – Volume to set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System20setBubbleDiffusivityEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI6MatrixE">
+<span id="_CPPv3N6System20setBubbleDiffusivityEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI6MatrixE"></span><span id="_CPPv2N6System20setBubbleDiffusivityEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI6MatrixE"></span><span id="System::setBubbleDiffusivity__i.SciantixArray:SciantixVariable:R.SciantixArray:SciantixVariable:R.SciantixArray:Matrix:R"></span><span class="target" id="classSystem_1ad2eeb759ac6830f559c8ebb123095b3a"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setBubbleDiffusivity</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">input_value</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sciantix_variable</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">history_variable</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classMatrix.html#_CPPv46Matrix" title="Matrix"><span class="n"><span class="pre">Matrix</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">matrices</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System20setBubbleDiffusivityEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI6MatrixE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the diffusivity of bubbles within the matrix based on input values. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_value</strong> – The model selection index for bubble diffusivity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System20getBubbleDiffusivityEv">
+<span id="_CPPv3N6System20getBubbleDiffusivityEv"></span><span id="_CPPv2N6System20getBubbleDiffusivityEv"></span><span id="System::getBubbleDiffusivity"></span><span class="target" id="classSystem_1a13d40e81413373127d17913b4ebc7073"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getBubbleDiffusivity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System20getBubbleDiffusivityEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the diffusivity of bubbles within the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current bubble diffusivity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System20setHeliumDiffusivityEiR13SciantixArrayI16SciantixVariableE">
+<span id="_CPPv3N6System20setHeliumDiffusivityEiR13SciantixArrayI16SciantixVariableE"></span><span id="_CPPv2N6System20setHeliumDiffusivityEiR13SciantixArrayI16SciantixVariableE"></span><span id="System::setHeliumDiffusivity__i.SciantixArray:SciantixVariable:R"></span><span class="target" id="classSystem_1ac72fd9d817d636de17bb071efcdd7549"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setHeliumDiffusivity</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">input_value</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">history_variable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System20setHeliumDiffusivityEiR13SciantixArrayI16SciantixVariableE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the helium diffusivity within the matrix based on the selected model. The intra-granular helium diffusivity within the fuel grain is set according to the input_variable iHeDiffusivity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_value</strong> – The model selection index for helium diffusivity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System20getHeliumDiffusivityEv">
+<span id="_CPPv3N6System20getHeliumDiffusivityEv"></span><span id="_CPPv2N6System20getHeliumDiffusivityEv"></span><span id="System::getHeliumDiffusivity"></span><span class="target" id="classSystem_1ae8fc2e89ce30eeeb092514e9de320b48"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getHeliumDiffusivity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System20getHeliumDiffusivityEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the helium diffusivity within the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current helium diffusivity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System24setFissionGasDiffusivityEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE">
+<span id="_CPPv3N6System24setFissionGasDiffusivityEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE"></span><span id="_CPPv2N6System24setFissionGasDiffusivityEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE"></span><span id="System::setFissionGasDiffusivity__i.SciantixArray:SciantixVariable:R.SciantixArray:SciantixVariable:R.SciantixArray:InputVariable:R"></span><span class="target" id="classSystem_1a7c475aa8dedf9734bf642573323193e1"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setFissionGasDiffusivity</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">input_value</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sciantix_variable</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">history_variable</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classInputVariable.html#_CPPv413InputVariable" title="InputVariable"><span class="n"><span class="pre">InputVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">scaling_factors</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System24setFissionGasDiffusivityEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the diffusivity of fission gases within the matrix based on the selected model. The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFissionGasDiffusivity. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_value</strong> – The model selection index for fission gas diffusivity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System24getFissionGasDiffusivityEv">
+<span id="_CPPv3N6System24getFissionGasDiffusivityEv"></span><span id="_CPPv2N6System24getFissionGasDiffusivityEv"></span><span id="System::getFissionGasDiffusivity"></span><span class="target" id="classSystem_1a41cb7f78f578633bd245296e7772b975"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getFissionGasDiffusivity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System24getFissionGasDiffusivityEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the diffusivity of fission gases within the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current fission gas diffusivity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System16setHenryConstantEd">
+<span id="_CPPv3N6System16setHenryConstantEd"></span><span id="_CPPv2N6System16setHenryConstantEd"></span><span id="System::setHenryConstant__double"></span><span class="target" id="classSystem_1ad6539b831e1c1c3b3c5656b442dbe494"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setHenryConstant</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">h</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System16setHenryConstantEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the Henry’s constant value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>h</strong> – The new value for Henry’s constant. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System16getHenryConstantEv">
+<span id="_CPPv3N6System16getHenryConstantEv"></span><span id="_CPPv2N6System16getHenryConstantEv"></span><span id="System::getHenryConstant"></span><span class="target" id="classSystem_1a4d3eb439a8a34abac8e0c3649bb4b6aa"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getHenryConstant</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System16getHenryConstantEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the Henry’s constant value. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current value of Henry’s constant. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System17setResolutionRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableER13SciantixArrayI6MatrixE">
+<span id="_CPPv3N6System17setResolutionRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableER13SciantixArrayI6MatrixE"></span><span id="_CPPv2N6System17setResolutionRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableER13SciantixArrayI6MatrixE"></span><span id="System::setResolutionRate__i.SciantixArray:SciantixVariable:R.SciantixArray:SciantixVariable:R.SciantixArray:InputVariable:R.SciantixArray:Matrix:R"></span><span class="target" id="classSystem_1a3161fca95c3de2b24baac7c1de86fee7"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setResolutionRate</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">input_value</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sciantix_variable</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">history_variable</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classInputVariable.html#_CPPv413InputVariable" title="InputVariable"><span class="n"><span class="pre">InputVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">scaling_factors</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classMatrix.html#_CPPv46Matrix" title="Matrix"><span class="n"><span class="pre">Matrix</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">matrices</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System17setResolutionRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableER13SciantixArrayI6MatrixE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the resolution rate for isotopes from nanobubbles in the matrix. The helium intra-granular resolution rate is set according to the input_variable iResolutionRate. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_value</strong> – The model selection index for setting the resolution rate. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System17getResolutionRateEv">
+<span id="_CPPv3N6System17getResolutionRateEv"></span><span id="_CPPv2N6System17getResolutionRateEv"></span><span id="System::getResolutionRate"></span><span class="target" id="classSystem_1ae0f820556c4a0d39886e935191cbb0b4"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getResolutionRate</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System17getResolutionRateEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the resolution rate for isotopes from nanobubbles in the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current resolution rate. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System15setTrappingRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE">
+<span id="_CPPv3N6System15setTrappingRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE"></span><span id="_CPPv2N6System15setTrappingRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE"></span><span id="System::setTrappingRate__i.SciantixArray:SciantixVariable:R.SciantixArray:InputVariable:R"></span><span class="target" id="classSystem_1a6beb8fbddd295c9319220cfaa2f38742"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setTrappingRate</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">input_value</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sciantix_variable</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classInputVariable.html#_CPPv413InputVariable" title="InputVariable"><span class="n"><span class="pre">InputVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">scaling_factors</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System15setTrappingRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the trapping rate for isotopes in nanobubbles within the matrix. The krypton intra-granular trapping rate is set according to the input_variable iTrappingRate. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_value</strong> – The model selection index for setting the trapping rate. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System15getTrappingRateEv">
+<span id="_CPPv3N6System15getTrappingRateEv"></span><span id="_CPPv2N6System15getTrappingRateEv"></span><span id="System::getTrappingRate"></span><span class="target" id="classSystem_1ae979bae3c16238a86071cfdd610b3aac"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getTrappingRate</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System15getTrappingRateEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the trapping rate for isotopes in nanobubbles within the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current trapping rate. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System17setNucleationRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE">
+<span id="_CPPv3N6System17setNucleationRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE"></span><span id="_CPPv2N6System17setNucleationRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE"></span><span id="System::setNucleationRate__i.SciantixArray:SciantixVariable:R.SciantixArray:InputVariable:R"></span><span class="target" id="classSystem_1a2392947effb3fb0515fec9e960fae8a5"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setNucleationRate</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">input_value</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">history_variable</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classInputVariable.html#_CPPv413InputVariable" title="InputVariable"><span class="n"><span class="pre">InputVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">scaling_factors</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System17setNucleationRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the nucleation rate based on the selected model. Evaluation of the nucleation rate of intragranular gas bubble inside the UO<sub>2</sub> matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_value</strong> – The model selection index for nucleation rate. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System17getNucleationRateEv">
+<span id="_CPPv3N6System17getNucleationRateEv"></span><span id="_CPPv2N6System17getNucleationRateEv"></span><span id="System::getNucleationRate"></span><span class="target" id="classSystem_1a373652dc042af738afd19365055133f1"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNucleationRate</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System17getNucleationRateEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the nucleation rate. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current nucleation rate. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System21setPoreNucleationRateEd">
+<span id="_CPPv3N6System21setPoreNucleationRateEd"></span><span id="_CPPv2N6System21setPoreNucleationRateEd"></span><span id="System::setPoreNucleationRate__double"></span><span class="target" id="classSystem_1a7943e5e337d159e7bfe76291a9517349"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setPoreNucleationRate</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System21setPoreNucleationRateEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the pore nucleation rate. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> – The new pore nucleation rate. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System21getPoreNucleationRateEv">
+<span id="_CPPv3N6System21getPoreNucleationRateEv"></span><span id="_CPPv2N6System21getPoreNucleationRateEv"></span><span id="System::getPoreNucleationRate"></span><span class="target" id="classSystem_1a74d984cb04659b1cf4d22179bb52455d"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPoreNucleationRate</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System21getPoreNucleationRateEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the pore nucleation rate. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current pore nucleation rate. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System17setProductionRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE">
+<span id="_CPPv3N6System17setProductionRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE"></span><span id="_CPPv2N6System17setProductionRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE"></span><span id="System::setProductionRate__i.SciantixArray:SciantixVariable:R.SciantixArray:InputVariable:R.SciantixArray:SciantixVariable:R.SciantixArray:InputVariable:R"></span><span class="target" id="classSystem_1af36fc2f742adc6feed7379ea53bd6f81"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setProductionRate</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">input_value</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">history_variable</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classInputVariable.html#_CPPv413InputVariable" title="InputVariable"><span class="n"><span class="pre">InputVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">input_variable</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sciantix_variable</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classInputVariable.html#_CPPv413InputVariable" title="InputVariable"><span class="n"><span class="pre">InputVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">scaling_factors</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System17setProductionRateEiR13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableER13SciantixArrayI16SciantixVariableER13SciantixArrayI13InputVariableE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the production rate based on the selected model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_value</strong> – The model selection index for setting the production rate. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System17getProductionRateEv">
+<span id="_CPPv3N6System17getProductionRateEv"></span><span id="_CPPv2N6System17getProductionRateEv"></span><span id="System::getProductionRate"></span><span class="target" id="classSystem_1a49e51a5008164164c648afe563c76e0f"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getProductionRate</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System17getProductionRateEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Member function to get the production rate of the sciantix_system. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The current production rate. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6System6SystemEv">
+<span id="_CPPv3N6System6SystemEv"></span><span id="_CPPv2N6System6SystemEv"></span><span id="System::System"></span><span class="target" id="classSystem_1ae317936c9bcf1374d61745572e0f2f8a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">System</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6System6SystemEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Default constructor for the <a class="reference internal" href="#classSystem"><span class="std std-ref">System</span></a> class. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6SystemD0Ev">
+<span id="_CPPv3N6SystemD0Ev"></span><span id="_CPPv2N6SystemD0Ev"></span><span id="System::~System"></span><span class="target" id="classSystem_1a3be70bb338e3f062f821173fd15680d0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~System</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6SystemD0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Destructor for the <a class="reference internal" href="#classSystem"><span class="std std-ref">System</span></a> class. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-protected-attributes">Protected Attributes</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System9referenceE">
+<span id="_CPPv3N6System9referenceE"></span><span id="_CPPv2N6System9referenceE"></span><span id="System::reference__ss"></span><span class="target" id="classSystem_1a4d63c0318028a91fe1c151e8ae85c62c"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">reference</span></span></span><a class="headerlink" href="#_CPPv4N6System9referenceE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System4nameE">
+<span id="_CPPv3N6System4nameE"></span><span id="_CPPv2N6System4nameE"></span><span id="System::name__ss"></span><span class="target" id="classSystem_1af3995745f52d4359f628ddd67de5121f"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">string</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">name</span></span></span><a class="headerlink" href="#_CPPv4N6System4nameE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System5yieldE">
+<span id="_CPPv3N6System5yieldE"></span><span id="_CPPv2N6System5yieldE"></span><span id="System::yield__double"></span><span class="target" id="classSystem_1a822ec3d131a4e7642ee7ee40bbf883b3"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">yield</span></span></span><a class="headerlink" href="#_CPPv4N6System5yieldE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System17radius_in_latticeE">
+<span id="_CPPv3N6System17radius_in_latticeE"></span><span id="_CPPv2N6System17radius_in_latticeE"></span><span id="System::radius_in_lattice__double"></span><span class="target" id="classSystem_1af451da3bb22a5c209ff7a67d70c1401b"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">radius_in_lattice</span></span></span><a class="headerlink" href="#_CPPv4N6System17radius_in_latticeE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System17volume_in_latticeE">
+<span id="_CPPv3N6System17volume_in_latticeE"></span><span id="_CPPv2N6System17volume_in_latticeE"></span><span id="System::volume_in_lattice__double"></span><span class="target" id="classSystem_1adca0422df64e9add8421ab5afe9be359"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">volume_in_lattice</span></span></span><a class="headerlink" href="#_CPPv4N6System17volume_in_latticeE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System11diffusivityE">
+<span id="_CPPv3N6System11diffusivityE"></span><span id="_CPPv2N6System11diffusivityE"></span><span id="System::diffusivity__double"></span><span class="target" id="classSystem_1ac461fe644e6d9b6ab3d42aa1f9c5bfbd"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">diffusivity</span></span></span><a class="headerlink" href="#_CPPv4N6System11diffusivityE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System18bubble_diffusivityE">
+<span id="_CPPv3N6System18bubble_diffusivityE"></span><span id="_CPPv2N6System18bubble_diffusivityE"></span><span id="System::bubble_diffusivity__double"></span><span class="target" id="classSystem_1ae8c1012ec14d3f2a81c53c13eb7ee24d"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">bubble_diffusivity</span></span></span><a class="headerlink" href="#_CPPv4N6System18bubble_diffusivityE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System14henry_constantE">
+<span id="_CPPv3N6System14henry_constantE"></span><span id="_CPPv2N6System14henry_constantE"></span><span id="System::henry_constant__double"></span><span class="target" id="classSystem_1ac475f1ce625d20471fec634af55b7b76"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">henry_constant</span></span></span><a class="headerlink" href="#_CPPv4N6System14henry_constantE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System15resolution_rateE">
+<span id="_CPPv3N6System15resolution_rateE"></span><span id="_CPPv2N6System15resolution_rateE"></span><span id="System::resolution_rate__double"></span><span class="target" id="classSystem_1a0afc0b9796be3f8ce9f5cfc2e83d0bb7"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">resolution_rate</span></span></span><a class="headerlink" href="#_CPPv4N6System15resolution_rateE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System13trapping_rateE">
+<span id="_CPPv3N6System13trapping_rateE"></span><span id="_CPPv2N6System13trapping_rateE"></span><span id="System::trapping_rate__double"></span><span class="target" id="classSystem_1a3bfedb61e0b85323acf9997bccd6cc77"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">trapping_rate</span></span></span><a class="headerlink" href="#_CPPv4N6System13trapping_rateE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System15nucleation_rateE">
+<span id="_CPPv3N6System15nucleation_rateE"></span><span id="_CPPv2N6System15nucleation_rateE"></span><span id="System::nucleation_rate__double"></span><span class="target" id="classSystem_1a54061d6d95679f3081b7e03af83f83d1"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nucleation_rate</span></span></span><a class="headerlink" href="#_CPPv4N6System15nucleation_rateE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System20pore_nucleation_rateE">
+<span id="_CPPv3N6System20pore_nucleation_rateE"></span><span id="_CPPv2N6System20pore_nucleation_rateE"></span><span id="System::pore_nucleation_rate__double"></span><span class="target" id="classSystem_1aab0143d69834556939c5daa841c847d7"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pore_nucleation_rate</span></span></span><a class="headerlink" href="#_CPPv4N6System20pore_nucleation_rateE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System5modesE">
+<span id="_CPPv3N6System5modesE"></span><span id="_CPPv2N6System5modesE"></span><span id="System::modes__std::vector:double:"></span><span class="target" id="classSystem_1a875e417f1e6fe522ec2c5a40f4d72c84"></span><span class="n"><span class="pre">std</span></span><span class="p"><span class="pre">::</span></span><span class="n"><span class="pre">vector</span></span><span class="p"><span class="pre">&lt;</span></span><span class="kt"><span class="pre">double</span></span><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">modes</span></span></span><a class="headerlink" href="#_CPPv4N6System5modesE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System15production_rateE">
+<span id="_CPPv3N6System15production_rateE"></span><span id="_CPPv2N6System15production_rateE"></span><span id="System::production_rate__double"></span><span class="target" id="classSystem_1aed29573ccd25ee2af01447b5c666778c"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">production_rate</span></span></span><a class="headerlink" href="#_CPPv4N6System15production_rateE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System19restructured_matrixE">
+<span id="_CPPv3N6System19restructured_matrixE"></span><span id="_CPPv2N6System19restructured_matrixE"></span><span id="System::restructured_matrix__b"></span><span class="target" id="classSystem_1a316d26fc125d6277781cdec7224ba88b"></span><span class="kt"><span class="pre">bool</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">restructured_matrix</span></span></span><a class="headerlink" href="#_CPPv4N6System19restructured_matrixE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System3gasE">
+<span id="_CPPv3N6System3gasE"></span><span id="_CPPv2N6System3gasE"></span><span id="System::gas__Gas"></span><span class="target" id="classSystem_1a009fcdc0f7d141db83bab5648507eb76"></span><a class="reference internal" href="classGas.html#_CPPv43Gas" title="Gas"><span class="n"><span class="pre">Gas</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">gas</span></span></span><a class="headerlink" href="#_CPPv4N6System3gasE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6System6matrixE">
+<span id="_CPPv3N6System6matrixE"></span><span id="_CPPv2N6System6matrixE"></span><span id="System::matrix__Matrix"></span><span class="target" id="classSystem_1a2639bccd07bf8420f2e5bcd32f9c1a87"></span><a class="reference internal" href="classMatrix.html#_CPPv46Matrix" title="Matrix"><span class="n"><span class="pre">Matrix</span></span></a><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">matrix</span></span></span><a class="headerlink" href="#_CPPv4N6System6matrixE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classSolver.html" class="btn btn-neutral float-left" title="Class Solver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classVariable.html" class="btn btn-neutral float-right" title="Class Variable" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, giozu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,826 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class Matrix &mdash; SCIANTIX 2.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/collapsible-lists/css/tree_view.css?v=a885cde7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=c4a36953"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/collapsible-lists/js/CollapsibleLists.compressed.js?v=73120307"></script>
+      <script src="../_static/collapsible-lists/js/apply-collapsible-lists.js?v=660e4f45"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class Model" href="classModel.html" />
+    <link rel="prev" title="Class Material" href="classMaterial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            SCIANTIX
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index_api.html">SCIANTIX API reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="index_api.html#class-hierarchy">Class Hierarchy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index_api.html#file-hierarchy">File Hierarchy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index_api.html#full-api">Full API</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="index_api.html#namespaces">Namespaces</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index_api.html#classes-and-structs">Classes and Structs</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="classGas.html">Class Gas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classInputVariable.html">Class InputVariable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classMaterial.html">Class Material</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Class Matrix</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classModel.html">Class Model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classSciantixArray.html">Template Class SciantixArray</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classSciantixVariable.html">Class SciantixVariable</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classSimulation.html">Class Simulation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classSolver.html">Class Solver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classSystem.html">Class System</a></li>
+<li class="toctree-l4"><a class="reference internal" href="classVariable.html">Class Variable</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="index_api.html#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="index_api.html#variables">Variables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">SCIANTIX</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index_api.html">SCIANTIX API reference</a></li>
+      <li class="breadcrumb-item active">Class Matrix</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/classMatrix.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-matrix">
+<span id="exhale-class-classmatrix"></span><h1>Class Matrix<a class="headerlink" href="#class-matrix" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p>Defined in <a class="reference internal" href="file_include_classes_Matrix.h.html#file-include-classes-matrix-h"><span class="std std-ref">File Matrix.h</span></a></p></li>
+</ul>
+<section id="inheritance-relationships">
+<h2>Inheritance Relationships<a class="headerlink" href="#inheritance-relationships" title="Link to this heading"></a></h2>
+<section id="base-type">
+<h3>Base Type<a class="headerlink" href="#base-type" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">public</span> <span class="pre">Material</span></code> (<a class="reference internal" href="classMaterial.html#exhale-class-classmaterial"><span class="std std-ref">Class Material</span></a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="class-documentation">
+<h2>Class Documentation<a class="headerlink" href="#class-documentation" title="Link to this heading"></a></h2>
+<dl class="cpp class">
+<dt class="sig sig-object cpp" id="_CPPv46Matrix">
+<span id="_CPPv36Matrix"></span><span id="_CPPv26Matrix"></span><span id="Matrix"></span><span class="target" id="classMatrix"></span><span class="k"><span class="pre">class</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Matrix</span></span></span><span class="w"> </span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="k"><span class="pre">public</span></span><span class="w"> </span><span class="k"><span class="pre">virtual</span></span><span class="w"> </span><a class="reference internal" href="classMaterial.html#_CPPv48Material" title="Material"><span class="n"><span class="pre">Material</span></span></a><a class="headerlink" href="#_CPPv46Matrix" title="Link to this definition"></a><br /></dt>
+<dd><p>Represents the fuel matrix material such as UO2, UO2-HBS, or MOX, derived from the <a class="reference internal" href="classMaterial.html#classMaterial"><span class="std std-ref">Material</span></a> class. </p>
+<p>This class extends the <a class="reference internal" href="classMaterial.html#classMaterial"><span class="std std-ref">Material</span></a> class to incorporate properties specific to nuclear fuel matrices, including physical and nuclear properties like lattice parameters, grain boundary properties, and fission fragment characteristics.</p>
+<p><dl class="simple">
+<dt><strong>Author</strong></dt><dd><p>G. Zullo </p>
+</dd>
+</dl>
+</p>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-functions">Public Functions</p>
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix21setTheoreticalDensityEd">
+<span id="_CPPv3N6Matrix21setTheoreticalDensityEd"></span><span id="_CPPv2N6Matrix21setTheoreticalDensityEd"></span><span id="Matrix::setTheoreticalDensity__double"></span><span class="target" id="classMatrix_1ad9672371c37ef80da2351f06aa7d63d5"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setTheoreticalDensity</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">m</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix21setTheoreticalDensityEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the theoretical density of the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>m</strong> – The density to set (kg/m3). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix21getTheoreticalDensityEv">
+<span id="_CPPv3N6Matrix21getTheoreticalDensityEv"></span><span id="_CPPv2N6Matrix21getTheoreticalDensityEv"></span><span id="Matrix::getTheoreticalDensity"></span><span class="target" id="classMatrix_1a06c129a7c37bcb4af167f322892fbcc0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getTheoreticalDensity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix21getTheoreticalDensityEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the theoretical density of the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A double that is the density of the matrix (kg/m3). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix19setLatticeParameterEd">
+<span id="_CPPv3N6Matrix19setLatticeParameterEd"></span><span id="_CPPv2N6Matrix19setLatticeParameterEd"></span><span id="Matrix::setLatticeParameter__double"></span><span class="target" id="classMatrix_1a1573f1263639bd2ad1e105d173055e3c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setLatticeParameter</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">m</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix19setLatticeParameterEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the lattice parameter of the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>m</strong> – The lattice parameter to set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix19getLatticeParameterEv">
+<span id="_CPPv3N6Matrix19getLatticeParameterEv"></span><span id="_CPPv2N6Matrix19getLatticeParameterEv"></span><span id="Matrix::getLatticeParameter"></span><span class="target" id="classMatrix_1a896e9198382ed62a91f92c91ac87efcb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getLatticeParameter</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix19getLatticeParameterEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the lattice parameter of the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The lattice parameter of the matrix. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix17setSurfaceTensionEd">
+<span id="_CPPv3N6Matrix17setSurfaceTensionEd"></span><span id="_CPPv2N6Matrix17setSurfaceTensionEd"></span><span id="Matrix::setSurfaceTension__double"></span><span class="target" id="classMatrix_1a9a400f2dbdb347ed275546d72724d014"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setSurfaceTension</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix17setSurfaceTensionEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the surface tension of the matrix material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> – The surface tension to set (N/m). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix17getSurfaceTensionEv">
+<span id="_CPPv3N6Matrix17getSurfaceTensionEv"></span><span id="_CPPv2N6Matrix17getSurfaceTensionEv"></span><span id="Matrix::getSurfaceTension"></span><span class="target" id="classMatrix_1a51dbbe07e308212347b3330c35c1ea19"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getSurfaceTension</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix17getSurfaceTensionEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the surface tension of the matrix material. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The surface tension of the matrix (N/m). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix17setSchottkyVolumeEd">
+<span id="_CPPv3N6Matrix17setSchottkyVolumeEd"></span><span id="_CPPv2N6Matrix17setSchottkyVolumeEd"></span><span id="Matrix::setSchottkyVolume__double"></span><span class="target" id="classMatrix_1a1f86e8cd111f19cbcdc3e859db73d2ed"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setSchottkyVolume</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix17setSchottkyVolumeEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the volume of a Schottky defect in the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>v</strong> – The volume of the Schottky defect to set (m3). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix17getSchottkyVolumeEv">
+<span id="_CPPv3N6Matrix17getSchottkyVolumeEv"></span><span id="_CPPv2N6Matrix17getSchottkyVolumeEv"></span><span id="Matrix::getSchottkyVolume"></span><span class="target" id="classMatrix_1a002cc5fac27f81aa6a41f90066de3096"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getSchottkyVolume</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix17getSchottkyVolumeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the volume of a Schottky defect in the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The volume of the Schottky defect (m3). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix29setOctahedralInterstitialSiteEd">
+<span id="_CPPv3N6Matrix29setOctahedralInterstitialSiteEd"></span><span id="_CPPv2N6Matrix29setOctahedralInterstitialSiteEd"></span><span id="Matrix::setOctahedralInterstitialSite__double"></span><span class="target" id="classMatrix_1a010abbea9e18b0a7acf03c6e920d8f15"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setOctahedralInterstitialSite</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix29setOctahedralInterstitialSiteEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the volume of an octahedral interstitial site in the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>v</strong> – The volume to set (m3). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix29getOctahedralInterstitialSiteEv">
+<span id="_CPPv3N6Matrix29getOctahedralInterstitialSiteEv"></span><span id="_CPPv2N6Matrix29getOctahedralInterstitialSiteEv"></span><span id="Matrix::getOctahedralInterstitialSite"></span><span class="target" id="classMatrix_1aecb072f6acaeefc93cc9dc1e82eb504a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getOctahedralInterstitialSite</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix29getOctahedralInterstitialSiteEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the volume of an octahedral interstitial site in the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The volume of the OIS (m3). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix24setGrainBoundaryMobilityEiR13SciantixArrayI16SciantixVariableE">
+<span id="_CPPv3N6Matrix24setGrainBoundaryMobilityEiR13SciantixArrayI16SciantixVariableE"></span><span id="_CPPv2N6Matrix24setGrainBoundaryMobilityEiR13SciantixArrayI16SciantixVariableE"></span><span id="Matrix::setGrainBoundaryMobility__i.SciantixArray:SciantixVariable:R"></span><span class="target" id="classMatrix_1a47e7a7f020d13aa6c0406b43e6bde859"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setGrainBoundaryMobility</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">input_value</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">history_variable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix24setGrainBoundaryMobilityEiR13SciantixArrayI16SciantixVariableE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the grain boundary mobility based on the selected model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_value</strong> – The model selection for grain boundary mobility. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix24getGrainBoundaryMobilityEv">
+<span id="_CPPv3N6Matrix24getGrainBoundaryMobilityEv"></span><span id="_CPPv2N6Matrix24getGrainBoundaryMobilityEv"></span><span id="Matrix::getGrainBoundaryMobility"></span><span class="target" id="classMatrix_1a0f1edc15747e6594f5f0853766e4b04d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getGrainBoundaryMobility</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix24getGrainBoundaryMobilityEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the mobility of the grain boundaries of the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The grain boundary mobility. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix23setFissionFragmentRangeEd">
+<span id="_CPPv3N6Matrix23setFissionFragmentRangeEd"></span><span id="_CPPv2N6Matrix23setFissionFragmentRangeEd"></span><span id="Matrix::setFissionFragmentRange__double"></span><span class="target" id="classMatrix_1ac4c3796da1f931629d0438c9cc20731c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setFissionFragmentRange</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix23setFissionFragmentRangeEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the average range of the fission fragments in the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> – The range to set (m). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix23getFissionFragmentRangeEv">
+<span id="_CPPv3N6Matrix23getFissionFragmentRangeEv"></span><span id="_CPPv2N6Matrix23getFissionFragmentRangeEv"></span><span id="Matrix::getFissionFragmentRange"></span><span class="target" id="classMatrix_1a19f2df5da1429c31db35bcd022cff768"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getFissionFragmentRange</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix23getFissionFragmentRangeEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the average range of the fission fragments in the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The range of the fission fragments (m). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix33setFissionFragmentInfluenceRadiusEd">
+<span id="_CPPv3N6Matrix33setFissionFragmentInfluenceRadiusEd"></span><span id="_CPPv2N6Matrix33setFissionFragmentInfluenceRadiusEd"></span><span id="Matrix::setFissionFragmentInfluenceRadius__double"></span><span class="target" id="classMatrix_1aefc4bd29dcb27ce6e03cf800f59e6c1d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setFissionFragmentInfluenceRadius</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">r</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix33setFissionFragmentInfluenceRadiusEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the radius of influence of the fission fragment track. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>r</strong> – The radius to set (m). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix33getFissionFragmentInfluenceRadiusEv">
+<span id="_CPPv3N6Matrix33getFissionFragmentInfluenceRadiusEv"></span><span id="_CPPv2N6Matrix33getFissionFragmentInfluenceRadiusEv"></span><span id="Matrix::getFissionFragmentInfluenceRadius"></span><span class="target" id="classMatrix_1a99a2b1fcd2a2c5bab4215932d8e82baa"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getFissionFragmentInfluenceRadius</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix33getFissionFragmentInfluenceRadiusEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the radius of influence of the fission fragment track. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The radius of influence (m). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix20setSemidihedralAngleEd">
+<span id="_CPPv3N6Matrix20setSemidihedralAngleEd"></span><span id="_CPPv2N6Matrix20setSemidihedralAngleEd"></span><span id="Matrix::setSemidihedralAngle__double"></span><span class="target" id="classMatrix_1accebe75c3f29db48edf0a2e820f2f062"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setSemidihedralAngle</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">sda</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix20setSemidihedralAngleEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the semidihedral angle. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>sda</strong> – The semidihedral angle to set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix20getSemidihedralAngleEv">
+<span id="_CPPv3N6Matrix20getSemidihedralAngleEv"></span><span id="_CPPv2N6Matrix20getSemidihedralAngleEv"></span><span id="Matrix::getSemidihedralAngle"></span><span class="target" id="classMatrix_1a0cf8f4bda2883f67c30d7e180116e892"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getSemidihedralAngle</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix20getSemidihedralAngleEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the semidihedral angle. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The semidihedral angle. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix25setGrainBoundaryThicknessEd">
+<span id="_CPPv3N6Matrix25setGrainBoundaryThicknessEd"></span><span id="_CPPv2N6Matrix25setGrainBoundaryThicknessEd"></span><span id="Matrix::setGrainBoundaryThickness__double"></span><span class="target" id="classMatrix_1a89fe9efdb9de2e180e84215823800478"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setGrainBoundaryThickness</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">gbt</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix25setGrainBoundaryThicknessEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the thickness of the grain boundary. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>gbt</strong> – The thickness to set (m). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix25getGrainBoundaryThicknessEv">
+<span id="_CPPv3N6Matrix25getGrainBoundaryThicknessEv"></span><span id="_CPPv2N6Matrix25getGrainBoundaryThicknessEv"></span><span id="Matrix::getGrainBoundaryThickness"></span><span class="target" id="classMatrix_1abc0b4821b599cb004bec4f85d6e899ba"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getGrainBoundaryThickness</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix25getGrainBoundaryThicknessEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the thickness of the grain boundary. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The thickness of the grain boundary (m). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix34setGrainBoundaryVacancyDiffusivityEiR13SciantixArrayI16SciantixVariableE">
+<span id="_CPPv3N6Matrix34setGrainBoundaryVacancyDiffusivityEiR13SciantixArrayI16SciantixVariableE"></span><span id="_CPPv2N6Matrix34setGrainBoundaryVacancyDiffusivityEiR13SciantixArrayI16SciantixVariableE"></span><span id="Matrix::setGrainBoundaryVacancyDiffusivity__i.SciantixArray:SciantixVariable:R"></span><span class="target" id="classMatrix_1a7b3300eb280323c66e1e2ccaf0c94914"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setGrainBoundaryVacancyDiffusivity</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">int</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">input_value</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">history_variable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix34setGrainBoundaryVacancyDiffusivityEiR13SciantixArrayI16SciantixVariableE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the diffusivity of vacancies on the grain boundaries based on the input model. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_value</strong> – The model selection for grain boundary vacancy diffusivity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix34getGrainBoundaryVacancyDiffusivityEv">
+<span id="_CPPv3N6Matrix34getGrainBoundaryVacancyDiffusivityEv"></span><span id="_CPPv2N6Matrix34getGrainBoundaryVacancyDiffusivityEv"></span><span id="Matrix::getGrainBoundaryVacancyDiffusivity"></span><span class="target" id="classMatrix_1a709673cc74fcbe016e657c13ddf0d509"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getGrainBoundaryVacancyDiffusivity</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix34getGrainBoundaryVacancyDiffusivityEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the vacancy diffusivity on the grain boundaries. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The grain boundary vacancy diffusivity. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix24setLenticularShapeFactorEd">
+<span id="_CPPv3N6Matrix24setLenticularShapeFactorEd"></span><span id="_CPPv2N6Matrix24setLenticularShapeFactorEd"></span><span id="Matrix::setLenticularShapeFactor__double"></span><span class="target" id="classMatrix_1ac243830dff23ca186fb6664ba4f5af07"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setLenticularShapeFactor</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">lsf</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix24setLenticularShapeFactorEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the lenticular shape factor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>lsf</strong> – The lenticular shape factor to set (/). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix24getLenticularShapeFactorEv">
+<span id="_CPPv3N6Matrix24getLenticularShapeFactorEv"></span><span id="_CPPv2N6Matrix24getLenticularShapeFactorEv"></span><span id="Matrix::getLenticularShapeFactor"></span><span class="target" id="classMatrix_1ac933e1aee228a0f46e14d51005547cb2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getLenticularShapeFactor</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix24getLenticularShapeFactorEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the lenticular shape factor. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The lenticular shape factor (/). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix17setNucleationRateEd">
+<span id="_CPPv3N6Matrix17setNucleationRateEd"></span><span id="_CPPv2N6Matrix17setNucleationRateEd"></span><span id="Matrix::setNucleationRate__double"></span><span class="target" id="classMatrix_1abb0015d9d4be841aab39a13adcef402b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setNucleationRate</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">n</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix17setNucleationRateEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the nucleation rate under irradiation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>n</strong> – The nucleation rate to set (1/s). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix17getNucleationRateEv">
+<span id="_CPPv3N6Matrix17getNucleationRateEv"></span><span id="_CPPv2N6Matrix17getNucleationRateEv"></span><span id="Matrix::getNucleationRate"></span><span class="target" id="classMatrix_1a7dac3cd340122fa20a92e85490935834"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getNucleationRate</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix17getNucleationRateEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the nucleation rate under irradiation. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The nucleation rate (1/s). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix21setPoreNucleationRateER13SciantixArrayI16SciantixVariableE">
+<span id="_CPPv3N6Matrix21setPoreNucleationRateER13SciantixArrayI16SciantixVariableE"></span><span id="_CPPv2N6Matrix21setPoreNucleationRateER13SciantixArrayI16SciantixVariableE"></span><span id="Matrix::setPoreNucleationRate__SciantixArray:SciantixVariable:R"></span><span class="target" id="classMatrix_1aa59ada6545c24a4fd5201a0ce7501931"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setPoreNucleationRate</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sciantix_variable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix21setPoreNucleationRateER13SciantixArrayI16SciantixVariableE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the nucleation rate of pores in high burnup structures (HBS). </p>
+<p>Calculates the nucleation rate based on current simulation parameters and a predefined model. The model used is defined by <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0022311522001234">Barani T. et al (2022). Journal of Nuclear Materials, 563, 153627.</a></p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix21getPoreNucleationRateEv">
+<span id="_CPPv3N6Matrix21getPoreNucleationRateEv"></span><span id="_CPPv2N6Matrix21getPoreNucleationRateEv"></span><span id="Matrix::getPoreNucleationRate"></span><span class="target" id="classMatrix_1ac64c2a6419564a0b0ee6812bd1f6b185"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPoreNucleationRate</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix21getPoreNucleationRateEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the nucleation rate of pores. </p>
+<p>
+The model used is defined by <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S0022311522001234">Barani T. et al (2022). Journal of Nuclear Materials, 563, 153627.</a> </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The pore nucleation rate (1/s).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix21setPoreResolutionRateER13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableE">
+<span id="_CPPv3N6Matrix21setPoreResolutionRateER13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableE"></span><span id="_CPPv2N6Matrix21setPoreResolutionRateER13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableE"></span><span id="Matrix::setPoreResolutionRate__SciantixArray:SciantixVariable:R.SciantixArray:SciantixVariable:R"></span><span class="target" id="classMatrix_1a97f9ed269ee89f29c7684a0c8784c8b3"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setPoreResolutionRate</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sciantix_variable</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">history_variable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix21setPoreResolutionRateER13SciantixArrayI16SciantixVariableER13SciantixArrayI16SciantixVariableE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the resolution rate of gas atoms from HBS pores. </p>
+<p>The re-solution rate is calculated based on current simulation parameters and a model from Barani et al., JNM 563 (2022) 153627. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix21getPoreResolutionRateEv">
+<span id="_CPPv3N6Matrix21getPoreResolutionRateEv"></span><span id="_CPPv2N6Matrix21getPoreResolutionRateEv"></span><span id="Matrix::getPoreResolutionRate"></span><span class="target" id="classMatrix_1a9fa806a97761781a07206a416475bb46"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPoreResolutionRate</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix21getPoreResolutionRateEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the resolution rate of gas atoms from pores. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The pore resolution rate (1/s). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix19setPoreTrappingRateER13SciantixArrayI6MatrixER13SciantixArrayI16SciantixVariableE">
+<span id="_CPPv3N6Matrix19setPoreTrappingRateER13SciantixArrayI6MatrixER13SciantixArrayI16SciantixVariableE"></span><span id="_CPPv2N6Matrix19setPoreTrappingRateER13SciantixArrayI6MatrixER13SciantixArrayI16SciantixVariableE"></span><span id="Matrix::setPoreTrappingRate__SciantixArray:Matrix:R.SciantixArray:SciantixVariable:R"></span><span class="target" id="classMatrix_1ab1145275605b9c26df74f2e5903348d4"></span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setPoreTrappingRate</span></span></span><span class="sig-paren">(</span><a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="#_CPPv46Matrix" title="Matrix"><span class="n"><span class="pre">Matrix</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">matrices</span></span>, <a class="reference internal" href="classSciantixArray.html#_CPPv4I0E13SciantixArray" title="SciantixArray"><span class="n"><span class="pre">SciantixArray</span></span></a><span class="p"><span class="pre">&lt;</span></span><a class="reference internal" href="classSciantixVariable.html#_CPPv416SciantixVariable" title="SciantixVariable"><span class="n"><span class="pre">SciantixVariable</span></span></a><span class="p"><span class="pre">&gt;</span></span><span class="w"> </span><span class="p"><span class="pre">&amp;</span></span><span class="n sig-param"><span class="pre">sciantix_variable</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix19setPoreTrappingRateER13SciantixArrayI6MatrixER13SciantixArrayI16SciantixVariableE" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the trapping rate of gas atoms in HBS pores. </p>
+<p>The trapping rate is calculated based on current simulation parameters and a model from Barani et al., JNM 563 (2022) 153627. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix19getPoreTrappingRateEv">
+<span id="_CPPv3N6Matrix19getPoreTrappingRateEv"></span><span id="_CPPv2N6Matrix19getPoreTrappingRateEv"></span><span id="Matrix::getPoreTrappingRate"></span><span class="target" id="classMatrix_1a9f6e13fad2aef372533476656b415560"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPoreTrappingRate</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix19getPoreTrappingRateEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the trapping rate of gas atoms in pores. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The pore trapping rate (1/s). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix14setGrainRadiusEd">
+<span id="_CPPv3N6Matrix14setGrainRadiusEd"></span><span id="_CPPv2N6Matrix14setGrainRadiusEd"></span><span id="Matrix::setGrainRadius__double"></span><span class="target" id="classMatrix_1a6c2797c111b4d77370a24f9197e397fb"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setGrainRadius</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">gr</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix14setGrainRadiusEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the grain radius of the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>gr</strong> – The grain radius to set. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix14getGrainRadiusEv">
+<span id="_CPPv3N6Matrix14getGrainRadiusEv"></span><span id="_CPPv2N6Matrix14getGrainRadiusEv"></span><span id="Matrix::getGrainRadius"></span><span class="target" id="classMatrix_1acd563740b65230646358ea64679481e1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getGrainRadius</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix14getGrainRadiusEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the grain radius of the matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The grain radius. </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix30setHealingTemperatureThresholdEd">
+<span id="_CPPv3N6Matrix30setHealingTemperatureThresholdEd"></span><span id="_CPPv2N6Matrix30setHealingTemperatureThresholdEd"></span><span id="Matrix::setHealingTemperatureThreshold__double"></span><span class="target" id="classMatrix_1a771a05878c684596f48b104cffccdefd"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setHealingTemperatureThreshold</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">t</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix30setHealingTemperatureThresholdEd" title="Link to this definition"></a><br /></dt>
+<dd><p>Sets the temperature limit for complete healing of extended defects in the fuel matrix. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>t</strong> – The temperature threshold to set (K). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix30getHealingTemperatureThresholdEv">
+<span id="_CPPv3N6Matrix30getHealingTemperatureThresholdEv"></span><span id="_CPPv2N6Matrix30getHealingTemperatureThresholdEv"></span><span id="Matrix::getHealingTemperatureThreshold"></span><span class="target" id="classMatrix_1abf31fbcc5d0ecee71b3ac0de1d362a17"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getHealingTemperatureThreshold</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix30getHealingTemperatureThresholdEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Retrieves the temperature limit for complete healing of extended defects. </p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The healing temperature threshold (K). </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix18setChromiumContentEd">
+<span id="_CPPv3N6Matrix18setChromiumContentEd"></span><span id="_CPPv2N6Matrix18setChromiumContentEd"></span><span id="Matrix::setChromiumContent__double"></span><span class="target" id="classMatrix_1a0294a5f2b5e1845e155aff6e478399e7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setChromiumContent</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cc</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix18setChromiumContentEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix18getChromiumContentEv">
+<span id="_CPPv3N6Matrix18getChromiumContentEv"></span><span id="_CPPv2N6Matrix18getChromiumContentEv"></span><span id="Matrix::getChromiumContent"></span><span class="target" id="classMatrix_1aad7df7d0ec72e4c208ea12d8824bd04c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getChromiumContent</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix18getChromiumContentEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix21setChromiumSolubilityEd">
+<span id="_CPPv3N6Matrix21setChromiumSolubilityEd"></span><span id="_CPPv2N6Matrix21setChromiumSolubilityEd"></span><span id="Matrix::setChromiumSolubility__double"></span><span class="target" id="classMatrix_1a1138c132a258f7cffdf5497f056eef6e"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setChromiumSolubility</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix21setChromiumSolubilityEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix21getChroimumSolubilityEv">
+<span id="_CPPv3N6Matrix21getChroimumSolubilityEv"></span><span id="_CPPv2N6Matrix21getChroimumSolubilityEv"></span><span id="Matrix::getChroimumSolubility"></span><span class="target" id="classMatrix_1ad5a1980b45355bc7cd33675a5cc64c7c"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getChroimumSolubility</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix21getChroimumSolubilityEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix20setChromiaSolubilityEd">
+<span id="_CPPv3N6Matrix20setChromiaSolubilityEd"></span><span id="_CPPv2N6Matrix20setChromiaSolubilityEd"></span><span id="Matrix::setChromiaSolubility__double"></span><span class="target" id="classMatrix_1ae4cf9d0bf7d695a2551de9a1beef9fc1"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setChromiaSolubility</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">crs</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix20setChromiaSolubilityEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix20getChromiaSolubilityEv">
+<span id="_CPPv3N6Matrix20getChromiaSolubilityEv"></span><span id="_CPPv2N6Matrix20getChromiaSolubilityEv"></span><span id="Matrix::getChromiaSolubility"></span><span class="target" id="classMatrix_1a87f5bd475cab3c2b3584d7d0a6423ca7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getChromiaSolubility</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix20getChromiaSolubilityEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix19setChromiumSolutionEd">
+<span id="_CPPv3N6Matrix19setChromiumSolutionEd"></span><span id="_CPPv2N6Matrix19setChromiumSolutionEd"></span><span id="Matrix::setChromiumSolution__double"></span><span class="target" id="classMatrix_1a24bb7259823aac98ff24573d835b404d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setChromiumSolution</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cr_sol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix19setChromiumSolutionEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix19getChromiumSolutionEv">
+<span id="_CPPv3N6Matrix19getChromiumSolutionEv"></span><span id="_CPPv2N6Matrix19getChromiumSolutionEv"></span><span id="Matrix::getChromiumSolution"></span><span class="target" id="classMatrix_1a5036f7b7b69fba40be35c1859a1ad3b0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getChromiumSolution</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix19getChromiumSolutionEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix22setChromiumPrecipitateEd">
+<span id="_CPPv3N6Matrix22setChromiumPrecipitateEd"></span><span id="_CPPv2N6Matrix22setChromiumPrecipitateEd"></span><span id="Matrix::setChromiumPrecipitate__double"></span><span class="target" id="classMatrix_1a76f765106c778303713a62fc3755fa9a"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setChromiumPrecipitate</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">cr_p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix22setChromiumPrecipitateEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix22getChromiumPrecipitateEv">
+<span id="_CPPv3N6Matrix22getChromiumPrecipitateEv"></span><span id="_CPPv2N6Matrix22getChromiumPrecipitateEv"></span><span id="Matrix::getChromiumPrecipitate"></span><span class="target" id="classMatrix_1ab2ecbc24e8ee701a426dcf0a82b17a78"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getChromiumPrecipitate</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix22getChromiumPrecipitateEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix18setChromiaSolutionEd">
+<span id="_CPPv3N6Matrix18setChromiaSolutionEd"></span><span id="_CPPv2N6Matrix18setChromiaSolutionEd"></span><span id="Matrix::setChromiaSolution__double"></span><span class="target" id="classMatrix_1a71cb69a0723f23590c72574d90c9c060"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setChromiaSolution</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">chromia_sol</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix18setChromiaSolutionEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix18getChromiaSolutionEv">
+<span id="_CPPv3N6Matrix18getChromiaSolutionEv"></span><span id="_CPPv2N6Matrix18getChromiaSolutionEv"></span><span id="Matrix::getChromiaSolution"></span><span class="target" id="classMatrix_1abc30b11af5ae83ebc0b23a409ef096d2"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getChromiaSolution</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix18getChromiaSolutionEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix21setChromiaPrecipitateEd">
+<span id="_CPPv3N6Matrix21setChromiaPrecipitateEd"></span><span id="_CPPv2N6Matrix21setChromiaPrecipitateEd"></span><span id="Matrix::setChromiaPrecipitate__double"></span><span class="target" id="classMatrix_1abe60fc1f1a49191cb72301a5998a082d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setChromiaPrecipitate</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">chromia_p</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix21setChromiaPrecipitateEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix21getChromiaPrecipitateEv">
+<span id="_CPPv3N6Matrix21getChromiaPrecipitateEv"></span><span id="_CPPv2N6Matrix21getChromiaPrecipitateEv"></span><span id="Matrix::getChromiaPrecipitate"></span><span class="target" id="classMatrix_1abb384674b9b3297e6e8daaaee0185374"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getChromiaPrecipitate</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix21getChromiaPrecipitateEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix17setElasticModulusEd">
+<span id="_CPPv3N6Matrix17setElasticModulusEd"></span><span id="_CPPv2N6Matrix17setElasticModulusEd"></span><span id="Matrix::setElasticModulus__double"></span><span class="target" id="classMatrix_1a9cde163d29bc4298c55ed76ed73f74b0"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setElasticModulus</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">e</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix17setElasticModulusEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix17getElasticModulusEv">
+<span id="_CPPv3N6Matrix17getElasticModulusEv"></span><span id="_CPPv2N6Matrix17getElasticModulusEv"></span><span id="Matrix::getElasticModulus"></span><span class="target" id="classMatrix_1ad325ceee75e8e0c1aa8bf0852c82134f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getElasticModulus</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix17getElasticModulusEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix15setPoissonRatioEd">
+<span id="_CPPv3N6Matrix15setPoissonRatioEd"></span><span id="_CPPv2N6Matrix15setPoissonRatioEd"></span><span id="Matrix::setPoissonRatio__double"></span><span class="target" id="classMatrix_1addf25ed13e0a21a1b3620ea80fc1741d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setPoissonRatio</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix15setPoissonRatioEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix15getPoissonRatioEv">
+<span id="_CPPv3N6Matrix15getPoissonRatioEv"></span><span id="_CPPv2N6Matrix15getPoissonRatioEv"></span><span id="Matrix::getPoissonRatio"></span><span class="target" id="classMatrix_1ac9a6b6e93f407b8337fddf17d3811d5d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getPoissonRatio</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix15getPoissonRatioEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix30setGrainBoundaryFractureEnergyEd">
+<span id="_CPPv3N6Matrix30setGrainBoundaryFractureEnergyEd"></span><span id="_CPPv2N6Matrix30setGrainBoundaryFractureEnergyEd"></span><span id="Matrix::setGrainBoundaryFractureEnergy__double"></span><span class="target" id="classMatrix_1a5e8a6bb4f5f22f9b30d2456a3b1071e7"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setGrainBoundaryFractureEnergy</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">v</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix30setGrainBoundaryFractureEnergyEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix30getGrainBoundaryFractureEnergyEv">
+<span id="_CPPv3N6Matrix30getGrainBoundaryFractureEnergyEv"></span><span id="_CPPv2N6Matrix30getGrainBoundaryFractureEnergyEv"></span><span id="Matrix::getGrainBoundaryFractureEnergy"></span><span class="target" id="classMatrix_1a197d3a395739be677efbb6d027484ed9"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getGrainBoundaryFractureEnergy</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix30getGrainBoundaryFractureEnergyEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix15setShearModulusEd">
+<span id="_CPPv3N6Matrix15setShearModulusEd"></span><span id="_CPPv2N6Matrix15setShearModulusEd"></span><span id="Matrix::setShearModulus__double"></span><span class="target" id="classMatrix_1a4fc31bc82c7f37791157b49a0cff289d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">void</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">setShearModulus</span></span></span><span class="sig-paren">(</span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="n sig-param"><span class="pre">g</span></span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix15setShearModulusEd" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix15getShearModulusEv">
+<span id="_CPPv3N6Matrix15getShearModulusEv"></span><span id="_CPPv2N6Matrix15getShearModulusEv"></span><span id="Matrix::getShearModulus"></span><span class="target" id="classMatrix_1aac0a4016991bcca1b1d82733bbced70d"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">getShearModulus</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix15getShearModulusEv" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix6MatrixEv">
+<span id="_CPPv3N6Matrix6MatrixEv"></span><span id="_CPPv2N6Matrix6MatrixEv"></span><span id="Matrix::Matrix"></span><span class="target" id="classMatrix_1a2dba13c45127354c9f75ef576f49269b"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Matrix</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6Matrix6MatrixEv" title="Link to this definition"></a><br /></dt>
+<dd><p>Constructor. </p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt class="sig sig-object cpp" id="_CPPv4N6MatrixD0Ev">
+<span id="_CPPv3N6MatrixD0Ev"></span><span id="_CPPv2N6MatrixD0Ev"></span><span id="Matrix::~Matrix"></span><span class="target" id="classMatrix_1a9b1c3627f573d78a2f08623fdfef990f"></span><span class="k"><span class="pre">inline</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">~Matrix</span></span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6MatrixD0Ev" title="Link to this definition"></a><br /></dt>
+<dd><p>Destructor. </p>
+</dd></dl>
+
+</div>
+<div class="breathe-sectiondef docutils container">
+<p class="breathe-sectiondef-title rubric" id="breathe-section-title-public-members">Public Members</p>
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix14matrix_densityE">
+<span id="_CPPv3N6Matrix14matrix_densityE"></span><span id="_CPPv2N6Matrix14matrix_densityE"></span><span id="Matrix::matrix_density__double"></span><span class="target" id="classMatrix_1ab90877a086ad33b9c5c540ad46a48423"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">matrix_density</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix14matrix_densityE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix17lattice_parameterE">
+<span id="_CPPv3N6Matrix17lattice_parameterE"></span><span id="_CPPv2N6Matrix17lattice_parameterE"></span><span id="Matrix::lattice_parameter__double"></span><span class="target" id="classMatrix_1ac80e3d9cf5a9d648f8ee03ca177a70e5"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">lattice_parameter</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix17lattice_parameterE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix23grain_boundary_mobilityE">
+<span id="_CPPv3N6Matrix23grain_boundary_mobilityE"></span><span id="_CPPv2N6Matrix23grain_boundary_mobilityE"></span><span id="Matrix::grain_boundary_mobility__double"></span><span class="target" id="classMatrix_1afeaefd6a62c0d15fb5e27370eddd92ef"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">grain_boundary_mobility</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix23grain_boundary_mobilityE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix8ff_rangeE">
+<span id="_CPPv3N6Matrix8ff_rangeE"></span><span id="_CPPv2N6Matrix8ff_rangeE"></span><span id="Matrix::ff_range__double"></span><span class="target" id="classMatrix_1a7fc0f52eb73ac5170f9e2402248106d7"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ff_range</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix8ff_rangeE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix19ff_influence_radiusE">
+<span id="_CPPv3N6Matrix19ff_influence_radiusE"></span><span id="_CPPv2N6Matrix19ff_influence_radiusE"></span><span id="Matrix::ff_influence_radius__double"></span><span class="target" id="classMatrix_1a4a220376b0758fb44c179762219c8995"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ff_influence_radius</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix19ff_influence_radiusE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix15surface_tensionE">
+<span id="_CPPv3N6Matrix15surface_tensionE"></span><span id="_CPPv2N6Matrix15surface_tensionE"></span><span id="Matrix::surface_tension__double"></span><span class="target" id="classMatrix_1aa44756628db667c14b4a2356d475b18e"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">surface_tension</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix15surface_tensionE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix22schottky_defect_volumeE">
+<span id="_CPPv3N6Matrix22schottky_defect_volumeE"></span><span id="_CPPv2N6Matrix22schottky_defect_volumeE"></span><span id="Matrix::schottky_defect_volume__double"></span><span class="target" id="classMatrix_1aeb3b32e24967bd35475a47774a5276d5"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">schottky_defect_volume</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix22schottky_defect_volumeE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix10ois_volumeE">
+<span id="_CPPv3N6Matrix10ois_volumeE"></span><span id="_CPPv2N6Matrix10ois_volumeE"></span><span id="Matrix::ois_volume__double"></span><span class="target" id="classMatrix_1a2a96ddbe95ed4712b2084fa3bf01f601"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">ois_volume</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix10ois_volumeE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix24grain_boundary_thicknessE">
+<span id="_CPPv3N6Matrix24grain_boundary_thicknessE"></span><span id="_CPPv2N6Matrix24grain_boundary_thicknessE"></span><span id="Matrix::grain_boundary_thickness__double"></span><span class="target" id="classMatrix_1afdaddc61d0874f895b2bad811894ef57"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">grain_boundary_thickness</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix24grain_boundary_thicknessE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix26grain_boundary_diffusivityE">
+<span id="_CPPv3N6Matrix26grain_boundary_diffusivityE"></span><span id="_CPPv2N6Matrix26grain_boundary_diffusivityE"></span><span id="Matrix::grain_boundary_diffusivity__double"></span><span class="target" id="classMatrix_1a5eb1687d9ced6fa14425f1f019ccee4b"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">grain_boundary_diffusivity</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix26grain_boundary_diffusivityE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix18semidihedral_angleE">
+<span id="_CPPv3N6Matrix18semidihedral_angleE"></span><span id="_CPPv2N6Matrix18semidihedral_angleE"></span><span id="Matrix::semidihedral_angle__double"></span><span class="target" id="classMatrix_1ad9f5607724a1044bb6fcb3a66aa93394"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">semidihedral_angle</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix18semidihedral_angleE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix23lenticular_shape_factorE">
+<span id="_CPPv3N6Matrix23lenticular_shape_factorE"></span><span id="_CPPv2N6Matrix23lenticular_shape_factorE"></span><span id="Matrix::lenticular_shape_factor__double"></span><span class="target" id="classMatrix_1a4e5c41644182ca1024490fa772857237"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">lenticular_shape_factor</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix23lenticular_shape_factorE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix12grain_radiusE">
+<span id="_CPPv3N6Matrix12grain_radiusE"></span><span id="_CPPv2N6Matrix12grain_radiusE"></span><span id="Matrix::grain_radius__double"></span><span class="target" id="classMatrix_1a1e75e81109cf8f008dbfd0e30b168a9e"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">grain_radius</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix12grain_radiusE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix29healing_temperature_thresholdE">
+<span id="_CPPv3N6Matrix29healing_temperature_thresholdE"></span><span id="_CPPv2N6Matrix29healing_temperature_thresholdE"></span><span id="Matrix::healing_temperature_threshold__double"></span><span class="target" id="classMatrix_1ab78c6c70af1c68632c541f19a160fcf0"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">healing_temperature_threshold</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix29healing_temperature_thresholdE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix15nucleation_rateE">
+<span id="_CPPv3N6Matrix15nucleation_rateE"></span><span id="_CPPv2N6Matrix15nucleation_rateE"></span><span id="Matrix::nucleation_rate__double"></span><span class="target" id="classMatrix_1a94d7511dee77bad5f25522328bbdbbe8"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">nucleation_rate</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix15nucleation_rateE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix20pore_nucleation_rateE">
+<span id="_CPPv3N6Matrix20pore_nucleation_rateE"></span><span id="_CPPv2N6Matrix20pore_nucleation_rateE"></span><span id="Matrix::pore_nucleation_rate__double"></span><span class="target" id="classMatrix_1ae1d551f2248b0b5b74e177359a3b67ce"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pore_nucleation_rate</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix20pore_nucleation_rateE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix20pore_resolution_rateE">
+<span id="_CPPv3N6Matrix20pore_resolution_rateE"></span><span id="_CPPv2N6Matrix20pore_resolution_rateE"></span><span id="Matrix::pore_resolution_rate__double"></span><span class="target" id="classMatrix_1a29dc8b9cc15c636906cb11133bd16b69"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pore_resolution_rate</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix20pore_resolution_rateE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix18pore_trapping_rateE">
+<span id="_CPPv3N6Matrix18pore_trapping_rateE"></span><span id="_CPPv2N6Matrix18pore_trapping_rateE"></span><span id="Matrix::pore_trapping_rate__double"></span><span class="target" id="classMatrix_1ab206e7e0050610d4b48dc936ef33d101"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">pore_trapping_rate</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix18pore_trapping_rateE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix16chromium_contentE">
+<span id="_CPPv3N6Matrix16chromium_contentE"></span><span id="_CPPv2N6Matrix16chromium_contentE"></span><span id="Matrix::chromium_content__double"></span><span class="target" id="classMatrix_1a5d798ed6600b07565ebf6da46c74cc14"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">chromium_content</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix16chromium_contentE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix19chromium_solubilityE">
+<span id="_CPPv3N6Matrix19chromium_solubilityE"></span><span id="_CPPv2N6Matrix19chromium_solubilityE"></span><span id="Matrix::chromium_solubility__double"></span><span class="target" id="classMatrix_1ad6c2be681139e0600a1872cb7cdad160"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">chromium_solubility</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix19chromium_solubilityE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix16Cr2O3_solubilityE">
+<span id="_CPPv3N6Matrix16Cr2O3_solubilityE"></span><span id="_CPPv2N6Matrix16Cr2O3_solubilityE"></span><span id="Matrix::Cr2O3_solubility__double"></span><span class="target" id="classMatrix_1a447156d805c98dea3d1770c61cf651a1"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">Cr2O3_solubility</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix16Cr2O3_solubilityE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix17chromium_solutionE">
+<span id="_CPPv3N6Matrix17chromium_solutionE"></span><span id="_CPPv2N6Matrix17chromium_solutionE"></span><span id="Matrix::chromium_solution__double"></span><span class="target" id="classMatrix_1a7027f6f7a9bff9fa95fed57c3b2dc5bf"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">chromium_solution</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix17chromium_solutionE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix20chromium_precipitateE">
+<span id="_CPPv3N6Matrix20chromium_precipitateE"></span><span id="_CPPv2N6Matrix20chromium_precipitateE"></span><span id="Matrix::chromium_precipitate__double"></span><span class="target" id="classMatrix_1ad9664dfb79bf2d9bb4edd302a52f1c18"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">chromium_precipitate</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix20chromium_precipitateE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix16chromia_solutionE">
+<span id="_CPPv3N6Matrix16chromia_solutionE"></span><span id="_CPPv2N6Matrix16chromia_solutionE"></span><span id="Matrix::chromia_solution__double"></span><span class="target" id="classMatrix_1a03898034ac227ab7e6b60f99998660f8"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">chromia_solution</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix16chromia_solutionE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix19chromia_precipitateE">
+<span id="_CPPv3N6Matrix19chromia_precipitateE"></span><span id="_CPPv2N6Matrix19chromia_precipitateE"></span><span id="Matrix::chromia_precipitate__double"></span><span class="target" id="classMatrix_1ada1209d2e28c26cd88c5826a7ee3da60"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">chromia_precipitate</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix19chromia_precipitateE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix15elastic_modulusE">
+<span id="_CPPv3N6Matrix15elastic_modulusE"></span><span id="_CPPv2N6Matrix15elastic_modulusE"></span><span id="Matrix::elastic_modulus__double"></span><span class="target" id="classMatrix_1a65464523f0369c3521c5aacff6cc6060"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">elastic_modulus</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix15elastic_modulusE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix13poisson_ratioE">
+<span id="_CPPv3N6Matrix13poisson_ratioE"></span><span id="_CPPv2N6Matrix13poisson_ratioE"></span><span id="Matrix::poisson_ratio__double"></span><span class="target" id="classMatrix_1a456bc5e156e0a70f5286e09908398ce6"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">poisson_ratio</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix13poisson_ratioE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix30grain_boundary_fracture_energyE">
+<span id="_CPPv3N6Matrix30grain_boundary_fracture_energyE"></span><span id="_CPPv2N6Matrix30grain_boundary_fracture_energyE"></span><span id="Matrix::grain_boundary_fracture_energy__double"></span><span class="target" id="classMatrix_1a1d8c54046b62d86ee5ca971f5e9a321d"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">grain_boundary_fracture_energy</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix30grain_boundary_fracture_energyE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp var">
+<dt class="sig sig-object cpp" id="_CPPv4N6Matrix13shear_modulusE">
+<span id="_CPPv3N6Matrix13shear_modulusE"></span><span id="_CPPv2N6Matrix13shear_modulusE"></span><span id="Matrix::shear_modulus__double"></span><span class="target" id="classMatrix_1a68af33d21522d5136f64d943722de9ec"></span><span class="kt"><span class="pre">double</span></span><span class="w"> </span><span class="sig-name descname"><span class="n"><span class="pre">shear_modulus</span></span></span><a class="headerlink" href="#_CPPv4N6Matrix13shear_modulusE" title="Link to this definition"></a><br /></dt>
+<dd></dd></dl>
+
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="classMaterial.html" class="btn btn-neutral float-left" title="Class Material" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="classModel.html" class="btn btn-neutral float-right" title="Class Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, giozu.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
