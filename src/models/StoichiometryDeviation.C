@@ -61,6 +61,8 @@ void Simulation::StoichiometryDeviation()
          * Range of utilization:
          * - Pure steam
          * - Temperature range: 1273-1923
+         * - x = 0.0 - 0.25
+         * 
          * @ref Cox et al. NUREG/CP-0078 (1986), U.S. NRC
          *
          */
@@ -97,6 +99,8 @@ void Simulation::StoichiometryDeviation()
          * Range of utilization:
          * - Pure steam
          * - Temperature range: 1158-2108
+         * - x = 0.0 - 0.25
+         * 
          * @ref Bittel et al., J. Amer. Ceram. Soc., 52:446–451, 1969, reanalysed by Cox et al. NUREG/CP-0078 (1986), U.S. NRC
          *
          */
@@ -134,6 +138,8 @@ void Simulation::StoichiometryDeviation()
          * - Pure steam
          * - Polycrystal sample
          * - Temperature range: 1273-1673
+         * - x = 0.0 - 0.175
+         * 
          * @ref Abrefah et al., JNM., 208:98–110, 1994.
          *
          */
@@ -169,6 +175,7 @@ void Simulation::StoichiometryDeviation()
          * Range of utilization:
          * - Pure steam
          * - Temperature range: 1073-1473
+         * - x = 0.0 - 0.08
          * @ref Imamura and. Une, JNM, 247:131–137, 1997.
          *
          */
@@ -200,7 +207,7 @@ void Simulation::StoichiometryDeviation()
          * Range of utilization:
          * - Pure steam
          * - Temperature range: 1073-1673 K
-         *
+         * - x = 0.0 - 0.25
          */
         case 5:
         {
@@ -246,7 +253,8 @@ void Simulation::StoichiometryDeviation()
          * Range of utilization:
          * - Pure steam
          * - Temperature range: 1073-1673 K
-         *
+         * - x = 0.0 - 0.25
+         * 
          * In this case, the surface-to-volume ratio of the sample is fixed.
          * This is the case for the simulation of oxidised rodlet.
          *
