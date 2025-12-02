@@ -108,7 +108,7 @@ def main():
             # Run all regression tests with default modes
             for name, func in regression_modules:
                 folderList_part, tests_count, tests_failed_count = func(
-                    wpath, 1, mode_gold, mode_plot, [], 0, 0)
+                    wpath, 1, mode_gold, mode_plot, [], 0, 0) [0:3]
                 folderList += folderList_part
                 total_tests += tests_count
                 total_tests_failed += tests_failed_count

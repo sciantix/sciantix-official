@@ -202,12 +202,12 @@ def regression_kashibe1991(wpath, mode_Kashibe1991, mode_gold, mode_plot, folder
             number_of_tests += 1
 
             if mode_gold == 0:
-                do_sciantix()
+                do_sciantix_only()
                 data, data_gold = check_output(file)
                 number_of_tests_failed = check_result(number_of_tests_failed)
 
             elif mode_gold == 1:
-                do_sciantix()
+                do_sciantix_only()
                 data, data_gold = check_output(file)
                 print("...golding results.")
                 do_gold()
