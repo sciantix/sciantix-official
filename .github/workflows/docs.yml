@@ -1,0 +1,40 @@
+name: build-and-deploy-docs
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install system deps (Doxygen)
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y doxygen
+
+    - name: Install Python deps (Sphinx stack)
+      run: |
+        pip install --upgrade pip
+        pip install sphinx breathe exhale sphinx_rtd_theme
+
+    - name: Build docs (Sphinx + Doxygen)
+      working-directory: ./docs
+      run: make html
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/build/html
+        publish_branch: gh-pages
+        force_orphan: true

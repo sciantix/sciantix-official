@@ -1,28 +1,30 @@
-# Build Artifacts
+########################################
+# Generic build artifacts
+########################################
 
-# Prerequisites
-*.d
-
-# Compiled Object Files
+# Object files
 *.o
 *.obj
 *.lo
 *.slo
 
-# Precompiled Headers
+# Dependency files
+*.d
+
+# Precompiled headers
 *.gch
 *.pch
 
-# Compiled Libraries
+# Static / shared libraries
+*.a
+*.la
+*.lai
+*.lib
 *.so
 *.dylib
-*.dll       # Dynamic
-*.a
-*.lib
-*.la
-*.lai       # Static
+*.dll
 
-# Fortran Module Files
+# Fortran modules
 *.mod
 *.smod
 
@@ -31,27 +33,59 @@
 *.out
 *.app
 *.x
+sciantix.x
 
-# Development Environment
 
-# IDE / Editor folders
+########################################
+# CMake
+########################################
+
+build/
+obj/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+Makefile
+
+
+########################################
+# Doxygen & Sphinx generated content
+########################################
+
+docs/build/
+docs/doxygen/
+latex/
+
+
+########################################
+# Python
+########################################
+
+__pycache__/
+*.pyc
+
+
+########################################
+# Editors / IDEs
+########################################
+
 .vscode/
 .vs/
 
-# Python
-__pycache__/
 
-# Backup and temporary files
+########################################
+# OS / misc junk
+########################################
+
 *.bak
-
-# macOS
 .DS_Store
+Testing/
 
-# Project-specific folders to ignore
+
+########################################
+# Project-specific
+########################################
+
 bin/
-obj/
-build/
 out/
-
-# Doxygen
-latex/
