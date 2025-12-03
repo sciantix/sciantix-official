@@ -1,5 +1,5 @@
-Models
-======
+Solvers
+=======
 
 .. toctree::
    :maxdepth: 1
