@@ -44,11 +44,15 @@ def run_group(group_name: str, prefix: str, mode_gold: int):
         if mode_gold in (0, 1):
             run_sciantix(case)
 
+            # clean
+            clean_case_dir(case, 0)
+
         # gold rewrite mode
         if mode_gold in (1, 3):
             shutil.copy(os.path.join(case, "output.txt"),
                         os.path.join(case, "output_gold.txt"))
             results.append((f"{group_name}/{name}", True))
+
             continue
 
         # compare
@@ -57,8 +61,5 @@ def run_group(group_name: str, prefix: str, mode_gold: int):
 
         ok = compare_outputs(out, gold, abs_tol=1e-8, rel_tol=1e-6)
         results.append((f"{group_name}/{name}", ok))
-
-        # clean
-        clean_case_dir(case, mode_gold)
 
     return results

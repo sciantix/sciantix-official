@@ -1,4 +1,12 @@
-import os
+"""
+regression.runner
+
+python3 -m regression.runner
+python3 -m regression.runner --white
+python3 -m regression.runner --white --mode-gold 0
+python3 -m regression.runner --white --mode-gold 1
+"""
+
 import argparse
 from regression.core.generic_runner import run_group
 
@@ -13,7 +21,7 @@ def run_all_chromium(mode):   return run_group("chromium",   "test_Chromium",   
 def run_all_contact(mode):    return run_group("contact",    "test_CONTACT",        mode)
 def run_all_vercors(mode):    return run_group("vercors",    "test_Vercors",        mode)
 def run_all_pulse(mode):      return run_group("analytics",  "test_powerPulse",     mode)
-
+def run_all_gpr(mode):        return run_group("gpr",        "test_GPR",           mode)
 
 def main():
     parser = argparse.ArgumentParser(description="SCIANTIX regression test runner")
@@ -29,6 +37,7 @@ def main():
     parser.add_argument("--hbs", action="store_true")
     parser.add_argument("--vercors", action="store_true")
     parser.add_argument("--pulse", action="store_true")
+    parser.add_argument("--gpr", action="store_true")
     parser.add_argument("--all", action="store_true")
 
     parser.add_argument(
@@ -44,7 +53,7 @@ def main():
     if not any([
         args.baker, args.cornell, args.white, args.kashibe, args.talip,
         args.oxidation, args.chromium, args.contact, args.hbs,
-        args.vercors, args.pulse, args.all
+        args.vercors, args.pulse, args.gpr, args.all
     ]):
         args.all = True
 
@@ -61,6 +70,7 @@ def main():
     if args.hbs or args.all:         results.extend(run_all_hbs(args.mode_gold))
     if args.vercors or args.all:     results.extend(run_all_vercors(args.mode_gold))
     if args.pulse or args.all:       results.extend(run_all_pulse(args.mode_gold))
+    if args.gpr or args.all:         results.extend(run_all_gpr(args.mode_gold))
 
     print("\n=== RESULTS ===")
     for name, ok in results:
