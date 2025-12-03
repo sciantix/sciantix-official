@@ -9,4 +9,5 @@ SCIANTIX documentation
    models
    solvers
    examples
+   regression
    api/index_api
