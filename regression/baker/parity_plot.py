@@ -35,7 +35,7 @@ def load_experimental(basename):
 # ------------------------------------------------------------
 # parity plot
 # ------------------------------------------------------------
-def parity_plot(exp, calc_gold, calc_test, quantity, outdir):
+def parity_plot(exp, calc_gold, calc_test, quantity, title, outdir):
     plt.figure(figsize=(6, 5))
 
     # scatter
@@ -48,16 +48,18 @@ def parity_plot(exp, calc_gold, calc_test, quantity, outdir):
                 marker="o", s=35, alpha=0.8, label="test")
 
     # 1:1 lines
-    # xline = np.logspace(-3, 2, 200)
-    # plt.plot(xline, xline, "-", color="#777777")
-    # plt.plot(xline, 2*xline, "--", color="#777777")
-    # plt.plot(xline, 0.5*xline, "--", color="#777777")
+    xmin = 0.5*min(exp.min(), calc_gold.min(), calc_test.min())
+    xmax = 2*max(exp.max(), calc_gold.max(), calc_test.max())
+    xline = np.linspace(xmin, xmax, 200)
+    plt.plot(xline, xline, "-", color="#777777")
+    plt.plot(xline, 2*xline, "--", color="#777777")
+    plt.plot(xline, 0.5*xline, "--", color="#777777")
 
     plt.xscale("log")
     plt.yscale("log")
     plt.xlabel("experimental")
     plt.ylabel("calculated")
-    plt.title(quantity)
+    plt.title(title)
 
     plt.grid(True, which="both", ls=":")
     plt.legend()
@@ -146,9 +148,9 @@ def main():
     exp_d, gold_d, test_d = map(np.array, (exp_d, gold_d, test_d))
 
     # one plot per quantity
-    parity_plot(exp_s, gold_s, test_s, "swelling", outdir)
-    parity_plot(exp_r, gold_r, test_r, "radius", outdir)
-    parity_plot(exp_d, gold_d, test_d, "density", outdir)
+    parity_plot(exp_s, gold_s, test_s, "swelling", "Intra-granular gaseous swelling (%)", outdir)
+    parity_plot(exp_r, gold_r, test_r, "radius", "Intra-granular bubble radius (m)", outdir)
+    parity_plot(exp_d, gold_d, test_d, "density", "Intra-granular bubble density (bub/m3)", outdir)
 
 
 if __name__ == "__main__":
