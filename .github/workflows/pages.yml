@@ -34,6 +34,9 @@ jobs:
           pip install --upgrade pip
           pip install sphinx sphinx_rtd_theme sphinx-autodoc-typehints myst-parser sphinx-book-theme
 
+      - name: Install doxygen
+        run: sudo apt-get update && sudo apt-get install -y doxygen
+
       - name: Build Sphinx HTML
         working-directory: docs
         run: make html
