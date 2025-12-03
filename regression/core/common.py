@@ -39,11 +39,24 @@ def clean_case_dir(case_dir: str, mode_gold: int):
             except FileNotFoundError:
                 pass
 
-
 def run_sciantix(case_dir: str):
+    """
+    Execute sciantix.x from the build directory.
+
+    Returns:
+        path to output.txt
+    """
+    # sciantix.x built inside build/
+    # __file__ = regression/core/common.py
+    # .. = regression
+    # .. = root
+    # root/build/sciantix.x
     exe = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), "..", "sciantix.x")
+        os.path.join(os.path.dirname(__file__), "..", "..", "build", "sciantix.x")
     )
+
+    if not os.path.isfile(exe):
+        raise FileNotFoundError(f"sciantix.x not found: {exe}")
 
     cmd = [exe, case_dir + "/"]
 
