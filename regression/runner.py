@@ -7,6 +7,7 @@ python3 -m regression.runner --white --mode-gold 0
 python3 -m regression.runner --white --mode-gold 1
 """
 
+import sys
 import argparse
 from regression.core.generic_runner import run_group
 
@@ -76,6 +77,16 @@ def main():
     for name, ok in results:
         print(f"{name:<60} {'PASS' if ok else 'FAIL'}")
 
+    # exit code handling
+    failed = [name for name, ok in results if not ok]
+    
+    if failed:
+        print("\nSome regression tests FAILED:")
+        for f in failed:
+            print("  -", f)
+        sys.exit(1)
+
+    sys.exit(0)
 
 if __name__ == "__main__":
     main()
