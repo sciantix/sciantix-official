@@ -7,5 +7,6 @@ SCIANTIX documentation
 
    overview
    models
+   solvers
    examples
    api/index_api
