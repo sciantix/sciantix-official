@@ -389,25 +389,16 @@ void Simulation::InterGranularBubbleBehavior()
 
             // Release fraction for diffusion-based release
             double vented_fraction_initial(0.0), vented_fraction_final(0.0);
+
+            vented_fraction_initial = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 3.7250) + 1));
+            vented_fraction_final = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) + 1));
+            reference2 += " release model from Cappellari et al., JNM, (2025, under review), Gaussian Process Regression lower bound";
             
-            if (scaling_factors["Diffusion-based release"].getValue() == 2)
-            {
-                vented_fraction_initial = (26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 2.6002) + 1));
-		        vented_fraction_final = (26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 2.6002) + 1));
-                reference2 += " release model from Cappellari et al., JNM, (2025, under review), Gaussian Process Regression mean prediction";
-            }
-            else if (scaling_factors["Diffusion-based release"].getValue() == 3)
-            {
-                vented_fraction_initial = (21.0911 * 1e-2 * (erf(0.0937 * 100 * (sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 0.5)) + 1));
-                vented_fraction_final = (21.0911 * 1e-2 * (erf(0.0937 * 100 * (sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 0.5)) + 1));
-                reference2 += " release model from Cappellari et al., JNM, (2025, under review), saturation threshold at 50% fractional coverage";
-            }
-            else
-            {
-                vented_fraction_initial = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 3.7250) + 1));
-                vented_fraction_final = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) + 1));
-                reference2 += " release model from Cappellari et al., JNM, (2025, under review), Gaussian Process Regression lower bound";
-            }
+            // 
+            // Other option for the diffusion-based release curve 
+            // vented_fraction = (26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable["Intergranular fractional coverage"] - 2.6002) + 1));
+            // reference2 += " release model from Cappellari et al., JNM, (2025, under review), Gaussian Process Regression mean prediction";
+            //
             
             // Combined fraction (probability) of diffusion-based release and burst release from microcracking, from Cappellari et al. (2025);
             double release_fraction_initial(0.0), release_fraction_final(0.0), release_fraction_increment(0.0);
@@ -533,25 +524,15 @@ void Simulation::InterGranularBubbleBehavior()
 
             // Release fraction for diffusion-based release
             double vented_fraction_initial(0.0), vented_fraction_final(0.0);
+            vented_fraction_initial = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 3.7250) + 1));
+            vented_fraction_final = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) + 1));
+            reference2 += " release model from Cappellari et al., JNM, (2025, under review), Gaussian Process Regression lower bound";
+            // 
+            // Other option for the diffusion-based release curve 
+            // vented_fraction = (26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable["Intergranular fractional coverage"] - 2.6002) + 1));
+            // reference2 += " release model from Cappellari et al., JNM, (2025, under review), Gaussian Process Regression mean prediction";
+            //
             
-            if (scaling_factors["Diffusion-based release"].getValue() == 2)
-            {
-                vented_fraction_initial = (26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 2.6002) + 1));
-                vented_fraction_final = (26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 2.6002) + 1));
-                reference2 += " release model from Cappellari et al., JNM, (2025, under review), Gaussian Process Regression mean prediction";
-            }
-            else if (scaling_factors["Diffusion-based release"].getValue() == 3)
-            {
-                vented_fraction_initial = (21.0911 * 1e-2 * (erf(0.0937 * 100 * (sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 0.5)) + 1));
-                vented_fraction_final = (21.0911 * 1e-2 * (erf(0.0937 * 100 * (sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 0.5)) + 1));
-                reference2 += " release model from Cappellari et al., JNM, (2025, under review), saturation threshold at 50% fractional coverage";
-            }
-            else
-            {
-                vented_fraction_initial = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 3.7250) + 1));
-                vented_fraction_final = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) + 1));
-                reference2 += " release model from Cappellari et al., JNM, (2025, under review), Gaussian Process Regression lower bound";
-            }
             
             // Combined fraction (probability) of diffusion-based release and burst release from microcracking, from Cappellari et al. (2025);
             double release_fraction_initial(0.0), release_fraction_final(0.0), release_fraction_increment(0.0);
@@ -601,12 +582,12 @@ void Simulation::InterGranularBubbleBehavior()
 
             sciantix_variable["Intergranular fractional coverage"].setFinalValue(sciantix_variable["Intergranular bubble concentration"].getFinalValue() * sciantix_variable["Intergranular bubble area"].getFinalValue());
  
-            if (scaling_factors["Diffusion-based release"].getValue() == 2)
-                vented_fraction_final = (26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 2.6002) + 1));
-            else if (scaling_factors["Diffusion-based release"].getValue() == 3)
-                vented_fraction_final = (21.0911 * 1e-2 * (erf(0.0937 * 100 * (sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 0.5)) + 1));
-            else
-                vented_fraction_final = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) + 1));
+            vented_fraction_final = (21.0911 * 1e-2 * (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) + 1));
+            // 
+            // Other option for the diffusion-based release curve 
+            // vented_fraction = (26.3997 * 1e-2 * (erf(0.0718 * 100 * sciantix_variable["Intergranular fractional coverage"] - 2.6002) + 1));
+            // reference2 += " release model from Cappellari et al., JNM, (2025, under review), Gaussian Process Regression mean prediction";
+            //
 
             release_fraction_final = vented_fraction_final * sciantix_variable["Intergranular fractional intactness"].getFinalValue() + (1 - sciantix_variable["Intergranular fractional intactness"].getFinalValue());
             release_fraction_increment = release_fraction_final - release_fraction_initial;

@@ -266,10 +266,8 @@ std::vector<std::string> getScalingFactorsNames()
         "Diffusivity2", // da seguire
         "Temperature",
         "Fission rate",
-        "Diffusion-based release", // prima era cent parameter
         "Helium production rate",
         "Dummy",
-
     };
 
     return names;

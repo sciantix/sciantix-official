@@ -77,9 +77,8 @@ if (!input_scaling_factors.fail())
 		Sciantix_scaling_factors[4] = ReadOneParameter("sf_diffusivity2", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[5] = ReadOneParameter("sf_temperature", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[6] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[7] = ReadOneParameter("sf_diffusion_based_release", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[8] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[9] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[8] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
 	}
 	else
 	{
@@ -91,7 +90,6 @@ if (!input_scaling_factors.fail())
 		Sciantix_scaling_factors[5] = 1.0;
 		Sciantix_scaling_factors[6] = 1.0;
 		Sciantix_scaling_factors[7] = 1.0;
-		Sciantix_scaling_factors[8] = 1.0;
 		Sciantix_scaling_factors[8] = 1.0;
 	}
 
