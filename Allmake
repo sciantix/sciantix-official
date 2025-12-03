@@ -1,8 +1,0 @@
-cd "${0%/*}" || exit 1
-
-mkdir build
-cd build
-cmake ..
-make -j
-
-cd ..
