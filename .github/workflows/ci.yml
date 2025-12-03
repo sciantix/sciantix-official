@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
 
       - name: Build SCIANTIX
@@ -20,38 +20,40 @@ jobs:
           cmake ..
           make -j
 
-      - name: Archive build artifacts
+      - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: sciantix-build
-          path: build
+          path: build/
 
   regression:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Download build artifacts
+      - name: Download compiled SCIANTIX
         uses: actions/download-artifact@v4
         with:
           name: sciantix-build
           path: build
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.8"
+      - name: Make binary executable
+        run: chmod +x build/sciantix.x
 
-      - name: Install Python dependencies
+      - name: Set up python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install regression dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install numpy matplotlib scipy scikit-learn
+          python3 -m pip install --upgrade pip
+          pip install numpy matplotlib scipy scikit-learn pandas
 
       - name: Run regression tests
         run: |
-          chmod +x build/sciantix.x
-          cd regression
-          python3 regression.py
+          export PATH=$PATH:$(pwd)/build
+          python3 -m regression.runner --all --mode-gold 0
