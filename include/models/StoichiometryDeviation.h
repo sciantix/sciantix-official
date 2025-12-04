@@ -21,12 +21,13 @@
 
 /**
  * @brief Evaluates the deviation in stoichiometry within the nuclear material and its effects.
- * 
+ *
  * @author G. Petrosillo
  * @author G. Zullo
- * 
+ *
  */
 
-double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature, SciantixArray<SciantixVariable> &sciantix_variable);
+double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature,
+                                    SciantixArray<SciantixVariable>& sciantix_variable);
 
-#endif // STOICHIOMETRY_DEVIATION_H
+#endif  // STOICHIOMETRY_DEVIATION_H

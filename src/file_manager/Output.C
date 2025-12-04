@@ -14,139 +14,139 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "Simulation.h"
 #include <sys/stat.h>
+#include "Simulation.h"
 
 /**
  * @brief Function to check if a file exists.
  * @return 0/1
  * @author G. Zullo
  */
-inline bool if_exist(const std::string &name)
+inline bool if_exist(const std::string& name)
 {
-	struct stat buffer;
-	return (stat(name.c_str(), &buffer) == 0);
+    struct stat buffer;
+    return (stat(name.c_str(), &buffer) == 0);
 }
 
 void Simulation::output()
 {
-	std::string output_name = TestPath + "output.txt";
-	std::fstream output_file;
-	output_file.open(output_name, std::fstream::in | std::fstream::out | std::fstream::app);
+    std::string  output_name = TestPath + "output.txt";
+    std::fstream output_file;
+    output_file.open(output_name, std::fstream::in | std::fstream::out | std::fstream::app);
 
     // iOutput == 1 --> output.txt organized in columns (header + values).
-	if (int(input_variable["iOutput"].getValue()) == 1)
-	{
-		if (history_variable["Time step number"].getFinalValue() == 0)
-		{
-			for (auto &variable : history_variable)
-			{
-				if (variable.getOutput())
-					output_file << variable.getName() << " " << variable.getUOM() << "\t";
-			}
-			for (auto &variable : sciantix_variable)
-			{
-				if (variable.getOutput())
-					output_file << variable.getName() << " " << variable.getUOM() << "\t";
-			}
-			output_file << "\n";
-		}
+    if (int(input_variable["iOutput"].getValue()) == 1)
+    {
+        if (history_variable["Time step number"].getFinalValue() == 0)
+        {
+            for (auto& variable : history_variable)
+            {
+                if (variable.getOutput())
+                    output_file << variable.getName() << " " << variable.getUOM() << "\t";
+            }
+            for (auto& variable : sciantix_variable)
+            {
+                if (variable.getOutput())
+                    output_file << variable.getName() << " " << variable.getUOM() << "\t";
+            }
+            output_file << "\n";
+        }
 
-		if ((int)history_variable["Time step number"].getFinalValue() % 1 == 0)
-		{
-			for (auto &variable : history_variable)
-			{
-				if (variable.getOutput())
-					output_file << std::setprecision(10) << variable.getFinalValue() << "\t";
-			}
+        if ((int)history_variable["Time step number"].getFinalValue() % 1 == 0)
+        {
+            for (auto& variable : history_variable)
+            {
+                if (variable.getOutput())
+                    output_file << std::setprecision(10) << variable.getFinalValue() << "\t";
+            }
 
-			for (auto &variable : sciantix_variable)
-			{
-				if (variable.getOutput())
-					output_file << std::setprecision(7) << variable.getFinalValue() << "\t";
-			}
-			output_file << "\n";
-		}
-	}
+            for (auto& variable : sciantix_variable)
+            {
+                if (variable.getOutput())
+                    output_file << std::setprecision(7) << variable.getFinalValue() << "\t";
+            }
+            output_file << "\n";
+        }
+    }
 
-	// iOutput = 2 prints the complete output.exe file
-	else if ((int)input_variable["iOutput"].getValue() == 2)
-	{
-		if (history_variable["Time step number"].getFinalValue() == 0)
-		{
-			for (auto &variable : history_variable)
-			{
-				output_file << variable.getName() << " " << variable.getUOM() << "\t";
-			}
-			for (auto &variable : sciantix_variable)
-			{
-				output_file << variable.getName() << " " << variable.getUOM() << "\t";
-			}
-			output_file << "\n";
-		}
+    // iOutput = 2 prints the complete output.exe file
+    else if ((int)input_variable["iOutput"].getValue() == 2)
+    {
+        if (history_variable["Time step number"].getFinalValue() == 0)
+        {
+            for (auto& variable : history_variable)
+            {
+                output_file << variable.getName() << " " << variable.getUOM() << "\t";
+            }
+            for (auto& variable : sciantix_variable)
+            {
+                output_file << variable.getName() << " " << variable.getUOM() << "\t";
+            }
+            output_file << "\n";
+        }
 
-		if ((int)history_variable["Time step number"].getFinalValue() % 1 == 0)
-		{
-			for (auto &variable : history_variable)
-			{
-				output_file << std::setprecision(10) << variable.getFinalValue() << "\t";
-			}
+        if ((int)history_variable["Time step number"].getFinalValue() % 1 == 0)
+        {
+            for (auto& variable : history_variable)
+            {
+                output_file << std::setprecision(10) << variable.getFinalValue() << "\t";
+            }
 
-			for (auto &variable : sciantix_variable)
-			{
-				output_file << std::setprecision(7) << variable.getFinalValue() << "\t";
-			}
-			output_file << "\n";
-		}
-	}
+            for (auto& variable : sciantix_variable)
+            {
+                output_file << std::setprecision(7) << variable.getFinalValue() << "\t";
+            }
+            output_file << "\n";
+        }
+    }
 
-	output_file.close();
+    output_file.close();
 
-	std::string overview_name = TestPath + "overview.txt";
+    std::string overview_name = TestPath + "overview.txt";
 
-	if (history_variable["Time step number"].getFinalValue() == 0 && if_exist(overview_name))
-		remove(overview_name.c_str()); // from string to const char*
+    if (history_variable["Time step number"].getFinalValue() == 0 && if_exist(overview_name))
+        remove(overview_name.c_str());  // from string to const char*
 
-	std::fstream overview_file;
-	if (history_variable["Time step number"].getFinalValue() == 0 && !if_exist(overview_name))
-	{
-		overview_file.open(overview_name, std::fstream::in | std::fstream::out | std::fstream::app);
+    std::fstream overview_file;
+    if (history_variable["Time step number"].getFinalValue() == 0 && !if_exist(overview_name))
+    {
+        overview_file.open(overview_name, std::fstream::in | std::fstream::out | std::fstream::app);
 
-		for (auto &model_ : model)
-		{
-			overview_file << "Model" << "\t";
-			overview_file << model_.getName() << "\t";
-			overview_file << model_.getRef() << "\n";
-		}
+        for (auto& model_ : model)
+        {
+            overview_file << "Model" << "\t";
+            overview_file << model_.getName() << "\t";
+            overview_file << model_.getRef() << "\n";
+        }
 
-		overview_file << "\n";
+        overview_file << "\n";
 
-		for (auto &matrix_ : matrices)
-		{
-			overview_file << "Matrix" << "\t";
-			overview_file << matrix_.getName() << "\t";
-			overview_file << matrix_.getRef() << "\n";
-		}
+        for (auto& matrix_ : matrices)
+        {
+            overview_file << "Matrix" << "\t";
+            overview_file << matrix_.getName() << "\t";
+            overview_file << matrix_.getRef() << "\n";
+        }
 
-		overview_file << "\n";
+        overview_file << "\n";
 
-		for (auto &system : sciantix_system)
-		{
-			overview_file << "System" << "\t";
-			overview_file << system.getName() << "\t";
-			overview_file << system.getRef() << "\n";
-		}
+        for (auto& system : sciantix_system)
+        {
+            overview_file << "System" << "\t";
+            overview_file << system.getName() << "\t";
+            overview_file << system.getRef() << "\n";
+        }
 
-		overview_file << "\n";
+        overview_file << "\n";
 
-		for (auto &input_variable_ : input_variable)
-		{
-			overview_file << "Input setting" << "\t";
-			overview_file << input_variable_.getName() << " = ";
-			overview_file << input_variable_.getValue() << "\n";
-		}
+        for (auto& input_variable_ : input_variable)
+        {
+            overview_file << "Input setting" << "\t";
+            overview_file << input_variable_.getName() << " = ";
+            overview_file << input_variable_.getValue() << "\n";
+        }
 
-		overview_file << "\n";
-	}
-	overview_file.close();
+        overview_file << "\n";
+    }
+    overview_file.close();
 }

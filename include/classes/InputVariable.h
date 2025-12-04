@@ -24,19 +24,19 @@
  * @brief A derived class specifically for handling input variables used in simulations or models.
  *
  * This class extends the `Variable` class, providing a structured way to manage input settings,
- * such as parameters for simulations, ensuring that these inputs can be easily modified and retrieved.
- * 
+ * such as parameters for simulations, ensuring that these inputs can be easily modified and
+ * retrieved.
+ *
  * @author G. Zullo
  * @author F. Bastien
- * 
+ *
  */
 class InputVariable : virtual public Variable
 {
-public:
-
+  public:
     InputVariable(std::string name, double value)
     {
-        this->name = name;
+        this->name  = name;
         this->value = value;
     }
 
@@ -70,8 +70,8 @@ public:
      */
     ~InputVariable() {}
 
-protected:
+  protected:
     double value;
 };
 
-#endif //INPUT_VARIABLE_H
+#endif  // INPUT_VARIABLE_H

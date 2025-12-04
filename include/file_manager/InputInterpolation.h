@@ -21,19 +21,21 @@
 
 /**
  * @brief Interpolates the value of an input variable at a given point using linear interpolation.
- * This function assumes that the input values (xx for positions and yy for values) are sorted and corresponds one-to-one.
- * The interpolation formula used is based on the straight-line equation between two points.
+ * This function assumes that the input values (xx for positions and yy for values) are sorted and
+ * corresponds one-to-one. The interpolation formula used is based on the straight-line equation
+ * between two points.
  *
  * @param x The point at which we want to interpolate.
  * @param xx Vector of input values representing the x-coordinates at which yy values are defined.
  * @param yy Vector of output values corresponding to each xx value.
  * @param n The total number of points in xx and yy.
  * @return The interpolated value at point x.
- * 
+ *
  * @author D. Pizzocri
  * @author T. Barani
- * 
+ *
  */
-double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy, unsigned short int n);
+double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy,
+                          unsigned short int n);
 
 #endif
