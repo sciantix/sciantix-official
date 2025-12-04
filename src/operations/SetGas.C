@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -24,9 +24,9 @@ void Simulation::setGas()
     helium(gas);
 }
 
-void xenon(SciantixArray<Gas> &gas)
+void xenon(SciantixArray<Gas>& gas)
 {
-    Gas gas_;    
+    Gas gas_;
     gas_.setName("Xe");
     gas_.setAtomicNumber(54);
     gas_.setMassNumber(135);
@@ -42,7 +42,7 @@ void xenon(SciantixArray<Gas> &gas)
     gas.push(gas_);
 }
 
-void krypton(SciantixArray<Gas> &gas)
+void krypton(SciantixArray<Gas>& gas)
 {
     Gas gas_;
     gas_.setName("Kr");
@@ -59,7 +59,7 @@ void krypton(SciantixArray<Gas> &gas)
     gas.push(gas_);
 }
 
-void helium(SciantixArray<Gas> &gas)
+void helium(SciantixArray<Gas>& gas)
 {
     Gas gas_;
     gas_.setName("He");

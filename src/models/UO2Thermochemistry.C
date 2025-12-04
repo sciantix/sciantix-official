@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -18,7 +18,8 @@
 
 void Simulation::UO2Thermochemistry()
 {
-    if (!input_variable["iStoichiometryDeviation"].getValue()) return;
+    if (!input_variable["iStoichiometryDeviation"].getValue())
+        return;
 
     // Model declaration
     Model model_;
@@ -32,7 +33,7 @@ void Simulation::UO2Thermochemistry()
 
     parameter.push_back(sciantix_variable["Stoichiometry deviation"].getInitialValue());
     parameter.push_back(history_variable["Temperature"].getFinalValue());
-    parameter.push_back(sciantix_variable["Gap oxygen partial pressure"].getFinalValue()); // (atm)
+    parameter.push_back(sciantix_variable["Gap oxygen partial pressure"].getFinalValue());  // (atm)
 
     model_.setParameter(parameter);
     model_.setRef(reference);
@@ -40,13 +41,11 @@ void Simulation::UO2Thermochemistry()
     model.push(model_);
 
     // Model resolution
-    if (history_variable["Temperature"].getFinalValue() < 1000.0 || sciantix_variable["Gap oxygen partial pressure"].getFinalValue() == 0)
+    if (history_variable["Temperature"].getFinalValue() < 1000.0 ||
+        sciantix_variable["Gap oxygen partial pressure"].getFinalValue() == 0)
         sciantix_variable["Equilibrium stoichiometry deviation"].setFinalValue(0.0);
 
     else
         sciantix_variable["Equilibrium stoichiometry deviation"].setFinalValue(
-            solver.NewtonBlackburn(
-                model["UO2 thermochemistry"].getParameter()
-            )
-        );
+            solver.NewtonBlackburn(model["UO2 thermochemistry"].getParameter()));
 }

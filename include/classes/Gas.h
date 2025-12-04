@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -21,23 +21,25 @@
 
 /**
  * @class Gas
- * @brief A derived class from Material, specifically for modeling fission gases like xenon, krypton, and helium.
+ * @brief A derived class from Material, specifically for modeling fission gases like xenon,
+ * krypton, and helium.
  *
- * This class extends the Material class to include specific properties that are unique to gases used in fission processes,
- * such as atomic number, mass number, Van der Waals volume, decay rate, and a precursor factor.
- * 
+ * This class extends the Material class to include specific properties that are unique to gases
+ * used in fission processes, such as atomic number, mass number, Van der Waals volume, decay rate,
+ * and a precursor factor.
+ *
  * @author G. Zullo
  */
 class Gas : virtual public Material
 {
-protected:
-    int atomic_number;
+  protected:
+    int    atomic_number;
     double mass_number;
     double van_der_waals_volume;
     double decay_rate;
     double precursor_factor;
 
-public:
+  public:
     /**
      * @brief Sets the atomic number of the gas.
      * @param y The atomic number to be set.
@@ -139,4 +141,4 @@ public:
     ~Gas() {}
 };
 
-#endif // GAS_H
+#endif  // GAS_H

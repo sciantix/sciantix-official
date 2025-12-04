@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -22,7 +22,7 @@
  *
  * @author M. Di Gennaro
  * @author E. Travaglia
- * 
+ *
  */
 
 #ifndef TUSRCCOUPLING_H
@@ -31,12 +31,14 @@
 #ifdef __cplusplus
 extern "C"
 {
-  #endif
-  void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[]);
-  void callSciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
+#endif
+    void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[]);
+    void callSciantix(int Sciantix_options[], double Sciantix_history[],
+                      double Sciantix_variables[], double Sciantix_scaling_factors[],
+                      double Sciantix_diffusion_modes[]);
 
-  #ifdef __cplusplus
+#ifdef __cplusplus
 }
 #endif
 
-#endif // TUSRCCOUPLING_H
+#endif  // TUSRCCOUPLING_H

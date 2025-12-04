@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -20,7 +20,6 @@
 
 Simulation* Simulation::instance = nullptr;
 
-
 Simulation* Simulation::getInstance()
 {
     if (instance == nullptr)
@@ -30,39 +29,27 @@ Simulation* Simulation::getInstance()
     return instance;
 }
 
-void Simulation::initialize(
-    int Sciantix_options[],
-    double Sciantix_history[],
-    double Sciantix_variables[],
-    double Sciantix_scaling_factors[],
-    double Sciantix_diffusion_modes[]
-)
+void Simulation::initialize(int Sciantix_options[], double Sciantix_history[],
+                            double Sciantix_variables[], double Sciantix_scaling_factors[],
+                            double Sciantix_diffusion_modes[])
 {
-    setVariables(
-        Sciantix_options,
-        Sciantix_history,
-        Sciantix_variables,
-        Sciantix_scaling_factors,
-        Sciantix_diffusion_modes
-    );
+    setVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors,
+                 Sciantix_diffusion_modes);
     setGas();
     setMatrix();
     setSystem();
-    setGPVariables(
-        Sciantix_options,
-        Sciantix_history,
-        Sciantix_variables
-    );
+    setGPVariables(Sciantix_options, Sciantix_history, Sciantix_variables);
 }
-
 
 void Simulation::execute()
 {
-    #if !defined(COUPLING_TU)
-        Burnup();
+#if !defined(COUPLING_TU)
+    Burnup();
 
-        EffectiveBurnup();
-    #endif
+    EffectiveBurnup();
+
+    Densification();
+#endif
 
     GapPartialPressure();
 
@@ -95,4 +82,6 @@ void Simulation::execute()
     GrainBoundaryVenting();
 
     InterGranularBubbleBehavior();
+
+    GasRelease();
 }
