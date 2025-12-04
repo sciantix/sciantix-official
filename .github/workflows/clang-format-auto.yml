@@ -2,7 +2,6 @@ name: Auto Format SCIANTIX Code
 
 on:
   push:
-    branches:
 
 jobs:
   clang-format-fix:
