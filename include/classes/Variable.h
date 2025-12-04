@@ -17,32 +17,32 @@
 #ifndef VARIABLE_H
 #define VARIABLE_H
 
+#include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
 
 /**
  * @class Variable
  * @brief The class Variable is intended to be the base class for other of variables,
  * encapsulating common attributes.
- * 
+ *
  * @author G. Zullo
- * 
+ *
  */
 class Variable
 {
-protected:
+  protected:
     std::string name;
 
-public:
+  public:
     /**
      * @brief Default constructor for the Variable class
      */
-    Variable() { }
+    Variable() {}
     /**
      * @brief Destructor for the Variable class
      */
-    ~Variable() { }
+    ~Variable() {}
 
     /**
      * @brief Sets the name of the entity.

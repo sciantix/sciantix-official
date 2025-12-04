@@ -17,24 +17,25 @@
 #ifndef ERROR_MESSAGES_H
 #define ERROR_MESSAGES_H
 
-#include <string>
-#include <iostream>
-#include <cstdlib>
-#include <iomanip>
-#include <fstream>
 #include "MainVariables.h"
+#include <cstdlib>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <string>
 
 /**
  *  @brief Contains functions for error handling in SCIANTIX software.
  *
- *  Provides functions to log and manage error messages related to wrong user inputs or internal errors.
- * 
+ *  Provides functions to log and manage error messages related to wrong user inputs or internal
+ * errors.
+ *
  * @author D. Pizzocri
- * @author T. Barani 
+ * @author T. Barani
  * @author G. Zullo
  * @author rzehumat
  * @author F. Bastien
- * 
+ *
  */
 namespace ErrorMessages
 {
@@ -61,10 +62,11 @@ namespace ErrorMessages
     /**
      * @brief Writes all accumulated error messages to the error log file.
      *
-     * This function should be called to flush all error messages stored in the errorMessages stringstream
-     * to the error log file at once. This approach minimizes disk I/O operations during runtime.
+     * This function should be called to flush all error messages stored in the errorMessages
+     * stringstream to the error log file at once. This approach minimizes disk I/O operations
+     * during runtime.
      */
     void writeErrorLog();
-};
+};  // namespace ErrorMessages
 
 #endif

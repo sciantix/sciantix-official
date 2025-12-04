@@ -22,12 +22,14 @@ void Simulation::EffectiveBurnup()
     Model model_;
     model_.setName("Effective burnup");
 
-    std::string reference;
+    std::string         reference;
     std::vector<double> parameter;
 
     const double temperature_threshold = 1273.15;
 
-    if (history_variable["Temperature"].getFinalValue() <= temperature_threshold || (history_variable["Temperature"].getFinalValue() > temperature_threshold && history_variable["Temperature"].getInitialValue() < temperature_threshold))
+    if (history_variable["Temperature"].getFinalValue() <= temperature_threshold ||
+        (history_variable["Temperature"].getFinalValue() > temperature_threshold &&
+         history_variable["Temperature"].getInitialValue() < temperature_threshold))
         parameter.push_back(sciantix_variable["Specific power"].getFinalValue() / 86400.0);
     else
         parameter.push_back(0.0);
@@ -40,8 +42,7 @@ void Simulation::EffectiveBurnup()
 
     // Model resolution
     sciantix_variable["Effective burnup"].setFinalValue(
-        solver.Integrator(
-            sciantix_variable["Effective burnup"].getInitialValue(),
-            model["Effective burnup"].getParameter().at(0),
-            physics_variable["Time step"].getFinalValue()));
+        solver.Integrator(sciantix_variable["Effective burnup"].getInitialValue(),
+                          model["Effective burnup"].getParameter().at(0),
+                          physics_variable["Time step"].getFinalValue()));
 }

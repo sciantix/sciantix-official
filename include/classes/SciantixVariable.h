@@ -21,32 +21,33 @@
 
 /**
  * @class SciantixVariable
- * @brief A specialized variable class that extends the Variable class with physical attributes and functionalities.
+ * @brief A specialized variable class that extends the Variable class with physical attributes and
+ * functionalities.
  *
  * SciantixVariable includes features such as unit of measure (UOM), final and initial values,
  * and mechanisms for adjusting these values through specific operations.
- * 
+ *
  * @author G. Zullo
  * @author F. Bastien
- * 
+ *
  */
 class SciantixVariable : virtual public Variable
 {
-protected:
+  protected:
     std::string uom;
-    double final_value;
-    double initial_value;
-    bool to_output;
+    double      final_value;
+    double      initial_value;
+    bool        to_output;
 
-public:
-
-    SciantixVariable(std::string name, std::string uom, double initial_value, double final_value, bool output)
+  public:
+    SciantixVariable(std::string name, std::string uom, double initial_value, double final_value,
+                     bool output)
     {
-        this->name = name;
-        this->uom = uom;
+        this->name          = name;
+        this->uom           = uom;
         this->initial_value = initial_value;
-        this->final_value = final_value;
-        this->to_output = output;
+        this->final_value   = final_value;
+        this->to_output     = output;
     }
 
     /**
@@ -80,7 +81,8 @@ public:
     std::string getUOM();
 
     /**
-     * @brief Sets the final value equal to the initial value, making the variable constant over time.
+     * @brief Sets the final value equal to the initial value, making the variable constant over
+     * time.
      */
     void setConstant();
 
@@ -135,7 +137,7 @@ public:
      * @brief Constructor
      */
     SciantixVariable() {}
-    
+
     /**
      * @brief Destructor
      */

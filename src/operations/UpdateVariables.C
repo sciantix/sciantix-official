@@ -101,16 +101,16 @@ std::map<int, std::string> update_sciantix_variable = {
     {85, "Xe in HBS pores - variance"},
     {86, "Xe atoms per HBS pore"},
     {88, "Xe atoms per HBS pore - variance"},
-    {150,"Chromium content"},
-    {151,"Lattice parameter"},
-    {152,"Theoretical density"},
-    {153,"Chromium solubility"},
-    {154,"Chromia solubility"},
-    {155,"Chromium solution"},
-    {156,"Chromium precipitate"},
-    {157,"Chromia solution"},
-    {158,"Chromia precipitate"},
-    {160,"Diffusion coefficient"},
+    {150, "Chromium content"},
+    {151, "Lattice parameter"},
+    {152, "Theoretical density"},
+    {153, "Chromium solubility"},
+    {154, "Chromia solubility"},
+    {155, "Chromium solution"},
+    {156, "Chromium precipitate"},
+    {157, "Chromia solution"},
+    {158, "Chromia precipitate"},
+    {160, "Diffusion coefficient"},
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
@@ -119,11 +119,12 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
     {
         for (int j = 0; j <= 17; j++)
         {
-            Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];	
+            Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];
         }
     }
 
-    for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin(); it != update_sciantix_variable.end(); it++)
+    for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin();
+         it != update_sciantix_variable.end(); it++)
     {
         Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
     }

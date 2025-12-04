@@ -22,12 +22,12 @@
 /**
  * @class Material
  * @brief Class for materials used in SCIANTIX (e.g., fuel matrix, fission gas, etc.).
- * 
+ *
  * @author G. Zullo
  */
 class Material
 {
-public:
+  public:
     /**
      * Constructor
      */
@@ -74,9 +74,9 @@ public:
         return reference;
     }
 
-protected:
+  protected:
     std::string name;
     std::string reference;
 };
 
-#endif // MATERIAL_H
+#endif  // MATERIAL_H

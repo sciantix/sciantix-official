@@ -17,15 +17,16 @@
 #include "Simulation.h"
 
 void Simulation::Densification()
-{	
-    if (!int(input_variable["iDensification"].getValue())) return;
+{
+    if (!int(input_variable["iDensification"].getValue()))
+        return;
 
     // Model declaration
     Model model_;
     model_.setName("Densification");
 
-	std::vector<double> parameter;
-    std::string reference;
+    std::vector<double> parameter;
+    std::string         reference;
 
     switch (int(input_variable["iDensification"].getValue()))
     {
@@ -33,7 +34,7 @@ void Simulation::Densification()
         {
             parameter.push_back(0);
             parameter.push_back(0);
-            
+
             reference = ": not considered.";
 
             break;
@@ -41,29 +42,29 @@ void Simulation::Densification()
         case 1:
         {
             parameter.push_back(2.0);
-            parameter.push_back(0.006*exp(0.002*history_variable["Temperature"].getFinalValue()));
+            parameter.push_back(0.006 *
+                                exp(0.002 * history_variable["Temperature"].getFinalValue()));
 
-            reference = ": Fit from Van Uffelen, P. (2002), PhD thesis, SCK•CEN Reports No. BLG-907";
+            reference =
+                ": Fit from Van Uffelen, P. (2002), PhD thesis, SCK•CEN Reports No. BLG-907";
 
             break;
         }
 
         default:
-            ErrorMessages::Switch(__FILE__, "iDensification", int(input_variable["iDensification"].getValue()));
+            ErrorMessages::Switch(__FILE__, "iDensification",
+                                  int(input_variable["iDensification"].getValue()));
             break;
-
     }
 
     model_.setParameter(parameter);
     model_.setRef(reference);
     model.push(model_);
 
-    double dens_factor = solver.Decay(
-        sciantix_variable["Densification factor"].getInitialValue(),
-        model["Densification"].getParameter().at(0),
-        model["Densification"].getParameter().at(1),
-        sciantix_variable["Burnup"].getIncrement()
-    );
+    double dens_factor = solver.Decay(sciantix_variable["Densification factor"].getInitialValue(),
+                                      model["Densification"].getParameter().at(0),
+                                      model["Densification"].getParameter().at(1),
+                                      sciantix_variable["Burnup"].getIncrement());
 
     if (dens_factor < 1.0)
         sciantix_variable["Densification factor"].setFinalValue(dens_factor);
@@ -71,9 +72,10 @@ void Simulation::Densification()
         sciantix_variable["Densification factor"].setFinalValue(1.0);
 
     sciantix_variable["Fabrication porosity"].setFinalValue(
-        sciantix_variable["Residual porosity"].getFinalValue() + (sciantix_variable["Fabrication porosity"].getFinalValue() - 
-        sciantix_variable["Residual porosity"].getFinalValue()) * (1 - sciantix_variable["Densification factor"].getFinalValue())
-    );
+        sciantix_variable["Residual porosity"].getFinalValue() +
+        (sciantix_variable["Fabrication porosity"].getFinalValue() -
+         sciantix_variable["Residual porosity"].getFinalValue()) *
+            (1 - sciantix_variable["Densification factor"].getFinalValue()));
 
     sciantix_variable["Porosity"].addValue(sciantix_variable["Fabrication porosity"].getIncrement());
 }
