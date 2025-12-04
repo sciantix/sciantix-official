@@ -20,8 +20,8 @@ Program Listing for File GasDiffusion.h
    //                                                                                  //
    //  Originally developed by D. Pizzocri & T. Barani                                 //
    //                                                                                  //
-   //  Version: 2.1                                                                    //
-   //  Year: 2024                                                                      //
+   //  Version: 2.2.1                                                                    //
+   //  Year: 2025                                                                      //
    //  Authors: D. Pizzocri, G. Zullo.                                                 //
    //                                                                                  //
    
