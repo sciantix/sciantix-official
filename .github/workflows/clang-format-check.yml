@@ -1,0 +1,22 @@
+name: Clang Format Check
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  clang-format:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install clang-format
+        run: sudo apt-get update && sudo apt-get install -y clang-format
+
+      - name: Run clang-format check
+        run: |
+          echo "Checking code formatting..."
+          FILES=$(find src include -name "*.C" -o -name "*.h")
+          clang-format --dry-run --Werror $FILES
