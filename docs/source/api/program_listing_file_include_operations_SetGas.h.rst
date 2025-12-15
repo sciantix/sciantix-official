@@ -10,7 +10,6 @@ Program Listing for File SetGas.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -28,12 +27,12 @@ Program Listing for File SetGas.h
    #ifndef SET_GAS_H
    #define SET_GAS_H
    
-   #include <vector>
    #include "Gas.h"
    #include "SciantixArray.h"
+   #include <vector>
    
-   void xenon(SciantixArray<Gas> &gas);
-   void krypton(SciantixArray<Gas> &gas);
-   void helium(SciantixArray<Gas> &gas);
+   void xenon(SciantixArray<Gas>& gas);
+   void krypton(SciantixArray<Gas>& gas);
+   void helium(SciantixArray<Gas>& gas);
    
-   #endif // SET_GAS_H
+   #endif  // SET_GAS_H

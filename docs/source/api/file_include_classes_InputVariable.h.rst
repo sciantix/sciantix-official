@@ -44,6 +44,8 @@ Included By
 
 - :ref:`file_include_classes_System.h`
 
+- :ref:`file_include_operations_SetGPVariables.h`
+
 - :ref:`file_include_operations_SetSystem.h`
 
 - :ref:`file_include_operations_SetVariables.h`

@@ -10,7 +10,6 @@ Program Listing for File StoichiometryDeviation.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -30,6 +29,7 @@ Program Listing for File StoichiometryDeviation.h
    
    #include "Simulation.h"
    
-   double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature, SciantixArray<SciantixVariable> &sciantix_variable);
+   double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature,
+                                       SciantixArray<SciantixVariable>& sciantix_variable);
    
-   #endif // STOICHIOMETRY_DEVIATION_H
+   #endif  // STOICHIOMETRY_DEVIATION_H

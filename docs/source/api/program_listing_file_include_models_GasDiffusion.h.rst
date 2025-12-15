@@ -10,7 +10,6 @@ Program Listing for File GasDiffusion.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -30,13 +29,18 @@ Program Listing for File GasDiffusion.h
    
    #include "Simulation.h"
    
-   void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
+   void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system,
+                                         SciantixArray<Model>& model, int n_modes);
    
-   void defineSpectralDiffusion2Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
+   void defineSpectralDiffusion2Equations(SciantixArray<System>& sciantix_system,
+                                          SciantixArray<Model>& model, int n_modes);
    
-   void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, 
-       SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> physics_variable, int n_modes);
+   void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_system,
+                                          SciantixArray<Model>&           model,
+                                          SciantixArray<SciantixVariable> sciantix_variable,
+                                          SciantixArray<SciantixVariable> physics_variable,
+                                          int                             n_modes);
    
    void errorHandling(SciantixArray<InputVariable> input_variable);
    
-   #endif // GAS_DIFFUSION_H
+   #endif  // GAS_DIFFUSION_H

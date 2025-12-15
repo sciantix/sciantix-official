@@ -10,7 +10,6 @@ Program Listing for File Sciantix.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -30,6 +29,7 @@ Program Listing for File Sciantix.h
    
    #include "Simulation.h"
    
-   void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
+   void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[],
+                 double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
    
-   #endif // SCIANTIX_H
+   #endif  // SCIANTIX_H

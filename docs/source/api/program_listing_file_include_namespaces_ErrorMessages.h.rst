@@ -10,7 +10,6 @@ Program Listing for File ErrorMessages.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -28,12 +27,12 @@ Program Listing for File ErrorMessages.h
    #ifndef ERROR_MESSAGES_H
    #define ERROR_MESSAGES_H
    
-   #include <string>
-   #include <iostream>
-   #include <cstdlib>
-   #include <iomanip>
-   #include <fstream>
    #include "MainVariables.h"
+   #include <cstdlib>
+   #include <fstream>
+   #include <iomanip>
+   #include <iostream>
+   #include <string>
    
    namespace ErrorMessages
    {
@@ -42,6 +41,6 @@ Program Listing for File ErrorMessages.h
        void Switch(std::string routine, std::string variable_name, int variable);
    
        void writeErrorLog();
-   };
+   };  // namespace ErrorMessages
    
    #endif

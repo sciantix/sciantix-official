@@ -10,7 +10,6 @@ Program Listing for File InputVariable.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -32,11 +31,10 @@ Program Listing for File InputVariable.h
    
    class InputVariable : virtual public Variable
    {
-   public:
-   
+     public:
        InputVariable(std::string name, double value)
        {
-           this->name = name;
+           this->name  = name;
            this->value = value;
        }
    
@@ -54,8 +52,8 @@ Program Listing for File InputVariable.h
    
        ~InputVariable() {}
    
-   protected:
+     protected:
        double value;
    };
    
-   #endif //INPUT_VARIABLE_H
+   #endif  // INPUT_VARIABLE_H

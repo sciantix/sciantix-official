@@ -10,7 +10,6 @@ Program Listing for File Gas.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -32,14 +31,14 @@ Program Listing for File Gas.h
    
    class Gas : virtual public Material
    {
-   protected:
-       int atomic_number;
+     protected:
+       int    atomic_number;
        double mass_number;
        double van_der_waals_volume;
        double decay_rate;
        double precursor_factor;
    
-   public:
+     public:
        void setAtomicNumber(int y)
        {
            atomic_number = y;
@@ -95,4 +94,4 @@ Program Listing for File Gas.h
        ~Gas() {}
    };
    
-   #endif // GAS_H
+   #endif  // GAS_H

@@ -10,7 +10,6 @@ Program Listing for File SetVariables.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -34,18 +33,13 @@ Program Listing for File SetVariables.h
    #include "SciantixArray.h"
    #include "SetVariablesFunctions.h"
    
-   void SetVariables(
-       int Sciantix_options[], 
-       double Sciantix_history[], 
-       double Sciantix_variables[], 
-       double Sciantix_scaling_factors[], 
-       double Sciantix_diffusion_modes[],
-       SciantixArray<InputVariable> &input_variable,
-       SciantixArray<SciantixVariable> &history_variable,
-       SciantixArray<SciantixVariable> &sciantix_variable,
-       SciantixArray<SciantixVariable> &physics_variable,
-       std::vector<double> &modes_initial_conditions,
-       SciantixArray<Variable> &scaling_factors
-   );
+   void SetVariables(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[],
+                     double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[],
+                     SciantixArray<InputVariable>&    input_variable,
+                     SciantixArray<SciantixVariable>& history_variable,
+                     SciantixArray<SciantixVariable>& sciantix_variable,
+                     SciantixArray<SciantixVariable>& physics_variable,
+                     std::vector<double>&             modes_initial_conditions,
+                     SciantixArray<Variable>&         scaling_factors);
    
    #endif

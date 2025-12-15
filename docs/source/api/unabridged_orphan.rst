@@ -130,6 +130,11 @@ Files
 .. toctree::
    :maxdepth: 5
 
+   file_include_operations_SetGPVariables.h.rst
+
+.. toctree::
+   :maxdepth: 5
+
    file_include_operations_SetMatrix.h.rst
 
 .. toctree::

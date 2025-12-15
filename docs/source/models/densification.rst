@@ -1,91 +1,72 @@
-Burnup
-======
+Densification
+=============
 
-This model computes the local fuel burnup from the fission rate density. The
-specific power is derived from the fission rate and fuel density and is then
-time-integrated to obtain the burnup expressed in MWd/kg. The model also updates
-related irradiation quantities, including the irradiation time and the fraction
-of initial metal atoms (FIMA).
+This model accounts for fuel densification during irradiation, represented as a
+progressive reduction of the fabrication porosity towards a residual porosity.
+Densification is enabled through the input option ``iDensification`` and is
+driven by burnup.
 
-The implementation follows the steps used in ``Simulation::Burnup()``.
+Reference
+---------
+
+Van Uffelen, P. (2002), PhD thesis, SCK•CEN Reports No. BLG-907. https://www.oecd-nea.org/science/wprs/fuel/Thesis_Van_Uffelen_BLG.pdf
+
+Activation
+----------
+
+If ``iDensification = 0``, the model is not considered and no updates are
+performed. If ``iDensification = 1``, densification is calculated according to a
+fit based on temperature.
 
 Inputs
-~~~~~~
+------
 
-The model uses the following variables:
+The model uses:
 
-- ``Fission rate`` (history variable): fission rate density.
-- ``Fuel density`` (sciantix variable): fuel density used to convert to specific power.
-- ``Time step`` (physics variable): integration time step.
+- ``iDensification`` (input option)
+- ``Temperature`` (history variable)
+- ``Burnup`` increment (sciantix variable, used as the evolution variable)
+- ``Residual porosity`` (sciantix variable)
+- ``Fabrication porosity`` (sciantix variable)
 
-Specific power and burnup rate
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Model formulation
+-----------------
 
-The specific power is computed from the fission rate density using a constant
-conversion factor:
+A *densification factor* :math:`f_{\mathrm{dens}}` is evolved with burnup using
+an exponential decay law (implemented through ``solver.Decay``). For the default
+correlation (``iDensification = 1``), the parameters are:
 
-.. math::
+- :math:`a = 2.0`
+- :math:`b = 0.006 \exp\!\left(0.002\,T\right)`
 
-   P_{\mathrm{spec}} = \frac{\dot{F}\,C}{\rho_f}
+where :math:`T` is the fuel temperature.
 
-where:
-
-- :math:`\dot{F}` is the fission rate density (``Fission rate``),
-- :math:`\rho_f` is the fuel density (``Fuel density``),
-- :math:`C = 3.12 \times 10^{-17}` is the conversion constant used in the code.
-
-The burnup rate is then defined as:
+The densification factor is bounded by:
 
 .. math::
 
-   \dot{B} = \frac{P_{\mathrm{spec}}}{86400}
+   f_{\mathrm{dens}} \le 1
 
-so that burnup is expressed in MWd/kg.
+Porosity update
+---------------
 
-Time integration
-~~~~~~~~~~~~~~~~
-
-The burnup value is updated by time integration:
-
-.. math::
-
-   B^{n+1} = B^{n} + \dot{B}\,\Delta t
-
-where :math:`\Delta t` is the current time step (``Time step``). In the code, this
-operation is performed using ``solver.Integrator``.
-
-Irradiation time
-~~~~~~~~~~~~~~~~
-
-When the fission rate density is positive, the irradiation time is updated
-consistently with the burnup increment:
+The fabrication porosity is updated as a transition from its current value
+towards the residual porosity:
 
 .. math::
 
-   t_{\mathrm{irr}}^{n+1} = t_{\mathrm{irr}}^{n}
-   + \frac{24}{P_{\mathrm{spec}}}\,\Delta B
+   \varepsilon_{\mathrm{fab}} =
+   \varepsilon_{\mathrm{res}} +
+   \left(\varepsilon_{\mathrm{fab}} - \varepsilon_{\mathrm{res}}\right)
+   \left(1 - f_{\mathrm{dens}}\right)
 
-where :math:`\Delta B` is the burnup increment over the current step. If the
-fission rate is zero, the irradiation time is kept constant.
+The total porosity is then incremented using the fabrication-porosity increment.
 
-FIMA
-~~~~
+Outputs
+-------
 
-The Fraction of Initial Metal Atoms (FIMA) is updated as:
+The model updates:
 
-.. math::
-
-   \mathrm{FIMA}^{n+1} = \mathrm{FIMA}^{n}
-   + \left(\frac{\dot{F}\,3.6 \times 10^{5}}{U}\right)\Delta t_{\mathrm{irr}}
-
-where:
-
-- :math:`U` is the uranium inventory variable (``U``),
-- :math:`\Delta t_{\mathrm{irr}}` is the irradiation time increment.
-
-Implementation note
-~~~~~~~~~~~~~~~~~~~
-
-In the source code, the model reference is reported as:
-
-"The local burnup is calculated from the fission rate density."
+- ``Densification factor``
+- ``Fabrication porosity``
+- ``Porosity`` (incremented by the fabrication porosity increment)

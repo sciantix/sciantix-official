@@ -10,7 +10,6 @@ Program Listing for File SciantixVariable.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -32,21 +31,21 @@ Program Listing for File SciantixVariable.h
    
    class SciantixVariable : virtual public Variable
    {
-   protected:
+     protected:
        std::string uom;
-       double final_value;
-       double initial_value;
-       bool to_output;
+       double      final_value;
+       double      initial_value;
+       bool        to_output;
    
-   public:
-   
-       SciantixVariable(std::string name, std::string uom, double initial_value, double final_value, bool output)
+     public:
+       SciantixVariable(std::string name, std::string uom, double initial_value, double final_value,
+                        bool output)
        {
-           this->name = name;
-           this->uom = uom;
+           this->name          = name;
+           this->uom           = uom;
            this->initial_value = initial_value;
-           this->final_value = final_value;
-           this->to_output = output;
+           this->final_value   = final_value;
+           this->to_output     = output;
        }
    
        void rescaleInitialValue(const double factor);
@@ -78,7 +77,7 @@ Program Listing for File SciantixVariable.h
        bool getOutput();
    
        SciantixVariable() {}
-       
+   
        ~SciantixVariable() {}
    };
    

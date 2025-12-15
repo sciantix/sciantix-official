@@ -52,13 +52,13 @@ Included By
 -----------
 
 
-- :ref:`file_include_Sciantix.h`
-
 - :ref:`file_include_models_GasDiffusion.h`
 
 - :ref:`file_include_models_StoichiometryDeviation.h`
 
 - :ref:`file_include_operations_SetMatrix.h`
+
+- :ref:`file_include_Sciantix.h`
 
 
 

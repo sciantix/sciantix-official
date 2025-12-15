@@ -56,6 +56,8 @@ Included By
 
 - :ref:`file_include_operations_SetGas.h`
 
+- :ref:`file_include_operations_SetGPVariables.h`
+
 - :ref:`file_include_operations_SetSystem.h`
 
 - :ref:`file_include_operations_SetVariables.h`
