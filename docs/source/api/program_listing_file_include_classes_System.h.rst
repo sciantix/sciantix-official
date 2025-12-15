@@ -10,7 +10,6 @@ Program Listing for File System.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -28,41 +27,40 @@ Program Listing for File System.h
    #ifndef SYSTEM_H
    #define SYSTEM_H
    
-   #include "Matrix.h"
-   #include "Gas.h"
    #include "Constants.h"
    #include "ErrorMessages.h"
+   #include "Gas.h"
+   #include "InputVariable.h"
+   #include "Matrix.h"
    #include "SciantixArray.h"
    #include "SciantixVariable.h"
-   #include "InputVariable.h"
    #include <cmath>
    #include <vector>
    
-   class System: virtual public Material
+   class System : virtual public Material
    {
-   protected:
-   
+     protected:
        std::string reference;
        std::string name;
    
-       double yield;
-       double radius_in_lattice;
-       double volume_in_lattice;
-       double diffusivity;
-       double bubble_diffusivity;
-       double henry_constant;
-       double resolution_rate;
-       double trapping_rate;
-       double nucleation_rate;
-       double pore_nucleation_rate;
+       double              yield;
+       double              radius_in_lattice;
+       double              volume_in_lattice;
+       double              diffusivity;
+       double              bubble_diffusivity;
+       double              henry_constant;
+       double              resolution_rate;
+       double              trapping_rate;
+       double              nucleation_rate;
+       double              pore_nucleation_rate;
        std::vector<double> modes;
-       double production_rate;
-       bool restructured_matrix;
+       double              production_rate;
+       bool                restructured_matrix;
    
-       Gas gas;
+       Gas    gas;
        Matrix matrix;
    
-   public:
+     public:
        void setRestructuredMatrix(bool y);
    
        bool getRestructuredMatrix();
@@ -88,17 +86,20 @@ Program Listing for File System.h
        double getVolumeInLattice();
        void setVolumeInLattice(double v);
    
-       void setBubbleDiffusivity(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, 
-           SciantixArray<SciantixVariable> &history_variable, SciantixArray<Matrix> &matrices);
+       void setBubbleDiffusivity(int input_value, SciantixArray<SciantixVariable>& sciantix_variable,
+                                 SciantixArray<SciantixVariable>& history_variable,
+                                 SciantixArray<Matrix>&           matrices);
    
        double getBubbleDiffusivity();
    
-       void setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable);
+       void setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable>& history_variable);
    
        double getHeliumDiffusivity();
    
-       void setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVariable> &sciantix_variable,
-           SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+       void setFissionGasDiffusivity(int                              input_value,
+                                     SciantixArray<SciantixVariable>& sciantix_variable,
+                                     SciantixArray<SciantixVariable>& history_variable,
+                                     SciantixArray<InputVariable>&    scaling_factors);
    
        double getFissionGasDiffusivity();
    
@@ -106,18 +107,20 @@ Program Listing for File System.h
    
        double getHenryConstant();
    
-       void setResolutionRate(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, 
-           SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors, SciantixArray<Matrix> &matrices);
+       void setResolutionRate(int input_value, SciantixArray<SciantixVariable>& sciantix_variable,
+                              SciantixArray<SciantixVariable>& history_variable,
+                              SciantixArray<InputVariable>&    scaling_factors,
+                              SciantixArray<Matrix>&           matrices);
    
        double getResolutionRate();
    
-       void setTrappingRate(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, 
-           SciantixArray<InputVariable> &scaling_factors);
+       void setTrappingRate(int input_value, SciantixArray<SciantixVariable>& sciantix_variable,
+                            SciantixArray<InputVariable>& scaling_factors);
    
        double getTrappingRate();
    
-       void setNucleationRate(int input_value, SciantixArray<SciantixVariable> &history_variable, 
-           SciantixArray<InputVariable> &scaling_factors);
+       void setNucleationRate(int input_value, SciantixArray<SciantixVariable>& history_variable,
+                              SciantixArray<InputVariable>& scaling_factors);
    
        double getNucleationRate();
    
@@ -125,12 +128,14 @@ Program Listing for File System.h
    
        double getPoreNucleationRate();
    
-       void setProductionRate(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable,
-           SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors);
+       void setProductionRate(int input_value, SciantixArray<SciantixVariable>& history_variable,
+                              SciantixArray<InputVariable>&    input_variable,
+                              SciantixArray<SciantixVariable>& sciantix_variable,
+                              SciantixArray<InputVariable>&    scaling_factors);
    
        double getProductionRate();
        System() {}
        ~System() {}
    };
    
-   #endif // SYSTEM_H
+   #endif  // SYSTEM_H

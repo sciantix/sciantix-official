@@ -10,7 +10,6 @@ Program Listing for File Model.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -28,24 +27,23 @@ Program Listing for File Model.h
    #ifndef MODEL_H
    #define MODEL_H
    
-   #include <vector>
-   #include <string>
+   #include "Gas.h"
+   #include "InputVariable.h"
+   #include "Material.h"
+   #include "Matrix.h"
+   #include "System.h"
    #include <iterator>
    #include <map>
    #include <string>
-   #include "InputVariable.h"
-   #include "Matrix.h"
-   #include "Gas.h"
-   #include "System.h"
-   #include "Material.h"
+   #include <vector>
    
-   class Model: public Material
+   class Model : public Material
    {
-   protected:
-       std::string overview;
+     protected:
+       std::string         overview;
        std::vector<double> parameter;
    
-   public:
+     public:
        void setParameter(std::vector<double> p)
        {
            parameter = p;
@@ -61,4 +59,4 @@ Program Listing for File Model.h
        ~Model() {}
    };
    
-   #endif // MODEL_H
+   #endif  // MODEL_H

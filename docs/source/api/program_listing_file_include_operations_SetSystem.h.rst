@@ -10,7 +10,6 @@ Program Listing for File SetSystem.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -28,21 +27,45 @@ Program Listing for File SetSystem.h
    #ifndef SETSYSTEM_H
    #define SETSYSTEM_H
    
-   #include "SciantixArray.h"
    #include "InputVariable.h"
-   #include "System.h"
    #include "Matrix.h"
+   #include "SciantixArray.h"
+   #include "System.h"
    
-   System Xe_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+   System Xe_in_UO2(SciantixArray<Matrix>& matrices, SciantixArray<Gas>& gas,
+                    SciantixArray<InputVariable>&    input_variable,
+                    SciantixArray<SciantixVariable>& sciantix_variable,
+                    SciantixArray<SciantixVariable>& history_variable,
+                    SciantixArray<InputVariable>&    scaling_factors);
    
-   System Xe_in_UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+   System Xe_in_UO2HBS(SciantixArray<Matrix>& matrices, SciantixArray<Gas>& gas,
+                       SciantixArray<InputVariable>&    input_variable,
+                       SciantixArray<SciantixVariable>& sciantix_variable,
+                       SciantixArray<SciantixVariable>& history_variable,
+                       SciantixArray<InputVariable>&    scaling_factors);
    
-   System Kr_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+   System Kr_in_UO2(SciantixArray<Matrix>& matrices, SciantixArray<Gas>& gas,
+                    SciantixArray<InputVariable>&    input_variable,
+                    SciantixArray<SciantixVariable>& sciantix_variable,
+                    SciantixArray<SciantixVariable>& history_variable,
+                    SciantixArray<InputVariable>&    scaling_factors);
    
-   System He_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+   System He_in_UO2(SciantixArray<Matrix>& matrices, SciantixArray<Gas>& gas,
+                    SciantixArray<InputVariable>&    input_variable,
+                    SciantixArray<SciantixVariable>& sciantix_variable,
+                    SciantixArray<SciantixVariable>& history_variable,
+                    SciantixArray<InputVariable>&    scaling_factors);
    
-   System Xe133_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+   System Xe133_in_UO2(SciantixArray<Matrix>& matrices, SciantixArray<Gas>& gas,
+                       SciantixArray<InputVariable>&    input_variable,
+                       SciantixArray<SciantixVariable>& sciantix_variable,
+                       SciantixArray<SciantixVariable>& history_variable,
+                       SciantixArray<InputVariable>&    scaling_factors);
    
-   System Kr85m_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+   System Kr85m_in_UO2(SciantixArray<Matrix>& matrices, SciantixArray<Gas>& gas,
+                       SciantixArray<InputVariable>&    input_variable,
+                       SciantixArray<SciantixVariable>& sciantix_variable,
+                       SciantixArray<SciantixVariable>& history_variable,
+                       SciantixArray<InputVariable>&    scaling_factors);
    
-   #endif // SETSYSTEM_H
+   #endif  // SETSYSTEM_H

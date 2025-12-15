@@ -10,7 +10,6 @@ Program Listing for File Variable.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -28,18 +27,18 @@ Program Listing for File Variable.h
    #ifndef VARIABLE_H
    #define VARIABLE_H
    
+   #include <iostream>
    #include <string>
    #include <vector>
-   #include <iostream>
    
    class Variable
    {
-   protected:
+     protected:
        std::string name;
    
-   public:
-       Variable() { }
-       ~Variable() { }
+     public:
+       Variable() {}
+       ~Variable() {}
    
        void setName(std::string n)
        {

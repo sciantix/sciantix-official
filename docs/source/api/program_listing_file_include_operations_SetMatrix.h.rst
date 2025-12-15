@@ -10,7 +10,6 @@ Program Listing for File SetMatrix.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -30,8 +29,13 @@ Program Listing for File SetMatrix.h
    
    #include "Simulation.h"
    
-   Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable, SciantixArray<InputVariable> &scaling_factor);
+   Matrix UO2(SciantixArray<Matrix>& matrices, SciantixArray<SciantixVariable>& sciantix_variable,
+              SciantixArray<SciantixVariable>& history_variable,
+              SciantixArray<InputVariable>&    input_variable,
+              SciantixArray<InputVariable>&    scaling_factor);
    
-   Matrix UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable);
+   Matrix UO2HBS(SciantixArray<Matrix>& matrices, SciantixArray<SciantixVariable>& sciantix_variable,
+                 SciantixArray<SciantixVariable>& history_variable,
+                 SciantixArray<InputVariable>&    input_variable);
    
    #endif

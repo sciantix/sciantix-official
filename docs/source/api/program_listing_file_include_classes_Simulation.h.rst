@@ -10,7 +10,6 @@ Program Listing for File Simulation.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -28,67 +27,61 @@ Program Listing for File Simulation.h
    #ifndef SIMULATION_H
    #define SIMULATION_H
    
-   #include <cmath>
-   #include <vector>
-   #include "Solver.h"
-   #include "Model.h"
    #include "Matrix.h"
-   #include "System.h"
+   #include "Model.h"
    #include "SciantixArray.h"
    #include "SciantixVariable.h"
+   #include "Solver.h"
+   #include "System.h"
+   #include <cmath>
+   #include <vector>
    
    class Simulation
    {
-   private:
+     private:
        SciantixArray<SciantixVariable> sciantix_variable;
        SciantixArray<SciantixVariable> history_variable;
        SciantixArray<SciantixVariable> physics_variable;
-       
-       SciantixArray<Model> model;
+   
+       SciantixArray<Model>  model;
        SciantixArray<System> sciantix_system;
        SciantixArray<Matrix> matrices;
-       SciantixArray<Gas> gas;
+       SciantixArray<Gas>    gas;
    
        SciantixArray<InputVariable> input_variable;
        SciantixArray<InputVariable> scaling_factors;
    
-       int n_modes;
+       int                 n_modes;
        std::vector<double> modes_initial_conditions;
    
        Solver solver;
    
        static Simulation* instance;
    
-       Simulation() {
+       Simulation()
+       {
            n_modes = 40;
            modes_initial_conditions.resize(720);
        }
    
-   public:
-   
+     public:
        ~Simulation() {}
    
        static Simulation* getInstance();
    
-       void setVariables(
-           int Sciantix_options[], 
-           double Sciantix_history[], 
-           double Sciantix_variables[], 
-           double Sciantix_scaling_factors[], 
-           double Sciantix_diffusion_modes[]
-       );
+       void setVariables(int Sciantix_options[], double Sciantix_history[],
+                         double Sciantix_variables[], double Sciantix_scaling_factors[],
+                         double Sciantix_diffusion_modes[]);
    
        void setGas();
        void setMatrix();
        void setSystem();
    
-       void initialize(
-           int Sciantix_options[], 
-           double Sciantix_history[], 
-           double Sciantix_variables[], 
-           double Sciantix_scaling_factors[], 
-           double Sciantix_diffusion_modes[]
-       );
+       void setGPVariables(int Sciantix_options[], double Sciantix_history[],
+                           double Sciantix_variables[]);
+   
+       void initialize(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[],
+                       double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
    
        void execute();
    
@@ -109,7 +102,7 @@ Program Listing for File Simulation.h
        void GasDiffusion();
    
        void GrainGrowth();
-       
+   
        void IntraGranularBubbleBehavior();
    
        void InterGranularBubbleBehavior();
@@ -118,21 +111,21 @@ Program Listing for File Simulation.h
    
        void GrainBoundaryMicroCracking();
    
-   
        void Densification();
    
        void GrainBoundaryVenting();
    
        double openPorosity(double fabrication_porosity);
    
-       double athermalVentingFactor(double open_porosity, double theta, double porosity, double grain_edge_lenght, double burnup, double temperature, double fission_rate);
-       
+       double athermalVentingFactor(double open_porosity, double theta, double porosity,
+                                    double grain_edge_lenght, double burnup, double temperature,
+                                    double fission_rate);
+   
        void HighBurnupStructureFormation();
    
        void HighBurnupStructurePorosity();
    
        void StoichiometryDeviation();
-   
    
        void GapPartialPressure();
    
@@ -142,7 +135,7 @@ Program Listing for File Simulation.h
    
        void Microstructure();
    
-       double *getDiffusionModes(std::string gas_name)
+       double* getDiffusionModes(std::string gas_name)
        {
            if (gas_name == "Xe")
                return &modes_initial_conditions[0];
@@ -161,12 +154,13 @@ Program Listing for File Simulation.h
    
            else
            {
-               std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes." << std::endl;
+               std::cerr << "Error: Invalid gas name \"" << gas_name
+                         << "\" in Simulation::getDiffusionModes." << std::endl;
                return nullptr;
            }
        }
    
-       double *getDiffusionModesSolution(std::string gas_name)
+       double* getDiffusionModesSolution(std::string gas_name)
        {
            if (gas_name == "Xe")
                return &modes_initial_conditions[1 * 40];
@@ -187,12 +181,13 @@ Program Listing for File Simulation.h
                return &modes_initial_conditions[16 * 40];
            else
            {
-               std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesSolution." << std::endl;
+               std::cerr << "Error: Invalid gas name \"" << gas_name
+                         << "\" in Simulation::getDiffusionModesSolution." << std::endl;
                return nullptr;
            }
        }
    
-       double *getDiffusionModesBubbles(std::string gas_name)
+       double* getDiffusionModesBubbles(std::string gas_name)
        {
            if (gas_name == "Xe")
                return &modes_initial_conditions[2 * 40];
@@ -211,7 +206,8 @@ Program Listing for File Simulation.h
    
            else
            {
-               std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesBubbles." << std::endl;
+               std::cerr << "Error: Invalid gas name \"" << gas_name
+                         << "\" in Simulation::getDiffusionModesBubbles." << std::endl;
                return nullptr;
            }
        }

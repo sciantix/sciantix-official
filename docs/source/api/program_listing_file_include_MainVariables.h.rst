@@ -10,7 +10,6 @@ Program Listing for File MainVariables.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -28,29 +27,29 @@ Program Listing for File MainVariables.h
    #ifndef MAIN_VARIABLES_H
    #define MAIN_VARIABLES_H
    
-   #include <vector>
    #include <fstream>
+   #include <vector>
    
-   extern int Sciantix_options[40];
+   extern int    Sciantix_options[40];
    extern double Sciantix_history[20];
    extern double Sciantix_variables[300];
-   extern double Sciantix_scaling_factors[10];
+   extern double Sciantix_scaling_factors[20];
    extern double Sciantix_diffusion_modes[720];
    
    extern long long int Time_step_number;
-   extern double  Time_h, dTime_h, Time_end_h;
-   extern double  Time_s, Time_end_s;
-   extern double  Number_of_time_steps_per_interval;
+   extern double        Time_h, dTime_h, Time_end_h;
+   extern double        Time_s, Time_end_s;
+   extern double        Number_of_time_steps_per_interval;
    
    extern std::ofstream Output_file;
    extern std::ofstream Execution_file;
-   extern std::string TestPath; 
+   extern std::string   TestPath;
    
-   extern int Input_history_points;
-   extern int Temperature_input_points;
-   extern int Fissionrate_input_points;
-   extern int Hydrostaticstress_input_points;
-   extern int Stempressure_input_points;
+   extern int                 Input_history_points;
+   extern int                 Temperature_input_points;
+   extern int                 Fissionrate_input_points;
+   extern int                 Hydrostaticstress_input_points;
+   extern int                 Stempressure_input_points;
    extern std::vector<double> Time_temperature_input;
    extern std::vector<double> Time_fissionrate_input;
    extern std::vector<double> Time_hydrostaticstress_input;

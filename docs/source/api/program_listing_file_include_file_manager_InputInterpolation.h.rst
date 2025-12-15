@@ -10,7 +10,6 @@ Program Listing for File InputInterpolation.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -30,6 +29,7 @@ Program Listing for File InputInterpolation.h
    
    #include <vector>
    
-   double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy, unsigned short int n);
+   double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy,
+                             unsigned short int n);
    
    #endif

@@ -10,7 +10,6 @@ Program Listing for File SciantixArray.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -30,22 +29,22 @@ Program Listing for File SciantixArray.h
    
    #include "Variable.h"
    
-   #include <vector>
+   #include <iostream>
    #include <map>
    #include <string>
-   #include <iostream>
+   #include <vector>
    
-   #include <type_traits> 
+   #include <type_traits>
    
-   template <class T>
-   class SciantixArray
+   template <class T> class SciantixArray
    {
-   private:
-       std::vector<T> array; // Vector storing the elements of type T
-       std::map<std::string, int> map; // Map for storing the relationship between element names and their indices in the array
+     private:
+       std::vector<T>             array;  // Vector storing the elements of type T
+       std::map<std::string, int> map;    // Map for storing the relationship between element names and
+                                          // their indices in the array
    
-   public:
-       SciantixArray(){}
+     public:
+       SciantixArray() {}
    
        ~SciantixArray() {}
    
@@ -66,7 +65,7 @@ Program Listing for File SciantixArray.h
            {
                array[pos->second] = element;
            }
-           else 
+           else
            {
                map.insert(std::pair<std::string, int>(element.getName(), array.size()));
                array.push_back(element);
@@ -103,13 +102,25 @@ Program Listing for File SciantixArray.h
            }
        }
    
-       typename std::vector<T>::iterator begin() {return array.begin();}
+       typename std::vector<T>::iterator begin()
+       {
+           return array.begin();
+       }
    
-       typename std::vector<T>::iterator end() {return array.end();}
+       typename std::vector<T>::iterator end()
+       {
+           return array.end();
+       }
    
-       typename std::vector<T>::const_iterator begin() const {return array.begin();}
+       typename std::vector<T>::const_iterator begin() const
+       {
+           return array.begin();
+       }
    
-       typename std::vector<T>::const_iterator end() const {return array.end();}
+       typename std::vector<T>::const_iterator end() const
+       {
+           return array.end();
+       }
    
        bool isElementPresent(std::string element_name)
        {

@@ -10,7 +10,6 @@ Program Listing for File Material.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -32,7 +31,7 @@ Program Listing for File Material.h
    
    class Material
    {
-   public:
+     public:
        Material() {}
    
        ~Material() {}
@@ -57,9 +56,9 @@ Program Listing for File Material.h
            return reference;
        }
    
-   protected:
+     protected:
        std::string name;
        std::string reference;
    };
    
-   #endif // MATERIAL_H
+   #endif  // MATERIAL_H

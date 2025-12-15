@@ -10,7 +10,6 @@ Program Listing for File Matrix.h
 
 .. code-block:: cpp
 
-   
    //       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
    //      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
    //     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
@@ -30,15 +29,15 @@ Program Listing for File Matrix.h
    
    #include <cmath>
    
-   #include "Material.h"
    #include "Constants.h"
    #include "ErrorMessages.h"
+   #include "Material.h"
    #include "SciantixArray.h"
    #include "SciantixVariable.h"
    
    class Matrix : virtual public Material
    {
-   public:
+     public:
        double matrix_density;
        double lattice_parameter;
        double grain_boundary_mobility;
@@ -121,7 +120,8 @@ Program Listing for File Matrix.h
            return ois_volume;
        }
    
-       void setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVariable> &history_variable);
+       void setGrainBoundaryMobility(int                              input_value,
+                                     SciantixArray<SciantixVariable>& history_variable);
    
        double getGrainBoundaryMobility()
        {
@@ -168,7 +168,8 @@ Program Listing for File Matrix.h
            return grain_boundary_thickness;
        }
    
-       void setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable);
+       void setGrainBoundaryVacancyDiffusivity(int                              input_value,
+                                               SciantixArray<SciantixVariable>& history_variable);
    
        double getGrainBoundaryVacancyDiffusivity()
        {
@@ -195,21 +196,23 @@ Program Listing for File Matrix.h
            return nucleation_rate;
        }
    
-       void setPoreNucleationRate(SciantixArray<SciantixVariable> &sciantix_variable);
+       void setPoreNucleationRate(SciantixArray<SciantixVariable>& sciantix_variable);
    
        double getPoreNucleationRate()
        {
            return pore_nucleation_rate;
        }
    
-       void setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable);
+       void setPoreResolutionRate(SciantixArray<SciantixVariable>& sciantix_variable,
+                                  SciantixArray<SciantixVariable>& history_variable);
    
        double getPoreResolutionRate()
        {
            return pore_resolution_rate;
        }
    
-       void setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable);
+       void setPoreTrappingRate(SciantixArray<Matrix>&           matrices,
+                                SciantixArray<SciantixVariable>& sciantix_variable);
    
        double getPoreTrappingRate()
        {
@@ -242,7 +245,7 @@ Program Listing for File Matrix.h
        }
    
        double getChromiumContent()
-       {   
+       {
            return chromium_content;
        }
    
@@ -268,7 +271,7 @@ Program Listing for File Matrix.h
    
        void setChromiumSolution(double cr_sol)
        {
-           chromium_solution= cr_sol;
+           chromium_solution = cr_sol;
        }
    
        double getChromiumSolution()
@@ -278,7 +281,7 @@ Program Listing for File Matrix.h
    
        void setChromiumPrecipitate(double cr_p)
        {
-           chromium_precipitate= cr_p;
+           chromium_precipitate = cr_p;
        }
    
        double getChromiumPrecipitate()
@@ -317,7 +320,6 @@ Program Listing for File Matrix.h
            // Member function to return the elastic (Young) modulus of the material (MPa)
            return elastic_modulus;
        }
-   
    
        // Poisson ratio
        void setPoissonRatio(double v)
@@ -362,4 +364,4 @@ Program Listing for File Matrix.h
        ~Matrix() {}
    };
    
-   #endif // MATRIX_H
+   #endif  // MATRIX_H
