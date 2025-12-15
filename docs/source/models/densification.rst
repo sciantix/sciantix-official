@@ -3,9 +3,9 @@ Burnup
 
 This model computes the local fuel burnup from the fission rate density. The
 specific power is derived from the fission rate and fuel density and is then
-time-integrated to obtain the burnup expressed in :math:`\mathrm{MWd/kg}`. The
-model also updates related irradiation quantities, including the irradiation
-time and the fraction of initial metal atoms (FIMA).
+time-integrated to obtain the burnup expressed in MWd/kg. The model also updates
+related irradiation quantities, including the irradiation time and the fraction
+of initial metal atoms (FIMA).
 
 The implementation follows the steps used in ``Simulation::Burnup()``.
 
@@ -28,7 +28,8 @@ conversion factor:
 
    P_{\mathrm{spec}} = \frac{\dot{F}\,C}{\rho_f}
 
-where
+where:
+
 - :math:`\dot{F}` is the fission rate density (``Fission rate``),
 - :math:`\rho_f` is the fuel density (``Fuel density``),
 - :math:`C = 3.12 \times 10^{-17}` is the conversion constant used in the code.
@@ -39,7 +40,7 @@ The burnup rate is then defined as:
 
    \dot{B} = \frac{P_{\mathrm{spec}}}{86400}
 
-so that burnup is expressed in :math:`\mathrm{MWd/kg}`.
+so that burnup is expressed in MWd/kg.
 
 Time integration
 ~~~~~~~~~~~~~~~~
@@ -77,7 +78,8 @@ The Fraction of Initial Metal Atoms (FIMA) is updated as:
    \mathrm{FIMA}^{n+1} = \mathrm{FIMA}^{n}
    + \left(\frac{\dot{F}\,3.6 \times 10^{5}}{U}\right)\Delta t_{\mathrm{irr}}
 
-where
+where:
+
 - :math:`U` is the uranium inventory variable (``U``),
 - :math:`\Delta t_{\mathrm{irr}}` is the irradiation time increment.
 
