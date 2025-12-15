@@ -9,7 +9,8 @@ driven by burnup.
 Reference
 ---------
 
-Van Uffelen, P. (2002), PhD thesis, SCK•CEN Reports No. BLG-907. https://www.oecd-nea.org/science/wprs/fuel/Thesis_Van_Uffelen_BLG.pdf
+Van Uffelen, P. (2002), PhD thesis, SCK•CEN Reports No. BLG-907. 
+https://www.oecd-nea.org/science/wprs/fuel/Thesis_Van_Uffelen_BLG.pdf
 
 Activation
 ----------

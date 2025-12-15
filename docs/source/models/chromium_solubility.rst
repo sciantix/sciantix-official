@@ -11,7 +11,8 @@ The default correlation is based on Riglet-Martial et al. (2014).
 Reference
 ---------
 
-Riglet-Martial et al., J. Nucl. Mater. 447 (2014) 63–72. https://doi.org/10.1016/j.jnucmat.2013.12.021
+Riglet-Martial et al., J. Nucl. Mater. 447 (2014) 63–72. 
+https://doi.org/10.1016/j.jnucmat.2013.12.021
 
 Inputs
 ------
