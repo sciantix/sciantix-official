@@ -144,6 +144,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {160,"Diffusion coefficient"},
     {161,"Uranium content"},
     {162,"Oxygen content"},
+    {163,"Plutonium content"},
     {170,"Initial grain radius"},
     {171,"Pu238"},
     {172,"Pu239"},

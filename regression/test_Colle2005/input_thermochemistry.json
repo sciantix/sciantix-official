@@ -17,7 +17,7 @@
     },
     "matrix":
     {
-      "elements": {"U":{"atomicnumber": 92}, "O":{"atomicnumber":8}},
+      "elements": {"U":{"atomicnumber": 92}, "O":{"atomicnumber":8}, "Pu": {"atomicnumber": 94}},
       "module": "NO",
       "database":"OU",
       "location": {"matrix":{}}
@@ -95,14 +95,18 @@
         "O2": {"O": 2},
         "UO": {"U": 1, "O": 1},
         "UO2": {"U": 1, "O": 2},
-        "UO3": {"U": 1, "O": 3}
+        "UO3": {"U": 1, "O": 3},
+        "PuO": {"Pu": 1, "O": 1},
+        "PuO2": {"Pu": 1, "O": 2}
       },
       "vapour":{
         "U": {"U": 1},
         "O2": {"O": 2},
         "UO": {"U": 1, "O": 1},
         "UO2": {"U": 1, "O": 2},
-        "UO3": {"U": 1, "O": 3}
+        "UO3": {"U": 1, "O": 3},
+        "PuO": {"Pu": 1, "O": 1},
+        "PuO2":{"Pu": 1, "O": 2}
       },
       "gas": {
         "O": {"O": 1},
@@ -111,7 +115,9 @@
         "U": {"U": 1},
         "UO": {"U": 1, "O": 1},
         "UO2": {"U": 1, "O": 2},
-        "UO3": {"U": 1, "O": 3}
+        "UO3": {"U": 1, "O": 3},
+        "PuO": {"Pu": 1, "O": 1},
+        "PuO2":{"Pu": 1, "O": 2}
       },
       "ionic_liquid": {
         "UO2:Va": {"U": 1, "O": 2},
