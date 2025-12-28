@@ -195,5 +195,11 @@ Matrix MOX(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
     matrix_.setPoreResolutionRate(sciantix_variable, history_variable);
     matrix_.setPoreTrappingRate(matrices, sciantix_variable);
 
+    // Mechanical properties
+    matrix_.setElasticModulus((217.99 * (1 - q) + 249.54 * q) * ((pow(1 - sciantix_variable["Porosity"].getFinalValue(), 2)) / (1 + 1.124330 * sciantix_variable["Porosity"].getFinalValue())) * (1 - 2.72739 * sciantix_variable["Stoichiometry deviation"].getFinalValue() + 13.84392 * pow(sciantix_variable["Stoichiometry deviation"].getFinalValue(), 2)) * (1.012527 - 2.282 * pow(10, -5) * history_variable["Temperature"].getFinalValue() - 6.312 * pow(10, -8) * pow(history_variable["Temperature"].getFinalValue(), 2))); // pag 124 Nuclear Science NEA/NSC/R(2024)1
+	matrix_.setPoissonRatio((0.32051 * (1 - q) + 0.31882 * q) * (1 - 1.03223 * sciantix_variable["Porosity"].getFinalValue()) * (1 + 0.69962 * sciantix_variable["Stoichiometry deviation"].getFinalValue() - 7.52905 * pow(sciantix_variable["Stoichiometry deviation"].getFinalValue(), 2)) * (1.017906 - 6.420 * pow(10, -5) * history_variable["Temperature"].getFinalValue() + 1.506 * pow(10, -8) * pow(history_variable["Temperature"].getFinalValue(),2))); // pag 124 Nuclear Science NEA/NSC/R(2024)1
+	matrix_.setGrainBoundaryFractureEnergy(2); // (J/m2) Jernkvist, L.O. (2020). A review of analytical criteria for fission gas induced fragmentation of oxide fuel in accident conditions. Progress in Nuclear Energy, 119, 103188.
+    matrix_.setShearModulus(matrix_.getElasticModulus() / ( 2 * ( 1 + matrix_.getPoissonRatio() ) )); // pag 125 Nuclear Science NEA/NSC/R(2024)1
+
     return matrix_;
 }
