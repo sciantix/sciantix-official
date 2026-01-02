@@ -1,18 +1,38 @@
-import subprocess
-import shutil
-import os
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""
+Sciantix Simulation Post-Processing Script
+
+This script handles:
+1. Running Sciantix simulations for various radial profiles.
+2. Generating input files and modifying settings.
+3. Plotting time-dependent quantities (temperature, burnup, fission rates).
+4. Plotting radial profiles and thermochemical species concentrations.
+5. Handling thermochemistry outputs, including normalization and radial integration.
+
+Author: Elisa Cappellari
+Date: 2025
+"""
+
+# ============================ IMPORTS ============================
+
+import subprocess  # For running external commands (Sciantix)
+import shutil      # For copying and moving files
+import os          # For file and folder handling
+import glob        # For finding files using patterns
+import re          # Regular expressions for parsing column names
+import json        # Reading/writing JSON configuration files
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import json
-import re
-
 import matplotlib as mpl
-import matplotlib.lines as mlines
-
-import glob
 from collections import defaultdict
 
+# ============================ MATPLOTLIB STYLE ============================
+
+# Configure plotting style globally
 mpl.rcParams.update({
     "font.family": "arial",
     "font.size": 20,
@@ -29,7 +49,7 @@ mpl.rcParams.update({
     "lines.markersize": 6,
 })
 
-# Define style
+# Define color palette for plotting multiple compounds
 colors = [
     'dodgerblue', 'darkorange', 'forestgreen', 'crimson', 'hotpink', 'gold', 'slategray',
     'mediumpurple', 'saddlebrown', 'deepskyblue', 'darkolivegreen', 'limegreen', 'darkcyan',
@@ -43,38 +63,58 @@ colors = [
     'bisque', 'gainsboro', 'powderblue', 'peachpuff', 'lightcyan'
 ]
 
+# Line style mapping for different simulation modes
 linestyles = {'No Thermochemistry': '--', 'With Thermochemistry': '-'}
 
+# ============================ FUNCTION: PLOT SIMULATION ============================
 
 def plot(folder_path):
+    """
+    Plot simulation results for a given folder path containing Sciantix output files.
 
-    # Remove previous plots
+    Parameters
+    ----------
+    folder_path : str
+        Path to the folder containing 'output_chemistry.txt' and 'thermochemistry_output_chemistry.txt'.
+    """
+
+    # Remove previous PNG plots to avoid overwriting issues
     png_files = glob.glob(os.path.join(folder_path, "*.png"))
     for file in png_files:
         os.remove(file)
 
-    # Load data
-    data = {}
-    data['With Thermochemistry'] = pd.read_csv(folder_path + '/output_chemistry.txt', sep='\t')
+    # ============================ LOAD DATA ============================
 
-    # Print some main variables at the end of irradiation
+    # Load main output data
+    data = {}
+    data['With Thermochemistry'] = pd.read_csv(
+        os.path.join(folder_path, 'output_chemistry.txt'), sep='\t'
+    )
+
+    # Print key simulation metrics at end of irradiation
     print('--------------------------------------------------------------------')
     print('Simulation results')
-    print('Burnup (MWd/kgUO2) = ', data['With Thermochemistry']['Burnup (MWd/kgUO2)'].max()) 
-    print('Grain diameter (um) = ', 2e6*data['With Thermochemistry']['Grain radius (m)'].max()) 
+    print('Burnup (MWd/kgUO2) = ', data['With Thermochemistry']['Burnup (MWd/kgUO2)'].max())
+    print('Grain diameter (um) = ', 2e6 * data['With Thermochemistry']['Grain radius (m)'].max())
     print('Initial Stoichiometry = ', data['With Thermochemistry']['Stoichiometry deviation (/)'].iloc[0])
-    
-    thermochemistry_data = pd.read_csv(folder_path + '/thermochemistry_output_chemistry.txt', sep='\t')
 
+    # Load thermochemistry output
+    thermochemistry_data = pd.read_csv(
+        os.path.join(folder_path, 'thermochemistry_output_chemistry.txt'), sep='\t'
+    )
+
+    # ============================ PARSE THERMOCHEMISTRY DATA ============================
+
+    # Nested dictionary: thermochemistry[position][phase][compound] = values
     thermochemistry = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
 
     for col in thermochemistry_data.columns:
+        # Only process columns with compound and unit info
         if "(" not in col or "mol" not in col:
             continue
 
-        # Match: Nome (fase, posizione) (unità)
+        # Regex parsing of column names: Compound (phase, position) (unit)
         match = re.match(r"(.+)\s+\(([^,]+),\s*([^)]+)\)\s*\((mol/m3|mol/m3)\)", col)
-
         if not match:
             print(f"Colonna non riconosciuta: {col}")
             continue
@@ -86,34 +126,45 @@ def plot(folder_path):
 
         thermochemistry[position][phase][compound] = thermochemistry_data[col].values
 
-    ##################################### temperature ########################
+    # ============================ PLOT TEMPERATURE ============================
+
     plt.figure(figsize=(8, 6))
     dataset = "With Thermochemistry"
     x = "Temperature (K)"
     label_x = "Time (h)"
-    plt.plot(data[dataset][label_x],data[dataset][x] , 
-                        linestyle=linestyles[dataset])
+    plt.plot(data[dataset][label_x], data[dataset][x],
+             linestyle=linestyles[dataset])
     plt.xlabel(label_x)
     plt.ylabel(x)
     plt.tight_layout()
-    plt.savefig(folder_path +"/Temperature.png")
-    #plt.show()
-    ############################################### MATRIX ###################################
+    plt.savefig(os.path.join(folder_path, "Temperature.png"))
+    plt.close()
+
+    # ============================ PLOT THERMOCHEMISTRY IN GAP ============================
+
     plt.figure(figsize=(8, 6))
     dataset = "With Thermochemistry"
     label_x = "Time (h)"
     location = 'in the gap'
-    total_moles = 1
+    total_moles = 1  # For normalization
     i = 0
+
+    # Loop over phases and compounds
     for phase in thermochemistry[location].keys():
         for compound, values in thermochemistry[location][phase].items():
             print(f"Plotting {compound} ({phase})")
             values = np.nan_to_num(values, nan=0).astype(float)
-            if np.any(values)>0:
-                norm_values = np.divide(values, total_moles, 
-                                        out=np.zeros_like(values, dtype=float), 
-                                        where=total_moles!=0)
-                plt.plot(data[dataset][label_x], norm_values, label=compound+" ("+phase+")", color=colors[i], linestyle = '--' if phase=='gas' else '-')
+            if np.any(values) > 0:
+                norm_values = np.divide(values, total_moles,
+                                        out=np.zeros_like(values, dtype=float),
+                                        where=total_moles != 0)
+                plt.plot(
+                    data[dataset][label_x],
+                    norm_values,
+                    label=compound + " (" + phase + ")",
+                    color=colors[i],
+                    linestyle='--' if phase == 'gas' else '-'
+                )
                 i += 1
 
     plt.xlabel(label_x)
@@ -121,20 +172,30 @@ def plot(folder_path):
     plt.legend(loc='center left', bbox_to_anchor=(1.01, 0.5), frameon=False)
     plt.title(f"In the gap")
     plt.tight_layout()
-    plt.savefig(folder_path + "/inthegap.png")
-    #plt.show()
+    plt.savefig(os.path.join(folder_path, "inthegap.png"))
+    plt.close()
+
+    # ============================ PLOT THERMOCHEMISTRY AT GRAIN BOUNDARY ============================
+
     plt.figure(figsize=(8, 6))
     location = 'at grain boundary'
     i = 0
+
     for phase in thermochemistry[location].keys():
         for compound, values in thermochemistry[location][phase].items():
             print(f"Plotting {compound} ({phase})")
             values = np.nan_to_num(values, nan=0).astype(float)
-            if np.any(values)>0:
-                norm_values = np.divide(values, total_moles, 
-                                        out=np.zeros_like(values, dtype=float), 
-                                        where=total_moles!=0)
-                plt.plot(data[dataset][label_x], norm_values, label=compound+"("+phase+")", color=colors[i], linestyle = '--' if phase=='gas' else '-')
+            if np.any(values) > 0:
+                norm_values = np.divide(values, total_moles,
+                                        out=np.zeros_like(values, dtype=float),
+                                        where=total_moles != 0)
+                plt.plot(
+                    data[dataset][label_x],
+                    norm_values,
+                    label=compound + "(" + phase + ")",
+                    color=colors[i],
+                    linestyle='--' if phase == 'gas' else '-'
+                )
                 i += 1
 
     plt.xlabel(label_x)
@@ -142,80 +203,107 @@ def plot(folder_path):
     plt.legend(loc='center left', bbox_to_anchor=(1.01, 0.5), frameon=False)
     plt.title(f"At grain boundary")
     plt.tight_layout()
-    plt.savefig(folder_path + "/atgrainboundary.png")
-    #plt.show()
+    plt.savefig(os.path.join(folder_path, "atgrainboundary.png"))
+    plt.close()
     return
 
-# Path to input settings file
+# ============================ FILE PATHS AND SETTINGS ============================
+
 input_file = "input_settings.txt"
 input_initial = "input_initial_conditions.txt"
 results_dir = "results"
+
+# Flags to control plotting behavior
 plot_only = False
-plot_only_only = True
-# Function to modify input settings
-def modify_input_settings(value):
-    with open(input_file, 'r') as file:
-        lines = file.readlines()
-    
-    lines[25] = value + lines[25][1:]
-    
-    with open(input_file, 'w') as file:
-        file.writelines(lines)
+plot_only_only = False
 
-def modify_input_initial_conditions(value):
-    with open(input_initial, 'r') as file:
-        lines = file.readlines()
-    
-    lines[24] = value + '\n'
+# ============================ FUNCTION TO RUN SCIANTIX ============================
 
-    with open(input_initial, 'w') as file:
-        file.writelines(lines)
-
-# Function to run sciantix and save output
 def run_sciantix(output_name):
+    """
+    Run Sciantix simulation and move output files to results directory.
+
+    Parameters
+    ----------
+    output_name : str
+        Base name for output files.
+    """
     subprocess.run("./sciantix.x", shell=True, check=True)
     shutil.move("thermochemistry_output.txt", f"{results_dir}/thermochemistry_{output_name}")
     shutil.move("output.txt", f"{results_dir}/{output_name}")
     shutil.move("input_check.txt", f"{results_dir}/input_check_{output_name}")
 
-def fissrate_frombu(burnup, time_s, density=10970, porosity=0.05, fissionenergy=220): #fiss m-3 s-1
-    return (density*(1 - porosity))* burnup * (3600*24)/(time_s * fissionenergy * 1.6022e-19) 
+# ============================ FISSION RATE CALCULATION ============================
+
+def fissrate_frombu(burnup, time_s, density=10970, porosity=0.05, fissionenergy=220):
+    """
+    Convert burnup to fission rate [fiss/m^3/s].
+
+    Parameters
+    ----------
+    burnup : float
+        Burnup [MWd/kgUO2]
+    time_s : float
+        Time [s]
+    density : float, optional
+        UO2 density [kg/m^3]
+    porosity : float, optional
+        Fuel porosity fraction
+    fissionenergy : float, optional
+        Energy released per fission [MeV]
+
+    Returns
+    -------
+    fiss_rate : float
+        Fission rate [fiss/m^3/s]
+    """
+    return (density * (1 - porosity)) * burnup * (3600 * 24) / (time_s * fissionenergy * 1.6022e-19)
+
+# ============================ COPY SCIANTIX EXECUTABLE ============================
 
 shutil.copy("../../build/sciantix.x", ".")
 
+# ============================ RADIAL PROFILES & COEFFICIENTS ============================
+
 totalradius = 4.7
-radialprofile = [0, 1, 2, 3, 4, 4.7]
+radialprofile = [0, 1, 2, 3, 4, 4.7]  # Radial positions in mm
+
+# Temperature profile in Celsius and normalization to outer radius
 temperatureprofile_Celsius = [868, 840, 757, 623, 415, 302]
-temperaturecoefficient = (np.array(temperatureprofile_Celsius) + 273)/(temperatureprofile_Celsius[-1] + 273)
+temperaturecoefficient = (np.array(temperatureprofile_Celsius) + 273) / (temperatureprofile_Celsius[-1] + 273)
 temperaturecoefficient = list(temperaturecoefficient)
+
+# Burnup coefficient normalized to maximum
 burnupprofile = [56, 56, 57, 60, 81, 136]
-burnupcoefficient = np.array(burnupprofile)/burnupprofile[-1]
+burnupcoefficient = np.array(burnupprofile) / burnupprofile[-1]
 burnupcoefficient = list(burnupcoefficient)
-pressurecoefficient = [1.0]*6
+
+# Pressure coefficient (assumed uniform)
+pressurecoefficient = [1.0] * 6
 
 print("Temperature coefficients: ", temperaturecoefficient)
 print("Burn-up/Fission rate coefficients: ", burnupcoefficient)
 print("Pressure coefficients: ", pressurecoefficient)
 
-########## History: outer fuel radius ############
-data = np.loadtxt("input_history_radial.txt")
+# ============================ HISTORY INPUT ============================
 
-time_h   = list(data[:,0]) 
-temperature_K      = list(data[:,1])  
-fissionrate_m3s   = list(data[:,2])
-pressure_MPa    = list(data[:,3])
+data = np.loadtxt("input_history_radial.txt")
+time_h = list(data[:, 0])          # Time [h]
+temperature_K = list(data[:, 1])   # Temperature [K]
+fissionrate_m3s = list(data[:, 2]) # Fission rate [fiss/m^3/s]
+pressure_MPa = list(data[:, 3])    # Pressure [MPa]
+
+# ============================ THERMOCHEMISTRY INPUT SETTINGS ============================
 
 KC = True
-annealing_time = 53400.099
+annealing_time = 53400.099  # Annealing time [h]
 
-# Thermochemistry input settings
+# Get outermost radius temperature and pressure for thermochemistry input
+outer_T = temperature_K[0] * temperaturecoefficient[-1]
+outer_P = pressure_MPa[0] * pressurecoefficient[-1] * 1e6 * (-1)
 
-# get outermost radius values at the initial time
-outer_T = temperature_K[0]*temperaturecoefficient[-1]
-outer_P = pressure_MPa[0]*pressurecoefficient[-1]*1e6*(-1)
-
-with open("input_thermochemistry.json", "r") as f_thermochemistry:
-    thermo_data = json.load(f_thermochemistry)
+with open("input_thermochemistry.json", "r") as f_thermo:
+    thermo_data = json.load(f_thermo)
 
 thermo_data["Settings"]["fission_products"]["gap settings"] = True
 thermo_data["Settings"]["fission_products"]["gap temperature"] = outer_T
@@ -223,40 +311,46 @@ thermo_data["Settings"]["fission_products"]["gap pressure"] = outer_P
 thermo_data["Settings"]["KC"] = KC
 thermo_data["Settings"]["KC time"] = annealing_time
 
-with open("input_thermochemistry.json", "w") as f_thermochemistry:
-    json.dump(thermo_data, f_thermochemistry, indent=2)
+with open("input_thermochemistry.json", "w") as f_thermo:
+    json.dump(thermo_data, f_thermo, indent=2)
 
-# Generate input files for each radial profile
+# ============================ INPUT FILE GENERATION & SIMULATION LOOP ============================
+
 for i, (r, cT, cF, cP) in enumerate(zip(radialprofile, temperaturecoefficient, burnupcoefficient, pressurecoefficient)):
-    if plot_only_only == True: continue
-    # Sciantix input settings
-    filename = f"input_history.txt"
-    radial_position = round(r/totalradius, 2)
+    if plot_only_only:
+        continue
+
+    # Generate Sciantix input file for this radial position
+    filename = "input_history.txt"
+    radial_position = round(r / totalradius, 2)
     j_max = len(time_h)
+
     with open(filename, "w") as f_input:
         for j, (t_h, T_K, F_m3s, P_MPa) in enumerate(zip(time_h, temperature_K, fissionrate_m3s, pressure_MPa)):
-            t_h *= 1
-            if t_h <= annealing_time and KC == True:
+            t_h *= 1  # Time scaling
+            if t_h <= annealing_time and KC:
                 T_K *= cT
                 F_m3s *= cF
                 P_MPa *= cP
-            P_Pa = P_MPa*1e6*(-1)
+            P_Pa = P_MPa * 1e6 * (-1)
             f_input.write(f"{t_h:.4f}   {T_K:.6e}   {F_m3s:.6e}   {P_MPa:.6e}   {P_Pa:.6e}")
-            if j < (j_max-1): f_input.write("\n")
-    
+            if j < (j_max - 1):
+                f_input.write("\n")
+
     folder_name = str(radial_position).replace('.', '_')
 
-    if plot_only == False:
+    if not plot_only:
         run_sciantix("output_chemistry.txt")
         plot(results_dir)
         os.makedirs(folder_name, exist_ok=True)
+        # Move PNG and TXT results to radial folder
         for file in os.listdir(results_dir):
             if file.endswith(".png") or file.endswith(".txt"):
                 shutil.move(os.path.join(results_dir, file), os.path.join(folder_name, file))
-    elif plot_only == True:
+    elif plot_only:
         plot(folder_name)
 
-####### Radial plot ##################
+# ============================ RADIAL PLOT FUNCTIONS ============================
 
 colors_set = ["blue", "orange", "green", "red"]
 markers = ["o", "s", "d", "^", "v", "x", "*"]
@@ -413,6 +507,12 @@ def radial_integral_all(results_base=".", totalradius=4.7, radialprofile=None, p
     plt.savefig(f"radial_profiles_{position.replace(' ', '_')}_{str(basetime).replace('.', '_')}h.png", bbox_inches="tight")
     plt.close()
 
+
+# ============================ RADIAL PLOTS CALLS ============================
+
+# Call radial_integral_all and radial_profile with appropriate parameters
+# (Repeated calls from original script; unchanged)
+
 time_plot = annealing_time 
 
 radial_integral_all(results_base=".", totalradius=totalradius,
@@ -500,11 +600,8 @@ radial_profile(["Xe reacted - GB (at/m3)", "Cs reacted - GB (at/m3)", "I reacted
 # radial_profile(["Xe reacted - IG (at/m3)", "Cs reacted - IG (at/m3)", "I reacted - IG (at/m3)", "Te reacted - IG (at/m3)"], name="Reacted - IG", results_base=".", totalradius=totalradius,
 #                radialprofile=radialprofile, norm=["Xe produced (at/m3)", "Cs produced (at/m3)", "I produced (at/m3)", "Te produced (at/m3)"], labeladd= "Reacted in grain / released")
 
-
-
 radialfolder = "RadialPlots"
 os.makedirs(radialfolder, exist_ok=True)
 for file in os.listdir("."):
     if file.endswith(".png"):
         shutil.move(file, os.path.join(radialfolder, file))
-
