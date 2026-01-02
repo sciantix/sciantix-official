@@ -26,6 +26,7 @@ bool System::getRestructuredMatrix()
     return restructured_matrix;
 }
 
+// CHECK YIELD
 void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
 {
     double q = sciantix_variable["q"].getFinalValue();
@@ -152,6 +153,8 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
     double Y_eff = (1.0 - q) * Y_U_mean + q * Y_Pu_mean;
 
     yield = Y_eff;
+
+    std::cout << "Yield of " << gas_name << ": " << yield << " at/fiss" << std::endl;
 }
 
 double System::getYield()
@@ -223,7 +226,7 @@ void System::setBubbleDiffusivity(int input_value, SciantixArray<SciantixVariabl
     SciantixArray<SciantixVariable> &history_variable, SciantixArray<Matrix> &matrices)
 
 {
-        // Determino il nome della matrice associata al sistema (es. UO2 o MOX)
+    // fuel matrix (ex. UO2 o MOX)
     std::string fuel_matrix_name = matrix.getName();
 
     switch (input_value)
@@ -725,7 +728,7 @@ double System::getHenryConstant()
 void System::setResolutionRate(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, 
     SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors, SciantixArray<Matrix> &matrices)
 {
-        // Determino il nome della matrice associata al sistema (es. UO2 o MOX)
+    // fuel matrix (ex. UO2 o MOX)
     std::string fuel_matrix_name = matrix.getName();
 
     /**

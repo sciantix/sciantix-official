@@ -22,10 +22,30 @@ void Simulation::ChromiumSolubility()
     Model model_;
     model_.setName("Chromium solubility");
 
-	// MOX
 	std::string fuel_matrix_name = "UO2";
-	if ((int)input_variable["iFuelMatrix"].getValue() == 2)
-    	fuel_matrix_name = "MOX";
+	switch ((int)input_variable["iFuelMatrix"].getValue())
+    {
+        case 0:
+		{
+			fuel_matrix_name = "UO2";
+			break;
+		}
+
+		case 1:
+		{
+			fuel_matrix_name = "UO2HBS";
+			break;
+		}
+		
+		case 2:
+		{
+			fuel_matrix_name = "MOX";
+			break;
+		}
+
+		default:
+			break;
+	}
 
     std::string reference;
     reference += "Riglet-Martial et al., JNM, 447 (2014) 63-72.";

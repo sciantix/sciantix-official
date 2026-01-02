@@ -40,11 +40,31 @@ void Simulation::GasDiffusion()
             break;
     }
 
-    // MOX
-        
-        std::string fuel_matrix_name = "UO2";
-        if ((int)input_variable["iFuelMatrix"].getValue() == 2)
-            fuel_matrix_name = "MOX";
+    
+	std::string fuel_matrix_name = "UO2";
+	switch ((int)input_variable["iFuelMatrix"].getValue())
+    {
+        case 0:
+		{
+			fuel_matrix_name = "UO2";
+			break;
+		}
+
+		case 1:
+		{
+			fuel_matrix_name = "UO2HBS";
+			break;
+		}
+		
+		case 2:
+		{
+			fuel_matrix_name = "MOX";
+			break;
+		}
+
+		default:
+			break;
+	}
 
     // Model resolution
     for (auto &system : sciantix_system)

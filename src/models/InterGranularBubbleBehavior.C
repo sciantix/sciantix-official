@@ -21,11 +21,31 @@ void Simulation::InterGranularBubbleBehavior()
     // Model declaration
     Model model_;
     Matrix fuel_(matrices[0]);
+	std::string fuel_matrix_name = "UO2";
+	switch ((int)input_variable["iFuelMatrix"].getValue())
+    {
+        case 0:
+		{
+			fuel_matrix_name = "UO2";
+			break;
+		}
 
-    //MOX
-    std::string fuel_matrix_name = "UO2";
-    if ((int)input_variable["iFuelMatrix"].getValue() == 2)
-        fuel_matrix_name = "MOX";
+		case 1:
+		{
+			fuel_matrix_name = "UO2HBS";
+			break;
+		}
+		
+		case 2:
+		{
+			fuel_matrix_name = "MOX";
+			break;
+		}
+
+		default:
+			break;
+	}
+
 
     model_.setName("Intergranular bubble behavior");
     std::string reference;

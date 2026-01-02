@@ -72,20 +72,17 @@ public:
     // MOX
     std::vector<double> initial_uranium_composition;
     std::vector<double> initial_plutonium_composition; // Isotopic vector for plutonium (Pu238–Pu242)
-    double mox_pu_enrichment = 0.0; // PuO₂ fraction in the MOX fuel
+    double mox_pu_enrichment; // PuO₂ fraction in the MOX fuel
 
     /**
      * @brief Sets the theoretical density of the matrix.
-     * @param m The density to set (kg/m3).
+     * @param sciantix_variable The SciantixArray of SciantixVariable objects.
+     * @param Cr_theoretical_density The theoretical density for chromium.
      */
-    void setTheoreticalDensity(double m)
-    {
-        matrix_density = m;
-    }
-
+    void setTheoreticalDensity(SciantixArray<SciantixVariable> &sciantix_variable, double Cr_theoretical_density);
     /**
      * @brief Retrieves the theoretical density of the matrix.
-     * @return A double that is the density of the matrix (kg/m3).
+     * @return A function that is the density of the matrix (kg/m3).
      */
     double getTheoreticalDensity()
     {
@@ -94,12 +91,10 @@ public:
 
     /**
      * @brief Sets the lattice parameter of the matrix.
-     * @param m The lattice parameter to set.
+     * @param sciantix_variable The SciantixArray of SciantixVariable objects.
+     * @param Cr_lattice_parameter The lattice parameter for chromium.
      */
-    void setLatticeParameter(double m)
-    {
-        lattice_parameter = m;
-    }
+    void setLatticeParameter(SciantixArray<SciantixVariable> &sciantix_variable, double Cr_lattice_parameter);
 
     /**
      * @brief Retrieves the lattice parameter of the matrix.
@@ -583,7 +578,6 @@ public:
      * @brief Destructor
      */
     ~Matrix() {}
-
 };
 
 #endif // MATRIX_H
