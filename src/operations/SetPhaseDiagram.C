@@ -29,14 +29,35 @@
 
 void Simulation::SetPhaseDiagram(std::string location)
 {
-    // MOX 
-    std::string fuel_matrix_name = "UO2";
-    if ((int)input_variable["iFuelMatrix"].getValue() == 2)
-        fuel_matrix_name = "MOX";
 
+	std::string fuel_matrix_name = "UO2";
+	switch ((int)input_variable["iFuelMatrix"].getValue())
+    {
+        case 0:
+		{
+			fuel_matrix_name = "UO2";
+			break;
+		}
+
+		case 1:
+		{
+			fuel_matrix_name = "UO2HBS";
+			break;
+		}
+		
+		case 2:
+		{
+			fuel_matrix_name = "MOX";
+			break;
+		}
+
+		default:
+			break;
+	}
     double temperature(0);
     double pressure(0);
     double oxygenfraction(std::nan("")); // Oxygen fraction defined only for location = matrix
+    
     if (location == "in grain")
     {
         if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;

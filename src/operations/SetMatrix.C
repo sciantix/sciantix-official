@@ -53,8 +53,8 @@ Matrix UO2(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
 
     matrix_.setName("UO2");
     matrix_.setRef("\n\t");
-    matrix_.setTheoreticalDensity(10960.0); // (kg/m3)
-    matrix_.setLatticeParameter(5.47e-10);
+    matrix_.setTheoreticalDensity(sciantix_variable, 0.0); // (kg/m3)
+    matrix_.setLatticeParameter(sciantix_variable, 0.0); // (m)
     matrix_.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);
     matrix_.setSurfaceTension(0.7); // (N/m)
     matrix_.setFissionFragmentInfluenceRadius(1.0e-9); // (m)
@@ -97,8 +97,8 @@ Matrix UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &
     
     matrix_.setName("UO2HBS");
     matrix_.setRef("\n\t");
-    matrix_.setTheoreticalDensity(10960.0); // (kg/m3)
-    matrix_.setLatticeParameter(5.47e-10);
+    matrix_.setTheoreticalDensity(sciantix_variable, 0.0); // (kg/m3)
+    matrix_.setLatticeParameter(sciantix_variable, 0.0);
     matrix_.setGrainBoundaryMobility(0, history_variable);
     matrix_.setSurfaceTension(0.7); // (N/m)
     matrix_.setFissionFragmentInfluenceRadius(1.0e-9); // (m)
@@ -163,11 +163,9 @@ Matrix MOX(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
         Pu_fraction * double(sciantix_variable["Pu242"].getFinalValue())
     });
 
-     // Pu enrichment (q)
+    // Pu enrichment (q)
     matrix_.setMoxPuEnrichment(Pu_fraction);
-
-     // theoretical density [kg/m3], formula from the original code MOX.C
-    matrix_.setTheoreticalDensity(10960.0 + 490 * 0.20); // 20% PuO2 (kg/m3)
+    matrix_.setTheoreticalDensity(sciantix_variable, 0.0); // (kg/m3)
 
     // microstructural and thermal parameters
     matrix_.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);
@@ -179,10 +177,7 @@ Matrix MOX(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
     matrix_.setSemidihedralAngle(0.97); // rad
     matrix_.setGrainBoundaryThickness(5.0e-10); // m
     matrix_.setLenticularShapeFactor(0.168610764); // function
-
-    // lattice parameter: convertion in [m]
-    // original formula: 5.47 - 0.074 * enrichment  [Å]
-    matrix_.setLatticeParameter(5.47e-10 - 0.074e-10 * 0.20); // 20% PuO2 (m)
+    matrix_.setLatticeParameter(sciantix_variable, 0.0); // function of Pu content
 
     matrix_.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue()); // m
     matrix_.setHealingTemperatureThreshold((2744.0 + 273.15) / 2.0); // K (as original code: half of the melting temperature by now)
@@ -190,7 +185,7 @@ Matrix MOX(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
     // grain boundary vacancy diffusivity (updated with history_variable)
     matrix_.setGrainBoundaryVacancyDiffusivity(int(input_variable["iGrainBoundaryVacancyDiffusivity"].getValue()), history_variable); // m2/s
 
-    // pores (using the updated versions as in UO₂)
+    // pores (using the updated versions as in UO2)
     matrix_.setPoreNucleationRate(sciantix_variable);
     matrix_.setPoreResolutionRate(sciantix_variable, history_variable);
     matrix_.setPoreTrappingRate(matrices, sciantix_variable);
