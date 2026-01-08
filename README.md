@@ -72,7 +72,7 @@ cd ../..
 
 
 3. **Compile via Code::Blocks (Windows)**:
-The compilation produces an executable named **`sciantix.exe`**. You can run the simulations by simply double-clicking the executable inside the project folder.
+The compilation produces an executable named **`sciantix.exe`**. You can run the simulations by simply double-clicking the executable inside a case folder.
 
 ---
 
@@ -90,6 +90,7 @@ The **`material/`** directory contains scenarios to explore fuel gas behavior:
 
 * **On WSL/Linux/macOS**: Navigate into a case folder and execute:
 ```bash
+cp sciantix.x 1_baker1977_stationary/
 cd material/1_baker1977_stationary
 ./sciantix.x
 
