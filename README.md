@@ -1,39 +1,106 @@
-# SCIANTIX Training repository
+# SCIANTIX training repository
 
-The **material/** directory contains the official SCIANTIX training cases.  
-These examples allow users to familiarise themselves with the SCIANTIX input/output structure, validate their installation, and reproduce reference simulations from the scientific literature.
+This branch is designed for educational purposes and provides a self-contained environment for learning SCIANTIX.
 
-The training cases are also used as optional exercises in courses, but they are fully self-contained and can be run independently.
+## Repository structure
+
+* **`code/`**: SCIANTIX source code (v2.0+) and build files.
+* **`material/`**: Official training cases (input/output examples).
+* **`slides/`**: Theoretical support and step-by-step tutorials.
+
+---
+
+## Environment setup (Windows)
+
+### Option A: WSL (Highly recommended and supported)
+
+This is the standard environment for SCIANTIX. It provides the best performance and compatibility with automated scripts.
+
+1. Open PowerShell as Administrator and run:
+```powershell
+wsl --install
+
+```
+
+
+2. Restart your computer.
+3. In the Ubuntu terminal, install the development suite:
+```bash
+sudo apt update && sudo apt install -y build-essential cmake git
+
+```
+
+
+
+### Option B: Code::Blocks (Legacy)
+
+You can compile SCIANTIX natively using [Code::Blocks](https://www.codeblocks.org/downloads/binaries/) (download the version with `mingw-setup.exe`).
+*Note: This option is provided for convenience but is **not actively supported** for this training.*
+
+---
+
+## Environment setup (macOS and Linux)
+
+Ensure you have a C++ compiler and CMake installed:
+
+* **Linux**: `sudo apt install build-essential cmake git`
+* **macOS**: `xcode-select --install` and `brew install cmake`.
+
+---
+
+## Download and compile
+
+1. **Clone the repository**:
+```bash
+git clone -b training https://github.com/sciantix/sciantix-official.git
+cd sciantix-official
+
+```
+
+
+2. **Compile the code via terminal (WSL/Linux/macOS)**:
+The compilation process produces an executable named **`sciantix.x`** inside the `build` folder.
+```bash
+cd code
+mkdir build && cd build
+cmake ..
+make
+cp sciantix.x ../../material/
+cd ../..
+
+```
+
+
+3. **Compile via Code::Blocks (Windows)**:
+The compilation produces an executable named **`sciantix.exe`**. You can run the simulations by simply double-clicking the executable inside the project folder.
+
+---
 
 ## Available training cases
 
+The **`material/`** directory contains scenarios to explore fuel gas behavior:
+
 | Folder | Description |
-|--------|-------------|
-| `1_baker1977_stationary` | Stationary irradiation case. Demonstrates intra-granular diffusion, trapping, re-solution and grain-boundary saturation. Based on conditions representative of Baker (1977). |
-| `2_white2004_transient` | Transient temperature-ramp case. Demonstrates grain-boundary swelling, saturation and burst release. Based on White (2004). |
-| `3_uo2_hbs` | Example case for high-burnup structure (HBS) formation. For advanced users and model development. |
+| --- | --- |
+| `1_baker1977_stationary` | Intra-granular diffusion, trapping, and re-solution (Baker 1977). |
+| `2_white2004_transient` | Grain-boundary swelling, saturation, and burst release (White 2004). |
+| `3_uo2_hbs` | High-burnup structure (HBS) formation. |
 
-## How to run a training case
+### How to run
 
-Inside any case directory:
-
+* **On WSL/Linux/macOS**: Navigate into a case folder and execute:
 ```bash
+cd material/1_baker1977_stationary
 ./sciantix.x
+
 ```
 
-Output files will be written in the same folder.
 
-## Plotting results
-Copy-paste into excel/csv files is suggested to elaborate quickly the results.
+* **On Windows (Code::Blocks)**: Copy the `sciantix.exe` into the specific case folder and double-click it.
+
+---
 
 ## Useful links
 
-* SCIANTIX main repository: [https://github.com/sciantix/sciantix-official](https://github.com/sciantix/sciantix-official)
-* SCIANTIX documentation (installation & structure): [https://sciantix.github.io/sciantix-official/](https://sciantix.github.io/sciantix-official/)
-<!-- * SCIANTIX MOOC (optional learning resource): *link to be added when public* -->
-
-## Notes
-
-* All input files follow the standard SCIANTIX format (history, settings, initial conditions, scaling factors).
-* Users are encouraged to modify temperature, fission rate and material properties to explore parameter sensitivity.
-* These cases rely only on the physics available in the standard open-source version of SCIANTIX.
+* [SCIANTIX documentation](https://sciantix.github.io/sciantix-official/)
+* [Main repository](https://github.com/sciantix/sciantix-official)
