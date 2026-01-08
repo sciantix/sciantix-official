@@ -42,9 +42,6 @@
 bin/
 obj/
 build/
-out/
-documentation/
 .vscode/
 .vs/
 __pycache__/
-GSA_output_files/

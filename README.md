@@ -1,4 +1,4 @@
-# SCIANTIX Training Repository
+# SCIANTIX Training repository
 
 The **material/** directory contains the official SCIANTIX training cases.  
 These examples allow users to familiarise themselves with the SCIANTIX input/output structure, validate their installation, and reproduce reference simulations from the scientific literature.
