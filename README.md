@@ -78,20 +78,21 @@ The compilation produces an executable named **`sciantix.exe`**. You can run the
 
 ## Available training cases
 
-The **`material/`** directory contains scenarios to explore fuel gas behavior:
+The **`material/`** directory contains scenarios to explore fission gas behavior:
 
 | Folder | Description |
 | --- | --- |
-| `1_baker1977_stationary` | Intra-granular diffusion, trapping, and re-solution (Baker 1977). |
-| `2_white2004_transient` | Grain-boundary swelling, saturation, and burst release (White 2004). |
+| `1_baker1977_stationary` | Intra-granular diffusion, trapping, and re-solution. |
+| `2_white2004_transient` | Grain-boundary swelling, saturation, and burst release. |
 | `3_uo2_hbs` | High-burnup structure (HBS) formation. |
 
 ### How to run
 
 * **On WSL/Linux/macOS**: Navigate into a case folder and execute:
 ```bash
+cd material
 cp sciantix.x 1_baker1977_stationary/
-cd material/1_baker1977_stationary
+cd 1_baker1977_stationary
 ./sciantix.x
 
 ```
