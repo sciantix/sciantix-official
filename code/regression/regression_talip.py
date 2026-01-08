@@ -48,10 +48,10 @@ def check_output(file):
 # Execute sciantix in the current test folder
 def do_sciantix():
   # copying input files from the regression folder into the current folder
-  # shutil.copy("../input_settings.txt", os.getcwd())
-  # shutil.copy("../input_scaling_factors.txt", os.getcwd())
+  #shutil.copy("../input_settings.txt", os.getcwd())
+  #shutil.copy("../input_scaling_factors.txt", os.getcwd())
 
-  # copying and executing sciantix into cwd
+  # copying and executing sciantix.exe into cwd
   shutil.copy("../sciantix.x", os.getcwd())
   os.system("./sciantix.x")
 

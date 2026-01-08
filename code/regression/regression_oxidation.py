@@ -51,10 +51,10 @@ def check_output(file):
 # Execute sciantix in the current test folder
 def do_sciantix():
   # copying input files from the regression folder into the current folder
-  # shutil.copy("../input_settings.txt", os.getcwd())
-  # shutil.copy("../input_scaling_factors.txt", os.getcwd())
+  #shutil.copy("../input_settings.txt", os.getcwd())
+  #shutil.copy("../input_scaling_factors.txt", os.getcwd())
 
-  # copying and executing sciantix into cwd
+  # copying and executing sciantix.exe into cwd
   shutil.copy("../sciantix.x", os.getcwd())
   os.system("./sciantix.x")
 
@@ -86,14 +86,14 @@ def do_plot(time, temperature, stiochiometryDeviation, stiochiometryDeviationDat
   axT.set_ylabel('Temperature (K)')
   axT.plot(time, temperature, label="Temperature",  color='orange')
 
-  ax.set_title(file + ' - Stoichiometry deviation')
+  # ax.set_title(file + ' - Stoichiometry deviation')
   ax.set_xlabel('Time (h)')
   ax.set_ylabel('Stoichiometry deviation (/)')
   h1, l1 = ax.get_legend_handles_labels()
   h2, l2 = axT.get_legend_handles_labels()
   ax.legend(h1+h2, l1+l2)
 
-  plt.savefig(file + ' - Stoichiometry deviation.png')
+  # plt.savefig(file + ' - Stoichiometry deviation.png')
   plt.show()
 
 

@@ -103,6 +103,5 @@ def main():
         
     return 
     
-# If the script is being run as the main program, call the 'main' function.
 if __name__ == "__main__":
     main()
