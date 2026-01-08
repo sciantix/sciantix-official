@@ -50,7 +50,7 @@ Ensure you have a C++ compiler and CMake installed:
 
 ## Download and compile
 
-1. **Clone the repository**:
+1. **Clone the training branch**:
 ```bash
 git clone -b training https://github.com/sciantix/sciantix-official.git
 cd sciantix-official
