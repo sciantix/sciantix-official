@@ -20,6 +20,9 @@ endif()
 # Name of the project created / existent in visual studio
 project(sciantix)
 
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 # Function to add all subdirectories of a given path to include directories
 function(add_subdirectory_includes root_dir)
     file(GLOB SUBDIRS RELATIVE ${root_dir} ${root_dir}/*) # get all files in directory (which is passed in parameter)
