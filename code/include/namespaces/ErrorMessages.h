@@ -18,6 +18,7 @@
 #define ERROR_MESSAGES_H
 
 #include <string>
+#include <sstream>
 #include <iostream>
 #include <cstdlib>
 #include <iomanip>
