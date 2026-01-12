@@ -98,7 +98,6 @@ def regression_white(wpath, inputfile):
             shutil.copy("../../../build/sciantix.x", os.getcwd())
             os.system("./sciantix.x")
             os.remove("sciantix.x")
-            os.remove("input_settings.txt")
 
             ramptime = pd.read_csv("input_history.txt", delimiter='\t').iloc[1, 0] - 10
             endtime = pd.read_csv("input_history.txt", delimiter='\t').iloc[-1, 0]
@@ -171,7 +170,7 @@ def regression_white(wpath, inputfile):
 
             os.rename("execution.txt", f"{inputfile}/execution.txt")
             os.rename("input_check.txt", f"{inputfile}/input_check.txt")
-            os.rename("output.txt", f"{inputfile}/output.txt")
+            shutil.copy("output.txt", f"{inputfile}/output.txt")
             os.rename("overview.txt", f"{inputfile}/overview.txt")
             os.rename("FGR_and_Temperature_vs_Time.png", f"{inputfile}/FGR_and_Temperature_vs_Time.png")
             os.rename("FGR_and_Temperature_vs_Time_ramp.png", f"{inputfile}/FGR_and_Temperature_vs_Time_ramp.png")
