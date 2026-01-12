@@ -128,8 +128,6 @@ Matrix UO2HBS(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &
     return matrix_;
 }
 
-// MOX
-
 Matrix MOX(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, 
     SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable)
 { 
@@ -145,8 +143,6 @@ Matrix MOX(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
     double Pu_fraction = q; // mole fraction of Pu
     double U_fraction  = 1.0 - q; // mole fraction of U
 
-
-    // isotopic composition
     matrix_.setInitialUraniumComposition({ 
         U_fraction * double(sciantix_variable["U234"].getFinalValue()),
         U_fraction * double(sciantix_variable["U235"].getFinalValue()),
@@ -163,38 +159,44 @@ Matrix MOX(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
         Pu_fraction * double(sciantix_variable["Pu242"].getFinalValue())
     });
 
-    // Pu enrichment (q)
     matrix_.setMoxPuEnrichment(Pu_fraction);
     matrix_.setTheoreticalDensity(sciantix_variable, 0.0); // (kg/m3)
 
-    // microstructural and thermal parameters
     matrix_.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);
     matrix_.setSurfaceTension(0.626); // N/m (reference Kitano)
     matrix_.setFissionFragmentInfluenceRadius(1.0e-9); // m
     matrix_.setFissionFragmentRange(6.0e-6); // m
     matrix_.setSchottkyVolume(4.09e-29); // m3
     matrix_.setOctahedralInterstitialSite(7.8e-30); // m3 (verificare fonte)
-    matrix_.setSemidihedralAngle(0.97); // rad
+    matrix_.setSemidihedralAngle(0.97); // rad - to be verified
     matrix_.setGrainBoundaryThickness(5.0e-10); // m
     matrix_.setLenticularShapeFactor(0.168610764); // function
-    matrix_.setLatticeParameter(sciantix_variable, 0.0); // function of Pu content
+    matrix_.setLatticeParameter(sciantix_variable, 0.0); 
 
     matrix_.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue()); // m
-    matrix_.setHealingTemperatureThreshold((2744.0 + 273.15) / 2.0); // K (as original code: half of the melting temperature by now)
+    matrix_.setHealingTemperatureThreshold((2744.0 + 273.15) / 2.0); // K (half of the melting temperature)
 
-    // grain boundary vacancy diffusivity (updated with history_variable)
     matrix_.setGrainBoundaryVacancyDiffusivity(int(input_variable["iGrainBoundaryVacancyDiffusivity"].getValue()), history_variable); // m2/s
-
-    // pores (using the updated versions as in UO2)
     matrix_.setPoreNucleationRate(sciantix_variable);
     matrix_.setPoreResolutionRate(sciantix_variable, history_variable);
     matrix_.setPoreTrappingRate(matrices, sciantix_variable);
 
-    // Mechanical properties
-    matrix_.setElasticModulus((217.99 * (1 - q) + 249.54 * q) * ((pow(1 - sciantix_variable["Porosity"].getFinalValue(), 2)) / (1 + 1.124330 * sciantix_variable["Porosity"].getFinalValue())) * (1 - 2.72739 * sciantix_variable["Stoichiometry deviation"].getFinalValue() + 13.84392 * pow(sciantix_variable["Stoichiometry deviation"].getFinalValue(), 2)) * (1.012527 - 2.282 * pow(10, -5) * history_variable["Temperature"].getFinalValue() - 6.312 * pow(10, -8) * pow(history_variable["Temperature"].getFinalValue(), 2))); // pag 124 Nuclear Science NEA/NSC/R(2024)1
-	matrix_.setPoissonRatio((0.32051 * (1 - q) + 0.31882 * q) * (1 - 1.03223 * sciantix_variable["Porosity"].getFinalValue()) * (1 + 0.69962 * sciantix_variable["Stoichiometry deviation"].getFinalValue() - 7.52905 * pow(sciantix_variable["Stoichiometry deviation"].getFinalValue(), 2)) * (1.017906 - 6.420 * pow(10, -5) * history_variable["Temperature"].getFinalValue() + 1.506 * pow(10, -8) * pow(history_variable["Temperature"].getFinalValue(),2))); // pag 124 Nuclear Science NEA/NSC/R(2024)1
+    // Mechanical properties 
+    // NEA 2024 report correlations, valid for
+    // Pu_fraction = 0 - 1
+    // Porosity = 0 - 0.2
+    // Stoichiometry deviation = 0 - 0.1, O/M = 2 - 1.9
+    // Temperature = 300 - 2930 K
+    double x = sciantix_variable["Stoichiometry deviation"].getFinalValue(); 
+    if (x > 0) 
+        x = 0.0; // to avoid issues if O/M > 2
+    else 
+        x = - x; // to have x = 2 - O/M
+    
+    matrix_.setElasticModulus(1e3*((217.99 * (1 - q) + 249.54 * q) * ((pow(1 - sciantix_variable["Porosity"].getFinalValue(), 2.0)) / (1.0 + 1.124330 * sciantix_variable["Porosity"].getFinalValue())) * (1.0 - 2.72739 * x + 13.84392 * pow(x, 2.0)) * (1.012527 - 2.282 * pow(10, - 5.0) * history_variable["Temperature"].getFinalValue() - 6.312 * pow(10, - 8.0) * pow(history_variable["Temperature"].getFinalValue(), 2)))); // pag 124 Nuclear Science NEA/NSC/R(2024)1
+	matrix_.setPoissonRatio((0.32051 * (1 - q) + 0.31882 * q) * (1.0 - 1.03223 * sciantix_variable["Porosity"].getFinalValue()) * (1.0 + 0.69962 * x - 7.52905 * pow(x, 2.0)) * (1.017906 - 6.420 * pow(10, - 5.0) * history_variable["Temperature"].getFinalValue() + 1.506 * pow(10, - 8.0) * pow(history_variable["Temperature"].getFinalValue(), 2.0))); // pag 124 Nuclear Science NEA/NSC/R(2024)1
 	matrix_.setGrainBoundaryFractureEnergy(2); // (J/m2) Jernkvist, L.O. (2020). A review of analytical criteria for fission gas induced fragmentation of oxide fuel in accident conditions. Progress in Nuclear Energy, 119, 103188.
-    matrix_.setShearModulus(matrix_.getElasticModulus() / ( 2 * ( 1 + matrix_.getPoissonRatio() ) )); // pag 125 Nuclear Science NEA/NSC/R(2024)1
-
+    matrix_.setShearModulus(1e3*((82.52 * (1 - q) + 94.91 * q) * (pow(1 - sciantix_variable["Porosity"].getFinalValue(), 2.0) / (1.0 + 0.95275 * sciantix_variable["Porosity"].getFinalValue())) * (1.0 - 2.88078 * x + 15.49419 * pow(x, 2.0)) * (1.009549 - 1.182 * pow(10, - 5.0) * history_variable["Temperature"].getFinalValue() - 6.671 * pow(10, - 8.0) * pow(history_variable["Temperature"].getFinalValue(), 2.0)))); // pag 124 Nuclear Science NEA/NSC/R(2024)1
+    
     return matrix_;
 }

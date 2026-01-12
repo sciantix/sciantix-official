@@ -250,7 +250,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("U238", "(at/m3)", Sciantix_variables[45], Sciantix_variables[45], 1),
 
         // MOX Pu composition and ratio
-        SciantixVariable("Plutonium content", "(at/m3)", Sciantix_variables[163], Sciantix_variables[163], 1),
+        SciantixVariable("Pu", "(at/m3)", Sciantix_variables[171] + Sciantix_variables[172] + Sciantix_variables[173] + Sciantix_variables[174] + Sciantix_variables[175], Sciantix_variables[171] + Sciantix_variables[172] + Sciantix_variables[173] + Sciantix_variables[174] + Sciantix_variables[175], 0),
         SciantixVariable("Pu238", "(at/m3)", Sciantix_variables[171], Sciantix_variables[171], 1),
         SciantixVariable("Pu239", "(at/m3)", Sciantix_variables[172], Sciantix_variables[172], 1),
         SciantixVariable("Pu240", "(at/m3)", Sciantix_variables[173], Sciantix_variables[173], 1),

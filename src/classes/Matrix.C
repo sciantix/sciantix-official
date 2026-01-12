@@ -135,7 +135,7 @@ void Matrix::setLatticeParameter(SciantixArray<SciantixVariable> &sciantix_varia
         lattice_parameter = Cr_lattice_parameter;
         return;
     }
-    
+
     lattice_parameter = 5.47e-10; // m for pure UO2
     matrix_density = 10960.0 ; // kg/m3 for pure UO2
 
@@ -180,7 +180,7 @@ void Matrix::setLatticeParameter(SciantixArray<SciantixVariable> &sciantix_varia
         }
         double yU = std::max(0.0, 1.0 - zPu - yAm - yNp);
         
-        // Ionic radii (�), coordination number (CN): U4+(CN8), Pu4+(CN8), Am3+(CN8), Np4+(CN8), O2-(CN4)
+        // Ionic radii (Å), coordination number (CN): U4+(CN8), Pu4+(CN8), Am3+(CN8), Np4+(CN8), O2-(CN4)
         const double rU = 0.9972;
         const double rPu = 0.9642;
         const double rAm = 1.0900;
@@ -189,7 +189,7 @@ void Matrix::setLatticeParameter(SciantixArray<SciantixVariable> &sciantix_varia
 
         double r_cation = rU*yU + rPu*zPu + rAm*yAm + rNp*yNp;
         // a = 4/sqrt(3) * ( r_cation*(1 + 0.112*x) + rO )
-        double a_A = (4.0 / std::sqrt(3.0)) * (r_cation * (1.0 + 0.112 * x_hypo) + rO); // �
+        double a_A = (4.0 / std::sqrt(3.0)) * (r_cation * (1.0 + 0.112 * x_hypo) + rO); // Å
         lattice_parameter = a_A * 1.0e-10; // m
     }
 }
@@ -201,7 +201,7 @@ void Matrix::setTheoreticalDensity(SciantixArray<SciantixVariable> &sciantix_var
         matrix_density = Cr_theoretical_density;
         return;
     }
-    
+
     lattice_parameter = 5.47e-10; // m for pure UO2
     matrix_density = 10960.0 ; // kg/m3 for pure UO2
 
@@ -247,7 +247,7 @@ void Matrix::setTheoreticalDensity(SciantixArray<SciantixVariable> &sciantix_var
         double yU = std::max(0.0, 1.0 - zPu - yAm - yNp);
 
 
-        // Ionic radii (�), coordination number (CN): U4+(CN8), Pu4+(CN8), Am3+(CN8), Np4+(CN8), O2-(CN4)
+        // Ionic radii (Å), coordination number (CN): U4+(CN8), Pu4+(CN8), Am3+(CN8), Np4+(CN8), O2-(CN4)
         const double rU = 0.9972;
         const double rPu = 0.9642;
         const double rAm = 1.0900;
@@ -256,7 +256,7 @@ void Matrix::setTheoreticalDensity(SciantixArray<SciantixVariable> &sciantix_var
 
         double r_cation = rU*yU + rPu*zPu + rAm*yAm + rNp*yNp;
         // a = 4/sqrt(3) * ( r_cation*(1 + 0.112*x) + rO )
-        double a_A = (4.0 / std::sqrt(3.0)) * (r_cation * (1.0 + 0.112 * x_hypo) + rO); // �
+        double a_A = (4.0 / std::sqrt(3.0)) * (r_cation * (1.0 + 0.112 * x_hypo) + rO); // Å
         lattice_parameter = a_A * 1.0e-10; // m
 
         // Molar mass (g/mol)
