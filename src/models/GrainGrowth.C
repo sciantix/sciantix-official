@@ -19,32 +19,8 @@
 void Simulation::GrainGrowth()
 {
     // Model declaration
-    Model model_;
-
-	std::string fuel_matrix_name = "UO2";
-	switch ((int)input_variable["iFuelMatrix"].getValue())
-    {
-        case 0:
-		{
-			fuel_matrix_name = "UO2";
-			break;
-		}
-
-		case 1:
-		{
-			fuel_matrix_name = "UO2HBS";
-			break;
-		}
-		
-		case 2:
-		{
-			fuel_matrix_name = "MOX";
-			break;
-		}
-
-		default:
-			break;
-	}
+    Model model_;    
+    Matrix fuel_(matrices[0]);
 
     model_.setName("Grain growth");
     std::string reference;
@@ -83,7 +59,7 @@ void Simulation::GrainGrowth()
 
             if (sciantix_variable["Grain radius"].getInitialValue() < limiting_grain_radius / burnup_factor)
             {
-                double rate_constant = matrices[fuel_matrix_name].getGrainBoundaryMobility();
+                double rate_constant = fuel_.getGrainBoundaryMobility();
                 rate_constant *= (1.0 - burnup_factor / (limiting_grain_radius / (sciantix_variable["Grain radius"].getFinalValue())));
 
                 parameter.push_back(sciantix_variable["Grain radius"].getInitialValue());
@@ -128,7 +104,7 @@ void Simulation::GrainGrowth()
 
             if(sciantix_variable["Grain radius"].getInitialValue() < limiting_grain_radius)
             {
-                double rate_constant = matrices[fuel_matrix_name].getGrainBoundaryMobility();
+                double rate_constant = fuel_.getGrainBoundaryMobility();
 
                 parameter.push_back(sciantix_variable["Grain radius"].getInitialValue());
                 parameter.push_back(1.0);
@@ -165,5 +141,5 @@ void Simulation::GrainGrowth()
 
     sciantix_variable["Grain radius"].resetValue();
 
-    matrices[fuel_matrix_name].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
+    fuel_.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
 }

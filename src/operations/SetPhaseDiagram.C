@@ -29,31 +29,8 @@
 
 void Simulation::SetPhaseDiagram(std::string location)
 {
+    Matrix fuel_(matrices[0]);
 
-	std::string fuel_matrix_name = "UO2";
-	switch ((int)input_variable["iFuelMatrix"].getValue())
-    {
-        case 0:
-		{
-			fuel_matrix_name = "UO2";
-			break;
-		}
-
-		case 1:
-		{
-			fuel_matrix_name = "UO2HBS";
-			break;
-		}
-		
-		case 2:
-		{
-			fuel_matrix_name = "MOX";
-			break;
-		}
-
-		default:
-			break;
-	}
     double temperature(0);
     double pressure(0);
     double oxygenfraction(std::nan("")); // Oxygen fraction defined only for location = matrix
@@ -91,7 +68,7 @@ void Simulation::SetPhaseDiagram(std::string location)
         if (input_variable["iThermochimica"].getValue() == 1)
         {
             if (sciantix_variable["Intergranular vacancies per bubble"].getInitialValue())
-                pressure = ( boltzmann_constant *  temperature * sciantix_variable["Intergranular atoms per bubble"].getInitialValue()/(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue() * matrices[fuel_matrix_name].getSchottkyVolume()));
+                pressure = ( boltzmann_constant *  temperature * sciantix_variable["Intergranular atoms per bubble"].getInitialValue()/(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue() * fuel_.getSchottkyVolume()));
             else
                 pressure = 1e5;
         }

@@ -248,8 +248,6 @@ System Te_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(sciantix_variable);
-    //system_.setYield(0.001241+0.008137+0.02921); //sum of cumulative fission yield of I129, I131, I127
-    //system_.setYield(0.012); //I+Te by Olander 1976 for fast spectrum
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -279,7 +277,7 @@ System Xe_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0); // Rest, 1992; Walker, 1977 for Xe and Kr typical value is 10^-7
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors); // Production rate as in UO₂ (Turnbull, 1988)
-    system_.setFissionGasDiffusivity(1.75 * int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors); // Lanning (2005); OECD/NEA (2019) – higher diffusivity in MOX due to porosity and Pu content
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors); // Lanning (2005); OECD/NEA (2019) – higher diffusivity in MOX due to porosity and Pu content 1.75 * for MOX?
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
     system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
@@ -302,7 +300,7 @@ System Kr_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0); // Rest, 1992; Walker, 1977 for Xe and Kr typical value is 10^-7
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors); // MOX: using same production model as UO2 (no dedicated MOX correlation)
-    system_.setFissionGasDiffusivity(1.75 * int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors); // Lanning (2005); OECD/NEA (2019) – higher diffusivity in MOX due to porosity and Pu content
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors); // Lanning (2005); OECD/NEA (2019) – higher diffusivity in MOX due to porosity and Pu content 1.75 * for MOX?
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
     system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
@@ -371,7 +369,7 @@ System Kr85m_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0); // Rest, 1992; Walker, 1977 for Xe and Kr typical value is 10^-7
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors); // MOX: using same production model as UO2 (no dedicated MOX correlation)
-    system_.setFissionGasDiffusivity(1.75 * int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors); // Lanning (2005); OECD/NEA (2019) – higher diffusivity in MOX due to porosity and Pu content
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors); // Lanning (2005); OECD/NEA (2019) – higher diffusivity in MOX due to porosity and Pu content 1.75 * for MOX?
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
     system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
@@ -394,7 +392,7 @@ System Cs_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors); // MOX: using same production model as UO2 (no dedicated MOX correlation)
-    system_.setFissionGasDiffusivity(1.75 * int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors); // Lanning (2005); OECD/NEA (2019) – higher diffusivity in MOX due to porosity and Pu content
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors); // Lanning (2005); OECD/NEA (2019) – higher diffusivity in MOX due to porosity and Pu content 1.75 * for MOX?
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
     system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
@@ -417,7 +415,7 @@ System I_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sciant
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors); // MOX: using same production model as UO2 (no dedicated MOX correlation)
-    system_.setFissionGasDiffusivity(1.75 * int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors); // Lanning (2005); OECD/NEA (2019) – higher diffusivity in MOX due to porosity and Pu content
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors); // Lanning (2005); OECD/NEA (2019) – higher diffusivity in MOX due to porosity and Pu content 1.75 * for MOX?
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
     system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
@@ -440,7 +438,7 @@ System Te_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors); // MOX: using same production model as UO2 (no dedicated MOX correlation)
-    system_.setFissionGasDiffusivity(1.75 * int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors); // Lanning (2005); OECD/NEA (2019) – higher diffusivity in MOX due to porosity and Pu content
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors); // Lanning (2005); OECD/NEA (2019) – higher diffusivity in MOX due to porosity and Pu content 1.75 * for MOX?
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
     system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
