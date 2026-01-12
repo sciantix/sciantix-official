@@ -4,7 +4,16 @@ This is a python script to execute the regression of white cases of sciantix.
 
 @author E. Cappellari
 
-"""
+run as python3 ./regression_white_time.py 
+    after selecting the input_settings.txt 
+    folder in the variable 'folder' below.
+
+""" 
+
+"""Specify input folder """
+
+folder = 'SCIANTIX_2026'
+
 
 """ ------------------- Import requiered depedencies ------------------- """
 
@@ -170,4 +179,4 @@ def regression_white(wpath, inputfile):
 
     return
         
-regression_white('.', 'SCIANTIX_2026')
+regression_white('.', folder)
