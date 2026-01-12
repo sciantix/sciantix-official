@@ -163,6 +163,21 @@ def regression_white(wpath, inputfile):
             plt.savefig("FGR_and_Temperature_vs_Time_ramp.png")
             plt.close()
 
+            fig, ax1 = plt.subplots(figsize=(10, 6))
+
+            ax1.set_xlabel("Temperature (K)")
+            ax1.set_ylabel("Fission gas release (%)")
+            ax1.plot(
+                data["Temperature (K)"],
+                100*data["Fission gas release (/)"],
+                label="FGR"
+            )
+            ax1.tick_params(axis='y')
+    
+            fig.tight_layout()
+            plt.savefig("FGR_and_Temperature.png")
+            plt.close()
+
             os.makedirs(inputfile, exist_ok=True)
 
             for png in glob.glob(os.path.join(inputfile, "*.png")):
@@ -174,6 +189,7 @@ def regression_white(wpath, inputfile):
             os.rename("overview.txt", f"{inputfile}/overview.txt")
             os.rename("FGR_and_Temperature_vs_Time.png", f"{inputfile}/FGR_and_Temperature_vs_Time.png")
             os.rename("FGR_and_Temperature_vs_Time_ramp.png", f"{inputfile}/FGR_and_Temperature_vs_Time_ramp.png")
+            os.rename("FGR_and_Temperature.png", f"{inputfile}/FGR_and_Temperature.png")
             os.chdir("..")
 
     return
