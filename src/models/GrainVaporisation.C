@@ -29,97 +29,115 @@ void Simulation::GrainVaporisation(bool thermochemistry_module)
     double initial_total_moles = total_metal_content + sciantix_variable["Oxygen content"].getFinalValue();
     double q = (total_metal_content > 0.0) ? (sciantix_variable["Plutonium content"].getFinalValue() / total_metal_content) : 0.0;
     double u_fraction = 1.0 - q;
+    double n_o2 = 2.0 + x;
+    double R = 8.314;
+    double n_u(0), n_u2(0), n_u4(0), n_u6(0);
+    double n_pu(0), n_pu2(0), n_pu3(0), n_pu4(0);
+    double p_o2(0);
+    double n_o = 2.0;
     
     if (thermochemistry_module)
     {
-        // Blackburn model (Olander pag154)
-        double n_u(0), n_u2(0), n_u4(0), n_u6(0), n_o(0);
-        double n_pu (0), n_pu2 (0), n_pu3(0), n_pu4(0);
-        double p_o2 (0);
-        double n_o2 = 2 + x;
-        double K_u24 = exp((78.3 * pow(10, 3))/temperature + 13.6);
-        double K_u46 = exp(-((16.4 * pow(10, 3))/temperature + 5));
-        double K_pu34 = exp(-((50.1 * pow(10, 3))/temperature + 10.3));
-        double K_pu23 = exp(-((92.5 * pow(10, 3))/temperature + 21.3));
+        // Kato's equation (NEA 2024)
+        double log_low = -80.0;
+        double log_high = 10.0;
+        double log_mid = 0.0;
 
-        // solver: bisection method for p_o2 value
-        double log_low = -100.0, log_high = 20.0, log_mid;
-        for (int i = 0; i < 150; i++) {
-            log_mid = (log_low + log_high) / 2.0;
-            double p_test = pow(10.0, log_mid);
-            double sq_p = sqrt(p_test);
-
-            double test_u4 = (1.0 - q) / ((K_u24 * n_o2) / sq_p + 1.0 + sq_p / (K_u46 * n_o2));
-            double test_pu4 = q / (sqrt((K_pu23 * n_o2) / sq_p) * sqrt((K_pu34 * n_o2) / sq_p) + sqrt((K_pu34 * n_o2) / sq_p) + 1.0);
-            
-            double n_o_calc = (test_u4 * (K_u24 * n_o2 / sq_p)) + // nu2
-                            (test_pu4 * sqrt((K_pu23 * n_o2) / sq_p) * sqrt((K_pu34 * n_o2) / sq_p)) + // npu2
-                            1.5 * (test_pu4 * sqrt((K_pu34 * n_o2) / sq_p)) + // 1.5*npu3
-                            2.0 * test_u4 + 2.0 * test_pu4 + // 2*nu4 + 2*npu4
-                            3.0 * (test_u4 * sq_p / (K_u46 * n_o2)); // 3*nu6
-
-            if (n_o_calc > n_o2) log_low = log_mid;
-            else log_high = log_mid;
-        }
-        p_o2 = pow(10.0, log_mid); // p_o2
-
-        if ((sciantix_variable["Oxygen content"].getFinalValue() > 0) && (total_metal_content > 0))
+        // bisection
+        for (int i = 0; i < 100; i++) 
         {
-            // Stoichiometry regime
-            const double epsilon = 1e-6; // Tolerance
-            bool is_hypo = (x < - epsilon);
+            log_mid = (log_low + log_high) / 2.0;
+            double current_po2 = std::pow(10.0, log_mid);
+            double ln_po2 = std::log(current_po2);
+            
+            // Kato's equation
+            double log_v1 = -5.0 * ((44.0 + 55.8 * q) / R - 376000.0 / (R * temperature) - 0.5 * ln_po2);
+            double log_v2 = -5.0 * (0.5 * (68.8 + 131.3 * q) / R - 0.5 * 515000.0 / (R * temperature) - 0.25 * ln_po2);
+            double log_v3 = -5.0 * (((1.0/3.0) * (std::log(2.0) + (153.5 - 96.5 * q + 331.0 * std::pow(q, 2)) / R - 891000.0 / (R * temperature))) - (1.0/3.0) * ln_po2);
+            double log_v4 = -5.0 * std::log(0.5 * q);
+            
+            // Log-Sum-Exp
+            double max_log = std::max({log_v1, log_v2, log_v3, log_v4});
+            double sum_exp = std::exp(log_v1 - max_log) + std::exp(log_v2 - max_log) + std::exp(log_v3 - max_log) + std::exp(log_v4 - max_log);
+            double S = std::exp(-0.2 * (max_log + std::log(sum_exp)));
+            double term5 = std::exp((-22.8 - 84.5 * q) / R + 105000.0 / (R * temperature) + 0.5 * ln_po2);
+            double calculated_om = 2.0 - S + term5;
+            
+            if (calculated_om > n_o2) 
+            {
+                log_high = log_mid;
+            } else 
+            {
+                log_low = log_mid;
+            }
 
-            // Constants from Blackburn's model, 1973
-            if (is_hypo) // O/M < 2.0
-            {   // U
-                if (u_fraction > 0) {
-                    n_u4 = (1-q)/(1 + (K_u24*n_o2)/std::sqrt(p_o2) + std::sqrt(p_o2)/(K_u46*n_o2));
-                    n_u2 = ((K_u24*n_o2)/std::sqrt(p_o2))*n_u4;  
-                    n_u6 = 0; // for hypo case
-                }
-                // Pu
-                n_pu4 = q/(1 + std::sqrt((K_pu34*n_o2)/std::sqrt(p_o2)) + std::sqrt((K_pu23*n_o2)/std::sqrt(p_o2)) * std::sqrt((K_pu34*n_o2)/std::sqrt(p_o2)));
-                n_pu3 = std::sqrt((K_pu34*n_o2)/std::sqrt(p_o2)) * n_pu4;
-                n_pu2 = std::sqrt((K_pu23*n_o2)/std::sqrt(p_o2)) * n_pu3;  
-            }
-            else // O/M >= 2.0:
-            {   // U
-                if (u_fraction > 0) {
-                    n_u4 = (1-q)/(1 + (K_u24*n_o2)/std::sqrt(p_o2) + std::sqrt(p_o2)/(K_u46*n_o2));
-                    n_u2 = ((K_u24*n_o2)/std::sqrt(p_o2)) * n_u4;  
-                    n_u6 = (std::sqrt(p_o2)/(K_u46*n_o2)) * n_u4;    
-                }
-                // Pu
-                n_pu2 = n_pu2 = std::sqrt((K_pu23*n_o2)/std::sqrt(p_o2)) * n_pu3;
-                n_pu3 = 0.0;
-                n_pu4 = q; // all Pu is Pu^4+ for the hyperstoichiometric case
-            }
         }
-        else if ((sciantix_variable["Oxygen content"].getFinalValue() <= 0) && (total_metal_content > 0)) 
-        {   
-            n_u = 1 - q;
-            n_pu = q; 
-        }
-        else if ((sciantix_variable["Oxygen content"].getFinalValue() > 0) && (total_metal_content <= 0)) n_o = 1;
+
+        p_o2 = std::pow(10.0, log_mid);
+
+        // Calculation of concentrations
+        double K_u24 = std::exp(-(78.3e3 / temperature) + 13.6); // constants from Olander
+        double K_u46 = std::exp(-(16.4e3 / temperature) + 5.0);
+        double K_pu34 = std::exp(-(50.1e3 / temperature) + 10.3);
+        double K_pu23 = std::exp(-(92.5e3 / temperature) + 21.3);
+        double sqrt_po2 = std::sqrt(p_o2);
         
-        thermochemistry_variable["UO (solid, matrix)"].setFinalValue(n_u2*sciantix_variable["Uranium content"].getFinalValue());
-        thermochemistry_variable["UO2 (solid, matrix)"].setFinalValue(n_u4*sciantix_variable["Uranium content"].getFinalValue());
-        thermochemistry_variable["UO3 (solid, matrix)"].setFinalValue(n_u6*sciantix_variable["Uranium content"].getFinalValue());
-        thermochemistry_variable["U (solid, matrix)"].setFinalValue(n_u*sciantix_variable["Uranium content"].getFinalValue());
-        thermochemistry_variable["O2 (solid, matrix)"].setFinalValue(n_o/2*sciantix_variable["Oxygen content"].getFinalValue());
-        thermochemistry_variable["PuO (solid, matrix)"].setFinalValue(n_pu2*sciantix_variable["Plutonium content"].getFinalValue());
-        thermochemistry_variable["PuO2 (solid, matrix)"].setFinalValue(n_pu4*sciantix_variable["Plutonium content"].getFinalValue());
+        // U
+        double denom_u = 1.0 + ((K_u24 * n_o) / sqrt_po2) + (sqrt_po2 / (K_u46 * n_o));
+        n_u4 = (1.0 - q) / denom_u;
+        n_u2 = ((K_u24 * n_o) / sqrt_po2) * n_u4;
+        n_u6 = (sqrt_po2 / (K_u46 * n_o)) * n_u4;
+        n_u = 0.0; // In ossido, U metallico è zero
+        
+        // Pu
+        double ratio_34 = std::sqrt((K_pu34 * n_o) / sqrt_po2);
+        double ratio_23 = std::sqrt((K_pu23 * n_o) / sqrt_po2);
+        double denom_pu = 1.0 + ratio_34 + (ratio_23 * ratio_34);
+        n_pu4 = q / denom_pu;
+        n_pu3 = ratio_34 * n_pu4;
+        n_pu2 = ratio_23 * n_pu3;
+
+    }
+
+
+    else if ((sciantix_variable["Oxygen content"].getFinalValue() <= 0) && (total_metal_content > 0))
+    {
+        n_u4 = 0; n_u6 = 0; n_u = 1.0 - q; n_u2 = 0;
+        n_pu4 = 0; n_pu3 = 0; n_pu = q; n_pu2 = 0;
+    }
+    
+        double u_content = sciantix_variable["Uranium content"].getFinalValue();
+        double pu_content = sciantix_variable["Plutonium content"].getFinalValue();
+        double o_content = sciantix_variable["Oxygen content"].getFinalValue();
+    
+        // U total fraction ?
+        double frac_u = (1.0 - q > 1e-9) ? (1.0 / (1.0 - q)) : 0.0;
+        double frac_pu = (q > 1e-9) ? (1.0 / q) : 0.0;
+    
+        // Calculation of partial fraction
+        double K_UO = std::exp(-49500.0 / temperature + 11.9); // from table 11.1 pag 158 Olander
+        double K_UO2 = std::exp(-74000.0 / temperature + 19.9);
+        double K_UO3 = std::exp(-44000.0 / temperature + 11.9);
+        double K_PuO = std::exp(-44100.0 / temperature + 11.5);
+        double K_PuO2= std::exp(-72500.0 / temperature + 18.8);
+    
+        double p_uo = 2.0 * K_UO * n_u2;
+        double p_uo2 = 4.0 * K_UO2 * n_u4;
+        double p_uo3 = 8.0 * K_UO3 * n_u6;
+        double p_puo = 2.0 * K_PuO * n_pu2;
+        double p_puo2= 4.0 * K_PuO2 * n_pu4;
+        double p_u = n_u * std::exp(-58000.0 / temperature + 13.5);
+    
+    
+        thermochemistry_variable["UO (solid, matrix)"].setFinalValue(n_u2 * frac_u * sciantix_variable["Uranium content"].getFinalValue());
+        thermochemistry_variable["UO2 (solid, matrix)"].setFinalValue(n_u4 * frac_u * sciantix_variable["Uranium content"].getFinalValue());
+        thermochemistry_variable["UO3 (solid, matrix)"].setFinalValue(n_u6 * frac_u * sciantix_variable["Uranium content"].getFinalValue());
+        thermochemistry_variable["U (solid, matrix)"].setFinalValue(n_u * frac_u * sciantix_variable["Uranium content"].getFinalValue());
+        thermochemistry_variable["PuO (solid, matrix)"].setFinalValue(n_pu2 * frac_pu * sciantix_variable["Plutonium content"].getFinalValue());
+        thermochemistry_variable["PuO2 (solid, matrix)"].setFinalValue(n_pu4 * frac_pu * sciantix_variable["Plutonium content"].getFinalValue());
 
         // Knudsen cell setup: skip if pressure is too high
         if (pressure >= 1e6) return;
-
-        // Constants form Olander (Fundamental aspects of nuclear reactor fuel elements, Blackburn's model, Table 11.1 pag 158)
-        double p_uo  = n_o2 * n_u2 * exp(- 49500/temperature + 11.9);
-        double p_uo2 = pow(n_o2, 2) * n_u4 * exp(- 74000/temperature + 19.9);
-        double p_uo3 = pow(n_o2, 3) * n_u6 * exp(- 44000/temperature + 11.9);
-        double p_u   = n_u * exp(- 58000/temperature + 13.5); 
-        double p_puo = n_o2 * n_pu2 * exp(- 44100/temperature + 11.5);
-        double p_puo2 = n_pu4 * n_pu4 * exp(- 72500/temperature + 18.8); 
         
 
         struct VapourCompound {
@@ -187,7 +205,7 @@ void Simulation::GrainVaporisation(bool thermochemistry_module)
         double final_total_moles = sciantix_variable["Uranium content"].getFinalValue() + sciantix_variable["Plutonium content"].getFinalValue() + sciantix_variable["Oxygen content"].getFinalValue();
 
         sciantix_variable["Grain radius"].setFinalValue(sciantix_variable["Grain radius"].getFinalValue() * pow(final_total_moles/initial_total_moles, 1.0/3.0));
-    }
+
 
     double final_total_metal_content = sciantix_variable["Uranium content"].getFinalValue() + sciantix_variable["Plutonium content"].getFinalValue();
 
@@ -269,6 +287,9 @@ double Simulation::MolarMass(ThermochemistryVariable& compound) // g/mol
 	double molar_mass_Uranium = sciantix_variable["U234"].getFinalValue()/conv_fact *pow(234.04095,2)+ sciantix_variable["U235"].getFinalValue()/conv_fact *pow(235.04393,2)+
 								sciantix_variable["U236"].getFinalValue()/conv_fact *pow(236.04557,2)+ sciantix_variable["U237"].getFinalValue()/conv_fact *pow(237.04873,2)+
 								sciantix_variable["U238"].getFinalValue()/conv_fact *pow(238.05079,2);
+    double molar_mass_Plutonium = sciantix_variable["Pu238"].getFinalValue()/conv_fact *pow(238.049, 2)+ sciantix_variable["Pu239"].getFinalValue()/conv_fact *pow(239.05, 2)+ 
+                                  sciantix_variable["Pu240"].getFinalValue()/conv_fact *pow(240.06, 2)+ sciantix_variable["Pu241"].getFinalValue()/conv_fact *pow(241.05, 2)+ 
+                                  sciantix_variable["Pu242"].getFinalValue()/conv_fact *pow(242.06, 2);                   
 
     // Iterate through the stoichiometry map to calculate the molar mass
     for (const auto& element : compound.getStoichiometry())
@@ -278,6 +299,8 @@ double Simulation::MolarMass(ThermochemistryVariable& compound) // g/mol
 
         if (element_name == "U")
             molar_mass += molar_mass_Uranium * number_of_atoms;
+        else if (element_name == "Pu")
+            molar_mass += molar_mass_Plutonium * number_of_atoms;
         else if (element_name == "O")
             molar_mass += molar_mass_Oxygen * number_of_atoms;
         else

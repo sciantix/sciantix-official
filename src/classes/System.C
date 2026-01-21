@@ -66,6 +66,8 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
     }
 
     // https://www-nds.iaea.org/wimsd/fpyield.htm
+    // https://www-nds.iaea.org/relnsd/vcharthtml/VChartHTML.html
+    // https://www.oecd-nea.org/janisweb/tree/N/JEFF-3.3/FY
     double YU234 = 0.0, YU235 = 0.0, YU236 = 0.0, YU237 = 0.0, YU238 = 0.0;
     double YPu238 = 0.0, YPu239 = 0.0, YPu240 = 0.0, YPu241 = 0.0, YPu242 = 0.0;
 
@@ -73,58 +75,58 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
 
     if (gas_name == "Xe")
     {
-        // Xe-131
-        YU235  = 2.8973e-02;
-        YU238  = 3.2878e-02;
-        YPu238 = 3.9158e-02;
-        YPu239 = 3.8568e-02;
-        YPu240 = 3.4617e-02;
-        YPu241 = 3.1010e-02;
-        YPu242 = 3.0408e-02;
+        // Xe-131, 132, 134, 136
+        YU235  = 21.525e-02;
+        YU238  = 22.211e-02;
+        YPu238 = 22.718e-02; 
+        YPu239 = 22.768e-02;
+        YPu240 = 22.072e-02;
+        YPu241 = 22.095e-02;
+        YPu242 = 17.250e-02; // https://www-nds.iaea.org/wimsd/fpyield.htm
     }
     else if (gas_name == "Kr")
     {
-        // Kr-83
-        YU235  = 5.3558e-03;
-        YU238  = 3.9366e-03;
-        YPu238 = 3.7834e-03;
-        YPu239 = 2.9713e-03;
-        YPu240 = 2.3321e-03;
-        YPu241 = 2.0129e-03;
-        YPu242 = 1.7261e-03;
+        // Kr-83, 84, 85, 86
+        YU235  = 3.087e-02; 
+        YU238  = 2.078e-02;
+        YPu238 = 1.783e-02; 
+        YPu239 = 1.678e-02;
+        YPu240 = 2.332e-02; 
+        YPu241 = 1.047e-02;
+        YPu242 = 1.726e-03; // non trovo Pu242 come genitore
     }
     else if (gas_name == "Cs")
     {
-        // Cs-137
-        YU235  = 6.3429e-02;
-        YU238  = 6.2259e-02;
-        YPu238 = 6.5790e-02;
-        YPu239 = 6.7092e-02;
-        YPu240 = 6.6973e-02;
-        YPu241 = 6.8184e-02;
-        YPu242 = 6.5203e-02;
+        // Cs-133, 135, 137
+        YU235  = 19.446e-02;
+        YU238  = 19.170e-02;
+        YPu238 = 19.579e-02;  
+        YPu239 = 20.967e-02;
+        YPu240 = 19.697e-02;
+        YPu241 = 19.916e-02;
+        YPu242 = 6.520e-02; //
     }
     else if (gas_name == "I")
     {
-        // I-135
-        YU235  = 6.2900e-02;
-        YU238  = 7.0147e-02;
-        YPu238 = 5.7400e-02;
-        YPu239 = 6.5354e-02;
-        YPu240 = 6.8468e-02;
-        YPu241 = 6.9543e-02;
-        YPu242 = 6.9520e-02;
+        // I-127, 129
+        YU235  = 0.826e-02;
+        YU238  = 0.767e-02;
+        YPu238 = 1.740e-02;
+        YPu239 = 1.868e-02;
+        YPu240 = 1.846e-02;
+        YPu241 = 1.829e-02;
+        YPu242 = 6.952e-02; //
     }
     else if (gas_name == "Te")
     {
-        // Te-127
-        YU235  = 2.8043e-04;
-        YU238  = 2.3883e-04;
-        YPu238 = 6.4669e-04;
-        YPu239 = 8.8600e-04;
-        YPu240 = 6.9736e-04;
-        YPu241 = 4.0693e-04;
-        YPu242 = 4.6932e-04;
+        // Te-125, 126, 128, 130
+        YU235  = 2.108e-02;
+        YU238  = 1.939e-02;
+        YPu238 = 1.467e-02; 
+        YPu239 = 3.622e-02;
+        YPu240 = 3.974e-02; 
+        YPu241 = 4.069e-02;
+        YPu242 = 3.022e-02; //
     }
     else if (gas_name == "He")
     {
