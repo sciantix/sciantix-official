@@ -16,6 +16,7 @@
 
 #include "StoichiometryDeviation.h"
 #include "Simulation.h"
+#include "Solver.h"
 
 void Simulation::StoichiometryDeviation()
 {
@@ -376,23 +377,54 @@ void Simulation::StoichiometryDeviation()
 
     if (sciantix_variable["Stoichiometry deviation"].getFinalValue() == 0) return;
 
-    sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
-        BlackburnThermochemicalModel(
-            sciantix_variable["Stoichiometry deviation"].getFinalValue(),
-            history_variable["Temperature"].getFinalValue(),
-            sciantix_variable
-        )
-    );
+    double stoichiometry_deviation = sciantix_variable["Stoichiometry deviation"].getFinalValue();
+    double temperature = history_variable["Temperature"].getFinalValue();
+    double p_o2_atm = 0.0;
 
-    // Fuel oxygen potential
-    if(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() == 0.0)
-        sciantix_variable["Fuel oxygen potential"].setFinalValue(0.0);
+    double q = sciantix_variable["Plutonium content"].getFinalValue(); 
+
+    // MOX (Kato) or UO2 (Blackburn)
+    if (q > 0.0) 
+    {
+        // MOX -> Kato
+        p_o2_atm = KatoThermochemicalModel(stoichiometry_deviation, temperature, sciantix_variable);
+    }
     else
-        sciantix_variable["Fuel oxygen potential"].setFinalValue(8.314*1.0e-3*history_variable["Temperature"].getFinalValue()*log(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue()/0.1013));
+    {
+        // UO2 -> Uso Blackburn
+        p_o2_atm = BlackburnThermochemicalModel(stoichiometry_deviation, temperature, sciantix_variable);
+    }
+
+    // atm -> MPa
+    double p_o2_MPa = p_o2_atm * 0.101325;
+
+    sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(p_o2_MPa);
+
+    if(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() <= 1e-30)
+        sciantix_variable["Fuel oxygen potential"].setFinalValue(-1.0e9); 
+    else
+        sciantix_variable["Fuel oxygen potential"].setFinalValue(8.314 * 1.0e-3 * temperature * log(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() / 0.101325));
 }
 
 double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature, SciantixArray<SciantixVariable> &sciantix_variable)
 {
     double ln_p = 2.0 * log(stoichiometry_deviation * (2.0 + stoichiometry_deviation) / (1.0 - stoichiometry_deviation)) + 108.0 * pow(sciantix_variable["Stoichiometry deviation"].getFinalValue(), 2.0) - 32700.0 / temperature + 9.92;
     return exp(ln_p);
+}
+
+double KatoThermochemicalModel(double stoichiometry_deviation, double temperature, SciantixArray<SciantixVariable> &sciantix_variable)
+{
+    double q_Pu = sciantix_variable["Plutonium content"].getFinalValue();
+    double q_Am = 0.0;
+
+    double target_om = 2.0 + stoichiometry_deviation;
+
+    std::vector<double> parameter;
+    parameter.push_back(temperature); // param[0]
+    parameter.push_back(q_Pu);        // param[1]
+    parameter.push_back(target_om);   // param[2]
+    parameter.push_back(q_Am);        // param[3]
+
+    Solver solver;
+    return solver.BisectionKato(parameter); 
 }
