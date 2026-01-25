@@ -511,3 +511,59 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
     }
     return x1;
 }
+
+double Solver::BisectionKato(std::vector<double> parameter)
+{
+    double temperature_actual = parameter.at(0);
+    double q_Pu = parameter.at(1);
+    double om = parameter.at(2);
+    double q_Am = 0.0;
+    if (parameter.size() > 3) 
+        q_Am = parameter.at(3);
+    
+    double q_eff = q_Pu + q_Am;
+
+    const double R = 8.314; 
+
+    double exponent = -3.0 * 100.0 * (0.335 - q_eff);
+    double sigmoid_S = 1.0 / (1.0 + std::exp(exponent)); // equation 8.4
+
+    double temperature_adjusted = temperature_actual + (0.16 * sigmoid_S) * (1773.0 - temperature_actual); // equation 8.5 NEA2024 pag 207
+
+    double log_low = -80.0;
+    double log_high = 10.0;
+    double log_mid = 0.0;
+    const int max_iter = 100;
+
+    for (int i = 0; i < max_iter; i++) 
+    {
+        log_mid = (log_low + log_high) / 2.0;
+        double current_po2 = std::pow(10.0, log_mid);
+        double ln_po2 = std::log(current_po2);
+        
+        // Kato's equation
+        double log_v1 = -5.0 * ((44.0 + 55.8 * q_eff) / R - 376000.0 / (R * temperature_adjusted) - 0.5 * ln_po2);
+        double log_v2 = -5.0 * (0.5 * (68.8 + 131.3 * q_eff) / R - 0.5 * 515000.0 / (R * temperature_adjusted) - 0.25 * ln_po2);
+        double log_v3 = -5.0 * (((1.0/3.0) * (std::log(2.0) + (153.5 - 96.5 * q_eff + 331.0 * std::pow(q_eff, 2)) / R - 891000.0 / (R * temperature_adjusted))) - (1.0/3.0) * ln_po2);
+        double log_v4 = -5.0 * std::log(0.5 * q_eff);
+        
+        // Log-Sum-Exp
+        double max_log = std::max({log_v1, log_v2, log_v3, log_v4});
+        double sum_exp = std::exp(log_v1 - max_log) + std::exp(log_v2 - max_log) + std::exp(log_v3 - max_log) + std::exp(log_v4 - max_log);
+        double S = std::exp(-0.2 * (max_log + std::log(sum_exp)));
+        double term5 = std::exp((-22.8 - 84.5 * q_eff) / R + 105000.0 / (R * temperature_adjusted) + 0.5 * ln_po2);
+        
+        double calculated_om = 2.0 - S + term5;
+        
+        if (calculated_om > om) 
+        {
+            log_high = log_mid;
+        } else 
+        {
+            log_low = log_mid;
+        }
+    }
+
+    // p_O2
+    return std::pow(10.0, log_mid);
+}

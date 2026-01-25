@@ -38,42 +38,13 @@ void Simulation::GrainVaporisation(bool thermochemistry_module)
     
     if (thermochemistry_module)
     {
-        // Kato's equation (NEA 2024)
-        double log_low = -80.0;
-        double log_high = 10.0;
-        double log_mid = 0.0;
+        std::vector<double> kato_parameters;
+        kato_parameters.push_back(temperature); // parameter[0]
+        kato_parameters.push_back(q);           // parameter[1]
+        kato_parameters.push_back(n_o2);        // parameter[2]
 
-        // bisection
-        for (int i = 0; i < 100; i++) 
-        {
-            log_mid = (log_low + log_high) / 2.0;
-            double current_po2 = std::pow(10.0, log_mid);
-            double ln_po2 = std::log(current_po2);
-            
-            // Kato's equation
-            double log_v1 = -5.0 * ((44.0 + 55.8 * q) / R - 376000.0 / (R * temperature) - 0.5 * ln_po2);
-            double log_v2 = -5.0 * (0.5 * (68.8 + 131.3 * q) / R - 0.5 * 515000.0 / (R * temperature) - 0.25 * ln_po2);
-            double log_v3 = -5.0 * (((1.0/3.0) * (std::log(2.0) + (153.5 - 96.5 * q + 331.0 * std::pow(q, 2)) / R - 891000.0 / (R * temperature))) - (1.0/3.0) * ln_po2);
-            double log_v4 = -5.0 * std::log(0.5 * q);
-            
-            // Log-Sum-Exp
-            double max_log = std::max({log_v1, log_v2, log_v3, log_v4});
-            double sum_exp = std::exp(log_v1 - max_log) + std::exp(log_v2 - max_log) + std::exp(log_v3 - max_log) + std::exp(log_v4 - max_log);
-            double S = std::exp(-0.2 * (max_log + std::log(sum_exp)));
-            double term5 = std::exp((-22.8 - 84.5 * q) / R + 105000.0 / (R * temperature) + 0.5 * ln_po2);
-            double calculated_om = 2.0 - S + term5;
-            
-            if (calculated_om > n_o2) 
-            {
-                log_high = log_mid;
-            } else 
-            {
-                log_low = log_mid;
-            }
-
-        }
-
-        p_o2 = std::pow(10.0, log_mid);
+        Solver solver; 
+        double p_o2 = solver.BisectionKato(kato_parameters);
 
         // Calculation of concentrations
         double K_u24 = std::exp(-(78.3e3 / temperature) + 13.6); // constants from Olander
@@ -87,7 +58,7 @@ void Simulation::GrainVaporisation(bool thermochemistry_module)
         n_u4 = (1.0 - q) / denom_u;
         n_u2 = ((K_u24 * n_o) / sqrt_po2) * n_u4;
         n_u6 = (sqrt_po2 / (K_u46 * n_o)) * n_u4;
-        n_u = 0.0; // In ossido, U metallico è zero
+        n_u = 0.0;
         
         // Pu
         double ratio_34 = std::sqrt((K_pu34 * n_o) / sqrt_po2);
@@ -110,7 +81,6 @@ void Simulation::GrainVaporisation(bool thermochemistry_module)
         double pu_content = sciantix_variable["Plutonium content"].getFinalValue();
         double o_content = sciantix_variable["Oxygen content"].getFinalValue();
     
-        // U total fraction ?
         double frac_u = (1.0 - q > 1e-9) ? (1.0 / (1.0 - q)) : 0.0;
         double frac_pu = (q > 1e-9) ? (1.0 / q) : 0.0;
     
