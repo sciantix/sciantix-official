@@ -639,12 +639,13 @@ for isotope, properties in isotope_data.items():
 #     )
 
 for compound, values in thermochemistry[position][phase].items():
+    print(compound, values)
     if compound != ["UO2 (solid, matrix)", "PuO2 (solid, matrix)", "UO3 (solid, matrix)", "UO (solid, matrix)", "U (solid, matrix)"]: continue
     temperature = thermochemistry_data["Temperature (K)"].values
     plt.plot(
         temperature,
         values/max(values),
-        label=f'Sim. MOX',
+        label=f'Sim. {compound}',
         color="gray"
     )
 
