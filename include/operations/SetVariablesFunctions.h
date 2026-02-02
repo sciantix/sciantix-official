@@ -236,9 +236,9 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Intergranular gas swelling", "(/)", Sciantix_variables[36], Sciantix_variables[36], 1),
         SciantixVariable("Intergranular fractional intactness", "(/)", Sciantix_variables[37], Sciantix_variables[37], 1),
 
-        SciantixVariable("Burnup", "(MWd/kgUO2)", Sciantix_variables[38], Sciantix_variables[38], 1),
+        SciantixVariable("Burnup", "(MWd/kgMOX)", Sciantix_variables[38], Sciantix_variables[38], 1),
         SciantixVariable("FIMA", "(%)", Sciantix_variables[69], Sciantix_variables[69], toOutputHighBurnupStructure || toOutputChromiumContent),
-        SciantixVariable("Effective burnup", "(MWd/kgUO2)", Sciantix_variables[39], Sciantix_variables[39], toOutputHighBurnupStructure),
+        SciantixVariable("Effective burnup", "(MWd/kgMOX)", Sciantix_variables[39], Sciantix_variables[39], toOutputHighBurnupStructure),
         SciantixVariable("Irradiation time", "(h)", Sciantix_variables[65], Sciantix_variables[65], 0),
         SciantixVariable("Fuel density", "(kg/m3)", Sciantix_variables[40], Sciantix_variables[40], 1),
 

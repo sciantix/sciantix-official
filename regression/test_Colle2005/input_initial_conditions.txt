@@ -26,3 +26,7 @@
 #   initial fuel stoichiometry deviation (\)
 0
 #   Cr content (ppm)
+1.31 60.52 23.36 10.34 4.46
+#   Initial composition Pu238, 239, 240, 241, 242 (at.%)
+0.244
+#   q
