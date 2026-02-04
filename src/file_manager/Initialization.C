@@ -55,6 +55,7 @@ void Initialization(
 	Sciantix_variables[43] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 236.04557; // U-236
 	Sciantix_variables[44] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 237.04873; // U-237
 	Sciantix_variables[45] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 238.05079; // U-238
+	double total_U = Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45];
 
     // https://pubchem.ncbi.nlm.nih.gov/compound/Plutonium-239
     Sciantix_variables[171] *= Sciantix_variables[40] * Sciantix_variables[177] * 6.022e24 * 0.882 / 238; // Pu-238
@@ -62,7 +63,7 @@ void Initialization(
 	Sciantix_variables[173] *= Sciantix_variables[40] * Sciantix_variables[177] * 6.022e24 * 0.882 / 240; // Pu-240
 	Sciantix_variables[174] *= Sciantix_variables[40] * Sciantix_variables[177] * 6.022e24 * 0.882 / 241; // Pu-241
 	Sciantix_variables[175] *= Sciantix_variables[40] * Sciantix_variables[177] * 6.022e24 * 0.882 / 242; // Pu-242
-
+	double total_Pu = Sciantix_variables[171] + Sciantix_variables[172] + Sciantix_variables[173] + Sciantix_variables[174] + Sciantix_variables[175];
 
 	// Intragranular similarity ratio
 	Sciantix_variables[64] = 1.0;
@@ -76,9 +77,11 @@ void Initialization(
 	// Residual porosity
 	Sciantix_variables[73] = 0.75 * Sciantix_variables[71];
 
-	// U and O content
-	Sciantix_variables[161] = Sciantix_variables[40]/(270e-3);
-	Sciantix_variables[162] = (2 + Sciantix_variables[66])*Sciantix_variables[161];
+	// U, O, Pu content (mol/m3)
+	double avogadro_number = 6.02214076e23;
+	Sciantix_variables[161] = total_U / avogadro_number; // U content in mol/m3
+	Sciantix_variables[163] = total_Pu / avogadro_number; // Pu content in mol/m3
+	Sciantix_variables[162] = (2.0 + Sciantix_variables[66]) * (Sciantix_variables[161] + Sciantix_variables[163]); // O content in mol/m3
 	
 	// Projection on diffusion modes of the initial conditions
 	double initial_condition(0.0);
