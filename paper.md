@@ -68,7 +68,9 @@ SCIANTIX has also contributed to European research projects addressing advanced 
 
 # AI usage disclosure
 
-No generative AI tools were used in the development of this software, the writing of this manuscript, or the preparation of supporting materials.
+Generative AI tools were used in the preparation and refinement of parts of the documentation (e.g., language polishing, structural suggestions, and formatting assistance). 
+
+No generative AI tools were used in the development of the SCIANTIX software, in the implementation of its physical models or numerical solvers, or in the preparation of validation results.
 
 # Acknowledgements
 
