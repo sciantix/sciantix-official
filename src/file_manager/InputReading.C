@@ -329,7 +329,6 @@ void InputReading(
 		Json::Value root;
 		jsonFile >> root;
 		
-		std::cout<<"here"<<std::endl;
 		Sciantix_thermochemistry_options.resize(10);
 		Sciantix_thermochemistry_options[0].push_back(root["Settings"]["module"].asString());
 		

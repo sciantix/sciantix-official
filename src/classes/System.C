@@ -156,7 +156,7 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
 
     yield = Y_eff;
 
-    std::cout << "Yield of " << gas_name << ": " << yield << " at/fiss" << std::endl;
+    // std::cout << "Yield of " << gas_name << ": " << yield << " at/fiss" << std::endl; // -- > EC debug output, to be removed later
 }
 
 double System::getYield()
