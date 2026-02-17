@@ -1,3 +1,8 @@
+"""
+sciantix regression suite
+author: Giovanni Zullo
+"""
+
 import numpy as np
 
 def compare_arrays(a: np.ndarray, b: np.ndarray,

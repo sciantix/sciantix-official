@@ -1,4 +1,7 @@
 """
+sciantix regression suite
+author: Giovanni Zullo
+
 regression.runner
 
 python3 -m regression.runner
@@ -8,21 +11,11 @@ python3 -m regression.runner --white --mode-gold 1
 """
 
 import sys
+import os
 import argparse
 from regression.core.generic_runner import run_group
+from regression.core.report import generate_html_report
 
-def run_all_baker(mode):      return run_group("baker",      "test_Baker",          mode)
-def run_all_cornell(mode):    return run_group("cornell",    "test_Cornell",        mode)
-def run_all_white(mode):      return run_group("white",      "test_White",          mode)
-def run_all_kashibe(mode):    return run_group("kashibe",    "test_Kashibe",        mode)
-def run_all_talip(mode):      return run_group("talip",      "test_Talip",          mode)
-def run_all_oxidation(mode):  return run_group("oxidation",  "test_UO2_oxidation",  mode)
-def run_all_hbs(mode):        return run_group("hbs",        "test_UO2HBS",         mode)
-def run_all_chromium(mode):   return run_group("chromium",   "test_Chromium",       mode)
-def run_all_contact(mode):    return run_group("contact",    "test_CONTACT",        mode)
-def run_all_vercors(mode):    return run_group("vercors",    "test_Vercors",        mode)
-def run_all_pulse(mode):      return run_group("analytics",  "test_powerPulse",     mode)
-def run_all_gpr(mode):        return run_group("gpr",        "test_GPR",           mode)
 
 def main():
     parser = argparse.ArgumentParser(description="SCIANTIX regression test runner")
@@ -48,42 +41,78 @@ def main():
         help="0=run+compare, 1=run+gold, 2=compare, 3=gold only"
     )
 
+    parser.add_argument(
+        "--jobs", "-j",
+        type=int,
+        default=1,
+        help="Number of parallel threads (default=1)"
+    )
+
     args = parser.parse_args()
 
-    # If nothing selected → run all
-    if not any([
-        args.baker, args.cornell, args.white, args.kashibe, args.talip,
-        args.oxidation, args.chromium, args.contact, args.hbs,
-        args.vercors, args.pulse, args.gpr, args.all
-    ]):
-        args.all = True
+    # Dynamic discovery of regression groups
+    # We look for folders in regression/ that contain test cases (folders starting with test_)
+    regression_root = os.path.join(os.path.dirname(__file__), "..", "regression")
+    available_groups = []
+    
+    if os.path.isdir(regression_root):
+        for entry in os.scandir(regression_root):
+            if entry.is_dir() and entry.name not in ("core", "__pycache__", "analytics"): # analytics often handled separately or is empty
+                # Check if it has at least one test_ folder
+                has_tests = False
+                for sub in os.scandir(entry.path):
+                    if sub.is_dir() and sub.name.startswith("test_"):
+                        has_tests = True
+                        break
+                if has_tests:
+                    available_groups.append(entry.name)
 
     results = []
+    
+    # Selected groups map
+    explicit_selection = any([getattr(args, g, False) for g in available_groups if hasattr(args, g)])
+    
+    # Hardcoded runners list for compatibility and precise prefixes
+    runners = [
+        ("baker", "test_Baker"),
+        ("cornell", "test_Cornell"),
+        ("white", "test_White"),
+        ("kashibe", "test_Kashibe"),
+        ("talip", "test_Talip"),
+        ("oxidation", "test_UO2_oxidation"),
+        ("chromium", "test_Chromium"),
+        ("contact", "test_CONTACT"),
+        ("hbs", "test_UO2HBS"),
+        ("vercors", "test_Vercors"),
+        ("analytics", "test_powerPulse"), # 'pulse' arg maps to 'analytics' group
+        ("gpr", "test_GPR"),
+    ]
 
-    if args.baker or args.all:       results.extend(run_all_baker(args.mode_gold))
-    if args.cornell or args.all:     results.extend(run_all_cornell(args.mode_gold))
-    if args.white or args.all:       results.extend(run_all_white(args.mode_gold))
-    if args.kashibe or args.all:     results.extend(run_all_kashibe(args.mode_gold))
-    if args.talip or args.all:       results.extend(run_all_talip(args.mode_gold))
-    if args.oxidation or args.all:   results.extend(run_all_oxidation(args.mode_gold))
-    if args.chromium or args.all:    results.extend(run_all_chromium(args.mode_gold))
-    if args.contact or args.all:     results.extend(run_all_contact(args.mode_gold))
-    if args.hbs or args.all:         results.extend(run_all_hbs(args.mode_gold))
-    if args.vercors or args.all:     results.extend(run_all_vercors(args.mode_gold))
-    if args.pulse or args.all:       results.extend(run_all_pulse(args.mode_gold))
-    if args.gpr or args.all:         results.extend(run_all_gpr(args.mode_gold))
+    if not explicit_selection and not args.all:
+        args.all = True
+
+    for group, prefix in runners:
+        # Check if this group is requested
+        # The arg name might differ from group name (e.g. pulse vs analytics)
+        arg_name = group if group != "analytics" else "pulse"
+        
+        should_run = args.all or getattr(args, arg_name, False)
+        
+        if should_run:
+            results.extend(run_group(group, prefix, args.mode_gold, args.jobs))
 
     print("\n=== RESULTS ===")
-    for name, ok in results:
-        print(f"{name:<60} {'PASS' if ok else 'FAIL'}")
+    for name, ok, msg in results:
+        status = "PASS" if ok else "FAIL"
+        print(f"{name:<60} {status}")
+
+    # Generate Report
+    generate_html_report(results, regression_root)
 
     # exit code handling
-    failed = [name for name, ok in results if not ok]
+    failed = [name for name, ok, msg in results if not ok]
     
     if failed:
-        print("\nSome regression tests FAILED:")
-        for f in failed:
-            print("  -", f)
         sys.exit(1)
 
     sys.exit(0)

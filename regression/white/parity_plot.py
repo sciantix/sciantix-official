@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from regression.core.common import load_output, load_gold
+from regression.core.plot import parity_plot
 
 
 # ------------------------------------------------------------
@@ -40,52 +41,6 @@ def load_experimental(basename):
             values.append(float(parts[1]))
 
     return np.array(names), np.array(values)
-
-
-# ------------------------------------------------------------
-# parity plot
-# ------------------------------------------------------------
-def parity_plot(exp, calc_gold, calc_test, outdir):
-
-    plt.figure(figsize=(6, 5))
-
-    # scatter
-    plt.scatter(exp, calc_gold,
-                facecolors="none", edgecolors="brown",
-                marker="^", s=40, label="gold")
-
-    plt.scatter(exp, calc_test,
-                facecolors="green", edgecolors="none",
-                marker="o", s=35, alpha=0.8, label="test")
-
-    # 1:1 lines (log scale)
-    xmin = min(exp.min(), calc_gold.min(), calc_test.min())
-    xmax = max(exp.max(), calc_gold.max(), calc_test.max())
-
-    xmin = max(xmin, 1e-30)
-    xmax = max(xmax, 1e-30)
-
-    xmin *= 0.8
-    xmax *= 1.2
-
-    xline = np.logspace(np.log10(xmin), np.log10(xmax), 200)
-    plt.plot(xline, xline, "-",  color="#777777")
-    plt.plot(xline, 2*xline, "--", color="#777777")
-    plt.plot(xline, 0.5*xline, "--", color="#777777")
-
-    plt.xscale("log")
-    plt.yscale("log")
-    plt.xlabel("experimental")
-    plt.ylabel("calculated")
-    plt.title("White – intergranular swelling (%)")
-    plt.grid(True, which="both", ls=":")
-    plt.legend()
-
-    out = os.path.join(outdir, "parity_white_swelling.png")
-    plt.tight_layout()
-    plt.savefig(out, dpi=180)
-    plt.close()
-    print("Saved:", out)
 
 
 # ------------------------------------------------------------
@@ -141,7 +96,7 @@ def main():
     test_arr = np.array(test_list)
 
     # plot
-    parity_plot(exp_arr, gold_arr, test_arr, outdir)
+    parity_plot(exp_arr, gold_arr, test_arr, "white_swelling", "White – intergranular swelling (%)", outdir)
 
 
 if __name__ == "__main__":

@@ -1,3 +1,8 @@
+"""
+sciantix regression suite
+author: Giovanni Zullo
+"""
+
 import os
 
 GREEN = "\033[92m"

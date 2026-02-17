@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from regression.core.common import load_output, load_gold
+from regression.core.plot import parity_plot
 
 
 # ------------------------------------------------------------
@@ -30,45 +31,6 @@ def load_experimental(basename):
         raise FileNotFoundError(f"Experimental data not found: {fpath}")
     arr = np.loadtxt(fpath)
     return arr[:, 0], arr[:, 1]
-
-
-# ------------------------------------------------------------
-# parity plot
-# ------------------------------------------------------------
-def parity_plot(exp, calc_gold, calc_test, quantity, title, outdir):
-    plt.figure(figsize=(6, 5))
-
-    # scatter
-    plt.scatter(exp, calc_gold, 
-                facecolors="none", edgecolors="brown",
-                marker="^", s=40, label="gold")
-
-    plt.scatter(exp, calc_test,
-                facecolors="green", edgecolors="none",
-                marker="o", s=35, alpha=0.8, label="test")
-
-    # 1:1 lines
-    xmin = 0.5*min(exp.min(), calc_gold.min(), calc_test.min())
-    xmax = 2*max(exp.max(), calc_gold.max(), calc_test.max())
-    xline = np.linspace(xmin, xmax, 200)
-    plt.plot(xline, xline, "-", color="#777777")
-    plt.plot(xline, 2*xline, "--", color="#777777")
-    plt.plot(xline, 0.5*xline, "--", color="#777777")
-
-    plt.xscale("log")
-    plt.yscale("log")
-    plt.xlabel("experimental")
-    plt.ylabel("calculated")
-    plt.title(title)
-
-    plt.grid(True, which="both", ls=":")
-    plt.legend()
-
-    out = os.path.join(outdir, f"parity_{quantity}.png")
-    plt.tight_layout()
-    plt.savefig(out, dpi=180)
-    plt.close()
-    print("Saved:", out)
 
 
 # ------------------------------------------------------------

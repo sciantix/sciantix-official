@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from regression.core.common import load_output, load_gold
+from regression.core.plot import parity_plot
 
 
 # ------------------------------------------------------------
@@ -30,60 +31,6 @@ def load_experimental(basename):
         raise FileNotFoundError(f"Experimental data not found: {fpath}")
     arr = np.loadtxt(fpath)
     return arr[:, 0], arr[:, 1]
-
-
-# ------------------------------------------------------------
-# parity plot
-# ------------------------------------------------------------
-def parity_plot(exp, calc_gold, calc_test, calc_extra, quantity, title, outdir):
-    plt.figure(figsize=(6, 5))
-
-    # GOLD
-    plt.scatter(exp, calc_gold,
-                facecolors="none", edgecolors="brown",
-                marker="^", s=40, label="gold")
-
-    # TEST
-    plt.scatter(exp, calc_test,
-                facecolors="green", edgecolors="none",
-                marker="o", s=35, alpha=0.8, label="test (w/ gpr)")
-
-    # EXTRA DATASET (third dataset)
-    if calc_extra is not None:
-        plt.scatter(exp, calc_extra,
-                    facecolors="blue", edgecolors="none",
-                    marker="s", s=35, alpha=0.8, label="(w/o gpr)")
-
-    # 1:1 lines
-    xmin = 0.5 * min(exp.min(),
-                     calc_gold.min(),
-                     calc_test.min(),
-                     calc_extra.min() if calc_extra is not None else np.inf)
-
-    xmax = 2 * max(exp.max(),
-                   calc_gold.max(),
-                   calc_test.max(),
-                   calc_extra.max() if calc_extra is not None else -np.inf)
-
-    xline = np.logspace(np.log10(xmin), np.log10(xmax), 200)
-    plt.plot(xline, xline, "-", color="#777777")
-    plt.plot(xline, 2*xline, "--", color="#777777")
-    plt.plot(xline, 0.5*xline, "--", color="#777777")
-
-    plt.xscale("log")
-    plt.yscale("log")
-    plt.xlabel("experimental")
-    plt.ylabel("calculated")
-    plt.title(title)
-
-    plt.grid(True, which="both", ls=":")
-    plt.legend()
-
-    out = os.path.join(outdir, f"parity_{quantity}.png")
-    plt.tight_layout()
-    plt.savefig(out, dpi=180)
-    plt.close()
-    print("Saved:", out)
 
 
 # ------------------------------------------------------------
@@ -181,14 +128,17 @@ def main():
     extra_d = None
 
     # PLOTS
-    parity_plot(exp_s, gold_s, test_s, extra_s,
-                "swelling", "Intra-granular gaseous swelling (%)", outdir)
+    parity_plot(exp_s, gold_s, test_s, 
+                "swelling", "Intra-granular gaseous swelling (%)", outdir, 
+                calc_extra=extra_s, label_extra="no GPR")
 
-    parity_plot(exp_r, gold_r, test_r, extra_r,
-                "radius", "Intra-granular bubble radius (m)", outdir)
+    parity_plot(exp_r, gold_r, test_r, 
+                "radius", "Intra-granular bubble radius (m)", outdir, 
+                calc_extra=extra_r)
 
-    parity_plot(exp_d, gold_d, test_d, extra_d,
-                "density", "Intra-granular bubble density (bub/m3)", outdir)
+    parity_plot(exp_d, gold_d, test_d, 
+                "density", "Intra-granular bubble density (bub/m3)", outdir, 
+                calc_extra=extra_d)
 
 if __name__ == "__main__":
     main()

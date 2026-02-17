@@ -1,4 +1,8 @@
-# regression/core/common.py
+"""
+sciantix regression suite
+author: Giovanni Zullo
+"""
+
 
 import os
 import subprocess

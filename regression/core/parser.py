@@ -1,3 +1,8 @@
+"""
+sciantix regression suite
+author: Giovanni Zullo
+"""
+
 import numpy as np
 
 class SciantixOutput:
