@@ -136,11 +136,11 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
 
     if (module == "THERMOCHIMICA")
     {
-        std::string directoryPath = "./../../thermochimica-master";
+        std::string directoryPath = "./../../thermochimica";
         std::string inputPath = "/inputs/thermoin.ti";
         std::string outputPath = "/outputs/thermoout";
-        std::string dataPath = "../../thermochimica-master/data/" + root["Settings"]["fission_products"]["database"].asString();
-        if (location == "matrix") dataPath = "../../thermochimica-master/data/" + root["Settings"]["matrix"]["database"].asString();
+        std::string dataPath = "../../thermochimica/data/" + root["Settings"]["fission_products"]["database"].asString();
+        if (location == "matrix") dataPath = "../../thermochimica/data/" + root["Settings"]["matrix"]["database"].asString();
         std::string exePath = directoryPath + "/bin/InputScriptMode " + directoryPath + inputPath;
         
         // 1. Write input file
