@@ -19,6 +19,21 @@ The model is enabled by:
 If ``iGrainBoundaryVenting = 0``, the model returns immediately and no venting is
 applied.
 
+Inputs
+------
+
+- ``iGrainBoundaryVenting`` (input option)
+- ``Intergranular fractional coverage``
+- ``Intergranular fractional intactness``
+- ``<Gas> at grain boundary`` for each gas system
+- ``Time step`` (physics variable)
+
+Outputs
+-------
+
+- ``P_vent`` (venting probability stored as a model parameter)
+- Updated grain-boundary inventories (after applying the venting sink)
+
 Key variables
 -------------
 

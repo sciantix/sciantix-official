@@ -70,3 +70,8 @@ The updated value is stored in:
 ::
 
    <Gas name> decayed
+
+Outputs
+-------
+
+- ``<Gas name> decayed`` (updated decayed inventory stored in sciantix variables)

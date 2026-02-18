@@ -10,6 +10,14 @@ structure (HBS) effects.
 The model also performs mass balance to determine the gas concentration at the
 grain boundary and accounts for optional immediate release.
 
+Activation
+----------
+
+The diffusion model is executed when a diffusion solver option is selected via
+the ``iDiffusionSolver`` input flag (values 1, 2 or 3). If the flag is not set
+or set to a disabling value, the routine returns without updating diffusion
+variables.
+
 Inputs
 ------
 
@@ -187,3 +195,12 @@ where:
 
 The spectral formulation provides a meshless and computationally efficient
 solution compatible with online coupling to fuel performance codes.
+
+Outputs
+-------
+
+- ``<Gas> in intragranular solution``
+- ``<Gas> in intragranular bubbles``
+- ``<Gas> in HBS`` (when Case 3 is active)
+- ``Grain-boundary concentration``
+- ``Released inventory`` (when applicable)

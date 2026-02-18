@@ -87,3 +87,17 @@ Implementation note
 In the source code, the model reference is reported as:
 
 "The local burnup is calculated from the fission rate density."
+
+Activation
+----------
+
+The burnup model is executed at every time step to convert fission rate into
+specific power and accumulate burnup; no explicit input flag is required.
+
+Outputs
+-------
+
+- ``Burnup`` (MWd/kg)
+- ``Specific power``
+- ``Irradiation time``
+- ``FIMA`` (Fraction of Initial Metal Atoms)

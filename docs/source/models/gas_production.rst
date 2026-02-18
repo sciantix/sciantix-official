@@ -17,6 +17,19 @@ For each gas system, the model uses:
 - ``system.getProductionRate()``: production rate of the gas (source term).
 - ``Time step`` (physics variable): current integration step size.
 
+Activation
+----------
+
+The gas production routine is invoked for all defined gas systems each time
+step. Systems with a zero production rate will not change but are still
+processed consistently by the loop.
+
+Outputs
+-------
+
+- ``<GasName> produced`` (cumulative produced inventory)
+- ``<GasName> produced in HBS`` (when applicable)
+
 Model resolution
 ----------------
 

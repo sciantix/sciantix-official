@@ -19,6 +19,13 @@ The model uses:
 - ``Specific power`` (sciantix variable)
 - ``Time step`` (physics variable)
 
+Activation
+----------
+
+The effective burnup model is executed at every time step; it computes an
+accumulated burnup that depends on the temperature threshold. There is no
+dedicated input flag to disable the routine.
+
 Model formulation
 -----------------
 
@@ -57,3 +64,8 @@ The effective burnup is updated by time integration:
 
 In the implementation this is performed using ``solver.Integrator`` with the
 current ``Time step``.
+
+Outputs
+-------
+
+- ``Effective burnup`` (updated accumulated burnup stored in sciantix variables)

@@ -212,6 +212,8 @@ SCIANTIX requires three main input files that define the simulation setup, histo
 - **Inputs**: Temperature history, irradiation conditions, fuel properties, initial conditions, simulation settings, and optional parameter scaling factors
 - **Outputs**: Fission gas release fractions, swelling estimates, temperature-dependent accelerations, bubble densities, burnup-dependent phenomena
 
+For detailed input-file templates and examples, see the :doc:`examples` page and the utilities documentation at ``utilities/InputExplanation.md``.
+
 **Numerical Stability and Efficiency**
 
 SCIANTIX employs several strategies to balance accuracy and computational efficiency:
