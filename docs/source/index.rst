@@ -7,6 +7,7 @@ SCIANTIX documentation
 
    overview
    installation
+   contributing
    models
    solvers
    examples
