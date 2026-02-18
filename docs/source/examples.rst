@@ -59,3 +59,50 @@ Key output variables for this case include:
 - **Fission gas release**
 
 You can find the reference results in ``output_gold.txt`` within the regression folder.
+
+Input Files Structure
+---------------------
+
+SCIANTIX expects a set of plain-text input files. The following templates show the typical shape of these files; complete descriptions are available in ``utilities/InputExplanation.md``.
+
+``input_settings.txt`` — model flags and options (one integer per line, comments allowed):
+
+.. code-block:: text
+
+    1    #    iGrainGrowth (0= no, 1= Ainscough, 2= Van Uffelen)
+    1    #    iFissionGasDiffusivity (0= constant, 1= Turnbull et al.)
+    1    #    iDiffusionSolver (1= SDA with quasi-stationarity, 2= without)
+    1    #    iIntraGranularBubbleBehavior (1= Pizzocri et al.)
+    ...
+
+``input_history.txt`` — time-dependent history (four columns: Time(h), Temperature(K), FissionRate(fiss/m³-s), HydrostaticStress(MPa)):
+
+.. code-block:: text
+
+    0          1273              1e19                      0
+    5500       1273              1e19                      0
+
+``input_initial_conditions.txt`` — structured initial parameters (value lines followed by a comment line starting with #):
+
+.. code-block:: text
+
+    5.0e-06
+    # initial grain radius (m)
+    0.0 0.0 0.0 0.0 0.0 0.0
+    # initial Xe (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released
+    0.0 0.0 0.0 0.0 0.0 0.0
+    # initial Kr (at/m³): produced, intragranular, in solution, in bubbles, grain boundary, released
+    0.0 0.0
+    # initial He (at/m³): produced, intragranular [+ in solution, in bubbles, grain boundary, released]
+    ...
+
+``input_scaling_factors.txt`` (optional) — single-column scaling factors with comments:
+
+.. code-block:: text
+
+    1.0
+    # scaling factor - resolution rate
+    1.0
+    # scaling factor - trapping rate
+
+For complete guidance and more examples, consult the `utilities/InputExplanation.md` file or the regression examples in the `regression/` folder.

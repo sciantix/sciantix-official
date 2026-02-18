@@ -18,6 +18,20 @@ The model is enabled by:
 If ``iGrainBoundarySweeping = 0``, the model returns immediately and no sweeping
 is applied.
 
+Inputs
+------
+
+- ``iGrainBoundarySweeping`` (input option)
+- ``Grain radius`` (sciantix variable)
+- ``iDiffusionSolver`` (to determine which modes are affected)
+- modal coefficients / intragranular concentration representation (``modes_initial_conditions``)
+
+Outputs
+-------
+
+- Updated intragranular modal coefficients or concentrations after sweeping
+- ``Swept fraction`` or ``f_sweep`` stored as a model parameter
+
 Swept volume fraction
 ---------------------
 

@@ -38,6 +38,19 @@ Output:
 
 - ``Grain radius`` updated at the end of the step
 
+Activation
+----------
+
+The grain growth model is enabled via the input option ``iGrainGrowth``. If
+``iGrainGrowth = 0``, the grain radius is kept constant and no growth update is
+applied.
+
+Outputs
+-------
+
+- ``Grain radius`` (updated)
+- Any internal model parameters used by the quartic solver (stored in the model parameter vector)
+
 Option 0: constant grain radius
 -------------------------------
 

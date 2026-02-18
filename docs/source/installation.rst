@@ -88,12 +88,12 @@ After successful compilation, the executable `sciantix.x` will be located in the
 
     ls -l build/sciantix.x
 
-Windows Installation (via WSL2)
+Windows Installation (via WSL)
 -------------------------------
 
-Windows users are recommended to use Windows Subsystem for Linux 2 (WSL2). This provides a native Linux environment on Windows without requiring virtual machines.
+Windows users are recommended to use Windows Subsystem for Linux (WSL). This provides a native Linux environment on Windows without requiring virtual machines.
 
-**Step 1: Install WSL2**
+**Step 1: Install WSL**
 
 Follow the `official WSL installation guide <https://learn.microsoft.com/en-us/windows/wsl/install>`_.
 
