@@ -224,7 +224,6 @@ The generated documentation will be available in the `doxygen/` directory.
 
 Troubleshooting
 ---------------
-
 **CMake not found**
 
 Ensure CMake is installed:
@@ -270,4 +269,8 @@ After successful installation:
 2. Examine the :doc:`examples` for practical usage
 3. Run the :doc:`regression` tests to validate your installation
 4. Refer to the :doc:`models` documentation for model details
+
 5. Check the :doc:`api/index_api` for API information
+
+For details on contributing and the development workflow, see
+:doc:`contributing`.
