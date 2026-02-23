@@ -251,8 +251,8 @@ def regression_contact(wpath, mode_CONTACT, mode_gold, mode_plot, folderList, nu
       common_values_1 = np.intersect1d(np.round(burnup,precision), np.round(exp_Xe133[1:,0].astype(float),precision))
       common_values_2 = np.intersect1d(np.round(burnup,precision), np.round(exp_Kr85m[1:,0].astype(float),precision))
       # Find the indices of the common values in each array
-      indices_1 = np.where(np.in1d(np.round(burnup,precision), common_values_1))[0]
-      indices_2 = np.where(np.in1d(np.round(burnup,precision), common_values_2))[0]
+      indices_1 = np.where(np.isin(np.round(burnup,precision), common_values_1))[0]
+      indices_2 = np.where(np.isin(np.round(burnup,precision), common_values_2))[0]
       # finding manually common position to avoid truncation errors
       indices_1 = [934, 2125, 2932, 5862, 7488,  8303, 8705, 10297]
       indices_2 = [934, 2125, 2932, 5862, 7488,  8303, 8705, 10297, 11275, -1]
@@ -269,8 +269,8 @@ def regression_contact(wpath, mode_CONTACT, mode_gold, mode_plot, folderList, nu
       common_values_1 = np.intersect1d(np.round(calculated_Xe133_Zullo2022[1:,0].astype(float),precision), np.round(exp_Xe133[1:,0].astype(float),precision))
       common_values_2 = np.intersect1d(np.round(calculated_Kr85m_Zullo2022[1:,0].astype(float),precision), np.round(exp_Kr85m[1:,0].astype(float),precision))
       # Find the indices of the common values in each array
-      indices_1 = np.where(np.in1d(np.round(calculated_Xe133_Zullo2022[1:,0].astype(float),precision), common_values_1))[0]
-      indices_2 = np.where(np.in1d(np.round(calculated_Kr85m_Zullo2022[1:,0].astype(float),precision), common_values_2))[0]
+      indices_1 = np.where(np.isin(np.round(calculated_Xe133_Zullo2022[1:,0].astype(float),precision), common_values_1))[0]
+      indices_2 = np.where(np.isin(np.round(calculated_Kr85m_Zullo2022[1:,0].astype(float),precision), common_values_2))[0]
       # finding manually common position to avoid truncation errors
       indices_1 = [98, 221, 305, 613, 781, 864, 903, 1065]
       indices_2 = [98, 221, 305, 613, 781, 864, 903, 1065, 1169, 1328]
