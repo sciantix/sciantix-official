@@ -225,13 +225,11 @@ void InputReading(
 	}
 
 	int n = 0;
-	while (!input_history.eof())
+	while (input_history >> Time_input[n]
+						 >> Temperature_input[n]
+						 >> Fissionrate_input[n]
+						 >> Hydrostaticstress_input[n])
 	{
-		input_history >> Time_input[n];
-		input_history >> Temperature_input[n];
-		input_history >> Fissionrate_input[n];
-		input_history >> Hydrostaticstress_input[n];
-
 		if(Sciantix_options[20] > 0)
 			input_history >> Steampressure_input[n];
 
