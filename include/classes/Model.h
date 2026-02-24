@@ -64,12 +64,16 @@ class Model : public Material
     /**
      * @brief Constructor
      */
-    Model() {}
+    Model()
+    {
+    }
 
     /**
      * @brief Destructor
      */
-    ~Model() {}
+    ~Model()
+    {
+    }
 };
 
 #endif  // MODEL_H

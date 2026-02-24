@@ -29,8 +29,10 @@
  * @author G. Zullo
  *
  */
-void Initialization(double Sciantix_history[], double Sciantix_variables[],
-                    double Sciantix_diffusion_modes[], std::vector<double> Temperature_input,
+void Initialization(double              Sciantix_history[],
+                    double              Sciantix_variables[],
+                    double              Sciantix_diffusion_modes[],
+                    std::vector<double> Temperature_input,
                     std::vector<double> Fissionrate_input,
                     std::vector<double> Hydrostaticstress_input,
                     std::vector<double> Steampressure_input);

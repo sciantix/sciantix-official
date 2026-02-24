@@ -68,14 +68,11 @@ void Simulation::IntraGranularBubbleBehavior()
 
         case 3:
         {
-            reference +=
-                "Case specific for annealing experiments and helium intragranular behaviour.";
+            reference += "Case specific for annealing experiments and helium intragranular behaviour.";
 
             if (physics_variable["Time step"].getFinalValue() > 0.0)
-                parameter.push_back(
-                    (1.0 / sciantix_variable["Intragranular similarity ratio"].getFinalValue() -
-                     1.0) /
-                    physics_variable["Time step"].getFinalValue());
+                parameter.push_back((1.0 / sciantix_variable["Intragranular similarity ratio"].getFinalValue() - 1.0) /
+                                    physics_variable["Time step"].getFinalValue());
             else
                 parameter.push_back(0.);
 
@@ -103,7 +100,8 @@ void Simulation::IntraGranularBubbleBehavior()
         }
 
         default:
-            ErrorMessages::Switch(__FILE__, "iIntraGranularBubbleBehavior",
+            ErrorMessages::Switch(__FILE__,
+                                  "iIntraGranularBubbleBehavior",
                                   int(input_variable["iIntraGranularBubbleBehavior"].getValue()));
             break;
     }
@@ -127,27 +125,22 @@ void Simulation::IntraGranularBubbleBehavior()
         if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
         {
             if (sciantix_variable["Intragranular bubble concentration"].getFinalValue() > 0.0)
-                sciantix_variable["Intragranular " + system.getGasName() + " atoms per bubble"]
-                    .setFinalValue(
-                        sciantix_variable[system.getGasName() + " in intragranular bubbles"]
-                            .getFinalValue() /
-                        sciantix_variable["Intragranular bubble concentration"].getFinalValue());
+                sciantix_variable["Intragranular " + system.getGasName() + " atoms per bubble"].setFinalValue(
+                    sciantix_variable[system.getGasName() + " in intragranular bubbles"].getFinalValue() /
+                    sciantix_variable["Intragranular bubble concentration"].getFinalValue());
 
             else
-                sciantix_variable["Intragranular " + system.getGasName() + " atoms per bubble"]
-                    .setFinalValue(0.0);
+                sciantix_variable["Intragranular " + system.getGasName() + " atoms per bubble"].setFinalValue(0.0);
 
             sciantix_variable["Intragranular bubble volume"].addValue(
                 system.getVolumeInLattice() *
-                sciantix_variable["Intragranular " + system.getGasName() + " atoms per bubble"]
-                    .getFinalValue());
+                sciantix_variable["Intragranular " + system.getGasName() + " atoms per bubble"].getFinalValue());
         }
     }
 
     // Intragranular bubble radius
     sciantix_variable["Intragranular bubble radius"].setFinalValue(
-        0.620350491 *
-        pow(sciantix_variable["Intragranular bubble volume"].getFinalValue(), (1.0 / 3.0)));
+        0.620350491 * pow(sciantix_variable["Intragranular bubble volume"].getFinalValue(), (1.0 / 3.0)));
 
     // Intragranular gaseous swelling
     // 4/3 pi N R^3

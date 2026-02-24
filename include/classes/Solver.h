@@ -81,8 +81,7 @@ class Solver : virtual public InputVariable
      * @param increment The time increment.
      * @return The updated value after solving the ODE.
      */
-    double BinaryInteraction(double initial_condition, double interaction_coefficient,
-                             double increment);
+    double BinaryInteraction(double initial_condition, double interaction_coefficient, double increment);
 
     /**
      * @brief Solves the spatially averaged PDE dy/dt = D div grad y + S - L y using a spectral
@@ -103,8 +102,7 @@ class Solver : virtual public InputVariable
      * 3 :production
      * 4 :loss rate
      */
-    double SpectralDiffusion(double* initial_condition, std::vector<double> parameter,
-                             double increment);
+    double SpectralDiffusion(double* initial_condition, std::vector<double> parameter, double increment);
 
     /**
      * @brief Function to compute the dot product between two arrays (v and u) of size n
@@ -137,9 +135,12 @@ class Solver : virtual public InputVariable
      * @param parameter A vector containing the parameters for the diffusion equations.
      * @param increment The time increment.
      */
-    void SpectralDiffusion2equations(double& gas_1, double& gas_2, double* initial_condition_gas_1,
-                                     double* initial_condition_gas_2, std::vector<double> parameter,
-                                     double increment);
+    void SpectralDiffusion2equations(double&             gas_1,
+                                     double&             gas_2,
+                                     double*             initial_condition_gas_1,
+                                     double*             initial_condition_gas_2,
+                                     std::vector<double> parameter,
+                                     double              increment);
 
     /**
      * @brief Solves three coupled diffusion equations using a spectral approach.
@@ -153,11 +154,14 @@ class Solver : virtual public InputVariable
      * @param parameter A vector containing the parameters for the diffusion equations.
      * @param increment The time increment.
      */
-    void SpectralDiffusion3equations(double& gas_1, double& gas_2, double& gas_3,
-                                     double* initial_condition_gas_1,
-                                     double* initial_condition_gas_2,
-                                     double* initial_condition_gas_3, std::vector<double> parameter,
-                                     double increment);
+    void SpectralDiffusion3equations(double&             gas_1,
+                                     double&             gas_2,
+                                     double&             gas_3,
+                                     double*             initial_condition_gas_1,
+                                     double*             initial_condition_gas_2,
+                                     double*             initial_condition_gas_3,
+                                     std::vector<double> parameter,
+                                     double              increment);
 
     /**
      * @brief Solves a system of two linear equations using Cramer's method.
@@ -239,17 +243,20 @@ class Solver : virtual public InputVariable
      *
      * @return The solution to the ODE.
      */
-    double NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter,
-                                    double increment);
+    double NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment);
 
     /**
      * @brief Constructor
      */
-    Solver() {}
+    Solver()
+    {
+    }
     /**
      * @brief Destructor
      */
-    ~Solver() {}
+    ~Solver()
+    {
+    }
 };
 
 #endif  // SOLVER_H

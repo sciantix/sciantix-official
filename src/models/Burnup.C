@@ -39,9 +39,9 @@ void Simulation::Burnup()
     model.push(model_);
 
     // Model resolution
-    sciantix_variable["Burnup"].setFinalValue(solver.Integrator(
-        sciantix_variable["Burnup"].getInitialValue(), model["Burnup"].getParameter().at(0),
-        physics_variable["Time step"].getFinalValue()));
+    sciantix_variable["Burnup"].setFinalValue(solver.Integrator(sciantix_variable["Burnup"].getInitialValue(),
+                                                                model["Burnup"].getParameter().at(0),
+                                                                physics_variable["Time step"].getFinalValue()));
 
     if (history_variable["Fission rate"].getFinalValue() > 0.0)
         sciantix_variable["Irradiation time"].setFinalValue(
@@ -51,9 +51,8 @@ void Simulation::Burnup()
     else
         sciantix_variable["Irradiation time"].setConstant();
 
-    sciantix_variable["FIMA"].setFinalValue(
-        solver.Integrator(sciantix_variable["FIMA"].getInitialValue(),
-                          history_variable["Fission rate"].getFinalValue() * 3.6e5 /
-                              sciantix_variable["U"].getFinalValue(),
-                          sciantix_variable["Irradiation time"].getIncrement()));
+    sciantix_variable["FIMA"].setFinalValue(solver.Integrator(sciantix_variable["FIMA"].getInitialValue(),
+                                                              history_variable["Fission rate"].getFinalValue() * 3.6e5 /
+                                                                  sciantix_variable["U"].getFinalValue(),
+                                                              sciantix_variable["Irradiation time"].getIncrement()));
 }

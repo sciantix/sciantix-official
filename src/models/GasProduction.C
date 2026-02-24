@@ -38,15 +38,14 @@ void Simulation::GasProduction()
 
         // Model resolution
         if (system.getRestructuredMatrix() == 0)
-            sciantix_variable[system.getGasName() + " produced"].setFinalValue(solver.Integrator(
-                sciantix_variable[system.getGasName() + " produced"].getInitialValue(),
-                model["Gas production - " + system.getName()].getParameter().at(0),
-                model["Gas production - " + system.getName()].getParameter().at(1)));
+            sciantix_variable[system.getGasName() + " produced"].setFinalValue(
+                solver.Integrator(sciantix_variable[system.getGasName() + " produced"].getInitialValue(),
+                                  model["Gas production - " + system.getName()].getParameter().at(0),
+                                  model["Gas production - " + system.getName()].getParameter().at(1)));
         else if (system.getRestructuredMatrix() == 1)
             sciantix_variable[system.getGasName() + " produced in HBS"].setFinalValue(
-                solver.Integrator(
-                    sciantix_variable[system.getGasName() + " produced in HBS"].getInitialValue(),
-                    model["Gas production - " + system.getName()].getParameter().at(0),
-                    model["Gas production - " + system.getName()].getParameter().at(1)));
+                solver.Integrator(sciantix_variable[system.getGasName() + " produced in HBS"].getInitialValue(),
+                                  model["Gas production - " + system.getName()].getParameter().at(0),
+                                  model["Gas production - " + system.getName()].getParameter().at(1)));
     }
 }

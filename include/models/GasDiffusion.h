@@ -27,8 +27,7 @@
  * @author G. Zullo
  *
  */
-void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system,
-                                      SciantixArray<Model>& model, int n_modes);
+void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes);
 
 /**
  * @brief Defines diffusion models using the spectral diffusion with two equations.
@@ -38,8 +37,7 @@ void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system,
  * @author G. Zullo
  *
  */
-void defineSpectralDiffusion2Equations(SciantixArray<System>& sciantix_system,
-                                       SciantixArray<Model>& model, int n_modes);
+void defineSpectralDiffusion2Equations(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes);
 
 /**
  * @brief Defines diffusion models using the spectral diffusion with three equations.

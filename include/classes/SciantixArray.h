@@ -52,12 +52,16 @@ template <class T> class SciantixArray
     /**
      * @brief Constructor
      */
-    SciantixArray() {}
+    SciantixArray()
+    {
+    }
 
     /**
      * @brief Destructor
      */
-    ~SciantixArray() {}
+    ~SciantixArray()
+    {
+    }
 
     /**
      * @brief Constructs a SciantixArray from a given vector of elements.

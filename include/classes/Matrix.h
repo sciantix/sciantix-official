@@ -166,8 +166,7 @@ class Matrix : virtual public Material
      *
      * @param input_value The model selection for grain boundary mobility.
      */
-    void setGrainBoundaryMobility(int                              input_value,
-                                  SciantixArray<SciantixVariable>& history_variable);
+    void setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVariable>& history_variable);
 
     /**
      * @brief Retrieves the mobility of the grain boundaries of the matrix.
@@ -254,8 +253,7 @@ class Matrix : virtual public Material
      * @brief Sets the diffusivity of vacancies on the grain boundaries based on the input model.
      * @param input_value The model selection for grain boundary vacancy diffusivity.
      */
-    void setGrainBoundaryVacancyDiffusivity(int                              input_value,
-                                            SciantixArray<SciantixVariable>& history_variable);
+    void setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable>& history_variable);
 
     /**
      * @brief Retrieves the vacancy diffusivity on the grain boundaries.
@@ -349,8 +347,7 @@ class Matrix : virtual public Material
      * The trapping rate is calculated based on current simulation parameters and a model from
      * Barani et al., JNM 563 (2022) 153627.
      */
-    void setPoreTrappingRate(SciantixArray<Matrix>&           matrices,
-                             SciantixArray<SciantixVariable>& sciantix_variable);
+    void setPoreTrappingRate(SciantixArray<Matrix>& matrices, SciantixArray<SciantixVariable>& sciantix_variable);
 
     /**
      * @brief Retrieves the trapping rate of gas atoms in pores.
@@ -528,12 +525,16 @@ class Matrix : virtual public Material
     /**
      * @brief Constructor
      */
-    Matrix() {}
+    Matrix()
+    {
+    }
 
     /**
      * @brief Destructor
      */
-    ~Matrix() {}
+    ~Matrix()
+    {
+    }
 };
 
 #endif  // MATRIX_H

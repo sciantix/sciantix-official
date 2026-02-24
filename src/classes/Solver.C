@@ -24,24 +24,20 @@ double Solver::Integrator(double initial_value, double parameter, double increme
 double Solver::LimitedGrowth(double initial_value, std::vector<double> parameter, double increment)
 {
     return 0.5 * ((initial_value + parameter[1] * increment) +
-                  sqrt(pow(initial_value + parameter[1] * increment, 2) +
-                       4.0 * parameter[0] * increment));
+                  sqrt(pow(initial_value + parameter[1] * increment, 2) + 4.0 * parameter[0] * increment));
 }
 
-double Solver::Decay(double initial_condition, double decay_rate, double source_term,
-                     double increment)
+double Solver::Decay(double initial_condition, double decay_rate, double source_term, double increment)
 {
     return (initial_condition + source_term * increment) / (1.0 + decay_rate * increment);
 }
 
-double Solver::BinaryInteraction(double initial_condition, double interaction_coefficient,
-                                 double increment)
+double Solver::BinaryInteraction(double initial_condition, double interaction_coefficient, double increment)
 {
     return initial_condition / (1.0 + interaction_coefficient * initial_condition * increment);
 }
 
-double Solver::SpectralDiffusion(double* initial_condition, std::vector<double> parameter,
-                                 double increment)
+double Solver::SpectralDiffusion(double* initial_condition, std::vector<double> parameter, double increment)
 {
     size_t             n;
     unsigned short int np1(1);
@@ -65,8 +61,7 @@ double Solver::SpectralDiffusion(double* initial_condition, std::vector<double> 
         diffusion_rate = diffusion_rate_coeff * pow(np1, 2) + parameter.at(4);
         source_rate    = source_rate_coeff * n_coeff;
 
-        initial_condition[n] =
-            Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);
+        initial_condition[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);
 
         solution += projection_coeff * n_coeff * initial_condition[n] / ((4. / 3.) * M_PI);
     }
@@ -96,10 +91,12 @@ void Solver::dotProduct2D(double A[], double v[], int n_rows, const int n_col, d
     }
 }
 
-void Solver::SpectralDiffusion2equations(double& gas_1, double& gas_2,
+void Solver::SpectralDiffusion2equations(double&             gas_1,
+                                         double&             gas_2,
                                          double*             initial_condition_gas_1,
                                          double*             initial_condition_gas_2,
-                                         std::vector<double> parameter, double increment)
+                                         std::vector<double> parameter,
+                                         double              increment)
 {
     size_t             n;
     unsigned short int np1(1);
@@ -124,10 +121,8 @@ void Solver::SpectralDiffusion2equations(double& gas_1, double& gas_2,
     double coeff_matrix[4];
     double initial_conditions[2];
 
-    diffusion_rate_coeff1 =
-        pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(3), 2);  // pi^2 * D1 / a^2
-    diffusion_rate_coeff2 =
-        pow(M_PI, 2) * parameter.at(2) / pow(parameter.at(3), 2);  // pi^2 * D2 / a^2
+    diffusion_rate_coeff1 = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(3), 2);  // pi^2 * D1 / a^2
+    diffusion_rate_coeff2 = pow(M_PI, 2) * parameter.at(2) / pow(parameter.at(3), 2);  // pi^2 * D2 / a^2
 
     projection_coeff = -2.0 * sqrt(2.0 / M_PI);
 
@@ -165,11 +160,14 @@ void Solver::SpectralDiffusion2equations(double& gas_1, double& gas_2,
     gas_2 = gas_2_solution;
 }
 
-void Solver::SpectralDiffusion3equations(double& gas_1, double& gas_2, double& gas_3,
+void Solver::SpectralDiffusion3equations(double&             gas_1,
+                                         double&             gas_2,
+                                         double&             gas_3,
                                          double*             initial_condition_gas_1,
                                          double*             initial_condition_gas_2,
                                          double*             initial_condition_gas_3,
-                                         std::vector<double> parameter, double increment)
+                                         std::vector<double> parameter,
+                                         double              increment)
 {
     size_t             n;
     unsigned short int np1(1);
@@ -199,12 +197,9 @@ void Solver::SpectralDiffusion3equations(double& gas_1, double& gas_2, double& g
     double coeff_matrix[9];
     double initial_conditions[3];
 
-    diffusion_rate_coeff1 =
-        pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(4), 2);  // pi^2 * D1 / a^2
-    diffusion_rate_coeff2 =
-        pow(M_PI, 2) * parameter.at(2) / pow(parameter.at(4), 2);  // pi^2 * D2 / a^2
-    diffusion_rate_coeff3 =
-        pow(M_PI, 2) * parameter.at(3) / pow(parameter.at(4), 2);  // pi^2 * D3 / a^2
+    diffusion_rate_coeff1 = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(4), 2);  // pi^2 * D1 / a^2
+    diffusion_rate_coeff2 = pow(M_PI, 2) * parameter.at(2) / pow(parameter.at(4), 2);  // pi^2 * D2 / a^2
+    diffusion_rate_coeff3 = pow(M_PI, 2) * parameter.at(3) / pow(parameter.at(4), 2);  // pi^2 * D3 / a^2
 
     projection_coeff = -2.0 * sqrt(2.0 / M_PI);
 
@@ -225,16 +220,12 @@ void Solver::SpectralDiffusion3equations(double& gas_1, double& gas_2, double& g
         source_rate2 = source_rate_coeff_2 * n_coeff;
         source_rate3 = source_rate_coeff_3 * n_coeff;
 
-        coeff_matrix[0] =
-            1.0 +
-            (diffusion_rate1 + parameter.at(9) + parameter.at(10) + parameter.at(11)) * increment;
+        coeff_matrix[0] = 1.0 + (diffusion_rate1 + parameter.at(9) + parameter.at(10) + parameter.at(11)) * increment;
         coeff_matrix[1] = -parameter.at(8) * increment;
         coeff_matrix[2] = 0.0;
 
         coeff_matrix[3] = -parameter.at(9) * increment;
-        coeff_matrix[4] =
-            1.0 +
-            (diffusion_rate2 + parameter.at(8) + parameter.at(10) + parameter.at(11)) * increment;
+        coeff_matrix[4] = 1.0 + (diffusion_rate2 + parameter.at(8) + parameter.at(10) + parameter.at(11)) * increment;
         coeff_matrix[5] = 0.0;
 
         coeff_matrix[6] = -parameter.at(11) * increment;
@@ -277,8 +268,8 @@ void Solver::Laplace2x2(double A[], double b[])
 void Solver::Laplace3x3(double A[], double b[])
 {
     double detX(0.0), detY(0.0), detZ(0.0);
-    double detA = A[0] * (A[4] * A[8] - A[5] * A[7]) - A[1] * (A[3] * A[8] - A[5] * A[6]) +
-                  A[2] * (A[3] * A[7] - A[4] * A[6]);
+    double detA =
+        A[0] * (A[4] * A[8] - A[5] * A[7]) - A[1] * (A[3] * A[8] - A[5] * A[6]) + A[2] * (A[3] * A[7] - A[4] * A[6]);
 
     if (detA != 0.0)
     {
@@ -409,8 +400,7 @@ void Solver::modeInitialization(int n_modes, double mode_initial_condition, doub
             np1                  = n + 1;
             const double n_coeff = pow(-1.0, np1) / np1;
             diffusion_modes[n] += projection_coeff * n_coeff * projection_remainder;
-            reconstructed_solution +=
-                projection_coeff * n_coeff * diffusion_modes[n] * 3.0 / (4.0 * M_PI);
+            reconstructed_solution += projection_coeff * n_coeff * diffusion_modes[n] * 3.0 / (4.0 * M_PI);
         }
         projection_remainder = initial_condition - reconstructed_solution;
     }
@@ -452,8 +442,7 @@ double Solver::NewtonBlackburn(std::vector<double> parameter)
     return x1;
 }
 
-double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter,
-                                        double increment)
+double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment)
 {
     double K     = parameter.at(0);
     double beta  = parameter.at(1);

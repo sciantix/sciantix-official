@@ -47,16 +47,13 @@ void Simulation::InterGranularBubbleBehavior()
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
-                    sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"]
-                        .setFinalValue(sciantix_variable[system.getGasName() + " at grain boundary"]
-                                           .getFinalValue() /
-                                       (sciantix_variable["Intergranular bubble concentration"]
-                                            .getInitialValue() *
-                                        (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+                    sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].setFinalValue(
+                        sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() /
+                        (sciantix_variable["Intergranular bubble concentration"].getInitialValue() *
+                         (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
 
-                    n_at += sciantix_variable["Intergranular " + system.getGasName() +
-                                              " atoms per bubble"]
-                                .getFinalValue();
+                    n_at +=
+                        sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue();
                 }
             }
             sciantix_variable["Intergranular atoms per bubble"].setFinalValue(n_at);
@@ -68,22 +65,20 @@ void Simulation::InterGranularBubbleBehavior()
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
-                    vol += sciantix_variable["Intergranular " + system.getGasName() +
-                                             " atoms per bubble"]
-                               .getFinalValue() *
-                           system.getGas().getVanDerWaalsVolume();
+                    vol +=
+                        sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue() *
+                        system.getGas().getVanDerWaalsVolume();
                 }
             }
-            vol += sciantix_variable["Intergranular vacancies per bubble"].getInitialValue() *
-                   fuel_.getSchottkyVolume();
+            vol +=
+                sciantix_variable["Intergranular vacancies per bubble"].getInitialValue() * fuel_.getSchottkyVolume();
             sciantix_variable["Intergranular bubble volume"].setInitialValue(vol);
 
             // initial radius
             sciantix_variable["Intergranular bubble radius"].setInitialValue(
-                0.620350491 *
-                pow(sciantix_variable["Intergranular bubble volume"].getInitialValue() /
-                        (fuel_.getLenticularShapeFactor()),
-                    1. / 3.));
+                0.620350491 * pow(sciantix_variable["Intergranular bubble volume"].getInitialValue() /
+                                      (fuel_.getLenticularShapeFactor()),
+                                  1. / 3.));
 
             // initial area
             sciantix_variable["Intergranular bubble area"].setInitialValue(
@@ -104,25 +99,19 @@ void Simulation::InterGranularBubbleBehavior()
             const double EE = 20.594;
 
             double sink_strength =
-                0.4054 +
-                AA * pow(sciantix_variable["Intergranular fractional coverage"].getInitialValue(),
-                         5) +
-                BB * pow(sciantix_variable["Intergranular fractional coverage"].getInitialValue(),
-                         4) +
-                CC * pow(sciantix_variable["Intergranular fractional coverage"].getInitialValue(),
-                         3) +
-                DD * pow(sciantix_variable["Intergranular fractional coverage"].getInitialValue(),
-                         2) +
+                0.4054 + AA * pow(sciantix_variable["Intergranular fractional coverage"].getInitialValue(), 5) +
+                BB * pow(sciantix_variable["Intergranular fractional coverage"].getInitialValue(), 4) +
+                CC * pow(sciantix_variable["Intergranular fractional coverage"].getInitialValue(), 3) +
+                DD * pow(sciantix_variable["Intergranular fractional coverage"].getInitialValue(), 2) +
                 EE * sciantix_variable["Intergranular fractional coverage"].getInitialValue();
 
             double volume_flow_rate = 2.0 * M_PI * fuel_.getGrainBoundaryThickness() *
                                       fuel_.getGrainBoundaryVacancyDiffusivity() * sink_strength;
 
             // Initial value of the growth rate = 2 pi t D n / S V
-            const double growth_rate =
-                volume_flow_rate *
-                sciantix_variable["Intergranular atoms per bubble"].getFinalValue() /
-                fuel_.getSchottkyVolume();
+            const double growth_rate = volume_flow_rate *
+                                       sciantix_variable["Intergranular atoms per bubble"].getFinalValue() /
+                                       fuel_.getSchottkyVolume();
 
             double surfacetension = fuel_.getSurfaceTension();
 
@@ -133,13 +122,11 @@ void Simulation::InterGranularBubbleBehavior()
             if (sciantix_variable["Intergranular bubble radius"].getInitialValue())
             {
                 equilibrium_pressure =
-                    2.0 * surfacetension /
-                        sciantix_variable["Intergranular bubble radius"].getInitialValue() -
+                    2.0 * surfacetension / sciantix_variable["Intergranular bubble radius"].getInitialValue() -
                     history_variable["Hydrostatic stress"].getFinalValue() * 1e6;
 
-                equilibrium_term =
-                    -volume_flow_rate * equilibrium_pressure /
-                    (boltzmann_constant * history_variable["Temperature"].getFinalValue());
+                equilibrium_term = -volume_flow_rate * equilibrium_pressure /
+                                   (boltzmann_constant * history_variable["Temperature"].getFinalValue());
             }
 
             parameter.push_back(growth_rate);
@@ -151,8 +138,8 @@ void Simulation::InterGranularBubbleBehavior()
         }
 
         default:
-            ErrorMessages::Switch(__FILE__, "iGrainBoundaryBehaviour",
-                                  int(input_variable["iGrainBoundaryBehaviour"].getValue()));
+            ErrorMessages::Switch(
+                __FILE__, "iGrainBoundaryBehaviour", int(input_variable["iGrainBoundaryBehaviour"].getValue()));
             break;
     }
 
@@ -163,10 +150,10 @@ void Simulation::InterGranularBubbleBehavior()
 
     // Model resolution
     // Vacancy concentration
-    sciantix_variable["Intergranular vacancies per bubble"].setFinalValue(solver.LimitedGrowth(
-        sciantix_variable["Intergranular vacancies per bubble"].getInitialValue(),
-        model["Intergranular bubble behavior"].getParameter(),
-        physics_variable["Time step"].getFinalValue()));
+    sciantix_variable["Intergranular vacancies per bubble"].setFinalValue(
+        solver.LimitedGrowth(sciantix_variable["Intergranular vacancies per bubble"].getInitialValue(),
+                             model["Intergranular bubble behavior"].getParameter(),
+                             physics_variable["Time step"].getFinalValue()));
 
     // Model declaration
     Model model2_;
@@ -183,14 +170,12 @@ void Simulation::InterGranularBubbleBehavior()
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
-                    vol += sciantix_variable["Intergranular " + system.getGasName() +
-                                             " atoms per bubble"]
-                               .getFinalValue() *
-                           system.getGas().getVanDerWaalsVolume();
+                    vol +=
+                        sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue() *
+                        system.getGas().getVanDerWaalsVolume();
                 }
             }
-            vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() *
-                   fuel_.getSchottkyVolume();
+            vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * fuel_.getSchottkyVolume();
             sciantix_variable["Intergranular bubble volume"].setFinalValue(vol);
 
             // Grain-boundary bubble radius
@@ -207,20 +192,17 @@ void Simulation::InterGranularBubbleBehavior()
 
             // Grain-boundary bubble coalescence
             double dbubble_area = sciantix_variable["Intergranular bubble area"].getIncrement();
-            sciantix_variable["Intergranular bubble concentration"].setFinalValue(
-                solver.BinaryInteraction(
-                    sciantix_variable["Intergranular bubble concentration"].getInitialValue(), 2.0,
-                    dbubble_area));
+            sciantix_variable["Intergranular bubble concentration"].setFinalValue(solver.BinaryInteraction(
+                sciantix_variable["Intergranular bubble concentration"].getInitialValue(), 2.0, dbubble_area));
 
             // Conservation
             for (auto& system : sciantix_system)
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
-                    sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"]
-                        .rescaleFinalValue(
-                            sciantix_variable["Intergranular bubble concentration"].getInitialValue() /
-                            sciantix_variable["Intergranular bubble concentration"].getFinalValue());
+                    sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].rescaleFinalValue(
+                        sciantix_variable["Intergranular bubble concentration"].getInitialValue() /
+                        sciantix_variable["Intergranular bubble concentration"].getFinalValue());
                 }
             }
 
@@ -228,9 +210,8 @@ void Simulation::InterGranularBubbleBehavior()
             for (auto& system : sciantix_system)
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-                    n_at += sciantix_variable["Intergranular " + system.getGasName() +
-                                              " atoms per bubble"]
-                                .getFinalValue();
+                    n_at +=
+                        sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue();
             }
             sciantix_variable["Intergranular atoms per bubble"].setFinalValue(n_at);
 
@@ -242,14 +223,12 @@ void Simulation::InterGranularBubbleBehavior()
             for (auto& system : sciantix_system)
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-                    vol += sciantix_variable["Intergranular " + system.getGasName() +
-                                             " atoms per bubble"]
-                               .getFinalValue() *
-                           system.getGas().getVanDerWaalsVolume();
+                    vol +=
+                        sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue() *
+                        system.getGas().getVanDerWaalsVolume();
             }
 
-            vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() *
-                   fuel_.getSchottkyVolume();
+            vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * fuel_.getSchottkyVolume();
             sciantix_variable["Intergranular bubble volume"].setFinalValue(vol);
 
             sciantix_variable["Intergranular bubble radius"].setFinalValue(
@@ -279,8 +258,7 @@ void Simulation::InterGranularBubbleBehavior()
 
             if (sciantix_variable["Intergranular fractional coverage"].getFinalValue() > 0.0)
                 similarity_ratio =
-                    sqrt(sciantix_variable["Intergranular saturation fractional coverage"]
-                             .getFinalValue() /
+                    sqrt(sciantix_variable["Intergranular saturation fractional coverage"].getFinalValue() /
                          sciantix_variable["Intergranular fractional coverage"].getFinalValue());
             else
                 similarity_ratio = 1.0;
@@ -288,23 +266,17 @@ void Simulation::InterGranularBubbleBehavior()
             if (similarity_ratio < 1.0)
             {
                 sciantix_variable["Intergranular bubble area"].rescaleFinalValue(similarity_ratio);
-                sciantix_variable["Intergranular bubble concentration"].rescaleFinalValue(
-                    similarity_ratio);
-                sciantix_variable["Intergranular fractional coverage"].rescaleFinalValue(
-                    pow(similarity_ratio, 2));
-                sciantix_variable["Intergranular bubble volume"].rescaleFinalValue(
-                    pow(similarity_ratio, 1.5));
-                sciantix_variable["Intergranular bubble radius"].rescaleFinalValue(
-                    pow(similarity_ratio, 0.5));
-                sciantix_variable["Intergranular vacancies per bubble"].rescaleFinalValue(
-                    pow(similarity_ratio, 1.5));
+                sciantix_variable["Intergranular bubble concentration"].rescaleFinalValue(similarity_ratio);
+                sciantix_variable["Intergranular fractional coverage"].rescaleFinalValue(pow(similarity_ratio, 2));
+                sciantix_variable["Intergranular bubble volume"].rescaleFinalValue(pow(similarity_ratio, 1.5));
+                sciantix_variable["Intergranular bubble radius"].rescaleFinalValue(pow(similarity_ratio, 0.5));
+                sciantix_variable["Intergranular vacancies per bubble"].rescaleFinalValue(pow(similarity_ratio, 1.5));
 
                 // New intergranular gas concentration
                 for (auto& system : sciantix_system)
                 {
                     if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-                        sciantix_variable["Intergranular " + system.getGasName() +
-                                          " atoms per bubble"]
+                        sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"]
                             .rescaleFinalValue(pow(similarity_ratio, 1.5));
                 }
 
@@ -312,8 +284,7 @@ void Simulation::InterGranularBubbleBehavior()
                 for (auto& system : sciantix_system)
                 {
                     if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-                        n_at += sciantix_variable["Intergranular " + system.getGasName() +
-                                                  " atoms per bubble"]
+                        n_at += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"]
                                     .getFinalValue();
                 }
                 sciantix_variable["Intergranular atoms per bubble"].setFinalValue(n_at);
@@ -321,14 +292,13 @@ void Simulation::InterGranularBubbleBehavior()
                 for (auto& system : sciantix_system)
                 {
                     if (system.getRestructuredMatrix() == 0)
-                        sciantix_variable[system.getGasName() + " at grain boundary"]
-                            .rescaleFinalValue(pow(similarity_ratio, 2.5));
+                        sciantix_variable[system.getGasName() + " at grain boundary"].rescaleFinalValue(
+                            pow(similarity_ratio, 2.5));
                 }
             }
 
-            reference2 +=
-                " coalescence from White, JNM, 325 (2004), 61-77; release from Pastore et "
-                "al., NED, 256 (2013), 75-86.";
+            reference2 += " coalescence from White, JNM, 325 (2004), 61-77; release from Pastore et "
+                          "al., NED, 256 (2013), 75-86.";
 
             break;
         }
@@ -344,11 +314,9 @@ void Simulation::InterGranularBubbleBehavior()
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
                     gasvolume_i += (system.getGas().getVanDerWaalsVolume() *
-                                    sciantix_variable[system.getGasName() + " at grain boundary"]
-                                        .getInitialValue());
+                                    sciantix_variable[system.getGasName() + " at grain boundary"].getInitialValue());
                     gasvolume_f += (system.getGas().getVanDerWaalsVolume() *
-                                    sciantix_variable[system.getGasName() + " at grain boundary"]
-                                        .getFinalValue());
+                                    sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue());
                 }
             }
 
@@ -360,17 +328,15 @@ void Simulation::InterGranularBubbleBehavior()
             grainboundary_statematrix[0] = 1.0;
             grainboundary_statematrix[1] = 0.0;
             grainboundary_statematrix[2] =
-                gasvolume_i /
-                (pow(sciantix_variable["Intergranular bubble concentration"].getInitialValue(), 2) *
-                 (3.0 / sciantix_variable["Grain radius"].getFinalValue()));
+                gasvolume_i / (pow(sciantix_variable["Intergranular bubble concentration"].getInitialValue(), 2) *
+                               (3.0 / sciantix_variable["Grain radius"].getFinalValue()));
             grainboundary_statematrix[3] = 0.0;
 
             // Bubble area
             if (sciantix_variable["Intergranular bubble volume"].getInitialValue() > 0.0)
-                grainboundary_statematrix[4 + 0] =
-                    -(2.0 / 3.0) *
-                    sciantix_variable["Intergranular bubble area"].getInitialValue() /
-                    sciantix_variable["Intergranular bubble volume"].getInitialValue();
+                grainboundary_statematrix[4 + 0] = -(2.0 / 3.0) *
+                                                   sciantix_variable["Intergranular bubble area"].getInitialValue() /
+                                                   sciantix_variable["Intergranular bubble volume"].getInitialValue();
             else
                 grainboundary_statematrix[4 + 0] = 0.0;
 
@@ -384,11 +350,8 @@ void Simulation::InterGranularBubbleBehavior()
             if (sciantix_variable["Intergranular fractional coverage"].getInitialValue() <
                 sciantix_variable["Intergranular saturation fractional coverage"].getInitialValue())
                 grainboundary_statematrix[4 + 4 + 1] =
-                    6.0 *
-                    pow(sciantix_variable["Intergranular bubble concentration"].getInitialValue(),
-                        2) /
-                    (3.0 +
-                     4.0 * sciantix_variable["Intergranular fractional coverage"].getInitialValue());
+                    6.0 * pow(sciantix_variable["Intergranular bubble concentration"].getInitialValue(), 2) /
+                    (3.0 + 4.0 * sciantix_variable["Intergranular fractional coverage"].getInitialValue());
             else
                 grainboundary_statematrix[4 + 4 + 1] =
                     sciantix_variable["Intergranular bubble concentration"].getInitialValue() /
@@ -415,34 +378,27 @@ void Simulation::InterGranularBubbleBehavior()
             double grainboundary_input[4];
             grainboundary_input[0] =
                 sciantix_variable["Intergranular bubble volume"].getInitialValue() +
-                sciantix_variable["Intergranular vacancies per bubble"].getIncrement() *
-                    fuel_.getSchottkyVolume() +
-                (gasvolume_f) /
-                    (sciantix_variable["Intergranular bubble concentration"].getInitialValue() *
-                     (3.0 / sciantix_variable["Grain radius"].getFinalValue()));
-            grainboundary_input[1] =
-                sciantix_variable["Intergranular bubble area"].getInitialValue() / 3.0;
+                sciantix_variable["Intergranular vacancies per bubble"].getIncrement() * fuel_.getSchottkyVolume() +
+                (gasvolume_f) / (sciantix_variable["Intergranular bubble concentration"].getInitialValue() *
+                                 (3.0 / sciantix_variable["Grain radius"].getFinalValue()));
+            grainboundary_input[1] = sciantix_variable["Intergranular bubble area"].getInitialValue() / 3.0;
             if (sciantix_variable["Intergranular fractional coverage"].getInitialValue() <
                 sciantix_variable["Intergranular saturation fractional coverage"].getInitialValue())
             {
                 grainboundary_input[2] =
                     sciantix_variable["Intergranular bubble concentration"].getInitialValue() +
-                    6.0 *
-                        pow(sciantix_variable["Intergranular bubble concentration"].getInitialValue(),
-                            2) *
+                    6.0 * pow(sciantix_variable["Intergranular bubble concentration"].getInitialValue(), 2) *
                         sciantix_variable["Intergranular bubble area"].getInitialValue() /
-                        (3.0 + 4.0 * sciantix_variable["Intergranular fractional coverage"]
-                                         .getInitialValue());
+                        (3.0 + 4.0 * sciantix_variable["Intergranular fractional coverage"].getInitialValue());
             }
             else
             {
                 grainboundary_input[2] =
                     2.0 * sciantix_variable["Intergranular bubble concentration"].getInitialValue();
             }
-            grainboundary_input[3] =
-                sciantix_variable["Intergranular fractional coverage"].getInitialValue() -
-                2.0 * sciantix_variable["Intergranular bubble concentration"].getInitialValue() *
-                    sciantix_variable["Intergranular bubble area"].getInitialValue();
+            grainboundary_input[3] = sciantix_variable["Intergranular fractional coverage"].getInitialValue() -
+                                     2.0 * sciantix_variable["Intergranular bubble concentration"].getInitialValue() *
+                                         sciantix_variable["Intergranular bubble area"].getInitialValue();
 
             for (int i = 0; i < 4; ++i)
             {
@@ -465,10 +421,8 @@ void Simulation::InterGranularBubbleBehavior()
 
             if (sciantix_variable["Intergranular bubble area"].getIncrement() >= 0.0)
             {
-                sciantix_variable["Intergranular bubble concentration"].setFinalValue(
-                    grainboundary_input[2]);
-                sciantix_variable["Intergranular fractional coverage"].setFinalValue(
-                    grainboundary_input[3]);
+                sciantix_variable["Intergranular bubble concentration"].setFinalValue(grainboundary_input[2]);
+                sciantix_variable["Intergranular fractional coverage"].setFinalValue(grainboundary_input[3]);
             }
             else
             {
@@ -488,19 +442,14 @@ void Simulation::InterGranularBubbleBehavior()
 
             vented_fraction_initial =
                 (21.0911 * 1e-2 *
-                 (erf(0.0937 * 100 *
-                          sciantix_variable["Intergranular fractional coverage"].getInitialValue() -
-                      3.7250) +
+                 (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 3.7250) +
                   1));
             vented_fraction_final =
                 (21.0911 * 1e-2 *
-                 (erf(0.0937 * 100 *
-                          sciantix_variable["Intergranular fractional coverage"].getFinalValue() -
-                      3.7250) +
+                 (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) +
                   1));
-            reference2 +=
-                " release model from Cappellari et al., JNM, (2025, under review), Gaussian "
-                "Process Regression lower bound";
+            reference2 += " release model from Cappellari et al., JNM, (2025, under review), Gaussian "
+                          "Process Regression lower bound";
 
             //
             // Other option for the diffusion-based release curve
@@ -512,16 +461,13 @@ void Simulation::InterGranularBubbleBehavior()
 
             // Combined fraction (probability) of diffusion-based release and burst release from
             // microcracking, from Cappellari et al. (2025);
-            double release_fraction_initial(0.0), release_fraction_final(0.0),
-                release_fraction_increment(0.0);
+            double release_fraction_initial(0.0), release_fraction_final(0.0), release_fraction_increment(0.0);
 
             release_fraction_initial =
-                vented_fraction_initial *
-                    sciantix_variable["Intergranular fractional intactness"].getInitialValue() +
+                vented_fraction_initial * sciantix_variable["Intergranular fractional intactness"].getInitialValue() +
                 (1 - sciantix_variable["Intergranular fractional intactness"].getInitialValue());
             release_fraction_final =
-                vented_fraction_final *
-                    sciantix_variable["Intergranular fractional intactness"].getFinalValue() +
+                vented_fraction_final * sciantix_variable["Intergranular fractional intactness"].getFinalValue() +
                 (1 - sciantix_variable["Intergranular fractional intactness"].getFinalValue());
 
             release_fraction_increment = release_fraction_final - release_fraction_initial;
@@ -535,30 +481,22 @@ void Simulation::InterGranularBubbleBehavior()
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
-                    sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-                        solver.Integrator(
-                            (1 - release_fraction_increment) *
-                                sciantix_variable[system.getGasName() + " at grain boundary"]
-                                    .getFinalValue(),
-                            -release_fraction_final,
-                            sciantix_variable[system.getGasName() + " at grain boundary"]
-                                .getIncrement()));
+                    sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(solver.Integrator(
+                        (1 - release_fraction_increment) *
+                            sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue(),
+                        -release_fraction_final,
+                        sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement()));
 
-                    if (sciantix_variable[system.getGasName() + " at grain boundary"]
-                            .getFinalValue() < 0.0)
-                        sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-                            0.0);
+                    if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
+                        sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
 
-                    sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"]
-                        .setFinalValue(
-                            sciantix_variable[system.getGasName() + " at grain boundary"]
-                                .getFinalValue() /
-                            (sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
-                             (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+                    sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].setFinalValue(
+                        sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() /
+                        (sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
+                         (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
 
-                    n_at += sciantix_variable["Intergranular " + system.getGasName() +
-                                              " atoms per bubble"]
-                                .getFinalValue();
+                    n_at +=
+                        sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue();
                 }
             }
             sciantix_variable["Intergranular atoms per bubble"].setFinalValue(n_at);
@@ -574,14 +512,12 @@ void Simulation::InterGranularBubbleBehavior()
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
-                    vol += sciantix_variable["Intergranular " + system.getGasName() +
-                                             " atoms per bubble"]
-                               .getFinalValue() *
-                           system.getGas().getVanDerWaalsVolume();
+                    vol +=
+                        sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue() *
+                        system.getGas().getVanDerWaalsVolume();
                 }
             }
-            vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() *
-                   fuel_.getSchottkyVolume();
+            vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * fuel_.getSchottkyVolume();
             sciantix_variable["Intergranular bubble volume"].setFinalValue(vol);
 
             // Grain-boundary bubble radius
@@ -597,9 +533,7 @@ void Simulation::InterGranularBubbleBehavior()
                            2));
 
             // Grain-boundary bubble coalescence
-            double N_bub =
-                2e13 /
-                (1 + 2 * 2e13 * sciantix_variable["Intergranular bubble area"].getFinalValue());
+            double N_bub = 2e13 / (1 + 2 * 2e13 * sciantix_variable["Intergranular bubble area"].getFinalValue());
             if (N_bub > sciantix_variable["Intergranular bubble concentration"].getFinalValue())
                 sciantix_variable["Intergranular bubble concentration"].setConstant();
             else
@@ -610,10 +544,9 @@ void Simulation::InterGranularBubbleBehavior()
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
-                    sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"]
-                        .rescaleFinalValue(
-                            sciantix_variable["Intergranular bubble concentration"].getInitialValue() /
-                            sciantix_variable["Intergranular bubble concentration"].getFinalValue());
+                    sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].rescaleFinalValue(
+                        sciantix_variable["Intergranular bubble concentration"].getInitialValue() /
+                        sciantix_variable["Intergranular bubble concentration"].getFinalValue());
                 }
             }
 
@@ -621,9 +554,8 @@ void Simulation::InterGranularBubbleBehavior()
             for (auto& system : sciantix_system)
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-                    n_at += sciantix_variable["Intergranular " + system.getGasName() +
-                                              " atoms per bubble"]
-                                .getFinalValue();
+                    n_at +=
+                        sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue();
             }
             sciantix_variable["Intergranular atoms per bubble"].setFinalValue(n_at);
 
@@ -635,14 +567,12 @@ void Simulation::InterGranularBubbleBehavior()
             for (auto& system : sciantix_system)
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-                    vol += sciantix_variable["Intergranular " + system.getGasName() +
-                                             " atoms per bubble"]
-                               .getFinalValue() *
-                           system.getGas().getVanDerWaalsVolume();
+                    vol +=
+                        sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue() *
+                        system.getGas().getVanDerWaalsVolume();
             }
 
-            vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() *
-                   fuel_.getSchottkyVolume();
+            vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * fuel_.getSchottkyVolume();
             sciantix_variable["Intergranular bubble volume"].setFinalValue(vol);
 
             sciantix_variable["Intergranular bubble radius"].setFinalValue(
@@ -669,19 +599,14 @@ void Simulation::InterGranularBubbleBehavior()
             double vented_fraction_initial(0.0), vented_fraction_final(0.0);
             vented_fraction_initial =
                 (21.0911 * 1e-2 *
-                 (erf(0.0937 * 100 *
-                          sciantix_variable["Intergranular fractional coverage"].getInitialValue() -
-                      3.7250) +
+                 (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 3.7250) +
                   1));
             vented_fraction_final =
                 (21.0911 * 1e-2 *
-                 (erf(0.0937 * 100 *
-                          sciantix_variable["Intergranular fractional coverage"].getFinalValue() -
-                      3.7250) +
+                 (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) +
                   1));
-            reference2 +=
-                " release model from Cappellari et al., JNM, (2025, under review), Gaussian "
-                "Process Regression lower bound";
+            reference2 += " release model from Cappellari et al., JNM, (2025, under review), Gaussian "
+                          "Process Regression lower bound";
             //
             // Other option for the diffusion-based release curve
             // vented_fraction = (26.3997 * 1e-2 * (erf(0.0718 * 100 *
@@ -692,16 +617,13 @@ void Simulation::InterGranularBubbleBehavior()
 
             // Combined fraction (probability) of diffusion-based release and burst release from
             // microcracking, from Cappellari et al. (2025);
-            double release_fraction_initial(0.0), release_fraction_final(0.0),
-                release_fraction_increment(0.0);
+            double release_fraction_initial(0.0), release_fraction_final(0.0), release_fraction_increment(0.0);
 
             release_fraction_initial =
-                vented_fraction_initial *
-                    sciantix_variable["Intergranular fractional intactness"].getInitialValue() +
+                vented_fraction_initial * sciantix_variable["Intergranular fractional intactness"].getInitialValue() +
                 (1 - sciantix_variable["Intergranular fractional intactness"].getInitialValue());
             release_fraction_final =
-                vented_fraction_final *
-                    sciantix_variable["Intergranular fractional intactness"].getFinalValue() +
+                vented_fraction_final * sciantix_variable["Intergranular fractional intactness"].getFinalValue() +
                 (1 - sciantix_variable["Intergranular fractional intactness"].getFinalValue());
 
             release_fraction_increment = release_fraction_final - release_fraction_initial;
@@ -716,18 +638,15 @@ void Simulation::InterGranularBubbleBehavior()
                 {
                     double n_tot = solver.Integrator(
                         (1 - release_fraction_increment) *
-                            sciantix_variable[system.getGasName() + " at grain boundary"]
-                                .getFinalValue(),
+                            sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue(),
                         -release_fraction_final,
                         sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement());
 
                     if (n_tot < 0.0)
                         n_tot = 0.0;
 
-                    double n_bub =
-                        n_tot /
-                        (sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
-                         (3.0 / sciantix_variable["Grain radius"].getFinalValue()));
+                    double n_bub = n_tot / (sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
+                                            (3.0 / sciantix_variable["Grain radius"].getFinalValue()));
 
                     if (n_bub < 0.0)
                         n_bub = 0.0;
@@ -736,8 +655,7 @@ void Simulation::InterGranularBubbleBehavior()
                 }
             }
 
-            vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() *
-                   fuel_.getSchottkyVolume();
+            vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * fuel_.getSchottkyVolume();
             sciantix_variable["Intergranular bubble volume"].setFinalValue(vol);
 
             // Grain-boundary bubble radius
@@ -758,9 +676,7 @@ void Simulation::InterGranularBubbleBehavior()
 
             vented_fraction_final =
                 (21.0911 * 1e-2 *
-                 (erf(0.0937 * 100 *
-                          sciantix_variable["Intergranular fractional coverage"].getFinalValue() -
-                      3.7250) +
+                 (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) +
                   1));
             //
             // Other option for the diffusion-based release curve
@@ -771,8 +687,7 @@ void Simulation::InterGranularBubbleBehavior()
             //
 
             release_fraction_final =
-                vented_fraction_final *
-                    sciantix_variable["Intergranular fractional intactness"].getFinalValue() +
+                vented_fraction_final * sciantix_variable["Intergranular fractional intactness"].getFinalValue() +
                 (1 - sciantix_variable["Intergranular fractional intactness"].getFinalValue());
             release_fraction_increment = release_fraction_final - release_fraction_initial;
             if (release_fraction_increment < 0.0)
@@ -784,31 +699,23 @@ void Simulation::InterGranularBubbleBehavior()
             {
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
-                    sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-                        solver.Integrator(
-                            (1 - release_fraction_increment) *
-                                sciantix_variable[system.getGasName() + " at grain boundary"]
-                                    .getFinalValue(),
-                            -release_fraction_final,
+                    sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(solver.Integrator(
+                        (1 - release_fraction_increment) *
+                            sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue(),
+                        -release_fraction_final,
 
-                            sciantix_variable[system.getGasName() + " at grain boundary"]
-                                .getIncrement()));
+                        sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement()));
 
-                    if (sciantix_variable[system.getGasName() + " at grain boundary"]
-                            .getFinalValue() < 0.0)
-                        sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-                            0.0);
+                    if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
+                        sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
 
-                    sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"]
-                        .setFinalValue(
-                            sciantix_variable[system.getGasName() + " at grain boundary"]
-                                .getFinalValue() /
-                            (sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
-                             (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+                    sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].setFinalValue(
+                        sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() /
+                        (sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
+                         (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
 
-                    n_at += sciantix_variable["Intergranular " + system.getGasName() +
-                                              " atoms per bubble"]
-                                .getFinalValue();
+                    n_at +=
+                        sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue();
                 }
             }
             sciantix_variable["Intergranular atoms per bubble"].setFinalValue(n_at);
