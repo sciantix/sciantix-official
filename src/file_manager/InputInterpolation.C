@@ -16,8 +16,7 @@
 
 #include "InputInterpolation.h"
 
-double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy,
-                          unsigned short int n)
+double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy, unsigned short int n)
 {
     double           y;
     signed short int interval_low, interval_upp, interval_med, i;

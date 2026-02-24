@@ -73,16 +73,12 @@ void Simulation::StoichiometryDeviation()
             reference += " : Carter and Lay, J. Nucl. Mater., 36:77-86, Cox et al. NUREG/CP-0078 "
                          "(1986), U.S. NRC.";
 
-            double surface_exchange_coefficient =
-                0.365 * exp(-23500 / history_variable["Temperature"].getFinalValue());
-            double decay_rate = surface_exchange_coefficient *
-                                sqrt(history_variable["Steam pressure"].getFinalValue()) *
-                                surface_to_volume;
+            double surface_exchange_coefficient = 0.365 * exp(-23500 / history_variable["Temperature"].getFinalValue());
+            double decay_rate                   = surface_exchange_coefficient *
+                                sqrt(history_variable["Steam pressure"].getFinalValue()) * surface_to_volume;
             double source_rate =
-                surface_exchange_coefficient *
-                sqrt(history_variable["Steam pressure"].getFinalValue()) *
-                sciantix_variable["Equilibrium stoichiometry deviation"].getFinalValue() *
-                surface_to_volume;
+                surface_exchange_coefficient * sqrt(history_variable["Steam pressure"].getFinalValue()) *
+                sciantix_variable["Equilibrium stoichiometry deviation"].getFinalValue() * surface_to_volume;
 
             parameter.push_back(decay_rate);
             parameter.push_back(source_rate);
@@ -117,20 +113,15 @@ void Simulation::StoichiometryDeviation()
          */
         case 2:
         {
-            reference +=
-                " : Carter and Lay, J. Nucl. Mater., 36:77-86, 1970. Bittel et al., J. Amer. "
-                "Ceram. Soc., 52:446-451, 1969.";
+            reference += " : Carter and Lay, J. Nucl. Mater., 36:77-86, 1970. Bittel et al., J. Amer. "
+                         "Ceram. Soc., 52:446-451, 1969.";
 
-            double surface_exchange_coefficient =
-                0.194 * exp(-19900 / history_variable["Temperature"].getFinalValue());
-            double decay_rate = surface_exchange_coefficient *
-                                sqrt(history_variable["Steam pressure"].getFinalValue()) *
-                                (surface_to_volume);
+            double surface_exchange_coefficient = 0.194 * exp(-19900 / history_variable["Temperature"].getFinalValue());
+            double decay_rate                   = surface_exchange_coefficient *
+                                sqrt(history_variable["Steam pressure"].getFinalValue()) * (surface_to_volume);
             double source_rate =
-                surface_exchange_coefficient *
-                sqrt(history_variable["Steam pressure"].getFinalValue()) *
-                sciantix_variable["Equilibrium stoichiometry deviation"].getFinalValue() *
-                (surface_to_volume);
+                surface_exchange_coefficient * sqrt(history_variable["Steam pressure"].getFinalValue()) *
+                sciantix_variable["Equilibrium stoichiometry deviation"].getFinalValue() * (surface_to_volume);
 
             parameter.push_back(decay_rate);
             parameter.push_back(source_rate);
@@ -168,16 +159,12 @@ void Simulation::StoichiometryDeviation()
             reference += " : Carter and Lay, J. Nucl. Mater., 36:77-86, 1970. Abrefah, JNM., "
                          "208:98-110, 1994.";
 
-            double surface_exchange_coefficient =
-                0.382 * exp(-22080 / history_variable["Temperature"].getFinalValue());
-            double decay_rate = surface_exchange_coefficient *
-                                sqrt(history_variable["Steam pressure"].getFinalValue()) *
-                                (surface_to_volume);
+            double surface_exchange_coefficient = 0.382 * exp(-22080 / history_variable["Temperature"].getFinalValue());
+            double decay_rate                   = surface_exchange_coefficient *
+                                sqrt(history_variable["Steam pressure"].getFinalValue()) * (surface_to_volume);
             double source_rate =
-                surface_exchange_coefficient *
-                sqrt(history_variable["Steam pressure"].getFinalValue()) *
-                sciantix_variable["Equilibrium stoichiometry deviation"].getFinalValue() *
-                (surface_to_volume);
+                surface_exchange_coefficient * sqrt(history_variable["Steam pressure"].getFinalValue()) *
+                sciantix_variable["Equilibrium stoichiometry deviation"].getFinalValue() * (surface_to_volume);
 
             parameter.push_back(decay_rate);
             parameter.push_back(source_rate);
@@ -210,20 +197,16 @@ void Simulation::StoichiometryDeviation()
          */
         case 4:
         {
-            reference +=
-                " : Carter and Lay, J. Nucl. Mater., 36:77-86, 1970. Imamura and. Une, JNM, "
-                "247:131-137, 1997.";
+            reference += " : Carter and Lay, J. Nucl. Mater., 36:77-86, 1970. Imamura and. Une, JNM, "
+                         "247:131-137, 1997.";
 
             double surface_exchange_coefficient =
                 0.000341 * exp(-15876 / history_variable["Temperature"].getFinalValue());
             double decay_rate = surface_exchange_coefficient *
-                                sqrt(history_variable["Steam pressure"].getFinalValue() / 0.12) *
-                                surface_to_volume;
+                                sqrt(history_variable["Steam pressure"].getFinalValue() / 0.12) * surface_to_volume;
             double source_rate =
-                surface_exchange_coefficient *
-                sqrt(history_variable["Steam pressure"].getFinalValue() / 0.12) *
-                sciantix_variable["Equilibrium stoichiometry deviation"].getFinalValue() *
-                surface_to_volume;
+                surface_exchange_coefficient * sqrt(history_variable["Steam pressure"].getFinalValue() / 0.12) *
+                sciantix_variable["Equilibrium stoichiometry deviation"].getFinalValue() * surface_to_volume;
 
             parameter.push_back(decay_rate);
             parameter.push_back(source_rate);
@@ -256,25 +239,20 @@ void Simulation::StoichiometryDeviation()
             reference += " : Massih, A. R. UO2 fuel oxidation and fission gas release. Swedish "
                          "Radiation Safety Authority report, Report 2018 (2018): 25";
 
-            double k_star  = 1e4 * exp(-21253.0 / history_variable["Temperature"].getFinalValue() -
-                                       2.43);  // (mol/m2 s)
+            double k_star = 1e4 * exp(-21253.0 / history_variable["Temperature"].getFinalValue() - 2.43);  // (mol/m2 s)
             double tau_inv = k_star * (surface_to_volume) / 8.0e4;
             double s       = 0.023;
-            double ka = 1.0e13 * exp(-21557.0 / history_variable["Temperature"].getFinalValue());
-            double B = s / sqrt(2 * M_PI * 8.314 * history_variable["Temperature"].getFinalValue() *
-                                0.018);
-            double A = 1.0135e5 * B / (1.66e-6 * ka);  // (1/atm)
-            double theta = A * history_variable["Steam pressure"].getFinalValue() * 1.013e5 /
+            double ka      = 1.0e13 * exp(-21557.0 / history_variable["Temperature"].getFinalValue());
+            double B       = s / sqrt(2 * M_PI * 8.314 * history_variable["Temperature"].getFinalValue() * 0.018);
+            double A       = 1.0135e5 * B / (1.66e-6 * ka);  // (1/atm)
+            double theta   = A * history_variable["Steam pressure"].getFinalValue() * 1.013e5 /
                            (1 + A * history_variable["Steam pressure"].getFinalValue() * 1.013e5);
-            double gamma = sqrt(
-                exp(-32700.0 / history_variable["Temperature"].getFinalValue() + 9.92) * 1.013e5);
+            double gamma = sqrt(exp(-32700.0 / history_variable["Temperature"].getFinalValue() + 9.92) * 1.013e5);
             double rad_c = sqrt(0.0004);
             double beta;
 
             if (sciantix_variable["Gap oxygen partial pressure"].getFinalValue() > 0.0)
-                beta = rad_c * gamma /
-                       sqrt(sciantix_variable["Gap oxygen partial pressure"].getFinalValue() *
-                            1.013e5);
+                beta = rad_c * gamma / sqrt(sciantix_variable["Gap oxygen partial pressure"].getFinalValue() * 1.013e5);
             else
                 beta = 0.0;
 
@@ -319,25 +297,20 @@ void Simulation::StoichiometryDeviation()
 
             surface_to_volume = 225;
 
-            double k_star  = 1e4 * exp(-21253.0 / history_variable["Temperature"].getFinalValue() -
-                                       2.43);  // (mol/m2 s)
+            double k_star = 1e4 * exp(-21253.0 / history_variable["Temperature"].getFinalValue() - 2.43);  // (mol/m2 s)
             double tau_inv = k_star * (surface_to_volume) / 8.0e4;
             double s       = 0.023;
-            double ka = 1.0e13 * exp(-21557.0 / history_variable["Temperature"].getFinalValue());
-            double B = s / sqrt(2 * M_PI * 8.314 * history_variable["Temperature"].getFinalValue() *
-                                0.018);
-            double A = 1.0135e5 * B / (1.66e-6 * ka);  // (1/atm)
-            double theta = A * history_variable["Steam pressure"].getFinalValue() * 1.013e5 /
+            double ka      = 1.0e13 * exp(-21557.0 / history_variable["Temperature"].getFinalValue());
+            double B       = s / sqrt(2 * M_PI * 8.314 * history_variable["Temperature"].getFinalValue() * 0.018);
+            double A       = 1.0135e5 * B / (1.66e-6 * ka);  // (1/atm)
+            double theta   = A * history_variable["Steam pressure"].getFinalValue() * 1.013e5 /
                            (1 + A * history_variable["Steam pressure"].getFinalValue() * 1.013e5);
-            double gamma = sqrt(
-                exp(-32700.0 / history_variable["Temperature"].getFinalValue() + 9.92) * 1.013e5);
+            double gamma = sqrt(exp(-32700.0 / history_variable["Temperature"].getFinalValue() + 9.92) * 1.013e5);
             double rad_c = sqrt(0.0004);
             double beta;
 
             if (sciantix_variable["Gap oxygen partial pressure"].getFinalValue() > 0)
-                beta = rad_c * gamma /
-                       sqrt(sciantix_variable["Gap oxygen partial pressure"].getFinalValue() *
-                            1.013e5);
+                beta = rad_c * gamma / sqrt(sciantix_variable["Gap oxygen partial pressure"].getFinalValue() * 1.013e5);
             else
                 beta = 0.0;
 
@@ -355,8 +328,8 @@ void Simulation::StoichiometryDeviation()
         }
 
         default:
-            ErrorMessages::Switch(__FILE__, "iStoichiometryDeviation",
-                                  int(input_variable["iStoichiometryDeviation"].getValue()));
+            ErrorMessages::Switch(
+                __FILE__, "iStoichiometryDeviation", int(input_variable["iStoichiometryDeviation"].getValue()));
             break;
     }
 
@@ -382,14 +355,15 @@ void Simulation::StoichiometryDeviation()
     }
 
     else if (input_variable["iStoichiometryDeviation"].getValue() > 4)
-        sciantix_variable["Stoichiometry deviation"].setFinalValue(solver.NewtonLangmuirBasedModel(
-            sciantix_variable["Stoichiometry deviation"].getInitialValue(),
-            model["Stoichiometry deviation"].getParameter(),
-            physics_variable["Time step"].getFinalValue()));
+        sciantix_variable["Stoichiometry deviation"].setFinalValue(
+            solver.NewtonLangmuirBasedModel(sciantix_variable["Stoichiometry deviation"].getInitialValue(),
+                                            model["Stoichiometry deviation"].getParameter(),
+                                            physics_variable["Time step"].getFinalValue()));
 
-    sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(BlackburnThermochemicalModel(
-        sciantix_variable["Stoichiometry deviation"].getFinalValue(),
-        history_variable["Temperature"].getFinalValue(), sciantix_variable));
+    sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
+        BlackburnThermochemicalModel(sciantix_variable["Stoichiometry deviation"].getFinalValue(),
+                                     history_variable["Temperature"].getFinalValue(),
+                                     sciantix_variable));
 
     // Fuel oxygen potential
     if (sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() == 0.0)
@@ -400,12 +374,12 @@ void Simulation::StoichiometryDeviation()
             log(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() / 0.1013));
 }
 
-double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature,
+double BlackburnThermochemicalModel(double                           stoichiometry_deviation,
+                                    double                           temperature,
                                     SciantixArray<SciantixVariable>& sciantix_variable)
 {
-    double ln_p = 2.0 * log(stoichiometry_deviation * (2.0 + stoichiometry_deviation) /
-                            (1.0 - stoichiometry_deviation)) +
-                  108.0 * pow(sciantix_variable["Stoichiometry deviation"].getFinalValue(), 2.0) -
-                  32700.0 / temperature + 9.92;
+    double ln_p =
+        2.0 * log(stoichiometry_deviation * (2.0 + stoichiometry_deviation) / (1.0 - stoichiometry_deviation)) +
+        108.0 * pow(sciantix_variable["Stoichiometry deviation"].getFinalValue(), 2.0) - 32700.0 / temperature + 9.92;
     return exp(ln_p);
 }

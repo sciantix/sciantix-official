@@ -16,8 +16,10 @@
 
 #include "Initialization.h"
 
-void Initialization(double Sciantix_history[], double Sciantix_variables[],
-                    double Sciantix_diffusion_modes[], std::vector<double> Temperature_input,
+void Initialization(double              Sciantix_history[],
+                    double              Sciantix_variables[],
+                    double              Sciantix_diffusion_modes[],
+                    std::vector<double> Temperature_input,
                     std::vector<double> Fissionrate_input,
                     std::vector<double> Hydrostaticstress_input,
                     std::vector<double> Steampressure_input)
@@ -142,11 +144,9 @@ void Initialization(double Sciantix_history[], double Sciantix_variables[],
                     Sciantix_diffusion_modes[k * n_modes + n] = 0;
                 np1                  = n + 1;
                 const double n_coeff = pow(-1.0, np1) / np1;
-                Sciantix_diffusion_modes[k * n_modes + n] +=
-                    projection_coeff * n_coeff * projection_remainder;
-                reconstructed_solution += projection_coeff * n_coeff *
-                                          Sciantix_diffusion_modes[k * n_modes + n] * 3.0 /
-                                          (4.0 * M_PI);
+                Sciantix_diffusion_modes[k * n_modes + n] += projection_coeff * n_coeff * projection_remainder;
+                reconstructed_solution +=
+                    projection_coeff * n_coeff * Sciantix_diffusion_modes[k * n_modes + n] * 3.0 / (4.0 * M_PI);
             }
             projection_remainder = initial_condition - reconstructed_solution;
         }
