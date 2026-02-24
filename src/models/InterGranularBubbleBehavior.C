@@ -782,7 +782,7 @@ void Simulation::InterGranularBubbleBehavior()
 
             for (auto& system : sciantix_system)
             {
-                if (system.getRestructuredMatrix() == 0)
+                if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
                     sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
                         solver.Integrator(
@@ -798,13 +798,16 @@ void Simulation::InterGranularBubbleBehavior()
                         sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
                             0.0);
 
-                    if (system.getGas().getDecayRate() == 0.0)
-                    {  
-                        sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].setFinalValue(
-                                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() /
-                                (sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
-                                (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
-                        n_at += sciantix_variable["Intergranular " + system.getGasName() +  " atoms per bubble"].getFinalValue();                    }
+                    sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"]
+                        .setFinalValue(
+                            sciantix_variable[system.getGasName() + " at grain boundary"]
+                                .getFinalValue() /
+                            (sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
+                             (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+
+                    n_at += sciantix_variable["Intergranular " + system.getGasName() +
+                                              " atoms per bubble"]
+                                .getFinalValue();
                 }
             }
             sciantix_variable["Intergranular atoms per bubble"].setFinalValue(n_at);
