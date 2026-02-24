@@ -15,16 +15,17 @@ IndentWidth: 4
 TabWidth: 4
 UseTab: Never
 ContinuationIndentWidth: 4
-ColumnLimit: 100
+ColumnLimit: 120
 IndentCaseLabels: true
 SpaceBeforeParens: ControlStatements
 SpaceAfterCStyleCast: false
 SpacesBeforeTrailingComments: 2
 AlignTrailingComments: true
+AlignAfterOpenBracket: Align
 
 # ---- Braces & Layout ----
 BreakBeforeBraces: Allman
-AllowShortFunctionsOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: None
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
 AllowShortBlocksOnASingleLine: false
@@ -34,6 +35,11 @@ AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
 AlignOperands: true
 AlignEscapedNewlines: Left
+
+# ---- Parameters & Functions ----
+BinPackParameters: false
+BinPackArguments: false
+AlwaysBreakAfterReturnType: None
 
 # ---- Includes ----
 SortIncludes: true
@@ -49,6 +55,7 @@ IncludeCategories:
 # ---- Namespaces ----
 NamespaceIndentation: All
 CompactNamespaces: false
+FixNamespaceComments: true
 
 # ---- Comments ----
 ReflowComments: true
