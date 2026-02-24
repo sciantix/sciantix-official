@@ -98,6 +98,40 @@ def main():
     # plot
     parity_plot(exp_arr, gold_arr, test_arr, "white_swelling", "White – intergranular swelling (%)", outdir)
 
+    # ------------------------------------------------------------
+    # Statistical analysis
+    # ------------------------------------------------------------
+    print("\n" + "="*50)
+    print("STATISTICAL ANALYSIS")
+    print("="*50)
+
+    error_test = test_arr - exp_arr
+    error_gold = gold_arr - exp_arr
+
+    # Experimental data
+    print(f"Experimental data - mean:   {np.mean(exp_arr):.4f}")
+    print(f"Experimental data - median: {np.median(exp_arr):.4f}")
+    print(f"Experimental data - Q1:     {np.percentile(exp_arr, 25, method='midpoint'):.4f}")
+    print(f"Experimental data - Q3:     {np.percentile(exp_arr, 75, method='midpoint'):.4f}")
+    print("-" * 30)
+
+    # Current results (test)
+    print(f"Current SCIANTIX  - mean:   {np.mean(test_arr):.4f}")
+    print(f"Current SCIANTIX  - median: {np.median(test_arr):.4f}")
+    print(f"Current SCIANTIX  - Q1:     {np.percentile(test_arr, 25, method='midpoint'):.4f}")
+    print(f"Current SCIANTIX  - Q3:     {np.percentile(test_arr, 75, method='midpoint'):.4f}")
+    print(f"Current SCIANTIX  - BIAS:   {np.median(error_test):.4f}")
+    print(f"Current SCIANTIX  - RMSE:   {np.sqrt(np.mean(error_test**2)):.4f}")
+    print(f"Current SCIANTIX  - MAD:    {np.median(np.abs(error_test)):.4f}")
+    print("-" * 30)
+
+    # Gold results
+    print(f"Gold (reference)  - mean:   {np.mean(gold_arr):.4f}")
+    print(f"Gold (reference)  - median: {np.median(gold_arr):.4f}")
+    print(f"Gold (reference)  - MAD:    {np.median(np.abs(error_gold)):.4f}")
+    print(f"Gold (reference)  - RMSE:   {np.sqrt(np.mean(error_gold**2)):.4f}")
+    print("="*50 + "\n")
+
 
 if __name__ == "__main__":
     main()

@@ -615,14 +615,14 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
     # Experimental data: mean, median, ...
     print(f"Experimental data - mean: ", np.mean(gbSwellingWhite))
     print(f"Experimental data - median: ", np.median(gbSwellingWhite))
-    print(f"Experimental data - Q1: ", np.percentile(gbSwellingWhite, 25, interpolation = 'midpoint'))
-    print(f"Experimental data - Q3: ", np.percentile(gbSwellingWhite, 75, interpolation = 'midpoint'))
+    print(f"Experimental data - Q1: ", np.percentile(gbSwellingWhite, 25, method = 'midpoint'))
+    print(f"Experimental data - Q3: ", np.percentile(gbSwellingWhite, 75, method = 'midpoint'))
 
     # SCIANTIX 1.0: mean, median, ...
     print(f"SCIANTIX 1.0 - mean: ", np.mean(gbSwelling1))
     print(f"SCIANTIX 1.0 - median: ", np.median(gbSwelling1))
-    print(f"SCIANTIX 1.0 - Q1: ", np.percentile(gbSwelling1, 25, interpolation = 'midpoint'))
-    print(f"SCIANTIX 1.0 - Q3: ", np.percentile(gbSwelling1, 75, interpolation = 'midpoint'))
+    print(f"SCIANTIX 1.0 - Q1: ", np.percentile(gbSwelling1, 25, method = 'midpoint'))
+    print(f"SCIANTIX 1.0 - Q3: ", np.percentile(gbSwelling1, 75, method = 'midpoint'))
     print(f"SCIANTIX 1.0 - Standard error: {np.std(gbSwelling1, ddof=0) / len(gbSwelling1)}")
     print(f"SCIANTIX 1.0 - 95% CI: {np.mean(gbSwelling1) - 1.96 * np.std(gbSwelling1, ddof=0) / len(gbSwelling1)}, {np.mean(gbSwelling1) + 1.96 * np.std(gbSwelling1, ddof=0) / len(gbSwelling1)}")
     print(f"SCIANTIX 1.0 - BIAS median: ", np.median(error1))
@@ -630,8 +630,8 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
     # SCIANTIX 2.0: mean and median
     print(f"SCIANTIX 2.0 - mean: ", np.mean(gbSwelling2))
     print(f"SCIANTIX 2.0 - median: ", np.median(gbSwelling2))
-    print(f"SCIANTIX 2.0 - Q1: ", np.percentile(gbSwelling2, 25, interpolation = 'midpoint'))
-    print(f"SCIANTIX 2.0 - Q3: ", np.percentile(gbSwelling2, 75, interpolation = 'midpoint'))
+    print(f"SCIANTIX 2.0 - Q1: ", np.percentile(gbSwelling2, 25, method = 'midpoint'))
+    print(f"SCIANTIX 2.0 - Q3: ", np.percentile(gbSwelling2, 75, method = 'midpoint'))
     print(f"SCIANTIX 2.0 - Standard error: {np.std(gbSwelling2, ddof=0) / len(gbSwelling2)}")
     print(f"SCIANTIX 2.0 - 95% CI: {np.mean(gbSwelling2) - 1.96 * np.std(gbSwelling2, ddof=0) / len(gbSwelling2)}, {np.mean(gbSwelling2) + 1.96 * np.std(gbSwelling2, ddof=0) / len(gbSwelling2)}")
     print(f"SCIANTIX 2.0 - BIAS median: ", np.median(error2))
