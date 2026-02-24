@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -19,16 +19,15 @@
 void Simulation::GasDecay()
 {
     // Model declaration
-    for (auto &system : sciantix_system)
+    for (auto& system : sciantix_system)
     {
         if (system.getGas().getDecayRate() > 0.0 && system.getRestructuredMatrix() == 0)
         {
-            sciantix_variable[system.getGasName() + " decayed"].setFinalValue(
-                solver.Decay(
-                    sciantix_variable[system.getGasName() + " decayed"].getInitialValue(),
-                    system.getGas().getDecayRate(),
-                    system.getGas().getDecayRate() * sciantix_variable[system.getGasName() + " produced"].getFinalValue(),
-                    physics_variable["Time step"].getFinalValue()));
+            sciantix_variable[system.getGasName() + " decayed"].setFinalValue(solver.Decay(
+                sciantix_variable[system.getGasName() + " decayed"].getInitialValue(),
+                system.getGas().getDecayRate(),
+                system.getGas().getDecayRate() * sciantix_variable[system.getGasName() + " produced"].getFinalValue(),
+                physics_variable["Time step"].getFinalValue()));
         }
     }
 }

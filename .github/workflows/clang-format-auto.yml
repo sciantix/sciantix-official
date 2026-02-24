@@ -1,0 +1,36 @@
+name: Auto Format SCIANTIX Code
+
+on:
+  push:
+
+jobs:
+  clang-format-fix:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install clang-format
+        run: sudo apt-get update && sudo apt-get install -y clang-format
+
+      - name: Format C++ code
+        run: |
+          echo "Formatting SCIANTIX code..."
+          clang-format -i $(find src include -name "*.C" -o -name "*.h")
+
+      - name: Commit formatted code
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          if ! git diff --exit-code; then
+            git add .
+            git commit -m "Auto-format: apply clang-format"
+            git push
+          else
+            echo "Code already properly formatted."
+          fi
