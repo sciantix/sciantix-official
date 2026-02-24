@@ -79,12 +79,24 @@ int main(int argc, char** argv)
         }
     }
 
-    InputReading(Sciantix_options, Sciantix_variables, Sciantix_scaling_factors,
-                 Input_history_points, Time_input, Temperature_input, Fissionrate_input,
-                 Hydrostaticstress_input, Steampressure_input, Time_end_h, Time_end_s);
+    InputReading(Sciantix_options,
+                 Sciantix_variables,
+                 Sciantix_scaling_factors,
+                 Input_history_points,
+                 Time_input,
+                 Temperature_input,
+                 Fissionrate_input,
+                 Hydrostaticstress_input,
+                 Steampressure_input,
+                 Time_end_h,
+                 Time_end_s);
 
-    Initialization(Sciantix_history, Sciantix_variables, Sciantix_diffusion_modes,
-                   Temperature_input, Fissionrate_input, Hydrostaticstress_input,
+    Initialization(Sciantix_history,
+                   Sciantix_variables,
+                   Sciantix_diffusion_modes,
+                   Temperature_input,
+                   Fissionrate_input,
+                   Hydrostaticstress_input,
                    Steampressure_input);
 
     std::string outputPath = TestPath + "output.txt";
@@ -98,27 +110,22 @@ int main(int argc, char** argv)
     while (Time_h <= Time_end_h)
     {
         Sciantix_history[0] = Sciantix_history[1];
-        Sciantix_history[1] =
-            InputInterpolation(Time_h, Time_input, Temperature_input, Input_history_points);
+        Sciantix_history[1] = InputInterpolation(Time_h, Time_input, Temperature_input, Input_history_points);
         Sciantix_history[2] = Sciantix_history[3];
-        Sciantix_history[3] =
-            InputInterpolation(Time_h, Time_input, Fissionrate_input, Input_history_points);
+        Sciantix_history[3] = InputInterpolation(Time_h, Time_input, Fissionrate_input, Input_history_points);
         if (Sciantix_history[3] < 0.0)
             Sciantix_history[3] = 0.0;
-        Sciantix_history[4] = Sciantix_history[5];
-        Sciantix_history[5] =
-            InputInterpolation(Time_h, Time_input, Hydrostaticstress_input, Input_history_points);
-        Sciantix_history[7] = Time_h;
-        Sciantix_history[8] = static_cast<double>(Time_step_number);
-        Sciantix_history[9] = Sciantix_history[10];
-        Sciantix_history[10] =
-            InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
+        Sciantix_history[4]  = Sciantix_history[5];
+        Sciantix_history[5]  = InputInterpolation(Time_h, Time_input, Hydrostaticstress_input, Input_history_points);
+        Sciantix_history[7]  = Time_h;
+        Sciantix_history[8]  = static_cast<double>(Time_step_number);
+        Sciantix_history[9]  = Sciantix_history[10];
+        Sciantix_history[10] = InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
 
-        Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors,
-                 Sciantix_diffusion_modes);
+        Sciantix(
+            Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
 
-        dTime_h             = TimeStepCalculation(Input_history_points, Time_h, Time_input,
-                                                  Number_of_time_steps_per_interval);
+        dTime_h = TimeStepCalculation(Input_history_points, Time_h, Time_input, Number_of_time_steps_per_interval);
         Sciantix_history[6] = dTime_h * 3600;
 
         if (Time_h < Time_end_h)
@@ -141,7 +148,6 @@ int main(int argc, char** argv)
 
 void logExecutionTime(double timer, int time_step_number, std::ofstream& Execution_file)
 {
-    Execution_file << std::setprecision(12) << std::scientific << timer << "\t" << CLOCKS_PER_SEC
-                   << "\t" << (double)timer * CLOCKS_PER_SEC << "\t" << time_step_number
-                   << std::endl;
+    Execution_file << std::setprecision(12) << std::scientific << timer << "\t" << CLOCKS_PER_SEC << "\t"
+                   << (double)timer * CLOCKS_PER_SEC << "\t" << time_step_number << std::endl;
 }

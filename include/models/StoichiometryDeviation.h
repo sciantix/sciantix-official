@@ -27,7 +27,8 @@
  *
  */
 
-double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature,
+double BlackburnThermochemicalModel(double                           stoichiometry_deviation,
+                                    double                           temperature,
                                     SciantixArray<SciantixVariable>& sciantix_variable);
 
 #endif  // STOICHIOMETRY_DEVIATION_H

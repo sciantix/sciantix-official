@@ -133,12 +133,16 @@ class Gas : virtual public Material
     /**
      * @brief Constructor
      */
-    Gas() {}
+    Gas()
+    {
+    }
 
     /**
      * @brief Destructor
      */
-    ~Gas() {}
+    ~Gas()
+    {
+    }
 };
 
 #endif  // GAS_H

@@ -29,12 +29,14 @@ Simulation* Simulation::getInstance()
     return instance;
 }
 
-void Simulation::initialize(int Sciantix_options[], double Sciantix_history[],
-                            double Sciantix_variables[], double Sciantix_scaling_factors[],
+void Simulation::initialize(int    Sciantix_options[],
+                            double Sciantix_history[],
+                            double Sciantix_variables[],
+                            double Sciantix_scaling_factors[],
                             double Sciantix_diffusion_modes[])
 {
-    setVariables(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors,
-                 Sciantix_diffusion_modes);
+    setVariables(
+        Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
     setGas();
     setMatrix();
     setSystem();

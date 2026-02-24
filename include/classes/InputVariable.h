@@ -63,12 +63,16 @@ class InputVariable : virtual public Variable
     /**
      * @brief Constructor
      */
-    InputVariable() {}
+    InputVariable()
+    {
+    }
 
     /**
      * @brief Destructor
      */
-    ~InputVariable() {}
+    ~InputVariable()
+    {
+    }
 
   protected:
     double value;

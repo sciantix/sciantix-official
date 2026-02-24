@@ -60,7 +60,8 @@ void Simulation::HighBurnupStructureFormation()
         }
 
         default:
-            ErrorMessages::Switch(__FILE__, "iHighBurnupStructureFormation",
+            ErrorMessages::Switch(__FILE__,
+                                  "iHighBurnupStructureFormation",
                                   int(input_variable["iHighBurnupStructureFormation"].getValue()));
             break;
     }
@@ -77,7 +78,9 @@ void Simulation::HighBurnupStructureFormation()
                          model["High-burnup structure formation"].getParameter().at(1) *
                          pow(sciantix_variable["Effective burnup"].getFinalValue(), 2.54);
 
-    sciantix_variable["Restructured volume fraction"].setFinalValue(solver.Decay(
-        sciantix_variable["Restructured volume fraction"].getInitialValue(), coefficient,
-        coefficient, sciantix_variable["Effective burnup"].getIncrement()));
+    sciantix_variable["Restructured volume fraction"].setFinalValue(
+        solver.Decay(sciantix_variable["Restructured volume fraction"].getInitialValue(),
+                     coefficient,
+                     coefficient,
+                     sciantix_variable["Effective burnup"].getIncrement()));
 }

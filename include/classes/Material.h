@@ -31,12 +31,16 @@ class Material
     /**
      * Constructor
      */
-    Material() {}
+    Material()
+    {
+    }
 
     /**
      * Destructor
      */
-    ~Material() {}
+    ~Material()
+    {
+    }
 
     /**
      * @brief Sets the name of the material.

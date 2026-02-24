@@ -44,8 +44,11 @@
  * @author F. Bastien
  *
  */
-void SetVariables(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[],
-                  double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[],
+void SetVariables(int                              Sciantix_options[],
+                  double                           Sciantix_history[],
+                  double                           Sciantix_variables[],
+                  double                           Sciantix_scaling_factors[],
+                  double                           Sciantix_diffusion_modes[],
                   SciantixArray<InputVariable>&    input_variable,
                   SciantixArray<SciantixVariable>& history_variable,
                   SciantixArray<SciantixVariable>& sciantix_variable,
