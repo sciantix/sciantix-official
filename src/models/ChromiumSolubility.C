@@ -29,16 +29,13 @@ void Simulation::ChromiumSolubility()
     const double Oxigen_chemical_potential_0K = -479070;  //(J/mol)
     double       Oxigen_chemical_potential_Cr2O3 =
         Oxigen_chemical_potential_0K +
-        calorie * temperature *
-            (8.86 * log10(temperature) - 4.42 + 9.152 * log10(2.4 / 100));  // (J/mol)
+        calorie * temperature * (8.86 * log10(temperature) - 4.42 + 9.152 * log10(2.4 / 100));  // (J/mol)
     double Oxigen_chemical_potential_Cr =
         Oxigen_chemical_potential_0K +
-        calorie * temperature *
-            (8.86 * log10(temperature) - 4.42 + 9.152 * log10(1.017 / 100));  // (J/mol)
+        calorie * temperature * (8.86 * log10(temperature) - 4.42 + 9.152 * log10(1.017 / 100));  // (J/mol)
     double log10_Oxigen_pressure_Cr203 =
-        Oxigen_chemical_potential_Cr2O3 / (gas_constant * temperature * log(10));  // (bar)
-    double log10_Oxigen_pressure_Cr =
-        Oxigen_chemical_potential_Cr / (gas_constant * temperature * log(10));  // (bar)
+        Oxigen_chemical_potential_Cr2O3 / (gas_constant * temperature * log(10));                             // (bar)
+    double log10_Oxigen_pressure_Cr = Oxigen_chemical_potential_Cr / (gas_constant * temperature * log(10));  // (bar)
 
     // Values for metal phase
     double V_coeff_Cr_ht  = 0;
@@ -94,8 +91,8 @@ void Simulation::ChromiumSolubility()
         }
 
         default:
-            ErrorMessages::Switch("ChromiumSolubility.C", "iChromiumSolubility",
-                                  int(input_variable["iChromiumSolubility"].getValue()));
+            ErrorMessages::Switch(
+                "ChromiumSolubility.C", "iChromiumSolubility", int(input_variable["iChromiumSolubility"].getValue()));
             break;
     }
 
@@ -108,42 +105,39 @@ void Simulation::ChromiumSolubility()
     double Cr_solubility;
 
     // routine to calculate the molar mass of Uranium
-    double conv_fact =
-        sciantix_variable["Fuel density"].getFinalValue() * avogadro_number * 10 * 0.8815 *
-        100;  // to move from atoms/m3 to percentage in atoms (see Initialization.cpp)
-    double molar_mass_Uranium =
-        sciantix_variable["U234"].getFinalValue() / conv_fact * pow(234.04095, 2) +
-        sciantix_variable["U235"].getFinalValue() / conv_fact * pow(235.04393, 2) +
-        sciantix_variable["U236"].getFinalValue() / conv_fact * pow(236.04557, 2) +
-        sciantix_variable["U237"].getFinalValue() / conv_fact * pow(237.04873, 2) +
-        sciantix_variable["U238"].getFinalValue() / conv_fact * pow(238.05079, 2);
+    double conv_fact = sciantix_variable["Fuel density"].getFinalValue() * avogadro_number * 10 * 0.8815 *
+                       100;  // to move from atoms/m3 to percentage in atoms (see Initialization.cpp)
+    double molar_mass_Uranium = sciantix_variable["U234"].getFinalValue() / conv_fact * pow(234.04095, 2) +
+                                sciantix_variable["U235"].getFinalValue() / conv_fact * pow(235.04393, 2) +
+                                sciantix_variable["U236"].getFinalValue() / conv_fact * pow(236.04557, 2) +
+                                sciantix_variable["U237"].getFinalValue() / conv_fact * pow(237.04873, 2) +
+                                sciantix_variable["U238"].getFinalValue() / conv_fact * pow(238.05079, 2);
 
     if (temperature < threshold_temp)
     {
-        Cr_solubility = pow(10, p_stoichiometry_Cr * log10_Oxigen_pressure_Cr + V_coeff_Cr_lt +
-                                    U_coeff_Cr_lt / temperature);  //(molar Cr solubility)
-        Cr_solubility =
-            100 * Cr_solubility * molar_mass_Chromium /
-            ((1 - Cr_solubility) * molar_mass_Uranium + Cr_solubility * molar_mass_Chromium +
-             2 * molar_mass_Oxygen);  //(% weight Cr /UO2)
+        Cr_solubility = pow(10,
+                            p_stoichiometry_Cr * log10_Oxigen_pressure_Cr + V_coeff_Cr_lt +
+                                U_coeff_Cr_lt / temperature);  //(molar Cr solubility)
+        Cr_solubility = 100 * Cr_solubility * molar_mass_Chromium /
+                        ((1 - Cr_solubility) * molar_mass_Uranium + Cr_solubility * molar_mass_Chromium +
+                         2 * molar_mass_Oxygen);  //(% weight Cr /UO2)
     }
     else
     {
-        Cr_solubility = pow(10, p_stoichiometry_Cr * log10_Oxigen_pressure_Cr + V_coeff_Cr_ht +
-                                    U_coeff_Cr_ht / temperature);  //(molar Cr solubility)
-        Cr_solubility =
-            100 * Cr_solubility * molar_mass_Chromium /
-            ((1 - Cr_solubility) * molar_mass_Uranium + Cr_solubility * molar_mass_Chromium +
-             2 * molar_mass_Oxygen);  //(% weight Cr /UO2)
+        Cr_solubility = pow(10,
+                            p_stoichiometry_Cr * log10_Oxigen_pressure_Cr + V_coeff_Cr_ht +
+                                U_coeff_Cr_ht / temperature);  //(molar Cr solubility)
+        Cr_solubility = 100 * Cr_solubility * molar_mass_Chromium /
+                        ((1 - Cr_solubility) * molar_mass_Uranium + Cr_solubility * molar_mass_Chromium +
+                         2 * molar_mass_Oxygen);  //(% weight Cr /UO2)
     }
 
-    double Cr2O3_solubility =
-        pow(10, p_stoichiometry_Cr2O3 * log10_Oxigen_pressure_Cr203 + V_coeff_Cr2O3 +
-                    U_coeff_Cr2O3 / temperature);  //(molar Cr solubility)
-    Cr2O3_solubility =
-        100 * Cr2O3_solubility * molar_mass_Chromium /
-        ((1 - Cr2O3_solubility) * molar_mass_Uranium + Cr2O3_solubility * molar_mass_Chromium +
-         2 * molar_mass_Oxygen);  //(% weight Cr /UO2)
+    double Cr2O3_solubility = pow(10,
+                                  p_stoichiometry_Cr2O3 * log10_Oxigen_pressure_Cr203 + V_coeff_Cr2O3 +
+                                      U_coeff_Cr2O3 / temperature);  //(molar Cr solubility)
+    Cr2O3_solubility        = 100 * Cr2O3_solubility * molar_mass_Chromium /
+                       ((1 - Cr2O3_solubility) * molar_mass_Uranium + Cr2O3_solubility * molar_mass_Chromium +
+                        2 * molar_mass_Oxygen);  //(% weight Cr /UO2)
 
     if (temperature < end_temp)
     {
@@ -153,18 +147,16 @@ void Simulation::ChromiumSolubility()
         Cr2O3_solubility = 0;
 
     // Calculations to get the amount of Cr in weight %
-    double U_content =
-        sciantix_variable["U234"].getFinalValue() + sciantix_variable["U235"].getFinalValue() +
-        sciantix_variable["U236"].getFinalValue() + sciantix_variable["U237"].getFinalValue() +
-        sciantix_variable["U238"].getFinalValue();  // (at U/m3)
+    double U_content = sciantix_variable["U234"].getFinalValue() + sciantix_variable["U235"].getFinalValue() +
+                       sciantix_variable["U236"].getFinalValue() + sciantix_variable["U237"].getFinalValue() +
+                       sciantix_variable["U238"].getFinalValue();  // (at U/m3)
 
     double U_weight   = U_content * molar_mass_Uranium / avogadro_number;     //(g U/m3)
     double O2_weight  = U_content * 2 * molar_mass_Oxygen / avogadro_number;  //(g O2/m3)
     double UO2_weight = U_weight + O2_weight;                                 //(g UO2/m3)
 
-    double Cr_weight =
-        UO2_weight * sciantix_variable["Chromium content"].getFinalValue() * 1e-6;  //(g Cr/m3)
-    double Cr_atoms = Cr_weight * avogadro_number / molar_mass_Chromium;
+    double Cr_weight = UO2_weight * sciantix_variable["Chromium content"].getFinalValue() * 1e-6;  //(g Cr/m3)
+    double Cr_atoms  = Cr_weight * avogadro_number / molar_mass_Chromium;
 
     // moving from weight% to atoms/m3
 
@@ -184,8 +176,7 @@ void Simulation::ChromiumSolubility()
 
     if (sciantix_variable["Burnup"].getFinalValue() <= 30)
         Cr203_fraction =
-            1 - exp(C1 * ((temperature)-C2 +
-                          2000 * (sciantix_variable["Burnup"].getFinalValue() - 30) / 30));
+            1 - exp(C1 * ((temperature)-C2 + 2000 * (sciantix_variable["Burnup"].getFinalValue() - 30) / 30));
 
     if (Cr203_fraction < 0)
     {

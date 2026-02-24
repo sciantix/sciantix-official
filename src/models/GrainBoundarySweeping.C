@@ -59,8 +59,8 @@ void Simulation::GrainBoundarySweeping()
         }
 
         default:
-            ErrorMessages::Switch(__FILE__, "iGrainBoundarySweeping",
-                                  int(input_variable["iGrainBoundarySweeping"].getValue()));
+            ErrorMessages::Switch(
+                __FILE__, "iGrainBoundarySweeping", int(input_variable["iGrainBoundarySweeping"].getValue()));
             break;
     }
 
@@ -75,7 +75,9 @@ void Simulation::GrainBoundarySweeping()
             for (int i = 0; i < n_modes; ++i)
             {
                 modes_initial_conditions[6 * 40 + i] =
-                    solver.Decay(modes_initial_conditions[6 * 40 + i], 1.0, 0.0,
+                    solver.Decay(modes_initial_conditions[6 * 40 + i],
+                                 1.0,
+                                 0.0,
                                  model["Grain-boundary sweeping"].getParameter().at(0));
             }
             break;
@@ -86,11 +88,15 @@ void Simulation::GrainBoundarySweeping()
             for (int i = 0; i < n_modes; ++i)
             {
                 modes_initial_conditions[7 * 40 + i] =
-                    solver.Decay(modes_initial_conditions[7 * 40 + i], 1.0, 0.0,
+                    solver.Decay(modes_initial_conditions[7 * 40 + i],
+                                 1.0,
+                                 0.0,
                                  model["Grain-boundary sweeping"].getParameter().at(0));
 
                 modes_initial_conditions[8 * 40 + i] =
-                    solver.Decay(modes_initial_conditions[8 * 40 + i], 1.0, 0.0,
+                    solver.Decay(modes_initial_conditions[8 * 40 + i],
+                                 1.0,
+                                 0.0,
                                  model["Grain-boundary sweeping"].getParameter().at(0));
             }
             break;
@@ -100,8 +106,7 @@ void Simulation::GrainBoundarySweeping()
             break;
 
         default:
-            ErrorMessages::Switch(__FILE__, "iDiffusionSolver",
-                                  int(input_variable["iDiffusionSolver"].getValue()));
+            ErrorMessages::Switch(__FILE__, "iDiffusionSolver", int(input_variable["iDiffusionSolver"].getValue()));
             break;
     }
 }

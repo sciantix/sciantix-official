@@ -136,7 +136,8 @@ class System : virtual public Material
      * @brief Sets the diffusivity of bubbles within the matrix based on input values.
      * @param input_value The model selection index for bubble diffusivity.
      */
-    void setBubbleDiffusivity(int input_value, SciantixArray<SciantixVariable>& sciantix_variable,
+    void setBubbleDiffusivity(int                              input_value,
+                              SciantixArray<SciantixVariable>& sciantix_variable,
                               SciantixArray<SciantixVariable>& history_variable,
                               SciantixArray<Matrix>&           matrices);
 
@@ -195,7 +196,8 @@ class System : virtual public Material
      * iResolutionRate.
      * @param input_value The model selection index for setting the resolution rate.
      */
-    void setResolutionRate(int input_value, SciantixArray<SciantixVariable>& sciantix_variable,
+    void setResolutionRate(int                              input_value,
+                           SciantixArray<SciantixVariable>& sciantix_variable,
                            SciantixArray<SciantixVariable>& history_variable,
                            SciantixArray<InputVariable>&    scaling_factors,
                            SciantixArray<Matrix>&           matrices);
@@ -212,8 +214,9 @@ class System : virtual public Material
      * iTrappingRate.
      * @param input_value The model selection index for setting the trapping rate.
      */
-    void setTrappingRate(int input_value, SciantixArray<SciantixVariable>& sciantix_variable,
-                         SciantixArray<InputVariable>& scaling_factors);
+    void setTrappingRate(int                              input_value,
+                         SciantixArray<SciantixVariable>& sciantix_variable,
+                         SciantixArray<InputVariable>&    scaling_factors);
 
     /**
      * @brief Retrieves the trapping rate for isotopes in nanobubbles within the matrix.
@@ -227,8 +230,9 @@ class System : virtual public Material
      * matrix
      * @param input_value The model selection index for nucleation rate.
      */
-    void setNucleationRate(int input_value, SciantixArray<SciantixVariable>& history_variable,
-                           SciantixArray<InputVariable>& scaling_factors);
+    void setNucleationRate(int                              input_value,
+                           SciantixArray<SciantixVariable>& history_variable,
+                           SciantixArray<InputVariable>&    scaling_factors);
 
     /**
      * @brief Retrieves the nucleation rate.
@@ -252,7 +256,8 @@ class System : virtual public Material
      * @brief Sets the production rate based on the selected model.
      * @param input_value The model selection index for setting the production rate.
      */
-    void setProductionRate(int input_value, SciantixArray<SciantixVariable>& history_variable,
+    void setProductionRate(int                              input_value,
+                           SciantixArray<SciantixVariable>& history_variable,
                            SciantixArray<InputVariable>&    input_variable,
                            SciantixArray<SciantixVariable>& sciantix_variable,
                            SciantixArray<InputVariable>&    scaling_factors);
@@ -265,11 +270,15 @@ class System : virtual public Material
     /**
      * @brief Default constructor for the System class.
      */
-    System() {}
+    System()
+    {
+    }
     /**
      * @brief Destructor for the System class
      */
-    ~System() {}
+    ~System()
+    {
+    }
 };
 
 #endif  // SYSTEM_H

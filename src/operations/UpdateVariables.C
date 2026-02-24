@@ -124,7 +124,8 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
     }
 
     for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin();
-         it != update_sciantix_variable.end(); it++)
+         it != update_sciantix_variable.end();
+         it++)
     {
         Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
     }

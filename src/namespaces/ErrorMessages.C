@@ -24,8 +24,7 @@ namespace ErrorMessages
 
     void MissingInputFile(const char* missing_file)
     {
-        std::string error_message =
-            "ERROR: Missing input file '" + (std::string)missing_file + "' \n";
+        std::string error_message = "ERROR: Missing input file '" + (std::string)missing_file + "' \n";
         error_message += "Please check that such file exists in the current working directory.\n";
         error_message += "Execution aborted\n";
 
@@ -41,8 +40,7 @@ namespace ErrorMessages
     void Switch(std::string routine, std::string variable_name, int variable)
     {
         errorMessages << "Warning in " << routine << "." << std::endl;
-        errorMessages << "The input setting " << variable_name << " = " << variable
-                      << " is out of range." << std::endl;
+        errorMessages << "The input setting " << variable_name << " = " << variable << " is out of range." << std::endl;
     }
 
     void writeErrorLog()

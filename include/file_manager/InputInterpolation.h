@@ -35,7 +35,6 @@
  * @author T. Barani
  *
  */
-double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy,
-                          unsigned short int n);
+double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy, unsigned short int n);
 
 #endif

@@ -56,17 +56,14 @@ void Simulation::GrainGrowth()
             reference += " : Ainscough et al., JNM, 49 (1973) 117-128.";
 
             double limiting_grain_radius =
-                2.23e-03 * (1.56 / 2.0) *
-                exp(-7620.0 / history_variable["Temperature"].getFinalValue());
+                2.23e-03 * (1.56 / 2.0) * exp(-7620.0 / history_variable["Temperature"].getFinalValue());
             double burnup_factor = 1.0 + 2.0 * sciantix_variable["Burnup"].getFinalValue() / 0.8815;
 
-            if (sciantix_variable["Grain radius"].getInitialValue() <
-                limiting_grain_radius / burnup_factor)
+            if (sciantix_variable["Grain radius"].getInitialValue() < limiting_grain_radius / burnup_factor)
             {
                 double rate_constant = matrices["UO2"].getGrainBoundaryMobility();
-                rate_constant *=
-                    (1.0 - burnup_factor / (limiting_grain_radius /
-                                            (sciantix_variable["Grain radius"].getFinalValue())));
+                rate_constant *= (1.0 - burnup_factor / (limiting_grain_radius /
+                                                         (sciantix_variable["Grain radius"].getFinalValue())));
 
                 parameter.push_back(sciantix_variable["Grain radius"].getInitialValue());
                 parameter.push_back(0.0);
@@ -100,8 +97,7 @@ void Simulation::GrainGrowth()
         case 2:
         {
             double limiting_grain_radius =
-                3.345e-3 / 2.0 *
-                exp(-7620.0 / history_variable["Temperature"].getFinalValue());  // (m)
+                3.345e-3 / 2.0 * exp(-7620.0 / history_variable["Temperature"].getFinalValue());  // (m)
 
             reference += "Van Uffelen et al. JNM, 434 (2013) 287–29.";
 
@@ -129,8 +125,7 @@ void Simulation::GrainGrowth()
         }
 
         default:
-            ErrorMessages::Switch(__FILE__, "iGrainGrowth",
-                                  int(input_variable["iGrainGrowth"].getValue()));
+            ErrorMessages::Switch(__FILE__, "iGrainGrowth", int(input_variable["iGrainGrowth"].getValue()));
             break;
     }
 
@@ -140,8 +135,7 @@ void Simulation::GrainGrowth()
     model.push(model_);
 
     // Model resolution
-    sciantix_variable["Grain radius"].setFinalValue(
-        solver.QuarticEquation(model["Grain growth"].getParameter()));
+    sciantix_variable["Grain radius"].setFinalValue(solver.QuarticEquation(model["Grain growth"].getParameter()));
 
     matrices["UO2"].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
 }

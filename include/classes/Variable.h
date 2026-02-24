@@ -38,11 +38,15 @@ class Variable
     /**
      * @brief Default constructor for the Variable class
      */
-    Variable() {}
+    Variable()
+    {
+    }
     /**
      * @brief Destructor for the Variable class
      */
-    ~Variable() {}
+    ~Variable()
+    {
+    }
 
     /**
      * @brief Sets the name of the entity.

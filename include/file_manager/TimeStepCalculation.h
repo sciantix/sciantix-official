@@ -28,7 +28,9 @@
  * @author T. Barani
  *
  */
-double TimeStepCalculation(int Input_history_points, double Time_h, std::vector<double> Time_input,
-                           double Number_of_time_steps_per_interval);
+double TimeStepCalculation(int                 Input_history_points,
+                           double              Time_h,
+                           std::vector<double> Time_input,
+                           double              Number_of_time_steps_per_interval);
 
 #endif  // TIME_STEP_CALCULATION_H

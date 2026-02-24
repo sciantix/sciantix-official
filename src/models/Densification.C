@@ -42,18 +42,15 @@ void Simulation::Densification()
         case 1:
         {
             parameter.push_back(2.0);
-            parameter.push_back(0.006 *
-                                exp(0.002 * history_variable["Temperature"].getFinalValue()));
+            parameter.push_back(0.006 * exp(0.002 * history_variable["Temperature"].getFinalValue()));
 
-            reference =
-                ": Fit from Van Uffelen, P. (2002), PhD thesis, SCK•CEN Reports No. BLG-907";
+            reference = ": Fit from Van Uffelen, P. (2002), PhD thesis, SCK•CEN Reports No. BLG-907";
 
             break;
         }
 
         default:
-            ErrorMessages::Switch(__FILE__, "iDensification",
-                                  int(input_variable["iDensification"].getValue()));
+            ErrorMessages::Switch(__FILE__, "iDensification", int(input_variable["iDensification"].getValue()));
             break;
     }
 
