@@ -783,7 +783,7 @@ void Simulation::InterGranularBubbleBehavior()
             for (auto& system : sciantix_system)
             {
                 if (system.getRestructuredMatrix() == 0)
-                {                                     
+                {
                     sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
                         solver.Integrator(
                             (1 - release_fraction_increment) *
@@ -799,16 +799,18 @@ void Simulation::InterGranularBubbleBehavior()
                             0.0);
 
                     if (system.getGas().getDecayRate() == 0.0)
-                    {  
-                        sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"]
+                    {
+                        sciantix_variable["Intergranular " + system.getGasName() +
+                                          " atoms per bubble"]
                             .setFinalValue(
                                 sciantix_variable[system.getGasName() + " at grain boundary"]
                                     .getFinalValue() /
-                                (sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
-                                (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+                                (sciantix_variable["Intergranular bubble concentration"]
+                                     .getFinalValue() *
+                                 (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
 
                         n_at += sciantix_variable["Intergranular " + system.getGasName() +
-                                                " atoms per bubble"]
+                                                  " atoms per bubble"]
                                     .getFinalValue();
                     }
                 }
