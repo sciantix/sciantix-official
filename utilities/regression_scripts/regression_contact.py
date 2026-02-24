@@ -245,37 +245,46 @@ def regression_contact(wpath, mode_CONTACT, mode_gold, mode_plot, folderList, nu
         do_plot(exp_Xe133, exp_Kr85m, calculated_Kr85m_ANS, calculated_Xe133_ANS,
                 time, temperature, burnup, Xe133, Kr85m, exp_FG, fgr, burnup2)
 
-      # Automatic search for the nearest simulation points to experimental data
-      exp_burnup_xe = exp_Xe133[1:, 0].astype(float)
-      exp_burnup_kr = exp_Kr85m[1:, 0].astype(float)
-      
-      indices_1 = [np.abs(burnup - b).argmin() for b in exp_burnup_xe]
-      indices_2 = [np.abs(burnup - b).argmin() for b in exp_burnup_kr]
+      """ Statistical analysis """
+      # Find common position in the burnup vector
+      precision = 2
+      common_values_1 = np.intersect1d(np.round(burnup,precision), np.round(exp_Xe133[1:,0].astype(float),precision))
+      common_values_2 = np.intersect1d(np.round(burnup,precision), np.round(exp_Kr85m[1:,0].astype(float),precision))
+      # Find the indices of the common values in each array
+      indices_1 = np.where(np.in1d(np.round(burnup,precision), common_values_1))[0]
+      indices_2 = np.where(np.in1d(np.round(burnup,precision), common_values_2))[0]
+      # finding manually common position to avoid truncation errors
+      indices_1 = [934, 2125, 2932, 5862, 7488,  8303, 8705, 10297]
+      indices_2 = [934, 2125, 2932, 5862, 7488,  8303, 8705, 10297, 11275, -1]
 
-      # Root mean squared error (SCIANTIX 2.0)
-      rmse_xe133_2 = np.sqrt(np.mean(((Xe133[indices_1] - exp_Xe133[1:,1].astype(float)))**2))
-      rmse_kr85m_2 = np.sqrt(np.mean(((Kr85m[indices_2] - exp_Kr85m[1:,1].astype(float)))**2))
+      # Mean squared error (SCIANTIX 2.0)
+      mse_xe133_2 = np.mean(((Xe133[indices_1] - exp_Xe133[1:,1].astype(float)))**2)
+      mse_kr85m_2 = np.mean(((Kr85m[indices_2] - exp_Kr85m[1:,1].astype(float)))**2)
       # absolute deviations (SCIANTIX 2.0)
       dev_xe133_2 = abs((Xe133[indices_1] - exp_Xe133[1:,1].astype(float)))
       dev_kr85m_2 = abs((Kr85m[indices_2] - exp_Kr85m[1:,1].astype(float)))
 
-      # Automatic search for the nearest simulation points for Sciantix 1.0 (Zullo 2022)
-      sim1_burnup_xe = calculated_Xe133_Zullo2022[1:, 0].astype(float)
-      sim1_burnup_kr = calculated_Kr85m_Zullo2022[1:, 0].astype(float)
+      # Find common position in the burnup vector
+      precision = 1
+      common_values_1 = np.intersect1d(np.round(calculated_Xe133_Zullo2022[1:,0].astype(float),precision), np.round(exp_Xe133[1:,0].astype(float),precision))
+      common_values_2 = np.intersect1d(np.round(calculated_Kr85m_Zullo2022[1:,0].astype(float),precision), np.round(exp_Kr85m[1:,0].astype(float),precision))
+      # Find the indices of the common values in each array
+      indices_1 = np.where(np.in1d(np.round(calculated_Xe133_Zullo2022[1:,0].astype(float),precision), common_values_1))[0]
+      indices_2 = np.where(np.in1d(np.round(calculated_Kr85m_Zullo2022[1:,0].astype(float),precision), common_values_2))[0]
+      # finding manually common position to avoid truncation errors
+      indices_1 = [98, 221, 305, 613, 781, 864, 903, 1065]
+      indices_2 = [98, 221, 305, 613, 781, 864, 903, 1065, 1169, 1328]
 
-      indices_1_old = [np.abs(sim1_burnup_xe - b).argmin() + 1 for b in exp_burnup_xe]
-      indices_2_old = [np.abs(sim1_burnup_kr - b).argmin() + 1 for b in exp_burnup_kr]
-
-      # Root mean squared error (SCIANTIX 1.0)
-      rmse_xe133_1 = np.sqrt(np.mean(((calculated_Xe133_Zullo2022[indices_1_old, 1].astype(float) - exp_Xe133[1:, 1].astype(float)))**2))
-      rmse_kr85m_1 = np.sqrt(np.mean(((calculated_Kr85m_Zullo2022[indices_2_old, 1].astype(float) - exp_Kr85m[1:, 1].astype(float)))**2))
+      # Mean squared error (SCIANTIX 1.0)
+      mse_xe133_1 = np.mean(((calculated_Xe133_Zullo2022[indices_1,1].astype(float) - exp_Xe133[1:,1].astype(float)))**2)
+      mse_kr85m_1 = np.mean(((calculated_Kr85m_Zullo2022[indices_2,1].astype(float) - exp_Kr85m[1:,1].astype(float)))**2)
       # absolute deviations (SCIANTIX 1.0)
-      dev_xe133_1 = abs((calculated_Xe133_Zullo2022[indices_1_old, 1].astype(float) - exp_Xe133[1:, 1].astype(float)))
-      dev_kr85m_1 = abs((calculated_Kr85m_Zullo2022[indices_2_old, 1].astype(float) - exp_Kr85m[1:, 1].astype(float)))
-      print(f"SCIANTIX 1.0 - Xe133, RMSE = {rmse_xe133_1:.2e}")
-      print(f"SCIANTIX 2.0 - Xe133, RMSE = {rmse_xe133_2:.2e}")
-      print(f"SCIANTIX 1.0 - Kr85m, RMSE = {rmse_kr85m_1:.2e}")
-      print(f"SCIANTIX 2.0 - Kr85m, RMSE = {rmse_kr85m_2:.2e}")
+      dev_xe133_1 = abs((calculated_Xe133_Zullo2022[indices_1,1].astype(float) - exp_Xe133[1:,1].astype(float)))
+      dev_kr85m_1 = abs((calculated_Kr85m_Zullo2022[indices_2,1].astype(float) - exp_Kr85m[1:,1].astype(float)))
+      print(f"SCIANTIX 1.0 - Xe133, RMSE = {mse_xe133_1:.2e}")
+      print(f"SCIANTIX 2.0 - Xe133, RMSE = {mse_xe133_2:.2e}")
+      print(f"SCIANTIX 1.0 - Kr85m, RMSE = {mse_kr85m_1:.2e}")
+      print(f"SCIANTIX 2.0 - Kr85m, RMSE = {mse_kr85m_2:.2e}")
       print(f"SCIANTIX 1.0 - Xe133, Median absolute deviations = {np.median(dev_xe133_1):.2e}")
       print(f"SCIANTIX 2.0 - Xe133, Median absolute deviations = {np.median(dev_xe133_2):.2e}")
       print(f"SCIANTIX 1.0 - Kr85m, Median absolute deviations = {np.median(dev_kr85m_1):.2e}")
