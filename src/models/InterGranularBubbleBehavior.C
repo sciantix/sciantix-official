@@ -790,7 +790,7 @@ void Simulation::InterGranularBubbleBehavior()
                                 sciantix_variable[system.getGasName() + " at grain boundary"]
                                     .getFinalValue(),
                             -release_fraction_final,
-                            
+
                             sciantix_variable[system.getGasName() + " at grain boundary"]
                                 .getIncrement()));
 
