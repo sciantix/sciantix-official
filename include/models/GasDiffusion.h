@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -21,23 +21,23 @@
 
 /**
  * @brief Defines diffusion models using the spectral diffusion with one equation.
- * 
+ *
  * @author D. Pizzocri
  * @author T. Barani
  * @author G. Zullo
- * 
+ *
  */
-void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
+void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes);
 
 /**
  * @brief Defines diffusion models using the spectral diffusion with two equations.
- * 
+ *
  * @author D. Pizzocri
  * @author T. Barani
  * @author G. Zullo
- * 
+ *
  */
-void defineSpectralDiffusion2Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
+void defineSpectralDiffusion2Equations(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes);
 
 /**
  * @brief Defines diffusion models using the spectral diffusion with three equations.
@@ -45,18 +45,21 @@ void defineSpectralDiffusion2Equations(SciantixArray<System> &sciantix_system, S
  * The first equation is for xenon in non-restructured matrix - intragranular dynamic solution
  * The second equation is for xenon in non-restructured matrix - intragranular bubbles
  * The third equation is for xenon in restructured matrix
- * 
+ *
  * @author G. Zullo
  *
  */
-void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, 
-	SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> physics_variable, int n_modes);
+void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_system,
+                                       SciantixArray<Model>&           model,
+                                       SciantixArray<SciantixVariable> sciantix_variable,
+                                       SciantixArray<SciantixVariable> physics_variable,
+                                       int                             n_modes);
 
 /**
  * @brief Handles unsupported diffusion solver options.
- * 
+ *
  * @author G. Zullo
  */
 void errorHandling(SciantixArray<InputVariable> input_variable);
 
-#endif // GAS_DIFFUSION_H
+#endif  // GAS_DIFFUSION_H
