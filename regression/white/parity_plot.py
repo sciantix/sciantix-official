@@ -98,9 +98,9 @@ def main():
     # plot
     parity_plot(exp_arr, gold_arr, test_arr, "white_swelling", "White – intergranular swelling (%)", outdir)
 
-    # ------------------------------------------------------------
+    # --------------------
     # Statistical analysis
-    # ------------------------------------------------------------
+    # --------------------
     print("\n" + "="*50)
     print("STATISTICAL ANALYSIS")
     print("="*50)

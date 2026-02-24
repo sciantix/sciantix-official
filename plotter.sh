@@ -12,4 +12,25 @@ python3 regression/white/parity_plot.py
 echo "=== Running GPR parity plot ==="
 python3 regression/gpr/parity_plot.py
 
+echo "=== Running Chromium plot ==="
+python3 regression/chromium/plot.py
+
+echo "=== Running Contact plot ==="
+python3 regression/contact/plot.py
+
+echo "=== Running Cornell plot ==="
+python3 regression/cornell/plot.py
+
+echo "=== Running HBS plot ==="
+python3 regression/hbs/plot.py
+
+echo "=== Running Kashibe plot ==="
+python3 regression/kashibe/plot.py
+
+echo "=== Running Oxidation plot ==="
+python3 regression/oxidation/plot.py
+
+echo "=== Running Talip plot ==="
+python3 regression/talip/plot.py
+
 echo "=== Done ==="

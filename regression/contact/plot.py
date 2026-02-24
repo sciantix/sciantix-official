@@ -249,5 +249,41 @@ def main():
             import traceback
             traceback.print_exc()
 
+        # --------------------
+        # Statistical analysis
+        # --------------------
+        print("\n" + "="*50)
+        print("STATISTICAL ANALYSIS")
+        print("="*50)
+
+        # 1. Xe133
+        if exp_Xe133.size > 0:
+            exp_burn_xe = exp_Xe133[:, 0]
+            exp_val_xe = exp_Xe133[:, 1]
+            
+            indices_xe = [np.abs(burnup - b).argmin() for b in exp_burn_xe]
+            sim_val_xe = Xe133[indices_xe]
+            
+            error_xe = sim_val_xe - exp_val_xe
+            rmse_xe = np.sqrt(np.mean(error_xe**2))
+            mad_xe = np.median(np.abs(error_xe))
+            
+            print(f"Xe133 -> RMSE: {rmse_xe:.4e}, MAD: {mad_xe:.4e}")
+        
+        # 2. Kr85m
+        if exp_Kr85m.size > 0:
+            exp_burn_kr = exp_Kr85m[:, 0]
+            exp_val_kr = exp_Kr85m[:, 1]
+            
+            indices_kr = [np.abs(burnup - b).argmin() for b in exp_burn_kr]
+            sim_val_kr = Kr85m[indices_kr]
+            
+            error_kr = sim_val_kr - exp_val_kr
+            rmse_kr = np.sqrt(np.mean(error_kr**2))
+            mad_kr = np.median(np.abs(error_kr))
+            
+            print(f"Kr85m -> RMSE: {rmse_kr:.4e}, MAD: {mad_kr:.4e}")
+        print("-" * 40)
+
 if __name__ == "__main__":
     main()
