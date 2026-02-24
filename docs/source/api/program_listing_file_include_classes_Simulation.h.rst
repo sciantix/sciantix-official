@@ -117,10 +117,6 @@ Program Listing for File Simulation.h
    
        double openPorosity(double fabrication_porosity);
    
-       double athermalVentingFactor(double open_porosity, double theta, double porosity,
-                                    double grain_edge_lenght, double burnup, double temperature,
-                                    double fission_rate);
-   
        void HighBurnupStructureFormation();
    
        void HighBurnupStructurePorosity();
