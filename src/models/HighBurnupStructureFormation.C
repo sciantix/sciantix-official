@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -18,14 +18,15 @@
 
 void Simulation::HighBurnupStructureFormation()
 {
-    if (!int(input_variable["iHighBurnupStructureFormation"].getValue())) return;
+    if (!int(input_variable["iHighBurnupStructureFormation"].getValue()))
+        return;
 
     // Model declaration
     Model model_;
 
     model_.setName("High-burnup structure formation");
 
-    std::string reference;
+    std::string         reference;
     std::vector<double> parameter;
 
     switch (int(input_variable["iHighBurnupStructureFormation"].getValue()))
@@ -47,8 +48,8 @@ void Simulation::HighBurnupStructureFormation()
 
             double avrami_constant(3.54);
             double transformation_rate(2.77e-7);
-            double resolution_layer_thickness = 1.0e-9; //(m)
-            double resolution_critical_distance = 1.0e-9; //(m)
+            double resolution_layer_thickness   = 1.0e-9;  //(m)
+            double resolution_critical_distance = 1.0e-9;  //(m)
 
             parameter.push_back(avrami_constant);
             parameter.push_back(transformation_rate);
@@ -59,7 +60,8 @@ void Simulation::HighBurnupStructureFormation()
         }
 
         default:
-            ErrorMessages::Switch(__FILE__, "iHighBurnupStructureFormation", int(input_variable["iHighBurnupStructureFormation"].getValue()));
+            ErrorMessages::Switch(__FILE__, "iHighBurnupStructureFormation",
+                                  int(input_variable["iHighBurnupStructureFormation"].getValue()));
             break;
     }
 
@@ -71,17 +73,11 @@ void Simulation::HighBurnupStructureFormation()
     // Model resolution
     // Restructuring rate:
     // dalpha_r / bu = 3.54 * 2.77e-7 (1-alpha_r) b^2.54
-    double coefficient =
-        model["High-burnup structure formation"].getParameter().at(0) *
-        model["High-burnup structure formation"].getParameter().at(1) *
-        pow(sciantix_variable["Effective burnup"].getFinalValue(), 2.54);
+    double coefficient = model["High-burnup structure formation"].getParameter().at(0) *
+                         model["High-burnup structure formation"].getParameter().at(1) *
+                         pow(sciantix_variable["Effective burnup"].getFinalValue(), 2.54);
 
-    sciantix_variable["Restructured volume fraction"].setFinalValue(
-        solver.Decay(
-            sciantix_variable["Restructured volume fraction"].getInitialValue(),
-            coefficient,
-            coefficient,
-            sciantix_variable["Effective burnup"].getIncrement()
-        )
-    );
+    sciantix_variable["Restructured volume fraction"].setFinalValue(solver.Decay(
+        sciantix_variable["Restructured volume fraction"].getInitialValue(), coefficient,
+        coefficient, sciantix_variable["Effective burnup"].getIncrement()));
 }

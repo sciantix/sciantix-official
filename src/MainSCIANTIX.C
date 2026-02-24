@@ -8,22 +8,22 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "Sciantix.h"
+#include "ErrorMessages.h"
+#include "Initialization.h"
 #include "InputInterpolation.h"
 #include "InputReading.h"
-#include "Initialization.h"
-#include "TimeStepCalculation.h"
 #include "MainVariables.h"
-#include "ErrorMessages.h"
-#include <iostream>
-#include <fstream>
+#include "Sciantix.h"
+#include "TimeStepCalculation.h"
 #include <ctime>
+#include <fstream>
+#include <iostream>
 
 using namespace std;
 
@@ -32,20 +32,22 @@ using namespace std;
  * @param timer The total execution time measured in seconds.
  * @param time_step_number The total number of time steps executed during the simulation.
  */
-void logExecutionTime(double timer, int time_step_number, std::ofstream &Execution_file);
+void logExecutionTime(double timer, int time_step_number, std::ofstream& Execution_file);
 
 /**
- * @brief Main entry point for the SCIANTIX program. 
+ * @brief Main entry point for the SCIANTIX program.
  *
  * SCIANTIX is a 0D code developed at Politecnico di Milano.
  * The objective of SCIANTIX is to represent the behaviour of a single grain of nuclear fuel.
  * The modelling of inert gas behaviour is the main aspect considered.
- * Engineering models are used, allowing for future integration in industrial fuel performance codes.
- * Nevertheless, physically-based model are preferred to empirical models.
- * This facilitates the incorporation of information from lower length scale calculations.
+ * Engineering models are used, allowing for future integration in industrial fuel performance
+ * codes. Nevertheless, physically-based model are preferred to empirical models. This facilitates
+ * the incorporation of information from lower length scale calculations.
  *
- * @see <a href="https://www.sciencedirect.com/science/article/pii/S0022311519313868" target="_blank">Pizzocri D. et al (2020). Journal of Nuclear Materials, 532, 152042.</a>
- * @see <a href="https://www.sciencedirect.com/science/article/pii/S0022311523005111" target="_blank">Zullo G. et al (2023). Journal of Nuclear Materials, 587, 154744.</a>
+ * @see <a href="https://www.sciencedirect.com/science/article/pii/S0022311519313868"
+ * target="_blank">Pizzocri D. et al (2020). Journal of Nuclear Materials, 532, 152042.</a>
+ * @see <a href="https://www.sciencedirect.com/science/article/pii/S0022311523005111"
+ * target="_blank">Zullo G. et al (2023). Journal of Nuclear Materials, 587, 154744.</a>
  *
  * At present, this version of the code is validated against experiments for
  * - intragranular gaseous swelling
@@ -54,10 +56,11 @@ void logExecutionTime(double timer, int time_step_number, std::ofstream &Executi
  * - release of radioactive fission gases
  * The validation database is accessible in the *regression* folder.
  * @param argc Number of command-line arguments.
- * @param argv Array of command-line arguments, where argv[1] is expected to be the path to the input file.
+ * @param argv Array of command-line arguments, where argv[1] is expected to be the path to the
+ * input file.
  * @return Returns 0 upon successful completion of the program.
  */
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     clock_t timer, timer_time_step;
 
@@ -70,34 +73,19 @@ int main(int argc, char **argv)
     else
     {
         TestPath = argv[1];
-        if (TestPath.back() != '/') {
+        if (TestPath.back() != '/')
+        {
             TestPath += '/';
         }
     }
 
-    InputReading(
-        Sciantix_options, 
-        Sciantix_variables, 
-        Sciantix_scaling_factors,
-        Input_history_points,
-        Time_input, 
-        Temperature_input,
-        Fissionrate_input,
-        Hydrostaticstress_input,
-        Steampressure_input,
-        Time_end_h,
-        Time_end_s
-    );
+    InputReading(Sciantix_options, Sciantix_variables, Sciantix_scaling_factors,
+                 Input_history_points, Time_input, Temperature_input, Fissionrate_input,
+                 Hydrostaticstress_input, Steampressure_input, Time_end_h, Time_end_s);
 
-    Initialization(
-        Sciantix_history,
-        Sciantix_variables,
-        Sciantix_diffusion_modes,
-        Temperature_input,
-        Fissionrate_input,
-        Hydrostaticstress_input,
-        Steampressure_input
-    );
+    Initialization(Sciantix_history, Sciantix_variables, Sciantix_diffusion_modes,
+                   Temperature_input, Fissionrate_input, Hydrostaticstress_input,
+                   Steampressure_input);
 
     std::string outputPath = TestPath + "output.txt";
 
@@ -110,26 +98,27 @@ int main(int argc, char **argv)
     while (Time_h <= Time_end_h)
     {
         Sciantix_history[0] = Sciantix_history[1];
-        Sciantix_history[1] = InputInterpolation(Time_h, Time_input, Temperature_input, Input_history_points);
+        Sciantix_history[1] =
+            InputInterpolation(Time_h, Time_input, Temperature_input, Input_history_points);
         Sciantix_history[2] = Sciantix_history[3];
-        Sciantix_history[3] = InputInterpolation(Time_h, Time_input, Fissionrate_input, Input_history_points);
+        Sciantix_history[3] =
+            InputInterpolation(Time_h, Time_input, Fissionrate_input, Input_history_points);
         if (Sciantix_history[3] < 0.0)
             Sciantix_history[3] = 0.0;
         Sciantix_history[4] = Sciantix_history[5];
-        Sciantix_history[5] = InputInterpolation(Time_h, Time_input, Hydrostaticstress_input, Input_history_points);
+        Sciantix_history[5] =
+            InputInterpolation(Time_h, Time_input, Hydrostaticstress_input, Input_history_points);
         Sciantix_history[7] = Time_h;
         Sciantix_history[8] = static_cast<double>(Time_step_number);
         Sciantix_history[9] = Sciantix_history[10];
-        Sciantix_history[10] = InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
+        Sciantix_history[10] =
+            InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
 
-        Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
+        Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors,
+                 Sciantix_diffusion_modes);
 
-        dTime_h = TimeStepCalculation(
-            Input_history_points,
-            Time_h,
-            Time_input,
-            Number_of_time_steps_per_interval
-        );
+        dTime_h             = TimeStepCalculation(Input_history_points, Time_h, Time_input,
+                                                  Number_of_time_steps_per_interval);
         Sciantix_history[6] = dTime_h * 3600;
 
         if (Time_h < Time_end_h)
@@ -150,7 +139,9 @@ int main(int argc, char **argv)
     return 0;
 }
 
-void logExecutionTime(double timer, int time_step_number, std::ofstream &Execution_file)
+void logExecutionTime(double timer, int time_step_number, std::ofstream& Execution_file)
 {
-    Execution_file << std::setprecision(12) << std::scientific << timer << "\t" << CLOCKS_PER_SEC << "\t" << (double)timer * CLOCKS_PER_SEC << "\t" << time_step_number << std::endl;
+    Execution_file << std::setprecision(12) << std::scientific << timer << "\t" << CLOCKS_PER_SEC
+                   << "\t" << (double)timer * CLOCKS_PER_SEC << "\t" << time_step_number
+                   << std::endl;
 }

@@ -14,7 +14,6 @@
 <a href="https://www.sciencedirect.com/science/article/pii/S0022311524004070" target="_blank">Zullo G. et al (2024). Integral-scale validation of the SCIANTIX code for Light Water Reactor fuel rods Journal of Nuclear Materials, 601, 155305.</a>
 
 
-
 ## Models
 
 <a href="https://www.sciencedirect.com/science/article/pii/S002231152030427X" target="_blank">Barani T. et al (2020). Modeling high burnup structure in oxide fuels for application to fuel performance codes. part I: High burnup structure formation. Journal of Nuclear Materials, 539, 152296.</a>
@@ -24,6 +23,8 @@
 <a href="https://www.sciencedirect.com/science/article/abs/pii/002231157390038X" target="_blank">Blackburn P.E. (1973). Oxygen pressures over fast breeder reactor fuel (I) A model for UO2+-x. Journal of Nuclear Materials, 46, 244-252.</a>
 
 <a href="https://www.sciencedirect.com/science/article/pii/S1738573320309451" target="_blank">Cechet A. et al (2021). A new burn-up module for application in fuel performance calculations targeting the helium production rate in (U,Pu)O2 for fast reactors. Nuclear Engineering and Technology, 53, 1893-1908.</a>
+
+<a href="https://www.sciencedirect.com/science/article/pii/S0022311515301616" target="_blank">Claisse A. and Van Uffelen P., (2015). Journal of Nuclear Materials, 466, 351-356.</a>
 
 <a href="https://www.sciencedirect.com/science/article/pii/S1738573320303557" target="_blank">Cognini L. et al (2021). Towards a physics-based description of intra-granular helium behaviour in oxide fuel for application in fuel performance codes. Nuclear Engineering and Technology, 53, 562-571.</a>
 
@@ -41,10 +42,11 @@
 
 <a href="https://www.sciencedirect.com/science/article/abs/pii/0022311583901769" target="_blank">White R.M. and Tucker P.G. (1983). A new fission-gas release model. Journal of Nuclear Materials, 118, 1-38.</a>
 
+<a href="https://researchportal.sckcen.be/en/publications/contribution-to-the-modelling-of-fission-gas-release-in-light-wat" target="_blank">Van Uffelen P. (2002). PhD thesis, SCK•CEN Reports; No. BLG-907, SCK CEN.</a>
+
 <a href="https://www.sciencedirect.com/science/article/pii/S0022311503004616" target="_blank">White R.M. (2004). The development of grain-face porosity in irradiated oxide fuel. Journal of Nuclear Materials, 325, 61-77.</a>
 
 <a href="https://www.sciencedirect.com/science/article/pii/S0029549324007027" target="_blank">Zullo G. et al (2024). Two-phase modelling for fission gas sweeping in restructuring nuclear oxide fuel. Nuclear Enginnering and Design, 429, 113602.</a>
-
 
 
 ## Experiments
@@ -58,7 +60,6 @@
 <a href="https://www.sciencedirect.com/science/article/abs/pii/S0022311513012336" target="_blank">Talip Z. et al (2014). Thermal diffusion of helium in 238Pu-doped UO2. Journal of Nuclear Materials, 445, 117-127.</a>
 
 <a href="https://www.sciencedirect.com/science/article/abs/pii/S0022311512006526" target="_blank">Van Uffelen P. et al (2013). An experimental study of grain growth in mixed oxide samples with various microstructures and plutonium concentrations. Journal of Nuclear Materials, 434, 287-290.</a>
-
 
 
 ## Correlations
@@ -95,9 +96,7 @@
 
 <a href="https://www.sciencedirect.com/science/article/abs/pii/S0022311597000822" target="_blank">Imamura M. and Une K. (1997). High temperature steam oxidation of U02 fuel pellets. Journal of Nuclear Materials, 247, 131-137.</a>
 
-
 <a href="https://www.stralsakerhetsmyndigheten.se/en/publications/reports/safety-at-nuclear-power-plants/2018/201825/" target="_blank">Massih A.R. (2018). UO2 Fuel Oxidation and Fission Gas Release, Swedish Radiation Safety Authority (SSM).</a>
-
 
 <a> Morel B., Serose N., Gamaury S., Ph. Dehaudt, "Cinetique d'Oxydation du Combustible par la Vapeur d'Eau; Influence du S/V," Commissariat a l'Energie Atomique, Report NT/DTP/SECC no. DR94-55, June 1994..</a>
 
@@ -105,9 +104,6 @@
 
 <a href="https://link.springer.com/article/10.1134/S0018151X07040177" target="_blank">Ronchi C. (2007). Thermophysical properties affecting safety and performance of nuclear fuel. High Temperatures, 45, 552-571.</a>
 
-
 <a href="https://www.sciencedirect.com/science/article/abs/pii/0022311571900754" target="_blank">Turnbull J.A. (1971). The re-solution of fission-gas atoms from bubbles during the irradiation of UO2 at an elevated temperature. Journal of Nuclear Materials, 38, 203.</a>
 
 <a href="https://inis.iaea.org/search/search.aspx?orig_q=RN:21003206" target="_blank">Turnbull J.A. et al (1988). The diffusion coefficient for fission gas atoms in uranium dioxide. IWGFPT-32, Preston, UK, Sep 18-22.</a>
-
-

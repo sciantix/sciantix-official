@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -17,48 +17,48 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
-#include "Matrix.h"
-#include "Gas.h"
 #include "Constants.h"
 #include "ErrorMessages.h"
+#include "Gas.h"
+#include "InputVariable.h"
+#include "Matrix.h"
 #include "SciantixArray.h"
 #include "SciantixVariable.h"
-#include "InputVariable.h"
 #include <cmath>
 #include <vector>
 
 /**
  * @class System
- * @brief Class derived from Material to include the properties that depend on both the fission gas and the fuel matrix.
- * 
+ * @brief Class derived from Material to include the properties that depend on both the fission gas
+ * and the fuel matrix.
+ *
  * @author G. Zullo
  * @author F. Bastien
  */
-class System: virtual public Material
+class System : virtual public Material
 {
-protected:
-
+  protected:
     std::string reference;
     std::string name;
 
-    double yield;
-    double radius_in_lattice;
-    double volume_in_lattice;
-    double diffusivity;
-    double bubble_diffusivity;
-    double henry_constant;
-    double resolution_rate;
-    double trapping_rate;
-    double nucleation_rate;
-    double pore_nucleation_rate;
+    double              yield;
+    double              radius_in_lattice;
+    double              volume_in_lattice;
+    double              diffusivity;
+    double              bubble_diffusivity;
+    double              henry_constant;
+    double              resolution_rate;
+    double              trapping_rate;
+    double              nucleation_rate;
+    double              pore_nucleation_rate;
     std::vector<double> modes;
-    double production_rate;
-    bool restructured_matrix;
+    double              production_rate;
+    bool                restructured_matrix;
 
-    Gas gas;
+    Gas    gas;
     Matrix matrix;
 
-public:
+  public:
     /**
      * @brief Sets the matrix restructuring status.
      * @param y True if the matrix is restructured, false otherwise.
@@ -136,8 +136,9 @@ public:
      * @brief Sets the diffusivity of bubbles within the matrix based on input values.
      * @param input_value The model selection index for bubble diffusivity.
      */
-    void setBubbleDiffusivity(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, 
-        SciantixArray<SciantixVariable> &history_variable, SciantixArray<Matrix> &matrices);
+    void setBubbleDiffusivity(int input_value, SciantixArray<SciantixVariable>& sciantix_variable,
+                              SciantixArray<SciantixVariable>& history_variable,
+                              SciantixArray<Matrix>&           matrices);
 
     /**
      * @brief Retrieves the diffusivity of bubbles within the matrix.
@@ -147,10 +148,11 @@ public:
 
     /**
      * @brief Sets the helium diffusivity within the matrix based on the selected model.
-     * The intra-granular helium diffusivity within the fuel grain is set according to the input_variable iHeDiffusivity
+     * The intra-granular helium diffusivity within the fuel grain is set according to the
+     * input_variable iHeDiffusivity
      * @param input_value The model selection index for helium diffusivity.
      */
-    void setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable);
+    void setHeliumDiffusivity(int input_value, SciantixArray<SciantixVariable>& history_variable);
 
     /**
      * @brief Retrieves the helium diffusivity within the matrix.
@@ -160,11 +162,14 @@ public:
 
     /**
      * @brief Sets the diffusivity of fission gases within the matrix based on the selected model.
-     * The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set according to the input_variable iFissionGasDiffusivity
+     * The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set
+     * according to the input_variable iFissionGasDiffusivity
      * @param input_value The model selection index for fission gas diffusivity.
      */
-    void setFissionGasDiffusivity(int input_value, SciantixArray<SciantixVariable> &sciantix_variable,
-        SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+    void setFissionGasDiffusivity(int                              input_value,
+                                  SciantixArray<SciantixVariable>& sciantix_variable,
+                                  SciantixArray<SciantixVariable>& history_variable,
+                                  SciantixArray<InputVariable>&    scaling_factors);
 
     /**
      * @brief Retrieves the diffusivity of fission gases within the matrix.
@@ -186,11 +191,14 @@ public:
 
     /**
      * @brief Sets the resolution rate for isotopes from nanobubbles in the matrix.
-     * The helium intra-granular resolution rate is set according to the input_variable iResolutionRate.
+     * The helium intra-granular resolution rate is set according to the input_variable
+     * iResolutionRate.
      * @param input_value The model selection index for setting the resolution rate.
      */
-    void setResolutionRate(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, 
-        SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors, SciantixArray<Matrix> &matrices);
+    void setResolutionRate(int input_value, SciantixArray<SciantixVariable>& sciantix_variable,
+                           SciantixArray<SciantixVariable>& history_variable,
+                           SciantixArray<InputVariable>&    scaling_factors,
+                           SciantixArray<Matrix>&           matrices);
 
     /**
      * @brief Retrieves the resolution rate for isotopes from nanobubbles in the matrix.
@@ -200,11 +208,12 @@ public:
 
     /**
      * @brief Sets the trapping rate for isotopes in nanobubbles within the matrix.
-     * The krypton intra-granular trapping rate is set according to the input_variable iTrappingRate.
+     * The krypton intra-granular trapping rate is set according to the input_variable
+     * iTrappingRate.
      * @param input_value The model selection index for setting the trapping rate.
      */
-    void setTrappingRate(int input_value, SciantixArray<SciantixVariable> &sciantix_variable, 
-        SciantixArray<InputVariable> &scaling_factors);
+    void setTrappingRate(int input_value, SciantixArray<SciantixVariable>& sciantix_variable,
+                         SciantixArray<InputVariable>& scaling_factors);
 
     /**
      * @brief Retrieves the trapping rate for isotopes in nanobubbles within the matrix.
@@ -214,11 +223,12 @@ public:
 
     /**
      * @brief Sets the nucleation rate based on the selected model.
-     * Evaluation of the nucleation rate of intragranular gas bubble inside the UO<sub>2</sub> matrix
+     * Evaluation of the nucleation rate of intragranular gas bubble inside the UO<sub>2</sub>
+     * matrix
      * @param input_value The model selection index for nucleation rate.
      */
-    void setNucleationRate(int input_value, SciantixArray<SciantixVariable> &history_variable, 
-        SciantixArray<InputVariable> &scaling_factors);
+    void setNucleationRate(int input_value, SciantixArray<SciantixVariable>& history_variable,
+                           SciantixArray<InputVariable>& scaling_factors);
 
     /**
      * @brief Retrieves the nucleation rate.
@@ -242,8 +252,10 @@ public:
      * @brief Sets the production rate based on the selected model.
      * @param input_value The model selection index for setting the production rate.
      */
-    void setProductionRate(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable,
-        SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors);
+    void setProductionRate(int input_value, SciantixArray<SciantixVariable>& history_variable,
+                           SciantixArray<InputVariable>&    input_variable,
+                           SciantixArray<SciantixVariable>& sciantix_variable,
+                           SciantixArray<InputVariable>&    scaling_factors);
 
     /**
      * @brief  Member function to get the production rate of the sciantix_system.
@@ -260,4 +272,4 @@ public:
     ~System() {}
 };
 
-#endif // SYSTEM_H
+#endif  // SYSTEM_H

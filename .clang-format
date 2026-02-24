@@ -1,0 +1,75 @@
+# clang-format configuration
+# for SCIANTIX (C++ scientific code)
+# G. Zullo
+# 
+# sudo apt install clang-format
+# clang-format -i $(find src include -name "*.C" -o -name "*.h")
+# 
+# sudo apt install cppcheck
+# cppcheck --enable=style,performance,warning src include
+
+BasedOnStyle: LLVM
+
+# ---- Indentation & Spacing ----
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ContinuationIndentWidth: 4
+ColumnLimit: 120
+IndentCaseLabels: true
+SpaceBeforeParens: ControlStatements
+SpaceAfterCStyleCast: false
+SpacesBeforeTrailingComments: 2
+AlignTrailingComments: true
+AlignAfterOpenBracket: Align
+
+# ---- Braces & Layout ----
+BreakBeforeBraces: Allman
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: false
+
+# ---- Alignment ----
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AlignOperands: true
+AlignEscapedNewlines: Left
+
+# ---- Parameters & Functions ----
+BinPackParameters: false
+BinPackArguments: false
+AlwaysBreakAfterReturnType: None
+
+# ---- Includes ----
+SortIncludes: true
+IncludeBlocks: Preserve
+IncludeCategories:
+  - Regex: '^<.*\.h>'
+    Priority: 1
+  - Regex: '^".*\.h"'
+    Priority: 2
+  - Regex: '.*'
+    Priority: 3
+
+# ---- Namespaces ----
+NamespaceIndentation: All
+CompactNamespaces: false
+FixNamespaceComments: true
+
+# ---- Comments ----
+ReflowComments: true
+CommentPragmas: '^ IWYU pragma:'
+
+# ---- Pointer and Reference Style ----
+PointerAlignment: Left
+ReferenceAlignment: Left
+DerivePointerAlignment: false
+
+# ---- Miscellaneous ----
+BreakConstructorInitializersBeforeComma: true
+ConstructorInitializerIndentWidth: 4
+AccessModifierOffset: -2
+PenaltyExcessCharacter: 50
+PenaltyBreakBeforeFirstCallParameter: 19
+KeepEmptyLinesAtTheStartOfBlocks: false
