@@ -48,9 +48,13 @@ Program Listing for File InputVariable.h
            return value;
        }
    
-       InputVariable() {}
+       InputVariable()
+       {
+       }
    
-       ~InputVariable() {}
+       ~InputVariable()
+       {
+       }
    
      protected:
        double value;

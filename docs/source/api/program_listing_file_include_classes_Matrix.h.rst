@@ -120,8 +120,7 @@ Program Listing for File Matrix.h
            return ois_volume;
        }
    
-       void setGrainBoundaryMobility(int                              input_value,
-                                     SciantixArray<SciantixVariable>& history_variable);
+       void setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVariable>& history_variable);
    
        double getGrainBoundaryMobility()
        {
@@ -168,8 +167,7 @@ Program Listing for File Matrix.h
            return grain_boundary_thickness;
        }
    
-       void setGrainBoundaryVacancyDiffusivity(int                              input_value,
-                                               SciantixArray<SciantixVariable>& history_variable);
+       void setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable>& history_variable);
    
        double getGrainBoundaryVacancyDiffusivity()
        {
@@ -211,8 +209,7 @@ Program Listing for File Matrix.h
            return pore_resolution_rate;
        }
    
-       void setPoreTrappingRate(SciantixArray<Matrix>&           matrices,
-                                SciantixArray<SciantixVariable>& sciantix_variable);
+       void setPoreTrappingRate(SciantixArray<Matrix>& matrices, SciantixArray<SciantixVariable>& sciantix_variable);
    
        double getPoreTrappingRate()
        {
@@ -359,9 +356,13 @@ Program Listing for File Matrix.h
            return shear_modulus;
        }
    
-       Matrix() {}
+       Matrix()
+       {
+       }
    
-       ~Matrix() {}
+       ~Matrix()
+       {
+       }
    };
    
    #endif  // MATRIX_H

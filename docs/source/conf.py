@@ -2,10 +2,8 @@ project = 'SCIANTIX'
 copyright = '2025, giozu'
 author = 'giozu'
 release = '2.1'
-extensions = []
 templates_path = ['_templates']
 exclude_patterns = []
-html_theme = 'alabaster'
 html_static_path = []
 
 import os
@@ -19,7 +17,7 @@ extensions = [
     "sphinx.ext.viewcode",
 ]
 
-html_theme = "sphinx_rtd_theme"
+html_theme = "furo"
 
 # -- Run Doxygen so that Breathe/Exhale can see the XML -----------------
 # Root della repo: docs/source -> .. (docs) -> .. (root)

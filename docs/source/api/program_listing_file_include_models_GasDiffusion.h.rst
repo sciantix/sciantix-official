@@ -29,11 +29,9 @@ Program Listing for File GasDiffusion.h
    
    #include "Simulation.h"
    
-   void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system,
-                                         SciantixArray<Model>& model, int n_modes);
+   void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes);
    
-   void defineSpectralDiffusion2Equations(SciantixArray<System>& sciantix_system,
-                                          SciantixArray<Model>& model, int n_modes);
+   void defineSpectralDiffusion2Equations(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes);
    
    void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_system,
                                           SciantixArray<Model>&           model,

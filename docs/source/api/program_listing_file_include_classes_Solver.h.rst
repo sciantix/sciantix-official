@@ -41,25 +41,29 @@ Program Listing for File Solver.h
    
        double Decay(double initial_condition, double decay_rate, double source_term, double increment);
    
-       double BinaryInteraction(double initial_condition, double interaction_coefficient,
-                                double increment);
+       double BinaryInteraction(double initial_condition, double interaction_coefficient, double increment);
    
-       double SpectralDiffusion(double* initial_condition, std::vector<double> parameter,
-                                double increment);
+       double SpectralDiffusion(double* initial_condition, std::vector<double> parameter, double increment);
    
        double dotProduct1D(std::vector<double> u, double v[], int n);
    
        void dotProduct2D(double A[], double v[], int n_rows, const int n_col, double result[]);
    
-       void SpectralDiffusion2equations(double& gas_1, double& gas_2, double* initial_condition_gas_1,
-                                        double* initial_condition_gas_2, std::vector<double> parameter,
-                                        double increment);
+       void SpectralDiffusion2equations(double&             gas_1,
+                                        double&             gas_2,
+                                        double*             initial_condition_gas_1,
+                                        double*             initial_condition_gas_2,
+                                        std::vector<double> parameter,
+                                        double              increment);
    
-       void SpectralDiffusion3equations(double& gas_1, double& gas_2, double& gas_3,
-                                        double* initial_condition_gas_1,
-                                        double* initial_condition_gas_2,
-                                        double* initial_condition_gas_3, std::vector<double> parameter,
-                                        double increment);
+       void SpectralDiffusion3equations(double&             gas_1,
+                                        double&             gas_2,
+                                        double&             gas_3,
+                                        double*             initial_condition_gas_1,
+                                        double*             initial_condition_gas_2,
+                                        double*             initial_condition_gas_3,
+                                        std::vector<double> parameter,
+                                        double              increment);
    
        void Laplace2x2(double A[], double b[]);
    
@@ -74,11 +78,14 @@ Program Listing for File Solver.h
        void modeInitialization(int n_modes, double mode_initial_condition, double* diffusion_modes);
    
        double NewtonBlackburn(std::vector<double> parameter);
-       double NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter,
-                                       double increment);
+       double NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment);
    
-       Solver() {}
-       ~Solver() {}
+       Solver()
+       {
+       }
+       ~Solver()
+       {
+       }
    };
    
    #endif  // SOLVER_H

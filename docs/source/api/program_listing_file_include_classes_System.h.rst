@@ -86,7 +86,8 @@ Program Listing for File System.h
        double getVolumeInLattice();
        void setVolumeInLattice(double v);
    
-       void setBubbleDiffusivity(int input_value, SciantixArray<SciantixVariable>& sciantix_variable,
+       void setBubbleDiffusivity(int                              input_value,
+                                 SciantixArray<SciantixVariable>& sciantix_variable,
                                  SciantixArray<SciantixVariable>& history_variable,
                                  SciantixArray<Matrix>&           matrices);
    
@@ -107,20 +108,23 @@ Program Listing for File System.h
    
        double getHenryConstant();
    
-       void setResolutionRate(int input_value, SciantixArray<SciantixVariable>& sciantix_variable,
+       void setResolutionRate(int                              input_value,
+                              SciantixArray<SciantixVariable>& sciantix_variable,
                               SciantixArray<SciantixVariable>& history_variable,
                               SciantixArray<InputVariable>&    scaling_factors,
                               SciantixArray<Matrix>&           matrices);
    
        double getResolutionRate();
    
-       void setTrappingRate(int input_value, SciantixArray<SciantixVariable>& sciantix_variable,
-                            SciantixArray<InputVariable>& scaling_factors);
+       void setTrappingRate(int                              input_value,
+                            SciantixArray<SciantixVariable>& sciantix_variable,
+                            SciantixArray<InputVariable>&    scaling_factors);
    
        double getTrappingRate();
    
-       void setNucleationRate(int input_value, SciantixArray<SciantixVariable>& history_variable,
-                              SciantixArray<InputVariable>& scaling_factors);
+       void setNucleationRate(int                              input_value,
+                              SciantixArray<SciantixVariable>& history_variable,
+                              SciantixArray<InputVariable>&    scaling_factors);
    
        double getNucleationRate();
    
@@ -128,14 +132,19 @@ Program Listing for File System.h
    
        double getPoreNucleationRate();
    
-       void setProductionRate(int input_value, SciantixArray<SciantixVariable>& history_variable,
+       void setProductionRate(int                              input_value,
+                              SciantixArray<SciantixVariable>& history_variable,
                               SciantixArray<InputVariable>&    input_variable,
                               SciantixArray<SciantixVariable>& sciantix_variable,
                               SciantixArray<InputVariable>&    scaling_factors);
    
        double getProductionRate();
-       System() {}
-       ~System() {}
+       System()
+       {
+       }
+       ~System()
+       {
+       }
    };
    
    #endif  // SYSTEM_H
