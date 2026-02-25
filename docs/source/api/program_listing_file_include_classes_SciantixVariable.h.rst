@@ -38,8 +38,7 @@ Program Listing for File SciantixVariable.h
        bool        to_output;
    
      public:
-       SciantixVariable(std::string name, std::string uom, double initial_value, double final_value,
-                        bool output)
+       SciantixVariable(std::string name, std::string uom, double initial_value, double final_value, bool output)
        {
            this->name          = name;
            this->uom           = uom;
@@ -76,9 +75,13 @@ Program Listing for File SciantixVariable.h
    
        bool getOutput();
    
-       SciantixVariable() {}
+       SciantixVariable()
+       {
+       }
    
-       ~SciantixVariable() {}
+       ~SciantixVariable()
+       {
+       }
    };
    
    #endif

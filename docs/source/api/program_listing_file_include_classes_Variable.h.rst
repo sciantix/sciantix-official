@@ -37,8 +37,12 @@ Program Listing for File Variable.h
        std::string name;
    
      public:
-       Variable() {}
-       ~Variable() {}
+       Variable()
+       {
+       }
+       ~Variable()
+       {
+       }
    
        void setName(std::string n)
        {

@@ -29,7 +29,8 @@ Program Listing for File StoichiometryDeviation.h
    
    #include "Simulation.h"
    
-   double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature,
+   double BlackburnThermochemicalModel(double                           stoichiometry_deviation,
+                                       double                           temperature,
                                        SciantixArray<SciantixVariable>& sciantix_variable);
    
    #endif  // STOICHIOMETRY_DEVIATION_H

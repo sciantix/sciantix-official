@@ -44,9 +44,13 @@ Program Listing for File SciantixArray.h
                                           // their indices in the array
    
      public:
-       SciantixArray() {}
+       SciantixArray()
+       {
+       }
    
-       ~SciantixArray() {}
+       ~SciantixArray()
+       {
+       }
    
        SciantixArray(std::vector<T> data)
        {

@@ -89,9 +89,13 @@ Program Listing for File Gas.h
            return precursor_factor;
        }
    
-       Gas() {}
+       Gas()
+       {
+       }
    
-       ~Gas() {}
+       ~Gas()
+       {
+       }
    };
    
    #endif  // GAS_H

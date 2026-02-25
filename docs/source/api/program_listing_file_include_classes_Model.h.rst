@@ -54,9 +54,13 @@ Program Listing for File Model.h
            return parameter;
        }
    
-       Model() {}
+       Model()
+       {
+       }
    
-       ~Model() {}
+       ~Model()
+       {
+       }
    };
    
    #endif  // MODEL_H

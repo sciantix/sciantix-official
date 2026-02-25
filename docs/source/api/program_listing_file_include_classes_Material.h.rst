@@ -32,9 +32,13 @@ Program Listing for File Material.h
    class Material
    {
      public:
-       Material() {}
+       Material()
+       {
+       }
    
-       ~Material() {}
+       ~Material()
+       {
+       }
    
        void setName(std::string n)
        {

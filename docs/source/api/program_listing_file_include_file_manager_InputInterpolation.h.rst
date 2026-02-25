@@ -29,7 +29,6 @@ Program Listing for File InputInterpolation.h
    
    #include <vector>
    
-   double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy,
-                             unsigned short int n);
+   double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy, unsigned short int n);
    
    #endif
