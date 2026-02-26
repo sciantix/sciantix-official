@@ -72,6 +72,9 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
     double YPu238 = 0.0, YPu239 = 0.0, YPu240 = 0.0, YPu241 = 0.0, YPu242 = 0.0;
 
     std::string gas_name = gas.getName();;
+    std::string particle_name = particle.getName();;
+    bool found = false;
+    std::string current_name = "";
 
     if (gas_name == "Xe")
     {
@@ -83,6 +86,8 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 22.072e-02;
         YPu241 = 22.095e-02;
         YPu242 = 17.250e-02; // https://www-nds.iaea.org/wimsd/fpyield.htm
+        found = true;
+        current_name = gas_name;
     }
     else if (gas_name == "Kr")
     {
@@ -94,6 +99,8 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 2.332e-02; 
         YPu241 = 1.047e-02;
         YPu242 = 1.726e-03; // non trovo Pu242 come genitore
+        found = true;
+        current_name = gas_name;
     }
     else if (gas_name == "Cs")
     {
@@ -105,6 +112,8 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 19.697e-02;
         YPu241 = 19.916e-02;
         YPu242 = 6.520e-02; //
+        found = true;
+        current_name = gas_name;
     }
     else if (gas_name == "I")
     {
@@ -116,6 +125,8 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 1.846e-02;
         YPu241 = 1.829e-02;
         YPu242 = 6.952e-02; //
+        found = true;
+        current_name = gas_name;
     }
     else if (gas_name == "Te")
     {
@@ -127,6 +138,8 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 3.974e-02; 
         YPu241 = 4.069e-02;
         YPu242 = 3.022e-02; //
+        found = true;
+        current_name = gas_name;
     }
     else if (gas_name == "He")
     {
@@ -144,9 +157,72 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         yield = 0.013027;
         return;
     }
+
+    if (!found) {
+    if (particle_name == "Mo")
+    {
+        // Mo-95, 97, 98, 100
+        YU235  = 23.450e-02;
+        YU238  = 23.100e-02; 
+        YPu239 = 22.100e-02;
+        YPu240 = 21.800e-02;
+        YPu241 = 20.500e-02;
+        YPu242 = 18.200e-02; 
+        found = true;
+        current_name = particle_name;
+    }
+    else if (particle_name == "Ru")
+    {
+        // Ru-101, 102, 104, 106
+        YU235  = 11.500e-02;
+        YU238  = 15.200e-02;
+        YPu239 = 23.800e-02; 
+        YPu240 = 22.900e-02;
+        YPu241 = 22.100e-02;
+        YPu242 = 20.500e-02;
+        found = true;
+        current_name = particle_name;
+    }
+    else if (particle_name == "Tc")
+    {
+        // Tc-99
+        YU235  = 6.110e-02;
+        YU238  = 6.150e-02;
+        YPu239 = 6.210e-02;
+        YPu240 = 6.180e-02;
+        YPu241 = 6.001E-02;
+        YPu242 = 5.559E-02;
+        found = true;
+        current_name = particle_name;
+    }
+    else if (particle_name == "Pd")
+    {
+        // Pd-106, 107, 108, 110
+        YU235  = 1.550e-02;
+        YU238  = 3.200e-02;
+        YPu239 = 15.600e-02; 
+        YPu240 = 16.500e-02;
+        YPu241 = 17.800e-02;
+        YPu242 = 18.500e-02;
+        found = true;
+        current_name = particle_name;
+    }
+    else if (particle_name == "Rh")
+    {
+        // Rh-105
+        YU235  = 3.030e-02;
+        YU238  = 3.500e-02;
+        YPu239 = 5.600e-02;
+        YPu240 = 5.850e-02;
+        YPu241 = 6.100e-02;
+        YPu242 = 6.400e-02;
+        found = true;
+        current_name = particle_name;
+    }
     else
     {
         return;
+    }
     }
 
     double Y_U_mean  = fU234 * YU234 + fU235 * YU235 + fU236 * YU236 + fU237 * YU237 + fU238 * YU238;
@@ -156,7 +232,7 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
 
     yield = Y_eff;
 
-    std::cout << "Yield of " << gas_name << ": " << yield << " at/fiss" << std::endl;
+    std::cout << "Yield of " << current_name << ": " << yield << " at/fiss" << std::endl;
 }
 
 double System::getYield()
@@ -191,8 +267,14 @@ Gas System::getGas()
 
 std::string System::getGasName()
 {
-    /// Member function to get the name of the gas in the matrix
-    return gas.getName();
+    if (gas.getName() != "")
+    {
+        return gas.getName();
+    }
+    else
+    {
+        return particle.getName();
+    }
 }
 
 void System::setMatrix(Matrix m)
@@ -210,6 +292,21 @@ std::string System::getMatrixName()
 {
     /// Member function to get the name of the matrix
     return matrix.getName();
+}
+
+void System::setParticle(Particle p)
+{
+    particle = p;
+}
+
+Particle System::getParticle()
+{
+    return particle;
+}
+
+std::string System::getParticleName()
+{
+    return particle.getName();
 }
 
 double System::getVolumeInLattice()

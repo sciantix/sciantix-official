@@ -16,6 +16,7 @@
 
 #include "SetSystem.h"
 #include "Simulation.h"
+#include "SetParticle.C"
 
 void Simulation::setSystem()
 {
@@ -30,6 +31,12 @@ void Simulation::setSystem()
             sciantix_system.push(Cs_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));            
             sciantix_system.push(I_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Te_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Mo_in_UO2(matrices, particle, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Ru_in_UO2(matrices, particle, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Tc_in_UO2(matrices, particle, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Pd_in_UO2(matrices, particle, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Rh_in_UO2(matrices, particle, input_variable, sciantix_variable, history_variable, scaling_factors));
+            break;
             break;
             break;
 
@@ -47,6 +54,11 @@ void Simulation::setSystem()
             sciantix_system.push(Cs_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));            
             sciantix_system.push(I_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Te_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Mo_in_MOX(matrices, particle, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Ru_in_MOX(matrices, particle, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Tc_in_MOX(matrices, particle, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Pd_in_MOX(matrices, particle, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Rh_in_MOX(matrices, particle, input_variable, sciantix_variable, history_variable, scaling_factors));
             break;
 
         default:
@@ -444,5 +456,178 @@ System Te_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
     system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
 
+    return system_;
+}
+
+// five metals
+
+System Mo_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Mo in UO2");
+    system_.setParticle(particle["Mo"]);
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(sciantix_variable);
+    system_.setRadiusInLattice(0.15e-9); // from atomic volume
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
+    
+    return system_;
+}
+
+System Ru_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Ru in UO2");
+    system_.setParticle(particle["Ru"]);
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(sciantix_variable);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
+
+    return system_;
+}
+
+System Tc_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Tc in UO2");
+    system_.setParticle(particle["Tc"]);
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(sciantix_variable);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
+
+    return system_;
+}
+
+System Pd_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Pd in UO2");
+    system_.setParticle(particle["Pd"]); 
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(sciantix_variable);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
+
+    return system_;
+}
+
+System Rh_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Rh in UO2");
+    system_.setParticle(particle["Rh"]); 
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(sciantix_variable);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
+
+    return system_;
+}
+
+
+System Mo_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Mo in MOX");
+    system_.setParticle(particle["Mo"]);
+    system_.setMatrix(matrices["MOX"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(sciantix_variable);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
+    
+    return system_;
+}
+
+System Ru_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Ru in MOX");
+    system_.setParticle(particle["Ru"]);
+    system_.setMatrix(matrices["MOX"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(sciantix_variable);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
+    
+    return system_;
+}
+
+System Tc_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Tc in MOX");
+    system_.setParticle(particle["Tc"]);
+    system_.setMatrix(matrices["MOX"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(sciantix_variable);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
+    
+    return system_;
+}
+
+System Pd_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Pd in MOX");
+    system_.setParticle(particle["Pd"]);
+    system_.setMatrix(matrices["MOX"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(sciantix_variable);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
+    
+    return system_;
+}
+
+System Rh_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Rh in MOX");
+    system_.setParticle(particle["Rh"]);
+    system_.setMatrix(matrices["MOX"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(sciantix_variable);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionGasDiffusivity(int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
+    
     return system_;
 }

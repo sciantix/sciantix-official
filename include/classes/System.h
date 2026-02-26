@@ -19,6 +19,7 @@
 
 #include "Matrix.h"
 #include "Gas.h"
+#include "Particle.h"
 #include "Constants.h"
 #include "ErrorMessages.h"
 #include "SciantixArray.h"
@@ -57,6 +58,7 @@ protected:
 
     Gas gas;
     Matrix matrix;
+    Particle particle;
 
 public:
     /**
@@ -120,7 +122,23 @@ public:
      * @return Name of the matrix.
      */
     std::string getMatrixName();
+    /**
+     * @brief Sets the particle (Five Metals) in the system.
+     * @param p Particle object.
+     */
+    void setParticle(Particle p);
 
+    /**
+     * @brief Gets the particle object.
+     * @return Particle object.
+     */
+    Particle getParticle();
+
+    /**
+     * @brief Gets the name of the particle.
+     * @return Name of the particle (e.g., "Mo", "Ru").
+     */
+    std::string getParticleName();
     /**
      * @brief Gets the volume occupied by the gas in the matrix.
      * @return Volume occupied by the gas.

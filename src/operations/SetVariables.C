@@ -91,7 +91,6 @@ void Simulation::setVariables(
     {
         thermochemistry_variable.push(initial_value);
     }
-    
 
     #if defined(COUPLING_TU)
 
