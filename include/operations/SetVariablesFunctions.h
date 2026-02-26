@@ -293,10 +293,10 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Fuel density", "(kg/m3)", Sciantix_variables[40], Sciantix_variables[40], 1),
 
         SciantixVariable("U", "(at/m3)", Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45], Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45], 0),
-        SciantixVariable("U234", "(at/m3)", Sciantix_variables[41], Sciantix_variables[41], 0),
+        SciantixVariable("U234", "(at/m3)", Sciantix_variables[41], Sciantix_variables[41], 1),
         SciantixVariable("U235", "(at/m3)", Sciantix_variables[42], Sciantix_variables[42], 1),
-        SciantixVariable("U236", "(at/m3)", Sciantix_variables[43], Sciantix_variables[43], 0),
-        SciantixVariable("U237", "(at/m3)", Sciantix_variables[44], Sciantix_variables[44], 0),
+        SciantixVariable("U236", "(at/m3)", Sciantix_variables[43], Sciantix_variables[43], 1),
+        SciantixVariable("U237", "(at/m3)", Sciantix_variables[44], Sciantix_variables[44], 1),
         SciantixVariable("U238", "(at/m3)", Sciantix_variables[45], Sciantix_variables[45], 1),
 
         // MOX Pu composition and ratio
@@ -324,8 +324,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Stoichiometry deviation", "(/)", Sciantix_variables[66], Sciantix_variables[66], 1),
         SciantixVariable("Equilibrium stoichiometry deviation", "(/)", 0.0, 0.0, toOutputStoichiometryDeviation),
 
-        SciantixVariable("Fuel oxygen partial pressure", "(MPa)", Sciantix_variables[67], Sciantix_variables[67], toOutputStoichiometryDeviation),
-        SciantixVariable("Fuel oxygen potential", "(KJ/mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
+        SciantixVariable("Fuel oxygen partial pressure", "(MPa)", Sciantix_variables[67], Sciantix_variables[67], 1),
+        SciantixVariable("Fuel oxygen potential", "(KJ/mol)", 0.0, 0.0, 1),
         SciantixVariable("Specific power", "(MW/kg)", 0.0, 0.0, 0),
 
         SciantixVariable("HBS porosity", "(/)", Sciantix_variables[56], Sciantix_variables[56], toOutputHighBurnupStructure),
