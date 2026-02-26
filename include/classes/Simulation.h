@@ -51,6 +51,7 @@ private:
     SciantixArray<System> sciantix_system;
     SciantixArray<Matrix> matrices;
     SciantixArray<Gas> gas;
+    SciantixArray<Particle> particle;
 
     SciantixArray<InputVariable> input_variable;
     SciantixArray<InputVariable> scaling_factors;
@@ -90,6 +91,7 @@ public:
     );
 
     void setGas();
+    void setParticle();
     void setMatrix();
     void setSystem();
 

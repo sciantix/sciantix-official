@@ -43,6 +43,8 @@ void Simulation::GasDiffusion()
     // Model resolution
     for (auto &system : sciantix_system)
     {
+        if (system.getParticleName() != "") continue;
+
         switch (int(input_variable["iDiffusionSolver"].getValue()))
         {
         case 1:
@@ -154,6 +156,8 @@ void Simulation::GasDiffusion()
     // Calculation of the gas concentration at grain boundary, by mass balance
     for (auto &system : sciantix_system)
     {
+        if (system.getParticleName() != "") continue;
+
         if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 0.0)
         {
             sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
@@ -192,6 +196,8 @@ void Simulation::GasDiffusion()
     {
         for (auto &system : sciantix_system)
         {
+            if (system.getParticleName() != "") continue;
+            
             if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 0.0)
             {
                 {

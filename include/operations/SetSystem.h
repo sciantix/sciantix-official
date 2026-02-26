@@ -64,4 +64,24 @@ System I_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sciant
 
 System Te_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
 
+System Mo_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+
+System Ru_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+
+System Tc_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+
+System Pd_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+
+System Rh_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+
+System Mo_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+
+System Ru_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+
+System Tc_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+
+System Pd_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+
+System Rh_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Particle> &particle, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+
 #endif // SETSYSTEM_H

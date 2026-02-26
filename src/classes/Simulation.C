@@ -50,6 +50,7 @@ void Simulation::initialize(
         Sciantix_thermochemistry_options
     );
     setGas();
+    setParticle();
     setMatrix();
     setSystem();
 }
