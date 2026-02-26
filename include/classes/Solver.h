@@ -21,6 +21,8 @@
 #include <string>
 #include <cmath>
 #include "InputVariable.h"
+#include <algorithm>
+
 
 /**
  * @brief Class providing solver methods for the SCIANTIX simulation framework.

@@ -49,21 +49,46 @@ void Initialization(
 	Sciantix_variables[35] = 0.5;      // Intergranular_saturation_fractional_coverage[0]
 	Sciantix_variables[37] = 1.0;      // Intergranular_fractional_intactness[0]
 
+	// EC -- added
+	double molar_mass_Uranium = Sciantix_variables[41]*234.04095 + Sciantix_variables[42]*235.04393 + 
+								Sciantix_variables[43]*236.04557 + Sciantix_variables[44]*237.04873 +
+								Sciantix_variables[45]*238.05079;
+    molar_mass_Uranium /= 100;  // % in atoms, so we need to divide by 100 to get the molar mass in g/mol
+    
+	double molar_mass_Plutonium = Sciantix_variables[171]*238.049 + Sciantix_variables[172]*239.05 + 
+                                  Sciantix_variables[173]*240.06 + Sciantix_variables[174]*241.05 + 
+                                  Sciantix_variables[175]*242.06;  
+    molar_mass_Plutonium /= 100;  // % in atoms, so we need to divide by 100 to get the molar mass in g/mol
+
+	double molar_mass_Oxygen = 15.999; // g/mol
+
+	double molar_mass_mix = (2.0 + Sciantix_variables[66]) * molar_mass_Oxygen + (1 - Sciantix_variables[177]) * molar_mass_Uranium + Sciantix_variables[177] * molar_mass_Plutonium;
+	double density_mix = Sciantix_variables[40]; // kg/m3
+
 	// https://pubchem.ncbi.nlm.nih.gov/compound/Uranium-235
-	Sciantix_variables[41] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 234.04095; // U-234
-	Sciantix_variables[42] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 235.04393; // U-235
-	Sciantix_variables[43] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 236.04557; // U-236
-	Sciantix_variables[44] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 237.04873; // U-237
-	Sciantix_variables[45] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 238.05079; // U-238
+	// at% * 1e-2 [atU234/atUtot] * [density, kgmix/m3mix] * [1-q, atUtot/atmix] * [avogadro, atmix/molmix] * [molarmassmix, molmix/gmix] * 1e3 gmix/kgmix 
+	Sciantix_variables[41] *= density_mix * (1.0 - Sciantix_variables[177]) * 6.022e+23 * 10 / molar_mass_mix; // U-234
+	Sciantix_variables[42] *= density_mix * (1.0 - Sciantix_variables[177]) * 6.022e+23 * 10 / molar_mass_mix; // U-235
+	Sciantix_variables[43] *= density_mix * (1.0 - Sciantix_variables[177]) * 6.022e+23 * 10 / molar_mass_mix; // U-236
+	Sciantix_variables[44] *= density_mix * (1.0 - Sciantix_variables[177]) * 6.022e+23 * 10 / molar_mass_mix; // U-237
+	Sciantix_variables[45] *= density_mix * (1.0 - Sciantix_variables[177]) * 6.022e+23 * 10 / molar_mass_mix; // U-238
 	double total_U = Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45];
 
     // https://pubchem.ncbi.nlm.nih.gov/compound/Plutonium-239
-    Sciantix_variables[171] *= Sciantix_variables[40] * Sciantix_variables[177] * 6.022e24 * 0.882 / 238; // Pu-238
-	Sciantix_variables[172] *= Sciantix_variables[40] * Sciantix_variables[177] * 6.022e24 * 0.882 / 239; // Pu-239
-	Sciantix_variables[173] *= Sciantix_variables[40] * Sciantix_variables[177] * 6.022e24 * 0.882 / 240; // Pu-240
-	Sciantix_variables[174] *= Sciantix_variables[40] * Sciantix_variables[177] * 6.022e24 * 0.882 / 241; // Pu-241
-	Sciantix_variables[175] *= Sciantix_variables[40] * Sciantix_variables[177] * 6.022e24 * 0.882 / 242; // Pu-242
+
+   // EC -> qui è corretto che vi sia q? e se sì, non dovrebbe essere usato anche per il calcolo di U?  - cambiato 
+    Sciantix_variables[171] *= density_mix * Sciantix_variables[177] * 6.022e+23 * 10 / molar_mass_mix; // Pu-238
+	Sciantix_variables[172] *= density_mix * Sciantix_variables[177] * 6.022e+23 * 10 / molar_mass_mix; // Pu-239
+	Sciantix_variables[173] *= density_mix * Sciantix_variables[177] * 6.022e+23 * 10 / molar_mass_mix; // Pu-240
+	Sciantix_variables[174] *= density_mix * Sciantix_variables[177] * 6.022e+23 * 10 / molar_mass_mix; // Pu-241
+	Sciantix_variables[175] *= density_mix * Sciantix_variables[177] * 6.022e+23 * 10 / molar_mass_mix; // Pu-242
 	double total_Pu = Sciantix_variables[171] + Sciantix_variables[172] + Sciantix_variables[173] + Sciantix_variables[174] + Sciantix_variables[175];
+
+	std::cout<< "INFO - Initialization" << std::endl;
+	std::cout<< "INFO - Initial fuel density: " << Sciantix_variables[40] << " kg/m3" << std::endl;
+	std::cout<< "Molar mass of the fuel mixture: " << molar_mass_mix << " g/mol" << std::endl;
+	std::cout<< "Previosly, the initial U content was scaled: " << 0.8815 / 234.04095 << " at/m3" << std::endl;
+	std::cout<< "Now, the initial U content is scaled: " << (1.0 - Sciantix_variables[177]) / molar_mass_mix << " at/m3" << std::endl;
 
 	// Intragranular similarity ratio
 	Sciantix_variables[64] = 1.0;

@@ -1,16 +1,13 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import matplotlib.lines as mlines
 import pandas as pd
 import numpy as np
 import os
 import glob
 import re
-from collections import defaultdict
 
 folder_path = "."
 avogadronumber = 6.02214e23
-xlim_i = 12000.0
 
 mpl.rcParams.update({
     "font.family": "arial",
@@ -37,77 +34,205 @@ for file in png_files:
 data = pd.read_csv(folder_path + '/output.txt', sep='\t')
 thermochemistry_data = pd.read_csv(folder_path + '/thermochemistry_output.txt', sep='\t')
 
+print("thermochemistry columns:", len(thermochemistry_data.columns))
+print("data columns:", len(data.columns))
 
-#Plotting
 
-#Plotting
+# -------------------------
+# 1) Temperature vs Time
+# -------------------------
 plt.figure(figsize=(10, 6))
 plt.plot(data['Time (h)'], data['Temperature (K)'], color='blue')
 plt.xlabel('Time (h)')
 plt.ylabel('Temperature (K)')
+plt.title('Temperature history')
 plt.yscale('linear')
-plt.legend()
 plt.tight_layout()
 plt.savefig(folder_path + '/temperature_plot.png')
+plt.close()
 
 
+# -------------------------
+# 2) Stoichiometry vs Time
+# -------------------------
 plt.figure(figsize=(10, 6))
 plt.plot(data['Time (h)'], data['Stoichiometry deviation (/)'], color='blue')
 plt.xlabel('Time (h)')
-plt.ylabel('Stoichiometry deviation (/)')
+plt.ylabel('Stoichiometry deviation (–)')
+plt.title('Stoichiometry deviation')
 plt.yscale('linear')
-plt.legend()
 plt.tight_layout()
 plt.savefig(folder_path + '/stoichiometry_plot.png')
+plt.close()
+
+
+# ---------------------------------------
+# 3) Atomic densities (U/Pu isotopes) vs T
+#    (automatico: prende tutte le colonne tipo U235 (at/m3), Pu239 (at/m3), ...)
+# ---------------------------------------
+iso_cols = [c for c in data.columns if re.match(r'^(U\d+|Pu\d+)\s+\(at/m3\)$', c)]
+iso_cols = [c for c in iso_cols if c != 'U233 (at/m3)']  # opzionale se non esiste/ti confonde
+
 plt.figure(figsize=(10, 6))
-plt.plot(data['Temperature (K)'], data['U235 (at/m3)'], label='U235', color='red')
-plt.plot(data['Temperature (K)'], data['U238 (at/m3)'], label='U238', color='green')
-plt.plot(data['Temperature (K)'], data['Pu239 (at/m3)'], label='Pu239', color='purple')
-plt.plot(data['Temperature (K)'], data['Pu241 (at/m3)'], label='Pu241', color='orange')
+for c in iso_cols:
+    label = c.split()[0]  # "U235"
+    plt.plot(data['Temperature (K)'], data[c], label=label)
 plt.xlabel('Temperature (K)')
-plt.ylabel('-')
-plt.title('at/m3 of U233, U235, U238, Pu239, and Pu241')
+plt.ylabel('Atomic density (at/m³)')
+plt.title('U/Pu isotopes atomic density')
 plt.yscale('log')
-plt.legend()
+plt.legend(frameon=False)
 plt.tight_layout()
 plt.savefig(folder_path + '/atom_density_plot.png')
+plt.close()
 
+
+# ---------------------------------------
+# 4) Element contents vs Temperature
+# ---------------------------------------
 plt.figure(figsize=(10, 6))
 plt.plot(data['Temperature (K)'], data['Plutonium content (mol/m3)'], label='Plutonium', color='red')
 plt.plot(data['Temperature (K)'], data['Uranium content (mol/m3)'], label='Uranium', color='green')
 plt.plot(data['Temperature (K)'], data['Oxygen content (mol/m3)'], label='Oxygen', color='purple')
 plt.xlabel('Temperature (K)')
-plt.ylabel('-')
-plt.title('at/m3 of Plutonium, Uranium, and Oxygen')
-plt.legend()
+plt.ylabel('Concentration (mol/m³)')
+plt.title('Element contents')
+plt.legend(frameon=False)
 plt.tight_layout()
 plt.savefig(folder_path + '/content_plot.png')
+plt.close()
+
+
+# -------------------------------------------------
+# 5) MATRIX: solid species vs Temperature (mol/m3)
+#    (automatico: tutte le colonne "(solid, matrix) (mol/m3)" con max>0)
+# -------------------------------------------------
+solid_matrix_cols = [c for c in thermochemistry_data.columns
+                     if '(solid, matrix)' in c and c.endswith('(mol/m3)') and not c.startswith('Unnamed')]
 
 plt.figure(figsize=(10, 6))
-plt.plot(thermochemistry_data['Temperature (K)'], thermochemistry_data['UO (solid, matrix) (mol/m3)'], label='UO', color='blue')
-plt.plot(thermochemistry_data['Temperature (K)'], thermochemistry_data['UO2 (solid, matrix) (mol/m3)'], label='UO2', color='orange')
-plt.plot(thermochemistry_data['Temperature (K)'], thermochemistry_data['UO3 (solid, matrix) (mol/m3)'], label='UO3', color='green')
-plt.plot(thermochemistry_data['Temperature (K)'], thermochemistry_data['PuO (solid, matrix) (mol/m3)'], label='PuO', color='red')
-plt.plot(thermochemistry_data['Temperature (K)'], thermochemistry_data['PuO2 (solid, matrix) (mol/m3)'], label='PuO2', color='purple')
-plt.xlabel('Temperature (K)')
-plt.ylabel('-')
-plt.title('Vapor Pressure of UO, UO2, UO3, PuO, and PuO2')
-plt.yscale('log')
-plt.legend()
-plt.tight_layout()
-plt.savefig(folder_path + '/solid_pressure_plot.png')
+n_plotted = 0
+for c in solid_matrix_cols:
+    y = thermochemistry_data[c].to_numpy(dtype=float)
+    if np.nanmax(y) <= 0:
+        continue
+    label = c.replace(' (solid, matrix) (mol/m3)', '')
+    plt.plot(thermochemistry_data['Temperature (K)'], y, label=label)
+    n_plotted += 1
 
-# Plotting
-plt.figure(figsize=(10, 6))
-plt.plot(thermochemistry_data['Temperature (K)'], thermochemistry_data['UO (vapour, matrix) (mol/m3)'], label='UO', color='blue')
-plt.plot(thermochemistry_data['Temperature (K)'], thermochemistry_data['UO2 (vapour, matrix) (mol/m3)'], label='UO2', color='orange')
-plt.plot(thermochemistry_data['Temperature (K)'], thermochemistry_data['UO3 (vapour, matrix) (mol/m3)'], label='UO3', color='green')
-plt.plot(thermochemistry_data['Temperature (K)'], thermochemistry_data['PuO (vapour, matrix) (mol/m3)'], label='PuO', color='red')
-plt.plot(thermochemistry_data['Temperature (K)'], thermochemistry_data['PuO2 (vapour, matrix) (mol/m3)'], label='PuO2', color='purple')
 plt.xlabel('Temperature (K)')
-plt.ylabel('-')
-plt.title('Vapor Pressure of UO, UO2, UO3, PuO, and PuO2')
+plt.ylabel('Concentration (mol/m³)')
+plt.title('Matrix – solid species')
+if n_plotted > 1:
+    plt.legend(frameon=False)
 plt.yscale('log')
-plt.legend()
+plt.ylim(bottom=1e-5)
 plt.tight_layout()
-plt.savefig(folder_path + '/vapor_pressure_plot.png')
+plt.savefig(folder_path + '/matrix_solid_species.png')
+plt.close()
+
+
+# -------------------------------------------------
+# 6) MATRIX: vapour species vs Temperature (mol/m3)
+#    (automatico: tutte "(vapour, matrix) (mol/m3)" con max>0)
+# -------------------------------------------------
+vapour_matrix_cols = [c for c in thermochemistry_data.columns
+                      if '(vapour, matrix)' in c and c.endswith('(mol/m3)') and not c.startswith('Unnamed')]
+
+plt.figure(figsize=(10, 6))
+n_plotted = 0
+for c in vapour_matrix_cols:
+    y = thermochemistry_data[c].to_numpy(dtype=float)
+    if np.nanmax(y) <= 0:
+        continue
+    label = c.replace(' (vapour, matrix) (mol/m3)', '')
+    plt.plot(thermochemistry_data['Temperature (K)'], y, label=label)
+    n_plotted += 1
+
+plt.xlabel('Temperature (K)')
+plt.ylabel('Concentration (mol/m³)')
+plt.title('Matrix – vapour species')
+if n_plotted > 1:
+    plt.legend(frameon=False)
+plt.yscale('log')
+plt.ylim(bottom=1e-5)
+plt.tight_layout()
+plt.savefig(folder_path + '/matrix_vapour_species.png')
+plt.close()
+
+
+# -------------------------------------------------
+# 7) MATRIX: gas species vs Temperature (mol/m3)
+#    (automatico: tutte "(gas, matrix) (mol/m3)" con max>0)
+# -------------------------------------------------
+gas_matrix_cols = [c for c in thermochemistry_data.columns
+                   if '(gas, matrix)' in c and c.endswith('(mol/m3)') and not c.startswith('Unnamed')]
+
+plt.figure(figsize=(10, 6))
+n_plotted = 0
+for c in gas_matrix_cols:
+    y = thermochemistry_data[c].to_numpy(dtype=float)
+    if np.nanmax(y) <= 0:
+        continue
+    label = c.replace(' (gas, matrix) (mol/m3)', '')
+    plt.plot(thermochemistry_data['Temperature (K)'], y, label=label)
+    n_plotted += 1
+
+plt.xlabel('Temperature (K)')
+plt.ylabel('Concentration (mol/m³)')
+plt.title('Matrix – gas species')
+if n_plotted > 1:
+    plt.legend(frameon=False)
+plt.yscale('log')
+plt.ylim(bottom=1e-5)
+plt.tight_layout()
+plt.savefig(folder_path + '/matrix_gas_species.png')
+plt.close()
+
+
+# -------------------------------------------------
+# 8) FP: gas species in grain / GB / gap vs Temperature
+#    (automatico: tutte le colonne "(gas, <pos>) (mol/m3)" con max>0)
+# -------------------------------------------------
+positions_fp = ['at grain boundary', 'in the gap']
+
+for pos in positions_fp:
+    cols = [c for c in thermochemistry_data.columns
+            if f'(gas, {pos})' in c and c.endswith('(mol/m3)') and not c.startswith('Unnamed')]
+
+    plt.figure(figsize=(10, 6))
+    n_plotted = 0
+    for c in cols:
+        y = thermochemistry_data[c].to_numpy(dtype=float)
+        if np.nanmax(y) <= 0:
+            continue
+        label = c.replace(f' (gas, {pos}) (mol/m3)', '')
+        plt.plot(thermochemistry_data['Temperature (K)'], y, label=label)
+        n_plotted += 1
+
+    plt.xlabel('Temperature (K)')
+    plt.ylabel('Concentration (mol/m³)')
+    plt.title(f'Gas species – {pos}')
+    if n_plotted > 1:
+        plt.legend(frameon=False, ncol=2)  # ncol=2 per stare un po' più stretta
+    plt.yscale('log')
+    plt.ylim(bottom=1e-5)
+    plt.tight_layout()
+    plt.savefig(folder_path + f'/gas_species_{pos.replace(" ", "_")}.png')
+    plt.close()
+
+# -------------------------------------------------
+# 9) Grain radius vs Temperature
+# -------------------------------------------------
+plt.figure(figsize=(10, 6))
+plt.plot(data['Temperature (K)'], data['Grain radius (m)'], color='blue')
+plt.xlabel('Temperature (K)')
+plt.ylabel('Grain radius (m)')
+plt.title('Grain radius vs temperature')
+plt.yscale('linear')
+plt.tight_layout()
+plt.savefig(folder_path + '/grain_radius_vs_temperature.png')
+plt.close()
+
+
+print("Done: plots saved in", os.path.abspath(folder_path))
