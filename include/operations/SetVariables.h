@@ -37,6 +37,12 @@
  * model.
  * @param Sciantix_diffusion_modes Array of doubles that describe diffusion modes used in gas
  * behavior modeling.
+ * @param input_variable Reference to SciantixArray of InputVariable objects.
+ * @param history_variable Reference to SciantixArray of SciantixVariable objects for history tracking.
+ * @param sciantix_variable Reference to SciantixArray of SciantixVariable objects.
+ * @param physics_variable Reference to SciantixArray of SciantixVariable objects for physics models.
+ * @param modes_initial_conditions Vector of doubles for initial conditions of diffusion modes.
+ * @param scaling_factors Reference to SciantixArray of Variable objects for user-defined scaling.
  *
  * @author D. Pizzocri
  * @author T. Barani
