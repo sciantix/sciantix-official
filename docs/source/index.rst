@@ -1,8 +1,3 @@
-.. image:: _static/sciantix_logo.jpg
-   :align: center
-   :width: 250px
-   :alt: SCIANTIX Logo
-
 SCIANTIX documentation
 ======================
 
