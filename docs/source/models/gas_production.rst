@@ -70,5 +70,5 @@ Implementation note
 -------------------
 
 The routine loops over all systems in ``sciantix_system``, so gas production is
-handled consistently for all modeled gaseous species using the same integration
+handled consistently for all modelled gaseous species using the same integration
 scheme.

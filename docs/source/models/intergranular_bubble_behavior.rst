@@ -1,5 +1,5 @@
-Intergranular Bubble Behavior
-=============================
+Intergranular Bubble Behaviour
+==============================
 
 This model describes the evolution of grain-boundary (intergranular) bubbles and
 computes the associated quantities needed for fission gas release and swelling:

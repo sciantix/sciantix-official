@@ -4,13 +4,13 @@ Overview
 What is SCIANTIX?
 -----------------
 
-SCIANTIX is an open-source 0D simulation code developed at Politecnico di Milano, designed to model the behavior of a single grain of nuclear fuel, with a particular focus on fission gas behavior.
+SCIANTIX is an open-source 0D simulation code developed at Politecnico di Milano, designed to model the behaviour of a single grain of nuclear fuel, with a particular focus on fission gas behaviour.
 Currently, SCIANTIX is validated against experimental data for the following phenomena:
 
 - **Intragranular gaseous swelling**: Swelling caused by gas bubbles within the fuel grain
 - **Intergranular gaseous swelling**: Swelling at grain boundaries due to bubble growth and coalescence
 - **Fission gas release**: Diffusion and release of gaseous fission products (Xe, Kr) from the fuel
-- **Helium behavior**: Diffusion, solubility, and thermal re-solution of helium under annealing conditions
+- **Helium behaviour**: Diffusion, solubility, and thermal re-solution of helium under annealing conditions
 - **High-burnup structure (HBS) formation**: Evolution of porosity at high burnups
 
 SCIANTIX employs **physics-based rate-theory models** rather than empirical correlations, enabling better integration with lower-length scale calculations and improved predictive capability. The engineering-compatible design allows SCIANTIX to operate both as an independent tool for separate-effect calculations and as an embedded module within industrial fuel performance codes (FPCs) such as TRANSURANUS, FRAPCON/FRAPTRAN, and OFFBEAT.
@@ -18,9 +18,9 @@ SCIANTIX employs **physics-based rate-theory models** rather than empirical corr
 Conceptual Introduction
 -----------------------
 
-**Physics-Based Modeling Approach**
+**Physics-Based Modelling Approach**
 
-Traditional fuel performance codes rely on empirical correlations for modeling fission gas release and swelling, which are often calibrated for specific datasets and reactor conditions. SCIANTIX addresses this limitation by implementing mechanistic rate-theory models based on fundamental physical principles:
+Traditional fuel performance codes rely on empirical correlations for modelling fission gas release and swelling, which are often calibrated for specific datasets and reactor conditions. SCIANTIX addresses this limitation by implementing mechanistic rate-theory models based on fundamental physical principles:
 
 - **Intragranular diffusion**: Models the migration of fission gas atoms within the fuel grain matrix
 - **Trapping and re-solution**: Accounts for gas atoms being trapped at defects and subsequently released through irradiation
@@ -37,18 +37,18 @@ SCIANTIX bridges the gap between atomistic simulations (which are computationall
 - **Numerical robustness**: First-order L-stable implicit time integrators and spectral diffusion solvers
 - **Flexibility**: Modular design supporting alternative models and solver approaches
 
-**Helium Behavior**
+**Helium Behaviour**
 
-Beyond fission gases, SCIANTIX includes dedicated models for helium behavior, which is critical in advanced fuel concepts and under annealing conditions:
+Beyond fission gases, SCIANTIX includes dedicated models for helium behaviour, which is critical in advanced fuel concepts and under annealing conditions:
 
 - **Helium diffusion**: Models temperature-dependent migration of helium atoms within the fuel matrix
 - **Solubility**: Accounts for helium solubility in the fuel and its variation with burnup and temperature
 - **Trapping and de-trapping**: Describes interaction between helium and fuel defects
 - **Thermal re-solution**: Models the release of trapped helium through thermal annealing, important for transient conditions
 - **Bubble formation**: Tracks helium bubble nucleation and growth at grain boundaries
-- **Experimental validation**: Validated against experimental data from helium release behavior under annealing conditions
+- **Experimental validation**: Validated against experimental data from helium release behaviour under annealing conditions
 
-This mechanism is particularly important for understanding fuel behavior in advanced designs and during reactor transients where thermal annealing plays a significant role.
+This mechanism is particularly important for understanding fuel behaviour in advanced designs and during reactor transients where thermal annealing plays a significant role.
 
 Architecture
 ------------
@@ -70,7 +70,7 @@ The SCIANTIX codebase is organized into several primary modules:
    - Matrix: Properties of the fuel material
    - Gas species: Physical and chemical properties of fission gases
    - System: Collections of gas species and their interactions
-   - Models: Physics-based implementations of gas behavior
+   - Models: Physics-based implementations of gas behaviour
    - Solvers: Numerical algorithms for solving differential equations
 
 2. **Solvers** (`solvers.h`): Numerical solution methods
@@ -111,10 +111,10 @@ A typical SCIANTIX simulation follows these stages:
      - Simulation settings (time stepping, convergence criteria)
      - Scaling factors for model parameters
      - Initial conditions (temperature history, burnup rate, fuel properties)
-   - Create and initialize simulation objects (matrix, gas species, systems)
+   - Create and initialise simulation objects (matrix, gas species, systems)
    - Set up numerical solvers and time integrators
 
-2. **Gas Behavior Calculations**
+2. **Gas Behaviour Calculations**
    
    - Solve diffusion equations for intragranular gas distribution
    - Compute trapping and re-solution rates
@@ -142,7 +142,7 @@ A typical SCIANTIX simulation follows these stages:
 6. **Output Generation**
    
    - Write results at specified time steps
-   - Generate output files with fuel properties and gas behavior predictions
+   - Generate output files with fuel properties and gas behaviour predictions
    - Store history information for subsequent time steps
 
 **Input Files Structure**
@@ -228,7 +228,7 @@ SCIANTIX employs several strategies to balance accuracy and computational effici
 The code is validated against experimental data through a comprehensive regression testing suite covering:
 
 - Intragranular and intergranular swelling experiments
-- Helium behavior under annealing
+- Helium behaviour under annealing
 - Fission gas release measurements
 - High-burnup structure characterization
 
