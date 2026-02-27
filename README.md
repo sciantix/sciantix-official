@@ -1,95 +1,102 @@
 # SCIANTIX
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17748425.svg)](https://doi.org/10.5281/zenodo.17748425)
-![CI](https://github.com/sciantix/sciantix-official/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/sciantix/sciantix-official/actions/workflows/pages.yml/badge.svg)
 ![paper](https://github.com/sciantix/sciantix-official/actions/workflows/paper.yml/badge.svg)
 
-SCIANTIX is a 0D simulation code developed at Politecnico di Milano, designed to model the behavior of a single grain of nuclear fuel, with a particular focus on fission gas behavior. The code primarily uses physics-based models, which enhances the integration of lower-length scale calculations and improves accuracy over empirical models. The engineering models facilitate the code integration into industrial fuel performance codes.
+SCIANTIX is an open-source 0D simulation code developed at Politecnico di Milano, designed to model the behavior of a single grain of nuclear fuel, with a particular focus on fission gas behavior. 
 
-Currently, SCIANTIX is validated against experimental data for the following phenomena:
+The code employs physics-based rate-theory models rather than empirical correlations, enabling better integration with lower-length scale calculations and improved predictive capability. SCIANTIX is designed to operate both as an independent tool and as an embedded module within industrial fuel performance codes (FPCs) such as TRANSURANUS, FRAPCON/FRAPTRAN, and OFFBEAT.
+
+Currently, SCIANTIX is validated against experimental data for:
 - Intragranular gaseous swelling
 - Intergranular gaseous swelling
+- Fission gas release (Xe, Kr)
 - Helium behavior and release under annealing conditions
-- Release of radioactive fission gases
-- Formation and evolution of high-burnup structure (HBS) porosity
+- High-burnup structure (HBS) formation and porosity evolution
 
-The validation database is available in the `regression` folder.
+The validation database and regression suite are available in the `regression/` directory.
 
 # Installation
 
 Recommended requirements:
-
 - C++17 compatible compiler (tested: GCC ≥ 9, Clang ≥ 10)
 - CMake ≥ 3.6
-- Ubuntu ≥ 20.04, MacOS Ventura, Windows 10/11 via WSL2 (tested)
+- Python 3.8+ (for regression suite)
 
-## Linux Installation
+## Quick installation (Linux/WSL2)
 
-1. **Obtain the Code:** Download the source code by cloning the GitHub repository or by downloading the zip folder.
-2. **Install Dependencies:**
-   - On Ubuntu, run: `sudo apt install build-essential cmake`
-3. **Build the Code:**
-   - Create a build directory: `mkdir build`
-   - Navigate to the build directory: `cd build`
-   - Generate the Makefile with CMake: `cmake ..`
-   - Compile the code: `make` (to speed up the process using multiple cores, use: `make -j`)
+1. **Obtain the code:**
+   ```bash
+   git clone https://github.com/sciantix/sciantix-official.git
+   cd sciantix-official
+   ```
+2. **Build the code:**
+   ```bash
+   ./Allmake.sh
+   ```
+   The compiled executable `sciantix.x` will be located in the `build/` directory.
 
-The compiled executable `sciantix.x` will be located in the `build` directory.
+## Manual installation
 
-## Windows Installation
-
-The recommended approach for Windows users is to use the [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install).
-
-1. **Install WSL:**
-   - Follow the [official installation guide](https://learn.microsoft.com/en-us/windows/wsl/install).
-2. **Run WSL:**
-   - Open WSL by typing `wsl` in `cmd.exe` or by launching the `Ubuntu` application from the Start menu.
-   - Navigate to the code directory using: `cd /mnt/c/...` (replace `...` with your code directory path).
-3. **Follow Linux Installation Instructions:**
-   - Proceed with the Linux installation steps starting from step 2.
-
-# Coupling with fuel performance codes
-The code can be coupled with thermo-mechanical fuel performance codes (<a href="https://www.sciencedirect.com/science/article/pii/S0022311524004070" target="_blank">Zullo G. et al (2024). Journal of Nuclear Materials, 601, 155305.</a>). Here, it is detailed that the code can be compiled as a static library and coupled with TRANSURANUS, distributed by JRC-EC Karlsruhe. To generate SCIANTIX as a static library, in the build folder:
-
-   - Generate the Makefile with CMake: `cmake -DCOUPLING_TU=ON ..`
-   - Compile the code: `make` (or `make -j`)
-
-The static library, `libsciantix.a`, will be located in the `build` directory.
-
-# Usage
-To run SCIANTIX, execute `sciantix.x` within the directory containing your input files, or execute `./sciantix.x /path_to_folder_with_input_files/` in the working directory with the executable.
-
-Refer to the [Input File Explanation](utilities/InputExplanation.md) for detailed instructions on input syntax.
-
-Examples of input files can be found in:
-- The `regression` directory
-- The `utilities/inputExample` directory, by running the following Python scripts:
-
-```sh
-python3 utilities/inputExample/print_input_initial_conditions.py
-python3 utilities/inputExample/print_input_scaling_factors.py
-python3 utilities/inputExample/print_input_settings.py
+If you prefer to build manually or need custom CMake flags:
+```bash
+mkdir build && cd build
+cmake ..
+make -j$(nproc)
 ```
 
-# Regression Tests
+## Windows installation
+The recommended approach for Windows users is to use the [Windows Subsystem for Linux (WSL2)](https://learn.microsoft.com/en-us/windows/wsl/install). Follow the Quick installation steps within your WSL terminal.
 
-To verify the correct operation of SCIANTIX, run the regression tests:
+# Coupling with fuel performance codes
+To compile SCIANTIX as a static library for coupling with codes like TRANSURANUS:
+```bash
+cd build
+cmake -DCOUPLING_TU=ON ..
+make -j$(nproc)
+```
+The static library `libsciantix.a` will be generated in the `build/` directory.
 
-```sh
-cd regression
-python3 regression.py
+# Usage
+Execute `sciantix.x` within the directory containing your input files, or provide the path to the input folder:
+```bash
+./build/sciantix.x [path_to_input_folder]
+```
+
+### Input preparation
+Refer to the [Input File Explanation](utilities/InputExplanation.md) for detailed syntax.
+Generation scripts for template input files are available in `utilities/inputExample/`:
+```bash
+python3 utilities/inputExample/print_input_settings.py
+python3 utilities/inputExample/print_input_initial_conditions.py
+python3 utilities/inputExample/print_input_scaling_factors.py
+```
+
+# Regression tests
+
+To verify the installation and physics:
+```bash
+./runRegression.sh
+```
+Alternatively, run the runner directly:
+```bash
+python3 -m regression.runner --all -j $(nproc)
 ```
 
 # Documentation
 
-To generate the code documentation, run `doxygen` in the root directory of the code. The Doxygen software can be installed, e.g., on Linux systems, with `sudo apt install doxygen`.
+Online documentation is available at [sciantix.github.io/sciantix-official](https://sciantix.github.io/sciantix-official/).
+To generate local Doxygen documentation:
+```bash
+doxygen Doxyfile
+```
 
 # How to cite
 
-Please cite SCIANTIX using the Zenodo DOI associated with the v2.2.1 release:
+Please cite SCIANTIX using the Zenodo DOI:
 
-### BibTeX
 ```bibtex
-@software{SCIANTIX_2024,
+@software{SCIANTIX_v2,
   title        = {SCIANTIX},
   year         = {2024},
   publisher    = {Zenodo},
