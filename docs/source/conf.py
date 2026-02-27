@@ -15,9 +15,30 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
+    "sphinx_design",
+    "sphinx_copybutton",
+    "myst_parser",
 ]
 
 html_theme = "furo"
+html_logo = "_static/logo.png"
+html_static_path = ["_static"]
+
+html_theme_options = {
+    "source_repository": "https://github.com/sciantix/sciantix-official/",
+    "source_branch": "main",
+    "source_directory": "docs/source/",
+    "sidebar_hide_name": False,
+    "navigation_with_keys": True,
+    "light_css_variables": {
+        "color-brand-primary": "#003366", # Deep navy
+        "color-brand-content": "#006699",
+    },
+    "dark_css_variables": {
+        "color-brand-primary": "#33CCCC", # Vibrant cyan
+        "color-brand-content": "#66E6E6",
+    },
+}
 
 # -- Run Doxygen so that Breathe/Exhale can see the XML -----------------
 # Root della repo: docs/source -> .. (docs) -> .. (root)
@@ -44,4 +65,5 @@ exhale_args = {
     "rootFileTitle": "SCIANTIX API reference",
     "doxygenStripFromPath": "../..",
     "createTreeView": True,
+    "contentsDirectives": False,
 }
