@@ -21,7 +21,7 @@ extensions = [
 ]
 
 html_theme = "furo"
-html_logo = "_static/logo.png"
+html_logo = "_static/sciantix_logo.jpg"
 html_static_path = ["_static"]
 
 html_theme_options = {
