@@ -34,7 +34,7 @@ jobs:
       - name: Install Sphinx and extensions
         run: |
           pip install --upgrade pip
-          pip install sphinx sphinx_rtd_theme sphinx-autodoc-typehints myst-parser sphinx-book-theme breathe exhale
+          pip install sphinx sphinx_rtd_theme sphinx-book-theme furo sphinx-autodoc-typehints myst-parser breathe exhale
 
       - name: Install doxygen
         run: sudo apt-get update && sudo apt-get install -y doxygen
