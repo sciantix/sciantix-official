@@ -53,6 +53,8 @@ void Simulation::SetPhaseDiagram(std::string location)
         {
             for (auto &system : sciantix_system)
             {
+                if (system.getParticleName() != "") continue;
+
                 if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1.0)
                 {
                     sciantix_variable[system.getGasName() + " at grain boundary"].addValue(sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue());
@@ -569,6 +571,8 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
         {
             for (auto &system : sciantix_system)
             {
+                if (system.getParticleName() != "") continue;
+                
                 if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1.0)
                 {
                     sciantix_variable[system.getGasName() + " at grain boundary"].addValue(sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue());

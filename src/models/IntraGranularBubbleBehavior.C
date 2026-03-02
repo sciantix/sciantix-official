@@ -123,6 +123,8 @@ void Simulation::IntraGranularBubbleBehavior()
     // Atom per bubbles and bubble radius
     for (auto &system : sciantix_system)
     {
+        if (system.getParticleName() != "") continue;
+        
         if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
         {
             if (sciantix_variable["Intragranular bubble concentration"].getFinalValue() > 0.0)
