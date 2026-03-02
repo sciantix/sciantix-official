@@ -18,6 +18,11 @@ Model	Gas diffusion - Kr85m in MOX
 Model	Gas diffusion - Cs in MOX	
 Model	Gas diffusion - I in MOX	
 Model	Gas diffusion - Te in MOX	
+Model	Gas diffusion - Mo in MOX	
+Model	Gas diffusion - Ru in MOX	
+Model	Gas diffusion - Tc in MOX	
+Model	Gas diffusion - Pd in MOX	
+Model	Gas diffusion - Rh in MOX	
 Model	Grain-boundary micro-cracking	: Barani et al. (2017), JNM
 Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
 Model	Release mode	 coalescence from White, JNM, 325 (2004), 61-77; release from Pastore et al., NED, 256 (2013), 75-86.
@@ -35,6 +40,11 @@ System	Kr85m in MOX
 System	Cs in MOX	
 System	I in MOX	
 System	Te in MOX	
+System	Mo in MOX	
+System	Ru in MOX	
+System	Tc in MOX	
+System	Pd in MOX	
+System	Rh in MOX	
 
 Input setting	iGrainGrowth = 1
 Input setting	iFissionGasDiffusivity = 1
