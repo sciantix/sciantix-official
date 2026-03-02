@@ -23,6 +23,8 @@ void Simulation::GasProduction()
     // Model declaration
     for (auto &system : sciantix_system)
     {
+        if (system.getParticleName() != "") continue;
+        
         Model model_;
         model_.setName("Gas production - " + system.getName());
         model_.setRef(" ");

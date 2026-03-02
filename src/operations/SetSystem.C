@@ -16,7 +16,6 @@
 
 #include "SetSystem.h"
 #include "Simulation.h"
-#include "SetParticle.C"
 
 void Simulation::setSystem()
 {

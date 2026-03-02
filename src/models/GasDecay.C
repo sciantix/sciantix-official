@@ -23,6 +23,8 @@ void Simulation::GasDecay()
     // Model declaration
     for (auto &system : sciantix_system)
     {
+        if (system.getParticleName() != "") continue;
+        
         if (system.getGas().getDecayRate() > 0.0 && system.getRestructuredMatrix() == 0)
         {
             sciantix_variable[system.getGasName() + " decayed"].setFinalValue(

@@ -160,6 +160,8 @@ void Simulation::InterGranularBubbleBehavior()
             double vol(0);
             for (auto &system : sciantix_system)
             {
+                if (system.getParticleName() != "") continue;
+
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
                     vol += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue() * system.getGas().getVanDerWaalsVolume();
@@ -187,6 +189,8 @@ void Simulation::InterGranularBubbleBehavior()
             // Conservation
             for (auto &system : sciantix_system)
             {
+                if (system.getParticleName() != "") continue;
+
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
                     sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].rescaleFinalValue(
@@ -198,6 +202,8 @@ void Simulation::InterGranularBubbleBehavior()
             double n_at(0);
             for (auto &system : sciantix_system)
             {
+                if (system.getParticleName() != "") continue;
+
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                     n_at += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue();
             }
@@ -210,6 +216,8 @@ void Simulation::InterGranularBubbleBehavior()
             vol = 0.0;
             for (auto &system : sciantix_system)
             {
+                if (system.getParticleName() != "") continue;
+
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                     vol += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue() *
                             system.getGas().getVanDerWaalsVolume();
@@ -259,6 +267,8 @@ void Simulation::InterGranularBubbleBehavior()
                 // New intergranular gas concentration
                 for (auto &system : sciantix_system)
                 {
+                    if (system.getParticleName() != "") continue;
+
                     if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                         sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].rescaleFinalValue(pow(similarity_ratio, 1.5));
                 }
@@ -266,6 +276,8 @@ void Simulation::InterGranularBubbleBehavior()
                 n_at = 0.0;
                 for (auto &system : sciantix_system)
                 {
+                    if (system.getParticleName() != "") continue;
+
                     if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                         n_at += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue();
                 }
@@ -273,6 +285,8 @@ void Simulation::InterGranularBubbleBehavior()
 
                 for (auto &system : sciantix_system)
                 {
+                    if (system.getParticleName() != "") continue;
+
                     if (system.getRestructuredMatrix() == 0)
                         sciantix_variable[system.getGasName() + " at grain boundary"].rescaleFinalValue(pow(similarity_ratio, 2.5));
                 }
@@ -456,6 +470,8 @@ void Simulation::InterGranularBubbleBehavior()
             double vol(0);
             for (auto &system : sciantix_system)
             {
+                if (system.getParticleName() != "") continue;
+
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
                     vol += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue() * system.getGas().getVanDerWaalsVolume();
@@ -484,6 +500,8 @@ void Simulation::InterGranularBubbleBehavior()
             // Conservation
             for (auto &system : sciantix_system)
             {
+                if (system.getParticleName() != "") continue;
+
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
                     sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].rescaleFinalValue(
@@ -495,6 +513,8 @@ void Simulation::InterGranularBubbleBehavior()
             double n_at(0);
             for (auto &system : sciantix_system)
             {
+                if (system.getParticleName() != "") continue;
+
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                     n_at += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue();
             }
@@ -507,6 +527,8 @@ void Simulation::InterGranularBubbleBehavior()
             vol = 0.0;
             for (auto &system : sciantix_system)
             {
+                if (system.getParticleName() != "") continue;
+
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                     vol += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getFinalValue() *
                             system.getGas().getVanDerWaalsVolume();
@@ -567,6 +589,8 @@ void Simulation::InterGranularBubbleBehavior()
             vol = 0.0;
             for (auto &system : sciantix_system)
             {
+                if (system.getParticleName() != "") continue;
+                
                 if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                 {
                     

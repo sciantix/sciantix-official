@@ -239,6 +239,8 @@ void Simulation::GrainBoundaryMicroCracking()
 
             for (auto &system : sciantix_system)
             {
+                if (system.getParticleName() != "") continue;
+
                 if (gas[system.getGasName()].getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                     sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].rescaleInitialValue(pow(similarity_ratio, 1.5));
             }
@@ -246,6 +248,8 @@ void Simulation::GrainBoundaryMicroCracking()
             double n_at(0);
             for (auto &system : sciantix_system)
             {
+                if (system.getParticleName() != "") continue;
+
                 if (gas[system.getGasName()].getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
                     n_at += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].getInitialValue();
             }
@@ -253,6 +257,8 @@ void Simulation::GrainBoundaryMicroCracking()
 
             for (auto &system : sciantix_system)
             {
+                if (system.getParticleName() != "") continue;
+                
                 if (system.getRestructuredMatrix() == 0)
                     sciantix_variable[system.getGasName() + " at grain boundary"].rescaleFinalValue(pow(similarity_ratio, 2.5));
             }

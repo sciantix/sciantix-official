@@ -206,6 +206,8 @@ void Simulation::GrainVaporisation(bool thermochemistry_module)
 
     for (auto &system : sciantix_system)
     {
+        if (system.getParticleName() != "") continue;
+        
         std::string gas = system.getGasName();
 
         double UO2vaporisation_IG = (
