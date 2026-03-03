@@ -762,3 +762,44 @@ plt.legend()
 plt.tight_layout()
 filename = "NewVap2"
 plt.savefig(folder_path + "/" + filename + ".png")
+
+##################################### 5 METALS VERIFICATION ########################
+
+metals_to_check = ['Mo', 'Ru', 'Tc', 'Pd', 'Rh']
+
+fig, axes = plt.subplots(2, 3, figsize=(18, 10))
+axes = axes.flatten()
+
+dataset = "With Thermochemistry"
+temperature = data[dataset]['Temperature (K)']
+
+for i, spec in enumerate(metals_to_check):
+    ax = axes[i]
+    
+    col_produced = f'{spec} produced (at/m3)'
+    col_grain = f'{spec} in grain (at/m3)'
+    col_bubbles = f'{spec} in intragranular precipitates (at/m3)'
+    col_solution = f'{spec} in intragranular solution (at/m3)'
+    
+    if col_produced in data[dataset].columns:
+        ax.plot(temperature, data[dataset][col_produced], label='Produced', color='dodgerblue', linewidth=2)
+        
+    if col_grain in data[dataset].columns:
+        ax.plot(temperature, data[dataset][col_grain], label='In grain', linestyle='--', color='darkorange', linewidth=2)
+        
+    if col_solution in data[dataset].columns:
+        ax.plot(temperature, data[dataset][col_solution], label='In solution', linestyle='-.', color='forestgreen', linewidth=2)
+
+    if col_bubbles in data[dataset].columns:
+        ax.plot(temperature, data[dataset][col_bubbles], label='In bubbles (Gas)', linestyle=':', color='crimson', linewidth=3)
+        
+    ax.set_title(f'{spec}')
+    ax.set_xlabel('Temperature (K)')
+    ax.set_ylabel('Concentration (at/m3)')
+    
+    # ax.set_yscale('log')
+    ax.legend(frameon=False, loc='best')
+    axes[5].set_visible(False)
+
+plt.tight_layout()
+plt.savefig(folder_path + "/5Metals.png")

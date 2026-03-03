@@ -43,7 +43,19 @@ void Simulation::GasDiffusion()
     // Model resolution
     for (auto &system : sciantix_system)
     {
-        if (system.getParticleName() != "") continue;
+        if (system.getParticleName() != "") 
+        {
+            std::string name = system.getParticleName();
+            
+            sciantix_variable[name + " in grain"].setFinalValue(
+                sciantix_variable[name + " produced"].getFinalValue()
+            );
+            
+            sciantix_variable[name + " in intragranular precipitates"].setFinalValue(0.0);
+            sciantix_variable[name + " in intragranular solution"].setFinalValue(0.0);
+            
+            continue; 
+        }
 
         switch (int(input_variable["iDiffusionSolver"].getValue()))
         {
@@ -236,6 +248,8 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
 
     for (auto& system : sciantix_system)
     {
+        if (system.getParticleName() != "") continue;
+
         Model model_;
         model_.setName("Gas diffusion - " + system.getName());
         model_.setRef(reference);
@@ -280,6 +294,8 @@ void defineSpectralDiffusion2Equations(SciantixArray<System> &sciantix_system, S
 
     for (auto& system : sciantix_system)
     {
+        if (system.getParticleName() != "") continue;
+        
         Model model_;
         model_.setName("Gas diffusion - " + system.getName());
         model_.setRef(reference);

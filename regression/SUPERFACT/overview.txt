@@ -9,6 +9,11 @@ Model	Gas production - Kr85m in MOX
 Model	Gas production - Cs in MOX	 
 Model	Gas production - I in MOX	 
 Model	Gas production - Te in MOX	 
+Model	Gas production - Mo in MOX	 
+Model	Gas production - Ru in MOX	 
+Model	Gas production - Tc in MOX	 
+Model	Gas production - Pd in MOX	 
+Model	Gas production - Rh in MOX	 
 Model	Intragranular bubble behavior	: Pizzocri et al., JNM, 502 (2018) 323-330.
 Model	Gas diffusion - Xe in MOX	
 Model	Gas diffusion - Kr in MOX	
@@ -18,11 +23,6 @@ Model	Gas diffusion - Kr85m in MOX
 Model	Gas diffusion - Cs in MOX	
 Model	Gas diffusion - I in MOX	
 Model	Gas diffusion - Te in MOX	
-Model	Gas diffusion - Mo in MOX	
-Model	Gas diffusion - Ru in MOX	
-Model	Gas diffusion - Tc in MOX	
-Model	Gas diffusion - Pd in MOX	
-Model	Gas diffusion - Rh in MOX	
 Model	Grain-boundary micro-cracking	: Barani et al. (2017), JNM
 Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
 Model	Release mode	 coalescence from White, JNM, 325 (2004), 61-77; release from Pastore et al., NED, 256 (2013), 75-86.
