@@ -23,8 +23,11 @@ void Simulation::GasProduction()
     // Model declaration
     for (auto &system : sciantix_system)
     {
-        if (system.getParticleName() != "") continue;
+        std::string species_name = system.getGasName();
+        if (species_name == "") species_name = system.getParticleName();
         
+        if (species_name == "") continue;
+
         Model model_;
         model_.setName("Gas production - " + system.getName());
         model_.setRef(" ");
@@ -42,17 +45,17 @@ void Simulation::GasProduction()
 
         // Model resolution
         if (system.getRestructuredMatrix() == 0)
-            sciantix_variable[system.getGasName() + " produced"].setFinalValue(
+            sciantix_variable[species_name + " produced"].setFinalValue(
                 solver.Integrator(
-                    sciantix_variable[system.getGasName() + " produced"].getInitialValue(),
+                    sciantix_variable[species_name + " produced"].getInitialValue(),
                     model["Gas production - " + system.getName()].getParameter().at(0),
                     model["Gas production - " + system.getName()].getParameter().at(1)
                 )
             );
         else if (system.getRestructuredMatrix() == 1)
-            sciantix_variable[system.getGasName() + " produced in HBS"].setFinalValue(
+            sciantix_variable[species_name + " produced in HBS"].setFinalValue(
                 solver.Integrator(
-                    sciantix_variable[system.getGasName() + " produced in HBS"].getInitialValue(),
+                    sciantix_variable[species_name + " produced in HBS"].getInitialValue(),
                     model["Gas production - " + system.getName()].getParameter().at(0),
                     model["Gas production - " + system.getName()].getParameter().at(1)
                 )

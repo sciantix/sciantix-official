@@ -9,6 +9,11 @@ Model	Gas production - Kr85m in MOX
 Model	Gas production - Cs in MOX	 
 Model	Gas production - I in MOX	 
 Model	Gas production - Te in MOX	 
+Model	Gas production - Mo in MOX	 
+Model	Gas production - Ru in MOX	 
+Model	Gas production - Tc in MOX	 
+Model	Gas production - Pd in MOX	 
+Model	Gas production - Rh in MOX	 
 Model	Intragranular bubble behavior	: Pizzocri et al., JNM, 502 (2018) 323-330.
 Model	Gas diffusion - Xe in MOX	
 Model	Gas diffusion - Kr in MOX	
@@ -35,6 +40,11 @@ System	Kr85m in MOX
 System	Cs in MOX	
 System	I in MOX	
 System	Te in MOX	
+System	Mo in MOX	
+System	Ru in MOX	
+System	Tc in MOX	
+System	Pd in MOX	
+System	Rh in MOX	
 
 Input setting	iGrainGrowth = 1
 Input setting	iFissionGasDiffusivity = 1
