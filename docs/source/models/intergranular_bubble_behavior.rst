@@ -1,41 +1,29 @@
 Intergranular Bubble Behaviour
 ==============================
 
-This model describes the evolution of grain-boundary (intergranular) bubbles and
-computes the associated quantities needed for fission gas release and swelling:
-bubble volume/radius/area, fractional coverage, bubble pressure, intergranular
-gas swelling, and released inventories (by mass balance). The governing
-equations are implemented following Pastore et al. (2013) for grain-boundary
-bubble growth and coalescence, with additional saturation handling when the
-fractional coverage exceeds a prescribed limit.
+This model describes the evolution of grain-boundary (intergranular) bubbles and 
+computes the associated quantities needed for fission gas release and swelling. 
+The implementation follows ``Simulation::InterGranularBubbleBehavior()``.
 
 Activation and option flag
 --------------------------
 
-The behaviour is selected by the input option:
+The model is controlled by two main input options:
 
-- ``iGrainBoundaryBehaviour``
-
-Option summary
---------------
-
-- **0**: no grain-boundary bubble evolution model (growth terms set to zero).
-- **1**: Pastore et al. (2013) model for vacancy-driven growth, with coalescence
-  and saturation scaling.
+- ``iGrainBoundaryBehaviour``: Selects the bubble evolution model.
+- ``iReleaseMode``: Selects the coalescence and release mechanism.
 
 Inputs
 ------
 
 The model uses:
 
-- ``iGrainBoundaryBehaviour`` (input option)
+- ``iGrainBoundaryBehaviour``, ``iReleaseMode`` (input options)
+- ``Temperature``, ``Hydrostatic stress``, ``Time step``  (history variables)
+- ``Intergranular fractional intactness``
 - ``Grain radius`` (sciantix variable)
-- ``Temperature`` (history variable)
-- ``Hydrostatic stress`` (history variable, MPa in input; converted in code)
-- ``Time step`` (physics variable)
 
 Intergranular bubble state variables (sciantix variables), including:
-
 - ``Intergranular bubble concentration`` (bubbles/m²)
 - ``Intergranular vacancies per bubble``
 - ``Intergranular bubble volume``
@@ -63,14 +51,10 @@ and gas properties from each ``system``:
 - decay rate (to skip radioactive gases)
 - restructured-matrix flag (to skip restructured systems)
 
-Model formulation (case 1: Pastore et al. 2013)
------------------------------------------------
-
-Gas distribution among grain-boundary bubbles
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-For each non-radioactive system in a non-restructured matrix, the atoms per
-bubble are computed from the grain-boundary inventory:
+Intergranular Bubble Evolution (iGrainBoundaryBehaviour = 1)
+------------------------------------------------------------
+Bubbles are assumed to be lenticular. The number of atoms per bubble ($n_{at}$) is 
+derived from the grain-boundary inventory and the bubble concentration. The atoms per bubble are computed from the grain-boundary inventory:
 
 .. math::
 
@@ -87,9 +71,6 @@ The total atoms per bubble is:
 .. math::
 
    n_{tot} = \sum_i n_i
-
-Initial bubble geometry and fractional coverage
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The initial bubble volume includes gas (Van der Waals) and vacancies
 (Schottky volume):
@@ -140,12 +121,6 @@ tension and hydrostatic stress through an equilibrium pressure:
 These two terms are stored as the model parameters and are later used to evolve
 the vacancy content per bubble with a limited-growth solver.
 
-Model resolution
-----------------
-
-Vacancies per bubble
-~~~~~~~~~~~~~~~~~~~~
-
 Vacancies per bubble are advanced with:
 
 - ``solver.LimitedGrowth(nv0, parameters, Δt)``
@@ -153,35 +128,29 @@ Vacancies per bubble are advanced with:
 where the parameter vector contains the growth and equilibrium terms computed
 above.
 
-Bubble volume, radius, area
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Coalescence Modes (iReleaseMode)
+---------------------------------
 
-After updating vacancies, the bubble volume is recomputed:
-
-.. math::
-
-   V_b^{n+1} = \sum_i n_i^{n+1} v_i^{vdW} + n_v^{n+1}\Omega_S
-
-Radius and area are updated with the same relations as in the initialization
-step.
-
-Coalescence and conservation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+Option 0 - 2: White (2004)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Coalescence is modelled following White (2004).
 Coalescence is applied by updating the bubble concentration using a binary
 interaction law driven by the increment in bubble area:
 
 - ``solver.BinaryInteraction(N0, 2.0, ΔA_b)``
 
-After coalescence, the model enforces conservation by rescaling:
 
-- ``Intergranular <gas> atoms per bubble`` (and vacancies per bubble)
-  by :math:`N_0/N_1`
+Option 1: Pastore et al. (2013)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A 4x4 state matrix is defined to evolve Volume, Area, Concentration, and 
+Coverage simultaneously. The system is solved using ``solver.Laplace``. 
+Coalescence follows Pastore et al. (2013) for Option 1.
 
-and then recomputes total atoms per bubble, volume, radius, and area again.
+Release Modes (iReleaseMode)
+---------------------------------
 
-Saturation scaling (fractional coverage limit)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Option 0
+~~~~~~~~~~
 
 If the computed fractional coverage exceeds a saturation constraint, a similarity
 ratio is computed:
@@ -195,6 +164,24 @@ concentration, volume, radius, vacancies, and atoms-per-bubble), and the
 grain-boundary gas inventories are rescaled accordingly to maintain consistent
 state variables.
 
+Option 1 - 2
+~~~~~~~~~~~~~~
+For these modes, the vented fraction ($f_{\mathrm{vent}}$) is calculated using 
+a Gaussian Process Regression (GPR) model:
+
+.. math::
+    f_{\mathrm{vent}} = 0.210911 \cdot \left(\mathrm{erf}(0.0937 \cdot 100 \cdot F - 3.7250) + 1\right)
+
+The total release fraction ($R$) combines diffusion-based release and burst 
+release from micro-cracking (via ``Intergranular fractional intactness``, $I$):
+
+.. math::
+    R = f_{\mathrm{vent}} \cdot I + (1 - I)
+
+The inventories are updated via ``solver.Integrator`` applying the increment 
+$\Delta R$ to the grain-boundary gas.
+
+
 Bubble pressure
 ~~~~~~~~~~~~~~~
 
@@ -206,73 +193,10 @@ The grain-boundary bubble pressure (MPa) is computed as:
 
 If ``Intergranular vacancies per bubble`` is zero, the pressure is set to zero.
 
-Released inventories and release metrics
-----------------------------------------
-
-Released concentration (mass balance)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-For each non-restructured system, released inventory is computed by mass balance:
-
-.. math::
-
-   C^{rel} = C^{prod} - C^{dec} - C^{grain} - C^{gb}
-
-Negative values are clipped to zero.
-
-Intergranular gaseous swelling
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The intergranular gas swelling is computed as:
-
-.. math::
-
-   S_{ig} = \frac{3}{a}\,N_{gb}\,V_b
-
-Fission gas release (Xe+Kr)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The fission gas release fraction is:
-
-.. math::
-
-   \mathrm{FGR} =
-   \frac{C_{Xe}^{rel} + C_{Kr}^{rel}}
-        {C_{Xe}^{prod} + C_{Kr}^{prod}}
-
-If no Xe and Kr are produced, FGR is set to zero.
-
-Release-to-birth ratios (radioactive gases)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- Xe133 R/B and Kr85m R/B are computed as released divided by (produced − decayed),
-  with zero used when the denominator is not positive.
-
-Helium release quantities
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- ``He fractional release`` = ``He released`` / ``He produced`` (if produced > 0)
-- ``He release rate`` = increment of ``He released`` / ``Time step`` (if Δt > 0)
-
-Outputs
--------
-
-Depending on the option and available systems, the model updates:
-
-- intergranular bubble state:
-  ``Intergranular bubble concentration``, ``... vacancies per bubble``,
-  ``... volume``, ``... radius``, ``... area``, ``... fractional coverage``,
-  ``Intergranular bubble pressure``, ``Intergranular atoms per bubble``
-- per-gas atoms-per-bubble variables:
-  ``Intergranular <gas> atoms per bubble``
-- released inventories and release metrics:
-  ``<gas> released``, ``Fission gas release``, ``Xe133 R/B``, ``Kr85m R/B``,
-  ``He fractional release``, ``He release rate``
-- swelling metric:
-  ``Intergranular gas swelling``
-
 References
 ----------
 
 - Pastore et al., *Nucl. Eng. Des.*, 256 (2013) 75–86. 
   https://doi.org/10.1016/j.nucengdes.2012.12.002
+- White, *J. Nucl. Mater.*, 325 (2004), 61–77.
+- Cappellari et al., *J. Nucl. Mater.*, 617 (2025), 156116.
