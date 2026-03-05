@@ -41,6 +41,13 @@ void Simulation::setSystem()
                 Xe_in_UO2HBS(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             break;
 
+            // case 2: // AD
+            // sciantix_system.push(
+            //     Xe_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+            // sciantix_system.push(
+            //     Kr_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+            // break;
+
         default:
             break;
     }
