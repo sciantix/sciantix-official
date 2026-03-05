@@ -66,9 +66,9 @@ void Simulation::IntraGranularBubbleBehavior()
             break;
         }
 
-        // case 3:
-        // AD
-        // bolle + piccole + bolle medie
+            // case 3:
+            // AD
+            // bolle + piccole + bolle medie
 
         case 3:
         {
