@@ -568,6 +568,16 @@ void System::setFissionGasDiffusivity(int                              input_val
             sciantix_variable["Diffusion coefficient"].setFinalValue(diffusivity);
 
             break;
+        
+        // UN, AD
+        case 11:
+        {
+            double d1 = 7.6e-10 * exp(-3.5e+4 / temperature);
+            double d2 = 4 * 1.41e-25 * sqrt(history_variable["Fission rate"].getFinalValue()) *
+                        exp(-1.91e-19 / temperature / (1.38e-23));
+            double d3 = 8e-40 * history_variable["Fission rate"].getFinalValue();
+
+            diffusivity = d1 + d2 + d3 + d4;
         }
 
         case 90:

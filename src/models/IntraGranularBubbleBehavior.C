@@ -66,6 +66,10 @@ void Simulation::IntraGranularBubbleBehavior()
             break;
         }
 
+        // case 3:
+        // AD
+        // bolle + piccole + bolle medie
+
         case 3:
         {
             reference += "Case specific for annealing experiments and helium intragranular behaviour.";
