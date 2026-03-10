@@ -25,6 +25,7 @@ void Simulation::setGas()
     caesium(gas);
     iodine(gas);
     tellurium(gas);
+    molybdenum(gas);
 }
 
 void xenon(SciantixArray<Gas> &gas)
@@ -118,67 +119,16 @@ void tellurium(SciantixArray<Gas> &gas)
     gas_.setPrecursorFactor(1.00);
     gas.push(gas_);
 }
-// // Data from JEFF-3.3 if not specified, to be verified the volumes
+void molybdenum(SciantixArray<Gas> &gas) 
+{
+    Gas gas_;
+    gas_.setName("Mo");
+    gas_.setAtomicNumber(42);
+    gas_.setVanDerWaalsVolume(3.66e-29); // to be modified 
+    gas_.setDecayRate(0.0); // stable
+    gas_.setMassNumber(96);// to be modified
+    gas_.setChemicallyActive(1.0);
+    gas_.setPrecursorFactor(1.00);
+    gas.push(gas_);
+}
 
-// void caesium(SciantixArray<Gas> &gas) //Cs 134, 137
-// {
-//     Gas gas_;
-//     gas_.setName("Cs133");
-//     gas_.setAtomicNumber(55);
-//     gas_.setVanDerWaalsVolume(1.69e-28);
-//     gas_.setDecayRate(0); //stable
-//     gas_.setPrecursorFactor(1.00);
-//     gas.push(gas_);
-//     //system_.setYield(0.066534);
-
-//     Gas gas_;
-//     gas_.setName("Cs135");
-//     gas_.setAtomicNumber(55);
-//     gas_.setVanDerWaalsVolume(1.69e-28);
-//     gas_.setDecayRate(0); //2,3e6 years
-//     gas_.setPrecursorFactor(1.00); 
-//     gas.push(gas_);
-//     //system_.setYield(0.063135);
-
-//     Gas gas_;
-//     gas_.setName("Cs137");
-//     gas_.setAtomicNumber(55);
-//     gas_.setVanDerWaalsVolume(1.69e-28);
-//     gas_.setDecayRate(7.31e-10); //30,05001 years 
-//     gas_.setPrecursorFactor(1.00);
-//     gas.push(gas_);
-//     //system_.setYield(0.060897);
-// }
-
-// void iodine(SciantixArray<Gas> &gas) // I129, 131, 133,135
-// {
-//     Gas gas_;
-//     gas_.setName("I127");
-//     gas_.setMassNumber(127);
-//     gas_.setAtomicNumber(53);
-//     gas_.setVanDerWaalsVolume(9.33e-29);
-//     gas_.setDecayRate(0); // stable
-//     gas_.setPrecursorFactor(1.00);
-//     gas.push(gas_);
-//     //system_.setYield(0.001241);
-    
-//     Gas gas_;
-//     gas_.setName("I129");
-//     gas_.setMassNumber(129);
-//     gas_.setAtomicNumber(53);
-//     gas_.setVanDerWaalsVolume(9.33e-29);
-//     gas_.setDecayRate(0); // 1,61e7 years  100% branching
-//     gas_.setPrecursorFactor(1.00);
-//     gas.push(gas_);
-//     //system_.setYield(0.008137);
-
-//     Gas gas_;
-//     gas_.setName("I131");
-//     gas_.setMassNumber(131);
-//     gas_.setAtomicNumber(53);
-//     gas_.setVanDerWaalsVolume(9.33e-29);
-//     gas_.setDecayRate(9.98e-7); // J.A. Turnbull, C.E. Beyer, in: Background and Derivation of ANS-5.4 Standard Fission Product Release Model, United States Nuclear Regulatory Commision, 2010, p. 11. URL, http://www.nrc.gov/reading-rm.html.
-//     gas_.setPrecursorFactor(1.00);
-//     gas.push(gas_);
-//     //system_.setYield(0.02921);
-// }
