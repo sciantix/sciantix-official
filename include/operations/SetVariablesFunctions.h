@@ -206,6 +206,18 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Intragranular Te atoms per bubble", "(at/bub)", Sciantix_variables[128], Sciantix_variables[128], 0),
         SciantixVariable("Intergranular Te atoms per bubble", "(at/bub)", Sciantix_variables[129], Sciantix_variables[129], 0),
 
+        SciantixVariable("Mo produced", "(at/m3)", Sciantix_variables[131], Sciantix_variables[131], 1),
+        SciantixVariable("Mo in grain", "(at/m3)", Sciantix_variables[132], Sciantix_variables[132], 1),
+        SciantixVariable("Mo in intragranular solution", "(at/m3)", Sciantix_variables[133], Sciantix_variables[133], 1),
+        SciantixVariable("Mo in intragranular bubbles", "(at/m3)", Sciantix_variables[134], Sciantix_variables[134], 1),
+        SciantixVariable("Mo at grain boundary", "(at/m3)", Sciantix_variables[135], Sciantix_variables[135], 1),
+        SciantixVariable("Mo released", "(at/m3)", Sciantix_variables[136], Sciantix_variables[136], 1),
+        SciantixVariable("Mo decayed", "(at/m3)", 0.0, 0.0, 0),
+        SciantixVariable("Mo reacted - IG", "(at/m3)", Sciantix_variables[140], Sciantix_variables[140], 1),
+        SciantixVariable("Mo reacted - GB", "(at/m3)", Sciantix_variables[137], Sciantix_variables[137], 1),
+        SciantixVariable("Intragranular Mo atoms per bubble", "(at/bub)", Sciantix_variables[138], Sciantix_variables[138], 0),
+        SciantixVariable("Intergranular Mo atoms per bubble", "(at/bub)", Sciantix_variables[139], Sciantix_variables[139], 0),
+
         SciantixVariable("Intragranular bubble concentration", "(bub/m3)", Sciantix_variables[19], Sciantix_variables[19], 1),
         SciantixVariable("Intragranular bubble radius", "(m)", Sciantix_variables[20], Sciantix_variables[20], 1),
         SciantixVariable("Intragranular bubble volume", "(m3)", 0.0, 0.0, 0),
@@ -237,7 +249,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Intergranular fractional intactness", "(/)", Sciantix_variables[37], Sciantix_variables[37], 1),
 
         SciantixVariable("Burnup", "(MWd/kgUO2)", Sciantix_variables[38], Sciantix_variables[38], 1),
-        SciantixVariable("FIMA", "(%)", Sciantix_variables[69], Sciantix_variables[69], toOutputHighBurnupStructure || toOutputChromiumContent),
+        SciantixVariable("FIMA", "(%)", Sciantix_variables[69], Sciantix_variables[69], 1),
         SciantixVariable("Effective burnup", "(MWd/kgUO2)", Sciantix_variables[39], Sciantix_variables[39], toOutputHighBurnupStructure),
         SciantixVariable("Irradiation time", "(h)", Sciantix_variables[65], Sciantix_variables[65], 0),
         SciantixVariable("Fuel density", "(kg/m3)", Sciantix_variables[40], Sciantix_variables[40], 1),

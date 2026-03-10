@@ -470,6 +470,9 @@ public:
         
         else if (gas_name == "Te")
             return &modes_initial_conditions[24 * 40];
+        
+        else if (gas_name == "Mo")
+            return &modes_initial_conditions[26 * 40];
 
         else
         {
@@ -511,6 +514,9 @@ public:
 
         else if (gas_name == "Te")
             return &modes_initial_conditions[25 * 40];
+
+        else if (gas_name == "Mo")
+            return &modes_initial_conditions[27 * 40];
             
         else
         {
@@ -552,6 +558,9 @@ public:
         
         else if (gas_name == "Te")
             return &modes_initial_conditions[26 * 40];
+            
+        else if (gas_name == "Mo")
+            return &modes_initial_conditions[29 * 40];
             
         else
         {

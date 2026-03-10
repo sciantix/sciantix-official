@@ -38,5 +38,6 @@ void helium(SciantixArray<Gas> &gas);
 void caesium(SciantixArray<Gas> &gas);
 void iodine(SciantixArray<Gas> &gas);
 void tellurium(SciantixArray<Gas> &gas);
+void molybdenum(SciantixArray<Gas> &gas);
 
 #endif // SET_GAS_H
