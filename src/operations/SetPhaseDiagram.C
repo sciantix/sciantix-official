@@ -377,6 +377,7 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
         {
             double atomsavailable(0);
             if (location == "in grain") 
+            {
                 atomsavailable = (
                     sciantix_variable[elementName + " produced"].getInitialValue() -
                     sciantix_variable[elementName + " decayed"].getInitialValue() -
@@ -384,29 +385,41 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
                     sciantix_variable[elementName + " at grain boundary"].getInitialValue() -
                     sciantix_variable[elementName + " released"].getInitialValue()
                 );
+                inputFile << "n(" << elementName << ")=" << atomsavailable/avogadro_number << " ";
+            }
             else if (location =="at grain boundary")
-                atomsavailable = (
-                    sciantix_variable[elementName + " produced"].getFinalValue() -
-                    sciantix_variable[elementName + " decayed"].getFinalValue() -
-                    sciantix_variable[elementName + " reacted - IG"].getFinalValue() -
-                    sciantix_variable[elementName + " in grain"].getFinalValue() -
-                    sciantix_variable[elementName + " released"].getInitialValue()
-                );
+            {
+                if (elementName == "O")
+                {
+                    atomsavailable = 0.1; // placeholder
+                    // double chem_pot_oxy = 8.314*1e-3*history_variable["Temperature"].getFinalValue()*log(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue()/0.1013);
+                    // inputFile << "mu(" << elementName << ")=" << chem_pot_oxy << " ";
+                    double activity = sciantix_variable["Fuel oxygen partial pressure"].getFinalValue()/pressure;
+                    inputFile << "ac(" << elementName << ")=" << activity << " ";
+                }
+                else
+                {
+                    atomsavailable = (
+                        sciantix_variable[elementName + " produced"].getFinalValue() -
+                        sciantix_variable[elementName + " decayed"].getFinalValue() -
+                        sciantix_variable[elementName + " reacted - IG"].getFinalValue() -
+                        sciantix_variable[elementName + " in grain"].getFinalValue() -
+                        sciantix_variable[elementName + " released"].getInitialValue()
+                    );
+                    inputFile << "n(" << elementName << ")=" << atomsavailable/avogadro_number << " ";
+                }
+            }
             else if (location == "matrix")
-                atomsavailable = 1;// sciantix_variable["Uranium content"].getFinalValue() + sciantix_variable["Oxygen content"].getFinalValue(); 
+            {
+                inputFile << "n=1 x(o)=" << oxygenfraction << " ";
+                // sciantix_variable["Uranium content"].getFinalValue() + sciantix_variable["Oxygen content"].getFinalValue(); 
                 // For matrix, we consider Uranium and Oxygen content, these are MOLES/grain not atoms
+                break;
+            }
             else
                 std::cout<<"Location not yet modelled: "<<location<<std::endl;
             
             if (atomsavailable > 0.0) noatoms = false;
-
-            if (location == "matrix")
-            {
-                inputFile << "n="<<atomsavailable<<" x(o)=" << oxygenfraction << " ";
-                break;
-            }
-            else
-                inputFile << "n(" << elementName << ")=" << atomsavailable/avogadro_number << " ";
         }
 
         if (noatoms) return;
@@ -511,12 +524,21 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
                     - sciantix_variable[element + " released"].getInitialValue()
                 );
             else if (location =="at grain boundary")
-                available = (sciantix_variable[element + " produced"].getFinalValue()
-                    - sciantix_variable[element + " decayed"].getFinalValue()
-                    - sciantix_variable[element + " reacted - IG"].getFinalValue()
-                    - sciantix_variable[element + " in grain"].getFinalValue()
-                    - sciantix_variable[element + " released"].getInitialValue()
-                );
+            {
+                if (element == "O")
+                {
+                    available = 0.1;
+                } 
+                else
+                {
+                    available = (sciantix_variable[element + " produced"].getFinalValue()
+                        - sciantix_variable[element + " decayed"].getFinalValue()
+                        - sciantix_variable[element + " reacted - IG"].getFinalValue()
+                        - sciantix_variable[element + " in grain"].getFinalValue()
+                        - sciantix_variable[element + " released"].getInitialValue()
+                    );
+                }
+            }
             else
                 std::cout<<"Location not yet modelled: "<<location<<std::endl;
             
@@ -526,6 +548,7 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
                 sciantix_variable[ element + " reacted - IG"].setFinalValue(available - updateAtoms);            
             else if (location =="at grain boundary")
             {
+                if (element =="O") continue;
                 if (kinetics)
                 {
                     // Trapping kinetics 
