@@ -57,6 +57,7 @@ void Simulation::JOGFormation()
     const double JOG_thickness_s1 = C_Cs2MoO4_s1 * fuel_radius * MM_Cs2MoO4 / (2.0 * theoretical_density_o);
     const double JOG_thickness_s2 = C_Cs2MoO4_s2 * fuel_radius * MM_Cs2MoO4 / (2.0 * theoretical_density_h);
     const double JOG_thickness = JOG_thickness_s1 + JOG_thickness_s2;
+    sciantix_variable["JOG thickness"].setFinalValue(JOG_thickness*1e6);
 
     std::cout << std::scientific << std::setprecision(8);
     std::cout << "JOGFormation variables:" << std::endl;
