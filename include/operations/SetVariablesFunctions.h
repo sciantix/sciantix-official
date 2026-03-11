@@ -304,7 +304,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Oxygen content", "(mol/m3)", Sciantix_variables[162], Sciantix_variables[162], 1),
         
         SciantixVariable("Initial grain radius", "(mol)", Sciantix_variables[170], Sciantix_variables[170], 0),
-
+        SciantixVariable("JOG thickness", "(um)", 0.0, 0.0, 1),
     };
 
     return init_sciantix_variable;
