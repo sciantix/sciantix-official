@@ -191,20 +191,6 @@ public:
      */
     void CallThermochemistryModule(double pressure, double temperature, std::string location, SciantixArray<SciantixVariable> &sciantix_variable, double oxygenfraction);
 
-    // struct StablePhaseResult {
-    //     std::vector<double> new_set;          // Computed new set values
-    //     std::vector<std::string> right_bounded; 
-    //     double compound; // Right bounded species of the stable reaction
-    // };
-
-    //     /**
-    //  * @brief Get the stable phase in the phase diagram.
-    //  * 
-    //  * @author E. Cappellari
-    //  * 
-    //  */
-    // StablePhaseResult SetStablePhase(double Temperature, double logCs, double logO2, double logI, double Pressure);
-
     /**
      * @brief Grain growth based on specific model parameters affecting the system's materials.
      * 
@@ -408,6 +394,14 @@ public:
      * 
      */
     void UO2Thermochemistry();
+
+    /**
+     * @brief JOG formation module.
+     * 
+     * @author E. Cappellari
+     * 
+     */
+    void JOGFormation();
 
 	/**
 	 * @brief This function defines the Sciantix model *ChromiumSolubility*.

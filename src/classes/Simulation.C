@@ -97,6 +97,8 @@ void Simulation::execute()
 
     SetPhaseDiagram("at grain boundary");
 
+    JOGFormation();
+
     GrainBoundaryMicroCracking();
 
     GrainBoundaryVenting();
