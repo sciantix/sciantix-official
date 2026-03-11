@@ -1,0 +1,23 @@
+# Experimental data of JOG thickness extracted from Fig.1 in   
+# Samuelsson, K., Dumas, J.-C., Sundman, B., & Lainet, M. (2020).  
+# An improved method to evaluate the “Joint Oxyde-Gaine” formation 
+# in (U,Pu)O2 irradiated fuels using the GERMINAL V2 code coupled 
+# to Calphad thermodynamic computations. 
+# EPJ Nuclear Sciences & Technologies, 6, 47. 
+# https://doi.org/10.1051/epjn/2020008
+# Internal reference:
+# Melis, J. C., Piron, J. P., & Roche, L. (1993). 
+# Fuel modeling at high burn-up: recent development of the GERMINAL code. 
+# Journal of Nuclear Materials, 204(C), 188–193. 
+# https://doi.org/10.1016/0022-3115(93)90216-L
+#
+# Data: 
+FIMA(%);Thickness(um)
+1.0;21.1
+3.6;2.9
+6.6;17.0
+8.5;52.1
+8.9;93.2
+10.5;56.3
+10.5;27.1
+13.5;72.1
