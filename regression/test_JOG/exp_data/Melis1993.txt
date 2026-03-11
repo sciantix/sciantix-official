@@ -10,7 +10,10 @@
 # Fuel modeling at high burn-up: recent development of the GERMINAL code. 
 # Journal of Nuclear Materials. 204(C). 188–193. 
 # https://doi.org/10.1016/0022-3115(93)90216-L
-#
+# Measured JOG thickness versus final burnup in some SFR fuel pins 
+# irradiated in the Phenix reactor. 
+# The burnup refers to the maximum burnup reached in the fuel pin.
+# 
 # Data: 
 FIMA(%);Thickness(um)
 3.6;11.8

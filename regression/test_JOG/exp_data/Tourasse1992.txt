@@ -10,7 +10,10 @@
 # Fission product behaviour in phenix fuel pins at high burnup. 
 # Journal of Nuclear Materials, 188(C), 49–57. 
 # https://doi.org/10.1016/0022-3115(92)90453-R
-#
+# Measured JOG thickness versus final burnup in some SFR fuel pins 
+# irradiated in the Phenix reactor. 
+# The burnup values refer to the local burnup at which the JOG was measured.
+# 
 # Data: 
 FIMA(%);Thickness(um)
 1.0;21.1
