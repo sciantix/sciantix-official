@@ -177,7 +177,6 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Cs at grain boundary", "(at/m3)", Sciantix_variables[105], Sciantix_variables[105], 1),
         SciantixVariable("Cs released", "(at/m3)", Sciantix_variables[106], Sciantix_variables[106], 1),
         SciantixVariable("Cs decayed", "(at/m3)", 0.0, 0.0, 0),
-        SciantixVariable("Cs reacted - IG", "(at/m3)", Sciantix_variables[110], Sciantix_variables[110], 1),
         SciantixVariable("Cs reacted - GB", "(at/m3)", Sciantix_variables[107], Sciantix_variables[107], 1),
         SciantixVariable("Intragranular Cs atoms per bubble", "(at/bub)", Sciantix_variables[108], Sciantix_variables[108], 0),
         SciantixVariable("Intergranular Cs atoms per bubble", "(at/bub)", Sciantix_variables[109], Sciantix_variables[109], 0),
@@ -189,7 +188,6 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("I at grain boundary", "(at/m3)", Sciantix_variables[115], Sciantix_variables[115], 1),
         SciantixVariable("I released", "(at/m3)", Sciantix_variables[116], Sciantix_variables[116], 1),
         SciantixVariable("I decayed", "(at/m3)", 0.0, 0.0, 0),
-        SciantixVariable("I reacted - IG", "(at/m3)", Sciantix_variables[120], Sciantix_variables[120], 1),
         SciantixVariable("I reacted - GB", "(at/m3)", Sciantix_variables[117], Sciantix_variables[117], 1),
         SciantixVariable("Intragranular I atoms per bubble", "(at/bub)", Sciantix_variables[118], Sciantix_variables[118], 0),
         SciantixVariable("Intergranular I atoms per bubble", "(at/bub)", Sciantix_variables[119], Sciantix_variables[119], 0),
@@ -201,7 +199,6 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Te at grain boundary", "(at/m3)", Sciantix_variables[125], Sciantix_variables[125], 1),
         SciantixVariable("Te released", "(at/m3)", Sciantix_variables[126], Sciantix_variables[126], 1),
         SciantixVariable("Te decayed", "(at/m3)", 0.0, 0.0, 0),
-        SciantixVariable("Te reacted - IG", "(at/m3)", Sciantix_variables[130], Sciantix_variables[130], 1),
         SciantixVariable("Te reacted - GB", "(at/m3)", Sciantix_variables[127], Sciantix_variables[127], 1),
         SciantixVariable("Intragranular Te atoms per bubble", "(at/bub)", Sciantix_variables[128], Sciantix_variables[128], 0),
         SciantixVariable("Intergranular Te atoms per bubble", "(at/bub)", Sciantix_variables[129], Sciantix_variables[129], 0),
@@ -213,7 +210,6 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Mo at grain boundary", "(at/m3)", Sciantix_variables[135], Sciantix_variables[135], 1),
         SciantixVariable("Mo released", "(at/m3)", Sciantix_variables[136], Sciantix_variables[136], 1),
         SciantixVariable("Mo decayed", "(at/m3)", 0.0, 0.0, 0),
-        SciantixVariable("Mo reacted - IG", "(at/m3)", Sciantix_variables[140], Sciantix_variables[140], 1),
         SciantixVariable("Mo reacted - GB", "(at/m3)", Sciantix_variables[137], Sciantix_variables[137], 1),
         SciantixVariable("Intragranular Mo atoms per bubble", "(at/bub)", Sciantix_variables[138], Sciantix_variables[138], 0),
         SciantixVariable("Intergranular Mo atoms per bubble", "(at/bub)", Sciantix_variables[139], Sciantix_variables[139], 0),
@@ -318,7 +314,6 @@ std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
 
     std::vector<std::string> locations;
     
-    locations.push_back("in grain");
     locations.push_back("at grain boundary");
     locations.push_back("in the gap");
     

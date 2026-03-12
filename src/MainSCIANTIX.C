@@ -109,6 +109,10 @@ int main(int argc, char** argv)
 
     remove(outputPath.c_str());
 
+    std::string thermo_outputPath = TestPath + "thermochemistry_output.txt";
+
+    remove(thermo_outputPath.c_str());
+
     Execution_file.open(TestPath + "execution.txt", std::ios::out);
 
     timer = clock();

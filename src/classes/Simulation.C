@@ -87,8 +87,6 @@ void Simulation::execute()
 
     GasDecay();
 
-    SetPhaseDiagram("in grain");
-
     IntraGranularBubbleBehavior();
 
     GasDiffusion();

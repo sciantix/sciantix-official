@@ -111,7 +111,6 @@ std::map<int, std::string> update_sciantix_variable = {
     {107, "Cs reacted - GB"},
     {108, "Intragranular Cs atoms per bubble"},
     {109, "Intergranular Cs atoms per bubble"},
-    {110, "Cs reacted - IG"},
     {111, "I produced"},
     {112, "I in grain"},
     {113, "I in intragranular solution"},
@@ -121,7 +120,6 @@ std::map<int, std::string> update_sciantix_variable = {
     {117, "I reacted - GB"},
     {118, "Intragranular I atoms per bubble"},
     {119, "Intergranular I atoms per bubble"},
-    {120, "I reacted - IG"},
     {121, "Te produced"},
     {122, "Te in grain"},
     {123, "Te in intragranular solution"},
@@ -131,7 +129,6 @@ std::map<int, std::string> update_sciantix_variable = {
     {127, "Te reacted - GB"},
     {128, "Intragranular Te atoms per bubble"},
     {129, "Intergranular Te atoms per bubble"},
-    {130, "Te reacted - IG"},
     {131, "Mo produced"},
     {132, "Mo in grain"},
     {133, "Mo in intragranular solution"},
@@ -141,7 +138,6 @@ std::map<int, std::string> update_sciantix_variable = {
     {137, "Mo reacted - GB"},
     {138, "Intragranular Mo atoms per bubble"},
     {139, "Intergranular Mo atoms per bubble"},
-    {140, "Mo reacted - IG"},
     {150, "Chromium content"},
     {151, "Lattice parameter"},
     {152, "Theoretical density"},
@@ -163,7 +159,6 @@ std::map<int, std::string> updateThermochemistryVariable()
 
     std::vector<std::string> locations;
     
-    locations.push_back("in grain");
     locations.push_back("at grain boundary");
     locations.push_back("in the gap");
     
