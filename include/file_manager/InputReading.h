@@ -48,7 +48,7 @@ void InputReading(
     std::vector<double> &Fissionrate_input,
     std::vector<double> &Hydrostaticstress_input,
     std::vector<double> &Steampressure_input,
-    std::vector<double> &THERMOCHIMICApressure_input,
+    std::vector<double> &Systempressure_input,
     double &Time_end_h,
     double &Time_end_s
     );

@@ -55,7 +55,8 @@ void Simulation::setVariables(
     std::vector<SciantixVariable> values = initializeHistoryVariable(
         Sciantix_history,
         Sciantix_scaling_factors,
-        toOutputStoichiometryDeviation
+        toOutputStoichiometryDeviation,
+        toOutputThermochimica
     );
     
     for (SciantixVariable initial_value : values)
