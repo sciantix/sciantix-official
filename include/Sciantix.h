@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -28,16 +28,25 @@
  * @param Sciantix_options Array of integers specifying simulation options.
  * @param Sciantix_history Array of doubles sets up with the old variables of the simulation.
  * @param Sciantix_variables Array of doubles representing current variables in the simulation.
- * @param Sciantix_scaling_factors Array of doubles used to scale various parameters within the model.
- * @param Sciantix_diffusion_modes Array of doubles representing diffusion modes used in the simulation.
+ * @param Sciantix_scaling_factors Array of doubles used to scale various parameters within the
+ * model.
+ * @param Sciantix_diffusion_modes Array of doubles representing diffusion modes used in the
+ * simulation.
  * @param Sciantix_thermochemistry Array of doubles representing the variables related to the thermochemistry module.
  * @param Sciantix_thermochemistry_options Array of string representing the options for the thermochemistry module.
  * 
  * @author D. Pizzocri
  * @author T. Barani
  * @author G. Zullo
- * 
+ *
  */
-void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[], std::vector<std::vector<std::string>> Sciantix_thermochemistry_options);
+
+void Sciantix(int    Sciantix_options[], 
+              double Sciantix_history[], 
+              double Sciantix_variables[], 
+              double Sciantix_scaling_factors[], 
+              double Sciantix_diffusion_modes[], 
+              double Sciantix_thermochemistry[], 
+              std::vector<std::vector<std::string>> Sciantix_thermochemistry_options);
 
 #endif // SCIANTIX_H
