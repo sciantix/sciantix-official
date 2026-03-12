@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -142,19 +142,19 @@ std::map<int, std::string> update_sciantix_variable = {
     {138, "Intragranular Mo atoms per bubble"},
     {139, "Intergranular Mo atoms per bubble"},
     {140, "Mo reacted - IG"},
-    {150,"Chromium content"},
-    {151,"Lattice parameter"},
-    {152,"Theoretical density"},
-    {153,"Chromium solubility"},
-    {154,"Chromia solubility"},
-    {155,"Chromium solution"},
-    {156,"Chromium precipitate"},
-    {157,"Chromia solution"},
-    {158,"Chromia precipitate"},
-    {160,"Diffusion coefficient"},
-    {161,"Uranium content"},
-    {162,"Oxygen content"},
-    {170,"Initial grain radius"},
+    {150, "Chromium content"},
+    {151, "Lattice parameter"},
+    {152, "Theoretical density"},
+    {153, "Chromium solubility"},
+    {154, "Chromia solubility"},
+    {155, "Chromium solution"},
+    {156, "Chromium precipitate"},
+    {157, "Chromia solution"},
+    {158, "Chromia precipitate"},
+    {160, "Diffusion coefficient"},
+    {161, "Uranium content"},
+    {162, "Oxygen content"},
+    {170, "Initial grain radius"},
 };
 
 std::map<int, std::string> updateThermochemistryVariable()
