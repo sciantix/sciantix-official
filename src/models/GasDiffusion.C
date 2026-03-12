@@ -18,13 +18,11 @@
 
 void Simulation::GasDiffusion()
 {
-    if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;
-    
     // Model declaration
     switch (static_cast<int>(input_variable["iDiffusionSolver"].getValue()))
     {
         case 1:
-            defineSpectralDiffusion1Equation(sciantix_system, model, n_modes, sciantix_variable);
+            defineSpectralDiffusion1Equation(sciantix_system, model, n_modes);
             break;
 
         case 2:
@@ -45,41 +43,35 @@ void Simulation::GasDiffusion()
     {
         switch (int(input_variable["iDiffusionSolver"].getValue()))
         {
-        case 1:
-        {    
-            if (system.getRestructuredMatrix() == 0)
+            case 1:
             {
-                sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
-                    solver.SpectralDiffusion(
-                        getDiffusionModes(system.getGasName()),
-                        model["Gas diffusion - " + system.getName()].getParameter(),
-                        physics_variable["Time step"].getFinalValue()
-                    )
-                );
+                if (system.getRestructuredMatrix() == 0)
+                {
+                    sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
+                        solver.SpectralDiffusion(getDiffusionModes(system.getGasName()),
+                                                 model["Gas diffusion - " + system.getName()].getParameter(),
+                                                 physics_variable["Time step"].getFinalValue()));
 
-                double equilibrium_fraction(1.0);
-                if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
-                    equilibrium_fraction = system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
+                    double equilibrium_fraction(1.0);
+                    if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
+                        equilibrium_fraction =
+                            system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
 
-                sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
-                    equilibrium_fraction * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
-                );
+                    sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
+                        equilibrium_fraction * sciantix_variable[system.getGasName() + " in grain"].getFinalValue());
 
-                sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
-                    (1.0 - equilibrium_fraction) * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
-                );
-            }
+                    sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
+                        (1.0 - equilibrium_fraction) *
+                        sciantix_variable[system.getGasName() + " in grain"].getFinalValue());
+                }
 
-            else if (system.getRestructuredMatrix() == 1)
-            {
-                sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(
-                    solver.SpectralDiffusion(
-                        getDiffusionModes(system.getGasName() + " in HBS"),
-                        model["Gas diffusion - " + system.getName()].getParameter(),
-                        physics_variable["Time step"].getFinalValue()
-                    )
-                );
-            }
+                else if (system.getRestructuredMatrix() == 1)
+                {
+                    sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(
+                        solver.SpectralDiffusion(getDiffusionModes(system.getGasName() + " in HBS"),
+                                                 model["Gas diffusion - " + system.getName()].getParameter(),
+                                                 physics_variable["Time step"].getFinalValue()));
+                }
 
                 break;
             }
@@ -224,7 +216,7 @@ void Simulation::GasDiffusion()
     }
 }
 
-void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes, SciantixArray<SciantixVariable> sciantix_variable)
+void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes)
 {
     std::string reference;
 
@@ -240,25 +232,15 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         if (system.getResolutionRate() + system.getTrappingRate() == 0)
             gasDiffusivity = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
         else
-            gasDiffusivity = 
-                (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
-                (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
+            gasDiffusivity = (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) *
+                                 system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
+                             (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) *
+                                 system.getBubbleDiffusivity();
 
         parameters.push_back(gasDiffusivity);
         parameters.push_back(system.getMatrix().getGrainRadius());
         parameters.push_back(system.getProductionRate());
         parameters.push_back(system.getGas().getDecayRate());
-
-        parameters.push_back(0);
-        
-            
-        double decay_vaporisation = - 3 * sciantix_variable["Grain radius"].getIncrement() / sciantix_variable["Grain radius"].getFinalValue();
-    
-        if (decay_vaporisation > 1.0)
-            decay_vaporisation = 1.0;
-        else if (decay_vaporisation < 0.0)
-            decay_vaporisation = 0.0;
-        parameters.push_back(decay_vaporisation);
 
         model_.setParameter(parameters);
         model.push(model_);
