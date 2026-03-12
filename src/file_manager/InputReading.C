@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -25,13 +25,14 @@
  */
 unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
 {
-	char comment;
-	unsigned short int variable;
-	input_file >> variable;
-	input_file >> comment;
-	if (comment == '#') input_file.ignore(256, '\n');
-	output_file << variable_name << " = " << variable << std::endl;
-	return variable;
+    char               comment;
+    unsigned short int variable;
+    input_file >> variable;
+    input_file >> comment;
+    if (comment == '#')
+        input_file.ignore(256, '\n');
+    output_file << variable_name << " = " << variable << std::endl;
+    return variable;
 }
 
 /**
@@ -43,13 +44,14 @@ unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& inpu
  */
 double ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
 {
-	char comment;
-	double variable;
-	input_file >> variable;
-	input_file >> comment;
-	if (comment == '#') input_file.ignore(256, '\n');
-	output_file << variable_name << " = " << variable << std::endl;
-	return variable;
+    char   comment;
+    double variable;
+    input_file >> variable;
+    input_file >> comment;
+    if (comment == '#')
+        input_file.ignore(256, '\n');
+    output_file << variable_name << " = " << variable << std::endl;
+    return variable;
 }
 
 /**
@@ -59,29 +61,31 @@ double ReadOneParameter(std::string variable_name, std::ifstream& input_file, st
  * @param output_file Output file stream where the read parameters are logged.
  * @return A vector of doubles containing the parameters read from the file.
  */
-std::vector<double> ReadSeveralParameters(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
+std::vector<double>
+ReadSeveralParameters(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
 {
-	char comment;
-	double variable;
-	short int K(0);
+    char      comment;
+    double    variable;
+    short int K(0);
 
-	std::vector<double> vector_read;
-	std::string timestring("");
-	std::getline(input_file, timestring);
-	std::istringstream timestream(timestring);
+    std::vector<double> vector_read;
+    std::string         timestring("");
+    std::getline(input_file, timestring);
+    std::istringstream timestream(timestring);
 
-	while (timestream >> variable)
-	{
-		vector_read.push_back(variable);
-		output_file << variable_name << K << " = " << vector_read[K] << std::endl;
-		++K;
-	}
+    while (timestream >> variable)
+    {
+        vector_read.push_back(variable);
+        output_file << variable_name << K << " = " << vector_read[K] << std::endl;
+        ++K;
+    }
 
-	input_file >> comment;
+    input_file >> comment;
 
-	if (comment == '#') input_file.ignore(256, '\n');
+    if (comment == '#')
+        input_file.ignore(256, '\n');
 
-	return vector_read;
+    return vector_read;
 }
 
 void InputReading(
@@ -108,23 +112,23 @@ void InputReading(
      * are reported in it.
      */
 
-	std::ofstream input_check(TestPath + "input_check.txt", std::ios::out);
+    std::ofstream input_check(TestPath + "input_check.txt", std::ios::out);
 
-	// Abort execution if any of the input files does not exist
-	std::ifstream input_settings(TestPath + "input_settings.txt", std::ios::in);
-	if (!input_settings)
-		ErrorMessages::MissingInputFile("input_settings.txt");
+    // Abort execution if any of the input files does not exist
+    std::ifstream input_settings(TestPath + "input_settings.txt", std::ios::in);
+    if (!input_settings)
+        ErrorMessages::MissingInputFile("input_settings.txt");
 
-	std::ifstream input_initial_conditions(TestPath + "input_initial_conditions.txt", std::ios::in);
-	if (!input_initial_conditions)
-		ErrorMessages::MissingInputFile("input_initial_conditions.txt");
+    std::ifstream input_initial_conditions(TestPath + "input_initial_conditions.txt", std::ios::in);
+    if (!input_initial_conditions)
+        ErrorMessages::MissingInputFile("input_initial_conditions.txt");
 
-	std::ifstream input_history(TestPath + "input_history.txt", std::ios::in);
-	if (!input_history)
-		ErrorMessages::MissingInputFile("input_history.txt");
-	
-	// This is optional so no error if not present
-	std::ifstream input_scaling_factors(TestPath + "input_scaling_factors.txt", std::ios::in);
+    std::ifstream input_history(TestPath + "input_history.txt", std::ios::in);
+    if (!input_history)
+        ErrorMessages::MissingInputFile("input_history.txt");
+
+    // This is optional so no error if not present
+    std::ifstream input_scaling_factors(TestPath + "input_scaling_factors.txt", std::ios::in);
 
 	Sciantix_options[0] = ReadOneSetting("iGrainGrowth", input_settings, input_check);
 	Sciantix_options[1] = ReadOneSetting("iFissionGasDiffusivity", input_settings, input_check);
@@ -158,78 +162,82 @@ void InputReading(
 		Sciantix_variables[0] = ReadOneParameter("Grain radius[0]", input_initial_conditions, input_check);
 		Sciantix_variables[170] = Sciantix_variables[0];
 
-		std::vector<double> initial_composition_Xe;
-		initial_composition_Xe = ReadSeveralParameters("Initial composition Xe", input_initial_conditions, input_check);
-		Sciantix_variables[1] = initial_composition_Xe[0];
-		Sciantix_variables[2] = initial_composition_Xe[1];
-		Sciantix_variables[3] = initial_composition_Xe[2];
-		Sciantix_variables[4] = initial_composition_Xe[3];
-		Sciantix_variables[5] = initial_composition_Xe[4];
-		Sciantix_variables[6] = initial_composition_Xe[5];
+        std::vector<double> initial_composition_Xe;
+        initial_composition_Xe = ReadSeveralParameters("Initial composition Xe", input_initial_conditions, input_check);
+        Sciantix_variables[1]  = initial_composition_Xe[0];
+        Sciantix_variables[2]  = initial_composition_Xe[1];
+        Sciantix_variables[3]  = initial_composition_Xe[2];
+        Sciantix_variables[4]  = initial_composition_Xe[3];
+        Sciantix_variables[5]  = initial_composition_Xe[4];
+        Sciantix_variables[6]  = initial_composition_Xe[5];
 
-		std::vector<double> initial_composition_Kr;
-		initial_composition_Kr = ReadSeveralParameters("Initial composition Kr", input_initial_conditions, input_check);
-		Sciantix_variables[7] = initial_composition_Kr[0];
-		Sciantix_variables[8] = initial_composition_Kr[1];
-		Sciantix_variables[9] = initial_composition_Kr[2];
-		Sciantix_variables[10] = initial_composition_Kr[3];
-		Sciantix_variables[11] = initial_composition_Kr[4];
-		Sciantix_variables[12] = initial_composition_Kr[5];
+        std::vector<double> initial_composition_Kr;
+        initial_composition_Kr = ReadSeveralParameters("Initial composition Kr", input_initial_conditions, input_check);
+        Sciantix_variables[7]  = initial_composition_Kr[0];
+        Sciantix_variables[8]  = initial_composition_Kr[1];
+        Sciantix_variables[9]  = initial_composition_Kr[2];
+        Sciantix_variables[10] = initial_composition_Kr[3];
+        Sciantix_variables[11] = initial_composition_Kr[4];
+        Sciantix_variables[12] = initial_composition_Kr[5];
 
-		std::vector<double> initial_composition_He;
-		initial_composition_He = ReadSeveralParameters("Initial composition He", input_initial_conditions, input_check);
-		Sciantix_variables[13] = initial_composition_He[0];
-		Sciantix_variables[14] = initial_composition_He[1];
-		Sciantix_variables[15] = initial_composition_He[2];
-		Sciantix_variables[16] = initial_composition_He[3];
-		Sciantix_variables[17] = initial_composition_He[4];
-		Sciantix_variables[18] = initial_composition_He[5];
+        std::vector<double> initial_composition_He;
+        initial_composition_He = ReadSeveralParameters("Initial composition He", input_initial_conditions, input_check);
+        Sciantix_variables[13] = initial_composition_He[0];
+        Sciantix_variables[14] = initial_composition_He[1];
+        Sciantix_variables[15] = initial_composition_He[2];
+        Sciantix_variables[16] = initial_composition_He[3];
+        Sciantix_variables[17] = initial_composition_He[4];
+        Sciantix_variables[18] = initial_composition_He[5];
 
-		std::vector<double> initial_intragranular_bubbles;
-		initial_intragranular_bubbles = ReadSeveralParameters("Initial intragranular bubbles", input_initial_conditions, input_check);
-		Sciantix_variables[19] = initial_intragranular_bubbles[0];
-		Sciantix_variables[20] = initial_intragranular_bubbles[1];
+        std::vector<double> initial_intragranular_bubbles;
+        initial_intragranular_bubbles =
+            ReadSeveralParameters("Initial intragranular bubbles", input_initial_conditions, input_check);
+        Sciantix_variables[19] = initial_intragranular_bubbles[0];
+        Sciantix_variables[20] = initial_intragranular_bubbles[1];
 
-		Sciantix_variables[38] = ReadOneParameter("Burn_up[0]", input_initial_conditions, input_check);
-		Sciantix_variables[39] = ReadOneParameter("Effective_burn_up[0]", input_initial_conditions, input_check);
-		Sciantix_variables[65] = ReadOneParameter("Irradiation_time[0]", input_initial_conditions, input_check);
-		Sciantix_variables[40] = ReadOneParameter("Fuel_density[0]", input_initial_conditions, input_check);
+        Sciantix_variables[38] = ReadOneParameter("Burn_up[0]", input_initial_conditions, input_check);
+        Sciantix_variables[39] = ReadOneParameter("Effective_burn_up[0]", input_initial_conditions, input_check);
+        Sciantix_variables[65] = ReadOneParameter("Irradiation_time[0]", input_initial_conditions, input_check);
+        Sciantix_variables[40] = ReadOneParameter("Fuel_density[0]", input_initial_conditions, input_check);
 
-		std::vector<double> initial_composition_U;
-		initial_composition_U = ReadSeveralParameters("Initial composition U", input_initial_conditions, input_check);
+        std::vector<double> initial_composition_U;
+        initial_composition_U = ReadSeveralParameters("Initial composition U", input_initial_conditions, input_check);
 
-		Sciantix_variables[41] = initial_composition_U[0]; // U-234
-		Sciantix_variables[42] = initial_composition_U[1]; // U-235
-		Sciantix_variables[43] = initial_composition_U[2]; // U-236
-		Sciantix_variables[44] = initial_composition_U[3]; // U-237
-		Sciantix_variables[45] = initial_composition_U[4]; // U-238
+        Sciantix_variables[41] = initial_composition_U[0];  // U-234
+        Sciantix_variables[42] = initial_composition_U[1];  // U-235
+        Sciantix_variables[43] = initial_composition_U[2];  // U-236
+        Sciantix_variables[44] = initial_composition_U[3];  // U-237
+        Sciantix_variables[45] = initial_composition_U[4];  // U-238
 
-		std::vector<double> initial_composition_Xe133;
-		initial_composition_Xe133 = ReadSeveralParameters("Initial composition Xe133", input_initial_conditions, input_check);
+        std::vector<double> initial_composition_Xe133;
+        initial_composition_Xe133 =
+            ReadSeveralParameters("Initial composition Xe133", input_initial_conditions, input_check);
 
-		Sciantix_variables[48] = initial_composition_Xe133[0];
-		Sciantix_variables[49] = initial_composition_Xe133[1];
-		Sciantix_variables[50] = initial_composition_Xe133[2];
-		Sciantix_variables[51] = initial_composition_Xe133[3];
-		Sciantix_variables[52] = initial_composition_Xe133[4];
-		Sciantix_variables[53] = initial_composition_Xe133[5];
-		Sciantix_variables[54] = initial_composition_Xe133[6];
+        Sciantix_variables[48] = initial_composition_Xe133[0];
+        Sciantix_variables[49] = initial_composition_Xe133[1];
+        Sciantix_variables[50] = initial_composition_Xe133[2];
+        Sciantix_variables[51] = initial_composition_Xe133[3];
+        Sciantix_variables[52] = initial_composition_Xe133[4];
+        Sciantix_variables[53] = initial_composition_Xe133[5];
+        Sciantix_variables[54] = initial_composition_Xe133[6];
 
-		std::vector<double> initial_composition_Kr85m;
-		initial_composition_Kr85m = ReadSeveralParameters("Initial composition Kr85m", input_initial_conditions, input_check);
+        std::vector<double> initial_composition_Kr85m;
+        initial_composition_Kr85m =
+            ReadSeveralParameters("Initial composition Kr85m", input_initial_conditions, input_check);
 
-		Sciantix_variables[57] = initial_composition_Kr85m[0];
-		Sciantix_variables[58] = initial_composition_Kr85m[1];
-		Sciantix_variables[59] = initial_composition_Kr85m[2];
-		Sciantix_variables[60] = initial_composition_Kr85m[3];
-		Sciantix_variables[61] = initial_composition_Kr85m[4];
-		Sciantix_variables[62] = initial_composition_Kr85m[5];
-		Sciantix_variables[63] = initial_composition_Kr85m[6];
+        Sciantix_variables[57] = initial_composition_Kr85m[0];
+        Sciantix_variables[58] = initial_composition_Kr85m[1];
+        Sciantix_variables[59] = initial_composition_Kr85m[2];
+        Sciantix_variables[60] = initial_composition_Kr85m[3];
+        Sciantix_variables[61] = initial_composition_Kr85m[4];
+        Sciantix_variables[62] = initial_composition_Kr85m[5];
+        Sciantix_variables[63] = initial_composition_Kr85m[6];
 
-		Sciantix_variables[66] = ReadOneParameter("Initial stoichiometry deviation[0]", input_initial_conditions, input_check);
+        Sciantix_variables[66] =
+            ReadOneParameter("Initial stoichiometry deviation[0]", input_initial_conditions, input_check);
 
-		Sciantix_variables[150] = ReadOneParameter("Chromium content", input_initial_conditions, input_check);
-	}
+        Sciantix_variables[150] = ReadOneParameter("Chromium content", input_initial_conditions, input_check);
+    }
 
 	int n = 0;
 	while (!input_history.eof())

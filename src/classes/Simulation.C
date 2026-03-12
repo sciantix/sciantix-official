@@ -104,6 +104,4 @@ void Simulation::execute()
     InterGranularBubbleBehavior();
 
     GasRelease();
-
-    // SetPhaseDiagram("in the gap");
 }
