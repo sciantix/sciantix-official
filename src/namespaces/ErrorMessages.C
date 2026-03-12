@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -22,7 +22,7 @@ namespace ErrorMessages
     const std::string Error_file_name = "error_log.txt";
     std::stringstream errorMessages;
 
-    void MissingInputFile(const char *missing_file)
+    void MissingInputFile(const char* missing_file)
     {
         std::string error_message = "ERROR: Missing input file '" + (std::string)missing_file + "' \n";
         error_message += "Please check that such file exists in the current working directory.\n";
@@ -49,4 +49,4 @@ namespace ErrorMessages
         Error_log << errorMessages.str();
         errorMessages.str("");
     }
-}
+}  // namespace ErrorMessages
