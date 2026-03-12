@@ -174,7 +174,6 @@ void Simulation::GasDiffusion()
                 sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " reacted - IG"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " released"].getInitialValue());
 
@@ -217,7 +216,6 @@ void Simulation::GasDiffusion()
                     sciantix_variable[system.getGasName() + " released"].setFinalValue(
                         sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                         sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                        sciantix_variable[system.getGasName() + " reacted - IG"].getFinalValue() -
                         sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
                     );
                 }
@@ -251,10 +249,7 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         parameters.push_back(system.getProductionRate());
         parameters.push_back(system.getGas().getDecayRate());
 
-        if (system.getGas().getChemicallyActive() == 1.0 && system.getRestructuredMatrix() == 0.0)
-            parameters.push_back(sciantix_variable[system.getGasName() + " reacted - IG"].getIncrement());
-        else
-            parameters.push_back(0);
+        parameters.push_back(0);
         
             
         double decay_vaporisation = - 3 * sciantix_variable["Grain radius"].getIncrement() / sciantix_variable["Grain radius"].getFinalValue();
