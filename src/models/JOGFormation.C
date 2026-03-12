@@ -19,7 +19,6 @@
 void Simulation::JOGFormation()
 {
     if (input_variable["iThermochimica"].getValue() == 0) return;
-    if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;
 
     const double temperature = history_variable["Temperature"].getFinalValue();
     const double temperature_celsius = temperature - 273.15;

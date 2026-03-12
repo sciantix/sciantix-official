@@ -17,9 +17,7 @@
 #include "Simulation.h"
 
 void Simulation::GasRelease()
-{
-    if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;
-    
+{    
     // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
     for (auto& system : sciantix_system)
     {

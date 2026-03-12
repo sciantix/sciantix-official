@@ -35,8 +35,6 @@ void Simulation::SetPhaseDiagram(std::string location)
     
     if (location == "at grain boundary")
     {
-        if (sciantix_variable["Grain radius"].getFinalValue() <= 0.0) return;
-
         if (input_variable["iThermochimica"].getValue() == 0 || sciantix_variable["Xe at grain boundary"].getInitialValue() <= 0.0) 
         {
             for (auto &system : sciantix_system)
