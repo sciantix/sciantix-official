@@ -30,7 +30,7 @@
 void Simulation::SetPhaseDiagram(std::string location)
 {
     double temperature = history_variable["Temperature"].getFinalValue();
-    double pressure = history_variable["THERMOCHIMICA pressure"].getFinalValue();
+    double pressure = history_variable["System pressure"].getFinalValue();
     double oxygenfraction(std::nan("")); // Oxygen fraction defined only for location = matrix
     
     if (location == "at grain boundary")
@@ -50,9 +50,6 @@ void Simulation::SetPhaseDiagram(std::string location)
 
             return;
         }
-
-        temperature = history_variable["Temperature"].getFinalValue();
-        pressure = history_variable["THERMOCHIMICA pressure"].getFinalValue();
     }
     else if (location == "matrix")
     {
