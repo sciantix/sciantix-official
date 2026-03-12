@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -22,21 +22,25 @@
 /**
  * @class Material
  * @brief Class for materials used in SCIANTIX (e.g., fuel matrix, fission gas, etc.).
- * 
+ *
  * @author G. Zullo
  */
 class Material
 {
-public:
+  public:
     /**
      * Constructor
      */
-    Material() {}
+    Material()
+    {
+    }
 
     /**
      * Destructor
      */
-    ~Material() {}
+    ~Material()
+    {
+    }
 
     /**
      * @brief Sets the name of the material.
@@ -74,9 +78,9 @@ public:
         return reference;
     }
 
-protected:
+  protected:
     std::string name;
     std::string reference;
 };
 
-#endif // MATERIAL_H
+#endif  // MATERIAL_H
