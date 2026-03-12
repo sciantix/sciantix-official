@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -19,7 +19,6 @@
 #include <iostream>
 
 Simulation* Simulation::instance = nullptr;
-
 
 Simulation* Simulation::getInstance()
 {
@@ -54,16 +53,15 @@ void Simulation::initialize(
     setSystem();
 }
 
-
 void Simulation::execute()
 {
-    #if !defined(COUPLING_TU)
-        Burnup();
+#if !defined(COUPLING_TU)
+    Burnup();
 
-        EffectiveBurnup();
+    EffectiveBurnup();
 
-        Densification();
-    #endif
+    Densification();
+#endif
 
     GapPartialPressure();
 
