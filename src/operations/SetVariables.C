@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -38,17 +38,17 @@ void Simulation::setVariables(
     }
 
     // toOutput flags
-    bool toOutputRadioactiveFG = input_variable["iRadioactiveFissionGas"].getValue() != 0,
-         toOutputVenting = input_variable["iGrainBoundaryVenting"].getValue() != 0,
-         toOutputHelium = input_variable["iHelium"].getValue() != 0,
-         toOutputCracking = input_variable["iGrainBoundaryMicroCracking"].getValue() != 0,
-         toOutputGrainBoundary = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
-         toOutputHighBurnupStructure = input_variable["iHighBurnupStructureFormation"].getValue() == 1,
+    bool toOutputRadioactiveFG          = input_variable["iRadioactiveFissionGas"].getValue() != 0,
+         toOutputVenting                = input_variable["iGrainBoundaryVenting"].getValue() != 0,
+         toOutputHelium                 = input_variable["iHelium"].getValue() != 0,
+         toOutputCracking               = input_variable["iGrainBoundaryMicroCracking"].getValue() != 0,
+         toOutputGrainBoundary          = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
+         toOutputHighBurnupStructure    = input_variable["iHighBurnupStructureFormation"].getValue() == 1,
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
-         toOutputChromiumContent = input_variable["iChromiumSolubility"].getValue() > 0,
-         toOutputThermochimica = input_variable["iThermochimica"].getValue() != 0;
+         toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0,
+         toOutputThermochimica          = input_variable["iThermochimica"].getValue() != 0;
 
-    // Physics variable	
+    // Physics variable
     physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
 
     // History variable
@@ -95,10 +95,10 @@ void Simulation::setVariables(
 
     #if defined(COUPLING_TU)
 
-        sciantix_variable["Burnup"].setInitialValue(Sciantix_history[7]);   
-        sciantix_variable["Burnup"].setFinalValue(Sciantix_history[8]); 
+    sciantix_variable["Burnup"].setInitialValue(Sciantix_history[7]);
+    sciantix_variable["Burnup"].setFinalValue(Sciantix_history[8]);
 
-    #endif
+#endif
 
     // Diffusion modes
     for (int i = 0; i < n_modes; ++i)
