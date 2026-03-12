@@ -96,6 +96,8 @@ class Simulation
     void setMatrix();
     void setSystem();
 
+    void setGPVariables(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[]);
+
     void initialize(int    Sciantix_options[],
                     double Sciantix_history[],
                     double Sciantix_variables[],

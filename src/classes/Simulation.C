@@ -51,6 +51,7 @@ void Simulation::initialize(
     setGas();
     setMatrix();
     setSystem();
+    setGPVariables(Sciantix_options, Sciantix_history, Sciantix_variables);
 }
 
 void Simulation::execute()
