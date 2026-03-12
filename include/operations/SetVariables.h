@@ -22,6 +22,7 @@
 #include "InputVariable.h"
 #include "SciantixArray.h"
 #include "SetVariablesFunctions.h"
+#include "ThermochemistryVariable.h"
 
 /**
  * @brief This routine initializes vectors that hold physics variables, history variables,

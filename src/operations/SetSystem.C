@@ -16,9 +16,44 @@
 
 #include "SetSystem.h"
 #include "Simulation.h"
+#include <fstream>
+#include <json/json.h>
+#include <set>
+
+namespace
+{
+std::set<std::string> getSelectedFissionProductElements(SciantixArray<InputVariable>& input_variable)
+{
+    std::set<std::string> selected_elements;
+
+    if ((int)input_variable["iThermochimica"].getValue() == 0)
+        return selected_elements;
+
+    std::ifstream json_file("./input_thermochemistry.json");
+    if (!json_file)
+    {
+        std::cerr << "Error: Cannot open thermochemistry input file: ./input_thermochemistry.json" << std::endl;
+        return selected_elements;
+    }
+
+    Json::Value root;
+    json_file >> root;
+
+    const Json::Value& elements = root["Settings"]["fission_products"]["elements"];
+    for (const auto& name : elements.getMemberNames())
+    {
+        if (name != "O" && name != "U")
+            selected_elements.insert(name);
+    }
+
+    return selected_elements;
+}
+}  // namespace
 
 void Simulation::setSystem()
 {
+    const std::set<std::string> selected_fission_products = getSelectedFissionProductElements(input_variable);
+
     switch ((int)input_variable["iFuelMatrix"].getValue())
     {
         case 0:
@@ -27,11 +62,18 @@ void Simulation::setSystem()
             sciantix_system.push(He_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Xe133_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Kr85m_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Cs_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));            
-            sciantix_system.push(I_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Te_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Mo_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            break;
+
+            if (selected_fission_products.count("Cs") > 0)
+                sciantix_system.push(Cs_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+
+            if (selected_fission_products.count("I") > 0)
+                sciantix_system.push(I_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+
+            if (selected_fission_products.count("Te") > 0)
+                sciantix_system.push(Te_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+
+            if (selected_fission_products.count("Mo") > 0)
+                sciantix_system.push(Mo_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             break;
 
         case 1:
