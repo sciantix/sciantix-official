@@ -450,11 +450,13 @@ class Simulation
     void Microstructure();
 
     /**
-     * @brief This method returns a pointer to the array of diffusion modes corresponding to the specified gas.
+     * @brief This method returns a pointer to the array of diffusion modes corresponding to the
+     * specified gas.
      * @param gas_name The name of the gas for which diffusion modes are required.
-     * @return A pointer to the array of diffusion modes for the specified gas, or nullptr for invalid gas names.
+     * @return A pointer to the array of diffusion modes for the specified gas, or nullptr for
+     * invalid gas names.
      */
-    double *getDiffusionModes(std::string gas_name)
+    double* getDiffusionModes(std::string gas_name)
     {
         if (gas_name == "Xe")
             return &modes_initial_conditions[0];
@@ -481,11 +483,12 @@ class Simulation
             return &modes_initial_conditions[24 * 40];
         
         else if (gas_name == "Mo")
-            return &modes_initial_conditions[26 * 40];
+            return &modes_initial_conditions[27 * 40];
 
         else
         {
-            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes." << std::endl;
+            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes."
+                      << std::endl;
             return nullptr;
         }
     }
@@ -493,9 +496,10 @@ class Simulation
     /**
      * @brief Retrieves diffusion modes related to solutions for a specified gas.
      * @param gas_name Name of the gas.
-     * @return Pointer to the array of diffusion modes for solutions, or nullptr for invalid gas names.
+     * @return Pointer to the array of diffusion modes for solutions, or nullptr for invalid gas
+     * names.
      */
-    double *getDiffusionModesSolution(std::string gas_name)
+    double* getDiffusionModesSolution(std::string gas_name)
     {
         if (gas_name == "Xe")
             return &modes_initial_conditions[1 * 40];
@@ -525,11 +529,12 @@ class Simulation
             return &modes_initial_conditions[25 * 40];
 
         else if (gas_name == "Mo")
-            return &modes_initial_conditions[27 * 40];
+            return &modes_initial_conditions[28 * 40];
             
         else
         {
-            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesSolution." << std::endl;
+            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesSolution."
+                      << std::endl;
             return nullptr;
         }
     }
@@ -537,9 +542,10 @@ class Simulation
     /**
      * @brief Retrieves diffusion modes related to bubbles for a specified gas.
      * @param gas_name Name of the gas.
-     * @return Pointer to the array of diffusion modes for bubbles, or nullptr for invalid gas names.
+     * @return Pointer to the array of diffusion modes for bubbles, or nullptr for invalid gas
+     * names.
      */
-    double *getDiffusionModesBubbles(std::string gas_name)
+    double* getDiffusionModesBubbles(std::string gas_name)
     {
         if (gas_name == "Xe")
             return &modes_initial_conditions[2 * 40];
@@ -573,7 +579,8 @@ class Simulation
             
         else
         {
-            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesBubbles." << std::endl;
+            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesBubbles."
+                      << std::endl;
             return nullptr;
         }
     }

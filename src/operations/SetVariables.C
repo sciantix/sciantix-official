@@ -103,7 +103,7 @@ void Simulation::setVariables(
     // Diffusion modes
     for (int i = 0; i < n_modes; ++i)
     {
-        for (int j = 0; j <= 27; j++)
+        for (int j = 0; j <= 30; j++)
         {
             modes_initial_conditions[j * n_modes + i] = Sciantix_diffusion_modes[j * n_modes + i];
         }

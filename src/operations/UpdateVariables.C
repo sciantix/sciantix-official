@@ -210,13 +210,15 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
 {
     for (int i = 0; i < n_modes; ++i)
     {
-        for (int j = 0; j <= 27; j++)
+        for (int j = 0; j <= 30; j++)
         {
-            Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];	
+            Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];
         }
     }
 
-    for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin(); it != update_sciantix_variable.end(); it++)
+    for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin();
+         it != update_sciantix_variable.end();
+         it++)
     {
         Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
     }
