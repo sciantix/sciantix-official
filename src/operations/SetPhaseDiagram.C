@@ -56,12 +56,6 @@ void Simulation::SetPhaseDiagram(std::string location)
     }
     else if (location == "matrix")
     {
-        if (input_variable["iThermochimica"].getValue() == 0)
-        {
-            GrainVaporisation(true); 
-            return; 
-        }
-
         double stoicdev = sciantix_variable["Stoichiometry deviation"].getFinalValue();
         oxygenfraction = (stoicdev + 2.0)/(1 + stoicdev + 2.0);
     }
@@ -234,10 +228,7 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
                 double mol_o = SolutionPhases["gas"]["elements"]["O"]["moles of element in phase"].asDouble()*total_moles;
                 
                 sciantix_variable["Grain radius"].setFinalValue(sciantix_variable["Grain radius"].getFinalValue() * pow((total_moles - mol_u - mol_o)/total_moles, 1.0/3.0));
-
-                GrainVaporisation(false);
             }
-            std::cout<<"Vaporized matrix! active vaporisation module"<<std::endl;
             return;
         }
 
@@ -291,11 +282,6 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
                     sciantix_variable[system.getGasName() + " reacted - GB"].setFinalValue(0);
                 }
             }
-            return;
-        }
-        else if (location == "matrix")
-        {
-            GrainVaporisation(true);  
             return;
         }
         else

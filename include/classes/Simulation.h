@@ -221,15 +221,6 @@ class Simulation
      * @author E. Cappellari
      */
     double MolarVolume(ThermochemistryVariable& compound, Matrix& fuel);
-
-    /**
-     * @brief Grain vaporisation.
-     * 
-     * @author E. Cappellari
-     * 
-     */
-    void GrainVaporisation(bool thermochemistry_module);
-    
     
     /**
      * @brief Evolution models for intra-granular bubbles in fuel grains based on the value of
