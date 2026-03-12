@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                    //
+//  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -18,10 +18,10 @@
 #define INPUT_READING_H
 
 #include "ErrorMessages.h"
-#include <string>
-#include <sstream>
-#include <vector>
 #include <numeric>
+#include <sstream>
+#include <string>
+#include <vector>
 #include <json/json.h>
 #include <fstream>
 
@@ -54,6 +54,6 @@ void InputReading(
     );
 
 unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
-double ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
+double             ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
 
-#endif // INPUT_READING_H
+#endif  // INPUT_READING_H
