@@ -29,8 +29,6 @@
 
 void Simulation::SetPhaseDiagram(std::string location)
 {
-    double temperature = history_variable["Temperature"].getFinalValue();
-    double pressure = history_variable["System pressure"].getFinalValue();
     double oxygenfraction(std::nan("")); // Oxygen fraction defined only for location = matrix
     
     if (location == "at grain boundary")
@@ -59,6 +57,11 @@ void Simulation::SetPhaseDiagram(std::string location)
         std::cout<<"Location not yet modelled: "<<location<<std::endl;
         return;
     }
+
+    if (input_variable["iThermochimica"].getValue() == 0) return;
+
+    double temperature = history_variable["Temperature"].getFinalValue();
+    double pressure = history_variable["System pressure"].getFinalValue();
 
     CallThermochemistryModule(pressure, temperature, location, sciantix_variable, oxygenfraction);
 
