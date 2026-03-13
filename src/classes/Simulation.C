@@ -63,6 +63,20 @@ void Simulation::execute()
 
     Densification();
 #endif
+    
+    // Fuel microstructural changes
+
+    HighBurnupStructureFormation();
+
+    HighBurnupStructurePorosity();
+
+    GrainGrowth();
+
+    // Fuel chemistry
+
+    Microstructure();
+
+    ChromiumSolubility();
 
     GapPartialPressure();
 
@@ -70,17 +84,9 @@ void Simulation::execute()
 
     StoichiometryDeviation();
 
-    HighBurnupStructureFormation();
-
-    HighBurnupStructurePorosity();
-
-    Microstructure();
-
-    ChromiumSolubility();
-
-    GrainGrowth();
-
     SetPhaseDiagram("matrix");
+
+    // Fission product behaviour 
 
     GrainBoundarySweeping();
 
@@ -94,8 +100,6 @@ void Simulation::execute()
 
     SetPhaseDiagram("at grain boundary");
 
-    JOGFormation();
-
     GrainBoundaryMicroCracking();
 
     GrainBoundaryVenting();
@@ -103,4 +107,9 @@ void Simulation::execute()
     InterGranularBubbleBehavior();
 
     GasRelease();
+
+    // gap behaviour
+    
+    JOGFormation();
+
 }

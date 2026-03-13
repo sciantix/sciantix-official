@@ -28,7 +28,7 @@ void Simulation::StoichiometryDeviation()
     std::string         reference;
     std::vector<double> parameter;
 
-    double surface_to_volume = 3 / sciantix_variable["Grain radius"].getFinalValue();  // (1/m)
+    double surface_to_volume = 3 / sciantix_variable["Grain radius"].getInitialValue();  // (1/m)
 
     model_.setName("Stoichiometry deviation");
 
