@@ -30,8 +30,12 @@ std::set<std::string> getSelectedFissionProductElements(SciantixArray<InputVaria
     if ((int)input_variable["iThermochimica"].getValue() == 0)
         return selected_elements;
 
-    const std::vector<ThermochemistryManifestEntry> manifest =
-        loadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
+    const ThermochemistrySettings settings =
+        loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt");
+    const std::vector<ThermochemistryManifestEntry> manifest = filterThermochemistryManifest(
+        loadThermochemistryManifest(TestPath + "input_thermochemistry.txt"),
+        settings
+    );
     const std::set<std::string> manifest_elements = getThermochemistryElements(
         manifest,
         "fission_products",

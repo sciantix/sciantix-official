@@ -16,6 +16,7 @@
 
 #include "Simulation.h"
 #include "MainVariables.h"
+#include "OCOutputParser.h"
 #include "ThermochemistryManifest.h"
 #include "ThermochemistrySettings.h"
 
@@ -28,7 +29,6 @@
 #include <cmath>
 #include <limits>
 #include <string>
-#include <json/json.h>
 #include <set>
 
 void Simulation::SetPhaseDiagram(std::string location)
@@ -78,10 +78,10 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
 {
     const std::vector<ThermochemistryManifestEntry> manifest =
         loadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
-    const ThermochemistrySettings settings =
-        loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt");
+    const ThermochemistrySettings settings = loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt");
+    const std::vector<ThermochemistryManifestEntry> filtered_manifest = filterThermochemistryManifest(manifest, settings);
     const std::string category = (location == "matrix") ? "matrix" : "fission_products";
-    const std::set<std::string> manifest_elements = getThermochemistryElements(manifest, category, location);
+    const std::set<std::string> manifest_elements = getThermochemistryElements(filtered_manifest, category, location);
     const ThermochemistryPhaseSettings& location_settings =
         (location == "matrix") ? settings.matrix : settings.fission_products;
     const std::string module = location_settings.module;
@@ -91,7 +91,6 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
         std::string directoryPath = "./../../../opencalphad/";
         std::string inputPath = "inputs/thermoin.OCM";
         std::string outputPath = "outputs/thermoout";
-        std::string parserPath = "parse_oc_output_to_json.py";
         std::string dataPath = "./../data/" + location_settings.database;
         std::string exePath = directoryPath + "oc6P " + directoryPath + inputPath;
         
@@ -161,53 +160,35 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
             return;
         }
 
-        // 3. Call Python script to preprocess the output file
-        std::vector<std::string> elementNames(manifest_elements.begin(), manifest_elements.end());
+        const std::vector<std::string> valid_elements(manifest_elements.begin(), manifest_elements.end());
+        const OCOutputData output_data = parseOCOutputFile(directoryPath + outputPath + ".DAT", valid_elements);
+        const auto& SolutionPhases = output_data.solution_phases;
 
-        std::string elements_str = "[";
-        for (size_t i = 0; i < elementNames.size(); ++i) {
-            elements_str += "\"" + elementNames[i] + "\"";
-            if (i != elementNames.size() - 1)
-                elements_str += ",";
-        }
-        elements_str += "]";
-        std::cout << "Elements: " << elements_str << std::endl;
-
-        std::string pythonCommand = "python3 "+ directoryPath + parserPath + " " + directoryPath + outputPath +".DAT " + directoryPath + outputPath + ".json "+ elements_str;
-        int pyStatus = std::system(pythonCommand.c_str());
-        if (pyStatus != 0) 
+        for (const auto& phase_entry : SolutionPhases)
         {
-            std::cerr << "Error: Execution of Python preprocessing script failed!\n";
-            return;
-        }
+            const std::string& phase_name = phase_entry.first;
+            const OCPhaseData& phase_data = phase_entry.second;
 
-        // 3. Read from DAT file output    
-        std::ifstream jsonFile(directoryPath + outputPath + ".json");
-        if (!jsonFile) {
-            std::cerr << "Error: Cannot open thermochemistry output file: " << outputPath << std::endl;
-            return;
-        }
-
-        Json::Value outputfile;
-        jsonFile >> outputfile;
-
-        const Json::Value& SolutionPhases = outputfile["1"]["solution phases"];
-        for (auto& phase : SolutionPhases.getMemberNames())
-        {
-            if ((SolutionPhases[phase].isMember("species")) && (SolutionPhases[phase]["species"].isObject()) && (!SolutionPhases[phase]["species"].empty()))
+            if (!phase_data.species.empty())
             {
-                for (auto& compound : SolutionPhases[phase]["species"].getMemberNames())
+                for (const auto& species_entry : phase_data.species)
                 {
-                    double moles = SolutionPhases[phase]["species"][compound]["moles"].asDouble();
-                    thermochemistry_variable[compound + " (" + phase + ", " + location + ")"].setFinalValue(moles);
+                    const std::string& compound = species_entry.first;
+                    const double       moles    = species_entry.second.moles;
+
+                    if (thermochemistry_variable.isElementPresent(compound + " (" + phase_name + ", " + location + ")"))
+                        thermochemistry_variable[compound + " (" + phase_name + ", " + location + ")"].setFinalValue(moles);
                 }
             }
             else
             {
-                for (auto& compound : SolutionPhases[phase]["elements"].getMemberNames())
+                for (const auto& element_entry : phase_data.elements)
                 {
-                    double moles = SolutionPhases[phase]["elements"][compound]["moles of element in phase"].asDouble();
-                    thermochemistry_variable[compound + " (" + phase + ", " + location + ")"].setFinalValue(moles);
+                    const std::string& compound = element_entry.first;
+                    const double       moles    = element_entry.second;
+
+                    if (thermochemistry_variable.isElementPresent(compound + " (" + phase_name + ", " + location + ")"))
+                        thermochemistry_variable[compound + " (" + phase_name + ", " + location + ")"].setFinalValue(moles);
                 }
             }
         }
@@ -215,11 +196,12 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
         if (location == "matrix")
         {
             Matrix fuel(matrices[0]);
-            if ((SolutionPhases.isMember("gas")) && (SolutionPhases["gas"].isObject()) && (!SolutionPhases["gas"].empty()))
+            const auto gas_phase = SolutionPhases.find("gas");
+            if (gas_phase != SolutionPhases.end())
             {
                 double total_moles = sciantix_variable["Uranium content"].getFinalValue() + sciantix_variable["Oxygen content"].getFinalValue();
-                double mol_u = SolutionPhases["gas"]["elements"]["U"]["moles of element in phase"].asDouble()*total_moles;
-                double mol_o = SolutionPhases["gas"]["elements"]["O"]["moles of element in phase"].asDouble()*total_moles;
+                double mol_u = gas_phase->second.elements.count("U") ? gas_phase->second.elements.at("U") * total_moles : 0.0;
+                double mol_o = gas_phase->second.elements.count("O") ? gas_phase->second.elements.at("O") * total_moles : 0.0;
                 
                 sciantix_variable["Grain radius"].setFinalValue(sciantix_variable["Grain radius"].getFinalValue() * pow((total_moles - mol_u - mol_o)/total_moles, 1.0/3.0));
             }
@@ -229,8 +211,9 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
         // elements: update gas atoms and grain boundary variables
         for (const auto& element : manifest_elements) {
             double moles(0);
-            if ((SolutionPhases.isMember("gas")) && (SolutionPhases["gas"].isObject()) && (!SolutionPhases["gas"].empty()))
-                moles = SolutionPhases["gas"]["elements"][element]["moles of element in phase"].asDouble();
+            const auto gas_phase = SolutionPhases.find("gas");
+            if (gas_phase != SolutionPhases.end() && gas_phase->second.elements.count(element) > 0)
+                moles = gas_phase->second.elements.at(element);
         
             double available(0);
             if (location =="at grain boundary")

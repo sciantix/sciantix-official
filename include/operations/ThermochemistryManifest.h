@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "ThermochemistrySettings.h"
+
 struct ThermochemistryManifestEntry
 {
     int                        index;
@@ -21,6 +23,11 @@ struct ThermochemistryManifestEntry
 };
 
 std::vector<ThermochemistryManifestEntry> loadThermochemistryManifest(const std::string& path);
+
+std::vector<ThermochemistryManifestEntry> filterThermochemistryManifest(
+    const std::vector<ThermochemistryManifestEntry>& manifest,
+    const ThermochemistrySettings&                   settings
+);
 
 std::set<std::string> getThermochemistryElements(const std::vector<ThermochemistryManifestEntry>& manifest,
                                                  const std::string&                              category,
