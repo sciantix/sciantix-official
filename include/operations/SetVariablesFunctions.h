@@ -20,6 +20,7 @@
 #include <vector>
 
 #include "SciantixVariable.h"
+#include "ThermochemistryManifest.h"
 #include "ThermochemistryVariable.h"
 
 std::vector<std::string> getInputVariableNames();
@@ -45,6 +46,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
 );
 
 std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
+    const std::vector<ThermochemistryManifestEntry>& manifest,
     double Sciantix_thermochemistry[]
 );
 

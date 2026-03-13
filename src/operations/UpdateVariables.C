@@ -16,8 +16,6 @@
 
 #include "Simulation.h"
 
-#include <json/json.h>
-
 std::map<int, std::string> update_sciantix_variable = {
     {0, "Grain radius"},
     {1, "Xe produced"},
@@ -154,47 +152,6 @@ std::map<int, std::string> update_sciantix_variable = {
     {170, "Initial grain radius"},
 };
 
-std::map<int, std::string> updateThermochemistryVariable()
-{
-    std::map<int, std::string> thermochemistry_variable;
-
-    std::vector<std::string> locations;
-    locations.push_back("at grain boundary");
-
-    std::string jsonPath = "./input_thermochemistry.json";
-
-    std::ifstream jsonFile(jsonPath);
-    if (!jsonFile) {
-        std::cerr << "Error: Cannot open JSON output: " << jsonPath << std::endl;
-    }
-
-    Json::Value root;
-    jsonFile >> root;
-    root = root["Compounds"];
-
-    int index = 0;
-
-    for (auto& type : root.getMemberNames())
-    {
-        for (auto& phase : root[type].getMemberNames())
-        {
-            for (auto& compound : root[type][phase].getMemberNames())
-            {
-                auto locations_to_use = (type == "matrix") ? std::vector<std::string>{"matrix"} : locations;
-
-                for (auto& location : locations_to_use)
-                {
-                    std::string label = compound + " (" + phase + ", " + location + ")";
-                    thermochemistry_variable[index] = label;
-                    ++index;
-                }
-            }
-        }
-    }
-
-    return thermochemistry_variable;
-}
-
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[])
 {
     for (int i = 0; i < n_modes; ++i)
@@ -215,12 +172,8 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
     if (thermochemistry_variable.empty())
         return;
 
-    static std::map<int, std::string> update_thermochemistry_variable = updateThermochemistryVariable();
-
-    for (std::map<int, std::string>::iterator it = update_thermochemistry_variable.begin();
-         it != update_thermochemistry_variable.end();
-         it++)
+    for (auto& variable : thermochemistry_variable)
     {
-        Sciantix_thermochemistry[it->first] = thermochemistry_variable[it->second].getFinalValue();
+        Sciantix_thermochemistry[variable.getIndex()] = variable.getFinalValue();
     }
 }

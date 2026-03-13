@@ -15,6 +15,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "MainVariables.h"
+#include "ThermochemistryManifest.h"
+#include "ThermochemistrySettings.h"
 
 #include <iostream>
 #include <fstream>
@@ -26,6 +29,7 @@
 #include <limits>
 #include <string>
 #include <json/json.h>
+#include <set>
 
 void Simulation::SetPhaseDiagram(std::string location)
 {
@@ -72,18 +76,15 @@ void Simulation::SetPhaseDiagram(std::string location)
 
 void Simulation::CallThermochemistryModule(double pressure, double temperature, std::string location, SciantixArray<SciantixVariable> &sciantix_variable, double oxygenfraction)
 {
-    std::string inputPath = "./input_thermochemistry.json";
-    
-    std::ifstream jsonFile(inputPath);
-    if (!jsonFile) {
-        std::cerr << "Error: Cannot open thermochemistry input file: " << inputPath << std::endl;
-    }
-
-    Json::Value root;
-    jsonFile >> root;
-
-    std::string module = root["Settings"]["fission_products"]["module"].asString();
-    if (location == "matrix") module = root["Settings"]["matrix"]["module"].asString();
+    const std::vector<ThermochemistryManifestEntry> manifest =
+        loadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
+    const ThermochemistrySettings settings =
+        loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt");
+    const std::string category = (location == "matrix") ? "matrix" : "fission_products";
+    const std::set<std::string> manifest_elements = getThermochemistryElements(manifest, category, location);
+    const ThermochemistryPhaseSettings& location_settings =
+        (location == "matrix") ? settings.matrix : settings.fission_products;
+    const std::string module = location_settings.module;
     
     if (module == "OPENCALPHAD")
     {
@@ -91,8 +92,7 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
         std::string inputPath = "inputs/thermoin.OCM";
         std::string outputPath = "outputs/thermoout";
         std::string parserPath = "parse_oc_output_to_json.py";
-        std::string dataPath = "./../data/" + root["Settings"]["fission_products"]["database"].asString();
-        if (location == "matrix") dataPath = "./../data/" + root["Settings"]["matrix"]["database"].asString();
+        std::string dataPath = "./../data/" + location_settings.database;
         std::string exePath = directoryPath + "oc6P " + directoryPath + inputPath;
         
         // 1. Write input file
@@ -108,12 +108,8 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
         inputFile << "\nset c t=" << temperature << " p="<<pressure<<" ";
 
         bool noatoms = true;
-        
-        Json::Value& elements = root["Settings"]["fission_products"]["elements"];
-        if (location == "matrix")
-            elements = root["Settings"]["matrix"]["elements"];
 
-        for (auto& elementName : elements.getMemberNames())
+        for (const auto& elementName : manifest_elements)
         {
             double atomsavailable(0);
             if (location =="at grain boundary")
@@ -166,7 +162,7 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
         }
 
         // 3. Call Python script to preprocess the output file
-        std::vector<std::string> elementNames = elements.getMemberNames();
+        std::vector<std::string> elementNames(manifest_elements.begin(), manifest_elements.end());
 
         std::string elements_str = "[";
         for (size_t i = 0; i < elementNames.size(); ++i) {
@@ -231,7 +227,7 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
         }
 
         // elements: update gas atoms and grain boundary variables
-        for (auto& element : elements.getMemberNames()) {
+        for (const auto& element : manifest_elements) {
             double moles(0);
             if ((SolutionPhases.isMember("gas")) && (SolutionPhases["gas"].isObject()) && (!SolutionPhases["gas"].empty()))
                 moles = SolutionPhases["gas"]["elements"][element]["moles of element in phase"].asDouble();

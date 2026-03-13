@@ -17,7 +17,6 @@
 #include "SetVariablesFunctions.h"
 
 #include <fstream>
-#include <json/json.h>
 #include <vector>
 
 std::vector<std::string> getInputVariableNames()
@@ -412,57 +411,25 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
 }
 
 std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
+    const std::vector<ThermochemistryManifestEntry>& manifest,
     double Sciantix_thermochemistry[]
 )
 {
     std::vector<ThermochemistryVariable> init_thermochemistry_variable;
 
-    std::vector<std::string> locations;
-    locations.push_back("at grain boundary");
-
-    std::string jsonPath = "./input_thermochemistry.json";
-
-    std::ifstream jsonFile(jsonPath);
-    if (!jsonFile)
-        std::cerr << "Error: Cannot open thermochemistry input: " << jsonPath << std::endl;
-
-    Json::Value root;
-    jsonFile >> root;
-    root = root["Compounds"];
-
-    int index = 0;
-
-    for (const auto& type : root.getMemberNames())
+    for (const auto& entry : manifest)
     {
-        for (const auto& phase : root[type].getMemberNames())
-        {
-            for (const auto& compound : root[type][phase].getMemberNames())
-            {
-                std::map<std::string, int> stoichiometry;
-                for (const auto& element : root[type][phase][compound].getMemberNames())
-                    stoichiometry[element] = root[type][phase][compound][element].asInt();
+        double final_value = (entry.location == "matrix") ? Sciantix_thermochemistry[entry.index] : 0.0;
 
-                auto locations_to_use = (type == "matrix") ? std::vector<std::string>{"matrix"} : locations;
-
-                for (const auto& location : locations_to_use)
-                {
-                    double final_value = 0.0;
-                    if (type == "matrix")
-                        final_value = Sciantix_thermochemistry[index];
-
-                    init_thermochemistry_variable.emplace_back(ThermochemistryVariable(
-                        compound + " (" + phase + ", " + location + ")",
-                        "(mol/m3)",
-                        Sciantix_thermochemistry[index],
-                        final_value,
-                        phase,
-                        location,
-                        stoichiometry,
-                        1));
-                    ++index;
-                }
-            }
-        }
+        init_thermochemistry_variable.emplace_back(ThermochemistryVariable(entry.index,
+                                                                           entry.getLabel(),
+                                                                           entry.uom,
+                                                                           Sciantix_thermochemistry[entry.index],
+                                                                           final_value,
+                                                                           entry.phase,
+                                                                           entry.location,
+                                                                           entry.stoichiometry,
+                                                                           entry.output));
     }
 
     return init_thermochemistry_variable;

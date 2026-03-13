@@ -1,0 +1,29 @@
+#ifndef THERMOCHEMISTRY_MANIFEST_H
+#define THERMOCHEMISTRY_MANIFEST_H
+
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
+
+struct ThermochemistryManifestEntry
+{
+    int                        index;
+    std::string                category;
+    std::string                phase;
+    std::string                compound;
+    std::string                location;
+    std::string                uom;
+    bool                       output;
+    std::map<std::string, int> stoichiometry;
+
+    std::string getLabel() const;
+};
+
+std::vector<ThermochemistryManifestEntry> loadThermochemistryManifest(const std::string& path);
+
+std::set<std::string> getThermochemistryElements(const std::vector<ThermochemistryManifestEntry>& manifest,
+                                                 const std::string&                              category,
+                                                 const std::string&                              location);
+
+#endif

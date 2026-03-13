@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "SetVariables.h"
+#include "MainVariables.h"
 #include "Simulation.h"
 
 void Simulation::setVariables(
@@ -87,7 +88,10 @@ void Simulation::setVariables(
     std::vector<ThermochemistryVariable> values_th;
     if (toOutputThermochimica)
     {
+        const std::vector<ThermochemistryManifestEntry> manifest =
+            loadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
         values_th = initializeThermochemistryVariable(
+                manifest,
                 Sciantix_thermochemistry
         );
     }

@@ -207,15 +207,6 @@ class Simulation
     void GrainGrowth();
 
     /**
-     * @brief Calculates the molar mass.
-     * @param compound the chemical compound for which to calculate the molar mass (as thermochemistry variable).
-     * @return the molar mass of the compound in g/mol.
-     * 
-     * @author E. Cappellari
-     */
-    double MolarMass(ThermochemistryVariable& compound); 
-
-    /**
      * @brief Calculates the molar volume.
      * @param compound the chemical compound for which to calculate the molar volume (as thermochemistry variable).
      * @return the molar volume of the compound in m3/mol.

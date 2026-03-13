@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "InputReading.h"
+#include "ThermochemistrySettings.h"
 
 /**
  * @brief Read a single setting from the input file.
@@ -332,40 +333,25 @@ void InputReading(
 
 	if (Sciantix_options[25] > 0) // Thermochemistry module is needed
 	{
-		std::string inputPath = TestPath + "input_thermochemistry.json";
-    
-        std::ifstream jsonFile(inputPath);
-		if (!jsonFile) {
-			std::cerr << "Error: Cannot open thermochemistry input file: " << inputPath << std::endl;
-		}
+		const ThermochemistrySettings settings =
+		    loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt");
 
-		Json::Value root;
-		jsonFile >> root;
-		
-		std::cout<<"here"<<std::endl;
 		Sciantix_thermochemistry_options.resize(10);
-		Sciantix_thermochemistry_options[0].push_back(root["Settings"]["module"].asString());
+		Sciantix_thermochemistry_options[0].push_back(settings.fission_products.module);
 		
 		// Fission products
-		for (auto& fp : root["Settings"]["fission_products"]["elements"].getMemberNames())
+		for (const auto& fp : settings.fission_products.elements)
         	Sciantix_thermochemistry_options[1].push_back(fp);
-		Sciantix_thermochemistry_options[2].push_back(root["Settings"]["fission_products"]["database"].asString());
-		for (auto& loc : root["Settings"]["fission_products"]["location"].getMemberNames())
+		Sciantix_thermochemistry_options[2].push_back(settings.fission_products.database);
+		for (const auto& loc : settings.fission_products.locations)
         	Sciantix_thermochemistry_options[3].push_back(loc);
 
 		// Matrix
-		for (auto& mat : root["Settings"]["matrix"]["elements"].getMemberNames())
+		for (const auto& mat : settings.matrix.elements)
         	Sciantix_thermochemistry_options[4].push_back(mat);
-		Sciantix_thermochemistry_options[5].push_back(root["Settings"]["matrix"]["database"].asString());
-		for (auto& loc : root["Settings"]["matrix"]["location"].getMemberNames())
+		Sciantix_thermochemistry_options[5].push_back(settings.matrix.database);
+		for (const auto& loc : settings.matrix.locations)
         	Sciantix_thermochemistry_options[6].push_back(loc);
-
-		for (int i = 0; i < 7; ++i) {
-			std::cout << "Option[" << i << "]: ";
-			for (const auto& val : Sciantix_thermochemistry_options[i])
-				std::cout << val << " ";
-			std::cout << std::endl;
-		}
 
 	}
 }
