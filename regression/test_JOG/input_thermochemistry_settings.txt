@@ -1,0 +1,21 @@
+# Thermochemistry settings
+kc = false
+kc_time = 53400.099
+langmuir = false
+langmuir_coefficient = 1e-7
+
+fission_products.module = OPENCALPHAD
+fission_products.database = CsMoO_TAFID_2021_Anna
+fission_products.elements = Cs, Mo, O
+fission_products.locations = at grain boundary
+fission_products.gap_settings = false
+fission_products.gap_temperature = 600
+fission_products.gap_pressure = 1000000
+
+matrix.module = NO
+matrix.database = OU
+matrix.elements = U, O
+matrix.locations = matrix
+matrix.gap_settings = false
+matrix.gap_temperature = 0.0
+matrix.gap_pressure = 0.0
