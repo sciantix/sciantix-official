@@ -9,7 +9,6 @@ Model	Gas production - He in UO2
 Model	Gas production - Xe133 in UO2	 
 Model	Gas production - Kr85m in UO2	 
 Model	Gas production - Cs in UO2	 
-Model	Gas production - I in UO2	 
 Model	Gas production - Mo in UO2	 
 Model	Intragranular bubble behavior	: Pizzocri et al., JNM, 502 (2018) 323-330.
 Model	Gas diffusion - Xe in UO2	
@@ -18,7 +17,6 @@ Model	Gas diffusion - He in UO2
 Model	Gas diffusion - Xe133 in UO2	
 Model	Gas diffusion - Kr85m in UO2	
 Model	Gas diffusion - Cs in UO2	
-Model	Gas diffusion - I in UO2	
 Model	Gas diffusion - Mo in UO2	
 Model	Grain-boundary micro-cracking	: Barani et al. (2017), JNM
 Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
@@ -35,7 +33,6 @@ System	He in UO2
 System	Xe133 in UO2	
 System	Kr85m in UO2	
 System	Cs in UO2	
-System	I in UO2	
 System	Mo in UO2	
 
 Input setting	iGrainGrowth = 1
