@@ -15,9 +15,10 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "SetSystem.h"
+#include "MainVariables.h"
 #include "Simulation.h"
+#include "ThermochemistryManifest.h"
 #include <fstream>
-#include <json/json.h>
 #include <set>
 
 namespace
@@ -29,18 +30,15 @@ std::set<std::string> getSelectedFissionProductElements(SciantixArray<InputVaria
     if ((int)input_variable["iThermochimica"].getValue() == 0)
         return selected_elements;
 
-    std::ifstream json_file("./input_thermochemistry.json");
-    if (!json_file)
-    {
-        std::cerr << "Error: Cannot open thermochemistry input file: ./input_thermochemistry.json" << std::endl;
-        return selected_elements;
-    }
+    const std::vector<ThermochemistryManifestEntry> manifest =
+        loadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
+    const std::set<std::string> manifest_elements = getThermochemistryElements(
+        manifest,
+        "fission_products",
+        "at grain boundary"
+    );
 
-    Json::Value root;
-    json_file >> root;
-
-    const Json::Value& elements = root["Settings"]["fission_products"]["elements"];
-    for (const auto& name : elements.getMemberNames())
+    for (const auto& name : manifest_elements)
     {
         if (name != "O" && name != "U")
             selected_elements.insert(name);

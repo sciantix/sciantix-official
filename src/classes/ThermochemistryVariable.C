@@ -15,6 +15,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "ThermochemistryVariable.h"
+#include "Constants.h"
+
+#include <map>
 
 void ThermochemistryVariable::rescaleInitialValue(const double factor)
 {
@@ -114,4 +117,35 @@ void ThermochemistryVariable::setOutput(bool io)
 bool ThermochemistryVariable::getOutput()
 {
     return to_output;
+}
+
+double ThermochemistryVariable::getMolarMass()
+{
+    static const std::map<std::string, double> atomic_masses = {
+        {"Cs", 132.90545196},
+        {"Cr", 51.9961},
+        {"I", 126.90447},
+        {"Mo", 95.95},
+        {"O", 15.999},
+        {"Te", 127.60},
+        {"U", 238.02891},
+        {"Va", 0.0}
+    };
+
+    double molar_mass = 0.0;
+
+    for (const auto& term : stoichiometry)
+    {
+        const auto atomic_mass = atomic_masses.find(term.first);
+        if (atomic_mass == atomic_masses.end())
+        {
+            std::cerr << "Error: Atomic mass not available for element " << term.first
+                      << " in thermochemistry variable " << name << std::endl;
+            exit(1);
+        }
+
+        molar_mass += term.second * atomic_mass->second;
+    }
+
+    return molar_mass;
 }

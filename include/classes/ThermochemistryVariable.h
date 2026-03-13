@@ -19,8 +19,6 @@
 
 #include "Variable.h"
 #include <map>  
-#include <json/json.h>
-#include <fstream>
 
 
 /**
@@ -36,6 +34,7 @@
 class ThermochemistryVariable : virtual public Variable
 {
 protected:
+    int index;
     std::string uom;
     double final_value;
     double initial_value;
@@ -46,8 +45,9 @@ protected:
 
 public:
 
-    ThermochemistryVariable(std::string name, std::string uom, double initial_value, double final_value, std::string  phase, std::string  location, std::map <std::string, int> stoichiometry, bool output)
+    ThermochemistryVariable(int index, std::string name, std::string uom, double initial_value, double final_value, std::string  phase, std::string  location, std::map <std::string, int> stoichiometry, bool output)
     {
+        this->index = index;
         this->name = name;
         this->uom = uom;
         this->initial_value = initial_value;
@@ -56,6 +56,16 @@ public:
         this->location = location;
         this->stoichiometry = stoichiometry;
         this->to_output = output;
+    }
+
+    void setIndex(int i)
+    {
+        index = i;
+    }
+
+    int getIndex()
+    {
+        return index;
     }
 
     /**
@@ -123,6 +133,12 @@ public:
      * @return The stoichiometry as a map.
      */
     std::map <std::string, int> getStoichiometry();
+
+    /**
+     * @brief Calculates the molar mass from the compound stoichiometry.
+     * @return The molar mass in g/mol.
+     */
+    double getMolarMass();
 
     /**
      * @brief Sets the final value equal to the initial value, making the variable constant over time.

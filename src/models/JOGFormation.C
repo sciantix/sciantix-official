@@ -25,8 +25,7 @@ void Simulation::JOGFormation()
 
     const double C_Cs2MoO4_s1 = thermochemistry_variable["Cs2MOO4_s1 (condensed, at grain boundary)"].getFinalValue();
     const double C_Cs2MoO4_s2 = thermochemistry_variable["Cs2MOO4_s2 (condensed, at grain boundary)"].getFinalValue();
-
-    const double MM_Cs2MoO4 = 425.76; // g/mol, computed from stoichiometry.
+    const double MM_Cs2MoO4 = thermochemistry_variable["Cs2MOO4_s1 (condensed, at grain boundary)"].getMolarMass();
     const double fuel_radius = 5.42e-3; // m, pellet radius assumption used in the JOG estimate.
 
     // Data on Cs2MoO4 from Wallez et al., Journal of Solid State Chemistry 215 (2014) 225-230.
