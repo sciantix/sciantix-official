@@ -424,13 +424,21 @@ void Simulation::StoichiometryDeviation()
         )
     );
 
+    sciantix_variable["Fuel oxygen partial pressure - Blackburn"].setFinalValue(
+        sciantix_variable["Fuel oxygen partial pressure"].getFinalValue()
+    );
+
     // Fuel oxygen potential
     if (sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() == 0.0)
         sciantix_variable["Fuel oxygen potential"].setFinalValue(0.0);
     else
         sciantix_variable["Fuel oxygen potential"].setFinalValue(
             8.314 * 1.0e-3 * history_variable["Temperature"].getFinalValue() *
-            log(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() / 0.1013));
+            log(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() / reference_oxygen_pressure));
+
+    sciantix_variable["Fuel oxygen potential - Blackburn"].setFinalValue(
+        sciantix_variable["Fuel oxygen potential"].getFinalValue()
+    );
 }
 
 double BlackburnThermochemicalModel(double                           stoichiometry_deviation,

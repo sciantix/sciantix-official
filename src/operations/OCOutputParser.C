@@ -189,12 +189,43 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
 
         if (in_components_section)
         {
+            if (stripped.rfind("Component name", 0) == 0)
+                continue;
+
             if (stripped.find("Some data for phases") != std::string::npos || stripped.empty())
             {
                 in_components_section = false;
                 in_phases_section = true;
                 continue;
             }
+
+            const std::vector<std::string> parts = split(stripped);
+            if (parts.size() < 5)
+                continue;
+
+            if (!isNumericToken(parts[1]) || !isNumericToken(parts[2]) || !isNumericToken(parts[3]) ||
+                !isNumericToken(parts[4]))
+                continue;
+
+            OCComponentData& component = data.components[normalizeElementCase(parts[0], valid_elements)];
+            component.moles = safeFloat(parts[1]);
+            component.mole_fraction = safeFloat(parts[2]);
+            component.chemical_potential_over_rt = safeFloat(parts[3]);
+            component.activity = safeFloat(parts[4]);
+
+            if (parts.size() > 5)
+            {
+                std::ostringstream reference_state;
+                for (size_t token_index = 5; token_index < parts.size(); ++token_index)
+                {
+                    if (token_index > 5)
+                        reference_state << " ";
+                    reference_state << parts[token_index];
+                }
+                component.reference_state = reference_state.str();
+            }
+
+            continue;
         }
 
         if (!in_phases_section)

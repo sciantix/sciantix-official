@@ -20,12 +20,18 @@ void Simulation::JOGFormation()
 {
     if (input_variable["iThermochimica"].getValue() == 0) return;
 
+    const std::string cs2moo4_s1_name = "CS2MOO4_S1 (condensed, at grain boundary)";
+    const std::string cs2moo4_s2_name = "CS2MOO4_S2 (condensed, at grain boundary)";
+    if (!thermochemistry_variable.isElementPresent(cs2moo4_s1_name) ||
+        !thermochemistry_variable.isElementPresent(cs2moo4_s2_name))
+        return;
+
     const double temperature = history_variable["Temperature"].getFinalValue();
     const double temperature_celsius = temperature - 273.15;
 
-    const double C_Cs2MoO4_s1 = thermochemistry_variable["CS2MOO4_S1 (condensed, at grain boundary)"].getFinalValue();
-    const double C_Cs2MoO4_s2 = thermochemistry_variable["CS2MOO4_S2 (condensed, at grain boundary)"].getFinalValue();
-    const double MM_Cs2MoO4 = thermochemistry_variable["CS2MOO4_S1 (condensed, at grain boundary)"].getMolarMass();
+    const double C_Cs2MoO4_s1 = thermochemistry_variable[cs2moo4_s1_name].getFinalValue();
+    const double C_Cs2MoO4_s2 = thermochemistry_variable[cs2moo4_s2_name].getFinalValue();
+    const double MM_Cs2MoO4 = thermochemistry_variable[cs2moo4_s1_name].getMolarMass();
     const double fuel_radius = 5.42e-3; // m, pellet radius assumption used in the JOG estimate.
 
     // Data on Cs2MoO4 from Wallez et al., Journal of Solid State Chemistry 215 (2014) 225-230.

@@ -38,5 +38,6 @@ const double molar_mass_Oxygen     = 15.999;         // g/mol
 const double molar_mass_Chromium   = 51.9961;        // g/mol
 const double calorie               = 4.186;          // J
 const double gas_constant          = 8.3143;         // J/(mol K)
+const double reference_oxygen_pressure = 0.1013;     // MPa
 
 #endif
