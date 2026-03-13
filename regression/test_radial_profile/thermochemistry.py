@@ -22,7 +22,6 @@ import shutil      # For copying and moving files
 import os          # For file and folder handling
 import glob        # For finding files using patterns
 import re          # Regular expressions for parsing column names
-import json        # Reading/writing JSON configuration files
 
 import pandas as pd
 import numpy as np
@@ -302,17 +301,30 @@ annealing_time = 53400.099  # Annealing time [h]
 outer_T = temperature_K[0] * temperaturecoefficient[-1]
 outer_P = pressure_MPa[0] * pressurecoefficient[-1] * 1e6 * (-1)
 
-with open("input_thermochemistry.json", "r") as f_thermo:
-    thermo_data = json.load(f_thermo)
+settings_path = "input_thermochemistry_settings.txt"
 
-thermo_data["Settings"]["fission_products"]["gap settings"] = True
-thermo_data["Settings"]["fission_products"]["gap temperature"] = outer_T
-thermo_data["Settings"]["fission_products"]["gap pressure"] = outer_P
-thermo_data["Settings"]["KC"] = KC
-thermo_data["Settings"]["KC time"] = annealing_time
+with open(settings_path, "r") as f_thermo:
+    settings_lines = f_thermo.readlines()
 
-with open("input_thermochemistry.json", "w") as f_thermo:
-    json.dump(thermo_data, f_thermo, indent=2)
+updated_settings_lines = []
+for line in settings_lines:
+    stripped = line.strip()
+
+    if stripped.startswith("fission_products.gap_settings"):
+        updated_settings_lines.append("fission_products.gap_settings = true\n")
+    elif stripped.startswith("fission_products.gap_temperature"):
+        updated_settings_lines.append(f"fission_products.gap_temperature = {outer_T}\n")
+    elif stripped.startswith("fission_products.gap_pressure"):
+        updated_settings_lines.append(f"fission_products.gap_pressure = {outer_P}\n")
+    elif stripped.startswith("kc_time"):
+        updated_settings_lines.append(f"kc_time = {annealing_time}\n")
+    elif stripped.startswith("kc"):
+        updated_settings_lines.append(f"kc = {'true' if KC else 'false'}\n")
+    else:
+        updated_settings_lines.append(line)
+
+with open(settings_path, "w") as f_thermo:
+    f_thermo.writelines(updated_settings_lines)
 
 # ============================ INPUT FILE GENERATION & SIMULATION LOOP ============================
 
