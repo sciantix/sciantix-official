@@ -194,7 +194,7 @@ class Simulation
      * @author E. Cappellari
      * 
      */
-    void CallThermochemistryModule(double pressure, double temperature, std::string location, SciantixArray<SciantixVariable> &sciantix_variable, double oxygenfraction);
+    void CallThermochemistryModule(std::string location, SciantixArray<SciantixVariable> &sciantix_variable);
 
     /**
      * @brief Grain growth based on specific model parameters affecting the system's materials.
