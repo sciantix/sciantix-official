@@ -137,3 +137,49 @@ std::set<std::string> getThermochemistryElements(const std::vector<Thermochemist
 
     return elements;
 }
+
+std::vector<ThermochemistryManifestEntry> filterThermochemistryManifest(
+    const std::vector<ThermochemistryManifestEntry>& manifest,
+    const ThermochemistrySettings&                   settings
+)
+{
+    std::set<std::string> allowed_fp_elements(settings.fission_products.elements.begin(),
+                                              settings.fission_products.elements.end());
+    std::set<std::string> allowed_fp_locations(settings.fission_products.locations.begin(),
+                                               settings.fission_products.locations.end());
+    std::set<std::string> allowed_matrix_elements(settings.matrix.elements.begin(), settings.matrix.elements.end());
+    std::set<std::string> allowed_matrix_locations(settings.matrix.locations.begin(), settings.matrix.locations.end());
+
+    std::vector<ThermochemistryManifestEntry> filtered_manifest;
+
+    for (const auto& entry : manifest)
+    {
+        const std::set<std::string>& allowed_elements =
+            (entry.category == "matrix") ? allowed_matrix_elements : allowed_fp_elements;
+        const std::set<std::string>& allowed_locations =
+            (entry.category == "matrix") ? allowed_matrix_locations : allowed_fp_locations;
+
+        if (!allowed_locations.empty() && allowed_locations.count(entry.location) == 0)
+            continue;
+
+        bool keep_entry = true;
+        for (const auto& stoichiometric_term : entry.stoichiometry)
+        {
+            if (allowed_elements.count(stoichiometric_term.first) == 0)
+            {
+                keep_entry = false;
+                break;
+            }
+        }
+
+        if (!keep_entry)
+            continue;
+
+        filtered_manifest.push_back(entry);
+    }
+
+    for (size_t i = 0; i < filtered_manifest.size(); ++i)
+        filtered_manifest[i].index = static_cast<int>(i);
+
+    return filtered_manifest;
+}

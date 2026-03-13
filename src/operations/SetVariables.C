@@ -88,8 +88,12 @@ void Simulation::setVariables(
     std::vector<ThermochemistryVariable> values_th;
     if (toOutputThermochimica)
     {
-        const std::vector<ThermochemistryManifestEntry> manifest =
-            loadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
+        const ThermochemistrySettings settings =
+            loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt");
+        const std::vector<ThermochemistryManifestEntry> manifest = filterThermochemistryManifest(
+            loadThermochemistryManifest(TestPath + "input_thermochemistry.txt"),
+            settings
+        );
         values_th = initializeThermochemistryVariable(
                 manifest,
                 Sciantix_thermochemistry
