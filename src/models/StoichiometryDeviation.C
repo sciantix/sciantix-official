@@ -358,6 +358,19 @@ void Simulation::StoichiometryDeviation()
             break;
         }
 
+        case 8:
+        {
+            reference += "Under development";
+
+            parameter.push_back(0.0);
+            parameter.push_back(0.0);
+
+            model_.setParameter(parameter);
+            model_.setRef(reference);
+
+            break;
+        }
+
         default:
             ErrorMessages::Switch(
                 __FILE__, "iStoichiometryDeviation", int(input_variable["iStoichiometryDeviation"].getValue()));
@@ -396,7 +409,7 @@ void Simulation::StoichiometryDeviation()
         );
     }
 
-    if (input_variable["iStoichiometryDeviation"].getValue() == 7)
+    if (input_variable["iStoichiometryDeviation"].getValue() >= 7)
     {
         sciantix_variable["Stoichiometry deviation"].setFinalValue(
             solver.Integrator(
@@ -434,7 +447,8 @@ void Simulation::StoichiometryDeviation()
     else
         sciantix_variable["Fuel oxygen potential"].setFinalValue(
             8.314 * 1.0e-3 * history_variable["Temperature"].getFinalValue() *
-            log(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() / reference_oxygen_pressure));
+            log(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() / reference_oxygen_pressure)
+        );
 
     sciantix_variable["Fuel oxygen potential - Blackburn"].setFinalValue(
         sciantix_variable["Fuel oxygen potential"].getFinalValue()
