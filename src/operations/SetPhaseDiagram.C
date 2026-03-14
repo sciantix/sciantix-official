@@ -161,31 +161,6 @@ void releaseGrainBoundarySpecies(SciantixArray<System>& sciantix_system,
     }
 }
 
-double computeCalphadOxygenPartialPressure(const OCOutputData& output_data, double total_pressure_pa)
-{
-    const auto oxygen_component = output_data.components.find("O");
-    if (oxygen_component != output_data.components.end() && oxygen_component->second.activity > 0.0)
-        return reference_oxygen_pressure * std::pow(oxygen_component->second.activity, 2.0);
-
-    const auto gas_phase = output_data.solution_phases.find("gas");
-    if (gas_phase == output_data.solution_phases.end() || gas_phase->second.moles <= 0.0)
-        return 0.0;
-
-    const auto oxygen_species = gas_phase->second.species.find("O2");
-    if (oxygen_species == gas_phase->second.species.end() || oxygen_species->second.moles <= 0.0)
-        return 0.0;
-
-    return oxygen_species->second.moles / gas_phase->second.moles * total_pressure_pa * 1.0e-6;
-}
-
-double oxygenPotentialFromPressure(double oxygen_partial_pressure, double temperature)
-{
-    if (oxygen_partial_pressure <= 0.0)
-        return 0.0;
-
-    return gas_constant * 1.0e-3 * temperature * std::log(oxygen_partial_pressure / reference_oxygen_pressure);
-}
-
 bool writeOpenCalphadInput(const std::string& input_file_path,
                            const std::string& data_path,
                            double             pressure,
@@ -200,6 +175,8 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
         std::cerr << "Error: Cannot create input file: " << input_file_path << std::endl;
         return false;
     }
+
+    const double reference_oxygen_pressure_pa = reference_oxygen_pressure_bar * 1.0e6;
 
     input_file << "@$ Initialize variables:\n";
     input_file << "r t " << data_path << "\n";
@@ -222,8 +199,10 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
         {
             if (element_name == "O")
             {
-                // For O2, activity is proportional to sqrt(pO2/p0)
-                const double activity = sqrt(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() / pressure);
+                // With O referenced to O2 gas at the standard pressure, AC(O)^2 = pO2 / pO2_ref.
+                const double oxygen_partial_pressure =
+                    std::max(0.0, sciantix_variable["Fuel oxygen partial pressure"].getFinalValue());
+                const double activity = sqrt(oxygen_partial_pressure / reference_oxygen_pressure_bar);
                 input_file << "ac(" << element_name << ")=" << activity << " ";
                 has_conditions = true;
                 continue;
@@ -288,9 +267,15 @@ void updateMatrixFromOutput(const OCOutputData&                output_data,
                             SciantixArray<SciantixVariable>&   sciantix_variable,
                             SciantixArray<Matrix>&             matrices)
 {
-    const double calphad_oxygen_partial_pressure = computeCalphadOxygenPartialPressure(output_data, pressure);
-    const double calphad_oxygen_potential =
-        oxygenPotentialFromPressure(calphad_oxygen_partial_pressure, temperature);
+    const auto oxygen_component = output_data.components.find("O");
+    double calphad_oxygen_potential(0.0), calphad_oxygen_partial_pressure(0.0);
+    if (oxygen_component != output_data.components.end())
+    {
+        calphad_oxygen_potential =
+            2.0 * oxygen_component->second.chemical_potential_over_rt * gas_constant * temperature * 1.0e-3;
+        calphad_oxygen_partial_pressure =
+            reference_oxygen_pressure_bar * oxygen_component->second.activity * oxygen_component->second.activity;
+    }
 
     sciantix_variable["Fuel oxygen partial pressure - CALPHAD"].setFinalValue(calphad_oxygen_partial_pressure);
     sciantix_variable["Fuel oxygen potential - CALPHAD"].setFinalValue(calphad_oxygen_potential);
@@ -389,6 +374,7 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     }
 
     const std::string directory_path = "./../../../opencalphad/";
+    std::cout <<directory_path <<std::endl;
     const std::string input_file_path = directory_path + "inputs/thermoin.OCM";
     const std::string output_file_path = directory_path + "outputs/thermoout.DAT";
     const std::string data_path = "./../data/" + stripTdbExtension(location_settings.database);
