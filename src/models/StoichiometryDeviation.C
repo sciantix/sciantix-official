@@ -360,10 +360,14 @@ void Simulation::StoichiometryDeviation()
 
         case 8:
         {
-            reference += "Under development";
+            reference += "Under development, E.Cappellari: OC - po2 verification";
 
-            parameter.push_back(0.0);
-            parameter.push_back(0.0);
+            // Target trend: x = x0 + 0.001 * t[h], from -0.1 at 0 h to +0.2 at 300 h.
+            // The generic integrator uses a rate times an increment, and the time step here is in seconds.
+            parameter.push_back(physics_variable["Time step"].getFinalValue());
+            parameter.push_back(0.001 / 3600.0);
+
+            // linear increase with time to verify the correct po2 at different O/M
 
             model_.setParameter(parameter);
             model_.setRef(reference);
@@ -383,12 +387,11 @@ void Simulation::StoichiometryDeviation()
     if (!input_variable.isElementPresent("iStoichiometryDeviation"))
         return;
 
-    if (history_variable["Temperature"].getFinalValue() < 1000.0)
+    if (history_variable["Temperature"].getFinalValue() < 1000.0 && input_variable["iStoichiometryDeviation"].getValue() < 7)
     {
         sciantix_variable["Stoichiometry deviation"].setConstant();
         sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(0.0);
     }
-
     else if (input_variable["iStoichiometryDeviation"].getValue() < 5)
     {
         sciantix_variable["Stoichiometry deviation"].setFinalValue(
@@ -397,7 +400,6 @@ void Simulation::StoichiometryDeviation()
                          model["Stoichiometry deviation"].getParameter().at(1),
                          physics_variable["Time step"].getFinalValue()));
     }
-
     else if (input_variable["iStoichiometryDeviation"].getValue() > 4 && input_variable["iStoichiometryDeviation"].getValue() < 7)
     {
         sciantix_variable["Stoichiometry deviation"].setFinalValue(
@@ -408,8 +410,7 @@ void Simulation::StoichiometryDeviation()
             )
         );
     }
-
-    if (input_variable["iStoichiometryDeviation"].getValue() >= 7)
+    else if (input_variable["iStoichiometryDeviation"].getValue() >= 7)
     {
         sciantix_variable["Stoichiometry deviation"].setFinalValue(
             solver.Integrator(
@@ -429,6 +430,8 @@ void Simulation::StoichiometryDeviation()
 
     if (sciantix_variable["Stoichiometry deviation"].getFinalValue() == 0) return;
 
+    // EC - this has not the dimensionality of a pressure if not multiplied to the reference one
+    // it is not coherent with the oxygen potential also
     sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
         BlackburnThermochemicalModel(
             sciantix_variable["Stoichiometry deviation"].getFinalValue(),
@@ -437,22 +440,42 @@ void Simulation::StoichiometryDeviation()
         )
     );
 
-    sciantix_variable["Fuel oxygen partial pressure - Blackburn"].setFinalValue(
-        sciantix_variable["Fuel oxygen partial pressure"].getFinalValue()
-    );
-
     // Fuel oxygen potential
     if (sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() == 0.0)
         sciantix_variable["Fuel oxygen potential"].setFinalValue(0.0);
     else
         sciantix_variable["Fuel oxygen potential"].setFinalValue(
             8.314 * 1.0e-3 * history_variable["Temperature"].getFinalValue() *
-            log(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() / reference_oxygen_pressure)
+            log(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() / reference_oxygen_pressure_atm)
         );
 
-    sciantix_variable["Fuel oxygen potential - Blackburn"].setFinalValue(
-        sciantix_variable["Fuel oxygen potential"].getFinalValue()
-    );
+    // EC - correct
+    if (input_variable["iStoichiometryDeviation"].getValue() >= 7)
+    {
+        sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
+            reference_oxygen_pressure_bar *
+            BlackburnThermochemicalModel(
+                sciantix_variable["Stoichiometry deviation"].getFinalValue(),
+                history_variable["Temperature"].getFinalValue(),
+                sciantix_variable
+            )
+        );
+        sciantix_variable["Fuel oxygen partial pressure - Blackburn"].setFinalValue(
+                sciantix_variable["Fuel oxygen partial pressure"].getFinalValue()
+        );
+
+        if (sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() == 0.0)
+            sciantix_variable["Fuel oxygen potential"].setFinalValue(0.0);
+        else
+            sciantix_variable["Fuel oxygen potential"].setFinalValue(
+                8.314 * 1.0e-3 * history_variable["Temperature"].getFinalValue() *
+                log(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() / reference_oxygen_pressure_bar)
+            );
+
+        sciantix_variable["Fuel oxygen potential - Blackburn"].setFinalValue(
+            sciantix_variable["Fuel oxygen potential"].getFinalValue()
+        );
+    }
 }
 
 double BlackburnThermochemicalModel(double                           stoichiometry_deviation,
