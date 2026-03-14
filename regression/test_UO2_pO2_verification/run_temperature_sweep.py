@@ -220,8 +220,8 @@ def main() -> None:
 
     for temperature_k in TEMPERATURES_K:
         case_dir = SCRIPT_DIR / f"{temperature_k}K"
-        # prepare_case(case_dir, temperature_k, input_files)
-        # run_case(case_dir)
+        prepare_case(case_dir, temperature_k, input_files)
+        run_case(case_dir)
         frames.append(collect_case(case_dir))
 
     combined = pd.concat(frames, ignore_index=True)

@@ -180,6 +180,8 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
 
     input_file << "@$ Initialize variables:\n";
     input_file << "r t " << data_path << "\n";
+    input_file << "all\n";
+    input_file << "set ref o gas * " << reference_oxygen_pressure_pa << "\n";
     input_file << "\nset c t=" << temperature << " p=" << pressure << " ";
 
     bool has_conditions = false;
