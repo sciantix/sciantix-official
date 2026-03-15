@@ -161,11 +161,109 @@ def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
     plt.close(fig)
 
 
+def interpolate_sciantix_to_oc_points(
+    sciantix_frame: pd.DataFrame,
+    oc_frame: pd.DataFrame,
+) -> pd.DataFrame:
+    """Interpolate SCIANTIX final pO2 onto the OpenCalphad O/U grid."""
+    rows: list[pd.DataFrame] = []
+
+    for temperature, oc_group in oc_frame.groupby("Temperature (K)", sort=True):
+        sci_group = sciantix_frame[
+            sciantix_frame["Temperature (K)"] == temperature
+        ].sort_values("O/U ratio (/)")
+        sci_group = sci_group[sci_group["Fuel oxygen partial pressure (MPa)"] > 0.0].copy()
+        if len(sci_group) < 2:
+            continue
+
+        oc_group = oc_group.sort_values("O/U ratio (/)")
+        oc_group = (
+            oc_group.groupby(["Temperature (K)", "O/U ratio (/)"], as_index=False)["OC pO2 (MPa)"]
+            .mean()
+            .sort_values("O/U ratio (/)")
+        )
+        oc_group = oc_group[oc_group["OC pO2 (MPa)"] > 0.0].copy()
+        if oc_group.empty:
+            continue
+
+        sci_x = sci_group["O/U ratio (/)"].to_numpy()
+        sci_log_p = np.log10(sci_group["Fuel oxygen partial pressure (MPa)"].to_numpy() / REFERENCE_PRESSURE_MPA)
+
+        within_range = oc_group["O/U ratio (/)"].between(sci_x.min(), sci_x.max())
+        oc_valid = oc_group.loc[within_range].copy()
+        if oc_valid.empty:
+            continue
+
+        oc_x = oc_valid["O/U ratio (/)"].to_numpy()
+        interpolated_log_p = np.interp(oc_x, sci_x, sci_log_p)
+        oc_valid["Interpolated SCIANTIX log10(pO2/p_ref)"] = interpolated_log_p
+        oc_valid["Interpolated SCIANTIX pO2 (MPa)"] = REFERENCE_PRESSURE_MPA * (10.0 ** interpolated_log_p)
+        oc_valid["OpenCalphad log10(pO2/p_ref)"] = np.log10(oc_valid["OC pO2 (MPa)"] / REFERENCE_PRESSURE_MPA)
+        oc_valid["pO2 error (%)"] = (
+            (oc_valid["Interpolated SCIANTIX pO2 (MPa)"] - oc_valid["OC pO2 (MPa)"])
+            / oc_valid["OC pO2 (MPa)"]
+            * 100.0
+        )
+        rows.append(oc_valid)
+
+    if not rows:
+        raise RuntimeError("No overlapping temperature/O-U ranges found for SCIANTIX interpolation.")
+
+    aligned = pd.concat(rows, ignore_index=True)
+    return aligned.sort_values(["Temperature (K)", "O/U ratio (/)"]).reset_index(drop=True)
+
+
+def plot_partial_pressure_error(frame: pd.DataFrame) -> None:
+    """Plot the signed SCIANTIX-versus-OpenCalphad pO2 error after interpolation."""
+    temperatures = sorted(frame["Temperature (K)"].dropna().unique())
+    cmap = plt.get_cmap("turbo", len(temperatures))
+    colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
+
+    fig, ax = plt.subplots(figsize=(12, 8))
+    for temperature, group in frame.groupby("Temperature (K)", sort=True):
+        group = group.sort_values("O/U ratio (/)")
+        ax.plot(
+            group["O/U ratio (/)"],
+            group["pO2 error (%)"],
+            color=colors[temperature],
+            linewidth=1.5,
+            marker="o",
+            markersize=3.0,
+        )
+
+    ax.axhline(0.0, color="black", linestyle="--", linewidth=1.0)
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel(r"$p_{O_2}$ error (%)")
+    ax.set_xlim([1.90, 2.20])
+    ax.set_ylim([-10, 10])
+    ax.set_title("Interpolated SCIANTIX + OpenCalphad error vs standalone OpenCalphad")
+    ax.grid(True, alpha=0.3)
+    temperature_handles = [
+        Line2D([0], [0], color=colors[temp], lw=2, label=f"{int(temp)} K")
+        for temp in temperatures
+    ]
+    ax.legend(handles=temperature_handles, loc="best", ncol=2, fontsize=8, title="Temperature")
+    fig.tight_layout()
+    fig.savefig(PO2_ERROR_PLOT_PATH, dpi=300)
+    plt.close(fig)
+
+
 def main() -> None:
     """Generate the SCIANTIX versus OpenCalphad partial-pressure comparison plots."""
     sciantix_frame = load_sciantix_data()
     oc_frame = load_oc_csv_data()
     plot_partial_pressure(sciantix_frame, oc_frame)
+    aligned_frame = interpolate_sciantix_to_oc_points(sciantix_frame, oc_frame)
+    aligned_frame.to_csv(MERGED_OUTPUT_PATH, sep="\t", index=False)
+    summary = aligned_frame.groupby("Temperature (K)", as_index=False).agg(
+        count=("pO2 error (%)", "count"),
+        mean=("pO2 error (%)", "mean"),
+        median=("pO2 error (%)", "median"),
+        min=("pO2 error (%)", "min"),
+        max=("pO2 error (%)", "max"),
+    )
+    summary.to_csv(SUMMARY_OUTPUT_PATH, sep="\t", index=False)
+    plot_partial_pressure_error(aligned_frame)
 
 
 if __name__ == "__main__":
