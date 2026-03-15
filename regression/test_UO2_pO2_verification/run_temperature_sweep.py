@@ -111,7 +111,7 @@ def collect_case(case_dir: Path) -> pd.DataFrame:
 
 def style_maps():
     """Create consistent color and line encodings across all plots."""
-    cmap = plt.get_cmap("viridis", len(TEMPERATURES_K))
+    cmap = plt.get_cmap("turbo", len(TEMPERATURES_K))
     colors = {temperature_k: cmap(index) for index, temperature_k in enumerate(TEMPERATURES_K)}
     linestyles = {
         "Final": "-",

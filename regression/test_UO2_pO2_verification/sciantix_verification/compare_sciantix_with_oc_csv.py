@@ -2,6 +2,16 @@
 
 from __future__ import annotations
 
+"""Compare SCIANTIX sweep results against standalone OpenCalphad CSV exports.
+
+The script loads the concatenated SCIANTIX sweep produced in the parent folder,
+parses OpenCalphad CSV files named ``test_<temperature>K_<region>.csv``, and
+creates overlay plots of oxygen partial pressure as a function of O/U ratio.
+
+Only plotting is performed at the moment; the output/summary path constants are
+kept because they may be useful for a future merged-data export.
+"""
+
 import math
 import os
 import re
@@ -37,6 +47,7 @@ POTENTIAL_ERROR_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_potential_error_per
 
 
 def load_sciantix_data() -> pd.DataFrame:
+    """Load the parent-folder sweep summary and normalize key column types."""
     frame = pd.read_csv(SCIANTIX_SWEEP_PATH, sep="\t")
     frame = frame.loc[:, ~frame.columns.str.startswith("Unnamed:")].copy()
     frame["Temperature (K)"] = frame["Temperature (K)"].astype(float)
@@ -46,6 +57,7 @@ def load_sciantix_data() -> pd.DataFrame:
 
 
 def load_oc_csv_data() -> pd.DataFrame:
+    """Load all standalone OpenCalphad CSV files and derive thermochemical fields."""
     rows: list[pd.DataFrame] = []
 
     for path in sorted(SCRIPT_DIR.glob("test_*K_*.csv")):
@@ -71,26 +83,20 @@ def load_oc_csv_data() -> pd.DataFrame:
     frame["OC oxygen activity"] = frame["OC oxygen activity"].astype(float)
     frame = frame.sort_values(["Temperature (K)", "O/U ratio (/)", "Region"]).reset_index(drop=True)
 
-    frame["OC pO2 (MPa)"] = (frame["OC oxygen activity"] ** 2) * REFERENCE_PRESSURE_PA / 1.0e6
-    frame["OC oxygen potential (KJ/mol)"] = (
-        2.0
-        * GAS_CONSTANT
-        * frame["Temperature (K)"]
-        * frame["OC oxygen activity"].map(lambda value: math.log(value))
-        / 1000.0
-    )
+    # OpenCalphad provides oxygen activity; derive pO2 and oxygen potential from it.
+    frame["OC pO2 (MPa)"] = (frame["OC oxygen activity"] ** 2) * REFERENCE_PRESSURE_MPA
     return frame
 
 
 def add_legends(ax, temperatures: list[float], colors: dict[float, object]) -> None:
+    """Add separate legends for temperatures and data sources."""
     temperature_handles = [
         Line2D([0], [0], color=colors[temp], lw=2, label=f"{int(temp)} K")
         for temp in temperatures
     ]
     model_handles = [
-        Line2D([0], [0], color="black", lw=1.8, linestyle="-", marker="s", markersize=5, label="SCIANTIX Final"),
-        Line2D([0], [0], color="black", lw=1.8, linestyle=":", marker="^", markersize=5, label="SCIANTIX CALPHAD"),
-        Line2D([0], [0], color="black", marker="o", linestyle="None", markersize=6, label="OpenCalphad CSV"),
+        Line2D([0], [0], color="black", lw=1.5, linestyle="-",  marker="s", markersize=2 ,label="SCIANTIX + OpenCalphad"),
+        Line2D([0], [0], color="black", marker="o", linestyle="None", markersize=6, label="OpenCalphad alone"),
     ]
     first = ax.legend(handles=temperature_handles, loc="upper left", ncol=2, fontsize=8, title="Temperature")
     ax.add_artist(first)
@@ -98,6 +104,7 @@ def add_legends(ax, temperatures: list[float], colors: dict[float, object]) -> N
 
 
 def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
+    """Overlay SCIANTIX and OpenCalphad pO2 trends, with two y-axis styles."""
     styles = {
         "Fuel oxygen partial pressure (MPa)": ("-", "s"),
         "Fuel oxygen partial pressure - CALPHAD (MPa)": (":", "^"),
@@ -106,6 +113,7 @@ def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
     cmap = plt.get_cmap("turbo", len(temperatures))
     colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
 
+    # Duplicate the figure with the Gueneau-style y-range used in the report plots.
     fig, ax = plt.subplots(figsize=(12, 8))
     for temperature, group in frame1.groupby("Temperature (K)", sort=True):
         group = group.sort_values("O/U ratio (/)")
@@ -114,17 +122,16 @@ def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
             if valid.empty:
                 continue
             value = np.log10(valid[column] / REFERENCE_PRESSURE_MPA)
-            ax.plot(
-                valid["O/U ratio (/)"],
-                value,
-                color=colors[temperature],
-                linestyle=linestyle,
-                linewidth=1.5,
-                marker=marker,
-                markersize=4.0,
-                markerfacecolor="white",
-                markeredgewidth=0.9,
-            )
+            if column == "Fuel oxygen partial pressure (MPa)":
+                ax.plot(
+                    valid["O/U ratio (/)"],
+                    value,
+                    color=colors[temperature],
+                    linestyle=linestyle,
+                    linewidth=1.5,
+                    marker=marker,
+                    markersize=2
+                )
 
     for temperature, group in frame2.groupby("Temperature (K)", sort=True):
         group = group.sort_values("O/U ratio (/)")
@@ -142,66 +149,24 @@ def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
         )
 
     ax.set_xlabel("O/U ratio (-)")
-    ax.set_ylabel(r"$\log_{10}(p_{O_2} / p_{ref})$")
-    ax.set_title("SCIANTIX vs standalone OpenCalphad")
-    ax.grid(True, alpha=0.3)
-    add_legends(ax, temperatures, colors)
-    fig.tight_layout()
-    fig.savefig( SCRIPT_DIR / "sciantix_vs_oc_csv_pO2.png", dpi=300)
-    plt.close(fig)
-
-    # as Gueneau
-    fig, ax = plt.subplots(figsize=(12, 8))
-    for temperature, group in frame1.groupby("Temperature (K)", sort=True):
-        group = group.sort_values("O/U ratio (/)")
-        for column, (linestyle, marker) in styles.items():
-            valid = group[group[column] > 0.0]
-            if valid.empty:
-                continue
-            value = np.log10(valid[column] / REFERENCE_PRESSURE_MPA)
-            ax.plot(
-                valid["O/U ratio (/)"],
-                value,
-                color=colors[temperature],
-                linestyle=linestyle,
-                linewidth=1.5,
-                marker=marker,
-                markersize=4.0,
-                markerfacecolor="white",
-                markeredgewidth=0.9,
-            )
-
-    for temperature, group in frame2.groupby("Temperature (K)", sort=True):
-        group = group.sort_values("O/U ratio (/)")
-        valid = group[group["OC pO2 (MPa)"] > 0.0]
-        if valid.empty:
-            continue
-        value = np.log10(valid["OC pO2 (MPa)"] / REFERENCE_PRESSURE_MPA)
-        ax.plot(
-            valid["O/U ratio (/)"],
-            value,
-            color=colors[temperature],
-            marker="o",
-            linestyle="None",
-            markersize=6.0,
-        )
-
-    ax.set_xlabel("O/U ratio (-)")
-    ax.set_ylabel(r"$\log_{10}(p_{O_2} / p_{ref})$")
+    ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
+    ax.set_xlim([1.90, 2.20])
     ax.set_ylim([-22, -2])
-    ax.set_yticks(np.linspace(-22, -2, 11))
+    ax.set_yticks(range(-22, 0, 2))
     ax.set_title("SCIANTIX vs standalone OpenCalphad")
     ax.grid(True, alpha=0.3)
     add_legends(ax, temperatures, colors)
     fig.tight_layout()
-    fig.savefig( SCRIPT_DIR / "sciantix_vs_oc_csv_pO2_2.png", dpi=300)
+    fig.savefig(SCRIPT_DIR / "sciantix_vs_oc_csv_pO2.png", dpi=300)
     plt.close(fig)
 
 
 def main() -> None:
+    """Generate the SCIANTIX versus OpenCalphad partial-pressure comparison plots."""
     sciantix_frame = load_sciantix_data()
     oc_frame = load_oc_csv_data()
     plot_partial_pressure(sciantix_frame, oc_frame)
+
 
 if __name__ == "__main__":
     main()
