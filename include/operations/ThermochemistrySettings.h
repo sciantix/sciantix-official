@@ -17,6 +17,7 @@ struct ThermochemistryPhaseSettings
 
 struct ThermochemistrySettings
 {
+    std::string                  opencalphad_path      = "";
     bool                         kc                   = false;
     double                       kc_time              = 0.0;
     bool                         langmuir             = false;
