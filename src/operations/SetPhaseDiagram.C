@@ -516,8 +516,9 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     if (!solved)
     {
         std::cout << "Warning: all OpenCalphad attempts failed for location '" << location
-                  << "'. Returning to SCIANTIX with the previous valid state." << std::endl;
-        return;
+                  << "'. Continue in any case." << std::endl;
+        const std::vector<std::string> valid_elements(manifest_elements.begin(), manifest_elements.end());
+        output_data = parseOCOutputFile(output_file_path, valid_elements);
     }
 
     dumpParsedOcOutput(output_data);
