@@ -274,7 +274,7 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
         return false;
 
     input_file << "\n\n" << buildSolveCommandBlock(solve_mode, temperature, pressure);
-    input_file << "l /out=./../outputs/thermoout.DAT r 1\n\n";
+    input_file << "l /out=./OCoutput.DAT r 1\n\n";
     input_file << "fin";
     return true;
 }
@@ -467,12 +467,11 @@ void Simulation::CallThermochemistryModule(std::string                        lo
         return;
     }
 
-    const std::string directory_path = "./../../../opencalphad/";
-    std::cout <<directory_path <<std::endl;
-    const std::string input_file_path = directory_path + "inputs/thermoin.OCM";
-    const std::string output_file_path = directory_path + "outputs/thermoout.DAT";
-    const std::string data_path = "./../data/" + stripTdbExtension(location_settings.database);
-    const std::string executable = directory_path + "oc6P " + directory_path + "inputs/thermoin.OCM";
+    const std::string directory_path = settings.opencalphad_path;
+    const std::string input_file_path = TestPath + "OCinput.OCM";
+    const std::string output_file_path = TestPath + "OCoutput.DAT";
+    const std::string data_path = directory_path + "data/" + stripTdbExtension(location_settings.database);
+    const std::string executable = directory_path + "oc6P " + input_file_path;
 
     std::string raw_output;
     bool solved = false;

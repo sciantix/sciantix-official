@@ -83,7 +83,9 @@ ThermochemistrySettings loadThermochemistrySettings(const std::string& path)
         const std::string key   = trim(line.substr(0, separator));
         const std::string value = trim(line.substr(separator + 1));
 
-        if (key == "kc")
+        if (key == "opencalphad.path")
+            settings.opencalphad_path = value;
+        else if (key == "kc")
             settings.kc = parseBool(value);
         else if (key == "kc_time")
             settings.kc_time = std::stod(value);
