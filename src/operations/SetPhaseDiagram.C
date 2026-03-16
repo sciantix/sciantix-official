@@ -539,12 +539,18 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     if (isMatrixLocation(location))
     {
         updateMatrixFromOutput(output_data, pressure, temperature, sciantix_variable, matrices);
+        
+        remove(input_file_path.c_str());
+        remove(output_file_path.c_str());
         return;
     }
 
     if (isGrainBoundaryLocation(location))
     {
         updateGrainBoundaryFromOutput(output_data.solution_phases, manifest_elements, sciantix_variable);
+
+        remove(input_file_path.c_str());
+        remove(output_file_path.c_str());
         return;
     }
 

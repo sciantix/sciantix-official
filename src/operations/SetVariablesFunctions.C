@@ -425,7 +425,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("Oxygen content", "(mol/m3)", Sciantix_variables[162], Sciantix_variables[162],  toOutputThermochimica),
 
         SciantixVariable("Initial grain radius", "(mol)", Sciantix_variables[170], Sciantix_variables[170],  toOutputThermochimica),
-        SciantixVariable("JOG thickness", "(um)", 0.0, 0.0, toOutputThermochimica)};
+        SciantixVariable("JOG", "(/)", 0.0, 0.0, toOutputThermochimica)};
 
     return init_sciantix_variable;
 }
