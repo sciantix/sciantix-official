@@ -12,7 +12,7 @@ fission_products.gap_settings = false
 fission_products.gap_temperature = 600
 fission_products.gap_pressure = 1000000
 
-matrix.module = NO
+matrix.module = OPENCALPHAD
 matrix.database = OU
 matrix.elements = U, O
 matrix.locations = matrix

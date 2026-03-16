@@ -251,7 +251,9 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
                 const double oxygen_partial_pressure =
                     std::max(0.0, sciantix_variable["Fuel oxygen partial pressure"].getFinalValue());
                 const double activity = sqrt(oxygen_partial_pressure / reference_oxygen_pressure_bar);
-                input_file << "ac(" << element_name << ")=" << activity << " ";
+                const double oxygen_content = sciantix_variable["Oxygen content"].getFinalValue();
+
+                input_file << "n(" << element_name << ")=" << activity * oxygen_content << " ";
                 has_conditions = true;
                 continue;
             }
