@@ -32,8 +32,6 @@ void Simulation::JOGFormation()
     const double C_Cs2MoO4_s1 = thermochemistry_variable[cs2moo4_s1_name].getFinalValue();
     const double C_Cs2MoO4_s2 = thermochemistry_variable[cs2moo4_s2_name].getFinalValue();
     const double MM_Cs2MoO4 = thermochemistry_variable[cs2moo4_s1_name].getMolarMass();
-    const double fuel_radius = 5.42e-3; // m, pellet radius assumption used in the JOG estimate.
-
     // Data on Cs2MoO4 from Wallez et al., Journal of Solid State Chemistry 215 (2014) 225-230.
 
     // Reference unit-cell parameters (to be checked) are kept explicit here so the intermediate values can be checked.
@@ -58,10 +56,10 @@ void Simulation::JOGFormation()
     const double theoretical_density_o = (MM_Cs2MoO4 / avogadro_number) * (Z_o / V_cell_o); // g/m3
     const double theoretical_density_h = (MM_Cs2MoO4 / avogadro_number) * (Z_h / V_cell_h); // g/m3
 
-    const double JOG_thickness_s1 = C_Cs2MoO4_s1 * fuel_radius * MM_Cs2MoO4 / (2.0 * theoretical_density_o);
-    const double JOG_thickness_s2 = C_Cs2MoO4_s2 * fuel_radius * MM_Cs2MoO4 / (2.0 * theoretical_density_h);
+    const double JOG_thickness_s1 = C_Cs2MoO4_s1 * MM_Cs2MoO4 / theoretical_density_o;
+    const double JOG_thickness_s2 = C_Cs2MoO4_s2 * MM_Cs2MoO4 / theoretical_density_h;
     const double JOG_thickness = JOG_thickness_s1 + JOG_thickness_s2;
-    sciantix_variable["JOG thickness"].setFinalValue(JOG_thickness*1e6);
+    sciantix_variable["JOG"].setFinalValue(JOG_thickness*1e6);
 
     std::cout << std::scientific << std::setprecision(8);
     std::cout << "JOGFormation variables:" << std::endl;
@@ -69,7 +67,6 @@ void Simulation::JOGFormation()
     std::cout << "  Temperature [K] = " << temperature << std::endl;
     std::cout << "  Temperature [C] = " << temperature_celsius << std::endl;
     std::cout << "  Grain radius [m] = " << sciantix_variable["Grain radius"].getFinalValue() << std::endl;
-    std::cout << "  Fuel radius assumption [m] = " << fuel_radius << std::endl;
     std::cout << "  Cs2MoO4_s1 concentration [mol/m3] = " << C_Cs2MoO4_s1 << std::endl;
     std::cout << "  Cs2MoO4_s2 concentration [mol/m3] = " << C_Cs2MoO4_s2 << std::endl;
     std::cout << "  Molar mass Cs2MoO4 [g/mol] = " << MM_Cs2MoO4 << std::endl;
@@ -85,7 +82,7 @@ void Simulation::JOGFormation()
     std::cout << "  Hexagonal cell volume [m3] = " << V_cell_h << std::endl;
     std::cout << "  Orthorhombic theoretical density [g/m3] = " << theoretical_density_o << std::endl;
     std::cout << "  Hexagonal theoretical density [g/m3] = " << theoretical_density_h << std::endl;
-    std::cout << "  JOG thickness from s1 [m] = " << JOG_thickness_s1 << std::endl;
-    std::cout << "  JOG thickness from s2 [m] = " << JOG_thickness_s2 << std::endl;
-    std::cout << "  Total JOG thickness [m] = " << JOG_thickness << std::endl;
+    std::cout << "  JOG thickness from s1 - volume [m3 ompound / m3 fuel] = " << JOG_thickness_s1 << std::endl;
+    std::cout << "  JOG thickness from s2 - volume [m3 ompound / m3 fuel] = " << JOG_thickness_s2 << std::endl;
+    std::cout << "  Total JOG thickness - volume [m3 ompound / m3 fuel] = " << JOG_thickness << std::endl;
 }
