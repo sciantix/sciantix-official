@@ -303,9 +303,22 @@ bool runOpenCalphadCase(const std::string& input_file_path,
     return true;
 }
 
-bool hasRequiredMatrixOxygenComponent(const OCOutputData& output_data)
+bool hasRequiredComponents(const OCOutputData&              output_data,
+                           const std::string&              location,
+                           const std::set<std::string>&    manifest_elements)
 {
-    return output_data.components.find("O") != output_data.components.end();
+    std::vector<std::string> required_components;
+
+    required_components.assign(manifest_elements.begin(), manifest_elements.end());
+    
+    for (const auto& component : required_components)
+    {
+        std::cout << "Temporary check: "<<component<<std::endl;
+        if (output_data.components.find(component) == output_data.components.end())
+            return false;
+    }
+
+    return true;
 }
 
 void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhaseData>& solution_phases,
@@ -462,14 +475,11 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     std::string raw_output;
     bool solved = false;
     OCOutputData output_data;
-    const std::vector<OpenCalphadSolveMode> solve_modes =
-        isMatrixLocation(location)
-            ? std::vector<OpenCalphadSolveMode>{
-                  OpenCalphadSolveMode::GlobalEquilibrium,
-                  OpenCalphadSolveMode::NoGlobalFallback,
-                  OpenCalphadSolveMode::WithCheckAfterFallback,
-              }
-            : std::vector<OpenCalphadSolveMode>{OpenCalphadSolveMode::GlobalEquilibrium};
+    const std::vector<OpenCalphadSolveMode> solve_modes = {
+        OpenCalphadSolveMode::GlobalEquilibrium,
+        OpenCalphadSolveMode::NoGlobalFallback,
+        OpenCalphadSolveMode::WithCheckAfterFallback,
+    };
 
     for (const auto solve_mode : solve_modes)
     {
@@ -497,7 +507,7 @@ void Simulation::CallThermochemistryModule(std::string                        lo
             const std::vector<std::string> valid_elements(manifest_elements.begin(), manifest_elements.end());
             output_data = parseOCOutputFile(output_file_path, valid_elements);
 
-            if (!isMatrixLocation(location) || hasRequiredMatrixOxygenComponent(output_data))
+            if (hasRequiredComponents(output_data, location, manifest_elements))
             {
                 solved = true;
                 break;
@@ -505,7 +515,7 @@ void Simulation::CallThermochemistryModule(std::string                        lo
 
             std::cout << "Warning: OpenCalphad produced an equilibrium for location '" << location
                       << "' using " << solveModeLabel(solve_mode)
-                      << " but the oxygen component line is missing. Retrying." << std::endl;
+                      << " but the required component lines are missing. Retrying." << std::endl;
             continue;
         }
 
