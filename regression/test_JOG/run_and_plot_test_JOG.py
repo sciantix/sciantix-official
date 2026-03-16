@@ -13,6 +13,24 @@ OUTPUT_FILE = TEST_DIR / "output.txt"
 THERMOCHEMISTRY_OUTPUT_FILE = TEST_DIR / "thermochemistry_output.txt"
 PLOT_BASENAME = "sciantix_all_variables_vs_burnup_time"
 
+plt.style.use("seaborn-v0_8-whitegrid")
+plt.rcParams.update({
+    "figure.figsize": (10, 6),
+    "font.size": 15,
+    "axes.labelsize": 15,
+    "axes.titlesize": 15,
+    "xtick.labelsize": 14,
+    "ytick.labelsize": 14,
+    "legend.fontsize": 15,
+    "figure.dpi": 300,
+    "axes.grid": True,
+    "grid.alpha": 0.5,
+    "grid.linestyle": "--",
+    "lines.linewidth": 2,
+    "lines.markersize": 8,
+    "legend.frameon": False,
+})
+
 
 def load_output_data(output_file: Path) -> tuple[list[str], np.ndarray]:
     with output_file.open(newline="") as handle:
@@ -49,6 +67,117 @@ def is_all_zero(series: np.ndarray) -> bool:
     return np.allclose(series, 0.0)
 
 
+def create_secondary_time_axis(axis, burnup_to_time, time_to_burnup, time_label: str) -> None:
+    top_axis = axis.secondary_xaxis("top", functions=(burnup_to_time, time_to_burnup))
+    top_axis.set_xlabel(time_label)
+
+
+def get_inventory_groups(headers: list[str]) -> dict[str, list[str]]:
+    grouped_variables: dict[str, list[str]] = {}
+    inventory_markers = {"produced", "in", "at", "released", "reacted"}
+
+    for header in headers:
+        parts = header.split()
+        if len(parts) < 2 or parts[1] not in inventory_markers:
+            continue
+
+        grouped_variables.setdefault(parts[0], []).append(header)
+
+    return grouped_variables
+
+
+def plot_grouped_inventory_variables(
+    output_file: Path,
+    burnup: np.ndarray,
+    column_map: dict[str, int],
+    grouped_variables: dict[str, list[str]],
+    burnup_to_time,
+    time_to_burnup,
+    burnup_label: str,
+    time_label: str,
+    values: np.ndarray,
+) -> list[Path]:
+    saved_paths: list[Path] = []
+
+    for group_name, variables in grouped_variables.items():
+        nonzero_variables = [
+            variable for variable in variables if not is_all_zero(values[:, column_map[variable]])
+        ]
+        if not nonzero_variables:
+            continue
+
+        fig, axis = plt.subplots(figsize=(14, 8.5))
+        colors = plt.cm.tab10(np.linspace(0, 1, len(nonzero_variables)))
+
+        for color, variable in zip(colors, nonzero_variables):
+            axis.plot(
+                burnup,
+                values[:, column_map[variable]],
+                label=variable.replace(f"{group_name} ", ""),
+                linewidth=2.0,
+                color=color,
+            )
+
+        axis.set_title(f"{group_name} inventory evolution", fontsize=16, weight="bold")
+        axis.set_xlabel(burnup_label)
+        axis.set_ylabel(nonzero_variables[0].split("(", 1)[-1].rstrip(")"))
+        axis.grid(True, alpha=0.25)
+        create_secondary_time_axis(axis, burnup_to_time, time_to_burnup, time_label)
+        axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), frameon=False)
+        fig.tight_layout()
+
+        plot_path = output_file.parent / f"{sanitize_filename(group_name)}_inventory.png"
+        fig.savefig(plot_path, dpi=220, bbox_inches="tight")
+        plt.close(fig)
+        saved_paths.append(plot_path)
+
+    return saved_paths
+
+
+def plot_misc_variables(
+    output_file: Path,
+    burnup: np.ndarray,
+    column_map: dict[str, int],
+    variables: list[str],
+    burnup_to_time,
+    time_to_burnup,
+    burnup_label: str,
+    time_label: str,
+    values: np.ndarray,
+) -> list[Path]:
+    saved_paths: list[Path] = []
+    plots_per_page = 6
+    ncols = 2
+    nrows = 3
+
+    for page_index, start in enumerate(range(0, len(variables), plots_per_page), start=1):
+        page_variables = variables[start:start + plots_per_page]
+        fig, axes = plt.subplots(nrows, ncols, figsize=(18, 16), sharex=True)
+        axes = axes.flatten()
+
+        for axis, variable in zip(axes, page_variables):
+            y_data = values[:, column_map[variable]]
+            axis.plot(burnup, y_data, color="#0f766e", linewidth=2.0)
+            axis.set_title(variable, fontsize=11, weight="bold")
+            axis.set_xlabel(burnup_label)
+            axis.set_ylabel(variable)
+            axis.grid(True, alpha=0.25)
+            create_secondary_time_axis(axis, burnup_to_time, time_to_burnup, time_label)
+
+        for axis in axes[len(page_variables):]:
+            axis.set_visible(False)
+
+        fig.suptitle("SCIANTIX summary variables vs burnup/time", fontsize=17, weight="bold")
+        fig.tight_layout(rect=(0, 0, 1, 0.98))
+
+        plot_path = output_file.parent / f"summary_variables_{page_index:02d}.png"
+        fig.savefig(plot_path, dpi=220, bbox_inches="tight")
+        plt.close(fig)
+        saved_paths.append(plot_path)
+
+    return saved_paths
+
+
 def plot_all_variables(output_file: Path) -> list[Path]:
     headers, values = load_output_data(output_file)
     column_map = {name: idx for idx, name in enumerate(headers)}
@@ -62,45 +191,62 @@ def plot_all_variables(output_file: Path) -> list[Path]:
     burnup = values[:, column_map[burnup_label]]
     time = values[:, column_map[time_label]]
     burnup_to_time, time_to_burnup = build_axis_mappers(burnup, time)
+    saved_paths: list[Path] = []
 
-    y_variables = [
+    grouped_variables = get_inventory_groups(headers)
+    saved_paths.extend(
+        plot_grouped_inventory_variables(
+            output_file,
+            burnup,
+            column_map,
+            grouped_variables,
+            burnup_to_time,
+            time_to_burnup,
+            burnup_label,
+            time_label,
+            values,
+        )
+    )
+
+    grouped_variable_names = {
+        variable for variables in grouped_variables.values() for variable in variables
+    }
+    summary_variables = [
         header
         for header in headers
         if header not in {burnup_label, time_label}
+        and header not in grouped_variable_names
         and not is_all_zero(values[:, column_map[header]])
     ]
+    saved_paths.extend(
+        plot_misc_variables(
+            output_file,
+            burnup,
+            column_map,
+            summary_variables,
+            burnup_to_time,
+            time_to_burnup,
+            burnup_label,
+            time_label,
+            values,
+        )
+    )
 
-    plots_per_page = 12
-    ncols = 3
-    nrows = 4
-    saved_paths: list[Path] = []
+    fig, axis = plt.subplots(1, 1, figsize=(12, 7), sharex=True)
+    p_o2 = values[:, column_map["Fuel oxygen partial pressure (MPa)"]]
+    activity_o = np.sqrt(p_o2 / 0.1)
+    axis.plot(burnup, activity_o, color="#1d4ed8", linewidth=2.2)
+    axis.set_title("Activity of Oxygen", fontsize=16, weight="bold")
+    axis.set_xlabel(burnup_label)
+    axis.set_ylabel("Activity (/)")
+    axis.grid(True, alpha=0.25)
+    create_secondary_time_axis(axis, burnup_to_time, time_to_burnup, time_label)
 
-    for page_index, start in enumerate(range(0, len(y_variables), plots_per_page), start=1):
-        page_variables = y_variables[start:start + plots_per_page]
-        fig, axes = plt.subplots(nrows, ncols, figsize=(16, 18), sharex=True)
-        axes = axes.flatten()
-
-        for axis, variable in zip(axes, page_variables):
-            y_data = values[:, column_map[variable]]
-            axis.plot(burnup, y_data, color="tab:blue", linewidth=1.6)
-            axis.set_title(variable, fontsize=10)
-            axis.set_xlabel(burnup_label)
-            axis.set_ylabel(variable)
-            axis.grid(True, alpha=0.3)
-
-            top_axis = axis.secondary_xaxis("top", functions=(burnup_to_time, time_to_burnup))
-            top_axis.set_xlabel(time_label)
-
-        for axis in axes[len(page_variables):]:
-            axis.set_visible(False)
-
-        fig.suptitle("SCIANTIX variables vs burnup/time", fontsize=16)
-        fig.tight_layout(rect=(0, 0, 1, 0.98))
-
-        plot_path = output_file.parent / f"{PLOT_BASENAME}_{page_index:02d}.png"
-        fig.savefig(plot_path, dpi=200, bbox_inches="tight")
-        plt.close(fig)
-        saved_paths.append(plot_path)
+    fig.tight_layout(rect=(0, 0, 1, 0.98))
+    plot_path = output_file.parent / "Oactivity.png"
+    fig.savefig(plot_path, dpi=220, bbox_inches="tight")
+    plt.close(fig)
+    saved_paths.append(plot_path)
 
     return saved_paths
 
@@ -138,7 +284,7 @@ def plot_thermochemistry_group(
     burnup = np.interp(time, reference_time, reference_burnup)
     burnup_to_time, time_to_burnup = build_axis_mappers(reference_burnup, reference_time)
 
-    fig, axis = plt.subplots(figsize=(16, 9))
+    fig, axis = plt.subplots(figsize=(15, 9))
     colors = plt.cm.nipy_spectral(np.linspace(0, 1, len(variables)))
 
     for color, variable in zip(colors, variables):
@@ -149,8 +295,7 @@ def plot_thermochemistry_group(
     axis.set_ylabel("Amount / concentration")
     axis.grid(True, alpha=0.3)
 
-    top_axis = axis.secondary_xaxis("top", functions=(burnup_to_time, time_to_burnup))
-    top_axis.set_xlabel(time_label)
+    create_secondary_time_axis(axis, burnup_to_time, time_to_burnup, time_label)
 
     handles, labels = axis.get_legend_handles_labels()
     if handles:
