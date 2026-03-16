@@ -34,6 +34,13 @@
 
 namespace
 {
+enum class OpenCalphadSolveMode
+{
+    GlobalEquilibrium,
+    NoGlobalFallback,
+    WithCheckAfterFallback,
+};
+
 bool isGrainBoundaryLocation(const std::string& location)
 {
     return location == "at grain boundary";
@@ -71,6 +78,44 @@ bool hasInvalidEquilibriumResult(const std::string& output_text)
 {
     return output_text.find("not a valid equilibrium as last calculation failed") != std::string::npos ||
            output_text.find("No results as no equilibrium calculated") != std::string::npos;
+}
+
+std::string solveModeLabel(OpenCalphadSolveMode mode)
+{
+    switch (mode)
+    {
+        case OpenCalphadSolveMode::GlobalEquilibrium:
+            return "c e";
+        case OpenCalphadSolveMode::NoGlobalFallback:
+            return "c n";
+        case OpenCalphadSolveMode::WithCheckAfterFallback:
+            return "c w";
+    }
+
+    return "unknown";
+}
+
+std::string buildSolveCommandBlock(OpenCalphadSolveMode mode, double temperature, double pressure)
+{
+    std::ostringstream commands;
+
+    if (mode == OpenCalphadSolveMode::NoGlobalFallback)
+    {
+        commands << "c e\n\n";
+        commands << "c n\n\n";
+    }
+    else if (mode == OpenCalphadSolveMode::WithCheckAfterFallback)
+    {
+        commands << "c e\n\n";
+        commands << "c n\n\n";
+        commands << "c w\n\n";
+    }
+    else
+    {
+        commands << "c e\n\n";
+    }
+
+    return commands.str();
 }
 
 void dumpParsedOcOutput(const OCOutputData& output_data)
@@ -165,6 +210,7 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
                            const std::string& data_path,
                            double             pressure,
                            double             temperature,
+                           OpenCalphadSolveMode solve_mode,
                            const std::string& location,
                            const std::set<std::string>& manifest_elements,
                            SciantixArray<SciantixVariable>& sciantix_variable)
@@ -225,10 +271,41 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
     if (!has_conditions)
         return false;
 
-    input_file << "\n\nc e\n\n";
+    input_file << "\n\n" << buildSolveCommandBlock(solve_mode, temperature, pressure);
     input_file << "l /out=./../outputs/thermoout.DAT r 1\n\n";
     input_file << "fin";
     return true;
+}
+
+bool runOpenCalphadCase(const std::string& input_file_path,
+                        const std::string& output_file_path,
+                        const std::string& executable,
+                        std::string&       raw_output)
+{
+    std::cout << "\n[OC input] " << input_file_path << std::endl;
+    std::cout << "----------------------------------------" << std::endl;
+    std::cout << readTextFile(input_file_path) << std::endl;
+    std::cout << "----------------------------------------" << std::endl;
+
+    const int status = std::system(executable.c_str());
+    if (status != 0)
+    {
+        std::cerr << "Error: Execution of OPENCALPHAD failed." << std::endl;
+        return false;
+    }
+
+    std::cout << "\n[OC output] " << output_file_path << std::endl;
+    std::cout << "----------------------------------------" << std::endl;
+    raw_output = readTextFile(output_file_path);
+    std::cout << raw_output << std::endl;
+    std::cout << "----------------------------------------" << std::endl;
+
+    return true;
+}
+
+bool hasRequiredMatrixOxygenComponent(const OCOutputData& output_data)
+{
+    return output_data.components.find("O") != output_data.components.end();
 }
 
 void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhaseData>& solution_phases,
@@ -382,45 +459,66 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     const std::string data_path = "./../data/" + stripTdbExtension(location_settings.database);
     const std::string executable = directory_path + "oc6P " + directory_path + "inputs/thermoin.OCM";
 
-    if (!writeOpenCalphadInput(
-            input_file_path,
-            data_path,
-            pressure,
-            temperature,
-            location,
-            manifest_elements,
-            sciantix_variable))
+    std::string raw_output;
+    bool solved = false;
+    OCOutputData output_data;
+    const std::vector<OpenCalphadSolveMode> solve_modes =
+        isMatrixLocation(location)
+            ? std::vector<OpenCalphadSolveMode>{
+                  OpenCalphadSolveMode::GlobalEquilibrium,
+                  OpenCalphadSolveMode::NoGlobalFallback,
+                  OpenCalphadSolveMode::WithCheckAfterFallback,
+              }
+            : std::vector<OpenCalphadSolveMode>{OpenCalphadSolveMode::GlobalEquilibrium};
+
+    for (const auto solve_mode : solve_modes)
     {
-        return;
-    }
+        if (!writeOpenCalphadInput(
+                input_file_path,
+                data_path,
+                pressure,
+                temperature,
+                solve_mode,
+                location,
+                manifest_elements,
+                sciantix_variable))
+        {
+            return;
+        }
 
-    std::cout << "\n[OC input] " << input_file_path << std::endl;
-    std::cout << "----------------------------------------" << std::endl;
-    std::cout << readTextFile(input_file_path) << std::endl;
-    std::cout << "----------------------------------------" << std::endl;
+        std::cout << "OpenCalphad attempt for '" << location << "' with " << solveModeLabel(solve_mode)
+                  << std::endl;
 
-    const int status = std::system(executable.c_str());
-    if (status != 0)
-    {
-        std::cerr << "Error: Execution of OPENCALPHAD failed." << std::endl;
-        return;
-    }
+        if (!runOpenCalphadCase(input_file_path, output_file_path, executable, raw_output))
+            return;
 
-    std::cout << "\n[OC output] " << output_file_path << std::endl;
-    std::cout << "----------------------------------------" << std::endl;
-    const std::string raw_output = readTextFile(output_file_path);
-    std::cout << raw_output << std::endl;
-    std::cout << "----------------------------------------" << std::endl;
+        if (!hasInvalidEquilibriumResult(raw_output))
+        {
+            const std::vector<std::string> valid_elements(manifest_elements.begin(), manifest_elements.end());
+            output_data = parseOCOutputFile(output_file_path, valid_elements);
 
-    if (hasInvalidEquilibriumResult(raw_output))
-    {
+            if (!isMatrixLocation(location) || hasRequiredMatrixOxygenComponent(output_data))
+            {
+                solved = true;
+                break;
+            }
+
+            std::cout << "Warning: OpenCalphad produced an equilibrium for location '" << location
+                      << "' using " << solveModeLabel(solve_mode)
+                      << " but the oxygen component line is missing. Retrying." << std::endl;
+            continue;
+        }
+
         std::cout << "Warning: OpenCalphad returned an invalid equilibrium for location '" << location
-                  << "'. Return to SCIANTIX." << std::endl;
-        return;
+                  << "' using " << solveModeLabel(solve_mode) << "." << std::endl;
     }
 
-    const std::vector<std::string> valid_elements(manifest_elements.begin(), manifest_elements.end());
-    const OCOutputData output_data = parseOCOutputFile(output_file_path, valid_elements);
+    if (!solved)
+    {
+        std::cout << "Warning: all OpenCalphad attempts failed for location '" << location
+                  << "'. Returning to SCIANTIX with the previous valid state." << std::endl;
+        return;
+    }
 
     dumpParsedOcOutput(output_data);
 
