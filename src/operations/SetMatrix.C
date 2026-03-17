@@ -36,8 +36,8 @@ void Simulation::setMatrix()
             // AD
         case 2:
         {
-              matrices.push(UN(matrices, sciantix_variable, history_variable, input_variable, scaling_factors));
-              break;
+            matrices.push(UN(matrices, sciantix_variable, history_variable, input_variable, scaling_factors));
+            break;
         }
 
         default:
