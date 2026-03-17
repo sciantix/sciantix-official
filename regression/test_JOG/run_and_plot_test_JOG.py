@@ -11,23 +11,29 @@ BUILD_EXECUTABLE = TEST_DIR.parents[1] / "build" / "sciantix.x"
 RUN_LOG = TEST_DIR / "sciantix.log"
 OUTPUT_FILE = TEST_DIR / "output.txt"
 THERMOCHEMISTRY_OUTPUT_FILE = TEST_DIR / "thermochemistry_output.txt"
+EXP_DATA_DIR = TEST_DIR / "exp_data"
 PLOT_BASENAME = "sciantix_all_variables_vs_burnup_time"
+JOG_RADIUS_M = 5.0e-3
+AVOGADRO_NUMBER = 6.02214076e23
 
 plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update({
-    "figure.figsize": (10, 6),
-    "font.size": 15,
-    "axes.labelsize": 15,
-    "axes.titlesize": 15,
-    "xtick.labelsize": 14,
-    "ytick.labelsize": 14,
-    "legend.fontsize": 15,
+    "figure.figsize": (11, 7),
+    "font.size": 17,
+    "axes.labelsize": 18,
+    "axes.titlesize": 19,
+    "axes.titleweight": "bold",
+    "xtick.labelsize": 15,
+    "ytick.labelsize": 15,
+    "legend.fontsize": 14,
     "figure.dpi": 300,
     "axes.grid": True,
-    "grid.alpha": 0.5,
+    "grid.alpha": 0.25,
     "grid.linestyle": "--",
-    "lines.linewidth": 2,
-    "lines.markersize": 8,
+    "axes.spines.top": False,
+    "axes.spines.right": False,
+    "lines.linewidth": 2.4,
+    "lines.markersize": 7,
     "legend.frameon": False,
 })
 
@@ -49,6 +55,23 @@ def load_output_data(output_file: Path) -> tuple[list[str], np.ndarray]:
     return headers, values
 
 
+def load_experimental_jog_data(data_file: Path) -> tuple[np.ndarray, np.ndarray]:
+    fima_values: list[float] = []
+    thickness_values: list[float] = []
+
+    with data_file.open() as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if not line or line.startswith("#") or line.startswith("FIMA("):
+                continue
+
+            fima_str, thickness_str = [item.strip() for item in line.split(";")]
+            fima_values.append(float(fima_str))
+            thickness_values.append(float(thickness_str))
+
+    return np.array(fima_values, dtype=float), np.array(thickness_values, dtype=float)
+
+
 def sanitize_filename(label: str) -> str:
     return "".join(char if char.isalnum() else "_" for char in label).strip("_").lower()
 
@@ -65,6 +88,13 @@ def build_axis_mappers(burnup: np.ndarray, time: np.ndarray):
 
 def is_all_zero(series: np.ndarray) -> bool:
     return np.allclose(series, 0.0)
+
+
+def style_axis(axis, title: str, xlabel: str, ylabel: str) -> None:
+    axis.set_title(title, pad=14)
+    axis.set_xlabel(xlabel)
+    axis.set_ylabel(ylabel)
+    axis.grid(True, alpha=0.25)
 
 
 def create_secondary_time_axis(axis, burnup_to_time, time_to_burnup, time_label: str) -> None:
@@ -84,6 +114,10 @@ def get_inventory_groups(headers: list[str]) -> dict[str, list[str]]:
         grouped_variables.setdefault(parts[0], []).append(header)
 
     return grouped_variables
+
+
+def atoms_per_m3_to_umol_per_mm3(series: np.ndarray) -> np.ndarray:
+    return series / AVOGADRO_NUMBER * 1.0e-3
 
 
 def plot_grouped_inventory_variables(
@@ -118,15 +152,69 @@ def plot_grouped_inventory_variables(
                 color=color,
             )
 
-        axis.set_title(f"{group_name} inventory evolution", fontsize=16, weight="bold")
-        axis.set_xlabel(burnup_label)
-        axis.set_ylabel(nonzero_variables[0].split("(", 1)[-1].rstrip(")"))
-        axis.grid(True, alpha=0.25)
+        style_axis(
+            axis,
+            f"{group_name} Inventory Evolution",
+            burnup_label,
+            nonzero_variables[0].split("(", 1)[-1].rstrip(")"),
+        )
         create_secondary_time_axis(axis, burnup_to_time, time_to_burnup, time_label)
         axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), frameon=False)
         fig.tight_layout()
 
         plot_path = output_file.parent / f"{sanitize_filename(group_name)}_inventory.png"
+        fig.savefig(plot_path, dpi=220, bbox_inches="tight")
+        plt.close(fig)
+        saved_paths.append(plot_path)
+
+    return saved_paths
+
+
+def plot_selected_inventory_groups_in_umol(
+    output_file: Path,
+    burnup: np.ndarray,
+    column_map: dict[str, int],
+    grouped_variables: dict[str, list[str]],
+    burnup_to_time,
+    time_to_burnup,
+    burnup_label: str,
+    time_label: str,
+    values: np.ndarray,
+) -> list[Path]:
+    saved_paths: list[Path] = []
+    selected_groups = ["Xe", "Kr", "Cs"]
+
+    for group_name in selected_groups:
+        variables = grouped_variables.get(group_name, [])
+        nonzero_variables = [
+            variable for variable in variables if not is_all_zero(values[:, column_map[variable]])
+        ]
+        if not nonzero_variables:
+            continue
+
+        fig, axis = plt.subplots(figsize=(14, 8.5))
+        colors = plt.cm.Set2(np.linspace(0, 1, len(nonzero_variables)))
+
+        for color, variable in zip(colors, nonzero_variables):
+            converted_values = atoms_per_m3_to_umol_per_mm3(values[:, column_map[variable]])
+            axis.plot(
+                burnup,
+                converted_values,
+                label=variable.replace(f"{group_name} ", ""),
+                color=color,
+            )
+
+        style_axis(
+            axis,
+            f"{group_name} Inventory Evolution",
+            burnup_label,
+            "Concentration (umol/mm3)",
+        )
+        create_secondary_time_axis(axis, burnup_to_time, time_to_burnup, time_label)
+        axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), frameon=False)
+        fig.tight_layout()
+
+        plot_path = output_file.parent / f"{sanitize_filename(group_name)}_inventory_umol_mm3.png"
         fig.savefig(plot_path, dpi=220, bbox_inches="tight")
         plt.close(fig)
         saved_paths.append(plot_path)
@@ -158,16 +246,13 @@ def plot_misc_variables(
         for axis, variable in zip(axes, page_variables):
             y_data = values[:, column_map[variable]]
             axis.plot(burnup, y_data, color="#0f766e", linewidth=2.0)
-            axis.set_title(variable, fontsize=11, weight="bold")
-            axis.set_xlabel(burnup_label)
-            axis.set_ylabel(variable)
-            axis.grid(True, alpha=0.25)
+            style_axis(axis, variable, burnup_label, variable)
             create_secondary_time_axis(axis, burnup_to_time, time_to_burnup, time_label)
 
         for axis in axes[len(page_variables):]:
             axis.set_visible(False)
 
-        fig.suptitle("SCIANTIX summary variables vs burnup/time", fontsize=17, weight="bold")
+        fig.suptitle("SCIANTIX Summary Variables vs Burnup and Time", fontsize=21, weight="bold")
         fig.tight_layout(rect=(0, 0, 1, 0.98))
 
         plot_path = output_file.parent / f"summary_variables_{page_index:02d}.png"
@@ -196,6 +281,19 @@ def plot_all_variables(output_file: Path) -> list[Path]:
     grouped_variables = get_inventory_groups(headers)
     saved_paths.extend(
         plot_grouped_inventory_variables(
+            output_file,
+            burnup,
+            column_map,
+            grouped_variables,
+            burnup_to_time,
+            time_to_burnup,
+            burnup_label,
+            time_label,
+            values,
+        )
+    )
+    saved_paths.extend(
+        plot_selected_inventory_groups_in_umol(
             output_file,
             burnup,
             column_map,
@@ -236,10 +334,7 @@ def plot_all_variables(output_file: Path) -> list[Path]:
     p_o2 = values[:, column_map["Fuel oxygen partial pressure (MPa)"]]
     activity_o = np.sqrt(p_o2 / 0.1)
     axis.plot(burnup, activity_o, color="#1d4ed8", linewidth=2.2)
-    axis.set_title("Activity of Oxygen", fontsize=16, weight="bold")
-    axis.set_xlabel(burnup_label)
-    axis.set_ylabel("Activity (/)")
-    axis.grid(True, alpha=0.25)
+    style_axis(axis, "Activity of Oxygen", burnup_label, "Activity (/)")
     create_secondary_time_axis(axis, burnup_to_time, time_to_burnup, time_label)
 
     fig.tight_layout(rect=(0, 0, 1, 0.98))
@@ -248,7 +343,76 @@ def plot_all_variables(output_file: Path) -> list[Path]:
     plt.close(fig)
     saved_paths.append(plot_path)
 
+    saved_paths.append(plot_jog_quantities(output_file, headers, values, column_map))
+
     return saved_paths
+
+
+def plot_jog_quantities(
+    output_file: Path,
+    headers: list[str],
+    values: np.ndarray,
+    column_map: dict[str, int],
+) -> Path:
+    time_label = "Time (h)"
+    fima_label = "FIMA (%)"
+    jog_label = "JOG (/)"
+
+    if jog_label not in column_map:
+        raise KeyError(f"Required JOG column is missing from {output_file}")
+    if time_label not in column_map or fima_label not in column_map:
+        raise KeyError(f"Required x-axis columns are missing from {output_file}")
+
+    fima = values[:, column_map[fima_label]]
+    jog_fraction = values[:, column_map[jog_label]]
+    jog_thickness_um = jog_fraction * (JOG_RADIUS_M / 2.0) * 1.0e6
+    time = values[:, column_map[time_label]]
+    fima_to_time, time_to_fima = build_axis_mappers(fima, time)
+
+    melis_fima, melis_thickness = load_experimental_jog_data(EXP_DATA_DIR / "Melis1993.txt")
+    tourasse_fima, tourasse_thickness = load_experimental_jog_data(EXP_DATA_DIR / "Tourasse1992.txt")
+
+    fig, axis = plt.subplots(1, 1, figsize=(12.5, 8.5))
+
+    axis.plot(fima, jog_thickness_um, color="#7c3aed", label="SCIANTIX")
+    axis.scatter(
+        melis_fima,
+        melis_thickness,
+        color="#dc2626",
+        marker="o",
+        s=46,
+        label="Melis 1993",
+        zorder=3,
+    )
+    axis.scatter(
+        tourasse_fima,
+        tourasse_thickness,
+        color="#2563eb",
+        marker="D",
+        s=44,
+        label="Tourasse 1992",
+        zorder=3,
+    )
+    style_axis(axis, "JOG Thickness vs FIMA", fima_label, "Thickness (um)")
+    top_axis_thickness = axis.secondary_xaxis("top", functions=(fima_to_time, time_to_fima))
+    top_axis_thickness.set_xlabel(time_label)
+    axis.text(
+        0.02,
+        0.95,
+        f"Thickness = JOG * R/2,  R = {JOG_RADIUS_M * 1.0e3:.1f} mm",
+        transform=axis.transAxes,
+        ha="left",
+        va="top",
+        fontsize=13,
+        color="#4b5563",
+    )
+    axis.legend(loc="upper left")
+
+    fig.tight_layout()
+    plot_path = output_file.parent / "JOG_fraction_vs_time_and_thickness_vs_fima.png"
+    fig.savefig(plot_path, dpi=240, bbox_inches="tight")
+    plt.close(fig)
+    return plot_path
 
 
 def plot_thermochemistry_group(
@@ -290,10 +454,12 @@ def plot_thermochemistry_group(
     for color, variable in zip(colors, variables):
         axis.plot(burnup, values[:, column_map[variable]], label=variable, linewidth=1.4, color=color)
 
-    axis.set_title(f"Thermochemistry variables in one plot: {location_label}", fontsize=16)
-    axis.set_xlabel(burnup_label)
-    axis.set_ylabel("Amount / concentration")
-    axis.grid(True, alpha=0.3)
+    style_axis(
+        axis,
+        f"Thermochemistry Variables: {location_label}",
+        burnup_label,
+        "Amount / concentration",
+    )
 
     create_secondary_time_axis(axis, burnup_to_time, time_to_burnup, time_label)
 
