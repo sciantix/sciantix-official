@@ -56,7 +56,8 @@ std::vector<SciantixVariable> initializeHistoryVariable(
     double Sciantix_history[],
     double Sciantix_scaling_factors[],
     bool toOutputStoichiometryDeviation,
-    bool toOutputThermochimica
+    bool toOutputThermochimica,
+    bool toOutputPrescribedOMRatio
 )
 {
     std::vector<SciantixVariable> history_variable = {
@@ -74,7 +75,8 @@ std::vector<SciantixVariable> initializeHistoryVariable(
                          1),
         SciantixVariable("Hydrostatic stress", "(MPa)", Sciantix_history[4], Sciantix_history[5], 1),
         SciantixVariable("Steam pressure", "(atm)", Sciantix_history[9], Sciantix_history[10], toOutputStoichiometryDeviation),
-        SciantixVariable("System pressure", "(Pa)", Sciantix_history[11], Sciantix_history[12], toOutputThermochimica)};
+        SciantixVariable("System pressure", "(Pa)", Sciantix_history[11], Sciantix_history[12], toOutputThermochimica),
+        SciantixVariable("O/M ratio", "(/)", Sciantix_history[13], Sciantix_history[14], toOutputPrescribedOMRatio)};
 
     return history_variable;
 }

@@ -53,16 +53,19 @@ extern int                 Fissionrate_input_points;
 extern int                 Hydrostaticstress_input_points;
 extern int                 Stempressure_input_points;
 extern int                 Systempressure_input_points;
+extern int                 OMratio_input_points;
 extern std::vector<double> Time_temperature_input;
 extern std::vector<double> Time_fissionrate_input;
 extern std::vector<double> Time_hydrostaticstress_input;
 extern std::vector<double> Time_steampressure_input;
 extern std::vector<double> Time_systempressure_input;
+extern std::vector<double> Time_OMratio_input;
 extern std::vector<double> Time_input;
 extern std::vector<double> Temperature_input;
 extern std::vector<double> Fissionrate_input;
 extern std::vector<double> Hydrostaticstress_input;
 extern std::vector<double> Steampressure_input;
 extern std::vector<double> Systempressure_input;
+extern std::vector<double> OMratio_input;
 
 #endif

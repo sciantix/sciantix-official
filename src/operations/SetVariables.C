@@ -46,6 +46,7 @@ void Simulation::setVariables(
          toOutputGrainBoundary          = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
          toOutputHighBurnupStructure    = input_variable["iHighBurnupStructureFormation"].getValue() == 1,
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
+         toOutputPrescribedOMRatio      = input_variable["iStoichiometryDeviation"].getValue() == 9,
          toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0,
          toOutputThermochimica          = input_variable["iThermochimica"].getValue() != 0;
 
@@ -57,7 +58,8 @@ void Simulation::setVariables(
         Sciantix_history,
         Sciantix_scaling_factors,
         toOutputStoichiometryDeviation,
-        toOutputThermochimica
+        toOutputThermochimica,
+        toOutputPrescribedOMRatio
     );
     
     for (SciantixVariable initial_value : values)

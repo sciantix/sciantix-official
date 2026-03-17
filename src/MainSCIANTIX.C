@@ -91,6 +91,7 @@ int main(int argc, char** argv)
                  Hydrostaticstress_input,
                  Steampressure_input,
                  Systempressure_input,
+                 OMratio_input,
                  Time_end_h,
                  Time_end_s);
 
@@ -103,7 +104,8 @@ int main(int argc, char** argv)
                    Fissionrate_input,
                    Hydrostaticstress_input,
                    Steampressure_input,
-                   Systempressure_input);
+                   Systempressure_input,
+                   OMratio_input);
 
     std::string outputPath = TestPath + "output.txt";
 
@@ -133,6 +135,8 @@ int main(int argc, char** argv)
         Sciantix_history[10] = InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
         Sciantix_history[11] = Sciantix_history[12];
         Sciantix_history[12] = InputInterpolation(Time_h, Time_input, Systempressure_input, Input_history_points);
+        Sciantix_history[13] = Sciantix_history[14];
+        Sciantix_history[14] = InputInterpolation(Time_h, Time_input, OMratio_input, Input_history_points);
 
         Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes, Sciantix_thermochemistry, Sciantix_thermochemistry_options);
 

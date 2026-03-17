@@ -102,6 +102,7 @@ void InputReading(
 	std::vector<double> &Hydrostaticstress_input,
 	std::vector<double> &Steampressure_input,
 	std::vector<double> &Systempressure_input,
+    std::vector<double> &OMratio_input,
 	double &Time_end_h,
 	double &Time_end_s
 	)
@@ -242,6 +243,7 @@ void InputReading(
 
     const bool needs_steam_pressure = Sciantix_options[20] > 0 && Sciantix_options[20] < 7;
     const bool needs_system_pressure = Sciantix_options[25] != 0;
+    const bool needs_OM_ratio = Sciantix_options[20] == 9;
 
 	int n = 0;
 	while (input_history >> Time_input[n] >> Temperature_input[n] >> Fissionrate_input[n] >> Hydrostaticstress_input[n])
@@ -268,6 +270,17 @@ void InputReading(
         else
             Systempressure_input[n] = 0.0;
 
+        if (needs_OM_ratio)
+        {
+            if (!(input_history >> OMratio_input[n]))
+            {
+                std::cerr << "ERROR: Missing O/M ratio in input_history.txt while iStoichiometryDeviation = 9." << std::endl;
+                exit(1);
+            }
+        }
+        else
+            OMratio_input[n] = 2.0 + Sciantix_variables[66];
+
 		input_check << Time_input[n] << "\t";
 		input_check << Temperature_input[n] << "\t";
 		input_check << Fissionrate_input[n] << "\t";
@@ -278,6 +291,9 @@ void InputReading(
 		
 		if (needs_system_pressure)
 		    input_check << Systempressure_input[n] << "\t";
+
+        if (needs_OM_ratio)
+            input_check << OMratio_input[n] << "\t";
 
 		input_check << std::endl;
 
@@ -294,6 +310,11 @@ void InputReading(
 		Steampressure_input.resize(Input_history_points);
 	
 	Systempressure_input.resize(Input_history_points);
+
+    if (needs_OM_ratio)
+        OMratio_input.resize(Input_history_points);
+    else
+        OMratio_input.assign(Input_history_points, 2.0 + Sciantix_variables[66]);
 
 	Time_end_h = Time_input[Input_history_points - 1];
 	Time_end_s = Time_end_h * 3600.0;
