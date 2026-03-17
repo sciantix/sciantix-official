@@ -25,7 +25,8 @@ void Initialization(double              Sciantix_history[],
                     std::vector<double> Fissionrate_input,
                     std::vector<double> Hydrostaticstress_input,
                     std::vector<double> Steampressure_input,
-                    std::vector<double> Systempressure_input
+                    std::vector<double> Systempressure_input,
+                    std::vector<double> OMratio_input
 )
 {
     // Sciantix_history initialization
@@ -42,6 +43,8 @@ void Initialization(double              Sciantix_history[],
 
     Sciantix_history[11] = Systempressure_input[0];
 	Sciantix_history[12] = Systempressure_input[0];
+    Sciantix_history[13] = OMratio_input[0];
+    Sciantix_history[14] = OMratio_input[0];
 
     // Sciantix_variables initialization
     Sciantix_variables[25] = 2.0e+13;  // Intergranular_bubble_concentration[0]

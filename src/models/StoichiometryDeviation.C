@@ -368,12 +368,25 @@ void Simulation::StoichiometryDeviation()
             parameter.push_back(0.001 / 3600.0);
 
             // linear increase with time to verify the correct po2 at different O/M
+            model_.setParameter(parameter);
+            model_.setRef(reference);
+
+            break;
+        }
+        case 9:
+        {
+            reference += " : prescribed O/M history from input_history.txt.";
+
+            // Prescribed O/M is converted to stoichiometry deviation as x = O/M - 2.
+            parameter.push_back(history_variable["O/M ratio"].getFinalValue() - 2.0);
+            parameter.push_back(history_variable["O/M ratio"].getInitialValue() - 2.0);
 
             model_.setParameter(parameter);
             model_.setRef(reference);
 
             break;
         }
+
 
         default:
             ErrorMessages::Switch(
@@ -408,6 +421,18 @@ void Simulation::StoichiometryDeviation()
                 model["Stoichiometry deviation"].getParameter(),
                 physics_variable["Time step"].getFinalValue()
             )
+        );
+    }
+    else if (input_variable["iStoichiometryDeviation"].getValue() == 9)
+    {
+        sciantix_variable["Stoichiometry deviation"].setFinalValue(
+            model["Stoichiometry deviation"].getParameter().at(0)
+        );
+
+        sciantix_variable["Uranium content"].addValue(
+            - sciantix_variable["Oxygen content"].getFinalValue()
+            * sciantix_variable["Stoichiometry deviation"].getIncrement()
+            * pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2)
         );
     }
     else if (input_variable["iStoichiometryDeviation"].getValue() >= 7)

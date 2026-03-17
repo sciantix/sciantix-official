@@ -29,7 +29,8 @@ std::vector<SciantixVariable> initializeHistoryVariable(
     double Sciantix_history[],
     double Sciantix_scaling_factors[],
     bool toOutputStoichiometryDeviation,
-    bool toOutputThermochimica
+    bool toOutputThermochimica,
+    bool toOutputPrescribedOMRatio
 );
 
 std::vector<SciantixVariable> initializeSciantixVariable(

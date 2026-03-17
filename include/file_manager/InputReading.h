@@ -48,6 +48,7 @@ void InputReading(
     std::vector<double> &Hydrostaticstress_input,
     std::vector<double> &Steampressure_input,
     std::vector<double> &Systempressure_input,
+    std::vector<double> &OMratio_input,
     double &Time_end_h,
     double &Time_end_s
     );
