@@ -33,11 +33,12 @@ void Simulation::setMatrix()
             break;
         }
 
-            // To add
-            // case 2:
-            // {
-            //     matrices.push(UN..)
-            // }
+            // AD
+        case 2:
+        {
+              matrices.push(UN(matrices, sciantix_variable, history_variable, input_variable, scaling_factors));
+              break;
+        }
 
         default:
             ErrorMessages::Switch(__FILE__, "iFuelMatrix", int(input_variable["iFuelMatrix"].getValue()));
