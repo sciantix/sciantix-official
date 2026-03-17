@@ -33,7 +33,6 @@ void Simulation::setMatrix()
             break;
         }
 
-
             // AD URANIUMNITRIDE
         case 2:
         {
@@ -164,32 +163,31 @@ Matrix UN(SciantixArray<Matrix>&           matrices,
     matrix_.setRef("\n\t");
 
     // --- PROPRIETÀ BASE (DA SISTEMARE) ---
-    matrix_.setTheoreticalDensity(14300.0); // TODO: valore da verificare
-    matrix_.setLatticeParameter(4.88e-10);  // TODO: valore indicativo
+    matrix_.setTheoreticalDensity(14300.0);  // TODO: valore da verificare
+    matrix_.setLatticeParameter(4.88e-10);   // TODO: valore indicativo
 
     // --- GEOMETRIA ---
     matrix_.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
 
     // --- DIFETTI (METTI PLACEHOLDER) ---
-    matrix_.setSchottkyVolume(0.0);          // TODO
-    matrix_.setOctahedralInterstitialSite(0.0); // TODO
+    matrix_.setSchottkyVolume(0.0);              // TODO
+    matrix_.setOctahedralInterstitialSite(0.0);  // TODO
 
     // --- PROPRIETÀ SIMILI A UO2 (temporaneo) ---
-    matrix_.setSurfaceTension(0.7); // TODO verificare
+    matrix_.setSurfaceTension(0.7);  // TODO verificare
     matrix_.setFissionFragmentInfluenceRadius(1.0e-9);
     matrix_.setFissionFragmentRange(6.0e-6);
 
     matrix_.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);
 
-    matrix_.setGrainBoundaryThickness(5.0e-10); // TODO
-    matrix_.setSemidihedralAngle(0.872664626);  // TODO
+    matrix_.setGrainBoundaryThickness(5.0e-10);  // TODO
+    matrix_.setSemidihedralAngle(0.872664626);   // TODO
     matrix_.setLenticularShapeFactor(0.168610764);
 
-    matrix_.setHealingTemperatureThreshold(1273.15); // TODO
+    matrix_.setHealingTemperatureThreshold(1273.15);  // TODO
 
-    matrix_.setGrainBoundaryVacancyDiffusivity(
-        int(input_variable["iGrainBoundaryVacancyDiffusivity"].getValue()),
-        history_variable);
+    matrix_.setGrainBoundaryVacancyDiffusivity(int(input_variable["iGrainBoundaryVacancyDiffusivity"].getValue()),
+                                               history_variable);
 
     // --- PORI ---
     matrix_.setPoreNucleationRate(sciantix_variable);
@@ -197,7 +195,7 @@ Matrix UN(SciantixArray<Matrix>&           matrices,
     matrix_.setPoreTrappingRate(matrices, sciantix_variable);
 
     // --- PROPRIETÀ MECCANICHE (placeholder) ---
-    matrix_.setElasticModulus(2.0e5); // TODO
+    matrix_.setElasticModulus(2.0e5);  // TODO
     matrix_.setPoissonRatio(0.3);
     matrix_.setShearModulus(matrix_.getElasticModulus() / (2 * (1 + matrix_.getPoissonRatio())));
 
