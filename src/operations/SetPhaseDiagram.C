@@ -129,7 +129,7 @@ void Simulation::CallThermochemistryModule(double pressure, double temperature, 
     bool kinetics = root["Settings"]["Langmuir"].asBool();
     if (location == "matrix") module = root["Settings"]["matrix"]["module"].asString();
     bool KC = root["Settings"]["KC"].asBool();
-    if (KC == true && history_variable["Time"].getFinalValue() < root["Settings"]["KC time"].asDouble()) KC == false;
+    if (KC == true && history_variable["Time"].getFinalValue() < root["Settings"]["KC time"].asDouble()) KC = false;
     if (location == "in the gap" && root["Settings"]["fission_products"]["gap settings"].asBool() && KC == false)
     {
         temperature = root["Settings"]["fission_products"]["gap temperature"].asDouble();

@@ -88,6 +88,8 @@ void Simulation::execute()
 
     GasProduction();
 
+    SetPhaseDiagram5metals("at grain boundary");
+
     GasDecay();
 
     SetPhaseDiagram("in grain");
