@@ -18,7 +18,7 @@
 
 void Simulation::GapPartialPressure()
 {
-    if (!input_variable["iStoichiometryDeviation"].getValue())
+    if ((input_variable["iStoichiometryDeviation"].getValue() == 0) | (input_variable["iStoichiometryDeviation"].getValue() > 6)) 
         return;
 
     // Model declaration

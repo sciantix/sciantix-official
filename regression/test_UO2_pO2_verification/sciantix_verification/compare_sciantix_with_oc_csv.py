@@ -42,7 +42,9 @@ MERGED_OUTPUT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv.tsv"
 SUMMARY_OUTPUT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_summary.tsv"
 
 POTENTIAL_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_potential.png"
-PO2_ERROR_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_pO2_error_percent.png"
+SIGNED_LOG_PO2_ERROR_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_log_pO2_error.png"
+ABSOLUTE_LOG_PO2_ERROR_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_log_pO2_error_absolute.png"
+RELATIVE_LOG_PO2_ERROR_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_log_pO2_error_relative_percent.png"
 POTENTIAL_ERROR_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_potential_error_percent.png"
 
 
@@ -199,10 +201,16 @@ def interpolate_sciantix_to_oc_points(
         oc_valid["Interpolated SCIANTIX log10(pO2/p_ref)"] = interpolated_log_p
         oc_valid["Interpolated SCIANTIX pO2 (MPa)"] = REFERENCE_PRESSURE_MPA * (10.0 ** interpolated_log_p)
         oc_valid["OpenCalphad log10(pO2/p_ref)"] = np.log10(oc_valid["OC pO2 (MPa)"] / REFERENCE_PRESSURE_MPA)
-        oc_valid["pO2 error (%)"] = (
-            (oc_valid["Interpolated SCIANTIX pO2 (MPa)"] - oc_valid["OC pO2 (MPa)"])
-            / oc_valid["OC pO2 (MPa)"]
-            * 100.0
+        oc_valid["log10(pO2/p_ref) error"] = (
+            oc_valid["Interpolated SCIANTIX log10(pO2/p_ref)"]
+            - oc_valid["OpenCalphad log10(pO2/p_ref)"]
+        )
+        oc_valid["Absolute log10(pO2/p_ref) error"] = oc_valid["log10(pO2/p_ref) error"].abs()
+        denominator = oc_valid["OpenCalphad log10(pO2/p_ref)"].abs()
+        oc_valid["Relative log10(pO2/p_ref) error (%)"] = np.where(
+            denominator > 0.0,
+            oc_valid["Absolute log10(pO2/p_ref) error"] / denominator * 100.0,
+            np.nan,
         )
         rows.append(oc_valid)
 
@@ -213,8 +221,17 @@ def interpolate_sciantix_to_oc_points(
     return aligned.sort_values(["Temperature (K)", "O/U ratio (/)"]).reset_index(drop=True)
 
 
-def plot_partial_pressure_error(frame: pd.DataFrame) -> None:
-    """Plot the signed SCIANTIX-versus-OpenCalphad pO2 error after interpolation."""
+def _rounded_upper_limit(values: pd.Series, step: float, floor: float) -> float:
+    """Round an upper bound upward to a clean plotting limit."""
+    finite_values = values.replace([np.inf, -np.inf], np.nan).dropna()
+    if finite_values.empty:
+        return floor
+    value_max = finite_values.max()
+    return max(floor, math.ceil(value_max / step) * step)
+
+
+def plot_signed_log_partial_pressure_error(frame: pd.DataFrame) -> None:
+    """Plot the signed SCIANTIX-versus-OpenCalphad log10(pO2/p_ref) error."""
     temperatures = sorted(frame["Temperature (K)"].dropna().unique())
     cmap = plt.get_cmap("turbo", len(temperatures))
     colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
@@ -224,7 +241,7 @@ def plot_partial_pressure_error(frame: pd.DataFrame) -> None:
         group = group.sort_values("O/U ratio (/)")
         ax.plot(
             group["O/U ratio (/)"],
-            group["pO2 error (%)"],
+            group["log10(pO2/p_ref) error"],
             color=colors[temperature],
             linewidth=1.5,
             marker="o",
@@ -233,10 +250,12 @@ def plot_partial_pressure_error(frame: pd.DataFrame) -> None:
 
     ax.axhline(0.0, color="black", linestyle="--", linewidth=1.0)
     ax.set_xlabel("O/U ratio (-)")
-    ax.set_ylabel(r"$p_{O_2}$ error (%)")
+    ax.set_ylabel(r"$\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})$ (-)")
     ax.set_xlim([1.90, 2.20])
-    ax.set_ylim([-10, 10])
-    ax.set_title("Interpolated SCIANTIX + OpenCalphad error vs standalone OpenCalphad")
+    error_max = frame["log10(pO2/p_ref) error"].abs().max()
+    y_limit = max(0.1, math.ceil(error_max / 0.02) * 0.02)
+    ax.set_ylim([-y_limit, y_limit])
+    ax.set_title("Interpolated SCIANTIX log(pO2) error vs standalone OpenCalphad")
     ax.grid(True, alpha=0.3)
     temperature_handles = [
         Line2D([0], [0], color=colors[temp], lw=2, label=f"{int(temp)} K")
@@ -244,7 +263,78 @@ def plot_partial_pressure_error(frame: pd.DataFrame) -> None:
     ]
     ax.legend(handles=temperature_handles, loc="best", ncol=2, fontsize=8, title="Temperature")
     fig.tight_layout()
-    fig.savefig(PO2_ERROR_PLOT_PATH, dpi=300)
+    fig.savefig(SIGNED_LOG_PO2_ERROR_PLOT_PATH, dpi=300)
+    plt.close(fig)
+
+
+def plot_absolute_log_partial_pressure_error(frame: pd.DataFrame) -> None:
+    """Plot the absolute SCIANTIX-versus-OpenCalphad log10(pO2/p_ref) error."""
+    temperatures = sorted(frame["Temperature (K)"].dropna().unique())
+    cmap = plt.get_cmap("turbo", len(temperatures))
+    colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
+
+    fig, ax = plt.subplots(figsize=(12, 8))
+    for temperature, group in frame.groupby("Temperature (K)", sort=True):
+        group = group.sort_values("O/U ratio (/)")
+        ax.plot(
+            group["O/U ratio (/)"],
+            group["Absolute log10(pO2/p_ref) error"],
+            color=colors[temperature],
+            linewidth=1.5,
+            marker="o",
+            markersize=3.0,
+        )
+
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel(r"$|\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})|$ (-)")
+    ax.set_xlim([1.90, 2.20])
+    y_limit = _rounded_upper_limit(frame["Absolute log10(pO2/p_ref) error"], step=0.02, floor=0.1)
+    ax.set_ylim([0.0, y_limit])
+    ax.set_title("Absolute SCIANTIX log(pO2) error vs standalone OpenCalphad")
+    ax.grid(True, alpha=0.3)
+    temperature_handles = [
+        Line2D([0], [0], color=colors[temp], lw=2, label=f"{int(temp)} K")
+        for temp in temperatures
+    ]
+    ax.legend(handles=temperature_handles, loc="best", ncol=2, fontsize=8, title="Temperature")
+    fig.tight_layout()
+    fig.savefig(ABSOLUTE_LOG_PO2_ERROR_PLOT_PATH, dpi=300)
+    plt.close(fig)
+
+
+def plot_relative_log_partial_pressure_error(frame: pd.DataFrame) -> None:
+    """Plot the relative SCIANTIX-versus-OpenCalphad log10(pO2/p_ref) error."""
+    temperatures = sorted(frame["Temperature (K)"].dropna().unique())
+    cmap = plt.get_cmap("turbo", len(temperatures))
+    colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
+
+    fig, ax = plt.subplots(figsize=(12, 8))
+    valid_frame = frame.dropna(subset=["Relative log10(pO2/p_ref) error (%)"])
+    for temperature, group in valid_frame.groupby("Temperature (K)", sort=True):
+        group = group.sort_values("O/U ratio (/)")
+        ax.plot(
+            group["O/U ratio (/)"],
+            group["Relative log10(pO2/p_ref) error (%)"],
+            color=colors[temperature],
+            linewidth=1.5,
+            marker="o",
+            markersize=3.0,
+        )
+
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel(r"Relative $|\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})|$ (%)")
+    ax.set_xlim([1.90, 2.20])
+    y_limit = _rounded_upper_limit(valid_frame["Relative log10(pO2/p_ref) error (%)"], step=1.0, floor=5.0)
+    ax.set_ylim([0.0, y_limit])
+    ax.set_title("Relative SCIANTIX log(pO2) error vs standalone OpenCalphad")
+    ax.grid(True, alpha=0.3)
+    temperature_handles = [
+        Line2D([0], [0], color=colors[temp], lw=2, label=f"{int(temp)} K")
+        for temp in temperatures
+    ]
+    ax.legend(handles=temperature_handles, loc="best", ncol=2, fontsize=8, title="Temperature")
+    fig.tight_layout()
+    fig.savefig(RELATIVE_LOG_PO2_ERROR_PLOT_PATH, dpi=300)
     plt.close(fig)
 
 
@@ -256,14 +346,24 @@ def main() -> None:
     aligned_frame = interpolate_sciantix_to_oc_points(sciantix_frame, oc_frame)
     aligned_frame.to_csv(MERGED_OUTPUT_PATH, sep="\t", index=False)
     summary = aligned_frame.groupby("Temperature (K)", as_index=False).agg(
-        count=("pO2 error (%)", "count"),
-        mean=("pO2 error (%)", "mean"),
-        median=("pO2 error (%)", "median"),
-        min=("pO2 error (%)", "min"),
-        max=("pO2 error (%)", "max"),
+        count=("log10(pO2/p_ref) error", "count"),
+        signed_mean=("log10(pO2/p_ref) error", "mean"),
+        signed_median=("log10(pO2/p_ref) error", "median"),
+        signed_min=("log10(pO2/p_ref) error", "min"),
+        signed_max=("log10(pO2/p_ref) error", "max"),
+        absolute_mean=("Absolute log10(pO2/p_ref) error", "mean"),
+        absolute_median=("Absolute log10(pO2/p_ref) error", "median"),
+        absolute_min=("Absolute log10(pO2/p_ref) error", "min"),
+        absolute_max=("Absolute log10(pO2/p_ref) error", "max"),
+        relative_mean_percent=("Relative log10(pO2/p_ref) error (%)", "mean"),
+        relative_median_percent=("Relative log10(pO2/p_ref) error (%)", "median"),
+        relative_min_percent=("Relative log10(pO2/p_ref) error (%)", "min"),
+        relative_max_percent=("Relative log10(pO2/p_ref) error (%)", "max"),
     )
     summary.to_csv(SUMMARY_OUTPUT_PATH, sep="\t", index=False)
-    plot_partial_pressure_error(aligned_frame)
+    plot_signed_log_partial_pressure_error(aligned_frame)
+    plot_absolute_log_partial_pressure_error(aligned_frame)
+    plot_relative_log_partial_pressure_error(aligned_frame)
 
 
 if __name__ == "__main__":
