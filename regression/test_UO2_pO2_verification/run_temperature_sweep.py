@@ -29,6 +29,26 @@ LOCAL_BINARY = SCRIPT_DIR / "sciantix.x"
 SUMMARY_PATH = SCRIPT_DIR / "temperature_sweep_summary.tsv"
 PRESSURE_PLOT_PATH = SCRIPT_DIR / "fuel_oxygen_partial_pressures_vs_ou_ratio.png"
 POTENTIAL_PLOT_PATH = SCRIPT_DIR / "fuel_oxygen_potentials_vs_ou_ratio.png"
+# TEMPORARY_REFERENCE_POINTS = {
+#     "900°C": [
+#         (2.011502514751891, -11.397924834660014),
+#         (2.022670389291513, -10.558552136549048),
+#         (2.034798621836759, -9.917389410320384),
+#         (2.053847372381292, -9.673636687655934),
+#         (2.0709061027286046, -9.379984951091044),
+#         (2.087954932477922, -9.13583620450675),
+#         (2.1019939804364185, -8.940596412023286),
+#     ],
+#     "1000°C": [
+#         (2.009670904122609, -10.555977981070056),
+#         (2.019819017068631, -9.815413250960358),
+#         (2.031947249613877, -9.174250524731693),
+#         (2.05201576175201, -8.831689834065976),
+#         (2.069084392697319, -8.488535107520494),
+#         (2.085143162647024, -8.194685358995685),
+#         (2.101142529008752, -8.197853550354441),
+#     ],
+# }
 
 
 def ensure_local_binary() -> None:
@@ -191,10 +211,56 @@ def make_pressure_plot(frames: list[pd.DataFrame]) -> None:
                     s=15,
                 )
 
+    # overlay_styles = {
+    #     "900°C": {"color": "black", "marker": "x"},
+    #     "1000°C": {"color": "black", "marker": "+"},
+    # }
+    # for label, points in TEMPORARY_REFERENCE_POINTS.items():
+    #     temporary_x, temporary_y = zip(*points)
+    #     ax.scatter(
+    #         temporary_x,
+    #         temporary_y,
+    #         color=overlay_styles[label]["color"],
+    #         marker=overlay_styles[label]["marker"],
+    #         s=45,
+    #         linewidths=1.2,
+    #         label=label,
+    #         zorder=5,
+    #     )
+
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
     ax.grid(True, alpha=0.3)
     add_legends(ax, colors, linestyles, markers)
+    # overlay_legend = ax.legend(
+    #     handles=[
+    #         Line2D(
+    #             [0],
+    #             [0],
+    #             color="black",
+    #             marker="x",
+    #             linestyle="None",
+    #             markersize=6,
+    #             markeredgewidth=1.2,
+    #             label="900°C",
+    #         ),
+    #         Line2D(
+    #             [0],
+    #             [0],
+    #             color="black",
+    #             marker="+",
+    #             linestyle="None",
+    #             markersize=7,
+    #             markeredgewidth=1.2,
+    #             label="1000°C",
+    #         ),
+    #     ],
+    #     loc="center right",
+    #     bbox_to_anchor=(1.0, 0.30),
+    #     frameon=True,
+    #     title="Overlay",
+    # )
+    # ax.add_artist(overlay_legend)
     # Match the y-range commonly used in the Gueneau comparison plots.
     ax.set_xlim([1.90, 2.20])
     ax.set_ylim([-22, -2])
