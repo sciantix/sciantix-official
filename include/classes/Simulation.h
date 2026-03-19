@@ -358,6 +358,7 @@ class Simulation
      *
      * @author G. Petrosillo
      * @author G. Zullo
+     * @author E. Cappellari
      *
      */
     void StoichiometryDeviation();
