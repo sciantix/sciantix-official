@@ -4,9 +4,6 @@ kc = false
 langmuir = false
 
 fission_products.module = NO
-fission_products.database = CsITe_Clean
-fission_products.elements = Cs, I, Te
-fission_products.locations = at grain boundary
 fission_products.gap_settings = false
 
 matrix.module = OPENCALPHAD
