@@ -20,6 +20,22 @@ import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import pandas as pd
 
+plt.rcParams.update({
+    "figure.figsize": (10, 7),
+    "font.size": 12,
+    "axes.labelsize": 15,
+    "axes.titlesize": 12,
+    "xtick.labelsize": 12,
+    "ytick.labelsize": 12,
+    "legend.fontsize": 12,
+    "figure.dpi": 300,
+    "axes.grid": True,
+    "grid.alpha": 0.5,
+    "grid.linestyle": "--",
+    "lines.linewidth": 2,
+    "lines.markersize": 4,
+    "legend.frameon": False,
+})
 
 TEMPERATURES_K = list(range(800, 2800, 100))
 REFERENCE_PRESSURE_MPA = 0.1 # 1 bar
@@ -29,27 +45,6 @@ LOCAL_BINARY = SCRIPT_DIR / "sciantix.x"
 SUMMARY_PATH = SCRIPT_DIR / "temperature_sweep_summary.tsv"
 PRESSURE_PLOT_PATH = SCRIPT_DIR / "fuel_oxygen_partial_pressures_vs_ou_ratio.png"
 POTENTIAL_PLOT_PATH = SCRIPT_DIR / "fuel_oxygen_potentials_vs_ou_ratio.png"
-# TEMPORARY_REFERENCE_POINTS = {
-#     "900°C": [
-#         (2.011502514751891, -11.397924834660014),
-#         (2.022670389291513, -10.558552136549048),
-#         (2.034798621836759, -9.917389410320384),
-#         (2.053847372381292, -9.673636687655934),
-#         (2.0709061027286046, -9.379984951091044),
-#         (2.087954932477922, -9.13583620450675),
-#         (2.1019939804364185, -8.940596412023286),
-#     ],
-#     "1000°C": [
-#         (2.009670904122609, -10.555977981070056),
-#         (2.019819017068631, -9.815413250960358),
-#         (2.031947249613877, -9.174250524731693),
-#         (2.05201576175201, -8.831689834065976),
-#         (2.069084392697319, -8.488535107520494),
-#         (2.085143162647024, -8.194685358995685),
-#         (2.101142529008752, -8.197853550354441),
-#     ],
-# }
-
 
 def ensure_local_binary() -> None:
     """Copy the up-to-date compiled SCIANTIX executable into this folder."""
@@ -58,7 +53,6 @@ def ensure_local_binary() -> None:
 
     shutil.copy2(BUILD_BINARY, LOCAL_BINARY)
 
-
 def template_input_files() -> list[Path]:
     """Return the template input files that are replicated for each case."""
     return sorted(
@@ -66,7 +60,6 @@ def template_input_files() -> list[Path]:
         for path in SCRIPT_DIR.glob("input_*")
         if path.is_file()
     )
-
 
 def prepare_case(case_dir: Path, temperature_k: int, input_files: list[Path]) -> None:
     """Populate one temperature case and overwrite its prescribed temperature."""
@@ -94,7 +87,6 @@ def prepare_case(case_dir: Path, temperature_k: int, input_files: list[Path]) ->
 
     history_path.write_text("\n".join(updated_lines) + "\n")
 
-
 def run_case(case_dir: Path) -> None:
     """Execute SCIANTIX for one prepared case directory."""
     subprocess.run(
@@ -102,7 +94,6 @@ def run_case(case_dir: Path) -> None:
         cwd=SCRIPT_DIR,
         check=True,
     )
-
 
 def collect_case(case_dir: Path) -> pd.DataFrame:
     """Load a case output and derive the quantities used in the plots."""
@@ -145,11 +136,10 @@ def style_maps():
     }
     return colors, linestyles, markers
 
-
 def add_legends(ax, colors: dict[int, object], linestyles: dict[str, str], markers: dict[str, str]) -> None:
     """Split the legend into temperature entries and model/source entries."""
     temperature_handles = [
-        Line2D([0], [0], color=colors[temperature_k], lw=2, label=f"{temperature_k} K")
+        Line2D([0], [0], color=colors[temperature_k], label=f"{temperature_k} K")
         for temperature_k in TEMPERATURES_K
     ]
     source_handles = [
@@ -157,10 +147,8 @@ def add_legends(ax, colors: dict[int, object], linestyles: dict[str, str], marke
             [0],
             [0],
             color="black",
-            lw=2,
             linestyle=linestyles[label] if linestyles[label] is not None else "None",
             marker=markers[label],
-            markersize=5,
             label=label,
         )
         for label in linestyles
@@ -168,18 +156,16 @@ def add_legends(ax, colors: dict[int, object], linestyles: dict[str, str], marke
 
     temperature_legend = ax.legend(
         handles=temperature_handles,
-        loc="upper left",
+        loc="lower right",
         ncol=2,
-        fontsize=8,
-        title="Temperature",
+        title="Temperature"
     )
     ax.add_artist(temperature_legend)
-    ax.legend(handles=source_handles, loc="lower right", title="Model")
-
+    ax.legend(handles=source_handles, loc="upper left", title="Model")
 
 def make_pressure_plot(frames: list[pd.DataFrame]) -> None:
     """Plot oxygen partial pressure versus O/U ratio for all temperatures."""
-    fig, ax = plt.subplots(figsize=(10, 7))
+    fig, ax = plt.subplots()
     colors, linestyles, markers = style_maps()
     pressure_columns = {
         "Final": "log10(Final pressure / reference)",
@@ -200,7 +186,6 @@ def make_pressure_plot(frames: list[pd.DataFrame]) -> None:
                     valid[column],
                     color=colors[temperature_k],
                     linestyle="-",
-                    linewidth=1.8,
                 )
             else:
                 ax.scatter(
@@ -208,72 +193,23 @@ def make_pressure_plot(frames: list[pd.DataFrame]) -> None:
                     valid[column],
                     color=colors[temperature_k],
                     marker=markers[label],
-                    s=15,
                 )
-
-    # overlay_styles = {
-    #     "900°C": {"color": "black", "marker": "x"},
-    #     "1000°C": {"color": "black", "marker": "+"},
-    # }
-    # for label, points in TEMPORARY_REFERENCE_POINTS.items():
-    #     temporary_x, temporary_y = zip(*points)
-    #     ax.scatter(
-    #         temporary_x,
-    #         temporary_y,
-    #         color=overlay_styles[label]["color"],
-    #         marker=overlay_styles[label]["marker"],
-    #         s=45,
-    #         linewidths=1.2,
-    #         label=label,
-    #         zorder=5,
-    #     )
 
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
     ax.grid(True, alpha=0.3)
     add_legends(ax, colors, linestyles, markers)
-    # overlay_legend = ax.legend(
-    #     handles=[
-    #         Line2D(
-    #             [0],
-    #             [0],
-    #             color="black",
-    #             marker="x",
-    #             linestyle="None",
-    #             markersize=6,
-    #             markeredgewidth=1.2,
-    #             label="900°C",
-    #         ),
-    #         Line2D(
-    #             [0],
-    #             [0],
-    #             color="black",
-    #             marker="+",
-    #             linestyle="None",
-    #             markersize=7,
-    #             markeredgewidth=1.2,
-    #             label="1000°C",
-    #         ),
-    #     ],
-    #     loc="center right",
-    #     bbox_to_anchor=(1.0, 0.30),
-    #     frameon=True,
-    #     title="Overlay",
-    # )
-    # ax.add_artist(overlay_legend)
-    # Match the y-range commonly used in the Gueneau comparison plots.
     ax.set_xlim([1.90, 2.20])
-    ax.set_ylim([-22, -2])
-    ax.set_yticks(range(-22, 0, 2))
+    ax.set_ylim([-30, 0])
+    ax.set_yticks(range(-30, 0, 2))
 
     fig.tight_layout()
-    fig.savefig(PRESSURE_PLOT_PATH, dpi=300)
+    fig.savefig(PRESSURE_PLOT_PATH)
     plt.close(fig)
-
 
 def make_potential_plot(frames: list[pd.DataFrame]) -> None:
     """Plot oxygen potential versus O/U ratio for all temperatures."""
-    fig, ax = plt.subplots(figsize=(10, 7))
+    fig, ax = plt.subplots()
     colors, linestyles, markers = style_maps()
     potential_columns = {
         "Final": "Fuel oxygen potential (KJ/mol)",
@@ -294,7 +230,6 @@ def make_potential_plot(frames: list[pd.DataFrame]) -> None:
                     valid[column],
                     color=colors[temperature_k],
                     linestyle="-",
-                    linewidth=1.8,
                 )
             else:
                 ax.scatter(
@@ -302,7 +237,6 @@ def make_potential_plot(frames: list[pd.DataFrame]) -> None:
                     valid[column],
                     color=colors[temperature_k],
                     marker=markers[label],
-                    s=15,
                 )
 
     ax.set_xlim([1.90, 2.20])
@@ -314,7 +248,7 @@ def make_potential_plot(frames: list[pd.DataFrame]) -> None:
     add_legends(ax, colors, linestyles, markers)
 
     fig.tight_layout()
-    fig.savefig(POTENTIAL_PLOT_PATH, dpi=300)
+    fig.savefig(POTENTIAL_PLOT_PATH)
     plt.close(fig)
 
 

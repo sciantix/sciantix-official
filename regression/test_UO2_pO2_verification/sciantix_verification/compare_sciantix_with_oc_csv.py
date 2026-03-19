@@ -28,6 +28,22 @@ from matplotlib.lines import Line2D
 import numpy as np
 import pandas as pd
 
+plt.rcParams.update({
+    "figure.figsize": (10, 7),
+    "font.size": 12,
+    "axes.labelsize": 15,
+    "axes.titlesize": 12,
+    "xtick.labelsize": 12,
+    "ytick.labelsize": 12,
+    "legend.fontsize": 12,
+    "figure.dpi": 300,
+    "axes.grid": True,
+    "grid.alpha": 0.5,
+    "grid.linestyle": "--",
+    "lines.linewidth": 2,
+    "lines.markersize": 4,
+    "legend.frameon": False,
+})
 
 REFERENCE_PRESSURE_PA = 1e5
 REFERENCE_PRESSURE_MPA = REFERENCE_PRESSURE_PA / 1.0e6
@@ -47,6 +63,17 @@ ABSOLUTE_LOG_PO2_ERROR_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_log_pO2_erro
 RELATIVE_LOG_PO2_ERROR_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_log_pO2_error_relative_percent.png"
 POTENTIAL_ERROR_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_potential_error_percent.png"
 
+BLACKBURN_MERGED_OUTPUT_PATH = SCRIPT_DIR / "sciantix_vs_blackburn_formula.tsv"
+BLACKBURN_SUMMARY_OUTPUT_PATH = SCRIPT_DIR / "sciantix_vs_blackburn_formula_summary.tsv"
+BLACKBURN_PO2_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_blackburn_formula_pO2.png"
+BLACKBURN_SIGNED_LOG_PO2_ERROR_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_blackburn_formula_log_pO2_error.png"
+BLACKBURN_ABSOLUTE_LOG_PO2_ERROR_PLOT_PATH = (
+    SCRIPT_DIR / "sciantix_vs_blackburn_formula_log_pO2_error_absolute.png"
+)
+BLACKBURN_RELATIVE_LOG_PO2_ERROR_PLOT_PATH = (
+    SCRIPT_DIR / "sciantix_vs_blackburn_formula_log_pO2_error_relative_percent.png"
+)
+
 
 def load_sciantix_data() -> pd.DataFrame:
     """Load the parent-folder sweep summary and normalize key column types."""
@@ -55,6 +82,7 @@ def load_sciantix_data() -> pd.DataFrame:
     frame["Temperature (K)"] = frame["Temperature (K)"].astype(float)
     frame["O/U ratio (/)"] = frame["O/U ratio (/)"].astype(float)
     frame["System pressure (Pa)"] = frame["System pressure (Pa)"].astype(float)
+    frame["Stoichiometry deviation (/)"] = frame["Stoichiometry deviation (/)"].astype(float)
     return frame
 
 
@@ -97,12 +125,12 @@ def add_legends(ax, temperatures: list[float], colors: dict[float, object]) -> N
         for temp in temperatures
     ]
     model_handles = [
-        Line2D([0], [0], color="black", lw=1.5, linestyle="-",  marker="s", markersize=2 ,label="SCIANTIX + OpenCalphad"),
-        Line2D([0], [0], color="black", marker="o", linestyle="None", markersize=6, label="OpenCalphad alone"),
+        Line2D([0], [0], color="black", linestyle="-", label="SCIANTIX + OpenCalphad"),
+        Line2D([0], [0], color="black", marker="o", linestyle="None", label="OpenCalphad alone"),
     ]
-    first = ax.legend(handles=temperature_handles, loc="upper left", ncol=2, fontsize=8, title="Temperature")
+    first = ax.legend(handles=temperature_handles, loc="lower right", ncol=2, title="Temperature")
     ax.add_artist(first)
-    ax.legend(handles=model_handles, loc="lower right", fontsize=8, title="Series")
+    ax.legend(handles=model_handles, loc="upper left", title="Series")
 
 
 def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
@@ -116,7 +144,7 @@ def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
     colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
 
     # Duplicate the figure with the Gueneau-style y-range used in the report plots.
-    fig, ax = plt.subplots(figsize=(12, 8))
+    fig, ax = plt.subplots()
     for temperature, group in frame1.groupby("Temperature (K)", sort=True):
         group = group.sort_values("O/U ratio (/)")
         for column, (linestyle, marker) in styles.items():
@@ -129,10 +157,7 @@ def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
                     valid["O/U ratio (/)"],
                     value,
                     color=colors[temperature],
-                    linestyle=linestyle,
-                    linewidth=1.5,
-                    marker=marker,
-                    markersize=2
+                    linestyle=linestyle
                 )
 
     for temperature, group in frame2.groupby("Temperature (K)", sort=True):
@@ -147,19 +172,95 @@ def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
             color=colors[temperature],
             marker="o",
             linestyle="None",
-            markersize=6.0,
         )
 
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
     ax.set_xlim([1.90, 2.20])
-    ax.set_ylim([-22, -2])
-    ax.set_yticks(range(-22, 0, 2))
-    ax.set_title("SCIANTIX vs standalone OpenCalphad")
+    ax.set_ylim([-30, 0])
+    ax.set_yticks(range(-30, 0, 2))
     ax.grid(True, alpha=0.3)
     add_legends(ax, temperatures, colors)
     fig.tight_layout()
-    fig.savefig(SCRIPT_DIR / "sciantix_vs_oc_csv_pO2.png", dpi=300)
+    fig.savefig(SCRIPT_DIR / "sciantix_vs_oc_csv_pO2.png")
+    plt.close(fig)
+
+
+def compute_blackburn_formula(frame: pd.DataFrame) -> pd.DataFrame:
+    """Recompute Blackburn pO2 from the analytical expression."""
+    blackburn = frame.copy()
+    x = blackburn["Stoichiometry deviation (/)"].to_numpy(dtype=float)
+    temperature = blackburn["Temperature (K)"].to_numpy(dtype=float)
+    ratio_term = x * (2.0 + x) / (1.0 - x)
+
+    analytical_pressure = np.full(len(blackburn), np.nan, dtype=float)
+    valid = (temperature > 0.0) & (ratio_term > 0.0)
+    ln_p = (
+        2.0 * np.log(ratio_term[valid])
+        + 108.0 * np.square(x[valid])
+        - 32700.0 / temperature[valid]
+        + 9.92
+    )
+    analytical_pressure[valid] = 0.1013 * np.exp(ln_p)
+
+    blackburn["Blackburn analytical pO2 (MPa)"] = analytical_pressure
+    blackburn["Blackburn analytical log10(pO2/p_ref)"] = np.where(
+        analytical_pressure > 0.0,
+        np.log10(analytical_pressure / 0.1013),
+        np.nan,
+    )
+    return blackburn
+
+
+def plot_blackburn_partial_pressure(frame: pd.DataFrame) -> None:
+    """Overlay SCIANTIX Blackburn output with the reconstructed Blackburn formula."""
+    temperatures = sorted(frame["Temperature (K)"].dropna().unique())
+    cmap = plt.get_cmap("turbo", len(temperatures))
+    colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
+
+    fig, ax = plt.subplots()
+    for temperature, group in frame.groupby("Temperature (K)", sort=True):
+        group = group.sort_values("O/U ratio (/)")
+        sciantix_valid = group[group["Fuel oxygen partial pressure - Blackburn (MPa)"] > 0.0]
+        if not sciantix_valid.empty:
+            ax.plot(
+                sciantix_valid["O/U ratio (/)"],
+                np.log10(sciantix_valid["Fuel oxygen partial pressure - Blackburn (MPa)"] / REFERENCE_PRESSURE_MPA),
+                color=colors[temperature],
+                linestyle="-",
+            )
+
+        analytical_valid = group[group["Blackburn analytical pO2 (MPa)"] > 0.0]
+        if not analytical_valid.empty:
+            ax.plot(
+                analytical_valid["O/U ratio (/)"],
+                analytical_valid["Blackburn analytical log10(pO2/p_ref)"],
+                color=colors[temperature],
+                marker="o",
+                linestyle="None",
+            )
+
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
+    ax.set_xlim([1.90, 2.20])
+    ax.set_ylim([-30, 0])
+    ax.set_yticks(range(-30, 0, 2))
+    ax.grid(True, alpha=0.3)
+
+    temperature_handles = [
+        Line2D([0], [0], color=colors[temp], lw=2, label=f"{int(temp)} K")
+        for temp in temperatures
+    ]
+    model_handles = [
+        Line2D([0], [0], color="black", linestyle="-", label="SCIANTIX Blackburn output"),
+        Line2D([0], [0], color="black", marker="o", linestyle="None", label="Analytical Blackburn formula"),
+    ]
+    first = ax.legend(handles=temperature_handles, loc="lower right", ncol=2, title="Temperature")
+    ax.add_artist(first)
+    ax.legend(handles=model_handles, loc="upper left", title="Series")
+
+    fig.tight_layout()
+    fig.savefig(BLACKBURN_PO2_PLOT_PATH)
     plt.close(fig)
 
 
@@ -221,6 +322,35 @@ def interpolate_sciantix_to_oc_points(
     return aligned.sort_values(["Temperature (K)", "O/U ratio (/)"]).reset_index(drop=True)
 
 
+def compare_blackburn_formula(frame: pd.DataFrame) -> pd.DataFrame:
+    """Compare SCIANTIX Blackburn output against the reconstructed analytical formula."""
+    aligned = frame.copy()
+    valid = (
+        (aligned["Fuel oxygen partial pressure - Blackburn (MPa)"] > 0.0)
+        & (aligned["Blackburn analytical pO2 (MPa)"] > 0.0)
+    )
+    aligned = aligned.loc[valid].copy()
+    if aligned.empty:
+        raise RuntimeError("No valid Blackburn verification points were found in the SCIANTIX sweep.")
+
+    aligned["SCIANTIX Blackburn log10(pO2/p_ref)"] = np.log10(
+        aligned["Fuel oxygen partial pressure - Blackburn (MPa)"] / REFERENCE_PRESSURE_MPA
+    )
+    aligned["Blackburn formula log10(pO2/p_ref)"] = aligned["Blackburn analytical log10(pO2/p_ref)"]
+    aligned["log10(pO2/p_ref) error"] = (
+        aligned["SCIANTIX Blackburn log10(pO2/p_ref)"]
+        - aligned["Blackburn formula log10(pO2/p_ref)"]
+    )
+    aligned["Absolute log10(pO2/p_ref) error"] = aligned["log10(pO2/p_ref) error"].abs()
+    denominator = aligned["Blackburn formula log10(pO2/p_ref)"].abs()
+    aligned["Relative log10(pO2/p_ref) error (%)"] = np.where(
+        denominator > 0.0,
+        aligned["Absolute log10(pO2/p_ref) error"] / denominator * 100.0,
+        np.nan,
+    )
+    return aligned.sort_values(["Temperature (K)", "O/U ratio (/)"]).reset_index(drop=True)
+
+
 def _rounded_upper_limit(values: pd.Series, step: float, floor: float) -> float:
     """Round an upper bound upward to a clean plotting limit."""
     finite_values = values.replace([np.inf, -np.inf], np.nan).dropna()
@@ -236,34 +366,63 @@ def plot_signed_log_partial_pressure_error(frame: pd.DataFrame) -> None:
     cmap = plt.get_cmap("turbo", len(temperatures))
     colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
 
-    fig, ax = plt.subplots(figsize=(12, 8))
+    fig, ax = plt.subplots()
     for temperature, group in frame.groupby("Temperature (K)", sort=True):
         group = group.sort_values("O/U ratio (/)")
         ax.plot(
             group["O/U ratio (/)"],
             group["log10(pO2/p_ref) error"],
             color=colors[temperature],
-            linewidth=1.5,
             marker="o",
-            markersize=3.0,
         )
 
-    ax.axhline(0.0, color="black", linestyle="--", linewidth=1.0)
+    ax.axhline(0.0, color="black", linestyle="--")
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})$ (-)")
     ax.set_xlim([1.90, 2.20])
-    error_max = frame["log10(pO2/p_ref) error"].abs().max()
-    y_limit = max(0.1, math.ceil(error_max / 0.02) * 0.02)
+    y_limit = 0.15
     ax.set_ylim([-y_limit, y_limit])
-    ax.set_title("Interpolated SCIANTIX log(pO2) error vs standalone OpenCalphad")
     ax.grid(True, alpha=0.3)
     temperature_handles = [
-        Line2D([0], [0], color=colors[temp], lw=2, label=f"{int(temp)} K")
+        Line2D([0], [0], color=colors[temp], label=f"{int(temp)} K")
         for temp in temperatures
     ]
-    ax.legend(handles=temperature_handles, loc="best", ncol=2, fontsize=8, title="Temperature")
+    ax.legend(handles=temperature_handles, loc="best", ncol=2, title="Temperature")
     fig.tight_layout()
-    fig.savefig(SIGNED_LOG_PO2_ERROR_PLOT_PATH, dpi=300)
+    fig.savefig(SIGNED_LOG_PO2_ERROR_PLOT_PATH)
+    plt.close(fig)
+
+
+def plot_blackburn_signed_log_partial_pressure_error(frame: pd.DataFrame) -> None:
+    """Plot the signed SCIANTIX-versus-Blackburn log10(pO2/p_ref) error."""
+    temperatures = sorted(frame["Temperature (K)"].dropna().unique())
+    cmap = plt.get_cmap("turbo", len(temperatures))
+    colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
+
+    fig, ax = plt.subplots()
+    for temperature, group in frame.groupby("Temperature (K)", sort=True):
+        group = group.sort_values("O/U ratio (/)")
+        ax.plot(
+            group["O/U ratio (/)"],
+            group["log10(pO2/p_ref) error"],
+            color=colors[temperature],
+            marker="o",
+        )
+
+    ax.axhline(0.0, color="black", linestyle="--")
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel(r"$\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})$ (-)")
+    ax.set_xlim([1.90, 2.20])
+    y_limit = 0.15
+    ax.set_ylim([-y_limit, y_limit])
+    ax.grid(True, alpha=0.3)
+    temperature_handles = [
+        Line2D([0], [0], color=colors[temp], label=f"{int(temp)} K")
+        for temp in temperatures
+    ]
+    ax.legend(handles=temperature_handles, loc="best", ncol=2, title="Temperature")
+    fig.tight_layout()
+    fig.savefig(BLACKBURN_SIGNED_LOG_PO2_ERROR_PLOT_PATH)
     plt.close(fig)
 
 
@@ -273,32 +432,61 @@ def plot_absolute_log_partial_pressure_error(frame: pd.DataFrame) -> None:
     cmap = plt.get_cmap("turbo", len(temperatures))
     colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
 
-    fig, ax = plt.subplots(figsize=(12, 8))
+    fig, ax = plt.subplots()
     for temperature, group in frame.groupby("Temperature (K)", sort=True):
         group = group.sort_values("O/U ratio (/)")
         ax.plot(
             group["O/U ratio (/)"],
             group["Absolute log10(pO2/p_ref) error"],
             color=colors[temperature],
-            linewidth=1.5,
             marker="o",
-            markersize=3.0,
         )
 
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$|\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})|$ (-)")
     ax.set_xlim([1.90, 2.20])
-    y_limit = _rounded_upper_limit(frame["Absolute log10(pO2/p_ref) error"], step=0.02, floor=0.1)
+    y_limit = 0.15
     ax.set_ylim([0.0, y_limit])
-    ax.set_title("Absolute SCIANTIX log(pO2) error vs standalone OpenCalphad")
     ax.grid(True, alpha=0.3)
     temperature_handles = [
         Line2D([0], [0], color=colors[temp], lw=2, label=f"{int(temp)} K")
         for temp in temperatures
     ]
-    ax.legend(handles=temperature_handles, loc="best", ncol=2, fontsize=8, title="Temperature")
+    ax.legend(handles=temperature_handles, loc="best", ncol=2, title="Temperature")
     fig.tight_layout()
-    fig.savefig(ABSOLUTE_LOG_PO2_ERROR_PLOT_PATH, dpi=300)
+    fig.savefig(ABSOLUTE_LOG_PO2_ERROR_PLOT_PATH)
+    plt.close(fig)
+
+
+def plot_blackburn_absolute_log_partial_pressure_error(frame: pd.DataFrame) -> None:
+    """Plot the absolute SCIANTIX-versus-Blackburn log10(pO2/p_ref) error."""
+    temperatures = sorted(frame["Temperature (K)"].dropna().unique())
+    cmap = plt.get_cmap("turbo", len(temperatures))
+    colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
+
+    fig, ax = plt.subplots()
+    for temperature, group in frame.groupby("Temperature (K)", sort=True):
+        group = group.sort_values("O/U ratio (/)")
+        ax.plot(
+            group["O/U ratio (/)"],
+            group["Absolute log10(pO2/p_ref) error"],
+            color=colors[temperature],
+            marker="o",
+        )
+
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel(r"$|\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})|$ (-)")
+    ax.set_xlim([1.90, 2.20])
+    y_limit = 0.15
+    ax.set_ylim([0.0, y_limit])
+    ax.grid(True, alpha=0.3)
+    temperature_handles = [
+        Line2D([0], [0], color=colors[temp], label=f"{int(temp)} K")
+        for temp in temperatures
+    ]
+    ax.legend(handles=temperature_handles, loc="best", ncol=2, title="Temperature")
+    fig.tight_layout()
+    fig.savefig(BLACKBURN_ABSOLUTE_LOG_PO2_ERROR_PLOT_PATH)
     plt.close(fig)
 
 
@@ -308,7 +496,7 @@ def plot_relative_log_partial_pressure_error(frame: pd.DataFrame) -> None:
     cmap = plt.get_cmap("turbo", len(temperatures))
     colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
 
-    fig, ax = plt.subplots(figsize=(12, 8))
+    fig, ax = plt.subplots()
     valid_frame = frame.dropna(subset=["Relative log10(pO2/p_ref) error (%)"])
     for temperature, group in valid_frame.groupby("Temperature (K)", sort=True):
         group = group.sort_values("O/U ratio (/)")
@@ -316,25 +504,55 @@ def plot_relative_log_partial_pressure_error(frame: pd.DataFrame) -> None:
             group["O/U ratio (/)"],
             group["Relative log10(pO2/p_ref) error (%)"],
             color=colors[temperature],
-            linewidth=1.5,
-            marker="o",
-            markersize=3.0,
+            marker="o"
         )
 
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"Relative $|\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})|$ (%)")
     ax.set_xlim([1.90, 2.20])
-    y_limit = _rounded_upper_limit(valid_frame["Relative log10(pO2/p_ref) error (%)"], step=1.0, floor=5.0)
+    y_limit = 50
     ax.set_ylim([0.0, y_limit])
-    ax.set_title("Relative SCIANTIX log(pO2) error vs standalone OpenCalphad")
     ax.grid(True, alpha=0.3)
     temperature_handles = [
         Line2D([0], [0], color=colors[temp], lw=2, label=f"{int(temp)} K")
         for temp in temperatures
     ]
-    ax.legend(handles=temperature_handles, loc="best", ncol=2, fontsize=8, title="Temperature")
+    ax.legend(handles=temperature_handles, loc="best", ncol=2, title="Temperature")
     fig.tight_layout()
-    fig.savefig(RELATIVE_LOG_PO2_ERROR_PLOT_PATH, dpi=300)
+    fig.savefig(RELATIVE_LOG_PO2_ERROR_PLOT_PATH)
+    plt.close(fig)
+
+
+def plot_blackburn_relative_log_partial_pressure_error(frame: pd.DataFrame) -> None:
+    """Plot the relative SCIANTIX-versus-Blackburn log10(pO2/p_ref) error."""
+    temperatures = sorted(frame["Temperature (K)"].dropna().unique())
+    cmap = plt.get_cmap("turbo", len(temperatures))
+    colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
+
+    fig, ax = plt.subplots()
+    valid_frame = frame.dropna(subset=["Relative log10(pO2/p_ref) error (%)"])
+    for temperature, group in valid_frame.groupby("Temperature (K)", sort=True):
+        group = group.sort_values("O/U ratio (/)")
+        ax.plot(
+            group["O/U ratio (/)"],
+            group["Relative log10(pO2/p_ref) error (%)"],
+            color=colors[temperature],
+            marker="o",
+        )
+
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel(r"Relative $|\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})|$ (%)")
+    ax.set_xlim([1.90, 2.20])
+    y_limit = 50
+    ax.set_ylim([0.0, y_limit])
+    ax.grid(True, alpha=0.3)
+    temperature_handles = [
+        Line2D([0], [0], color=colors[temp], label=f"{int(temp)} K")
+        for temp in temperatures
+    ]
+    ax.legend(handles=temperature_handles, loc="best", ncol=2, title="Temperature")
+    fig.tight_layout()
+    fig.savefig(BLACKBURN_RELATIVE_LOG_PO2_ERROR_PLOT_PATH)
     plt.close(fig)
 
 
@@ -364,6 +582,30 @@ def main() -> None:
     plot_signed_log_partial_pressure_error(aligned_frame)
     plot_absolute_log_partial_pressure_error(aligned_frame)
     plot_relative_log_partial_pressure_error(aligned_frame)
+
+    blackburn_frame = compute_blackburn_formula(sciantix_frame)
+    plot_blackburn_partial_pressure(blackburn_frame)
+    blackburn_aligned = compare_blackburn_formula(blackburn_frame)
+    blackburn_aligned.to_csv(BLACKBURN_MERGED_OUTPUT_PATH, sep="\t", index=False)
+    blackburn_summary = blackburn_aligned.groupby("Temperature (K)", as_index=False).agg(
+        count=("log10(pO2/p_ref) error", "count"),
+        signed_mean=("log10(pO2/p_ref) error", "mean"),
+        signed_median=("log10(pO2/p_ref) error", "median"),
+        signed_min=("log10(pO2/p_ref) error", "min"),
+        signed_max=("log10(pO2/p_ref) error", "max"),
+        absolute_mean=("Absolute log10(pO2/p_ref) error", "mean"),
+        absolute_median=("Absolute log10(pO2/p_ref) error", "median"),
+        absolute_min=("Absolute log10(pO2/p_ref) error", "min"),
+        absolute_max=("Absolute log10(pO2/p_ref) error", "max"),
+        relative_mean_percent=("Relative log10(pO2/p_ref) error (%)", "mean"),
+        relative_median_percent=("Relative log10(pO2/p_ref) error (%)", "median"),
+        relative_min_percent=("Relative log10(pO2/p_ref) error (%)", "min"),
+        relative_max_percent=("Relative log10(pO2/p_ref) error (%)", "max"),
+    )
+    blackburn_summary.to_csv(BLACKBURN_SUMMARY_OUTPUT_PATH, sep="\t", index=False)
+    plot_blackburn_signed_log_partial_pressure_error(blackburn_aligned)
+    plot_blackburn_absolute_log_partial_pressure_error(blackburn_aligned)
+    plot_blackburn_relative_log_partial_pressure_error(blackburn_aligned)
 
 
 if __name__ == "__main__":
