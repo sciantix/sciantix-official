@@ -257,7 +257,7 @@ std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
                 double activity = std::sqrt(oxygen_partial_pressure / reference_oxygen_pressure_bar);
                 const double oxygen_content = std::max(0.0, sciantix_variable["Oxygen content"].getFinalValue());
 
-                component.content = grain_boundary * oxygen_content;
+                component.content = activity * oxygen_content;
             }
             else if (element_name == "U")
             {
