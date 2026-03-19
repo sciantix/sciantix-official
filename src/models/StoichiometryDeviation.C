@@ -335,7 +335,8 @@ void Simulation::StoichiometryDeviation()
          * The Kleykamp's relation holds provided there is no internal oxidation of Zr-alloy cladding, its validity range is limited to burnup < 5 FIMA.
          * Nevertheless the work of Spino and Peerani indicates that the relation holds up to 10 FIMA.
          * 
-         * J. Spino and P. Peerani. Oxygen stoichiometry shift of irradiated LWR-fuels at high burnups: Review of data and alternative interpretation of recently published results. J. Nucl. Mater., 375:8–25, 2008.
+         * J. Spino and P. Peerani. Oxygen stoichiometry shift of irradiated LWR-fuels at high burnups: 
+         * Review of data and alternative interpretation of recently published results. J. Nucl. Mater., 375:8–25, 2008.
          *
          */
         case 7:
@@ -386,6 +387,32 @@ void Simulation::StoichiometryDeviation()
 
             break;
         }
+        case 10:
+        {
+            reference += " : under development: fission + radial transport from Aitken.";
+
+            // Interaction term due to fission
+            double fissionrate_mol = history_variable["Fission rate"].getFinalValue()/avogadro_number;
+            parameter.push_back(fissionrate_mol);
+
+            // // Due to radial transport (Atkin model, for hypostoichiometric fuels)
+            // double Q = - 125e3;
+            // if (sciantix_variable["Stoichiometry deviation"].getInitialValue() > 0)
+            //     Q = 0;
+            
+            // double radialtransfer = exp(
+            //     Q/gas_constant*
+            //     (
+            //         1.0 / history_variable["Temperature"].getFinalValue() -
+            //         1.0 / history_variable["Temperature"].getInitialValue()
+            //     )
+            // );
+
+            model_.setParameter(parameter);
+            model_.setRef(reference);
+
+            break;
+        } 
 
 
         default:
@@ -450,6 +477,26 @@ void Simulation::StoichiometryDeviation()
             - sciantix_variable["Oxygen content"].getFinalValue()
             * sciantix_variable["Stoichiometry deviation"].getIncrement()
             * pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2)
+        );
+    }
+    else if (input_variable["iStoichiometryDeviation"].getValue() == 10)
+    {
+        sciantix_variable["Uranium content"].setFinalValue(
+            solver.Integrator(
+                sciantix_variable["Uranium content"].getFinalValue(),
+                - model["Stoichiometry deviation"].getParameter().at(0),
+                physics_variable["Time step"].getFinalValue()
+            )
+        );
+            
+        sciantix_variable["Stoichiometry deviation"].setFinalValue( 
+            solver.BinaryInteraction(
+                sciantix_variable["Stoichiometry deviation"].getFinalValue() + 2.0,
+                - model["Stoichiometry deviation"].getParameter().at(0)/
+                sciantix_variable["Oxygen content"].getFinalValue(),
+                physics_variable["Time step"].getFinalValue()
+            ) 
+            - 2.0
         );
     }
 

@@ -64,6 +64,12 @@ std::string toLowerCopy(std::string text)
     return text;
 }
 
+std::string toUpperCopy(std::string text)
+{
+    std::transform(text.begin(), text.end(), text.begin(), [](unsigned char c) { return std::toupper(c); });
+    return text;
+}
+
 std::string stripTdbExtension(const std::string& database_name)
 {
     if (database_name.size() >= 4)
@@ -242,6 +248,7 @@ std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
         }
         else if (isGrainBoundaryLocation(location))
         {
+            double grain_boundary = sciantix_variable["Grain boundary fraction"].getFinalValue();
             if (element_name == "O")
             {
                 // With O referenced to O2 gas at the standard pressure, AC(O)^2 = pO2 / pO2_ref.
@@ -250,7 +257,13 @@ std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
                 double activity = std::sqrt(oxygen_partial_pressure / reference_oxygen_pressure_bar);
                 const double oxygen_content = std::max(0.0, sciantix_variable["Oxygen content"].getFinalValue());
 
-                component.content = activity * oxygen_content;
+                component.content = grain_boundary * oxygen_content;
+            }
+            else if (element_name == "U")
+            {
+                const double uranium_content = std::max(0.0, sciantix_variable["Uranium content"].getFinalValue());
+
+                component.content = grain_boundary * uranium_content;
             }
             else
             {
@@ -393,15 +406,41 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                     thermochemistry_variable[variable_name].setFinalValue(
                         species_entry.second.moles * content_scaling_factor);
             }
+
+            // For non-condensed phases, OpenCalphad may report ionic constituents
+            // (e.g. CS+, MO+4) while SCIANTIX manifest entries are often expressed
+            // as element totals (e.g. CS, MO). Keep updating the phase-element
+            // variables from the parsed elemental composition as well.
+            for (const auto& element_entry : phase_data.elements)
+            {
+                const std::string variable_name = element_entry.first + " (" + phase_name + ", " + location + ")";
+                const std::string uppercase_variable_name =
+                    toUpperCopy(element_entry.first) + " (" + phase_name + ", " + location + ")";
+                const bool has_variable = thermochemistry_variable.isElementPresent(variable_name);
+                const bool has_uppercase_variable =
+                    thermochemistry_variable.isElementPresent(uppercase_variable_name);
+
+                if (has_variable)
+                    thermochemistry_variable[variable_name].setFinalValue(
+                        element_entry.second * content_scaling_factor);
+                else if (has_uppercase_variable)
+                    thermochemistry_variable[uppercase_variable_name].setFinalValue(
+                        element_entry.second * content_scaling_factor);
+            }
             continue;
         }
 
         for (const auto& element_entry : phase_data.elements)
         {
             const std::string variable_name = element_entry.first + " (" + phase_name + ", " + location + ")";
+            const std::string uppercase_variable_name =
+                toUpperCopy(element_entry.first) + " (" + phase_name + ", " + location + ")";
 
             if (thermochemistry_variable.isElementPresent(variable_name))
                 thermochemistry_variable[variable_name].setFinalValue(
+                    element_entry.second * content_scaling_factor);
+            else if (thermochemistry_variable.isElementPresent(uppercase_variable_name))
+                thermochemistry_variable[uppercase_variable_name].setFinalValue(
                     element_entry.second * content_scaling_factor);
         }
     }
@@ -442,7 +481,7 @@ void updateGrainBoundaryFromOutput(const std::map<std::string, OCPhaseData>& sol
 
     for (const auto& element : manifest_elements)
     {
-        if (element == "O")
+        if (element == "O" || element == "U")
             continue;
 
         double gas_moles = 0.0;
@@ -466,6 +505,10 @@ void Simulation::SetPhaseDiagram(std::string location)
 {
     if (isGrainBoundaryLocation(location))
     {
+        Matrix fuel_(matrices[0]);
+        double grain_boundary = 1.0 - (pow(fuel_.getGrainRadius(), 3.0)/pow(fuel_.getGrainRadius() + fuel_.getGrainBoundaryThickness(), 3.0));
+        sciantix_variable["Grain boundary fraction"].setFinalValue(grain_boundary);
+
         if (input_variable["iThermochimica"].getValue() == 0 ||
             sciantix_variable["Xe at grain boundary"].getInitialValue() <= 0.0)
         {
