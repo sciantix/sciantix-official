@@ -37,8 +37,10 @@ namespace
 enum class OpenCalphadSolveMode
 {
     GlobalEquilibrium,
+    CalculateCarefully,
     NoGlobalFallback,
     WithCheckAfterFallback,
+    RoundedInputGlobalEquilibrium,
 };
 
 struct OpenCalphadInputComponent
@@ -107,8 +109,12 @@ std::string solveModeLabel(OpenCalphadSolveMode mode)
             return "c e";
         case OpenCalphadSolveMode::NoGlobalFallback:
             return "c n";
+        case OpenCalphadSolveMode::CalculateCarefully:
+            return "c c";
         case OpenCalphadSolveMode::WithCheckAfterFallback:
             return "c w";
+        case OpenCalphadSolveMode::RoundedInputGlobalEquilibrium:
+            return "c e with rounded n(element)";
     }
 
     return "unknown";
@@ -118,23 +124,62 @@ std::string buildSolveCommandBlock(OpenCalphadSolveMode mode, double temperature
 {
     std::ostringstream commands;
 
-    if (mode == OpenCalphadSolveMode::NoGlobalFallback)
-    {
-        commands << "c e\n\n";
+    commands << "c e\n\n";
+    
+    if (mode == OpenCalphadSolveMode::NoGlobalFallback)    
         commands << "c n\n\n";
-    }
     else if (mode == OpenCalphadSolveMode::WithCheckAfterFallback)
     {
-        commands << "c e\n\n";
         commands << "c n\n\n";
         commands << "c w\n\n";
     }
-    else
-    {
-        commands << "c e\n\n";
-    }
+    else if (mode == OpenCalphadSolveMode::RoundedInputGlobalEquilibrium)
+        commands << "c c\n\n";
+    else if (mode == OpenCalphadSolveMode::CalculateCarefully)
+        commands << "c c\n\n";
 
     return commands.str();
+}
+
+std::vector<double> rounded(const std::vector<double>& fractions)
+{
+    std::vector<double> rounded_fractions(fractions.size(), 0.0);
+    if (fractions.empty())
+        return rounded_fractions;
+
+    const int scale = 1000;
+
+    std::vector<int> base_units(fractions.size(), 0);
+    std::vector<std::pair<double, size_t>> remainders;
+    int assigned_units = 0;
+
+    for (size_t index = 0; index < fractions.size(); ++index)
+    {
+        const double scaled = std::max(0.0, fractions[index]) * scale;
+        const int base = static_cast<int>(std::floor(scaled));
+        base_units[index] = base;
+        assigned_units += base;
+        remainders.push_back(std::make_pair(scaled - base, index));
+    }
+
+    std::sort(
+        remainders.begin(),
+        remainders.end(),
+        [](const std::pair<double, size_t>& left, const std::pair<double, size_t>& right)
+        {
+            if (left.first == right.first)
+                return left.second < right.second;
+            return left.first > right.first;
+        });
+
+    int remaining_units = std::max(0, scale - assigned_units);
+    for (int i = 0; i < remaining_units && i < static_cast<int>(remainders.size()); ++i)
+        base_units[remainders[i].second] += 1;
+
+    for (size_t index = 0; index < base_units.size(); ++index)
+        rounded_fractions[index] = static_cast<double>(base_units[index]) / scale;
+
+    return rounded_fractions;
 }
 
 void dumpParsedOcOutput(const OCOutputData& output_data)
@@ -290,6 +335,23 @@ std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
     for (auto& component : components)
         component.fraction = component.content / total_content;
 
+    components.erase(
+        std::remove_if(
+            components.begin(),
+            components.end(),
+            [](const OpenCalphadInputComponent& component) { return component.fraction < 1.0e-10; }),
+        components.end());
+
+    total_content = 0.0;
+    for (const auto& component : components)
+        total_content += component.content;
+
+    if (total_content <= 0.0 || components.empty())
+        return components;
+
+    for (auto& component : components)
+        component.fraction = component.content / total_content;
+
     return components;
 }
 
@@ -316,23 +378,45 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
     const std::vector<OpenCalphadInputComponent> input_components =
         buildOpenCalphadInputComponents(location, manifest_elements, sciantix_variable, total_input_content);
 
+    std::vector<OpenCalphadInputComponent> solve_components = input_components;
+
+    if (solve_mode == OpenCalphadSolveMode::RoundedInputGlobalEquilibrium)
+    {
+        std::vector<double> fractions;
+        fractions.reserve(solve_components.size());
+        for (const auto& component : solve_components)
+            fractions.push_back(component.fraction);
+
+        const std::vector<double> rounded_fractions = rounded(fractions);
+
+        for (size_t index = 0; index < solve_components.size(); ++index)
+            solve_components[index].fraction = rounded_fractions[index];
+
+        solve_components.erase(
+            std::remove_if(
+                solve_components.begin(),
+                solve_components.end(),
+                [](const OpenCalphadInputComponent& component) { return component.fraction <= 0.0; }),
+            solve_components.end());
+    }
+
     active_elements.clear();
-    for (const auto& component : input_components)
+    for (const auto& component : solve_components)
         active_elements.insert(component.name);
 
-    if (input_components.empty() || total_input_content <= 0.0)
+    if (solve_components.empty() || total_input_content <= 0.0)
         return false;
 
     input_file << "@$ Initialize variables:\n";
     input_file << "r t " << data_path;
-    for (const auto& component : input_components)
+    for (const auto& component : solve_components)
         input_file << " " << toLowerCopy(component.name);
     input_file << "\n\n";
     input_file << "set ref o gas * " << reference_oxygen_pressure_pa << "\n";
     input_file << "\nset c t=" << temperature << " p=" << pressure << " ";
-    if (input_components.size() > 1)
+    if (solve_components.size() > 1)
     {
-        for (const auto& component : input_components)
+        for (const auto& component : solve_components)
             input_file << "n(" << toLowerCopy(component.name) << ")=" << component.fraction << " ";
     }
     input_file << "\n\n" << buildSolveCommandBlock(solve_mode, temperature, pressure);
@@ -576,8 +660,10 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     std::set<std::string> active_elements;
     const std::vector<OpenCalphadSolveMode> solve_modes = {
         OpenCalphadSolveMode::GlobalEquilibrium,
+        OpenCalphadSolveMode::CalculateCarefully,
         OpenCalphadSolveMode::NoGlobalFallback,
         OpenCalphadSolveMode::WithCheckAfterFallback,
+        OpenCalphadSolveMode::RoundedInputGlobalEquilibrium,
     };
 
     for (const auto solve_mode : solve_modes)

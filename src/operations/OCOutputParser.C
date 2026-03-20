@@ -203,15 +203,19 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
             if (parts.size() < 5)
                 continue;
 
-            if (!isNumericToken(parts[1]) || !isNumericToken(parts[2]) || !isNumericToken(parts[3]) ||
-                !isNumericToken(parts[4]))
+            OCComponentData* component = nullptr;
+            try
+            {
+                component = &data.components[normalizeElementCase(parts[0], valid_elements)];
+                component->moles = safeFloat(parts[1]);
+                component->mole_fraction = safeFloat(parts[2]);
+                component->chemical_potential_over_rt = safeFloat(parts[3]);
+                component->activity = safeFloat(parts[4]);
+            }
+            catch (const std::exception&)
+            {
                 continue;
-
-            OCComponentData& component = data.components[normalizeElementCase(parts[0], valid_elements)];
-            component.moles = safeFloat(parts[1]);
-            component.mole_fraction = safeFloat(parts[2]);
-            component.chemical_potential_over_rt = safeFloat(parts[3]);
-            component.activity = safeFloat(parts[4]);
+            }
 
             if (parts.size() > 5)
             {
@@ -222,7 +226,7 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                         reference_state << " ";
                     reference_state << parts[token_index];
                 }
-                component.reference_state = reference_state.str();
+                component->reference_state = reference_state.str();
             }
 
             continue;
