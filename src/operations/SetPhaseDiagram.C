@@ -124,20 +124,31 @@ std::string buildSolveCommandBlock(OpenCalphadSolveMode mode, double temperature
 {
     std::ostringstream commands;
 
-    commands << "c e\n\n";
-    
     if (mode == OpenCalphadSolveMode::NoGlobalFallback)    
+    {
+        commands << "c e\n\n";
         commands << "c n\n\n";
+    }
     else if (mode == OpenCalphadSolveMode::WithCheckAfterFallback)
     {
+        commands << "c e\n\n";
         commands << "c n\n\n";
         commands << "c w\n\n";
     }
     else if (mode == OpenCalphadSolveMode::RoundedInputGlobalEquilibrium)
+    {
+        commands << "set n 1000\n\n";
+        commands << "c e\n\n";
         commands << "c c\n\n";
+    }
     else if (mode == OpenCalphadSolveMode::CalculateCarefully)
+    {
+        commands << "c e\n\n";
         commands << "c c\n\n";
-
+    }
+    else
+        commands << "c e\n\n";
+    
     return commands.str();
 }
 
@@ -147,7 +158,7 @@ std::vector<double> rounded(const std::vector<double>& fractions)
     if (fractions.empty())
         return rounded_fractions;
 
-    const int scale = 1000;
+    const int scale = 10000;
 
     std::vector<int> base_units(fractions.size(), 0);
     std::vector<std::pair<double, size_t>> remainders;
