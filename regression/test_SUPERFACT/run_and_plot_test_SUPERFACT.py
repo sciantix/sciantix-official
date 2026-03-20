@@ -22,6 +22,13 @@ RUN_SUMMARY = TEST_DIR / "run_summary.txt"
 THERMO_OUTPUT_NAME = "thermochemistry_output.txt"
 MAIN_OUTPUT_NAME = "output.txt"
 AVOGADRO_NUMBER = 6.02214076e23
+ATOMIC_MASS_G_PER_MOL = {
+    "Cs": 132.90545196,
+    "Mo": 95.95,
+    "O": 15.999,
+    "U": 238.02891,
+}
+CS2MOO4_LIQUID_DENSITY_KG_PER_M3 = 4380.0
 CASE_DIR_PATTERN = "point_*"
 PLOTS_DIR_NAME = "plots"
 EXP_DATA_DIR = TEST_DIR.parent / "test_JOG" / "exp_data"
@@ -317,11 +324,20 @@ def build_time_histories(case_dirs: list[Path], output_name: str) -> tuple[np.nd
 
     histories_by_radius.sort(key=lambda item: item[0])
     radii_mm = np.array([radius for radius, _ in histories_by_radius], dtype=float)
-    profile_names = histories_by_radius[0][1].keys()
-    histories = {
-        name: np.vstack([series_map[name] for _, series_map in histories_by_radius])
-        for name in profile_names
-    }
+    reference_series_map = max(histories_by_radius, key=lambda item: len(item[1]["Time (h)"]))[1]
+    reference_time = reference_series_map["Time (h)"]
+    common_names = set(reference_series_map.keys())
+    for _, series_map in histories_by_radius[1:]:
+        common_names &= set(series_map.keys())
+
+    histories: dict[str, np.ndarray] = {}
+    for name in sorted(common_names):
+        aligned_series = []
+        for _, series_map in histories_by_radius:
+            case_time = series_map["Time (h)"]
+            case_values = series_map[name]
+            aligned_series.append(np.interp(reference_time, case_time, case_values))
+        histories[name] = np.vstack(aligned_series)
 
     return radii_mm, histories
 
@@ -926,12 +942,391 @@ def plot_case_thermochemistry_group(
     plt.close(fig)
 
 
+def compute_case_thermochemistry_jog(
+    output_headers: list[str],
+    output_values: np.ndarray,
+    thermo_headers: list[str],
+    thermo_values: np.ndarray,
+) -> dict[str, np.ndarray | str]:
+    output_column_map = {name: idx for idx, name in enumerate(output_headers)}
+    thermo_column_map = {name: idx for idx, name in enumerate(thermo_headers)}
+
+    burnup = output_values[:, output_column_map["Burnup (MWd/kgUO2)"]]
+    time = output_values[:, output_column_map["Time (h)"]]
+    fima = output_values[:, output_column_map["FIMA (%)"]]
+    jog_fraction = output_values[:, output_column_map["JOG (/)"]]
+    thermochemistry_time = thermo_values[:, thermo_column_map["Time (h)"]]
+    thermochemistry_burnup = np.interp(thermochemistry_time, time, burnup)
+
+    liquid_cs_label = "CS (liquid, at grain boundary) (mol/m3)"
+    liquid_mo_label = "MO (liquid, at grain boundary) (mol/m3)"
+    liquid_o_label = "O (liquid, at grain boundary) (mol/m3)"
+    condensed_cs2moo4_s1_label = "CS2MOO4_S1 (condensed, at grain boundary) (mol/m3)"
+    condensed_cs2moo4_s2_label = "CS2MOO4_S2 (condensed, at grain boundary) (mol/m3)"
+
+    liquid_cs = np.zeros_like(thermochemistry_burnup)
+    if liquid_cs_label in thermo_column_map:
+        liquid_cs = thermo_values[:, thermo_column_map[liquid_cs_label]]
+
+    liquid_mo = np.zeros_like(thermochemistry_burnup)
+    if liquid_mo_label in thermo_column_map:
+        liquid_mo = thermo_values[:, thermo_column_map[liquid_mo_label]]
+
+    liquid_o = np.zeros_like(thermochemistry_burnup)
+    if liquid_o_label in thermo_column_map:
+        liquid_o = thermo_values[:, thermo_column_map[liquid_o_label]]
+
+    liquid_cs2moo4_limiters = np.vstack([
+        liquid_cs / 2.0,
+        liquid_mo,
+        liquid_o / 4.0,
+    ])
+    limiter_labels = ["Cs/2", "Mo", "O/4"]
+    limiter_index = np.argmin(liquid_cs2moo4_limiters, axis=0)
+    final_limiter_label = limiter_labels[int(limiter_index[-1])]
+    liquid_cs2moo4_available = np.min(liquid_cs2moo4_limiters, axis=0)
+
+    cs2moo4_molar_mass = (
+        2.0 * ATOMIC_MASS_G_PER_MOL["Cs"]
+        + ATOMIC_MASS_G_PER_MOL["Mo"]
+        + 4.0 * ATOMIC_MASS_G_PER_MOL["O"]
+    )
+
+    temperature = thermo_values[:, thermo_column_map["Temperature (K)"]]
+    temperature_celsius = temperature - 273.15
+    a_o_ref = 0.8499e-9
+    b_o_ref = 0.6551e-9
+    c_o_ref = 1.1586e-9
+    z_o = 4.0
+    z_h = 2.0
+    alpha_o = -7.12e-4 + 2.57e-5 * temperature_celsius + 4.03e-8 * temperature_celsius**2
+    alpha_h = -0.0102 + 8.50e-5 * temperature_celsius - 2.13e-8 * temperature_celsius**2
+    v_cell_o = (a_o_ref * b_o_ref * c_o_ref) * (1.0 + 3.0 * alpha_o)
+    v_cell_h = (a_o_ref * b_o_ref * c_o_ref) * (1.0 + 3.0 * alpha_h)
+    condensed_s1_density_g_per_m3 = (cs2moo4_molar_mass / AVOGADRO_NUMBER) * (z_o / v_cell_o)
+    condensed_s2_density_g_per_m3 = (cs2moo4_molar_mass / AVOGADRO_NUMBER) * (z_h / v_cell_h)
+
+    liquid_cs2moo4_volume_fraction = (
+        liquid_cs2moo4_available * cs2moo4_molar_mass / (CS2MOO4_LIQUID_DENSITY_KG_PER_M3 * 1000.0)
+    )
+    condensed_cs2moo4_s1_volume_fraction = np.zeros_like(thermochemistry_burnup)
+    if condensed_cs2moo4_s1_label in thermo_column_map:
+        condensed_cs2moo4_s1 = thermo_values[:, thermo_column_map[condensed_cs2moo4_s1_label]]
+        condensed_cs2moo4_s1_volume_fraction = (
+            condensed_cs2moo4_s1 * cs2moo4_molar_mass / condensed_s1_density_g_per_m3
+        )
+
+    condensed_cs2moo4_s2_volume_fraction = np.zeros_like(thermochemistry_burnup)
+    if condensed_cs2moo4_s2_label in thermo_column_map:
+        condensed_cs2moo4_s2 = thermo_values[:, thermo_column_map[condensed_cs2moo4_s2_label]]
+        condensed_cs2moo4_s2_volume_fraction = (
+            condensed_cs2moo4_s2 * cs2moo4_molar_mass / condensed_s2_density_g_per_m3
+        )
+
+    condensed_cs2moo4_volume_fraction = condensed_cs2moo4_s1_volume_fraction + condensed_cs2moo4_s2_volume_fraction
+    return {
+        "burnup": thermochemistry_burnup,
+        "time": thermochemistry_time,
+        "fima": np.interp(thermochemistry_time, time, fima),
+        "model_jog_fraction": np.interp(thermochemistry_time, time, jog_fraction),
+        "liquid_volume_fraction": liquid_cs2moo4_volume_fraction,
+        "condensed_volume_fraction": condensed_cs2moo4_volume_fraction,
+        "total_volume_fraction": liquid_cs2moo4_volume_fraction + condensed_cs2moo4_volume_fraction,
+        "limiter_labels": np.array(limiter_labels, dtype=object),
+        "limiter_index": limiter_index,
+        "final_limiter_label": final_limiter_label,
+        "liquid_limiters": liquid_cs2moo4_limiters,
+    }
+
+
+def plot_case_inventory_overview(
+    case_plot_dir: Path,
+    burnup: np.ndarray,
+    time: np.ndarray,
+    column_map: dict[str, int],
+    values: np.ndarray,
+    saved_paths: list[Path],
+) -> None:
+    required = [
+        "Grain boundary fraction (/)",
+        "Fuel oxygen partial pressure (MPa)",
+        "Oxygen content (mol/m3)",
+        "Uranium content (mol/m3)",
+        "Xe produced (at/m3)",
+        "Xe in grain (at/m3)",
+        "Xe at grain boundary (at/m3)",
+        "Xe released (at/m3)",
+        "Kr produced (at/m3)",
+        "Kr in grain (at/m3)",
+        "Kr at grain boundary (at/m3)",
+        "Kr released (at/m3)",
+        "Cs produced (at/m3)",
+        "Cs in grain (at/m3)",
+        "Cs at grain boundary (at/m3)",
+        "Cs reacted - GB (at/m3)",
+        "Cs released (at/m3)",
+        "Mo produced (at/m3)",
+        "Mo in grain (at/m3)",
+        "Mo at grain boundary (at/m3)",
+        "Mo reacted - GB (at/m3)",
+        "Mo released (at/m3)",
+    ]
+    if any(label not in column_map for label in required):
+        return
+
+    burnup_to_time, time_to_burnup = build_axis_mappers(burnup, time)
+    grain_boundary_fraction = values[:, column_map["Grain boundary fraction (/)"]]
+    oxygen_activity = np.sqrt(np.clip(values[:, column_map["Fuel oxygen partial pressure (MPa)"]], 0.0, None) / 0.1)
+
+    fig, axes = plt.subplots(3, 2, figsize=(12, 14))
+    axes = axes.flatten()
+
+    axis = axes[0]
+    axis.plot(burnup, values[:, column_map["Oxygen content (mol/m3)"]], color="C0", label="Total")
+    axis.plot(burnup, values[:, column_map["Oxygen content (mol/m3)"]] * grain_boundary_fraction, color="C2", label="* at grain boundary")
+    axis.plot(burnup, values[:, column_map["Oxygen content (mol/m3)"]] * oxygen_activity, color="C3", label="* activity(O)")
+    axis.set_xlabel("Burnup (MWd/kgUO2)")
+    axis.set_ylabel("Oxygen concentration (mol/m3)")
+    axis.set_yscale("log")
+    create_secondary_axis(axis, burnup_to_time, time_to_burnup, "Time (h)")
+    axis.legend(loc="upper left")
+
+    axis = axes[1]
+    axis.plot(burnup, values[:, column_map["Uranium content (mol/m3)"]], color="C0", label="Total")
+    axis.plot(burnup, values[:, column_map["Uranium content (mol/m3)"]] * grain_boundary_fraction, color="C2", label="At grain boundary")
+    axis.set_xlabel("Burnup (MWd/kgUO2)")
+    axis.set_ylabel("Uranium concentration (mol/m3)")
+    axis.set_yscale("log")
+    create_secondary_axis(axis, burnup_to_time, time_to_burnup, "Time (h)")
+    axis.legend(loc="upper left")
+
+    for axis, species, extras in [
+        (axes[2], "Xe", ["produced", "in grain", "at grain boundary", "released"]),
+        (axes[3], "Kr", ["produced", "in grain", "at grain boundary", "released"]),
+        (axes[4], "Cs", ["produced", "in grain", "at grain boundary", "reacted - GB", "released"]),
+        (axes[5], "Mo", ["produced", "in grain", "at grain boundary", "reacted - GB", "released"]),
+    ]:
+        labels = [f"{species} {item} (at/m3)" for item in extras]
+        colors = ["C0", "C1", "C2", "C4", "C3"][: len(labels)]
+        for color, label in zip(colors, labels):
+            axis.plot(burnup, values[:, column_map[label]] / AVOGADRO_NUMBER, color=color, label=label.replace(f"{species} ", "").replace(" (at/m3)", ""))
+        axis.set_xlabel("Burnup (MWd/kgUO2)")
+        axis.set_ylabel(f"{species} concentration (mol/m3)")
+        create_secondary_axis(axis, burnup_to_time, time_to_burnup, "Time (h)")
+        axis.legend(loc="upper left")
+
+    fig.tight_layout()
+    plot_path = append_saved_path(saved_paths, case_plot_dir, "inventory_mol_m3_overview.png")
+    fig.savefig(plot_path, dpi=220, bbox_inches="tight")
+    plt.close(fig)
+
+
+def plot_case_po2_and_muo2(
+    case_plot_dir: Path,
+    burnup: np.ndarray,
+    column_map: dict[str, int],
+    values: np.ndarray,
+    saved_paths: list[Path],
+) -> None:
+    po2_labels = [
+        "Fuel oxygen partial pressure (MPa)",
+        "Fuel oxygen partial pressure - CALPHAD (MPa)",
+        "Fuel oxygen partial pressure - Blackburn (MPa)",
+    ]
+    mu_labels = [
+        "Fuel oxygen potential (KJ/mol)",
+        "Fuel oxygen potential - CALPHAD (KJ/mol)",
+        "Fuel oxygen potential - Blackburn (KJ/mol)",
+    ]
+    if all(label in column_map for label in po2_labels):
+        fig, axis = plt.subplots()
+        axis.plot(burnup, np.log10(np.clip(values[:, column_map[po2_labels[0]]], 1.0e-30, None) / 0.1), color="C0", label="SCIANTIX")
+        axis.plot(burnup, np.log10(np.clip(values[:, column_map[po2_labels[1]]], 1.0e-30, None) / 0.1), color="C1", label="CALPHAD")
+        axis.plot(burnup, np.log10(np.clip(values[:, column_map[po2_labels[2]]], 1.0e-30, None) / 0.1), color="C2", label="Blackburn model")
+        axis.set_xlabel("Burnup (MWd/kgUO2)")
+        axis.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
+        axis.legend()
+        fig.tight_layout()
+        plot_path = append_saved_path(saved_paths, case_plot_dir, "po2.png")
+        fig.savefig(plot_path, bbox_inches="tight")
+        plt.close(fig)
+
+    if all(label in column_map for label in mu_labels):
+        fig, axis = plt.subplots()
+        axis.plot(burnup, values[:, column_map[mu_labels[0]]], color="C0", label="SCIANTIX")
+        axis.plot(burnup, values[:, column_map[mu_labels[1]]], color="C1", label="CALPHAD")
+        axis.plot(burnup, values[:, column_map[mu_labels[2]]], color="C2", label="Blackburn model")
+        axis.set_xlabel("Burnup (MWd/kgUO2)")
+        axis.set_ylabel("Fuel oxygen potential (kJ/mol)")
+        axis.legend()
+        fig.tight_layout()
+        plot_path = append_saved_path(saved_paths, case_plot_dir, "muo2.png")
+        fig.savefig(plot_path, bbox_inches="tight")
+        plt.close(fig)
+
+
+def plot_case_thermochemistry_jog(
+    case_plot_dir: Path,
+    case_dir: Path,
+    output_headers: list[str],
+    output_values: np.ndarray,
+    thermo_headers: list[str],
+    thermo_values: np.ndarray,
+    saved_paths: list[Path],
+) -> None:
+    derived = compute_case_thermochemistry_jog(output_headers, output_values, thermo_headers, thermo_values)
+    radius_m = parse_radius_mm(case_dir) * 1.0e-3
+
+    thermochemistry_jog_thickness_um = derived["total_volume_fraction"] * (radius_m / 2.0) * 1.0e6
+    liquid_thickness_um = derived["liquid_volume_fraction"] * (radius_m / 2.0) * 1.0e6
+    condensed_thickness_um = derived["condensed_volume_fraction"] * (radius_m / 2.0) * 1.0e6
+    model_jog_thickness_um = derived["model_jog_fraction"] * (radius_m / 2.0) * 1.0e6
+
+    fig, axis = plt.subplots()
+    axis.stackplot(
+        derived["burnup"],
+        liquid_thickness_um,
+        condensed_thickness_um,
+        labels=["Liquid stoichiometric Cs2MoO4", "Condensed Cs2MoO4"],
+        colors=["#fb923c", "#7c3aed"],
+        alpha=0.75,
+    )
+    axis.plot(derived["burnup"], thermochemistry_jog_thickness_um, color="#111827", label="Total estimated thickness")
+    axis.plot(derived["fima"], model_jog_thickness_um, color="#059669", linestyle="--", label="SCIANTIX JOG thickness")
+    axis.text(
+        0.02,
+        0.98,
+        f"Liquid Cs2MoO4 = min(Cs/2, Mo, O/4)\nFinal limiting factor: {derived['final_limiter_label']}",
+        transform=axis.transAxes,
+        ha="left",
+        va="top",
+    )
+    axis.set_xlabel("Burnup (MWd/kgUO2)")
+    axis.set_ylabel("JOG thickness (um)")
+    axis.legend()
+    fig.tight_layout()
+    plot_path = append_saved_path(saved_paths, case_plot_dir, "JOG_thickness_from_thermochemistry.png")
+    fig.savefig(plot_path, bbox_inches="tight")
+    plt.close(fig)
+
+
+def build_thermochemistry_jog_profiles(case_dirs: list[Path]) -> tuple[np.ndarray, dict[str, np.ndarray]]:
+    radii_mm: list[float] = []
+    profiles: dict[str, list[float]] = {
+        "Thermochemistry JOG total": [],
+        "Thermochemistry JOG liquid": [],
+        "Thermochemistry JOG condensed": [],
+        "SCIANTIX JOG": [],
+    }
+
+    for case_dir in case_dirs:
+        output_headers, output_values = load_output_data(case_dir / MAIN_OUTPUT_NAME)
+        thermo_headers, thermo_values = load_output_data(case_dir / THERMO_OUTPUT_NAME)
+        derived = compute_case_thermochemistry_jog(output_headers, output_values, thermo_headers, thermo_values)
+        radii_mm.append(parse_radius_mm(case_dir))
+        profiles["Thermochemistry JOG total"].append(float(derived["total_volume_fraction"][-1]))
+        profiles["Thermochemistry JOG liquid"].append(float(derived["liquid_volume_fraction"][-1]))
+        profiles["Thermochemistry JOG condensed"].append(float(derived["condensed_volume_fraction"][-1]))
+        profiles["SCIANTIX JOG"].append(float(derived["model_jog_fraction"][-1]))
+
+    radii = np.array(radii_mm, dtype=float)
+    order = np.argsort(radii)
+    return radii[order], {name: np.array(values, dtype=float)[order] for name, values in profiles.items()}
+
+
+def plot_thermochemistry_jog_radial_profiles(
+    radii_mm: np.ndarray,
+    jog_profiles: dict[str, np.ndarray],
+    plot_dir: Path,
+    saved_paths: list[Path],
+) -> None:
+    radius_fraction = radii_mm / radii_mm.max()
+    fig, axes = plt.subplots(1, 2, figsize=(18, 7.5), sharex=True)
+    axes[0].plot(radius_fraction, jog_profiles["SCIANTIX JOG"], color="#059669", marker="o", label="SCIANTIX JOG")
+    axes[0].plot(radius_fraction, jog_profiles["Thermochemistry JOG total"], color="#111827", marker="o", label="Thermochemistry total")
+    style_axis(axes[0], "JOG Radial Profile", "Radius / Rmax (-)", "JOG (/)")
+    axes[0].legend(loc="best")
+
+    axes[1].plot(radius_fraction, jog_profiles["Thermochemistry JOG liquid"], color="#fb923c", marker="o", label="Liquid Cs2MoO4")
+    axes[1].plot(radius_fraction, jog_profiles["Thermochemistry JOG condensed"], color="#7c3aed", marker="o", label="Condensed Cs2MoO4")
+    axes[1].plot(radius_fraction, jog_profiles["Thermochemistry JOG total"], color="#111827", marker="o", label="Total")
+    style_axis(axes[1], "Thermochemistry JOG Radial Profile", "Radius / Rmax (-)", "Volume fraction (m3 compound / m3 fuel)")
+    axes[1].legend(loc="best")
+
+    fig.tight_layout()
+    plot_path = append_saved_path(saved_paths, plot_dir, "jog_thermochemistry_radial_summary.png")
+    fig.savefig(plot_path, dpi=220, bbox_inches="tight")
+    plt.close(fig)
+
+
+def plot_thermochemistry_jog_thickness_vs_fima(
+    radii_mm: np.ndarray,
+    case_dirs: list[Path],
+    plot_dir: Path,
+    saved_paths: list[Path],
+) -> None:
+    radii_m = radii_mm * 1.0e-3
+    ring_areas = compute_annulus_areas(radii_m)
+    outer_radius_m = radii_m[-1]
+
+    derived_by_radius: list[tuple[float, dict[str, np.ndarray | str]]] = []
+
+    for case_dir in case_dirs:
+        output_headers, output_values = load_output_data(case_dir / MAIN_OUTPUT_NAME)
+        thermo_headers, thermo_values = load_output_data(case_dir / THERMO_OUTPUT_NAME)
+        derived_by_radius.append((parse_radius_mm(case_dir), compute_case_thermochemistry_jog(output_headers, output_values, thermo_headers, thermo_values)))
+
+    derived_by_radius.sort(key=lambda item: item[0])
+    reference = max(derived_by_radius, key=lambda item: len(item[1]["time"]))[1]
+    reference_time = reference["time"]
+    fima_reference = np.interp(reference_time, reference["time"], reference["fima"])
+
+    total_series = []
+    liquid_series = []
+    condensed_series = []
+    model_series = []
+    for _, derived in derived_by_radius:
+        derived_time = derived["time"]
+        total_series.append(np.interp(reference_time, derived_time, derived["total_volume_fraction"]))
+        liquid_series.append(np.interp(reference_time, derived_time, derived["liquid_volume_fraction"]))
+        condensed_series.append(np.interp(reference_time, derived_time, derived["condensed_volume_fraction"]))
+        model_series.append(np.interp(reference_time, derived_time, derived["model_jog_fraction"]))
+
+    total_stack = np.vstack(total_series)
+    liquid_stack = np.vstack(liquid_series)
+    condensed_stack = np.vstack(condensed_series)
+    model_stack = np.vstack(model_series)
+
+    total_thickness_um = np.sum(total_stack * ring_areas[:, np.newaxis], axis=0) / (2.0 * math.pi * outer_radius_m) * 1.0e6
+    liquid_thickness_um = np.sum(liquid_stack * ring_areas[:, np.newaxis], axis=0) / (2.0 * math.pi * outer_radius_m) * 1.0e6
+    condensed_thickness_um = np.sum(condensed_stack * ring_areas[:, np.newaxis], axis=0) / (2.0 * math.pi * outer_radius_m) * 1.0e6
+    model_thickness_um = np.sum(model_stack * ring_areas[:, np.newaxis], axis=0) / (2.0 * math.pi * outer_radius_m) * 1.0e6
+
+    fig, axis = plt.subplots(figsize=(13.5, 8.5))
+    axis.stackplot(
+        fima_reference,
+        liquid_thickness_um,
+        condensed_thickness_um,
+        labels=["Liquid stoichiometric Cs2MoO4", "Condensed Cs2MoO4"],
+        colors=["#fb923c", "#7c3aed"],
+        alpha=0.75,
+    )
+    axis.plot(fima_reference, total_thickness_um, color="#111827", linewidth=2.4, label="Thermochemistry total")
+    axis.plot(fima_reference, model_thickness_um, color="#059669", linewidth=2.2, linestyle="--", label="SCIANTIX integrated")
+    style_axis(axis, "Integrated Thermochemistry JOG Thickness vs FIMA", "FIMA (%)", "Thickness (um)")
+    axis.legend(loc="best")
+    fig.tight_layout()
+
+    plot_path = append_saved_path(saved_paths, plot_dir, "jog_thickness_from_thermochemistry_vs_fima.png")
+    fig.savefig(plot_path, dpi=220, bbox_inches="tight")
+    plt.close(fig)
 def plot_test_jog_style_for_case(case_dir: Path, plot_dir: Path, saved_paths: list[Path]) -> None:
     output_file = case_dir / MAIN_OUTPUT_NAME
     thermo_output_file = case_dir / THERMO_OUTPUT_NAME
     case_plot_dir = make_case_plot_dir(plot_dir, case_dir)
 
     headers, values = load_output_data(output_file)
+    thermo_headers, thermo_values = load_output_data(thermo_output_file)
     column_map = {name: idx for idx, name in enumerate(headers)}
     burnup_label = "Burnup (MWd/kgUO2)"
     time_label = "Time (h)"
@@ -944,10 +1339,21 @@ def plot_test_jog_style_for_case(case_dir: Path, plot_dir: Path, saved_paths: li
     time = values[:, column_map[time_label]]
     fima = values[:, column_map[fima_label]]
 
+    plot_case_inventory_overview(case_plot_dir, burnup, time, column_map, values, saved_paths)
     plot_case_inventory_groups(case_plot_dir, burnup, time, headers, column_map, values, saved_paths)
     plot_case_summary_variables(case_plot_dir, burnup, time, headers, column_map, values, saved_paths)
+    plot_case_po2_and_muo2(case_plot_dir, burnup, column_map, values, saved_paths)
     plot_case_oxygen_activity(case_plot_dir, burnup, time, column_map, values, saved_paths)
     plot_case_jog_vs_fima(case_plot_dir, case_dir, burnup, fima, time, column_map, values, saved_paths)
+    plot_case_thermochemistry_jog(
+        case_plot_dir,
+        case_dir,
+        headers,
+        values,
+        thermo_headers,
+        thermo_values,
+        saved_paths,
+    )
     plot_case_thermochemistry_group(
         case_plot_dir,
         thermo_output_file,
@@ -1032,8 +1438,11 @@ def main() -> int:
     plot_radial_summary(radii_mm, output_profiles, plot_dir, saved_paths)
     plot_inventory_radial_groups(radii_mm, output_profiles, plot_dir, saved_paths)
     plot_jog_profiles(radii_mm, build_jog_profiles(case_dirs, output_profiles), plot_dir, saved_paths)
+    thermochemistry_jog_radii_mm, thermochemistry_jog_profiles = build_thermochemistry_jog_profiles(case_dirs)
+    plot_thermochemistry_jog_radial_profiles(thermochemistry_jog_radii_mm, thermochemistry_jog_profiles, plot_dir, saved_paths)
     _, output_histories = build_time_histories(case_dirs, MAIN_OUTPUT_NAME)
     plot_jog_thickness_vs_fima(radii_mm, output_histories, plot_dir, saved_paths)
+    plot_thermochemistry_jog_thickness_vs_fima(radii_mm, case_dirs, plot_dir, saved_paths)
     _, thermo_histories = build_time_histories(case_dirs, THERMO_OUTPUT_NAME)
     plot_condensed_grain_boundary_vs_fima(radii_mm, output_histories, thermo_histories, plot_dir, saved_paths)
     for case_dir in case_dirs:

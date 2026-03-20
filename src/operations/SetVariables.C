@@ -90,12 +90,11 @@ void Simulation::setVariables(
     std::vector<ThermochemistryVariable> values_th;
     if (toOutputThermochimica)
     {
-        const ThermochemistrySettings settings =
-            loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt");
-        const std::vector<ThermochemistryManifestEntry> manifest = filterThermochemistryManifest(
-            loadThermochemistryManifest(TestPath + "input_thermochemistry.txt"),
-            settings
-        );
+        // Keep the full manifest for output variables so parsed phases/species that are
+        // not part of the selected solve inputs can still be stored when OpenCalphad
+        // reports them in the equilibrium result.
+        const std::vector<ThermochemistryManifestEntry> manifest =
+            loadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
         values_th = initializeThermochemistryVariable(
                 manifest,
                 Sciantix_thermochemistry
