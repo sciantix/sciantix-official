@@ -20,8 +20,9 @@ RUN_SUMMARY = TEST_DIR / "run_summary.txt"
 CASE_LOG_NAME = "sciantix_case.log"
 MAIN_OUTPUT_NAME = "output.txt"
 THERMO_OUTPUT_NAME = "thermochemistry_output.txt"
+THERMOCHEMISTRY_MANIFEST_FILE = TEST_DIR /"input_thermochemistry.txt"
 PLOTS_DIR = TEST_DIR / "plots"
-EXP_DATA_DIR = TEST_DIR.parent / "test_JOG" / "exp_data"
+EXP_DATA_DIR = TEST_DIR.parent / "test_JOG_1" / "exp_data"
 JOG_RADIUS_M = 5.0e-3
 AVOGADRO_NUMBER = 6.02214076e23
 CS2MOO4_LIQUID_DENSITY_KG_PER_M3 = 4380.0
@@ -90,6 +91,39 @@ def load_output_data(output_file: Path) -> tuple[list[str], np.ndarray]:
         raise ValueError(f"Malformed SCIANTIX output in {output_file}")
 
     return headers, values
+
+
+def load_grain_boundary_uranium_species(manifest_file: Path) -> set[str]:
+    uranium_species: set[str] = set()
+
+    with manifest_file.open() as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+
+            parts = [part.strip() for part in line.split("|")]
+            if len(parts) < 8:
+                continue
+
+            category = parts[1]
+            compound = parts[3]
+            location = parts[4]
+            output_flag = parts[6]
+            stoichiometry = parts[7]
+
+            if category != "fission_products" or location != "at grain boundary" or output_flag != "1":
+                continue
+
+            stoichiometric_elements = {
+                item.split(":", 1)[0].strip()
+                for item in stoichiometry.split(",")
+                if ":" in item
+            }
+            if ("Mo" not in stoichiometric_elements) & ("Cs" not in stoichiometric_elements) and ("U" in stoichiometric_elements):
+                uranium_species.add(compound)
+
+    return uranium_species
 
 
 def load_experimental_jog_data(data_file: Path) -> tuple[np.ndarray, np.ndarray]:
@@ -236,14 +270,10 @@ def plot_case(case_dir: Path, saved_paths: list[Path]) -> None:
     saved_paths.append(plot_path)
 
     summary_variables = [
-        "Grain radius (m)",
         "Fission gas release (/)",
-        "Gap oxygen partial pressure (MPa)",
         "Stoichiometry deviation (/)",
         "Fuel oxygen partial pressure (MPa)",
         "Fuel oxygen potential (KJ/mol)",
-        "JOG (/)",
-        "Grain boundary fraction (/)",
     ]
     available_summary_variables = [name for name in summary_variables if name in column_map]
     for page_index, start in enumerate(range(0, len(available_summary_variables), 4), start=1):
@@ -315,11 +345,14 @@ def plot_case(case_dir: Path, saved_paths: list[Path]) -> None:
     plt.close(fig)
     saved_paths.append(plot_path)
 
+    uranium_species = load_grain_boundary_uranium_species(THERMOCHEMISTRY_MANIFEST_FILE)
+
     gb_variables = [
         header
         for header in thermochemistry_headers
         if header not in {burnup_label, time_label}
         and ", at grain boundary)" in header
+        and header.split(" (", 1)[0] not in uranium_species
         and not is_all_zero(thermochemistry_values[:, thermochemistry_column_map[header]])
     ]
     gb_sorted_variables = sorted(
@@ -396,7 +429,6 @@ def plot_case(case_dir: Path, saved_paths: list[Path]) -> None:
         alpha=0.75,
     )
     axis.plot(thermochemistry_burnup, thermochemistry_jog_thickness_um, color="#111827", label="Total estimated thickness")
-    axis.plot(fima, jog_thickness_um, color="#059669", linestyle="--", label="SCIANTIX JOG thickness")
     axis.set_xlabel(burnup_label)
     axis.set_ylabel("JOG thickness (um)")
     axis.legend(loc="upper left")

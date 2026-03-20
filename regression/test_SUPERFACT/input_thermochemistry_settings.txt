@@ -4,8 +4,8 @@ kc = false
 langmuir = false
 
 fission_products.module = OPENCALPHAD
-fission_products.database = CsMoO_TAFID_2021_Anna
-fission_products.elements = Cs, Mo, O
+fission_products.database = OU_merged_CsMoO
+fission_products.elements = Cs, Mo, O, U
 fission_products.locations = at grain boundary
 fission_products.gap_settings = false
 
