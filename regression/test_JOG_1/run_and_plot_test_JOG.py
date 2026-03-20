@@ -497,33 +497,22 @@ def main() -> int:
         saved_paths.append(plot_path)
 
         # Plot 6: JOG thickness estimated from liquid + condensed thermochemistry phases.
-        liquid_cs_label = "CS (liquid, at grain boundary) (mol/m3)"
-        liquid_mo_label = "MO (liquid, at grain boundary) (mol/m3)"
-        liquid_o_label = "O (liquid, at grain boundary) (mol/m3)"
         condensed_cs2moo4_s1_label = "CS2MOO4_S1 (condensed, at grain boundary) (mol/m3)"
         condensed_cs2moo4_s2_label = "CS2MOO4_S2 (condensed, at grain boundary) (mol/m3)"
 
-        liquid_cs = np.zeros_like(thermochemistry_burnup)
-        if liquid_cs_label in thermochemistry_column_map:
-            liquid_cs = thermochemistry_values[:, thermochemistry_column_map[liquid_cs_label]]
-
-        liquid_mo = np.zeros_like(thermochemistry_burnup)
-        if liquid_mo_label in thermochemistry_column_map:
-            liquid_mo = thermochemistry_values[:, thermochemistry_column_map[liquid_mo_label]]
-
-        liquid_o = np.zeros_like(thermochemistry_burnup)
-        if liquid_o_label in thermochemistry_column_map:
-            liquid_o = thermochemistry_values[:, thermochemistry_column_map[liquid_o_label]]
+        cs = (values[:, column_map["Cs reacted - GB (at/m3)"]] + values[:, column_map["Cs at grain boundary (at/m3)"]])/AVOGADRO_NUMBER
+        mo = (values[:, column_map["Mo reacted - GB (at/m3)"]] + values[:, column_map["Mo at grain boundary (at/m3)"]])/AVOGADRO_NUMBER
+        o = values[:, column_map[oxygen_label]] * oxygen_activity
 
         liquid_cs2moo4_available = np.minimum.reduce([
-            liquid_cs / 2.0,
-            liquid_mo,
-            liquid_o / 4.0,
+            cs / 2.0,
+            mo,
+            o / 4.0,
         ])
         liquid_cs2moo4_limiters = np.vstack([
-            liquid_cs / 2.0,
-            liquid_mo,
-            liquid_o / 4.0,
+            cs / 2.0,
+            mo,
+            o / 4.0,
         ])
         limiter_labels = ["Cs/2", "Mo", "O/4"]
         limiter_index = np.argmin(liquid_cs2moo4_limiters, axis=0)
@@ -583,7 +572,7 @@ def main() -> int:
             thermochemistry_burnup,
             liquid_thickness_um,
             condensed_thickness_um,
-            labels=["Liquid stoichiometric Cs2MoO4", "Condensed Cs2MoO4"],
+            labels=["Available Cs2MoO4", "CALPHAD Cs2MoO4"],
             colors=["#fb923c", "#7c3aed"],
             alpha=0.75,
         )
@@ -603,7 +592,7 @@ def main() -> int:
         axis.text(
             0.02,
             0.98,
-            f"Liquid Cs2MoO4 = min(Cs/2, Mo, O/4)\nFinal limiting factor: {final_limiter_label}",
+            f"Cs2MoO4 = min(Cs/2, Mo, O/4)\nFinal limiting factor: {final_limiter_label}",
             transform=axis.transAxes,
             ha="left",
             va="top",
