@@ -60,6 +60,11 @@ bool isMatrixLocation(const std::string& location)
     return location == "matrix";
 }
 
+bool useOxygenPotentialConstraint(const std::set<std::string>& manifest_elements)
+{
+    return manifest_elements.count("O") > 0 && manifest_elements.count("U") == 0;
+}
+
 std::string toLowerCopy(std::string text)
 {
     std::transform(text.begin(), text.end(), text.begin(), [](unsigned char c) { return std::tolower(c); });
@@ -313,13 +318,13 @@ std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
                 double activity = std::sqrt(oxygen_partial_pressure / reference_oxygen_pressure_bar);
                 const double oxygen_content = std::max(0.0, sciantix_variable["Oxygen content"].getFinalValue());
 
-                component.content = activity * oxygen_content;
+                component.content = oxygen_content;
             }
             else if (element_name == "U")
             {
                 const double uranium_content = std::max(0.0, sciantix_variable["Uranium content"].getFinalValue());
 
-                component.content = grain_boundary * uranium_content;
+                component.content = uranium_content;
             }
             else
             {
@@ -385,6 +390,9 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
     }
 
     const double reference_oxygen_pressure_pa = reference_oxygen_pressure_bar * 1.0e6;
+    const bool use_oxygen_potential = useOxygenPotentialConstraint(manifest_elements);
+    const double oxygen_potential_j_per_mol =
+        sciantix_variable["Fuel oxygen potential"].getFinalValue() * 1.0e3;
 
     const std::vector<OpenCalphadInputComponent> input_components =
         buildOpenCalphadInputComponents(location, manifest_elements, sciantix_variable, total_input_content);
@@ -424,11 +432,20 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
         input_file << " " << toLowerCopy(component.name);
     input_file << "\n\n";
     input_file << "set ref o gas * " << reference_oxygen_pressure_pa << "\n";
-    input_file << "\nset c t=" << temperature << " p=" << pressure << " ";
+    input_file << "\nset c t=" << temperature << " p=" << pressure << "\n";
+    input_file << "\nset c ";
+    
+    if (use_oxygen_potential)
+        input_file << "mu(o)=" << oxygen_potential_j_per_mol << " ";
+
     if (solve_components.size() > 1)
     {
         for (const auto& component : solve_components)
+        {
+            if (use_oxygen_potential && component.name == "O")
+                continue;
             input_file << "n(" << toLowerCopy(component.name) << ")=" << component.fraction << " ";
+        }
     }
     input_file << "\n\n" << buildSolveCommandBlock(solve_mode, temperature, pressure);
     input_file << "l /out=./OCoutput.DAT r 1\n\n";
