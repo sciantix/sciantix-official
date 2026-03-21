@@ -44,6 +44,7 @@ BUILD_BINARY = SCRIPT_DIR.parent.parent / "build" / "sciantix.x"
 LOCAL_BINARY = SCRIPT_DIR / "sciantix.x"
 SUMMARY_PATH = SCRIPT_DIR / "temperature_sweep_summary.tsv"
 PRESSURE_PLOT_PATH = SCRIPT_DIR / "fuel_oxygen_partial_pressures_vs_ou_ratio.png"
+PRESSURE_PLOT_PATH_2 = SCRIPT_DIR / "fuel_oxygen_partial_pressures_vs_ou_ratio_2.png"
 POTENTIAL_PLOT_PATH = SCRIPT_DIR / "fuel_oxygen_potentials_vs_ou_ratio.png"
 
 def ensure_local_binary() -> None:
@@ -205,6 +206,47 @@ def make_pressure_plot(frames: list[pd.DataFrame]) -> None:
 
     fig.tight_layout()
     fig.savefig(PRESSURE_PLOT_PATH)
+    plt.close(fig)
+
+    fig, ax = plt.subplots()
+    colors, linestyles, markers = style_maps()
+    pressure_columns = {
+        "Final": "log10(Final pressure / reference)",
+        "Blackburn model": "log10(Blackburn model pressure / reference)",
+        "OpenCalphad": "log10(OpenCalphad pressure / reference)",
+    }
+
+    for frame in frames:
+        temperature_k = int(frame["Temperature (K)"].iloc[0])
+        
+        Opencalphad_values = frame["log10(OpenCalphad pressure / reference)"]
+        Blackburn_values = frame["log10(Blackburn model pressure / reference)"]
+
+        ax.scatter(
+            valid["O/U ratio (/)"],
+            Blackburn_values - Opencalphad_values,
+            color=colors[temperature_k],
+            marker=markers[label],
+        )
+
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel(r"$\Delta\log_{10}(p_{O_2})$ (bar)")
+    ax.grid(True, alpha=0.3)
+    temperature_handles = [
+        Line2D([0], [0], color=colors[temperature_k], label=f"{temperature_k} K")
+        for temperature_k in TEMPERATURES_K
+    ]
+    temperature_legend = ax.legend(
+        handles=temperature_handles,
+        loc="lower left",
+        ncol=2,
+        title="Temperature"
+    )
+    ax.add_artist(temperature_legend)
+    ax.set_xlim([1.90, 2.20])
+
+    fig.tight_layout()
+    fig.savefig(PRESSURE_PLOT_PATH_2)
     plt.close(fig)
 
 def make_potential_plot(frames: list[pd.DataFrame]) -> None:
