@@ -12,6 +12,7 @@ BUILD_EXECUTABLE = TEST_DIR.parents[1] / "build" / "sciantix.x"
 RUN_LOG = TEST_DIR / "sciantix.log"
 OUTPUT_FILE = TEST_DIR / "output.txt"
 THERMOCHEMISTRY_OUTPUT_FILE = TEST_DIR / "thermochemistry_output.txt"
+THERMOCHEMISTRY_MANIFEST_FILE = TEST_DIR / "input_thermochemistry.txt"
 EXP_DATA_DIR = TEST_DIR / "exp_data"
 JOG_RADIUS_M = 5.0e-3
 AVOGADRO_NUMBER = 6.02214076e23
@@ -80,6 +81,39 @@ def load_experimental_jog_data(data_file: Path) -> tuple[np.ndarray, np.ndarray]
 
 def is_all_zero(series: np.ndarray) -> bool:
     return np.allclose(series, 0.0)
+
+
+def load_grain_boundary_uranium_species(manifest_file: Path) -> set[str]:
+    uranium_species: set[str] = set()
+
+    with manifest_file.open() as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+
+            parts = [part.strip() for part in line.split("|")]
+            if len(parts) < 8:
+                continue
+
+            category = parts[1]
+            compound = parts[3]
+            location = parts[4]
+            output_flag = parts[6]
+            stoichiometry = parts[7]
+
+            if category != "fission_products" or location != "at grain boundary" or output_flag != "1":
+                continue
+
+            stoichiometric_elements = {
+                item.split(":", 1)[0].strip()
+                for item in stoichiometry.split(",")
+                if ":" in item
+            }
+            if ("Mo" not in stoichiometric_elements) & ("Cs" not in stoichiometric_elements) and ("U" in stoichiometric_elements):
+                uranium_species.add(compound)
+
+    return uranium_species
 
 
 def ensure_executable(path: Path) -> None:
@@ -448,6 +482,7 @@ def main() -> int:
 
         thermochemistry_headers, thermochemistry_values = load_output_data(THERMOCHEMISTRY_OUTPUT_FILE)
         thermochemistry_column_map = {name: idx for idx, name in enumerate(thermochemistry_headers)}
+        uranium_species = load_grain_boundary_uranium_species(THERMOCHEMISTRY_MANIFEST_FILE)
 
         thermochemistry_time = thermochemistry_values[:, thermochemistry_column_map[time_label]]
         thermochemistry_burnup = np.interp(thermochemistry_time, time, burnup)
@@ -464,6 +499,7 @@ def main() -> int:
             for header in thermochemistry_headers
             if header not in {burnup_label, time_label}
             and ", at grain boundary)" in header
+            and header.split(" (", 1)[0] not in uranium_species
             and not is_all_zero(thermochemistry_values[:, thermochemistry_column_map[header]])
         ]
 
@@ -492,6 +528,24 @@ def main() -> int:
             axis.legend()
         fig.tight_layout()
         plot_path = OUTPUT_FILE.parent / "thermochemistry_fission_products_at_grain_boundary.png"
+        fig.savefig(plot_path, bbox_inches="tight")
+        plt.close(fig)
+        saved_paths.append(plot_path)
+
+        fig, axis = plt.subplots()
+        axis.stackplot(
+            thermochemistry_time,
+            gb_stacked_data,
+            labels=gb_sorted_variables,
+            colors=thermochemistry_colors,
+            alpha=0.9,
+        )
+        axis.set_xlabel(time_label)
+        axis.set_ylabel("Concentration at grain boundary (mol/m3)")
+        if axis.get_legend_handles_labels()[0]:
+            axis.legend()
+        fig.tight_layout()
+        plot_path = OUTPUT_FILE.parent / "thermochemistry_fission_products_at_grain_boundary_2.png"
         fig.savefig(plot_path, bbox_inches="tight")
         plt.close(fig)
         saved_paths.append(plot_path)
@@ -581,13 +635,6 @@ def main() -> int:
             thermochemistry_jog_thickness_um,
             color="#111827",
             label="Total estimated thickness",
-        )
-        axis.plot(
-            fima,
-            jog_thickness_um,
-            color="#059669",
-            linestyle="--",
-            label="SCIANTIX JOG thickness",
         )
         axis.text(
             0.02,
