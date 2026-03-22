@@ -83,6 +83,10 @@ def is_all_zero(series: np.ndarray) -> bool:
     return np.allclose(series, 0.0)
 
 
+def has_columns(column_map: dict[str, int], labels: list[str]) -> bool:
+    return all(label in column_map for label in labels)
+
+
 def load_grain_boundary_uranium_species(manifest_file: Path) -> set[str]:
     uranium_species: set[str] = set()
 
@@ -480,6 +484,58 @@ def main() -> int:
         plt.close(fig)
         saved_paths.append(plot_path)
 
+        jog_breakdown_labels = {
+            "condensed": "JOG from condensed (/)",
+            "liquid": "JOG from liquid (/)",
+            "known": "JOG from known densities (/)",
+            "estimated": "JOG from estimated densities (/)",
+            "cs2moo4": "JOG from Cs2MoO4 (/)",
+        }
+
+        if has_columns(column_map, list(jog_breakdown_labels.values())):
+            jog_condensed_um = values[:, column_map[jog_breakdown_labels["condensed"]]] * (JOG_RADIUS_M / 2.0) * 1.0e6
+            jog_liquid_um = values[:, column_map[jog_breakdown_labels["liquid"]]] * (JOG_RADIUS_M / 2.0) * 1.0e6
+            jog_known_um = values[:, column_map[jog_breakdown_labels["known"]]] * (JOG_RADIUS_M / 2.0) * 1.0e6
+            jog_estimated_um = values[:, column_map[jog_breakdown_labels["estimated"]]] * (JOG_RADIUS_M / 2.0) * 1.0e6
+            jog_cs2moo4_um = values[:, column_map[jog_breakdown_labels["cs2moo4"]]] * (JOG_RADIUS_M / 2.0) * 1.0e6
+
+            fig, axes = plt.subplots(2, 1, figsize=(11, 10), sharex=True)
+
+            axis = axes[0]
+            axis.stackplot(
+                fima,
+                jog_condensed_um,
+                jog_liquid_um,
+                labels=["Condensed contribution", "Liquid contribution"],
+                colors=["#2563eb", "#f97316"],
+                alpha=0.8,
+            )
+            axis.plot(fima, jog_thickness_um, color="#111827", label="Total JOG", linewidth=2.3)
+            axis.set_ylabel("JOG thickness (um)")
+            axis.legend(loc="upper left")
+            axis.secondary_xaxis("top", functions=(fima_to_time, time_to_fima)).set_xlabel(time_label)
+
+            axis = axes[1]
+            axis.stackplot(
+                fima,
+                jog_known_um,
+                jog_estimated_um,
+                labels=["Known densities", "Estimated densities"],
+                colors=["#16a34a", "#dc2626"],
+                alpha=0.8,
+            )
+            axis.plot(fima, jog_cs2moo4_um, color="#7c3aed", linestyle="--", label="Cs2MoO4 only", linewidth=2.0)
+            axis.plot(fima, jog_thickness_um, color="#111827", label="Total JOG", linewidth=2.3)
+            axis.set_xlabel(fima_label)
+            axis.set_ylabel("JOG thickness (um)")
+            axis.legend(loc="upper left")
+
+            fig.tight_layout()
+            plot_path = OUTPUT_FILE.parent / "JOG_contributions.png"
+            fig.savefig(plot_path, bbox_inches="tight")
+            plt.close(fig)
+            saved_paths.append(plot_path)
+
         thermochemistry_headers, thermochemistry_values = load_output_data(THERMOCHEMISTRY_OUTPUT_FILE)
         thermochemistry_column_map = {name: idx for idx, name in enumerate(thermochemistry_headers)}
         uranium_species = load_grain_boundary_uranium_species(THERMOCHEMISTRY_MANIFEST_FILE)
@@ -652,6 +708,37 @@ def main() -> int:
         fig.savefig(plot_path, bbox_inches="tight")
         plt.close(fig)
         saved_paths.append(plot_path)
+
+        if has_columns(column_map, list(jog_breakdown_labels.values())):
+            fig, axis = plt.subplots()
+            axis.plot(fima, jog_thickness_um, color="#111827", label="SCIANTIX total JOG")
+            axis.plot(
+                thermochemistry_burnup,
+                thermochemistry_jog_thickness_um,
+                color="#7c3aed",
+                linestyle="--",
+                label="Old thermochemistry estimate",
+            )
+            axis.plot(
+                fima,
+                jog_liquid_um,
+                color="#f97316",
+                label="SCIANTIX liquid contribution",
+            )
+            axis.plot(
+                fima,
+                jog_condensed_um,
+                color="#2563eb",
+                label="SCIANTIX condensed contribution",
+            )
+            axis.set_xlabel(fima_label)
+            axis.set_ylabel("JOG thickness (um)")
+            axis.legend()
+            fig.tight_layout()
+            plot_path = OUTPUT_FILE.parent / "JOG_model_comparison.png"
+            fig.savefig(plot_path, bbox_inches="tight")
+            plt.close(fig)
+            saved_paths.append(plot_path)
 
         print("Liquid Cs2MoO4 limiting factor:")
         print(f"  Final point: {final_limiter_label}")
