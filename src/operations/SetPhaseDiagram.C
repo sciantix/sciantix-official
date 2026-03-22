@@ -37,6 +37,8 @@ namespace
 enum class OpenCalphadSolveMode
 {
     GlobalEquilibrium,
+    PressureAxisStepGlobalEquilibrium,
+    TemperatureAxisStepGlobalEquilibrium,
     CalculateCarefully,
     NoGlobalFallback,
     WithCheckAfterFallback,
@@ -100,6 +102,33 @@ std::string readTextFile(const std::string& file_path)
     return content.str();
 }
 
+bool writeTextFile(const std::string& file_path, const std::string& content)
+{
+    std::ofstream file(file_path);
+    if (!file)
+        return false;
+
+    file << content;
+    return file.good();
+}
+
+bool fileExists(const std::string& file_path)
+{
+    std::ifstream file(file_path);
+    return static_cast<bool>(file);
+}
+
+std::string buildOpenCalphadLocationTag(const std::string& location)
+{
+    if (isMatrixLocation(location))
+        return "matrix";
+
+    if (isGrainBoundaryLocation(location))
+        return "grain_boundary";
+
+    return "unknown";
+}
+
 bool hasInvalidEquilibriumResult(const std::string& output_text)
 {
     return output_text.find("not a valid equilibrium as last calculation failed") != std::string::npos ||
@@ -112,6 +141,10 @@ std::string solveModeLabel(OpenCalphadSolveMode mode)
     {
         case OpenCalphadSolveMode::GlobalEquilibrium:
             return "c e";
+        case OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium:
+            return "set axis(P) + step + c e";
+        case OpenCalphadSolveMode::TemperatureAxisStepGlobalEquilibrium:
+            return "set axis(T) + step + c e";
         case OpenCalphadSolveMode::NoGlobalFallback:
             return "c n";
         case OpenCalphadSolveMode::CalculateCarefully:
@@ -125,11 +158,80 @@ std::string solveModeLabel(OpenCalphadSolveMode mode)
     return "unknown";
 }
 
+double buildPressureStepIncrement(double target_pressure)
+{
+    const double start_pressure = 1.0e5;
+    if (target_pressure <= 0.0)
+        return 0.0;
+
+    if (target_pressure <= start_pressure)
+        return 0.0;
+
+    const double pressure_span = target_pressure - start_pressure;
+    const double minimum_increment = 2.25e4;
+    const double target_increment = pressure_span / 20.0;
+
+    return std::min(pressure_span, std::max(minimum_increment, target_increment));
+}
+
+double buildTemperatureStepIncrement(double target_temperature)
+{
+    const double start_temperature = 300.0;
+    if (target_temperature <= 0.0)
+        return 0.0;
+
+    if (target_temperature <= start_temperature)
+        return 0.0;
+
+    const double temperature_span = target_temperature - start_temperature;
+    const double minimum_increment = 20.0;
+    const double target_increment = temperature_span / 20.0;
+
+    return std::min(temperature_span, std::max(minimum_increment, target_increment));
+}
+
 std::string buildSolveCommandBlock(OpenCalphadSolveMode mode, double temperature, double pressure)
 {
     std::ostringstream commands;
+    commands << std::setprecision(16);
 
-    if (mode == OpenCalphadSolveMode::NoGlobalFallback)    
+    if (mode == OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium)
+    {
+        const double start_pressure = 1.0e5;
+        const double pressure_increment = buildPressureStepIncrement(pressure);
+
+        commands << "set c p=" << start_pressure << "\n\n";
+        commands << "c e\n\n";
+        commands << "set axis\n";
+        commands << "1\n";
+        commands << "p\n";
+        commands << start_pressure << "\n";
+        commands << pressure << "\n";
+        commands << pressure_increment << "\n\n";
+        commands << "step\n";
+        commands << "normal\n\n";
+        commands << "set c p=" << pressure << "\n\n";
+        commands << "c c\n\n";
+    }
+    else if (mode == OpenCalphadSolveMode::TemperatureAxisStepGlobalEquilibrium)
+    {
+        const double start_temperature = 300.0;
+        const double temperature_increment = buildTemperatureStepIncrement(temperature);
+
+        commands << "set c t=" << start_temperature << "\n\n";
+        commands << "c c\n\n";
+        commands << "set axis\n";
+        commands << "1\n";
+        commands << "t\n";
+        commands << start_temperature << "\n";
+        commands << temperature << "\n";
+        commands << temperature_increment << "\n\n";
+        commands << "step\n";
+        commands << "normal\n\n";
+        commands << "set c t=" << temperature << "\n\n";
+        commands << "c c\n\n";
+    }
+    else if (mode == OpenCalphadSolveMode::NoGlobalFallback)    
     {
         commands << "c e\n\n";
         commands << "c n\n\n";
@@ -372,6 +474,7 @@ std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
 }
 
 bool writeOpenCalphadInput(const std::string& input_file_path,
+                           const std::string& output_file_path,
                            const std::string& data_path,
                            double             pressure,
                            double             temperature,
@@ -448,7 +551,7 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
         }
     }
     input_file << "\n\n" << buildSolveCommandBlock(solve_mode, temperature, pressure);
-    input_file << "l /out=./OCoutput.DAT r 1\n\n";
+    input_file << "l /out=" << output_file_path << " r 1\n\n";
     input_file << "fin";
     return true;
 }
@@ -676,8 +779,9 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     }
 
     const std::string directory_path = settings.opencalphad_path;
-    const std::string input_file_path = TestPath + "OCinput.OCM";
-    const std::string output_file_path = TestPath + "OCoutput.DAT";
+    const std::string location_tag = buildOpenCalphadLocationTag(location);
+    const std::string input_file_path = TestPath + "OCinput_" + location_tag + ".OCM";
+    const std::string output_file_path = TestPath + "OCoutput_" + location_tag + ".DAT";
     const std::string data_path = directory_path + "data/" + stripTdbExtension(location_settings.database);
     const std::string executable = directory_path + "oc6P " + input_file_path;
 
@@ -686,18 +790,26 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     OCOutputData output_data;
     double total_input_content = 0.0;
     std::set<std::string> active_elements;
-    const std::vector<OpenCalphadSolveMode> solve_modes = {
+    const std::string previous_output_snapshot =
+        fileExists(output_file_path) ? readTextFile(output_file_path) : "";
+    std::vector<OpenCalphadSolveMode> solve_modes = {
         OpenCalphadSolveMode::GlobalEquilibrium,
-        OpenCalphadSolveMode::CalculateCarefully,
-        OpenCalphadSolveMode::NoGlobalFallback,
-        OpenCalphadSolveMode::WithCheckAfterFallback,
-        OpenCalphadSolveMode::RoundedInputGlobalEquilibrium,
     };
+
+    if (pressure > 1.0e5 + 1.0)
+        solve_modes.push_back(OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium);
+
+    if (temperature > 300.0 + 1.0)
+        solve_modes.push_back(OpenCalphadSolveMode::TemperatureAxisStepGlobalEquilibrium);
+
+    solve_modes.push_back(OpenCalphadSolveMode::CalculateCarefully);
+    solve_modes.push_back(OpenCalphadSolveMode::RoundedInputGlobalEquilibrium);
 
     for (const auto solve_mode : solve_modes)
     {
         if (!writeOpenCalphadInput(
                 input_file_path,
+                output_file_path,
                 data_path,
                 pressure,
                 temperature,
@@ -740,10 +852,28 @@ void Simulation::CallThermochemistryModule(std::string                        lo
 
     if (!solved)
     {
-        std::cout << "Warning: all OpenCalphad attempts failed for location '" << location
-                  << "'. Continue in any case." << std::endl;
         const std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
-        output_data = parseOCOutputFile(output_file_path, valid_elements);
+
+        if (!previous_output_snapshot.empty() &&
+            writeTextFile(output_file_path, previous_output_snapshot))
+        {
+            output_data = parseOCOutputFile(output_file_path, valid_elements);
+            if (hasRequiredComponents(output_data, location, active_elements))
+            {
+                solved = true;
+                std::cout << "Warning: all OpenCalphad attempts failed for location '" << location
+                          << "'. Reusing the previous timestep equilibrium from " << output_file_path
+                          << "." << std::endl;
+            }
+        }
+
+        if (!solved)
+        {
+            std::cout << "Warning: all OpenCalphad attempts failed for location '" << location
+                      << "' and no valid previous timestep equilibrium was available. Continue in any case."
+                      << std::endl;
+            output_data = parseOCOutputFile(output_file_path, valid_elements);
+        }
     }
 
     dumpParsedOcOutput(output_data);
@@ -757,9 +887,6 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     if (isMatrixLocation(location))
     {
         updateMatrixFromOutput(output_data, pressure, temperature, sciantix_variable, matrices);
-        
-        remove(input_file_path.c_str());
-        remove(output_file_path.c_str());
         return;
     }
 
@@ -770,9 +897,6 @@ void Simulation::CallThermochemistryModule(std::string                        lo
             manifest_elements,
             total_input_content,
             sciantix_variable);
-
-        remove(input_file_path.c_str());
-        remove(output_file_path.c_str());
         return;
     }
 
