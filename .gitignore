@@ -54,3 +54,5 @@ __pycache__/
 optimization
 GSA_output_files/
 test_SUPERFACT/
+test_SUPERFACT_1/
+test_SUPERFACT_2/
