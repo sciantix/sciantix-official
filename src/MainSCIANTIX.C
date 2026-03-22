@@ -114,6 +114,10 @@ int main(int argc, char** argv)
     std::string thermo_outputPath = TestPath + "thermochemistry_output.txt";
 
     remove(thermo_outputPath.c_str());
+    remove((TestPath + "OCinput_matrix.OCM").c_str());
+    remove((TestPath + "OCinput_grain_boundary.OCM").c_str());
+    remove((TestPath + "OCoutput_matrix.DAT").c_str());
+    remove((TestPath + "OCoutput_grain_boundary.DAT").c_str());
 
     Execution_file.open(TestPath + "execution.txt", std::ios::out);
 
@@ -158,6 +162,11 @@ int main(int argc, char** argv)
 
     logExecutionTime((double)timer / CLOCKS_PER_SEC, Time_step_number, Execution_file);
     Execution_file.close();
+
+    remove((TestPath + "OCinput_matrix.OCM").c_str());
+    remove((TestPath + "OCinput_grain_boundary.OCM").c_str());
+    remove((TestPath + "OCoutput_matrix.DAT").c_str());
+    remove((TestPath + "OCoutput_grain_boundary.DAT").c_str());
 
     return 0;
 }
