@@ -428,6 +428,11 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
 
         SciantixVariable("Initial grain radius", "(mol)", Sciantix_variables[170], Sciantix_variables[170],  toOutputThermochimica),
         SciantixVariable("JOG", "(/)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("JOG from condensed", "(/)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("JOG from liquid", "(/)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("JOG from known densities", "(/)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("JOG from estimated densities", "(/)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("JOG from Cs2MoO4", "(/)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("Grain boundary fraction", "(/)", 0.0, 0.0, toOutputThermochimica)};
 
     return init_sciantix_variable;

@@ -16,21 +16,36 @@
 
 #include "Simulation.h"
 
+#include <algorithm>
+#include <iomanip>
+#include <vector>
+
+namespace
+{
+struct JOGSpeciesContribution
+{
+    std::string name;
+    std::string phase;
+    double concentration = 0.0;
+    double molar_mass = 0.0;
+    double density = 0.0;
+    double thickness = 0.0;
+    bool   uses_estimated_density = false;
+};
+}
+
 void Simulation::JOGFormation()
 {
     if (input_variable["iThermochimica"].getValue() == 0) return;
 
     const std::string cs2moo4_s1_name = "CS2MOO4_S1 (condensed, at grain boundary)";
     const std::string cs2moo4_s2_name = "CS2MOO4_S2 (condensed, at grain boundary)";
-    if (!thermochemistry_variable.isElementPresent(cs2moo4_s1_name) ||
-        !thermochemistry_variable.isElementPresent(cs2moo4_s2_name))
+    if (!thermochemistry_variable.isElementPresent(cs2moo4_s1_name))
         return;
 
     const double temperature = history_variable["Temperature"].getFinalValue();
     const double temperature_celsius = temperature - 273.15;
 
-    const double C_Cs2MoO4_s1 = thermochemistry_variable[cs2moo4_s1_name].getFinalValue();
-    const double C_Cs2MoO4_s2 = thermochemistry_variable[cs2moo4_s2_name].getFinalValue();
     const double MM_Cs2MoO4 = thermochemistry_variable[cs2moo4_s1_name].getMolarMass();
     // Data on Cs2MoO4 from Wallez et al., Journal of Solid State Chemistry 215 (2014) 225-230.
 
@@ -56,10 +71,105 @@ void Simulation::JOGFormation()
     const double theoretical_density_o = (MM_Cs2MoO4 / avogadro_number) * (Z_o / V_cell_o); // g/m3
     const double theoretical_density_h = (MM_Cs2MoO4 / avogadro_number) * (Z_h / V_cell_h); // g/m3
 
-    const double JOG_thickness_s1 = C_Cs2MoO4_s1 * MM_Cs2MoO4 / theoretical_density_o;
-    const double JOG_thickness_s2 = C_Cs2MoO4_s2 * MM_Cs2MoO4 / theoretical_density_h;
-    const double JOG_thickness = JOG_thickness_s1 + JOG_thickness_s2;
+    const double reference_density = theoretical_density_o;
+
+    double JOG_thickness = 0.0;
+    double JOG_thickness_condensed = 0.0;
+    double JOG_thickness_liquid = 0.0;
+    double JOG_thickness_known_density = 0.0;
+    double JOG_thickness_estimated_density = 0.0;
+    double JOG_thickness_cs2moo4 = 0.0;
+    std::vector<JOGSpeciesContribution> contributions;
+
+    for (auto& variable : thermochemistry_variable)
+    {
+        if (variable.getLocation() != "at grain boundary")
+            continue;
+
+        const std::string phase = variable.getPhase();
+        if (phase != "condensed" && phase != "liquid" && phase != "ionic_liquid")
+            continue;
+
+        const std::map<std::string, int> stoichiometry = variable.getStoichiometry();
+        const bool contains_uranium = stoichiometry.count("U") > 0;
+        const bool oxygen_only_species =
+            !stoichiometry.empty() &&
+            std::all_of(
+                stoichiometry.begin(),
+                stoichiometry.end(),
+                [](const std::pair<const std::string, int>& entry) { return entry.first == "O"; });
+
+        if (contains_uranium || oxygen_only_species)
+            continue;
+
+        const double concentration = variable.getFinalValue();
+        if (concentration <= 0.0)
+            continue;
+
+        const std::string variable_name = variable.getName();
+        const double molar_mass = variable.getMolarMass();
+
+        double density = reference_density;
+        bool uses_estimated_density = true;
+
+        if (variable_name == cs2moo4_s1_name)
+        {
+            density = theoretical_density_o;
+            uses_estimated_density = false;
+        }
+        else if (variable_name == cs2moo4_s2_name)
+        {
+            density = theoretical_density_h;
+            uses_estimated_density = false;
+        }
+
+        if (density <= 0.0)
+            continue;
+
+        const double contribution = concentration * molar_mass / density;
+        if (contribution <= 0.0)
+            continue;
+
+        JOGSpeciesContribution species_contribution;
+        species_contribution.name = variable_name;
+        species_contribution.phase = phase;
+        species_contribution.concentration = concentration;
+        species_contribution.molar_mass = molar_mass;
+        species_contribution.density = density;
+        species_contribution.thickness = contribution;
+        species_contribution.uses_estimated_density = uses_estimated_density;
+        contributions.push_back(species_contribution);
+
+        JOG_thickness += contribution;
+
+        if (phase == "condensed")
+            JOG_thickness_condensed += contribution;
+        else
+            JOG_thickness_liquid += contribution;
+
+        if (uses_estimated_density)
+            JOG_thickness_estimated_density += contribution;
+        else
+            JOG_thickness_known_density += contribution;
+
+        if (variable_name == cs2moo4_s1_name || variable_name == cs2moo4_s2_name)
+            JOG_thickness_cs2moo4 += contribution;
+    }
+
     sciantix_variable["JOG"].setFinalValue(JOG_thickness);
+    sciantix_variable["JOG from condensed"].setFinalValue(JOG_thickness_condensed);
+    sciantix_variable["JOG from liquid"].setFinalValue(JOG_thickness_liquid);
+    sciantix_variable["JOG from known densities"].setFinalValue(JOG_thickness_known_density);
+    sciantix_variable["JOG from estimated densities"].setFinalValue(JOG_thickness_estimated_density);
+    sciantix_variable["JOG from Cs2MoO4"].setFinalValue(JOG_thickness_cs2moo4);
+
+    std::sort(
+        contributions.begin(),
+        contributions.end(),
+        [](const JOGSpeciesContribution& left, const JOGSpeciesContribution& right)
+        {
+            return left.thickness > right.thickness;
+        });
 
     std::cout << std::scientific << std::setprecision(8);
     std::cout << "JOGFormation variables:" << std::endl;
@@ -67,8 +177,6 @@ void Simulation::JOGFormation()
     std::cout << "  Temperature [K] = " << temperature << std::endl;
     std::cout << "  Temperature [C] = " << temperature_celsius << std::endl;
     std::cout << "  Grain radius [m] = " << sciantix_variable["Grain radius"].getFinalValue() << std::endl;
-    std::cout << "  Cs2MoO4_s1 concentration [mol/m3] = " << C_Cs2MoO4_s1 << std::endl;
-    std::cout << "  Cs2MoO4_s2 concentration [mol/m3] = " << C_Cs2MoO4_s2 << std::endl;
     std::cout << "  Molar mass Cs2MoO4 [g/mol] = " << MM_Cs2MoO4 << std::endl;
     std::cout << "  Orthorhombic reference a [m] = " << a_o_ref << std::endl;
     std::cout << "  Orthorhombic reference b [m] = " << b_o_ref << std::endl;
@@ -82,7 +190,29 @@ void Simulation::JOGFormation()
     std::cout << "  Hexagonal cell volume [m3] = " << V_cell_h << std::endl;
     std::cout << "  Orthorhombic theoretical density [g/m3] = " << theoretical_density_o << std::endl;
     std::cout << "  Hexagonal theoretical density [g/m3] = " << theoretical_density_h << std::endl;
-    std::cout << "  JOG thickness from s1 - volume [m3 ompound / m3 fuel] = " << JOG_thickness_s1 << std::endl;
-    std::cout << "  JOG thickness from s2 - volume [m3 ompound / m3 fuel] = " << JOG_thickness_s2 << std::endl;
+    std::cout << "  Reference density for non-Cs2MoO4 species [g/m3] = " << reference_density << std::endl;
+    std::cout << "  JOG thickness from condensed species [m3 compound / m3 fuel] = " << JOG_thickness_condensed << std::endl;
+    std::cout << "  JOG thickness from liquid species [m3 compound / m3 fuel] = " << JOG_thickness_liquid << std::endl;
+    std::cout << "  JOG thickness from known densities [m3 compound / m3 fuel] = " << JOG_thickness_known_density << std::endl;
+    std::cout << "  JOG thickness from estimated densities [m3 compound / m3 fuel] = " << JOG_thickness_estimated_density << std::endl;
+    std::cout << "  JOG thickness from Cs2MoO4 [m3 compound / m3 fuel] = " << JOG_thickness_cs2moo4 << std::endl;
     std::cout << "  Total JOG thickness - volume [m3 ompound / m3 fuel] = " << JOG_thickness << std::endl;
+
+    const size_t number_of_reported_species = std::min<size_t>(5, contributions.size());
+    for (size_t index = 0; index < number_of_reported_species; ++index)
+    {
+        const JOGSpeciesContribution& contribution = contributions[index];
+        std::cout << "  JOG contributor " << index + 1 << ": "
+                  << contribution.name
+                  << " | phase=" << contribution.phase
+                  << " | contribution=" << contribution.thickness
+                  << " | density=" << contribution.density;
+
+        if (contribution.uses_estimated_density)
+            std::cout << " | estimated_density";
+        else
+            std::cout << " | dedicated_density";
+
+        std::cout << std::endl;
+    }
 }
