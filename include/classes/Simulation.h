@@ -193,6 +193,18 @@ public:
      */
     void CallThermochemistryModule(double pressure, double temperature, std::string location, SciantixArray<SciantixVariable> &sciantix_variable, double oxygenfraction);
 
+    /**
+     * @brief SetPhaseDiagram specific for the 5 noble metals (Mo, Pd, Rh, Ru, Tc).
+     * * @author C. Besio
+     * */
+    void SetPhaseDiagram5metals(std::string location);
+
+    /**
+     * @brief Specific module to couple SCIANTIX with OpenCalphad for noble metals.
+     * * @author C. Besio
+     * */
+    void CallNobleMetalsModule(double pressure, double temperature, std::string location, SciantixArray<SciantixVariable> &sciantix_variable);
+
     // struct StablePhaseResult {
     //     std::vector<double> new_set;          // Computed new set values
     //     std::vector<std::string> right_bounded; 
