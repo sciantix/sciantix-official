@@ -171,7 +171,6 @@ void Simulation::JOGFormation()
             return left.thickness > right.thickness;
         });
 
-    std::cout << std::scientific << std::setprecision(8);
     std::cout << "JOGFormation variables:" << std::endl;
     std::cout << "  FIMA [perc] = " << sciantix_variable["FIMA"].getFinalValue() << std::endl;
     std::cout << "  Temperature [K] = " << temperature << std::endl;
