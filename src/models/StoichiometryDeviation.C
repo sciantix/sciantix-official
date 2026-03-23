@@ -500,15 +500,18 @@ void Simulation::StoichiometryDeviation()
         );
     }
 
-    if (sciantix_variable["Stoichiometry deviation"].getFinalValue() == 0) return;
-
     // EC - this has not the dimensionality of a pressure if not multiplied to the reference one
     // it is not coherent with the oxygen potential also, modified by * reference pressure
     double coeff(1.0);
     if (input_variable["iStoichiometryDeviation"].getValue() > 6)
         coeff = reference_oxygen_pressure_atm;
     
-    double q = sciantix_variable["Plutonium content"].getFinalValue(); 
+    const double x = sciantix_variable["Stoichiometry deviation"].getFinalValue();
+    double q = sciantix_variable["q"].getFinalValue(); 
+
+    // Keep the historical UO2/Blackburn behaviour at exact stoichiometry to avoid log(0).
+    if (x == 0.0 && q <= 0.0)
+        return;
 
     // MOX (Kato) or UO2 (Blackburn)
     if (q > 0.0)
@@ -516,7 +519,7 @@ void Simulation::StoichiometryDeviation()
         sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
             coeff *
             KatoThermochemicalModel(
-                sciantix_variable["Stoichiometry deviation"].getFinalValue(),
+                x,
                 history_variable["Temperature"].getFinalValue(),
                 sciantix_variable
             )
@@ -531,7 +534,7 @@ void Simulation::StoichiometryDeviation()
         sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
             coeff *
             BlackburnThermochemicalModel(
-                sciantix_variable["Stoichiometry deviation"].getFinalValue(),
+                x,
                 history_variable["Temperature"].getFinalValue(),
                 sciantix_variable
             )
@@ -577,7 +580,7 @@ double BlackburnThermochemicalModel(double                           stoichiomet
 
 double KatoThermochemicalModel(double stoichiometry_deviation, double temperature, SciantixArray<SciantixVariable> &sciantix_variable)
 {
-    double q_Pu = sciantix_variable["Plutonium content"].getFinalValue();
+    double q_Pu = sciantix_variable["q"].getFinalValue();
     double q_Am = 0.0;
 
     double target_om = 2.0 + stoichiometry_deviation;
