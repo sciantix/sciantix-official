@@ -182,7 +182,7 @@ void Simulation::output()
             for (auto &variable : thermochemistry_variable)
             {
                 if (variable.getOutput())
-                    thermo_output_file << std::setprecision(7) << variable.getFinalValue() << "\t";
+                    thermo_output_file << std::setprecision(4) << variable.getFinalValue() << "\t";
             }
             thermo_output_file << "\n";
         }

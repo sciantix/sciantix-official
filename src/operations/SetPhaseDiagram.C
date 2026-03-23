@@ -30,10 +30,14 @@
 #include <set>
 #include <sstream>
 #include <string>
+#include <sys/wait.h>
 #include <vector>
 
 namespace
 {
+constexpr double open_calphad_component_fraction_cutoff = 1.0e-8;
+constexpr int open_calphad_timeout_seconds = 60;
+
 enum class OpenCalphadSolveMode
 {
     GlobalEquilibrium,
@@ -457,7 +461,10 @@ std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
         std::remove_if(
             components.begin(),
             components.end(),
-            [](const OpenCalphadInputComponent& component) { return component.fraction < 1.0e-10; }),
+            [](const OpenCalphadInputComponent& component)
+            {
+                return component.fraction < open_calphad_component_fraction_cutoff;
+            }),
         components.end());
 
     total_content = 0.0;
@@ -566,10 +573,22 @@ bool runOpenCalphadCase(const std::string& input_file_path,
     std::cout << readTextFile(input_file_path) << std::endl;
     std::cout << "----------------------------------------" << std::endl;
 
-    const int status = std::system(executable.c_str());
+    const std::string command =
+        "timeout --signal=TERM " + std::to_string(open_calphad_timeout_seconds) + "s " + executable;
+    const int status = std::system(command.c_str());
     if (status != 0)
     {
-        std::cerr << "Error: Execution of OPENCALPHAD failed." << std::endl;
+        if (WIFEXITED(status) && WEXITSTATUS(status) == 124)
+        {
+            std::cerr << "Warning: OpenCalphad timed out after "
+                      << open_calphad_timeout_seconds
+                      << " s."
+                      << std::endl;
+        }
+        else
+        {
+            std::cerr << "Error: Execution of OPENCALPHAD failed." << std::endl;
+        }
         return false;
     }
 
@@ -827,7 +846,12 @@ void Simulation::CallThermochemistryModule(std::string                        lo
                   << std::endl;
 
         if (!runOpenCalphadCase(input_file_path, output_file_path, executable, raw_output))
-            return;
+        {
+            std::cout << "Warning: OpenCalphad attempt for location '" << location
+                      << "' with " << solveModeLabel(solve_mode)
+                      << " failed or timed out. Retrying." << std::endl;
+            continue;
+        }
 
         if (!hasInvalidEquilibriumResult(raw_output))
         {

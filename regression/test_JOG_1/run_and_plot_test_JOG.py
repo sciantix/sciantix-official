@@ -566,7 +566,7 @@ def main() -> int:
         )
 
         fig, axis = plt.subplots()
-        thermochemistry_colors = plt.cm.nipy_spectral(np.linspace(0, 1, len(gb_variables)))
+        thermochemistry_colors = plt.cm.nipy_spectral(np.linspace(0, 1, len(gb_sorted_variables)))
         gb_stacked_data = [
             thermochemistry_values[:, thermochemistry_column_map[variable]]
             for variable in gb_sorted_variables
@@ -769,7 +769,7 @@ def main() -> int:
         )
 
         fig, axis = plt.subplots()
-        thermochemistry_colors = plt.cm.nipy_spectral(np.linspace(0, 1, len(matrix_variables)))
+        thermochemistry_colors = plt.cm.nipy_spectral(np.linspace(0, 1, len(matrix_sorted_variables)))
         matrix_stacked_data = [
             thermochemistry_values[:, thermochemistry_column_map[variable]]
             for variable in matrix_sorted_variables
