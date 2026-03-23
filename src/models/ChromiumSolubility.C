@@ -18,6 +18,8 @@
 
 void Simulation::ChromiumSolubility()
 {
+    const std::string matrix_name = matrices.isElementPresent("UO2") ? "UO2" : "MOX";
+
     // Model declaration
     Model model_;
     model_.setName("Chromium solubility");
@@ -217,12 +219,12 @@ void Simulation::ChromiumSolubility()
     sciantix_variable["Chromia solution"].setFinalValue(Cr203_solution);
     sciantix_variable["Chromia precipitate"].setFinalValue(Cr2O3_precipitate);
 
-    matrices["UO2"].setChromiumSolubility(Cr_solubility);
-    matrices["UO2"].setChromiaSolubility(Cr2O3_solubility);
-    matrices["UO2"].setChromiumSolution(Cr_solution);
-    matrices["UO2"].setChromiumPrecipitate(Cr_precipitate);
-    matrices["UO2"].setChromiaSolution(Cr203_solution);
-    matrices["UO2"].setChromiaPrecipitate(Cr2O3_precipitate);
+    matrices[matrix_name].setChromiumSolubility(Cr_solubility);
+    matrices[matrix_name].setChromiaSolubility(Cr2O3_solubility);
+    matrices[matrix_name].setChromiumSolution(Cr_solution);
+    matrices[matrix_name].setChromiumPrecipitate(Cr_precipitate);
+    matrices[matrix_name].setChromiaSolution(Cr203_solution);
+    matrices[matrix_name].setChromiaPrecipitate(Cr2O3_precipitate);
 
     model_.setRef(reference);
 }

@@ -24,6 +24,8 @@
  *
  * @author G. Petrosillo
  * @author G. Zullo
+ * @author E. Cappellari
+ * @author C. Besio
  *
  */
 
