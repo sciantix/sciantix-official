@@ -48,7 +48,8 @@ void Simulation::setVariables(
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
          toOutputPrescribedOMRatio      = input_variable["iStoichiometryDeviation"].getValue() == 9,
          toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0,
-         toOutputThermochimica          = input_variable["iThermochimica"].getValue() != 0;
+         toOutputThermochimica          = input_variable["iThermochimica"].getValue() != 0,
+         toOutputMOX                    = input_variable["iFuelMatrix"].getValue() == 2;
 
     // Physics variable
     physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
@@ -78,7 +79,8 @@ void Simulation::setVariables(
             toOutputHighBurnupStructure,
             toOutputStoichiometryDeviation,
             toOutputChromiumContent,
-            toOutputThermochimica
+            toOutputThermochimica,
+            toOutputMOX
         );
 
     for (SciantixVariable initial_value : values)

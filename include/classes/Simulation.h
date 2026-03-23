@@ -423,18 +423,6 @@ class Simulation
     void ChromiumSolubility();
 
     /**
-     * @brief The model Microstructure is used to evaluate the lattice parameter and the theoretical
-     * density, accordingly to chromium content.
-     *
-     * @author G. Nicodemo
-     *
-     * @ref <a href="https://www.sciencedirect.com/science/article/pii/S0022311512000943"
-     * target="_blank">T. Cardinaels et al (2012), Journal of Nuclear Materials, 424 252-260.</a>
-     */
-
-    void Microstructure();
-
-    /**
      * @brief This method returns a pointer to the array of diffusion modes corresponding to the
      * specified gas.
      * @param gas_name The name of the gas for which diffusion modes are required.

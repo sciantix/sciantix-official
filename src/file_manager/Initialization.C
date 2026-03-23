@@ -51,13 +51,48 @@ void Initialization(double              Sciantix_history[],
     Sciantix_variables[35] = 0.5;      // Intergranular_saturation_fractional_coverage[0]
     Sciantix_variables[37] = 1.0;      // Intergranular_fractional_intactness[0]
 
-    // https://pubchem.ncbi.nlm.nih.gov/compound/Uranium-235
-    Sciantix_variables[41] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 234.04095;  // U-234
-    Sciantix_variables[42] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 235.04393;  // U-235
-    Sciantix_variables[43] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 236.04557;  // U-236
-    Sciantix_variables[44] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 237.04873;  // U-237
-    Sciantix_variables[45] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 238.05079;  // U-238
-    double total_U = Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] + Sciantix_variables[45];
+    const double density_mix = Sciantix_variables[40];
+    const double q = Sciantix_variables[177];
+    const double avogadro_number = 6.022e23;
+    // const double molar_mass_oxygen = 15.999;
+
+    // const double molar_mass_uranium =
+    //     Sciantix_variables[41] * 234.04095 +
+    //     Sciantix_variables[42] * 235.04393 +
+    //     Sciantix_variables[43] * 236.04557 +
+    //     Sciantix_variables[44] * 237.04873 +
+    //     Sciantix_variables[45] * 238.05079;
+
+    // const double molar_mass_plutonium =
+    //     Sciantix_variables[171] * 238.04956 +
+    //     Sciantix_variables[172] * 239.05216 +
+    //     Sciantix_variables[173] * 240.05381 +
+    //     Sciantix_variables[174] * 241.05685 +
+    //     Sciantix_variables[175] * 242.05874;
+
+    // const double molar_mass_mix =
+    //     (2.0 + Sciantix_variables[66]) * molar_mass_oxygen +
+    //     (1.0 - q) * molar_mass_uranium +
+    //     q * molar_mass_plutonium;
+
+    // Correct: Sciantix_variables[i] *= density_mix * q * avogadro_number * 10.0 / molar_mass_mix;
+
+    Sciantix_variables[41] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 234.04095;
+    Sciantix_variables[42] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 235.04393; 
+    Sciantix_variables[43] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 236.04557;  
+    Sciantix_variables[44] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 237.04873; 
+    Sciantix_variables[45] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 238.05079; 
+
+    Sciantix_variables[171] *= density_mix * q * avogadro_number * 10.0 * 0.8815 / 238.04956;
+    Sciantix_variables[172] *= density_mix * q * avogadro_number * 10.0 * 0.8815 / 239.05216;
+    Sciantix_variables[173] *= density_mix * q * avogadro_number * 10.0 * 0.8815 / 240.05381;
+    Sciantix_variables[174] *= density_mix * q * avogadro_number * 10.0 * 0.8815 / 241.05685;
+    Sciantix_variables[175] *= density_mix * q * avogadro_number * 10.0 * 0.8815 / 242.05874;
+
+    double total_U = Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] +
+                     Sciantix_variables[44] + Sciantix_variables[45];
+    double total_Pu = Sciantix_variables[171] + Sciantix_variables[172] + Sciantix_variables[173] +
+                      Sciantix_variables[174] + Sciantix_variables[175];
 
     // Intragranular similarity ratio
     Sciantix_variables[64] = 1.0;
@@ -72,9 +107,9 @@ void Initialization(double              Sciantix_history[],
     // Residual porosity
     Sciantix_variables[73] = 0.75 * Sciantix_variables[71];
     // U and O content
-    double avogadro_number = 6.02214076e23;
-    Sciantix_variables[161] = total_U / avogadro_number; // U content in mol/m3
-	Sciantix_variables[162] = (2.0 + Sciantix_variables[66]) * (Sciantix_variables[161]); // O content in mol/m3
+    Sciantix_variables[161] = total_U / avogadro_number;
+    Sciantix_variables[163] = total_Pu / avogadro_number;
+	Sciantix_variables[162] = (2.0 + Sciantix_variables[66]) * (Sciantix_variables[161] + Sciantix_variables[163]);
 	
 	
     // Projection on diffusion modes of the initial conditions

@@ -43,7 +43,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(
     bool toOutputHighBurnupStructure,
     bool toOutputStoichiometryDeviation,
     bool toOutputChromiumContent,
-    bool toOutputThermochimica
+    bool toOutputThermochimica,
+    bool toOutputMOX
 );
 
 std::vector<ThermochemistryVariable> initializeThermochemistryVariable(

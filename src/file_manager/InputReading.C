@@ -89,6 +89,45 @@ ReadSeveralParameters(std::string variable_name, std::ifstream& input_file, std:
     return vector_read;
 }
 
+namespace
+{
+bool MOXInitialConditions(std::ifstream& input_file, double Sciantix_variables[], std::ofstream& input_check)
+{
+    std::streampos stream_position = input_file.tellg();
+
+    input_file >> std::ws;
+    if (input_file.peek() == EOF)
+        return false;
+
+    std::vector<double> initial_composition_Pu =
+        ReadSeveralParameters("Initial composition Pu", input_file, input_check);
+
+    if (initial_composition_Pu.size() != 5)
+    {
+        input_file.clear();
+        input_file.seekg(stream_position);
+        return false;
+    }
+
+    Sciantix_variables[171] = initial_composition_Pu[0];
+    Sciantix_variables[172] = initial_composition_Pu[1];
+    Sciantix_variables[173] = initial_composition_Pu[2];
+    Sciantix_variables[174] = initial_composition_Pu[3];
+    Sciantix_variables[175] = initial_composition_Pu[4];
+
+    Sciantix_variables[177] = ReadOneParameter("q", input_file, input_check);
+
+    if (input_file.fail())
+    {
+        input_file.clear();
+        input_file.seekg(stream_position);
+        return false;
+    }
+
+    return true;
+}
+}
+
 void InputReading(
 	int Sciantix_options[], 
 	double Sciantix_variables[], 
@@ -239,6 +278,16 @@ void InputReading(
             ReadOneParameter("Initial stoichiometry deviation[0]", input_initial_conditions, input_check);
 
         Sciantix_variables[150] = ReadOneParameter("Chromium content", input_initial_conditions, input_check);
+
+        if (Sciantix_options[11] == 2)
+        {
+            if (!MOXInitialConditions(input_initial_conditions, Sciantix_variables, input_check))
+            {
+                std::cout
+                    << "WARNING: MOX fuel selected but no optional MOX initial conditions were found "
+                    << std::endl;
+            }
+        }
     }
 
     const bool needs_steam_pressure = Sciantix_options[20] > 0 && Sciantix_options[20] < 7;

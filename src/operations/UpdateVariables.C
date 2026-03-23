@@ -149,7 +149,14 @@ std::map<int, std::string> update_sciantix_variable = {
     {160, "Diffusion coefficient"},
     {161, "Uranium content"},
     {162, "Oxygen content"},
+    {163, "Plutonium content"},
     {170, "Initial grain radius"},
+    {171, "Pu238"},
+    {172, "Pu239"},
+    {173, "Pu240"},
+    {174, "Pu241"},
+    {175, "Pu242"},
+    {177, "q"},
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[])

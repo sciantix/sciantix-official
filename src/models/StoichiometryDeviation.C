@@ -507,18 +507,40 @@ void Simulation::StoichiometryDeviation()
     double coeff(1.0);
     if (input_variable["iStoichiometryDeviation"].getValue() > 6)
         coeff = reference_oxygen_pressure_atm;
-    sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
-        coeff *
-        BlackburnThermochemicalModel(
-            sciantix_variable["Stoichiometry deviation"].getFinalValue(),
-            history_variable["Temperature"].getFinalValue(),
-            sciantix_variable
-        )
-    );
+    
+    double q = sciantix_variable["Plutonium content"].getFinalValue(); 
 
-    sciantix_variable["Fuel oxygen partial pressure - Blackburn"].setFinalValue(
-        sciantix_variable["Fuel oxygen partial pressure"].getFinalValue()
-    );
+    // MOX (Kato) or UO2 (Blackburn)
+    if (q > 0.0)
+    {
+        sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
+            coeff *
+            KatoThermochemicalModel(
+                sciantix_variable["Stoichiometry deviation"].getFinalValue(),
+                history_variable["Temperature"].getFinalValue(),
+                sciantix_variable
+            )
+        );
+
+        sciantix_variable["Fuel oxygen partial pressure - Kato"].setFinalValue(
+            sciantix_variable["Fuel oxygen partial pressure"].getFinalValue()
+        );
+    }
+    else
+    {
+        sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
+            coeff *
+            BlackburnThermochemicalModel(
+                sciantix_variable["Stoichiometry deviation"].getFinalValue(),
+                history_variable["Temperature"].getFinalValue(),
+                sciantix_variable
+            )
+        );
+
+        sciantix_variable["Fuel oxygen partial pressure - Blackburn"].setFinalValue(
+            sciantix_variable["Fuel oxygen partial pressure"].getFinalValue()
+        );
+    }
 
     // Fuel oxygen potential
     if (sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() == 0.0)
@@ -529,9 +551,18 @@ void Simulation::StoichiometryDeviation()
             log(sciantix_variable["Fuel oxygen partial pressure"].getFinalValue() / reference_oxygen_pressure_atm)
         );
 
-    sciantix_variable["Fuel oxygen potential - Blackburn"].setFinalValue(
-        sciantix_variable["Fuel oxygen potential"].getFinalValue()
-    );
+    if (q > 0.0)
+    {
+        sciantix_variable["Fuel oxygen potential - Kato"].setFinalValue(
+            sciantix_variable["Fuel oxygen potential"].getFinalValue()
+        );
+    }
+    else
+    {
+        sciantix_variable["Fuel oxygen potential - Blackburn"].setFinalValue(
+            sciantix_variable["Fuel oxygen potential"].getFinalValue()
+        );
+    }
 }
 
 double BlackburnThermochemicalModel(double                           stoichiometry_deviation,
@@ -542,4 +573,21 @@ double BlackburnThermochemicalModel(double                           stoichiomet
         2.0 * log(stoichiometry_deviation * (2.0 + stoichiometry_deviation) / (1.0 - stoichiometry_deviation)) +
         108.0 * pow(sciantix_variable["Stoichiometry deviation"].getFinalValue(), 2.0) - 32700.0 / temperature + 9.92;
     return exp(ln_p);
+}
+
+double KatoThermochemicalModel(double stoichiometry_deviation, double temperature, SciantixArray<SciantixVariable> &sciantix_variable)
+{
+    double q_Pu = sciantix_variable["Plutonium content"].getFinalValue();
+    double q_Am = 0.0;
+
+    double target_om = 2.0 + stoichiometry_deviation;
+
+    std::vector<double> parameter;
+    parameter.push_back(temperature); // param[0]
+    parameter.push_back(q_Pu);        // param[1]
+    parameter.push_back(target_om);   // param[2]
+    parameter.push_back(q_Am);        // param[3]
+
+    Solver solver;
+    return solver.BisectionKato(parameter); 
 }
