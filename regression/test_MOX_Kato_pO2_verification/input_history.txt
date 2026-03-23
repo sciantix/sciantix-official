@@ -1,2 +1,2 @@
-0   __TEMPERATURE__   0   0   __OM_RATIO__
-1   __TEMPERATURE__   0   0   __OM_RATIO__
+0   800 0   0
+300 800 0   0

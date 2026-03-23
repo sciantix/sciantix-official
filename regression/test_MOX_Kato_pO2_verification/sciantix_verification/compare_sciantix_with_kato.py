@@ -4,11 +4,13 @@ from __future__ import annotations
 
 Source-based implementation from:
 NEA/NSC/R(2024)1, Recommendations on Fuel Properties for Fuel Performance Codes,
-Section 8, using:
-- Equation (8.2): Kato correlation for O/M
-- Equation (8.4): sigmoid factor S
-- Equation (8.5): adjusted temperature
-- Equation (8.6): CPuMA effective actinide content
+Section 8.
+
+The script writes:
+- a merged SCIANTIX-versus-Kato table
+- residual summary TSV files
+- a compact text report with headline error metrics
+- the verification plots stored in the parent folder
 """
 
 import math
@@ -28,10 +30,16 @@ REFERENCE_PRESSURE_MPA = 0.1013
 GAS_CONSTANT = 8.314
 
 ROOT_DIR = SCRIPT_DIR.parent
-SUMMARY_PATH = ROOT_DIR / "kato_sweep_summary.tsv"
-COMPARISON_PATH = SCRIPT_DIR / "kato_explicit_comparison.tsv"
-RESIDUALS_PATH = SCRIPT_DIR / "kato_explicit_residuals.tsv"
-EXPLICIT_POINTS_PATH = SCRIPT_DIR / "kato_explicit_points.tsv"
+SUMMARY_PATH = ROOT_DIR / "temperature_sweep_summary.tsv"
+LEGACY_SUMMARY_PATH = ROOT_DIR / "kato_sweep_summary.tsv"
+COMPARISON_PATH = SCRIPT_DIR / "sciantix_vs_kato_comparison.tsv"
+LEGACY_COMPARISON_PATH = SCRIPT_DIR / "kato_explicit_comparison.tsv"
+RESIDUALS_PATH = SCRIPT_DIR / "sciantix_vs_kato_residuals.tsv"
+LEGACY_RESIDUALS_PATH = SCRIPT_DIR / "kato_explicit_residuals.tsv"
+SUMMARY_REPORT_PATH = SCRIPT_DIR / "sciantix_vs_kato_summary.txt"
+LEGACY_SUMMARY_REPORT_PATH = SCRIPT_DIR / "kato_explicit_summary.txt"
+EXPLICIT_POINTS_PATH = SCRIPT_DIR / "sciantix_vs_kato_points.tsv"
+LEGACY_EXPLICIT_POINTS_PATH = SCRIPT_DIR / "kato_explicit_points.tsv"
 
 
 plt.rcParams.update({
@@ -63,6 +71,7 @@ def adjusted_temperature(
     q_am: float = 0.0,
     q_np: float = 0.0,
 ) -> float:
+    """Apply the NEA temperature adjustment used with the Kato correlation."""
     q_eff = effective_pu_content(q_pu, q_am=q_am, q_np=q_np)
     exponent = -300.0 * (0.335 - q_eff)
     sigmoid_s = 1.0 / (1.0 + math.exp(exponent))
@@ -121,14 +130,17 @@ def explicit_kato_om_from_pressure_ratio(
 
 
 def safe_log10(value: float) -> float:
+    """Return log10(value) for positive values and NaN otherwise."""
     return math.log10(value) if value > 0.0 else math.nan
 
 
 def safe_log(value: float) -> float:
+    """Return ln(value) for positive values and NaN otherwise."""
     return math.log(value) if value > 0.0 else math.nan
 
 
 def build_explicit_points(frame: pd.DataFrame) -> pd.DataFrame:
+    """Sample the explicit Kato equation over pressure ratio for each (T, q)."""
     rows: list[pd.DataFrame] = []
 
     grouped = frame.groupby(["Temperature target (K)", "q target (-)"], as_index=False)
@@ -163,14 +175,19 @@ def build_explicit_points(frame: pd.DataFrame) -> pd.DataFrame:
 
     explicit_points = pd.concat(rows, ignore_index=True)
     explicit_points.to_csv(EXPLICIT_POINTS_PATH, sep="\t", index=False)
+    explicit_points.to_csv(LEGACY_EXPLICIT_POINTS_PATH, sep="\t", index=False)
     return explicit_points
 
 
 def prepare_dataframe() -> pd.DataFrame:
+    """Align SCIANTIX trajectory points with explicit NEA Kato reference points."""
     if not SUMMARY_PATH.exists():
-        raise FileNotFoundError(f"Missing summary file: {SUMMARY_PATH}")
+        if not LEGACY_SUMMARY_PATH.exists():
+            raise FileNotFoundError(f"Missing summary file: {SUMMARY_PATH}")
+        frame = pd.read_csv(LEGACY_SUMMARY_PATH, sep="\t")
+    else:
+        frame = pd.read_csv(SUMMARY_PATH, sep="\t")
 
-    frame = pd.read_csv(SUMMARY_PATH, sep="\t")
     frame["O/M ratio (/)"] = frame["Stoichiometry deviation (/)"] + 2.0
     frame["SCIANTIX oxygen partial pressure (MPa)"] = frame["Fuel oxygen partial pressure (MPa)"]
     frame["SCIANTIX oxygen potential (KJ/mol)"] = frame["Fuel oxygen potential (KJ/mol)"]
@@ -228,6 +245,7 @@ def prepare_dataframe() -> pd.DataFrame:
     frame["Absolute relative delta oxygen potential (%)"] = frame["Relative delta oxygen potential (%)"].abs()
 
     frame.to_csv(COMPARISON_PATH, sep="\t", index=False)
+    frame.to_csv(LEGACY_COMPARISON_PATH, sep="\t", index=False)
 
     residuals = (
         frame.groupby(["q target (-)", "Temperature target (K)"], as_index=False)
@@ -241,29 +259,77 @@ def prepare_dataframe() -> pd.DataFrame:
         })
     )
     residuals.to_csv(RESIDUALS_PATH, sep="\t", index=False)
+    residuals.to_csv(LEGACY_RESIDUALS_PATH, sep="\t", index=False)
     return frame
 
 
+def write_summary_report(frame: pd.DataFrame) -> None:
+    """Write a short human-readable report with global and grouped MOX metrics."""
+    overall_count = len(frame)
+    signed_mean = frame["Delta log10(p/reference)"].mean()
+    max_abs_log = frame["Absolute delta log10(p/reference)"].max()
+    mean_abs_log = frame["Absolute delta log10(p/reference)"].mean()
+    mean_rel_log = frame["Absolute relative delta log10(p/reference) (%)"].mean()
+    max_abs_potential = frame["Absolute delta oxygen potential (KJ/mol)"].max()
+    mean_abs_potential = frame["Absolute delta oxygen potential (KJ/mol)"].mean()
+
+    grouped = (
+        frame.groupby(["q target (-)", "Temperature target (K)"], as_index=False)
+        .agg(
+            count=("Delta log10(p/reference)", "count"),
+            mean_abs_log_error=("Absolute delta log10(p/reference)", "mean"),
+            max_abs_log_error=("Absolute delta log10(p/reference)", "max"),
+            mean_abs_potential_error=("Absolute delta oxygen potential (KJ/mol)", "mean"),
+            max_abs_potential_error=("Absolute delta oxygen potential (KJ/mol)", "max"),
+        )
+    )
+
+    lines = [
+        "SCIANTIX MOX verification vs explicit NEA Kato equation",
+        "======================================================",
+        "",
+        f"Compared points: {overall_count}",
+        f"Mean signed log10(p/reference) error: {signed_mean:.6e}",
+        f"Mean absolute log10(p/reference) error: {mean_abs_log:.6e}",
+        f"Maximum absolute log10(p/reference) error: {max_abs_log:.6e}",
+        f"Mean absolute relative log10(p/reference) error (%): {mean_rel_log:.6e}",
+        f"Mean absolute oxygen potential error (kJ/mol): {mean_abs_potential:.6e}",
+        f"Maximum absolute oxygen potential error (kJ/mol): {max_abs_potential:.6e}",
+        "",
+        "Per-(q, temperature) summary:",
+        grouped.to_string(index=False),
+        "",
+    ]
+    report_text = "\n".join(lines)
+    SUMMARY_REPORT_PATH.write_text(report_text)
+    LEGACY_SUMMARY_REPORT_PATH.write_text(report_text)
+
+
 def temperature_color_map(temperatures_k: list[int]) -> dict[int, object]:
+    """Assign a stable plotting color to each verification temperature."""
     cmap = plt.get_cmap("turbo", len(temperatures_k))
     return {temperature_k: cmap(index) for index, temperature_k in enumerate(temperatures_k)}
 
 
 def temperature_marker_map(temperatures_k: list[int]) -> dict[int, str]:
+    """Assign marker styles to temperatures when a temperature marker map is needed."""
     markers = ["o", "s", "^", "D", "v", "P", "X", "*"]
     return {temperature_k: markers[index % len(markers)] for index, temperature_k in enumerate(temperatures_k)}
 
 
 def q_marker_map(q_values: list[float]) -> dict[float, str]:
+    """Assign one marker style to each plutonium content q."""
     markers = ["o", "s", "^", "D", "v", "P", "X", "*"]
     return {q_value: markers[index % len(markers)] for index, q_value in enumerate(q_values)}
 
 
 def q_tag(q_value: float) -> str:
+    """Convert a q value into the filename tag used by the saved figures."""
     return f"{q_value:.2f}".replace(".", "p")
 
 
 def clear_legacy_aggregate_plots() -> None:
+    """Remove obsolete aggregate plots left from earlier plotting layouts."""
     legacy_paths = [
         ROOT_DIR / "fuel_oxygen_partial_pressure_vs_om_ratio_kato.png",
         ROOT_DIR / "fuel_oxygen_potential_vs_om_ratio_kato.png",
@@ -282,12 +348,27 @@ def clear_legacy_aggregate_plots() -> None:
 
 
 def clear_potential_error_plots() -> None:
+    """Remove oxygen-potential error plots that are no longer part of the default set."""
     for path in ROOT_DIR.glob("fuel_oxygen_potential*_q_*.png"):
         if not path.name.startswith("fuel_oxygen_potential_vs_om_ratio_kato_q_"):
             path.unlink()
 
 
+def clear_unsigned_error_plots() -> None:
+    """Remove unsigned error plots from the root folder."""
+    patterns = [
+        "fuel_oxygen_partial_pressure_error_absolute_vs_om_ratio_kato_q_*.png",
+        "fuel_oxygen_partial_pressure_relative_error_absolute_vs_om_ratio_kato_q_*.png",
+        "fuel_oxygen_potential_error_absolute_vs_om_ratio_kato_q_*.png",
+        "fuel_oxygen_potential_relative_error_absolute_vs_om_ratio_kato_q_*.png",
+    ]
+    for pattern in patterns:
+        for path in ROOT_DIR.glob(pattern):
+            path.unlink()
+
+
 def add_model_legends(ax, temperatures_k: list[int], temperature_colors: dict[int, object]) -> None:
+    """Add separate legends for temperatures and for SCIANTIX/reference sources."""
     temperature_handles = [
         Line2D([0], [0], color=temperature_colors[temperature_k], label=f"{temperature_k} K")
         for temperature_k in temperatures_k
@@ -308,6 +389,7 @@ def add_model_legends(ax, temperatures_k: list[int], temperature_colors: dict[in
 
 
 def add_temperature_q_legends(ax, temperatures_k: list[int], temperature_colors: dict[int, object]) -> None:
+    """Add the temperature legend used on the per-q error figures."""
     temperature_handles = [
         Line2D([0], [0], color=temperature_colors[temperature_k], label=f"{temperature_k} K")
         for temperature_k in temperatures_k
@@ -316,6 +398,7 @@ def add_temperature_q_legends(ax, temperatures_k: list[int], temperature_colors:
 
 
 def make_pressure_plot(frame: pd.DataFrame) -> None:
+    """Create one partial-pressure overlay plot per plutonium content q."""
     q_values = sorted(frame["q target (-)"].unique())
     temperatures_k = sorted(frame["Temperature target (K)"].unique())
     temperature_colors = temperature_color_map(temperatures_k)
@@ -363,6 +446,7 @@ def make_pressure_plot(frame: pd.DataFrame) -> None:
 
 
 def make_signed_log_pressure_error_plot(frame: pd.DataFrame) -> None:
+    """Create one signed log10(p/reference) error plot per plutonium content q."""
     q_values = sorted(frame["q target (-)"].unique())
     temperatures_k = sorted(frame["Temperature target (K)"].unique())
     temperature_colors = temperature_color_map(temperatures_k)
@@ -400,6 +484,7 @@ def make_signed_log_pressure_error_plot(frame: pd.DataFrame) -> None:
 
 
 def make_absolute_log_pressure_error_plot(frame: pd.DataFrame) -> None:
+    """Create one absolute log10(p/reference) error plot per plutonium content q."""
     q_values = sorted(frame["q target (-)"].unique())
     temperatures_k = sorted(frame["Temperature target (K)"].unique())
     temperature_colors = temperature_color_map(temperatures_k)
@@ -436,6 +521,7 @@ def make_absolute_log_pressure_error_plot(frame: pd.DataFrame) -> None:
 
 
 def make_relative_log_pressure_error_plot(frame: pd.DataFrame) -> None:
+    """Create one signed relative log10(p/reference) error plot per plutonium content q."""
     q_values = sorted(frame["q target (-)"].unique())
     temperatures_k = sorted(frame["Temperature target (K)"].unique())
     temperature_colors = temperature_color_map(temperatures_k)
@@ -474,6 +560,7 @@ def make_relative_log_pressure_error_plot(frame: pd.DataFrame) -> None:
 
 
 def make_absolute_relative_log_pressure_error_plot(frame: pd.DataFrame) -> None:
+    """Create one absolute relative log10(p/reference) error plot per plutonium content q."""
     q_values = sorted(frame["q target (-)"].unique())
     temperatures_k = sorted(frame["Temperature target (K)"].unique())
     temperature_colors = temperature_color_map(temperatures_k)
@@ -511,6 +598,7 @@ def make_absolute_relative_log_pressure_error_plot(frame: pd.DataFrame) -> None:
 
 
 def make_potential_plot(frame: pd.DataFrame) -> None:
+    """Create one oxygen-potential overlay plot per plutonium content q."""
     q_values = sorted(frame["q target (-)"].unique())
     temperatures_k = sorted(frame["Temperature target (K)"].unique())
     temperature_colors = temperature_color_map(temperatures_k)
@@ -551,6 +639,7 @@ def make_potential_plot(frame: pd.DataFrame) -> None:
 
 
 def make_potential_error_plot(frame: pd.DataFrame) -> None:
+    """Create one signed oxygen-potential error plot per plutonium content q."""
     q_values = sorted(frame["q target (-)"].unique())
     temperatures_k = sorted(frame["Temperature target (K)"].unique())
     temperature_colors = temperature_color_map(temperatures_k)
@@ -588,6 +677,7 @@ def make_potential_error_plot(frame: pd.DataFrame) -> None:
 
 
 def make_absolute_potential_error_plot(frame: pd.DataFrame) -> None:
+    """Create one absolute oxygen-potential error plot per plutonium content q."""
     q_values = sorted(frame["q target (-)"].unique())
     temperatures_k = sorted(frame["Temperature target (K)"].unique())
     temperature_colors = temperature_color_map(temperatures_k)
@@ -625,6 +715,7 @@ def make_absolute_potential_error_plot(frame: pd.DataFrame) -> None:
 
 
 def make_relative_potential_error_plot(frame: pd.DataFrame) -> None:
+    """Create one signed relative oxygen-potential error plot per plutonium content q."""
     q_values = sorted(frame["q target (-)"].unique())
     temperatures_k = sorted(frame["Temperature target (K)"].unique())
     temperature_colors = temperature_color_map(temperatures_k)
@@ -663,6 +754,7 @@ def make_relative_potential_error_plot(frame: pd.DataFrame) -> None:
 
 
 def make_absolute_relative_potential_error_plot(frame: pd.DataFrame) -> None:
+    """Create one absolute relative oxygen-potential error plot per plutonium content q."""
     q_values = sorted(frame["q target (-)"].unique())
     temperatures_k = sorted(frame["Temperature target (K)"].unique())
     temperature_colors = temperature_color_map(temperatures_k)
@@ -700,14 +792,15 @@ def make_absolute_relative_potential_error_plot(frame: pd.DataFrame) -> None:
 
 
 def main() -> None:
+    """Generate the MOX verification tables, text report, and plots."""
     clear_legacy_aggregate_plots()
     clear_potential_error_plots()
+    clear_unsigned_error_plots()
     frame = prepare_dataframe()
+    write_summary_report(frame)
     make_pressure_plot(frame)
     make_signed_log_pressure_error_plot(frame)
-    make_absolute_log_pressure_error_plot(frame)
     make_relative_log_pressure_error_plot(frame)
-    make_absolute_relative_log_pressure_error_plot(frame)
     make_potential_plot(frame)
 
 

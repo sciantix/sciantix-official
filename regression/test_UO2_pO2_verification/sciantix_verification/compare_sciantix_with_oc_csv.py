@@ -2,14 +2,16 @@
 
 from __future__ import annotations
 
-"""Compare SCIANTIX sweep results against standalone OpenCalphad CSV exports.
+"""Compare SCIANTIX UO2 verification results against external reference data.
 
-The script loads the concatenated SCIANTIX sweep produced in the parent folder,
-parses OpenCalphad CSV files named ``test_<temperature>K_<region>.csv``, and
-creates overlay plots of oxygen partial pressure as a function of O/U ratio.
+This script performs two complementary checks for the UO2 oxygen-potential
+verification:
 
-Only plotting is performed at the moment; the output/summary path constants are
-kept because they may be useful for a future merged-data export.
+1. SCIANTIX versus standalone OpenCalphad CSV exports.
+2. SCIANTIX Blackburn output versus the analytical Blackburn formula.
+
+For each comparison it writes merged tables, summary TSV files, human-readable
+text reports, and the verification plots used in the folder documentation.
 """
 
 import math
@@ -56,6 +58,7 @@ SCIANTIX_SWEEP_PATH = Path(
 
 MERGED_OUTPUT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv.tsv"
 SUMMARY_OUTPUT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_summary.tsv"
+SUMMARY_REPORT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_summary.txt"
 
 POTENTIAL_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_potential.png"
 SIGNED_LOG_PO2_ERROR_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_log_pO2_error.png"
@@ -65,6 +68,7 @@ POTENTIAL_ERROR_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_potential_error_per
 
 BLACKBURN_MERGED_OUTPUT_PATH = SCRIPT_DIR / "sciantix_vs_blackburn_formula.tsv"
 BLACKBURN_SUMMARY_OUTPUT_PATH = SCRIPT_DIR / "sciantix_vs_blackburn_formula_summary.tsv"
+BLACKBURN_SUMMARY_REPORT_PATH = SCRIPT_DIR / "sciantix_vs_blackburn_formula_summary.txt"
 BLACKBURN_PO2_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_blackburn_formula_pO2.png"
 BLACKBURN_SIGNED_LOG_PO2_ERROR_PLOT_PATH = SCRIPT_DIR / "sciantix_vs_blackburn_formula_log_pO2_error.png"
 BLACKBURN_ABSOLUTE_LOG_PO2_ERROR_PLOT_PATH = (
@@ -360,6 +364,52 @@ def _rounded_upper_limit(values: pd.Series, step: float, floor: float) -> float:
     return max(floor, math.ceil(value_max / step) * step)
 
 
+def build_metric_summary(frame: pd.DataFrame, temperature_column: str = "Temperature (K)") -> pd.DataFrame:
+    """Aggregate standard signed/absolute/relative pO2 error metrics by temperature."""
+    return frame.groupby(temperature_column, as_index=False).agg(
+        count=("log10(pO2/p_ref) error", "count"),
+        signed_mean=("log10(pO2/p_ref) error", "mean"),
+        signed_median=("log10(pO2/p_ref) error", "median"),
+        signed_min=("log10(pO2/p_ref) error", "min"),
+        signed_max=("log10(pO2/p_ref) error", "max"),
+        absolute_mean=("Absolute log10(pO2/p_ref) error", "mean"),
+        absolute_median=("Absolute log10(pO2/p_ref) error", "median"),
+        absolute_min=("Absolute log10(pO2/p_ref) error", "min"),
+        absolute_max=("Absolute log10(pO2/p_ref) error", "max"),
+        relative_mean_percent=("Relative log10(pO2/p_ref) error (%)", "mean"),
+        relative_median_percent=("Relative log10(pO2/p_ref) error (%)", "median"),
+        relative_min_percent=("Relative log10(pO2/p_ref) error (%)", "min"),
+        relative_max_percent=("Relative log10(pO2/p_ref) error (%)", "max"),
+    )
+
+
+def write_summary_report(title: str, frame: pd.DataFrame, summary: pd.DataFrame, output_path: Path) -> None:
+    """Write a short text report with headline verification metrics."""
+    overall_count = len(frame)
+    signed_mean = frame["log10(pO2/p_ref) error"].mean()
+    signed_max_abs = frame["log10(pO2/p_ref) error"].abs().max()
+    absolute_mean = frame["Absolute log10(pO2/p_ref) error"].mean()
+    relative_mean = frame["Relative log10(pO2/p_ref) error (%)"].mean()
+    relative_max = frame["Relative log10(pO2/p_ref) error (%)"].max()
+
+    lines = [
+        title,
+        "=" * len(title),
+        "",
+        f"Compared points: {overall_count}",
+        f"Mean signed log10(pO2/p_ref) error: {signed_mean:.6e}",
+        f"Mean absolute log10(pO2/p_ref) error: {absolute_mean:.6e}",
+        f"Maximum absolute log10(pO2/p_ref) error: {signed_max_abs:.6e}",
+        f"Mean relative log10(pO2/p_ref) error (%): {relative_mean:.6e}",
+        f"Maximum relative log10(pO2/p_ref) error (%): {relative_max:.6e}",
+        "",
+        "Per-temperature summary:",
+        summary.to_string(index=False),
+        "",
+    ]
+    output_path.write_text("\n".join(lines))
+
+
 def plot_signed_log_partial_pressure_error(frame: pd.DataFrame) -> None:
     """Plot the signed SCIANTIX-versus-OpenCalphad log10(pO2/p_ref) error."""
     temperatures = sorted(frame["Temperature (K)"].dropna().unique())
@@ -557,28 +607,20 @@ def plot_blackburn_relative_log_partial_pressure_error(frame: pd.DataFrame) -> N
 
 
 def main() -> None:
-    """Generate the SCIANTIX versus OpenCalphad partial-pressure comparison plots."""
+    """Generate tables, text summaries, and plots for the UO2 verification."""
     sciantix_frame = load_sciantix_data()
     oc_frame = load_oc_csv_data()
     plot_partial_pressure(sciantix_frame, oc_frame)
     aligned_frame = interpolate_sciantix_to_oc_points(sciantix_frame, oc_frame)
     aligned_frame.to_csv(MERGED_OUTPUT_PATH, sep="\t", index=False)
-    summary = aligned_frame.groupby("Temperature (K)", as_index=False).agg(
-        count=("log10(pO2/p_ref) error", "count"),
-        signed_mean=("log10(pO2/p_ref) error", "mean"),
-        signed_median=("log10(pO2/p_ref) error", "median"),
-        signed_min=("log10(pO2/p_ref) error", "min"),
-        signed_max=("log10(pO2/p_ref) error", "max"),
-        absolute_mean=("Absolute log10(pO2/p_ref) error", "mean"),
-        absolute_median=("Absolute log10(pO2/p_ref) error", "median"),
-        absolute_min=("Absolute log10(pO2/p_ref) error", "min"),
-        absolute_max=("Absolute log10(pO2/p_ref) error", "max"),
-        relative_mean_percent=("Relative log10(pO2/p_ref) error (%)", "mean"),
-        relative_median_percent=("Relative log10(pO2/p_ref) error (%)", "median"),
-        relative_min_percent=("Relative log10(pO2/p_ref) error (%)", "min"),
-        relative_max_percent=("Relative log10(pO2/p_ref) error (%)", "max"),
-    )
+    summary = build_metric_summary(aligned_frame)
     summary.to_csv(SUMMARY_OUTPUT_PATH, sep="\t", index=False)
+    write_summary_report(
+        "SCIANTIX vs standalone OpenCalphad CSV",
+        aligned_frame,
+        summary,
+        SUMMARY_REPORT_PATH,
+    )
     plot_signed_log_partial_pressure_error(aligned_frame)
     plot_absolute_log_partial_pressure_error(aligned_frame)
     plot_relative_log_partial_pressure_error(aligned_frame)
@@ -587,22 +629,14 @@ def main() -> None:
     plot_blackburn_partial_pressure(blackburn_frame)
     blackburn_aligned = compare_blackburn_formula(blackburn_frame)
     blackburn_aligned.to_csv(BLACKBURN_MERGED_OUTPUT_PATH, sep="\t", index=False)
-    blackburn_summary = blackburn_aligned.groupby("Temperature (K)", as_index=False).agg(
-        count=("log10(pO2/p_ref) error", "count"),
-        signed_mean=("log10(pO2/p_ref) error", "mean"),
-        signed_median=("log10(pO2/p_ref) error", "median"),
-        signed_min=("log10(pO2/p_ref) error", "min"),
-        signed_max=("log10(pO2/p_ref) error", "max"),
-        absolute_mean=("Absolute log10(pO2/p_ref) error", "mean"),
-        absolute_median=("Absolute log10(pO2/p_ref) error", "median"),
-        absolute_min=("Absolute log10(pO2/p_ref) error", "min"),
-        absolute_max=("Absolute log10(pO2/p_ref) error", "max"),
-        relative_mean_percent=("Relative log10(pO2/p_ref) error (%)", "mean"),
-        relative_median_percent=("Relative log10(pO2/p_ref) error (%)", "median"),
-        relative_min_percent=("Relative log10(pO2/p_ref) error (%)", "min"),
-        relative_max_percent=("Relative log10(pO2/p_ref) error (%)", "max"),
-    )
+    blackburn_summary = build_metric_summary(blackburn_aligned)
     blackburn_summary.to_csv(BLACKBURN_SUMMARY_OUTPUT_PATH, sep="\t", index=False)
+    write_summary_report(
+        "SCIANTIX Blackburn output vs analytical Blackburn formula",
+        blackburn_aligned,
+        blackburn_summary,
+        BLACKBURN_SUMMARY_REPORT_PATH,
+    )
     plot_blackburn_signed_log_partial_pressure_error(blackburn_aligned)
     plot_blackburn_absolute_log_partial_pressure_error(blackburn_aligned)
     plot_blackburn_relative_log_partial_pressure_error(blackburn_aligned)

@@ -281,12 +281,15 @@ void InputReading(
 
         if (Sciantix_options[11] == 2)
         {
-            if (!MOXInitialConditions(input_initial_conditions, Sciantix_variables, input_check))
-            {
-                std::cout
-                    << "WARNING: MOX fuel selected but no optional MOX initial conditions were found "
-                    << std::endl;
-            }
+            std::vector<double> initial_composition_Pu = ReadSeveralParameters("Initial composition Pu", input_initial_conditions, input_check);
+
+            Sciantix_variables[171] = initial_composition_Pu[0];
+            Sciantix_variables[172] = initial_composition_Pu[1];
+            Sciantix_variables[173] = initial_composition_Pu[2];
+            Sciantix_variables[174] = initial_composition_Pu[3];
+            Sciantix_variables[175] = initial_composition_Pu[4];
+
+            Sciantix_variables[177] = ReadOneParameter("q", input_initial_conditions, input_check);
         }
     }
 

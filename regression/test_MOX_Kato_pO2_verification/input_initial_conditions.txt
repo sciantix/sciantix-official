@@ -22,11 +22,11 @@
 #	initial Xe133 (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
 0.0	0.0	0.0	0.0	0.0	0.0 0.0
 #	initial Kr85m (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
-0.0
+-0.10
 #   initial fuel stoichiometry deviation (\)
 0
 #   Cr content (ppm)
-0.0	100.0	0.0	0.0	0.0
+0.0 80.0    20.0    0.0 0.0
 #   initial Pu238 Pu239 Pu240 Pu241 Pu242 (% of Pu atoms) content
 __Q_VALUE__
 #   q = Pu / (U + Pu)
