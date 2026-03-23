@@ -90,7 +90,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputHighBurnupStructure,
                                                          bool   toOutputStoichiometryDeviation,
                                                          bool   toOutputChromiumContent,
-                                                         bool   toOutputThermochimica)
+                                                         bool   toOutputThermochimica,
+                                                         bool   toOutputMOX)
 {
     std::vector<SciantixVariable> init_sciantix_variable = {
         SciantixVariable("Grain radius", "(m)", Sciantix_variables[0], Sciantix_variables[0], 1),
@@ -316,6 +317,12 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("U236", "(at/m3)", Sciantix_variables[43], Sciantix_variables[43], 0),
         SciantixVariable("U237", "(at/m3)", Sciantix_variables[44], Sciantix_variables[44], 0),
         SciantixVariable("U238", "(at/m3)", Sciantix_variables[45], Sciantix_variables[45], 1),
+        SciantixVariable("Pu238", "(at/m3)", Sciantix_variables[171], Sciantix_variables[171], toOutputMOX),
+        SciantixVariable("Pu239", "(at/m3)", Sciantix_variables[172], Sciantix_variables[172], toOutputMOX),
+        SciantixVariable("Pu240", "(at/m3)", Sciantix_variables[173], Sciantix_variables[173], toOutputMOX),
+        SciantixVariable("Pu241", "(at/m3)", Sciantix_variables[174], Sciantix_variables[174], toOutputMOX),
+        SciantixVariable("Pu242", "(at/m3)", Sciantix_variables[175], Sciantix_variables[175], toOutputMOX),
+        SciantixVariable("q", "(-)", Sciantix_variables[177], Sciantix_variables[177], toOutputMOX),
 
         SciantixVariable(
             "Intergranular vented fraction", "(/)", Sciantix_variables[46], Sciantix_variables[46], toOutputVenting),
@@ -425,6 +432,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("Diffusion coefficient", "(m2/s)", Sciantix_variables[160], Sciantix_variables[160], 0),
         SciantixVariable("Uranium content", "(mol/m3)", Sciantix_variables[161], Sciantix_variables[161],  toOutputThermochimica),
         SciantixVariable("Oxygen content", "(mol/m3)", Sciantix_variables[162], Sciantix_variables[162],  toOutputThermochimica),
+        SciantixVariable("Plutonium content", "(mol/m3)", Sciantix_variables[163], Sciantix_variables[163],  toOutputThermochimica && toOutputMOX),
 
         SciantixVariable("Initial grain radius", "(mol)", Sciantix_variables[170], Sciantix_variables[170],  toOutputThermochimica),
         SciantixVariable("JOG", "(/)", 0.0, 0.0, toOutputThermochimica),

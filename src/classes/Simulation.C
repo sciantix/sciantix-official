@@ -74,8 +74,6 @@ void Simulation::execute()
 
     // Fuel chemistry
 
-    Microstructure();
-
     ChromiumSolubility();
 
     GapPartialPressure();
