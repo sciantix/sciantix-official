@@ -86,6 +86,9 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 22.072e-02;
         YPu241 = 22.095e-02;
         YPu242 = 17.250e-02; // https://www-nds.iaea.org/wimsd/fpyield.htm
+
+        yield = 0.24;
+        return;
         found = true;
         current_name = gas_name;
     }
@@ -99,6 +102,9 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 2.332e-02; 
         YPu241 = 1.047e-02;
         YPu242 = 1.726e-03; // non trovo Pu242 come genitore
+
+        yield = 0.03;
+        return;
         found = true;
         current_name = gas_name;
     }
@@ -112,6 +118,12 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 19.697e-02;
         YPu241 = 19.916e-02;
         YPu242 = 6.520e-02; //
+
+        if (q>0)
+            yield = 0.209;
+        else
+            yield = 0.226;
+        return;
         found = true;
         current_name = gas_name;
     }
@@ -125,6 +137,9 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 1.846e-02;
         YPu241 = 1.829e-02;
         YPu242 = 6.952e-02; //
+
+        yield = 0.012/2;
+        return;
         found = true;
         current_name = gas_name;
     }
@@ -138,6 +153,9 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 3.974e-02; 
         YPu241 = 4.069e-02;
         YPu242 = 3.022e-02; //
+
+        yield = 0.012/2;
+        return;
         found = true;
         current_name = gas_name;
     }
@@ -168,6 +186,9 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 21.800e-02;
         YPu241 = 20.500e-02;
         YPu242 = 18.200e-02; 
+
+        yield = 0.206;
+        return;
         found = true;
         current_name = particle_name;
     }
@@ -180,6 +201,10 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 22.900e-02;
         YPu241 = 22.100e-02;
         YPu242 = 20.500e-02;
+
+        yield = 0.456/4;
+        return;
+
         found = true;
         current_name = particle_name;
     }
@@ -192,6 +217,10 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 6.180e-02;
         YPu241 = 6.001E-02;
         YPu242 = 5.559E-02;
+
+        yield = 0.456/4;
+        return;
+
         found = true;
         current_name = particle_name;
     }
@@ -204,6 +233,10 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 16.500e-02;
         YPu241 = 17.800e-02;
         YPu242 = 18.500e-02;
+
+        yield = 0.456/4;
+        return;
+
         found = true;
         current_name = particle_name;
     }
@@ -216,6 +249,10 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
         YPu240 = 5.850e-02;
         YPu241 = 6.100e-02;
         YPu242 = 6.400e-02;
+
+        yield = 0.456/4;
+        return;
+
         found = true;
         current_name = particle_name;
     }
