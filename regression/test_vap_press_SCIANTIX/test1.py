@@ -1,0 +1,80 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import io
+
+# Nd
+np_data_str = """Temperature (K);Normalized release (/)
+1532.8812195861742;0.0
+1708.7769850584868;0.014630173498852908
+1767.408906882591;0.019506897998470545
+1846.567935750175;0.022798933833511024
+1922.7894341215103;0.025968804758262486
+2057.6428543169504;0.03157703793282279
+2183.6896174286885;0.04730299365729769
+2242.3156048477495;0.057055455465338384
+2286.2598741906136;0.07350329475061217
+2324.3290825409804;0.0988346207951834
+2344.802779939074;0.1192694785162529
+2382.8245130490977;0.18093758483674457
+2406.2238721333533;0.2276475233840931
+2414.9533819514963;0.24906685752363147
+2432.4717456382123;0.30079370172018055
+2447.040710018595;0.35290012093092255
+2464.51753287001;0.4292161701917617
+2484.8784765722876;0.5409889187788436
+2499.44744095267;0.630054542313484
+2516.930198209129;0.7500204842172822
+2525.6893800524867;0.8123112613835489
+2543.290825409804;0.9360196451047658
+2546.299568766567;0.9555393765887611
+2546.3885848422105;0.9560613539327207
+2549.403262604017;0.9719837607048543
+2552.495087631381;0.9848419260100186
+2555.551306228488;0.9948828944445816
+2558.892376267655;0.9962723660504947
+2561.693415447916;1.0"""
+
+df_np = pd.read_csv(io.StringIO(np_data_str), sep=';')
+
+data = pd.read_csv('./thermochemistry_output.txt', sep='\t')
+temp_k = data['Temperature (K)']
+
+# matrix species
+vapour_species = [
+    'UO2 (vapour, matrix) (mol/m3)',
+    'UO3 (vapour, matrix) (mol/m3)',
+    'UO (vapour, matrix) (mol/m3)',
+    'PuO2 (vapour, matrix) (mol/m3)',
+    'PuO (vapour, matrix) (mol/m3)'
+]
+
+total_conc = data[vapour_species].sum(axis=1)
+max_total = total_conc.max()
+
+plt.figure(figsize=(12, 8))
+
+plt.plot(df_np['Temperature (K)'], df_np['Normalized release (/)'], 
+         label='Nd', color='red', linestyle='--', linewidth=2)
+
+
+plt.plot(temp_k, total_conc / max_total, 
+         label='SCIANTIX Matrix tot', color='black', linewidth=2, alpha=0.8)
+
+
+for spec in vapour_species:
+    name = spec.split(' (')[0]
+    
+    plt.plot(temp_k, data[spec] / max_total, label=f'{name}', alpha=0.7)
+
+
+plt.xlabel('Temperature (K)')
+plt.ylabel('Normalised release')
+plt.legend(loc='upper left', fontsize='small', ncol=2)
+plt.grid(alpha=0.3)
+plt.xlim(1000, 3000)
+plt.ylim(0, 1.1)
+
+plt.tight_layout()
+plt.savefig('species.png')
+plt.show()
