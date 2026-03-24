@@ -91,9 +91,18 @@ void Simulation::setSystem()
             sciantix_system.push(He_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Xe133_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Kr85m_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Cs_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));            
-            sciantix_system.push(I_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Te_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+
+            if (selected_fission_products.count("Cs") > 0)
+                sciantix_system.push(Cs_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+
+            if (selected_fission_products.count("I") > 0)
+                sciantix_system.push(I_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+
+            if (selected_fission_products.count("Te") > 0)
+                sciantix_system.push(Te_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+
+            if (selected_fission_products.count("Mo") > 0)
+                sciantix_system.push(Mo_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             break;
 
         default:
@@ -577,6 +586,30 @@ System Te_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
     system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
     system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
+    system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
+
+    return system_;
+}
+
+System Mo_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+
+    system_.setName("Mo in MOX");
+    system_.setGas(gas["Mo"]);
+    system_.setMatrix(matrices["MOX"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0.206); //Mo by Olander 1976 for fast spectrum, MOX
+    system_.setRadiusInLattice(0.21e-9);
+    system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    system_.setFissionGasDiffusivity(11, sciantix_variable, history_variable, scaling_factors); // To be modified
+    
+    system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
+    system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
+    system_.setTrappingRate(99, sciantix_variable, scaling_factors);
     system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
 
     return system_;

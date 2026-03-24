@@ -155,5 +155,12 @@ System Te_in_MOX(SciantixArray<Matrix>&             matrices,
                  SciantixArray<SciantixVariable>&   sciantix_variable, 
                  SciantixArray<SciantixVariable>&   history_variable, 
                  SciantixArray<InputVariable>&      scaling_factors);
+
+System Mo_in_MOX(SciantixArray<Matrix>&             matrices, 
+                 SciantixArray<Gas>&                gas, 
+                 SciantixArray<InputVariable>&      input_variable,
+                 SciantixArray<SciantixVariable>&   sciantix_variable, 
+                 SciantixArray<SciantixVariable>&   history_variable, 
+                 SciantixArray<InputVariable>&      scaling_factors);
                  
 #endif  // SETSYSTEM_H

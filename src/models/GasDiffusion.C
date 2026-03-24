@@ -142,7 +142,7 @@ void Simulation::GasDiffusion()
         sciantix_variable["Intragranular gas solution swelling"].setFinalValue(
             (sciantix_variable["Xe in intragranular solution"].getFinalValue() +
              sciantix_variable["Xe in grain HBS"].getFinalValue()) *
-            pow(matrices["UO2"].getLatticeParameter(), 3) / 4);
+            pow(matrices[0].getLatticeParameter(), 3) / 4);
     }
 
     // Calculation of the gas concentration at grain boundary, by mass balance
