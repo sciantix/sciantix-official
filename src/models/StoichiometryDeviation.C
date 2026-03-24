@@ -381,7 +381,7 @@ void Simulation::StoichiometryDeviation()
     double temperature = history_variable["Temperature"].getFinalValue();
     double p_o2_atm = 0.0;
 
-    double q = sciantix_variable["Plutonium content"].getFinalValue(); 
+    double q = sciantix_variable["q"].getFinalValue(); 
 
     // MOX (Kato) or UO2 (Blackburn)
     if (q > 0.0) 
@@ -414,16 +414,24 @@ double BlackburnThermochemicalModel(double stoichiometry_deviation, double tempe
 
 double KatoThermochemicalModel(double stoichiometry_deviation, double temperature, SciantixArray<SciantixVariable> &sciantix_variable)
 {
-    double q_Pu = sciantix_variable["Plutonium content"].getFinalValue();
+    // expliciting input values
+    double q_Pu = 0.244; 
+    double x = -0.02;
+    std::cout<< "X = "<<stoichiometry_deviation <<std::endl;
+    
+    double T_calc = temperature;
+    if (T_calc < 1000.0) {
+        T_calc = 1000.0;
+    }
+
+    double target_om = 2.0 + x; // 1.98
     double q_Am = 0.0;
 
-    double target_om = 2.0 + stoichiometry_deviation;
-
     std::vector<double> parameter;
-    parameter.push_back(temperature); // param[0]
-    parameter.push_back(q_Pu);        // param[1]
-    parameter.push_back(target_om);   // param[2]
-    parameter.push_back(q_Am);        // param[3]
+    parameter.push_back(T_calc);    // param[0]
+    parameter.push_back(q_Pu);      // param[1]
+    parameter.push_back(target_om); // param[2]
+    parameter.push_back(q_Am);      // param[3]
 
     Solver solver;
     return solver.BisectionKato(parameter); 
