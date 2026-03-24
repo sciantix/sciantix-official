@@ -1,0 +1,7 @@
+SUPERFACT batch run summary
+
+point_01_r_0p0000mm: returncode=0
+point_02_r_0p6797mm: returncode=0
+point_03_r_1p3595mm: returncode=0
+point_04_r_2p0393mm: returncode=0
+point_05_r_2p7190mm: returncode=0
