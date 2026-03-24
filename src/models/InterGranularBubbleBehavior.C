@@ -733,7 +733,7 @@ void Simulation::InterGranularBubbleBehavior()
             1e-6 * boltzmann_constant * history_variable["Temperature"].getFinalValue() *
             sciantix_variable["Intergranular atoms per bubble"].getFinalValue() /
             (sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() *
-             matrices["UO2"].getSchottkyVolume()));
+             matrices[0].getSchottkyVolume()));
     else
         sciantix_variable["Intergranular bubble pressure"].setFinalValue(0.0);
 }
