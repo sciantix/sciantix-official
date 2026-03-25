@@ -40,6 +40,7 @@ constexpr int open_calphad_timeout_seconds = 60;
 
 enum class OpenCalphadSolveMode
 {
+    SaveReadWarmStart,
     GlobalEquilibrium,
     PressureAxisStepGlobalEquilibrium,
     TemperatureAxisStepGlobalEquilibrium,
@@ -122,6 +123,13 @@ bool fileExists(const std::string& file_path)
     return static_cast<bool>(file);
 }
 
+bool hasOpenCalphadSavedState(const std::string& state_file_path)
+{
+    return fileExists(state_file_path) ||
+           fileExists(state_file_path + ".OCU") ||
+           fileExists(state_file_path + ".ocu");
+}
+
 std::string buildOpenCalphadLocationTag(const std::string& location)
 {
     if (isMatrixLocation(location))
@@ -143,6 +151,8 @@ std::string solveModeLabel(OpenCalphadSolveMode mode)
 {
     switch (mode)
     {
+        case OpenCalphadSolveMode::SaveReadWarmStart:
+            return "save/read warm-start (first: c e, then: r u + c w)";
         case OpenCalphadSolveMode::GlobalEquilibrium:
             return "c e";
         case OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium:
@@ -482,6 +492,7 @@ std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
 
 bool writeOpenCalphadInput(const std::string& input_file_path,
                            const std::string& output_file_path,
+                           const std::string& state_file_path,
                            const std::string& data_path,
                            double             pressure,
                            double             temperature,
@@ -536,11 +547,22 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
     if (solve_components.empty() || total_input_content <= 0.0)
         return false;
 
-    input_file << "@$ Initialize variables:\n";
-    input_file << "r t " << data_path;
-    for (const auto& component : solve_components)
-        input_file << " " << toLowerCopy(component.name);
-    input_file << "\n\n";
+    const bool use_saved_state =
+        (solve_mode == OpenCalphadSolveMode::SaveReadWarmStart) && hasOpenCalphadSavedState(state_file_path);
+
+    if (use_saved_state)
+    {
+        input_file << "r u " << state_file_path << ".OCU\n\n";
+    }
+    else
+    {
+        input_file << "@$ Initialize variables:\n";
+        input_file << "r t " << data_path;
+        for (const auto& component : solve_components)
+            input_file << " " << toLowerCopy(component.name);
+        input_file << "\n\n";
+    }
+
     input_file << "set ref o gas * " << reference_oxygen_pressure_pa << "\n";
     input_file << "\nset c t=" << temperature << " p=" << pressure << "\n";
     input_file << "\nset c ";
@@ -557,7 +579,21 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
             input_file << "n(" << toLowerCopy(component.name) << ")=" << component.fraction << " ";
         }
     }
-    input_file << "\n\n" << buildSolveCommandBlock(solve_mode, temperature, pressure);
+    input_file << "\n\n";
+    if (solve_mode == OpenCalphadSolveMode::SaveReadWarmStart)
+    {
+        if (use_saved_state)
+            input_file << "c w\n\n";
+        else
+            input_file << "c e\n\n";
+
+        input_file << "save u " << state_file_path << " Y\n\n";
+    }
+    else
+    {
+        input_file << buildSolveCommandBlock(solve_mode, temperature, pressure);
+    }
+
     input_file << "l /out=" << output_file_path << " r 1\n\n";
     input_file << "fin";
     return true;
@@ -801,6 +837,7 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     const std::string location_tag = buildOpenCalphadLocationTag(location);
     const std::string input_file_path = TestPath + "OCinput_" + location_tag + ".OCM";
     const std::string output_file_path = TestPath + "OCoutput_" + location_tag + ".DAT";
+    const std::string state_file_path = TestPath + "OCoutput_" + location_tag;
     const std::string data_path = directory_path + "data/" + stripTdbExtension(location_settings.database);
     const std::string executable = directory_path + "oc6P " + input_file_path;
 
@@ -812,6 +849,7 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     const std::string previous_output_snapshot =
         fileExists(output_file_path) ? readTextFile(output_file_path) : "";
     std::vector<OpenCalphadSolveMode> solve_modes = {
+        OpenCalphadSolveMode::SaveReadWarmStart,
         OpenCalphadSolveMode::GlobalEquilibrium,
     };
 
@@ -829,6 +867,7 @@ void Simulation::CallThermochemistryModule(std::string                        lo
         if (!writeOpenCalphadInput(
                 input_file_path,
                 output_file_path,
+                state_file_path,
                 data_path,
                 pressure,
                 temperature,

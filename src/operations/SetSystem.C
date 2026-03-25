@@ -320,7 +320,7 @@ System Cs_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Cs"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.209); //Cs+Rb by Olander 1976 for fast spectrum, MOX
+    system_.setYield(0.17); //Cs from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -343,7 +343,7 @@ System I_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sciant
     system_.setGas(gas["I"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.0); //I+Te by Olander 1976 for fast spectrum, MOX
+    system_.setYield(0.0);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -366,7 +366,7 @@ System Te_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Te"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.0); //I+Te by Olander 1976 for fast spectrum, MOX
+    system_.setYield(0.0);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -389,7 +389,7 @@ System Mo_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Mo"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.206); //Mo by Olander 1976 for fast spectrum, MOX
+    system_.setYield(0.220); //Mo from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -531,7 +531,7 @@ System Cs_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Cs"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.209); // Cs+Rb by Olander 1976 for fast spectrum, MOX
+    system_.setYield(0.17); // Cs from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -554,7 +554,7 @@ System I_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sciant
     system_.setGas(gas["I"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.0); // I+Te by Olander 1976 for fast spectrum, MOX
+    system_.setYield(0.0);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -577,7 +577,7 @@ System Te_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Te"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.0); // I+Te by Olander 1976 for fast spectrum, MOX
+    system_.setYield(0.0);
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
@@ -600,7 +600,7 @@ System Mo_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     system_.setGas(gas["Mo"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.206); //Mo by Olander 1976 for fast spectrum, MOX
+    system_.setYield(0.22); //Mo from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);

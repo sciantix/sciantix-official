@@ -116,6 +116,10 @@ int main(int argc, char** argv)
     remove(thermo_outputPath.c_str());
     remove((TestPath + "OCinput_matrix.OCM").c_str());
     remove((TestPath + "OCinput_grain_boundary.OCM").c_str());
+    remove((TestPath + "OCoutput_matrix").c_str());
+    remove((TestPath + "OCoutput_grain_boundary").c_str());
+    remove((TestPath + "OCoutput_matrix.OCU").c_str());
+    remove((TestPath + "OCoutput_grain_boundary.OCU").c_str());
     remove((TestPath + "OCoutput_matrix.DAT").c_str());
     remove((TestPath + "OCoutput_grain_boundary.DAT").c_str());
 
@@ -165,6 +169,10 @@ int main(int argc, char** argv)
 
     remove((TestPath + "OCinput_matrix.OCM").c_str());
     remove((TestPath + "OCinput_grain_boundary.OCM").c_str());
+    remove((TestPath + "OCoutput_matrix").c_str());
+    remove((TestPath + "OCoutput_grain_boundary").c_str());
+    remove((TestPath + "OCoutput_matrix.OCU").c_str());
+    remove((TestPath + "OCoutput_grain_boundary.OCU").c_str());
     remove((TestPath + "OCoutput_matrix.DAT").c_str());
     remove((TestPath + "OCoutput_grain_boundary.DAT").c_str());
 
