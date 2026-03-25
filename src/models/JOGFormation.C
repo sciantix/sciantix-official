@@ -17,7 +17,6 @@
 #include "Simulation.h"
 
 #include <algorithm>
-#include <vector>
 
 void Simulation::JOGFormation()
 {
@@ -37,7 +36,7 @@ void Simulation::JOGFormation()
     if (temperature_celsius > 568) // Transition temperature
         alpha = -0.0102 + 8.50e-5 * temperature_celsius - 2.13e-8 * std::pow(temperature_celsius, 2.0);
 
-    const double V_cell = (a_o_ref * b_o_ref * c_o_ref)*(1.0 + 3 * alpha)/ (2.0); // 2.0 = Z
+    const double V_cell = (a_o_ref * b_o_ref * c_o_ref)*(1.0 + 3 * alpha)/ (4.0); // 4.0 = Z in orthorombic
 
     const double theoretical_density = 425.76 / (avogadro_number * V_cell); // g/m3
 

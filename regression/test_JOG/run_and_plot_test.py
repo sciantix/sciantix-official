@@ -876,32 +876,16 @@ def plot_radial_profiles(
         gb_radial_histories = [item[1] for item in condensed_entries]
         gb_colors = [item[2] for item in condensed_entries]
         fig, axis = plt.subplots()
-        stack_data: list[np.ndarray] = []
-        stack_colors: list[object] = []
-        stack_labels: list[str] = []
+        axis.stackplot(
+            reference_burnup,
+            jog_cs2moo4_thickness_over_time_um,
+            colors=gb_colors,
+            labels=gb_labels,
+            alpha=0.9,
+        )
+        axis.plot(reference_burnup, jog_cs2moo4_thickness_over_time_um, color="#111827", linewidth=0.25, alpha=0.35)
 
-        if gb_radial_histories and jog_condensed_thickness_over_time_um is not None:
-            condensed_matrix = np.vstack(gb_radial_histories)
-            condensed_total = np.sum(condensed_matrix, axis=0)
-            safe_condensed_total = np.where(condensed_total > 0.0, condensed_total, 1.0)
-            condensed_thickness_matrix = (
-                condensed_matrix / safe_condensed_total[np.newaxis, :]
-            ) * jog_condensed_thickness_over_time_um[np.newaxis, :]
-            stack_data.extend(list(condensed_thickness_matrix))
-            stack_colors.extend(gb_colors)
-            stack_labels.extend(gb_labels)
-
-        if stack_data:
-            polys = axis.stackplot(
-                reference_burnup,
-                *stack_data,
-                colors=stack_colors,
-                labels=stack_labels,
-                alpha=0.9,
-            )
-            cumulative_histories = np.cumsum(np.vstack(stack_data), axis=0)
-            for boundary in cumulative_histories:
-                axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.35)
+        axis.plot(reference_burnup, jog_condensed_thickness_over_time_um, color="#111827", label = "Total")
 
         axis.scatter(
             fima_to_burnup(melis_fima),
@@ -922,7 +906,7 @@ def plot_radial_profiles(
         axis.set_xlabel("Burnup (MWd/kgUO2)")
         axis.set_ylabel("JOG thickness (um)")
         axis.legend(loc="upper left")
-        axis.set_ylim([0,300])
+        axis.set_ylim([0,200])
 
         fig.tight_layout()
         plot_path = PLOTS_DIR / "summary_08_jog_contributions_and_experiments.png"
