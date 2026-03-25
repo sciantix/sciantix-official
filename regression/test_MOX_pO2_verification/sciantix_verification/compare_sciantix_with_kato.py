@@ -454,9 +454,7 @@ def make_signed_log_pressure_error_plot(frame: pd.DataFrame) -> None:
     for q_value in q_values:
         fig, ax = plt.subplots()
         q_frame = frame[frame["q target (-)"] == q_value]
-        finite_values = q_frame["Delta log10(p/reference)"].replace([np.inf, -np.inf], np.nan).dropna()
-        y_limit = 0.15 if finite_values.empty else max(0.15, float(np.nanmax(np.abs(finite_values))) * 1.15)
-
+        y_limit = 1e-3
         for temperature_k in temperatures_k:
             subset = q_frame[q_frame["Temperature target (K)"] == temperature_k].sort_values("O/M target (/)")
             subset = subset.dropna(subset=["Delta log10(p/reference)"])
@@ -492,9 +490,7 @@ def make_absolute_log_pressure_error_plot(frame: pd.DataFrame) -> None:
     for q_value in q_values:
         fig, ax = plt.subplots()
         q_frame = frame[frame["q target (-)"] == q_value]
-        finite_values = q_frame["Absolute delta log10(p/reference)"].replace([np.inf, -np.inf], np.nan).dropna()
-        y_limit = 0.15 if finite_values.empty else max(0.15, float(np.nanmax(finite_values)) * 1.15)
-
+        y_limit = 0.05 
         for temperature_k in temperatures_k:
             subset = q_frame[q_frame["Temperature target (K)"] == temperature_k].sort_values("O/M target (/)")
             subset = subset.dropna(subset=["Absolute delta log10(p/reference)"])
@@ -530,9 +526,7 @@ def make_relative_log_pressure_error_plot(frame: pd.DataFrame) -> None:
     for q_value in q_values:
         fig, ax = plt.subplots()
         q_frame = frame[frame["q target (-)"] == q_value]
-        finite_values = q_frame["Relative delta log10(p/reference) (%)"].replace([np.inf, -np.inf], np.nan).dropna()
-        y_limit = 5.0 if finite_values.empty else max(5.0, float(np.nanmax(np.abs(finite_values))) * 1.15)
-
+        y_limit = 1e-2
         for temperature_k in temperatures_k:
             subset = q_frame[q_frame["Temperature target (K)"] == temperature_k].sort_values("O/M target (/)")
             subset = subset.dropna(subset=["Relative delta log10(p/reference) (%)"])
@@ -556,44 +550,6 @@ def make_relative_log_pressure_error_plot(frame: pd.DataFrame) -> None:
         add_temperature_q_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
         fig.savefig(ROOT_DIR / f"fuel_oxygen_partial_pressure_relative_error_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
-        plt.close(fig)
-
-
-def make_absolute_relative_log_pressure_error_plot(frame: pd.DataFrame) -> None:
-    """Create one absolute relative log10(p/reference) error plot per plutonium content q."""
-    q_values = sorted(frame["q target (-)"].unique())
-    temperatures_k = sorted(frame["Temperature target (K)"].unique())
-    temperature_colors = temperature_color_map(temperatures_k)
-    q_markers = q_marker_map(q_values)
-
-    for q_value in q_values:
-        fig, ax = plt.subplots()
-        q_frame = frame[frame["q target (-)"] == q_value]
-        finite_values = q_frame["Absolute relative delta log10(p/reference) (%)"].replace([np.inf, -np.inf], np.nan).dropna()
-        y_limit = 5.0 if finite_values.empty else max(5.0, float(np.nanmax(finite_values)) * 1.15)
-
-        for temperature_k in temperatures_k:
-            subset = q_frame[q_frame["Temperature target (K)"] == temperature_k].sort_values("O/M target (/)")
-            subset = subset.dropna(subset=["Absolute relative delta log10(p/reference) (%)"])
-            if subset.empty:
-                continue
-
-            ax.plot(
-                subset["O/M target (/)"],
-                subset["Absolute relative delta log10(p/reference) (%)"],
-                color=temperature_colors[temperature_k],
-                marker=q_markers[q_value],
-            )
-
-        ax.set_title(f"q = {q_value:.2f}")
-        ax.set_xlabel("O/M ratio (-)")
-        ax.set_ylabel(r"Relative $|\Delta \log_{10}(p_{O_2}/p_{ref})|$ (%)")
-        ax.set_xlim([1.96, 2.08])
-        ax.set_ylim([0.0, y_limit])
-        ax.grid(True, alpha=0.3)
-        add_temperature_q_legends(ax, temperatures_k, temperature_colors)
-        fig.tight_layout()
-        fig.savefig(ROOT_DIR / f"fuel_oxygen_partial_pressure_relative_error_absolute_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
         plt.close(fig)
 
 
@@ -635,159 +591,6 @@ def make_potential_plot(frame: pd.DataFrame) -> None:
         add_model_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
         fig.savefig(ROOT_DIR / f"fuel_oxygen_potential_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
-        plt.close(fig)
-
-
-def make_potential_error_plot(frame: pd.DataFrame) -> None:
-    """Create one signed oxygen-potential error plot per plutonium content q."""
-    q_values = sorted(frame["q target (-)"].unique())
-    temperatures_k = sorted(frame["Temperature target (K)"].unique())
-    temperature_colors = temperature_color_map(temperatures_k)
-    q_markers = q_marker_map(q_values)
-    for q_value in q_values:
-        fig, ax = plt.subplots()
-        q_frame = frame[frame["q target (-)"] == q_value]
-        finite_values = q_frame["Delta oxygen potential (KJ/mol)"].replace([np.inf, -np.inf], np.nan).dropna()
-        y_limit = 0.1 if finite_values.empty else max(0.1, float(np.nanmax(np.abs(finite_values))) * 1.15)
-
-        for temperature_k in temperatures_k:
-            subset = q_frame[q_frame["Temperature target (K)"] == temperature_k].sort_values("O/M target (/)")
-            subset = subset.dropna(subset=["Delta oxygen potential (KJ/mol)"])
-            if subset.empty:
-                continue
-
-            ax.plot(
-                subset["O/M target (/)"],
-                subset["Delta oxygen potential (KJ/mol)"],
-                color=temperature_colors[temperature_k],
-                marker=q_markers[q_value],
-            )
-
-        ax.axhline(0.0, color="black", linestyle="--")
-        ax.set_title(f"q = {q_value:.2f}")
-        ax.set_xlabel("O/M ratio (-)")
-        ax.set_ylabel(r"$\Delta \mu_{O_2}$ (kJ/mol)")
-        ax.set_xlim([1.96, 2.08])
-        ax.set_ylim([-y_limit, y_limit])
-        ax.grid(True, alpha=0.3)
-        add_temperature_q_legends(ax, temperatures_k, q_values, temperature_colors, q_markers)
-        fig.tight_layout()
-        fig.savefig(ROOT_DIR / f"fuel_oxygen_potential_error_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
-        plt.close(fig)
-
-
-def make_absolute_potential_error_plot(frame: pd.DataFrame) -> None:
-    """Create one absolute oxygen-potential error plot per plutonium content q."""
-    q_values = sorted(frame["q target (-)"].unique())
-    temperatures_k = sorted(frame["Temperature target (K)"].unique())
-    temperature_colors = temperature_color_map(temperatures_k)
-    q_markers = q_marker_map(q_values)
-
-    for q_value in q_values:
-        fig, ax = plt.subplots()
-        q_frame = frame[frame["q target (-)"] == q_value]
-        finite_values = q_frame["Absolute delta oxygen potential (KJ/mol)"].replace([np.inf, -np.inf], np.nan).dropna()
-        y_limit = 0.1 if finite_values.empty else max(0.1, float(np.nanmax(finite_values)) * 1.15)
-
-        for temperature_k in temperatures_k:
-            subset = q_frame[q_frame["Temperature target (K)"] == temperature_k].sort_values("O/M target (/)")
-            subset = subset.dropna(subset=["Absolute delta oxygen potential (KJ/mol)"])
-            if subset.empty:
-                continue
-
-            ax.plot(
-                subset["O/M target (/)"],
-                subset["Absolute delta oxygen potential (KJ/mol)"],
-                color=temperature_colors[temperature_k],
-                marker=q_markers[q_value],
-            )
-
-        ax.set_title(f"q = {q_value:.2f}")
-        ax.set_xlabel("O/M ratio (-)")
-        ax.set_ylabel(r"$|\Delta \mu_{O_2}|$ (kJ/mol)")
-        ax.set_xlim([1.96, 2.08])
-        ax.set_ylim([0.0, y_limit])
-        ax.grid(True, alpha=0.3)
-        add_temperature_q_legends(ax, temperatures_k, q_values, temperature_colors, q_markers)
-        fig.tight_layout()
-        fig.savefig(ROOT_DIR / f"fuel_oxygen_potential_error_absolute_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
-        plt.close(fig)
-
-
-def make_relative_potential_error_plot(frame: pd.DataFrame) -> None:
-    """Create one signed relative oxygen-potential error plot per plutonium content q."""
-    q_values = sorted(frame["q target (-)"].unique())
-    temperatures_k = sorted(frame["Temperature target (K)"].unique())
-    temperature_colors = temperature_color_map(temperatures_k)
-    q_markers = q_marker_map(q_values)
-
-    for q_value in q_values:
-        fig, ax = plt.subplots()
-        q_frame = frame[frame["q target (-)"] == q_value]
-        finite_values = q_frame["Relative delta oxygen potential (%)"].replace([np.inf, -np.inf], np.nan).dropna()
-        y_limit = 5.0 if finite_values.empty else max(5.0, float(np.nanmax(np.abs(finite_values))) * 1.15)
-
-        for temperature_k in temperatures_k:
-            subset = q_frame[q_frame["Temperature target (K)"] == temperature_k].sort_values("O/M target (/)")
-            subset = subset.dropna(subset=["Relative delta oxygen potential (%)"])
-            if subset.empty:
-                continue
-
-            ax.plot(
-                subset["O/M target (/)"],
-                subset["Relative delta oxygen potential (%)"],
-                color=temperature_colors[temperature_k],
-                marker=q_markers[q_value],
-            )
-
-        ax.axhline(0.0, color="black", linestyle="--")
-        ax.set_title(f"q = {q_value:.2f}")
-        ax.set_xlabel("O/M ratio (-)")
-        ax.set_ylabel(r"Relative $\Delta \mu_{O_2}$ (%)")
-        ax.set_xlim([1.96, 2.08])
-        ax.set_ylim([-y_limit, y_limit])
-        ax.grid(True, alpha=0.3)
-        add_temperature_q_legends(ax, temperatures_k, q_values, temperature_colors, q_markers)
-        fig.tight_layout()
-        fig.savefig(ROOT_DIR / f"fuel_oxygen_potential_relative_error_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
-        plt.close(fig)
-
-
-def make_absolute_relative_potential_error_plot(frame: pd.DataFrame) -> None:
-    """Create one absolute relative oxygen-potential error plot per plutonium content q."""
-    q_values = sorted(frame["q target (-)"].unique())
-    temperatures_k = sorted(frame["Temperature target (K)"].unique())
-    temperature_colors = temperature_color_map(temperatures_k)
-    q_markers = q_marker_map(q_values)
-
-    for q_value in q_values:
-        fig, ax = plt.subplots()
-        q_frame = frame[frame["q target (-)"] == q_value]
-        finite_values = q_frame["Absolute relative delta oxygen potential (%)"].replace([np.inf, -np.inf], np.nan).dropna()
-        y_limit = 5.0 if finite_values.empty else max(5.0, float(np.nanmax(finite_values)) * 1.15)
-
-        for temperature_k in temperatures_k:
-            subset = q_frame[q_frame["Temperature target (K)"] == temperature_k].sort_values("O/M target (/)")
-            subset = subset.dropna(subset=["Absolute relative delta oxygen potential (%)"])
-            if subset.empty:
-                continue
-
-            ax.plot(
-                subset["O/M target (/)"],
-                subset["Absolute relative delta oxygen potential (%)"],
-                color=temperature_colors[temperature_k],
-                marker=q_markers[q_value],
-            )
-
-        ax.set_title(f"q = {q_value:.2f}")
-        ax.set_xlabel("O/M ratio (-)")
-        ax.set_ylabel(r"Relative $|\Delta \mu_{O_2}|$ (%)")
-        ax.set_xlim([1.96, 2.08])
-        ax.set_ylim([0.0, y_limit])
-        ax.grid(True, alpha=0.3)
-        add_temperature_q_legends(ax, temperatures_k, q_values, temperature_colors, q_markers)
-        fig.tight_layout()
-        fig.savefig(ROOT_DIR / f"fuel_oxygen_potential_relative_error_absolute_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
         plt.close(fig)
 
 
