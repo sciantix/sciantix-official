@@ -270,17 +270,13 @@ def write_summary_report(frame: pd.DataFrame) -> None:
     max_abs_log = frame["Absolute delta log10(p/reference)"].max()
     mean_abs_log = frame["Absolute delta log10(p/reference)"].mean()
     mean_rel_log = frame["Absolute relative delta log10(p/reference) (%)"].mean()
-    max_abs_potential = frame["Absolute delta oxygen potential (KJ/mol)"].max()
-    mean_abs_potential = frame["Absolute delta oxygen potential (KJ/mol)"].mean()
-
+    max_rel_log = frame["Absolute relative delta log10(p/reference) (%)"].max()
     grouped = (
         frame.groupby(["q target (-)", "Temperature target (K)"], as_index=False)
         .agg(
             count=("Delta log10(p/reference)", "count"),
             mean_abs_log_error=("Absolute delta log10(p/reference)", "mean"),
             max_abs_log_error=("Absolute delta log10(p/reference)", "max"),
-            mean_abs_potential_error=("Absolute delta oxygen potential (KJ/mol)", "mean"),
-            max_abs_potential_error=("Absolute delta oxygen potential (KJ/mol)", "max"),
         )
     )
 
@@ -292,9 +288,8 @@ def write_summary_report(frame: pd.DataFrame) -> None:
         f"Mean signed log10(p/reference) error: {signed_mean:.6e}",
         f"Mean absolute log10(p/reference) error: {mean_abs_log:.6e}",
         f"Maximum absolute log10(p/reference) error: {max_abs_log:.6e}",
-        f"Mean absolute relative log10(p/reference) error (%): {mean_rel_log:.6e}",
-        f"Mean absolute oxygen potential error (kJ/mol): {mean_abs_potential:.6e}",
-        f"Maximum absolute oxygen potential error (kJ/mol): {max_abs_potential:.6e}",
+        f"Mean relative log10(p/reference) error (%): {mean_rel_log:.6e}",
+        f"Max relative log10(p/reference) error (%): {max_rel_log:.6e}",
         "",
         "Per-(q, temperature) summary:",
         grouped.to_string(index=False),

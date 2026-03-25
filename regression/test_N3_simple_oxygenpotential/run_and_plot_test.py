@@ -11,6 +11,7 @@ os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 
 TEST_DIR = Path(__file__).resolve().parent
@@ -432,21 +433,17 @@ def plot_case(
     jog_breakdown_labels = {
         "condensed": "JOG from condensed (/)",
         "liquid": "JOG from liquid (/)",
-        "known": "JOG from known densities (/)",
-        "estimated": "JOG from estimated densities (/)",
         "cs2moo4": "JOG from Cs2MoO4 (/)",
     }
 
-    if has_columns(column_map, list(jog_breakdown_labels.values())):
+    if has_columns(column_map, [jog_breakdown_labels["condensed"], jog_breakdown_labels["liquid"]]):
         jog_condensed_um = values[:, column_map[jog_breakdown_labels["condensed"]]] * (PELLET_RADIUS_M / 2.0) * 1.0e6
         jog_liquid_um = values[:, column_map[jog_breakdown_labels["liquid"]]] * (PELLET_RADIUS_M / 2.0) * 1.0e6
-        jog_known_um = values[:, column_map[jog_breakdown_labels["known"]]] * (PELLET_RADIUS_M / 2.0) * 1.0e6
-        jog_estimated_um = values[:, column_map[jog_breakdown_labels["estimated"]]] * (PELLET_RADIUS_M / 2.0) * 1.0e6
-        jog_cs2moo4_um = values[:, column_map[jog_breakdown_labels["cs2moo4"]]] * (PELLET_RADIUS_M / 2.0) * 1.0e6
+        jog_cs2moo4_um = None
+        if jog_breakdown_labels["cs2moo4"] in column_map:
+            jog_cs2moo4_um = values[:, column_map[jog_breakdown_labels["cs2moo4"]]] * (PELLET_RADIUS_M / 2.0) * 1.0e6
 
-        fig, axes = plt.subplots(2, 1, figsize=(11, 10), sharex=True)
-
-        axis = axes[0]
+        fig, axis = plt.subplots()
         axis.stackplot(
             fima,
             jog_condensed_um,
@@ -457,22 +454,10 @@ def plot_case(
         )
         axis.plot(fima, jog_thickness_um, color="#111827", label="Total JOG", linewidth=2.3)
         axis.set_ylabel("JOG thickness (um)")
-        axis.legend(loc="upper left")
         axis.secondary_xaxis("top", functions=(burnup_to_time, time_to_burnup)).set_xlabel(time_label)
-
-        axis = axes[1]
-        axis.stackplot(
-            fima,
-            jog_known_um,
-            jog_estimated_um,
-            labels=["Known densities", "Estimated densities"],
-            colors=["#16a34a", "#dc2626"],
-            alpha=0.8,
-        )
-        axis.plot(fima, jog_cs2moo4_um, color="#7c3aed", linestyle="--", label="Cs2MoO4 only")
-        axis.plot(fima, jog_thickness_um, color="#111827", label="Total JOG")
+        if jog_cs2moo4_um is not None:
+            axis.plot(fima, jog_cs2moo4_um, color="#7c3aed", linestyle="--", label="Cs2MoO4 only")
         axis.set_xlabel(fima_label)
-        axis.set_ylabel("JOG thickness (um)")
         axis.legend(loc="upper left")
 
         fig.tight_layout()
@@ -719,8 +704,6 @@ def plot_radial_profiles(
         jog_thickness_over_time_um = jog_thickness_over_time_m * 1.0e6
         jog_condensed_thickness_over_time_um = None
         jog_liquid_thickness_over_time_um = None
-        jog_known_thickness_over_time_um = None
-        jog_estimated_thickness_over_time_um = None
         jog_cs2moo4_thickness_over_time_um = None
 
         if "JOG from condensed (/)" in output_profiles:
@@ -732,18 +715,6 @@ def plot_radial_profiles(
         if "JOG from liquid (/)" in output_profiles:
             jog_liquid_thickness_over_time_um = radial_integral_over_radius(
                 output_profiles["JOG from liquid (/)"],
-                radii_m_array,
-                r_max_m,
-            ) * 1.0e6
-        if "JOG from known densities (/)" in output_profiles:
-            jog_known_thickness_over_time_um = radial_integral_over_radius(
-                output_profiles["JOG from known densities (/)"],
-                radii_m_array,
-                r_max_m,
-            ) * 1.0e6
-        if "JOG from estimated densities (/)" in output_profiles:
-            jog_estimated_thickness_over_time_um = radial_integral_over_radius(
-                output_profiles["JOG from estimated densities (/)"],
                 radii_m_array,
                 r_max_m,
             ) * 1.0e6
@@ -846,12 +817,13 @@ def plot_radial_profiles(
                 linestyle="--",
                 label="Condensed",
             )
-        axis.plot(reference_burnup, jog_cs2moo4_thickness_over_time_um,
-                color="#7c3aed",
-                linestyle="--",
-                label="Cs2MoO4 only",
-                linewidth=2.0,
-            )
+        if jog_cs2moo4_thickness_over_time_um is not None:
+            axis.plot(reference_burnup, jog_cs2moo4_thickness_over_time_um,
+                    color="#7c3aed",
+                    linestyle="--",
+                    label="Cs2MoO4 only",
+                    linewidth=2.0,
+                )
         axis.scatter(
             fima_to_burnup(melis_fima),
             melis_thickness,
@@ -879,15 +851,8 @@ def plot_radial_profiles(
         plt.close(fig)
         saved_paths.append(plot_path)
 
-        if (
-            jog_condensed_thickness_over_time_um is not None
-            and jog_liquid_thickness_over_time_um is not None
-            and jog_known_thickness_over_time_um is not None
-            and jog_estimated_thickness_over_time_um is not None
-        ):
-            fig, axes = plt.subplots(2, 1, figsize=(11, 10), sharex=True)
-
-            axis = axes[0]
+        if jog_condensed_thickness_over_time_um is not None and jog_liquid_thickness_over_time_um is not None:
+            fig, axis = plt.subplots()
             axis.stackplot(
                 reference_burnup,
                 jog_condensed_thickness_over_time_um,
@@ -897,19 +862,14 @@ def plot_radial_profiles(
                 alpha=0.8,
             )
             axis.plot(reference_burnup, jog_thickness_over_time_um, color="#111827", label="Total JOG", linewidth=2.3)
-            axis.set_ylabel("JOG thickness (um)")
-            axis.legend(loc="upper left")
-
-            axis = axes[1]
-            axis.stackplot(
-                reference_burnup,
-                jog_known_thickness_over_time_um,
-                jog_estimated_thickness_over_time_um,
-                labels=["Known densities", "Estimated densities"],
-                colors=["#16a34a", "#dc2626"],
-                alpha=0.8,
-            )
-            axis.plot(reference_burnup, jog_thickness_over_time_um, color="#111827", label="Total JOG", linewidth=2.3)
+            if jog_cs2moo4_thickness_over_time_um is not None:
+                axis.plot(
+                    reference_burnup,
+                    jog_cs2moo4_thickness_over_time_um,
+                    color="#7c3aed",
+                    linestyle="--",
+                    label="Cs2MoO4 only",
+                )
             axis.scatter(
                 fima_to_burnup(melis_fima),
                 melis_thickness,
