@@ -963,8 +963,8 @@ def main() -> int:
     else:
         gb_color_map, matrix_color_map = {}, {}
 
-    # for case_dir in case_directories:
-    #     plot_case(case_dir, saved_paths, gb_color_map, matrix_color_map, half_wall_thickness_m, r_inner_m, r_outer_m)
+    for case_dir in case_directories:
+        plot_case(case_dir, saved_paths, gb_color_map, matrix_color_map, half_wall_thickness_m, r_inner_m, r_outer_m)
 
     plot_radial_profiles(case_directories, saved_paths, gb_color_map)
 

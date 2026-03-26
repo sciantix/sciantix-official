@@ -16,21 +16,22 @@ U/M = 0.78
 Pu/M = 0.288
 O/M = 1.975
 
-Source if not otherwise indicated: inspyre D7.3
+Source if not otherwise indicated: INSPYRE D7.3
 
 ## Simulation results
 
-Germinal after 420 days of irradiation sees a decrease in temperature 
+GERMINAL after 420 days of irradiation sees a decrease in temperature 
     linked to gap reopening, jog formation and therefore improved gap conductance
-    after that the gap size follows the jog thickness evolution
-Central hole in the first days
-FCT 1500°C-2000°C with TU providing the highest temperature regimes. 
-The fission gas release increases rapidly after the high-power cycles at the beginning of irradiation and after approximately 330 days. 
+    after that the gap size follows the jog thickness evolution.
+Central hole in the first days.
+FCT 1500°C-2000°C with TRANSURANUS providing the highest temperature regimes. 
+The fission gas release increases rapidly after the high-power cycles at the beginning 
+    of irradiation and after approximately 330 days. 
+EOL Pressure estimated by GERMINAL: 70 bar.
 
 ## Measured
 
 Fission gas released @stp for Xe, Kr = 401 cm3 
 EOL He volume @stp = 38 cm3
-Central hole lenght = 
 Fuel elongation = 0.4%
 Clad elongation = 0.3%
