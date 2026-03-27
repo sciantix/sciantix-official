@@ -44,7 +44,7 @@ std::set<std::string> getSelectedFissionProductElements(SciantixArray<InputVaria
 
     for (const auto& name : manifest_elements)
     {
-        if (name != "O" && name != "U")
+        if (name != "O" && name != "U" && name != "Pu")
             selected_elements.insert(name);
     }
 

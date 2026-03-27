@@ -69,7 +69,7 @@ bool isMatrixLocation(const std::string& location)
 
 bool useOxygenPotentialConstraint(const std::set<std::string>& manifest_elements)
 {
-    return manifest_elements.count("O") > 0 && manifest_elements.count("U") == 0;
+    return manifest_elements.count("O") > 0 && manifest_elements.count("U") == 0  && manifest_elements.count("Pu") == 0;
 }
 
 std::string toLowerCopy(std::string text)
@@ -422,6 +422,8 @@ std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
                 component.content = std::max(0.0, sciantix_variable["Oxygen content"].getFinalValue());
             else if (element_name == "U")
                 component.content = std::max(0.0, sciantix_variable["Uranium content"].getFinalValue());
+            else if (element_name == "Pu")
+                component.content = std::max(0.0, sciantix_variable["Plutonium content"].getFinalValue());
         }
         else if (isGrainBoundaryLocation(location))
         {
@@ -441,6 +443,12 @@ std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
                 const double uranium_content = std::max(0.0, sciantix_variable["Uranium content"].getFinalValue());
 
                 component.content = uranium_content;
+            }
+            else if (element_name == "Pu")
+            {
+                const double plutonium_content = std::max(0.0, sciantix_variable["Plutonium content"].getFinalValue());
+
+                component.content = plutonium_content;
             }
             else
             {
@@ -751,7 +759,7 @@ void updateGrainBoundaryFromOutput(const std::map<std::string, OCPhaseData>& sol
 
     for (const auto& element : manifest_elements)
     {
-        if (element == "O" || element == "U")
+        if (element == "O" || element == "U" || element == "Pu")
             continue;
 
         double gas_moles = 0.0;

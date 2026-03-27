@@ -16,6 +16,7 @@
 
 #include "Simulation.h"
 #include "StoichiometryDeviation.h"
+#include <cmath>
 
 void Simulation::StoichiometryDeviation()
 {
@@ -353,6 +354,12 @@ void Simulation::StoichiometryDeviation()
             parameter.push_back(burnup);
             parameter.push_back(coefficient);
 
+            // If MOX: hp. of all fissions on Pu
+            if (sciantix_variable["q"].getFinalValue() > 0.0)
+                parameter.push_back(0.0);
+            else
+                parameter.push_back(1.0);
+
             model_.setParameter(parameter);
             model_.setRef(reference);
 
@@ -367,6 +374,8 @@ void Simulation::StoichiometryDeviation()
             // The generic integrator uses a rate times an increment, and the time step here is in seconds.
             parameter.push_back(physics_variable["Time step"].getFinalValue());
             parameter.push_back(0.001 / 3600.0);
+            // for the purpose of the verification in MOX fuel q = Pu/(U + Pu) is kept constant. 
+            parameter.push_back(1.0 - sciantix_variable["q"].getFinalValue());
 
             // linear increase with time to verify the correct po2 at different O/M
             model_.setParameter(parameter);
@@ -407,6 +416,12 @@ void Simulation::StoichiometryDeviation()
             //         1.0 / history_variable["Temperature"].getInitialValue()
             //     )
             // );
+
+            // If MOX: hp. of all fissions on Pu
+            if (sciantix_variable["q"].getFinalValue() > 0.0)
+                parameter.push_back(0.0);
+            else
+                parameter.push_back(1.0);
 
             model_.setParameter(parameter);
             model_.setRef(reference);
@@ -463,8 +478,16 @@ void Simulation::StoichiometryDeviation()
         // reduced Uranium content
         sciantix_variable["Uranium content"].addValue( 
             - sciantix_variable["Oxygen content"].getFinalValue()
+            * model["Stoichiometry deviation"].getParameter().at(2)
             * sciantix_variable["Stoichiometry deviation"].getIncrement()
-            * pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2)
+            * pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2.0)
+        );
+
+        sciantix_variable["Plutonium content"].addValue( 
+            - sciantix_variable["Oxygen content"].getFinalValue()
+            * (1.0 - model["Stoichiometry deviation"].getParameter().at(2))
+            * sciantix_variable["Stoichiometry deviation"].getIncrement()
+            * pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2.0)
         );
     }
     else if (input_variable["iStoichiometryDeviation"].getValue() == 9)
@@ -473,10 +496,19 @@ void Simulation::StoichiometryDeviation()
             model["Stoichiometry deviation"].getParameter().at(0)
         );
 
+        // under development for mox!
         sciantix_variable["Uranium content"].addValue(
             - sciantix_variable["Oxygen content"].getFinalValue()
+            * (1.0 - sciantix_variable["q"].getFinalValue())
             * sciantix_variable["Stoichiometry deviation"].getIncrement()
-            * pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2)
+            * pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2.0)
+        );
+
+        sciantix_variable["Plutonium content"].addValue( 
+            - sciantix_variable["Oxygen content"].getFinalValue()
+            * sciantix_variable["q"].getFinalValue()
+            * sciantix_variable["Stoichiometry deviation"].getIncrement()
+            * pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2.0)
         );
     }
     else if (input_variable["iStoichiometryDeviation"].getValue() == 10)
@@ -484,7 +516,17 @@ void Simulation::StoichiometryDeviation()
         sciantix_variable["Uranium content"].setFinalValue(
             solver.Integrator(
                 sciantix_variable["Uranium content"].getFinalValue(),
-                - model["Stoichiometry deviation"].getParameter().at(0),
+                - (model["Stoichiometry deviation"].getParameter().at(0) 
+                    * model["Stoichiometry deviation"].getParameter().at(2)),
+                physics_variable["Time step"].getFinalValue()
+            )
+        );
+
+        sciantix_variable["Plutonium content"].setFinalValue(
+            solver.Integrator(
+                sciantix_variable["Plutonium content"].getFinalValue(),
+                - (model["Stoichiometry deviation"].getParameter().at(0) 
+                   * (1.0 - model["Stoichiometry deviation"].getParameter().at(2))),
                 physics_variable["Time step"].getFinalValue()
             )
         );
@@ -499,6 +541,12 @@ void Simulation::StoichiometryDeviation()
             - 2.0
         );
     }
+    const double plutonium_content = sciantix_variable["Plutonium content"].getFinalValue();
+    const double uranium_content = sciantix_variable["Uranium content"].getFinalValue();
+    const double total = plutonium_content + uranium_content;
+
+    if (total > 0.0)
+        sciantix_variable["q"].setFinalValue(plutonium_content / total);
 
     // EC - this has not the dimensionality of a pressure if not multiplied to the reference one
     // it is not coherent with the oxygen potential also, modified by * reference pressure
