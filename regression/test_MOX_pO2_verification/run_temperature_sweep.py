@@ -48,6 +48,7 @@ PRESSURE_PLOT_NAME = "fuel_oxygen_partial_pressures_vs_ou_ratio"
 PRESSURE_PLOT_NAME_2 = "fuel_oxygen_partial_pressures_vs_ou_ratio_2"
 POTENTIAL_PLOT_NAME = "fuel_oxygen_potentials_vs_ou_ratio"
 COMPARE_SCRIPT = SCRIPT_DIR / "sciantix_verification" / "compare_sciantix_with_kato.py"
+COMPARE_OC_SCRIPT = SCRIPT_DIR / "sciantix_verification" / "compare_sciantix_with_oc_csv.py"
 
 
 def parse_args() -> argparse.Namespace:
@@ -283,7 +284,7 @@ def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
             valid["O/U ratio (/)"],
             valid["log10(Kato model pressure / reference)"] - valid["log10(OpenCalphad pressure / reference)"],
             color=colors[temperature_k],
-            marker=markers[label],
+            marker="o",
         )
 
     ax.set_xlabel("O/U ratio (-)")
@@ -356,12 +357,18 @@ def make_potential_plot(frames: list[pd.DataFrame], q_value: float) -> None:
 
 
 def run_comparison() -> None:
-    """Run the post-processing script that compares SCIANTIX with the Kato reference."""
+    """Run post-processing comparisons against Kato and standalone OpenCalphad."""
     subprocess.run(
         ["python3", str(COMPARE_SCRIPT)],
         cwd=SCRIPT_DIR,
         check=True,
     )
+    if COMPARE_OC_SCRIPT.exists():
+        subprocess.run(
+            ["python3", str(COMPARE_OC_SCRIPT)],
+            cwd=SCRIPT_DIR,
+            check=True,
+        )
 
 
 def cleanup_generated_cases(temperatures_k: list[int]) -> None:
@@ -381,6 +388,8 @@ def cleanup_generated_artifacts() -> None:
     metric_files_to_keep = {
         verification_dir / "sciantix_vs_kato_residuals.tsv",
         verification_dir / "sciantix_vs_kato_summary.txt",
+        verification_dir / "sciantix_vs_oc_csv_summary.tsv",
+        verification_dir / "sciantix_vs_oc_csv_summary.txt",
     }
     files_to_remove = [
         verification_dir / "kato_explicit_comparison.tsv",
@@ -391,6 +400,7 @@ def cleanup_generated_artifacts() -> None:
         verification_dir / "kato_solver_residuals.tsv",
         verification_dir / "sciantix_vs_kato_comparison.tsv",
         verification_dir / "sciantix_vs_kato_points.tsv",
+        verification_dir / "sciantix_vs_oc_csv_comparison.tsv",
     ]
     for path in files_to_remove:
         if path.exists() and path not in metric_files_to_keep:
@@ -401,6 +411,9 @@ def cleanup_generated_artifacts() -> None:
         "fuel_oxygen_partial_pressure_error_vs_om_ratio_kato_q_",
         "fuel_oxygen_partial_pressure_relative_error_vs_om_ratio_kato_q_",
         "fuel_oxygen_potential_vs_om_ratio_kato_q_",
+        "sciantix_vs_oc_csv_partial_pressure_q_",
+        "sciantix_vs_oc_csv_log_pO2_error_q_",
+        "sciantix_vs_oc_csv_potential_q_",
     )
 
     for png_path in SCRIPT_DIR.glob("*.png"):
