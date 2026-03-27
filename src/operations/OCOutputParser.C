@@ -119,6 +119,10 @@ std::string normalizePhaseName(const std::string& raw_phase)
     const size_t auto_pos = phase.find("_AUTO");
     if (auto_pos != std::string::npos)
         phase = phase.substr(0, auto_pos);
+    
+    const size_t chkd_pos = phase.find("_CHKD");
+    if (chkd_pos != std::string::npos)
+        phase = phase.substr(0, chkd_pos);
 
     phase = trim(phase);
 
@@ -150,6 +154,10 @@ std::string normalizeSpeciesName(const std::string& raw_name)
     const size_t auto_pos = name.find("_AUTO");
     if (auto_pos != std::string::npos)
         name = name.substr(0, auto_pos);
+    
+    const size_t chkd_pos = name.find("_CHKD");
+    if (chkd_pos != std::string::npos)
+        name = name.substr(0, chkd_pos);
 
     return trim(name);
 }
