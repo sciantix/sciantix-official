@@ -448,7 +448,14 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("JOG", "(/)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("JOG from condensed", "(/)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("JOG from liquid", "(/)", 0.0, 0.0, toOutputThermochimica),
-        SciantixVariable("JOG from Cs2MoO4", "(/)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("JOG from CS2MOO4_S1", "(/)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("JOG from CS2MOO4_S2", "(/)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("JOG from CS2MO3O10", "(/)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("JOG from CS2MO4O13", "(/)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("JOG from BCC_A2", "(/)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("JOG from MOO2", "(/)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("JOG from FCC_A1", "(/)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("JOG from HCP_A3", "(/)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("Grain boundary fraction", "(/)", 0.0, 0.0, toOutputThermochimica)};
 
     return init_sciantix_variable;
