@@ -28,6 +28,8 @@ import pandas as pd
 
 REFERENCE_PRESSURE_MPA = 0.1013
 GAS_CONSTANT = 8.314
+TEMPERATURE_COMPARE_COL = "Temperature compared (K)"
+Q_COMPARE_COL = "q compared (-)"
 
 ROOT_DIR = SCRIPT_DIR.parent
 SUMMARY_PATH = ROOT_DIR / "temperature_sweep_summary.tsv"
@@ -143,9 +145,9 @@ def build_explicit_points(frame: pd.DataFrame) -> pd.DataFrame:
     """Sample the explicit Kato equation over pressure ratio for each (T, q)."""
     rows: list[pd.DataFrame] = []
 
-    grouped = frame.groupby(["Temperature target (K)", "q target (-)"], as_index=False)
+    grouped = frame.groupby([TEMPERATURE_COMPARE_COL, Q_COMPARE_COL], as_index=False)
     for (temperature_k, q_value), group in grouped:
-        sci_log_values = group["SCIANTIX log10(p/reference)"].replace([np.inf, -np.inf], np.nan).dropna()
+        sci_log_values = group["Kato log10(p/reference)"].replace([np.inf, -np.inf], np.nan).dropna()
         if sci_log_values.empty:
             log_min = -30.0
             log_max = 2.0
@@ -162,8 +164,8 @@ def build_explicit_points(frame: pd.DataFrame) -> pd.DataFrame:
         potential_values = GAS_CONSTANT * 1.0e-3 * temperature_k * np.log(pressure_ratio)
 
         explicit_frame = pd.DataFrame({
-            "Temperature target (K)": temperature_k,
-            "q target (-)": q_value,
+            TEMPERATURE_COMPARE_COL: temperature_k,
+            Q_COMPARE_COL: q_value,
             "Explicit log10(p/reference)": log_grid,
             "Explicit pressure ratio (-)": pressure_ratio,
             "Explicit oxygen partial pressure (MPa)": REFERENCE_PRESSURE_MPA * pressure_ratio,
@@ -175,30 +177,28 @@ def build_explicit_points(frame: pd.DataFrame) -> pd.DataFrame:
 
     explicit_points = pd.concat(rows, ignore_index=True)
     explicit_points.to_csv(EXPLICIT_POINTS_PATH, sep="\t", index=False)
-    explicit_points.to_csv(LEGACY_EXPLICIT_POINTS_PATH, sep="\t", index=False)
     return explicit_points
 
 
 def prepare_dataframe() -> pd.DataFrame:
     """Align SCIANTIX trajectory points with explicit NEA Kato reference points."""
-    if not SUMMARY_PATH.exists():
-        if not LEGACY_SUMMARY_PATH.exists():
-            raise FileNotFoundError(f"Missing summary file: {SUMMARY_PATH}")
-        frame = pd.read_csv(LEGACY_SUMMARY_PATH, sep="\t")
-    else:
-        frame = pd.read_csv(SUMMARY_PATH, sep="\t")
+    frame = pd.read_csv(SUMMARY_PATH, sep="\t")
+    # De-fragment blocks before adding many derived columns.
+    frame = frame.copy()
+    temperature_source = "Temperature (K)" if "Temperature (K)" in frame.columns else "Temperature target (K)"
+    q_source = "q (-)" if "q (-)" in frame.columns else "q target (-)"
+    frame[TEMPERATURE_COMPARE_COL] = pd.to_numeric(frame[temperature_source], errors="coerce")
+    frame[Q_COMPARE_COL] = pd.to_numeric(frame[q_source], errors="coerce")
 
     frame["O/M ratio (/)"] = frame["Stoichiometry deviation (/)"] + 2.0
-    frame["SCIANTIX oxygen partial pressure (MPa)"] = frame["Fuel oxygen partial pressure (MPa)"]
-    frame["SCIANTIX oxygen potential (KJ/mol)"] = frame["Fuel oxygen potential (KJ/mol)"]
-    frame["SCIANTIX log10(p/reference)"] = (frame["Fuel oxygen partial pressure (MPa)"] / REFERENCE_PRESSURE_MPA).map(safe_log10)
+    frame["Kato log10(p/reference)"] = (frame["Fuel oxygen partial pressure - Kato (MPa)"] / REFERENCE_PRESSURE_MPA).map(safe_log10)
     explicit_points = build_explicit_points(frame)
 
     aligned_rows: list[pd.DataFrame] = []
-    for (temperature_k, q_value), group in frame.groupby(["Temperature target (K)", "q target (-)"], as_index=False):
+    for (temperature_k, q_value), group in frame.groupby([TEMPERATURE_COMPARE_COL, Q_COMPARE_COL], as_index=False):
         explicit_group = explicit_points[
-            (explicit_points["Temperature target (K)"] == temperature_k) &
-            (explicit_points["q target (-)"] == q_value)
+            (explicit_points[TEMPERATURE_COMPARE_COL] == temperature_k) &
+            (explicit_points[Q_COMPARE_COL] == q_value)
         ].sort_values("Explicit O/M ratio (/)")
 
         explicit_group = explicit_group.drop_duplicates(subset=["Explicit O/M ratio (/)"], keep="first")
@@ -218,25 +218,27 @@ def prepare_dataframe() -> pd.DataFrame:
             continue
 
         x_sci = group["O/M ratio (/)"].to_numpy(dtype=float)
-        group["Explicit log10(p/reference)"] = np.interp(x_sci, x_formula, y_logp)
-        group["Explicit oxygen partial pressure (MPa)"] = np.interp(x_sci, x_formula, y_pressure)
-        group["Explicit oxygen potential (KJ/mol)"] = np.interp(x_sci, x_formula, y_potential)
+        group["Explicit Kato log10(p/reference)"] = np.interp(x_sci, x_formula, y_logp)
+        group["Explicit Kato oxygen partial pressure (MPa)"] = np.interp(x_sci, x_formula, y_pressure)
+        group["Explicit Kato oxygen potential (KJ/mol)"] = np.interp(x_sci, x_formula, y_potential)
         aligned_rows.append(group)
 
-    frame = pd.concat(aligned_rows, ignore_index=True)
+    frame = pd.concat(aligned_rows, ignore_index=True).copy()
 
-    frame["Delta log10(p/reference)"] = frame["SCIANTIX log10(p/reference)"] - frame["Explicit log10(p/reference)"]
+    frame["Delta log10(p/reference)"] = frame["Kato log10(p/reference)"] - frame["Explicit Kato log10(p/reference)"]
     frame["Absolute delta log10(p/reference)"] = frame["Delta log10(p/reference)"].abs()
-    denominator_log_pressure = frame["Explicit log10(p/reference)"].abs()
+    denominator_log_pressure = frame["Explicit Kato log10(p/reference)"].abs()
     frame["Relative delta log10(p/reference) (%)"] = np.where(
         denominator_log_pressure > 0.0,
         frame["Delta log10(p/reference)"] / denominator_log_pressure * 100.0,
         np.nan,
     )
     frame["Absolute relative delta log10(p/reference) (%)"] = frame["Relative delta log10(p/reference) (%)"].abs()
-    frame["Delta oxygen potential (KJ/mol)"] = frame["SCIANTIX oxygen potential (KJ/mol)"] - frame["Explicit oxygen potential (KJ/mol)"]
+    frame["Delta oxygen potential (KJ/mol)"] = (
+        frame["Fuel oxygen potential - Kato (KJ/mol)"] - frame["Explicit Kato oxygen potential (KJ/mol)"]
+    )
     frame["Absolute delta oxygen potential (KJ/mol)"] = frame["Delta oxygen potential (KJ/mol)"].abs()
-    denominator_potential = frame["Explicit oxygen potential (KJ/mol)"].abs()
+    denominator_potential = frame["Explicit Kato oxygen potential (KJ/mol)"].abs()
     frame["Relative delta oxygen potential (%)"] = np.where(
         denominator_potential > 0.0,
         frame["Delta oxygen potential (KJ/mol)"] / denominator_potential * 100.0,
@@ -245,10 +247,9 @@ def prepare_dataframe() -> pd.DataFrame:
     frame["Absolute relative delta oxygen potential (%)"] = frame["Relative delta oxygen potential (%)"].abs()
 
     frame.to_csv(COMPARISON_PATH, sep="\t", index=False)
-    frame.to_csv(LEGACY_COMPARISON_PATH, sep="\t", index=False)
 
     residuals = (
-        frame.groupby(["q target (-)", "Temperature target (K)"], as_index=False)
+        frame.groupby([Q_COMPARE_COL, TEMPERATURE_COMPARE_COL], as_index=False)
         .agg({
             "Delta log10(p/reference)": lambda series: series.abs().max(),
             "Delta oxygen potential (KJ/mol)": lambda series: series.abs().max(),
@@ -259,7 +260,6 @@ def prepare_dataframe() -> pd.DataFrame:
         })
     )
     residuals.to_csv(RESIDUALS_PATH, sep="\t", index=False)
-    residuals.to_csv(LEGACY_RESIDUALS_PATH, sep="\t", index=False)
     return frame
 
 
@@ -272,7 +272,7 @@ def write_summary_report(frame: pd.DataFrame) -> None:
     mean_rel_log = frame["Absolute relative delta log10(p/reference) (%)"].mean()
     max_rel_log = frame["Absolute relative delta log10(p/reference) (%)"].max()
     grouped = (
-        frame.groupby(["q target (-)", "Temperature target (K)"], as_index=False)
+        frame.groupby([Q_COMPARE_COL, TEMPERATURE_COMPARE_COL], as_index=False)
         .agg(
             count=("Delta log10(p/reference)", "count"),
             mean_abs_log_error=("Absolute delta log10(p/reference)", "mean"),
@@ -297,7 +297,6 @@ def write_summary_report(frame: pd.DataFrame) -> None:
     ]
     report_text = "\n".join(lines)
     SUMMARY_REPORT_PATH.write_text(report_text)
-    LEGACY_SUMMARY_REPORT_PATH.write_text(report_text)
 
 
 def temperature_color_map(temperatures_k: list[int]) -> dict[int, object]:
@@ -323,25 +322,6 @@ def q_tag(q_value: float) -> str:
     return f"{q_value:.2f}".replace(".", "p")
 
 
-def clear_legacy_aggregate_plots() -> None:
-    """Remove obsolete aggregate plots left from earlier plotting layouts."""
-    legacy_paths = [
-        ROOT_DIR / "fuel_oxygen_partial_pressure_vs_om_ratio_kato.png",
-        ROOT_DIR / "fuel_oxygen_potential_vs_om_ratio_kato.png",
-        ROOT_DIR / "fuel_oxygen_partial_pressure_error_vs_om_ratio_kato.png",
-        ROOT_DIR / "fuel_oxygen_partial_pressure_error_absolute_vs_om_ratio_kato.png",
-        ROOT_DIR / "fuel_oxygen_partial_pressure_relative_error_vs_om_ratio_kato.png",
-        ROOT_DIR / "fuel_oxygen_partial_pressure_relative_error_absolute_vs_om_ratio_kato.png",
-        ROOT_DIR / "fuel_oxygen_potential_error_vs_om_ratio_kato.png",
-        ROOT_DIR / "fuel_oxygen_potential_error_absolute_vs_om_ratio_kato.png",
-        ROOT_DIR / "fuel_oxygen_potential_relative_error_vs_om_ratio_kato.png",
-        ROOT_DIR / "fuel_oxygen_potential_relative_error_absolute_vs_om_ratio_kato.png",
-    ]
-    for path in legacy_paths:
-        if path.exists():
-            path.unlink()
-
-
 def clear_potential_error_plots() -> None:
     """Remove oxygen-potential error plots that are no longer part of the default set."""
     for path in ROOT_DIR.glob("fuel_oxygen_potential*_q_*.png"):
@@ -365,7 +345,7 @@ def clear_unsigned_error_plots() -> None:
 def add_model_legends(ax, temperatures_k: list[int], temperature_colors: dict[int, object]) -> None:
     """Add separate legends for temperatures and for SCIANTIX/reference sources."""
     temperature_handles = [
-        Line2D([0], [0], color=temperature_colors[temperature_k], label=f"{temperature_k} K")
+        Line2D([0], [0], color=temperature_colors[temperature_k], label=f"{int(round(temperature_k))} K")
         for temperature_k in temperatures_k
     ]
     source_handles = [
@@ -386,7 +366,7 @@ def add_model_legends(ax, temperatures_k: list[int], temperature_colors: dict[in
 def add_temperature_q_legends(ax, temperatures_k: list[int], temperature_colors: dict[int, object]) -> None:
     """Add the temperature legend used on the per-q error figures."""
     temperature_handles = [
-        Line2D([0], [0], color=temperature_colors[temperature_k], label=f"{temperature_k} K")
+        Line2D([0], [0], color=temperature_colors[temperature_k], label=f"{int(round(temperature_k))} K")
         for temperature_k in temperatures_k
     ]
     ax.legend(handles=temperature_handles, loc="upper left", ncol=2, title="Temperature")
@@ -394,29 +374,29 @@ def add_temperature_q_legends(ax, temperatures_k: list[int], temperature_colors:
 
 def make_pressure_plot(frame: pd.DataFrame) -> None:
     """Create one partial-pressure overlay plot per plutonium content q."""
-    q_values = sorted(frame["q target (-)"].unique())
-    temperatures_k = sorted(frame["Temperature target (K)"].unique())
+    q_values = sorted(frame[Q_COMPARE_COL].dropna().unique())
+    temperatures_k = sorted(frame[TEMPERATURE_COMPARE_COL].dropna().unique())
     temperature_colors = temperature_color_map(temperatures_k)
     q_markers = q_marker_map(q_values)
 
     for q_value in q_values:
         fig, ax = plt.subplots()
-        q_frame = frame[frame["q target (-)"] == q_value]
+        q_frame = frame[frame[Q_COMPARE_COL] == q_value]
 
         for temperature_k in temperatures_k:
-            subset = q_frame[q_frame["Temperature target (K)"] == temperature_k].sort_values("O/M target (/)")
+            subset = q_frame[q_frame[TEMPERATURE_COMPARE_COL] == temperature_k].sort_values("O/M ratio (/)")
             if subset.empty:
                 continue
 
             ax.plot(
-                subset["O/M target (/)"],
-                subset["SCIANTIX log10(p/reference)"],
+                subset["O/M ratio (/)"],
+                subset["Kato log10(p/reference)"],
                 color=temperature_colors[temperature_k],
                 linestyle="-",
             )
             ax.scatter(
-                subset["O/M target (/)"],
-                subset["Explicit log10(p/reference)"],
+                subset["O/M ratio (/)"],
+                subset["Explicit Kato log10(p/reference)"],
                 color=temperature_colors[temperature_k],
                 marker=q_markers[q_value],
                 s=22,
@@ -426,7 +406,7 @@ def make_pressure_plot(frame: pd.DataFrame) -> None:
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
         ax.set_xlim([1.96, 2.08])
-        finite_values = q_frame["SCIANTIX log10(p/reference)"].replace([np.inf, -np.inf], np.nan).dropna()
+        finite_values = q_frame["Kato log10(p/reference)"].replace([np.inf, -np.inf], np.nan).dropna()
         if not finite_values.empty:
             y_min = 2.0 * math.floor(float(finite_values.min()) / 2.0)
             y_max = min(0.0, 2.0 * math.ceil(float(finite_values.max()) / 2.0))
@@ -442,22 +422,21 @@ def make_pressure_plot(frame: pd.DataFrame) -> None:
 
 def make_signed_log_pressure_error_plot(frame: pd.DataFrame) -> None:
     """Create one signed log10(p/reference) error plot per plutonium content q."""
-    q_values = sorted(frame["q target (-)"].unique())
-    temperatures_k = sorted(frame["Temperature target (K)"].unique())
+    q_values = sorted(frame[Q_COMPARE_COL].dropna().unique())
+    temperatures_k = sorted(frame[TEMPERATURE_COMPARE_COL].dropna().unique())
     temperature_colors = temperature_color_map(temperatures_k)
     q_markers = q_marker_map(q_values)
     for q_value in q_values:
         fig, ax = plt.subplots()
-        q_frame = frame[frame["q target (-)"] == q_value]
-        y_limit = 1e-3
+        q_frame = frame[frame[Q_COMPARE_COL] == q_value]
         for temperature_k in temperatures_k:
-            subset = q_frame[q_frame["Temperature target (K)"] == temperature_k].sort_values("O/M target (/)")
+            subset = q_frame[q_frame[TEMPERATURE_COMPARE_COL] == temperature_k].sort_values("O/M ratio (/)")
             subset = subset.dropna(subset=["Delta log10(p/reference)"])
             if subset.empty:
                 continue
 
             ax.plot(
-                subset["O/M target (/)"],
+                subset["O/M ratio (/)"],
                 subset["Delta log10(p/reference)"],
                 color=temperature_colors[temperature_k],
                 marker=q_markers[q_value],
@@ -468,7 +447,7 @@ def make_signed_log_pressure_error_plot(frame: pd.DataFrame) -> None:
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel(r"$\Delta \log_{10}(p_{O_2}/p_{ref})$ (-)")
         ax.set_xlim([1.96, 2.08])
-        ax.set_ylim([-y_limit, y_limit])
+        # ax.set_ylim([-y_limit, y_limit])
         ax.grid(True, alpha=0.3)
         add_temperature_q_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
@@ -478,22 +457,21 @@ def make_signed_log_pressure_error_plot(frame: pd.DataFrame) -> None:
 
 def make_absolute_log_pressure_error_plot(frame: pd.DataFrame) -> None:
     """Create one absolute log10(p/reference) error plot per plutonium content q."""
-    q_values = sorted(frame["q target (-)"].unique())
-    temperatures_k = sorted(frame["Temperature target (K)"].unique())
+    q_values = sorted(frame[Q_COMPARE_COL].dropna().unique())
+    temperatures_k = sorted(frame[TEMPERATURE_COMPARE_COL].dropna().unique())
     temperature_colors = temperature_color_map(temperatures_k)
     q_markers = q_marker_map(q_values)
     for q_value in q_values:
         fig, ax = plt.subplots()
-        q_frame = frame[frame["q target (-)"] == q_value]
-        y_limit = 0.05 
+        q_frame = frame[frame[Q_COMPARE_COL] == q_value]
         for temperature_k in temperatures_k:
-            subset = q_frame[q_frame["Temperature target (K)"] == temperature_k].sort_values("O/M target (/)")
+            subset = q_frame[q_frame[TEMPERATURE_COMPARE_COL] == temperature_k].sort_values("O/M ratio (/)")
             subset = subset.dropna(subset=["Absolute delta log10(p/reference)"])
             if subset.empty:
                 continue
 
             ax.plot(
-                subset["O/M target (/)"],
+                subset["O/M ratio (/)"],
                 subset["Absolute delta log10(p/reference)"],
                 color=temperature_colors[temperature_k],
                 marker=q_markers[q_value],
@@ -503,7 +481,7 @@ def make_absolute_log_pressure_error_plot(frame: pd.DataFrame) -> None:
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel(r"$|\Delta \log_{10}(p_{O_2}/p_{ref})|$ (-)")
         ax.set_xlim([1.96, 2.08])
-        ax.set_ylim([0.0, y_limit])
+        # ax.set_ylim([0.0, y_limit])
         ax.grid(True, alpha=0.3)
         add_temperature_q_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
@@ -513,23 +491,22 @@ def make_absolute_log_pressure_error_plot(frame: pd.DataFrame) -> None:
 
 def make_relative_log_pressure_error_plot(frame: pd.DataFrame) -> None:
     """Create one signed relative log10(p/reference) error plot per plutonium content q."""
-    q_values = sorted(frame["q target (-)"].unique())
-    temperatures_k = sorted(frame["Temperature target (K)"].unique())
+    q_values = sorted(frame[Q_COMPARE_COL].dropna().unique())
+    temperatures_k = sorted(frame[TEMPERATURE_COMPARE_COL].dropna().unique())
     temperature_colors = temperature_color_map(temperatures_k)
     q_markers = q_marker_map(q_values)
 
     for q_value in q_values:
         fig, ax = plt.subplots()
-        q_frame = frame[frame["q target (-)"] == q_value]
-        y_limit = 1e-2
+        q_frame = frame[frame[Q_COMPARE_COL] == q_value]
         for temperature_k in temperatures_k:
-            subset = q_frame[q_frame["Temperature target (K)"] == temperature_k].sort_values("O/M target (/)")
+            subset = q_frame[q_frame[TEMPERATURE_COMPARE_COL] == temperature_k].sort_values("O/M ratio (/)")
             subset = subset.dropna(subset=["Relative delta log10(p/reference) (%)"])
             if subset.empty:
                 continue
 
             ax.plot(
-                subset["O/M target (/)"],
+                subset["O/M ratio (/)"],
                 subset["Relative delta log10(p/reference) (%)"],
                 color=temperature_colors[temperature_k],
                 marker=q_markers[q_value],
@@ -540,7 +517,7 @@ def make_relative_log_pressure_error_plot(frame: pd.DataFrame) -> None:
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel(r"Relative $\Delta \log_{10}(p_{O_2}/p_{ref})$ (%)")
         ax.set_xlim([1.96, 2.08])
-        ax.set_ylim([-y_limit, y_limit])
+        # ax.set_ylim([-y_limit, y_limit])
         ax.grid(True, alpha=0.3)
         add_temperature_q_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
@@ -550,29 +527,29 @@ def make_relative_log_pressure_error_plot(frame: pd.DataFrame) -> None:
 
 def make_potential_plot(frame: pd.DataFrame) -> None:
     """Create one oxygen-potential overlay plot per plutonium content q."""
-    q_values = sorted(frame["q target (-)"].unique())
-    temperatures_k = sorted(frame["Temperature target (K)"].unique())
+    q_values = sorted(frame[Q_COMPARE_COL].dropna().unique())
+    temperatures_k = sorted(frame[TEMPERATURE_COMPARE_COL].dropna().unique())
     temperature_colors = temperature_color_map(temperatures_k)
     q_markers = q_marker_map(q_values)
 
     for q_value in q_values:
         fig, ax = plt.subplots()
-        q_frame = frame[frame["q target (-)"] == q_value]
+        q_frame = frame[frame[Q_COMPARE_COL] == q_value]
 
         for temperature_k in temperatures_k:
-            subset = q_frame[q_frame["Temperature target (K)"] == temperature_k].sort_values("O/M target (/)")
+            subset = q_frame[q_frame[TEMPERATURE_COMPARE_COL] == temperature_k].sort_values("O/M ratio (/)")
             if subset.empty:
                 continue
 
             ax.plot(
-                subset["O/M target (/)"],
-                subset["Fuel oxygen potential (KJ/mol)"],
+                subset["O/M ratio (/)"],
+                subset["Fuel oxygen potential - Kato (KJ/mol)"],
                 color=temperature_colors[temperature_k],
                 linestyle="-",
             )
             ax.scatter(
-                subset["O/M target (/)"],
-                subset["Explicit oxygen potential (KJ/mol)"],
+                subset["O/M ratio (/)"],
+                subset["Explicit Kato oxygen potential (KJ/mol)"],
                 color=temperature_colors[temperature_k],
                 marker=q_markers[q_value],
                 s=22,
@@ -591,9 +568,6 @@ def make_potential_plot(frame: pd.DataFrame) -> None:
 
 def main() -> None:
     """Generate the MOX verification tables, text report, and plots."""
-    clear_legacy_aggregate_plots()
-    clear_potential_error_plots()
-    clear_unsigned_error_plots()
     frame = prepare_dataframe()
     write_summary_report(frame)
     make_pressure_plot(frame)

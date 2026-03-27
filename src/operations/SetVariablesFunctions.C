@@ -317,6 +317,14 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("U236", "(at/m3)", Sciantix_variables[43], Sciantix_variables[43], 0),
         SciantixVariable("U237", "(at/m3)", Sciantix_variables[44], Sciantix_variables[44], 0),
         SciantixVariable("U238", "(at/m3)", Sciantix_variables[45], Sciantix_variables[45], 1),
+        
+        SciantixVariable("Pu",
+                    "(at/m3)",
+                    Sciantix_variables[171] + Sciantix_variables[172] + Sciantix_variables[173] +
+                        Sciantix_variables[174] + Sciantix_variables[175],
+                    Sciantix_variables[171] + Sciantix_variables[172] + Sciantix_variables[173] +
+                        Sciantix_variables[174] + Sciantix_variables[175],
+                    toOutputMOX),
         SciantixVariable("Pu238", "(at/m3)", Sciantix_variables[171], Sciantix_variables[171], toOutputMOX),
         SciantixVariable("Pu239", "(at/m3)", Sciantix_variables[172], Sciantix_variables[172], toOutputMOX),
         SciantixVariable("Pu240", "(at/m3)", Sciantix_variables[173], Sciantix_variables[173], toOutputMOX),

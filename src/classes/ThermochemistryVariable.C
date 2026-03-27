@@ -129,6 +129,7 @@ double ThermochemistryVariable::getMolarMass()
         {"O", 15.999},
         {"Te", 127.60},
         {"U", 238.02891},
+        {"Pu", 239.052},
         {"Va", 0.0}
     };
 

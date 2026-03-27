@@ -82,7 +82,6 @@ def prepare_case(case_dir: Path, temperature_k: int, input_files: list[Path]) ->
             updated_lines.append(raw_line)
             continue
 
-        # The second column stores the temperature value used by SCIANTIX.
         parts[1] = str(temperature_k)
         updated_lines.append("\t".join(parts))
 

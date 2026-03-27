@@ -9,21 +9,44 @@ The workflow mirrors the UO2 pO2 verification layout as closely as possible:
 """
 
 import argparse
+
+import math
 import shutil
 import subprocess
 from pathlib import Path
 
+import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 import pandas as pd
 
+plt.rcParams.update({
+    "figure.figsize": (10, 7),
+    "font.size": 12,
+    "axes.labelsize": 15,
+    "axes.titlesize": 12,
+    "xtick.labelsize": 12,
+    "ytick.labelsize": 12,
+    "legend.fontsize": 12,
+    "figure.dpi": 300,
+    "axes.grid": True,
+    "grid.alpha": 0.5,
+    "grid.linestyle": "--",
+    "lines.linewidth": 2,
+    "lines.markersize": 4,
+    "legend.frameon": False,
+})
 
-DEFAULT_TEMPERATURES_K = [800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000, 2100, 2200, 2300, 2400, 2500, 2600]
-DEFAULT_Q_VALUES = [0.10, 0.15, 0.20, 0.25, 0.30, 0.35]
+TEMPERATURES_K = list(range(800, 2800, 100))
+REFERENCE_PRESSURE_MPA = 0.1 # 1 bar
+Q_VALUES = [value / 100 for value in range(10, 40, 5)]
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 BUILD_BINARY = SCRIPT_DIR.parent.parent / "build" / "sciantix.x"
 LOCAL_BINARY = SCRIPT_DIR / "sciantix.x"
 SUMMARY_PATH = SCRIPT_DIR / "temperature_sweep_summary.tsv"
-LEGACY_SUMMARY_PATH = SCRIPT_DIR / "kato_sweep_summary.tsv"
+PRESSURE_PLOT_NAME = "fuel_oxygen_partial_pressures_vs_ou_ratio"
+PRESSURE_PLOT_NAME_2 = "fuel_oxygen_partial_pressures_vs_ou_ratio_2"
+POTENTIAL_PLOT_NAME = "fuel_oxygen_potentials_vs_ou_ratio"
 COMPARE_SCRIPT = SCRIPT_DIR / "sciantix_verification" / "compare_sciantix_with_kato.py"
 
 
@@ -32,8 +55,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--plot-only", action="store_true", help="Skip case generation and rerun only the comparison plots.")
     parser.add_argument("--keep-cases", action="store_true", help="Keep generated case folders after the comparison has completed.")
-    parser.add_argument("--temperatures", default=",".join(str(value) for value in DEFAULT_TEMPERATURES_K))
-    parser.add_argument("--q-values", default=",".join(f"{value:.2f}" for value in DEFAULT_Q_VALUES))
+    parser.add_argument("--temperatures", default=",".join(str(value) for value in TEMPERATURES_K))
+    parser.add_argument("--q-values", default=",".join(f"{value:.2f}" for value in Q_VALUES))
     return parser.parse_args()
 
 
@@ -46,27 +69,29 @@ def parse_float_list(text: str) -> list[float]:
     """Parse a comma-separated list of floating-point values."""
     return [float(item.strip()) for item in text.split(",") if item.strip()]
 
-
 def ensure_local_binary() -> None:
-    """Copy the up-to-date SCIANTIX executable into the verification folder."""
+    """Copy the up-to-date compiled SCIANTIX executable into this folder."""
     if not BUILD_BINARY.exists():
         raise FileNotFoundError(f"Missing SCIANTIX binary: {BUILD_BINARY}")
 
     shutil.copy2(BUILD_BINARY, LOCAL_BINARY)
 
-
 def template_input_files() -> list[Path]:
-    """Return the template input files replicated into each generated case."""
+    """Return the template input files that are replicated for each case."""
     return sorted(
         path
         for path in SCRIPT_DIR.glob("input_*")
         if path.is_file()
     )
 
-
 def format_q_tag(q_value: float) -> str:
     """Format a plutonium-content tag for directory names."""
     return f"{q_value:.2f}".replace(".", "p")
+
+
+def q_plot_suffix(q_value: float) -> str:
+    """Format the q suffix used in per-q plot filenames."""
+    return f"q_{format_q_tag(q_value)}"
 
 
 def case_dir_path(temperature_k: int, q_value: float) -> Path:
@@ -79,8 +104,13 @@ def case_id(temperature_k: int, q_value: float) -> str:
     return f"{temperature_k}K/q_{format_q_tag(q_value)}"
 
 
-def rewrite_case_files(case_dir: Path, temperature_k: int, q_value: float) -> None:
-    """Inject the selected temperature and q value into one prepared case."""
+def prepare_case(case_dir: Path, temperature_k: int, q_value: float, input_files: list[Path]) -> None:
+    """Create one generated case and copy the template inputs into it."""
+    case_dir.mkdir(parents=True, exist_ok=True)
+
+    for source in input_files:
+        shutil.copy2(source, case_dir / source.name)
+
     history_path = case_dir / "input_history.txt"
     updated_lines = []
     for raw_line in history_path.read_text().splitlines():
@@ -105,18 +135,8 @@ def rewrite_case_files(case_dir: Path, temperature_k: int, q_value: float) -> No
     initial_conditions_path.write_text(initial_text)
 
 
-def prepare_case(case_dir: Path, temperature_k: int, q_value: float, input_files: list[Path]) -> None:
-    """Create one generated case and copy the template inputs into it."""
-    case_dir.mkdir(parents=True, exist_ok=True)
-
-    for source in input_files:
-        shutil.copy2(source, case_dir / source.name)
-
-    rewrite_case_files(case_dir, temperature_k, q_value)
-
-
 def run_case(case_dir: Path) -> None:
-    """Execute SCIANTIX for one generated case directory."""
+    """Execute SCIANTIX for one prepared case directory."""
     subprocess.run(
         [str(LOCAL_BINARY), f"{case_dir.relative_to(SCRIPT_DIR).as_posix()}/"],
         cwd=SCRIPT_DIR,
@@ -125,7 +145,7 @@ def run_case(case_dir: Path) -> None:
 
 
 def collect_case(case_dir: Path, temperature_k: int, q_value: float) -> pd.DataFrame:
-    """Load one case output and append the sweep identifiers used downstream."""
+    """Load a case output and derive the quantities used in the plots."""
     output_path = case_dir / "output.txt"
     if not output_path.exists():
         raise FileNotFoundError(f"Missing output for {case_dir.name}: {output_path}")
@@ -133,27 +153,206 @@ def collect_case(case_dir: Path, temperature_k: int, q_value: float) -> pd.DataF
     frame = pd.read_csv(output_path, sep="\t")
     frame["Temperature target (K)"] = temperature_k
     frame["q target (-)"] = q_value
-    frame["O/M target (/)"] = frame["Stoichiometry deviation (/)"] + 2.0
+    frame["O/U ratio (/)"] = frame["Stoichiometry deviation (/)"] + 2.0
     frame["Case"] = case_id(temperature_k, q_value)
+    
+    pressure_columns = {
+        "Final": "Fuel oxygen partial pressure (MPa)",
+        "Kato model": "Fuel oxygen partial pressure - Kato (MPa)",
+        "OpenCalphad": "Fuel oxygen partial pressure - CALPHAD (MPa)",
+    }
+
+    for label, column in pressure_columns.items():
+        ratio = frame[column] / REFERENCE_PRESSURE_MPA
+        # Log values are only defined for positive pressures.
+        frame[f"log10({label} pressure / reference)"] = ratio.where(ratio > 0.0).map(
+            lambda value: math.log10(value) if pd.notna(value) else math.nan
+        )
+
     return frame
 
 
-def build_summary(temperatures_k: list[int], q_values: list[float]) -> None:
-    """Generate all cases, run them, and concatenate their full time histories."""
-    ensure_local_binary()
-    input_files = template_input_files()
+def style_maps():
+    """Create consistent color and line encodings across all plots."""
+    cmap = plt.get_cmap("turbo", len(TEMPERATURES_K))
+    colors = {temperature_k: cmap(index) for index, temperature_k in enumerate(TEMPERATURES_K)}
+    linestyles = {
+        "Final": "-",
+        "Kato model": None,
+        "OpenCalphad": None,
+    }
+    markers = {
+        "Final": None,
+        "Kato model": "^",
+        "OpenCalphad": "s",
+    }
+    return colors, linestyles, markers
 
-    collected_frames: list[pd.DataFrame] = []
-    for temperature_k in temperatures_k:
-        for q_value in q_values:
-            current_case = case_dir_path(temperature_k, q_value)
-            prepare_case(current_case, temperature_k, q_value, input_files)
-            run_case(current_case)
-            collected_frames.append(collect_case(current_case, temperature_k, q_value))
+def add_legends(ax,
+                colors: dict[int, object],
+                linestyles: dict[str, str],
+                markers: dict[str, str],
+                temperatures_k: list[int]) -> None:
+    """Split the legend into temperature entries and model/source entries."""
+    temperature_handles = [
+        Line2D([0], [0], color=colors[temperature_k], label=f"{temperature_k} K")
+        for temperature_k in temperatures_k
+    ]
+    source_handles = [
+        Line2D(
+            [0],
+            [0],
+            color="black",
+            linestyle=linestyles[label] if linestyles[label] is not None else "None",
+            marker=markers[label],
+            label=label,
+        )
+        for label in linestyles
+    ]
 
-    summary = pd.concat(collected_frames, ignore_index=True)
-    summary.to_csv(SUMMARY_PATH, sep="\t", index=False)
-    summary.to_csv(LEGACY_SUMMARY_PATH, sep="\t", index=False)
+    temperature_legend = ax.legend(
+        handles=temperature_handles,
+        loc="lower right",
+        ncol=2,
+        title="Temperature"
+    )
+    ax.add_artist(temperature_legend)
+    ax.legend(handles=source_handles, loc="upper left", title="Model")
+
+def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
+    """Plot oxygen partial pressure versus O/U ratio for all temperatures."""
+    fig, ax = plt.subplots()
+    colors, linestyles, markers = style_maps()
+    temperatures_k = sorted({int(frame["Temperature (K)"].iloc[0]) for frame in frames})
+    pressure_columns = {
+        "Final": "log10(Final pressure / reference)",
+        "Kato model": "log10(Kato model pressure / reference)",
+        "OpenCalphad": "log10(OpenCalphad pressure / reference)",
+    }
+
+    for frame in frames:
+        temperature_k = int(frame["Temperature (K)"].iloc[0])
+        for label, column in pressure_columns.items():
+            valid = frame.dropna(subset=[column])
+            if valid.empty:
+                continue
+
+            if label == "Final":
+                ax.plot(
+                    valid["O/U ratio (/)"],
+                    valid[column],
+                    color=colors[temperature_k],
+                    linestyle="-",
+                )
+            else:
+                ax.scatter(
+                    valid["O/U ratio (/)"],
+                    valid[column],
+                    color=colors[temperature_k],
+                    marker=markers[label],
+                )
+
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
+    ax.grid(True, alpha=0.3)
+    add_legends(ax, colors, linestyles, markers, temperatures_k)
+    ax.set_xlim([1.90, 2.20])
+    ax.set_ylim([-30, 0])
+    ax.set_yticks(range(-30, 0, 2))
+
+    fig.tight_layout()
+    fig.savefig(SCRIPT_DIR / f"{PRESSURE_PLOT_NAME}_{q_plot_suffix(q_value)}.png")
+    plt.close(fig)
+
+    fig, ax = plt.subplots()
+    colors, _, _ = style_maps()
+
+    for frame in frames:
+        temperature_k = int(frame["Temperature (K)"].iloc[0])
+        valid = frame.dropna(
+            subset=[
+                "O/U ratio (/)",
+                "log10(OpenCalphad pressure / reference)",
+                "log10(Kato model pressure / reference)",
+            ]
+        )
+        if valid.empty:
+            continue
+
+        ax.scatter(
+            valid["O/U ratio (/)"],
+            valid["log10(Kato model pressure / reference)"] - valid["log10(OpenCalphad pressure / reference)"],
+            color=colors[temperature_k],
+            marker=markers[label],
+        )
+
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel(r"$\Delta\log_{10}(p_{O_2})$ (bar)")
+    ax.grid(True, alpha=0.3)
+    temperature_handles = [
+        Line2D([0], [0], color=colors[temperature_k], label=f"{temperature_k} K")
+        for temperature_k in temperatures_k
+    ]
+    temperature_legend = ax.legend(
+        handles=temperature_handles,
+        loc="lower left",
+        ncol=2,
+        title="Temperature"
+    )
+    ax.add_artist(temperature_legend)
+    ax.set_xlim([1.90, 2.20])
+
+    fig.tight_layout()
+    fig.savefig(SCRIPT_DIR / f"{PRESSURE_PLOT_NAME_2}_{q_plot_suffix(q_value)}.png")
+    plt.close(fig)
+
+def make_potential_plot(frames: list[pd.DataFrame], q_value: float) -> None:
+    """Plot oxygen potential versus O/U ratio for all temperatures."""
+    fig, ax = plt.subplots()
+    colors, linestyles, markers = style_maps()
+    temperatures_k = sorted({int(frame["Temperature (K)"].iloc[0]) for frame in frames})
+    potential_columns = {
+        "Final": "Fuel oxygen potential (KJ/mol)",
+        "Kato model": "Fuel oxygen potential - Kato (KJ/mol)",
+        "OpenCalphad": "Fuel oxygen potential - CALPHAD (KJ/mol)",
+    }
+
+    for frame in frames:
+        temperature_k = int(frame["Temperature (K)"].iloc[0])
+        for label, column in potential_columns.items():
+            if column not in frame.columns:
+                continue
+            valid = frame.dropna(subset=[column])
+            if valid.empty:
+                continue
+
+            if label == "Final":
+                ax.plot(
+                    valid["O/U ratio (/)"],
+                    valid[column],
+                    color=colors[temperature_k],
+                    linestyle="-",
+                )
+            else:
+                ax.scatter(
+                    valid["O/U ratio (/)"],
+                    valid[column],
+                    color=colors[temperature_k],
+                    marker=markers[label],
+                )
+
+    ax.set_xlim([1.90, 2.20])
+    ax.set_ylim([-1000, 0])
+    ax.set_yticks(range(-1000, 100, 100))
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel("Oxygen potential (kJ/mol)")
+    ax.grid(True, alpha=0.3)
+    add_legends(ax, colors, linestyles, markers, temperatures_k)
+
+    fig.tight_layout()
+    fig.savefig(SCRIPT_DIR / f"{POTENTIAL_PLOT_NAME}_{q_plot_suffix(q_value)}.png")
+    plt.close(fig)
+
 
 
 def run_comparison() -> None:
@@ -192,7 +391,6 @@ def cleanup_generated_artifacts() -> None:
         verification_dir / "kato_solver_residuals.tsv",
         verification_dir / "sciantix_vs_kato_comparison.tsv",
         verification_dir / "sciantix_vs_kato_points.tsv",
-        LEGACY_SUMMARY_PATH,
     ]
     for path in files_to_remove:
         if path.exists() and path not in metric_files_to_keep:
@@ -211,12 +409,6 @@ def cleanup_generated_artifacts() -> None:
             if destination.exists():
                 destination.unlink()
             shutil.move(str(png_path), str(destination))
-        else:
-            png_path.unlink()
-
-    for png_path in plots_dir.glob("*.png"):
-        if not png_path.name.startswith(selected_plot_prefixes):
-            png_path.unlink()
 
 
 def main() -> None:
@@ -225,8 +417,34 @@ def main() -> None:
     temperatures_k = parse_int_list(args.temperatures)
     q_values = parse_float_list(args.q_values)
 
+    collected_frames: list[pd.DataFrame] = []
     if not args.plot_only:
-        build_summary(temperatures_k, q_values)
+        ensure_local_binary()
+        input_files = template_input_files()
+
+        for temperature_k in temperatures_k:
+            for q_value in q_values:
+                current_case = case_dir_path(temperature_k, q_value)
+                prepare_case(current_case, temperature_k, q_value, input_files)
+                run_case(current_case)
+                collected_frames.append(collect_case(current_case, temperature_k, q_value))
+    else:
+        for temperature_k in temperatures_k:
+            for q_value in q_values:
+                current_case = case_dir_path(temperature_k, q_value)
+                collected_frames.append(collect_case(current_case, temperature_k, q_value))
+
+    summary = pd.concat(collected_frames, ignore_index=True)
+    summary.to_csv(SUMMARY_PATH, sep="\t", index=False)
+
+    q_to_frames: dict[float, list[pd.DataFrame]] = {}
+    for frame in collected_frames:
+        q_case = float(frame["q target (-)"].iloc[0])
+        q_to_frames.setdefault(q_case, []).append(frame)
+
+    for q_value in sorted(q_to_frames):
+        make_pressure_plot(q_to_frames[q_value], q_value)
+        make_potential_plot(q_to_frames[q_value], q_value)
 
     run_comparison()
 
