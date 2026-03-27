@@ -67,6 +67,13 @@ plt.rcParams.update({
 })
 
 colors = ["#ff0000", "#ff7f00", "#00c853", "#2962ff", "#aa00ff"]
+# Muted but still well-separated palette for species-consistent plots.
+DISTINCT_COLOR_VALUES = [
+    "#6baed6", "#fd8d3c", "#74c476", "#9e9ac8", "#e377c2", "#8c564b",
+    "#17becf", "#bcbd22", "#c7a9d9", "#fdae6b", "#a1d99b", "#bcbddc",
+    "#fdd0a2", "#9ecae1", "#c994c7", "#bdbdbd", "#66c2a5", "#fc8d62",
+    "#8da0cb", "#e78ac3", "#a6d854", "#ffd92f", "#e5c494", "#b3b3b3",
+]
 
 
 def ensure_executable(path: Path) -> None:
@@ -236,15 +243,26 @@ def case_label(case_dir: Path) -> str:
     return f"{parse_radius_mm(case_dir):.4f} mm"
 
 
+def build_species_color_map(labels: list[str]) -> dict[str, object]:
+    species_names = sorted({label.split(" (", 1)[0] for label in labels})
+    if not species_names:
+        return {}
+
+    return {
+        species: DISTINCT_COLOR_VALUES[index % len(DISTINCT_COLOR_VALUES)]
+        for index, species in enumerate(species_names)
+    }
+
+
 def build_label_color_map(labels: list[str]) -> dict[str, object]:
     unique_labels = sorted(set(labels))
     if not unique_labels:
         return {}
 
-    color_values = plt.cm.nipy_spectral(np.linspace(0, 1, len(unique_labels), endpoint=False))
+    species_color_map = build_species_color_map(unique_labels)
     return {
-        label: color_values[index]
-        for index, label in enumerate(unique_labels)
+        label: species_color_map[label.split(" (", 1)[0]]
+        for label in unique_labels
     }
 
 
@@ -315,7 +333,7 @@ def plot_case(
     burnup_label = "Burnup (MWd/kgUO2)"
     time_label = "Time (h)"
     fima_label = "FIMA (%)"
-    jog_label = "JOG (/)"
+    jog_label = "JOG from condensed (/)"
     oxygen_label = "Oxygen content (mol/m3)"
     uranium_label = "Uranium content (mol/m3)"
 
@@ -459,32 +477,41 @@ def plot_case(
     saved_paths.append(plot_path)
 
     jog_breakdown_labels = {
-        "condensed": "JOG from condensed (/)",
-        "liquid": "JOG from liquid (/)",
-        "cs2moo4": "JOG from Cs2MoO4 (/)",
+        "condensed": "JOG from condensed (/)"
     }
+    jog_condensed_subvariables = [
+        ("CS2MOO4_S2", "JOG from CS2MOO4_S2 (/)", "CS2MOO4_S2 (condensed, at grain boundary) (mol/m3)"),
+        ("CS2MOO4_S1", "JOG from CS2MOO4_S1 (/)", "CS2MOO4_S1 (condensed, at grain boundary) (mol/m3)"),
+        ("MOO2", "JOG from MOO2 (/)", "MOO2 (condensed, at grain boundary) (mol/m3)"),
+        ("CS2MO3O10", "JOG from CS2MO3O10 (/)", "CS2MO3O10 (condensed, at grain boundary) (mol/m3)"),
+        ("CS2MO4O13", "JOG from CS2MO4O13 (/)", "CS2MO4O13 (condensed, at grain boundary) (mol/m3)"),
+        ("BCC_A2", "JOG from BCC_A2 (/)", "BCC_A2 (condensed, at grain boundary) (mol/m3)"),
+        ("FCC_A1", "JOG from FCC_A1 (/)", "FCC_A1 (condensed, at grain boundary) (mol/m3)"),
+        ("HCP_A3", "JOG from HCP_A3 (/)", "HCP_A3 (condensed, at grain boundary) (mol/m3)"),
+    ]
 
-    if has_columns(column_map, [jog_breakdown_labels["condensed"], jog_breakdown_labels["liquid"]]):
-        jog_condensed_um = values[:, column_map[jog_breakdown_labels["condensed"]]] * half_wall_thickness_m * 1.0e6
-        jog_liquid_um = values[:, column_map[jog_breakdown_labels["liquid"]]] * half_wall_thickness_m * 1.0e6
-        jog_cs2moo4_um = None
-        if jog_breakdown_labels["cs2moo4"] in column_map:
-            jog_cs2moo4_um = values[:, column_map[jog_breakdown_labels["cs2moo4"]]] * half_wall_thickness_m * 1.0e6
+    if has_columns(column_map, [jog_breakdown_labels["condensed"]]):
+        stack_series = []
+        stack_labels = []
+        stack_colors = []
+        for sub_label, output_label, thermo_label in jog_condensed_subvariables:
+            if output_label not in column_map:
+                continue
+            stack_series.append(values[:, column_map[output_label]] * half_wall_thickness_m * 1.0e6)
+            stack_labels.append(sub_label)
+            stack_colors.append(gb_color_map.get(thermo_label))
 
         fig, axis = plt.subplots()
         axis.stackplot(
             fima,
-            jog_condensed_um,
-            jog_liquid_um,
-            labels=["Condensed contribution", "Liquid contribution"],
-            colors=["#2563eb", "#f97316"],
+            *stack_series,
+            labels=stack_labels,
+            colors=stack_colors,
             alpha=0.8,
         )
         axis.plot(fima, jog_thickness_um, color="#111827", label="Total JOG", linewidth=2.3)
         axis.set_ylabel("JOG thickness (um)")
         axis.secondary_xaxis("top", functions=(burnup_to_time, time_to_burnup)).set_xlabel(time_label)
-        if jog_cs2moo4_um is not None:
-            axis.plot(fima, jog_cs2moo4_um, color="#7c3aed", linestyle="--", label="Cs2MoO4 only")
         axis.set_xlabel(fima_label)
         axis.legend(loc="upper left")
 
@@ -513,13 +540,33 @@ def plot_case(
     gb_stacked_data = [thermochemistry_values[:, thermochemistry_column_map[variable]] for variable in gb_sorted_variables]
     gb_colors = [gb_color_map[variable] for variable in gb_sorted_variables]
     if gb_stacked_data:
-        axis.stackplot(
+        phase_hatch = {
+            "gas": "...",
+            "liquid": "///",
+            "ionic_liquid": "|||",
+            "condensed": "xx",
+            "unknown": "\\\\\\",
+        }
+        gb_labels = []
+        gb_hatches = []
+        for variable in gb_sorted_variables:
+            species = variable.split(" (", 1)[0]
+            match = re.search(r"\(([^,]+), at grain boundary\)", variable)
+            phase = match.group(1).strip().lower() if match else "unknown"
+            gb_labels.append(f"{species} ({phase})")
+            gb_hatches.append(phase_hatch.get(phase, phase_hatch["unknown"]))
+
+        polys = axis.stackplot(
             thermochemistry_burnup,
             gb_stacked_data,
-            labels=gb_sorted_variables,
+            labels=gb_labels,
             colors=gb_colors,
             alpha=0.9,
         )
+        for poly, hatch in zip(polys, gb_hatches):
+            poly.set_hatch(hatch)
+            poly.set_edgecolor((0.1, 0.1, 0.1, 0.7))
+            poly.set_linewidth(0.2)
     axis.set_xlabel(burnup_label)
     axis.set_ylabel("Concentration at grain boundary (mol/m3)")
     add_capped_legend(axis, loc="upper left", fontsize=8)
@@ -721,7 +768,7 @@ def plot_radial_profiles(
                 alpha=0.9,
             )
         axis.set_xlabel("Burnup (MWd/kgUO2)")
-        axis.set_ylabel("Chemical potential (kJ/mol)")
+        axis.set_ylabel("Fuel oxygen potential (kJ/mol)")
         axis.set_ylim([-800, 0.0])
         axis.legend(loc="upper left")
         fig.tight_layout()
@@ -743,15 +790,11 @@ def plot_radial_profiles(
         key=lambda variable: radial_volume_average(thermo_profiles[variable], radii_m_array)[-1],
         reverse=True,
     )
+    species_colors: dict[str, object] = {}
 
     # 5-6) Grain-boundary phases: species-specific color + phase-specific hatch style.
     if gb_sorted_variables:
-        species_names = [variable.split(" (", 1)[0] for variable in gb_sorted_variables]
-        unique_species = sorted(set(species_names))
-        species_colors = {
-            species: color
-            for species, color in zip(unique_species, plt.cm.tab20(np.linspace(0, 1, len(unique_species))))
-        }
+        species_colors = build_species_color_map(gb_sorted_variables)
         phase_hatch = {
             "liquid": "///",
             "gas": "...",
@@ -788,7 +831,7 @@ def plot_radial_profiles(
 
         cumulative_histories = np.cumsum(np.vstack(gb_radial_histories), axis=0)
         for boundary in cumulative_histories:
-            axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.35)
+            axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
 
         axis.set_xlabel("Burnup (MWd/kgUO2)")
         axis.set_ylabel("Concentration at grain boundary (mol/m3)")
@@ -827,7 +870,7 @@ def plot_radial_profiles(
 
         cumulative_histories = np.cumsum(np.vstack(gb_radial_histories), axis=0)
         for boundary in cumulative_histories:
-            axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.35)
+            axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
 
         axis.set_xlabel("Burnup (MWd/kgUO2)")
         axis.set_ylabel("Concentration of condensed species at grain boundary (mol/m3)")
@@ -840,35 +883,36 @@ def plot_radial_profiles(
     
     if "JOG (/)" in output_profiles:
         jog_condensed_thickness_over_time_um = None
-        jog_cs2moo4_thickness_over_time_um = None
 
         if "JOG from condensed (/)" in output_profiles:
             jog_condensed_thickness_over_time_um = radial_integral_over_radius(
                 output_profiles["JOG from condensed (/)"],
                 radii_m_array,
             ) * 1.0e6
-        if "JOG from Cs2MoO4 (/)" in output_profiles:
-            jog_cs2moo4_thickness_over_time_um = radial_integral_over_radius(
-                output_profiles["JOG from Cs2MoO4 (/)"],
-                radii_m_array,
-            ) * 1.0e6
-
         melis_fima, melis_thickness = load_experimental_jog_data(EXP_DATA_DIR / "Melis1993.txt")
         tourasse_fima, tourasse_thickness = load_experimental_jog_data(EXP_DATA_DIR / "Tourasse1992.txt")
 
         def fima_to_burnup(fima_values: np.ndarray) -> np.ndarray:
             return np.interp(fima_values, reference_fima, reference_burnup)
 
+        condensed_contribution_columns = [
+            ("CS2MOO4_S2", "JOG from CS2MOO4_S2 (/)"),
+            ("CS2MOO4_S1", "JOG from CS2MOO4_S1 (/)"),
+            ("MOO2", "JOG from MOO2 (/)"),
+            ("CS2MO3O10", "JOG from CS2MO3O10 (/)"),
+            ("CS2MO4O13", "JOG from CS2MO4O13 (/)"),
+            ("BCC_A2", "JOG from BCC_A2 (/)"),
+            ("FCC_A1", "JOG from FCC_A1 (/)"),
+            ("HCP_A3", "JOG from HCP_A3 (/)"),
+        ]
         condensed_entries: list[tuple[str, np.ndarray, object]] = []
-        for variable in gb_sorted_variables:
-            species = variable.split(" (", 1)[0]
-            match = re.search(r"\(([^,]+), at grain boundary\)", variable)
-            phase = match.group(1).strip().lower() if match else "unknown"
-            if phase != "condensed": 
+        for index, (label, column_name) in enumerate(condensed_contribution_columns):
+            if column_name not in output_profiles:
                 continue
-            series = radial_volume_average(thermo_profiles[variable], radii_m_array)
-            color = species_colors[species]
-            condensed_entries.append((species, series, color))
+            series = radial_integral_over_radius(output_profiles[column_name], radii_m_array) * 1.0e6
+            if is_all_zero(series):
+                continue
+            condensed_entries.append((label, series, species_colors.get(label, plt.cm.tab20(index / max(1, len(condensed_contribution_columns))))))
 
         # Put CS2MOO4_S2 at the base inside the condensed stack ordering.
         condensed_entries.sort(key=lambda item: (item[0] != "CS2MOO4_S2", item[0]))
@@ -876,17 +920,19 @@ def plot_radial_profiles(
         gb_radial_histories = [item[1] for item in condensed_entries]
         gb_colors = [item[2] for item in condensed_entries]
         fig, axis = plt.subplots()
-        axis.stackplot(
-            reference_burnup,
-            jog_cs2moo4_thickness_over_time_um,
-            colors=gb_colors,
-            labels=gb_labels,
-            alpha=0.9,
-        )
-        axis.plot(reference_burnup, jog_cs2moo4_thickness_over_time_um, color="#111827", linewidth=0.25, alpha=0.35)
+        if gb_radial_histories:
+            axis.stackplot(
+                reference_burnup,
+                *gb_radial_histories,
+                colors=gb_colors,
+                labels=gb_labels,
+                alpha=0.9,
+            )
+            cumulative_histories = np.cumsum(np.vstack(gb_radial_histories), axis=0)
+            for boundary in cumulative_histories:
+                axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
 
-        axis.plot(reference_burnup, jog_condensed_thickness_over_time_um, color="#111827", label = "Total")
-
+        axis.plot(reference_burnup, jog_condensed_thickness_over_time_um, color="#111827", label="Total")
         axis.scatter(
             fima_to_burnup(melis_fima),
             melis_thickness,

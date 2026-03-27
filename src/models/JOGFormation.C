@@ -43,7 +43,6 @@ void Simulation::JOGFormation()
     double JOG_thickness = 0.0;
     double JOG_thickness_condensed = 0.0;
     double JOG_thickness_liquid = 0.0;
-    double JOG_thickness_cs2moo4 = 0.0;
 
     for (auto& variable : thermochemistry_variable)
     {
@@ -55,7 +54,7 @@ void Simulation::JOGFormation()
             continue;
 
         const std::map<std::string, int> stoichiometry = variable.getStoichiometry();
-        const bool contains_uranium = stoichiometry.count("U") > 0;
+        // const bool contains_uranium = stoichiometry.count("U") > 0;
         const bool oxygen_only_species =
             !stoichiometry.empty() &&
             std::all_of(
@@ -63,7 +62,7 @@ void Simulation::JOGFormation()
                 stoichiometry.end(),
                 [](const std::pair<const std::string, int>& entry) { return entry.first == "O"; });
 
-        if (contains_uranium || oxygen_only_species)
+        if (oxygen_only_species)
             continue;
 
         double contribution = std::max(0.0, variable.getFinalValue() * variable.getMolarMass() / theoretical_density);
@@ -75,26 +74,25 @@ void Simulation::JOGFormation()
         else
             JOG_thickness_liquid += contribution;
 
-        if (variable.getName() == "CS2MOO4_S1 (condensed, at grain boundary)" || variable.getName() == "CS2MOO4_S2 (condensed, at grain boundary)")
-            JOG_thickness_cs2moo4 += contribution;
+        if (variable.getName() == "CS2MOO4_S1 (condensed, at grain boundary)")
+            sciantix_variable["JOG from CS2MOO4_S1"].setFinalValue(contribution);
+        else if (variable.getName() == "CS2MOO4_S2 (condensed, at grain boundary)")
+            sciantix_variable["JOG from CS2MOO4_S2"].setFinalValue(contribution);
+        else if (variable.getName() == "MOO2 (condensed, at grain boundary)")
+            sciantix_variable["JOG from MOO2"].setFinalValue(contribution);
+        else if (variable.getName() == "CS2MO3O10 (condensed, at grain boundary)")
+            sciantix_variable["JOG from CS2MO3O10"].setFinalValue(contribution);
+        else if (variable.getName() == "CS2MO4O13 (condensed, at grain boundary)")
+            sciantix_variable["JOG from CS2MO4O13"].setFinalValue(contribution);
+        else if (variable.getName() == "BCC_A2 (condensed, at grain boundary)")
+            sciantix_variable["JOG from BCC_A2"].setFinalValue(contribution);
+        else if (variable.getName() == "FCC_A1 (condensed, at grain boundary)")
+            sciantix_variable["JOG from FCC_A1"].setFinalValue(contribution);
+        else if (variable.getName() == "HCP_A3 (condensed, at grain boundary)")
+            sciantix_variable["JOG from HCP_A3"].setFinalValue(contribution);
     }
 
     sciantix_variable["JOG"].setFinalValue(JOG_thickness);
     sciantix_variable["JOG from condensed"].setFinalValue(JOG_thickness_condensed);
     sciantix_variable["JOG from liquid"].setFinalValue(JOG_thickness_liquid);
-    sciantix_variable["JOG from Cs2MoO4"].setFinalValue(JOG_thickness_cs2moo4);
-
-    std::cout << " JOG Formation -------------------------------------------------------" << std::endl;
-    std::cout << "  FIMA [perc] = " << sciantix_variable["FIMA"].getFinalValue() << std::endl;
-    std::cout << "  Temperature [C] = " << temperature_celsius << std::endl;
-    std::cout << "  Orthorhombic reference a [m] = " << a_o_ref << std::endl;
-    std::cout << "  Orthorhombic reference b [m] = " << b_o_ref << std::endl;
-    std::cout << "  Orthorhombic reference c [m] = " << c_o_ref << std::endl;
-    std::cout << "  Thermal expansion [-] = " << alpha << std::endl;
-    std::cout << "  Cell volume [m3] = " << V_cell << std::endl;
-    std::cout << "  Theoretical density [g/m3] = " << theoretical_density << std::endl;
-    std::cout << "  JOG thickness from condensed species [m3 compound / m3 fuel] = " << JOG_thickness_condensed << std::endl;
-    std::cout << "  JOG thickness from liquid species [m3 compound / m3 fuel] = " << JOG_thickness_liquid << std::endl;
-    std::cout << "  JOG thickness from Cs2MoO4 [m3 compound / m3 fuel] = " << JOG_thickness_cs2moo4 << std::endl;
-    std::cout << "  Total JOG thickness - volume [m3 compound / m3 fuel] = " << JOG_thickness << std::endl;
 }
