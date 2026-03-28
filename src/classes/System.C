@@ -568,20 +568,22 @@ void System::setFissionGasDiffusivity(int                              input_val
             sciantix_variable["Diffusion coefficient"].setFinalValue(diffusivity);
 
             break;
+        }
 
             // UN, AD
-            case 11:
-            {
+        case 11:
+        {
                 double d1 = 7.6e-10 * exp(-3.5e+4 / temperature);
                 double d2 = 4 * 1.41e-25 * sqrt(history_variable["Fission rate"].getFinalValue()) *
                             exp(-1.91e-19 / temperature / (1.38e-23));
                 double d3 = 8e-40 * history_variable["Fission rate"].getFinalValue();
 
                 diffusivity = d1 + d2 + d3 + d4;
-            }
+                break;
+        }
 
-            case 90:
-            {
+        case 90:
+        {
                 /**
                  * @brief This is a test case for the correlation update with GPs. The correlation
                  * considered is the one described in @ref *Turnbull et al (1988), IWGFPT-32, Preston,
@@ -597,10 +599,10 @@ void System::setFissionGasDiffusivity(int                              input_val
                 sciantix_variable["Diffusion coefficient"].setFinalValue(diffusivity);
 
                 break;
-            }
+        }
 
-            case 99:
-            {
+        case 99:
+        {
                 /**
                  * @brief iFissionGasDiffusivity = 99 set the xenon single-atom intragranular
                  * diffusivity to zero.
@@ -611,12 +613,12 @@ void System::setFissionGasDiffusivity(int                              input_val
                 diffusivity = 0.0;
 
                 break;
-            }
+        }
 
-            default:
+        default:
                 ErrorMessages::Switch(__FILE__, "iFissionGasDiffusivity", input_value);
                 break;
-        }
+        
     }
 
     double System::getFissionGasDiffusivity()
