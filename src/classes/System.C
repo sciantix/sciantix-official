@@ -570,15 +570,15 @@ void System::setFissionGasDiffusivity(int                              input_val
             break;
         }
 
-            // UN, AD
+            // UN, AD da scrivere giusto
         case 11:
         {
-                double d1 = 7.6e-10 * exp(-3.5e+4 / temperature);
-                double d2 = 4 * 1.41e-25 * sqrt(history_variable["Fission rate"].getFinalValue()) *
-                            exp(-1.91e-19 / temperature / (1.38e-23));
-                double d3 = 8e-40 * history_variable["Fission rate"].getFinalValue();
+               // double d1 = 7.6e-10 * exp(-3.5e+4 / temperature);
+               // double d2 = 4 * 1.41e-25 * sqrt(history_variable["Fission rate"].getFinalValue()) *
+               //             exp(-1.91e-19 / temperature / (1.38e-23));
+               // double d3 = 8e-40 * history_variable["Fission rate"].getFinalValue();
 
-                diffusivity = d1 + d2 + d3 + d4;
+                //diffusivity = d1 + d2 + d3 + d4;
                 break;
         }
 
