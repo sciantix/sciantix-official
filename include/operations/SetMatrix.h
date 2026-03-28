@@ -41,5 +41,11 @@ Matrix UO2HBS(SciantixArray<Matrix>&           matrices,
               SciantixArray<SciantixVariable>& sciantix_variable,
               SciantixArray<SciantixVariable>& history_variable,
               SciantixArray<InputVariable>&    input_variable);
+//AD URANIUMNITRIDE
+Matrix UN(SciantixArray<Matrix>&           matrices,
+          SciantixArray<SciantixVariable>& sciantix_variable,
+          SciantixArray<SciantixVariable>& history_variable,
+          SciantixArray<InputVariable>&    input_variable,
+          SciantixArray<InputVariable>&    scaling_factor);
 
 #endif
