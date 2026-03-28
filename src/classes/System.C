@@ -618,8 +618,8 @@ void System::setFissionGasDiffusivity(int                              input_val
         default:
                 ErrorMessages::Switch(__FILE__, "iFissionGasDiffusivity", input_value);
                 break;
-        
     }
+}
 
     double System::getFissionGasDiffusivity()
     {
