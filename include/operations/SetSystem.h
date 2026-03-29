@@ -72,7 +72,7 @@ System Kr85m_in_UO2(SciantixArray<Matrix>&           matrices,
                     SciantixArray<SciantixVariable>& history_variable,
                     SciantixArray<InputVariable>&    scaling_factors);
 
-// AD URANIUMNITRIDE                  
+// AD URANIUMNITRIDE
 System Xe_in_UN(SciantixArray<Matrix>&           matrices,
                 SciantixArray<Gas>&              gas,
                 SciantixArray<InputVariable>&    input_variable,

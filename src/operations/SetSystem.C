@@ -42,7 +42,7 @@ void Simulation::setSystem()
             break;
 
             // AD URANIUMNITRIDE
-        case 2: // UN
+        case 2:  // UN
             sciantix_system.push(
                 Xe_in_UN(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(
@@ -269,10 +269,10 @@ System Xe_in_UN(SciantixArray<Matrix>&           matrices,
 
     system_.setName("Xe in UN");
     system_.setGas(gas["Xe"]);
-    system_.setMatrix(matrices["UN"]);   
+    system_.setMatrix(matrices["UN"]);
     system_.setRestructuredMatrix(0);
 
-    system_.setYield(0.24);              // TUTTI I PARAMETRI SONO INVENTATI
+    system_.setYield(0.24);  // TUTTI I PARAMETRI SONO INVENTATI
     system_.setRadiusInLattice(0.21e-9);
 
     system_.setVolumeInLattice(matrices["UN"].getSchottkyVolume());
@@ -282,33 +282,20 @@ System Xe_in_UN(SciantixArray<Matrix>&           matrices,
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
 
     system_.setFissionGasDiffusivity(
-        int(input_variable["iFissionGasDiffusivity"].getValue()),
-        sciantix_variable,
-        history_variable,
-        scaling_factors);
+        int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
 
     system_.setBubbleDiffusivity(
-        int(input_variable["iBubbleDiffusivity"].getValue()),
-        sciantix_variable,
-        history_variable,
-        matrices);
+        int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
 
-    system_.setResolutionRate(
-        int(input_variable["iResolutionRate"].getValue()),
-        sciantix_variable,
-        history_variable,
-        scaling_factors,
-        matrices);
+    system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()),
+                              sciantix_variable,
+                              history_variable,
+                              scaling_factors,
+                              matrices);
 
-    system_.setTrappingRate(
-        int(input_variable["iTrappingRate"].getValue()),
-        sciantix_variable,
-        scaling_factors);
+    system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
 
-    system_.setNucleationRate(
-        int(input_variable["iNucleationRate"].getValue()),
-        history_variable,
-        scaling_factors);
+    system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
 
     return system_;
 }
@@ -324,10 +311,10 @@ System Kr_in_UN(SciantixArray<Matrix>&           matrices,
 
     system_.setName("Kr in UN");
     system_.setGas(gas["Kr"]);
-    system_.setMatrix(matrices["UN"]);   
+    system_.setMatrix(matrices["UN"]);
     system_.setRestructuredMatrix(0);
 
-    system_.setYield(0.3);              // TUTTI I PARAMETRI SONO INVENTATI
+    system_.setYield(0.3);  // TUTTI I PARAMETRI SONO INVENTATI
     system_.setRadiusInLattice(0.21e-9);
 
     system_.setVolumeInLattice(matrices["UN"].getSchottkyVolume());
@@ -337,33 +324,20 @@ System Kr_in_UN(SciantixArray<Matrix>&           matrices,
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
 
     system_.setFissionGasDiffusivity(
-        int(input_variable["iFissionGasDiffusivity"].getValue()),
-        sciantix_variable,
-        history_variable,
-        scaling_factors);
+        int(input_variable["iFissionGasDiffusivity"].getValue()), sciantix_variable, history_variable, scaling_factors);
 
     system_.setBubbleDiffusivity(
-        int(input_variable["iBubbleDiffusivity"].getValue()),
-        sciantix_variable,
-        history_variable,
-        matrices);
+        int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
 
-    system_.setResolutionRate(
-        int(input_variable["iResolutionRate"].getValue()),
-        sciantix_variable,
-        history_variable,
-        scaling_factors,
-        matrices);
+    system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()),
+                              sciantix_variable,
+                              history_variable,
+                              scaling_factors,
+                              matrices);
 
-    system_.setTrappingRate(
-        int(input_variable["iTrappingRate"].getValue()),
-        sciantix_variable,
-        scaling_factors);
+    system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
 
-    system_.setNucleationRate(
-        int(input_variable["iNucleationRate"].getValue()),
-        history_variable,
-        scaling_factors);
+    system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
 
     return system_;
 }
@@ -397,44 +371,31 @@ System He_in_UN(SciantixArray<Matrix>&           matrices,
     system_.setVolumeInLattice(matrices["UN"].getOctahedralInterstitialSite());
 
     // Diffusività He (usa modello selezionato)
-    system_.setHeliumDiffusivity(
-        int(input_variable["iHeDiffusivity"].getValue()),
-        history_variable);
+    system_.setHeliumDiffusivity(int(input_variable["iHeDiffusivity"].getValue()), history_variable);
 
     // Risoluzione bolle
-    system_.setResolutionRate(
-        int(input_variable["iResolutionRate"].getValue()),
-        sciantix_variable,
-        history_variable,
-        scaling_factors,
-        matrices);
+    system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()),
+                              sciantix_variable,
+                              history_variable,
+                              scaling_factors,
+                              matrices);
 
     // Trapping
-    system_.setTrappingRate(
-        int(input_variable["iTrappingRate"].getValue()),
-        sciantix_variable,
-        scaling_factors);
+    system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
 
     // Nucleazione
-    system_.setNucleationRate(
-        int(input_variable["iNucleationRate"].getValue()),
-        history_variable,
-        scaling_factors);
+    system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
 
     // Produzione He
-    system_.setProductionRate(
-        int(input_variable["iHeliumProductionRate"].getValue()),
-        history_variable,
-        input_variable,
-        sciantix_variable,
-        scaling_factors);
+    system_.setProductionRate(int(input_variable["iHeliumProductionRate"].getValue()),
+                              history_variable,
+                              input_variable,
+                              sciantix_variable,
+                              scaling_factors);
 
     // Diffusività bolle
     system_.setBubbleDiffusivity(
-        int(input_variable["iBubbleDiffusivity"].getValue()),
-        sciantix_variable,
-        history_variable,
-        matrices);
+        int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
 
     return system_;
 }
