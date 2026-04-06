@@ -964,21 +964,15 @@ void System::setTrappingRatesUN(int                              input_value,
     }
 }
 
-
-
 double System::getTrappingRateBulkBubble()
-{    
-       return trapping_rate_bulk;      
-   
+{
+    return trapping_rate_bulk;
 }
 
 double System::getTrappingRateDislocationBubble()
-{  
-      return trapping_rate_dislocation;
+{
+    return trapping_rate_dislocation;
 }
-
-
-
 
 void System::setNucleationRate(int                              input_value,
                                SciantixArray<SciantixVariable>& history_variable,
