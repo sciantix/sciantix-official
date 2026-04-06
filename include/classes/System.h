@@ -244,13 +244,13 @@ class System : virtual public Material
      * @param gb bulk bubble trapping rate
      *
      */
-    void getTrappingRateBulkBubble();
+    double getTrappingRateBulkBubble();
 
     /**
      * @brief Retrieves the trapping rates for UN intragranular bubbles.
      * @param gd dislocation bubble trapping rate
      */
-    void getTrappingRateDislocationBubble();
+    double getTrappingRateDislocationBubble();
 
     /**
      * @brief Sets the nucleation rate based on the selected model.
