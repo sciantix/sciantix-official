@@ -570,15 +570,44 @@ void System::setFissionGasDiffusivity(int                              input_val
             break;
         }
 
-            // UN, AD da scrivere giusto
+            // UN AD URANIUMNITRIDE
         case 11:
         {
-            // double d1 = 7.6e-10 * exp(-3.5e+4 / temperature);
-            // double d2 = 4 * 1.41e-25 * sqrt(history_variable["Fission rate"].getFinalValue()) *
-            //             exp(-1.91e-19 / temperature / (1.38e-23));
-            // double d3 = 8e-40 * history_variable["Fission rate"].getFinalValue();
+            /**
+             * @brief iFissionGasDiffusivity = 11 this case is for the Xe in UN. value from @ref J.T. Rizk et al.,
+             * "Mechanistic nuclear fuel performance modeling of uranium nitride",
+             * Journal of Nuclear Materials, 606 (2025), 155604
+             * 
+             *
+             */
+            double temperature  = history_variable["Temperature"].getFinalValue();
+            double fission_rate = history_variable["Fission rate"].getFinalValue();
 
-            // diffusivity = d1 + d2 + d3 + d4;
+            // Boltzmann constant [eV/K]
+            const double kB = 8.617333262e-5;
+            // Xe thermal diffusivity parameters
+            const double D10 = 1.56e-3; // [m^2/s]
+            const double Q1  = 4.94;    // [eV]
+
+            double d1 = D10 * exp(-Q1 / (kB * temperature));
+
+             // ===== d2: irradiation-enhanced (trascurabile) =====
+            //const double A20 = 1.21e-67; // [m^7/2/s^1/2]
+            //const double B21 = 25.87;    // [eV]
+            //const double B22 = -1.49;    // [eV^2]
+            //const double B23 = 0.0;      // [eV^3] non definito
+
+            //double exponent = -B21/(kB*T) - B22/pow(kB*T,2) - B23/pow(kB*T,3);
+            //double d2 = sqrt(fission_rate) * A20 * exp(exponent);
+            double d2=0;
+
+            // ===== D3: ballistic mixing =====
+            const double A30 = 1.85e-39; // [m^5]
+            double d3 = A30 * fission_rate;
+            
+            diffusivity = d1 + d2 + d3;
+            diffusivity *= scaling_factors["Diffusivity"].getValue();
+
             break;
         }
 
