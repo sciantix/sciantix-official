@@ -964,19 +964,21 @@ void System::setTrappingRatesUN(int                              input_value,
     }
 }
 
-void System::getTrappingRatesUN(double& gb, double& gd) const
-{
-    if (iTrappingRate == 2)
-    {
-        gb = trapping_rate_bulk;
-        gd = trapping_rate_dislocation;
-    }
-    else
-    {
-        gb = 0.0;
-        gd = 0.0;
-    }
+
+
+double System::getTrappingRateBulkBubble()
+{    
+       return trapping_rate_bulk;      
+   
 }
+
+double System::getTrappingRateDislocationBubble()
+{  
+      return trapping_rate_dislocation;
+}
+
+
+
 
 void System::setNucleationRate(int                              input_value,
                                SciantixArray<SciantixVariable>& history_variable,
