@@ -49,6 +49,9 @@ class System : virtual public Material
     double              henry_constant;
     double              resolution_rate;
     double              trapping_rate;
+    // UN AD URANIUMNITRIDE
+    double              trapping_rate_bulk;
+    double              trapping_rate_dislocation;
     double              nucleation_rate;
     double              pore_nucleation_rate;
     std::vector<double> modes;
@@ -223,6 +226,29 @@ class System : virtual public Material
      * @return The current trapping rate.
      */
     double getTrappingRate();
+
+
+    // UN AD URANIUMINTRIDE
+
+    /**
+     * @brief Sets the trapping rate for UN intragranular bulk bubbles and dislocation bubbles.
+     * The Xenon intra-granular trapping rate is set according to the input_variable
+     * iTrappingRate.
+     * @param input_value The model selection index for setting the trapping rate.
+     */
+    void setTrappingRatesUN(int                              input_value,
+                         SciantixArray<SciantixVariable>& sciantix_variable,
+                         SciantixArray<InputVariable>&    scaling_factors);
+
+    /**
+    * @brief Retrieves the trapping rates for UN intragranular bubbles.
+    * @param gb bulk bubble trapping rate
+    * @param gd dislocation bubble trapping rate
+    */
+    void getTrappingRatesUN(double &gb, double &gd) const;
+
+
+
 
     /**
      * @brief Sets the nucleation rate based on the selected model.

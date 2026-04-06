@@ -887,7 +887,51 @@ void System::setTrappingRate(int                              input_value,
             break;
         }
 
-        // UN AD URANIUMNITRIDE
+       
+
+        case 99:
+        {
+            /**
+             * @brief iTrappingRate = 99 stands for the case with zero trapping rate.
+             *
+             */
+            reference += "iTrappingRate: Null trapping rate.\n\t";
+
+            trapping_rate = 0.0;
+            break;
+        }
+
+        default:
+            ErrorMessages::Switch(__FILE__, "setTrappingRate", input_value);
+            break;
+    }
+}
+
+double System::getTrappingRate()
+{
+    /// Member function to get the value of the trapping rate of the isotope in the fuel matrix
+    /// nanobubbles
+    return trapping_rate;
+}
+
+// UN AD URANIUMNITRIDE
+
+
+void System::setTrappingRatesUN(int                              input_value,
+                             SciantixArray<SciantixVariable>& sciantix_variable,
+                             SciantixArray<InputVariable>&    scaling_factors)
+{
+    /**
+     * ### setTrappingRate
+     * @brief The Xenon intra-granular trapping rates bulk and dislocation bubbles are set according to the input_variable
+     * iTrappingRate.
+     *
+     */
+
+    switch (input_value)
+    {
+
+
         case 2:
         {
             /**
@@ -922,31 +966,23 @@ void System::setTrappingRate(int                              input_value,
             // trapping_rate *= scaling_factors["Trapping rate"].getValue();
             break;
         }
-
-        case 99:
-        {
-            /**
-             * @brief iTrappingRate = 99 stands for the case with zero trapping rate.
-             *
-             */
-            reference += "iTrappingRate: Null trapping rate.\n\t";
-
-            trapping_rate = 0.0;
-            break;
-        }
-
-        default:
-            ErrorMessages::Switch(__FILE__, "setTrappingRate", input_value);
-            break;
     }
 }
 
-double System::getTrappingRate()
+void System::getTrappingRatesUN(double &gb, double &gd) const
 {
-    /// Member function to get the value of the trapping rate of the isotope in the fuel matrix
-    /// nanobubbles
-    return trapping_rate;
+    if(iTrappingRate == 2)
+    {
+        gb = trapping_rate_bulk;
+        gd = trapping_rate_dislocation;
+    }
+    else
+    {
+        gb = 0.0;
+        gd = 0.0;
+    }
 }
+
 
 void System::setNucleationRate(int                              input_value,
                                SciantixArray<SciantixVariable>& history_variable,
