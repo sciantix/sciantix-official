@@ -954,7 +954,7 @@ void System::setTrappingRatesUN(int                              input_value,
             // else
             //{
             //  Parameters from Rizk et al., approximate example
-            //  trapping_rate_bulk = 4.0 * M_PI * diffusivity * (bulk_bubble_radius + radius_lattice) * bulk_bubble_conc;
+            //  trapping_rate_bulk = 4.0 * M_PI * diffusivity * (bulk_bubble_radius) * bulk_bubble_conc;
 
             // }
 
