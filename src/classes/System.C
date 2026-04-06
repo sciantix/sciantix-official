@@ -886,6 +886,47 @@ void System::setTrappingRate(int                              input_value,
 
             break;
         }
+        
+        // UN AD URANIUMNITRIDE
+        case 2:
+        {
+          /**
+          * @brief iTrappingRate = 2 corresponds to the mechanistic UN intragranular trapping
+          * rate from bulk bubbles gb and dislocation bubbles gd, based on
+          * @see Rizk et al., J. Nucl. Mater., 606 (2025) 155604.
+          *
+          * 
+          * Formula: gb = 4 * pi * D_g * R_b * N_b
+          * gb trapping rate bulk bubbles, D_g=diffusivity Xe in UN, R_b bulk bubbles radius [m],
+          * N_b bulk bubbles concentration [1\m^3]
+          * 
+          *
+          */
+
+          reference += "iTrappingRate: mechanistic UN model, Rizk et al., JNM, 606 (2025) 155604.\n\t";
+
+          //double bubble_conc = sciantix_variable["Intragranular bulk bubble concentration"].getFinalValue();
+          //double bubble_radius = sciantix_variable["Intragranular bulk bubble radius"].getFinalValue();
+          
+
+
+
+          // COME MAI USANO "Intragranular bulk bubble radius" + radius_in_lattice ???????
+
+          
+          //if (bubble_conc == 0.0)
+          // trapping_rate = 0.0;
+          //else
+          //{
+            // Parameters from Rizk et al., approximate example
+            // trapping_rate = 4.0 * M_PI * diffusivity * (bubble_radius + radius_lattice) * bubble_conc;
+
+          // }
+
+           //trapping_rate *= scaling_factors["Trapping rate"].getValue();
+           break;
+        }
+        
 
         case 99:
         {
