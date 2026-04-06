@@ -41,14 +41,14 @@ class System : virtual public Material
     std::string reference;
     std::string name;
 
-    double              yield;
-    double              radius_in_lattice;
-    double              volume_in_lattice;
-    double              diffusivity;
-    double              bubble_diffusivity;
-    double              henry_constant;
-    double              resolution_rate;
-    double              trapping_rate;
+    double yield;
+    double radius_in_lattice;
+    double volume_in_lattice;
+    double diffusivity;
+    double bubble_diffusivity;
+    double henry_constant;
+    double resolution_rate;
+    double trapping_rate;
     // UN AD URANIUMNITRIDE
     double              trapping_rate_bulk;
     double              trapping_rate_dislocation;
@@ -227,7 +227,6 @@ class System : virtual public Material
      */
     double getTrappingRate();
 
-
     // UN AD URANIUMINTRIDE
 
     /**
@@ -237,18 +236,15 @@ class System : virtual public Material
      * @param input_value The model selection index for setting the trapping rate.
      */
     void setTrappingRatesUN(int                              input_value,
-                         SciantixArray<SciantixVariable>& sciantix_variable,
-                         SciantixArray<InputVariable>&    scaling_factors);
+                            SciantixArray<SciantixVariable>& sciantix_variable,
+                            SciantixArray<InputVariable>&    scaling_factors);
 
     /**
-    * @brief Retrieves the trapping rates for UN intragranular bubbles.
-    * @param gb bulk bubble trapping rate
-    * @param gd dislocation bubble trapping rate
-    */
-    void getTrappingRatesUN(double &gb, double &gd) const;
-
-
-
+     * @brief Retrieves the trapping rates for UN intragranular bubbles.
+     * @param gb bulk bubble trapping rate
+     * @param gd dislocation bubble trapping rate
+     */
+    void getTrappingRatesUN(double& gb, double& gd) const;
 
     /**
      * @brief Sets the nucleation rate based on the selected model.

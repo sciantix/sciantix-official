@@ -887,8 +887,6 @@ void System::setTrappingRate(int                              input_value,
             break;
         }
 
-       
-
         case 99:
         {
             /**
@@ -916,22 +914,19 @@ double System::getTrappingRate()
 
 // UN AD URANIUMNITRIDE
 
-
 void System::setTrappingRatesUN(int                              input_value,
-                             SciantixArray<SciantixVariable>& sciantix_variable,
-                             SciantixArray<InputVariable>&    scaling_factors)
+                                SciantixArray<SciantixVariable>& sciantix_variable,
+                                SciantixArray<InputVariable>&    scaling_factors)
 {
     /**
      * ### setTrappingRate
-     * @brief The Xenon intra-granular trapping rates bulk and dislocation bubbles are set according to the input_variable
-     * iTrappingRate.
+     * @brief The Xenon intra-granular trapping rates bulk and dislocation bubbles are set according to the
+     * input_variable iTrappingRate.
      *
      */
 
     switch (input_value)
     {
-
-
         case 2:
         {
             /**
@@ -969,9 +964,9 @@ void System::setTrappingRatesUN(int                              input_value,
     }
 }
 
-void System::getTrappingRatesUN(double &gb, double &gd) const
+void System::getTrappingRatesUN(double& gb, double& gd) const
 {
-    if(iTrappingRate == 2)
+    if (iTrappingRate == 2)
     {
         gb = trapping_rate_bulk;
         gd = trapping_rate_dislocation;
@@ -982,7 +977,6 @@ void System::getTrappingRatesUN(double &gb, double &gd) const
         gd = 0.0;
     }
 }
-
 
 void System::setNucleationRate(int                              input_value,
                                SciantixArray<SciantixVariable>& history_variable,
