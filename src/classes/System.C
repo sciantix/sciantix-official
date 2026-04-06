@@ -943,9 +943,9 @@ void System::setTrappingRatesUN(int                              input_value,
              */
 
             reference += "iTrappingRate: mechanistic UN model, Rizk et al., JNM, 606 (2025) 155604.\n\t";
-            //gb
-            // double bulk_bubble_conc = sciantix_variable["Intragranular bulk bubble concentration"].getFinalValue();
-            // double bulk_bubble_radius = sciantix_variable["Intragranular bulk bubble radius"].getFinalValue();
+            // gb
+            //  double bulk_bubble_conc = sciantix_variable["Intragranular bulk bubble concentration"].getFinalValue();
+            //  double bulk_bubble_radius = sciantix_variable["Intragranular bulk bubble radius"].getFinalValue();
 
             // COME MAI USANO "Intragranular bulk bubble radius" + radius_in_lattice ???????
 
@@ -959,8 +959,6 @@ void System::setTrappingRatesUN(int                              input_value,
             // }
 
             // trapping_rate_bulk *= scaling_factors["Trapping rate"].getValue();
-
-
 
             // gd
 
