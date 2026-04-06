@@ -240,20 +240,17 @@ class System : virtual public Material
                             SciantixArray<InputVariable>&    scaling_factors);
 
     /**
-    * @brief Retrieves the trapping rates for UN intragranular bubbles.
-    * @param gb bulk bubble trapping rate
-    * 
-    */
-    void getTrappingRateBulkBubble() ;
+     * @brief Retrieves the trapping rates for UN intragranular bubbles.
+     * @param gb bulk bubble trapping rate
+     *
+     */
+    void getTrappingRateBulkBubble();
 
     /**
-    * @brief Retrieves the trapping rates for UN intragranular bubbles.
-    * @param gd dislocation bubble trapping rate
-    */
-    void getTrappingRateDislocationBubble() ;
-
-
-
+     * @brief Retrieves the trapping rates for UN intragranular bubbles.
+     * @param gd dislocation bubble trapping rate
+     */
+    void getTrappingRateDislocationBubble();
 
     /**
      * @brief Sets the nucleation rate based on the selected model.
