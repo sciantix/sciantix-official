@@ -943,22 +943,27 @@ void System::setTrappingRatesUN(int                              input_value,
              */
 
             reference += "iTrappingRate: mechanistic UN model, Rizk et al., JNM, 606 (2025) 155604.\n\t";
-
-            // double bubble_conc = sciantix_variable["Intragranular bulk bubble concentration"].getFinalValue();
-            // double bubble_radius = sciantix_variable["Intragranular bulk bubble radius"].getFinalValue();
+            //gb
+            // double bulk_bubble_conc = sciantix_variable["Intragranular bulk bubble concentration"].getFinalValue();
+            // double bulk_bubble_radius = sciantix_variable["Intragranular bulk bubble radius"].getFinalValue();
 
             // COME MAI USANO "Intragranular bulk bubble radius" + radius_in_lattice ???????
 
-            // if (bubble_conc == 0.0)
-            //  trapping_rate = 0.0;
+            // if (bulk_bubble_conc == 0.0)
+            //  trapping_rate_bulk = 0.0;
             // else
             //{
             //  Parameters from Rizk et al., approximate example
-            //  trapping_rate = 4.0 * M_PI * diffusivity * (bubble_radius + radius_lattice) * bubble_conc;
+            //  trapping_rate_bulk = 4.0 * M_PI * diffusivity * (bulk_bubble_radius + radius_lattice) * bulk_bubble_conc;
 
             // }
 
-            // trapping_rate *= scaling_factors["Trapping rate"].getValue();
+            // trapping_rate_bulk *= scaling_factors["Trapping rate"].getValue();
+
+
+
+            // gd
+
             break;
         }
     }
