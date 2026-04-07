@@ -984,8 +984,8 @@ void System::setTrappingRatesUN(int                              input_value,
             // concentration"].getFinalValue(); double dislocation_bubble_radius = sciantix_variable["Intragranular
             // dislocation bubble radius"].getFinalValue();
 
-            //double dislocation_density = matrices["UN"].getDislocationDensity();
-            // double dislocation_core_radius   = /* r_d (≈ Burgers vector) */;
+            // double dislocation_density = matrices["UN"].getDislocationDensity();
+            //  double dislocation_core_radius   = /* r_d (≈ Burgers vector) */;
 
             // double Zd = 5.0;
 
