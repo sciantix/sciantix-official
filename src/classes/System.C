@@ -945,7 +945,6 @@ void System::setTrappingRatesUN(int                              input_value,
             reference += "iTrappingRate: mechanistic UN model, Rizk et al., JNM, 606 (2025) 155604.\n\t";
             // gb
 
-
             //  double bulk_bubble_conc = sciantix_variable["Intragranular bulk bubble concentration"].getFinalValue();
             //  double bulk_bubble_radius = sciantix_variable["Intragranular bulk bubble radius"].getFinalValue();
 
@@ -962,14 +961,12 @@ void System::setTrappingRatesUN(int                              input_value,
 
             // trapping_rate_bulk_bubble *= scaling_factors["Trapping rate bulk bubble"].getValue();
 
-
-
             // gd=cattura bolle su dislocazione + cattura da dislocazione nuda
             // ------------------------------------------------------------------
             // Formula per gd
             // ------------------------------------------------------------------
-            // gd = 4 * pi * D_g * (R_d + r_lattice) * N_d 
-            //      + (2 * pi * D_g * rho_d / ( ln(Gamma_d / (Z_d * r_d)) - 3/5 )) 
+            // gd = 4 * pi * D_g * (R_d + r_lattice) * N_d
+            //      + (2 * pi * D_g * rho_d / ( ln(Gamma_d / (Z_d * r_d)) - 3/5 ))
             //        * (rho_d - 2 * R_d * N_d)
             //
             // Termini:
@@ -983,9 +980,9 @@ void System::setTrappingRatesUN(int                              input_value,
             // Gamma_d   : Wigner-Seitz radius associated with dislocation = sqrt(pi * rho_d)
             // ------------------------------------------------------------------
 
-            
-            // double dislocation_bubble_conc   = sciantix_variable["Intragranular dislocation bubble concentration"].getFinalValue();
-            // double dislocation_bubble_radius = sciantix_variable["Intragranular dislocation bubble radius"].getFinalValue();
+            // double dislocation_bubble_conc   = sciantix_variable["Intragranular dislocation bubble
+            // concentration"].getFinalValue(); double dislocation_bubble_radius = sciantix_variable["Intragranular
+            // dislocation bubble radius"].getFinalValue();
 
             // double dislocation_density       = /* rho_d */;
             // double dislocation_core_radius   = /* r_d (≈ Burgers vector) */;
