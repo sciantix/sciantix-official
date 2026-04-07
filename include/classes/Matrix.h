@@ -499,10 +499,6 @@ class Matrix : virtual public Material
         return dislocation_core_radius;
     }
 
-
-
-
-
     void setElasticModulus(double e)
     {
         // Member function to set the elastic (Young) modulus of the material (MPa)
