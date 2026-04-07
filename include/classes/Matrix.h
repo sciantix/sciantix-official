@@ -65,6 +65,10 @@ class Matrix : virtual public Material
     double chromia_solution;
     double chromia_precipitate;
 
+    //UN AD URANIUMNITRIDE
+    double dislocation_density;
+
+
     // Mechanical properties
     double elastic_modulus;
     double poisson_ratio;
@@ -471,6 +475,20 @@ class Matrix : virtual public Material
         /// Member function to set the chromia (Cr2O3) precipitate (kg)
         return chromia_precipitate;
     }
+
+    //UN AD URANIUMNITRIDE
+    // Member function to set the dislocation density [1/m^2]
+    void setDislocationDensity(double a)
+    {
+        dislocation_density = a;
+    }
+
+    double getDislocationDensity()
+    {
+        
+        return dislocation_density;
+    }
+
 
     void setElasticModulus(double e)
     {
