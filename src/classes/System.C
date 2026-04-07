@@ -944,23 +944,94 @@ void System::setTrappingRatesUN(int                              input_value,
 
             reference += "iTrappingRate: mechanistic UN model, Rizk et al., JNM, 606 (2025) 155604.\n\t";
             // gb
+
+
             //  double bulk_bubble_conc = sciantix_variable["Intragranular bulk bubble concentration"].getFinalValue();
             //  double bulk_bubble_radius = sciantix_variable["Intragranular bulk bubble radius"].getFinalValue();
 
             // COME MAI USANO "Intragranular bulk bubble radius" + radius_in_lattice ???????
 
             // if (bulk_bubble_conc == 0.0)
-            //  trapping_rate_bulk = 0.0;
+            //  trapping_rate_bulk_bubble = 0.0;
             // else
             //{
             //  Parameters from Rizk et al., approximate example
-            //  trapping_rate_bulk = 4.0 * M_PI * diffusivity * (bulk_bubble_radius) * bulk_bubble_conc;
+            //  trapping_rate_bulk_bubble = 4.0 * M_PI * diffusivity * (bulk_bubble_radius) * bulk_bubble_conc;
 
             // }
 
-            // trapping_rate_bulk *= scaling_factors["Trapping rate"].getValue();
+            // trapping_rate_bulk_bubble *= scaling_factors["Trapping rate bulk bubble"].getValue();
 
-            // gd
+
+
+            // gd=cattura bolle su dislocazione + cattura da dislocazione nuda
+            // ------------------------------------------------------------------
+            // Formula per gd
+            // ------------------------------------------------------------------
+            // gd = 4 * pi * D_g * (R_d + r_lattice) * N_d 
+            //      + (2 * pi * D_g * rho_d / ( ln(Gamma_d / (Z_d * r_d)) - 3/5 )) 
+            //        * (rho_d - 2 * R_d * N_d)
+            //
+            // Termini:
+            // D_g       : diffusivity of gas atoms [m^2/s]
+            // R_d       : dislocation bubble radius [m]
+            // r_lattice : lattice radius correction [m]
+            // N_d       : dislocation bubble concentration [m^-3]
+            // rho_d     : dislocation line density [m^-2]
+            // r_d       : dislocation core radius, ~Burgers vector [m]
+            // Z_d       : trapping radius factor for dislocation line (dimensionless)
+            // Gamma_d   : Wigner-Seitz radius associated with dislocation = sqrt(pi * rho_d)
+            // ------------------------------------------------------------------
+
+            
+            // double dislocation_bubble_conc   = sciantix_variable["Intragranular dislocation bubble concentration"].getFinalValue();
+            // double dislocation_bubble_radius = sciantix_variable["Intragranular dislocation bubble radius"].getFinalValue();
+
+            // double dislocation_density       = /* rho_d */;
+            // double dislocation_core_radius   = /* r_d (≈ Burgers vector) */;
+
+            // double Zd = 5.0;
+
+            // Wigner-Seitz radius per dislocazioni
+            // double Gamma_d = sqrt(M_PI * dislocation_density);
+
+            // ==========================
+            // 1. Termine bolle (come gb)
+            // ==========================
+
+            // opzionale stile Sciantix:
+            // double Rd_eff = dislocation_bubble_radius + radius_in_lattice;
+
+            // double term_bubbles = 4.0 * M_PI * diffusivity * Rd_eff * dislocation_bubble_conc;
+
+            // ==========================
+            // 2. Termine dislocazione nuda (line sink)
+            // ==========================
+
+            // Denominatore logaritmico
+            // double denominator = log(Gamma_d / (Zd * dislocation_core_radius)) - 3.0/5.0;
+
+            // Protezione numerica
+            // if (denominator <= 0.0)
+            //    denominator = 1e-20;
+
+            // Lunghezza libera della dislocazione
+            // double free_dislocation = dislocation_density - 2.0 * dislocation_bubble_radius * dislocation_bubble_conc;
+
+            // Evita valori negativi
+            // if (free_dislocation < 0.0)
+            //     free_dislocation = 0.0;
+
+            // double term_dislocation = (2.0 * M_PI * diffusivity * dislocation_density / denominator)* free_dislocation;
+
+            // ==========================
+            // Totale
+            // ==========================
+
+            // double trapping_rate_dislocation = term_bubbles + term_dislocation;
+
+            // scaling Sciantix-style
+            // trapping_rate_dislocation *= scaling_factors["Trapping rate dislocation bubble"].getValue();
 
             break;
         }
