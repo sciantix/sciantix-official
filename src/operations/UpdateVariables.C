@@ -120,7 +120,6 @@ std::map<int, std::string> update_sciantix_variable = {
     //{164, "Intragranular dislocation bubble radius"}
 };
 
-
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
 {
     for (int i = 0; i < n_modes; ++i)
