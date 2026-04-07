@@ -980,9 +980,8 @@ void System::setTrappingRatesUN(int                              input_value,
             // Gamma_d   : Wigner-Seitz radius associated with dislocation = sqrt(pi * rho_d)
             // ------------------------------------------------------------------
 
-            // double dislocation_bubble_conc   = sciantix_variable["Intragranular dislocation bubble
-            // concentration"].getFinalValue(); double dislocation_bubble_radius = sciantix_variable["Intragranular
-            // dislocation bubble radius"].getFinalValue();
+            // double dislocation_bubble_conc = sciantix_variable["Intragranular dislocation bubble concentration"].getFinalValue(); 
+            // double dislocation_bubble_radius = sciantix_variable["Intragranular dislocation bubble radius"].getFinalValue();
 
             // double dislocation_density = matrices["UN"].getDislocationDensity();
             // double dislocation_core_radius = matrices["UN"].getDislocationCoreRadius();
