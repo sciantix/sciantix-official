@@ -166,7 +166,7 @@ Matrix UN(SciantixArray<Matrix>&           matrices,
     matrix_.setTheoreticalDensity(14300.0);  // TODO: valore da verificare
     matrix_.setLatticeParameter(4.88e-10);   // TODO: valore indicativo
     matrix_.setDislocationDensity(1.0e14);   //  MANCA VALORE
-
+    matrix_.setDislocationCoreRadius(3.8e-10); // MANCA VALORE circa burg_vector
     // --- GEOMETRIA ---
     matrix_.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
 

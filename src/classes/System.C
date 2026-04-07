@@ -972,7 +972,7 @@ void System::setTrappingRatesUN(int                              input_value,
             // Termini:
             // D_g       : diffusivity of gas atoms [m^2/s]
             // R_d       : dislocation bubble radius [m]
-            // r_lattice : lattice radius correction [m]
+            // r_lattice : lattice radius correction [m]        FORSE SERVE FORSE NO
             // N_d       : dislocation bubble concentration [m^-3]
             // rho_d     : dislocation line density [m^-2]
             // r_d       : dislocation core radius, ~Burgers vector [m]
@@ -985,7 +985,7 @@ void System::setTrappingRatesUN(int                              input_value,
             // dislocation bubble radius"].getFinalValue();
 
             // double dislocation_density = matrices["UN"].getDislocationDensity();
-            //  double dislocation_core_radius   = /* r_d (≈ Burgers vector) */;
+            // double dislocation_core_radius = matrices["UN"].getDislocationCoreRadius();
 
             // double Zd = 5.0;
 
