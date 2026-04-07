@@ -6,5 +6,5 @@ INPUT                  = include src
 RECURSIVE              = YES
 EXTRACT_ALL            = YES
 QUIET                  = YES
-GENERATE_LATEX         = NO
+GENERATE_LATEX         = YES
 HAVE_DOT = NO
