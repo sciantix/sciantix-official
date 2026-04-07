@@ -67,6 +67,7 @@ class Matrix : virtual public Material
 
     // UN AD URANIUMNITRIDE
     double dislocation_density;
+    double dislocation_core_radius;
 
     // Mechanical properties
     double elastic_modulus;
@@ -486,6 +487,21 @@ class Matrix : virtual public Material
     {
         return dislocation_density;
     }
+
+    //  Member function to set the dislocation density [1/m^2]
+    void setDislocationCoreRadius(double a)
+    {
+        dislocation_core_radius = a;
+    }
+
+    double getDislocationCoreRadius()
+    {
+        return dislocation_core_radius;
+    }
+
+
+
+
 
     void setElasticModulus(double e)
     {
