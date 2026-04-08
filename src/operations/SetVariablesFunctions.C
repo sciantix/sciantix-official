@@ -216,10 +216,6 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("Dislocation bubble radius", "(m)", Sciantix_variables[20], Sciantix_variables[20], 0),
         SciantixVariable("Dislocation bubble volume", "(m3)", 0.0, 0.0, 0),
 
-
-
-
-        
         SciantixVariable(
             "Intragranular Xe atoms per bubble", "(at/bub)", Sciantix_variables[21], Sciantix_variables[21], 0),
         SciantixVariable(
