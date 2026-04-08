@@ -171,8 +171,8 @@ Matrix UN(SciantixArray<Matrix>&           matrices,
     // --- GEOMETRIA ---
     matrix_.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
 
-    // --- DIFETTI (METTI PLACEHOLDER) ---
-    matrix_.setSchottkyVolume(0.0);              // TODO
+    // --- DIFETTI  ---
+    matrix_.setSchottkyVolume(4.09e-29);        // TODO valore stesso di UO2
     matrix_.setOctahedralInterstitialSite(0.0);  // TODO
 
     // --- PROPRIETÀ SIMILI A UO2 (temporaneo) ---
