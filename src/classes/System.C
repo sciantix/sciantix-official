@@ -982,10 +982,10 @@ void System::setTrappingRatesUN(int                              input_value,
             double dislocation_bubble_conc   = sciantix_variable["Dislocation bubble concentration"].getFinalValue();
             double dislocation_bubble_radius = sciantix_variable["Dislocation bubble radius"].getFinalValue();
 
-            //double dislocation_density = matrices["UN"].getDislocationDensity();
-            //double dislocation_core_radius = matrices["UN"].getDislocationCoreRadius();
+            // double dislocation_density = matrices["UN"].getDislocationDensity();
+            // double dislocation_core_radius = matrices["UN"].getDislocationCoreRadius();
 
-            //double Zd = 5.0;
+            // double Zd = 5.0;
 
             // Wigner-Seitz radius per dislocazioni
             // double Gamma_d = sqrt(M_PI * dislocation_density);
