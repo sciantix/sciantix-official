@@ -982,8 +982,8 @@ void System::setTrappingRatesUN(int                              input_value,
             double dislocation_bubble_conc   = sciantix_variable["Dislocation bubble concentration"].getFinalValue();
             double dislocation_bubble_radius = sciantix_variable["Dislocation bubble radius"].getFinalValue();
 
-            double dislocation_density     = matrices["UN"].getDislocationDensity();
-            double dislocation_core_radius = matrices["UN"].getDislocationCoreRadius();
+            double dislocation_density     = matrix.getDislocationDensity();
+            double dislocation_core_radius = matrix.getDislocationCoreRadius();
 
             double Zd = 5.0;
 
@@ -1019,7 +1019,7 @@ void System::setTrappingRatesUN(int                              input_value,
 
             double term_dislocation = (2.0 * M_PI * diffusivity * dislocation_density / denominator) * free_dislocation;
 
-            double trapping_rate_dislocation = term_bubbles + term_dislocation;
+            trapping_rate_dislocation = term_bubbles + term_dislocation;
 
             // scaling factor
             // trapping_rate_dislocation *= scaling_factors["Trapping rate dislocation bubble"].getValue();
