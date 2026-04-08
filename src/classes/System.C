@@ -982,50 +982,47 @@ void System::setTrappingRatesUN(int                              input_value,
             double dislocation_bubble_conc   = sciantix_variable["Dislocation bubble concentration"].getFinalValue();
             double dislocation_bubble_radius = sciantix_variable["Dislocation bubble radius"].getFinalValue();
 
-            // double dislocation_density = matrices["UN"].getDislocationDensity();
-            // double dislocation_core_radius = matrices["UN"].getDislocationCoreRadius();
+            double dislocation_density = matrices["UN"].getDislocationDensity();
+            double dislocation_core_radius = matrices["UN"].getDislocationCoreRadius();
 
-            // double Zd = 5.0;
+            double Zd = 5.0;
 
             // Wigner-Seitz radius per dislocazioni
-            // double Gamma_d = sqrt(M_PI * dislocation_density);
+            double Gamma_d = sqrt(M_PI * dislocation_density);
 
             // ==========================
             // 1. Termine bolle (come gb)
             // ==========================
 
-            // opzionale stile Sciantix:
-            // double Rd_eff = dislocation_bubble_radius + radius_in_lattice;
+            // Raggio effettivo di cattura bolla stile Sciantix:
+            double Rd_eff = dislocation_bubble_radius + radius_in_lattice;
 
-            // double term_bubbles = 4.0 * M_PI * diffusivity * Rd_eff * dislocation_bubble_conc;
+            double term_bubbles = 4.0 * M_PI * diffusivity * Rd_eff * dislocation_bubble_conc;
 
             // ==========================
             // 2. Termine dislocazione nuda (line sink)
             // ==========================
 
             // Denominatore logaritmico
-            // double denominator = log(Gamma_d / (Zd * dislocation_core_radius)) - 3.0/5.0;
+            double denominator = log(Gamma_d / (Zd * dislocation_core_radius)) - 3.0/5.0;
 
             // Protezione numerica
-            // if (denominator <= 0.0)
-            //    denominator = 1e-20;
+            if (denominator <= 0.0)
+               denominator = 1e-20;
 
             // Lunghezza libera della dislocazione
-            // double free_dislocation = dislocation_density - 2.0 * dislocation_bubble_radius * dislocation_bubble_conc;
+            double free_dislocation = dislocation_density - 2.0 * dislocation_bubble_radius * dislocation_bubble_conc;
 
             // Evita valori negativi
-            // if (free_dislocation < 0.0)
-            //     free_dislocation = 0.0;
+            if (free_dislocation < 0.0)
+                free_dislocation = 0.0;
 
-            // double term_dislocation = (2.0 * M_PI * diffusivity * dislocation_density / denominator)* free_dislocation;
+            double term_dislocation = (2.0 * M_PI * diffusivity * dislocation_density / denominator)* free_dislocation;
 
-            // ==========================
-            // Totale
-            // ==========================
 
-            // double trapping_rate_dislocation = term_bubbles + term_dislocation;
+            double trapping_rate_dislocation = term_bubbles + term_dislocation;
 
-            // scaling Sciantix-style
+            // scaling factor
             // trapping_rate_dislocation *= scaling_factors["Trapping rate dislocation bubble"].getValue();
 
             break;
