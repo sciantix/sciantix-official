@@ -822,7 +822,6 @@ void System::setResolutionRate(int                              input_value,
             break;
         }
 
-
         case 99:
         {
             /**
