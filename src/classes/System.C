@@ -817,7 +817,7 @@ void System::setResolutionRate(int                              input_value,
             const double F_dot  = history_variable["Fission rate"].getFinalValue();
 
             resolution_rate = F_dot * b0;
-            //Scaling factor
+            // Scaling factor
             resolution_rate *= scaling_factors["Resolution rate"].getValue();
             break;
         }
