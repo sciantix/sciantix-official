@@ -201,6 +201,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("Intragranular bubble volume", "(m3)", 0.0, 0.0, 0),
 
         // UN AD URANIUMNITRIDE
+
         /*
          Sciantix_variables[19] credo legga tipo input file, da vedere
 
@@ -208,17 +209,12 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
             "Intragranular bulk bubble concentration", "(bub/m3)", Sciantix_variables[19], Sciantix_variables[19], 1),
          SciantixVariable("Intragranular bulk bubble radius", "(m)", Sciantix_variables[20], Sciantix_variables[20], 1),
          SciantixVariable("Intragranular bulk bubble volume", "(m3)", 0.0, 0.0, 0),
-
-         SciantixVariable(
-            "Intragranular dislocation bubble concentration", "(bub/m3)", Sciantix_variables[19],
-         Sciantix_variables[19], 1), SciantixVariable("Dislocation bubble radius", "(m)", Sciantix_variables[20],
-         Sciantix_variables[20], 1), SciantixVariable("Dislocation bubble volume", "(m3)", 0.0, 0.0, 0),
         */
 
         SciantixVariable(
-            "Intragranular dislocation bubble concentration", "(bub/m3)", Sciantix_variables[19], Sciantix_variables[19], 0),
-        SciantixVariable( "Intragranular dislocation bubble radius", "(m)", Sciantix_variables[20], Sciantix_variables[20], 0),
-        SciantixVariable("Intragranular dislocation bubble volume", "(m3)", 0.0, 0.0, 0),
+            " Dislocation bubble concentration", "(bub/m3)", Sciantix_variables[19], Sciantix_variables[19], 0),
+        SciantixVariable( " Dislocation bubble radius", "(m)", Sciantix_variables[20], Sciantix_variables[20], 0),
+        SciantixVariable(" Dislocation bubble volume", "(m3)", 0.0, 0.0, 0),
 
 
 
