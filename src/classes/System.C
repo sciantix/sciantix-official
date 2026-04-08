@@ -952,13 +952,13 @@ void System::setTrappingRatesUN(int                              input_value,
             // USANO "Intragranular bubble radius" + radius_in_lattice ???????
 
             if (bulk_bubble_conc == 0.0)
-                trapping_rate_bulk_bubble = 0.0;
+                trapping_rate_bulk = 0.0;
             else
             {
-                trapping_rate_bulk_bubble = 4.0 * M_PI * diffusivity * (bulk_bubble_radius)*bulk_bubble_conc;
+                trapping_rate_bulk = 4.0 * M_PI * diffusivity * (bulk_bubble_radius)*bulk_bubble_conc;
             }
 
-            trapping_rate_bulk_bubble *= scaling_factors["Trapping rate"].getValue();
+            trapping_rate_bulk *= scaling_factors["Trapping rate"].getValue();
 
             // gd=cattura bolle su dislocazione + cattura da dislocazione nuda
             // ------------------------------------------------------------------
