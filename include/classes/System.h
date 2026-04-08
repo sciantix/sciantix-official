@@ -53,6 +53,7 @@ class System : virtual public Material
     double              trapping_rate_bulk;
     double              trapping_rate_dislocation;
     double              nucleation_rate;
+    double              bulk_nucleation_factor;
     double              pore_nucleation_rate;
     std::vector<double> modes;
     double              production_rate;
@@ -269,6 +270,18 @@ class System : virtual public Material
     double getNucleationRate();
 
     /**
+     * @brief Sets the bulk bubble nucleation factor used in the UN model.
+     * @param x The bulk nucleation factor.
+     */
+    void setBulkNucleationFactor(double x);
+
+    /**
+     * @brief Retrieves the bulk bubble nucleation factor used in the UN model.
+     * @return The bulk nucleation factor.
+     */
+    double getBulkNucleationFactor();
+
+    /**
      * @brief Sets the pore nucleation rate.
      * @param t The new pore nucleation rate.
      */
@@ -300,6 +313,7 @@ class System : virtual public Material
      */
     System()
     {
+        bulk_nucleation_factor = 0.0;
     }
     /**
      * @brief Destructor for the System class

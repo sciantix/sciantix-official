@@ -1127,6 +1127,16 @@ double System::getNucleationRate()
     return nucleation_rate;
 }
 
+void System::setBulkNucleationFactor(double x)
+{
+    bulk_nucleation_factor = x;
+}
+
+double System::getBulkNucleationFactor()
+{
+    return bulk_nucleation_factor;
+}
+
 void System::setPoreNucleationRate(double t)
 {
     pore_nucleation_rate = t;
