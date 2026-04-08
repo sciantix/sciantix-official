@@ -1021,8 +1021,8 @@ void System::setTrappingRatesUN(int                              input_value,
 
             trapping_rate_dislocation = term_bubbles + term_dislocation;
 
-            // scaling factor
-            // trapping_rate_dislocation *= scaling_factors["Trapping rate dislocation bubble"].getValue();
+            // scaling factor per dislocation manca
+            trapping_rate_dislocation *= scaling_factors["Trapping rate"].getValue();
 
             break;
         }

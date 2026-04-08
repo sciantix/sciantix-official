@@ -293,7 +293,7 @@ System Xe_in_UN(SciantixArray<Matrix>&           matrices,
                               scaling_factors,
                               matrices);
 
-    system_.setTrappingRate(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
+    system_.setTrappingRatesUN(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
 
     system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
 
