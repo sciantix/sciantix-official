@@ -804,36 +804,22 @@ void System::setResolutionRate(int                              input_value,
         // UN AD URANIUMNITRIDE
         case 4:
         {
-
             /**
-             * @brief iResolutionRate = 3 corresponds to both intra-granular bulk bubble and dislocation bubble resolution rate from
-             * @ref J.T. Rizk et al.,
-             * "Mechanistic nuclear fuel performance modeling of uranium nitride",
-             * Journal of Nuclear Materials, 606 (2025), 155604
+             * @brief iResolutionRate = 4 corresponds to both intra-granular bulk bubble and dislocation bubble
+             * resolution rate from Rizk et al., JNM 606 (2025) 155604.
              */
 
-                reference += "iResolutionRate: Rizk et al. JNM 606 (2025) 155604 (UN).\n\t";
+            reference += "iResolutionRate: Rizk et al. JNM 606 (2025) 155604 (UN).\n\t";
 
-                    // --- Bubble radius [m]
-                    double Rb = sciantix_variable["Intragranular bubble radius"].getFinalValue();
-                    
-                    //protezione per R=0 NON SO SE VA BENE
-                    double Rbeff = max(Rb, eps)
+            const double Rb     = sciantix_variable["Intragranular bubble radius"].getInitialValue();
+            const double Rb_eff = (Rb > 1.0e-12) ? Rb : 1.0e-12;
+            const double b0     = 1.0e-25 * (2.64 - 2.02 * exp(-2.61e-9 / Rb_eff));
+            const double F_dot  = history_variable["Fission rate"].getFinalValue();
 
-                    // --- Resolution parameter b0(R)
-                    double b0 = 1.0e-25 * (2.64 - 2.02 * exp(-2.61e-9 / Rbeff));
-
-                    // --- Fission rate [fissions/m^3/s]
-                    double F_dot = history_variable["Fission rate"].getFinalValue();
-
-                    // --- Total resolution rate
-                    resolution_rate = F_dot * b0;
-
-                    // --- Scaling factor
-                    resolution_rate *= scaling_factors["Resolution rate"].getValue();
-
-
-           break;
+            resolution_rate = F_dot * b0;
+            //Scaling factor
+            resolution_rate *= scaling_factors["Resolution rate"].getValue();
+            break;
         }
 
 
