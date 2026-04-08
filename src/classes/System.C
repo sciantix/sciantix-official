@@ -946,17 +946,17 @@ void System::setTrappingRatesUN(int                              input_value,
             // gb
 
             double bulk_bubble_conc = sciantix_variable["Intragranular bubble concentration"].getFinalValue();
-            double bulk_bubble_radius = sciantix_variable["Intragranular bubble radius"].getFinalValue() + radius_in_lattice;
+            double bulk_bubble_radius =
+                sciantix_variable["Intragranular bubble radius"].getFinalValue() + radius_in_lattice;
 
             // USANO "Intragranular bubble radius" + radius_in_lattice ???????
 
             if (bulk_bubble_conc == 0.0)
-              trapping_rate_bulk_bubble = 0.0;
+                trapping_rate_bulk_bubble = 0.0;
             else
             {
-              Parameters from Rizk et al., approximate example
-              trapping_rate_bulk_bubble = 4.0 * M_PI * diffusivity * (bulk_bubble_radius) * bulk_bubble_conc;
-
+                Parameters from Rizk et al., approximate example trapping_rate_bulk_bubble =
+                                                 4.0 * M_PI * diffusivity * (bulk_bubble_radius)*bulk_bubble_conc;
             }
 
             trapping_rate_bulk_bubble *= scaling_factors["Trapping rate"].getValue();
@@ -980,11 +980,11 @@ void System::setTrappingRatesUN(int                              input_value,
             // Gamma_d   : Wigner-Seitz radius associated with dislocation = sqrt(pi * rho_d)
             // ------------------------------------------------------------------
 
-            double dislocation_bubble_conc = sciantix_variable["Dislocation bubble concentration"].getFinalValue(); 
+            double dislocation_bubble_conc   = sciantix_variable["Dislocation bubble concentration"].getFinalValue();
             double dislocation_bubble_radius = sciantix_variable["Dislocation bubble radius"].getFinalValue();
 
-            //double dislocation_density = matrices["UN"].getDislocationDensity();
-            // double dislocation_core_radius = matrices["UN"].getDislocationCoreRadius();
+            // double dislocation_density = matrices["UN"].getDislocationDensity();
+            //  double dislocation_core_radius = matrices["UN"].getDislocationCoreRadius();
 
             // double Zd = 5.0;
 
