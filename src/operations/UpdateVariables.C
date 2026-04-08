@@ -115,9 +115,10 @@ std::map<int, std::string> update_sciantix_variable = {
     // UN AD URANIUMNITRIDE
 
     //{161, "Intragranular bulk bubble concentration"},
-    //{162, "Intragranular bulk bubble radius"}
-    //{163, "Intragranular dislocation bubble concentration"}
-    //{164, "Intragranular dislocation bubble radius"}
+    //{162, "Intragranular bulk bubble radius"},   usiamo vecchia variabile intragranular
+
+    {163, "Dislocation bubble concentration"},
+    {164, "Dislocation bubble radius"},
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
