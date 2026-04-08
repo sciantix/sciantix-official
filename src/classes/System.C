@@ -811,10 +811,10 @@ void System::setResolutionRate(int                              input_value,
 
             reference += "iResolutionRate: Rizk et al. JNM 606 (2025) 155604 (UN).\n\t";
 
-            const double Rb     = sciantix_variable["Intragranular bubble radius"].getInitialValue() + radius_in_lattice;
-            //const double Rb_eff = (Rb > 1.0e-12) ? Rb : 1.0e-12;
-            const double b0     = 1.0e-25 * (2.64 - 2.02 * exp(-2.61e-9 / Rb));
-            const double F_dot  = history_variable["Fission rate"].getFinalValue();
+            const double Rb = sciantix_variable["Intragranular bubble radius"].getInitialValue() + radius_in_lattice;
+            // const double Rb_eff = (Rb > 1.0e-12) ? Rb : 1.0e-12;
+            const double b0    = 1.0e-25 * (2.64 - 2.02 * exp(-2.61e-9 / Rb));
+            const double F_dot = history_variable["Fission rate"].getFinalValue();
 
             resolution_rate = F_dot * b0;
             // Scaling factor
