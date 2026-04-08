@@ -955,9 +955,7 @@ void System::setTrappingRatesUN(int                              input_value,
                 trapping_rate_bulk_bubble = 0.0;
             else
             {
-            
-              trapping_rate_bulk_bubble = 4.0 * M_PI * diffusivity * (bulk_bubble_radius) * bulk_bubble_conc;
-
+                trapping_rate_bulk_bubble = 4.0 * M_PI * diffusivity * (bulk_bubble_radius)*bulk_bubble_conc;
             }
 
             trapping_rate_bulk_bubble *= scaling_factors["Trapping rate"].getValue();
