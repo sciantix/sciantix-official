@@ -278,6 +278,7 @@ System Xe_in_UN(SciantixArray<Matrix>&           matrices,
     system_.setVolumeInLattice(matrices["UN"].getSchottkyVolume());
 
     system_.setHenryConstant(0.0);
+    system_.setBulkNucleationFactor(1.0e-6);
 
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
 
@@ -320,6 +321,7 @@ System Kr_in_UN(SciantixArray<Matrix>&           matrices,
     system_.setVolumeInLattice(matrices["UN"].getSchottkyVolume());
 
     system_.setHenryConstant(0.0);
+    system_.setBulkNucleationFactor(1.0e-6);
 
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
 
@@ -360,6 +362,7 @@ System He_in_UN(SciantixArray<Matrix>&           matrices,
 
     // Henry NON noto per UN → metti 0 per ora
     system_.setHenryConstant(0.0);
+    system_.setBulkNucleationFactor(1.0e-6);
 
     // Produzione He (ternary fission → ok uguale)
     system_.setYield(0.0022);
