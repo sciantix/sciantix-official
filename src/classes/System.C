@@ -801,8 +801,6 @@ void System::setResolutionRate(int                              input_value,
             break;
         }
 
-        
-
         case 99:
         {
             /**
@@ -824,12 +822,11 @@ void System::setResolutionRate(int                              input_value,
 
 // AD URANIUMNITRIDE
 
-
 void System::setResolutionRatesUN(int                              input_value,
-                               SciantixArray<SciantixVariable>& sciantix_variable,
-                               SciantixArray<SciantixVariable>& history_variable,
-                               SciantixArray<InputVariable>&    scaling_factors,
-                               SciantixArray<Matrix>&           matrices)
+                                  SciantixArray<SciantixVariable>& sciantix_variable,
+                                  SciantixArray<SciantixVariable>& history_variable,
+                                  SciantixArray<InputVariable>&    scaling_factors,
+                                  SciantixArray<Matrix>&           matrices)
 {
     /**
      * ### setResolutionRatesUN
@@ -842,31 +839,31 @@ void System::setResolutionRatesUN(int                              input_value,
     {
         case 4:
         {
-    // Fission rate (1/(m³ s))
-    double F_dot = history_variable["Fission rate"].getFinalValue();
-    double scaling = scaling_factors["Resolution rate"].getValue();
+            // Fission rate (1/(m³ s))
+            double F_dot   = history_variable["Fission rate"].getFinalValue();
+            double scaling = scaling_factors["Resolution rate"].getValue();
 
-    // Intragranular resolution (Rizk et al. JNM 606 (2025) 155604)
-    double Rb_intra = sciantix_variable["Intragranular bubble radius"].getInitialValue() + radius_in_lattice;
-    double b0_intra = 1.0e-25 * (2.64 - 2.02 * std::exp(-2.61e-9 / Rb_intra));
-    resolution_rate_intra = F_dot * b0_intra * scaling;
+            // Intragranular resolution (Rizk et al. JNM 606 (2025) 155604)
+            double Rb_intra = sciantix_variable["Intragranular bubble radius"].getInitialValue() + radius_in_lattice;
+            double b0_intra = 1.0e-25 * (2.64 - 2.02 * std::exp(-2.61e-9 / Rb_intra));
+            resolution_rate_intra = F_dot * b0_intra * scaling;
 
-    // Dislocation resolution – same formula, different bubble radius
-    double Rb_disl = sciantix_variable["Dislocation bubble radius"].getInitialValue() + radius_in_lattice;
-    double b0_disl = 1.0e-25 * (2.64 - 2.02 * std::exp(-2.61e-9 / Rb_disl));
-    resolution_rate_disl = F_dot * b0_disl * scaling;
-         break;
+            // Dislocation resolution – same formula, different bubble radius
+            double Rb_disl       = sciantix_variable["Dislocation bubble radius"].getInitialValue() + radius_in_lattice;
+            double b0_disl       = 1.0e-25 * (2.64 - 2.02 * std::exp(-2.61e-9 / Rb_disl));
+            resolution_rate_disl = F_dot * b0_disl * scaling;
+            break;
         }
     }
 }
 
 double getResolutionRateIntra()
-{ 
-    return resolution_rate_intra; 
+{
+    return resolution_rate_intra;
 }
 double getResolutionRateDisl()
-{ 
-    return resolution_rate_disl; 
+{
+    return resolution_rate_disl;
 }
 
 double System::getResolutionRate()
