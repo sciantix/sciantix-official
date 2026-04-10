@@ -233,10 +233,12 @@ class System : virtual public Material
 
     // UN AD URANIUMINTRIDE
 
-    void setResolutionRatesUN(SciantixArray<SciantixVariable>& sciantix_variable,
-                              SciantixArray<SciantixVariable>& history_variable,
-                              SciantixArray<InputVariable>&    scaling_factors);
-
+   void setResolutionRatesUN(
+    int input_value,
+    SciantixArray<SciantixVariable>& sciantix_variable,
+    SciantixArray<SciantixVariable>& history_variable,
+    SciantixArray<InputVariable>& scaling_factors,
+    SciantixArray<Matrix>& matrices);
     double getResolutionRateIntra();
     double getResolutionRateDisl();
 
