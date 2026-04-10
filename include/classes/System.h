@@ -50,8 +50,8 @@ class System : virtual public Material
     double resolution_rate;
     double trapping_rate;
     // UN AD URANIUMNITRIDE
-    double resolution_rate_intra;         // new: UN intragranular resolution rate
-    double resolution_rate_disl;          // new: UN dislocation resolution rate
+    double resolution_rate_intra;  // new: UN intragranular resolution rate
+    double resolution_rate_disl;   // new: UN dislocation resolution rate
 
     double              trapping_rate_bulk;
     double              trapping_rate_dislocation;
@@ -214,7 +214,7 @@ class System : virtual public Material
      * @return The current resolution rate.
      */
     double getResolutionRate();
-    
+
     /**
      * @brief Sets the trapping rate for isotopes in nanobubbles within the matrix.
      * The krypton intra-granular trapping rate is set according to the input_variable
@@ -235,10 +235,10 @@ class System : virtual public Material
 
     void setResolutionRatesUN(SciantixArray<SciantixVariable>& sciantix_variable,
                               SciantixArray<SciantixVariable>& history_variable,
-                              SciantixArray<InputVariable>& scaling_factors);
+                              SciantixArray<InputVariable>&    scaling_factors);
 
-    double getResolutionRateIntra() ;
-    double getResolutionRateDisl() ;
+    double getResolutionRateIntra();
+    double getResolutionRateDisl();
 
     /**
      * @brief Sets the trapping rate for UN intragranular bulk bubbles and dislocation bubbles.
