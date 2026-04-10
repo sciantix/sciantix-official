@@ -41,7 +41,8 @@ void Simulation::setVariables(int    Sciantix_options[],
          toOutputGrainBoundary          = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
          toOutputHighBurnupStructure    = input_variable["iHighBurnupStructureFormation"].getValue() == 1,
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
-         toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0;
+         toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0,
+         toFMP                          = input_variable["iFMP"].getValue() == 1;
 
     // Physics variable
     physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
@@ -64,7 +65,9 @@ void Simulation::setVariables(int    Sciantix_options[],
                                         toOutputGrainBoundary,
                                         toOutputHighBurnupStructure,
                                         toOutputStoichiometryDeviation,
-                                        toOutputChromiumContent);
+                                        toOutputChromiumContent,
+                                        toFMP
+                                    );
 
     for (SciantixVariable initial_value : values)
     {

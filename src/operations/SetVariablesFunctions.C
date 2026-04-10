@@ -53,7 +53,8 @@ std::vector<std::string> getInputVariableNames()
                                       "iBubbleDiffusivity",
                                       "iChromiumSolubility",
                                       "iDensification",
-                                      "iReleaseMode"};
+                                      "iReleaseMode",
+                                    "iFMP"};
 
     return names;
 }
@@ -98,6 +99,7 @@ initializeHistoryVariable(double Sciantix_history[], double Sciantix_scaling_fac
  * @param toOutputGrainBoundary Flag for outputting grain boundary information.
  * @param toOutputHighBurnupStructure Flag for outputting high burnup structure information.
  * @param toOutputStoichiometryDeviation Flag for outputting stoichiometry deviation information.
+ * @param toFMP Flag for FMP.
  * @return A vector of SciantixVariable objects initialized with the given values and flags.
  */
 std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variables[],
@@ -108,7 +110,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputGrainBoundary,
                                                          bool   toOutputHighBurnupStructure,
                                                          bool   toOutputStoichiometryDeviation,
-                                                         bool   toOutputChromiumContent)
+                                                         bool   toOutputChromiumContent,
+                                                         bool   toFMP)
 {
     std::vector<SciantixVariable> init_sciantix_variable = {
         SciantixVariable("Grain radius", "(m)", Sciantix_variables[0], Sciantix_variables[0], 1),
@@ -381,6 +384,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
             "Chromia precipitate", "(at/m3)", Sciantix_variables[158], Sciantix_variables[158], toOutputChromiumContent),
 
         SciantixVariable("Diffusion coefficient", "(m2/s)", Sciantix_variables[160], Sciantix_variables[160], 0),
+
+        SciantixVariable("Metal produced", "(at/m3)", Sciantix_variables[170], Sciantix_variables[170], toFMP),
     };
 
     return init_sciantix_variable;
