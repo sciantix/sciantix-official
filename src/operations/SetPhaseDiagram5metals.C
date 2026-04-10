@@ -115,6 +115,11 @@ void Simulation::CallNobleMetalsModule(double pressure, double temperature, std:
         inputFile << "set c t=" << temperature << "\n";
         inputFile << "set c p=" << pressure << "\n";
 
+        std::cout << "[NobleMetals OC Input] location=" << location
+                  << ", T=" << temperature
+                  << ", P=" << pressure
+                  << ", total_moles=" << total_moles << "\n";
+
         
 
         // OpenCalphad is fed with normalized element fractions to avoid issues with
@@ -140,6 +145,8 @@ void Simulation::CallNobleMetalsModule(double pressure, double temperature, std:
         {
             double normalizedFraction = normalizedFractions[elementName] / fractionSum;
             inputFile << "set c n(" << elementName << ")=" << normalizedFraction << "\n";
+            std::cout << "[NobleMetals OC Input] n(" << elementName << ")="
+                      << normalizedFraction << " (fraction)\n";
         }
 
         inputFile << "c e\n"; // Calculate Equilibrium
@@ -152,6 +159,23 @@ void Simulation::CallNobleMetalsModule(double pressure, double temperature, std:
         {
             std::cerr << "Error: OpenCalphad execution failed.\n";
             return;
+        }
+
+        // Print full OpenCalphad DAT output so it is captured in thermo.log.
+        std::ifstream ocDatFile(datOutputPath);
+        if (ocDatFile.is_open())
+        {
+            std::cout << "[OpenCalphad DAT Begin] " << datOutputPath << "\n";
+            std::string ocLine;
+            while (std::getline(ocDatFile, ocLine))
+            {
+                std::cout << ocLine << "\n";
+            }
+            std::cout << "[OpenCalphad DAT End]\n";
+        }
+        else
+        {
+            std::cout << "[OpenCalphad DAT] Unable to open " << datOutputPath << "\n";
         }
 
         // 5. Convert OC output to JSON via Python parser
@@ -183,7 +207,12 @@ void Simulation::CallNobleMetalsModule(double pressure, double temperature, std:
             for (auto& element : solutionPhases[phase]["elements"].getMemberNames())
             {
                 // Convert from normalized OC basis back to real moles.
-                double molesInPhase = solutionPhases[phase]["elements"][element]["moles of element in phase"].asDouble() * total_moles;
+                double normalizedMolesInPhase = solutionPhases[phase]["elements"][element]["moles of element in phase"].asDouble();
+                double molesInPhase = normalizedMolesInPhase * total_moles;
+                std::cout << "[NobleMetals OC Output] phase=" << phase
+                          << ", element=" << element
+                          << ", normalized=" << normalizedMolesInPhase
+                          << ", real_moles=" << molesInPhase << "\n";
                 thermochemistry_variable[element + " (" + phase + ", " + location + ")"].setFinalValue(molesInPhase);
             }
         }
