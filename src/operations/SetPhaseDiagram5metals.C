@@ -23,6 +23,7 @@
 #include <map>     
 #include <cmath>
 #include <limits>
+#include <algorithm>
 #include <json/json.h>
 #include <cctype>
 
@@ -114,16 +115,31 @@ void Simulation::CallNobleMetalsModule(double pressure, double temperature, std:
         inputFile << "set c t=" << temperature << "\n";
         inputFile << "set c p=" << pressure << "\n";
 
+        
+
+        // OpenCalphad is fed with normalized element fractions to avoid issues with
+        // very small absolute amounts. Real moles are reconstructed after parsing.
+        std::map<std::string, double> normalizedFractions;
+        double fractionSum = 0.0;
         for (auto& elementName : elementNames)
         {
             std::string sciantix_elem = elementName;
             if (sciantix_elem.length() > 1) sciantix_elem[1] = std::tolower(sciantix_elem[1]);
 
             double moles = sciantix_variable[sciantix_elem + " produced"].getFinalValue() / avogadro_number;
-            
-            // Numerical safety: avoid absolute zero to prevent logarithm errors in OC
-            if (moles < 1e-12) moles = 1e-12; 
-            inputFile << "set c n(" << elementName << ")=" << moles << "\n"; 
+            double fraction = moles / total_moles;
+
+            // Numerical safety: avoid absolute zero to prevent logarithm errors in OC.
+            if (fraction < 1e-12) fraction = 1e-12;
+
+            normalizedFractions[elementName] = fraction;
+            fractionSum += fraction;
+        }
+
+        for (auto& elementName : elementNames)
+        {
+            double normalizedFraction = normalizedFractions[elementName] / fractionSum;
+            inputFile << "set c n(" << elementName << ")=" << normalizedFraction << "\n";
         }
 
         inputFile << "c e\n"; // Calculate Equilibrium
@@ -166,7 +182,8 @@ void Simulation::CallNobleMetalsModule(double pressure, double temperature, std:
             
             for (auto& element : solutionPhases[phase]["elements"].getMemberNames())
             {
-                double molesInPhase = solutionPhases[phase]["elements"][element]["moles of element in phase"].asDouble();
+                // Convert from normalized OC basis back to real moles.
+                double molesInPhase = solutionPhases[phase]["elements"][element]["moles of element in phase"].asDouble() * total_moles;
                 thermochemistry_variable[element + " (" + phase + ", " + location + ")"].setFinalValue(molesInPhase);
             }
         }
@@ -185,7 +202,7 @@ void Simulation::CallNobleMetalsModule(double pressure, double temperature, std:
             {
                 if (solutionPhases[phase]["elements"].isMember(element))
                 {
-                    equilibrium_moles += solutionPhases[phase]["elements"][element]["moles of element in phase"].asDouble();
+                    equilibrium_moles += solutionPhases[phase]["elements"][element]["moles of element in phase"].asDouble() * total_moles;
                 }
             }
 
