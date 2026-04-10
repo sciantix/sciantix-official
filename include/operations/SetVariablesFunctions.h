@@ -31,7 +31,6 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputHighBurnupStructure,
                                                          bool   toOutputStoichiometryDeviation,
                                                          bool   toOutputChromiumContent,
-                                                         bool   toFMP
-                                                        );
+                                                         bool   toFMP);
 
 std::vector<std::string> getScalingFactorsNames();
