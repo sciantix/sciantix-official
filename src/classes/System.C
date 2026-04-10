@@ -71,7 +71,7 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
     double YU234 = 0.0, YU235 = 0.0, YU236 = 0.0, YU237 = 0.0, YU238 = 0.0;
     double YPu238 = 0.0, YPu239 = 0.0, YPu240 = 0.0, YPu241 = 0.0, YPu242 = 0.0;
 
-    std::string gas_name = gas.getName();;
+    std::string gas_name = gas.getName();
     std::string particle_name = particle.getName();;
     bool found = false;
     std::string current_name = "";
@@ -177,89 +177,92 @@ void System::setYield(SciantixArray<SciantixVariable> &sciantix_variable)
     }
 
     if (!found) {
-    if (particle_name == "Mo")
-    {
-        // Mo-95, 97, 98, 100
-        YU235  = 23.450e-02;
-        YU238  = 23.100e-02; 
-        YPu239 = 22.100e-02;
-        YPu240 = 21.800e-02;
-        YPu241 = 20.500e-02;
-        YPu242 = 18.200e-02; 
+        if (particle_name == "Mo")
+        {
+            // Mo-95, 97, 98, 100
+            YU235  = 23.450e-02;
+            YU238  = 23.100e-02; 
+            YPu239 = 22.100e-02;
+            YPu240 = 21.800e-02;
+            YPu241 = 20.500e-02;
+            YPu242 = 18.200e-02; 
 
-        yield = 0.206;
-        return;
-        found = true;
-        current_name = particle_name;
-    }
-    else if (particle_name == "Ru")
-    {
-        // Ru-101, 102, 104, 106
-        YU235  = 11.500e-02;
-        YU238  = 15.200e-02;
-        YPu239 = 23.800e-02; 
-        YPu240 = 22.900e-02;
-        YPu241 = 22.100e-02;
-        YPu242 = 20.500e-02;
+            // Yield mediato a 13.4% FIMA (Samuelsson et al. 2020)
+            yield = 0.2187; 
+            
+            found = true;
+            current_name = particle_name;
+            return;
+        }
+        else if (particle_name == "Ru")
+        {
+            // Ru-101, 102, 104, 106
+            YU235  = 11.500e-02;
+            YU238  = 15.200e-02;
+            YPu239 = 23.800e-02; 
+            YPu240 = 22.900e-02;
+            YPu241 = 22.100e-02;
+            YPu242 = 20.500e-02;
 
-        yield = 0.456/4;
-        return;
+            // Yield mediato a 13.4% FIMA (Samuelsson et al. 2020)
+            yield = 0.1984; 
+            
+            found = true;
+            current_name = particle_name;
+            return;
+        }
+        else if (particle_name == "Tc")
+        {
+            // Tc-99
+            YU235  = 6.110e-02;
+            YU238  = 6.150e-02;
+            YPu239 = 6.210e-02;
+            YPu240 = 6.180e-02;
+            YPu241 = 6.001E-02;
+            YPu242 = 5.559E-02;
 
-        found = true;
-        current_name = particle_name;
-    }
-    else if (particle_name == "Tc")
-    {
-        // Tc-99
-        YU235  = 6.110e-02;
-        YU238  = 6.150e-02;
-        YPu239 = 6.210e-02;
-        YPu240 = 6.180e-02;
-        YPu241 = 6.001E-02;
-        YPu242 = 5.559E-02;
+            // Yield mediato a 13.4% FIMA (Samuelsson et al. 2020)
+            yield = 0.0531; 
+            
+            found = true;
+            current_name = particle_name;
+            return;
+        }
+        else if (particle_name == "Pd")
+        {
+            // Pd-106, 107, 108, 110
+            YU235  = 1.550e-02;
+            YU238  = 3.200e-02;
+            YPu239 = 15.600e-02; 
+            YPu240 = 16.500e-02;
+            YPu241 = 17.800e-02;
+            YPu242 = 18.500e-02;
 
-        yield = 0.456/4;
-        return;
+            // Yield mediato a 13.4% FIMA (Samuelsson et al. 2020)
+            yield = 0.1547; 
+            
+            found = true;
+            current_name = particle_name;
+            return;
+        }
+        else if (particle_name == "Rh")
+        {
+            // Rh-105
+            YU235  = 3.030e-02;
+            YU238  = 3.500e-02;
+            YPu239 = 5.600e-02;
+            YPu240 = 5.850e-02;
+            YPu241 = 6.100e-02;
+            YPu242 = 6.400e-02;
 
-        found = true;
-        current_name = particle_name;
-    }
-    else if (particle_name == "Pd")
-    {
-        // Pd-106, 107, 108, 110
-        YU235  = 1.550e-02;
-        YU238  = 3.200e-02;
-        YPu239 = 15.600e-02; 
-        YPu240 = 16.500e-02;
-        YPu241 = 17.800e-02;
-        YPu242 = 18.500e-02;
-
-        yield = 0.456/4;
-        return;
-
-        found = true;
-        current_name = particle_name;
-    }
-    else if (particle_name == "Rh")
-    {
-        // Rh-105
-        YU235  = 3.030e-02;
-        YU238  = 3.500e-02;
-        YPu239 = 5.600e-02;
-        YPu240 = 5.850e-02;
-        YPu241 = 6.100e-02;
-        YPu242 = 6.400e-02;
-
-        yield = 0.456/4;
-        return;
-
-        found = true;
-        current_name = particle_name;
-    }
-    else
-    {
-        return;
-    }
+            // Yield mediato a 13.4% FIMA (Samuelsson et al. 2020)
+            yield = 0.0594; 
+            
+            found = true;
+            current_name = particle_name;
+            return;
+        }
+    
     }
 
     double Y_U_mean  = fU234 * YU234 + fU235 * YU235 + fU236 * YU236 + fU237 * YU237 + fU238 * YU238;
