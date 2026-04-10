@@ -54,7 +54,7 @@ std::vector<std::string> getInputVariableNames()
                                       "iChromiumSolubility",
                                       "iDensification",
                                       "iReleaseMode",
-                                    "iFMP"};
+                                      "iFMP"};
 
     return names;
 }

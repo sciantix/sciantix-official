@@ -66,8 +66,7 @@ void Simulation::setVariables(int    Sciantix_options[],
                                         toOutputHighBurnupStructure,
                                         toOutputStoichiometryDeviation,
                                         toOutputChromiumContent,
-                                        toFMP
-                                    );
+                                        toFMP);
 
     for (SciantixVariable initial_value : values)
     {
