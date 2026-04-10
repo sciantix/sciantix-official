@@ -801,26 +801,7 @@ void System::setResolutionRate(int                              input_value,
             break;
         }
 
-        // UN AD URANIUMNITRIDE
-        case 4:
-        {
-            /**
-             * @brief iResolutionRate = 4 corresponds to both intra-granular bulk bubble and dislocation bubble
-             * resolution rate from Rizk et al., JNM 606 (2025) 155604.
-             */
-
-            reference += "iResolutionRate: Rizk et al. JNM 606 (2025) 155604 (UN).\n\t";
-
-            const double Rb = sciantix_variable["Intragranular bubble radius"].getInitialValue() + radius_in_lattice;
-            // const double Rb_eff = (Rb > 1.0e-12) ? Rb : 1.0e-12;
-            const double b0    = 1.0e-25 * (2.64 - 2.02 * exp(-2.61e-9 / Rb));
-            const double F_dot = history_variable["Fission rate"].getFinalValue();
-
-            resolution_rate = F_dot * b0;
-            // Scaling factor
-            resolution_rate *= scaling_factors["Resolution rate"].getValue();
-            break;
-        }
+        
 
         case 99:
         {
@@ -839,6 +820,53 @@ void System::setResolutionRate(int                              input_value,
             break;
     }
     resolution_rate *= scaling_factors["Resolution rate"].getValue();
+}
+
+// AD URANIUMNITRIDE
+
+
+void System::setResolutionRatesUN(int                              input_value,
+                               SciantixArray<SciantixVariable>& sciantix_variable,
+                               SciantixArray<SciantixVariable>& history_variable,
+                               SciantixArray<InputVariable>&    scaling_factors,
+                               SciantixArray<Matrix>&           matrices)
+{
+    /**
+     * ### setResolutionRatesUN
+     * @brief The Xe intra-granular bulk and dislocation bubbles resolution rates is set according to the input_variable
+     * iResolutionRate.
+     *
+     */
+
+    switch (input_value)
+    {
+        case 4:
+        {
+    // Fission rate (1/(m³ s))
+    double F_dot = history_variable["Fission rate"].getFinalValue();
+    double scaling = scaling_factors["Resolution rate"].getValue();
+
+    // Intragranular resolution (Rizk et al. JNM 606 (2025) 155604)
+    double Rb_intra = sciantix_variable["Intragranular bubble radius"].getInitialValue() + radius_in_lattice;
+    double b0_intra = 1.0e-25 * (2.64 - 2.02 * std::exp(-2.61e-9 / Rb_intra));
+    resolution_rate_intra = F_dot * b0_intra * scaling;
+
+    // Dislocation resolution – same formula, different bubble radius
+    double Rb_disl = sciantix_variable["Dislocation bubble radius"].getInitialValue() + radius_in_lattice;
+    double b0_disl = 1.0e-25 * (2.64 - 2.02 * std::exp(-2.61e-9 / Rb_disl));
+    resolution_rate_disl = F_dot * b0_disl * scaling;
+         break;
+        }
+    }
+}
+
+double getResolutionRateIntra()
+{ 
+    return resolution_rate_intra; 
+}
+double getResolutionRateDisl()
+{ 
+    return resolution_rate_disl; 
 }
 
 double System::getResolutionRate()
