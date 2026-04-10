@@ -857,11 +857,12 @@ void System::setResolutionRatesUN(int                              input_value,
     }
 }
 
-double getResolutionRateIntra()
+double System::getResolutionRateIntra()
 {
     return resolution_rate_intra;
 }
-double getResolutionRateDisl()
+
+double System::getResolutionRateDisl()
 {
     return resolution_rate_disl;
 }
