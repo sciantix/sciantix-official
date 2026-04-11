@@ -278,7 +278,8 @@ System Xe_in_UN(SciantixArray<Matrix>&           matrices,
     system_.setVolumeInLattice(matrices["UN"].getSchottkyVolume());
 
     system_.setHenryConstant(0.0);
-    system_.setBulkNucleationFactor(1.0e-6); // sarebbe fn nella formula (26) Ritzk (suggerito 10^-6 ma range 10^-2  10^-7)
+    system_.setBulkNucleationFactor(
+        1.0e-6);  // sarebbe fn nella formula (26) Ritzk (suggerito 10^-6 ma range 10^-2  10^-7)
 
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
 
