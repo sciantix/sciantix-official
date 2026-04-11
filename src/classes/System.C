@@ -712,6 +712,9 @@ void System::setProductionRate(int input_value, SciantixArray<SciantixVariable> 
 
         double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
 
+        // When iFuelMatrix==1 (UO2 + UO2HBS two-phase), the base xenon yield stored
+        // in System (~0.24 at/fiss) is rescaled by 1.25 to recover the true cumulative
+        // Xe yield of 0.30 at/fiss used for HBS calculations.
         double sf(1.00);
         if (input_variable["iFuelMatrix"].getValue() == 1)
         {

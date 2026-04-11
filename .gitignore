@@ -53,3 +53,4 @@ old_files/
 __pycache__/
 optimization
 GSA_output_files/
+point_*

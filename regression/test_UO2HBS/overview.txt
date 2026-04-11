@@ -12,12 +12,12 @@ Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
 Matrix	UO2	
 	Ainscough et al., JNM, 49 (1973) 117-128.
 	iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004)
-	iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.
+	GrainBoundarySingleAtomDiffusivity: Xia et al., Metals 12 (2022) 763, as calibrated by Frattini MSc thesis (2025).
 	
 Matrix	UO2HBS	
 	Null grain-boundary mobility.
 	iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77 / BARANI HBS part 2, 2022
-	iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.
+	GrainBoundarySingleAtomDiffusivity: Xia et al., Metals 12 (2022) 763, as calibrated by Frattini MSc thesis (2025).
 	
 
 System	Xe in UO2	

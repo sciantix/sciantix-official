@@ -23,7 +23,7 @@ plt.rcParams['xtick.labelsize'] = font_size
 plt.rcParams['ytick.labelsize'] = font_size
 """ ------------------- Functions ------------------- """
 
-def do_plot(label_x, label_y, experimental_data_x, experimental_data_y, calculations_x, calculations_y, model_x=None, model_y=None):
+def do_plot(label_x, label_y, experimental_data_x, experimental_data_y, calculations_x, calculations_y, model_x=None, model_y=None, filename=None):
 
     # 1st plot
     fig, ax = plt.subplots(1,1)
@@ -38,7 +38,11 @@ def do_plot(label_x, label_y, experimental_data_x, experimental_data_y, calculat
     ax.legend()
     ax.legend(loc='best')
 
-    plt.show()
+    if filename is not None:
+        plt.savefig(filename, dpi=150, bbox_inches='tight')
+        plt.close(fig)
+    else:
+        plt.show()
 
 
 # Main function of the Contact regression
@@ -132,11 +136,13 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot, folderList, number_of_
 
 
             burnupPos = findSciantixVariablePosition(data, "Burnup (MWd/kgUO2)")
+            effectiveBurnupPos = findSciantixVariablePosition(data, "Effective burnup (MWd/kgUO2)")
             poreDensityPos = findSciantixVariablePosition(data, "HBS pore density (pores/m3)")
             porosityPos = findSciantixVariablePosition(data, "HBS porosity (/)")
             poreRadiusPos = findSciantixVariablePosition(data, "HBS pore radius (m)")
 
             burnup = data[1:,burnupPos].astype(float) / 0.8814
+            effectiveBurnup = data[1:,effectiveBurnupPos].astype(float) / 0.8814
             poreDensity = data[1:,poreDensityPos].astype(float)
             porosity = data[1:,porosityPos].astype(float)
             poreRadius = data[1:,poreRadiusPos].astype(float)
@@ -152,10 +158,11 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot, folderList, number_of_
                     'Pore number density (pores m${}^{-3}$)',
                     exp_pore_density[:,0],
                     exp_pore_density[:,1],
-                    burnup,
+                    effectiveBurnup,
                     poreDensity,
                     model_bu,
-                    model_density
+                    model_density,
+                    filename='plot_pore_density_simple.png'
                 )
                 
                 fig, ax = plt.subplots()
@@ -165,36 +172,39 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot, folderList, number_of_
                 ax.plot(exp_pore_density_2[:,0], exp_pore_density_2[:,1], 's', color='red', markersize=5, label='Spino et al. (2006), $Bu_{AV}= 67$ MWd/kgU')
                 ax.plot(exp_pore_density_3[:,0], exp_pore_density_3[:,1], 's', color='green', markersize=5, label='Spino et al. (2006), $Bu_{AV}= 80$ MWd/kgU')
                 ax.plot(exp_pore_density_4[:,0], exp_pore_density_4[:,1], 's', color='blue', markersize=5, label='Spino et al. (2006), $Bu_{AV}= 98$ MWd/kgU')
-                ax.plot(burnup, poreDensity, color='green', linewidth=2.0, label='SCIANTIX 2.2.1 (2026)')
+                ax.plot(effectiveBurnup, poreDensity, color='green', linewidth=2.0, label='SCIANTIX 2.2.1 (2026)')
                 # ax.plot(model_bu, model_density, '-', color='purple', linewidth=2.0, label='Barani (2022)')
                 ax.plot(old_model_bu, old_model_density, '-', color='blue', linewidth=2.0, label='SCIANTIX 2.0 (2024)')
                 ax.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.7)
                 ax.legend(loc='upper right', frameon=True, fontsize=10)
                 #ax.legend(loc='best')
                 plt.tight_layout()
-                plt.show()
+                plt.savefig('plot_pore_density.png', dpi=150, bbox_inches='tight')
+                plt.close(fig)
 
                 #sensitivity Np
                 fig, ax = plt.subplots()
                 ax.set_xlabel('Effective burnup (MWd kgHM${}^{-1}$)')
                 ax.set_ylabel('Pore number density (pores m${}^{-3}$)')
                 ax.plot(exp_pore_density[:,0], exp_pore_density[:,1], 'o', color='#B3B3B3', label='Cappia et al. (2016)')
-                ax.plot(burnup, poreDensity, color='green', linewidth=1, label='SCIANTIX 2.0')
+                ax.plot(effectiveBurnup, poreDensity, color='green', linewidth=1, label='SCIANTIX 2.0')
                 ax.plot(Barani_bu_Np, Barani_density_Np, '-', color='blue', label='$D_{gb}^v$ from Barani (2022)')
                 ax.plot(White_bu_Np, White_density_Np, '-', color='red', label='$D_{gb}^v$ from White (2004)')
                 ax.legend(loc='best')
                 plt.tight_layout()
-                plt.show()
+                plt.savefig('plot_pore_density_sensitivity.png', dpi=150, bbox_inches='tight')
+                plt.close(fig)
 
                 do_plot(
                     'Effective burnup (MWd kgHM${}^{-1}$)',
                     'HBS porosity (/)',
                     exp_porosity[:,0],
                     exp_porosity[:,1],
-                    burnup,
-                    porosity
+                    effectiveBurnup,
+                    porosity,
+                    filename='plot_porosity_simple.png'
                 )
-            
+
                 fig, ax = plt.subplots()
                 ax.set_xlabel('Effective burnup (MWd kgHM${}^{-1}$)')
                 ax.set_ylabel('HBS porosity (/)')
@@ -204,34 +214,37 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot, folderList, number_of_
                 ax.plot(exp_porosity_4[:, 0], exp_porosity_4[:, 1], 'D', color='orange', label='Lassman et al. (2003)', markersize=5)
                 ax.plot(exp_porosity_5[:, 0], exp_porosity_5[:, 1], 'v', color='purple', label='Une et al. (2001), low PCMI', markersize=5)
                 ax.plot(exp_porosity_6[:, 0], exp_porosity_6[:, 1], 'v', color='pink', label='Une et. al (2001), strong PCMI', markersize=5)
-                ax.plot(burnup, porosity, color='green', linewidth= 2, label='SCIANTIX 2.2.1 (2026)')
+                ax.plot(effectiveBurnup, porosity, color='green', linewidth= 2, label='SCIANTIX 2.2.1 (2026)')
                 # ax.plot(model_bu_1, model_porosity, color='purple', linewidth=2 , label='Barani (2022)')
                 ax.plot(old_model_bu, old_model_porosity, color='blue', linewidth= 2, label='SCIANTIX 2.0 (2023)')
                 #ax.legend(loc='best', fontsize='small')
                 ax.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.7)
                 ax.legend(loc='upper left', frameon=True, fontsize=10)
                 plt.tight_layout()
-                plt.show()
+                plt.savefig('plot_porosity.png', dpi=150, bbox_inches='tight')
+                plt.close(fig)
 
                 #sensitivity porosity
                 fig, ax = plt.subplots()
                 ax.set_xlabel('Effective burnup (MWd kgHM${}^{-1}$)')
                 ax.set_ylabel('HBS porosity (/)')
                 ax.plot(exp_porosity[:, 0], exp_porosity[:, 1], 'o', color='gray', label='Cappia (2016)')
-                ax.plot(burnup, porosity, color='green', linewidth=1.5, label='SCIANTIX 2.0 ()')
+                ax.plot(effectiveBurnup, porosity, color='green', linewidth=1.5, label='SCIANTIX 2.0 ()')
                 # ax.plot(Barani_bu_P, Barani_P_P, color='blue', linewidth=1.5, label='$D_{gb}^v$ from Barani (2022)')
                 ax.plot(White_bu_P, White_P_P , color='red', linewidth=1.5, label='$D_{gb}^v$ from White (2004)')
                 ax.legend(loc='best', fontsize='small')
                 plt.tight_layout()
-                plt.show()
+                plt.savefig('plot_porosity_sensitivity.png', dpi=150, bbox_inches='tight')
+                plt.close(fig)
 
                 do_plot(
                     'Effective burnup (MWd kgHM${}^{-1}$)',
                     'Pore radius (m)',
                     exp_pore_radius[:,0],
                     exp_pore_radius[:,1],
-                    burnup,
-                    poreRadius
+                    effectiveBurnup,
+                    poreRadius,
+                    filename='plot_pore_radius_simple.png'
                 )
                 
                 fig, ax = plt.subplots()
@@ -239,14 +252,15 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot, folderList, number_of_
                 ax.set_ylabel('Pore radius (m)')
                 ax.plot(exp_pore_radius[:,0], exp_pore_radius[:,1], 'o', color='gray', label='Cappia et al. (2016)', markersize=5)
                 ax.plot(exp_pore_radius_2[:, 0], exp_pore_radius_2[:, 1], 's', color='red', label='Spino et al. (2006)', markersize=5)
-                ax.plot(burnup, poreRadius, color='green', linewidth= 2, label='SCIANTIX 2.2.1 (2026)')
+                ax.plot(effectiveBurnup, poreRadius, color='green', linewidth= 2, label='SCIANTIX 2.2.1 (2026)')
                 # ax.plot(model_bu_2, model_radius, color='purple', linewidth=2 , label='Barani (2022)')
                 ax.plot(old_model_bu, old_model_radius, color='blue', linewidth= 2, label='SCIANTIX 2.0 (2023)')
                 #ax.legend(loc='best', fontsize='small')
                 ax.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.7)
                 ax.legend(loc='upper left', frameon=True, fontsize=10)
                 plt.tight_layout()
-                plt.show()
+                plt.savefig('plot_pore_radius.png', dpi=150, bbox_inches='tight')
+                plt.close(fig)
 
 
 
@@ -257,12 +271,13 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot, folderList, number_of_
                 ax.set_xlabel('Effective burnup (MWd kgHM${}^{-1}$)')
                 ax.set_ylabel('Pore radius (m)')
                 ax.plot(exp_pore_radius[:, 0], exp_pore_radius[:, 1], 'o', color='gray', label='Cappia et al. (2016)')
-                ax.plot(burnup, poreRadius, color='green', linewidth=1.5, label='SCIANTIX 2.0')
+                ax.plot(effectiveBurnup, poreRadius, color='green', linewidth=1.5, label='SCIANTIX 2.0')
                 ax.plot(Barani_bu_R, Barani_R_R, color='blue', linewidth=1.5, label='$D_{gb}^v$ from Barani (2022)')
                 ax.plot(White_bu_R, White_R_R , color='red', linewidth=1.5, label='$D_{gb}^v$ from White (2004)')
                 ax.legend(loc='best', fontsize='small')
                 plt.tight_layout()
-                plt.show()
+                plt.savefig('plot_pore_radius_sensitivity.png', dpi=150, bbox_inches='tight')
+                plt.close(fig)
 
                 # plot: burnup - Xe grain NR + HBS (%)
                 def lassmann_fit(x, threshold=60):
@@ -304,7 +319,8 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot, folderList, number_of_
                 ax2.set_ylabel('Restructured volume fraction (/)', color='black', fontsize='large')
                 plt.legend(fontsize='medium')
                 plt.tight_layout()
-                plt.show()
+                plt.savefig('plot_xe_depletion.png', dpi=150, bbox_inches='tight')
+                plt.close(fig)
 
                 # plot: burnup - fuel swelling
 
@@ -328,7 +344,8 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot, folderList, number_of_
                 ax2.set_ylabel('Restructured volume fraction (/)', color='black', fontsize='large')
                 plt.legend(fontsize='medium')
                 plt.tight_layout()
-                plt.show()
+                plt.savefig('plot_fuel_swelling.png', dpi=150, bbox_inches='tight')
+                plt.close(fig)
             
             os.chdir('..')
 
