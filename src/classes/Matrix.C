@@ -79,16 +79,17 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
 
         case 3:
         {
-            double hbs_correction = sin(40.0 * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);            
-            
+            // Base D_gb^v (MSc Thesis of U. Frattini, 2025) Table 2 (White 2004 + a-thermal term tuned in the thesis).
+            // The tilt-angle correction sin[4(1-alpha)+40 alpha]/sin(4) of Barani 2022 Eq. 7 is
+            // alpha-dependent and is applied locally where the diffusivity is consumed, so this
+            // getter returns the untilted base value (consistent with D_gb^SA which is also
+            // corrected locally in HighBurnupStructurePorosity case 2).
             grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 5e-41 * history_variable["Fission rate"].getFinalValue();
             //grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 1e-39 * history_variable["Fission rate"].getFinalValue();
             //grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue()));
-            
-            grain_boundary_vacancy_diffusivity *= hbs_correction;
-            
+
             reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77 / BARANI HBS part 2, 2022\n\t";
-            
+
             break;
         }
 
@@ -112,34 +113,40 @@ void Matrix::setGrainBoundarySingleAtomDiffusivity(int input_value, SciantixArra
 
         case 1:
         {
-            // Barani et al. 2022, HBS part II
+            // Barani et al. 2022, HBS part II (Olander-Van Uffelen "low D")
+            // Paper-correct value but at T=723 K leads to catch-22 between trapping
+            // and re-solution (2-atom nuclei destroyed before gaining atoms).
+            // Frattini 2025 Table 2 deliberately substitutes Xia 2022 as empirical
+            // calibration that lets the cluster-dynamics 5x5 system converge.
             // grain_boundary_single_atom_diffusivity = (1.3e-7 * exp(- 2.82 /
             //     (8.62e-5 * history_variable["Temperature"].getFinalValue()))
             // );
-            
+
             // Liu et al. 2023 (https://www.osti.gov/servlets/purl/1969379/)
             // tilt S5
             // grain_boundary_single_atom_diffusivity = (1.2e-6 * exp(- 1.46 /
             //     (8.62e-5 * history_variable["Temperature"].getFinalValue()))
             // );
-            
+
             // random GB
             // grain_boundary_single_atom_diffusivity = (2.8e-7 * exp(- 1.08 /
             //     (8.62e-5 * history_variable["Temperature"].getFinalValue()))
             // );
-        
+
             // twist S5
             // grain_boundary_single_atom_diffusivity = (1.1e-9 * exp(- 0.39 /
             // (8.62e-5 * history_variable["Temperature"].getFinalValue()))
             // );
 
             // Xia et al. (2022) https://www.mdpi.com/2075-4701/12/5/763
+            // Empirical calibration adopted by Frattini 2025 (Table 2) for the
+            // mechanistic HBS porosity model in SCIANTIX; delivers fit of Cappia
+            // data through the full burnup range.
             grain_boundary_single_atom_diffusivity = (2.0e-8 * exp(- 1.4 /
                 (8.62e-5 * history_variable["Temperature"].getFinalValue()))
             );
-        
 
-            reference += "iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 (2022) 153627.\n\t";
+            reference += "GrainBoundarySingleAtomDiffusivity: Xia et al., Metals 12 (2022) 763, as calibrated by Frattini MSc thesis (2025).\n\t";
             break;
         }
 
@@ -188,6 +195,4 @@ void Matrix::setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<
         (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
 
     pore_trapping_rate *= scaling_factors["Dummy"].getValue();
-
-    pore_trapping_rate = 0.0;
 }
