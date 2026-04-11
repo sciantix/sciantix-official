@@ -87,16 +87,35 @@ void Simulation::HighBurnupStructurePorosity()
             pore_trapping_rate_HBS =
                 4.0 * M_PI * D_gb * c_gb * R_pore * (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
                            
-            // Nucleation rate
+            // Nucleation rate with incubation burnup.
+            // Following Biswas & Aagesen 2025 (Comput. Mater. Sci. 258, 114052,
+            // Eq. 45), the modified JMAK is alpha_r = 1 - exp[-K*(bu - bu_inc)^n]
+            // for bu > bu_inc, 0 otherwise. The threshold bu_inc is derived from
+            // the dislocation-energy vs subgrain-formation-energy balance
+            // (f_d > E_sub). We apply it consistently to both
+            // alpha_r (in HighBurnupStructureFormation) and nu_P (here), so that
+            // d(alpha_r)/d(bu) remains the exact Barani 2022 Eq. 6 prescription.
+            // This avoids the "gas-reservoir burst" that occurs when the
+            // threshold is applied to nu_P alone: grain sub-division produces
+            // c_gb^HBS with no pore sink, then the first pores explode when
+            // nu_P reactivates.
             double avrami_constant = model["High-burnup structure formation"].getParameter().at(0);
             double transformation_rate = model["High-burnup structure formation"].getParameter().at(1);
-            double pore_nucleation_rate =
-            (5.0e17 * transformation_rate * avrami_constant * (1.0 - sciantix_variable["Restructured volume fraction"].getFinalValue())* pow(sciantix_variable["Effective burnup"].getFinalValue()/0.8814, avrami_constant - 1.));
-            // from d_alpha/d_burnup -> d_alpha/d_time
-            if(physics_variable["Time step"].getFinalValue()) 
-                pore_nucleation_rate *= sciantix_variable["Effective burnup"].getIncrement() / physics_variable["Time step"].getFinalValue();
-            else
-                pore_nucleation_rate = 0.0;
+            double bu_inc = model["High-burnup structure formation"].getParameter().at(4);
+            double bu_for_nucl = sciantix_variable["Effective burnup"].getFinalValue() / 0.8814 - bu_inc;
+            double pore_nucleation_rate = 0.0;
+            if (bu_for_nucl > 0.0)
+            {
+                pore_nucleation_rate =
+                    1.0e18 * transformation_rate * avrami_constant
+                    * (1.0 - sciantix_variable["Restructured volume fraction"].getFinalValue())
+                    * pow(bu_for_nucl, avrami_constant - 1.);
+                // from d_alpha/d_burnup -> d_alpha/d_time
+                if(physics_variable["Time step"].getFinalValue())
+                    pore_nucleation_rate *= sciantix_variable["Effective burnup"].getIncrement() / physics_variable["Time step"].getFinalValue();
+                else
+                    pore_nucleation_rate = 0.0;
+            }
             
             // Resolution rate
             double resolution_layer_thickness = model["High-burnup structure formation"].getParameter().at(2);
@@ -238,23 +257,56 @@ void Simulation::HighBurnupStructurePorosity()
                 DimensionlessFactor =  10.0 * psi * (1 + pow(psi, 3.0)) / (-pow(psi, 6.0) + 5.0 * pow(psi, 2.0) - 9.0 * psi + 5.0);
             }
         
-            // double N_grains = pow(WignerSeitzCellRadius,3) - pow(sciantix_variable["HBS pore radius"].getInitialValue(),3) / pow(fuel_.getGrainRadius(),3);
-
             if(sciantix_variable["HBS pore radius"].getInitialValue()) equilibrium_pressure = 2.0 * fuel_.getSurfaceTension() / sciantix_variable["HBS pore radius"].getInitialValue() - history_variable["Hydrostatic stress"].getFinalValue() * 1e6;
             
             if(DimensionlessFactor)
             {
-                // Barani 2022 Eq. 7: alpha-weighted tilt-angle correction on the grain-boundary
-                // vacancy diffusivity. angle_deg was computed at the top of case 2 from the
-                // current restructured volume fraction.
+                // Barani 2022 Eq. 7: alpha-weighted tilt-angle correction on the
+                // grain-boundary vacancy diffusivity. angle_deg was computed at
+                // the top of case 2 from the current restructured volume fraction.
                 double tilt_factor = sin(angle_deg * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
                 double D_gb_v_tilted = fuel_.getGrainBoundaryVacancyDiffusivity() * tilt_factor;
 
-                //volume_flow_rate = 2.0 * M_PI * fuel_.getGrainBoundaryThickness() * D_gb_v_tilted / DimensionlessFactor;
-                volume_flow_rate = 2.0 * M_PI * WignerSeitzCellRadius * D_gb_v_tilted / DimensionlessFactor;
+                // Kinetic saturation of the vacancy flow rate at high porosity.
+                //
+                // HBS pores do NOT release gas by venting in steady-state
+                // operation: they stay closed at 30-100 MPa overpressure
+                // (Hiernaut 2008 JNM 377, Noirot 2008 JNM 372). Gas is released
+                // only by fragmentation during transients (Kulacsy 2015 JNM 466,
+                // Jernkvist 2019 EPJ-N). The observed porosity saturation at
+                // xi ~ 0.15-0.20 (Cappia 2016 JNM 480, Spino 2005 JNM 346) is
+                // therefore a kinetic phenomenon, not a release.
+                //
+                // Physical mechanism: at high xi the remaining solid matrix must
+                // support the external load on a smaller cross-section, so its
+                // local effective stress grows as ~1/(1-xi) and internal vacancy
+                // sources (dislocation climb, GB emission) are suppressed. The
+                // "infinite vacancy source at the Wigner-Seitz boundary"
+                // assumption of the Speight-Beere model breaks down, and the
+                // effective volume_flow_rate decreases.
+                //
+                // Equivalent percolation-theoretic reading: the backbone of the
+                // solid matrix transporting vacancies to pores loses connectivity
+                // near an effective percolation threshold xi_c; transport scales
+                // as (1 - xi/xi_c)^t with t = 2 in 3D (Stauffer & Aharony,
+                // Introduction to Percolation Theory, 1994).
+                //
+                // xi_old is the porosity at the end of the previous time step
+                // (step-lagged cap, stable for explicit use). Note that the
+                // trapping rate of gas atoms is NOT affected by this cap:
+                // gas keeps accumulating in pores that can no longer grow in
+                // volume, driving up pressure consistently with the experimental
+                // over-pressurization observed in annealing tests.
+                double xi_old = sciantix_variable["HBS porosity"].getInitialValue();
+                const double xi_sat = 0.22; // saturation porosity (Cappia/Spino upper envelope)
+                double linear = std::max(0.0, 1.0 - xi_old / xi_sat);
+                double saturation_factor = linear * linear;
+
+                volume_flow_rate = saturation_factor * 2.0 * M_PI * WignerSeitzCellRadius * D_gb_v_tilted / DimensionlessFactor;
+
                 growth_rate = volume_flow_rate * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * Z_compr / fuel_.getSchottkyVolume();
                 equilibrium_term = - volume_flow_rate * equilibrium_pressure / (boltzmann_constant * history_variable["Temperature"].getFinalValue());
-                
+
                 parameter.push_back(growth_rate);
                 parameter.push_back(equilibrium_term);
             }
@@ -263,13 +315,6 @@ void Simulation::HighBurnupStructurePorosity()
                 parameter.push_back(0.0);
                 parameter.push_back(0.0);
             }
-        
-            // print wigner seitz cell radius
-            // std::cout << "Wigner Seitz Cell Radius: " << WignerSeitzCellRadius << std::endl;
-            // std::cout << "psi: " << psi << std::endl;
-            // std::cout << "Dimensionless Factor: " << DimensionlessFactor << std::endl;
-            // std::cout << "Equilibrium Pressure: " << equilibrium_pressure << std::endl;
-            // std::cout << "Volume Flow Rate: " << volume_flow_rate << std::endl;
             
             sciantix_variable["Vacancies per HBS pore"].setFinalValue(
                 solver.LimitedGrowth(
