@@ -37,7 +37,7 @@ plt.rcParams.update({
     "legend.frameon": False,
 })
 
-TEMPERATURES_K = list(range(800, 2800, 100))
+TEMPERATURES_K = list(range(800, 2800, 200))
 REFERENCE_PRESSURE_MPA = 0.1 # 1 bar
 SCRIPT_DIR = Path(__file__).resolve().parent
 BUILD_BINARY = SCRIPT_DIR.parent.parent / "build" / "sciantix.x"

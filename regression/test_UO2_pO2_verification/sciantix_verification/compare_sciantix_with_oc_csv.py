@@ -7,7 +7,7 @@ from __future__ import annotations
 This script performs two complementary checks for the UO2 oxygen-potential
 verification:
 
-1. SCIANTIX versus standalone OpenCalphad CSV exports.
+1. SCIANTIX versus Thermo-Calc CSV export data.
 2. SCIANTIX Blackburn output versus the analytical Blackburn formula.
 
 For each comparison it writes merged tables, summary TSV files, human-readable
@@ -50,8 +50,13 @@ plt.rcParams.update({
 REFERENCE_PRESSURE_PA = 1e5
 REFERENCE_PRESSURE_MPA = REFERENCE_PRESSURE_PA / 1.0e6
 GAS_CONSTANT = 8.31446261815324
+OU_EXCLUDED_VALUE = 2.0
+OU_EXCLUDED_TOLERANCE = 1.0e-3
+OU_MIN = 1.90
+OU_MAX = 2.20
 
 SCRIPT_DIR = Path(__file__).resolve().parent
+THERMOCALC_TEMPERATURES_DIR = SCRIPT_DIR.parent / "TEMPERATURES_THERMOCALC"
 SCIANTIX_SWEEP_PATH = Path(
     "/home/ecappellari/transparant/sciantix-official/regression/test_UO2_pO2_verification/temperature_sweep_summary.tsv"
 )
@@ -91,35 +96,56 @@ def load_sciantix_data() -> pd.DataFrame:
 
 
 def load_oc_csv_data() -> pd.DataFrame:
-    """Load all standalone OpenCalphad CSV files and derive thermochemical fields."""
+    """Load reference files from TEMPERATURES_THERMOCALC and derive thermochemical fields."""
     rows: list[pd.DataFrame] = []
 
-    for path in sorted(SCRIPT_DIR.glob("test_*K_*.csv")):
-        match = re.fullmatch(r"test_(\d+)K_(ipo|iper)\.csv", path.name)
-        if not match:
+    for path in sorted(THERMOCALC_TEMPERATURES_DIR.glob("*.csv")):
+        if not re.fullmatch(r"\d+\.csv", path.name):
             continue
 
-        temperature_k = float(match.group(1))
-        region = match.group(2)
+        frame = pd.read_csv(path, sep="\t").rename(columns=lambda name: name.strip().strip('"'))
+        expected_columns = {"Temperature [K]", "Mole percent O", "Mole percent U", "Activity of O"}
+        missing_columns = expected_columns.difference(frame.columns)
+        if missing_columns:
+            missing_sorted = ", ".join(sorted(missing_columns))
+            raise RuntimeError(f"{path.name} is missing required columns: {missing_sorted}")
 
-        frame = pd.read_csv(path).rename(columns=lambda name: name.strip().strip('"'))
-        frame = frame.rename(columns={"N(O)": "O/U ratio (/)", "AC(O)": "OC oxygen activity"})
-        frame = frame[["O/U ratio (/)", "OC oxygen activity"]].copy()
-        frame["Temperature (K)"] = temperature_k
-        frame["Region"] = region
-        rows.append(frame)
+        frame = frame.rename(
+            columns={
+                "Temperature [K]": "Temperature (K)",
+                "Mole percent O": "Mole percent O",
+                "Mole percent U": "Mole percent U",
+                "Activity of O": "OC oxygen activity",
+            }
+        )
+        frame["Temperature (K)"] = frame["Temperature (K)"].astype(float)
+        frame["Mole percent O"] = frame["Mole percent O"].astype(float)
+        frame["Mole percent U"] = frame["Mole percent U"].astype(float)
+        frame["OC oxygen activity"] = frame["OC oxygen activity"].astype(float)
+
+        # O/U = n_O / n_U and mole percents are proportional to n_O and n_U.
+        frame["O/U ratio (/)"] = np.where(
+            frame["Mole percent U"] > 0.0,
+            frame["Mole percent O"] / frame["Mole percent U"],
+            np.nan,
+        )
+
+        # OpenCalphad/Thermo-Calc provides oxygen activity; derive pO2 from it.
+        frame["OC pO2 (MPa)"] = (frame["OC oxygen activity"] ** 2) * REFERENCE_PRESSURE_MPA
+        rows.append(frame[["Temperature (K)", "O/U ratio (/)", "OC oxygen activity", "OC pO2 (MPa)"]])
 
     if not rows:
-        raise RuntimeError(f"No standalone OpenCalphad CSV files found in {SCRIPT_DIR}")
+        raise RuntimeError(
+            "No reference CSV files matching '<temperature>.csv' found in "
+            f"{THERMOCALC_TEMPERATURES_DIR}"
+        )
 
-    frame = pd.concat(rows, ignore_index=True)
-    frame["O/U ratio (/)"] = frame["O/U ratio (/)"].astype(float)
-    frame["OC oxygen activity"] = frame["OC oxygen activity"].astype(float)
-    frame = frame.sort_values(["Temperature (K)", "O/U ratio (/)", "Region"]).reset_index(drop=True)
-
-    # OpenCalphad provides oxygen activity; derive pO2 and oxygen potential from it.
-    frame["OC pO2 (MPa)"] = (frame["OC oxygen activity"] ** 2) * REFERENCE_PRESSURE_MPA
-    return frame
+    merged = pd.concat(rows, ignore_index=True)
+    merged = merged.loc[
+        ~np.isclose(merged["O/U ratio (/)"], OU_EXCLUDED_VALUE, atol=OU_EXCLUDED_TOLERANCE, rtol=0.0)
+    ].copy()
+    merged = merged.sort_values(["Temperature (K)", "O/U ratio (/)"]).reset_index(drop=True)
+    return merged
 
 
 def add_legends(ax, temperatures: list[float], colors: dict[float, object]) -> None:
@@ -129,8 +155,8 @@ def add_legends(ax, temperatures: list[float], colors: dict[float, object]) -> N
         for temp in temperatures
     ]
     model_handles = [
-        Line2D([0], [0], color="black", linestyle="-", label="SCIANTIX + OpenCalphad"),
-        Line2D([0], [0], color="black", marker="o", linestyle="None", label="OpenCalphad alone"),
+        Line2D([0], [0], color="black", linestyle="-", label="SCIANTIX"),
+        Line2D([0], [0], color="black", marker="o", linestyle="None", label="Thermo-Calc"),
     ]
     first = ax.legend(handles=temperature_handles, loc="lower right", ncol=2, title="Temperature")
     ax.add_artist(first)
@@ -138,7 +164,7 @@ def add_legends(ax, temperatures: list[float], colors: dict[float, object]) -> N
 
 
 def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
-    """Overlay SCIANTIX and OpenCalphad pO2 trends, with two y-axis styles."""
+    """Overlay SCIANTIX and Thermo-Calc pO2 trends, with two y-axis styles."""
     styles = {
         "Fuel oxygen partial pressure (MPa)": ("-", "s"),
         "Fuel oxygen partial pressure - CALPHAD (MPa)": (":", "^"),
@@ -178,11 +204,19 @@ def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
             linestyle="None",
         )
 
+    all_x = pd.concat([frame1["O/U ratio (/)"], frame2["O/U ratio (/)"]], ignore_index=True)
+    x_limits = _padded_limits(all_x, fallback=(1.90, 2.20))
+    sci_log = np.log10(
+        frame1.loc[frame1["Fuel oxygen partial pressure (MPa)"] > 0.0, "Fuel oxygen partial pressure (MPa)"]
+        / REFERENCE_PRESSURE_MPA
+    )
+    ref_log = np.log10(frame2.loc[frame2["OC pO2 (MPa)"] > 0.0, "OC pO2 (MPa)"] / REFERENCE_PRESSURE_MPA)
+    y_limits = _padded_limits(pd.concat([sci_log, ref_log], ignore_index=True), fallback=(-30.0, 0.0))
+
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
-    ax.set_xlim([1.90, 2.20])
-    ax.set_ylim([-30, 0])
-    ax.set_yticks(range(-30, 0, 2))
+    ax.set_xlim([OU_MIN, OU_MAX])
+    ax.set_ylim(list(y_limits))
     ax.grid(True, alpha=0.3)
     add_legends(ax, temperatures, colors)
     fig.tight_layout()
@@ -244,11 +278,24 @@ def plot_blackburn_partial_pressure(frame: pd.DataFrame) -> None:
                 linestyle="None",
             )
 
+    x_limits = _padded_limits(frame["O/U ratio (/)"], fallback=(1.90, 2.20))
+    sciantix_log = np.log10(
+        frame.loc[
+            frame["Fuel oxygen partial pressure - Blackburn (MPa)"] > 0.0,
+            "Fuel oxygen partial pressure - Blackburn (MPa)",
+        ]
+        / REFERENCE_PRESSURE_MPA
+    )
+    analytical_log = frame.loc[
+        frame["Blackburn analytical pO2 (MPa)"] > 0.0,
+        "Blackburn analytical log10(pO2/p_ref)",
+    ]
+    y_limits = _padded_limits(pd.concat([sciantix_log, analytical_log], ignore_index=True), fallback=(-30.0, 0.0))
+
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
-    ax.set_xlim([1.90, 2.20])
-    ax.set_ylim([-30, 0])
-    ax.set_yticks(range(-30, 0, 2))
+    ax.set_xlim([OU_MIN, OU_MAX])
+    ax.set_ylim(list(y_limits))
     ax.grid(True, alpha=0.3)
 
     temperature_handles = [
@@ -272,7 +319,7 @@ def interpolate_sciantix_to_oc_points(
     sciantix_frame: pd.DataFrame,
     oc_frame: pd.DataFrame,
 ) -> pd.DataFrame:
-    """Interpolate SCIANTIX final pO2 onto the OpenCalphad O/U grid."""
+    """Interpolate SCIANTIX final pO2 onto the Thermo-Calc O/U grid."""
     rows: list[pd.DataFrame] = []
 
     for temperature, oc_group in oc_frame.groupby("Temperature (K)", sort=True):
@@ -317,6 +364,13 @@ def interpolate_sciantix_to_oc_points(
             oc_valid["Absolute log10(pO2/p_ref) error"] / denominator * 100.0,
             np.nan,
         )
+        oc_valid["pO2 error (MPa)"] = oc_valid["Interpolated SCIANTIX pO2 (MPa)"] - oc_valid["OC pO2 (MPa)"]
+        oc_valid["Absolute pO2 error (MPa)"] = oc_valid["pO2 error (MPa)"].abs()
+        oc_valid["Relative pO2 error (%)"] = np.where(
+            oc_valid["OC pO2 (MPa)"] > 0.0,
+            oc_valid["Absolute pO2 error (MPa)"] / oc_valid["OC pO2 (MPa)"] * 100.0,
+            np.nan,
+        )
         rows.append(oc_valid)
 
     if not rows:
@@ -352,6 +406,15 @@ def compare_blackburn_formula(frame: pd.DataFrame) -> pd.DataFrame:
         aligned["Absolute log10(pO2/p_ref) error"] / denominator * 100.0,
         np.nan,
     )
+    aligned["pO2 error (MPa)"] = (
+        aligned["Fuel oxygen partial pressure - Blackburn (MPa)"] - aligned["Blackburn analytical pO2 (MPa)"]
+    )
+    aligned["Absolute pO2 error (MPa)"] = aligned["pO2 error (MPa)"].abs()
+    aligned["Relative pO2 error (%)"] = np.where(
+        aligned["Blackburn analytical pO2 (MPa)"] > 0.0,
+        aligned["Absolute pO2 error (MPa)"] / aligned["Blackburn analytical pO2 (MPa)"] * 100.0,
+        np.nan,
+    )
     return aligned.sort_values(["Temperature (K)", "O/U ratio (/)"]).reset_index(drop=True)
 
 
@@ -362,6 +425,30 @@ def _rounded_upper_limit(values: pd.Series, step: float, floor: float) -> float:
         return floor
     value_max = finite_values.max()
     return max(floor, math.ceil(value_max / step) * step)
+
+
+def _series_min_max(values: pd.Series) -> tuple[float, float] | None:
+    """Return finite min/max, or None when no finite values exist."""
+    finite_values = values.replace([np.inf, -np.inf], np.nan).dropna()
+    if finite_values.empty:
+        return None
+    return float(finite_values.min()), float(finite_values.max())
+
+
+def _padded_limits(values: pd.Series, fallback: tuple[float, float], pad_fraction: float = 0.05) -> tuple[float, float]:
+    """Build y-limits with a small padding, guarding against zero-width ranges."""
+    bounds = _series_min_max(values)
+    if bounds is None:
+        return fallback
+
+    value_min, value_max = bounds
+    span = value_max - value_min
+    if span <= 0.0:
+        epsilon = max(abs(value_max) * 0.05, 1.0e-12)
+        return value_min - epsilon, value_max + epsilon
+
+    pad = span * pad_fraction
+    return value_min - pad, value_max + pad
 
 
 def build_metric_summary(frame: pd.DataFrame, temperature_column: str = "Temperature (K)") -> pd.DataFrame:
@@ -411,7 +498,7 @@ def write_summary_report(title: str, frame: pd.DataFrame, summary: pd.DataFrame,
 
 
 def plot_signed_log_partial_pressure_error(frame: pd.DataFrame) -> None:
-    """Plot the signed SCIANTIX-versus-OpenCalphad log10(pO2/p_ref) error."""
+    """Plot the signed SCIANTIX-versus-Thermo-Calc log10(pO2/p_ref) error."""
     temperatures = sorted(frame["Temperature (K)"].dropna().unique())
     cmap = plt.get_cmap("turbo", len(temperatures))
     colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
@@ -427,10 +514,14 @@ def plot_signed_log_partial_pressure_error(frame: pd.DataFrame) -> None:
         )
 
     ax.axhline(0.0, color="black", linestyle="--")
+    x_limits = _padded_limits(frame["O/U ratio (/)"], fallback=(1.90, 2.20))
+    signed_values = frame["log10(pO2/p_ref) error"].replace([np.inf, -np.inf], np.nan).dropna()
+    y_limit = float(signed_values.abs().max()) if not signed_values.empty else 0.15
+    y_limit = max(y_limit * 1.05, 1.0e-6)
+
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})$ (-)")
-    ax.set_xlim([1.90, 2.20])
-    y_limit = 0.15
+    ax.set_xlim([OU_MIN, OU_MAX])
     ax.set_ylim([-y_limit, y_limit])
     ax.grid(True, alpha=0.3)
     temperature_handles = [
@@ -460,10 +551,14 @@ def plot_blackburn_signed_log_partial_pressure_error(frame: pd.DataFrame) -> Non
         )
 
     ax.axhline(0.0, color="black", linestyle="--")
+    x_limits = _padded_limits(frame["O/U ratio (/)"], fallback=(1.90, 2.20))
+    signed_values = frame["log10(pO2/p_ref) error"].replace([np.inf, -np.inf], np.nan).dropna()
+    y_limit = float(signed_values.abs().max()) if not signed_values.empty else 0.15
+    y_limit = max(y_limit * 1.05, 1.0e-6)
+
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})$ (-)")
-    ax.set_xlim([1.90, 2.20])
-    y_limit = 0.15
+    ax.set_xlim([OU_MIN, OU_MAX])
     ax.set_ylim([-y_limit, y_limit])
     ax.grid(True, alpha=0.3)
     temperature_handles = [
@@ -477,7 +572,7 @@ def plot_blackburn_signed_log_partial_pressure_error(frame: pd.DataFrame) -> Non
 
 
 def plot_absolute_log_partial_pressure_error(frame: pd.DataFrame) -> None:
-    """Plot the absolute SCIANTIX-versus-OpenCalphad log10(pO2/p_ref) error."""
+    """Plot the absolute SCIANTIX-versus-Thermo-Calc log10(pO2/p_ref) error."""
     temperatures = sorted(frame["Temperature (K)"].dropna().unique())
     cmap = plt.get_cmap("turbo", len(temperatures))
     colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
@@ -492,10 +587,14 @@ def plot_absolute_log_partial_pressure_error(frame: pd.DataFrame) -> None:
             marker="o",
         )
 
+    x_limits = _padded_limits(frame["O/U ratio (/)"], fallback=(1.90, 2.20))
+    abs_values = frame["Absolute log10(pO2/p_ref) error"].replace([np.inf, -np.inf], np.nan).dropna()
+    y_limit = float(abs_values.max()) if not abs_values.empty else 0.15
+    y_limit = max(y_limit * 1.05, 1.0e-6)
+
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$|\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})|$ (-)")
-    ax.set_xlim([1.90, 2.20])
-    y_limit = 0.15
+    ax.set_xlim([OU_MIN, OU_MAX])
     ax.set_ylim([0.0, y_limit])
     ax.grid(True, alpha=0.3)
     temperature_handles = [
@@ -524,10 +623,14 @@ def plot_blackburn_absolute_log_partial_pressure_error(frame: pd.DataFrame) -> N
             marker="o",
         )
 
+    x_limits = _padded_limits(frame["O/U ratio (/)"], fallback=(1.90, 2.20))
+    abs_values = frame["Absolute log10(pO2/p_ref) error"].replace([np.inf, -np.inf], np.nan).dropna()
+    y_limit = float(abs_values.max()) if not abs_values.empty else 0.15
+    y_limit = max(y_limit * 1.05, 1.0e-6)
+
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$|\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})|$ (-)")
-    ax.set_xlim([1.90, 2.20])
-    y_limit = 0.15
+    ax.set_xlim([OU_MIN, OU_MAX])
     ax.set_ylim([0.0, y_limit])
     ax.grid(True, alpha=0.3)
     temperature_handles = [
@@ -541,7 +644,7 @@ def plot_blackburn_absolute_log_partial_pressure_error(frame: pd.DataFrame) -> N
 
 
 def plot_relative_log_partial_pressure_error(frame: pd.DataFrame) -> None:
-    """Plot the relative SCIANTIX-versus-OpenCalphad log10(pO2/p_ref) error."""
+    """Plot the relative SCIANTIX-versus-Thermo-Calc log10(pO2/p_ref) error."""
     temperatures = sorted(frame["Temperature (K)"].dropna().unique())
     cmap = plt.get_cmap("turbo", len(temperatures))
     colors = {temp: cmap(i) for i, temp in enumerate(temperatures)}
@@ -557,10 +660,14 @@ def plot_relative_log_partial_pressure_error(frame: pd.DataFrame) -> None:
             marker="o"
         )
 
+    x_limits = _padded_limits(valid_frame["O/U ratio (/)"], fallback=(1.90, 2.20))
+    rel_values = valid_frame["Relative log10(pO2/p_ref) error (%)"].replace([np.inf, -np.inf], np.nan).dropna()
+    y_limit = float(rel_values.max()) if not rel_values.empty else 50.0
+    y_limit = max(y_limit * 1.05, 1.0e-6)
+
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"Relative $|\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})|$ (%)")
-    ax.set_xlim([1.90, 2.20])
-    y_limit = 50
+    ax.set_xlim([OU_MIN, OU_MAX])
     ax.set_ylim([0.0, y_limit])
     ax.grid(True, alpha=0.3)
     temperature_handles = [
@@ -590,10 +697,14 @@ def plot_blackburn_relative_log_partial_pressure_error(frame: pd.DataFrame) -> N
             marker="o",
         )
 
+    x_limits = _padded_limits(valid_frame["O/U ratio (/)"], fallback=(1.90, 2.20))
+    rel_values = valid_frame["Relative log10(pO2/p_ref) error (%)"].replace([np.inf, -np.inf], np.nan).dropna()
+    y_limit = float(rel_values.max()) if not rel_values.empty else 50.0
+    y_limit = max(y_limit * 1.05, 1.0e-6)
+
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"Relative $|\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})|$ (%)")
-    ax.set_xlim([1.90, 2.20])
-    y_limit = 50
+    ax.set_xlim([OU_MIN, OU_MAX])
     ax.set_ylim([0.0, y_limit])
     ax.grid(True, alpha=0.3)
     temperature_handles = [
@@ -605,18 +716,29 @@ def plot_blackburn_relative_log_partial_pressure_error(frame: pd.DataFrame) -> N
     fig.savefig(BLACKBURN_RELATIVE_LOG_PO2_ERROR_PLOT_PATH)
     plt.close(fig)
 
-
 def main() -> None:
     """Generate tables, text summaries, and plots for the UO2 verification."""
     sciantix_frame = load_sciantix_data()
     oc_frame = load_oc_csv_data()
+    oc_temperatures = set(oc_frame["Temperature (K)"].dropna().unique())
+    sciantix_temperatures = set(sciantix_frame["Temperature (K)"].dropna().unique())
+    common_temperatures = sorted(oc_temperatures.intersection(sciantix_temperatures))
+    if not common_temperatures:
+        raise RuntimeError(
+            "No overlapping temperatures between SCIANTIX sweep and TEMPERATURES_THERMOCALC reference files."
+        )
+
+    sciantix_frame = sciantix_frame[sciantix_frame["Temperature (K)"].isin(common_temperatures)].copy()
+    oc_frame = oc_frame[oc_frame["Temperature (K)"].isin(common_temperatures)].copy()
+    sciantix_frame = sciantix_frame[sciantix_frame["O/U ratio (/)"].between(OU_MIN, OU_MAX)].copy()
+    oc_frame = oc_frame[oc_frame["O/U ratio (/)"].between(OU_MIN, OU_MAX)].copy()
     plot_partial_pressure(sciantix_frame, oc_frame)
     aligned_frame = interpolate_sciantix_to_oc_points(sciantix_frame, oc_frame)
     aligned_frame.to_csv(MERGED_OUTPUT_PATH, sep="\t", index=False)
     summary = build_metric_summary(aligned_frame)
     summary.to_csv(SUMMARY_OUTPUT_PATH, sep="\t", index=False)
     write_summary_report(
-        "SCIANTIX vs standalone OpenCalphad CSV",
+        "SCIANTIX vs Thermo-Calc CSV",
         aligned_frame,
         summary,
         SUMMARY_REPORT_PATH,

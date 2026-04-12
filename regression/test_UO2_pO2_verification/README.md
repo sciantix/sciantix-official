@@ -7,7 +7,8 @@ pressure and oxygen potential models implemented in SCIANTIX.
 
 The UO2 workflow compares SCIANTIX against two external references:
 
-- standalone OpenCalphad CSV exports with the opensource database OU.TDB
+- Thermo-Calc/OpenCalphad point files in
+  `TEMPERATURES_THERMOCALC/` (`800.csv`, `1000.csv`, ..., `2600.csv`)
 - the analytical Blackburn correlation
 
 ## Workflow
@@ -26,8 +27,8 @@ The verification is split into two main steps.
 
 2. `sciantix_verification/compare_sciantix_with_oc_csv.py`
    - loads `temperature_sweep_summary.tsv`
-   - reads the standalone OpenCalphad CSV files stored in
-     `sciantix_verification/`
+   - reads the reference CSV files
+     `TEMPERATURES_THERMOCALC/800.csv`, `1000.csv`, ..., `2600.csv`
    - rebuilds the analytical Blackburn reference
    - writes merged comparison tables and summary metrics:
      - `sciantix_verification/sciantix_vs_oc_csv.tsv`
@@ -41,10 +42,16 @@ The verification is split into two main steps.
      - `sciantix_verification/sciantix_vs_oc_csv_log_pO2_error.png`
      - `sciantix_verification/sciantix_vs_oc_csv_log_pO2_error_absolute.png`
      - `sciantix_verification/sciantix_vs_oc_csv_log_pO2_error_relative_percent.png`
+     - `sciantix_verification/sciantix_vs_oc_csv_linear_pO2_error.png`
+     - `sciantix_verification/sciantix_vs_oc_csv_linear_pO2_error_absolute.png`
+     - `sciantix_verification/sciantix_vs_oc_csv_linear_pO2_error_relative_percent.png`
      - `sciantix_verification/sciantix_vs_blackburn_formula_pO2.png`
      - `sciantix_verification/sciantix_vs_blackburn_formula_log_pO2_error.png`
      - `sciantix_verification/sciantix_vs_blackburn_formula_log_pO2_error_absolute.png`
      - `sciantix_verification/sciantix_vs_blackburn_formula_log_pO2_error_relative_percent.png`
+     - `sciantix_verification/sciantix_vs_blackburn_formula_linear_pO2_error.png`
+     - `sciantix_verification/sciantix_vs_blackburn_formula_linear_pO2_error_absolute.png`
+     - `sciantix_verification/sciantix_vs_blackburn_formula_linear_pO2_error_relative_percent.png`
 
 ## Typical Usage
 
