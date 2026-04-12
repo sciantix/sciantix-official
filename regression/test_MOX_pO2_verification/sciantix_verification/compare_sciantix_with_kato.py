@@ -377,7 +377,6 @@ def make_pressure_plot(frame: pd.DataFrame) -> None:
     q_values = sorted(frame[Q_COMPARE_COL].dropna().unique())
     temperatures_k = sorted(frame[TEMPERATURE_COMPARE_COL].dropna().unique())
     temperature_colors = temperature_color_map(temperatures_k)
-    q_markers = q_marker_map(q_values)
 
     for q_value in q_values:
         fig, ax = plt.subplots()
@@ -398,21 +397,16 @@ def make_pressure_plot(frame: pd.DataFrame) -> None:
                 subset["O/M ratio (/)"],
                 subset["Explicit Kato log10(p/reference)"],
                 color=temperature_colors[temperature_k],
-                marker=q_markers[q_value],
+                marker="o",
                 s=22,
             )
 
         ax.set_title(f"q = {q_value:.2f}")
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
-        ax.set_xlim([1.96, 2.08])
-        finite_values = q_frame["Kato log10(p/reference)"].replace([np.inf, -np.inf], np.nan).dropna()
-        if not finite_values.empty:
-            y_min = 2.0 * math.floor(float(finite_values.min()) / 2.0)
-            y_max = min(0.0, 2.0 * math.ceil(float(finite_values.max()) / 2.0))
-            if y_max <= y_min:
-                y_max = y_min + 2.0
-            ax.set_ylim([y_min, y_max])
+        ax.set_xlim([1.95, 2.20])
+        ax.set_ylim([-30, 0])
+        ax.set_yticks(range(-30, 0, 2))
         ax.grid(True, alpha=0.3)
         add_model_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
@@ -425,7 +419,6 @@ def make_signed_log_pressure_error_plot(frame: pd.DataFrame) -> None:
     q_values = sorted(frame[Q_COMPARE_COL].dropna().unique())
     temperatures_k = sorted(frame[TEMPERATURE_COMPARE_COL].dropna().unique())
     temperature_colors = temperature_color_map(temperatures_k)
-    q_markers = q_marker_map(q_values)
     for q_value in q_values:
         fig, ax = plt.subplots()
         q_frame = frame[frame[Q_COMPARE_COL] == q_value]
@@ -439,15 +432,15 @@ def make_signed_log_pressure_error_plot(frame: pd.DataFrame) -> None:
                 subset["O/M ratio (/)"],
                 subset["Delta log10(p/reference)"],
                 color=temperature_colors[temperature_k],
-                marker=q_markers[q_value],
+                marker="o",
             )
 
         ax.axhline(0.0, color="black", linestyle="--")
         ax.set_title(f"q = {q_value:.2f}")
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel(r"$\Delta \log_{10}(p_{O_2}/p_{ref})$ (-)")
-        ax.set_xlim([1.96, 2.08])
-        # ax.set_ylim([-y_limit, y_limit])
+        ax.set_xlim([1.95, 2.20])
+        ax.set_ylim([-0.15, 0.15])
         ax.grid(True, alpha=0.3)
         add_temperature_q_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
@@ -460,7 +453,6 @@ def make_absolute_log_pressure_error_plot(frame: pd.DataFrame) -> None:
     q_values = sorted(frame[Q_COMPARE_COL].dropna().unique())
     temperatures_k = sorted(frame[TEMPERATURE_COMPARE_COL].dropna().unique())
     temperature_colors = temperature_color_map(temperatures_k)
-    q_markers = q_marker_map(q_values)
     for q_value in q_values:
         fig, ax = plt.subplots()
         q_frame = frame[frame[Q_COMPARE_COL] == q_value]
@@ -474,14 +466,14 @@ def make_absolute_log_pressure_error_plot(frame: pd.DataFrame) -> None:
                 subset["O/M ratio (/)"],
                 subset["Absolute delta log10(p/reference)"],
                 color=temperature_colors[temperature_k],
-                marker=q_markers[q_value],
+                marker="o",
             )
 
         ax.set_title(f"q = {q_value:.2f}")
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel(r"$|\Delta \log_{10}(p_{O_2}/p_{ref})|$ (-)")
-        ax.set_xlim([1.96, 2.08])
-        # ax.set_ylim([0.0, y_limit])
+        ax.set_xlim([1.95, 2.20])
+        ax.set_ylim([0.0, 0.15])
         ax.grid(True, alpha=0.3)
         add_temperature_q_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
@@ -490,34 +482,32 @@ def make_absolute_log_pressure_error_plot(frame: pd.DataFrame) -> None:
 
 
 def make_relative_log_pressure_error_plot(frame: pd.DataFrame) -> None:
-    """Create one signed relative log10(p/reference) error plot per plutonium content q."""
+    """Create one absolute relative log10(p/reference) error plot per plutonium content q."""
     q_values = sorted(frame[Q_COMPARE_COL].dropna().unique())
     temperatures_k = sorted(frame[TEMPERATURE_COMPARE_COL].dropna().unique())
     temperature_colors = temperature_color_map(temperatures_k)
-    q_markers = q_marker_map(q_values)
 
     for q_value in q_values:
         fig, ax = plt.subplots()
         q_frame = frame[frame[Q_COMPARE_COL] == q_value]
         for temperature_k in temperatures_k:
             subset = q_frame[q_frame[TEMPERATURE_COMPARE_COL] == temperature_k].sort_values("O/M ratio (/)")
-            subset = subset.dropna(subset=["Relative delta log10(p/reference) (%)"])
+            subset = subset.dropna(subset=["Absolute relative delta log10(p/reference) (%)"])
             if subset.empty:
                 continue
 
             ax.plot(
                 subset["O/M ratio (/)"],
-                subset["Relative delta log10(p/reference) (%)"],
+                subset["Absolute relative delta log10(p/reference) (%)"],
                 color=temperature_colors[temperature_k],
-                marker=q_markers[q_value],
+                marker="o",
             )
 
-        ax.axhline(0.0, color="black", linestyle="--")
         ax.set_title(f"q = {q_value:.2f}")
         ax.set_xlabel("O/M ratio (-)")
-        ax.set_ylabel(r"Relative $\Delta \log_{10}(p_{O_2}/p_{ref})$ (%)")
-        ax.set_xlim([1.96, 2.08])
-        # ax.set_ylim([-y_limit, y_limit])
+        ax.set_ylabel(r"Relative $|\Delta \log_{10}(p_{O_2}/p_{ref})|$ (%)")
+        ax.set_xlim([1.95, 2.20])
+        ax.set_ylim([0.0, 50.0])
         ax.grid(True, alpha=0.3)
         add_temperature_q_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
@@ -571,9 +561,10 @@ def main() -> None:
     frame = prepare_dataframe()
     write_summary_report(frame)
     make_pressure_plot(frame)
-    make_signed_log_pressure_error_plot(frame)
-    make_relative_log_pressure_error_plot(frame)
     make_potential_plot(frame)
+    make_signed_log_pressure_error_plot(frame)
+    make_absolute_log_pressure_error_plot(frame)
+    make_relative_log_pressure_error_plot(frame)
 
 
 if __name__ == "__main__":

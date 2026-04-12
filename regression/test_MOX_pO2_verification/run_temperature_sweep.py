@@ -36,9 +36,9 @@ plt.rcParams.update({
     "legend.frameon": False,
 })
 
-TEMPERATURES_K = list(range(800, 2800, 100))
+TEMPERATURES_K = list(range(800, 2800, 200))
 REFERENCE_PRESSURE_MPA = 0.1 # 1 bar
-Q_VALUES = [value / 100 for value in range(10, 40, 5)]
+Q_VALUES = [0.1, 0.3, 0.4]
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 BUILD_BINARY = SCRIPT_DIR.parent.parent / "build" / "sciantix.x"
@@ -257,7 +257,7 @@ def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
     ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
     ax.grid(True, alpha=0.3)
     add_legends(ax, colors, linestyles, markers, temperatures_k)
-    ax.set_xlim([1.90, 2.20])
+    ax.set_xlim([1.95, 2.20])
     ax.set_ylim([-30, 0])
     ax.set_yticks(range(-30, 0, 2))
 
@@ -301,7 +301,7 @@ def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
         title="Temperature"
     )
     ax.add_artist(temperature_legend)
-    ax.set_xlim([1.90, 2.20])
+    ax.set_xlim([1.95, 2.20])
 
     fig.tight_layout()
     fig.savefig(SCRIPT_DIR / f"{PRESSURE_PLOT_NAME_2}_{q_plot_suffix(q_value)}.png")
@@ -342,7 +342,7 @@ def make_potential_plot(frames: list[pd.DataFrame], q_value: float) -> None:
                     marker=markers[label],
                 )
 
-    ax.set_xlim([1.90, 2.20])
+    ax.set_xlim([1.95, 2.20])
     ax.set_ylim([-1000, 0])
     ax.set_yticks(range(-1000, 100, 100))
     ax.set_xlabel("O/U ratio (-)")
@@ -380,7 +380,7 @@ def cleanup_generated_cases(temperatures_k: list[int]) -> None:
 
 
 def cleanup_generated_artifacts() -> None:
-    """Keep only the compact metrics and the selected signed plots."""
+    """Keep only compact metrics and selected verification plots."""
     verification_dir = SCRIPT_DIR / "sciantix_verification"
     plots_dir = SCRIPT_DIR / "plots"
     plots_dir.mkdir(parents=True, exist_ok=True)
@@ -409,11 +409,12 @@ def cleanup_generated_artifacts() -> None:
     selected_plot_prefixes = (
         "fuel_oxygen_partial_pressure_vs_om_ratio_kato_q_",
         "fuel_oxygen_partial_pressure_error_vs_om_ratio_kato_q_",
+        "fuel_oxygen_partial_pressure_error_absolute_vs_om_ratio_kato_q_",
         "fuel_oxygen_partial_pressure_relative_error_vs_om_ratio_kato_q_",
-        "fuel_oxygen_potential_vs_om_ratio_kato_q_",
         "sciantix_vs_oc_csv_partial_pressure_q_",
         "sciantix_vs_oc_csv_log_pO2_error_q_",
-        "sciantix_vs_oc_csv_potential_q_",
+        "sciantix_vs_oc_csv_log_pO2_error_absolute_q_",
+        "sciantix_vs_oc_csv_log_pO2_error_relative_percent_q_",
     )
 
     for png_path in SCRIPT_DIR.glob("*.png"):
