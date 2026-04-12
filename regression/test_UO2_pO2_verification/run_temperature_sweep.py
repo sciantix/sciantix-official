@@ -105,9 +105,8 @@ def collect_case(case_dir: Path) -> pd.DataFrame:
     frame["O/U ratio (/)"] = frame["Stoichiometry deviation (/)"] + 2.0
 
     pressure_columns = {
-        "Final": "Fuel oxygen partial pressure (MPa)",
-        "Blackburn model": "Fuel oxygen partial pressure - Blackburn (MPa)",
-        "OpenCalphad": "Fuel oxygen partial pressure - CALPHAD (MPa)",
+        "SCIANTIX + Blackburn model": "Fuel oxygen partial pressure - Blackburn (MPa)",
+        "SCIANTIX + OpenCalphad": "Fuel oxygen partial pressure - CALPHAD (MPa)",
     }
 
     for label, column in pressure_columns.items():
@@ -125,14 +124,12 @@ def style_maps():
     cmap = plt.get_cmap("turbo", len(TEMPERATURES_K))
     colors = {temperature_k: cmap(index) for index, temperature_k in enumerate(TEMPERATURES_K)}
     linestyles = {
-        "Final": "-",
-        "Blackburn model": None,
-        "OpenCalphad": None,
+        "SCIANTIX + Blackburn model": None,
+        "SCIANTIX + OpenCalphad": None,
     }
     markers = {
-        "Final": None,
-        "Blackburn model": "^",
-        "OpenCalphad": "s",
+        "SCIANTIX + Blackburn model": "^",
+        "SCIANTIX + OpenCalphad": "s",
     }
     return colors, linestyles, markers
 
@@ -168,9 +165,8 @@ def make_pressure_plot(frames: list[pd.DataFrame]) -> None:
     fig, ax = plt.subplots()
     colors, linestyles, markers = style_maps()
     pressure_columns = {
-        "Final": "log10(Final pressure / reference)",
-        "Blackburn model": "log10(Blackburn model pressure / reference)",
-        "OpenCalphad": "log10(OpenCalphad pressure / reference)",
+        "SCIANTIX + Blackburn model": "log10(SCIANTIX + Blackburn model pressure / reference)",
+        "SCIANTIX + OpenCalphad": "log10(SCIANTIX + OpenCalphad pressure / reference)",
     }
 
     for frame in frames:
@@ -180,12 +176,13 @@ def make_pressure_plot(frames: list[pd.DataFrame]) -> None:
             if valid.empty:
                 continue
 
-            if label == "Final":
+            if label == "SCIANTIX + OpenCalphad":
                 ax.plot(
                     valid["O/U ratio (/)"],
                     valid[column],
                     color=colors[temperature_k],
                     linestyle="-",
+                    marker=markers[label],
                 )
             else:
                 ax.scatter(
@@ -210,22 +207,27 @@ def make_pressure_plot(frames: list[pd.DataFrame]) -> None:
     fig, ax = plt.subplots()
     colors, linestyles, markers = style_maps()
     pressure_columns = {
-        "Final": "log10(Final pressure / reference)",
-        "Blackburn model": "log10(Blackburn model pressure / reference)",
-        "OpenCalphad": "log10(OpenCalphad pressure / reference)",
+        "SCIANTIX + Blackburn model": "log10(SCIANTIX + Blackburn model pressure / reference)",
+        "SCIANTIX + OpenCalphad": "log10(SCIANTIX + OpenCalphad pressure / reference)",
     }
 
     for frame in frames:
         temperature_k = int(frame["Temperature (K)"].iloc[0])
-        
-        Opencalphad_values = frame["log10(OpenCalphad pressure / reference)"]
-        Blackburn_values = frame["log10(Blackburn model pressure / reference)"]
+        valid = frame.dropna(subset=[
+            pressure_columns["SCIANTIX + Blackburn model"],
+            pressure_columns["SCIANTIX + OpenCalphad"],
+        ])
+        if valid.empty:
+            continue
+
+        opencalphad_values = valid[pressure_columns["SCIANTIX + OpenCalphad"]]
+        blackburn_values = valid[pressure_columns["SCIANTIX + Blackburn model"]]
 
         ax.scatter(
             valid["O/U ratio (/)"],
-            Blackburn_values - Opencalphad_values,
+            blackburn_values - opencalphad_values,
             color=colors[temperature_k],
-            marker=markers[label],
+            marker=markers["SCIANTIX + Blackburn model"],
         )
 
     ax.set_xlabel("O/U ratio (-)")
@@ -253,9 +255,8 @@ def make_potential_plot(frames: list[pd.DataFrame]) -> None:
     fig, ax = plt.subplots()
     colors, linestyles, markers = style_maps()
     potential_columns = {
-        "Final": "Fuel oxygen potential (KJ/mol)",
-        "Blackburn model": "Fuel oxygen potential - Blackburn (KJ/mol)",
-        "OpenCalphad": "Fuel oxygen potential - CALPHAD (KJ/mol)",
+        "SCIANTIX + Blackburn model": "Fuel oxygen potential - Blackburn (KJ/mol)",
+        "SCIANTIX + OpenCalphad": "Fuel oxygen potential - CALPHAD (KJ/mol)",
     }
 
     for frame in frames:
@@ -265,12 +266,13 @@ def make_potential_plot(frames: list[pd.DataFrame]) -> None:
             if valid.empty:
                 continue
 
-            if label == "Final":
+            if label == "SCIANTIX + OpenCalphad":
                 ax.plot(
                     valid["O/U ratio (/)"],
                     valid[column],
                     color=colors[temperature_k],
                     linestyle="-",
+                    marker=markers[label],
                 )
             else:
                 ax.scatter(

@@ -354,7 +354,7 @@ def add_model_legends(ax, temperatures_k: list[int], temperature_colors: dict[in
         for temp in temperatures_k
     ]
     model_handles = [
-        Line2D([0], [0], color='black', linestyle='-', label='SCIANTIX CALPHAD output'),
+        Line2D([0], [0], color='black', linestyle='-', label='SCIANTIX + OpenCalphad'),
         Line2D([0], [0], color='black', marker='o', linestyle='None', label='Thermo-Calc'),
     ]
     first = ax.legend(handles=temperature_handles, loc='lower right', ncol=2, title='Temperature')
@@ -531,9 +531,7 @@ def make_signed_log_error_plot(frame: pd.DataFrame) -> None:
         ax.set_xlabel('O/M ratio (-)')
         ax.set_ylabel(r'$\Delta\log_{10}(p_{O_2}/p_{ref})$ (-)')
         ax.set_xlim([OM_MIN, OM_MAX])
-        signed_values = _finite_series(q_frame['Delta log10(pO2/p_ref)'])
-        y_limit = max(float(signed_values.abs().max()) if not signed_values.empty else 1.0e-3, 1.0e-3)
-        ax.set_ylim([-1.05 * y_limit, 1.05 * y_limit])
+        ax.set_ylim([-1.0, 1.0])
         ax.grid(True, alpha=0.3)
         add_temperature_legend(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
@@ -567,9 +565,7 @@ def make_absolute_log_error_plot(frame: pd.DataFrame) -> None:
         ax.set_xlabel('O/M ratio (-)')
         ax.set_ylabel(r'$|\Delta\log_{10}(p_{O_2}/p_{ref})|$ (-)')
         ax.set_xlim([OM_MIN, OM_MAX])
-        abs_values = _finite_series(q_frame['Absolute delta log10(pO2/p_ref)'])
-        y_limit = max(float(abs_values.max()) if not abs_values.empty else 1.0e-3, 1.0e-3)
-        ax.set_ylim([0.0, 1.05 * y_limit])
+        ax.set_ylim([0.0, 1.0])
         ax.grid(True, alpha=0.3)
         add_temperature_legend(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
@@ -603,9 +599,7 @@ def make_relative_log_error_plot(frame: pd.DataFrame) -> None:
         ax.set_xlabel('O/M ratio (-)')
         ax.set_ylabel(r'Relative $|\Delta \log_{10}(p_{O_2}/p_{ref})|$ (%)')
         ax.set_xlim([OM_MIN, OM_MAX])
-        rel_values = _finite_series(q_frame['Relative delta log10(pO2/p_ref) (%)'])
-        y_limit = max(float(rel_values.max()) if not rel_values.empty else 1.0, 1.0)
-        ax.set_ylim([0.0, 1.05 * y_limit])
+        ax.set_ylim([0.0, 100])
         ax.grid(True, alpha=0.3)
         add_temperature_legend(ax, temperatures_k, temperature_colors)
         fig.tight_layout()

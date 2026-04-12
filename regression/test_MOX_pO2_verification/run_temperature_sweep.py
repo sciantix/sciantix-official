@@ -158,9 +158,8 @@ def collect_case(case_dir: Path, temperature_k: int, q_value: float) -> pd.DataF
     frame["Case"] = case_id(temperature_k, q_value)
     
     pressure_columns = {
-        "Final": "Fuel oxygen partial pressure (MPa)",
-        "Kato model": "Fuel oxygen partial pressure - Kato (MPa)",
-        "OpenCalphad": "Fuel oxygen partial pressure - CALPHAD (MPa)",
+        "SCIANTIX + Kato model": "Fuel oxygen partial pressure - Kato (MPa)",
+        "SCIANTIX + OpenCalphad": "Fuel oxygen partial pressure - CALPHAD (MPa)",
     }
 
     for label, column in pressure_columns.items():
@@ -178,14 +177,12 @@ def style_maps():
     cmap = plt.get_cmap("turbo", len(TEMPERATURES_K))
     colors = {temperature_k: cmap(index) for index, temperature_k in enumerate(TEMPERATURES_K)}
     linestyles = {
-        "Final": "-",
-        "Kato model": None,
-        "OpenCalphad": None,
+        "SCIANTIX + Kato model": None,
+        "SCIANTIX + OpenCalphad": None,
     }
     markers = {
-        "Final": None,
-        "Kato model": "^",
-        "OpenCalphad": "s",
+        "SCIANTIX + Kato model": "^",
+        "SCIANTIX + OpenCalphad": "s",
     }
     return colors, linestyles, markers
 
@@ -226,9 +223,8 @@ def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
     colors, linestyles, markers = style_maps()
     temperatures_k = sorted({int(frame["Temperature (K)"].iloc[0]) for frame in frames})
     pressure_columns = {
-        "Final": "log10(Final pressure / reference)",
-        "Kato model": "log10(Kato model pressure / reference)",
-        "OpenCalphad": "log10(OpenCalphad pressure / reference)",
+        "SCIANTIX + Kato model": "log10(SCIANTIX + Kato model pressure / reference)",
+        "SCIANTIX + OpenCalphad": "log10(SCIANTIX + OpenCalphad pressure / reference)",
     }
 
     for frame in frames:
@@ -238,27 +234,19 @@ def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
             if valid.empty:
                 continue
 
-            if label == "Final":
-                ax.plot(
-                    valid["O/U ratio (/)"],
-                    valid[column],
-                    color=colors[temperature_k],
-                    linestyle="-",
-                )
-            else:
-                ax.scatter(
-                    valid["O/U ratio (/)"],
-                    valid[column],
-                    color=colors[temperature_k],
-                    marker=markers[label],
-                )
+            ax.scatter(
+                valid["O/U ratio (/)"],
+                valid[column],
+                color=colors[temperature_k],
+                marker=markers[label],
+            )
 
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
     ax.grid(True, alpha=0.3)
     add_legends(ax, colors, linestyles, markers, temperatures_k)
     ax.set_xlim([1.95, 2.20])
-    ax.set_ylim([-30, 0])
+    ax.set_ylim([-30, 2])
     ax.set_yticks(range(-30, 0, 2))
 
     fig.tight_layout()
@@ -273,8 +261,8 @@ def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
         valid = frame.dropna(
             subset=[
                 "O/U ratio (/)",
-                "log10(OpenCalphad pressure / reference)",
-                "log10(Kato model pressure / reference)",
+                "log10(SCIANTIX + OpenCalphad pressure / reference)",
+                "log10(SCIANTIX + Kato model pressure / reference)",
             ]
         )
         if valid.empty:
@@ -282,7 +270,7 @@ def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
 
         ax.scatter(
             valid["O/U ratio (/)"],
-            valid["log10(Kato model pressure / reference)"] - valid["log10(OpenCalphad pressure / reference)"],
+            valid["log10(SCIANTIX + Kato model pressure / reference)"] - valid["log10(SCIANTIX + OpenCalphad pressure / reference)"],
             color=colors[temperature_k],
             marker="o",
         )
@@ -313,9 +301,8 @@ def make_potential_plot(frames: list[pd.DataFrame], q_value: float) -> None:
     colors, linestyles, markers = style_maps()
     temperatures_k = sorted({int(frame["Temperature (K)"].iloc[0]) for frame in frames})
     potential_columns = {
-        "Final": "Fuel oxygen potential (KJ/mol)",
-        "Kato model": "Fuel oxygen potential - Kato (KJ/mol)",
-        "OpenCalphad": "Fuel oxygen potential - CALPHAD (KJ/mol)",
+        "SCIANTIX + Kato model": "Fuel oxygen potential - Kato (KJ/mol)",
+        "SCIANTIX + OpenCalphad": "Fuel oxygen potential - CALPHAD (KJ/mol)",
     }
 
     for frame in frames:
@@ -327,23 +314,15 @@ def make_potential_plot(frames: list[pd.DataFrame], q_value: float) -> None:
             if valid.empty:
                 continue
 
-            if label == "Final":
-                ax.plot(
-                    valid["O/U ratio (/)"],
-                    valid[column],
-                    color=colors[temperature_k],
-                    linestyle="-",
-                )
-            else:
-                ax.scatter(
-                    valid["O/U ratio (/)"],
-                    valid[column],
-                    color=colors[temperature_k],
-                    marker=markers[label],
-                )
+            ax.scatter(
+                valid["O/U ratio (/)"],
+                valid[column],
+                color=colors[temperature_k],
+                marker=markers[label],
+            )
 
     ax.set_xlim([1.95, 2.20])
-    ax.set_ylim([-1000, 0])
+    ax.set_ylim([-1000, 50])
     ax.set_yticks(range(-1000, 100, 100))
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel("Oxygen potential (kJ/mol)")

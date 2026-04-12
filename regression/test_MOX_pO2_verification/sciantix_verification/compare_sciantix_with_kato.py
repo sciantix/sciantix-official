@@ -321,27 +321,6 @@ def q_tag(q_value: float) -> str:
     """Convert a q value into the filename tag used by the saved figures."""
     return f"{q_value:.2f}".replace(".", "p")
 
-
-def clear_potential_error_plots() -> None:
-    """Remove oxygen-potential error plots that are no longer part of the default set."""
-    for path in ROOT_DIR.glob("fuel_oxygen_potential*_q_*.png"):
-        if not path.name.startswith("fuel_oxygen_potential_vs_om_ratio_kato_q_"):
-            path.unlink()
-
-
-def clear_unsigned_error_plots() -> None:
-    """Remove unsigned error plots from the root folder."""
-    patterns = [
-        "fuel_oxygen_partial_pressure_error_absolute_vs_om_ratio_kato_q_*.png",
-        "fuel_oxygen_partial_pressure_relative_error_absolute_vs_om_ratio_kato_q_*.png",
-        "fuel_oxygen_potential_error_absolute_vs_om_ratio_kato_q_*.png",
-        "fuel_oxygen_potential_relative_error_absolute_vs_om_ratio_kato_q_*.png",
-    ]
-    for pattern in patterns:
-        for path in ROOT_DIR.glob(pattern):
-            path.unlink()
-
-
 def add_model_legends(ax, temperatures_k: list[int], temperature_colors: dict[int, object]) -> None:
     """Add separate legends for temperatures and for SCIANTIX/reference sources."""
     temperature_handles = [
@@ -349,8 +328,8 @@ def add_model_legends(ax, temperatures_k: list[int], temperature_colors: dict[in
         for temperature_k in temperatures_k
     ]
     source_handles = [
-        Line2D([0], [0], color="black", linestyle="-", label="SCIANTIX"),
-        Line2D([0], [0], color="black", linestyle="None", marker="o", label="Kato model"),
+        Line2D([0], [0], color="black", linestyle="-", label="SCIANTIX + Kato model"),
+        Line2D([0], [0], color="black", linestyle="None", marker="o", label="Analytical Kato formula"),
     ]
 
     temperature_legend = ax.legend(
@@ -440,7 +419,6 @@ def make_signed_log_pressure_error_plot(frame: pd.DataFrame) -> None:
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel(r"$\Delta \log_{10}(p_{O_2}/p_{ref})$ (-)")
         ax.set_xlim([1.95, 2.20])
-        ax.set_ylim([-0.15, 0.15])
         ax.grid(True, alpha=0.3)
         add_temperature_q_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
@@ -473,7 +451,6 @@ def make_absolute_log_pressure_error_plot(frame: pd.DataFrame) -> None:
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel(r"$|\Delta \log_{10}(p_{O_2}/p_{ref})|$ (-)")
         ax.set_xlim([1.95, 2.20])
-        ax.set_ylim([0.0, 0.15])
         ax.grid(True, alpha=0.3)
         add_temperature_q_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
@@ -507,7 +484,6 @@ def make_relative_log_pressure_error_plot(frame: pd.DataFrame) -> None:
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel(r"Relative $|\Delta \log_{10}(p_{O_2}/p_{ref})|$ (%)")
         ax.set_xlim([1.95, 2.20])
-        ax.set_ylim([0.0, 50.0])
         ax.grid(True, alpha=0.3)
         add_temperature_q_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()

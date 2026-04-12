@@ -155,7 +155,7 @@ def add_legends(ax, temperatures: list[float], colors: dict[float, object]) -> N
         for temp in temperatures
     ]
     model_handles = [
-        Line2D([0], [0], color="black", linestyle="-", label="SCIANTIX"),
+        Line2D([0], [0], color="black", linestyle="-", label="SCIANTIX + OpenCalphad"),
         Line2D([0], [0], color="black", marker="o", linestyle="None", label="Thermo-Calc"),
     ]
     first = ax.legend(handles=temperature_handles, loc="lower right", ncol=2, title="Temperature")
@@ -204,8 +204,6 @@ def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
             linestyle="None",
         )
 
-    all_x = pd.concat([frame1["O/U ratio (/)"], frame2["O/U ratio (/)"]], ignore_index=True)
-    x_limits = _padded_limits(all_x, fallback=(1.90, 2.20))
     sci_log = np.log10(
         frame1.loc[frame1["Fuel oxygen partial pressure (MPa)"] > 0.0, "Fuel oxygen partial pressure (MPa)"]
         / REFERENCE_PRESSURE_MPA
@@ -278,7 +276,6 @@ def plot_blackburn_partial_pressure(frame: pd.DataFrame) -> None:
                 linestyle="None",
             )
 
-    x_limits = _padded_limits(frame["O/U ratio (/)"], fallback=(1.90, 2.20))
     sciantix_log = np.log10(
         frame.loc[
             frame["Fuel oxygen partial pressure - Blackburn (MPa)"] > 0.0,
@@ -303,7 +300,7 @@ def plot_blackburn_partial_pressure(frame: pd.DataFrame) -> None:
         for temp in temperatures
     ]
     model_handles = [
-        Line2D([0], [0], color="black", linestyle="-", label="SCIANTIX Blackburn output"),
+        Line2D([0], [0], color="black", linestyle="-", label="SCIANTIX + Blackburn model"),
         Line2D([0], [0], color="black", marker="o", linestyle="None", label="Analytical Blackburn formula"),
     ]
     first = ax.legend(handles=temperature_handles, loc="lower right", ncol=2, title="Temperature")
@@ -514,15 +511,10 @@ def plot_signed_log_partial_pressure_error(frame: pd.DataFrame) -> None:
         )
 
     ax.axhline(0.0, color="black", linestyle="--")
-    x_limits = _padded_limits(frame["O/U ratio (/)"], fallback=(1.90, 2.20))
-    signed_values = frame["log10(pO2/p_ref) error"].replace([np.inf, -np.inf], np.nan).dropna()
-    y_limit = float(signed_values.abs().max()) if not signed_values.empty else 0.15
-    y_limit = max(y_limit * 1.05, 1.0e-6)
-
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})$ (-)")
     ax.set_xlim([OU_MIN, OU_MAX])
-    ax.set_ylim([-y_limit, y_limit])
+    ax.set_ylim([-1, 1])
     ax.grid(True, alpha=0.3)
     temperature_handles = [
         Line2D([0], [0], color=colors[temp], label=f"{int(temp)} K")
@@ -551,7 +543,6 @@ def plot_blackburn_signed_log_partial_pressure_error(frame: pd.DataFrame) -> Non
         )
 
     ax.axhline(0.0, color="black", linestyle="--")
-    x_limits = _padded_limits(frame["O/U ratio (/)"], fallback=(1.90, 2.20))
     signed_values = frame["log10(pO2/p_ref) error"].replace([np.inf, -np.inf], np.nan).dropna()
     y_limit = float(signed_values.abs().max()) if not signed_values.empty else 0.15
     y_limit = max(y_limit * 1.05, 1.0e-6)
@@ -559,7 +550,7 @@ def plot_blackburn_signed_log_partial_pressure_error(frame: pd.DataFrame) -> Non
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})$ (-)")
     ax.set_xlim([OU_MIN, OU_MAX])
-    ax.set_ylim([-y_limit, y_limit])
+    ax.set_ylim([-1, 1])
     ax.grid(True, alpha=0.3)
     temperature_handles = [
         Line2D([0], [0], color=colors[temp], label=f"{int(temp)} K")
@@ -587,15 +578,11 @@ def plot_absolute_log_partial_pressure_error(frame: pd.DataFrame) -> None:
             marker="o",
         )
 
-    x_limits = _padded_limits(frame["O/U ratio (/)"], fallback=(1.90, 2.20))
-    abs_values = frame["Absolute log10(pO2/p_ref) error"].replace([np.inf, -np.inf], np.nan).dropna()
-    y_limit = float(abs_values.max()) if not abs_values.empty else 0.15
-    y_limit = max(y_limit * 1.05, 1.0e-6)
 
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$|\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})|$ (-)")
     ax.set_xlim([OU_MIN, OU_MAX])
-    ax.set_ylim([0.0, y_limit])
+    ax.set_ylim([0.0, 1.0])
     ax.grid(True, alpha=0.3)
     temperature_handles = [
         Line2D([0], [0], color=colors[temp], lw=2, label=f"{int(temp)} K")
@@ -623,15 +610,11 @@ def plot_blackburn_absolute_log_partial_pressure_error(frame: pd.DataFrame) -> N
             marker="o",
         )
 
-    x_limits = _padded_limits(frame["O/U ratio (/)"], fallback=(1.90, 2.20))
-    abs_values = frame["Absolute log10(pO2/p_ref) error"].replace([np.inf, -np.inf], np.nan).dropna()
-    y_limit = float(abs_values.max()) if not abs_values.empty else 0.15
-    y_limit = max(y_limit * 1.05, 1.0e-6)
 
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$|\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})|$ (-)")
     ax.set_xlim([OU_MIN, OU_MAX])
-    ax.set_ylim([0.0, y_limit])
+    ax.set_ylim([0.0, 1.0])
     ax.grid(True, alpha=0.3)
     temperature_handles = [
         Line2D([0], [0], color=colors[temp], label=f"{int(temp)} K")
@@ -660,15 +643,10 @@ def plot_relative_log_partial_pressure_error(frame: pd.DataFrame) -> None:
             marker="o"
         )
 
-    x_limits = _padded_limits(valid_frame["O/U ratio (/)"], fallback=(1.90, 2.20))
-    rel_values = valid_frame["Relative log10(pO2/p_ref) error (%)"].replace([np.inf, -np.inf], np.nan).dropna()
-    y_limit = float(rel_values.max()) if not rel_values.empty else 50.0
-    y_limit = max(y_limit * 1.05, 1.0e-6)
-
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"Relative $|\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})|$ (%)")
     ax.set_xlim([OU_MIN, OU_MAX])
-    ax.set_ylim([0.0, y_limit])
+    ax.set_ylim([0.0, 100])
     ax.grid(True, alpha=0.3)
     temperature_handles = [
         Line2D([0], [0], color=colors[temp], lw=2, label=f"{int(temp)} K")
@@ -696,16 +674,10 @@ def plot_blackburn_relative_log_partial_pressure_error(frame: pd.DataFrame) -> N
             color=colors[temperature],
             marker="o",
         )
-
-    x_limits = _padded_limits(valid_frame["O/U ratio (/)"], fallback=(1.90, 2.20))
-    rel_values = valid_frame["Relative log10(pO2/p_ref) error (%)"].replace([np.inf, -np.inf], np.nan).dropna()
-    y_limit = float(rel_values.max()) if not rel_values.empty else 50.0
-    y_limit = max(y_limit * 1.05, 1.0e-6)
-
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"Relative $|\Delta \log_{10}(p_{O_2}/p_{\mathrm{ref}})|$ (%)")
     ax.set_xlim([OU_MIN, OU_MAX])
-    ax.set_ylim([0.0, y_limit])
+    ax.set_ylim([0.0, 100])
     ax.grid(True, alpha=0.3)
     temperature_handles = [
         Line2D([0], [0], color=colors[temp], label=f"{int(temp)} K")
