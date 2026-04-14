@@ -155,6 +155,24 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot,
         porosity = data[1:, porosity_pos].astype(float)
         poreRadius = data[1:, pore_rad_pos].astype(float)
 
+        # Variance of the pore-size distribution (Fokker-Planck second moment)
+        M2_pos = findSciantixVariablePosition(data, "Xe atoms per HBS pore - variance (at^2/pore)")
+        nXe_pos = findSciantixVariablePosition(data, "Xe atoms per HBS pore (at/pore)")
+        B_pos = findSciantixVariablePosition(data, "Xe in HBS pores - variance (at^2/m3)")
+
+        M2 = data[1:, M2_pos].astype(float)             # at^2/pore
+        nXe_per_pore = data[1:, nXe_pos].astype(float)  # at/pore
+        B_raw = data[1:, B_pos].astype(float)            # at^2/m^3
+
+        # Coefficient of variation CV = sigma_n / n_mean (guard: Np, n > 0)
+        safe = (poreDensity > 0) & (nXe_per_pore > 0) & (poreRadius > 0)
+        sigma_n = np.where(safe, np.sqrt(np.maximum(M2, 0.0)), 0.0)
+        CV = np.where(safe, sigma_n / nXe_per_pore, 0.0)
+
+        # Propagated standard deviations (first-order Taylor, R ~ n^{1/3})
+        sigma_R = poreRadius * CV / 3.0          # std dev of pore radius
+        sigma_xi = porosity * CV                  # std dev of porosity
+
         sd = sciantix_dictionary("output.txt")
 
         if mode_plot != 1:
@@ -255,6 +273,11 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot,
         ax.plot(effectiveBurnup, porosity,
                 "-", color=COLOR_CURRENT, linewidth=LINEWIDTH_MODEL,
                 label="SCIANTIX 2.2.1 (2026)")
+        ax.fill_between(effectiveBurnup,
+                        np.maximum(porosity - sigma_xi, 0.0),
+                        porosity + sigma_xi,
+                        alpha=0.20, color=COLOR_CURRENT, linewidth=0,
+                        label=r"$\pm\sigma_\xi$ (Fokker-Planck)")
         ax.set_xlim(0, 210)
         ax.set_ylim(0, 0.25)
         ax.legend(loc="upper left", ncol=1)
@@ -282,6 +305,11 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot,
         ax.plot(effectiveBurnup, poreRadius,
                 "-", color=COLOR_CURRENT, linewidth=LINEWIDTH_MODEL,
                 label="SCIANTIX 2.2.1 (2026)")
+        ax.fill_between(effectiveBurnup,
+                        np.maximum(poreRadius - sigma_R, 0.0),
+                        poreRadius + sigma_R,
+                        alpha=0.20, color=COLOR_CURRENT, linewidth=0,
+                        label=r"$\pm\sigma_R$ (Fokker-Planck)")
         ax.set_xlim(0, 210)
         ax.legend(loc="upper left")
         _save(fig, "plot_pore_radius.png")
@@ -371,6 +399,40 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot,
         lines2, labels2 = ax2.get_legend_handles_labels()
         ax1.legend(lines1 + lines2, labels1 + labels2, loc="upper left")
         _save(fig, "plot_fuel_swelling.png")
+
+        # ---------------------------------------------------------------------
+        # Plot 6: Pore variance B (diagnostic, not for paper)
+        # ---------------------------------------------------------------------
+        fig, ax = _new_axes(
+            x_label_bu_eff,
+            r"Pore variance $B$ (at$^2$ m$^{-3}$)",
+        )
+        ax.plot(effectiveBurnup, B_raw,
+                "-", color=COLOR_CURRENT, linewidth=LINEWIDTH_MODEL,
+                label=r"$B = \sum c_n\,(n - \bar{n})^2$")
+        ax.set_xlim(0, 210)
+        ax.legend(loc="upper right")
+        _save(fig, "plot_pore_variance.png")
+
+        # ---------------------------------------------------------------------
+        # Plot 7: Coefficient of variation CV (diagnostic)
+        # ---------------------------------------------------------------------
+        # CV = sigma_n / n_mean should show a "U" shape: high at onset (few
+        # heterogeneous pores), minimum near the N_p peak (many similar-sized
+        # pores), rising again at high burnup (nucleation off, old pores
+        # coarsen while distribution broadens). This is a qualitative test
+        # of the Fokker-Planck cluster-dynamics formulation.
+        fig, ax = _new_axes(
+            x_label_bu_eff,
+            r"Coefficient of variation $\sigma_n / \bar{n}$ (/)",
+        )
+        ax.plot(effectiveBurnup, CV,
+                "-", color=COLOR_CURRENT, linewidth=LINEWIDTH_MODEL,
+                label=r"CV $= \sqrt{M_2}\,/\,\bar{n}$")
+        ax.set_xlim(0, 210)
+        ax.set_ylim(0, None)
+        ax.legend(loc="upper right")
+        _save(fig, "plot_CV.png")
 
         os.chdir("..")
 
