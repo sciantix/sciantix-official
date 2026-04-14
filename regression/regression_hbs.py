@@ -167,7 +167,9 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot,
         # Coefficient of variation CV = sigma_n / n_mean (guard: Np, n > 0)
         safe = (poreDensity > 0) & (nXe_per_pore > 0) & (poreRadius > 0)
         sigma_n = np.where(safe, np.sqrt(np.maximum(M2, 0.0)), 0.0)
-        CV = np.where(safe, sigma_n / nXe_per_pore, 0.0)
+        # np.divide with where= avoids evaluating the division at unsafe points
+        CV = np.zeros_like(sigma_n)
+        np.divide(sigma_n, nXe_per_pore, out=CV, where=safe)
 
         # Propagated standard deviations (first-order Taylor, R ~ n^{1/3})
         sigma_R = poreRadius * CV / 3.0          # std dev of pore radius
