@@ -404,6 +404,11 @@ void Simulation::StoichiometryDeviation()
             double fissionrate_mol = history_variable["Fission rate"].getFinalValue()/avogadro_number;
             parameter.push_back(fissionrate_mol);
 
+            // Placeholder for radial transport contribution (currently disabled below).
+            // Keep it to preserve the expected parameter layout used later:
+            // [0]=fission term, [1]=radial term, [2]=U/Pu partition factor.
+            parameter.push_back(0.0);
+
             // // Due to radial transport (Atkin model, for hypostoichiometric fuels)
             // double Q = - 125e3;
             // if (sciantix_variable["Stoichiometry deviation"].getInitialValue() > 0)
