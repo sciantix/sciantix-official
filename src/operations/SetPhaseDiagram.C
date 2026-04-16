@@ -25,7 +25,6 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <limits>
 #include <map>
 #include <set>
 #include <sstream>
@@ -128,48 +127,20 @@ std::string solveModeLabel(OpenCalphadSolveMode mode)
     switch (mode)
     {
         case OpenCalphadSolveMode::SaveReadWarmStart:
-            return "save/read warm-start";
+            return "WARM-START";
         case OpenCalphadSolveMode::GlobalEquilibrium:
-            return "c e + c w";
+            return "COLD-START";
         case OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium:
-            return "pressure step + c w";
+            return "PRESSURE-SWEEP";
         case OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve:
-            return "fixed N(O) from failed MU(O) solve";
+            return "OXYGEN-MOLES-FIXED";
     }
 
     return "unknown";
 }
 
-std::vector<std::pair<std::string, double>> buildPhaseShiftAxisCandidates(
-    const std::vector<OpenCalphadInputComponent>& solve_components)
-{
-    std::vector<std::pair<std::string, double>> candidates;
-
-    for (const auto& component : solve_components)
-    {
-        if (component.name == "O")
-            continue;
-
-        candidates.push_back(std::make_pair(component.name, component.fraction));
-    }
-
-    std::sort(
-        candidates.begin(),
-        candidates.end(),
-        [](const std::pair<std::string, double>& left, const std::pair<std::string, double>& right)
-        {
-            if (left.second == right.second)
-                return left.first < right.first;
-            return left.second > right.second;
-        });
-
-    return candidates;
-}
-
 std::string buildSolveCommandBlock(OpenCalphadSolveMode mode,
-                                   double               temperature,
                                    double               pressure,
-                                   const std::vector<OpenCalphadInputComponent>& solve_components,
                                    double               fixed_oxygen_moles)
 {
     std::ostringstream commands;
@@ -178,8 +149,8 @@ std::string buildSolveCommandBlock(OpenCalphadSolveMode mode,
     if (mode == OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium)
     {
         const double start_pressure = 1.0e5;
-        commands << "set c p=" << start_pressure << "\n\n";
-        commands << "c w\n\n";
+        commands << "set c p=" << start_pressure << "\n";
+        commands << "c w\n";
         commands << "set axis\n";
         commands << "1\n";
         commands << "p\n";
@@ -188,74 +159,23 @@ std::string buildSolveCommandBlock(OpenCalphadSolveMode mode,
         commands << "\n\n";
         commands << "step\n";
         commands << "normal\n\n";
-        commands << "set c p=" << pressure << "\n\n";
-        commands << "c e\n\n";
-        commands << "c w\n\n";
+        commands << "set c p=" << pressure << "\n";
     }
     else if (mode == OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve)
     {
         commands << "set c n(o)=" << fixed_oxygen_moles << "\n";
         commands << "set c mu(o)=none\n\n";
-        commands << "c e\n\n";
-        commands << "c w\n\n";
     }
-    else
-    {
-        commands << "c e\n\n";
-        commands << "c w\n\n";
-    }
-    
+    commands << "c e\nc w\n";
+   
     return commands.str();
-}
-
-std::vector<double> rounded(const std::vector<double>& fractions)
-{
-    std::vector<double> rounded_fractions(fractions.size(), 0.0);
-    if (fractions.empty())
-        return rounded_fractions;
-
-    const int scale = 10000;
-
-    std::vector<int> base_units(fractions.size(), 0);
-    std::vector<std::pair<double, size_t>> remainders;
-    int assigned_units = 0;
-
-    for (size_t index = 0; index < fractions.size(); ++index)
-    {
-        const double scaled = std::max(0.0, fractions[index]) * scale;
-        const int base = static_cast<int>(std::floor(scaled));
-        base_units[index] = base;
-        assigned_units += base;
-        remainders.push_back(std::make_pair(scaled - base, index));
-    }
-
-    std::sort(
-        remainders.begin(),
-        remainders.end(),
-        [](const std::pair<double, size_t>& left, const std::pair<double, size_t>& right)
-        {
-            if (left.first == right.first)
-                return left.second < right.second;
-            return left.first > right.first;
-        });
-
-    int remaining_units = std::max(0, scale - assigned_units);
-    for (int i = 0; i < remaining_units && i < static_cast<int>(remainders.size()); ++i)
-        base_units[remainders[i].second] += 1;
-
-    for (size_t index = 0; index < base_units.size(); ++index)
-        rounded_fractions[index] = static_cast<double>(base_units[index]) / scale;
-
-    return rounded_fractions;
 }
 
 void dumpParsedOcOutput(const OCOutputData& output_data)
 {
     std::cout << "\n[OC parser] Parsed components" << std::endl;
     if (output_data.components.empty())
-    {
         std::cout << "  <none>" << std::endl;
-    }
     else
     {
         for (const auto& component_entry : output_data.components)
@@ -460,7 +380,6 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
         input_file << "set c n(o)=none\n";
         input_file << "set c mu(o)=" << oxygen_potential_j_per_mol << "\n\n";
     }
-    input_file << "\n\n";
     if (solve_mode == OpenCalphadSolveMode::SaveReadWarmStart)
     {
         input_file << "c w\n\n";
@@ -470,9 +389,7 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
     {
         input_file << buildSolveCommandBlock(
             solve_mode,
-            temperature,
             pressure,
-            solve_components,
             fixed_oxygen_moles);
     }
 
@@ -677,8 +594,6 @@ void Simulation::SetPhaseDiagram(std::string location)
 {
     if (location == "at grain boundary")
     {
-        Matrix fuel_(matrices[0]);
-
         if (input_variable["iThermochimica"].getValue() == 0 ||
             sciantix_variable["Xe at grain boundary"].getInitialValue() <= 0.0)
         {
@@ -697,8 +612,8 @@ void Simulation::SetPhaseDiagram(std::string location)
         CallThermochemistryModule(location, sciantix_variable);
         return;
     }
-
-    std::cout << "Location not yet modelled: " << location << std::endl;
+    else    
+        std::cout << "Location not yet modelled: " << location << std::endl;
 }
 
 void Simulation::CallThermochemistryModule(std::string                        location,
@@ -759,22 +674,8 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     if (oxygen_potential_constraint)
         solve_attempts.push_back(OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve);
 
-    double preview_total_input_content = 0.0;
-    const std::vector<OpenCalphadInputComponent> preview_components =
-        buildOpenCalphadInputComponents(location, manifest_elements, sciantix_variable, preview_total_input_content);
-
-    size_t non_oxygen_active_elements = 0;
-    for (const auto& component : preview_components)
-    {
-        if (component.name != "O")
-            ++non_oxygen_active_elements;
-    }
-
-
     for (const auto& solve_attempt : solve_attempts)
     {
-        std::ostringstream attempt_suffix;
-
         if (solve_attempt == OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve &&
             fallback_oxygen_moles <= 0.0)
         {
@@ -803,14 +704,12 @@ void Simulation::CallThermochemistryModule(std::string                        lo
         }
 
         std::cout << "OpenCalphad attempt for '" << location << "' with " << solveModeLabel(solve_attempt)
-                  << attempt_suffix.str()
                   << std::endl;
 
         if (!runOpenCalphadCase(input_file_path, output_file_path, executable, raw_output))
         {
             std::cout << "Warning: OpenCalphad attempt for location '" << location
                       << "' with " << solveModeLabel(solve_attempt)
-                      << attempt_suffix.str()
                       << " failed or timed out. Retrying." << std::endl;
             continue;
         }
@@ -828,13 +727,12 @@ void Simulation::CallThermochemistryModule(std::string                        lo
 
             std::cout << "Warning: OpenCalphad produced an equilibrium for location '" << location
                       << "' using " << solveModeLabel(solve_attempt)
-                      << attempt_suffix.str()
                       << " but the required component lines are missing. Retrying." << std::endl;
             continue;
         }
 
         std::cout << "Warning: OpenCalphad returned an invalid equilibrium for location '" << location
-                  << "' using " << solveModeLabel(solve_attempt) << attempt_suffix.str() << "." << std::endl;
+                  << "' using " << solveModeLabel(solve_attempt) << "." << std::endl;
 
         if (oxygen_potential_constraint &&
             solve_attempt != OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve)
