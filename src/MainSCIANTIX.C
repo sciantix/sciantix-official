@@ -115,13 +115,13 @@ int main(int argc, char** argv)
 
     remove(thermo_outputPath.c_str());
     remove((TestPath + "OCinput_matrix.OCM").c_str());
-    remove((TestPath + "OCinput_grain_boundary.OCM").c_str());
+    remove((TestPath + "OCinput_fission_products.OCM").c_str());
     remove((TestPath + "OCoutput_matrix").c_str());
-    remove((TestPath + "OCoutput_grain_boundary").c_str());
+    remove((TestPath + "OCoutput_fission_products").c_str());
     remove((TestPath + "OCoutput_matrix.OCU").c_str());
-    remove((TestPath + "OCoutput_grain_boundary.OCU").c_str());
+    remove((TestPath + "OCoutput_fission_products.OCU").c_str());
     remove((TestPath + "OCoutput_matrix.DAT").c_str());
-    remove((TestPath + "OCoutput_grain_boundary.DAT").c_str());
+    remove((TestPath + "OCoutput_fission_products.DAT").c_str());
 
     Execution_file.open(TestPath + "execution.txt", std::ios::out);
 
@@ -168,13 +168,13 @@ int main(int argc, char** argv)
     Execution_file.close();
 
     remove((TestPath + "OCinput_matrix.OCM").c_str());
-    remove((TestPath + "OCinput_grain_boundary.OCM").c_str());
+    remove((TestPath + "OCinput_fission_products.OCM").c_str());
     remove((TestPath + "OCoutput_matrix").c_str());
-    remove((TestPath + "OCoutput_grain_boundary").c_str());
+    remove((TestPath + "OCoutput_fission_products").c_str());
     remove((TestPath + "OCoutput_matrix.OCU").c_str());
-    remove((TestPath + "OCoutput_grain_boundary.OCU").c_str());
+    remove((TestPath + "OCoutput_fission_products.OCU").c_str());
     remove((TestPath + "OCoutput_matrix.DAT").c_str());
-    remove((TestPath + "OCoutput_grain_boundary.DAT").c_str());
+    remove((TestPath + "OCoutput_fission_products.DAT").c_str());
 
     return 0;
 }

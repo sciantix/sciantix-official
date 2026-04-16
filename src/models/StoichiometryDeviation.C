@@ -481,15 +481,15 @@ void Simulation::StoichiometryDeviation()
         );
 
         // reduced Uranium content
-        sciantix_variable["Uranium content"].addValue( 
-            - sciantix_variable["Oxygen content"].getFinalValue()
+        sciantix_variable["U content"].addValue( 
+            - sciantix_variable["O content"].getFinalValue()
             * model["Stoichiometry deviation"].getParameter().at(2)
             * sciantix_variable["Stoichiometry deviation"].getIncrement()
             * pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2.0)
         );
 
-        sciantix_variable["Plutonium content"].addValue( 
-            - sciantix_variable["Oxygen content"].getFinalValue()
+        sciantix_variable["Pu content"].addValue( 
+            - sciantix_variable["O content"].getFinalValue()
             * (1.0 - model["Stoichiometry deviation"].getParameter().at(2))
             * sciantix_variable["Stoichiometry deviation"].getIncrement()
             * pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2.0)
@@ -502,15 +502,15 @@ void Simulation::StoichiometryDeviation()
         );
 
         // under development for mox!
-        sciantix_variable["Uranium content"].addValue(
-            - sciantix_variable["Oxygen content"].getFinalValue()
+        sciantix_variable["U content"].addValue(
+            - sciantix_variable["O content"].getFinalValue()
             * (1.0 - sciantix_variable["q"].getFinalValue())
             * sciantix_variable["Stoichiometry deviation"].getIncrement()
             * pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2.0)
         );
 
-        sciantix_variable["Plutonium content"].addValue( 
-            - sciantix_variable["Oxygen content"].getFinalValue()
+        sciantix_variable["Pu content"].addValue( 
+            - sciantix_variable["O content"].getFinalValue()
             * sciantix_variable["q"].getFinalValue()
             * sciantix_variable["Stoichiometry deviation"].getIncrement()
             * pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2.0)
@@ -518,18 +518,18 @@ void Simulation::StoichiometryDeviation()
     }
     else if (input_variable["iStoichiometryDeviation"].getValue() == 10)
     {
-        sciantix_variable["Uranium content"].setFinalValue(
+        sciantix_variable["U content"].setFinalValue(
             solver.Integrator(
-                sciantix_variable["Uranium content"].getFinalValue(),
+                sciantix_variable["U content"].getFinalValue(),
                 - (model["Stoichiometry deviation"].getParameter().at(0) 
                     * model["Stoichiometry deviation"].getParameter().at(2)),
                 physics_variable["Time step"].getFinalValue()
             )
         );
 
-        sciantix_variable["Plutonium content"].setFinalValue(
+        sciantix_variable["Pu content"].setFinalValue(
             solver.Integrator(
-                sciantix_variable["Plutonium content"].getFinalValue(),
+                sciantix_variable["Pu content"].getFinalValue(),
                 - (model["Stoichiometry deviation"].getParameter().at(0) 
                    * (1.0 - model["Stoichiometry deviation"].getParameter().at(2))),
                 physics_variable["Time step"].getFinalValue()
@@ -540,14 +540,14 @@ void Simulation::StoichiometryDeviation()
             solver.BinaryInteraction(
                 sciantix_variable["Stoichiometry deviation"].getFinalValue() + 2.0,
                 - model["Stoichiometry deviation"].getParameter().at(0)/
-                sciantix_variable["Oxygen content"].getFinalValue(),
+                sciantix_variable["O content"].getFinalValue(),
                 physics_variable["Time step"].getFinalValue()
             ) 
             - 2.0
         );
     }
-    const double plutonium_content = sciantix_variable["Plutonium content"].getFinalValue();
-    const double uranium_content = sciantix_variable["Uranium content"].getFinalValue();
+    const double plutonium_content = sciantix_variable["Pu content"].getFinalValue();
+    const double uranium_content = sciantix_variable["U content"].getFinalValue();
     const double total = plutonium_content + uranium_content;
 
     if (total > 0.0)

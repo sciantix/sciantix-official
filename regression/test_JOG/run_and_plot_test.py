@@ -334,8 +334,8 @@ def plot_case(
     time_label = "Time (h)"
     fima_label = "FIMA (%)"
     jog_label = "JOG from condensed (/)"
-    oxygen_label = "Oxygen content (mol/m3)"
-    uranium_label = "Uranium content (mol/m3)"
+    oxygen_label = "O content (mol/m3)"
+    uranium_label = "U content (mol/m3)"
 
     burnup = values[:, column_map[burnup_label]]
     time = values[:, column_map[time_label]]

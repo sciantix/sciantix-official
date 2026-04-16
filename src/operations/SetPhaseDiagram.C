@@ -54,16 +54,6 @@ struct OpenCalphadInputComponent
     double      fraction = 0.0;
 };
 
-bool isGrainBoundaryLocation(const std::string& location)
-{
-    return location == "at grain boundary";
-}
-
-bool isMatrixLocation(const std::string& location)
-{
-    return location == "matrix";
-}
-
 bool useOxygenPotentialConstraint(const std::set<std::string>& manifest_elements)
 {
     return manifest_elements.count("O") > 0 && manifest_elements.count("U") == 0  && manifest_elements.count("Pu") == 0;
@@ -127,27 +117,11 @@ bool hasOpenCalphadSavedState(const std::string& state_file_path)
            fileExists(state_file_path + ".ocu");
 }
 
-std::string buildOpenCalphadLocationTag(const std::string& location)
-{
-    if (isMatrixLocation(location))
-        return "matrix";
-
-    if (isGrainBoundaryLocation(location))
-        return "grain_boundary";
-
-    return "unknown";
-}
-
 bool hasInvalidEquilibriumResult(const std::string& output_text)
 {
     return output_text.find("not a valid equilibrium as last calculation failed") != std::string::npos ||
-           output_text.find("No results as no equilibrium calculated") != std::string::npos;
-}
-
-bool hasInconsistentConditionsWarning(const std::string& output_text)
-{
-    return output_text.find("*** The results listed below may be inconsistent with the current conditions") !=
-           std::string::npos;
+           output_text.find("No results as no equilibrium calculated") != std::string::npos ||
+           output_text.find("*** The results listed below may be inconsistent with the current conditions") != std::string::npos;
 }
 
 std::string solveModeLabel(OpenCalphadSolveMode mode)
@@ -427,48 +401,17 @@ std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
     {
         OpenCalphadInputComponent component;
         component.name = element_name;
-
-        if (isMatrixLocation(location))
+        if (element_name == "O" || element_name == "U" || element_name == "Pu")
+            component.content = std::max(0.0, sciantix_variable[element_name + " content"].getFinalValue());
+        else
         {
-            if (element_name == "O")
-                component.content = std::max(0.0, sciantix_variable["Oxygen content"].getFinalValue());
-            else if (element_name == "U")
-                component.content = std::max(0.0, sciantix_variable["Uranium content"].getFinalValue());
-            else if (element_name == "Pu")
-                component.content = std::max(0.0, sciantix_variable["Plutonium content"].getFinalValue());
-        }
-        else if (isGrainBoundaryLocation(location))
-        {
-            double grain_boundary = sciantix_variable["Grain boundary fraction"].getFinalValue();
-            if (element_name == "O")
-            {
-                // With O referenced to O2 gas at the standard pressure, AC(O)^2 = pO2 / pO2_ref.
-                const double oxygen_content = std::max(0.0, sciantix_variable["Oxygen content"].getFinalValue());
+            const double atoms_available =
+                sciantix_variable[element_name + " produced"].getFinalValue() -
+                sciantix_variable[element_name + " decayed"].getFinalValue() -
+                sciantix_variable[element_name + " in grain"].getFinalValue() -
+                sciantix_variable[element_name + " released"].getInitialValue();
 
-                component.content = oxygen_content;
-            }
-            else if (element_name == "U")
-            {
-                const double uranium_content = std::max(0.0, sciantix_variable["Uranium content"].getFinalValue());
-
-                component.content = uranium_content;
-            }
-            else if (element_name == "Pu")
-            {
-                const double plutonium_content = std::max(0.0, sciantix_variable["Plutonium content"].getFinalValue());
-
-                component.content = plutonium_content;
-            }
-            else
-            {
-                const double atoms_available =
-                    sciantix_variable[element_name + " produced"].getFinalValue() -
-                    sciantix_variable[element_name + " decayed"].getFinalValue() -
-                    sciantix_variable[element_name + " in grain"].getFinalValue() -
-                    sciantix_variable[element_name + " released"].getInitialValue();
-
-                component.content = std::max(0.0, atoms_available / avogadro_number);
-            }
+            component.content = std::max(0.0, atoms_available / avogadro_number);
         }
 
         if (component.content > 0.0)
@@ -528,15 +471,12 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
         return false;
     }
 
-    const double reference_oxygen_pressure_pa = reference_oxygen_pressure_bar * 1.0e6;
     const bool use_oxygen_potential = useOxygenPotentialConstraint(manifest_elements);
     const double oxygen_potential_j_per_mol =
         sciantix_variable["Fuel oxygen potential"].getFinalValue() * 1.0e3;
 
-    const std::vector<OpenCalphadInputComponent> input_components =
+    std::vector<OpenCalphadInputComponent> solve_components =
         buildOpenCalphadInputComponents(location, manifest_elements, sciantix_variable, total_input_content);
-
-    std::vector<OpenCalphadInputComponent> solve_components = input_components;
 
     active_elements.clear();
     for (const auto& component : solve_components)
@@ -548,10 +488,8 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
     const bool use_saved_state =
         (solve_mode == OpenCalphadSolveMode::SaveReadWarmStart) && hasOpenCalphadSavedState(state_file_path);
 
-    if (use_saved_state)
-    {
+    if (use_saved_state) 
         input_file << "r u " << state_file_path << ".OCU\n\n";
-    }
     else
     {
         input_file << "@$ Initialize variables:\n";
@@ -561,31 +499,21 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
         input_file << "\n\n";
     }
 
-    input_file << "set ref o gas * " << reference_oxygen_pressure_pa << "\n\n";
+    input_file << "set ref o gas * " << reference_oxygen_pressure_bar * 1.0e6 << "\n\n";
     input_file << "set c t=" << temperature << "\n";
     input_file << "set c p=" << pressure << "\n";
-
+    for (const auto& component : solve_components)
+        input_file << "set c n(" << toLowerCopy(component.name) << ")=" << component.fraction << "\n";
+    input_file << "c e\n";
     if (use_oxygen_potential)
-        input_file << "set c mu(o)=" << oxygen_potential_j_per_mol << "\n";
-
-    if (solve_components.size() > 1)
     {
-        for (const auto& component : solve_components)
-        {
-            if (use_oxygen_potential && component.name == "O")
-                continue;
-
-            input_file << "set c n(" << toLowerCopy(component.name) << ")=" << component.fraction << "\n";
-        }
+        input_file << "set c n(o)=none\n";
+        input_file << "set c mu(o)=" << oxygen_potential_j_per_mol << "\n\n";
     }
     input_file << "\n\n";
     if (solve_mode == OpenCalphadSolveMode::SaveReadWarmStart)
     {
-        if (use_saved_state)
-            input_file << "c w\n\n";
-        else
-            input_file << "c e\n\n";
-
+        input_file << "c w\n\n";
         input_file << "save u " << state_file_path << " Y\n\n";
     }
     else
@@ -777,11 +705,9 @@ void updateGrainBoundaryFromOutput(const std::map<std::string, OCPhaseData>& sol
 
 void Simulation::SetPhaseDiagram(std::string location)
 {
-    if (isGrainBoundaryLocation(location))
+    if (location == "at grain boundary")
     {
         Matrix fuel_(matrices[0]);
-        double grain_boundary = 1.0 - (pow(fuel_.getGrainRadius(), 3.0)/pow(fuel_.getGrainRadius() + fuel_.getGrainBoundaryThickness(), 3.0));
-        sciantix_variable["Grain boundary fraction"].setFinalValue(grain_boundary);
 
         if (input_variable["iThermochimica"].getValue() == 0 ||
             sciantix_variable["Xe at grain boundary"].getInitialValue() <= 0.0)
@@ -793,8 +719,7 @@ void Simulation::SetPhaseDiagram(std::string location)
         CallThermochemistryModule(location, sciantix_variable);
         return;
     }
-
-    if (isMatrixLocation(location))
+    else if (location == "matrix")
     {
         if (input_variable["iThermochimica"].getValue() == 0)
             return;
@@ -819,15 +744,15 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     const std::vector<ThermochemistryManifestEntry> filtered_manifest =
         filterThermochemistryManifest(manifest, settings);
 
-    const std::string category = isMatrixLocation(location) ? "matrix" : "fission_products";
+    const std::string category = (location == "matrix") ? "matrix" : "fission_products";
     const std::set<std::string> manifest_elements =
         getThermochemistryElements(filtered_manifest, category, location);
     const ThermochemistryPhaseSettings& location_settings =
-        isMatrixLocation(location) ? settings.matrix : settings.fission_products;
+        (location == "matrix") ? settings.matrix : settings.fission_products;
 
     if (location_settings.module != "OPENCALPHAD")
     {
-        if (isGrainBoundaryLocation(location))
+        if (location == "at grain boundary")
         {
             releaseGrainBoundarySpecies(sciantix_system, sciantix_variable);
             return;
@@ -838,10 +763,9 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     }
 
     const std::string directory_path = settings.opencalphad_path;
-    const std::string location_tag = buildOpenCalphadLocationTag(location);
-    const std::string input_file_path = TestPath + "OCinput_" + location_tag + ".OCM";
-    const std::string output_file_path = TestPath + "OCoutput_" + location_tag + ".DAT";
-    const std::string state_file_path = TestPath + "OCoutput_" + location_tag;
+    const std::string input_file_path = TestPath + "OCinput_" + category + ".OCM";
+    const std::string output_file_path = TestPath + "OCoutput_" + category + ".DAT";
+    const std::string state_file_path = TestPath + "OCoutput_" + category;
     const std::string data_path = directory_path + "data/" + stripTdbExtension(location_settings.database);
     const std::string executable = directory_path + "oc6P " + input_file_path;
 
@@ -920,15 +844,6 @@ void Simulation::CallThermochemistryModule(std::string                        lo
             continue;
         }
 
-        if (hasInconsistentConditionsWarning(raw_output))
-        {
-            std::cout << "Warning: OpenCalphad output for location '" << location
-                      << "' using " << solveModeLabel(solve_mode)
-                      << attempt_suffix.str()
-                      << " reported inconsistent conditions. Retrying with next solve mode." << std::endl;
-            continue;
-        }
-
         if (!hasInvalidEquilibriumResult(raw_output))
         {
             const std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
@@ -985,13 +900,13 @@ void Simulation::CallThermochemistryModule(std::string                        lo
         total_input_content,
         thermochemistry_variable);
 
-    if (isMatrixLocation(location))
+    if (location == "matrix")
     {
         updateMatrixFromOutput(output_data, pressure, temperature, sciantix_variable, matrices);
         return;
     }
 
-    if (isGrainBoundaryLocation(location))
+    if (location == "at grain boundary")
     {
         updateGrainBoundaryFromOutput(
             output_data.solution_phases,
