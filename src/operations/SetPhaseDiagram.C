@@ -43,8 +43,6 @@ enum class OpenCalphadSolveMode
     SaveReadWarmStart,
     GlobalEquilibrium,
     PressureAxisStepGlobalEquilibrium,
-    TemperatureAxisStepGlobalEquilibrium,
-    CompositionAxisStepPhaseShift,
 };
 
 struct OpenCalphadInputComponent
@@ -134,10 +132,6 @@ std::string solveModeLabel(OpenCalphadSolveMode mode)
             return "c e + c w";
         case OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium:
             return "pressure step + c w";
-        case OpenCalphadSolveMode::TemperatureAxisStepGlobalEquilibrium:
-            return "temperature step + c w";
-        case OpenCalphadSolveMode::CompositionAxisStepPhaseShift:
-            return "composition step + c w";
     }
 
     return "unknown";
@@ -172,8 +166,7 @@ std::vector<std::pair<std::string, double>> buildPhaseShiftAxisCandidates(
 std::string buildSolveCommandBlock(OpenCalphadSolveMode mode,
                                    double               temperature,
                                    double               pressure,
-                                   const std::vector<OpenCalphadInputComponent>& solve_components,
-                                   size_t               phase_shift_attempt_index)
+                                   const std::vector<OpenCalphadInputComponent>& solve_components)
 {
     std::ostringstream commands;
     commands << std::setprecision(16);
@@ -193,61 +186,6 @@ std::string buildSolveCommandBlock(OpenCalphadSolveMode mode,
         commands << "normal\n\n";
         commands << "set c p=" << pressure << "\n\n";
         commands << "c e\n\n";
-        commands << "c w\n\n";
-    }
-    else if (mode == OpenCalphadSolveMode::TemperatureAxisStepGlobalEquilibrium)
-    {
-        const double start_temperature = 300.0;
-
-        commands << "set c t=" << start_temperature << "\n\n";
-        commands << "c w\n\n";
-        commands << "set axis\n";
-        commands << "1\n";
-        commands << "t\n";
-        commands << start_temperature << "\n";
-        commands << temperature << "\n";
-        commands << "\n\n";
-        commands << "step\n";
-        commands << "normal\n\n";
-        commands << "set c t=" << temperature << "\n\n";
-        commands << "c e\n\n";
-        commands << "c w\n\n";
-    }
-    else if (mode == OpenCalphadSolveMode::CompositionAxisStepPhaseShift)
-    {
-        const std::vector<std::pair<std::string, double>> candidates =
-            buildPhaseShiftAxisCandidates(solve_components);
-        if (phase_shift_attempt_index >= candidates.size())
-        {
-            commands << "c e\n\n";
-            commands << "c w\n\n";
-            return commands.str();
-        }
-
-        const std::pair<std::string, double> axis_component = candidates[phase_shift_attempt_index];
-        const std::string axis_name = toLowerCopy(axis_component.first);
-        const double target_value = axis_component.second;
-
-        if (axis_name.empty() || target_value <= 0.0)
-        {
-            commands << "c e\n\n";
-            commands << "c w\n\n";
-            return commands.str();
-        }
-
-        const double start_value = std::min(1.0e-7, target_value);
-
-        commands << "set c n(" << axis_name << ")=" << start_value << "\n\n";
-        commands << "c e\n\n";
-        commands << "set axis\n";
-        commands << "1\n";
-        commands << "n(" << axis_name << ")\n";
-        commands << start_value << "\n";
-        commands << target_value << "\n";
-        commands << "\n\n";
-        commands << "step\n";
-        commands << "normal\n\n";
-        commands << "set c n(" << axis_name << ")=" << target_value << "\n\n";
         commands << "c w\n\n";
     }
     else
@@ -457,7 +395,6 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
                            double             pressure,
                            double             temperature,
                            OpenCalphadSolveMode solve_mode,
-                           size_t             phase_shift_attempt_index,
                            const std::string& location,
                            const std::set<std::string>& manifest_elements,
                            SciantixArray<SciantixVariable>& sciantix_variable,
@@ -522,8 +459,7 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
             solve_mode,
             temperature,
             pressure,
-            solve_components,
-            phase_shift_attempt_index);
+            solve_components);
     }
 
     input_file << "l /out=" << output_file_path << " r 1\n\n";
@@ -774,23 +710,16 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     OCOutputData output_data;
     double total_input_content = 0.0;
     std::set<std::string> active_elements;
-    struct OpenCalphadSolveAttempt
-    {
-        OpenCalphadSolveMode mode;
-        size_t               phase_shift_attempt_index = 0;
-    };
+
     const std::string previous_output_snapshot =
         fileExists(output_file_path) ? readTextFile(output_file_path) : "";
-    std::vector<OpenCalphadSolveAttempt> solve_attempts = {
-        {OpenCalphadSolveMode::SaveReadWarmStart, 0},
-        {OpenCalphadSolveMode::GlobalEquilibrium, 0},
+    std::vector solve_attempts = {
+        OpenCalphadSolveMode::SaveReadWarmStart,
+        OpenCalphadSolveMode::GlobalEquilibrium,
     };
 
     if (pressure > 1.0e5 + 1.0)
-        solve_attempts.push_back({OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium, 0});
-
-    if (temperature > 300.0 + 1.0)
-        solve_attempts.push_back({OpenCalphadSolveMode::TemperatureAxisStepGlobalEquilibrium, 0});
+        solve_attempts.push_back(OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium);
 
     double preview_total_input_content = 0.0;
     const std::vector<OpenCalphadInputComponent> preview_components =
@@ -803,15 +732,10 @@ void Simulation::CallThermochemistryModule(std::string                        lo
             ++non_oxygen_active_elements;
     }
 
-    for (size_t attempt_index = 0; attempt_index < non_oxygen_active_elements; ++attempt_index)
-        solve_attempts.push_back({OpenCalphadSolveMode::CompositionAxisStepPhaseShift, attempt_index});
 
     for (const auto& solve_attempt : solve_attempts)
     {
-        const auto solve_mode = solve_attempt.mode;
         std::ostringstream attempt_suffix;
-        if (solve_mode == OpenCalphadSolveMode::CompositionAxisStepPhaseShift)
-            attempt_suffix << " [non-O candidate " << (solve_attempt.phase_shift_attempt_index + 1) << "]";
 
         if (!writeOpenCalphadInput(
                 input_file_path,
@@ -820,8 +744,7 @@ void Simulation::CallThermochemistryModule(std::string                        lo
                 data_path,
                 pressure,
                 temperature,
-                solve_mode,
-                solve_attempt.phase_shift_attempt_index,
+                solve_attempt,
                 location,
                 manifest_elements,
                 sciantix_variable,
@@ -831,14 +754,14 @@ void Simulation::CallThermochemistryModule(std::string                        lo
             return;
         }
 
-        std::cout << "OpenCalphad attempt for '" << location << "' with " << solveModeLabel(solve_mode)
+        std::cout << "OpenCalphad attempt for '" << location << "' with " << solveModeLabel(solve_attempt)
                   << attempt_suffix.str()
                   << std::endl;
 
         if (!runOpenCalphadCase(input_file_path, output_file_path, executable, raw_output))
         {
             std::cout << "Warning: OpenCalphad attempt for location '" << location
-                      << "' with " << solveModeLabel(solve_mode)
+                      << "' with " << solveModeLabel(solve_attempt)
                       << attempt_suffix.str()
                       << " failed or timed out. Retrying." << std::endl;
             continue;
@@ -856,14 +779,14 @@ void Simulation::CallThermochemistryModule(std::string                        lo
             }
 
             std::cout << "Warning: OpenCalphad produced an equilibrium for location '" << location
-                      << "' using " << solveModeLabel(solve_mode)
+                      << "' using " << solveModeLabel(solve_attempt)
                       << attempt_suffix.str()
                       << " but the required component lines are missing. Retrying." << std::endl;
             continue;
         }
 
         std::cout << "Warning: OpenCalphad returned an invalid equilibrium for location '" << location
-                  << "' using " << solveModeLabel(solve_mode) << attempt_suffix.str() << "." << std::endl;
+                  << "' using " << solveModeLabel(solve_attempt) << attempt_suffix.str() << "." << std::endl;
     }
 
     if (!solved)
