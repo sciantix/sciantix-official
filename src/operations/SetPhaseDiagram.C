@@ -43,6 +43,7 @@ enum class OpenCalphadSolveMode
     SaveReadWarmStart,
     GlobalEquilibrium,
     PressureAxisStepGlobalEquilibrium,
+    FixedOxygenMolesFromInvalidPotentialSolve,
 };
 
 struct OpenCalphadInputComponent
@@ -132,6 +133,8 @@ std::string solveModeLabel(OpenCalphadSolveMode mode)
             return "c e + c w";
         case OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium:
             return "pressure step + c w";
+        case OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve:
+            return "fixed N(O) from failed MU(O) solve";
     }
 
     return "unknown";
@@ -166,7 +169,8 @@ std::vector<std::pair<std::string, double>> buildPhaseShiftAxisCandidates(
 std::string buildSolveCommandBlock(OpenCalphadSolveMode mode,
                                    double               temperature,
                                    double               pressure,
-                                   const std::vector<OpenCalphadInputComponent>& solve_components)
+                                   const std::vector<OpenCalphadInputComponent>& solve_components,
+                                   double               fixed_oxygen_moles)
 {
     std::ostringstream commands;
     commands << std::setprecision(16);
@@ -185,6 +189,13 @@ std::string buildSolveCommandBlock(OpenCalphadSolveMode mode,
         commands << "step\n";
         commands << "normal\n\n";
         commands << "set c p=" << pressure << "\n\n";
+        commands << "c e\n\n";
+        commands << "c w\n\n";
+    }
+    else if (mode == OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve)
+    {
+        commands << "set c n(o)=" << fixed_oxygen_moles << "\n";
+        commands << "set c mu(o)=none\n\n";
         commands << "c e\n\n";
         commands << "c w\n\n";
     }
@@ -399,7 +410,8 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
                            const std::set<std::string>& manifest_elements,
                            SciantixArray<SciantixVariable>& sciantix_variable,
                            std::set<std::string>& active_elements,
-                           double&                total_input_content)
+                           double&                total_input_content,
+                           double                 fixed_oxygen_moles)
 {
     std::ofstream input_file(input_file_path);
     if (!input_file)
@@ -442,7 +454,8 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
     for (const auto& component : solve_components)
         input_file << "set c n(" << toLowerCopy(component.name) << ")=" << component.fraction << "\n";
     input_file << "c e\n";
-    if (use_oxygen_potential)
+    if (use_oxygen_potential &&
+        solve_mode != OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve)
     {
         input_file << "set c n(o)=none\n";
         input_file << "set c mu(o)=" << oxygen_potential_j_per_mol << "\n\n";
@@ -459,7 +472,8 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
             solve_mode,
             temperature,
             pressure,
-            solve_components);
+            solve_components,
+            fixed_oxygen_moles);
     }
 
     input_file << "l /out=" << output_file_path << " r 1\n\n";
@@ -502,6 +516,26 @@ bool runOpenCalphadCase(const std::string& input_file_path,
     std::cout << raw_output << std::endl;
     std::cout << "----------------------------------------" << std::endl;
 
+    return true;
+}
+
+bool tryGetOxygenMolesFromOutput(const std::string& output_file_path,
+                                 const std::set<std::string>& active_elements,
+                                 double& oxygen_moles)
+{
+    std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
+    if (std::find(valid_elements.begin(), valid_elements.end(), "O") == valid_elements.end())
+        valid_elements.push_back("O");
+
+    const OCOutputData parsed_output = parseOCOutputFile(output_file_path, valid_elements);
+    const auto oxygen_component = parsed_output.components.find("O");
+    if (oxygen_component == parsed_output.components.end())
+        return false;
+
+    if (oxygen_component->second.moles <= 0.0 || !std::isfinite(oxygen_component->second.moles))
+        return false;
+
+    oxygen_moles = oxygen_component->second.moles;
     return true;
 }
 
@@ -713,6 +747,8 @@ void Simulation::CallThermochemistryModule(std::string                        lo
 
     const std::string previous_output_snapshot =
         fileExists(output_file_path) ? readTextFile(output_file_path) : "";
+    const bool oxygen_potential_constraint = useOxygenPotentialConstraint(manifest_elements);
+    double fallback_oxygen_moles = -1.0;
     std::vector solve_attempts = {
         OpenCalphadSolveMode::SaveReadWarmStart,
         OpenCalphadSolveMode::GlobalEquilibrium,
@@ -720,6 +756,8 @@ void Simulation::CallThermochemistryModule(std::string                        lo
 
     if (pressure > 1.0e5 + 1.0)
         solve_attempts.push_back(OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium);
+    if (oxygen_potential_constraint)
+        solve_attempts.push_back(OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve);
 
     double preview_total_input_content = 0.0;
     const std::vector<OpenCalphadInputComponent> preview_components =
@@ -737,6 +775,15 @@ void Simulation::CallThermochemistryModule(std::string                        lo
     {
         std::ostringstream attempt_suffix;
 
+        if (solve_attempt == OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve &&
+            fallback_oxygen_moles <= 0.0)
+        {
+            std::cout << "Warning: skipping " << solveModeLabel(solve_attempt)
+                      << " because no fallback O moles were captured from previous failed MU(O) attempts."
+                      << std::endl;
+            continue;
+        }
+
         if (!writeOpenCalphadInput(
                 input_file_path,
                 output_file_path,
@@ -749,7 +796,8 @@ void Simulation::CallThermochemistryModule(std::string                        lo
                 manifest_elements,
                 sciantix_variable,
                 active_elements,
-                total_input_content))
+                total_input_content,
+                fallback_oxygen_moles))
         {
             return;
         }
@@ -787,6 +835,19 @@ void Simulation::CallThermochemistryModule(std::string                        lo
 
         std::cout << "Warning: OpenCalphad returned an invalid equilibrium for location '" << location
                   << "' using " << solveModeLabel(solve_attempt) << attempt_suffix.str() << "." << std::endl;
+
+        if (oxygen_potential_constraint &&
+            solve_attempt != OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve)
+        {
+            double extracted_oxygen_moles = -1.0;
+            if (tryGetOxygenMolesFromOutput(output_file_path, active_elements, extracted_oxygen_moles))
+            {
+                fallback_oxygen_moles = extracted_oxygen_moles;
+                std::cout << "Captured fallback N(O)=" << fallback_oxygen_moles
+                          << " from invalid MU(O) output for location '" << location
+                          << "'." << std::endl;
+            }
+        }
     }
 
     if (!solved)
