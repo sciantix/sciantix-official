@@ -448,9 +448,9 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
             "Chromia precipitate", "(at/m3)", Sciantix_variables[158], Sciantix_variables[158], toOutputChromiumContent),
 
         SciantixVariable("Diffusion coefficient", "(m2/s)", Sciantix_variables[160], Sciantix_variables[160], 0),
-        SciantixVariable("Uranium content", "(mol/m3)", Sciantix_variables[161], Sciantix_variables[161],  toOutputThermochimica),
-        SciantixVariable("Oxygen content", "(mol/m3)", Sciantix_variables[162], Sciantix_variables[162],  toOutputThermochimica),
-        SciantixVariable("Plutonium content", "(mol/m3)", Sciantix_variables[163], Sciantix_variables[163],  toOutputThermochimica && toOutputMOX),
+        SciantixVariable("U content", "(mol/m3)", Sciantix_variables[161], Sciantix_variables[161],  toOutputThermochimica),
+        SciantixVariable("O content", "(mol/m3)", Sciantix_variables[162], Sciantix_variables[162],  toOutputThermochimica),
+        SciantixVariable("Pu content", "(mol/m3)", Sciantix_variables[163], Sciantix_variables[163],  toOutputThermochimica && toOutputMOX),
 
         SciantixVariable("Initial grain radius", "(mol)", Sciantix_variables[170], Sciantix_variables[170],  toOutputThermochimica),
         SciantixVariable("JOG", "(/)", 0.0, 0.0, toOutputThermochimica),
@@ -463,8 +463,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("JOG from BCC_A2", "(/)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("JOG from MOO2", "(/)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("JOG from FCC_A1", "(/)", 0.0, 0.0, toOutputThermochimica),
-        SciantixVariable("JOG from HCP_A3", "(/)", 0.0, 0.0, toOutputThermochimica),
-        SciantixVariable("Grain boundary fraction", "(/)", 0.0, 0.0, toOutputThermochimica)};
+        SciantixVariable("JOG from HCP_A3", "(/)", 0.0, 0.0, toOutputThermochimica)};
 
     return init_sciantix_variable;
 }
