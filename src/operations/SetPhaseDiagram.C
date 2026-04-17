@@ -109,6 +109,9 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         OpenCalphadSolveMode::SaveReadWarmStart,
         OpenCalphadSolveMode::GlobalEquilibrium,
     };
+    bool has_deferred_matrix_stoichiometric_solution = false;
+    OCOutputData deferred_matrix_stoichiometric_output_data;
+    std::set<std::string> deferred_matrix_stoichiometric_active_elements;
 
     if (pressure > 1.0e5 + 1.0)
         solve_attempts.push_back(OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium);
@@ -173,6 +176,21 @@ void Simulation::CallThermochemistryModule(std::string                      loca
             continue;
         }
 
+        if ((location == "matrix") &&
+            raw_output.find("C1_MO2") != std::string::npos)
+        {
+            const std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
+            const OCOutputData candidate_output_data = parseOCOutputFile(output_file_path, valid_elements);
+
+            has_deferred_matrix_stoichiometric_solution = true;
+            deferred_matrix_stoichiometric_output_data = candidate_output_data;
+            deferred_matrix_stoichiometric_active_elements = active_elements;
+            std::cout << "Warning: OpenCalphad returned a stoichiometric C1_MO2 stabilization failure for "
+                        << "location '" << location << "' using "
+                        << OCUtilsCoupling::solveModeLabel(solve_attempt)
+                        << ". Deferring acceptance until all solve attempts are exhausted." << std::endl;
+        }
+
         std::cout << "Warning: OpenCalphad returned an invalid equilibrium for location '" << location
                   << "' using " << OCUtilsCoupling::solveModeLabel(solve_attempt) << "." << std::endl;
 
@@ -188,6 +206,19 @@ void Simulation::CallThermochemistryModule(std::string                      loca
                           << " from invalid MU(O) output for location '" << location
                           << "'." << std::endl;
             }
+        }
+    }
+
+    if (!solved)
+    {
+        if (has_deferred_matrix_stoichiometric_solution)
+        {
+            solved = true;
+            output_data = deferred_matrix_stoichiometric_output_data;
+            active_elements = deferred_matrix_stoichiometric_active_elements;
+            std::cout << "Warning: all OpenCalphad solve attempts failed for location '" << location
+                      << "'. Accepting deferred stoichiometric C1_MO2 stabilization result."
+                      << std::endl;
         }
     }
 
