@@ -61,6 +61,7 @@ void Simulation::GrainGrowth()
 
             if (sciantix_variable["Grain radius"].getInitialValue() < limiting_grain_radius / burnup_factor)
             {
+                // CODE DEVELOPMENT : GENERALIZATION FROM UO2 TO ALL MATRICES
                 double rate_constant = matrices[0].getGrainBoundaryMobility();
                 rate_constant *= (1.0 - burnup_factor / (limiting_grain_radius /
                                                          (sciantix_variable["Grain radius"].getFinalValue())));
@@ -103,6 +104,7 @@ void Simulation::GrainGrowth()
 
             if (sciantix_variable["Grain radius"].getInitialValue() < limiting_grain_radius)
             {
+                // CODE DEVELOPMENT : GENERALIZATION FROM UO2 TO ALL MATRICES
                 double rate_constant = matrices[0].getGrainBoundaryMobility();
 
                 parameter.push_back(sciantix_variable["Grain radius"].getInitialValue());
@@ -137,5 +139,6 @@ void Simulation::GrainGrowth()
     // Model resolution
     sciantix_variable["Grain radius"].setFinalValue(solver.QuarticEquation(model["Grain growth"].getParameter()));
 
+    // CODE DEVELOPMENT : GENERALIZATION FROM UO2 TO ALL MATRICES
     matrices[0].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
 }

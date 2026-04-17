@@ -8,7 +8,7 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.2.1                                                                    //
 //  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
@@ -101,6 +101,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {85, "Xe in HBS pores - variance"},
     {86, "Xe atoms per HBS pore"},
     {88, "Xe atoms per HBS pore - variance"},
+    // CODE DEVELOPMENT : TO BE REDUCED
     {101, "Cs produced"},
     {102, "Cs in grain"},
     {103, "Cs in intragranular solution"},
@@ -147,6 +148,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {157, "Chromia solution"},
     {158, "Chromia precipitate"},
     {160, "Diffusion coefficient"},
+    // CODE DEVELOPMENT 
     {161, "U content"},
     {162, "O content"},
     {163, "Pu content"},
@@ -159,6 +161,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {177, "q"},
 };
 
+// CODE DEVELOPMENT: DIFFUSION MODES FROM 17 TO 30
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[])
 {
     for (int i = 0; i < n_modes; ++i)
@@ -176,6 +179,7 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
         Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
     }
 
+    // CODE DEVELOPMENT : update thermochemistry variables
     if (thermochemistry_variable.empty())
         return;
 

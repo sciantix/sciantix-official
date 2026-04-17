@@ -29,31 +29,36 @@ Simulation* Simulation::getInstance()
     return instance;
 }
 
-void Simulation::initialize(
-    int Sciantix_options[],
-    double Sciantix_history[],
-    double Sciantix_variables[],
-    double Sciantix_scaling_factors[],
-    double Sciantix_diffusion_modes[],
-    double Sciantix_thermochemistry[],
-    std::vector<std::vector<std::string>> Sciantix_thermochemistry_options
+void Simulation::initialize(int    Sciantix_options[],
+                            double Sciantix_history[],
+                            double Sciantix_variables[],
+                            double Sciantix_scaling_factors[],
+                            double Sciantix_diffusion_modes[],
+                            // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
+                            double Sciantix_thermochemistry[],
+                            std::vector<std::vector<std::string>> Sciantix_thermochemistry_options
 )
 {
+    // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
     setVariables(
-        Sciantix_options,
-        Sciantix_history,
-        Sciantix_variables,
-        Sciantix_scaling_factors,
-        Sciantix_diffusion_modes,
-        Sciantix_thermochemistry,
-        Sciantix_thermochemistry_options
+            Sciantix_options,
+            Sciantix_history,
+            Sciantix_variables,
+            Sciantix_scaling_factors,
+            Sciantix_diffusion_modes,
+            Sciantix_thermochemistry,
+            Sciantix_thermochemistry_options
     );
+    //
     setGas();
     setMatrix();
     setSystem();
     setGPVariables(Sciantix_options, Sciantix_history, Sciantix_variables);
 }
 
+// CODE DEVELOPMENT : THE ORDER OF THE FUNCTIONS CALLED HAS BEEN CHANGED
+// WITHOUT AFFECTING THE GENERAL BEHAVIOR OF THE CODE, 
+// TO BETTER CATEGORIZE THE PROCESSES AND IMPROVE CLARITY
 void Simulation::execute()
 {
 #if !defined(COUPLING_TU)
@@ -64,7 +69,7 @@ void Simulation::execute()
     Densification();
 #endif
     
-    // Fuel microstructural changes
+    // FUEL MICROSTRUCTURE
 
     HighBurnupStructureFormation();
 
@@ -72,7 +77,7 @@ void Simulation::execute()
 
     GrainGrowth();
 
-    // Fuel chemistry
+    // FUEL CHEMISTRY
 
     ChromiumSolubility();
 
@@ -84,7 +89,7 @@ void Simulation::execute()
 
     SetPhaseDiagram("matrix");
 
-    // Fission product behaviour 
+    // FISSION PRODUCT BEHAVIOR
 
     GrainBoundarySweeping();
 
@@ -106,7 +111,7 @@ void Simulation::execute()
 
     GasRelease();
 
-    // gap behaviour
+    // GAP BEHAVIOUR
     
     JOGFormation();
 

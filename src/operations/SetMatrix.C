@@ -33,6 +33,7 @@ void Simulation::setMatrix()
             break;
         }
 
+        // CODE DEVELOPMENT : MOX MATRIX
         case 2: 
         {
             matrices.push(MOX(matrices, sciantix_variable, history_variable, input_variable));
@@ -46,6 +47,7 @@ void Simulation::setMatrix()
     }
 }
 
+// CODE DEVELOPMENT : THERORETICAL DENSITY AND LATTICE PARAMETER SHIFT TO CRYSTAL PROPERTIES FUNCTIONS
 Matrix UO2(SciantixArray<Matrix>&           matrices,
            SciantixArray<SciantixVariable>& sciantix_variable,
            SciantixArray<SciantixVariable>& history_variable,
@@ -148,6 +150,7 @@ Matrix UO2HBS(SciantixArray<Matrix>&           matrices,
     return matrix_;
 }
 
+// CODE DEVELOPMENT : MOX MATRIX
 Matrix MOX(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, 
     SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &input_variable)
 { 
@@ -157,29 +160,25 @@ Matrix MOX(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sci
     matrix_.setRef("\n\t");
 
     
-    double q = sciantix_variable["q"].getFinalValue(); // q ratio (Olander, 1976) defines MOX composition
-
-    // Pu and U fractions from q = Pu / (U + Pu)
-    double Pu_fraction = q; // mole fraction of Pu
-    double U_fraction  = 1.0 - q; // mole fraction of U
+    double q = sciantix_variable["q"].getFinalValue(); 
 
     matrix_.setInitialUraniumComposition({ 
-        U_fraction * double(sciantix_variable["U234"].getFinalValue()),
-        U_fraction * double(sciantix_variable["U235"].getFinalValue()),
-        U_fraction * double(sciantix_variable["U236"].getFinalValue()),
-        U_fraction * double(sciantix_variable["U237"].getFinalValue()),
-        U_fraction * double(sciantix_variable["U238"].getFinalValue())
+        (1.0 - q) * double(sciantix_variable["U234"].getFinalValue()),
+        (1.0 - q) * double(sciantix_variable["U235"].getFinalValue()),
+        (1.0 - q) * double(sciantix_variable["U236"].getFinalValue()),
+        (1.0 - q) * double(sciantix_variable["U237"].getFinalValue()),
+        (1.0 - q) * double(sciantix_variable["U238"].getFinalValue())
     });
 
     matrix_.setInitialPlutoniumComposition({
-        Pu_fraction * double(sciantix_variable["Pu238"].getFinalValue()),
-        Pu_fraction * double(sciantix_variable["Pu239"].getFinalValue()),
-        Pu_fraction * double(sciantix_variable["Pu240"].getFinalValue()),
-        Pu_fraction * double(sciantix_variable["Pu241"].getFinalValue()),
-        Pu_fraction * double(sciantix_variable["Pu242"].getFinalValue())
+        q * double(sciantix_variable["Pu238"].getFinalValue()),
+        q * double(sciantix_variable["Pu239"].getFinalValue()),
+        q * double(sciantix_variable["Pu240"].getFinalValue()),
+        q * double(sciantix_variable["Pu241"].getFinalValue()),
+        q * double(sciantix_variable["Pu242"].getFinalValue())
     });
 
-    matrix_.setMoxPuEnrichment(Pu_fraction);
+    matrix_.setMoxPuEnrichment(q);
     matrix_.setCrystalProperties(sciantix_variable); // (kg/m3, m)
 
     matrix_.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);

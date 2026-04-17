@@ -150,6 +150,7 @@ void Simulation::output()
     }
     overview_file.close();
 
+    // CODE DEVELOPMENT : THERMOCHEMISTRY OUTPUT
     if ((int)input_variable["iThermochimica"].getValue() > 0)
     {
         // Write thermochemical informations in thermochemistry_output.txt

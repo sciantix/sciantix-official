@@ -16,6 +16,7 @@
 
 #include "Simulation.h"
 #include "StoichiometryDeviation.h"
+// CODE DEVELOPMENT :  NECESSARY INCLUDES FOR THE MODEL
 #include <cmath>
 
 void Simulation::StoichiometryDeviation()
@@ -29,6 +30,7 @@ void Simulation::StoichiometryDeviation()
     std::string         reference;
     std::vector<double> parameter;
 
+    // CODE DEVELOPMENT : TO INITIAL VALUE, NO CHANGES
     double surface_to_volume = 3 / sciantix_variable["Grain radius"].getInitialValue();  // (1/m)
 
     model_.setName("Stoichiometry deviation");
@@ -328,6 +330,7 @@ void Simulation::StoichiometryDeviation()
             break;
         }
 
+        // CODE DEVELOPMENT : NEW MODELS FOR STOICHIOMETRY DEVIATION, TO BE DEVELOPED IN THE FUTURE
         /**
          * @brief The model for fuel oxidation as the net effect of burnup.
          * @ref https://doi.org/10.1016/0022-3115(79)90154-5 
@@ -354,7 +357,7 @@ void Simulation::StoichiometryDeviation()
             parameter.push_back(burnup);
             parameter.push_back(coefficient);
 
-            // If MOX: hp. of all fissions on Pu
+            // MOX : all fissions are associated to Pu.
             if (sciantix_variable["q"].getFinalValue() > 0.0)
                 parameter.push_back(0.0);
             else
@@ -368,13 +371,14 @@ void Simulation::StoichiometryDeviation()
 
         case 8:
         {
-            reference += " : Under development, E.Cappellari: OC - po2 verification";
+            reference += " : Under development, E.Cappellari, OC - po2 verification";
 
-            // Target trend: x = x0 + 0.001 * t[h], from -0.1 at 0 h to +0.2 at 300 h.
+            // Unphysical shift, adopted only for verification purposes.
+            // x = x0 + 0.001 * t[h]
             // The generic integrator uses a rate times an increment, and the time step here is in seconds.
             parameter.push_back(physics_variable["Time step"].getFinalValue());
             parameter.push_back(0.001 / 3600.0);
-            // for the purpose of the verification in MOX fuel q = Pu/(U + Pu) is kept constant. 
+            // MOX : for the purpose of the verification q is kept constant. 
             parameter.push_back(1.0 - sciantix_variable["q"].getFinalValue());
 
             // linear increase with time to verify the correct po2 at different O/M
@@ -385,11 +389,17 @@ void Simulation::StoichiometryDeviation()
         }
         case 9:
         {
-            reference += " : prescribed O/M history from input_history.txt.";
+            reference += " : Under development, E.Cappellari, prescribed O/M history.";
 
             // Prescribed O/M is converted to stoichiometry deviation as x = O/M - 2.
             parameter.push_back(history_variable["O/M ratio"].getFinalValue() - 2.0);
             parameter.push_back(history_variable["O/M ratio"].getInitialValue() - 2.0);
+            
+            // MOX : all fissions are associated to Pu.
+            if (sciantix_variable["q"].getFinalValue() > 0.0)
+                parameter.push_back(0.0);
+            else
+                parameter.push_back(1.0);
 
             model_.setParameter(parameter);
             model_.setRef(reference);
@@ -398,7 +408,7 @@ void Simulation::StoichiometryDeviation()
         }
         case 10:
         {
-            reference += " : under development: fission + radial transport from Aitken.";
+            reference += " : Under development, E.Cappellari, fission + radial transport from Aitken.";
 
             // Interaction term due to fission
             double fissionrate_mol = history_variable["Fission rate"].getFinalValue()/avogadro_number;
@@ -409,20 +419,7 @@ void Simulation::StoichiometryDeviation()
             // [0]=fission term, [1]=radial term, [2]=U/Pu partition factor.
             parameter.push_back(0.0);
 
-            // // Due to radial transport (Atkin model, for hypostoichiometric fuels)
-            // double Q = - 125e3;
-            // if (sciantix_variable["Stoichiometry deviation"].getInitialValue() > 0)
-            //     Q = 0;
-            
-            // double radialtransfer = exp(
-            //     Q/gas_constant*
-            //     (
-            //         1.0 / history_variable["Temperature"].getFinalValue() -
-            //         1.0 / history_variable["Temperature"].getInitialValue()
-            //     )
-            // );
-
-            // If MOX: hp. of all fissions on Pu
+            // MOX : all fissions are associated to Pu.
             if (sciantix_variable["q"].getFinalValue() > 0.0)
                 parameter.push_back(0.0);
             else
@@ -447,6 +444,7 @@ void Simulation::StoichiometryDeviation()
     if (!input_variable.isElementPresent("iStoichiometryDeviation"))
         return;
 
+    // CODE DEVELOPMENT : NEW MODELS FOR STOICHIOMETRY DEVIATION FOR NUMBER HIGHER THAN 7
     if (history_variable["Temperature"].getFinalValue() < 1000.0 && input_variable["iStoichiometryDeviation"].getValue() < 7)
     {
         sciantix_variable["Stoichiometry deviation"].setConstant();
@@ -472,6 +470,7 @@ void Simulation::StoichiometryDeviation()
     }
     else if (input_variable["iStoichiometryDeviation"].getValue() > 6 && input_variable["iStoichiometryDeviation"].getValue() < 9)
     {
+        // MODELS 7 - 8: stoichiometry deviation is calculated as the integral of a rate variation.
         sciantix_variable["Stoichiometry deviation"].setFinalValue(
             solver.Integrator(
                 sciantix_variable["Stoichiometry deviation"].getInitialValue(),
@@ -480,7 +479,6 @@ void Simulation::StoichiometryDeviation()
             )
         );
 
-        // reduced Uranium content
         sciantix_variable["U content"].addValue( 
             - sciantix_variable["O content"].getFinalValue()
             * model["Stoichiometry deviation"].getParameter().at(2)
@@ -497,27 +495,28 @@ void Simulation::StoichiometryDeviation()
     }
     else if (input_variable["iStoichiometryDeviation"].getValue() == 9)
     {
+        // MODEL 9: stoichiometry deviation is prescribed as a history variable, converted to O/M and then to x.
         sciantix_variable["Stoichiometry deviation"].setFinalValue(
             model["Stoichiometry deviation"].getParameter().at(0)
         );
 
-        // under development for mox!
-        sciantix_variable["U content"].addValue(
+        sciantix_variable["U content"].addValue( 
             - sciantix_variable["O content"].getFinalValue()
-            * (1.0 - sciantix_variable["q"].getFinalValue())
+            * model["Stoichiometry deviation"].getParameter().at(2)
             * sciantix_variable["Stoichiometry deviation"].getIncrement()
             * pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2.0)
         );
 
         sciantix_variable["Pu content"].addValue( 
             - sciantix_variable["O content"].getFinalValue()
-            * sciantix_variable["q"].getFinalValue()
+            * (1.0 - model["Stoichiometry deviation"].getParameter().at(2))
             * sciantix_variable["Stoichiometry deviation"].getIncrement()
             * pow(2 + sciantix_variable["Stoichiometry deviation"].getFinalValue(), -2.0)
         );
     }
     else if (input_variable["iStoichiometryDeviation"].getValue() == 10)
     {
+        // MODEL 10: stoichiometry deviation only by fission
         sciantix_variable["U content"].setFinalValue(
             solver.Integrator(
                 sciantix_variable["U content"].getFinalValue(),
@@ -553,8 +552,9 @@ void Simulation::StoichiometryDeviation()
     if (total > 0.0)
         sciantix_variable["q"].setFinalValue(plutonium_content / total);
 
-    // EC - this has not the dimensionality of a pressure if not multiplied to the reference one
+    // CODE DEVELOPMENT : this has not the dimensionality of a pressure if not multiplied to the reference one
     // it is not coherent with the oxygen potential also, modified by * reference pressure
+    // changed like this not to fail regressions for models developed before.
     double coeff(1.0);
     if (input_variable["iStoichiometryDeviation"].getValue() > 6)
         coeff = reference_oxygen_pressure_atm;
@@ -566,6 +566,7 @@ void Simulation::StoichiometryDeviation()
     if (x == 0.0 && q <= 0.0)
         return;
 
+    // Fuel oxygen partial pressure correlations
     // MOX (Kato) or UO2 (Blackburn)
     if (q > 0.0)
     {
@@ -631,6 +632,7 @@ double BlackburnThermochemicalModel(double                           stoichiomet
     return exp(ln_p);
 }
 
+// CODE DEVELOPMENT : MOX PARTIAL PRESSURE CORRELATION
 double KatoThermochemicalModel(double stoichiometry_deviation, double temperature, SciantixArray<SciantixVariable> &sciantix_variable)
 {
     double q_Pu = sciantix_variable["q"].getFinalValue();
@@ -639,10 +641,10 @@ double KatoThermochemicalModel(double stoichiometry_deviation, double temperatur
     double target_om = 2.0 + stoichiometry_deviation;
 
     std::vector<double> parameter;
-    parameter.push_back(temperature); // param[0]
-    parameter.push_back(q_Pu);        // param[1]
-    parameter.push_back(target_om);   // param[2]
-    parameter.push_back(q_Am);        // param[3]
+    parameter.push_back(temperature); 
+    parameter.push_back(q_Pu);        
+    parameter.push_back(target_om);   
+    parameter.push_back(q_Am);        
 
     Solver solver;
     return solver.BisectionKato(parameter); 

@@ -21,6 +21,7 @@
 #include <fstream>
 #include <set>
 
+// CODE DEVELOPMENT : FUNCTION
 namespace
 {
 std::set<std::string> getSelectedFissionProductElements(SciantixArray<InputVariable>& input_variable)
@@ -54,6 +55,7 @@ std::set<std::string> getSelectedFissionProductElements(SciantixArray<InputVaria
 
 void Simulation::setSystem()
 {
+    // CODE DEVELOPMENT : FISSION PRODUCT CHOSEN + MOX MATRIX
     const std::set<std::string> selected_fission_products = getSelectedFissionProductElements(input_variable);
 
     switch ((int)input_variable["iFuelMatrix"].getValue())
@@ -311,6 +313,7 @@ System Kr85m_in_UO2(SciantixArray<Matrix>&           matrices,
     return system_;
 }
 
+// CODE DEVELOPMENT : TO BE MOVED TO A SEPARATE FUNCTION FOR METALLIC FISSION PRODUCTS?
 System Cs_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {

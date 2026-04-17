@@ -142,12 +142,14 @@ void Simulation::GasDiffusion()
         sciantix_variable["Intragranular gas solution swelling"].setFinalValue(
             (sciantix_variable["Xe in intragranular solution"].getFinalValue() +
              sciantix_variable["Xe in grain HBS"].getFinalValue()) *
-            pow(matrices[0].getLatticeParameter(), 3) / 4);
+             // CODE DEVELOPMENT : GENERALIZATION FROM UO2 TO ALL MATRICES
+            pow(matrices["UO2"].getLatticeParameter(), 3) / 4);
     }
 
     // Calculation of the gas concentration at grain boundary, by mass balance
     for (auto& system : sciantix_system)
     {
+        // CODE DEVELOPMENT : CHEMICALLY ACTIVE FP (VOLATILE DIFFUSION)
         if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 0.0)
         {
             sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
@@ -174,6 +176,7 @@ void Simulation::GasDiffusion()
                 sciantix_variable[system.getGasName() + " reacted - GB"].setFinalValue(0.0);
 
         }
+        // 
     }
 
     /**
@@ -185,6 +188,7 @@ void Simulation::GasDiffusion()
     {
         for (auto& system : sciantix_system)
         {
+            // CODE DEVELOPMENT : CHEMICALLY ACTIVE FP (VOLATILE DIFFUSION)
             if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 0.0)
             {
                 {
@@ -212,6 +216,7 @@ void Simulation::GasDiffusion()
                     );
                 }
             }
+            //
         }
     }
 }

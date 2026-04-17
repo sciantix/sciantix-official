@@ -79,6 +79,5 @@ sf_diffusivity = 1
 sf_diffusivity2 = 1
 sf_temperature = 1
 sf_fission_rate = 1
-sf_cent_parameter = 1
 sf_helium_production_rate = 1
 sf_dummy = 1
