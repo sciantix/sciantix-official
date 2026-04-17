@@ -19,18 +19,28 @@
 #include "Simulation.h"
 #include "TUSrcCoupling.h"
 #include <iostream>
+// CODE DEVELOPMENT: STRING NEEDED FOR THERMOCHEMISTRY OPTIONS
 #include <string>
 
 
-void callSciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[], std::vector<std::vector<std::string>> Sciantix_thermochemistry_options)
+void callSciantix(int    Sciantix_options[],
+                  double Sciantix_history[],
+                  double Sciantix_variables[],
+                  double Sciantix_scaling_factors[],
+                  double Sciantix_diffusion_modes[], 
+                  // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
+                  double Sciantix_thermochemistry[], 
+                  std::vector<std::vector<std::string>> Sciantix_thermochemistry_options)
 {
     Simulation* simulation = Simulation::getInstance();
 
+    // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
     simulation->initialize(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes, Sciantix_thermochemistry, Sciantix_thermochemistry_options); 
-
+    //
     simulation->execute();
-
-	simulation->update(Sciantix_variables, Sciantix_diffusion_modes, Sciantix_thermochemistry);
+    // CODE DEVELOPMENT : THERMOCHEMISTRY UPDATE
+    simulation->update(Sciantix_variables, Sciantix_diffusion_modes, Sciantix_thermochemistry);
+    //
 }
 
 void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[])
@@ -69,6 +79,7 @@ void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[
     Sciantix_options[22] = ReadOneSetting("iChromiumSolubility", input_settings, input_check);
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
+    // CODE DEVELOPMENT : THERMOCHEMISTRY FLAG
     Sciantix_options[25] = ReadOneSetting("iThermochimica",input_settings,input_check);
 
 

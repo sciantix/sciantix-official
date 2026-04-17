@@ -132,6 +132,7 @@ void System::setBubbleDiffusivity(int                              input_value,
                     3.0e-5 * exp(-4.5 / (boltzmann_constant_eV * history_variable["Temperature"].getFinalValue()));
                 double bubble_radius = sciantix_variable["Intragranular bubble radius"].getInitialValue();
 
+                // CODE DEVELOPMENT : GENERALIZATION FROM UO2 TO ALL MATRICES
                 bubble_diffusivity = 3 * matrices[0].getSchottkyVolume() * volume_self_diffusivity /
                                      (4.0 * M_PI * pow(bubble_radius, 3.0));
             }
@@ -569,11 +570,11 @@ void System::setFissionGasDiffusivity(int                              input_val
             break;
         }
 
-        
+        // CODE DEVELOPMENT: DIFFUSION FOR CESIUM AND IODINE
         case 11:
         {
             /**
-             * @brief iFissionGasDiffusivity = 11 set the Cesium diffusivity (HP for Te)
+             * @brief iFissionGasDiffusivity = 11 set the Cesium diffusivity
              *
              */
 
@@ -615,6 +616,7 @@ void System::setFissionGasDiffusivity(int                              input_val
 
             break;
         }
+        //
 
         case 90:
         {
@@ -716,6 +718,7 @@ void System::setResolutionRate(int                              input_value,
              */
 
             reference += "iResolutionRate: J.A. Turnbull, JNM, 38 (1971), 203.\n\t";
+            // CODE DEVELOPMENT: GENERALIZATION FROM UO2 TO ALL MATRICES
             resolution_rate = 2.0 * M_PI * matrices[0].getFissionFragmentRange() *
                               pow(matrices[0].getFissionFragmentInfluenceRadius() +
                                       sciantix_variable["Intragranular bubble radius"].getFinalValue(),
@@ -756,6 +759,7 @@ void System::setResolutionRate(int                              input_value,
              */
 
             reference += "iResolutionRate: Cognini et al. NET 53 (2021) 562-571.\n\t";
+            // CODE DEVELOPMENT: GENERALIZATION FROM UO2 TO ALL MATRICES
 
             /// irradiation_resolution_rate
             double irradiation_resolution_rate =

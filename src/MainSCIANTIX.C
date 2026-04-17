@@ -79,31 +79,38 @@ int main(int argc, char** argv)
         }
     }
 
-    InputReading(Sciantix_options, 
-                 Sciantix_variables, 
+    InputReading(Sciantix_options,
+                 Sciantix_variables,
                  Sciantix_scaling_factors,
+                 // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
                  Sciantix_thermochemistry,
                  Sciantix_thermochemistry_options,
+                 //
                  Input_history_points,
-                 Time_input, 
+                 Time_input,
                  Temperature_input,
                  Fissionrate_input,
                  Hydrostaticstress_input,
                  Steampressure_input,
+                 // CODE DEVELOPMENT : SYSTEM PRESSURE AND O/M RATIO INPUTS
                  Systempressure_input,
                  OMratio_input,
+                 //
                  Time_end_h,
                  Time_end_s);
 
     Initialization(Sciantix_history,
                    Sciantix_variables,
                    Sciantix_diffusion_modes,
+                   // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
                    Sciantix_thermochemistry,
                    Sciantix_thermochemistry_options,
+                   //
                    Temperature_input,
                    Fissionrate_input,
                    Hydrostaticstress_input,
                    Steampressure_input,
+                   // CODE DEVELOPMENT : SYSTEM PRESSURE AND O/M RATIO INPUTS
                    Systempressure_input,
                    OMratio_input);
 
@@ -111,6 +118,7 @@ int main(int argc, char** argv)
 
     remove(outputPath.c_str());
 
+    // CODE DEVELOPMENT : THERMOCHEMISTRY OUTPUT
     std::string thermo_outputPath = TestPath + "thermochemistry_output.txt";
 
     remove(thermo_outputPath.c_str());
@@ -122,6 +130,7 @@ int main(int argc, char** argv)
     remove((TestPath + "OCoutput_fission_products.OCU").c_str());
     remove((TestPath + "OCoutput_matrix.DAT").c_str());
     remove((TestPath + "OCoutput_fission_products.DAT").c_str());
+    //
 
     Execution_file.open(TestPath + "execution.txt", std::ios::out);
 
@@ -141,12 +150,14 @@ int main(int argc, char** argv)
         Sciantix_history[8]  = static_cast<double>(Time_step_number);
         Sciantix_history[9]  = Sciantix_history[10];
         Sciantix_history[10] = InputInterpolation(Time_h, Time_input, Steampressure_input, Input_history_points);
+        // CODE DEVELOPMENT : SYSTEM PRESSURE AND O/M RATIO INPUTS
         Sciantix_history[11] = Sciantix_history[12];
         Sciantix_history[12] = InputInterpolation(Time_h, Time_input, Systempressure_input, Input_history_points);
         Sciantix_history[13] = Sciantix_history[14];
         Sciantix_history[14] = InputInterpolation(Time_h, Time_input, OMratio_input, Input_history_points);
 
         Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes, Sciantix_thermochemistry, Sciantix_thermochemistry_options);
+        //
 
 
         dTime_h = TimeStepCalculation(Input_history_points, Time_h, Time_input, Number_of_time_steps_per_interval);
@@ -167,6 +178,7 @@ int main(int argc, char** argv)
     logExecutionTime((double)timer / CLOCKS_PER_SEC, Time_step_number, Execution_file);
     Execution_file.close();
 
+    // CODE DEVELOPMENT : THERMOCHEMISTRY OUTPUT
     remove((TestPath + "OCinput_matrix.OCM").c_str());
     remove((TestPath + "OCinput_fission_products.OCM").c_str());
     remove((TestPath + "OCoutput_matrix").c_str());
@@ -175,6 +187,7 @@ int main(int argc, char** argv)
     remove((TestPath + "OCoutput_fission_products.OCU").c_str());
     remove((TestPath + "OCoutput_matrix.DAT").c_str());
     remove((TestPath + "OCoutput_fission_products.DAT").c_str());
+    //
 
     return 0;
 }

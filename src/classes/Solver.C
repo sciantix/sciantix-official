@@ -474,6 +474,7 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
     return x1;
 }
 
+// CODE DEVELOPMENT : THE BISECTIONKATO SOLVER HAS BEEN ADDED TO CALCULATE THE OXYGEN POTENTIAL IN MOX
 double Solver::BisectionKato(std::vector<double> parameter)
 {
     double temperature_actual = parameter.at(0);

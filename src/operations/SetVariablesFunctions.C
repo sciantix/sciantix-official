@@ -14,47 +14,63 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#include "SciantixVariable.h"
 #include "SetVariablesFunctions.h"
-
-#include <fstream>
 #include <vector>
+
+/**
+ * @brief Retrieves the list of input variable names.
+ * @return A vector of strings containing the names of input variables.
+ *
+ * @author F. Bastien
+ * @author G. Zullo
+ *
+ */
 
 std::vector<std::string> getInputVariableNames()
 {
-    std::vector<std::string> names = {
-        "iGrainGrowth",
-        "iFissionGasDiffusivity",
-        "iDiffusionSolver",
-        "iIntraGranularBubbleBehavior",
-        "iResolutionRate",
-        "iTrappingRate",
-        "iNucleationRate",
-        "iOutput",
-        "iGrainBoundaryVacancyDiffusivity",
-        "iGrainBoundaryBehaviour",
-        "iGrainBoundaryMicroCracking",
-        "iFuelMatrix",
-        "iGrainBoundaryVenting",
-        "iRadioactiveFissionGas",
-        "iHelium",
-        "iHeDiffusivity",
-        "iGrainBoundarySweeping",
-        "iHighBurnupStructureFormation",
-        "iHighBurnupStructurePorosity",
-        "iHeliumProductionRate",
-        "iStoichiometryDeviation",
-        "iBubbleDiffusivity",
-        "iChromiumSolubility",
-        "iDensification",
-        "iReleaseMode",
-        "iThermochimica"};
+    std::vector<std::string> names = {"iGrainGrowth",
+                                      "iFissionGasDiffusivity",
+                                      "iDiffusionSolver",
+                                      "iIntraGranularBubbleBehavior",
+                                      "iResolutionRate",
+                                      "iTrappingRate",
+                                      "iNucleationRate",
+                                      "iOutput",
+                                      "iGrainBoundaryVacancyDiffusivity",
+                                      "iGrainBoundaryBehaviour",
+                                      "iGrainBoundaryMicroCracking",
+                                      "iFuelMatrix",
+                                      "iGrainBoundaryVenting",
+                                      "iRadioactiveFissionGas",
+                                      "iHelium",
+                                      "iHeDiffusivity",
+                                      "iGrainBoundarySweeping",
+                                      "iHighBurnupStructureFormation",
+                                      "iHighBurnupStructurePorosity",
+                                      "iHeliumProductionRate",
+                                      "iStoichiometryDeviation",
+                                      "iBubbleDiffusivity",
+                                      "iChromiumSolubility",
+                                      "iDensification",
+                                      "iReleaseMode",
+                                      // CODE DEVELOPMENT : flags
+                                      "iThermochimica"};
 
     return names;
 }
 
+/**
+ * @brief Initializes the history variables.
+ * @param Sciantix_history An array of history variables.
+ * @param toOutput* flags indicating whether to consider additional history variables.
+ * @param Sciantix_scaling_factors An array of scaling factors.
+ * @return A vector of SciantixVariable objects initialized with the given history variables.
+ */
 std::vector<SciantixVariable> initializeHistoryVariable(
     double Sciantix_history[],
     double Sciantix_scaling_factors[],
+    // CODE DEVELOPMENT : flags
     bool toOutputStoichiometryDeviation,
     bool toOutputThermochimica,
     bool toOutputPrescribedOMRatio
@@ -75,12 +91,28 @@ std::vector<SciantixVariable> initializeHistoryVariable(
                          1),
         SciantixVariable("Hydrostatic stress", "(MPa)", Sciantix_history[4], Sciantix_history[5], 1),
         SciantixVariable("Steam pressure", "(atm)", Sciantix_history[9], Sciantix_history[10], toOutputStoichiometryDeviation),
+        // CODE DEVELOPMENT : SYSTEM PRESSURE AND O/M RATIO HISTORY VARIABLES
         SciantixVariable("System pressure", "(Pa)", Sciantix_history[11], Sciantix_history[12], toOutputThermochimica),
         SciantixVariable("O/M ratio", "(/)", Sciantix_history[13], Sciantix_history[14], toOutputPrescribedOMRatio)};
 
     return history_variable;
 }
 
+/**
+ * @brief Initializes the Sciantix variables with the provided values and flags.
+ * @param Sciantix_variables An array of Sciantix variable values.
+ * @param toOutputRadioactiveFG Flag for outputting radioactive fission gas information.
+ * @param toOutputVenting Flag for outputting venting information.
+ * @param toOutputHelium Flag for outputting helium information.
+ * @param toOutputCracking Flag for outputting cracking information.
+ * @param toOutputGrainBoundary Flag for outputting grain boundary information.
+ * @param toOutputHighBurnupStructure Flag for outputting high burnup structure information.
+ * @param toOutputStoichiometryDeviation Flag for outputting stoichiometry deviation information.
+ * @param toOutputChromiumContent Flag for outputting chromium content information.
+ * @param toOutputThermochimica Flag for outputting thermochemical information.
+ * @param toOutputMOX Flag for outputting MOX fuel information.
+ * @return A vector of SciantixVariable objects initialized with the given values and flags.
+ */
 std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variables[],
                                                          bool   toOutputRadioactiveFG,
                                                          bool   toOutputVenting,
@@ -90,6 +122,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputHighBurnupStructure,
                                                          bool   toOutputStoichiometryDeviation,
                                                          bool   toOutputChromiumContent,
+                                                         // CODE DEVELOPMENT : flags
                                                          bool   toOutputThermochimica,
                                                          bool   toOutputMOX)
 {
@@ -177,7 +210,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable(
             "Kr85m released", "(at/m3)", Sciantix_variables[63], Sciantix_variables[63], toOutputRadioactiveFG),
         SciantixVariable("Kr85m R/B", "(/)", 0.0, 0.0, toOutputRadioactiveFG),
-
+        
+        // CODE DEVELOPMENT : VOLATILE FP VARIABLES - TO BE REDUCED
         SciantixVariable("Cs produced", "(at/m3)", Sciantix_variables[101], Sciantix_variables[101], toOutputThermochimica),
         SciantixVariable("Cs in grain", "(at/m3)", Sciantix_variables[102], Sciantix_variables[102],  toOutputThermochimica),
         SciantixVariable("Cs in intragranular solution", "(at/m3)", Sciantix_variables[103], Sciantix_variables[103], toOutputThermochimica),
@@ -210,7 +244,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("Te reacted - GB", "(at/m3)", Sciantix_variables[127], Sciantix_variables[127],  toOutputThermochimica),
         SciantixVariable("Intragranular Te atoms per bubble", "(at/bub)", Sciantix_variables[128], Sciantix_variables[128], 0),
         SciantixVariable("Intergranular Te atoms per bubble", "(at/bub)", Sciantix_variables[129], Sciantix_variables[129], 0),
-
+        
+        // CODE DEVELOPMENT : MO VARIABLE - TO BE REDUCED
         SciantixVariable("Mo produced", "(at/m3)", Sciantix_variables[131], Sciantix_variables[131],  toOutputThermochimica),
         SciantixVariable("Mo in grain", "(at/m3)", Sciantix_variables[132], Sciantix_variables[132],  toOutputThermochimica),
         SciantixVariable("Mo in intragranular solution", "(at/m3)", Sciantix_variables[133], Sciantix_variables[133],  toOutputThermochimica),
@@ -221,7 +256,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("Mo reacted - GB", "(at/m3)", Sciantix_variables[137], Sciantix_variables[137],  toOutputThermochimica),
         SciantixVariable("Intragranular Mo atoms per bubble", "(at/bub)", Sciantix_variables[138], Sciantix_variables[138], 0),
         SciantixVariable("Intergranular Mo atoms per bubble", "(at/bub)", Sciantix_variables[139], Sciantix_variables[139], 0),
-
+        //
+        
         SciantixVariable("Intragranular bubble concentration", "(bub/m3)", Sciantix_variables[19], Sciantix_variables[19], 1),
         SciantixVariable("Intragranular bubble radius", "(m)", Sciantix_variables[20], Sciantix_variables[20], 1),
         SciantixVariable("Intragranular bubble volume", "(m3)", 0.0, 0.0, 0),
@@ -317,7 +353,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("U236", "(at/m3)", Sciantix_variables[43], Sciantix_variables[43], 0),
         SciantixVariable("U237", "(at/m3)", Sciantix_variables[44], Sciantix_variables[44], 0),
         SciantixVariable("U238", "(at/m3)", Sciantix_variables[45], Sciantix_variables[45], 1),
-        
+            
+        // CODE DEVELOPMENT : MOX FUEL VARIABLES
         SciantixVariable("Pu",
                     "(at/m3)",
                     Sciantix_variables[171] + Sciantix_variables[172] + Sciantix_variables[173] +
@@ -331,7 +368,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("Pu241", "(at/m3)", Sciantix_variables[174], Sciantix_variables[174], toOutputMOX),
         SciantixVariable("Pu242", "(at/m3)", Sciantix_variables[175], Sciantix_variables[175], toOutputMOX),
         SciantixVariable("q", "(-)", Sciantix_variables[177], Sciantix_variables[177], toOutputMOX),
-
+        //
+        
         SciantixVariable(
             "Intergranular vented fraction", "(/)", Sciantix_variables[46], Sciantix_variables[46], toOutputVenting),
         SciantixVariable(
@@ -354,7 +392,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          "(/)",
                          Sciantix_variables[66],
                          Sciantix_variables[66],
-                         toOutputStoichiometryDeviation || toOutputThermochimica),
+                         toOutputStoichiometryDeviation),
         SciantixVariable("Equilibrium stoichiometry deviation", "(/)", 0.0, 0.0, toOutputStoichiometryDeviation),
 
         SciantixVariable("Fuel oxygen partial pressure",
@@ -362,6 +400,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[67],
                          Sciantix_variables[67],
                          toOutputStoichiometryDeviation || toOutputThermochimica),
+        // CODE DEVELOPMENT : FUEL OXYGEN PARTIAL PRESSURE - TO BE REDUCED, ONLY FOR PURPOSE OF VERIFICATION
         SciantixVariable("Fuel oxygen partial pressure - Blackburn",
                          "(MPa)",
                          0.0,
@@ -393,6 +432,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          0.0,
                          0.0,
                          toOutputThermochimica),
+        //
         SciantixVariable("Specific power", "(MW/kg)", 0.0, 0.0, 0),
 
         SciantixVariable(
@@ -448,11 +488,17 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
             "Chromia precipitate", "(at/m3)", Sciantix_variables[158], Sciantix_variables[158], toOutputChromiumContent),
 
         SciantixVariable("Diffusion coefficient", "(m2/s)", Sciantix_variables[160], Sciantix_variables[160], 0),
+
+        // CODE DEVELOPMENT : U, PU, OX CONTENT VARIABLES
+        // WITH RESPECT TO THE AT/M3 THESE ARE ALLOWED TO CHANGE WITH BURNUP
         SciantixVariable("U content", "(mol/m3)", Sciantix_variables[161], Sciantix_variables[161],  toOutputThermochimica),
         SciantixVariable("O content", "(mol/m3)", Sciantix_variables[162], Sciantix_variables[162],  toOutputThermochimica),
         SciantixVariable("Pu content", "(mol/m3)", Sciantix_variables[163], Sciantix_variables[163],  toOutputThermochimica && toOutputMOX),
-
+        
+        // CODE DEVELOPMENT : USELESS ?
         SciantixVariable("Initial grain radius", "(mol)", Sciantix_variables[170], Sciantix_variables[170],  toOutputThermochimica),
+        
+        // CODE DEVELOPMENT : JOG VARIABLES - TO BE REDUCED, ONLY FOR PURPOSE OF MODELLING
         SciantixVariable("JOG", "(/)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("JOG from condensed", "(/)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("JOG from liquid", "(/)", 0.0, 0.0, toOutputThermochimica),
@@ -468,6 +514,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
     return init_sciantix_variable;
 }
 
+// CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES
 std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
     const std::vector<ThermochemistryManifestEntry>& manifest,
     double Sciantix_thermochemistry[]
@@ -492,6 +539,7 @@ std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
 
     return init_thermochemistry_variable;
 }
+//
 
 std::vector<std::string> getScalingFactorsNames()
 {
@@ -503,9 +551,9 @@ std::vector<std::string> getScalingFactorsNames()
         "Diffusivity2",
         "Temperature",
         "Fission rate",
-        "Cent parameter",
         "Helium production rate",
-        "Dummy"};
+        "Dummy",
+    };
 
     return names;
 }

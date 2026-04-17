@@ -78,6 +78,7 @@ void Simulation::GrainBoundaryVenting()
 
         case 3:
         {
+            // CODE DEVELOPMENT : UNDER REVIEW
             double open_porosity = openPorosity(sciantix_variable["Fabrication porosity"].getFinalValue());
             sciantix_variable["Open porosity"].setFinalValue(open_porosity);
 
@@ -113,12 +114,9 @@ void Simulation::GrainBoundaryVenting()
     for (auto& system : sciantix_system)
     {
         sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-            solver.Integrator(
-                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue(),
-                - sciantix_variable["Intergranular venting probability"].getFinalValue(),
-                sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement()
-            )
-        );
+            solver.Integrator(sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue(),
+                              -sciantix_variable["Intergranular venting probability"].getFinalValue(),
+                              sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement()));
     }
 }
 

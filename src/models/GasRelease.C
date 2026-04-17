@@ -17,10 +17,11 @@
 #include "Simulation.h"
 
 void Simulation::GasRelease()
-{    
+{
     // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
     for (auto& system : sciantix_system)
     {
+        // CODE DEVELOPMENT : CHEMICALLY ACTIVE FP (VOLATILE DIFFUSION)
         if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 0.0)
         {
             sciantix_variable[system.getGasName() + " released"].setFinalValue(
@@ -46,6 +47,7 @@ void Simulation::GasRelease()
             if (sciantix_variable[system.getGasName() + " released"].getFinalValue() < 0.0)
                 sciantix_variable[system.getGasName() + " released"].setFinalValue(0.0);
         }
+        //
     }
 
     // Intergranular gaseous swelling

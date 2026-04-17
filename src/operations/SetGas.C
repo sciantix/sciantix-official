@@ -22,12 +22,15 @@ void Simulation::setGas()
     xenon(gas);
     krypton(gas);
     helium(gas);
+    // CODE DEVELOPMENT : VOLATILE FISSION PRODUCTS TO BE MOVED TO A SEPARATE FUNCTION ?
     caesium(gas);
     iodine(gas);
     tellurium(gas);
+    // CODE DEVELOPMENT : TO BE MOVED TO A SEPARATE FUNCTION FOR METALLIC FISSION PRODUCTS
     molybdenum(gas);
 }
 
+// CODE DEVELOPMENT : CHEMICALLY ACTIVE FLAG 
 void xenon(SciantixArray<Gas>& gas)
 {
     Gas gas_;
@@ -79,6 +82,7 @@ void helium(SciantixArray<Gas>& gas)
     gas.push(gas_);
 }
 
+// CODE DEVELOPMENT : VOLATILE FISSION PRODUCTS TO BE MOVED TO A SEPARATE FUNCTION ?
 // Data from JEFF-3.3 if not specified, to be verified the volumes
 
 void caesium(SciantixArray<Gas> &gas)
@@ -119,6 +123,7 @@ void tellurium(SciantixArray<Gas> &gas)
     gas_.setPrecursorFactor(1.00);
     gas.push(gas_);
 }
+// CODE DEVELOPMENT : TO BE MOVED TO A SEPARATE FUNCTION FOR METALLIC FISSION PRODUCTS
 void molybdenum(SciantixArray<Gas> &gas) 
 {
     Gas gas_;

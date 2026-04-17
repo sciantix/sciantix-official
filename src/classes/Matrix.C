@@ -16,6 +16,9 @@
 
 #include "Matrix.h"
 
+// CODE DEVELOPMENT : FUNCTIONS TO CALCULATE MEAN MOLAR MASSES AND CHROMIUM MOLE FRACTION
+// PREVIOUSLY DIRECTLY CALCULATED IN THE FUNCTIONS WHEN NEEDED,
+// NOW DEFINED AS SEPARATE FUNCTIONS TO AVOID CODE DUPLICATION AND IMPROVE CLARITY
 namespace
 {
 double GetMeanUraniumMolarMass(SciantixArray<SciantixVariable> &sciantix_variable)
@@ -70,6 +73,7 @@ double GetMeanPlutoniumMolarMass(SciantixArray<SciantixVariable> &sciantix_varia
            Pu_tot;
 }
 }
+// 
 
 void Matrix::setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVariable>& history_variable)
 {
@@ -187,6 +191,9 @@ void Matrix::setPoreTrappingRate(SciantixArray<Matrix>& matrices, SciantixArray<
                          (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
 }
 
+// CODE DEVELOPMENT : CRYSTAL PROPERTIES SUBSTITUTES LATTICE PARAMETER AND DENSITY FUNCTIONS
+// SUCH FUNCTIONS WERE PREVIOUSLY CALCULATED WITHIN THE SIMULATION
+// NOW THEY ARE CALCULATED WITHIN THE MATRIX CLASS
 void Matrix::setCrystalProperties(SciantixArray<SciantixVariable> &sciantix_variable)
 {
     lattice_parameter = 5.47109e-10; // m UO2

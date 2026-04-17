@@ -18,14 +18,14 @@
 #include "MainVariables.h"
 #include "Simulation.h"
 
-void Simulation::setVariables(
-    int Sciantix_options[],
-    double Sciantix_history[],
-    double Sciantix_variables[],
-    double Sciantix_scaling_factors[],
-    double Sciantix_diffusion_modes[],
-    double Sciantix_thermochemistry[],
-    std::vector<std::vector<std::string>> Sciantix_thermochemistry_options
+void Simulation::setVariables(int    Sciantix_options[],
+                              double Sciantix_history[],
+                              double Sciantix_variables[],
+                              double Sciantix_scaling_factors[],
+                              double Sciantix_diffusion_modes[],
+                              // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
+                              double Sciantix_thermochemistry[],
+                              std::vector<std::vector<std::string>> Sciantix_thermochemistry_options
 )
 {
     // Input variable
@@ -46,8 +46,9 @@ void Simulation::setVariables(
          toOutputGrainBoundary          = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
          toOutputHighBurnupStructure    = input_variable["iHighBurnupStructureFormation"].getValue() == 1,
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
-         toOutputPrescribedOMRatio      = input_variable["iStoichiometryDeviation"].getValue() == 9,
          toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0,
+         // CODE DEVELOPMENT : flags
+         toOutputPrescribedOMRatio      = input_variable["iStoichiometryDeviation"].getValue() == 9,
          toOutputThermochimica          = input_variable["iThermochimica"].getValue() != 0,
          toOutputMOX                    = input_variable["iFuelMatrix"].getValue() == 2;
 
@@ -59,6 +60,7 @@ void Simulation::setVariables(
         Sciantix_history,
         Sciantix_scaling_factors,
         toOutputStoichiometryDeviation,
+        // CODE DEVELOPMENT : flags
         toOutputThermochimica,
         toOutputPrescribedOMRatio
     );
@@ -69,26 +71,26 @@ void Simulation::setVariables(
     }
 
     // Sciantix variable
-    values = initializeSciantixVariable(
-            Sciantix_variables,
-            toOutputRadioactiveFG,
-            toOutputVenting,
-            toOutputHelium,
-            toOutputCracking,
-            toOutputGrainBoundary,
-            toOutputHighBurnupStructure,
-            toOutputStoichiometryDeviation,
-            toOutputChromiumContent,
-            toOutputThermochimica,
-            toOutputMOX
-        );
+    values = initializeSciantixVariable(Sciantix_variables,
+                                        toOutputRadioactiveFG,
+                                        toOutputVenting,
+                                        toOutputHelium,
+                                        toOutputCracking,
+                                        toOutputGrainBoundary,
+                                        toOutputHighBurnupStructure,
+                                        toOutputStoichiometryDeviation,
+                                        toOutputChromiumContent,
+                                        // CODE DEVELOPMENT : flags
+                                        toOutputThermochimica,
+                                        toOutputMOX
+                                    );
 
     for (SciantixVariable initial_value : values)
     {
         sciantix_variable.push(initial_value);
     }
 
-    // Sciantix variable
+    // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES
     std::vector<ThermochemistryVariable> values_th;
     if (toOutputThermochimica)
     {
@@ -119,6 +121,7 @@ void Simulation::setVariables(
     // Diffusion modes
     for (int i = 0; i < n_modes; ++i)
     {
+        // CODE DEVELOPMENT : FROM 17 TO 30 DIFFUSION MODES
         for (int j = 0; j <= 30; j++)
         {
             modes_initial_conditions[j * n_modes + i] = Sciantix_diffusion_modes[j * n_modes + i];

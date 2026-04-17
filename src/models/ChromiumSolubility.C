@@ -217,6 +217,7 @@ void Simulation::ChromiumSolubility()
     sciantix_variable["Chromia solution"].setFinalValue(Cr203_solution);
     sciantix_variable["Chromia precipitate"].setFinalValue(Cr2O3_precipitate);
 
+    // CODE DEVELOPMENT : GENERALIZATION FROM UO2 TO ALL MATRICES
     matrices[0].setChromiumSolubility(Cr_solubility);
     matrices[0].setChromiaSolubility(Cr2O3_solubility);
     matrices[0].setChromiumSolution(Cr_solution);
