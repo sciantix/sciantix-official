@@ -8,36 +8,20 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Version: under development                                                      //
+//  Year: 2026                                                                      //
+//  Authors: D. Pizzocri, G. Zullo, E.Cappellari                                    //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef SET_GAS_H
-#define SET_GAS_H
+#ifndef SET_FISSION_PRODUCTS_H
+#define SET_FISSION_PRODUCTS_H
 
-#include "Gas.h"
+#include "FissionProducts.h"
 #include "SciantixArray.h"
-#include <vector>
 
-/**
- * @brief Sets up the gas properties in the simulation.
- *
- * This function initializes and maps properties for Xenon, Krypton, and Helium gases
- * used in the simulation. Each gas is set up with specific attributes and then mapped
- * for easy access throughout the simulation.
- *
- * @author G. Zullo
- * @author F. Bastien
- */
+void SetGasFPs(SciantixArray<FissionProducts>& gas_fp);
+void SetVolatileFPs(SciantixArray<FissionProducts>& volatile_fp);
+void SetMetallicFPs(SciantixArray<FissionProducts>& metallic_fp);
 
-void xenon(SciantixArray<Gas>& gas);
-void krypton(SciantixArray<Gas>& gas);
-void helium(SciantixArray<Gas>& gas);
-void caesium(SciantixArray<Gas>& gas);
-void iodine(SciantixArray<Gas>& gas);
-void tellurium(SciantixArray<Gas>& gas);
-void molybdenum(SciantixArray<Gas>& gas);
-
-#endif  // SET_GAS_H
+#endif  // SET_FISSION_PRODUCTS_H

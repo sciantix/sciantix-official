@@ -14,20 +14,12 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#include "SetFissionProducts.h"
 #include "Simulation.h"
 
-void Simulation::GasDecay()
+void Simulation::setFissionProducts()
 {
-    // Model declaration
-    for (auto& system : sciantix_system)
-    {
-        if (system.getFissionProduct().getDecayRate() > 0.0 && system.getRestructuredMatrix() == 0)
-        {
-            sciantix_variable[system.getFissionProductName() + " decayed"].setFinalValue(solver.Decay(
-                sciantix_variable[system.getFissionProductName() + " decayed"].getInitialValue(),
-                system.getFissionProduct().getDecayRate(),
-                system.getFissionProduct().getDecayRate() * sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue(),
-                physics_variable["Time step"].getFinalValue()));
-        }
-    }
+    SetGasFPs(gas_fp);
+    SetVolatileFPs(volatile_fp);
+    SetMetallicFPs(metallic_fp);
 }

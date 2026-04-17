@@ -50,21 +50,67 @@ double System::getRadiusInLattice()
     return radius_in_lattice;
 }
 
-void System::setGas(Gas g)
+void System::setGas(FissionProducts g_fp)
 {
-    /// Member function to set the name of the gas in the matrix
-    gas = g;
+    gas_fp = g_fp;
 }
 
-Gas System::getGas()
+void System::setVolatileFP(FissionProducts v_fp)
 {
-    return gas;
+    volatile_fp = v_fp;
+}
+
+void System::setMetallicFP(FissionProducts m_fp)
+{
+    metallic_fp = m_fp;
+}
+
+FissionProducts System::getGas()
+{
+    return gas_fp;
+}
+
+FissionProducts System::getVolatileFP()
+{
+    return volatile_fp;
+}
+
+FissionProducts System::getMetallicFP()
+{
+    return metallic_fp;
 }
 
 std::string System::getGasName()
 {
-    /// Member function to get the name of the gas in the matrix
-    return gas.getName();
+    return gas_fp.getName();
+}
+
+std::string System::getVolatileFPName()
+{
+    return volatile_fp.getName();
+}
+
+std::string System::getMetallicFPName()
+{
+    return metallic_fp.getName();
+}
+
+FissionProducts System::getFissionProduct()
+{
+    if (!gas_fp.getName().empty())
+        return gas_fp;
+    if (!volatile_fp.getName().empty())
+        return volatile_fp;
+    return metallic_fp;
+}
+
+std::string System::getFissionProductName()
+{
+    if (!gas_fp.getName().empty())
+        return gas_fp.getName();
+    if (!volatile_fp.getName().empty())
+        return volatile_fp.getName();
+    return metallic_fp.getName();
 }
 
 void System::setMatrix(Matrix m)

@@ -587,11 +587,11 @@ void releaseGrainBoundarySpecies(SciantixArray<System>& sciantix_system,
 {
     for (auto& system : sciantix_system)
     {
-        if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1.0)
+        if (system.getRestructuredMatrix() == 0 && system.getFissionProduct().getChemicallyActive() == 1.0)
         {
-            sciantix_variable[system.getGasName() + " at grain boundary"].addValue(
-                sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue());
-            sciantix_variable[system.getGasName() + " reacted - GB"].setFinalValue(0.0);
+            sciantix_variable[system.getFissionProductName() + " at grain boundary"].addValue(
+                sciantix_variable[system.getFissionProductName() + " reacted - GB"].getFinalValue());
+            sciantix_variable[system.getFissionProductName() + " reacted - GB"].setFinalValue(0.0);
         }
     }
 }
