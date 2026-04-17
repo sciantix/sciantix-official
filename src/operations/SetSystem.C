@@ -61,50 +61,50 @@ void Simulation::setSystem()
     switch ((int)input_variable["iFuelMatrix"].getValue())
     {
         case 0:
-            sciantix_system.push(Xe_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Kr_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(He_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Xe133_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Kr85m_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Xe_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Kr_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(He_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Xe133_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Kr85m_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 
             if (selected_fission_products.count("Cs") > 0)
-                sciantix_system.push(Cs_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+                sciantix_system.push(Cs_in_UO2(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 
             if (selected_fission_products.count("I") > 0)
-                sciantix_system.push(I_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+                sciantix_system.push(I_in_UO2(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 
             if (selected_fission_products.count("Te") > 0)
-                sciantix_system.push(Te_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+                sciantix_system.push(Te_in_UO2(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 
             if (selected_fission_products.count("Mo") > 0)
-                sciantix_system.push(Mo_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+                sciantix_system.push(Mo_in_UO2(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             break;
 
         case 1:
             sciantix_system.push(
-                Xe_in_UO2(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+                Xe_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(
-                Xe_in_UO2HBS(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+                Xe_in_UO2HBS(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             break;
 
         case 2:
-            sciantix_system.push(Xe_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Kr_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(He_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Xe133_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(Kr85m_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Xe_in_MOX(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Kr_in_MOX(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(He_in_MOX(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Xe133_in_MOX(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Kr85m_in_MOX(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 
             if (selected_fission_products.count("Cs") > 0)
-                sciantix_system.push(Cs_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+                sciantix_system.push(Cs_in_MOX(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 
             if (selected_fission_products.count("I") > 0)
-                sciantix_system.push(I_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+                sciantix_system.push(I_in_MOX(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 
             if (selected_fission_products.count("Te") > 0)
-                sciantix_system.push(Te_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+                sciantix_system.push(Te_in_MOX(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 
             if (selected_fission_products.count("Mo") > 0)
-                sciantix_system.push(Mo_in_MOX(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
+                sciantix_system.push(Mo_in_MOX(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             break;
 
         default:
@@ -113,7 +113,7 @@ void Simulation::setSystem()
 }
 
 System Xe_in_UO2(SciantixArray<Matrix>&           matrices,
-                 SciantixArray<Gas>&              gas,
+                 SciantixArray<FissionProducts>&  gas_fp,
                  SciantixArray<InputVariable>&    input_variable,
                  SciantixArray<SciantixVariable>& sciantix_variable,
                  SciantixArray<SciantixVariable>& history_variable,
@@ -122,7 +122,7 @@ System Xe_in_UO2(SciantixArray<Matrix>&           matrices,
     System system_;
 
     system_.setName("Xe in UO2");
-    system_.setGas(gas["Xe"]);
+    system_.setGas(gas_fp["Xe"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.24);
@@ -146,7 +146,7 @@ System Xe_in_UO2(SciantixArray<Matrix>&           matrices,
 }
 
 System Xe_in_UO2HBS(SciantixArray<Matrix>&           matrices,
-                    SciantixArray<Gas>&              gas,
+                    SciantixArray<FissionProducts>&  gas_fp,
                     SciantixArray<InputVariable>&    input_variable,
                     SciantixArray<SciantixVariable>& sciantix_variable,
                     SciantixArray<SciantixVariable>& history_variable,
@@ -155,7 +155,7 @@ System Xe_in_UO2HBS(SciantixArray<Matrix>&           matrices,
     System system_;
 
     system_.setName("Xe in UO2HBS");
-    system_.setGas(gas["Xe"]);
+    system_.setGas(gas_fp["Xe"]);
     system_.setMatrix(matrices["UO2HBS"]);
     system_.setRestructuredMatrix(1);
     system_.setYield(0.24);
@@ -173,7 +173,7 @@ System Xe_in_UO2HBS(SciantixArray<Matrix>&           matrices,
 }
 
 System Kr_in_UO2(SciantixArray<Matrix>&           matrices,
-                 SciantixArray<Gas>&              gas,
+                 SciantixArray<FissionProducts>&  gas_fp,
                  SciantixArray<InputVariable>&    input_variable,
                  SciantixArray<SciantixVariable>& sciantix_variable,
                  SciantixArray<SciantixVariable>& history_variable,
@@ -182,7 +182,7 @@ System Kr_in_UO2(SciantixArray<Matrix>&           matrices,
     System system_;
 
     system_.setName("Kr in UO2");
-    system_.setGas(gas["Kr"]);
+    system_.setGas(gas_fp["Kr"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.03);
@@ -206,7 +206,7 @@ System Kr_in_UO2(SciantixArray<Matrix>&           matrices,
 }
 
 System He_in_UO2(SciantixArray<Matrix>&           matrices,
-                 SciantixArray<Gas>&              gas,
+                 SciantixArray<FissionProducts>&  gas_fp,
                  SciantixArray<InputVariable>&    input_variable,
                  SciantixArray<SciantixVariable>& sciantix_variable,
                  SciantixArray<SciantixVariable>& history_variable,
@@ -215,7 +215,7 @@ System He_in_UO2(SciantixArray<Matrix>&           matrices,
     System system_;
 
     system_.setName("He in UO2");
-    system_.setGas(gas["He"]);
+    system_.setGas(gas_fp["He"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setHenryConstant(
         4.1e+18 * exp(-7543.5 / history_variable["Temperature"]
@@ -248,7 +248,7 @@ System He_in_UO2(SciantixArray<Matrix>&           matrices,
 }
 
 System Xe133_in_UO2(SciantixArray<Matrix>&           matrices,
-                    SciantixArray<Gas>&              gas,
+                    SciantixArray<FissionProducts>&  gas_fp,
                     SciantixArray<InputVariable>&    input_variable,
                     SciantixArray<SciantixVariable>& sciantix_variable,
                     SciantixArray<SciantixVariable>& history_variable,
@@ -257,7 +257,7 @@ System Xe133_in_UO2(SciantixArray<Matrix>&           matrices,
     System system_;
 
     system_.setName("Xe133 in UO2");
-    system_.setGas(gas["Xe133"]);
+    system_.setGas(gas_fp["Xe133"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.066534);           // from JEFF-3.3 library
@@ -281,7 +281,7 @@ System Xe133_in_UO2(SciantixArray<Matrix>&           matrices,
 }
 
 System Kr85m_in_UO2(SciantixArray<Matrix>&           matrices,
-                    SciantixArray<Gas>&              gas,
+                    SciantixArray<FissionProducts>&  gas_fp,
                     SciantixArray<InputVariable>&    input_variable,
                     SciantixArray<SciantixVariable>& sciantix_variable,
                     SciantixArray<SciantixVariable>& history_variable,
@@ -290,7 +290,7 @@ System Kr85m_in_UO2(SciantixArray<Matrix>&           matrices,
     System system_;
 
     system_.setName("Kr85m in UO2");
-    system_.setGas(gas["Kr85m"]);
+    system_.setGas(gas_fp["Kr85m"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.013027);
@@ -314,13 +314,13 @@ System Kr85m_in_UO2(SciantixArray<Matrix>&           matrices,
 }
 
 // CODE DEVELOPMENT : TO BE MOVED TO A SEPARATE FUNCTION FOR METALLIC FISSION PRODUCTS?
-System Cs_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+System Cs_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &volatile_fp, SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
 
     system_.setName("Cs in UO2");
-    system_.setGas(gas["Cs"]);
+    system_.setVolatileFP(volatile_fp["Cs"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.17); //Cs from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
@@ -337,13 +337,13 @@ System Cs_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     return system_;
 }
 
-System I_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+System I_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &volatile_fp, SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
 
     system_.setName("I in UO2");
-    system_.setGas(gas["I"]);
+    system_.setVolatileFP(volatile_fp["I"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.0);
@@ -360,13 +360,13 @@ System I_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sciant
     return system_;
 }
 
-System Te_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+System Te_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &volatile_fp, SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
 
     system_.setName("Te in UO2");
-    system_.setGas(gas["Te"]);
+    system_.setVolatileFP(volatile_fp["Te"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.0);
@@ -383,13 +383,13 @@ System Te_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     return system_;
 }
 
-System Mo_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+System Mo_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &metallic_fp, SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
 
     system_.setName("Mo in UO2");
-    system_.setGas(gas["Mo"]);
+    system_.setMetallicFP(metallic_fp["Mo"]);
     system_.setMatrix(matrices["UO2"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.220); //Mo from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
@@ -410,13 +410,13 @@ System Mo_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
 
 // MOX
 
-System Xe_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+System Xe_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &gas_fp, SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
 
     system_.setName("Xe in MOX");
-    system_.setGas(gas["Xe"]);
+    system_.setGas(gas_fp["Xe"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.24); 
@@ -433,13 +433,13 @@ System Xe_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     return system_;
 }
 
-System Kr_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+System Kr_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &gas_fp, SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
 
     system_.setName("Kr in MOX");
-    system_.setGas(gas["Kr"]);
+    system_.setGas(gas_fp["Kr"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.03);
@@ -456,13 +456,13 @@ System Kr_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     return system_;
 }
 
-System He_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+System He_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &gas_fp, SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
 
     system_.setName("He in MOX");
-    system_.setGas(gas["He"]);
+    system_.setGas(gas_fp["He"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setHenryConstant(4.1e+18 * exp(-7543.5 / history_variable["Temperature"].getFinalValue())); // from Matzke, JNM 65 (1977) 89-106, correlation used for UO2 and MOX
     system_.setRestructuredMatrix(0);
@@ -479,13 +479,13 @@ System He_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     return system_;
 }
 
-System Xe133_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+System Xe133_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &gas_fp, SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
 
     system_.setName("Xe133 in MOX");
-    system_.setGas(gas["Xe133"]);
+    system_.setGas(gas_fp["Xe133"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.066534); // from JEFF-3.3 library
@@ -502,13 +502,13 @@ System Xe133_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
     return system_;
 }
 
-System Kr85m_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+System Kr85m_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &gas_fp, SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
 
     system_.setName("Kr85m in MOX");
-    system_.setGas(gas["Kr85m"]);
+    system_.setGas(gas_fp["Kr85m"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.013027);
@@ -525,13 +525,13 @@ System Kr85m_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sc
     return system_;
 }
 
-System Cs_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+System Cs_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &volatile_fp, SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
 
     system_.setName("Cs in MOX");
-    system_.setGas(gas["Cs"]);
+    system_.setVolatileFP(volatile_fp["Cs"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.17); // Cs from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
@@ -548,13 +548,13 @@ System Cs_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     return system_;
 }
 
-System I_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+System I_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &volatile_fp, SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
 
     system_.setName("I in MOX");
-    system_.setGas(gas["I"]);
+    system_.setVolatileFP(volatile_fp["I"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.0);
@@ -571,13 +571,13 @@ System I_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Sciant
     return system_;
 }
 
-System Te_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+System Te_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &volatile_fp, SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
 
     system_.setName("Te in MOX");
-    system_.setGas(gas["Te"]);
+    system_.setVolatileFP(volatile_fp["Te"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.0);
@@ -594,13 +594,13 @@ System Te_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, Scian
     return system_;
 }
 
-System Mo_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<Gas> &gas, SciantixArray<InputVariable> &input_variable,
+System Mo_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &metallic_fp, SciantixArray<InputVariable> &input_variable,
     SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
 
     system_.setName("Mo in MOX");
-    system_.setGas(gas["Mo"]);
+    system_.setMetallicFP(metallic_fp["Mo"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
     system_.setYield(0.22); //Mo from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)

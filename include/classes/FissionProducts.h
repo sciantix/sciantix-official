@@ -8,41 +8,40 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Version: under development                                                      //
+//  Year: 2026                                                                      //
+//  Authors: D. Pizzocri, G. Zullo, E.Cappellari                                    //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GAS_H
-#define GAS_H
+#ifndef FISSION_PRODUCTS_H
+#define FISSION_PRODUCTS_H
 
 #include "Material.h"
 
 /**
- * @class Gas
- * @brief A derived class from Material, specifically for modeling fission gases like xenon,
- * krypton, and helium.
+ * @class FissionProducts
+ * @brief A derived class from Material, specifically for modeling fission products.
  *
- * This class extends the Material class to include specific properties that are unique to gases
+ * This class extends the Material class to include specific properties that are unique to fission products
  * used in fission processes, such as atomic number, mass number, Van der Waals volume, decay rate,
  * and a precursor factor.
  *
- * @author G. Zullo
+ * @author G. Zullo, E. Cappellari
  */
-class Gas : virtual public Material
+class FissionProducts : virtual public Material
 {
   protected:
     int    atomic_number;
     double mass_number;
     double van_der_waals_volume;
     double decay_rate;
-    double chemically_active;
     double precursor_factor;
+    bool chemically_active;
 
   public:
     /**
-     * @brief Sets the atomic number of the gas.
+     * @brief Sets the atomic number of the fission product.
      * @param y The atomic number to be set.
      */
     void setAtomicNumber(int y)
@@ -51,8 +50,8 @@ class Gas : virtual public Material
     }
 
     /**
-     * @brief Returns the atomic number of the gas.
-     * @return The atomic number of the gas.
+     * @brief Returns the atomic number of the fission product.
+     * @return The atomic number of the fission product.
      */
     int getAtomicNumber()
     {
@@ -60,7 +59,7 @@ class Gas : virtual public Material
     }
 
     /**
-     * @brief Sets the mass number of the gas.
+     * @brief Sets the mass number of the fission product.
      * @param y The mass number to be set.
      */
     void setMassNumber(double y)
@@ -69,8 +68,8 @@ class Gas : virtual public Material
     }
 
     /**
-     * @brief Returns the mass number of the gas.
-     * @return The mass number of the gas.
+     * @brief Returns the mass number of the fission product.
+     * @return The mass number of the fission product.
      */
     double getMassNumber()
     {
@@ -96,7 +95,7 @@ class Gas : virtual public Material
     }
 
     /**
-     * @brief Sets the decay rate of the gas.
+     * @brief Sets the decay rate of the fission product.
      * @param l The decay rate to be set.
      */
     void setDecayRate(double l)
@@ -105,30 +104,12 @@ class Gas : virtual public Material
     }
 
     /**
-     * @brief Returns the decay rate of the gas.
-     * @return The decay rate of the gas.
+     * @brief Returns the decay rate of the fission product.
+     * @return The decay rate of the fission product.
      */
     double getDecayRate()
     {
         return decay_rate;
-    }
-
-    /**
-     * @brief
-     * @param g
-     */
-    void setChemicallyActive(double g)
-    {
-        chemically_active = g;
-    }
-
-    /**
-     * @brief 
-     * @return 
-     */
-    double getChemicallyActive()
-    {
-        return chemically_active;
     }
 
     /**
@@ -142,7 +123,7 @@ class Gas : virtual public Material
 
     /**
      * @brief Returns the precursor factor for nuclear reactions.
-     * @return The precursor factor of the gas.
+     * @return The precursor factor of the fission product.
      */
     double getPrecursorFactor()
     {
@@ -150,18 +131,36 @@ class Gas : virtual public Material
     }
 
     /**
+     * @brief Sets whether the fission product is chemically active.
+     */
+    void setChemicallyActive(bool g)
+    {
+        chemically_active = g;
+    }
+
+    /**
+     * @brief Returns whether the fission product is chemically active.
+     * @return The chemical activity of the fission product.
+     */
+    double getChemicallyActive()
+    {
+        return chemically_active;
+    }
+
+    /**
      * @brief Constructor
      */
-    Gas()
+    FissionProducts()
     {
     }
 
     /**
      * @brief Destructor
      */
-    ~Gas()
+    ~FissionProducts()
     {
     }
 };
 
-#endif  // GAS_H
+
+#endif  // FISSION_PRODUCTS_H

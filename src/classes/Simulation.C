@@ -50,7 +50,7 @@ void Simulation::initialize(int    Sciantix_options[],
             Sciantix_thermochemistry_options
     );
     //
-    setGas();
+    setFissionProducts();
     setMatrix();
     setSystem();
     setGPVariables(Sciantix_options, Sciantix_history, Sciantix_variables);

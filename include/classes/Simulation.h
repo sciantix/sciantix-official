@@ -52,7 +52,9 @@ class Simulation
     SciantixArray<Model>  model;
     SciantixArray<System> sciantix_system;
     SciantixArray<Matrix> matrices;
-    SciantixArray<Gas>    gas;
+    SciantixArray<FissionProducts>    gas_fp;
+    SciantixArray<FissionProducts>    volatile_fp;
+    SciantixArray<FissionProducts>    metallic_fp;
 
     SciantixArray<InputVariable> input_variable;
     SciantixArray<InputVariable> scaling_factors;
@@ -92,7 +94,7 @@ class Simulation
                       std::vector<std::vector<std::string>> Sciantix_thermochemistry_options
     );
 
-    void setGas();
+    void setFissionProducts();
     void setMatrix();
     void setSystem();
 
@@ -207,15 +209,6 @@ class Simulation
     void GrainGrowth();
 
     /**
-     * @brief Calculates the molar volume.
-     * @param compound the chemical compound for which to calculate the molar volume (as thermochemistry variable).
-     * @return the molar volume of the compound in m3/mol.
-     * 
-     * @author E. Cappellari
-     */
-    double MolarVolume(ThermochemistryVariable& compound, Matrix& fuel);
-    
-    /**
      * @brief Evolution models for intra-granular bubbles in fuel grains based on the value of
      * iIntraGranularBubbleBehavior.
      *
@@ -251,7 +244,7 @@ class Simulation
      *
      * @ref White, JNM, 325 (2004) 61-77
      * @ref Pastore, NED, (2013)
-     * @ref Cappellari, JNM (2025, under review)
+     * @ref Cappellari, JNM, (2025)
      *
      * @author D. Pizzocri
      * @author T. Barani

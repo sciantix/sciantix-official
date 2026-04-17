@@ -22,30 +22,30 @@ void Simulation::GasRelease()
     for (auto& system : sciantix_system)
     {
         // CODE DEVELOPMENT : CHEMICALLY ACTIVE FP (VOLATILE DIFFUSION)
-        if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 0.0)
+        if (system.getRestructuredMatrix() == 0 && system.getFissionProduct().getChemicallyActive() == 0.0)
         {
-            sciantix_variable[system.getGasName() + " released"].setFinalValue(
-                sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue()
+            sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(
+                sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue()
             );
 
-            if (sciantix_variable[system.getGasName() + " released"].getFinalValue() < 0.0)
-                sciantix_variable[system.getGasName() + " released"].setFinalValue(0.0);
+            if (sciantix_variable[system.getFissionProductName() + " released"].getFinalValue() < 0.0)
+                sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(0.0);
         }
-        if (system.getRestructuredMatrix() == 0 && system.getGas().getChemicallyActive() == 1.0)
+        if (system.getRestructuredMatrix() == 0 && system.getFissionProduct().getChemicallyActive() == 1.0)
         {
-            sciantix_variable[system.getGasName() + " released"].setFinalValue(
-                sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " reacted - GB"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue()
+            sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(
+                sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " reacted - GB"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue()
             );
 
-            if (sciantix_variable[system.getGasName() + " released"].getFinalValue() < 0.0)
-                sciantix_variable[system.getGasName() + " released"].setFinalValue(0.0);
+            if (sciantix_variable[system.getFissionProductName() + " released"].getFinalValue() < 0.0)
+                sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(0.0);
         }
         //
     }

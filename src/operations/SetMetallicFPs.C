@@ -8,26 +8,30 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Version: under development                                                                   //
+//  Year: 2026                                                                      //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari                                   //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "Simulation.h"
+#include "SetFissionProducts.h"
 
-void Simulation::GasDecay()
+static void molybdenum(SciantixArray<FissionProducts>& metallic_fp);
+
+void SetMetallicFPs(SciantixArray<FissionProducts>& metallic_fp)
 {
-    // Model declaration
-    for (auto& system : sciantix_system)
-    {
-        if (system.getFissionProduct().getDecayRate() > 0.0 && system.getRestructuredMatrix() == 0)
-        {
-            sciantix_variable[system.getFissionProductName() + " decayed"].setFinalValue(solver.Decay(
-                sciantix_variable[system.getFissionProductName() + " decayed"].getInitialValue(),
-                system.getFissionProduct().getDecayRate(),
-                system.getFissionProduct().getDecayRate() * sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue(),
-                physics_variable["Time step"].getFinalValue()));
-        }
-    }
+    molybdenum(metallic_fp);
+}
+
+static void molybdenum(SciantixArray<FissionProducts>& metallic_fp)
+{
+    FissionProducts metallic_;
+    metallic_.setName("Mo");
+    metallic_.setAtomicNumber(42);
+    metallic_.setVanDerWaalsVolume(3.66e-29); // to be checked
+    metallic_.setDecayRate(0.0); // stable
+    metallic_.setMassNumber(96); // to be checked
+    metallic_.setChemicallyActive(1.0);
+    metallic_.setPrecursorFactor(1.00);
+    metallic_fp.push(metallic_);
 }
