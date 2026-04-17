@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Version: under development                                                      //
+//  Year: 2026                                                                      //
+//  Authors: D. Pizzocri, G. Zullo, E.Cappellari                                    //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
