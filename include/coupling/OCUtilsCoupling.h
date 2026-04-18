@@ -87,8 +87,6 @@ bool tryGetOxygenMolesFromOutput(const std::string& output_file_path,
 
 bool useOxygenPotentialConstraint(const std::set<std::string>& manifest_elements);
 void dumpParsedOcOutput(const OCOutputData& output_data);
-void releaseGrainBoundarySpecies(SciantixArray<System>& sciantix_system,
-                                 SciantixArray<SciantixVariable>& sciantix_variable);
 bool writeOpenCalphadInput(const std::string& input_file_path,
                            const std::string& output_file_path,
                            const std::string& state_file_path,

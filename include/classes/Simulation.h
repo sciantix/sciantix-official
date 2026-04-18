@@ -146,40 +146,44 @@ class Simulation
     void EffectiveBurnup();
 
     /**
-     * @brief GasProduction computes the gas produced from the production rate.
+     * @brief FissionProductProduction computes the fission products produced from the production rate.
      *
      * @author D. Pizzocri
      * @author T. Barani
      * @author G. Zullo
+     * @author E. Cappellari
      *
      */
-    void GasProduction();
+    void FissionProductProduction();
 
     /**
-     * @brief Calculates the decayed amount of radioactive gases.
+     * @brief Calculates the decayed amount of radioactive fission products.
      *
      * @author G. Zullo
+     * @author E. Cappellari
      *
      */
-    void GasDecay();
+    void FissionProductDecay();
 
     /**
-     * @brief Calculates the gas released to the rod free volume.
+     * @brief Calculates the fission products released to the rod free volume.
      *
      * @author E. Cappellari
      *
      */
-    void GasRelease();
+    void FissionProductRelease();
 
     /**
-     * @brief Handles the intragranular gas diffusion problem.
+     * @brief Handles the intragranular volatile and gas diffusion problem.
      *
      * @author D. Pizzocri
      * @author T. Barani
      * @author G. Zullo
+     * @author E. Cappellari
+
      *
      */
-    void GasDiffusion();
+    void IntragranularDiffusion();
     
     /**
      * @brief Thermochemistry module, specific for a certain location.
@@ -267,7 +271,7 @@ class Simulation
 
     /**
      * @brief Calculates the fraction of cracked/healed grain-boundary faces after temperature
-     * transients, and the corresponding fission gas released.
+     * transients, and the corresponding fission products released.
      *
      * @author D. Pizzocri
      * @author T. Barani
@@ -287,7 +291,7 @@ class Simulation
     void Densification();
 
     /**
-     * @brief Calculates the amount of gas released due to venting processes.
+     * @brief Calculates the amount of fission product released due to venting processes.
      *
      * @author D. Pizzocri
      * @author T. Barani
@@ -309,7 +313,7 @@ class Simulation
     double openPorosity(double fabrication_porosity);
 
         /**
-     * @brief Calculates a corrective factor for the athermal fission gas release.
+     * @brief Calculates a corrective factor for the athermal fission product release.
      * @param open_porosity the open porosity of the fuel.
      * @param theta the grain-edge inclination angle.
      * @param porosity the as-fabricated porosity.
@@ -417,135 +421,135 @@ class Simulation
 
     /**
      * @brief This method returns a pointer to the array of diffusion modes corresponding to the
-     * specified gas.
-     * @param gas_name The name of the gas for which diffusion modes are required.
+     * specified gas/volatile FP.
+     * @param name The name of the gas/volatile FP for which diffusion modes are required.
      * @return A pointer to the array of diffusion modes for the specified gas, or nullptr for
      * invalid gas names.
      */
-    double* getDiffusionModes(std::string gas_name)
+    double* getDiffusionModes(std::string name)
     {
-        if (gas_name == "Xe")
+        if (name == "Xe")
             return &modes_initial_conditions[0];
-        else if (gas_name == "Kr")
+        else if (name == "Kr")
             return &modes_initial_conditions[3 * 40];
-        else if (gas_name == "He")
+        else if (name == "He")
             return &modes_initial_conditions[6 * 40];
-        else if (gas_name == "Xe133")
+        else if (name == "Xe133")
             return &modes_initial_conditions[9 * 40];
 
-        else if (gas_name == "Kr85m")
+        else if (name == "Kr85m")
             return &modes_initial_conditions[12 * 40];
 
-        else if (gas_name == "Xe in HBS")
+        else if (name == "Xe in HBS")
             return &modes_initial_conditions[15 * 40];
 
-        else if (gas_name == "Cs")
+        else if (name == "Cs")
             return &modes_initial_conditions[18 * 40];
             
-        else if (gas_name == "I")
+        else if (name == "I")
             return &modes_initial_conditions[21 * 40];
         
-        else if (gas_name == "Te")
+        else if (name == "Te")
             return &modes_initial_conditions[24 * 40];
         
-        else if (gas_name == "Mo")
+        else if (name == "Mo")
             return &modes_initial_conditions[27 * 40];
 
         else
         {
-            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes."
+            std::cerr << "Error: Invalid gas name \"" << name << "\" in Simulation::getDiffusionModes."
                       << std::endl;
             return nullptr;
         }
     }
 
     /**
-     * @brief Retrieves diffusion modes related to solutions for a specified gas.
-     * @param gas_name Name of the gas.
+     * @brief Retrieves diffusion modes related to solutions for a specified gas/volatile FP.
+     * @param name Name of the gas/volatile FP.
      * @return Pointer to the array of diffusion modes for solutions, or nullptr for invalid gas
      * names.
      */
-    double* getDiffusionModesSolution(std::string gas_name)
+    double* getDiffusionModesSolution(std::string name)
     {
-        if (gas_name == "Xe")
+        if (name == "Xe")
             return &modes_initial_conditions[1 * 40];
 
-        else if (gas_name == "Kr")
+        else if (name == "Kr")
             return &modes_initial_conditions[4 * 40];
 
-        else if (gas_name == "He")
+        else if (name == "He")
             return &modes_initial_conditions[7 * 40];
 
-        else if (gas_name == "Xe133")
+        else if (name == "Xe133")
             return &modes_initial_conditions[10 * 40];
 
-        else if (gas_name == "Kr85m")
+        else if (name == "Kr85m")
             return &modes_initial_conditions[13 * 40];
 
-        else if (gas_name == "Xe in HBS")
+        else if (name == "Xe in HBS")
             return &modes_initial_conditions[16 * 40];
 
-        else if (gas_name == "Cs")
+        else if (name == "Cs")
             return &modes_initial_conditions[19 * 40];
             
-        else if (gas_name == "I")
+        else if (name == "I")
             return &modes_initial_conditions[22 * 40];
 
-        else if (gas_name == "Te")
+        else if (name == "Te")
             return &modes_initial_conditions[25 * 40];
 
-        else if (gas_name == "Mo")
+        else if (name == "Mo")
             return &modes_initial_conditions[28 * 40];
             
         else
         {
-            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesSolution."
+            std::cerr << "Error: Invalid gas name \"" << name << "\" in Simulation::getDiffusionModesSolution."
                       << std::endl;
             return nullptr;
         }
     }
 
     /**
-     * @brief Retrieves diffusion modes related to bubbles for a specified gas.
-     * @param gas_name Name of the gas.
+     * @brief Retrieves diffusion modes related to bubbles for a specified gas/volatile FP.
+     * @param name Name of the gas/volatile FP.
      * @return Pointer to the array of diffusion modes for bubbles, or nullptr for invalid gas
      * names.
      */
-    double* getDiffusionModesBubbles(std::string gas_name)
+    double* getDiffusionModesBubbles(std::string name)
     {
-        if (gas_name == "Xe")
+        if (name == "Xe")
             return &modes_initial_conditions[2 * 40];
 
-        else if (gas_name == "Kr")
+        else if (name == "Kr")
             return &modes_initial_conditions[5 * 40];
 
-        else if (gas_name == "He")
+        else if (name == "He")
             return &modes_initial_conditions[8 * 40];
 
-        else if (gas_name == "Xe133")
+        else if (name == "Xe133")
             return &modes_initial_conditions[11 * 40];
 
-        else if (gas_name == "Kr85m")
+        else if (name == "Kr85m")
             return &modes_initial_conditions[14 * 40];
         
-        else if (gas_name == "Xe in HBS")
+        else if (name == "Xe in HBS")
             return &modes_initial_conditions[17 * 40];
 
-        else if (gas_name == "Cs")
+        else if (name == "Cs")
             return &modes_initial_conditions[20 * 40];
             
-        else if (gas_name == "I")
+        else if (name == "I")
             return &modes_initial_conditions[23 * 40];
         
-        else if (gas_name == "Te")
+        else if (name == "Te")
             return &modes_initial_conditions[26 * 40];
             
-        else if (gas_name == "Mo")
+        else if (name == "Mo")
             return &modes_initial_conditions[29 * 40];
             
         else
         {
-            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesBubbles."
+            std::cerr << "Error: Invalid gas name \"" << name << "\" in Simulation::getDiffusionModesBubbles."
                       << std::endl;
             return nullptr;
         }

@@ -53,15 +53,21 @@ double System::getRadiusInLattice()
 void System::setGas(FissionProducts g_fp)
 {
     gas_fp = g_fp;
+    volatile_fp = FissionProducts();
+    metallic_fp = FissionProducts();
 }
 
 void System::setVolatileFP(FissionProducts v_fp)
 {
+    gas_fp = FissionProducts();
     volatile_fp = v_fp;
+    metallic_fp = FissionProducts();
 }
 
 void System::setMetallicFP(FissionProducts m_fp)
 {
+    gas_fp = FissionProducts();
+    volatile_fp = FissionProducts();
     metallic_fp = m_fp;
 }
 
@@ -93,6 +99,26 @@ std::string System::getVolatileFPName()
 std::string System::getMetallicFPName()
 {
     return metallic_fp.getName();
+}
+
+bool System::isGasFP()
+{
+    return !gas_fp.getName().empty();
+}
+
+bool System::isVolatileFP()
+{
+    return !volatile_fp.getName().empty();
+}
+
+bool System::isMetallicFP()
+{
+    return !metallic_fp.getName().empty();
+}
+
+bool System::isGasOrVolatileFP()
+{
+    return isGasFP() || isVolatileFP();
 }
 
 FissionProducts System::getFissionProduct()
@@ -296,15 +322,15 @@ double System::getHeliumDiffusivity()
     return diffusivity;
 }
 
-void System::setFissionGasDiffusivity(int                              input_value,
+void System::setFissionProductDiffusivity(int                              input_value,
                                       SciantixArray<SciantixVariable>& sciantix_variable,
                                       SciantixArray<SciantixVariable>& history_variable,
                                       SciantixArray<InputVariable>&    scaling_factors)
 {
     /**
-     * ### setFissionGasDiffusivity
+     * ### setFissionProductDiffusivity
      * @brief The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain
-     * is set according to the input_variable iFissionGasDiffusivity
+     * is set according to the input_variable iFissionProductDiffusivity
      *
      */
     switch (input_value)
@@ -312,12 +338,12 @@ void System::setFissionGasDiffusivity(int                              input_val
         case 0:
         {
             /**
-             * @brief iFissionGasDiffusivity = 0 corresponds to a constant intra-granular
+             * @brief iFissionProductDiffusivity = 0 corresponds to a constant intra-granular
              * diffusivity value, equal to 7e-19 m^2/s.
              *
              */
 
-            reference += "iFissionGasDiffusivity: constant diffusivity (7e-19 m2/s).\n\t";
+            reference += "iFissionProductDiffusivity: constant diffusivity (7e-19 m2/s).\n\t";
             diffusivity = 7e-19;
             diffusivity *= scaling_factors["Diffusivity"].getValue();
 
@@ -327,14 +353,14 @@ void System::setFissionGasDiffusivity(int                              input_val
         case 1:
         {
             /**
-             * @brief iFissionGasDiffusivity = 1 set the fission gas (xenon and krypton) single-atom
+             * @brief iFissionProductDiffusivity = 1 set the fission gas (xenon and krypton) single-atom
              * intragranular diffusivity equal to the expression in <a
              * href="../../references/pdf_link/Turnbull_et_al_1988.pdf" target="_blank">Turnbull et
              * al (1988), IWGFPT-32, Preston, UK, Sep 18-22</a>.
              *
              */
 
-            reference += "iFissionGasDiffusivity: Turnbull et al (1988), IWGFPT-32, Preston, UK, "
+            reference += "iFissionProductDiffusivity: Turnbull et al (1988), IWGFPT-32, Preston, UK, "
                          "Sep 18-22.\n\t";
 
             double temperature  = history_variable["Temperature"].getFinalValue();
@@ -353,13 +379,13 @@ void System::setFissionGasDiffusivity(int                              input_val
         case 2:
         {
             /**
-             * @brief iFissionGasDiffusivity = 2 set the xenon effective intragranular diffusivity
+             * @brief iFissionProductDiffusivity = 2 set the xenon effective intragranular diffusivity
              * equal to the expression in <a href="../../references/pdf_link/Matzke_1980.pdf"
              * target="_blank">Matzke (1980), Radiation Effects, 53, 219-242</a>.
              *
              */
 
-            reference += "iFissionGasDiffusivity: Matzke (1980), Radiation Effects, 53, 219-242.\n\t";
+            reference += "iFissionProductDiffusivity: Matzke (1980), Radiation Effects, 53, 219-242.\n\t";
             diffusivity = 5.0e-08 * exp(-40262.0 / history_variable["Temperature"].getFinalValue());
             if (diffusivity < 1e-25)
                 diffusivity = 1e-25;
@@ -371,14 +397,14 @@ void System::setFissionGasDiffusivity(int                              input_val
         case 3:
         {
             /**
-             * @brief iFissionGasDiffusivity = 3 set the xenon single-atom intragranular diffusivity
+             * @brief iFissionProductDiffusivity = 3 set the xenon single-atom intragranular diffusivity
              * equal to the expression in <a href="../../references/pdf_link/Turnbull_et_al_2010.pdf"
              * target="_blank">Turnbull et al., (2010), Background and Derivation of ANS-5.4 Standard
              * Fission Product Release Model</a>.
              *
              */
 
-            reference += "iFissionGasDiffusivity: Turnbull et al., (2010), Background and Derivation "
+            reference += "iFissionProductDiffusivity: Turnbull et al., (2010), Background and Derivation "
                          "of ANS-5.4 Standard Fission Product Release Model.\n\t";
 
             double temperature  = history_variable["Temperature"].getFinalValue();
@@ -397,13 +423,13 @@ void System::setFissionGasDiffusivity(int                              input_val
         case 4:
         {
             /**
-             * @brief iFissionGasDiffusivity = 4 set the xenon single-atom intragranular diffusivity
+             * @brief iFissionProductDiffusivity = 4 set the xenon single-atom intragranular diffusivity
              * equal to the expression in <a href="../../references/pdf_link/Ronchi_2007.pdf"
              * target="_blank">Ronchi, C. High Temp 45, 552-571 (2007)</a>.
              *
              */
 
-            reference += "iFissionGasDiffusivity: Ronchi, C. High Temp 45, 552-571 (2007).\n\t";
+            reference += "iFissionProductDiffusivity: Ronchi, C. High Temp 45, 552-571 (2007).\n\t";
 
             double temperature  = history_variable["Temperature"].getFinalValue();
             double fission_rate = history_variable["Fission rate"].getFinalValue();
@@ -620,7 +646,7 @@ void System::setFissionGasDiffusivity(int                              input_val
         case 11:
         {
             /**
-             * @brief iFissionGasDiffusivity = 11 set the Cesium diffusivity
+             * @brief iFissionProductDiffusivity = 11 set the Cesium diffusivity
              *
              */
 
@@ -643,7 +669,7 @@ void System::setFissionGasDiffusivity(int                              input_val
         case 12:
         {
             /**
-             * @brief iFissionGasDiffusivity = 12 set the Iodine diffusivity
+             * @brief iFissionProductDiffusivity = 12 set the Iodine diffusivity
              *
              */
 
@@ -686,24 +712,24 @@ void System::setFissionGasDiffusivity(int                              input_val
         case 99:
         {
             /**
-             * @brief iFissionGasDiffusivity = 99 set the xenon single-atom intragranular
+             * @brief iFissionProductDiffusivity = 99 set the xenon single-atom intragranular
              * diffusivity to zero.
              *
              */
 
-            reference += "iFissionGasDiffusivity: Test case: zero diffusion coefficient.\n\t";
+            reference += "iFissionProductDiffusivity: Test case: zero diffusion coefficient.\n\t";
             diffusivity = 0.0;
 
             break;
         }
 
         default:
-            ErrorMessages::Switch(__FILE__, "iFissionGasDiffusivity", input_value);
+            ErrorMessages::Switch(__FILE__, "iFissionProductDiffusivity", input_value);
             break;
     }
 }
 
-double System::getFissionGasDiffusivity()
+double System::getFissionProductDiffusivity()
 {
     /// Member function to get the diffusivity of the isotope in the fuel matrix
     return diffusivity;

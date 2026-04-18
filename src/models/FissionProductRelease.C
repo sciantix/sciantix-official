@@ -16,13 +16,12 @@
 
 #include "Simulation.h"
 
-void Simulation::GasRelease()
+void Simulation::FissionProductRelease() // qui tutti i gas (hanno la scrittura come chimicamente attivi nulli)+ i volatili (ora chimicamente attivi 1), cerca di unificare. no i metallici!
 {
-    // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
+    // Calculation of the fission product concentration arrived at the grain boundary, by mass balance.
     for (auto& system : sciantix_system)
     {
-        // CODE DEVELOPMENT : CHEMICALLY ACTIVE FP (VOLATILE DIFFUSION)
-        if (system.getRestructuredMatrix() == 0 && system.getFissionProduct().getChemicallyActive() == 0.0)
+        if (system.getRestructuredMatrix() == 0 && system.isGasFP())
         {
             sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(
                 sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
@@ -34,7 +33,7 @@ void Simulation::GasRelease()
             if (sciantix_variable[system.getFissionProductName() + " released"].getFinalValue() < 0.0)
                 sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(0.0);
         }
-        if (system.getRestructuredMatrix() == 0 && system.getFissionProduct().getChemicallyActive() == 1.0)
+        if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
         {
             sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(
                 sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -

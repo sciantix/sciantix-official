@@ -16,7 +16,7 @@
 
 #include "Simulation.h"
 
-void Simulation::IntraGranularBubbleBehavior()
+void Simulation::IntraGranularBubbleBehavior() // qui i gas e i volatili, cerca di unificare. no i metallici!
 {
     // Model declaration
     Model model_;
@@ -122,7 +122,7 @@ void Simulation::IntraGranularBubbleBehavior()
     // Atom per bubbles and bubble radius
     for (auto& system : sciantix_system)
     {
-        if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
+        if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
         {
             if (sciantix_variable["Intragranular bubble concentration"].getFinalValue() > 0.0)
                 sciantix_variable["Intragranular " + system.getFissionProductName() + " atoms per bubble"].setFinalValue(
