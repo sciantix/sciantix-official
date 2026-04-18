@@ -73,6 +73,8 @@ void Simulation::execute()
 
     GasProduction();
 
+    MetallicFissionProducts();
+
     GasDecay();
 
     IntraGranularBubbleBehavior();
@@ -86,4 +88,5 @@ void Simulation::execute()
     InterGranularBubbleBehavior();
 
     GasRelease();
+
 }

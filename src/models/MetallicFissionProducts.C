@@ -14,26 +14,33 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "SciantixVariable.h"
-#include <vector>
+#include "Simulation.h"
 
-std::vector<std::string> getInputVariableNames();
+void Simulation::MetallicFissionProducts()
+{
+   
+    // Se iCm = 0 nel file di input, il modello è disattivato 
+    if (!input_variable["iCm"].getValue())
+        return;
+    
+    // Fission yield per prodotti metallici di fissione, assunta come costante
+    // Da cambiare e verificare tramite fonte bibliografica)
+    const double y = 0.25;
+ 
+    // Fission rate al passo attuale (fiss/m3/s)
+    // Già letto automaticamente dal file di input ad ogni passo
+    double fission_rate = history_variable["Fission rate"].getFinalValue();
 
-std::vector<SciantixVariable>
-initializeHistoryVariable(double Sciantix_history[], double Sciantix_scaling_factors[], bool toOutput);
+    // Passo temporale (s)
+    double dt = physics_variable["Time step"].getFinalValue();
 
-std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variables[],
-                                                         bool   toOutputRadioactiveFG,
-                                                         bool   toOutputVenting,
-                                                         bool   toOutputHelium,
-                                                         bool   toOutputCracking,
-                                                         bool   toOutputGrainBoundary,
-                                                         bool   toOutputHighBurnupStructure,
-                                                         bool   toOutputStoichiometryDeviation,
-                                                         bool   toOutputChromiumContent,
-                                                         bool   toFMP,
-                                                         bool   toOutputCm);
-            
-                                                 
+    // Equazione fisica 
+    // dCm/dt = y * F  discretizzata su Δt:
+    // Cm(t+dt) = Cm(t) + y * F * dt
+    double produzione = y * fission_rate * dt;
 
-std::vector<std::string> getScalingFactorsNames();
+    // Aggiornamento della variabile
+    // addValue aggiunge 'produzione' al valore attuale di Cm
+    // final_value è protected —> devo usare la funzione pubblica addValue
+    sciantix_variable["Cm"].addValue(produzione);
+}

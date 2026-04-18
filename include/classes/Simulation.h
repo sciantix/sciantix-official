@@ -152,6 +152,16 @@ class Simulation
     void GasDecay();
 
     /**
+     * @brief MetallicFissionProducts calculates the concentration of metallic fission products produced during irradiation
+     * Equation: dCm/dt = y * F
+     * where y is the fission yield (-) and F is the fission rate (fiss/m3/s).
+     *
+     * @author V. Bellani
+     *
+     */
+     void MetallicFissionProducts();
+     
+    /**
      * @brief Calculates the gas released to the rod free volume.
      *
      * @author E. Cappellari
