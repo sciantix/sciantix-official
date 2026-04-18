@@ -54,7 +54,9 @@ std::vector<std::string> getInputVariableNames()
                                       "iChromiumSolubility",
                                       "iDensification",
                                       "iReleaseMode",
-                                      "iFMP"};
+                                      "iFMP",
+                                      "iCm"
+                                    };
 
     return names;
 }
@@ -111,7 +113,10 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputHighBurnupStructure,
                                                          bool   toOutputStoichiometryDeviation,
                                                          bool   toOutputChromiumContent,
-                                                         bool   toFMP)
+                                                         bool   toFMP,
+                                                         bool   toOutputCm)
+
+                                            
 {
     std::vector<SciantixVariable> init_sciantix_variable = {
         SciantixVariable("Grain radius", "(m)", Sciantix_variables[0], Sciantix_variables[0], 1),
@@ -386,6 +391,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("Diffusion coefficient", "(m2/s)", Sciantix_variables[160], Sciantix_variables[160], 0),
 
         SciantixVariable("Metal produced", "(at/m3)", Sciantix_variables[170], Sciantix_variables[170], toFMP),
+        SciantixVariable("Cm", "(at/m3)", Sciantix_variables[171], Sciantix_variables[171], toOutputCm),
     };
 
     return init_sciantix_variable;
