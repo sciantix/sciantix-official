@@ -107,6 +107,10 @@ class System : virtual public Material
     std::string getGasName();
     std::string getVolatileFPName();
     std::string getMetallicFPName();
+    bool isGasFP();
+    bool isVolatileFP();
+    bool isMetallicFP();
+    bool isGasOrVolatileFP();
 
     /**
      * @brief Gets the active fission product for this system.
@@ -175,21 +179,21 @@ class System : virtual public Material
     double getHeliumDiffusivity();
 
     /**
-     * @brief Sets the diffusivity of fission gases within the matrix based on the selected model.
-     * The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set
-     * according to the input_variable iFissionGasDiffusivity
-     * @param input_value The model selection index for fission gas diffusivity.
+     * @brief Sets the diffusivity of fission products within the matrix based on the selected model.
+     * The intra-granular fission product diffusivity within the fuel grain is set
+     * according to the input_variable iFissionProductDiffusivity
+     * @param input_value The model selection index for fission product diffusivity.
      */
-    void setFissionGasDiffusivity(int                              input_value,
+    void setFissionProductDiffusivity(int                              input_value,
                                   SciantixArray<SciantixVariable>& sciantix_variable,
                                   SciantixArray<SciantixVariable>& history_variable,
                                   SciantixArray<InputVariable>&    scaling_factors);
 
     /**
-     * @brief Retrieves the diffusivity of fission gases within the matrix.
-     * @return The current fission gas diffusivity.
+     * @brief Retrieves the diffusivity of fission products within the matrix.
+     * @return The current fission product diffusivity.
      */
-    double getFissionGasDiffusivity();
+    double getFissionProductDiffusivity();
 
     /**
      * @brief Sets the Henry's constant value.

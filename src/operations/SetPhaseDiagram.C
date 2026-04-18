@@ -25,14 +25,22 @@
 #include <string>
 #include <vector>
 
-void Simulation::SetPhaseDiagram(std::string location)
+void Simulation::SetPhaseDiagram(std::string location) // qui tutti eccetto i gas. 
 {
     if (location == "at grain boundary")
     {
         if (input_variable["iThermochimica"].getValue() == 0 ||
             sciantix_variable["Xe at grain boundary"].getInitialValue() <= 0.0)
         {
-            OCUtilsCoupling::releaseGrainBoundarySpecies(sciantix_system, sciantix_variable);
+            for (auto& system : sciantix_system)
+            {
+                if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
+                {
+                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].addValue(
+                        sciantix_variable[system.getFissionProductName() + " reacted - GB"].getFinalValue());
+                    sciantix_variable[system.getFissionProductName() + " reacted - GB"].setFinalValue(0.0);
+                }
+            }
             return;
         }
 
@@ -78,7 +86,15 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     {
         if (location == "at grain boundary")
         {
-            OCUtilsCoupling::releaseGrainBoundarySpecies(sciantix_system, sciantix_variable);
+            for (auto& system : sciantix_system)
+            {
+                if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
+                {
+                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].addValue(
+                        sciantix_variable[system.getFissionProductName() + " reacted - GB"].getFinalValue());
+                    sciantix_variable[system.getFissionProductName() + " reacted - GB"].setFinalValue(0.0);
+                }
+            }
             return;
         }
 

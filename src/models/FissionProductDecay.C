@@ -16,10 +16,10 @@
 
 #include "Simulation.h"
 
-void Simulation::GasDecay()
+void Simulation::FissionProductDecay()
 {
     // Model declaration
-    for (auto& system : sciantix_system)
+    for (auto& system : sciantix_system) // qui tutti i FPs
     {
         if (system.getFissionProduct().getDecayRate() > 0.0 && system.getRestructuredMatrix() == 0)
         {

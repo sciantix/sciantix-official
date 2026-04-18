@@ -1,5 +1,5 @@
 iGrainGrowth = 0
-iFissionGasDiffusivity = 0
+iFissionProductDiffusivity = 0
 iDiffusionSolver = 1
 iIntraGranularBubbleBehavior = 0
 iResolutionRate = 0

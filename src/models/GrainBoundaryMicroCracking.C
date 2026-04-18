@@ -16,7 +16,7 @@
 
 #include "Simulation.h"
 
-void Simulation::GrainBoundaryMicroCracking()
+void Simulation::GrainBoundaryMicroCracking() // qui tutti i gas e i volatili, cerca di unificare. no i metallici!
 {
     if (!int(input_variable["iGrainBoundaryMicroCracking"].getValue()))
         return;
@@ -253,7 +253,7 @@ void Simulation::GrainBoundaryMicroCracking()
 
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
                     sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].rescaleInitialValue(
                         pow(similarity_ratio, 1.5));
             }
@@ -261,7 +261,7 @@ void Simulation::GrainBoundaryMicroCracking()
             double n_at(0);
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
                     n_at += sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
                                 .getInitialValue();
             }
@@ -269,7 +269,7 @@ void Simulation::GrainBoundaryMicroCracking()
 
             for (auto& system : sciantix_system)
             {
-                if (system.getRestructuredMatrix() == 0)
+                if (system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
                     sciantix_variable[system.getFissionProductName() + " at grain boundary"].rescaleFinalValue(
                         pow(similarity_ratio, 2.5));
             }

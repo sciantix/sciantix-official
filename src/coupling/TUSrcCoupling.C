@@ -55,7 +55,7 @@ void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[
     std::ifstream input_scaling_factors(TestPath + "input_scaling_factors.txt", std::ios::in);
 
     Sciantix_options[0]  = ReadOneSetting("iGrainGrowth", input_settings, input_check);
-    Sciantix_options[1]  = ReadOneSetting("iFissionGasDiffusivity", input_settings, input_check);
+    Sciantix_options[1]  = ReadOneSetting("iFissionProductDiffusivity", input_settings, input_check);
     Sciantix_options[2]  = ReadOneSetting("iDiffusionSolver", input_settings, input_check);
     Sciantix_options[3]  = ReadOneSetting("iIntraGranularBubbleBehavior", input_settings, input_check);
     Sciantix_options[4]  = ReadOneSetting("iResolutionRate", input_settings, input_check);

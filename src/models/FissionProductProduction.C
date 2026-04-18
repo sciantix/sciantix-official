@@ -16,13 +16,13 @@
 
 #include "Simulation.h"
 
-void Simulation::GasProduction()
+void Simulation::FissionProductProduction() // qui tutti i fps
 {
     // Model declaration
     for (auto& system : sciantix_system)
     {
         Model model_;
-        model_.setName("Gas production - " + system.getName());
+        model_.setName("Fission product production - " + system.getName());
         model_.setRef(" ");
 
         double productionRate = system.getProductionRate();
@@ -40,12 +40,12 @@ void Simulation::GasProduction()
         if (system.getRestructuredMatrix() == 0)
             sciantix_variable[system.getFissionProductName() + " produced"].setFinalValue(
                 solver.Integrator(sciantix_variable[system.getFissionProductName() + " produced"].getInitialValue(),
-                                  model["Gas production - " + system.getName()].getParameter().at(0),
-                                  model["Gas production - " + system.getName()].getParameter().at(1)));
+                                  model["Fission product production - " + system.getName()].getParameter().at(0),
+                                  model["Fission product production - " + system.getName()].getParameter().at(1)));
         else if (system.getRestructuredMatrix() == 1)
             sciantix_variable[system.getFissionProductName() + " produced in HBS"].setFinalValue(
                 solver.Integrator(sciantix_variable[system.getFissionProductName() + " produced in HBS"].getInitialValue(),
-                                  model["Gas production - " + system.getName()].getParameter().at(0),
-                                  model["Gas production - " + system.getName()].getParameter().at(1)));
+                                  model["Fission product production - " + system.getName()].getParameter().at(0),
+                                  model["Fission product production - " + system.getName()].getParameter().at(1)));
     }
 }

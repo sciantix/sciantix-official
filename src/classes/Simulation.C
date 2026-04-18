@@ -93,13 +93,13 @@ void Simulation::execute()
 
     GrainBoundarySweeping();
 
-    GasProduction();
+    FissionProductProduction();
 
-    GasDecay();
+    FissionProductDecay();
 
     IntraGranularBubbleBehavior();
 
-    GasDiffusion();
+    IntragranularDiffusion();
 
     SetPhaseDiagram("at grain boundary");
 
@@ -109,7 +109,7 @@ void Simulation::execute()
 
     InterGranularBubbleBehavior();
 
-    GasRelease();
+    FissionProductRelease();
 
     // GAP BEHAVIOUR
     
