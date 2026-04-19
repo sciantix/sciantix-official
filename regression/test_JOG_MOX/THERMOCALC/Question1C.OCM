@@ -1,0 +1,90 @@
+@$ Question 1 
+
+
+new Y
+
+set echo Y
+
+@$ path to database
+r t /home/ecappellari/transparant/opencalphad/data/CsMoO_TAFID_2021_Anna cs mo o
+@$ r t CsMoO_TAFID_2021_Anna
+cs mo o
+
+
+@$ initialize variables
+set ref o gas * 100000
+set c t=1290 p=4.416e+06
+
+@$ set c mu(o)=-217469 n(cs)=0.00285206 n(mo)=0.00375442 
+
+@$ As the amount of O is not important use more digits for the other elements
+@$ The general accuracy is 6 decimals
+
+set c n(cs)=0.285206 n(mo)=0.375442 
+
+set st ph gas=fix 0
+
+@$ Initially set all condenced phases as dormant,
+@$ That means they cannot participate in the equilibrium
+@$ but the program will calculate a driving force for each
+@$ and if that is positive they would like to be stable
+
+set st ph *=dor
+
+@$ Just calculate with the gas phase
+
+set st ph gas=e 1
+
+@$ The remaining amount up to 1 will be O
+
+set c n=1
+
+l c
+
+@&
+
+c e
+
+
+l e 2
+
+
+@$ Many phases show up with a positive driving force, select the highest
+
+@&
+
+set st ph liq=e 0
+
+c e
+
+@$ With just liquid it has a miscibility gap, but BCC wants to be stable also
+@&
+
+set st ph bcc=e 0
+
+c e
+
+
+@$ No dormant phases has positive driving force,
+@$ this is the stable equilibrium with a lot of oxygen
+
+set con  n=none
+
+set con mu(o)=-217469
+
+@&
+
+c e
+
+
+l e
+
+
+@&
+
+l sh a
+
+
+set inter
+
+

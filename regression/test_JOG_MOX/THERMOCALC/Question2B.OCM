@@ -1,0 +1,134 @@
+@$ Question 2
+
+
+@$ is command removes any previous data 
+@$ The echo lists the command
+
+new Y
+
+set echo Y
+
+@$ path to database
+@$ r t /home/ecappellari/transparant/opencalphad/data/CsMoO_TAFID_2021_Anna cs mo o
+
+r t CsMoO_TAFID_2021_Anna
+cs mo o
+
+@$ initialize variables
+set ref o gas * 100000
+set c t=1140
+set c p=5436000
+set c mu(o)=-209944
+
+@$ increasing the amounts ....
+set c n(cs)=2.83652689
+set c n(mo)=3.6708
+
+set st ph *=dor
+
+set st ph gas liq=e 1
+
+c e
+
+l r 2
+
+
+@$ Again a liquid miscibility gap, add BCC
+@&
+
+set st ph bcc=e 0
+
+c e
+
+l r 2
+
+@$  set all dormant phases as stable with zero amount
+@&
+
+set st ph *D = E 0
+
+c e
+
+l r 2
+
+@$ The MoO2 wants to be stable 
+@&
+
+set st ph moo2=e 1
+
+c e
+
+l ,,,,
+
+@$ Competition between Cs2MoO4_S1 and Cs2MoO4_S2
+
+@&
+
+set st ph cs2MoO4_s2=dorm
+
+c e
+
+l r 2
+
+
+@$ it seems impossible to obtain a stable equilibrium
+
+
+
+set inter
+
+
+This seems to be the best result but the two phases Cs2MoO4_s1/s2 compete
+
+Output for equilibrium:   1, DEFAULT_EQUILIBRIUM          2026.04.15
+Conditions .................................................:
+  1:T=1140, 2:P=5436000, 3:MU(O)=-209944, 4:N(CS)=2.83652689, 5:N(MO)=3.6708
+ Degrees of freedom are   0
+
+Some global data, reference state SER ......................:
+T=   1140.00 K (   866.85 C), P=  5.4360E+06 Pa, V=  0.0000E+00 m3
+N=   1.6689E+01 moles, B=   8.9208E+02 g, RT=   9.4785E+03 J/mol
+G= -4.27289E+06 J, G/N=-2.5603E+05 J/mol, H=-3.0606E+06 J, S= 1.063E+03 J/K
+
+Some data for components ...................................:
+Component name    Moles      Mole-fr  Chem.pot/RT  Activities  Ref.state
+CS                2.8365E+00  0.16996 -3.1165E+01  2.9196E-14  SER (default)   
+MO                3.6708E+00  0.21995 -5.4719E+00  4.2031E-03  SER (default)   
+O                 1.0182E+01  0.61009 -2.2149E+01  2.4024E-10  GAS             
+
+Some data for phases .......................................:
+Name                Status Moles      Volume    Form.Units Cmp/FU dGm/RT  Comp:
+LIQUID#1................ E  9.943E+00  0.00E+00  1.42E+00    6.99  0.00E+00  X:
+ O      5.71707E-01  CS     2.85268E-01  MO     1.43024E-01
+Constitution: Sublattice  1 with     2 constituents and     1.994540 sites
+ CS+    1.00000E+00  MO+4   8.42941E-12
+              Sublattice  2 with     6 constituents and     1.000000 sites
+ MOO4-2       9.97270E-01  VA           1.43251E-08  CSO2         1.10000E-12
+ MOO3         2.72982E-03  O            5.25263E-11  O-2          1.10000E-12
+
+MOO2.................... E  6.746E+00  0.00E+00  2.25E+00    3.00  0.00E+00  X:
+ O      6.66667E-01  MO     3.33333E-01  CS     0.00000E+00
+Constitution: Sublattice  1 with     1 constituents and     1.000000 sites
+ MO     1.00000E+00
+              Sublattice  2 with     1 constituents and     2.000000 sites
+ O      1.00000E+00
+
+
+ *** There are phase(s) which would like to be stable:
+   CS2MOO4_S1  1.0709E-03   CS2MOO4_S2  4.5873E-03
+
+
+But suspending one of them does not make the other stable.
+----------------------------------------------------------
+
+I would like to question the use of the neutral MOO3 in the liquid
+phase.  Together with Cs+ and MoO4-2 and with almost 2/1 site rations
+in the liquid it will be very difficult to extablish the fraction of
+the MoO3 in the liquid.  Small variations can create large changes in
+chemical potetials if the composition of the liquid liquid is on the
+line between MoO2 and CsO2.  And I think that is the case, the liquid
+is amost only Cs+1 in the cation sites and almost only MoO4-2 in the
+anion sublattice.
+
+I know the Mo-O system is complicated and asume Christine has proposed
+this model.  Try to skip the neutral MoO3 species.

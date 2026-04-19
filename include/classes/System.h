@@ -100,13 +100,6 @@ class System : virtual public Material
     void setVolatileFP(FissionProducts v_fp);
     void setMetallicFP(FissionProducts m_fp);
 
-    FissionProducts getGas();
-    FissionProducts getVolatileFP();
-    FissionProducts getMetallicFP();
-
-    std::string getGasName();
-    std::string getVolatileFPName();
-    std::string getMetallicFPName();
     bool isGasFP();
     bool isVolatileFP();
     bool isMetallicFP();
