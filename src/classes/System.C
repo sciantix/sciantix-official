@@ -71,36 +71,6 @@ void System::setMetallicFP(FissionProducts m_fp)
     metallic_fp = m_fp;
 }
 
-FissionProducts System::getGas()
-{
-    return gas_fp;
-}
-
-FissionProducts System::getVolatileFP()
-{
-    return volatile_fp;
-}
-
-FissionProducts System::getMetallicFP()
-{
-    return metallic_fp;
-}
-
-std::string System::getGasName()
-{
-    return gas_fp.getName();
-}
-
-std::string System::getVolatileFPName()
-{
-    return volatile_fp.getName();
-}
-
-std::string System::getMetallicFPName()
-{
-    return metallic_fp.getName();
-}
-
 bool System::isGasFP()
 {
     return !gas_fp.getName().empty();
