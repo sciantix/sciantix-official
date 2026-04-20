@@ -783,6 +783,26 @@ def plot_radial_profiles(
         plt.close(fig)
         saved_paths.append(plot_path)
 
+    # 3b) q vs burnup
+    if "q (-)" in output_profiles:
+        fig, axis = plt.subplots()
+        for radius_mm, case_history in zip(radii_mm_array, output_histories):
+            case_burnup = case_history["Burnup (MWd/kgUO2)"]
+            axis.plot(
+                case_burnup,
+                case_history["q (-)"],
+                label=f"r = {radius_mm:.1f} mm",
+                alpha=0.9,
+            )
+        axis.set_xlabel("Burnup (MWd/kgUO2)")
+        axis.set_ylabel("q (-)")
+        axis.legend(loc="upper left")
+        fig.tight_layout()
+        plot_path = PLOTS_DIR / "summary_03b_q_vs_burnup.png"
+        fig.savefig(plot_path, bbox_inches="tight")
+        plt.close(fig)
+        saved_paths.append(plot_path)
+
     # 4) Chemical potential vs burnup
     if "Fuel oxygen potential (KJ/mol)" in output_profiles:
         fig, axis = plt.subplots()
