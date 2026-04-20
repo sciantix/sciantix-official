@@ -17,7 +17,6 @@
 #include "Simulation.h"
 #include "MainVariables.h"
 #include "OCUtilsCoupling.h"
-#include "ThermochemistryManifest.h"
 #include "ThermochemistrySettings.h"
 
 #include <iostream>
@@ -69,18 +68,13 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     const double temperature = history_variable["Temperature"].getFinalValue();
     const double pressure = history_variable["System pressure"].getFinalValue();
 
-    const std::vector<ThermochemistryManifestEntry> manifest =
-        loadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
     const ThermochemistrySettings settings =
         loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt");
-    const std::vector<ThermochemistryManifestEntry> filtered_manifest =
-        filterThermochemistryManifest(manifest, settings);
 
     const std::string category = (location == "matrix") ? "matrix" : "fission_products";
-    const std::set<std::string> manifest_elements =
-        getThermochemistryElements(filtered_manifest, category, location);
     const ThermochemistryPhaseSettings& location_settings =
         (location == "matrix") ? settings.matrix : settings.fission_products;
+    std::set<std::string> manifest_elements(location_settings.elements.begin(), location_settings.elements.end());
 
     if (location_settings.module != "OPENCALPHAD")
     {

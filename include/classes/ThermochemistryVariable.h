@@ -25,7 +25,7 @@
  * @class ThermochemistryVariable
  * @brief A specialized variable class that extends the Variable class with physical attributes and functionalities: thermochemistry module.
  *
- * ThermochemistryVariable includes features such as unit of measure (UOM), final and initial values, chemical state and location, stoichiometry composition
+ * ThermochemistryVariable includes features such as unit of measure (UOM), final and initial values, chemical state and location, phase composition
  * and mechanisms for adjusting these values through specific operations.
  * 
  * @author E. Cappellari
@@ -40,12 +40,12 @@ protected:
     double initial_value;
     std::string location;
     std::string phase;
-    std::map <std::string, int> stoichiometry;
+    std::map <std::string, double> composition;
     bool to_output;
 
 public:
 
-    ThermochemistryVariable(int index, std::string name, std::string uom, double initial_value, double final_value, std::string  phase, std::string  location, std::map <std::string, int> stoichiometry, bool output)
+    ThermochemistryVariable(int index, std::string name, std::string uom, double initial_value, double final_value, std::string  phase, std::string  location, bool output)
     {
         this->index = index;
         this->name = name;
@@ -54,7 +54,6 @@ public:
         this->final_value = final_value;
         this->phase = phase;
         this->location = location;
-        this->stoichiometry = stoichiometry;
         this->to_output = output;
     }
 
@@ -123,16 +122,16 @@ public:
     std::string getPhase();
 
     /**
-     * @brief Sets the stoichiometry for the compound.
-     * @param stoic The map representing the stoichiometry of the compound.
+     * @brief Sets the dynamic composition for the compound from thermochemistry outputs.
+     * @param composition_map The map representing composition ratios per element.
      */
-    void setStoichiometry(std::map <std::string, int> stoic);
+    void setComposition(std::map <std::string, double> composition_map);
 
     /**
-     * @brief Retrieves the stoichiometry of the compound.
-     * @return The stoichiometry as a map.
+     * @brief Retrieves the dynamic composition of the compound.
+     * @return The composition as a map.
      */
-    std::map <std::string, int> getStoichiometry();
+    std::map <std::string, double> getComposition();
 
     /**
      * @brief Calculates the molar mass from the compound stoichiometry.

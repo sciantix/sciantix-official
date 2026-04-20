@@ -17,7 +17,7 @@
 #include "SetSystem.h"
 #include "MainVariables.h"
 #include "Simulation.h"
-#include "ThermochemistryManifest.h"
+#include "ThermochemistrySettings.h"
 #include <fstream>
 #include <set>
 
@@ -31,19 +31,9 @@ std::set<std::string> getSelectedFissionProductElements(SciantixArray<InputVaria
     if ((int)input_variable["iThermochimica"].getValue() == 0)
         return selected_elements;
 
-    const ThermochemistrySettings settings =
-        loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt");
-    const std::vector<ThermochemistryManifestEntry> manifest = filterThermochemistryManifest(
-        loadThermochemistryManifest(TestPath + "input_thermochemistry.txt"),
-        settings
-    );
-    const std::set<std::string> manifest_elements = getThermochemistryElements(
-        manifest,
-        "fission_products",
-        "at grain boundary"
-    );
-
-    for (const auto& name : manifest_elements)
+    const ThermochemistrySettings settings = loadThermochemistrySettings(
+        TestPath + "input_thermochemistry_settings.txt");
+    for (const auto& name : settings.fission_products.elements)
     {
         if (name != "O" && name != "U" && name != "Pu")
             selected_elements.insert(name);

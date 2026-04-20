@@ -290,9 +290,12 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                 OCSpeciesData&    species      = phase.species[species_name];
                 const double      moles        = safeFloat(parts[2]);
                 const double      volume       = safeFloat(parts[3]);
-
+                const double      stoichiometric_size =
+                    (parts.size() > 5 && isNumericToken(parts[5])) ? safeFloat(parts[5]) : 1.0;
+                
                 species.moles += moles;
                 species.volume += volume;
+                species.stoichiometric_size = (stoichiometric_size > 0.0) ? stoichiometric_size : 1.0;
                 phase.moles += moles;
                 phase.volume += volume;
             }
@@ -328,7 +331,7 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                         const std::string species_name = normalizeSpeciesName(raw_phase_name);
                         OCPhaseData&      phase        = data.solution_phases[current_phase];
                         OCSpeciesData&    species      = phase.species[species_name];
-                        const double      element_moles = fraction * species.moles;
+                        const double      element_moles = fraction * species.moles * species.stoichiometric_size;
 
                         species.elements[element] = element_moles;
                         phase.elements[element] += element_moles;
@@ -350,7 +353,8 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
             const std::vector<std::string> species_parts = split(next_line);
             for (size_t k = 0; k + 1 < species_parts.size(); k += 2)
             {
-                if (current_phase == "condensed")
+                // Keep explicit constituent parsing only for gas.
+                if (current_phase == "condensed" || current_phase == "liquid" || current_phase == "ionic_liquid")
                     continue;
 
                 if (!isNumericToken(species_parts[k + 1]))
@@ -789,10 +793,123 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                                               double                                     content_scaling_factor,
                                               SciantixArray<ThermochemistryVariable>&    thermochemistry_variable)
 {
+    static std::set<std::string> logged_thermochemistry_variables;
+
+    auto formatComposition = [](const std::map<std::string, double>& composition)
+    {
+        if (composition.empty())
+            return std::string("<empty>");
+
+        std::ostringstream stream;
+        stream << std::setprecision(8);
+        bool first = true;
+        for (const auto& entry : composition)
+        {
+            if (!first)
+                stream << ",";
+            stream << entry.first << ":" << entry.second;
+            first = false;
+        }
+        return stream.str();
+    };
+
+    auto logThermochemistryVariable = [&](const std::string& variable_name)
+    {
+        if (!thermochemistry_variable.isElementPresent(variable_name))
+            return;
+        if (!logged_thermochemistry_variables.insert(variable_name).second)
+            return;
+
+        const std::map<std::string, double> composition = thermochemistry_variable[variable_name].getComposition();
+        const std::string composition_label = !composition.empty() ? formatComposition(composition) : "<empty>";
+
+        std::cout << "[Thermochemistry] " << variable_name
+                  << " composition=" << composition_label
+                  << " molar_mass=" << thermochemistry_variable[variable_name].getMolarMass()
+                  << " g/mol"
+                  << std::endl;
+    };
+
+    auto computeNormalizedPhaseComposition = [&](const OCPhaseData& phase_data)
+    {
+        std::map<std::string, double> composition;
+        double total_element_moles = 0.0;
+        for (const auto& element_entry : phase_data.elements)
+            total_element_moles += std::max(0.0, element_entry.second);
+
+        if (total_element_moles <= 0.0)
+            return composition;
+
+        for (const auto& element_entry : phase_data.elements)
+            composition[element_entry.first] = std::max(0.0, element_entry.second) / total_element_moles;
+
+        return composition;
+    };
+
+    auto computeCompositionMolarMass = [](const std::map<std::string, double>& composition)
+    {
+        static const std::map<std::string, double> atomic_masses = {
+            {"Cs", 132.90545196},
+            {"Cr", 51.9961},
+            {"I", 126.90447},
+            {"Mo", 95.95},
+            {"O", 15.999},
+            {"Te", 127.60},
+            {"U", 238.02891},
+            {"Pu", 239.052},
+            {"Va", 0.0}
+        };
+
+        double molar_mass = 0.0;
+        for (const auto& entry : composition)
+        {
+            const auto it = atomic_masses.find(entry.first);
+            if (it == atomic_masses.end())
+                continue;
+            molar_mass += entry.second * it->second;
+        }
+        return molar_mass;
+    };
+
     for (const auto& phase_entry : solution_phases)
     {
         const std::string& phase_name = phase_entry.first;
         const OCPhaseData& phase_data = phase_entry.second;
+        const bool is_single_phase_liquid = (phase_name == "liquid" || phase_name == "ionic_liquid");
+        const std::map<std::string, double> liquid_phase_composition =
+            is_single_phase_liquid ? computeNormalizedPhaseComposition(phase_data) : std::map<std::string, double>{};
+        const std::string liquid_phase_variable_name = "LIQUID (" + phase_name + ", " + location + ")";
+
+        if (is_single_phase_liquid && thermochemistry_variable.isElementPresent(liquid_phase_variable_name))
+        {
+            thermochemistry_variable[liquid_phase_variable_name].setFinalValue(
+                phase_data.moles * content_scaling_factor);
+            if (!liquid_phase_composition.empty())
+                thermochemistry_variable[liquid_phase_variable_name].setComposition(liquid_phase_composition);
+
+            logThermochemistryVariable(liquid_phase_variable_name);
+
+            if (!liquid_phase_composition.empty())
+            {
+                std::ostringstream phase_stream;
+                phase_stream << std::setprecision(8);
+                bool first = true;
+                for (const auto& entry : liquid_phase_composition)
+                {
+                    if (!first)
+                        phase_stream << ",";
+                    phase_stream << entry.first << ":" << entry.second;
+                    first = false;
+                }
+                const double phase_molar_mass = computeCompositionMolarMass(liquid_phase_composition);
+                std::cout << "[ThermochemistryPhase] " << phase_name << " (" << location
+                          << ") composition=" << phase_stream.str()
+                          << " molar_mass=" << phase_molar_mass
+                          << " g/mol" << std::endl;
+            }
+
+            continue;
+        }
 
         if (!phase_data.species.empty())
         {
@@ -802,8 +919,18 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                     species_entry.first + " (" + phase_name + ", " + location + ")";
 
                 if (thermochemistry_variable.isElementPresent(variable_name))
+                {
                     thermochemistry_variable[variable_name].setFinalValue(
                         species_entry.second.moles * content_scaling_factor);
+                    std::map<std::string, double> composition;
+                    if (species_entry.second.moles > 0.0)
+                    {
+                        for (const auto& element_entry : species_entry.second.elements)
+                            composition[element_entry.first] = element_entry.second / species_entry.second.moles;
+                    }
+                    thermochemistry_variable[variable_name].setComposition(composition);
+                    logThermochemistryVariable(variable_name);
+                }
             }
 
             for (const auto& element_entry : phase_data.elements)
@@ -816,11 +943,19 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                     thermochemistry_variable.isElementPresent(uppercase_variable_name);
 
                 if (has_variable)
+                {
                     thermochemistry_variable[variable_name].setFinalValue(
                         element_entry.second * content_scaling_factor);
+                    thermochemistry_variable[variable_name].setComposition({{element_entry.first, 1.0}});
+                    logThermochemistryVariable(variable_name);
+                }
                 else if (has_uppercase_variable)
+                {
                     thermochemistry_variable[uppercase_variable_name].setFinalValue(
                         element_entry.second * content_scaling_factor);
+                    thermochemistry_variable[uppercase_variable_name].setComposition({{element_entry.first, 1.0}});
+                    logThermochemistryVariable(uppercase_variable_name);
+                }
             }
             continue;
         }
@@ -832,11 +967,44 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                 toUpperCopy(element_entry.first) + " (" + phase_name + ", " + location + ")";
 
             if (thermochemistry_variable.isElementPresent(variable_name))
+            {
                 thermochemistry_variable[variable_name].setFinalValue(
                     element_entry.second * content_scaling_factor);
+                if (!liquid_phase_composition.empty())
+                    thermochemistry_variable[variable_name].setComposition(liquid_phase_composition);
+                else
+                    thermochemistry_variable[variable_name].setComposition({{element_entry.first, 1.0}});
+                logThermochemistryVariable(variable_name);
+            }
             else if (thermochemistry_variable.isElementPresent(uppercase_variable_name))
+            {
                 thermochemistry_variable[uppercase_variable_name].setFinalValue(
                     element_entry.second * content_scaling_factor);
+                if (!liquid_phase_composition.empty())
+                    thermochemistry_variable[uppercase_variable_name].setComposition(liquid_phase_composition);
+                else
+                    thermochemistry_variable[uppercase_variable_name].setComposition({{element_entry.first, 1.0}});
+                logThermochemistryVariable(uppercase_variable_name);
+            }
+        }
+
+        if (is_single_phase_liquid && !liquid_phase_composition.empty())
+        {
+            std::ostringstream phase_stream;
+            phase_stream << std::setprecision(8);
+            bool first = true;
+            for (const auto& entry : liquid_phase_composition)
+            {
+                if (!first)
+                    phase_stream << ",";
+                phase_stream << entry.first << ":" << entry.second;
+                first = false;
+            }
+            const double phase_molar_mass = computeCompositionMolarMass(liquid_phase_composition);
+            std::cout << "[ThermochemistryPhase] " << phase_name << " (" << location
+                      << ") composition=" << phase_stream.str()
+                      << " molar_mass=" << phase_molar_mass
+                      << " g/mol" << std::endl;
         }
     }
 }

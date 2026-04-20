@@ -53,18 +53,6 @@ void Simulation::JOGFormation()
         if (phase != "condensed" && phase != "liquid" && phase != "ionic_liquid")
             continue;
 
-        const std::map<std::string, int> stoichiometry = variable.getStoichiometry();
-        // const bool contains_uranium = stoichiometry.count("U") > 0;
-        const bool oxygen_only_species =
-            !stoichiometry.empty() &&
-            std::all_of(
-                stoichiometry.begin(),
-                stoichiometry.end(),
-                [](const std::pair<const std::string, int>& entry) { return entry.first == "O"; });
-
-        if (oxygen_only_species)
-            continue;
-
         double contribution = std::max(0.0, variable.getFinalValue() * variable.getMolarMass() / theoretical_density);
 
         JOG_thickness += contribution;
