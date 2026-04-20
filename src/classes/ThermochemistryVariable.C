@@ -64,14 +64,14 @@ std::string ThermochemistryVariable::getPhase()
     return phase;
 }
 
-void ThermochemistryVariable::setStoichiometry(std::map <std::string, int> stoic)
+void ThermochemistryVariable::setComposition(std::map <std::string, double> composition_map)
 {
-    stoichiometry = stoic;
+    composition = composition_map;
 }
 
-std::map <std::string, int> ThermochemistryVariable::getStoichiometry()
+std::map <std::string, double> ThermochemistryVariable::getComposition()
 {
-    return stoichiometry;
+    return composition;
 }
 
 void ThermochemistryVariable::setConstant()
@@ -135,17 +135,26 @@ double ThermochemistryVariable::getMolarMass()
 
     double molar_mass = 0.0;
 
-    for (const auto& term : stoichiometry)
+    if (!composition.empty())
     {
-        const auto atomic_mass = atomic_masses.find(term.first);
-        if (atomic_mass == atomic_masses.end())
+        for (const auto& term : composition)
         {
-            std::cerr << "Error: Atomic mass not available for element " << term.first
-                      << " in thermochemistry variable " << name << std::endl;
-            exit(1);
-        }
+            const auto atomic_mass = atomic_masses.find(term.first);
+            if (atomic_mass == atomic_masses.end())
+            {
+                std::cerr << "Error: Atomic mass not available for element " << term.first
+                          << " in thermochemistry variable " << name << std::endl;
+                exit(1);
+            }
 
-        molar_mass += term.second * atomic_mass->second;
+            molar_mass += term.second * atomic_mass->second;
+        }
+        return molar_mass;
+    }
+    else
+    {
+        std::cerr << "Warning: No composition information available for thermochemistry variable " << name
+                  << ". Molar mass cannot be computed and will be returned as zero." << std::endl;
     }
 
     return molar_mass;

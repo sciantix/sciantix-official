@@ -533,7 +533,6 @@ std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
                                                                            final_value,
                                                                            entry.phase,
                                                                            entry.location,
-                                                                           entry.stoichiometry,
                                                                            entry.output));
     }
 
