@@ -109,6 +109,29 @@ def load_output_data(output_file: Path) -> tuple[list[str], np.ndarray]:
 
 def load_grain_boundary_uranium_species(manifest_file: Path) -> set[str]:
     uranium_species: set[str] = set()
+    known_elements = {"Cs", "Mo", "O", "U", "Pu", "I", "Te", "Cr", "Va"}
+
+    def extract_elements_from_compound(compound: str) -> set[str]:
+        elements: set[str] = set()
+        index = 0
+        while index < len(compound):
+            if not compound[index].isalpha():
+                index += 1
+                continue
+
+            matched = False
+            for size in (2, 1):
+                token = compound[index:index + size]
+                if token in known_elements:
+                    elements.add(token)
+                    index += size
+                    matched = True
+                    break
+
+            if not matched:
+                return set()
+
+        return elements
 
     with manifest_file.open() as handle:
         for raw_line in handle:
@@ -117,24 +140,19 @@ def load_grain_boundary_uranium_species(manifest_file: Path) -> set[str]:
                 continue
 
             parts = [part.strip() for part in line.split("|")]
-            if len(parts) < 8:
+            if len(parts) < 7:
                 continue
 
             category = parts[1]
             compound = parts[3]
             location = parts[4]
             output_flag = parts[6]
-            stoichiometry = parts[7]
 
             if category != "fission_products" or location != "at grain boundary" or output_flag != "1":
                 continue
 
-            stoichiometric_elements = {
-                item.split(":", 1)[0].strip()
-                for item in stoichiometry.split(",")
-                if ":" in item
-            }
-            if ("Mo" not in stoichiometric_elements) & ("Cs" not in stoichiometric_elements) and ("U" in stoichiometric_elements):
+            elements = extract_elements_from_compound(compound)
+            if ("U" in elements) and ("Mo" not in elements) and ("Cs" not in elements):
                 uranium_species.add(compound)
 
     return uranium_species
@@ -576,16 +594,23 @@ def plot_case(
     plt.close(fig)
     saved_paths.append(plot_path)
 
-    liquid_cs_label = "CS (liquid, at grain boundary) (mol/m3)"
-    if liquid_cs_label in thermochemistry_column_map:
-        cs = thermochemistry_values[:, thermochemistry_column_map[liquid_cs_label]]
-    liquid_mo_label = "MO (liquid, at grain boundary) (mol/m3)"
-    if liquid_mo_label in thermochemistry_column_map:
-        mo = thermochemistry_values[:, thermochemistry_column_map[liquid_mo_label]]
-    liquid_o_label = "O (liquid, at grain boundary) (mol/m3)"
-    if liquid_o_label in thermochemistry_column_map:
-        o = thermochemistry_values[:, thermochemistry_column_map[liquid_o_label]]
-    liquid_cs2moo4_available = np.minimum.reduce([cs / 2.0, mo, o / 4.0])
+    liquid_phase_label = "LIQUID (liquid, at grain boundary) (mol/m3)"
+    if liquid_phase_label in thermochemistry_column_map:
+        liquid_cs2moo4_available = thermochemistry_values[:, thermochemistry_column_map[liquid_phase_label]]
+    else:
+        cs = np.zeros_like(thermochemistry_burnup)
+        mo = np.zeros_like(thermochemistry_burnup)
+        o = np.zeros_like(thermochemistry_burnup)
+        liquid_cs_label = "CS (liquid, at grain boundary) (mol/m3)"
+        if liquid_cs_label in thermochemistry_column_map:
+            cs = thermochemistry_values[:, thermochemistry_column_map[liquid_cs_label]]
+        liquid_mo_label = "MO (liquid, at grain boundary) (mol/m3)"
+        if liquid_mo_label in thermochemistry_column_map:
+            mo = thermochemistry_values[:, thermochemistry_column_map[liquid_mo_label]]
+        liquid_o_label = "O (liquid, at grain boundary) (mol/m3)"
+        if liquid_o_label in thermochemistry_column_map:
+            o = thermochemistry_values[:, thermochemistry_column_map[liquid_o_label]]
+        liquid_cs2moo4_available = np.minimum.reduce([cs / 2.0, mo, o / 4.0])
     cs2moo4_molar_mass = (
         2.0 * ATOMIC_MASS_G_PER_MOL["Cs"] + ATOMIC_MASS_G_PER_MOL["Mo"] + 4.0 * ATOMIC_MASS_G_PER_MOL["O"]
     )
