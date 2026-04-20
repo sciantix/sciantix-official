@@ -75,7 +75,7 @@ Initial composition Pu1 = 60.4
 Initial composition Pu2 = 23.4
 Initial composition Pu3 = 10.4
 Initial composition Pu4 = 4.5
-q = 0.288
+q = 0.22
 0	1290	4e+19	0	200000	
 20560	1290	4e+19	0	7e+06	
 sf_resolution_rate = 1

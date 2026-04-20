@@ -13,7 +13,7 @@ Radial gap 0.106 m
 Grain diameter 10 um (HP)
 
 U/M = 0.78
-Pu/M = 0.288
+Pu/M = 0.22
 O/M = 1.975
 
 Source if not otherwise indicated: INSPYRE D7.3
