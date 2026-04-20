@@ -1036,7 +1036,7 @@ void System::setTrappingRatesUN(int                              input_value,
             double Zd = 5.0;
 
             // Wigner-Seitz radius per dislocazioni
-            double Gamma_d = 1/sqrt(M_PI * dislocation_density);
+            double Gamma_d = 1 / sqrt(M_PI * dislocation_density);
 
             // ==========================
             // 1. Termine bolle (come gb)
