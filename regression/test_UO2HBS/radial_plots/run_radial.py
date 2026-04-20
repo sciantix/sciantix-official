@@ -159,7 +159,7 @@ f_r = 1.0 + p1 * np.exp(-p2 * (rout_mm - radii_mm) ** p3)
 #   <f>_vol = (2/R^2) * int_0^R f(r) * r dr .
 _r_int = np.linspace(0.0, r_out, 1000)
 _f_int = 1.0 + p1 * np.exp(-p2 * ((r_out - _r_int) * 1000.0) ** p3)
-f_avg_volumetric = 2.0 * np.trapz(_f_int * _r_int, _r_int) / (r_out ** 2)
+f_avg_volumetric = 2.0 * np.trapezoid(_f_int * _r_int, _r_int) / (r_out ** 2)
 print(f"Volumetric mean of TUBRNP shape factor: f_avg_vol = {f_avg_volumetric:.4f}")
 
 # Radial F-dot profile (same for every bu_avg run, its volumetric mean
