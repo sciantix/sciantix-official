@@ -46,30 +46,6 @@ std::vector<std::string> split(const std::string& input, const char delimiter)
 
     return parts;
 }
-
-std::map<std::string, int> parseStoichiometry(const std::string& input)
-{
-    std::map<std::string, int> stoichiometry;
-
-    if (trim(input).empty())
-        return stoichiometry;
-
-    for (const auto& token : split(input, ','))
-    {
-        const size_t separator = token.find(':');
-        if (separator == std::string::npos)
-        {
-            std::cerr << "Error: Invalid thermochemistry stoichiometry token: " << token << std::endl;
-            exit(1);
-        }
-
-        const std::string element = trim(token.substr(0, separator));
-        const std::string value   = trim(token.substr(separator + 1));
-        stoichiometry[element]    = std::stoi(value);
-    }
-
-    return stoichiometry;
-}
 }  // namespace
 
 std::string ThermochemistryManifestEntry::getLabel() const
