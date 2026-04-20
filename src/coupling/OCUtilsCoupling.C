@@ -508,10 +508,10 @@ bool tryGetOxygenMolesFromOutput(const std::string& output_file_path,
     return true;
 }
 
-bool useOxygenPotentialConstraint(const std::set<std::string>& manifest_elements)
+bool useOxygenPotentialConstraint(const std::set<std::string>& selected_elements)
 {
-    return manifest_elements.count("O") > 0 && manifest_elements.count("U") == 0 &&
-           manifest_elements.count("Pu") == 0;
+    return selected_elements.count("O") > 0 && selected_elements.count("U") == 0 &&
+           selected_elements.count("Pu") == 0;
 }
 
 void dumpParsedOcOutput(const OCOutputData& output_data)
@@ -594,7 +594,7 @@ struct OpenCalphadInputComponent
 };
 
 std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
-    const std::set<std::string>&     manifest_elements,
+    const std::set<std::string>&     selected_elements,
     SciantixArray<SciantixVariable>& sciantix_variable,
     double&                          total_content)
 {
@@ -602,7 +602,7 @@ std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
     std::vector<OpenCalphadInputComponent> components;
     total_content = 0.0;
 
-    for (const auto& element_name : manifest_elements)
+    for (const auto& element_name : selected_elements)
     {
         OpenCalphadInputComponent component;
         component.name = element_name;
@@ -663,7 +663,7 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
                            double             temperature,
                            OpenCalphadSolveMode solve_mode,
                            const std::string& location,
-                           const std::set<std::string>& manifest_elements,
+                           const std::set<std::string>& selected_elements,
                            SciantixArray<SciantixVariable>& sciantix_variable,
                            std::set<std::string>& active_elements,
                            double&                total_input_content,
@@ -678,12 +678,12 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
         return false;
     }
 
-    const bool use_oxygen_potential = useOxygenPotentialConstraint(manifest_elements);
+    const bool use_oxygen_potential = useOxygenPotentialConstraint(selected_elements);
     const double oxygen_potential_j_per_mol =
         sciantix_variable["Fuel oxygen potential"].getFinalValue() * 1.0e3;
 
     std::vector<OpenCalphadInputComponent> solve_components =
-        buildOpenCalphadInputComponents(manifest_elements, sciantix_variable, total_input_content);
+        buildOpenCalphadInputComponents(selected_elements, sciantix_variable, total_input_content);
 
     active_elements.clear();
     for (const auto& component : solve_components)
@@ -1038,13 +1038,13 @@ void updateMatrixFromOutput(const OCOutputData&              output_data,
 }
 
 void updateGrainBoundaryFromOutput(const std::map<std::string, OCPhaseData>& solution_phases,
-                                   const std::set<std::string>&               manifest_elements,
+                                   const std::set<std::string>&               selected_elements,
                                    double                                     content_scaling_factor,
                                    SciantixArray<SciantixVariable>&           sciantix_variable)
 {
     const auto gas_phase = solution_phases.find("gas");
 
-    for (const auto& element : manifest_elements)
+    for (const auto& element : selected_elements)
     {
         if (element == "O" || element == "U" || element == "Pu")
             continue;

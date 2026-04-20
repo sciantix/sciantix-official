@@ -86,7 +86,7 @@ bool tryGetOxygenMolesFromOutput(const std::string& output_file_path,
                                  const std::set<std::string>& active_elements,
                                  double& oxygen_moles);
 
-bool useOxygenPotentialConstraint(const std::set<std::string>& manifest_elements);
+bool useOxygenPotentialConstraint(const std::set<std::string>& selected_elements);
 void dumpParsedOcOutput(const OCOutputData& output_data);
 bool writeOpenCalphadInput(const std::string& input_file_path,
                            const std::string& output_file_path,
@@ -96,7 +96,7 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
                            double             temperature,
                            OpenCalphadSolveMode solve_mode,
                            const std::string& location,
-                           const std::set<std::string>& manifest_elements,
+                           const std::set<std::string>& selected_elements,
                            SciantixArray<SciantixVariable>& sciantix_variable,
                            std::set<std::string>& active_elements,
                            double&                total_input_content,
@@ -118,7 +118,7 @@ void updateMatrixFromOutput(const OCOutputData&              output_data,
                             SciantixArray<SciantixVariable>& sciantix_variable,
                             SciantixArray<Matrix>&           matrices);
 void updateGrainBoundaryFromOutput(const std::map<std::string, OCPhaseData>& solution_phases,
-                                   const std::set<std::string>&               manifest_elements,
+                                   const std::set<std::string>&               selected_elements,
                                    double                                     content_scaling_factor,
                                    SciantixArray<SciantixVariable>&           sciantix_variable);
 }  // namespace OCUtilsCoupling

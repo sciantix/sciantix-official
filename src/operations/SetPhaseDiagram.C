@@ -74,7 +74,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     const std::string category = (location == "matrix") ? "matrix" : "fission_products";
     const ThermochemistryPhaseSettings& location_settings =
         (location == "matrix") ? settings.matrix : settings.fission_products;
-    std::set<std::string> manifest_elements(location_settings.elements.begin(), location_settings.elements.end());
+    std::set<std::string> selected_elements(location_settings.elements.begin(), location_settings.elements.end());
 
     if (location_settings.module != "OPENCALPHAD")
     {
@@ -113,7 +113,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     const std::string previous_output_snapshot =
         OCUtilsCoupling::fileExists(output_file_path) ? OCUtilsCoupling::readTextFile(output_file_path) : "";
     const bool oxygen_potential_constraint =
-        OCUtilsCoupling::useOxygenPotentialConstraint(manifest_elements);
+        OCUtilsCoupling::useOxygenPotentialConstraint(selected_elements);
     double fallback_oxygen_moles = -1.0;
     std::vector solve_attempts = {
         OpenCalphadSolveMode::SaveReadWarmStart,
@@ -148,7 +148,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
                 temperature,
                 solve_attempt,
                 location,
-                manifest_elements,
+                selected_elements,
                 sciantix_variable,
                 active_elements,
                 total_input_content,
@@ -277,7 +277,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     {
         OCUtilsCoupling::updateGrainBoundaryFromOutput(
             output_data.solution_phases,
-            manifest_elements,
+            selected_elements,
             total_input_content,
             sciantix_variable);
         return;
