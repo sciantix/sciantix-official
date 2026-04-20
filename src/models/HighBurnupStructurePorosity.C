@@ -271,7 +271,7 @@ void Simulation::HighBurnupStructurePorosity()
             // Physical basis: (1 - xi/xi_sat)^2 with t=2 from 3D percolation
             // theory (Stauffer & Aharony 1994). HBS pores stay closed in
             // steady-state (Hiernaut 2008, Noirot 2008); saturation is kinetic,
-            // not venting. See CLAUDE.md §4 for full rationale.
+            // not venting
             double xi_old = sciantix_variable["HBS porosity"].getInitialValue();
             const double xi_sat = 0.22;
             double linear = std::max(0.0, 1.0 - xi_old / xi_sat);
