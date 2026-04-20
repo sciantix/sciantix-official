@@ -1012,8 +1012,9 @@ void System::setTrappingRatesUN(int                              input_value,
             // Formula per gd
             // ------------------------------------------------------------------
             // gd = 4 * pi * D_g * (R_d + r_lattice) * N_d
-            //      + (2 * pi * D_g * rho_d / ( ln(Gamma_d / (Z_d * r_d)) - 3/5 ))
+            //      + (2 * pi * D_g / ( ln(Gamma_d / (Z_d * r_d)) - 3/5 ))
             //        * (rho_d - 2 * R_d * N_d)
+            // nel Ritzk a numeratore c`era un *rho_d in piu, sembra per errore di stampa
             //
             // Termini:
             // D_g       : diffusivity of gas atoms [m^2/s]
@@ -1035,7 +1036,7 @@ void System::setTrappingRatesUN(int                              input_value,
             double Zd = 5.0;
 
             // Wigner-Seitz radius per dislocazioni
-            double Gamma_d = sqrt(M_PI * dislocation_density);
+            double Gamma_d = 1/sqrt(M_PI * dislocation_density);
 
             // ==========================
             // 1. Termine bolle (come gb)
@@ -1064,7 +1065,7 @@ void System::setTrappingRatesUN(int                              input_value,
             if (free_dislocation < 0.0)
                 free_dislocation = 0.0;
 
-            double term_dislocation = (2.0 * M_PI * diffusivity * dislocation_density / denominator) * free_dislocation;
+            double term_dislocation = (2.0 * M_PI * diffusivity / denominator) * free_dislocation;
 
             trapping_rate_dislocation = term_bubbles + term_dislocation;
 
