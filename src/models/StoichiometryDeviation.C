@@ -357,9 +357,9 @@ void Simulation::StoichiometryDeviation()
             parameter.push_back(burnup);
             parameter.push_back(coefficient);
 
-            // MOX : all fissions are associated to Pu.
+            // MOX : from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
             if (sciantix_variable["q"].getFinalValue() > 0.0)
-                parameter.push_back(0.0);
+                parameter.push_back(0.71); 
             else
                 parameter.push_back(1.0);
 
@@ -395,9 +395,9 @@ void Simulation::StoichiometryDeviation()
             parameter.push_back(history_variable["O/M ratio"].getFinalValue() - 2.0);
             parameter.push_back(history_variable["O/M ratio"].getInitialValue() - 2.0);
             
-            // MOX : all fissions are associated to Pu.
+            // MOX : from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
             if (sciantix_variable["q"].getFinalValue() > 0.0)
-                parameter.push_back(0.0);
+                parameter.push_back(0.71); 
             else
                 parameter.push_back(1.0);
 
@@ -419,9 +419,9 @@ void Simulation::StoichiometryDeviation()
             // [0]=fission term, [1]=radial term, [2]=U/Pu partition factor.
             parameter.push_back(0.0);
 
-            // MOX : all fissions are associated to Pu.
+            // MOX : from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
             if (sciantix_variable["q"].getFinalValue() > 0.0)
-                parameter.push_back(0.0);
+                parameter.push_back(0.71); 
             else
                 parameter.push_back(1.0);
 
