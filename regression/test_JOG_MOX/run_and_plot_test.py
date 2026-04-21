@@ -797,14 +797,14 @@ def plot_radial_profiles(
             species = variable.split(" (", 1)[0]
             match = re.search(r"\(([^,]+), at grain boundary\)", variable)
             phase = match.group(1).strip().lower() if match else "unknown"
-            if phase != "condensed": 
+            if phase not in {"condensed", "liquid"}:
                 continue
             series = radial_volume_average(thermo_profiles[variable], radii_m_array)
             color = species_colors[species]
             gb_radial_histories.append(series)
             gb_colors.append(color)
             gb_hatches.append(phase_hatch.get(phase, phase_hatch["unknown"]))
-            gb_labels.append(f"{species}")
+            gb_labels.append(f"{species} ({phase})")
 
         if gb_radial_histories:
             polys = axis.stackplot(
@@ -820,7 +820,7 @@ def plot_radial_profiles(
                 axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
 
         axis.set_xlabel("Burnup (MWd/kgUO2)")
-        axis.set_ylabel("Concentration of condensed species at grain boundary (mol/m3)")
+        axis.set_ylabel("Concentration of condensed+liquid species at grain boundary (mol/m3)")
         add_capped_legend(axis, loc="upper left")
         fig.tight_layout()
         plot_path = PLOTS_DIR / "summary_06_gb_noliq_phases_vs_burnup.png"
@@ -829,11 +829,22 @@ def plot_radial_profiles(
         saved_paths.append(plot_path)
     
     if "JOG (/)" in output_profiles:
+        jog_total_thickness_over_time_um = radial_integral_over_radius(
+            output_profiles["JOG (/)"],
+            radii_m_array,
+        ) * 1.0e6
+
         jog_condensed_thickness_over_time_um = None
 
         if "JOG from condensed (/)" in output_profiles:
             jog_condensed_thickness_over_time_um = radial_integral_over_radius(
                 output_profiles["JOG from condensed (/)"],
+                radii_m_array,
+            ) * 1.0e6
+        jog_liquid_thickness_over_time_um = None
+        if "JOG from liquid (/)" in output_profiles:
+            jog_liquid_thickness_over_time_um = radial_integral_over_radius(
+                output_profiles["JOG from liquid (/)"],
                 radii_m_array,
             ) * 1.0e6
         melis_fima, melis_thickness = load_experimental_jog_data(EXP_DATA_DIR / "Melis1993.txt")
@@ -863,9 +874,19 @@ def plot_radial_profiles(
 
         # Put CS2MOO4_S2 at the base inside the condensed stack ordering.
         condensed_entries.sort(key=lambda item: (item[0] != "CS2MOO4_S2", item[0]))
-        gb_labels = [item[0] for item in condensed_entries]
-        gb_radial_histories = [item[1] for item in condensed_entries]
-        gb_colors = [item[2] for item in condensed_entries]
+        gb_labels = []
+        gb_radial_histories = []
+        gb_colors = []
+
+        # Keep liquid at the base of the stack when available.
+        if jog_liquid_thickness_over_time_um is not None and not is_all_zero(jog_liquid_thickness_over_time_um):
+            gb_labels.append("LIQUID")
+            gb_radial_histories.append(jog_liquid_thickness_over_time_um)
+            gb_colors.append("#f97316")
+
+        gb_labels.extend(item[0] for item in condensed_entries)
+        gb_radial_histories.extend(item[1] for item in condensed_entries)
+        gb_colors.extend(item[2] for item in condensed_entries)
         fig, axis = plt.subplots()
         if gb_radial_histories:
             axis.stackplot(
@@ -879,7 +900,7 @@ def plot_radial_profiles(
             for boundary in cumulative_histories:
                 axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
 
-        axis.plot(reference_burnup, jog_condensed_thickness_over_time_um, color="#111827", label="Total")
+        axis.plot(reference_burnup, jog_total_thickness_over_time_um, color="#111827", label="Total")
         axis.scatter(
             fima_to_burnup(melis_fima),
             melis_thickness,
