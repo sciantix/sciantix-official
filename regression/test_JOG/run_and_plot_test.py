@@ -351,14 +351,17 @@ def plot_case(
     burnup_label = "Burnup (MWd/kgUO2)"
     time_label = "Time (h)"
     fima_label = "FIMA (%)"
-    jog_label = "JOG from condensed (/)"
+    jog_label_condensed = "JOG from condensed (/)"
+    jog_label_liquid = "JOG from liquid (/)"
     oxygen_label = "O content (mol/m3)"
     uranium_label = "U content (mol/m3)"
 
     burnup = values[:, column_map[burnup_label]]
     time = values[:, column_map[time_label]]
     fima = values[:, column_map[fima_label]]
-    jog_fraction = values[:, column_map[jog_label]]
+    jog_fraction_condensed = values[:, column_map[jog_label_condensed]] if jog_label_condensed in column_map else np.zeros_like(burnup)
+    jog_fraction_liquid = values[:, column_map[jog_label_liquid]] if jog_label_liquid in column_map else np.zeros_like(burnup)
+    jog_fraction = jog_fraction_condensed + jog_fraction_liquid
     jog_thickness_um = jog_fraction * half_wall_thickness_m * 1.0e6
     
     def burnup_to_time(x):
@@ -440,23 +443,6 @@ def plot_case(
         saved_paths.append(plot_path)
 
     fig, axis = plt.subplots()
-    p_o2_oc = np.log10(values[:, column_map["Fuel oxygen partial pressure - CALPHAD (MPa)"]] / 0.1)
-    p_o2_bb = np.log10(values[:, column_map["Fuel oxygen partial pressure - Blackburn (MPa)"]] / 0.1)
-    p_o2_final = np.log10(values[:, column_map["Fuel oxygen partial pressure (MPa)"]] / 0.1)
-    axis.plot(burnup, p_o2_final, label="SCIANTIX", color=colors[0])
-    axis.plot(burnup, p_o2_bb, label="Blackburn", color=colors[1], linestyle = '--')
-    axis.plot(burnup, p_o2_oc, label="CALPHAD", color=colors[3], linestyle = '--')
-    axis.set_xlabel(burnup_label)
-    axis.set_ylabel((r"$\log_{10}(p_{O_2})$ (bar)"))
-    axis.secondary_xaxis("top", functions=(burnup_to_time, time_to_burnup)).set_xlabel(time_label)
-    axis.legend(loc="best")
-    fig.tight_layout()
-    plot_path = case_plot_dir / "po2.png"
-    fig.savefig(plot_path, bbox_inches="tight")
-    plt.close(fig)
-    saved_paths.append(plot_path)
-
-    fig, axis = plt.subplots()
     axis.plot(burnup, values[:, column_map["Fuel oxygen potential (KJ/mol)"]], label="SCIANTIX", color=colors[0])
     axis.plot(burnup, values[:, column_map["Fuel oxygen potential - Blackburn (KJ/mol)"]], label="Blackburn", color=colors[1], linestyle = '--')
     axis.plot(burnup, values[:, column_map["Fuel oxygen potential - CALPHAD (KJ/mol)"]], label="CALPHAD", color=colors[3], linestyle = '--')
@@ -470,32 +456,9 @@ def plot_case(
     plt.close(fig)
     saved_paths.append(plot_path)
 
-    melis_fima, melis_thickness = load_experimental_jog_data(EXP_DATA_DIR / "Melis1993.txt")
-    tourasse_fima, tourasse_thickness = load_experimental_jog_data(EXP_DATA_DIR / "Tourasse1992.txt")
-    fig, axis = plt.subplots()
-    axis.plot(fima, jog_thickness_um, color=colors[3], label="SCIANTIX")
-    axis.scatter(melis_fima, melis_thickness, edgecolors="black", facecolor=None, marker="o", label="Melis et al. (1993)", zorder=3)
-    axis.scatter(tourasse_fima, tourasse_thickness, edgecolors="black", facecolor=None, marker="D", label="Tourasse et al. (1992)", zorder=3)
-    axis.set_xlabel(fima_label)
-    axis.set_ylabel("JOG thickness (um)")
-    axis.text(
-        0.98,
-        0.98,
-        "Thickness = JOG (/) * (Rout - Rin)/2\n"
-        f"Rin = {r_inner_m * 1.0e3:.3f} mm, Rout = {r_outer_m * 1.0e3:.3f} mm",
-        transform=axis.transAxes,
-        ha="right",
-        va="top",
-    )
-    axis.legend(loc="upper left")
-    fig.tight_layout()
-    plot_path = case_plot_dir / "JOG_vs_fima.png"
-    fig.savefig(plot_path, bbox_inches="tight")
-    plt.close(fig)
-    saved_paths.append(plot_path)
-
     jog_breakdown_labels = {
-        "condensed": "JOG from condensed (/)"
+        "condensed": "JOG from condensed (/)",
+        "liquid": "JOG from liquid (/)",
     }
     jog_condensed_subvariables = [
         ("CS2MOO4_S2", "JOG from CS2MOO4_S2 (/)", "CS2MOO4_S2 (condensed, at grain boundary) (mol/m3)"),
@@ -508,10 +471,17 @@ def plot_case(
         ("HCP_A3", "JOG from HCP_A3 (/)", "HCP_A3 (condensed, at grain boundary) (mol/m3)"),
     ]
 
-    if has_columns(column_map, [jog_breakdown_labels["condensed"]]):
+    if has_columns(column_map, [jog_breakdown_labels["condensed"]]) or has_columns(column_map, [jog_breakdown_labels["liquid"]]):
         stack_series = []
         stack_labels = []
         stack_colors = []
+
+        # Keep liquid as the base layer in the stack plot.
+        if jog_breakdown_labels["liquid"] in column_map:
+            stack_series.append(values[:, column_map[jog_breakdown_labels["liquid"]]] * half_wall_thickness_m * 1.0e6)
+            stack_labels.append("LIQUID")
+            stack_colors.append("#f97316")
+
         for sub_label, output_label, thermo_label in jog_condensed_subvariables:
             if output_label not in column_map:
                 continue
@@ -590,78 +560,6 @@ def plot_case(
     add_capped_legend(axis, loc="upper left", fontsize=8)
     fig.tight_layout()
     plot_path = case_plot_dir / "thermochemistry_fission_products_at_grain_boundary.png"
-    fig.savefig(plot_path, bbox_inches="tight")
-    plt.close(fig)
-    saved_paths.append(plot_path)
-
-    liquid_phase_label = "LIQUID (liquid, at grain boundary) (mol/m3)"
-    if liquid_phase_label in thermochemistry_column_map:
-        liquid_cs2moo4_available = thermochemistry_values[:, thermochemistry_column_map[liquid_phase_label]]
-    else:
-        cs = np.zeros_like(thermochemistry_burnup)
-        mo = np.zeros_like(thermochemistry_burnup)
-        o = np.zeros_like(thermochemistry_burnup)
-        liquid_cs_label = "CS (liquid, at grain boundary) (mol/m3)"
-        if liquid_cs_label in thermochemistry_column_map:
-            cs = thermochemistry_values[:, thermochemistry_column_map[liquid_cs_label]]
-        liquid_mo_label = "MO (liquid, at grain boundary) (mol/m3)"
-        if liquid_mo_label in thermochemistry_column_map:
-            mo = thermochemistry_values[:, thermochemistry_column_map[liquid_mo_label]]
-        liquid_o_label = "O (liquid, at grain boundary) (mol/m3)"
-        if liquid_o_label in thermochemistry_column_map:
-            o = thermochemistry_values[:, thermochemistry_column_map[liquid_o_label]]
-        liquid_cs2moo4_available = np.minimum.reduce([cs / 2.0, mo, o / 4.0])
-    cs2moo4_molar_mass = (
-        2.0 * ATOMIC_MASS_G_PER_MOL["Cs"] + ATOMIC_MASS_G_PER_MOL["Mo"] + 4.0 * ATOMIC_MASS_G_PER_MOL["O"]
-    )
-    temperature = thermochemistry_values[:, thermochemistry_column_map["Temperature (K)"]]
-    temperature_celsius = temperature - 273.15
-    a_o_ref = 0.8499e-9
-    b_o_ref = 0.6551e-9
-    c_o_ref = 1.1586e-9
-    z_o = 4.0
-    z_h = 2.0
-    alpha_o = -7.12e-4 + 2.57e-5 * temperature_celsius + 4.03e-8 * temperature_celsius**2
-    alpha_h = -0.0102 + 8.50e-5 * temperature_celsius - 2.13e-8 * temperature_celsius**2
-    v_cell_o = (a_o_ref * b_o_ref * c_o_ref) * (1.0 + 3.0 * alpha_o)
-    v_cell_h = (a_o_ref * b_o_ref * c_o_ref) * (1.0 + 3.0 * alpha_h)
-    condensed_s1_density_g_per_m3 = (cs2moo4_molar_mass / AVOGADRO_NUMBER) * (z_o / v_cell_o)
-    condensed_s2_density_g_per_m3 = (cs2moo4_molar_mass / AVOGADRO_NUMBER) * (z_h / v_cell_h)
-    liquid_cs2moo4_volume_fraction = liquid_cs2moo4_available * cs2moo4_molar_mass / (CS2MOO4_LIQUID_DENSITY_KG_PER_M3 * 1000.0)
-    condensed_cs2moo4_s1_volume_fraction = np.zeros_like(thermochemistry_burnup)
-    condensed_cs2moo4_s1_label = "CS2MOO4_S1 (condensed, at grain boundary) (mol/m3)"
-    if condensed_cs2moo4_s1_label in thermochemistry_column_map:
-        condensed_cs2moo4_s1 = thermochemistry_values[:, thermochemistry_column_map[condensed_cs2moo4_s1_label]]
-        condensed_cs2moo4_s1_volume_fraction = condensed_cs2moo4_s1 * cs2moo4_molar_mass / condensed_s1_density_g_per_m3
-    condensed_cs2moo4_s2_volume_fraction = np.zeros_like(thermochemistry_burnup)
-    condensed_cs2moo4_s2_label = "CS2MOO4_S2 (condensed, at grain boundary) (mol/m3)"
-    if condensed_cs2moo4_s2_label in thermochemistry_column_map:
-        condensed_cs2moo4_s2 = thermochemistry_values[:, thermochemistry_column_map[condensed_cs2moo4_s2_label]]
-        condensed_cs2moo4_s2_volume_fraction = condensed_cs2moo4_s2 * cs2moo4_molar_mass / condensed_s2_density_g_per_m3
-    condensed_cs2moo4_volume_fraction = condensed_cs2moo4_s1_volume_fraction + condensed_cs2moo4_s2_volume_fraction
-    thermochemistry_jog_thickness_um = (
-        liquid_cs2moo4_volume_fraction + condensed_cs2moo4_volume_fraction
-    ) * half_wall_thickness_m * 1.0e6
-    liquid_thickness_um = liquid_cs2moo4_volume_fraction * half_wall_thickness_m * 1.0e6
-    condensed_thickness_um = condensed_cs2moo4_volume_fraction * half_wall_thickness_m * 1.0e6
-
-    fig, axis = plt.subplots()
-    axis.stackplot(
-        fima,
-        liquid_thickness_um,
-        condensed_thickness_um,
-        labels=["Available Cs2MoO4", "CALPHAD Cs2MoO4"],
-        colors=["#fb923c", "#7c3aed"],
-        alpha=0.75,
-    )
-    axis.plot(fima, thermochemistry_jog_thickness_um, color="#111827", label="Total estimated thickness")
-    axis.scatter(melis_fima, melis_thickness, edgecolors="black", facecolor=None, marker="o", label="Melis et al. (1993)", zorder=3)
-    axis.scatter(tourasse_fima, tourasse_thickness, edgecolors="black", facecolor=None, marker="D", label="Tourasse et al. (1992)", zorder=3)
-    axis.set_xlabel(fima_label)
-    axis.set_ylabel("JOG thickness (um)")
-    axis.legend(loc="upper left")
-    fig.tight_layout()
-    plot_path = case_plot_dir / "JOG_thickness_from_thermochemistry.png"
     fig.savefig(plot_path, bbox_inches="tight")
     plt.close(fig)
     saved_paths.append(plot_path)
@@ -876,14 +774,14 @@ def plot_radial_profiles(
             species = variable.split(" (", 1)[0]
             match = re.search(r"\(([^,]+), at grain boundary\)", variable)
             phase = match.group(1).strip().lower() if match else "unknown"
-            if phase != "condensed": 
+            if phase not in {"condensed", "liquid"}:
                 continue
             series = radial_volume_average(thermo_profiles[variable], radii_m_array)
             color = species_colors[species]
             gb_radial_histories.append(series)
             gb_colors.append(color)
             gb_hatches.append(phase_hatch.get(phase, phase_hatch["unknown"]))
-            gb_labels.append(f"{species}")
+            gb_labels.append(f"{species} ({phase})")
 
         polys = axis.stackplot(
             reference_burnup,
@@ -898,7 +796,7 @@ def plot_radial_profiles(
             axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
 
         axis.set_xlabel("Burnup (MWd/kgUO2)")
-        axis.set_ylabel("Concentration of condensed species at grain boundary (mol/m3)")
+        axis.set_ylabel("Concentration of condensed+liquid species at grain boundary (mol/m3)")
         add_capped_legend(axis, loc="upper left")
         fig.tight_layout()
         plot_path = PLOTS_DIR / "summary_06_gb_noliq_phases_vs_burnup.png"
@@ -907,11 +805,22 @@ def plot_radial_profiles(
         saved_paths.append(plot_path)
     
     if "JOG (/)" in output_profiles:
+        jog_total_thickness_over_time_um = radial_integral_over_radius(
+            output_profiles["JOG (/)"],
+            radii_m_array,
+        ) * 1.0e6
+
         jog_condensed_thickness_over_time_um = None
 
         if "JOG from condensed (/)" in output_profiles:
             jog_condensed_thickness_over_time_um = radial_integral_over_radius(
                 output_profiles["JOG from condensed (/)"],
+                radii_m_array,
+            ) * 1.0e6
+        jog_liquid_thickness_over_time_um = None
+        if "JOG from liquid (/)" in output_profiles:
+            jog_liquid_thickness_over_time_um = radial_integral_over_radius(
+                output_profiles["JOG from liquid (/)"],
                 radii_m_array,
             ) * 1.0e6
         melis_fima, melis_thickness = load_experimental_jog_data(EXP_DATA_DIR / "Melis1993.txt")
@@ -941,9 +850,19 @@ def plot_radial_profiles(
 
         # Put CS2MOO4_S2 at the base inside the condensed stack ordering.
         condensed_entries.sort(key=lambda item: (item[0] != "CS2MOO4_S2", item[0]))
-        gb_labels = [item[0] for item in condensed_entries]
-        gb_radial_histories = [item[1] for item in condensed_entries]
-        gb_colors = [item[2] for item in condensed_entries]
+        gb_labels = []
+        gb_radial_histories = []
+        gb_colors = []
+
+        # Keep liquid at the base of the stack when available.
+        if jog_liquid_thickness_over_time_um is not None and not is_all_zero(jog_liquid_thickness_over_time_um):
+            gb_labels.append("LIQUID")
+            gb_radial_histories.append(jog_liquid_thickness_over_time_um)
+            gb_colors.append("#f97316")
+
+        gb_labels.extend(item[0] for item in condensed_entries)
+        gb_radial_histories.extend(item[1] for item in condensed_entries)
+        gb_colors.extend(item[2] for item in condensed_entries)
         fig, axis = plt.subplots()
         if gb_radial_histories:
             axis.stackplot(
@@ -957,7 +876,7 @@ def plot_radial_profiles(
             for boundary in cumulative_histories:
                 axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
 
-        axis.plot(reference_burnup, jog_condensed_thickness_over_time_um, color="#111827", label="Total")
+        axis.plot(reference_burnup, jog_total_thickness_over_time_um, color="#111827", label="Total")
         axis.scatter(
             fima_to_burnup(melis_fima),
             melis_thickness,
