@@ -10,7 +10,7 @@ fission_products.locations = at grain boundary
 fission_products.gap_settings = false
 
 matrix.module = OPENCALPHAD
-matrix.database = O-Pu-UPaper
+matrix.database = upuo-v21
 matrix.elements = U, Pu, O
 matrix.locations = matrix
 matrix.gap_settings = false
