@@ -75,18 +75,31 @@ void Simulation::HighBurnupStructurePorosity()
 
         case 2:
         {
-            // Trapping rate (HBS), Gosele approximated formula
-            double pore_trapping_rate_HBS = 0.0;
             double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
             double angle_deg = 4.0 * (1.0 - alpha) + 40.0 * alpha;
             double D_sa = fuel_.getGrainBoundarySingleAtomDiffusivity();
             double D_gb = D_sa * sin(angle_deg * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
-
             double c_gb = sciantix_variable["Xe at grain boundary HBS"].getFinalValue();
             double R_pore = sciantix_variable["HBS pore radius"].getFinalValue();
-            pore_trapping_rate_HBS =
-                4.0 * M_PI * D_gb * c_gb * R_pore * (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
-                           
+
+            // Kinetic saturation factor from 3D percolation theory
+            // (Stauffer & Aharony 1994): (1 - xi/xi_sat)^t with t = 2.
+            // Modulates BOTH transport coefficients along the solid
+            // grain-boundary backbone:
+            //   - D_gb^SA  (single-atom) -> gas trapping rate beta_n
+            //   - D_gb^v   (vacancies)   -> Speight-Beere volume flow rate
+            // Percolation fragments the solid network at xi -> xi_sat, shutting
+            // both diffusive pathways simultaneously. No post-hoc cap is
+            // applied to the total pore-volume increment: saturation acts on
+            // the diffusivities, preserving the EoS consistency V_p =
+            // n_Xe * Omega_Xe + n_vac * Omega_vac. At saturation, beta_n -> 0
+            // causes gas to pile up on c_gb^HBS rather than inside the pores,
+            // and vacancy inflow ceases, so porosity stabilizes mechanistically.
+            double xi_old = sciantix_variable["HBS porosity"].getInitialValue();
+            const double xi_sat = 0.22;
+            double linear = std::max(0.0, 1.0 - xi_old / xi_sat);
+            double saturation_factor = linear * linear;
+
             // Nucleation rate with incubation burnup.
             // Following Biswas & Aagesen 2025 (Comput. Mater. Sci. 258, 114052,
             // Eq. 45), the modified JMAK is alpha_r = 1 - exp[-K*(bu - bu_inc)^n]
@@ -155,8 +168,12 @@ void Simulation::HighBurnupStructurePorosity()
             
             reference = ": Barani T. et al (2020). Journal of Nuclear Materials, 539, 152296. Barani T. et al (2022). Journal of Nuclear Materials, 563, 153627 (linear model).";
 
-            // Solution of the linear model for Np (pore density), A (1st moment), B (2nd moment), C_gb_NR, C_gb_HBS
-            double trapping_coeff_HBS = 4.0 * M_PI * D_gb * R_pore * (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
+            // Solution of the linear model for Np (pore density), A (1st moment), B (2nd moment), C_gb_NR, C_gb_HBS.
+            // Percolation-modulated D_gb^SA: single-atom gas diffusion along
+            // the grain boundary network is suppressed as the solid backbone
+            // fragments, so beta_n inherits the same saturation_factor as the
+            // vacancy pathway.
+            double trapping_coeff_HBS = 4.0 * M_PI * (D_gb * saturation_factor) * R_pore * (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
             double total_trapping_rate_HBS = trapping_coeff_HBS * N_pore;
             double dt = physics_variable["Time step"].getFinalValue();
 
@@ -184,9 +201,7 @@ void Simulation::HighBurnupStructurePorosity()
 
             initial_conditions[0] = sciantix_variable["HBS pore density"].getInitialValue() + pore_nucleation_rate * dt;
 
-            initial_conditions[1] = sciantix_variable["Xe in HBS pores"].getInitialValue()
-                + 2.0 * pore_nucleation_rate * dt
-                + pore_trapping_rate_HBS * dt;
+            initial_conditions[1] = sciantix_variable["Xe in HBS pores"].getInitialValue() + 2.0 * pore_nucleation_rate * dt;
 
             initial_conditions[2] = sciantix_variable["Xe in HBS pores - variance"].getInitialValue()
                 + pow((sciantix_variable["Xe atoms per HBS pore"].getFinalValue() - 2.0), 2.0) * pore_nucleation_rate * dt;
@@ -194,8 +209,7 @@ void Simulation::HighBurnupStructurePorosity()
             initial_conditions[3] = sciantix_variable["Xe at grain boundary"].getInitialValue() + gas_in_gb_from_grain;
             initial_conditions[4] = sciantix_variable["Xe at grain boundary HBS"].getInitialValue()
                 + gas_in_pores_from_hbs_grain
-                - 2.0 * pore_nucleation_rate * dt
-                + pore_resolution_rate * sciantix_variable["Xe in HBS pores"].getInitialValue() * dt;
+                - 2.0 * pore_nucleation_rate * dt;
 
             solver.Laplace(5, coeff_matrix, initial_conditions);
         
@@ -211,12 +225,6 @@ void Simulation::HighBurnupStructurePorosity()
             sciantix_variable["Xe at grain boundary HBS"].setFinalValue(0.0);
             if (sciantix_variable["Xe in HBS pores"].getFinalValue() < 0.0)
             sciantix_variable["Xe in HBS pores"].setFinalValue(0.0);
-
-            // Provisional variables
-            pore_trapping_rate_HBS *= scaling_factors["Dummy"].getValue();
-            sciantix_variable["trapping rate hbs"].setFinalValue(pore_trapping_rate_HBS);
-            sciantix_variable["re-solution rate hbs"].setFinalValue(pore_resolution_rate);
-            sciantix_variable["nucleation rate hbs"].setFinalValue(pore_nucleation_rate);
             
             // Xe atoms per HBS pore: n = A / Np
             if (sciantix_variable["HBS pore density"].getFinalValue())
@@ -261,31 +269,17 @@ void Simulation::HighBurnupStructurePorosity()
         
             if(sciantix_variable["HBS pore radius"].getInitialValue()) equilibrium_pressure = 2.0 * fuel_.getSurfaceTension() / sciantix_variable["HBS pore radius"].getInitialValue() - history_variable["Hydrostatic stress"].getFinalValue() * 1e6;
 
-            // Kinetic saturation factor for pore growth at high porosity.
-            // Applies to BOTH vacancy absorption (volume_flow_rate, inside the
-            // DimensionlessFactor block) AND total pore-volume increment (Edit 3,
-            // after the Speight-Beere integration). This ensures that the gas
-            // contribution n_Xe*gasVolumeInPore, which is NOT modulated by
-            // volume_flow_rate, is also capped.
-            //
-            // Physical basis: (1 - xi/xi_sat)^2 with t=2 from 3D percolation
-            // theory (Stauffer & Aharony 1994). HBS pores stay closed in
-            // steady-state (Hiernaut 2008, Noirot 2008); saturation is kinetic,
-            // not venting
-            double xi_old = sciantix_variable["HBS porosity"].getInitialValue();
-            const double xi_sat = 0.22;
-            double linear = std::max(0.0, 1.0 - xi_old / xi_sat);
-            double saturation_factor = linear * linear;
-
             if(DimensionlessFactor)
             {
                 // Barani 2022 Eq. 7: alpha-weighted tilt-angle correction on the
                 // grain-boundary vacancy diffusivity. angle_deg was computed at
                 // the top of case 2 from the current restructured volume fraction.
+                // saturation_factor modulates D_gb^v via percolation (same t=2
+                // exponent as for D_gb^SA at the top of case 2).
                 double tilt_factor = sin(angle_deg * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
-                double D_gb_v_tilted = fuel_.getGrainBoundaryVacancyDiffusivity() * tilt_factor;
+                double D_gb_v_eff = fuel_.getGrainBoundaryVacancyDiffusivity() * tilt_factor * saturation_factor;
 
-                volume_flow_rate = saturation_factor * 2.0 * M_PI * WignerSeitzCellRadius * D_gb_v_tilted / DimensionlessFactor;
+                volume_flow_rate = 2.0 * M_PI * WignerSeitzCellRadius * D_gb_v_eff / DimensionlessFactor;
 
                 growth_rate = volume_flow_rate * sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * Z_compr / fuel_.getSchottkyVolume();
                 equilibrium_term = - volume_flow_rate * equilibrium_pressure / (boltzmann_constant * history_variable["Temperature"].getFinalValue());
@@ -307,26 +301,16 @@ void Simulation::HighBurnupStructurePorosity()
                 )
             );
         
-            // HBS pore volume - update with vacancy contribution
+            // HBS pore volume - update with vacancy contribution.
+            // No post-hoc cap: saturation acts on diffusivities (D_gb^SA and
+            // D_gb^v) upstream, so V_p follows n_Xe and n_vac consistently
+            // with the EoS.
             sciantix_variable["HBS pore volume"].setFinalValue(
                 sciantix_variable["Xe atoms per HBS pore"].getFinalValue() * gasVolumeInPore + sciantix_variable["Vacancies per HBS pore"].getFinalValue() *  fuel_.getSchottkyVolume()
             );
 
-            // Saturation cap on total pore-volume growth (gas + vacancy).
-            // dV > 0 guard: shrinkage (re-solution dominant) is never blocked.
-            // Save the uncapped increment BEFORE applying the cap: the
-            // interconnection (coalescence) rate must see the "natural" pore
-            // expansion, not the throttled one — pores still touch each other
-            // at the uncapped rate even if their stored volume is capped.
-            double V_pore_increment_uncapped =
+            double V_pore_increment =
                 sciantix_variable["HBS pore volume"].getFinalValue() - V_pore_old_step;
-            {
-                double dV = V_pore_increment_uncapped;
-                if (dV > 0.0)
-                    sciantix_variable["HBS pore volume"].setFinalValue(
-                        V_pore_old_step + saturation_factor * dV
-                    );
-            }
 
             sciantix_variable["HBS pore radius"].setFinalValue(
                 0.620350491 * pow(sciantix_variable["HBS pore volume"].getFinalValue(), 1. / 3.)
@@ -337,8 +321,6 @@ void Simulation::HighBurnupStructurePorosity()
             );
 
             // HBS pore interconnection by impingement.
-            // Uses the UNCAPPED volume increment so that coalescence kinetics
-            // are not frozen by the saturation cap at high porosity.
             double limiting_factor =
                (2.0 - sciantix_variable["HBS porosity"].getFinalValue()) / (2.0 * pow(1.0 - sciantix_variable["HBS porosity"].getFinalValue(), 3.0));
 
@@ -349,7 +331,7 @@ void Simulation::HighBurnupStructurePorosity()
                 solver.BinaryInteraction(
                     sciantix_variable["HBS pore density"].getInitialValue(),
                     pore_interconnection_rate,
-                    V_pore_increment_uncapped
+                    V_pore_increment
                 )
             );
         
