@@ -680,7 +680,7 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
 
     const bool use_oxygen_potential = useOxygenPotentialConstraint(selected_elements);
     const double oxygen_potential_j_per_mol =
-        sciantix_variable["Fuel oxygen potential"].getFinalValue() * 1.0e3;
+        sciantix_variable["Fuel oxygen potential"].getFinalValue() * 1.0e3 / 2.0; // Convert from kJ/mol O2 to J/mol O
 
     std::vector<OpenCalphadInputComponent> solve_components =
         buildOpenCalphadInputComponents(selected_elements, sciantix_variable, total_input_content);
