@@ -60,7 +60,9 @@ void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_
  * @brief Defines diffusion models using spectral diffusion with three coupled equations:
  * solution (diffusing) + bulk bubbles + dislocation bubbles (exchange only).
  */
-void defineSpectralDiffusion3EquationsExchange(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes);
+void defineSpectralDiffusion3EquationsExchange(SciantixArray<System>& sciantix_system,
+                                               SciantixArray<Model>&  model,
+                                               int                    n_modes);
 
 /**
  * @brief Handles unsupported diffusion solver options.
