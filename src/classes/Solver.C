@@ -276,7 +276,7 @@ void Solver::SpectralDiffusion3equationsExchange(double&             c,
 
     double diffusion_rate_coeff = pow(M_PI, 2) * D_g / pow(radius, 2);
 
-    const double projection_coeff = -2.0 * sqrt(2.0 / M_PI);
+    const double projection_coeff  = -2.0 * sqrt(2.0 / M_PI);
     const double source_rate_coeff = projection_coeff * beta;
 
     double c_solution(0.0);
