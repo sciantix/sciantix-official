@@ -162,6 +162,40 @@ class Solver : virtual public InputVariable
                                      double*             initial_condition_gas_3,
                                      std::vector<double> parameter,
                                      double              increment);
+    
+                                  
+    // AD UN URANIUMNITRIDE                                 
+    /**
+     * @brief Solves three coupled equations with diffusion in the first variable (gas in solution)
+     * and exchange terms with the other two variables (e.g. bulk bubbles and dislocation bubbles).
+     *
+     * The system solved (spatially averaged over a spherical grain) is:
+     *  dc/dt  = D_g * div grad c  - (g_b + g_d + L_c) * c + b_b * m_b + b_d * m_d + beta
+     *  dm_b/dt = g_b * c - b_b * m_b
+     *  dm_d/dt = g_d * c - b_d * m_d
+     *
+     * A spectral approach is used in space for c, with backward Euler in time for each mode,
+     * resulting in a 3x3 linear system per mode.
+     *
+     * Parameters (vector):
+     * 0 : N_modes
+     * 1 : D_g (diffusivity of gas atoms in solution)
+     * 2 : r (grain radius)
+     * 3 : beta (volumetric generation rate)
+     * 4 : g_b (capture rate to bulk bubbles)
+     * 5 : g_d (capture rate to dislocation bubbles)
+     * 6 : b_b (re-solution rate from bulk bubbles)
+     * 7 : b_d (re-solution rate from dislocation bubbles)
+     * 8 : L_c (additional first-order loss rate for c, e.g. radioactive decay)
+     */
+    void SpectralDiffusion3equationsExchange(double&             c,
+                                            double&             m_b,
+                                            double&             m_d,
+                                            double*             modes_c,
+                                            double*             modes_m_b,
+                                            double*             modes_m_d,
+                                            std::vector<double> parameter,
+                                            double              increment);
 
     /**
      * @brief Solves a system of two linear equations using Cramer's method.

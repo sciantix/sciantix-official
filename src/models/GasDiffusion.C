@@ -33,6 +33,11 @@ void Simulation::GasDiffusion()
             defineSpectralDiffusion3Equations(sciantix_system, model, sciantix_variable, physics_variable, n_modes);
             break;
 
+            // AD UN URANIUMNITRIDE
+        case 4:
+            defineSpectralDiffusion3EquationsExchange(sciantix_system, model, n_modes);
+            break;
+
         default:
             errorHandling(input_variable);
             break;
@@ -110,6 +115,40 @@ void Simulation::GasDiffusion()
 
             case 3:
                 break;
+
+                // AD UN URANIUMNITRIDE
+            case 4:
+            {
+                if (system.getRestructuredMatrix() == 0)
+                {
+                    double c_solution =
+                        sciantix_variable[system.getGasName() + " in intragranular solution"].getFinalValue();
+                    double m_bulk =
+                        sciantix_variable[system.getGasName() + " in intragranular bubbles"].getFinalValue();
+                    double m_disl =
+                        sciantix_variable[system.getGasName() + " in dislocation bubbles"].getFinalValue();
+
+                    solver.SpectralDiffusion3equationsExchange(c_solution,
+                                                              m_bulk,
+                                                              m_disl,
+                                                              getDiffusionModesSolution(system.getGasName()),
+                                                              getDiffusionModesBubbles(system.getGasName()),
+                                                              getDiffusionModesDislocationBubbles(system.getGasName()),
+                                                              model["Gas diffusion - " + system.getName()].getParameter(),
+                                                              physics_variable["Time step"].getFinalValue());
+
+                    sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(c_solution);
+                    sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(m_bulk);
+                    sciantix_variable[system.getGasName() + " in dislocation bubbles"].setFinalValue(m_disl);
+
+                    sciantix_variable[system.getGasName() + " in grain"].setFinalValue(c_solution + m_bulk + m_disl);
+                }
+                else if (system.getRestructuredMatrix() == 1)
+                {
+                    sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(0.0);
+                }
+                break;
+            }
 
             default:
                 ErrorMessages::Switch(__FILE__, "iDiffusionSolver", int(input_variable["iDiffusionSolver"].getValue()));
@@ -292,6 +331,38 @@ void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_
 
     model_.setParameter(parameters);
     model.push(model_);
+}
+// AD UN URANIUMNITRIDE
+void defineSpectralDiffusion3EquationsExchange(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes)
+{
+    std::string reference;
+
+    for (auto& system : sciantix_system)
+    {
+        Model model_;
+        model_.setName("Gas diffusion - " + system.getName());
+        model_.setRef(reference);
+
+        std::vector<double> parameters;
+        parameters.push_back(n_modes);
+
+        const double D_g = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
+        parameters.push_back(D_g);
+        parameters.push_back(system.getMatrix().getGrainRadius());
+        parameters.push_back(system.getProductionRate());
+
+        // Exchange terms (bulk + dislocation). For non-UN systems these are expected to be 0.
+        parameters.push_back(system.getTrappingRateBulkBubble());
+        parameters.push_back(system.getTrappingRateDislocationBubble());
+        parameters.push_back(system.getResolutionRateIntra());
+        parameters.push_back(system.getResolutionRateDisl());
+
+        // Additional first-order loss on c (e.g. decay)
+        parameters.push_back(system.getGas().getDecayRate());
+
+        model_.setParameter(parameters);
+        model.push(model_);
+    }
 }
 
 void errorHandling(SciantixArray<InputVariable> input_variable)
