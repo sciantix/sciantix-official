@@ -124,6 +124,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
             "Xe in grain HBS", "(at/m3)", Sciantix_variables[92], Sciantix_variables[92], toOutputHighBurnupStructure),
         SciantixVariable("Xe in intragranular solution", "(at/m3)", Sciantix_variables[3], Sciantix_variables[3], 1),
         SciantixVariable("Xe in intragranular bubbles", "(at/m3)", Sciantix_variables[4], Sciantix_variables[4], 1),
+        SciantixVariable("Xe in dislocation bubbles", "(at/m3)", 0.0, 0.0, 0),  // AD UN URANIUMNITRIDE
         SciantixVariable("Xe at grain boundary", "(at/m3)", Sciantix_variables[5], Sciantix_variables[5], 1),
         SciantixVariable("Xe released", "(at/m3)", Sciantix_variables[6], Sciantix_variables[6], 1),
         SciantixVariable("Xe decayed", "(at/m3)", 0.0, 0.0, 0),
@@ -132,6 +133,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("Kr in grain", "(at/m3)", Sciantix_variables[8], Sciantix_variables[8], 1),
         SciantixVariable("Kr in intragranular solution", "(at/m3)", Sciantix_variables[9], Sciantix_variables[9], 1),
         SciantixVariable("Kr in intragranular bubbles", "(at/m3)", Sciantix_variables[10], Sciantix_variables[10], 1),
+        SciantixVariable("Kr in dislocation bubbles", "(at/m3)", 0.0, 0.0, 0),   // AD UN URANIUMNITRIDE
         SciantixVariable("Kr at grain boundary", "(at/m3)", Sciantix_variables[11], Sciantix_variables[11], 1),
         SciantixVariable("Kr released", "(at/m3)", Sciantix_variables[12], Sciantix_variables[12], 1),
         SciantixVariable("Kr decayed", "(at/m3)", 0.0, 0.0, 0),
@@ -144,6 +146,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
             "He in intragranular solution", "(at/m3)", Sciantix_variables[15], Sciantix_variables[15], toOutputHelium),
         SciantixVariable(
             "He in intragranular bubbles", "(at/m3)", Sciantix_variables[16], Sciantix_variables[16], toOutputHelium),
+        SciantixVariable("He in dislocation bubbles", "(at/m3)", 0.0, 0.0, 0),     // AD UN URANIUMNITRIDE
         SciantixVariable(
             "He at grain boundary", "(at/m3)", Sciantix_variables[17], Sciantix_variables[71], toOutputHelium),
         SciantixVariable("He released", "(at/m3)", Sciantix_variables[18], Sciantix_variables[18], toOutputHelium),
@@ -165,6 +168,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[51],
                          Sciantix_variables[51],
                          toOutputRadioactiveFG),
+        SciantixVariable("Xe133 in dislocation bubbles", "(at/m3)", 0.0, 0.0, 0),     // AD UN URANIUMNITRIDE
         SciantixVariable(
             "Xe133 decayed", "(at/m3)", Sciantix_variables[52], Sciantix_variables[52], toOutputRadioactiveFG),
         SciantixVariable(
@@ -187,6 +191,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[60],
                          Sciantix_variables[60],
                          toOutputRadioactiveFG),
+        SciantixVariable("Kr85m in dislocation bubbles", "(at/m3)", 0.0, 0.0, 0),      // AD UN URANIUMNITRIDE
         SciantixVariable(
             "Kr85m decayed", "(at/m3)", Sciantix_variables[61], Sciantix_variables[61], toOutputRadioactiveFG),
         SciantixVariable(

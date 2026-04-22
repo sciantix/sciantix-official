@@ -251,6 +251,84 @@ void Solver::SpectralDiffusion3equations(double&             gas_1,
     gas_3 = gas_3_solution;
 }
 
+// AD UN URANIUMNITRIDE
+void Solver::SpectralDiffusion3equationsExchange(double&             c,
+                                                 double&             m_b,
+                                                 double&             m_d,
+                                                 double*             modes_c,
+                                                 double*             modes_m_b,
+                                                 double*             modes_m_d,
+                                                 std::vector<double> parameter,
+                                                 double              increment)
+{
+    size_t             n;
+    unsigned short int np1(1);
+
+    const double n_modes = parameter.at(0);
+    const double D_g     = parameter.at(1);
+    const double radius  = parameter.at(2);
+    const double beta    = parameter.at(3);
+    const double g_b     = parameter.at(4);
+    const double g_d     = parameter.at(5);
+    const double b_b     = parameter.at(6);
+    const double b_d     = parameter.at(7);
+    const double loss_c  = parameter.at(8);
+
+    double diffusion_rate_coeff = pow(M_PI, 2) * D_g / pow(radius, 2);
+
+    const double projection_coeff = -2.0 * sqrt(2.0 / M_PI);
+    const double source_rate_coeff = projection_coeff * beta;
+
+    double c_solution(0.0);
+    double m_b_solution(0.0);
+    double m_d_solution(0.0);
+
+    double coeff_matrix[9];
+    double initial_conditions[3];
+
+    for (n = 0; n < n_modes; n++)
+    {
+        np1                  = n + 1;
+        const double n_coeff = pow(-1.0, np1) / np1;
+
+        const double diffusion_rate = diffusion_rate_coeff * pow(np1, 2);
+        const double source_rate    = source_rate_coeff * n_coeff;
+
+        // Backward Euler per mode:
+        // (I - dt * J) * x^{n+1} = x^n + dt * s
+        // with x = [c, m_b, m_d] and s = [source_rate, 0, 0]
+        coeff_matrix[0] = 1.0 + (diffusion_rate + g_b + g_d + loss_c) * increment;
+        coeff_matrix[1] = -b_b * increment;
+        coeff_matrix[2] = -b_d * increment;
+
+        coeff_matrix[3] = -g_b * increment;
+        coeff_matrix[4] = 1.0 + b_b * increment;
+        coeff_matrix[5] = 0.0;
+
+        coeff_matrix[6] = -g_d * increment;
+        coeff_matrix[7] = 0.0;
+        coeff_matrix[8] = 1.0 + b_d * increment;
+
+        initial_conditions[0] = modes_c[n] + source_rate * increment;
+        initial_conditions[1] = modes_m_b[n];
+        initial_conditions[2] = modes_m_d[n];
+
+        Solver::Laplace3x3(coeff_matrix, initial_conditions);
+
+        modes_c[n]   = initial_conditions[0];
+        modes_m_b[n] = initial_conditions[1];
+        modes_m_d[n] = initial_conditions[2];
+
+        c_solution += projection_coeff * n_coeff * initial_conditions[0] / ((4. / 3.) * M_PI);
+        m_b_solution += projection_coeff * n_coeff * initial_conditions[1] / ((4. / 3.) * M_PI);
+        m_d_solution += projection_coeff * n_coeff * initial_conditions[2] / ((4. / 3.) * M_PI);
+    }
+
+    c   = c_solution;
+    m_b = m_b_solution;
+    m_d = m_d_solution;
+}
+
 void Solver::Laplace2x2(double A[], double b[])
 {
     double detX(0.0), detY(0.0);
