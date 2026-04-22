@@ -23,6 +23,7 @@
 #include "SciantixVariable.h"
 #include "Solver.h"
 #include "System.h"
+#include "ThermochemistrySettings.h"
 #include "ThermochemistryVariable.h"
 #include <cmath>
 #include <vector>
@@ -58,6 +59,7 @@ class Simulation
 
     SciantixArray<InputVariable> input_variable;
     SciantixArray<InputVariable> scaling_factors;
+    ThermochemistrySettings thermochemistry_settings;
 
     int                 n_modes;
     std::vector<double> modes_initial_conditions;
@@ -91,7 +93,7 @@ class Simulation
                       double Sciantix_scaling_factors[],
                       double Sciantix_diffusion_modes[],
                       double Sciantix_thermochemistry[],
-                      std::vector<std::vector<std::string>> Sciantix_thermochemistry_options
+                      const ThermochemistrySettings& Sciantix_thermochemistry_settings
     );
 
     void setFissionProducts();
@@ -106,7 +108,7 @@ class Simulation
                     double Sciantix_scaling_factors[],
                     double Sciantix_diffusion_modes[],
                     double Sciantix_thermochemistry[],
-                    std::vector<std::vector<std::string>> Sciantix_thermochemistry_options
+                    const ThermochemistrySettings& Sciantix_thermochemistry_settings
     );
 
     void execute();

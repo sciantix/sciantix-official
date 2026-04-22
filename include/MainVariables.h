@@ -17,6 +17,7 @@
 #ifndef MAIN_VARIABLES_H
 #define MAIN_VARIABLES_H
 
+#include "ThermochemistrySettings.h"
 #include <fstream>
 #include <vector>
 
@@ -36,7 +37,7 @@ extern double Sciantix_variables[300];
 extern double Sciantix_scaling_factors[20];
 extern double Sciantix_diffusion_modes[1300];
 extern double Sciantix_thermochemistry[300];
-extern std::vector<std::vector<std::string>> Sciantix_thermochemistry_options;
+extern ThermochemistrySettings Sciantix_thermochemistry_settings;
 
 extern long long int Time_step_number;
 extern double        Time_h, dTime_h, Time_end_h;

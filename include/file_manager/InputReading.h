@@ -18,6 +18,7 @@
 #define INPUT_READING_H
 
 #include "ErrorMessages.h"
+#include "ThermochemistrySettings.h"
 #include <numeric>
 #include <sstream>
 #include <string>
@@ -40,7 +41,7 @@ void InputReading(
     double Sciantix_variables[],
     double Sciantix_scaling_factors[],
     double Sciantix_thermochemistry[],
-    std::vector<std::vector<std::string>> Sciantix_thermochemistry_options,
+    ThermochemistrySettings &Sciantix_thermochemistry_settings,
     int &Input_history_points,
     std::vector<double> &Time_input,
     std::vector<double> &Temperature_input,

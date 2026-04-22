@@ -62,18 +62,16 @@ void Simulation::SetPhaseDiagram(std::string location) // qui tutti eccetto i ga
 void Simulation::CallThermochemistryModule(std::string                      location,
                                            SciantixArray<SciantixVariable>& sciantix_variable)
 {
+    const ThermochemistrySettings& Sciantix_thermochemistry_settings = thermochemistry_settings;
     using OpenCalphadSolveMode = OCUtilsCoupling::OpenCalphadSolveMode;
     constexpr int open_calphad_timeout_seconds = 60;
 
     const double temperature = history_variable["Temperature"].getFinalValue();
     const double pressure = history_variable["System pressure"].getFinalValue();
 
-    const ThermochemistrySettings settings =
-        loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt");
-
     const std::string category = (location == "matrix") ? "matrix" : "fission_products";
     const ThermochemistryPhaseSettings& location_settings =
-        (location == "matrix") ? settings.matrix : settings.fission_products;
+        (location == "matrix") ? Sciantix_thermochemistry_settings.matrix : Sciantix_thermochemistry_settings.fission_products;
     std::set<std::string> selected_elements(location_settings.elements.begin(), location_settings.elements.end());
 
     if (location_settings.module != "OPENCALPHAD")
@@ -96,7 +94,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         return;
     }
 
-    const std::string directory_path = settings.opencalphad_path;
+    const std::string directory_path = Sciantix_thermochemistry_settings.opencalphad_path;
     const std::string input_file_path = TestPath + "OCinput_" + category + ".OCM";
     const std::string output_file_path = TestPath + "OCoutput_" + category + ".DAT";
     const std::string state_file_path = TestPath + "OCoutput_" + category;
@@ -112,8 +110,9 @@ void Simulation::CallThermochemistryModule(std::string                      loca
 
     const std::string previous_output_snapshot =
         OCUtilsCoupling::fileExists(output_file_path) ? OCUtilsCoupling::readTextFile(output_file_path) : "";
-    const bool oxygen_potential_constraint =
-        OCUtilsCoupling::useOxygenPotentialConstraint(selected_elements);
+    const bool oxygen_potential_constraint = (selected_elements.count("O") > 0 && 
+                                                selected_elements.count("U") == 0 &&
+                                                selected_elements.count("Pu") == 0);
     double fallback_oxygen_moles = -1.0;
     std::vector solve_attempts = {
         OpenCalphadSolveMode::SaveReadWarmStart,
@@ -230,32 +229,31 @@ void Simulation::CallThermochemistryModule(std::string                      loca
                       << "'. Accepting deferred stoichiometric C1_MO2 stabilization result."
                       << std::endl;
         }
-    }
-
-    if (!solved)
-    {
-        const std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
-
-        if (!previous_output_snapshot.empty() &&
-            OCUtilsCoupling::writeTextFile(output_file_path, previous_output_snapshot))
+        else
         {
-            output_data = parseOCOutputFile(output_file_path, valid_elements);
-            if (OCUtilsCoupling::hasRequiredComponents(output_data, active_elements))
+            const std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
+
+            if (!previous_output_snapshot.empty() &&
+                OCUtilsCoupling::writeTextFile(output_file_path, previous_output_snapshot))
             {
-                solved = true;
-                std::cout << "Warning: all OpenCalphad attempts failed for location '" << location
-                          << "'. Reusing the previous timestep equilibrium from " << output_file_path
-                          << "." << std::endl;
+                output_data = parseOCOutputFile(output_file_path, valid_elements);
+                if (OCUtilsCoupling::hasRequiredComponents(output_data, active_elements))
+                {
+                    solved = true;
+                    std::cout << "Warning: all OpenCalphad attempts failed for location '" << location
+                            << "'. Reusing the previous timestep equilibrium from " << output_file_path
+                            << "." << std::endl;
+                }
             }
-        }
 
-        if (!solved)
-        {
-            std::cout << "Warning: all OpenCalphad attempts failed for location '" << location
-                      << "' and no valid previous timestep equilibrium was available. Continue in any case."
-                      << std::endl;
-            output_data = parseOCOutputFile(output_file_path, valid_elements);
-        }
+            if (!solved)
+            {
+                std::cout << "Warning: all OpenCalphad attempts failed for location '" << location
+                        << "' and no valid previous timestep equilibrium was available. Continue in any case."
+                        << std::endl;
+                output_data = parseOCOutputFile(output_file_path, valid_elements);
+            }
+        }    
     }
 
     OCUtilsCoupling::dumpParsedOcOutput(output_data);

@@ -508,12 +508,6 @@ bool tryGetOxygenMolesFromOutput(const std::string& output_file_path,
     return true;
 }
 
-bool useOxygenPotentialConstraint(const std::set<std::string>& selected_elements)
-{
-    return selected_elements.count("O") > 0 && selected_elements.count("U") == 0 &&
-           selected_elements.count("Pu") == 0;
-}
-
 void dumpParsedOcOutput(const OCOutputData& output_data)
 {
     std::cout << "\n[OC parser] Parsed components" << std::endl;
@@ -678,7 +672,10 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
         return false;
     }
 
-    const bool use_oxygen_potential = useOxygenPotentialConstraint(selected_elements);
+    const bool use_oxygen_potential = (selected_elements.count("O") > 0 && 
+                                        selected_elements.count("U") == 0 &&
+                                        selected_elements.count("Pu") == 0);
+                                        
     const double oxygen_potential_j_per_mol =
         sciantix_variable["Fuel oxygen potential"].getFinalValue() * 1.0e3 / 2.0; // Convert from kJ/mol O2 to J/mol O
 

@@ -95,7 +95,7 @@ void InputReading(int                  Sciantix_options[],
                   double               Sciantix_scaling_factors[],
                   // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
                   double Sciantix_thermochemistry[],
-	              std::vector<std::vector<std::string>> Sciantix_thermochemistry_options,
+	              ThermochemistrySettings &Sciantix_thermochemistry_settings,
                   //
                   int&                 Input_history_points,
                   std::vector<double>& Time_input,
@@ -370,28 +370,11 @@ void InputReading(int                  Sciantix_options[],
 	input_history.close();
 	input_scaling_factors.close();
 
+    Sciantix_thermochemistry_settings = ThermochemistrySettings{};
     // CODE DEVELOPMENT : THERMOCHEMISTRY SETTINGS READER
 	if (Sciantix_options[25] > 0)
 	{
-		const ThermochemistrySettings settings =
+		Sciantix_thermochemistry_settings =
 		    loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt");
-
-		Sciantix_thermochemistry_options.resize(10);
-		Sciantix_thermochemistry_options[0].push_back(settings.fission_products.module);
-		
-		// Fission products
-		for (const auto& fp : settings.fission_products.elements)
-        	Sciantix_thermochemistry_options[1].push_back(fp);
-		Sciantix_thermochemistry_options[2].push_back(settings.fission_products.database);
-		for (const auto& loc : settings.fission_products.locations)
-        	Sciantix_thermochemistry_options[3].push_back(loc);
-
-		// Matrix
-		for (const auto& mat : settings.matrix.elements)
-        	Sciantix_thermochemistry_options[4].push_back(mat);
-		Sciantix_thermochemistry_options[5].push_back(settings.matrix.database);
-		for (const auto& loc : settings.matrix.locations)
-        	Sciantix_thermochemistry_options[6].push_back(loc);
-
 	}
 }

@@ -123,7 +123,6 @@ double ThermochemistryVariable::getMolarMass()
 {
     static const std::map<std::string, double> atomic_masses = {
         {"Cs", 132.90545196},
-        {"Cr", 51.9961},
         {"I", 126.90447},
         {"Mo", 95.95},
         {"O", 15.999},

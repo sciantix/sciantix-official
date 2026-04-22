@@ -84,7 +84,7 @@ int main(int argc, char** argv)
                  Sciantix_scaling_factors,
                  // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
                  Sciantix_thermochemistry,
-                 Sciantix_thermochemistry_options,
+                 Sciantix_thermochemistry_settings,
                  //
                  Input_history_points,
                  Time_input,
@@ -104,7 +104,6 @@ int main(int argc, char** argv)
                    Sciantix_diffusion_modes,
                    // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
                    Sciantix_thermochemistry,
-                   Sciantix_thermochemistry_options,
                    //
                    Temperature_input,
                    Fissionrate_input,
@@ -156,7 +155,7 @@ int main(int argc, char** argv)
         Sciantix_history[13] = Sciantix_history[14];
         Sciantix_history[14] = InputInterpolation(Time_h, Time_input, OMratio_input, Input_history_points);
 
-        Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes, Sciantix_thermochemistry, Sciantix_thermochemistry_options);
+        Sciantix(Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes, Sciantix_thermochemistry, Sciantix_thermochemistry_settings);
         //
 
 

@@ -23,7 +23,7 @@ double Sciantix_scaling_factors[20];
 // CODE DEVELOPMENT : INCREASE IN DIFFUSION MODES FROM 720 TO 1300
 double Sciantix_diffusion_modes[1300];
 double Sciantix_thermochemistry[300];
-std::vector<std::vector<std::string>> Sciantix_thermochemistry_options;
+ThermochemistrySettings Sciantix_thermochemistry_settings;
 //
 
 long long int Time_step_number(0);

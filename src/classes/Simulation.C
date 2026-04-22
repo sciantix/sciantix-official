@@ -36,7 +36,7 @@ void Simulation::initialize(int    Sciantix_options[],
                             double Sciantix_diffusion_modes[],
                             // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
                             double Sciantix_thermochemistry[],
-                            std::vector<std::vector<std::string>> Sciantix_thermochemistry_options
+                            const ThermochemistrySettings& Sciantix_thermochemistry_settings
 )
 {
     // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
@@ -47,7 +47,7 @@ void Simulation::initialize(int    Sciantix_options[],
             Sciantix_scaling_factors,
             Sciantix_diffusion_modes,
             Sciantix_thermochemistry,
-            Sciantix_thermochemistry_options
+            Sciantix_thermochemistry_settings
     );
     //
     setFissionProducts();
