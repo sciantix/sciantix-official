@@ -34,7 +34,8 @@ understanding the rationale in Section 4.
 | KJMA `K, n` (Barani 2020) | `2.77e-7`, `3.54` | `HighBurnupStructureFormation.C` params 0,1 | Barani 2020 fit on Gerczak data, unchanged |
 | `0.8814` (M_U/M_UO₂) | hardcoded in both formation and porosity modules | `HighBurnupStructureFormation.C`, `HighBurnupStructurePorosity.C` | Stoichiometric unit conversion MWd/kgUO₂→MWd/kgU |
 | Xe yield scale factor `sf` | 1.25 for `iFuelMatrix=1` | `System.C::setProductionRate` case 1 & 5 | Converts base 0.24 → 0.30 true cumulative Xe yield |
-| Saturation cap on pore growth | `(1−ξ_old/ξ_sat)²`, `ξ_sat = 0.22` | `HighBurnupStructurePorosity.C` | Percolation theory (Stauffer-Aharony t=2); kinetic saturation of vacancy-driven pore growth |
+| Percolation saturation factor | `(1−ξ_old/ξ_sat)²`, `ξ_sat = 0.22` | `HighBurnupStructurePorosity.C` | Stauffer-Aharony `t=2`. Applied to **both** `D_gb^SA` (trapping) and `D_gb^v` (vacancy flow). No post-hoc cap on ΔV. |
+| Cluster-dynamics time discretisation | Pure **implicit Euler** on the 5×5 system | `HighBurnupStructurePorosity.C` | Coeff matrix carries all implicit couplings; no residual explicit α·A term on the RHS |
 
 ## 3. Code changes vs parent commit (logical diff)
 
@@ -56,31 +57,33 @@ understanding the rationale in Section 4.
 
 ### `src/models/HighBurnupStructurePorosity.C` case 2
 
-#### Sensitivity flags (top of case 2)
-Four `constexpr bool` flags for separate-effect analysis of the 5×5 system:
-- `flag_sweeping` (SW1): NR→HBS gas sweeping. When false, `sweeping_term = 0`.
-- `flag_partitioning` (SW2): direct grain→pore flux. When false, `f_p = 0, f_gb = 1`.
-- `flag_implicit_coupling` (SW3): implicit A ↔ c_gb,HBS coupling in the matrix. When false, off-diagonal terms `coeff_matrix[9,21]` are zeroed and trapping is explicit.
-- `flag_variance_source` (SW4): direct source to variance B from grain flux. When false, B grows only via nucleation and β·Np (consistent with Frattini Eq. 12).
-
-All default `true` (full model). Setting all to `false` gives the decoupled Frattini Eq. 12 system.
-
 #### Nucleation rate
 - `pore_nucleation_rate` reads `bu_inc` from formation model parameter[4] and applies the incubation threshold: `ν_P = 0` for `bu_U ≤ bu_inc`, otherwise proportional to `(bu_U - bu_inc)^(n-1)`. Prefactor bumped 5e17 → 1e18 (factor 2) to recover N_p peak magnitude consistent with Cappia 2016 data.
 
 #### Tilt correction
-- Added **α-weighted tilt correction** on `D_gb^v` locally (was hardcoded at max in Matrix.C).
+- α-weighted tilt correction `sin(angle_deg)/sin(4°)` with `angle_deg = 4°(1−α_r) + 40°α_r` is applied **locally** to both `D_gb^SA` (for `β_n`) and `D_gb^v` (for Speight-Beere), consistent with Barani 2022 Eq. 7. The base matrix values returned by the getters are **untilted**; the tilt is combined with the percolation saturation factor in a single multiplicative chain at the point of use. No other routine applies the tilt (the NR intergranular bubble model uses UO₂ matrix boundaries at 4° by definition).
 
-#### Saturation cap (two-pathway)
-The saturation factor `(1 − ξ_old/ξ_sat)²` is computed **outside** the `if(DimensionlessFactor)` block so it is in scope for both pathways:
+#### Cluster-dynamics 5×5 linear system — fully implicit Euler
+The 5 unknowns are `Np, A, B, c_gb^NR, c_gb^HBS`. The scheme is **pure implicit Euler**: every coupling (re-solution, trapping, sweeping) appears only through `coeff_matrix`, and the RHS `initial_conditions[]` contains only previous-step values and explicit sources (nucleation).
 
-1. **Vacancy pathway**: `volume_flow_rate *= saturation_factor` inside `if(DimensionlessFactor)`. This throttles the Speight-Beere vacancy absorption ODE.
-2. **Total pore volume**: after V_pore is computed from gas + vacancy contributions, the **total increment** `dV = V_new − V_old_step` is throttled: `V_pore = V_old_step + saturation_factor · dV` (only for dV > 0; shrinkage is never blocked).
+Mass balance encoded by the matrix:
+- Row `A`: `(1 + α_n dt) A_new − β_n N_p dt · c_gb^HBS_new = A_old + 2ν_P dt`
+- Row `c_gb^HBS`: `(1 + β_n N_p dt) c_gb^HBS_new − α_n dt · A_new − w dt · c_gb^NR_new = c_gb^HBS_old + gas_from_grain − 2ν_P dt`
+- The `−2ν_P dt` RHS term on `c_gb^HBS` is the nucleation sink (two xenon atoms leave the HBS grain-boundary reservoir at every nucleation event); its counterpart `+2ν_P dt` on `A` is the source.
+- Overall `d(A + c_gb^HBS)/dt = S_HBS + w c_gb` is conserved exactly by the solver.
 
-`V_pore_old_step` is saved at the start of each time step (before `setInitialValue` overwrites the value).
+Previously the RHS of `c_gb^HBS` also carried `+ pore_resolution_rate · A_old · dt`, which, combined with the implicit `−α_n dt` coupling in `coeff_matrix[21]`, turned the re-solution coupling into a Crank-Nicolson-like scheme with over-counting. **Removed**: only the implicit coupling remains, so the scheme is now pure implicit Euler.
 
-#### Interconnection (coalescence) uses uncapped increment
-`BinaryInteraction` receives `V_pore_increment_uncapped` (saved before the cap), NOT `getIncrement()` (which would return the capped dV ≈ 0 at high ξ). This ensures coalescence kinetics are not frozen by the saturation cap — pores still merge at their "natural" expansion rate even when the stored volume is capped. Without this fix, N_p plateaus instead of declining at bu > 125 MWd/kgHM.
+#### Percolation saturation factor — two-pathway modulation of diffusivities
+The saturation factor `(1 − ξ_old/ξ_sat)²` is computed **once** at the top of case 2 (before `trapping_coeff_HBS` is formed). It is applied by the same `t = 2` percolation exponent (Stauffer-Aharony) to **both** grain-boundary transport coefficients:
+
+1. **Trapping pathway (`β_n`)**: `trapping_coeff_HBS = 4π · (D_gb · saturation_factor) · R_p · (1 + 1.8 ξ^{1.3})`. At `ξ → ξ_sat`, `β_n → 0` and newly produced gas piles up on `c_gb^HBS` instead of being absorbed by pores.
+2. **Vacancy pathway (Speight-Beere)**: `D_gb_v_eff = D_gb^v · tilt_factor · saturation_factor`, used in `volume_flow_rate = 2π ρ_P D_gb_v_eff / ζ(ψ)`. At `ξ → ξ_sat`, vacancy inflow shuts down.
+
+**No post-hoc cap on ΔV.** The earlier `V_pore = V_old + saturation_factor · dV` block has been removed. Saturation now acts entirely on the upstream diffusivities, so the pore volume follows the EoS identity `V_p = n_Xe·Ω_Xe + n_vac·Ω_Schottky` without any post-hoc manipulation. Carnahan-Starling packing-fraction cap (0.65) handles the thermodynamic limit on over-pressurisation naturally.
+
+#### Coalescence / interconnection
+`BinaryInteraction` now receives the **physical** `V_pore_increment = V_new − V_old_step` (no longer distinguished as "uncapped" vs "capped" because no cap is applied to ΔV). The bell-shaped `N_p(bu)` profile is preserved because saturation acts on diffusivities upstream, not on ΔV downstream.
 
 #### Existing guards preserved
 `ψ > 0.7` cap, `PackingFraction > 0.65` cap, `isinf/isnan` on sweeping.
@@ -95,7 +98,7 @@ The saturation factor `(1 − ξ_old/ξ_sat)²` is computed **outside** the `if(
   - `σ_ξ = ξ · CV` (propagated from σ_R)
   - Note: both approximations neglect the vacancy contribution to pore volume, so they slightly underestimate the true spread.
 - `plt.show()` replaced with `plt.savefig()` for non-interactive execution.
-- **7 plots** produced total:
+- **8 plots** produced total:
   1. `plot_pore_density.png` — N_p vs bu_eff + Cappia/Spino/Barani/SCIANTIX 2.0/2.2.1
   2. `plot_porosity.png` — ξ vs bu_eff + ±σ_ξ band + 6 experimental datasets + 3 model curves
   3. `plot_pore_radius.png` — R_p vs bu_eff + ±σ_R band + Cappia/Spino + 3 model curves
@@ -103,6 +106,7 @@ The saturation factor `(1 − ξ_old/ξ_sat)²` is computed **outside** the `if(
   5. `plot_fuel_swelling.png` — matrix swelling breakdown vs Spino 2005 + α_r twin axis
   6. `plot_pore_variance.png` — B raw (at²/m³) vs bu_eff (diagnostic, not for paper)
   7. `plot_CV.png` — coefficient of variation σ_n/n̄ vs bu_eff (diagnostic, U-shape test)
+  8. `plot_xe_inventory.png` — **xenon mass balance** across the six reservoirs (NR grain → NR GB → HBS grain → HBS GB → HBS pores → released). Two-panel stacked area: top = absolute inventory (10²⁶ at/m³) with total production dashed-line overlay for conservation check; bottom = fractional share (%) with `α_r` on twin axis. Directly validates the two-phase sweeping framework and exposes the `c_gb^HBS` backup at `ξ → ξ_sat` (signature of the percolation saturation on `β_n`).
 
 ### `regression/regression_functions.py`
 - Removed 4 stale variable entries from `sciantix_dictionary()` that caused warnings:
@@ -149,7 +153,7 @@ to avoid "gas-reservoir burst" that occurs when applied to ν_P alone.
 The incubation threshold reduces the integral of ν_P. Recalibrating to 1e18
 restores peak ~5×10¹⁷ pores/m³, consistent with Cappia/Spino range.
 
-### Why saturation cap `(1 - ξ/0.22)²` on BOTH vacancy flow AND total dV
+### Why percolation saturation `(1 - ξ/0.22)²` on both diffusivities (not on ΔV)
 **Important:** HBS pores do NOT release gas by venting in steady-state
 operation. Gas stays trapped at 30-100+ MPa overpressure (Hiernaut 2008
 JNM 377, Noirot 2008 JNM 372). Gas is released only by fragmentation during
@@ -157,22 +161,34 @@ transients (Kulacsy 2015 JNM 466, Jernkvist 2019/2020). Therefore zero FGR
 from HBS pores in isothermal tests is **physically correct**.
 
 The experimentally observed porosity saturation at ξ ≈ 0.15-0.20
-(Spino 2005, Cappia 2016) is a **kinetic saturation**, not a release. At
-high ξ the remaining solid matrix supports the load on a smaller
-cross-section; local effective stress grows as ~1/(1-ξ), suppressing
-vacancy sources. The quadratic cap models this via percolation theory
-(Stauffer & Aharony 1994, critical exponent t=2 in 3D). Gas continues to
-accumulate in pores after saturation (trapping unaffected), driving up
-pressure — consistent with experimental over-pressurization data.
+(Spino 2005, Cappia 2016) is a **percolation transition of the solid
+grain-boundary backbone**. Both single-atom gas diffusion (`D_gb^SA`,
+feeding `β_n`) and vacancy diffusion (`D_gb^v`, feeding the Speight-Beere
+flux) travel along the same connected network of grain boundaries. As ξ
+approaches `ξ_sat`, the backbone fragments and both diffusive pathways
+close simultaneously. From 3D lattice percolation theory (Stauffer &
+Aharony 1994), any transport coefficient along the solid phase scales near
+the critical porosity as `D_eff = D (1 − ξ/ξ_sat)^t` with `t ≈ 2`.
 
-The cap must apply to the **total** pore volume increment (gas + vacancy),
-not just the vacancy flow rate, because `V_gas = n_Xe · gasVolumeInPore`
-grows uncapped otherwise and `V_gas ≈ V_vacancy` in magnitude, so capping
-only the vacancy pathway leaves ~half the growth uncontrolled.
+**Implementation**: the factor is applied as a multiplicative modulation
+of the two diffusivities *in situ* in `HighBurnupStructurePorosity.C`:
+- `trapping_coeff_HBS = 4π · D_gb^SA · saturation_factor · R_p · (1 + 1.8 ξ^{1.3})`
+- `D_gb_v_eff = D_gb^v · tilt_factor · saturation_factor` (used inside Speight-Beere)
 
-The interconnection (coalescence) uses the **uncapped** increment so that
-pore merging continues at high ξ. Without this, N_p plateaus instead of
-declining — inconsistent with experimental bell-shaped N_p(bu) curve.
+The earlier ad-hoc post-hoc cap on the total pore-volume increment
+(`V_pore = V_old + saturation_factor · dV`) has been **removed**. That cap
+was physically inconsistent: it throttled the gas contribution `n_Xe Ω_Xe`
+in addition to the vacancy contribution, even though trapping and vacancy
+transport are distinct physical channels. By moving the factor upstream to
+the diffusivities, both channels are suppressed at the correct rate, the
+EoS identity `V_p = n_Xe Ω_Xe + n_vac Ω_Schottky` is preserved, and the
+bell-shaped `N_p(bu)` profile emerges naturally from the percolation-modulated
+β_n without needing an "uncapped-increment" special case for coalescence.
+
+**Physical signature in the output** (visible in `plot_xe_inventory.png`):
+as β_n → 0 at `ξ → ξ_sat`, newly produced xenon cannot enter the pores and
+backs up on `c_gb^HBS`, which develops a plateau at high burnup. This is a
+direct, visual validation of the two-pathway percolation formulation.
 
 ### Why `(bu_eff/0.8814)` conversion
 `0.8814 = M(U) / M(UO₂)`. Converts MWd/kgUO₂ → MWd/kgU. Stoichiometry,
@@ -214,7 +230,7 @@ paper but should be noted.
 ```bash
 cd regression
 printf '1\n6\n0\n0\n' | python3 regression.py   # no plots
-printf '1\n6\n0\n1\n' | python3 regression.py   # with plots (7 PNGs)
+printf '1\n6\n0\n1\n' | python3 regression.py   # with plots (8 PNGs)
 ```
 
 ### Expected baseline values
@@ -242,9 +258,9 @@ Default: `bu_avg_list = [40, 67, 97]`, `temp_center=1400K`, `rim_clustering=3.0`
 | `src/classes/Matrix.C` | D_gb^SA (case 1), D_gb^v (case 3), pore rates |
 | `src/classes/System.C` | Production rate with 1.25 yield factor |
 | `src/models/HighBurnupStructureFormation.C` | KJMA α_r with incubation burnup, parameters[0-4] |
-| `src/models/HighBurnupStructurePorosity.C` | **Core**: sensitivity flags, cluster-dynamics 5×5, nucleation with bu_inc, tilt correction, two-pathway saturation cap, uncapped-increment interconnection |
-| `src/operations/SetMatrix.C` | Matrix setup; UO2HBS uses `iGrainBoundaryVacancyDiffusivity=3` hardcoded |
-| `regression/regression_hbs.py` | HBS regression with 7 plots (density, porosity+σ, radius+σ, Xe depletion, swelling, variance B, CV) |
+| `src/models/HighBurnupStructurePorosity.C` | **Core**: fully implicit Euler 5×5 cluster dynamics, nucleation with `bu_inc`, local tilt correction on both `D_gb^SA` and `D_gb^v`, percolation saturation factor applied to the two diffusivities (no ΔV cap) |
+| `src/operations/SetMatrix.C` | Matrix setup; UO2HBS uses `iGrainBoundaryVacancyDiffusivity=3` hardcoded. UO2HBS pore surface energy `γ = 1.0 N/m`; UO2 matrix uses `γ = 0.7 N/m`. |
+| `regression/regression_hbs.py` | HBS regression with 8 plots (density, porosity+σ, radius+σ, Xe depletion, swelling, variance B, CV, xenon inventory mass balance) |
 | `regression/regression_functions.py` | Shared regression utilities; `sciantix_dictionary()` variable list |
 | `regression/test_UO2HBS/radial_plots/run_radial.py` | Multi-burnup radial sweep with 5 comparison plots |
 
@@ -269,14 +285,37 @@ All PDFs except Stauffer-Aharony are in repo root.
 ## 9. Manuscript
 
 The manuscript is at `/home/giovanni/research-manuscripts/Zullo_et_al__HBS/main.tex`
-with bibliography at `bibliography.bib`. Target journal: Journal of Nuclear Materials.
+with bibliography at `HBS.bib`. Target journal: Journal of Nuclear Materials.
 
-New plots generated during this session are in:
-- `regression/test_UO2HBS/plot_pore_density.png` (replaces `Images/Np_finale.png`)
-- `regression/test_UO2HBS/plot_porosity.png` (replaces `Images/Porosity_PPT.png`)
-- `regression/test_UO2HBS/plot_pore_radius.png` (replaces `Images/R_finale.png`)
-- `regression/test_UO2HBS/plot_pore_variance.png` (new, diagnostic)
-- `regression/test_UO2HBS/plot_CV.png` (new, diagnostic)
-- `regression/test_UO2HBS/radial_plots/plot_radial_porosity.png` (replaces `Images/SepEff_Porosity.png`)
-- `regression/test_UO2HBS/radial_plots/plot_radial_pore_radius.png` (replaces `Images/SepEff_R.png`)
-- `regression/test_UO2HBS/radial_plots/plot_radial_pore_density.png` (replaces `Images/SepEff_Np.png`)
+### Equations aligned with the code
+
+| Paper | Form | Notes |
+|---|---|---|
+| Eq. 12 (definition of `β_n`) | `β_n = 4π D_gb^SA c_gb R_n^p (1 + 1.8 ξ^{1.3})` | `β_n` **already includes** `c_gb^HBS` (atoms/pore·s). Frattini convention. |
+| Eq. 15 (`dA/dt`) | `dA/dt = 2ν_P − α_n A + β_n N_p` | Previously had `β_n^{tot} c_gb^HBS` which double-counted `c_gb^HBS`. Now matches Frattini thesis exactly. |
+| Eq. 18 (`dc_gb^HBS/dt`) | `dc_gb^HBS/dt = S_HBS + w c_gb − 2ν_P − β_n N_p + α_n A` | `−2ν_P` nucleation sink added (two atoms leave the reservoir per pore nucleated). Mass balance `d(A + c_gb^HBS)/dt = S_HBS + w c_gb` is now exact. |
+| Eq. 22 (percolation saturation) | `D_eff = D (1 − ξ/ξ_sat)^t, t ≈ 2` with separate equations for `D_gb^SA,eff` and `D_gb^v,eff` | Rewritten as symmetric modulation of both diffusivities. The previous formulation "applied to total ΔV" has been removed. |
+| §3.9 text | "saturation acts on upstream transport coefficients" | Rewritten. No more "capping only the vacancy pathway leaves half the growth uncontrolled" — that paragraph was the old (incorrect) justification for the ΔV cap and has been replaced. |
+| §3.4 text | `β_n N_p` | Last residual `β_n^{tot}` removed. |
+| Table 2 | Added `γ = 1.0 N/m` (UO₂-HBS pore surface energy) and effective cumulative yield `y = 0.30 at/fiss` | Explanatory paragraph on the 1.25 precursor factor (iodine + tellurium decay chains feeding stable Xe). |
+| §5.5 (new) | "Xenon inventory and mass balance" | New results subsection built around `plot_xe_inventory.png`. Numbered observations: (1) conservation to 10⁻³ relative, (2) onset of HBS reservoir at `bu_eff ≈ 40–50 MWd/kgHM`, (3) closed-system behaviour (`c_r ≈ 0` throughout), plus the `c_gb^HBS` plateau as visual signature of the percolation saturation on `β_n`. |
+
+### Plots in `Images/` for the manuscript
+- `plot_pore_density.png` (Fig. 3 — N_p vs bu_eff)
+- `plot_porosity.png` (Fig. 4 — ξ vs bu_eff with ±σ_ξ band)
+- `plot_pore_radius.png` (Fig. 5 — R_p vs bu_eff with ±σ_R band)
+- `plot_pore_variance.png` (Fig. 6 — diagnostic, B moment)
+- `plot_CV.png` (Fig. 7 — diagnostic, coefficient of variation)
+- `plot_xe_inventory.png` (Fig. 8 — xenon mass balance, §5.5)
+- `plot_radial_porosity.png`, `plot_radial_pore_radius.png`, `plot_radial_pore_density.png` (radial section)
+
+## 10. Recent-session change log (2026-04-22)
+
+The material changes applied in this session, relative to the `e2f88a9b` tip, are:
+
+1. **Implicit Euler on the 5×5 cluster-dynamics solver.** Removed the residual `+ pore_resolution_rate · A_old · dt` from `initial_conditions[4]`; the `−α_n A` coupling to `c_gb^HBS` is now carried purely by `coeff_matrix[21]`, eliminating a Crank-Nicolson-like over-count.
+2. **Nucleation sink on `c_gb^HBS`.** Added `−2·ν_P·dt` to `initial_conditions[4]` (was previously missing in the paper; in the code it is now explicit and matches the sink/source balance with `A`).
+3. **Percolation saturation factor moved onto the diffusivities.** The factor `(1 − ξ/ξ_sat)²` is now applied to both `D_gb^SA` (inside `trapping_coeff_HBS`) and `D_gb^v` (inside the Speight-Beere block), instead of being applied twice (once on `volume_flow_rate` and once on the total ΔV). The post-hoc `V_pore = V_old + saturation_factor·dV` block was removed; `V_pore_increment` is now the physical EoS-consistent ΔV.
+4. **`BinaryInteraction` simplification.** Uses the physical `V_pore_increment` (no more "uncapped vs capped" distinction).
+5. **Paper alignment.** Eq. 15 rewritten with Frattini's `β_n N_p` notation; Eq. 18 gained the `−2ν_P` sink; §3.9 rewritten as a two-pathway percolation modulation of `D_gb^SA` and `D_gb^v`; Table 2 gained the `γ_HBS = 1.0 N/m` and effective-yield rows; new §5.5 "Xenon inventory and mass balance".
+6. **Regression plot 8.** `plot_xe_inventory.png` added to `regression_hbs.py`: two-panel stacked area visualising the six xenon reservoirs and the `α_r`-driven redistribution, doubling as a visual conservation check.
