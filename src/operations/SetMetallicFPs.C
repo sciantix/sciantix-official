@@ -26,7 +26,7 @@ void SetMetallicFPs(SciantixArray<FissionProducts>& metallic_fp)
 static void metallicPlaceholder(SciantixArray<FissionProducts>& metallic_fp)
 {
     FissionProducts metallic_;
-    // Placeholder metallic FP used only to validate metallic class plumbing.
+    // Placeholder metallic FP used only to validate metallic class.
     metallic_.setName("M_placeholder");
     metallic_.setAtomicNumber(0);
     metallic_.setVanDerWaalsVolume(0.0);

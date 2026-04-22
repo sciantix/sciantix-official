@@ -22,6 +22,7 @@
 #include "InputVariable.h"
 #include "SciantixArray.h"
 #include "SetVariablesFunctions.h"
+#include "ThermochemistrySettings.h"
 #include "ThermochemistryVariable.h"
 
 /**
@@ -39,7 +40,7 @@
  * @param Sciantix_diffusion_modes Array of doubles that describe diffusion modes used in gas
  * behavior modeling.
  * @param Sciantix_thermochemistry Array of doubles representing the variables related to the thermochemistry module.
- * @param Sciantix_thermochemistry_options Array of string representing the options for the thermochemistry module.
+ * @param Sciantix_thermochemistry_settings Thermochemistry module options.
 
  * @param input_variable Reference to SciantixArray of InputVariable objects.
  * @param history_variable Reference to SciantixArray of SciantixVariable objects for history tracking.
@@ -60,7 +61,7 @@ void SetVariables(int                              Sciantix_options[],
                   double                           Sciantix_scaling_factors[],
                   double                           Sciantix_diffusion_modes[],
                   double                           Sciantix_thermochemistry[],
-	              std::vector<std::vector<std::string>> Sciantix_thermochemistry_options,
+                  const ThermochemistrySettings&    Sciantix_thermochemistry_settings,
                   SciantixArray<InputVariable>&    input_variable,
                   SciantixArray<SciantixVariable>& history_variable,
                   SciantixArray<SciantixVariable>& sciantix_variable,

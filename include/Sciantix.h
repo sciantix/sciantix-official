@@ -33,7 +33,7 @@
  * @param Sciantix_diffusion_modes Array of doubles representing diffusion modes used in the
  * simulation.
  * @param Sciantix_thermochemistry Array of doubles representing the variables related to the thermochemistry module.
- * @param Sciantix_thermochemistry_options Array of string representing the options for the thermochemistry module.
+ * @param Sciantix_thermochemistry_settings Thermochemistry module settings.
  * 
  * @author D. Pizzocri
  * @author T. Barani
@@ -47,6 +47,6 @@ void Sciantix(int    Sciantix_options[],
               double Sciantix_scaling_factors[], 
               double Sciantix_diffusion_modes[], 
               double Sciantix_thermochemistry[], 
-              std::vector<std::vector<std::string>> Sciantix_thermochemistry_options);
+              const ThermochemistrySettings& Sciantix_thermochemistry_settings);
 
 #endif // SCIANTIX_H

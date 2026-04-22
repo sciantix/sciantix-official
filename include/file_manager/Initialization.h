@@ -33,7 +33,6 @@ void Initialization(double              Sciantix_history[],
                     double              Sciantix_variables[],
                     double              Sciantix_diffusion_modes[],
                     double              Sciantix_thermochemistry[],
-                    std::vector<std::vector<std::string>> Sciantix_thermochemistry_options,
     
                     std::vector<double> Temperature_input,
                     std::vector<double> Fissionrate_input,

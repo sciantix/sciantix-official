@@ -31,9 +31,7 @@ std::set<std::string> getSelectedFissionProductElements(SciantixArray<InputVaria
     if ((int)input_variable["iThermochimica"].getValue() == 0)
         return selected_elements;
 
-    const ThermochemistrySettings settings = loadThermochemistrySettings(
-        TestPath + "input_thermochemistry_settings.txt");
-    for (const auto& name : settings.fission_products.elements)
+    for (const auto& name : Sciantix_thermochemistry_settings.fission_products.elements)
     {
         if (name != "O" && name != "U" && name != "Pu")
             selected_elements.insert(name);
