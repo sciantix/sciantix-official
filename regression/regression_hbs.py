@@ -10,9 +10,9 @@ set of validation plots:
     3. plot_pore_radius.png    - HBS mean pore radius vs effective burnup
     4. plot_xe_depletion.png   - Xe retention in grains vs Walker 1999
     5. plot_fuel_swelling.png  - Matrix swelling breakdown vs Spino 2005
-
-Earlier versions of this script also emitted "simple" duplicates and D_gb^v
-sensitivity plots; both were removed in the cleanup.
+    6. plot_pore_variance.png  - Second central moment B (diagnostic)
+    7. plot_CV.png             - Coefficient of variation of the Fokker-Planck
+    8. plot_xe_inventory.png   - Xenon mass balance: where does the gas go?
 
 @author G. Zullo
 """
@@ -435,6 +435,101 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot,
         ax.set_ylim(0, None)
         ax.legend(loc="upper right")
         _save(fig, "plot_CV.png")
+
+        # ---------------------------------------------------------------------
+        # Plot 8: Xenon inventory accounting (stacked mass balance)
+        # ---------------------------------------------------------------------
+        # Tracks the journey of every xenon atom produced in the pellet:
+        #   (NR grain -> NR grain boundary) in the non-restructured region
+        #   (HBS grain -> HBS grain boundary -> HBS pores) in the restructured
+        #   region, with the release channel on top.
+        #
+        # Two panels share the x-axis (effective burnup):
+        #   top    = absolute inventory (1e26 at/m^3) with the total production
+        #            line overlaid - any gap between the stacked area and the
+        #            production line is a conservation residual.
+        #   bottom = fractional share of each reservoir (%). This is the
+        #            diagnostic view: it immediately shows when the HBS pores
+        #            begin to dominate over the NR grain reservoir.
+        xe_p_pos     = findSciantixVariablePosition(data, "Xe produced (at/m3)")
+        xe_pHBS_pos  = findSciantixVariablePosition(data, "Xe produced in HBS (at/m3)")
+        xe_ig_pos    = findSciantixVariablePosition(data, "Xe in grain (at/m3)")
+        xe_igHBS_pos = findSciantixVariablePosition(data, "Xe in grain HBS (at/m3)")
+        xe_gb_pos    = findSciantixVariablePosition(data, "Xe at grain boundary (at/m3)")
+        xe_gbHBS_pos = findSciantixVariablePosition(data, "Xe at grain boundary HBS (at/m3)")
+        xe_pore_pos  = findSciantixVariablePosition(data, "Xe in HBS pores (at/m3)")
+        xe_rel_pos   = findSciantixVariablePosition(data, "Xe released (at/m3)")
+
+        scale = 1.0e26  # normalisation for y-axis readability
+
+        xe_ig     = data[1:, xe_ig_pos].astype(float)    / scale
+        xe_gb     = data[1:, xe_gb_pos].astype(float)    / scale
+        xe_igHBS  = data[1:, xe_igHBS_pos].astype(float) / scale
+        xe_gbHBS  = data[1:, xe_gbHBS_pos].astype(float) / scale
+        xe_pore   = data[1:, xe_pore_pos].astype(float)  / scale
+        xe_rel    = data[1:, xe_rel_pos].astype(float)   / scale
+        xe_total  = (data[1:, xe_p_pos].astype(float) +
+                     data[1:, xe_pHBS_pos].astype(float)) / scale
+
+        reservoirs = [
+            (xe_ig,    "Xe in NR grain",           "#1a3c6e"),
+            (xe_gb,    "Xe at NR grain boundary",  "#4a7bb5"),
+            (xe_igHBS, "Xe in HBS grain",          "#f4a65a"),
+            (xe_gbHBS, "Xe at HBS grain boundary", "#e6703f"),
+            (xe_pore,  "Xe in HBS pores",          "#b23838"),
+            (xe_rel,   "Xe released",              "#4a4a4a"),
+        ]
+
+        labels = [label for _, label, _ in reservoirs]
+        colors = [color for _, _, color in reservoirs]
+        series = np.vstack([y for y, _, _ in reservoirs])
+
+        # Fractional share (guard against zero production at the first points)
+        total_nz = np.where(xe_total > 0.0, xe_total, 1.0)
+        fractions = 100.0 * series / total_nz
+
+        fig, (ax_top, ax_bot) = plt.subplots(
+            2, 1, figsize=(8.0, 8.0), sharex=True,
+            gridspec_kw={"height_ratios": [1.1, 1.0], "hspace": 0.08},
+        )
+
+        # --- top panel: absolute inventory (1e26 at/m^3) ---
+        ax_top.stackplot(effectiveBurnup, series,
+                         labels=labels, colors=colors,
+                         alpha=0.92, linewidth=0)
+        ax_top.plot(effectiveBurnup, xe_total,
+                    "--", color="black", linewidth=LINEWIDTH_REF,
+                    label="Xe produced (total)")
+        ax_top.set_ylabel(r"Xe inventory ($10^{26}$ at m$^{-3}$)")
+        ax_top.set_xlim(0, 210)
+        ax_top.set_ylim(bottom=0.0)
+        ax_top.legend(loc="upper left", ncol=1, fontsize=8.5)
+
+        # --- bottom panel: fractional share (%) ---
+        ax_bot.stackplot(effectiveBurnup, fractions,
+                         labels=labels, colors=colors,
+                         alpha=0.92, linewidth=0)
+        ax_bot.set_xlabel(x_label_bu_eff)
+        ax_bot.set_ylabel("Share of produced Xe (%)")
+        ax_bot.set_xlim(0, 210)
+        ax_bot.set_ylim(0.0, 100.0)
+
+        # restructured fraction (twin y on bottom panel) as context
+        ax_alpha = ax_bot.twinx()
+        ax_alpha.plot(sd["bu"] / 0.8814, 100.0 * sd["alpha"],
+                      "-", color=COLOR_ALPHA, linewidth=LINEWIDTH_MODEL,
+                      label=r"Restructured fraction $\alpha_r$")
+        ax_alpha.set_ylabel(r"$\alpha_r$ (%)", color=COLOR_ALPHA)
+        ax_alpha.tick_params(axis="y", colors=COLOR_ALPHA)
+        ax_alpha.set_ylim(0.0, 100.0)
+        ax_alpha.grid(False)
+
+        lines_bot, labels_bot = ax_bot.get_legend_handles_labels()
+        lines_alpha, labels_alpha = ax_alpha.get_legend_handles_labels()
+        ax_bot.legend(lines_alpha + lines_bot, labels_alpha + labels_bot,
+                      loc="upper left", ncol=1, fontsize=8.5)
+
+        _save(fig, "plot_xe_inventory.png")
 
         os.chdir("..")
 
