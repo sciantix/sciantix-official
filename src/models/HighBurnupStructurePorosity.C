@@ -86,13 +86,12 @@ void Simulation::HighBurnupStructurePorosity()
             // (Stauffer & Aharony 1994): (1 - xi/xi_sat)^t with t = 2.
             // Modulates BOTH transport coefficients along the solid
             // grain-boundary backbone:
-            //   - D_gb^SA  (single-atom) -> gas trapping rate beta_n
-            //   - D_gb^v   (vacancies)   -> Speight-Beere volume flow rate
+            //   - D_gb^SA  (single-atom) -> gas trapping rate
+            //   - D_gb^v   (vacancies)   -> vacancy flow rate
             // Percolation fragments the solid network at xi -> xi_sat, shutting
-            // both diffusive pathways simultaneously. No post-hoc cap is
-            // applied to the total pore-volume increment: saturation acts on
+            // both diffusive pathways simultaneously. Saturation acts on
             // the diffusivities, preserving the EoS consistency V_p =
-            // n_Xe * Omega_Xe + n_vac * Omega_vac. At saturation, beta_n -> 0
+            // n_Xe * Omega_Xe + n_vac * Omega_vac. At saturation, gas trapping rate -> 0
             // causes gas to pile up on c_gb^HBS rather than inside the pores,
             // and vacancy inflow ceases, so porosity stabilizes mechanistically.
             double xi_old = sciantix_variable["HBS porosity"].getInitialValue();
@@ -101,13 +100,11 @@ void Simulation::HighBurnupStructurePorosity()
             double saturation_factor = linear * linear;
 
             // Nucleation rate with incubation burnup.
-            // Following Biswas & Aagesen 2025 (Comput. Mater. Sci. 258, 114052,
-            // Eq. 45), the modified JMAK is alpha_r = 1 - exp[-K*(bu - bu_inc)^n]
+            // Following Biswas & Aagesen 2025 (Comput. Mater. Sci. 258, 114052),
+            // the modified JMAK is alpha_r = 1 - exp[-K*(bu - bu_inc)^n]
             // for bu > bu_inc, 0 otherwise. The threshold bu_inc is derived from
             // the dislocation-energy vs subgrain-formation-energy balance
-            // (f_d > E_sub). We apply it consistently to both
-            // alpha_r (in HighBurnupStructureFormation) and nu_P (here), so that
-            // d(alpha_r)/d(bu) remains the exact Barani 2022 Eq. 6 prescription.
+            // (f_d > E_sub).
             // This avoids the "gas-reservoir burst" that occurs when the
             // threshold is applied to nu_P alone: grain sub-division produces
             // c_gb^HBS with no pore sink, then the first pores explode when
