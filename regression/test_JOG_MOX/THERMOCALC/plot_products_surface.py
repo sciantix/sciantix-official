@@ -13,9 +13,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 # =========================
 # USER SETTINGS
 # =========================
-INPUT_FILE = ["1bar_Cs0p17_Mo0p22.csv", 
-              "10bar_Cs0p17_Mo0p22.csv",
-              "70bar_Cs0p17_Mo0p22.csv"]
+INPUT_FILE = ["1bar_Cs0p17_Mo0p22.csv", "1bar_Cs0p17_Mo0p22_2.csv", "70bar_Cs0p17_Mo0p22.csv"]
 INCLUDE_KEYWORDS: list[str] = []
 EXCLUDE_KEYWORDS: list[str] = []
 
@@ -42,11 +40,13 @@ DEFAULT_PLOT_SETTINGS: dict[str, object] = {
 SAVE_INDIVIDUAL_PNG = False
 SAVE_MULTIPAGE_PDF = True
 
+TOTAL_LIQUID_MOLE_FRACTION_KEY = "Mole fraction of LIQUID"
+TOTAL_GAS_MOLE_FRACTION_KEY = "Mole fraction of GAS"
+
 # Derived quantity: fraction of CS2MOO4 gas over total gas
 # = Site fraction of CS2MOO4 on GAS sublattice 1 * Mole fraction of all components in GAS.
 ADD_CS2MOO4_OVER_TOTAL_GAS = True
 CS2MOO4_SITE_FRACTION_KEY = "site fraction of cs2moo4 on sublattice 1 in gas"
-TOTAL_GAS_MOLE_FRACTION_KEY = "Mole fraction of GAS"
 CS2MOO4_OVER_TOTAL_LABEL = "Fraction of CS2MOO4 in total GAS"
 
 # Derived quantity: fraction of MOO3 gas over total gas
@@ -60,6 +60,22 @@ MOO3_OVER_TOTAL_LABEL = "Fraction of MOO3 in total GAS"
 ADD_MO_OVER_TOTAL_GAS = True
 MO_SITE_FRACTION_KEY = "Mole fraction of mo in gas"
 MO_OVER_TOTAL_LABEL = "Fraction of MO in total GAS"
+
+# Derived quantity: fraction of CS2MOO4 liquid over total liquid
+# = Site fraction of CS on LIQUID sublattice 1 * Mole fraction of all components in LIQUID.
+ADD_CS_OVER_TOTAL_LIQUID = True
+CS_SITE_FRACTION_KEY = "site fraction of cs+"
+CS_OVER_TOTAL_LABEL = "Fraction of CS+ in total liquid"
+
+# Derived quantity: fraction of CS2MOO4 liquid over total liquid
+# = Site fraction of MOO4 on LIQUID sublattice 1 * Mole fraction of all components in LIQUID.
+ADD_MOO4_OVER_TOTAL_LIQUID = True
+MOO4_SITE_FRACTION_KEY = "site fraction of moo4-2"
+MOO4_OVER_TOTAL_LABEL = "Fraction of MOO4-2 in total liquid"
+
+CS2MOO4_FORMATION_TOL = 0.1
+CS2MOO4_SOLID_S1_KEY = "mole fraction of cs2moo4_s1"
+CS2MOO4_SOLID_S2_KEY = "mole fraction of cs2moo4_s2"
 
 def canonical_name(name: str) -> str:
     """Drop duplicated-column suffixes like ' [1]'."""
@@ -105,6 +121,86 @@ def get_plot_settings(column_name: str) -> dict[str, object]:
     settings = dict(DEFAULT_PLOT_SETTINGS)
     return settings
 
+
+def save_formation_boundaries(
+    *,
+    plot_dir: Path,
+    file_stem: str,
+    tag: str,
+    x: np.ndarray,
+    y: np.ndarray,
+    indicators: dict[str, np.ndarray],
+    require_all_positive: bool,
+    tol: float = 0.0,
+) -> None:
+    if not indicators:
+        print(f"[{file_stem}] No indicators found for '{tag}'; boundary files were not written.")
+        return
+
+    finite_mask = np.isfinite(x) & np.isfinite(y)
+    positive_masks: list[np.ndarray] = []
+    for values in indicators.values():
+        finite_mask = finite_mask & np.isfinite(values)
+        positive_masks.append(values > tol)
+
+    if require_all_positive:
+        indicator_mask = np.ones_like(x, dtype=bool)
+        for m in positive_masks:
+            indicator_mask = indicator_mask & m
+        condition_mode = "all_positive"
+    else:
+        indicator_mask = np.zeros_like(x, dtype=bool)
+        for m in positive_masks:
+            indicator_mask = indicator_mask | m
+        condition_mode = "any_positive"
+
+    formation_mask = finite_mask & indicator_mask
+    formation_points = np.count_nonzero(formation_mask)
+    if formation_points == 0:
+        print(f"[{file_stem}] No formation points found for '{tag}'; boundary files were not written.")
+        return
+
+    mu_min = x[formation_mask].min()
+    mu_max = x[formation_mask].max()
+    temp_min = y[formation_mask].min()
+    temp_max = y[formation_mask].max()
+
+    bounds_data: dict[str, object] = {
+        "tag": tag,
+        "condition_mode": condition_mode,
+        "mu_o_min_kJ_per_mol": mu_min,
+        "mu_o_max_kJ_per_mol": mu_max,
+        "temperature_min_K": temp_min,
+        "temperature_max_K": temp_max,
+        "formation_points": int(formation_points),
+    }
+    for name, values in indicators.items():
+        bounds_data[f"{name}_min"] = float(values[formation_mask].min())
+        bounds_data[f"{name}_max"] = float(values[formation_mask].max())
+
+    bounds_path = plot_dir / f"{file_stem}_{tag}_formation_boundaries.csv"
+    pd.DataFrame([bounds_data]).to_csv(bounds_path, index=False)
+
+    margin_mask = formation_mask & (
+        np.isclose(x, mu_min)
+        | np.isclose(x, mu_max)
+        | np.isclose(y, temp_min)
+        | np.isclose(y, temp_max)
+    )
+    margin_rows_data: dict[str, np.ndarray] = {
+        "mu_o_kJ_per_mol": x[margin_mask],
+        "temperature_K": y[margin_mask],
+    }
+    for name, values in indicators.items():
+        margin_rows_data[name] = values[margin_mask]
+
+    margin_rows_df = pd.DataFrame(margin_rows_data, index=np.where(margin_mask)[0])
+    margin_rows_path = plot_dir / f"{file_stem}_{tag}_formation_margin_rows.csv"
+    margin_rows_df.to_csv(margin_rows_path, index=True)
+
+    print(f"[{file_stem}] Saved {tag} formation boundaries: {bounds_path}")
+    print(f"[{file_stem}] Saved {tag} formation margin rows: {margin_rows_path}")
+
 plot_dir = Path(__file__).resolve().with_name("plot")
 plot_dir.mkdir(exist_ok=True)
 
@@ -120,27 +216,102 @@ for file in INPUT_FILE:
 
     # Convert everything to numeric where possible.
     numeric_df = df.apply(pd.to_numeric, errors="coerce")
+    cs2moo4_indicator_col: str | None = None
+    solid_s1_col: str | None = None
+    solid_s2_col: str | None = None
 
     if ADD_CS2MOO4_OVER_TOTAL_GAS:
         cs2moo4_col = find_column_by_canonical_contains(columns, CS2MOO4_SITE_FRACTION_KEY)
-        total_gas_col = find_column_by_canonical_contains(columns, TOTAL_GAS_MOLE_FRACTION_KEY)
-        numeric_df[CS2MOO4_OVER_TOTAL_LABEL] = numeric_df[cs2moo4_col] * numeric_df[total_gas_col]
+        total_col = find_column_by_canonical_contains(columns, TOTAL_GAS_MOLE_FRACTION_KEY)
+        numeric_df[CS2MOO4_OVER_TOTAL_LABEL] = numeric_df[cs2moo4_col] * numeric_df[total_col]
         columns.append(CS2MOO4_OVER_TOTAL_LABEL)
+        cs2moo4_indicator_col = CS2MOO4_OVER_TOTAL_LABEL
+    try:
+        solid_s1_col = find_column_by_canonical_contains(columns, CS2MOO4_SOLID_S1_KEY)
+    except ValueError:
+        solid_s1_col = None
+    try:
+        solid_s2_col = find_column_by_canonical_contains(columns, CS2MOO4_SOLID_S2_KEY)
+    except ValueError:
+        solid_s2_col = None
 
     if ADD_MOO3_OVER_TOTAL_GAS:
         moo3_col = find_column_by_canonical_contains(columns, MOO3_SITE_FRACTION_KEY)
-        total_gas_col = find_column_by_canonical_contains(columns, TOTAL_GAS_MOLE_FRACTION_KEY)
-        numeric_df[MOO3_OVER_TOTAL_LABEL] = numeric_df[moo3_col] * numeric_df[total_gas_col]
+        total_col = find_column_by_canonical_contains(columns, TOTAL_GAS_MOLE_FRACTION_KEY)
+        numeric_df[MOO3_OVER_TOTAL_LABEL] = numeric_df[moo3_col] * numeric_df[total_col]
         columns.append(MOO3_OVER_TOTAL_LABEL)
 
     if ADD_MO_OVER_TOTAL_GAS:
         mo_col = find_column_by_canonical_contains(columns, MO_SITE_FRACTION_KEY)
-        total_gas_col = find_column_by_canonical_contains(columns, TOTAL_GAS_MOLE_FRACTION_KEY)
-        numeric_df[MO_OVER_TOTAL_LABEL] = numeric_df[mo_col] * numeric_df[total_gas_col]
+        total_col = find_column_by_canonical_contains(columns, TOTAL_GAS_MOLE_FRACTION_KEY)
+        numeric_df[MO_OVER_TOTAL_LABEL] = numeric_df[mo_col] * numeric_df[total_col]
         columns.append(MO_OVER_TOTAL_LABEL)
+
+    if ADD_CS_OVER_TOTAL_LIQUID:
+        cs_col = find_column_by_canonical_contains(columns, CS_SITE_FRACTION_KEY)
+        total_col = find_column_by_canonical_contains(columns, TOTAL_LIQUID_MOLE_FRACTION_KEY)
+        numeric_df[CS_OVER_TOTAL_LABEL] = numeric_df[cs_col] * numeric_df[total_col]
+        columns.append(CS_OVER_TOTAL_LABEL)
+    
+    
+    if ADD_MOO4_OVER_TOTAL_LIQUID:
+        moo4_col = find_column_by_canonical_contains(columns, MOO4_SITE_FRACTION_KEY)
+        total_col = find_column_by_canonical_contains(columns, TOTAL_LIQUID_MOLE_FRACTION_KEY)
+        numeric_df[MOO4_OVER_TOTAL_LABEL] = numeric_df[moo4_col] * numeric_df[total_col]
+        columns.append(MOO4_OVER_TOTAL_LABEL)
 
     x = numeric_df[x_col].to_numpy(dtype=float) / 1000.0
     y = numeric_df[y_col].to_numpy(dtype=float)
+    if cs2moo4_indicator_col is not None:
+        save_formation_boundaries(
+            plot_dir=plot_dir,
+            file_stem=Path(file).stem,
+            tag="Cs2MoO4(gas)",
+            x=x,
+            y=y,
+            indicators={cs2moo4_indicator_col: numeric_df[cs2moo4_indicator_col].to_numpy(dtype=float)},
+            require_all_positive=True,
+            tol=CS2MOO4_FORMATION_TOL,
+        )
+
+    if solid_s1_col is not None:
+        save_formation_boundaries(
+            plot_dir=plot_dir,
+            file_stem=Path(file).stem,
+            tag="Cs2MoO4(solid_S1)",
+            x=x,
+            y=y,
+            indicators={"MoleFraction_CS2MOO4_S1": numeric_df[solid_s1_col].to_numpy(dtype=float)},
+            require_all_positive=True,
+            tol=CS2MOO4_FORMATION_TOL,
+        )
+    if solid_s2_col is not None:
+        save_formation_boundaries(
+            plot_dir=plot_dir,
+            file_stem=Path(file).stem,
+            tag="Cs2MoO4(solid_S2)",
+            x=x,
+            y=y,
+            indicators={"MoleFraction_CS2MOO4_S2": numeric_df[solid_s2_col].to_numpy(dtype=float)},
+            require_all_positive=True,
+            tol=CS2MOO4_FORMATION_TOL,
+        )
+
+    liquid_indicators: dict[str, np.ndarray] = {}
+    if CS_OVER_TOTAL_LABEL in numeric_df.columns:
+        liquid_indicators[CS_OVER_TOTAL_LABEL] = numeric_df[CS_OVER_TOTAL_LABEL].to_numpy(dtype=float)
+    if MOO4_OVER_TOTAL_LABEL in numeric_df.columns:
+        liquid_indicators[MOO4_OVER_TOTAL_LABEL] = numeric_df[MOO4_OVER_TOTAL_LABEL].to_numpy(dtype=float)
+    save_formation_boundaries(
+        plot_dir=plot_dir,
+        file_stem=Path(file).stem,
+        tag="CsMOO4(liquid)",
+        x=x,
+        y=y,
+        indicators=liquid_indicators,
+        require_all_positive=True,
+        tol=CS2MOO4_FORMATION_TOL,
+    )
 
     x_name = canonical_name(x_col).replace("[J/mol]", "[kJ/mol]")
     y_name = canonical_name(y_col)
@@ -191,6 +362,8 @@ for file in INPUT_FILE:
             cmap=str(settings["cmap"]),
             linewidth=float(settings["linewidth"]),
             antialiased=bool(settings["antialiased"]),
+            vmin=0,
+            vmax=1
         )
         ax.view_init(elev=float(settings["view_elev"]), azim=float(settings["view_azim"]))
         if str(settings["zscale"]).lower() == "log":
@@ -234,11 +407,11 @@ for file in INPUT_FILE:
             colorbar_label = c_name if settings["colorbar_label"] is None else str(settings["colorbar_label"])
             cbar = fig2.colorbar(contour, ax=ax2, shrink=0.85, pad=0.02, label=colorbar_label)
             if str(settings["zscale"]).lower() == "log":
-                contour_lines = ax2.tricontour(tri, z_m, levels=int(settings["contour_levels"]), colors="k", linewidths=0.2)
+                contour_lines = ax2.tricontour(tri, z_m, levels=int(settings["contour_levels"]), colors="k", linewidths=0.2, vmin=0, vmax=1.0)
                 cbar.ax.set_yscale("log")
                 cbar.add_lines(contour_lines)
             else:
-                ax2.tricontour(tri, z_m, levels=int(settings["contour_levels"]), colors="k", linewidths=0.2)
+                ax2.tricontour(tri, z_m, levels=int(settings["contour_levels"]), colors="k", linewidths=0.2, vmin=0, vmax=1.0)
 
             ax2.set_xlabel(x_name)
             ax2.set_ylabel(y_name)

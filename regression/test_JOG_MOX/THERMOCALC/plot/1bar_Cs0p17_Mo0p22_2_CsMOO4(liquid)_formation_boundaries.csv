@@ -1,0 +1,2 @@
+tag,condition_mode,mu_o_min_kJ_per_mol,mu_o_max_kJ_per_mol,temperature_min_K,temperature_max_K,formation_points,Fraction of CS+ in total liquid_min,Fraction of CS+ in total liquid_max,Fraction of MOO4-2 in total liquid_min,Fraction of MOO4-2 in total liquid_max
+CsMOO4(liquid),all_positive,-100.0,-10.0,740.0,2500.0,2295,0.36136,1.0,0.1766399952,0.5240864862

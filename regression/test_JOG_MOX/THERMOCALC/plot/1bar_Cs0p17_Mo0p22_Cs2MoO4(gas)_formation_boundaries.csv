@@ -1,0 +1,2 @@
+tag,condition_mode,mu_o_min_kJ_per_mol,mu_o_max_kJ_per_mol,temperature_min_K,temperature_max_K,formation_points,Fraction of CS2MOO4 in total GAS_min,Fraction of CS2MOO4 in total GAS_max
+Cs2MoO4(gas),all_positive,-148.0,-124.0,2300.0,2500.0,8,0.102221505,0.3083928639

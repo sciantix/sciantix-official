@@ -1,0 +1,2 @@
+tag,condition_mode,mu_o_min_kJ_per_mol,mu_o_max_kJ_per_mol,temperature_min_K,temperature_max_K,formation_points,MoleFraction_CS2MOO4_S1_min,MoleFraction_CS2MOO4_S1_max
+Cs2MoO4(solid_S1),all_positive,-328.0,-136.0,500.0,820.0,263,0.595,0.81507
