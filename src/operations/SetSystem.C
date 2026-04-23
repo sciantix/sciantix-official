@@ -289,14 +289,14 @@ System Xe_in_UN(SciantixArray<Matrix>&           matrices,
     system_.setBubbleDiffusivity(
         int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
 
-    system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()),
+    system_.setResolutionRatesUN(int(input_variable["iResolutionRate"].getValue()),
                               sciantix_variable,
                               history_variable,
                               scaling_factors,
                               matrices);
 
     system_.setTrappingRatesUN(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
-
+// per UN Ritzk nucleation rate non puo essere chiamato qui perche dipende da c^2 concentrazione gas in soluzione
     system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
 
     return system_;
