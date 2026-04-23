@@ -1,0 +1,50 @@
+Metadata-Version: 2.4
+Name: oxired
+Version: 0.1.0
+Summary: Practical OXIRED solver for cylindrical oxide fuel
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.24
+
+# oxired
+
+Small Python library implementing a practical OXIRED-style solver for radial oxygen redistribution in a cylindrical oxide fuel pellet.
+
+## Scope
+
+This package implements the cylindrical, dilute-solution form of the OXIRED model described by Lassmann, with the steady-state treatment based on Sari and Schumacher and the transient approximation from Lassmann.
+
+Implemented pieces:
+- steady-state redistribution in a cylinder
+- transient relaxation toward the steady state
+- hypostoichiometric mixed oxide `(U,Pu)O_{2-x}` and hyperstoichiometric `UO_{2+x}` / mixed oxide support
+- simple burnup-dependent average O/M shift helpers
+
+## Install
+
+```bash
+pip install -e .
+```
+
+## Example
+
+```python
+from oxired import CylinderGeometry, OxiRedCylinder, PolynomialProfile
+
+geom = CylinderGeometry(r_outer=4.0e-3)
+profile = PolynomialProfile(0.0, geom.r_outer, t_center=2600.0, t_surface=1240.0)
+solver = OxiRedCylinder(geometry=geom, temperature_profile=profile, pu_fraction=0.2, n_cells=200)
+
+result = solver.solve_steady_state(average_om=1.965)
+print(result.radius)
+print(result.om)
+```
+
+## Notes
+
+The package is intentionally lightweight. It uses the published OXIRED correlations for:
+- oxygen diffusion coefficient
+- effective heat of transport for vacancies and interstitials
+- Lassmann's transient time constant approximation
+
+The implementation is meant for engineering studies and code coupling, not as a strict reproduction of TRANSURANUS internals.
