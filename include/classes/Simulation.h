@@ -55,7 +55,7 @@ class Simulation
 
     int                 n_modes;
     std::vector<double> modes_initial_conditions;
-    std::vector<double> modes_initial_conditions_dislocation_bubbles; //AD UN URANIUMNITRIDE
+    std::vector<double> modes_initial_conditions_dislocation_bubbles;  // AD UN URANIUMNITRIDE
 
     Solver solver;
 
@@ -68,7 +68,7 @@ class Simulation
     {
         n_modes = 40;
         modes_initial_conditions.resize(720);
-        modes_initial_conditions_dislocation_bubbles.resize(200); //AD UN URANIUMNITRIDE
+        modes_initial_conditions_dislocation_bubbles.resize(200);  // AD UN URANIUMNITRIDE
     }
 
   public:
@@ -470,8 +470,7 @@ class Simulation
         }
     }
 
-
-    //AD UN URANIUMNITRIDE
+    // AD UN URANIUMNITRIDE
 
     /**
      * @brief Retrieves diffusion modes related to dislocation bubbles for a specified gas.
@@ -482,7 +481,7 @@ class Simulation
     double* getDiffusionModesDislocationBubbles(std::string gas_name)
     {
         if (gas_name == "Xe")
-            return &modes_initial_conditions_dislocation_bubbles[0 * 40];  //NON SO SE VA BENE QUEL 0*40
+            return &modes_initial_conditions_dislocation_bubbles[0 * 40];  // NON SO SE VA BENE QUEL 0*40
         else if (gas_name == "Kr")
             return &modes_initial_conditions_dislocation_bubbles[1 * 40];
         else if (gas_name == "He")

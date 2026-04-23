@@ -125,17 +125,17 @@ void Simulation::GasDiffusion()
                         sciantix_variable[system.getGasName() + " in intragranular solution"].getFinalValue();
                     double m_bulk =
                         sciantix_variable[system.getGasName() + " in intragranular bubbles"].getFinalValue();
-                    double m_disl =
-                        sciantix_variable[system.getGasName() + " in dislocation bubbles"].getFinalValue();
+                    double m_disl = sciantix_variable[system.getGasName() + " in dislocation bubbles"].getFinalValue();
 
-                    solver.SpectralDiffusion3equationsExchange(c_solution,
-                                                              m_bulk,
-                                                              m_disl,
-                                                              getDiffusionModesSolution(system.getGasName()),
-                                                              getDiffusionModesBubbles(system.getGasName()),
-                                                              getDiffusionModesDislocationBubbles(system.getGasName()),
-                                                              model["Gas diffusion - " + system.getName()].getParameter(),
-                                                              physics_variable["Time step"].getFinalValue());
+                    solver.SpectralDiffusion3equationsExchange(
+                        c_solution,
+                        m_bulk,
+                        m_disl,
+                        getDiffusionModesSolution(system.getGasName()),
+                        getDiffusionModesBubbles(system.getGasName()),
+                        getDiffusionModesDislocationBubbles(system.getGasName()),
+                        model["Gas diffusion - " + system.getName()].getParameter(),
+                        physics_variable["Time step"].getFinalValue());
 
                     sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(c_solution);
                     sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(m_bulk);
@@ -333,7 +333,9 @@ void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_
     model.push(model_);
 }
 // AD UN URANIUMNITRIDE
-void defineSpectralDiffusion3EquationsExchange(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes)
+void defineSpectralDiffusion3EquationsExchange(SciantixArray<System>& sciantix_system,
+                                               SciantixArray<Model>&  model,
+                                               int                    n_modes)
 {
     std::string reference;
 
