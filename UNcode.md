@@ -37,13 +37,13 @@ Definiti in `src/operations/SetMatrix.C` (funzione `UN(...)`) e accessibili via 
 
 ### Parametri UN-specifici (dislocazioni)
 - `rho_d` = `matrix.getDislocationDensity()`  `[1/m^2]`
-  - valore attuale nel codice: `1.0e14` (placeholder)
+  - valore attuale nel codice: `3.0e13` (Rizk et al., JNM 606 (2025) 155604)
 - `r_d` = `matrix.getDislocationCoreRadius()` `[m]`
-  - valore attuale nel codice: `3.8e-10` (placeholder, ~ Burgers vector)
+  - valore attuale nel codice: `3.46e-10` (Rizk et al., JNM 606 (2025) 155604, ~ a/sqrt(2))
 
 ### Altri valori impostati (placeholder)
-- `matrix_density = 14300.0` `(kg/m3)` (TODO nel codice)
-- `lattice_parameter = 4.88e-10` `(m)` (TODO nel codice)
+- `matrix_density = 14300.0` `(kg/m3)` (TODO nel codice: verificare fonte)
+- `lattice_parameter = 4.889e-10` `(m)` (Rizk et al., JNM 606 (2025) 155604)
 
 ## Diffusività Xe in UN (iFissionGasDiffusivity = 11)
 

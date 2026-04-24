@@ -94,8 +94,8 @@ setDislocationCoreRadius(...)
 
 In `setmatrix.c` per il caso UN:
 ```cpp
-matrix_.setDislocationDensity(1.0e14);       // MANCA VALORE
-matrix_.setDislocationCoreRadius(5.0 * 3.8e-10);  // MANCA VALORE — 5.0 * burg_vector
+matrix_.setDislocationDensity(3.0e13);            // (Rizk 2025)
+matrix_.setDislocationCoreRadius(3.46e-10);       // (Rizk 2025) ~ a/sqrt(2)
 ```
 
 ### 3.4 Nuove variabili in UpdateVariables.c e SetvariablesFunctions.c
@@ -495,8 +495,8 @@ setDislocationCoreRadius(...)
 
 ```cpp
 // setmatrix.c — caso UN
-matrix_.setDislocationDensity(1.0e14);             // MANCA VALORE DEFINITIVO
-matrix_.setDislocationCoreRadius(5.0 * 3.8e-10);   // ~ 5 * vettore di Burgers — MANCA VALORE DEFINITIVO
+matrix_.setDislocationDensity(3.0e13);             // (Rizk 2025)
+matrix_.setDislocationCoreRadius(3.46e-10);        // (Rizk 2025) ~ a/sqrt(2)
 ```
 
 ### 10.3 Solver.h / Solver.C — nuovo solver spettrale 3 equazioni
@@ -583,10 +583,9 @@ D_g_eff = D_g * precursor_factor
 
 ## 11. Punti aperti e TODO
 
-- [ ] **MANCA VALORE:** `dislocation_density` per UN (attualmente 1.0e14, placeholder)
-- [ ] **MANCA VALORE:** `dislocation_core_radius` per UN (attualmente 5 × Burgers vector)
+- [ ] **Verificare fonte:** `matrix_density` per UN (in codice 14300.0 kg/m³)
 - [ ] **Mancano da implementare:** parametri per equazioni 21d, 21e, 21f
-- [ ] **Differenza Gamma_d:** sembra errore in Ritzk (rho_d² al numeratore invece di rho_d)
+- [ ] **Differenza Gamma_d:** sembra errore in Rizk (rho_d² al numeratore invece di rho_d)
 - [ ] **Coerenza phi:** valutare se usare phi anche nell'equazione per m (come Barani/Ref39) per rispettare bilancio di atomi
 - [ ] **Nucleazione — termini mancanti:** in Ritzk manca il termine che sottrae da c gli atomi nucleati come dimeri (presente in Ref39 e U₃Si₂)
 - [ ] **Termine coalescenza eq.20 Ref39:** non chiaro il termine che trasferisce bolle da bulk a disloc con il corrispettivo trasferimento di atomi da m_b a m_d

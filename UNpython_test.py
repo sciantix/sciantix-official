@@ -37,12 +37,12 @@ import warnings
 class MaterialProperties:
     """Proprietà materiali per UN"""
     # Parametri reticolari
-    lattice_parameter: float = 4.88e-10  # m
+    lattice_parameter: float = 4.889e-10  # m (Rizk 2025)
     matrix_density: float = 14300.0  # kg/m³
     
     # Parametri dislocazioni
-    dislocation_density: float = 1.0e14  # 1/m²
-    dislocation_core_radius: float = 3.8e-10  # m (~ Burgers vector)
+    dislocation_density: float = 3.0e13  # 1/m² (Rizk 2025)
+    dislocation_core_radius: float = 3.46e-10  # m (Rizk 2025, a/sqrt(2))
     
     # Volumi atomici
     omega_fg: float = None  # m³/atom (calcolato da lattice_parameter)
@@ -62,7 +62,7 @@ class OperatingConditions:
     """Condizioni operative del combustibile"""
     temperature: float = 1500.0  # K
     fission_rate_density: float = 1.0e20  # 1/(m³·s)
-    grain_radius: float = 5.0e-6  # m
+    grain_radius: float = 6.0e-6  # m (Rizk 2025)
     burnup: float = 0.0  # at% (per future estensioni)
 
 
@@ -567,14 +567,14 @@ def run_example():
     
     # Setup materiale e condizioni
     material = MaterialProperties(
-        dislocation_density=1.0e14,  # 1/m²
-        dislocation_core_radius=3.8e-10  # m
+        dislocation_density=3.0e13,  # 1/m² (Rizk 2025)
+        dislocation_core_radius=3.46e-10  # m (Rizk 2025)
     )
     
     conditions = OperatingConditions(
         temperature=1500.0,  # K
         fission_rate_density=1.0e20,  # 1/(m³·s)
-        grain_radius=5.0e-6  # m (5 μm)
+        grain_radius=6.0e-6  # m (Rizk 2025, 6 μm)
     )
     
     print(f"Condizioni operative:")
