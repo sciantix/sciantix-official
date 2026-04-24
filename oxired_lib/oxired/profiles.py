@@ -8,9 +8,7 @@ from typing import Callable
 
 import numpy as np
 
-
 TemperatureProfile = Callable[[np.ndarray], np.ndarray]
-
 
 @dataclass(frozen=True)
 class PolynomialProfile:

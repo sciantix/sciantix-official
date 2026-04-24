@@ -1,7 +1,5 @@
-"""Core OXIRED solver for cylindrical fuel.
-
-This package implements the dilute-solution steady-state and transient approximation
-used in OXIRED for oxygen redistribution in cylindrical fuel pellets.
+"""
+Core oxygen redistribution solver for cylindrical fuel.
 """
 from __future__ import annotations
 
@@ -246,14 +244,22 @@ class OxygenBalanceResult:
 @dataclass(frozen=True)
 class OxygenBalanceModel:
     """
-    Semi-physical oxygen balance model.
+    Oxygen balance model by J. Spino, P. Peerani / Journal of Nuclear Materials 375 (2008) 8-25 .
 
-    Default values are based on the high-burnup LWR balance discussed in
-    Spino & Peerani (2008), where for every 10 fissions:
+    For every 10 fissions (in LWR conditions, Table 3):
       - about 20 oxygen atoms are released
-      - about 15.66 are consumed by Zr + Y/RE + Sr/Ba
-      - up to about 4.58 may be consumed by Mo if fully oxidized
+      - about 15.6 are consumed by Zr + Y/RE + Sr/Ba
+      - oxidation of elements according to the increasing oxygen potential, fully oxidation can stand:
+        Mo (4.58 atoms of oxygen), Sn (0.08), Cs (0.565) + Rb (0.105), Sb (0.0075), Cd (0.157) and Tc (0.86)
       - the remaining surplus raises fuel O/M unless absorbed by cladding
+
+    In this work we consider up to Zr + Y/RE + Sr/Ba.
+    The Mo sink is indeed considered in SCIANTIX thanks to Cs-Mo-O database.
+
+    For each 10 fissions:
+    O/M final = O/M initial + N_o_surplus / (90 + 0.25Nzr + 0.12Nsr + Ny/re ) = O/M initial + N_o_surplus / 95.48
+    In the above expressions it is implicit that 25% of Zr and 12% of Sr are dissolved in the fuel matrix. 
+    This leads to 15.66 atoms per every 10 fissions consumed after oxisation of Zr, Y + RE + Sr +Ba.
     """
     oxygen_released_per_10_fissions: float = 20.0
     fixed_sink_oxygen_per_10_fissions: float = 15.66
@@ -278,10 +284,9 @@ class OxygenBalanceModel:
         burnup_at_percent:
             Burnup in at.%.
         mo_oxidation_fraction:
-            Fraction of Mo oxidation realized, from 0 to 1.
+            Not considered.
         cladding_sink_fraction:
-            Fraction of the post-fission-product oxygen surplus captured
-            by cladding, from 0 to 1.
+            Not considered.
 
         Returns
         -------
@@ -294,19 +299,15 @@ class OxygenBalanceModel:
         if not (0.0 <= cladding_sink_fraction <= 1.0):
             raise ValueError("cladding_sink_fraction must be in [0, 1]")
 
-        scale = burnup_at_percent / 10.0
+        FIMA_scaled = burnup_at_percent / 10.0 #every ten fissions
 
-        released = self.oxygen_released_per_10_fissions * scale
-        fixed = self.fixed_sink_oxygen_per_10_fissions * scale
-        mo_sink = self.mo_full_oxygen_per_10_fissions * mo_oxidation_fraction * scale
-
+        released = self.oxygen_released_per_10_fissions * FIMA_scaled
+        fixed = self.fixed_sink_oxygen_per_10_fissions * FIMA_scaled
+        mo_sink = self.mo_full_oxygen_per_10_fissions * mo_oxidation_fraction * FIMA_scaled
         gross_surplus = released - fixed - mo_sink
         cladding_sink = max(gross_surplus, 0.0) * cladding_sink_fraction
         net_surplus = gross_surplus - cladding_sink
 
-        # Keep the matrix atom basis constant so delta_om grows with burnup.
-        # With the previous formulation (also scaled by `scale`), burnup
-        # canceled out and produced an almost immediate plateau for BU > 0.
         matrix_atoms = self.fuel_matrix_atoms_per_10_fissions
         delta_om = net_surplus / matrix_atoms
         target = initial_average_om + delta_om
@@ -314,7 +315,7 @@ class OxygenBalanceModel:
         return OxygenBalanceResult(
             initial_average_om=initial_average_om,
             burnup_at_percent=burnup_at_percent,
-            oxygen_released_per_10_fissions=self.oxygen_released_per_10_fissions * scale,
+            oxygen_released_per_10_fissions=self.oxygen_released_per_10_fissions,
             oxygen_fixed_sinks_per_10_fissions=fixed,
             oxygen_mo_sink_per_10_fissions=mo_sink,
             oxygen_cladding_sink_per_10_fissions=cladding_sink,
