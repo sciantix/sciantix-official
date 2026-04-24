@@ -478,18 +478,17 @@ def plot_case(
         stack_labels = []
         stack_colors = []
 
-        # Keep liquid as the base layer in the stack plot.
-        if jog_breakdown_labels["liquid"] in column_map:
-            stack_series.append(values[:, column_map[jog_breakdown_labels["liquid"]]] * half_wall_thickness_m * 1.0e6)
-            stack_labels.append("LIQUID")
-            stack_colors.append("#f97316")
-
         for sub_label, output_label, thermo_label in jog_condensed_subvariables:
             if output_label not in column_map:
                 continue
             stack_series.append(values[:, column_map[output_label]] * half_wall_thickness_m * 1.0e6)
             stack_labels.append(sub_label)
             stack_colors.append(gb_color_map.get(thermo_label))
+
+        if jog_breakdown_labels["liquid"] in column_map:
+            stack_series.append(values[:, column_map[jog_breakdown_labels["liquid"]]] * half_wall_thickness_m * 1.0e6)
+            stack_labels.append("LIQUID")
+            stack_colors.append("#f97316")
 
         fig, axis = plt.subplots()
         axis.stackplot(
@@ -834,13 +833,6 @@ def plot_radial_profiles(
             radii_m_array,
         ) * 1.0e6
 
-        jog_condensed_thickness_over_time_um = None
-
-        if "JOG from condensed (/)" in output_profiles:
-            jog_condensed_thickness_over_time_um = radial_integral_over_radius(
-                output_profiles["JOG from condensed (/)"],
-                radii_m_array,
-            ) * 1.0e6
         jog_liquid_thickness_over_time_um = None
         if "JOG from liquid (/)" in output_profiles:
             jog_liquid_thickness_over_time_um = radial_integral_over_radius(
@@ -878,15 +870,16 @@ def plot_radial_profiles(
         gb_radial_histories = []
         gb_colors = []
 
+        gb_labels.extend(item[0] for item in condensed_entries)
+        gb_radial_histories.extend(item[1] for item in condensed_entries)
+        gb_colors.extend(item[2] for item in condensed_entries)
+
         # Keep liquid at the base of the stack when available.
         if jog_liquid_thickness_over_time_um is not None and not is_all_zero(jog_liquid_thickness_over_time_um):
             gb_labels.append("LIQUID")
             gb_radial_histories.append(jog_liquid_thickness_over_time_um)
             gb_colors.append("#f97316")
 
-        gb_labels.extend(item[0] for item in condensed_entries)
-        gb_radial_histories.extend(item[1] for item in condensed_entries)
-        gb_colors.extend(item[2] for item in condensed_entries)
         fig, axis = plt.subplots()
         if gb_radial_histories:
             axis.stackplot(
