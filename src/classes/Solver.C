@@ -272,7 +272,6 @@ void Solver::SpectralDiffusion3equationsExchange(double&             c,
     const double g_d     = parameter.at(5);
     const double b_b     = parameter.at(6);
     const double b_d     = parameter.at(7);
-    const double loss_c  = parameter.at(8);
 
     double diffusion_rate_coeff = pow(M_PI, 2) * D_g / pow(radius, 2);
 
@@ -297,7 +296,7 @@ void Solver::SpectralDiffusion3equationsExchange(double&             c,
         // Backward Euler per mode:
         // (I - dt * J) * x^{n+1} = x^n + dt * s
         // with x = [c, m_b, m_d] and s = [source_rate, 0, 0]
-        coeff_matrix[0] = 1.0 + (diffusion_rate + g_b + g_d + loss_c) * increment;
+        coeff_matrix[0] = 1.0 + (diffusion_rate + g_b + g_d) * increment;
         coeff_matrix[1] = -b_b * increment;
         coeff_matrix[2] = -b_d * increment;
 

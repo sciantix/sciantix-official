@@ -359,9 +359,6 @@ void defineSpectralDiffusion3EquationsExchange(SciantixArray<System>& sciantix_s
         parameters.push_back(system.getResolutionRateIntra());
         parameters.push_back(system.getResolutionRateDisl());
 
-        // Additional first-order loss on c (e.g. decay)
-        parameters.push_back(system.getGas().getDecayRate());
-
         model_.setParameter(parameters);
         model.push(model_);
     }

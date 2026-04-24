@@ -516,7 +516,7 @@ void Solver::SpectralDiffusion3equationsExchange(
 
 **Sistema risolto (mediato spazialmente su grano sferico):**
 ```
-dc/dt   = D_g ∇²c − (g_b + g_d + L_c) c + b_b m_b + b_d m_d + β
+dc/dt   = D_g ∇²c − (g_b + g_d) c + b_b m_b + b_d m_d + β
 dm_b/dt = g_b c − b_b m_b
 dm_d/dt = g_d c − b_d m_d
 ```
@@ -531,7 +531,6 @@ dm_d/dt = g_d c − b_d m_d
 5: g_d (capture rate dislocation bubbles)
 6: b_b (re-solution rate bulk)
 7: b_d (re-solution rate dislocation)
-8: L_c (additional loss rate, es. radioactive decay)
 ```
 
 **Metodo:** approccio spettrale in spazio, backward Euler in tempo → sistema 3×3 lineare per modo.
