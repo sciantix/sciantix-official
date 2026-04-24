@@ -162,11 +162,11 @@ Matrix UN(SciantixArray<Matrix>&           matrices,
     matrix_.setName("UN");
     matrix_.setRef("\n\t");
 
-    // --- PROPRIETÀ BASE (DA SISTEMARE) ---
-    matrix_.setTheoreticalDensity(14300.0);     // TODO: valore da verificare
-    matrix_.setLatticeParameter(4.88e-10);      // TODO: valore indicativo
-    matrix_.setDislocationDensity(1.0e14);      //  MANCA VALORE
-    matrix_.setDislocationCoreRadius(3.8e-10);  // MANCA VALORE circa burg_vector
+    // --- PROPRIETÀ BASE (UN, Rizk et al. JNM 606 (2025) 155604) ---
+    matrix_.setTheoreticalDensity(14300.0);        // (kg/m3) TODO: verificare fonte (non in lista parametri Rizk)
+    matrix_.setLatticeParameter(4.889e-10);        // (m) a
+    matrix_.setDislocationDensity(3.0e13);         // (1/m2) rho_d
+    matrix_.setDislocationCoreRadius(3.46e-10);    // (m) r_d = a/sqrt(2)
 
     // --- GEOMETRIA ---
     matrix_.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
@@ -175,15 +175,15 @@ Matrix UN(SciantixArray<Matrix>&           matrices,
     matrix_.setSchottkyVolume(4.09e-29);         // TODO valore stesso di UO2
     matrix_.setOctahedralInterstitialSite(0.0);  // TODO
 
-    // --- PROPRIETÀ SIMILI A UO2 (temporaneo) ---
-    matrix_.setSurfaceTension(0.7);  // TODO verificare
+    // --- PROPRIETÀ (UN, Rizk et al. JNM 606 (2025) 155604) ---
+    matrix_.setSurfaceTension(1.11);  // (N/m) gamma
     matrix_.setFissionFragmentInfluenceRadius(1.0e-9);
     matrix_.setFissionFragmentRange(6.0e-6);
 
     matrix_.setGrainBoundaryMobility(int(input_variable["iGrainGrowth"].getValue()), history_variable);
 
-    matrix_.setGrainBoundaryThickness(5.0e-10);  // TODO
-    matrix_.setSemidihedralAngle(0.872664626);   // TODO
+    matrix_.setGrainBoundaryThickness(4.0e-10);  // (m) delta_gb
+    matrix_.setSemidihedralAngle(1.029744259);   // (rad) theta = 59 deg
     matrix_.setLenticularShapeFactor(0.168610764);
 
     matrix_.setHealingTemperatureThreshold(1273.15);  // TODO
