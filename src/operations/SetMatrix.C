@@ -163,10 +163,10 @@ Matrix UN(SciantixArray<Matrix>&           matrices,
     matrix_.setRef("\n\t");
 
     // --- PROPRIETÀ BASE (UN, Rizk et al. JNM 606 (2025) 155604) ---
-    matrix_.setTheoreticalDensity(14300.0);        // (kg/m3) TODO: verificare fonte (non in lista parametri Rizk)
-    matrix_.setLatticeParameter(4.889e-10);        // (m) a
-    matrix_.setDislocationDensity(3.0e13);         // (1/m2) rho_d
-    matrix_.setDislocationCoreRadius(3.46e-10);    // (m) r_d = a/sqrt(2)
+    matrix_.setTheoreticalDensity(14300.0);      // (kg/m3) TODO: verificare fonte (non in lista parametri Rizk)
+    matrix_.setLatticeParameter(4.889e-10);      // (m) a
+    matrix_.setDislocationDensity(3.0e13);       // (1/m2) rho_d
+    matrix_.setDislocationCoreRadius(3.46e-10);  // (m) r_d = a/sqrt(2)
 
     // --- GEOMETRIA ---
     matrix_.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
