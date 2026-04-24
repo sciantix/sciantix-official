@@ -33,16 +33,61 @@ from typing import Tuple, Optional
 import warnings
 
 
+# %% Config (modifica qui i parametri)
+@dataclass(frozen=True)
+class UNConfig:
+    # --- Materiale (Rizk 2025) ---
+    lattice_parameter: float = 4.889e-10  # m
+    matrix_density: float = 14300.0  # kg/m^3 (TODO: verificare fonte)
+    dislocation_density: float = 3.0e13  # 1/m^2
+    dislocation_core_radius: float = 3.46e-10  # m (= a/sqrt(2))
+
+    # --- Condizioni operative ---
+    temperature: float = 1500.0  # K
+    fission_rate_density: float = 1.0e20  # 1/(m^3 s)
+    grain_radius: float = 6.0e-6  # m
+
+    # --- Diffusività Xe in UN (Rizk 2025) ---
+    kB_ev_per_K: float = 8.617333262e-5  # eV/K
+    D10: float = 1.56e-3  # m^2/s
+    Q1: float = 4.94  # eV
+    A30: float = 1.85e-39  # m^5
+    precursor_factor: float = 1.0  # Xe=1.0, Xe133=1.25, ...
+
+    # --- Produzione gas ---
+    xe_yield_per_fission: float = 0.25  # (-) ipotesi
+    fragments_per_fission: float = 2.0  # (-)
+
+    # --- Stato bolle (placeholder: impostalo tu) ---
+    N_b: float = 1.0e22  # bub/m^3
+    N_d: float = 5.0e21  # bub/m^3
+    R_b: float = 1.0e-9  # m
+    R_d: float = 2.0e-9  # m
+
+    # --- Numerica ---
+    n_modes: int = 40
+    t_end: float = 100 * 3600  # s
+    dt_out: float = 3600  # s
+    dt_internal: float = 3600  # s (time step Sciantix-like)
+    ode_method: str = "BDF"
+    rtol: float = 1e-6
+    atol: float = 1e-12
+    initialize_modes_from_mean: bool = True
+
+
+CFG = UNConfig()
+
+
 @dataclass
 class MaterialProperties:
     """Proprietà materiali per UN"""
     # Parametri reticolari
-    lattice_parameter: float = 4.889e-10  # m (Rizk 2025)
-    matrix_density: float = 14300.0  # kg/m³
+    lattice_parameter: float = CFG.lattice_parameter  # m (Rizk 2025)
+    matrix_density: float = CFG.matrix_density  # kg/m^3
     
     # Parametri dislocazioni
-    dislocation_density: float = 3.0e13  # 1/m² (Rizk 2025)
-    dislocation_core_radius: float = 3.46e-10  # m (Rizk 2025, a/sqrt(2))
+    dislocation_density: float = CFG.dislocation_density  # 1/m^2 (Rizk 2025)
+    dislocation_core_radius: float = CFG.dislocation_core_radius  # m (Rizk 2025)
     
     # Volumi atomici
     omega_fg: float = None  # m³/atom (calcolato da lattice_parameter)
@@ -60,20 +105,14 @@ class MaterialProperties:
 @dataclass
 class OperatingConditions:
     """Condizioni operative del combustibile"""
-    temperature: float = 1500.0  # K
-    fission_rate_density: float = 1.0e20  # 1/(m³·s)
-    grain_radius: float = 6.0e-6  # m (Rizk 2025)
+    temperature: float = CFG.temperature  # K
+    fission_rate_density: float = CFG.fission_rate_density  # 1/(m^3 s)
+    grain_radius: float = CFG.grain_radius  # m (Rizk 2025)
     burnup: float = 0.0  # at% (per future estensioni)
 
 
 class DiffusivityModel:
     """Modello di diffusività Xe in UN (Rizk 2025)"""
-    
-    # Costanti
-    kB = 8.617333262e-5  # eV/K
-    D10 = 1.56e-3  # m²/s
-    Q1 = 4.94  # eV
-    A30 = 1.85e-39  # m⁵
     
     @classmethod
     def compute(cls, T: float, F_dot: float, precursor_factor: float = 1.0) -> float:
@@ -89,9 +128,9 @@ class DiffusivityModel:
             D_g: diffusività (m²/s)
         """
         # Componenti della diffusività
-        d1 = cls.D10 * np.exp(-cls.Q1 / (cls.kB * T))  # Thermal diffusion
+        d1 = CFG.D10 * np.exp(-CFG.Q1 / (CFG.kB_ev_per_K * T))  # Thermal diffusion
         d2 = 0.0  # Irradiation-enhanced (trascurato per Xe)
-        d3 = cls.A30 * F_dot  # Radiation-induced mixing (athermal)
+        d3 = CFG.A30 * F_dot  # Radiation-induced mixing (athermal)
         
         D_g = (d1 + d2 + d3) * precursor_factor
         return D_g
@@ -239,84 +278,122 @@ class SpectralSolver:
         # Autovalori: λ_n = (n*π/R)² per n = 1, 2, 3, ...
         n = np.arange(1, self.n_modes + 1)
         self.eigenvalues = (n * np.pi / grain_radius)**2
-        
-    def solve_3equations_exchange(self, y0: np.ndarray, t_span: Tuple[float, float],
-                                  params: dict, method: str = 'BDF',
-                                  **kwargs) -> dict:
+
+    @staticmethod
+    def mode_initialization(n_modes: int, mode_initial_condition: float, diffusion_modes: np.ndarray) -> None:
         """
-        Risolve il sistema 3-equazioni con metodo backward Euler spettrale
-        
-        Args:
-            y0: stato iniziale [c, m_b, m_d, modes_c, modes_m_b, modes_m_d]
-            t_span: (t_start, t_end)
-            params: dizionario parametri (D_g, beta, g_b, g_d, b_b, b_d)
-            method: metodo ODE (default 'BDF' per stiff problems)
-            **kwargs: argomenti aggiuntivi per solve_ivp
-            
-        Returns:
-            risultato solve_ivp
+        Inizializzazione modi come in Sciantix `Solver::modeInitialization`.
+
+        Proietta una condizione iniziale "media sul grano" su una serie di modi, con un ciclo di ricostruzione
+        iterativa.
         """
-        if self.eigenvalues is None:
-            raise ValueError("Call setup_modes() first")
+        projection_coeff = -np.sqrt(8.0 / np.pi)
+        initial_condition = mode_initial_condition
+        projection_remainder = initial_condition
+
+        iteration_max = 20
+        for _ in range(iteration_max):
+            reconstructed_solution = 0.0
+            for n in range(n_modes):
+                np1 = n + 1
+                n_coeff = ((-1.0) ** np1) / np1
+                diffusion_modes[n] += projection_coeff * n_coeff * projection_remainder
+                reconstructed_solution += projection_coeff * n_coeff * diffusion_modes[n] * 3.0 / (4.0 * np.pi)
+            projection_remainder = initial_condition - reconstructed_solution
+
+    @staticmethod
+    def laplace3x3(A: np.ndarray, b: np.ndarray) -> np.ndarray:
+        """
+        Solve 3x3 lineare come in Sciantix `Solver::Laplace3x3` (formula con determinanti).
+        """
+        detA = (
+            A[0, 0] * (A[1, 1] * A[2, 2] - A[1, 2] * A[2, 1])
+            - A[0, 1] * (A[1, 0] * A[2, 2] - A[1, 2] * A[2, 0])
+            + A[0, 2] * (A[1, 0] * A[2, 1] - A[1, 1] * A[2, 0])
+        )
+        if detA == 0.0:
+            return b
+
+        detX = (
+            b[0] * (A[1, 1] * A[2, 2] - A[1, 2] * A[2, 1])
+            - A[0, 1] * (b[1] * A[2, 2] - A[1, 2] * b[2])
+            + A[0, 2] * (b[1] * A[2, 1] - A[1, 1] * b[2])
+        )
+        detY = (
+            A[0, 0] * (b[1] * A[2, 2] - A[1, 2] * b[2])
+            - b[0] * (A[1, 0] * A[2, 2] - A[1, 2] * A[2, 0])
+            + A[0, 2] * (A[1, 0] * b[2] - b[1] * A[2, 0])
+        )
+        detZ = (
+            A[0, 0] * (A[1, 1] * b[2] - b[1] * A[2, 1])
+            - A[0, 1] * (A[1, 0] * b[2] - b[1] * A[2, 0])
+            + b[0] * (A[1, 0] * A[2, 1] - A[1, 1] * A[2, 0])
+        )
+        return np.array([detX / detA, detY / detA, detZ / detA], dtype=float)
+
+    def step_3equations_exchange_sciantix(
+        self,
+        modes_c: np.ndarray,
+        modes_m_b: np.ndarray,
+        modes_m_d: np.ndarray,
+        parameter: np.ndarray,
+        dt: float,
+    ) -> tuple[float, float, float]:
+        """
+        Un singolo time-step *identico* a Sciantix: `Solver::SpectralDiffusion3equationsExchange`.
+
+        Aggiorna i modi in-place e ritorna (c, m_b, m_d) ricostruiti come medie sul grano.
+        """
+        n_modes = int(parameter[0])
+        D_g = float(parameter[1])
+        radius = float(parameter[2])
+        beta = float(parameter[3])
+        g_b = float(parameter[4])
+        g_d = float(parameter[5])
+        b_b = float(parameter[6])
+        b_d = float(parameter[7])
+
+        diffusion_rate_coeff = (np.pi**2) * D_g / (radius**2)
+        projection_coeff = -2.0 * np.sqrt(2.0 / np.pi)
+        source_rate_coeff = projection_coeff * beta
+
+        c_solution = 0.0
+        m_b_solution = 0.0
+        m_d_solution = 0.0
+
+        vol_coeff = (4.0 / 3.0) * np.pi
+
+        for n in range(n_modes):
+            np1 = n + 1
+            n_coeff = ((-1.0) ** np1) / np1
+
+            diffusion_rate = diffusion_rate_coeff * (np1**2)
+            source_rate = source_rate_coeff * n_coeff
+
+            A = np.array(
+                [
+                    [1.0 + (diffusion_rate + g_b + g_d) * dt, -b_b * dt, -b_d * dt],
+                    [-g_b * dt, 1.0 + b_b * dt, 0.0],
+                    [-g_d * dt, 0.0, 1.0 + b_d * dt],
+                ],
+                dtype=float,
+            )
+
+            b = np.array([modes_c[n] + source_rate * dt, modes_m_b[n], modes_m_d[n]], dtype=float)
+            x = self.laplace3x3(A, b)
+
+            modes_c[n] = x[0]
+            modes_m_b[n] = x[1]
+            modes_m_d[n] = x[2]
+
+            c_solution += projection_coeff * n_coeff * x[0] / vol_coeff
+            m_b_solution += projection_coeff * n_coeff * x[1] / vol_coeff
+            m_d_solution += projection_coeff * n_coeff * x[2] / vol_coeff
+
+        return c_solution, m_b_solution, m_d_solution
         
-        def rhs(t, y):
-            """Right-hand side del sistema ODE"""
-            # Estrai variabili mediate
-            c = y[0]
-            m_b = y[1]
-            m_d = y[2]
-            
-            # Estrai modi
-            modes_c = y[3:3+self.n_modes]
-            modes_m_b = y[3+self.n_modes:3+2*self.n_modes]
-            modes_m_d = y[3+2*self.n_modes:3+3*self.n_modes]
-            
-            # Parametri
-            D_g = params['D_g']
-            beta = params['beta']
-            g_b = params['g_b']
-            g_d = params['g_d']
-            b_b = params['b_b']
-            b_d = params['b_d']
-            
-            # RHS per modi (accoppiati)
-            # Per ogni modo: sistema lineare 3x3
-            d_modes_c = np.zeros(self.n_modes)
-            d_modes_m_b = np.zeros(self.n_modes)
-            d_modes_m_d = np.zeros(self.n_modes)
-            
-            for i in range(self.n_modes):
-                lam = self.eigenvalues[i]
-                
-                # Sistema per modo i:
-                # dc_i/dt   = -D_g*λ_i*c_i - (g_b+g_d)*c_i + b_b*m_b_i + b_d*m_d_i
-                # dm_b_i/dt = g_b*c_i - b_b*m_b_i
-                # dm_d_i/dt = g_d*c_i - b_d*m_d_i
-                
-                d_modes_c[i] = -D_g * lam * modes_c[i] - (g_b + g_d) * modes_c[i] \
-                               + b_b * modes_m_b[i] + b_d * modes_m_d[i]
-                d_modes_m_b[i] = g_b * modes_c[i] - b_b * modes_m_b[i]
-                d_modes_m_d[i] = g_d * modes_c[i] - b_d * modes_m_d[i]
-            
-            # Medie spaziali (somma modi + termine sorgente)
-            dc = np.sum(d_modes_c) + beta
-            dm_b = np.sum(d_modes_m_b)
-            dm_d = np.sum(d_modes_m_d)
-            
-            # Assembla derivata
-            dy = np.zeros_like(y)
-            dy[0] = dc
-            dy[1] = dm_b
-            dy[2] = dm_d
-            dy[3:3+self.n_modes] = d_modes_c
-            dy[3+self.n_modes:3+2*self.n_modes] = d_modes_m_b
-            dy[3+2*self.n_modes:3+3*self.n_modes] = d_modes_m_d
-            
-            return dy
-        
-        # Risolvi ODE
-        result = solve_ivp(rhs, t_span, y0, method=method, **kwargs)
-        return result
+    # Nota: per replicare Sciantix 1:1 non usiamo `solve_ivp` per il caso UN 3-eq. Il time stepping
+    # è gestito nel wrapper `SciantixUNSolver.solve(...)` con `step_3equations_exchange_sciantix(...)`.
 
 
 class SciantixUNSolver:
@@ -327,7 +404,7 @@ class SciantixUNSolver:
     def __init__(self, 
                  material: MaterialProperties = None,
                  conditions: OperatingConditions = None,
-                 n_modes: int = 40):
+                 n_modes: int = None):
         """
         Args:
             material: proprietà materiali UN
@@ -336,16 +413,16 @@ class SciantixUNSolver:
         """
         self.material = material or MaterialProperties()
         self.conditions = conditions or OperatingConditions()
-        self.solver = SpectralSolver(n_modes=n_modes)
+        self.solver = SpectralSolver(n_modes=(n_modes or CFG.n_modes))
         
         # Setup solver
         self.solver.setup_modes(self.conditions.grain_radius)
         
         # Stato bolle (da aggiornare dinamicamente o fissare)
-        self.N_b = 1.0e22  # bub/m³ (placeholder)
-        self.N_d = 1.0e21  # bub/m³ (placeholder)
-        self.R_b = 1.0e-9  # m (placeholder)
-        self.R_d = 2.0e-9  # m (placeholder)
+        self.N_b = CFG.N_b  # bub/m^3
+        self.N_d = CFG.N_d  # bub/m^3
+        self.R_b = CFG.R_b  # m
+        self.R_d = CFG.R_d  # m
         
     def compute_parameters(self, precursor_factor: float = 1.0) -> dict:
         """
@@ -364,9 +441,8 @@ class SciantixUNSolver:
         # Diffusività
         D_g = DiffusivityModel.compute(T, F_dot, precursor_factor)
         
-        # Produzione gas (assumo yield Xe = 0.25 per fissione)
-        yield_xe = 0.25
-        beta = 2.0 * F_dot * yield_xe  # 2 frammenti per fissione
+        # Produzione gas
+        beta = CFG.fragments_per_fission * F_dot * CFG.xe_yield_per_fission
         
         # Raggio in lattice units
         r_lattice = self.material.lattice_parameter / 2.0
@@ -394,6 +470,25 @@ class SciantixUNSolver:
             'T': T,
             'F_dot': F_dot
         }
+
+    def build_sciantix_parameter_vector(self, params: dict) -> np.ndarray:
+        """
+        Costruisce il vettore `parameter` nello stesso ordine usato da Sciantix
+        (`Solver::SpectralDiffusion3equationsExchange`).
+        """
+        return np.array(
+            [
+                float(self.solver.n_modes),
+                float(params["D_g"]),
+                float(self.conditions.grain_radius),
+                float(params["beta"]),
+                float(params["g_b"]),
+                float(params["g_d"]),
+                float(params["b_b"]),
+                float(params["b_d"]),
+            ],
+            dtype=float,
+        )
     
     def solve(self, t_end: float, dt_out: float = None, 
               initial_state: dict = None, **kwargs) -> dict:
@@ -409,42 +504,68 @@ class SciantixUNSolver:
         Returns:
             dizionario con risultati
         """
-        # Stato iniziale
+        # Stato iniziale (medie + modi)
         if initial_state is None:
-            initial_state = {
-                'c': 0.0,
-                'm_b': 0.0,
-                'm_d': 0.0,
-                'modes_c': np.zeros(self.solver.n_modes),
-                'modes_m_b': np.zeros(self.solver.n_modes),
-                'modes_m_d': np.zeros(self.solver.n_modes)
-            }
-        
-        # Assembla vettore iniziale
-        y0 = np.concatenate([
-            [initial_state['c'], initial_state['m_b'], initial_state['m_d']],
-            initial_state['modes_c'],
-            initial_state['modes_m_b'],
-            initial_state['modes_m_d']
-        ])
-        
+            initial_state = {"c": 0.0, "m_b": 0.0, "m_d": 0.0}
+
+        modes_c = np.array(initial_state.get("modes_c", np.zeros(self.solver.n_modes)), dtype=float)
+        modes_m_b = np.array(initial_state.get("modes_m_b", np.zeros(self.solver.n_modes)), dtype=float)
+        modes_m_d = np.array(initial_state.get("modes_m_d", np.zeros(self.solver.n_modes)), dtype=float)
+
+        if CFG.initialize_modes_from_mean and (
+            np.all(modes_c == 0.0) and np.all(modes_m_b == 0.0) and np.all(modes_m_d == 0.0)
+        ):
+            self.solver.mode_initialization(self.solver.n_modes, float(initial_state.get("c", 0.0)), modes_c)
+            self.solver.mode_initialization(self.solver.n_modes, float(initial_state.get("m_b", 0.0)), modes_m_b)
+            self.solver.mode_initialization(self.solver.n_modes, float(initial_state.get("m_d", 0.0)), modes_m_d)
+
         # Parametri
-        params = self.compute_parameters()
-        
-        # Setup output times
-        if dt_out is not None:
-            t_eval = np.arange(0, t_end, dt_out)
-            kwargs['t_eval'] = t_eval
-        
-        # Risolvi
-        result = self.solver.solve_3equations_exchange(
-            y0, (0, t_end), params, **kwargs
+        params = self.compute_parameters(precursor_factor=CFG.precursor_factor)
+        parameter_vec = self.build_sciantix_parameter_vector(params)
+
+        # Time stepping Sciantix-like
+        if dt_out is None:
+            dt_out = CFG.dt_out
+        dt = float(CFG.dt_internal)
+        if dt <= 0.0:
+            raise ValueError("CFG.dt_internal must be > 0")
+        if dt_out <= 0.0:
+            raise ValueError("dt_out must be > 0")
+
+        n_out = int(np.floor(t_end / dt_out)) + 1
+        t = np.linspace(0.0, dt_out * (n_out - 1), n_out)
+
+        c = np.zeros_like(t)
+        m_b = np.zeros_like(t)
+        m_d = np.zeros_like(t)
+
+        # Ricostruisci stato iniziale coerente con i modi (come Sciantix farebbe dopo una chiamata)
+        c[0], m_b[0], m_d[0] = self.solver.step_3equations_exchange_sciantix(
+            modes_c, modes_m_b, modes_m_d, parameter_vec, 0.0
         )
-        
-        # Estrai risultati
-        c = result.y[0, :]
-        m_b = result.y[1, :]
-        m_d = result.y[2, :]
+
+        current_time = 0.0
+        success = True
+        message = "OK"
+
+        for i_out in range(1, n_out):
+            target_time = t[i_out]
+            while current_time + 1e-18 < target_time:
+                step = min(dt, target_time - current_time)
+                try:
+                    c_i, m_b_i, m_d_i = self.solver.step_3equations_exchange_sciantix(
+                        modes_c, modes_m_b, modes_m_d, parameter_vec, step
+                    )
+                except Exception as exc:  # pragma: no cover
+                    success = False
+                    message = str(exc)
+                    break
+                current_time += step
+            if not success:
+                break
+            c[i_out] = c_i
+            m_b[i_out] = m_b_i
+            m_d[i_out] = m_d_i
         
         # Gas totale nel grano
         m_total = c + m_b + m_d
@@ -453,16 +574,19 @@ class SciantixUNSolver:
         frac_bubbles = (m_b + m_d) / (m_total + 1e-30)
         
         return {
-            't': result.t,
+            't': t,
             'c': c,
             'm_b': m_b,
             'm_d': m_d,
             'm_total': m_total,
             'frac_bubbles': frac_bubbles,
             'params': params,
-            'result': result,
-            'success': result.success,
-            'message': result.message
+            'result': None,
+            'success': success,
+            'message': message,
+            'modes_c': modes_c,
+            'modes_m_b': modes_m_b,
+            'modes_m_d': modes_m_d,
         }
     
     def plot_results(self, solution: dict, figsize=(12, 8)):
@@ -565,17 +689,9 @@ def run_example():
     print("="*70)
     print()
     
-    # Setup materiale e condizioni
-    material = MaterialProperties(
-        dislocation_density=3.0e13,  # 1/m² (Rizk 2025)
-        dislocation_core_radius=3.46e-10  # m (Rizk 2025)
-    )
-    
-    conditions = OperatingConditions(
-        temperature=1500.0,  # K
-        fission_rate_density=1.0e20,  # 1/(m³·s)
-        grain_radius=6.0e-6  # m (Rizk 2025, 6 μm)
-    )
+    # Setup materiale e condizioni (da CFG in testa al file)
+    material = MaterialProperties()
+    conditions = OperatingConditions()
     
     print(f"Condizioni operative:")
     print(f"  - Temperatura: {conditions.temperature} K")
@@ -587,14 +703,8 @@ def run_example():
     solver = SciantixUNSolver(
         material=material,
         conditions=conditions,
-        n_modes=40
+        n_modes=CFG.n_modes
     )
-    
-    # Setup bolle (valori realistici)
-    solver.N_b = 1.0e22  # bub/m³
-    solver.N_d = 5.0e21  # bub/m³
-    solver.R_b = 1.0e-9  # m (1 nm)
-    solver.R_d = 2.0e-9  # m (2 nm)
     
     print("Parametri bolle:")
     print(f"  - N_b (bulk): {solver.N_b:.2e} bub/m³")
@@ -605,14 +715,14 @@ def run_example():
     
     # Simula 100 ore
     print("Inizio simulazione (100 ore, ~ 6 giorni)...")
-    t_end = 100 * 3600  # s
+    t_end = CFG.t_end
     
     solution = solver.solve(
         t_end=t_end,
-        dt_out=3600,  # output ogni ora
-        method='BDF',  # Per problemi stiff
-        rtol=1e-6,
-        atol=1e-12
+        dt_out=CFG.dt_out,
+        method=CFG.ode_method,
+        rtol=CFG.rtol,
+        atol=CFG.atol,
     )
     
     if solution['success']:

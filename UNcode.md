@@ -157,3 +157,111 @@ Costruito in `src/models/GasDiffusion.C` (`defineSpectralDiffusion3EquationsExch
 Note codice:
 - `D_g` viene costruito come `system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor()`.
 - Per sistemi non-UN, `g_b, g_d, b_b, b_d` sono attesi `0`.
+
+---
+
+## Codice Sciantix: caller + solver (3 eq UN)
+
+### 1) Chi chiama il solver (iDiffusionSolver = 4)
+
+In `src/models/GasDiffusion.C` il caso `iDiffusionSolver = 4` legge `c, m_b, m_d` dalle variabili Sciantix, chiama il
+solver spettrale e poi riscrive i valori aggiornati:
+
+```cpp
+// src/models/GasDiffusion.C (case 4 - UN)
+double c_solution =
+    sciantix_variable[system.getGasName() + " in intragranular solution"].getFinalValue();
+double m_bulk =
+    sciantix_variable[system.getGasName() + " in intragranular bubbles"].getFinalValue();
+double m_disl =
+    sciantix_variable[system.getGasName() + " in dislocation bubbles"].getFinalValue();
+
+solver.SpectralDiffusion3equationsExchange(
+    c_solution,
+    m_bulk,
+    m_disl,
+    getDiffusionModesSolution(system.getGasName()),
+    getDiffusionModesBubbles(system.getGasName()),
+    getDiffusionModesDislocationBubbles(system.getGasName()),
+    model["Gas diffusion - " + system.getName()].getParameter(),
+    physics_variable["Time step"].getFinalValue());
+
+sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(c_solution);
+sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(m_bulk);
+sciantix_variable[system.getGasName() + " in dislocation bubbles"].setFinalValue(m_disl);
+sciantix_variable[system.getGasName() + " in grain"].setFinalValue(c_solution + m_bulk + m_disl);
+```
+
+### 2) Il codice che risolve davvero (Backward Euler per modo + 3×3)
+
+In `src/classes/Solver.C`, `Solver::SpectralDiffusion3equationsExchange(...)` fa un loop sui modi spettrali e, per ogni
+modo, esegue **un passo implicito Backward Euler** risolvendo un **sistema lineare 3×3** accoppiato.
+
+Estratto (matrice del passo implicito e solve):
+
+```cpp
+// src/classes/Solver.C (per ogni modo)
+coeff_matrix[0] = 1.0 + (diffusion_rate + g_b + g_d) * increment;
+coeff_matrix[1] = -b_b * increment;
+coeff_matrix[2] = -b_d * increment;
+
+coeff_matrix[3] = -g_b * increment;
+coeff_matrix[4] = 1.0 + b_b * increment;
+coeff_matrix[5] = 0.0;
+
+coeff_matrix[6] = -g_d * increment;
+coeff_matrix[7] = 0.0;
+coeff_matrix[8] = 1.0 + b_d * increment;
+
+initial_conditions[0] = modes_c[n] + source_rate * increment;
+initial_conditions[1] = modes_m_b[n];
+initial_conditions[2] = modes_m_d[n];
+
+Solver::Laplace3x3(coeff_matrix, initial_conditions);
+```
+
+Poi aggiorna `modes_c[n], modes_m_b[n], modes_m_d[n]` e ricostruisce le medie sul grano (`c, m_b, m_d`) via proiezione
+sommando il contributo di tutti i modi.
+
+---
+
+## Spiegazione formale del procedimento numerico
+
+### A) Discretizzazione nello spazio: espansione spettrale su sfera
+
+Si assume un grano sferico di raggio `R`. Le grandezze vengono espanse in autofunzioni del Laplaciano; nel codice questo
+compare come una dipendenza `~ n²` del termine diffusivo:
+
+- `diffusion_rate = (π² D_g / R²) * n²`
+
+Ogni modo spettrale evolve quindi come un sistema ODE accoppiato fra `c_n, m_{b,n}, m_{d,n}`.
+
+### B) Discretizzazione nel tempo: Backward Euler modo-per-modo
+
+Per ogni modo `n` e per ogni time step `k → k+1` con `dt`, Sciantix risolve:
+
+- `(I - dt * J_n) x_n^{k+1} = x_n^{k} + dt * s_n`
+
+dove:
+- `x_n = [c_n, m_{b,n}, m_{d,n}]^T`
+- `J_n` è il jacobiano lineare (include diffusione + trapping + resolution)
+- `s_n` è il termine sorgente del modo (derivato dalla sorgente volumetrica `β` tramite proiezione)
+
+Operativamente, questo equivale a costruire e risolvere un sistema lineare 3×3 per ogni modo:
+- righe/colonne 1..3 corrispondono a `[c_n, m_{b,n}, m_{d,n}]`
+- i coefficienti sono quelli che vedi in `coeff_matrix[...]` (con termini `diffusion_rate`, `g_b`, `g_d`, `b_b`, `b_d`)
+
+### C) Ricostruzione delle medie sul grano (quantità “lumped”)
+
+Dopo l’update dei modi, Sciantix ricostruisce le quantità medie sul grano (`c, m_b, m_d`) come combinazione lineare dei
+coefficienti modali tramite un fattore di proiezione (`projection_coeff`) e `n_coeff = (-1)^(n+1)/n`. Queste medie sono
+quelle che poi vengono salvate nelle variabili Sciantix e usate dagli altri modelli.
+
+---
+
+## Collegamento con il tuo script Python
+
+Nel tuo `UNpython_test.py` hai già le stesse 3 equazioni e l’idea “modo per modo”. Se vuoi che il Python faccia *esattamente*
+lo stesso che fa Sciantix, la strada più diretta è:
+- implementare anche in Python il **Backward Euler per modo** con solve 3×3 (come sopra), invece di usare `solve_ivp(..., method="BDF")`;
+- assicurarti che la parte di **proiezione/ricostruzione delle medie** (come Sciantix) sia la stessa.
