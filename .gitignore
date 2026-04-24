@@ -41,6 +41,9 @@
 # OC databases
 *.TDB
 
+# log for EC
+sciantix.log
+
 #doxygen
 latex
 

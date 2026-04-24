@@ -21,7 +21,7 @@ THERMO_OUTPUT_NAME = "thermochemistry_output.txt"
 THERMOCHEMISTRY_MANIFEST_FILE = TEST_DIR /"input_thermochemistry.txt"
 PLOTS_DIR = TEST_DIR / "plots"
 EXP_DATA_DIR = TEST_DIR / "exp_data"
-PELLET_RADIUS_M = 2.719e-3
+PELLET_RADIUS_M = 2.7e-3
 AVOGADRO_NUMBER = 6.02214076e23
 CS2MOO4_LIQUID_DENSITY_KG_PER_M3 = 4380.0
 
@@ -446,7 +446,7 @@ def plot_case(
 
     fig, axis = plt.subplots()
     axis.plot(burnup, values[:, column_map["Fuel oxygen potential (KJ/mol)"]], label="SCIANTIX", color=colors[0])
-    axis.plot(burnup, values[:, column_map["Fuel oxygen potential - Blackburn (KJ/mol)"]], label="Blackburn", color=colors[1], linestyle = '--')
+    axis.plot(burnup, values[:, column_map["Fuel oxygen potential - Kato (KJ/mol)"]], label="Kato", color=colors[1], linestyle = '--')
     axis.plot(burnup, values[:, column_map["Fuel oxygen potential - CALPHAD (KJ/mol)"]], label="CALPHAD", color=colors[3], linestyle = '--')
     axis.set_xlabel(burnup_label)
     axis.set_ylabel("muO2 (kJ/mol)")
