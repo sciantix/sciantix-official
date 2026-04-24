@@ -7,6 +7,23 @@ import matplotlib.pyplot as plt
 
 from oxired import CylinderGeometry, OxiRedCylinder, PolynomialProfile, OxygenBalanceModel
 
+plt.style.use("seaborn-v0_8-whitegrid")
+plt.rcParams.update({
+    "figure.figsize": (10, 7),
+    "font.size": 12,
+    "axes.labelsize": 15,
+    "axes.titlesize": 12,
+    "xtick.labelsize": 12,
+    "ytick.labelsize": 12,
+    "legend.fontsize": 12,
+    "figure.dpi": 300,
+    "axes.grid": True,
+    "grid.alpha": 0.5,
+    "grid.linestyle": "--",
+    "lines.linewidth": 2,
+    "lines.markersize": 6,
+    "legend.frameon": False,
+})
 
 def make_case_dir_name(index: int, radius_mm: float) -> str:
     return f"point_{index:02d}_r_{radius_mm:.4f}mm".replace(".", "p")
@@ -57,8 +74,8 @@ def main() -> None:
     profile = PolynomialProfile(
         r_inner=0.4e-3,
         r_outer=r_outer,
-        t_center=1850.0,         # K
-        t_surface=950.0,         # K
+        t_center=1900.0,         # K
+        t_surface=900.0,         # K
         power=2.0,
     )
 
@@ -74,16 +91,7 @@ def main() -> None:
     # =========================
     # MODEL CHOICE FOR AVERAGE O/M SHIFT
     # =========================
-    # Option A: empirical OXIRED/Lassmann shift
-    use_empirical_shift = False
-
-    # Option B: level-2 oxygen balance model
-    # (more physically meaningful)
     balance = OxygenBalanceModel()
-
-    # Level-2 model parameters
-    mo_oxidation_fraction = 0.60
-    cladding_sink_fraction = 0.20
 
     # Burnup discretization
     burnup_values = np.linspace(0.0, burnup_final, 10)
@@ -112,26 +120,16 @@ def main() -> None:
     # O/M PROFILE CALCULATION
     # =========================
     for bu in burnup_values:
-        if use_empirical_shift:
-            target_average_om = solver.burnup_shifted_average_om(
-                initial_om=initial_om,
-                burnup_at_percent=bu,
-                fuel_type="fbr_mox",
-            )
-        else:
-            chem = balance.target_average_om(
-                initial_average_om=initial_om,
-                burnup_at_percent=bu,
-                mo_oxidation_fraction=mo_oxidation_fraction,
-                cladding_sink_fraction=cladding_sink_fraction,
-            )
-            target_average_om = chem.target_average_om
+        chem = balance.target_average_om(
+            initial_average_om=initial_om,
+            burnup_at_percent=bu
+        )
+        target_average_om = chem.target_average_om
 
         steady = solver.solve_steady_state(
             average_om=target_average_om,
             mode="auto",
             max_iter=1000,
-            relaxation=0.8,
         )
 
         profiles.append(steady.om.copy())
@@ -175,34 +173,24 @@ def main() -> None:
     # =========================
     plt.figure(figsize=(7, 5))
     plt.plot(r_mm, temperature, marker="o")
-    plt.xlabel("Radius [mm]")
-    plt.ylabel("Temperature [K]")
+    plt.xlabel("Radius (mm)")
+    plt.ylabel("Temperature (K)")
     plt.title("Radial temperature profile")
     plt.grid(True)
-
+    plt.savefig("/home/ecappellari/transparant/sciantix-official/oxired_lib/examples/radial_input_histories/Tprofile.png")
+    
     # =========================
     # PLOT 2: O/M vs radius at different burnup values
     # =========================
     plt.figure(figsize=(8, 6))
     for i, bu in enumerate(burnup_values):
         plt.plot(r_mm, profiles[i], marker="o", label=f"BU = {bu:.1f} at.%")
-    plt.xlabel("Radius [mm]")
+    plt.xlabel("Radius (mm)")
     plt.ylabel("O/M")
     plt.title("Radial O/M profiles vs burnup")
     plt.legend()
     plt.grid(True)
-
-    # =========================
-    # PLOT 3: one line per radial point (O/M vs burnup)
-    # =========================
-    plt.figure(figsize=(8, 6))
-    for i in range(len(r)):
-        plt.plot(burnup_values, profiles[:, i], marker="o", label=f"r = {r_mm[i]:.3f} mm")
-    plt.xlabel("Burnup [at.%]")
-    plt.ylabel("O/M")
-    plt.title("O/M evolution at each radial point")
-    plt.legend(ncol=2, fontsize=8)
-    plt.grid(True)
+    plt.savefig("/home/ecappellari/transparant/sciantix-official/oxired_lib/examples/radial_input_histories/OMprofile.png")
 
     # =========================
     # PLOT 4: average O/M vs burnup
@@ -210,13 +198,13 @@ def main() -> None:
     plt.figure(figsize=(7, 5))
     plt.plot(burnup_values, average_oms, marker="o", label="Redistributed average O/M")
     plt.plot(burnup_values, target_average_oms, marker="x", linestyle="--", label="Target average O/M")
-    plt.xlabel("Burnup [at.%]")
+    plt.xlabel("Burnup (at.%)")
     plt.ylabel("Average O/M")
     plt.title("Evolution of average O/M with burnup")
     plt.legend()
     plt.grid(True)
-
-    plt.show()
+    plt.savefig("/home/ecappellari/transparant/sciantix-official/oxired_lib/examples/radial_input_histories/EvolutionOMaverage.png")
+    plt.close()
 
 
 if __name__ == "__main__":
