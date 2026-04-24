@@ -275,13 +275,13 @@ class OxygenBalanceModel:
         Mo (4.58 atoms of oxygen), Sn (0.08), Cs (0.565) + Rb (0.105), Sb (0.0075), Cd (0.157) and Tc (0.86)
       - the remaining surplus raises fuel O/M unless absorbed by cladding
 
-    In this work we consider up to Zr + Y/RE + Sr/Ba.
-    The Mo sink is indeed considered in SCIANTIX thanks to Cs-Mo-O database.
-
     For each 10 fissions:
     O/M final = O/M initial + N_o_surplus / (90 + 0.25Nzr + 0.12Nsr + Ny/re ) = O/M initial + N_o_surplus / 95.48
     In the above expressions it is implicit that 25% of Zr and 12% of Sr are dissolved in the fuel matrix. 
     This leads to 15.66 atoms per every 10 fissions consumed after oxisation of Zr, Y + RE + Sr +Ba.
+
+    In the examples considered in Table 3, it is shown that such oxidation stagnation at fractions of 50-60% of 
+    the available amount of Mo would enable fina O/M ratios of the fuel of approximately 2.01-2.013 to be achieved 
     """
     oxygen_released_per_10_fissions: float = 20.0
     fixed_sink_oxygen_per_10_fissions: float = 15.66
@@ -292,7 +292,7 @@ class OxygenBalanceModel:
         self,
         initial_average_om: float,
         burnup_at_percent: float,
-        mo_oxidation_fraction: float = 0.0,
+        mo_oxidation_fraction: float = 0.6,
         cladding_sink_fraction: float = 0.0,
     ) -> OxygenBalanceResult:
         """
