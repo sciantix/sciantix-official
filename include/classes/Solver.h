@@ -169,7 +169,7 @@ class Solver : virtual public InputVariable
      * and exchange terms with the other two variables (e.g. bulk bubbles and dislocation bubbles).
      *
      * The system solved (spatially averaged over a spherical grain) is:
-     *  dc/dt  = D_g * div grad c  - (g_b + g_d + L_c) * c + b_b * m_b + b_d * m_d + beta
+     *  dc/dt  = D_g * div grad c  - (g_b + g_d) * c + b_b * m_b + b_d * m_d + beta
      *  dm_b/dt = g_b * c - b_b * m_b
      *  dm_d/dt = g_d * c - b_d * m_d
      *
@@ -185,7 +185,6 @@ class Solver : virtual public InputVariable
      * 5 : g_d (capture rate to dislocation bubbles)
      * 6 : b_b (re-solution rate from bulk bubbles)
      * 7 : b_d (re-solution rate from dislocation bubbles)
-     * 8 : L_c (additional first-order loss rate for c, e.g. radioactive decay)
      */
     void SpectralDiffusion3equationsExchange(double&             c,
                                              double&             m_b,
