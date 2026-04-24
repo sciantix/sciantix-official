@@ -65,6 +65,7 @@ enum class OpenCalphadSolveMode
     GlobalEquilibrium,
     PressureAxisStepGlobalEquilibrium,
     FixedOxygenMolesFromInvalidPotentialSolve,
+    OnlyC1MO2
 };
 
 std::string solveModeLabel(OpenCalphadSolveMode mode);

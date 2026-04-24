@@ -386,6 +386,8 @@ std::string solveModeLabel(OpenCalphadSolveMode mode)
             return "PRESSURE-SWEEP";
         case OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve:
             return "OXYGEN-MOLES-FIXED";
+        case OpenCalphadSolveMode::OnlyC1MO2:
+            return "ONLY C1MO2 ENTERED";
     }
 
     return "unknown";
@@ -417,6 +419,14 @@ std::string buildSolveCommandBlock(OpenCalphadSolveMode mode,
     {
         commands << "set c n(o)=" << fixed_oxygen_moles << "\n";
         commands << "set c mu(o)=none\n\n";
+    }
+    else if (mode == OpenCalphadSolveMode::OnlyC1MO2)
+    {
+        commands << "set st ph gas=fix 0\n";
+        commands << "set st ph *=dor\n";
+        commands << "set st ph gas=e 1\n";
+        commands << "c e\n";
+        commands << "set st ph C1_MO2=e 1\n";
     }
     commands << "c e\nc w\n";
 

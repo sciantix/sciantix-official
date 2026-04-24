@@ -124,6 +124,8 @@ void Simulation::CallThermochemistryModule(std::string                      loca
 
     if (pressure > 1.0e5 + 1.0)
         solve_attempts.push_back(OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium);
+    if (location == "matrix")
+        solve_attempts.push_back(OpenCalphadSolveMode::OnlyC1MO2);
     if (oxygen_potential_constraint)
         solve_attempts.push_back(OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve);
 
