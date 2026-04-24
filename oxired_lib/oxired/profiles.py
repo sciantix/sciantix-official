@@ -24,6 +24,17 @@ class PolynomialProfile:
     t_surface: float
     power: float = 2.0
 
+    def __post_init__(self) -> None:
+        values = (self.r_inner, self.r_outer, self.t_center, self.t_surface, self.power)
+        if not all(np.isfinite(value) for value in values):
+            raise ValueError("profile parameters must be finite")
+        if self.r_outer <= self.r_inner:
+            raise ValueError("r_outer must be greater than r_inner")
+        if self.t_center <= 0.0 or self.t_surface <= 0.0:
+            raise ValueError("temperatures must be strictly positive")
+        if self.power <= 0.0:
+            raise ValueError("power must be strictly positive")
+
     def __call__(self, r: np.ndarray) -> np.ndarray:
         r = np.asarray(r, dtype=float)
         xi = (r - self.r_inner) / (self.r_outer - self.r_inner)

@@ -23,6 +23,14 @@ class CylinderGeometry:
     r_outer: float
     r_inner: float = 0.0
 
+    def __post_init__(self) -> None:
+        if not np.isfinite(self.r_outer) or not np.isfinite(self.r_inner):
+            raise ValueError("geometry radii must be finite")
+        if self.r_inner < 0.0:
+            raise ValueError("r_inner must be non-negative")
+        if self.r_outer <= self.r_inner:
+            raise ValueError("r_outer must be greater than r_inner")
+
     @property
     def equivalent_radius(self) -> float:
         return float(np.sqrt(self.r_outer**2 - self.r_inner**2))
@@ -90,7 +98,7 @@ class OxiRedCylinder:
     def solve_steady_state(
         self,
         average_om: float,
-        mode: Mode = "auto", # hyper and hypo calculated automatically
+        mode: Mode = "auto",
         max_iter: int = 200,
         tol: float = 1e-10,
         relaxation: float = 1.0,
@@ -98,9 +106,15 @@ class OxiRedCylinder:
         """
         Solve the steady-state radial O/M profile.
         """
+        if not np.isfinite(average_om):
+            raise ValueError("average_om must be finite")
+        if not (0.0 < relaxation <= 1.0):
+            raise ValueError("relaxation must be in (0, 1]")
         actual_mode = self._resolve_mode(average_om, mode)
         edges, r = self.mesh()
         T = np.asarray(self.temperature_profile(r), dtype=float)
+        if T.shape != r.shape:
+            raise ValueError("temperature profile must return one value per radial cell")
         if np.any(T <= 0.0):
             raise ValueError("temperature profile must be strictly positive")
 
@@ -149,6 +163,8 @@ class OxiRedCylinder:
         c(r,t+dt) = c_inf(r) + (c(r,t) - c_inf(r)) exp(-dt/tau)
         with tau based on the average fuel temperature.
         """
+        if dt < 0.0:
+            raise ValueError("dt must be non-negative")
         steady = self.solve_steady_state(average_om=target_average_om, mode=mode)
         edges, r = self.mesh()
         T = steady.temperature
@@ -204,6 +220,12 @@ class OxiRedCylinder:
     def _resolve_mode(self, average_om: float, mode: Mode) -> Literal["hypo", "hyper"]:
         if mode == "auto":
             return "hyper" if average_om >= 2.0 else "hypo"
+        if mode not in ("hypo", "hyper"):
+            raise ValueError("mode must be 'auto', 'hypo', or 'hyper'")
+        if mode == "hypo" and average_om > 2.0:
+            raise ValueError("hypo mode requires average_om <= 2")
+        if mode == "hyper" and average_om < 2.0:
+            raise ValueError("hyper mode requires average_om >= 2")
         return mode
 
     @staticmethod
@@ -315,7 +337,7 @@ class OxygenBalanceModel:
         return OxygenBalanceResult(
             initial_average_om=initial_average_om,
             burnup_at_percent=burnup_at_percent,
-            oxygen_released_per_10_fissions=self.oxygen_released_per_10_fissions,
+            oxygen_released_per_10_fissions=released,
             oxygen_fixed_sinks_per_10_fissions=fixed,
             oxygen_mo_sink_per_10_fissions=mo_sink,
             oxygen_cladding_sink_per_10_fissions=cladding_sink,
