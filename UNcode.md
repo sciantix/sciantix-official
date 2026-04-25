@@ -259,9 +259,3 @@ quelle che poi vengono salvate nelle variabili Sciantix e usate dagli altri mode
 
 ---
 
-## Collegamento con il tuo script Python
-
-Nel tuo `UNpython_test.py` hai già le stesse 3 equazioni e l’idea “modo per modo”. Se vuoi che il Python faccia *esattamente*
-lo stesso che fa Sciantix, la strada più diretta è:
-- implementare anche in Python il **Backward Euler per modo** con solve 3×3 (come sopra), invece di usare `solve_ivp(..., method="BDF")`;
-- assicurarti che la parte di **proiezione/ricostruzione delle medie** (come Sciantix) sia la stessa.
