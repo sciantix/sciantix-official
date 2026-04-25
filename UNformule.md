@@ -72,6 +72,15 @@ $$
 D_g = \left(1.56\times10^{-3} e^{-4.94/(k_BT)} + 1.85\times10^{-39}\dot{F}\right) SF_D
 $$
 
+
+
+$$
+N_d(0) = 3.6 \times 10^{19} \; \text{[bub/m}^3\text{]}
+$$
+
+*Valore iniziale del numero di bolle sulle dislocazioni.*
+
+
 ---
 
 # 2. Barani (2019) – Uranium Silicide (U₃Si₂)
