@@ -98,7 +98,7 @@ $$
 ## Trapping rate
 
 $$
-b_n = 4\pi D R_n c_1
+b_n = 4\pi D R_n N
 \quad [\mathrm{s}^{-1}]
 $$
 
@@ -195,6 +195,10 @@ $$
 * $K = 10^6, m^{-1}$
 * $\rho_d = 4.0\times10^{13}, m^{-2}$
 * $r_d = 1.925\times10^{-9}, m$
+* $
+r_{ws,d} = \frac{1}{\sqrt{\pi \rho_d}}\ \text{(m)}
+$
+
 
 ### Diffusività
 
