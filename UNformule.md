@@ -158,7 +158,7 @@ $$
 ### Dislocazioni
 
 $$
-b_d =
+b_d = 4\pi D R_b N_d+
 \frac{2\pi D_d}{\ln\left(\frac{r_{ws,d}}{r_d}\right) - \frac{3}{5}}
 \;\rho_d
 $$
