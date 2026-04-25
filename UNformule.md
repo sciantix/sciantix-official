@@ -32,7 +32,8 @@ $$
 ### Bulk
 
 $$
-g_b = 4\pi D_g R_b N_b
+g_b = 4\pi D_g R_b N_b  
+\quad [\mathrm{s}^{-1}]
 $$
 
 ### Dislocazioni
@@ -85,6 +86,7 @@ Omogeneo (metallo)
 
 $$
 \alpha = \alpha_0(R)\dot{F}
+\quad [\mathrm{s}^{-1}]
 $$
 
 $$
@@ -97,6 +99,7 @@ $$
 
 $$
 b_n = 4\pi D R_n c_1
+\quad [\mathrm{s}^{-1}]
 $$
 
 ---
@@ -105,6 +108,7 @@ $$
 
 $$
 n = 8\pi D R_{sg} f_n c_1^2
+\quad [\mathrm{at}\cdot \mathrm{m}^{-3}\ \mathrm{s}^{-1}]
 $$
 
 ---
@@ -114,7 +118,11 @@ $$
 * $f_n = 10^{-4}$
 * $R_{sg} = 2.41\times10^{-10}, m$
 * $D = 5.91\times10^{-6} \exp\left[-\frac{4.41\times10^{-19}}{k_BT}\right]$
+* Nota: qui l'energia è in Joule, quindi
 
+$$
+k_B = 1.38 \cdot 10^{-23}\ \mathrm{J/K}
+$$
 ---
 
 # 3. Barani (2020) – Uranium Dioxide (UO₂)
@@ -132,9 +140,10 @@ $$
 \left[
 a e^{-b_1 R}
 
-* \frac{b_0 - a}{1 + cR^2} e^{-dR^2}
++ \frac{b_0 - a}{1 + cR^2} e^{-dR^2}
   \right]\dot{F}
-  $$
+\quad [\mathrm{s}^{-1}]
+$$
 
 ---
 
@@ -182,7 +191,7 @@ $$
 
 ### Microstruttura
 
-* $h = 25$
+* $h = 25 \quad \mathrm{bolle/fission\ fragment}$ 
 * $K = 10^6, m^{-1}$
 * $\rho_d = 4.0\times10^{13}, m^{-2}$
 * $r_d = 1.925\times10^{-9}, m$
@@ -194,7 +203,7 @@ D_1 = 7.6\times10^{-10} e^{-4.86\times10^{-19}/(k_BT)}
 $$
 
 $$
-D_2 = 5.64\times10^{-25}\dot{F} e^{-1.91\times10^{-19}/(k_BT)}
+D_2 = 5.64 \cdot 10^{-25}\ \sqrt{\dot{F}}\ e^{-\frac{1.91 \cdot 10^{-19}}{k_B T}}
 $$
 
 $$
