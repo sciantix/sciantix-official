@@ -19,11 +19,11 @@ b = b_0(R)\dot{F} \quad [s^{-1}]
 $$
 
 $$
-b_0(R)=10^{-25}\left(2.64 - 2.02 \exp\left[-\frac{R}{2.61\times10^{-9}}\right]\right)
+b_0(R)=10^{-25}\left(2.64 - 2.02 \exp\left[-\frac{2.61\times10^{-9}}{R}\right]\right)
 $$
 
 * $R$ in metri
-* $\dot{F}$ in fissioni m$^{-3}$ s$^{-1}$
+* $\dot{F}\ \text{in fissioni}\ \mathrm{m}^{-3}\ \mathrm{s}^{-1}$
 
 ---
 
@@ -39,8 +39,7 @@ $$
 
 $$
 g_d = 4\pi D_g R_d N_d
-
-* \frac{2\pi D_g}{\ln\left(\frac{Z_d r_d}{\Gamma_d}\right)-\frac{5}{3}}
++\frac{2\pi D_g}{\ln\left(\frac{\Gamma_d}{ Z_d r_d }\right)-\frac{5}{3}}
   (\rho_d - 2R_d N_d)
   $$
 
@@ -89,7 +88,7 @@ $$
 $$
 
 $$
-\alpha_0(R)=2.80\times10^{-25}\left(\frac{R}{5\times10^{-10}}\right)^{0.23}
+\alpha_0(R)=2.80\times10^{-25}\left(\frac{5\times10^{-10}}{R}\right)^{0.23}
 $$
 
 ---
