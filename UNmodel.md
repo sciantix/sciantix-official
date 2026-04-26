@@ -171,7 +171,7 @@ $$
 N_d(0) = K \rho_d = 1.5 \times 10^{19} \ \mathrm{bubble\,m^{-3}}
 $$
 
-Se si volesse modellare l’evoluzione dinamica di $N_d$ tramite evoluzione della densità di dislocazioni:
+Se si volesse modellare l’evoluzione dinamica di $N_d$ tramite evoluzione della densità di dislocazioni: CHATGPT NON VA BENE, NON è COSI EQUAZIONE COMPLETA
 
 $$
 \frac{\partial N_d}{\partial t}
