@@ -45,7 +45,15 @@ $$
 - $R$ è il raggio della bolla (m)
 - $\dot{F}$ è il fission rate density (fissioni/m³·s)
 
-Questo vale sia per le bolle bulk che per quelle su dislocazioni.
+Questo vale sia per le bolle bulk che per quelle su dislocazioni:
+
+$$
+b_b = b_0(R_b)\dot{F}
+$$
+
+$$
+b_d = b_0(R_d)\dot{F}
+$$
 
 ## Trapping Rate
 
@@ -62,7 +70,12 @@ $$
 ### Trapping verso dislocazioni ($g_d$)
 
 $$
-g_d = 4\pi D_g R_d N_d + \frac{2\pi D_g}{\ln\left(\frac{\Gamma_d}{Z_d r_d}\right) - \frac{3}{5}} (\rho_d - 2 R_d N_d)
+g_d =
+4\pi D_g R_d N_d
++
+\frac{2\pi D_g}
+{\ln\left(\frac{\Gamma_d}{Z_d r_d}\right) - \frac{3}{5}}
+(\rho_d - 2 R_d N_d)
 $$
 
 dove:
@@ -72,6 +85,14 @@ dove:
 - $\rho_d = 3.0 \times 10^{13}$ m⁻² (densità dislocazioni)
 - $r_d = 3.46 \times 10^{-10}$ m (raggio core dislocazioni)
 - $Z_d = 5.0$
+
+Nota: $\Gamma_d$ è mantenuto nella forma dimensionalmente corretta:
+
+$$
+\Gamma_d = \frac{1}{\sqrt{\pi \rho_d}}
+$$
+
+perché deve essere una lunghezza, in modo che l’argomento del logaritmo sia adimensionale.
 
 ## Nucleazione
 
@@ -85,48 +106,79 @@ $$
 - $\Omega_{fg} = 8.5 \times 10^{-29}$ m³
 - $c$ concentrazione gas in soluzione (at/m³)
 
-## Sistema di Equazioni di Diffusione (3 equazioni)
+## Sistema completo Rizk per bolle bulk e bolle su dislocazioni
 
-Le variabili sono:
+Le variabili principali sono:
 - $c$: gas in soluzione (at/m³)
 - $m_b$: gas in bolle bulk (at/m³)
 - $m_d$: gas in bolle su dislocazioni (at/m³)
+- $N_b$: concentrazione bolle bulk (bub/m³)
+- $N_d$: concentrazione bolle su dislocazioni (bub/m³)
+- $V_b$: volume medio bolla bulk (m³/bub)
+- $V_d$: volume medio bolla su dislocazione (m³/bub)
+- $n_b$: numero medio di vacanze per bolla bulk
+- $n_d$: numero medio di vacanze per bolla su dislocazione
 
-Sistema:
-
-$$
-\frac{\partial c}{\partial t} = D_g \nabla^2 c - (g_b + g_d) c + b_b m_b + b_d m_d + \beta
-$$
-
-$$
-\frac{\partial m_b}{\partial t} = g_b c - b_b m_b
-$$
+### Equazione per gas in soluzione
 
 $$
-\frac{\partial m_d}{\partial t} = g_d c - b_d m_d
+\frac{\partial c}{\partial t}
+=
+D_g \nabla^2 c
+-
+(g_b + g_d)c
++
+b_b m_b
++
+b_d m_d
++
+\beta
+$$
+
+### Equazioni per gas nelle bolle
+
+Forma compatta scritta per bulk e dislocation bubbles:
+
+$$
+\frac{\partial m_{b,d}}{\partial t}
+=
+g_{b,d}c
+-
+b_{b,d}m_{b,d}
+$$
+
+cioè:
+
+$$
+\frac{\partial m_b}{\partial t}
+=
+g_b c
+-
+b_b m_b
+$$
+
+$$
+\frac{\partial m_d}{\partial t}
+=
+g_d c
+-
+b_d m_d
 $$
 
 dove:
 - $\beta$ produzione volumetrica di gas (at/m³·s)
 - $b_b, b_d$ tassi di re-solution per bulk e dislocazioni
 
-## Valori Iniziali
-
-- Concentrazione iniziale bolle su dislocazioni: $N_d(0) = 3.6 \times 10^{19}$ bub/m³
-
-## Riferimenti
-
-- Rizk et al., JNM 606 (2025) 155604
-
-
----
-
-## Evoluzione della concentrazione di bolle bulk
+### Evoluzione della concentrazione di bolle bulk
 
 La concentrazione numerica delle bolle bulk, $N_b$, evolve secondo:
 
 $$
-\frac{\partial N_b}{\partial t} = \nu_b - b_b \phi_b N_b
+\frac{\partial N_b}{\partial t}
+=
+\nu_b
+-
+b_b \phi_b N_b
 $$
 
 dove:
@@ -145,11 +197,25 @@ $$
 
 Il termine $\phi_b$ corregge il fatto che la re-solution rimuove singoli atomi, mentre per distruggere una bolla servono più eventi di re-solution.
 
----
+### Evoluzione della concentrazione di bolle su dislocazioni
 
-## Evoluzione della concentrazione di bolle su dislocazioni
+L’equazione completa per la concentrazione numerica delle bolle su dislocazioni è:
 
-Nel modello di Rizk, la densità di bolle su dislocazioni è legata alla densità di dislocazioni:
+$$
+\frac{\partial N_d}{\partial t}
+=
+\frac{N_d}{\rho_d}
+\frac{\partial \rho_d}{\partial t}
+-
+4 \lambda N_d^2
+\frac{dV_d}{dt}
+$$
+
+dove:
+- $\frac{N_d}{\rho_d}\frac{\partial \rho_d}{\partial t}$ descrive la variazione di $N_d$ dovuta all’evoluzione della densità di dislocazioni;
+- $-4\lambda N_d^2 \frac{dV_d}{dt}$ descrive la diminuzione di $N_d$ dovuta alla coalescenza delle bolle su dislocazioni.
+
+Nel modello di Rizk, la densità iniziale di bolle su dislocazioni è legata alla densità di dislocazioni:
 
 $$
 N_d = K \rho_d
@@ -165,49 +231,140 @@ $$
 \rho_d = 3.0 \times 10^{13} \ \mathrm{m^{-2}}
 $$
 
-quindi:
+quindi, usando questi valori:
 
 $$
 N_d(0) = K \rho_d = 1.5 \times 10^{19} \ \mathrm{bubble\,m^{-3}}
 $$
 
-Se si volesse modellare l’evoluzione dinamica di $N_d$ tramite evoluzione della densità di dislocazioni: CHATGPT NON VA BENE, NON è COSI EQUAZIONE COMPLETA
 
-$$
-\frac{\partial N_d}{\partial t}
-=
-\frac{N_d}{\rho_d}
-\frac{\partial \rho_d}{\partial t}
-$$
-
-Nel caso implementato in SCIANTIX-UN, però, si assume $\rho_d$ costante, quindi normalmente:
+Se si assume densità di dislocazioni costante:
 
 $$
 \frac{\partial \rho_d}{\partial t}=0
 $$
 
-e quindi:
+allora il primo termine della 21d si annulla, ma rimane comunque il termine di coalescenza se si implementa l’evoluzione del volume:
+
+$$
+\frac{\partial N_d}{\partial t}
+=
+-
+4 \lambda N_d^2
+\frac{dV_d}{dt}
+$$
+
+Se invece nel modello numerico semplificato non si implementano né evoluzione di $\rho_d$ né coalescenza, allora si assume:
 
 $$
 \frac{\partial N_d}{\partial t}=0
 $$
 
-salvo eventuali termini di coalescenza non ancora implementati.
+### Evoluzione del volume delle bolle
 
----
+L’evoluzione del volume medio delle bolle bulk e delle bolle su dislocazioni è:
+
+$$
+\frac{\partial V_{b,d}}{\partial t}
+=
+\frac{\Omega_{fg}}{N_{b,d}}
+\frac{\partial m_{b,d}}{\partial t}
++
+\frac{\Omega}{N_{b,d}}
+\frac{\partial n_{b,d}}{\partial t}
+$$
+
+dove:
+- $\Omega_{fg}$ = volume atomico del gas di fissione;
+- $\Omega$ = volume atomico della matrice UN;
+- $m_{b,d}$ = concentrazione di gas nelle bolle;
+- $n_{b,d}$ = concentrazione di vacanze associata alle bolle;
+- $N_{b,d}$ = concentrazione numerica delle bolle.
+
+Scritta separatamente:
+
+$$
+\frac{\partial V_b}{\partial t}
+=
+\frac{\Omega_{fg}}{N_b}
+\frac{\partial m_b}{\partial t}
++
+\frac{\Omega}{N_b}
+\frac{\partial n_b}{\partial t}
+$$
+
+$$
+\frac{\partial V_d}{\partial t}
+=
+\frac{\Omega_{fg}}{N_d}
+\frac{\partial m_d}{\partial t}
++
+\frac{\Omega}{N_d}
+\frac{\partial n_d}{\partial t}
+$$
+
+
+### Evoluzione delle vacanze nelle bolle
+
+L’evoluzione del numero di vacanze associato alle bolle è:
+
+$$
+\frac{\partial n_{b,d}}{\partial t}
+=
+\frac{2 \pi D_v \delta_{b,d} N_{b,d}}
+{k_B T \zeta_{b,d}}
+\left(
+p_{b,d}
+-
+p_{b,d}^{eq}
+\right)
+$$
+
+Scritta separatamente:
+
+$$
+\frac{\partial n_b}{\partial t}
+=
+\frac{2 \pi D_v \delta_b N_b}
+{k_B T \zeta_b}
+\left(
+p_b
+-
+p_b^{eq}
+\right)
+$$
+
+$$
+\frac{\partial n_d}{\partial t}
+=
+\frac{2 \pi D_v \delta_d N_d}
+{k_B T \zeta_d}
+\left(
+p_d
+-
+p_d^{eq}
+\right)
+$$
+
+dove:
+- $D_v$ = diffusività delle vacanze (m²/s)
+- $\delta_{b,d}$ = raggio della cella di Wigner-Seitz associata alla popolazione di bolle
+- $\zeta_{b,d}$ = fattore geometrico
+- $p_{b,d}$ = pressione interna della bolla
+- $p_{b,d}^{eq}$ = pressione di equilibrio della bolla
 
 ## Numero medio di atomi per bolla
 
 Per le bolle bulk:
 
 $$
-n_b = \frac{m_b}{N_b}
+m_b' = \frac{m_b}{N_b}
 $$
 
 Per le bolle su dislocazioni:
 
 $$
-n_d = \frac{m_d}{N_d}
+m_d' = \frac{m_d}{N_d}
 $$
 
 dove:
@@ -216,7 +373,7 @@ dove:
 - $N_b$ = concentrazione numerica bolle bulk $[\mathrm{bub/m^3}]$
 - $N_d$ = concentrazione numerica bolle su dislocazioni $[\mathrm{bub/m^3}]$
 
----
+Nota: in questo documento si usa $m_i'$ per il numero medio di atomi di gas per bolla, per non confonderlo con $m_i$, che è la concentrazione volumetrica di gas nelle bolle.
 
 ## Raggio delle bolle
 
@@ -228,7 +385,7 @@ $$
 
 con $i=b,d$.
 
-Il raggio si può calcolare dalla relazione:
+Il raggio si calcola dalla relazione:
 
 $$
 R_i =
@@ -240,7 +397,7 @@ $$
 Nel caso semplificato in cui il volume della bolla sia calcolato tramite il volume atomico efficace del gas:
 
 $$
-V_i = n_i \Omega_{fg}
+V_i = m_i' \Omega_{fg}
 $$
 
 quindi:
@@ -248,7 +405,7 @@ quindi:
 $$
 R_i =
 \left(
-\frac{3 n_i \Omega_{fg}}{4 \pi}
+\frac{3 m_i' \Omega_{fg}}{4 \pi}
 \right)^{1/3}
 $$
 
@@ -257,8 +414,6 @@ dove:
 $$
 \Omega_{fg} = 8.5 \times 10^{-29} \ \mathrm{m^3}
 $$
-
----
 
 ## Swelling intragranulare da bolle bulk
 
@@ -284,8 +439,6 @@ $$
 \frac{4}{3}\pi R_b^3 N_b
 $$
 
----
-
 ## Swelling intragranulare da bolle su dislocazioni
 
 Lo swelling volumetrico dovuto alle bolle su dislocazioni è:
@@ -310,8 +463,6 @@ $$
 \frac{4}{3}\pi R_d^3 N_d
 $$
 
----
-
 ## Swelling gassoso intragranulare totale
 
 Lo swelling gassoso intragranulare totale è la somma dei contributi bulk e dislocation:
@@ -334,8 +485,6 @@ $$
 \frac{4}{3}\pi R_d^3 N_d
 $$
 
----
-
 ## Swelling da prodotti di fissione solidi
 
 Rizk usa una correlazione semplice per lo swelling da prodotti di fissione solidi:
@@ -357,8 +506,6 @@ $$
 $$
 
 Questa correlazione rappresenta circa $0.5\%$ di swelling per ogni $1\%$ FIMA.
-
----
 
 ## Swelling totale
 
@@ -385,14 +532,15 @@ $$
 \left(\frac{\Delta V}{V}\right)_{gf} = 0
 $$
 
----
-
 ## Parametri UN da Rizk
 
 | Simbolo | Valore | Unità | Significato |
 |---|---:|---|---|
 | $D_{10}^{Xe}$ | $1.56 \times 10^{-3}$ | $\mathrm{m^2\,s^{-1}}$ | prefattore diffusione termica Xe |
 | $Q_1^{Xe}$ | $4.94$ | $\mathrm{eV}$ | energia attivazione Xe |
+| $A_{20}^{Xe}$ | $1.21 \times 10^{-67}$ | $\mathrm{m^{7/2}\,s^{-1/2}}$ | coefficiente irradiation-enhanced Xe |
+| $B_{21}^{Xe}$ | $25.87$ | $\mathrm{eV}$ | parametro fit $D_2$ Xe |
+| $B_{22}^{Xe}$ | $-1.49$ | $\mathrm{eV^2}$ | parametro fit $D_2$ Xe |
 | $A_3^{Xe}$ | $1.85 \times 10^{-39}$ | $\mathrm{m^5}$ | coefficiente mixing irradiation-induced |
 | $D_{10}^{V_U}$ | $1.35 \times 10^{-2}$ | $\mathrm{m^2\,s^{-1}}$ | prefattore diffusione termica vacanze U |
 | $Q_1^{V_U}$ | $5.66$ | $\mathrm{eV}$ | energia attivazione vacanze U |
@@ -417,8 +565,6 @@ $$
 | $\rho_d$ | $3.0 \times 10^{13}$ | $\mathrm{m^{-2}}$ | densità di dislocazioni |
 | $Z_d$ | $5.0$ | $-$ | trapping radius factor dislocazioni |
 | $k_B$ | $8.617333262 \times 10^{-5}$ | $\mathrm{eV\,K^{-1}}$ | costante di Boltzmann |
-
----
 
 ## Diffusività delle vacanze di Uranio
 
@@ -457,8 +603,6 @@ $$
 
 Per le vacanze non si usa il termine $D_3$, perché $D_3$ rappresenta il mixing balistico usato per Xe.
 
----
-
 ## Diffusività delle vacanze ai bordi di grano
 
 Rizk assume:
@@ -469,47 +613,23 @@ $$
 
 dove $D_1^U$ è la diffusività termica dei difetti di Uranio.
 
----
-
 ## Pressione interna della bolla
 
-La pressione del gas nella bolla può essere calcolata con l’equazione di stato hard-sphere tipo Carnahan-Starling:
+La pressione del gas nella bolla può essere calcolata con la relazione:
 
 $$
-\frac{pV}{n k_B T}
-=
-\frac{1+\eta+\eta^2-\eta^3}{(1-\eta)^3}
+p =
+\frac{k_B T m}{n \Omega}
 $$
 
 dove:
 - $p$ = pressione interna della bolla
-- $V$ = volume della bolla
-- $n$ = numero di atomi nella bolla
 - $T$ = temperatura
-- $k_B$ = costante di Boltzmann
-- $\eta$ = packing fraction
+- $m$ = numero di atomi di gas nella bolla
+- $n$ = numero di vacanze nella bolla
+- $\Omega$ = volume atomico della matrice UN
 
-La packing fraction è:
-
-$$
-\eta =
-\frac{\pi}{6} d_{HS}^3 \frac{n}{V}
-$$
-
-Il diametro hard-sphere dello Xe è:
-
-$$
-d_{HS}
-=
-4.45 \times 10^{-10}
-\left[
-0.8542
--
-0.03996 \log\left(\frac{T}{231.2}\right)
-\right]
-$$
-
----
+Nota: questa è la forma riportata nel modello Rizk per il calcolo della pressione interna della bolla.
 
 ## Pressione di equilibrio della bolla
 
@@ -542,8 +662,6 @@ p_{eq}
 \frac{2 \gamma}{R}
 $$
 
----
-
 ## Crescita per assorbimento di vacanze
 
 La crescita delle bolle può essere guidata dall’assorbimento di vacanze quando:
@@ -552,59 +670,108 @@ $$
 p > p_{eq}
 $$
 
-Il rate di assorbimento di vacanze può essere scritto nella forma Speight-Beere:
+Il rate di assorbimento di vacanze nel modello Rizk è:
 
 $$
-\frac{dn_v}{dt}
+\frac{\partial n_{b,d}}{\partial t}
 =
-\frac{2\pi D_v d}{k_B T \zeta}
+\frac{2 \pi D_v \delta_{b,d} N_{b,d}}
+{k_B T \zeta_{b,d}}
 \left(
-p - p_{eq}
+p_{b,d}
+-
+p_{b,d}^{eq}
 \right)
 $$
 
 dove:
-- $n_v$ = numero di vacanze nella bolla
+- $n_{b,d}$ = vacanze associate a bolle bulk/dislocation
 - $D_v$ = diffusività delle vacanze
-- $d$ = raggio della cella di Wigner-Seitz associata alla bolla
-- $\zeta$ = fattore geometrico
-- $p-p_{eq}$ = sovrapressione della bolla
+- $\delta_{b,d}$ = raggio della cella di Wigner-Seitz
+- $\zeta_{b,d}$ = fattore geometrico
+- $p_{b,d}-p_{b,d}^{eq}$ = sovrapressione della bolla
 
-Per le bolle su dislocazioni:
-
-$$
-d =
-\frac{1}{\sqrt{\pi N_d/\rho_d}}
-$$
-
-oppure, in forma equivalente, se $K=N_d/\rho_d$:
+La cella di Wigner-Seitz associata alla popolazione di bolle è:
 
 $$
-d =
-\frac{1}{\sqrt{\pi K}}
+\delta_{b,d}
+=
+\left(
+\frac{3}{4\pi N_{b,d}}
+\right)^{1/3}
 $$
 
 Il fattore geometrico è:
 
 $$
-\zeta =
-10\xi
+\zeta_{b,d}
+=
 \frac{
-1+\xi^3
+10 \psi_{b,d}
+\left(
+1+\psi_{b,d}^3
+\right)
 }{
--\xi^6 + 5\xi^2 - 9\xi + 5
+-\psi_{b,d}^6
++
+5\psi_{b,d}^2
+-
+9\psi_{b,d}
++
+5
 }
 $$
 
 con:
 
 $$
-\xi = \frac{R_d}{d}
+\psi_{b,d} =
+\frac{R_{b,d}}{\delta_{b,d}}
 $$
 
 Nota: questa parte è importante per descrivere il breakaway swelling, ma nel tuo stato attuale sembra non ancora implementata completamente in SCIANTIX-UN.
 
----
+## Copertura delle dislocazioni da parte delle bolle
+
+La frazione di dislocazioni occupata dalle bolle è:
+
+$$
+\kappa
+=
+\frac{2R_d N_d}{\rho_d}
+$$
+
+Questo termine è coerente con la parte libera della dislocazione usata nel trapping:
+
+$$
+\rho_d - 2R_d N_d
+$$
+
+## Loop punching / emissione di dislocazioni
+
+La pressione soglia per il loop punching è:
+
+$$
+P_{dis}
+=
+\frac{G b}{R}
++
+p^{eq}
+$$
+
+dove:
+
+$$
+G =
+\frac{E}{2(1+\nu)}
+$$
+
+e:
+- $G$ = modulo di taglio
+- $E$ = modulo di Young
+- $\nu$ = coefficiente di Poisson
+- $b$ = modulo del vettore di Burgers
+- $R$ = raggio bolla
 
 ## Bolle ai bordi di grano
 
@@ -661,8 +828,6 @@ $$
 
 Quando la copertura raggiunge la saturazione, il gas che arriva successivamente ai bordi di grano può essere considerato rilasciato.
 
----
-
 ## Fission gas release
 
 Il gas rilasciato può essere modellato come il gas che arriva alle bolle intergranulari dopo il raggiungimento della copertura critica:
@@ -686,8 +851,6 @@ $$
 dove $\dot{q}_{gb}$ è il flusso/rate di gas che raggiunge il bordo di grano.
 
 Nel modello SCIANTIX-UN attuale, questa parte può essere lasciata come estensione futura se il rilascio intergranulare non è ancora accoppiato.
-
----
 
 ## Note implementative importanti
 
@@ -728,17 +891,27 @@ g_d c
 b_d m_d
 $$
 
-3. Le equazioni mancanti da aggiungere al modello sono quindi soprattutto:
+3. Le equazioni aggiunte rispetto al modello minimo sono:
    - evoluzione $N_b$
-   - definizione $N_d = K\rho_d$
-   - calcolo $R_b$, $R_d$
-   - swelling bulk/dislocation
-   - eventuale crescita tramite vacanze
-   - eventuale popolazione intergranulare e FGR
+   - evoluzione completa $N_d$ con termine di coalescenza
+   - evoluzione $V_b$, $V_d$
+   - evoluzione delle vacanze $n_b$, $n_d$
+   - pressione interna bolla
+   - pressione di equilibrio
+   - fattore geometrico $\zeta$
+   - copertura dislocazioni $\kappa$
+   - pressione soglia per loop punching
 
-4. Per ora, se si vuole rimanere coerenti con l’implementazione minima:
+4. Per una prima implementazione numerica minimale:
    - usare $N_d$ costante
    - usare $N_b$ evolutivo
-   - calcolare $R_b$ e $R_d$ da $m_i/N_i$
+   - calcolare $R_b$ e $R_d$ da $m_i'/N_i$ solo se non si implementa ancora $V_i$
    - calcolare swelling intragranulare come somma bulk + dislocation
    - lasciare grain-boundary bubbles/FGR come TODO
+
+5. Per una implementazione completa Rizk:
+   - risolvere anche $N_d$
+   - risolvere anche $V_b$ e $V_d$
+   - risolvere anche $n_b$ e $n_d$
+   - aggiornare $R_b$ e $R_d$ da $V_b$ e $V_d$
+   - usare $p-p^{eq}$ per la crescita vacancy-driven
