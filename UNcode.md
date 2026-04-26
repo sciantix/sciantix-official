@@ -261,7 +261,7 @@ quelle che poi vengono salvate nelle variabili Sciantix e usate dagli altri mode
 
 ---
 
-# Approfondimento — Metodo Spettrale e Significato dei Modi 
+# Approfondimento — Metodo Spettrale e Significato dei Modi (versione corretta)
 
 Questa sezione chiarisce il significato matematico e fisico della decomposizione spettrale usata nel solver UN a 3 equazioni, in coerenza con l’implementazione SCIANTIX.
 
@@ -284,7 +284,7 @@ dove:
   $$
 - con:
   $$
-  \lambda_n = \frac{\pi^2 n^2}{R^2}
+  \lambda_n = \left(\frac{n\pi}{R}\right)^2
   $$
 
 Questa formulazione deriva dall’approccio classico di **Booth** per la diffusione intragranulare in una sfera, in cui la soluzione viene espressa come serie di modi radiali.
@@ -323,7 +323,8 @@ Ogni modo evolve **indipendentemente dagli altri** una volta effettuata la proie
 
 - **Modo n = 1**
   - rappresenta la componente a più bassa frequenza spaziale
-  - contribuisce in modo dominante al comportamento macroscopico
+  - contribuisce in modo dominante alla media volumetrica
+  - ma **non coincide esattamente con la media**
 
 - **Modi n > 1**
   - rappresentano variazioni radiali più rapide nel grano
@@ -357,7 +358,13 @@ $$
 S_n = \int_V \beta\,\phi_n(r)\, dV
 $$
 
-Poiché $ \beta $ è uniforme, la funzione costante viene rappresentata come serie spettrale:
+Poiché $ \beta $ è costante:
+
+$$
+S_n = \beta \int_V \phi_n(r)\, dV
+$$
+
+La funzione uniforme viene quindi rappresentata come serie spettrale:
 
 $$
 \beta = \sum_{n=1}^{N} S_n \phi_n(r)
@@ -367,7 +374,7 @@ $$
 
 ### Forma implementata nel codice
 
-Nel solver SCIANTIX, questa proiezione è implementata implicitamente come:
+Nel solver SCIANTIX, questa proiezione non è calcolata tramite integrazione numerica esplicita, ma è implementata direttamente tramite coefficienti analitici equivalenti derivati dalla base spettrale:
 
 $$
 S_n = p\,a_n\,\beta
@@ -496,7 +503,7 @@ $$
 w_n = \frac{p\,a_n}{(4/3)\pi}
 $$
 
-ovvero gli stessi coefficienti usati nella proiezione.
+dove i pesi $w_n$ derivano dalla media volumetrica delle autofunzioni $\phi_n$ nel grano sferico.
 
 ---
 
@@ -523,3 +530,17 @@ Pertanto, una sorgente costante non corrisponde a un singolo modo, ma a una comb
 $$
 S_n \propto \frac{(-1)^n}{n}
 $$
+
+---
+
+## 11. Collegamento con la soluzione analitica (Pastore / Booth)
+
+Nel caso di coefficienti costanti, il sistema modale può essere risolto analiticamente. Ogni modo evolve come combinazione di esponenziali:
+
+$$
+c_n(t) = A_n e^{-p_n t} + B_n e^{-q_n t} + C_n
+$$
+
+dove $p_n$ e $q_n$ sono gli autovalori del sistema accoppiato diffusione–trapping–resolution.
+
+Nel solver SCIANTIX, questi autovalori non sono calcolati esplicitamente, ma il comportamento dinamico equivalente è ottenuto tramite integrazione numerica implicita.
