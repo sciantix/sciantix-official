@@ -123,7 +123,7 @@ dove:
 
 ## Evoluzione della concentrazione di bolle bulk
 
-La concentrazione numerica delle bolle bulk, \(N_b\), evolve secondo:
+La concentrazione numerica delle bolle bulk, $N_b$, evolve secondo:
 
 $$
 \frac{\partial N_b}{\partial t} = \nu_b - b_b \phi_b N_b
@@ -143,7 +143,7 @@ $$
 
 è il numero medio di atomi di gas per bolla bulk.
 
-Il termine \(\phi_b\) corregge il fatto che la re-solution rimuove singoli atomi, mentre per distruggere una bolla servono più eventi di re-solution.
+Il termine $\phi_b$ corregge il fatto che la re-solution rimuove singoli atomi, mentre per distruggere una bolla servono più eventi di re-solution.
 
 ---
 
@@ -158,7 +158,7 @@ $$
 con:
 
 $$
-K = 5.0 \times 10^5 \ \mathrm{bubble \ m^{-1}}
+K = 5.0 \times 10^5 \ \mathrm{bubble\,m^{-1}}
 $$
 
 $$
@@ -168,10 +168,10 @@ $$
 quindi:
 
 $$
-N_d(0) = K \rho_d = 1.5 \times 10^{19} \ \mathrm{bubble \ m^{-3}}
+N_d(0) = K \rho_d = 1.5 \times 10^{19} \ \mathrm{bubble\,m^{-3}}
 $$
 
-Se si volesse modellare l’evoluzione dinamica di \(N_d\) tramite evoluzione della densità di dislocazioni:
+Se si volesse modellare l’evoluzione dinamica di $N_d$ tramite evoluzione della densità di dislocazioni:
 
 $$
 \frac{\partial N_d}{\partial t}
@@ -180,7 +180,7 @@ $$
 \frac{\partial \rho_d}{\partial t}
 $$
 
-Nel caso implementato in SCIANTIX-UN, però, si assume \(\rho_d\) costante, quindi normalmente:
+Nel caso implementato in SCIANTIX-UN, però, si assume $\rho_d$ costante, quindi normalmente:
 
 $$
 \frac{\partial \rho_d}{\partial t}=0
@@ -211,10 +211,10 @@ n_d = \frac{m_d}{N_d}
 $$
 
 dove:
-- \(m_b\) = concentrazione di gas nelle bolle bulk \([\mathrm{at/m^3}]\)
-- \(m_d\) = concentrazione di gas nelle bolle su dislocazioni \([\mathrm{at/m^3}]\)
-- \(N_b\) = concentrazione numerica bolle bulk \([\mathrm{bub/m^3}]\)
-- \(N_d\) = concentrazione numerica bolle su dislocazioni \([\mathrm{bub/m^3}]\)
+- $m_b$ = concentrazione di gas nelle bolle bulk $[\mathrm{at/m^3}]$
+- $m_d$ = concentrazione di gas nelle bolle su dislocazioni $[\mathrm{at/m^3}]$
+- $N_b$ = concentrazione numerica bolle bulk $[\mathrm{bub/m^3}]$
+- $N_d$ = concentrazione numerica bolle su dislocazioni $[\mathrm{bub/m^3}]$
 
 ---
 
@@ -226,7 +226,7 @@ $$
 V_i = \frac{4}{3}\pi R_i^3
 $$
 
-con \(i=b,d\).
+con $i=b,d$.
 
 Il raggio si può calcolare dalla relazione:
 
@@ -346,9 +346,9 @@ $$
 0.5 B
 $$
 
-dove \(B\) è il burnup espresso in FIMA.
+dove $B$ è il burnup espresso in FIMA.
 
-Se \(B\) è espresso in percento FIMA, la forma equivalente è:
+Se $B$ è espresso in percento FIMA, la forma equivalente è:
 
 $$
 \left(\frac{\Delta V}{V}\right)_{solid}
@@ -356,7 +356,7 @@ $$
 0.005 B_{\%FIMA}
 $$
 
-Questa correlazione rappresenta circa \(0.5\%\) di swelling per ogni \(1\%\) FIMA.
+Questa correlazione rappresenta circa $0.5\%$ di swelling per ogni $1\%$ FIMA.
 
 ---
 
@@ -375,9 +375,9 @@ $$
 $$
 
 dove:
-- \((\Delta V/V)_{solid}\) = swelling da prodotti solidi
-- \((\Delta V/V)_{ig}\) = swelling gassoso intragranulare
-- \((\Delta V/V)_{gf}\) = swelling da bolle ai bordi di grano
+- $(\Delta V/V)_{solid}$ = swelling da prodotti solidi
+- $(\Delta V/V)_{ig}$ = swelling gassoso intragranulare
+- $(\Delta V/V)_{gf}$ = swelling da bolle ai bordi di grano
 
 Nel modello SCIANTIX-UN attuale, se le bolle intergranulari non sono ancora implementate, si può porre temporaneamente:
 
@@ -391,32 +391,32 @@ $$
 
 | Simbolo | Valore | Unità | Significato |
 |---|---:|---|---|
-| \(D_{10}^{Xe}\) | \(1.56 \times 10^{-3}\) | \(\mathrm{m^2/s}\) | prefattore diffusione termica Xe |
-| \(Q_1^{Xe}\) | \(4.94\) | eV | energia attivazione Xe |
-| \(A_3^{Xe}\) | \(1.85 \times 10^{-39}\) | \(\mathrm{m^5}\) | coefficiente mixing irradiation-induced |
-| \(D_{10}^{V_U}\) | \(1.35 \times 10^{-2}\) | \(\mathrm{m^2/s}\) | prefattore diffusione termica vacanze U |
-| \(Q_1^{V_U}\) | \(5.66\) | eV | energia attivazione vacanze U |
-| \(A_{20}^{V_U}\) | \(1.32 \times 10^{-19}\) | \(\mathrm{m^{7/2}/s^{1/2}}\) | coefficiente irradiation-enhanced vacanze |
-| \(B_{21}^{V_U}\) | \(-0.62\) | eV | parametro fit \(D_2\) vacanze |
-| \(B_{22}^{V_U}\) | \(-0.04\) | \(\mathrm{eV^2}\) | parametro fit \(D_2\) vacanze |
-| \(\Omega_{fg}\) | \(8.5 \times 10^{-29}\) | \(\mathrm{m^3}\) | volume atomico gas fissione |
-| \(f_n\) | \(10^{-6}\) | / | fattore nucleazione omogenea |
-| \(a\) | \(4.889 \times 10^{-10}\) | m | parametro reticolare UN |
-| \(\Omega\) | \(a^3/4\) | \(\mathrm{m^3}\) | volume atomico matrice UN |
-| \(\gamma\) | \(1.11\) | \(\mathrm{J/m^2}\) | energia superficiale UN-bolla |
-| \(D_v^{gb}\) | \(10^6 D_1^U\) | \(\mathrm{m^2/s}\) | diffusività vacanze al bordo grano |
-| \(\delta_{gb}\) | \(4.0 \times 10^{-10}\) | m | spessore layer diffusivo bordo grano |
-| \(N_{gf,0}\) | \(2.0 \times 10^{13}\) | \(\mathrm{bub/m^2}\) | densità iniziale bolle grain-face |
-| \(\theta\) | \(59^\circ\) | gradi | semi-angolo diedro |
-| \(R_{gf}\) | \(2.42 \times 10^{-10}\) | m | raggio iniziale grain-face |
-| \(r_{gr}\) | \(6.0 \times 10^{-6}\) | m | raggio grano |
-| \(F_{c,sat}\) | \(0.5\) | / | copertura grain-face a saturazione |
-| \(K\) | \(5.0 \times 10^5\) | \(\mathrm{bubble/m}\) | bolle per lunghezza di dislocazione |
-| \(r_d\) | \(a/\sqrt{2}\) | m | raggio/core dislocazione |
-| \(r_d\) | \(3.46 \times 10^{-10}\) | m | valore numerico |
-| \(\rho_d\) | \(3.0 \times 10^{13}\) | \(\mathrm{m^{-2}}\) | densità di dislocazioni |
-| \(Z_d\) | \(5.0\) | / | trapping radius factor dislocazioni |
-| \(k_B\) | \(8.617333262 \times 10^{-5}\) | eV/K | costante di Boltzmann |
+| $D_{10}^{Xe}$ | $1.56 \times 10^{-3}$ | $\mathrm{m^2\,s^{-1}}$ | prefattore diffusione termica Xe |
+| $Q_1^{Xe}$ | $4.94$ | $\mathrm{eV}$ | energia attivazione Xe |
+| $A_3^{Xe}$ | $1.85 \times 10^{-39}$ | $\mathrm{m^5}$ | coefficiente mixing irradiation-induced |
+| $D_{10}^{V_U}$ | $1.35 \times 10^{-2}$ | $\mathrm{m^2\,s^{-1}}$ | prefattore diffusione termica vacanze U |
+| $Q_1^{V_U}$ | $5.66$ | $\mathrm{eV}$ | energia attivazione vacanze U |
+| $A_{20}^{V_U}$ | $1.32 \times 10^{-19}$ | $\mathrm{m^{7/2}\,s^{-1/2}}$ | coefficiente irradiation-enhanced vacanze |
+| $B_{21}^{V_U}$ | $-0.62$ | $\mathrm{eV}$ | parametro fit $D_2$ vacanze |
+| $B_{22}^{V_U}$ | $-0.04$ | $\mathrm{eV^2}$ | parametro fit $D_2$ vacanze |
+| $\Omega_{fg}$ | $8.5 \times 10^{-29}$ | $\mathrm{m^3}$ | volume atomico gas fissione |
+| $f_n$ | $10^{-6}$ | $-$ | fattore nucleazione omogenea |
+| $a$ | $4.889 \times 10^{-10}$ | $\mathrm{m}$ | parametro reticolare UN |
+| $\Omega$ | $a^3/4$ | $\mathrm{m^3}$ | volume atomico matrice UN |
+| $\gamma$ | $1.11$ | $\mathrm{J\,m^{-2}}$ | energia superficiale UN-bolla |
+| $D_v^{gb}$ | $10^6 D_1^U$ | $\mathrm{m^2\,s^{-1}}$ | diffusività vacanze al bordo grano |
+| $\delta_{gb}$ | $4.0 \times 10^{-10}$ | $\mathrm{m}$ | spessore layer diffusivo bordo grano |
+| $N_{gf,0}$ | $2.0 \times 10^{13}$ | $\mathrm{bub\,m^{-2}}$ | densità iniziale bolle grain-face |
+| $\theta$ | $59^\circ$ | $\mathrm{gradi}$ | semi-angolo diedro |
+| $R_{gf}$ | $2.42 \times 10^{-10}$ | $\mathrm{m}$ | raggio iniziale grain-face |
+| $r_{gr}$ | $6.0 \times 10^{-6}$ | $\mathrm{m}$ | raggio grano |
+| $F_{c,sat}$ | $0.5$ | $-$ | copertura grain-face a saturazione |
+| $K$ | $5.0 \times 10^5$ | $\mathrm{bubble\,m^{-1}}$ | bolle per lunghezza di dislocazione |
+| $r_d$ | $a/\sqrt{2}$ | $\mathrm{m}$ | raggio/core dislocazione |
+| $r_d$ | $3.46 \times 10^{-10}$ | $\mathrm{m}$ | valore numerico |
+| $\rho_d$ | $3.0 \times 10^{13}$ | $\mathrm{m^{-2}}$ | densità di dislocazioni |
+| $Z_d$ | $5.0$ | $-$ | trapping radius factor dislocazioni |
+| $k_B$ | $8.617333262 \times 10^{-5}$ | $\mathrm{eV\,K^{-1}}$ | costante di Boltzmann |
 
 ---
 
@@ -455,7 +455,7 @@ D_2^{V_U}
 \right]
 $$
 
-Per le vacanze non si usa il termine \(D_3\), perché \(D_3\) rappresenta il mixing balistico usato per Xe.
+Per le vacanze non si usa il termine $D_3$, perché $D_3$ rappresenta il mixing balistico usato per Xe.
 
 ---
 
@@ -467,7 +467,7 @@ $$
 D_v^{gb} = 10^6 D_1^U
 $$
 
-dove \(D_1^U\) è la diffusività termica dei difetti di Uranio.
+dove $D_1^U$ è la diffusività termica dei difetti di Uranio.
 
 ---
 
@@ -482,12 +482,12 @@ $$
 $$
 
 dove:
-- \(p\) = pressione interna della bolla
-- \(V\) = volume della bolla
-- \(n\) = numero di atomi nella bolla
-- \(T\) = temperatura
-- \(k_B\) = costante di Boltzmann
-- \(\eta\) = packing fraction
+- $p$ = pressione interna della bolla
+- $V$ = volume della bolla
+- $n$ = numero di atomi nella bolla
+- $T$ = temperatura
+- $k_B$ = costante di Boltzmann
+- $\eta$ = packing fraction
 
 La packing fraction è:
 
@@ -524,9 +524,9 @@ p_{eq}
 $$
 
 dove:
-- \(\gamma = 1.11 \ \mathrm{J/m^2}\)
-- \(R\) = raggio bolla
-- \(\sigma_h\) = stress idrostatico
+- $\gamma = 1.11 \ \mathrm{J\,m^{-2}}$
+- $R$ = raggio bolla
+- $\sigma_h$ = stress idrostatico
 
 Se lo stress idrostatico non è disponibile nel modello 0D:
 
@@ -564,11 +564,11 @@ p - p_{eq}
 $$
 
 dove:
-- \(n_v\) = numero di vacanze nella bolla
-- \(D_v\) = diffusività delle vacanze
-- \(d\) = raggio della cella di Wigner-Seitz associata alla bolla
-- \(\zeta\) = fattore geometrico
-- \(p-p_{eq}\) = sovrapressione della bolla
+- $n_v$ = numero di vacanze nella bolla
+- $D_v$ = diffusività delle vacanze
+- $d$ = raggio della cella di Wigner-Seitz associata alla bolla
+- $\zeta$ = fattore geometrico
+- $p-p_{eq}$ = sovrapressione della bolla
 
 Per le bolle su dislocazioni:
 
@@ -577,7 +577,7 @@ d =
 \frac{1}{\sqrt{\pi N_d/\rho_d}}
 $$
 
-oppure, in forma equivalente, se \(K=N_d/\rho_d\):
+oppure, in forma equivalente, se $K=N_d/\rho_d$:
 
 $$
 d =
@@ -613,7 +613,7 @@ Rizk include anche una popolazione intergranulare, indicata come grain-face bubb
 La densità iniziale è:
 
 $$
-N_{gf,0} = 2.0 \times 10^{13} \ \mathrm{bub/m^2}
+N_{gf,0} = 2.0 \times 10^{13} \ \mathrm{bub\,m^{-2}}
 $$
 
 La copertura frazionaria delle facce di grano è:
@@ -622,7 +622,7 @@ $$
 F_c = N_{gf} A_{gf}
 $$
 
-dove \(A_{gf}\) è l’area proiettata media di una bolla sul bordo di grano.
+dove $A_{gf}$ è l’area proiettata media di una bolla sul bordo di grano.
 
 Per bolle lenticolari:
 
@@ -683,7 +683,7 @@ $$
 \dot{R}_{FG} = \dot{q}_{gb}
 $$
 
-dove \(\dot{q}_{gb}\) è il flusso/rate di gas che raggiunge il bordo di grano.
+dove $\dot{q}_{gb}$ è il flusso/rate di gas che raggiunge il bordo di grano.
 
 Nel modello SCIANTIX-UN attuale, questa parte può essere lasciata come estensione futura se il rilascio intergranulare non è ancora accoppiato.
 
@@ -692,9 +692,9 @@ Nel modello SCIANTIX-UN attuale, questa parte può essere lasciata come estensio
 ## Note implementative importanti
 
 1. Nel modello attuale SCIANTIX-UN sono già presenti tre concentrazioni:
-   - \(c\): gas in soluzione
-   - \(m_b\): gas in bolle bulk
-   - \(m_d\): gas in bolle su dislocazioni
+   - $c$: gas in soluzione
+   - $m_b$: gas in bolle bulk
+   - $m_d$: gas in bolle su dislocazioni
 
 2. Il sistema diffusivo a 3 equazioni è:
 
@@ -729,16 +729,16 @@ b_d m_d
 $$
 
 3. Le equazioni mancanti da aggiungere al modello sono quindi soprattutto:
-   - evoluzione \(N_b\)
-   - definizione \(N_d = K\rho_d\)
-   - calcolo \(R_b\), \(R_d\)
+   - evoluzione $N_b$
+   - definizione $N_d = K\rho_d$
+   - calcolo $R_b$, $R_d$
    - swelling bulk/dislocation
    - eventuale crescita tramite vacanze
    - eventuale popolazione intergranulare e FGR
 
 4. Per ora, se si vuole rimanere coerenti con l’implementazione minima:
-   - usare \(N_d\) costante
-   - usare \(N_b\) evolutivo
-   - calcolare \(R_b\) e \(R_d\) da \(m_i/N_i\)
+   - usare $N_d$ costante
+   - usare $N_b$ evolutivo
+   - calcolare $R_b$ e $R_d$ da $m_i/N_i$
    - calcolare swelling intragranulare come somma bulk + dislocation
    - lasciare grain-boundary bubbles/FGR come TODO
