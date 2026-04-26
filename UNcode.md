@@ -259,3 +259,267 @@ quelle che poi vengono salvate nelle variabili Sciantix e usate dagli altri mode
 
 ---
 
+---
+
+# Approfondimento — Metodo Spettrale e Significato dei Modi 
+
+Questa sezione chiarisce il significato matematico e fisico della decomposizione spettrale usata nel solver UN a 3 equazioni, in coerenza con l’implementazione SCIANTIX.
+
+---
+
+## 1. Espansione spettrale
+
+La concentrazione del gas in soluzione è rappresentata come:
+
+$$
+c(r,t) = \sum_{n=1}^{N} c_n(t)\,\phi_n(r)
+$$
+
+dove:
+
+- $ \phi_n(r) $ sono autofunzioni del Laplaciano nel grano sferico
+- soddisfano:
+  $$
+  \nabla^2 \phi_n = -\lambda_n \phi_n
+  $$
+- con:
+  $$
+  \lambda_n = \frac{\pi^2 n^2}{R^2}
+  $$
+
+Questa formulazione deriva dall’approccio classico di **Booth** per la diffusione intragranulare in una sfera, in cui la soluzione viene espressa come serie di modi radiali.
+
+Espansioni analoghe valgono per:
+
+$$
+m_b(r,t), \quad m_d(r,t)
+$$
+
+---
+
+## 2. Da PDE a ODE
+
+Sostituendo l’espansione nella PDE e proiettando sulle autofunzioni:
+
+$$
+\int_V \phi_n \phi_m \, dV = 0 \quad (n \neq m)
+$$
+
+si ottiene, per ogni modo $ n $, il sistema:
+
+$$
+\begin{cases}
+\frac{dc_n}{dt} = -D_g \lambda_n c_n - (g_b + g_d)c_n + b_b m_{b,n} + b_d m_{d,n} + S_n \\
+\frac{dm_{b,n}}{dt} = g_b c_n - b_b m_{b,n} \\
+\frac{dm_{d,n}}{dt} = g_d c_n - b_d m_{d,n}
+\end{cases}
+$$
+
+Ogni modo evolve **indipendentemente dagli altri** una volta effettuata la proiezione.
+
+---
+
+## 3. Significato dei modi
+
+- **Modo n = 1**
+  - rappresenta la componente a più bassa frequenza spaziale
+  - contribuisce in modo dominante al comportamento macroscopico
+
+- **Modi n > 1**
+  - rappresentano variazioni radiali più rapide nel grano
+  - decadono rapidamente per diffusione:
+    $$
+    \lambda_n \propto n^2
+    $$
+
+> Nota: nella base spettrale di tipo Booth, nessun modo coincide esattamente con una funzione costante. La decomposizione non separa direttamente media e fluttuazioni.
+
+---
+
+## 4. Termine sorgente β (produzione da fissione)
+
+### Definizione
+
+$$
+\beta = \dot{F} \cdot Y_{Xe}
+$$
+
+- funzione del tempo
+- assunta **uniforme nello spazio**
+
+---
+
+## 5. Proiezione della sorgente (forma esplicita in SCIANTIX)
+
+Nel formalismo continuo, la proiezione è:
+
+$$
+S_n = \int_V \beta\,\phi_n(r)\, dV
+$$
+
+Poiché $ \beta $ è uniforme, la funzione costante viene rappresentata come serie spettrale:
+
+$$
+\beta = \sum_{n=1}^{N} S_n \phi_n(r)
+$$
+
+---
+
+### Forma implementata nel codice
+
+Nel solver SCIANTIX, questa proiezione è implementata implicitamente come:
+
+$$
+S_n = p\,a_n\,\beta
+$$
+
+con:
+
+$$
+p = -2\sqrt{\frac{2}{\pi}}, \qquad a_n = \frac{(-1)^n}{n}
+$$
+
+ovvero:
+
+$$
+S_n = -2\sqrt{\frac{2}{\pi}} \cdot \frac{(-1)^n}{n} \cdot \beta
+$$
+
+---
+
+### Proprietà dei coefficienti
+
+- tutti i modi sono eccitati:
+  $$
+  S_n \neq 0 \quad \forall n=1,\dots,N
+  $$
+
+- ampiezza decrescente:
+  $$
+  S_n \sim \frac{1}{n}
+  $$
+
+- segno alternato:
+  $$
+  (-1)^n
+  $$
+
+---
+
+### Correzione rispetto all’assunzione semplificata
+
+Non vale:
+
+$$
+\beta_n =
+\begin{cases}
+\neq 0 & n = 1 \\
+0 & n > 1
+\end{cases}
+$$
+
+Questa proprietà sarebbe valida solo per basi che includono esplicitamente la funzione costante come primo modo, cosa che **non avviene nella base radiale usata (Booth / SCIANTIX)**.
+
+---
+
+### Interpretazione fisica corretta
+
+- la produzione di gas è uniforme
+- la base spettrale non contiene una componente costante pura
+- quindi una funzione costante viene rappresentata come somma di modi:
+
+$$
+\beta = \sum_n S_n \phi_n(r)
+$$
+
+➡️ la sorgente alimenta **tutti i modi**, non solo il primo
+
+---
+
+## 6. Implementazione nel solver
+
+Nel solver:
+
+- β è passato come termine scalare
+- viene distribuito sui modi tramite i coefficienti $S_n$
+
+Per ogni modo si risolve:
+
+$$
+\dot{x}_n = A_n x_n + S_n
+$$
+
+con:
+
+$$
+x_n =
+\begin{bmatrix}
+c_n \\
+m_{b,n} \\
+m_{d,n}
+\end{bmatrix}
+$$
+
+---
+
+## 7. Risoluzione numerica
+
+Il sistema è risolto con schema implicito (Backward Euler):
+
+$$
+(I - \Delta t A_n)\, x_n^{k+1} = x_n^k + \Delta t S_n
+$$
+
+Caratteristiche:
+
+- schema implicito
+- A-stable
+- sistema lineare 3×3 per ogni modo
+
+---
+
+## 8. Ricostruzione delle variabili medie
+
+Le quantità macroscopiche sono:
+
+$$
+c = \sum_{n=1}^{N} w_n c_n,
+\quad
+m_b = \sum_{n=1}^{N} w_n m_{b,n},
+\quad
+m_d = \sum_{n=1}^{N} w_n m_{d,n}
+$$
+
+con:
+
+$$
+w_n = \frac{p\,a_n}{(4/3)\pi}
+$$
+
+ovvero gli stessi coefficienti usati nella proiezione.
+
+---
+
+## 9. Conseguenze pratiche
+
+- la sorgente alimenta **tutti i modi**
+- i modi alti:
+  - sono debolmente eccitati ($\sim 1/n$)
+  - decadono rapidamente ($\sim n^2$)
+- il comportamento globale è dominato dai primi modi, ma non esclusivamente
+
+---
+
+## 10. Sintesi concettuale
+
+Il metodo spettrale usato in SCIANTIX:
+
+- rappresenta il campo tramite modi radiali (tipo Booth)
+- non separa esplicitamente media e fluttuazioni
+- distribuisce una sorgente uniforme su tutta la base
+
+Pertanto, una sorgente costante non corrisponde a un singolo modo, ma a una combinazione di modi con coefficienti:
+
+$$
+S_n \propto \frac{(-1)^n}{n}
+$$
