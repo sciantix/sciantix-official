@@ -116,8 +116,8 @@ Le variabili principali sono:
 - $N_d$: concentrazione bolle su dislocazioni (bub/m³)
 - $V_b$: volume medio bolla bulk (m³/bub)
 - $V_d$: volume medio bolla su dislocazione (m³/bub)
-- $n_b$: numero medio di vacanze per bolla bulk
-- $n_d$: numero medio di vacanze per bolla su dislocazione
+- $n_b$: concentrazione volumetrica di vacanze associate alle bolle bulk (vac/m³)
+- $n_d$: concentrazione volumetrica di vacanze associate alle bolle su dislocazioni (vac/m³)
 
 ### Equazione per gas in soluzione
 
@@ -237,7 +237,6 @@ $$
 N_d(0) = K \rho_d = 1.5 \times 10^{19} \ \mathrm{bubble\,m^{-3}}
 $$
 
-
 Se si assume densità di dislocazioni costante:
 
 $$
@@ -278,7 +277,7 @@ dove:
 - $\Omega_{fg}$ = volume atomico del gas di fissione;
 - $\Omega$ = volume atomico della matrice UN;
 - $m_{b,d}$ = concentrazione di gas nelle bolle;
-- $n_{b,d}$ = concentrazione di vacanze associata alle bolle;
+- $n_{b,d}$ = concentrazione volumetrica di vacanze associata alle bolle;
 - $N_{b,d}$ = concentrazione numerica delle bolle.
 
 Scritta separatamente:
@@ -303,10 +302,9 @@ $$
 \frac{\partial n_d}{\partial t}
 $$
 
-
 ### Evoluzione delle vacanze nelle bolle
 
-L’evoluzione del numero di vacanze associato alle bolle è:
+L’evoluzione della concentrazione volumetrica di vacanze associata alle bolle è:
 
 $$
 \frac{\partial n_{b,d}}{\partial t}
@@ -347,6 +345,7 @@ p_d^{eq}
 $$
 
 dove:
+- $n_{b,d}$ = concentrazione volumetrica di vacanze associate alle bolle $[\mathrm{vac/m^3}]$
 - $D_v$ = diffusività delle vacanze (m²/s)
 - $\delta_{b,d}$ = raggio della cella di Wigner-Seitz associata alla popolazione di bolle
 - $\zeta_{b,d}$ = fattore geometrico
@@ -685,7 +684,7 @@ p_{b,d}^{eq}
 $$
 
 dove:
-- $n_{b,d}$ = vacanze associate a bolle bulk/dislocation
+- $n_{b,d}$ = concentrazione volumetrica di vacanze associate a bolle bulk/dislocation
 - $D_v$ = diffusività delle vacanze
 - $\delta_{b,d}$ = raggio della cella di Wigner-Seitz
 - $\zeta_{b,d}$ = fattore geometrico
@@ -905,7 +904,30 @@ $$
 4. Per una prima implementazione numerica minimale:
    - usare $N_d$ costante
    - usare $N_b$ evolutivo
-   - calcolare $R_b$ e $R_d$ da $m_i'/N_i$ solo se non si implementa ancora $V_i$
+   - calcolare il numero medio di atomi di gas per bolla come:
+
+$$
+m_i' = \frac{m_i}{N_i}
+$$
+
+   - calcolare $R_b$ e $R_d$ da:
+
+$$
+R_i =
+\left(
+\frac{3 m_i' \Omega_{fg}}{4\pi}
+\right)^{1/3}
+$$
+
+   oppure, in forma equivalente, direttamente da $m_i$ e $N_i$:
+
+$$
+R_i =
+\left(
+\frac{3 m_i \Omega_{fg}}{4\pi N_i}
+\right)^{1/3}
+$$
+
    - calcolare swelling intragranulare come somma bulk + dislocation
    - lasciare grain-boundary bubbles/FGR come TODO
 
