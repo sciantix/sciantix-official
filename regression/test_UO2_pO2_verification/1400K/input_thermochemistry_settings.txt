@@ -1,0 +1,13 @@
+# Thermochemistry settings
+opencalphad.path = /home/ecappellari/transparant/opencalphad/
+kc = false
+langmuir = false
+
+fission_products.module = NO
+fission_products.gap_settings = false
+
+matrix.module = OPENCALPHAD
+matrix.database = OU
+matrix.elements = U, O
+matrix.locations = matrix
+matrix.gap_settings = false
