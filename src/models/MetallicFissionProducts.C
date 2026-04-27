@@ -18,15 +18,14 @@
 
 void Simulation::MetallicFissionProducts()
 {
-   
-    // Se iCm = 0 nel file di input, il modello è disattivato 
+    // Se iCm = 0 nel file di input, il modello è disattivato
     if (!input_variable["iCm"].getValue())
         return;
-    
+
     // Fission yield per prodotti metallici di fissione, assunta come costante
     // Da cambiare e verificare tramite fonte bibliografica)
     const double y = 0.25;
- 
+
     // Fission rate al passo attuale (fiss/m3/s)
     // Già letto automaticamente dal file di input ad ogni passo
     double fission_rate = history_variable["Fission rate"].getFinalValue();
@@ -34,7 +33,7 @@ void Simulation::MetallicFissionProducts()
     // Passo temporale (s)
     double dt = physics_variable["Time step"].getFinalValue();
 
-    // Equazione fisica 
+    // Equazione fisica
     // dCm/dt = y * F  discretizzata su Δt:
     // Cm(t+dt) = Cm(t) + y * F * dt
     double produzione = y * fission_rate * dt;

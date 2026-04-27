@@ -55,8 +55,7 @@ std::vector<std::string> getInputVariableNames()
                                       "iDensification",
                                       "iReleaseMode",
                                       "iFMP",
-                                      "iCm"
-                                    };
+                                      "iCm"};
 
     return names;
 }
@@ -116,7 +115,6 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toFMP,
                                                          bool   toOutputCm)
 
-                                            
 {
     std::vector<SciantixVariable> init_sciantix_variable = {
         SciantixVariable("Grain radius", "(m)", Sciantix_variables[0], Sciantix_variables[0], 1),
