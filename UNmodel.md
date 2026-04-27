@@ -937,3 +937,482 @@ $$
    - risolvere anche $n_b$ e $n_d$
    - aggiornare $R_b$ e $R_d$ da $V_b$ e $V_d$
    - usare $p-p^{eq}$ per la crescita vacancy-driven
+
+   ---
+
+## Struttura globale del modello: intragranular → grain face → gas release
+
+L’obiettivo del modello è calcolare il trasporto del gas dalla matrice intragranulare verso i bordi di grano, la crescita delle bolle intergranulari e, quando viene raggiunta la saturazione della copertura di grain-face bubbles, il fission gas release.
+
+La struttura è:
+
+$$
+\text{intragranular}
+\rightarrow
+\dot{q}_{gb}
+\rightarrow
+\text{grain-face bubbles}
+\rightarrow
+F_c \ge F_{c,sat}
+\rightarrow
+\text{fission gas release}
+$$
+
+---
+
+## Variabili intragranulari principali
+
+Le variabili primarie del modello intragranulare sono:
+
+$$
+c
+$$
+
+$$
+m_b
+$$
+
+$$
+m_d
+$$
+
+$$
+N_b
+$$
+
+$$
+N_d
+$$
+
+dove:
+- $c$ = concentrazione di gas in soluzione;
+- $m_b$ = concentrazione di gas nelle bolle bulk;
+- $m_d$ = concentrazione di gas nelle bolle su dislocazioni;
+- $N_b$ = concentrazione numerica delle bolle bulk;
+- $N_d$ = concentrazione numerica delle bolle su dislocazioni.
+
+---
+
+## Equazioni intragranulari
+
+Il sistema intragranulare è:
+
+$$
+\frac{\partial c}{\partial t}
+=
+D_g\nabla^2 c
+-
+(g_b+g_d)c
++
+b_b m_b
++
+b_d m_d
++
+\beta
+$$
+
+$$
+\frac{\partial m_b}{\partial t}
+=
+g_b c
+-
+b_b m_b
+$$
+
+$$
+\frac{\partial m_d}{\partial t}
+=
+g_d c
+-
+b_d m_d
+$$
+
+$$
+\frac{\partial N_b}{\partial t}
+=
+\nu_b
+-
+b_b \phi_b N_b
+$$
+
+$$
+\frac{\partial N_d}{\partial t}
+=
+\frac{N_d}{\rho_d}
+\frac{\partial \rho_d}{\partial t}
+-
+4\lambda N_d^2
+\frac{dV_d}{dt}
+$$
+
+---
+
+## Ipotesi su densità di dislocazioni
+
+Nel modello attuale si assume densità di dislocazioni costante:
+
+$$
+\frac{\partial \rho_d}{\partial t}
+=
+0
+$$
+
+Sostituendo nella equazione di $N_d$:
+
+$$
+\frac{\partial N_d}{\partial t}
+=
+-
+4\lambda N_d^2
+\frac{dV_d}{dt}
+$$
+
+Quindi $N_d$ non è costante se si considera la coalescenza delle bolle su dislocazioni.
+
+La variazione di $N_d$ è controllata dalla crescita del volume medio delle bolle su dislocazioni:
+
+$$
+\frac{dV_d}{dt}
+$$
+
+Se le bolle su dislocazioni crescono:
+
+$$
+\frac{dV_d}{dt} > 0
+$$
+
+allora:
+
+$$
+\frac{\partial N_d}{\partial t} < 0
+$$
+
+cioè la concentrazione numerica delle bolle su dislocazioni diminuisce per coalescenza.
+
+---
+
+## Volume delle bolle
+
+L’evoluzione del volume medio delle bolle bulk e delle bolle su dislocazioni è:
+
+$$
+\frac{\partial V_{b,d}}{\partial t}
+=
+\frac{\Omega_{fg}}{N_{b,d}}
+\frac{\partial m_{b,d}}{\partial t}
++
+\frac{\Omega}{N_{b,d}}
+\frac{\partial n_{b,d}}{\partial t}
+$$
+
+Separatamente:
+
+$$
+\frac{\partial V_b}{\partial t}
+=
+\frac{\Omega_{fg}}{N_b}
+\frac{\partial m_b}{\partial t}
++
+\frac{\Omega}{N_b}
+\frac{\partial n_b}{\partial t}
+$$
+
+$$
+\frac{\partial V_d}{\partial t}
+=
+\frac{\Omega_{fg}}{N_d}
+\frac{\partial m_d}{\partial t}
++
+\frac{\Omega}{N_d}
+\frac{\partial n_d}{\partial t}
+$$
+
+---
+
+## Crescita per vacanze
+
+La concentrazione volumetrica di vacanze associate alle bolle evolve come:
+
+$$
+\frac{\partial n_{b,d}}{\partial t}
+=
+\frac{2\pi D_v \delta_{b,d} N_{b,d}}
+{k_B T \zeta_{b,d}}
+\left(
+p_{b,d}
+-
+p_{b,d}^{eq}
+\right)
+$$
+
+Separatamente:
+
+$$
+\frac{\partial n_b}{\partial t}
+=
+\frac{2\pi D_v \delta_b N_b}
+{k_B T \zeta_b}
+\left(
+p_b
+-
+p_b^{eq}
+\right)
+$$
+
+$$
+\frac{\partial n_d}{\partial t}
+=
+\frac{2\pi D_v \delta_d N_d}
+{k_B T \zeta_d}
+\left(
+p_d
+-
+p_d^{eq}
+\right)
+$$
+
+---
+
+## Raggio delle bolle
+
+Il raggio delle bolle viene calcolato dal volume medio:
+
+$$
+R_b =
+\left(
+\frac{3V_b}{4\pi}
+\right)^{1/3}
+$$
+
+$$
+R_d =
+\left(
+\frac{3V_d}{4\pi}
+\right)^{1/3}
+$$
+
+---
+
+## Condizione al bordo di grano
+
+Il bordo di grano è trattato come sink per il gas in soluzione:
+
+$$
+c(r=a,t)=0
+$$
+
+Il flusso di gas verso il grain face è:
+
+$$
+J_{gb}
+=
+-
+D_g
+\left.
+\frac{\partial c}{\partial r}
+\right|_{r=a}
+$$
+
+Il rate volumetrico di gas che raggiunge il grain face può essere scritto come:
+
+$$
+\dot{q}_{gb}
+=
+-
+\frac{3}{a}
+D_g
+\left.
+\frac{\partial c}{\partial r}
+\right|_{r=a}
+$$
+
+---
+
+## Variabili intergranulari principali
+
+Le variabili principali del modello grain-face sono:
+
+$$
+q
+$$
+
+$$
+N_{gf}
+$$
+
+$$
+V_{gf}
+$$
+
+$$
+R_{gf}
+$$
+
+$$
+F_c
+$$
+
+$$
+R_{FG}
+$$
+
+dove:
+- $q$ = gas arrivato al grain face;
+- $N_{gf}$ = concentrazione numerica delle bolle grain-face;
+- $V_{gf}$ = volume medio delle bolle grain-face;
+- $R_{gf}$ = raggio medio delle bolle grain-face;
+- $F_c$ = copertura frazionaria del grain face;
+- $R_{FG}$ = gas rilasciato.
+
+---
+
+## Accumulo di gas al grain face
+
+Prima della saturazione/interconnessione:
+
+$$
+\frac{dq}{dt}
+=
+\dot{q}_{gb}
+$$
+
+Dopo la saturazione/interconnessione:
+
+$$
+\frac{dq}{dt}
+=
+0
+$$
+
+e il gas che arriva viene rilasciato.
+
+---
+
+## Grain-face bubble coverage
+
+La copertura del grain face è:
+
+$$
+F_c =
+N_{gf} A_{gf}
+$$
+
+L’area proiettata della bolla grain-face è:
+
+$$
+A_{gf}
+=
+\pi R_{gf}^2 \sin^2\theta
+$$
+
+Il raggio della bolla grain-face è:
+
+$$
+R_{gf}
+=
+\left[
+\frac{3V_{gf}}
+{4\pi
+\left(
+1
+-
+1.5\cos\theta
++
+0.5\cos^3\theta
+\right)}
+\right]^{1/3}
+$$
+
+---
+
+## Condizione di saturazione/interconnessione
+
+La saturazione avviene quando:
+
+$$
+F_c \ge F_{c,sat}
+$$
+
+con:
+
+$$
+F_{c,sat}=0.5
+$$
+
+---
+
+## Fission gas release
+
+Prima della saturazione:
+
+$$
+F_c < F_{c,sat}
+$$
+
+$$
+\dot{R}_{FG}=0
+$$
+
+Dopo la saturazione:
+
+$$
+F_c \ge F_{c,sat}
+$$
+
+$$
+\dot{R}_{FG}
+=
+\dot{q}_{gb}
+$$
+
+Quindi, dopo interconnessione, tutto il gas che arriva dal modello intragranulare al grain face viene considerato rilasciato.
+
+---
+
+## Sequenza logica di soluzione
+
+1. Risolvere il modello intragranulare:
+
+$$
+c,\ m_b,\ m_d,\ N_b,\ N_d
+$$
+
+2. Calcolare il flusso verso il grain face:
+
+$$
+\dot{q}_{gb}
+$$
+
+3. Usare $\dot{q}_{gb}$ come sorgente del modello grain-face:
+
+$$
+\frac{dq}{dt}
+=
+\dot{q}_{gb}
+$$
+
+4. Calcolare crescita delle grain-face bubbles:
+
+$$
+V_{gf}
+\rightarrow
+R_{gf}
+\rightarrow
+A_{gf}
+\rightarrow
+F_c
+$$
+
+5. Quando:
+
+$$
+F_c \ge 0.5
+$$
+
+imporre:
+
+$$
+\dot{R}_{FG}
+=
+\dot{q}_{gb}
+$$
