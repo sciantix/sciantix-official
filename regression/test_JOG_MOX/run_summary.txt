@@ -1,0 +1,22 @@
+SUPERFACT batch run summary
+
+point_01_r_0p0675mm: returncode=0
+point_02_r_0p2025mm: returncode=0
+point_03_r_0p3375mm: returncode=0
+point_04_r_0p4725mm: returncode=0
+point_05_r_0p6075mm: returncode=0
+point_06_r_0p7425mm: returncode=0
+point_07_r_0p8775mm: returncode=0
+point_08_r_1p0125mm: returncode=0
+point_09_r_1p1475mm: returncode=0
+point_10_r_1p2825mm: returncode=0
+point_11_r_1p4175mm: returncode=0
+point_12_r_1p5525mm: returncode=0
+point_13_r_1p6875mm: returncode=0
+point_14_r_1p8225mm: returncode=0
+point_15_r_1p9575mm: returncode=0
+point_16_r_2p0925mm: returncode=0
+point_17_r_2p2275mm: returncode=0
+point_18_r_2p3625mm: returncode=0
+point_19_r_2p4975mm: returncode=0
+point_20_r_2p6325mm: returncode=0

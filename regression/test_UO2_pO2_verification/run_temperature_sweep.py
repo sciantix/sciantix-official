@@ -1,0 +1,317 @@
+from __future__ import annotations
+
+"""Run the UO2 oxygen-potential sweep and collect SCIANTIX outputs.
+
+The script clones the template input files in this folder into one case
+directory per temperature, updates the imposed temperature in
+``input_history.txt``, runs the local ``sciantix.x`` executable, and builds:
+
+- ``temperature_sweep_summary.tsv`` with all cases concatenated
+- a partial-pressure comparison plot
+- an oxygen-potential comparison plot
+"""
+
+import math
+import shutil
+import subprocess
+from pathlib import Path
+
+import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+import pandas as pd
+
+plt.rcParams.update({
+    "figure.figsize": (10, 7),
+    "font.size": 12,
+    "axes.labelsize": 15,
+    "axes.titlesize": 12,
+    "xtick.labelsize": 12,
+    "ytick.labelsize": 12,
+    "legend.fontsize": 12,
+    "figure.dpi": 300,
+    "axes.grid": True,
+    "grid.alpha": 0.5,
+    "grid.linestyle": "--",
+    "lines.linewidth": 2,
+    "lines.markersize": 4,
+    "legend.frameon": False,
+})
+
+TEMPERATURES_K = list(range(800, 2800, 200))
+REFERENCE_PRESSURE_MPA = 0.1 # 1 bar
+SCRIPT_DIR = Path(__file__).resolve().parent
+BUILD_BINARY = SCRIPT_DIR.parent.parent / "build" / "sciantix.x"
+LOCAL_BINARY = SCRIPT_DIR / "sciantix.x"
+SUMMARY_PATH = SCRIPT_DIR / "temperature_sweep_summary.tsv"
+PRESSURE_PLOT_PATH = SCRIPT_DIR / "fuel_oxygen_partial_pressures_vs_ou_ratio.png"
+PRESSURE_PLOT_PATH_2 = SCRIPT_DIR / "fuel_oxygen_partial_pressures_vs_ou_ratio_2.png"
+POTENTIAL_PLOT_PATH = SCRIPT_DIR / "fuel_oxygen_potentials_vs_ou_ratio.png"
+
+def ensure_local_binary() -> None:
+    """Copy the up-to-date compiled SCIANTIX executable into this folder."""
+    if not BUILD_BINARY.exists():
+        raise FileNotFoundError(f"Missing SCIANTIX binary: {BUILD_BINARY}")
+
+    shutil.copy2(BUILD_BINARY, LOCAL_BINARY)
+
+def template_input_files() -> list[Path]:
+    """Return the template input files that are replicated for each case."""
+    return sorted(
+        path
+        for path in SCRIPT_DIR.glob("input_*")
+        if path.is_file()
+    )
+
+def prepare_case(case_dir: Path, temperature_k: int, input_files: list[Path]) -> None:
+    """Populate one temperature case and overwrite its prescribed temperature."""
+    case_dir.mkdir(exist_ok=True)
+
+    for source in input_files:
+        shutil.copy2(source, case_dir / source.name)
+
+    history_path = case_dir / "input_history.txt"
+    updated_lines = []
+    for raw_line in history_path.read_text().splitlines():
+        stripped = raw_line.strip()
+        if not stripped:
+            updated_lines.append(raw_line)
+            continue
+
+        parts = stripped.split()
+        if len(parts) < 2:
+            updated_lines.append(raw_line)
+            continue
+
+        parts[1] = str(temperature_k)
+        updated_lines.append("\t".join(parts))
+
+    history_path.write_text("\n".join(updated_lines) + "\n")
+
+def run_case(case_dir: Path) -> None:
+    """Execute SCIANTIX for one prepared case directory."""
+    subprocess.run(
+        [str(LOCAL_BINARY), f"{case_dir.name}/"],
+        cwd=SCRIPT_DIR,
+        check=True,
+    )
+
+def collect_case(case_dir: Path) -> pd.DataFrame:
+    """Load a case output and derive the quantities used in the plots."""
+    output_path = case_dir / "output.txt"
+    if not output_path.exists():
+        raise FileNotFoundError(f"Missing output for {case_dir.name}: {output_path}")
+
+    frame = pd.read_csv(output_path, sep="\t")
+    frame["O/U ratio (/)"] = frame["Stoichiometry deviation (/)"] + 2.0
+
+    pressure_columns = {
+        "SCIANTIX + Blackburn model": "Fuel oxygen partial pressure - Blackburn (MPa)",
+        "SCIANTIX + OpenCalphad": "Fuel oxygen partial pressure - CALPHAD (MPa)",
+    }
+
+    for label, column in pressure_columns.items():
+        ratio = frame[column] / REFERENCE_PRESSURE_MPA
+        # Log values are only defined for positive pressures.
+        frame[f"log10({label} pressure / reference)"] = ratio.where(ratio > 0.0).map(
+            lambda value: math.log10(value) if pd.notna(value) else math.nan
+        )
+
+    return frame
+
+
+def style_maps():
+    """Create consistent color and line encodings across all plots."""
+    cmap = plt.get_cmap("turbo", len(TEMPERATURES_K))
+    colors = {temperature_k: cmap(index) for index, temperature_k in enumerate(TEMPERATURES_K)}
+    linestyles = {
+        "SCIANTIX + Blackburn model": None,
+        "SCIANTIX + OpenCalphad": None,
+    }
+    markers = {
+        "SCIANTIX + Blackburn model": "^",
+        "SCIANTIX + OpenCalphad": "s",
+    }
+    return colors, linestyles, markers
+
+def add_legends(ax, colors: dict[int, object], linestyles: dict[str, str], markers: dict[str, str]) -> None:
+    """Split the legend into temperature entries and model/source entries."""
+    temperature_handles = [
+        Line2D([0], [0], color=colors[temperature_k], label=f"{temperature_k} K")
+        for temperature_k in TEMPERATURES_K
+    ]
+    source_handles = [
+        Line2D(
+            [0],
+            [0],
+            color="black",
+            linestyle=linestyles[label] if linestyles[label] is not None else "None",
+            marker=markers[label],
+            label=label,
+        )
+        for label in linestyles
+    ]
+
+    temperature_legend = ax.legend(
+        handles=temperature_handles,
+        loc="lower right",
+        ncol=2,
+        title="Temperature"
+    )
+    ax.add_artist(temperature_legend)
+    ax.legend(handles=source_handles, loc="upper left", title="Model")
+
+def make_pressure_plot(frames: list[pd.DataFrame]) -> None:
+    """Plot oxygen partial pressure versus O/U ratio for all temperatures."""
+    fig, ax = plt.subplots()
+    colors, linestyles, markers = style_maps()
+    pressure_columns = {
+        "SCIANTIX + Blackburn model": "log10(SCIANTIX + Blackburn model pressure / reference)",
+        "SCIANTIX + OpenCalphad": "log10(SCIANTIX + OpenCalphad pressure / reference)",
+    }
+
+    for frame in frames:
+        temperature_k = int(frame["Temperature (K)"].iloc[0])
+        for label, column in pressure_columns.items():
+            valid = frame.dropna(subset=[column])
+            if valid.empty:
+                continue
+
+            if label == "SCIANTIX + OpenCalphad":
+                ax.plot(
+                    valid["O/U ratio (/)"],
+                    valid[column],
+                    color=colors[temperature_k],
+                    linestyle="-",
+                    marker=markers[label],
+                )
+            else:
+                ax.scatter(
+                    valid["O/U ratio (/)"],
+                    valid[column],
+                    color=colors[temperature_k],
+                    marker=markers[label],
+                )
+
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
+    ax.grid(True, alpha=0.3)
+    add_legends(ax, colors, linestyles, markers)
+    ax.set_xlim([1.90, 2.20])
+    ax.set_ylim([-30, 0])
+    ax.set_yticks(range(-30, 0, 2))
+
+    fig.tight_layout()
+    fig.savefig(PRESSURE_PLOT_PATH)
+    plt.close(fig)
+
+    fig, ax = plt.subplots()
+    colors, linestyles, markers = style_maps()
+    pressure_columns = {
+        "SCIANTIX + Blackburn model": "log10(SCIANTIX + Blackburn model pressure / reference)",
+        "SCIANTIX + OpenCalphad": "log10(SCIANTIX + OpenCalphad pressure / reference)",
+    }
+
+    for frame in frames:
+        temperature_k = int(frame["Temperature (K)"].iloc[0])
+        valid = frame.dropna(subset=[
+            pressure_columns["SCIANTIX + Blackburn model"],
+            pressure_columns["SCIANTIX + OpenCalphad"],
+        ])
+        if valid.empty:
+            continue
+
+        opencalphad_values = valid[pressure_columns["SCIANTIX + OpenCalphad"]]
+        blackburn_values = valid[pressure_columns["SCIANTIX + Blackburn model"]]
+
+        ax.scatter(
+            valid["O/U ratio (/)"],
+            blackburn_values - opencalphad_values,
+            color=colors[temperature_k],
+            marker=markers["SCIANTIX + Blackburn model"],
+        )
+
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel(r"$\Delta\log_{10}(p_{O_2})$ (bar)")
+    ax.grid(True, alpha=0.3)
+    temperature_handles = [
+        Line2D([0], [0], color=colors[temperature_k], label=f"{temperature_k} K")
+        for temperature_k in TEMPERATURES_K
+    ]
+    temperature_legend = ax.legend(
+        handles=temperature_handles,
+        loc="lower left",
+        ncol=2,
+        title="Temperature"
+    )
+    ax.add_artist(temperature_legend)
+    ax.set_xlim([1.90, 2.20])
+
+    fig.tight_layout()
+    fig.savefig(PRESSURE_PLOT_PATH_2)
+    plt.close(fig)
+
+def make_potential_plot(frames: list[pd.DataFrame]) -> None:
+    """Plot oxygen potential versus O/U ratio for all temperatures."""
+    fig, ax = plt.subplots()
+    colors, linestyles, markers = style_maps()
+    potential_columns = {
+        "SCIANTIX + Blackburn model": "Fuel oxygen potential - Blackburn (KJ/mol)",
+        "SCIANTIX + OpenCalphad": "Fuel oxygen potential - CALPHAD (KJ/mol)",
+    }
+
+    for frame in frames:
+        temperature_k = int(frame["Temperature (K)"].iloc[0])
+        for label, column in potential_columns.items():
+            valid = frame.dropna(subset=[column])
+            if valid.empty:
+                continue
+
+            if label == "SCIANTIX + OpenCalphad":
+                ax.plot(
+                    valid["O/U ratio (/)"],
+                    valid[column],
+                    color=colors[temperature_k],
+                    linestyle="-",
+                    marker=markers[label],
+                )
+            else:
+                ax.scatter(
+                    valid["O/U ratio (/)"],
+                    valid[column],
+                    color=colors[temperature_k],
+                    marker=markers[label],
+                )
+
+    ax.set_xlim([1.90, 2.20])
+    ax.set_ylim([-1000, 0])
+    ax.set_yticks(range(-1000, 100, 100))
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel("Oxygen potential (kJ/mol)")
+    ax.grid(True, alpha=0.3)
+    add_legends(ax, colors, linestyles, markers)
+
+    fig.tight_layout()
+    fig.savefig(POTENTIAL_PLOT_PATH)
+    plt.close(fig)
+
+
+def main() -> None:
+    """Run the complete temperature sweep from 800 K to 2700 K."""
+    ensure_local_binary()
+    input_files = template_input_files()
+    frames: list[pd.DataFrame] = []
+
+    for temperature_k in TEMPERATURES_K:
+        case_dir = SCRIPT_DIR / f"{temperature_k}K"
+        prepare_case(case_dir, temperature_k, input_files)
+        run_case(case_dir)
+        frames.append(collect_case(case_dir))
+
+    combined = pd.concat(frames, ignore_index=True)
+    combined.to_csv(SUMMARY_PATH, sep="\t", index=False)
+    make_pressure_plot(frames)
+    make_potential_plot(frames)
+
+
+if __name__ == "__main__":
+    main()
