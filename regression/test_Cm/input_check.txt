@@ -70,7 +70,7 @@ Initial composition Kr85m4 = 0
 Initial composition Kr85m5 = 0
 Initial composition Kr85m6 = 0
 Initial stoichiometry deviation[0] = 0
-Chromium content = 9.88131e-324
+Chromium content = 0
 0	1157	4.15e+18	-0.21	
 35316.9	1157	4.15e+18	-0.21	
 35604.9	1157	4.15e+18	-0.21	
