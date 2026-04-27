@@ -149,4 +149,46 @@ void Simulation::output()
         overview_file << "\n";
     }
     overview_file.close();
+
+    // CODE DEVELOPMENT : THERMOCHEMISTRY OUTPUT
+    if ((int)input_variable["iThermochimica"].getValue() > 0)
+    {
+        // Write thermochemical informations in thermochemistry_output.txt
+        std::string thermo_output_name = TestPath + "thermochemistry_output.txt";
+        std::fstream thermo_output_file;
+        thermo_output_file.open(thermo_output_name, std::fstream::in | std::fstream::out | std::fstream::app);
+
+        if (history_variable["Time step number"].getFinalValue() == 0)
+        {
+            for (auto &variable : history_variable)
+            {
+                if (variable.getOutput())
+                    thermo_output_file << variable.getName() << " " << variable.getUOM() << "\t";
+            }
+            for (auto &variable : thermochemistry_variable)
+            {
+                if (variable.getOutput())
+                    thermo_output_file << variable.getName() << " " << variable.getUOM() << "\t";
+            }
+            thermo_output_file << "\n";
+        }
+
+        if ((int)history_variable["Time step number"].getFinalValue() % 1 == 0)
+        {
+            for (auto &variable : history_variable)
+            {
+                if (variable.getOutput())
+                    thermo_output_file << std::setprecision(10) << variable.getFinalValue() << "\t";
+            }
+            for (auto &variable : thermochemistry_variable)
+            {
+                if (variable.getOutput())
+                    thermo_output_file << std::setprecision(4) << variable.getFinalValue() << "\t";
+            }
+            thermo_output_file << "\n";
+        }
+
+        thermo_output_file.close();
+    }
+
 }

@@ -15,6 +15,8 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "InputReading.h"
+// CODE DEVELOPMENT: STRING NEEDED FOR THERMOCHEMISTRY 
+#include "ThermochemistrySettings.h"
 
 /**
  * @brief Read a single setting from the input file.
@@ -91,12 +93,20 @@ ReadSeveralParameters(std::string variable_name, std::ifstream& input_file, std:
 void InputReading(int                  Sciantix_options[],
                   double               Sciantix_variables[],
                   double               Sciantix_scaling_factors[],
+                  // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
+                  double Sciantix_thermochemistry[],
+	              ThermochemistrySettings &Sciantix_thermochemistry_settings,
+                  //
                   int&                 Input_history_points,
                   std::vector<double>& Time_input,
                   std::vector<double>& Temperature_input,
                   std::vector<double>& Fissionrate_input,
                   std::vector<double>& Hydrostaticstress_input,
                   std::vector<double>& Steampressure_input,
+                  // CODE DEVELOPMENT : SYSTEM PRESSURE AND O/M RATIO INPUTS
+                  std::vector<double> &Systempressure_input,
+                  std::vector<double> &OMratio_input,
+                  //
                   double&              Time_end_h,
                   double&              Time_end_s)
 {
@@ -126,7 +136,7 @@ void InputReading(int                  Sciantix_options[],
     std::ifstream input_scaling_factors(TestPath + "input_scaling_factors.txt", std::ios::in);
 
     Sciantix_options[0]  = ReadOneSetting("iGrainGrowth", input_settings, input_check);
-    Sciantix_options[1]  = ReadOneSetting("iFissionGasDiffusivity", input_settings, input_check);
+    Sciantix_options[1]  = ReadOneSetting("iFissionProductDiffusivity", input_settings, input_check);
     Sciantix_options[2]  = ReadOneSetting("iDiffusionSolver", input_settings, input_check);
     Sciantix_options[3]  = ReadOneSetting("iIntraGranularBubbleBehavior", input_settings, input_check);
     Sciantix_options[4]  = ReadOneSetting("iResolutionRate", input_settings, input_check);
@@ -150,11 +160,15 @@ void InputReading(int                  Sciantix_options[],
     Sciantix_options[22] = ReadOneSetting("iChromiumSolubility", input_settings, input_check);
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
-
+    // CODE DEVELOPMENT : THERMOCHEMISTRY FLAG
+    Sciantix_options[25] = ReadOneSetting("iThermochimica",input_settings,input_check);
+    //
     if (!input_initial_conditions.fail())
     {
         Sciantix_variables[0] = ReadOneParameter("Grain radius[0]", input_initial_conditions, input_check);
-
+        // CODE DEVELOPMENT : STORED INITIAL GRAIN RADIUS
+        Sciantix_variables[170] = Sciantix_variables[0];
+        //
         std::vector<double> initial_composition_Xe;
         initial_composition_Xe = ReadSeveralParameters("Initial composition Xe", input_initial_conditions, input_check);
         Sciantix_variables[1]  = initial_composition_Xe[0];
@@ -230,67 +244,137 @@ void InputReading(int                  Sciantix_options[],
             ReadOneParameter("Initial stoichiometry deviation[0]", input_initial_conditions, input_check);
 
         Sciantix_variables[150] = ReadOneParameter("Chromium content", input_initial_conditions, input_check);
+
+        // CODE DEVELOPMENT: MOX INITIAL CONDITIONS READER
+        if (Sciantix_options[11] == 2)
+        {
+            std::vector<double> initial_composition_Pu = ReadSeveralParameters("Initial composition Pu", input_initial_conditions, input_check);
+
+            Sciantix_variables[171] = initial_composition_Pu[0];
+            Sciantix_variables[172] = initial_composition_Pu[1];
+            Sciantix_variables[173] = initial_composition_Pu[2];
+            Sciantix_variables[174] = initial_composition_Pu[3];
+            Sciantix_variables[175] = initial_composition_Pu[4];
+
+            Sciantix_variables[177] = ReadOneParameter("q", input_initial_conditions, input_check);
+        }
     }
 
-    int n = 0;
-    while (input_history >> Time_input[n] >> Temperature_input[n] >> Fissionrate_input[n] >> Hydrostaticstress_input[n])
-    {
-        if (Sciantix_options[20] > 0)
-            input_history >> Steampressure_input[n];
+    const bool needs_steam_pressure = Sciantix_options[20] > 0 && Sciantix_options[20] < 7;
+    const bool needs_system_pressure = Sciantix_options[25] != 0;
+    const bool needs_OM_ratio = Sciantix_options[20] == 9;
 
-        input_check << Time_input[n] << "\t";
-        input_check << Temperature_input[n] << "\t";
-        input_check << Fissionrate_input[n] << "\t";
-        input_check << Hydrostaticstress_input[n] << "\t";
+	int n = 0;
+	while (input_history >> Time_input[n] >> Temperature_input[n] >> Fissionrate_input[n] >> Hydrostaticstress_input[n])
+	{
+		if (needs_steam_pressure)
+		{
+			if (!(input_history >> Steampressure_input[n]))
+			{
+                std::cerr << "ERROR: Missing steam pressure in input_history.txt while iStoichiometryDeviation requires it." << std::endl;
+                exit(1);
+			}
+		}
+        else
+            Steampressure_input[n] = 0.0;
 
-        if (Sciantix_options[20] > 0)
-            input_check << Steampressure_input[n] << "\t";
+        if (needs_system_pressure)
+        {
+            if (!(input_history >> Systempressure_input[n]))
+            {
+                std::cerr << "ERROR: Missing systempressure in input_history.txt while iThermochimica is enabled." << std::endl;
+                exit(1);
+            }
+        }
+        else
+            Systempressure_input[n] = 0.0;
 
-        input_check << std::endl;
+        if (needs_OM_ratio)
+        {
+            if (!(input_history >> OMratio_input[n]))
+            {
+                std::cerr << "ERROR: Missing O/M ratio in input_history.txt while iStoichiometryDeviation = 9." << std::endl;
+                exit(1);
+            }
+        }
+        else
+            OMratio_input[n] = 2.0 + Sciantix_variables[66];
 
-        n++;
-        Input_history_points = n;
-    }
+		input_check << Time_input[n] << "\t";
+		input_check << Temperature_input[n] << "\t";
+		input_check << Fissionrate_input[n] << "\t";
+		input_check << Hydrostaticstress_input[n] << "\t";
 
-    Time_input.resize(Input_history_points);
-    Temperature_input.resize(Input_history_points);
-    Fissionrate_input.resize(Input_history_points);
-    Hydrostaticstress_input.resize(Input_history_points);
+		if (needs_steam_pressure)
+			input_check << Steampressure_input[n] << "\t";
+		
+		if (needs_system_pressure)
+		    input_check << Systempressure_input[n] << "\t";
 
-    if (Sciantix_options[20] > 0)
-        Steampressure_input.resize(Input_history_points);
+        if (needs_OM_ratio)
+            input_check << OMratio_input[n] << "\t";
 
-    Time_end_h = Time_input[Input_history_points - 1];
-    Time_end_s = Time_end_h * 3600.0;
+		input_check << std::endl;
 
-    if (!input_scaling_factors.fail())
-    {
-        Sciantix_scaling_factors[0] = ReadOneParameter("sf_resolution_rate", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[1] = ReadOneParameter("sf_trapping_rate", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[2] = ReadOneParameter("sf_nucleation_rate", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[3] = ReadOneParameter("sf_diffusivity", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[4] = ReadOneParameter("sf_diffusivity2", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[5] = ReadOneParameter("sf_temperature", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[6] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
-        Sciantix_scaling_factors[8] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
-    }
+		n++;
+		Input_history_points = n;
+	}
+
+	Time_input.resize(Input_history_points);
+	Temperature_input.resize(Input_history_points);
+	Fissionrate_input.resize(Input_history_points);
+	Hydrostaticstress_input.resize(Input_history_points);
+		
+	if (needs_steam_pressure)
+		Steampressure_input.resize(Input_history_points);
+	
+	Systempressure_input.resize(Input_history_points);
+
+    if (needs_OM_ratio)
+        OMratio_input.resize(Input_history_points);
     else
-    {
-        Sciantix_scaling_factors[0] = 1.0;
-        Sciantix_scaling_factors[1] = 1.0;
-        Sciantix_scaling_factors[2] = 1.0;
-        Sciantix_scaling_factors[3] = 1.0;
-        Sciantix_scaling_factors[4] = 1.0;
-        Sciantix_scaling_factors[5] = 1.0;
-        Sciantix_scaling_factors[6] = 1.0;
-        Sciantix_scaling_factors[7] = 1.0;
-        Sciantix_scaling_factors[8] = 1.0;
-    }
+        OMratio_input.assign(Input_history_points, 2.0 + Sciantix_variables[66]);
 
-    input_check.close();
-    input_settings.close();
-    input_initial_conditions.close();
-    input_history.close();
-    input_scaling_factors.close();
+	Time_end_h = Time_input[Input_history_points - 1];
+	Time_end_s = Time_end_h * 3600.0;
+    //
+
+	if (!input_scaling_factors.fail())
+	{
+		Sciantix_scaling_factors[0] = ReadOneParameter("sf_resolution_rate", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[1] = ReadOneParameter("sf_trapping_rate", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[2] = ReadOneParameter("sf_nucleation_rate", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[3] = ReadOneParameter("sf_diffusivity", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[4] = ReadOneParameter("sf_diffusivity2", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[5] = ReadOneParameter("sf_temperature", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[6] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[8] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
+	}
+	else
+	{
+		Sciantix_scaling_factors[0] = 1.0;
+		Sciantix_scaling_factors[1] = 1.0;
+		Sciantix_scaling_factors[2] = 1.0;
+		Sciantix_scaling_factors[3] = 1.0;
+		Sciantix_scaling_factors[4] = 1.0;
+		Sciantix_scaling_factors[5] = 1.0;
+		Sciantix_scaling_factors[6] = 1.0;
+		Sciantix_scaling_factors[7] = 1.0;
+		Sciantix_scaling_factors[8] = 1.0;
+	}
+
+	input_check.close();
+	input_settings.close();
+	input_initial_conditions.close();
+	input_history.close();
+	input_scaling_factors.close();
+
+    Sciantix_thermochemistry_settings = ThermochemistrySettings{};
+    // CODE DEVELOPMENT : THERMOCHEMISTRY SETTINGS READER
+	if (Sciantix_options[25] > 0)
+	{
+		Sciantix_thermochemistry_settings =
+		    loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt");
+	}
 }

@@ -71,14 +71,22 @@ class Matrix : virtual public Material
     double grain_boundary_fracture_energy;
     double shear_modulus;
 
+    // MOX
+    std::vector<double> initial_uranium_composition;
+    std::vector<double> initial_plutonium_composition; // Isotopic vector for plutonium (Pu238–Pu242)
+    double mox_pu_enrichment; // PuO₂ fraction in the MOX fuel
+
     /**
-     * @brief Sets the theoretical density of the matrix.
-     * @param m The density to set (kg/m3).
+     * @brief Sets the theoretical density of the matrix from the current fuel state.
+     * @param sciantix_variable The SciantixArray of SciantixVariable objects.
      */
-    void setTheoreticalDensity(double m)
-    {
-        matrix_density = m;
-    }
+    void setTheoreticalDensity(SciantixArray<SciantixVariable> &sciantix_variable);
+
+    /**
+     * @brief Updates the lattice parameter and theoretical density from the current fuel state.
+     * @param sciantix_variable The SciantixArray of SciantixVariable objects.
+     */
+    void setCrystalProperties(SciantixArray<SciantixVariable> &sciantix_variable);
 
     /**
      * @brief Retrieves the theoretical density of the matrix.
@@ -90,14 +98,10 @@ class Matrix : virtual public Material
     }
 
     /**
-     * @brief Sets the lattice parameter of the matrix.
-     * @param m The lattice parameter to set.
+     * @brief Sets the lattice parameter of the matrix from the current fuel state.
+     * @param sciantix_variable The SciantixArray of SciantixVariable objects.
      */
-    void setLatticeParameter(double m)
-    {
-        lattice_parameter = m;
-    }
-
+    void setLatticeParameter(SciantixArray<SciantixVariable> &sciantix_variable);
     /**
      * @brief Retrieves the lattice parameter of the matrix.
      * @return The lattice parameter of the matrix.
@@ -522,6 +526,60 @@ class Matrix : virtual public Material
         return shear_modulus;
     }
 
+    /**
+     * @brief Sets the initial uranium isotopic composition in the matrix.
+     * @param U_composition Vector of uranium isotope fractions (e.g. U234, U235, U236, U237, U238).
+     */
+    void setInitialUraniumComposition(std::vector<double> U_composition)
+    {
+        initial_uranium_composition = U_composition;
+    }
+
+    /**
+     * @brief Gets the initial uranium isotopic composition.
+     * @return Vector of uranium isotope fractions.
+     */
+    std::vector<double> getInitialUraniumComposition()
+    {
+        return initial_uranium_composition;
+    }
+
+    /**
+     * @brief Sets the initial plutonium isotopic composition in the matrix.
+     * @param Pu_composition Vector of plutonium isotope fractions (Pu238, Pu239, Pu240, Pu241, Pu242)
+     */
+    void setInitialPlutoniumComposition(std::vector<double> Pu_composition)
+    {
+        initial_plutonium_composition = Pu_composition;
+    }
+
+    /**
+     * @brief Gets the initial plutonium isotopic composition.
+     * @return Vector of plutonium isotope fractions.
+     */
+    std::vector<double> getInitialPlutoniumComposition()
+    {
+        return initial_plutonium_composition;
+    }
+
+    /**
+     * @brief Sets the PuO₂ enrichment in the MOX fuel (e.g., 0.20 = 20% PuO₂).
+     * @param enrichment Fraction of PuO₂ in MOX.
+     */
+    void setMoxPuEnrichment(double enrichment)
+    {
+        mox_pu_enrichment = enrichment;
+    }
+
+    /**
+     * @brief Gets the PuO₂ enrichment in the MOX fuel.
+     * @return Fraction of PuO₂ in MOX.
+     */
+    double getMoxPuEnrichment()
+    {
+        return mox_pu_enrichment;
+    }
+    
     /**
      * @brief Constructor
      */

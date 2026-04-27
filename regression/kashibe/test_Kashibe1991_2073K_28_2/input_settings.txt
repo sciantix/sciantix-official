@@ -23,3 +23,4 @@
 0    #    iChromiumSolubility
 0    #    iDensification (0 = not considered, 1 = Fit from Van Uffelen, P. (2002), PhD thesis.)
 1    #    iReleaseMode (0 = coalescence by White (2004), saturation threshold of fractional coverage Pastore et al (2013), 1= coalescence by Pastore et al (2013), Cappellari et al. (2025))
+0    #    iThermochimica

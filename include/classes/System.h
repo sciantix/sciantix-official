@@ -19,7 +19,7 @@
 
 #include "Constants.h"
 #include "ErrorMessages.h"
-#include "Gas.h"
+#include "FissionProducts.h"
 #include "InputVariable.h"
 #include "Matrix.h"
 #include "SciantixArray.h"
@@ -55,7 +55,9 @@ class System : virtual public Material
     double              production_rate;
     bool                restructured_matrix;
 
-    Gas    gas;
+    FissionProducts gas_fp;
+    FissionProducts volatile_fp;
+    FissionProducts metallic_fp;
     Matrix matrix;
 
   public:
@@ -72,41 +74,49 @@ class System : virtual public Material
     bool getRestructuredMatrix();
 
     /**
-     * @brief Sets the cumulative yield of the fission gas.
+     * @brief Sets the cumulative yield of the fission products.
      * @param y Yield to set (atoms per fission).
      */
     void setYield(double y);
 
     /**
-     * @brief Gets the cumulative yield of the fission gas.
-     * @return Yield of the gas (atoms per fission).
+     * @brief Gets the cumulative yield of the fission products.
+     * @return Yield of the fission products (atoms per fission).
      */
     double getYield();
 
     /**
-     * @brief Sets the radius of the fission gas atom in the matrix lattice.
+     * @brief Sets the radius of the fission product atom in the matrix lattice.
      * @param r Radius to set (meters).
      */
     void setRadiusInLattice(double r);
     /**
-     * @brief Gets the radius of the fission gas atom in the matrix lattice.
-     * @return Radius of the gas atom (meters).
+     * @brief Gets the radius of the fission product atom in the matrix lattice.
+     * @return Radius of the fission product atom (meters).
      */
     double getRadiusInLattice();
 
-    /**
-     * @brief Sets the name of the gas.
-     * @param n Name of the gas to set.
-     */
-    void setGas(Gas g);
+    void setGas(FissionProducts g_fp);
+    void setVolatileFP(FissionProducts v_fp);
+    void setMetallicFP(FissionProducts m_fp);
 
-    Gas getGas();
+    bool isGasFP();
+    bool isVolatileFP();
+    bool isMetallicFP();
+    bool isGasOrVolatileFP();
 
     /**
-     * @brief Gets the name of the gas.
-     * @return Name of the gas.
+     * @brief Gets the active fission product for this system.
+     * @return Gas, volatile, or metallic species depending on system category.
      */
-    std::string getGasName();
+    FissionProducts getFissionProduct();
+
+    /**
+     * @brief Gets the active fission product name for this system.
+     * @return Gas, volatile, or metallic species name.
+     */
+    std::string getFissionProductName();
+    
     /**
      * @brief Sets the name of the matrix.
      * @param n Name of the matrix to set.
@@ -122,12 +132,12 @@ class System : virtual public Material
     std::string getMatrixName();
 
     /**
-     * @brief Gets the volume occupied by the gas in the matrix.
-     * @return Volume occupied by the gas.
+     * @brief Gets the volume occupied by the fission products in the matrix.
+     * @return Volume occupied by the fission products.
      */
     double getVolumeInLattice();
     /**
-     * @brief Sets the volume occupied by the gas in the matrix.
+     * @brief Sets the volume occupied by the fission products in the matrix.
      * @param v Volume to set.
      */
     void setVolumeInLattice(double v);
@@ -162,21 +172,21 @@ class System : virtual public Material
     double getHeliumDiffusivity();
 
     /**
-     * @brief Sets the diffusivity of fission gases within the matrix based on the selected model.
-     * The intra-granular fission gas (xenon and krypton) diffusivity within the fuel grain is set
-     * according to the input_variable iFissionGasDiffusivity
-     * @param input_value The model selection index for fission gas diffusivity.
+     * @brief Sets the diffusivity of fission products within the matrix based on the selected model.
+     * The intra-granular fission product diffusivity within the fuel grain is set
+     * according to the input_variable iFissionProductDiffusivity
+     * @param input_value The model selection index for fission product diffusivity.
      */
-    void setFissionGasDiffusivity(int                              input_value,
+    void setFissionProductDiffusivity(int                              input_value,
                                   SciantixArray<SciantixVariable>& sciantix_variable,
                                   SciantixArray<SciantixVariable>& history_variable,
                                   SciantixArray<InputVariable>&    scaling_factors);
 
     /**
-     * @brief Retrieves the diffusivity of fission gases within the matrix.
-     * @return The current fission gas diffusivity.
+     * @brief Retrieves the diffusivity of fission products within the matrix.
+     * @return The current fission product diffusivity.
      */
-    double getFissionGasDiffusivity();
+    double getFissionProductDiffusivity();
 
     /**
      * @brief Sets the Henry's constant value.

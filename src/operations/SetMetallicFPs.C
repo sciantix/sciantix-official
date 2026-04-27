@@ -8,32 +8,31 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Version: under development                                                                   //
+//  Year: 2026                                                                      //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari                                   //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef SET_GAS_H
-#define SET_GAS_H
+#include "SetFissionProducts.h"
 
-#include "Gas.h"
-#include "SciantixArray.h"
-#include <vector>
+static void metallicPlaceholder(SciantixArray<FissionProducts>& metallic_fp);
 
-/**
- * @brief Sets up the gas properties in the simulation.
- *
- * This function initializes and maps properties for Xenon, Krypton, and Helium gases
- * used in the simulation. Each gas is set up with specific attributes and then mapped
- * for easy access throughout the simulation.
- *
- * @author G. Zullo
- * @author F. Bastien
- */
+void SetMetallicFPs(SciantixArray<FissionProducts>& metallic_fp)
+{
+    metallicPlaceholder(metallic_fp);
+}
 
-void xenon(SciantixArray<Gas>& gas);
-void krypton(SciantixArray<Gas>& gas);
-void helium(SciantixArray<Gas>& gas);
-
-#endif  // SET_GAS_H
+static void metallicPlaceholder(SciantixArray<FissionProducts>& metallic_fp)
+{
+    FissionProducts metallic_;
+    // Placeholder metallic FP used only to validate metallic class.
+    metallic_.setName("M_placeholder");
+    metallic_.setAtomicNumber(0);
+    metallic_.setVanDerWaalsVolume(0.0);
+    metallic_.setDecayRate(0.0);
+    metallic_.setMassNumber(0.0);
+    metallic_.setChemicallyActive(0.0);
+    metallic_.setPrecursorFactor(1.00);
+    metallic_fp.push(metallic_);
+}

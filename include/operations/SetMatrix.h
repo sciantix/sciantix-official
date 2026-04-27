@@ -42,4 +42,9 @@ Matrix UO2HBS(SciantixArray<Matrix>&           matrices,
               SciantixArray<SciantixVariable>& history_variable,
               SciantixArray<InputVariable>&    input_variable);
 
+Matrix MOX(SciantixArray<Matrix>&              matrices,
+              SciantixArray<SciantixVariable>& sciantix_variable,
+              SciantixArray<SciantixVariable>& history_variable,
+              SciantixArray<InputVariable>&    input_variable);
+
 #endif

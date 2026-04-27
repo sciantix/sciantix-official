@@ -8,31 +8,36 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Version: under development                                                      //
+//  Year: 2026                                                                      //
+//  Authors: D. Pizzocri, G. Zullo, E.Cappellari                                    //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef STOICHIOMETRY_DEVIATION_H
-#define STOICHIOMETRY_DEVIATION_H
+#ifndef THERMOCHEMISTRY_MANIFEST_H
+#define THERMOCHEMISTRY_MANIFEST_H
 
-#include "Simulation.h"
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
 
-/**
- * @brief Evaluates the deviation in stoichiometry within the nuclear material and its effects.
- *
- * @author G. Petrosillo
- * @author G. Zullo
- * @author E. Cappellari
- * @author C. Besio
- *
- */
+#include "ThermochemistrySettings.h"
 
-double BlackburnThermochemicalModel(double                           stoichiometry_deviation,
-                                    double                           temperature,
-                                    SciantixArray<SciantixVariable>& sciantix_variable);
+struct ThermochemistryManifestEntry
+{
+    int                        index;
+    std::string                category;
+    std::string                phase;
+    std::string                compound;
+    std::string                location;
+    std::string                uom;
+    bool                       output;
+    std::map<std::string, int> stoichiometry;
 
-double KatoThermochemicalModel(double stoichiometry_deviation, double temperature, SciantixArray<SciantixVariable> &sciantix_variable);
+    std::string getLabel() const;
+};
 
-#endif  // STOICHIOMETRY_DEVIATION_H
+std::vector<ThermochemistryManifestEntry> loadThermochemistryManifest(const std::string& path);
+
+#endif

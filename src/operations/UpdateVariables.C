@@ -111,9 +111,20 @@ std::map<int, std::string> update_sciantix_variable = {
     {157, "Chromia solution"},
     {158, "Chromia precipitate"},
     {160, "Diffusion coefficient"},
+    // CODE DEVELOPMENT 
+    {161, "U content"},
+    {162, "O content"},
+    {163, "Pu content"},
+    {170, "Initial grain radius"},
+    {171, "Pu238"},
+    {172, "Pu239"},
+    {173, "Pu240"},
+    {174, "Pu241"},
+    {175, "Pu242"},
+    {177, "q"},
 };
 
-void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
+void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[])
 {
     for (int i = 0; i < n_modes; ++i)
     {
@@ -128,5 +139,14 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
          it++)
     {
         Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
+    }
+
+    // CODE DEVELOPMENT : update thermochemistry variables
+    if (thermochemistry_variable.empty())
+        return;
+
+    for (auto& variable : thermochemistry_variable)
+    {
+        Sciantix_thermochemistry[variable.getIndex()] = variable.getFinalValue();
     }
 }

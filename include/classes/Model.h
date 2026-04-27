@@ -17,7 +17,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "Gas.h"
+#include "FissionProducts.h"
 #include "InputVariable.h"
 #include "Material.h"
 #include "Matrix.h"

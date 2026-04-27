@@ -33,16 +33,32 @@ void Simulation::initialize(int    Sciantix_options[],
                             double Sciantix_history[],
                             double Sciantix_variables[],
                             double Sciantix_scaling_factors[],
-                            double Sciantix_diffusion_modes[])
+                            double Sciantix_diffusion_modes[],
+                            // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
+                            double Sciantix_thermochemistry[],
+                            const ThermochemistrySettings& Sciantix_thermochemistry_settings
+)
 {
+    // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
     setVariables(
-        Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
-    setGas();
+            Sciantix_options,
+            Sciantix_history,
+            Sciantix_variables,
+            Sciantix_scaling_factors,
+            Sciantix_diffusion_modes,
+            Sciantix_thermochemistry,
+            Sciantix_thermochemistry_settings
+    );
+    //
+    setFissionProducts();
     setMatrix();
     setSystem();
     setGPVariables(Sciantix_options, Sciantix_history, Sciantix_variables);
 }
 
+// CODE DEVELOPMENT : THE ORDER OF THE FUNCTIONS CALLED HAS BEEN CHANGED
+// WITHOUT AFFECTING THE GENERAL BEHAVIOR OF THE CODE, 
+// TO BETTER CATEGORIZE THE PROCESSES AND IMPROVE CLARITY
 void Simulation::execute()
 {
 #if !defined(COUPLING_TU)
@@ -52,6 +68,18 @@ void Simulation::execute()
 
     Densification();
 #endif
+    
+    // FUEL MICROSTRUCTURE
+
+    HighBurnupStructureFormation();
+
+    HighBurnupStructurePorosity();
+
+    GrainGrowth();
+
+    // FUEL CHEMISTRY
+
+    ChromiumSolubility();
 
     GapPartialPressure();
 
@@ -59,25 +87,21 @@ void Simulation::execute()
 
     StoichiometryDeviation();
 
-    HighBurnupStructureFormation();
+    SetPhaseDiagram("matrix");
 
-    HighBurnupStructurePorosity();
-
-    Microstructure();
-
-    ChromiumSolubility();
-
-    GrainGrowth();
+    // FISSION PRODUCT BEHAVIOR
 
     GrainBoundarySweeping();
 
-    GasProduction();
+    FissionProductProduction();
 
-    GasDecay();
+    FissionProductDecay();
 
     IntraGranularBubbleBehavior();
 
-    GasDiffusion();
+    IntragranularDiffusion();
+
+    SetPhaseDiagram("at grain boundary");
 
     GrainBoundaryMicroCracking();
 
@@ -85,5 +109,6 @@ void Simulation::execute()
 
     InterGranularBubbleBehavior();
 
-    GasRelease();
+    FissionProductRelease();
+
 }

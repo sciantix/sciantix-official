@@ -14,9 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "GasDiffusion.h"
+#include "IntragranularDiffusion.h"
 
-void Simulation::GasDiffusion()
+void Simulation::IntragranularDiffusion() // qui tutti i gas e i volatili, cerca di unificare. no i metallici!
 {
     // Model declaration
     switch (static_cast<int>(input_variable["iDiffusionSolver"].getValue()))
@@ -41,15 +41,18 @@ void Simulation::GasDiffusion()
     // Model resolution
     for (auto& system : sciantix_system)
     {
+        if (!system.isGasOrVolatileFP())
+            continue;
+
         switch (int(input_variable["iDiffusionSolver"].getValue()))
         {
             case 1:
             {
                 if (system.getRestructuredMatrix() == 0)
                 {
-                    sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
-                        solver.SpectralDiffusion(getDiffusionModes(system.getGasName()),
-                                                 model["Gas diffusion - " + system.getName()].getParameter(),
+                    sciantix_variable[system.getFissionProductName() + " in grain"].setFinalValue(
+                        solver.SpectralDiffusion(getDiffusionModes(system.getFissionProductName()),
+                                                 model["Intragranular diffusion - " + system.getName()].getParameter(),
                                                  physics_variable["Time step"].getFinalValue()));
 
                     double equilibrium_fraction(1.0);
@@ -57,19 +60,19 @@ void Simulation::GasDiffusion()
                         equilibrium_fraction =
                             system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
 
-                    sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
-                        equilibrium_fraction * sciantix_variable[system.getGasName() + " in grain"].getFinalValue());
+                    sciantix_variable[system.getFissionProductName() + " in intragranular solution"].setFinalValue(
+                        equilibrium_fraction * sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue());
 
-                    sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
+                    sciantix_variable[system.getFissionProductName() + " in intragranular bubbles"].setFinalValue(
                         (1.0 - equilibrium_fraction) *
-                        sciantix_variable[system.getGasName() + " in grain"].getFinalValue());
+                        sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue());
                 }
 
                 else if (system.getRestructuredMatrix() == 1)
                 {
-                    sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(
-                        solver.SpectralDiffusion(getDiffusionModes(system.getGasName() + " in HBS"),
-                                                 model["Gas diffusion - " + system.getName()].getParameter(),
+                    sciantix_variable[system.getFissionProductName() + " in grain HBS"].setFinalValue(
+                        solver.SpectralDiffusion(getDiffusionModes(system.getFissionProductName() + " in HBS"),
+                                                 model["Intragranular diffusion - " + system.getName()].getParameter(),
                                                  physics_variable["Time step"].getFinalValue()));
                 }
 
@@ -83,27 +86,27 @@ void Simulation::GasDiffusion()
                 if (system.getRestructuredMatrix() == 0)
                 {
                     initial_value_solution =
-                        sciantix_variable[system.getGasName() + " in intragranular solution"].getFinalValue();
+                        sciantix_variable[system.getFissionProductName() + " in intragranular solution"].getFinalValue();
                     initial_value_bubbles =
-                        sciantix_variable[system.getGasName() + " in intragranular bubbles"].getFinalValue();
+                        sciantix_variable[system.getFissionProductName() + " in intragranular bubbles"].getFinalValue();
 
                     solver.SpectralDiffusion2equations(initial_value_solution,
                                                        initial_value_bubbles,
-                                                       getDiffusionModesSolution(system.getGasName()),
-                                                       getDiffusionModesBubbles(system.getGasName()),
-                                                       model["Gas diffusion - " + system.getName()].getParameter(),
+                                                       getDiffusionModesSolution(system.getFissionProductName()),
+                                                       getDiffusionModesBubbles(system.getFissionProductName()),
+                                                       model["Intragranular diffusion - " + system.getName()].getParameter(),
                                                        physics_variable["Time step"].getFinalValue());
 
-                    sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
+                    sciantix_variable[system.getFissionProductName() + " in intragranular solution"].setFinalValue(
                         initial_value_solution);
-                    sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
+                    sciantix_variable[system.getFissionProductName() + " in intragranular bubbles"].setFinalValue(
                         initial_value_bubbles);
-                    sciantix_variable[system.getGasName() + " in grain"].setFinalValue(initial_value_solution +
+                    sciantix_variable[system.getFissionProductName() + " in grain"].setFinalValue(initial_value_solution +
                                                                                        initial_value_bubbles);
                 }
                 else if (system.getRestructuredMatrix() == 1)
                 {
-                    sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(0.0);
+                    sciantix_variable[system.getFissionProductName() + " in grain HBS"].setFinalValue(0.0);
                 }
                 break;
             }
@@ -131,7 +134,7 @@ void Simulation::GasDiffusion()
                                            getDiffusionModesSolution("Xe"),
                                            getDiffusionModesBubbles("Xe"),
                                            getDiffusionModes("Xe in HBS"),
-                                           model["Gas diffusion - Xe in UO2 with HBS"].getParameter(),
+                                           model["Intragranular diffusion - Xe in UO2 with HBS"].getParameter(),
                                            physics_variable["Time step"].getFinalValue());
 
         sciantix_variable["Xe in grain"].setFinalValue(initial_value_solution + initial_value_bubbles);
@@ -142,46 +145,79 @@ void Simulation::GasDiffusion()
         sciantix_variable["Intragranular gas solution swelling"].setFinalValue(
             (sciantix_variable["Xe in intragranular solution"].getFinalValue() +
              sciantix_variable["Xe in grain HBS"].getFinalValue()) *
+             // CODE DEVELOPMENT : GENERALIZATION FROM UO2 TO ALL MATRICES
             pow(matrices["UO2"].getLatticeParameter(), 3) / 4);
     }
 
-    // Calculation of the gas concentration at grain boundary, by mass balance
+    // Calculation of the fission product concentration at grain boundary, by mass balance
     for (auto& system : sciantix_system)
     {
-        if (system.getRestructuredMatrix() == 0)
+        if (system.getRestructuredMatrix() == 0 && system.isGasFP())
         {
-            sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-                sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " released"].getInitialValue());
+            sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(
+                sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " released"].getInitialValue());
 
-            if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
-                sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
+            if (sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue() < 0.0)
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(0.0);
         }
+        
+        if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
+        {            
+            sciantix_variable[system.getFissionProductName() + " reacted - GB"].setFinalValue(
+                sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " released"].getInitialValue());
+
+            
+            if (sciantix_variable[system.getFissionProductName() + " reacted - GB"].getFinalValue() < 0.0)
+                sciantix_variable[system.getFissionProductName() + " reacted - GB"].setFinalValue(0.0);
+
+        }
+        // 
     }
 
     /**
      * @brief If **iGrainBoundaryBehaviour = 0** (e.g., no grain-boundary bubbles),
-     * fission gases at grain boundary is immediately released.
+     * fission products at grain boundary are immediately released.
      *
      */
     if (input_variable["iGrainBoundaryBehaviour"].getValue() == 0)
     {
         for (auto& system : sciantix_system)
         {
-            if (system.getRestructuredMatrix() == 0)
+            if (system.getRestructuredMatrix() == 0 && system.isGasFP())
             {
                 {
-                    sciantix_variable[system.getGasName() + " at grain boundary"].setInitialValue(0.0);
-                    sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
+                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].setInitialValue(0.0);
+                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(0.0);
 
-                    sciantix_variable[system.getGasName() + " released"].setFinalValue(
-                        sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
-                        sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                        sciantix_variable[system.getGasName() + " in grain"].getFinalValue());
+                    sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(
+                        sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
+                        sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
+                        sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue()
+                    );
                 }
             }
+
+            if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
+            {
+                {
+                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].setInitialValue(0.0);
+                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(0.0);
+
+                    sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(
+                        sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
+                        sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
+                        sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue()
+                    );
+                }
+            }
+            //
         }
     }
 }
@@ -192,25 +228,28 @@ void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system, Sc
 
     for (auto& system : sciantix_system)
     {
+        if (!system.isGasOrVolatileFP())
+            continue;
+
         Model model_;
-        model_.setName("Gas diffusion - " + system.getName());
+        model_.setName("Intragranular diffusion - " + system.getName());
         model_.setRef(reference);
 
         std::vector<double> parameters;
         parameters.push_back(n_modes);
-        double gasDiffusivity;
+        double FPsDiffusivity;
         if (system.getResolutionRate() + system.getTrappingRate() == 0)
-            gasDiffusivity = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
+            FPsDiffusivity = system.getFissionProductDiffusivity() * system.getFissionProduct().getPrecursorFactor();
         else
-            gasDiffusivity = (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) *
-                                 system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
+            FPsDiffusivity = (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) *
+                                 system.getFissionProductDiffusivity() * system.getFissionProduct().getPrecursorFactor() +
                              (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) *
                                  system.getBubbleDiffusivity();
 
-        parameters.push_back(gasDiffusivity);
+        parameters.push_back(FPsDiffusivity);
         parameters.push_back(system.getMatrix().getGrainRadius());
         parameters.push_back(system.getProductionRate());
-        parameters.push_back(system.getGas().getDecayRate());
+        parameters.push_back(system.getFissionProduct().getDecayRate());
 
         model_.setParameter(parameters);
         model.push(model_);
@@ -223,21 +262,24 @@ void defineSpectralDiffusion2Equations(SciantixArray<System>& sciantix_system, S
 
     for (auto& system : sciantix_system)
     {
+        if (!system.isGasOrVolatileFP())
+            continue;
+
         Model model_;
-        model_.setName("Gas diffusion - " + system.getName());
+        model_.setName("Intragranular diffusion - " + system.getName());
         model_.setRef(reference);
 
         std::vector<double> parameters;
 
         parameters.push_back(n_modes);
-        parameters.push_back(system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor());
+        parameters.push_back(system.getFissionProductDiffusivity() * system.getFissionProduct().getPrecursorFactor());
         parameters.push_back(system.getBubbleDiffusivity());
         parameters.push_back(system.getMatrix().getGrainRadius());
         parameters.push_back(system.getProductionRate());
         parameters.push_back(0.0);
         parameters.push_back(system.getResolutionRate());
         parameters.push_back(system.getTrappingRate());
-        parameters.push_back(system.getGas().getDecayRate());
+        parameters.push_back(system.getFissionProduct().getDecayRate());
 
         model_.setParameter(parameters);
         model.push(model_);
@@ -253,7 +295,7 @@ void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_
     std::string reference;
 
     Model model_;
-    model_.setName("Gas diffusion - Xe in UO2 with HBS");
+    model_.setName("Intragranular diffusion - Xe in UO2 with HBS");
     model_.setRef(reference);
 
     std::vector<double> parameters;
@@ -263,10 +305,10 @@ void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_
     System xe_in_uo2_(sciantix_system["Xe in UO2"]);
     System xe_in_uo2hbs_(sciantix_system["Xe in UO2HBS"]);
 
-    parameters.push_back(xe_in_uo2_.getGas().getPrecursorFactor() * xe_in_uo2_.getFissionGasDiffusivity() /
+    parameters.push_back(xe_in_uo2_.getFissionProduct().getPrecursorFactor() * xe_in_uo2_.getFissionProductDiffusivity() /
                          (pow(xe_in_uo2_.getMatrix().getGrainRadius(), 2)));
     parameters.push_back(0.0);
-    parameters.push_back(xe_in_uo2hbs_.getFissionGasDiffusivity() /
+    parameters.push_back(xe_in_uo2hbs_.getFissionProductDiffusivity() /
                          (pow(xe_in_uo2hbs_.getMatrix().getGrainRadius(), 2)));
 
     parameters.push_back(1.0);
@@ -277,7 +319,7 @@ void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_
 
     parameters.push_back(xe_in_uo2_.getResolutionRate());
     parameters.push_back(xe_in_uo2_.getTrappingRate());
-    parameters.push_back(xe_in_uo2_.getGas().getDecayRate());
+    parameters.push_back(xe_in_uo2_.getFissionProduct().getDecayRate());
 
     double sweeping_term(0.0);
     if (physics_variable["Time step"].getFinalValue())
