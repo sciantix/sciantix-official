@@ -215,6 +215,31 @@ dove:
 - $\frac{N_d}{\rho_d}\frac{\partial \rho_d}{\partial t}$ descrive la variazione di $N_d$ dovuta all’evoluzione della densità di dislocazioni;
 - $-4\lambda N_d^2 \frac{dV_d}{dt}$ descrive la diminuzione di $N_d$ dovuta alla coalescenza delle bolle su dislocazioni.
 
+ Fattore di coalescenza per bolle su dislocazioni
+
+Il fattore correttivo per la coalescenza tra bolle su dislocazioni è:
+
+$$
+\lambda =
+\frac{2-\xi}{2(1-\xi)^3}
+$$
+
+dove:
+
+$$
+\xi =
+V_d N_d
+$$
+
+cioè:
+
+$$
+\xi =
+\frac{4}{3}\pi R_d^3 N_d
+$$
+
+Qui $\xi$ rappresenta la porosità intragranulare associata alla popolazione di bolle su dislocazioni.
+
 Nel modello di Rizk, la densità iniziale di bolle su dislocazioni è legata alla densità di dislocazioni:
 
 $$
@@ -771,7 +796,8 @@ e:
 - $\nu$ = coefficiente di Poisson
 - $b$ = modulo del vettore di Burgers
 - $R$ = raggio bolla
-
+---
+it is not utilized in the current bubble growth model, but is instructive for future model development
 ## Bolle ai bordi di grano
 
 Rizk include anche una popolazione intergranulare, indicata come grain-face bubbles.
@@ -812,6 +838,8 @@ con:
 $$
 \theta = 59^\circ
 $$
+
+From MD calculations, where θ is semi-dihedral angle of the bubble, which is calculated using the ratio of grain boundary and surface energies.
 
 La saturazione/interconnessione è assunta quando:
 
