@@ -33,7 +33,5 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputChromiumContent,
                                                          bool   toFMP,
                                                          bool   toOutputCm);
-            
-                                                 
 
 std::vector<std::string> getScalingFactorsNames();

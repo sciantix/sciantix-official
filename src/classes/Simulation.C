@@ -88,5 +88,4 @@ void Simulation::execute()
     InterGranularBubbleBehavior();
 
     GasRelease();
-
 }
