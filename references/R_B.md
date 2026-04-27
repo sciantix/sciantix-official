@@ -56,15 +56,23 @@ $$\left(\frac{R}{B}\right)_{\text{Turnbull}} \;=\; 3\left[\frac{1}{\sqrt\mu}\,\c
 
 Let us evaluate the SCIANTIX cumulative ratio `R/(P−D)` at radioactive equilibrium under constant fission rate `F` and temperature `T`, for `iGrainBoundaryBehaviour = 0`.
 
-**Step 1 - solve `D(t)` analytically.** With `P(t) = yF·t` (constant `F`, zero initial inventory), the linear ODE `dD/dt + λD = λyF·t` admits the exact solution
+**Step 1 - solve `D(t)` analytically.** Assume constant fission rate `F` and zero initial inventory, so that `P(t) = yF · t`. The decay ODE in [`GasDecay.C`](src/models/GasDecay.C#L26-L30) reads
 
-$$D(t) \;=\; yF\,t \;-\; \frac{yF}{\lambda}\bigl(1 - e^{-\lambda t}\bigr)$$
+$$\frac{dD}{dt} + \lambda\,D \;=\; \lambda\,yF\,t$$
 
-so that
+and the exact solution is
 
-$$P(t) - D(t) \;=\; \frac{yF}{\lambda}\bigl(1 - e^{-\lambda t}\bigr) \;\xrightarrow[\lambda t \gg 1]{}\; \frac{yF}{\lambda} \tag{3}$$
+$$D(t) \;=\; yF\,t \;-\; \frac{yF}{\lambda}\,\bigl(1 - e^{-\lambda t}\bigr).$$
 
-That is, at radioactive equilibrium `(P − D) → yF/λ`, a *constant*. (Notice this is the same as the secular-equilibrium inventory `λN_eq = yF` would give *if release were absent*. With release, eq. (1) shows the difference is exactly `Ṙ_eq/λ`; see step 3.)
+Subtracting from `P(t)`:
+
+$$P(t) - D(t) \;=\; \frac{yF}{\lambda}\,\bigl(1 - e^{-\lambda t}\bigr).$$
+
+In the radioactive-equilibrium limit `λt ≫ 1` the exponential term vanishes, and we obtain the central identity used in the rest of the proof:
+
+$$P(t) - D(t) \;\longrightarrow\; \frac{yF}{\lambda} \qquad (\lambda t \gg 1). \tag{3}$$
+
+That is, at radioactive equilibrium `(P − D) → yF/λ`, a *constant*. (This is the same as the secular-equilibrium inventory `λN_eq = yF` would give *if release were absent*. With release, eq. (1) shows the difference is exactly `Ṙ_eq/λ`; see Step 3.)
 
 **Step 2 - apply the SCIANTIX closure.** From [`GasDiffusion.C:179-182`](src/models/GasDiffusion.C#L179-L182),
 
