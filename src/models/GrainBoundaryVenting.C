@@ -16,7 +16,7 @@
 
 #include "Simulation.h"
 
-void Simulation::GrainBoundaryVenting()
+void Simulation::GrainBoundaryVenting() // qui i gas e i volatili, cerca di unificare. no i metallici!
 {
     if (!int(input_variable["iGrainBoundaryVenting"].getValue()))
         return;
@@ -103,10 +103,13 @@ void Simulation::GrainBoundaryVenting()
 
     for (auto& system : sciantix_system)
     {
-        sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-            solver.Integrator(sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue(),
+        if (!system.isGasOrVolatileFP())
+            continue;
+
+        sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(
+            solver.Integrator(sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue(),
                               -sciantix_variable["Intergranular venting probability"].getFinalValue(),
-                              sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement()));
+                              sciantix_variable[system.getFissionProductName() + " at grain boundary"].getIncrement()));
     }
 }
 

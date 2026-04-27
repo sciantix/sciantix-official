@@ -16,22 +16,37 @@
 
 #include "Simulation.h"
 
-void Simulation::GasRelease()
+void Simulation::FissionProductRelease() // qui tutti i gas (hanno la scrittura come chimicamente attivi nulli)+ i volatili (ora chimicamente attivi 1), cerca di unificare. no i metallici!
 {
-    // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
+    // Calculation of the fission product concentration arrived at the grain boundary, by mass balance.
     for (auto& system : sciantix_system)
     {
-        if (system.getRestructuredMatrix() == 0)
+        if (system.getRestructuredMatrix() == 0 && system.isGasFP())
         {
-            sciantix_variable[system.getGasName() + " released"].setFinalValue(
-                sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue());
+            sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(
+                sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue()
+            );
 
-            if (sciantix_variable[system.getGasName() + " released"].getFinalValue() < 0.0)
-                sciantix_variable[system.getGasName() + " released"].setFinalValue(0.0);
+            if (sciantix_variable[system.getFissionProductName() + " released"].getFinalValue() < 0.0)
+                sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(0.0);
         }
+        if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
+        {
+            sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(
+                sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " reacted - GB"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue()
+            );
+
+            if (sciantix_variable[system.getFissionProductName() + " released"].getFinalValue() < 0.0)
+                sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(0.0);
+        }
+        //
     }
 
     // Intergranular gaseous swelling
@@ -50,11 +65,6 @@ void Simulation::GasRelease()
 
     // Release-to-birth ratio: Xe133
     // Note that R/B is not defined with a null fission rate.
-    // At radioactive equilibrium in the intra-granular Booth limit, this cumulative ratio
-    // is identically equal to the Turnbull / ANS-5.4 rate-ratio R/B = Rdot / yF, because
-    // (produced - decayed) tends to yF/lambda and `released` is closed by mass balance
-    // (GasDiffusion.C) so the global decay accounting in `decayed` applies to it as well.
-    // See R_B.md for the proof and the numerical verification on test_CONTACT1.
     if (sciantix_variable["Xe133 produced"].getFinalValue() - sciantix_variable["Xe133 decayed"].getFinalValue() > 0.0)
         sciantix_variable["Xe133 R/B"].setFinalValue(
             sciantix_variable["Xe133 released"].getFinalValue() /
@@ -64,7 +74,6 @@ void Simulation::GasRelease()
 
     // Release-to-birth ratio: Kr85m
     // Note that R/B is not defined with a null fission rate.
-    // Same Turnbull-equivalence argument as for Xe133 R/B above; see R_B.md.
     if (sciantix_variable["Kr85m produced"].getFinalValue() - sciantix_variable["Kr85m decayed"].getFinalValue() > 0.0)
         sciantix_variable["Kr85m R/B"].setFinalValue(
             sciantix_variable["Kr85m released"].getFinalValue() /

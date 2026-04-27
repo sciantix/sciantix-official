@@ -14,8 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GAS_DIFFUSION_H
-#define GAS_DIFFUSION_H
+#ifndef INTRAGRANULAR_DIFFUSION_H
+#define INTRAGRANULAR_DIFFUSION_H
 
 #include "Simulation.h"
 
@@ -27,7 +27,7 @@
  * @author G. Zullo
  *
  */
-void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes);
+void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes);
 
 /**
  * @brief Defines diffusion models using the spectral diffusion with two equations.
@@ -62,4 +62,4 @@ void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_
  */
 void errorHandling(SciantixArray<InputVariable> input_variable);
 
-#endif  // GAS_DIFFUSION_H
+#endif  // INTRAGRANULAR_DIFFUSION_H

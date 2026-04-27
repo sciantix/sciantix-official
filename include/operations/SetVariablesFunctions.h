@@ -8,28 +8,50 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
+//  Version: 2.2.1                                                                  //
 //  Year: 2025                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "SciantixVariable.h"
+#ifndef SET_VARIABLES_FUNCTIONS_H
+#define SET_VARIABLES_FUNCTIONS_H
+
 #include <vector>
+
+#include "SciantixVariable.h"
+#include "ThermochemistryManifest.h"
+#include "ThermochemistryVariable.h"
 
 std::vector<std::string> getInputVariableNames();
 
-std::vector<SciantixVariable>
-initializeHistoryVariable(double Sciantix_history[], double Sciantix_scaling_factors[], bool toOutput);
+std::vector<SciantixVariable> initializeHistoryVariable(
+    double Sciantix_history[],
+    double Sciantix_scaling_factors[],
+    bool toOutputStoichiometryDeviation,
+    bool toOutputThermochimica,
+    bool toOutputPrescribedOMRatio
+);
 
-std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variables[],
-                                                         bool   toOutputRadioactiveFG,
-                                                         bool   toOutputVenting,
-                                                         bool   toOutputHelium,
-                                                         bool   toOutputCracking,
-                                                         bool   toOutputGrainBoundary,
-                                                         bool   toOutputHighBurnupStructure,
-                                                         bool   toOutputStoichiometryDeviation,
-                                                         bool   toOutputChromiumContent);
+std::vector<SciantixVariable> initializeSciantixVariable(
+    double Sciantix_variables[],
+    bool toOutputRadioactiveFG,
+    bool toOutputVenting,
+    bool toOutputHelium,
+    bool toOutputCracking,
+    bool toOutputGrainBoundary,
+    bool toOutputHighBurnupStructure,
+    bool toOutputStoichiometryDeviation,
+    bool toOutputChromiumContent,
+    bool toOutputThermochimica,
+    bool toOutputMOX
+);
+
+std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
+    const std::vector<ThermochemistryManifestEntry>& manifest,
+    double Sciantix_thermochemistry[]
+);
 
 std::vector<std::string> getScalingFactorsNames();
+
+#endif

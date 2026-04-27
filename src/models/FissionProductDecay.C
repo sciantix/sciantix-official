@@ -14,58 +14,20 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "SetGas.h"
 #include "Simulation.h"
 
-void Simulation::setGas()
+void Simulation::FissionProductDecay()
 {
-    xenon(gas);
-    krypton(gas);
-    helium(gas);
-}
-
-void xenon(SciantixArray<Gas>& gas)
-{
-    Gas gas_;
-    gas_.setName("Xe");
-    gas_.setAtomicNumber(54);
-    gas_.setMassNumber(135);
-    gas_.setVanDerWaalsVolume(8.48e-29);
-    gas_.setDecayRate(0.0);
-    gas_.setPrecursorFactor(1.00);
-    gas.push(gas_);
-
-    gas_.setName("Xe133");
-    gas_.setMassNumber(133);
-    gas_.setDecayRate(1.53e-6);
-    gas_.setPrecursorFactor(1.25);
-    gas.push(gas_);
-}
-
-void krypton(SciantixArray<Gas>& gas)
-{
-    Gas gas_;
-    gas_.setName("Kr");
-    gas_.setAtomicNumber(36);
-    gas_.setVanDerWaalsVolume(6.61e-29);
-    gas_.setDecayRate(0.0);
-    gas_.setPrecursorFactor(1.00);
-    gas.push(gas_);
-
-    gas_.setName("Kr85m");
-    gas_.setMassNumber(85);
-    gas_.setDecayRate(4.3e-5);
-    gas_.setPrecursorFactor(1.31);
-    gas.push(gas_);
-}
-
-void helium(SciantixArray<Gas>& gas)
-{
-    Gas gas_;
-    gas_.setName("He");
-    gas_.setAtomicNumber(2);
-    gas_.setVanDerWaalsVolume(9.97e-30);
-    gas_.setDecayRate(0.0);
-    gas_.setPrecursorFactor(1.00);
-    gas.push(gas_);
+    // Model declaration
+    for (auto& system : sciantix_system) // qui tutti i FPs
+    {
+        if (system.getFissionProduct().getDecayRate() > 0.0 && system.getRestructuredMatrix() == 0)
+        {
+            sciantix_variable[system.getFissionProductName() + " decayed"].setFinalValue(solver.Decay(
+                sciantix_variable[system.getFissionProductName() + " decayed"].getInitialValue(),
+                system.getFissionProduct().getDecayRate(),
+                system.getFissionProduct().getDecayRate() * sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue(),
+                physics_variable["Time step"].getFinalValue()));
+        }
+    }
 }

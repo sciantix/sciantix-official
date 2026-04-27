@@ -22,6 +22,8 @@
 #include "InputVariable.h"
 #include "SciantixArray.h"
 #include "SetVariablesFunctions.h"
+#include "ThermochemistrySettings.h"
+#include "ThermochemistryVariable.h"
 
 /**
  * @brief This routine initializes vectors that hold physics variables, history variables,
@@ -37,6 +39,9 @@
  * model.
  * @param Sciantix_diffusion_modes Array of doubles that describe diffusion modes used in gas
  * behavior modeling.
+ * @param Sciantix_thermochemistry Array of doubles representing the variables related to the thermochemistry module.
+ * @param Sciantix_thermochemistry_settings Thermochemistry module options.
+
  * @param input_variable Reference to SciantixArray of InputVariable objects.
  * @param history_variable Reference to SciantixArray of SciantixVariable objects for history tracking.
  * @param sciantix_variable Reference to SciantixArray of SciantixVariable objects.
@@ -55,11 +60,15 @@ void SetVariables(int                              Sciantix_options[],
                   double                           Sciantix_variables[],
                   double                           Sciantix_scaling_factors[],
                   double                           Sciantix_diffusion_modes[],
+                  double                           Sciantix_thermochemistry[],
+                  const ThermochemistrySettings&    Sciantix_thermochemistry_settings,
                   SciantixArray<InputVariable>&    input_variable,
                   SciantixArray<SciantixVariable>& history_variable,
                   SciantixArray<SciantixVariable>& sciantix_variable,
                   SciantixArray<SciantixVariable>& physics_variable,
                   std::vector<double>&             modes_initial_conditions,
-                  SciantixArray<Variable>&         scaling_factors);
+                  SciantixArray<Variable>&         scaling_factors,
+                  SciantixArray<ThermochemistryVariable> &thermochemistry_variable
+);
 
 #endif
