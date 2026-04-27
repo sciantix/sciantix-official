@@ -40,7 +40,7 @@ $$
 
 $$
 g_d = 4\pi D_g R_d N_d
-+\frac{2\pi D_g}{\ln\left(\frac{\Gamma_d}{ Z_d r_d }\right)-\frac{5}{3}}
++\frac{2\pi D_g}{\ln\left(\frac{\Gamma_d}{ Z_d r_d }\right)-\frac{3}{5}}
   (\rho_d - 2R_d N_d)
   $$
 
