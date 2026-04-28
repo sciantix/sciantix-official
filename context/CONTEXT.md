@@ -309,19 +309,20 @@ printf '1\n6\n0\n1\n' | python3 regression.py   # with plots (8 PNGs)
 ```
 
 ### Expected baseline values
-After the §15.14-§15.15 calibration changes (σ_h ramp 0 → −70 MPa, ξ_sat = 0.18, γ_p = 1.1 N/m, σ_h reflects Tas-Ergun 2013 normal-operation PCMI) the regression now produces:
+After the §15.14-§15.15 calibration changes (σ_h ramp 0 → −70 MPa, ξ_sat = 0.18, γ_p = 1.1 N/m, σ_h reflects Tas-Ergun 2013 normal-operation PCMI) and the §15.16 irradiation-time extension (74 000 → 84 000 h, EoL burnup ~229 MWd/kgHM), the regression now produces:
 
 | bu (MWd/kgHM) | porosity | N_p (1/m³) | R_p (m) |
 |---|---|---|---|
-| 50 | ~0.008 | ~5×10¹⁶ | ~330 nm |
-| 75 | ~0.065 | ~3×10¹⁷ | ~375 nm |
-| 100 | ~0.15 | ~5.3×10¹⁷ (peak) | ~405 nm |
-| 125 | ~0.16 | ~5.0×10¹⁷ | ~425 nm |
-| 150 | ~0.16 | ~3.6×10¹⁷ | ~470 nm |
-| 175 | ~0.16 | ~2.6×10¹⁷ | ~530 nm |
-| 200 | ~0.16 | ~1.9×10¹⁷ | ~585 nm |
+| 50 | ~0.008 | ~5×10¹⁶ | ~340 nm |
+| 75 | ~0.07 | ~3×10¹⁷ | ~380 nm |
+| 100 | ~0.15 | ~5.3×10¹⁷ | ~410 nm |
+| 125 | ~0.16 | ~5.1×10¹⁷ (peak) | ~425 nm |
+| 150 | ~0.16 | ~3.7×10¹⁷ | ~470 nm |
+| 175 | ~0.16 | ~2.6×10¹⁷ | ~525 nm |
+| 200 | ~0.16 | ~2.0×10¹⁷ | ~580 nm |
+| 225 | ~0.17 | ~1.6×10¹⁷ | ~630 nm |
 
-Asymptote settles at ξ ≈ 0.16, comfortably below the cap ξ_sat = 0.18 and inside the Spino-Cappia experimental envelope (0.15-0.20). N_p peak ~5×10¹⁷ at bu ≈ 100-125 MWd/kgHM, declining smoothly post-peak. R_p grows monotonically through end-of-life. Compared to the pre-§15.14 baseline (constant σ_h = −20 MPa for the semi-empirical, ramp 0 → −150 MPa for the production model), the new asymptote is lower because the much-less-compressive σ_h endpoint removes the "free" Speight-Beere suppression that the old −150 MPa ramp delivered at high burnup; ξ_sat = 0.18 + γ_p = 1.1 partially compensate, landing the curve in the lower-middle of the experimental envelope.
+Asymptote settles at ξ ≈ 0.16-0.17, comfortably below the cap ξ_sat = 0.18 and inside the Spino-Cappia experimental envelope (0.15-0.20). N_p peak ~5×10¹⁷ at bu ≈ 125 MWd/kgHM, declining smoothly post-peak. R_p grows monotonically through end-of-life (~630 nm at 225 MWd/kgHM).
 
 ### Radial test
 ```bash
@@ -525,6 +526,7 @@ Cross-check pass: production code (formation case 1/2, porosity case 2, `Matrix.
 13. **`branch` → `curve` for plot-line references** ([main.tex:427], 2 occurrences: "The NR branch follows..." and "the HBS branch settles..."). `branch` reads as bifurcation-theory jargon when really we just mean "the NR-component plotted line". `curve` is plain English and matches what readers of fuel-performance papers expect. Logged as the second entry in the §13.20 synonym list.
 14. **Hydrostatic-stress history aligned across both test cases** ([test_UO2HBS/input_history.txt], [test_UO2HBS_0/input_history.txt], [main.tex:418, 532]). The previous setup was inconsistent: `test_UO2HBS` ramped 0 → −150 MPa over 74 000 h while `test_UO2HBS_0` (the semi-empirical reference) was constant at −20 MPa, and the paper text claimed `σ_h = 20 MPa` constant — neither matched the actual `test_UO2HBS` simulation. Both input files are now identical: linear ramp from 0 (start of irradiation) to **−70 MPa** (end of life). The −70 MPa endpoint is the upper bound of the 40-70 MPa contact-pressure range reported by Tas and Ergun 2013 from FRAPCON steady-state analyses for high-burnup PWR rods under normal operation; consistent with the broader PCMI envelope (Capps 2021 critical review, Michel et al. 2008 3D FEM contact-pressure 70-84 MPa, FRAPCON-4.0 hoop-stress range −75 to +110 MPa in-pile). Three new bib entries added by user: `tasEffectsPellettocladdingGap2013`, `michel3DFuelCracking2008`; `cappsCriticalReviewHigh2021` was already present. Both simulations now share the same boundary conditions, so the only difference between the "this work" and "semi-empirical" plotted curves is the model formulation, which is a cleaner experimental design. Regression re-run, gold files refreshed, plots regenerated; new baseline table in §6. Paper text rewritten at line 418 (§3 Results intro) — primary citation Tas-Ergun 2013, supporting Capps 2021 + Michel 2008 — and at line 532 (§3.6 Xe inventory). Build clean: 4 cosmetic overfulls (line 417-419 dropped 12 → 2.7 pt as text reflowed).
 15. **`ξ_sat` lowered 0.22 → 0.20 → 0.18 and `γ_p` raised 1.0 → 1.1 N/m to compensate the higher vacancy driving force at the new σ_h** ([HighBurnupStructurePorosity.C:98], [SetMatrix.C:81], [main.tex Table 1 rows 232-233, Eq. 22, §3.4 narrative line 459]). Once `σ_h` was reduced from −150 to −70 MPa (§15.14), the Speight-Beere driving force `p_P − p_P^eq` increased and porosity rose above the experimental envelope. First attempt with `ξ_sat = 0.20` alone proved insufficient because `ξ_sat` shifts the asymptote but only marginally moves the mid-burnup curve (`F_sat` changes by 5-15% at ξ ≈ 0.10). Final choice: `ξ_sat = 0.18` (centre of the Spino-Cappia experimental envelope 0.15-0.20) combined with `γ_p = 1.1 N/m` (upper part of UO₂ surface-energy literature scatter, 0.7-1.2 N/m). User explicitly excluded `D_gb^v` (avoiding Frattini-thesis sensitivity work) and kept `σ_h` endpoint at −70 MPa (within Tas-Ergun 2013 normal-operation 40-70 MPa range). New Discussion subsection added: §5.3 "Key parameters of the saturation mechanism" (between Physical insights and Fission gas release), spelling out (a) `ξ_sat` controls both asymptote and intermediate-burnup slope of `ξ(bu)`, (b) `γ_p` is significant for early-restructuring small pores (R_p ≈ 50 nm gives capillary tens of MPa) but small at end-of-life (R_p ≈ 500 nm gives ~4 MPa), (c) `σ_h` acts on the same `p_P^eq` but is an irradiation-history input rather than a model parameter. Regression re-run with the new ξ_sat / γ_p / σ_h history, gold files refreshed, plots regenerated; resulting baseline table in §6 shows porosity asymptoting at ξ ≈ 0.16, inside the lower-middle of the Spino-Cappia experimental envelope.
+16. **Irradiation duration extended 74 000 h → 84 000 h** in both `test_UO2HBS/input_history.txt` and `test_UO2HBS_0/input_history.txt`. EoL burnup goes from ~201 → ~229 MWd/kgHM. σ_h ramp endpoint unchanged at −70 MPa, so the ramp is slightly slower (more time spent at low compressive stress per unit burnup increment). Curve shape preserved: same low-burnup behaviour, N_p peak shifts marginally to higher burnup (~125 vs ~100-125 MWd/kgHM previously, value still ~5.1×10¹⁷), porosity asymptote essentially unchanged at ξ ≈ 0.16-0.17. §6 expected-baseline table updated to include the bu = 225 MWd/kgHM row. Test `test_UO2HBS` gold file in sync; `test_UO2HBS_0` gold still differs from current output (refresh pending). Test `test_UO2HBS_dislocation` (out-of-scope per §13.10) was not modified — still 74 000 h, σ_h = −20 MPa constant.
 
 Build status: 44 pages, 0 undefined references, 6 cosmetic overfulls (was 5; +1 of 13.6 pt at line 364 from the new ν_P units extension — not worth reflowing).
 
