@@ -625,7 +625,7 @@ double MLThermochemicalModel(double                           stoichiometry_devi
 {
     (void)sciantix_variable;
 
-    const double input[] = {2.0 + stoichiometry_deviation, temperature};
+    const double input[]       = {2.0 + stoichiometry_deviation, temperature};
     const double raw_log10_po2 = ThermoSurrogate::predict_log10_po2(input);
 
     const double gas_constant = 8.3144626;
