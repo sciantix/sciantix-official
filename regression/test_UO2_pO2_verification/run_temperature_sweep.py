@@ -46,9 +46,25 @@ REFERENCE_PRESSURE_MPA = 0.1 # 1 bar
 BUILD_BINARY = SCRIPT_DIR.parent.parent / "build" / "sciantix.x"
 LOCAL_BINARY = SCRIPT_DIR / "sciantix.x"
 SUMMARY_PATH = SCRIPT_DIR / "temperature_sweep_summary.tsv"
-PRESSURE_PLOT_PATH = SCRIPT_DIR / "fuel_oxygen_partial_pressures_vs_ou_ratio.png"
-PRESSURE_PLOT_PATH_2 = SCRIPT_DIR / "fuel_oxygen_partial_pressures_vs_ou_ratio_2.png"
+PRESSURE_PLOT_PATH = SCRIPT_DIR / "fuel_oxygen_partial_pressures_OC_Blackburn_ML.png"
+PRESSURE_PAIR_PLOT_PATHS = {
+    ("OpenCalphad", "Blackburn"): SCRIPT_DIR / "fuel_oxygen_partial_pressures_OC_vs_Blackburn.png",
+    ("OpenCalphad", "ML"): SCRIPT_DIR / "fuel_oxygen_partial_pressures_OC_vs_ML.png",
+    ("Blackburn", "ML"): SCRIPT_DIR / "fuel_oxygen_partial_pressures_Blackburn_vs_ML.png",
+}
 POTENTIAL_PLOT_PATH = SCRIPT_DIR / "fuel_oxygen_potentials_vs_ou_ratio.png"
+
+PRESSURE_MODEL_COLUMNS = {
+    "Blackburn": "log10(SCIANTIX + Blackburn model pressure / reference)",
+    "ML": "log10(SCIANTIX + ML model pressure / reference)",
+    "OpenCalphad": "log10(SCIANTIX + OpenCalphad pressure / reference)",
+}
+
+PRESSURE_MODEL_STYLES = {
+    "OpenCalphad": {"linestyle": "-", "marker": None, "linewidth": 2.4, "alpha": 0.95},
+    "Blackburn": {"linestyle": "--", "marker": "^", "linewidth": 1.8, "alpha": 0.90},
+    "ML": {"linestyle": ":", "marker": "D", "linewidth": 2.2, "alpha": 0.95},
+}
 
 def ensure_local_binary() -> None:
     """Copy the up-to-date compiled SCIANTIX executable into this folder."""
@@ -167,111 +183,119 @@ def add_legends(ax, colors: dict[int, object], linestyles: dict[str, str], marke
     ax.add_artist(temperature_legend)
     ax.legend(handles=source_handles, loc="upper left", title="Model")
 
-def make_pressure_plot(frames: list[pd.DataFrame]) -> None:
-    """Plot oxygen partial pressure versus O/U ratio for all temperatures."""
-    fig, ax = plt.subplots()
-    colors, linestyles, markers = style_maps()
-    pressure_columns = {
-        "SCIANTIX + Blackburn model": "log10(SCIANTIX + Blackburn model pressure / reference)",
-        "SCIANTIX + ML model": "log10(SCIANTIX + ML model pressure / reference)",
-        "SCIANTIX + OpenCalphad": "log10(SCIANTIX + OpenCalphad pressure / reference)",
-    }
-
-    for frame in frames:
-        temperature_k = int(frame["Temperature (K)"].iloc[0])
-        for label, column in pressure_columns.items():
-            valid = frame.dropna(subset=[column])
-            if valid.empty:
-                continue
-
-            if label == "SCIANTIX + OpenCalphad":
-                ax.plot(
-                    valid["O/U ratio (/)"],
-                    valid[column],
-                    color=colors[temperature_k],
-                    linestyle="-",
-                    marker=markers[label],
-                )
-            else:
-                ax.scatter(
-                    valid["O/U ratio (/)"],
-                    valid[column],
-                    color=colors[temperature_k],
-                    marker=markers[label],
-                )
-
-    ax.set_xlabel("O/U ratio (-)")
-    ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
-    ax.grid(True, alpha=0.3)
-    add_legends(ax, colors, linestyles, markers)
-    ax.set_xlim([1.90, 2.20])
-    ax.set_ylim([-30, 0])
-    ax.set_yticks(range(-30, 0, 2))
-
-    fig.tight_layout()
-    fig.savefig(PRESSURE_PLOT_PATH)
-    plt.close(fig)
-
-    fig, ax = plt.subplots()
-    colors, linestyles, markers = style_maps()
-    pressure_columns = {
-        "SCIANTIX + Blackburn model": "log10(SCIANTIX + Blackburn model pressure / reference)",
-        "SCIANTIX + ML model": "log10(SCIANTIX + ML model pressure / reference)",
-        "SCIANTIX + OpenCalphad": "log10(SCIANTIX + OpenCalphad pressure / reference)",
-    }
-
-    for frame in frames:
-        temperature_k = int(frame["Temperature (K)"].iloc[0])
-        opencalphad_column = pressure_columns["SCIANTIX + OpenCalphad"]
-        for label in ("SCIANTIX + Blackburn model", "SCIANTIX + ML model"):
-            valid = frame.dropna(subset=[pressure_columns[label], opencalphad_column])
-            if valid.empty:
-                continue
-
-            ax.scatter(
-                valid["O/U ratio (/)"],
-                valid[pressure_columns[label]] - valid[opencalphad_column],
-                color=colors[temperature_k],
-                marker=markers[label],
-            )
-
-    ax.set_xlabel("O/U ratio (-)")
-    ax.set_ylabel(r"$\Delta\log_{10}(p_{O_2})$ (bar)")
-    ax.grid(True, alpha=0.3)
+def add_temperature_legend(ax, colors: dict[int, object], loc: str = "lower right") -> None:
+    """Add a compact temperature legend."""
     temperature_handles = [
-        Line2D([0], [0], color=colors[temperature_k], label=f"{temperature_k} K")
+        Line2D([0], [0], color=colors[temperature_k], lw=2, label=f"{temperature_k} K")
         for temperature_k in TEMPERATURES_K
     ]
-    temperature_legend = ax.legend(
-        handles=temperature_handles,
-        loc="lower left",
-        ncol=2,
-        title="Temperature"
-    )
+    temperature_legend = ax.legend(handles=temperature_handles, loc=loc, ncol=2, title="Temperature")
     ax.add_artist(temperature_legend)
+
+
+def add_pressure_model_legend(ax, models: tuple[str, ...], loc: str = "upper left") -> None:
+    """Add a model legend using only black handles, keeping colors for temperature."""
     model_handles = [
         Line2D(
             [0],
             [0],
             color="black",
-            linestyle="None",
-            marker=markers["SCIANTIX + Blackburn model"],
-            label="Blackburn - OpenCalphad",
-        ),
-        Line2D(
-            [0],
-            [0],
-            color="black",
-            linestyle="None",
-            marker=markers["SCIANTIX + ML model"],
-            label="ML - OpenCalphad",
-        ),
+            linestyle=PRESSURE_MODEL_STYLES[model]["linestyle"],
+            marker=PRESSURE_MODEL_STYLES[model]["marker"],
+            linewidth=PRESSURE_MODEL_STYLES[model]["linewidth"],
+            label=model,
+        )
+        for model in models
     ]
-    ax.legend(handles=model_handles, loc="upper left", title="Model")
+    ax.legend(handles=model_handles, loc=loc, title="Model")
+
+
+def plot_pressure_model(ax, frame: pd.DataFrame, model: str, color: object) -> None:
+    """Draw one model for one temperature."""
+    column = PRESSURE_MODEL_COLUMNS[model]
+    valid = frame.dropna(subset=[column]).sort_values("O/U ratio (/)")
+    if valid.empty:
+        return
+
+    style = PRESSURE_MODEL_STYLES[model]
+    marker = style["marker"]
+    markevery = max(1, len(valid) // 12) if marker is not None else None
+    ax.plot(
+        valid["O/U ratio (/)"],
+        valid[column],
+        color=color,
+        linestyle=style["linestyle"],
+        marker=marker,
+        markevery=markevery,
+        linewidth=style["linewidth"],
+        alpha=style["alpha"],
+    )
+
+
+def format_pressure_axis(ax, title: str) -> None:
+    """Apply shared axis formatting for pO2 plots."""
+    ax.set_title(title)
+    ax.set_xlabel("O/U ratio (-)")
+    ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
     ax.set_xlim([1.90, 2.20])
+    ax.set_ylim([-30, 0])
+    ax.set_yticks(range(-30, 2, 2))
+    ax.grid(True, alpha=0.3)
+
+
+def make_pressure_pair_plot(
+    frames: list[pd.DataFrame],
+    colors: dict[int, object],
+    first_model: str,
+    second_model: str,
+    output_path: Path,
+) -> None:
+    """Plot a cleaner two-model pO2 comparison."""
+    fig, ax = plt.subplots(figsize=(10, 6.5))
+    models = (first_model, second_model)
+
+    for frame in frames:
+        temperature_k = int(frame["Temperature (K)"].iloc[0])
+        for model in models:
+            plot_pressure_model(ax, frame, model, colors[temperature_k])
+
+    format_pressure_axis(ax, f"{first_model} vs {second_model}")
+    add_temperature_legend(ax, colors, loc="lower right")
+    add_pressure_model_legend(ax, models, loc="upper left")
 
     fig.tight_layout()
-    fig.savefig(PRESSURE_PLOT_PATH_2)
+    fig.savefig(output_path)
+    plt.close(fig)
+
+
+def make_pressure_plot(frames: list[pd.DataFrame]) -> None:
+    """Plot oxygen partial pressure comparisons versus O/U ratio."""
+    colors, _, _ = style_maps()
+
+    for models, output_path in PRESSURE_PAIR_PLOT_PATHS.items():
+        make_pressure_pair_plot(frames, colors, models[0], models[1], output_path)
+
+    models = ("OpenCalphad", "Blackburn", "ML")
+    fig, axes = plt.subplots(len(models), 1, figsize=(10, 12), sharex=True, sharey=True)
+    for ax, model in zip(axes, models):
+        for frame in frames:
+            temperature_k = int(frame["Temperature (K)"].iloc[0])
+            plot_pressure_model(ax, frame, model, colors[temperature_k])
+
+        format_pressure_axis(ax, model)
+
+    axes[-1].set_xlabel("O/U ratio (-)")
+    for ax in axes[:-1]:
+        ax.set_xlabel("")
+
+    temperature_handles = [
+        Line2D([0], [0], color=colors[temperature_k], lw=2, label=f"{temperature_k} K")
+        for temperature_k in TEMPERATURES_K
+    ]
+    axes[-1].legend(handles=temperature_handles, loc="lower right", ncol=2, title="Temperature")
+
+    fig.tight_layout()
+    fig.savefig(PRESSURE_PLOT_PATH)
     plt.close(fig)
 
 def make_potential_plot(frames: list[pd.DataFrame]) -> None:
