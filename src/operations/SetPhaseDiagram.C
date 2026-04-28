@@ -258,8 +258,6 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         }    
     }
 
-    OCUtilsCoupling::dumpParsedOcOutput(output_data);
-
     OCUtilsCoupling::updateThermochemistryVariablesFromOutput(
         output_data.solution_phases,
         location,
