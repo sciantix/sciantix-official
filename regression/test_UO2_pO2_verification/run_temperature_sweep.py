@@ -108,11 +108,21 @@ def prepare_case(case_dir: Path, temperature_k: int, input_files: list[Path]) ->
 
 def run_case(case_dir: Path) -> None:
     """Execute SCIANTIX for one prepared case directory."""
-    subprocess.run(
-        [str(LOCAL_BINARY), f"{case_dir.name}/"],
-        cwd=SCRIPT_DIR,
-        check=True,
-    )
+    try:
+        subprocess.run(
+            [str(LOCAL_BINARY), f"{case_dir.name}/"],
+            cwd=SCRIPT_DIR,
+            check=True,
+        )
+    finally:
+        remove_execution_file(case_dir)
+
+def remove_execution_file(case_dir: Path) -> None:
+    """Remove the transient timing file so reruns do not dirty the worktree."""
+    execution_path = case_dir / "execution.txt"
+    if execution_path.exists():
+        execution_path.unlink()
+        print(f"Removed transient timing file: {execution_path}", flush=True)
 
 def collect_case(case_dir: Path) -> pd.DataFrame:
     """Load a case output and derive the quantities used in the plots."""

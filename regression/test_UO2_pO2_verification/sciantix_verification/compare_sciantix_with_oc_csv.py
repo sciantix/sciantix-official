@@ -57,9 +57,7 @@ OU_MAX = 2.20
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 THERMOCALC_TEMPERATURES_DIR = SCRIPT_DIR.parent / "TEMPERATURES_THERMOCALC"
-SCIANTIX_SWEEP_PATH = Path(
-    "/home/ecappellari/transparant/sciantix-official/regression/test_UO2_pO2_verification/temperature_sweep_summary.tsv"
-)
+SCIANTIX_SWEEP_PATH = SCRIPT_DIR.parent / "temperature_sweep_summary.tsv"
 
 MERGED_OUTPUT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv.tsv"
 SUMMARY_OUTPUT_PATH = SCRIPT_DIR / "sciantix_vs_oc_csv_summary.tsv"
@@ -82,6 +80,8 @@ BLACKBURN_ABSOLUTE_LOG_PO2_ERROR_PLOT_PATH = (
 BLACKBURN_RELATIVE_LOG_PO2_ERROR_PLOT_PATH = (
     SCRIPT_DIR / "sciantix_vs_blackburn_formula_log_pO2_error_relative_percent.png"
 )
+GOLD_DIR = SCRIPT_DIR / "gold"
+GOLD_SUMMARY_TOLERANCE = 0.0
 
 
 def load_sciantix_data() -> pd.DataFrame:
@@ -506,6 +506,50 @@ def write_summary_report(title: str, frame: pd.DataFrame, summary: pd.DataFrame,
     output_path.write_text("\n".join(lines))
 
 
+def compare_summary_to_gold(summary_path: Path, gold_path: Path) -> None:
+    """Fail when aggregate verification metrics drift beyond the accepted tolerance."""
+    if not gold_path.is_file():
+        raise FileNotFoundError(f"Missing gold summary file: {gold_path}")
+
+    current = pd.read_csv(summary_path, sep="\t")
+    gold = pd.read_csv(gold_path, sep="\t")
+    if list(current.columns) != list(gold.columns):
+        raise RuntimeError(
+            f"Summary columns changed for {summary_path.name}.\n"
+            f"Current: {list(current.columns)}\n"
+            f"Gold:    {list(gold.columns)}"
+        )
+    if current.shape != gold.shape:
+        raise RuntimeError(
+            f"Summary shape changed for {summary_path.name}: current={current.shape}, gold={gold.shape}"
+        )
+
+    failures: list[str] = []
+    for column in current.columns:
+        if not pd.api.types.is_numeric_dtype(current[column]):
+            if not current[column].equals(gold[column]):
+                failures.append(f"{column}: non-numeric values changed")
+            continue
+
+        current_values = current[column].to_numpy(dtype=float)
+        gold_values = gold[column].to_numpy(dtype=float)
+        if not np.allclose(
+            current_values,
+            gold_values,
+            rtol=GOLD_SUMMARY_TOLERANCE,
+            atol=GOLD_SUMMARY_TOLERANCE,
+            equal_nan=True,
+        ):
+            max_diff = np.nanmax(np.abs(current_values - gold_values))
+            failures.append(f"{column}: max_abs_diff={max_diff:.6e}")
+
+    if failures:
+        details = "\n  - ".join(failures)
+        raise RuntimeError(f"Verification summary changed substantially for {summary_path.name}:\n  - {details}")
+
+    print(f"PASS: {summary_path.name} matches gold summary within tolerance {GOLD_SUMMARY_TOLERANCE:g}.")
+
+
 def plot_signed_log_partial_pressure_error(frame: pd.DataFrame) -> None:
     """Plot the signed SCIANTIX-versus-Thermo-Calc log10(pO2/p_ref) error."""
     temperatures = sorted(frame["Temperature (K)"].dropna().unique())
@@ -721,6 +765,7 @@ def main() -> None:
     aligned_frame.to_csv(MERGED_OUTPUT_PATH, sep="\t", index=False)
     summary = build_metric_summary(aligned_frame)
     summary.to_csv(SUMMARY_OUTPUT_PATH, sep="\t", index=False)
+    compare_summary_to_gold(SUMMARY_OUTPUT_PATH, GOLD_DIR / SUMMARY_OUTPUT_PATH.name)
     write_summary_report(
         "SCIANTIX vs Thermo-Calc CSV",
         aligned_frame,
@@ -737,6 +782,7 @@ def main() -> None:
     blackburn_aligned.to_csv(BLACKBURN_MERGED_OUTPUT_PATH, sep="\t", index=False)
     blackburn_summary = build_metric_summary(blackburn_aligned)
     blackburn_summary.to_csv(BLACKBURN_SUMMARY_OUTPUT_PATH, sep="\t", index=False)
+    compare_summary_to_gold(BLACKBURN_SUMMARY_OUTPUT_PATH, GOLD_DIR / BLACKBURN_SUMMARY_OUTPUT_PATH.name)
     write_summary_report(
         "SCIANTIX Blackburn output vs analytical Blackburn formula",
         blackburn_aligned,

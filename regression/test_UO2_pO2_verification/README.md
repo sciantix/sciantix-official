@@ -1,84 +1,107 @@
 # UO2 pO2 Verification
 
-This folder contains the verification workflow for the UO2 oxygen partial
-pressure and oxygen potential models implemented in SCIANTIX.
+This folder verifies the UO2 oxygen partial pressure and oxygen potential
+models in SCIANTIX. It runs a temperature sweep and compares SCIANTIX against external
+OpenCalphad/Thermo-Calc data and the Blackburn analytical correlation.
 
-## Verification Scope
+- the parent folder contains the input templates and the script that creates
+  all SCIANTIX cases;
+- the `800K`, `1000K`, ..., `2600K` folders are the actual generated cases;
+- `sciantix_verification/` compares the generated SCIANTIX summary with the
+  independent references.
 
-The UO2 workflow compares SCIANTIX against two external references:
+## Imposed History
 
-- Thermo-Calc/OpenCalphad point files in
-  `TEMPERATURES_THERMOCALC/` (`800.csv`, `1000.csv`, ..., `2600.csv`)
-- the analytical Blackburn correlation
+The template history is `input_history.txt`. Its columns are:
 
-## Workflow
+```text
+time (h)    temperature (K)    fission rate (fiss/m3/s)    hydrostatic stress (MPa)    system pressure (Pa)
+```
 
-The verification is split into two main steps.
+The template contains:
 
-1. `run_temperature_sweep.py`
-   - copies the template `input_*` files into one case directory per
-     temperature from `800 K` to `2700 K`
-   - updates the temperature prescribed in `input_history.txt`
-   - runs `sciantix.x` for each case
-   - collects all `output.txt` files into `temperature_sweep_summary.tsv`
-   - produces the parent-folder SCIANTIX sweep plots:
-     - `fuel_oxygen_partial_pressures_vs_ou_ratio.png`
-     - `fuel_oxygen_potentials_vs_ou_ratio.png`
+```text
+0      800    0    0    1e5
+300    800    0    0    1e5
+```
 
-2. `sciantix_verification/compare_sciantix_with_oc_csv.py`
-   - loads `temperature_sweep_summary.tsv`
-   - reads the reference CSV files
-     `TEMPERATURES_THERMOCALC/800.csv`, `1000.csv`, ..., `2600.csv`
-   - rebuilds the analytical Blackburn reference
-   - writes merged comparison tables and summary metrics:
-     - `sciantix_verification/sciantix_vs_oc_csv.tsv`
-     - `sciantix_verification/sciantix_vs_oc_csv_summary.tsv`
-     - `sciantix_verification/sciantix_vs_oc_csv_summary.txt`
-     - `sciantix_verification/sciantix_vs_blackburn_formula.tsv`
-     - `sciantix_verification/sciantix_vs_blackburn_formula_summary.tsv`
-     - `sciantix_verification/sciantix_vs_blackburn_formula_summary.txt`
-   - produces comparison plots between SCIANTIX and the two references:
-     - `sciantix_verification/sciantix_vs_oc_csv_pO2.png`
-     - `sciantix_verification/sciantix_vs_oc_csv_log_pO2_error.png`
-     - `sciantix_verification/sciantix_vs_oc_csv_log_pO2_error_absolute.png`
-     - `sciantix_verification/sciantix_vs_oc_csv_log_pO2_error_relative_percent.png`
-     - `sciantix_verification/sciantix_vs_oc_csv_linear_pO2_error.png`
-     - `sciantix_verification/sciantix_vs_oc_csv_linear_pO2_error_absolute.png`
-     - `sciantix_verification/sciantix_vs_oc_csv_linear_pO2_error_relative_percent.png`
-     - `sciantix_verification/sciantix_vs_blackburn_formula_pO2.png`
-     - `sciantix_verification/sciantix_vs_blackburn_formula_log_pO2_error.png`
-     - `sciantix_verification/sciantix_vs_blackburn_formula_log_pO2_error_absolute.png`
-     - `sciantix_verification/sciantix_vs_blackburn_formula_log_pO2_error_relative_percent.png`
-     - `sciantix_verification/sciantix_vs_blackburn_formula_linear_pO2_error.png`
-     - `sciantix_verification/sciantix_vs_blackburn_formula_linear_pO2_error_absolute.png`
-     - `sciantix_verification/sciantix_vs_blackburn_formula_linear_pO2_error_relative_percent.png`
+`run_temperature_sweep.py` copies the template inputs into one folder per
+temperature and overwrites the second column of `input_history.txt`. Therefore
+each generated case has the same story:
 
-## Typical Usage
+- fixed temperature for `300 h`;
+- no imposed fission rate;
+- zero hydrostatic stress;
+- system pressure fixed at `1e5 Pa`.
 
-Run the full SCIANTIX temperature sweep and then the verification:
+The initial fuel state is in `input_initial_conditions.txt`. The relevant
+oxygen starting point is `initial fuel stoichiometry deviation = -0.10`, so the
+case begins from hypostoichiometric UO2-x.
+
+## OpenCalphad Setup
+
+`input_thermochemistry_settings.txt` enables the OpenCalphad matrix solve:
+
+```text
+matrix.module = OPENCALPHAD
+matrix.database = OU
+matrix.elements = U, O
+matrix.locations = matrix
+```
+
+The fission-product thermochemistry module is disabled. 
+
+## Oxygen Quantities
+
+In every generated `output.txt`, the important oxygen columns are:
+
+- `O/U ratio (/)`;
+- `Fuel oxygen potential (KJ/mol)`;
+- `Fuel oxygen potential - CALPHAD (KJ/mol)`;
+- `Fuel oxygen potential - Blackburn (KJ/mol)`;
+- `Fuel oxygen potential - ML (KJ/mol)`;
+- `Fuel oxygen partial pressure (MPa)`;
+- `Fuel oxygen partial pressure - CALPHAD (MPa)`;
+- `Fuel oxygen partial pressure - Blackburn (MPa)`;
+- `Fuel oxygen partial pressure - ML (MPa)`.
+
+`thermochemistry_output.txt` inside each temperature folder contains the raw
+OpenCalphad equilibrium printout for that case.
+
+## Temperature Sweep
+
+Run from `regression/test_UO2_pO2_verification/` after building SCIANTIX:
 
 ```bash
 python3 run_temperature_sweep.py
 ```
 
-If the sweep summary already exists and only the post-processing needs to be
-refreshed, rerun the comparison stage directly:
+The script copies the compiled executable, prepares the temperature folders,
+runs SCIANTIX, and writes:
+
+- `temperature_sweep_summary.tsv`, the combined table for all temperatures;
+- `fuel_oxygen_partial_pressures_OC_Blackburn_ML.png`;
+- `fuel_oxygen_potentials_vs_ou_ratio.png`;
+- pairwise pressure plots comparing OpenCalphad, Blackburn, and ML.
+
+## Reference Verification
+
+The reference data are in `TEMPERATURES_THERMOCALC/` as one CSV file per
+temperature. `sciantix_verification/compare_sciantix_with_oc_csv.py` reads
+those CSV files, reads `temperature_sweep_summary.tsv`, rebuilds the analytical
+Blackburn pressure, and writes comparison tables, plots, and compact summaries.
+
+Run it from this folder:
 
 ```bash
 python3 sciantix_verification/compare_sciantix_with_oc_csv.py
 ```
 
-## Summary Metrics
+The two summary files are:
 
-The two text reports in `sciantix_verification/` provide compact metrics.
+- `sciantix_verification/sciantix_vs_oc_csv_summary.tsv`;
+- `sciantix_verification/sciantix_vs_blackburn_formula_summary.tsv`.
 
-- `sciantix_vs_oc_csv_summary.txt`
-- `sciantix_vs_blackburn_formula_summary.txt`
-
-Each report includes:
-
-- the number of compared points
-- mean signed `log10(pO2 / p_ref)` error
-- mean and maximum absolute `log10(pO2 / p_ref)` error
-- mean and maximum relative `log10(pO2 / p_ref)` error
-- a per-temperature summary table
+Gold copies of those summaries are stored in `sciantix_verification/gold/`.
+The comparison script now checks the regenerated summaries against the gold
+files and prints `PASS` if the aggregate metrics have not changed.
