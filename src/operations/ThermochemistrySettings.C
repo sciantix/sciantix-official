@@ -19,6 +19,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <unistd.h>
 
 namespace
 {
@@ -60,6 +61,101 @@ namespace
             return false;
 
         std::cerr << "Error: Invalid thermochemistry settings boolean value: " << input << std::endl;
+        exit(1);
+    }
+
+    std::string parentPath(const std::string& path)
+    {
+        if (path.empty() || path == "/")
+            return "";
+
+        const size_t end = path.find_last_not_of('/');
+        if (end == std::string::npos)
+            return "";
+
+        const size_t separator = path.find_last_of('/', end);
+        if (separator == std::string::npos)
+            return "";
+        if (separator == 0)
+            return "/";
+
+        return path.substr(0, separator);
+    }
+
+    std::string baseName(const std::string& path)
+    {
+        const size_t end = path.find_last_not_of('/');
+        if (end == std::string::npos)
+            return "";
+
+        const size_t separator = path.find_last_of('/', end);
+        if (separator == std::string::npos)
+            return path.substr(0, end + 1);
+
+        return path.substr(separator + 1, end - separator);
+    }
+
+    std::string directoryName(const std::string& path)
+    {
+        const size_t separator = path.find_last_of('/');
+        if (separator == std::string::npos)
+            return ".";
+        if (separator == 0)
+            return "/";
+
+        return path.substr(0, separator);
+    }
+
+    std::string withTrailingSlash(const std::string& path)
+    {
+        if (path.empty() || path.back() == '/')
+            return path;
+
+        return path + "/";
+    }
+
+    std::string currentWorkingDirectory()
+    {
+        char buffer[4096];
+        if (getcwd(buffer, sizeof(buffer)) == nullptr)
+        {
+            std::cerr << "Error: Cannot determine current working directory while locating OpenCalphad." << std::endl;
+            exit(1);
+        }
+
+        return std::string(buffer);
+    }
+
+    std::string absoluteDirectoryFromSettingsPath(const std::string& settings_path)
+    {
+        std::string settings_directory = directoryName(settings_path);
+        if (!settings_directory.empty() && settings_directory.front() == '/')
+            return settings_directory;
+
+        if (settings_directory == ".")
+            return currentWorkingDirectory();
+
+        return withTrailingSlash(currentWorkingDirectory()) + settings_directory;
+    }
+
+    std::string defaultOpenCalphadPath(const std::string& settings_path)
+    {
+        std::string current_path = absoluteDirectoryFromSettingsPath(settings_path);
+
+        while (!current_path.empty())
+        {
+            if (baseName(current_path) == "regression")
+                return withTrailingSlash(parentPath(current_path)) + "OC/";
+
+            const std::string parent = parentPath(current_path);
+            if (parent == current_path)
+                break;
+
+            current_path = parent;
+        }
+
+        std::cerr << "Error: Cannot infer the default OpenCalphad path. Expected the settings file "
+                  << "to be under the SCIANTIX regression directory: " << settings_path << std::endl;
         exit(1);
     }
 }  // namespace
@@ -143,6 +239,11 @@ ThermochemistrySettings loadThermochemistrySettings(const std::string& path)
             exit(1);
         }
     }
+
+    if (settings.opencalphad_path.empty())
+        settings.opencalphad_path = defaultOpenCalphadPath(path);
+    else
+        settings.opencalphad_path = withTrailingSlash(settings.opencalphad_path);
 
     return settings;
 }
