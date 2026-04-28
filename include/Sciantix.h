@@ -34,19 +34,19 @@
  * simulation.
  * @param Sciantix_thermochemistry Array of doubles representing the variables related to the thermochemistry module.
  * @param Sciantix_thermochemistry_settings Thermochemistry module settings.
- * 
+ *
  * @author D. Pizzocri
  * @author T. Barani
  * @author G. Zullo
  *
  */
 
-void Sciantix(int    Sciantix_options[], 
-              double Sciantix_history[], 
-              double Sciantix_variables[], 
-              double Sciantix_scaling_factors[], 
-              double Sciantix_diffusion_modes[], 
-              double Sciantix_thermochemistry[], 
+void Sciantix(int                            Sciantix_options[],
+              double                         Sciantix_history[],
+              double                         Sciantix_variables[],
+              double                         Sciantix_scaling_factors[],
+              double                         Sciantix_diffusion_modes[],
+              double                         Sciantix_thermochemistry[],
               const ThermochemistrySettings& Sciantix_thermochemistry_settings);
 
 #endif  // SCIANTIX_H
