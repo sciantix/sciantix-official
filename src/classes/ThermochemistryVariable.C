@@ -150,11 +150,6 @@ double ThermochemistryVariable::getMolarMass()
         }
         return molar_mass;
     }
-    else
-    {
-        std::cerr << "Warning: No composition information available for thermochemistry variable " << name
-                  << ". Molar mass cannot be computed and will be returned as zero." << std::endl;
-    }
 
     return molar_mass;
 }
