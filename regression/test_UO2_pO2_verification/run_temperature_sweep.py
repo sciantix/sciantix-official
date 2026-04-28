@@ -110,6 +110,7 @@ def collect_case(case_dir: Path) -> pd.DataFrame:
 
     pressure_columns = {
         "SCIANTIX + Blackburn model": "Fuel oxygen partial pressure - Blackburn (MPa)",
+        "SCIANTIX + ML model": "Fuel oxygen partial pressure - ML (MPa)",
         "SCIANTIX + OpenCalphad": "Fuel oxygen partial pressure - CALPHAD (MPa)",
     }
 
@@ -129,10 +130,12 @@ def style_maps():
     colors = {temperature_k: cmap(index) for index, temperature_k in enumerate(TEMPERATURES_K)}
     linestyles = {
         "SCIANTIX + Blackburn model": None,
+        "SCIANTIX + ML model": None,
         "SCIANTIX + OpenCalphad": None,
     }
     markers = {
         "SCIANTIX + Blackburn model": "^",
+        "SCIANTIX + ML model": "D",
         "SCIANTIX + OpenCalphad": "s",
     }
     return colors, linestyles, markers
@@ -170,6 +173,7 @@ def make_pressure_plot(frames: list[pd.DataFrame]) -> None:
     colors, linestyles, markers = style_maps()
     pressure_columns = {
         "SCIANTIX + Blackburn model": "log10(SCIANTIX + Blackburn model pressure / reference)",
+        "SCIANTIX + ML model": "log10(SCIANTIX + ML model pressure / reference)",
         "SCIANTIX + OpenCalphad": "log10(SCIANTIX + OpenCalphad pressure / reference)",
     }
 
@@ -212,27 +216,24 @@ def make_pressure_plot(frames: list[pd.DataFrame]) -> None:
     colors, linestyles, markers = style_maps()
     pressure_columns = {
         "SCIANTIX + Blackburn model": "log10(SCIANTIX + Blackburn model pressure / reference)",
+        "SCIANTIX + ML model": "log10(SCIANTIX + ML model pressure / reference)",
         "SCIANTIX + OpenCalphad": "log10(SCIANTIX + OpenCalphad pressure / reference)",
     }
 
     for frame in frames:
         temperature_k = int(frame["Temperature (K)"].iloc[0])
-        valid = frame.dropna(subset=[
-            pressure_columns["SCIANTIX + Blackburn model"],
-            pressure_columns["SCIANTIX + OpenCalphad"],
-        ])
-        if valid.empty:
-            continue
+        opencalphad_column = pressure_columns["SCIANTIX + OpenCalphad"]
+        for label in ("SCIANTIX + Blackburn model", "SCIANTIX + ML model"):
+            valid = frame.dropna(subset=[pressure_columns[label], opencalphad_column])
+            if valid.empty:
+                continue
 
-        opencalphad_values = valid[pressure_columns["SCIANTIX + OpenCalphad"]]
-        blackburn_values = valid[pressure_columns["SCIANTIX + Blackburn model"]]
-
-        ax.scatter(
-            valid["O/U ratio (/)"],
-            blackburn_values - opencalphad_values,
-            color=colors[temperature_k],
-            marker=markers["SCIANTIX + Blackburn model"],
-        )
+            ax.scatter(
+                valid["O/U ratio (/)"],
+                valid[pressure_columns[label]] - valid[opencalphad_column],
+                color=colors[temperature_k],
+                marker=markers[label],
+            )
 
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$\Delta\log_{10}(p_{O_2})$ (bar)")
@@ -248,6 +249,25 @@ def make_pressure_plot(frames: list[pd.DataFrame]) -> None:
         title="Temperature"
     )
     ax.add_artist(temperature_legend)
+    model_handles = [
+        Line2D(
+            [0],
+            [0],
+            color="black",
+            linestyle="None",
+            marker=markers["SCIANTIX + Blackburn model"],
+            label="Blackburn - OpenCalphad",
+        ),
+        Line2D(
+            [0],
+            [0],
+            color="black",
+            linestyle="None",
+            marker=markers["SCIANTIX + ML model"],
+            label="ML - OpenCalphad",
+        ),
+    ]
+    ax.legend(handles=model_handles, loc="upper left", title="Model")
     ax.set_xlim([1.90, 2.20])
 
     fig.tight_layout()
@@ -260,6 +280,7 @@ def make_potential_plot(frames: list[pd.DataFrame]) -> None:
     colors, linestyles, markers = style_maps()
     potential_columns = {
         "SCIANTIX + Blackburn model": "Fuel oxygen potential - Blackburn (KJ/mol)",
+        "SCIANTIX + ML model": "Fuel oxygen potential - ML (KJ/mol)",
         "SCIANTIX + OpenCalphad": "Fuel oxygen potential - CALPHAD (KJ/mol)",
     }
 

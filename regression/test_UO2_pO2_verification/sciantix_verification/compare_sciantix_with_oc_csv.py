@@ -155,7 +155,9 @@ def add_legends(ax, temperatures: list[float], colors: dict[float, object]) -> N
         for temp in temperatures
     ]
     model_handles = [
-        Line2D([0], [0], color="black", linestyle="-", label="SCIANTIX + OpenCalphad"),
+        Line2D([0], [0], color="black", linestyle="-", label="SCIANTIX"),
+        Line2D([0], [0], color="black", linestyle=":", marker="^", label="SCIANTIX + OpenCalphad"),
+        Line2D([0], [0], color="black", linestyle="--", marker="D", label="SCIANTIX + ML model"),
         Line2D([0], [0], color="black", marker="o", linestyle="None", label="Thermo-Calc"),
     ]
     first = ax.legend(handles=temperature_handles, loc="lower right", ncol=2, title="Temperature")
@@ -168,6 +170,7 @@ def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
     styles = {
         "Fuel oxygen partial pressure (MPa)": ("-", "s"),
         "Fuel oxygen partial pressure - CALPHAD (MPa)": (":", "^"),
+        "Fuel oxygen partial pressure - ML (MPa)": ("--", "D"),
     }
     temperatures = sorted(frame1["Temperature (K)"].dropna().unique())
     cmap = plt.get_cmap("turbo", len(temperatures))
@@ -178,17 +181,21 @@ def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
     for temperature, group in frame1.groupby("Temperature (K)", sort=True):
         group = group.sort_values("O/U ratio (/)")
         for column, (linestyle, marker) in styles.items():
+            if column not in group.columns:
+                continue
+
             valid = group[group[column] > 0.0]
             if valid.empty:
                 continue
+
             value = np.log10(valid[column] / REFERENCE_PRESSURE_MPA)
-            if column == "Fuel oxygen partial pressure (MPa)":
-                ax.plot(
-                    valid["O/U ratio (/)"],
-                    value,
-                    color=colors[temperature],
-                    linestyle=linestyle
-                )
+            ax.plot(
+                valid["O/U ratio (/)"],
+                value,
+                color=colors[temperature],
+                linestyle=linestyle,
+                marker=marker if column != "Fuel oxygen partial pressure (MPa)" else None,
+            )
 
     for temperature, group in frame2.groupby("Temperature (K)", sort=True):
         group = group.sort_values("O/U ratio (/)")
@@ -204,10 +211,15 @@ def plot_partial_pressure(frame1: pd.DataFrame, frame2: pd.DataFrame) -> None:
             linestyle="None",
         )
 
-    sci_log = np.log10(
-        frame1.loc[frame1["Fuel oxygen partial pressure (MPa)"] > 0.0, "Fuel oxygen partial pressure (MPa)"]
-        / REFERENCE_PRESSURE_MPA
-    )
+    sci_log_values = []
+    for column in styles:
+        if column not in frame1.columns:
+            continue
+
+        sci_log_values.append(
+            np.log10(frame1.loc[frame1[column] > 0.0, column] / REFERENCE_PRESSURE_MPA)
+        )
+    sci_log = pd.concat(sci_log_values, ignore_index=True) if sci_log_values else pd.Series(dtype=float)
     ref_log = np.log10(frame2.loc[frame2["OC pO2 (MPa)"] > 0.0, "OC pO2 (MPa)"] / REFERENCE_PRESSURE_MPA)
     y_limits = _padded_limits(pd.concat([sci_log, ref_log], ignore_index=True), fallback=(-30.0, 0.0))
 
