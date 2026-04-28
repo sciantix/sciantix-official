@@ -42,6 +42,7 @@ import os
 
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.signal import savgol_filter
 
 from regression_functions import *
 
@@ -577,14 +578,37 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot,
 
         fig, ax = _new_axes(
             x_label_bu,
-            r"Coefficient of variation $\sigma_n / \bar{n}$ (/)",
+            r"Coefficient of variation $\sqrt{B/N_p}\,/\,\bar{n}$ (/)",
         )
-        ax.plot(primary["burnup"], primary["CV"],
-                "-", color=COLOR_CURRENT, linewidth=LINEWIDTH_MODEL,
-                label=r"CV $= \sqrt{M_2}\,/\,\bar{n}$")
+        # The implicit-Euler moment solver produces a period-2 alternation in
+        # CV near nucleation onset (consecutive timesteps follow two distinct
+        # envelopes ~0.45 / ~0.65 around bu ~25 MWd/kgHM). A short median is
+        # insufficient because it locks onto one envelope; a Savitzky-Golay
+        # filter averages across the oscillation and preserves the underlying
+        # U-shape of the curve.
+        cv_raw = np.asarray(primary["CV"], dtype=float)
+        # The first few timesteps after nucleation onset contain only a
+        # handful of pores per m^3, all carrying the seed value n=2: the
+        # cluster-dynamics moments are not yet statistically meaningful and
+        # produce isolated CV outliers that the savgol window then smears
+        # backward into the pre-nucleation region as a spurious tick. Mask
+        # out CV until the pore population is dense enough to be physical.
+        np_arr = np.asarray(primary["poreDensity"], dtype=float)
+        valid = np_arr > 1.0e10
+        cv_clean = np.where(valid, cv_raw, 0.0)
+        n = len(cv_clean)
+        win = min(51, n if n % 2 == 1 else n - 1)
+        if win >= 5:
+            cv_smoothed = savgol_filter(cv_clean, window_length=win,
+                                        polyorder=3, mode="nearest")
+        else:
+            cv_smoothed = cv_clean
+        cv_smoothed = np.where(valid, cv_smoothed, 0.0)
+        cv_smoothed = np.clip(cv_smoothed, 0.0, None)
+        ax.plot(primary["burnup"], cv_smoothed,
+                "-", color=COLOR_CURRENT, linewidth=LINEWIDTH_MODEL)
         ax.set_xlim(0, 210)
         ax.set_ylim(0, None)
-        ax.legend(loc="upper right")
         _save(fig, "plot_CV.png")
     else:
         print(f"[regression_hbs] {PRIMARY_FOLDER} has no cluster-dynamics moments; "
