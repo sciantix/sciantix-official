@@ -33,6 +33,8 @@ double BlackburnThermochemicalModel(double                           stoichiomet
                                     double                           temperature,
                                     SciantixArray<SciantixVariable>& sciantix_variable);
 
-double KatoThermochemicalModel(double stoichiometry_deviation, double temperature, SciantixArray<SciantixVariable> &sciantix_variable);
+double KatoThermochemicalModel(double                           stoichiometry_deviation,
+                               double                           temperature,
+                               SciantixArray<SciantixVariable>& sciantix_variable);
 
 #endif  // STOICHIOMETRY_DEVIATION_H

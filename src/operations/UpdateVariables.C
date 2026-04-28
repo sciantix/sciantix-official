@@ -111,7 +111,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {157, "Chromia solution"},
     {158, "Chromia precipitate"},
     {160, "Diffusion coefficient"},
-    // CODE DEVELOPMENT 
+    // CODE DEVELOPMENT
     {161, "U content"},
     {162, "O content"},
     {163, "Pu content"},
@@ -124,7 +124,9 @@ std::map<int, std::string> update_sciantix_variable = {
     {177, "q"},
 };
 
-void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[])
+void Simulation::update(double Sciantix_variables[],
+                        double Sciantix_diffusion_modes[],
+                        double Sciantix_thermochemistry[])
 {
     for (int i = 0; i < n_modes; ++i)
     {

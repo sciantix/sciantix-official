@@ -24,28 +24,28 @@
 
 namespace
 {
-std::string trim(const std::string& input)
-{
-    const std::string whitespace = " \t\r\n";
-    const size_t      begin      = input.find_first_not_of(whitespace);
-    if (begin == std::string::npos)
-        return "";
+    std::string trim(const std::string& input)
+    {
+        const std::string whitespace = " \t\r\n";
+        const size_t      begin      = input.find_first_not_of(whitespace);
+        if (begin == std::string::npos)
+            return "";
 
-    const size_t end = input.find_last_not_of(whitespace);
-    return input.substr(begin, end - begin + 1);
-}
+        const size_t end = input.find_last_not_of(whitespace);
+        return input.substr(begin, end - begin + 1);
+    }
 
-std::vector<std::string> split(const std::string& input, const char delimiter)
-{
-    std::vector<std::string> parts;
-    std::stringstream        stream(input);
-    std::string              item;
+    std::vector<std::string> split(const std::string& input, const char delimiter)
+    {
+        std::vector<std::string> parts;
+        std::stringstream        stream(input);
+        std::string              item;
 
-    while (std::getline(stream, item, delimiter))
-        parts.push_back(trim(item));
+        while (std::getline(stream, item, delimiter))
+            parts.push_back(trim(item));
 
-    return parts;
-}
+        return parts;
+    }
 }  // namespace
 
 std::string ThermochemistryManifestEntry::getLabel() const
@@ -82,22 +82,21 @@ std::vector<ThermochemistryManifestEntry> loadThermochemistryManifest(const std:
         }
 
         ThermochemistryManifestEntry entry;
-        entry.index         = std::stoi(fields[0]);
-        entry.category      = fields[1];
-        entry.phase         = fields[2];
-        entry.compound      = fields[3];
-        entry.location      = fields[4];
-        entry.uom           = fields[5];
-        entry.output        = std::stoi(fields[6]) != 0;
+        entry.index    = std::stoi(fields[0]);
+        entry.category = fields[1];
+        entry.phase    = fields[2];
+        entry.compound = fields[3];
+        entry.location = fields[4];
+        entry.uom      = fields[5];
+        entry.output   = std::stoi(fields[6]) != 0;
 
         manifest.push_back(entry);
     }
 
     std::sort(manifest.begin(),
               manifest.end(),
-              [](const ThermochemistryManifestEntry& lhs, const ThermochemistryManifestEntry& rhs) {
-                  return lhs.index < rhs.index;
-              });
+              [](const ThermochemistryManifestEntry& lhs, const ThermochemistryManifestEntry& rhs)
+              { return lhs.index < rhs.index; });
 
     for (size_t i = 0; i < manifest.size(); ++i)
     {

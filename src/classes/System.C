@@ -52,21 +52,21 @@ double System::getRadiusInLattice()
 
 void System::setGas(FissionProducts g_fp)
 {
-    gas_fp = g_fp;
+    gas_fp      = g_fp;
     volatile_fp = FissionProducts();
     metallic_fp = FissionProducts();
 }
 
 void System::setVolatileFP(FissionProducts v_fp)
 {
-    gas_fp = FissionProducts();
+    gas_fp      = FissionProducts();
     volatile_fp = v_fp;
     metallic_fp = FissionProducts();
 }
 
 void System::setMetallicFP(FissionProducts m_fp)
 {
-    gas_fp = FissionProducts();
+    gas_fp      = FissionProducts();
     volatile_fp = FissionProducts();
     metallic_fp = m_fp;
 }
@@ -293,9 +293,9 @@ double System::getHeliumDiffusivity()
 }
 
 void System::setFissionProductDiffusivity(int                              input_value,
-                                      SciantixArray<SciantixVariable>& sciantix_variable,
-                                      SciantixArray<SciantixVariable>& history_variable,
-                                      SciantixArray<InputVariable>&    scaling_factors)
+                                          SciantixArray<SciantixVariable>& sciantix_variable,
+                                          SciantixArray<SciantixVariable>& history_variable,
+                                          SciantixArray<InputVariable>&    scaling_factors)
 {
     /**
      * ### setFissionProductDiffusivity
@@ -622,17 +622,17 @@ void System::setFissionProductDiffusivity(int                              input
 
             reference += "Diffusivity for Cs (Busker, 2000)\n\t";
 
-            double temperature = history_variable["Temperature"].getFinalValue();
+            double temperature  = history_variable["Temperature"].getFinalValue();
             double fission_rate = history_variable["Fission rate"].getFinalValue();
 
             double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
             double d3 = 8.0e-40 * fission_rate;
 
             if (temperature < 1673)
-                double d1 = 1e-4 * 1.5e-3*exp(-4.5/boltzmann_constant_eV/temperature);
+                double d1 = 1e-4 * 1.5e-3 * exp(-4.5 / boltzmann_constant_eV / temperature);
             else
-                double d1 = 1e-4 * 2.6e-1 * exp(-4.6/boltzmann_constant_eV/temperature);
-                    
+                double d1 = 1e-4 * 2.6e-1 * exp(-4.6 / boltzmann_constant_eV / temperature);
+
             break;
         }
 
@@ -645,20 +645,20 @@ void System::setFissionProductDiffusivity(int                              input
 
             reference += "Diffusivity for Iodine (Busker, 2000)\n\t";
 
-            double temperature = history_variable["Temperature"].getFinalValue();
+            double temperature  = history_variable["Temperature"].getFinalValue();
             double fission_rate = history_variable["Fission rate"].getFinalValue();
 
             double d2 = 4.0 * 1.41e-25 * sqrt(fission_rate) * exp(-1.91e-19 / (boltzmann_constant * temperature));
             double d3 = 8.0e-40 * fission_rate;
 
             if (temperature < 1700)
-                double d1 = 1e-4 * 1.2e-9*exp(-2.1/boltzmann_constant_eV/temperature);
+                double d1 = 1e-4 * 1.2e-9 * exp(-2.1 / boltzmann_constant_eV / temperature);
             else
-                double d1 = 1e-4 * 4.3 * exp(-5.4/boltzmann_constant_eV/temperature);
+                double d1 = 1e-4 * 4.3 * exp(-5.4 / boltzmann_constant_eV / temperature);
 
             break;
         }
-        //
+            //
 
         case 90:
         {
@@ -814,9 +814,8 @@ void System::setResolutionRate(int                              input_value,
             /// compressibility_factor
             double helium_hard_sphere_diameter =
                 2.973e-10 * (0.8414 - 0.05 * log(history_variable["Temperature"].getFinalValue() / 10.985));  // (m)
-            double helium_volume_in_bubble =
-                matrices[0].getOctahedralInterstitialSite();  // 7.8e-30, approximation of
-                                                                  // saturated nanobubbles
+            double helium_volume_in_bubble = matrices[0].getOctahedralInterstitialSite();  // 7.8e-30, approximation of
+                                                                                           // saturated nanobubbles
             double y = M_PI * pow(helium_hard_sphere_diameter, 3) / (6.0 * helium_volume_in_bubble);
             double compressibility_factor = (1.0 + y + pow(y, 2) - pow(y, 3)) / (pow(1.0 - y, 3));
 

@@ -14,8 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "ThermochemistryVariable.h"
 #include "Constants.h"
+#include "ThermochemistryVariable.h"
 
 #include <map>
 
@@ -64,12 +64,12 @@ std::string ThermochemistryVariable::getPhase()
     return phase;
 }
 
-void ThermochemistryVariable::setComposition(std::map <std::string, double> composition_map)
+void ThermochemistryVariable::setComposition(std::map<std::string, double> composition_map)
 {
     composition = composition_map;
 }
 
-std::map <std::string, double> ThermochemistryVariable::getComposition()
+std::map<std::string, double> ThermochemistryVariable::getComposition()
 {
     return composition;
 }
@@ -121,16 +121,14 @@ bool ThermochemistryVariable::getOutput()
 
 double ThermochemistryVariable::getMolarMass()
 {
-    static const std::map<std::string, double> atomic_masses = {
-        {"Cs", 132.90545196},
-        {"I", 126.90447},
-        {"Mo", 95.95},
-        {"O", 15.999},
-        {"Te", 127.60},
-        {"U", 238.02891},
-        {"Pu", 239.052},
-        {"Va", 0.0}
-    };
+    static const std::map<std::string, double> atomic_masses = {{"Cs", 132.90545196},
+                                                                {"I", 126.90447},
+                                                                {"Mo", 95.95},
+                                                                {"O", 15.999},
+                                                                {"Te", 127.60},
+                                                                {"U", 238.02891},
+                                                                {"Pu", 239.052},
+                                                                {"Va", 0.0}};
 
     double molar_mass = 0.0;
 

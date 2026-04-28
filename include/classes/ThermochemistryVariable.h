@@ -18,43 +18,49 @@
 #define THERMOCHEMISTRY_VARIABLE_H
 
 #include "Variable.h"
-#include <map>  
-
+#include <map>
 
 /**
  * @class ThermochemistryVariable
- * @brief A specialized variable class that extends the Variable class with physical attributes and functionalities: thermochemistry module.
+ * @brief A specialized variable class that extends the Variable class with physical attributes and functionalities:
+ * thermochemistry module.
  *
- * ThermochemistryVariable includes features such as unit of measure (UOM), final and initial values, chemical state and location, phase composition
- * and mechanisms for adjusting these values through specific operations.
- * 
+ * ThermochemistryVariable includes features such as unit of measure (UOM), final and initial values, chemical state and
+ * location, phase composition and mechanisms for adjusting these values through specific operations.
+ *
  * @author E. Cappellari
- * 
+ *
  */
 class ThermochemistryVariable : virtual public Variable
 {
-protected:
-    int index;
-    std::string uom;
-    double final_value;
-    double initial_value;
-    std::string location;
-    std::string phase;
-    std::map <std::string, double> composition;
-    bool to_output;
+  protected:
+    int                           index;
+    std::string                   uom;
+    double                        final_value;
+    double                        initial_value;
+    std::string                   location;
+    std::string                   phase;
+    std::map<std::string, double> composition;
+    bool                          to_output;
 
-public:
-
-    ThermochemistryVariable(int index, std::string name, std::string uom, double initial_value, double final_value, std::string  phase, std::string  location, bool output)
+  public:
+    ThermochemistryVariable(int         index,
+                            std::string name,
+                            std::string uom,
+                            double      initial_value,
+                            double      final_value,
+                            std::string phase,
+                            std::string location,
+                            bool        output)
     {
-        this->index = index;
-        this->name = name;
-        this->uom = uom;
+        this->index         = index;
+        this->name          = name;
+        this->uom           = uom;
         this->initial_value = initial_value;
-        this->final_value = final_value;
-        this->phase = phase;
-        this->location = location;
-        this->to_output = output;
+        this->final_value   = final_value;
+        this->phase         = phase;
+        this->location      = location;
+        this->to_output     = output;
     }
 
     void setIndex(int i)
@@ -125,13 +131,13 @@ public:
      * @brief Sets the dynamic composition for the compound from thermochemistry outputs.
      * @param composition_map The map representing composition ratios per element.
      */
-    void setComposition(std::map <std::string, double> composition_map);
+    void setComposition(std::map<std::string, double> composition_map);
 
     /**
      * @brief Retrieves the dynamic composition of the compound.
      * @return The composition as a map.
      */
-    std::map <std::string, double> getComposition();
+    std::map<std::string, double> getComposition();
 
     /**
      * @brief Calculates the molar mass from the compound stoichiometry.
@@ -194,12 +200,16 @@ public:
     /**
      * @brief Constructor
      */
-    ThermochemistryVariable() {}
-    
+    ThermochemistryVariable()
+    {
+    }
+
     /**
      * @brief Destructor
      */
-    ~ThermochemistryVariable() {}
+    ~ThermochemistryVariable()
+    {
+    }
 };
 
 #endif

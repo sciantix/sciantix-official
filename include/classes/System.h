@@ -58,7 +58,7 @@ class System : virtual public Material
     FissionProducts gas_fp;
     FissionProducts volatile_fp;
     FissionProducts metallic_fp;
-    Matrix matrix;
+    Matrix          matrix;
 
   public:
     /**
@@ -116,7 +116,7 @@ class System : virtual public Material
      * @return Gas, volatile, or metallic species name.
      */
     std::string getFissionProductName();
-    
+
     /**
      * @brief Sets the name of the matrix.
      * @param n Name of the matrix to set.
@@ -178,9 +178,9 @@ class System : virtual public Material
      * @param input_value The model selection index for fission product diffusivity.
      */
     void setFissionProductDiffusivity(int                              input_value,
-                                  SciantixArray<SciantixVariable>& sciantix_variable,
-                                  SciantixArray<SciantixVariable>& history_variable,
-                                  SciantixArray<InputVariable>&    scaling_factors);
+                                      SciantixArray<SciantixVariable>& sciantix_variable,
+                                      SciantixArray<SciantixVariable>& history_variable,
+                                      SciantixArray<InputVariable>&    scaling_factors);
 
     /**
      * @brief Retrieves the diffusivity of fission products within the matrix.

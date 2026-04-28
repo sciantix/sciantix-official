@@ -26,8 +26,8 @@
 #include "ThermochemistrySettings.h"
 #include "ThermochemistryVariable.h"
 #include <cmath>
-#include <vector>
 #include <string>
+#include <vector>
 
 /**
  * @class Simulation
@@ -44,22 +44,21 @@
 class Simulation
 {
   private:
-    SciantixArray<SciantixVariable> sciantix_variable;
-    SciantixArray<SciantixVariable> history_variable;
-    SciantixArray<SciantixVariable> physics_variable;
+    SciantixArray<SciantixVariable>        sciantix_variable;
+    SciantixArray<SciantixVariable>        history_variable;
+    SciantixArray<SciantixVariable>        physics_variable;
     SciantixArray<ThermochemistryVariable> thermochemistry_variable;
-    
 
-    SciantixArray<Model>  model;
-    SciantixArray<System> sciantix_system;
-    SciantixArray<Matrix> matrices;
-    SciantixArray<FissionProducts>    gas_fp;
-    SciantixArray<FissionProducts>    volatile_fp;
-    SciantixArray<FissionProducts>    metallic_fp;
+    SciantixArray<Model>           model;
+    SciantixArray<System>          sciantix_system;
+    SciantixArray<Matrix>          matrices;
+    SciantixArray<FissionProducts> gas_fp;
+    SciantixArray<FissionProducts> volatile_fp;
+    SciantixArray<FissionProducts> metallic_fp;
 
     SciantixArray<InputVariable> input_variable;
     SciantixArray<InputVariable> scaling_factors;
-    ThermochemistrySettings thermochemistry_settings;
+    ThermochemistrySettings      thermochemistry_settings;
 
     int                 n_modes;
     std::vector<double> modes_initial_conditions;
@@ -87,14 +86,13 @@ class Simulation
 
     static Simulation* getInstance();
 
-    void setVariables(int    Sciantix_options[],
-                      double Sciantix_history[],
-                      double Sciantix_variables[],
-                      double Sciantix_scaling_factors[],
-                      double Sciantix_diffusion_modes[],
-                      double Sciantix_thermochemistry[],
-                      const ThermochemistrySettings& Sciantix_thermochemistry_settings
-    );
+    void setVariables(int                            Sciantix_options[],
+                      double                         Sciantix_history[],
+                      double                         Sciantix_variables[],
+                      double                         Sciantix_scaling_factors[],
+                      double                         Sciantix_diffusion_modes[],
+                      double                         Sciantix_thermochemistry[],
+                      const ThermochemistrySettings& Sciantix_thermochemistry_settings);
 
     void setFissionProducts();
     void setMatrix();
@@ -102,14 +100,13 @@ class Simulation
 
     void setGPVariables(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[]);
 
-    void initialize(int    Sciantix_options[],
-                    double Sciantix_history[],
-                    double Sciantix_variables[],
-                    double Sciantix_scaling_factors[],
-                    double Sciantix_diffusion_modes[],
-                    double Sciantix_thermochemistry[],
-                    const ThermochemistrySettings& Sciantix_thermochemistry_settings
-    );
+    void initialize(int                            Sciantix_options[],
+                    double                         Sciantix_history[],
+                    double                         Sciantix_variables[],
+                    double                         Sciantix_scaling_factors[],
+                    double                         Sciantix_diffusion_modes[],
+                    double                         Sciantix_thermochemistry[],
+                    const ThermochemistrySettings& Sciantix_thermochemistry_settings);
 
     void execute();
 
@@ -186,23 +183,23 @@ class Simulation
      *
      */
     void IntragranularDiffusion();
-    
+
     /**
      * @brief Thermochemistry module, specific for a certain location.
-     * 
+     *
      * @author E. Cappellari
-     * 
+     *
      */
     void SetPhaseDiagram(std::string location);
 
     /**
      * @brief Function to couple SCIANTIX with a Thermochemistry code.
      * It writes the input, runs the code, reads and store the output in SCIANTIX thermochemistry variables.
-     * 
+     *
      * @author E. Cappellari
-     * 
+     *
      */
-    void CallThermochemistryModule(std::string location, SciantixArray<SciantixVariable> &sciantix_variable);
+    void CallThermochemistryModule(std::string location, SciantixArray<SciantixVariable>& sciantix_variable);
 
     /**
      * @brief Grain growth based on specific model parameters affecting the system's materials.
@@ -314,7 +311,7 @@ class Simulation
      */
     double openPorosity(double fabrication_porosity);
 
-        /**
+    /**
      * @brief Calculates a corrective factor for the athermal fission product release.
      * @param open_porosity the open porosity of the fuel.
      * @param theta the grain-edge inclination angle.
@@ -325,12 +322,18 @@ class Simulation
      * @param fission_rate the fission rate given as input.
      * @return the athermal venting factor to correct athermal release for the real shape of gas flux within the grain
      *          including its dependency on the grain-edge inclination angle.
-     * 
+     *
      * @author A. Pagani
      * @author E. Cappellari
      */
-    double athermalVentingFactor(double open_porosity, double theta, double porosity, double grain_edge_lenght, double burnup, double temperature, double fission_rate);
-    
+    double athermalVentingFactor(double open_porosity,
+                                 double theta,
+                                 double porosity,
+                                 double grain_edge_lenght,
+                                 double burnup,
+                                 double temperature,
+                                 double fission_rate);
+
     /**
      * @brief Calculates the formation of high burnup structures within the nuclear fuel.
      *
@@ -439,8 +442,7 @@ class Simulation
 
         else
         {
-            std::cerr << "Error: Invalid gas name \"" << name << "\" in Simulation::getDiffusionModes."
-                      << std::endl;
+            std::cerr << "Error: Invalid gas name \"" << name << "\" in Simulation::getDiffusionModes." << std::endl;
             return nullptr;
         }
     }
