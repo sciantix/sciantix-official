@@ -53,5 +53,5 @@ Input setting	iBubbleDiffusivity = 0
 Input setting	iChromiumSolubility = 0
 Input setting	iDensification = 0
 Input setting	iReleaseMode = 0
-Input setting	iThermochimica = 2
+Input setting	iThermochimica = 1
 

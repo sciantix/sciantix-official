@@ -12,9 +12,13 @@ directory per temperature, updates the imposed temperature in
 """
 
 import math
+import os
 import shutil
 import subprocess
 from pathlib import Path
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+os.environ.setdefault("MPLCONFIGDIR", str(SCRIPT_DIR / ".matplotlib"))
 
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
@@ -39,7 +43,6 @@ plt.rcParams.update({
 
 TEMPERATURES_K = list(range(800, 2800, 200))
 REFERENCE_PRESSURE_MPA = 0.1 # 1 bar
-SCRIPT_DIR = Path(__file__).resolve().parent
 BUILD_BINARY = SCRIPT_DIR.parent.parent / "build" / "sciantix.x"
 LOCAL_BINARY = SCRIPT_DIR / "sciantix.x"
 SUMMARY_PATH = SCRIPT_DIR / "temperature_sweep_summary.tsv"
@@ -102,6 +105,7 @@ def collect_case(case_dir: Path) -> pd.DataFrame:
         raise FileNotFoundError(f"Missing output for {case_dir.name}: {output_path}")
 
     frame = pd.read_csv(output_path, sep="\t")
+    frame = frame.loc[:, ~frame.columns.str.startswith("Unnamed:")]
     frame["O/U ratio (/)"] = frame["Stoichiometry deviation (/)"] + 2.0
 
     pressure_columns = {
