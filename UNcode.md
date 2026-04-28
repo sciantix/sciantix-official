@@ -49,6 +49,9 @@ Definiti in `src/operations/SetMatrix.C` (funzione `UN(...)`) e accessibili via 
 
 Implementata in `src/classes/System.C` (case 11).
 
+Valore di riferimento per i calcoli di validazione Rizk/DN1:
+- `Ḟ ≈ 5.0e19` fiss/(m³·s), for Rizk validation experiments, ricavato da LHR ≈ 100 kW/m e rod diameter = 8.30 mm.
+
 ### Formula
 Sia `T` la temperatura (K) e `Ḟ` il fission rate density (1/(m³·s)).
 

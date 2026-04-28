@@ -60,6 +60,12 @@ setFissionGasDiffusivity(
     iFissionGasDiffusivity = 11
 ```
 
+Per i confronti di validazione con Rizk/DN1 si usa come fission rate density:
+```text
+F_dot ≈ 5.0e19 fiss/(m3 s)
+```
+for Rizk validation experiments, ricavato da LHR ≈ 100 kW/m e rod diameter = 8.30 mm.
+
 - Si usa **1 sola diffusività** (sia per Xe che per Kr); definita solo per Xe.
 - Il termine **D₂** (irradiation-enhanced diffusion per Xe) è **trascurabile** secondo Ritzk:
   > "The irradiation-enhanced diffusion for Xe (D2) calculated using Centipede is neglected because improvements to the underlying atomistic defect parameters have demonstrated that D2 remains negligible compared to D1+D3 for all relevant conditions [66]. However, D2 is still a significant contributor for vacancy diffusion."

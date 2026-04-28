@@ -67,6 +67,7 @@ $$
 * $r_d = 3.46\times10^{-10}, m$
 * $Z_d = 5.0$
 * $k_B = 8.617\times10^{-5}, eV/K$
+* $\dot{F} \approx 5.0\times10^{19}, \mathrm{fissions\,m^{-3}\,s^{-1}}$ for Rizk validation experiments (DN1, LHR ≈ 100 kW/m, rod diameter 8.30 mm)
 
 $$
 D_g = \left(1.56\times10^{-3} e^{-4.94/(k_BT)} + 1.85\times10^{-39}\dot{F}\right) SF_D

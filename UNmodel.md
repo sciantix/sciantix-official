@@ -26,6 +26,14 @@ Valori dei parametri:
 - $k_B = 8.617 \times 10^{-5}$ eV/K
 - $\dot{F}$ è il fission rate density (fissioni/m³·s)
 
+Per i calcoli di validazione rispetto agli esperimenti Rizk/DN1 si usa:
+
+$$
+\dot{F} \simeq 5.0 \times 10^{19} \ \mathrm{fissions\,m^{-3}\,s^{-1}}
+$$
+
+for Rizk validation experiments, corrispondente a un linear heat rate di circa 100 kW/m e a un rod diameter di 8.30 mm.
+
 Nota: Nel modello attuale, $D_2$ è trascurato per Xe secondo Rizk, ma è incluso qui per completezza.
 
 ## Re-solution Rate
