@@ -16,6 +16,7 @@
 
 #include "Simulation.h"
 #include "StoichiometryDeviation.h"
+#include "../../ML_models/GBDTLog10PO2_UO2.hpp"
 // CODE DEVELOPMENT :  NECESSARY INCLUDES FOR THE MODEL
 #include <cmath>
 
@@ -574,6 +575,9 @@ void Simulation::StoichiometryDeviation()
 
         sciantix_variable["Fuel oxygen partial pressure - Blackburn"].setFinalValue(
             sciantix_variable["Fuel oxygen partial pressure"].getFinalValue());
+
+        sciantix_variable["Fuel oxygen partial pressure - ML"].setFinalValue(
+            MLThermochemicalModel(x, history_variable["Temperature"].getFinalValue(), sciantix_variable));
     }
 
     // Fuel oxygen potential
@@ -593,6 +597,14 @@ void Simulation::StoichiometryDeviation()
     {
         sciantix_variable["Fuel oxygen potential - Blackburn"].setFinalValue(
             sciantix_variable["Fuel oxygen potential"].getFinalValue());
+
+        if (sciantix_variable["Fuel oxygen partial pressure - ML"].getFinalValue() == 0.0)
+            sciantix_variable["Fuel oxygen potential - ML"].setFinalValue(0.0);
+        else
+            sciantix_variable["Fuel oxygen potential - ML"].setFinalValue(
+                8.314 * 1.0e-3 * history_variable["Temperature"].getFinalValue() *
+                log(sciantix_variable["Fuel oxygen partial pressure - ML"].getFinalValue() /
+                    reference_oxygen_pressure_atm));
     }
 }
 
@@ -604,6 +616,17 @@ double BlackburnThermochemicalModel(double                           stoichiomet
         2.0 * log(stoichiometry_deviation * (2.0 + stoichiometry_deviation) / (1.0 - stoichiometry_deviation)) +
         108.0 * pow(sciantix_variable["Stoichiometry deviation"].getFinalValue(), 2.0) - 32700.0 / temperature + 9.92;
     return exp(ln_p);
+}
+
+// CODE DEVELOPMENT : ML MODEL PRESSURE CORRELATION
+double MLThermochemicalModel(double                           stoichiometry_deviation,
+                             double                           temperature,
+                             SciantixArray<SciantixVariable>& sciantix_variable)
+{
+    (void)sciantix_variable;
+
+    const double input[] = {2.0 + stoichiometry_deviation, temperature};
+    return pow(10.0, ThermoSurrogate::predict_log10_po2(input));
 }
 
 // CODE DEVELOPMENT : MOX PARTIAL PRESSURE CORRELATION

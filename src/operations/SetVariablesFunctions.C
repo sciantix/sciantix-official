@@ -361,10 +361,12 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("Fuel oxygen partial pressure - Blackburn", "(MPa)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("Fuel oxygen partial pressure - Kato", "(MPa)", 0.0, 0.0, toOutputMOX),
         SciantixVariable("Fuel oxygen partial pressure - CALPHAD", "(MPa)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("Fuel oxygen partial pressure - ML", "(MPa)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("Fuel oxygen potential", "(KJ/mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
         SciantixVariable("Fuel oxygen potential - Blackburn", "(KJ/mol)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("Fuel oxygen potential - Kato", "(KJ/mol)", 0.0, 0.0, toOutputMOX),
         SciantixVariable("Fuel oxygen potential - CALPHAD", "(KJ/mol)", 0.0, 0.0, toOutputThermochimica),
+        SciantixVariable("Fuel oxygen potential - ML", "(KJ/mol)", 0.0, 0.0, toOutputThermochimica),
         //
         SciantixVariable("Specific power", "(MW/kg)", 0.0, 0.0, 0),
 
