@@ -159,7 +159,7 @@ def collect_case(case_dir: Path, temperature_k: int, q_value: float) -> pd.DataF
     
     pressure_columns = {
         "SCIANTIX + Kato model": "Fuel oxygen partial pressure - Kato (MPa)",
-        "SCIANTIX + OpenCalphad": "Fuel oxygen partial pressure - CALPHAD (MPa)",
+        # "SCIANTIX + OpenCalphad": "Fuel oxygen partial pressure - CALPHAD (MPa)",
     }
 
     for label, column in pressure_columns.items():
@@ -224,7 +224,7 @@ def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
     temperatures_k = sorted({int(frame["Temperature (K)"].iloc[0]) for frame in frames})
     pressure_columns = {
         "SCIANTIX + Kato model": "log10(SCIANTIX + Kato model pressure / reference)",
-        "SCIANTIX + OpenCalphad": "log10(SCIANTIX + OpenCalphad pressure / reference)",
+        # "SCIANTIX + OpenCalphad": "log10(SCIANTIX + OpenCalphad pressure / reference)",
     }
 
     for frame in frames:
@@ -256,44 +256,6 @@ def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
     fig, ax = plt.subplots()
     colors, _, _ = style_maps()
 
-    for frame in frames:
-        temperature_k = int(frame["Temperature (K)"].iloc[0])
-        valid = frame.dropna(
-            subset=[
-                "O/U ratio (/)",
-                "log10(SCIANTIX + OpenCalphad pressure / reference)",
-                "log10(SCIANTIX + Kato model pressure / reference)",
-            ]
-        )
-        if valid.empty:
-            continue
-
-        ax.scatter(
-            valid["O/U ratio (/)"],
-            valid["log10(SCIANTIX + Kato model pressure / reference)"] - valid["log10(SCIANTIX + OpenCalphad pressure / reference)"],
-            color=colors[temperature_k],
-            marker="o",
-        )
-
-    ax.set_xlabel("O/U ratio (-)")
-    ax.set_ylabel(r"$\Delta\log_{10}(p_{O_2})$ (bar)")
-    ax.grid(True, alpha=0.3)
-    temperature_handles = [
-        Line2D([0], [0], color=colors[temperature_k], label=f"{temperature_k} K")
-        for temperature_k in temperatures_k
-    ]
-    temperature_legend = ax.legend(
-        handles=temperature_handles,
-        loc="lower left",
-        ncol=2,
-        title="Temperature"
-    )
-    ax.add_artist(temperature_legend)
-    ax.set_xlim([1.95, 2.20])
-
-    fig.tight_layout()
-    fig.savefig(SCRIPT_DIR / f"{PRESSURE_PLOT_NAME_2}_{q_plot_suffix(q_value)}.png")
-    plt.close(fig)
 
 def make_potential_plot(frames: list[pd.DataFrame], q_value: float) -> None:
     """Plot oxygen potential versus O/U ratio for all temperatures."""
@@ -302,7 +264,7 @@ def make_potential_plot(frames: list[pd.DataFrame], q_value: float) -> None:
     temperatures_k = sorted({int(frame["Temperature (K)"].iloc[0]) for frame in frames})
     potential_columns = {
         "SCIANTIX + Kato model": "Fuel oxygen potential - Kato (KJ/mol)",
-        "SCIANTIX + OpenCalphad": "Fuel oxygen potential - CALPHAD (KJ/mol)",
+        # "SCIANTIX + OpenCalphad": "Fuel oxygen potential - CALPHAD (KJ/mol)",
     }
 
     for frame in frames:

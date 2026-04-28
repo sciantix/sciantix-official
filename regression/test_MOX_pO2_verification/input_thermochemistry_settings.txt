@@ -1,13 +1,10 @@
 # Thermochemistry settings
-opencalphad.path = /home/ecappellari/transparant/opencalphad/
+opencalphad.path = /home/ecappellari/sciantix-official/OC/
 kc = false
 langmuir = false
 
 fission_products.module = NO
 fission_products.gap_settings = false
 
-matrix.module = OPENCALPHAD
-matrix.database = upuo-v21
-matrix.elements = U, Pu, O
-matrix.locations = matrix
+matrix.module = NO
 matrix.gap_settings = false

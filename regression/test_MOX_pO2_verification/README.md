@@ -6,7 +6,7 @@ pressure and oxygen potential model implemented in SCIANTIX.
 ## Verification Scope
 
 This case is a solver-only verification. Unlike the UO2 case, it does not use
-OpenCalphad and a CALPHAD database. The comparison is between:
+the matrix thermochemistry module. The comparison is between:
 
 - SCIANTIX
 - the explicit NEA Kato correlation sampled over oxygen partial pressure (NEA (2025), Recommendations on Fuel Properties for Fuel Performance Codes, OECD Publishing, Paris)
@@ -15,8 +15,8 @@ For the current setup, the verification assumes:
 
 - minor actinides content = `0`, not yet implemented a MA-MOX matrix
 - evolving `O/M` with `iStoichiometryDeviation = 8`
-- Temperatures: `800, 900, 1000, ..., 2600 K`
-- Pu contents `q`: `0.10, 0.15, 0.20, 0.25, 0.30, 0.35`
+- Temperatures: `800, 1000, 1200, ..., 2600 K`
+- Pu contents `q`: `0.10, 0.30, 0.40`
 
 
 ## Workflow
