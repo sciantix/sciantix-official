@@ -95,7 +95,7 @@ void Simulation::HighBurnupStructurePorosity()
             // causes gas to pile up on c_gb^HBS rather than inside the pores,
             // and vacancy inflow ceases, so porosity stabilizes mechanistically.
             double xi_old = sciantix_variable["HBS porosity"].getInitialValue();
-            const double xi_sat = 0.22;
+            const double xi_sat = 0.18;
             double linear = std::max(0.0, 1.0 - xi_old / xi_sat);
             double saturation_factor = linear * linear;
 
@@ -427,7 +427,7 @@ void Simulation::HighBurnupStructurePorosity()
             // Kinetic saturation factor from 3D percolation theory
             // (Stauffer & Aharony 1994): (1 - xi/xi_sat)^t with t = 2.
             double xi_old = sciantix_variable["HBS porosity"].getInitialValue();
-            const double xi_sat = 0.22;
+            const double xi_sat = 0.18;
             double linear = std::max(0.0, 1.0 - xi_old / xi_sat);
             double saturation_factor = linear * linear;
 
