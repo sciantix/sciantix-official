@@ -600,7 +600,7 @@ $$
 
 ## Diffusività delle vacanze di Uranio
 
-Per la crescita delle bolle tramite assorbimento di vacanze serve la diffusività delle vacanze di Uranio:
+Per la crescita delle bolle tramite assorbimento di vacanze serve la diffusività efficace delle vacanze di Uranio:
 
 $$
 D_{V_U} = D_1^{V_U} + D_2^{V_U}
@@ -624,16 +624,42 @@ D_2^{V_U}
 =
 \sqrt{\dot{F}}
 \left[
-1.32 \times 10^{-19}
+A_{20,\mathrm{fit}}^{V_U}
 \exp\left(
--\frac{-0.62}{k_B T}
--
+\frac{-0.62}{k_B T}
++
 \frac{-0.04}{(k_B T)^2}
 \right)
 \right]
 $$
 
+dove:
+
+$$
+A_{20,\mathrm{fit}}^{V_U}
+=
+4.6304523933553033 \times 10^{-29}
+\ \mathrm{m^{7/2}s^{-1/2}}
+$$
+
 Per le vacanze non si usa il termine $D_3$, perché $D_3$ rappresenta il mixing balistico usato per Xe.
+
+**Nota sul parametro $A_{20}^{V_U}$**  
+La Table 2 di Rizk riporta per le vacanze di Uranio il valore:
+
+$$
+A_{20}^{V_U} = 1.32 \times 10^{-19}
+$$
+
+ma usando tale valore direttamente nella formula la diffusività ottenuta non riproduce la curva “Vacancies, bulk” riportata da Rizk. Per questo motivo, in questa implementazione si usa il valore:
+
+$$
+A_{20,\mathrm{fit}}^{V_U}
+=
+4.6304523933553033 \times 10^{-29}
+$$
+
+ottenuto come fit della diffusività delle vacanze di bulk riportata nella Fig. 4 di Rizk. Gli altri parametri della correlazione, cioè $D_{10}^{V_U}$, $Q_1^{V_U}$, $B_{21}^{V_U}$ e $B_{22}^{V_U}$, sono mantenuti invariati.
 
 ## Diffusività delle vacanze ai bordi di grano
 
