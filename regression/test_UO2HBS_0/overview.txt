@@ -1,12 +1,12 @@
 Model	Burnup	: The local burnup is calculated from the fission rate density.
 Model	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
-Model	High-burnup structure formation	: Barani et al. Journal of Nuclear Materials 539 (2020) 152296; incubation burnup bu_inc = 15 MWd/kgU from Biswas & Aagesen Comput. Mater. Sci. 258 (2025) 114052, Eq. 45; calibration Zullo (2026)
+Model	High-burnup structure formation	: Barani et al. Journal of Nuclear Materials 539 (2020) 152296 (original KJMA, no incubation burnup)
 Model	Grain growth	 : Ainscough et al., JNM, 49 (1973) 117-128.
 Model	Gas production - Xe in UO2	 
 Model	Gas production - Xe in UO2HBS	 
 Model	Intragranular bubble behavior	: Pizzocri et al., JNM, 502 (2018) 323-330.
 Model	Gas diffusion - Xe in UO2 with HBS	
-Model	High-burnup structure porosity	: mechanistic cluster dynamics, Barani et al. JNM 563 (2022) 153627; percolation and implicit Euler corrections from Zullo (2026)
+Model	High-burnup structure porosity	: semi-empirical porosity model based on Spino et al. JNM 354 (2006) 66
 Model	Intergranular bubble behavior	: Pastore et al., NED, 256 (2013) 75-86.
 
 Matrix	UO2	
@@ -40,8 +40,8 @@ Input setting	iRadioactiveFissionGas = 0
 Input setting	iHelium = 0
 Input setting	iHeDiffusivity = 0
 Input setting	iGrainBoundarySweeping = 0
-Input setting	iHighBurnupStructureFormation = 2
-Input setting	iHighBurnupStructurePorosity = 2
+Input setting	iHighBurnupStructureFormation = 1
+Input setting	iHighBurnupStructurePorosity = 1
 Input setting	iHeliumProductionRate = 0
 Input setting	iStoichiometryDeviation = 0
 Input setting	iBubbleDiffusivity = 0

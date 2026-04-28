@@ -1,56 +1,102 @@
-# Prerequisites
-*.d
+# --- System Files ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Compiled Object files
-*.slo
-*.lo
+# --- IDEs and Editors ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- Build & Compilation ---
+# Object files
 *.o
 *.obj
+*.slo
+*.lo
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
+# Libraries
+*.lib
+*.a
+*.la
+*.lai
 *.so
+*.so.*
 *.dylib
 *.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
 
 # Executables
 *.exe
 *.out
 *.app
+*.i*86
+*.x86
+*.x86_64
+*.endpoint
 *.x
 
-# Backup files
-*.bak
+# Precompiled Headers
+*.gch
+*.pch
 
-# Mac OS files
-*.DS_Store
+# CMake
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps/
 
-#doxygen
-latex
+# Fortran
+*.mod
+*.smod
 
-# Folders
+# --- Languages ---
+# C++
+*.d
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# --- Project Specific ---
+# Doxygen
+latex/
+html/
+
+# Build folders
 bin/
 obj/
 build/
-out/
-documentation/
-.vscode/
-.vs/
-old_files/
-__pycache__/
-optimization
-GSA_output_files/
-point_*
+
+# Miscellaneous
+*.bak
+*.png
+radial_plots/
