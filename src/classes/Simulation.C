@@ -35,20 +35,17 @@ void Simulation::initialize(int    Sciantix_options[],
                             double Sciantix_scaling_factors[],
                             double Sciantix_diffusion_modes[],
                             // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
-                            double Sciantix_thermochemistry[],
-                            const ThermochemistrySettings& Sciantix_thermochemistry_settings
-)
+                            double                         Sciantix_thermochemistry[],
+                            const ThermochemistrySettings& Sciantix_thermochemistry_settings)
 {
     // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
-    setVariables(
-            Sciantix_options,
-            Sciantix_history,
-            Sciantix_variables,
-            Sciantix_scaling_factors,
-            Sciantix_diffusion_modes,
-            Sciantix_thermochemistry,
-            Sciantix_thermochemistry_settings
-    );
+    setVariables(Sciantix_options,
+                 Sciantix_history,
+                 Sciantix_variables,
+                 Sciantix_scaling_factors,
+                 Sciantix_diffusion_modes,
+                 Sciantix_thermochemistry,
+                 Sciantix_thermochemistry_settings);
     //
     setFissionProducts();
     setMatrix();
@@ -57,7 +54,7 @@ void Simulation::initialize(int    Sciantix_options[],
 }
 
 // CODE DEVELOPMENT : THE ORDER OF THE FUNCTIONS CALLED HAS BEEN CHANGED
-// WITHOUT AFFECTING THE GENERAL BEHAVIOR OF THE CODE, 
+// WITHOUT AFFECTING THE GENERAL BEHAVIOR OF THE CODE,
 // TO BETTER CATEGORIZE THE PROCESSES AND IMPROVE CLARITY
 void Simulation::execute()
 {
@@ -68,7 +65,7 @@ void Simulation::execute()
 
     Densification();
 #endif
-    
+
     // FUEL MICROSTRUCTURE
 
     HighBurnupStructureFormation();
@@ -110,5 +107,4 @@ void Simulation::execute()
     InterGranularBubbleBehavior();
 
     FissionProductRelease();
-
 }

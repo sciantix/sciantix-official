@@ -34,8 +34,8 @@ static void caesium(SciantixArray<FissionProducts>& volatile_fp)
     FissionProducts volatile_;
     volatile_.setName("Cs");
     volatile_.setAtomicNumber(55);
-    volatile_.setVanDerWaalsVolume(1.69e-28); // 4/3 * PI * pow(343e-12, 3) from the van der waals radius
-    volatile_.setDecayRate(0.0); // stable
+    volatile_.setVanDerWaalsVolume(1.69e-28);  // 4/3 * PI * pow(343e-12, 3) from the van der waals radius
+    volatile_.setDecayRate(0.0);               // stable
     volatile_.setMassNumber(133);
     volatile_.setChemicallyActive(1.0);
     volatile_.setPrecursorFactor(1.00);
@@ -47,8 +47,8 @@ static void iodine(SciantixArray<FissionProducts>& volatile_fp)
     FissionProducts volatile_;
     volatile_.setName("I");
     volatile_.setAtomicNumber(53);
-    volatile_.setVanDerWaalsVolume(3.25e-29); // 4/3 * PI * pow(198e-12, 3) from the van der waals radius
-    volatile_.setDecayRate(0.0); // stable
+    volatile_.setVanDerWaalsVolume(3.25e-29);  // 4/3 * PI * pow(198e-12, 3) from the van der waals radius
+    volatile_.setDecayRate(0.0);               // stable
     volatile_.setMassNumber(127);
     volatile_.setChemicallyActive(1.0);
     volatile_.setPrecursorFactor(1.00);
@@ -60,8 +60,8 @@ static void tellurium(SciantixArray<FissionProducts>& volatile_fp)
     FissionProducts volatile_;
     volatile_.setName("Te");
     volatile_.setAtomicNumber(52);
-    volatile_.setVanDerWaalsVolume(3.66e-29); // 4/3 * PI * pow(206e-12, 3) from the van der waals radius
-    volatile_.setDecayRate(0.0); // stable   
+    volatile_.setVanDerWaalsVolume(3.66e-29);  // 4/3 * PI * pow(206e-12, 3) from the van der waals radius
+    volatile_.setDecayRate(0.0);               // stable
     volatile_.setMassNumber(128);
     volatile_.setChemicallyActive(1.0);
     volatile_.setPrecursorFactor(1.00);

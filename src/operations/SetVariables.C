@@ -14,8 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "SetVariables.h"
 #include "MainVariables.h"
+#include "SetVariables.h"
 #include "Simulation.h"
 
 void Simulation::setVariables(int    Sciantix_options[],
@@ -24,9 +24,8 @@ void Simulation::setVariables(int    Sciantix_options[],
                               double Sciantix_scaling_factors[],
                               double Sciantix_diffusion_modes[],
                               // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
-                              double Sciantix_thermochemistry[],
-                              const ThermochemistrySettings& Sciantix_thermochemistry_settings
-)
+                              double                         Sciantix_thermochemistry[],
+                              const ThermochemistrySettings& Sciantix_thermochemistry_settings)
 {
     // Input variable
     if (input_variable.empty())
@@ -48,23 +47,21 @@ void Simulation::setVariables(int    Sciantix_options[],
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
          toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0,
          // CODE DEVELOPMENT : flags
-         toOutputPrescribedOMRatio      = input_variable["iStoichiometryDeviation"].getValue() == 9,
-         toOutputThermochimica          = input_variable["iThermochimica"].getValue() != 0,
-         toOutputMOX                    = input_variable["iFuelMatrix"].getValue() == 2;
+        toOutputPrescribedOMRatio = input_variable["iStoichiometryDeviation"].getValue() == 9,
+         toOutputThermochimica    = input_variable["iThermochimica"].getValue() != 0,
+         toOutputMOX              = input_variable["iFuelMatrix"].getValue() == 2;
 
     // Physics variable
     physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
 
     // History variable
-    std::vector<SciantixVariable> values = initializeHistoryVariable(
-        Sciantix_history,
-        Sciantix_scaling_factors,
-        toOutputStoichiometryDeviation,
-        // CODE DEVELOPMENT : flags
-        toOutputThermochimica,
-        toOutputPrescribedOMRatio
-    );
-    
+    std::vector<SciantixVariable> values = initializeHistoryVariable(Sciantix_history,
+                                                                     Sciantix_scaling_factors,
+                                                                     toOutputStoichiometryDeviation,
+                                                                     // CODE DEVELOPMENT : flags
+                                                                     toOutputThermochimica,
+                                                                     toOutputPrescribedOMRatio);
+
     for (SciantixVariable initial_value : values)
     {
         history_variable.push(initial_value);
@@ -82,8 +79,7 @@ void Simulation::setVariables(int    Sciantix_options[],
                                         toOutputChromiumContent,
                                         // CODE DEVELOPMENT : flags
                                         toOutputThermochimica,
-                                        toOutputMOX
-                                    );
+                                        toOutputMOX);
 
     for (SciantixVariable initial_value : values)
     {
@@ -101,19 +97,15 @@ void Simulation::setVariables(int    Sciantix_options[],
         // reports them in the equilibrium result.
         const std::vector<ThermochemistryManifestEntry> manifest =
             loadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
-        values_th = initializeThermochemistryVariable(
-                manifest,
-                Sciantix_thermochemistry
-        );
+        values_th = initializeThermochemistryVariable(manifest, Sciantix_thermochemistry);
     }
-    
+
     for (ThermochemistryVariable initial_value : values_th)
     {
         thermochemistry_variable.push(initial_value);
     }
-    
 
-    #if defined(COUPLING_TU)
+#if defined(COUPLING_TU)
 
     sciantix_variable["Burnup"].setInitialValue(Sciantix_history[7]);
     sciantix_variable["Burnup"].setFinalValue(Sciantix_history[8]);
