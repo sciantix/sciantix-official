@@ -1,0 +1,10 @@
+# Thermochemistry settings
+opencalphad.path = /home/ecappellari/transparant/sciantix-official/OC/
+kc = false
+langmuir = false
+
+fission_products.module = NO
+fission_products.gap_settings = false
+
+matrix.module = NO
+matrix.gap_settings = false
