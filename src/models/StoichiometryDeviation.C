@@ -626,7 +626,16 @@ double MLThermochemicalModel(double                           stoichiometry_devi
     (void)sciantix_variable;
 
     const double input[] = {2.0 + stoichiometry_deviation, temperature};
-    return pow(10.0, ThermoSurrogate::predict_log10_po2(input));
+    const double raw_log10_po2 = ThermoSurrogate::predict_log10_po2(input);
+
+    const double gas_constant = 8.3144626;
+    const double h_t          = 33.6 * (temperature - 298.15);
+    const double s_t          = 205.15 + 33.6 * log(temperature / 298.15);
+    const double g_o2_std     = h_t - temperature * s_t;
+    const double shift        = g_o2_std / (gas_constant * temperature * log(10.0));
+
+    const double corrected_log10_po2_bar = raw_log10_po2 - shift;
+    return reference_oxygen_pressure_bar * pow(10.0, corrected_log10_po2_bar);
 }
 
 // CODE DEVELOPMENT : MOX PARTIAL PRESSURE CORRELATION
