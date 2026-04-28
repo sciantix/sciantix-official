@@ -16,20 +16,19 @@
 
 #include "Initialization.h"
 
-void Initialization(double              Sciantix_history[],
-                    double              Sciantix_variables[],
-                    double              Sciantix_diffusion_modes[],
+void Initialization(double Sciantix_history[],
+                    double Sciantix_variables[],
+                    double Sciantix_diffusion_modes[],
                     // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
-                    double              Sciantix_thermochemistry[],
+                    double Sciantix_thermochemistry[],
                     //
-	                std::vector<double> Temperature_input,
+                    std::vector<double> Temperature_input,
                     std::vector<double> Fissionrate_input,
                     std::vector<double> Hydrostaticstress_input,
                     std::vector<double> Steampressure_input,
                     // CODE DEVELOPMENT : SYSTEM PRESSURE AND O/M RATIO INPUTS
                     std::vector<double> Systempressure_input,
-                    std::vector<double> OMratio_input
-)
+                    std::vector<double> OMratio_input)
 {
     // Sciantix_history initialization
     Sciantix_history[0] = Temperature_input[0];
@@ -45,7 +44,7 @@ void Initialization(double              Sciantix_history[],
 
     // CODE DEVELOPMENT : SYSTEM PRESSURE AND O/M RATIO INPUTS
     Sciantix_history[11] = Systempressure_input[0];
-	Sciantix_history[12] = Systempressure_input[0];
+    Sciantix_history[12] = Systempressure_input[0];
     Sciantix_history[13] = OMratio_input[0];
     Sciantix_history[14] = OMratio_input[0];
     //
@@ -56,10 +55,10 @@ void Initialization(double              Sciantix_history[],
     Sciantix_variables[37] = 1.0;      // Intergranular_fractional_intactness[0]
 
     // CODE DEVELOPMENT : GENERALIZATION FROM UO2 TO ALL MATRICES
-    const double density_mix = Sciantix_variables[40];
-    const double q = Sciantix_variables[177];
+    const double density_mix     = Sciantix_variables[40];
+    const double q               = Sciantix_variables[177];
     const double avogadro_number = 6.022e23;
-    
+
     // const double molar_mass_oxygen = 15.999;
 
     // const double molar_mass_uranium =
@@ -84,10 +83,10 @@ void Initialization(double              Sciantix_history[],
     // Correct: Sciantix_variables[i] *= density_mix * q * avogadro_number * 10.0 / molar_mass_mix;
 
     Sciantix_variables[41] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 234.04095;
-    Sciantix_variables[42] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 235.04393; 
-    Sciantix_variables[43] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 236.04557;  
-    Sciantix_variables[44] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 237.04873; 
-    Sciantix_variables[45] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 238.05079; 
+    Sciantix_variables[42] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 235.04393;
+    Sciantix_variables[43] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 236.04557;
+    Sciantix_variables[44] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 237.04873;
+    Sciantix_variables[45] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 238.05079;
 
     Sciantix_variables[171] *= density_mix * q * avogadro_number * 10.0 * 0.8815 / 238.04956;
     Sciantix_variables[172] *= density_mix * q * avogadro_number * 10.0 * 0.8815 / 239.05216;
@@ -95,8 +94,8 @@ void Initialization(double              Sciantix_history[],
     Sciantix_variables[174] *= density_mix * q * avogadro_number * 10.0 * 0.8815 / 241.05685;
     Sciantix_variables[175] *= density_mix * q * avogadro_number * 10.0 * 0.8815 / 242.05874;
 
-    double total_U = Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] +
-                     Sciantix_variables[44] + Sciantix_variables[45];
+    double total_U = Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] + Sciantix_variables[44] +
+                     Sciantix_variables[45];
     double total_Pu = Sciantix_variables[171] + Sciantix_variables[172] + Sciantix_variables[173] +
                       Sciantix_variables[174] + Sciantix_variables[175];
     //
@@ -105,23 +104,29 @@ void Initialization(double              Sciantix_history[],
     Sciantix_variables[64] = 1.0;
 
     // CODE DEVELOPMENT : FISSION PRODUCTS
-    Sciantix_variables[101] = Sciantix_variables[102] = Sciantix_variables[103] = Sciantix_variables[104] = Sciantix_variables[105] = Sciantix_variables[106] = Sciantix_variables[107] = Sciantix_variables[108] = Sciantix_variables[109] = Sciantix_variables[110] =  0.0;
-	Sciantix_variables[111] = Sciantix_variables[112] = Sciantix_variables[113] = Sciantix_variables[114] = Sciantix_variables[115] = Sciantix_variables[116] = Sciantix_variables[117] = Sciantix_variables[118] = Sciantix_variables[119] = Sciantix_variables[120] =  0.0;
-	Sciantix_variables[121] = Sciantix_variables[122] = Sciantix_variables[123] = Sciantix_variables[124] = Sciantix_variables[125] = Sciantix_variables[126] = Sciantix_variables[127] = Sciantix_variables[128] = Sciantix_variables[129] = Sciantix_variables[130] =  0.0;
-    // 
-    
+    Sciantix_variables[101] = Sciantix_variables[102] = Sciantix_variables[103] = Sciantix_variables[104] =
+        Sciantix_variables[105] = Sciantix_variables[106] = Sciantix_variables[107] = Sciantix_variables[108] =
+            Sciantix_variables[109] = Sciantix_variables[110] = 0.0;
+    Sciantix_variables[111] = Sciantix_variables[112] = Sciantix_variables[113] = Sciantix_variables[114] =
+        Sciantix_variables[115] = Sciantix_variables[116] = Sciantix_variables[117] = Sciantix_variables[118] =
+            Sciantix_variables[119] = Sciantix_variables[120] = 0.0;
+    Sciantix_variables[121] = Sciantix_variables[122] = Sciantix_variables[123] = Sciantix_variables[124] =
+        Sciantix_variables[125] = Sciantix_variables[126] = Sciantix_variables[127] = Sciantix_variables[128] =
+            Sciantix_variables[129] = Sciantix_variables[130] = 0.0;
+    //
+
     // Fabrication porosity = Porosity
     Sciantix_variables[71] = Sciantix_variables[70] = 1.0 - Sciantix_variables[40] / 10960.0;
 
     // Residual porosity
     Sciantix_variables[73] = 0.75 * Sciantix_variables[71];
-    
+
     // CODE DEVELOPMENT : U and O content
     Sciantix_variables[161] = total_U / avogadro_number;
     Sciantix_variables[163] = total_Pu / avogadro_number;
-	Sciantix_variables[162] = (2.0 + Sciantix_variables[66]) * (Sciantix_variables[161] + Sciantix_variables[163]);
-	//
-	
+    Sciantix_variables[162] = (2.0 + Sciantix_variables[66]) * (Sciantix_variables[161] + Sciantix_variables[163]);
+    //
+
     // Projection on diffusion modes of the initial conditions
     double initial_condition(0.0);
     double projection_remainder(0.0);

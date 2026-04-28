@@ -16,7 +16,7 @@
 
 #include "Simulation.h"
 
-void Simulation::FissionProductProduction() // qui tutti i fps
+void Simulation::FissionProductProduction()  // qui tutti i fps
 {
     // Model declaration
     for (auto& system : sciantix_system)
@@ -43,9 +43,9 @@ void Simulation::FissionProductProduction() // qui tutti i fps
                                   model["Fission product production - " + system.getName()].getParameter().at(0),
                                   model["Fission product production - " + system.getName()].getParameter().at(1)));
         else if (system.getRestructuredMatrix() == 1)
-            sciantix_variable[system.getFissionProductName() + " produced in HBS"].setFinalValue(
-                solver.Integrator(sciantix_variable[system.getFissionProductName() + " produced in HBS"].getInitialValue(),
-                                  model["Fission product production - " + system.getName()].getParameter().at(0),
-                                  model["Fission product production - " + system.getName()].getParameter().at(1)));
+            sciantix_variable[system.getFissionProductName() + " produced in HBS"].setFinalValue(solver.Integrator(
+                sciantix_variable[system.getFissionProductName() + " produced in HBS"].getInitialValue(),
+                model["Fission product production - " + system.getName()].getParameter().at(0),
+                model["Fission product production - " + system.getName()].getParameter().at(1)));
     }
 }

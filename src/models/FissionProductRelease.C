@@ -16,7 +16,8 @@
 
 #include "Simulation.h"
 
-void Simulation::FissionProductRelease() // qui tutti i gas (hanno la scrittura come chimicamente attivi nulli)+ i volatili (ora chimicamente attivi 1), cerca di unificare. no i metallici!
+void Simulation::FissionProductRelease()  // qui tutti i gas (hanno la scrittura come chimicamente attivi nulli)+ i
+                                          // volatili (ora chimicamente attivi 1), cerca di unificare. no i metallici!
 {
     // Calculation of the fission product concentration arrived at the grain boundary, by mass balance.
     for (auto& system : sciantix_system)
@@ -27,8 +28,7 @@ void Simulation::FissionProductRelease() // qui tutti i gas (hanno la scrittura 
                 sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
                 sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
                 sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue()
-            );
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue());
 
             if (sciantix_variable[system.getFissionProductName() + " released"].getFinalValue() < 0.0)
                 sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(0.0);
@@ -40,8 +40,7 @@ void Simulation::FissionProductRelease() // qui tutti i gas (hanno la scrittura 
                 sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
                 sciantix_variable[system.getFissionProductName() + " reacted - GB"].getFinalValue() -
                 sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue()
-            );
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue());
 
             if (sciantix_variable[system.getFissionProductName() + " released"].getFinalValue() < 0.0)
                 sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(0.0);

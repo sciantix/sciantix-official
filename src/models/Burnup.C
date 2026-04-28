@@ -51,8 +51,9 @@ void Simulation::Burnup()
     else
         sciantix_variable["Irradiation time"].setConstant();
 
-    sciantix_variable["FIMA"].setFinalValue(solver.Integrator(sciantix_variable["FIMA"].getInitialValue(),
-                                                              history_variable["Fission rate"].getFinalValue() * 3.6e5 /
-                                                                  (sciantix_variable["U"].getFinalValue() + sciantix_variable["Pu"].getFinalValue()),
-                                                              sciantix_variable["Irradiation time"].getIncrement()));
+    sciantix_variable["FIMA"].setFinalValue(
+        solver.Integrator(sciantix_variable["FIMA"].getInitialValue(),
+                          history_variable["Fission rate"].getFinalValue() * 3.6e5 /
+                              (sciantix_variable["U"].getFinalValue() + sciantix_variable["Pu"].getFinalValue()),
+                          sciantix_variable["Irradiation time"].getIncrement()));
 }

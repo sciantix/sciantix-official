@@ -14,9 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#include "ThermochemistrySettings.h"
 #include <string>
 #include <vector>
-#include "ThermochemistrySettings.h"
 
 /**
  * @brief This is a file required for TRANSURANUS-SCIANTIX coupling.
@@ -36,8 +36,14 @@
 extern "C"
 {
 #endif
-  void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[]);
-  void callSciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[], double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[], const ThermochemistrySettings& Sciantix_thermochemistry_options);
+    void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[]);
+    void callSciantix(int                            Sciantix_options[],
+                      double                         Sciantix_history[],
+                      double                         Sciantix_variables[],
+                      double                         Sciantix_scaling_factors[],
+                      double                         Sciantix_diffusion_modes[],
+                      double                         Sciantix_thermochemistry[],
+                      const ThermochemistrySettings& Sciantix_thermochemistry_options);
 
 #ifdef __cplusplus
 }

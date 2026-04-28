@@ -21,8 +21,8 @@ double Sciantix_history[20];
 double Sciantix_variables[300];
 double Sciantix_scaling_factors[20];
 // CODE DEVELOPMENT : INCREASE IN DIFFUSION MODES FROM 720 TO 1300
-double Sciantix_diffusion_modes[720];
-double Sciantix_thermochemistry[300];
+double                  Sciantix_diffusion_modes[720];
+double                  Sciantix_thermochemistry[300];
 ThermochemistrySettings Sciantix_thermochemistry_settings;
 //
 
@@ -35,14 +35,14 @@ std::ofstream Output_file;
 std::ofstream Execution_file;
 std::string   TestPath;
 
-int                 Input_history_points(1000);
-int                 Temperature_input_points;
-int                 Fissionrate_input_points;
-int                 Hydrostaticstress_input_points;
-int                 Stempressure_input_points;
+int Input_history_points(1000);
+int Temperature_input_points;
+int Fissionrate_input_points;
+int Hydrostaticstress_input_points;
+int Stempressure_input_points;
 // CODE DEVELOPMENT : SYSTEM PRESSURE AND O/M RATIO INPUTS
-int                 Systempressure_input_points;
-int                 OMratio_input_points;
+int Systempressure_input_points;
+int OMratio_input_points;
 //
 std::vector<double> Time_temperature_input;
 std::vector<double> Time_fissionrate_input;

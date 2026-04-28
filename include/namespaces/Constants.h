@@ -31,14 +31,14 @@
  *
  */
 
-const double boltzmann_constant    = 1.380651e-23;   // (J/K)
-const double boltzmann_constant_eV = 8.62e-5;        // (eV/K)
-const double avogadro_number       = 6.02214076e23;  // (at/mol)
-const double molar_mass_Oxygen     = 15.999;         // g/mol
-const double molar_mass_Chromium   = 51.9961;        // g/mol
-const double calorie               = 4.186;          // J
-const double gas_constant          = 8.3143;         // J/(mol K)
-const double reference_oxygen_pressure_atm = 0.1013;  // MPa
-const double reference_oxygen_pressure_bar = 0.1;     // MPa
+const double boltzmann_constant            = 1.380651e-23;   // (J/K)
+const double boltzmann_constant_eV         = 8.62e-5;        // (eV/K)
+const double avogadro_number               = 6.02214076e23;  // (at/mol)
+const double molar_mass_Oxygen             = 15.999;         // g/mol
+const double molar_mass_Chromium           = 51.9961;        // g/mol
+const double calorie                       = 4.186;          // J
+const double gas_constant                  = 8.3143;         // J/(mol K)
+const double reference_oxygen_pressure_atm = 0.1013;         // MPa
+const double reference_oxygen_pressure_bar = 0.1;            // MPa
 
 #endif

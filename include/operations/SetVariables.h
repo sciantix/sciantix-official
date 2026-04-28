@@ -55,20 +55,19 @@
  * @author F. Bastien
  *
  */
-void SetVariables(int                              Sciantix_options[],
-                  double                           Sciantix_history[],
-                  double                           Sciantix_variables[],
-                  double                           Sciantix_scaling_factors[],
-                  double                           Sciantix_diffusion_modes[],
-                  double                           Sciantix_thermochemistry[],
-                  const ThermochemistrySettings&    Sciantix_thermochemistry_settings,
-                  SciantixArray<InputVariable>&    input_variable,
-                  SciantixArray<SciantixVariable>& history_variable,
-                  SciantixArray<SciantixVariable>& sciantix_variable,
-                  SciantixArray<SciantixVariable>& physics_variable,
-                  std::vector<double>&             modes_initial_conditions,
-                  SciantixArray<Variable>&         scaling_factors,
-                  SciantixArray<ThermochemistryVariable> &thermochemistry_variable
-);
+void SetVariables(int                                     Sciantix_options[],
+                  double                                  Sciantix_history[],
+                  double                                  Sciantix_variables[],
+                  double                                  Sciantix_scaling_factors[],
+                  double                                  Sciantix_diffusion_modes[],
+                  double                                  Sciantix_thermochemistry[],
+                  const ThermochemistrySettings&          Sciantix_thermochemistry_settings,
+                  SciantixArray<InputVariable>&           input_variable,
+                  SciantixArray<SciantixVariable>&        history_variable,
+                  SciantixArray<SciantixVariable>&        sciantix_variable,
+                  SciantixArray<SciantixVariable>&        physics_variable,
+                  std::vector<double>&                    modes_initial_conditions,
+                  SciantixArray<Variable>&                scaling_factors,
+                  SciantixArray<ThermochemistryVariable>& thermochemistry_variable);
 
 #endif

@@ -22,46 +22,46 @@
 
 namespace
 {
-std::string trim(const std::string& input)
-{
-    const std::string whitespace = " \t\r\n";
-    const size_t      begin      = input.find_first_not_of(whitespace);
-    if (begin == std::string::npos)
-        return "";
-
-    const size_t end = input.find_last_not_of(whitespace);
-    return input.substr(begin, end - begin + 1);
-}
-
-std::vector<std::string> split(const std::string& input, const char delimiter)
-{
-    std::vector<std::string> parts;
-    std::stringstream        stream(input);
-    std::string              item;
-
-    while (std::getline(stream, item, delimiter))
+    std::string trim(const std::string& input)
     {
-        item = trim(item);
-        if (!item.empty())
-            parts.push_back(item);
+        const std::string whitespace = " \t\r\n";
+        const size_t      begin      = input.find_first_not_of(whitespace);
+        if (begin == std::string::npos)
+            return "";
+
+        const size_t end = input.find_last_not_of(whitespace);
+        return input.substr(begin, end - begin + 1);
     }
 
-    return parts;
-}
+    std::vector<std::string> split(const std::string& input, const char delimiter)
+    {
+        std::vector<std::string> parts;
+        std::stringstream        stream(input);
+        std::string              item;
 
-bool parseBool(const std::string& input)
-{
-    const std::string value = trim(input);
+        while (std::getline(stream, item, delimiter))
+        {
+            item = trim(item);
+            if (!item.empty())
+                parts.push_back(item);
+        }
 
-    if (value == "true" || value == "1" || value == "TRUE" || value == "True")
-        return true;
+        return parts;
+    }
 
-    if (value == "false" || value == "0" || value == "FALSE" || value == "False")
-        return false;
+    bool parseBool(const std::string& input)
+    {
+        const std::string value = trim(input);
 
-    std::cerr << "Error: Invalid thermochemistry settings boolean value: " << input << std::endl;
-    exit(1);
-}
+        if (value == "true" || value == "1" || value == "TRUE" || value == "True")
+            return true;
+
+        if (value == "false" || value == "0" || value == "FALSE" || value == "False")
+            return false;
+
+        std::cerr << "Error: Invalid thermochemistry settings boolean value: " << input << std::endl;
+        exit(1);
+    }
 }  // namespace
 
 ThermochemistrySettings loadThermochemistrySettings(const std::string& path)

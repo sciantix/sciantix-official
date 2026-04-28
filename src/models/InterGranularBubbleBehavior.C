@@ -16,7 +16,7 @@
 
 #include "Simulation.h"
 
-void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca di unificare. no i metallici!
+void Simulation::InterGranularBubbleBehavior()  // qui i gas e i volatili, cerca di unificare. no i metallici!
 {
     // Model declaration
     Model  model_;
@@ -45,15 +45,17 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
 
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
                 {
-                    sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].setFinalValue(
-                        sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue() /
-                        (sciantix_variable["Intergranular bubble concentration"].getInitialValue() *
-                         (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+                    sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                        .setFinalValue(
+                            sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue() /
+                            (sciantix_variable["Intergranular bubble concentration"].getInitialValue() *
+                             (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
 
-                    n_at +=
-                        sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].getFinalValue();
+                    n_at += sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                                .getFinalValue();
                 }
             }
             sciantix_variable["Intergranular atoms per bubble"].setFinalValue(n_at);
@@ -63,11 +65,12 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
             double vol(0);
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
                 {
-                    vol +=
-                        sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].getFinalValue() *
-                        system.getFissionProduct().getVanDerWaalsVolume();
+                    vol += sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                               .getFinalValue() *
+                           system.getFissionProduct().getVanDerWaalsVolume();
                 }
             }
             vol +=
@@ -168,11 +171,12 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
             double vol(0);
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
                 {
-                    vol +=
-                        sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].getFinalValue() *
-                        system.getFissionProduct().getVanDerWaalsVolume();
+                    vol += sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                               .getFinalValue() *
+                           system.getFissionProduct().getVanDerWaalsVolume();
                 }
             }
             vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * fuel_.getSchottkyVolume();
@@ -198,20 +202,22 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
             // Conservation
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
                 {
-                    sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].rescaleFinalValue(
-                        sciantix_variable["Intergranular bubble concentration"].getInitialValue() /
-                        sciantix_variable["Intergranular bubble concentration"].getFinalValue());
+                    sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                        .rescaleFinalValue(sciantix_variable["Intergranular bubble concentration"].getInitialValue() /
+                                           sciantix_variable["Intergranular bubble concentration"].getFinalValue());
                 }
             }
 
             double n_at(0);
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
-                    n_at +=
-                        sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].getFinalValue();
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
+                    n_at += sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                                .getFinalValue();
             }
             sciantix_variable["Intergranular atoms per bubble"].setFinalValue(n_at);
 
@@ -222,10 +228,11 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
             vol = 0.0;
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
-                    vol +=
-                        sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].getFinalValue() *
-                        system.getFissionProduct().getVanDerWaalsVolume();
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
+                    vol += sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                               .getFinalValue() *
+                           system.getFissionProduct().getVanDerWaalsVolume();
             }
 
             vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * fuel_.getSchottkyVolume();
@@ -275,7 +282,8 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
                 // New intergranular gas concentration
                 for (auto& system : sciantix_system)
                 {
-                    if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                    if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                        system.isGasOrVolatileFP())
                         sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
                             .rescaleFinalValue(pow(similarity_ratio, 1.5));
                 }
@@ -283,9 +291,11 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
                 n_at = 0.0;
                 for (auto& system : sciantix_system)
                 {
-                    if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
-                        n_at += sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
-                                    .getFinalValue();
+                    if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                        system.isGasOrVolatileFP())
+                        n_at +=
+                            sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                                .getFinalValue();
                 }
                 sciantix_variable["Intergranular atoms per bubble"].setFinalValue(n_at);
 
@@ -311,12 +321,15 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
             double gasvolume_f(0.0);
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
                 {
-                    gasvolume_i += (system.getFissionProduct().getVanDerWaalsVolume() *
-                                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].getInitialValue());
-                    gasvolume_f += (system.getFissionProduct().getVanDerWaalsVolume() *
-                                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue());
+                    gasvolume_i +=
+                        (system.getFissionProduct().getVanDerWaalsVolume() *
+                         sciantix_variable[system.getFissionProductName() + " at grain boundary"].getInitialValue());
+                    gasvolume_f +=
+                        (system.getFissionProduct().getVanDerWaalsVolume() *
+                         sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue());
                 }
             }
 
@@ -479,24 +492,27 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
 
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
                 {
-                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(solver.Integrator(
-                        (1 - release_fraction_increment) *
-                            sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue(),
-                        -release_fraction_final,
-                        sciantix_variable[system.getFissionProductName() + " at grain boundary"].getIncrement()));
+                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(
+                        solver.Integrator(
+                            (1 - release_fraction_increment) *
+                                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue(),
+                            -release_fraction_final,
+                            sciantix_variable[system.getFissionProductName() + " at grain boundary"].getIncrement()));
 
                     if (sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue() < 0.0)
                         sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(0.0);
 
-                    sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].setFinalValue(
-                        sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue() /
-                        (sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
-                         (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+                    sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                        .setFinalValue(
+                            sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue() /
+                            (sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
+                             (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
 
-                    n_at +=
-                        sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].getFinalValue();
+                    n_at += sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                                .getFinalValue();
                 }
             }
             sciantix_variable["Intergranular atoms per bubble"].setFinalValue(n_at);
@@ -510,11 +526,12 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
             double vol(0);
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
                 {
-                    vol +=
-                        sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].getFinalValue() *
-                        system.getFissionProduct().getVanDerWaalsVolume();
+                    vol += sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                               .getFinalValue() *
+                           system.getFissionProduct().getVanDerWaalsVolume();
                 }
             }
             vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * fuel_.getSchottkyVolume();
@@ -542,20 +559,22 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
             // Conservation
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
                 {
-                    sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].rescaleFinalValue(
-                        sciantix_variable["Intergranular bubble concentration"].getInitialValue() /
-                        sciantix_variable["Intergranular bubble concentration"].getFinalValue());
+                    sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                        .rescaleFinalValue(sciantix_variable["Intergranular bubble concentration"].getInitialValue() /
+                                           sciantix_variable["Intergranular bubble concentration"].getFinalValue());
                 }
             }
 
             double n_at(0);
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
-                    n_at +=
-                        sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].getFinalValue();
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
+                    n_at += sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                                .getFinalValue();
             }
             sciantix_variable["Intergranular atoms per bubble"].setFinalValue(n_at);
 
@@ -566,10 +585,11 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
             vol = 0.0;
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
-                    vol +=
-                        sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].getFinalValue() *
-                        system.getFissionProduct().getVanDerWaalsVolume();
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
+                    vol += sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                               .getFinalValue() *
+                           system.getFissionProduct().getVanDerWaalsVolume();
             }
 
             vol += sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * fuel_.getSchottkyVolume();
@@ -634,7 +654,8 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
             vol = 0.0;
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
                 {
                     double n_tot = solver.Integrator(
                         (1 - release_fraction_increment) *
@@ -697,25 +718,28 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
 
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
                 {
-                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(solver.Integrator(
-                        (1 - release_fraction_increment) *
-                            sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue(),
-                        -release_fraction_final,
+                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(
+                        solver.Integrator(
+                            (1 - release_fraction_increment) *
+                                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue(),
+                            -release_fraction_final,
 
-                        sciantix_variable[system.getFissionProductName() + " at grain boundary"].getIncrement()));
+                            sciantix_variable[system.getFissionProductName() + " at grain boundary"].getIncrement()));
 
                     if (sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue() < 0.0)
                         sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(0.0);
 
-                    sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].setFinalValue(
-                        sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue() /
-                        (sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
-                         (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
+                    sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                        .setFinalValue(
+                            sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue() /
+                            (sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
+                             (3.0 / sciantix_variable["Grain radius"].getFinalValue())));
 
-                    n_at +=
-                        sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].getFinalValue();
+                    n_at += sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                                .getFinalValue();
                 }
             }
             sciantix_variable["Intergranular atoms per bubble"].setFinalValue(n_at);
@@ -732,8 +756,7 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
         sciantix_variable["Intergranular bubble pressure"].setFinalValue(
             1e-6 * boltzmann_constant * history_variable["Temperature"].getFinalValue() *
             sciantix_variable["Intergranular atoms per bubble"].getFinalValue() /
-            (sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() *
-             matrices[0].getSchottkyVolume()));
+            (sciantix_variable["Intergranular vacancies per bubble"].getFinalValue() * matrices[0].getSchottkyVolume()));
     else
         sciantix_variable["Intergranular bubble pressure"].setFinalValue(0.0);
 }

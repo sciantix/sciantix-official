@@ -16,7 +16,7 @@
 
 #include "Simulation.h"
 
-void Simulation::GrainBoundaryVenting() // qui i gas e i volatili, cerca di unificare. no i metallici!
+void Simulation::GrainBoundaryVenting()  // qui i gas e i volatili, cerca di unificare. no i metallici!
 {
     if (!int(input_variable["iGrainBoundaryVenting"].getValue()))
         return;
