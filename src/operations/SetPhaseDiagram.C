@@ -155,9 +155,6 @@ void Simulation::CallThermochemistryModule(std::string location, SciantixArray<S
             return;
         }
 
-        std::cout << "OpenCalphad attempt for '" << location << "' with "
-                  << OCUtilsCoupling::solveModeLabel(solve_attempt) << std::endl;
-
         if (!OCUtilsCoupling::runOpenCalphadCase(
                 input_file_path, output_file_path, executable, raw_output, open_calphad_timeout_seconds))
         {
