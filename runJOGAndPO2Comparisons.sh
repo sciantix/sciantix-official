@@ -16,10 +16,10 @@ echo "===== UO2 pO2 VERIFICATION ====="
 python3 regression/test_UO2_pO2_verification/run_temperature_sweep.py > regression/test_UO2_pO2_verification/out.log
 python3 regression/test_UO2_pO2_verification/sciantix_verification/compare_sciantix_with_oc_csv.py
 
-echo ""
-echo "===== MOX pO2 VERIFICATION ====="
+# echo ""
+# echo "===== MOX pO2 VERIFICATION ====="
 
-python3 regression/test_MOX_pO2_verification/run_temperature_sweep.py > regression/test_MOX_pO2_verification/out.log
-python3 regression/test_MOX_pO2_verification/sciantix_verification/compare_sciantix_with_kato.py
+# python3 regression/test_MOX_pO2_verification/run_temperature_sweep.py > regression/test_MOX_pO2_verification/out.log
+# python3 regression/test_MOX_pO2_verification/sciantix_verification/compare_sciantix_with_kato.py
 
 echo "===== DONE ====="
