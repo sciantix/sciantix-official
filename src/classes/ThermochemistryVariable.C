@@ -148,6 +148,6 @@ double ThermochemistryVariable::getMolarMass()
         }
         return molar_mass;
     }
-    
+
     return molar_mass;
 }

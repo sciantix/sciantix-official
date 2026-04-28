@@ -519,26 +519,22 @@ namespace OCUtilsCoupling
         return true;
     }
 
-void dumpParsedOcOutput(const OCOutputData& output_data) // unused
-{
-    std::cout << "\n[OC parser] Parsed components" << std::endl;
-    if (output_data.components.empty())
-        std::cout << "  <none>" << std::endl;
-    else
+    void dumpParsedOcOutput(const OCOutputData& output_data)  // unused
     {
-        for (const auto& component_entry : output_data.components)
+        std::cout << "\n[OC parser] Parsed components" << std::endl;
+        if (output_data.components.empty())
+            std::cout << "  <none>" << std::endl;
+        else
         {
-            const auto& name = component_entry.first;
-            const auto& data = component_entry.second;
-            std::cout << "  " << name
-                      << " : moles=" << data.moles
-                      << ", x=" << data.mole_fraction
-                      << ", mu/RT=" << data.chemical_potential_over_rt
-                      << ", activity=" << data.activity
-                      << ", ref=" << data.reference_state
-                      << std::endl;
+            for (const auto& component_entry : output_data.components)
+            {
+                const auto& name = component_entry.first;
+                const auto& data = component_entry.second;
+                std::cout << "  " << name << " : moles=" << data.moles << ", x=" << data.mole_fraction
+                          << ", mu/RT=" << data.chemical_potential_over_rt << ", activity=" << data.activity
+                          << ", ref=" << data.reference_state << std::endl;
+            }
         }
-    }
 
         std::cout << "\n[OC parser] Parsed phases" << std::endl;
         if (output_data.solution_phases.empty())
@@ -727,37 +723,33 @@ void dumpParsedOcOutput(const OCOutputData& output_data) // unused
         return true;
     }
 
-bool runOpenCalphadCase(const std::string& input_file_path,
-                        const std::string& output_file_path,
-                        const std::string& executable,
-                        std::string&       raw_output,
-                        int                timeout_seconds)
-{
-    (void)input_file_path;
-
-    const std::string command =
-        "timeout --signal=TERM " + std::to_string(timeout_seconds) + "s " + executable +
-        " > /dev/null 2>&1";
-    const int status = std::system(command.c_str());
-    if (status != 0)
+    bool runOpenCalphadCase(const std::string& input_file_path,
+                            const std::string& output_file_path,
+                            const std::string& executable,
+                            std::string&       raw_output,
+                            int                timeout_seconds)
     {
-        if (WIFEXITED(status) && WEXITSTATUS(status) == 124)
-        {
-            std::cerr << "Warning: OpenCalphad timed out after "
-                      << timeout_seconds
-                      << " s."
-                      << std::endl;
-        }
-        else
-        {
-            std::cerr << "Error: Execution of OPENCALPHAD failed." << std::endl;
-        }
-        return false;
-    }
+        (void)input_file_path;
 
-    raw_output = readTextFile(output_file_path);
-    return true;
-}
+        const std::string command =
+            "timeout --signal=TERM " + std::to_string(timeout_seconds) + "s " + executable + " > /dev/null 2>&1";
+        const int status = std::system(command.c_str());
+        if (status != 0)
+        {
+            if (WIFEXITED(status) && WEXITSTATUS(status) == 124)
+            {
+                std::cerr << "Warning: OpenCalphad timed out after " << timeout_seconds << " s." << std::endl;
+            }
+            else
+            {
+                std::cerr << "Error: Execution of OPENCALPHAD failed." << std::endl;
+            }
+            return false;
+        }
+
+        raw_output = readTextFile(output_file_path);
+        return true;
+    }
 
     bool hasRequiredComponents(const OCOutputData& output_data, const std::set<std::string>& active_elements)
     {
@@ -793,7 +785,6 @@ bool runOpenCalphadCase(const std::string& input_file_path,
             }
             return stream.str();
         };
-
 
         auto computeNormalizedPhaseComposition = [&](const OCPhaseData& phase_data)
         {
@@ -851,8 +842,8 @@ bool runOpenCalphadCase(const std::string& input_file_path,
                 if (!liquid_phase_composition.empty())
                     thermochemistry_variable[liquid_phase_variable_name].setComposition(liquid_phase_composition);
 
-            continue;
-        }
+                continue;
+            }
 
             if (!phase_data.species.empty())
             {
@@ -860,19 +851,19 @@ bool runOpenCalphadCase(const std::string& input_file_path,
                 {
                     const std::string variable_name = species_entry.first + " (" + phase_name + ", " + location + ")";
 
-                if (thermochemistry_variable.isElementPresent(variable_name))
-                {
-                    thermochemistry_variable[variable_name].setFinalValue(
-                        species_entry.second.moles * content_scaling_factor);
-                    std::map<std::string, double> composition;
-                    if (species_entry.second.moles > 0.0)
+                    if (thermochemistry_variable.isElementPresent(variable_name))
                     {
-                        for (const auto& element_entry : species_entry.second.elements)
-                            composition[element_entry.first] = element_entry.second / species_entry.second.moles;
+                        thermochemistry_variable[variable_name].setFinalValue(species_entry.second.moles *
+                                                                              content_scaling_factor);
+                        std::map<std::string, double> composition;
+                        if (species_entry.second.moles > 0.0)
+                        {
+                            for (const auto& element_entry : species_entry.second.elements)
+                                composition[element_entry.first] = element_entry.second / species_entry.second.moles;
+                        }
+                        thermochemistry_variable[variable_name].setComposition(composition);
                     }
-                    thermochemistry_variable[variable_name].setComposition(composition);
                 }
-            }
 
                 for (const auto& element_entry : phase_data.elements)
                 {
@@ -883,21 +874,21 @@ bool runOpenCalphadCase(const std::string& input_file_path,
                     const bool has_uppercase_variable =
                         thermochemistry_variable.isElementPresent(uppercase_variable_name);
 
-                if (has_variable)
-                {
-                    thermochemistry_variable[variable_name].setFinalValue(
-                        element_entry.second * content_scaling_factor);
-                    thermochemistry_variable[variable_name].setComposition({{element_entry.first, 1.0}});
+                    if (has_variable)
+                    {
+                        thermochemistry_variable[variable_name].setFinalValue(element_entry.second *
+                                                                              content_scaling_factor);
+                        thermochemistry_variable[variable_name].setComposition({{element_entry.first, 1.0}});
+                    }
+                    else if (has_uppercase_variable)
+                    {
+                        thermochemistry_variable[uppercase_variable_name].setFinalValue(element_entry.second *
+                                                                                        content_scaling_factor);
+                        thermochemistry_variable[uppercase_variable_name].setComposition({{element_entry.first, 1.0}});
+                    }
                 }
-                else if (has_uppercase_variable)
-                {
-                    thermochemistry_variable[uppercase_variable_name].setFinalValue(
-                        element_entry.second * content_scaling_factor);
-                    thermochemistry_variable[uppercase_variable_name].setComposition({{element_entry.first, 1.0}});
-                }
+                continue;
             }
-            continue;
-        }
 
             for (const auto& element_entry : phase_data.elements)
             {
@@ -905,27 +896,26 @@ bool runOpenCalphadCase(const std::string& input_file_path,
                 const std::string uppercase_variable_name =
                     toUpperCopy(element_entry.first) + " (" + phase_name + ", " + location + ")";
 
-            if (thermochemistry_variable.isElementPresent(variable_name))
-            {
-                thermochemistry_variable[variable_name].setFinalValue(
-                    element_entry.second * content_scaling_factor);
-                if (!liquid_phase_composition.empty())
-                    thermochemistry_variable[variable_name].setComposition(liquid_phase_composition);
-                else
-                    thermochemistry_variable[variable_name].setComposition({{element_entry.first, 1.0}});
-            }
-            else if (thermochemistry_variable.isElementPresent(uppercase_variable_name))
-            {
-                thermochemistry_variable[uppercase_variable_name].setFinalValue(
-                    element_entry.second * content_scaling_factor);
-                if (!liquid_phase_composition.empty())
-                    thermochemistry_variable[uppercase_variable_name].setComposition(liquid_phase_composition);
-                else
-                    thermochemistry_variable[uppercase_variable_name].setComposition({{element_entry.first, 1.0}});
+                if (thermochemistry_variable.isElementPresent(variable_name))
+                {
+                    thermochemistry_variable[variable_name].setFinalValue(element_entry.second * content_scaling_factor);
+                    if (!liquid_phase_composition.empty())
+                        thermochemistry_variable[variable_name].setComposition(liquid_phase_composition);
+                    else
+                        thermochemistry_variable[variable_name].setComposition({{element_entry.first, 1.0}});
+                }
+                else if (thermochemistry_variable.isElementPresent(uppercase_variable_name))
+                {
+                    thermochemistry_variable[uppercase_variable_name].setFinalValue(element_entry.second *
+                                                                                    content_scaling_factor);
+                    if (!liquid_phase_composition.empty())
+                        thermochemistry_variable[uppercase_variable_name].setComposition(liquid_phase_composition);
+                    else
+                        thermochemistry_variable[uppercase_variable_name].setComposition({{element_entry.first, 1.0}});
+                }
             }
         }
     }
-}
 
     void updateMatrixFromOutput(const OCOutputData&              output_data,
                                 double                           pressure,
