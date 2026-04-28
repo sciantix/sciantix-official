@@ -75,10 +75,11 @@ $$
 
 
 $$
-N_d(0) = 3.6 \times 10^{19} \; \text{[bub/m}^3\text{]}
+N_d(0) = K\rho_d = 5.0\times10^5 \cdot 3.0\times10^{13}
+= 1.5 \times 10^{19} \; \text{[bub/m}^3\text{]}
 $$
 
-*Valore iniziale del numero di bolle sulle dislocazioni.*
+*Valore iniziale Rizk del numero di bolle sulle dislocazioni.*
 
 
 ---
@@ -289,4 +290,3 @@ Nel complesso, il confronto evidenzia una distinzione netta tra due classi di mo
 Questa distinzione riflette due approcci concettualmente diversi: da un lato una descrizione microscopica basata sul trasporto diffusivo e sulle interazioni tra specie, dall’altro una modellazione efficace in cui i fenomeni sono guidati direttamente dall’energia depositata dagli eventi di fissione.
 
 In termini applicativi, ciò implica che i modelli per UN e U₃Si₂ risultano più adatti a descrivere l’evoluzione microstrutturale in condizioni in cui il trasporto diffusivo è dominante, mentre il modello per UO₂ è più rappresentativo di condizioni in cui i processi indotti dall’irraggiamento giocano un ruolo primario.
-
