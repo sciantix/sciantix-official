@@ -79,15 +79,8 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
 
         case 3:
         {
-            // Base D_gb^v (MSc Thesis of U. Frattini, 2025) Table 2 (White 2004 + a-thermal term tuned in the thesis).
-            // The tilt-angle correction sin[4(1-alpha)+40 alpha]/sin(4) of Barani 2022 Eq. 7 is
-            // alpha-dependent and is applied locally where the diffusivity is consumed, so this
-            // getter returns the untilted base value (consistent with D_gb^SA which is also
-            // corrected locally in HighBurnupStructurePorosity case 2).
-            grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 5e-41 * history_variable["Fission rate"].getFinalValue();
-            //grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 1e-39 * history_variable["Fission rate"].getFinalValue();
-            //grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue()));
-
+            // Base D_gb^v (White 2004 + a-thermal term).
+            grain_boundary_vacancy_diffusivity = 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue())) + 1e-39 * history_variable["Fission rate"].getFinalValue();
             reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77 / BARANI HBS part 2, 2022\n\t";
 
             break;

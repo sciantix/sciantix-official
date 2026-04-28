@@ -78,6 +78,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {53, "Xe133 at grain boundary"},
     {54, "Xe133 released"},
     {55, "Restructured volume fraction"},
+    {70, "Dislocation density"},
     {56, "HBS porosity"},
     {57, "Kr85m produced"},
     {58, "Kr85m in grain"},

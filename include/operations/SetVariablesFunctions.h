@@ -210,6 +210,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(
         SciantixVariable("Intergranular venting probability", "(/)", Sciantix_variables[47], Sciantix_variables[47], toOutputVenting),
 
         SciantixVariable("Restructured volume fraction", "(/)", Sciantix_variables[55], Sciantix_variables[55], toOutputHighBurnupStructure),
+        SciantixVariable("Dislocation density", "(1/m2)", Sciantix_variables[70], Sciantix_variables[70], toOutputHighBurnupStructure),
         SciantixVariable("Intragranular similarity ratio", "(/)", Sciantix_variables[64], Sciantix_variables[64], 0),
         SciantixVariable("Gap oxygen partial pressure", "(MPa)", 0.0, 0.0, toOutputStoichiometryDeviation),
         SciantixVariable("Stoichiometry deviation", "(/)", Sciantix_variables[66], Sciantix_variables[66], toOutputStoichiometryDeviation),
