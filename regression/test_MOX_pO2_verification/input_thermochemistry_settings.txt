@@ -1,5 +1,5 @@
 # Thermochemistry settings
-opencalphad.path = /home/ecappellari/sciantix-official/OC/
+opencalphad.path = /home/ecappellari/transparant/sciantix-official/OC/
 kc = false
 langmuir = false
 
