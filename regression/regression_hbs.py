@@ -410,7 +410,7 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot,
                         alpha=0.20, color=COLOR_CURRENT, linewidth=0,
                         label=r"$\pm\sigma_\xi$ (Fokker-Planck)")
     ax.set_xlim(0, 210)
-    ax.set_ylim(0, 0.25)
+    ax.set_ylim(0, 0.27)
     ax.legend(loc="upper left", ncol=1)
     _save(fig, "plot_porosity.png")
 
