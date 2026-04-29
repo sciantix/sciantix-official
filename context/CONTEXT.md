@@ -36,10 +36,10 @@ understanding the rationale in Section 4.
 | `d_V`, `δ_V` (Veshchunov-Tarasov re-solution) | 1 nm each | `HighBurnupStructureFormation.C` case 1 params 2,3 | Barani 2022 Tab 1 / Veshchunov-Tarasov 2013 |
 | `ν_P` prefactor | **`8.8e17`** | `HighBurnupStructurePorosity.C` line ~120 | 1.76× Barani 2022 5e17, calibrated on Cappia N_p peak magnitude. Previously `1.0e18` when the chain rule in the time-rate conversion was broken (effective prefactor `0.88e18`); with the `/0.8814` fix in place the literal prefactor `8.8e17` preserves the same calibration. See §11.9. |
 | HBS incubation burnup `bu_inc` | **15 MWd/kgHM** | `HighBurnupStructureFormation.C` param 4 | Biswas-Aagesen 2025 Eq. 45 (modified KJMA); shifted from 20 → 15 to reduce RMSE vs PIE (Gerczak 2018 / Noirot 2015): 0.180 → 0.110, below the unshifted 0.156 baseline (see `context/kjma_fit_comparison.py`) |
-| KJMA `K, n` (Barani 2020) | `2.77e-7`, `3.54` | `HighBurnupStructureFormation.C` params 0,1 | Barani 2020 fit on Gerczak data, unchanged |
+| KJMA `γ` (Avrami exponent) and `K` (rate prefactor) | `γ = 3.54`, `K = 2.77e-7` | `HighBurnupStructureFormation.C` case 2: `parameter[0] = avrami_constant = 3.54` (line 68), `parameter[1] = transformation_rate = 2.77e-7` (line 69) | Barani 2020 fit on Gerczak data, unchanged. **Note**: paper Table 1 lists `K` first then `γ`, but the code stores them in the reverse order in the parameter vector (γ at index 0, K at index 1). Read order is enforced consistently in `HighBurnupStructurePorosity.C:112-113`. |
 | `0.8814` (M_U/M_UO₂) | hardcoded in both formation and porosity modules | `HighBurnupStructureFormation.C`, `HighBurnupStructurePorosity.C` | Stoichiometric unit conversion MWd/kgUO₂→MWd/kgHM |
-| Xe yield scale factor `sf` | 1.25 for `iFuelMatrix=1` | `System.C::setProductionRate` case 1 & 5 | Converts base 0.24 → 0.30 true cumulative Xe yield |
-| Percolation + mechanical saturation factor | `F_sat = (1−ξ_old/ξ_sat)²`, `ξ_sat = 0.22` | `HighBurnupStructurePorosity.C` case 2 | Stauffer-Aharony `t=2` applied to `D_gb^v` (vacancy backbone percolation) **and** post-hoc to the total pore-volume increment ΔV (mechanical stress on residual solid cross-section). **Not** applied to `D_gb^SA`/β_n. Coalescence receives the capped ΔV. |
+| Xe yield scale factor `sf` | **1.125** for `iFuelMatrix=1` | `System.C::setProductionRate` case 1 & 5 | Converts base 0.24 → **0.27** effective cumulative Xe yield (Motta-Olander textbook). Previously 1.25 → 0.30; updated to the more recent textbook value. |
+| Percolation + mechanical saturation factor | `F_sat = (1−ξ_old/ξ_sat)²`, **`ξ_sat = 0.18`** | `HighBurnupStructurePorosity.C` case 2 line 98 (and case 3 line 430) | Stauffer-Aharony `t=2` applied to `D_gb^v` (vacancy backbone percolation) **and** post-hoc to the total pore-volume increment ΔV (mechanical stress on residual solid cross-section). **Not** applied to `D_gb^SA`/β_n. Coalescence receives the capped ΔV. Lowered from 0.22 → 0.20 → 0.18 in §15.15 to keep the asymptote inside the Spino-Cappia envelope after the σ_h rampup change. |
 | Cluster-dynamics time discretisation | Pure **implicit Euler** on the 5×5 system | `HighBurnupStructurePorosity.C` | Coeff matrix carries all implicit couplings; no residual explicit α·A term on the RHS |
 
 ## 3. Code changes vs parent commit (logical diff)
@@ -49,7 +49,7 @@ understanding the rationale in Section 4.
 - `setGrainBoundarySingleAtomDiffusivity` case 1: active formula is Xia 2022 (`2e-8·exp(-1.4/kT_eV)`). Olander-Van Uffelen "low D" (`1.3e-7·exp(-2.82/kT_eV)`) is commented with a note explaining why (catch-22 at T=723 K with 2-atom nucleation).
 
 ### `src/classes/System.C`
-- `setProductionRate` case 1: added comment documenting that `sf = 1.25` rescales yield 0.24 → 0.30 when `iFuelMatrix=1`, to match cumulative Xe yield used for HBS calculations.
+- `setProductionRate` case 1 & 5: `sf = 1.125` rescales yield 0.24 → 0.27 when `iFuelMatrix=1`, to match the effective cumulative Xe yield used for HBS calculations (Motta-Olander textbook). Previously `sf = 1.25` → 0.30.
 
 ### `src/models/HighBurnupStructureFormation.C`
 - Added `hbs_incubation_burnup = 15.0` as parameter[4] of the model (shifted from the earlier 20.0; see Section 4).
@@ -80,7 +80,7 @@ Mass balance encoded by the matrix:
 Previously the RHS of `c_gb^HBS` also carried `+ pore_resolution_rate · A_old · dt`, which, combined with the implicit `−α_n dt` coupling in `coeff_matrix[21]`, turned the re-solution coupling into a Crank-Nicolson-like scheme with over-counting. **Removed**: only the implicit coupling remains, so the scheme is now pure implicit Euler.
 
 #### Percolation + mechanical saturation — vacancy pathway and post-hoc ΔV cap
-The saturation factor `F_sat = (1 − ξ_old/ξ_sat)²` with `ξ_sat = 0.22` is computed **once** at the top of case 2 and acts through **two distinct physical channels** sharing the same functional form:
+The saturation factor `F_sat = (1 − ξ_old/ξ_sat)²` with `ξ_sat = 0.18` is computed **once** at the top of case 2 and acts through **two distinct physical channels** sharing the same functional form:
 
 1. **Vacancy backbone percolation (Stauffer-Aharony `t=2`)**: `D_gb_v_eff = D_gb^v · tilt_factor · F_sat`, used in `volume_flow_rate = 2π ρ_P D_gb_v_eff / ζ(ψ)`. Vacancy transport requires bulk connectivity of the solid grain-boundary backbone; as the backbone fragments near `ξ_sat`, Schottky-vacancy flow shuts down.
 2. **Mechanical cap on ΔV (stress on residual solid cross-section)**: the total pore-volume increment is capped post-hoc,
@@ -337,7 +337,7 @@ Default: `bu_avg_list = [40, 67, 97]`, `temp_center=1400K`, `rim_clustering=3.0`
 | File | Role |
 |---|---|
 | `src/classes/Matrix.C` | D_gb^SA (case 1), D_gb^v (case 3), pore rates |
-| `src/classes/System.C` | Production rate with 1.25 yield factor |
+| `src/classes/System.C` | Production rate with 1.125 yield factor (0.24 → 0.27, Motta-Olander) |
 | `src/models/HighBurnupStructureFormation.C` | KJMA α_r with incubation burnup (case 2, `bu_inc = 15`, production baseline); case 1 is Barani 2020 without incubation. Additional cases exist in the codebase but are **out of scope** of this branch/paper — do not edit or reference. |
 | `src/models/HighBurnupStructurePorosity.C` | **Core (case 2)**: fully implicit Euler 5×5 cluster dynamics, nucleation with `bu_inc`, local tilt correction on both `D_gb^SA` and `D_gb^v`, vacancy-pathway percolation on `D_gb^v`, mechanical post-hoc cap on ΔV (coalescence included). case 3 exists in the codebase but is **out of scope** of this branch/paper — do not edit or reference. |
 | `src/operations/SetMatrix.C` | Matrix setup; UO2HBS uses `iGrainBoundaryVacancyDiffusivity=3` hardcoded. UO2HBS pore surface energy `γ = 1.0 N/m`; UO2 matrix uses `γ = 0.7 N/m`. |
@@ -381,7 +381,7 @@ with bibliography at `HBS.bib`. Target journal: Nuclear Engineering and Design (
 | §3.4 text | `D_gb^v = White + 1.0e-39·Ḟ` (Barani 2022 original); tilt applied symmetrically to `D_gb^SA`; percolation factor applied only to `D_gb^v`, not to `D_gb^SA`. | The Frattini `5e-41` paragraph is removed: ΔV cap bounds porosity upstream, so base `D_gb^v` reverts to the Barani value. |
 | §3.6 text | Two-channel saturation: (i) vacancy-backbone percolation on `D_gb^v`, (ii) mechanical cap on ΔV. EoS identity `V_p = n_Xe Ω_Xe + n_vp Ω_vac` **is broken under saturation by design** (over-pressurisation). | Replaces the "applied directly to both grain-boundary diffusivities" paragraph. |
 | §3.4 / §3.2 `β_n` eq | `β_n N_p` | Last residual `β_n^{tot}` removed. β_n is no longer percolation-modulated. |
-| Table 1 | Full parameter list: KJMA (K, γ, bu_inc), ν_P prefactor, d_V/δ_V, D_gb^SA (Xia), D_gb^v (White), tilt, ξ_sat, pore surface energy γ=1.0 N/m, effective cumulative yield y=0.30 at/fiss. | Single table (`tab:model_parameters`). Uses `tabularx` layout with phase subheaders. |
+| Table 1 | Full parameter list: KJMA (K, γ, bu_inc), ν_P prefactor, d_V/δ_V, D_gb^SA (Xia), D_gb^v (White), tilt, ξ_sat, pore surface energy γ=1.0 N/m, effective cumulative yield y=0.27 at/fiss (Motta-Olander textbook). | Single table (`tab:model_parameters`). Uses `tabularx` layout with phase subheaders. The user is removing all yield prose mentions outside Table 1. |
 | §5.5 | "Xenon inventory and mass balance" | Three observations: (1) conservation to 10⁻³ relative, (2) onset of HBS reservoir at `bu_eff ≈ 40–50 MWd/kgHM`, (3) closed-system behaviour (`c_r ≈ 0` throughout). The earlier `c_gb^HBS` plateau claim has been removed — β_n is no longer damped, so no plateau forms; saturation of the pore inventory is driven by the mechanical ΔV cap instead. |
 
 ### Plots in `Images/` for the manuscript
@@ -539,3 +539,15 @@ Build status: 44 pages, 0 undefined references, 6 cosmetic overfulls (was 5; +1 
 Out-of-scope material referenced but **not** included in `main.tex`:
 
 5. **Dislocation-density formation path** (commit f8c4a50b earlier today): `iHighBurnupStructureFormation = 3` (Veshchunov 2009 / Zullo 2026 KJMA(ρ_d) fit, RMSE 0.050 vs production option 2's 0.110 against the same PIE dataset), paired with formation-agnostic `iHighBurnupStructurePorosity = 3`, regression test `regression/test_UO2HBS_dislocation/`, fit script `context/dd_fit.py`. Full physics, calibration, and rationale documented in `context/dislocation_density.md` (604 lines). Deferred to a future paper on lower-scale coupling of HBS formation. Production paths (formation case 1/2, porosity case 2) are unaffected. Style rule §13.10 updated to cover both case-3's.
+
+## 16. Recent-session change log (2026-04-29)
+
+1. **CV plot saw-tooth eliminated via Savitzky-Golay smoothing + pre-nucleation masking** ([regression_hbs.py:46, 582-601]). The §15.17 figure-caption disclosure footnote is now obsolete; the plot is clean. Implementation: (a) `cv_raw` is masked to zero where `poreDensity < 1.0e10/m³` (the "statistically meaningful population" threshold; below this, the cluster-dynamics moments are essentially noise from the seed value `n=2` carried by ~6 000 pores), (b) Savitzky-Golay filter applied with `window_length=51, polyorder=3, mode='nearest'`, (c) re-mask after smoothing so the curve starts at exactly CV=0 before nucleation onset (~bu=15 MWd/kgHM) without smoothing leakage. Result: clean U-shape with first peak ~0.95 at bu≈30, minimum ~0.50 at bu≈40, second peak ~0.80 at bu≈65, monotonic decrease to ~0.12 at 200 MWd/kgHM. **Paper text rewritten** ([main.tex:484]): describes the cleaned curve in physical terms (early heterogeneity, monodisperse intermediate, vacancy-driven differential growth, saturation narrowing). Per user request, the §15.17 footnote was removed and the smoothing is **not** mentioned in the paper.
+
+2. **Xe yield scale factor: 1.25 → 1.125 (yield 0.30 → 0.27, Motta-Olander textbook)** ([System.C:721, 785], cases 1 & 5 of `setProductionRate`). The user adopted the more recent textbook value 0.27 at/fiss for the effective cumulative xenon yield (0.24 base × 1.125). All yield prose mentions are being **removed** from the paper — only the Table 1 entry (`y = 0.27 at/fiss`, line 212, citing `olanderLightWaterReactor2017,2021`) is retained. CONTEXT.md parameter table (§2 line 41), code-changes section (§3 line 52), file-layout table (§7 line 340), and §9 Table 1 row description (line 384) all updated. The 2026-04-28 audit log entry (line 511) is left untouched as historical record of what was verified on that date.
+
+3. **Stale `ξ_sat = 0.22` in CONTEXT.md fixed** ([CONTEXT.md §2 line 42, §3 line 83]). The §15.15 lowering to 0.18 had been applied to code and paper but the parameter table at the top of CONTEXT.md and the Section 3 narrative still showed the historical 0.22. Code verified at `HighBurnupStructurePorosity.C:98` (case 2) and `HighBurnupStructurePorosity.C:430` (case 3) — both `const double xi_sat = 0.18`. Paper at `main.tex:455` already says 0.18.
+
+4. **`high-burnup` → `high burnup` everywhere in the paper** (10 occurrences across title, highlights, keywords, intro, results, discussion, conclusions). User unifying notation; non-hyphenated form preferred even as compound modifier ("high burnup fuel", "high burnup regime"). Convention saved to memory `feedback_hbs_notation.md`.
+
+5. **UK English conversion in `main.tex`** (sed-based bulk pass). `modeled` → `modelled`, `characterized` → `characterised`, `recrystallized`/`recrystallization` → `recrystallised`/`recrystallisation`, `polygonization` → `polygonisation`, `normalized`/`normalizes` → `normalised`/`normalises`, `over-pressurized`/`over-pressurization` → `over-pressurised`/`over-pressurisation`, `pressurized water reactor` → `pressurised water reactor`, `utilization` → `utilisation`, `stabilizing` → `stabilising`, `dataset center` → `dataset centre`. Cite keys, `\centering`, and `organization=` (affiliation field) left untouched. Convention saved to memory `feedback_uk_english.md`.
