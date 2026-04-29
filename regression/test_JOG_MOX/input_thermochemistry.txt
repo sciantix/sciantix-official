@@ -101,3 +101,13 @@
 99 | matrix | condensed | TETRAGONAL_A6 | matrix | (mol/m3) | 0
 100 | matrix | condensed | ETA_PHASE | matrix | (mol/m3) | 0
 101 | matrix | condensed | ZETA_PHASE | matrix | (mol/m3) | 0
+102 | fission_products | liquid | Cs | at grain boundary | (mol/m3) | 1
+103 | fission_products | liquid | Mo | at grain boundary | (mol/m3) | 1
+104 | fission_products | liquid | O | at grain boundary | (mol/m3) | 1
+105 | fission_products | liquid | CS+ | at grain boundary | (mol/m3) | 1
+106 | fission_products | liquid | MO+4 | at grain boundary | (mol/m3) | 1
+107 | fission_products | liquid | MOO4-2 | at grain boundary | (mol/m3) | 1
+108 | fission_products | liquid | O-2 | at grain boundary | (mol/m3) | 1
+109 | fission_products | liquid | VA | at grain boundary | (mol/m3) | 1
+110 | fission_products | liquid | MOO3 | at grain boundary | (mol/m3) | 1
+111 | fission_products | liquid | CSO2 | at grain boundary | (mol/m3) | 1

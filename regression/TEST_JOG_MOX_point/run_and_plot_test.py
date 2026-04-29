@@ -13,13 +13,28 @@ import numpy as np
 TEST_DIR = Path(__file__).resolve().parent
 LOCAL_EXECUTABLE = TEST_DIR / "sciantix.x"
 BUILD_EXECUTABLE = TEST_DIR.parents[1] / "build" / "sciantix.x"
+RUN_LOG = TEST_DIR / "sciantix.log"
 MAIN_OUTPUT_NAME = "output.txt"
 THERMO_OUTPUT_NAME = "thermochemistry_output.txt"
 PLOTS_DIR = TEST_DIR / "plots"
 AVOGADRO_NUMBER = 6.02214076e23
 PELLET_RADIUS_M = 2.7e-3
+BURNUP_LABEL = "Burnup (MWd/kgUO2)"
+TIME_LABEL = "Time (h)"
+FIMA_LABEL = "FIMA (%)"
 
 COLORS = ["#ff0000", "#ff7f00", "#00c853", "#2962ff", "#aa00ff"]
+JOG_PHASES = [
+    ("CS2MOO4_S2", "JOG from CS2MOO4_S2 (/)", "#6baed6"),
+    ("CS2MOO4_S1", "JOG from CS2MOO4_S1 (/)", "#fd8d3c"),
+    ("MOO2", "JOG from MOO2 (/)", "#74c476"),
+    ("CS2MO3O10", "JOG from CS2MO3O10 (/)", "#9e9ac8"),
+    ("CS2MO4O13", "JOG from CS2MO4O13 (/)", "#e377c2"),
+    ("BCC_A2", "JOG from BCC_A2 (/)", "#8c564b"),
+    ("FCC_A1", "JOG from FCC_A1 (/)", "#17becf"),
+    ("HCP_A3", "JOG from HCP_A3 (/)", "#bcbd22"),
+    ("LIQUID", "JOG from liquid (/)", "#f97316"),
+]
 LIQUID_CONSTITUENT_COLUMNS = [
     "CS+ (liquid, at grain boundary) (mol/m3)",
     "MO+4 (liquid, at grain boundary) (mol/m3)",
@@ -38,7 +53,7 @@ plt.rcParams.update({
     "axes.titlesize": 12,
     "xtick.labelsize": 12,
     "ytick.labelsize": 12,
-    "legend.fontsize": 10,
+    "legend.fontsize": 12,
     "figure.dpi": 300,
     "axes.grid": True,
     "grid.alpha": 0.5,
@@ -115,13 +130,11 @@ def plot_case(saved_paths: list[Path]) -> None:
     columns = column_map(headers)
     thermo_columns = column_map(thermo_headers)
 
-    burnup_label = "Burnup (MWd/kgUO2)"
-    time_label = "Time (h)"
-    fima_label = "FIMA (%)"
-    burnup = values[:, columns[burnup_label]]
-    time = values[:, columns[time_label]]
-    fima = values[:, columns[fima_label]]
+    burnup = values[:, columns[BURNUP_LABEL]]
+    time = values[:, columns[TIME_LABEL]]
+    fima = values[:, columns[FIMA_LABEL]]
 
+    # SCIANTIX stores JOG as a relative pellet-radius fraction; plots use micrometers.
     jog_condensed = series_or_zeros(values, columns, "JOG from condensed (/)")
     jog_liquid = series_or_zeros(values, columns, "JOG from liquid (/)")
     jog_thickness_um = (jog_condensed + jog_liquid) * PELLET_RADIUS_M * 1.0e6
@@ -132,9 +145,9 @@ def plot_case(saved_paths: list[Path]) -> None:
     axis = axes[0]
     if "O content (mol/m3)" in columns:
         axis.plot(burnup, values[:, columns["O content (mol/m3)"]], color=COLORS[0], label="Total")
-    axis.set_xlabel(burnup_label)
+    axis.set_xlabel(BURNUP_LABEL)
     axis.set_ylabel("Oxygen concentration (mol/m3)")
-    secondary_time_axis(axis, burnup, time, time_label)
+    secondary_time_axis(axis, burnup, time, TIME_LABEL)
     axis.legend(loc="upper left")
 
     axis = axes[1]
@@ -142,9 +155,9 @@ def plot_case(saved_paths: list[Path]) -> None:
         axis.plot(burnup, values[:, columns["U content (mol/m3)"]], color=COLORS[0], label="Uranium")
     if "Pu content (mol/m3)" in columns:
         axis.plot(burnup, values[:, columns["Pu content (mol/m3)"]], color=COLORS[1], label="Plutonium")
-    axis.set_xlabel(burnup_label)
+    axis.set_xlabel(BURNUP_LABEL)
     axis.set_ylabel("Concentration (mol/m3)")
-    secondary_time_axis(axis, burnup, time, time_label)
+    secondary_time_axis(axis, burnup, time, TIME_LABEL)
     axis.legend(loc="upper left")
 
     for axis, species, ylabel in [
@@ -163,9 +176,9 @@ def plot_case(saved_paths: list[Path]) -> None:
             column_name = f"{species}{suffix}"
             if column_name in columns:
                 axis.plot(burnup, values[:, columns[column_name]] / AVOGADRO_NUMBER, color=color, label=legend_label)
-        axis.set_xlabel(burnup_label)
+        axis.set_xlabel(BURNUP_LABEL)
         axis.set_ylabel(ylabel)
-        secondary_time_axis(axis, burnup, time, time_label)
+        secondary_time_axis(axis, burnup, time, TIME_LABEL)
         if axis.get_legend_handles_labels()[0]:
             axis.legend(loc="upper left")
 
@@ -178,9 +191,9 @@ def plot_case(saved_paths: list[Path]) -> None:
             axis.plot(burnup, values[:, columns["Fuel oxygen potential - Kato (KJ/mol)"]], label="Kato", color=COLORS[1], linestyle="--")
         if "Fuel oxygen potential - CALPHAD (KJ/mol)" in columns:
             axis.plot(burnup, values[:, columns["Fuel oxygen potential - CALPHAD (KJ/mol)"]], label="CALPHAD", color=COLORS[3], linestyle="--")
-        axis.set_xlabel(burnup_label)
+        axis.set_xlabel(BURNUP_LABEL)
         axis.set_ylabel("muO2 (kJ/mol)")
-        secondary_time_axis(axis, burnup, time, time_label)
+        secondary_time_axis(axis, burnup, time, TIME_LABEL)
         axis.legend(loc="best")
         save_figure(fig, "muo2.png", saved_paths)
 
@@ -188,18 +201,7 @@ def plot_case(saved_paths: list[Path]) -> None:
     stack_series = []
     stack_labels = []
     stack_colors = []
-    jog_parts = [
-        ("CS2MOO4_S2", "JOG from CS2MOO4_S2 (/)", "#6baed6"),
-        ("CS2MOO4_S1", "JOG from CS2MOO4_S1 (/)", "#fd8d3c"),
-        ("MOO2", "JOG from MOO2 (/)", "#74c476"),
-        ("CS2MO3O10", "JOG from CS2MO3O10 (/)", "#9e9ac8"),
-        ("CS2MO4O13", "JOG from CS2MO4O13 (/)", "#e377c2"),
-        ("BCC_A2", "JOG from BCC_A2 (/)", "#8c564b"),
-        ("FCC_A1", "JOG from FCC_A1 (/)", "#17becf"),
-        ("HCP_A3", "JOG from HCP_A3 (/)", "#bcbd22"),
-        ("LIQUID", "JOG from liquid (/)", "#f97316"),
-    ]
-    for label, column_name, color in jog_parts:
+    for label, column_name, color in JOG_PHASES:
         if column_name in columns:
             stack_series.append(values[:, columns[column_name]] * PELLET_RADIUS_M * 1.0e6)
             stack_labels.append(label)
@@ -207,9 +209,9 @@ def plot_case(saved_paths: list[Path]) -> None:
     if stack_series:
         axis.stackplot(fima, *stack_series, labels=stack_labels, colors=stack_colors, alpha=0.85)
         axis.plot(fima, jog_thickness_um, color="#111827", label="Total JOG", linewidth=2.3)
-        axis.set_xlabel(fima_label)
+        axis.set_xlabel(FIMA_LABEL)
         axis.set_ylabel("JOG thickness (um)")
-        secondary_time_axis(axis, burnup, time, time_label)
+        secondary_time_axis(axis, burnup, time, TIME_LABEL)
         axis.legend(loc="upper left")
         save_figure(fig, "JOG_contributions.png", saved_paths)
     else:
@@ -225,12 +227,10 @@ def plot_liquid_constituent_fractions(
     time: np.ndarray,
     saved_paths: list[Path],
 ) -> None:
-    time_label = "Time (h)"
-    burnup_label = "Burnup (MWd/kgUO2)"
-    if time_label not in thermo_columns:
-        raise ValueError(f"Missing {time_label} in {THERMO_OUTPUT_NAME}")
+    if TIME_LABEL not in thermo_columns:
+        raise ValueError(f"Missing {TIME_LABEL} in {THERMO_OUTPUT_NAME}")
 
-    thermo_time = thermo_values[:, thermo_columns[time_label]]
+    thermo_time = thermo_values[:, thermo_columns[TIME_LABEL]]
     thermo_burnup = np.interp(thermo_time, time, burnup)
     available_columns = [
         column for column in LIQUID_CONSTITUENT_COLUMNS
@@ -254,19 +254,24 @@ def plot_liquid_constituent_fractions(
 
     fig, axis = plt.subplots(figsize=(11, 7))
     axis.stackplot(thermo_burnup, fractions, labels=labels, colors=colors[:len(labels)], alpha=0.88)
-    axis.set_xlabel(burnup_label)
+    axis.set_xlabel(BURNUP_LABEL)
     axis.set_ylabel("Fraction of tracked liquid constituents (-)")
     axis.set_ylim(0.0, 1.0)
 
-    def burnup_to_time(x):
-        return np.interp(x, burnup, time)
-
-    def time_to_burnup(x):
-        return np.interp(x, time, burnup)
-
-    axis.secondary_xaxis("top", functions=(burnup_to_time, time_to_burnup)).set_xlabel(time_label)
+    secondary_time_axis(axis, burnup, time, TIME_LABEL)
     axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5))
     save_figure(fig, "liquid_constituent_fractions.png", saved_paths)
+
+
+    fig, axis = plt.subplots(figsize=(11, 7))
+    axis.stackplot(thermo_burnup, constituent_values, labels=labels, colors=colors[:len(labels)], alpha=0.88)
+    axis.plot(thermo_burnup, denominator, color="black")
+    axis.set_xlabel(BURNUP_LABEL)
+    axis.set_ylabel("Liquid constituents (mol/m3)")
+
+    secondary_time_axis(axis, burnup, time, TIME_LABEL)
+    axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5))
+    save_figure(fig, "liquid_constituent.png", saved_paths)
 
 
 def run_case() -> None:
@@ -279,14 +284,14 @@ def run_case() -> None:
         capture_output=True,
         check=False,
     )
-    (TEST_DIR / "sciantix.log").write_text(completed.stdout + completed.stderr)
+    RUN_LOG.write_text(completed.stdout + completed.stderr)
     if completed.returncode != 0:
-        raise RuntimeError(f"SCIANTIX failed with return code {completed.returncode}. See sciantix.log.")
+        raise RuntimeError(f"SCIANTIX failed with return code {completed.returncode}. See {RUN_LOG.name}.")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run and plot the JOG MOX single-point case.")
-    parser.add_argument("--no-run", action="store_true", help="Plot existing output files without running SCIANTIX.")
+    parser.add_argument("--no-run", "--plot-only", action="store_true", help="Plot existing output files without running SCIANTIX.")
     args = parser.parse_args()
 
     if not args.no_run:

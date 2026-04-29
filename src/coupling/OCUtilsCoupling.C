@@ -79,6 +79,19 @@ bool isNumericToken(const std::string& value)
     return std::regex_match(value, numeric_pattern);
 }
 
+bool tryParseSublatticeSites(const std::string& line, double& sites)
+{
+    static const std::regex sublattice_pattern(
+        R"(Sublattice\s+\d+\s+with\s+\d+\s+constituents\s+and\s+([+-]?(?:\d+\.?\d*|\.\d+)(?:[Ee][+-]?\d+)?)\s+sites)");
+
+    std::smatch match;
+    if (!std::regex_search(line, match, sublattice_pattern))
+        return false;
+
+    sites = safeFloat(match[1].str());
+    return true;
+}
+
 std::string normalizeElementCase(const std::string& token, const std::vector<std::string>& valid_elements)
 {
     std::map<std::string, std::string> valid_set;
@@ -202,6 +215,9 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
     bool        in_components_section   = false;
     bool        in_phases_section       = false;
     bool        in_constitution_section = false;
+    double      current_phase_moles      = 0.0;
+    double      current_phase_form_units = 0.0;
+    double      current_sublattice_sites = 0.0;
     std::string current_phase;
 
     for (size_t i = 0; i < lines.size(); ++i)
@@ -266,6 +282,15 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
         if (stripped.rfind("Name", 0) == 0 || stripped.find("Moles") != std::string::npos)
             continue;
 
+        if (stripped.rfind("Constitution:", 0) == 0)
+        {
+            in_constitution_section = true;
+            current_sublattice_sites = 0.0;
+            if (stripped.find("Sublattice") != std::string::npos)
+                tryParseSublatticeSites(stripped, current_sublattice_sites);
+            continue;
+        }
+
         if (stripped.find(".. E") != std::string::npos && stripped.find("X:") != std::string::npos)
         {
             in_constitution_section = false;
@@ -276,38 +301,40 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
 
             const std::string raw_phase_name = normalizeSpeciesName(parts[0]);
             current_phase = normalizePhaseName(raw_phase_name);
+            current_phase_moles = safeFloat(parts[2]);
+            current_phase_form_units =
+                (parts.size() > 4 && isNumericToken(parts[4])) ? safeFloat(parts[4]) : current_phase_moles;
 
             if (current_phase != "condensed")
             {
                 OCPhaseData& phase = data.solution_phases[current_phase];
-                phase.moles += safeFloat(parts[2]);
-                phase.volume += safeFloat(parts[3]);
+                const double volume = safeFloat(parts[3]);
+                phase.moles += current_phase_moles;
+                phase.volume += volume;
+                phase.form_units += current_phase_form_units;
             }
             else
             {
                 const std::string species_name = normalizeSpeciesName(raw_phase_name);
                 OCPhaseData&      phase        = data.solution_phases[current_phase];
                 OCSpeciesData&    species      = phase.species[species_name];
-                const double      moles        = safeFloat(parts[2]);
                 const double      volume       = safeFloat(parts[3]);
                 const double      stoichiometric_size =
                     (parts.size() > 5 && isNumericToken(parts[5])) ? safeFloat(parts[5]) : 1.0;
                 
-                species.moles += moles;
+                species.moles += current_phase_moles;
                 species.volume += volume;
                 species.stoichiometric_size = (stoichiometric_size > 0.0) ? stoichiometric_size : 1.0;
-                phase.moles += moles;
+                phase.moles += current_phase_moles;
                 phase.volume += volume;
+                phase.form_units += current_phase_form_units;
             }
 
             for (size_t j = i + 1; j < lines.size(); ++j)
             {
                 const std::string next_line = trim(lines[j]);
-                if (next_line.rfind("Constitution: There are", 0) == 0)
-                {
-                    in_constitution_section = true;
+                if (next_line.rfind("Constitution:", 0) == 0)
                     break;
-                }
 
                 if (next_line.find("Sublattice") != std::string::npos || next_line.empty())
                     break;
@@ -344,17 +371,26 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
             const std::string next_line = stripped;
 
             if (next_line.empty() || next_line.rfind("Name", 0) == 0 || next_line.rfind("Some", 0) == 0 ||
-                next_line.find("with") != std::string::npos)
+                next_line.find("Output for equilibrium") != std::string::npos)
             {
                 in_constitution_section = false;
+                current_phase_moles = 0.0;
+                current_phase_form_units = 0.0;
+                current_sublattice_sites = 0.0;
+                continue;
+            }
+
+            if (next_line.find("Sublattice") != std::string::npos)
+            {
+                if (!tryParseSublatticeSites(next_line, current_sublattice_sites))
+                    current_sublattice_sites = 0.0;
                 continue;
             }
 
             const std::vector<std::string> species_parts = split(next_line);
             for (size_t k = 0; k + 1 < species_parts.size(); k += 2)
             {
-                // Keep explicit constituent parsing only for gas.
-                if (current_phase == "condensed" || current_phase == "liquid" || current_phase == "ionic_liquid")
+                if (current_phase == "condensed")
                     continue;
 
                 if (!isNumericToken(species_parts[k + 1]))
@@ -364,7 +400,10 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                 const double      mole_fraction = safeFloat(species_parts[k + 1]);
                 OCPhaseData&      phase         = data.solution_phases[current_phase];
                 OCSpeciesData&    species       = phase.species[species_name];
-                species.moles = mole_fraction * phase.moles;
+                if (current_sublattice_sites > 0.0)
+                    species.moles += mole_fraction * current_phase_form_units * current_sublattice_sites;
+                else
+                    species.moles += mole_fraction * current_phase_moles;
             }
         }
     }
@@ -554,6 +593,7 @@ void dumpParsedOcOutput(const OCOutputData& output_data)
         std::cout << "  Phase " << phase_name
                   << " : moles=" << phase_data.moles
                   << ", volume=" << phase_data.volume
+                  << ", form_units=" << phase_data.form_units
                   << std::endl;
 
         if (!phase_data.elements.empty())
@@ -740,7 +780,7 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
             fixed_oxygen_moles);
     }
 
-    input_file << "l /out=" << output_file_path << " r 1\n\n";
+    input_file << "l /out=" << output_file_path << " r 2\n\n";
     input_file << "fin";
     return true;
 }
@@ -914,8 +954,6 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                           << " molar_mass=" << phase_molar_mass
                           << " g/mol" << std::endl;
             }
-
-            continue;
         }
 
         if (!phase_data.species.empty())

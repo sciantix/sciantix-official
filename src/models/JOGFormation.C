@@ -53,6 +53,13 @@ void Simulation::JOGFormation()
         if (phase != "condensed" && phase != "liquid" && phase != "ionic_liquid")
             continue;
 
+        const std::string variable_name = variable.getName();
+        if ((phase == "liquid" || phase == "ionic_liquid") &&
+            variable_name.rfind("LIQUID (", 0) != 0)
+        {
+            continue;
+        }
+
         double contribution = std::max(0.0, variable.getFinalValue() * variable.getMolarMass() / theoretical_density);
 
         JOG_thickness += contribution;
@@ -62,21 +69,21 @@ void Simulation::JOGFormation()
         else
             JOG_thickness_liquid += contribution;
 
-        if (variable.getName() == "CS2MOO4_S1 (condensed, at grain boundary)")
+        if (variable_name == "CS2MOO4_S1 (condensed, at grain boundary)")
             sciantix_variable["JOG from CS2MOO4_S1"].setFinalValue(contribution);
-        else if (variable.getName() == "CS2MOO4_S2 (condensed, at grain boundary)")
+        else if (variable_name == "CS2MOO4_S2 (condensed, at grain boundary)")
             sciantix_variable["JOG from CS2MOO4_S2"].setFinalValue(contribution);
-        else if (variable.getName() == "MOO2 (condensed, at grain boundary)")
+        else if (variable_name == "MOO2 (condensed, at grain boundary)")
             sciantix_variable["JOG from MOO2"].setFinalValue(contribution);
-        else if (variable.getName() == "CS2MO3O10 (condensed, at grain boundary)")
+        else if (variable_name == "CS2MO3O10 (condensed, at grain boundary)")
             sciantix_variable["JOG from CS2MO3O10"].setFinalValue(contribution);
-        else if (variable.getName() == "CS2MO4O13 (condensed, at grain boundary)")
+        else if (variable_name == "CS2MO4O13 (condensed, at grain boundary)")
             sciantix_variable["JOG from CS2MO4O13"].setFinalValue(contribution);
-        else if (variable.getName() == "BCC_A2 (condensed, at grain boundary)")
+        else if (variable_name == "BCC_A2 (condensed, at grain boundary)")
             sciantix_variable["JOG from BCC_A2"].setFinalValue(contribution);
-        else if (variable.getName() == "FCC_A1 (condensed, at grain boundary)")
+        else if (variable_name == "FCC_A1 (condensed, at grain boundary)")
             sciantix_variable["JOG from FCC_A1"].setFinalValue(contribution);
-        else if (variable.getName() == "HCP_A3 (condensed, at grain boundary)")
+        else if (variable_name == "HCP_A3 (condensed, at grain boundary)")
             sciantix_variable["JOG from HCP_A3"].setFinalValue(contribution);
     }
 

@@ -18,19 +18,15 @@ BUILD_EXECUTABLE = TEST_DIR.parents[1] / "build" / "sciantix.x"
 RUN_SUMMARY = TEST_DIR / "run_summary.txt"
 MAIN_OUTPUT_NAME = "output.txt"
 THERMO_OUTPUT_NAME = "thermochemistry_output.txt"
-THERMOCHEMISTRY_MANIFEST_FILE = TEST_DIR /"input_thermochemistry.txt"
+THERMOCHEMISTRY_MANIFEST_FILE = TEST_DIR / "input_thermochemistry.txt"
 PLOTS_DIR = TEST_DIR / "plots"
 EXP_DATA_DIR = TEST_DIR / "exp_data"
 PELLET_RADIUS_M = 2.7e-3
 AVOGADRO_NUMBER = 6.02214076e23
-CS2MOO4_LIQUID_DENSITY_KG_PER_M3 = 4380.0
+BURNUP_LABEL = "Burnup (MWd/kgUO2)"
+TIME_LABEL = "Time (h)"
+FIMA_LABEL = "FIMA (%)"
 
-ATOMIC_MASS_G_PER_MOL = {
-    "Cs": 132.90545196,
-    "Mo": 95.95,
-    "O": 15.999,
-    "U": 238.02891,
-}
 SHARED_INPUT_FILES = (
     "input_settings.txt",
     "input_initial_conditions.txt",
@@ -47,6 +43,16 @@ CASE_TEMPORARY_FILES = SHARED_INPUT_FILES + (
     "OCoutput_grain_boundary.DAT",
 )
 MAX_STACKPLOT_LEGEND_ITEMS = 50
+JOG_PHASES = [
+    ("CS2MOO4_S2", "JOG from CS2MOO4_S2 (/)", "CS2MOO4_S2 (condensed, at grain boundary) (mol/m3)"),
+    ("CS2MOO4_S1", "JOG from CS2MOO4_S1 (/)", "CS2MOO4_S1 (condensed, at grain boundary) (mol/m3)"),
+    ("MOO2", "JOG from MOO2 (/)", "MOO2 (condensed, at grain boundary) (mol/m3)"),
+    ("CS2MO3O10", "JOG from CS2MO3O10 (/)", "CS2MO3O10 (condensed, at grain boundary) (mol/m3)"),
+    ("CS2MO4O13", "JOG from CS2MO4O13 (/)", "CS2MO4O13 (condensed, at grain boundary) (mol/m3)"),
+    ("BCC_A2", "JOG from BCC_A2 (/)", "BCC_A2 (condensed, at grain boundary) (mol/m3)"),
+    ("FCC_A1", "JOG from FCC_A1 (/)", "FCC_A1 (condensed, at grain boundary) (mol/m3)"),
+    ("HCP_A3", "JOG from HCP_A3 (/)", "HCP_A3 (condensed, at grain boundary) (mol/m3)"),
+]
 
 plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update({
@@ -66,7 +72,7 @@ plt.rcParams.update({
     "legend.frameon": False,
 })
 
-colors = ["#ff0000", "#ff7f00", "#00c853", "#2962ff", "#aa00ff"]
+COLORS = ["#ff0000", "#ff7f00", "#00c853", "#2962ff", "#aa00ff"]
 # Muted but still well-separated palette for species-consistent plots.
 DISTINCT_COLOR_VALUES = [
     "#6baed6", "#fd8d3c", "#74c476", "#9e9ac8", "#e377c2", "#8c564b",
@@ -100,11 +106,37 @@ def load_output_data(output_file: Path) -> tuple[list[str], np.ndarray]:
 
     headers = rows[0]
     values = np.array(rows[1:], dtype=float)
-
     if values.ndim != 2 or values.shape[1] != len(headers):
         raise ValueError(f"Malformed SCIANTIX output in {output_file}")
-
     return headers, values
+
+
+def column_map(headers: list[str]) -> dict[str, int]:
+    return {name: index for index, name in enumerate(headers)}
+
+
+def series_or_zeros(values: np.ndarray, columns: dict[str, int], label: str) -> np.ndarray:
+    if label not in columns:
+        return np.zeros(values.shape[0], dtype=float)
+    return values[:, columns[label]]
+
+
+def secondary_time_axis(axis: plt.Axes, burnup: np.ndarray, time: np.ndarray) -> None:
+    def burnup_to_time(x):
+        return np.interp(x, burnup, time)
+
+    def time_to_burnup(x):
+        return np.interp(x, time, burnup)
+
+    axis.secondary_xaxis("top", functions=(burnup_to_time, time_to_burnup)).set_xlabel(TIME_LABEL)
+
+
+def save_figure(fig: plt.Figure, path: Path, saved_paths: list[Path]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fig.tight_layout()
+    fig.savefig(path, bbox_inches="tight")
+    plt.close(fig)
+    saved_paths.append(path)
 
 
 def load_grain_boundary_uranium_species(manifest_file: Path) -> set[str]:
@@ -284,10 +316,9 @@ def build_label_color_map(labels: list[str]) -> dict[str, object]:
     }
 
 
-def build_thermochemistry_color_maps(case_directories: list[Path]) -> tuple[dict[str, object], dict[str, object]]:
+def build_thermochemistry_color_map(case_directories: list[Path]) -> dict[str, object]:
     uranium_species = load_grain_boundary_uranium_species(THERMOCHEMISTRY_MANIFEST_FILE)
     gb_labels: list[str] = []
-    matrix_labels: list[str] = []
 
     for case_dir in case_directories:
         thermo_file = case_dir / THERMO_OUTPUT_NAME
@@ -301,14 +332,8 @@ def build_thermochemistry_color_maps(case_directories: list[Path]) -> tuple[dict
             and ", at grain boundary)" in header
             and header.split(" (", 1)[0] not in uranium_species
         )
-        matrix_labels.extend(
-            header
-            for header in thermochemistry_headers
-            if header not in {"Burnup (MWd/kgUO2)", "Time (h)"}
-            and ", matrix)" in header
-        )
 
-    return build_label_color_map(gb_labels), build_label_color_map(matrix_labels)
+    return build_label_color_map(gb_labels)
 
 
 def prepare_case_inputs(case_dir: Path) -> None:
@@ -333,10 +358,7 @@ def plot_case(
     case_dir: Path,
     saved_paths: list[Path],
     gb_color_map: dict[str, object],
-    matrix_color_map: dict[str, object],
     half_wall_thickness_m: float,
-    r_inner_m: float,
-    r_outer_m: float,
 ) -> None:
     output_file = case_dir / MAIN_OUTPUT_NAME
     thermo_file = case_dir / THERMO_OUTPUT_NAME
@@ -344,34 +366,20 @@ def plot_case(
     ensure_output_file(thermo_file)
 
     headers, values = load_output_data(output_file)
-    column_map = {name: idx for idx, name in enumerate(headers)}
+    columns = column_map(headers)
     thermochemistry_headers, thermochemistry_values = load_output_data(thermo_file)
-    thermochemistry_column_map = {name: idx for idx, name in enumerate(thermochemistry_headers)}
+    thermochemistry_columns = column_map(thermochemistry_headers)
 
-    burnup_label = "Burnup (MWd/kgUO2)"
-    time_label = "Time (h)"
-    fima_label = "FIMA (%)"
-    jog_label_condensed = "JOG from condensed (/)"
-    jog_label_liquid = "JOG from liquid (/)"
-    oxygen_label = "O content (mol/m3)"
-    uranium_label = "U content (mol/m3)"
-    plutonium_label = "Pu content (mol/m3)"
+    burnup = values[:, columns[BURNUP_LABEL]]
+    time = values[:, columns[TIME_LABEL]]
+    fima = values[:, columns[FIMA_LABEL]]
 
-    burnup = values[:, column_map[burnup_label]]
-    time = values[:, column_map[time_label]]
-    fima = values[:, column_map[fima_label]]
-    jog_fraction_condensed = values[:, column_map[jog_label_condensed]] if jog_label_condensed in column_map else np.zeros_like(burnup)
-    jog_fraction_liquid = values[:, column_map[jog_label_liquid]] if jog_label_liquid in column_map else np.zeros_like(burnup)
-    jog_fraction = jog_fraction_condensed + jog_fraction_liquid
-    jog_thickness_um = jog_fraction * half_wall_thickness_m * 1.0e6
-    
-    def burnup_to_time(x):
-        return np.interp(x, burnup, time)
+    # In the hollow-pellet run, JOG fractions are scaled with half the annulus wall thickness.
+    jog_fraction_condensed = series_or_zeros(values, columns, "JOG from condensed (/)")
+    jog_fraction_liquid = series_or_zeros(values, columns, "JOG from liquid (/)")
+    jog_thickness_um = (jog_fraction_condensed + jog_fraction_liquid) * half_wall_thickness_m * 1.0e6
 
-    def time_to_burnup(x):
-        return np.interp(x, time, burnup)
-
-    thermochemistry_time = thermochemistry_values[:, thermochemistry_column_map[time_label]]
+    thermochemistry_time = thermochemistry_values[:, thermochemistry_columns[TIME_LABEL]]
     thermochemistry_burnup = np.interp(thermochemistry_time, time, burnup)
 
     case_plot_dir = PLOTS_DIR / case_dir.name
@@ -381,18 +389,21 @@ def plot_case(
     axes = axes.flatten()
 
     axis = axes[0]
-    axis.plot(burnup, values[:, column_map[oxygen_label]], color=colors[0], label="Total")
-    axis.set_xlabel(burnup_label)
+    if "O content (mol/m3)" in columns:
+        axis.plot(burnup, values[:, columns["O content (mol/m3)"]], color=COLORS[0], label="Total")
+    axis.set_xlabel(BURNUP_LABEL)
     axis.set_ylabel("Oxygen concentration (mol/m3)")
-    axis.secondary_xaxis("top", functions=(burnup_to_time, time_to_burnup)).set_xlabel(time_label)
+    secondary_time_axis(axis, burnup, time)
     axis.legend(loc="upper left")
 
     axis = axes[1]
-    axis.plot(burnup, values[:, column_map[uranium_label]], color=colors[0], label="Uranium")
-    axis.plot(burnup, values[:, column_map[plutonium_label]], color=colors[1], label="Plutonium")
-    axis.set_xlabel(burnup_label)
+    if "U content (mol/m3)" in columns:
+        axis.plot(burnup, values[:, columns["U content (mol/m3)"]], color=COLORS[0], label="Uranium")
+    if "Pu content (mol/m3)" in columns:
+        axis.plot(burnup, values[:, columns["Pu content (mol/m3)"]], color=COLORS[1], label="Plutonium")
+    axis.set_xlabel(BURNUP_LABEL)
     axis.set_ylabel("Concentration (mol/m3)")
-    axis.secondary_xaxis("top", functions=(burnup_to_time, time_to_burnup)).set_xlabel(time_label)
+    secondary_time_axis(axis, burnup, time)
     axis.legend(loc="upper left")
 
     for axis, species, ylabel in [
@@ -402,91 +413,67 @@ def plot_case(
         (axes[5], "Mo", "Molybdenum concentration (mol/m3)"),
     ]:
         for label, color, suffix in [
-            ("Produced", colors[0], " produced (at/m3)"),
-            ("In grain", colors[1], " in grain (at/m3)"),
-            ("At grain boundary", colors[2], " at grain boundary (at/m3)"),
-            ("Reacted", colors[3], " reacted - GB (at/m3)"),
-            ("Released", colors[4], " released (at/m3)"),
+            ("Produced", COLORS[0], " produced (at/m3)"),
+            ("In grain", COLORS[1], " in grain (at/m3)"),
+            ("At grain boundary", COLORS[2], " at grain boundary (at/m3)"),
+            ("Reacted", COLORS[3], " reacted - GB (at/m3)"),
+            ("Released", COLORS[4], " released (at/m3)"),
         ]:
             column_name = f"{species}{suffix}"
-            if column_name in column_map:
-                axis.plot(burnup, values[:, column_map[column_name]] / AVOGADRO_NUMBER, color=color, label=label)
-        axis.set_xlabel(burnup_label)
+            if column_name in columns:
+                axis.plot(burnup, values[:, columns[column_name]] / AVOGADRO_NUMBER, color=color, label=label)
+        axis.set_xlabel(BURNUP_LABEL)
         axis.set_ylabel(ylabel)
-        axis.secondary_xaxis("top", functions=(burnup_to_time, time_to_burnup)).set_xlabel(time_label)
+        secondary_time_axis(axis, burnup, time)
         if axis.get_legend_handles_labels()[0]:
             axis.legend(loc="upper left")
 
-    fig.tight_layout()
-    plot_path = case_plot_dir / "inventory_mol_m3_overview.png"
-    fig.savefig(plot_path, bbox_inches="tight")
-    plt.close(fig)
-    saved_paths.append(plot_path)
+    save_figure(fig, case_plot_dir / "inventory_mol_m3_overview.png", saved_paths)
 
     summary_variables = [
         "Temperature (K)",
         "Fission gas release (/)",
         "Stoichiometry deviation (/)"
     ]
-    available_summary_variables = [name for name in summary_variables if name in column_map]
+    available_summary_variables = [name for name in summary_variables if name in columns]
     for page_index, start in enumerate(range(0, len(available_summary_variables), 4), start=1):
         page_variables = available_summary_variables[start:start + 4]
         fig, axes = plt.subplots(len(page_variables), 1, figsize=(10, 3.2 * len(page_variables)), sharex=True)
         axes = np.atleast_1d(axes)
         for axis, variable in zip(axes, page_variables):
-            axis.plot(time, values[:, column_map[variable]], color="#0f766e")
+            axis.plot(time, values[:, columns[variable]], color="#0f766e")
             axis.set_ylabel(variable)
             axis.grid(True, alpha=0.3)
-        axes[-1].set_xlabel(time_label)
-        fig.tight_layout()
-        plot_path = case_plot_dir / f"summary_variables_{page_index:02d}.png"
-        fig.savefig(plot_path, bbox_inches="tight")
-        plt.close(fig)
-        saved_paths.append(plot_path)
+        axes[-1].set_xlabel(TIME_LABEL)
+        save_figure(fig, case_plot_dir / f"summary_variables_{page_index:02d}.png", saved_paths)
 
-    fig, axis = plt.subplots()
-    axis.plot(burnup, values[:, column_map["Fuel oxygen potential (KJ/mol)"]], label="SCIANTIX", color=colors[0])
-    axis.plot(burnup, values[:, column_map["Fuel oxygen potential - Kato (KJ/mol)"]], label="Kato", color=colors[1], linestyle = '--')
-    axis.plot(burnup, values[:, column_map["Fuel oxygen potential - CALPHAD (KJ/mol)"]], label="CALPHAD", color=colors[3], linestyle = '--')
-    axis.set_xlabel(burnup_label)
-    axis.set_ylabel("muO2 (kJ/mol)")
-    axis.secondary_xaxis("top", functions=(burnup_to_time, time_to_burnup)).set_xlabel(time_label)
-    axis.legend(loc="best")
-    fig.tight_layout()
-    plot_path = case_plot_dir / "muo2.png"
-    fig.savefig(plot_path, bbox_inches="tight")
-    plt.close(fig)
-    saved_paths.append(plot_path)
+    if "Fuel oxygen potential (KJ/mol)" in columns:
+        fig, axis = plt.subplots()
+        axis.plot(burnup, values[:, columns["Fuel oxygen potential (KJ/mol)"]], label="SCIANTIX", color=COLORS[0])
+        if "Fuel oxygen potential - Kato (KJ/mol)" in columns:
+            axis.plot(burnup, values[:, columns["Fuel oxygen potential - Kato (KJ/mol)"]], label="Kato", color=COLORS[1], linestyle="--")
+        if "Fuel oxygen potential - CALPHAD (KJ/mol)" in columns:
+            axis.plot(burnup, values[:, columns["Fuel oxygen potential - CALPHAD (KJ/mol)"]], label="CALPHAD", color=COLORS[3], linestyle="--")
+        axis.set_xlabel(BURNUP_LABEL)
+        axis.set_ylabel("muO2 (kJ/mol)")
+        secondary_time_axis(axis, burnup, time)
+        axis.legend(loc="best")
+        save_figure(fig, case_plot_dir / "muo2.png", saved_paths)
 
-    jog_breakdown_labels = {
-        "condensed": "JOG from condensed (/)",
-        "liquid": "JOG from liquid (/)",
-    }
-    jog_condensed_subvariables = [
-        ("CS2MOO4_S2", "JOG from CS2MOO4_S2 (/)", "CS2MOO4_S2 (condensed, at grain boundary) (mol/m3)"),
-        ("CS2MOO4_S1", "JOG from CS2MOO4_S1 (/)", "CS2MOO4_S1 (condensed, at grain boundary) (mol/m3)"),
-        ("MOO2", "JOG from MOO2 (/)", "MOO2 (condensed, at grain boundary) (mol/m3)"),
-        ("CS2MO3O10", "JOG from CS2MO3O10 (/)", "CS2MO3O10 (condensed, at grain boundary) (mol/m3)"),
-        ("CS2MO4O13", "JOG from CS2MO4O13 (/)", "CS2MO4O13 (condensed, at grain boundary) (mol/m3)"),
-        ("BCC_A2", "JOG from BCC_A2 (/)", "BCC_A2 (condensed, at grain boundary) (mol/m3)"),
-        ("FCC_A1", "JOG from FCC_A1 (/)", "FCC_A1 (condensed, at grain boundary) (mol/m3)"),
-        ("HCP_A3", "JOG from HCP_A3 (/)", "HCP_A3 (condensed, at grain boundary) (mol/m3)"),
-    ]
-
-    if has_columns(column_map, [jog_breakdown_labels["condensed"]]) or has_columns(column_map, [jog_breakdown_labels["liquid"]]):
+    if has_columns(columns, ["JOG from condensed (/)"]) or has_columns(columns, ["JOG from liquid (/)"]):
         stack_series = []
         stack_labels = []
         stack_colors = []
 
-        for sub_label, output_label, thermo_label in jog_condensed_subvariables:
-            if output_label not in column_map:
+        for sub_label, output_label, thermo_label in JOG_PHASES:
+            if output_label not in columns:
                 continue
-            stack_series.append(values[:, column_map[output_label]] * half_wall_thickness_m * 1.0e6)
+            stack_series.append(values[:, columns[output_label]] * half_wall_thickness_m * 1.0e6)
             stack_labels.append(sub_label)
             stack_colors.append(gb_color_map.get(thermo_label))
 
-        if jog_breakdown_labels["liquid"] in column_map:
-            stack_series.append(values[:, column_map[jog_breakdown_labels["liquid"]]] * half_wall_thickness_m * 1.0e6)
+        if "JOG from liquid (/)" in columns:
+            stack_series.append(values[:, columns["JOG from liquid (/)"]] * half_wall_thickness_m * 1.0e6)
             stack_labels.append("LIQUID")
             stack_colors.append("#f97316")
 
@@ -500,33 +487,28 @@ def plot_case(
         )
         axis.plot(fima, jog_thickness_um, color="#111827", label="Total JOG", linewidth=2.3)
         axis.set_ylabel("JOG thickness (um)")
-        axis.secondary_xaxis("top", functions=(burnup_to_time, time_to_burnup)).set_xlabel(time_label)
-        axis.set_xlabel(fima_label)
+        secondary_time_axis(axis, burnup, time)
+        axis.set_xlabel(FIMA_LABEL)
         axis.legend(loc="upper left")
-
-        fig.tight_layout()
-        plot_path = case_plot_dir / "JOG_contributions.png"
-        fig.savefig(plot_path, bbox_inches="tight")
-        plt.close(fig)
-        saved_paths.append(plot_path)
+        save_figure(fig, case_plot_dir / "JOG_contributions.png", saved_paths)
 
     uranium_species = load_grain_boundary_uranium_species(THERMOCHEMISTRY_MANIFEST_FILE)
 
     gb_variables = [
         header
         for header in thermochemistry_headers
-        if header not in {burnup_label, time_label}
+        if header not in {BURNUP_LABEL, TIME_LABEL}
         and ", at grain boundary)" in header
         and header.split(" (", 1)[0] not in uranium_species
-        and not is_all_zero(thermochemistry_values[:, thermochemistry_column_map[header]])
+        and not is_all_zero(thermochemistry_values[:, thermochemistry_columns[header]])
     ]
     gb_sorted_variables = sorted(
         gb_variables,
-        key=lambda variable: thermochemistry_values[-1, thermochemistry_column_map[variable]],
+        key=lambda variable: thermochemistry_values[-1, thermochemistry_columns[variable]],
         reverse=True,
     )
     fig, axis = plt.subplots()
-    gb_stacked_data = [thermochemistry_values[:, thermochemistry_column_map[variable]] for variable in gb_sorted_variables]
+    gb_stacked_data = [thermochemistry_values[:, thermochemistry_columns[variable]] for variable in gb_sorted_variables]
     gb_colors = [gb_color_map[variable] for variable in gb_sorted_variables]
     if gb_stacked_data:
         phase_hatch = {
@@ -556,14 +538,10 @@ def plot_case(
             poly.set_hatch(hatch)
             poly.set_edgecolor((0.1, 0.1, 0.1, 0.7))
             poly.set_linewidth(0.2)
-    axis.set_xlabel(burnup_label)
+    axis.set_xlabel(BURNUP_LABEL)
     axis.set_ylabel("Concentration at grain boundary (mol/m3)")
     add_capped_legend(axis, loc="upper left", fontsize=8)
-    fig.tight_layout()
-    plot_path = case_plot_dir / "thermochemistry_fission_products_at_grain_boundary.png"
-    fig.savefig(plot_path, bbox_inches="tight")
-    plt.close(fig)
-    saved_paths.append(plot_path)
+    save_figure(fig, case_plot_dir / "thermochemistry_fission_products_at_grain_boundary.png", saved_paths)
 
 def plot_radial_profiles(
     case_directories: list[Path],
@@ -629,18 +607,15 @@ def plot_radial_profiles(
                 radii_mm_array,
                 output_profiles["Temperature (K)"][:, index],
                 color=color,
-                marker="o")
-            break
+                marker="o",
+                label=f"{reference_burnup[index]:.1f} MWd/kgUO2",
+            )
         axis.set_xlabel("Radius (mm)")
         axis.set_xlim([0, 3.0])
         axis.set_ylabel("Temperature (K)")
         axis.set_ylim([800, 2000])
         axis.legend(loc="best")
-        fig.tight_layout()
-        plot_path = PLOTS_DIR / "summary_01_temperature_vs_radius.png"
-        fig.savefig(plot_path, bbox_inches="tight")
-        plt.close(fig)
-        saved_paths.append(plot_path)
+        save_figure(fig, PLOTS_DIR / "summary_01_temperature_vs_radius.png", saved_paths)
 
     # 2) System pressure (bar) vs burnup
     if "System pressure (Pa)" in output_profiles:
@@ -653,11 +628,7 @@ def plot_radial_profiles(
         axis.set_ylim([0,100])
         axis.set_ylabel("System pressure (bar)")
         axis.legend(loc="upper left")
-        fig.tight_layout()
-        plot_path = PLOTS_DIR / "summary_02_pressure_vs_burnup.png"
-        fig.savefig(plot_path, bbox_inches="tight")
-        plt.close(fig)
-        saved_paths.append(plot_path)
+        save_figure(fig, PLOTS_DIR / "summary_02_pressure_vs_burnup.png", saved_paths)
 
     # 3) Stoichiometry deviation vs burnup
     if "Stoichiometry deviation (/)" in output_profiles:
@@ -674,11 +645,7 @@ def plot_radial_profiles(
         axis.set_ylabel("O/M (/)")
         axis.set_ylim([1.95, 2.3])
         axis.legend(loc="upper left")
-        fig.tight_layout()
-        plot_path = PLOTS_DIR / "summary_03_stoichiometry_vs_burnup.png"
-        fig.savefig(plot_path, bbox_inches="tight")
-        plt.close(fig)
-        saved_paths.append(plot_path)
+        save_figure(fig, PLOTS_DIR / "summary_03_stoichiometry_vs_burnup.png", saved_paths)
 
     # 3b) q vs burnup
     if "q (-)" in output_profiles:
@@ -694,11 +661,7 @@ def plot_radial_profiles(
         axis.set_xlabel("Burnup (MWd/kgUO2)")
         axis.set_ylabel("q (-)")
         axis.legend(loc="upper left")
-        fig.tight_layout()
-        plot_path = PLOTS_DIR / "summary_03b_q_vs_burnup.png"
-        fig.savefig(plot_path, bbox_inches="tight")
-        plt.close(fig)
-        saved_paths.append(plot_path)
+        save_figure(fig, PLOTS_DIR / "summary_03b_q_vs_burnup.png", saved_paths)
 
     # 4) Chemical potential vs burnup
     if "Fuel oxygen potential (KJ/mol)" in output_profiles:
@@ -715,11 +678,7 @@ def plot_radial_profiles(
         axis.set_ylabel("Fuel oxygen potential (kJ/mol)")
         axis.set_ylim([-800, 0.0])
         axis.legend(loc="upper left")
-        fig.tight_layout()
-        plot_path = PLOTS_DIR / "summary_04_chemical_potential_vs_burnup.png"
-        fig.savefig(plot_path, bbox_inches="tight")
-        plt.close(fig)
-        saved_paths.append(plot_path)
+        save_figure(fig, PLOTS_DIR / "summary_04_chemical_potential_vs_burnup.png", saved_paths)
 
     gb_variables = [
         header
@@ -781,11 +740,7 @@ def plot_radial_profiles(
         axis.set_xlabel("Burnup (MWd/kgUO2)")
         axis.set_ylabel("Concentration at grain boundary (mol/m3)")
         add_capped_legend(axis, loc="upper left")
-        fig.tight_layout()
-        plot_path = PLOTS_DIR / "summary_05_gb_phases_vs_burnup.png"
-        fig.savefig(plot_path, bbox_inches="tight")
-        plt.close(fig)
-        saved_paths.append(plot_path)
+        save_figure(fig, PLOTS_DIR / "summary_05_gb_phases_vs_burnup.png", saved_paths)
 
         fig, axis = plt.subplots()
         gb_radial_histories = []
@@ -821,11 +776,7 @@ def plot_radial_profiles(
         axis.set_xlabel("Burnup (MWd/kgUO2)")
         axis.set_ylabel("Concentration of condensed+liquid species at grain boundary (mol/m3)")
         add_capped_legend(axis, loc="upper left")
-        fig.tight_layout()
-        plot_path = PLOTS_DIR / "summary_06_gb_noliq_phases_vs_burnup.png"
-        fig.savefig(plot_path, bbox_inches="tight")
-        plt.close(fig)
-        saved_paths.append(plot_path)
+        save_figure(fig, PLOTS_DIR / "summary_06_gb_noliq_phases_vs_burnup.png", saved_paths)
     
     if "JOG (/)" in output_profiles:
         jog_total_thickness_over_time_um = radial_integral_over_radius(
@@ -915,11 +866,7 @@ def plot_radial_profiles(
         axis.legend(loc="upper left")
         axis.set_ylim([0,200])
 
-        fig.tight_layout()
-        plot_path = PLOTS_DIR / "summary_08_jog_contributions_and_experiments.png"
-        fig.savefig(plot_path, bbox_inches="tight")
-        plt.close(fig)
-        saved_paths.append(plot_path)
+        save_figure(fig, PLOTS_DIR / "summary_08_jog_contributions_and_experiments.png", saved_paths)
 
 
 def main() -> int:
@@ -934,7 +881,7 @@ def main() -> int:
     case_directories = case_dirs()
     if not case_directories:
         raise FileNotFoundError(f"No point_* directories found in {TEST_DIR}")
-    r_inner_m, r_outer_m, half_wall_thickness_m = hollow_geometry_from_case_directories(case_directories)
+    _, _, half_wall_thickness_m = hollow_geometry_from_case_directories(case_directories)
 
     PLOTS_DIR.mkdir(exist_ok=True)
     saved_paths: list[Path] = []
@@ -964,14 +911,10 @@ def main() -> int:
             ensure_output_file(case_dir / MAIN_OUTPUT_NAME)
             ensure_output_file(case_dir / THERMO_OUTPUT_NAME)
 
-    for case_dir in case_directories:
-        gb_color_map, matrix_color_map = build_thermochemistry_color_maps(case_directories)
-        break
-    else:
-        gb_color_map, matrix_color_map = {}, {}
+    gb_color_map = build_thermochemistry_color_map(case_directories)
 
     for case_dir in case_directories:
-        plot_case(case_dir, saved_paths, gb_color_map, matrix_color_map, half_wall_thickness_m, r_inner_m, r_outer_m)
+        plot_case(case_dir, saved_paths, gb_color_map, half_wall_thickness_m)
 
     plot_radial_profiles(case_directories, saved_paths, gb_color_map)
 

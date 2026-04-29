@@ -36,6 +36,7 @@ struct OCPhaseData
 {
     double                   moles  = 0.0;
     double                   volume = 0.0;
+    double                   form_units = 0.0;
     std::map<std::string, OCSpeciesData> species;
     std::map<std::string, double>        elements;
 };
