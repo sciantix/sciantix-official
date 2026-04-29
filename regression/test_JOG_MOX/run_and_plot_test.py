@@ -53,6 +53,16 @@ JOG_PHASES = [
     ("FCC_A1", "JOG from FCC_A1 (/)", "FCC_A1 (condensed, at grain boundary) (mol/m3)"),
     ("HCP_A3", "JOG from HCP_A3 (/)", "HCP_A3 (condensed, at grain boundary) (mol/m3)"),
 ]
+LIQUID_CONSTITUENT_COLUMNS = [
+    "CS+ (liquid, at grain boundary) (mol/m3)",
+    "MO+4 (liquid, at grain boundary) (mol/m3)",
+    "MOO4-2 (liquid, at grain boundary) (mol/m3)",
+    "O-2 (liquid, at grain boundary) (mol/m3)",
+    "VA (liquid, at grain boundary) (mol/m3)",
+    "MOO3 (liquid, at grain boundary) (mol/m3)",
+    "CSO2 (liquid, at grain boundary) (mol/m3)",
+]
+LIQUID_CONSTITUENT_COLORS = ["#6baed6", "#fd8d3c", "#74c476", "#9e9ac8", "#e377c2", "#8c564b", "#17becf"]
 
 plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update({
@@ -354,6 +364,63 @@ def run_sciantix_case(case_dir: Path) -> subprocess.CompletedProcess[str]:
     )
 
 
+def plot_liquid_constituent_fractions(
+    thermochemistry_values: np.ndarray,
+    thermochemistry_columns: dict[str, int],
+    burnup: np.ndarray,
+    time: np.ndarray,
+    case_plot_dir: Path,
+    saved_paths: list[Path],
+) -> None:
+    if TIME_LABEL not in thermochemistry_columns:
+        raise ValueError(f"Missing {TIME_LABEL} in {THERMO_OUTPUT_NAME}")
+
+    thermochemistry_time = thermochemistry_values[:, thermochemistry_columns[TIME_LABEL]]
+    thermochemistry_burnup = np.interp(thermochemistry_time, time, burnup)
+
+    available_columns = [
+        column for column in LIQUID_CONSTITUENT_COLUMNS
+        if column in thermochemistry_columns
+        and not is_all_zero(thermochemistry_values[:, thermochemistry_columns[column]])
+    ]
+    if not available_columns:
+        return
+
+    constituent_values = np.vstack([
+        thermochemistry_values[:, thermochemistry_columns[column]]
+        for column in available_columns
+    ])
+    denominator = np.sum(constituent_values, axis=0)
+    fractions = np.divide(
+        constituent_values,
+        denominator,
+        out=np.zeros_like(constituent_values),
+        where=denominator > 0.0,
+    )
+
+    labels = [column.split(" (", 1)[0] for column in available_columns]
+    colors = LIQUID_CONSTITUENT_COLORS[:len(labels)]
+
+    # These two plots mirror the single-point case: composition first, absolute inventory second.
+    fig, axis = plt.subplots(figsize=(11, 7))
+    axis.stackplot(thermochemistry_burnup, fractions, labels=labels, colors=colors, alpha=0.88)
+    axis.set_xlabel(BURNUP_LABEL)
+    axis.set_ylabel("Fraction of tracked liquid constituents (-)")
+    axis.set_ylim(0.0, 1.0)
+    secondary_time_axis(axis, burnup, time)
+    axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5))
+    save_figure(fig, case_plot_dir / "liquid_constituent_fractions.png", saved_paths)
+
+    fig, axis = plt.subplots(figsize=(11, 7))
+    axis.stackplot(thermochemistry_burnup, constituent_values, labels=labels, colors=colors, alpha=0.88)
+    axis.plot(thermochemistry_burnup, denominator, color="black", label="Total")
+    axis.set_xlabel(BURNUP_LABEL)
+    axis.set_ylabel("Liquid constituents (mol/m3)")
+    secondary_time_axis(axis, burnup, time)
+    axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5))
+    save_figure(fig, case_plot_dir / "liquid_constituent.png", saved_paths)
+
+
 def plot_case(
     case_dir: Path,
     saved_paths: list[Path],
@@ -542,6 +609,16 @@ def plot_case(
     axis.set_ylabel("Concentration at grain boundary (mol/m3)")
     add_capped_legend(axis, loc="upper left", fontsize=8)
     save_figure(fig, case_plot_dir / "thermochemistry_fission_products_at_grain_boundary.png", saved_paths)
+
+    plot_liquid_constituent_fractions(
+        thermochemistry_values,
+        thermochemistry_columns,
+        burnup,
+        time,
+        case_plot_dir,
+        saved_paths,
+    )
+
 
 def plot_radial_profiles(
     case_directories: list[Path],
