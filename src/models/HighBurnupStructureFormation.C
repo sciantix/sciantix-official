@@ -49,7 +49,7 @@ void Simulation::HighBurnupStructureFormation()
             double transformation_rate(2.77e-7);
             double resolution_layer_thickness = 1.0e-9; // (m)
             double resolution_critical_distance = 1.0e-9; // (m)
-            double hbs_incubation_burnup = 0.0; // MWd/kgU
+            double hbs_incubation_burnup = 0.0; // MWd/kgHM
 
             parameter.push_back(avrami_constant);
             parameter.push_back(transformation_rate);
@@ -63,18 +63,18 @@ void Simulation::HighBurnupStructureFormation()
 
         case 2:
         {
-            reference += ": Barani et al. Journal of Nuclear Materials 539 (2020) 152296; incubation burnup bu_inc = 15 MWd/kgU from Biswas & Aagesen Comput. Mater. Sci. 258 (2025) 114052, Eq. 45; calibration Zullo (2026)";
+            reference += ": Barani et al. Journal of Nuclear Materials 539 (2020) 152296; incubation burnup bu_inc = 15 MWd/kgHM from Biswas & Aagesen Comput. Mater. Sci. 258 (2025) 114052, Eq. 45; parameter selection Zullo (2026)";
 
             double avrami_constant(3.54);
             double transformation_rate(2.77e-7);
             double resolution_layer_thickness = 1.0e-9; // (m)
             double resolution_critical_distance = 1.0e-9; // (m)
-            // HBS-formation incubation burnup (MWd/kgU). Below this value
+            // HBS-formation incubation burnup (MWd/kgHM). Below this value
             // neither grain sub-division (alpha_r) nor pore nucleation (nu_P)
             // are active, following the modified KJMA formulation of Biswas &
             // Aagesen 2025 (Comput. Mater. Sci. 258, 114052, Eq. 45) derived
             // from the dislocation-energy vs subgrain-formation-energy balance.
-            double hbs_incubation_burnup = 15.0; // MWd/kgU
+            double hbs_incubation_burnup = 15.0; // MWd/kgHM
 
             parameter.push_back(avrami_constant);
             parameter.push_back(transformation_rate);

@@ -1,6 +1,6 @@
 Model	Burnup	: The local burnup is calculated from the fission rate density.
 Model	Effective burnup	: G. Khvostov et al., WRFPM-2005, Kyoto, Japan, 2005.
-Model	High-burnup structure formation	: Barani et al. Journal of Nuclear Materials 539 (2020) 152296; incubation burnup bu_inc = 15 MWd/kgU from Biswas & Aagesen Comput. Mater. Sci. 258 (2025) 114052, Eq. 45; calibration Zullo (2026)
+Model	High-burnup structure formation	: Barani et al. Journal of Nuclear Materials 539 (2020) 152296; incubation burnup bu_inc = 15 MWd/kgHM from Biswas & Aagesen Comput. Mater. Sci. 258 (2025) 114052, Eq. 45; parameter selection Zullo (2026)
 Model	Grain growth	 : Ainscough et al., JNM, 49 (1973) 117-128.
 Model	Gas production - Xe in UO2	 
 Model	Gas production - Xe in UO2HBS	 
