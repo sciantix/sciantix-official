@@ -61,6 +61,9 @@ class UNParameters:
     trapping_sf: float = 1.0
     resolution_sf: float = 1.0
     g_d_scale: float = 1.0
+    nucleation_gas_coupling: bool = False
+    phi_resolution_mode: str = "none"
+    bulk_dislocation_capture: bool = False
     vacancy_absorption_only: bool = True
     update_bulk_vacancies: bool = True
     min_number_density: float = 0.0
@@ -188,6 +191,15 @@ def phi_bulk(mb, Nb):
     if Nb <= 0.0:
         return 0.0
     atoms_per_bubble = mb / Nb
+    if atoms_per_bubble <= 1.0:
+        return 0.0
+    return 1.0 / (atoms_per_bubble - 1.0)
+
+
+def phi_population(m_gas, N):
+    if N <= 0.0:
+        return 0.0
+    atoms_per_bubble = m_gas / N
     if atoms_per_bubble <= 1.0:
         return 0.0
     return 1.0 / (atoms_per_bubble - 1.0)
@@ -326,20 +338,40 @@ def solve3x3_cramer(A, b):
     return [det3(Ax) / detA, det3(Ay) / detA, det3(Az) / detA]
 
 
-def sciantix_3x3_exchange_step(modes_c, modes_mb, modes_md, Dg, R, beta, g_b, g_d, b_b, b_d, dt):
+def sciantix_3x3_exchange_step(
+    modes_c,
+    modes_mb,
+    modes_md,
+    Dg,
+    R,
+    beta,
+    g_b,
+    g_d,
+    b_b,
+    b_d,
+    dt,
+    source_mb=0.0,
+    source_md=0.0,
+):
     projection_coeff = -2.0 * math.sqrt(2.0 / math.pi)
     diffusion_rate_coeff = math.pi**2 * Dg / R**2
     for i in range(len(modes_c)):
         n = i + 1
         n_coeff = (-1.0) ** n / n
         diffusion_rate = diffusion_rate_coeff * n**2
-        source_rate = projection_coeff * beta * n_coeff
+        source_rate_c = projection_coeff * beta * n_coeff
+        source_rate_mb = projection_coeff * source_mb * n_coeff
+        source_rate_md = projection_coeff * source_md * n_coeff
         A = [
             [1.0 + (diffusion_rate + g_b + g_d) * dt, -b_b * dt, -b_d * dt],
             [-g_b * dt, 1.0 + b_b * dt, 0.0],
             [-g_d * dt, 0.0, 1.0 + b_d * dt],
         ]
-        rhs = [modes_c[i] + source_rate * dt, modes_mb[i], modes_md[i]]
+        rhs = [
+            modes_c[i] + source_rate_c * dt,
+            modes_mb[i] + source_rate_mb * dt,
+            modes_md[i] + source_rate_md * dt,
+        ]
         modes_c[i], modes_mb[i], modes_md[i] = solve3x3_cramer(A, rhs)
     return reconstruct_average(modes_c), reconstruct_average(modes_mb), reconstruct_average(modes_md)
 
@@ -421,8 +453,27 @@ def solve_UN_sciantix_intragranular_extended(p):
         trapping_parts["g_b_used_after_Nb_update"] = g_b
         trapping_parts["Nb_old"] = Nb_old
         trapping_parts["Nb_used_for_gb"] = Nb_old
+        phi_d = phi_population(md_old, Nd_old)
+        b_b_gas = b_b
+        b_d_gas = b_d
+        if p.phi_resolution_mode in ("bulk_only", "bulk_and_dislocation"):
+            b_b_gas = b_b * phi_b
+        if p.phi_resolution_mode == "bulk_and_dislocation":
+            b_d_gas = b_d * phi_d
+        nucleation_source = 2.0 * nu_b if p.nucleation_gas_coupling else 0.0
         c_new, mb_new, md_new = sciantix_3x3_exchange_step(
-            modes_c, modes_mb, modes_md, Dg, p.grain_radius, beta, g_b, g_d, b_b, b_d, dt
+            modes_c,
+            modes_mb,
+            modes_md,
+            Dg,
+            p.grain_radius,
+            beta - nucleation_source,
+            g_b,
+            g_d,
+            b_b_gas,
+            b_d_gas,
+            dt,
+            source_mb=nucleation_source,
         )
         dmb_dt = (mb_new - mb_old) / dt
         dmd_dt = (md_new - md_old) / dt
@@ -442,6 +493,24 @@ def solve_UN_sciantix_intragranular_extended(p):
         else:
             dVd_growth_dt = 0.0
             V_d_growth = V_d
+        capture_fraction = 0.0
+        captured_bubbles = 0.0
+        if p.bulk_dislocation_capture and N_b > 0.0 and Nd_old > 0.0:
+            Rb_growth = radius_from_volume(V_b_growth)
+            Rd_growth = radius_from_volume(V_d_growth)
+            dV_capture = max(sphere_volume(Rb_growth + Rd_growth) - sphere_volume(R_b + R_d), 0.0)
+            captured_bubbles = min(max(Nd_old * N_b * dV_capture, 0.0), N_b)
+            capture_fraction = max(0.0, min(captured_bubbles / N_b, 1.0))
+            if capture_fraction > 0.0:
+                mb_transfer = capture_fraction * mb_new
+                nvb_transfer = capture_fraction * nvb
+                mb_new -= mb_transfer
+                md_new += mb_transfer
+                nvb -= nvb_transfer
+                nvd += nvb_transfer
+                N_b = max(N_b - captured_bubbles, p.min_number_density)
+                modes_mb = initialize_modes_from_average(mb_new, p.n_modes)
+                modes_md = initialize_modes_from_average(md_new, p.n_modes)
         lambda_d = coalescence_lambda(Vd_old, Nd_old)
         dVd_positive = max(V_d_growth - Vd_old, 0.0)
         if dVd_positive > 0.0 and Nd_old > 0.0:
@@ -498,8 +567,14 @@ def solve_UN_sciantix_intragranular_extended(p):
             "g_d": g_d,
             "b_b": b_b,
             "b_d": b_d,
+            "b_b_gas": b_b_gas,
+            "b_d_gas": b_d_gas,
             "nu_b": nu_b,
+            "nucleation_source": nucleation_source,
             "phi_b": phi_b,
+            "phi_d": phi_d,
+            "capture_fraction": capture_fraction,
+            "captured_bubbles": captured_bubbles,
             "lambda_d": lambda_d,
             "dVd_growth_dt": dVd_growth_dt,
             "dnvb_dt": dnvb_dt,
@@ -540,6 +615,9 @@ def run_model_point(
     fission_rate=FISSION_RATE,
     grain_radius=GRAIN_RADIUS,
     xe_yield=XE_YIELD,
+    nucleation_gas_coupling=False,
+    phi_resolution_mode="none",
+    bulk_dislocation_capture=False,
     include_history=False,
 ):
     key = (
@@ -554,6 +632,9 @@ def run_model_point(
         float(fission_rate),
         float(grain_radius),
         float(xe_yield),
+        bool(nucleation_gas_coupling),
+        str(phi_resolution_mode),
+        bool(bulk_dislocation_capture),
         bool(include_history),
     )
     if key in _RUN_CACHE:
@@ -569,6 +650,9 @@ def run_model_point(
         f_n=float(f_n),
         K_d=float(K_d),
         g_d_scale=float(g_d_scale),
+        nucleation_gas_coupling=bool(nucleation_gas_coupling),
+        phi_resolution_mode=str(phi_resolution_mode),
+        bulk_dislocation_capture=bool(bulk_dislocation_capture),
         R_b=0.0,
         N_b=0.0,
         R_d=0.0,
@@ -598,6 +682,9 @@ def run_model_point(
         "K_d": float(K_d),
         "g_d_scale": float(g_d_scale),
         "bulk_seed_radius_nm": float(bulk_seed_radius_nm),
+        "nucleation_gas_coupling": bool(nucleation_gas_coupling),
+        "phi_resolution_mode": str(phi_resolution_mode),
+        "bulk_dislocation_capture": bool(bulk_dislocation_capture),
         "swelling_b_percent": 100.0 * hist["swelling_b"][-1],
         "swelling_d_percent": 100.0 * hist["swelling_d"][-1],
         "swelling_ig_percent": 100.0 * hist["swelling_ig"][-1],
@@ -620,6 +707,9 @@ def run_model_point(
         "g_b": rates.get("g_b", math.nan),
         "g_d": rates.get("g_d", math.nan),
         "g_d_unscaled": rates.get("g_d_unscaled", math.nan),
+        "b_b_gas": rates.get("b_b_gas", math.nan),
+        "b_d_gas": rates.get("b_d_gas", math.nan),
+        "capture_fraction": rates.get("capture_fraction", math.nan),
     }
     if include_history:
         row["hist"] = hist

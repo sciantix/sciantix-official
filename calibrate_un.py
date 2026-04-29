@@ -7,7 +7,7 @@ import zlib
 from pathlib import Path
 
 from un_data import EXP_ND_T_13, EXP_RD_T_13, EXP_SWELLING_BURNUP_1600, EXP_SWELLING_T
-from un_model import GRAIN_RADIUS, run_model_point
+from un_model import GRAIN_RADIUS, clear_run_cache, run_model_point
 
 try:
     import matplotlib
@@ -18,6 +18,8 @@ except ModuleNotFoundError:
     plt = None
 
 RESULTS_DIR = Path("results_un_calibration")
+RUN_MODE = "MODEL_VARIANTS"
+VARIANT_RESULTS_DIR = Path("results_model_variants")
 
 FN_GRID = [1.0e-10, 3.0e-10, 1.0e-9, 3.0e-9, 1.0e-8, 3.0e-8, 1.0e-7, 3.0e-7, 1.0e-6]
 K_D_GRID = [1.0e5, 2.0e5, 3.0e5, 5.0e5, 8.0e5]
@@ -28,6 +30,10 @@ DEFAULT_SEED_NM = 0.0
 DEFAULT_XE_YIELD = 0.24
 DEFAULT_DT_H = 48.0
 DEFAULT_N_MODES = 8
+VARIANT_FAST_DT_H = 24.0
+VARIANT_FAST_N_MODES = 15
+VARIANT_FINAL_DT_H = 6.0
+VARIANT_FINAL_N_MODES = 30
 
 
 def rmse(values):
@@ -534,6 +540,370 @@ def write_summary(rows, best_main, best_alt, plots_written):
     (RESULTS_DIR / "summary.md").write_text("\n".join(lines) + "\n")
 
 
+VARIANT_SPECS = [
+    {
+        "variant": "M0_baseline",
+        "model_id": "M0",
+        "rizk_coherent": "yes",
+        "description": "Current equations, Rizk-style base model.",
+        "physics_note": "Rizk-coherent baseline: no nucleation gas mass source, no phi in gas re-solution, no bulk-dislocation capture.",
+        "nucleation_gas_coupling": False,
+        "phi_resolution_mode": "none",
+        "bulk_dislocation_capture": False,
+    },
+    {
+        "variant": "M1_rescore_baseline",
+        "model_id": "M1",
+        "rizk_coherent": "yes",
+        "description": "Same equations as M0, evaluated with P2-only score.",
+        "physics_note": "Same physics as M0; this isolates the effect of the P2-only score.",
+        "nucleation_gas_coupling": False,
+        "phi_resolution_mode": "none",
+        "bulk_dislocation_capture": False,
+    },
+    {
+        "variant": "M2_nucleation_mass",
+        "model_id": "M2",
+        "rizk_coherent": "diagnostic",
+        "description": "Nucleation transfers two gas atoms from matrix to bulk bubbles.",
+        "physics_note": "Diagnostic mass-closure test: dc/dt gets -2 nu_b and dm_b/dt gets +2 nu_b; phi remains only in dN_b/dt.",
+        "nucleation_gas_coupling": True,
+        "phi_resolution_mode": "none",
+        "bulk_dislocation_capture": False,
+    },
+    {
+        "variant": "M3_phi_resolution_bulk_only",
+        "model_id": "M3",
+        "rizk_coherent": "diagnostic",
+        "description": "Gas re-solution from bulk bubbles uses b_b * phi_b.",
+        "physics_note": "Diagnostic re-solution test: phi modifies gas re-solution from bulk bubbles, while N_b destruction still uses b_b phi_b.",
+        "nucleation_gas_coupling": False,
+        "phi_resolution_mode": "bulk_only",
+        "bulk_dislocation_capture": False,
+    },
+    {
+        "variant": "M3_phi_resolution_bulk_and_dislocation",
+        "model_id": "M3",
+        "rizk_coherent": "diagnostic",
+        "description": "Gas re-solution from both populations uses b * phi.",
+        "physics_note": "Diagnostic re-solution test: phi modifies gas re-solution from bulk and dislocation bubbles.",
+        "nucleation_gas_coupling": False,
+        "phi_resolution_mode": "bulk_and_dislocation",
+        "bulk_dislocation_capture": False,
+    },
+    {
+        "variant": "M4_bulk_dislocation_capture",
+        "model_id": "M4",
+        "rizk_coherent": "barani-like",
+        "description": "Bulk bubbles captured by growing dislocation bubbles.",
+        "physics_note": "Barani-like extension, not in Rizk base: growing dislocation-bubble capture volume removes bulk bubbles and transfers bulk gas/vacancies to dislocation bubbles.",
+        "nucleation_gas_coupling": False,
+        "phi_resolution_mode": "none",
+        "bulk_dislocation_capture": True,
+    },
+    {
+        "variant": "M5_nucleation_mass_plus_capture",
+        "model_id": "M5",
+        "rizk_coherent": "diagnostic+barani-like",
+        "description": "M2 nucleation mass transfer plus M4 capture.",
+        "physics_note": "Combined diagnostic mass-closure and Barani-like capture extension.",
+        "nucleation_gas_coupling": True,
+        "phi_resolution_mode": "none",
+        "bulk_dislocation_capture": True,
+    },
+    {
+        "variant": "M6_phi_plus_capture",
+        "model_id": "M6",
+        "rizk_coherent": "diagnostic+barani-like",
+        "description": "M3 bulk-and-dislocation phi re-solution plus M4 capture.",
+        "physics_note": "Combined diagnostic phi re-solution and Barani-like capture extension.",
+        "nucleation_gas_coupling": False,
+        "phi_resolution_mode": "bulk_and_dislocation",
+        "bulk_dislocation_capture": True,
+    },
+]
+
+
+def variant_model_point(T, burnup, f_n, K_d, g_d_scale, seed_nm, spec, dt_h, n_modes):
+    return run_model_point(
+        T,
+        burnup,
+        f_n,
+        K_d=K_d,
+        g_d_scale=g_d_scale,
+        bulk_seed_radius_nm=seed_nm,
+        dt_h=dt_h,
+        n_modes=n_modes,
+        grain_radius=GRAIN_RADIUS,
+        xe_yield=DEFAULT_XE_YIELD,
+        nucleation_gas_coupling=spec["nucleation_gas_coupling"],
+        phi_resolution_mode=spec["phi_resolution_mode"],
+        bulk_dislocation_capture=spec["bulk_dislocation_capture"],
+    )
+
+
+def pressure_penalty_for_mid_temperature(row):
+    penalty = 0.0
+    for key in ("p_b_over_eq", "p_d_over_eq"):
+        value = row.get(key, math.nan)
+        if not (value > 0.0 and math.isfinite(value)):
+            penalty += 2.0
+            continue
+        logv = abs(math.log10(max(value, 1.0e-30)))
+        if value < 0.3 or value > 3.0:
+            penalty += max(0.0, logv - math.log10(3.0))
+    return penalty
+
+
+def variant_high_temperature_diagnostic(f_n, K_d, g_d_scale, seed_nm, spec, dt_h, n_modes):
+    penalties = []
+    for T in (1800.0, 1900.0, 2000.0):
+        row = variant_model_point(T, 3.2, f_n, K_d, g_d_scale, seed_nm, spec, dt_h, n_modes)
+        sw_excess = max(0.0, (row["swelling_d_percent"] - 15.0) / 15.0)
+        rd_excess = max(0.0, (row["Rd_nm"] - 500.0) / 500.0)
+        penalties.append(sw_excess + rd_excess)
+    return rmse(penalties)
+
+
+def score_variant_candidate(spec, f_n, K_d, g_d_scale, seed_nm, dt_h, n_modes, stage):
+    swelling_errors_d = []
+    swelling_errors_ig = []
+    for exp in EXP_SWELLING_T:
+        if exp["T"] > 1700.0:
+            continue
+        out = variant_model_point(exp["T"], exp["burnup"], f_n, K_d, g_d_scale, seed_nm, spec, dt_h, n_modes)
+        swelling_errors_d.append(out["swelling_d_percent"] - exp["swelling"])
+        swelling_errors_ig.append(out["swelling_ig_percent"] - exp["swelling"])
+
+    n_pairs = []
+    for exp in EXP_ND_T_13:
+        out = variant_model_point(exp["T"], 1.3, f_n, K_d, g_d_scale, seed_nm, spec, dt_h, n_modes)
+        n_pairs.append((out["Nd"], exp["N"]))
+
+    r_pairs = []
+    for exp in EXP_RD_T_13:
+        out = variant_model_point(exp["T"], 1.3, f_n, K_d, g_d_scale, seed_nm, spec, dt_h, n_modes)
+        r_pairs.append((out["Rd_nm"], exp["R_nm"]))
+
+    pressure_rows = [
+        variant_model_point(T, 3.2, f_n, K_d, g_d_scale, seed_nm, spec, dt_h, n_modes)
+        for T in (1200.0, 1400.0, 1600.0, 1700.0)
+    ]
+    score_swd = rmse(swelling_errors_d)
+    score_swig_diag = rmse(swelling_errors_ig)
+    score_Nd = log10_rmse(n_pairs)
+    score_Rd = log10_rmse(r_pairs)
+    score_pressure = rmse([pressure_penalty_for_mid_temperature(row) for row in pressure_rows])
+    highT_diag = variant_high_temperature_diagnostic(f_n, K_d, g_d_scale, seed_nm, spec, dt_h, n_modes)
+    score_main = score_swd + 0.7 * score_Nd + 0.7 * score_Rd + 0.2 * score_pressure
+    probe = variant_model_point(1600.0, 1.3, f_n, K_d, g_d_scale, seed_nm, spec, dt_h, n_modes)
+    return {
+        "stage": stage,
+        "variant": spec["variant"],
+        "model_id": spec["model_id"],
+        "description": spec["description"],
+        "rizk_coherent": spec["rizk_coherent"],
+        "nucleation_gas_coupling": spec["nucleation_gas_coupling"],
+        "phi_resolution_mode": spec["phi_resolution_mode"],
+        "bulk_dislocation_capture": spec["bulk_dislocation_capture"],
+        "dt_h": dt_h,
+        "n_modes": n_modes,
+        "f_n": f_n,
+        "K_d": K_d,
+        "g_d_scale": g_d_scale,
+        "seed_nm": seed_nm,
+        "score_main": score_main,
+        "score_swd": score_swd,
+        "score_swig_diag": score_swig_diag,
+        "score_Nd": score_Nd,
+        "score_Rd": score_Rd,
+        "score_pressure": score_pressure,
+        "highT_blowup_diag": highT_diag,
+        "probe_swelling_d_1600_13": probe["swelling_d_percent"],
+        "probe_swelling_ig_1600_13": probe["swelling_ig_percent"],
+        "probe_Nd_1600_13": probe["Nd"],
+        "probe_Rd_nm_1600_13": probe["Rd_nm"],
+        "probe_p_b_over_eq_1600_13": probe["p_b_over_eq"],
+        "probe_p_d_over_eq_1600_13": probe["p_d_over_eq"],
+        "probe_capture_fraction": probe.get("capture_fraction", math.nan),
+    }
+
+
+def run_model_variant_sweep():
+    rows = []
+    for spec in VARIANT_SPECS:
+        clear_run_cache()
+        print(f"FAST sweep {spec['variant']}", flush=True)
+        model_rows = []
+        for f_n in FN_GRID:
+            for K_d in K_D_GRID:
+                for g_d_scale in [0.5, 1.0, 2.0, 3.0, 5.0]:
+                    row = score_variant_candidate(
+                        spec,
+                        f_n,
+                        K_d,
+                        g_d_scale,
+                        0.0,
+                        VARIANT_FAST_DT_H,
+                        VARIANT_FAST_N_MODES,
+                        "FAST",
+                    )
+                    model_rows.append(row)
+                    rows.append(row)
+        for coarse in sorted(model_rows, key=lambda r: r["score_main"])[:3]:
+            clear_run_cache()
+            final_row = score_variant_candidate(
+                spec,
+                coarse["f_n"],
+                coarse["K_d"],
+                coarse["g_d_scale"],
+                coarse["seed_nm"],
+                VARIANT_FINAL_DT_H,
+                VARIANT_FINAL_N_MODES,
+                "FINAL",
+            )
+            rows.append(final_row)
+        print(f"completed {spec['variant']}", flush=True)
+    return rows
+
+
+def best_final_by_model(rows):
+    best = {}
+    final_rows = [r for r in rows if r["stage"] == "FINAL"]
+    for model_id in sorted({r["model_id"] for r in final_rows}):
+        candidates = [r for r in final_rows if r["model_id"] == model_id]
+        best[model_id] = min(candidates, key=lambda r: r["score_main"])
+    return best
+
+
+def plot_variant_swelling_basic(row):
+    spec = next(s for s in VARIANT_SPECS if s["variant"] == row["variant"])
+    temperatures = [float(T) for T in range(900, 2001, 50)]
+    colors = [(25, 93, 170), (210, 88, 45), (45, 145, 85), (20, 20, 20)]
+    series = []
+    for idx, burnup in enumerate((1.1, 1.3, 3.2)):
+        rows = [
+            variant_model_point(
+                T,
+                burnup,
+                row["f_n"],
+                row["K_d"],
+                row["g_d_scale"],
+                row["seed_nm"],
+                spec,
+                VARIANT_FINAL_DT_H,
+                VARIANT_FINAL_N_MODES,
+            )
+            for T in temperatures
+        ]
+        series.append({"x": temperatures, "y": [r["swelling_d_percent"] for r in rows], "color": colors[idx]})
+    series.append({"x": [p["T"] for p in EXP_SWELLING_T], "y": [p["swelling"] for p in EXP_SWELLING_T], "color": colors[-1], "kind": "scatter"})
+    simple_chart(VARIANT_RESULTS_DIR / f"{row['model_id']}_swelling.png", series, xlim=(850.0, 2050.0), ylim=(0.0, 8.0))
+
+
+def plot_variant_swelling_matplotlib(row):
+    spec = next(s for s in VARIANT_SPECS if s["variant"] == row["variant"])
+    temperatures = [float(T) for T in range(900, 2001, 50)]
+    fig, axes = plt.subplots(1, 3, figsize=(15, 4), sharey=True)
+    for ax, burnup in zip(axes, (1.1, 1.3, 3.2)):
+        rows = [
+            variant_model_point(
+                T,
+                burnup,
+                row["f_n"],
+                row["K_d"],
+                row["g_d_scale"],
+                row["seed_nm"],
+                spec,
+                VARIANT_FINAL_DT_H,
+                VARIANT_FINAL_N_MODES,
+            )
+            for T in temperatures
+        ]
+        ax.plot(temperatures, [r["swelling_d_percent"] for r in rows], label="model dislocation")
+        ax.plot(temperatures, [r["swelling_ig_percent"] for r in rows], linestyle="--", label="model total IG")
+        experimental_swelling_for_burnup(ax, burnup)
+        ax.axvline(1700.0, color="0.6", linestyle=":", linewidth=1)
+        ax.set_title(f"{burnup:.1f}% FIMA")
+        ax.set_xlabel("T [K]")
+        ax.grid(True, alpha=0.3)
+    axes[0].set_ylabel("Swelling [%]")
+    axes[0].legend(fontsize=8)
+    fig.suptitle(row["variant"])
+    fig.tight_layout()
+    fig.savefig(VARIANT_RESULTS_DIR / f"{row['model_id']}_swelling.png", dpi=180)
+    plt.close(fig)
+
+
+def write_variant_plots(best_rows):
+    for row in best_rows.values():
+        clear_run_cache()
+        if plt is None:
+            plot_variant_swelling_basic(row)
+        else:
+            plot_variant_swelling_matplotlib(row)
+
+
+def write_variant_summary(all_rows, best_rows):
+    overall = min(best_rows.values(), key=lambda r: r["score_main"])
+    lines = [
+        "# UN model variants summary",
+        "",
+        "Run mode: `MODEL_VARIANTS`.",
+        "",
+        "Fixed Rizk parameters were kept unchanged: `grain_radius = 6e-6`, `fission_rate = 5e19`, `xe_yield = 0.24`, `rho_d = 3e13`, `gamma_b = 1.11`, `omega_fg = 8.5e-29`.",
+        "",
+        "Main score is P2-only: Fig. 3 is compared only with `swelling_d_percent` for `T <= 1700 K`; Fig. 7 and Fig. 8 constrain `Nd` and `Rd_nm`; pressure is penalized only from 1200 to 1700 K. Total intragranular swelling and high-temperature blow-up are diagnostics.",
+        "",
+        f"Best variant for Fig. 3 as dislocation swelling: `{overall['variant']}` with `score_main = {fmt(overall['score_main'])}`.",
+        "",
+        "## Best By Model",
+        "",
+        "| model | variant | score | sw_d | Rd log | Nd log | pressure | highT diag | f_n | K_d | g_d_scale | Rizk/coherence |",
+        "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|",
+    ]
+    for model_id in sorted(best_rows):
+        row = best_rows[model_id]
+        lines.append(
+            f"| {model_id} | {row['variant']} | {fmt(row['score_main'])} | {fmt(row['score_swd'])} | "
+            f"{fmt(row['score_Rd'])} | {fmt(row['score_Nd'])} | {fmt(row['score_pressure'])} | "
+            f"{fmt(row['highT_blowup_diag'])} | {fmt(row['f_n'])} | {fmt(row['K_d'])} | "
+            f"{fmt(row['g_d_scale'])} | {row['rizk_coherent']} |"
+        )
+    lines += [
+        "",
+        "## Interpretation",
+        "",
+        f"1. The best P2/dislocation swelling variant is `{overall['variant']}`. Its Fig. 3 term is `score_swd = {fmt(overall['score_swd'])}`.",
+        f"2. Its microstructure terms are `score_Rd = {fmt(overall['score_Rd'])}` and `score_Nd = {fmt(overall['score_Nd'])}`; these should be read together because a good swelling fit alone can hide a bad radius-density partition.",
+        f"3. Its pressure diagnostic is `score_pressure = {fmt(overall['score_pressure'])}`; lower means bulk and dislocation bubbles stay closer to near-equilibrium in the 1200-1700 K range.",
+        f"4. Coherence label: `{overall['rizk_coherent']}`. Variants marked `diagnostic` or `barani-like` are useful tests, but are not pure Rizk-base equations.",
+        "",
+        "## Variant Notes",
+        "",
+    ]
+    for spec in VARIANT_SPECS:
+        lines.append(f"- `{spec['variant']}`: {spec['physics_note']}")
+    lines.append("")
+    lines.append("PNG files are written as `M0_swelling.png`, `M1_swelling.png`, etc. For M3, the best of the two phi-resolution options is used for `M3_swelling.png`.")
+    (VARIANT_RESULTS_DIR / "variant_summary.md").write_text("\n".join(lines) + "\n")
+
+
+def main_model_variants():
+    VARIANT_RESULTS_DIR.mkdir(exist_ok=True)
+    rows = run_model_variant_sweep()
+    rows_sorted = sorted(rows, key=lambda r: (r["model_id"], r["stage"], r["score_main"]))
+    write_csv(VARIANT_RESULTS_DIR / "variant_all_runs.csv", rows_sorted)
+    best_rows = best_final_by_model(rows)
+    best_list = [best_rows[k] for k in sorted(best_rows)]
+    write_csv(VARIANT_RESULTS_DIR / "variant_best_by_model.csv", best_list)
+    write_variant_plots(best_rows)
+    write_variant_summary(rows, best_rows)
+    overall = min(best_rows.values(), key=lambda r: r["score_main"])
+    print(f"Wrote {VARIANT_RESULTS_DIR / 'variant_summary.md'}")
+    print(f"Best model variant: {overall['variant']} score={overall['score_main']:.4g}")
+
+
 def main():
     RESULTS_DIR.mkdir(exist_ok=True)
     rows = run_sweep()
@@ -551,4 +921,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if RUN_MODE == "MODEL_VARIANTS":
+        main_model_variants()
+    else:
+        main()
