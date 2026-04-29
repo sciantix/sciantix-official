@@ -14,6 +14,7 @@ from .constants import (
     heat_of_transport_interstitial,
     heat_of_transport_vacancy,
 )
+from .fission_yields import PHENIX_FISSION_YIELDS, SOLID_SOLUTION, fission_yield_for_element
 
 Mode = Literal["auto", "hypo", "hyper"]
 
@@ -264,6 +265,228 @@ class OxygenBalanceResult:
 
 
 @dataclass(frozen=True)
+class OxygenBalanceContribution:
+    name: str
+    element: str
+    group: str
+    fp_atoms_per_100_initial_metal: float
+    reacted_fraction: float
+    oxygen_per_fp_atom: float
+    oxygen_atoms_per_100_initial_metal: float
+
+
+@dataclass(frozen=True)
+class MatrixAtomInventory:
+    initial_metal_atoms: float
+    burned_metal_atoms: float
+    remaining_initial_metal_atoms: float
+    zr_atoms_in_matrix: float
+    sr_atoms_in_matrix: float
+    y_re_atoms_in_matrix: float
+    fission_product_atoms_in_matrix: float
+    matrix_atoms: float
+
+
+@dataclass(frozen=True)
+class OxygenBalanceModel_PHENIX:
+    """Phenix-specific oxygen balance using the imported fission-yield table."""
+    zr_matrix_fraction: float = 0.25
+    sr_matrix_fraction: float = 0.12
+
+    def target_average_om(
+        self,
+        initial_average_om: float,
+        burnup_at_percent: float,
+        mo_oxidation_fraction: float = 0.6,
+        cladding_sink_fraction: float = 0.0,
+    ) -> OxygenBalanceResult:
+        """
+        Compute target bulk O/M after burnup with partial Mo oxidation and
+        optional cladding oxygen sink.
+
+        Parameters
+        ----------
+        initial_average_om:
+            Initial average oxygen-to-metal ratio.
+        burnup_at_percent:
+            Burnup in at.%, i.e. fissions per initial metal atom in percent.
+            NB.  10 fissions over 100 initial metal atoms 
+                    = 0.1 FIMA fraction
+                    = 10 at.% FIMA
+        mo_oxidation_fraction:
+            Fraction of the Phenix Mo yield oxidized as MoO2 from the start.
+        cladding_sink_fraction:
+            Fraction of positive oxygen surplus absorbed by the cladding.
+
+        Returns
+        -------
+        OxygenBalanceResult
+        """
+        if not (0.0 <= burnup_at_percent <= 100.0):
+            raise ValueError("burnup_at_percent must be in [0, 100]")
+        if not (0.0 <= mo_oxidation_fraction <= 1.0):
+            raise ValueError("mo_oxidation_fraction must be in [0, 1]")
+        if not (0.0 <= cladding_sink_fraction <= 1.0):
+            raise ValueError("cladding_sink_fraction must be in [0, 1]")
+
+        # Quantities are expressed as atoms per 100 initial metal atoms.
+        # At 10 at.% burnup this is numerically "per 10 fissions".
+        released = initial_average_om * burnup_at_percent
+
+        # Simple sink model: Zr, Sr, Y+RE, Ba, Nb consume oxygen; Mo consumes a
+        # prescribed fraction of its full MoO2 oxygen demand.
+        contributions = self.oxygen_sink_contributions(
+            burnup_at_percent=burnup_at_percent,
+            mo_oxidation_fraction=mo_oxidation_fraction,
+        )
+        fixed = sum(
+            contribution.oxygen_atoms_per_100_initial_metal
+            for contribution in contributions
+            if contribution.element != "Mo"
+        )
+        mo_sink = sum(
+            contribution.oxygen_atoms_per_100_initial_metal
+            for contribution in contributions
+            if contribution.element == "Mo"
+        )
+        gross_surplus = released - fixed - mo_sink
+        cladding_sink = max(gross_surplus, 0.0) * cladding_sink_fraction
+        net_surplus = gross_surplus - cladding_sink
+
+        matrix_atoms = self.matrix_atom_inventory(burnup_at_percent).matrix_atoms
+        delta_om = net_surplus / matrix_atoms
+        target = initial_average_om + delta_om
+
+        return OxygenBalanceResult(
+            initial_average_om=initial_average_om,
+            burnup_at_percent=burnup_at_percent,
+            oxygen_released_per_10_fissions=released,
+            oxygen_fixed_sinks_per_10_fissions=fixed,
+            oxygen_mo_sink_per_10_fissions=mo_sink,
+            oxygen_cladding_sink_per_10_fissions=cladding_sink,
+            oxygen_surplus_per_10_fissions=net_surplus,
+            delta_om=delta_om,
+            target_average_om=target,
+        )
+
+    def oxygen_sink_contributions(
+        self,
+        burnup_at_percent: float,
+        mo_oxidation_fraction: float = 0.6,
+    ) -> tuple[OxygenBalanceContribution, ...]:
+        if not (0.0 <= burnup_at_percent <= 100.0):
+            raise ValueError("burnup_at_percent must be in [0, 100]")
+        if not (0.0 <= mo_oxidation_fraction <= 1.0):
+            raise ValueError("mo_oxidation_fraction must be in [0, 1]")
+
+        contributions = [
+            # Zr and Sr oxidize fully; their matrix fractions only affect the
+            # matrix-atom inventory used in the O/M denominator.
+            self._oxygen_contribution("Zr", burnup_at_percent),
+            self._oxygen_contribution("Sr", burnup_at_percent),
+        ]
+        contributions.extend(
+            # Y + rare earths in solid solution are assumed fully oxidized.
+            self._oxygen_contribution(entry.element, burnup_at_percent)
+            for entry in self._solid_solution_entries()
+        )
+        contributions.extend(
+            [
+                self._oxygen_contribution("Ba", burnup_at_percent),
+                self._oxygen_contribution("Nb", burnup_at_percent),
+                self._oxygen_contribution("Mo", burnup_at_percent, mo_oxidation_fraction),
+            ]
+        )
+        return tuple(contributions)
+
+    def fixed_sink_summary(
+        self,
+        burnup_at_percent: float,
+    ) -> dict[str, float]:
+        contributions = self.oxygen_sink_contributions(
+            burnup_at_percent=burnup_at_percent,
+            mo_oxidation_fraction=0.0,
+        )
+        by_element = {contribution.element: contribution for contribution in contributions}
+        y_re_sink = sum(
+            contribution.oxygen_atoms_per_100_initial_metal
+            for contribution in contributions
+            if contribution.group == SOLID_SOLUTION
+        )
+        return {
+            "Zr": by_element["Zr"].oxygen_atoms_per_100_initial_metal,
+            "Sr": by_element["Sr"].oxygen_atoms_per_100_initial_metal,
+            "Nb": by_element["Nb"].oxygen_atoms_per_100_initial_metal,
+            "Y+RE": y_re_sink,
+            "Zr+Sr+Y+RE": by_element["Zr"].oxygen_atoms_per_100_initial_metal
+            + by_element["Sr"].oxygen_atoms_per_100_initial_metal
+            + y_re_sink,
+            "Zr+Sr+Nb+Y+RE": by_element["Zr"].oxygen_atoms_per_100_initial_metal
+            + by_element["Sr"].oxygen_atoms_per_100_initial_metal
+            + by_element["Nb"].oxygen_atoms_per_100_initial_metal
+            + y_re_sink,
+        }
+
+    def matrix_atom_inventory(self, burnup_at_percent: float) -> MatrixAtomInventory:
+        if not (0.0 <= burnup_at_percent <= 100.0):
+            raise ValueError("burnup_at_percent must be in [0, 100]")
+
+        initial_metal_atoms = 100.0
+        burned_metal_atoms = burnup_at_percent
+        remaining_initial_metal_atoms = initial_metal_atoms - burned_metal_atoms
+
+        # Matrix atoms are the un-fissioned initial metal atoms plus the FP
+        # atoms assumed to stay dissolved in the fuel matrix.
+        zr_atoms = self.zr_matrix_fraction * self._fp_atoms_per_100_initial_metal("Zr", burnup_at_percent)
+        sr_atoms = self.sr_matrix_fraction * self._fp_atoms_per_100_initial_metal("Sr", burnup_at_percent)
+        y_re_atoms = sum(
+            self._fp_atoms_per_100_initial_metal(entry.element, burnup_at_percent)
+            for entry in self._solid_solution_entries()
+        )
+        fp_atoms = zr_atoms + sr_atoms + y_re_atoms
+        matrix_atoms = remaining_initial_metal_atoms + fp_atoms
+
+        return MatrixAtomInventory(
+            initial_metal_atoms=initial_metal_atoms,
+            burned_metal_atoms=burned_metal_atoms,
+            remaining_initial_metal_atoms=remaining_initial_metal_atoms,
+            zr_atoms_in_matrix=zr_atoms,
+            sr_atoms_in_matrix=sr_atoms,
+            y_re_atoms_in_matrix=y_re_atoms,
+            fission_product_atoms_in_matrix=fp_atoms,
+            matrix_atoms=matrix_atoms,
+        )
+
+    def _oxygen_contribution(
+        self,
+        element: str,
+        burnup_at_percent: float,
+        reacted_fraction: float = 1.0,
+    ) -> OxygenBalanceContribution:
+        yield_entry = fission_yield_for_element(element)
+        oxygen_per_fp_atom = yield_entry.valence / 2.0
+        fp_atoms = self._fp_atoms_per_100_initial_metal(element, burnup_at_percent)
+        oxygen_atoms = reacted_fraction * fp_atoms * oxygen_per_fp_atom
+        return OxygenBalanceContribution(
+            name=f"{element} oxygen sink",
+            element=element,
+            group=yield_entry.group,
+            fp_atoms_per_100_initial_metal=fp_atoms,
+            reacted_fraction=reacted_fraction,
+            oxygen_per_fp_atom=oxygen_per_fp_atom,
+            oxygen_atoms_per_100_initial_metal=oxygen_atoms,
+        )
+
+    @staticmethod
+    def _fp_atoms_per_100_initial_metal(element: str, burnup_at_percent: float) -> float:
+        return fission_yield_for_element(element).yield_percent_fp_per_fission * burnup_at_percent / 100.0
+
+    @staticmethod
+    def _solid_solution_entries():
+        return (entry for entry in PHENIX_FISSION_YIELDS if entry.group == SOLID_SOLUTION)
+
+
+@dataclass(frozen=True)
 class OxygenBalanceModel:
     """
     Oxygen balance model by J. Spino, P. Peerani / Journal of Nuclear Materials 375 (2008) 8-25 .
@@ -306,16 +529,16 @@ class OxygenBalanceModel:
         burnup_at_percent:
             Burnup in at.%.
         mo_oxidation_fraction:
-            Not considered.
+            Fraction of the full Mo oxygen demand consumed by Mo oxidation.
         cladding_sink_fraction:
-            Not considered.
+            Fraction of positive oxygen surplus absorbed by the cladding.
 
         Returns
         -------
         OxygenBalanceResult
         """
-        if burnup_at_percent < 0.0:
-            raise ValueError("burnup_at_percent must be non-negative")
+        if not (0.0 <= burnup_at_percent <= 100.0):
+            raise ValueError("burnup_at_percent must be in [0, 100]")
         if not (0.0 <= mo_oxidation_fraction <= 1.0):
             raise ValueError("mo_oxidation_fraction must be in [0, 1]")
         if not (0.0 <= cladding_sink_fraction <= 1.0):
