@@ -82,18 +82,18 @@ void Simulation::HighBurnupStructurePorosity()
             double c_gb = sciantix_variable["Xe at grain boundary HBS"].getFinalValue();
             double R_pore = sciantix_variable["HBS pore radius"].getFinalValue();
 
-            // Kinetic saturation factor from 3D percolation theory
-            // (Stauffer & Aharony 1994): (1 - xi/xi_sat)^t with t = 2.
-            // Modulates BOTH transport coefficients along the solid
-            // grain-boundary backbone:
-            //   - D_gb^SA  (single-atom) -> gas trapping rate
-            //   - D_gb^v   (vacancies)   -> vacancy flow rate
-            // Percolation fragments the solid network at xi -> xi_sat, shutting
-            // both diffusive pathways simultaneously. Saturation acts on
-            // the diffusivities, preserving the EoS consistency V_p =
-            // n_Xe * Omega_Xe + n_vac * Omega_vac. At saturation, gas trapping rate -> 0
-            // causes gas to pile up on c_gb^HBS rather than inside the pores,
-            // and vacancy inflow ceases, so porosity stabilizes mechanistically.
+            // Two-channel saturation factor (Stauffer & Aharony 1994 form,
+            // (1 - xi/xi_sat)^t with t = 2) applied below to:
+            //   1. D_gb^v in the Speight-Beere vacancy flow (vacancy-backbone
+            //      percolation: as the solid GB network fragments near xi_sat,
+            //      Schottky-vacancy transport along the backbone shuts down).
+            //   2. The total pore-volume increment dV (mechanical cap: as the
+            //      remaining solid cross-section shrinks, the effective stress
+            //      grows as ~1/(1-xi) and opposes further pore expansion).
+            // F_sat is NOT applied to D_gb^SA / beta_n: single-atom GB hops are
+            // a surface mechanism that does not require bulk backbone connectivity.
+            // The EoS identity V_p = n_Xe*Omega_Xe + n_vac*Omega_Sch is broken
+            // under saturation by design (over-pressurised pores).
             double xi_old = sciantix_variable["HBS porosity"].getInitialValue();
             const double xi_sat = 0.18;
             double linear = std::max(0.0, 1.0 - xi_old / xi_sat);
@@ -172,11 +172,12 @@ void Simulation::HighBurnupStructurePorosity()
             
             reference = ": mechanistic cluster dynamics, Barani et al. JNM 563 (2022) 153627; percolation and implicit Euler corrections from Zullo (2026)";
 
-            // TEST VARIANT (post-hoc dV cap, Frattini-style):
-            // saturation_factor is removed from beta_n and applied only to
-            // (a) D_gb^v in the Speight-Beere vacancy flow (below), and
-            // (b) the total pore-volume increment dV (after vacancy update).
-            // Coalescence keeps the uncapped dV, so N_p(bu) stays bell-shaped.
+            // Single-atom trapping rate beta_n: NOT modulated by F_sat.
+            // The percolation factor enters only the vacancy channel
+            // (D_gb^v in Speight-Beere) and the post-hoc dV cap (after the
+            // vacancy update). Coalescence operates on the capped dV so that
+            // N_p(bu) keeps its bell shape and merging slows together with
+            // pore growth as xi -> xi_sat.
             double trapping_coeff_HBS = 4.0 * M_PI * D_gb * R_pore * (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
             double total_trapping_rate_HBS = trapping_coeff_HBS * N_pore;
             double dt = physics_variable["Time step"].getFinalValue();

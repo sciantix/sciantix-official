@@ -106,35 +106,13 @@ void Matrix::setGrainBoundarySingleAtomDiffusivity(int input_value, SciantixArra
 
         case 1:
         {
-            // Barani et al. 2022, HBS part II (Olander-Van Uffelen "low D")
-            // Paper-correct value but at T=723 K leads to catch-22 between trapping
-            // and re-solution (2-atom nuclei destroyed before gaining atoms).
-            // Frattini 2025 Table 2 deliberately substitutes Xia 2022 as empirical
-            // calibration that lets the cluster-dynamics 5x5 system converge.
-            // grain_boundary_single_atom_diffusivity = (1.3e-7 * exp(- 2.82 /
-            //     (8.62e-5 * history_variable["Temperature"].getFinalValue()))
-            // );
-
-            // Liu et al. 2023 (https://www.osti.gov/servlets/purl/1969379/)
-            // tilt S5
-            // grain_boundary_single_atom_diffusivity = (1.2e-6 * exp(- 1.46 /
-            //     (8.62e-5 * history_variable["Temperature"].getFinalValue()))
-            // );
-
-            // random GB
-            // grain_boundary_single_atom_diffusivity = (2.8e-7 * exp(- 1.08 /
-            //     (8.62e-5 * history_variable["Temperature"].getFinalValue()))
-            // );
-
-            // twist S5
-            // grain_boundary_single_atom_diffusivity = (1.1e-9 * exp(- 0.39 /
-            // (8.62e-5 * history_variable["Temperature"].getFinalValue()))
-            // );
-
+            // Barani et al. 2022, HBS part II uses the Olander-Van Uffelen
+            // "low D" (1.3e-7 * exp(-2.82/kT_eV)), which at T = 723 K leads to
+            // a catch-22 between trapping and re-solution (2-atom nuclei
+            // destroyed before gaining atoms). Substituted here by Xia 2022,
+            // which delivers a mobility large enough to sustain nucleation.
             // Xia et al. (2022) https://www.mdpi.com/2075-4701/12/5/763
-            // Empirical calibration adopted by Frattini 2025 (Table 2) for the
-            // mechanistic HBS porosity model in SCIANTIX; delivers fit of Cappia
-            // data through the full burnup range.
+            // delivers a fit of Cappia data through the full burnup range.
             grain_boundary_single_atom_diffusivity = (2.0e-8 * exp(- 1.4 /
                 (8.62e-5 * history_variable["Temperature"].getFinalValue()))
             );
