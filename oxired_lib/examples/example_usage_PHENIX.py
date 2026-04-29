@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+from dataclasses import asdict
 
 import numpy as np
 
@@ -9,7 +10,14 @@ os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 
 import matplotlib.pyplot as plt
 
-from oxired import CylinderGeometry, OxiRedCylinder, PolynomialProfile, OxygenBalanceModel
+from oxired import (
+    CylinderGeometry,
+    OxiRedCylinder,
+    OxygenBalanceModel_PHENIX,
+    PHENIX_FISSION_YIELDS,
+    PolynomialProfile,
+)
+from oxired.fission_yields import PHENIX_FISSION_YIELD_SOURCE
 
 plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update({
@@ -61,6 +69,11 @@ def write_radial_input_histories(
 
         (case_dir / "input_history.txt").write_text("\n".join(lines) + "\n")
 
+def print_block(title: str, rows: dict[str, float]) -> None:
+    print(f"\n{title}")
+    print("-" * len(title))
+    for name, value in rows.items():
+        print(f"{name:36s} {value:12.6f}")
 
 def main() -> None:
     # =========================
@@ -70,7 +83,7 @@ def main() -> None:
     pu_fraction = 0.22           # Pu fraction
     r_outer = 2.7e-3             # Outer radius [m]
     burnup_final = 13.4          # Final burnup [at.%]
-    mo_fraction = 0.6
+    mo_fraction = 1.0
 
     # Requested mesh: 20 radial points
     n_radial_points = 20
@@ -96,7 +109,7 @@ def main() -> None:
     # =========================
     # MODEL CHOICE FOR AVERAGE O/M SHIFT
     # =========================
-    balance = OxygenBalanceModel()
+    balance = OxygenBalanceModel_PHENIX()
 
     result = balance.target_average_om(
         initial_average_om=initial_om,
@@ -104,16 +117,35 @@ def main() -> None:
         mo_oxidation_fraction=mo_fraction,
     )
 
-    print("Original oxygen balance")
-    print("=======================")
+    print("Phenix oxygen balance")
+    print("=====================")
+    print(PHENIX_FISSION_YIELD_SOURCE)
     print(f"initial O/M:                 {initial_om:.6f}")
     print(f"burnup:                      {burnup_final:.6f} at.%")
     print(f"Mo oxidation fraction:       {mo_fraction:.6f}")
+    print(f"number of yield entries:     {len(PHENIX_FISSION_YIELDS)}")
+
     print(f"O released [atoms/100 initial metal]: {result.oxygen_released_per_10_fissions:.6f}")
     print(f"O fixed [atoms/100 initial metal]:    {result.oxygen_fixed_sinks_per_10_fissions:.6f}")
     print(f"Mo sink [atoms/100 initial metal]:    {result.oxygen_mo_sink_per_10_fissions:.6f}")
     print(f"delta OM: {result.delta_om:.6f}")
 
+    print_block("Aggregate balance", asdict(result))
+    print_block("Matrix atom inventory", asdict(balance.matrix_atom_inventory(burnup_final)))
+    print_block("Oxygen fixed by Zr, Sr, Nb, Y+RE", balance.fixed_sink_summary(burnup_final))
+
+    print("\nElement contributions")
+    print("---------------------")
+    print(f"{'el':>3s} {'FP atoms':>10s} {'reacted':>9s} {'O/FP':>8s} {'O taken':>10s}")
+    for c in balance.oxygen_sink_contributions(burnup_final, mo_fraction):
+        # O taken = FP atoms produced * reacted fraction * valence/2
+        print(
+            f"{c.element:>3s} "
+            f"{c.fp_atoms_per_100_initial_metal:10.6f} "
+            f"{c.reacted_fraction:9.6f} "
+            f"{c.oxygen_per_fp_atom:8.6f} "
+            f"{c.oxygen_atoms_per_100_initial_metal:10.6f}"
+        )
 
     # Burnup discretization
     burnup_values = np.linspace(0.0, burnup_final, 10)
@@ -181,7 +213,7 @@ def main() -> None:
     # =========================
     max_time_hours = 20560.0
     time_hours = np.linspace(0.0, max_time_hours, len(burnup_values))
-    histories_dir = Path(__file__).resolve().parent / "radial_input_histories"
+    histories_dir = Path(__file__).resolve().parent / "radial_input_histories_PHENIX"
     write_radial_input_histories(
         output_root=histories_dir,
         time_hours=time_hours,
