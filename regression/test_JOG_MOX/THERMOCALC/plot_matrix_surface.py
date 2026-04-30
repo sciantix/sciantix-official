@@ -8,6 +8,24 @@ import matplotlib.tri as mtri
 import numpy as np
 import pandas as pd
 
+plt.style.use("seaborn-v0_8-whitegrid")
+plt.rcParams.update({
+    "figure.figsize": (10, 7),
+    "font.size": 12,
+    "axes.labelsize": 15,
+    "axes.titlesize": 12,
+    "xtick.labelsize": 12,
+    "ytick.labelsize": 12,
+    "legend.fontsize": 12,
+    "figure.dpi": 300,
+    "axes.grid": True,
+    "grid.alpha": 0.5,
+    "grid.linestyle": "--",
+    "lines.linewidth": 2,
+    "lines.markersize": 6,
+    "legend.frameon": False,
+})
+
 
 INPUT_FILE = Path(__file__).resolve().with_name("U0p78-Pu0p22-O_1bar.csv")
 PLOT_DIR = Path(__file__).resolve().with_name("plot")
@@ -24,10 +42,20 @@ VIEW_ELEV = 28
 VIEW_AZIM = -130
 LINEWIDTH = 0.08
 ANTIALIASED = True
-CONTOUR_LEVELS = 24
+CONTOUR_LEVELS = 100
+CONTOUR_LINE_INTERVAL_KJ_MOL = 25.0
 # Radius-temperature profile provided by user.
 RADIUS = np.array([0.4, 0.7, 0.9, 1.2, 1.5, 1.7, 2.0, 2.3, 2.5, 2.7], dtype=float)
 TEMP_PROFILE = np.array([1853, 1834, 1795, 1733, 1651, 1560, 1428, 1290, 1140, 979], dtype=float)
+
+
+def contour_line_levels(z: np.ndarray, interval: float = CONTOUR_LINE_INTERVAL_KJ_MOL) -> np.ndarray:
+    """Return contour-line levels at fixed kJ/mol intervals within the z range."""
+    z_min = np.nanmin(z)
+    z_max = np.nanmax(z)
+    first_level = np.ceil(z_min / interval) * interval
+    last_level = np.floor(z_max / interval) * interval
+    return np.arange(first_level, last_level + interval * 0.5, interval)
 
 
 def draw_mask_boundary_on_surface(
@@ -229,36 +257,15 @@ surf = ax.plot_trisurf(
     z,
     cmap=CMAP,
     linewidth=LINEWIDTH,
-    antialiased=ANTIALIASED,
-    vmin=shared_cbar_min,
-    vmax=shared_cbar_max,
-    alpha = 0.7,
+    alpha=1.0
 )
 
 ax.view_init(elev=VIEW_ELEV, azim=VIEW_AZIM)
 fig.colorbar(surf, ax=ax, shrink=0.65, pad=0.08, label=z_label, alpha=0.7)
-boundary_drawn = False
-for region_label, region_color, region_mask in region_masks:
-    if np.any(region_mask) and np.any(~region_mask):
-        drew = draw_mask_boundary_on_surface(
-            ax,
-            tri,
-            x,
-            y,
-            mu_o_kj,
-            region_mask,
-            color=region_color,
-            linewidth=2.5,
-            label=region_label,
-        )
-        boundary_drawn = boundary_drawn or drew
-
 ax.set_ylabel("Temperature (K)")
 ax.set_xlabel("Oxygen-to-metal ratio (-)")
 ax.set_zlabel(z_label)
 ax.set_title("Pu/M = 0.22, 1 bar")
-if boundary_drawn:
-    ax.legend(loc="upper left", fontsize=8)
 fig.tight_layout(rect=[0, 0, 1, 0.97])
 plt.savefig("plot/OxygenPotentialO")
 
@@ -269,18 +276,16 @@ contour = axc.tricontourf(
     z,
     levels=CONTOUR_LEVELS,
     cmap=CMAP,
-    vmin=shared_cbar_min,
-    vmax=shared_cbar_max,
+    alpha=1.0,
 )
-axc.tricontour(
+contour_lines = axc.tricontour(
     tri,
     z,
-    levels=CONTOUR_LEVELS,
+    levels=contour_line_levels(z),
     colors="k",
     linewidths=0.2,
-    vmin=shared_cbar_min,
-    vmax=shared_cbar_max,
 )
+axc.clabel(contour_lines, inline=True, fontsize=7, fmt="%.0f")
 contour_boundary_drawn = False
 for region_label, region_color, region_mask in region_masks:
     if np.any(region_mask) and np.any(~region_mask):
@@ -298,9 +303,9 @@ for region_label, region_color, region_mask in region_masks:
 figc.colorbar(contour, ax=axc, shrink=0.85, pad=0.02, label=z_label)
 axc.set_ylabel("Temperature (K)")
 axc.set_xlabel("Oxygen-to-metal ratio (-)")
-axc.set_title("Pu/M = 0.22, 1 bar (Contour)")
+axc.set_title("Pu/M = 0.22, 1 bar")
 if contour_boundary_drawn:
-    axc.legend(loc="upper left", fontsize=8)
+    axc.legend(loc="upper right", frameon=False)
 figc.tight_layout(rect=[0, 0, 1, 0.97])
 figc.savefig("plot/OxygenPotentialO_contour")
 
@@ -341,15 +346,16 @@ contour = axc.tricontourf(
     vmin=shared_cbar_min,
     vmax=shared_cbar_max,
 )
-axc.tricontour(
+contour_lines = axc.tricontour(
     tri,
     z,
-    levels=CONTOUR_LEVELS,
+    levels=contour_line_levels(z),
     colors="k",
     linewidths=0.2,
     vmin=shared_cbar_min,
     vmax=shared_cbar_max,
 )
+axc.clabel(contour_lines, inline=True, fontsize=7, fmt="%.0f")
 contour_boundary_drawn = False
 for region_label, region_color, region_mask in region_masks:
     if np.any(region_mask) and np.any(~region_mask):
@@ -367,9 +373,9 @@ for region_label, region_color, region_mask in region_masks:
 figc.colorbar(contour, ax=axc, shrink=0.85, pad=0.02, label=z_label)
 axc.set_ylabel("Temperature (K)")
 axc.set_xlabel("Oxygen-to-metal ratio (-)")
-axc.set_title("Pu/M = 0.22, 1 bar (Contour)")
+axc.set_title("Pu/M = 0.22, 1 bar")
 if contour_boundary_drawn:
-    axc.legend(loc="upper left", fontsize=8)
+    axc.legend(loc="upper right",frameon=False)
 figc.tight_layout(rect=[0, 0, 1, 0.97])
 figc.savefig("plot/OxygenPotentialO2_contour")
 

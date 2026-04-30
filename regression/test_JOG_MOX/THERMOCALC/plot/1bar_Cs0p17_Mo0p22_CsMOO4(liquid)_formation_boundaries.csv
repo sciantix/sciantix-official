@@ -1,2 +1,2 @@
-tag,condition_mode,mu_o_min_kJ_per_mol,mu_o_max_kJ_per_mol,temperature_min_K,temperature_max_K,formation_points,Fraction of CS+ in total liquid_min,Fraction of CS+ in total liquid_max,Fraction of MOO4-2 in total liquid_min,Fraction of MOO4-2 in total liquid_max
-CsMOO4(liquid),all_positive,-304.0,-100.0,740.0,2500.0,616,0.36136,1.0,0.1093624224,0.8150536986
+tag,condition_mode,mu_o_min_kJ_per_mol,mu_o_max_kJ_per_mol,temperature_min_K,temperature_max_K,formation_points,MoO4-2 (liquid) = Site fraction in LIQUID sublattice 2 * Mole fraction of LIQUID_min,MoO4-2 (liquid) = Site fraction in LIQUID sublattice 2 * Mole fraction of LIQUID_max
+CsMOO4(liquid),all_positive,-304.0,-100.0,740.0,2500.0,616,0.1093624224,0.8150536986

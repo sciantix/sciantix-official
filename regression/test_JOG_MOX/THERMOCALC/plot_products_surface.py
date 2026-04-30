@@ -10,6 +10,24 @@ import numpy as np
 import pandas as pd
 from matplotlib.backends.backend_pdf import PdfPages
 
+plt.style.use("seaborn-v0_8-whitegrid")
+plt.rcParams.update({
+    "figure.figsize": (10, 7),
+    "font.size": 12,
+    "axes.labelsize": 13,
+    "axes.titlesize": 12,
+    "xtick.labelsize": 12,
+    "ytick.labelsize": 12,
+    "legend.fontsize": 12,
+    "figure.dpi": 300,
+    "axes.grid": True,
+    "grid.alpha": 0.5,
+    "grid.linestyle": "--",
+    "lines.linewidth": 2,
+    "lines.markersize": 6,
+    "legend.frameon": False,
+})
+
 # =========================
 # USER SETTINGS
 # =========================
@@ -47,31 +65,30 @@ TOTAL_GAS_MOLE_FRACTION_KEY = "Mole fraction of GAS"
 # = Site fraction of CS2MOO4 on GAS sublattice 1 * Mole fraction of all components in GAS.
 ADD_CS2MOO4_OVER_TOTAL_GAS = True
 CS2MOO4_SITE_FRACTION_KEY = "site fraction of cs2moo4 on sublattice 1 in gas"
-CS2MOO4_OVER_TOTAL_LABEL = "Fraction of CS2MOO4 in total GAS"
+CS2MOO4_OVER_TOTAL_LABEL = "Cs2MoO4 (gas)"
 
 # Derived quantity: fraction of MOO3 gas over total gas
 # = Site fraction of MOO3 on GAS sublattice 1 * Mole fraction of all components in GAS.
 ADD_MOO3_OVER_TOTAL_GAS = True
 MOO3_SITE_FRACTION_KEY = "site fraction of moo3 on sublattice 1 in gas"
-MOO3_OVER_TOTAL_LABEL = "Fraction of MOO3 in total GAS"
+MOO3_OVER_TOTAL_LABEL = "MoO3 (gas)"
 
 # Derived quantity: fraction of MO gas over total gas
 # = Element fraction of MO in GAS * Mole fraction of all components in GAS.
 ADD_MO_OVER_TOTAL_GAS = True
 MO_SITE_FRACTION_KEY = "Mole fraction of mo in gas"
-MO_OVER_TOTAL_LABEL = "Fraction of MO in total GAS"
+MO_OVER_TOTAL_LABEL = "Mo in gaseous phase"
 
-# Derived quantity: fraction of CS2MOO4 liquid over total liquid
-# = Site fraction of CS on LIQUID sublattice 1 * Mole fraction of all components in LIQUID.
-ADD_CS_OVER_TOTAL_LIQUID = True
-CS_SITE_FRACTION_KEY = "site fraction of cs+"
-CS_OVER_TOTAL_LABEL = "Fraction of CS+ in total liquid"
+ADD_CS_OVER_TOTAL_GAS = True
+CS_SITE_FRACTION_KEY = "Mole fraction of cs in gas"
+CS_OVER_TOTAL_LABEL = "Cs in gaseous phase"
 
 # Derived quantity: fraction of CS2MOO4 liquid over total liquid
 # = Site fraction of MOO4 on LIQUID sublattice 1 * Mole fraction of all components in LIQUID.
 ADD_MOO4_OVER_TOTAL_LIQUID = True
 MOO4_SITE_FRACTION_KEY = "site fraction of moo4-2"
-MOO4_OVER_TOTAL_LABEL = "Fraction of MOO4-2 in total liquid"
+MOO4_OVER_TOTAL_LABEL = "MoO4-2 (liquid, sublattice 2)"
+
 
 CS2MOO4_FORMATION_TOL = 0.1
 CS2MOO4_SOLID_S1_KEY = "mole fraction of cs2moo4_s1"
@@ -247,9 +264,9 @@ for file in INPUT_FILE:
         numeric_df[MO_OVER_TOTAL_LABEL] = numeric_df[mo_col] * numeric_df[total_col]
         columns.append(MO_OVER_TOTAL_LABEL)
 
-    if ADD_CS_OVER_TOTAL_LIQUID:
+    if ADD_CS_OVER_TOTAL_GAS:
         cs_col = find_column_by_canonical_contains(columns, CS_SITE_FRACTION_KEY)
-        total_col = find_column_by_canonical_contains(columns, TOTAL_LIQUID_MOLE_FRACTION_KEY)
+        total_col = find_column_by_canonical_contains(columns, TOTAL_GAS_MOLE_FRACTION_KEY)
         numeric_df[CS_OVER_TOTAL_LABEL] = numeric_df[cs_col] * numeric_df[total_col]
         columns.append(CS_OVER_TOTAL_LABEL)
     
