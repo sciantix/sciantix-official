@@ -84,9 +84,9 @@ void Simulation::HighBurnupStructurePorosity()
 
             // Two-channel saturation factor (Stauffer & Aharony 1994 form,
             // (1 - xi/xi_sat)^t with t = 2) applied below to:
-            //   1. D_gb^v in the Speight-Beere vacancy flow (vacancy-backbone
+            //   1. D_gb^v in the Speight-Beere vacancy flow (grain-boundary
             //      percolation: as the solid GB network fragments near xi_sat,
-            //      Schottky-vacancy transport along the backbone shuts down).
+            //      Schottky-vacancy transport along the GB network shuts down).
             //   2. The total pore-volume increment dV (mechanical cap: as the
             //      remaining solid cross-section shrinks, the effective stress
             //      grows as ~1/(1-xi) and opposes further pore expansion).
