@@ -27,6 +27,7 @@
 struct OCSpeciesData
 {
     double                   moles               = 0.0;
+    double                   atom_equivalent_moles = 0.0;
     double                   volume              = 0.0;
     double                   stoichiometric_size = 1.0;
     std::map<std::string, double> elements;

@@ -194,6 +194,90 @@ std::string normalizeSpeciesName(const std::string& raw_name)
 
     return trim(name);
 }
+
+double speciesStoichiometricSize(const std::string& species_name,
+                                 const std::vector<std::string>& valid_elements)
+{
+    std::map<std::string, std::string> valid_set;
+    for (const auto& element : valid_elements)
+    {
+        std::string upper = element;
+        std::transform(upper.begin(), upper.end(), upper.begin(), [](unsigned char c) { return std::toupper(c); });
+        valid_set[upper] = element;
+    }
+
+    double total_size = 0.0;
+    bool   found_element = false;
+    size_t i = 0;
+    while (i < species_name.size())
+    {
+        const unsigned char character = static_cast<unsigned char>(species_name[i]);
+        if (species_name[i] == '+' || species_name[i] == '-')
+        {
+            ++i;
+            while (i < species_name.size() && std::isdigit(static_cast<unsigned char>(species_name[i])))
+                ++i;
+            continue;
+        }
+
+        if (species_name[i] == ':' || species_name[i] == '_' || !std::isalpha(character))
+        {
+            ++i;
+            continue;
+        }
+
+        std::string element;
+        if (i + 2 <= species_name.size())
+        {
+            std::string candidate = species_name.substr(i, 2);
+            std::transform(candidate.begin(), candidate.end(), candidate.begin(), [](unsigned char c) { return std::toupper(c); });
+            if (candidate == "VA")
+            {
+                element = "Va";
+                i += 2;
+            }
+            else
+            {
+                const auto it = valid_set.find(candidate);
+                if (it != valid_set.end())
+                {
+                    element = it->second;
+                    i += 2;
+                }
+            }
+        }
+
+        if (element.empty())
+        {
+            std::string candidate(1, species_name[i]);
+            std::transform(candidate.begin(), candidate.end(), candidate.begin(), [](unsigned char c) { return std::toupper(c); });
+            const auto it = valid_set.find(candidate);
+            if (it != valid_set.end())
+            {
+                element = it->second;
+                ++i;
+            }
+            else
+            {
+                ++i;
+                continue;
+            }
+        }
+
+        double count = 1.0;
+        size_t count_begin = i;
+        while (i < species_name.size() && std::isdigit(static_cast<unsigned char>(species_name[i])))
+            ++i;
+        if (i > count_begin)
+            count = safeFloat(species_name.substr(count_begin, i - count_begin));
+
+        found_element = true;
+        if (element != "Va")
+            total_size += count;
+    }
+
+    return found_element ? total_size : 1.0;
+}
 }  // namespace
 
 OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<std::string>& valid_elements)
@@ -323,6 +407,7 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                     (parts.size() > 5 && isNumericToken(parts[5])) ? safeFloat(parts[5]) : 1.0;
                 
                 species.moles += current_phase_moles;
+                species.atom_equivalent_moles += current_phase_moles * stoichiometric_size;
                 species.volume += volume;
                 species.stoichiometric_size = (stoichiometric_size > 0.0) ? stoichiometric_size : 1.0;
                 phase.moles += current_phase_moles;
@@ -400,10 +485,13 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                 const double      mole_fraction = safeFloat(species_parts[k + 1]);
                 OCPhaseData&      phase         = data.solution_phases[current_phase];
                 OCSpeciesData&    species       = phase.species[species_name];
-                if (current_sublattice_sites > 0.0)
-                    species.moles += mole_fraction * current_phase_form_units * current_sublattice_sites;
-                else
-                    species.moles += mole_fraction * current_phase_moles;
+                const double      species_formula_moles =
+                    (current_sublattice_sites > 0.0) ?
+                        mole_fraction * current_phase_form_units * current_sublattice_sites :
+                        mole_fraction * current_phase_moles;
+                species.moles += species_formula_moles;
+                species.stoichiometric_size = speciesStoichiometricSize(species_name, valid_elements);
+                species.atom_equivalent_moles += species_formula_moles * species.stoichiometric_size;
             }
         }
     }
@@ -616,6 +704,8 @@ void dumpParsedOcOutput(const OCOutputData& output_data)
                 const auto& species_data = species_entry.second;
                 std::cout << "      " << species_name
                           << " : moles=" << species_data.moles
+                          << ", atom_equivalent_moles=" << species_data.atom_equivalent_moles
+                          << ", stoichiometric_size=" << species_data.stoichiometric_size
                           << ", volume=" << species_data.volume
                           << std::endl;
 
@@ -965,8 +1055,10 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
 
                 if (thermochemistry_variable.isElementPresent(variable_name))
                 {
+                    const double species_output_moles =
+                        is_single_phase_liquid ? species_entry.second.atom_equivalent_moles : species_entry.second.moles;
                     thermochemistry_variable[variable_name].setFinalValue(
-                        species_entry.second.moles * content_scaling_factor);
+                        species_output_moles * content_scaling_factor);
                     std::map<std::string, double> composition;
                     if (species_entry.second.moles > 0.0)
                     {
