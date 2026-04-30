@@ -1,64 +1,66 @@
 Phenix oxygen balance
 =====================
-Elemental yields of fission products in a Phenix fuel pin at 10 at% from Pelletier and Guerin, Fuel Performance of Fast Spectrum Oxide Fuel, Table 2.
+Elemental yields of fission products in a Phenix fuel pin at 10 at% 
 initial O/M:                 1.975000
 burnup:                      13.400000 at.%
-Mo oxidation fraction:       1.000000
-number of yield entries:     31
+Mo oxidation fraction requested: 1.000000
+Mo oxidation fraction actual:    0.734208
+number of yield entries:     26
 O released [atoms/100 initial metal]: 26.465000
-O fixed [atoms/100 initial metal]:    19.081600
-Mo sink [atoms/100 initial metal]:    5.708400
-delta OM: 0.017952
+O fixed [atoms/100 initial metal]:    19.818600
+Mo sink [atoms/100 initial metal]:    4.309213
+delta OM: 0.025000
 
 Aggregate balance
 -----------------
 initial_average_om                       1.975000
 burnup_at_percent                       13.400000
 oxygen_released_per_10_fissions         26.465000
-oxygen_fixed_sinks_per_10_fissions      19.081600
-oxygen_mo_sink_per_10_fissions           5.708400
+oxygen_fixed_sinks_per_10_fissions      19.818600
+oxygen_mo_sink_per_10_fissions           4.309213
+oxygen_mo_oxidation_fraction             0.734208
 oxygen_cladding_sink_per_10_fissions     0.000000
-oxygen_surplus_per_10_fissions           1.675000
-delta_om                                 0.017952
-target_average_om                        1.992952
+oxygen_surplus_per_10_fissions           2.337187
+delta_om                                 0.025000
+target_average_om                        2.000000
 
 Matrix atom inventory
 ---------------------
 initial_metal_atoms                    100.000000
 burned_metal_atoms                      13.400000
 remaining_initial_metal_atoms           86.600000
-zr_atoms_in_matrix                       0.643200
-sr_atoms_in_matrix                       0.057888
-y_re_atoms_in_matrix                     6.003200
-fission_product_atoms_in_matrix          6.704288
-matrix_atoms                            93.304288
+zr_atoms_in_matrix                       0.680050
+sr_atoms_in_matrix                       0.043416
+y_re_atoms_in_matrix                     6.164000
+fission_product_atoms_in_matrix          6.887466
+matrix_atoms                            93.487466
 
 Oxygen fixed by Zr, Sr, Nb, Y+RE
 --------------------------------
-Zr                                       5.145600
-Sr                                       0.964800
-Nb                                       0.053600
-Y+RE                                    12.006400
-Zr+Sr+Y+RE                              18.116800
-Zr+Sr+Nb+Y+RE                           18.170400
+Zr                                       5.440400
+Sr                                       0.723600
+Nb                                       0.000000
+Y+RE                                    12.328000
+Zr+Sr+Y+RE                              18.492000
+Zr+Sr+Nb+Y+RE                           18.492000
 
 Element contributions
 ---------------------
  el   FP atoms   reacted     O/FP    O taken
- Zr   2.572800  1.000000 2.000000   5.145600
- Sr   0.482400  1.000000 2.000000   0.964800
+ Zr   2.720200  1.000000 2.000000   5.440400
+ Sr   0.361800  1.000000 2.000000   0.723600
   Y   0.254600  1.000000 2.000000   0.509200
- La   0.750400  1.000000 2.000000   1.500800
- Ce   1.527600  1.000000 2.000000   3.055200
- Pr   0.643200  1.000000 2.000000   1.286400
- Nd   2.077000  1.000000 2.000000   4.154000
- Pm   0.160800  1.000000 2.000000   0.321600
- Sm   0.455600  1.000000 2.000000   0.911200
- Eu   0.080400  1.000000 2.000000   0.160800
- Gd   0.053600  1.000000 2.000000   0.107200
- Ba   0.911200  1.000000 1.000000   0.911200
- Nb   0.026800  1.000000 2.000000   0.053600
- Mo   2.854200  1.000000 2.000000   5.708400
+ La   0.763800  1.000000 2.000000   1.527600
+ Ce   1.393600  1.000000 2.000000   2.787200
+ Pr   0.670000  1.000000 2.000000   1.340000
+ Nd   2.264600  1.000000 2.000000   4.529200
+ Pm   0.000000  1.000000 2.000000   0.000000
+ Sm   0.670000  1.000000 2.000000   1.340000
+ Eu   0.053600  1.000000 2.000000   0.107200
+ Gd   0.093800  1.000000 2.000000   0.187600
+ Ba   1.326600  1.000000 1.000000   1.326600
+ Nb   0.000000  1.000000 2.000000   0.000000
+ Mo   2.934600  1.000000 2.000000   5.869200
 Radial points [mm]:
 [0.0675 0.2025 0.3375 0.4725 0.6075 0.7425 0.8775 1.0125 1.1475 1.2825
  1.4175 1.5525 1.6875 1.8225 1.9575 2.0925 2.2275 2.3625 2.4975 2.6325]
@@ -70,6 +72,7 @@ Temperature [K] at radial points:
 
 Burnup = 0.00 at.%
   target average O/M = 1.975000
+  Mo oxidation frac. = 0.000000
   centerline O/M     = 1.934817
   rim O/M            = 2.000000
   radial O/M         = [1.934817 1.934817 1.934817 1.934843 1.935036 1.935425 1.93604  1.936926
@@ -77,75 +80,72 @@ Burnup = 0.00 at.%
  1.999927 1.999987 1.999998 2.      ]
 
 Burnup = 1.49 at.%
-  target average O/M = 1.976875
-  centerline O/M     = 1.937683
+  target average O/M = 1.982439
+  Mo oxidation frac. = 0.000000
+  centerline O/M     = 1.946230
   rim O/M            = 2.000000
-  radial O/M         = [1.937683 1.937683 1.937683 1.937712 1.937921 1.938344 1.939014 1.939985
- 1.941353 1.943293 1.946172 1.950982 1.965243 1.996943 1.999041 1.999715
- 1.99993  1.999987 1.999999 2.      ]
-
-Burnup = 2.98 at.%
-  target average O/M = 1.978778
-  centerline O/M     = 1.939287
-  rim O/M            = 2.000000
-  radial O/M         = [1.939287 1.939287 1.939287 1.939316 1.939535 1.939978 1.940681 1.941702
- 1.943146 1.94521  1.94831  1.953657 1.984354 1.997073 1.99907  1.999723
- 1.999932 1.999988 1.999999 2.      ]
-
-Burnup = 4.47 at.%
-  target average O/M = 1.980711
-  centerline O/M     = 1.942809
-  rim O/M            = 2.000000
-  radial O/M         = [1.942809 1.942809 1.942809 1.942842 1.943082 1.943571 1.944349 1.945487
- 1.947113 1.949472 1.953128 1.95997  1.989797 1.99734  1.999135 1.99974
- 1.999936 1.999988 1.999999 2.      ]
-
-Burnup = 5.96 at.%
-  target average O/M = 1.982673
-  centerline O/M     = 1.946694
-  rim O/M            = 2.000000
-  radial O/M         = [1.946694 1.946694 1.946694 1.94673  1.946996 1.947539 1.948407 1.949683
- 1.951527 1.954254 1.958639 1.967777 1.992071 1.99761  1.999204 1.999759
+  radial O/M         = [1.94623  1.94623  1.94623  1.946266 1.946529 1.947065 1.947922 1.949181
+ 1.950998 1.953679 1.95797  1.966798 1.991858 1.997579 1.999195 1.999756
  1.99994  1.999989 1.999999 2.      ]
 
-Burnup = 7.44 at.%
-  target average O/M = 1.984665
-  centerline O/M     = 1.950656
+Burnup = 2.98 at.%
+  target average O/M = 1.989987
+  Mo oxidation frac. = 0.000000
+  centerline O/M     = 1.962944
   rim O/M            = 2.000000
-  radial O/M         = [1.950656 1.950656 1.950656 1.950696 1.95099  1.95159  1.952554 1.953981
- 1.956065 1.959206 1.964445 1.976263 1.993537 1.997864 1.999272 1.999778
- 1.999945 1.99999  1.999999 2.      ]
+  radial O/M         = [1.962944 1.962944 1.962944 1.962995 1.963375 1.964156 1.96542  1.967317
+ 1.970141 1.974487 1.981522 1.990713 1.996252 1.998541 1.999474 1.999835
+ 1.999959 1.999992 1.999999 2.      ]
+
+Burnup = 4.47 at.%
+  target average O/M = 1.997646
+  Mo oxidation frac. = 0.000000
+  centerline O/M     = 1.988758
+  rim O/M            = 2.000000
+  radial O/M         = [1.988758 1.988758 1.988758 1.988807 1.989161 1.989862 1.990913 1.992295
+ 1.993931 1.995647 1.997197 1.998386 1.99917  1.999622 1.999851 1.999951
+ 1.999988 1.999998 2.       2.      ]
+
+Burnup = 5.96 at.%
+  target average O/M = 2.000000
+  Mo oxidation frac. = 0.201767
+  centerline O/M     = 2.000000
+  rim O/M            = 2.000000
+  radial O/M         = [2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]
+
+Burnup = 7.44 at.%
+  target average O/M = 2.000000
+  Mo oxidation frac. = 0.393446
+  centerline O/M     = 2.000000
+  rim O/M            = 2.000000
+  radial O/M         = [2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]
 
 Burnup = 8.93 at.%
-  target average O/M = 1.986688
-  centerline O/M     = 1.954926
+  target average O/M = 2.000000
+  Mo oxidation frac. = 0.521232
+  centerline O/M     = 2.000000
   rim O/M            = 2.000000
-  radial O/M         = [1.954926 1.954926 1.954926 1.954971 1.955294 1.955959 1.957029 1.958625
- 1.960979 1.964587 1.970773 1.983617 1.994691 1.998116 1.999344 1.999798
- 1.99995  1.999991 1.999999 2.      ]
+  radial O/M         = [2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]
 
 Burnup = 10.42 at.%
-  target average O/M = 1.988744
-  centerline O/M     = 1.959760
+  target average O/M = 2.000000
+  Mo oxidation frac. = 0.612507
+  centerline O/M     = 2.000000
   rim O/M            = 2.000000
-  radial O/M         = [1.95976  1.95976  1.95976  1.959809 1.960167 1.960904 1.962093 1.963877
- 1.966529 1.970629 1.977577 1.988584 1.995699 1.998379 1.999423 1.99982
- 1.999955 1.999992 1.999999 2.      ]
+  radial O/M         = [2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]
 
 Burnup = 11.91 at.%
-  target average O/M = 1.990831
-  centerline O/M     = 1.965229
+  target average O/M = 2.000000
+  Mo oxidation frac. = 0.680964
+  centerline O/M     = 2.000000
   rim O/M            = 2.000000
-  radial O/M         = [1.965229 1.965229 1.965229 1.965282 1.965676 1.966488 1.967799 1.969769
- 1.972694 1.977146 1.984    1.991921 1.996609 1.998653 1.999509 1.999846
- 1.999961 1.999993 1.999999 2.      ]
+  radial O/M         = [2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]
 
 Burnup = 13.40 at.%
-  target average O/M = 1.992952
-  centerline O/M     = 1.971476
+  target average O/M = 2.000000
+  Mo oxidation frac. = 0.734208
+  centerline O/M     = 2.000000
   rim O/M            = 2.000000
-  radial O/M         = [1.971476 1.971476 1.971476 1.971534 1.971959 1.972834 1.974243 1.97634
- 1.979382 1.983719 1.9893   1.994401 1.997453 1.99894  1.999605 1.999874
- 1.999968 1.999994 1.999999 2.      ]
+  radial O/M         = [2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]
 
 Generated input histories in: /home/ecappellari/transparant/sciantix-official/oxired_lib/examples/radial_input_histories_PHENIX

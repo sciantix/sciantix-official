@@ -258,6 +258,7 @@ class OxygenBalanceResult:
     oxygen_released_per_10_fissions: float
     oxygen_fixed_sinks_per_10_fissions: float
     oxygen_mo_sink_per_10_fissions: float
+    oxygen_mo_oxidation_fraction: float
     oxygen_cladding_sink_per_10_fissions: float
     oxygen_surplus_per_10_fissions: float
     delta_om: float
@@ -301,8 +302,8 @@ class OxygenBalanceModel_PHENIX:
         cladding_sink_fraction: float = 0.0,
     ) -> OxygenBalanceResult:
         """
-        Compute target bulk O/M after burnup with partial Mo oxidation and
-        optional cladding oxygen sink.
+        Compute target bulk O/M after burnup with Mo oxidation starting only
+        after the average O/M reaches 2.0, plus optional cladding oxygen sink.
 
         Parameters
         ----------
@@ -314,7 +315,8 @@ class OxygenBalanceModel_PHENIX:
                     = 0.1 FIMA fraction
                     = 10 at.% FIMA
         mo_oxidation_fraction:
-            Fraction of the Phenix Mo yield oxidized as MoO2 from the start.
+            Maximum fraction of the Phenix Mo yield that can oxidize as MoO2
+            after the fuel reaches O/M = 2.0.
         cladding_sink_fraction:
             Fraction of positive oxygen surplus absorbed by the cladding.
 
@@ -333,27 +335,39 @@ class OxygenBalanceModel_PHENIX:
         # At 10 at.% burnup this is numerically "per 10 fissions".
         released = initial_average_om * burnup_at_percent
 
-        # Simple sink model: Zr, Sr, Y+RE, Ba, Nb consume oxygen; Mo consumes a
-        # prescribed fraction of its full MoO2 oxygen demand.
+        # Simple sink model: Zr, Sr, Y+RE, Ba, Nb consume oxygen immediately.
+        # Mo starts oxidizing only after the fuel inventory reaches O/M = 2.0.
         contributions = self.oxygen_sink_contributions(
             burnup_at_percent=burnup_at_percent,
-            mo_oxidation_fraction=mo_oxidation_fraction,
+            mo_oxidation_fraction=0.0,
         )
         fixed = sum(
             contribution.oxygen_atoms_per_100_initial_metal
             for contribution in contributions
             if contribution.element != "Mo"
         )
-        mo_sink = sum(
-            contribution.oxygen_atoms_per_100_initial_metal
-            for contribution in contributions
-            if contribution.element == "Mo"
-        )
-        gross_surplus = released - fixed - mo_sink
-        cladding_sink = max(gross_surplus, 0.0) * cladding_sink_fraction
-        net_surplus = gross_surplus - cladding_sink
-
         matrix_atoms = self.matrix_atom_inventory(burnup_at_percent).matrix_atoms
+        mo_full_sink = self._oxygen_contribution(
+            "Mo",
+            burnup_at_percent,
+            1.0,
+        ).oxygen_atoms_per_100_initial_metal
+        mo_capacity = self._oxygen_contribution(
+            "Mo",
+            burnup_at_percent,
+            mo_oxidation_fraction,
+        ).oxygen_atoms_per_100_initial_metal
+        surplus_after_fixed = released - fixed
+        fuel_surplus, mo_sink, surplus_after_mo = _partition_surplus_at_om_cap(
+            initial_average_om=initial_average_om,
+            matrix_atoms=matrix_atoms,
+            surplus_after_fixed=surplus_after_fixed,
+            mo_capacity=mo_capacity,
+        )
+        cladding_sink = surplus_after_mo * cladding_sink_fraction
+        net_surplus = fuel_surplus
+        actual_mo_oxidation_fraction = mo_sink / mo_full_sink if mo_full_sink > 0.0 else 0.0
+
         delta_om = net_surplus / matrix_atoms
         target = initial_average_om + delta_om
 
@@ -363,6 +377,7 @@ class OxygenBalanceModel_PHENIX:
             oxygen_released_per_10_fissions=released,
             oxygen_fixed_sinks_per_10_fissions=fixed,
             oxygen_mo_sink_per_10_fissions=mo_sink,
+            oxygen_mo_oxidation_fraction=actual_mo_oxidation_fraction,
             oxygen_cladding_sink_per_10_fissions=cladding_sink,
             oxygen_surplus_per_10_fissions=net_surplus,
             delta_om=delta_om,
@@ -519,8 +534,8 @@ class OxygenBalanceModel:
         cladding_sink_fraction: float = 0.0,
     ) -> OxygenBalanceResult:
         """
-        Compute target bulk O/M after burnup with partial Mo oxidation and
-        optional cladding oxygen sink.
+        Compute target bulk O/M after burnup with Mo oxidation starting only
+        after the average O/M reaches 2.0, plus optional cladding oxygen sink.
 
         Parameters
         ----------
@@ -563,8 +578,30 @@ class OxygenBalanceModel:
             oxygen_released_per_10_fissions=released,
             oxygen_fixed_sinks_per_10_fissions=fixed,
             oxygen_mo_sink_per_10_fissions=mo_sink,
+            oxygen_mo_oxidation_fraction=mo_oxidation_fraction,
             oxygen_cladding_sink_per_10_fissions=cladding_sink,
             oxygen_surplus_per_10_fissions=net_surplus,
             delta_om=delta_om,
             target_average_om=target,
         )
+
+
+def _partition_surplus_at_om_cap(
+    *,
+    initial_average_om: float,
+    matrix_atoms: float,
+    surplus_after_fixed: float,
+    mo_capacity: float,
+) -> tuple[float, float, float]:
+    """Split surplus oxygen between fuel O/M increase and delayed Mo oxidation."""
+    if matrix_atoms <= 0.0:
+        raise ValueError("matrix_atoms must be positive")
+
+    oxygen_to_om_cap = max(2.0 - initial_average_om, 0.0) * matrix_atoms
+    if surplus_after_fixed <= oxygen_to_om_cap:
+        return surplus_after_fixed, 0.0, 0.0
+
+    surplus_after_cap = surplus_after_fixed - oxygen_to_om_cap
+    mo_sink = min(surplus_after_cap, mo_capacity)
+    surplus_after_mo = surplus_after_cap - mo_sink
+    return oxygen_to_om_cap, mo_sink, surplus_after_mo

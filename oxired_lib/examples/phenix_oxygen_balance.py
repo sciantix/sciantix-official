@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from dataclasses import asdict
 
+import numpy as np
+
 from oxired import OxygenBalanceModel_PHENIX
 
 
@@ -36,11 +38,27 @@ def main() -> None:
     print("=====================")
     print(f"initial O/M:                 {initial_om:.6f}")
     print(f"burnup:                      {burnup:.6f} at.%")
-    print(f"Mo oxidation fraction:       {mo_fraction:.6f}")
+    print(f"Mo oxidation fraction requested: {mo_fraction:.6f}")
+    print(f"Mo oxidation fraction actual:    {result.oxygen_mo_oxidation_fraction:.6f}")
 
     print_block("Aggregate balance", asdict(result))
     print_block("Matrix atom inventory", asdict(balance.matrix_atom_inventory(burnup)))
     print_block("Oxygen fixed by Zr, Sr, Nb, Y+RE", balance.fixed_sink_summary(burnup))
+
+    print("\nMo oxidation fraction vs burnup")
+    print("-------------------------------")
+    print(f"{'burnup':>10s} {'actual Mo fraction':>18s} {'target O/M':>12s}")
+    for bu in np.linspace(0.0, burnup, 11):
+        bu_result = balance.target_average_om(
+            initial_average_om=initial_om,
+            burnup_at_percent=float(bu),
+            mo_oxidation_fraction=mo_fraction,
+        )
+        print(
+            f"{bu:10.3f} "
+            f"{bu_result.oxygen_mo_oxidation_fraction:18.6f} "
+            f"{bu_result.target_average_om:12.6f}"
+        )
 
     print("\nElement contributions")
     print("---------------------")

@@ -105,10 +105,11 @@ def test_phenix_oxygen_balance_uses_imported_yields() -> None:
     )
 
     assert abs(result.oxygen_released_per_10_fissions - 20.0) < 1e-12
-    assert abs(result.oxygen_fixed_sinks_per_10_fissions - 14.25) < 1e-12
+    assert abs(result.oxygen_fixed_sinks_per_10_fissions - 14.79) < 1e-12
     assert abs(result.oxygen_mo_sink_per_10_fissions) < 1e-12
-    assert abs(result.oxygen_surplus_per_10_fissions - 5.75) < 1e-12
-    assert abs(result.target_average_om - (2.0 + 5.75 / 95.0032)) < 1e-12
+    assert abs(result.oxygen_mo_oxidation_fraction) < 1e-12
+    assert abs(result.oxygen_surplus_per_10_fissions) < 1e-12
+    assert abs(result.target_average_om - 2.0) < 1e-12
 
 
 def test_phenix_oxygen_balance_alias_and_cladding_sink() -> None:
@@ -120,9 +121,10 @@ def test_phenix_oxygen_balance_alias_and_cladding_sink() -> None:
         cladding_sink_fraction=0.5,
     )
 
-    assert abs(result.oxygen_mo_sink_per_10_fissions - 2.556) < 1e-12
-    assert abs(result.oxygen_cladding_sink_per_10_fissions - 1.597) < 1e-12
-    assert abs(result.oxygen_surplus_per_10_fissions - 1.597) < 1e-12
+    assert abs(result.oxygen_mo_sink_per_10_fissions - 2.628) < 1e-12
+    assert abs(result.oxygen_mo_oxidation_fraction - 0.6) < 1e-12
+    assert abs(result.oxygen_cladding_sink_per_10_fissions - 1.291) < 1e-12
+    assert abs(result.oxygen_surplus_per_10_fissions) < 1e-12
 
 
 def test_phenix_oxygen_balance_reports_single_contributions() -> None:
@@ -135,11 +137,11 @@ def test_phenix_oxygen_balance_reports_single_contributions() -> None:
     by_element = {contribution.element: contribution for contribution in contributions}
     assert by_element["Zr"].reacted_fraction == 1.0
     assert by_element["Sr"].reacted_fraction == 1.0
-    assert abs(by_element["Zr"].oxygen_atoms_per_100_initial_metal - 3.84) < 1e-12
-    assert abs(by_element["Sr"].oxygen_atoms_per_100_initial_metal - 0.72) < 1e-12
-    assert abs(by_element["Ba"].oxygen_atoms_per_100_initial_metal - 0.68) < 1e-12
-    assert abs(by_element["Nb"].oxygen_atoms_per_100_initial_metal - 0.05) < 1e-12
-    assert abs(by_element["Mo"].oxygen_atoms_per_100_initial_metal - 2.556) < 1e-12
+    assert abs(by_element["Zr"].oxygen_atoms_per_100_initial_metal - 4.06) < 1e-12
+    assert abs(by_element["Sr"].oxygen_atoms_per_100_initial_metal - 0.54) < 1e-12
+    assert abs(by_element["Ba"].oxygen_atoms_per_100_initial_metal - 0.99) < 1e-12
+    assert abs(by_element["Nb"].oxygen_atoms_per_100_initial_metal) < 1e-12
+    assert abs(by_element["Mo"].oxygen_atoms_per_100_initial_metal - 2.628) < 1e-12
 
     result = balance.target_average_om(
         initial_average_om=2.0,
@@ -154,7 +156,7 @@ def test_phenix_oxygen_balance_reports_single_contributions() -> None:
     assert abs(fixed_without_mo - result.oxygen_fixed_sinks_per_10_fissions) < 1e-12
 
 
-def test_phenix_mo_oxidation_fraction_applies_from_start() -> None:
+def test_phenix_sink_contributions_report_requested_mo_capacity() -> None:
     balance = OxygenBalanceModel_PHENIX()
     contributions = balance.oxygen_sink_contributions(
         burnup_at_percent=1.0,
@@ -164,19 +166,51 @@ def test_phenix_mo_oxidation_fraction_applies_from_start() -> None:
     by_element = {contribution.element: contribution for contribution in contributions}
     assert by_element["Ba"].reacted_fraction == 1.0
     assert by_element["Mo"].reacted_fraction == 0.6
-    assert abs(by_element["Mo"].oxygen_atoms_per_100_initial_metal - 0.2556) < 1e-12
+    assert abs(by_element["Mo"].oxygen_atoms_per_100_initial_metal - 0.2628) < 1e-12
+
+
+def test_phenix_mo_oxidation_starts_after_om_cap() -> None:
+    balance = OxygenBalanceModel_PHENIX()
+    result = balance.target_average_om(
+        initial_average_om=1.975,
+        burnup_at_percent=1.0,
+        mo_oxidation_fraction=0.6,
+    )
+
+    matrix_atoms = balance.matrix_atom_inventory(burnup_at_percent=1.0).matrix_atoms
+    expected_surplus = 1.975 - 1.479
+    assert abs(result.oxygen_mo_sink_per_10_fissions) < 1e-12
+    assert abs(result.oxygen_mo_oxidation_fraction) < 1e-12
+    assert abs(result.oxygen_surplus_per_10_fissions - expected_surplus) < 1e-12
+    assert abs(result.target_average_om - (1.975 + expected_surplus / matrix_atoms)) < 1e-12
+
+
+def test_oxygen_balance_caps_average_om_and_then_oxidizes_mo() -> None:
+    balance = OxygenBalanceModel()
+    result = balance.target_average_om(
+        initial_average_om=1.975,
+        burnup_at_percent=10.0,
+        mo_oxidation_fraction=0.6,
+    )
+
+    expected_fuel_surplus = (2.0 - 1.975) * balance.fuel_matrix_atoms_per_10_fissions
+    expected_mo_sink = 20.0 - 15.66 - expected_fuel_surplus
+    assert abs(result.target_average_om - 2.0) < 1e-12
+    assert abs(result.oxygen_surplus_per_10_fissions - expected_fuel_surplus) < 1e-12
+    assert abs(result.oxygen_mo_sink_per_10_fissions - expected_mo_sink) < 1e-12
+    assert abs(result.oxygen_mo_oxidation_fraction - expected_mo_sink / 4.58) < 1e-12
 
 
 def test_phenix_fixed_sink_summary_reports_zr_sr_nb_y_re() -> None:
     balance = OxygenBalanceModel_PHENIX()
     summary = balance.fixed_sink_summary(burnup_at_percent=10.0)
 
-    assert abs(summary["Zr"] - 3.84) < 1e-12
-    assert abs(summary["Sr"] - 0.72) < 1e-12
-    assert abs(summary["Nb"] - 0.05) < 1e-12
-    assert abs(summary["Y+RE"] - 8.96) < 1e-12
-    assert abs(summary["Zr+Sr+Y+RE"] - 13.52) < 1e-12
-    assert abs(summary["Zr+Sr+Nb+Y+RE"] - 13.57) < 1e-12
+    assert abs(summary["Zr"] - 4.06) < 1e-12
+    assert abs(summary["Sr"] - 0.54) < 1e-12
+    assert abs(summary["Nb"]) < 1e-12
+    assert abs(summary["Y+RE"] - 9.2) < 1e-12
+    assert abs(summary["Zr+Sr+Y+RE"] - 13.8) < 1e-12
+    assert abs(summary["Zr+Sr+Nb+Y+RE"] - 13.8) < 1e-12
 
 
 def test_phenix_matrix_atom_inventory_is_reported() -> None:
@@ -186,8 +220,8 @@ def test_phenix_matrix_atom_inventory_is_reported() -> None:
     assert abs(inventory.initial_metal_atoms - 100.0) < 1e-12
     assert abs(inventory.burned_metal_atoms - 10.0) < 1e-12
     assert abs(inventory.remaining_initial_metal_atoms - 90.0) < 1e-12
-    assert abs(inventory.zr_atoms_in_matrix - 0.48) < 1e-12
-    assert abs(inventory.sr_atoms_in_matrix - 0.0432) < 1e-12
-    assert abs(inventory.y_re_atoms_in_matrix - 4.48) < 1e-12
-    assert abs(inventory.fission_product_atoms_in_matrix - 5.0032) < 1e-12
-    assert abs(inventory.matrix_atoms - 95.0032) < 1e-12
+    assert abs(inventory.zr_atoms_in_matrix - 0.5075) < 1e-12
+    assert abs(inventory.sr_atoms_in_matrix - 0.0324) < 1e-12
+    assert abs(inventory.y_re_atoms_in_matrix - 4.6) < 1e-12
+    assert abs(inventory.fission_product_atoms_in_matrix - 5.1399) < 1e-12
+    assert abs(inventory.matrix_atoms - 95.1399) < 1e-12

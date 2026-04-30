@@ -122,7 +122,8 @@ def main() -> None:
     print(PHENIX_FISSION_YIELD_SOURCE)
     print(f"initial O/M:                 {initial_om:.6f}")
     print(f"burnup:                      {burnup_final:.6f} at.%")
-    print(f"Mo oxidation fraction:       {mo_fraction:.6f}")
+    print(f"Mo oxidation fraction requested: {mo_fraction:.6f}")
+    print(f"Mo oxidation fraction actual:    {result.oxygen_mo_oxidation_fraction:.6f}")
     print(f"number of yield entries:     {len(PHENIX_FISSION_YIELDS)}")
 
     print(f"O released [atoms/100 initial metal]: {result.oxygen_released_per_10_fissions:.6f}")
@@ -169,6 +170,7 @@ def main() -> None:
     center_oms = []
     rim_oms = []
     target_average_oms = []
+    mo_oxidation_fractions = []
 
     # =========================
     # O/M PROFILE CALCULATION
@@ -192,9 +194,11 @@ def main() -> None:
         center_oms.append(steady.om[0])
         rim_oms.append(steady.om[-1])
         target_average_oms.append(target_average_om)
+        mo_oxidation_fractions.append(chem.oxygen_mo_oxidation_fraction)
 
         print(f"Burnup = {bu:.2f} at.%")
         print(f"  target average O/M = {target_average_om:.6f}")
+        print(f"  Mo oxidation frac. = {chem.oxygen_mo_oxidation_fraction:.6f}")
         print(f"  centerline O/M     = {steady.om[0]:.6f}")
         print(f"  rim O/M            = {steady.om[-1]:.6f}")
         print(f"  radial O/M         = {np.round(steady.om, 6)}")
@@ -205,6 +209,7 @@ def main() -> None:
     center_oms = np.asarray(center_oms)
     rim_oms = np.asarray(rim_oms)
     target_average_oms = np.asarray(target_average_oms)
+    mo_oxidation_fractions = np.asarray(mo_oxidation_fractions)
 
     # =========================
     # WRITE INPUT HISTORIES (JOG-style point folders)
@@ -259,6 +264,20 @@ def main() -> None:
     plt.legend()
     plt.grid(True)
     plt.savefig(histories_dir / "EvolutionOMaverage.png")
+
+    # =========================
+    # PLOT 5: actual Mo oxidation fraction vs burnup
+    # =========================
+    plt.figure(figsize=(7, 5))
+    plt.plot(burnup_values, mo_oxidation_fractions, marker="o", label="Mo oxidation fraction")
+    #plt.axhline(mo_fraction, color="k", linestyle="--", linewidth=1.0, label="Requested maximum")
+    plt.xlabel("Burnup (at.%)")
+    plt.ylabel("Mo oxidation fraction (-)")
+    plt.title("Evolution of Mo oxidation fraction with burnup")
+    plt.ylim(-0.05, 1.05)
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(histories_dir / "EvolutionMoOxidationFraction.png")
     plt.close("all")
 
 
