@@ -54,8 +54,23 @@ JOG_PHASES = [
     ("HCP_A3", "JOG from HCP_A3 (/)", "HCP_A3 (condensed, at grain boundary) (mol/m3)"),
 ]
 LIQUID_CONSTITUENT_COLORS = ["#6baed6", "#fd8d3c", "#74c476", "#9e9ac8", "#e377c2", "#8c564b", "#17becf"]
+SUMMARY_STACK_COLORS = [
+    "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b",
+    "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#aec7e8", "#ffbb78",
+    "#98df8a", "#ff9896", "#c5b0d5", "#c49c94", "#f7b6d2", "#c7c7c7",
+    "#dbdb8d", "#9edae5", "#393b79", "#637939", "#8c6d31", "#843c39",
+]
 LIQUID_TOTAL_COLUMN = "LIQUID (liquid, at grain boundary) (mol/m3)"
 LIQUID_ELEMENT_SPECIES = {"Cs", "Mo", "O"}
+LIQUID_CONSTITUENT_STOICHIOMETRIC_SIZE = {
+    "CS+": 1.0,
+    "MO+4": 1.0,
+    "MOO4-2": 5.0,
+    "O-2": 1.0,
+    "VA": 0.0,
+    "MOO3": 4.0,
+    "CSO2": 3.0,
+}
 
 plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update({
@@ -196,6 +211,16 @@ def radial_volume_average(profile: np.ndarray, radii_m_array: np.ndarray) -> np.
     shell_weights = (shell_edges[1:] ** 2 - shell_edges[:-1] ** 2) / denominator
     return np.tensordot(shell_weights, profile, axes=(0, 0))
 
+
+def radial_integral_masked_to_full_radius(
+    profile: np.ndarray,
+    radii_m_array: np.ndarray,
+    radial_indices: list[int],
+) -> np.ndarray:
+    masked_profile = np.zeros_like(profile)
+    masked_profile[radial_indices, :] = profile[radial_indices, :]
+    return radial_integral_over_radius(masked_profile, radii_m_array)
+
 def case_dirs() -> list[Path]:
     return sorted(path for path in TEST_DIR.glob("point_*") if path.is_dir())
 
@@ -226,6 +251,50 @@ def build_label_color_map(labels: list[str]) -> dict[str, object]:
         label: species_color_map[label.split(" (", 1)[0]]
         for label in unique_labels
     }
+
+
+def assign_distinct_colors(labels: list[str], palette: list[str] = SUMMARY_STACK_COLORS) -> dict[str, object]:
+    return {
+        label: palette[index % len(palette)]
+        for index, label in enumerate(labels)
+    }
+
+
+def grain_boundary_phase(header: str) -> str:
+    match = re.search(r"\(([^,]+), at grain boundary\)", header)
+    return match.group(1).strip().lower() if match else "unknown"
+
+
+def grain_boundary_species(header: str) -> str:
+    return header.split(" (", 1)[0]
+
+
+def is_liquid_total_column(header: str) -> bool:
+    return grain_boundary_phase(header) == "liquid" and grain_boundary_species(header).upper() == "LIQUID"
+
+
+def is_liquid_fraction_column(header: str) -> bool:
+    return grain_boundary_phase(header) == "liquid" and not is_liquid_total_column(header)
+
+
+def is_liquid_element_column(header: str) -> bool:
+    return is_liquid_fraction_column(header) and grain_boundary_species(header) in LIQUID_ELEMENT_SPECIES
+
+
+def is_liquid_constituent_column(header: str) -> bool:
+    return is_liquid_fraction_column(header) and not is_liquid_element_column(header)
+
+
+def liquid_constituent_stoichiometric_size(header: str) -> float:
+    return LIQUID_CONSTITUENT_STOICHIOMETRIC_SIZE.get(grain_boundary_species(header), 1.0)
+
+
+def is_grain_boundary_amount_column(header: str) -> bool:
+    return (
+        header not in {BURNUP_LABEL, TIME_LABEL}
+        and ", at grain boundary)" in header
+        and not is_liquid_fraction_column(header)
+    )
 
 
 def build_thermochemistry_color_map(case_directories: list[Path]) -> dict[str, object]:
@@ -414,10 +483,25 @@ def plot_case(
     if not available_columns:
         return
 
-    constituent_values = np.vstack([
+    constituent_formula_units = np.vstack([
         thermochemistry_values[:, thermochemistry_columns[column]]
         for column in available_columns
     ])
+    constituent_atom_equivalents = np.vstack([
+        thermochemistry_values[:, thermochemistry_columns[column]] * liquid_constituent_stoichiometric_size(column)
+        for column in available_columns
+    ])
+    constituent_values = constituent_formula_units
+    constituent_ylabel = "Liquid constituent inventory (mol/m3)"
+    if LIQUID_TOTAL_COLUMN in thermochemistry_columns:
+        total_series = thermochemistry_values[:, thermochemistry_columns[LIQUID_TOTAL_COLUMN]]
+        total_norm = np.linalg.norm(total_series)
+        if total_norm > 0.0:
+            raw_error = np.linalg.norm(np.sum(constituent_formula_units, axis=0) - total_series) / total_norm
+            atom_equivalent_error = np.linalg.norm(np.sum(constituent_atom_equivalents, axis=0) - total_series) / total_norm
+            if atom_equivalent_error < raw_error:
+                constituent_values = constituent_atom_equivalents
+                constituent_ylabel = "Liquid constituent atom-equivalent inventory (mol/m3)"
 
     labels = [column.split(" (", 1)[0] for column in available_columns]
     colors = [
@@ -426,9 +510,15 @@ def plot_case(
     ]
 
     fig, axis = plt.subplots(figsize=(11, 7))
-    axis.stackplot(thermochemistry_burnup, constituent_values, labels=labels, colors=colors, alpha=0.88)
+    axis.stackplot(
+        thermochemistry_burnup,
+        constituent_values,
+        labels=labels,
+        colors=colors,
+        alpha=0.88,
+    )
     axis.set_xlabel(BURNUP_LABEL)
-    axis.set_ylabel("Liquid constituents (mol/m3)")
+    axis.set_ylabel(constituent_ylabel)
 
     if LIQUID_TOTAL_COLUMN in thermochemistry_columns:
         total_series = thermochemistry_values[:, thermochemistry_columns[LIQUID_TOTAL_COLUMN]]
@@ -452,6 +542,19 @@ def plot_case(
     else:
         axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5))
     save_figure(fig, case_plot_dir / "liquid_constituent.png", saved_paths)
+
+    fig, axis = plt.subplots(figsize=(11, 7))
+    axis.stackplot(
+        thermochemistry_burnup,
+        constituent_formula_units,
+        labels=labels,
+        colors=colors,
+        alpha=0.88,
+    )
+    axis.set_xlabel(BURNUP_LABEL)
+    axis.set_ylabel("Liquid constituent formula-unit inventory (mol/m3)")
+    axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5))
+    save_figure(fig, case_plot_dir / "liquid_constituent_formula_units.png", saved_paths)
 
 
 def plot_radial_profiles(
@@ -556,6 +659,49 @@ def plot_radial_profiles(
         axis.legend(loc="lower right")
         save_figure(fig, PLOTS_DIR / "summary_03_stoichiometry_vs_burnup.png", saved_paths)
 
+        fig, axis = plt.subplots()
+        for color, index in zip(snapshot_colors, indexes):
+            axis.plot(
+                radii_mm_array,
+                2.0 + output_profiles["Stoichiometry deviation (/)"][:, index],
+                color=color,
+                marker="o",
+                label=f"{reference_burnup[index]:.1f} MWd/kgUO2",
+            )
+        axis.set_xlabel("Radius (mm)")
+        axis.set_xlim([0, 3.0])
+        axis.set_ylabel("O/M (/)")
+        axis.legend(loc="lower right")
+        save_figure(fig, PLOTS_DIR / "summary_03bis_stoichiometry_vs_radius.png", saved_paths)
+
+    if "Fission gas release (/)" in output_profiles:
+        fgr_radial_average = radial_volume_average(
+            output_profiles["Fission gas release (/)"],
+            radii_m_array,
+        )
+
+        fig, axis = plt.subplots()
+        for radius_mm, case_history in zip(radii_mm_array, output_histories):
+            case_burnup = case_history["Burnup (MWd/kgUO2)"]
+            axis.plot(
+                case_burnup,
+                case_history["Fission gas release (/)"],
+                color="#9ca3af",
+                linewidth=0.8,
+                alpha=0.45,
+            )
+        axis.plot(
+            reference_burnup,
+            fgr_radial_average,
+            color="#111827",
+            linewidth=2.5,
+            label="Radial average",
+        )
+        axis.set_xlabel("Burnup (MWd/kgUO2)")
+        axis.set_ylabel("FGR (/)")
+        axis.legend(loc="upper left")
+        save_figure(fig, PLOTS_DIR / "summary_03c_fgr_radial_average_vs_burnup.png", saved_paths)
+
     # 3b) q vs burnup
     if "q (-)" in output_profiles:
         fig, axis = plt.subplots()
@@ -619,39 +765,67 @@ def plot_radial_profiles(
     # 5-6) Grain-boundary phases: species-specific color + phase-specific hatch style.
     if gb_sorted_variables:
         species_colors = build_species_color_map(gb_sorted_variables)
-        phase_hatch = {
-            "liquid": "///",
-            "gas": "...",
-            "condensed": "xx",
-            "unknown": "\\\\\\",
-        }
-        fig, axis = plt.subplots()
-        gb_radial_histories = []
-        gb_colors = []
-        gb_hatches = []
-        gb_labels = []
+        summary_entries: list[tuple[str, np.ndarray]] = []
         for variable in gb_sorted_variables:
             species = grain_boundary_species(variable)
             phase = grain_boundary_phase(variable)
+            if phase not in {"condensed", "liquid"}:
+                continue
+            if is_liquid_total_column(variable):
+                continue
             series = radial_volume_average(thermo_profiles[variable], radii_m_array)
-            color = species_colors[species]
-            gb_radial_histories.append(series)
-            gb_colors.append(color)
-            gb_hatches.append(phase_hatch.get(phase, phase_hatch["unknown"]))
-            gb_labels.append(f"{species} ({phase})")
+            summary_entries.append((f"{species}", series))
+
+        liquid_constituent_variables = [
+            variable for variable in thermo_profiles
+            if is_liquid_constituent_column(variable)
+            and not is_all_zero(thermo_profiles[variable])
+        ]
+        if liquid_constituent_variables:
+            liquid_formula_series = [
+                radial_volume_average(thermo_profiles[variable], radii_m_array)
+                for variable in liquid_constituent_variables
+            ]
+            liquid_atom_equivalent_series = [
+                radial_volume_average(
+                    thermo_profiles[variable] * liquid_constituent_stoichiometric_size(variable),
+                    radii_m_array,
+                )
+                for variable in liquid_constituent_variables
+            ]
+            liquid_series = liquid_formula_series
+            if LIQUID_TOTAL_COLUMN in thermo_profiles:
+                liquid_total_series = radial_volume_average(thermo_profiles[LIQUID_TOTAL_COLUMN], radii_m_array)
+                total_norm = np.linalg.norm(liquid_total_series)
+                if total_norm > 0.0:
+                    raw_error = np.linalg.norm(np.sum(np.vstack(liquid_formula_series), axis=0) - liquid_total_series) / total_norm
+                    atom_equivalent_error = np.linalg.norm(np.sum(np.vstack(liquid_atom_equivalent_series), axis=0) - liquid_total_series) / total_norm
+                    if atom_equivalent_error < raw_error:
+                        liquid_series = liquid_atom_equivalent_series
+
+            liquid_entries = [
+                (grain_boundary_species(variable), series)
+                for variable, series in zip(liquid_constituent_variables, liquid_series)
+                if not is_all_zero(series)
+            ]
+            liquid_entries.sort(key=lambda item: item[1][-1], reverse=True)
+            for species, series in liquid_entries:
+                summary_entries.append((f"Liquid: {species}", series))
+
+        fig, axis = plt.subplots()
+        gb_labels = [label for label, _ in summary_entries]
+        gb_radial_histories = [series for _, series in summary_entries]
+        summary_colors = assign_distinct_colors(gb_labels)
+        gb_colors = [summary_colors[label] for label in gb_labels]
 
         if gb_radial_histories:
-            polys = axis.stackplot(
+            axis.stackplot(
                 reference_burnup,
                 gb_radial_histories,
                 colors=gb_colors,
                 labels=gb_labels,
                 alpha=0.9,
             )
-            for poly, hatch in zip(polys, gb_hatches):
-                poly.set_hatch(hatch)
-                poly.set_edgecolor((0.1, 0.1, 0.1, 0.7))
-                poly.set_linewidth(0.2)
 
             cumulative_histories = np.cumsum(np.vstack(gb_radial_histories), axis=0)
             for boundary in cumulative_histories:
@@ -659,41 +833,6 @@ def plot_radial_profiles(
 
         axis.set_xlabel("Burnup (MWd/kgUO2)")
         axis.set_ylabel("Concentration at grain boundary (mol/m3)")
-        add_capped_legend(axis, loc="upper left")
-        save_figure(fig, PLOTS_DIR / "summary_05_gb_phases_vs_burnup.png", saved_paths)
-
-        fig, axis = plt.subplots()
-        gb_radial_histories = []
-        gb_colors = []
-        gb_hatches = []
-        gb_labels = []
-        for variable in gb_sorted_variables:
-            species = grain_boundary_species(variable)
-            phase = grain_boundary_phase(variable)
-            if phase not in {"condensed", "liquid"}:
-                continue
-            series = radial_volume_average(thermo_profiles[variable], radii_m_array)
-            color = species_colors[species]
-            gb_radial_histories.append(series)
-            gb_colors.append(color)
-            gb_hatches.append(phase_hatch.get(phase, phase_hatch["unknown"]))
-            gb_labels.append(f"{species} ({phase})")
-
-        if gb_radial_histories:
-            polys = axis.stackplot(
-                reference_burnup,
-                gb_radial_histories,
-                colors=gb_colors,
-                labels=gb_labels,
-                alpha=0.9,
-            )
-
-            cumulative_histories = np.cumsum(np.vstack(gb_radial_histories), axis=0)
-            for boundary in cumulative_histories:
-                axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
-
-        axis.set_xlabel("Burnup (MWd/kgUO2)")
-        axis.set_ylabel("Concentration of condensed+liquid species at grain boundary (mol/m3)")
         add_capped_legend(axis, loc="upper left")
         save_figure(fig, PLOTS_DIR / "summary_06_gb_noliq_phases_vs_burnup.png", saved_paths)
     
@@ -786,6 +925,88 @@ def plot_radial_profiles(
         axis.set_ylim([0,200])
 
         save_figure(fig, PLOTS_DIR / "summary_08_jog_contributions_and_experiments.png", saved_paths)
+
+        outer_indices = [
+            index for index, radius_mm in enumerate(radii_mm_array)
+            if radius_mm >=  2.3
+        ]
+        if len(outer_indices) >= 2:
+            outer_jog_total_thickness_over_time_um = radial_integral_masked_to_full_radius(
+                output_profiles["JOG (/)"],
+                radii_m_array,
+                outer_indices,
+            ) * 1.0e6
+
+            outer_jog_liquid_thickness_over_time_um = None
+            if "JOG from liquid (/)" in output_profiles:
+                outer_jog_liquid_thickness_over_time_um = radial_integral_masked_to_full_radius(
+                    output_profiles["JOG from liquid (/)"],
+                    radii_m_array,
+                    outer_indices,
+                ) * 1.0e6
+
+            outer_entries: list[tuple[str, np.ndarray, object]] = []
+            for index, (label, column_name) in enumerate(condensed_contribution_columns):
+                if column_name not in output_profiles:
+                    continue
+                series = radial_integral_masked_to_full_radius(
+                    output_profiles[column_name],
+                    radii_m_array,
+                    outer_indices,
+                ) * 1.0e6
+                if is_all_zero(series):
+                    continue
+                outer_entries.append((
+                    label,
+                    series,
+                    species_colors.get(label, plt.cm.tab20(index / max(1, len(condensed_contribution_columns)))),
+                ))
+
+            outer_entries.sort(key=lambda item: (item[0] != "CS2MOO4_S2", item[0]))
+            outer_labels = [item[0] for item in outer_entries]
+            outer_histories = [item[1] for item in outer_entries]
+            outer_colors = [item[2] for item in outer_entries]
+
+            if outer_jog_liquid_thickness_over_time_um is not None and not is_all_zero(outer_jog_liquid_thickness_over_time_um):
+                outer_labels.append("LIQUID")
+                outer_histories.append(outer_jog_liquid_thickness_over_time_um)
+                outer_colors.append("#f97316")
+
+            fig, axis = plt.subplots()
+            if outer_histories:
+                axis.stackplot(
+                    reference_burnup,
+                    *outer_histories,
+                    colors=outer_colors,
+                    labels=outer_labels,
+                    alpha=0.9,
+                )
+                cumulative_histories = np.cumsum(np.vstack(outer_histories), axis=0)
+                for boundary in cumulative_histories:
+                    axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
+
+            axis.plot(reference_burnup, outer_jog_total_thickness_over_time_um, color="#111827", label="Total")
+            axis.scatter(
+                fima_to_burnup(melis_fima),
+                melis_thickness,
+                edgecolors="black", facecolor=None,
+                marker="o",
+                label="Melis et al. (1993)",
+                zorder=3,
+            )
+            axis.scatter(
+                fima_to_burnup(tourasse_fima),
+                tourasse_thickness,
+                edgecolors="black", facecolor=None,
+                marker="D",
+                label="Tourasse et al. (1992)",
+                zorder=3,
+            )
+            axis.set_xlabel("Burnup (MWd/kgUO2)")
+            axis.set_ylabel("JOG thickness (um)")
+            axis.legend(loc="upper left")
+            axis.set_ylim([0, 200])
+            save_figure(fig, PLOTS_DIR / "summary_08_jog_contributions_and_experiments_radii_18_20.png", saved_paths)
 
 def main() -> int:
     parser = argparse.ArgumentParser()
