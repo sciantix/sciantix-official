@@ -1,0 +1,2 @@
+label,f_n,K_d,rho_d,fission_rate,Dv_scale,Dg_scale,b_scale,gb_scale,gd_scale,coalescence_d_scale,capture_scale,D2_xe_scale
+diagnostic_M7_no_phi_Dv05_trial_00097,1.1149e-08,534290.727568,27788924849394.254,6.930584923894175e+19,0.5,1.315673,2.578705,2.010723,4.852245,6.966378,2.482966,1.361065
