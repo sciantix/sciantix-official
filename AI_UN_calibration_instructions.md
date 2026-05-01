@@ -444,3 +444,307 @@ Usa le pressioni p_b/p_eq e p_d/p_eq solo come diagnostica secondaria: in Rizk b
 
 Produci all_runs.csv, best_candidates.csv, summary.md e grafici PNG. Itera autonomamente: prima griglia grossolana, poi raffinamento locale sui migliori candidati, poi test seed bulk solo sui migliori. Spiega quali parametri sono robusti, quali sono incerti, quale candidato è migliore per swelling_d, quale per swelling_ig, e quali limiti fisici restano.
 ```
+
+
+---
+
+# 13. Aggiornamento operativo — calibrazione v5 dopo analisi v3/v4
+
+## 13.1 Cosa abbiamo imparato dai run recenti
+
+Sono stati eseguiti run `capture_only` con scoring progressivamente più fisico:
+
+1. **v2 / Codex fixed-Dv profile**
+   - `capture_only` riesce a fittare abbastanza bene P2.
+   - I candidati a `Dv_scale` basso possono avere score numerico buono, ma spesso pressione dislocation troppo alta.
+   - Il candidato più fisico emerso era vicino a `Dv_scale = 1`, ma aveva gas partition non soddisfacente.
+
+2. **v3 / gas partition score**
+   - Aggiungere vincoli su gas partition e `q_gb` ha funzionato: il modello ha spostato gas da `q_gb` verso bulk/dislocation in modo più simile a Rizk Fig. 9.
+   - Però i migliori candidati v3 hanno pagato questo risultato con un raggio medio delle dislocation bubbles troppo grande:
+     ```text
+     Rd(2000 K, 1.3% FIMA) ~ 2 micrometri
+     ```
+   - Questo non è accettabile per un single-size average radius.
+
+3. **v4 / radius guard**
+   - Aggiungere il vincolo `Rd(2000 K) <= 800 nm` ha ridotto molto il problema.
+   - I top-score finali restano però ancora attorno a:
+     ```text
+     Rd(2000 K) ~ 1.3-1.6 micrometri
+     ```
+   - Esistono candidati più fisici, non scelti dal ranking totale:
+     ```text
+     trial_00150: Rd(2000 K) ~ 785 nm
+     trial_00163: Rd(2000 K) ~ 705 nm
+     trial_00170: Rd(2000 K) ~ 992 nm
+     ```
+   - Questi candidati hanno raggio molto più ragionevole, ma mostrano ancora due problemi:
+     - il raggio `R_d(T)` continua a crescere dopo 1800 K invece di tendere a saturare;
+     - la pressione dislocation resta sopra equilibrio, mentre bulk pressure è quasi in equilibrio.
+
+## 13.2 Nuovo obiettivo v5
+
+Lo scopo di `v5` non è solo abbassare lo score totale, ma cercare candidati con forma fisica migliore:
+
+```text
+1. fit P2/dislocation swelling ragionevole fino a ~1700 K;
+2. R_d e N_d nello stesso ordine di grandezza dei dati;
+3. gas partition simile a Rizk:
+   - bulk gas alto a bassa/intermedia T;
+   - dislocation gas dominante ad alta T;
+   - q_gb moderato, interpretato come GB bubbles + FGR;
+4. pressione bulk e dislocation non estrema;
+5. R_d(2000 K) sub-micrometrico;
+6. R_d(T) con tendenza alla saturazione/flattening dopo ~1800 K, non crescita accelerata.
+```
+
+Il punto nuovo è il 6.
+
+## 13.3 Scoring v5
+
+Rispetto a v4, `UN_M7_optuna_calibration_v5.py` aggiunge:
+
+```text
+score_radius_saturation
+```
+
+che penalizza:
+
+```text
+- crescita eccessiva R_d(1800 -> 2000 K);
+- crescita accelerata R_d(1900 -> 2000 K) rispetto a R_d(1800 -> 1900 K);
+- rapporto R_d(2000)/R_d(1900) troppo alto;
+- raggio 1900/2000 K sopra valori sub-micrometrici.
+```
+
+Default indicativi:
+
+```text
+rd2000_max_nm = 800
+rd1900_soft_max_nm = 700
+rd1800_soft_max_nm = 600
+rd_post1800_delta_max_nm = 350
+rd_last_increment_factor_max = 0.75
+rd_1900_2000_ratio_max = 1.35
+radius_guard_weight = 0.55
+radius_saturation_weight = 0.75
+```
+
+Interpretazione:
+
+- non è un fit rigido alla curva Rizk;
+- è un guardrail fisico per impedire che il modello single-size compensi lo score con raggi micrometrici;
+- se questo vincolo distrugge il fit P2, il report deve dirlo chiaramente.
+
+## 13.4 Criteri di selezione fisica
+
+Codex/agent non deve scegliere solo `score_total`.
+
+Deve sempre classificare i candidati in almeno queste categorie:
+
+```text
+best_total_score
+best_physical_score
+best_radius_saturated
+best_partition
+best_pressure
+best_rizk_near
+best_exploratory_escape
+```
+
+Un candidato è **più fisico** se, indicativamente:
+
+```text
+Rd_1p3_2000K <= 800-1000 nm
+Rd_ratio_2000_over_1800 <= 2.8
+Rd_inc_1900_2000 <= 0.75 * Rd_inc_1800_1900  # flattening
+p_d_over_eq_1p3_1600K <= ~2-2.5
+qgb_gas_1p1_1600K <= ~12%
+bulk_gas_1p1_1200K >= ~70%
+bulk_gas_1p1_1500K >= ~68-70%
+swD_1p3_1600K circa 2-3%
+R_d 1000-1750 K confrontabile coi dati P2
+N_d 1000-1750 K nello stesso ordine dei dati P2
+```
+
+Se nessun candidato soddisfa tutto, non nascondere il fallimento. Dire quale vincolo è in conflitto con gli altri.
+
+## 13.5 Strategia Codex a step
+
+Codex deve lavorare a blocchi, non lanciare una singola ottimizzazione cieca.
+
+### Block A — pilot v5
+
+Run consigliato:
+
+```text
+family = capture_only
+n_trials = 250-400
+no plots
+score v5 standard
+```
+
+Obiettivo:
+- verificare se v5 trova candidati non peggiori di v4;
+- capire se il vincolo di saturazione è troppo duro;
+- ispezionare componenti dello score.
+
+### Block B — continuation
+
+Se il pilot produce candidati ragionevoli, continuare nella stessa cartella/stesso database:
+
+```text
++800/+1200 trial aggiuntivi
+no plots
+```
+
+Non ripartire da zero.
+
+### Block C — final rerun e plot
+
+Selezionare non solo i primi per `score_total`, ma anche i migliori fisici:
+
+```text
+top 5 per score_total
+top 5 per filtro fisico
+top 3 vicino a Rizk
+top 3 pressure-friendly
+top 3 radius-saturated
+```
+
+Fare rerun finale con:
+
+```text
+final_dt_h = 1 h
+final_n_modes = 40
+plots enabled
+```
+
+### Block D — escape studies
+
+Se i risultati non sono soddisfacenti, non cambiare subito le equazioni. Fare blocchi separati:
+
+```text
+D1: nominal-near
+    prior più forte, parametri restano vicino a Rizk.
+
+D2: diffusion escape
+    Dv_scale, Dg_scale, D2_xe_scale più liberi.
+
+D3: resolution/trapping escape
+    b_scale, gb_scale, gd_scale più liberi.
+
+D4: microstructure escape
+    f_n, K_d, rho_d più liberi.
+
+D5: coalescence/capture escape
+    coalescence_d_scale, capture_scale più liberi.
+
+D6: all-wide
+    tutti larghi, ma prior non nullo.
+```
+
+Per ogni blocco, creare una sottocartella e un breve paragrafo in `WORKLOG.md`.
+
+## 13.6 Regole sui pesi dello score
+
+Codex può cambiare i pesi solo seguendo questo protocollo:
+
+```text
+1. completare un pilot;
+2. leggere componenti score e plot diagnostici;
+3. scrivere in WORKLOG.md perché un peso sembra troppo forte/debole;
+4. creare un nuovo blocco con nome chiaro;
+5. non sovrascrivere il blocco precedente.
+```
+
+Non è permesso:
+- rimuovere pressure score;
+- rimuovere qgb/gas partition score;
+- rimuovere radius/saturation score;
+- scegliere un candidato solo perché minimizza `score_total`;
+- tacere se il candidato usa parametri molto lontani da Rizk.
+
+## 13.7 Output richiesto per v5
+
+Creare almeno:
+
+```text
+UN_M7_v5_codex_report.md
+UN_M7_v5_codex_results/WORKLOG.md
+UN_M7_v5_codex_results/best_candidates_all_categories.csv
+UN_M7_v5_codex_results/physical_filtered_candidates.csv
+UN_M7_v5_codex_results/score_component_summary.csv
+UN_M7_v5_codex_results/escape_study_summary.csv
+```
+
+Per ogni candidato finale importante, riportare:
+
+```text
+label
+score_total
+score_swd
+score_Rd
+score_Nd
+score_pressure
+score_partition
+score_qgb
+score_radius_guard
+score_radius_saturation
+score_rizk_prior
+
+f_n
+K_d
+rho_d
+fission_rate
+Dv_scale
+Dg_scale
+D2_xe_scale
+b_scale
+gb_scale
+gd_scale
+coalescence_d_scale
+capture_scale
+
+swD_1p3_1600K
+swB_1p3_1600K
+Rd_1p3_1600K
+Rd_1p3_1800K
+Rd_1p3_1900K
+Rd_1p3_2000K
+Rd_ratio_2000_over_1800
+Rd_inc_1800_1900_nm
+Rd_inc_1900_2000_nm
+Nd_1p3_1600K
+p_b_over_eq_1p3_1600K
+p_d_over_eq_1p3_1600K
+bulk_gas_1p1_1200
+bulk_gas_1p1_1500
+bulk_gas_1p1_1600
+disl_gas_1p1_2000
+qgb_gas_1p1_1600
+```
+
+## 13.8 Conclusione scientifica da verificare
+
+La domanda centrale dopo v5 è:
+
+```text
+È possibile ottenere simultaneamente:
+- gas partition ragionevole;
+- pressione dislocation non estrema;
+- R_d sub-micrometrico e tendente a saturare;
+- fit P2 accettabile;
+senza parametri assurdi?
+```
+
+Se sì, il candidato v5 è forte.
+
+Se no, il report deve dire se il conflitto nasce principalmente da:
+- coalescenza dislocation troppo aggressiva;
+- trapping verso dislocation troppo forte;
+- capture bulk→dislocation;
+- mancanza del modello grain-boundary/FGR;
+- problema nei parametri Rizk;
+- limite del single-size model.
