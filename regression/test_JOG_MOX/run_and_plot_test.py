@@ -384,7 +384,7 @@ def plot_case(
             ("Produced", COLORS[0], " produced (at/m3)"),
             ("In grain", COLORS[1], " in grain (at/m3)"),
             ("At grain boundary", COLORS[2], " at grain boundary (at/m3)"),
-            ("Reacted", COLORS[3], " reacted - GB (at/m3)"),
+            ("Reacted", COLORS[3], " reacted (at/m3)"),
             ("Released", COLORS[4], " released (at/m3)"),
         ]:
             column_name = f"{species}{suffix}"

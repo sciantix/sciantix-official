@@ -453,9 +453,6 @@ class Simulation
         
         else if (name == "Te")
             return &modes_initial_conditions[24 * 40];
-        
-        else if (name == "Mo")
-            return &modes_initial_conditions[27 * 40];
 
         else
         {
@@ -500,9 +497,6 @@ class Simulation
         else if (name == "Te")
             return &modes_initial_conditions[25 * 40];
 
-        else if (name == "Mo")
-            return &modes_initial_conditions[28 * 40];
-            
         else
         {
             std::cerr << "Error: Invalid gas name \"" << name << "\" in Simulation::getDiffusionModesSolution."
@@ -545,9 +539,6 @@ class Simulation
         
         else if (name == "Te")
             return &modes_initial_conditions[26 * 40];
-            
-        else if (name == "Mo")
-            return &modes_initial_conditions[29 * 40];
             
         else
         {

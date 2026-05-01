@@ -38,7 +38,7 @@ void Simulation::FissionProductRelease() // qui tutti i gas (hanno la scrittura 
             sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(
                 sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
                 sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
-                sciantix_variable[system.getFissionProductName() + " reacted - GB"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " reacted"].getFinalValue() -
                 sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue() -
                 sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue()
             );

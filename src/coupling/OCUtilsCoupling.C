@@ -728,9 +728,10 @@ struct OpenCalphadInputComponent
 };
 
 std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
-    const std::set<std::string>&     selected_elements,
-    SciantixArray<SciantixVariable>& sciantix_variable,
-    double&                          total_content)
+     const std::set<std::string>&     selected_elements,
+     SciantixArray<SciantixVariable>& sciantix_variable,
+     SciantixArray<System>&           sciantix_system,
+     double&                          total_content)
 {
     constexpr double open_calphad_component_fraction_cutoff = 1.0e-8;
     std::vector<OpenCalphadInputComponent> components;
@@ -738,17 +739,43 @@ std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
 
     for (const auto& element_name : selected_elements)
     {
+        if (element_name != "O" && element_name != "U" && element_name != "Pu")
+            continue;
+
         OpenCalphadInputComponent component;
         component.name = element_name;
-        if (element_name == "O" || element_name == "U" || element_name == "Pu")
-            component.content = std::max(0.0, sciantix_variable[element_name + " content"].getFinalValue());
-        else
+        component.content = std::max(0.0, sciantix_variable[element_name + " content"].getFinalValue());
+
+        if (component.content > 0.0)
+        {
+            total_content += component.content;
+            components.push_back(component);
+        }
+    }
+
+    for (auto& system : sciantix_system)
+    {
+        const std::string element_name = system.getFissionProductName();
+        if (selected_elements.count(element_name) == 0)
+            continue;
+
+        OpenCalphadInputComponent component;
+        component.name = element_name;
+
+        if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
         {
             const double atoms_available =
                 sciantix_variable[element_name + " produced"].getFinalValue() -
                 sciantix_variable[element_name + " decayed"].getFinalValue() -
                 sciantix_variable[element_name + " in grain"].getFinalValue() -
                 sciantix_variable[element_name + " released"].getInitialValue();
+
+            component.content = std::max(0.0, atoms_available / avogadro_number);
+        }
+        else if (system.getRestructuredMatrix() == 0 && system.isMetallicFP())
+        {
+            const double atoms_available =
+                sciantix_variable[element_name + " produced"].getFinalValue();
 
             component.content = std::max(0.0, atoms_available / avogadro_number);
         }
@@ -799,6 +826,7 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
                            const std::string& location,
                            const std::set<std::string>& selected_elements,
                            SciantixArray<SciantixVariable>& sciantix_variable,
+                           SciantixArray<System>& sciantix_system,
                            std::set<std::string>& active_elements,
                            double&                total_input_content,
                            double                 fixed_oxygen_moles)
@@ -820,7 +848,7 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
         sciantix_variable["Fuel oxygen potential"].getFinalValue() * 1.0e3 / 2.0; // Convert from kJ/mol O2 to J/mol O
 
     std::vector<OpenCalphadInputComponent> solve_components =
-        buildOpenCalphadInputComponents(selected_elements, sciantix_variable, total_input_content);
+        buildOpenCalphadInputComponents(selected_elements, sciantix_variable, sciantix_system, total_input_content);
 
     active_elements.clear();
     for (const auto& component : solve_components)
@@ -1177,28 +1205,42 @@ void updateMatrixFromOutput(const OCOutputData&              output_data,
 void updateGrainBoundaryFromOutput(const std::map<std::string, OCPhaseData>& solution_phases,
                                    const std::set<std::string>&               selected_elements,
                                    double                                     content_scaling_factor,
-                                   SciantixArray<SciantixVariable>&           sciantix_variable)
+                                   SciantixArray<SciantixVariable>&           sciantix_variable,
+                                   SciantixArray<System>&                     sciantix_system)
 {
     const auto gas_phase = solution_phases.find("gas");
 
-    for (const auto& element : selected_elements)
+    for (auto& system : sciantix_system)
     {
-        if (element == "O" || element == "U" || element == "Pu")
+        const std::string element = system.getFissionProductName();
+        if (selected_elements.count(element) == 0)
             continue;
 
         double gas_moles = 0.0;
         if (gas_phase != solution_phases.end() && gas_phase->second.elements.count(element) > 0)
             gas_moles = gas_phase->second.elements.at(element) * content_scaling_factor;
 
-        const double available =
-            sciantix_variable[element + " produced"].getFinalValue() -
-            sciantix_variable[element + " decayed"].getFinalValue() -
-            sciantix_variable[element + " in grain"].getFinalValue() -
-            sciantix_variable[element + " released"].getInitialValue();
+        if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
+        {
+            const double available =
+                sciantix_variable[element + " produced"].getFinalValue() -
+                sciantix_variable[element + " decayed"].getFinalValue() -
+                sciantix_variable[element + " in grain"].getFinalValue() -
+                sciantix_variable[element + " released"].getInitialValue();
 
-        const double updated_atoms = std::min(available, gas_moles * avogadro_number);
-        sciantix_variable[element + " at grain boundary"].setFinalValue(updated_atoms);
-        sciantix_variable[element + " reacted - GB"].setFinalValue(available - updated_atoms);
+            const double updated_atoms = std::min(available, gas_moles * avogadro_number);
+            sciantix_variable[element + " at grain boundary"].setFinalValue(updated_atoms);
+            sciantix_variable[element + " reacted"].setFinalValue(available - updated_atoms);
+        }
+        else if (system.getRestructuredMatrix() == 0 && system.isMetallicFP())
+        {
+            const double available =
+                sciantix_variable[element + " produced"].getFinalValue();
+
+            const double updated_atoms = std::min(available, gas_moles * avogadro_number);
+            sciantix_variable[element + " in solution"].setFinalValue(updated_atoms);
+            sciantix_variable[element + " reacted"].setFinalValue(available - updated_atoms);
+        }
     }
 }
 }  // namespace OCUtilsCoupling

@@ -21,31 +21,9 @@
 #include <fstream>
 #include <set>
 
-// CODE DEVELOPMENT : FUNCTION
-namespace
-{
-std::set<std::string> getSelectedFissionProductElements(SciantixArray<InputVariable>& input_variable)
-{
-    std::set<std::string> selected_elements;
-
-    if ((int)input_variable["iThermochimica"].getValue() == 0)
-        return selected_elements;
-
-    for (const auto& name : Sciantix_thermochemistry_settings.fission_products.elements)
-    {
-        if (name != "O" && name != "U" && name != "Pu")
-            selected_elements.insert(name);
-    }
-
-    return selected_elements;
-}
-}  // namespace
-
 void Simulation::setSystem()
 {
     // CODE DEVELOPMENT : FISSION PRODUCT CHOSEN + MOX MATRIX
-    const std::set<std::string> selected_fission_products = getSelectedFissionProductElements(input_variable);
-
     switch ((int)input_variable["iFuelMatrix"].getValue())
     {
         case 0:
@@ -55,17 +33,18 @@ void Simulation::setSystem()
             sciantix_system.push(Xe133_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Kr85m_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 
-            if (selected_fission_products.count("Cs") > 0)
-                sciantix_system.push(Cs_in_UO2(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
-
-            if (selected_fission_products.count("I") > 0)
-                sciantix_system.push(I_in_UO2(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
-
-            if (selected_fission_products.count("Te") > 0)
-                sciantix_system.push(Te_in_UO2(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
-
-            if (selected_fission_products.count("Mo") > 0)
-                sciantix_system.push(Mo_in_UO2(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            if ((int)input_variable["iThermochimica"].getValue() == 0)
+                break;
+            
+            sciantix_system.push(Cs_in_UO2(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(I_in_UO2(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Te_in_UO2(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Mo_in_UO2(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Tc_in_UO2(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Rh_in_UO2(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Ru_in_UO2(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Pd_in_UO2(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            
             break;
 
         case 1:
@@ -82,18 +61,17 @@ void Simulation::setSystem()
             sciantix_system.push(Xe133_in_MOX(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Kr85m_in_MOX(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 
-            if (selected_fission_products.count("Cs") > 0)
-                sciantix_system.push(Cs_in_MOX(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
-
-            if (selected_fission_products.count("I") > 0)
-                sciantix_system.push(I_in_MOX(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
-
-            if (selected_fission_products.count("Te") > 0)
-                sciantix_system.push(Te_in_MOX(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
-
-            if (selected_fission_products.count("Mo") > 0)
-                sciantix_system.push(Mo_in_MOX(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
-            break;
+            if ((int)input_variable["iThermochimica"].getValue() == 0)
+                break;
+            
+            sciantix_system.push(Cs_in_MOX(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(I_in_MOX(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Te_in_MOX(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Mo_in_MOX(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Tc_in_MOX(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Rh_in_MOX(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Ru_in_MOX(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Pd_in_MOX(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
 
         default:
             break;
@@ -371,31 +349,6 @@ System Te_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>
     return system_;
 }
 
-System Mo_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &volatile_fp, SciantixArray<InputVariable> &input_variable,
-    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
-{
-    System system_;
-
-    system_.setName("Mo in UO2");
-    system_.setVolatileFP(volatile_fp["Mo"]);
-    system_.setMatrix(matrices["UO2"]);
-    system_.setRestructuredMatrix(0);
-    system_.setYield(0.220); //Mo from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
-    system_.setRadiusInLattice(0.21e-9);
-    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
-    system_.setHenryConstant(0.0);
-    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
-    system_.setFissionProductDiffusivity(11, sciantix_variable, history_variable, scaling_factors); // To be modified
-    
-    system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
-    system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
-    system_.setTrappingRate(99, sciantix_variable, scaling_factors);
-    system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
-
-    return system_;
-}
-
-
 // MOX
 
 System Xe_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &gas_fp, SciantixArray<InputVariable> &input_variable,
@@ -582,26 +535,155 @@ System Te_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>
     return system_;
 }
 
-System Mo_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts> &volatile_fp, SciantixArray<InputVariable> &input_variable,
-    SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+// Metals in UO2 (not modelled)
+
+System Mo_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>& metallic_fp, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
+    system_.setName("Mo in UO2");
+    system_.setMetallicFP(metallic_fp["Mo"]);
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0);
+    system_.setRadiusInLattice(0.15e-9); // from atomic volume
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    return system_;
+}
 
+System Ru_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>& metallic_fp, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Ru in UO2");
+    system_.setMetallicFP(metallic_fp["Ru"]);
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    return system_;
+}
+
+System Tc_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>& metallic_fp, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Tc in UO2");
+    system_.setMetallicFP(metallic_fp["Tc"]);
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    return system_;
+}
+
+System Pd_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>& metallic_fp, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Pd in UO2");
+    system_.setMetallicFP(metallic_fp["Pd"]); 
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    return system_;
+}
+
+System Rh_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>& metallic_fp, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Rh in UO2");
+    system_.setMetallicFP(metallic_fp["Rh"]); 
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    return system_;
+}
+
+// Metals in MOX
+System Mo_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>& metallic_fp, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
     system_.setName("Mo in MOX");
-    system_.setVolatileFP(volatile_fp["Mo"]);
+    system_.setMetallicFP(metallic_fp["Mo"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.219); //Mo from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
-    system_.setRadiusInLattice(0.21e-9);
+    system_.setYield(0.219);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors); 
+    return system_;
+}
+
+System Ru_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>& metallic_fp, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Ru in MOX");
+    system_.setMetallicFP(metallic_fp["Ru"]);
+    system_.setMatrix(matrices["MOX"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0.198);
+    system_.setRadiusInLattice(0.15e-9);
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
-    system_.setFissionProductDiffusivity(11, sciantix_variable, history_variable, scaling_factors); // To be modified
-    
-    system_.setBubbleDiffusivity(int(input_variable["iBubbleDiffusivity"].getValue()), sciantix_variable, history_variable, matrices);
-    system_.setResolutionRate(int(input_variable["iResolutionRate"].getValue()), sciantix_variable, history_variable, scaling_factors, matrices);
-    system_.setTrappingRate(99, sciantix_variable, scaling_factors);
-    system_.setNucleationRate(int(input_variable["iNucleationRate"].getValue()), history_variable, scaling_factors);
+    return system_;
+}
 
+System Tc_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>& metallic_fp, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Tc in MOX");
+    system_.setMetallicFP(metallic_fp["Tc"]);
+    system_.setMatrix(matrices["MOX"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0.053);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    return system_;
+}
+
+System Pd_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>& metallic_fp, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Pd in MOX");
+    system_.setMetallicFP(metallic_fp["Pd"]);
+    system_.setMatrix(matrices["MOX"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0.189);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    return system_;
+}
+
+System Rh_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>& metallic_fp, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Rh in MOX");
+    system_.setMetallicFP(metallic_fp["Rh"]);
+    system_.setMatrix(matrices["MOX"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0.059);
+    system_.setRadiusInLattice(0.15e-9);
+    system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
     return system_;
 }
