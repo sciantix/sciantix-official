@@ -36,8 +36,14 @@ void Simulation::SetPhaseDiagram(std::string location) // qui tutti eccetto i ga
                 if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
                 {
                     sciantix_variable[system.getFissionProductName() + " at grain boundary"].addValue(
-                        sciantix_variable[system.getFissionProductName() + " reacted - GB"].getFinalValue());
-                    sciantix_variable[system.getFissionProductName() + " reacted - GB"].setFinalValue(0.0);
+                        sciantix_variable[system.getFissionProductName() + " reacted"].getFinalValue());
+                    sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(0.0);
+                }
+                if (system.getRestructuredMatrix() == 0 && system.isMetallicFP())
+                {
+                    sciantix_variable[system.getFissionProductName() + " in solution"].setFinalValue(
+                        sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue());
+                    sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(0.0);
                 }
             }
             return;
@@ -83,8 +89,14 @@ void Simulation::CallThermochemistryModule(std::string                      loca
                 if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
                 {
                     sciantix_variable[system.getFissionProductName() + " at grain boundary"].addValue(
-                        sciantix_variable[system.getFissionProductName() + " reacted - GB"].getFinalValue());
-                    sciantix_variable[system.getFissionProductName() + " reacted - GB"].setFinalValue(0.0);
+                        sciantix_variable[system.getFissionProductName() + " reacted"].getFinalValue());
+                    sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(0.0);
+                }
+                if (system.getRestructuredMatrix() == 0 && system.isMetallicFP())
+                {
+                    sciantix_variable[system.getFissionProductName() + " in solution"].setFinalValue(
+                        sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue());
+                    sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(0.0);
                 }
             }
             return;
@@ -151,6 +163,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
                 location,
                 selected_elements,
                 sciantix_variable,
+                sciantix_system,
                 active_elements,
                 total_input_content,
                 fallback_oxygen_moles))
@@ -279,7 +292,8 @@ void Simulation::CallThermochemistryModule(std::string                      loca
             output_data.solution_phases,
             selected_elements,
             total_input_content,
-            sciantix_variable);
+            sciantix_variable,
+            sciantix_system);
         return;
     }
 

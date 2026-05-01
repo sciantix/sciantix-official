@@ -101,6 +101,7 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
                            const std::string& location,
                            const std::set<std::string>& selected_elements,
                            SciantixArray<SciantixVariable>& sciantix_variable,
+                           SciantixArray<System>& sciantix_system,
                            std::set<std::string>& active_elements,
                            double&                total_input_content,
                            double                 fixed_oxygen_moles);
@@ -123,7 +124,8 @@ void updateMatrixFromOutput(const OCOutputData&              output_data,
 void updateGrainBoundaryFromOutput(const std::map<std::string, OCPhaseData>& solution_phases,
                                    const std::set<std::string>&               selected_elements,
                                    double                                     content_scaling_factor,
-                                   SciantixArray<SciantixVariable>&           sciantix_variable);
+                                   SciantixArray<SciantixVariable>&           sciantix_variable,
+                                   SciantixArray<System>&                     sciantix_system);
 }  // namespace OCUtilsCoupling
 
 #endif
