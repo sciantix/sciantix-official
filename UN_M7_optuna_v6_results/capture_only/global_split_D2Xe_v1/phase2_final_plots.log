@@ -1,0 +1,133 @@
+[I 2026-05-02 20:50:28,107] Using an existing study with name 'UN_M7_capture_only' instead of creating a new one.
+[I 2026-05-02 20:50:31,701] Trial with params {'f_n': 4.7e-08, 'K_d': 575000.0, 'rho_d': 30400000000000.0, 'fission_rate': 4.76e+19, 'Dv_scale': 0.591, 'Dg_scale': 0.552, 'D2_xe_scale': 1.0, 'b_scale': 0.233, 'gb_scale': 1.588, 'gd_scale': 0.328, 'coalescence_d_scale': 8.15, 'capture_scale': 2.97} already exists. Skipping enqueue.
+[I 2026-05-02 20:50:31,704] Trial with params {'f_n': 1e-08, 'K_d': 800000.0, 'rho_d': 10000000000000.0, 'fission_rate': 7.5e+19, 'Dv_scale': 3.0, 'Dg_scale': 0.5, 'D2_xe_scale': 1.0, 'b_scale': 0.3, 'gb_scale': 1.0, 'gd_scale': 1.0, 'coalescence_d_scale': 1.0, 'capture_scale': 0.3} already exists. Skipping enqueue.
+[I 2026-05-02 20:50:31,706] Trial with params {'f_n': 1e-06, 'K_d': 500000.0, 'rho_d': 30000000000000.0, 'fission_rate': 5e+19, 'Dv_scale': 1.0, 'Dg_scale': 1.0, 'D2_xe_scale': 1.0, 'b_scale': 1.0, 'gb_scale': 1.0, 'gd_scale': 1.0, 'coalescence_d_scale': 1.0, 'capture_scale': 1.0} already exists. Skipping enqueue.
+[I 2026-05-02 20:50:31,708] Trial with params {'f_n': 1.3333e-08, 'K_d': 714300.0, 'rho_d': 46135000000000.0, 'fission_rate': 4.9558e+19, 'Dv_scale': 0.05, 'Dg_scale': 2.012, 'D2_xe_scale': 1.0, 'b_scale': 1.181, 'gb_scale': 0.8994, 'gd_scale': 3.641, 'coalescence_d_scale': 10.99, 'capture_scale': 3.247} already exists. Skipping enqueue.
+[I 2026-05-02 20:50:31,711] Trial with params {'f_n': 2.5466e-07, 'K_d': 648460.0, 'rho_d': 35350000000000.0, 'fission_rate': 7.4799e+19, 'Dv_scale': 1.0, 'Dg_scale': 0.5333, 'D2_xe_scale': 1.0, 'b_scale': 3.066, 'gb_scale': 0.4625, 'gd_scale': 4.507, 'coalescence_d_scale': 6.997, 'capture_scale': 0.1401} already exists. Skipping enqueue.
+[I 2026-05-02 20:50:31,715] Trial with params {'f_n': 1.9043e-07, 'K_d': 633680.0, 'rho_d': 48099000000000.0, 'fission_rate': 6.8347e+19, 'Dv_scale': 1.0, 'Dg_scale': 0.3921, 'D2_xe_scale': 1.0, 'b_scale': 3.704, 'gb_scale': 0.3881, 'gd_scale': 3.375, 'coalescence_d_scale': 7.005, 'capture_scale': 0.0608} already exists. Skipping enqueue.
+[I 2026-05-02 20:50:31,718] Trial with params {'f_n': 1.3237e-08, 'K_d': 558920.0, 'rho_d': 24815000000000.0, 'fission_rate': 7.6621e+19, 'Dv_scale': 0.5, 'Dg_scale': 1.307, 'D2_xe_scale': 1.0, 'b_scale': 1.296, 'gb_scale': 0.4151, 'gd_scale': 1.963, 'coalescence_d_scale': 9.772, 'capture_scale': 0.1557} already exists. Skipping enqueue.
+[I 2026-05-02 20:50:31,722] Trial with params {'f_n': 2.940436e-07, 'K_d': 1033314.0, 'rho_d': 12059490000000.0, 'fission_rate': 6.730293e+19, 'Dv_scale': 0.227099, 'Dg_scale': 2.163517, 'D2_xe_scale': 0.112489, 'b_scale': 0.09929, 'gb_scale': 1.445601, 'gd_scale': 4.396731, 'coalescence_d_scale': 3.880728, 'capture_scale': 0.024136} already exists. Skipping enqueue.
+[I 2026-05-02 20:50:31,726] Trial with params {'f_n': 5.96478e-07, 'K_d': 1198283.0, 'rho_d': 9976134000000.0, 'fission_rate': 6.685431e+19, 'Dv_scale': 0.239374, 'Dg_scale': 2.580361, 'D2_xe_scale': 0.119911, 'b_scale': 0.115218, 'gb_scale': 1.009685, 'gd_scale': 4.737461, 'coalescence_d_scale': 2.916475, 'capture_scale': 0.027787} already exists. Skipping enqueue.
+[I 2026-05-02 20:50:31,729] Trial with params {'f_n': 7.392651e-07, 'K_d': 1166892.0, 'rho_d': 11803530000000.0, 'fission_rate': 6.574543e+19, 'Dv_scale': 0.221547, 'Dg_scale': 2.170761, 'D2_xe_scale': 0.149876, 'b_scale': 0.126114, 'gb_scale': 1.30495, 'gd_scale': 5.541092, 'coalescence_d_scale': 2.726375, 'capture_scale': 0.023283} already exists. Skipping enqueue.
+########################################################################################################################
+V6 wrapper settings
+family                 = capture_only
+Dv fixed/range          = None / [0.2, 2.0]
+pressure weight/free    = 0.7 / 2.0
+partition/qgb weights   = 0.8 / 0.7
+Rizk prior weight       = 0.2
+radius guard weight     = 0.55
+radius saturation weight= 0.75
+Rd2000/Rratio guard      = 800.0 nm / 2.8
+Rd1900/delta/slope guard = 700.0 nm / 350.0 nm / 0.75
+output dir              = UN_M7_optuna_v6_results/capture_only/global_split_D2Xe_v1
+q_gb interpretation     = grain-boundary bubbles + fission gas release
+capture law             = unchanged; active for capture_only and M7_no_phi
+nucleation mass coupling= depends on family switch in base module
+########################################################################################################################
+########################################################################################################################
+OPTUNA CALIBRATION: capture_only
+########################################################################################################################
+Output dir        = UN_M7_optuna_v6_results/capture_only/global_split_D2Xe_v1
+Trials requested  = 0
+FAST dt/modes     = 12 h / 22
+FINAL dt/modes    = 1 h / 40
+Pressure weight   = 0.7; free factor = 2
+D2 Xe             = included, with D2_xe_scale
+Coalescence       = active, scale never zero
+Family switches   = phi_gas:False, nuc_mass:False, capture:True
+########################################################################################################################
+Fast trials written to: UN_M7_optuna_v6_results/capture_only/global_split_D2Xe_v1/optuna_fast_trials_capture_only.csv
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+rank |     score |                        label |       f_n |       K_d |     rho_d |      Fdot |    Dv |    Dg |     b |    gb |    gd |  coal |   cap |  swD1600 |   Rd1600 |   NdDrop
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1 |     1.741 |  capture_only_v6_trial_01126 |   7.4e-07 |   7.3e+05 |   1.1e+13 |   6.2e+19 |     1 |     1 |     1 |   6.7 |     1 |  0.52 |   7.2 |     2.66 |     95.4 |  -0.0493
+   2 |     1.746 |  capture_only_v6_trial_00925 |   7.0e-07 |   7.3e+05 |   1.2e+13 |   6.3e+19 |     1 |     1 |     1 |   5.9 |     1 |  0.33 |     7 |     2.59 |     89.4 |    -0.03
+   3 |     1.749 |  capture_only_v6_trial_01157 |   9.5e-07 |   6.2e+05 |   1.1e+13 |   6.1e+19 |     1 |     1 |     1 |   6.5 |     1 |  0.39 |   7.9 |     2.57 |     98.2 |  -0.0353
+   4 |     1.749 |  capture_only_v6_trial_00678 |   2.0e-06 |   8.8e+05 |   1.3e+13 |   5.6e+19 |     1 |     1 |     1 |   3.4 |     1 |  0.73 |     8 |     2.59 |     82.8 |  -0.0788
+   5 |      1.75 |  capture_only_v6_trial_01230 |   5.3e-07 |   7.0e+05 |   1.2e+13 |   6.4e+19 |     1 |     1 |     1 |   7.9 |     1 |  0.45 |   4.7 |      2.6 |     90.8 |  -0.0416
+   6 |      1.75 |  capture_only_v6_trial_01286 |   3.7e-07 |   6.9e+05 |   1.1e+13 |   6.4e+19 |     1 |     1 |     1 |   4.7 |     1 |  0.46 |   6.3 |     2.54 |     94.9 |  -0.0454
+   7 |      1.75 |  capture_only_v6_trial_00779 |   1.4e-06 |   9.2e+05 |   1.2e+13 |   5.9e+19 |     1 |     1 |     1 |     4 |     1 |  0.58 |   5.7 |     2.54 |     82.4 |  -0.0566
+   8 |     1.752 |  capture_only_v6_trial_01223 |   4.5e-07 |   7.1e+05 |   1.1e+13 |   6.0e+19 |     1 |     1 |     1 |     8 |     1 |  0.41 |   6.5 |     2.51 |     93.2 |  -0.0366
+   9 |     1.752 |  capture_only_v6_trial_01408 |   3.6e-07 |   9.0e+05 |   1.1e+13 |   5.9e+19 |     1 |     1 |     1 |   5.7 |     1 |  0.33 |   6.4 |      2.7 |     88.8 |  -0.0332
+  10 |     1.752 |  capture_only_v6_trial_00796 |   9.7e-07 |   1.0e+06 |   1.2e+13 |   6.2e+19 |     1 |     1 |     1 |   5.1 |     1 |  0.49 |   6.4 |     2.47 |       81 |  -0.0454
+  11 |     1.752 |  capture_only_v6_trial_01385 |   2.7e-07 |   7.5e+05 |   9.5e+12 |   6.0e+19 |     1 |     1 |     1 |   5.6 |     1 |  0.36 |   7.2 |     2.56 |     96.4 |  -0.0348
+  12 |     1.752 |  capture_only_v6_trial_00895 |   4.2e-07 |   7.7e+05 |   1.2e+13 |   6.5e+19 |     1 |     1 |     1 |   7.2 |     1 |  0.42 |   6.4 |     2.55 |     89.2 |  -0.0392
+  13 |     1.754 |  capture_only_v6_trial_00847 |   4.7e-07 |   8.3e+05 |   1.1e+13 |   6.8e+19 |     1 |     1 |     1 |   7.2 |     1 |  0.59 |   5.1 |     2.63 |     90.1 |  -0.0563
+  14 |     1.754 |  capture_only_v6_trial_00910 |   5.5e-07 |   9.3e+05 |   1.2e+13 |   6.3e+19 |     1 |     1 |     1 |   7.3 |     1 |  0.46 |   6.1 |      2.5 |     83.7 |  -0.0403
+  15 |     1.754 |  capture_only_v6_trial_01138 |   7.4e-07 |   6.1e+05 |   1.1e+13 |   6.1e+19 |     1 |     1 |     1 |   4.9 |     1 |  0.35 |     8 |     2.61 |     99.5 |  -0.0331
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Final rows written to: UN_M7_optuna_v6_results/capture_only/global_split_D2Xe_v1/optuna_final_top_capture_only.csv
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+rank |     score |                        label |       f_n |       K_d |     rho_d |      Fdot |    Dv |    Dg |     b |    gb |    gd |  coal |   cap |  swD1600 |   Rd1600 |   NdDrop
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   1 |     1.616 | FINAL_rank7_capture_only_capture_only_v6_trial_00779 |   1.4e-06 |   9.2e+05 |   1.2e+13 |   5.9e+19 |     1 |     1 |     1 |     4 |     1 |  0.58 |   5.7 |     2.53 |     82.3 |  -0.0564
+   2 |     1.623 | FINAL_rank4_capture_only_capture_only_v6_trial_00678 |   2.0e-06 |   8.8e+05 |   1.3e+13 |   5.6e+19 |     1 |     1 |     1 |   3.4 |     1 |  0.73 |     8 |     2.59 |     82.7 |  -0.0785
+   3 |     1.627 | FINAL_rank2_capture_only_capture_only_v6_trial_00925 |   7.0e-07 |   7.3e+05 |   1.2e+13 |   6.3e+19 |     1 |     1 |     1 |   5.9 |     1 |  0.33 |     7 |     2.58 |     89.3 |  -0.0298
+   4 |     1.641 | FINAL_rank5_capture_only_capture_only_v6_trial_01230 |   5.3e-07 |   7.0e+05 |   1.2e+13 |   6.4e+19 |     1 |     1 |     1 |   7.9 |     1 |  0.45 |   4.7 |     2.59 |     90.7 |  -0.0414
+   5 |     1.652 | FINAL_rank1_capture_only_capture_only_v6_trial_01126 |   7.4e-07 |   7.3e+05 |   1.1e+13 |   6.2e+19 |     1 |     1 |     1 |   6.7 |     1 |  0.52 |   7.2 |     2.65 |     95.3 |   -0.049
+   6 |     1.655 | FINAL_rank8_capture_only_capture_only_v6_trial_01223 |   4.5e-07 |   7.1e+05 |   1.1e+13 |   6.0e+19 |     1 |     1 |     1 |     8 |     1 |  0.41 |   6.5 |      2.5 |       93 |  -0.0363
+   7 |     1.669 | FINAL_rank3_capture_only_capture_only_v6_trial_01157 |   9.5e-07 |   6.2e+05 |   1.1e+13 |   6.1e+19 |     1 |     1 |     1 |   6.5 |     1 |  0.39 |   7.9 |     2.56 |     98.1 |   -0.035
+   8 |      1.67 | FINAL_rank6_capture_only_capture_only_v6_trial_01286 |   3.7e-07 |   6.9e+05 |   1.1e+13 |   6.4e+19 |     1 |     1 |     1 |   4.7 |     1 |  0.46 |   6.3 |     2.53 |     94.7 |  -0.0451
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+============================================================================================================================================
+CAPTURE CHECK: best_capture_only_rank1_FINAL_rank7_capture_only_capture_only_v6_trial_00779, T=1600.0, burnup=3.2
+============================================================================================================================================
+f_cap_step is the physical clipped per-step fraction and must be <= 1.
+capture_fraction_sum can exceed 1 because it is a diagnostic sum, not a physical fraction.
+--------------------------------------------------------------------------------------------------------------------------------------------
+final f_cap_step       = 1.631631e-06
+max f_cap_step         = 1.449899e-04
+final cap_raw_step     = 1.631631e-06
+capture_fraction_sum   = 2.701613e-01
+capture_raw_sum        = 2.701613e-01
+captured bubbles cum.  = 4.815944e+20 m^-3
+============================================================================================================================================
+
+============================================================================================================================================
+DIAGNOSTICS FOR best_capture_only_rank1
+============================================================================================================================================
+{'label': 'best_capture_only_rank1_FINAL_rank7_capture_only_capture_only_v6_trial_00779', 'f_n': 1.3855048604023133e-06, 'K_d': 922170.4716704335, 'rho_d': 12473976274726.434, 'fission_rate': 5.945970275422171e+19, 'Dv_scale': 1.0, 'Dg_scale': 1.0, 'b_scale': 1.0, 'gb_scale': 3.9844815657870623, 'gd_scale': 1.0, 'coalescence_d_scale': 0.5753590132351523, 'capture_scale': 5.696110254301761, 'D2_xe_scale': 1.0, 'Dg_D1_scale': 0.19495290183194355, 'Dg_D3_scale': 1.9662923777519212, 'Dv_D1_scale': 0.30130378126699126, 'Dv_D2_scale': 3.5859840582040885, 'b_bulk_scale': 0.22198771968837241, 'b_dislocation_scale': 0.10801884849043286, 'gd_bubble_scale': 7.805762175602618, 'gd_line_scale': 6.241373234525165, 'gd_line_alpha': 0.2800337974267017, 'family': 'capture_only'}
+============================================================================================================================================
+
+============================================================================================================================================
+CAPTURE CHECK: best_capture_only_rank2_FINAL_rank4_capture_only_capture_only_v6_trial_00678, T=1600.0, burnup=3.2
+============================================================================================================================================
+f_cap_step is the physical clipped per-step fraction and must be <= 1.
+capture_fraction_sum can exceed 1 because it is a diagnostic sum, not a physical fraction.
+--------------------------------------------------------------------------------------------------------------------------------------------
+final f_cap_step       = 3.103567e-06
+max f_cap_step         = 1.966764e-04
+final cap_raw_step     = 3.103567e-06
+capture_fraction_sum   = 3.583867e-01
+capture_raw_sum        = 3.583867e-01
+captured bubbles cum.  = 7.493581e+20 m^-3
+============================================================================================================================================
+
+============================================================================================================================================
+DIAGNOSTICS FOR best_capture_only_rank2
+============================================================================================================================================
+{'label': 'best_capture_only_rank2_FINAL_rank4_capture_only_capture_only_v6_trial_00678', 'f_n': 1.991041562073914e-06, 'K_d': 875893.4171341596, 'rho_d': 13433603613263.734, 'fission_rate': 5.626953643554472e+19, 'Dv_scale': 1.0, 'Dg_scale': 1.0, 'b_scale': 1.0, 'gb_scale': 3.410272461050558, 'gd_scale': 1.0, 'coalescence_d_scale': 0.7302393550804286, 'capture_scale': 7.991362675103746, 'D2_xe_scale': 1.0, 'Dg_D1_scale': 0.18986716637526022, 'Dg_D3_scale': 1.3992788719095728, 'Dv_D1_scale': 0.3093430447116805, 'Dv_D2_scale': 3.9986378642467386, 'b_bulk_scale': 0.16955144577621578, 'b_dislocation_scale': 0.11704344032719662, 'gd_bubble_scale': 9.147085697778667, 'gd_line_scale': 7.254939174003766, 'gd_line_alpha': 0.2804122535379173, 'family': 'capture_only'}
+============================================================================================================================================
+
+============================================================================================================================================
+CAPTURE CHECK: best_capture_only_rank3_FINAL_rank2_capture_only_capture_only_v6_trial_00925, T=1600.0, burnup=3.2
+============================================================================================================================================
+f_cap_step is the physical clipped per-step fraction and must be <= 1.
+capture_fraction_sum can exceed 1 because it is a diagnostic sum, not a physical fraction.
+--------------------------------------------------------------------------------------------------------------------------------------------
+final f_cap_step       = 3.281729e-06
+max f_cap_step         = 2.057182e-04
+final cap_raw_step     = 3.281729e-06
+capture_fraction_sum   = 3.326021e-01
+capture_raw_sum        = 3.326021e-01
+captured bubbles cum.  = 3.078341e+20 m^-3
+============================================================================================================================================
+
+============================================================================================================================================
+DIAGNOSTICS FOR best_capture_only_rank3
+============================================================================================================================================
+{'label': 'best_capture_only_rank3_FINAL_rank2_capture_only_capture_only_v6_trial_00925', 'f_n': 6.992684750567316e-07, 'K_d': 727894.9797781971, 'rho_d': 12273425075386.29, 'fission_rate': 6.325372577564552e+19, 'Dv_scale': 1.0, 'Dg_scale': 1.0, 'b_scale': 1.0, 'gb_scale': 5.884158032024938, 'gd_scale': 1.0, 'coalescence_d_scale': 0.3315358866821132, 'capture_scale': 7.029709871393187, 'D2_xe_scale': 1.0, 'Dg_D1_scale': 0.1503891213917843, 'Dg_D3_scale': 2.5919837250654867, 'Dv_D1_scale': 0.27861638525122095, 'Dv_D2_scale': 3.987191884186101, 'b_bulk_scale': 0.2953849907877611, 'b_dislocation_scale': 0.12513478595289462, 'gd_bubble_scale': 6.818742183502663, 'gd_line_scale': 7.51763456737921, 'gd_line_alpha': 0.4745206570083229, 'family': 'capture_only'}
+============================================================================================================================================
+Summary written to: UN_M7_optuna_v6_results/capture_only/global_split_D2Xe_v1/optuna_summary_capture_only.md
