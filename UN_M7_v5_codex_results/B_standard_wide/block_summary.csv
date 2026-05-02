@@ -1,0 +1,2 @@
+block,n_trials,best_score_total,best_label,n_physical_top50,n_radius_ok_top50,n_partition_ok_top50,n_pressure_ok_top50
+B_standard_wide,700,1.990001368772348,capture_only_v5_codex_trial_00629,50,50,50,50
