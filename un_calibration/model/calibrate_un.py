@@ -1,5 +1,12 @@
 """Automatic calibration pipeline for the UN/Rizk intragranular model."""
 
+# --- path setup (added by tools/fix_paths.py after un_calibration/ reorg) ---
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent.parent))
+import _pathsetup  # noqa: F401
+# --- end path setup ---
+
 import csv
 import math
 import struct
@@ -17,9 +24,9 @@ try:
 except ModuleNotFoundError:
     plt = None
 
-RESULTS_DIR = Path("results_un_calibration")
+RESULTS_DIR = Path("results/results_un_calibration")
 RUN_MODE = "MODEL_VARIANTS"
-VARIANT_RESULTS_DIR = Path("results_model_variants")
+VARIANT_RESULTS_DIR = Path("results/results_model_variants")
 
 FN_GRID = [1.0e-10, 3.0e-10, 1.0e-9, 3.0e-9, 1.0e-8, 3.0e-8, 1.0e-7, 3.0e-7, 1.0e-6]
 K_D_GRID = [1.0e5, 2.0e5, 3.0e5, 5.0e5, 8.0e5]

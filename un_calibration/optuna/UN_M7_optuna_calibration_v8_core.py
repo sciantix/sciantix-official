@@ -23,6 +23,13 @@
 #
 # ============================================================
 
+# --- path setup (added by tools/fix_paths.py after un_calibration/ reorg) ---
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent.parent))
+import _pathsetup  # noqa: F401
+# --- end path setup ---
+
 import os
 import csv
 import math
@@ -39,7 +46,7 @@ except ModuleNotFoundError:
 # USER CONFIGURATION
 # ============================================================
 
-OUTPUT_DIR = "UN_M7_global_sensitivity_fullcell"
+OUTPUT_DIR = "results/UN_M7_global_sensitivity_fullcell"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 RANDOM_SEED = 123
@@ -2141,7 +2148,7 @@ def main():
     parser.add_argument("--no-plots", action="store_true")
     args = parser.parse_args()
 
-    out = args.output_dir or os.path.join("UN_M7_optuna_results", args.family)
+    out = args.output_dir or os.path.join("results/UN_M7_optuna_results", args.family)
     run_optuna_calibration(
         family=args.family,
         n_trials=args.n_trials,

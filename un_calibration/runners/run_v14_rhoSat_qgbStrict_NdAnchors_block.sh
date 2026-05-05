@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# --- path setup added by tools/fix_paths.py after un_calibration/ reorg ---
+cd "$(dirname "$0")/.."   # cd into un_calibration/
+# --- end path setup ---
+
 N_TRIALS="${1:-100}"
 
-python UN_M7_optuna_calibration_v14_rhoSat_qgbStrict_NdAnchors_STANDALONE.py \
+python optuna/UN_M7_optuna_calibration_v14_rhoSat_qgbStrict_NdAnchors_STANDALONE.py \
   --family capture_only \
   --n-trials "${N_TRIALS}" \
   --full-exp-fast \
@@ -41,11 +45,11 @@ python UN_M7_optuna_calibration_v14_rhoSat_qgbStrict_NdAnchors_STANDALONE.py \
   --rd2000-max-nm 1400 \
   --rd1800-soft-max-nm 1100 \
   --rd1900-soft-max-nm 1300 \
-  --output-dir UN_M7_optuna_v14_rhoSat_qgbStrict_NdAnchors_results/capture_only \
-  2>&1 | tee -a v14_rhoSat_qgbStrict_NdAnchors_run.log
+  --output-dir results/UN_M7_optuna_v14_rhoSat_qgbStrict_NdAnchors_results/capture_only \
+  2>&1 | tee -a logs/v14_rhoSat_qgbStrict_NdAnchors_run.log
 
 # Regenerate final plots/summary from the same study.
-python UN_M7_optuna_calibration_v14_rhoSat_qgbStrict_NdAnchors_STANDALONE.py \
+python optuna/UN_M7_optuna_calibration_v14_rhoSat_qgbStrict_NdAnchors_STANDALONE.py \
   --family capture_only \
   --n-trials 0 \
   --full-exp-fast \
@@ -83,5 +87,5 @@ python UN_M7_optuna_calibration_v14_rhoSat_qgbStrict_NdAnchors_STANDALONE.py \
   --rd2000-max-nm 1400 \
   --rd1800-soft-max-nm 1100 \
   --rd1900-soft-max-nm 1300 \
-  --output-dir UN_M7_optuna_v14_rhoSat_qgbStrict_NdAnchors_results/capture_only \
-  2>&1 | tee -a v14_rhoSat_qgbStrict_NdAnchors_run.log
+  --output-dir results/UN_M7_optuna_v14_rhoSat_qgbStrict_NdAnchors_results/capture_only \
+  2>&1 | tee -a logs/v14_rhoSat_qgbStrict_NdAnchors_run.log

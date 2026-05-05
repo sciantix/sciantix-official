@@ -15,6 +15,14 @@ versus the hand-rolled Cramer's rule in `un_model.solve3x3_cramer`.
 
 from __future__ import annotations
 
+# --- path setup (added by tools/fix_paths.py after un_calibration/ reorg) ---
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent.parent))
+import _pathsetup  # noqa: F401
+# --- end path setup ---
+
+
 import math
 from typing import Optional
 

@@ -19,6 +19,14 @@ Run this file in the same folder as:
 
 from __future__ import annotations
 
+# --- path setup (added by tools/fix_paths.py after un_calibration/ reorg) ---
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent.parent))
+import _pathsetup  # noqa: F401
+# --- end path setup ---
+
+
 import argparse
 import math
 import os
@@ -924,7 +932,7 @@ def main():
         out = args.output_dir
     else:
         out = os.path.join(
-            "UN_M7_optuna_v13b_rhoSat_qgbStrict_results",
+            "results/UN_M7_optuna_v13b_rhoSat_qgbStrict_results",
             args.family,
             f"rhoScale{v10c.RHO_SCALE_MIN:g}-{v10c.RHO_SCALE_MAX:g}"
             f"_qgb{W_V13_QGB:g}_part{W_V13_PARTITION:g}_Rfig8{W_RIZK_FIG8_DISL_RADIUS:g}",

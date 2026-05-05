@@ -29,6 +29,14 @@ Then rerun/continue same folder with plots:
 
 from __future__ import annotations
 
+# --- path setup (added by tools/fix_paths.py after un_calibration/ reorg) ---
+import sys as _sys
+from pathlib import Path as _Path
+_sys.path.insert(0, str(_Path(__file__).resolve().parent.parent))
+import _pathsetup  # noqa: F401
+# --- end path setup ---
+
+
 import argparse
 import math
 import os
@@ -694,7 +702,7 @@ def main():
     else:
         dv_tag = f"dv{DV_FIXED:g}" if DV_FIXED is not None else f"dv{DV_MIN:g}-{DV_MAX:g}"
         out = os.path.join(
-            "UN_M7_optuna_v8_results",
+            "results/UN_M7_optuna_v8_results",
             args.family,
             f"{dv_tag}_pW{m.W_PRESSURE:g}_pF{m.PRESSURE_FREE_FACTOR:g}_part{W_PARTITION:g}_qgb{W_QGB:g}_prior{W_RIZK_PRIOR:g}_R{RD2000_MAX_NM:g}_sat",
         )
