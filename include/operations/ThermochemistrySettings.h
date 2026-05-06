@@ -38,6 +38,7 @@ struct ThermochemistrySettings
     double                       kc_time              = 0.0;
     bool                         langmuir             = false;
     double                       langmuir_coefficient = 0.0;
+    bool                         output_phase_sublattice_composition = false;
     ThermochemistryPhaseSettings fission_products;
     ThermochemistryPhaseSettings matrix;
 };

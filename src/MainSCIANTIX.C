@@ -129,6 +129,8 @@ int main(int argc, char** argv)
     remove((TestPath + "OCoutput_fission_products.OCU").c_str());
     remove((TestPath + "OCoutput_matrix.DAT").c_str());
     remove((TestPath + "OCoutput_fission_products.DAT").c_str());
+    remove((TestPath + "phase_sublattice_composition.txt").c_str());
+    remove((TestPath + "condensed_sublattice_composition.txt").c_str());
     //
 
     Execution_file.open(TestPath + "execution.txt", std::ios::out);
