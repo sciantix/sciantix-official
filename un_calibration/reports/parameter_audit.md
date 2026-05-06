@@ -5,6 +5,21 @@ sandbox against the literature. Goal: tell the student which parameters are
 **verified** vs **fitted** vs **inherited from UO₂** vs **questionable**, so
 the v15 search space can be reduced to only the genuinely uncertain DOFs.
 
+---
+
+> **Status note (2026-05-06)**: v15 was prototyped during the audit session
+> (see `context/SESSION_NOTES.md`) with the recommendations below — widened
+> `K_d` range, locked theoretical scales, and a thermal sigmoid gate on
+> coalescence. A 50-trial study completed; the fitted `T_coal_onset = 1433 K`
+> independently confirmed Rizk's stated 1500 K transition. However, the
+> resulting curves did not match the student's qualitative expectations
+> (high-T N_d crash was less dramatic than v14's), so the v15 calibrator,
+> results, and `v8_core.py` gate edits were **reverted**. The
+> recommendations in this audit remain the documented path for any future
+> attempt.
+
+---
+
 **Scope so far**: Rizk et al., *J. Nucl. Mater.* 606 (2025) 155604 — primary
 source for nearly every constant and equation. Subsequent passes (Nelson 1969,
 Blank carbides, Pizzocri/Pastore SCIANTIX papers) are listed at the end.
