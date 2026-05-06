@@ -107,12 +107,10 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     }
 
     const std::string directory_path = Sciantix_thermochemistry_settings.opencalphad_path;
-    const std::string input_file_path = TestPath + "OCinput_" + category + ".OCM";
-    const std::string output_file_path = TestPath + "OCoutput_" + category + ".DAT";
     const std::string state_file_path = TestPath + "OCoutput_" + category;
     const std::string data_path =
         directory_path + "data/" + OCUtilsCoupling::stripTdbExtension(location_settings.database);
-    const std::string executable = directory_path + "oc6P " + input_file_path;
+    const std::string executable = directory_path + "oc6P " + state_file_path + ".OCM";
 
     std::string raw_output;
     bool solved = false;
@@ -121,7 +119,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     std::set<std::string> active_elements;
 
     const std::string previous_output_snapshot =
-        OCUtilsCoupling::fileExists(output_file_path) ? OCUtilsCoupling::readTextFile(output_file_path) : "";
+        OCUtilsCoupling::fileExists(state_file_path + ".DAT") ? OCUtilsCoupling::readTextFile(state_file_path + ".DAT") : "";
     const bool oxygen_potential_constraint = (selected_elements.count("O") > 0 && 
                                                 selected_elements.count("U") == 0 &&
                                                 selected_elements.count("Pu") == 0);
@@ -153,8 +151,6 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         }
 
         if (!OCUtilsCoupling::writeOpenCalphadInput(
-                input_file_path,
-                output_file_path,
                 state_file_path,
                 data_path,
                 pressure,
@@ -175,8 +171,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
                   << OCUtilsCoupling::solveModeLabel(solve_attempt) << std::endl;
 
         if (!OCUtilsCoupling::runOpenCalphadCase(
-                input_file_path, output_file_path, executable, raw_output, open_calphad_timeout_seconds))
-        {
+                state_file_path, executable, raw_output, open_calphad_timeout_seconds))        {
             std::cout << "Warning: OpenCalphad attempt for location '" << location
                       << "' with " << OCUtilsCoupling::solveModeLabel(solve_attempt)
                       << " failed or timed out. Retrying." << std::endl;
@@ -186,7 +181,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         if (!OCUtilsCoupling::hasInvalidEquilibriumResult(raw_output))
         {
             const std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
-            output_data = parseOCOutputFile(output_file_path, valid_elements);
+            output_data = parseOCOutputFile(state_file_path + ".DAT", valid_elements);
 
             if (OCUtilsCoupling::hasRequiredComponents(output_data, active_elements))
             {
@@ -199,37 +194,25 @@ void Simulation::CallThermochemistryModule(std::string                      loca
                       << " but the required component lines are missing. Retrying." << std::endl;
             continue;
         }
-
+        
         if ((location == "matrix") &&
             raw_output.find("C1_MO2") != std::string::npos)
         {
             const std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
-            const OCOutputData candidate_output_data = parseOCOutputFile(output_file_path, valid_elements);
+            const OCOutputData candidate_output_data = parseOCOutputFile(state_file_path + ".DAT", valid_elements);
 
             has_deferred_matrix_stoichiometric_solution = true;
             deferred_matrix_stoichiometric_output_data = candidate_output_data;
             deferred_matrix_stoichiometric_active_elements = active_elements;
-            std::cout << "Warning: OpenCalphad returned a stoichiometric C1_MO2 stabilization failure for "
-                        << "location '" << location << "' using "
-                        << OCUtilsCoupling::solveModeLabel(solve_attempt)
-                        << ". Deferring acceptance until all solve attempts are exhausted." << std::endl;
         }
-
-        std::cout << "Warning: OpenCalphad returned an invalid equilibrium for location '" << location
-                  << "' using " << OCUtilsCoupling::solveModeLabel(solve_attempt) << "." << std::endl;
 
         if (oxygen_potential_constraint &&
             solve_attempt != OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve)
         {
             double extracted_oxygen_moles = -1.0;
             if (OCUtilsCoupling::tryGetOxygenMolesFromOutput(
-                    output_file_path, active_elements, extracted_oxygen_moles))
-            {
+                    state_file_path + ".DAT", active_elements, extracted_oxygen_moles))
                 fallback_oxygen_moles = extracted_oxygen_moles;
-                std::cout << "Captured fallback N(O)=" << fallback_oxygen_moles
-                          << " from invalid MU(O) output for location '" << location
-                          << "'." << std::endl;
-            }
         }
     }
 
@@ -249,14 +232,14 @@ void Simulation::CallThermochemistryModule(std::string                      loca
             const std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
 
             if (!previous_output_snapshot.empty() &&
-                OCUtilsCoupling::writeTextFile(output_file_path, previous_output_snapshot))
+                OCUtilsCoupling::writeTextFile(state_file_path + ".DAT", previous_output_snapshot))
             {
-                output_data = parseOCOutputFile(output_file_path, valid_elements);
+                output_data = parseOCOutputFile(state_file_path + ".DAT", valid_elements);
                 if (OCUtilsCoupling::hasRequiredComponents(output_data, active_elements))
                 {
                     solved = true;
                     std::cout << "Warning: all OpenCalphad attempts failed for location '" << location
-                            << "'. Reusing the previous timestep equilibrium from " << output_file_path
+                            << "'. Reusing the previous timestep equilibrium from " << state_file_path + ".DAT"
                             << "." << std::endl;
                 }
             }
@@ -266,11 +249,12 @@ void Simulation::CallThermochemistryModule(std::string                      loca
                 std::cout << "Warning: all OpenCalphad attempts failed for location '" << location
                         << "' and no valid previous timestep equilibrium was available. Continue in any case."
                         << std::endl;
-                output_data = parseOCOutputFile(output_file_path, valid_elements);
+                output_data = parseOCOutputFile(state_file_path + ".DAT", valid_elements);
             }
         }    
     }
 
+    // Debug
     OCUtilsCoupling::dumpParsedOcOutput(output_data);
 
     if (Sciantix_thermochemistry_settings.output_phase_sublattice_composition)

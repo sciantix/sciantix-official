@@ -861,6 +861,7 @@ bool tryGetOxygenMolesFromOutput(const std::string& output_file_path,
     return true;
 }
 
+// Debug
 void dumpParsedOcOutput(const OCOutputData& output_data)
 {
     std::cout << "\n[OC parser] Parsed components" << std::endl;
@@ -1157,9 +1158,7 @@ std::vector<OpenCalphadInputComponent> buildOpenCalphadInputComponents(
     return components;
 }
 
-bool writeOpenCalphadInput(const std::string& input_file_path,
-                           const std::string& output_file_path,
-                           const std::string& state_file_path,
+bool writeOpenCalphadInput(const std::string& state_file_path,
                            const std::string& data_path,
                            double             pressure,
                            double             temperature,
@@ -1172,12 +1171,12 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
                            double&                total_input_content,
                            double                 fixed_oxygen_moles)
 {
-    (void)output_file_path;
+    (void)state_file_path;
     (void)location;
-    std::ofstream input_file(input_file_path);
+    std::ofstream input_file(state_file_path + ".OCM");
     if (!input_file)
     {
-        std::cerr << "Error: Cannot create input file: " << input_file_path << std::endl;
+        std::cerr << "Error: Cannot create input file: " << state_file_path + ".OCM" << std::endl;
         return false;
     }
 
@@ -1239,21 +1238,22 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
             fixed_oxygen_moles);
     }
 
-    input_file << "l /out=" << output_file_path << " r 2\n\n";
+    input_file << "l /out=" << state_file_path + ".DAT" << " r 2\n\n";
     input_file << "fin";
     return true;
 }
 
-bool runOpenCalphadCase(const std::string& input_file_path,
-                        const std::string& output_file_path,
+bool runOpenCalphadCase(const std::string& state_file_path,
                         const std::string& executable,
                         std::string&       raw_output,
                         int                timeout_seconds)
 {
-    std::cout << "\n[OC input] " << input_file_path << std::endl;
+    // debug
+    std::cout << "\n[OC input] " << std::endl;
     std::cout << "----------------------------------------" << std::endl;
-    std::cout << readTextFile(input_file_path) << std::endl;
+    std::cout << readTextFile(state_file_path + ".OCM") << std::endl;
     std::cout << "----------------------------------------" << std::endl;
+    //
 
     const std::string command =
         "timeout --signal=TERM " + std::to_string(timeout_seconds) + "s " + executable;
@@ -1274,9 +1274,11 @@ bool runOpenCalphadCase(const std::string& input_file_path,
         return false;
     }
 
-    std::cout << "\n[OC output] " << output_file_path << std::endl;
+    raw_output = readTextFile(state_file_path + ".DAT");
+
+    // debug
+    std::cout << "\n[OC output] " << std::endl;
     std::cout << "----------------------------------------" << std::endl;
-    raw_output = readTextFile(output_file_path);
     std::cout << raw_output << std::endl;
     std::cout << "----------------------------------------" << std::endl;
 
@@ -1299,8 +1301,6 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                                               double                                     content_scaling_factor,
                                               SciantixArray<ThermochemistryVariable>&    thermochemistry_variable)
 {
-    static std::set<std::string> logged_thermochemistry_variables;
-
     auto computePhaseFormulaComposition = [&](const OCPhaseData& phase_data)
     {
         std::map<std::string, double> composition;
@@ -1313,35 +1313,6 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
             composition[element_entry.first] = std::max(0.0, element_entry.second) / phase_moles;
 
         return composition;
-    };
-
-    auto computeCompositionMolarMass = [](const std::map<std::string, double>& composition)
-    {
-        static const std::map<std::string, double> atomic_masses = {
-            {"Cs", 132.90545196},
-            {"Cr", 51.9961},
-            {"I", 126.90447},
-            {"Mo", 95.95},
-            {"O", 15.999},
-            {"Pd", 106.42},
-            {"Te", 127.60},
-            {"Rh", 102.91},
-            {"Ru", 101.07},
-            {"Tc", 98.906},
-            {"U", 238.02891},
-            {"Pu", 239.052},
-            {"Va", 0.0}
-        };
-
-        double molar_mass = 0.0;
-        for (const auto& entry : composition)
-        {
-            const auto it = atomic_masses.find(entry.first);
-            if (it == atomic_masses.end())
-                continue;
-            molar_mass += entry.second * it->second;
-        }
-        return molar_mass;
     };
 
     for (const auto& phase_entry : solution_phases)

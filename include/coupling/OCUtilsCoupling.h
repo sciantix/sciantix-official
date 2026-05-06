@@ -92,15 +92,15 @@ bool hasInvalidEquilibriumResult(const std::string& output_text);
 bool tryGetOxygenMolesFromOutput(const std::string& output_file_path,
                                  const std::set<std::string>& active_elements,
                                  double& oxygen_moles);
+
+// Debug
 void dumpParsedOcOutput(const OCOutputData& output_data);
 bool writePhaseSublatticeCompositionOutput(const std::string& file_path,
                                            double             time_hours,
                                            const std::string& location,
                                            const OCOutputData& output_data,
                                            double             content_scaling_factor);
-bool writeOpenCalphadInput(const std::string& input_file_path,
-                           const std::string& output_file_path,
-                           const std::string& state_file_path,
+bool writeOpenCalphadInput(const std::string& state_file_path,
                            const std::string& data_path,
                            double             pressure,
                            double             temperature,
@@ -112,8 +112,7 @@ bool writeOpenCalphadInput(const std::string& input_file_path,
                            std::set<std::string>& active_elements,
                            double&                total_input_content,
                            double                 fixed_oxygen_moles);
-bool runOpenCalphadCase(const std::string& input_file_path,
-                        const std::string& output_file_path,
+bool runOpenCalphadCase(const std::string& state_file_path,
                         const std::string& executable,
                         std::string&       raw_output,
                         int                timeout_seconds);
