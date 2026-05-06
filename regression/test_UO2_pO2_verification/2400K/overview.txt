@@ -8,12 +8,23 @@ Model	Fission product production - Kr in UO2
 Model	Fission product production - He in UO2	 
 Model	Fission product production - Xe133 in UO2	 
 Model	Fission product production - Kr85m in UO2	 
+Model	Fission product production - Cs in UO2	 
+Model	Fission product production - I in UO2	 
+Model	Fission product production - Te in UO2	 
+Model	Fission product production - Mo in UO2	 
+Model	Fission product production - Tc in UO2	 
+Model	Fission product production - Rh in UO2	 
+Model	Fission product production - Ru in UO2	 
+Model	Fission product production - Pd in UO2	 
 Model	Intragranular bubble behavior	: Constant bubble concentration and radius.
 Model	Intragranular diffusion - Xe in UO2	
 Model	Intragranular diffusion - Kr in UO2	
 Model	Intragranular diffusion - He in UO2	
 Model	Intragranular diffusion - Xe133 in UO2	
 Model	Intragranular diffusion - Kr85m in UO2	
+Model	Intragranular diffusion - Cs in UO2	
+Model	Intragranular diffusion - I in UO2	
+Model	Intragranular diffusion - Te in UO2	
 Model	Intergranular bubble behavior	: No model for grain-boundary bubble evolution.
 Model	Release mode	 coalescence from White, JNM, 325 (2004), 61-77; release from Pastore et al., NED, 256 (2013), 75-86.
 
@@ -27,6 +38,14 @@ System	Kr in UO2
 System	He in UO2	
 System	Xe133 in UO2	
 System	Kr85m in UO2	
+System	Cs in UO2	
+System	I in UO2	
+System	Te in UO2	
+System	Mo in UO2	
+System	Tc in UO2	
+System	Rh in UO2	
+System	Ru in UO2	
+System	Pd in UO2	
 
 Input setting	iGrainGrowth = 0
 Input setting	iFissionProductDiffusivity = 0
