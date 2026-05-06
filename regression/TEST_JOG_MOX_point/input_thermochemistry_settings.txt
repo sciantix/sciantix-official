@@ -2,10 +2,11 @@
 opencalphad.path = /home/ecappellari/transparant/opencalphad/
 kc = false
 langmuir = false
+output.phase_sublattice_composition = true
 
 fission_products.module = OPENCALPHAD
-fission_products.database = CsMoO_TAFID_2021_Anna
-fission_products.elements = Cs, Mo, O
+fission_products.database = CsMoO_MoPdRhRuTc_merged.TDB
+fission_products.elements = Cs, Mo, O, Pd, Rh, Ru, Tc
 fission_products.locations = at grain boundary
 fission_products.gap_settings = false
 

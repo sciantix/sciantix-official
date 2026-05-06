@@ -79,16 +79,25 @@ bool isNumericToken(const std::string& value)
     return std::regex_match(value, numeric_pattern);
 }
 
-bool tryParseSublatticeSites(const std::string& line, double& sites)
+struct ParsedSublatticeHeader
+{
+    int    index = 0;
+    int    constituents_count = 0;
+    double sites = 0.0;
+};
+
+bool tryParseSublatticeHeader(const std::string& line, ParsedSublatticeHeader& header)
 {
     static const std::regex sublattice_pattern(
-        R"(Sublattice\s+\d+\s+with\s+\d+\s+constituents\s+and\s+([+-]?(?:\d+\.?\d*|\.\d+)(?:[Ee][+-]?\d+)?)\s+sites)");
+        R"(Sublattice\s+(\d+)\s+with\s+(\d+)\s+constituents\s+and\s+([+-]?(?:\d+\.?\d*|\.\d+)(?:[Ee][+-]?\d+)?)\s+sites)");
 
     std::smatch match;
     if (!std::regex_search(line, match, sublattice_pattern))
         return false;
 
-    sites = safeFloat(match[1].str());
+    header.index = std::stoi(match[1].str());
+    header.constituents_count = std::stoi(match[2].str());
+    header.sites = safeFloat(match[3].str());
     return true;
 }
 
@@ -195,8 +204,27 @@ std::string normalizeSpeciesName(const std::string& raw_name)
     return trim(name);
 }
 
+std::map<std::string, double> speciesStoichiometry(const std::string& species_name,
+                                                   const std::vector<std::string>& valid_elements);
+
 double speciesStoichiometricSize(const std::string& species_name,
                                  const std::vector<std::string>& valid_elements)
+{
+    const std::map<std::string, double> stoichiometry =
+        speciesStoichiometry(species_name, valid_elements);
+
+    double total_size = 0.0;
+    for (const auto& entry : stoichiometry)
+    {
+        if (entry.first != "Va")
+            total_size += entry.second;
+    }
+
+    return !stoichiometry.empty() ? total_size : 1.0;
+}
+
+std::map<std::string, double> speciesStoichiometry(const std::string& species_name,
+                                                   const std::vector<std::string>& valid_elements)
 {
     std::map<std::string, std::string> valid_set;
     for (const auto& element : valid_elements)
@@ -206,8 +234,7 @@ double speciesStoichiometricSize(const std::string& species_name,
         valid_set[upper] = element;
     }
 
-    double total_size = 0.0;
-    bool   found_element = false;
+    std::map<std::string, double> stoichiometry;
     size_t i = 0;
     while (i < species_name.size())
     {
@@ -271,12 +298,150 @@ double speciesStoichiometricSize(const std::string& species_name,
         if (i > count_begin)
             count = safeFloat(species_name.substr(count_begin, i - count_begin));
 
-        found_element = true;
-        if (element != "Va")
-            total_size += count;
+        stoichiometry[element] += count;
     }
 
-    return found_element ? total_size : 1.0;
+    return stoichiometry;
+}
+
+void addFormulaElements(OCSpeciesData&                  species,
+                        OCPhaseData&                    phase,
+                        const std::string&              species_name,
+                        const std::vector<std::string>& valid_elements,
+                        const double                    species_formula_moles,
+                        const bool                      add_to_phase)
+{
+    const std::map<std::string, double> stoichiometry =
+        speciesStoichiometry(species_name, valid_elements);
+    if (stoichiometry.empty())
+        return;
+
+    for (const auto& element_entry : stoichiometry)
+    {
+        const double element_moles = element_entry.second * species_formula_moles;
+        species.elements[element_entry.first] += element_moles;
+        if (add_to_phase)
+            phase.elements[element_entry.first] += element_moles;
+    }
+}
+
+std::map<std::string, double> sublatticeStoichiometry(
+    const std::vector<OCSublatticeData>& sublattices,
+    const std::vector<std::string>&      valid_elements)
+{
+    std::map<std::string, double> stoichiometry;
+
+    for (const auto& sublattice : sublattices)
+    {
+        if (sublattice.sites <= 0.0)
+            continue;
+
+        for (const auto& constituent_entry : sublattice.composition)
+        {
+            const std::map<std::string, double> constituent_stoichiometry =
+                speciesStoichiometry(constituent_entry.first, valid_elements);
+
+            for (const auto& element_entry : constituent_stoichiometry)
+            {
+                stoichiometry[element_entry.first] +=
+                    sublattice.sites * constituent_entry.second * element_entry.second;
+            }
+        }
+    }
+
+    return stoichiometry;
+}
+
+bool addSublatticeElements(OCSpeciesData&                  species,
+                           OCPhaseData&                    phase,
+                           const std::vector<std::string>& valid_elements,
+                           const bool                      add_to_phase)
+{
+    const std::map<std::string, double> stoichiometry =
+        sublatticeStoichiometry(species.sublattices, valid_elements);
+    if (stoichiometry.empty())
+        return false;
+
+    double stoichiometric_size = 0.0;
+    for (const auto& element_entry : stoichiometry)
+    {
+        const double element_moles = element_entry.second * species.moles;
+        species.elements[element_entry.first] += element_moles;
+        if (add_to_phase)
+            phase.elements[element_entry.first] += element_moles;
+
+        if (element_entry.first != "Va")
+            stoichiometric_size += element_entry.second;
+    }
+
+    if (stoichiometric_size > 0.0)
+    {
+        species.stoichiometric_size = stoichiometric_size;
+        species.atom_equivalent_moles = species.moles * stoichiometric_size;
+    }
+
+    return true;
+}
+
+std::string buildSolveCommandBlock(OCUtilsCoupling::OpenCalphadSolveMode mode,
+                                   double                                pressure,
+                                   double                                fixed_oxygen_moles)
+{
+    using OpenCalphadSolveMode = OCUtilsCoupling::OpenCalphadSolveMode;
+
+    std::ostringstream commands;
+    commands << std::setprecision(16);
+
+    if (mode == OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium)
+    {
+        const double start_pressure = 1.0e5;
+        commands << "set c p=" << start_pressure << "\n";
+        commands << "c w\n";
+        commands << "set axis\n";
+        commands << "1\n";
+        commands << "p\n";
+        commands << start_pressure << "\n";
+        commands << pressure << "\n";
+        commands << "\n\n";
+        commands << "step\n";
+        commands << "normal\n\n";
+        commands << "set c p=" << pressure << "\n";
+    }
+    else if (mode == OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve)
+    {
+        commands << "set c n(o)=" << fixed_oxygen_moles << "\n";
+        commands << "set c mu(o)=none\n\n";
+    }
+    else if (mode == OpenCalphadSolveMode::OnlyC1MO2)
+    {
+        commands << "set st ph gas=fix 0\n";
+        commands << "set st ph *=dor\n";
+        commands << "set st ph gas=e 1\n";
+        commands << "c e\n";
+        commands << "set st ph C1_MO2=e 1\n";
+    }
+    commands << "c e\nc w\n";
+
+    return commands.str();
+}
+
+std::string toLowerCopy(std::string text)
+{
+    std::transform(text.begin(), text.end(), text.begin(), [](unsigned char c) { return std::tolower(c); });
+    return text;
+}
+
+std::string toUpperCopy(std::string text)
+{
+    std::transform(text.begin(), text.end(), text.begin(), [](unsigned char c) { return std::toupper(c); });
+    return text;
+}
+
+bool hasOpenCalphadSavedState(const std::string& state_file_path)
+{
+    return OCUtilsCoupling::fileExists(state_file_path) ||
+           OCUtilsCoupling::fileExists(state_file_path + ".OCU") ||
+           OCUtilsCoupling::fileExists(state_file_path + ".ocu");
 }
 }  // namespace
 
@@ -302,7 +467,9 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
     double      current_phase_moles      = 0.0;
     double      current_phase_form_units = 0.0;
     double      current_sublattice_sites = 0.0;
+    int         current_sublattice_index = 0;
     std::string current_phase;
+    std::string current_condensed_species;
 
     for (size_t i = 0; i < lines.size(); ++i)
     {
@@ -370,8 +537,35 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
         {
             in_constitution_section = true;
             current_sublattice_sites = 0.0;
+            current_sublattice_index = 0;
             if (stripped.find("Sublattice") != std::string::npos)
-                tryParseSublatticeSites(stripped, current_sublattice_sites);
+            {
+                ParsedSublatticeHeader header;
+                if (tryParseSublatticeHeader(stripped, header))
+                {
+                    current_sublattice_sites = header.sites;
+                    current_sublattice_index = header.index;
+
+                    if (current_phase == "condensed" && !current_condensed_species.empty())
+                    {
+                        OCSublatticeData sublattice;
+                        sublattice.index = header.index;
+                        sublattice.constituents_count = header.constituents_count;
+                        sublattice.sites = header.sites;
+                        data.solution_phases[current_phase]
+                            .species[current_condensed_species]
+                            .sublattices.push_back(sublattice);
+                    }
+                    else if (!current_phase.empty())
+                    {
+                        OCSublatticeData sublattice;
+                        sublattice.index = header.index;
+                        sublattice.constituents_count = header.constituents_count;
+                        sublattice.sites = header.sites;
+                        data.solution_phases[current_phase].sublattices.push_back(sublattice);
+                    }
+                }
+            }
             continue;
         }
 
@@ -384,10 +578,12 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                 continue;
 
             const std::string raw_phase_name = normalizeSpeciesName(parts[0]);
+            const std::string species_name = normalizeSpeciesName(raw_phase_name);
             current_phase = normalizePhaseName(raw_phase_name);
             current_phase_moles = safeFloat(parts[2]);
             current_phase_form_units =
                 (parts.size() > 4 && isNumericToken(parts[4])) ? safeFloat(parts[4]) : current_phase_moles;
+            current_condensed_species = (current_phase == "condensed") ? species_name : "";
 
             if (current_phase != "condensed")
             {
@@ -399,7 +595,6 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
             }
             else
             {
-                const std::string species_name = normalizeSpeciesName(raw_phase_name);
                 OCPhaseData&      phase        = data.solution_phases[current_phase];
                 OCSpeciesData&    species      = phase.species[species_name];
                 const double      volume       = safeFloat(parts[3]);
@@ -435,7 +630,7 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
 
                     if (current_phase != "condensed")
                     {
-                        data.solution_phases[current_phase].elements[element] =
+                        data.solution_phases[current_phase].elements[element] +=
                             fraction * data.solution_phases[current_phase].moles;
                     }
                     else
@@ -462,28 +657,85 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                 current_phase_moles = 0.0;
                 current_phase_form_units = 0.0;
                 current_sublattice_sites = 0.0;
+                current_sublattice_index = 0;
+                current_condensed_species.clear();
                 continue;
             }
 
             if (next_line.find("Sublattice") != std::string::npos)
             {
-                if (!tryParseSublatticeSites(next_line, current_sublattice_sites))
+                ParsedSublatticeHeader header;
+                if (tryParseSublatticeHeader(next_line, header))
+                {
+                    current_sublattice_sites = header.sites;
+                    current_sublattice_index = header.index;
+
+                    if (current_phase == "condensed" && !current_condensed_species.empty())
+                    {
+                        OCSublatticeData sublattice;
+                        sublattice.index = header.index;
+                        sublattice.constituents_count = header.constituents_count;
+                        sublattice.sites = header.sites;
+                        data.solution_phases[current_phase]
+                            .species[current_condensed_species]
+                            .sublattices.push_back(sublattice);
+                    }
+                    else if (!current_phase.empty())
+                    {
+                        OCSublatticeData sublattice;
+                        sublattice.index = header.index;
+                        sublattice.constituents_count = header.constituents_count;
+                        sublattice.sites = header.sites;
+                        data.solution_phases[current_phase].sublattices.push_back(sublattice);
+                    }
+                }
+                else
+                {
                     current_sublattice_sites = 0.0;
+                    current_sublattice_index = 0;
+                }
                 continue;
             }
 
             const std::vector<std::string> species_parts = split(next_line);
             for (size_t k = 0; k + 1 < species_parts.size(); k += 2)
             {
-                if (current_phase == "condensed")
-                    continue;
-
                 if (!isNumericToken(species_parts[k + 1]))
                     continue;
 
                 const std::string species_name = normalizeSpeciesName(species_parts[k]);
                 const double      mole_fraction = safeFloat(species_parts[k + 1]);
+
+                if (current_phase == "condensed")
+                {
+                    if (current_condensed_species.empty())
+                        continue;
+
+                    OCSpeciesData& condensed_species =
+                        data.solution_phases[current_phase].species[current_condensed_species];
+                    if (condensed_species.sublattices.empty() ||
+                        condensed_species.sublattices.back().index != current_sublattice_index)
+                    {
+                        OCSublatticeData sublattice;
+                        sublattice.index = current_sublattice_index;
+                        sublattice.sites = current_sublattice_sites;
+                        condensed_species.sublattices.push_back(sublattice);
+                    }
+
+                    condensed_species.sublattices.back().composition[species_name] += mole_fraction;
+                    continue;
+                }
+
                 OCPhaseData&      phase         = data.solution_phases[current_phase];
+                if (phase.sublattices.empty() || phase.sublattices.back().index != current_sublattice_index)
+                {
+                    OCSublatticeData sublattice;
+                    sublattice.index = current_sublattice_index;
+                    sublattice.sites = current_sublattice_sites;
+                    phase.sublattices.push_back(sublattice);
+                }
+                phase.sublattices.back().composition[species_name] += mole_fraction;
+
                 OCSpeciesData&    species       = phase.species[species_name];
                 const double      species_formula_moles =
                     (current_sublattice_sites > 0.0) ?
@@ -492,7 +744,30 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                 species.moles += species_formula_moles;
                 species.stoichiometric_size = speciesStoichiometricSize(species_name, valid_elements);
                 species.atom_equivalent_moles += species_formula_moles * species.stoichiometric_size;
+                addFormulaElements(species, phase, species_name, valid_elements, species_formula_moles, false);
             }
+        }
+    }
+
+    for (auto& phase_entry : data.solution_phases)
+    {
+        OCPhaseData& phase = phase_entry.second;
+        const bool phase_has_element_inventory = !phase.elements.empty();
+        for (auto& species_entry : phase.species)
+        {
+            OCSpeciesData& species = species_entry.second;
+            if (!species.elements.empty() || species.moles <= 0.0)
+                continue;
+
+            if (addSublatticeElements(species, phase, valid_elements, !phase_has_element_inventory))
+                continue;
+
+            addFormulaElements(species,
+                               phase,
+                               species_entry.first,
+                               valid_elements,
+                               species.moles,
+                               !phase_has_element_inventory);
         }
     }
 
@@ -518,58 +793,6 @@ std::string solveModeLabel(OpenCalphadSolveMode mode)
     }
 
     return "unknown";
-}
-
-std::string buildSolveCommandBlock(OpenCalphadSolveMode mode,
-                                   double               pressure,
-                                   double               fixed_oxygen_moles)
-{
-    std::ostringstream commands;
-    commands << std::setprecision(16);
-
-    if (mode == OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium)
-    {
-        const double start_pressure = 1.0e5;
-        commands << "set c p=" << start_pressure << "\n";
-        commands << "c w\n";
-        commands << "set axis\n";
-        commands << "1\n";
-        commands << "p\n";
-        commands << start_pressure << "\n";
-        commands << pressure << "\n";
-        commands << "\n\n";
-        commands << "step\n";
-        commands << "normal\n\n";
-        commands << "set c p=" << pressure << "\n";
-    }
-    else if (mode == OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve)
-    {
-        commands << "set c n(o)=" << fixed_oxygen_moles << "\n";
-        commands << "set c mu(o)=none\n\n";
-    }
-    else if (mode == OpenCalphadSolveMode::OnlyC1MO2)
-    {
-        commands << "set st ph gas=fix 0\n";
-        commands << "set st ph *=dor\n";
-        commands << "set st ph gas=e 1\n";
-        commands << "c e\n";
-        commands << "set st ph C1_MO2=e 1\n";
-    }
-    commands << "c e\nc w\n";
-
-    return commands.str();
-}
-
-std::string toLowerCopy(std::string text)
-{
-    std::transform(text.begin(), text.end(), text.begin(), [](unsigned char c) { return std::tolower(c); });
-    return text;
-}
-
-std::string toUpperCopy(std::string text)
-{
-    std::transform(text.begin(), text.end(), text.begin(), [](unsigned char c) { return std::toupper(c); });
-    return text;
 }
 
 std::string stripTdbExtension(const std::string& database_name)
@@ -609,13 +832,6 @@ bool fileExists(const std::string& file_path)
 {
     std::ifstream file(file_path);
     return static_cast<bool>(file);
-}
-
-bool hasOpenCalphadSavedState(const std::string& state_file_path)
-{
-    return fileExists(state_file_path) ||
-           fileExists(state_file_path + ".OCU") ||
-           fileExists(state_file_path + ".ocu");
 }
 
 bool hasInvalidEquilibriumResult(const std::string& output_text)
@@ -695,6 +911,25 @@ void dumpParsedOcOutput(const OCOutputData& output_data)
             }
         }
 
+        if (!phase_data.sublattices.empty())
+        {
+            std::cout << "    Sublattices" << std::endl;
+            for (const auto& sublattice : phase_data.sublattices)
+            {
+                std::cout << "      Sublattice " << sublattice.index
+                          << " : constituents=" << sublattice.constituents_count
+                          << ", sites=" << sublattice.sites
+                          << std::endl;
+
+                for (const auto& constituent_entry : sublattice.composition)
+                {
+                    std::cout << "        " << constituent_entry.first
+                              << " = " << constituent_entry.second
+                              << std::endl;
+                }
+            }
+        }
+
         if (!phase_data.species.empty())
         {
             std::cout << "    Species" << std::endl;
@@ -715,9 +950,115 @@ void dumpParsedOcOutput(const OCOutputData& output_data)
                               << " = " << element_entry.second
                               << std::endl;
                 }
+
+                for (const auto& sublattice : species_data.sublattices)
+                {
+                    std::cout << "        Sublattice " << sublattice.index
+                              << " : constituents=" << sublattice.constituents_count
+                              << ", sites=" << sublattice.sites
+                              << std::endl;
+
+                    for (const auto& constituent_entry : sublattice.composition)
+                    {
+                        std::cout << "          " << constituent_entry.first
+                                  << " = " << constituent_entry.second
+                                  << std::endl;
+                    }
+                }
             }
         }
     }
+}
+
+bool writePhaseSublatticeCompositionOutput(const std::string& file_path,
+                                           double             time_hours,
+                                           const std::string& location,
+                                           const OCOutputData& output_data,
+                                           double             content_scaling_factor)
+{
+    const bool write_header = !fileExists(file_path);
+    std::ofstream output_file(file_path, std::ios::app);
+    if (!output_file)
+        return false;
+
+    if (write_header)
+    {
+        output_file << "Time (h)\tLocation\tPhase\tMoles (mol/m3)\t"
+                    << "Sublattice\tSites\tConstituent\tSite fraction\n";
+    }
+
+    output_file << std::setprecision(10);
+    for (const auto& phase_entry : output_data.solution_phases)
+    {
+        const std::string& phase_name = phase_entry.first;
+        const OCPhaseData& phase_data = phase_entry.second;
+
+        if (phase_name == "condensed")
+        {
+            for (const auto& species_entry : phase_data.species)
+            {
+                const std::string& species_name = species_entry.first;
+                const OCSpeciesData& species_data = species_entry.second;
+
+                for (const auto& sublattice : species_data.sublattices)
+                {
+                    if (sublattice.composition.empty())
+                    {
+                        output_file << time_hours << "\t"
+                                    << location << "\t"
+                                    << species_name << "\t"
+                                    << species_data.moles * content_scaling_factor << "\t"
+                                    << sublattice.index << "\t"
+                                    << sublattice.sites << "\t"
+                                    << "<empty>\t0\n";
+                        continue;
+                    }
+
+                    for (const auto& constituent_entry : sublattice.composition)
+                    {
+                        output_file << time_hours << "\t"
+                                    << location << "\t"
+                                    << species_name << "\t"
+                                    << species_data.moles * content_scaling_factor << "\t"
+                                    << sublattice.index << "\t"
+                                    << sublattice.sites << "\t"
+                                    << constituent_entry.first << "\t"
+                                    << constituent_entry.second << "\n";
+                    }
+                }
+            }
+            continue;
+        }
+
+        for (const auto& sublattice : phase_data.sublattices)
+        {
+            if (sublattice.composition.empty())
+            {
+                output_file << time_hours << "\t"
+                            << location << "\t"
+                            << phase_name << "\t"
+                            << phase_data.moles * content_scaling_factor << "\t"
+                            << sublattice.index << "\t"
+                            << sublattice.sites << "\t"
+                            << "<empty>\t0\n";
+                continue;
+            }
+
+            for (const auto& constituent_entry : sublattice.composition)
+            {
+                output_file << time_hours << "\t"
+                            << location << "\t"
+                            << phase_name << "\t"
+                            << phase_data.moles * content_scaling_factor << "\t"
+                            << sublattice.index << "\t"
+                            << sublattice.sites << "\t"
+                            << constituent_entry.first << "\t"
+                            << constituent_entry.second << "\n";
+            }
+        }
+    }
+
+    return output_file.good();
 }
 
 struct OpenCalphadInputComponent
@@ -960,53 +1301,16 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
 {
     static std::set<std::string> logged_thermochemistry_variables;
 
-    auto formatComposition = [](const std::map<std::string, double>& composition)
-    {
-        if (composition.empty())
-            return std::string("<empty>");
-
-        std::ostringstream stream;
-        stream << std::setprecision(8);
-        bool first = true;
-        for (const auto& entry : composition)
-        {
-            if (!first)
-                stream << ",";
-            stream << entry.first << ":" << entry.second;
-            first = false;
-        }
-        return stream.str();
-    };
-
-    auto logThermochemistryVariable = [&](const std::string& variable_name)
-    {
-        if (!thermochemistry_variable.isElementPresent(variable_name))
-            return;
-        if (!logged_thermochemistry_variables.insert(variable_name).second)
-            return;
-
-        const std::map<std::string, double> composition = thermochemistry_variable[variable_name].getComposition();
-        const std::string composition_label = !composition.empty() ? formatComposition(composition) : "<empty>";
-
-        std::cout << "[Thermochemistry] " << variable_name
-                  << " composition=" << composition_label
-                  << " molar_mass=" << thermochemistry_variable[variable_name].getMolarMass()
-                  << " g/mol"
-                  << std::endl;
-    };
-
-    auto computeNormalizedPhaseComposition = [&](const OCPhaseData& phase_data)
+    auto computePhaseFormulaComposition = [&](const OCPhaseData& phase_data)
     {
         std::map<std::string, double> composition;
-        double total_element_moles = 0.0;
-        for (const auto& element_entry : phase_data.elements)
-            total_element_moles += std::max(0.0, element_entry.second);
-
-        if (total_element_moles <= 0.0)
+        const double phase_moles =
+            (phase_data.form_units > 0.0) ? phase_data.form_units : phase_data.moles;
+        if (phase_moles <= 0.0)
             return composition;
 
         for (const auto& element_entry : phase_data.elements)
-            composition[element_entry.first] = std::max(0.0, element_entry.second) / total_element_moles;
+            composition[element_entry.first] = std::max(0.0, element_entry.second) / phase_moles;
 
         return composition;
     };
@@ -1019,7 +1323,11 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
             {"I", 126.90447},
             {"Mo", 95.95},
             {"O", 15.999},
+            {"Pd", 106.42},
             {"Te", 127.60},
+            {"Rh", 102.91},
+            {"Ru", 101.07},
+            {"Tc", 98.906},
             {"U", 238.02891},
             {"Pu", 239.052},
             {"Va", 0.0}
@@ -1040,9 +1348,11 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
     {
         const std::string& phase_name = phase_entry.first;
         const OCPhaseData& phase_data = phase_entry.second;
-        const bool is_single_phase_liquid = (phase_name == "liquid" || phase_name == "ionic_liquid");
+        const std::map<std::string, double> phase_composition = computePhaseFormulaComposition(phase_data);
+        const bool is_single_phase_liquid =
+            phase_name == "liquid" || phase_name == "ionic_liquid" || phase_name == "liquid_ionic";
         const std::map<std::string, double> liquid_phase_composition =
-            is_single_phase_liquid ? computeNormalizedPhaseComposition(phase_data) : std::map<std::string, double>{};
+            is_single_phase_liquid ? phase_composition : std::map<std::string, double>{};
         const std::string liquid_phase_variable_name = "LIQUID (" + phase_name + ", " + location + ")";
 
         if (is_single_phase_liquid && thermochemistry_variable.isElementPresent(liquid_phase_variable_name))
@@ -1051,27 +1361,6 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                 phase_data.moles * content_scaling_factor);
             if (!liquid_phase_composition.empty())
                 thermochemistry_variable[liquid_phase_variable_name].setComposition(liquid_phase_composition);
-
-            logThermochemistryVariable(liquid_phase_variable_name);
-
-            if (!liquid_phase_composition.empty())
-            {
-                std::ostringstream phase_stream;
-                phase_stream << std::setprecision(8);
-                bool first = true;
-                for (const auto& entry : liquid_phase_composition)
-                {
-                    if (!first)
-                        phase_stream << ",";
-                    phase_stream << entry.first << ":" << entry.second;
-                    first = false;
-                }
-                const double phase_molar_mass = computeCompositionMolarMass(liquid_phase_composition);
-                std::cout << "[ThermochemistryPhase] " << phase_name << " (" << location
-                          << ") composition=" << phase_stream.str()
-                          << " molar_mass=" << phase_molar_mass
-                          << " g/mol" << std::endl;
-            }
         }
 
         if (!phase_data.species.empty())
@@ -1094,7 +1383,6 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                             composition[element_entry.first] = element_entry.second / species_entry.second.moles;
                     }
                     thermochemistry_variable[variable_name].setComposition(composition);
-                    logThermochemistryVariable(variable_name);
                 }
             }
 
@@ -1112,14 +1400,12 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                     thermochemistry_variable[variable_name].setFinalValue(
                         element_entry.second * content_scaling_factor);
                     thermochemistry_variable[variable_name].setComposition({{element_entry.first, 1.0}});
-                    logThermochemistryVariable(variable_name);
                 }
                 else if (has_uppercase_variable)
                 {
                     thermochemistry_variable[uppercase_variable_name].setFinalValue(
                         element_entry.second * content_scaling_factor);
                     thermochemistry_variable[uppercase_variable_name].setComposition({{element_entry.first, 1.0}});
-                    logThermochemistryVariable(uppercase_variable_name);
                 }
             }
             continue;
@@ -1139,7 +1425,6 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                     thermochemistry_variable[variable_name].setComposition(liquid_phase_composition);
                 else
                     thermochemistry_variable[variable_name].setComposition({{element_entry.first, 1.0}});
-                logThermochemistryVariable(variable_name);
             }
             else if (thermochemistry_variable.isElementPresent(uppercase_variable_name))
             {
@@ -1149,27 +1434,7 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                     thermochemistry_variable[uppercase_variable_name].setComposition(liquid_phase_composition);
                 else
                     thermochemistry_variable[uppercase_variable_name].setComposition({{element_entry.first, 1.0}});
-                logThermochemistryVariable(uppercase_variable_name);
             }
-        }
-
-        if (is_single_phase_liquid && !liquid_phase_composition.empty())
-        {
-            std::ostringstream phase_stream;
-            phase_stream << std::setprecision(8);
-            bool first = true;
-            for (const auto& entry : liquid_phase_composition)
-            {
-                if (!first)
-                    phase_stream << ",";
-                phase_stream << entry.first << ":" << entry.second;
-                first = false;
-            }
-            const double phase_molar_mass = computeCompositionMolarMass(liquid_phase_composition);
-            std::cout << "[ThermochemistryPhase] " << phase_name << " (" << location
-                      << ") composition=" << phase_stream.str()
-                      << " molar_mass=" << phase_molar_mass
-                      << " g/mol" << std::endl;
         }
     }
 }

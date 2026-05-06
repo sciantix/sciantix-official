@@ -109,6 +109,9 @@ ThermochemistrySettings loadThermochemistrySettings(const std::string& path)
             settings.langmuir = parseBool(value);
         else if (key == "langmuir_coefficient")
             settings.langmuir_coefficient = std::stod(value);
+        else if (key == "output.phase_sublattice_composition" ||
+                 key == "output.condensed_sublattice_composition")
+            settings.output_phase_sublattice_composition = parseBool(value);
         else if (key == "fission_products.module")
             settings.fission_products.module = value;
         else if (key == "fission_products.database")

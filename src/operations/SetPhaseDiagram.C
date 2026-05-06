@@ -273,6 +273,22 @@ void Simulation::CallThermochemistryModule(std::string                      loca
 
     OCUtilsCoupling::dumpParsedOcOutput(output_data);
 
+    if (Sciantix_thermochemistry_settings.output_phase_sublattice_composition)
+    {
+        const std::string sublattice_output_path =
+            TestPath + "phase_sublattice_composition.txt";
+        if (!OCUtilsCoupling::writePhaseSublatticeCompositionOutput(
+                sublattice_output_path,
+                history_variable["Time"].getFinalValue(),
+                location,
+                output_data,
+                total_input_content))
+        {
+            std::cout << "Warning: cannot write phase sublattice composition output: "
+                      << sublattice_output_path << std::endl;
+        }
+    }
+
     OCUtilsCoupling::updateThermochemistryVariablesFromOutput(
         output_data.solution_phases,
         location,

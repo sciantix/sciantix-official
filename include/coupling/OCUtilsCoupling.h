@@ -24,6 +24,14 @@
 #include <string>
 #include <vector>
 
+struct OCSublatticeData
+{
+    int                           index = 0;
+    int                           constituents_count = 0;
+    double                        sites = 0.0;
+    std::map<std::string, double> composition;
+};
+
 struct OCSpeciesData
 {
     double                   moles               = 0.0;
@@ -31,6 +39,7 @@ struct OCSpeciesData
     double                   volume              = 0.0;
     double                   stoichiometric_size = 1.0;
     std::map<std::string, double> elements;
+    std::vector<OCSublatticeData> sublattices;
 };
 
 struct OCPhaseData
@@ -40,6 +49,7 @@ struct OCPhaseData
     double                   form_units = 0.0;
     std::map<std::string, OCSpeciesData> species;
     std::map<std::string, double>        elements;
+    std::vector<OCSublatticeData>        sublattices;
 };
 
 struct OCComponentData
@@ -71,26 +81,23 @@ enum class OpenCalphadSolveMode
 };
 
 std::string solveModeLabel(OpenCalphadSolveMode mode);
-std::string buildSolveCommandBlock(OpenCalphadSolveMode mode,
-                                   double               pressure,
-                                   double               fixed_oxygen_moles);
 
-std::string toLowerCopy(std::string text);
-std::string toUpperCopy(std::string text);
 std::string stripTdbExtension(const std::string& database_name);
 
 std::string readTextFile(const std::string& file_path);
 bool writeTextFile(const std::string& file_path, const std::string& content);
 bool fileExists(const std::string& file_path);
-bool hasOpenCalphadSavedState(const std::string& state_file_path);
 
 bool hasInvalidEquilibriumResult(const std::string& output_text);
 bool tryGetOxygenMolesFromOutput(const std::string& output_file_path,
                                  const std::set<std::string>& active_elements,
                                  double& oxygen_moles);
-
-bool useOxygenPotentialConstraint(const std::set<std::string>& selected_elements);
 void dumpParsedOcOutput(const OCOutputData& output_data);
+bool writePhaseSublatticeCompositionOutput(const std::string& file_path,
+                                           double             time_hours,
+                                           const std::string& location,
+                                           const OCOutputData& output_data,
+                                           double             content_scaling_factor);
 bool writeOpenCalphadInput(const std::string& input_file_path,
                            const std::string& output_file_path,
                            const std::string& state_file_path,

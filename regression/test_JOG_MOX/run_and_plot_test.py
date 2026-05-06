@@ -355,7 +355,7 @@ def plot_case(
     case_plot_dir = PLOTS_DIR / case_dir.name
     case_plot_dir.mkdir(parents=True, exist_ok=True)
 
-    fig, axes = plt.subplots(3, 2, figsize=(12, 14))
+    fig, axes = plt.subplots(5, 2, figsize=(12, 14))
     axes = axes.flatten()
 
     axis = axes[0]
@@ -375,10 +375,14 @@ def plot_case(
     axis.legend(loc="upper left")
 
     for axis, species, ylabel in [
-        (axes[2], "Xe", "Xenon concentration (mol/m3)"),
-        (axes[3], "Kr", "Krypton concentration (mol/m3)"),
-        (axes[4], "Cs", "Cesium concentration (mol/m3)"),
-        (axes[5], "Mo", "Molybdenum concentration (mol/m3)"),
+        (axes[2], "Xe", "Xe concentration (mol/m3)"),
+        (axes[3], "Kr", "Kr concentration (mol/m3)"),
+        (axes[4], "Cs", "Cs concentration (mol/m3)"),
+        (axes[5], "Mo", "Mo concentration (mol/m3)"),
+        (axes[6], "Pd", "Pd concentration (mol/m3)"),
+        (axes[7], "Tc", "Tc concentration (mol/m3)"),
+        (axes[8], "Rh", "Rh concentration (mol/m3)"),
+        (axes[9], "Ru", "Ru concentration (mol/m3)"),
     ]:
         for label, color, suffix in [
             ("Produced", COLORS[0], " produced (at/m3)"),

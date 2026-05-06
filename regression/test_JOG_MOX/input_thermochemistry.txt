@@ -111,3 +111,12 @@
 109 | fission_products | liquid | VA | at grain boundary | (mol/m3) | 1
 110 | fission_products | liquid | MOO3 | at grain boundary | (mol/m3) | 1
 111 | fission_products | liquid | CSO2 | at grain boundary | (mol/m3) | 1
+112 | fission_products | gas | PD | at grain boundary | (mol/m3) | 1
+113 | fission_products | gas | RH | at grain boundary | (mol/m3) | 1
+114 | fission_products | gas | RU | at grain boundary | (mol/m3) | 1
+115 | fission_products | gas | TC | at grain boundary | (mol/m3) | 1
+116 | fission_products | condensed | A15_CR3SI | at grain boundary | (mol/m3) | 1
+117 | fission_products | condensed | MOPD2 | at grain boundary | (mol/m3) | 1
+118 | fission_products | condensed | MOTE2_A | at grain boundary | (mol/m3) | 1
+119 | fission_products | condensed | MO3TE4 | at grain boundary | (mol/m3) | 1
+120 | fission_products | condensed | MOTE2_B | at grain boundary | (mol/m3) | 1

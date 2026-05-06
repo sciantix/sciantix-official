@@ -3,6 +3,7 @@ import argparse
 import csv
 import os
 import subprocess
+from collections import defaultdict
 from pathlib import Path
 
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
@@ -15,7 +16,7 @@ LOCAL_EXECUTABLE = TEST_DIR / "sciantix.x"
 BUILD_EXECUTABLE = TEST_DIR.parents[1] / "build" / "sciantix.x"
 RUN_LOG = TEST_DIR / "sciantix.log"
 MAIN_OUTPUT_NAME = "output.txt"
-THERMO_OUTPUT_NAME = "thermochemistry_output.txt"
+PHASE_SUBLATTICE_OUTPUT_NAME = "phase_sublattice_composition.txt"
 PLOTS_DIR = TEST_DIR / "plots"
 AVOGADRO_NUMBER = 6.02214076e23
 PELLET_RADIUS_M = 2.7e-3
@@ -35,16 +36,6 @@ JOG_PHASES = [
     ("HCP_A3", "JOG from HCP_A3 (/)", "#bcbd22"),
     ("LIQUID", "JOG from liquid (/)", "#f97316"),
 ]
-LIQUID_CONSTITUENT_COLUMNS = [
-    "CS+ (liquid, at grain boundary) (mol/m3)",
-    "MO+4 (liquid, at grain boundary) (mol/m3)",
-    "MOO4-2 (liquid, at grain boundary) (mol/m3)",
-    "O-2 (liquid, at grain boundary) (mol/m3)",
-    "VA (liquid, at grain boundary) (mol/m3)",
-    "MOO3 (liquid, at grain boundary) (mol/m3)",
-    "CSO2 (liquid, at grain boundary) (mol/m3)",
-]
-
 plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update({
     "figure.figsize": (10, 7),
@@ -121,14 +112,10 @@ def save_figure(fig: plt.Figure, name: str, saved_paths: list[Path]) -> None:
 
 def plot_case(saved_paths: list[Path]) -> None:
     output_file = TEST_DIR / MAIN_OUTPUT_NAME
-    thermo_file = TEST_DIR / THERMO_OUTPUT_NAME
     ensure_file(output_file)
-    ensure_file(thermo_file)
 
     headers, values = load_output_data(output_file)
-    thermo_headers, thermo_values = load_output_data(thermo_file)
     columns = column_map(headers)
-    thermo_columns = column_map(thermo_headers)
 
     burnup = values[:, columns[BURNUP_LABEL]]
     time = values[:, columns[TIME_LABEL]]
@@ -139,7 +126,7 @@ def plot_case(saved_paths: list[Path]) -> None:
     jog_liquid = series_or_zeros(values, columns, "JOG from liquid (/)")
     jog_thickness_um = (jog_condensed + jog_liquid) * PELLET_RADIUS_M * 1.0e6
 
-    fig, axes = plt.subplots(3, 2, figsize=(12, 14))
+    fig, axes = plt.subplots(5, 2, figsize=(12, 14))
     axes = axes.flatten()
 
     axis = axes[0]
@@ -161,10 +148,14 @@ def plot_case(saved_paths: list[Path]) -> None:
     axis.legend(loc="upper left")
 
     for axis, species, ylabel in [
-        (axes[2], "Xe", "Xenon concentration (mol/m3)"),
-        (axes[3], "Kr", "Krypton concentration (mol/m3)"),
-        (axes[4], "Cs", "Cesium concentration (mol/m3)"),
-        (axes[5], "Mo", "Molybdenum concentration (mol/m3)"),
+        (axes[2], "Xe", "Xe concentration (mol/m3)"),
+        (axes[3], "Kr", "Kr concentration (mol/m3)"),
+        (axes[4], "Cs", "Cs concentration (mol/m3)"),
+        (axes[5], "Mo", "Mo concentration (mol/m3)"),
+        (axes[6], "Pd", "Pd concentration (mol/m3)"),
+        (axes[7], "Tc", "Tc concentration (mol/m3)"),
+        (axes[8], "Rh", "Rh concentration (mol/m3)"),
+        (axes[9], "Ru", "Ru concentration (mol/m3)"),
     ]:
         for legend_label, color, suffix in [
             ("Produced", COLORS[0], " produced (at/m3)"),
@@ -217,61 +208,129 @@ def plot_case(saved_paths: list[Path]) -> None:
     else:
         plt.close(fig)
 
-    plot_liquid_constituent_fractions(thermo_values, thermo_columns, burnup, time, saved_paths)
+    plot_phase_sublattice_composition(burnup, time, saved_paths)
 
 
-def plot_liquid_constituent_fractions(
-    thermo_values: np.ndarray,
-    thermo_columns: dict[str, int],
+def safe_plot_name(text: str) -> str:
+    return (
+        text.lower()
+        .replace(" ", "_")
+        .replace("+", "p")
+        .replace("-", "m")
+        .replace("/", "_")
+        .replace(":", "_")
+    )
+
+
+def load_phase_sublattice_rows(path: Path) -> list[dict[str, object]]:
+    ensure_file(path)
+    grouped: dict[tuple[float, str, str, int, float, str], list[tuple[float, float]]] = defaultdict(list)
+
+    with path.open(newline="") as handle:
+        reader = csv.DictReader(handle, delimiter="\t")
+        for row in reader:
+            constituent = row["Constituent"].strip()
+            phase_moles = float(row["Moles (mol/m3)"])
+            if constituent == "<empty>" or phase_moles <= 0.0:
+                continue
+
+            key = (
+                float(row["Time (h)"]),
+                row["Location"].strip(),
+                row["Phase"].strip(),
+                int(row["Sublattice"]),
+                float(row["Sites"]),
+                constituent,
+            )
+            grouped[key].append((phase_moles, float(row["Site fraction"])))
+
+    rows: list[dict[str, object]] = []
+    for (time_h, location, phase, sublattice, sites, constituent), values in grouped.items():
+        phase_moles = float(np.mean([value[0] for value in values]))
+        site_fraction = float(np.mean([value[1] for value in values]))
+        rows.append({
+            "time": time_h,
+            "location": location,
+            "phase": phase,
+            "sublattice": sublattice,
+            "sites": sites,
+            "constituent": constituent,
+            "phase_moles": phase_moles,
+            "site_fraction": site_fraction,
+        })
+
+    return rows
+
+
+def plot_phase_sublattice_composition(
     burnup: np.ndarray,
     time: np.ndarray,
     saved_paths: list[Path],
 ) -> None:
-    if TIME_LABEL not in thermo_columns:
-        raise ValueError(f"Missing {TIME_LABEL} in {THERMO_OUTPUT_NAME}")
-
-    thermo_time = thermo_values[:, thermo_columns[TIME_LABEL]]
-    thermo_burnup = np.interp(thermo_time, time, burnup)
-    available_columns = [
-        column for column in LIQUID_CONSTITUENT_COLUMNS
-        if column in thermo_columns and not np.allclose(thermo_values[:, thermo_columns[column]], 0.0)
-    ]
-    if not available_columns:
-        print("No non-zero liquid constituent columns found; skipping liquid fraction plot.")
+    sublattice_file = TEST_DIR / PHASE_SUBLATTICE_OUTPUT_NAME
+    if not sublattice_file.exists():
+        print(f"No {PHASE_SUBLATTICE_OUTPUT_NAME} found; skipping phase sublattice plots.")
         return
 
-    constituent_values = np.vstack([thermo_values[:, thermo_columns[column]] for column in available_columns])
-    denominator = np.sum(constituent_values, axis=0)
-    fractions = np.divide(
-        constituent_values,
-        denominator,
-        out=np.zeros_like(constituent_values),
-        where=denominator > 0.0,
-    )
+    rows = load_phase_sublattice_rows(sublattice_file)
+    if not rows:
+        print("No non-zero phase sublattice composition rows found; skipping phase sublattice plots.")
+        return
 
-    labels = [column.split(" (", 1)[0] for column in available_columns]
-    colors = ["#6baed6", "#fd8d3c", "#74c476", "#9e9ac8", "#e377c2", "#8c564b", "#17becf"]
+    phase_keys = sorted({
+        (str(row["location"]), str(row["phase"]))
+        for row in rows
+    })
 
-    fig, axis = plt.subplots(figsize=(11, 7))
-    axis.stackplot(thermo_burnup, fractions, labels=labels, colors=colors[:len(labels)], alpha=0.88)
-    axis.set_xlabel(BURNUP_LABEL)
-    axis.set_ylabel("Fraction of tracked liquid constituents (-)")
-    axis.set_ylim(0.0, 1.0)
+    for location, phase in phase_keys:
+        phase_rows = [
+            row for row in rows
+            if row["location"] == location and row["phase"] == phase
+        ]
+        if not phase_rows:
+            continue
 
-    secondary_time_axis(axis, burnup, time, TIME_LABEL)
-    axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5))
-    save_figure(fig, "liquid_constituent_fractions.png", saved_paths)
+        sublattices = sorted({int(row["sublattice"]) for row in phase_rows})
+        fig, axes = plt.subplots(
+            len(sublattices),
+            1,
+            figsize=(11, max(4, 3.2 * len(sublattices))),
+            sharex=True,
+        )
+        axes = np.atleast_1d(axes)
 
+        for axis, sublattice in zip(axes, sublattices):
+            sublattice_rows = [
+                row for row in phase_rows
+                if int(row["sublattice"]) == sublattice
+            ]
+            constituents = sorted({str(row["constituent"]) for row in sublattice_rows})
+            for constituent in constituents:
+                constituent_rows = sorted(
+                    [
+                        row for row in sublattice_rows
+                        if row["constituent"] == constituent
+                    ],
+                    key=lambda row: float(row["time"]),
+                )
+                plot_time = np.array([float(row["time"]) for row in constituent_rows])
+                plot_burnup = np.interp(plot_time, time, burnup)
+                plot_fraction = np.array([float(row["site_fraction"]) for row in constituent_rows])
+                axis.plot(plot_burnup, plot_fraction, label=constituent)
 
-    fig, axis = plt.subplots(figsize=(11, 7))
-    axis.stackplot(thermo_burnup, constituent_values, labels=labels, colors=colors[:len(labels)], alpha=0.88)
-    axis.plot(thermo_burnup, denominator, color="black")
-    axis.set_xlabel(BURNUP_LABEL)
-    axis.set_ylabel("Liquid constituents (mol/m3)")
+            sites = sublattice_rows[0]["sites"]
+            axis.set_ylabel(f"SL {sublattice}, sites={sites:g}\nsite fraction (-)")
+            axis.set_ylim(-0.02, 1.02)
+            axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
 
-    secondary_time_axis(axis, burnup, time, TIME_LABEL)
-    axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5))
-    save_figure(fig, "liquid_constituent.png", saved_paths)
+        axes[-1].set_xlabel(BURNUP_LABEL)
+        secondary_time_axis(axes[0], burnup, time, TIME_LABEL)
+        fig.suptitle(f"{phase} ({location}) sublattice composition", y=1.0)
+        save_figure(
+            fig,
+            f"phase_sublattice_{safe_plot_name(location)}_{safe_plot_name(phase)}.png",
+            saved_paths,
+        )
 
 
 def run_case() -> None:
