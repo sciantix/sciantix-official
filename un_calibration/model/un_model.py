@@ -1,14 +1,12 @@
-# UN M7 / capture_only — pure physics module.
+# un_model.py — UN M7 / capture_only fission gas behaviour, pure physics.
 #
-# Extracted from UN_M7_optuna_calibration_v8_core.py with all Optuna machinery
-# (sweep drivers, scoring, CSV/plot helpers, candidate generators) removed.
-# Provides only:
+# Provides:
 #   - Candidate, UNParameters dataclasses
 #   - Helper functions for diffusivity, resolution, trapping, nucleation,
 #     coalescence, pressure, vacancy ODE, spectral 3-equation gas balance
 #   - solve_UN_M7(p) — main M7 solver
 #
-# Physics flags kept (M7 / capture_only family):
+# Physics flags (M7 / capture_only family):
 #   USE_PHI_GAS_RESOLUTION       = True
 #   USE_NUCLEATION_MASS_COUPLING = True
 #   USE_BULK_DISLOCATION_CAPTURE = True
