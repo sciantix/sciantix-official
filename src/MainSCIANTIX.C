@@ -121,16 +121,15 @@ int main(int argc, char** argv)
     std::string thermo_outputPath = TestPath + "thermochemistry_output.txt";
 
     remove(thermo_outputPath.c_str());
-    remove((TestPath + "OCinput_matrix.OCM").c_str());
-    remove((TestPath + "OCinput_fission_products.OCM").c_str());
-    remove((TestPath + "OCoutput_matrix").c_str());
-    remove((TestPath + "OCoutput_fission_products").c_str());
-    remove((TestPath + "OCoutput_matrix.OCU").c_str());
-    remove((TestPath + "OCoutput_fission_products.OCU").c_str());
-    remove((TestPath + "OCoutput_matrix.DAT").c_str());
-    remove((TestPath + "OCoutput_fission_products.DAT").c_str());
+    remove((TestPath + "OC_matrix").c_str());
+    remove((TestPath + "OC_fission_products").c_str());
+    remove((TestPath + "OC_matrix.OCM").c_str());
+    remove((TestPath + "OC_fission_products.OCM").c_str());
+    remove((TestPath + "OC_matrix.OCU").c_str());
+    remove((TestPath + "OC_fission_products.OCU").c_str());
+    remove((TestPath + "OC_matrix.DAT").c_str());
+    remove((TestPath + "OC_fission_products.DAT").c_str());
     remove((TestPath + "phase_sublattice_composition.txt").c_str());
-    remove((TestPath + "condensed_sublattice_composition.txt").c_str());
     //
 
     Execution_file.open(TestPath + "execution.txt", std::ios::out);
@@ -180,14 +179,14 @@ int main(int argc, char** argv)
     Execution_file.close();
 
     // CODE DEVELOPMENT : THERMOCHEMISTRY OUTPUT
-    remove((TestPath + "OCinput_matrix.OCM").c_str());
-    remove((TestPath + "OCinput_fission_products.OCM").c_str());
-    remove((TestPath + "OCoutput_matrix").c_str());
-    remove((TestPath + "OCoutput_fission_products").c_str());
-    remove((TestPath + "OCoutput_matrix.OCU").c_str());
-    remove((TestPath + "OCoutput_fission_products.OCU").c_str());
-    remove((TestPath + "OCoutput_matrix.DAT").c_str());
-    remove((TestPath + "OCoutput_fission_products.DAT").c_str());
+    remove((TestPath + "OC_matrix").c_str());
+    remove((TestPath + "OC_fission_products").c_str());
+    remove((TestPath + "OC_matrix.OCM").c_str());
+    remove((TestPath + "OC_fission_products.OCM").c_str());
+    remove((TestPath + "OC_matrix.OCU").c_str());
+    remove((TestPath + "OC_fission_products.OCU").c_str());
+    remove((TestPath + "OC_matrix.DAT").c_str());
+    remove((TestPath + "OC_fission_products.DAT").c_str());
     //
 
     return 0;

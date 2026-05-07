@@ -58,7 +58,6 @@ struct OCComponentData
     double      mole_fraction                = 0.0;
     double      chemical_potential_over_rt   = 0.0;
     double      activity                     = 0.0;
-    std::string reference_state;
 };
 
 struct OCOutputData
@@ -66,6 +65,14 @@ struct OCOutputData
     std::map<std::string, OCPhaseData>     solution_phases;
     std::map<std::string, OCComponentData> components;
 };
+
+struct InputComponent
+{
+    std::string name;
+    double      content  = 0.0;
+    double      fraction = 0.0;
+};
+
 
 OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<std::string>& valid_elements);
 
@@ -82,10 +89,7 @@ enum class OpenCalphadSolveMode
 
 std::string solveModeLabel(OpenCalphadSolveMode mode);
 
-std::string stripTdbExtension(const std::string& database_name);
-
 std::string readTextFile(const std::string& file_path);
-bool writeTextFile(const std::string& file_path, const std::string& content);
 bool fileExists(const std::string& file_path);
 
 bool hasInvalidEquilibriumResult(const std::string& output_text);
@@ -100,33 +104,28 @@ bool writePhaseSublatticeCompositionOutput(const std::string& file_path,
                                            const std::string& location,
                                            const OCOutputData& output_data,
                                            double             content_scaling_factor);
+std::vector<InputComponent> buildInputComponents(
+     const std::set<std::string>&     selected_elements,
+     SciantixArray<SciantixVariable>& sciantix_variable,
+     SciantixArray<System>&           sciantix_system,
+     double&                          total_content);
 bool writeOpenCalphadInput(const std::string& state_file_path,
                            const std::string& data_path,
                            double             pressure,
                            double             temperature,
                            OpenCalphadSolveMode solve_mode,
                            const std::string& location,
-                           const std::set<std::string>& selected_elements,
+                           std::vector<InputComponent> components,
                            SciantixArray<SciantixVariable>& sciantix_variable,
-                           SciantixArray<System>& sciantix_system,
-                           std::set<std::string>& active_elements,
-                           double&                total_input_content,
                            double                 fixed_oxygen_moles);
-bool runOpenCalphadCase(const std::string& state_file_path,
-                        const std::string& executable,
-                        std::string&       raw_output,
-                        int                timeout_seconds);
-bool hasRequiredComponents(const OCOutputData& output_data,
-                           const std::set<std::string>& active_elements);
+bool runOpenCalphadCase(const std::string& executable);
 void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhaseData>& solution_phases,
                                               const std::string&                         location,
                                               double                                     content_scaling_factor,
                                               SciantixArray<ThermochemistryVariable>&    thermochemistry_variable);
 void updateMatrixFromOutput(const OCOutputData&              output_data,
-                            double                           pressure,
                             double                           temperature,
-                            SciantixArray<SciantixVariable>& sciantix_variable,
-                            SciantixArray<Matrix>&           matrices);
+                            SciantixArray<SciantixVariable>& sciantix_variable);
 void updateGrainBoundaryFromOutput(const std::map<std::string, OCPhaseData>& solution_phases,
                                    const std::set<std::string>&               selected_elements,
                                    double                                     content_scaling_factor,
