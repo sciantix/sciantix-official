@@ -23,8 +23,6 @@ python3 regression/test_MOX_pO2_verification/sciantix_verification/compare_scian
 echo "===== JOG COMPARISON MOX ====="
 python3 regression/test_JOG_MOX/run_and_plot_test.py
 
-echo "===== JOG COMPARISON MOX - small ====="
-python3 regression/TEST_JOG_MOX_point/run_and_plot_test.py
 echo "===== DONE ====="
 
 
