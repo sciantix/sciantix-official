@@ -717,25 +717,7 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
 
 namespace OCUtilsCoupling
 {
-std::string solveModeLabel(OpenCalphadSolveMode mode)
-{
-    switch (mode)
-    {
-        case OpenCalphadSolveMode::SaveReadWarmStart:
-            return "WARM-START";
-        case OpenCalphadSolveMode::GlobalEquilibrium:
-            return "COLD-START";
-        case OpenCalphadSolveMode::PressureAxisStepGlobalEquilibrium:
-            return "PRESSURE-SWEEP";
-        case OpenCalphadSolveMode::FixedOxygenMolesFromInvalidPotentialSolve:
-            return "OXYGEN-MOLES-FIXED";
-        case OpenCalphadSolveMode::OnlyC1MO2:
-            return "ONLY C1MO2 ENTERED";
-    }
-
-    return "unknown";
-}
-
+    
 std::string readTextFile(const std::string& file_path)
 {
     std::ifstream file(file_path);

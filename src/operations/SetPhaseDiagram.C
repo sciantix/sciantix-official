@@ -156,12 +156,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     { 
         if (solver == OCSolver::FixedOxygenMolesFromInvalidPotentialSolve &&
             fallback_oxygen_moles <= 0.0)
-        {
-            std::cout << "Warning: skipping " << OCUtilsCoupling::solveModeLabel(solver)
-                      << " because no fallback O moles were captured from previous failed MU(O) attempts."
-                      << std::endl;
             continue;
-        }
 
         if (!OCUtilsCoupling::writeOpenCalphadInput(
                 state_file_path,
@@ -211,7 +206,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
 
     if (!solved)
     {
-        std::cout << "Warning: all OpenCalphad attempts failed for location '" << location << std::endl;
+        std::cout << "Warning: all OpenCalphad attempts failed for location: " << location << std::endl;
         if ((location == "matrix") && raw_output.find("C1_MO2") != std::string::npos)
             solved = true;
         else if (has_previous_output)
@@ -224,7 +219,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
 
         if (!solved)
         {
-            std::cout << "Warning: all OpenCalphad attempts failed for location '" << location
+            std::cout << "Warning: all OpenCalphad attempts failed for location: " << location
                     << "' and no valid previous timestep equilibrium was available. Continue in any case."
                     << std::endl;
         }
