@@ -1,0 +1,21 @@
+@$ Initialize variables:
+r t /home/ecappellari/transparant/opencalphad/data/upuo-v21 o pu u
+
+set ref o gas * 100000
+
+set c t=1068.34
+set c p=7e+06
+set c n(o)=0.666632
+set c n(pu)=0.0729582
+set c n(u)=0.26041
+c e
+set st ph gas=fix 0
+set st ph *=dor
+set st ph gas=e 1
+c e
+set st ph C1_MO2=e 1
+c e
+c w
+l /out=./OCoutput_matrix.DAT r 2
+
+fin

@@ -2,6 +2,7 @@
 opencalphad.path = /home/ecappellari/transparant/opencalphad/
 kc = false
 langmuir = false
+output.phase_sublattice_composition = true
 
 fission_products.module = OPENCALPHAD
 fission_products.database = CsMoO_MoPdRhRuTc_merged.TDB

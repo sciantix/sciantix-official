@@ -1,0 +1,24 @@
+r u ./OCoutput_fission_products.OCU
+
+set ref o gas * 100000
+
+set c t=1358.5
+set c p=7e+06
+set c n(o)=0.950476
+set c n(cs)=0.00606139
+set c n(mo)=0.0132566
+set c n(tc)=0.00320821
+set c n(rh)=0.00357141
+set c n(ru)=0.0119854
+set c n(pd)=0.0114406
+c e
+set c n(o)=none
+set c mu(o)=-238075
+
+c w
+
+save u ./OCoutput_fission_products Y
+
+l /out=./OCoutput_fission_products.DAT r 2
+
+fin

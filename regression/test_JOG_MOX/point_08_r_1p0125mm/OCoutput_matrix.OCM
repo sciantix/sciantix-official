@@ -1,0 +1,17 @@
+r u ./OCoutput_matrix.OCU
+
+set ref o gas * 100000
+
+set c t=1829.08
+set c p=7e+06
+set c n(o)=0.666579
+set c n(pu)=0.0729818
+set c n(u)=0.260439
+c e
+c w
+
+save u ./OCoutput_matrix Y
+
+l /out=./OCoutput_matrix.DAT r 2
+
+fin

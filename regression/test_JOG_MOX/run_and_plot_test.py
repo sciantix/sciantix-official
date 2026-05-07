@@ -5,6 +5,7 @@ import os
 import re
 import shutil
 import subprocess
+from collections import defaultdict
 from pathlib import Path
 
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
@@ -18,8 +19,10 @@ BUILD_EXECUTABLE = TEST_DIR.parents[1] / "build" / "sciantix.x"
 RUN_SUMMARY = TEST_DIR / "run_summary.txt"
 MAIN_OUTPUT_NAME = "output.txt"
 THERMO_OUTPUT_NAME = "thermochemistry_output.txt"
+PHASE_SUBLATTICE_OUTPUT_NAME = "phase_sublattice_composition.txt"
 THERMOCHEMISTRY_MANIFEST_FILE = TEST_DIR / "input_thermochemistry.txt"
 PLOTS_DIR = TEST_DIR / "plots"
+GOLD_DIR = TEST_DIR / "gold"
 EXP_DATA_DIR = TEST_DIR / "exp_data"
 PELLET_RADIUS_M = 2.7e-3
 AVOGADRO_NUMBER = 6.02214076e23
@@ -53,25 +56,12 @@ JOG_PHASES = [
     ("FCC_A1", "JOG from FCC_A1 (/)", "FCC_A1 (condensed, at grain boundary) (mol/m3)"),
     ("HCP_A3", "JOG from HCP_A3 (/)", "HCP_A3 (condensed, at grain boundary) (mol/m3)"),
 ]
-LIQUID_CONSTITUENT_COLORS = ["#6baed6", "#fd8d3c", "#74c476", "#9e9ac8", "#e377c2", "#8c564b", "#17becf"]
 SUMMARY_STACK_COLORS = [
     "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b",
     "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#aec7e8", "#ffbb78",
     "#98df8a", "#ff9896", "#c5b0d5", "#c49c94", "#f7b6d2", "#c7c7c7",
     "#dbdb8d", "#9edae5", "#393b79", "#637939", "#8c6d31", "#843c39",
 ]
-LIQUID_TOTAL_COLUMN = "LIQUID (liquid, at grain boundary) (mol/m3)"
-LIQUID_ELEMENT_SPECIES = {"Cs", "Mo", "O"}
-LIQUID_CONSTITUENT_STOICHIOMETRIC_SIZE = {
-    "CS+": 1.0,
-    "MO+4": 1.0,
-    "MOO4-2": 5.0,
-    "O-2": 1.0,
-    "VA": 0.0,
-    "MOO3": 4.0,
-    "CSO2": 3.0,
-}
-
 plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update({
     "figure.figsize": (10, 7),
@@ -90,7 +80,7 @@ plt.rcParams.update({
     "legend.frameon": False,
 })
 
-COLORS = ["#ff0000", "#ff7f00", "#00c853", "#2962ff", "#aa00ff"]
+COLORS = ["#ff0000", "#ff7f00", "#00c853", "#2962ff", "#aa00ff", "#8b5cf6"]
 # Muted but still well-separated palette for species-consistent plots.
 DISTINCT_COLOR_VALUES = [
     "#6baed6", "#fd8d3c", "#74c476", "#9e9ac8", "#e377c2", "#8c564b",
@@ -129,8 +119,119 @@ def load_output_data(output_file: Path) -> tuple[list[str], np.ndarray]:
     return headers, values
 
 
+def relative_difference(diff: np.ndarray, reference: np.ndarray, abs_tol: float) -> np.ndarray:
+    return diff / np.maximum(abs_tol, np.abs(reference))
+
+
+def compare_tabular_outputs(
+    old_path: Path,
+    new_path: Path,
+    abs_tol: float = 1e-8,
+    rel_tol: float = 1e-6,
+    top: int = 20,
+) -> tuple[bool, list[str]]:
+    old_header, old_data = load_output_data(old_path)
+    new_header, new_data = load_output_data(new_path)
+
+    old_cols = {name: index for index, name in enumerate(old_header)}
+    new_cols = {name: index for index, name in enumerate(new_header)}
+
+    removed = [name for name in old_header if name not in new_cols]
+    added = [name for name in new_header if name not in old_cols]
+    common = [name for name in old_header if name in new_cols]
+
+    lines = [
+        f"Comparing {old_path} -> {new_path}",
+        f"Rows: {old_data.shape[0]} -> {new_data.shape[0]}",
+        f"Columns: {len(old_header)} -> {len(new_header)}",
+    ]
+
+    if removed:
+        lines.append("")
+        lines.append("Columns only in gold output:")
+        lines.extend(f"  - {name}" for name in removed)
+
+    if added:
+        lines.append("")
+        lines.append("Columns only in new output:")
+        lines.extend(f"  + {name}" for name in added)
+
+    if old_data.shape[0] != new_data.shape[0]:
+        lines.append("")
+        lines.append("Cannot compare common columns: row counts differ.")
+        return False, lines
+
+    differences = []
+    failing = []
+    for name in common:
+        old_values = old_data[:, old_cols[name]]
+        new_values = new_data[:, new_cols[name]]
+        diff = np.abs(new_values - old_values)
+        rel = relative_difference(diff, old_values, abs_tol)
+        finite = np.isfinite(diff) & np.isfinite(rel)
+
+        if not np.any(finite):
+            row = -1
+            max_abs = np.nan
+            max_rel = np.nan
+        else:
+            scored = np.where(finite, diff, -np.inf)
+            row = int(np.argmax(scored))
+            max_abs = float(diff[row])
+            max_rel = float(rel[row])
+
+        bad = (diff > abs_tol) & (rel > rel_tol)
+        n_bad = int(np.count_nonzero(bad))
+        if n_bad:
+            failing.append(name)
+
+        differences.append({
+            "name": name,
+            "row": row,
+            "max_abs": max_abs,
+            "max_rel": max_rel,
+            "n_bad": n_bad,
+            "old": float(old_values[row]) if row >= 0 else np.nan,
+            "new": float(new_values[row]) if row >= 0 else np.nan,
+        })
+
+    differences.sort(
+        key=lambda item: (
+            item["n_bad"] > 0,
+            np.nan_to_num(item["max_abs"], nan=-1.0),
+        ),
+        reverse=True,
+    )
+
+    lines.append("")
+    lines.append(f"Common columns compared: {len(common)}")
+    lines.append(f"Columns outside tolerance: {len(failing)}")
+    lines.append("")
+    lines.append(f"Top {min(top, len(differences))} column differences:")
+    for item in differences[:top]:
+        lines.append(
+            f"  {item['name']}: row={item['row']}, "
+            f"gold={item['old']:.8e}, new={item['new']:.8e}, "
+            f"abs={item['max_abs']:.8e}, rel={item['max_rel']:.8e}, "
+            f"bad_rows={item['n_bad']}"
+        )
+
+    return not removed and not added and not failing, lines
+
+
 def column_map(headers: list[str]) -> dict[str, int]:
     return {name: index for index, name in enumerate(headers)}
+
+
+def secondary_time_axis(axis: plt.Axes, burnup: np.ndarray, time: np.ndarray, time_label: str) -> None:
+    def burnup_to_time(x):
+        return np.interp(x, burnup, time)
+
+    def time_to_burnup(x):
+        return np.interp(x, time, burnup)
+
+    axis.secondary_xaxis("top", functions=(burnup_to_time, time_to_burnup)).set_xlabel(time_label)
+
 
 def save_figure(fig: plt.Figure, path: Path, saved_paths: list[Path]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -164,6 +265,45 @@ def is_all_zero(series: np.ndarray) -> bool:
 def delete_file_if_exists(path: Path) -> None:
     if path.exists() and path.is_file():
         path.unlink()
+
+
+def save_gold_outputs(case_dir: Path) -> Path:
+    gold_case_dir = GOLD_DIR / case_dir.name
+    gold_case_dir.mkdir(parents=True, exist_ok=True)
+
+    for filename in (MAIN_OUTPUT_NAME, THERMO_OUTPUT_NAME):
+        source = case_dir / filename
+        if source.exists():
+            shutil.copy2(source, gold_case_dir / filename)
+
+    return gold_case_dir
+
+
+def compare_case_outputs_with_gold(case_dir: Path, gold_case_dir: Path) -> tuple[bool, Path]:
+    report_lines: list[str] = []
+    ok = True
+
+    for filename in (MAIN_OUTPUT_NAME, THERMO_OUTPUT_NAME):
+        old_path = gold_case_dir / filename
+        new_path = case_dir / filename
+        if not old_path.exists():
+            report_lines.append(f"No gold {filename} available for {case_dir.name}.")
+            report_lines.append("")
+            continue
+        if not new_path.exists():
+            report_lines.append(f"No new {filename} produced for {case_dir.name}.")
+            report_lines.append("")
+            ok = False
+            continue
+
+        file_ok, lines = compare_tabular_outputs(old_path, new_path)
+        ok = ok and file_ok
+        report_lines.extend(lines)
+        report_lines.append("")
+
+    report_path = gold_case_dir / "comparison_report.txt"
+    report_path.write_text("\n".join(report_lines))
+    return ok, report_path
 
 
 def cleanup_case_directory(case_dir: Path) -> None:
@@ -277,18 +417,6 @@ def is_liquid_fraction_column(header: str) -> bool:
     return grain_boundary_phase(header) == "liquid" and not is_liquid_total_column(header)
 
 
-def is_liquid_element_column(header: str) -> bool:
-    return is_liquid_fraction_column(header) and grain_boundary_species(header) in LIQUID_ELEMENT_SPECIES
-
-
-def is_liquid_constituent_column(header: str) -> bool:
-    return is_liquid_fraction_column(header) and not is_liquid_element_column(header)
-
-
-def liquid_constituent_stoichiometric_size(header: str) -> float:
-    return LIQUID_CONSTITUENT_STOICHIOMETRIC_SIZE.get(grain_boundary_species(header), 1.0)
-
-
 def is_grain_boundary_amount_column(header: str) -> bool:
     return (
         header not in {BURNUP_LABEL, TIME_LABEL}
@@ -330,6 +458,129 @@ def run_sciantix_case(case_dir: Path) -> subprocess.CompletedProcess[str]:
         capture_output=True,
         check=False,
     )
+
+
+def safe_plot_name(text: str) -> str:
+    return (
+        text.lower()
+        .replace(" ", "_")
+        .replace("+", "p")
+        .replace("-", "m")
+        .replace("/", "_")
+        .replace(":", "_")
+    )
+
+
+def load_phase_sublattice_rows(path: Path) -> list[dict[str, object]]:
+    ensure_output_file(path)
+    grouped: dict[tuple[float, str, str, int, float, str], list[tuple[float, float]]] = defaultdict(list)
+
+    with path.open(newline="") as handle:
+        reader = csv.DictReader(handle, delimiter="\t")
+        for row in reader:
+            constituent = row["Constituent"].strip()
+            phase_moles = float(row["Moles (mol/m3)"])
+            if constituent == "<empty>" or phase_moles <= 0.0:
+                continue
+
+            key = (
+                float(row["Time (h)"]),
+                row["Location"].strip(),
+                row["Phase"].strip(),
+                int(row["Sublattice"]),
+                float(row["Sites"]),
+                constituent,
+            )
+            grouped[key].append((phase_moles, float(row["Site fraction"])))
+
+    rows: list[dict[str, object]] = []
+    for (time_h, location, phase, sublattice, sites, constituent), values in grouped.items():
+        rows.append({
+            "time": time_h,
+            "location": location,
+            "phase": phase,
+            "sublattice": sublattice,
+            "sites": sites,
+            "constituent": constituent,
+            "phase_moles": float(np.mean([value[0] for value in values])),
+            "site_fraction": float(np.mean([value[1] for value in values])),
+        })
+
+    return rows
+
+
+def plot_phase_sublattice_composition(
+    case_dir: Path,
+    case_plot_dir: Path,
+    burnup: np.ndarray,
+    time: np.ndarray,
+    saved_paths: list[Path],
+) -> None:
+    sublattice_file = case_dir / PHASE_SUBLATTICE_OUTPUT_NAME
+    if not sublattice_file.exists():
+        print(f"No {sublattice_file.relative_to(TEST_DIR)} found; skipping phase sublattice plots.")
+        return
+
+    rows = load_phase_sublattice_rows(sublattice_file)
+    if not rows:
+        print(f"No non-zero phase sublattice composition rows found in {sublattice_file.relative_to(TEST_DIR)}.")
+        return
+
+    phase_keys = sorted({
+        (str(row["location"]), str(row["phase"]))
+        for row in rows
+    })
+
+    for location, phase in phase_keys:
+        phase_rows = [
+            row for row in rows
+            if row["location"] == location and row["phase"] == phase
+        ]
+        if not phase_rows:
+            continue
+
+        sublattices = sorted({int(row["sublattice"]) for row in phase_rows})
+        fig, axes = plt.subplots(
+            len(sublattices),
+            1,
+            figsize=(11, max(4, 3.2 * len(sublattices))),
+            sharex=True,
+        )
+        axes = np.atleast_1d(axes)
+
+        for axis, sublattice in zip(axes, sublattices):
+            sublattice_rows = [
+                row for row in phase_rows
+                if int(row["sublattice"]) == sublattice
+            ]
+            constituents = sorted({str(row["constituent"]) for row in sublattice_rows})
+            for constituent in constituents:
+                constituent_rows = sorted(
+                    [
+                        row for row in sublattice_rows
+                        if row["constituent"] == constituent
+                    ],
+                    key=lambda row: float(row["time"]),
+                )
+                plot_time = np.array([float(row["time"]) for row in constituent_rows])
+                plot_burnup = np.interp(plot_time, time, burnup)
+                plot_fraction = np.array([float(row["site_fraction"]) for row in constituent_rows])
+                axis.plot(plot_burnup, plot_fraction, label=constituent)
+
+            sites = sublattice_rows[0]["sites"]
+            axis.set_ylabel(f"SL {sublattice}, sites={sites:g}\nsite fraction (-)")
+            axis.set_ylim(-0.02, 1.02)
+            axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
+
+        axes[-1].set_xlabel(BURNUP_LABEL)
+        secondary_time_axis(axes[0], burnup, time, TIME_LABEL)
+        fig.suptitle(f"{phase} ({location}) sublattice composition", y=1.0)
+        save_figure(
+            fig,
+            case_plot_dir / f"phase_sublattice_{safe_plot_name(location)}_{safe_plot_name(phase)}.png",
+            saved_paths,
+        )
+
 
 def plot_case(
     case_dir: Path,
@@ -390,6 +641,7 @@ def plot_case(
             ("At grain boundary", COLORS[2], " at grain boundary (at/m3)"),
             ("Reacted", COLORS[3], " reacted (at/m3)"),
             ("Released", COLORS[4], " released (at/m3)"),
+            ("In solution", COLORS[5], " in solution (at/m3)"),
         ]:
             column_name = f"{species}{suffix}"
             if column_name in columns:
@@ -479,86 +731,7 @@ def plot_case(
     if TIME_LABEL not in thermochemistry_columns:
         raise ValueError(f"Missing {TIME_LABEL} in {THERMO_OUTPUT_NAME}")
 
-    available_columns = [
-        column for column in thermochemistry_headers
-        if is_liquid_constituent_column(column)
-        and not is_all_zero(thermochemistry_values[:, thermochemistry_columns[column]])
-    ]
-    if not available_columns:
-        return
-
-    constituent_formula_units = np.vstack([
-        thermochemistry_values[:, thermochemistry_columns[column]]
-        for column in available_columns
-    ])
-    constituent_atom_equivalents = np.vstack([
-        thermochemistry_values[:, thermochemistry_columns[column]] * liquid_constituent_stoichiometric_size(column)
-        for column in available_columns
-    ])
-    constituent_values = constituent_formula_units
-    constituent_ylabel = "Liquid constituent inventory (mol/m3)"
-    if LIQUID_TOTAL_COLUMN in thermochemistry_columns:
-        total_series = thermochemistry_values[:, thermochemistry_columns[LIQUID_TOTAL_COLUMN]]
-        total_norm = np.linalg.norm(total_series)
-        if total_norm > 0.0:
-            raw_error = np.linalg.norm(np.sum(constituent_formula_units, axis=0) - total_series) / total_norm
-            atom_equivalent_error = np.linalg.norm(np.sum(constituent_atom_equivalents, axis=0) - total_series) / total_norm
-            if atom_equivalent_error < raw_error:
-                constituent_values = constituent_atom_equivalents
-                constituent_ylabel = "Liquid constituent atom-equivalent inventory (mol/m3)"
-
-    labels = [column.split(" (", 1)[0] for column in available_columns]
-    colors = [
-        LIQUID_CONSTITUENT_COLORS[index % len(LIQUID_CONSTITUENT_COLORS)]
-        for index in range(len(labels))
-    ]
-
-    fig, axis = plt.subplots(figsize=(11, 7))
-    axis.stackplot(
-        thermochemistry_burnup,
-        constituent_values,
-        labels=labels,
-        colors=colors,
-        alpha=0.88,
-    )
-    axis.set_xlabel(BURNUP_LABEL)
-    axis.set_ylabel(constituent_ylabel)
-
-    if LIQUID_TOTAL_COLUMN in thermochemistry_columns:
-        total_series = thermochemistry_values[:, thermochemistry_columns[LIQUID_TOTAL_COLUMN]]
-        if not is_all_zero(total_series):
-            axis.plot(
-                thermochemistry_burnup,
-                total_series,
-                color="black",
-                linestyle="--",
-                label="LIQUID total",
-            )
-            handles, labels_for_legend = axis.get_legend_handles_labels()
-            axis.legend(
-                handles,
-                labels_for_legend,
-                loc="center left",
-                bbox_to_anchor=(1.12, 0.5),
-            )
-        else:
-            axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5))
-    else:
-        axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5))
-    save_figure(fig, case_plot_dir / "liquid_constituent.png", saved_paths)
-
-    fig, axis = plt.subplots(figsize=(11, 7))
-    axis.stackplot(
-        thermochemistry_burnup,
-        constituent_formula_units,
-        labels=labels,
-        colors=colors,
-        alpha=0.88,
-    )
-    axis.set_xlabel(BURNUP_LABEL)
-    axis.set_ylabel("Liquid constituent formula-unit inventory (mol/m3)")
-    axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5))
-    save_figure(fig, case_plot_dir / "liquid_constituent_formula_units.png", saved_paths)
+    plot_phase_sublattice_composition(case_dir, case_plot_dir, burnup, time, saved_paths)
 
 
 def plot_radial_profiles(
@@ -592,14 +765,20 @@ def plot_radial_profiles(
     for name in output_histories[0]:
         aligned_series = []
         for case_history in output_histories:
-            aligned_series.append(np.interp(reference_time, case_history["Time (h)"], case_history[name]))
+            if name in case_history:
+                aligned_series.append(np.interp(reference_time, case_history["Time (h)"], case_history[name]))
+            else:
+                aligned_series.append(np.zeros_like(reference_time))
         output_profiles[name] = np.vstack(aligned_series)
 
     thermo_profiles: dict[str, np.ndarray] = {}
     for name in thermo_histories[0]:
         aligned_series = []
         for case_history in thermo_histories:
-            aligned_series.append(np.interp(reference_time, case_history["Time (h)"], case_history[name]))
+            if name in case_history:
+                aligned_series.append(np.interp(reference_time, case_history["Time (h)"], case_history[name]))
+            else:
+                aligned_series.append(np.zeros_like(reference_time))
         thermo_profiles[name] = np.vstack(aligned_series)
 
     snapshot_targets = np.linspace(
@@ -779,42 +958,6 @@ def plot_radial_profiles(
                 continue
             series = radial_volume_average(thermo_profiles[variable], radii_m_array)
             summary_entries.append((f"{species}", series))
-
-        liquid_constituent_variables = [
-            variable for variable in thermo_profiles
-            if is_liquid_constituent_column(variable)
-            and not is_all_zero(thermo_profiles[variable])
-        ]
-        if liquid_constituent_variables:
-            liquid_formula_series = [
-                radial_volume_average(thermo_profiles[variable], radii_m_array)
-                for variable in liquid_constituent_variables
-            ]
-            liquid_atom_equivalent_series = [
-                radial_volume_average(
-                    thermo_profiles[variable] * liquid_constituent_stoichiometric_size(variable),
-                    radii_m_array,
-                )
-                for variable in liquid_constituent_variables
-            ]
-            liquid_series = liquid_formula_series
-            if LIQUID_TOTAL_COLUMN in thermo_profiles:
-                liquid_total_series = radial_volume_average(thermo_profiles[LIQUID_TOTAL_COLUMN], radii_m_array)
-                total_norm = np.linalg.norm(liquid_total_series)
-                if total_norm > 0.0:
-                    raw_error = np.linalg.norm(np.sum(np.vstack(liquid_formula_series), axis=0) - liquid_total_series) / total_norm
-                    atom_equivalent_error = np.linalg.norm(np.sum(np.vstack(liquid_atom_equivalent_series), axis=0) - liquid_total_series) / total_norm
-                    if atom_equivalent_error < raw_error:
-                        liquid_series = liquid_atom_equivalent_series
-
-            liquid_entries = [
-                (grain_boundary_species(variable), series)
-                for variable, series in zip(liquid_constituent_variables, liquid_series)
-                if not is_all_zero(series)
-            ]
-            liquid_entries.sort(key=lambda item: item[1][-1], reverse=True)
-            for species, series in liquid_entries:
-                summary_entries.append((f"Liquid: {species}", series))
 
         fig, axis = plt.subplots()
         gb_labels = [label for label, _ in summary_entries]
@@ -1028,11 +1171,14 @@ def main() -> int:
     PLOTS_DIR.mkdir(exist_ok=True)
     saved_paths: list[Path] = []
     case_results: list[tuple[Path, int]] = []
+    comparison_results: list[tuple[Path, bool, Path]] = []
 
     if not args.plot_only:
         ensure_executable(BUILD_EXECUTABLE)
         delete_file_if_exists(RUN_SUMMARY)
         for case_dir in case_directories:
+            print(f"Running {case_dir.name}...", flush=True)
+            gold_case_dir = save_gold_outputs(case_dir)
             cleanup_case_directory(case_dir)
             prepare_case_inputs(case_dir)
             completed = run_sciantix_case(case_dir)
@@ -1042,11 +1188,36 @@ def main() -> int:
             if completed.returncode != 0:
                 cleanup_case_directory(case_dir)
                 raise RuntimeError(f"SCIANTIX failed for {case_dir}")
+            comparison_ok, comparison_report = compare_case_outputs_with_gold(case_dir, gold_case_dir)
+            comparison_results.append((case_dir, comparison_ok, comparison_report))
+            status = "OK" if comparison_ok else "DIFF"
+            print(
+                f"Compared {case_dir.name} with gold: {status} "
+                f"({comparison_report.relative_to(TEST_DIR)})",
+                flush=True,
+            )
+
+            case_saved_paths: list[Path] = []
+            case_color_map = build_thermochemistry_color_map([case_dir])
+            plot_case(case_dir, case_saved_paths, case_color_map)
+            saved_paths.extend(case_saved_paths)
+            print(
+                f"Generated {len(case_saved_paths)} plots for {case_dir.name} "
+                f"in {(PLOTS_DIR / case_dir.name).relative_to(TEST_DIR)}",
+                flush=True,
+            )
             cleanup_case_directory(case_dir)
 
         summary_lines = ["SUPERFACT batch run summary", ""]
         for case_dir, returncode in case_results:
             summary_lines.append(f"{case_dir.name}: returncode={returncode}")
+        summary_lines.append("")
+        summary_lines.append("Gold comparison summary")
+        for case_dir, comparison_ok, comparison_report in comparison_results:
+            status = "OK" if comparison_ok else "DIFF"
+            summary_lines.append(
+                f"{case_dir.name}: {status}, report={comparison_report.relative_to(TEST_DIR)}"
+            )
         RUN_SUMMARY.write_text("\n".join(summary_lines))
     else:
         for case_dir in case_directories:
@@ -1055,8 +1226,9 @@ def main() -> int:
 
     gb_color_map = build_thermochemistry_color_map(case_directories)
 
-    for case_dir in case_directories:
-        plot_case(case_dir, saved_paths, gb_color_map)
+    if args.plot_only:
+        for case_dir in case_directories:
+            plot_case(case_dir, saved_paths, gb_color_map)
 
     plot_radial_profiles(case_directories, saved_paths, gb_color_map)
 
