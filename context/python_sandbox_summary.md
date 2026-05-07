@@ -18,11 +18,12 @@ sciantix-official/
 │   └── build_un_clean_notebook.py                    ← regenerates UN_clean.ipynb
 └── un_calibration/
     ├── model/
-    │   ├── un_model.py           ← M7 / capture_only physics, stdlib only
+    │   ├── un_model.py           ← capture_only physics, stdlib only
     │   └── un_data.py            ← Rizk experimental anchors
     ├── notebooks/
     │   └── UN_clean.ipynb        ← single curated notebook
-    └── reports/                  ← thesis-side markdown reports (preserved)
+    └── reports/
+        └── un_physics_notes.md    ← consolidated thesis-side physics notes
 ```
 
 `un_calibration/` total: ~890 KB. Only two Python files (`un_model.py`,
@@ -36,7 +37,7 @@ Pure-physics module, stdlib-only (`math`, `dataclasses`, `typing`). Provides:
 
 - `Candidate` (frozen dataclass — free fit parameters + scaling factors)
 - `UNParameters` (mutable dataclass — every literature constant as a field)
-- `solve_UN_M7(p, keep_history)` — the M7 / capture_only ODE solver
+- `solve_UN(p, keep_history)` — the capture_only ODE solver
 - helpers: diffusivity, resolution, trapping, nucleation, coalescence,
   pressure, vacancy ODE, spectral 3-equation gas balance
 
@@ -61,7 +62,7 @@ Two optional dislocation-density laws available, mutually exclusive:
 **Sections**:
 
 1. Imports + RIZK_CONSTANTS + RHO_FT_PARAMS + RHO_EXP_PARAMS + MANUAL_PARAMS + Candidate build + local model runner
-2. Equations solved (LaTeX, M7 / capture_only)
+2. Equations solved (LaTeX, capture_only)
 3. Smoke test at T = 1600 K, 1.3 % FIMA
 4. Swelling vs T at 1.1 / 1.3 / 3.2 % FIMA (Rizk Fig. 3)
 5. ρ_d(F, T) law diagnostics (Blank Table 3 anchors + 2-panel diagnostic + side-by-side 3D surfaces in MWd/kgHM)
