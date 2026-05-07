@@ -79,3 +79,41 @@ To re-run v14 calibration (~10 min for 100 trials + ~5 min FINAL):
 cd un_calibration/runners
 bash run_v14_rhoSat_qgbStrict_NdAnchors_block.sh 100
 ```
+
+---
+
+# Session notes — 2026-05-07
+
+Optuna purge. The notebook + physics module are now standalone.
+
+## What changed
+
+| Change | Where |
+|---|---|
+| Extracted M7/capture_only physics into a clean module (no Optuna scaffolding) | `un_calibration/model/un_M7_model.py` (~640 lines, stdlib only) |
+| Notebook rewired: every Rizk constant lives in `RIZK_CONSTANTS`; free fit params in `MANUAL_PARAMS`; optional saturating + Ray-Blank ρ_d law in `RHO_FT_PARAMS` (toggle `USE_RHO_FT`) | `un_calibration/notebooks/UN_clean.ipynb` (rebuilt by `tools/build_un_clean_notebook.py`) |
+| Notebook now has a 3D surface of ρ_d(F, T) with Blank Table 3 anchors, burnup axis in MWd/kgHM (1 a/o = 9.38 MWd/kgHM, 200 MeV/fission) | UN_clean.ipynb Section 5b |
+| Default `K_d` corrected from `3×10⁵` to Rizk's stated `1×10⁶` bub/m | RIZK_CONSTANTS in cell 3 |
+| Removed: `un_calibration/optuna/`, `un_calibration/runners/`, `un_calibration/results/`, `un_calibration/logs/`, `_pathsetup.py`, the four legacy `model/*.py` files (`un_model.py`, `un_model_fast.py`, `un_model_parity.py`, `calibrate_un.py`), and the three one-shot migration scripts in `tools/` | repo |
+
+## Disk usage
+
+- `un_calibration/` total: 15 MB → 892 KB
+- Python files in `un_calibration/`: 11 → 2 (`un_M7_model.py`, `un_data.py`)
+- Notebook cells: 21 → 20 (dropped v14 best-candidate table + Ray-Blank rhoSat fit + rhoFT2 plot, added the law diagnostics + 3D surface)
+
+## Default Rizk-nominal output (sanity)
+
+`USE_RHO_FT = False`, `f_n = 1×10⁻⁶`, `K_d = 10⁶`, `ρ_d = 3×10¹³`, all scales 1.0:
+- N_d (1400 K, 1.3 % FIMA) = 2.90×10¹⁹ m⁻³ — matches Rizk Fig. 8 cloud
+- R_d (2000 K, 1.3 % FIMA) = 186 nm — sub-µm, healthy
+- swelling_d (1600 K, 1.3 %) = 2.88 % — comparable to Rizk Fig. 3b
+
+Bit-identical parity confirmed against the deleted `UN_M7_optuna_calibration_v8_core.py`
+at one operating point (T=1600 K, 1.3 % FIMA): all of Nd, Rd, swelling, pressure, q_gb agree to 0 ulp.
+
+## Open items
+
+1. The "rank-1 candidate" reference in earlier notes is now historical only — the v14 CSV is gone.
+2. If a future calibration is wanted, it must be re-introduced as a separate script that imports `un_M7_model`; the previous Optuna scaffolding is no longer in the repo.
+3. `AI_UN_calibration_instructions.md` still describes the v3/v4/v5 Codex-Optuna workflow. It's preserved as-is (user-authored guidance) but is no longer tied to any code in the repo.

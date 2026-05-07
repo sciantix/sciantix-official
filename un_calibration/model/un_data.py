@@ -1,12 +1,5 @@
 """Digitized experimental data used by the UN calibration pipeline."""
 
-# --- path setup (added by tools/fix_paths.py after un_calibration/ reorg) ---
-import sys as _sys
-from pathlib import Path as _Path
-_sys.path.insert(0, str(_Path(__file__).resolve().parent.parent))
-import _pathsetup  # noqa: F401
-# --- end path setup ---
-
 EXP_SWELLING_T = [
     {"figure": "Fig3a", "burnup": 1.1, "series": "100 kW/m", "T": 1127.0, "swelling": 0.68},
     {"figure": "Fig3a", "burnup": 1.1, "series": "100 kW/m", "T": 1228.0, "swelling": 0.59},
