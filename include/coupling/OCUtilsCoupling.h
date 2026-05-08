@@ -29,6 +29,9 @@ struct OCSublatticeData
     int                           index = 0;
     int                           constituents_count = 0;
     double                        sites = 0.0;
+    double                        phase_moles = 0.0;
+    double                        phase_form_units = 0.0;
+    std::string                   phase_instance;
     std::map<std::string, double> composition;
 };
 
