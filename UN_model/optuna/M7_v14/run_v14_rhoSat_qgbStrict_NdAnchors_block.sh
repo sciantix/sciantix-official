@@ -2,16 +2,21 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 cd "${SCRIPT_DIR}"
 
 N_TRIALS="${1:-100}"
 if [[ -n "${PYTHON:-}" ]]; then
   PYTHON_BIN="${PYTHON}"
-elif [[ -x "${REPO_ROOT}/.venv/bin/python" ]]; then
-  PYTHON_BIN="${REPO_ROOT}/.venv/bin/python"
 else
+  SEARCH_DIR="${SCRIPT_DIR}"
   PYTHON_BIN="python3"
+  while [[ "${SEARCH_DIR}" != "/" ]]; do
+    if [[ -x "${SEARCH_DIR}/.venv/bin/python" ]]; then
+      PYTHON_BIN="${SEARCH_DIR}/.venv/bin/python"
+      break
+    fi
+    SEARCH_DIR="$(dirname "${SEARCH_DIR}")"
+  done
 fi
 
 "${PYTHON_BIN}" UN_M7_optuna_calibration_v14_rhoSat_qgbStrict_NdAnchors_STANDALONE.py \
