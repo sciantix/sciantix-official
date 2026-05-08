@@ -204,6 +204,24 @@ std::string normalizeSpeciesName(const std::string& raw_name)
     return trim(name);
 }
 
+std::string normalizePhaseInstanceName(const std::string& raw_name)
+{
+    std::string name = raw_name;
+
+    while (!name.empty() && name.back() == '.')
+        name.pop_back();
+
+    const size_t chkd_pos = name.find("_CHKD");
+    if (chkd_pos != std::string::npos)
+        name.erase(chkd_pos, 5);
+
+    const size_t auto_pos = name.find("_AUTO");
+    if (auto_pos != std::string::npos)
+        name.erase(auto_pos, 5);
+
+    return trim(name);
+}
+
 std::map<std::string, double> speciesStoichiometry(const std::string& species_name,
                                                    const std::vector<std::string>& valid_elements);
 
@@ -432,6 +450,7 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
     double      current_sublattice_sites = 0.0;
     int         current_sublattice_index = 0;
     std::string current_phase;
+    std::string current_phase_instance;
     std::string current_condensed_species;
 
     for (size_t i = 0; i < lines.size(); ++i)
@@ -493,6 +512,9 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                         sublattice.index = header.index;
                         sublattice.constituents_count = header.constituents_count;
                         sublattice.sites = header.sites;
+                        sublattice.phase_moles = current_phase_moles;
+                        sublattice.phase_form_units = current_phase_form_units;
+                        sublattice.phase_instance = current_phase_instance;
                         data.solution_phases[current_phase]
                             .species[current_condensed_species]
                             .sublattices.push_back(sublattice);
@@ -503,6 +525,9 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                         sublattice.index = header.index;
                         sublattice.constituents_count = header.constituents_count;
                         sublattice.sites = header.sites;
+                        sublattice.phase_moles = current_phase_moles;
+                        sublattice.phase_form_units = current_phase_form_units;
+                        sublattice.phase_instance = current_phase_instance;
                         data.solution_phases[current_phase].sublattices.push_back(sublattice);
                     }
                 }
@@ -519,6 +544,7 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                 continue;
 
             const std::string raw_phase_name = normalizeSpeciesName(parts[0]);
+            current_phase_instance = normalizePhaseInstanceName(parts[0]);
             const std::string species_name = normalizeSpeciesName(raw_phase_name);
             current_phase = normalizePhaseName(raw_phase_name);
             current_phase_moles = safeFloat(parts[2]);
@@ -600,6 +626,7 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                 current_sublattice_sites = 0.0;
                 current_sublattice_index = 0;
                 current_condensed_species.clear();
+                current_phase_instance.clear();
                 continue;
             }
 
@@ -617,6 +644,9 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                         sublattice.index = header.index;
                         sublattice.constituents_count = header.constituents_count;
                         sublattice.sites = header.sites;
+                        sublattice.phase_moles = current_phase_moles;
+                        sublattice.phase_form_units = current_phase_form_units;
+                        sublattice.phase_instance = current_phase_instance;
                         data.solution_phases[current_phase]
                             .species[current_condensed_species]
                             .sublattices.push_back(sublattice);
@@ -627,6 +657,9 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                         sublattice.index = header.index;
                         sublattice.constituents_count = header.constituents_count;
                         sublattice.sites = header.sites;
+                        sublattice.phase_moles = current_phase_moles;
+                        sublattice.phase_form_units = current_phase_form_units;
+                        sublattice.phase_instance = current_phase_instance;
                         data.solution_phases[current_phase].sublattices.push_back(sublattice);
                     }
                 }
@@ -660,6 +693,9 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                         OCSublatticeData sublattice;
                         sublattice.index = current_sublattice_index;
                         sublattice.sites = current_sublattice_sites;
+                        sublattice.phase_moles = current_phase_moles;
+                        sublattice.phase_form_units = current_phase_form_units;
+                        sublattice.phase_instance = current_phase_instance;
                         condensed_species.sublattices.push_back(sublattice);
                     }
 
@@ -673,6 +709,9 @@ OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<st
                     OCSublatticeData sublattice;
                     sublattice.index = current_sublattice_index;
                     sublattice.sites = current_sublattice_sites;
+                    sublattice.phase_moles = current_phase_moles;
+                    sublattice.phase_form_units = current_phase_form_units;
+                    sublattice.phase_instance = current_phase_instance;
                     phase.sublattices.push_back(sublattice);
                 }
                 phase.sublattices.back().composition[species_name] += mole_fraction;
@@ -820,6 +859,8 @@ void dumpParsedOcOutput(const OCOutputData& output_data)
                 std::cout << "      Sublattice " << sublattice.index
                           << " : constituents=" << sublattice.constituents_count
                           << ", sites=" << sublattice.sites
+                          << ", phase_instance=" << sublattice.phase_instance
+                          << ", phase_moles=" << sublattice.phase_moles
                           << std::endl;
 
                 for (const auto& constituent_entry : sublattice.composition)
@@ -857,6 +898,8 @@ void dumpParsedOcOutput(const OCOutputData& output_data)
                     std::cout << "        Sublattice " << sublattice.index
                               << " : constituents=" << sublattice.constituents_count
                               << ", sites=" << sublattice.sites
+                              << ", phase_instance=" << sublattice.phase_instance
+                              << ", phase_moles=" << sublattice.phase_moles
                               << std::endl;
 
                     for (const auto& constituent_entry : sublattice.composition)
@@ -884,8 +927,8 @@ bool writePhaseSublatticeCompositionOutput(const std::string& file_path,
 
     if (write_header)
     {
-        output_file << "Time (h)\tLocation\tPhase\tMoles (mol/m3)\t"
-                    << "Sublattice\tSites\tConstituent\tSite fraction\n";
+        output_file << "Time (h)\tLocation\tPhase\tPhase instance\tMoles (mol/m3)\t"
+                    << "Form units (mol/m3)\tSublattice\tSites\tConstituent\tSite fraction\n";
     }
 
     output_file << std::setprecision(10);
@@ -908,7 +951,9 @@ bool writePhaseSublatticeCompositionOutput(const std::string& file_path,
                         output_file << time_hours << "\t"
                                     << location << "\t"
                                     << species_name << "\t"
-                                    << species_data.moles * content_scaling_factor << "\t"
+                                    << sublattice.phase_instance << "\t"
+                                    << sublattice.phase_moles * content_scaling_factor << "\t"
+                                    << sublattice.phase_form_units * content_scaling_factor << "\t"
                                     << sublattice.index << "\t"
                                     << sublattice.sites << "\t"
                                     << constituent_entry.first << "\t"
@@ -926,7 +971,9 @@ bool writePhaseSublatticeCompositionOutput(const std::string& file_path,
                 output_file << time_hours << "\t"
                             << location << "\t"
                             << phase_name << "\t"
-                            << phase_data.moles * content_scaling_factor << "\t"
+                            << sublattice.phase_instance << "\t"
+                            << sublattice.phase_moles * content_scaling_factor << "\t"
+                            << sublattice.phase_form_units * content_scaling_factor << "\t"
                             << sublattice.index << "\t"
                             << sublattice.sites << "\t"
                             << constituent_entry.first << "\t"

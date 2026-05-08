@@ -459,18 +459,40 @@ def safe_plot_name(text: str) -> str:
         .replace("-", "m")
         .replace("/", "_")
         .replace(":", "_")
+        .replace("#", "_")
     )
+
+
+def phase_instance_from_row(row: dict[str, str]) -> str:
+    return row.get("Phase instance", "").strip()
+
+
+def display_phase_label(phase: str, phase_instance: str) -> str:
+    if not phase_instance or phase_instance.lower() == phase.lower():
+        return phase
+    match = re.search(r"#(.+)$", phase_instance)
+    if match:
+        return f"{phase} #{match.group(1).strip()}"
+    return f"{phase} ({phase_instance})"
+
+
+def phase_instance_plot_suffix(phase: str, phase_instance: str) -> str:
+    if not phase_instance or phase_instance.lower() == phase.lower():
+        return ""
+    match = re.search(r"#(.+)$", phase_instance)
+    return match.group(1).strip() if match else phase_instance
 
 
 def load_phase_sublattice_rows(path: Path) -> list[dict[str, object]]:
     ensure_output_file(path)
-    grouped: dict[tuple[float, str, str, int, float, str], list[tuple[float, float]]] = defaultdict(list)
+    grouped: dict[tuple[float, str, str, str, int, float, str], list[tuple[float, float, float]]] = defaultdict(list)
 
     with path.open(newline="") as handle:
         reader = csv.DictReader(handle, delimiter="\t")
         for row in reader:
             constituent = row["Constituent"].strip()
             phase_moles = float(row["Moles (mol/m3)"])
+            phase_form_units = float(row.get("Form units (mol/m3)") or phase_moles)
             if constituent == "<empty>" or phase_moles <= 0.0:
                 continue
 
@@ -478,23 +500,26 @@ def load_phase_sublattice_rows(path: Path) -> list[dict[str, object]]:
                 float(row["Time (h)"]),
                 row["Location"].strip(),
                 row["Phase"].strip(),
+                phase_instance_from_row(row),
                 int(row["Sublattice"]),
                 float(row["Sites"]),
                 constituent,
             )
-            grouped[key].append((phase_moles, float(row["Site fraction"])))
+            grouped[key].append((phase_moles, phase_form_units, float(row["Site fraction"])))
 
     rows: list[dict[str, object]] = []
-    for (time_h, location, phase, sublattice, sites, constituent), values in grouped.items():
+    for (time_h, location, phase, phase_instance, sublattice, sites, constituent), values in grouped.items():
         rows.append({
             "time": time_h,
             "location": location,
             "phase": phase,
+            "phase_instance": phase_instance,
             "sublattice": sublattice,
             "sites": sites,
             "constituent": constituent,
             "phase_moles": float(np.mean([value[0] for value in values])),
-            "site_fraction": float(np.mean([value[1] for value in values])),
+            "phase_form_units": float(np.mean([value[1] for value in values])),
+            "site_fraction": float(np.mean([value[2] for value in values])),
         })
 
     return rows
@@ -523,6 +548,7 @@ def load_phase_sublattice_inventory(path: Path) -> dict[float, dict[str, object]
 
             constituent = row["Constituent"].strip()
             phase_moles = float(row["Moles (mol/m3)"])
+            phase_form_units = float(row.get("Form units (mol/m3)") or phase_moles)
             site_fraction = float(row["Site fraction"])
             sites = float(row["Sites"])
             if constituent == "<empty>" or phase_moles <= 0.0 or site_fraction <= 0.0:
@@ -531,7 +557,7 @@ def load_phase_sublattice_inventory(path: Path) -> dict[float, dict[str, object]
             time_h = float(row["Time (h)"])
             location = row["Location"].strip()
             phase = row["Phase"].strip()
-            constituent_moles = phase_moles * sites * site_fraction
+            constituent_moles = phase_form_units * sites * site_fraction
             time_inventory = inventory[time_h]
 
             if location == "at grain boundary" and phase == "liquid" and "MOO4" in constituent.upper():
@@ -573,14 +599,18 @@ def plot_phase_sublattice_composition(
         return
 
     phase_keys = sorted({
-        (str(row["location"]), str(row["phase"]))
+        (str(row["location"]), str(row["phase"]), str(row["phase_instance"]))
         for row in rows
     })
 
-    for location, phase in phase_keys:
+    for location, phase, phase_instance in phase_keys:
         phase_rows = [
             row for row in rows
-            if row["location"] == location and row["phase"] == phase
+            if (
+                row["location"] == location
+                and row["phase"] == phase
+                and row["phase_instance"] == phase_instance
+            )
         ]
         if not phase_rows:
             continue
@@ -620,10 +650,19 @@ def plot_phase_sublattice_composition(
             axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
 
         axes[-1].set_xlabel(BURNUP_LABEL)
-        fig.suptitle(f"{phase} ({location})", y=1.0)
+        phase_label = display_phase_label(phase, phase_instance)
+        fig.suptitle(f"{phase_label} ({location})", y=1.0)
+        plot_name_parts = [
+            "phase_sublattice",
+            safe_plot_name(location),
+            safe_plot_name(phase),
+        ]
+        phase_suffix = phase_instance_plot_suffix(phase, phase_instance)
+        if phase_suffix:
+            plot_name_parts.append(safe_plot_name(phase_suffix))
         save_figure(
             fig,
-            case_plot_dir / f"phase_sublattice_{safe_plot_name(location)}_{safe_plot_name(phase)}.png",
+            case_plot_dir / ("_".join(plot_name_parts) + ".png"),
             saved_paths,
         )
 
