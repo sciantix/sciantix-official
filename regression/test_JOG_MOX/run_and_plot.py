@@ -948,13 +948,14 @@ def plot_radial_profiles(
         mo_produced_profile = output_profiles["Mo produced (at/m3)"] / AVOGADRO_NUMBER
         mo_oxide_profile = mo_liquid_moo4_profile + mo_solid_cs2moo4_profile
         mo_residual_profile = mo_produced_profile - mo_hcp_profile - mo_oxide_profile
-
+        if (mo_residual_profile/mo_produced_profile).any() > 0.01:
+            print("Check residual")
         quantity_panels = [
             ("Mo produced", mo_produced_profile),
             ("Mo oxide in liquid MOO4", mo_liquid_moo4_profile),
             ("Mo oxide in solid CS2MOO4", mo_solid_cs2moo4_profile),
             ("Mo metal in HCP_A3", mo_hcp_profile),
-            ("Mo residual", mo_residual_profile),
+            #("Mo residual", mo_residual_profile),
         ]
         fig, axes = plt.subplots(3, 2, figsize=(12, 13), sharex=True)
         axes = axes.flatten()
@@ -979,9 +980,9 @@ def plot_radial_profiles(
         save_figure(fig, PLOTS_DIR / "Mo_inventory_by_radius.png", saved_paths)
 
         mo_oxide_over_produced = np.divide(
-            mo_oxide_profile,
+            mo_solid_cs2moo4_profile,
             mo_produced_profile,
-            out=np.zeros_like(mo_oxide_profile),
+            out=np.zeros_like(mo_solid_cs2moo4_profile),
             where=mo_produced_profile > 0.0,
         )
         fig, axis = plt.subplots()
@@ -996,31 +997,57 @@ def plot_radial_profiles(
                 label=f"{reference_burnup[index]:.1f} MWd/kg$_{{MOX}}$",
             )
         axis.set_xlabel("Radius (mm)")
-        axis.set_ylabel("Mo oxide in liquid MOO4 + solid CS2MOO4 / Mo produced (-)")
+        axis.set_ylabel("Mo in CS2MOO4 / Mo produced (-)")
         axis.set_ylim(bottom=0.0)
         axis.legend(loc="best")
         save_figure(fig, PLOTS_DIR / "Mo_oxide_fraction_by_radius.png", saved_paths)
 
-    mo_hcp_over_ru_hcp = np.divide(
-        mo_hcp_profile,
-        ru_hcp_profile,
-        out=np.zeros_like(mo_hcp_profile),
-        where=ru_hcp_profile > 0.0,
-    )
-    if not is_all_zero(mo_hcp_over_ru_hcp):
+        mo_metal_over_produced = np.divide(
+            mo_hcp_profile,
+            mo_produced_profile,
+            out=np.zeros_like(mo_hcp_profile),
+            where=mo_produced_profile > 0.0,
+        )
         fig, axis = plt.subplots()
-        for radius_mm, ratio_history in zip(radii_mm_array, mo_hcp_over_ru_hcp):
+        for color, index in zip(snapshot_colors, indexes):
+            if is_all_zero(mo_produced_profile[:, index]):
+                continue
             axis.plot(
-                reference_burnup,
-                ratio_history,
-                label=f"r = {radius_mm:.1f} mm",
-                alpha=0.9,
+                radii_mm_array,
+                mo_metal_over_produced[:, index],
+                color=color,
+                marker="o",
+                label=f"{reference_burnup[index]:.1f} MWd/kg$_{{MOX}}$",
             )
-        axis.set_xlabel("Burnup (MWd/kg$_{MOX}$)")
-        axis.set_ylabel("Mo / Ru in HCP_A3 (-)")
+        axis.set_xlabel("Radius (mm)")
+        axis.set_ylabel("Mo in HCP_A3 / Mo produced (-)")
         axis.set_ylim(bottom=0.0)
-        axis.legend(loc="upper left")
-        save_figure(fig, PLOTS_DIR / "Mo_Ru_ratio_HCP_A3.png", saved_paths)
+        axis.legend(loc="best")
+        save_figure(fig, PLOTS_DIR / "Mo_metal_fraction_by_radius.png", saved_paths)
+
+        mo_hcp_over_ru_hcp = np.divide(
+            mo_hcp_profile,
+            ru_hcp_profile,
+            out=np.zeros_like(mo_hcp_profile),
+            where=ru_hcp_profile > 0.0,
+        )
+        if not is_all_zero(mo_hcp_over_ru_hcp):
+            fig, axis = plt.subplots()
+            for color, index in zip(snapshot_colors, indexes):
+                if is_all_zero(mo_hcp_over_ru_hcp[:, index]):
+                    continue
+                axis.plot(
+                    radii_mm_array,
+                    mo_hcp_over_ru_hcp[:, index],
+                    color=color,
+                    marker="o",
+                    label=f"{reference_burnup[index]:.1f} MWd/kg$_{{MOX}}$",
+                )
+            axis.set_xlabel("Radius (mm)")
+            axis.set_ylabel("Mo / Ru in HCP_A3 (-)")
+            axis.set_ylim(bottom=0.0)
+            axis.legend(loc="upper left")
+            save_figure(fig, PLOTS_DIR / "Mo_Ru_ratio_HCP_A3.png", saved_paths)
 
     if "Temperature (K)" in output_profiles:
         fig, axis = plt.subplots()
