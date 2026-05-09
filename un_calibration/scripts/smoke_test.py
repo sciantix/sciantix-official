@@ -2,19 +2,9 @@
 
 Validates that:
   - The config package + un_model wiring is intact.
-  - The Rizk-nominal run produces the expected reference numbers
-    (those reported below as REFERENCE).
+  - The Rizk-nominal run produces the expected reference numbers.
 
-REFERENCE values (capture_only flags ON, K_D=5e5, BE-quadratic coalescence,
-2026-05-09):
-    swelling (dislocation)  =  3.17 %
-    swelling (bulk)         =  1.35 %
-    R_d                     =  83.2 nm
-    R_b                     =  13.8 nm
-    N_d                     =  1.32e+19  m^-3
-    N_b                     =  ~1.2e+21  m^-3
-
-A discrepancy >1% on these numbers means a regression.
+A discrepancy >1% on the reference numbers below means a regression.
 """
 
 import sys
@@ -40,8 +30,7 @@ def main():
 
     print(f"Smoke test at T = {T_K} K, {BURNUP_PERCENT_FIMA} % FIMA")
     print(f"  flags:  phi={m.USE_PHI_GAS_RESOLUTION}  "
-          f"mass={m.USE_NUCLEATION_MASS_COUPLING}  "
-          f"capture={m.USE_BULK_DISLOCATION_CAPTURE}")
+          f"mass={m.USE_NUCLEATION_MASS_COUPLING}")
     print()
     print(f"  {'quantity':<26s} {'value':>14s}")
     print(f"  {'swelling (dislocation)':<26s} {out['swelling_d_percent']:>13.3f} %")

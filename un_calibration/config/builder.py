@@ -25,13 +25,13 @@ def build_candidate(manual_params=None, rizk_constants=None):
         label=mp["label"], f_n=mp["f_n"],
         K_d=rk["K_D"], rho_d=mp["rho_d"],
         fission_rate=mp["fission_rate"],
-        Dv_scale=mp["Dv_scale"], Dv_D1_scale=mp["Dv_D1_scale"], Dv_D2_scale=mp["Dv_D2_scale"],
+        Dv_scale=mp["Dv_scale"], Dv_D1_scale=mp["Dv_D1_scale"], Dv_D3_scale=mp["Dv_D3_scale"],
         Dg_scale=mp["Dg_scale"], Dg_D1_scale=mp["Dg_D1_scale"], Dg_D3_scale=mp["Dg_D3_scale"],
         b_scale=mp["b_scale"], gb_scale=mp["gb_scale"], gd_scale=mp["gd_scale"],
         b_bulk_scale=mp["b_bulk_scale"], b_dislocation_scale=mp["b_dislocation_scale"],
         gd_bubble_scale=mp["gd_bubble_scale"], gd_line_scale=mp["gd_line_scale"],
         gd_line_alpha=mp["gd_line_alpha"],
-        coalescence_d_scale=mp["coalescence_d_scale"], capture_scale=mp["capture_scale"],
+        coalescence_d_scale=mp["coalescence_d_scale"],
         D2_xe_scale=mp["D2_xe_scale"],
     )
 
@@ -71,10 +71,9 @@ def build_un_params(T, bu, cand=None, dt_h=12.0, n_modes=22,
         A20_xe=rk["A20_XE"], B21_xe=rk["B21_XE"],
         B22_xe=rk["B22_XE"], B23_xe=rk["B23_XE"],
         A30=rk["A30_XE"],
-        # Vacancy diffusivity
+        # Vacancy diffusivity (D1 thermal + D3 athermal; D2 dropped)
         D10_vU=rk["D10_VU"], Q1_vU=rk["Q1_VU"],
-        A20_vU_fig4_refit=rk["A20_VU"],
-        B21_vU_refit=rk["B21_VU"], B22_vU_refit=rk["B22_VU"],
+        A30_vU=rk["A30_VU"],
         # Resolution shape b0(R)  (Rizk Eq. 8)
         b0_prefactor=rk["B0_PREFACTOR"],
         b0_a1=rk["B0_A1"],
@@ -89,7 +88,7 @@ def build_un_params(T, bu, cand=None, dt_h=12.0, n_modes=22,
         # Scales
         Dv_scale=c.Dv_scale, Dg_scale=c.Dg_scale,
         Dg_D1_scale=c.Dg_D1_scale, Dg_D3_scale=c.Dg_D3_scale,
-        Dv_D1_scale=c.Dv_D1_scale, Dv_D2_scale=c.Dv_D2_scale,
+        Dv_D1_scale=c.Dv_D1_scale, Dv_D3_scale=c.Dv_D3_scale,
         D2_xe_scale=c.D2_xe_scale,
         b_scale=c.b_scale,
         b_bulk_scale=c.b_bulk_scale, b_dislocation_scale=c.b_dislocation_scale,
@@ -97,7 +96,6 @@ def build_un_params(T, bu, cand=None, dt_h=12.0, n_modes=22,
         gd_bubble_scale=c.gd_bubble_scale, gd_line_scale=c.gd_line_scale,
         gd_line_alpha=c.gd_line_alpha,
         coalescence_d_scale=c.coalescence_d_scale,
-        capture_scale=c.capture_scale,
     )
 
 
