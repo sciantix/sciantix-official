@@ -38,17 +38,16 @@ RIZK_CONSTANTS = {
     "B22_XE":              -1.49,     # eV^2
     "B23_XE":              0.0,       # eV^3
 
-    # --- Vacancy diffusivity (Fig. 4 refit) ---
-    # NOTE: the published Table 2 vacancy values do NOT reproduce Fig. 4 (the
-    # printed A20_VU = 1.32e-19 with B21_VU = 25.87 eV gives D2_v ~ 1e-100 m^2/s
-    # at T=1500 K; the figure shows ~1e-21). The refit below reproduces Fig. 4.
-    # The functional form deliberately uses +B21/(kT) (vs paper's -B21/(kT)) so
-    # that B21_VU_refit < 0 acts as a positive activation energy ~0.62 eV.
-    "D10_VU":              1.35e-2,   # m^2/s
-    "Q1_VU":               5.66,      # eV
-    "A20_VU":              4.6304523933553033e-29,  # m^(7/2) s^(-1/2)  (refit from Fig. 4)
-    "B21_VU":              -0.62,     # eV   (refit)
-    "B22_VU":              -0.04,     # eV^2 (refit)
+    # --- Vacancy diffusivity (D1 thermal + D3 athermal; D2 omitted) ---
+    # Rizk 2025 Fig. 4 actually plots D_tot which at T>=1300 K is dominated by D1
+    # (the Arrhenius thermal term from Tab. 2 below). The Tab. 2 D2 fit parameters
+    # for V_U are mathematically broken (off by ~14 OOM); per Schneider 2026
+    # cluster dynamics the true D2_v at 1500 K is ~1e-24 m^2/s, negligible vs D1.
+    # We therefore drop D2 entirely and add D3 athermal mixing from Schneider 2024
+    # (D3_v = 2.48e-22 m^2/s at F=5e19 fiss/m^3/s → A30 = D3/F = 4.96e-42 m^5).
+    "D10_VU":   1.35e-2,    # m^2/s  (Rizk 2025 Tab. 2)
+    "Q1_VU":    5.66,       # eV     (Rizk 2025 Tab. 2)
+    "A30_VU":   4.96e-42,   # m^5    (Schneider 2024 athermal mixing for V_U)
 
     # --- Re-solution shape b0(R) = pref * (a1 - a2 * exp(-b1/R))  (Rizk 2025 Eq. 8) ---
     "B0_PREFACTOR":        1.0e-25,   # m^6 at/bub/fission

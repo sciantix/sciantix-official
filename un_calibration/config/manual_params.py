@@ -29,7 +29,6 @@ MANUAL_PARAMS = {
 
     # --- Scales (1.0 = Rizk-nominal) ---
     "coalescence_d_scale":  1.0,
-    "capture_scale":        1.0,
     "gb_scale":             1.0,
     "gd_bubble_scale":      1.0,
     "gd_line_scale":        1.0,
@@ -38,7 +37,7 @@ MANUAL_PARAMS = {
     "b_dislocation_scale":  1.0,
     "Dv_scale":             1.0,
     "Dv_D1_scale":          1.0,
-    "Dv_D2_scale":          1.0,
+    "Dv_D3_scale":          1.0,
     "Dg_scale":             1.0,
     "Dg_D1_scale":          1.0,
     "Dg_D3_scale":          1.0,

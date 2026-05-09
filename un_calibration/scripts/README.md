@@ -40,7 +40,7 @@ Each script:
 | `fig78_NdRd_vs_T.py` | Rizk 2025 Fig. 7+8 | N_d (m^-3) and R_d (nm) vs T at 1.3 % FIMA |
 | `fig9_gas_partition.py` | Rizk 2025 Fig. 9 | Stacked-area gas fractions vs T at 1.3 % FIMA |
 | `rho_d_diagnostic.py` | – | 3D surface of the active ρ_d(F, T) law + Blank 1984 Table 3 anchors |
-| `flag_ablation.py` | – | 2×2×2 study of (φ, mass-coupling, capture) flags. CSV with RMSE + 8-panel figure. |
+| `flag_ablation.py` | – | 2×2 study of (φ, mass-coupling) flags. CSV with RMSE + 4-panel figure. |
 
 The notebook `notebooks/UN_clean.ipynb` is archived in `notebooks/archive/UN_clean_v0.ipynb`
 and is no longer the source of truth.

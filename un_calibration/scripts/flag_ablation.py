@@ -1,13 +1,11 @@
-"""2x2x2 ablation study of the three Python-extension flags in un_model.
+"""2x2 ablation study of the two physics-extension flags in un_model.
 
 Flags toggled (True/False each):
-  - USE_PHI_GAS_RESOLUTION       (φ-correction on resolution; Olander review)
+  - USE_PHI_GAS_RESOLUTION       (φ-correction on resolution; Olander 2006 / Pizzocri 2020)
   - USE_NUCLEATION_MASS_COUPLING (±2ν_b coupling between c and m_b; Pizzocri 2020)
-  - USE_BULK_DISLOCATION_CAPTURE (bulk→dislocation transfer; Barani-style; NOT in Rizk)
 
-Run 0 (all flags OFF) collapses the system to the bare 3-equation form that
-matches Rizk 2025 paper as published. Run 7 (all flags ON) is the "capture_only"
-default.
+Run 00 (both flags OFF) collapses the system to the bare 3-equation form that
+matches Rizk 2025 paper as published. Run 11 (both flags ON) is the default.
 
 For each combination, the model is run at the experimental (T, burnup) anchor
 points of `un_data.EXP_SWELLING_T` (Rizk Fig. 3) and RMSE / bias are computed
@@ -16,7 +14,7 @@ on dislocation-bubble swelling vs the measurements.
 Output:
     un_calibration/reports/flag_ablation/flag_ablation.csv     (per-combo metrics)
     un_calibration/reports/flag_ablation/flag_ablation_curves.png
-                                                                (8 swelling-vs-T panels)
+                                                                (4 swelling-vs-T panels)
 """
 
 import sys
@@ -42,14 +40,13 @@ BURNUPS = [1.1, 1.3, 3.2]
 
 OUT_DIR = ROOT / "reports" / "flag_ablation"
 
-FLAG_NAMES = ("phi", "mass", "capture")
+FLAG_NAMES = ("phi", "mass")
 
 
-def _set_flags(phi: bool, mass: bool, capture: bool):
+def _set_flags(phi: bool, mass: bool):
     """Override module-level flags before calling the solver."""
     m.USE_PHI_GAS_RESOLUTION = phi
     m.USE_NUCLEATION_MASS_COUPLING = mass
-    m.USE_BULK_DISLOCATION_CAPTURE = capture
 
 
 def _flag_label(flags):
@@ -69,18 +66,18 @@ def _mean(xs):
 def run():
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    # All 8 combinations: (phi, mass, capture)
-    combos = list(itertools.product([False, True], repeat=3))
+    # All 4 combinations: (phi, mass)
+    combos = list(itertools.product([False, True], repeat=2))
 
     # --- Per-combo metrics + curve data ---
     rows = []                                           # for CSV
-    curves = {}                                         # combo -> list of (T, bu, swD)
+    curves = {}                                         # combo -> list of dict
 
     for combo in combos:
         _set_flags(*combo)
         label = _flag_label(combo)
 
-        # Run model at every experimental anchor + on a smooth T-grid for plotting.
+        # Run model at every experimental anchor for the residuals.
         results_at_exp = []
         for exp_pt in un_data.EXP_SWELLING_T:
             T = float(exp_pt["T"])
@@ -113,7 +110,7 @@ def run():
                       if abs(r["burnup"] - bu) < 0.01]
             rows.append({
                 "label": label,
-                "phi": combo[0], "mass": combo[1], "capture": combo[2],
+                "phi": combo[0], "mass": combo[1],
                 "burnup_percent": bu,
                 "n_points": len(res_bu),
                 "rmse_swelling_d": _rmse(res_bu),
@@ -124,7 +121,7 @@ def run():
         all_res = [r["residual"] for r in results_at_exp]
         rows.append({
             "label": label,
-            "phi": combo[0], "mass": combo[1], "capture": combo[2],
+            "phi": combo[0], "mass": combo[1],
             "burnup_percent": "all",
             "n_points": len(all_res),
             "rmse_swelling_d": _rmse(all_res),
@@ -142,17 +139,16 @@ def run():
 
     # --- Console table ---
     print()
-    print(f"{'label':>5}  {'phi':>4}  {'mass':>4}  {'cap':>4}  {'bu':>4}  "
+    print(f"{'label':>5}  {'phi':>4}  {'mass':>4}  {'bu':>4}  "
           f"{'n':>3}  {'RMSE Sw_d':>10}  {'bias Sw_d':>10}")
-    print("-" * 64)
+    print("-" * 56)
     for r in rows:
         print(f"  {r['label']:>3}  {str(r['phi'])[0]:>4}  {str(r['mass'])[0]:>4}  "
-              f"{str(r['capture'])[0]:>4}  {str(r['burnup_percent']):>4}  "
-              f"{r['n_points']:>3}  {r['rmse_swelling_d']:>10.3f}  "
-              f"{r['bias_swelling_d']:>10.3f}")
+              f"{str(r['burnup_percent']):>4}  {r['n_points']:>3}  "
+              f"{r['rmse_swelling_d']:>10.3f}  {r['bias_swelling_d']:>10.3f}")
 
-    # --- 8-panel figure of swelling vs T ---
-    fig, axes = plt.subplots(2, 4, figsize=(20, 9), sharex=True, sharey=True)
+    # --- 4-panel figure of swelling vs T ---
+    fig, axes = plt.subplots(2, 2, figsize=(12, 9), sharex=True, sharey=True)
     axes = axes.flatten()
     colors_bu = {1.1: "tab:blue", 1.3: "tab:orange", 3.2: "tab:red"}
 
@@ -166,11 +162,10 @@ def run():
             ax.plot(Ts, swD, "-", color=colors_bu[bu], linewidth=1.6,
                     label=f"model {bu}% FIMA")
 
-            # Experimental dots
             exps = [p for p in un_data.EXP_SWELLING_T
                     if abs(p["burnup"] - bu) < 0.01]
             ax.scatter([p["T"] for p in exps], [p["swelling"] for p in exps],
-                       marker="o", s=18, color=colors_bu[bu],
+                       marker="o", s=22, color=colors_bu[bu],
                        edgecolor="black", linewidth=0.4, zorder=5)
 
         flag_str = " ".join(
@@ -182,16 +177,16 @@ def run():
         if ax is axes[0]:
             ax.legend(fontsize=8, loc="upper left")
 
-    for ax in axes[4:]:
+    for ax in axes[2:]:
         ax.set_xlabel("Temperature (K)")
-    for ax in (axes[0], axes[4]):
+    for ax in (axes[0], axes[2]):
         ax.set_ylabel("Swelling (%)")
     fig.suptitle(
-        "Flag ablation 2x2x2 — dislocation-bubble swelling vs experiment\n"
-        "label = (phi)(mass)(capture)   |   000 = bare 3-eq (paper-faithful)   |   111 = capture_only default",
+        "Flag ablation 2x2 — dislocation-bubble swelling vs experiment\n"
+        "label = (phi)(mass)   |   00 = bare 3-eq (paper-faithful)   |   11 = default",
         fontsize=11
     )
-    plt.tight_layout(rect=[0, 0, 1, 0.96])
+    plt.tight_layout(rect=[0, 0, 1, 0.94])
 
     png_path = OUT_DIR / "flag_ablation_curves.png"
     plt.savefig(png_path, dpi=140, bbox_inches="tight")

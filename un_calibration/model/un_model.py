@@ -1,4 +1,4 @@
-# un_model.py — UN fission gas behaviour, capture_only physics, pure module.
+# un_model.py — UN fission gas behaviour, pure module.
 #
 # Provides:
 #   - Candidate, UNParameters dataclasses
@@ -6,21 +6,19 @@
 #     coalescence, pressure, vacancy ODE, spectral 3-equation gas balance
 #   - solve_UN(p) — main solver
 #
-# Physics flags (capture_only family):
-#   USE_PHI_GAS_RESOLUTION       = True
-#   USE_NUCLEATION_MASS_COUPLING = True
-#   USE_BULK_DISLOCATION_CAPTURE = True
+# Physics flags:
+#   USE_PHI_GAS_RESOLUTION       = True   (Olander 2006 / Pizzocri 2020)
+#   USE_NUCLEATION_MASS_COUPLING = True   (Pizzocri 2020 mass conservation)
 
 import math
 from dataclasses import dataclass
 from typing import Optional, Sequence, Dict, List, Tuple
 
 # ============================================================
-# PHYSICS FLAGS (capture_only)
+# PHYSICS FLAGS
 # ============================================================
 USE_PHI_GAS_RESOLUTION = True
 USE_NUCLEATION_MASS_COUPLING = True
-USE_BULK_DISLOCATION_CAPTURE = True
 
 # All Rizk physical constants live in the caller (UN_clean.ipynb / RIZK_CONSTANTS).
 # This module is parameter-free: only physics formulas, solver, and algorithmic guards.
@@ -39,13 +37,12 @@ class Candidate:
 
     Dv_scale: float = 1.0
     Dv_D1_scale: float = 1.0
-    Dv_D2_scale: float = 1.0
+    Dv_D3_scale: float = 1.0
     Dg_scale: float = 1.0
     b_scale: float = 1.0
     gb_scale: float = 1.0
     gd_scale: float = 1.0
     coalescence_d_scale: float = 1.0
-    capture_scale: float = 1.0
 
     D2_xe_scale: float = 1.0
 
@@ -101,15 +98,13 @@ class UNParameters:
     Dg_D3_scale: float = 1.0
     Dg_extra_scale: float = 1.0
 
-    # --- Vacancy diffusivity (Fig. 4 refit) ---
+    # --- Vacancy diffusivity (D1 thermal + D3 athermal; D2 dropped) ---
     D10_vU: float
     Q1_vU: float
-    A20_vU_fig4_refit: float
-    B21_vU_refit: float
-    B22_vU_refit: float
+    A30_vU: float
     Dv_scale: float = 1.0
     Dv_D1_scale: float = 1.0
-    Dv_D2_scale: float = 1.0
+    Dv_D3_scale: float = 1.0
 
     # --- Resolution shape b0(R), Rizk 2025 Eq. 8 ---
     b0_prefactor: float
@@ -134,7 +129,6 @@ class UNParameters:
     gd_line_scale: float = 1.0
     gd_line_alpha: float = 1.0
     coalescence_d_scale: float = 1.0
-    capture_scale: float = 1.0
 
     # --- Initial conditions ---
     R_b: float = 0.0
@@ -228,16 +222,14 @@ def vacancy_diffusivity_UN(p: UNParameters):
     T = p.temperature
     kBT = p.kB_eV * T
     D1 = p.D10_vU * math.exp(-p.Q1_vU / kBT)
-    D2 = math.sqrt(p.fission_rate) * p.A20_vU_fig4_refit * math.exp(
-        p.B21_vU_refit / kBT + p.B22_vU_refit / (kBT**2)
-    )
-    Dv_unscaled = p.Dv_D1_scale * D1 + p.Dv_D2_scale * D2
+    D3 = p.A30_vU * p.fission_rate
+    Dv_unscaled = p.Dv_D1_scale * D1 + p.Dv_D3_scale * D3
     Dv = Dv_unscaled * p.Dv_scale
     return Dv, {
         "Dv1": D1,
-        "Dv2": D2,
+        "Dv3": D3,
         "Dv1_scaled": p.Dv_D1_scale * D1,
-        "Dv2_scaled": p.Dv_D2_scale * D2,
+        "Dv3_scaled": p.Dv_D3_scale * D3,
         "Dv": Dv,
     }
 
@@ -506,22 +498,15 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
     retained = initial_gas
     t = 0.0
 
-    capture_fraction_sum = 0.0
-    capture_raw_sum = 0.0
-    capture_bubbles_cumulative = 0.0
-    max_f_cap_step = 0.0
-
     hist_keys = [
         "time", "burnup_percent_fima", "c", "mb", "md", "Nb", "Nd", "Vb", "Vd", "Rb", "Rd",
         "nvb", "nvd", "generated", "retained", "q_gb", "swelling_b", "swelling_d", "swelling_ig",
         "p_b", "p_d", "p_b_eq", "p_d_eq", "lambda_d", "nu_b", "phi_b", "phi_d",
-        "f_cap_step", "cap_raw_step", "capture_fraction_sum", "capture_raw_sum",
-        "capture_bubbles_cumulative", "max_f_cap_step",
         "matrix_gas_percent", "bulk_gas_percent", "dislocation_gas_percent", "qgb_gas_percent",
     ]
     hist = {key: [] for key in hist_keys}
 
-    def append_state(nu_b=0.0, phi_b=0.0, phi_d=0.0, lambda_d=0.0, fcap=0.0, capraw=0.0):
+    def append_state(nu_b=0.0, phi_b=0.0, phi_d=0.0, lambda_d=0.0):
         if not keep_history:
             return
         c_av = reconstruct_average(modes_c)
@@ -559,12 +544,6 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
         hist["nu_b"].append(nu_b)
         hist["phi_b"].append(phi_b)
         hist["phi_d"].append(phi_d)
-        hist["f_cap_step"].append(fcap)
-        hist["cap_raw_step"].append(capraw)
-        hist["capture_fraction_sum"].append(capture_fraction_sum)
-        hist["capture_raw_sum"].append(capture_raw_sum)
-        hist["capture_bubbles_cumulative"].append(capture_bubbles_cumulative)
-        hist["max_f_cap_step"].append(max_f_cap_step)
         hist["matrix_gas_percent"].append(100.0 * c_av / generated if generated > 0.0 else 0.0)
         hist["bulk_gas_percent"].append(100.0 * mb_av / generated if generated > 0.0 else 0.0)
         hist["dislocation_gas_percent"].append(100.0 * md_av / generated if generated > 0.0 else 0.0)
@@ -678,41 +657,6 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
         R_b = radius_from_volume(V_b)
         R_d = radius_from_volume(V_d)
 
-        delta_Rd_cap = max(R_d - Rd_old, 0.0)
-        delta_Vcap = 4.0 * math.pi * (Rd_old + Rb_old) ** 2 * delta_Rd_cap
-        if USE_BULK_DISLOCATION_CAPTURE:
-            cap_raw_step = p.capture_scale * N_d * delta_Vcap
-            f_cap = max(0.0, min(cap_raw_step, 1.0))
-        else:
-            cap_raw_step = 0.0
-            f_cap = 0.0
-
-        capture_raw_sum += cap_raw_step
-        capture_fraction_sum += f_cap
-        max_f_cap_step = max(max_f_cap_step, f_cap)
-
-        if f_cap > 0.0 and N_b > 0.0:
-            mb_before = max(mb_new, 0.0)
-            nvb_before = max(nvb, 0.0)
-            captured_bubbles = f_cap * N_b
-
-            mb_new = (1.0 - f_cap) * mb_before
-            md_new = max(md_new, 0.0) + f_cap * mb_before
-            nvb = (1.0 - f_cap) * nvb_before
-            nvd = max(nvd, 0.0) + f_cap * nvb_before
-            N_b = (1.0 - f_cap) * N_b
-
-            capture_bubbles_cumulative += captured_bubbles
-
-            modes_c, modes_mb, modes_md = reset_modes_to_averages(c_new, mb_new, md_new, p.n_modes)
-
-            V_b = (p.omega_fg * max(mb_new, 0.0) + omega_matrix(p) * nvb) / N_b if N_b > 0.0 else 0.0
-            V_d = (p.omega_fg * max(md_new, 0.0) + omega_matrix(p) * nvd) / N_d if N_d > 0.0 else 0.0
-            V_b = max(V_b, p.min_volume)
-            V_d = max(V_d, p.min_volume)
-            R_b = radius_from_volume(V_b)
-            R_d = radius_from_volume(V_d)
-
         generated += beta * dt
         retained = max(c_new, 0.0) + max(mb_new, 0.0) + max(md_new, 0.0)
         q_gb = max(initial_gas + generated - retained, 0.0)
@@ -727,16 +671,10 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
             "lambda_d": lambda_d,
             "dVd_growth_dt": dVd_growth_dt,
             "dnvb_dt": dnvb_dt, "dnvd_dt": dnvd_dt,
-            "f_cap_step": f_cap,
-            "cap_raw_step": cap_raw_step,
-            "capture_fraction_sum": capture_fraction_sum,
-            "capture_raw_sum": capture_raw_sum,
-            "capture_bubbles_cumulative": capture_bubbles_cumulative,
-            "max_f_cap_step": max_f_cap_step,
             **D_parts, **Dv_parts, **trapping_parts,
         }
 
-        append_state(nu_b=nu_b, phi_b=phi_b, phi_d=phi_d, lambda_d=lambda_d, fcap=f_cap, capraw=cap_raw_step)
+        append_state(nu_b=nu_b, phi_b=phi_b, phi_d=phi_d, lambda_d=lambda_d)
 
     if not keep_history:
         c_av = reconstruct_average(modes_c)
@@ -766,12 +704,6 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
             "nu_b": [last_rates.get("nu_b", 0.0)],
             "phi_b": [last_rates.get("phi_b", 0.0)],
             "phi_d": [last_rates.get("phi_d", 0.0)],
-            "f_cap_step": [last_rates.get("f_cap_step", 0.0)],
-            "cap_raw_step": [last_rates.get("cap_raw_step", 0.0)],
-            "capture_fraction_sum": [capture_fraction_sum],
-            "capture_raw_sum": [capture_raw_sum],
-            "capture_bubbles_cumulative": [capture_bubbles_cumulative],
-            "max_f_cap_step": [max_f_cap_step],
             "matrix_gas_percent": [100.0 * c_av / generated if generated > 0.0 else 0.0],
             "bulk_gas_percent": [100.0 * mb_av / generated if generated > 0.0 else 0.0],
             "dislocation_gas_percent": [100.0 * md_av / generated if generated > 0.0 else 0.0],
