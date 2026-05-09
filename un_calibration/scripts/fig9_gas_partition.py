@@ -40,23 +40,26 @@ def run():
     matrix = [r["matrix_gas_percent"] for r in results]
     bulk   = [r["bulk_gas_percent"] for r in results]
     disl   = [r["dislocation_gas_percent"] for r in results]
-    qgb    = [r["qgb_gas_percent"] for r in results]
+    inter  = [r["intergranular_gas_percent"] for r in results]
+    rel    = [r["released_gas_percent"] for r in results]
 
     # --- CSV ---
     csv_path = OUT_DIR / "fig9_gas_partition.csv"
     with csv_path.open("w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["T_K", "matrix_percent", "bulk_percent",
-                    "dislocation_percent", "qgb_percent"])
-        for T, mat, b, d, q in zip(Ts, matrix, bulk, disl, qgb):
-            w.writerow([T, mat, b, d, q])
+                    "dislocation_percent", "intergranular_percent",
+                    "released_FGR_percent"])
+        for T, mat, b, d, i, fgr in zip(Ts, matrix, bulk, disl, inter, rel):
+            w.writerow([T, mat, b, d, i, fgr])
     print(f"  wrote {csv_path}")
 
     # --- Figure ---
     fig, ax = plt.subplots(figsize=(10, 5))
-    ax.stackplot(Ts, matrix, bulk, disl, qgb,
+    ax.stackplot(Ts, matrix, bulk, disl, inter, rel,
                  labels=["Matrix (in solution)", "Bulk bubbles",
-                         "Dislocation bubbles", "q_gb (grain face)"],
+                         "Dislocation bubbles", "Inter-granular bubbles",
+                         "Released (FGR)"],
                  alpha=0.85)
     ax.set_xlabel("Temperature (K)")
     ax.set_ylabel("Fraction of generated gas (%)")

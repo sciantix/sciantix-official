@@ -20,6 +20,11 @@ from typing import Optional, Sequence, Dict, List, Tuple
 USE_PHI_GAS_RESOLUTION = True
 USE_NUCLEATION_MASS_COUPLING = True
 
+# Inter-granular (grain face) bubble model: Rizk 2025 §A.2 + Eqs. 39, 40.
+# When False, gas leaving the grain interior is directly counted as FGR
+# (legacy behaviour, no GB bubbles).
+USE_GB_BUBBLES = True
+
 # All Rizk physical constants live in the caller (UN_clean.ipynb / RIZK_CONSTANTS).
 # This module is parameter-free: only physics formulas, solver, and algorithmic guards.
 
@@ -118,6 +123,14 @@ class UNParameters:
     K_d: float
     r_d: float
     Z_d: float
+
+    # --- Inter-granular (grain face) bubble model — Rizk 2025 §A.2 ---
+    N_gf_0: float          # m^-2, initial GB bubble density
+    D_vgb_ratio: float     # D_v_gb / D_1_v_thermal (multiplier)
+    delta_gb: float        # m, GB diffusion layer thickness
+    R_gf_0: float          # m, initial GB bubble radius
+    F_c_sat: float         # saturation coverage threshold
+    theta_rad: float       # rad, semi-dihedral angle
 
     # --- Calibration scales ---
     gb_scale: float = 1.0
@@ -234,6 +247,17 @@ def vacancy_diffusivity_UN(p: UNParameters):
     }
 
 
+def gb_vacancy_diffusivity_UN(p: UNParameters) -> float:
+    """D_v_gb = D_vgb_ratio * D_1_thermal_v   (Rizk 2025 §A.2 + Tab. 1).
+
+    Note: only the THERMAL Arrhenius part of D_v enters the GB multiplier;
+    no D_3 athermal here. This is what Rizk uses for SIFGRS in BISON.
+    """
+    kBT = p.kB_eV * p.temperature
+    D1_thermal_v = p.D10_vU * math.exp(-p.Q1_vU / kBT)
+    return p.D_vgb_ratio * D1_thermal_v
+
+
 def b0_resolution(R: float, prefactor: float, a1: float, a2: float, b1: float) -> float:
     R = max(R, 1.0e-15)
     return prefactor * (a1 - a2 * math.exp(-b1 / R))
@@ -335,6 +359,95 @@ def zeta_geometry(R: float, N: float) -> float:
     den = -psi**6 + 5.0 * psi**2 - 9.0 * psi + 5.0
     den = max(den, 1.0e-30)
     return max(10.0 * psi * (1.0 + psi**3) / den, 1.0e-30)
+
+
+# === Inter-granular (grain face) bubble helpers — Rizk 2025 Eqs. 39, 40 ===
+
+def zeta_gf(F_c: float) -> float:
+    """Eq. 39 of Rizk 2025: GB-bubble sink-strength geometric factor.
+
+        ζ_gf = -[(3 - F_c)(1 - F_c) + 2 ln F_c] / 4
+
+    F_c is the fraction of grain-face area covered by bubble projections.
+    """
+    F_c = max(min(F_c, 0.99), 1.0e-6)
+    inner = (3.0 - F_c) * (1.0 - F_c) + 2.0 * math.log(F_c)
+    return max(-inner / 4.0, 1.0e-30)
+
+
+def lenticular_shape_factor(theta: float) -> float:
+    """g(θ) = 1 - 1.5 cosθ + 0.5 cos²θ  (lenticular bubble volume factor)."""
+    c = math.cos(theta)
+    return 1.0 - 1.5 * c + 0.5 * c * c
+
+
+def R_gf_from_V(V_gf: float, theta: float) -> float:
+    """Eq. 40 of Rizk 2025: lenticular-bubble radius of curvature from volume.
+
+        V = (4π/3) R³ · g(θ)        ⇒        R = (3 V / [4π g(θ)])^(1/3)
+    """
+    if V_gf <= 0.0:
+        return 0.0
+    g = lenticular_shape_factor(theta)
+    return (3.0 * V_gf / (4.0 * math.pi * g)) ** (1.0 / 3.0)
+
+
+def V_gf_from_R(R_gf: float, theta: float) -> float:
+    """Inverse of Eq. 40."""
+    g = lenticular_shape_factor(theta)
+    return (4.0 / 3.0) * math.pi * R_gf ** 3 * g
+
+
+def F_c_coverage(N_gf: float, R_gf: float, theta: float) -> float:
+    """Fraction of grain-face area covered by lenticular bubble projections.
+
+    Each bubble projects onto the grain face as a circle of radius R · sinθ.
+    Coverage = N_gf · π · (R sinθ)².
+    """
+    return math.pi * N_gf * R_gf ** 2 * math.sin(theta) ** 2
+
+
+def gb_vacancy_step(p: UNParameters, D_v_gb: float, R_gf: float,
+                    N_gf: float, m_f: float, n_v_f_old: float,
+                    F_c: float, dt: float):
+    """Backward-Euler step on Eq. 21f for grain-face bubbles.
+
+    Differs from intragranular Eq. 21f via: (a) δ → δ_gb (constant GB
+    thickness, not Wigner-Seitz), (b) ζ → ζ_gf (Eq. 39, function of F_c),
+    (c) D_v → D_v_gb (Rizk Tab. 1: 10⁶ × D_1_thermal).
+
+    Same quadratic form as `vacancy_concentration_implicit_step`, with the
+    A coefficient redefined.
+    """
+    if N_gf <= 0.0 or m_f <= 0.0 or R_gf <= 0.0:
+        return n_v_f_old, 0.0
+
+    p_eq = 2.0 * p.gamma_b / R_gf - p.hydrostatic_stress
+    p_int_old = pressure_internal(p, m_f, n_v_f_old)
+
+    if p.vacancy_absorption_only and p_int_old <= p_eq:
+        return n_v_f_old, 0.0
+
+    zeta = zeta_gf(F_c)
+    A = 2.0 * math.pi * D_v_gb * p.delta_gb * N_gf / (p.kB_J * p.temperature * zeta)
+    C = p.kB_J * p.temperature * m_f / omega_matrix(p)
+    B = n_v_f_old - dt * A * p_eq
+    disc = B * B + 4.0 * dt * A * C
+
+    if disc < 0.0:
+        raise ValueError(f"Negative discriminant in GB vacancy step: {disc:g}")
+
+    sqrt_disc = math.sqrt(disc)
+    if B >= 0.0:
+        n_new = 0.5 * (B + sqrt_disc)
+    else:
+        denom = sqrt_disc - B
+        n_new = 0.0 if denom <= 0.0 else (2.0 * dt * A * C) / denom
+
+    if p.vacancy_absorption_only:
+        n_new = max(n_new, n_v_f_old)
+
+    return n_new, (n_new - n_v_f_old) / dt
 
 
 def vacancy_concentration_implicit_step(p: UNParameters, Dv: float, R: float, N: float, m_gas: float, n_old: float, dt: float):
@@ -498,11 +611,34 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
     retained = initial_gas
     t = 0.0
 
+    # --- Inter-granular (grain-face) bubble state ---
+    # Convention: m_f, n_v_f are atom/vacancy densities PER m^3 OF GRAIN (3D),
+    # consistent with c, m_b, m_d. N_gf is the published 2D density (Rizk
+    # Tab. 1: 2e13 m^-2 of grain face). For per-bubble volume calculations
+    # and the vacancy ODE we therefore convert to a 3D bubble density via
+    #     N_gf_3D = N_gf * (3 / r_grain)        [bubbles per m^3 of grain]
+    # F_c (coverage of the grain face) keeps the 2D N_gf.
+    N_gf = p.N_gf_0
+    N_gf_3D = N_gf * 3.0 / p.grain_radius
+    R_gf = p.R_gf_0
+    V_gf = V_gf_from_R(R_gf, p.theta_rad)
+    m_f = 0.0
+    # Initial vacancies fill the entire bubble volume (no gas yet).
+    n_v_f = max(V_gf * N_gf_3D / omega_matrix(p), 0.0)
+    F_c = F_c_coverage(N_gf, R_gf, p.theta_rad)
+    fgr_total = 0.0
+
     hist_keys = [
         "time", "burnup_percent_fima", "c", "mb", "md", "Nb", "Nd", "Vb", "Vd", "Rb", "Rd",
         "nvb", "nvd", "generated", "retained", "q_gb", "swelling_b", "swelling_d", "swelling_ig",
         "p_b", "p_d", "p_b_eq", "p_d_eq", "lambda_d", "nu_b", "phi_b", "phi_d",
         "matrix_gas_percent", "bulk_gas_percent", "dislocation_gas_percent", "qgb_gas_percent",
+        # Inter-granular (grain-face) bubble outputs:
+        "mf", "nvf", "Vgf", "Rgf", "Ngf", "F_c", "swelling_gf", "fgr_total",
+        "fgr_percent", "swelling_gf_percent", "intergranular_gas_percent",
+        "released_gas_percent",
+        # Solid fission product swelling (Rizk 2025 Eq. 19): 0.5·B per FIMA.
+        "swelling_solid", "swelling_solid_percent",
     ]
     hist = {key: [] for key in hist_keys}
 
@@ -548,6 +684,25 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
         hist["bulk_gas_percent"].append(100.0 * mb_av / generated if generated > 0.0 else 0.0)
         hist["dislocation_gas_percent"].append(100.0 * md_av / generated if generated > 0.0 else 0.0)
         hist["qgb_gas_percent"].append(100.0 * q_gb / generated if generated > 0.0 else 0.0)
+        hist["mf"].append(m_f)
+        hist["nvf"].append(n_v_f)
+        hist["Vgf"].append(V_gf)
+        hist["Rgf"].append(R_gf)
+        hist["Ngf"].append(N_gf)
+        hist["F_c"].append(F_c)
+        # GB volume fraction = N_gf_3D · V_gf  (N_gf_3D = N_gf * 3/r_grain).
+        swelling_gf_vol = N_gf_3D * V_gf
+        hist["swelling_gf"].append(swelling_gf_vol)
+        hist["fgr_total"].append(fgr_total)
+        hist["swelling_gf_percent"].append(100.0 * swelling_gf_vol)
+        hist["intergranular_gas_percent"].append(100.0 * m_f / generated if generated > 0.0 else 0.0)
+        hist["released_gas_percent"].append(100.0 * fgr_total / generated if generated > 0.0 else 0.0)
+        hist["fgr_percent"].append(100.0 * fgr_total / generated if generated > 0.0 else 0.0)
+        # Solid swelling (Rizk 2025 Eq. 19)
+        bu_pct_now = time_to_burnup_percent(t, p.fission_rate, p.lattice_parameter)
+        sw_solid_pct = 0.5 * bu_pct_now
+        hist["swelling_solid"].append(sw_solid_pct / 100.0)
+        hist["swelling_solid_percent"].append(sw_solid_pct)
 
     append_state()
     last_rates = {}
@@ -657,8 +812,61 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
         R_b = radius_from_volume(V_b)
         R_d = radius_from_volume(V_d)
 
+        # === Inter-granular (grain-face) bubble step ===
+        # Gas leaving the grain interior in this step (conservation balance).
+        delta_grain_internal = (c_new - c_old) + (mb_new - mb_old) + (md_new - md_old)
+        gas_to_gb = max(beta * dt - delta_grain_internal, 0.0)
+
+        if USE_GB_BUBBLES:
+            m_f_provisional = m_f + gas_to_gb
+
+            # Vacancy ODE on GB bubble (BE quadratic, with D_v_gb, δ_gb, ζ_gf).
+            # Pass N_gf_3D so that A = 2π D_v_gb δ_gb N_3D / (kT ζ_gf) has the
+            # same units as the intragranular case.
+            D_v_gb = gb_vacancy_diffusivity_UN(p)
+            n_v_f, dnvf_dt = gb_vacancy_step(
+                p, D_v_gb, R_gf, N_gf_3D, m_f_provisional, n_v_f, F_c, dt,
+            )
+
+            # Volume + radius update from gas + vacancies (lenticular geometry).
+            V_gf_new = ((p.omega_fg * max(m_f_provisional, 0.0)
+                         + omega_matrix(p) * n_v_f) / N_gf_3D
+                        if N_gf_3D > 0.0 else 0.0)
+            V_gf_new = max(V_gf_new, p.min_volume)
+            R_gf_new = R_gf_from_V(V_gf_new, p.theta_rad)
+            F_c_new = F_c_coverage(N_gf, R_gf_new, p.theta_rad)
+
+            # Saturation cap + FGR release at F_c ≥ F_c,sat.
+            fgr_step = 0.0
+            if F_c_new > p.F_c_sat:
+                R_gf_sat = math.sqrt(p.F_c_sat / (math.pi * N_gf
+                                                  * math.sin(p.theta_rad) ** 2))
+                V_gf_sat = V_gf_from_R(R_gf_sat, p.theta_rad)
+                m_f_sat = max(
+                    (V_gf_sat * N_gf_3D - omega_matrix(p) * n_v_f) / p.omega_fg,
+                    0.0,
+                )
+                fgr_step = max(m_f_provisional - m_f_sat, 0.0)
+                m_f = m_f_sat
+                V_gf = V_gf_sat
+                R_gf = R_gf_sat
+                F_c = p.F_c_sat
+            else:
+                m_f = m_f_provisional
+                V_gf = V_gf_new
+                R_gf = R_gf_new
+                F_c = F_c_new
+
+            fgr_total += fgr_step
+        else:
+            # Legacy: no GB bubbles, gas leaving the grain is released directly.
+            fgr_total += gas_to_gb
+
         generated += beta * dt
         retained = max(c_new, 0.0) + max(mb_new, 0.0) + max(md_new, 0.0)
+        # q_gb keeps its original meaning ("everything that has left the grain
+        # interior"), now decomposed into m_f (in GB bubbles) + fgr_total
+        # (released to plenum). Conservation: q_gb = m_f + fgr_total.
         q_gb = max(initial_gas + generated - retained, 0.0)
         t += dt
 
@@ -708,6 +916,24 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
             "bulk_gas_percent": [100.0 * mb_av / generated if generated > 0.0 else 0.0],
             "dislocation_gas_percent": [100.0 * md_av / generated if generated > 0.0 else 0.0],
             "qgb_gas_percent": [100.0 * q_gb / generated if generated > 0.0 else 0.0],
+            "mf": [m_f],
+            "nvf": [n_v_f],
+            "Vgf": [V_gf],
+            "Rgf": [R_gf],
+            "Ngf": [N_gf],
+            "F_c": [F_c],
+            "swelling_gf": [N_gf_3D * V_gf],
+            "fgr_total": [fgr_total],
+            "swelling_gf_percent": [100.0 * N_gf_3D * V_gf],
+            "swelling_solid": [
+                0.005 * time_to_burnup_percent(t, p.fission_rate, p.lattice_parameter)
+            ],
+            "swelling_solid_percent": [
+                0.5 * time_to_burnup_percent(t, p.fission_rate, p.lattice_parameter)
+            ],
+            "intergranular_gas_percent": [100.0 * m_f / generated if generated > 0.0 else 0.0],
+            "released_gas_percent": [100.0 * fgr_total / generated if generated > 0.0 else 0.0],
+            "fgr_percent": [100.0 * fgr_total / generated if generated > 0.0 else 0.0],
         }
 
     return hist, last_rates
