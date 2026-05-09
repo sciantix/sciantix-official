@@ -36,8 +36,9 @@ Each script:
 | Script | Reproduces | Notes |
 |---|---|---|
 | `smoke_test.py` | – | Single point at T=1600 K, 1.3% FIMA. Reference numbers in docstring. |
-| `fig3_swelling_vs_T.py` | Rizk 2025 Fig. 3 | swelling_b + swelling_d vs T at 1.1 / 1.3 / 3.2 % FIMA |
-| `fig78_NdRd_vs_T.py` | Rizk 2025 Fig. 7+8 | N_d (m^-3) and R_d (nm) vs T at 1.3 % FIMA |
+| `fig3_swelling_vs_T.py` | Rizk 2025 Fig. 3 | swelling_b + swelling_d vs T at 1.1 / 1.3 / 3.2 % FIMA. Experimental points include ±10% Ronchi 1978 statistical error bars. |
+| `fig4_diffusivity_vs_T.py` | Rizk 2025 Fig. 4 | Decomposed D_Xe and D_v vs T (D1, D3, total). Includes a "broken Tab. 2 D2_v" diagnostic curve. |
+| `fig78_NdRd_vs_T.py` | Rizk 2025 Fig. 7+8 | N_d (m^-3) and R_d (nm) vs T at 1.3 % FIMA, with ±10% experimental error bars. |
 | `fig9_gas_partition.py` | Rizk 2025 Fig. 9 | Stacked-area gas fractions vs T at 1.3 % FIMA |
 | `rho_d_diagnostic.py` | – | 3D surface of the active ρ_d(F, T) law + Blank 1984 Table 3 anchors |
 | `flag_ablation.py` | – | 2×2 study of (φ, mass-coupling) flags. CSV with RMSE + 4-panel figure. |

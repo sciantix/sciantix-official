@@ -29,6 +29,9 @@ BURNUPS = [1.1, 1.3, 3.2]
 DT_HOURS = 12.0
 N_MODES = 25
 
+# Ronchi 1978 reports a global statistical error <10% on microscopic swelling.
+EXPERIMENTAL_ERROR_FRACTION = 0.10
+
 OUT_DIR = ROOT / "reports" / "fig3_swelling_vs_T"
 
 
@@ -71,16 +74,27 @@ def run():
                        if abs(p["burnup"] - 1.1) < 0.01 and p["series"] == "100 kW/m"]
             exp_119 = [p for p in un_data.EXP_SWELLING_T
                        if abs(p["burnup"] - 1.1) < 0.01 and p["series"] == "119 kW/m"]
-            ax.scatter([p["T"] for p in exp_100], [p["swelling"] for p in exp_100],
-                       marker="s", s=50, color="black",
-                       label="Exp P2 100 kW/m", zorder=5)
-            ax.scatter([p["T"] for p in exp_119], [p["swelling"] for p in exp_119],
-                       marker="^", s=50, facecolor="white", edgecolor="black",
-                       linewidth=1.3, label="Exp P2 119 kW/m", zorder=5)
+            sw_100 = [p["swelling"] for p in exp_100]
+            sw_119 = [p["swelling"] for p in exp_119]
+            ax.errorbar([p["T"] for p in exp_100], sw_100,
+                        yerr=[EXPERIMENTAL_ERROR_FRACTION * s for s in sw_100],
+                        fmt="s", markersize=6, color="black",
+                        ecolor="black", elinewidth=0.8, capsize=2.0,
+                        label="Exp P2 100 kW/m", zorder=5)
+            ax.errorbar([p["T"] for p in exp_119], sw_119,
+                        yerr=[EXPERIMENTAL_ERROR_FRACTION * s for s in sw_119],
+                        fmt="^", markersize=7, markerfacecolor="white",
+                        markeredgecolor="black", markeredgewidth=1.0,
+                        ecolor="black", elinewidth=0.8, capsize=2.0,
+                        label="Exp P2 119 kW/m", zorder=5)
         else:
             exp = [p for p in un_data.EXP_SWELLING_T if abs(p["burnup"] - bu) < 0.01]
-            ax.scatter([p["T"] for p in exp], [p["swelling"] for p in exp],
-                       marker="s", s=50, color="black", label="Exp P2", zorder=5)
+            sw = [p["swelling"] for p in exp]
+            ax.errorbar([p["T"] for p in exp], sw,
+                        yerr=[EXPERIMENTAL_ERROR_FRACTION * s for s in sw],
+                        fmt="s", markersize=6, color="black",
+                        ecolor="black", elinewidth=0.8, capsize=2.0,
+                        label="Exp P2 (±10% Ronchi 1978)", zorder=5)
 
         ax.set_xlabel("Temperature (K)")
         ax.set_title(f"{bu} % FIMA")

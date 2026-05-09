@@ -28,6 +28,9 @@ BURNUP_PERCENT_FIMA = 1.3
 DT_HOURS = 12.0
 N_MODES = 25
 
+# Ronchi 1978 reports a global statistical error <10% on microscopic measurements.
+EXPERIMENTAL_ERROR_FRACTION = 0.10
+
 OUT_DIR = ROOT / "reports" / "fig78_NdRd_vs_T"
 
 
@@ -53,11 +56,14 @@ def run():
     # --- Figure ---
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 4.2))
 
+    rd_pts = un_data.EXP_RD_T_13
+    rd_T   = [p["T"] for p in rd_pts]
+    rd_R   = [p["R_nm"] for p in rd_pts]
+    rd_err = [EXPERIMENTAL_ERROR_FRACTION * r for r in rd_R]
     ax1.plot(Ts, Rds, "-", linewidth=2, label="Model R_d")
-    ax1.scatter([p["T"] for p in un_data.EXP_RD_T_13],
-                [p["R_nm"] for p in un_data.EXP_RD_T_13],
-                color="red", s=40, marker="^",
-                label="Rizk Fig. 8 exp (1.3% FIMA)", zorder=5)
+    ax1.errorbar(rd_T, rd_R, yerr=rd_err, fmt="^", markersize=6,
+                 color="red", ecolor="red", elinewidth=0.7, capsize=2.0,
+                 label="Rizk Fig. 8 exp (1.3% FIMA, ±10%)", zorder=5)
     ax1.set_xlabel("Temperature (K)")
     ax1.set_ylabel("R_d (nm)")
     ax1.set_yscale("log")
@@ -65,16 +71,20 @@ def run():
     ax1.legend()
     ax1.grid(alpha=0.3, which="both")
 
+    nd_pts = un_data.EXP_ND_T_13
+    nd_T   = [p["T"] for p in nd_pts]
+    nd_N   = [p["N"] for p in nd_pts]
+    nd_err = [EXPERIMENTAL_ERROR_FRACTION * n for n in nd_N]
     ax2.semilogy(Ts, Nds, "-", linewidth=2, label="Model N_d")
-    ax2.scatter([p["T"] for p in un_data.EXP_ND_T_13],
-                [p["N"] for p in un_data.EXP_ND_T_13],
-                color="red", s=40, marker="^",
-                label="Rizk Fig. 7 exp (1.3% FIMA)", zorder=5)
+    ax2.errorbar(nd_T, nd_N, yerr=nd_err, fmt="^", markersize=6,
+                 color="red", ecolor="red", elinewidth=0.7, capsize=2.0,
+                 label="Rizk Fig. 7 exp (1.3% FIMA, ±10%)", zorder=5)
     ax2.set_xlabel("Temperature (K)")
     ax2.set_ylabel("N_d (m^-3)")
     ax2.set_title(f"Dislocation-bubble concentration ({BURNUP_PERCENT_FIMA}% FIMA)")
     ax2.legend()
     ax2.grid(alpha=0.3, which="both")
+    ax2.set_ylim(bottom=1e17)
 
     plt.tight_layout()
     png_path = OUT_DIR / "fig78_NdRd_vs_T.png"
