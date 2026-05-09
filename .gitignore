@@ -55,7 +55,7 @@ compile_commands.json
 docs/build/
 docs/doxygen/
 latex/
-
+*.pdf
 
 ########################################
 # Python

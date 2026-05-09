@@ -22,22 +22,8 @@ USE_PHI_GAS_RESOLUTION = True
 USE_NUCLEATION_MASS_COUPLING = True
 USE_BULK_DISLOCATION_CAPTURE = True
 
-# ============================================================
-# DEFAULT CONSTANTS (Rizk 2025 nominal). Override per-run via UNParameters.
-# ============================================================
-GRAIN_RADIUS = 6.0e-6        # m
-XE_YIELD = 0.24              # Xe atoms / fission
-GAMMA_B = 1.11               # J/m^2
-OMEGA_FG = 8.5e-29           # m^3
-LATTICE_PARAMETER = 4.889e-10
-
-FISSION_RATE_NOMINAL = 5.0e19
-F_N_NOMINAL = 1.0e-6
-K_D_NOMINAL = 1.0e6   # bub/m, Rizk 2025 Eq. 11 (citing UO2 ref [39])
-RHO_D_NOMINAL = 3.0e13
-
-FAST_DT_H = 12.0
-FAST_N_MODES = 22
+# All Rizk physical constants live in the caller (UN_clean.ipynb / RIZK_CONSTANTS).
+# This module is parameter-free: only physics formulas, solver, and algorithmic guards.
 
 # ============================================================
 # DATACLASSES
@@ -74,57 +60,71 @@ class Candidate:
     gd_line_alpha: float = 1.0
 
 
-@dataclass
+@dataclass(kw_only=True)
 class UNParameters:
-    temperature: float = 1600.0
-    fission_rate: float = FISSION_RATE_NOMINAL
-    grain_radius: float = GRAIN_RADIUS
+    # --- Run-specific (must be supplied per call) ---
+    temperature: float
+    fission_rate: float
+    grain_radius: float
     target_burnup_percent_fima: Optional[float] = None
     final_time: float = 24.0 * 3600.0
-    dt: float = FAST_DT_H * 3600.0
-    n_modes: int = FAST_N_MODES
+    dt: float = 12.0 * 3600.0
+    n_modes: int = 22
 
-    xe_yield: float = XE_YIELD
+    # --- Fission yield / precursor ---
+    xe_yield: float
     precursor_factor: float = 1.0
 
-    D10: float = 1.56e-3
-    Q1: float = 4.94
-    A20_xe: float = 1.21e-67
-    B21_xe: float = 25.87
-    B22_xe: float = -1.49
-    B23_xe: float = 0.0
-    A30: float = 1.85e-39
+    # --- Boltzmann ---
+    kB_eV: float
+    kB_J: float
+
+    # --- Geometry / matrix ---
+    lattice_parameter: float
+    omega_fg: float
+    radius_in_lattice: float
+    gamma_b: float
+    hydrostatic_stress: float = 0.0
+    min_radius_for_pressure: float = 1.0e-15
+
+    # --- Xe diffusivity D = D1 + D3 (D2 diagnostic only for Xe) ---
+    D10: float
+    Q1: float
+    A20_xe: float
+    B21_xe: float
+    B22_xe: float
+    B23_xe: float
+    A30: float
     D2_xe_scale: float = 1.0
     Dg_scale: float = 1.0
     Dg_D1_scale: float = 1.0
     Dg_D3_scale: float = 1.0
+    Dg_extra_scale: float = 1.0
 
-    kB_eV: float = 8.617333262e-5
-    kB_J: float = 1.380649e-23
-
-    D10_vU: float = 1.35e-2
-    Q1_vU: float = 5.66
-    B21_vU_refit: float = -0.62
-    B22_vU_refit: float = -0.04
-    A20_vU_fig4_refit: float = 4.6304523933553033e-29
+    # --- Vacancy diffusivity (Fig. 4 refit) ---
+    D10_vU: float
+    Q1_vU: float
+    A20_vU_fig4_refit: float
+    B21_vU_refit: float
+    B22_vU_refit: float
     Dv_scale: float = 1.0
     Dv_D1_scale: float = 1.0
     Dv_D2_scale: float = 1.0
 
-    radius_in_lattice: float = 0.21e-9
-    omega_fg: float = OMEGA_FG
-    lattice_parameter: float = LATTICE_PARAMETER
-    gamma_b: float = GAMMA_B
-    hydrostatic_stress: float = 0.0
-    min_radius_for_pressure: float = 1.0e-15
+    # --- Resolution shape b0(R), Rizk 2025 Eq. 8 ---
+    b0_prefactor: float
+    b0_a1: float
+    b0_a2: float
+    b0_b1: float
 
-    f_n: float = F_N_NOMINAL
-    rho_d: float = RHO_D_NOMINAL
-    K_d: float = K_D_NOMINAL
-    r_d: float = 3.46e-10
-    Z_d: float = 5.0
+    # --- Dislocations ---
+    f_n: float
+    rho_d: float
+    K_d: float
+    r_d: float
+    Z_d: float
 
-    Dg_extra_scale: float = 1.0
+    # --- Calibration scales ---
     gb_scale: float = 1.0
     gd_scale: float = 1.0
     b_scale: float = 1.0
@@ -136,6 +136,7 @@ class UNParameters:
     coalescence_d_scale: float = 1.0
     capture_scale: float = 1.0
 
+    # --- Initial conditions ---
     R_b: float = 0.0
     N_b: float = 0.0
     R_d: float = 0.0
@@ -146,6 +147,7 @@ class UNParameters:
     nvb0: Optional[float] = None
     nvd0: Optional[float] = None
 
+    # --- Solver behaviour ---
     bulk_seed_radius_nm: float = 0.0
     vacancy_absorption_only: bool = True
     update_bulk_vacancies: bool = True
@@ -240,14 +242,16 @@ def vacancy_diffusivity_UN(p: UNParameters):
     }
 
 
-def b0_resolution(R: float) -> float:
+def b0_resolution(R: float, prefactor: float, a1: float, a2: float, b1: float) -> float:
     R = max(R, 1.0e-15)
-    return 1.0e-25 * (2.64 - 2.02 * math.exp(-2.61e-9 / R))
+    return prefactor * (a1 - a2 * math.exp(-b1 / R))
 
 
 def resolution_rates_UN(p: UNParameters, R_b: float, R_d: float):
-    b_b = p.fission_rate * b0_resolution(R_b + p.radius_in_lattice) * p.b_scale * p.b_bulk_scale
-    b_d = p.fission_rate * b0_resolution(R_d + p.radius_in_lattice) * p.b_scale * p.b_dislocation_scale
+    b0_b = b0_resolution(R_b + p.radius_in_lattice, p.b0_prefactor, p.b0_a1, p.b0_a2, p.b0_b1)
+    b0_d = b0_resolution(R_d + p.radius_in_lattice, p.b0_prefactor, p.b0_a1, p.b0_a2, p.b0_b1)
+    b_b = p.fission_rate * b0_b * p.b_scale * p.b_bulk_scale
+    b_d = p.fission_rate * b0_d * p.b_scale * p.b_dislocation_scale
     return b_b, b_d
 
 
@@ -649,11 +653,20 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
             dVd_growth_dt = 0.0
             V_d_growth = 0.0
 
+        # Coalescence: backward Euler step on  dN_d/dV_d = -4 λ N_d^2.
+        # λ is lagged at (Vd_old, Nd_old); N_new is treated implicitly,
+        # giving the quadratic  4 λ_old ΔV · N_new^2 + N_new - N_old = 0.
+        # The positive root, in numerically stable form, is
+        #     N_new = 2 N_old / (1 + sqrt(1 + 16 λ_old ΔV N_old)).
+        # We do NOT use Rizk 2025 Eq. 15 (closed-form with constant λ over ΔV):
+        # SCIANTIX integrates every kinetic equation via implicit Euler, and
+        # treating λ as constant over the step is only valid for vanishing dt.
         lambda_d = coalescence_lambda(Vd_old, Nd_old)
         dVd_positive = max(V_d_growth - Vd_old, 0.0)
-        if dVd_positive > 0.0 and Nd_old > 0.0:
-            denominator = 1.0 + p.coalescence_d_scale * 4.0 * lambda_d * Nd_old * dVd_positive
-            N_d = Nd_old / denominator
+        coal_coeff = p.coalescence_d_scale * 4.0 * lambda_d * dVd_positive
+        if coal_coeff > 0.0 and Nd_old > 0.0:
+            disc = 1.0 + 4.0 * coal_coeff * Nd_old
+            N_d = 2.0 * Nd_old / (math.sqrt(disc) + 1.0)
         else:
             N_d = Nd_old
         N_d = max(N_d, p.min_number_density)
