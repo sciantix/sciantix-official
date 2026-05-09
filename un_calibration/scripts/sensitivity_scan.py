@@ -45,8 +45,11 @@ BURNUPS = [1.1, 1.3, 3.2]
 # manual_or_rizk_key = "mp:<key>"  (override in MANUAL_PARAMS)
 #                  or "rk:<key>"   (override in RIZK_CONSTANTS)
 SCANS = [
+    # (axis, REFERENCE value to mark on plot, scan values, where-to-override)
     ("K_d",   5.0e5,   [1.0e4, 5.0e4, 1.0e5, 5.0e5, 1.0e6, 5.0e6, 1.0e7],   "rk:K_D"),
-    ("f_n",   1.0e-6,  [1.0e-8, 1.0e-7, 1.0e-6, 1.0e-5, 1.0e-4, 1.0e-3],    "mp:f_n"),
+    # f_n reference is the UN-recalibrated value (was 1e-6 inherited from U3Si2;
+    # see calibrate_f_n.py for the fine scan that picked 3e-6).
+    ("f_n",   3.0e-6,  [1.0e-7, 1.0e-6, 3.0e-6, 1.0e-5, 1.0e-4, 1.0e-3],    "mp:f_n"),
     ("rho_d", 3.0e13,  [1.0e12, 5.0e12, 1.0e13, 3.0e13, 1.0e14, 3.0e14, 1.0e15], "mp:rho_d"),
 ]
 
