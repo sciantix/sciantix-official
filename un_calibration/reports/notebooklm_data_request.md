@@ -40,9 +40,9 @@ and report citations + figure/table + conditions + data type):
     what does **Kosmidou 2025** (Kr-irradiated UN, in-situ TEM) report
     quantitatively, and at what conditions?
 
-(C) **Total / radial / linear swelling** correlations and data.  What
-    functional form does **Ross 1988** use, what is its calibration
-    range and uncertainty?  Anything in Honda 1969, Storms 1988?
+(C) **Total / radial / linear swelling** correlations and data.  Anything
+    in Honda 1969, Storms 1988?  (Note: Ross 1988 turned out to be only
+    thermal conductivity, not swelling, despite earlier naming.)
 
 (D) **Integral pin tests** beyond Rizk's summaries.  For SP-1 (NBU-2/3
     EBR-II), SNAP50 (capsule 5-742), JOYO L413/L414 (U,Pu)N — what do
