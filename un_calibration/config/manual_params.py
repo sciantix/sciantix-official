@@ -9,7 +9,14 @@ MANUAL_PARAMS = {
     "label": "manual_candidate",
 
     # --- Free fit parameters ---
-    "f_n":          1.0e-6,   # nucleation factor (Olander 1e-7..1e-2; Rizk uses 1e-6)
+    # f_n: UN-specific recalibration on the Ronchi 1978 dislocation swelling
+    # dataset (39 anchor points, 1.1 / 1.3 / 3.2 % FIMA). The U3Si2-inherited
+    # Rizk value 1e-6 gives RMSE 1.51% Sw and a +1.24% systematic bias at
+    # 1.3% FIMA. Fine-grained scan (un_calibration/scripts/calibrate_f_n.py)
+    # picks 3e-6 as the value that balances per-burnup biases (max |bias|/bu
+    # = 0.40, RMSE 1.03 — 32% better than reference). Still inside the
+    # Olander 2006 range (1e-7..1e-2).
+    "f_n":          3.0e-6,   # UN-recalibrated against Ronchi 1978
     "rho_d":        3.0e13,   # m^-2  (Rizk Table 1; used when both rho_d laws are off)
     "fission_rate": 5.0e19,   # fiss/(m^3 s) (DN1/Rizk validation, LHR~100 kW/m, d=8.30 mm)
 
