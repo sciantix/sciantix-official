@@ -10,6 +10,8 @@ it builds UNParameters, calls solve_UN, and returns a flat dict of the
 last-step quantities (swelling %, N_b, N_d, R_b, R_d, gas partition, etc.).
 """
 
+import math
+
 import un_model as m
 
 from rizk_constants import RIZK_CONSTANTS as DEFAULT_RIZK_CONSTANTS
@@ -79,6 +81,13 @@ def build_un_params(T, bu, cand=None, dt_h=12.0, n_modes=22,
         b0_a1=rk["B0_A1"],
         b0_a2=rk["B0_A2"],
         b0_b1=rk["B0_B1"],
+        # Inter-granular bubbles (Rizk 2025 §A.2)
+        N_gf_0=rk["N_GF_0"],
+        D_vgb_ratio=rk["D_VGB_RATIO"],
+        delta_gb=rk["DELTA_GB"],
+        R_gf_0=rk["R_GF_0"],
+        F_c_sat=rk["F_C_SAT"],
+        theta_rad=math.radians(rk["THETA_DEG"]),
         # Boltzmann
         kB_eV=rk["KB_EV"], kB_J=rk["KB_J"],
         # Free-fit / candidate
@@ -124,6 +133,28 @@ def model_runner(T, bu, cand=None, dt_h=12.0, n_modes=22,
         "bulk_gas_percent":        hist["bulk_gas_percent"][-1],
         "dislocation_gas_percent": hist["dislocation_gas_percent"][-1],
         "qgb_gas_percent":         hist["qgb_gas_percent"][-1],
+        # Inter-granular (grain-face) bubble outputs
+        "Rgf_nm": hist["Rgf"][-1] * 1.0e9,
+        "Ngf":    hist["Ngf"][-1],
+        "F_c":    hist["F_c"][-1],
+        "swelling_gf_percent":     hist["swelling_gf_percent"][-1],
+        "intergranular_gas_percent": hist["intergranular_gas_percent"][-1],
+        "released_gas_percent":      hist["released_gas_percent"][-1],
+        "fgr_percent":               hist["fgr_percent"][-1],
+        # Solid fission product swelling (Rizk 2025 Eq. 19, 0.5·B per FIMA)
+        "swelling_solid_percent":  hist["swelling_solid_percent"][-1],
+        # Gas-only total swelling = bulk + dislocation + grain-face
+        "swelling_gas_total_percent":
+            100.0 * (hist["swelling_b"][-1]
+                     + hist["swelling_d"][-1]
+                     + hist["swelling_gf"][-1]),
+        # Grand total = gas + solid (matches what experimentalists measure
+        # for a fully irradiated pellet, before thermal expansion).
+        "swelling_total_percent":
+            100.0 * (hist["swelling_b"][-1]
+                     + hist["swelling_d"][-1]
+                     + hist["swelling_gf"][-1])
+            + hist["swelling_solid_percent"][-1],
         "hist": hist if keep_history else None,
         "rates": rates,
     }

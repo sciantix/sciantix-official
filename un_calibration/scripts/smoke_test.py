@@ -35,15 +35,25 @@ def main():
     print(f"  {'quantity':<26s} {'value':>14s}")
     print(f"  {'swelling (dislocation)':<26s} {out['swelling_d_percent']:>13.3f} %")
     print(f"  {'swelling (bulk)':<26s} {out['swelling_b_percent']:>13.3f} %")
+    print(f"  {'swelling (grain-face)':<26s} {out['swelling_gf_percent']:>13.3f} %")
+    print(f"  {'swelling (gas total)':<26s} {out['swelling_gas_total_percent']:>13.3f} %")
+    print(f"  {'swelling (solid Eq.19)':<26s} {out['swelling_solid_percent']:>13.3f} %")
+    print(f"  {'swelling (TOTAL)':<26s} {out['swelling_total_percent']:>13.3f} %")
     print(f"  {'R_d':<26s} {out['Rd_nm']:>12.1f} nm")
     print(f"  {'R_b':<26s} {out['Rb_nm']:>12.1f} nm")
+    print(f"  {'R_gf':<26s} {out['Rgf_nm']:>12.1f} nm")
     print(f"  {'N_d':<26s} {out['Nd']:>14.2e}")
     print(f"  {'N_b':<26s} {out['Nb']:>14.2e}")
+    print(f"  {'N_gf':<26s} {out['Ngf']:>14.2e}")
+    print(f"  {'F_c (coverage)':<26s} {out['F_c']:>14.3e}")
+    print(f"  {'FGR':<26s} {out['fgr_percent']:>13.2f} %")
     print()
     print(f"  Gas partition:  matrix={out['matrix_gas_percent']:.1f}%  "
           f"bulk={out['bulk_gas_percent']:.1f}%  "
-          f"disl={out['dislocation_gas_percent']:.1f}%  "
-          f"q_gb={out['qgb_gas_percent']:.1f}%")
+          f"disl={out['dislocation_gas_percent']:.1f}%")
+    print(f"                  intergranular={out['intergranular_gas_percent']:.1f}%  "
+          f"released(FGR)={out['released_gas_percent']:.1f}%  "
+          f"(q_gb={out['qgb_gas_percent']:.1f}% = sum)")
 
 
 if __name__ == "__main__":

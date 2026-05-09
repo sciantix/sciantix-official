@@ -43,11 +43,15 @@ RIZK_CONSTANTS = {
     # (the Arrhenius thermal term from Tab. 2 below). The Tab. 2 D2 fit parameters
     # for V_U are mathematically broken (off by ~14 OOM); per Schneider 2026
     # cluster dynamics the true D2_v at 1500 K is ~1e-24 m^2/s, negligible vs D1.
-    # We therefore drop D2 entirely and add D3 athermal mixing from Schneider 2024
-    # (D3_v = 2.48e-22 m^2/s at F=5e19 fiss/m^3/s → A30 = D3/F = 4.96e-42 m^5).
+    # We therefore drop D2 entirely and add D3 athermal mixing from Schneider 2024:
+    # the paper reports D3_v = 2.48e-22 m^2/s at F = 5e18 fiss/m^3/s (Matzke's
+    # reference fission rate, NOT our DN1/Rizk-validation 5e19). Therefore
+    #   A30 = D3 / F_Schneider = 2.48e-22 / 5e18 = 4.96e-41 m^5
+    # At our reference F=5e19 this gives D3 = 2.48e-21 m^2/s (10x larger than
+    # the value initially extracted by NotebookLM, which conflated the two F's).
     "D10_VU":   1.35e-2,    # m^2/s  (Rizk 2025 Tab. 2)
     "Q1_VU":    5.66,       # eV     (Rizk 2025 Tab. 2)
-    "A30_VU":   4.96e-42,   # m^5    (Schneider 2024 athermal mixing for V_U)
+    "A30_VU":   4.96e-41,   # m^5    (Schneider 2024 athermal mixing for V_U)
 
     # --- Re-solution shape b0(R) = pref * (a1 - a2 * exp(-b1/R))  (Rizk 2025 Eq. 8) ---
     "B0_PREFACTOR":        1.0e-25,   # m^6 at/bub/fission
@@ -58,4 +62,18 @@ RIZK_CONSTANTS = {
     # --- Boltzmann ---
     "KB_EV":               8.617333262e-5,
     "KB_J":                1.380649e-23,
+
+    # --- Inter-granular (grain face) bubble model — Rizk 2025 §A.2 ---
+    # Initial grain-face bubble number density (Rizk Tab. 1, inherited from UO2 [41]).
+    "N_GF_0":              2.0e13,    # m^-2
+    # GB vacancy diffusivity: D_v_gb = ratio * D_1_thermal (Rizk Tab. 1, from UO2 [48]).
+    # ONLY thermal D_1 enters the multiplier basis (no D_3 athermal here).
+    "D_VGB_RATIO":         1.0e6,
+    "DELTA_GB":            4.0e-10,   # m, GB diffusion-layer thickness (Rizk Tab. 1)
+    # Initial grain-face bubble radius (Rizk Tab. 1).
+    "R_GF_0":              2.42e-10,  # m
+    # Saturation coverage threshold for interconnection / FGR (Rizk Tab. 1, UO2 [38]).
+    "F_C_SAT":             0.5,
+    # Semi-dihedral angle θ from cos θ = γ_GB/(2γ_b). Rizk Tab. 1: θ ≈ 59°.
+    "THETA_DEG":           59.0,
 }

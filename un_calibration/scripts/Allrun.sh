@@ -32,6 +32,7 @@ SCRIPTS_FAST=(
     fig4_diffusivity_vs_T
     fig78_NdRd_vs_T
     fig9_gas_partition
+    fig11_FGR_vs_burnup
     rho_d_diagnostic
     flag_ablation
 )
