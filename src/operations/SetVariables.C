@@ -25,7 +25,7 @@ void Simulation::setVariables(int    Sciantix_options[],
                               double Sciantix_diffusion_modes[],
                               // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
                               double Sciantix_thermochemistry[],
-                              const ThermochemistrySettings& Sciantix_thermochemistry_settings
+                              const ThermochemistrySettings* Sciantix_thermochemistry_settings
 )
 {
     // Input variable
