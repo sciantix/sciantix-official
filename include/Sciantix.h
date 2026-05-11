@@ -47,6 +47,6 @@ void Sciantix(int    Sciantix_options[],
               double Sciantix_scaling_factors[], 
               double Sciantix_diffusion_modes[], 
               double Sciantix_thermochemistry[], 
-              const ThermochemistrySettings& Sciantix_thermochemistry_settings);
+              const ThermochemistrySettings* Sciantix_thermochemistry_settings);
 
 #endif // SCIANTIX_H

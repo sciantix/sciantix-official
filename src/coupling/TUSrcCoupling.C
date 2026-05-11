@@ -30,7 +30,7 @@ void callSciantix(int    Sciantix_options[],
                   double Sciantix_diffusion_modes[], 
                   // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
                   double Sciantix_thermochemistry[], 
-                  const ThermochemistrySettings& Sciantix_thermochemistry_options)
+                  const ThermochemistrySettings* Sciantix_thermochemistry_options)
 {
     Simulation* simulation = Simulation::getInstance();
 

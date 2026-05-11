@@ -95,7 +95,7 @@ void InputReading(int                  Sciantix_options[],
                   double               Sciantix_scaling_factors[],
                   // CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES/OPTIONS
                   double Sciantix_thermochemistry[],
-	              ThermochemistrySettings &Sciantix_thermochemistry_settings,
+	              ThermochemistrySettings *&Sciantix_thermochemistry_settings,
                   //
                   int&                 Input_history_points,
                   std::vector<double>& Time_input,
@@ -368,11 +368,12 @@ void InputReading(int                  Sciantix_options[],
 	input_history.close();
 	input_scaling_factors.close();
 
-    Sciantix_thermochemistry_settings = ThermochemistrySettings{};
+    delete Sciantix_thermochemistry_settings;
+    Sciantix_thermochemistry_settings = nullptr;
     // CODE DEVELOPMENT : THERMOCHEMISTRY SETTINGS READER
 	if (Sciantix_options[25] > 0)
 	{
 		Sciantix_thermochemistry_settings =
-		    loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt");
+		    new ThermochemistrySettings(loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt"));
 	}
 }

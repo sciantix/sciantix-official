@@ -59,7 +59,7 @@ class Simulation
 
     SciantixArray<InputVariable> input_variable;
     SciantixArray<InputVariable> scaling_factors;
-    ThermochemistrySettings thermochemistry_settings;
+    const ThermochemistrySettings* thermochemistry_settings;
 
     int                 n_modes;
     std::vector<double> modes_initial_conditions;
@@ -75,6 +75,7 @@ class Simulation
     {
         n_modes = 40;
         modes_initial_conditions.resize(1300);
+        thermochemistry_settings = nullptr;
     }
 
   public:
@@ -93,7 +94,7 @@ class Simulation
                       double Sciantix_scaling_factors[],
                       double Sciantix_diffusion_modes[],
                       double Sciantix_thermochemistry[],
-                      const ThermochemistrySettings& Sciantix_thermochemistry_settings
+                      const ThermochemistrySettings* Sciantix_thermochemistry_settings
     );
 
     void setFissionProducts();
@@ -108,7 +109,7 @@ class Simulation
                     double Sciantix_scaling_factors[],
                     double Sciantix_diffusion_modes[],
                     double Sciantix_thermochemistry[],
-                    const ThermochemistrySettings& Sciantix_thermochemistry_settings
+                    const ThermochemistrySettings* Sciantix_thermochemistry_settings
     );
 
     void execute();

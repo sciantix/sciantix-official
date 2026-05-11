@@ -37,7 +37,7 @@ extern double Sciantix_variables[300];
 extern double Sciantix_scaling_factors[10];
 extern double Sciantix_diffusion_modes[1300];
 extern double Sciantix_thermochemistry[300];
-extern ThermochemistrySettings Sciantix_thermochemistry_settings;
+extern ThermochemistrySettings* Sciantix_thermochemistry_settings;
 
 extern long long int Time_step_number;
 extern double        Time_h, dTime_h, Time_end_h;

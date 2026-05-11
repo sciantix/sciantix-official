@@ -1,9 +1,6 @@
 Comparing /home/ecappellari/transparant/sciantix-official/regression/test_JOG_MOX/gold/point_14_r_1p8225mm/output.txt -> /home/ecappellari/transparant/sciantix-official/regression/test_JOG_MOX/point_14_r_1p8225mm/output.txt
 Rows: 1915 -> 1915
-Columns: 108 -> 107
-
-Columns only in gold output:
-  - Initial grain radius (mol)
+Columns: 107 -> 107
 
 Common columns compared: 107
 Columns outside tolerance: 0

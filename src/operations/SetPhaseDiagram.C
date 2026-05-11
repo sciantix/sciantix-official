@@ -69,7 +69,31 @@ void Simulation::CallThermochemistryModule(std::string                      loca
                                            SciantixArray<SciantixVariable>& sciantix_variable)
 {
     // Defined from the input_thermochemistry_settings.txt
-    const ThermochemistrySettings& Sciantix_thermochemistry_settings = thermochemistry_settings;
+    if (thermochemistry_settings == nullptr)
+    {
+        std::cout << "Warning: thermochemistry settings are not loaded." << std::endl;
+        if (location == "at grain boundary")
+        {
+            for (auto& system : sciantix_system)
+            {
+                if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
+                {
+                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].addValue(
+                        sciantix_variable[system.getFissionProductName() + " reacted"].getFinalValue());
+                    sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(0.0);
+                }
+                if (system.getRestructuredMatrix() == 0 && system.isMetallicFP())
+                {
+                    sciantix_variable[system.getFissionProductName() + " in solution"].setFinalValue(
+                        sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue());
+                    sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(0.0);
+                }
+            }
+        }
+        return;
+    }
+
+    const ThermochemistrySettings& Sciantix_thermochemistry_settings = *thermochemistry_settings;
     const ThermochemistryPhaseSettings& location_settings =
         (location == "matrix") ? Sciantix_thermochemistry_settings.matrix : Sciantix_thermochemistry_settings.fission_products;
     const std::string category = (location == "matrix") ? "matrix" : "fission_products";
