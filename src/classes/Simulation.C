@@ -81,11 +81,13 @@ void Simulation::execute()
 
     ChromiumSolubility();
 
+#if !defined(COUPLING_TU)
     GapPartialPressure();
 
     UO2Thermochemistry();
 
     StoichiometryDeviation();
+#endif
 
     SetPhaseDiagram("matrix");
 

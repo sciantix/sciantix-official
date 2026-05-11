@@ -190,21 +190,7 @@ void Simulation::IntragranularDiffusion() // qui tutti i gas e i volatili, cerca
     {
         for (auto& system : sciantix_system)
         {
-            if (system.getRestructuredMatrix() == 0 && system.isGasFP())
-            {
-                {
-                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].setInitialValue(0.0);
-                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(0.0);
-
-                    sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(
-                        sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
-                        sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
-                        sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue()
-                    );
-                }
-            }
-
-            if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
+            if (system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
             {
                 {
                     sciantix_variable[system.getFissionProductName() + " at grain boundary"].setInitialValue(0.0);
