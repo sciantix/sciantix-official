@@ -75,7 +75,7 @@ void Simulation::GrainBoundaryMicroCracking() // qui tutti i gas e i volatili, c
             // Material properties
             double E  = fuel_.getElasticModulus() * 1e6;  // Pa
             double nu = fuel_.getPoissonRatio();
-            double G  = fuel_.getGrainBoundaryFractureEnergy();  // J/m2
+			double G =  fuel_.getGrainBoundaryFractureEnergy() * scaling_factors["Grain-boundary energy"].getValue(); // J/m2
 
             if (sciantix_variable["Intergranular bubble radius"].getFinalValue() == 0)
             {
@@ -132,7 +132,8 @@ void Simulation::GrainBoundaryMicroCracking() // qui tutti i gas e i volatili, c
             {
                 atompervacancyf = maxatompervacancy;
             }
-
+            atompervacancyf *= scaling_factors["Atoms per vacancy"].getValue();
+            
             // Bubble gas pressure
             double bubble_pressure = (boltzmann_constant * history_variable["Temperature"].getFinalValue() *
                                       atompervacancyf / fuel_.getSchottkyVolume());  // Pa

@@ -607,6 +607,11 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
                   1));
             reference2 += " release model from Cappellari et al., JNM, (2025, under review), Gaussian "
                           "Process Regression lower bound";
+            #if defined(COUPLING_TU)
+                vented_fraction_initial = (21.0911 * 1e-2 * (erf(0.0937 * 100 * (sciantix_variable["Intergranular fractional coverage"].getInitialValue() - 0.5)) + 1));
+                vented_fraction_final = (21.0911 * 1e-2 * (erf(0.0937 * 100 * (sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 0.5)) + 1));
+                reference2 += " release model from Cappellari et al., JNM, (2025, under review), saturation threshold at 50% fractional coverage, OperaHPC 3rd Plenary meeting 2025";
+            #endif
             //
             // Other option for the diffusion-based release curve
             // vented_fraction = (26.3997 * 1e-2 * (erf(0.0718 * 100 *
@@ -678,13 +683,9 @@ void Simulation::InterGranularBubbleBehavior() // qui i gas e i volatili, cerca 
                 (21.0911 * 1e-2 *
                  (erf(0.0937 * 100 * sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 3.7250) +
                   1));
-            //
-            // Other option for the diffusion-based release curve
-            // vented_fraction = (26.3997 * 1e-2 * (erf(0.0718 * 100 *
-            // sciantix_variable["Intergranular fractional coverage"] - 2.6002) + 1)); reference2 +=
-            // " release model from Cappellari et al., JNM, (2025, under review), Gaussian Process
-            // Regression mean prediction";
-            //
+            #if defined(COUPLING_TU)
+                vented_fraction_final = (21.0911 * 1e-2 * (erf(0.0937 * 100 * (sciantix_variable["Intergranular fractional coverage"].getFinalValue() - 0.5)) + 1));
+            #endif
 
             release_fraction_final =
                 vented_fraction_final * sciantix_variable["Intergranular fractional intactness"].getFinalValue() +

@@ -79,14 +79,14 @@ void Simulation::GrainBoundaryVenting() // qui i gas e i volatili, cerca di unif
         case 3:
         {
             // CODE DEVELOPMENT : UNDER REVIEW
-            double open_porosity = openPorosity(sciantix_variable["Fabrication porosity"].getFinalValue());
+            double open_porosity = openPorosity(sciantix_variable["Fabrication porosity"].getFinalValue()* scaling_factors["Fabricated porosity"].getValue());
             sciantix_variable["Open porosity"].setFinalValue(open_porosity);
 
             sciantix_variable["Intergranular venting probability"].setFinalValue(
                     athermalVentingFactor(
                     open_porosity,
-                    2.0 / 3.0 * 3.14,
-                    sciantix_variable["Fabrication porosity"].getFinalValue(),
+                    2.0 / 3.0 * 3.14 * scaling_factors["Grain-edge angle"].getValue(),
+                    sciantix_variable["Fabrication porosity"].getFinalValue() * scaling_factors["Fabricated porosity"].getValue(),
                     1.0 / 3.0 * 1.1 * 2.0 * sciantix_variable["Grain radius"].getFinalValue(),
                     sciantix_variable["Burnup"].getFinalValue(),
                     history_variable["Temperature"].getFinalValue(),

@@ -315,7 +315,6 @@ void System::setFissionProductDiffusivity(int                              input
 
             reference += "iFissionProductDiffusivity: constant diffusivity (7e-19 m2/s).\n\t";
             diffusivity = 7e-19;
-            diffusivity *= scaling_factors["Diffusivity"].getValue();
 
             break;
         }
@@ -341,7 +340,6 @@ void System::setFissionProductDiffusivity(int                              input
             double d3 = 8.0e-40 * fission_rate;
 
             diffusivity = d1 + d2 + d3;
-            diffusivity *= scaling_factors["Diffusivity"].getValue();
 
             break;
         }
@@ -359,7 +357,6 @@ void System::setFissionProductDiffusivity(int                              input
             diffusivity = 5.0e-08 * exp(-40262.0 / history_variable["Temperature"].getFinalValue());
             if (diffusivity < 1e-25)
                 diffusivity = 1e-25;
-            diffusivity *= scaling_factors["Diffusivity"].getValue();
 
             break;
         }
@@ -385,7 +382,6 @@ void System::setFissionProductDiffusivity(int                              input
             double d3 = 2.0e-40 * fission_rate;
 
             diffusivity = d1 + d2 + d3;
-            diffusivity *= scaling_factors["Diffusivity"].getValue();
 
             break;
         }
@@ -409,7 +405,6 @@ void System::setFissionProductDiffusivity(int                              input
             double d3 = 1.2e-39 * fission_rate;
 
             diffusivity = d1 + d2 + d3;
-            diffusivity *= scaling_factors["Diffusivity"].getValue();
 
             break;
         }
@@ -424,7 +419,6 @@ void System::setFissionProductDiffusivity(int                              input
              */
 
             diffusivity = 4.5e-42 * history_variable["Fission rate"].getFinalValue();
-            diffusivity *= scaling_factors["Diffusivity"].getValue();
 
             reference += "HBS : Inert fission gas diffusivity in UO2-HBS.\n\t";
             break;
@@ -454,8 +448,6 @@ void System::setFissionProductDiffusivity(int                              input
             double d4 = pow(3e-10, 2) * 1e13 * exp(-27800 / temperature) * uranium_vacancies;
 
             diffusivity = d1 + d2 + d3 + d4;
-
-            diffusivity *= scaling_factors["Diffusivity"].getValue();
 
             break;
         }
@@ -491,9 +483,8 @@ void System::setFissionProductDiffusivity(int                              input
             double Cr_content = Cr_atoms / (Cr_atoms + U_content) * 100;            // at.%
 
             // linear fitting of amorphous Cr doped-UO2 data
-            double activation_energy = scaling_factors["Diffusivity"].getValue() * (Cr_content - 173.3) / (-532.3);
-            double Pre_exponential_factor =
-                scaling_factors["Diffusivity2"].getValue() * (Cr_content - 41.93) / (-1.376e+9);
+            double activation_energy =(Cr_content - 173.3) / (-532.3);
+            double Pre_exponential_factor = (Cr_content - 41.93) / (-1.376e+9);
 
             diffusivity =
                 Pre_exponential_factor *
@@ -535,8 +526,6 @@ void System::setFissionProductDiffusivity(int                              input
 
             diffusivity = d1 + d2 + d3 + d4;
 
-            diffusivity *= scaling_factors["Diffusivity"].getValue();
-
             sciantix_variable["Diffusion coefficient"].setFinalValue(diffusivity);
 
             break;
@@ -566,8 +555,6 @@ void System::setFissionProductDiffusivity(int                              input
 
             diffusivity = exp(-DeltaH_1 / CB * (1 / temperature - 1 / T_1)) * d1 +
                           exp(-DeltaH_2 / CB * (1 / temperature - 1 / T_2)) * d2 + d3;
-
-            diffusivity *= scaling_factors["Diffusivity"].getValue();
 
             break;
         }
@@ -604,8 +591,6 @@ void System::setFissionProductDiffusivity(int                              input
             double d4 = pow(1e-10, 2) * 1e13 * exp(-2.78 * 1e+4 / temperature) * V_U_concentration;
 
             diffusivity = d1 + d2 + d3 + d4;
-
-            diffusivity *= scaling_factors["Diffusivity"].getValue();
 
             sciantix_variable["Diffusion coefficient"].setFinalValue(diffusivity);
 
@@ -671,8 +656,6 @@ void System::setFissionProductDiffusivity(int                              input
              */
 
             diffusivity = sciantix_variable["Diffusion coefficient"].getFinalValue();
-
-            diffusivity *= scaling_factors["Diffusivity"].getValue();
 
             sciantix_variable["Diffusion coefficient"].setFinalValue(diffusivity);
 
@@ -746,7 +729,6 @@ void System::setResolutionRate(int                              input_value,
             reference += "iResolutionRate: Constant resolution rate from Olander, Wongsawaeng, JNM, "
                          "354 (2006), 94-109.\n\t";
             resolution_rate = 1.0e-4;
-            resolution_rate *= scaling_factors["Resolution rate"].getValue();
             break;
         }
 
@@ -766,7 +748,6 @@ void System::setResolutionRate(int                              input_value,
                                       sciantix_variable["Intragranular bubble radius"].getFinalValue(),
                                   2) *
                               history_variable["Fission rate"].getFinalValue();
-            resolution_rate *= scaling_factors["Resolution rate"].getValue();
 
             break;
         }
@@ -783,7 +764,6 @@ void System::setResolutionRate(int                              input_value,
 
             reference += "iResolutionRate: P. Losonen, JNM 304 (2002) 29�49.\n\t";
             resolution_rate = 3.0e-23 * history_variable["Fission rate"].getFinalValue();
-            resolution_rate *= scaling_factors["Resolution rate"].getValue();
 
             break;
         }
@@ -847,7 +827,6 @@ void System::setResolutionRate(int                              input_value,
                 thermal_resolution_rate = 0.0;
 
             resolution_rate = irradiation_resolution_rate + thermal_resolution_rate;
-            resolution_rate *= scaling_factors["Resolution rate"].getValue();
 
             break;
         }
@@ -868,7 +847,6 @@ void System::setResolutionRate(int                              input_value,
             ErrorMessages::Switch(__FILE__, "iResolutionRate", input_value);
             break;
     }
-    resolution_rate *= scaling_factors["Resolution rate"].getValue();
 }
 
 double System::getResolutionRate()
@@ -905,7 +883,6 @@ void System::setTrappingRate(int                              input_value,
             reference += "iTrappingRate: constant value from Olander, Wongsawaeng, JNM, 354 "
                          "(2006), 94-109.\n\t";
             trapping_rate = 9.35e-6;
-            trapping_rate *= scaling_factors["Trapping rate"].getValue();
 
             break;
         }
@@ -932,8 +909,6 @@ void System::setTrappingRate(int                              input_value,
                 trapping_rate = 4.0 * M_PI * diffusivity *
                                 (sciantix_variable["Intragranular bubble radius"].getFinalValue() + radius_in_lattice) *
                                 sciantix_variable["Intragranular bubble concentration"].getFinalValue();
-
-            trapping_rate *= scaling_factors["Trapping rate"].getValue();
 
             break;
         }
@@ -985,7 +960,6 @@ void System::setNucleationRate(int                              input_value,
 
             reference += "iNucleationRate: constant value.\n\t";
             nucleation_rate = 4e20;
-            nucleation_rate *= scaling_factors["Nucleation rate"].getValue();
 
             break;
         }
@@ -1002,7 +976,6 @@ void System::setNucleationRate(int                              input_value,
 
             reference += "iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.\n\t";
             nucleation_rate = 2.0 * history_variable["Fission rate"].getFinalValue() * 25;
-            nucleation_rate *= scaling_factors["Nucleation rate"].getValue();
 
             break;
         }
@@ -1108,8 +1081,6 @@ void System::setProductionRate(int                              input_value,
             // production rate in dproduced / dburnup -> dproduced / dtime
             production_rate = 2.0e+21 * sciantix_variable["Burnup"].getFinalValue() + 3.0e+23;  // (at/m3 burnup)
             production_rate *= sciantix_variable["Specific power"].getFinalValue() / 86400;     // (at/m3s)
-
-            production_rate *= scaling_factors["Helium production rate"].getValue();
 
             break;
         }

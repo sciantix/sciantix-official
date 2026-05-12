@@ -550,15 +550,16 @@ std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
 std::vector<std::string> getScalingFactorsNames()
 {
     std::vector<std::string> names = {
-        "Resolution rate",
-        "Trapping rate",
-        "Nucleation rate",
-        "Diffusivity",
-        "Diffusivity2",
-        "Temperature",
-        "Fission rate",
-        "Helium production rate",
-        "Dummy",
+        "Grain-boundary energy",
+        "Fabricated porosity",
+        "Atoms per vacancy",
+        "Grain-edge angle",
+        "Dummy 0",
+        "Dummy 1",
+        "Dummy 2",
+        "Dummy 3",
+        "Dummy 4",
+        "Dummy 5"
     };
 
     return names;
