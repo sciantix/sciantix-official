@@ -72,12 +72,13 @@ Initial stoichiometry deviation[0] = -0.1
 Chromium content = 0
 0	1800	0	0	100000	
 300	1800	0	0	100000	
-sf_resolution_rate = 1
-sf_trapping_rate = 1
-sf_nucleation_rate = 1
-sf_diffusivity = 1
-sf_diffusivity2 = 1
-sf_temperature = 1
-sf_fission_rate = 1
-sf_helium_production_rate = 1
-sf_dummy = 1
+sf_grain_boundary_energy = 1
+sf_fabricated_porosity = 1
+sf_atoms_per_vacancy = 1
+sf_grain_edge_angle = 1
+sf_dummy_0 = 1
+sf_dummy_1 = 1
+sf_dummy_2 = 1
+sf_dummy_3 = 1
+sf_dummy_4 = 1
+sf_dummy_5 = 1

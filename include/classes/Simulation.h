@@ -74,7 +74,7 @@ class Simulation
     Simulation()
     {
         n_modes = 40;
-        modes_initial_conditions.resize(1300);
+        modes_initial_conditions.resize(1080);
         thermochemistry_settings = nullptr;
     }
 
