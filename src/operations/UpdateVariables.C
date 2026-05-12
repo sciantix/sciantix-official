@@ -178,12 +178,12 @@ std::map<int, std::string> update_sciantix_variable = {
     {177, "q"}, // added
 };
 
-// CODE DEVELOPMENT: DIFFUSION MODES FROM 17 TO 30
+// CODE DEVELOPMENT: DIFFUSION MODES FROM 17 TO 26
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[])
 {
     for (int i = 0; i < n_modes; ++i)
     {
-        for (int j = 0; j <= 30; j++)
+        for (int j = 0; j <= 26; j++)
         {
             Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];
         }
