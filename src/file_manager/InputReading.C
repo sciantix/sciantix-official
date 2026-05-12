@@ -166,7 +166,7 @@ void InputReading(int                  Sciantix_options[],
     if (!input_initial_conditions.fail())
     {
         Sciantix_variables[0] = ReadOneParameter("Grain radius[0]", input_initial_conditions, input_check);
-        
+
         std::vector<double> initial_composition_Xe;
         initial_composition_Xe = ReadSeveralParameters("Initial composition Xe", input_initial_conditions, input_check);
         Sciantix_variables[1]  = initial_composition_Xe[0];
@@ -339,15 +339,16 @@ void InputReading(int                  Sciantix_options[],
 
 	if (!input_scaling_factors.fail())
 	{
-		Sciantix_scaling_factors[0] = ReadOneParameter("sf_resolution_rate", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[1] = ReadOneParameter("sf_trapping_rate", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[2] = ReadOneParameter("sf_nucleation_rate", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[3] = ReadOneParameter("sf_diffusivity", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[4] = ReadOneParameter("sf_diffusivity2", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[5] = ReadOneParameter("sf_temperature", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[6] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[8] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[0] = ReadOneParameter("sf_grain_boundary_energy", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[1] = ReadOneParameter("sf_fabricated_porosity", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[2] = ReadOneParameter("sf_atoms_per_vacancy", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[3] = ReadOneParameter("sf_grain_edge_angle", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[4] = ReadOneParameter("sf_dummy_0", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[5] = ReadOneParameter("sf_dummy_1", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[6] = ReadOneParameter("sf_dummy_2", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[7] = ReadOneParameter("sf_dummy_3", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[8] = ReadOneParameter("sf_dummy_4", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[9] = ReadOneParameter("sf_dummy_5", input_scaling_factors, input_check);
 	}
 	else
 	{
@@ -360,6 +361,7 @@ void InputReading(int                  Sciantix_options[],
 		Sciantix_scaling_factors[6] = 1.0;
 		Sciantix_scaling_factors[7] = 1.0;
 		Sciantix_scaling_factors[8] = 1.0;
+		Sciantix_scaling_factors[9] = 1.0;
 	}
 
 	input_check.close();

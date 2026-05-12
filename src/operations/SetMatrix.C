@@ -83,17 +83,18 @@ Matrix UO2(SciantixArray<Matrix>&           matrices,
     matrix_.setChromiaPrecipitate(0);   // (at/m3)
 
     // Mechanical properties
+    // matrix_.setElasticModulus(
+    //     2.237e5 * (1 - 2.6 * sciantix_variable["Porosity"].getFinalValue()) *
+    //     (1 - 1.394e-4 * (history_variable["Temperature"].getFinalValue() - 273 - 20)) *
+    //     (1 - 0.1506 * (1 - exp(-0.035 * sciantix_variable["Burnup"].getFinalValue()))));  // (MPa) TRANSURANUS manual
     matrix_.setElasticModulus(
-        2.237e5 * (1 - 2.6 * sciantix_variable["Porosity"].getFinalValue()) *
-        (1 - 1.394e-4 * (history_variable["Temperature"].getFinalValue() - 273 - 20)) *
-        (1 - 0.1506 * (1 - exp(-0.035 * sciantix_variable["Burnup"].getFinalValue()))));  // (MPa) TRANSURANUS manual
-    if (sciantix_variable["Porosity"].getFinalValue() >= 0.2)
-    {
-        std::cout << "WARNING: elastic modulus correlation used outside the validity range for "
-                     "fuel porosity (P<0.2)"
-                  << std::endl;
-        std::cout << "Porosity P = " << sciantix_variable["Porosity"].getFinalValue() << std::endl;
-    }
+        2.237e5 * (1 - 2.6 * (1 - sciantix_variable["Fuel density"].getFinalValue() / 10960)) * 
+        (1 - 1.394e-4 * (history_variable["Temperature"].getFinalValue() - 273 - 20)) * 
+        (1 - 0.1506 * (1 - exp(-0.035*sciantix_variable["Burnup"].getFinalValue())))); // (MPa) TU
+	// if ((1 - sciantix_variable["Fuel density"].getFinalValue() / 10960)>=0.2){
+	// 	std::cout<<"WARNING: elastic modulus correlation used outside the validity range for fuel porosity (P<0.2)"<<std::endl;
+	// 	std::cout<<"Porosity P = "<<(1 - sciantix_variable["Fuel density"].getFinalValue() / 10960)<<std::endl;
+	// }
     matrix_.setPoissonRatio(0.32);              // (/) TRANSURANUS manual
     matrix_.setGrainBoundaryFractureEnergy(2);  // (J/m2) Jernkvist, L.O. (2020). A review of analytical criteria for
                                                 // fission gas induced fragmentation of oxide fuel in accident
