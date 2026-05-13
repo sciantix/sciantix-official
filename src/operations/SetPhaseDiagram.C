@@ -123,11 +123,13 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     }
 
     using OCSolver = OCUtilsCoupling::OpenCalphadSolveMode;
-    // Solver for OC
-    std::vector solvers = {
-        OCSolver::SaveReadWarmStart,
-        OCSolver::GlobalEquilibrium,
-    };
+    // Solver for O
+
+    std::vector<OCSolver> solvers;
+    #if !defined(COUPLING_TU)
+        solvers.push_back(OCSolver::SaveReadWarmStart);
+    #endif
+    solvers.push_back(OCSolver::GlobalEquilibrium);
     if (history_variable["System pressure"].getFinalValue() > 1.0e5 + 1.0)
         solvers.push_back(OCSolver::PressureAxisStepGlobalEquilibrium);
     if (location == "matrix")
