@@ -106,9 +106,9 @@ std::map<int, std::string> update_sciantix_variable = {
     {102, "Cs in grain"}, // added
     {103, "Cs in intragranular solution"}, // added
     {104, "Cs in intragranular bubbles"}, // added
-    {105, "Cs at grain boundary"}, // added, it accounts also for reacted
+    {105, "Cs at grain boundary"}, // added, it accounts also for reacted in TU
     {106, "Cs released"}, // tu calculated
-    {107, "Cs reacted"}, // not added, accounted for in the grain boundary
+    {107, "Cs reacted"}, //added
     {108, "Intragranular Cs atoms per bubble"},  // in sciantix
     {109, "Intergranular Cs atoms per bubble"},  // in sciantix
     {111, "I produced"}, // not added
@@ -129,25 +129,25 @@ std::map<int, std::string> update_sciantix_variable = {
     {127, "Te reacted"}, // not added
     {128, "Intragranular Te atoms per bubble"}, // not added
     {129, "Intergranular Te atoms per bubble"}, // not added
-    {130, "Mo produced"}, // not added
-    {131, "Mo in solution"}, // not added
-    {132, "Mo reacted"}, // not added
+    {130, "Mo produced"}, // added
+    {131, "Mo in solution"}, // not added, calculated
+    {132, "Mo reacted"}, // added
     //{133, "Mo released"},
-    {134, "Tc produced"}, // not added
-    {135, "Tc in solution"}, // not added
-    {136, "Tc reacted"}, // not added
+    {134, "Tc produced"}, // added
+    {135, "Tc in solution"}, // not added, calculated
+    {136, "Tc reacted"}, // added
     //{137, "Tc released"},
-    {138, "Ru produced"}, // not added
-    {139, "Ru in solution"}, // not added
-    {140, "Ru reacted"}, // not added
+    {138, "Ru produced"}, // added
+    {139, "Ru in solution"}, // not added, calculated
+    {140, "Ru reacted"}, // added
     //{141, "Ru released"},
-    {142, "Rh produced"}, // not added
-    {143, "Rh in solution"}, // not added
-    {144, "Rh reacted"}, // not added
+    {142, "Rh produced"}, // added
+    {143, "Rh in solution"}, // not added, calculated
+    {144, "Rh reacted"}, // added
     //{145, "Rh released"},
-    {146, "Pd produced"}, // not added
-    {147, "Pd in solution"}, // not added
-    {148, "Pd reacted"}, // not added
+    {146, "Pd produced"}, // added
+    {147, "Pd in solution"}, // not added, calculated
+    {148, "Pd reacted"}, // added
     //{149, "Pd released"},
     {150, "Chromium content"}, // not present
     {151, "Lattice parameter"}, // not present
@@ -163,21 +163,24 @@ std::map<int, std::string> update_sciantix_variable = {
     {161, "U content"}, // added
     {162, "O content"}, // added
     {163, "Pu content"}, // added
-    {164, "JOG"}, // not added
-    {165, "JOG from CS2MOO4_S1"}, // not added
-    {166, "JOG from CS2MOO4_S2"}, // not added
-    {167, "JOG from HCP_A3"}, // not added
-    {168, "JOG from BCC_A2"}, // not added
-    {169, "JOG from MOO2"}, // not added
-    {170, "JOG from FCC_A1"}, // not added
     {171, "Pu238"}, // added
     {172, "Pu239"}, // added
     {173, "Pu240"}, // added
     {174, "Pu241"}, // added
     {175, "Pu242"}, // added
     {177, "q"}, // added
+    {180, "JOG"}, // not added
+    {181, "JOG from CS2MOO4_S1"}, // not added
+    {182, "JOG from CS2MOO4_S2"}, // not added
+    {183, "JOG from HCP_A3"}, // not added
+    {184, "JOG from BCC_A2"}, // not added
+    {185, "JOG from MOO2"}, // not added
+    {186, "JOG from FCC_A1"}, // not added
+    {187, "JOG from liquid"}, // not added
+    {188, "JOG from CS2MO3O10"}, // not added
+    {189, "JOG from CS2MO4O13"}, // not added
 };
-
+ 
 // CODE DEVELOPMENT: DIFFUSION MODES FROM 17 TO 26
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[])
 {

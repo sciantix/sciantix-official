@@ -1088,9 +1088,12 @@ bool writeOpenCalphadInput(const std::string& state_file_path,
     // Generating input file
     std::ofstream input_file(state_file_path + ".OCM");
 
-    const bool use_saved_state =
-        (solve_mode == OpenCalphadSolveMode::SaveReadWarmStart) &&
-        hasOpenCalphadSavedState(state_file_path);
+    bool use_saved_state = false;
+    #if !defined(COUPLING_TU)
+        use_saved_state =
+            (solve_mode == OpenCalphadSolveMode::SaveReadWarmStart) &&
+            hasOpenCalphadSavedState(state_file_path);
+    #endif
 
     if (use_saved_state)
         input_file << "r u " << state_file_path << ".OCU\n\n";
@@ -1160,7 +1163,9 @@ bool writeOpenCalphadInput(const std::string& state_file_path,
         input_file << "c e\nc w\n";
     }
 
-    input_file << "save u " << state_file_path << " Y\n\n";
+    #if !defined(COUPLING_TU)
+        input_file << "save u " << state_file_path << " Y\n\n";
+    #endif
     input_file << "l /out=" << state_file_path + ".DAT" << " r 2\n\n";
     input_file << "fin";
     return true;
@@ -1169,7 +1174,7 @@ bool writeOpenCalphadInput(const std::string& state_file_path,
 bool runOpenCalphadCase(const std::string& executable)
 {
     const std::string command =
-        "timeout --signal=TERM " + std::to_string(60) + "s " + executable;
+        "timeout --signal=TERM " + std::to_string(60) + "s " + executable + " > /dev/null 2>&1";
     const int status = std::system(command.c_str());
     if (status != 0)
     {

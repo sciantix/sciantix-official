@@ -60,29 +60,6 @@ void Initialization(double              Sciantix_history[],
     const double q = Sciantix_variables[177];
     const double avogadro_number = 6.022e23;
     
-    // const double molar_mass_oxygen = 15.999;
-
-    // const double molar_mass_uranium =
-    //     Sciantix_variables[41] * 234.04095 +
-    //     Sciantix_variables[42] * 235.04393 +
-    //     Sciantix_variables[43] * 236.04557 +
-    //     Sciantix_variables[44] * 237.04873 +
-    //     Sciantix_variables[45] * 238.05079;
-
-    // const double molar_mass_plutonium =
-    //     Sciantix_variables[171] * 238.04956 +
-    //     Sciantix_variables[172] * 239.05216 +
-    //     Sciantix_variables[173] * 240.05381 +
-    //     Sciantix_variables[174] * 241.05685 +
-    //     Sciantix_variables[175] * 242.05874;
-
-    // const double molar_mass_mix =
-    //     (2.0 + Sciantix_variables[66]) * molar_mass_oxygen +
-    //     (1.0 - q) * molar_mass_uranium +
-    //     q * molar_mass_plutonium;
-
-    // Correct: Sciantix_variables[i] *= density_mix * q * avogadro_number * 10.0 / molar_mass_mix;
-
     Sciantix_variables[41] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 234.04095;
     Sciantix_variables[42] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 235.04393; 
     Sciantix_variables[43] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 236.04557;  

@@ -49,7 +49,6 @@ class Simulation
     SciantixArray<SciantixVariable> physics_variable;
     SciantixArray<ThermochemistryVariable> thermochemistry_variable;
     
-
     SciantixArray<Model>  model;
     SciantixArray<System> sciantix_system;
     SciantixArray<Matrix> matrices;
