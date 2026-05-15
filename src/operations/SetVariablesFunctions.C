@@ -426,7 +426,11 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          0.0,
                          0.0,
                          toOutputThermochimica),
-        SciantixVariable("Fuel oxygen potential", "(KJ/mol)", 0.0, 0.0, toOutputStoichiometryDeviation),
+        SciantixVariable("Fuel oxygen potential", 
+                         "(KJ/mol)", 
+                         Sciantix_variables[164],
+                         Sciantix_variables[164], 
+                         toOutputStoichiometryDeviation),
         SciantixVariable("Fuel oxygen potential - Blackburn",
                          "(KJ/mol)",
                          0.0,
@@ -504,20 +508,24 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("U content", "(mol/m3)", Sciantix_variables[161], Sciantix_variables[161],  toOutputThermochimica),
         SciantixVariable("O content", "(mol/m3)", Sciantix_variables[162], Sciantix_variables[162],  toOutputThermochimica),
         SciantixVariable("Pu content", "(mol/m3)", Sciantix_variables[163], Sciantix_variables[163],  toOutputThermochimica && toOutputMOX),
-        
+        SciantixVariable("Phase std density", 
+                    "(g/m3)", 
+                    Sciantix_variables[165],
+                    Sciantix_variables[165], 
+                    0),
         // CODE DEVELOPMENT : JOG VARIABLES - TO BE REDUCED, ONLY FOR PURPOSE OF MODELLING
         SciantixVariable("JOG", "(/)", Sciantix_variables[180], Sciantix_variables[180], toOutputThermochimica),
-        SciantixVariable("JOG from condensed", "(/)", 0.0, 0.0, toOutputThermochimica),
-        SciantixVariable("JOG from liquid", "(/)", Sciantix_variables[187], Sciantix_variables[187], toOutputThermochimica),
         SciantixVariable("JOG from CS2MOO4_S1", "(/)", Sciantix_variables[181], Sciantix_variables[181], toOutputThermochimica),
         SciantixVariable("JOG from CS2MOO4_S2", "(/)", Sciantix_variables[182], Sciantix_variables[182], toOutputThermochimica),
-        SciantixVariable("JOG from CS2MO3O10", "(/)", Sciantix_variables[188], Sciantix_variables[188], toOutputThermochimica),
-        SciantixVariable("JOG from CS2MO4O13", "(/)", Sciantix_variables[189], Sciantix_variables[189], toOutputThermochimica),
+        SciantixVariable("JOG from HCP_A3", "(/)", Sciantix_variables[183], Sciantix_variables[183], toOutputThermochimica),
         SciantixVariable("JOG from BCC_A2", "(/)", Sciantix_variables[184], Sciantix_variables[184], toOutputThermochimica),
         SciantixVariable("JOG from MOO2", "(/)", Sciantix_variables[185], Sciantix_variables[185], toOutputThermochimica),
         SciantixVariable("JOG from FCC_A1", "(/)", Sciantix_variables[186], Sciantix_variables[186], toOutputThermochimica),
-        SciantixVariable("JOG from HCP_A3", "(/)", Sciantix_variables[183], Sciantix_variables[183], toOutputThermochimica)};
-
+        SciantixVariable("JOG from liquid", "(/)", Sciantix_variables[187], Sciantix_variables[187], toOutputThermochimica),
+        SciantixVariable("JOG from CS2MO3O10", "(/)", Sciantix_variables[188], Sciantix_variables[188], toOutputThermochimica),
+        SciantixVariable("JOG from CS2MO4O13", "(/)", Sciantix_variables[189], Sciantix_variables[189], toOutputThermochimica),
+        SciantixVariable("JOG from condensed", "(/)", 0.0, 0.0, toOutputThermochimica)};
+    
     return init_sciantix_variable;
 }
 

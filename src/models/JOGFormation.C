@@ -39,7 +39,7 @@ void Simulation::JOGFormation()
     const double V_cell = (a_o_ref * b_o_ref * c_o_ref)*(1.0 + 3 * alpha)/ (4.0); // 4.0 = Z in orthorombic
 
     const double theoretical_density = 425.76 / (avogadro_number * V_cell); // g/m3
-
+    sciantix_variable["Phase std density"].setFinalValue(theoretical_density);
     double JOG_thickness = 0.0;
     double JOG_thickness_condensed = 0.0;
     double JOG_thickness_liquid = 0.0;

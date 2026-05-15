@@ -163,6 +163,8 @@ std::map<int, std::string> update_sciantix_variable = {
     {161, "U content"}, // added
     {162, "O content"}, // added
     {163, "Pu content"}, // added
+    {164, "Fuel oxygen potential"}, // added
+    {165, "Phase std density"}, // added
     {171, "Pu238"}, // added
     {172, "Pu239"}, // added
     {173, "Pu240"}, // added
