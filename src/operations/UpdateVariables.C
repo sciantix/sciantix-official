@@ -113,6 +113,10 @@ std::map<int, std::string> update_sciantix_variable = {
     {160, "Diffusion coefficient"},
     {170, "Metal produced"},
     {171, "Cm"},
+    {172, "Cm matrix"},
+    {173, "Cm precipitated intragranular"},
+    {174, "Cm precipitated grain boundary"},
+
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
