@@ -33,7 +33,6 @@ void Simulation::MetallicFissionProducts()
     const double k_intra = 1.0e-10;
     const double k_gb    = 1.0e-9;
 
-
     // Fission rate al passo attuale (fiss/m3/s)
     // Già letto automaticamente dal file di input ad ogni passo
     double fission_rate = history_variable["Fission rate"].getFinalValue();
@@ -43,36 +42,36 @@ void Simulation::MetallicFissionProducts()
 
     // CONCENTRAZIONE TOTALE Cm
 
-        // Equazione fisica
-        // dCm/dt = y * F  discretizzata su Δt:
-        // Cm(t+dt) = Cm(t) + y * F * dt
-        double produzione = y * fission_rate * dt;
+    // Equazione fisica
+    // dCm/dt = y * F  discretizzata su Δt:
+    // Cm(t+dt) = Cm(t) + y * F * dt
+    double produzione = y * fission_rate * dt;
 
-        // Aggiornamento della variabile
-        // addValue aggiunge 'produzione' al valore attuale di Cm
-        // final_value è protected —> devo usare la funzione pubblica addValue
-        sciantix_variable["Cm"].addValue(produzione);
+    // Aggiornamento della variabile
+    // addValue aggiunge 'produzione' al valore attuale di Cm
+    // final_value è protected —> devo usare la funzione pubblica addValue
+    sciantix_variable["Cm"].addValue(produzione);
 
     // CONCENTRAZIONE LIBERA IN MATRICE Cm matrix
 
-        // Valore di Cm matrix al passo precedente usato per calcolare i sink
-        double cm_matrix = sciantix_variable["Cm matrix"].getFinalValue();
-        // TERMINI DI PERDITA
-        double sink_intra = k_intra * cm_matrix;       // precipitazione intragranulare (at/m3 s)
-        double sink_gb    = k_gb    * cm_matrix;       // precipitazione al bordo grano (at/m3 s)
-        // Aggiornamento Cm
-        // dCm_matrix/dt = y * F - (k_intra + k_gb) * cm_matrix
-        sciantix_variable["Cm matrix"].addValue(produzione - (sink_intra + sink_gb) * dt);
+    // Valore di Cm matrix al passo precedente usato per calcolare i sink
+    double cm_matrix = sciantix_variable["Cm matrix"].getFinalValue();
+    // TERMINI DI PERDITA
+    double sink_intra = k_intra * cm_matrix;  // precipitazione intragranulare (at/m3 s)
+    double sink_gb    = k_gb * cm_matrix;     // precipitazione al bordo grano (at/m3 s)
+    // Aggiornamento Cm
+    // dCm_matrix/dt = y * F - (k_intra + k_gb) * cm_matrix
+    sciantix_variable["Cm matrix"].addValue(produzione - (sink_intra + sink_gb) * dt);
 
     // Cm PRECIPIATTA INTRAGRANO
-       
-        // Aggiornamento della variabile
-        // dCm_prec_intragr/dt = + k_intra * cm_matrix
-        sciantix_variable["Cm precipitated intragranular"].addValue(sink_intra * dt);
 
-    // Cm PRECIPITATA A GB 
+    // Aggiornamento della variabile
+    // dCm_prec_intragr/dt = + k_intra * cm_matrix
+    sciantix_variable["Cm precipitated intragranular"].addValue(sink_intra * dt);
 
-        // Aggiornamento della variabile
-        // dCm_prec_intergr/dy = + k_gb * cm_matrix
-        sciantix_variable["Cm precipitated grain boundary"].addValue(sink_gb * dt);
+    // Cm PRECIPITATA A GB
+
+    // Aggiornamento della variabile
+    // dCm_prec_intergr/dy = + k_gb * cm_matrix
+    sciantix_variable["Cm precipitated grain boundary"].addValue(sink_gb * dt);
 }
