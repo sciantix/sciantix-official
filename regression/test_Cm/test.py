@@ -16,7 +16,7 @@ PROJECT_DIR = TEST_DIR.parents[1]
 BUILD_EXECUTABLE = PROJECT_DIR / "build" / "sciantix.x"
 LOCAL_EXECUTABLE = TEST_DIR / "sciantix.x"
 OUTPUT_FILE = TEST_DIR / "output.txt"
-PLOT_FILE = TEST_DIR / "Cm_vs_time.png"
+PLOT_FILE = TEST_DIR / "metallic_fission_products.png"
 
 
 def run_command(command: list[str], cwd: Path) -> None:
@@ -74,26 +74,60 @@ def load_columns(output_file: Path, x_label: str, y_label: str) -> tuple[np.ndar
     return values[:, x_index], values[:, y_index]
 
 
-def plot_cm_vs_time() -> Path:
-    time_h, cm = load_columns(OUTPUT_FILE, "Time (h)", "Cm (at/m3)")
+def plot_metallic_fission_products() -> Path:
+    time_h, cm       = load_columns(OUTPUT_FILE, "Time (h)", "Cm (at/m3)")
+    time_h, cm_mat   = load_columns(OUTPUT_FILE, "Time (h)", "Cm matrix (at/m3)")
+    time_h, cm_intra = load_columns(OUTPUT_FILE, "Time (h)",
+                                    "Cm precipitated intragranular (at/m3)")
+    time_h, cm_gb    = load_columns(OUTPUT_FILE, "Time (h)",
+                                    "Cm precipitated grain boundary (at/m3)")
 
-    fig, ax = plt.subplots(figsize=(7, 5))
-    ax.scatter(time_h, cm, color="black")
+    fig, ax = plt.subplots(figsize=(9, 6))
+    ax.plot(time_h, cm,       label="Cm total",      color="black",  linewidth=2)
+    ax.plot(time_h, cm_mat,   label="Cm matrix",     color="blue",   linewidth=1.5)
+    ax.plot(time_h, cm_intra, label="Cm prec. intra",color="green",  linewidth=1.5)
+    ax.plot(time_h, cm_gb,    label="Cm prec. GB",   color="red",    linewidth=1.5)
     ax.set_xlabel("Time (h)")
-    ax.set_ylabel("Cm (at/m3)")
-    ax.set_title("Cm evolution")
+    ax.set_ylabel("Concentration (at/m3)")
+    ax.set_title("Metallic fission products evolution")
+    ax.legend()
     ax.grid(True, which="both", linestyle=":", linewidth=0.8)
 
     fig.tight_layout()
     fig.savefig(PLOT_FILE, dpi=180)
     plt.show()
-
     return PLOT_FILE
+
+def check_mass_conservation() -> None:
+    time_h, cm       = load_columns(OUTPUT_FILE, "Time (h)", "Cm (at/m3)")
+    time_h, cm_mat   = load_columns(OUTPUT_FILE, "Time (h)", "Cm matrix (at/m3)")
+    time_h, cm_intra = load_columns(OUTPUT_FILE, "Time (h)",
+                                    "Cm precipitated intragranular (at/m3)")
+    time_h, cm_gb    = load_columns(OUTPUT_FILE, "Time (h)",
+                                    "Cm precipitated grain boundary (at/m3)")
+
+    # Calcola l'errore relativo di massa ad ogni passo
+    cm_sum = cm_mat + cm_intra + cm_gb
+
+    # Evita divisione per zero al primo passo (cm = 0)
+    with np.errstate(invalid='ignore', divide='ignore'):
+        epsilon = np.where(cm > 0, np.abs(cm - cm_sum) / cm, 0.0)
+
+    max_epsilon = np.max(epsilon)
+    print(f"Mass conservation check: max relative error = {max_epsilon:.2e}", flush=True)
+
+    # Il test fallisce se l'errore supera l'1%
+    assert max_epsilon < 0.01, (
+        f"Mass conservation violated: max error = {max_epsilon:.2e} (threshold = 0.01)"
+    )
+    print("Mass conservation: OK", flush=True)
 
 
 if __name__ == "__main__":
     run_allmake()
     copy_sciantix_executable()
     run_sciantix()
-    saved_plot = plot_cm_vs_time()
+    saved_plot = plot_metallic_fission_products()   
     print(f"Saved: {saved_plot}", flush=True)
+    check_mass_conservation()                       
+
