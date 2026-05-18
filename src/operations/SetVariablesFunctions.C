@@ -221,13 +221,13 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[170],
                          Sciantix_variables[170],
                          toOutputCoarsening),
+        SciantixVariable("Intragranular coarsened bubble radius",
+                         "(m)",
+                         Sciantix_variables[171],
+                         Sciantix_variables[171],
+                         toOutputCoarsening),
         SciantixVariable(
-            "Intragranular coarsened bubble radius", "(m)", Sciantix_variables[171], Sciantix_variables[171], toOutputCoarsening),
-        SciantixVariable("Intragranular coarsened atoms per bubble",
-                         "(at/bub)",
-                         Sciantix_variables[172],
-                         Sciantix_variables[172],
-                         0),
+            "Intragranular coarsened atoms per bubble", "(at/bub)", Sciantix_variables[172], Sciantix_variables[172], 0),
         SciantixVariable("Intragranular coarsened vacancies per bubble",
                          "(vac/bub)",
                          Sciantix_variables[173],
@@ -238,8 +238,11 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[174],
                          Sciantix_variables[174],
                          toOutputCoarsening),
-        SciantixVariable(
-            "Intragranular bulk gas bubble swelling", "(/)", Sciantix_variables[175], Sciantix_variables[175], toOutputCoarsening),
+        SciantixVariable("Intragranular bulk gas bubble swelling",
+                         "(/)",
+                         Sciantix_variables[175],
+                         Sciantix_variables[175],
+                         toOutputCoarsening),
         SciantixVariable(
             "Intragranular gas in coarsened bubbles", "(at/m3)", Sciantix_variables[176], Sciantix_variables[176], 0),
         SciantixVariable(
