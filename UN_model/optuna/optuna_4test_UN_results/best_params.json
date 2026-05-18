@@ -1,0 +1,28 @@
+{
+  "number": 267,
+  "value": 3.775171485678747,
+  "params": {
+    "rho_mode": "constant",
+    "rho_const_scale": 4.195160164942472,
+    "K_d": 2869991.9368489077,
+    "f_n": 1.0609704427004406e-06,
+    "Dg_dislocation_scale": 1.762525632685351,
+    "Dv_dislocation_scale": 7.044950531210412,
+    "first_gas_pressure_factor": 0.21623790810835175
+  },
+  "user_attrs": {
+    "first_gas_pressure_factor": 0.21623790810835175,
+    "max_Rd_nm": 138.6005576612843,
+    "max_f_cap_step": 0.10821248694510048,
+    "max_psi_d": 0.7094935325848127,
+    "min_Nd": 3.202298269329297e+19,
+    "rho_cfg": "{\"rho_mode\": \"constant\", \"rho_const_scale\": 4.195160164942472, \"rho_max\": 1000000000000000.0, \"rho_fab_base\": 30000000000000.0, \"first_gas_pressure_factor\": 0.21623790810835175}",
+    "score_Nd_drop": 0.11451504133247974,
+    "score_guards": 4.4055746177703147e-07,
+    "score_partition": 1.0987806029547127,
+    "score_pressure": 7.284492746592773e-05,
+    "score_radius_T": 2.353422055787738,
+    "score_swelling_T": 0.1997576789977684,
+    "score_swelling_burnup": 0.3341147120988067
+  }
+}
