@@ -23,6 +23,7 @@ def main():
     parser.add_argument("--baker", action="store_true")
     parser.add_argument("--cornell", action="store_true")
     parser.add_argument("--white", action="store_true")
+    parser.add_argument("--whiteCOARSENING", "--white-coarsening", dest="whiteCOARSENING", action="store_true")  # COARSENING: isolated White suite using the Barani two-size intragranular model.
     parser.add_argument("--kashibe", action="store_true")
     parser.add_argument("--talip", action="store_true")
     parser.add_argument("--oxidation", action="store_true")
@@ -77,6 +78,7 @@ def main():
         ("baker", "test_Baker"),
         ("cornell", "test_Cornell"),
         ("white", "test_White"),
+        ("whiteCOARSENING", "test_White"),  # COARSENING: keep model-4 White cases out of the legacy white regression group.
         ("kashibe", "test_Kashibe"),
         ("talip", "test_Talip"),
         ("oxidation", "test_UO2_oxidation"),
