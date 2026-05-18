@@ -98,6 +98,7 @@ initializeHistoryVariable(double Sciantix_history[], double Sciantix_scaling_fac
  * @param toOutputGrainBoundary Flag for outputting grain boundary information.
  * @param toOutputHighBurnupStructure Flag for outputting high burnup structure information.
  * @param toOutputStoichiometryDeviation Flag for outputting stoichiometry deviation information.
+ * @param toOutputCoarsening Flag for outputting Barani two-size intragranular coarsening information. COARSENING.
  * @return A vector of SciantixVariable objects initialized with the given values and flags.
  */
 std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variables[],
@@ -108,7 +109,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputGrainBoundary,
                                                          bool   toOutputHighBurnupStructure,
                                                          bool   toOutputStoichiometryDeviation,
-                                                         bool   toOutputChromiumContent)
+                                                         bool   toOutputChromiumContent,
+                                                         bool   toOutputCoarsening)
 {
     std::vector<SciantixVariable> init_sciantix_variable = {
         SciantixVariable("Grain radius", "(m)", Sciantix_variables[0], Sciantix_variables[0], 1),
@@ -213,6 +215,40 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          0),
 
         SciantixVariable("Intragranular gas bubble swelling", "(/)", Sciantix_variables[24], Sciantix_variables[24], 1),
+        // COARSENING: Barani et al. two-size intragranular model outputs for dislocation/coarsened bubbles.
+        SciantixVariable("Intragranular coarsened bubble concentration",
+                         "(bub/m3)",
+                         Sciantix_variables[170],
+                         Sciantix_variables[170],
+                         toOutputCoarsening),
+        SciantixVariable(
+            "Intragranular coarsened bubble radius", "(m)", Sciantix_variables[171], Sciantix_variables[171], toOutputCoarsening),
+        SciantixVariable("Intragranular coarsened atoms per bubble",
+                         "(at/bub)",
+                         Sciantix_variables[172],
+                         Sciantix_variables[172],
+                         0),
+        SciantixVariable("Intragranular coarsened vacancies per bubble",
+                         "(vac/bub)",
+                         Sciantix_variables[173],
+                         Sciantix_variables[173],
+                         0),
+        SciantixVariable("Intragranular coarsened gas bubble swelling",
+                         "(/)",
+                         Sciantix_variables[174],
+                         Sciantix_variables[174],
+                         toOutputCoarsening),
+        SciantixVariable(
+            "Intragranular bulk gas bubble swelling", "(/)", Sciantix_variables[175], Sciantix_variables[175], toOutputCoarsening),
+        SciantixVariable(
+            "Intragranular gas in coarsened bubbles", "(at/m3)", Sciantix_variables[176], Sciantix_variables[176], 0),
+        SciantixVariable(
+            "Intragranular coarsened bubble pressure", "(MPa)", Sciantix_variables[177], Sciantix_variables[177], 0),
+        SciantixVariable("Intragranular coarsened bubble equilibrium pressure",
+                         "(MPa)",
+                         Sciantix_variables[178],
+                         Sciantix_variables[178],
+                         0),
         SciantixVariable("Intragranular gas solution swelling",
                          "(/)",
                          Sciantix_variables[68],
