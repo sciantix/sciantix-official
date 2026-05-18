@@ -20,92 +20,90 @@
 
 namespace
 {
-// COARSENING: numerical guard used by the Barani et al. two-size intragranular bubble extension.
-double coarseningPositive(const double value)
-{
-    return std::max(value, 0.0);
-}
+    // COARSENING: numerical guard used by the Barani et al. two-size intragranular bubble extension.
+    double coarseningPositive(const double value)
+    {
+        return std::max(value, 0.0);
+    }
 
-// COARSENING: Setyawan-informed size-dependent re-solution rate used in Barani et al. (2020), Eq. (7).
-double coarseningResolutionRate(const double radius, const double fission_rate)
-{
-    const double a  = 9.49e-24;  // COARSENING: m3, Barani et al. Table 1.
-    const double b1 = 7.07e-2;   // COARSENING: 1/m, Barani et al. Table 1.
-    const double b0 = 9.18e-23;  // COARSENING: m3, Barani et al. Table 1.
-    const double c  = 7.982;     // COARSENING: 1/m2, Barani et al. Table 1.
-    const double d  = 3.71e-2;   // COARSENING: 1/m2, Barani et al. Table 1.
+    // COARSENING: Setyawan-informed size-dependent re-solution rate used in Barani et al. (2020), Eq. (7).
+    double coarseningResolutionRate(const double radius, const double fission_rate)
+    {
+        const double a  = 9.49e-24;  // COARSENING: m3, Barani et al. Table 1.
+        const double b1 = 7.07e-2;   // COARSENING: 1/m, Barani et al. Table 1.
+        const double b0 = 9.18e-23;  // COARSENING: m3, Barani et al. Table 1.
+        const double c  = 7.982;     // COARSENING: 1/m2, Barani et al. Table 1.
+        const double d  = 3.71e-2;   // COARSENING: 1/m2, Barani et al. Table 1.
 
-    const double denominator = 1.0 + c * pow(radius, 2.0) * exp(-d * pow(radius, 2.0));
-    const double volume_rate = (a * exp(-b1 * radius) + b0 - a) / denominator;
+        const double denominator = 1.0 + c * pow(radius, 2.0) * exp(-d * pow(radius, 2.0));
+        const double volume_rate = (a * exp(-b1 * radius) + b0 - a) / denominator;
 
-    return coarseningPositive(volume_rate * fission_rate);
-}
+        return coarseningPositive(volume_rate * fission_rate);
+    }
 
-// COARSENING: xenon pipe-diffusion coefficient close to the dislocation core, Barani et al. Table 1.
-double coarseningGasPipeDiffusivity(const double temperature)
-{
-    if (temperature <= 0.0)
-        return 0.0;
+    // COARSENING: xenon pipe-diffusion coefficient close to the dislocation core, Barani et al. Table 1.
+    double coarseningGasPipeDiffusivity(const double temperature)
+    {
+        if (temperature <= 0.0)
+            return 0.0;
 
-    return 7.74e-6 * exp(-1.21e-19 / (boltzmann_constant * temperature));
-}
+        return 7.74e-6 * exp(-1.21e-19 / (boltzmann_constant * temperature));
+    }
 
-// COARSENING: vacancy pipe-diffusion coefficient along dislocations, Barani et al. Eq. (15).
-double coarseningVacancyPipeDiffusivity(const double temperature)
-{
-    if (temperature <= 0.0)
-        return 0.0;
+    // COARSENING: vacancy pipe-diffusion coefficient along dislocations, Barani et al. Eq. (15).
+    double coarseningVacancyPipeDiffusivity(const double temperature)
+    {
+        if (temperature <= 0.0)
+            return 0.0;
 
-    return 3.8e-2 * exp(-1.84 / (boltzmann_constant_eV * temperature));
-}
+        return 3.8e-2 * exp(-1.84 / (boltzmann_constant_eV * temperature));
+    }
 
-// COARSENING: hard-sphere diameter for Xe in the Carnahan-Starling EOS, Barani et al. Eq. (11).
-double coarseningHardSphereDiameter(const double temperature)
-{
-    if (temperature <= 0.0)
-        return 0.0;
+    // COARSENING: hard-sphere diameter for Xe in the Carnahan-Starling EOS, Barani et al. Eq. (11).
+    double coarseningHardSphereDiameter(const double temperature)
+    {
+        if (temperature <= 0.0)
+            return 0.0;
 
-    return 4.45e-10 * (0.8542 - 0.03996 * log(temperature / 231.2));
-}
+        return 4.45e-10 * (0.8542 - 0.03996 * log(temperature / 231.2));
+    }
 
-// COARSENING: spherical radius from a per-bubble volume.
-double coarseningRadiusFromVolume(const double volume)
-{
-    if (volume <= 0.0)
-        return 0.0;
+    // COARSENING: spherical radius from a per-bubble volume.
+    double coarseningRadiusFromVolume(const double volume)
+    {
+        if (volume <= 0.0)
+            return 0.0;
 
-    return 0.620350491 * pow(volume, 1.0 / 3.0);
-}
+        return 0.620350491 * pow(volume, 1.0 / 3.0);
+    }
 
-// COARSENING: spherical per-bubble volume from radius.
-double coarseningVolumeFromRadius(const double radius)
-{
-    if (radius <= 0.0)
-        return 0.0;
+    // COARSENING: spherical per-bubble volume from radius.
+    double coarseningVolumeFromRadius(const double radius)
+    {
+        if (radius <= 0.0)
+            return 0.0;
 
-    return 4.188790205 * pow(radius, 3.0);
-}
+        return 4.188790205 * pow(radius, 3.0);
+    }
 
-// COARSENING: Carnahan-Starling pressure for coarsened dislocation bubbles, Barani et al. Eq. (10).
-double coarseningBubblePressure(const double atoms_per_bubble,
-                                const double bubble_volume,
-                                const double temperature)
-{
-    if (atoms_per_bubble <= 0.0 || bubble_volume <= 0.0 || temperature <= 0.0)
-        return 0.0;
+    // COARSENING: Carnahan-Starling pressure for coarsened dislocation bubbles, Barani et al. Eq. (10).
+    double coarseningBubblePressure(const double atoms_per_bubble, const double bubble_volume, const double temperature)
+    {
+        if (atoms_per_bubble <= 0.0 || bubble_volume <= 0.0 || temperature <= 0.0)
+            return 0.0;
 
-    const double hard_sphere_diameter = coarseningHardSphereDiameter(temperature);
-    const double atomic_density       = atoms_per_bubble / bubble_volume;
-    double       packing_fraction     = M_PI * pow(hard_sphere_diameter, 3.0) * atomic_density / 6.0;
+        const double hard_sphere_diameter = coarseningHardSphereDiameter(temperature);
+        const double atomic_density       = atoms_per_bubble / bubble_volume;
+        double       packing_fraction     = M_PI * pow(hard_sphere_diameter, 3.0) * atomic_density / 6.0;
 
-    packing_fraction = std::min(std::max(packing_fraction, 0.0), 0.74);
+        packing_fraction = std::min(std::max(packing_fraction, 0.0), 0.74);
 
-    const double compressibility =
-        (1.0 + packing_fraction + pow(packing_fraction, 2.0) - pow(packing_fraction, 3.0)) /
-        pow(1.0 - packing_fraction, 3.0);
+        const double compressibility =
+            (1.0 + packing_fraction + pow(packing_fraction, 2.0) - pow(packing_fraction, 3.0)) /
+            pow(1.0 - packing_fraction, 3.0);
 
-    return atoms_per_bubble * boltzmann_constant * temperature * compressibility / bubble_volume;
-}
+        return atoms_per_bubble * boltzmann_constant * temperature * compressibility / bubble_volume;
+    }
 }  // namespace
 
 void Simulation::IntraGranularBubbleBehavior()
@@ -179,9 +177,9 @@ void Simulation::IntraGranularBubbleBehavior()
             reference += "Barani et al., JNM, 538 (2020) 152195. COARSENING.";
 
             // COARSENING: bulk bubbles use the same nucleation structure as Pizzocri et al. with size-dependent re-solution.
-            parameter.push_back(coarseningResolutionRate(
-                sciantix_variable["Intragranular bubble radius"].getInitialValue(),
-                history_variable["Fission rate"].getFinalValue()));
+            parameter.push_back(
+                coarseningResolutionRate(sciantix_variable["Intragranular bubble radius"].getInitialValue(),
+                                         history_variable["Fission rate"].getFinalValue()));
             parameter.push_back(sciantix_system[0].getNucleationRate());
 
             break;
@@ -278,16 +276,16 @@ void Simulation::IntraGranularBubbleBehavior()
         double coarsened_gas =
             coarseningPositive(sciantix_variable["Intragranular gas in coarsened bubbles"].getInitialValue());
 
-        double total_gas_in_bubbles = 0.0;
+        double total_gas_in_bubbles  = 0.0;
         double total_gas_in_solution = 0.0;
         for (auto& system : sciantix_system)
         {
             if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
             {
-                total_gas_in_bubbles +=
-                    coarseningPositive(sciantix_variable[system.getGasName() + " in intragranular bubbles"].getFinalValue());
-                total_gas_in_solution +=
-                    coarseningPositive(sciantix_variable[system.getGasName() + " in intragranular solution"].getFinalValue());
+                total_gas_in_bubbles += coarseningPositive(
+                    sciantix_variable[system.getGasName() + " in intragranular bubbles"].getFinalValue());
+                total_gas_in_solution += coarseningPositive(
+                    sciantix_variable[system.getGasName() + " in intragranular solution"].getFinalValue());
             }
         }
 
@@ -308,11 +306,10 @@ void Simulation::IntraGranularBubbleBehavior()
         const double pipe_trapping_denominator =
             std::max(log(wigner_seitz_dislocation_radius / dislocation_core_radius) - 0.75, 1.0);
 
-        const double bulk_trapping_rate =
-            4.0 * M_PI * gas_diffusivity * bulk_bubble_radius * bulk_bubble_concentration;
-        const double dislocation_bubble_trapping_rate =
-            4.0 * M_PI * gas_diffusivity * std::max(dislocation_bubble_radius_i, bulk_bubble_radius) *
-            dislocation_bubble_concentration;
+        const double bulk_trapping_rate = 4.0 * M_PI * gas_diffusivity * bulk_bubble_radius * bulk_bubble_concentration;
+        const double dislocation_bubble_trapping_rate = 4.0 * M_PI * gas_diffusivity *
+                                                        std::max(dislocation_bubble_radius_i, bulk_bubble_radius) *
+                                                        dislocation_bubble_concentration;
         const double dislocation_line_trapping_rate =
             2.0 * M_PI * pipe_gas_diffusivity * dislocation_density / pipe_trapping_denominator;
         const double total_trapping_rate =
@@ -337,27 +334,25 @@ void Simulation::IntraGranularBubbleBehavior()
 
         double coarsened_vacancies_per_bubble =
             coarseningPositive(sciantix_variable["Intragranular coarsened vacancies per bubble"].getInitialValue());
-        double coarsened_bubble_volume =
-            coarsened_atoms_per_bubble * gas_atom_volume_in_bulk_bubbles +
-            coarsened_vacancies_per_bubble * vacancy_volume;
+        double coarsened_bubble_volume = coarsened_atoms_per_bubble * gas_atom_volume_in_bulk_bubbles +
+                                         coarsened_vacancies_per_bubble * vacancy_volume;
 
         double coarsened_bubble_radius = coarseningRadiusFromVolume(coarsened_bubble_volume);
         double coarsened_bubble_pressure =
             coarseningBubblePressure(coarsened_atoms_per_bubble, coarsened_bubble_volume, temperature);
         double equilibrium_pressure = 0.0;
         if (coarsened_bubble_radius > 0.0)
-            equilibrium_pressure =
-                2.0 * uo2_gas_surface_energy / coarsened_bubble_radius -
-                history_variable["Hydrostatic stress"].getFinalValue() * 1.0e6;
+            equilibrium_pressure = 2.0 * uo2_gas_surface_energy / coarsened_bubble_radius -
+                                   history_variable["Hydrostatic stress"].getFinalValue() * 1.0e6;
 
-        if (time_step > 0.0 && dislocation_bubble_concentration > 0.0 && coarsened_bubble_pressure > equilibrium_pressure)
+        if (time_step > 0.0 && dislocation_bubble_concentration > 0.0 &&
+            coarsened_bubble_pressure > equilibrium_pressure)
         {
             // COARSENING: vacancy absorption along dislocations follows the Speight-Beere form, Eq. (8).
             const double dislocation_bubble_cell_radius =
                 pow(3.0 / (4.0 * M_PI * dislocation_bubble_concentration), 1.0 / 3.0);
-            const double psi = std::min(coarsened_bubble_radius / dislocation_bubble_cell_radius, 0.95);
-            const double z_denominator =
-                std::max(-pow(psi, 6.0) + 5.0 * pow(psi, 2.0) - 9.0 * psi + 5.0, 1.0e-12);
+            const double psi           = std::min(coarsened_bubble_radius / dislocation_bubble_cell_radius, 0.95);
+            const double z_denominator = std::max(-pow(psi, 6.0) + 5.0 * pow(psi, 2.0) - 9.0 * psi + 5.0, 1.0e-12);
             const double sink_strength = 10.0 * psi * (1.0 + pow(psi, 3.0)) / z_denominator;
             const double vacancy_absorption_rate =
                 2.0 * M_PI * coarseningVacancyPipeDiffusivity(temperature) * dislocation_bubble_cell_radius *
@@ -366,18 +361,17 @@ void Simulation::IntraGranularBubbleBehavior()
 
             const double previous_volume = coarsened_bubble_volume;
             coarsened_vacancies_per_bubble += coarseningPositive(vacancy_absorption_rate) * time_step;
-            coarsened_bubble_volume =
-                coarsened_atoms_per_bubble * gas_atom_volume_in_bulk_bubbles +
-                coarsened_vacancies_per_bubble * vacancy_volume;
+            coarsened_bubble_volume = coarsened_atoms_per_bubble * gas_atom_volume_in_bulk_bubbles +
+                                      coarsened_vacancies_per_bubble * vacancy_volume;
 
             // COARSENING: limit explicit vacancy-growth overshoot during sharp White power ramps.
-            const double previous_radius       = coarseningRadiusFromVolume(previous_volume);
+            const double previous_radius      = coarseningRadiusFromVolume(previous_volume);
             const double max_radius_increment = 2.0e-10;  // COARSENING: stable explicit growth limiter per time step.
-            const double max_coarsened_radius  = 2.5e-7;
-            coarsened_bubble_radius            = std::min(coarseningRadiusFromVolume(coarsened_bubble_volume),
+            const double max_coarsened_radius = 2.5e-7;
+            coarsened_bubble_radius           = std::min(coarseningRadiusFromVolume(coarsened_bubble_volume),
                                                std::min(previous_radius + max_radius_increment, max_coarsened_radius));
-            coarsened_bubble_volume            = coarseningVolumeFromRadius(coarsened_bubble_radius);
-            coarsened_vacancies_per_bubble     = coarseningPositive(
+            coarsened_bubble_volume           = coarseningVolumeFromRadius(coarsened_bubble_radius);
+            coarsened_vacancies_per_bubble    = coarseningPositive(
                 (coarsened_bubble_volume - coarsened_atoms_per_bubble * gas_atom_volume_in_bulk_bubbles) /
                 vacancy_volume);
 
@@ -402,19 +396,17 @@ void Simulation::IntraGranularBubbleBehavior()
 
             if (dislocation_bubble_concentration > 0.0)
                 coarsened_atoms_per_bubble = coarsened_gas / dislocation_bubble_concentration;
-            coarsened_bubble_volume =
-                coarsened_atoms_per_bubble * gas_atom_volume_in_bulk_bubbles +
-                coarsened_vacancies_per_bubble * vacancy_volume;
+            coarsened_bubble_volume = coarsened_atoms_per_bubble * gas_atom_volume_in_bulk_bubbles +
+                                      coarsened_vacancies_per_bubble * vacancy_volume;
             coarsened_bubble_radius = coarseningRadiusFromVolume(coarsened_bubble_volume);
             coarsened_bubble_pressure =
                 coarseningBubblePressure(coarsened_atoms_per_bubble, coarsened_bubble_volume, temperature);
             if (coarsened_bubble_radius > 0.0)
-                equilibrium_pressure =
-                    2.0 * uo2_gas_surface_energy / coarsened_bubble_radius -
-                    history_variable["Hydrostatic stress"].getFinalValue() * 1.0e6;
+                equilibrium_pressure = 2.0 * uo2_gas_surface_energy / coarsened_bubble_radius -
+                                       history_variable["Hydrostatic stress"].getFinalValue() * 1.0e6;
         }
 
-        const double bulk_gas = coarseningPositive(total_gas_in_bubbles - coarsened_gas);
+        const double bulk_gas              = coarseningPositive(total_gas_in_bubbles - coarsened_gas);
         double       bulk_atoms_per_bubble = 0.0;
         if (bulk_bubble_concentration > 0.0)
             bulk_atoms_per_bubble = bulk_gas / bulk_bubble_concentration;
@@ -428,14 +420,16 @@ void Simulation::IntraGranularBubbleBehavior()
         sciantix_variable["Intragranular bubble radius"].setFinalValue(updated_bulk_radius);
         sciantix_variable["Intragranular atoms per bubble"].setFinalValue(bulk_atoms_per_bubble);
         sciantix_variable["Intragranular bulk gas bubble swelling"].setFinalValue(bulk_bubble_swelling);
-        sciantix_variable["Intragranular coarsened bubble concentration"].setFinalValue(dislocation_bubble_concentration);
+        sciantix_variable["Intragranular coarsened bubble concentration"].setFinalValue(
+            dislocation_bubble_concentration);
         sciantix_variable["Intragranular coarsened bubble radius"].setFinalValue(coarsened_bubble_radius);
         sciantix_variable["Intragranular coarsened atoms per bubble"].setFinalValue(coarsened_atoms_per_bubble);
         sciantix_variable["Intragranular coarsened vacancies per bubble"].setFinalValue(coarsened_vacancies_per_bubble);
         sciantix_variable["Intragranular coarsened gas bubble swelling"].setFinalValue(coarsened_swelling);
         sciantix_variable["Intragranular gas in coarsened bubbles"].setFinalValue(coarsened_gas);
         sciantix_variable["Intragranular coarsened bubble pressure"].setFinalValue(coarsened_bubble_pressure / 1.0e6);
-        sciantix_variable["Intragranular coarsened bubble equilibrium pressure"].setFinalValue(equilibrium_pressure / 1.0e6);
+        sciantix_variable["Intragranular coarsened bubble equilibrium pressure"].setFinalValue(equilibrium_pressure /
+                                                                                               1.0e6);
         sciantix_variable["Intragranular gas bubble swelling"].setFinalValue(bulk_bubble_swelling + coarsened_swelling);
     }
 
