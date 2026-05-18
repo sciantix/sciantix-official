@@ -1,0 +1,42 @@
+{
+  "rank": 1,
+  "trial_number": 247,
+  "objective": 41.893098661932676,
+  "params": {
+    "rho_mode": "blank_sat",
+    "rho_blank_scale": 1.6553317915147303,
+    "K_d": 2300628.536649826,
+    "f_n": 5.1964546749383095e-08,
+    "Dg_dislocation_scale": 1.2270380693289118,
+    "Dv_dislocation_scale": 7.529941775692336,
+    "first_gas_pressure_factor": 0.47077626562557995
+  },
+  "rho_cfg": {
+    "rho_mode": "blank_sat",
+    "rho_blank_scale": 1.6553317915147303
+  },
+  "csv_path": "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_grid.csv",
+  "plots": [
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_swelling_T_1.1FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_swelling_T_1.3FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_swelling_T_3.2FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_swelling_vs_burnup_1600K.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_RbRd_NbNd_T_1.1FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_RbRd_NbNd_T_1.3FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_RbRd_NbNd_T_3.2FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_pressure_T_1.1FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_pressure_ratio_T_1.1FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_gas_partition_1.1FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_capture_diagnostic_1.1FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_pressure_T_1.3FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_pressure_ratio_T_1.3FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_gas_partition_1.3FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_capture_diagnostic_1.3FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_pressure_T_3.2FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_pressure_ratio_T_3.2FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_gas_partition_3.2FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_capture_diagnostic_3.2FIMA.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_diffusivities_T.png",
+    "UN_model/optuna/optuna_4test_UN_results_no_capture_RSw/final_reruns/rank01_trial00247/rank01_trial00247_rho_d_surface.png"
+  ]
+}
