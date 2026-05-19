@@ -768,11 +768,11 @@ void System::setResolutionRate(int                              input_value,
             const double radius = sciantix_variable["Intragranular bubble radius"].getFinalValue();
             if (radius > 0.0)
             {
-                const double a  = 9.49e-24;  // COARSENING: m3, Barani et al. Table 1.
-                const double b1 = 7.07e-2;   // COARSENING: 1/m, Barani et al. Table 1.
-                const double b0 = 9.18e-23;  // COARSENING: m3, Barani et al. Table 1.
-                const double c  = 7.982;     // COARSENING: 1/m2, Barani et al. Table 1.
-                const double d  = 3.71e-2;   // COARSENING: 1/m2, Barani et al. Table 1.
+                const double a           = 9.49e-24;  // COARSENING: m3, Barani et al. Table 1.
+                const double b1          = 7.07e-2;   // COARSENING: 1/m, Barani et al. Table 1.
+                const double b0          = 9.18e-23;  // COARSENING: m3, Barani et al. Table 1.
+                const double c           = 7.982;     // COARSENING: 1/m2, Barani et al. Table 1.
+                const double d           = 3.71e-2;   // COARSENING: 1/m2, Barani et al. Table 1.
                 const double denominator = 1.0 + c * pow(radius, 2.0) * exp(-d * pow(radius, 2.0));
                 const double volume_rate = (a * exp(-b1 * radius) + b0 - a) / denominator;
                 resolution_rate = std::max(volume_rate * history_variable["Fission rate"].getFinalValue(), 0.0);
@@ -957,7 +957,8 @@ void System::setNucleationRate(int                              input_value,
         case 2:
         {
             // COARSENING: Olander-Wongsawaeng bulk nucleation plus Barani dislocation-bubble nucleation in model 4.
-            reference += "iNucleationRate: Olander-Wongsawaeng bulk plus Barani dislocation nucleation for COARSENING.\n\t";
+            reference +=
+                "iNucleationRate: Olander-Wongsawaeng bulk plus Barani dislocation nucleation for COARSENING.\n\t";
             nucleation_rate = 2.0 * history_variable["Fission rate"].getFinalValue() * 25;
             nucleation_rate *= scaling_factors["Nucleation rate"].getValue();
 

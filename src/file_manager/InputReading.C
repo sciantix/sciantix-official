@@ -36,9 +36,9 @@ unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& inpu
 }
 
 // COARSENING: read optional settings appended after legacy input_settings.txt entries.
-unsigned short int ReadOptionalSetting(std::string       variable_name,
-                                       std::ifstream&    input_file,
-                                       std::ofstream&    output_file,
+unsigned short int ReadOptionalSetting(std::string        variable_name,
+                                       std::ifstream&     input_file,
+                                       std::ofstream&     output_file,
                                        unsigned short int default_value)
 {
     char               comment;
