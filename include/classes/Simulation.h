@@ -205,10 +205,14 @@ class Simulation
      * concentration in bubbles.
      *
      * - **iIntraGranularBubbleBehavior == 4**:
-     *   COARSENING:
-     * two-size intra-granular bubble model following Barani et al., JNM, 538
-     *   (2020) 152195, with nanometric
-     * bulk bubbles and coarsened dislocation bubbles.
+     *   COARSENING: two-size intra-granular bubble model following Barani et al., JNM, 538
+     *   (2020) 152195, with nanometric bulk bubbles and coarsened dislocation bubbles.
+     *   COARSENING options:
+     *   iResolutionRate = 4 selects the Setyawan-informed size-dependent re-solution;
+     *   iTrappingRate = 2 enables Barani trapping to dislocations; iNucleationRate = 2 enables
+     *   Barani dislocation-bubble nucleation; iCoarseningDislocationDensity = 0/1/2/3 selects no
+     *   dislocations, fixed Barani density, Zullo 2026, or Zullo - Nicodemo 2026.
+
      *
      * @author D. Pizzocri
      * @author T. Barani

@@ -53,7 +53,8 @@ std::vector<std::string> getInputVariableNames()
                                       "iBubbleDiffusivity",
                                       "iChromiumSolubility",
                                       "iDensification",
-                                      "iReleaseMode"};
+                                      "iReleaseMode",
+                                      "iCoarseningDislocationDensity"}; // COARSENING: 0=none, 1=fixed Barani, 2=Zullo 2026, 3=Zullo - Nicodemo 2026.
 
     return names;
 }
@@ -255,6 +256,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[178],
                          Sciantix_variables[178],
                          0),
+        SciantixVariable(
+            "Dislocation density", "(m/m3)", Sciantix_variables[179], Sciantix_variables[179], toOutputCoarsening),
         SciantixVariable("Intragranular gas solution swelling",
                          "(/)",
                          Sciantix_variables[68],

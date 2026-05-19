@@ -35,6 +35,30 @@ unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& inpu
     return variable;
 }
 
+// COARSENING: read optional settings appended after legacy input_settings.txt entries.
+unsigned short int ReadOptionalSetting(std::string       variable_name,
+                                       std::ifstream&    input_file,
+                                       std::ofstream&    output_file,
+                                       unsigned short int default_value)
+{
+    char               comment;
+    unsigned short int variable;
+
+    if (!(input_file >> variable))
+    {
+        input_file.clear();
+        output_file << variable_name << " = " << default_value << " (default)" << std::endl;
+        return default_value;
+    }
+
+    input_file >> comment;
+    if (comment == '#')
+        input_file.ignore(256, '\n');
+
+    output_file << variable_name << " = " << variable << std::endl;
+    return variable;
+}
+
 /**
  * @brief Read a single parameter from the input file.
  * @param variable_name The name of the parameter to be read.
@@ -150,6 +174,7 @@ void InputReading(int                  Sciantix_options[],
     Sciantix_options[22] = ReadOneSetting("iChromiumSolubility", input_settings, input_check);
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
+    Sciantix_options[25] = ReadOptionalSetting("iCoarseningDislocationDensity", input_settings, input_check, 0);
 
     if (!input_initial_conditions.fail())
     {
