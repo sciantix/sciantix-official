@@ -139,6 +139,70 @@ def plot_parity(root: Path, rows: list[dict[str, float | str]]) -> None:
         plt.close(fig)
 
 
+def plot_intergranular_gold_comparison(root: Path, legacy_root: Path) -> None:
+    # COARSENING: compare intergranular swelling against White experimental data for legacy gold and model 4.
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.ticker import FixedLocator, LogFormatterMathtext
+
+    figures = root / "figures"
+    figures.mkdir(exist_ok=True)
+    measured = load_expected(legacy_root / "data" / "ig_swelling.txt")
+
+    measured_percent: list[float] = []
+    gold_percent: list[float] = []
+    coarsening_percent: list[float] = []
+
+    for case_name in sorted(measured):
+        case = root / case_name
+        legacy_gold = legacy_root / case_name / "output_gold.txt"
+        if not case.exists():
+            continue
+        if not legacy_gold.exists():
+            continue
+
+        header, values = load_output(case / "output.txt")
+        gold_header, gold_values = load_output(legacy_gold)
+
+        column = "Intergranular gas swelling (/)"
+        measured_percent.append(measured[case_name])
+        coarsening_percent.append(values[header.index(column)] * 100.0)
+        gold_percent.append(gold_values[gold_header.index(column)] * 100.0)
+
+    lower, upper = 1.0e-2, 1.0e1
+    fig, ax = plt.subplots(figsize=(5.2, 5.2), constrained_layout=True)
+    ax.scatter(measured_percent, gold_percent, facecolors="none", edgecolors="black", s=24, marker="^", label="SCIANTIX white gold")
+    ax.scatter(measured_percent, coarsening_percent, color="#d62728", s=18, marker="o", label="SCIANTIX COARSENING")
+    ax.set_xscale("log")
+    ax.set_yscale("log")
+    ax.plot([lower, upper], [lower, upper], color="0.55", linewidth=1.0, linestyle="--", label="Parity")
+    ax.set_xlim(lower, upper)
+    ax.set_ylim(lower, upper)
+    ticks = [1.0e-2, 1.0e-1, 1.0, 1.0e1]
+    ax.xaxis.set_major_locator(FixedLocator(ticks))
+    ax.yaxis.set_major_locator(FixedLocator(ticks))
+    ax.xaxis.set_major_formatter(LogFormatterMathtext())
+    ax.yaxis.set_major_formatter(LogFormatterMathtext())
+    ax.set_aspect("equal", adjustable="box")
+    ax.set_xlabel("Experimental intergranular swelling (%)")
+    ax.set_ylabel("Calculated intergranular swelling (%)")
+    ax.grid(True, color="0.88", linewidth=0.8)
+    ax.legend(frameon=False, loc="best")
+    ax.set_title("Intergranular swelling (%)")
+    fig.savefig(figures / "parity_intergranular_swelling.png", dpi=300)
+    plt.close(fig)
+
+    gold_pairs = list(zip(measured_percent, gold_percent))
+    coarsening_pairs = list(zip(measured_percent, coarsening_percent))
+    print(
+        "intergranular_swelling_percent: "
+        f"white-gold RMSE={rmse(gold_pairs):.6g}, MAPE={mape(gold_pairs):.3f}% | "
+        f"COARSENING RMSE={rmse(coarsening_pairs):.6g}, MAPE={mape(coarsening_pairs):.3f}%"
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", action="store_true", help="COARSENING: execute SCIANTIX before collecting metrics.")
@@ -214,6 +278,7 @@ def main() -> int:
 
     if args.figures and rows:
         plot_parity(root, rows)
+        plot_intergranular_gold_comparison(root, legacy_root)
         print(f"Figures: {root / 'figures'}")
 
     return 0
