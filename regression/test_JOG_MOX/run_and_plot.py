@@ -526,7 +526,6 @@ def load_phase_sublattice_rows(path: Path) -> list[dict[str, object]]:
 
 
 def load_phase_sublattice_inventory(path: Path) -> dict[float, dict[str, object]]:
-    ensure_output_file(path)
     inventory: dict[float, dict[str, object]] = defaultdict(
         lambda: {
             "hcp_constituents": defaultdict(float),
@@ -536,47 +535,39 @@ def load_phase_sublattice_inventory(path: Path) -> dict[float, dict[str, object]
             "mo_solid_cs2moo4": 0.0,
         }
     )
-    seen_rows: set[tuple[str, ...]] = set()
 
-    with path.open(newline="") as handle:
-        reader = csv.DictReader(handle, delimiter="\t")
-        for row in reader:
-            row_key = tuple(row[field].strip() for field in reader.fieldnames or [])
-            if row_key in seen_rows:
-                continue
-            seen_rows.add(row_key)
+    for row in load_phase_sublattice_rows(path):
+        constituent = str(row["constituent"])
+        phase_moles = float(row["phase_moles"])
+        phase_form_units = float(row["phase_form_units"])
+        site_fraction = float(row["site_fraction"])
+        sites = float(row["sites"])
+        if constituent == "<empty>" or phase_moles <= 0.0 or site_fraction <= 0.0:
+            continue
 
-            constituent = row["Constituent"].strip()
-            phase_moles = float(row["Moles (mol/m3)"])
-            phase_form_units = float(row.get("Form units (mol/m3)") or phase_moles)
-            site_fraction = float(row["Site fraction"])
-            sites = float(row["Sites"])
-            if constituent == "<empty>" or phase_moles <= 0.0 or site_fraction <= 0.0:
-                continue
+        time_h = float(row["time"])
+        location = str(row["location"])
+        phase = str(row["phase"])
+        constituent_moles = phase_form_units * sites * site_fraction
+        time_inventory = inventory[time_h]
 
-            time_h = float(row["Time (h)"])
-            location = row["Location"].strip()
-            phase = row["Phase"].strip()
-            constituent_moles = phase_form_units * sites * site_fraction
-            time_inventory = inventory[time_h]
+        if location == "at grain boundary" and phase == "liquid" and "MOO4" in constituent.upper():
+            time_inventory["mo_liquid_moo4"] += constituent_moles
 
-            if location == "at grain boundary" and phase == "liquid" and "MOO4" in constituent.upper():
-                time_inventory["mo_liquid_moo4"] += constituent_moles
+        if (
+            location == "at grain boundary"
+            and phase.upper().startswith("CS2MOO4")
+            and constituent.upper() == "MO"
+        ):
+            time_inventory["mo_solid_cs2moo4"] += constituent_moles
 
-            if (
-                location == "at grain boundary"
-                and phase.upper().startswith("CS2MOO4")
-                and constituent.upper() == "MO"
-            ):
-                time_inventory["mo_solid_cs2moo4"] += constituent_moles
-
-            if location == "at grain boundary" and phase == "HCP_A3":
-                normalized_constituent = "MO" if constituent.upper() == "MO" else constituent.upper()
-                time_inventory["hcp_constituents"][normalized_constituent] += constituent_moles
-                if normalized_constituent == "MO":
-                    time_inventory["mo_hcp"] += constituent_moles
-                if normalized_constituent == "RU":
-                    time_inventory["ru_hcp"] += constituent_moles
+        if location == "at grain boundary" and phase == "HCP_A3":
+            normalized_constituent = "MO" if constituent.upper() == "MO" else constituent.upper()
+            time_inventory["hcp_constituents"][normalized_constituent] += constituent_moles
+            if normalized_constituent == "MO":
+                time_inventory["mo_hcp"] += constituent_moles
+            if normalized_constituent == "RU":
+                time_inventory["ru_hcp"] += constituent_moles
 
     return dict(inventory)
 
@@ -948,7 +939,13 @@ def plot_radial_profiles(
         mo_produced_profile = output_profiles["Mo produced (at/m3)"] / AVOGADRO_NUMBER
         mo_oxide_profile = mo_liquid_moo4_profile + mo_solid_cs2moo4_profile
         mo_residual_profile = mo_produced_profile - mo_hcp_profile - mo_oxide_profile
-        if (mo_residual_profile/mo_produced_profile).any() > 0.01:
+        mo_residual_fraction = np.divide(
+            mo_residual_profile,
+            mo_produced_profile,
+            out=np.zeros_like(mo_residual_profile),
+            where=mo_produced_profile > 0.0,
+        )
+        if np.any(np.abs(mo_residual_fraction) > 0.01):
             print("Check residual")
         quantity_panels = [
             ("Mo produced", mo_produced_profile),
