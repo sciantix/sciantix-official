@@ -47,10 +47,11 @@ void InputReading(int                  Sciantix_options[],
                   double&              Time_end_s);
 
 unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
-unsigned short int ReadOptionalSetting(std::string       variable_name,
-                                       std::ifstream&    input_file,
-                                       std::ofstream&    output_file,
-                                       unsigned short int default_value);  // COARSENING: backward-compatible optional switches.
-double             ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
+unsigned short int
+       ReadOptionalSetting(std::string        variable_name,
+                           std::ifstream&     input_file,
+                           std::ofstream&     output_file,
+                           unsigned short int default_value);  // COARSENING: backward-compatible optional switches.
+double ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
 
 #endif  // INPUT_READING_H

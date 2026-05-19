@@ -128,12 +128,11 @@ namespace
             return 0.0;
 
         const double burnup_threshold = 10.0;  // COARSENING: MWd/kgUO2, no dislocation build-up below this value.
-        const double burnup_width     = 10.0;  // COARSENING: MWd/kgUO2, slow sigmoid convergence to Zullo - Nicodemo 2026.
+        const double burnup_width = 10.0;  // COARSENING: MWd/kgUO2, slow sigmoid convergence to Zullo - Nicodemo 2026.
         if (burnup <= burnup_threshold)
             return 0.0;
 
-        const double activation =
-            2.0 / (1.0 + exp(-(burnup - burnup_threshold) / burnup_width)) - 1.0;
+        const double activation = 2.0 / (1.0 + exp(-(burnup - burnup_threshold) / burnup_width)) - 1.0;
         return zullo_density * std::min(std::max(activation, 0.0), 1.0);
     }
 
@@ -324,11 +323,9 @@ void Simulation::IntraGranularBubbleBehavior()
             int(input_variable["iCoarseningDislocationDensity"].getValue());  // COARSENING.
 >>>>>>> 6b6daddd (Disclocation law added)
 
-        const double dislocation_density =
-            coarseningDislocationDensity(coarsening_dislocation_model,
-                                         sciantix_variable["Burnup"].getFinalValue(),
-                                         temperature);
-        const double bubbles_per_dislocation         = 1.0e6;   // COARSENING: bubble/m, Barani et al. Table 1.
+        const double dislocation_density = coarseningDislocationDensity(
+            coarsening_dislocation_model, sciantix_variable["Burnup"].getFinalValue(), temperature);
+        const double bubbles_per_dislocation         = 1.0e6;  // COARSENING: bubble/m, Barani et al. Table 1.
         const double initial_dislocation_bubbles     = bubbles_per_dislocation * dislocation_density;
         const double burgers_vector                  = 3.85e-10;  // COARSENING: m, Barani et al. Table 1.
         const double dislocation_core_radius         = 5.0 * burgers_vector;
@@ -359,7 +356,6 @@ void Simulation::IntraGranularBubbleBehavior()
         }
         else
         {
-
             double coarsened_gas =
                 coarseningPositive(sciantix_variable["Intragranular gas in coarsened bubbles"].getInitialValue());
 
@@ -393,9 +389,9 @@ void Simulation::IntraGranularBubbleBehavior()
             const double pipe_trapping_denominator =
                 std::max(log(wigner_seitz_dislocation_radius / dislocation_core_radius) - 0.75, 1.0);
 
-            double bulk_trapping_rate                = 0.0;
-            double dislocation_bubble_trapping_rate  = 0.0;
-            double dislocation_line_trapping_rate    = 0.0;
+            double bulk_trapping_rate               = 0.0;
+            double dislocation_bubble_trapping_rate = 0.0;
+            double dislocation_line_trapping_rate   = 0.0;
             if (coarsening_trapping_model == 2)
             {
                 // COARSENING: Barani et al. trapping to bulk bubbles, dislocation bubbles, and dislocation lines.
@@ -416,10 +412,10 @@ void Simulation::IntraGranularBubbleBehavior()
                     (dislocation_bubble_trapping_rate + dislocation_line_trapping_rate) / total_trapping_rate;
                 const double target_coarsened_gas = total_gas_in_bubbles * coarsened_fraction;
                 const double coarsening_resolution_rate =
-                    (coarsening_resolution_model == 4) ? coarseningResolutionRate(dislocation_bubble_radius_i, fission_rate)
-                                                       : 0.0;
-                const double relaxation =
-                    1.0 - exp(-(total_trapping_rate + coarsening_resolution_rate) * time_step);
+                    (coarsening_resolution_model == 4)
+                        ? coarseningResolutionRate(dislocation_bubble_radius_i, fission_rate)
+                        : 0.0;
+                const double relaxation = 1.0 - exp(-(total_trapping_rate + coarsening_resolution_rate) * time_step);
                 coarsened_gas += (target_coarsened_gas - coarsened_gas) * std::min(std::max(relaxation, 0.0), 1.0);
                 coarsened_gas = std::min(std::max(coarsened_gas, 0.0), total_gas_in_bubbles);
             }
@@ -461,13 +457,15 @@ void Simulation::IntraGranularBubbleBehavior()
                                           coarsened_vacancies_per_bubble * vacancy_volume;
 
                 // COARSENING: limit explicit vacancy-growth overshoot during sharp White power ramps.
-                const double previous_radius      = coarseningRadiusFromVolume(previous_volume);
-                const double max_radius_increment = 2.0e-10;  // COARSENING: stable explicit growth limiter per time step.
+                const double previous_radius = coarseningRadiusFromVolume(previous_volume);
+                const double max_radius_increment =
+                    2.0e-10;  // COARSENING: stable explicit growth limiter per time step.
                 const double max_coarsened_radius = 2.5e-7;
-                coarsened_bubble_radius           = std::min(coarseningRadiusFromVolume(coarsened_bubble_volume),
-                                                   std::min(previous_radius + max_radius_increment, max_coarsened_radius));
-                coarsened_bubble_volume           = coarseningVolumeFromRadius(coarsened_bubble_radius);
-                coarsened_vacancies_per_bubble    = coarseningPositive(
+                coarsened_bubble_radius =
+                    std::min(coarseningRadiusFromVolume(coarsened_bubble_volume),
+                             std::min(previous_radius + max_radius_increment, max_coarsened_radius));
+                coarsened_bubble_volume        = coarseningVolumeFromRadius(coarsened_bubble_radius);
+                coarsened_vacancies_per_bubble = coarseningPositive(
                     (coarsened_bubble_volume - coarsened_atoms_per_bubble * gas_atom_volume_in_bulk_bubbles) /
                     vacancy_volume);
 
@@ -481,7 +479,8 @@ void Simulation::IntraGranularBubbleBehavior()
                     (1.0 + 4.0 * lambda * dislocation_bubble_concentration * volume_increment);
 
                 // COARSENING: capture of bulk bubbles by expanding dislocation bubbles, Barani et al. Eq. (18).
-                const double radius_increment = coarseningPositive(coarsened_bubble_radius - dislocation_bubble_radius_i);
+                const double radius_increment =
+                    coarseningPositive(coarsened_bubble_radius - dislocation_bubble_radius_i);
                 const double interaction_volume_increment =
                     4.0 * M_PI * pow(coarsened_bubble_radius + bulk_bubble_radius, 2.0) * radius_increment;
                 const double captured_bulk_fraction =
@@ -520,13 +519,16 @@ void Simulation::IntraGranularBubbleBehavior()
                 dislocation_bubble_concentration);
             sciantix_variable["Intragranular coarsened bubble radius"].setFinalValue(coarsened_bubble_radius);
             sciantix_variable["Intragranular coarsened atoms per bubble"].setFinalValue(coarsened_atoms_per_bubble);
-            sciantix_variable["Intragranular coarsened vacancies per bubble"].setFinalValue(coarsened_vacancies_per_bubble);
+            sciantix_variable["Intragranular coarsened vacancies per bubble"].setFinalValue(
+                coarsened_vacancies_per_bubble);
             sciantix_variable["Intragranular coarsened gas bubble swelling"].setFinalValue(coarsened_swelling);
             sciantix_variable["Intragranular gas in coarsened bubbles"].setFinalValue(coarsened_gas);
-            sciantix_variable["Intragranular coarsened bubble pressure"].setFinalValue(coarsened_bubble_pressure / 1.0e6);
-            sciantix_variable["Intragranular coarsened bubble equilibrium pressure"].setFinalValue(equilibrium_pressure /
-                                                                                                   1.0e6);
-            sciantix_variable["Intragranular gas bubble swelling"].setFinalValue(bulk_bubble_swelling + coarsened_swelling);
+            sciantix_variable["Intragranular coarsened bubble pressure"].setFinalValue(coarsened_bubble_pressure /
+                                                                                       1.0e6);
+            sciantix_variable["Intragranular coarsened bubble equilibrium pressure"].setFinalValue(
+                equilibrium_pressure / 1.0e6);
+            sciantix_variable["Intragranular gas bubble swelling"].setFinalValue(bulk_bubble_swelling +
+                                                                                 coarsened_swelling);
         }
     }
 
