@@ -7,7 +7,9 @@ import argparse
 import csv
 import math
 import os
+import shutil
 import subprocess
+import tempfile
 from pathlib import Path
 
 
@@ -45,6 +47,13 @@ METRICS = {
     },
 }
 
+DISLOCATION_OPTIONS = {
+    0: ("none", "COARSENING no dislocations", "#1f77b4", "s"),
+    1: ("barani_2019", "Barani 2019", "#d62728", "o"),
+    2: ("zullo_2026", "Zullo 2026", "#2ca02c", "^"),
+    3: ("zullo_nicodemo_2026", "Zullo - Nicodemo 2026", "#9467bd", "D"),
+}
+
 
 def load_expected(path: Path) -> dict[str, float]:
     values: dict[str, float] = {}
@@ -74,6 +83,22 @@ def run_case(exe: Path, case: Path) -> None:
         if artifact_path.exists():
             artifact_path.unlink()
     subprocess.run([str(exe), str(case) + os.sep], check=True)
+
+
+def set_optional_setting(path: Path, setting_name: str, value: int) -> None:
+    # COARSENING: modify only the dislocation-density option in temporary variant cases.
+    lines = path.read_text().splitlines()
+    replacement = (
+        f"{value}    #    {setting_name} "
+        "(0= none, 1= Barani 2019, 2= Zullo 2026, 3= Zullo - Nicodemo 2026 COARSENING)"
+    )
+    for index, line in enumerate(lines):
+        if f"#    {setting_name}" in line:
+            lines[index] = replacement
+            break
+    else:
+        lines.append(replacement)
+    path.write_text("\n".join(lines) + "\n")
 
 
 def rmse(pairs: list[tuple[float, float]]) -> float:
@@ -203,10 +228,141 @@ def plot_intergranular_gold_comparison(root: Path, legacy_root: Path) -> None:
     )
 
 
+def plot_dislocation_option_comparison(root: Path,
+                                       legacy_root: Path,
+                                       expected: dict[str, dict[str, float]],
+                                       case_names: list[str],
+                                       exe: Path) -> None:
+    # COARSENING: run the three dislocation-density options in temporary cases and compare them with legacy SCIANTIX.
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.ticker import FixedLocator, LogFormatterMathtext
+
+    figures = root / "figures"
+    figures.mkdir(exist_ok=True)
+
+    legacy_rows: dict[str, list[tuple[float, float]]] = {name: [] for name in METRICS}
+    variant_rows: dict[int, dict[str, list[tuple[float, float]]]] = {
+        option: {name: [] for name in METRICS} for option in DISLOCATION_OPTIONS
+    }
+    dislocation_state: dict[int, list[tuple[float, float, float]]] = {option: [] for option in DISLOCATION_OPTIONS}
+
+    for name in case_names:
+        legacy_case = legacy_root / name
+        if not legacy_case.is_dir():
+            continue
+        legacy_header, legacy_values = load_output(legacy_case / "output.txt")
+        for metric, config in METRICS.items():
+            experimental = expected[metric][name] * float(config["expected_factor"])
+            legacy_index = legacy_header.index(str(config["legacy_column"]))
+            legacy_rows[metric].append((experimental, legacy_values[legacy_index] * float(config["factor"])))
+
+    with tempfile.TemporaryDirectory(prefix="sciantix_white_coarsening_") as temp_dir:
+        temp_root = Path(temp_dir)
+        for option in DISLOCATION_OPTIONS:
+            option_root = temp_root / f"dislocation_{option}"
+            option_root.mkdir()
+            for name in case_names:
+                source_case = root / name
+                if not source_case.is_dir():
+                    continue
+                case = option_root / name
+                shutil.copytree(source_case, case)
+                set_optional_setting(case / "input_settings.txt", "iCoarseningDislocationDensity", option)
+                run_case(exe, case)
+                header, values = load_output(case / "output.txt")
+                temperature = values[header.index("Temperature (K)")]
+                burnup = values[header.index("Burnup (MWd/kgUO2)")]
+                dislocation_density = values[header.index("Dislocation density (m/m3)")]
+                dislocation_state[option].append((temperature, burnup, dislocation_density))
+                for metric, config in METRICS.items():
+                    experimental = expected[metric][name] * float(config["expected_factor"])
+                    coarsening_index = header.index(str(config["coarsening_column"]))
+                    calculated = values[coarsening_index] * float(config["factor"])
+                    variant_rows[option][metric].append((experimental, calculated))
+
+    for metric, config in METRICS.items():
+        lower, upper = config["limits"]
+        fig, ax = plt.subplots(figsize=(5.2, 5.2), constrained_layout=True)
+        legacy_pairs = [(x, y) for x, y in legacy_rows[metric] if x > 0.0 and y > 0.0]
+        if legacy_pairs:
+            ax.scatter([x for x, _ in legacy_pairs],
+                       [y for _, y in legacy_pairs],
+                       color="black",
+                       s=14,
+                       marker="o",
+                       label="SCIANTIX legacy")
+        for option, (_, label, color, marker) in DISLOCATION_OPTIONS.items():
+            pairs = [(x, y) for x, y in variant_rows[option][metric] if x > 0.0 and y > 0.0]
+            if pairs:
+                ax.scatter([x for x, _ in pairs], [y for _, y in pairs], color=color, s=14, marker=marker, label=label)
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+        ax.plot([lower, upper], [lower, upper], color="0.55", linewidth=1.0, linestyle="--", label="Parity")
+        ax.set_xlim(lower, upper)
+        ax.set_ylim(lower, upper)
+        ticks = []
+        tick = lower
+        while tick <= upper * 1.0001:
+            ticks.append(tick)
+            tick *= 10.0
+        ax.xaxis.set_major_locator(FixedLocator(ticks))
+        ax.yaxis.set_major_locator(FixedLocator(ticks))
+        ax.xaxis.set_major_formatter(LogFormatterMathtext())
+        ax.yaxis.set_major_formatter(LogFormatterMathtext())
+        ax.set_aspect("equal", adjustable="box")
+        ax.set_xlabel(f"Experimental {config['label']}")
+        ax.set_ylabel(f"Calculated {config['label']}")
+        ax.grid(True, color="0.88", linewidth=0.8)
+        ax.legend(frameon=False, loc="best")
+        ax.set_title(f"{config['label']} - dislocation options")
+        fig.savefig(figures / f"dislocation_options_{metric}.png", dpi=300)
+        plt.close(fig)
+
+    plot_dislocation_density_state(root, dislocation_state)
+
+
+def plot_dislocation_density_state(root: Path, state: dict[int, list[tuple[float, float, float]]]) -> None:
+    # COARSENING: show how Barani 2019, Zullo 2026, and Zullo - Nicodemo 2026 dislocation densities map onto White case state points.
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    figures = root / "figures"
+    figures.mkdir(exist_ok=True)
+
+    axes = [
+        ("temperature", "Temperature (K)", "dislocation_density_vs_temperature.png", 0),
+        ("burnup", "Burnup (MWd/kgUO2)", "dislocation_density_vs_burnup.png", 1),
+    ]
+    for _, xlabel, filename, index in axes:
+        fig, ax = plt.subplots(figsize=(5.6, 4.2), constrained_layout=True)
+        for option in (1, 2, 3):
+            _, label, color, marker = DISLOCATION_OPTIONS[option]
+            points = [(row[index], row[2]) for row in state.get(option, []) if row[2] > 0.0]
+            if not points:
+                continue
+            ax.scatter([x for x, _ in points], [y for _, y in points], s=18, color=color, marker=marker, label=label)
+        ax.set_yscale("log")
+        ax.set_xlabel(xlabel)
+        ax.set_ylabel("Dislocation density (m/m3)")
+        ax.grid(True, color="0.88", linewidth=0.8)
+        ax.legend(frameon=False, loc="best")
+        ax.set_title("Dislocation density")
+        fig.savefig(figures / filename, dpi=300)
+        plt.close(fig)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", action="store_true", help="COARSENING: execute SCIANTIX before collecting metrics.")
     parser.add_argument("--figures", action="store_true", help="COARSENING: write parity plots in the figures folder.")
+    parser.add_argument("--dislocation-variants",
+                        action="store_true",
+                        help="COARSENING: run and plot dislocation-density options 0/1/2/3 in temporary cases.")
     parser.add_argument("--exe", default=None, help="Path to sciantix.x. Defaults to ../../build/sciantix.x.")
     args = parser.parse_args()
 
@@ -279,6 +435,8 @@ def main() -> int:
     if args.figures and rows:
         plot_parity(root, rows)
         plot_intergranular_gold_comparison(root, legacy_root)
+        if args.dislocation_variants:
+            plot_dislocation_option_comparison(root, legacy_root, expected, case_names, exe)
         print(f"Figures: {root / 'figures'}")
 
     return 0

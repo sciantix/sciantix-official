@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "System.h"
+#include <algorithm>
 
 void System::setRestructuredMatrix(bool y)
 {
@@ -760,6 +761,27 @@ void System::setResolutionRate(int                              input_value,
             break;
         }
 
+        case 4:
+        {
+            // COARSENING: Setyawan-informed size-dependent re-solution used by the Barani two-size model.
+            reference += "iResolutionRate: Setyawan-informed size-dependent re-solution for COARSENING.\n\t";
+            const double radius = sciantix_variable["Intragranular bubble radius"].getFinalValue();
+            if (radius > 0.0)
+            {
+                const double a  = 9.49e-24;  // COARSENING: m3, Barani et al. Table 1.
+                const double b1 = 7.07e-2;   // COARSENING: 1/m, Barani et al. Table 1.
+                const double b0 = 9.18e-23;  // COARSENING: m3, Barani et al. Table 1.
+                const double c  = 7.982;     // COARSENING: 1/m2, Barani et al. Table 1.
+                const double d  = 3.71e-2;   // COARSENING: 1/m2, Barani et al. Table 1.
+                const double denominator = 1.0 + c * pow(radius, 2.0) * exp(-d * pow(radius, 2.0));
+                const double volume_rate = (a * exp(-b1 * radius) + b0 - a) / denominator;
+                resolution_rate = std::max(volume_rate * history_variable["Fission rate"].getFinalValue(), 0.0);
+            }
+            else
+                resolution_rate = 0.0;
+            break;
+        }
+
         case 99:
         {
             /**
@@ -846,6 +868,23 @@ void System::setTrappingRate(int                              input_value,
             break;
         }
 
+        case 2:
+        {
+            // COARSENING: Ham trapping for the bulk population; Barani dislocation trapping is added in model 4.
+            reference += "iTrappingRate: Ham bulk trapping plus Barani dislocation trapping for COARSENING.\n\t";
+
+            if (sciantix_variable["Intragranular bubble concentration"].getFinalValue() == 0.0)
+                trapping_rate = 0.0;
+
+            else
+                trapping_rate = 4.0 * M_PI * diffusivity *
+                                (sciantix_variable["Intragranular bubble radius"].getFinalValue() + radius_in_lattice) *
+                                sciantix_variable["Intragranular bubble concentration"].getFinalValue();
+
+            trapping_rate *= scaling_factors["Trapping rate"].getValue();
+            break;
+        }
+
         case 99:
         {
             /**
@@ -909,6 +948,16 @@ void System::setNucleationRate(int                              input_value,
              */
 
             reference += "iNucleationRate: Olander, Wongsawaeng, JNM, 354 (2006), 94-109.\n\t";
+            nucleation_rate = 2.0 * history_variable["Fission rate"].getFinalValue() * 25;
+            nucleation_rate *= scaling_factors["Nucleation rate"].getValue();
+
+            break;
+        }
+
+        case 2:
+        {
+            // COARSENING: Olander-Wongsawaeng bulk nucleation plus Barani dislocation-bubble nucleation in model 4.
+            reference += "iNucleationRate: Olander-Wongsawaeng bulk plus Barani dislocation nucleation for COARSENING.\n\t";
             nucleation_rate = 2.0 * history_variable["Fission rate"].getFinalValue() * 25;
             nucleation_rate *= scaling_factors["Nucleation rate"].getValue();
 

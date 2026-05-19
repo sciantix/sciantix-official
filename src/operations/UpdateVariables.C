@@ -54,6 +54,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {176, "Intragranular gas in coarsened bubbles"},
     {177, "Intragranular coarsened bubble pressure"},
     {178, "Intragranular coarsened bubble equilibrium pressure"},
+    {179, "Dislocation density"},
     {68, "Intragranular gas solution swelling"},
     {25, "Intergranular bubble concentration"},
     {26, "Intergranular Xe atoms per bubble"},

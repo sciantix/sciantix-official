@@ -13,6 +13,7 @@ python3 -m regression.runner --white --mode-gold 1
 import sys
 import os
 import argparse
+import subprocess
 from regression.core.generic_runner import run_group
 from regression.core.report import generate_html_report
 
@@ -21,6 +22,7 @@ def main():
     parser = argparse.ArgumentParser(description="SCIANTIX regression test runner")
 
     parser.add_argument("--baker", action="store_true")
+    parser.add_argument("--BakerCoarsening", "--baker-coarsening", dest="BakerCoarsening", action="store_true")  # COARSENING: Baker suite with model 4 and no dislocations.
     parser.add_argument("--cornell", action="store_true")
     parser.add_argument("--white", action="store_true")
     parser.add_argument("--whiteCOARSENING", "--white-coarsening", dest="whiteCOARSENING", action="store_true")  # COARSENING: isolated White suite using the Barani two-size intragranular model.
@@ -76,6 +78,7 @@ def main():
     # Hardcoded runners list for compatibility and precise prefixes
     runners = [
         ("baker", "test_Baker"),
+        ("BakerCoarsening", "test_Baker"),  # COARSENING: Baker cases for no-dislocation coarsening fallback checks.
         ("cornell", "test_Cornell"),
         ("white", "test_White"),
         ("whiteCOARSENING", "test_White"),  # COARSENING: keep model-4 White cases out of the legacy white regression group.
@@ -102,6 +105,17 @@ def main():
         
         if should_run:
             results.extend(run_group(group, prefix, args.mode_gold, args.jobs))
+            if group == "whiteCOARSENING" and args.mode_gold in (0, 1, 2):
+                # COARSENING: keep the White coarsening diagnostic figures part of the regression workflow.
+                script = os.path.join(regression_root, "whiteCOARSENING", "coarsening_metrics.py")
+                subprocess.run([sys.executable, script, "--figures", "--dislocation-variants"], check=True)
+                csv_path = os.path.join(regression_root, "whiteCOARSENING", "coarsening_metrics.csv")
+                if os.path.exists(csv_path):
+                    os.remove(csv_path)
+            if group == "BakerCoarsening" and args.mode_gold in (0, 1, 2):
+                # COARSENING: keep Baker measured parity plots and dislocation-density comparisons in the workflow.
+                script = os.path.join(regression_root, "BakerCoarsening", "baker_coarsening_metrics.py")
+                subprocess.run([sys.executable, script, "--figures", "--dislocation-variants"], check=True)
 
     print("\n=== RESULTS ===")
     for name, ok, msg in results:
