@@ -29,7 +29,8 @@ void Simulation::SetPhaseDiagram(std::string location) // qui tutti eccetto i ga
     if (location == "at grain boundary")
     {
         if (input_variable["iThermochimica"].getValue() == 0 ||
-            sciantix_variable["Xe at grain boundary"].getInitialValue() <= 0.0)
+            sciantix_variable["Xe at grain boundary"].getInitialValue() <= 0.0 ||
+            thermochemistry_settings == nullptr)
         {
             for (auto& system : sciantix_system)
             {
@@ -52,8 +53,7 @@ void Simulation::SetPhaseDiagram(std::string location) // qui tutti eccetto i ga
         CallThermochemistryModule(location, sciantix_variable);
         return;
     }
-
-    if (location == "matrix")
+    else if (location == "matrix")
     {
         if (input_variable["iThermochimica"].getValue() == 0)
             return;
@@ -61,37 +61,13 @@ void Simulation::SetPhaseDiagram(std::string location) // qui tutti eccetto i ga
         CallThermochemistryModule(location, sciantix_variable);
         return;
     }
-
-    std::cout << "Location not yet modelled: " << location << std::endl;
+    else        
+        std::cerr << "Location not yet modelled: " << location << std::endl;
 }
 
 void Simulation::CallThermochemistryModule(std::string                      location,
                                            SciantixArray<SciantixVariable>& sciantix_variable)
 {
-    // Defined from the input_thermochemistry_settings.txt
-    if (thermochemistry_settings == nullptr)
-    {
-        std::cout << "Warning: thermochemistry settings are not loaded." << std::endl;
-        if (location == "at grain boundary")
-        {
-            for (auto& system : sciantix_system)
-            {
-                if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
-                {
-                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].addValue(
-                        sciantix_variable[system.getFissionProductName() + " reacted"].getFinalValue());
-                    sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(0.0);
-                }
-                if (system.getRestructuredMatrix() == 0 && system.isMetallicFP())
-                {
-                    sciantix_variable[system.getFissionProductName() + " in solution"].setFinalValue(
-                        sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue());
-                    sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(0.0);
-                }
-            }
-        }
-        return;
-    }
 
     const ThermochemistrySettings& Sciantix_thermochemistry_settings = *thermochemistry_settings;
     const ThermochemistryPhaseSettings& location_settings =
@@ -122,68 +98,39 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         return;
     }
 
-    using OCSolver = OCUtilsCoupling::OpenCalphadSolveMode;
     // Solver for O
-
+    using OCSolver = OCUtilsCoupling::OpenCalphadSolveMode;
     std::vector<OCSolver> solvers;
     #if !defined(COUPLING_TU)
         solvers.push_back(OCSolver::SaveReadWarmStart);
     #endif
     solvers.push_back(OCSolver::GlobalEquilibrium);
     if (history_variable["System pressure"].getFinalValue() > 1.0e5 + 1.0)
-        solvers.push_back(OCSolver::PressureAxisStepGlobalEquilibrium);
+        solvers.push_back(OCSolver::PressureAxisStep);
     if (location == "matrix")
         solvers.push_back(OCSolver::OnlyC1MO2);
 
-    auto stripTdbExtension = [](const std::string& database_name)
-    {
-        if (database_name.size() >= 4)
-        {
-            const std::string suffix = database_name.substr(database_name.size() - 4);
-            if (suffix == ".TDB" || suffix == ".tdb")
-                return database_name.substr(0, database_name.size() - 4);
-        }
-
-        return database_name;
-    };
 
     // Path to OC files
     const std::string state_file_path = TestPath + "OC_" + category;
     const std::string data_path =
-        Sciantix_thermochemistry_settings.opencalphad_path + "data/" + stripTdbExtension(location_settings.database);
+        Sciantix_thermochemistry_settings.opencalphad_path + "data/" + location_settings.database;
     
     // Needed later
     std::string raw_output;
     bool solved = false;
     OCOutputData output_data;
     double total_input_content = 0.0;
-    double fallback_oxygen_moles = -1.0;
-
-    // Build input components
     std::vector<InputComponent> components =
-        OCUtilsCoupling::buildInputComponents(selected_elements, sciantix_variable, sciantix_system, total_input_content);
+    OCUtilsCoupling::buildInputComponents(selected_elements, sciantix_variable, sciantix_system, total_input_content, location);
     std::set<std::string> active_elements;
     for (const auto& component : components)
         active_elements.insert(component.name);
     const std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
-    const bool oxygen_potential_constraint =
-        active_elements.count("O") > 0 &&
-        active_elements.count("U") == 0 &&
-        active_elements.count("Pu") == 0;
-    if (oxygen_potential_constraint)
-        solvers.push_back(OCSolver::FixedOxygenMolesFromInvalidPotentialSolve);
-    const bool has_previous_output = OCUtilsCoupling::fileExists(state_file_path + ".DAT");
-    const OCOutputData previous_output_data =
-        has_previous_output ? parseOCOutputFile(state_file_path + ".DAT", valid_elements) : OCOutputData{};
-            
 
     // Attempt for each solver
     for (const auto& solver : solvers)
     { 
-        if (solver == OCSolver::FixedOxygenMolesFromInvalidPotentialSolve &&
-            fallback_oxygen_moles <= 0.0)
-            continue;
-
         if (!OCUtilsCoupling::writeOpenCalphadInput(
                 state_file_path,
                 data_path,
@@ -192,8 +139,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
                 solver,
                 location,
                 components,
-                sciantix_variable,
-                fallback_oxygen_moles))
+                sciantix_variable))
         {
             return;
         }
@@ -211,22 +157,10 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         std::cout << raw_output << std::endl;
         std::cout << "----------------------------------------" << std::endl;
 
-
-        output_data = parseOCOutputFile(state_file_path + ".DAT", valid_elements);
-
         if (!OCUtilsCoupling::hasInvalidEquilibriumResult(raw_output))
         {  
             solved = true;
             break;
-        }
-        
-        if (oxygen_potential_constraint &&
-            solver != OCSolver::FixedOxygenMolesFromInvalidPotentialSolve)
-        {
-            double extracted_oxygen_moles = -1.0;
-            if (OCUtilsCoupling::tryGetOxygenMolesFromOutput(
-                    state_file_path + ".DAT", active_elements, extracted_oxygen_moles))
-                fallback_oxygen_moles = extracted_oxygen_moles;
         }
     }
 
@@ -235,13 +169,6 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         std::cout << "Warning: all OpenCalphad attempts failed for location: " << location << std::endl;
         if ((location == "matrix") && raw_output.find("C1_MO2") != std::string::npos)
             solved = true;
-        else if (has_previous_output)
-        {
-            output_data = previous_output_data;
-            solved = true;
-            std::cout << "Warning: reusing the previous timestep equilibrium from "
-                      << state_file_path + ".DAT" << "." << std::endl;
-        }
 
         if (!solved)
         {
@@ -250,6 +177,8 @@ void Simulation::CallThermochemistryModule(std::string                      loca
                     << std::endl;
         }
     }
+
+    output_data = parseOCOutputFile(state_file_path + ".DAT", valid_elements);
 
     // Debug
     OCUtilsCoupling::dumpParsedOcOutput(output_data);
@@ -274,7 +203,8 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         output_data.solution_phases,
         location,
         total_input_content,
-        thermochemistry_variable);
+        thermochemistry_variable,
+        sciantix_variable);
 
     if (location == "matrix")
     {

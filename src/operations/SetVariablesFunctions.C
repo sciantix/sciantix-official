@@ -507,6 +507,11 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         // WITH RESPECT TO THE AT/M3 THESE ARE ALLOWED TO CHANGE WITH BURNUP
         SciantixVariable("U content", "(mol/m3)", Sciantix_variables[161], Sciantix_variables[161],  toOutputThermochimica),
         SciantixVariable("O content", "(mol/m3)", Sciantix_variables[162], Sciantix_variables[162],  toOutputThermochimica),
+        SciantixVariable("O available content",
+                         "(mol/m3)",
+                         Sciantix_variables[166] > 0.0 ? Sciantix_variables[166] : 1.0,
+                         Sciantix_variables[166] > 0.0 ? Sciantix_variables[166] : 1.0,
+                         toOutputThermochimica),
         SciantixVariable("Pu content", "(mol/m3)", Sciantix_variables[163], Sciantix_variables[163],  toOutputThermochimica && toOutputMOX),
         SciantixVariable("Phase std density", 
                     "(g/m3)", 

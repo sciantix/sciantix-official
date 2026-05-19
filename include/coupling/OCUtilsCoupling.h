@@ -85,8 +85,8 @@ enum class OpenCalphadSolveMode
 {
     SaveReadWarmStart,
     GlobalEquilibrium,
-    PressureAxisStepGlobalEquilibrium,
-    FixedOxygenMolesFromInvalidPotentialSolve,
+    PressureAxisStep,
+    FixedOxygenMoles,
     OnlyC1MO2
 };
 
@@ -96,9 +96,6 @@ std::string readTextFile(const std::string& file_path);
 bool fileExists(const std::string& file_path);
 
 bool hasInvalidEquilibriumResult(const std::string& output_text);
-bool tryGetOxygenMolesFromOutput(const std::string& output_file_path,
-                                 const std::set<std::string>& active_elements,
-                                 double& oxygen_moles);
 
 // Debug
 void dumpParsedOcOutput(const OCOutputData& output_data);
@@ -111,7 +108,8 @@ std::vector<InputComponent> buildInputComponents(
      const std::set<std::string>&     selected_elements,
      SciantixArray<SciantixVariable>& sciantix_variable,
      SciantixArray<System>&           sciantix_system,
-     double&                          total_content);
+     double&                          total_content,
+     const std::string&               location);
 bool writeOpenCalphadInput(const std::string& state_file_path,
                            const std::string& data_path,
                            double             pressure,
@@ -119,13 +117,13 @@ bool writeOpenCalphadInput(const std::string& state_file_path,
                            OpenCalphadSolveMode solve_mode,
                            const std::string& location,
                            std::vector<InputComponent> components,
-                           SciantixArray<SciantixVariable>& sciantix_variable,
-                           double                 fixed_oxygen_moles);
+                           SciantixArray<SciantixVariable>& sciantix_variable);
 bool runOpenCalphadCase(const std::string& executable);
 void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhaseData>& solution_phases,
                                               const std::string&                         location,
                                               double                                     content_scaling_factor,
-                                              SciantixArray<ThermochemistryVariable>&    thermochemistry_variable);
+                                              SciantixArray<ThermochemistryVariable>&    thermochemistry_variable,
+                                              SciantixArray<SciantixVariable>&           sciantix_variable);
 void updateMatrixFromOutput(const OCOutputData&              output_data,
                             double                           temperature,
                             SciantixArray<SciantixVariable>& sciantix_variable);

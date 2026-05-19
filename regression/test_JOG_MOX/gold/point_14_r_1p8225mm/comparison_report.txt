@@ -1,11 +1,21 @@
 Comparing /home/ecappellari/transparant/sciantix-official/regression/test_JOG_MOX/gold/point_14_r_1p8225mm/output.txt -> /home/ecappellari/transparant/sciantix-official/regression/test_JOG_MOX/point_14_r_1p8225mm/output.txt
 Rows: 1915 -> 1915
-Columns: 107 -> 107
+Columns: 107 -> 108
+
+Columns only in new output:
+  + O available content (mol/m3)
 
 Common columns compared: 107
-Columns outside tolerance: 0
+Columns outside tolerance: 6
 
 Top 20 column differences:
+  JOG from CS2MOO4_S2 (/): row=1913, gold=0.00000000e+00, new=6.43956100e-01, abs=6.43956100e-01, rel=6.43956100e+07, bad_rows=1912
+  JOG from condensed (/): row=1913, gold=2.16637100e-01, new=8.60556200e-01, abs=6.43919100e-01, rel=2.97233992e+00, bad_rows=1913
+  JOG (/): row=1913, gold=3.08614900e-01, new=8.60556200e-01, abs=5.51941300e-01, rel=1.78844670e+00, bad_rows=1912
+  JOG from liquid (/): row=1913, gold=9.19778700e-02, new=0.00000000e+00, abs=9.19778700e-02, rel=1.00000000e+00, bad_rows=1912
+  JOG from HCP_A3 (/): row=1789, gold=2.02939800e-01, new=2.02875800e-01, abs=6.40000000e-05, rel=3.15364458e-04, bad_rows=1905
+  JOG from CS2MO3O10 (/): row=2, gold=1.30425200e-04, new=1.30408100e-04, abs=1.71000000e-08, rel=1.31109632e-04, bad_rows=1
+  JOG from FCC_A1 (/): row=2, gold=7.89601800e-05, new=7.89649100e-05, abs=4.73000000e-09, rel=5.99036122e-05, bad_rows=0
   Time (h): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Temperature (K): row=0, gold=1.51748500e+03, new=1.51748500e+03, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Fission rate (fiss / m3 s): row=0, gold=4.00000000e+19, new=4.00000000e+19, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
@@ -19,22 +29,18 @@ Top 20 column differences:
   Xe in intragranular solution (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Xe in intragranular bubbles (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Xe at grain boundary (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Xe released (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr produced (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr in grain (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr in intragranular solution (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr in intragranular bubbles (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr at grain boundary (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr released (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
 
 Comparing /home/ecappellari/transparant/sciantix-official/regression/test_JOG_MOX/gold/point_14_r_1p8225mm/thermochemistry_output.txt -> /home/ecappellari/transparant/sciantix-official/regression/test_JOG_MOX/point_14_r_1p8225mm/thermochemistry_output.txt
 Rows: 1915 -> 1915
 Columns: 81 -> 81
 
 Common columns compared: 81
-Columns outside tolerance: 0
+Columns outside tolerance: 3
 
 Top 20 column differences:
+  LIQUID (liquid, at grain boundary) (mol/m3): row=1913, gold=2.27000000e+03, new=0.00000000e+00, abs=2.27000000e+03, rel=1.00000000e+00, bad_rows=1912
+  CS2MOO4_S2 (condensed, at grain boundary) (mol/m3): row=1913, gold=0.00000000e+00, new=2.27000000e+03, abs=2.27000000e+03, rel=2.27000000e+11, bad_rows=1912
+  HCP_A3 (condensed, at grain boundary) (mol/m3): row=579, gold=1.00800000e+03, new=1.00900000e+03, abs=1.00000000e+00, rel=9.92063492e-04, bad_rows=942
   Time (h): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Temperature (K): row=0, gold=1.51748500e+03, new=1.51748500e+03, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Fission rate (fiss / m3 s): row=0, gold=4.00000000e+19, new=4.00000000e+19, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
@@ -52,6 +58,3 @@ Top 20 column differences:
   MO2 (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   MO2O6 (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   MO3O9 (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  MO4O12 (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  MO5O15 (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  MOO (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
