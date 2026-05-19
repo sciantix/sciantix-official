@@ -97,9 +97,12 @@ initializeHistoryVariable(double Sciantix_history[], double Sciantix_scaling_fac
  * @param toOutputCracking Flag for outputting cracking information.
  * @param toOutputGrainBoundary Flag for outputting grain boundary information.
  * @param toOutputHighBurnupStructure Flag for outputting high burnup structure information.
- * @param toOutputStoichiometryDeviation Flag for outputting stoichiometry deviation information.
- * @param toOutputCoarsening Flag for outputting Barani two-size intragranular coarsening information. COARSENING.
- * @return A vector of SciantixVariable objects initialized with the given values and flags.
+ * @param
+ * toOutputStoichiometryDeviation Flag for outputting stoichiometry deviation information.
+ * @param toOutputCoarsening
+ * Flag for outputting Barani two-size intragranular coarsening information. COARSENING.
+ * @return A vector of
+ * SciantixVariable objects initialized with the given values and flags.
  */
 std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variables[],
                                                          bool   toOutputRadioactiveFG,
