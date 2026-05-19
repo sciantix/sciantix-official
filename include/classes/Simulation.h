@@ -198,13 +198,17 @@ class Simulation
      * evolution.
      *
      * - **iIntraGranularBubbleBehavior == 3**:
-     *   The evolution of intra-granular bubble concentration, radius, and atoms per bubble is
-     * described through the similarity ratio, based on the evolution of intra-granular gas
+     *   The evolution of intra-granular bubble concentration, radius,
+     * and atoms per bubble is
+     * described through the similarity ratio, based on the evolution of intra-granular
+     * gas
      * concentration in bubbles.
      *
      * - **iIntraGranularBubbleBehavior == 4**:
-     *   COARSENING: two-size intra-granular bubble model following Barani et al., JNM, 538
-     *   (2020) 152195, with nanometric bulk bubbles and coarsened dislocation bubbles.
+     *   COARSENING:
+     * two-size intra-granular bubble model following Barani et al., JNM, 538
+     *   (2020) 152195, with nanometric
+     * bulk bubbles and coarsened dislocation bubbles.
      *
      * @author D. Pizzocri
      * @author T. Barani
