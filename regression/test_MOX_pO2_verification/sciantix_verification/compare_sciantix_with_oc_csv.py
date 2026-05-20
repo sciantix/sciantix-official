@@ -39,10 +39,8 @@ REFERENCE_PRESSURE_PA = 1e5
 REFERENCE_PRESSURE_MPA = REFERENCE_PRESSURE_PA / 1.0e6
 GAS_CONSTANT = 8.31446261815324
 THERMOCALC_Q_DIR_GLOB = "TEMPERATURES_THERMOCALC_Q_*"
-OM_MIN = 1.95
-OM_MAX = 2.20
-OM_EXCLUDED_VALUE = 2.00
-OM_EXCLUDED_TOLERANCE = 1.0e-3
+OM_MIN = 1.85
+OM_MAX = 2.15
 
 COMPARISON_PATH = SCRIPT_DIR / 'sciantix_vs_oc_csv_comparison.tsv'
 SUMMARY_OUTPUT_PATH = SCRIPT_DIR / 'sciantix_vs_oc_csv_summary.tsv'
@@ -77,9 +75,9 @@ def load_sciantix_data() -> pd.DataFrame:
     frame[TEMPERATURE_KEY_COL] = frame["Temperature (K)"].round().astype('Int64')
     frame[Q_KEY_COL] = frame["q (-)"].round(2)
     frame = frame[frame["O/M ratio (/)"].between(OM_MIN, OM_MAX)].copy()
-    frame = frame.loc[
-        ~np.isclose(frame["O/M ratio (/)"], OM_EXCLUDED_VALUE, atol=OM_EXCLUDED_TOLERANCE, rtol=0.0)
-    ].copy()
+    # frame = frame.loc[
+    #     ~np.isclose(frame["O/M ratio (/)"], OM_EXCLUDED_VALUE, atol=OM_EXCLUDED_TOLERANCE, rtol=0.0)
+    # ].copy()
     return frame
 
 
@@ -206,9 +204,9 @@ def load_oc_csv_data() -> pd.DataFrame:
     frame = pd.concat(rows, ignore_index=True)
     frame = frame.sort_values([TEMPERATURE_KEY_COL, Q_KEY_COL, 'O/M ratio (/)', 'Region']).reset_index(drop=True)
     frame = frame[frame["O/M ratio (/)"].between(OM_MIN, OM_MAX)].copy()
-    frame = frame.loc[
-        ~np.isclose(frame["O/M ratio (/)"], OM_EXCLUDED_VALUE, atol=OM_EXCLUDED_TOLERANCE, rtol=0.0)
-    ].copy()
+    # frame = frame.loc[
+    #     ~np.isclose(frame["O/M ratio (/)"], OM_EXCLUDED_VALUE, atol=OM_EXCLUDED_TOLERANCE, rtol=0.0)
+    # ].copy()
 
     frame['OC pO2 (MPa)'] = (frame['OC oxygen activity'] ** 2) * REFERENCE_PRESSURE_MPA
     frame['OC log10(pO2/p_ref)'] = np.where(

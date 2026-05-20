@@ -38,7 +38,7 @@ plt.rcParams.update({
 
 TEMPERATURES_K = list(range(800, 2800, 200))
 REFERENCE_PRESSURE_MPA = 0.1 # 1 bar
-Q_VALUES = [0.1, 0.3, 0.4]
+Q_VALUES = [0.1, 0.2, 0.3]
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 BUILD_BINARY = SCRIPT_DIR.parent.parent / "build" / "sciantix.x"
@@ -245,7 +245,7 @@ def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
     ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
     ax.grid(True, alpha=0.3)
     add_legends(ax, colors, linestyles, markers, temperatures_k)
-    ax.set_xlim([1.95, 2.20])
+    ax.set_xlim([1.85, 2.15])
     ax.set_ylim([-30, 2])
     ax.set_yticks(range(-30, 0, 2))
 
@@ -289,7 +289,7 @@ def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
         title="Temperature"
     )
     ax.add_artist(temperature_legend)
-    ax.set_xlim([1.95, 2.20])
+    ax.set_xlim([1.85, 2.15])
 
     fig.tight_layout()
     fig.savefig(SCRIPT_DIR / f"{PRESSURE_PLOT_NAME_2}_{q_plot_suffix(q_value)}.png")
@@ -321,7 +321,7 @@ def make_potential_plot(frames: list[pd.DataFrame], q_value: float) -> None:
                 marker=markers[label],
             )
 
-    ax.set_xlim([1.95, 2.20])
+    ax.set_xlim([1.85, 2.15])
     ax.set_ylim([-1000, 50])
     ax.set_yticks(range(-1000, 100, 100))
     ax.set_xlabel("O/U ratio (-)")
