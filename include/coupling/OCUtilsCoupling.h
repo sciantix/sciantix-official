@@ -90,8 +90,6 @@ enum class OpenCalphadSolveMode
     OnlyC1MO2
 };
 
-std::string solveModeLabel(OpenCalphadSolveMode mode);
-
 std::string readTextFile(const std::string& file_path);
 bool fileExists(const std::string& file_path);
 
@@ -119,6 +117,17 @@ bool writeOpenCalphadInput(const std::string& state_file_path,
                            std::vector<InputComponent> components,
                            SciantixArray<SciantixVariable>& sciantix_variable);
 bool runOpenCalphadCase(const std::string& executable);
+
+bool runOpenCalphadCaseOCASI(const std::string& database_path,
+                             double temperature,
+                             double pressure,
+                             const std::vector<InputComponent>& components,
+                             const std::vector<std::string>& valid_elements,
+                             OpenCalphadSolveMode solve_mode,
+                             const std::string& location,
+                             double oxygen_potential_kj_per_mol_o2,
+                             OCOutputData& output_data);
+
 void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhaseData>& solution_phases,
                                               const std::string&                         location,
                                               double                                     content_scaling_factor,
