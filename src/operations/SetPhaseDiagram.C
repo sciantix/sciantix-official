@@ -131,54 +131,40 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     // Attempt for each solver
     for (const auto& solver : solvers)
     { 
-        if (!OCUtilsCoupling::writeOpenCalphadInput(
-                state_file_path,
-                data_path,
-                history_variable["System pressure"].getFinalValue(),
-                history_variable["Temperature"].getFinalValue(),
-                solver,
-                location,
-                components,
-                sciantix_variable))
+        // Use OCASI direct interface instead of subprocess
+        bool case_success = OCUtilsCoupling::runOpenCalphadCaseOCASI(
+            data_path,
+            history_variable["Temperature"].getFinalValue(),
+            history_variable["System pressure"].getFinalValue(),
+            components,
+            valid_elements,
+            solver,
+            location,
+            sciantix_variable["Fuel oxygen potential"].getFinalValue(),
+            output_data);
+
+        if (!case_success)
         {
-            return;
-        }
-
-        if (!OCUtilsCoupling::runOpenCalphadCase(
-                Sciantix_thermochemistry_settings.opencalphad_path + "oc6P " + state_file_path + ".OCM")
-            )        
             continue;
-
-        raw_output = OCUtilsCoupling::readTextFile(state_file_path + ".DAT");
-
-        // debug
-        std::cout << "\n[OC output] " << std::endl;
-        std::cout << "----------------------------------------" << std::endl;
-        std::cout << raw_output << std::endl;
-        std::cout << "----------------------------------------" << std::endl;
-
-        if (!OCUtilsCoupling::hasInvalidEquilibriumResult(raw_output))
-        {  
-            solved = true;
-            break;
         }
+
+        // Mark as solved since we got results
+        solved = true;
+        
+        // Debug output
+        std::cout << "\n[OCASI Output - Direct C++ Interface]" << std::endl;
+        std::cout << "----------------------------------------" << std::endl;
+        std::cout << "Temperature: " << history_variable["Temperature"].getFinalValue() << " K" << std::endl;
+        std::cout << "Pressure: " << history_variable["System pressure"].getFinalValue() << " Pa" << std::endl;
+        std::cout << "----------------------------------------" << std::endl;
+
+        break;
     }
 
     if (!solved)
     {
         std::cout << "Warning: all OpenCalphad attempts failed for location: " << location << std::endl;
-        if ((location == "matrix") && raw_output.find("C1_MO2") != std::string::npos)
-            solved = true;
-
-        if (!solved)
-        {
-            std::cout << "Warning: all OpenCalphad attempts failed for location: " << location
-                    << "' and no valid previous timestep equilibrium was available. Continue in any case."
-                    << std::endl;
-        }
     }
-
-    output_data = parseOCOutputFile(state_file_path + ".DAT", valid_elements);
 
     // Debug
     OCUtilsCoupling::dumpParsedOcOutput(output_data);

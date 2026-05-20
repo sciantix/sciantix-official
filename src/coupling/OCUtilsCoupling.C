@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "OCUtilsCoupling.h"
+#include "OCASIAdapter.h"
 #include "MainVariables.h"
 
 #include <algorithm>
@@ -1169,6 +1170,99 @@ bool runOpenCalphadCase(const std::string& executable)
         return false;
     }
     return true;
+}
+
+bool runOpenCalphadCaseOCASI(const std::string& database_path,
+                             double temperature,
+                             double pressure,
+                             const std::vector<InputComponent>& components,
+                             const std::vector<std::string>& valid_elements,
+                             OpenCalphadSolveMode solve_mode,
+                             const std::string& location,
+                             double oxygen_potential_kj_per_mol_o2,
+                             OCOutputData& output_data)
+{
+    try
+    {
+        auto& oc = OCASIAdapter::getOpenCalphadInterface();
+
+        if (!oc.loadDatabase(database_path, valid_elements))
+        {
+            std::cerr << "Error: Failed to load OpenCalphad database: " << database_path << std::endl;
+            return false;
+        }
+
+        if (!oc.setReferenceState("O", "GAS", -1.0, reference_oxygen_pressure_bar * 1.0e6))
+            std::cerr << "Warning: Failed to set OpenCalphad oxygen gas reference state" << std::endl;
+
+        std::map<std::string, double> components_map;
+        for (const auto& comp : components)
+            components_map[comp.name] = comp.fraction;
+
+        if (!oc.setConditions(temperature, pressure, components_map))
+        {
+            std::cerr << "Error: Failed to set OpenCalphad conditions" << std::endl;
+            return false;
+        }
+
+        const bool use_oxygen_potential =
+            location == "at grain boundary" && solve_mode != OpenCalphadSolveMode::FixedOxygenMoles;
+        if (use_oxygen_potential)
+        {
+            if (!oc.calculateEquilibrium(false))
+            {
+                std::cerr << "Error: Initial OpenCalphad equilibrium calculation failed" << std::endl;
+                return false;
+            }
+
+            if (!oc.removeComponentCondition("O"))
+            {
+                std::cerr << "Error: Failed to remove OpenCalphad oxygen amount condition" << std::endl;
+                return false;
+            }
+
+            const double oxygen_potential_j_per_mol_o = oxygen_potential_kj_per_mol_o2 * 1.0e3 / 2.0;
+            if (!oc.setComponentPotential("O", oxygen_potential_j_per_mol_o))
+            {
+                std::cerr << "Error: Failed to set OpenCalphad oxygen potential condition" << std::endl;
+                return false;
+            }
+        }
+
+        if (solve_mode == OpenCalphadSolveMode::PressureAxisStep)
+        {
+            oc.setPhaseStatus("GAS", -3, 0.0);
+        }
+        else if (solve_mode == OpenCalphadSolveMode::OnlyC1MO2)
+        {
+            oc.setPhaseStatus("GAS", 2, 0.0);
+            oc.setPhaseStatus("*", -3, 0.0);
+            oc.setPhaseStatus("C1_MO2", 0, 0.0);
+        }
+
+        const bool suspend_gas = !use_oxygen_potential &&
+                                 (solve_mode == OpenCalphadSolveMode::GlobalEquilibrium ||
+                                  solve_mode == OpenCalphadSolveMode::SaveReadWarmStart ||
+                                  solve_mode == OpenCalphadSolveMode::FixedOxygenMoles);
+        if (!oc.calculateEquilibrium(suspend_gas))
+        {
+            std::cerr << "Error: OpenCalphad equilibrium calculation failed" << std::endl;
+            return false;
+        }
+
+        if (!oc.extractResults(output_data))
+        {
+            std::cerr << "Error: Failed to extract OpenCalphad results" << std::endl;
+            return false;
+        }
+
+        return true;
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Exception in runOpenCalphadCaseOCASI: " << e.what() << std::endl;
+        return false;
+    }
 }
 
 void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhaseData>& solution_phases,
