@@ -257,19 +257,15 @@ namespace OCASIAdapter
 
     // OpenCalphadInterface Implementation
 
-    static std::unique_ptr<OpenCalphadInterface> g_ocasi_matrix_interface;
-    static std::unique_ptr<OpenCalphadInterface> g_ocasi_fission_products_interface;
+    static std::unique_ptr<OpenCalphadInterface> g_ocasi_interface;
 
     OpenCalphadInterface &getOpenCalphadInterface(OpenCalphadContext context)
     {
-        std::unique_ptr<OpenCalphadInterface> &interface =
-            (context == OpenCalphadContext::Matrix)
-                ? g_ocasi_matrix_interface
-                : g_ocasi_fission_products_interface;
+        (void)context;
 
-        if (!interface)
-            interface = std::make_unique<OpenCalphadInterface>();
-        return *interface;
+        if (!g_ocasi_interface)
+            g_ocasi_interface = std::make_unique<OpenCalphadInterface>();
+        return *g_ocasi_interface;
     }
 
     OpenCalphadInterface::OpenCalphadInterface()
@@ -370,7 +366,7 @@ namespace OCASIAdapter
             return loadDatabase(resolved_tdb_file_path, selected_elements);
         }
 
-        reset(false);
+        //reset(false);
         return true;
     }
 
@@ -515,10 +511,11 @@ namespace OCASIAdapter
         // Process each phase
         for (int ph = 0; ph < nphases; ++ph)
         {
-            char phase_name[64] = {0};
+            char phase_name[256] = {0};
             const int phase_index = ph + 1;
             // Get phase name by index
             c_tqgpn(phase_index, phase_name, &ceq_);
+            phase_name[sizeof(phase_name) - 1] = '\0';
             const std::string oc_phase_name = trimOcName(phase_name);
 
             OCPhaseData phase_data;
@@ -560,8 +557,9 @@ namespace OCASIAdapter
 
                 int base_phase_index = phase_index;
                 int composition_set_index = 0;
-                char phase_lookup_name[64] = {0};
+                char phase_lookup_name[256] = {0};
                 std::strncpy(phase_lookup_name, oc_phase_name.c_str(), sizeof(phase_lookup_name) - 1);
+                phase_lookup_name[sizeof(phase_lookup_name) - 1] = '\0';
                 
                 // Get phase and composition set indices by name
                 c_tqgpi2(&base_phase_index, &composition_set_index, phase_lookup_name, &ceq_);
@@ -582,9 +580,10 @@ namespace OCASIAdapter
                          extended_constituent_index < max_constituents;
                          ++constituent)
                     {
-                        char constituent_name[24] = {0};
+                        char constituent_name[256] = {0};
                         // Get constituent name by extended index
                         c_tqgpcn2(base_phase_index, extended_constituent_index + 1, constituent_name, &ceq_);
+                        constituent_name[sizeof(constituent_name) - 1] = '\0';
                         const std::string name = trimOcName(constituent_name);
                         if (!name.empty())
                             sublattice.composition[name] += constituent_fractions[extended_constituent_index];
