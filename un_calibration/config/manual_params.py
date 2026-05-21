@@ -10,14 +10,31 @@ MANUAL_PARAMS = {
 
     # --- Free fit parameters ---
     # f_n: UN-specific recalibration on the Ronchi 1978 dislocation swelling
-    # dataset (39 anchor points, 1.1 / 1.3 / 3.2 % FIMA). The U3Si2-inherited
-    # Rizk value 1e-6 gives RMSE 1.51% Sw and a +1.24% systematic bias at
-    # 1.3% FIMA. Fine-grained scan (un_calibration/scripts/calibrate_f_n.py)
-    # picks 3e-6 as the value that balances per-burnup biases (max |bias|/bu
-    # = 0.40, RMSE 1.03 — 32% better than reference). Still inside the
-    # Olander 2006 range (1e-7..1e-2).
-    "f_n":          3.0e-6,   # UN-recalibrated against Ronchi 1978
-    "rho_d":        3.0e13,   # m^-2  (Rizk Table 1; used when both rho_d laws are off)
+    # dataset (39 anchor points, 1.1 / 1.3 / 3.2 % FIMA).
+    # History:
+    #   2026-05-09: f_n=3e-6 chosen with USE_PHI_GAS_RESOLUTION = True (Barani
+    #               moment closure). Gave RMSE 1.03, max |bias|/bu 0.40.
+    #   2026-05-21: switched default to USE_PHI_GAS_RESOLUTION = False
+    #               (per-atom-rigorous closure consistent with Setyawan 2018 /
+    #               Matthews 2014 derivation of b). With phi=OFF the calibrate_f_n
+    #               scan finds a monotone improvement as f_n shrinks; optimum at
+    #               the Olander 2006 lower bound 1e-7 (RMSE 1.76, bias -1.55).
+    #               Even there, the model still under-predicts Sw_d on Ronchi by
+    #               ~50% — f_n alone cannot compensate the rigorous closure. The
+    #               residual misfit is open thesis work (candidates: K_d, rho_d
+    #               law, D_v at moderate T, nu_b ∝ c^2 form, loop-punching cap).
+    "f_n":          1.0e-7,   # Olander lower bound; rigorous-closure best fit on Ronchi 1978
+    # rho_d: UN dislocation density.
+    #   Rizk 2025 Table 1 uses 3e13 m^-2 (UO2/UC heritage). Under the rigorous
+    #   per-atom closure (USE_PHI_GAS_RESOLUTION = False), the sensitivity scan
+    #   on Ronchi 1978 identifies rho_d ≈ 1e14 m^-2 as the value that brings
+    #   the global bias to zero (RMSE 0.857, bias -0.100 — better than the
+    #   Barani-closure fit at rho_d=3e13). 1e14 is also consistent with
+    #   measured UN dislocation densities in Blank 1984 Table 3 (specimen
+    #   C3/1, 6.8 a/o): 6.4e14 m^-2 at 940 K up to 8.6e14 at 1300 K (lower
+    #   bound at low burnup ~ 10^14 m^-2). Adopting 1e14 therefore aligns the
+    #   model both with UN microstructure data and with Ronchi swelling.
+    "rho_d":        1.0e14,   # m^-2  (UN-realistic; sensitivity-derived 2026-05-21)
     "fission_rate": 5.0e19,   # fiss/(m^3 s) (DN1/Rizk validation, LHR~100 kW/m, d=8.30 mm)
 
     # --- Dislocation-density law toggle (mutually exclusive) ---
@@ -36,6 +53,9 @@ MANUAL_PARAMS = {
 
     # --- Scales (1.0 = Rizk-nominal) ---
     "coalescence_d_scale":  1.0,
+    "capture_scale":        1.0,   # bulk→disloc capture, only consulted if
+                                   #   un_model.USE_BULK_DISLOCATION_CAPTURE = True
+                                   #   (default OFF per audit 2026-05-09; ablation only).
     "gb_scale":             1.0,
     "gd_bubble_scale":      1.0,
     "gd_line_scale":        1.0,
