@@ -54,6 +54,44 @@ DISLOCATION_OPTIONS = {
     3: ("zullo_nicodemo_2026", "Zullo - Nicodemo 2026", "#9467bd", "D"),
 }
 
+# COARSENING: comparison set for the White development plots, adding the distributed Nicodemo 2026 population.
+DISTRIBUTION_VARIANTS = {
+    "barani_2019": {
+        "dislocation": 1,
+        "distribution": 0,
+        "label": "Barani 2019",
+        "color": "#d62728",
+        "marker": "o",
+    },
+    "zullo_2026": {
+        "dislocation": 2,
+        "distribution": 0,
+        "label": "Zullo 2026",
+        "color": "#2ca02c",
+        "marker": "^",
+    },
+    "zullo_nicodemo_2026": {
+        "dislocation": 3,
+        "distribution": 0,
+        "label": "Zullo - Nicodemo 2026",
+        "color": "#9467bd",
+        "marker": "D",
+    },
+    "nicodemo_2026_distribution": {
+        "dislocation": 3,
+        "distribution": 1,
+        "label": "Nicodemo 2026",
+        "color": "#ff7f0e",
+        "marker": "P",
+    },
+}
+
+DISTRIBUTED_COLUMNS = {
+    # COARSENING: distributed-population reporting columns used only by the Nicodemo 2026 variant.
+    "density_bub_m3": "Intragranular distributed coarsened bubble concentration (bub/m3)",
+    "radius_m": "Intragranular distributed coarsened bubble radius mean (m)",
+}
+
 
 def load_expected(path: Path) -> dict[str, float]:
     values: dict[str, float] = {}
@@ -86,12 +124,17 @@ def run_case(exe: Path, case: Path) -> None:
 
 
 def set_optional_setting(path: Path, setting_name: str, value: int) -> None:
-    # COARSENING: modify only the dislocation-density option in temporary variant cases.
+    # COARSENING: modify optional model-development settings in temporary variant cases.
     lines = path.read_text().splitlines()
-    replacement = (
-        f"{value}    #    {setting_name} "
-        "(0= none, 1= Barani 2019, 2= Zullo 2026, 3= Zullo - Nicodemo 2026 COARSENING)"
-    )
+    descriptions = {
+        "iCoarseningDislocationDensity": (
+            "(0= none, 1= Barani 2019, 2= Zullo 2026, 3= Zullo - Nicodemo 2026 COARSENING)"
+        ),
+        "iCoarseningSizeDistribution": (
+            "(0= single Barani mean, 1= four-family Nicodemo 2026 distribution COARSENING)"
+        ),
+    }
+    replacement = f"{value}    #    {setting_name} {descriptions.get(setting_name, '(COARSENING)')}"
     for index, line in enumerate(lines):
         if f"#    {setting_name}" in line:
             lines[index] = replacement
@@ -233,7 +276,7 @@ def plot_dislocation_option_comparison(root: Path,
                                        expected: dict[str, dict[str, float]],
                                        case_names: list[str],
                                        exe: Path) -> None:
-    # COARSENING: run the three dislocation-density options in temporary cases and compare them with legacy SCIANTIX.
+    # COARSENING: run dislocation-density and distributed-population variants in temporary cases.
     import matplotlib
 
     matplotlib.use("Agg")
@@ -244,8 +287,8 @@ def plot_dislocation_option_comparison(root: Path,
     figures.mkdir(exist_ok=True)
 
     legacy_rows: dict[str, list[tuple[float, float]]] = {name: [] for name in METRICS}
-    variant_rows: dict[int, dict[str, list[tuple[float, float]]]] = {
-        option: {name: [] for name in METRICS} for option in DISLOCATION_OPTIONS
+    variant_rows: dict[str, dict[str, list[tuple[float, float, float, float]]]] = {
+        key: {name: [] for name in METRICS} for key in DISTRIBUTION_VARIANTS
     }
     dislocation_state: dict[int, list[tuple[float, float, float]]] = {option: [] for option in DISLOCATION_OPTIONS}
 
@@ -261,8 +304,8 @@ def plot_dislocation_option_comparison(root: Path,
 
     with tempfile.TemporaryDirectory(prefix="sciantix_white_coarsening_") as temp_dir:
         temp_root = Path(temp_dir)
-        for option in DISLOCATION_OPTIONS:
-            option_root = temp_root / f"dislocation_{option}"
+        for key, variant in DISTRIBUTION_VARIANTS.items():
+            option_root = temp_root / key
             option_root.mkdir()
             for name in case_names:
                 source_case = root / name
@@ -270,18 +313,32 @@ def plot_dislocation_option_comparison(root: Path,
                     continue
                 case = option_root / name
                 shutil.copytree(source_case, case)
-                set_optional_setting(case / "input_settings.txt", "iCoarseningDislocationDensity", option)
+                set_optional_setting(case / "input_settings.txt",
+                                     "iCoarseningDislocationDensity",
+                                     int(variant["dislocation"]))
+                set_optional_setting(case / "input_settings.txt",
+                                     "iCoarseningSizeDistribution",
+                                     int(variant["distribution"]))
                 run_case(exe, case)
                 header, values = load_output(case / "output.txt")
                 temperature = values[header.index("Temperature (K)")]
                 burnup = values[header.index("Burnup (MWd/kgUO2)")]
                 dislocation_density = values[header.index("Dislocation density (m/m3)")]
-                dislocation_state[option].append((temperature, burnup, dislocation_density))
+                if int(variant["distribution"]) == 0:
+                    dislocation_state[int(variant["dislocation"])].append((temperature, burnup, dislocation_density))
                 for metric, config in METRICS.items():
                     experimental = expected[metric][name] * float(config["expected_factor"])
-                    coarsening_index = header.index(str(config["coarsening_column"]))
+                    coarsening_column = str(config["coarsening_column"])
+                    if int(variant["distribution"]) == 1:
+                        coarsening_column = DISTRIBUTED_COLUMNS.get(metric, coarsening_column)
+                    coarsening_index = header.index(coarsening_column)
                     calculated = values[coarsening_index] * float(config["factor"])
-                    variant_rows[option][metric].append((experimental, calculated))
+                    lower_band = calculated
+                    upper_band = calculated
+                    if int(variant["distribution"]) == 1 and metric == "radius_m":
+                        lower_band = values[header.index("Intragranular distributed coarsened bubble radius p10 (m)")]
+                        upper_band = values[header.index("Intragranular distributed coarsened bubble radius p90 (m)")]
+                    variant_rows[key][metric].append((experimental, calculated, lower_band, upper_band))
 
     for metric, config in METRICS.items():
         lower, upper = config["limits"]
@@ -294,10 +351,32 @@ def plot_dislocation_option_comparison(root: Path,
                        s=14,
                        marker="o",
                        label="SCIANTIX legacy")
-        for option, (_, label, color, marker) in DISLOCATION_OPTIONS.items():
-            pairs = [(x, y) for x, y in variant_rows[option][metric] if x > 0.0 and y > 0.0]
+        for key, variant in DISTRIBUTION_VARIANTS.items():
+            pairs = [(x, y, lo, hi) for x, y, lo, hi in variant_rows[key][metric] if x > 0.0 and y > 0.0]
             if pairs:
-                ax.scatter([x for x, _ in pairs], [y for _, y in pairs], color=color, s=14, marker=marker, label=label)
+                x_values = [x for x, _, _, _ in pairs]
+                y_values = [y for _, y, _, _ in pairs]
+                if int(variant["distribution"]) == 1 and metric == "radius_m":
+                    lower_errors = [max(y - lo, 0.0) for _, y, lo, _ in pairs]
+                    upper_errors = [max(hi - y, 0.0) for _, y, _, hi in pairs]
+                    ax.errorbar(x_values,
+                                y_values,
+                                yerr=[lower_errors, upper_errors],
+                                fmt=str(variant["marker"]),
+                                color=str(variant["color"]),
+                                ecolor=str(variant["color"]),
+                                elinewidth=0.8,
+                                capsize=1.8,
+                                markersize=3.8,
+                                linestyle="none",
+                                label=str(variant["label"]))
+                else:
+                    ax.scatter(x_values,
+                               y_values,
+                               color=str(variant["color"]),
+                               s=14,
+                               marker=str(variant["marker"]),
+                               label=str(variant["label"]))
         ax.set_xscale("log")
         ax.set_yscale("log")
         ax.plot([lower, upper], [lower, upper], color="0.55", linewidth=1.0, linestyle="--", label="Parity")
@@ -321,7 +400,134 @@ def plot_dislocation_option_comparison(root: Path,
         fig.savefig(figures / f"dislocation_options_{metric}.png", dpi=300)
         plt.close(fig)
 
+    # COARSENING: print variant scores so the distributed-population effect is visible without opening the figures.
+    for metric in METRICS:
+        print(f"{metric} variants:")
+        for key, variant in DISTRIBUTION_VARIANTS.items():
+            pairs = [(x, y) for x, y, _, _ in variant_rows[key][metric]]
+            if not pairs:
+                continue
+            print(f"  {variant['label']}: RMSE={rmse(pairs):.6g}, MAPE={mape(pairs):.3f}%")
+
+    plot_focused_nicodemo_comparison(root, variant_rows)
     plot_dislocation_density_state(root, dislocation_state)
+
+
+def plot_focused_nicodemo_comparison(root: Path,
+                                     variant_rows: dict[str, dict[str, list[tuple[float, float, float, float]]]]) -> None:
+    # COARSENING: draw compact White parity plots for Barani, Zullo-Nicodemo, and distributed Nicodemo 2026 only.
+    import matplotlib
+
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.collections import LineCollection
+    from matplotlib.lines import Line2D
+    from matplotlib.ticker import FixedLocator, LogFormatterMathtext
+
+    figures = root / "figures"
+    figures.mkdir(exist_ok=True)
+
+    focused_styles = {
+        "barani_2019": {"label": "Barani 2019", "color": "#d62728", "marker": "x", "size": 26},
+        "zullo_nicodemo_2026": {"label": "Zullo - Nicodemo 2026", "color": "#9467bd", "marker": "*", "size": 42},
+        "nicodemo_2026_distribution": {"label": "Nicodemo 2026", "color": "#ff7f0e", "marker": "o", "size": 16},
+    }
+
+    for metric, config in METRICS.items():
+        lower, upper = config["limits"]
+        fig, ax = plt.subplots(figsize=(5.2, 5.2), constrained_layout=True)
+
+        for key in ("barani_2019", "zullo_nicodemo_2026"):
+            style = focused_styles[key]
+            pairs = [(x, y) for x, y, _, _ in variant_rows[key][metric] if x > 0.0 and y > 0.0]
+            if not pairs:
+                continue
+            ax.scatter([x for x, _ in pairs],
+                       [y for _, y in pairs],
+                       color=str(style["color"]),
+                       s=float(style["size"]),
+                       marker=str(style["marker"]),
+                       linewidths=1.1,
+                       alpha=0.95,
+                       zorder=4,
+                       label=str(style["label"]))
+
+        nicodemo_style = focused_styles["nicodemo_2026_distribution"]
+        nicodemo_pairs = [
+            (x, y, lo, hi)
+            for x, y, lo, hi in variant_rows["nicodemo_2026_distribution"][metric]
+            if x > 0.0 and y > 0.0
+        ]
+        if metric == "radius_m":
+            for experimental, mean, p10, p90 in nicodemo_pairs:
+                if p10 <= 0.0 or p90 <= 0.0 or p90 <= p10:
+                    continue
+                # COARSENING: vertical continuous-histogram surrogate, thicker near the predicted radius mode.
+                y_values = [10 ** (math.log10(p10) + i * (math.log10(p90) - math.log10(p10)) / 48.0) for i in range(49)]
+                sigma = max((math.log(p90) - math.log(p10)) / (2.0 * 1.2815515655446004), 1.0e-12)
+                mu = math.log(mean)
+                densities = [
+                    math.exp(-0.5 * ((math.log(math.sqrt(y_values[i] * y_values[i + 1])) - mu) / sigma) ** 2)
+                    for i in range(len(y_values) - 1)
+                ]
+                max_density = max(densities) if densities else 1.0
+                line_segments = [
+                    [(experimental, y_values[i]), (experimental, y_values[i + 1])] for i in range(len(y_values) - 1)
+                ]
+                linewidths = [0.35 + 5.0 * density / max_density for density in densities]
+                collection = LineCollection(line_segments,
+                                            colors=str(nicodemo_style["color"]),
+                                            linewidths=linewidths,
+                                            alpha=0.30,
+                                            zorder=1)
+                ax.add_collection(collection)
+            ax.scatter([x for x, _, _, _ in nicodemo_pairs],
+                       [y for _, y, _, _ in nicodemo_pairs],
+                       color=str(nicodemo_style["color"]),
+                       s=float(nicodemo_style["size"]),
+                       marker=str(nicodemo_style["marker"]),
+                       alpha=0.65,
+                       linewidths=0.0,
+                       zorder=3,
+                       label=str(nicodemo_style["label"]))
+        elif nicodemo_pairs:
+            ax.scatter([x for x, _, _, _ in nicodemo_pairs],
+                       [y for _, y, _, _ in nicodemo_pairs],
+                       color=str(nicodemo_style["color"]),
+                       s=float(nicodemo_style["size"]),
+                       marker=str(nicodemo_style["marker"]),
+                       alpha=0.65,
+                       linewidths=0.0,
+                       zorder=3,
+                       label=str(nicodemo_style["label"]))
+
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+        ax.plot([lower, upper], [lower, upper], color="0.55", linewidth=1.0, linestyle="--", label="Parity")
+        ax.set_xlim(lower, upper)
+        ax.set_ylim(lower, upper)
+        ticks = []
+        tick = lower
+        while tick <= upper * 1.0001:
+            ticks.append(tick)
+            tick *= 10.0
+        ax.xaxis.set_major_locator(FixedLocator(ticks))
+        ax.yaxis.set_major_locator(FixedLocator(ticks))
+        ax.xaxis.set_major_formatter(LogFormatterMathtext())
+        ax.yaxis.set_major_formatter(LogFormatterMathtext())
+        ax.set_aspect("equal", adjustable="box")
+        ax.set_xlabel(f"Experimental {config['label']}")
+        ax.set_ylabel(f"Calculated {config['label']}")
+        ax.grid(True, color="0.88", linewidth=0.8)
+
+        handles, labels = ax.get_legend_handles_labels()
+        if metric == "radius_m":
+            handles.append(Line2D([0], [0], color=str(nicodemo_style["color"]), linewidth=4.0, alpha=0.30))
+            labels.append("Nicodemo 2026 distribution")
+        ax.legend(handles, labels, frameon=False, loc="best", fontsize=9)
+        ax.set_title(f"{config['label']} - focused comparison")
+        fig.savefig(figures / f"focused_nicodemo_{metric}.png", dpi=300)
+        plt.close(fig)
 
 
 def plot_dislocation_density_state(root: Path, state: dict[int, list[tuple[float, float, float]]]) -> None:
