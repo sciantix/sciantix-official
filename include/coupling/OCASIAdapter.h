@@ -57,6 +57,10 @@ namespace OCASIAdapter
                             double value);
         bool calculateEquilibrium(int grid_minimizer);
         bool calculateEquilibriumChecked();
+        bool stepNormal(const std::string &axis_variable,
+                        double minimum,
+                        double maximum,
+                        double increment);
         bool extractResults(OCOutputData &output_data);
         void reset(bool clear_database);
 

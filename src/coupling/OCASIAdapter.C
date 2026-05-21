@@ -95,6 +95,8 @@ extern "C"
     // Exact wrapper for the interactive OpenCalphad "calculate with_check_after"
     void c_tqce_with_check_after(void *);
 
+    void c_step_normal(char *, double, double, double, void *);
+
     // Get state variable value
     // (state variable in caputal letters,
     //  n1 can be a phase tuple index but if <0 means all,
@@ -493,6 +495,22 @@ namespace OCASIAdapter
         if (!ceq_ || !database_loaded_)
             return false;
         c_tqce_with_check_after(&ceq_);
+
+        return true;
+    }
+
+    bool OpenCalphadInterface::stepNormal(const std::string &axis_variable,
+                                          double minimum,
+                                          double maximum,
+                                          double increment)
+    {
+        if (!ceq_ || !database_loaded_)
+            return false;
+
+        char axis_name[24] = {0};
+        std::strncpy(axis_name, upperCopy(axis_variable).c_str(), sizeof(axis_name) - 1);
+
+        c_step_normal(axis_name, minimum, maximum, increment, &ceq_);
         return true;
     }
 

@@ -416,8 +416,7 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
         }
 
         if (solve_mode == OpenCalphadSolveMode::SaveReadWarmStart ||
-            solve_mode == OpenCalphadSolveMode::GlobalEquilibrium ||
-            solve_mode == OpenCalphadSolveMode::FixedOxygenMoles)
+            solve_mode == OpenCalphadSolveMode::GlobalEquilibrium)
         {
             if (!oc.calculateEquilibriumChecked())
             {
@@ -427,13 +426,17 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
         }
         else if (solve_mode == OpenCalphadSolveMode::PressureAxisStep)
         {
-            if (!oc.setPressure(1.0e5) || !oc.calculateEquilibriumChecked())
+            constexpr double start_pressure = 1.0e5;
+            const double pressure_increment = std::max(1.0, 0.025 * std::abs(pressure - start_pressure));
+
+            if (!oc.setPressure(start_pressure) || !oc.calculateEquilibriumChecked())
             {
                 std::cerr << "Warning: OpenCalphad checked equilibrium at start pressure failed" << std::endl;
                 clear_equilibrium = false;
             }
 
-            if (!oc.setPressure(pressure) ||
+            if (!oc.stepNormal("P", start_pressure, pressure, pressure_increment) ||
+                !oc.setPressure(pressure) ||
                 !oc.calculateEquilibrium(-1) ||
                 !oc.calculateEquilibriumChecked())
             {
