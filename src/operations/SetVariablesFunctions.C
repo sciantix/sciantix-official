@@ -55,7 +55,8 @@ std::vector<std::string> getInputVariableNames()
         "iChromiumSolubility",
         "iDensification",
         "iReleaseMode",
-        "iCoarseningDislocationDensity"};  // COARSENING: 0=none, 1=fixed Barani, 2=Zullo 2026, 3=Zullo - Nicodemo 2026.
+        "iCoarseningDislocationDensity",  // COARSENING: 0=none, 1=fixed Barani, 2=Zullo 2026, 3=Zullo - Nicodemo 2026.
+        "iCoarseningSizeDistribution"};   // COARSENING: 0=single Barani mean, 1=four-family Nicodemo 2026 distribution.
 
     return names;
 }
@@ -259,6 +260,31 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          0),
         SciantixVariable(
             "Dislocation density", "(m/m3)", Sciantix_variables[179], Sciantix_variables[179], toOutputCoarsening),
+        SciantixVariable("Coarsening maximum temperature",
+                         "(K)",
+                         Sciantix_variables[180],
+                         Sciantix_variables[180],
+                         0),  // COARSENING: history memory for the distributed dislocation-bubble families.
+        SciantixVariable("Intragranular distributed coarsened bubble concentration",
+                         "(bub/m3)",
+                         Sciantix_variables[181],
+                         Sciantix_variables[181],
+                         toOutputCoarsening),  // COARSENING: distribution-equivalent total number density.
+        SciantixVariable("Intragranular distributed coarsened bubble radius mean",
+                         "(m)",
+                         Sciantix_variables[182],
+                         Sciantix_variables[182],
+                         toOutputCoarsening),  // COARSENING: number-weighted mean over the four effective families.
+        SciantixVariable("Intragranular distributed coarsened bubble radius p10",
+                         "(m)",
+                         Sciantix_variables[183],
+                         Sciantix_variables[183],
+                         toOutputCoarsening),  // COARSENING: lower radius quantile for parity error bars.
+        SciantixVariable("Intragranular distributed coarsened bubble radius p90",
+                         "(m)",
+                         Sciantix_variables[184],
+                         Sciantix_variables[184],
+                         toOutputCoarsening),  // COARSENING: upper radius quantile for parity error bars.
         SciantixVariable("Intragranular gas solution swelling",
                          "(/)",
                          Sciantix_variables[68],
