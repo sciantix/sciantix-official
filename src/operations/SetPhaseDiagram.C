@@ -125,10 +125,12 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         solvers.push_back(OCSolver::SaveReadWarmStart);
     #endif
     solvers.push_back(OCSolver::GlobalEquilibrium);
-    if (history_variable["System pressure"].getFinalValue() > 1.0e5 + 1.0)
-        solvers.push_back(OCSolver::PressureAxisStep);
     if (location == "matrix")
         solvers.push_back(OCSolver::OnlyC1MO2);
+    if (history_variable["System pressure"].getFinalValue() > 1.0e5 + 1.0)
+        solvers.push_back(OCSolver::PressureAxisStep);
+    if (location == "at grain boundary")
+        solvers.push_back(OCSolver::FixedOxygenMoles);
 
 
     // Path to OC files
@@ -142,6 +144,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     bool has_fallback_output = false;
     OCOutputData output_data;
     OCOutputData fallback_output_data;
+    double fallback_oxygen_moles = -1.0;
     double total_input_content = 0.0;
     std::vector<InputComponent> components =
     OCUtilsCoupling::buildInputComponents(selected_elements, sciantix_variable, sciantix_system, total_input_content, location);
@@ -150,12 +153,43 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     // Attempt for each solver
     for (const auto& solver : solvers)
     { 
+        if (solver == OCSolver::FixedOxygenMoles && fallback_oxygen_moles <= 0.0)
+        {
+            std::cout << "Warning: skipping fixed N(O) OpenCalphad fallback because no "
+                      << "O moles were captured from a failed MU(O) attempt." << std::endl;
+            continue;
+        }
+
+        std::vector<InputComponent> solve_components = components;
+        if (solver == OCSolver::FixedOxygenMoles)
+        {
+            bool found_oxygen = false;
+            for (auto& component : solve_components)
+            {
+                if (component.name == "O")
+                {
+                    component.fraction = fallback_oxygen_moles;
+                    found_oxygen = true;
+                    break;
+                }
+            }
+
+            if (!found_oxygen)
+            {
+                InputComponent oxygen_component;
+                oxygen_component.name = "O";
+                oxygen_component.content = fallback_oxygen_moles * total_input_content;
+                oxygen_component.fraction = fallback_oxygen_moles;
+                solve_components.push_back(oxygen_component);
+            }
+        }
+
         // Use OCASI direct interface instead of subprocess
         bool case_success = OCUtilsCoupling::runOpenCalphadCaseOCASI(
             data_path,
             history_variable["Temperature"].getFinalValue(),
             history_variable["System pressure"].getFinalValue(),
-            components,
+            solve_components,
             valid_elements,
             solver,
             location,
@@ -171,6 +205,17 @@ void Simulation::CallThermochemistryModule(std::string                      loca
 
         if (!case_success || !has_usable_output)
         {
+            if (location == "at grain boundary" && solver != OCSolver::FixedOxygenMoles)
+            {
+                const auto oxygen_component = output_data.components.find("O");
+                if (oxygen_component != output_data.components.end() &&
+                    oxygen_component->second.moles > 0.0)
+                {
+                    fallback_oxygen_moles = oxygen_component->second.moles;
+                    std::cout << "Captured fallback N(O)=" << fallback_oxygen_moles
+                              << " from failed MU(O) OpenCalphad output." << std::endl;
+                }
+            }
             continue;
         }
 
