@@ -24,6 +24,26 @@
 #include <string>
 #include <vector>
 
+namespace
+{
+bool hasUsableOpenCalphadOutput(const OCOutputData& output_data)
+{
+    if (!output_data.solution_phases.empty())
+        return true;
+
+    for (const auto& component_entry : output_data.components)
+    {
+        const OCComponentData& component = component_entry.second;
+        if (component.moles > 0.0 ||
+            component.activity > 0.0 ||
+            component.chemical_potential_over_rt != 0.0)
+            return true;
+    }
+
+    return false;
+}
+}
+
 void Simulation::SetPhaseDiagram(std::string location) // qui tutti eccetto i gas. 
 {
     if (location == "at grain boundary")
@@ -119,14 +139,13 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     // Needed later
     std::string raw_output;
     bool solved = false;
+    bool has_fallback_output = false;
     OCOutputData output_data;
+    OCOutputData fallback_output_data;
     double total_input_content = 0.0;
     std::vector<InputComponent> components =
     OCUtilsCoupling::buildInputComponents(selected_elements, sciantix_variable, sciantix_system, total_input_content, location);
-    std::set<std::string> active_elements;
-    for (const auto& component : components)
-        active_elements.insert(component.name);
-    const std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
+    const std::vector<std::string> valid_elements(selected_elements.begin(), selected_elements.end());
 
     // Attempt for each solver
     for (const auto& solver : solvers)
@@ -143,7 +162,14 @@ void Simulation::CallThermochemistryModule(std::string                      loca
             sciantix_variable["Fuel oxygen potential"].getFinalValue(),
             output_data);
 
-        if (!case_success)
+        const bool has_usable_output = hasUsableOpenCalphadOutput(output_data);
+        if (has_usable_output)
+        {
+            fallback_output_data = output_data;
+            has_fallback_output = true;
+        }
+
+        if (!case_success || !has_usable_output)
         {
             continue;
         }
@@ -164,6 +190,12 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     if (!solved)
     {
         std::cout << "Warning: all OpenCalphad attempts failed for location: " << location << std::endl;
+        if (has_fallback_output)
+        {
+            std::cout << "Warning: using the last available OpenCalphad output for location: "
+                      << location << std::endl;
+            output_data = fallback_output_data;
+        }
     }
 
     // Debug
