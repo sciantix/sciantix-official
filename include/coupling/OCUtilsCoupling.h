@@ -76,9 +76,6 @@ struct InputComponent
     double      fraction = 0.0;
 };
 
-
-OCOutputData parseOCOutputFile(const std::string& filepath, const std::vector<std::string>& valid_elements);
-
 namespace OCUtilsCoupling
 {
 enum class OpenCalphadSolveMode
@@ -90,10 +87,7 @@ enum class OpenCalphadSolveMode
     OnlyC1MO2
 };
 
-std::string readTextFile(const std::string& file_path);
 bool fileExists(const std::string& file_path);
-
-bool hasInvalidEquilibriumResult(const std::string& output_text);
 
 // Debug
 void dumpParsedOcOutput(const OCOutputData& output_data);
@@ -108,16 +102,7 @@ std::vector<InputComponent> buildInputComponents(
      SciantixArray<System>&           sciantix_system,
      double&                          total_content,
      const std::string&               location);
-bool writeOpenCalphadInput(const std::string& state_file_path,
-                           const std::string& data_path,
-                           double             pressure,
-                           double             temperature,
-                           OpenCalphadSolveMode solve_mode,
-                           const std::string& location,
-                           std::vector<InputComponent> components,
-                           SciantixArray<SciantixVariable>& sciantix_variable);
-bool runOpenCalphadCase(const std::string& executable);
-
+     
 bool runOpenCalphadCaseOCASI(const std::string& database_path,
                              double temperature,
                              double pressure,

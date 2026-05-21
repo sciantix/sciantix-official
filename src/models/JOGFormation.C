@@ -60,9 +60,12 @@ void Simulation::JOGFormation()
             continue;
         }
 
-        double contribution = std::max(0.0, variable.getFinalValue() * variable.getMolarMass() / theoretical_density);
-        if (variable.getFinalValue() > 0.0)
-            std::cout<<"Molar mass of "<< variable.getName() << ": " <<variable.getMolarMass()<<std::endl;
+        if (variable.getFinalValue() <= 0.0)
+            continue;
+
+        const double molar_mass = variable.getMolarMass();
+        double contribution = variable.getFinalValue() * molar_mass / theoretical_density;
+        std::cout<<"Molar mass of "<< variable.getName() << ": " << molar_mass << std::endl;
 
         JOG_thickness += contribution;
 

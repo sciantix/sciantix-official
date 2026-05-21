@@ -121,14 +121,6 @@ int main(int argc, char** argv)
     std::string thermo_outputPath = TestPath + "thermochemistry_output.txt";
 
     remove(thermo_outputPath.c_str());
-    remove((TestPath + "OC_matrix").c_str());
-    remove((TestPath + "OC_fission_products").c_str());
-    remove((TestPath + "OC_matrix.OCM").c_str());
-    remove((TestPath + "OC_fission_products.OCM").c_str());
-    remove((TestPath + "OC_matrix.OCU").c_str());
-    remove((TestPath + "OC_fission_products.OCU").c_str());
-    remove((TestPath + "OC_matrix.DAT").c_str());
-    remove((TestPath + "OC_fission_products.DAT").c_str());
     remove((TestPath + "phase_sublattice_composition.txt").c_str());
     //
 
@@ -177,18 +169,7 @@ int main(int argc, char** argv)
 
     logExecutionTime((double)timer / CLOCKS_PER_SEC, Time_step_number, Execution_file);
     Execution_file.close();
-
-    // CODE DEVELOPMENT : THERMOCHEMISTRY OUTPUT
-    remove((TestPath + "OC_matrix").c_str());
-    remove((TestPath + "OC_fission_products").c_str());
-    remove((TestPath + "OC_matrix.OCM").c_str());
-    remove((TestPath + "OC_fission_products.OCM").c_str());
-    remove((TestPath + "OC_matrix.OCU").c_str());
-    remove((TestPath + "OC_fission_products.OCU").c_str());
-    remove((TestPath + "OC_matrix.DAT").c_str());
-    remove((TestPath + "OC_fission_products.DAT").c_str());
-    //
-
+    std::cout << "Simulation completed in " << (double)timer / CLOCKS_PER_SEC << " seconds." << std::endl;
     return 0;
 }
 
