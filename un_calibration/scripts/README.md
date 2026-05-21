@@ -5,11 +5,20 @@ All scripts are stand-alone Python files. Run each from the repo root, e.g.:
 ```bash
 python un_calibration/scripts/smoke_test.py
 python un_calibration/scripts/fig3_swelling_vs_T.py
+python un_calibration/scripts/fig4_diffusivity_vs_T.py
 python un_calibration/scripts/fig78_NdRd_vs_T.py
 python un_calibration/scripts/fig9_gas_partition.py
+python un_calibration/scripts/fig11_FGR_vs_burnup.py
 python un_calibration/scripts/rho_d_diagnostic.py
 python un_calibration/scripts/flag_ablation.py
+python un_calibration/scripts/rho_d_laws_comparison.py
+python un_calibration/scripts/sensitivity_scan.py
+python un_calibration/scripts/calibrate_f_n.py
+python un_calibration/scripts/validate_FGR_storms1988.py
 ```
+
+Or run them all with `un_calibration/scripts/Allrun.sh` (use `--quick` to skip
+the four slow scans).
 
 Each script:
 
@@ -40,8 +49,14 @@ Each script:
 | `fig4_diffusivity_vs_T.py` | Rizk 2025 Fig. 4 | Decomposed D_Xe and D_v vs T (D1, D3, total). Includes a "broken Tab. 2 D2_v" diagnostic curve. |
 | `fig78_NdRd_vs_T.py` | Rizk 2025 Fig. 7+8 | N_d (m^-3) and R_d (nm) vs T at 1.3 % FIMA, with ±10% experimental error bars. |
 | `fig9_gas_partition.py` | Rizk 2025 Fig. 9 | Stacked-area gas fractions vs T at 1.3 % FIMA |
+| `fig11_FGR_vs_burnup.py` | – | FGR vs burnup at multiple T (Vitanza-style) |
 | `rho_d_diagnostic.py` | – | 3D surface of the active ρ_d(F, T) law + Blank 1984 Table 3 anchors |
-| `flag_ablation.py` | – | 2×2 study of (φ, mass-coupling) flags. CSV with RMSE + 4-panel figure. |
+| `flag_ablation.py` | – | 2×2×2 study of (φ, mass-coupling, capture) flags. CSV with RMSE + 8-panel figure. |
+| `rho_d_laws_comparison.py` | – | 3-way comparison of ρ_d laws (constant / Blank-FT / Rizk-NEAMS exp) |
+| `sensitivity_scan.py` | – | 1D scans of K_d, f_n, ρ_d around the current default |
+| `calibrate_f_n.py` | – | Fine logarithmic scan of f_n, picks the global RMSE optimum |
+| `validate_FGR_storms1988.py` | – | FGR validation against Storms 1988 (133 pts UN + U-Pu-N) |
 
 The notebook `notebooks/UN_clean.ipynb` is archived in `notebooks/archive/UN_clean_v0.ipynb`
-and is no longer the source of truth.
+and is no longer the source of truth. The canonical reference is
+`un_calibration/reports/un_model_state.md`.

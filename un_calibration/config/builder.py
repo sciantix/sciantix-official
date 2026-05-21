@@ -34,6 +34,7 @@ def build_candidate(manual_params=None, rizk_constants=None):
         gd_bubble_scale=mp["gd_bubble_scale"], gd_line_scale=mp["gd_line_scale"],
         gd_line_alpha=mp["gd_line_alpha"],
         coalescence_d_scale=mp["coalescence_d_scale"],
+        capture_scale=mp["capture_scale"],
         D2_xe_scale=mp["D2_xe_scale"],
     )
 
@@ -105,6 +106,7 @@ def build_un_params(T, bu, cand=None, dt_h=12.0, n_modes=22,
         gd_bubble_scale=c.gd_bubble_scale, gd_line_scale=c.gd_line_scale,
         gd_line_alpha=c.gd_line_alpha,
         coalescence_d_scale=c.coalescence_d_scale,
+        capture_scale=c.capture_scale,
     )
 
 

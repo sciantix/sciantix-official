@@ -40,6 +40,7 @@ SCRIPTS_SLOW=(
     rho_d_laws_comparison
     sensitivity_scan
     calibrate_f_n
+    validate_FGR_storms1988
 )
 
 run_one() {

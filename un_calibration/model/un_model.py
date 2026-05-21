@@ -7,8 +7,16 @@
 #   - solve_UN(p) — main solver
 #
 # Physics flags:
-#   USE_PHI_GAS_RESOLUTION       = True   (Olander 2006 / Pizzocri 2020)
+#   USE_PHI_GAS_RESOLUTION       = False  (per-atom b from Setyawan 2018 /
+#                                          Matthews 2014 → φ does NOT belong
+#                                          on dc/dt or dm_b/dt; only on dN_b/dt)
 #   USE_NUCLEATION_MASS_COUPLING = True   (Pizzocri 2020 mass conservation)
+#   USE_GB_BUBBLES               = True   (Rizk 2025 §A.2 grain-face bubbles)
+#   USE_BULK_DISLOCATION_CAPTURE = True   (Barani-like sweeping; with rho_d=1e14
+#                                          calibrated 2026-05-21 it improves the
+#                                          Ronchi fit by ~8% on RMSE Sw_d. Not
+#                                          in Rizk 2025 / 2023 — kept as a UN
+#                                          extension justified empirically.)
 
 import math
 from dataclasses import dataclass
@@ -17,13 +25,43 @@ from typing import Optional, Sequence, Dict, List, Tuple
 # ============================================================
 # PHYSICS FLAGS
 # ============================================================
-USE_PHI_GAS_RESOLUTION = True
+# Re-solution rate b(R) used here comes from Setyawan 2018 (MD) and Matthews
+# 2014, both of which explicitly state b is computed on a "per bubble atom"
+# basis (probability per unit time that an individual gas atom in a bubble
+# is ejected back to the matrix). The standard moment closure for such a
+# per-atom b puts the bare b on the gas balance and b·φ on the bubble-count
+# equation (φ converts per-atom rate → per-bubble extinction rate).
+# Applying φ also to dc/dt and dm_b/dt (the Barani 2019/2020 closure choice)
+# is an alternative not directly justified by the MD-derived b: it fits
+# Ronchi 1978 better but at the price of an extra φ factor that does not
+# follow from the per-atom definition. We therefore default to OFF
+# (per-atom-rigorous, Rizk 2025 Eq. 21a/b/c as published) and keep ON as
+# an ablation option for studying the moment-closure sensitivity.
+USE_PHI_GAS_RESOLUTION = False
 USE_NUCLEATION_MASS_COUPLING = True
 
 # Inter-granular (grain face) bubble model: Rizk 2025 §A.2 + Eqs. 39, 40.
 # When False, gas leaving the grain interior is directly counted as FGR
 # (legacy behaviour, no GB bubbles).
 USE_GB_BUBBLES = True
+
+# Bulk → dislocation capture (Barani-like sweeping). Not in Rizk 2025 / 2023.
+# History:
+#   2026-05-09 audit: REMOVED because (a) marginally degrades the fit at the
+#                     then-default rho_d=3e13 + phi=ON closure, (b) not in any
+#                     UN literature paper (Rizk/Pizzocri/Barani 2025).
+#   2026-05-21      : RE-INTRODUCED as a toggleable flag with mass-conserving
+#                     bookkeeping (gas mb→md, vacancies nvb→nvd, count N_b ↓,
+#                     N_d unchanged "absorption" interpretation). With the new
+#                     defaults (phi=OFF rigorous closure, rho_d=1e14 UN-realistic),
+#                     capture-ON improves Ronchi fit from RMSE 0.937 (cap=F) to
+#                     0.857 (cap=T). Default flipped to True.
+# When True, dislocation bubbles in growth sweep a fraction
+#   f_cap = capture_scale · N_d · 4π(R_d+R_b)² · ΔR_d
+# of nearby bulk bubbles into the dislocation population (gas + vacancies +
+# bubble count). Mass-conserving by construction. dN_b/dV_d = -N_b·N_d in
+# differential form (Olander §10.4 cross-section form).
+USE_BULK_DISLOCATION_CAPTURE = True
 
 # All Rizk physical constants live in the caller (UN_clean.ipynb / RIZK_CONSTANTS).
 # This module is parameter-free: only physics formulas, solver, and algorithmic guards.
@@ -48,6 +86,7 @@ class Candidate:
     gb_scale: float = 1.0
     gd_scale: float = 1.0
     coalescence_d_scale: float = 1.0
+    capture_scale: float = 1.0
 
     D2_xe_scale: float = 1.0
 
@@ -142,6 +181,7 @@ class UNParameters:
     gd_line_scale: float = 1.0
     gd_line_alpha: float = 1.0
     coalescence_d_scale: float = 1.0
+    capture_scale: float = 1.0
 
     # --- Initial conditions ---
     R_b: float = 0.0
@@ -628,6 +668,14 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
     F_c = F_c_coverage(N_gf, R_gf, p.theta_rad)
     fgr_total = 0.0
 
+    # Bulk → dislocation capture accumulators (zero when flag OFF; updated in loop).
+    f_cap_step = 0.0
+    cap_raw_step = 0.0
+    capture_fraction_sum = 0.0
+    capture_raw_sum = 0.0
+    capture_bubbles_cumulative = 0.0
+    max_f_cap_step = 0.0
+
     hist_keys = [
         "time", "burnup_percent_fima", "c", "mb", "md", "Nb", "Nd", "Vb", "Vd", "Rb", "Rd",
         "nvb", "nvd", "generated", "retained", "q_gb", "swelling_b", "swelling_d", "swelling_ig",
@@ -639,6 +687,9 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
         "released_gas_percent",
         # Solid fission product swelling (Rizk 2025 Eq. 19): 0.5·B per FIMA.
         "swelling_solid", "swelling_solid_percent",
+        # Bulk → dislocation capture diagnostics (USE_BULK_DISLOCATION_CAPTURE).
+        "f_cap_step", "cap_raw_step", "capture_fraction_sum",
+        "capture_raw_sum", "capture_bubbles_cumulative", "max_f_cap_step",
     ]
     hist = {key: [] for key in hist_keys}
 
@@ -703,6 +754,13 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
         sw_solid_pct = 0.5 * bu_pct_now
         hist["swelling_solid"].append(sw_solid_pct / 100.0)
         hist["swelling_solid_percent"].append(sw_solid_pct)
+        # Bulk → dislocation capture diagnostics (zero when flag OFF).
+        hist["f_cap_step"].append(f_cap_step)
+        hist["cap_raw_step"].append(cap_raw_step)
+        hist["capture_fraction_sum"].append(capture_fraction_sum)
+        hist["capture_raw_sum"].append(capture_raw_sum)
+        hist["capture_bubbles_cumulative"].append(capture_bubbles_cumulative)
+        hist["max_f_cap_step"].append(max_f_cap_step)
 
     append_state()
     last_rates = {}
@@ -811,6 +869,48 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
         V_d = max(V_d, p.min_volume)
         R_b = radius_from_volume(V_b)
         R_d = radius_from_volume(V_d)
+
+        # === Bulk → dislocation capture (Barani-like sweeping) ===
+        # Not in Rizk 2025. Active only when USE_BULK_DISLOCATION_CAPTURE = True
+        # (audit 2026-05-09: OFF by default, ablation-only).
+        # The volume swept by dislocation bubbles in growth this step,
+        # delta_Vcap = 4π(R_d + R_b)² · ΔR_d, captures a fraction
+        # f_cap = capture_scale · N_d · delta_Vcap of nearby bulk bubbles
+        # (gas mb, vacancies nvb, count N_b) into the dislocation population.
+        f_cap_step = 0.0
+        cap_raw_step = 0.0
+        if USE_BULK_DISLOCATION_CAPTURE:
+            delta_Rd_cap = max(R_d - Rd_old, 0.0)
+            delta_Vcap = 4.0 * math.pi * (Rd_old + Rb_old) ** 2 * delta_Rd_cap
+            cap_raw_step = p.capture_scale * N_d * delta_Vcap
+            f_cap_step = max(0.0, min(cap_raw_step, 1.0))
+
+            capture_raw_sum += cap_raw_step
+            capture_fraction_sum += f_cap_step
+            if f_cap_step > max_f_cap_step:
+                max_f_cap_step = f_cap_step
+
+            if f_cap_step > 0.0 and N_b > 0.0:
+                mb_before = max(mb_new, 0.0)
+                nvb_before = max(nvb, 0.0)
+                capture_bubbles_cumulative += f_cap_step * N_b
+
+                mb_new = (1.0 - f_cap_step) * mb_before
+                md_new = max(md_new, 0.0) + f_cap_step * mb_before
+                nvb = (1.0 - f_cap_step) * nvb_before
+                nvd = max(nvd, 0.0) + f_cap_step * nvb_before
+                N_b = max((1.0 - f_cap_step) * N_b, p.min_number_density)
+
+                modes_c, modes_mb, modes_md = reset_modes_to_averages(
+                    c_new, mb_new, md_new, p.n_modes
+                )
+
+                V_b = (p.omega_fg * max(mb_new, 0.0) + omega_matrix(p) * nvb) / N_b if N_b > 0.0 else 0.0
+                V_d = (p.omega_fg * max(md_new, 0.0) + omega_matrix(p) * nvd) / N_d if N_d > 0.0 else 0.0
+                V_b = max(V_b, p.min_volume)
+                V_d = max(V_d, p.min_volume)
+                R_b = radius_from_volume(V_b)
+                R_d = radius_from_volume(V_d)
 
         # === Inter-granular (grain-face) bubble step ===
         # Gas leaving the grain interior in this step (conservation balance).
@@ -934,6 +1034,12 @@ def solve_UN(p: UNParameters, keep_history: bool = True):
             "intergranular_gas_percent": [100.0 * m_f / generated if generated > 0.0 else 0.0],
             "released_gas_percent": [100.0 * fgr_total / generated if generated > 0.0 else 0.0],
             "fgr_percent": [100.0 * fgr_total / generated if generated > 0.0 else 0.0],
+            "f_cap_step": [f_cap_step],
+            "cap_raw_step": [cap_raw_step],
+            "capture_fraction_sum": [capture_fraction_sum],
+            "capture_raw_sum": [capture_raw_sum],
+            "capture_bubbles_cumulative": [capture_bubbles_cumulative],
+            "max_f_cap_step": [max_f_cap_step],
         }
 
     return hist, last_rates
