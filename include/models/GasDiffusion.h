@@ -55,14 +55,17 @@ void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_
                                        SciantixArray<SciantixVariable> physics_variable,
                                        int                             n_modes);
 
-// AD UN URANIUMNITRIDE
+// UN AD URANIUMNITRIDE
 /**
  * @brief Defines diffusion models using spectral diffusion with three coupled equations:
  * solution (diffusing) + bulk bubbles + dislocation bubbles (exchange only).
  */
-void defineSpectralDiffusion3EquationsExchange(SciantixArray<System>& sciantix_system,
-                                               SciantixArray<Model>&  model,
-                                               int                    n_modes);
+void defineSpectralDiffusion3EquationsExchange(SciantixArray<System>&           sciantix_system,
+                                               SciantixArray<Model>&            model,
+                                               SciantixArray<SciantixVariable>& sciantix_variable,
+                                               SciantixArray<InputVariable>&    input_variable,
+                                               int                             n_modes);
+// END UN AD URANIUMNITRIDE
 
 /**
  * @brief Handles unsupported diffusion solver options.

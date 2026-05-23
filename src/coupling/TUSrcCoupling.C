@@ -72,6 +72,11 @@ void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[
     Sciantix_options[22] = ReadOneSetting("iChromiumSolubility", input_settings, input_check);
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
+    // UN AD URANIUMNITRIDE
+    Sciantix_options[25] = ReadOptionalSetting("iUNDislocationDensity", input_settings, input_check, 1);
+    Sciantix_options[26] = ReadOptionalSetting("iUNVacancyDiffusivity", input_settings, input_check, 2);
+    Sciantix_options[27] = ReadOptionalSetting("iUNInterGranularBehavior", input_settings, input_check, 1);
+    // END UN AD URANIUMNITRIDE
 
     if (!input_scaling_factors.fail())
     {

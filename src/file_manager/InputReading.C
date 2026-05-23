@@ -35,6 +35,38 @@ unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& inpu
     return variable;
 }
 
+// UN AD URANIUMNITRIDE
+unsigned short int ReadOptionalSetting(std::string        variable_name,
+                                       std::ifstream&     input_file,
+                                       std::ofstream&     output_file,
+                                       unsigned short int default_value)
+{
+    char               comment;
+    unsigned short int variable(default_value);
+    std::streampos     previous_position = input_file.tellg();
+
+    if (!(input_file >> variable))
+    {
+        input_file.clear();
+        if (previous_position != std::streampos(-1))
+            input_file.seekg(previous_position);
+        output_file << variable_name << " = " << default_value << " (default)" << std::endl;
+        return default_value;
+    }
+
+    if (input_file >> comment)
+    {
+        if (comment == '#')
+            input_file.ignore(256, '\n');
+        else
+            input_file.unget();
+    }
+
+    output_file << variable_name << " = " << variable << std::endl;
+    return variable;
+}
+// END UN AD URANIUMNITRIDE
+
 /**
  * @brief Read a single parameter from the input file.
  * @param variable_name The name of the parameter to be read.
@@ -150,6 +182,11 @@ void InputReading(int                  Sciantix_options[],
     Sciantix_options[22] = ReadOneSetting("iChromiumSolubility", input_settings, input_check);
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
+    // UN AD URANIUMNITRIDE
+    Sciantix_options[25] = ReadOptionalSetting("iUNDislocationDensity", input_settings, input_check, 1);
+    Sciantix_options[26] = ReadOptionalSetting("iUNVacancyDiffusivity", input_settings, input_check, 2);
+    Sciantix_options[27] = ReadOptionalSetting("iUNInterGranularBehavior", input_settings, input_check, 1);
+    // END UN AD URANIUMNITRIDE
 
     if (!input_initial_conditions.fail())
     {

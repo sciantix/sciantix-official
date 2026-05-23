@@ -610,6 +610,7 @@ void System::setFissionGasDiffusivity(int                              input_val
 
             break;
         }
+            // END UN AD URANIUMNITRIDE
 
         case 90:
         {
@@ -820,7 +821,7 @@ void System::setResolutionRate(int                              input_value,
     resolution_rate *= scaling_factors["Resolution rate"].getValue();
 }
 
-// AD URANIUMNITRIDE
+// UN AD URANIUMNITRIDE
 
 void System::setResolutionRatesUN(int                              input_value,
                                   SciantixArray<SciantixVariable>& sciantix_variable,
@@ -844,18 +845,21 @@ void System::setResolutionRatesUN(int                              input_value,
             double scaling = scaling_factors["Resolution rate"].getValue();
 
             // Intragranular resolution (Rizk et al. JNM 606 (2025) 155604)
-            double Rb_intra = sciantix_variable["Intragranular bubble radius"].getInitialValue() + radius_in_lattice;
+            double Rb_intra =
+                std::max(sciantix_variable["Intragranular bubble radius"].getInitialValue() + radius_in_lattice, 1.0e-15);
             double b0_intra = 1.0e-25 * (2.64 - 2.02 * std::exp(-2.61e-9 / Rb_intra));
             resolution_rate_intra = F_dot * b0_intra * scaling;
 
             // Dislocation resolution – same formula, different bubble radius
-            double Rb_disl       = sciantix_variable["Dislocation bubble radius"].getInitialValue() + radius_in_lattice;
+            double Rb_disl =
+                std::max(sciantix_variable["Dislocation bubble radius"].getInitialValue() + radius_in_lattice, 1.0e-15);
             double b0_disl       = 1.0e-25 * (2.64 - 2.02 * std::exp(-2.61e-9 / Rb_disl));
             resolution_rate_disl = F_dot * b0_disl * scaling;
             break;
         }
     }
 }
+// END UN AD URANIUMNITRIDE
 
 double System::getResolutionRateIntra()
 {
@@ -1030,8 +1034,8 @@ void System::setTrappingRatesUN(int                              input_value,
             double dislocation_bubble_conc   = sciantix_variable["Dislocation bubble concentration"].getFinalValue();
             double dislocation_bubble_radius = sciantix_variable["Dislocation bubble radius"].getFinalValue();
 
-            double dislocation_density     = matrix.getDislocationDensity();
-            double dislocation_core_radius = matrix.getDislocationCoreRadius();
+            double dislocation_density     = std::max(matrix.getDislocationDensity(), 1.0e10);
+            double dislocation_core_radius = std::max(matrix.getDislocationCoreRadius(), 1.0e-15);
 
             double Zd = 5.0;
 
@@ -1055,8 +1059,8 @@ void System::setTrappingRatesUN(int                              input_value,
             double denominator = log(Gamma_d / (Zd * dislocation_core_radius)) - 3.0 / 5.0;
 
             // Protezione numerica
-            if (denominator <= 0.0)
-                denominator = 1e-20;
+            if (denominator <= 0.0 || !std::isfinite(denominator))
+                denominator = 1.0e-20;
 
             // Lunghezza libera della dislocazione
             double free_dislocation = dislocation_density - 2.0 * dislocation_bubble_radius * dislocation_bubble_conc;
@@ -1076,6 +1080,7 @@ void System::setTrappingRatesUN(int                              input_value,
         }
     }
 }
+// END UN AD URANIUMNITRIDE
 
 double System::getTrappingRateBulkBubble()
 {
