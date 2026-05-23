@@ -55,7 +55,9 @@ void Simulation::execute()
 
     GapPartialPressure();
 
-    UO2Thermochemistry();
+    // UN AD URANIUMNITRIDE
+    if (input_variable["iFuelMatrix"].getValue() != 2)
+        UO2Thermochemistry();
 
     StoichiometryDeviation();
 
@@ -63,9 +65,12 @@ void Simulation::execute()
 
     HighBurnupStructurePorosity();
 
-    Microstructure();
+    if (input_variable["iFuelMatrix"].getValue() != 2)
+        Microstructure();
 
-    ChromiumSolubility();
+    if (input_variable["iFuelMatrix"].getValue() != 2)
+        ChromiumSolubility();
+    // END UN AD URANIUMNITRIDE
 
     GrainGrowth();
 
@@ -75,15 +80,28 @@ void Simulation::execute()
 
     GasDecay();
 
-    IntraGranularBubbleBehavior();
-
-    GasDiffusion();
+    // UN AD URANIUMNITRIDE
+    if (input_variable["iIntraGranularBubbleBehavior"].getValue() == 5)
+    {
+        GasDiffusion();
+        IntraGranularBubbleBehavior();
+    }
+    else
+    {
+        IntraGranularBubbleBehavior();
+        GasDiffusion();
+    }
+    // END UN AD URANIUMNITRIDE
 
     GrainBoundaryMicroCracking();
 
     GrainBoundaryVenting();
 
-    InterGranularBubbleBehavior();
-
-    GasRelease();
+    // UN AD URANIUMNITRIDE
+    if (input_variable["iIntraGranularBubbleBehavior"].getValue() != 5)
+    {
+        InterGranularBubbleBehavior();
+        GasRelease();
+    }
+    // END UN AD URANIUMNITRIDE
 }

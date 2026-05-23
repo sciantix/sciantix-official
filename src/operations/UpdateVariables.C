@@ -117,8 +117,35 @@ std::map<int, std::string> update_sciantix_variable = {
     //{161, "Intragranular bulk bubble concentration"},
     //{162, "Intragranular bulk bubble radius"},   usiamo vecchia variabile intragranular
 
-    {163, "Dislocation bubble concentration"},
-    {164, "Dislocation bubble radius"},
+    {170, "Xe in dislocation bubbles"},
+    {171, "Dislocation bubble concentration"},
+    {172, "Dislocation bubble radius"},
+    {173, "Dislocation bubble volume"},
+    {174, "Dislocation gas atoms per bubble"},
+    {175, "Dislocation vacancies per bubble"},
+    {176, "Dislocation gas bubble swelling"},
+    {177, "Intragranular bulk gas bubble swelling"},
+    {178, "Bulk vacancies per bubble"},
+    {179, "Bulk bubble pressure"},
+    {180, "Bulk bubble equilibrium pressure"},
+    {181, "Dislocation bubble pressure"},
+    {182, "Dislocation bubble equilibrium pressure"},
+    {183, "Dislocation density"},
+    {184, "UN gas to grain boundary diagnostic"},
+    {185, "Grain-face bubble concentration"},
+    {186, "Grain-face atoms per bubble"},
+    {187, "Grain-face vacancies per bubble"},
+    {188, "Grain-face bubble radius"},
+    {189, "Grain-face bubble area"},
+    {190, "Grain-face bubble volume"},
+    {191, "Grain-face fractional coverage"},
+    {192, "Grain-face gas swelling"},
+    {193, "UN grain-face gas"},
+    {194, "UN released gas"},
+    {195, "UN fission gas release"},
+    {196, "UN total gas swelling"},
+    {197, "UN bulk nucleation rate"},
+    // END UN AD URANIUMNITRIDE
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])

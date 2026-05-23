@@ -41,15 +41,12 @@ void Simulation::setSystem()
                 Xe_in_UO2HBS(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             break;
 
-            // AD URANIUMNITRIDE
+            // UN AD URANIUMNITRIDE
         case 2:  // UN
             sciantix_system.push(
                 Xe_in_UN(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(
-                Kr_in_UN(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
-            sciantix_system.push(
-                He_in_UN(matrices, gas, input_variable, sciantix_variable, history_variable, scaling_factors));
             break;
+            // END UN AD URANIUMNITRIDE
 
         default:
             break;
@@ -257,7 +254,7 @@ System Kr85m_in_UO2(SciantixArray<Matrix>&           matrices,
     return system_;
 }
 
-// AD URANIUMNITRIDE
+// UN AD URANIUMNITRIDE
 System Xe_in_UN(SciantixArray<Matrix>&           matrices,
                 SciantixArray<Gas>&              gas,
                 SciantixArray<InputVariable>&    input_variable,
@@ -301,6 +298,7 @@ System Xe_in_UN(SciantixArray<Matrix>&           matrices,
 
     return system_;
 }
+// END UN AD URANIUMNITRIDE
 
 System Kr_in_UN(SciantixArray<Matrix>&           matrices,
                 SciantixArray<Gas>&              gas,

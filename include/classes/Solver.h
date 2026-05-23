@@ -163,7 +163,7 @@ class Solver : virtual public InputVariable
                                      std::vector<double> parameter,
                                      double              increment);
 
-    // AD UN URANIUMNITRIDE
+    // UN AD URANIUMNITRIDE
     /**
      * @brief Solves three coupled equations with diffusion in the first variable (gas in solution)
      * and exchange terms with the other two variables (e.g. bulk bubbles and dislocation bubbles).
@@ -180,11 +180,13 @@ class Solver : virtual public InputVariable
      * 0 : N_modes
      * 1 : D_g (diffusivity of gas atoms in solution)
      * 2 : r (grain radius)
-     * 3 : beta (volumetric generation rate)
+     * 3 : source_c (solution volumetric source)
      * 4 : g_b (capture rate to bulk bubbles)
      * 5 : g_d (capture rate to dislocation bubbles)
      * 6 : b_b (re-solution rate from bulk bubbles)
      * 7 : b_d (re-solution rate from dislocation bubbles)
+     * 8 : source_mb (bulk bubble gas source, default 0)
+     * 9 : source_md (dislocation bubble gas source, default 0)
      */
     void SpectralDiffusion3equationsExchange(double&             c,
                                              double&             m_b,
@@ -194,6 +196,7 @@ class Solver : virtual public InputVariable
                                              double*             modes_m_d,
                                              std::vector<double> parameter,
                                              double              increment);
+    // END UN AD URANIUMNITRIDE
 
     /**
      * @brief Solves a system of two linear equations using Cramer's method.

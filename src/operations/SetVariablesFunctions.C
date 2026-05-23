@@ -53,7 +53,13 @@ std::vector<std::string> getInputVariableNames()
                                       "iBubbleDiffusivity",
                                       "iChromiumSolubility",
                                       "iDensification",
-                                      "iReleaseMode"};
+                                      "iReleaseMode",
+                                      // UN AD URANIUMNITRIDE
+                                      "iUNDislocationDensity",
+                                      "iUNVacancyDiffusivity",
+                                      "iUNInterGranularBehavior",
+                                      // END UN AD URANIUMNITRIDE
+                                      };
 
     return names;
 }
@@ -108,7 +114,8 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputGrainBoundary,
                                                          bool   toOutputHighBurnupStructure,
                                                          bool   toOutputStoichiometryDeviation,
-                                                         bool   toOutputChromiumContent)
+                                                         bool   toOutputChromiumContent,
+                                                         bool   toOutputUN)
 {
     std::vector<SciantixVariable> init_sciantix_variable = {
         SciantixVariable("Grain radius", "(m)", Sciantix_variables[0], Sciantix_variables[0], 1),
@@ -124,7 +131,10 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
             "Xe in grain HBS", "(at/m3)", Sciantix_variables[92], Sciantix_variables[92], toOutputHighBurnupStructure),
         SciantixVariable("Xe in intragranular solution", "(at/m3)", Sciantix_variables[3], Sciantix_variables[3], 1),
         SciantixVariable("Xe in intragranular bubbles", "(at/m3)", Sciantix_variables[4], Sciantix_variables[4], 1),
-        SciantixVariable("Xe in dislocation bubbles", "(at/m3)", 0.0, 0.0, 0),  // AD UN URANIUMNITRIDE
+        // UN AD URANIUMNITRIDE
+        SciantixVariable(
+            "Xe in dislocation bubbles", "(at/m3)", Sciantix_variables[170], Sciantix_variables[170], toOutputUN),
+        // END UN AD URANIUMNITRIDE
         SciantixVariable("Xe at grain boundary", "(at/m3)", Sciantix_variables[5], Sciantix_variables[5], 1),
         SciantixVariable("Xe released", "(at/m3)", Sciantix_variables[6], Sciantix_variables[6], 1),
         SciantixVariable("Xe decayed", "(at/m3)", 0.0, 0.0, 0),
@@ -133,7 +143,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("Kr in grain", "(at/m3)", Sciantix_variables[8], Sciantix_variables[8], 1),
         SciantixVariable("Kr in intragranular solution", "(at/m3)", Sciantix_variables[9], Sciantix_variables[9], 1),
         SciantixVariable("Kr in intragranular bubbles", "(at/m3)", Sciantix_variables[10], Sciantix_variables[10], 1),
-        SciantixVariable("Kr in dislocation bubbles", "(at/m3)", 0.0, 0.0, 0),  // AD UN URANIUMNITRIDE
+        SciantixVariable("Kr in dislocation bubbles", "(at/m3)", 0.0, 0.0, 0),
         SciantixVariable("Kr at grain boundary", "(at/m3)", Sciantix_variables[11], Sciantix_variables[11], 1),
         SciantixVariable("Kr released", "(at/m3)", Sciantix_variables[12], Sciantix_variables[12], 1),
         SciantixVariable("Kr decayed", "(at/m3)", 0.0, 0.0, 0),
@@ -146,7 +156,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
             "He in intragranular solution", "(at/m3)", Sciantix_variables[15], Sciantix_variables[15], toOutputHelium),
         SciantixVariable(
             "He in intragranular bubbles", "(at/m3)", Sciantix_variables[16], Sciantix_variables[16], toOutputHelium),
-        SciantixVariable("He in dislocation bubbles", "(at/m3)", 0.0, 0.0, 0),  // AD UN URANIUMNITRIDE
+        SciantixVariable("He in dislocation bubbles", "(at/m3)", 0.0, 0.0, 0),
         SciantixVariable(
             "He at grain boundary", "(at/m3)", Sciantix_variables[17], Sciantix_variables[71], toOutputHelium),
         SciantixVariable("He released", "(at/m3)", Sciantix_variables[18], Sciantix_variables[18], toOutputHelium),
@@ -168,7 +178,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[51],
                          Sciantix_variables[51],
                          toOutputRadioactiveFG),
-        SciantixVariable("Xe133 in dislocation bubbles", "(at/m3)", 0.0, 0.0, 0),  // AD UN URANIUMNITRIDE
+        SciantixVariable("Xe133 in dislocation bubbles", "(at/m3)", 0.0, 0.0, 0),
         SciantixVariable(
             "Xe133 decayed", "(at/m3)", Sciantix_variables[52], Sciantix_variables[52], toOutputRadioactiveFG),
         SciantixVariable(
@@ -191,7 +201,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[60],
                          Sciantix_variables[60],
                          toOutputRadioactiveFG),
-        SciantixVariable("Kr85m in dislocation bubbles", "(at/m3)", 0.0, 0.0, 0),  // AD UN URANIUMNITRIDE
+        SciantixVariable("Kr85m in dislocation bubbles", "(at/m3)", 0.0, 0.0, 0),
         SciantixVariable(
             "Kr85m decayed", "(at/m3)", Sciantix_variables[61], Sciantix_variables[61], toOutputRadioactiveFG),
         SciantixVariable(
@@ -216,10 +226,86 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
          SciantixVariable("Intragranular bulk bubble volume", "(m3)", 0.0, 0.0, 0),
         */
 
+        SciantixVariable("Dislocation bubble concentration",
+                         "(bub/m3)",
+                         Sciantix_variables[171],
+                         Sciantix_variables[171],
+                         toOutputUN),
+        SciantixVariable("Dislocation bubble radius", "(m)", Sciantix_variables[172], Sciantix_variables[172], toOutputUN),
+        SciantixVariable("Dislocation bubble volume",
+                         "(m3)",
+                         Sciantix_variables[173],
+                         Sciantix_variables[173],
+                         toOutputUN),
+        SciantixVariable("Dislocation gas atoms per bubble",
+                         "(at/bub)",
+                         Sciantix_variables[174],
+                         Sciantix_variables[174],
+                         toOutputUN),
+        SciantixVariable("Dislocation vacancies per bubble",
+                         "(vac/bub)",
+                         Sciantix_variables[175],
+                         Sciantix_variables[175],
+                         toOutputUN),
+        SciantixVariable("Dislocation gas bubble swelling",
+                         "(/)",
+                         Sciantix_variables[176],
+                         Sciantix_variables[176],
+                         toOutputUN),
+        SciantixVariable("Intragranular bulk gas bubble swelling",
+                         "(/)",
+                         Sciantix_variables[177],
+                         Sciantix_variables[177],
+                         toOutputUN),
         SciantixVariable(
-            "Dislocation bubble concentration", "(bub/m3)", Sciantix_variables[19], Sciantix_variables[19], 0),
-        SciantixVariable("Dislocation bubble radius", "(m)", Sciantix_variables[20], Sciantix_variables[20], 0),
-        SciantixVariable("Dislocation bubble volume", "(m3)", 0.0, 0.0, 0),
+            "Bulk vacancies per bubble", "(vac/bub)", Sciantix_variables[178], Sciantix_variables[178], toOutputUN),
+        SciantixVariable("Bulk bubble pressure", "(MPa)", Sciantix_variables[179], Sciantix_variables[179], toOutputUN),
+        SciantixVariable("Bulk bubble equilibrium pressure",
+                         "(MPa)",
+                         Sciantix_variables[180],
+                         Sciantix_variables[180],
+                         toOutputUN),
+        SciantixVariable(
+            "Dislocation bubble pressure", "(MPa)", Sciantix_variables[181], Sciantix_variables[181], toOutputUN),
+        SciantixVariable("Dislocation bubble equilibrium pressure",
+                         "(MPa)",
+                         Sciantix_variables[182],
+                         Sciantix_variables[182],
+                         toOutputUN),
+        SciantixVariable("Dislocation density", "(m^-2)", Sciantix_variables[183], Sciantix_variables[183], toOutputUN),
+        SciantixVariable("UN gas to grain boundary diagnostic",
+                         "(at/m3)",
+                         Sciantix_variables[184],
+                         Sciantix_variables[184],
+                         toOutputUN),
+        SciantixVariable("Grain-face bubble concentration",
+                         "(bub/m2)",
+                         Sciantix_variables[185],
+                         Sciantix_variables[185],
+                         toOutputUN),
+        SciantixVariable(
+            "Grain-face atoms per bubble", "(at/bub)", Sciantix_variables[186], Sciantix_variables[186], toOutputUN),
+        SciantixVariable("Grain-face vacancies per bubble",
+                         "(vac/bub)",
+                         Sciantix_variables[187],
+                         Sciantix_variables[187],
+                         toOutputUN),
+        SciantixVariable(
+            "Grain-face bubble radius", "(m)", Sciantix_variables[188], Sciantix_variables[188], toOutputUN),
+        SciantixVariable(
+            "Grain-face bubble area", "(m2)", Sciantix_variables[189], Sciantix_variables[189], toOutputUN),
+        SciantixVariable(
+            "Grain-face bubble volume", "(m3)", Sciantix_variables[190], Sciantix_variables[190], toOutputUN),
+        SciantixVariable(
+            "Grain-face fractional coverage", "(/)", Sciantix_variables[191], Sciantix_variables[191], toOutputUN),
+        SciantixVariable(
+            "Grain-face gas swelling", "(/)", Sciantix_variables[192], Sciantix_variables[192], toOutputUN),
+        SciantixVariable("UN grain-face gas", "(at/m3)", Sciantix_variables[193], Sciantix_variables[193], toOutputUN),
+        SciantixVariable("UN released gas", "(at/m3)", Sciantix_variables[194], Sciantix_variables[194], toOutputUN),
+        SciantixVariable("UN fission gas release", "(/)", Sciantix_variables[195], Sciantix_variables[195], toOutputUN),
+        SciantixVariable("UN total gas swelling", "(/)", Sciantix_variables[196], Sciantix_variables[196], toOutputUN),
+        SciantixVariable("UN bulk nucleation rate", "(bub/m3/s)", Sciantix_variables[197], Sciantix_variables[197], toOutputUN),
+        // END UN AD URANIUMNITRIDE
 
         SciantixVariable(
             "Intragranular Xe atoms per bubble", "(at/bub)", Sciantix_variables[21], Sciantix_variables[21], 0),
