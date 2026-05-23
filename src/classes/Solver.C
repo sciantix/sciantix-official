@@ -251,7 +251,7 @@ void Solver::SpectralDiffusion3equations(double&             gas_1,
     gas_3 = gas_3_solution;
 }
 
-// AD UN URANIUMNITRIDE
+// UN AD URANIUMNITRIDE
 void Solver::SpectralDiffusion3equationsExchange(double&             c,
                                                  double&             m_b,
                                                  double&             m_d,
@@ -267,16 +267,20 @@ void Solver::SpectralDiffusion3equationsExchange(double&             c,
     const double n_modes = parameter.at(0);
     const double D_g     = parameter.at(1);
     const double radius  = parameter.at(2);
-    const double beta    = parameter.at(3);
+    const double source_c = parameter.at(3);
     const double g_b     = parameter.at(4);
     const double g_d     = parameter.at(5);
     const double b_b     = parameter.at(6);
     const double b_d     = parameter.at(7);
+    const double source_mb = parameter.size() > 8 ? parameter.at(8) : 0.0;
+    const double source_md = parameter.size() > 9 ? parameter.at(9) : 0.0;
 
     double diffusion_rate_coeff = pow(M_PI, 2) * D_g / pow(radius, 2);
 
-    const double projection_coeff  = -2.0 * sqrt(2.0 / M_PI);
-    const double source_rate_coeff = projection_coeff * beta;
+    const double projection_coeff   = -2.0 * sqrt(2.0 / M_PI);
+    const double source_c_coeff     = projection_coeff * source_c;
+    const double source_mb_coeff    = projection_coeff * source_mb;
+    const double source_md_coeff    = projection_coeff * source_md;
 
     double c_solution(0.0);
     double m_b_solution(0.0);
@@ -291,11 +295,13 @@ void Solver::SpectralDiffusion3equationsExchange(double&             c,
         const double n_coeff = pow(-1.0, np1) / np1;
 
         const double diffusion_rate = diffusion_rate_coeff * pow(np1, 2);
-        const double source_rate    = source_rate_coeff * n_coeff;
+        const double source_c_rate  = source_c_coeff * n_coeff;
+        const double source_mb_rate = source_mb_coeff * n_coeff;
+        const double source_md_rate = source_md_coeff * n_coeff;
 
         // Backward Euler per mode:
         // (I - dt * J) * x^{n+1} = x^n + dt * s
-        // with x = [c, m_b, m_d] and s = [source_rate, 0, 0]
+        // with x = [c, m_b, m_d] and s = [source_c_rate, source_mb_rate, source_md_rate]
         coeff_matrix[0] = 1.0 + (diffusion_rate + g_b + g_d) * increment;
         coeff_matrix[1] = -b_b * increment;
         coeff_matrix[2] = -b_d * increment;
@@ -308,9 +314,9 @@ void Solver::SpectralDiffusion3equationsExchange(double&             c,
         coeff_matrix[7] = 0.0;
         coeff_matrix[8] = 1.0 + b_d * increment;
 
-        initial_conditions[0] = modes_c[n] + source_rate * increment;
-        initial_conditions[1] = modes_m_b[n];
-        initial_conditions[2] = modes_m_d[n];
+        initial_conditions[0] = modes_c[n] + source_c_rate * increment;
+        initial_conditions[1] = modes_m_b[n] + source_mb_rate * increment;
+        initial_conditions[2] = modes_m_d[n] + source_md_rate * increment;
 
         Solver::Laplace3x3(coeff_matrix, initial_conditions);
 
@@ -327,6 +333,7 @@ void Solver::SpectralDiffusion3equationsExchange(double&             c,
     m_b = m_b_solution;
     m_d = m_d_solution;
 }
+// END UN AD URANIUMNITRIDE
 
 void Solver::Laplace2x2(double A[], double b[])
 {

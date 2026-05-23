@@ -33,12 +33,13 @@ void Simulation::setMatrix()
             break;
         }
 
-            // AD URANIUMNITRIDE
+            // UN AD URANIUMNITRIDE
         case 2:
         {
             matrices.push(UN(matrices, sciantix_variable, history_variable, input_variable, scaling_factors));
             break;
         }
+            // END UN AD URANIUMNITRIDE
 
         default:
             ErrorMessages::Switch(__FILE__, "iFuelMatrix", int(input_variable["iFuelMatrix"].getValue()));
@@ -150,7 +151,7 @@ Matrix UO2HBS(SciantixArray<Matrix>&           matrices,
     return matrix_;
 }
 
-// AD URANIUMNITRIDE
+// UN AD URANIUMNITRIDE
 Matrix UN(SciantixArray<Matrix>&           matrices,
           SciantixArray<SciantixVariable>& sciantix_variable,
           SciantixArray<SciantixVariable>& history_variable,
@@ -203,3 +204,4 @@ Matrix UN(SciantixArray<Matrix>&           matrices,
 
     return matrix_;
 }
+// END UN AD URANIUMNITRIDE

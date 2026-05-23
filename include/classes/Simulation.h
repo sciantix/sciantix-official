@@ -55,7 +55,9 @@ class Simulation
 
     int                 n_modes;
     std::vector<double> modes_initial_conditions;
-    std::vector<double> modes_initial_conditions_dislocation_bubbles;  // AD UN URANIUMNITRIDE
+    // UN AD URANIUMNITRIDE
+    std::vector<double> modes_initial_conditions_dislocation_bubbles;
+    // END UN AD URANIUMNITRIDE
 
     Solver solver;
 
@@ -68,7 +70,9 @@ class Simulation
     {
         n_modes = 40;
         modes_initial_conditions.resize(720);
-        modes_initial_conditions_dislocation_bubbles.resize(200);  // AD UN URANIUMNITRIDE
+        // UN AD URANIUMNITRIDE
+        modes_initial_conditions_dislocation_bubbles.resize(200);
+        // END UN AD URANIUMNITRIDE
     }
 
   public:
@@ -470,7 +474,7 @@ class Simulation
         }
     }
 
-    // AD UN URANIUMNITRIDE
+    // UN AD URANIUMNITRIDE
 
     /**
      * @brief Retrieves diffusion modes related to dislocation bubbles for a specified gas.
@@ -497,6 +501,7 @@ class Simulation
             return nullptr;
         }
     }
+    // END UN AD URANIUMNITRIDE
 };
 
 #endif

@@ -137,5 +137,7 @@ void Simulation::GrainGrowth()
     // Model resolution
     sciantix_variable["Grain radius"].setFinalValue(solver.QuarticEquation(model["Grain growth"].getParameter()));
 
-    matrices["UO2"].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
+    // UN AD URANIUMNITRIDE
+    matrices[0].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
+    // END UN AD URANIUMNITRIDE
 }

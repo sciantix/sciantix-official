@@ -15,6 +15,18 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "GasDiffusion.h"
+#include <algorithm>
+#include <cmath>
+
+// UN AD URANIUMNITRIDE
+namespace
+{
+    constexpr double un_gas_diffusion_pi       = 3.14159265358979323846;
+    constexpr double un_gas_diffusion_omega_fg = 8.5e-29;
+    constexpr double un_gas_diffusion_fn = 5.5e-4;  // UN AD URANIUMNITRIDE: calibrated notebook-8 value;
+                                                   // Rizk nominal = 1.0e-6; used/calibrated = 5.5e-4.
+}
+// END UN AD URANIUMNITRIDE
 
 void Simulation::GasDiffusion()
 {
@@ -33,10 +45,11 @@ void Simulation::GasDiffusion()
             defineSpectralDiffusion3Equations(sciantix_system, model, sciantix_variable, physics_variable, n_modes);
             break;
 
-            // AD UN URANIUMNITRIDE
+        // UN AD URANIUMNITRIDE
         case 4:
-            defineSpectralDiffusion3EquationsExchange(sciantix_system, model, n_modes);
+            defineSpectralDiffusion3EquationsExchange(sciantix_system, model, sciantix_variable, input_variable, n_modes);
             break;
+            // END UN AD URANIUMNITRIDE
 
         default:
             errorHandling(input_variable);
@@ -116,7 +129,7 @@ void Simulation::GasDiffusion()
             case 3:
                 break;
 
-                // AD UN URANIUMNITRIDE
+                // UN AD URANIUMNITRIDE
             case 4:
             {
                 if (system.getRestructuredMatrix() == 0)
@@ -149,6 +162,7 @@ void Simulation::GasDiffusion()
                 }
                 break;
             }
+                // END UN AD URANIUMNITRIDE
 
             default:
                 ErrorMessages::Switch(__FILE__, "iDiffusionSolver", int(input_variable["iDiffusionSolver"].getValue()));
@@ -332,10 +346,12 @@ void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_
     model_.setParameter(parameters);
     model.push(model_);
 }
-// AD UN URANIUMNITRIDE
-void defineSpectralDiffusion3EquationsExchange(SciantixArray<System>& sciantix_system,
-                                               SciantixArray<Model>&  model,
-                                               int                    n_modes)
+// UN AD URANIUMNITRIDE
+void defineSpectralDiffusion3EquationsExchange(SciantixArray<System>&           sciantix_system,
+                                               SciantixArray<Model>&            model,
+                                               SciantixArray<SciantixVariable>& sciantix_variable,
+                                               SciantixArray<InputVariable>&    input_variable,
+                                               int                             n_modes)
 {
     std::string reference;
 
@@ -351,18 +367,36 @@ void defineSpectralDiffusion3EquationsExchange(SciantixArray<System>& sciantix_s
         const double D_g = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
         parameters.push_back(D_g);
         parameters.push_back(system.getMatrix().getGrainRadius());
-        parameters.push_back(system.getProductionRate());
+        double source_c  = system.getProductionRate();
+        double source_mb = 0.0;
+        double source_md = 0.0;
+
+        if (int(input_variable["iIntraGranularBubbleBehavior"].getValue()) == 5 &&
+            system.getGasName() == "Xe" && system.getRestructuredMatrix() == 0)
+        {
+            const double c = std::max(sciantix_variable["Xe in intragranular solution"].getFinalValue(), 0.0);
+            const double nu_b = 8.0 * un_gas_diffusion_pi * un_gas_diffusion_fn * D_g *
+                                std::pow(un_gas_diffusion_omega_fg, 1.0 / 3.0) * c * c;
+            source_c -= 2.0 * nu_b;
+            source_mb = 2.0 * nu_b;
+            sciantix_variable["UN bulk nucleation rate"].setFinalValue(std::max(nu_b, 0.0));
+        }
+
+        parameters.push_back(source_c);
 
         // Exchange terms (bulk + dislocation). For non-UN systems these are expected to be 0.
         parameters.push_back(system.getTrappingRateBulkBubble());
         parameters.push_back(system.getTrappingRateDislocationBubble());
         parameters.push_back(system.getResolutionRateIntra());
         parameters.push_back(system.getResolutionRateDisl());
+        parameters.push_back(source_mb);
+        parameters.push_back(source_md);
 
         model_.setParameter(parameters);
         model.push(model_);
     }
 }
+// END UN AD URANIUMNITRIDE
 
 void errorHandling(SciantixArray<InputVariable> input_variable)
 {
