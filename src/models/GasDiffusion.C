@@ -23,9 +23,9 @@ namespace
 {
     constexpr double un_gas_diffusion_pi       = 3.14159265358979323846;
     constexpr double un_gas_diffusion_omega_fg = 8.5e-29;
-    constexpr double un_gas_diffusion_fn = 5.5e-4;  // UN AD URANIUMNITRIDE: calibrated notebook-8 value;
-                                                   // Rizk nominal = 1.0e-6; used/calibrated = 5.5e-4.
-}
+    constexpr double un_gas_diffusion_fn       = 5.5e-4;  // UN AD URANIUMNITRIDE: calibrated notebook-8 value;
+                                                          // Rizk nominal = 1.0e-6; used/calibrated = 5.5e-4.
+}  // namespace
 // END UN AD URANIUMNITRIDE
 
 void Simulation::GasDiffusion()
@@ -47,7 +47,8 @@ void Simulation::GasDiffusion()
 
         // UN AD URANIUMNITRIDE
         case 4:
-            defineSpectralDiffusion3EquationsExchange(sciantix_system, model, sciantix_variable, input_variable, n_modes);
+            defineSpectralDiffusion3EquationsExchange(
+                sciantix_system, model, sciantix_variable, input_variable, n_modes);
             break;
             // END UN AD URANIUMNITRIDE
 
@@ -351,7 +352,7 @@ void defineSpectralDiffusion3EquationsExchange(SciantixArray<System>&           
                                                SciantixArray<Model>&            model,
                                                SciantixArray<SciantixVariable>& sciantix_variable,
                                                SciantixArray<InputVariable>&    input_variable,
-                                               int                             n_modes)
+                                               int                              n_modes)
 {
     std::string reference;
 
@@ -371,10 +372,10 @@ void defineSpectralDiffusion3EquationsExchange(SciantixArray<System>&           
         double source_mb = 0.0;
         double source_md = 0.0;
 
-        if (int(input_variable["iIntraGranularBubbleBehavior"].getValue()) == 5 &&
-            system.getGasName() == "Xe" && system.getRestructuredMatrix() == 0)
+        if (int(input_variable["iIntraGranularBubbleBehavior"].getValue()) == 5 && system.getGasName() == "Xe" &&
+            system.getRestructuredMatrix() == 0)
         {
-            const double c = std::max(sciantix_variable["Xe in intragranular solution"].getFinalValue(), 0.0);
+            const double c    = std::max(sciantix_variable["Xe in intragranular solution"].getFinalValue(), 0.0);
             const double nu_b = 8.0 * un_gas_diffusion_pi * un_gas_diffusion_fn * D_g *
                                 std::pow(un_gas_diffusion_omega_fg, 1.0 / 3.0) * c * c;
             source_c -= 2.0 * nu_b;
