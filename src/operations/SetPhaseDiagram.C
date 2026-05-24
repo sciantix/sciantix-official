@@ -26,8 +26,11 @@
 
 namespace
 {
-bool hasUsableOpenCalphadOutput(const OCOutputData& output_data)
+bool hasUsableOpenCalphadOutput(const OCOutputData& output_data,
+                                const std::string&  location)
 {
+    if (location != "matrix") return false;
+
     if (!output_data.solution_phases.empty())
         return true;
 
@@ -129,8 +132,6 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         solvers.push_back(OCSolver::OnlyC1MO2);
     if (history_variable["System pressure"].getFinalValue() > 1.0e5 + 1.0)
         solvers.push_back(OCSolver::PressureAxisStep);
-    if (location == "at grain boundary")
-        solvers.push_back(OCSolver::FixedOxygenMoles);
 
 
     // Path to OC files
@@ -139,12 +140,8 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         Sciantix_thermochemistry_settings.opencalphad_path + "data/" + location_settings.database;
     
     // Needed later
-    std::string raw_output;
     bool solved = false;
-    bool has_fallback_output = false;
     OCOutputData output_data;
-    OCOutputData fallback_output_data;
-    double fallback_oxygen_moles = -1.0;
     double total_input_content = 0.0;
     std::vector<InputComponent> components =
     OCUtilsCoupling::buildInputComponents(selected_elements, sciantix_variable, sciantix_system, total_input_content, location);
@@ -153,98 +150,36 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     // Attempt for each solver
     for (const auto& solver : solvers)
     { 
-        if (solver == OCSolver::FixedOxygenMoles && fallback_oxygen_moles <= 0.0)
-        {
-            std::cout << "Warning: skipping fixed N(O) OpenCalphad fallback because no "
-                      << "O moles were captured from a failed MU(O) attempt." << std::endl;
-            continue;
-        }
-
-        std::vector<InputComponent> solve_components = components;
-        if (solver == OCSolver::FixedOxygenMoles)
-        {
-            bool found_oxygen = false;
-            for (auto& component : solve_components)
-            {
-                if (component.name == "O")
-                {
-                    component.fraction = fallback_oxygen_moles;
-                    found_oxygen = true;
-                    break;
-                }
-            }
-
-            if (!found_oxygen)
-            {
-                InputComponent oxygen_component;
-                oxygen_component.name = "O";
-                oxygen_component.content = fallback_oxygen_moles * total_input_content;
-                oxygen_component.fraction = fallback_oxygen_moles;
-                solve_components.push_back(oxygen_component);
-            }
-        }
-
         // Use OCASI direct interface instead of subprocess
         bool case_success = OCUtilsCoupling::runOpenCalphadCaseOCASI(
             data_path,
             history_variable["Temperature"].getFinalValue(),
             history_variable["System pressure"].getFinalValue(),
-            solve_components,
+            components,
             valid_elements,
             solver,
             location,
             sciantix_variable["Fuel oxygen potential"].getFinalValue(),
             output_data);
-
-        const bool has_usable_output = hasUsableOpenCalphadOutput(output_data);
-        if (has_usable_output)
-        {
-            fallback_output_data = output_data;
-            has_fallback_output = true;
-        }
+        
+        const bool has_usable_output = hasUsableOpenCalphadOutput(output_data, location);
 
         if (!case_success || !has_usable_output)
-        {
-            if (location == "at grain boundary" && solver != OCSolver::FixedOxygenMoles)
-            {
-                const auto oxygen_component = output_data.components.find("O");
-                if (oxygen_component != output_data.components.end() &&
-                    oxygen_component->second.moles > 0.0)
-                {
-                    fallback_oxygen_moles = oxygen_component->second.moles;
-                    std::cout << "Captured fallback N(O)=" << fallback_oxygen_moles
-                              << " from failed MU(O) OpenCalphad output." << std::endl;
-                }
-            }
             continue;
-        }
 
         // Mark as solved since we got results
         solved = true;
-        
-        // Debug output
-        std::cout << "\n[OCASI Output - Direct C++ Interface]" << std::endl;
-        std::cout << "----------------------------------------" << std::endl;
-        std::cout << "Temperature: " << history_variable["Temperature"].getFinalValue() << " K" << std::endl;
-        std::cout << "Pressure: " << history_variable["System pressure"].getFinalValue() << " Pa" << std::endl;
-        std::cout << "----------------------------------------" << std::endl;
-
         break;
     }
 
     if (!solved)
-    {
         std::cout << "Warning: all OpenCalphad attempts failed for location: " << location << std::endl;
-        if (has_fallback_output)
-        {
-            std::cout << "Warning: using the last available OpenCalphad output for location: "
-                      << location << std::endl;
-            output_data = fallback_output_data;
-        }
-    }
+    
+    if (location != "matrix")
+        OCUtilsCoupling::getOpenCalphadResults(location, output_data);
 
-    // Debug
-    OCUtilsCoupling::dumpParsedOcOutput(output_data);
+    // // Debug
+    // OCUtilsCoupling::dumpParsedOcOutput(output_data);
 
     if (Sciantix_thermochemistry_settings.output_phase_sublattice_composition)
     {
@@ -261,14 +196,6 @@ void Simulation::CallThermochemistryModule(std::string                      loca
                       << sublattice_output_path << std::endl;
         }
     }
-
-    OCUtilsCoupling::updateThermochemistryVariablesFromOutput(
-        output_data.solution_phases,
-        location,
-        total_input_content,
-        thermochemistry_variable,
-        sciantix_variable);
-
     if (location == "matrix")
     {
         OCUtilsCoupling::updateMatrixFromOutput(
@@ -277,6 +204,13 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     }
     else if (location == "at grain boundary")
     {
+        OCUtilsCoupling::updateThermochemistryVariablesFromOutput(
+            output_data.solution_phases,
+            location,
+            total_input_content,
+            thermochemistry_variable,
+            sciantix_variable);
+
         OCUtilsCoupling::updateGrainBoundaryFromOutput(
             output_data.solution_phases,
             selected_elements,

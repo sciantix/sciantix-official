@@ -462,17 +462,41 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             }
         }
 
-        if (!oc.extractResults(output_data))
-        {
-            std::cerr << "Error: Failed to extract OpenCalphad results" << std::endl;
-            return false;
-        }
+        if (location == "matrix")
+            oc.extractResults(output_data);
 
         return clear_equilibrium;
     }
     catch (const std::exception& e)
     {
         std::cerr << "Exception in runOpenCalphadCaseOCASI: " << e.what() << std::endl;
+        return false;
+    }
+}
+
+bool getOpenCalphadResults(const std::string& location,
+                             OCOutputData& output_data)
+{
+    try
+    {
+        const OCASIAdapter::OpenCalphadContext context =
+            (location == "matrix")
+                ? OCASIAdapter::OpenCalphadContext::Matrix
+                : OCASIAdapter::OpenCalphadContext::FissionProducts;
+        auto& oc = OCASIAdapter::getOpenCalphadInterface(context);
+
+        if (!oc.extractResults(output_data))
+        {
+            std::cerr << "Error: Failed to extract OpenCalphad results" << std::endl;
+            return false;
+        }
+
+        return true;
+
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Exception in getOpenCalphadCaseResults: " << e.what() << std::endl;
         return false;
     }
 }
