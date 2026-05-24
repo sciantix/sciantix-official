@@ -64,7 +64,7 @@ void defineSpectralDiffusion3EquationsExchange(SciantixArray<System>&           
                                                SciantixArray<Model>&            model,
                                                SciantixArray<SciantixVariable>& sciantix_variable,
                                                SciantixArray<InputVariable>&    input_variable,
-                                               int                             n_modes);
+                                               int                              n_modes);
 // END UN AD URANIUMNITRIDE
 
 /**
