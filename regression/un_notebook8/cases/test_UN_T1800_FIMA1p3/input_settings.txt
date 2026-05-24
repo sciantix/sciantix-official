@@ -1,0 +1,56 @@
+0
+# iGrainGrowth
+11
+# iFissionGasDiffusivity
+4
+# iDiffusionSolver
+5
+# iIntraGranularBubbleBehavior
+4
+# iResolutionRate
+2
+# iTrappingRate
+1
+# iNucleationRate
+1
+# iOutput
+0
+# iGrainBoundaryVacancyDiffusivity
+0
+# iGrainBoundaryBehaviour
+0
+# iGrainBoundaryMicroCracking
+2
+# iFuelMatrix
+0
+# iGrainBoundaryVenting
+0
+# iRadioactiveFissionGas
+0
+# iHelium
+0
+# iHeDiffusivity
+0
+# iGrainBoundarySweeping
+0
+# iHighBurnupStructureFormation
+0
+# iHighBurnupStructurePorosity
+0
+# iHeliumProductionRate
+0
+# iStoichiometryDeviation
+0
+# iBubbleDiffusivity
+1
+# iChromiumSolubility
+0
+# iDensification
+1
+# iReleaseMode
+1
+# iUNDislocationDensity
+2
+# iUNVacancyDiffusivity
+1
+# iUNInterGranularBehavior
