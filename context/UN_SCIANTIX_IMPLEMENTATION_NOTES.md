@@ -175,3 +175,72 @@ GasProduction/GasDecay -> GasDiffusion 3x3 -> UN growth/vacancies
   scalar `m_d` is persisted, but the public `Sciantix_diffusion_modes` array is
   unchanged for backward ABI compatibility.
 - No UO2 coarsening physics/constants were copied.
+
+## UN notebook-8 regression suite
+
+Created a standalone validation suite under `regression/un_notebook8/`:
+
+- `README.md`
+- `run_un_notebook8.py`
+- `plot_un_notebook8.py`
+- `reference/python8_reference_points.csv`
+- `cases/test_UN_T900_FIMA1p3/`
+- `cases/test_UN_T1200_FIMA1p3/`
+- `cases/test_UN_T1600_FIMA1p3/`
+- `cases/test_UN_T1800_FIMA1p3/`
+- `cases/test_UN_T2000_FIMA1p3/`
+- `cases/test_UN_T1600_FIMA1p1/`
+- `cases/test_UN_T1600_FIMA3p2/`
+- `cases/test_UN_history_T1600/`
+
+The suite is not wired into top-level `regression/runner.py`; it is standalone
+so existing SCIANTIX regressions are unchanged while notebook-8 tolerances are
+being assessed.
+
+Run command:
+
+```text
+python3 regression/un_notebook8/run_un_notebook8.py --exe build/sciantix.x
+```
+
+Generated artifacts:
+
+- `regression/un_notebook8/results/un_notebook8_summary.csv`
+- `regression/un_notebook8/figures/*.png`
+
+`matplotlib` is not installed in this environment, so `plot_un_notebook8.py`
+used its stdlib PNG fallback and wrote 17 figures.
+
+Regression test status from the first standalone run:
+
+- direct `g++` build to `build/sciantix.x`: pass;
+- UN notebook-8 suite execution: pass as a runner, with comparison failures;
+- compared values: 91;
+- pass: 41;
+- fail: 50;
+- missing columns: 0;
+- UO2 smoke command `./build/sciantix.x regression/baker/test_Baker1977__1373K/`:
+  pass.
+
+Main SCIANTIX-vs-notebook-8 differences observed at the current tolerance
+(`rel_tol = 0.35`):
+
+- dislocation bubble swelling and radius are much lower in SCIANTIX at several
+  points than in the notebook reference;
+- dislocation pressure/equilibrium pressure differ strongly at low and mid
+  temperatures;
+- `UN bulk nucleation rate` differs by more than tolerance in multiple cases;
+- FIMA coordinate comparison passes for all seven point cases;
+- grain-face fractional coverage comparison passes for all seven point cases.
+
+FIMA handling:
+
+- SCIANTIX `Burnup` is treated only as `MWd/kgUO2` and is not used for notebook
+  comparisons.
+- All notebook/Rizk/Ronchi comparisons use `FIMA (%)`.
+- The generated case duration is computed from
+  `time_h = FIMA_percent * U_atom_density / (fission_rate * 3.6e5)`.
+- The generated UN cases set `iChromiumSolubility = 1` only to expose the
+  `FIMA (%)` output column; for `iFuelMatrix = 2`, Chromium physics is not run.
+- Optional Storms FGR comparison is documented as FIMA-based only; no Storms
+  reference CSV is configured yet.
