@@ -43,8 +43,8 @@ void Simulation::setVariables(int    Sciantix_options[],
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
          toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0,
          // UN AD URANIUMNITRIDE
-         toOutputUN                     = input_variable["iFuelMatrix"].getValue() == 2 ||
-                      input_variable["iIntraGranularBubbleBehavior"].getValue() == 5;
+        toOutputUN = input_variable["iFuelMatrix"].getValue() == 2 ||
+                     input_variable["iIntraGranularBubbleBehavior"].getValue() == 5;
     // END UN AD URANIUMNITRIDE
 
     // Physics variable

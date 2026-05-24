@@ -264,23 +264,23 @@ void Solver::SpectralDiffusion3equationsExchange(double&             c,
     size_t             n;
     unsigned short int np1(1);
 
-    const double n_modes = parameter.at(0);
-    const double D_g     = parameter.at(1);
-    const double radius  = parameter.at(2);
-    const double source_c = parameter.at(3);
-    const double g_b     = parameter.at(4);
-    const double g_d     = parameter.at(5);
-    const double b_b     = parameter.at(6);
-    const double b_d     = parameter.at(7);
+    const double n_modes   = parameter.at(0);
+    const double D_g       = parameter.at(1);
+    const double radius    = parameter.at(2);
+    const double source_c  = parameter.at(3);
+    const double g_b       = parameter.at(4);
+    const double g_d       = parameter.at(5);
+    const double b_b       = parameter.at(6);
+    const double b_d       = parameter.at(7);
     const double source_mb = parameter.size() > 8 ? parameter.at(8) : 0.0;
     const double source_md = parameter.size() > 9 ? parameter.at(9) : 0.0;
 
     double diffusion_rate_coeff = pow(M_PI, 2) * D_g / pow(radius, 2);
 
-    const double projection_coeff   = -2.0 * sqrt(2.0 / M_PI);
-    const double source_c_coeff     = projection_coeff * source_c;
-    const double source_mb_coeff    = projection_coeff * source_mb;
-    const double source_md_coeff    = projection_coeff * source_md;
+    const double projection_coeff = -2.0 * sqrt(2.0 / M_PI);
+    const double source_c_coeff   = projection_coeff * source_c;
+    const double source_mb_coeff  = projection_coeff * source_mb;
+    const double source_md_coeff  = projection_coeff * source_md;
 
     double c_solution(0.0);
     double m_b_solution(0.0);

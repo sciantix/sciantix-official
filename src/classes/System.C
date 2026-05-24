@@ -845,9 +845,9 @@ void System::setResolutionRatesUN(int                              input_value,
             double scaling = scaling_factors["Resolution rate"].getValue();
 
             // Intragranular resolution (Rizk et al. JNM 606 (2025) 155604)
-            double Rb_intra =
-                std::max(sciantix_variable["Intragranular bubble radius"].getInitialValue() + radius_in_lattice, 1.0e-15);
-            double b0_intra = 1.0e-25 * (2.64 - 2.02 * std::exp(-2.61e-9 / Rb_intra));
+            double Rb_intra = std::max(
+                sciantix_variable["Intragranular bubble radius"].getInitialValue() + radius_in_lattice, 1.0e-15);
+            double b0_intra       = 1.0e-25 * (2.64 - 2.02 * std::exp(-2.61e-9 / Rb_intra));
             resolution_rate_intra = F_dot * b0_intra * scaling;
 
             // Dislocation resolution – same formula, different bubble radius

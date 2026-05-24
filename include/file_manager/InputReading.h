@@ -53,6 +53,6 @@ unsigned short int ReadOptionalSetting(std::string        variable_name,
                                        std::ofstream&     output_file,
                                        unsigned short int default_value);
 // END UN AD URANIUMNITRIDE
-double             ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
+double ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
 
 #endif  // INPUT_READING_H

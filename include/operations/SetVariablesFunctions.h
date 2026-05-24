@@ -32,7 +32,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                                                          bool   toOutputStoichiometryDeviation,
                                                          bool   toOutputChromiumContent,
                                                          // UN AD URANIUMNITRIDE
-                                                         bool   toOutputUN);
+                                                         bool toOutputUN);
 // END UN AD URANIUMNITRIDE
 
 std::vector<std::string> getScalingFactorsNames();
