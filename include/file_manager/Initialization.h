@@ -29,7 +29,8 @@
  * @author G. Zullo
  *
  */
-void Initialization(double              Sciantix_history[],
+void Initialization(int                 Sciantix_options[],
+                    double              Sciantix_history[],
                     double              Sciantix_variables[],
                     double              Sciantix_diffusion_modes[],
                     std::vector<double> Temperature_input,
