@@ -288,16 +288,10 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("UN trapping rate bulk", "(1/s)", Sciantix_variables[198], Sciantix_variables[198], toOutputUN),
         SciantixVariable(
             "UN trapping rate dislocation", "(1/s)", Sciantix_variables[199], Sciantix_variables[199], toOutputUN),
-        SciantixVariable("UN vacancy diffusivity bulk",
-                         "(m2/s)",
-                         Sciantix_variables[200],
-                         Sciantix_variables[200],
-                         toOutputUN),
-        SciantixVariable("UN vacancy diffusivity dislocation",
-                         "(m2/s)",
-                         Sciantix_variables[201],
-                         Sciantix_variables[201],
-                         toOutputUN),
+        SciantixVariable(
+            "UN vacancy diffusivity bulk", "(m2/s)", Sciantix_variables[200], Sciantix_variables[200], toOutputUN),
+        SciantixVariable(
+            "UN vacancy diffusivity dislocation", "(m2/s)", Sciantix_variables[201], Sciantix_variables[201], toOutputUN),
         // END UN AD URANIUMNITRIDE
 
         SciantixVariable(
