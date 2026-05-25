@@ -120,35 +120,15 @@ namespace
         return coarseningPositive(A * pow(burnup, n) * fT);
     }
 
-    // COARSENING: Zullo - Nicodemo 2026 dislocation-density correlation with low-burnup incubation.
-    double coarseningDislocationDensityZulloNicodemo2026(const double burnup, const double temperature)
-    {
-        const double zullo_density = coarseningDislocationDensityZullo2026(burnup, temperature);
-        if (zullo_density <= 0.0)
-            return 0.0;
-
-        const double burnup_threshold = 10.0;  // COARSENING: MWd/kgUO2, no dislocation build-up below this value.
-        const double burnup_width = 10.0;  // COARSENING: MWd/kgUO2, slow sigmoid convergence to Zullo - Nicodemo 2026.
-        if (burnup <= burnup_threshold)
-            return 0.0;
-
-        const double activation = 2.0 / (1.0 + exp(-(burnup - burnup_threshold) / burnup_width)) - 1.0;
-        return zullo_density * std::min(std::max(activation, 0.0), 1.0);
-    }
-
-    // COARSENING: select no/fixed/variable dislocation density for Barani-type dislocation bubbles.
+    // COARSENING: select fixed Barani or variable Zullo dislocation density for Barani-type dislocation bubbles.
     double coarseningDislocationDensity(const int option, const double burnup, const double temperature)
     {
         switch (option)
         {
-            case 0:
-                return 0.0;
             case 1:
                 return 4.0e13;  // COARSENING: m/m3, fixed Barani et al. Table 1 value.
             case 2:
                 return coarseningDislocationDensityZullo2026(burnup, temperature);
-            case 3:
-                return coarseningDislocationDensityZulloNicodemo2026(burnup, temperature);
             default:
                 ErrorMessages::Switch(__FILE__, "iCoarseningDislocationDensity", option);
                 return 0.0;
@@ -156,6 +136,19 @@ namespace
     }
 
     // COARSENING: effective bubbles-per-dislocation K for Barani/Zullo dislocation-bubble nucleation.
+    double coarseningBurnupActivation(const double burnup, const double burnup_saturation)
+    {
+        // COARSENING: cumulative availability of fission gas/defect history for dislocation-bubble nucleation.
+        return 1.0 - exp(-coarseningPositive(burnup) / std::max(burnup_saturation, 1.0e-12));
+    }
+
+    double coarseningTemperatureActivation(const double maximum_temperature, const double temperature_saturation)
+    {
+        // COARSENING: survival/activation of dislocation-bubble nuclei after the peak thermal history.
+        const double temperature_width = 100.0;
+        return 1.0 / (1.0 + exp((maximum_temperature - temperature_saturation) / temperature_width));
+    }
+
     double coarseningBubblesPerDislocation(const int    option,
                                            const double burnup,
                                            const double maximum_temperature,
@@ -172,16 +165,16 @@ namespace
             case 1:
             {
                 // COARSENING: K_eff = K0*fBu*fT; fBu follows the positive White swelling-burnup trend.
-                const double f_burnup =
-                    1.0 - exp(-coarseningPositive(burnup) / std::max(burnup_saturation, 1.0e-12));
+                const double f_burnup = coarseningBurnupActivation(burnup, burnup_saturation);
 
                 // COARSENING: fT damps K at high peak temperature, consistent with lower K_eff at high thermal dose.
-                const double temperature_width = 100.0;
-                const double f_temperature =
-                    1.0 / (1.0 + exp((maximum_temperature - temperature_saturation) / temperature_width));
+                const double f_temperature = coarseningTemperatureActivation(maximum_temperature, temperature_saturation);
 
                 return nominal_k * std::min(std::max(f_burnup * f_temperature, 0.0), 1.0);
             }
+            case 2:
+                // COARSENING: kinetic activation uses K0 as site density and applies fBu/fT in dN/dt.
+                return nominal_k;
             default:
                 ErrorMessages::Switch(__FILE__, "iCoarseningKModel", option);
                 return nominal_k;
@@ -355,7 +348,7 @@ void Simulation::IntraGranularBubbleBehavior()
         const int coarsening_dislocation_model =
             int(input_variable["iCoarseningDislocationDensity"].getValue());  // COARSENING.
         const int coarsening_k_model =
-            int(input_variable["iCoarseningKModel"].getValue());  // COARSENING: option 1 uses K0*fBu*fT.
+            int(input_variable["iCoarseningKModel"].getValue());  // COARSENING: 0=Barani, 1=Nicodemo algebraic, 2=Nicodemo kinetic.
 
         const double dislocation_density = coarseningDislocationDensity(
             coarsening_dislocation_model, sciantix_variable["Burnup"].getFinalValue(), temperature);
@@ -383,7 +376,40 @@ void Simulation::IntraGranularBubbleBehavior()
         sciantix_variable["Coarsening bubbles per dislocation"].setFinalValue(bubbles_per_dislocation);
 
         if (coarsening_nucleation_model == 2 && dislocation_density > 0.0 && fission_rate > 0.0)
-            dislocation_bubble_concentration = std::max(dislocation_bubble_concentration, initial_dislocation_bubbles);
+        {
+            if (coarsening_k_model == 2)
+            {
+                // COARSENING: kinetic site activation avoids instant seeding of all K0*rho_d dislocation bubbles.
+                const double site_saturation = coarseningPositive(initial_dislocation_bubbles);
+                if (site_saturation > 0.0 && time_step > 0.0)
+                {
+                    const double burnup_initial =
+                        coarseningPositive(sciantix_variable["Burnup"].getInitialValue());
+                    const double burnup_final = coarseningPositive(sciantix_variable["Burnup"].getFinalValue());
+                    const double burnup_activation_increment =
+                        coarseningPositive(coarseningBurnupActivation(burnup_final,
+                                                                      scaling_factors["Coarsening Bsat"].getValue()) -
+                                           coarseningBurnupActivation(burnup_initial,
+                                                                      scaling_factors["Coarsening Bsat"].getValue()));
+                    const double temperature_activation =
+                        coarseningTemperatureActivation(maximum_temperature,
+                                                       scaling_factors["Coarsening Tsat"].getValue());
+                    const double activation_increment =
+                        std::min(std::max(burnup_activation_increment * temperature_activation, 0.0), 1.0);
+                    const double available_sites =
+                        std::min(std::max(1.0 - dislocation_bubble_concentration / site_saturation, 0.0), 1.0);
+                    dislocation_bubble_concentration +=
+                        site_saturation * activation_increment * available_sites;
+                    dislocation_bubble_concentration =
+                        std::min(dislocation_bubble_concentration, site_saturation);
+                }
+            }
+            else
+            {
+                dislocation_bubble_concentration =
+                    std::max(dislocation_bubble_concentration, initial_dislocation_bubbles);
+            }
+        }
 
         if (dislocation_density <= 0.0 || dislocation_bubble_concentration <= 0.0)
         {
