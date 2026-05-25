@@ -16,6 +16,8 @@
 
 #include "SetSystem.h"
 #include "Simulation.h"
+#include "UNModel.h"
+#include <cmath>
 
 void Simulation::setSystem()
 {
@@ -291,6 +293,21 @@ System Xe_in_UN(SciantixArray<Matrix>&           matrices,
                                  history_variable,
                                  scaling_factors,
                                  matrices);
+
+    if (sciantix_variable["Dislocation density"].getFinalValue() <= 0.0)
+    {
+        const double lattice_parameter   = 4.889e-10;
+        const double uranium_density     = 4.0 / std::pow(lattice_parameter, 3.0);
+        const double fission_rate        = history_variable["Fission rate"].getFinalValue();
+        const double time_s              = history_variable["Time"].getFinalValue() * 3600.0;
+        const double burnup_percent_fima = 100.0 * fission_rate * time_s / uranium_density;
+        const double rho_d               = un_model::dynamic_dislocation_density(
+            history_variable["Temperature"].getFinalValue(),
+            burnup_percent_fima,
+            int(input_variable["iUNDislocationDensity"].getValue()),
+            matrices["UN"].getDislocationDensity());
+        sciantix_variable["Dislocation density"].setFinalValue(rho_d);
+    }
 
     system_.setTrappingRatesUN(int(input_variable["iTrappingRate"].getValue()), sciantix_variable, scaling_factors);
     // per UN Ritzk nucleation rate non puo essere chiamato qui perche dipende da c^2 concentrazione gas in soluzione

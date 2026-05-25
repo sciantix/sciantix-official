@@ -79,6 +79,10 @@ Dedicated persistent UN block:
 195 UN fission gas release
 196 UN total gas swelling
 197 UN bulk nucleation rate
+198 UN trapping rate bulk
+199 UN trapping rate dislocation
+200 UN vacancy diffusivity bulk
+201 UN vacancy diffusivity dislocation
 ```
 
 `Xe in dislocation bubbles` is now scalar-persistent through
@@ -120,6 +124,21 @@ The timestep order for case 5 is:
 GasProduction/GasDecay -> GasDiffusion 3x3 -> UN growth/vacancies
 -> dislocation coalescence -> rho_d update -> grain-face/FGR split
 ```
+
+## Fix: dynamic rho_d used in dislocation trapping
+
+The UN dislocation trapping sink now reads `sciantix_variable["Dislocation density"]`
+instead of the constant matrix dislocation density. For `iIntraGranularBubbleBehavior=5`,
+the variable is initialized before `GasDiffusion` when needed and then updated by the
+UN intragranular step.
+
+The same shared helper, `un_model::dynamic_dislocation_density(T, FIMA, option, rho_const)`,
+is used for the pre-GasDiffusion value and for the `rho_old/rho_next` update of `N_d`.
+Consequently the dynamic `rho_d(F,T)` enters:
+
+- `Gamma_d = 1 / sqrt(pi*rho_d)`;
+- `free_dislocation = rho_d - 2*R_d*N_d`;
+- the naked-dislocation line-sink trapping term.
 
 ## Calibrated vs Rizk nominal parameters
 

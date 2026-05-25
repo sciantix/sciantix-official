@@ -145,6 +145,10 @@ std::map<int, std::string> update_sciantix_variable = {
     {195, "UN fission gas release"},
     {196, "UN total gas swelling"},
     {197, "UN bulk nucleation rate"},
+    {198, "UN trapping rate bulk"},
+    {199, "UN trapping rate dislocation"},
+    {200, "UN vacancy diffusivity bulk"},
+    {201, "UN vacancy diffusivity dislocation"},
     // END UN AD URANIUMNITRIDE
 };
 
