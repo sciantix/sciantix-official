@@ -1034,7 +1034,10 @@ void System::setTrappingRatesUN(int                              input_value,
             double dislocation_bubble_conc   = sciantix_variable["Dislocation bubble concentration"].getFinalValue();
             double dislocation_bubble_radius = sciantix_variable["Dislocation bubble radius"].getFinalValue();
 
-            double dislocation_density     = std::max(matrix.getDislocationDensity(), 1.0e10);
+            const double dislocation_density_variable = sciantix_variable["Dislocation density"].getFinalValue();
+            double       dislocation_density =
+                dislocation_density_variable > 0.0 ? dislocation_density_variable : matrix.getDislocationDensity();
+            dislocation_density = std::max(dislocation_density, 1.0e10);
             double dislocation_core_radius = std::max(matrix.getDislocationCoreRadius(), 1.0e-15);
 
             double Zd = 5.0;
@@ -1075,6 +1078,9 @@ void System::setTrappingRatesUN(int                              input_value,
 
             // scaling factor per dislocation manca
             trapping_rate_dislocation *= scaling_factors["Trapping rate"].getValue();
+
+            sciantix_variable["UN trapping rate bulk"].setFinalValue(trapping_rate_bulk);
+            sciantix_variable["UN trapping rate dislocation"].setFinalValue(trapping_rate_dislocation);
 
             break;
         }
