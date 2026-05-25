@@ -155,80 +155,37 @@ namespace
         }
     }
 
-    // COARSENING: compact four-family moment description for a distributed dislocation-bubble population.
-    struct CoarseningBubbleDistribution
+    // COARSENING: effective bubbles-per-dislocation K for Barani/Zullo dislocation-bubble nucleation.
+    double coarseningBubblesPerDislocation(const int    option,
+                                           const double burnup,
+                                           const double maximum_temperature,
+                                           const double k0,
+                                           const double temperature_saturation,
+                                           const double burnup_saturation)
     {
-        double radius_mean_factor;
-        double volume_moment_factor;
-        double radius_p10_factor;
-        double radius_p90_factor;
-    };
+        const double nominal_k = (k0 > 0.0) ? std::min(k0, 1.0e6) : 1.0e6;  // COARSENING: Barani K0 upper bound.
 
-    // COARSENING: smooth activation used to move weight from dense/small to sparse/large families.
-    double coarseningSigmoid(const double argument)
-    {
-        return 1.0 / (1.0 + exp(-argument));
-    }
-
-    // COARSENING: weighted quantile over the four ordered effective Barani-family radius factors.
-    double coarseningWeightedRadiusFactorQuantile(const double radius_factor[],
-                                                  const double number_fraction[],
-                                                  const double quantile)
-    {
-        double cumulative = 0.0;
-        for (int i = 0; i < 4; ++i)
+        switch (option)
         {
-            cumulative += number_fraction[i];
-            if (cumulative >= quantile)
-                return radius_factor[i];
+            case 0:
+                return nominal_k;
+            case 1:
+            {
+                // COARSENING: K_eff = K0*fBu*fT; fBu follows the positive White swelling-burnup trend.
+                const double f_burnup =
+                    1.0 - exp(-coarseningPositive(burnup) / std::max(burnup_saturation, 1.0e-12));
+
+                // COARSENING: fT damps K at high peak temperature, consistent with lower K_eff at high thermal dose.
+                const double temperature_width = 100.0;
+                const double f_temperature =
+                    1.0 / (1.0 + exp((maximum_temperature - temperature_saturation) / temperature_width));
+
+                return nominal_k * std::min(std::max(f_burnup * f_temperature, 0.0), 1.0);
+            }
+            default:
+                ErrorMessages::Switch(__FILE__, "iCoarseningKModel", option);
+                return nominal_k;
         }
-
-        return radius_factor[3];
-    }
-
-    // COARSENING: Nicodemo 2026 distributed-population surrogate around the Barani/Zullo-Nicodemo mean state.
-    CoarseningBubbleDistribution coarseningDistributedBubbleMoments(const double maximum_temperature,
-                                                                    const double burnup)
-    {
-        const double radius_factor[4] = {
-            0.25,  // COARSENING: dense/early small bubbles on activated dislocation segments.
-            0.48,  // COARSENING: intermediate dislocation bubbles.
-            0.82,  // COARSENING: sparse coarsened bubbles.
-            1.35   // COARSENING: hot-tail bubbles on climb/junction-active segments.
-        };
-
-        const double warm_gate   = coarseningSigmoid((maximum_temperature - 1450.0) / 90.0);
-        const double hot_gate    = coarseningSigmoid((maximum_temperature - 1650.0) / 120.0);
-        const double burnup_gate = coarseningSigmoid((burnup - 20.0) / 12.0);
-
-        double raw_weight[4] = {
-            0.58 * (1.0 - 0.55 * warm_gate) + 0.12 * (1.0 - burnup_gate),
-            0.32 + 0.16 * warm_gate * (1.0 - hot_gate),
-            0.08 + 0.30 * warm_gate + 0.10 * burnup_gate,
-            0.02 + 0.45 * hot_gate * burnup_gate};
-
-        double weight_sum = 0.0;
-        for (int i = 0; i < 4; ++i)
-            weight_sum += raw_weight[i];
-
-        double number_fraction[4] = {0.0, 0.0, 0.0, 0.0};
-        if (weight_sum > 0.0)
-        {
-            for (int i = 0; i < 4; ++i)
-                number_fraction[i] = raw_weight[i] / weight_sum;
-        }
-
-        CoarseningBubbleDistribution distribution = {0.0, 0.0, radius_factor[0], radius_factor[3]};
-        for (int i = 0; i < 4; ++i)
-        {
-            distribution.radius_mean_factor += number_fraction[i] * radius_factor[i];
-            distribution.volume_moment_factor += number_fraction[i] * pow(radius_factor[i], 3.0);
-        }
-
-        distribution.radius_p10_factor = coarseningWeightedRadiusFactorQuantile(radius_factor, number_fraction, 0.10);
-        distribution.radius_p90_factor = coarseningWeightedRadiusFactorQuantile(radius_factor, number_fraction, 0.90);
-
-        return distribution;
     }
 }  // namespace
 
@@ -397,14 +354,20 @@ void Simulation::IntraGranularBubbleBehavior()
             int(input_variable["iTrappingRate"].getValue());  // COARSENING: option 2 enables Barani trapping.
         const int coarsening_dislocation_model =
             int(input_variable["iCoarseningDislocationDensity"].getValue());  // COARSENING.
-        const int coarsening_distribution_model =
-            int(input_variable["iCoarseningSizeDistribution"].getValue());  // COARSENING: option 1 reports four-family moments.
+        const int coarsening_k_model =
+            int(input_variable["iCoarseningKModel"].getValue());  // COARSENING: option 1 uses K0*fBu*fT.
 
         const double dislocation_density = coarseningDislocationDensity(
             coarsening_dislocation_model, sciantix_variable["Burnup"].getFinalValue(), temperature);
         const double maximum_temperature =
             std::max(sciantix_variable["Coarsening maximum temperature"].getInitialValue(), temperature);
-        const double bubbles_per_dislocation         = 1.0e6;  // COARSENING: bubble/m, Barani et al. Table 1.
+        const double bubbles_per_dislocation = coarseningBubblesPerDislocation(
+            coarsening_k_model,
+            sciantix_variable["Burnup"].getFinalValue(),
+            maximum_temperature,
+            scaling_factors["Coarsening K0"].getValue(),
+            scaling_factors["Coarsening Tsat"].getValue(),
+            scaling_factors["Coarsening Bsat"].getValue());
         const double initial_dislocation_bubbles     = bubbles_per_dislocation * dislocation_density;
         const double burgers_vector                  = 3.85e-10;  // COARSENING: m, Barani et al. Table 1.
         const double dislocation_core_radius         = 5.0 * burgers_vector;
@@ -414,11 +377,13 @@ void Simulation::IntraGranularBubbleBehavior()
 
         double dislocation_bubble_concentration =
             sciantix_variable["Intragranular coarsened bubble concentration"].getInitialValue();
-        if (coarsening_nucleation_model == 2 && dislocation_density > 0.0 && fission_rate > 0.0)
-            dislocation_bubble_concentration = std::max(dislocation_bubble_concentration, initial_dislocation_bubbles);
 
         sciantix_variable["Dislocation density"].setFinalValue(dislocation_density);
         sciantix_variable["Coarsening maximum temperature"].setFinalValue(maximum_temperature);
+        sciantix_variable["Coarsening bubbles per dislocation"].setFinalValue(bubbles_per_dislocation);
+
+        if (coarsening_nucleation_model == 2 && dislocation_density > 0.0 && fission_rate > 0.0)
+            dislocation_bubble_concentration = std::max(dislocation_bubble_concentration, initial_dislocation_bubbles);
 
         if (dislocation_density <= 0.0 || dislocation_bubble_concentration <= 0.0)
         {
@@ -433,10 +398,6 @@ void Simulation::IntraGranularBubbleBehavior()
             sciantix_variable["Intragranular gas in coarsened bubbles"].setFinalValue(0.0);
             sciantix_variable["Intragranular coarsened bubble pressure"].setFinalValue(0.0);
             sciantix_variable["Intragranular coarsened bubble equilibrium pressure"].setFinalValue(0.0);
-            sciantix_variable["Intragranular distributed coarsened bubble concentration"].setFinalValue(0.0);
-            sciantix_variable["Intragranular distributed coarsened bubble radius mean"].setFinalValue(0.0);
-            sciantix_variable["Intragranular distributed coarsened bubble radius p10"].setFinalValue(0.0);
-            sciantix_variable["Intragranular distributed coarsened bubble radius p90"].setFinalValue(0.0);
         }
         else
         {
@@ -540,11 +501,11 @@ void Simulation::IntraGranularBubbleBehavior()
                 coarsened_bubble_volume = coarsened_atoms_per_bubble * gas_atom_volume_in_bulk_bubbles +
                                           coarsened_vacancies_per_bubble * vacancy_volume;
 
-                // COARSENING: limit explicit vacancy-growth overshoot during sharp White power ramps.
+                // COARSENING: Barani baseline explicit limiter stabilizes vacancy-growth overshoot during sharp White ramps.
                 const double previous_radius = coarseningRadiusFromVolume(previous_volume);
                 const double max_radius_increment =
                     2.0e-10;  // COARSENING: stable explicit growth limiter per time step.
-                const double max_coarsened_radius = 2.5e-7;
+                const double max_coarsened_radius = 2.5e-7;  // COARSENING: Barani baseline upper radius guard.
                 coarsened_bubble_radius =
                     std::min(coarseningRadiusFromVolume(coarsened_bubble_volume),
                              std::min(previous_radius + max_radius_increment, max_coarsened_radius));
@@ -595,29 +556,6 @@ void Simulation::IntraGranularBubbleBehavior()
             const double bulk_bubble_swelling = bulk_bubble_concentration * bulk_bubble_volume;
             const double coarsened_swelling   = dislocation_bubble_concentration * coarsened_bubble_volume;
 
-            double distributed_bubble_concentration = dislocation_bubble_concentration;
-            double distributed_radius_mean          = coarsened_bubble_radius;
-            double distributed_radius_p10           = coarsened_bubble_radius;
-            double distributed_radius_p90           = coarsened_bubble_radius;
-            if (coarsening_distribution_model == 1 && coarsened_bubble_radius > 0.0 && coarsened_swelling > 0.0)
-            {
-                // COARSENING: report a four-family radius distribution without feeding it back into the Barani state.
-                const CoarseningBubbleDistribution distribution =
-                    coarseningDistributedBubbleMoments(maximum_temperature, sciantix_variable["Burnup"].getFinalValue());
-                distributed_radius_mean = coarsened_bubble_radius * distribution.radius_mean_factor;
-                distributed_radius_p10  = coarsened_bubble_radius * distribution.radius_p10_factor;
-                distributed_radius_p90  = coarsened_bubble_radius * distribution.radius_p90_factor;
-
-                const double distributed_mean_volume =
-                    coarseningVolumeFromRadius(coarsened_bubble_radius) * distribution.volume_moment_factor;
-                if (distributed_mean_volume > 0.0)
-                    distributed_bubble_concentration = coarsened_swelling / distributed_mean_volume;
-            }
-            else if (coarsening_distribution_model != 0)
-            {
-                ErrorMessages::Switch(__FILE__, "iCoarseningSizeDistribution", coarsening_distribution_model);
-            }
-
             // COARSENING: publish the two-size state while keeping legacy intragranular swelling as the total.
             sciantix_variable["Intragranular bubble radius"].setFinalValue(updated_bulk_radius);
             sciantix_variable["Intragranular atoms per bubble"].setFinalValue(bulk_atoms_per_bubble);
@@ -634,14 +572,6 @@ void Simulation::IntraGranularBubbleBehavior()
                                                                                        1.0e6);
             sciantix_variable["Intragranular coarsened bubble equilibrium pressure"].setFinalValue(
                 equilibrium_pressure / 1.0e6);
-            sciantix_variable["Intragranular distributed coarsened bubble concentration"].setFinalValue(
-                distributed_bubble_concentration);
-            sciantix_variable["Intragranular distributed coarsened bubble radius mean"].setFinalValue(
-                distributed_radius_mean);
-            sciantix_variable["Intragranular distributed coarsened bubble radius p10"].setFinalValue(
-                distributed_radius_p10);
-            sciantix_variable["Intragranular distributed coarsened bubble radius p90"].setFinalValue(
-                distributed_radius_p90);
             sciantix_variable["Intragranular gas bubble swelling"].setFinalValue(bulk_bubble_swelling +
                                                                                  coarsened_swelling);
         }

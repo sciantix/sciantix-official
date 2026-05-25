@@ -53,5 +53,9 @@ unsigned short int
                            std::ofstream&     output_file,
                            unsigned short int default_value);  // COARSENING: backward-compatible optional switches.
 double ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
+double ReadOptionalParameter(std::string    variable_name,
+                             std::ifstream& input_file,
+                             std::ofstream& output_file,
+                             double         default_value);  // COARSENING: optional K_eff scaling factors.
 
 #endif  // INPUT_READING_H
