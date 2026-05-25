@@ -19,7 +19,6 @@
 
 #include <algorithm>
 #include <cctype>
-#include <chrono>
 #include <cmath>
 #include <cstring>
 #include <exception>
@@ -36,8 +35,6 @@
 
 namespace
 {
-using TimingClock = std::chrono::steady_clock;
-
 std::string toUpperCopy(std::string text)
 {
     std::transform(text.begin(), text.end(), text.begin(), [](unsigned char c) { return std::toupper(c); });
@@ -47,37 +44,6 @@ std::string toUpperCopy(std::string text)
 bool isLiquidPhase(const std::string& phase_name)
 {
     return phase_name == "liquid" || phase_name == "ionic_liquid" || phase_name == "liquid_ionic";
-}
-
-double elapsedMilliseconds(const TimingClock::time_point& start)
-{
-    return std::chrono::duration<double, std::milli>(TimingClock::now() - start).count();
-}
-
-    std::string solverName(OCUtilsCoupling::OpenCalphadSolveMode solver)
-    {
-        using OCSolver = OCUtilsCoupling::OpenCalphadSolveMode;
-
-    switch (solver)
-    {
-        case OCSolver::SaveReadWarmStart:
-            return "SaveReadWarmStart";
-        case OCSolver::GlobalEquilibrium:
-            return "GlobalEquilibrium";
-        case OCSolver::PressureAxisStep:
-            return "PressureAxisStep";
-        case OCSolver::FixedOxygenMoles:
-            return "FixedOxygenMoles";
-        case OCSolver::OnlyC1MO2:
-            return "OnlyC1MO2";
-    }
-
-    return "Unknown";
-}
-
-std::string solverName(const std::string& solver)
-{
-    return solver;
 }
 
 std::string equilibriumRecordName(const std::string& location,
@@ -102,44 +68,6 @@ std::string equilibriumRecordName(const std::string& location,
 
     return location_prefix + "_UNKNOWN";
 }
-
-void appendOpenCalphadStageTiming(const std::string& location,
-                                  const std::string& solver,
-                                  const std::string& stage,
-                                  bool success,
-                                  double elapsed_ms)
-{
-    const std::string timing_file_path = TestPath + "opencalphad_stage_timing.txt";
-    const bool write_header = !OCUtilsCoupling::fileExists(timing_file_path);
-    std::ofstream timing_file(timing_file_path, std::ios::app);
-
-    if (!timing_file)
-        return;
-
-    if (write_header)
-    {
-        timing_file << "Time (h)\tTime step\tLocation\tSolver\tStage\tSuccess\tElapsed (ms)\n";
-    }
-
-    timing_file << std::setprecision(12) << std::scientific
-                << Time_h << "\t"
-                << Time_step_number << "\t"
-                << location << "\t"
-                << solver << "\t"
-                << stage << "\t"
-                << success << "\t"
-                << elapsed_ms << "\n";
-}
-
-void appendOpenCalphadStageTiming(const std::string& location,
-                                  OCUtilsCoupling::OpenCalphadSolveMode solver,
-                                  const std::string& stage,
-                                  bool success,
-                                  double elapsed_ms)
-{
-    appendOpenCalphadStageTiming(location, solverName(solver), stage, success, elapsed_ms);
-}
-
 }  // namespace
 
 namespace OCASIAdapter
@@ -1294,9 +1222,6 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
                              double oxygen_potential_kj_per_mol_o2,
                              OCOutputData& output_data)
 {
-    const auto total_start = TimingClock::now();
-    bool final_success = false;
-
     try
     {
         const OCASIAdapter::OpenCalphadContext context =
@@ -1308,52 +1233,26 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
         const bool use_stored_equilibrium =
             solve_mode == OpenCalphadSolveMode::SaveReadWarmStart;
 
-        auto stage_start = TimingClock::now();
         const bool database_ready = oc.ensureDatabaseLoaded(database_path, valid_elements);
-        appendOpenCalphadStageTiming(location,
-                                     solve_mode,
-                                     "ensure_database_loaded",
-                                     database_ready,
-                                     elapsedMilliseconds(stage_start));
         if (!database_ready)
         {
             std::cerr << "Error: Failed to load OpenCalphad database: " << database_path << std::endl;
-            appendOpenCalphadStageTiming(location, solve_mode, "run_total", false, elapsedMilliseconds(total_start));
             return false;
         }
 
-        stage_start = TimingClock::now();
         const bool reuse_existing_record = solve_mode == OpenCalphadSolveMode::SaveReadWarmStart;
         const bool record_ready =
             oc.prepareCalculationRecord(equilibriumRecordName(location, solve_mode), reuse_existing_record);
-        appendOpenCalphadStageTiming(location,
-                                     solve_mode,
-                                     reuse_existing_record ? "select_or_copy_equilibrium_record" : "copy_equilibrium_record",
-                                     record_ready,
-                                     elapsedMilliseconds(stage_start));
         if (!record_ready)
         {
             std::cerr << "Error: Failed to prepare OpenCalphad equilibrium record" << std::endl;
-            appendOpenCalphadStageTiming(location, solve_mode, "run_total", false, elapsedMilliseconds(total_start));
             return false;
         }
 
-        stage_start = TimingClock::now();
         oc.reset(false);
-        appendOpenCalphadStageTiming(location,
-                                     solve_mode,
-                                     "reset_conditions",
-                                     true,
-                                     elapsedMilliseconds(stage_start));
 
-        stage_start = TimingClock::now();
         const bool reference_state_ready =
             oc.setReferenceState("O", "GAS", -1.0, reference_oxygen_pressure_bar * 1.0e6);
-        appendOpenCalphadStageTiming(location,
-                                     solve_mode,
-                                     "set_reference_state",
-                                     reference_state_ready,
-                                     elapsedMilliseconds(stage_start));
         if (!reference_state_ready)
             std::cerr << "Warning: Failed to set OpenCalphad oxygen gas reference state" << std::endl;
 
@@ -1361,30 +1260,17 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
         for (const auto& comp : components)
             components_map[comp.name] = comp.fraction;
 
-        stage_start = TimingClock::now();
         const bool conditions_ready = oc.setConditions(temperature, pressure, components_map);
-        appendOpenCalphadStageTiming(location,
-                                     solve_mode,
-                                     "set_conditions",
-                                     conditions_ready,
-                                     elapsedMilliseconds(stage_start));
         if (!conditions_ready)
         {
             std::cerr << "Error: Failed to set OpenCalphad conditions" << std::endl;
-            appendOpenCalphadStageTiming(location, solve_mode, "run_total", false, elapsedMilliseconds(total_start));
             return false;
         }
         
         // Same first solve as the previous macro `c e`: no grid minimizer.
         bool clear_equilibrium = true;
 
-        stage_start = TimingClock::now();
         const bool initial_equilibrium_ready = oc.calculateEquilibrium(-1);
-        appendOpenCalphadStageTiming(location,
-                                     solve_mode,
-                                     "calculate_equilibrium_initial",
-                                     initial_equilibrium_ready,
-                                     elapsedMilliseconds(stage_start));
         if (!initial_equilibrium_ready)
         {
             std::cerr << "Warning: Initial OpenCalphad equilibrium calculation failed" << std::endl;
@@ -1395,32 +1281,18 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             location == "at grain boundary" && solve_mode != OpenCalphadSolveMode::FixedOxygenMoles;
         if (use_oxygen_potential)
         {
-            stage_start = TimingClock::now();
             const bool oxygen_condition_removed = oc.removeComponentCondition("O");
-            appendOpenCalphadStageTiming(location,
-                                         solve_mode,
-                                         "remove_oxygen_amount_condition",
-                                         oxygen_condition_removed,
-                                         elapsedMilliseconds(stage_start));
             if (!oxygen_condition_removed)
             {
                 std::cerr << "Error: Failed to remove OpenCalphad oxygen amount condition" << std::endl;
-                appendOpenCalphadStageTiming(location, solve_mode, "run_total", false, elapsedMilliseconds(total_start));
                 return false;
             }
 
             const double oxygen_potential_j_per_mol_o = oxygen_potential_kj_per_mol_o2 * 1.0e3 / 2.0;
-            stage_start = TimingClock::now();
             const bool oxygen_potential_ready = oc.setComponentPotential("O", oxygen_potential_j_per_mol_o);
-            appendOpenCalphadStageTiming(location,
-                                         solve_mode,
-                                         "set_oxygen_potential",
-                                         oxygen_potential_ready,
-                                         elapsedMilliseconds(stage_start));
             if (!oxygen_potential_ready)
             {
                 std::cerr << "Error: Failed to set OpenCalphad oxygen potential condition" << std::endl;
-                appendOpenCalphadStageTiming(location, solve_mode, "run_total", false, elapsedMilliseconds(total_start));
                 return false;
             }
         }
@@ -1428,13 +1300,7 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
         if (solve_mode == OpenCalphadSolveMode::SaveReadWarmStart ||
             solve_mode == OpenCalphadSolveMode::GlobalEquilibrium)
         {
-            stage_start = TimingClock::now();
             const bool checked_equilibrium_ready = oc.calculateEquilibriumChecked();
-            appendOpenCalphadStageTiming(location,
-                                         solve_mode,
-                                         "calculate_equilibrium_checked",
-                                         checked_equilibrium_ready,
-                                         elapsedMilliseconds(stage_start));
             if (!checked_equilibrium_ready)
             {
                 std::cerr << "Warning: OpenCalphad checked equilibrium calculation failed" << std::endl;
@@ -1446,31 +1312,19 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             constexpr double start_pressure = 1.0e5;
             const double pressure_increment = 0.025 * std::abs(pressure - start_pressure);
 
-            stage_start = TimingClock::now();
             const bool start_pressure_ready =
                 oc.setPressure(start_pressure) && oc.calculateEquilibriumChecked();
-            appendOpenCalphadStageTiming(location,
-                                         solve_mode,
-                                         "pressure_axis_start_equilibrium",
-                                         start_pressure_ready,
-                                         elapsedMilliseconds(stage_start));
             if (!start_pressure_ready)
             {
                 std::cerr << "Warning: OpenCalphad checked equilibrium at start pressure failed" << std::endl;
                 clear_equilibrium = false;
             }
 
-            stage_start = TimingClock::now();
             const bool pressure_axis_ready =
                 oc.stepNormal("P", start_pressure, pressure, pressure_increment) &&
                 oc.setPressure(pressure) &&
                 oc.calculateEquilibrium(-1) &&
                 oc.calculateEquilibriumChecked();
-            appendOpenCalphadStageTiming(location,
-                                         solve_mode,
-                                         "pressure_axis_final_equilibrium",
-                                         pressure_axis_ready,
-                                         elapsedMilliseconds(stage_start));
             if (!pressure_axis_ready)
             {
                 std::cerr << "Warning: OpenCalphad pressure-axis final equilibrium failed" << std::endl;
@@ -1481,13 +1335,7 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
         {
             oc.setPhaseStatus("*", -2, 0.0);
             oc.setPhaseStatus("GAS", 0, 1.0);
-            stage_start = TimingClock::now();
             const bool gas_only_ready = oc.calculateEquilibrium(-1);
-            appendOpenCalphadStageTiming(location,
-                                         solve_mode,
-                                         "calculate_equilibrium_gas_only",
-                                         gas_only_ready,
-                                         elapsedMilliseconds(stage_start));
             if (!gas_only_ready)
             {
                 std::cerr << "Warning: OpenCalphad gas-only equilibrium calculation failed" << std::endl;
@@ -1495,13 +1343,7 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             }
             oc.setPhaseStatus("C1_MO2", 0, 1.0);
 
-            stage_start = TimingClock::now();
             const bool c1_mo2_ready = oc.calculateEquilibrium(-1) && oc.calculateEquilibriumChecked();
-            appendOpenCalphadStageTiming(location,
-                                         solve_mode,
-                                         "calculate_equilibrium_c1_mo2",
-                                         c1_mo2_ready,
-                                         elapsedMilliseconds(stage_start));
             if (!c1_mo2_ready)
             {
                 std::cerr << "Warning: OpenCalphad fixed C1_MO2 equilibrium failed" << std::endl;
@@ -1511,23 +1353,14 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
 
         if (location == "matrix")
         {
-            stage_start = TimingClock::now();
-            const bool extracted = oc.extractResults(output_data);
-            appendOpenCalphadStageTiming(location,
-                                         solve_mode,
-                                         "extract_results",
-                                         extracted,
-                                         elapsedMilliseconds(stage_start));
+            oc.extractResults(output_data);
         }
 
-        final_success = clear_equilibrium;
-        appendOpenCalphadStageTiming(location, solve_mode, "run_total", final_success, elapsedMilliseconds(total_start));
         return clear_equilibrium;
     }
     catch (const std::exception& e)
     {
         std::cerr << "Exception in runOpenCalphadCaseOCASI: " << e.what() << std::endl;
-        appendOpenCalphadStageTiming(location, solve_mode, "run_total", final_success, elapsedMilliseconds(total_start));
         return false;
     }
 }
