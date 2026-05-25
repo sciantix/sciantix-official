@@ -441,14 +441,17 @@ def prepare_case_inputs(case_dir: Path) -> None:
             shutil.copy2(source, target)
 
 
-def run_sciantix_case(case_dir: Path) -> subprocess.CompletedProcess[str]:
+def run_sciantix_case(case_dir: Path) -> subprocess.CompletedProcess[bytes]:
     return subprocess.run(
         [str(BUILD_EXECUTABLE)],
         cwd=case_dir,
-        text=True,
         capture_output=True,
         check=False,
     )
+
+
+def decode_process_output(output: bytes) -> str:
+    return output.decode("utf-8", errors="replace")
 
 
 def safe_plot_name(text: str) -> str:
@@ -1423,7 +1426,10 @@ def main() -> int:
             prepare_case_inputs(case_dir)
             completed = run_sciantix_case(case_dir)
             RUN_LOG_case = case_dir / RUN_LOG
-            RUN_LOG_case.write_text(completed.stdout + completed.stderr)
+            RUN_LOG_case.write_text(
+                decode_process_output(completed.stdout) + decode_process_output(completed.stderr),
+                encoding="utf-8",
+            )
             case_results.append((case_dir, completed.returncode))
             if completed.returncode != 0:
                 cleanup_case_directory(case_dir)
