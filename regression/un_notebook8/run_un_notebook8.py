@@ -22,10 +22,10 @@ FISSION_RATE = 5.77e19
 LATTICE_PARAMETER = 4.889e-10
 U_ATOM_DENSITY = 4.0 / LATTICE_PARAMETER**3
 
-# Regression workaround: SCIANTIX Initialization.C still converts U isotopic
-# content with UO2 uranium mass fraction 0.8815. This artificial density makes
-# the resulting U atom density equal to the notebook-8 UN lattice density 4/a^3.
-FUEL_DENSITY = 15346.98644135921
+# Physical UN density used in the generated decks. For FIMA and gas production,
+# SCIANTIX now gets the uranium atom density from the iFuelMatrix=2 core
+# initialization branch, not from a fuel-density workaround.
+FUEL_DENSITY = 14300.0
 GRAIN_RADIUS = 6.0e-6
 
 COMPARE_COLUMNS = [

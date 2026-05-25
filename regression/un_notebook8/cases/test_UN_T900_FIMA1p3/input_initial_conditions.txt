@@ -14,7 +14,7 @@
 # initial fuel effective burn-up (MWd/kgUO2)
 0.0
 # initial irradiation time (h)
-15346.98644135921
+14300.0
 # initial fuel density (kg/m3)
 0.0 1.5 0.0 0.0 98.5
 # initial U234 U235 U236 U237 U238 (% of heavy atoms) content

@@ -7,6 +7,9 @@ yet. It generates its own UN input decks, runs `build/sciantix.x <case_dir>/`,
 parses `output.txt`, compares the final timestep against notebook-8 reference
 points, and creates CSV/PNG artifacts under this directory.
 
+The reference CSV is generated from notebook-8 physics with SCIANTIX numerical
+settings: `n_modes = 40` and, for each point case, `dt_h = final_time_h / 100`.
+
 ## Run
 
 From the repository root:
@@ -19,6 +22,12 @@ Then, to regenerate figures from an existing summary:
 
 ```bash
 python3 regression/un_notebook8/plot_un_notebook8.py
+```
+
+To regenerate the Python reference points:
+
+```bash
+python3 regression/un_notebook8/reference/generate_python8_reference.py
 ```
 
 The runner writes:
@@ -50,11 +59,11 @@ The generated end time is computed as:
 time_h = FIMA_percent * U_atom_density / (fission_rate * 3.6e5)
 ```
 
-This mirrors the SCIANTIX FIMA update. The generated settings set
+with `U_atom_density = 4/a^3` and `a = 4.889e-10 m`. This mirrors the
+SCIANTIX UN FIMA update. The generated settings set
 `iChromiumSolubility = 1` only to expose the `FIMA (%)` column in the standard
 output. For `iFuelMatrix = 2`, Chromium physics is not run by the UN execution
 path.
 
 Optional Storms FGR comparisons, when added, must use `FIMA (%)` as the
 atom-percent burnup `B` and must not use SCIANTIX `Burnup`.
-
