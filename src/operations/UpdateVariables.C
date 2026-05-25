@@ -55,11 +55,8 @@ std::map<int, std::string> update_sciantix_variable = {
     {177, "Intragranular coarsened bubble pressure"},
     {178, "Intragranular coarsened bubble equilibrium pressure"},
     {179, "Dislocation density"},
-    {180, "Coarsening maximum temperature"},  // COARSENING: history memory for the distributed family weights.
-    {181, "Intragranular distributed coarsened bubble concentration"},  // COARSENING.
-    {182, "Intragranular distributed coarsened bubble radius mean"},     // COARSENING.
-    {183, "Intragranular distributed coarsened bubble radius p10"},      // COARSENING.
-    {184, "Intragranular distributed coarsened bubble radius p90"},      // COARSENING.
+    {180, "Coarsening maximum temperature"},       // COARSENING: hidden memory for the peak-temperature K_eff weight.
+    {181, "Coarsening bubbles per dislocation"},   // COARSENING: effective K for dislocation-bubble nucleation.
     {68, "Intragranular gas solution swelling"},
     {25, "Intergranular bubble concentration"},
     {26, "Intergranular Xe atoms per bubble"},

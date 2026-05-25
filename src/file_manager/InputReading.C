@@ -78,6 +78,30 @@ double ReadOneParameter(std::string variable_name, std::ifstream& input_file, st
     return variable;
 }
 
+// COARSENING: read optional scaling factors appended after legacy input_scaling_factors.txt entries.
+double ReadOptionalParameter(std::string    variable_name,
+                             std::ifstream& input_file,
+                             std::ofstream& output_file,
+                             double         default_value)
+{
+    char   comment;
+    double variable;
+
+    if (!(input_file >> variable))
+    {
+        input_file.clear();
+        output_file << variable_name << " = " << default_value << " (default)" << std::endl;
+        return default_value;
+    }
+
+    input_file >> comment;
+    if (comment == '#')
+        input_file.ignore(256, '\n');
+
+    output_file << variable_name << " = " << variable << std::endl;
+    return variable;
+}
+
 /**
  * @brief Read several parameters from a single line in the input file.
  * @param variable_name The name for the parameters to be logged.
@@ -175,7 +199,7 @@ void InputReading(int                  Sciantix_options[],
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
     Sciantix_options[25] = ReadOptionalSetting("iCoarseningDislocationDensity", input_settings, input_check, 0);
-    Sciantix_options[26] = ReadOptionalSetting("iCoarseningSizeDistribution", input_settings, input_check, 0);  // COARSENING.
+    Sciantix_options[26] = ReadOptionalSetting("iCoarseningKModel", input_settings, input_check, 0);  // COARSENING.
 
     if (!input_initial_conditions.fail())
     {
@@ -300,6 +324,12 @@ void InputReading(int                  Sciantix_options[],
         Sciantix_scaling_factors[6] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
         Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
         Sciantix_scaling_factors[8] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
+        Sciantix_scaling_factors[9] =
+            ReadOptionalParameter("sf_coarsening_k0", input_scaling_factors, input_check, 1.0e6);  // COARSENING.
+        Sciantix_scaling_factors[10] =
+            ReadOptionalParameter("sf_coarsening_tsat", input_scaling_factors, input_check, 1500.0);  // COARSENING.
+        Sciantix_scaling_factors[11] =
+            ReadOptionalParameter("sf_coarsening_bsat", input_scaling_factors, input_check, 20.0);  // COARSENING.
     }
     else
     {
@@ -312,6 +342,9 @@ void InputReading(int                  Sciantix_options[],
         Sciantix_scaling_factors[6] = 1.0;
         Sciantix_scaling_factors[7] = 1.0;
         Sciantix_scaling_factors[8] = 1.0;
+        Sciantix_scaling_factors[9]  = 1.0e6;  // COARSENING.
+        Sciantix_scaling_factors[10] = 1500.0;  // COARSENING.
+        Sciantix_scaling_factors[11] = 20.0;    // COARSENING.
     }
 
     input_check.close();
