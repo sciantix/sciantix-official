@@ -140,6 +140,14 @@ Consequently the dynamic `rho_d(F,T)` enters:
 - `free_dislocation = rho_d - 2*R_d*N_d`;
 - the naked-dislocation line-sink trapping term.
 
+## Fix: notebook-8 Xe diffusivity and Dg_dislocation_scale
+
+- `iFissionGasDiffusivity = 11` now uses the notebook-8 refit of the Rizk
+  2025 Xe diffusivity plot instead of the nominal Rizk coefficients.
+- `Dg_dislocation_scale = 13.0` is applied only to the naked-dislocation
+  line sink in `setTrappingRatesUN`, not to bubble trapping.
+- `Dv_dislocation_scale = 10.0` was already present and was not modified.
+
 ## Calibrated vs Rizk nominal parameters
 
 - `f_n`: Rizk nominal `1.0e-6`; used/calibrated notebook-8 value `5.5e-4`.
