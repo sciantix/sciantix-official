@@ -19,9 +19,14 @@ RESULTS_DIR = SUITE_DIR / "results"
 FIGURES_DIR = SUITE_DIR / "figures"
 
 FISSION_RATE = 5.77e19
-FUEL_DENSITY = 10600.0
-GRAIN_RADIUS = 4.5e-6
-U_ATOM_DENSITY = 2.364191e28
+LATTICE_PARAMETER = 4.889e-10
+U_ATOM_DENSITY = 4.0 / LATTICE_PARAMETER**3
+
+# Regression workaround: SCIANTIX Initialization.C still converts U isotopic
+# content with UO2 uranium mass fraction 0.8815. This artificial density makes
+# the resulting U atom density equal to the notebook-8 UN lattice density 4/a^3.
+FUEL_DENSITY = 15346.98644135921
+GRAIN_RADIUS = 6.0e-6
 
 COMPARE_COLUMNS = [
     ("FIMA (%)", ["FIMA (%)"]),
@@ -346,4 +351,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
