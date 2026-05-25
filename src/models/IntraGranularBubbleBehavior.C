@@ -28,8 +28,8 @@ namespace
     constexpr double un_omega_fg          = 8.5e-29;
     constexpr double un_lattice_parameter = 4.889e-10;
     constexpr double un_gamma             = 1.11;
-    constexpr double un_fn      = 5.5e-4;  // UN AD URANIUMNITRIDE: Rizk nominal = 1.0e-6; used/calibrated = 5.5e-4.
-    constexpr double un_kd      = 3.0e5;   // UN AD URANIUMNITRIDE: Rizk nominal = 5.0e5; used/calibrated = 3.0e5.
+    constexpr double un_fn = 5.5e-4;  // UN AD URANIUMNITRIDE: Rizk nominal = 1.0e-6; used/calibrated = 5.5e-4.
+    constexpr double un_kd = 3.0e5;   // UN AD URANIUMNITRIDE: Rizk nominal = 5.0e5; used/calibrated = 3.0e5.
     constexpr double un_dv_dislocation_scale =
         10.0;  // UN AD URANIUMNITRIDE: Rizk nominal dislocation vacancy scale = 1.0; used/calibrated = 10.0.
     constexpr double un_gf_ngf_areal_0 = 2.0e13;  // UN AD URANIUMNITRIDE: Rizk nominal grain-face areal density = not
@@ -459,8 +459,8 @@ void Simulation::IntraGranularBubbleBehavior()
         double nvb = positive(sciantix_variable["Bulk vacancies per bubble"].getInitialValue()) * Nb;
         double nvd = positive(sciantix_variable["Dislocation vacancies per bubble"].getInitialValue()) * Nd;
 
-        const double Dv    = un_vacancy_diffusivity(temperature, fission_rate, vacancy_option);
-        const double Dv_d  = Dv * un_dv_dislocation_scale;
+        const double Dv   = un_vacancy_diffusivity(temperature, fission_rate, vacancy_option);
+        const double Dv_d = Dv * un_dv_dislocation_scale;
         sciantix_variable["UN vacancy diffusivity bulk"].setFinalValue(Dv);
         sciantix_variable["UN vacancy diffusivity dislocation"].setFinalValue(Dv_d);
         const double b_b   = sciantix_system[0].getResolutionRateIntra();

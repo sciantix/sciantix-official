@@ -301,11 +301,11 @@ System Xe_in_UN(SciantixArray<Matrix>&           matrices,
         const double fission_rate        = history_variable["Fission rate"].getFinalValue();
         const double time_s              = history_variable["Time"].getFinalValue() * 3600.0;
         const double burnup_percent_fima = 100.0 * fission_rate * time_s / uranium_density;
-        const double rho_d               = un_model::dynamic_dislocation_density(
-            history_variable["Temperature"].getFinalValue(),
-            burnup_percent_fima,
-            int(input_variable["iUNDislocationDensity"].getValue()),
-            matrices["UN"].getDislocationDensity());
+        const double rho_d =
+            un_model::dynamic_dislocation_density(history_variable["Temperature"].getFinalValue(),
+                                                  burnup_percent_fima,
+                                                  int(input_variable["iUNDislocationDensity"].getValue()),
+                                                  matrices["UN"].getDislocationDensity());
         sciantix_variable["Dislocation density"].setFinalValue(rho_d);
     }
 
