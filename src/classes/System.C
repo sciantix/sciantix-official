@@ -583,27 +583,27 @@ void System::setFissionGasDiffusivity(int                              input_val
             double temperature  = history_variable["Temperature"].getFinalValue();
             double fission_rate = history_variable["Fission rate"].getFinalValue();
 
-            // Boltzmann constant [eV/K]
+            // UN AD URANIUMNITRIDE: notebook-8 refit from Rizk 2025 plot, not Rizk nominal.
+            // Rizk nominal: D10 = 1.56e-3, Q1 = 4.94, A30 = 1.85e-39;
+            // D2 neglected in previous implementation.
+            // Notebook-8 refit used: D10 = 2.967341817979e-03, Q1 = 5.013616576464e+00,
+            // A20 = 4.498475254045e-68, B1 = -1.790671812685e+01,
+            // B2 = 9.255235831189e-01, A30 = 1.189275430019e-38.
             const double kB = 8.617333262e-5;
-            // Xe thermal diffusivity parameters
-            const double D10 = 1.56e-3;  // [m^2/s]
-            const double Q1  = 4.94;     // [eV]
+            const double kBT = kB * temperature;
 
-            double d1 = D10 * exp(-Q1 / (kB * temperature));
+            const double D10 = 2.967341817979e-03;
+            const double Q1  = 5.013616576464e+00;
 
-            // ===== d2: irradiation-enhanced (trascurabile) =====
-            // const double A20 = 1.21e-67; // [m^7/2/s^1/2]
-            // const double B21 = 25.87;    // [eV]
-            // const double B22 = -1.49;    // [eV^2]
-            // const double B23 = 0.0;      // [eV^3] non definito
+            const double A20 = 4.498475254045e-68;
+            const double B1  = -1.790671812685e+01;
+            const double B2  = 9.255235831189e-01;
 
-            // double exponent = -B21/(kB*T) - B22/pow(kB*T,2) - B23/pow(kB*T,3);
-            // double d2 = sqrt(fission_rate) * A20 * exp(exponent);
-            double d2 = 0;
+            const double A30 = 1.189275430019e-38;
 
-            // ===== D3: ballistic mixing =====
-            const double A30 = 1.85e-39;  // [m^5]
-            double       d3  = A30 * fission_rate;
+            double d1 = D10 * exp(-Q1 / kBT);
+            double d2 = sqrt(std::max(fission_rate, 0.0)) * A20 * exp(-B1 / kBT - B2 / (kBT * kBT));
+            double d3 = A30 * fission_rate;
 
             diffusivity = d1 + d2 + d3;
             diffusivity *= scaling_factors["Diffusivity"].getValue();
@@ -1072,7 +1072,12 @@ void System::setTrappingRatesUN(int                              input_value,
             if (free_dislocation < 0.0)
                 free_dislocation = 0.0;
 
-            double term_dislocation = (2.0 * M_PI * diffusivity / denominator) * free_dislocation;
+            // UN AD URANIUMNITRIDE: notebook-8 calibrated Dg_dislocation_scale = 13.0;
+            // used only for naked-dislocation line sink, not for bubble trapping.
+            const double Dg_dislocation_scale = 13.0;
+            const double Dg_dislocation       = diffusivity * Dg_dislocation_scale;
+
+            double term_dislocation = (2.0 * M_PI * Dg_dislocation / denominator) * free_dislocation;
 
             trapping_rate_dislocation = term_bubbles + term_dislocation;
 
