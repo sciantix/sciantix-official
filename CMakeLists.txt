@@ -62,7 +62,11 @@ else()
     find_package(jsoncpp REQUIRED)
     include_directories(${JSONCPP_INCLUDE_DIRS})
     add_executable(sciantix ${SOURCES})
-    target_link_libraries(sciantix jsoncpp_lib ${PROJECT_SOURCE_DIR}/../opencalphad/liboctq-isoc.a gfortran quadmath gomp)
+    target_link_libraries(sciantix
+        jsoncpp_lib
+        ${PROJECT_SOURCE_DIR}/../opencalphad/liboctq-isoc.a
+        ${PROJECT_SOURCE_DIR}/../opencalphad/liboctq-isoc-gb.a
+        gfortran quadmath gomp)
     if (UNIX)
         set(CMAKE_EXECUTABLE_SUFFIX ".x")
     endif()
