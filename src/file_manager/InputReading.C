@@ -198,7 +198,7 @@ void InputReading(int                  Sciantix_options[],
     Sciantix_options[22] = ReadOneSetting("iChromiumSolubility", input_settings, input_check);
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
-    Sciantix_options[25] = ReadOptionalSetting("iCoarseningDislocationDensity", input_settings, input_check, 0);
+    Sciantix_options[25] = ReadOptionalSetting("iCoarseningDislocationDensity", input_settings, input_check, 1);
     Sciantix_options[26] = ReadOptionalSetting("iCoarseningKModel", input_settings, input_check, 0);  // COARSENING.
 
     if (!input_initial_conditions.fail())

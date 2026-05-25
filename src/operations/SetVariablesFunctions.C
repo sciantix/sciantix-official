@@ -55,8 +55,8 @@ std::vector<std::string> getInputVariableNames()
         "iChromiumSolubility",
         "iDensification",
         "iReleaseMode",
-        "iCoarseningDislocationDensity",  // COARSENING: 0=none, 1=fixed Barani, 2=Zullo 2026, 3=Zullo - Nicodemo 2026.
-        "iCoarseningKModel"};              // COARSENING: 0=Barani K0, 1=K0*fBu*fT.
+        "iCoarseningDislocationDensity",  // COARSENING: 1=fixed Barani 2019, 2=Zullo 2026.
+        "iCoarseningKModel"};              // COARSENING: 0=Barani 2019, 1=Nicodemo 2026 algebraic, 2=Nicodemo 2026 kinetic.
 
     return names;
 }
