@@ -35,6 +35,22 @@ The runner writes:
 - `regression/un_notebook8/results/un_notebook8_summary.csv`
 - `regression/un_notebook8/figures/*.png`
 
+## How To Inspect Validation Results
+
+- `history_*.png`: show the evolution of one variable versus `FIMA (%)`.
+  These figures are for checking the time trend; they are not parity plots and
+  therefore do not include a `y = x` line.
+- `parity_all_quantities.png`: direct SCIANTIX versus Python notebook-8
+  comparison. The `y = x` line is perfect agreement, with `+/-35%` tolerance
+  bands matching `rel_tol = 0.35`.
+- `relative_error_by_quantity.png`: maximum relative error for each compared
+  quantity, with the `rel_tol = 0.35` threshold drawn as a vertical line.
+- `regression_pass_fail_summary.png`: visual summary of compared values,
+  passes, failures, missing values, and overall status.
+- `results/un_notebook8_summary.csv`: authoritative table with SCIANTIX values,
+  Python reference values, absolute differences, relative differences, and
+  PASS/FAIL status.
+
 ## Cases
 
 The minimum validation grid is:
