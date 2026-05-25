@@ -1037,7 +1037,7 @@ void System::setTrappingRatesUN(int                              input_value,
             const double dislocation_density_variable = sciantix_variable["Dislocation density"].getFinalValue();
             double       dislocation_density =
                 dislocation_density_variable > 0.0 ? dislocation_density_variable : matrix.getDislocationDensity();
-            dislocation_density = std::max(dislocation_density, 1.0e10);
+            dislocation_density            = std::max(dislocation_density, 1.0e10);
             double dislocation_core_radius = std::max(matrix.getDislocationCoreRadius(), 1.0e-15);
 
             double Zd = 5.0;
