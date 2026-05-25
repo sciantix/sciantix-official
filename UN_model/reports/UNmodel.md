@@ -661,6 +661,120 @@ $$
 
 ottenuto come fit della diffusività delle vacanze di bulk riportata nella Fig. 4 di Rizk. Gli altri parametri della correlazione, cioè $D_{10}^{V_U}$, $Q_1^{V_U}$, $B_{21}^{V_U}$ e $B_{22}^{V_U}$, sono mantenuti invariati.
 
+### Refit della diffusività bulk delle vacanze di Uranio
+
+Nel modello numerico calibrato non è stata usata direttamente la parametrizzazione nominale della Table 2 di Rizk per le vacanze di Uranio. I coefficienti nominali Rizk sono:
+
+$$
+D_{10}^{V_U}=1.35\times 10^{-2}\ \mathrm{m^2\,s^{-1}}
+$$
+
+$$
+Q_1^{V_U}=5.66\ \mathrm{eV}
+$$
+
+$$
+A_{20}^{V_U}=1.32\times 10^{-19}\ \mathrm{m^{7/2}\,s^{-1/2}}
+$$
+
+$$
+B_{21}^{V_U}=-0.62\ \mathrm{eV}
+$$
+
+$$
+B_{22}^{V_U}=-0.04\ \mathrm{eV^2}
+$$
+
+Usando questi valori direttamente nella formula, la diffusività calcolata non riproduce bene la curva “Vacancies, bulk” mostrata in Fig. 4 di Rizk et al. (2025). Per questo motivo, nel modello notebook-8/SCIANTIX-UN è stato adottato un refit diretto della curva riportata nel plot.
+
+Nel refit notebook-8 usato nella versione SCIANTIX-UN calibrata, la diffusività bulk delle vacanze viene quindi scritta come:
+
+$$
+D_{V_U}^{bulk}
+=
+D_{1,\mathrm{fit}}^{V_U}
++
+D_{2,\mathrm{fit}}^{V_U}
+$$
+
+con:
+
+$$
+D_{1,\mathrm{fit}}^{V_U}
+=
+1.122978768506\times 10^{-2}
+\exp\left(
+-\frac{5.596873538604}{k_B T}
+\right)
+$$
+
+e:
+
+$$
+D_{2,\mathrm{fit}}^{V_U}
+=
+\sqrt{\dot{F}}\,
+7.805188680989\times 10^{-28}
+\exp\left[
+-\frac{9.932675113163\times 10^{-1}}{k_B T}
+-
+\frac{2.082395503235\times 10^{-2}}{(k_B T)^2}
+\right]
+$$
+
+Quindi:
+
+$$
+D_{V_U}^{bulk}
+=
+1.122978768506\times 10^{-2}
+\exp\left(
+-\frac{5.596873538604}{k_B T}
+\right)
++
+\sqrt{\dot{F}}\,
+7.805188680989\times 10^{-28}
+\exp\left[
+-\frac{9.932675113163\times 10^{-1}}{k_B T}
+-
+\frac{2.082395503235\times 10^{-2}}{(k_B T)^2}
+\right]
+$$
+
+dove:
+
+$$
+k_B=8.617333262\times10^{-5}\ \mathrm{eV\,K^{-1}}
+$$
+
+\(T\) è espresso in K e \(\dot{F}\) è il fission rate density in \(\mathrm{fissions\,m^{-3}\,s^{-1}}\).
+
+Questo refit deve essere distinto dai coefficienti nominali Rizk: i valori nominali restano quelli riportati nella tabella dei parametri, mentre i coefficienti sopra sono quelli effettivamente usati nella versione calibrata del modello. Il refit è stato introdotto per riprodurre la curva bulk delle vacanze della Fig. 4; non modifica la diffusività dello Xe.
+
+Per le bolle su dislocazioni si usa la stessa forma della diffusività bulk delle vacanze, ma con un fattore moltiplicativo:
+
+$$
+D_{V_U}^{disl}
+=
+s_{V,d}\,D_{V_U}^{bulk}
+$$
+
+con:
+
+$$
+s_{V,d}=10
+$$
+
+Per le vacanze al bordo di grano, invece, si segue l’ipotesi di Rizk:
+
+$$
+D_v^{gb}
+=
+10^6 D_1^{V_U}
+$$
+
+dove \(D_1^{V_U}\) è il solo contributo termico delle vacanze di Uranio, non la somma completa \(D_{V_U}^{bulk}\).
+
 ## Diffusività delle vacanze ai bordi di grano
 
 Rizk assume:

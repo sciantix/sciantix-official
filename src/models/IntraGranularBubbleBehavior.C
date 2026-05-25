@@ -16,6 +16,7 @@
 
 #include "Constants.h"
 #include "Simulation.h"
+#include "UNModel.h"
 #include <algorithm>
 #include <cmath>
 
@@ -29,22 +30,6 @@ namespace
     constexpr double un_gamma             = 1.11;
     constexpr double un_fn      = 5.5e-4;  // UN AD URANIUMNITRIDE: Rizk nominal = 1.0e-6; used/calibrated = 5.5e-4.
     constexpr double un_kd      = 3.0e5;   // UN AD URANIUMNITRIDE: Rizk nominal = 5.0e5; used/calibrated = 3.0e5.
-    constexpr double un_rho_fab = 3.0e13;  // UN AD URANIUMNITRIDE: Rizk nominal constant rho_d = 3.0e13;
-                                           // used/calibrated dynamic rho_d floor = 3.0e13.
-    constexpr double un_rho_amp =
-        7.5e14;  // UN AD URANIUMNITRIDE: Rizk nominal dynamic amplitude = 0.0; used/calibrated = 7.5e14.
-    constexpr double un_rho_scale =
-        0.10;  // UN AD URANIUMNITRIDE: Rizk nominal dynamic scale = 0.0; used/calibrated = 0.10.
-    constexpr double un_rho_fc_percent =
-        3.0;  // UN AD URANIUMNITRIDE: Rizk nominal burnup scale = not specified; used/calibrated = 3.0 FIMA percent.
-    constexpr double un_rho_t_half =
-        1550.0;  // UN AD URANIUMNITRIDE: Rizk nominal temperature half-point = not specified; used/calibrated = 1550 K.
-    constexpr double un_rho_width =
-        120.0;  // UN AD URANIUMNITRIDE: Rizk nominal temperature width = not specified; used/calibrated = 120 K.
-    constexpr double un_rho_f_min = 0.08;  // UN AD URANIUMNITRIDE: Rizk nominal high-temperature floor factor = not
-                                           // specified; used/calibrated = 0.08.
-    constexpr double un_rho_cap =
-        4.0e15;  // UN AD URANIUMNITRIDE: Rizk nominal dynamic cap = not specified; used/calibrated = 4.0e15.
     constexpr double un_dv_dislocation_scale =
         10.0;  // UN AD URANIUMNITRIDE: Rizk nominal dislocation vacancy scale = 1.0; used/calibrated = 10.0.
     constexpr double un_gf_ngf_areal_0 = 2.0e13;  // UN AD URANIUMNITRIDE: Rizk nominal grain-face areal density = not
@@ -140,19 +125,6 @@ namespace
         // UN AD URANIUMNITRIDE: Rizk nominal for U vacancies A20 = 1.32e-19, B21 = -0.62, B22 = -0.04; used/calibrated
         // notebook-8 full refit A20 = 7.805188680989e-28, B21 = 9.932675113163e-01, B22 = 2.082395503235e-02.
         return d1 + d2;
-    }
-
-    double
-    un_dynamic_rho(const double temperature, const double burnup_percent, const int option, const double constant_rho)
-    {
-        if (option == 0)
-            return std::max(constant_rho, 1.0e10);
-
-        const double burnup_part = 1.0 - std::exp(-std::max(burnup_percent, 0.0) / un_rho_fc_percent);
-        const double ft =
-            un_rho_f_min + (1.0 - un_rho_f_min) / (1.0 + std::exp((temperature - un_rho_t_half) / un_rho_width));
-        const double rho = un_rho_fab + un_rho_scale * un_rho_amp * burnup_part * ft;
-        return std::min(std::max(rho, 1.0e10), un_rho_cap);
     }
 
     double phi_population(const double gas, const double number_density)
@@ -465,10 +437,10 @@ void Simulation::IntraGranularBubbleBehavior()
         const double burnup_old = burnup_percent_from_time(time_old_s, fission_rate);
         const double burnup_new = burnup_percent_from_time(time_new_s, fission_rate);
 
-        const double rho_old =
-            un_dynamic_rho(temperature, burnup_old, rho_option, matrices["UN"].getDislocationDensity());
-        const double rho_next =
-            un_dynamic_rho(temperature, burnup_new, rho_option, matrices["UN"].getDislocationDensity());
+        const double rho_old = un_model::dynamic_dislocation_density(
+            temperature, burnup_old, rho_option, matrices["UN"].getDislocationDensity());
+        const double rho_next = un_model::dynamic_dislocation_density(
+            temperature, burnup_new, rho_option, matrices["UN"].getDislocationDensity());
 
         double c  = positive(sciantix_variable["Xe in intragranular solution"].getFinalValue());
         double mb = positive(sciantix_variable["Xe in intragranular bubbles"].getFinalValue());
@@ -489,6 +461,8 @@ void Simulation::IntraGranularBubbleBehavior()
 
         const double Dv    = un_vacancy_diffusivity(temperature, fission_rate, vacancy_option);
         const double Dv_d  = Dv * un_dv_dislocation_scale;
+        sciantix_variable["UN vacancy diffusivity bulk"].setFinalValue(Dv);
+        sciantix_variable["UN vacancy diffusivity dislocation"].setFinalValue(Dv_d);
         const double b_b   = sciantix_system[0].getResolutionRateIntra();
         const double nu_b  = positive(sciantix_variable["UN bulk nucleation rate"].getFinalValue());
         const double phi_b = phi_population(mb, Nb);
