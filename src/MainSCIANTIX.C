@@ -91,7 +91,8 @@ int main(int argc, char** argv)
                  Time_end_h,
                  Time_end_s);
 
-    Initialization(Sciantix_history,
+    Initialization(Sciantix_options,
+                   Sciantix_history,
                    Sciantix_variables,
                    Sciantix_diffusion_modes,
                    Temperature_input,

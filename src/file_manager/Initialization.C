@@ -16,7 +16,8 @@
 
 #include "Initialization.h"
 
-void Initialization(double              Sciantix_history[],
+void Initialization(int                 Sciantix_options[],
+                    double              Sciantix_history[],
                     double              Sciantix_variables[],
                     double              Sciantix_diffusion_modes[],
                     std::vector<double> Temperature_input,
@@ -41,12 +42,28 @@ void Initialization(double              Sciantix_history[],
     Sciantix_variables[35] = 0.5;      // Intergranular_saturation_fractional_coverage[0]
     Sciantix_variables[37] = 1.0;      // Intergranular_fractional_intactness[0]
 
-    // https://pubchem.ncbi.nlm.nih.gov/compound/Uranium-235
-    Sciantix_variables[41] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 234.04095;  // U-234
-    Sciantix_variables[42] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 235.04393;  // U-235
-    Sciantix_variables[43] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 236.04557;  // U-236
-    Sciantix_variables[44] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 237.04873;  // U-237
-    Sciantix_variables[45] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 238.05079;  // U-238
+    if (Sciantix_options[11] == 2)
+    {
+        // UN AD URANIUMNITRIDE:
+        // For UN, the uranium atom density is fixed by the NaCl lattice:
+        // N_U = 4/a^3, with a = 4.889e-10 m.
+        // This avoids the UO2 uranium-mass-fraction conversion used by legacy initialization.
+        const double uranium_atom_density = 4.0 / pow(4.889e-10, 3.0);
+        Sciantix_variables[41] *= uranium_atom_density / 100.0;  // U-234
+        Sciantix_variables[42] *= uranium_atom_density / 100.0;  // U-235
+        Sciantix_variables[43] *= uranium_atom_density / 100.0;  // U-236
+        Sciantix_variables[44] *= uranium_atom_density / 100.0;  // U-237
+        Sciantix_variables[45] *= uranium_atom_density / 100.0;  // U-238
+    }
+    else
+    {
+        // https://pubchem.ncbi.nlm.nih.gov/compound/Uranium-235
+        Sciantix_variables[41] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 234.04095;  // U-234
+        Sciantix_variables[42] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 235.04393;  // U-235
+        Sciantix_variables[43] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 236.04557;  // U-236
+        Sciantix_variables[44] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 237.04873;  // U-237
+        Sciantix_variables[45] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 238.05079;  // U-238
+    }
 
     // Intragranular similarity ratio
     Sciantix_variables[64] = 1.0;
