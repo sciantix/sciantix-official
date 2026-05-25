@@ -68,6 +68,9 @@ void Simulation::SetPhaseDiagram(std::string location) // qui tutti eccetto i ga
 void Simulation::CallThermochemistryModule(std::string                      location,
                                            SciantixArray<SciantixVariable>& sciantix_variable)
 {
+    std::cout << "[Thermochemistry debug] location=" << location
+              << " update" << std::endl;
+
     const ThermochemistrySettings& Sciantix_thermochemistry_settings = *thermochemistry_settings;
     const ThermochemistryPhaseSettings& location_settings =
         (location == "matrix") ? Sciantix_thermochemistry_settings.matrix : Sciantix_thermochemistry_settings.fission_products;
@@ -105,11 +108,11 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     solvers.push_back(OCSolver::GlobalEquilibrium);
     if (location == "matrix")
         solvers.push_back(OCSolver::OnlyC1MO2);
-    // else
-    //     solvers.push_back(OCSolver::FixedOxygenMoles);
-    // if (history_variable["System pressure"].getFinalValue() > 1.0e5 + 1.0)
-    //     solvers.push_back(OCSolver::PressureAxisStep);
 
+    std::cout << "[Thermochemistry debug] solvers for " << location << ':';
+    for (const auto& solver : solvers)
+        std::cout << ' ' << static_cast<int>(solver);
+    std::cout << std::endl;
 
     const std::string data_path =
         Sciantix_thermochemistry_settings.opencalphad_path + "data/" + location_settings.database;
@@ -124,9 +127,29 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         active_elements.insert(component.name);
     const std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
 
+    std::cout << "[Thermochemistry debug] input for " << location
+              << " T=" << history_variable["Temperature"].getFinalValue()
+              << " P=" << history_variable["System pressure"].getFinalValue()
+              << " database=" << data_path
+              << " total_input_content=" << total_input_content
+              << std::endl;
+    std::cout << "[Thermochemistry debug] components:";
+    for (const auto& component : components)
+        std::cout << ' ' << component.name
+                  << "(content=" << component.content
+                  << ", fraction=" << component.fraction << ')';
+    std::cout << std::endl;
+    std::cout << "[Thermochemistry debug] valid elements:";
+    for (const auto& element : valid_elements)
+        std::cout << ' ' << element;
+    std::cout << std::endl;
+
     // Attempt for each solver
     for (const auto& solver : solvers)
     { 
+        std::cout << "[Thermochemistry debug] attempting " << location
+                  << " solver=" << static_cast<int>(solver) << std::endl;
+
         // Use OCASI direct interface instead of subprocess
         bool case_success = OCUtilsCoupling::runOpenCalphadCaseOCASI(
             data_path,
@@ -145,6 +168,13 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         else if (location == "at grain boundary")
             has_usable_output = case_success;
 
+        std::cout << "[Thermochemistry debug] solver=" << static_cast<int>(solver)
+                  << " case_success=" << case_success
+                  << " has_usable_output=" << has_usable_output
+                  << " phases=" << output_data.solution_phases.size()
+                  << " components=" << output_data.components.size()
+                  << std::endl;
+
         if (!case_success || !has_usable_output)
             continue;
 
@@ -157,12 +187,9 @@ void Simulation::CallThermochemistryModule(std::string                      loca
         std::cout << "Warning: all OpenCalphad attempts failed for location: " << location << std::endl;
     
     if (location != "matrix")
-    {
         OCUtilsCoupling::getOpenCalphadResults(location, output_data);
-    }
 
-    // // Debug
-    // OCUtilsCoupling::dumpParsedOcOutput(output_data);
+    OCUtilsCoupling::dumpParsedOcOutput(output_data);
 
     if (Sciantix_thermochemistry_settings.output_phase_sublattice_composition)
     {
@@ -182,6 +209,9 @@ void Simulation::CallThermochemistryModule(std::string                      loca
 
     if (location == "matrix")
     {
+        std::cout << "[Thermochemistry debug] updating matrix from OpenCalphad output"
+                  << std::endl;
+
         OCUtilsCoupling::updateThermochemistryVariablesFromOutput(
             output_data.solution_phases,
             location,
@@ -195,32 +225,22 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     }
     else if (location == "at grain boundary")
     {
+        std::cout << "[Thermochemistry debug] updating grain boundary from OpenCalphad output"
+                  << std::endl;
+
         OCUtilsCoupling::updateThermochemistryVariablesFromOutput(
             output_data.solution_phases,
             location,
             total_input_content,
             thermochemistry_variable,
             sciantix_variable);
-
-        const double fuel_oxygen_potential_before_grain_boundary =
-            sciantix_variable["Fuel oxygen potential"].getFinalValue();
-        const double fuel_oxygen_partial_pressure_before_grain_boundary =
-            sciantix_variable["Fuel oxygen partial pressure"].getFinalValue();
-        const double calphad_oxygen_potential_before_grain_boundary =
-            sciantix_variable["Fuel oxygen potential - CALPHAD"].getFinalValue();
-        const double calphad_oxygen_partial_pressure_before_grain_boundary =
-            sciantix_variable["Fuel oxygen partial pressure - CALPHAD"].getFinalValue();
+            
         OCUtilsCoupling::updateGrainBoundaryFromOutput(
             output_data.solution_phases,
             selected_elements,
             total_input_content,
             sciantix_variable,
             sciantix_system);
-
-        sciantix_variable["Fuel oxygen potential"].setFinalValue(fuel_oxygen_potential_before_grain_boundary);
-        sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(fuel_oxygen_partial_pressure_before_grain_boundary);
-        sciantix_variable["Fuel oxygen potential - CALPHAD"].setFinalValue(calphad_oxygen_potential_before_grain_boundary);
-        sciantix_variable["Fuel oxygen partial pressure - CALPHAD"].setFinalValue(calphad_oxygen_partial_pressure_before_grain_boundary);
 
         return;
     }
