@@ -589,7 +589,7 @@ void System::setFissionGasDiffusivity(int                              input_val
             // Notebook-8 refit used: D10 = 2.967341817979e-03, Q1 = 5.013616576464e+00,
             // A20 = 4.498475254045e-68, B1 = -1.790671812685e+01,
             // B2 = 9.255235831189e-01, A30 = 1.189275430019e-38.
-            const double kB = 8.617333262e-5;
+            const double kB  = 8.617333262e-5;
             const double kBT = kB * temperature;
 
             const double D10 = 2.967341817979e-03;
