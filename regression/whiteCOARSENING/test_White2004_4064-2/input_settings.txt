@@ -23,5 +23,5 @@
 0    #    iChromiumSolubility
 0    #    iDensification (0 = not considered, 1 = Fit from Van Uffelen, P. (2002), PhD thesis.)
 0    #    iReleaseMode (0 = coalescence by White (2004), saturation threshold of fractional coverage Pastore et al (2013), 1= coalescence by Pastore et al (2013), Cappellari et al. (2025))
-1    #    iCoarseningDislocationDensity (1= Barani 2019, 2= Zullo 2026 COARSENING)
-0    #    iCoarseningKModel (0= Barani 2019 constant K, 1= Nicodemo 2026 fBu*fT, 2= Nicodemo 2026 kinetic COARSENING)
+0    #    iCoarseningDislocationDensity (0= Barani 2019, 1= Veshchunov 2009 COARSENING)
+0    #    iCoarseningKModel (0= Barani 2019 constant K, 1= Nicodemo 2026 tuned fBu*fT, 2= Nicodemo 2026 tuned kinetic COARSENING)

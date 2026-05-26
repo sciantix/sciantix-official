@@ -105,6 +105,10 @@ def main():
         
         if should_run:
             results.extend(run_group(group, prefix, args.mode_gold, args.jobs))
+            if group == "white" and args.mode_gold in (0, 1, 2):
+                # COARSENING: keep White parity plots for intra/inter-granular bubble metrics in the regression workflow.
+                script = os.path.join(regression_root, "white", "parity_plot.py")
+                subprocess.run([sys.executable, script], check=True)
             if group == "whiteCOARSENING" and args.mode_gold in (0, 1, 2):
                 # COARSENING: keep the White coarsening diagnostic figures part of the regression workflow.
                 script = os.path.join(regression_root, "whiteCOARSENING", "coarsening_metrics.py")

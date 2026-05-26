@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""COARSENING: White regression plots for Barani 2019, Zullo 2026, and Nicodemo 2026 K models."""
+"""COARSENING: White regression plots for Barani 2019, Veshchunov 2009, and Nicodemo 2026 K models."""
 
 from __future__ import annotations
 
@@ -62,12 +62,12 @@ class Variant:
     marker: str = "o"
 
 
-# COARSENING: Nicodemo 2026 coefficients are the radius-optimized set from the White_dev scan.
-BARANI = Variant("barani_2019", "Barani 2019", 1, 0, color="#d62728", marker="x")
-ZULLO = Variant("zullo_2026", "Zullo 2026", 2, 0, color="#2ca02c", marker="^")
-NICODEMO_1 = Variant("nicodemo_2026_1", "Nicodemo 2026 (1)", 2, 1, color="#ff7f0e", marker="P")
-NICODEMO_2 = Variant("nicodemo_2026_2", "Nicodemo 2026 (2)", 2, 2, color="#9467bd", marker="*")
-MODEL_VARIANTS = [BARANI, ZULLO, NICODEMO_1, NICODEMO_2]
+# COARSENING: Nicodemo 2026 coefficients are tuned on White radius and bubble-density data.
+BARANI = Variant("barani_2019", "Barani 2019", 0, 0, color="#d62728", marker="x")
+VESHCHUNOV = Variant("veshchunov_2009", "Veshchunov 2009", 1, 0, color="#2ca02c", marker="^")
+NICODEMO_1 = Variant("nicodemo_2026_1", "Nicodemo 2026 (1)", 1, 1, k0=8.0e5, bsat=16.0, tsat=1850.0, color="#ff7f0e", marker="P")
+NICODEMO_2 = Variant("nicodemo_2026_2", "Nicodemo 2026 (2)", 1, 2, k0=8.0e5, bsat=16.0, tsat=1850.0, color="#9467bd", marker="*")
+MODEL_VARIANTS = [BARANI, VESHCHUNOV, NICODEMO_1, NICODEMO_2]
 
 
 def repo_root(root: Path) -> Path:
@@ -127,11 +127,12 @@ def apply_variant(case: Path, variant: Variant) -> None:
     ]
     lines.append(
         f"{variant.dislocation}    #    iCoarseningDislocationDensity "
-        "(1= Barani 2019, 2= Zullo 2026 COARSENING)"
+        "(0= Barani 2019, 1= Veshchunov 2009 COARSENING)"
     )
     lines.append(
         f"{variant.k_model}    #    iCoarseningKModel "
-        "(0= Barani 2019 constant K, 1= Nicodemo 2026 fBu*fT, 2= Nicodemo 2026 kinetic COARSENING)"
+        "(0= Barani 2019 constant K, 1= Nicodemo 2026 tuned fBu*fT, "
+        "2= Nicodemo 2026 tuned kinetic COARSENING)"
     )
     settings.write_text("\n".join(lines) + "\n")
 
@@ -307,7 +308,7 @@ def plot_legacy_barani(root: Path,
 def plot_model_comparison(root: Path,
                           expected: dict[str, dict[str, float]],
                           variant_rows: dict[str, dict[str, dict[str, float]]]) -> None:
-    # COARSENING: compare Barani, Zullo, and the two Nicodemo K models against White data.
+    # COARSENING: compare Barani, Veshchunov, and the two Nicodemo K models against White data.
     import matplotlib
 
     matplotlib.use("Agg")
@@ -359,7 +360,7 @@ def plot_intergranular(root: Path,
 
 
 def plot_dislocation_history(root: Path, variant_rows: dict[str, dict[str, dict[str, float]]]) -> None:
-    # COARSENING: show the Barani and Zullo dislocation densities versus White final temperature and burnup.
+    # COARSENING: show the Barani and Veshchunov dislocation densities versus White final temperature and burnup.
     import matplotlib
 
     matplotlib.use("Agg")
@@ -372,7 +373,7 @@ def plot_dislocation_history(root: Path, variant_rows: dict[str, dict[str, dict[
         ("burnup", "Final burnup (MWd/kgUO2)", "dislocation_density_vs_burnup.png"),
     ]:
         fig, ax = plt.subplots(figsize=(6.2, 4.4), constrained_layout=True)
-        for variant in [BARANI, ZULLO]:
+        for variant in [BARANI, VESHCHUNOV]:
             rows = variant_rows[variant.key]
             x_values = [rows[case][x_key] for case in sorted(rows)]
             y_values = [max(rows[case]["dislocation_density"], 1.0) for case in sorted(rows)]
