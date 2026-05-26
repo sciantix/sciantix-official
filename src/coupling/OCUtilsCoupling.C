@@ -112,13 +112,12 @@ namespace OCASIAdapter
                                       bool reuse_existing_record);
         bool setConditions(double temperature,
                            double pressure,
-                           const std::map<std::string, double> &components);
-        bool setPressure(double pressure);
+                           const std::map<std::string, double> &components,
+                           int *oxygen_component_index = nullptr);
         bool setReferenceState(const std::string &component_name,
                                const std::string &phase_name,
                                double temperature,
                                double pressure);
-        bool removeComponentCondition(const std::string &component_name);
         bool setComponentPotential(const std::string &component_name,
                                    double chemical_potential);
         bool setPhaseStatus(const std::string &phase_name,
@@ -126,18 +125,11 @@ namespace OCASIAdapter
                             double value);
         bool calculateEquilibrium(int grid_minimizer);
         bool calculateEquilibriumChecked();
-        bool stepNormal(const std::string &axis_variable,
-                        double minimum,
-                        double maximum,
-                        double increment);
         bool extractResults(OCOutputData &output_data);
-        void debugPrintCurrentState(const std::string &label) const;
         void reset(bool clear_database);
 
     private:
         int getComponentIndex(const std::string &component_name) const;
-        std::string getPhaseNameAtIndex(int phase_index) const;
-        int getPhaseIndex(const std::string &phase_name) const;
         int currentElementCount() const;
         char* currentComponentName(int index) const;
 
@@ -222,15 +214,8 @@ extern "C"
     //  n2, value as output, ceq)
     void c_tqce(char *, int, int, double *, void *);
 
-    // Calculate equilibrium using OpenCalphad's higher-level modes.
-    // mode=0 no grid minimizer, mode=1 with global grid minimizer,
-    // mode=2 carefully/default, corresponding to the checked solve path.
-    void c_tqcalc(void *, int);
-
     // Exact wrapper for the interactive OpenCalphad "calculate with_check_after"
     void c_tqce_with_check_after(void *);
-
-    void c_step_normal(char *, double, double, double, void *);
 
     // Get state variable value
     // (state variable in caputal letters,
@@ -240,11 +225,6 @@ extern "C"
     //  array with calculated values,
     //  ceq)
     void c_tqgetv(char *, int, int, int *, double *, void *);
-
-    // Get index of constituent using name (alphabetically)
-    // (phase number, extended constituent index in output
-    //  10*species_number+sublattice, constituent name, current equilibrium = ceq)
-    void c_tqgpci(int, int *, char *, void *);
 
     // Get constituent name by the sequential constituent index returned by
     // c_tqgphc1. The constituents are numbered over all sublattices from
@@ -283,7 +263,6 @@ extern "C"
     // static database data but owns independent conditions and results.
     void c_tqcceq(char *, int *, void **, void **);
     void c_tqselceq(char *, void **);
-    void c_tqdceq(char *);
 
     void gb_c_tqini(int, void *);
     void gb_c_tqrpfil(char *, int, char **, void *);
@@ -293,11 +272,8 @@ extern "C"
     void gb_c_tqgpi2(int *, int *, char *, void *);
     void gb_c_tqsetc(char *, int, int, double, int *, void *);
     void gb_c_tqce(char *, int, int, double *, void *);
-    void gb_c_tqcalc(void *, int);
     void gb_c_tqce_with_check_after(void *);
-    void gb_c_step_normal(char *, double, double, double, void *);
     void gb_c_tqgetv(char *, int, int, int *, double *, void *);
-    void gb_c_tqgpci(int, int *, char *, void *);
     void gb_c_tqgpcn2(int, int, char *, void *);
     void gb_c_tqgphc1(int, int *, int *, int *, double *, double *, double *, void *);
     void gb_c_Change_Status_Phase(char *, int, double, void *);
@@ -305,7 +281,6 @@ extern "C"
     void gb_c_reset_conditions(char *, void *);
     void gb_c_tqcceq(char *, int *, void **, void **);
     void gb_c_tqselceq(char *, void **);
-    void gb_c_tqdceq(char *);
 }
 
 #define OCASI_CALL(symbol, ...)                         \
@@ -630,9 +605,12 @@ namespace OCASIAdapter
 
     bool OpenCalphadInterface::setConditions(double temperature,
                                              double pressure,
-                                             const std::map<std::string, double> &components)
+                                             const std::map<std::string, double> &components,
+                                             int *oxygen_component_index)
     {
         int condition_number = 0;
+        if (oxygen_component_index)
+            *oxygen_component_index = 0;
 
         // Set temperature (in Kelvin)
         char temperature_condition[] = "T";
@@ -657,20 +635,12 @@ namespace OCASIAdapter
             }
             char component_condition[] = "N";
             OCASI_CALL(c_tqsetc, component_condition, component_index, 0, comp.second, &condition_number, &ceq_);
+            if (oxygen_component_index && toUpperCopy(comp.first) == "O")
+                *oxygen_component_index = component_index;
+
         }
         std::cout << std::endl;
 
-        return true;
-    }
-
-    bool OpenCalphadInterface::setPressure(double pressure)
-    {
-        if (!ceq_ || !database_loaded_)
-            return false;
-
-        int condition_number = 0;
-        char pressure_condition[] = "P";
-        OCASI_CALL(c_tqsetc, pressure_condition, 0, 0, pressure, &condition_number, &ceq_);
         return true;
     }
 
@@ -688,25 +658,6 @@ namespace OCASIAdapter
 
         double reference_temperature_pressure[2] = {temperature, pressure};
         OCASI_CALL(c_Set_Reference_State, component_index, phase, reference_temperature_pressure, &ceq_);
-        return true;
-    }
-
-    bool OpenCalphadInterface::removeComponentCondition(const std::string &component_name)
-    {
-        if (!ceq_ || !database_loaded_)
-            return false;
-
-        const int component_index = getComponentIndex(component_name);
-        if (component_index <= 0)
-            return false;
-
-        int condition_number = 0;
-        char condition_name[] = "N";
-        constexpr double rnone = -1.0e-36;
-        OCASI_CALL(c_tqsetc, condition_name, component_index, -1, rnone, &condition_number, &ceq_);
-
-        std::cout << "[OpenCalphad debug] removed N condition for "
-                  << component_name << ", ceq=" << ceq_ << std::endl;
         return true;
     }
 
@@ -766,21 +717,6 @@ namespace OCASIAdapter
 
         std::cout << "[OpenCalphad debug] calculateEquilibriumChecked, ceq="
                   << ceq_ << std::endl;
-        return true;
-    }
-
-    bool OpenCalphadInterface::stepNormal(const std::string &axis_variable,
-                                          double minimum,
-                                          double maximum,
-                                          double increment)
-    {
-        if (!ceq_ || !database_loaded_)
-            return false;
-
-        char axis_name[24] = {0};
-        std::strncpy(axis_name, upperCopy(axis_variable).c_str(), sizeof(axis_name) - 1);
-
-        OCASI_CALL(c_step_normal, axis_name, minimum, maximum, increment, &ceq_);
         return true;
     }
 
@@ -939,6 +875,7 @@ namespace OCASIAdapter
             }
         }
 
+
         // Extract component data for the currently loaded system only. The
         // OpenCalphad component globals can retain names from a previously
         // loaded database when matrix and grain-boundary calculations are
@@ -988,58 +925,6 @@ namespace OCASIAdapter
         return true;
     }
 
-    void OpenCalphadInterface::debugPrintCurrentState(const std::string &label) const
-    {
-        std::cout << "[OpenCalphad debug] " << label
-                  << " base_ceq=" << base_ceq_
-                  << " ceq=" << ceq_
-                  << " database_loaded=" << database_loaded_
-                  << " database=" << loaded_database_path_
-                  << " elements:";
-        for (const auto& element : element_names_)
-            std::cout << ' ' << element;
-        std::cout << std::endl;
-
-        if (!ceq_ || !database_loaded_)
-            return;
-
-        void *ceq = const_cast<void *>(ceq_);
-        int n_values = 1;
-        double temperature = 0.0;
-        char temperature_variable[] = "T";
-        OCASI_CALL(c_tqgetv, temperature_variable, 0, 0, &n_values, &temperature, &ceq);
-        if (n_values == 1)
-            std::cout << "[OpenCalphad debug] T=" << temperature << " K" << std::endl;
-
-        for (const auto& comp_name : element_names_)
-        {
-            const int component_index = getComponentIndex(comp_name);
-            if (component_index <= 0)
-                continue;
-
-            n_values = 1;
-            double component_moles = 0.0;
-            char component_moles_variable[] = "N";
-            OCASI_CALL(c_tqgetv, component_moles_variable, component_index, 0, &n_values, &component_moles, &ceq);
-
-            n_values = 1;
-            double mole_fraction = 0.0;
-            char mole_fraction_variable[] = "X";
-            OCASI_CALL(c_tqgetv, mole_fraction_variable, component_index, 0, &n_values, &mole_fraction, &ceq);
-
-            n_values = 1;
-            double chemical_potential = 0.0;
-            char chemical_potential_variable[] = "MU";
-            OCASI_CALL(c_tqgetv, chemical_potential_variable, component_index, 0, &n_values, &chemical_potential, &ceq);
-
-            std::cout << "[OpenCalphad debug] component " << comp_name
-                      << " N=" << component_moles
-                      << " X=" << mole_fraction
-                      << " MU=" << chemical_potential << " J/mol"
-                      << std::endl;
-        }
-    }
-
     void OpenCalphadInterface::reset(bool clear_database)
     {
         if (!ceq_)
@@ -1057,34 +942,7 @@ namespace OCASIAdapter
             nel_ = 0;
         }
     }
-
-    std::string OpenCalphadInterface::getPhaseNameAtIndex(int phase_index) const
-    {
-        if (!ceq_)
-            return "";
-
-        char phase_name_buf[64] = {0};
-        void *ceq = const_cast<void *>(ceq_);
-        OCASI_CALL(c_tqgpn, phase_index, phase_name_buf, &ceq);
-        return std::string(phase_name_buf);
-    }
-
-    int OpenCalphadInterface::getPhaseIndex(const std::string &phase_name) const
-    {
-        if (!ceq_)
-            return -1;
-
-        int ph_idx = -1;
-        char ph_name[64];
-        std::strncpy(ph_name, phase_name.c_str(), sizeof(ph_name) - 1);
-        ph_name[sizeof(ph_name) - 1] = '\0';
-
-        int idx = 0;
-        void *ceq = const_cast<void *>(ceq_);
-        OCASI_CALL(c_tqgpi, &idx, ph_name, &ceq);
-        return idx >= 0 ? idx : -1;
-    }
-
+    
     int OpenCalphadInterface::currentElementCount() const
     {
         return use_prefixed_symbols_ ? gb_c_nel : c_nel;
@@ -1410,160 +1268,214 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
 {
     try
     {
-        const OCASIAdapter::OpenCalphadContext context =
-            (location == "matrix")
-                ? OCASIAdapter::OpenCalphadContext::Matrix
-                : OCASIAdapter::OpenCalphadContext::FissionProducts;
-        auto& oc = OCASIAdapter::getOpenCalphadInterface(context);
-
-        std::cout << "[OpenCalphad debug] run case location=" << location
-                  << " solver=" << openCalphadSolveModeName(solve_mode)
-                  << " T=" << temperature
-                  << " P=" << pressure
-                  << " database=" << database_path
-                  << " valid_elements:";
-        for (const auto& element : valid_elements)
-            std::cout << ' ' << element;
-        std::cout << std::endl;
-
-        const bool database_ready = oc.ensureDatabaseLoaded(database_path, valid_elements);
-        if (!database_ready)
+        if (location == "matrix")
         {
-            std::cerr << "Error: Failed to load OpenCalphad database: " << database_path << std::endl;
-            return false;
-        }
+            auto& oc = OCASIAdapter::getOpenCalphadInterface(
+                        OCASIAdapter::OpenCalphadContext::Matrix
+                    );
 
-        const bool reuse_existing_record = solve_mode == OpenCalphadSolveMode::SaveReadWarmStart;
-        const bool record_ready =
-            oc.prepareCalculationRecord(equilibriumRecordName(location, solve_mode), reuse_existing_record);
-        if (!record_ready)
-        {
-            std::cerr << "Error: Failed to prepare OpenCalphad equilibrium record" << std::endl;
-            return false;
-        }
-        oc.reset(false);
-        const bool reference_state_ready =
-            oc.setReferenceState("O", "GAS", -1.0, reference_oxygen_pressure_bar * 1.0e6);
-        if (!reference_state_ready)
-            std::cerr << "Warning: Failed to set OpenCalphad oxygen gas reference state" << std::endl;
+            std::cout << "[OpenCalphad debug] run case location=" << location
+                    << " solver=" << openCalphadSolveModeName(solve_mode)
+                    << " T=" << temperature
+                    << " P=" << pressure
+                    << " database=" << database_path
+                    << " valid_elements:";
+            for (const auto& element : valid_elements)
+                std::cout << ' ' << element;
+            std::cout << std::endl;
 
-        const bool use_oxygen_potential =
-            location == "at grain boundary" && solve_mode != OpenCalphadSolveMode::FixedOxygenMoles;
-
-        std::map<std::string, double> components_map;
-        for (const auto& comp : components)
-        {
-            if (use_oxygen_potential && toUpperCopy(comp.name) == "O")
-                continue;
-            components_map[comp.name] = comp.fraction;
-        }
-
-        const bool conditions_ready = oc.setConditions(temperature, pressure, components_map);
-        if (!conditions_ready)
-        {
-            std::cerr << "Error: Failed to set OpenCalphad conditions" << std::endl;
-            return false;
-        }
-        oc.debugPrintCurrentState("after setting input conditions");
-        
-        if (use_oxygen_potential)
-        {
-            const double oxygen_potential_j_per_mol_o = oxygen_potential_kj_per_mol_o2 * 1.0e3 / 2.0;
-            const bool oxygen_potential_ready = oc.setComponentPotential("O", oxygen_potential_j_per_mol_o);
-            if (!oxygen_potential_ready)
+            const bool database_ready = oc.ensureDatabaseLoaded(database_path, valid_elements);
+            if (!database_ready)
             {
-                std::cerr << "Error: Failed to set OpenCalphad oxygen potential condition" << std::endl;
+                std::cerr << "Error: Failed to load OpenCalphad database: " << database_path << std::endl;
                 return false;
             }
-            oc.debugPrintCurrentState("after oxygen potential condition");
+
+            const bool reuse_existing_record = solve_mode == OpenCalphadSolveMode::SaveReadWarmStart;
+            const bool record_ready =
+                oc.prepareCalculationRecord(equilibriumRecordName(location, solve_mode), reuse_existing_record);
+            if (!record_ready)
+            {
+                std::cerr << "Error: Failed to prepare OpenCalphad equilibrium record" << std::endl;
+                return false;
+            }
+            oc.reset(false);
+            const bool reference_state_ready =
+                oc.setReferenceState("O", "GAS", -1.0, reference_oxygen_pressure_bar * 1.0e6);
+            if (!reference_state_ready)
+                std::cerr << "Warning: Failed to set OpenCalphad oxygen gas reference state" << std::endl;
+
+            std::map<std::string, double> components_map;
+            for (const auto& comp : components)
+                components_map[comp.name] = comp.fraction;
+
+            const bool conditions_ready = oc.setConditions(temperature, pressure, components_map);
+            if (!conditions_ready)
+            {
+                std::cerr << "Error: Failed to set OpenCalphad conditions" << std::endl;
+                return false;
+            }
+            std::cout << "[OpenCalphad debug] input conditions set; equilibrium state will be refreshed after calculation"
+                      << std::endl;
+
+            // Same first solve as the previous macro `c e`: no grid minimizer.
+            bool clear_equilibrium = true;
+
+            const bool initial_equilibrium_ready = oc.calculateEquilibrium(-1);
+            if (!initial_equilibrium_ready)
+            {
+                std::cerr << "Warning: Initial OpenCalphad equilibrium calculation failed" << std::endl;
+                clear_equilibrium = false;
+            }
+
+            if (solve_mode == OpenCalphadSolveMode::SaveReadWarmStart ||
+                solve_mode == OpenCalphadSolveMode::GlobalEquilibrium)
+            {
+                const bool checked_equilibrium_ready = oc.calculateEquilibriumChecked();
+                if (!checked_equilibrium_ready)
+                {
+                    std::cerr << "Warning: OpenCalphad checked equilibrium calculation failed" << std::endl;
+                    clear_equilibrium = false;
+                }
+            }
+            else if (solve_mode == OpenCalphadSolveMode::OnlyC1MO2)
+            {
+                oc.setPhaseStatus("*", -2, 0.0);
+                oc.setPhaseStatus("GAS", 0, 1.0);
+                const bool gas_only_ready = oc.calculateEquilibrium(-1);
+                if (!gas_only_ready)
+                {
+                    std::cerr << "Warning: OpenCalphad gas-only equilibrium calculation failed" << std::endl;
+                    clear_equilibrium = false;
+                }
+                oc.setPhaseStatus("C1_MO2", 0, 1.0);
+                const bool c1_mo2_ready = oc.calculateEquilibrium(-1) && oc.calculateEquilibriumChecked();
+                if (!c1_mo2_ready)
+                {
+                    std::cerr << "Warning: OpenCalphad fixed C1_MO2 equilibrium failed" << std::endl;
+                    clear_equilibrium = false;
+                }
+            }
+
+            oc.extractResults(output_data);
+            std::cout << "[OpenCalphad debug] matrix output phases="
+                    << output_data.solution_phases.size()
+                    << " components=" << output_data.components.size()
+                    << std::endl;
+
+            return clear_equilibrium;
         }
-
-        // Same first solve as the previous macro `c e`: no grid minimizer.
-        bool clear_equilibrium = true;
-
-        const bool initial_equilibrium_ready = oc.calculateEquilibrium(-1);
-        if (!initial_equilibrium_ready)
+        else if (location == "at grain boundary")
         {
-            std::cerr << "Warning: Initial OpenCalphad equilibrium calculation failed" << std::endl;
-            clear_equilibrium = false;
-        }
-        else
-            oc.debugPrintCurrentState("after initial equilibrium");
+            auto& oc = OCASIAdapter::getOpenCalphadInterface(OCASIAdapter::OpenCalphadContext::FissionProducts);
 
-        if (solve_mode == OpenCalphadSolveMode::SaveReadWarmStart ||
-            solve_mode == OpenCalphadSolveMode::GlobalEquilibrium)
-        {
+            std::cout << "[OpenCalphad debug] run case location=" << location
+                    << " solver=" << openCalphadSolveModeName(solve_mode)
+                    << " T=" << temperature
+                    << " P=" << pressure
+                    << " database=" << database_path
+                    << " valid_elements:";
+            for (const auto& element : valid_elements)
+                std::cout << ' ' << element;
+            std::cout << std::endl;
+
+            const bool database_ready = oc.ensureDatabaseLoaded(database_path, valid_elements);
+            if (!database_ready)
+            {
+                std::cerr << "Error: Failed to load OpenCalphad database: " << database_path << std::endl;
+                return false;
+            }
+
+            const bool reuse_existing_record = solve_mode == OpenCalphadSolveMode::SaveReadWarmStart;
+            const bool record_ready =
+                oc.prepareCalculationRecord(equilibriumRecordName(location, solve_mode), reuse_existing_record);
+            if (!record_ready)
+            {
+                std::cerr << "Error: Failed to prepare OpenCalphad equilibrium record" << std::endl;
+                return false;
+            }
+            oc.reset(false);
+            const bool reference_state_ready =
+                oc.setReferenceState("O", "GAS", -1.0, reference_oxygen_pressure_bar * 1.0e6);
+            if (!reference_state_ready)
+                std::cerr << "Warning: Failed to set OpenCalphad oxygen gas reference state" << std::endl;
+
+            const bool use_oxygen_potential =
+                solve_mode != OpenCalphadSolveMode::FixedOxygenMoles;
+            if (!use_oxygen_potential)
+                std::cout << "[OpenCalphad debug] fixed oxygen mode: setting N(O) with normalized component contents; no MU(O) condition"
+                          << std::endl;
+
+            std::map<std::string, double> components_map;
+            for (const auto& comp : components)
+            {
+                if (use_oxygen_potential && toUpperCopy(comp.name) == "O")
+                    continue;
+                components_map[comp.name] = comp.fraction;
+            }
+
+            int O_index = 0;
+
+            const bool conditions_ready = oc.setConditions(
+                temperature,
+                pressure,
+                components_map,
+                use_oxygen_potential ? nullptr : &O_index);
+            if (!conditions_ready)
+            {
+                std::cerr << "Error: Failed to set OpenCalphad conditions" << std::endl;
+                return false;
+            }
+            std::cout << "[OpenCalphad debug] input conditions set; equilibrium state will be refreshed after calculation"
+                      << std::endl;
+
+            if (use_oxygen_potential)
+            {
+                const double oxygen_potential_j_per_mol_o = oxygen_potential_kj_per_mol_o2 * 1.0e3 / 2.0;
+                const bool oxygen_potential_ready = oc.setComponentPotential("O", oxygen_potential_j_per_mol_o);
+                if (!oxygen_potential_ready)
+                {
+                    std::cerr << "Error: Failed to set OpenCalphad oxygen potential condition" << std::endl;
+                    return false;
+                }
+                std::cout << "[OpenCalphad debug] oxygen potential condition set; equilibrium state will be refreshed after calculation"
+                          << std::endl;
+            }
+
+            bool clear_equilibrium = true;
+            // Same first solve as the previous macro `c e`: no grid minimizer.
+            const bool initial_equilibrium_ready = oc.calculateEquilibrium(-1);
+            if (!initial_equilibrium_ready)
+            {
+                std::cerr << "Warning: Initial OpenCalphad equilibrium calculation failed" << std::endl;
+                clear_equilibrium = false;
+            }
+
             const bool checked_equilibrium_ready = oc.calculateEquilibriumChecked();
             if (!checked_equilibrium_ready)
             {
                 std::cerr << "Warning: OpenCalphad checked equilibrium calculation failed" << std::endl;
                 clear_equilibrium = false;
             }
-            else
-                oc.debugPrintCurrentState("after checked equilibrium");
-        }
-        else if (solve_mode == OpenCalphadSolveMode::PressureAxisStep)
-        {
-            constexpr double start_pressure = 1.0e5;
-            const double pressure_increment = 0.025 * std::abs(pressure - start_pressure);
 
-            const bool start_pressure_ready =
-                oc.setPressure(start_pressure) && oc.calculateEquilibriumChecked();
-            if (!start_pressure_ready)
-            {
-                std::cerr << "Warning: OpenCalphad checked equilibrium at start pressure failed" << std::endl;
-                clear_equilibrium = false;
-            }
-
-            const bool pressure_axis_ready =
-                oc.stepNormal("P", start_pressure, pressure, pressure_increment) &&
-                oc.setPressure(pressure) &&
-                oc.calculateEquilibrium(-1) &&
-                oc.calculateEquilibriumChecked();
-            if (!pressure_axis_ready)
-            {
-                std::cerr << "Warning: OpenCalphad pressure-axis final equilibrium failed" << std::endl;
-                clear_equilibrium = false;
-            }
-            else
-                oc.debugPrintCurrentState("after pressure-axis equilibrium");
-        }
-        else if (solve_mode == OpenCalphadSolveMode::OnlyC1MO2)
-        {
-            oc.setPhaseStatus("*", -2, 0.0);
-            oc.setPhaseStatus("GAS", 0, 1.0);
-            const bool gas_only_ready = oc.calculateEquilibrium(-1);
-            if (!gas_only_ready)
-            {
-                std::cerr << "Warning: OpenCalphad gas-only equilibrium calculation failed" << std::endl;
-                clear_equilibrium = false;
-            }
-            oc.setPhaseStatus("C1_MO2", 0, 1.0);
-            const bool c1_mo2_ready = oc.calculateEquilibrium(-1) && oc.calculateEquilibriumChecked();
-            if (!c1_mo2_ready)
-            {
-                std::cerr << "Warning: OpenCalphad fixed C1_MO2 equilibrium failed" << std::endl;
-                clear_equilibrium = false;
-            }
-            else
-                oc.debugPrintCurrentState("after fixed C1_MO2 equilibrium");
-        }
-
-        if (location == "matrix")
-        {
             oc.extractResults(output_data);
-            std::cout << "[OpenCalphad debug] matrix output phases="
+            std::cout << "[OpenCalphad debug] grain-boundary output phases="
                       << output_data.solution_phases.size()
                       << " components=" << output_data.components.size()
                       << std::endl;
-        }
 
-        return clear_equilibrium;
+            return clear_equilibrium;
+        }
+        else
+        {
+            std::cerr << "Error: Invalid location for OpenCalphad case: " << location << std::endl;
+            return false;
+        }
     }
-    catch (const std::exception& e)
-    {
-        std::cerr << "Exception in runOpenCalphadCaseOCASI: " << e.what() << std::endl;
-        return false;
+        catch (const std::exception& e)
+        {
+            std::cerr << "Exception in runOpenCalphadCaseOCASI: " << e.what() << std::endl;
+            return false;
     }
 }
 
@@ -1578,7 +1490,6 @@ bool getOpenCalphadResults(const std::string& location,
                 : OCASIAdapter::OpenCalphadContext::FissionProducts;
         auto& oc = OCASIAdapter::getOpenCalphadInterface(context);
 
-        oc.debugPrintCurrentState("before output extraction for " + location);
         if (!oc.extractResults(output_data))
         {
             std::cerr << "Error: Failed to extract OpenCalphad results" << std::endl;
