@@ -108,6 +108,8 @@ void Simulation::CallThermochemistryModule(std::string                      loca
     solvers.push_back(OCSolver::GlobalEquilibrium);
     if (location == "matrix")
         solvers.push_back(OCSolver::OnlyC1MO2);
+    else if (location == "at grain boundary")
+        solvers.push_back(OCSolver::FixedOxygenMoles);
 
     std::cout << "[Thermochemistry debug] solvers for " << location << ':';
     for (const auto& solver : solvers)
