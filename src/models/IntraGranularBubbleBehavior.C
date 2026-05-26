@@ -171,9 +171,8 @@ namespace
         const double default_k = (option == 0) ? 1.0e6 : 8.0e5;  // COARSENING: Barani or tuned Nicodemo K0.
         const double nominal_k = (k0 > 0.0) ? std::min(k0, 1.0e6) : default_k;  // COARSENING.
         const double selected_temperature_saturation =
-            (temperature_saturation > 0.0) ? temperature_saturation : 1850.0;  // COARSENING.
-        const double selected_burnup_saturation =
-            (burnup_saturation > 0.0) ? burnup_saturation : 16.0;  // COARSENING.
+            (temperature_saturation > 0.0) ? temperature_saturation : 1850.0;                            // COARSENING.
+        const double selected_burnup_saturation = (burnup_saturation > 0.0) ? burnup_saturation : 16.0;  // COARSENING.
 
         switch (option)
         {
@@ -366,27 +365,26 @@ void Simulation::IntraGranularBubbleBehavior()
         const int coarsening_dislocation_model =
             int(input_variable["iCoarseningDislocationDensity"].getValue());  // COARSENING.
         const int coarsening_k_model =
-            int(input_variable["iCoarseningKModel"].getValue());  // COARSENING: 0=Barani, 1=Nicodemo algebraic, 2=Nicodemo kinetic.
+            int(input_variable["iCoarseningKModel"]
+                    .getValue());  // COARSENING: 0=Barani, 1=Nicodemo algebraic, 2=Nicodemo kinetic.
 
         const double dislocation_density = coarseningDislocationDensity(
             coarsening_dislocation_model, sciantix_variable["Burnup"].getFinalValue(), temperature);
         const double maximum_temperature =
             std::max(sciantix_variable["Coarsening maximum temperature"].getInitialValue(), temperature);
-        const double coarsening_temperature_saturation =
-            (scaling_factors["Coarsening Tsat"].getValue() > 0.0) ?
-                scaling_factors["Coarsening Tsat"].getValue() :
-                1850.0;  // COARSENING.
-        const double coarsening_burnup_saturation =
-            (scaling_factors["Coarsening Bsat"].getValue() > 0.0) ?
-                scaling_factors["Coarsening Bsat"].getValue() :
-                16.0;  // COARSENING.
-        const double bubbles_per_dislocation = coarseningBubblesPerDislocation(
-            coarsening_k_model,
-            sciantix_variable["Burnup"].getFinalValue(),
-            maximum_temperature,
-            scaling_factors["Coarsening K0"].getValue(),
-            coarsening_temperature_saturation,
-            coarsening_burnup_saturation);
+        const double coarsening_temperature_saturation = (scaling_factors["Coarsening Tsat"].getValue() > 0.0)
+                                                             ? scaling_factors["Coarsening Tsat"].getValue()
+                                                             : 1850.0;  // COARSENING.
+        const double coarsening_burnup_saturation      = (scaling_factors["Coarsening Bsat"].getValue() > 0.0)
+                                                             ? scaling_factors["Coarsening Bsat"].getValue()
+                                                             : 16.0;  // COARSENING.
+        const double bubbles_per_dislocation =
+            coarseningBubblesPerDislocation(coarsening_k_model,
+                                            sciantix_variable["Burnup"].getFinalValue(),
+                                            maximum_temperature,
+                                            scaling_factors["Coarsening K0"].getValue(),
+                                            coarsening_temperature_saturation,
+                                            coarsening_burnup_saturation);
         const double initial_dislocation_bubbles     = bubbles_per_dislocation * dislocation_density;
         const double burgers_vector                  = 3.85e-10;  // COARSENING: m, Barani et al. Table 1.
         const double dislocation_core_radius         = 5.0 * burgers_vector;
@@ -409,9 +407,8 @@ void Simulation::IntraGranularBubbleBehavior()
                 const double site_saturation = coarseningPositive(initial_dislocation_bubbles);
                 if (site_saturation > 0.0 && time_step > 0.0)
                 {
-                    const double burnup_initial =
-                        coarseningPositive(sciantix_variable["Burnup"].getInitialValue());
-                    const double burnup_final = coarseningPositive(sciantix_variable["Burnup"].getFinalValue());
+                    const double burnup_initial = coarseningPositive(sciantix_variable["Burnup"].getInitialValue());
+                    const double burnup_final   = coarseningPositive(sciantix_variable["Burnup"].getFinalValue());
                     const double burnup_activation_increment =
                         coarseningPositive(coarseningBurnupActivation(burnup_final, coarsening_burnup_saturation) -
                                            coarseningBurnupActivation(burnup_initial, coarsening_burnup_saturation));
@@ -421,10 +418,8 @@ void Simulation::IntraGranularBubbleBehavior()
                         std::min(std::max(burnup_activation_increment * temperature_activation, 0.0), 1.0);
                     const double available_sites =
                         std::min(std::max(1.0 - dislocation_bubble_concentration / site_saturation, 0.0), 1.0);
-                    dislocation_bubble_concentration +=
-                        site_saturation * activation_increment * available_sites;
-                    dislocation_bubble_concentration =
-                        std::min(dislocation_bubble_concentration, site_saturation);
+                    dislocation_bubble_concentration += site_saturation * activation_increment * available_sites;
+                    dislocation_bubble_concentration = std::min(dislocation_bubble_concentration, site_saturation);
                 }
             }
             else

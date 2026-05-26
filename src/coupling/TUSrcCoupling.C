@@ -72,7 +72,8 @@ void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[
     Sciantix_options[22] = ReadOneSetting("iChromiumSolubility", input_settings, input_check);
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
-    Sciantix_options[25] = ReadOptionalSetting("iCoarseningDislocationDensity", input_settings, input_check, 0);  // COARSENING.
+    Sciantix_options[25] =
+        ReadOptionalSetting("iCoarseningDislocationDensity", input_settings, input_check, 0);         // COARSENING.
     Sciantix_options[26] = ReadOptionalSetting("iCoarseningKModel", input_settings, input_check, 0);  // COARSENING.
 
     if (!input_scaling_factors.fail())
@@ -95,15 +96,15 @@ void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[
     }
     else
     {
-        Sciantix_scaling_factors[0] = 1.0;
-        Sciantix_scaling_factors[1] = 1.0;
-        Sciantix_scaling_factors[2] = 1.0;
-        Sciantix_scaling_factors[3] = 1.0;
-        Sciantix_scaling_factors[4] = 1.0;
-        Sciantix_scaling_factors[5] = 1.0;
-        Sciantix_scaling_factors[6] = 1.0;
-        Sciantix_scaling_factors[7] = 1.0;
-        Sciantix_scaling_factors[8] = 1.0;
+        Sciantix_scaling_factors[0]  = 1.0;
+        Sciantix_scaling_factors[1]  = 1.0;
+        Sciantix_scaling_factors[2]  = 1.0;
+        Sciantix_scaling_factors[3]  = 1.0;
+        Sciantix_scaling_factors[4]  = 1.0;
+        Sciantix_scaling_factors[5]  = 1.0;
+        Sciantix_scaling_factors[6]  = 1.0;
+        Sciantix_scaling_factors[7]  = 1.0;
+        Sciantix_scaling_factors[8]  = 1.0;
         Sciantix_scaling_factors[9]  = 0.0;  // COARSENING: use model-specific K0 default.
         Sciantix_scaling_factors[10] = 0.0;  // COARSENING: use model-specific Tsat default.
         Sciantix_scaling_factors[11] = 0.0;  // COARSENING: use model-specific Bsat default.

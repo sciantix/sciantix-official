@@ -56,7 +56,7 @@ std::vector<std::string> getInputVariableNames()
         "iDensification",
         "iReleaseMode",
         "iCoarseningDislocationDensity",  // COARSENING: 0=fixed Barani 2019, 1=Veshchunov 2009, 2=Nogita 1995.
-        "iCoarseningKModel"};              // COARSENING: 0=Barani 2019, 1=Nicodemo 2026 algebraic, 2=Nicodemo 2026 kinetic.
+        "iCoarseningKModel"};  // COARSENING: 0=Barani 2019, 1=Nicodemo 2026 algebraic, 2=Nicodemo 2026 kinetic.
 
     return names;
 }
