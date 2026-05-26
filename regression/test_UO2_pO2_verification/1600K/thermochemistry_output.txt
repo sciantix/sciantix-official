@@ -1,5 +1,5 @@
 Time (h)	Temperature (K)	Fission rate (fiss / m3 s)	Hydrostatic stress (MPa)	Steam pressure (atm)	System pressure (Pa)	O (gas, matrix) (mol/m3)	O2 (gas, matrix) (mol/m3)	C1_MO2 (condensed, matrix) (mol/m3)	U3O8_S1 (condensed, matrix) (mol/m3)	U3O8_S2 (condensed, matrix) (mol/m3)	U3O8_S3 (condensed, matrix) (mol/m3)	U3O8_S4 (condensed, matrix) (mol/m3)	U4O9_S1 (condensed, matrix) (mol/m3)	U4O9_S2 (condensed, matrix) (mol/m3)	U4O9_S3 (condensed, matrix) (mol/m3)	UO3 (condensed, matrix) (mol/m3)	
-0	1600	0	0	0	100000	0	0	1.127e+05	0	0	0	0	0	0	0	0	
+0	1600	0	0	0	100000	0	0	0	0	0	0	0	0	0	0	0	
 3	1600	0	0	0	100000	0	0	1.127e+05	0	0	0	0	0	0	0	0	
 6	1600	0	0	0	100000	0	0	1.127e+05	0	0	0	0	0	0	0	0	
 9	1600	0	0	0	100000	0	0	1.127e+05	0	0	0	0	0	0	0	0	
