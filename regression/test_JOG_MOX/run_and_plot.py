@@ -1405,11 +1405,33 @@ def main() -> int:
         action="store_true",
         help="Skip the SCIANTIX runs and regenerate plots from existing point outputs.",
     )
+    parser.add_argument(
+        "--start-case",
+        metavar="POINT_DIR",
+        help="Start running from this point directory name, e.g. point_18_r_2p3625mm.",
+    )
+    parser.add_argument(
+        "--end-case",
+        metavar="POINT_DIR",
+        help="Stop running after this point directory name, e.g. point_20_r_2p6325mm.",
+    )
     args = parser.parse_args()
 
     case_directories = case_dirs()
     if not case_directories:
         raise FileNotFoundError(f"No point_* directories found in {TEST_DIR}")
+    case_names = [case_dir.name for case_dir in case_directories]
+    if args.start_case:
+        if args.start_case not in case_names:
+            raise ValueError(f"Unknown --start-case {args.start_case!r}")
+        start_index = case_names.index(args.start_case)
+        case_directories = case_directories[start_index:]
+        case_names = case_names[start_index:]
+    if args.end_case:
+        if args.end_case not in case_names:
+            raise ValueError(f"Unknown --end-case {args.end_case!r}")
+        end_index = case_names.index(args.end_case)
+        case_directories = case_directories[:end_index + 1]
 
     PLOTS_DIR.mkdir(exist_ok=True)
     saved_paths: list[Path] = []

@@ -587,20 +587,36 @@ namespace OCASIAdapter
         std::copy(bounded_name.begin(), bounded_name.end(), ceq_name.begin());
         ceq_name.back() = '\0';
 
-        if (reuse_existing_record && known_equilibrium_records_.count(bounded_name) > 0)
+        const bool known_record = known_equilibrium_records_.count(bounded_name) > 0;
+
+        std::cout << "[OpenCalphad debug] preparing equilibrium record "
+                  << bounded_name
+                  << ", reuse_existing_record=" << reuse_existing_record
+                  << ", known=" << known_record
+                  << ", base_ceq=" << base_ceq_
+                  << ", current_ceq=" << ceq_ << std::endl;
+
+        if (known_record)
         {
+            std::cout << "[OpenCalphad debug] before selecting equilibrium record "
+                      << bounded_name << ", current_ceq=" << ceq_ << std::endl;
             OCASI_CALL(c_tqselceq, ceq_name.data(), &ceq_);
             std::cout << "[OpenCalphad debug] selected equilibrium record "
                       << bounded_name << ", ceq=" << ceq_ << std::endl;
             return ceq_ != nullptr;
         }
 
-        if (known_equilibrium_records_.count(bounded_name) > 0)
-            OCASI_CALL(c_tqdceq, ceq_name.data());
-
         void *new_ceq = nullptr;
         int equilibrium_index = 0;
+        std::cout << "[OpenCalphad debug] before creating equilibrium record "
+                  << bounded_name << ", base_ceq=" << base_ceq_
+                  << ", current_ceq=" << ceq_ << std::endl;
         OCASI_CALL(c_tqcceq, ceq_name.data(), &equilibrium_index, &new_ceq, &base_ceq_);
+        std::cout << "[OpenCalphad debug] after creating equilibrium record "
+                  << bounded_name << ", equilibrium_index=" << equilibrium_index
+                  << ", new_ceq=" << new_ceq
+                  << ", base_ceq=" << base_ceq_
+                  << ", current_ceq=" << ceq_ << std::endl;
         if (!new_ceq)
             return false;
 
@@ -1425,11 +1441,7 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             std::cerr << "Error: Failed to prepare OpenCalphad equilibrium record" << std::endl;
             return false;
         }
-        oc.debugPrintCurrentState("after record preparation");
-
         oc.reset(false);
-        oc.debugPrintCurrentState("after reset");
-
         const bool reference_state_ready =
             oc.setReferenceState("O", "GAS", -1.0, reference_oxygen_pressure_bar * 1.0e6);
         if (!reference_state_ready)
