@@ -148,7 +148,10 @@ void Simulation::CallThermochemistryModule(std::string                      loca
 
     // Attempt for each solver
     for (const auto& solver : solvers)
-    { 
+    {
+        output_data.solution_phases.clear();
+        output_data.components.clear();
+
         std::cout << "[Thermochemistry debug] attempting " << location
                   << " solver=" << static_cast<int>(solver) << std::endl;
 
@@ -163,12 +166,7 @@ void Simulation::CallThermochemistryModule(std::string                      loca
             location,
             sciantix_variable["Fuel oxygen potential"].getFinalValue(),
             output_data);
-        
-        bool has_usable_output = false; 
-        if (location == "matrix" && ((!output_data.solution_phases.empty())))
-            has_usable_output = true;
-        else if (location == "at grain boundary")
-            has_usable_output = case_success;
+        const bool has_usable_output = !output_data.solution_phases.empty();
 
         std::cout << "[Thermochemistry debug] solver=" << static_cast<int>(solver)
                   << " case_success=" << case_success
@@ -177,12 +175,11 @@ void Simulation::CallThermochemistryModule(std::string                      loca
                   << " components=" << output_data.components.size()
                   << std::endl;
 
-        if (!case_success || !has_usable_output)
-            continue;
-
-        // Mark as solved since we got results
-        solved = true;
-        break;
+        if (case_success && has_usable_output)
+        {
+            solved = true;
+            break;
+        }
     }
 
     if (!solved)
