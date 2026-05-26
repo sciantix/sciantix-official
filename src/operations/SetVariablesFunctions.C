@@ -55,7 +55,7 @@ std::vector<std::string> getInputVariableNames()
         "iChromiumSolubility",
         "iDensification",
         "iReleaseMode",
-        "iCoarseningDislocationDensity",  // COARSENING: 1=fixed Barani 2019, 2=Zullo 2026.
+        "iCoarseningDislocationDensity",  // COARSENING: 0=fixed Barani 2019, 1=Veshchunov 2009, 2=Nogita 1995.
         "iCoarseningKModel"};              // COARSENING: 0=Barani 2019, 1=Nicodemo 2026 algebraic, 2=Nicodemo 2026 kinetic.
 
     return names;

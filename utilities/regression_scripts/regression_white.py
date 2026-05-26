@@ -41,6 +41,68 @@ ListNames = ['4000-1','4000-2','4000-3','4000-4','4000-5',
              '4162-1','4162-2','4163-3','4162-4',
              '4163-1','4163-2','4163-3','4163-4'
              ]
+
+# COARSENING: White utility regression settings for the Veshchunov/Nicodemo model-4 run.
+WHITE_COARSENING_SETTINGS = {
+    "iIntraGranularBubbleBehavior": (
+        "4    #    iIntraGranularBubbleBehavior "
+        "(1= Pizzocri et al. (2018), 4= Barani two-size coarsening COARSENING)"
+    ),
+    "iResolutionRate": (
+        "4    #    iResolutionRate "
+        "(0= constant value, 1= Turnbull (1971), 2= Losonen (2000), "
+        "3= thermal resolution, Cognini et al. (2021), 4= Setyawan size-dependent COARSENING)"
+    ),
+    "iTrappingRate": (
+        "2    #    iTrappingRate "
+        "(0= constant value, 1= Ham (1958), 2= Ham bulk + Barani dislocation trapping COARSENING)"
+    ),
+    "iNucleationRate": (
+        "2    #    iNucleationRate "
+        "(0= constant value, 1= Olander, Wongsawaeng (2006), "
+        "2= Olander bulk + Barani dislocation nucleation COARSENING)"
+    ),
+    "iCoarseningDislocationDensity": (
+        "1    #    iCoarseningDislocationDensity "
+        "(0= Barani 2019, 1= Veshchunov 2009, 2= Nogita 1995 COARSENING)"
+    ),
+    "iCoarseningKModel": (
+        "1    #    iCoarseningKModel "
+        "(0= Barani 2019 constant K, 1= Nicodemo 2026 tuned fBu*fT, "
+        "2= Nicodemo 2026 tuned kinetic COARSENING)"
+    ),
+}
+
+
+def apply_white_coarsening_settings():
+    """COARSENING: enforce the requested White model-4 settings before running/golding."""
+    settings_path = "input_settings.txt"
+    with open(settings_path, "r") as stream:
+        lines = stream.read().splitlines()
+
+    keys_to_update = set(WHITE_COARSENING_SETTINGS)
+    updated_keys = set()
+    updated_lines = []
+
+    for line in lines:
+        matched_key = None
+        for key in keys_to_update:
+            if key in line:
+                matched_key = key
+                break
+
+        if matched_key is None:
+            updated_lines.append(line)
+        else:
+            updated_lines.append(WHITE_COARSENING_SETTINGS[matched_key])
+            updated_keys.add(matched_key)
+
+    for key in WHITE_COARSENING_SETTINGS:
+        if key not in updated_keys:
+            updated_lines.append(WHITE_COARSENING_SETTINGS[key])
+
+    with open(settings_path, "w") as stream:
+        stream.write("\n".join(updated_lines) + "\n")
 # Data from SCIANTIX 1.0
 gbSwelling1 = np.array([1.19, 1.16, 1.13, 1.12, 1.29,                   # 4000
                0.91, 0.89, 0.85, 0.79, 0.77, 0.81,             # 4004
@@ -522,6 +584,7 @@ def regression_white(wpath, mode_White, mode_gold, mode_plot, folderList, number
             os.chdir(file)
             print(f"Now in folder {file}...")
             number_of_tests += 1
+            apply_white_coarsening_settings()
 
             if mode_gold == 0:
                 do_sciantix_only()
