@@ -211,7 +211,8 @@ class Simulation
      *   iResolutionRate = 4 selects the Setyawan-informed size-dependent re-solution;
      *   iTrappingRate = 2 enables Barani trapping to dislocations; iNucleationRate = 2 enables
      *   Barani dislocation-bubble nucleation; iCoarseningDislocationDensity = 0/1/2 selects fixed
-     *   Barani 2019 density, Veshchunov 2009, or Nogita 1995. COARSENING.
+     *   Barani 2019
+     * density, Veshchunov 2009, or Nogita 1995. COARSENING.
 
      *
      * @author D. Pizzocri
