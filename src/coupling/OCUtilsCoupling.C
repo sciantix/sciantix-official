@@ -1274,16 +1274,6 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
                         OCASIAdapter::OpenCalphadContext::Matrix
                     );
 
-            std::cout << "[OpenCalphad debug] run case location=" << location
-                    << " solver=" << openCalphadSolveModeName(solve_mode)
-                    << " T=" << temperature
-                    << " P=" << pressure
-                    << " database=" << database_path
-                    << " valid_elements:";
-            for (const auto& element : valid_elements)
-                std::cout << ' ' << element;
-            std::cout << std::endl;
-
             const bool database_ready = oc.ensureDatabaseLoaded(database_path, valid_elements);
             if (!database_ready)
             {
@@ -1315,8 +1305,6 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
                 std::cerr << "Error: Failed to set OpenCalphad conditions" << std::endl;
                 return false;
             }
-            std::cout << "[OpenCalphad debug] input conditions set; equilibrium state will be refreshed after calculation"
-                      << std::endl;
 
             // Same first solve as the previous macro `c e`: no grid minimizer.
             bool clear_equilibrium = true;
@@ -1358,10 +1346,6 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             }
 
             oc.extractResults(output_data);
-            std::cout << "[OpenCalphad debug] matrix output phases="
-                    << output_data.solution_phases.size()
-                    << " components=" << output_data.components.size()
-                    << std::endl;
 
             return clear_equilibrium;
         }
@@ -1484,10 +1468,7 @@ bool getOpenCalphadResults(const std::string& location,
 {
     try
     {
-        const OCASIAdapter::OpenCalphadContext context =
-            (location == "matrix")
-                ? OCASIAdapter::OpenCalphadContext::Matrix
-                : OCASIAdapter::OpenCalphadContext::FissionProducts;
+        const OCASIAdapter::OpenCalphadContext context = OCASIAdapter::OpenCalphadContext::FissionProducts;
         auto& oc = OCASIAdapter::getOpenCalphadInterface(context);
 
         if (!oc.extractResults(output_data))
@@ -1495,12 +1476,6 @@ bool getOpenCalphadResults(const std::string& location,
             std::cerr << "Error: Failed to extract OpenCalphad results" << std::endl;
             return false;
         }
-
-        std::cout << "[OpenCalphad debug] extracted output for " << location
-                  << ": phases=" << output_data.solution_phases.size()
-                  << " components=" << output_data.components.size()
-                  << std::endl;
-
         return true;
 
     }
