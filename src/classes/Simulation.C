@@ -89,8 +89,6 @@ void Simulation::execute()
     StoichiometryDeviation();
 #endif
 
-    SetPhaseDiagram("matrix");
-
     // FISSION PRODUCT BEHAVIOR
 
     GrainBoundarySweeping();
@@ -103,7 +101,7 @@ void Simulation::execute()
 
     IntragranularDiffusion();
 
-    SetPhaseDiagram("at grain boundary");
+    SetPhaseDiagram();
 
     GrainBoundaryMicroCracking();
 

@@ -186,23 +186,15 @@ class Simulation
      *
      */
     void IntragranularDiffusion();
-    
-    /**
-     * @brief Thermochemistry module, specific for a certain location.
-     * 
-     * @author E. Cappellari
-     * 
-     */
-    void SetPhaseDiagram(std::string location);
 
     /**
-     * @brief Function to couple SCIANTIX with a Thermochemistry code.
+     * @brief Function to couple SCIANTIX with a Thermochemistry module.
      * It writes the input, runs the code, reads and store the output in SCIANTIX thermochemistry variables.
      * 
      * @author E. Cappellari
      * 
      */
-    void CallThermochemistryModule(std::string location, SciantixArray<SciantixVariable> &sciantix_variable);
+    void SetPhaseDiagram();
 
     /**
      * @brief Grain growth based on specific model parameters affecting the system's materials.
