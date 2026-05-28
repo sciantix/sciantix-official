@@ -58,10 +58,6 @@ std::string equilibriumRecordName(const std::string& location,
             return location_prefix + "_WARM";
         case OCSolver::GlobalEquilibrium:
             return location_prefix + "_GLOBAL";
-        case OCSolver::PressureAxisStep:
-            return location_prefix + "_PSTEP";
-        case OCSolver::FixedOxygenMoles:
-            return location_prefix + "_FIXO";
         case OCSolver::OnlyC1MO2:
             return location_prefix + "_C1MO2";
     }
@@ -78,10 +74,6 @@ const char* openCalphadSolveModeName(OCUtilsCoupling::OpenCalphadSolveMode solve
             return "SaveReadWarmStart";
         case OCSolver::GlobalEquilibrium:
             return "GlobalEquilibrium";
-        case OCSolver::PressureAxisStep:
-            return "PressureAxisStep";
-        case OCSolver::FixedOxygenMoles:
-            return "FixedOxygenMoles";
         case OCSolver::OnlyC1MO2:
             return "OnlyC1MO2";
     }
@@ -112,8 +104,7 @@ namespace OCASIAdapter
                                       bool reuse_existing_record);
         bool setConditions(double temperature,
                            double pressure,
-                           const std::map<std::string, double> &components,
-                           int *oxygen_component_index = nullptr);
+                           const std::map<std::string, double> &components);
         bool setReferenceState(const std::string &component_name,
                                const std::string &phase_name,
                                double temperature,
@@ -378,6 +369,94 @@ namespace OCASIAdapter
             return "condensed";
         }
 
+        std::map<std::string, double> speciesStoichiometry(
+            const std::string& species_name,
+            const std::vector<std::string>& valid_elements)
+        {
+            std::map<std::string, std::string> valid_set;
+            for (const auto& element : valid_elements)
+                valid_set[upperCopy(element)] = element;
+
+            std::map<std::string, double> stoichiometry;
+            size_t i = 0;
+            while (i < species_name.size())
+            {
+                const unsigned char character = static_cast<unsigned char>(species_name[i]);
+                if (species_name[i] == '+' || species_name[i] == '-')
+                {
+                    ++i;
+                    while (i < species_name.size() && std::isdigit(static_cast<unsigned char>(species_name[i])))
+                        ++i;
+                    continue;
+                }
+
+                if (species_name[i] == ':' || species_name[i] == '_' || !std::isalpha(character))
+                {
+                    ++i;
+                    continue;
+                }
+
+                std::string element;
+                if (i + 2 <= species_name.size())
+                {
+                    const std::string candidate = upperCopy(species_name.substr(i, 2));
+                    if (candidate == "VA")
+                    {
+                        element = "Va";
+                        i += 2;
+                    }
+                    else
+                    {
+                        const auto it = valid_set.find(candidate);
+                        if (it != valid_set.end())
+                        {
+                            element = it->second;
+                            i += 2;
+                        }
+                    }
+                }
+
+                if (element.empty())
+                {
+                    const std::string candidate = upperCopy(species_name.substr(i, 1));
+                    const auto it = valid_set.find(candidate);
+                    if (it != valid_set.end())
+                    {
+                        element = it->second;
+                        ++i;
+                    }
+                    else
+                    {
+                        ++i;
+                        continue;
+                    }
+                }
+
+                double count = 1.0;
+                const size_t count_begin = i;
+                while (i < species_name.size() && std::isdigit(static_cast<unsigned char>(species_name[i])))
+                    ++i;
+                if (i > count_begin)
+                    count = std::stod(species_name.substr(count_begin, i - count_begin));
+
+                stoichiometry[element] += count;
+            }
+
+            return stoichiometry;
+        }
+
+        double speciesStoichiometricSize(const std::map<std::string, double>& stoichiometry)
+        {
+            double total_size = 0.0;
+            for (const auto& entry : stoichiometry)
+            {
+                if (entry.first != "Va")
+                    total_size += entry.second;
+            }
+
+            return total_size > 0.0 ? total_size : 1.0;
+        }
+
         // Merge per-element inventories while preserving elements that are
         // present in only one source phase or species.
         void addElementInventory(std::map<std::string, double> &target,
@@ -605,12 +684,9 @@ namespace OCASIAdapter
 
     bool OpenCalphadInterface::setConditions(double temperature,
                                              double pressure,
-                                             const std::map<std::string, double> &components,
-                                             int *oxygen_component_index)
+                                             const std::map<std::string, double> &components)
     {
         int condition_number = 0;
-        if (oxygen_component_index)
-            *oxygen_component_index = 0;
 
         // Set temperature (in Kelvin)
         char temperature_condition[] = "T";
@@ -635,9 +711,6 @@ namespace OCASIAdapter
             }
             char component_condition[] = "N";
             OCASI_CALL(c_tqsetc, component_condition, component_index, 0, comp.second, &condition_number, &ceq_);
-            if (oxygen_component_index && toUpperCopy(comp.first) == "O")
-                *oxygen_component_index = component_index;
-
         }
         std::cout << std::endl;
 
@@ -815,7 +888,7 @@ namespace OCASIAdapter
                         // Get constituent name by extended index
                         OCASI_CALL(c_tqgpcn2, base_phase_index, extended_constituent_index + 1, constituent_name, &ceq_);
                         constituent_name[sizeof(constituent_name) - 1] = '\0';
-                        const std::string name = trimOcName(constituent_name);
+                        const std::string name = normalizeSpeciesName(trimOcName(constituent_name));
                         if (!name.empty())
                             sublattice.composition[name] += constituent_fractions[extended_constituent_index];
 
@@ -859,19 +932,60 @@ namespace OCASIAdapter
             {
                 const std::string species_name = normalizeSpeciesName(oc_phase_name);
                 OCSpeciesData &species = output_phase.species[species_name];
-                species.moles += phase_data.moles;
-                species.atom_equivalent_moles += phase_data.moles;
+                const double species_moles =
+                    phase_data.form_units > 0.0 ? phase_data.form_units : phase_data.moles;
+                species.moles += species_moles;
                 species.volume += phase_data.volume;
                 species.sublattices.insert(species.sublattices.end(),
                                            phase_sublattices.begin(),
                                            phase_sublattices.end());
                 addElementInventory(species.elements, phase_data.elements);
+
+                double element_inventory = 0.0;
+                for (const auto& element_entry : phase_data.elements)
+                    element_inventory += element_entry.second;
+
+                if (species_moles > 0.0 && element_inventory > 0.0)
+                    species.stoichiometric_size = element_inventory / species_moles;
+                species.atom_equivalent_moles += element_inventory > 0.0
+                    ? element_inventory
+                    : species_moles * species.stoichiometric_size;
             }
             else
             {
                 output_phase.sublattices.insert(output_phase.sublattices.end(),
                                                 phase_sublattices.begin(),
                                                 phase_sublattices.end());
+
+                std::map<std::string, double> species_moles_by_name;
+                for (const auto& sublattice : phase_sublattices)
+                {
+                    const double species_moles_base =
+                        sublattice.phase_form_units > 0.0 ? sublattice.phase_form_units : phase_data.moles;
+                    for (const auto& constituent_entry : sublattice.composition)
+                    {
+                        species_moles_by_name[constituent_entry.first] +=
+                            species_moles_base * sublattice.sites * constituent_entry.second;
+                    }
+                }
+
+                if (species_moles_by_name.empty() && phase_data.moles > 0.0)
+                    species_moles_by_name[normalizeSpeciesName(oc_phase_name)] = phase_data.moles;
+
+                for (const auto& species_entry : species_moles_by_name)
+                {
+                    const std::string& species_name = species_entry.first;
+                    const double species_moles = species_entry.second;
+                    OCSpeciesData& species = output_phase.species[species_name];
+                    species.moles += species_moles;
+
+                    const std::map<std::string, double> stoichiometry =
+                        speciesStoichiometry(species_name, element_names_);
+                    species.stoichiometric_size = speciesStoichiometricSize(stoichiometry);
+                    species.atom_equivalent_moles += species_moles * species.stoichiometric_size;
+                    for (const auto& element_entry : stoichiometry)
+                        species.elements[element_entry.first] += element_entry.second * species_moles;
+                }
             }
         }
 
@@ -1384,16 +1498,10 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             if (!reference_state_ready)
                 std::cerr << "Warning: Failed to set OpenCalphad oxygen gas reference state" << std::endl;
 
-            const bool use_oxygen_potential =
-                solve_mode != OpenCalphadSolveMode::FixedOxygenMoles;
-            if (!use_oxygen_potential)
-                std::cout << "[OpenCalphad debug] fixed oxygen mode: setting N(O) with normalized component contents; no MU(O) condition"
-                          << std::endl;
-
             std::map<std::string, double> components_map;
             for (const auto& comp : components)
             {
-                if (use_oxygen_potential && toUpperCopy(comp.name) == "O")
+                if (toUpperCopy(comp.name) == "O")
                     continue;
                 components_map[comp.name] = comp.fraction;
             }
@@ -1403,27 +1511,19 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             const bool conditions_ready = oc.setConditions(
                 temperature,
                 pressure,
-                components_map,
-                use_oxygen_potential ? nullptr : &O_index);
+                components_map);
             if (!conditions_ready)
             {
                 std::cerr << "Error: Failed to set OpenCalphad conditions" << std::endl;
                 return false;
             }
-            std::cout << "[OpenCalphad debug] input conditions set; equilibrium state will be refreshed after calculation"
-                      << std::endl;
 
-            if (use_oxygen_potential)
+            const double oxygen_potential_j_per_mol_o = oxygen_potential_kj_per_mol_o2 * 1.0e3 / 2.0;
+            const bool oxygen_potential_ready = oc.setComponentPotential("O", oxygen_potential_j_per_mol_o);
+            if (!oxygen_potential_ready)
             {
-                const double oxygen_potential_j_per_mol_o = oxygen_potential_kj_per_mol_o2 * 1.0e3 / 2.0;
-                const bool oxygen_potential_ready = oc.setComponentPotential("O", oxygen_potential_j_per_mol_o);
-                if (!oxygen_potential_ready)
-                {
-                    std::cerr << "Error: Failed to set OpenCalphad oxygen potential condition" << std::endl;
-                    return false;
-                }
-                std::cout << "[OpenCalphad debug] oxygen potential condition set; equilibrium state will be refreshed after calculation"
-                          << std::endl;
+                std::cerr << "Error: Failed to set OpenCalphad oxygen potential condition" << std::endl;
+                return false;
             }
 
             bool clear_equilibrium = true;

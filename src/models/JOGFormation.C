@@ -40,6 +40,7 @@ void Simulation::JOGFormation()
 
     const double theoretical_density = 425.76 / (avogadro_number * V_cell); // g/m3
     sciantix_variable["Phase std density"].setFinalValue(theoretical_density);
+    std::cout<<"Theoretical density of the JOG phase: " << theoretical_density << " g/m3" << std::endl;
     double JOG_thickness = 0.0;
     double JOG_thickness_condensed = 0.0;
     double JOG_thickness_liquid = 0.0;

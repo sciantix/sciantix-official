@@ -89,7 +89,6 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
                 }
                 location_settings = &Sciantix_thermochemistry_settings.fission_products;
                 location = "at grain boundary";
-                solvers.push_back(OCSolver::FixedOxygenMoles);
                 refresh_output_after_solve = true;
                 break;
         }
@@ -98,7 +97,7 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
         {
             if (location_case == PhaseDiagramLocation::GrainBoundary)
                 moveFissionProductsWithoutThermochemistry();
-            return;
+            continue;
         }
 
         std::set<std::string> selected_elements(location_settings->elements.begin(), location_settings->elements.end());

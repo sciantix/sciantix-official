@@ -17,7 +17,117 @@
 #include "ThermochemistryVariable.h"
 #include "Constants.h"
 
+#include <algorithm>
+#include <cctype>
+#include <iostream>
 #include <map>
+
+namespace
+{
+std::string normalizeElementName(std::string element)
+{
+    if (element.empty())
+        return element;
+
+    std::transform(element.begin(), element.end(), element.begin(), [](unsigned char c) { return std::tolower(c); });
+    element[0] = static_cast<char>(std::toupper(static_cast<unsigned char>(element[0])));
+    return element;
+}
+
+std::string compoundNameFromVariableName(const std::string& variable_name)
+{
+    const size_t parenthesis_pos = variable_name.find(" (");
+    std::string compound_name =
+        parenthesis_pos == std::string::npos ? variable_name : variable_name.substr(0, parenthesis_pos);
+
+    const size_t hash_pos = compound_name.find('#');
+    if (hash_pos != std::string::npos)
+        compound_name = compound_name.substr(0, hash_pos);
+
+    const size_t auto_pos = compound_name.find("_AUTO");
+    if (auto_pos != std::string::npos)
+        compound_name = compound_name.substr(0, auto_pos);
+
+    const size_t chkd_pos = compound_name.find("_CHKD");
+    if (chkd_pos != std::string::npos)
+        compound_name = compound_name.substr(0, chkd_pos);
+
+    return compound_name;
+}
+
+std::map<std::string, double> parseCompoundStoichiometry(
+    const std::string& compound_name,
+    const std::map<std::string, double>& atomic_masses)
+{
+    std::map<std::string, std::string> known_elements;
+    for (const auto& atomic_mass : atomic_masses)
+    {
+        std::string upper = atomic_mass.first;
+        std::transform(upper.begin(), upper.end(), upper.begin(), [](unsigned char c) { return std::toupper(c); });
+        known_elements[upper] = atomic_mass.first;
+    }
+
+    std::map<std::string, double> parsed_composition;
+    size_t i = 0;
+    while (i < compound_name.size())
+    {
+        const unsigned char character = static_cast<unsigned char>(compound_name[i]);
+
+        if (compound_name[i] == '+' || compound_name[i] == '-')
+        {
+            ++i;
+            while (i < compound_name.size() && std::isdigit(static_cast<unsigned char>(compound_name[i])))
+                ++i;
+            continue;
+        }
+
+        if (compound_name[i] == '_' || compound_name[i] == ':' || !std::isalpha(character))
+        {
+            ++i;
+            continue;
+        }
+
+        std::string element;
+        if (i + 2 <= compound_name.size())
+        {
+            std::string candidate = compound_name.substr(i, 2);
+            std::transform(candidate.begin(), candidate.end(), candidate.begin(), [](unsigned char c) { return std::toupper(c); });
+            const auto element_it = known_elements.find(candidate);
+            if (element_it != known_elements.end())
+            {
+                element = element_it->second;
+                i += 2;
+            }
+        }
+
+        if (element.empty())
+        {
+            std::string candidate = compound_name.substr(i, 1);
+            std::transform(candidate.begin(), candidate.end(), candidate.begin(), [](unsigned char c) { return std::toupper(c); });
+            const auto element_it = known_elements.find(candidate);
+            if (element_it == known_elements.end())
+            {
+                ++i;
+                continue;
+            }
+
+            element = element_it->second;
+            ++i;
+        }
+
+        double coefficient = 1.0;
+        const size_t coefficient_begin = i;
+        while (i < compound_name.size() && std::isdigit(static_cast<unsigned char>(compound_name[i])))
+            ++i;
+        if (i > coefficient_begin)
+            coefficient = std::stod(compound_name.substr(coefficient_begin, i - coefficient_begin));
+
+        parsed_composition[element] += coefficient;
+    }
+
+    return parsed_composition;
+}
+}
 
 void ThermochemistryVariable::rescaleInitialValue(const double factor)
 {
@@ -138,9 +248,22 @@ double ThermochemistryVariable::getMolarMass()
 
     double molar_mass = 0.0;
 
+    std::map<std::string, double> molar_mass_composition;
     if (!composition.empty())
     {
         for (const auto& term : composition)
+            molar_mass_composition[normalizeElementName(term.first)] += term.second;
+    }
+    else
+    {
+        molar_mass_composition = parseCompoundStoichiometry(
+            compoundNameFromVariableName(name),
+            atomic_masses);
+    }
+
+    if (!molar_mass_composition.empty())
+    {
+        for (const auto& term : molar_mass_composition)
         {
             const auto atomic_mass = atomic_masses.find(term.first);
             if (atomic_mass == atomic_masses.end())
