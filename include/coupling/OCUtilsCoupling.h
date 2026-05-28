@@ -82,8 +82,6 @@ enum class OpenCalphadSolveMode
 {
     SaveReadWarmStart,
     GlobalEquilibrium,
-    PressureAxisStep,
-    FixedOxygenMoles,
     OnlyC1MO2
 };
 

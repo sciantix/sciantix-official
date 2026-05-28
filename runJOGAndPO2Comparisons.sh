@@ -5,7 +5,7 @@ cd "$(dirname "$0")"
 
 echo "===== COMPILING SCIANTIX ====="
 ./Allclean.sh || true
-./Allmake.sh
+./Allmake_OC.sh
 
 echo ""
 echo "===== UO2 pO2 VERIFICATION ====="
