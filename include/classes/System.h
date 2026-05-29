@@ -180,7 +180,8 @@ class System : virtual public Material
     void setFissionProductDiffusivity(int                              input_value,
                                   SciantixArray<SciantixVariable>& sciantix_variable,
                                   SciantixArray<SciantixVariable>& history_variable,
-                                  SciantixArray<InputVariable>&    scaling_factors);
+                                  SciantixArray<InputVariable>&    scaling_factors,
+                                  SciantixArray<Matrix>&           matrices);
 
     /**
      * @brief Retrieves the diffusivity of fission products within the matrix.

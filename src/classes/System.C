@@ -295,7 +295,8 @@ double System::getHeliumDiffusivity()
 void System::setFissionProductDiffusivity(int                              input_value,
                                       SciantixArray<SciantixVariable>& sciantix_variable,
                                       SciantixArray<SciantixVariable>& history_variable,
-                                      SciantixArray<InputVariable>&    scaling_factors)
+                                      SciantixArray<InputVariable>&    scaling_factors,
+                                      SciantixArray<Matrix>&           matrices)
 {
     /**
      * ### setFissionProductDiffusivity
@@ -340,6 +341,12 @@ void System::setFissionProductDiffusivity(int                              input
             double d3 = 8.0e-40 * fission_rate;
 
             diffusivity = d1 + d2 + d3;
+
+            if (matrices[0].getName() == "MOX")
+            {
+                diffusivity *= 1.75;
+                reference += "MOX, scaling factor 1.75: Lanning, D. D., Beyer, C. E., & Geelhood, K. J. (2005). FRAPCON-3 Updates, Including Mixed Oxide Fuel Properties.\n\t";
+            } 
 
             break;
         }
