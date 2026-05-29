@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "Constants.h"
 #include "MainVariables.h"
 #include "OCUtilsCoupling.h"
 #include "ThermochemistrySettings.h"
@@ -26,6 +27,27 @@
 
 void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas. 
 {
+    std::cout << "Setting phase diagram..." << std::endl;
+    std::cout << "Thermochemistry settings: " << (thermochemistry_settings != nullptr ? "provided" : "not provided") << std::endl;
+    std::cout << "iThermochimica: " << input_variable["iThermochimica"].getValue() << std::endl;
+    std::cout << "Temperature: " << history_variable["Temperature"].getFinalValue() << std::endl;
+    std::cout << "System pressure: " << history_variable["System pressure"].getFinalValue() << std::endl;
+    std::cout << "Fuel oxygen potential: " << sciantix_variable["Fuel oxygen potential"].getFinalValue() << std::endl;
+    std::cout << "Fuel oxygen potential - Kato:" << sciantix_variable["Fuel oxygen potential - Kato"].getFinalValue() << std::endl;
+    std::cout << "Xe at grain boundary mol/m3: " << sciantix_variable["Xe at grain boundary"].getInitialValue() / avogadro_number << std::endl;
+    std::cout << "Kr at grain boundary mol/m3: " << sciantix_variable["Kr at grain boundary"].getInitialValue() / avogadro_number << std::endl;
+    std::cout << "Cs at grain boundary mol/m3: " << sciantix_variable["Cs at grain boundary"].getInitialValue() / avogadro_number << std::endl;
+    std::cout << "I at grain boundary mol/m3: " << sciantix_variable["I at grain boundary"].getInitialValue() / avogadro_number << std::endl;
+    std::cout << "Te at grain boundary mol/m3: " << sciantix_variable["Te at grain boundary"].getInitialValue() / avogadro_number << std::endl;
+    std::cout << "Cs reacted mol/m3: " << sciantix_variable["Cs reacted"].getInitialValue() / avogadro_number << std::endl;
+    std::cout << "I reacted mol/m3: " << sciantix_variable["I reacted"].getInitialValue() / avogadro_number << std::endl;
+    std::cout << "Te reacted mol/m3: " << sciantix_variable["Te reacted"].getInitialValue() / avogadro_number << std::endl;
+    std::cout << "Mo at grain boundary mol/m3: " << sciantix_variable["Mo produced"].getInitialValue() / avogadro_number << std::endl;
+    std::cout << "Pd at grain boundary mol/m3: " << sciantix_variable["Pd produced"].getInitialValue() / avogadro_number << std::endl;
+    std::cout << "Ru at grain boundary mol/m3: " << sciantix_variable["Ru produced"].getInitialValue() / avogadro_number << std::endl;
+    std::cout << "Rh at grain boundary mol/m3: " << sciantix_variable["Rh produced"].getInitialValue() / avogadro_number << std::endl;
+    std::cout << "Tc at grain boundary mol/m3: " << sciantix_variable["Tc produced"].getInitialValue() / avogadro_number << std::endl;
+
     auto moveFissionProductsWithoutThermochemistry = [&]()
     {
         for (auto& system : sciantix_system)
@@ -66,7 +88,6 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
         const ThermochemistryPhaseSettings* location_settings = nullptr;
         std::string location;
         std::vector<OCSolver> solvers;
-        bool refresh_output_after_solve = false;
 
         #if !defined(COUPLING_TU)
             solvers.push_back(OCSolver::SaveReadWarmStart);
@@ -89,7 +110,6 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
                 }
                 location_settings = &Sciantix_thermochemistry_settings.fission_products;
                 location = "at grain boundary";
-                refresh_output_after_solve = true;
                 break;
         }
 
@@ -146,9 +166,6 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
         if (!solved)
             std::cout << "Warning: all OpenCalphad attempts failed for " << location << std::endl;
 
-        if (refresh_output_after_solve)
-            OCUtilsCoupling::getOpenCalphadResults(location, output_data);
-
         OCUtilsCoupling::dumpParsedOcOutput(output_data);
 
         if (Sciantix_thermochemistry_settings.output_phase_sublattice_composition)
@@ -193,4 +210,11 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
                 break;
         }
     }
+
+    std::cout << "Phase diagram set." << std::endl;
+    std::cout << "Updated thermochemistry variables:" << std::endl;
+    std::cout << "FUel oxygen potential: " << sciantix_variable["Fuel oxygen potential"].getFinalValue() << std::endl;
+    std::cout << "FUel oxygen potential - Kato: " << sciantix_variable["Fuel oxygen potential - Kato"].getFinalValue() << std::endl;
+    std::cout << "Fuel oxygen potential - CALPHAD: " << sciantix_variable["Fuel oxygen potential - CALPHAD"].getFinalValue() << std::endl;
+    
 }

@@ -1,60 +1,57 @@
 Comparing /home/ecappellari/transparant/sciantix-official/regression/test_JOG_MOX/gold/point_07_r_0p8775mm/output.txt -> /home/ecappellari/transparant/sciantix-official/regression/test_JOG_MOX/point_07_r_0p8775mm/output.txt
 Rows: 1915 -> 1915
-Columns: 107 -> 108
+Columns: 108 -> 108
 
-Columns only in new output:
-  + O available content (mol/m3)
-
-Common columns compared: 107
-Columns outside tolerance: 24
+Common columns compared: 108
+Columns outside tolerance: 40
 
 Top 20 column differences:
-  Cs at grain boundary (at/m3): row=3, gold=0.00000000e+00, new=4.38416800e+22, abs=4.38416800e+22, rel=4.38416800e+30, bad_rows=546
-  Cs reacted (at/m3): row=3, gold=6.28093900e+22, new=1.89677200e+22, abs=4.38416700e+22, rel=6.98011396e-01, bad_rows=548
-  Xe released (at/m3): row=542, gold=5.26658800e+25, new=5.26662900e+25, abs=4.10000000e+20, rel=7.78492641e-06, bad_rows=546
-  Xe at grain boundary (at/m3): row=542, gold=8.18478500e+25, new=8.18474400e+25, abs=4.10000000e+20, rel=5.00929469e-06, bad_rows=427
-  Cs released (at/m3): row=461, gold=2.11259900e+25, new=2.11262100e+25, abs=2.20000000e+20, rel=1.04137132e-05, bad_rows=1859
-  Kr released (at/m3): row=542, gold=3.82615300e+24, new=3.82618400e+24, abs=3.10000000e+19, rel=8.10213287e-06, bad_rows=560
-  Kr at grain boundary (at/m3): row=542, gold=5.94621100e+24, new=5.94618100e+24, abs=3.00000000e+19, rel=5.04522964e-06, bad_rows=427
-  Mo in solution (at/m3): row=542, gold=1.54591600e+22, new=1.54616500e+22, abs=2.49000000e+18, rel=1.61069554e-04, bad_rows=546
-  Pd in solution (at/m3): row=3, gold=0.00000000e+00, new=1.25575600e+18, abs=1.25575600e+18, rel=1.25575600e+26, bad_rows=547
-  Pd reacted (at/m3): row=3, gold=8.83517300e+23, new=8.83516100e+23, abs=1.20000000e+18, rel=1.35820770e-06, bad_rows=1
-  Rh in solution (at/m3): row=3, gold=0.00000000e+00, new=1.18001700e+12, abs=1.18001700e+12, rel=1.18001700e+20, bad_rows=544
-  Ru in solution (at/m3): row=3, gold=0.00000000e+00, new=3.32207600e+11, abs=3.32207600e+11, rel=3.32207600e+19, bad_rows=547
-  Intergranular bubble concentration (bub/m2): row=3, gold=1.92801500e+13, new=1.90136100e+13, abs=2.66540000e+11, rel=1.38245812e-02, bad_rows=370
-  Tc in solution (at/m3): row=3, gold=0.00000000e+00, new=1.63527600e+11, abs=1.63527600e+11, rel=1.63527600e+19, bad_rows=547
-  Intergranular vacancies per bubble (vac/bub): row=542, gold=1.25912400e+12, new=1.25912000e+12, abs=4.00000000e+06, rel=3.17681182e-06, bad_rows=400
-  Intergranular atoms per bubble (at/bub): row=542, gold=4.47482600e+10, new=4.47499300e+10, abs=1.67000000e+06, rel=3.73198869e-05, bad_rows=566
-  Intergranular fractional coverage (/): row=3, gold=2.60863900e-02, new=3.56474600e-02, abs=9.56107000e-03, rel=3.66515643e-01, bad_rows=48
-  JOG from liquid (/): row=3, gold=4.70857500e-04, new=0.00000000e+00, abs=4.70857500e-04, rel=1.00000000e+00, bad_rows=1360
-  JOG from HCP_A3 (/): row=3, gold=1.86142300e-05, new=3.85514800e-04, abs=3.66900570e-04, rel=1.97107573e+01, bad_rows=1893
-  JOG from condensed (/): row=3, gold=1.86142300e-05, new=3.85514800e-04, abs=3.66900570e-04, rel=1.97107573e+01, bad_rows=1893
+  Xe in intragranular solution (at/m3): row=1914, gold=1.83290300e+25, new=1.04745300e+25, abs=7.85450000e+24, rel=4.28527860e-01, bad_rows=1914
+  Xe in grain (at/m3): row=1913, gold=6.74080600e+25, new=5.95555600e+25, abs=7.85250000e+24, rel=1.16492004e-01, bad_rows=1914
+  Cs in intragranular solution (at/m3): row=1914, gold=1.33159600e+25, new=7.60970400e+24, abs=5.70625600e+24, rel=4.28527571e-01, bad_rows=1914
+  Cs in grain (at/m3): row=1913, gold=4.89716700e+25, new=4.32668600e+25, abs=5.70481000e+24, rel=1.16492045e-01, bad_rows=1914
+  Xe at grain boundary (at/m3): row=988, gold=1.83833200e+26, new=1.88139700e+26, abs=4.30650000e+24, rel=2.34261276e-02, bad_rows=1914
+  Cs reacted (at/m3): row=1912, gold=4.28314000e+26, new=4.32206300e+26, abs=3.89230000e+24, rel=9.08749189e-03, bad_rows=1908
+  Xe released (at/m3): row=1913, gold=2.50412000e+26, new=2.54256600e+26, abs=3.84460000e+24, rel=1.53530981e-02, bad_rows=1890
+  Cs at grain boundary (at/m3): row=551, gold=9.68491200e+24, new=1.25259900e+25, abs=2.84107800e+24, rel=2.93350936e-01, bad_rows=552
+  Cs released (at/m3): row=548, gold=2.57581900e+25, new=2.75707600e+25, abs=1.81257000e+24, rel=7.03686866e-02, bad_rows=1909
+  Xe in intragranular bubbles (at/m3): row=246, gold=3.64435600e+25, new=3.82462400e+25, abs=1.80268000e+24, rel=4.94649809e-02, bad_rows=1913
+  Cs in intragranular bubbles (at/m3): row=246, gold=2.64760900e+25, new=2.77857300e+25, abs=1.30964000e+24, rel=4.94650079e-02, bad_rows=1913
+  Kr in intragranular solution (at/m3): row=1914, gold=1.33159600e+24, new=7.60970400e+23, abs=5.70625600e+23, rel=4.28527571e-01, bad_rows=1914
+  Kr in grain (at/m3): row=1913, gold=4.89716700e+24, new=4.32668600e+24, abs=5.70481000e+23, rel=1.16492045e-01, bad_rows=1914
+  Kr at grain boundary (at/m3): row=990, gold=1.33867200e+25, new=1.36995900e+25, abs=3.12870000e+23, rel=2.33716698e-02, bad_rows=1914
+  Kr released (at/m3): row=1913, gold=1.81923300e+25, new=1.84716400e+25, abs=2.79310000e+23, rel=1.53531736e-02, bad_rows=1890
+  Kr in intragranular bubbles (at/m3): row=246, gold=2.64760900e+24, new=2.77857300e+24, abs=1.30964000e+23, rel=4.94650079e-02, bad_rows=1913
+  Intragranular bubble concentration (bub/m3): row=103, gold=3.06749100e+23, new=2.98177300e+23, abs=8.57180000e+21, rel=2.79440103e-02, bad_rows=1911
+  Mo in solution (at/m3): row=551, gold=5.88159700e+21, new=7.60692700e+21, abs=1.72533000e+21, rel=2.93343798e-01, bad_rows=551
+  Mo reacted (at/m3): row=551, gold=1.87683100e+26, new=1.87681400e+26, abs=1.70000000e+21, rel=9.05782140e-06, bad_rows=66
+  Pd reacted (at/m3): row=527, gold=1.54910000e+26, new=1.54909900e+26, abs=1.00000000e+20, rel=6.45536118e-07, bad_rows=1
 
 Comparing /home/ecappellari/transparant/sciantix-official/regression/test_JOG_MOX/gold/point_07_r_0p8775mm/thermochemistry_output.txt -> /home/ecappellari/transparant/sciantix-official/regression/test_JOG_MOX/point_07_r_0p8775mm/thermochemistry_output.txt
 Rows: 1915 -> 1915
 Columns: 81 -> 81
 
 Common columns compared: 81
-Columns outside tolerance: 11
+Columns outside tolerance: 12
 
 Top 20 column differences:
-  LIQUID (liquid, at grain boundary) (mol/m3): row=3, gold=1.05600000e+01, new=0.00000000e+00, abs=1.05600000e+01, rel=1.00000000e+00, bad_rows=446
-  HCP_A3 (condensed, at grain boundary) (mol/m3): row=3, gold=2.70600000e-01, new=5.60500000e+00, abs=5.33440000e+00, rel=1.97132299e+01, bad_rows=525
-  FCC_A1 (condensed, at grain boundary) (mol/m3): row=2, gold=0.00000000e+00, new=1.42900000e+00, abs=1.42900000e+00, rel=1.42900000e+08, bad_rows=1
-  CS (gas, at grain boundary) (mol/m3): row=3, gold=0.00000000e+00, new=7.28000000e-02, abs=7.28000000e-02, rel=7.28000000e+06, bad_rows=183
-  CS2 (gas, at grain boundary) (mol/m3): row=404, gold=2.11900000e+00, new=2.11800000e+00, abs=1.00000000e-03, rel=4.71920717e-04, bad_rows=188
-  O (gas, at grain boundary) (mol/m3): row=536, gold=1.09400000e-01, new=1.09500000e-01, abs=1.00000000e-04, rel=9.14076782e-04, bad_rows=157
-  CS2MOO4 (gas, at grain boundary) (mol/m3): row=542, gold=2.74600000e-02, new=2.74700000e-02, abs=1.00000000e-05, rel=3.64166060e-04, bad_rows=50
-  CS2O (gas, at grain boundary) (mol/m3): row=542, gold=3.20600000e-02, new=3.20700000e-02, abs=1.00000000e-05, rel=3.11915159e-04, bad_rows=143
-  MO (gas, at grain boundary) (mol/m3): row=521, gold=1.14900000e-02, new=1.15000000e-02, abs=1.00000000e-05, rel=8.70322019e-04, bad_rows=43
-  PD (gas, at grain boundary) (mol/m3): row=3, gold=0.00000000e+00, new=2.08500000e-06, abs=2.08500000e-06, rel=2.08500000e+02, bad_rows=126
-  CSO (gas, at grain boundary) (mol/m3): row=461, gold=1.63400000e-05, new=1.63500000e-05, abs=1.00000000e-08, rel=6.11995104e-04, bad_rows=10
-  RH (gas, at grain boundary) (mol/m3): row=3, gold=0.00000000e+00, new=1.95900000e-12, abs=1.95900000e-12, rel=1.95900000e-04, bad_rows=0
-  CS2O2 (gas, at grain boundary) (mol/m3): row=542, gold=1.84500000e-09, new=1.84600000e-09, abs=1.00000000e-12, rel=1.00000000e-04, bad_rows=0
-  RU (gas, at grain boundary) (mol/m3): row=3, gold=0.00000000e+00, new=5.51600000e-13, abs=5.51600000e-13, rel=5.51600000e-05, bad_rows=0
-  TC (gas, at grain boundary) (mol/m3): row=3, gold=0.00000000e+00, new=2.71500000e-13, abs=2.71500000e-13, rel=2.71500000e-05, bad_rows=0
-  MOO (gas, at grain boundary) (mol/m3): row=3, gold=0.00000000e+00, new=1.74500000e-14, abs=1.74500000e-14, rel=1.74500000e-06, bad_rows=0
-  MOO2 (gas, at grain boundary) (mol/m3): row=476, gold=1.95600000e-11, new=1.95500000e-11, abs=1.00000000e-14, rel=1.00000000e-06, bad_rows=0
-  MOO3 (gas, at grain boundary) (mol/m3): row=544, gold=4.52900000e-12, new=4.53000000e-12, abs=1.00000000e-15, rel=1.00000000e-07, bad_rows=0
-  O2 (gas, at grain boundary) (mol/m3): row=512, gold=1.49700000e-12, new=1.49800000e-12, abs=1.00000000e-15, rel=1.00000000e-07, bad_rows=0
-  MO2 (gas, at grain boundary) (mol/m3): row=3, gold=0.00000000e+00, new=3.34200000e-20, abs=3.34200000e-20, rel=3.34200000e-12, bad_rows=0
+  C1_MO2 (condensed, matrix) (mol/m3): row=27, gold=1.17100000e+05, new=3.98600000e+04, abs=7.72400000e+04, rel=6.59607173e-01, bad_rows=1915
+  LIQUID (liquid, at grain boundary) (mol/m3): row=1158, gold=1.33900000e+03, new=1.36200000e+03, abs=2.30000000e+01, rel=1.71769978e-02, bad_rows=1366
+  CS (gas, at grain boundary) (mol/m3): row=551, gold=1.60800000e+01, new=2.08000000e+01, abs=4.72000000e+00, rel=2.93532338e-01, bad_rows=551
+  HCP_A3 (condensed, at grain boundary) (mol/m3): row=933, gold=1.58400000e+03, new=1.58000000e+03, abs=4.00000000e+00, rel=2.52525253e-03, bad_rows=1441
+  FCC_A1 (condensed, at grain boundary) (mol/m3): row=2, gold=1.42900000e+00, new=0.00000000e+00, abs=1.42900000e+00, rel=1.00000000e+00, bad_rows=1
+  CS2 (gas, at grain boundary) (mol/m3): row=551, gold=1.07100000e+00, new=1.38500000e+00, abs=3.14000000e-01, rel=2.93183940e-01, bad_rows=551
+  O (gas, at grain boundary) (mol/m3): row=551, gold=4.90600000e-02, new=6.34400000e-02, abs=1.43800000e-02, rel=2.93110477e-01, bad_rows=551
+  CS2O (gas, at grain boundary) (mol/m3): row=551, gold=1.07000000e-02, new=1.38300000e-02, abs=3.13000000e-03, rel=2.92523364e-01, bad_rows=551
+  CS2MOO4 (gas, at grain boundary) (mol/m3): row=551, gold=1.04700000e-02, new=1.35400000e-02, abs=3.07000000e-03, rel=2.93218720e-01, bad_rows=433
+  MO (gas, at grain boundary) (mol/m3): row=551, gold=9.76700000e-03, new=1.26300000e-02, abs=2.86300000e-03, rel=2.93129927e-01, bad_rows=432
+  PD (gas, at grain boundary) (mol/m3): row=551, gold=4.20100000e-05, new=5.42600000e-05, abs=1.22500000e-05, rel=2.91597239e-01, bad_rows=551
+  CSO (gas, at grain boundary) (mol/m3): row=551, gold=1.14000000e-05, new=1.47300000e-05, abs=3.33000000e-06, rel=2.92105263e-01, bad_rows=480
+  CS2O2 (gas, at grain boundary) (mol/m3): row=551, gold=6.69900000e-10, new=8.65300000e-10, abs=1.95400000e-10, rel=1.95400000e-02, bad_rows=0
+  RH (gas, at grain boundary) (mol/m3): row=551, gold=5.16500000e-11, new=6.66600000e-11, abs=1.50100000e-11, rel=1.50100000e-03, bad_rows=0
+  MOO2 (gas, at grain boundary) (mol/m3): row=551, gold=1.72600000e-11, new=2.23600000e-11, abs=5.10000000e-12, rel=5.10000000e-04, bad_rows=0
+  RU (gas, at grain boundary) (mol/m3): row=551, gold=1.07500000e-11, new=1.38900000e-11, abs=3.14000000e-12, rel=3.14000000e-04, bad_rows=0
+  MOO (gas, at grain boundary) (mol/m3): row=551, gold=4.51100000e-12, new=5.84500000e-12, abs=1.33400000e-12, rel=1.33400000e-04, bad_rows=0
+  TC (gas, at grain boundary) (mol/m3): row=551, gold=4.49400000e-12, new=5.81200000e-12, abs=1.31800000e-12, rel=1.31800000e-04, bad_rows=0
+  MOO3 (gas, at grain boundary) (mol/m3): row=551, gold=1.46000000e-12, new=1.88900000e-12, abs=4.29000000e-13, rel=4.29000000e-05, bad_rows=0
+  O2 (gas, at grain boundary) (mol/m3): row=551, gold=8.91500000e-13, new=1.15100000e-12, abs=2.59500000e-13, rel=2.59500000e-05, bad_rows=0

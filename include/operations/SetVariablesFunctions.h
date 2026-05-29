@@ -17,6 +17,7 @@
 #ifndef SET_VARIABLES_FUNCTIONS_H
 #define SET_VARIABLES_FUNCTIONS_H
 
+#include <string>
 #include <vector>
 
 #include "SciantixVariable.h"

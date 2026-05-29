@@ -17,14 +17,13 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
-#include "Constants.h"
-#include "ErrorMessages.h"
 #include "FissionProducts.h"
 #include "InputVariable.h"
 #include "Matrix.h"
 #include "SciantixArray.h"
 #include "SciantixVariable.h"
-#include <cmath>
+
+#include <string>
 #include <vector>
 
 /**

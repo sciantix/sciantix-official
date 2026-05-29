@@ -17,13 +17,11 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#include <cmath>
-
-#include "Constants.h"
-#include "ErrorMessages.h"
 #include "Material.h"
 #include "SciantixArray.h"
 #include "SciantixVariable.h"
+
+#include <vector>
 
 /**
  * @class Matrix

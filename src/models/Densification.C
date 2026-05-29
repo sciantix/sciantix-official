@@ -15,6 +15,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "ErrorMessages.h"
+
+#include <cmath>
 
 void Simulation::Densification()
 {

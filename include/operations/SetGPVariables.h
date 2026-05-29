@@ -17,8 +17,6 @@
 #ifndef SET_GPVARIABLE_H
 #define SET_GPVARIABLE_H
 
-#include <vector>
-
 #include "InputVariable.h"
 #include "SciantixArray.h"
 #include "SetVariablesFunctions.h"

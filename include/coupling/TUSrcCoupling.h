@@ -14,8 +14,6 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include <string>
-#include <vector>
 #include "ThermochemistrySettings.h"
 
 /**

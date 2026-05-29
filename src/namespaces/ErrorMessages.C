@@ -15,6 +15,12 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "ErrorMessages.h"
+#include "MainVariables.h"
+
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 namespace ErrorMessages
 {

@@ -16,6 +16,8 @@
 
 #include "Simulation.h"
 
+#include <cmath>
+
 void Simulation::GapPartialPressure()
 {
     if ((input_variable["iStoichiometryDeviation"].getValue() == 0) | (input_variable["iStoichiometryDeviation"].getValue() > 6)) 

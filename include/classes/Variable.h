@@ -17,9 +17,7 @@
 #ifndef VARIABLE_H
 #define VARIABLE_H
 
-#include <iostream>
 #include <string>
-#include <vector>
 
 /**
  * @class Variable

@@ -15,6 +15,10 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "Constants.h"
+#include "ErrorMessages.h"
+
+#include <cmath>
 
 void Simulation::ChromiumSolubility()
 {

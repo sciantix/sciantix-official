@@ -15,6 +15,10 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "Constants.h"
+#include "ErrorMessages.h"
+
+#include <cmath>
 
 void Simulation::GrainBoundaryMicroCracking() // qui tutti i gas e i volatili, cerca di unificare. no i metallici!
 {

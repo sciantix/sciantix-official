@@ -15,6 +15,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "ErrorMessages.h"
+
+#include <cmath>
 
 void Simulation::IntraGranularBubbleBehavior() // qui i gas e i volatili, cerca di unificare. no i metallici!
 {

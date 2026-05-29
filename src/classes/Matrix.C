@@ -15,6 +15,11 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Matrix.h"
+#include "Constants.h"
+#include "ErrorMessages.h"
+
+#include <algorithm>
+#include <cmath>
 
 // CODE DEVELOPMENT : FUNCTIONS TO CALCULATE MEAN MOLAR MASSES AND CHROMIUM MOLE FRACTION
 // PREVIOUSLY DIRECTLY CALCULATED IN THE FUNCTIONS WHEN NEEDED,
