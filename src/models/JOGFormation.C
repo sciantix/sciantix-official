@@ -15,8 +15,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "Constants.h"
 
-#include <algorithm>
+#include <cmath>
 
 void Simulation::JOGFormation()
 {
@@ -50,24 +51,26 @@ void Simulation::JOGFormation()
         if (variable.getLocation() != "at grain boundary")
             continue;
 
+        if (variable.getFinalValue() <= 0.0)
+            continue;
+
         const std::string phase = variable.getPhase();
         if (phase != "condensed" && phase != "liquid" && phase != "ionic_liquid")
             continue;
 
         const std::string variable_name = variable.getName();
-        if ((phase == "liquid" || phase == "ionic_liquid") &&
-            variable_name.rfind("LIQUID (", 0) != 0)
-        {
+        if ((phase == "liquid" || phase == "ionic_liquid") && variable_name.rfind("LIQUID (", 0) != 0)
             continue;
-        }
 
-        if (variable.getFinalValue() <= 0.0)
-            continue;
+        std::cout << "Variable " << variable.getName() << " has final value " << variable.getFinalValue() << std::endl;
 
         const double molar_mass = variable.getMolarMass();
-        double contribution = variable.getFinalValue() * molar_mass / theoretical_density;
+        const double mass = variable.getMass();
+        double contribution = mass / theoretical_density;
         std::cout<<"Molar mass of "<< variable.getName() << ": " << molar_mass << std::endl;
-
+        std::cout<<"Mass of "<< variable.getName() << ": " << mass << std::endl;
+        std::cout<<"Contribution of "<< variable.getName() << " to JOG thickness: " << contribution << std::endl;
+            
         JOG_thickness += contribution;
 
         if (phase == "condensed")

@@ -18,11 +18,8 @@
 #define THERMOCHEMISTRY_MANIFEST_H
 
 #include <map>
-#include <set>
 #include <string>
 #include <vector>
-
-#include "ThermochemistrySettings.h"
 
 struct ThermochemistryManifestEntry
 {

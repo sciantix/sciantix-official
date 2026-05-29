@@ -15,6 +15,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "SetMatrix.h"
+#include "ErrorMessages.h"
+
+#include <cmath>
 
 void Simulation::setMatrix()
 {

@@ -18,9 +18,6 @@
 #define SOLVER_h
 
 #include "InputVariable.h"
-#include <cmath>
-#include <algorithm>
-#include <string>
 #include <vector>
 
 /**

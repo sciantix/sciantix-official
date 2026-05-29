@@ -15,6 +15,10 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "System.h"
+#include "Constants.h"
+#include "ErrorMessages.h"
+
+#include <cmath>
 
 void System::setRestructuredMatrix(bool y)
 {

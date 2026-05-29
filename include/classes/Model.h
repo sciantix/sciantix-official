@@ -17,13 +17,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "FissionProducts.h"
-#include "InputVariable.h"
 #include "Material.h"
-#include "Matrix.h"
-#include "System.h"
-#include <iterator>
-#include <map>
 #include <string>
 #include <vector>
 

@@ -16,6 +16,9 @@
 
 #include "Initialization.h"
 
+#include <cmath>
+#include <iostream>
+
 void Initialization(double              Sciantix_history[],
                     double              Sciantix_variables[],
                     double              Sciantix_diffusion_modes[],

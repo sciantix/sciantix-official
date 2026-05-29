@@ -17,8 +17,6 @@
 #ifndef INITIALIZATION_H
 #define INITIALIZATION_H
 
-#include <cmath>
-#include <iostream>
 #include <vector>
 
 /**

@@ -24,8 +24,6 @@
 #include <string>
 #include <vector>
 
-#include <type_traits>
-
 /**
  * @class SciantixArray
  * @brief A template class for managing a collection of variables with fast access by name or index.

@@ -17,11 +17,6 @@
 #ifndef ERROR_MESSAGES_H
 #define ERROR_MESSAGES_H
 
-#include "MainVariables.h"
-#include <cstdlib>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
 #include <string>
 
 /**

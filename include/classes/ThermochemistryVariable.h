@@ -140,6 +140,12 @@ public:
     double getMolarMass();
 
     /**
+     * @brief Calculates the variable mass from the current amount and composition.
+     * @return The mass in g.
+     */
+    double getMass();
+
+    /**
      * @brief Sets the final value equal to the initial value, making the variable constant over time.
      */
     void setConstant();

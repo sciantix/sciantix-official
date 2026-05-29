@@ -253,16 +253,7 @@ double ThermochemistryVariable::getMolarMass()
     {
         for (const auto& term : composition)
             molar_mass_composition[normalizeElementName(term.first)] += term.second;
-    }
-    else
-    {
-        molar_mass_composition = parseCompoundStoichiometry(
-            compoundNameFromVariableName(name),
-            atomic_masses);
-    }
 
-    if (!molar_mass_composition.empty())
-    {
         for (const auto& term : molar_mass_composition)
         {
             const auto atomic_mass = atomic_masses.find(term.first);
@@ -277,6 +268,14 @@ double ThermochemistryVariable::getMolarMass()
         }
         return molar_mass;
     }
+    else
+        std::cout << "Error in computing the molar mass of variable: "<< name << ". No composition available." << std::endl;
+
 
     return molar_mass;
+}
+
+double ThermochemistryVariable::getMass()
+{
+    return final_value * getMolarMass();
 }

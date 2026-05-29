@@ -15,6 +15,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "IntragranularDiffusion.h"
+#include "ErrorMessages.h"
+
+#include <cmath>
 
 void Simulation::IntragranularDiffusion() // qui tutti i gas e i volatili, cerca di unificare. no i metallici!
 {

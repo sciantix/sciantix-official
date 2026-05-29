@@ -15,8 +15,13 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "InputReading.h"
+#include "ErrorMessages.h"
+#include "MainVariables.h"
 // CODE DEVELOPMENT: STRING NEEDED FOR THERMOCHEMISTRY 
 #include "ThermochemistrySettings.h"
+
+#include <iostream>
+#include <sstream>
 
 /**
  * @brief Read a single setting from the input file.

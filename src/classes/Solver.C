@@ -16,6 +16,10 @@
 
 #include "Solver.h"
 
+#include <algorithm>
+#include <cmath>
+#include <iostream>
+
 double Solver::Integrator(double initial_value, double parameter, double increment)
 {
     return initial_value + parameter * increment;

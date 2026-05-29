@@ -14,14 +14,14 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#include "ErrorMessages.h"
 #include "InputReading.h"
-#include "Sciantix.h"
+#include "MainVariables.h"
 #include "Simulation.h"
 #include "TUSrcCoupling.h"
-#include <iostream>
-// CODE DEVELOPMENT: STRING NEEDED FOR THERMOCHEMISTRY OPTIONS
-#include <string>
 #include "ThermochemistrySettings.h"
+
+#include <fstream>
 
 void callSciantix(int    Sciantix_options[],
                   double Sciantix_history[],

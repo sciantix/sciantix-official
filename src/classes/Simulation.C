@@ -15,8 +15,6 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
-#include <chrono>
-#include <iostream>
 
 Simulation* Simulation::instance = nullptr;
 

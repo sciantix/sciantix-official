@@ -16,6 +16,8 @@
 
 #include "Simulation.h"
 #include "StoichiometryDeviation.h"
+#include "Constants.h"
+#include "ErrorMessages.h"
 // CODE DEVELOPMENT :  NECESSARY INCLUDES FOR THE MODEL
 #include <cmath>
 

@@ -15,7 +15,11 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include <sys/stat.h>
+#include "MainVariables.h"
 #include "Simulation.h"
+
+#include <fstream>
+#include <iomanip>
 
 /**
  * @brief Function to check if a file exists.

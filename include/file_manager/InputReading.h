@@ -17,13 +17,10 @@
 #ifndef INPUT_READING_H
 #define INPUT_READING_H
 
-#include "ErrorMessages.h"
 #include "ThermochemistrySettings.h"
-#include <numeric>
-#include <sstream>
+#include <fstream>
 #include <string>
 #include <vector>
-#include <fstream>
 
 /**
  * @brief Handles all input processing for the simulation.

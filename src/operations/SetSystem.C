@@ -15,11 +15,9 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "SetSystem.h"
-#include "MainVariables.h"
 #include "Simulation.h"
-#include "ThermochemistrySettings.h"
-#include <fstream>
-#include <set>
+
+#include <cmath>
 
 void Simulation::setSystem()
 {

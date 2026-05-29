@@ -15,7 +15,12 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "SetGPVariables.h"
+#include "MainVariables.h"
 #include "Simulation.h"
+
+#include <cmath>
+#include <fstream>
+#include <sstream>
 
 // -----------------------------------------------------------------------------------------------
 // Functions for GPs

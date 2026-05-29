@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "OCUtilsCoupling.h"
+#include "Constants.h"
 #include "MainVariables.h"
 
 #include <algorithm>
@@ -26,12 +27,9 @@
 #include <iomanip>
 #include <memory>
 #include <iostream>
-#include <regex>
 #include <set>
-#include <sstream>
 #include <stdexcept>
 #include <vector>
-#include <sys/wait.h>
 
 namespace
 {
@@ -443,18 +441,6 @@ namespace OCASIAdapter
             }
 
             return stoichiometry;
-        }
-
-        double speciesStoichiometricSize(const std::map<std::string, double>& stoichiometry)
-        {
-            double total_size = 0.0;
-            for (const auto& entry : stoichiometry)
-            {
-                if (entry.first != "Va")
-                    total_size += entry.second;
-            }
-
-            return total_size > 0.0 ? total_size : 1.0;
         }
 
         // Merge per-element inventories while preserving elements that are
@@ -925,7 +911,6 @@ namespace OCASIAdapter
             OCPhaseData &output_phase = output_data.solution_phases[phase_bucket];
             output_phase.moles += phase_data.moles;
             output_phase.form_units += phase_data.form_units;
-            output_phase.volume += phase_data.volume;
             addElementInventory(output_phase.elements, phase_data.elements);
 
             if (phase_bucket == "condensed")
@@ -935,21 +920,10 @@ namespace OCASIAdapter
                 const double species_moles =
                     phase_data.form_units > 0.0 ? phase_data.form_units : phase_data.moles;
                 species.moles += species_moles;
-                species.volume += phase_data.volume;
                 species.sublattices.insert(species.sublattices.end(),
                                            phase_sublattices.begin(),
                                            phase_sublattices.end());
                 addElementInventory(species.elements, phase_data.elements);
-
-                double element_inventory = 0.0;
-                for (const auto& element_entry : phase_data.elements)
-                    element_inventory += element_entry.second;
-
-                if (species_moles > 0.0 && element_inventory > 0.0)
-                    species.stoichiometric_size = element_inventory / species_moles;
-                species.atom_equivalent_moles += element_inventory > 0.0
-                    ? element_inventory
-                    : species_moles * species.stoichiometric_size;
             }
             else
             {
@@ -981,8 +955,6 @@ namespace OCASIAdapter
 
                     const std::map<std::string, double> stoichiometry =
                         speciesStoichiometry(species_name, element_names_);
-                    species.stoichiometric_size = speciesStoichiometricSize(stoichiometry);
-                    species.atom_equivalent_moles += species_moles * species.stoichiometric_size;
                     for (const auto& element_entry : stoichiometry)
                         species.elements[element_entry.first] += element_entry.second * species_moles;
                 }
@@ -1115,7 +1087,6 @@ void dumpParsedOcOutput(const OCOutputData& output_data)
 
         std::cout << "  Phase " << phase_name
                   << " : moles=" << phase_data.moles
-                  << ", volume=" << phase_data.volume
                   << ", form_units=" << phase_data.form_units
                   << std::endl;
 
@@ -1160,9 +1131,6 @@ void dumpParsedOcOutput(const OCOutputData& output_data)
                 const auto& species_data = species_entry.second;
                 std::cout << "      " << species_name
                           << " : moles=" << species_data.moles
-                          << ", atom_equivalent_moles=" << species_data.atom_equivalent_moles
-                          << ", stoichiometric_size=" << species_data.stoichiometric_size
-                          << ", volume=" << species_data.volume
                           << std::endl;
 
                 for (const auto& element_entry : species_data.elements)
@@ -1506,8 +1474,6 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
                 components_map[comp.name] = comp.fraction;
             }
 
-            int O_index = 0;
-
             const bool conditions_ready = oc.setConditions(
                 temperature,
                 pressure,
@@ -1563,30 +1529,7 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
     }
 }
 
-bool getOpenCalphadResults(const std::string& location,
-                             OCOutputData& output_data)
-{
-    try
-    {
-        const OCASIAdapter::OpenCalphadContext context = OCASIAdapter::OpenCalphadContext::FissionProducts;
-        auto& oc = OCASIAdapter::getOpenCalphadInterface(context);
-
-        if (!oc.extractResults(output_data))
-        {
-            std::cerr << "Error: Failed to extract OpenCalphad results" << std::endl;
-            return false;
-        }
-        return true;
-
-    }
-    catch (const std::exception& e)
-    {
-        std::cerr << "Exception in getOpenCalphadCaseResults: " << e.what() << std::endl;
-        return false;
-    }
-}
-
-void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhaseData>& solution_phases,
+void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhaseData>&  solution_phases,
                                               const std::string&                         location,
                                               double                                     content_scaling_factor,
                                               SciantixArray<ThermochemistryVariable>&    thermochemistry_variable,

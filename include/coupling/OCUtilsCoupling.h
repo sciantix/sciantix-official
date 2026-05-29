@@ -17,7 +17,10 @@
 #ifndef OC_UTILS_COUPLING_H
 #define OC_UTILS_COUPLING_H
 
-#include "Simulation.h"
+#include "SciantixArray.h"
+#include "SciantixVariable.h"
+#include "System.h"
+#include "ThermochemistryVariable.h"
 
 #include <map>
 #include <set>
@@ -37,18 +40,14 @@ struct OCSublatticeData
 
 struct OCSpeciesData
 {
-    double                   moles               = 0.0;
-    double                   atom_equivalent_moles = 0.0;
-    double                   volume              = 0.0;
-    double                   stoichiometric_size = 1.0;
+    double                   moles = 0.0;
     std::map<std::string, double> elements;
     std::vector<OCSublatticeData> sublattices;
 };
 
 struct OCPhaseData
 {
-    double                   moles  = 0.0;
-    double                   volume = 0.0;
+    double                   moles = 0.0;
     double                   form_units = 0.0;
     std::map<std::string, OCSpeciesData> species;
     std::map<std::string, double>        elements;
@@ -109,9 +108,6 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
                              OpenCalphadSolveMode solve_mode,
                              const std::string& location,
                              double oxygen_potential_kj_per_mol_o2,
-                             OCOutputData& output_data);
-
-bool getOpenCalphadResults(const std::string& location,
                              OCOutputData& output_data);
 
 void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhaseData>& solution_phases,
