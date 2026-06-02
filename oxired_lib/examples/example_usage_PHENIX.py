@@ -149,7 +149,7 @@ def main() -> None:
         )
 
     # Burnup discretization
-    burnup_values = np.linspace(0.0, burnup_final, 20)
+    burnup_values = np.linspace(0.0, burnup_final, 40)
 
     # Radial mesh
     edges, r = solver.mesh()

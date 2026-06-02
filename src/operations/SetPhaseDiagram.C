@@ -139,6 +139,8 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
             active_elements.insert(component.name);
         const std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
 
+        //const std::vector<std::string> valid_elements(selected_elements.begin(), selected_elements.end());
+
         for (const auto& solver : solvers)
         {
             output_data.solution_phases.clear();
