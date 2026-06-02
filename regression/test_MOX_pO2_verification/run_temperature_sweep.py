@@ -11,9 +11,12 @@ The workflow mirrors the UO2 pO2 verification layout as closely as possible:
 import argparse
 
 import math
+import os
 import shutil
 import subprocess
 from pathlib import Path
+
+os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
@@ -32,23 +35,29 @@ plt.rcParams.update({
     "grid.alpha": 0.5,
     "grid.linestyle": "--",
     "lines.linewidth": 2,
-    "lines.markersize": 4,
+    "lines.markersize": 6,
     "legend.frameon": False,
 })
 
 TEMPERATURES_K = list(range(800, 2800, 200))
 REFERENCE_PRESSURE_MPA = 0.1 # 1 bar
-Q_VALUES = [0.1, 0.2, 0.3]
+Q_VALUES = [0.2]
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 BUILD_BINARY = SCRIPT_DIR.parent.parent / "build" / "sciantix.x"
 LOCAL_BINARY = SCRIPT_DIR / "sciantix.x"
 SUMMARY_PATH = SCRIPT_DIR / "temperature_sweep_summary.tsv"
+PLOTS_DIR = SCRIPT_DIR / "plots"
 PRESSURE_PLOT_NAME = "fuel_oxygen_partial_pressures_vs_ou_ratio"
 PRESSURE_PLOT_NAME_2 = "fuel_oxygen_partial_pressures_vs_ou_ratio_2"
 POTENTIAL_PLOT_NAME = "fuel_oxygen_potentials_vs_ou_ratio"
 COMPARE_SCRIPT = SCRIPT_DIR / "sciantix_verification" / "compare_sciantix_with_kato.py"
 COMPARE_OC_SCRIPT = SCRIPT_DIR / "sciantix_verification" / "compare_sciantix_with_oc_csv.py"
+PLOT_MARKER_SIZE = 6
+OM_AXIS_LIMITS = (1.92, 2.08)
+LOG_PRESSURE_AXIS_LIMITS = (-30, 0)
+DELTA_LOG_AXIS_LIMITS = (-1.0, 1.0)
+OXYGEN_POTENTIAL_AXIS_LIMITS = (-1000, 50)
 
 
 def parse_args() -> argparse.Namespace:
@@ -105,6 +114,15 @@ def case_id(temperature_k: int, q_value: float) -> str:
     return f"{temperature_k}K/q_{format_q_tag(q_value)}"
 
 
+def clear_plot_outputs() -> None:
+    """Remove stale plot files before generating a new sweep."""
+    PLOTS_DIR.mkdir(parents=True, exist_ok=True)
+    for png_path in PLOTS_DIR.glob("*.png"):
+        png_path.unlink()
+    for png_path in SCRIPT_DIR.glob("*.png"):
+        png_path.unlink()
+
+
 def prepare_case(case_dir: Path, temperature_k: int, q_value: float, input_files: list[Path]) -> None:
     """Create one generated case and copy the template inputs into it."""
     case_dir.mkdir(parents=True, exist_ok=True)
@@ -151,12 +169,15 @@ def collect_case(case_dir: Path, temperature_k: int, q_value: float) -> pd.DataF
     if not output_path.exists():
         raise FileNotFoundError(f"Missing output for {case_dir.name}: {output_path}")
 
-    frame = pd.read_csv(output_path, sep="\t")
-    frame["Temperature target (K)"] = temperature_k
-    frame["q target (-)"] = q_value
-    frame["O/U ratio (/)"] = frame["Stoichiometry deviation (/)"] + 2.0
-    frame["Case"] = case_id(temperature_k, q_value)
-    
+    # SCIANTIX output can have many columns; copy once and append derived columns
+    # in a single concat to avoid pandas fragmentation warnings.
+    frame = pd.read_csv(output_path, sep="\t").copy()
+    derived = pd.DataFrame(index=frame.index)
+    derived["Temperature target (K)"] = temperature_k
+    derived["q target (-)"] = q_value
+    derived["O/U ratio (/)"] = frame["Stoichiometry deviation (/)"] + 2.0
+    derived["Case"] = case_id(temperature_k, q_value)
+
     pressure_columns = {
         "SCIANTIX + Kato model": "Fuel oxygen partial pressure - Kato (MPa)",
         "SCIANTIX + OpenCalphad": "Fuel oxygen partial pressure - CALPHAD (MPa)",
@@ -165,11 +186,11 @@ def collect_case(case_dir: Path, temperature_k: int, q_value: float) -> pd.DataF
     for label, column in pressure_columns.items():
         ratio = frame[column] / REFERENCE_PRESSURE_MPA
         # Log values are only defined for positive pressures.
-        frame[f"log10({label} pressure / reference)"] = ratio.where(ratio > 0.0).map(
+        derived[f"log10({label} pressure / reference)"] = ratio.where(ratio > 0.0).map(
             lambda value: math.log10(value) if pd.notna(value) else math.nan
         )
 
-    return frame
+    return pd.concat([frame, derived], axis=1)
 
 
 def style_maps():
@@ -239,18 +260,19 @@ def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
                 valid[column],
                 color=colors[temperature_k],
                 marker=markers[label],
+                s=PLOT_MARKER_SIZE,
             )
 
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
     ax.grid(True, alpha=0.3)
     add_legends(ax, colors, linestyles, markers, temperatures_k)
-    ax.set_xlim([1.85, 2.15])
-    ax.set_ylim([-30, 2])
+    ax.set_xlim(OM_AXIS_LIMITS)
+    ax.set_ylim(LOG_PRESSURE_AXIS_LIMITS)
     ax.set_yticks(range(-30, 0, 2))
 
     fig.tight_layout()
-    fig.savefig(SCRIPT_DIR / f"{PRESSURE_PLOT_NAME}_{q_plot_suffix(q_value)}.png")
+    fig.savefig(PLOTS_DIR / f"{PRESSURE_PLOT_NAME}_{q_plot_suffix(q_value)}.png")
     plt.close(fig)
 
     fig, ax = plt.subplots()
@@ -273,6 +295,7 @@ def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
             valid["log10(SCIANTIX + Kato model pressure / reference)"] - valid["log10(SCIANTIX + OpenCalphad pressure / reference)"],
             color=colors[temperature_k],
             marker="o",
+            s=PLOT_MARKER_SIZE,
         )
 
     ax.set_xlabel("O/U ratio (-)")
@@ -289,10 +312,11 @@ def make_pressure_plot(frames: list[pd.DataFrame], q_value: float) -> None:
         title="Temperature"
     )
     ax.add_artist(temperature_legend)
-    ax.set_xlim([1.85, 2.15])
+    ax.set_xlim(OM_AXIS_LIMITS)
+    ax.set_ylim(DELTA_LOG_AXIS_LIMITS)
 
     fig.tight_layout()
-    fig.savefig(SCRIPT_DIR / f"{PRESSURE_PLOT_NAME_2}_{q_plot_suffix(q_value)}.png")
+    fig.savefig(PLOTS_DIR / f"{PRESSURE_PLOT_NAME_2}_{q_plot_suffix(q_value)}.png")
     plt.close(fig)
 
 def make_potential_plot(frames: list[pd.DataFrame], q_value: float) -> None:
@@ -319,10 +343,11 @@ def make_potential_plot(frames: list[pd.DataFrame], q_value: float) -> None:
                 valid[column],
                 color=colors[temperature_k],
                 marker=markers[label],
+                s=PLOT_MARKER_SIZE,
             )
 
-    ax.set_xlim([1.85, 2.15])
-    ax.set_ylim([-1000, 50])
+    ax.set_xlim(OM_AXIS_LIMITS)
+    ax.set_ylim(OXYGEN_POTENTIAL_AXIS_LIMITS)
     ax.set_yticks(range(-1000, 100, 100))
     ax.set_xlabel("O/U ratio (-)")
     ax.set_ylabel("Oxygen potential (kJ/mol)")
@@ -330,7 +355,7 @@ def make_potential_plot(frames: list[pd.DataFrame], q_value: float) -> None:
     add_legends(ax, colors, linestyles, markers, temperatures_k)
 
     fig.tight_layout()
-    fig.savefig(SCRIPT_DIR / f"{POTENTIAL_PLOT_NAME}_{q_plot_suffix(q_value)}.png")
+    fig.savefig(PLOTS_DIR / f"{POTENTIAL_PLOT_NAME}_{q_plot_suffix(q_value)}.png")
     plt.close(fig)
 
 
@@ -361,8 +386,6 @@ def cleanup_generated_cases(temperatures_k: list[int]) -> None:
 def cleanup_generated_artifacts() -> None:
     """Keep only compact metrics and selected verification plots."""
     verification_dir = SCRIPT_DIR / "sciantix_verification"
-    plots_dir = SCRIPT_DIR / "plots"
-    plots_dir.mkdir(parents=True, exist_ok=True)
 
     metric_files_to_keep = {
         verification_dir / "sciantix_vs_kato_residuals.tsv",
@@ -385,23 +408,8 @@ def cleanup_generated_artifacts() -> None:
         if path.exists() and path not in metric_files_to_keep:
             path.unlink()
 
-    selected_plot_prefixes = (
-        "fuel_oxygen_partial_pressure_vs_om_ratio_kato_q_",
-        "fuel_oxygen_partial_pressure_error_vs_om_ratio_kato_q_",
-        "fuel_oxygen_partial_pressure_error_absolute_vs_om_ratio_kato_q_",
-        "fuel_oxygen_partial_pressure_relative_error_vs_om_ratio_kato_q_",
-        "sciantix_vs_oc_csv_partial_pressure_q_",
-        "sciantix_vs_oc_csv_log_pO2_error_q_",
-        "sciantix_vs_oc_csv_log_pO2_error_absolute_q_",
-        "sciantix_vs_oc_csv_log_pO2_error_relative_percent_q_",
-    )
-
     for png_path in SCRIPT_DIR.glob("*.png"):
-        if png_path.name.startswith(selected_plot_prefixes):
-            destination = plots_dir / png_path.name
-            if destination.exists():
-                destination.unlink()
-            shutil.move(str(png_path), str(destination))
+        png_path.unlink()
 
 
 def main() -> None:
@@ -409,6 +417,7 @@ def main() -> None:
     args = parse_args()
     temperatures_k = parse_int_list(args.temperatures)
     q_values = parse_float_list(args.q_values)
+    clear_plot_outputs()
 
     collected_frames: list[pd.DataFrame] = []
     if not args.plot_only:

@@ -30,7 +30,7 @@ plt.rcParams.update({
     "axes.grid": True,
     "grid.alpha": 0.5,
     "grid.linestyle": "--",
-    "lines.linewidth": 2,
+    "lines.linewidth": 0.5,
     "lines.markersize": 4,
     "legend.frameon": False,
 })
@@ -39,12 +39,20 @@ REFERENCE_PRESSURE_PA = 1e5
 REFERENCE_PRESSURE_MPA = REFERENCE_PRESSURE_PA / 1.0e6
 GAS_CONSTANT = 8.31446261815324
 THERMOCALC_Q_DIR_GLOB = "TEMPERATURES_THERMOCALC_Q_*"
-OM_MIN = 1.85
-OM_MAX = 2.15
+TEMPERATURE_MIN_K = 753.0
+TEMPERATURE_MAX_K = 2550.0
+Q_MIN = 0.10
+Q_MAX = 0.32
+Q_TOLERANCE = 1.0e-3
+OM_MIN = 1.92
+OM_MAX = 2.08
+NEAR_STOICHIOMETRY_TOLERANCE = 1.0e-3
+PLOT_MARKER_SIZE = 4
 
 COMPARISON_PATH = SCRIPT_DIR / 'sciantix_vs_oc_csv_comparison.tsv'
 SUMMARY_OUTPUT_PATH = SCRIPT_DIR / 'sciantix_vs_oc_csv_summary.tsv'
 SUMMARY_REPORT_PATH = SCRIPT_DIR / 'sciantix_vs_oc_csv_summary.txt'
+PLOTS_DIR = ROOT_DIR / 'plots'
 
 TEMPERATURE_KEY_COL = 'Temperature key (K)'
 Q_KEY_COL = 'q key (-)'
@@ -53,10 +61,27 @@ def q_tag(q_value: float) -> str:
     return f'{q_value:.2f}'.replace('.', 'p')
 
 
+def positive_log10_ratio(values: pd.Series, reference: float) -> pd.Series:
+    result = pd.Series(np.nan, index=values.index, dtype=float)
+    ratio = pd.to_numeric(values, errors='coerce') / reference
+    positive = ratio > 0.0
+    result.loc[positive] = np.log10(ratio.loc[positive])
+    return result
+
+
+def positive_ln_ratio(values: pd.Series, reference: float) -> pd.Series:
+    result = pd.Series(np.nan, index=values.index, dtype=float)
+    ratio = pd.to_numeric(values, errors='coerce') / reference
+    positive = ratio > 0.0
+    result.loc[positive] = np.log(ratio.loc[positive])
+    return result
+
+
 def load_sciantix_data() -> pd.DataFrame:
     """Load the parent-folder sweep summary and normalize key column types."""
     frame = pd.read_csv(SUMMARY_PATH, sep='\t')
     frame = frame.loc[:, ~frame.columns.str.startswith('Unnamed:')].copy()
+    source_points = len(frame)
 
     # temperature_col = 'Temperature (K)' if 'Temperature (K)' in frame.columns else 'Temperature target (K)'
     # q_col = 'q (-)' if 'q (-)' in frame.columns else 'q target (-)'
@@ -66,18 +91,22 @@ def load_sciantix_data() -> pd.DataFrame:
     frame['O/M ratio (/)'] = frame['Stoichiometry deviation (/)'].astype(float) + 2.0
     frame['SCIANTIX CALPHAD pO2 (MPa)'] = frame['Fuel oxygen partial pressure - CALPHAD (MPa)'].astype(float)
     frame['SCIANTIX CALPHAD oxygen potential (KJ/mol)'] = frame['Fuel oxygen potential - CALPHAD (KJ/mol)'].astype(float)
-    frame['SCIANTIX CALPHAD log10(pO2/p_ref)'] = np.where(
-        frame['SCIANTIX CALPHAD pO2 (MPa)'] > 0.0,
-        np.log10(frame['SCIANTIX CALPHAD pO2 (MPa)'] / REFERENCE_PRESSURE_MPA),
-        np.nan,
+    frame['SCIANTIX CALPHAD log10(pO2/p_ref)'] = positive_log10_ratio(
+        frame['SCIANTIX CALPHAD pO2 (MPa)'],
+        REFERENCE_PRESSURE_MPA,
     )
 
     frame[TEMPERATURE_KEY_COL] = frame["Temperature (K)"].round().astype('Int64')
     frame[Q_KEY_COL] = frame["q (-)"].round(2)
-    frame = frame[frame["O/M ratio (/)"].between(OM_MIN, OM_MAX)].copy()
-    # frame = frame.loc[
-    #     ~np.isclose(frame["O/M ratio (/)"], OM_EXCLUDED_VALUE, atol=OM_EXCLUDED_TOLERANCE, rtol=0.0)
-    # ].copy()
+    in_comparison_range = (
+        frame["Temperature (K)"].between(TEMPERATURE_MIN_K, TEMPERATURE_MAX_K)
+        & frame["q (-)"].between(Q_MIN - Q_TOLERANCE, Q_MAX + Q_TOLERANCE)
+        & frame["O/M ratio (/)"].between(OM_MIN, OM_MAX)
+    )
+    frame = frame.loc[in_comparison_range].copy()
+    # Exact-stoichiometry points are part of the verification; do not exclude O/M = 2.0.
+    frame.attrs["source_points"] = source_points
+    frame.attrs["comparison_range_excluded_points"] = source_points - len(frame)
     return frame
 
 
@@ -202,20 +231,24 @@ def load_oc_csv_data() -> pd.DataFrame:
         )
 
     frame = pd.concat(rows, ignore_index=True)
+    source_points = len(frame)
     frame = frame.sort_values([TEMPERATURE_KEY_COL, Q_KEY_COL, 'O/M ratio (/)', 'Region']).reset_index(drop=True)
-    frame = frame[frame["O/M ratio (/)"].between(OM_MIN, OM_MAX)].copy()
-    # frame = frame.loc[
-    #     ~np.isclose(frame["O/M ratio (/)"], OM_EXCLUDED_VALUE, atol=OM_EXCLUDED_TOLERANCE, rtol=0.0)
-    # ].copy()
+    in_comparison_range = (
+        frame[TEMPERATURE_KEY_COL].astype(float).between(TEMPERATURE_MIN_K, TEMPERATURE_MAX_K)
+        & frame[Q_KEY_COL].astype(float).between(Q_MIN - Q_TOLERANCE, Q_MAX + Q_TOLERANCE)
+        & frame["O/M ratio (/)"].between(OM_MIN, OM_MAX)
+    )
+    frame = frame.loc[in_comparison_range].copy()
+    # Exact-stoichiometry points are part of the verification; do not exclude O/M = 2.0.
+    frame.attrs["source_points"] = source_points
+    frame.attrs["comparison_range_excluded_points"] = source_points - len(frame)
 
     frame['OC pO2 (MPa)'] = (frame['OC oxygen activity'] ** 2) * REFERENCE_PRESSURE_MPA
-    frame['OC log10(pO2/p_ref)'] = np.where(
-        frame['OC pO2 (MPa)'] > 0.0,
-        np.log10(frame['OC pO2 (MPa)'] / REFERENCE_PRESSURE_MPA),
-        np.nan,
-    )
+    frame['OC log10(pO2/p_ref)'] = positive_log10_ratio(frame['OC pO2 (MPa)'], REFERENCE_PRESSURE_MPA)
     frame['OC oxygen potential (KJ/mol)'] = (
-        GAS_CONSTANT * 1.0e-3 * frame[TEMPERATURE_KEY_COL].astype(float) * np.log(frame['OC pO2 (MPa)'] / REFERENCE_PRESSURE_MPA)
+        GAS_CONSTANT * 1.0e-3
+        * frame[TEMPERATURE_KEY_COL].astype(float)
+        * positive_ln_ratio(frame['OC pO2 (MPa)'], REFERENCE_PRESSURE_MPA)
     )
     return frame
 
@@ -243,13 +276,11 @@ def interpolate_sciantix_to_oc_points(
             .mean()
             .sort_values('O/M ratio (/)')
         )
-        oc_group['OC log10(pO2/p_ref)'] = np.where(
-            oc_group['OC pO2 (MPa)'] > 0.0,
-            np.log10(oc_group['OC pO2 (MPa)'] / REFERENCE_PRESSURE_MPA),
-            np.nan,
-        )
+        oc_group['OC log10(pO2/p_ref)'] = positive_log10_ratio(oc_group['OC pO2 (MPa)'], REFERENCE_PRESSURE_MPA)
         oc_group['OC oxygen potential (KJ/mol)'] = (
-            GAS_CONSTANT * 1.0e-3 * float(temperature_k) * np.log(oc_group['OC pO2 (MPa)'] / REFERENCE_PRESSURE_MPA)
+            GAS_CONSTANT * 1.0e-3
+            * float(temperature_k)
+            * positive_ln_ratio(oc_group['OC pO2 (MPa)'], REFERENCE_PRESSURE_MPA)
         )
         oc_group = oc_group[oc_group['OC pO2 (MPa)'] > 0.0].copy()
         if oc_group.empty:
@@ -299,7 +330,14 @@ def interpolate_sciantix_to_oc_points(
         raise RuntimeError('No overlapping (T,q,O/M) ranges found for SCIANTIX-CALPHAD interpolation.')
 
     aligned = pd.concat(rows, ignore_index=True)
-    return aligned.sort_values([TEMPERATURE_KEY_COL, Q_KEY_COL, 'O/M ratio (/)']).reset_index(drop=True)
+    aligned.attrs["sciantix_source_points"] = sciantix_frame.attrs.get("source_points", len(sciantix_frame))
+    aligned.attrs["sciantix_comparison_range_excluded_points"] = sciantix_frame.attrs.get("comparison_range_excluded_points", 0)
+    aligned.attrs["oc_source_points"] = oc_frame.attrs.get("source_points", len(oc_frame))
+    aligned.attrs["oc_comparison_range_excluded_points"] = oc_frame.attrs.get("comparison_range_excluded_points", 0)
+    aligned.attrs["oc_overlap_excluded_points"] = len(oc_frame) - len(aligned)
+    result = aligned.sort_values([TEMPERATURE_KEY_COL, Q_KEY_COL, 'O/M ratio (/)']).reset_index(drop=True)
+    result.attrs.update(aligned.attrs)
+    return result
 
 
 def build_metric_summary(frame: pd.DataFrame) -> pd.DataFrame:
@@ -314,20 +352,36 @@ def build_metric_summary(frame: pd.DataFrame) -> pd.DataFrame:
 
 def write_summary_report(frame: pd.DataFrame, summary: pd.DataFrame) -> None:
     overall_count = len(frame)
+    near_stoichiometry_points = int(np.isclose(
+        frame['O/M ratio (/)'],
+        2.0,
+        atol=NEAR_STOICHIOMETRY_TOLERANCE,
+        rtol=0.0,
+    ).sum())
     max_abs_log = frame['Absolute delta log10(pO2/p_ref)'].max()
     mean_abs_log = frame['Absolute delta log10(pO2/p_ref)'].mean()
     mean_rel_log = frame['Relative delta log10(pO2/p_ref) (%)'].mean()
     max_rel_log = frame['Relative delta log10(pO2/p_ref) (%)'].max()
+    max_abs_potential = frame['Absolute delta oxygen potential (KJ/mol)'].max()
 
     lines = [
         'SCIANTIX-CALPHAD vs Thermo-Calc (MOX)',
         '===============================================',
         '',
+        f"Comparison ranges: T = {TEMPERATURE_MIN_K:g}-{TEMPERATURE_MAX_K:g} K, "
+        f"Pu/M = {Q_MIN:.2f}-{Q_MAX:.2f}, O/M = {OM_MIN:.2f}-{OM_MAX:.2f}",
+        f"Sciantix source points: {frame.attrs.get('sciantix_source_points', 'unknown')}",
+        f"Sciantix points outside comparison ranges: {frame.attrs.get('sciantix_comparison_range_excluded_points', 'unknown')}",
+        f"OC source points: {frame.attrs.get('oc_source_points', 'unknown')}",
+        f"OC points outside comparison ranges: {frame.attrs.get('oc_comparison_range_excluded_points', 'unknown')}",
+        f"OC points outside SCIANTIX interpolation overlap: {frame.attrs.get('oc_overlap_excluded_points', 'unknown')}",
         f'Compared points: {overall_count}',
+        f'Near O/M = 2.0 compared points: {near_stoichiometry_points}',
         f'Mean absolute log10(pO2/p_ref) error: {mean_abs_log:.6e}',
         f'Max absolute log10(pO2/p_ref) error: {max_abs_log:.6e}',
         f'Mean relative log10(pO2/p_ref) error (%): {mean_rel_log:.6e}',
         f'Max relative log10(pO2/p_ref) error (%): {max_rel_log:.6e}',
+        f'Max absolute oxygen-potential error (KJ/mol): {max_abs_potential:.6e}',
         '',
         'Per-(q, temperature) summary:',
         summary.to_string(index=False),
@@ -404,7 +458,7 @@ def make_pressure_plot(sciantix_frame: pd.DataFrame, oc_frame: pd.DataFrame) -> 
                 oc_subset['OC log10(pO2/p_ref)'],
                 color=temperature_colors[temperature_k],
                 marker=q_markers[q_value],
-                s=22,
+                s=PLOT_MARKER_SIZE,
             )
 
         ax.set_title(f'q = {q_value:.2f}')
@@ -431,7 +485,7 @@ def make_pressure_plot(sciantix_frame: pd.DataFrame, oc_frame: pd.DataFrame) -> 
         ax.grid(True, alpha=0.3)
         add_model_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
-        fig.savefig(ROOT_DIR / f'sciantix_vs_oc_csv_partial_pressure_q_{q_tag(q_value)}.png')
+        fig.savefig(PLOTS_DIR / f'sciantix_vs_oc_csv_partial_pressure_q_{q_tag(q_value)}.png')
         plt.close(fig)
 
 
@@ -470,7 +524,7 @@ def make_potential_plot(sciantix_frame: pd.DataFrame, oc_frame: pd.DataFrame) ->
                 edgecolors=temperature_colors[temperature_k],
                 linewidths=0.9,
                 marker=q_markers[q_value],
-                s=24,
+                s=PLOT_MARKER_SIZE,
                 zorder=3,
             )
 
@@ -498,7 +552,7 @@ def make_potential_plot(sciantix_frame: pd.DataFrame, oc_frame: pd.DataFrame) ->
         ax.grid(True, alpha=0.3)
         add_model_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
-        fig.savefig(ROOT_DIR / f'fuel_oxygen_potential_vs_om_ratio_oc_csv_q_{q_tag(q_value)}.png')
+        fig.savefig(PLOTS_DIR / f'fuel_oxygen_potential_vs_om_ratio_oc_csv_q_{q_tag(q_value)}.png')
         plt.close(fig)
 
 
@@ -522,6 +576,7 @@ def make_signed_log_error_plot(frame: pd.DataFrame) -> None:
                 subset['Delta log10(pO2/p_ref)'],
                 color=temperature_colors[temperature_k],
                 marker='o',
+                markersize=2,
             )
 
         ax.axhline(0.0, color='black', linestyle='--')
@@ -533,7 +588,7 @@ def make_signed_log_error_plot(frame: pd.DataFrame) -> None:
         ax.grid(True, alpha=0.3)
         add_temperature_legend(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
-        fig.savefig(ROOT_DIR / f'sciantix_vs_oc_csv_log_pO2_error_q_{q_tag(q_value)}.png')
+        fig.savefig(PLOTS_DIR / f'sciantix_vs_oc_csv_log_pO2_error_q_{q_tag(q_value)}.png')
         plt.close(fig)
 
 
@@ -557,6 +612,7 @@ def make_absolute_log_error_plot(frame: pd.DataFrame) -> None:
                 subset['Absolute delta log10(pO2/p_ref)'],
                 color=temperature_colors[temperature_k],
                 marker='o',
+                markersize=2,
             )
 
         ax.set_title(f'q = {q_value:.2f}')
@@ -567,7 +623,7 @@ def make_absolute_log_error_plot(frame: pd.DataFrame) -> None:
         ax.grid(True, alpha=0.3)
         add_temperature_legend(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
-        fig.savefig(ROOT_DIR / f'sciantix_vs_oc_csv_log_pO2_error_absolute_q_{q_tag(q_value)}.png')
+        fig.savefig(PLOTS_DIR / f'sciantix_vs_oc_csv_log_pO2_error_absolute_q_{q_tag(q_value)}.png')
         plt.close(fig)
 
 
@@ -591,6 +647,7 @@ def make_relative_log_error_plot(frame: pd.DataFrame) -> None:
                 subset['Relative delta log10(pO2/p_ref) (%)'],
                 color=temperature_colors[temperature_k],
                 marker='o',
+                markersize=2,
             )
 
         ax.set_title(f'q = {q_value:.2f}')
@@ -601,11 +658,12 @@ def make_relative_log_error_plot(frame: pd.DataFrame) -> None:
         ax.grid(True, alpha=0.3)
         add_temperature_legend(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
-        fig.savefig(ROOT_DIR / f'sciantix_vs_oc_csv_log_pO2_error_relative_percent_q_{q_tag(q_value)}.png')
+        fig.savefig(PLOTS_DIR / f'sciantix_vs_oc_csv_log_pO2_error_relative_percent_q_{q_tag(q_value)}.png')
         plt.close(fig)
 
 
 def main() -> None:
+    PLOTS_DIR.mkdir(parents=True, exist_ok=True)
     sciantix_frame = load_sciantix_data()
     oc_frame = load_oc_csv_data()
     aligned_frame = interpolate_sciantix_to_oc_points(sciantix_frame, oc_frame)

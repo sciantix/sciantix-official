@@ -30,8 +30,16 @@ REFERENCE_PRESSURE_MPA = 0.1013
 GAS_CONSTANT = 8.314
 TEMPERATURE_COMPARE_COL = "Temperature compared (K)"
 Q_COMPARE_COL = "q compared (-)"
+TEMPERATURE_MIN_K = 753.0
+TEMPERATURE_MAX_K = 2550.0
+Q_MIN = 0.10
+Q_MAX = 0.32
+Q_TOLERANCE = 1.0e-3
+OM_MIN = 1.92
+OM_MAX = 2.08
 
 ROOT_DIR = SCRIPT_DIR.parent
+PLOTS_DIR = ROOT_DIR / "plots"
 SUMMARY_PATH = ROOT_DIR / "temperature_sweep_summary.tsv"
 LEGACY_SUMMARY_PATH = ROOT_DIR / "kato_sweep_summary.tsv"
 COMPARISON_PATH = SCRIPT_DIR / "sciantix_vs_kato_comparison.tsv"
@@ -56,10 +64,11 @@ plt.rcParams.update({
     "axes.grid": True,
     "grid.alpha": 0.5,
     "grid.linestyle": "--",
-    "lines.linewidth": 2,
+    "lines.linewidth": 0.5,
     "lines.markersize": 4,
     "legend.frameon": False,
 })
+PLOT_MARKER_SIZE = 4
 
 
 def effective_pu_content(q_pu: float, q_am: float = 0.0, q_np: float = 0.0) -> float:
@@ -183,6 +192,7 @@ def build_explicit_points(frame: pd.DataFrame) -> pd.DataFrame:
 def prepare_dataframe() -> pd.DataFrame:
     """Align SCIANTIX trajectory points with explicit NEA Kato reference points."""
     frame = pd.read_csv(SUMMARY_PATH, sep="\t")
+    source_points = len(frame)
     # De-fragment blocks before adding many derived columns.
     frame = frame.copy()
     temperature_source = "Temperature (K)" if "Temperature (K)" in frame.columns else "Temperature target (K)"
@@ -191,6 +201,13 @@ def prepare_dataframe() -> pd.DataFrame:
     frame[Q_COMPARE_COL] = pd.to_numeric(frame[q_source], errors="coerce")
 
     frame["O/M ratio (/)"] = frame["Stoichiometry deviation (/)"] + 2.0
+    in_comparison_range = (
+        frame[TEMPERATURE_COMPARE_COL].between(TEMPERATURE_MIN_K, TEMPERATURE_MAX_K)
+        & frame[Q_COMPARE_COL].between(Q_MIN - Q_TOLERANCE, Q_MAX + Q_TOLERANCE)
+        & frame["O/M ratio (/)"].between(OM_MIN, OM_MAX)
+    )
+    frame = frame.loc[in_comparison_range].copy()
+    comparison_range_points = len(frame)
     frame["Kato log10(p/reference)"] = (frame["Fuel oxygen partial pressure - Kato (MPa)"] / REFERENCE_PRESSURE_MPA).map(safe_log10)
     explicit_points = build_explicit_points(frame)
 
@@ -224,6 +241,9 @@ def prepare_dataframe() -> pd.DataFrame:
         aligned_rows.append(group)
 
     frame = pd.concat(aligned_rows, ignore_index=True).copy()
+    frame.attrs["source_points"] = source_points
+    frame.attrs["comparison_range_excluded_points"] = source_points - comparison_range_points
+    frame.attrs["explicit_range_excluded_points"] = comparison_range_points - len(frame)
 
     frame["Delta log10(p/reference)"] = frame["Kato log10(p/reference)"] - frame["Explicit Kato log10(p/reference)"]
     frame["Absolute delta log10(p/reference)"] = frame["Delta log10(p/reference)"].abs()
@@ -266,11 +286,16 @@ def prepare_dataframe() -> pd.DataFrame:
 def write_summary_report(frame: pd.DataFrame) -> None:
     """Write a short human-readable report with global and grouped MOX metrics."""
     overall_count = len(frame)
+    source_count = int(frame.attrs.get("source_points", overall_count))
+    comparison_range_excluded_count = int(frame.attrs.get("comparison_range_excluded_points", 0))
+    explicit_range_excluded_count = int(frame.attrs.get("explicit_range_excluded_points", 0))
+    exact_stoichiometry_points = int(np.isclose(frame["O/M ratio (/)"], 2.0, atol=1.0e-12, rtol=0.0).sum())
     signed_mean = frame["Delta log10(p/reference)"].mean()
     max_abs_log = frame["Absolute delta log10(p/reference)"].max()
     mean_abs_log = frame["Absolute delta log10(p/reference)"].mean()
     mean_rel_log = frame["Absolute relative delta log10(p/reference) (%)"].mean()
     max_rel_log = frame["Absolute relative delta log10(p/reference) (%)"].max()
+    max_abs_potential = frame["Absolute delta oxygen potential (KJ/mol)"].max()
     grouped = (
         frame.groupby([Q_COMPARE_COL, TEMPERATURE_COMPARE_COL], as_index=False)
         .agg(
@@ -279,17 +304,23 @@ def write_summary_report(frame: pd.DataFrame) -> None:
             max_abs_log_error=("Absolute delta log10(p/reference)", "max"),
         )
     )
-
     lines = [
         "SCIANTIX MOX verification vs explicit NEA Kato equation",
         "======================================================",
         "",
+        f"Comparison ranges: T = {TEMPERATURE_MIN_K:g}-{TEMPERATURE_MAX_K:g} K, "
+        f"Pu/M = {Q_MIN:.2f}-{Q_MAX:.2f}, O/M = {OM_MIN:.2f}-{OM_MAX:.2f}",
+        f"Source points: {source_count}",
         f"Compared points: {overall_count}",
+        f"Excluded points outside comparison ranges: {comparison_range_excluded_count}",
+        f"Excluded points outside explicit Kato O/M interpolation range: {explicit_range_excluded_count}",
+        f"Exact O/M = 2.0 compared points: {exact_stoichiometry_points}",
         f"Mean signed log10(p/reference) error: {signed_mean:.6e}",
         f"Mean absolute log10(p/reference) error: {mean_abs_log:.6e}",
         f"Maximum absolute log10(p/reference) error: {max_abs_log:.6e}",
         f"Mean relative log10(p/reference) error (%): {mean_rel_log:.6e}",
         f"Max relative log10(p/reference) error (%): {max_rel_log:.6e}",
+        f"Maximum absolute oxygen-potential error (KJ/mol): {max_abs_potential:.6e}",
         "",
         "Per-(q, temperature) summary:",
         grouped.to_string(index=False),
@@ -377,19 +408,19 @@ def make_pressure_plot(frame: pd.DataFrame) -> None:
                 subset["Explicit Kato log10(p/reference)"],
                 color=temperature_colors[temperature_k],
                 marker="o",
-                s=22,
+                s=PLOT_MARKER_SIZE,
             )
 
         ax.set_title(f"q = {q_value:.2f}")
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel(r"$\log_{10}(p_{O_2})$ (bar)")
-        ax.set_xlim([1.85, 2.15])
+        ax.set_xlim([OM_MIN, OM_MAX])
         ax.set_ylim([-30, 0])
         ax.set_yticks(range(-30, 0, 2))
         ax.grid(True, alpha=0.3)
         add_model_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
-        fig.savefig(ROOT_DIR / f"fuel_oxygen_partial_pressure_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
+        fig.savefig(PLOTS_DIR / f"fuel_oxygen_partial_pressure_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
         plt.close(fig)
 
 
@@ -418,11 +449,11 @@ def make_signed_log_pressure_error_plot(frame: pd.DataFrame) -> None:
         ax.set_title(f"q = {q_value:.2f}")
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel(r"$\Delta \log_{10}(p_{O_2}/p_{ref})$ (-)")
-        ax.set_xlim([1.85, 2.15])
+        ax.set_xlim([OM_MIN, OM_MAX])
         ax.grid(True, alpha=0.3)
         add_temperature_q_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
-        fig.savefig(ROOT_DIR / f"fuel_oxygen_partial_pressure_error_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
+        fig.savefig(PLOTS_DIR / f"fuel_oxygen_partial_pressure_error_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
         plt.close(fig)
 
 
@@ -450,11 +481,11 @@ def make_absolute_log_pressure_error_plot(frame: pd.DataFrame) -> None:
         ax.set_title(f"q = {q_value:.2f}")
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel(r"$|\Delta \log_{10}(p_{O_2}/p_{ref})|$ (-)")
-        ax.set_xlim([1.85, 2.15])
+        ax.set_xlim([OM_MIN, OM_MAX])
         ax.grid(True, alpha=0.3)
         add_temperature_q_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
-        fig.savefig(ROOT_DIR / f"fuel_oxygen_partial_pressure_error_absolute_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
+        fig.savefig(PLOTS_DIR / f"fuel_oxygen_partial_pressure_error_absolute_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
         plt.close(fig)
 
 
@@ -483,11 +514,11 @@ def make_relative_log_pressure_error_plot(frame: pd.DataFrame) -> None:
         ax.set_title(f"q = {q_value:.2f}")
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel(r"Relative $|\Delta \log_{10}(p_{O_2}/p_{ref})|$ (%)")
-        ax.set_xlim([1.85, 2.15])
+        ax.set_xlim([OM_MIN, OM_MAX])
         ax.grid(True, alpha=0.3)
         add_temperature_q_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
-        fig.savefig(ROOT_DIR / f"fuel_oxygen_partial_pressure_relative_error_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
+        fig.savefig(PLOTS_DIR / f"fuel_oxygen_partial_pressure_relative_error_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
         plt.close(fig)
 
 
@@ -518,22 +549,23 @@ def make_potential_plot(frame: pd.DataFrame) -> None:
                 subset["Explicit Kato oxygen potential (KJ/mol)"],
                 color=temperature_colors[temperature_k],
                 marker=q_markers[q_value],
-                s=22,
+                s=PLOT_MARKER_SIZE,
             )
 
         ax.set_title(f"q = {q_value:.2f}")
         ax.set_xlabel("O/M ratio (-)")
         ax.set_ylabel("Oxygen potential (kJ/mol)")
-        ax.set_xlim([1.85, 2.15])
+        ax.set_xlim([OM_MIN, OM_MAX])
         ax.grid(True, alpha=0.3)
         add_model_legends(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
-        fig.savefig(ROOT_DIR / f"fuel_oxygen_potential_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
+        fig.savefig(PLOTS_DIR / f"fuel_oxygen_potential_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
         plt.close(fig)
 
 
 def main() -> None:
     """Generate the MOX verification tables, text report, and plots."""
+    PLOTS_DIR.mkdir(parents=True, exist_ok=True)
     frame = prepare_dataframe()
     write_summary_report(frame)
     make_pressure_plot(frame)

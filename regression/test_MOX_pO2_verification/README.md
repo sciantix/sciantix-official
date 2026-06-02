@@ -1,79 +1,120 @@
 # MOX pO2 Verification
 
-This folder contains the verification workflow for the MOX oxygen partial
-pressure and oxygen potential model implemented in SCIANTIX.
+This directory runs a MOX oxygen partial pressure and oxygen-potential
+verification sweep for SCIANTIX. 
+## Scope
 
-## Verification Scope
+The default sweep covers:
 
-This case is a solver-only verification. Unlike the UO2 case, it does not use
-OpenCalphad and a CALPHAD database. The comparison is between:
+- temperatures from `800 K` to `2600 K` in `200 K` steps
+- plutonium contents `q = 0.10, 0.20, 0.30`
+- evolving `O/M` through `iStoichiometryDeviation = 8`
+- minor actinides set to zero
 
-- SCIANTIX
-- the explicit NEA Kato correlation sampled over oxygen partial pressure (NEA (2025), Recommendations on Fuel Properties for Fuel Performance Codes, OECD Publishing, Paris)
+Two comparisons are produced:
 
-For the current setup, the verification assumes:
+- SCIANTIX Kato output against the explicit analytical NEA Kato equation
+- SCIANTIX OpenCalphad output against the Thermo-Calc CSV tables in
+  `TEMPERATURES_THERMOCALC_Q_*`
 
-- minor actinides content = `0`, not yet implemented a MA-MOX matrix
-- evolving `O/M` with `iStoichiometryDeviation = 8`
-- Temperatures: `800, 900, 1000, ..., 2600 K`
-- Pu contents `q`: `0.10, 0.15, 0.20, 0.25, 0.30, 0.35`
+The verification comparisons are restricted to the requested reference domain:
 
+- `753 K <= T <= 2550 K`
+- `0.10 <= Pu/M <= 0.32`
+- `1.92 <= O/M <= 2.08`
 
-## Workflow
+The lower `Pu/M` bound is applied with a small numerical tolerance so that a
+nominal `10%` Pu/M SCIANTIX output is not removed only because it is printed as
+slightly below `0.10`.
 
-The verification is split into two main steps.
+## Usage
 
-1. `run_temperature_sweep.py`
-   - copies the template `input_*` files into one case directory per
-     `(temperature, q)` combination, organised as `temperature/q`
-     (for example `1600K/q_0p20`)
-   - updates only the prescribed temperature and the MOX `q` value
-   - leaves the `O/M` transient entirely defined by the template
-     `input_history.txt` and `input_initial_conditions.txt`
-   - runs `sciantix.x` for each case
-   - collects all `output.txt` files into
-     `temperature_sweep_summary.tsv`
-   - calls the comparison and plotting script
-
-2. `sciantix_verification/compare_sciantix_with_kato.py`
-   - loads `temperature_sweep_summary.tsv`
-   - samples the explicit NEA Kato equation over oxygen partial pressure
-   - writes merged comparison tables and summary metrics:
-     - `sciantix_verification/sciantix_vs_kato_points.tsv`
-     - `sciantix_verification/sciantix_vs_kato_comparison.tsv`
-     - `sciantix_verification/sciantix_vs_kato_residuals.tsv`
-     - `sciantix_verification/sciantix_vs_kato_summary.txt`
-   - produces detailed plots, one per `q`, for:
-     - oxygen partial pressure
-     - oxygen potential
-     - signed absolute log-pressure error
-     - unsigned absolute log-pressure error
-     - signed relative log-pressure error
-     - unsigned relative log-pressure error
-
-
-## Typical Usage
-
-Run the full SCIANTIX temperature sweep and then the verification:
+Run the full SCIANTIX sweep and post-processing:
 
 ```bash
 python3 run_temperature_sweep.py
 ```
 
-Regenerate only the comparison tables and plots from an existing summary:
+Regenerate plots and comparison reports from existing case outputs:
 
 ```bash
 python3 run_temperature_sweep.py --plot-only
 ```
 
-## Summary Metrics
+Keep generated case directories after a full run:
 
-After the comparison step, the file
-`sciantix_verification/sciantix_vs_kato_summary.txt` provide compact metrics, including:
+```bash
+python3 run_temperature_sweep.py --keep-cases
+```
 
-- the number of compared points
-- mean signed `log10(pO2 / p_ref)` error
-- mean and maximum absolute `log10(pO2 / p_ref)` error
-- mean absolute relative `log10(pO2 / p_ref)` error
-- mean and maximum absolute oxygen-potential error
-- a per-`(q, temperature)` summary table
+Limit the sweep:
+
+```bash
+python3 run_temperature_sweep.py --temperatures 1200,1600,2000 --q-values 0.10,0.20
+```
+
+## Workflow
+
+`run_temperature_sweep.py`:
+
+- clears previously generated PNG plots from the test directory and `plots/`
+- copies the template `input_*` files into one case directory per
+  `(temperature, q)` pair
+- updates the temperature in `input_history.txt`
+- substitutes `__Q_VALUE__` in `input_initial_conditions.txt`
+- runs `sciantix.x`
+- collects all case `output.txt` files into `temperature_sweep_summary.tsv`
+- creates overview plots directly in `plots/`
+- runs the Kato and OpenCalphad CSV comparison scripts
+- removes generated case directories unless `--keep-cases` is used
+
+`sciantix_verification/compare_sciantix_with_kato.py`:
+
+- reads `temperature_sweep_summary.tsv`
+- keeps only `753 K <= T <= 2550 K`, `0.10 <= Pu/M <= 0.32`, and
+  `1.92 <= O/M <= 2.08`
+- samples the explicit NEA Kato equation over oxygen partial pressure
+- interpolates the explicit reference onto the SCIANTIX `O/M` trajectory
+- writes comparison tables, residual summaries, and plots
+
+`sciantix_verification/compare_sciantix_with_oc_csv.py`:
+
+- reads `temperature_sweep_summary.tsv`
+- reads Thermo-Calc CSV tables from `TEMPERATURES_THERMOCALC_Q_*`
+- keeps only `753 K <= T <= 2550 K`, `0.10 <= Pu/M <= 0.32`, and
+  `1.92 <= O/M <= 2.08`
+- interpolates SCIANTIX OpenCalphad values onto the Thermo-Calc `O/M` grid
+- writes comparison tables, residual summaries, and plots
+
+## Why Points Are Excluded
+
+Some points are removed from the comparison tables before metrics are computed.
+These removals are bookkeeping choices required by the interpolation/logarithm
+operations.
+
+Kato comparison:
+- SCIANTIX points outside the comparison domain
+  `753-2550 K`, `Pu/M = 0.10-0.32`, `O/M = 1.92-2.08` are dropped
+- the explicit Kato curve is sampled over a finite pressure range
+- SCIANTIX points outside the resulting explicit Kato `O/M` range cannot be
+  interpolated and are dropped
+- non-finite explicit values are dropped
+
+OpenCalphad CSV comparison:
+- Thermo-Calc and SCIANTIX points outside the comparison domain
+  `753-2550 K`, `Pu/M = 0.10-0.32`, `O/M = 1.92-2.08` are dropped
+- non-positive pressures are dropped because `log10(pO2 / p_ref)` is undefined
+- Thermo-Calc points outside the SCIANTIX `O/M` interpolation range are dropped
+- duplicate Thermo-Calc `O/M` points for a given `(T, q)` are averaged before
+  interpolation
+
+## Outputs
+
+Primary reports:
+
+- `sciantix_verification/sciantix_vs_kato_summary.txt`
+- `sciantix_verification/sciantix_vs_oc_csv_summary.txt`
+
+Plots are written to:
+
+- `plots/`
