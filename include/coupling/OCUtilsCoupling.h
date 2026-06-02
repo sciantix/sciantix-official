@@ -110,6 +110,10 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
                              double oxygen_potential_kj_per_mol_o2,
                              OCOutputData& output_data);
 
+bool validateOpenCalphadOutput(const OCOutputData& output_data,
+                               const std::vector<InputComponent>& input_components,
+                               const std::string& location);
+
 void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhaseData>& solution_phases,
                                               const std::string&                         location,
                                               double                                     content_scaling_factor,

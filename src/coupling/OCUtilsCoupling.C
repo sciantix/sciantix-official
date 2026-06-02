@@ -114,6 +114,7 @@ namespace OCASIAdapter
                             double value);
         bool calculateEquilibrium(int grid_minimizer);
         bool calculateEquilibriumChecked();
+        bool listResults(int output_mode);
         bool extractResults(OCOutputData &output_data);
         void reset(bool clear_database);
 
@@ -121,6 +122,7 @@ namespace OCASIAdapter
         int getComponentIndex(const std::string &component_name) const;
         int currentElementCount() const;
         char* currentComponentName(int index) const;
+        bool isPhaseTupleStable(int phase_tuple_index);
 
         bool use_prefixed_symbols_ = false;
         void *base_ceq_ = nullptr;
@@ -206,6 +208,11 @@ extern "C"
     // Exact wrapper for the interactive OpenCalphad "calculate with_check_after"
     void c_tqce_with_check_after(void *);
 
+    // List results. This prints the same information as the interactive
+    // OpenCalphad `l r` command, including the current conditions.
+    void c_tqlr(int, void *);
+    void c_tqcheckphstab(bool *, int, void *);
+
     // Get state variable value
     // (state variable in caputal letters,
     //  n1 can be a phase tuple index but if <0 means all,
@@ -262,6 +269,8 @@ extern "C"
     void gb_c_tqsetc(char *, int, int, double, int *, void *);
     void gb_c_tqce(char *, int, int, double *, void *);
     void gb_c_tqce_with_check_after(void *);
+    void gb_c_tqlr(int, void *);
+    void gb_c_tqcheckphstab(bool *, int, void *);
     void gb_c_tqgetv(char *, int, int, int *, double *, void *);
     void gb_c_tqgpcn2(int, int, char *, void *);
     void gb_c_tqgphc1(int, int *, int *, int *, double *, double *, double *, void *);
@@ -609,7 +618,6 @@ namespace OCASIAdapter
 
         std::cout << "[OpenCalphad debug] reusing database: " << loaded_database_path_
                   << ", ceq=" << ceq_ << std::endl;
-        //reset(false);
         return true;
     }
 
@@ -779,6 +787,26 @@ namespace OCASIAdapter
         return true;
     }
 
+    bool OpenCalphadInterface::listResults(int output_mode)
+    {
+        if (!ceq_ || !database_loaded_)
+            return false;
+
+        OCASI_CALL(c_tqlr, output_mode, &ceq_);
+
+        return true;
+    }
+
+    bool OpenCalphadInterface::isPhaseTupleStable(int phase_tuple_index)
+    {
+        if (!ceq_ || !database_loaded_)
+            return false;
+
+        bool is_stable = false;
+        OCASI_CALL(c_tqcheckphstab, &is_stable, phase_tuple_index, &ceq_);
+        return is_stable;
+    }
+
     bool OpenCalphadInterface::extractResults(OCOutputData &output_data)
     {
         output_data.solution_phases.clear();
@@ -802,6 +830,9 @@ namespace OCASIAdapter
         {
             char phase_name[256] = {0};
             const int phase_index = ph + 1;
+            if (!isPhaseTupleStable(phase_index))
+                continue;
+
             // Get phase name by index
             OCASI_CALL(c_tqgpn, phase_index, phase_name, &ceq_);
             phase_name[sizeof(phase_name) - 1] = '\0';
@@ -1493,8 +1524,8 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             }
 
             bool clear_equilibrium = true;
-            // Same first solve as the previous macro `c e`: no grid minimizer.
-            const bool initial_equilibrium_ready = oc.calculateEquilibrium(-1);
+
+            const bool initial_equilibrium_ready = oc.calculateEquilibrium(0);
             if (!initial_equilibrium_ready)
             {
                 std::cerr << "Warning: Initial OpenCalphad equilibrium calculation failed" << std::endl;
@@ -1508,13 +1539,18 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
                 clear_equilibrium = false;
             }
 
-            oc.extractResults(output_data);
+            oc.listResults(2);
+
+            const bool extracted = oc.extractResults(output_data);
             std::cout << "[OpenCalphad debug] grain-boundary output phases="
                       << output_data.solution_phases.size()
                       << " components=" << output_data.components.size()
                       << std::endl;
 
-            return clear_equilibrium;
+            const bool output_valid =
+                extracted && validateOpenCalphadOutput(output_data, components, location);
+
+            return clear_equilibrium && output_valid;
         }
         else
         {
@@ -1522,11 +1558,134 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             return false;
         }
     }
-        catch (const std::exception& e)
-        {
-            std::cerr << "Exception in runOpenCalphadCaseOCASI: " << e.what() << std::endl;
-            return false;
+    catch (const std::exception& e)
+    {
+        std::cerr << "Exception in runOpenCalphadCaseOCASI: " << e.what() << std::endl;
+        return false;
     }
+}
+
+bool validateOpenCalphadOutput(const OCOutputData& output_data,
+                               const std::vector<InputComponent>& input_components,
+                               const std::string& location)
+{
+    constexpr double significant_input_fraction = 1.0e-8;
+    constexpr double inventory_relative_tolerance = 5.0e-2;
+    constexpr double minimum_recovered_fraction = 1.0e-3;
+    constexpr double absolute_tolerance = 1.0e-12;
+
+    if (output_data.solution_phases.empty())
+    {
+        std::cerr << "Error: OpenCalphad returned no stable phases for "
+                  << location << std::endl;
+        return false;
+    }
+
+    std::map<std::string, double> input_inventory;
+    for (const auto& component : input_components)
+    {
+        if (!std::isfinite(component.fraction) || component.fraction < 0.0)
+        {
+            std::cerr << "Error: invalid OpenCalphad input fraction for "
+                      << component.name << " at " << location << std::endl;
+            return false;
+        }
+
+        if (location == "at grain boundary" && toUpperCopy(component.name) == "O")
+            continue;
+
+        if (component.fraction >= significant_input_fraction)
+            input_inventory[component.name] += component.fraction;
+    }
+
+    std::map<std::string, double> phase_inventory;
+    for (const auto& phase_entry : output_data.solution_phases)
+    {
+        const OCPhaseData& phase_data = phase_entry.second;
+        if (!std::isfinite(phase_data.moles) || phase_data.moles < -absolute_tolerance)
+        {
+            std::cerr << "Error: invalid OpenCalphad phase amount for "
+                      << phase_entry.first << " at " << location << std::endl;
+            return false;
+        }
+
+        for (const auto& element_entry : phase_data.elements)
+        {
+            if (!std::isfinite(element_entry.second) || element_entry.second < -absolute_tolerance)
+            {
+                std::cerr << "Error: invalid OpenCalphad element inventory for "
+                          << element_entry.first << " in phase " << phase_entry.first
+                          << " at " << location << std::endl;
+                return false;
+            }
+
+            if (location == "at grain boundary" && toUpperCopy(element_entry.first) == "O")
+                continue;
+
+            phase_inventory[element_entry.first] += std::max(0.0, element_entry.second);
+        }
+    }
+
+    for (const auto& component_entry : output_data.components)
+    {
+        const OCComponentData& component_data = component_entry.second;
+        if (!std::isfinite(component_data.moles) ||
+            !std::isfinite(component_data.mole_fraction) ||
+            !std::isfinite(component_data.chemical_potential_over_rt) ||
+            !std::isfinite(component_data.activity) ||
+            component_data.moles < -absolute_tolerance ||
+            component_data.mole_fraction < -absolute_tolerance ||
+            component_data.activity < -absolute_tolerance)
+        {
+            std::cerr << "Error: invalid OpenCalphad component data for "
+                      << component_entry.first << " at " << location << std::endl;
+            return false;
+        }
+    }
+
+    double input_total = 0.0;
+    double output_total = 0.0;
+    for (const auto& element_entry : input_inventory)
+        input_total += element_entry.second;
+    for (const auto& element_entry : phase_inventory)
+        output_total += element_entry.second;
+
+    if (input_total <= 0.0 || output_total <= 0.0)
+    {
+        std::cerr << "Error: OpenCalphad inventory check has zero input or output for "
+                  << location << std::endl;
+        return false;
+    }
+
+    bool balanced = true;
+    for (const auto& input_entry : input_inventory)
+    {
+        const double expected_fraction = input_entry.second / input_total;
+        const double output_moles = phase_inventory[input_entry.first];
+        const double output_fraction = output_moles / output_total;
+        const double difference = std::abs(output_fraction - expected_fraction);
+        const double tolerance =
+            std::max(inventory_relative_tolerance * expected_fraction, absolute_tolerance);
+
+        if (output_moles <= std::max(absolute_tolerance,
+                                     minimum_recovered_fraction * expected_fraction * output_total) ||
+            difference > tolerance)
+        {
+            std::cerr << "Error: OpenCalphad inventory mismatch for "
+                      << input_entry.first << " at " << location
+                      << " input fraction=" << expected_fraction
+                      << " output fraction=" << output_fraction
+                      << std::endl;
+            balanced = false;
+        }
+    }
+
+    if (!balanced)
+        std::cerr << "Error: rejecting OpenCalphad results for "
+                  << location << " to avoid propagating inconsistent data"
+                  << std::endl;
+
+    return balanced;
 }
 
 void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhaseData>&  solution_phases,
