@@ -139,8 +139,6 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
             active_elements.insert(component.name);
         const std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
 
-        //const std::vector<std::string> valid_elements(selected_elements.begin(), selected_elements.end());
-
         for (const auto& solver : solvers)
         {
             output_data.solution_phases.clear();
@@ -212,11 +210,4 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
                 break;
         }
     }
-
-    std::cout << "Phase diagram set." << std::endl;
-    std::cout << "Updated thermochemistry variables:" << std::endl;
-    std::cout << "FUel oxygen potential: " << sciantix_variable["Fuel oxygen potential"].getFinalValue() << std::endl;
-    std::cout << "FUel oxygen potential - Kato: " << sciantix_variable["Fuel oxygen potential - Kato"].getFinalValue() << std::endl;
-    std::cout << "Fuel oxygen potential - CALPHAD: " << sciantix_variable["Fuel oxygen potential - CALPHAD"].getFinalValue() << std::endl;
-    
 }
