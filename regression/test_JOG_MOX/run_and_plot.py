@@ -784,6 +784,7 @@ def plot_case(
             poly.set_edgecolor((0.1, 0.1, 0.1, 0.7))
             poly.set_linewidth(0.1)
     axis.set_xlabel(BURNUP_LABEL)
+    axis.set_ylim([0,4000])
     axis.set_ylabel("Concentration (mol m$^{-3}$)")
     add_capped_legend(axis, loc="upper left", fontsize=8)
     save_figure(fig, case_plot_dir / "thermochemistry.png", saved_paths)
