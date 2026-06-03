@@ -41,7 +41,9 @@ struct OCSublatticeData
 struct OCSpeciesData
 {
     double                   moles = 0.0;
+    double                   mass = 0.0;
     std::map<std::string, double> elements;
+    std::map<std::string, double> element_masses;
     std::vector<OCSublatticeData> sublattices;
 };
 
@@ -49,14 +51,17 @@ struct OCPhaseData
 {
     double                   moles = 0.0;
     double                   form_units = 0.0;
+    double                   mass = 0.0;
     std::map<std::string, OCSpeciesData> species;
     std::map<std::string, double>        elements;
+    std::map<std::string, double>        element_masses;
     std::vector<OCSublatticeData>        sublattices;
 };
 
 struct OCComponentData
 {
     double      moles                        = 0.0;
+    double      mass                         = 0.0;
     double      mole_fraction                = 0.0;
     double      chemical_potential_over_rt   = 0.0;
     double      activity                     = 0.0;
@@ -86,8 +91,6 @@ enum class OpenCalphadSolveMode
 
 bool fileExists(const std::string& file_path);
 
-// Debug
-void dumpParsedOcOutput(const OCOutputData& output_data);
 bool writePhaseSublatticeCompositionOutput(const std::string& file_path,
                                            double             time_hours,
                                            const std::string& location,
