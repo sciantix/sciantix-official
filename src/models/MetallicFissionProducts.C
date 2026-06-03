@@ -43,15 +43,15 @@ void Simulation::MetallicFissionProducts()
 
     // CONCENTRAZIONE TOTALE Cm
 
-        // Equazione fisica
-        // dCm/dt = y * F  discretizzata su Δt:
-        // Cm(t+dt) = Cm(t) + y * F * dt
-        double produzione = y * fission_rate * dt;
+    // Equazione fisica
+    // dCm/dt = y * F  discretizzata su Δt:
+    // Cm(t+dt) = Cm(t) + y * F * dt
+    double produzione = y * fission_rate * dt;
 
-        // Aggiornamento della variabile
-        // addValue aggiunge 'produzione' al valore attuale di Cm
-        // final_value è protected —> devo usare la funzione pubblica addValue
-        sciantix_variable["Cm"].addValue(produzione);
+    // Aggiornamento della variabile
+    // addValue aggiunge 'produzione' al valore attuale di Cm
+    // final_value è protected —> devo usare la funzione pubblica addValue
+    sciantix_variable["Cm"].addValue(produzione);
 
     // CONCENTRAZIONE LIBERA IN MATRICE Cm matrix
 
@@ -77,7 +77,9 @@ void Simulation::MetallicFissionProducts()
                                    / (1.0 + dt * k_res);
         sciantix_variable["Cm precipitated intragranular"].setFinalValue(cm_prec_intra_new);
 
-    // Cm PRECIPITATA A GB 
+    // Aggiornamento della variabile
+    // dCm_prec_intragr/dt = + k_intra * cm_matrix
+    sciantix_variable["Cm precipitated intragranular"].addValue(sink_intra * dt);
 
         // Aggiornamento della variabile
         // dCm_prec_intergr/dy = + (k_gb) * cm_matrix - k_res * Cm_prec_inter
