@@ -393,7 +393,9 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("Cm matrix", "(at/m3)", Sciantix_variables[172], Sciantix_variables[172], toOutputCm),
         SciantixVariable("Cm precipitated intragranular", "(at/m3)", Sciantix_variables[173], Sciantix_variables[173], toOutputCm),
         SciantixVariable("Cm precipitated grain boundary", "(at/m3)", Sciantix_variables[174], Sciantix_variables[174], toOutputCm),
-
+        SciantixVariable ("Intragranular 5MPs concentration", "(5MP/m3)", Sciantix_variables[175], Sciantix_variables[175], toOutputCm),
+        SciantixVariable ("Intragranular atom per 5MP", "(at/5MP)", Sciantix_variables[176], Sciantix_variables[176], toOutputCm),
+        
     };
 
     return init_sciantix_variable;
