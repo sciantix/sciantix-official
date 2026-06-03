@@ -269,7 +269,7 @@ double ThermochemistryVariable::getMolarMass()
         return molar_mass;
     }
     else
-        std::cout << "Error in computing the molar mass of variable: "<< name << ". No composition available." << std::endl;
+        std::cerr << "Error in computing the molar mass of variable: "<< name << ". No composition available." << std::endl;
 
 
     return molar_mass;
@@ -277,5 +277,5 @@ double ThermochemistryVariable::getMolarMass()
 
 double ThermochemistryVariable::getMass()
 {
-    return final_value * getMolarMass();
+    return final_value;
 }

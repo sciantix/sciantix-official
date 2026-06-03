@@ -27,27 +27,6 @@
 
 void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas. 
 {
-    std::cout << "Setting phase diagram..." << std::endl;
-    std::cout << "Thermochemistry settings: " << (thermochemistry_settings != nullptr ? "provided" : "not provided") << std::endl;
-    std::cout << "iThermochimica: " << input_variable["iThermochimica"].getValue() << std::endl;
-    std::cout << "Temperature: " << history_variable["Temperature"].getFinalValue() << std::endl;
-    std::cout << "System pressure: " << history_variable["System pressure"].getFinalValue() << std::endl;
-    std::cout << "Fuel oxygen potential: " << sciantix_variable["Fuel oxygen potential"].getFinalValue() << std::endl;
-    std::cout << "Fuel oxygen potential - Kato:" << sciantix_variable["Fuel oxygen potential - Kato"].getFinalValue() << std::endl;
-    std::cout << "Xe at grain boundary mol/m3: " << sciantix_variable["Xe at grain boundary"].getInitialValue() / avogadro_number << std::endl;
-    std::cout << "Kr at grain boundary mol/m3: " << sciantix_variable["Kr at grain boundary"].getInitialValue() / avogadro_number << std::endl;
-    std::cout << "Cs at grain boundary mol/m3: " << sciantix_variable["Cs at grain boundary"].getInitialValue() / avogadro_number << std::endl;
-    std::cout << "I at grain boundary mol/m3: " << sciantix_variable["I at grain boundary"].getInitialValue() / avogadro_number << std::endl;
-    std::cout << "Te at grain boundary mol/m3: " << sciantix_variable["Te at grain boundary"].getInitialValue() / avogadro_number << std::endl;
-    std::cout << "Cs reacted mol/m3: " << sciantix_variable["Cs reacted"].getInitialValue() / avogadro_number << std::endl;
-    std::cout << "I reacted mol/m3: " << sciantix_variable["I reacted"].getInitialValue() / avogadro_number << std::endl;
-    std::cout << "Te reacted mol/m3: " << sciantix_variable["Te reacted"].getInitialValue() / avogadro_number << std::endl;
-    std::cout << "Mo at grain boundary mol/m3: " << sciantix_variable["Mo produced"].getInitialValue() / avogadro_number << std::endl;
-    std::cout << "Pd at grain boundary mol/m3: " << sciantix_variable["Pd produced"].getInitialValue() / avogadro_number << std::endl;
-    std::cout << "Ru at grain boundary mol/m3: " << sciantix_variable["Ru produced"].getInitialValue() / avogadro_number << std::endl;
-    std::cout << "Rh at grain boundary mol/m3: " << sciantix_variable["Rh produced"].getInitialValue() / avogadro_number << std::endl;
-    std::cout << "Tc at grain boundary mol/m3: " << sciantix_variable["Tc produced"].getInitialValue() / avogadro_number << std::endl;
-
     auto moveFissionProductsWithoutThermochemistry = [&]()
     {
         for (auto& system : sciantix_system)
@@ -164,10 +143,7 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
         }
 
         if (!solved)
-            std::cout << "Warning: all OpenCalphad attempts failed for " << location << std::endl;
-
-        OCUtilsCoupling::dumpParsedOcOutput(output_data);
-
+            std::cerr << "Warning: all OpenCalphad attempts failed for " << location << std::endl;
         if (Sciantix_thermochemistry_settings.output_phase_sublattice_composition)
         {
             const std::string sublattice_output_path =
@@ -179,7 +155,7 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
                     output_data,
                     total_input_content))
             {
-                std::cout << "Warning: cannot write phase sublattice composition output: "
+                std::cerr << "Warning: cannot write phase sublattice composition output: "
                           << sublattice_output_path << std::endl;
             }
         }

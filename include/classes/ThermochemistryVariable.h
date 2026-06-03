@@ -140,8 +140,8 @@ public:
     double getMolarMass();
 
     /**
-     * @brief Calculates the variable mass from the current amount and composition.
-     * @return The mass in g.
+     * @brief Retrieves the tracked mass stored in the variable.
+     * @return The mass concentration in g/m3.
      */
     double getMass();
 

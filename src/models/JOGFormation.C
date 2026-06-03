@@ -41,7 +41,6 @@ void Simulation::JOGFormation()
 
     const double theoretical_density = 425.76 / (avogadro_number * V_cell); // g/m3
     sciantix_variable["Phase std density"].setFinalValue(theoretical_density);
-    std::cout<<"Theoretical density of the JOG phase: " << theoretical_density << " g/m3" << std::endl;
     double JOG_thickness = 0.0;
     double JOG_thickness_condensed = 0.0;
     double JOG_thickness_liquid = 0.0;
@@ -62,14 +61,8 @@ void Simulation::JOGFormation()
         if ((phase == "liquid" || phase == "ionic_liquid") && variable_name.rfind("LIQUID (", 0) != 0)
             continue;
 
-        std::cout << "Variable " << variable.getName() << " has final value " << variable.getFinalValue() << std::endl;
-
-        const double molar_mass = variable.getMolarMass();
         const double mass = variable.getMass();
         double contribution = mass / theoretical_density;
-        std::cout<<"Molar mass of "<< variable.getName() << ": " << molar_mass << std::endl;
-        std::cout<<"Mass of "<< variable.getName() << ": " << mass << std::endl;
-        std::cout<<"Contribution of "<< variable.getName() << " to JOG thickness: " << contribution << std::endl;
             
         JOG_thickness += contribution;
 

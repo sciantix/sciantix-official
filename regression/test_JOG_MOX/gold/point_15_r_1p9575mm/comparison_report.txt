@@ -3,9 +3,13 @@ Rows: 1608 -> 1608
 Columns: 108 -> 108
 
 Common columns compared: 108
-Columns outside tolerance: 0
+Columns outside tolerance: 4
 
 Top 20 column differences:
+  JOG (/): row=1607, gold=3.07284700e-01, new=3.07107200e-01, abs=1.77500000e-04, rel=5.77640214e-04, bad_rows=1606
+  JOG from condensed (/): row=1607, gold=3.07284700e-01, new=3.07107200e-01, abs=1.77500000e-04, rel=5.77640214e-04, bad_rows=1606
+  JOG from HCP_A3 (/): row=1607, gold=2.15033100e-01, new=2.14855900e-01, abs=1.77200000e-04, rel=8.24059180e-04, bad_rows=1606
+  JOG from CS2MOO4_S2 (/): row=1606, gold=9.15477900e-02, new=9.15475900e-02, abs=2.00000000e-07, rel=2.18465132e-06, bad_rows=1135
   Time (h): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Temperature (K): row=0, gold=1.44143500e+03, new=1.44143500e+03, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Fission rate (fiss / m3 s): row=0, gold=4.00000000e+19, new=4.00000000e+19, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
@@ -22,19 +26,167 @@ Top 20 column differences:
   Xe released (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Kr produced (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Kr in grain (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr in intragranular solution (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr in intragranular bubbles (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr at grain boundary (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr released (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
 
 Comparing /home/ecappellari/transparant/sciantix-official/regression/test_JOG_MOX/gold/point_15_r_1p9575mm/thermochemistry_output.txt -> /home/ecappellari/transparant/sciantix-official/regression/test_JOG_MOX/point_15_r_1p9575mm/thermochemistry_output.txt
 Rows: 1608 -> 1608
 Columns: 81 -> 81
 
-Common columns compared: 81
+Columns only in gold output:
+  - CS (gas, at grain boundary) (mol/m3)
+  - CS2 (gas, at grain boundary) (mol/m3)
+  - CS2MOO4 (gas, at grain boundary) (mol/m3)
+  - CS2O (gas, at grain boundary) (mol/m3)
+  - CS2O2 (gas, at grain boundary) (mol/m3)
+  - CSO (gas, at grain boundary) (mol/m3)
+  - MO (gas, at grain boundary) (mol/m3)
+  - MO2 (gas, at grain boundary) (mol/m3)
+  - MO2O6 (gas, at grain boundary) (mol/m3)
+  - MO3O9 (gas, at grain boundary) (mol/m3)
+  - MO4O12 (gas, at grain boundary) (mol/m3)
+  - MO5O15 (gas, at grain boundary) (mol/m3)
+  - MOO (gas, at grain boundary) (mol/m3)
+  - MOO2 (gas, at grain boundary) (mol/m3)
+  - MOO3 (gas, at grain boundary) (mol/m3)
+  - O (gas, at grain boundary) (mol/m3)
+  - O2 (gas, at grain boundary) (mol/m3)
+  - O3 (gas, at grain boundary) (mol/m3)
+  - PD (gas, at grain boundary) (mol/m3)
+  - RH (gas, at grain boundary) (mol/m3)
+  - RU (gas, at grain boundary) (mol/m3)
+  - TC (gas, at grain boundary) (mol/m3)
+  - LIQUID (liquid, at grain boundary) (mol/m3)
+  - MOPD2 (condensed, at grain boundary) (mol/m3)
+  - MOTE2_A (condensed, at grain boundary) (mol/m3)
+  - MO3TE4 (condensed, at grain boundary) (mol/m3)
+  - MOTE2_B (condensed, at grain boundary) (mol/m3)
+  - A15_CR3SI (condensed, at grain boundary) (mol/m3)
+  - BCC_A2 (condensed, at grain boundary) (mol/m3)
+  - C1_MO2 (condensed, at grain boundary) (mol/m3)
+  - C14_LAVES (condensed, at grain boundary) (mol/m3)
+  - C15_LAVES (condensed, at grain boundary) (mol/m3)
+  - CS2MO2O7_S1 (condensed, at grain boundary) (mol/m3)
+  - CS2MO2O7_S2 (condensed, at grain boundary) (mol/m3)
+  - CS2MO3O10 (condensed, at grain boundary) (mol/m3)
+  - CS2MO4O13 (condensed, at grain boundary) (mol/m3)
+  - CS2MO5O16 (condensed, at grain boundary) (mol/m3)
+  - CS2MO7O22 (condensed, at grain boundary) (mol/m3)
+  - CS2MOO4_S1 (condensed, at grain boundary) (mol/m3)
+  - CS2MOO4_S2 (condensed, at grain boundary) (mol/m3)
+  - CS2O1 (condensed, at grain boundary) (mol/m3)
+  - CS2O2 (condensed, at grain boundary) (mol/m3)
+  - CS3O (condensed, at grain boundary) (mol/m3)
+  - CS4O (condensed, at grain boundary) (mol/m3)
+  - CS7O1 (condensed, at grain boundary) (mol/m3)
+  - CS7O2 (condensed, at grain boundary) (mol/m3)
+  - CSO2 (condensed, at grain boundary) (mol/m3)
+  - CSO3 (condensed, at grain boundary) (mol/m3)
+  - DIAMOND_A4 (condensed, at grain boundary) (mol/m3)
+  - DIS_SIG (condensed, at grain boundary) (mol/m3)
+  - FCC_A1 (condensed, at grain boundary) (mol/m3)
+  - HCP_A3 (condensed, at grain boundary) (mol/m3)
+  - MC_ETA (condensed, at grain boundary) (mol/m3)
+  - MO4O11 (condensed, at grain boundary) (mol/m3)
+  - MO8O23 (condensed, at grain boundary) (mol/m3)
+  - MO9O26 (condensed, at grain boundary) (mol/m3)
+  - MOO2 (condensed, at grain boundary) (mol/m3)
+  - MOO3 (condensed, at grain boundary) (mol/m3)
+  - ORTHORHOMBIC_A20 (condensed, at grain boundary) (mol/m3)
+  - SIGMA (condensed, at grain boundary) (mol/m3)
+  - O (gas, matrix) (mol/m3)
+  - O2 (gas, matrix) (mol/m3)
+  - C1_MO2 (condensed, matrix) (mol/m3)
+  - U3O8_S1 (condensed, matrix) (mol/m3)
+  - U3O8_S2 (condensed, matrix) (mol/m3)
+  - U3O8_S3 (condensed, matrix) (mol/m3)
+  - U3O8_S4 (condensed, matrix) (mol/m3)
+  - U4O9_S1 (condensed, matrix) (mol/m3)
+  - U4O9_S2 (condensed, matrix) (mol/m3)
+  - U4O9_S3 (condensed, matrix) (mol/m3)
+  - UO3 (condensed, matrix) (mol/m3)
+  - PU2O3 (condensed, matrix) (mol/m3)
+  - PUO152 (condensed, matrix) (mol/m3)
+  - PUO161 (condensed, matrix) (mol/m3)
+
+Columns only in new output:
+  + CS (gas, at grain boundary) (g/m3)
+  + CS2 (gas, at grain boundary) (g/m3)
+  + CS2MOO4 (gas, at grain boundary) (g/m3)
+  + CS2O (gas, at grain boundary) (g/m3)
+  + CS2O2 (gas, at grain boundary) (g/m3)
+  + CSO (gas, at grain boundary) (g/m3)
+  + MO (gas, at grain boundary) (g/m3)
+  + MO2 (gas, at grain boundary) (g/m3)
+  + MO2O6 (gas, at grain boundary) (g/m3)
+  + MO3O9 (gas, at grain boundary) (g/m3)
+  + MO4O12 (gas, at grain boundary) (g/m3)
+  + MO5O15 (gas, at grain boundary) (g/m3)
+  + MOO (gas, at grain boundary) (g/m3)
+  + MOO2 (gas, at grain boundary) (g/m3)
+  + MOO3 (gas, at grain boundary) (g/m3)
+  + O (gas, at grain boundary) (g/m3)
+  + O2 (gas, at grain boundary) (g/m3)
+  + O3 (gas, at grain boundary) (g/m3)
+  + PD (gas, at grain boundary) (g/m3)
+  + RH (gas, at grain boundary) (g/m3)
+  + RU (gas, at grain boundary) (g/m3)
+  + TC (gas, at grain boundary) (g/m3)
+  + LIQUID (liquid, at grain boundary) (g/m3)
+  + MOPD2 (condensed, at grain boundary) (g/m3)
+  + MOTE2_A (condensed, at grain boundary) (g/m3)
+  + MO3TE4 (condensed, at grain boundary) (g/m3)
+  + MOTE2_B (condensed, at grain boundary) (g/m3)
+  + A15_CR3SI (condensed, at grain boundary) (g/m3)
+  + BCC_A2 (condensed, at grain boundary) (g/m3)
+  + C1_MO2 (condensed, at grain boundary) (g/m3)
+  + C14_LAVES (condensed, at grain boundary) (g/m3)
+  + C15_LAVES (condensed, at grain boundary) (g/m3)
+  + CS2MO2O7_S1 (condensed, at grain boundary) (g/m3)
+  + CS2MO2O7_S2 (condensed, at grain boundary) (g/m3)
+  + CS2MO3O10 (condensed, at grain boundary) (g/m3)
+  + CS2MO4O13 (condensed, at grain boundary) (g/m3)
+  + CS2MO5O16 (condensed, at grain boundary) (g/m3)
+  + CS2MO7O22 (condensed, at grain boundary) (g/m3)
+  + CS2MOO4_S1 (condensed, at grain boundary) (g/m3)
+  + CS2MOO4_S2 (condensed, at grain boundary) (g/m3)
+  + CS2O1 (condensed, at grain boundary) (g/m3)
+  + CS2O2 (condensed, at grain boundary) (g/m3)
+  + CS3O (condensed, at grain boundary) (g/m3)
+  + CS4O (condensed, at grain boundary) (g/m3)
+  + CS7O1 (condensed, at grain boundary) (g/m3)
+  + CS7O2 (condensed, at grain boundary) (g/m3)
+  + CSO2 (condensed, at grain boundary) (g/m3)
+  + CSO3 (condensed, at grain boundary) (g/m3)
+  + DIAMOND_A4 (condensed, at grain boundary) (g/m3)
+  + DIS_SIG (condensed, at grain boundary) (g/m3)
+  + FCC_A1 (condensed, at grain boundary) (g/m3)
+  + HCP_A3 (condensed, at grain boundary) (g/m3)
+  + MC_ETA (condensed, at grain boundary) (g/m3)
+  + MO4O11 (condensed, at grain boundary) (g/m3)
+  + MO8O23 (condensed, at grain boundary) (g/m3)
+  + MO9O26 (condensed, at grain boundary) (g/m3)
+  + MOO2 (condensed, at grain boundary) (g/m3)
+  + MOO3 (condensed, at grain boundary) (g/m3)
+  + ORTHORHOMBIC_A20 (condensed, at grain boundary) (g/m3)
+  + SIGMA (condensed, at grain boundary) (g/m3)
+  + O (gas, matrix) (g/m3)
+  + O2 (gas, matrix) (g/m3)
+  + C1_MO2 (condensed, matrix) (g/m3)
+  + U3O8_S1 (condensed, matrix) (g/m3)
+  + U3O8_S2 (condensed, matrix) (g/m3)
+  + U3O8_S3 (condensed, matrix) (g/m3)
+  + U3O8_S4 (condensed, matrix) (g/m3)
+  + U4O9_S1 (condensed, matrix) (g/m3)
+  + U4O9_S2 (condensed, matrix) (g/m3)
+  + U4O9_S3 (condensed, matrix) (g/m3)
+  + UO3 (condensed, matrix) (g/m3)
+  + PU2O3 (condensed, matrix) (g/m3)
+  + PUO152 (condensed, matrix) (g/m3)
+  + PUO161 (condensed, matrix) (g/m3)
+
+Common columns compared: 7
 Columns outside tolerance: 0
 
-Top 20 column differences:
+Top 7 column differences:
   Time (h): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Temperature (K): row=0, gold=1.44143500e+03, new=1.44143500e+03, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Fission rate (fiss / m3 s): row=0, gold=4.00000000e+19, new=4.00000000e+19, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
@@ -42,16 +194,3 @@ Top 20 column differences:
   Steam pressure (atm): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   System pressure (Pa): row=0, gold=2.00000000e+05, new=2.00000000e+05, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   O/M ratio (/): row=0, gold=1.99898600e+00, new=1.99898600e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  CS (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  CS2 (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  CS2MOO4 (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  CS2O (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  CS2O2 (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  CSO (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  MO (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  MO2 (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  MO2O6 (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  MO3O9 (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  MO4O12 (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  MO5O15 (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  MOO (gas, at grain boundary) (mol/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0

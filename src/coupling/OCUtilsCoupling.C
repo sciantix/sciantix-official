@@ -63,21 +63,6 @@ std::string equilibriumRecordName(const std::string& location,
     return location_prefix + "_UNKNOWN";
 }
 
-const char* openCalphadSolveModeName(OCUtilsCoupling::OpenCalphadSolveMode solver)
-{
-    using OCSolver = OCUtilsCoupling::OpenCalphadSolveMode;
-    switch (solver)
-    {
-        case OCSolver::SaveReadWarmStart:
-            return "SaveReadWarmStart";
-        case OCSolver::GlobalEquilibrium:
-            return "GlobalEquilibrium";
-        case OCSolver::OnlyC1MO2:
-            return "OnlyC1MO2";
-    }
-
-    return "Unknown";
-}
 }  // namespace
 
 namespace OCASIAdapter
@@ -376,6 +361,30 @@ namespace OCASIAdapter
             return "condensed";
         }
 
+        double atomicMass(const std::string& element_name)
+        {
+            static const std::map<std::string, double> atomic_masses = {
+                {"Cs", 132.90545196},
+                {"I", 126.90447},
+                {"Mo", 95.95},
+                {"O", 15.999},
+                {"Te", 127.60},
+                {"U", 238.02891},
+                {"Pu", 239.052},
+                {"Va", 0.0},
+                {"Pd", 106.42},
+                {"Rh", 102.91},
+                {"Ru", 101.07},
+                {"Tc", 98.906}
+            };
+
+            const auto atomic_mass = atomic_masses.find(ElementName(element_name));
+            if (atomic_mass == atomic_masses.end())
+                throw std::runtime_error("Atomic mass not available for element " + element_name);
+
+            return atomic_mass->second;
+        }
+
         std::map<std::string, double> speciesStoichiometry(
             const std::string& species_name,
             const std::vector<std::string>& valid_elements)
@@ -537,12 +546,6 @@ namespace OCASIAdapter
     {
         // Reinitialize the TQ interface so each database load starts from a
         // clean OpenCalphad equilibrium object.
-        std::cout << "[OpenCalphad debug] loading database: " << tdb_file_path
-                  << " with elements:";
-        for (const auto& element : selected_elements)
-            std::cout << ' ' << element;
-        std::cout << std::endl;
-
         OCASI_CALL(c_tqini, 0, &base_ceq_);
         ceq_ = base_ceq_;
 
@@ -593,10 +596,6 @@ namespace OCASIAdapter
         loaded_selected_elements_ = selected_elements;
         ceq_ = base_ceq_;
 
-        std::cout << "[OpenCalphad debug] database loaded: " << loaded_database_path_
-                  << ", base_ceq=" << base_ceq_
-                  << ", ceq=" << ceq_
-                  << ", nel=" << nel_ << std::endl;
         return true;
     }
 
@@ -608,16 +607,9 @@ namespace OCASIAdapter
             loaded_database_path_ != resolved_tdb_file_path ||
             loaded_selected_elements_ != selected_elements)
         {
-            std::cout << "[OpenCalphad debug] database reload needed"
-                      << " loaded=" << database_loaded_
-                      << " current_path=" << loaded_database_path_
-                      << " requested_path=" << resolved_tdb_file_path
-                      << std::endl;
             return loadDatabase(resolved_tdb_file_path, selected_elements);
         }
 
-        std::cout << "[OpenCalphad debug] reusing database: " << loaded_database_path_
-                  << ", ceq=" << ceq_ << std::endl;
         return true;
     }
 
@@ -637,42 +629,20 @@ namespace OCASIAdapter
 
         const bool known_record = known_equilibrium_records_.count(bounded_name) > 0;
 
-        std::cout << "[OpenCalphad debug] preparing equilibrium record "
-                  << bounded_name
-                  << ", reuse_existing_record=" << reuse_existing_record
-                  << ", known=" << known_record
-                  << ", base_ceq=" << base_ceq_
-                  << ", current_ceq=" << ceq_ << std::endl;
-
         if (known_record)
         {
-            std::cout << "[OpenCalphad debug] before selecting equilibrium record "
-                      << bounded_name << ", current_ceq=" << ceq_ << std::endl;
             OCASI_CALL(c_tqselceq, ceq_name.data(), &ceq_);
-            std::cout << "[OpenCalphad debug] selected equilibrium record "
-                      << bounded_name << ", ceq=" << ceq_ << std::endl;
             return ceq_ != nullptr;
         }
 
         void *new_ceq = nullptr;
         int equilibrium_index = 0;
-        std::cout << "[OpenCalphad debug] before creating equilibrium record "
-                  << bounded_name << ", base_ceq=" << base_ceq_
-                  << ", current_ceq=" << ceq_ << std::endl;
         OCASI_CALL(c_tqcceq, ceq_name.data(), &equilibrium_index, &new_ceq, &base_ceq_);
-        std::cout << "[OpenCalphad debug] after creating equilibrium record "
-                  << bounded_name << ", equilibrium_index=" << equilibrium_index
-                  << ", new_ceq=" << new_ceq
-                  << ", base_ceq=" << base_ceq_
-                  << ", current_ceq=" << ceq_ << std::endl;
         if (!new_ceq)
             return false;
 
         ceq_ = new_ceq;
         known_equilibrium_records_.insert(bounded_name);
-        std::cout << "[OpenCalphad debug] created equilibrium record "
-                  << bounded_name << ", base_ceq=" << base_ceq_
-                  << ", ceq=" << ceq_ << std::endl;
         return true;
     }
 
@@ -690,13 +660,9 @@ namespace OCASIAdapter
         char pressure_condition[] = "P";
         OCASI_CALL(c_tqsetc, pressure_condition, 0, 0, pressure, &condition_number, &ceq_);
 
-        std::cout << "[OpenCalphad debug] set conditions: T=" << temperature
-                  << " K, P=" << pressure << " Pa, components:";
-
         // Set component contents (in moles)
         for (const auto &comp : components)
         {
-            std::cout << ' ' << comp.first << '=' << comp.second;
             const int component_index = getComponentIndex(comp.first);
             if (component_index <= 0)
             {
@@ -706,7 +672,6 @@ namespace OCASIAdapter
             char component_condition[] = "N";
             OCASI_CALL(c_tqsetc, component_condition, component_index, 0, comp.second, &condition_number, &ceq_);
         }
-        std::cout << std::endl;
 
         return true;
     }
@@ -741,9 +706,6 @@ namespace OCASIAdapter
         char condition_name[] = "MU";
         OCASI_CALL(c_tqsetc, condition_name, component_index, 0, chemical_potential, &condition_number, &ceq_);
 
-        std::cout << "[OpenCalphad debug] set MU(" << component_name
-                  << ")=" << chemical_potential << " J/mol, ceq=" << ceq_
-                  << std::endl;
         return true;
     }
 
@@ -771,8 +733,6 @@ namespace OCASIAdapter
         double g_val = 0.0;
         OCASI_CALL(c_tqce, target, grid_minimizer, 0, &g_val, &ceq_);
 
-        std::cout << "[OpenCalphad debug] calculateEquilibrium grid_minimizer="
-                  << grid_minimizer << ", ceq=" << ceq_ << std::endl;
         return true;
     }
 
@@ -782,8 +742,6 @@ namespace OCASIAdapter
             return false;
         OCASI_CALL(c_tqce_with_check_after, &ceq_);
 
-        std::cout << "[OpenCalphad debug] calculateEquilibriumChecked, ceq="
-                  << ceq_ << std::endl;
         return true;
     }
 
@@ -814,9 +772,6 @@ namespace OCASIAdapter
 
         if (!ceq_ || !database_loaded_)
             return false;
-
-        std::cout << "[OpenCalphad debug] extracting results from ceq="
-                  << ceq_ << std::endl;
 
         output_data.solution_phases.clear();
         output_data.components.clear();
@@ -933,7 +888,22 @@ namespace OCASIAdapter
                 {
                     phase_data.elements[el] = el_moles;
                 }
+
+                n_values = 1;
+                double el_mass = 0.0;
+                // get state variable value
+                char element_mass_variable[] = "B";
+                OCASI_CALL(c_tqgetv, element_mass_variable, phase_index, component_index, &n_values, &el_mass, &ceq_);
+
+                if (n_values == 1 && el_mass > 0.0)
+                    phase_data.element_masses[el] = el_mass;
+                else if (el_moles > 0.0)
+                    phase_data.element_masses[el] = el_moles * atomicMass(el);
             }
+
+            phase_data.mass = 0.0;
+            for (const auto& element_mass_entry : phase_data.element_masses)
+                phase_data.mass += element_mass_entry.second;
 
             if (phase_data.moles <= 0.0 && phase_data.elements.empty())
                 continue;
@@ -942,7 +912,9 @@ namespace OCASIAdapter
             OCPhaseData &output_phase = output_data.solution_phases[phase_bucket];
             output_phase.moles += phase_data.moles;
             output_phase.form_units += phase_data.form_units;
+            output_phase.mass += phase_data.mass;
             addElementInventory(output_phase.elements, phase_data.elements);
+            addElementInventory(output_phase.element_masses, phase_data.element_masses);
 
             if (phase_bucket == "condensed")
             {
@@ -951,10 +923,12 @@ namespace OCASIAdapter
                 const double species_moles =
                     phase_data.form_units > 0.0 ? phase_data.form_units : phase_data.moles;
                 species.moles += species_moles;
+                species.mass += phase_data.mass;
                 species.sublattices.insert(species.sublattices.end(),
                                            phase_sublattices.begin(),
                                            phase_sublattices.end());
                 addElementInventory(species.elements, phase_data.elements);
+                addElementInventory(species.element_masses, phase_data.element_masses);
             }
             else
             {
@@ -987,7 +961,13 @@ namespace OCASIAdapter
                     const std::map<std::string, double> stoichiometry =
                         speciesStoichiometry(species_name, element_names_);
                     for (const auto& element_entry : stoichiometry)
+                    {
                         species.elements[element_entry.first] += element_entry.second * species_moles;
+                        const double element_mass =
+                            element_entry.second * species_moles * atomicMass(element_entry.first);
+                        species.element_masses[element_entry.first] += element_mass;
+                        species.mass += element_mass;
+                    }
                 }
             }
         }
@@ -1012,6 +992,15 @@ namespace OCASIAdapter
                 OCASI_CALL(c_tqgetv, component_moles_variable, component_index, 0, &n_values, &component_moles, &ceq_);
                 if (n_values == 1)
                     comp_data.moles = component_moles;
+
+                n_values = 1;
+                double component_mass = 0.0;
+                char component_mass_variable[] = "B";
+                OCASI_CALL(c_tqgetv, component_mass_variable, component_index, 0, &n_values, &component_mass, &ceq_);
+                if (n_values == 1 && component_mass > 0.0)
+                    comp_data.mass = component_mass;
+                else if (component_moles > 0.0)
+                    comp_data.mass = component_moles * atomicMass(comp_name);
 
                 n_values = 1;
                 double mole_fraction = 0.0;
@@ -1081,115 +1070,6 @@ bool fileExists(const std::string& file_path)
 {
     std::ifstream file(file_path);
     return static_cast<bool>(file);
-}
-
-// Debug
-void dumpParsedOcOutput(const OCOutputData& output_data)
-{
-    std::cout << "\n[OC parser] Parsed components" << std::endl;
-    if (output_data.components.empty())
-        std::cout << "  <none>" << std::endl;
-    else
-    {
-        for (const auto& component_entry : output_data.components)
-        {
-            const auto& name = component_entry.first;
-            const auto& data = component_entry.second;
-            std::cout << "  " << name
-                      << " : moles=" << data.moles
-                      << ", x=" << data.mole_fraction
-                      << ", mu/RT=" << data.chemical_potential_over_rt
-                      << ", activity=" << data.activity
-                      << std::endl;
-        }
-    }
-
-    std::cout << "\n[OC parser] Parsed phases" << std::endl;
-    if (output_data.solution_phases.empty())
-    {
-        std::cout << "  <none>" << std::endl;
-        return;
-    }
-
-    for (const auto& phase_entry : output_data.solution_phases)
-    {
-        const auto& phase_name = phase_entry.first;
-        const auto& phase_data = phase_entry.second;
-
-        std::cout << "  Phase " << phase_name
-                  << " : moles=" << phase_data.moles
-                  << ", form_units=" << phase_data.form_units
-                  << std::endl;
-
-        if (!phase_data.elements.empty())
-        {
-            std::cout << "    Elements" << std::endl;
-            for (const auto& element_entry : phase_data.elements)
-            {
-                std::cout << "      " << element_entry.first
-                          << " = " << element_entry.second
-                          << std::endl;
-            }
-        }
-
-        if (!phase_data.sublattices.empty())
-        {
-            std::cout << "    Sublattices" << std::endl;
-            for (const auto& sublattice : phase_data.sublattices)
-            {
-                std::cout << "      Sublattice " << sublattice.index
-                          << " : constituents=" << sublattice.constituents_count
-                          << ", sites=" << sublattice.sites
-                          << ", phase_instance=" << sublattice.phase_instance
-                          << ", phase_moles=" << sublattice.phase_moles
-                          << std::endl;
-
-                for (const auto& constituent_entry : sublattice.composition)
-                {
-                    std::cout << "        " << constituent_entry.first
-                              << " = " << constituent_entry.second
-                              << std::endl;
-                }
-            }
-        }
-
-        if (!phase_data.species.empty())
-        {
-            std::cout << "    Species" << std::endl;
-            for (const auto& species_entry : phase_data.species)
-            {
-                const auto& species_name = species_entry.first;
-                const auto& species_data = species_entry.second;
-                std::cout << "      " << species_name
-                          << " : moles=" << species_data.moles
-                          << std::endl;
-
-                for (const auto& element_entry : species_data.elements)
-                {
-                    std::cout << "        " << element_entry.first
-                              << " = " << element_entry.second
-                              << std::endl;
-                }
-
-                for (const auto& sublattice : species_data.sublattices)
-                {
-                    std::cout << "        Sublattice " << sublattice.index
-                              << " : constituents=" << sublattice.constituents_count
-                              << ", sites=" << sublattice.sites
-                              << ", phase_instance=" << sublattice.phase_instance
-                              << ", phase_moles=" << sublattice.phase_moles
-                              << std::endl;
-
-                    for (const auto& constituent_entry : sublattice.composition)
-                    {
-                        std::cout << "          " << constituent_entry.first
-                                  << " = " << constituent_entry.second
-                                  << std::endl;
-                    }
-                }
-            }
-        }
-    }
 }
 
 bool writePhaseSublatticeCompositionOutput(const std::string& file_path,
@@ -1466,16 +1346,6 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
         {
             auto& oc = OCASIAdapter::getOpenCalphadInterface(OCASIAdapter::OpenCalphadContext::FissionProducts);
 
-            std::cout << "[OpenCalphad debug] run case location=" << location
-                    << " solver=" << openCalphadSolveModeName(solve_mode)
-                    << " T=" << temperature
-                    << " P=" << pressure
-                    << " database=" << database_path
-                    << " valid_elements:";
-            for (const auto& element : valid_elements)
-                std::cout << ' ' << element;
-            std::cout << std::endl;
-
             const bool database_ready = oc.ensureDatabaseLoaded(database_path, valid_elements);
             if (!database_ready)
             {
@@ -1542,10 +1412,6 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             oc.listResults(2);
 
             const bool extracted = oc.extractResults(output_data);
-            std::cout << "[OpenCalphad debug] grain-boundary output phases="
-                      << output_data.solution_phases.size()
-                      << " components=" << output_data.components.size()
-                      << std::endl;
 
             const bool output_valid =
                 extracted && validateOpenCalphadOutput(output_data, components, location);
@@ -1696,6 +1562,14 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                                               SciantixArray<ThermochemistryVariable>&    thermochemistry_variable,
                                               SciantixArray<SciantixVariable>&           sciantix_variable)
 {
+    auto setThermochemistryMass = [](ThermochemistryVariable& variable,
+                                     double                   mass,
+                                     const std::map<std::string, double>& composition)
+    {
+        variable.setComposition(composition);
+        variable.setFinalValue(mass);
+    };
+
     auto computePhaseComposition = [](const OCPhaseData& phase_data)
     {
         std::map<std::string, double> composition;
@@ -1724,12 +1598,12 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
             const std::string liquid_variable_name = "LIQUID (" + phase_name + ", " + location + ")";
             if (thermochemistry_variable.isElementPresent(liquid_variable_name))
             {
-                thermochemistry_variable[liquid_variable_name].setFinalValue(
-                    phase_data.moles * content_scaling_factor);
-
                 const std::map<std::string, double> composition = computePhaseComposition(phase_data);
                 if (!composition.empty())
-                    thermochemistry_variable[liquid_variable_name].setComposition(composition);
+                    setThermochemistryMass(
+                        thermochemistry_variable[liquid_variable_name],
+                        phase_data.mass * content_scaling_factor,
+                        composition);
             }
         }
 
@@ -1742,15 +1616,19 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
 
                 if (thermochemistry_variable.isElementPresent(variable_name))
                 {
-                    thermochemistry_variable[variable_name].setFinalValue(
-                        species_entry.second.moles * content_scaling_factor);
                     std::map<std::string, double> composition;
                     if (species_entry.second.moles > 0.0)
                     {
                         for (const auto& element_entry : species_entry.second.elements)
                             composition[element_entry.first] = element_entry.second / species_entry.second.moles;
                     }
-                    thermochemistry_variable[variable_name].setComposition(composition);
+                    if (!composition.empty())
+                    {
+                        setThermochemistryMass(
+                            thermochemistry_variable[variable_name],
+                            species_entry.second.mass * content_scaling_factor,
+                            composition);
+                    }
                 }
             }
 
@@ -1768,15 +1646,21 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
 
                 if (has_variable)
                 {
-                    thermochemistry_variable[variable_name].setFinalValue(
-                        element_entry.second * content_scaling_factor);
-                    thermochemistry_variable[variable_name].setComposition({{element_entry.first, 1.0}});
+                    const auto element_mass = phase_data.element_masses.find(element_entry.first);
+                    setThermochemistryMass(
+                        thermochemistry_variable[variable_name],
+                        (element_mass != phase_data.element_masses.end() ? element_mass->second : 0.0) *
+                            content_scaling_factor,
+                        {{element_entry.first, 1.0}});
                 }
                 else if (has_uppercase_variable)
                 {
-                    thermochemistry_variable[uppercase_variable_name].setFinalValue(
-                        element_entry.second * content_scaling_factor);
-                    thermochemistry_variable[uppercase_variable_name].setComposition({{element_entry.first, 1.0}});
+                    const auto element_mass = phase_data.element_masses.find(element_entry.first);
+                    setThermochemistryMass(
+                        thermochemistry_variable[uppercase_variable_name],
+                        (element_mass != phase_data.element_masses.end() ? element_mass->second : 0.0) *
+                            content_scaling_factor,
+                        {{element_entry.first, 1.0}});
                 }
             }
             continue;
@@ -1793,15 +1677,21 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
 
             if (thermochemistry_variable.isElementPresent(variable_name))
             {
-                thermochemistry_variable[variable_name].setFinalValue(
-                    element_entry.second * content_scaling_factor);
-                thermochemistry_variable[variable_name].setComposition({{element_entry.first, 1.0}});
+                const auto element_mass = phase_data.element_masses.find(element_entry.first);
+                setThermochemistryMass(
+                    thermochemistry_variable[variable_name],
+                    (element_mass != phase_data.element_masses.end() ? element_mass->second : 0.0) *
+                        content_scaling_factor,
+                    {{element_entry.first, 1.0}});
             }
             else if (thermochemistry_variable.isElementPresent(uppercase_variable_name))
             {
-                thermochemistry_variable[uppercase_variable_name].setFinalValue(
-                    element_entry.second * content_scaling_factor);
-                thermochemistry_variable[uppercase_variable_name].setComposition({{element_entry.first, 1.0}});
+                const auto element_mass = phase_data.element_masses.find(element_entry.first);
+                setThermochemistryMass(
+                    thermochemistry_variable[uppercase_variable_name],
+                    (element_mass != phase_data.element_masses.end() ? element_mass->second : 0.0) *
+                        content_scaling_factor,
+                    {{element_entry.first, 1.0}});
             }
         }
     }

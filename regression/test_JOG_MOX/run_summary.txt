@@ -1,5 +1,17 @@
 Run summary
 
+point_01_r_0p0675mm: returncode=0
+point_02_r_0p2025mm: returncode=0
+point_03_r_0p3375mm: returncode=0
+point_04_r_0p4725mm: returncode=0
+point_05_r_0p6075mm: returncode=0
+point_06_r_0p7425mm: returncode=0
+point_07_r_0p8775mm: returncode=0
+point_08_r_1p0125mm: returncode=0
+point_09_r_1p1475mm: returncode=0
+point_10_r_1p2825mm: returncode=0
+point_11_r_1p4175mm: returncode=0
+point_12_r_1p5525mm: returncode=0
 point_13_r_1p6875mm: returncode=0
 point_14_r_1p8225mm: returncode=0
 point_15_r_1p9575mm: returncode=0
@@ -10,11 +22,23 @@ point_19_r_2p4975mm: returncode=0
 point_20_r_2p6325mm: returncode=0
 
 Gold comparison summary
+point_01_r_0p0675mm: DIFF, report=gold/point_01_r_0p0675mm/comparison_report.txt
+point_02_r_0p2025mm: DIFF, report=gold/point_02_r_0p2025mm/comparison_report.txt
+point_03_r_0p3375mm: DIFF, report=gold/point_03_r_0p3375mm/comparison_report.txt
+point_04_r_0p4725mm: OK, report=gold/point_04_r_0p4725mm/comparison_report.txt
+point_05_r_0p6075mm: DIFF, report=gold/point_05_r_0p6075mm/comparison_report.txt
+point_06_r_0p7425mm: DIFF, report=gold/point_06_r_0p7425mm/comparison_report.txt
+point_07_r_0p8775mm: DIFF, report=gold/point_07_r_0p8775mm/comparison_report.txt
+point_08_r_1p0125mm: DIFF, report=gold/point_08_r_1p0125mm/comparison_report.txt
+point_09_r_1p1475mm: DIFF, report=gold/point_09_r_1p1475mm/comparison_report.txt
+point_10_r_1p2825mm: DIFF, report=gold/point_10_r_1p2825mm/comparison_report.txt
+point_11_r_1p4175mm: DIFF, report=gold/point_11_r_1p4175mm/comparison_report.txt
+point_12_r_1p5525mm: DIFF, report=gold/point_12_r_1p5525mm/comparison_report.txt
 point_13_r_1p6875mm: DIFF, report=gold/point_13_r_1p6875mm/comparison_report.txt
 point_14_r_1p8225mm: DIFF, report=gold/point_14_r_1p8225mm/comparison_report.txt
-point_15_r_1p9575mm: OK, report=gold/point_15_r_1p9575mm/comparison_report.txt
-point_16_r_2p0925mm: OK, report=gold/point_16_r_2p0925mm/comparison_report.txt
+point_15_r_1p9575mm: DIFF, report=gold/point_15_r_1p9575mm/comparison_report.txt
+point_16_r_2p0925mm: DIFF, report=gold/point_16_r_2p0925mm/comparison_report.txt
 point_17_r_2p2275mm: DIFF, report=gold/point_17_r_2p2275mm/comparison_report.txt
-point_18_r_2p3625mm: OK, report=gold/point_18_r_2p3625mm/comparison_report.txt
-point_19_r_2p4975mm: OK, report=gold/point_19_r_2p4975mm/comparison_report.txt
+point_18_r_2p3625mm: DIFF, report=gold/point_18_r_2p3625mm/comparison_report.txt
+point_19_r_2p4975mm: DIFF, report=gold/point_19_r_2p4975mm/comparison_report.txt
 point_20_r_2p6325mm: DIFF, report=gold/point_20_r_2p6325mm/comparison_report.txt

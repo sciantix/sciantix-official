@@ -47,14 +47,14 @@ CASE_TEMPORARY_FILES = SHARED_INPUT_FILES + (
 )
 MAX_STACKPLOT_LEGEND_ITEMS = 50
 JOG_PHASES = [
-    ("CS2MOO4_S2", "JOG from CS2MOO4_S2 (/)", "CS2MOO4_S2 (condensed, at grain boundary) (mol/m3)"),
-    ("CS2MOO4_S1", "JOG from CS2MOO4_S1 (/)", "CS2MOO4_S1 (condensed, at grain boundary) (mol/m3)"),
-    ("MOO2", "JOG from MOO2 (/)", "MOO2 (condensed, at grain boundary) (mol/m3)"),
-    ("CS2MO3O10", "JOG from CS2MO3O10 (/)", "CS2MO3O10 (condensed, at grain boundary) (mol/m3)"),
-    ("CS2MO4O13", "JOG from CS2MO4O13 (/)", "CS2MO4O13 (condensed, at grain boundary) (mol/m3)"),
-    ("BCC_A2", "JOG from BCC_A2 (/)", "BCC_A2 (condensed, at grain boundary) (mol/m3)"),
-    ("FCC_A1", "JOG from FCC_A1 (/)", "FCC_A1 (condensed, at grain boundary) (mol/m3)"),
-    ("HCP_A3", "JOG from HCP_A3 (/)", "HCP_A3 (condensed, at grain boundary) (mol/m3)"),
+    ("CS2MOO4_S2", "JOG from CS2MOO4_S2 (/)", "CS2MOO4_S2 (condensed, at grain boundary) (g/m3)"),
+    ("CS2MOO4_S1", "JOG from CS2MOO4_S1 (/)", "CS2MOO4_S1 (condensed, at grain boundary) (g/m3)"),
+    ("MOO2", "JOG from MOO2 (/)", "MOO2 (condensed, at grain boundary) (g/m3)"),
+    ("CS2MO3O10", "JOG from CS2MO3O10 (/)", "CS2MO3O10 (condensed, at grain boundary) (g/m3)"),
+    ("CS2MO4O13", "JOG from CS2MO4O13 (/)", "CS2MO4O13 (condensed, at grain boundary) (g/m3)"),
+    ("BCC_A2", "JOG from BCC_A2 (/)", "BCC_A2 (condensed, at grain boundary) (g/m3)"),
+    ("FCC_A1", "JOG from FCC_A1 (/)", "FCC_A1 (condensed, at grain boundary) (g/m3)"),
+    ("HCP_A3", "JOG from HCP_A3 (/)", "HCP_A3 (condensed, at grain boundary) (g/m3)"),
 ]
 SUMMARY_STACK_COLORS = [
     "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b",
@@ -783,9 +783,27 @@ def plot_case(
             poly.set_hatch(hatch)
             poly.set_edgecolor((0.1, 0.1, 0.1, 0.7))
             poly.set_linewidth(0.1)
+
+    total_mass = np.zeros_like(burnup)
+
+    def add_atom_inventory(column_name: str, atomic_mass: float) -> None:
+        if column_name in columns:
+            total_mass[:] += values[:, columns[column_name]] * atomic_mass / AVOGADRO_NUMBER
+
+    add_atom_inventory("Cs at grain boundary (at/m3)", 132.90545196)
+    add_atom_inventory("Cs reacted (at/m3)", 132.90545196)
+    add_atom_inventory("Mo produced (at/m3)", 95.95)
+    add_atom_inventory("Pd produced (at/m3)", 106.42)
+    add_atom_inventory("Tc produced (at/m3)", 98.906)
+    add_atom_inventory("Rh produced (at/m3)", 102.91)
+    add_atom_inventory("Ru produced (at/m3)", 101.07)
+    if "O available content (mol/m3)" in columns:
+        total_mass += values[:, columns["O available content (mol/m3)"]] * 15.999
+
+    axis.plot(burnup, total_mass, color="black", label="Total mass")
+
     axis.set_xlabel(BURNUP_LABEL)
-    axis.set_ylim([0,4000])
-    axis.set_ylabel("Concentration (mol m$^{-3}$)")
+    axis.set_ylabel("Mass concentration (g m$^{-3}$)")
     add_capped_legend(axis, loc="upper left", fontsize=8)
     save_figure(fig, case_plot_dir / "thermochemistry.png", saved_paths)
 
@@ -1225,7 +1243,7 @@ def plot_radial_profiles(
                 axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
 
         axis.set_xlabel("Burnup (MWd/kg$_{MOX}$)")
-        axis.set_ylabel("Concentration (mol m$^{-3}$)")
+        axis.set_ylabel("Mass concentration (g m$^{-3}$)")
         add_capped_legend(axis, loc="upper left")
         save_figure(fig, PLOTS_DIR / "Thermochemistry_No_Gas.png", saved_paths)
     
@@ -1255,7 +1273,7 @@ def plot_radial_profiles(
             ("CS2MO4O13", "JOG from CS2MO4O13 (/)"),
             ("BCC_A2", "JOG from BCC_A2 (/)"),
             ("FCC_A1", "JOG from FCC_A1 (/)"),
-            ("HCP_A3", "JOG from HCP_A3 (/)"),
+            # ("HCP_A3", "JOG from HCP_A3 (/)"),
         ]
         condensed_entries: list[tuple[str, np.ndarray, object]] = []
         for index, (label, column_name) in enumerate(condensed_contribution_columns):
@@ -1295,7 +1313,7 @@ def plot_radial_profiles(
             for boundary in cumulative_histories:
                 axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
 
-        axis.plot(reference_burnup, jog_total_thickness_over_time_um, color="#111827", label="Total")
+        # axis.plot(reference_burnup, jog_total_thickness_over_time_um, color="#111827", label="Total")
         axis.scatter(
             fima_to_burnup(melis_fima),
             melis_thickness,
@@ -1495,9 +1513,9 @@ def main() -> int:
 
     gb_color_map = build_thermochemistry_color_map(case_directories)
 
-    if args.plot_only:
-        for case_dir in case_directories:
-            plot_case(case_dir, saved_paths, gb_color_map)
+    # if args.plot_only:
+    #     for case_dir in case_directories:
+    #         plot_case(case_dir, saved_paths, gb_color_map)
 
     plot_radial_profiles(case_directories, saved_paths, gb_color_map)
 
