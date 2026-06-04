@@ -74,7 +74,6 @@ void Simulation::MetallicFissionProducts()
     double cm_prec_intra_new = (cm_prec_intra_old + dt * k_intra * cm_matrix_new) / (1.0 + dt * k_res);
     sciantix_variable["Cm precipitated intragranular"].setFinalValue(cm_prec_intra_new);
 
-
     // Aggiornamento della variabile
     // dCm_prec_intergr/dy = + (k_gb) * cm_matrix - k_res * Cm_prec_inter
     double cm_prec_gb_new = (cm_prec_gb_old + dt * k_gb * cm_matrix_new) / (1.0 + dt * k_res);
@@ -88,29 +87,29 @@ void Simulation::MetallicFissionProducts()
     const double Cm_eq = 0.0;
 
     // nucleation rate MFPs
-    //EQUATION 1: v = k_nucl * (f_disl*dislocation density + f_bub*sink_strenght_bub) * exp(-dG/kT) * (C_matrix - C_eq)^2
-    //EQUATION 2: v = k_nucl * (f_disl*dislocation density + f_bub*sink_strenght_bub) * exp(-dG/kT)
-        // Hp) heterogeneous nucleation mainly due to dislocation and bubbles
-        // dislocation density (m^(-2)) to check, 
-        // Ref: Modelling dislocation density evolution of UO2 under irradiation, Aleksandar Djonovic
-        double intra_bubble_density = sciantix_variable["Intragranular bubble concentration"].getFinalValue();
-        double intra_bubble_radius = sciantix_variable["Intragranular bubble radius"].getFinalValue();
-        double bubble_sink_strenght = (4*M_PI*intra_bubble_density*intra_bubble_radius); // m^(-2)
-        double temperature = history_variable["Temperature"].getFinalValue();
-        double dislocation_density = 0.0;
-        if (temperature < 673.15)  // Hp) 400°C come thershold ma potremmo farne più casi, oppure
-                                    // introdurre dislocation_density come sciantix_variable
-        {
-            dislocation_density = 5.0 * pow(10, 15); 
-        }
-        else
-        {
-            dislocation_density = 5.0 * pow(10, 14);
-        }
-        const double f_dislocation = 0.5; //coeff che pesa la nucleazione eterogenea sulle dislocazioni, da calibrare
-        const double f_bubbles = 0.5; // coeff che pesa la nucleazione eterogenea su bolle di gas, da calibrare
-        const double Kb = boltzmann_constant_eV;
-        const double dG_nucleation = 2.9; // energy barrier (eV), da calibrazione Excel con k_intra ottimizzato
+    // EQUATION 1: v = k_nucl * (f_disl*dislocation density + f_bub*sink_strenght_bub) * exp(-dG/kT) * (C_matrix -
+    // C_eq)^2 EQUATION 2: v = k_nucl * (f_disl*dislocation density + f_bub*sink_strenght_bub) * exp(-dG/kT)
+    // Hp) heterogeneous nucleation mainly due to dislocation and bubbles
+    // dislocation density (m^(-2)) to check,
+    // Ref: Modelling dislocation density evolution of UO2 under irradiation, Aleksandar Djonovic
+    double intra_bubble_density = sciantix_variable["Intragranular bubble concentration"].getFinalValue();
+    double intra_bubble_radius  = sciantix_variable["Intragranular bubble radius"].getFinalValue();
+    double bubble_sink_strenght = (4 * M_PI * intra_bubble_density * intra_bubble_radius);  // m^(-2)
+    double temperature          = history_variable["Temperature"].getFinalValue();
+    double dislocation_density  = 0.0;
+    if (temperature < 673.15)  // Hp) 400°C come thershold ma potremmo farne più casi, oppure
+                               // introdurre dislocation_density come sciantix_variable
+    {
+        dislocation_density = 5.0 * pow(10, 15);
+    }
+    else
+    {
+        dislocation_density = 5.0 * pow(10, 14);
+    }
+    const double f_dislocation = 0.5;  // coeff che pesa la nucleazione eterogenea sulle dislocazioni, da calibrare
+    const double f_bubbles     = 0.5;  // coeff che pesa la nucleazione eterogenea su bolle di gas, da calibrare
+    const double Kb            = boltzmann_constant_eV;
+    const double dG_nucleation = 2.9;  // energy barrier (eV), da calibrazione Excel con k_intra ottimizzato
 
     // k_nucl coefficient - calculation through n and k_intra
     double N_current = sciantix_variable["Intragranular 5MPs concentration"].getFinalValue();
@@ -128,14 +127,16 @@ void Simulation::MetallicFissionProducts()
         n_old = sciantix_variable["Intragranular atom per 5MP"].getFinalValue();
     }
 
-        // tenendo la sovrasaturazione (EQ 1) k_nucl = 1.87731949315681E-34; // (m^5)/(atm^2)(s), calibrato su Excel
-        // senza sovrasaturazione (EQ 2): k_nucl = 3995668086708020000; // atm/(m*s)
-        double k_nucl = 3995668086708020000; // atm/(m*s)
+    // tenendo la sovrasaturazione (EQ 1) k_nucl = 1.87731949315681E-34; // (m^5)/(atm^2)(s), calibrato su Excel
+    // senza sovrasaturazione (EQ 2): k_nucl = 3995668086708020000; // atm/(m*s)
+    double k_nucl = 3995668086708020000;  // atm/(m*s)
 
-        // definizione nucleation rate for EQ 1
-        // double nucleation_rate_m = (k_nucl*(f_dislocation * dislocation_density + f_bubbles * bubble_sink_strenght)*(exp(-dG_nucleation/(Kb*temperature)))*pow((cm_matrix_new - Cm_eq) , 2.0));
-        // definizione nucleation rate for EQ 2
-        double nucleation_rate_m = (k_nucl*(f_dislocation * dislocation_density + f_bubbles * bubble_sink_strenght)*(exp(-dG_nucleation/(Kb*temperature))));
+    // definizione nucleation rate for EQ 1
+    // double nucleation_rate_m = (k_nucl*(f_dislocation * dislocation_density + f_bubbles *
+    // bubble_sink_strenght)*(exp(-dG_nucleation/(Kb*temperature)))*pow((cm_matrix_new - Cm_eq) , 2.0)); definizione
+    // nucleation rate for EQ 2
+    double nucleation_rate_m = (k_nucl * (f_dislocation * dislocation_density + f_bubbles * bubble_sink_strenght) *
+                                (exp(-dG_nucleation / (Kb * temperature))));
 
     // Intragranular 5MPs concentration N
     // discrtizzazione equazione
@@ -143,12 +144,11 @@ void Simulation::MetallicFissionProducts()
     double dN = nucleation_rate_m * dt;
     sciantix_variable["Intragranular 5MPs concentration"].addValue(dN);
 
-
-    // resolution rate coefficient definition 
-        // const double b = k_res; // parametro da calibrare
-                                    // valore attuale con Sakib, 2025 
-        // double b = b_0 * fission_rate; // resolution coefficient
-        const double b = k_res;
+    // resolution rate coefficient definition
+    // const double b = k_res; // parametro da calibrare
+    // valore attuale con Sakib, 2025
+    // double b = b_0 * fission_rate; // resolution coefficient
+    const double b = k_res;
 
     // trapping rate coefficient g - diffusione verso una sfera
     const double V_eff_5M = 1.44123e-29;           // volume atomico efficace pesato per una 5M (m^3)
