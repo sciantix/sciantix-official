@@ -77,9 +77,6 @@ void Simulation::MetallicFissionProducts()
                                    / (1.0 + dt * k_res);
         sciantix_variable["Cm precipitated intragranular"].setFinalValue(cm_prec_intra_new);
 
-    // Aggiornamento della variabile
-    // dCm_prec_intragr/dt = + k_intra * cm_matrix
-    sciantix_variable["Cm precipitated intragranular"].addValue(sink_intra * dt);
 
         // Aggiornamento della variabile
         // dCm_prec_intergr/dy = + (k_gb) * cm_matrix - k_res * Cm_prec_inter
@@ -95,7 +92,8 @@ void Simulation::MetallicFissionProducts()
         const double Cm_eq = 0.0;
 
     // nucleation rate MFPs
-    //EQUATION: v = k_nucl * (f_disl*dislocation density + f_bub*sink_strenght_bub) * C_matrix^2
+    //EQUATION 1: v = k_nucl * (f_disl*dislocation density + f_bub*sink_strenght_bub) * exp(-dG/kT) * (C_matrix - C_eq)^2
+    //EQUATION 2: v = k_nucl * (f_disl*dislocation density + f_bub*sink_strenght_bub) * exp(-dG/kT)
         // Hp) heterogeneous nucleation mainly due to dislocation and bubbles
         // dislocation density (m^(-2)) to check, 
         // Ref: Modelling dislocation density evolution of UO2 under irradiation, Aleksandar Djonovic
@@ -134,16 +132,21 @@ void Simulation::MetallicFissionProducts()
                 n_old = sciantix_variable["Intragranular atom per 5MP"].getFinalValue();
             }
 
-        double k_nucl = 4.4253016024739E-47; // (m^5)/(atm^2)(s), calibrato su Excel
+        // tenendo la sovrasaturazione (EQ 1) k_nucl = 1.87731949315681E-34; // (m^5)/(atm^2)(s), calibrato su Excel
+        // senza sovrasaturazione (EQ 2): k_nucl = 3995668086708020000; // atm/(m*s)
+        double k_nucl = 3995668086708020000; // atm/(m*s)
 
-        // definiziatione nucleation rate
-        double nucleation_rate_m = (k_nucl*(f_dislocation * dislocation_density + f_bubbles * bubble_sink_strenght)*(exp(-dG_nucleation/(Kb*temperature)))*pow((cm_matrix_new - Cm_eq), 2));
+        // definizione nucleation rate for EQ 1
+        // double nucleation_rate_m = (k_nucl*(f_dislocation * dislocation_density + f_bubbles * bubble_sink_strenght)*(exp(-dG_nucleation/(Kb*temperature)))*pow((cm_matrix_new - Cm_eq) , 2.0));
+        // definizione nucleation rate for EQ 2
+        double nucleation_rate_m = (k_nucl*(f_dislocation * dislocation_density + f_bubbles * bubble_sink_strenght)*(exp(-dG_nucleation/(Kb*temperature))));
 
     // Intragranular 5MPs concentration N
         // discrtizzazione equazione
         // EULERO ESPLICITO 
         double dN = nucleation_rate_m * dt;
         sciantix_variable["Intragranular 5MPs concentration"].addValue(dN);
+
 
     // resolution rate coefficient definition 
         // const double b = k_res; // parametro da calibrare
