@@ -284,7 +284,8 @@ void InputReading(int                  Sciantix_options[],
 
         input_scaling_factors >> std::ws;
         if (input_scaling_factors.peek() != EOF)
-            Sciantix_scaling_factors[9] = ReadOneParameter("sf_mfp_nucleation_rate", input_scaling_factors, input_check);
+            Sciantix_scaling_factors[9] =
+                ReadOneParameter("sf_mfp_nucleation_rate", input_scaling_factors, input_check);
 
         input_scaling_factors >> std::ws;
         if (input_scaling_factors.peek() != EOF)
@@ -298,8 +299,9 @@ void InputReading(int                  Sciantix_options[],
 
         input_scaling_factors >> std::ws;
         if (input_scaling_factors.peek() != EOF)
-            Sciantix_scaling_factors[12] = ReadOneParameter("sf_mfp_resolution_rate", input_scaling_factors, input_check);
-// END EC 04.06.2026
+            Sciantix_scaling_factors[12] =
+                ReadOneParameter("sf_mfp_resolution_rate", input_scaling_factors, input_check);
+        // END EC 04.06.2026
     }
     else
     {

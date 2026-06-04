@@ -68,7 +68,7 @@ void Simulation::MetallicFissionProducts()
     double cm_matrix_new = (cm_matrix_old + dt * (y * fission_rate + k_res * (cm_prec_intra_old + cm_prec_gb_old))) /
                            (1.0 + dt * (k_intra + k_gb));
 
-    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb                       
+    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb
     // sciantix_variable["Cm matrix"].setFinalValue(cm_matrix_new);
 
     // Cm PRECIPIATTA INTRAGRANO
@@ -76,13 +76,13 @@ void Simulation::MetallicFissionProducts()
     // Aggiornamento della variabile
     // dCm_prec_intragr/dt = + (k_intra) * cm_matrix - k_res Cm_prec_intra
     double cm_prec_intra_new = (cm_prec_intra_old + dt * k_intra * cm_matrix_new) / (1.0 + dt * k_res);
-    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb                       
+    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb
     // sciantix_variable["Cm precipitated intragranular"].setFinalValue(cm_prec_intra_new);
 
     // Aggiornamento della variabile
     // dCm_prec_intergr/dy = + (k_gb) * cm_matrix - k_res * Cm_prec_inter
     double cm_prec_gb_new = (cm_prec_gb_old + dt * k_gb * cm_matrix_new) / (1.0 + dt * k_res);
-    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb                       
+    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb
     // sciantix_variable["Cm precipitated grain boundary"].setFinalValue(cm_prec_gb_new);
 
     // Definizione Cm_eq (mx solubility)
@@ -123,9 +123,9 @@ void Simulation::MetallicFissionProducts()
 
     // Inizializza n se ci sono bolle ma n è ancora zero
     // altrimenti avremmo diviso 0
-    
-    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb                       
-    // 
+
+    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb
+    //
     // if (N_current > 0.0 && n_old == 0.0)
     // {
     //     n_old = 2.0;
@@ -154,11 +154,12 @@ void Simulation::MetallicFissionProducts()
     // EULERO ESPLICITO
     double dN = nucleation_rate_m * dt;
 
-    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb con eulero implicito
-    double A_matrix[9] = {0};
-    double b_matrix[3] = {0};
+    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb con
+    // eulero implicito
+    double A_matrix[9]   = {0};
+    double b_matrix[3]   = {0};
     double k_nucleazione = k_nucl * dt * exp(-dG_nucleation / (Kb * temperature));
-    double N_iniziale = sciantix_variable["Intragranular 5MPs concentration"].getInitialValue();
+    double N_iniziale    = sciantix_variable["Intragranular 5MPs concentration"].getInitialValue();
     double Nucleazione =
         (k_nucleazione * (f_dislocation * dislocation_density + f_bubbles * bubble_sink_strenght) + N_iniziale) /
         (1.0 + k_nucleazione);
@@ -182,7 +183,6 @@ void Simulation::MetallicFissionProducts()
     sciantix_variable["Cm precipitated intragranular"].setFinalValue(b_matrix[1]);
     sciantix_variable["Cm precipitated grain boundary"].setFinalValue(b_matrix[2]);
 
-
     double N_final = sciantix_variable["Intragranular 5MPs concentration"].getFinalValue();
     double n_media = 0.0;
     if (N_final > 0.0)
@@ -191,7 +191,7 @@ void Simulation::MetallicFissionProducts()
         n_media = 0.0;
     sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_media);
     // END EC 04.06.2026
-    
+
     // resolution rate coefficient definition
     // const double b = k_res; // parametro da calibrare
     // valore attuale con Sakib, 2025
@@ -235,7 +235,7 @@ void Simulation::MetallicFissionProducts()
 
     double source_n = g * cm_matrix_new;
     double n_new    = (n_old + source_n * dt) / (1.0 + b * dt);
-    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb                       
+    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb
     // sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_new);
 
     // Verifica interna: Cm_prec_intra deve essere uguale a N * n
