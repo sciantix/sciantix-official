@@ -421,7 +421,8 @@ std::vector<std::string> getScalingFactorsNames()
         "Fission rate",
         "Helium production rate",
         "Dummy",
-        // EC 04.06.2026: scaling factor per calibrazione più flessibile del modello di precipitazione dei prodotti di fissione metallici (MFP)
+        // EC 04.06.2026: scaling factor per calibrazione più flessibile del modello di precipitazione dei prodotti di
+        // fissione metallici (MFP)
         "MFP nucleation rate",
         "MFP precipitation rate intragranular",
         "MFP precipitation rate grain boundary",
