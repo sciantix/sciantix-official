@@ -276,6 +276,30 @@ void InputReading(int                  Sciantix_options[],
         Sciantix_scaling_factors[6] = ReadOneParameter("sf_fission_rate", input_scaling_factors, input_check);
         Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
         Sciantix_scaling_factors[8] = ReadOneParameter("sf_dummy", input_scaling_factors, input_check);
+        // EC 04.06.2026
+        Sciantix_scaling_factors[9]  = 1.0;
+        Sciantix_scaling_factors[10] = 1.0;
+        Sciantix_scaling_factors[11] = 1.0;
+        Sciantix_scaling_factors[12] = 1.0;
+
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[9] = ReadOneParameter("sf_mfp_nucleation_rate", input_scaling_factors, input_check);
+
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[10] =
+                ReadOneParameter("sf_mfp_precipitation_rate_intragranular", input_scaling_factors, input_check);
+
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[11] =
+                ReadOneParameter("sf_mfp_precipitation_rate_grain_boundary", input_scaling_factors, input_check);
+
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[12] = ReadOneParameter("sf_mfp_resolution_rate", input_scaling_factors, input_check);
+// END EC 04.06.2026
     }
     else
     {
@@ -288,6 +312,12 @@ void InputReading(int                  Sciantix_options[],
         Sciantix_scaling_factors[6] = 1.0;
         Sciantix_scaling_factors[7] = 1.0;
         Sciantix_scaling_factors[8] = 1.0;
+        // EC 04.06.2026
+        Sciantix_scaling_factors[9]  = 1.0;
+        Sciantix_scaling_factors[10] = 1.0;
+        Sciantix_scaling_factors[11] = 1.0;
+        Sciantix_scaling_factors[12] = 1.0;
+        // END EC 04.06.2026
     }
 
     input_check.close();
