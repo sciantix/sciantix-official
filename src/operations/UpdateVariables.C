@@ -118,7 +118,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {174, "Cm precipitated grain boundary"},
     {175, "Intragranular 5MPs concentration"},
     {176, "Intragranular atom per 5MP"},
-   
+
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
