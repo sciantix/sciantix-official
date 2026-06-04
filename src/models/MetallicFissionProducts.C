@@ -30,9 +30,12 @@ void Simulation::MetallicFissionProducts()
     // Tassi di precipitazione (1/s) da calibrare su micrografie
     // k_intra: precipitazione dentro i grani
     // k_gb:    precipitazione ai bordi grano
-    const double k_intra = 0.241313858;
-    const double k_gb    = 0.944860042;
-    const double k_res   = 6.799 * pow(10, -19);
+
+    // EC 04.06.2026: introduzione scaling factors per calibrazione più flessibile
+    const double k_intra = 0.241313858 * scaling_factors["MFP precipitation rate intragranular"].getValue();
+    const double k_gb    = 0.944860042 * scaling_factors["MFP precipitation rate grain boundary"].getValue();
+    const double k_res   = 6.799 * pow(10, -19) * scaling_factors["MFP resolution rate"].getValue();
+    // END EC 04.06.2026
 
     // Fission rate al passo attuale (fiss/m3/s)
     // Già letto automaticamente dal file di input ad ogni passo
@@ -65,19 +68,22 @@ void Simulation::MetallicFissionProducts()
     double cm_matrix_new = (cm_matrix_old + dt * (y * fission_rate + k_res * (cm_prec_intra_old + cm_prec_gb_old))) /
                            (1.0 + dt * (k_intra + k_gb));
 
-    sciantix_variable["Cm matrix"].setFinalValue(cm_matrix_new);
+    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb                       
+    // sciantix_variable["Cm matrix"].setFinalValue(cm_matrix_new);
 
     // Cm PRECIPIATTA INTRAGRANO
 
     // Aggiornamento della variabile
     // dCm_prec_intragr/dt = + (k_intra) * cm_matrix - k_res Cm_prec_intra
     double cm_prec_intra_new = (cm_prec_intra_old + dt * k_intra * cm_matrix_new) / (1.0 + dt * k_res);
-    sciantix_variable["Cm precipitated intragranular"].setFinalValue(cm_prec_intra_new);
+    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb                       
+    // sciantix_variable["Cm precipitated intragranular"].setFinalValue(cm_prec_intra_new);
 
     // Aggiornamento della variabile
     // dCm_prec_intergr/dy = + (k_gb) * cm_matrix - k_res * Cm_prec_inter
     double cm_prec_gb_new = (cm_prec_gb_old + dt * k_gb * cm_matrix_new) / (1.0 + dt * k_res);
-    sciantix_variable["Cm precipitated grain boundary"].setFinalValue(cm_prec_gb_new);
+    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb                       
+    // sciantix_variable["Cm precipitated grain boundary"].setFinalValue(cm_prec_gb_new);
 
     // Definizione Cm_eq (mx solubility)
     // Da the chemical state of the fission products in oxide fuels, H. KLEYKAMP
@@ -117,19 +123,24 @@ void Simulation::MetallicFissionProducts()
 
     // Inizializza n se ci sono bolle ma n è ancora zero
     // altrimenti avremmo diviso 0
-    if (N_current > 0.0 && n_old == 0.0)
-    {
-        n_old = 2.0;
-        sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_old);
-    }
-    else
-    {
-        n_old = sciantix_variable["Intragranular atom per 5MP"].getFinalValue();
-    }
+    
+    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb                       
+    // 
+    // if (N_current > 0.0 && n_old == 0.0)
+    // {
+    //     n_old = 2.0;
+    //     sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_old);
+    // }
+    // else
+    // {
+    //     n_old = sciantix_variable["Intragranular atom per 5MP"].getFinalValue();
+    // }
+    // END EC 04.06.2026
 
     // tenendo la sovrasaturazione (EQ 1) k_nucl = 1.87731949315681E-34; // (m^5)/(atm^2)(s), calibrato su Excel
     // senza sovrasaturazione (EQ 2): k_nucl = 3995668086708020000; // atm/(m*s)
-    double k_nucl = 3995668086708020000;  // atm/(m*s)
+    // EC 04.06.2026: introduzione scaling factor per calibrazione più flessibile
+    double k_nucl = 3995668086708020000 * scaling_factors["MFP nucleation rate"].getValue();  // atm/(m*s)
 
     // definizione nucleation rate for EQ 1
     // double nucleation_rate_m = (k_nucl*(f_dislocation * dislocation_density + f_bubbles *
@@ -142,8 +153,45 @@ void Simulation::MetallicFissionProducts()
     // discrtizzazione equazione
     // EULERO ESPLICITO
     double dN = nucleation_rate_m * dt;
-    sciantix_variable["Intragranular 5MPs concentration"].addValue(dN);
 
+    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb con eulero implicito
+    double A_matrix[9] = {0};
+    double b_matrix[3] = {0};
+    double k_nucleazione = k_nucl * dt * exp(-dG_nucleation / (Kb * temperature));
+    double N_iniziale = sciantix_variable["Intragranular 5MPs concentration"].getInitialValue();
+    double Nucleazione =
+        (k_nucleazione * (f_dislocation * dislocation_density + f_bubbles * bubble_sink_strenght) + N_iniziale) /
+        (1.0 + k_nucleazione);
+    sciantix_variable["Intragranular 5MPs concentration"].setFinalValue(Nucleazione);
+
+    A_matrix[0] = 1 + (k_intra + k_gb) * dt;
+    A_matrix[1] = -k_res * dt;
+    A_matrix[2] = -k_res * dt;
+    A_matrix[3] = -k_intra * dt;
+    A_matrix[4] = 1 + k_res * dt;
+    A_matrix[5] = 0.0;
+    A_matrix[6] = -k_gb * dt;
+    A_matrix[7] = 0.0;
+    A_matrix[8] = 1 + k_res * dt;
+    b_matrix[0] = cm_matrix_old + produzione;
+    b_matrix[1] = cm_prec_intra_old;
+    b_matrix[2] = cm_prec_gb_old;
+
+    solver.Laplace3x3(A_matrix, b_matrix);
+    sciantix_variable["Cm matrix"].setFinalValue(b_matrix[0]);
+    sciantix_variable["Cm precipitated intragranular"].setFinalValue(b_matrix[1]);
+    sciantix_variable["Cm precipitated grain boundary"].setFinalValue(b_matrix[2]);
+
+
+    double N_final = sciantix_variable["Intragranular 5MPs concentration"].getFinalValue();
+    double n_media = 0.0;
+    if (N_final > 0.0)
+        n_media = sciantix_variable["Cm precipitated intragranular"].getFinalValue() / N_final;
+    else
+        n_media = 0.0;
+    sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_media);
+    // END EC 04.06.2026
+    
     // resolution rate coefficient definition
     // const double b = k_res; // parametro da calibrare
     // valore attuale con Sakib, 2025
@@ -187,7 +235,8 @@ void Simulation::MetallicFissionProducts()
 
     double source_n = g * cm_matrix_new;
     double n_new    = (n_old + source_n * dt) / (1.0 + b * dt);
-    sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_new);
+    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb                       
+    // sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_new);
 
     // Verifica interna: Cm_prec_intra deve essere uguale a N * n
     double N             = sciantix_variable["Intragranular 5MPs concentration"].getFinalValue();
