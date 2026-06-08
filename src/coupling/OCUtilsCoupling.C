@@ -1395,19 +1395,26 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
 
             bool clear_equilibrium = true;
 
-            const bool initial_equilibrium_ready = oc.calculateEquilibrium(0);
+            const bool initial_equilibrium_ready =
+#if defined(COUPLING_TU)
+                oc.calculateEquilibrium(-1);
+#else
+                oc.calculateEquilibrium(0);
+#endif
             if (!initial_equilibrium_ready)
             {
                 std::cerr << "Warning: Initial OpenCalphad equilibrium calculation failed" << std::endl;
                 clear_equilibrium = false;
             }
 
+            #if !defined(COUPLING_TU)
             const bool checked_equilibrium_ready = oc.calculateEquilibriumChecked();
             if (!checked_equilibrium_ready)
             {
                 std::cerr << "Warning: OpenCalphad checked equilibrium calculation failed" << std::endl;
                 clear_equilibrium = false;
             }
+            #endif
 
             oc.listResults(2);
 
