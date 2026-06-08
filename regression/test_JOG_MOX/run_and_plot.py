@@ -1070,18 +1070,19 @@ def plot_radial_profiles(
 
     if "Temperature (K)" in output_profiles:
         fig, axis = plt.subplots()
+        temperature_c_profiles = output_profiles["Temperature (K)"] - 273.15
         for color, index in zip(snapshot_colors, indexes):
             axis.plot(
                 radii_mm_array,
-                output_profiles["Temperature (K)"][:, index],
+                temperature_c_profiles[:, index],
                 color=color,
                 marker="o",
                 label=f"{reference_burnup[index]:.1f} MWd/kg$_{{MOX}}$",
             )
         axis.set_xlabel("Radius (mm)")
         axis.set_xlim([0, 3.0])
-        axis.set_ylabel("Temperature (K)")
-        axis.set_ylim([800, 2000])
+        axis.set_ylabel("Temperature ($^\\circ$C)")
+        axis.set_ylim([500, 1750])
         axis.legend(loc="best")
         save_figure(fig, PLOTS_DIR / "Temperature.png", saved_paths)
 
@@ -1268,12 +1269,8 @@ def plot_radial_profiles(
         condensed_contribution_columns = [
             ("CS2MOO4_S2", "JOG from CS2MOO4_S2 (/)"),
             ("CS2MOO4_S1", "JOG from CS2MOO4_S1 (/)"),
-            ("MOO2", "JOG from MOO2 (/)"),
             ("CS2MO3O10", "JOG from CS2MO3O10 (/)"),
             ("CS2MO4O13", "JOG from CS2MO4O13 (/)"),
-            ("BCC_A2", "JOG from BCC_A2 (/)"),
-            ("FCC_A1", "JOG from FCC_A1 (/)"),
-            # ("HCP_A3", "JOG from HCP_A3 (/)"),
         ]
         condensed_entries: list[tuple[str, np.ndarray, object]] = []
         for index, (label, column_name) in enumerate(condensed_contribution_columns):
@@ -1513,9 +1510,9 @@ def main() -> int:
 
     gb_color_map = build_thermochemistry_color_map(case_directories)
 
-    # if args.plot_only:
-    #     for case_dir in case_directories:
-    #         plot_case(case_dir, saved_paths, gb_color_map)
+    if args.plot_only:
+        for case_dir in case_directories:
+            plot_case(case_dir, saved_paths, gb_color_map)
 
     plot_radial_profiles(case_directories, saved_paths, gb_color_map)
 
