@@ -83,9 +83,8 @@ void Simulation::execute()
     GapPartialPressure();
 
     UO2Thermochemistry();
-
-    StoichiometryDeviation();
 #endif
+    StoichiometryDeviation();
 
     // FISSION PRODUCT BEHAVIOR
 

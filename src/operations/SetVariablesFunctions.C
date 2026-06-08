@@ -161,7 +161,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable(
             "He in intragranular bubbles", "(at/m3)", Sciantix_variables[16], Sciantix_variables[16], toOutputHelium),
         SciantixVariable(
-            "He at grain boundary", "(at/m3)", Sciantix_variables[17], Sciantix_variables[71], toOutputHelium),
+            "He at grain boundary", "(at/m3)", Sciantix_variables[17], Sciantix_variables[17], toOutputHelium),
         SciantixVariable("He released", "(at/m3)", Sciantix_variables[18], Sciantix_variables[18], toOutputHelium),
         SciantixVariable("He decayed", "(at/m3)", 0.0, 0.0, 0),
         SciantixVariable("He fractional release", "(/)", 0.0, 0.0, toOutputHelium),
