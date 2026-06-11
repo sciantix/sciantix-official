@@ -247,9 +247,9 @@ void Simulation::StoichiometryDeviation()
             double A       = 1.0135e5 * B / (1.66e-6 * ka);  // (1/atm)
             double theta   = A * history_variable["Steam pressure"].getFinalValue() * 1.013e5 /
                            (1 + A * history_variable["Steam pressure"].getFinalValue() * 1.013e5);
-            double gamma = sqrt(
-                exp(-blackburn_enthalpy / history_variable["Temperature"].getFinalValue() + blackburn_entropy) *
-                1.013e5);
+            double gamma =
+                sqrt(exp(-blackburn_enthalpy / history_variable["Temperature"].getFinalValue() + blackburn_entropy) *
+                     1.013e5);
             double rad_c = sqrt(0.0004);
             double beta;
 
@@ -307,9 +307,9 @@ void Simulation::StoichiometryDeviation()
             double A       = 1.0135e5 * B / (1.66e-6 * ka);  // (1/atm)
             double theta   = A * history_variable["Steam pressure"].getFinalValue() * 1.013e5 /
                            (1 + A * history_variable["Steam pressure"].getFinalValue() * 1.013e5);
-            double gamma = sqrt(
-                exp(-blackburn_enthalpy / history_variable["Temperature"].getFinalValue() + blackburn_entropy) *
-                1.013e5);
+            double gamma =
+                sqrt(exp(-blackburn_enthalpy / history_variable["Temperature"].getFinalValue() + blackburn_entropy) *
+                     1.013e5);
             double rad_c = sqrt(0.0004);
             double beta;
 
