@@ -39,4 +39,10 @@ const double molar_mass_Chromium   = 51.9961;        // g/mol
 const double calorie               = 4.186;          // J
 const double gas_constant          = 8.3143;         // J/(mol K)
 
+// Blackburn (1973) correlation for the equilibrium constant of UO2 oxidation,
+// ln(K) = 2 ln(x(x+2)/(1-x)) + 108 x^2 - blackburn_enthalpy/T + blackburn_entropy.
+// Used in Solver::NewtonBlackburn and StoichiometryDeviation.
+const double blackburn_enthalpy = 32700.0;  // (K)
+const double blackburn_entropy  = 9.92;     // (/)
+
 #endif

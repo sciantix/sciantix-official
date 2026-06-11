@@ -232,33 +232,45 @@ void InputReading(int                  Sciantix_options[],
         Sciantix_variables[150] = ReadOneParameter("Chromium content", input_initial_conditions, input_check);
     }
 
-    int n = 0;
-    while (input_history >> Time_input[n] >> Temperature_input[n] >> Fissionrate_input[n] >> Hydrostaticstress_input[n])
+    Time_input.clear();
+    Temperature_input.clear();
+    Fissionrate_input.clear();
+    Hydrostaticstress_input.clear();
+    Steampressure_input.clear();
+
+    double time_in(0.0), temperature_in(0.0), fissionrate_in(0.0), hydrostaticstress_in(0.0), steampressure_in(0.0);
+    while (input_history >> time_in >> temperature_in >> fissionrate_in >> hydrostaticstress_in)
     {
         if (Sciantix_options[20] > 0)
-            input_history >> Steampressure_input[n];
+            input_history >> steampressure_in;
 
-        input_check << Time_input[n] << "\t";
-        input_check << Temperature_input[n] << "\t";
-        input_check << Fissionrate_input[n] << "\t";
-        input_check << Hydrostaticstress_input[n] << "\t";
+        Time_input.push_back(time_in);
+        Temperature_input.push_back(temperature_in);
+        Fissionrate_input.push_back(fissionrate_in);
+        Hydrostaticstress_input.push_back(hydrostaticstress_in);
+
+        input_check << time_in << "\t";
+        input_check << temperature_in << "\t";
+        input_check << fissionrate_in << "\t";
+        input_check << hydrostaticstress_in << "\t";
 
         if (Sciantix_options[20] > 0)
-            input_check << Steampressure_input[n] << "\t";
+        {
+            Steampressure_input.push_back(steampressure_in);
+            input_check << steampressure_in << "\t";
+        }
 
         input_check << std::endl;
-
-        n++;
-        Input_history_points = n;
     }
 
-    Time_input.resize(Input_history_points);
-    Temperature_input.resize(Input_history_points);
-    Fissionrate_input.resize(Input_history_points);
-    Hydrostaticstress_input.resize(Input_history_points);
+    Input_history_points = static_cast<int>(Time_input.size());
 
-    if (Sciantix_options[20] > 0)
-        Steampressure_input.resize(Input_history_points);
+    if (Input_history_points == 0)
+        ErrorMessages::Fatal("InputReading.C", "input_history.txt is empty or its first row is malformed");
+
+    // Without the steam-pressure column the history is interpolated as identically zero
+    if (Sciantix_options[20] == 0)
+        Steampressure_input.assign(Input_history_points, 0.0);
 
     Time_end_h = Time_input[Input_history_points - 1];
     Time_end_s = Time_end_h * 3600.0;

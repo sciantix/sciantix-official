@@ -16,6 +16,11 @@
 
 #include "Simulation.h"
 
+// Uranium mass fraction in UO2, value as published in Barani et al. (2017)
+// (~238.03/270.03; GrainGrowth.C uses 0.8815 for the same ratio). Converts
+// burnup from MWd/kgUO2 to MWd/kgU.
+static const double uranium_mass_fraction = 0.8814;
+
 void Simulation::GrainBoundaryMicroCracking()
 {
     if (!int(input_variable["iGrainBoundaryMicroCracking"].getValue()))
@@ -52,7 +57,7 @@ void Simulation::GrainBoundaryMicroCracking()
 
             // microcracking parameter
             const double inflection =
-                1773.0 + 520.0 * exp(-sciantix_variable["Burnup"].getFinalValue() / (10.0 * 0.8814));
+                1773.0 + 520.0 * exp(-sciantix_variable["Burnup"].getFinalValue() / (10.0 * uranium_mass_fraction));
             const double exponent = 33.0;
             const double arg = (transient_type / span) * (history_variable["Temperature"].getFinalValue() - inflection);
             const double microcracking_parameter =
@@ -62,7 +67,7 @@ void Simulation::GrainBoundaryMicroCracking()
             parameter.push_back(dTemperature);
 
             // healing parameter
-            const double healing_parameter = 1.0 / 0.8814;  // 1 / (u * burnup)
+            const double healing_parameter = 1.0 / uranium_mass_fraction;  // 1 / (u * burnup)
             parameter.push_back(healing_parameter);
 
             reference = ": Barani et al. (2017), JNM";
@@ -81,7 +86,7 @@ void Simulation::GrainBoundaryMicroCracking()
             {
                 parameter.push_back(0.0);
                 parameter.push_back(0.0);
-                parameter.push_back(1.0 / 0.8814);
+                parameter.push_back(1.0 / uranium_mass_fraction);
                 break;
             };  // m
 
@@ -152,7 +157,7 @@ void Simulation::GrainBoundaryMicroCracking()
                                 sciantix_variable["Intergranular bubble radius"].getFinalValue());
 
             // healing parameter from Barani et al.(2017)
-            const double healing_parameter = 1.0 / 0.8814;  // 1 / (u * burnup)
+            const double healing_parameter = 1.0 / uranium_mass_fraction;  // 1 / (u * burnup)
             parameter.push_back(healing_parameter);
 
             reference = ": Cappellari et al., JNM, (2025, under review); healing from Barani et al. "

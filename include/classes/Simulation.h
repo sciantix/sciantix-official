@@ -17,6 +17,7 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
+#include "ErrorMessages.h"
 #include "Matrix.h"
 #include "Model.h"
 #include "SciantixArray.h"
@@ -58,15 +59,13 @@ class Simulation
 
     Solver solver;
 
-    static Simulation* instance;
-
     /**
      * @brief Default constructor for the Simulation class
      */
     Simulation()
     {
-        n_modes = 40;
-        modes_initial_conditions.resize(720);
+        n_modes = N_DIFFUSION_MODES;
+        modes_initial_conditions.resize(SCIANTIX_DIFFUSION_MODES_SIZE);
     }
 
   public:
@@ -384,24 +383,20 @@ class Simulation
         if (gas_name == "Xe")
             return &modes_initial_conditions[0];
         else if (gas_name == "Kr")
-            return &modes_initial_conditions[3 * 40];
+            return &modes_initial_conditions[3 * n_modes];
         else if (gas_name == "He")
-            return &modes_initial_conditions[6 * 40];
+            return &modes_initial_conditions[6 * n_modes];
         else if (gas_name == "Xe133")
-            return &modes_initial_conditions[9 * 40];
+            return &modes_initial_conditions[9 * n_modes];
 
         else if (gas_name == "Kr85m")
-            return &modes_initial_conditions[12 * 40];
+            return &modes_initial_conditions[12 * n_modes];
 
         else if (gas_name == "Xe in HBS")
-            return &modes_initial_conditions[15 * 40];
+            return &modes_initial_conditions[15 * n_modes];
 
         else
-        {
-            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes."
-                      << std::endl;
-            return nullptr;
-        }
+            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + gas_name + "\" in getDiffusionModes");
     }
 
     /**
@@ -413,28 +408,24 @@ class Simulation
     double* getDiffusionModesSolution(std::string gas_name)
     {
         if (gas_name == "Xe")
-            return &modes_initial_conditions[1 * 40];
+            return &modes_initial_conditions[1 * n_modes];
 
         else if (gas_name == "Kr")
-            return &modes_initial_conditions[4 * 40];
+            return &modes_initial_conditions[4 * n_modes];
 
         else if (gas_name == "He")
-            return &modes_initial_conditions[7 * 40];
+            return &modes_initial_conditions[7 * n_modes];
 
         else if (gas_name == "Xe133")
-            return &modes_initial_conditions[10 * 40];
+            return &modes_initial_conditions[10 * n_modes];
 
         else if (gas_name == "Kr85m")
-            return &modes_initial_conditions[13 * 40];
+            return &modes_initial_conditions[13 * n_modes];
 
         else if (gas_name == "Xe in HBS")
-            return &modes_initial_conditions[16 * 40];
+            return &modes_initial_conditions[16 * n_modes];
         else
-        {
-            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesSolution."
-                      << std::endl;
-            return nullptr;
-        }
+            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + gas_name + "\" in getDiffusionModesSolution");
     }
 
     /**
@@ -446,26 +437,22 @@ class Simulation
     double* getDiffusionModesBubbles(std::string gas_name)
     {
         if (gas_name == "Xe")
-            return &modes_initial_conditions[2 * 40];
+            return &modes_initial_conditions[2 * n_modes];
 
         else if (gas_name == "Kr")
-            return &modes_initial_conditions[5 * 40];
+            return &modes_initial_conditions[5 * n_modes];
 
         else if (gas_name == "He")
-            return &modes_initial_conditions[8 * 40];
+            return &modes_initial_conditions[8 * n_modes];
 
         else if (gas_name == "Xe133")
-            return &modes_initial_conditions[11 * 40];
+            return &modes_initial_conditions[11 * n_modes];
 
         else if (gas_name == "Kr85m")
-            return &modes_initial_conditions[14 * 40];
+            return &modes_initial_conditions[14 * n_modes];
 
         else
-        {
-            std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesBubbles."
-                      << std::endl;
-            return nullptr;
-        }
+            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + gas_name + "\" in getDiffusionModesBubbles");
     }
 };
 

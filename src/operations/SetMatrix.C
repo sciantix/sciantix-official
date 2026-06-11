@@ -43,7 +43,7 @@ Matrix UO2(SciantixArray<Matrix>&           matrices,
            SciantixArray<SciantixVariable>& sciantix_variable,
            SciantixArray<SciantixVariable>& history_variable,
            SciantixArray<InputVariable>&    input_variable,
-           SciantixArray<InputVariable>&    scaling_factor)
+           SciantixArray<InputVariable>& /* scaling_factor */)
 {
     Matrix matrix_;
 
@@ -98,7 +98,7 @@ Matrix UO2(SciantixArray<Matrix>&           matrices,
 Matrix UO2HBS(SciantixArray<Matrix>&           matrices,
               SciantixArray<SciantixVariable>& sciantix_variable,
               SciantixArray<SciantixVariable>& history_variable,
-              SciantixArray<InputVariable>&    input_variable)
+              SciantixArray<InputVariable>& /* input_variable */)
 {
     Matrix matrix_;
 

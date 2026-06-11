@@ -18,15 +18,10 @@
 #include <chrono>
 #include <iostream>
 
-Simulation* Simulation::instance = nullptr;
-
 Simulation* Simulation::getInstance()
 {
-    if (instance == nullptr)
-    {
-        instance = new Simulation;
-    }
-    return instance;
+    static Simulation instance;
+    return &instance;
 }
 
 void Simulation::initialize(int    Sciantix_options[],

@@ -35,10 +35,13 @@ void Simulation::GasRelease()
     }
 
     // Intergranular gaseous swelling
-    sciantix_variable["Intergranular gas swelling"].setFinalValue(
-        3 / sciantix_variable["Grain radius"].getFinalValue() *
-        sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
-        sciantix_variable["Intergranular bubble volume"].getFinalValue());
+    if (sciantix_variable["Grain radius"].getFinalValue() > 0.0)
+        sciantix_variable["Intergranular gas swelling"].setFinalValue(
+            3 / sciantix_variable["Grain radius"].getFinalValue() *
+            sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
+            sciantix_variable["Intergranular bubble volume"].getFinalValue());
+    else
+        sciantix_variable["Intergranular gas swelling"].setFinalValue(0.0);
 
     // Fission gas release
     if (sciantix_variable["Xe produced"].getFinalValue() + sciantix_variable["Kr produced"].getFinalValue() > 0.0)
