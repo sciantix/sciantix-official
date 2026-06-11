@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -247,7 +247,9 @@ void Simulation::StoichiometryDeviation()
             double A       = 1.0135e5 * B / (1.66e-6 * ka);  // (1/atm)
             double theta   = A * history_variable["Steam pressure"].getFinalValue() * 1.013e5 /
                            (1 + A * history_variable["Steam pressure"].getFinalValue() * 1.013e5);
-            double gamma = sqrt(exp(-32700.0 / history_variable["Temperature"].getFinalValue() + 9.92) * 1.013e5);
+            double gamma =
+                sqrt(exp(-blackburn_enthalpy / history_variable["Temperature"].getFinalValue() + blackburn_entropy) *
+                     1.013e5);
             double rad_c = sqrt(0.0004);
             double beta;
 
@@ -305,7 +307,9 @@ void Simulation::StoichiometryDeviation()
             double A       = 1.0135e5 * B / (1.66e-6 * ka);  // (1/atm)
             double theta   = A * history_variable["Steam pressure"].getFinalValue() * 1.013e5 /
                            (1 + A * history_variable["Steam pressure"].getFinalValue() * 1.013e5);
-            double gamma = sqrt(exp(-32700.0 / history_variable["Temperature"].getFinalValue() + 9.92) * 1.013e5);
+            double gamma =
+                sqrt(exp(-blackburn_enthalpy / history_variable["Temperature"].getFinalValue() + blackburn_entropy) *
+                     1.013e5);
             double rad_c = sqrt(0.0004);
             double beta;
 
@@ -380,6 +384,7 @@ double BlackburnThermochemicalModel(double                           stoichiomet
 {
     double ln_p =
         2.0 * log(stoichiometry_deviation * (2.0 + stoichiometry_deviation) / (1.0 - stoichiometry_deviation)) +
-        108.0 * pow(sciantix_variable["Stoichiometry deviation"].getFinalValue(), 2.0) - 32700.0 / temperature + 9.92;
+        108.0 * pow(sciantix_variable["Stoichiometry deviation"].getFinalValue(), 2.0) -
+        blackburn_enthalpy / temperature + blackburn_entropy;
     return exp(ln_p);
 }

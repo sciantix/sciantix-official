@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@ void logExecutionTime(double timer, int time_step_number, std::ofstream& Executi
  */
 int main(int argc, char** argv)
 {
-    clock_t timer, timer_time_step;
+    clock_t timer;
 
     if (argc < 2)
     {

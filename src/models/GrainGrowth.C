@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -55,9 +55,14 @@ void Simulation::GrainGrowth()
         {
             reference += " : Ainscough et al., JNM, 49 (1973) 117-128.";
 
+            // Uranium mass fraction in UO2 (~238.03/270.03), converting burnup from
+            // MWd/kgUO2 to MWd/kgU. GrainBoundaryMicroCracking.C uses 0.8814 for the
+            // same ratio (value as published in Barani et al. (2017)).
+            const double uranium_mass_fraction = 0.8815;
+
             double limiting_grain_radius =
                 2.23e-03 * (1.56 / 2.0) * exp(-7620.0 / history_variable["Temperature"].getFinalValue());
-            double burnup_factor = 1.0 + 2.0 * sciantix_variable["Burnup"].getFinalValue() / 0.8815;
+            double burnup_factor = 1.0 + 2.0 * sciantix_variable["Burnup"].getFinalValue() / uranium_mass_fraction;
 
             if (sciantix_variable["Grain radius"].getInitialValue() < limiting_grain_radius / burnup_factor)
             {

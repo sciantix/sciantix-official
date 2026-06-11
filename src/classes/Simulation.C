@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -18,15 +18,10 @@
 #include <chrono>
 #include <iostream>
 
-Simulation* Simulation::instance = nullptr;
-
 Simulation* Simulation::getInstance()
 {
-    if (instance == nullptr)
-    {
-        instance = new Simulation;
-    }
-    return instance;
+    static Simulation instance;
+    return &instance;
 }
 
 void Simulation::initialize(int    Sciantix_options[],
