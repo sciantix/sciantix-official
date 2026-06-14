@@ -9,7 +9,6 @@ Valence from J. Spino, P. Peerani / Journal of Nuclear Materials 375 (2008) 8-25
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Iterable
 
 
 @dataclass(frozen=True)
@@ -20,32 +19,29 @@ class FissionYield:
     valence: float
     note: str = ""
 
-    @property
-    def atoms_per_10_fissions(self) -> float:
-        return self.yield_percent_fp_per_fission / 10.0
-
 
 SOLID_SOLUTION = "FPs in solid solution"
 OXIDE_PRECIPITATES = "FPs forming oxide precipitates"
 METALLIC_PRECIPITATES = "FPs forming metallic precipitates"
 GASES_AND_VOLATILE_FPS = "Gases and volatile FPs"
+ACTINIDES = "Actinides"
 
 PHENIX_FISSION_YIELDS: tuple[FissionYield, ...] = (
-    FissionYield(SOLID_SOLUTION, "Y", 1.9, 4),
-    FissionYield(SOLID_SOLUTION, "La", 5.7, 4),
-    FissionYield(SOLID_SOLUTION, "Ce", 10.4, 4),
-    FissionYield(SOLID_SOLUTION, "Pr", 5.0, 4),
-    FissionYield(SOLID_SOLUTION, "Nd", 16.9, 4),
-    FissionYield(SOLID_SOLUTION, "Pm", 0.0, 4),
-    FissionYield(SOLID_SOLUTION, "Sm", 5.0, 4),
-    FissionYield(SOLID_SOLUTION, "Eu", 0.4, 4),
-    FissionYield(SOLID_SOLUTION, "Gd", 0.7, 4),
+    FissionYield(SOLID_SOLUTION, "Y", 1.9, 3, "Y2O3"),
+    FissionYield(SOLID_SOLUTION, "La", 5.7, 3, "La2O3"),
+    FissionYield(SOLID_SOLUTION, "Ce", 10.4, 3, "Ce2O3/CeO2"),
+    FissionYield(SOLID_SOLUTION, "Pr", 5.0, 3, "Pr2O3"),
+    FissionYield(SOLID_SOLUTION, "Nd", 16.9, 3, "Nd2O3"),
+    FissionYield(SOLID_SOLUTION, "Pm", 0.0, 3, "Negligible yield"),
+    FissionYield(SOLID_SOLUTION, "Sm", 5.0, 3, "Assumed"),
+    FissionYield(SOLID_SOLUTION, "Eu", 0.4, 3, "Assumed"),
+    FissionYield(SOLID_SOLUTION, "Gd", 0.7, 3, "Assumed"),
     FissionYield(OXIDE_PRECIPITATES, "Rb", 1.1, 1),
     FissionYield(OXIDE_PRECIPITATES, "Cs", 17.0, 1),
-    FissionYield(OXIDE_PRECIPITATES, "Sr", 2.7, 4),
+    FissionYield(OXIDE_PRECIPITATES, "Sr", 2.7, 2, "SrO"),
     FissionYield(OXIDE_PRECIPITATES, "Ba", 9.9, 2),
     FissionYield(OXIDE_PRECIPITATES, "Zr", 20.3, 4),
-    FissionYield(OXIDE_PRECIPITATES, "Nb", 0.0, 4),
+    FissionYield(OXIDE_PRECIPITATES, "Nb", 0.0, 4), # contained in Zr yield
     FissionYield(METALLIC_PRECIPITATES, "Mo", 21.9, 4),
     FissionYield(METALLIC_PRECIPITATES, "Tc", 5.3, 4),
     FissionYield(METALLIC_PRECIPITATES, "Ru", 19.8, 0),
@@ -63,11 +59,10 @@ PHENIX_FISSION_YIELDS: tuple[FissionYield, ...] = (
     FissionYield(GASES_AND_VOLATILE_FPS, "Xe", 23.4, 0),
     FissionYield(GASES_AND_VOLATILE_FPS, "Br", 0.1, 0),
     FissionYield(GASES_AND_VOLATILE_FPS, "I", 1.6, 0),
+    FissionYield(ACTINIDES, "Am+Cm", 5.5, 4, "AmO2, CmO2"),
+    FissionYield(ACTINIDES, "Np", 0.4, 4, "NpO2"),
 )
 
-PHENIX_FISSION_YIELD_SOURCE = (
-    "Elemental yields of fission products in a Phenix fuel pin at 10 at% "
-)
 
 def fission_yield_for_element(element: str) -> FissionYield:
     normalized = element.strip().casefold()
@@ -75,7 +70,3 @@ def fission_yield_for_element(element: str) -> FissionYield:
         if entry.element.casefold() == normalized:
             return entry
     raise KeyError(f"unknown fission-product element: {element}")
-
-
-def sum_yields(entries: Iterable[FissionYield]) -> float:
-    return sum(entry.yield_percent_fp_per_fission for entry in entries)
