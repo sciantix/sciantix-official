@@ -1,19 +1,53 @@
 # oxired
 
-Small Python library for radial oxygen redistribution in a cylindrical oxide fuel pellet.
+Small Python helper package for generating radial O/M histories for SCIANTIX.
 
 ## Scope
 
-This package implements the cylindrical, dilute-solution form of the OXIRED model described by Lassmann.
+The package keeps only what is needed by
+`examples/example_usage_model.py`:
 
-Implemented pieces:
-- steady-state treatment based on Sari and Schumacher
-- transient approximation from Lassmann toward the steady state
-- hypostoichiometric mixed oxide `(U,Pu)O_{2-x}` and hyperstoichiometric `UO_{2+x}`
-- simple burnup-dependent average O/M shift
+- a cylindrical radial mesh (`CylinderGeometry`)
+- a hypostoichiometric steady-state OXIRED redistribution solver (`OxiRedCylinder`)
+- a polynomial radial temperature profile (`PolynomialProfile`)
+- PHENIX fission-yield lookup
+- fixed oxygen sink calculation from the fission-yield table and valences
+
+
+## Main Example
+
+Run from this directory:
+
+```bash
+python3 examples/example_usage_model.py
+```
+
+The script writes five radial SCIANTIX input folders to:
+
+```text
+examples/radial_input_histories_ioxire4/
+```
+
+Each point folder contains an `input_history.txt` with:
+
+```text
+time[h]  temperature[K]  fission_rate[fiss/m3/s]  hydrostatic_stress[MPa]  pressure[Pa]  O/M
+```
+
+The same folder also contains plots for temperature, radial O/M profiles,
+average O/M, oxygen sinks, matrix uptake, free surplus oxygen, and burnup.
+
+The fixed oxygen sink is computed as `yield_percent / 100 * valence / 2` for the fixed-sink elements. Ba and Mo are excluded from that sum and handled separately
+through their oxide fractions.
 
 ## Install
 
 ```bash
 pip install -e .
+```
+
+## Test
+
+```bash
+pytest
 ```
