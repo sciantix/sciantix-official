@@ -57,6 +57,7 @@ class System : virtual public Material
     FissionProducts gas_fp;
     FissionProducts volatile_fp;
     FissionProducts metallic_fp;
+    FissionProducts ceramic_fp;
     Matrix matrix;
 
   public:
@@ -98,10 +99,12 @@ class System : virtual public Material
     void setGas(FissionProducts g_fp);
     void setVolatileFP(FissionProducts v_fp);
     void setMetallicFP(FissionProducts m_fp);
+    void setCeramicFP(FissionProducts c_fp);
 
     bool isGasFP();
     bool isVolatileFP();
     bool isMetallicFP();
+    bool isCeramicFP();
     bool isGasOrVolatileFP();
 
     /**

@@ -367,6 +367,7 @@ namespace OCASIAdapter
                 {"Cs", 132.90545196},
                 {"I", 126.90447},
                 {"Mo", 95.95},
+                {"Ba", 137.327},
                 {"O", 15.999},
                 {"Te", 127.60},
                 {"U", 238.02891},
@@ -1196,7 +1197,7 @@ std::vector<InputComponent> buildInputComponents(
 
             if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
             {
-                const double atoms_available =
+                double atoms_available =
                     sciantix_variable[element_name + " produced"].getFinalValue() -
                     sciantix_variable[element_name + " decayed"].getFinalValue() -
                     sciantix_variable[element_name + " in grain"].getFinalValue() -
@@ -1204,9 +1205,9 @@ std::vector<InputComponent> buildInputComponents(
 
                 component.content = std::max(0.0, atoms_available / avogadro_number);
             }
-            else if (system.getRestructuredMatrix() == 0 && system.isMetallicFP())
+            else if (system.getRestructuredMatrix() == 0 && (system.isMetallicFP() || system.isCeramicFP()))
             {
-                const double atoms_available =
+                double atoms_available =
                     sciantix_variable[element_name + " produced"].getFinalValue();
 
                 component.content = std::max(0.0, atoms_available / avogadro_number);
@@ -1765,7 +1766,7 @@ void updateGrainBoundaryFromOutput(const std::map<std::string, OCPhaseData>& sol
             sciantix_variable[element + " at grain boundary"].setFinalValue(updated_atoms);
             sciantix_variable[element + " reacted"].setFinalValue(available - updated_atoms);
         }
-        else if (system.getRestructuredMatrix() == 0 && system.isMetallicFP())
+        else if (system.getRestructuredMatrix() == 0 && (system.isMetallicFP() || system.isCeramicFP()))
         {
             const double available =
                 sciantix_variable[element + " produced"].getFinalValue();

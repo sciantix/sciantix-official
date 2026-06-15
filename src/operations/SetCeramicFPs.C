@@ -8,19 +8,29 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Version: under development                                                       //
+//  Year: 2026                                                                      //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari                                   //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "SetFissionProducts.h"
-#include "Simulation.h"
 
-void Simulation::setFissionProducts()
+static void barium(SciantixArray<FissionProducts>& ceramic_fp);
+
+void SetCeramicFPs(SciantixArray<FissionProducts>& ceramic_fp)
 {
-    SetGasFPs(gas_fp);
-    SetVolatileFPs(volatile_fp);
-    SetMetallicFPs(metallic_fp);
-    SetCeramicFPs(ceramic_fp);
+    barium(ceramic_fp);
+}
+
+static void barium(SciantixArray<FissionProducts>& ceramic_fp)
+{
+    FissionProducts ceramic_;
+    ceramic_.setName("Ba");
+    ceramic_.setAtomicNumber(56);
+    ceramic_.setMassNumber(138);
+    ceramic_.setDecayRate(0.0);
+    ceramic_.setChemicallyActive(1.00);
+    ceramic_.setPrecursorFactor(1.00);
+    ceramic_fp.push(ceramic_);
 }

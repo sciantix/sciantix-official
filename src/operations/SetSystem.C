@@ -38,6 +38,7 @@ void Simulation::setSystem()
             sciantix_system.push(I_in_UO2(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Te_in_UO2(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Mo_in_UO2(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Ba_in_UO2(matrices, ceramic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Tc_in_UO2(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Rh_in_UO2(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Ru_in_UO2(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
@@ -66,6 +67,7 @@ void Simulation::setSystem()
             sciantix_system.push(I_in_MOX(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Te_in_MOX(matrices, volatile_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Mo_in_MOX(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+            sciantix_system.push(Ba_in_MOX(matrices, ceramic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Tc_in_MOX(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Rh_in_MOX(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(Ru_in_MOX(matrices, metallic_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
@@ -550,6 +552,21 @@ System Mo_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>
     return system_;
 }
 
+System Ba_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>& ceramic_fp, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Ba in UO2");
+    system_.setCeramicFP(ceramic_fp["Ba"]);
+    system_.setMatrix(matrices["UO2"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0.0);
+    system_.setRadiusInLattice(0.215e-9);
+    system_.setVolumeInLattice(matrices["UO2"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
+    return system_;
+}
+
 System Ru_in_UO2(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>& metallic_fp, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
 {
     System system_;
@@ -623,6 +640,21 @@ System Mo_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);
     system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors); 
+    return system_;
+}
+
+System Ba_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>& ceramic_fp, SciantixArray<InputVariable> &input_variable, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors)
+{
+    System system_;
+    system_.setName("Ba in MOX");
+    system_.setCeramicFP(ceramic_fp["Ba"]);
+    system_.setMatrix(matrices["MOX"]);
+    system_.setRestructuredMatrix(0);
+    system_.setYield(0.099);
+    system_.setRadiusInLattice(0.215e-9);
+    system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
+    system_.setHenryConstant(0.0);
+    system_.setProductionRate(1, history_variable, input_variable, sciantix_variable, scaling_factors);
     return system_;
 }
 

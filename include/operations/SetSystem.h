@@ -100,6 +100,13 @@ System Mo_in_UO2(SciantixArray<Matrix>&             matrices,
                  SciantixArray<SciantixVariable>&   history_variable, 
                  SciantixArray<InputVariable>&      scaling_factors);
 
+System Ba_in_UO2(SciantixArray<Matrix>&             matrices,
+                 SciantixArray<FissionProducts>&    ceramic_fp,
+                 SciantixArray<InputVariable>&      input_variable,
+                 SciantixArray<SciantixVariable>&   sciantix_variable,
+                 SciantixArray<SciantixVariable>&   history_variable,
+                 SciantixArray<InputVariable>&      scaling_factors);
+
 System Tc_in_UO2(SciantixArray<Matrix>&             matrices,
                  SciantixArray<FissionProducts>&    metallic_fp, 
                  SciantixArray<InputVariable>&      input_variable,
@@ -186,6 +193,13 @@ System Te_in_MOX(SciantixArray<Matrix>&             matrices,
 
 System Mo_in_MOX(SciantixArray<Matrix>&             matrices,
                  SciantixArray<FissionProducts>&    metallic_fp, 
+                 SciantixArray<InputVariable>&      input_variable,
+                 SciantixArray<SciantixVariable>&   sciantix_variable, 
+                 SciantixArray<SciantixVariable>&   history_variable, 
+                 SciantixArray<InputVariable>&      scaling_factors);
+
+System Ba_in_MOX(SciantixArray<Matrix>&             matrices,
+                 SciantixArray<FissionProducts>&    ceramic_fp,
                  SciantixArray<InputVariable>&      input_variable,
                  SciantixArray<SciantixVariable>&   sciantix_variable, 
                  SciantixArray<SciantixVariable>&   history_variable, 

@@ -88,6 +88,10 @@ void Initialization(double              Sciantix_history[],
     Sciantix_variables[101] = Sciantix_variables[102] = Sciantix_variables[103] = Sciantix_variables[104] = Sciantix_variables[105] = Sciantix_variables[106] = Sciantix_variables[107] = Sciantix_variables[108] = Sciantix_variables[109] = Sciantix_variables[110] =  0.0;
 	Sciantix_variables[111] = Sciantix_variables[112] = Sciantix_variables[113] = Sciantix_variables[114] = Sciantix_variables[115] = Sciantix_variables[116] = Sciantix_variables[117] = Sciantix_variables[118] = Sciantix_variables[119] = Sciantix_variables[120] =  0.0;
 	Sciantix_variables[121] = Sciantix_variables[122] = Sciantix_variables[123] = Sciantix_variables[124] = Sciantix_variables[125] = Sciantix_variables[126] = Sciantix_variables[127] = Sciantix_variables[128] = Sciantix_variables[129] = Sciantix_variables[130] =  0.0;
+    Sciantix_variables[131] = Sciantix_variables[132] = Sciantix_variables[133] = Sciantix_variables[134] = Sciantix_variables[135] = Sciantix_variables[136] = Sciantix_variables[137] = Sciantix_variables[138] = Sciantix_variables[139] = Sciantix_variables[140] = 0.0;
+    Sciantix_variables[141] = Sciantix_variables[142] = Sciantix_variables[143] = Sciantix_variables[144] = Sciantix_variables[145] = Sciantix_variables[146] = Sciantix_variables[147] = 0.0;
+    Sciantix_variables[180] = Sciantix_variables[181] = Sciantix_variables[182] = Sciantix_variables[183] = Sciantix_variables[184] = Sciantix_variables[185] =  0.0;
+	Sciantix_variables[190] = Sciantix_variables[191] = 0.0;
     // 
     
     // Fabrication porosity = Porosity

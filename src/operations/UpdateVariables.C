@@ -111,6 +111,9 @@ std::map<int, std::string> update_sciantix_variable = {
     {107, "Cs reacted"}, //added
     {108, "Intragranular Cs atoms per bubble"},  // in sciantix
     {109, "Intergranular Cs atoms per bubble"},  // in sciantix
+#if defined(COUPLING_TU)
+    {110, "Cs in the gap"},
+#endif
     {111, "I produced"}, // not added
     {112, "I in grain"}, // not added
     {113, "I in intragranular solution"}, // not added
@@ -129,26 +132,26 @@ std::map<int, std::string> update_sciantix_variable = {
     {127, "Te reacted"}, // not added
     {128, "Intragranular Te atoms per bubble"}, // not added
     {129, "Intergranular Te atoms per bubble"}, // not added
+    // Non-volatile FPs
     {130, "Mo produced"}, // added
     {131, "Mo in solution"}, // not added, calculated
     {132, "Mo reacted"}, // added
-    //{133, "Mo released"},
-    {134, "Tc produced"}, // added
-    {135, "Tc in solution"}, // not added, calculated
-    {136, "Tc reacted"}, // added
-    //{137, "Tc released"},
-    {138, "Ru produced"}, // added
-    {139, "Ru in solution"}, // not added, calculated
-    {140, "Ru reacted"}, // added
-    //{141, "Ru released"},
+    {133, "Ba produced"}, // to be added
+    {134, "Ba in solution"}, // not added, calculated
+    {135, "Ba reacted"}, // to be added
+    {136, "Tc produced"}, // added
+    {137, "Tc in solution"}, // not added, calculated
+    {138, "Tc reacted"}, // added
+    {139, "Ru produced"}, // added
+    {140, "Ru in solution"}, // not added, calculated
+    {141, "Ru reacted"}, // added
     {142, "Rh produced"}, // added
     {143, "Rh in solution"}, // not added, calculated
     {144, "Rh reacted"}, // added
-    //{145, "Rh released"},
-    {146, "Pd produced"}, // added
-    {147, "Pd in solution"}, // not added, calculated
-    {148, "Pd reacted"}, // added
-    //{149, "Pd released"},
+    {145, "Pd produced"}, // added
+    {146, "Pd in solution"}, // not added, calculated
+    {147, "Pd reacted"}, // added
+    // Chromium
     {150, "Chromium content"}, // not present
     {151, "Lattice parameter"}, // not present
     {152, "Theoretical density"}, // not present
@@ -159,29 +162,29 @@ std::map<int, std::string> update_sciantix_variable = {
     {157, "Chromia solution"}, // not present
     {158, "Chromia precipitate"}, // not present
     {160, "Diffusion coefficient"}, // not present
-    // CODE DEVELOPMENT 
+    // Matrix
     {161, "U content"}, // added
     {162, "O content"}, // added
     {163, "Pu content"}, // added
     {164, "Fuel oxygen potential"}, // added
     {165, "Phase std density"}, // added
-    {166, "O available content"}, // not yet added
+    {166, "O available content"}, // added
     {171, "Pu238"}, // added
     {172, "Pu239"}, // added
     {173, "Pu240"}, // added
     {174, "Pu241"}, // added
     {175, "Pu242"}, // added
     {177, "q"}, // added
-    {180, "JOG"}, // not added
-    {181, "JOG from CS2MOO4_S1"}, // not added
-    {182, "JOG from CS2MOO4_S2"}, // not added
-    {183, "JOG from HCP_A3"}, // not added
-    {184, "JOG from BCC_A2"}, // not added
-    {185, "JOG from MOO2"}, // not added
-    {186, "JOG from FCC_A1"}, // not added
-    {187, "JOG from liquid"}, // not added
-    {188, "JOG from CS2MO3O10"}, // not added
-    {189, "JOG from CS2MO4O13"}, // not added
+    // 
+    {180, "Mo/Ru in HCP_A3"},
+    {181, "Mo in oxide fraction"},
+    {182, "Mo oxide valence"},
+    {183, "Ba/Mo in oxide compounds"},
+    {184, "Ba in oxide fraction"},
+    {185, "Ba oxide valence"},
+    //
+    {190, "JOG (Cs2MoO4)"},
+    {191, "JOG (BaMoO4)"},
 };
  
 // CODE DEVELOPMENT: DIFFUSION MODES FROM 17 TO 26

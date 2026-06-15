@@ -37,7 +37,7 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
                     sciantix_variable[system.getFissionProductName() + " reacted"].getFinalValue());
                 sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(0.0);
             }
-            if (system.getRestructuredMatrix() == 0 && system.isMetallicFP())
+            if (system.getRestructuredMatrix() == 0 && (system.isMetallicFP() || system.isCeramicFP()))
             {
                 sciantix_variable[system.getFissionProductName() + " in solution"].setFinalValue(
                     sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue());

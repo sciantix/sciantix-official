@@ -55,6 +55,7 @@ class Simulation
     SciantixArray<FissionProducts>    gas_fp;
     SciantixArray<FissionProducts>    volatile_fp;
     SciantixArray<FissionProducts>    metallic_fp;
+    SciantixArray<FissionProducts>    ceramic_fp;
 
     SciantixArray<InputVariable> input_variable;
     SciantixArray<InputVariable> scaling_factors;
