@@ -23,5 +23,6 @@
 void SetGasFPs(SciantixArray<FissionProducts>& gas_fp);
 void SetVolatileFPs(SciantixArray<FissionProducts>& volatile_fp);
 void SetMetallicFPs(SciantixArray<FissionProducts>& metallic_fp);
+void SetCeramicFPs(SciantixArray<FissionProducts>& ceramic_fp);
 
 #endif  // SET_FISSION_PRODUCTS_H
