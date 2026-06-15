@@ -25,30 +25,30 @@ iDensification = 0
 iReleaseMode = 0
 iThermochimica = 2
 Grain radius[0] = 5e-06
-Initial composition Xe0 = 7.75e+26
-Initial composition Xe1 = 7.75e+26
-Initial composition Xe2 = 7.75e+26
+Initial composition Xe0 = 0
+Initial composition Xe1 = 0
+Initial composition Xe2 = 0
 Initial composition Xe3 = 0
 Initial composition Xe4 = 0
 Initial composition Xe5 = 0
-Initial composition Kr0 = 4.94e+25
-Initial composition Kr1 = 4.94e+25
-Initial composition Kr2 = 4.94e+25
+Initial composition Kr0 = 0
+Initial composition Kr1 = 0
+Initial composition Kr2 = 0
 Initial composition Kr3 = 0
 Initial composition Kr4 = 0
 Initial composition Kr5 = 0
-Initial composition He0 = 5.73e+25
-Initial composition He1 = 5.73e+25
-Initial composition He2 = 5.73e+25
+Initial composition He0 = 0
+Initial composition He1 = 0
+Initial composition He2 = 0
 Initial composition He3 = 0
 Initial composition He4 = 0
 Initial composition He5 = 0
 Initial intragranular bubbles0 = 0
 Initial intragranular bubbles1 = 0
-Burn_up[0] = 116
-Effective_burn_up[0] = 116
+Burn_up[0] = 0
+Effective_burn_up[0] = 0
 Irradiation_time[0] = 0
-Fuel_density[0] = 10420
+Fuel_density[0] = 10641
 Initial composition U0 = 0.036
 Initial composition U1 = 0.26
 Initial composition U2 = 0.007
@@ -76,33 +76,8 @@ Initial composition Pu2 = 13.25
 Initial composition Pu3 = 0.57
 Initial composition Pu4 = 0.27
 q = 0.244
-0	800	1e-05	0	1	
-600	900	1e-05	0	1	
-1200	1000	1e-05	0	1	
-1800	1100	1e-05	0	1	
-2400	1200	1e-05	0	1	
-3000	1300	1e-05	0	1	
-3600	1400	1e-05	0	1	
-4200	1500	1e-05	0	1	
-4800	1600	1e-05	0	1	
-5400	1700	1e-05	0	1	
-6000	1800	1e-05	0	1	
-6600	1900	1e-05	0	1	
-7200	2000	1e-05	0	1	
-7800	2100	1e-05	0	1	
-8400	2200	1e-05	0	1	
-9000	2300	1e-05	0	1	
-9600	2400	1e-05	0	1	
-10200	2500	1e-05	0	1	
-10800	2600	1e-05	0	1	
-11140	2650	1e-05	0	1	
-sf_resolution_rate = 1
-sf_trapping_rate = 1
-sf_nucleation_rate = 1
-sf_diffusivity = 1
-sf_diffusivity2 = 1
-sf_temperature = 1
-sf_fission_rate = 1
-sf_cent_parameter = 1
-sf_helium_production_rate = 1
-sf_dummy = 1
+0	1000	1e+19	-1	1e+06	
+10000	1000	1e+19	-1	1e+06	
+10000	1000	0	-1	1e+06	
+10010	2500	0	-1	1e+06	
+10015	2500	0	-1	1e+06	

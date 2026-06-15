@@ -1,20 +1,20 @@
 5.0e-06
 #	initial grain radius (m)
-7.75e26	7.75e26	7.75e26	0.0	0.0	0.0
+0.0	0.0	0.0	0.0	0.0	0.0
 #	initial Xe (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
-4.94e25	4.94e25	4.94e25	0.0	0.0	0.0
+0.0	0.0	0.0	0.0	0.0	0.0
 #	initial Kr (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
-5.73e25	5.73e25	5.73e25	0.0	0.0	0.0
+0.0	0.0	0.0	0.0	0.0	0.0
 #	initial He (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
 0.0 0.0
 # initial intragranular bubble concentration (at/m3), radius (m)
-116.0
+0.0
 #	initial fuel burn-up (MWd/kgUO2)
-116.0
+0.0
 #	initial fuel effective burn-up (MWd/kgUO2)
 0.0
 #	initial irradiation time (h)
-10420.0
+10641.0
 #	initial fuel density (kg/m3)
 0.036	0.26 0.007 0.0 99.73
 #	initial U234 U235 U236 U237 U238 (% of heavy atoms) content

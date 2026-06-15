@@ -287,7 +287,7 @@ if temp_vap_plot in results_db:
 df = pd.read_csv("vapor_results.csv")
 
 # vs T
-df_t = df[ (df['OM'] == 1.98) & (df['T'] != 2000) ]
+df_t = df[ (df['OM'] == 1.98) ]
 
 plt.figure(figsize=(10, 6))
 
@@ -371,7 +371,7 @@ for T in T_smooth:
 
 
 df = pd.read_csv("vapor_results.csv")
-df_t_val = df[(df['OM'] == val_om_fix) & (df['T'] != 2000)]
+df_t_val = df[(df['OM'] == val_om_fix)]
 
 
 plt.figure(figsize=(10, 7))
