@@ -356,7 +356,8 @@ def main() -> None:
     r_outer = 2.7e-3
     burnup_final = 13.28
     max_time_hours = 20560.0
-    fission_rate = 4.5e19
+    heavy_metal_atoms_per_m3 = 2.35376139e28
+    fission_rate = (burnup_final / 100.0) * heavy_metal_atoms_per_m3 / (max_time_hours * 3600.0)
 
     # Requested SCIANTIX radial histories.
     n_radial_points = 5
@@ -375,7 +376,7 @@ def main() -> None:
     # fixed burnup law.  Valence +6 is consistent with Cs2MoO4 formation.
     # def mo_oxide_fraction(burnup_at_percent: float) -> float:
     #     return min(1.0, 0.0 * burnup_at_percent)
-    mo_oxide_fraction = 0.0
+    mo_oxide_fraction = 0.6
     mo_valence = 6.0
 
     # Radial burnup, 1.0 means all radial points see the same local burnup.
