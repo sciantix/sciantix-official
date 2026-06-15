@@ -27,6 +27,7 @@ EXP_DATA_DIR = TEST_DIR / "exp_data"
 PELLET_RADIUS_M = 2.7e-3
 AVOGADRO_NUMBER = 6.02214076e23
 BURNUP_LABEL = "Burnup (MWd/kgUO2)"
+BURNUP_UNIT = "MWd/kgUO2"
 TIME_LABEL = "Time (h)"
 FIMA_LABEL = "FIMA (%)"
 
@@ -46,16 +47,6 @@ CASE_TEMPORARY_FILES = SHARED_INPUT_FILES + (
     "OCoutput_grain_boundary.DAT",
 )
 MAX_STACKPLOT_LEGEND_ITEMS = 50
-JOG_PHASES = [
-    ("CS2MOO4_S2", "JOG from CS2MOO4_S2 (/)", "CS2MOO4_S2 (condensed, at grain boundary) (g/m3)"),
-    ("CS2MOO4_S1", "JOG from CS2MOO4_S1 (/)", "CS2MOO4_S1 (condensed, at grain boundary) (g/m3)"),
-    ("MOO2", "JOG from MOO2 (/)", "MOO2 (condensed, at grain boundary) (g/m3)"),
-    ("CS2MO3O10", "JOG from CS2MO3O10 (/)", "CS2MO3O10 (condensed, at grain boundary) (g/m3)"),
-    ("CS2MO4O13", "JOG from CS2MO4O13 (/)", "CS2MO4O13 (condensed, at grain boundary) (g/m3)"),
-    ("BCC_A2", "JOG from BCC_A2 (/)", "BCC_A2 (condensed, at grain boundary) (g/m3)"),
-    ("FCC_A1", "JOG from FCC_A1 (/)", "FCC_A1 (condensed, at grain boundary) (g/m3)"),
-    ("HCP_A3", "JOG from HCP_A3 (/)", "HCP_A3 (condensed, at grain boundary) (g/m3)"),
-]
 SUMMARY_STACK_COLORS = [
     "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b",
     "#e377c2", "#7f7f7f", "#bcbd22", "#17becf", "#aec7e8", "#ffbb78",
@@ -88,6 +79,7 @@ DISTINCT_COLOR_VALUES = [
     "#fdd0a2", "#9ecae1", "#c994c7", "#bdbdbd", "#66c2a5", "#fc8d62",
     "#8da0cb", "#e78ac3", "#a6d854", "#ffd92f", "#e5c494", "#b3b3b3",
 ]
+METALLIC_ELEMENTS_EXCLUDED_FROM_FILTERED_PIE = {"RU", "PD", "RH", "TC"}
 
 
 def ensure_executable(path: Path) -> None:
@@ -416,6 +408,45 @@ def is_grain_boundary_amount_column(header: str) -> bool:
     )
 
 
+def is_jog_column(header: str) -> bool:
+    return header.startswith("JOG") and header.endswith("(/)")
+
+
+def is_jog_contribution_column(header: str) -> bool:
+    return header.startswith("JOG from ") and header.endswith("(/)")
+
+
+def jog_label(header: str) -> str:
+    if header == "JOG (/)":
+        return "Total"
+    if is_jog_contribution_column(header):
+        return header.removeprefix("JOG from ").removesuffix(" (/)")
+
+    match = re.match(r"JOG \((.+)\) \(/\)$", header)
+    if match:
+        return match.group(1)
+    return header.removeprefix("JOG ").removesuffix(" (/)")
+
+
+def sorted_jog_columns(output_profiles: dict[str, np.ndarray]) -> list[str]:
+    columns = [
+        name
+        for name, profile in output_profiles.items()
+        if is_jog_column(name) and not is_all_zero(profile)
+    ]
+    if not columns:
+        return []
+
+    def sort_key(name: str) -> tuple[int, str]:
+        if name == "JOG (/)":
+            return (0, name)
+        if name.startswith("JOG ("):
+            return (1, name)
+        return (2, name)
+
+    return sorted(columns, key=sort_key)
+
+
 def build_thermochemistry_color_map(case_directories: list[Path]) -> dict[str, object]:
     gb_labels: list[str] = []
 
@@ -573,6 +604,109 @@ def load_phase_sublattice_inventory(path: Path) -> dict[float, dict[str, object]
                 time_inventory["ru_hcp"] += constituent_moles
 
     return dict(inventory)
+
+
+def normalize_constituent_element(constituent: str) -> str | None:
+    element = re.sub(r"[+-].*$", "", constituent.strip().upper())
+    if not element or element in {"VA", "<EMPTY>"}:
+        return None
+    return element
+
+
+def outer_node_element_atomic_percent(case_dir: Path) -> tuple[float, dict[str, float]]:
+    element_moles: dict[str, float] = defaultdict(float)
+    rows = [
+        row
+        for row in load_phase_sublattice_rows(case_dir / PHASE_SUBLATTICE_OUTPUT_NAME)
+        if row["location"] == "at grain boundary"
+    ]
+    if not rows:
+        return 0.0, {}
+
+    final_time = max(float(row["time"]) for row in rows)
+    for row in rows:
+        if not np.isclose(float(row["time"]), final_time):
+            continue
+
+        element = normalize_constituent_element(str(row["constituent"]))
+        if element is None:
+            continue
+
+        constituent_moles = (
+            float(row["phase_form_units"])
+            * float(row["sites"])
+            * float(row["site_fraction"])
+        )
+        if constituent_moles > 0.0:
+            element_moles[element] += constituent_moles
+
+    total_moles = sum(element_moles.values())
+    if total_moles <= 0.0:
+        return final_time, {}
+
+    return final_time, {
+        element: 100.0 * moles / total_moles
+        for element, moles in element_moles.items()
+        if moles > 0.0
+    }
+
+
+def plot_outer_node_atomic_percent_pie(
+    case_dir: Path,
+    saved_paths: list[Path],
+    *,
+    excluded_elements: set[str] | None = None,
+    output_name: str = "outer_radial_node_atomic_percent_pie.svg",
+    title_suffix: str = "",
+) -> None:
+    final_time, atomic_percent = outer_node_element_atomic_percent(case_dir)
+    if not atomic_percent:
+        return
+    if excluded_elements:
+        atomic_percent = {
+            element: value
+            for element, value in atomic_percent.items()
+            if element.upper() not in excluded_elements
+        }
+        total = sum(atomic_percent.values())
+        if total <= 0.0:
+            return
+        atomic_percent = {
+            element: 100.0 * value / total
+            for element, value in atomic_percent.items()
+        }
+
+    labels = sorted(atomic_percent, key=atomic_percent.get, reverse=True)
+    values = [atomic_percent[label] for label in labels]
+    colors = [
+        DISTINCT_COLOR_VALUES[index % len(DISTINCT_COLOR_VALUES)]
+        for index in range(len(labels))
+    ]
+
+    fig, axis = plt.subplots(figsize=(8.5, 7.0))
+    wedges, texts, autotexts = axis.pie(
+        values,
+        labels=labels,
+        colors=colors,
+        startangle=70,
+        autopct=lambda pct: f"{pct:.0f}%" if pct >= 1.0 else "",
+        pctdistance=0.72,
+        labeldistance=1.08,
+        wedgeprops={"linewidth": 1.0, "edgecolor": "white", "alpha": 0.7},
+        textprops={"color": "#171717", "fontsize": 16},
+    )
+    for text in texts:
+        text.set_fontweight("bold")
+    for text in autotexts:
+        text.set_fontsize(14)
+
+    axis.set_title(
+        f"Outer radial node atomic percent{title_suffix} at {final_time:.1f} h",
+        fontsize=14,
+        pad=18,
+    )
+    axis.axis("equal")
+    save_figure(fig, PLOTS_DIR / output_name, saved_paths)
 
 
 def plot_phase_sublattice_composition(
@@ -740,7 +874,7 @@ def plot_case(
         if "Fuel oxygen potential - CALPHAD (KJ/mol)" in columns:
             axis.plot(burnup, values[:, columns["Fuel oxygen potential - CALPHAD (KJ/mol)"]], label="CALPHAD", color=COLORS[3], linestyle="--")
         axis.set_xlabel(BURNUP_LABEL)
-        axis.set_ylabel("Fuel oxygen potential (KJ/mol O$_2$)")
+        axis.set_ylabel("Fuel oxygen potential (kJ/mol O$_2$)")
         axis.legend(loc="best")
         save_figure(fig, case_plot_dir / "oxygenpotential.png", saved_paths)
 
@@ -793,6 +927,7 @@ def plot_case(
     add_atom_inventory("Cs at grain boundary (at/m3)", 132.90545196)
     add_atom_inventory("Cs reacted (at/m3)", 132.90545196)
     add_atom_inventory("Mo produced (at/m3)", 95.95)
+    add_atom_inventory("Ba produced (at/m3)", 137.327)
     add_atom_inventory("Pd produced (at/m3)", 106.42)
     add_atom_inventory("Tc produced (at/m3)", 98.906)
     add_atom_inventory("Rh produced (at/m3)", 102.91)
@@ -838,13 +973,26 @@ def plot_radial_profiles(
     output_histories = [output_histories[index] for index in order]
     thermo_histories = [thermo_histories[index] for index in order]
     phase_inventory_histories = [phase_inventory_histories[index] for index in order]
+    ordered_case_directories = [case_directories[index] for index in order]
 
     reference_time = output_histories[0]["Time (h)"]
     reference_burnup = output_histories[0][BURNUP_LABEL]
     reference_fima = output_histories[0]["FIMA (%)"]
 
+    plot_outer_node_atomic_percent_pie(ordered_case_directories[-1], saved_paths)
+    plot_outer_node_atomic_percent_pie(
+        ordered_case_directories[-1],
+        saved_paths,
+        excluded_elements=METALLIC_ELEMENTS_EXCLUDED_FROM_FILTERED_PIE,
+        output_name="outer_radial_node_atomic_percent_pie_without_ru_pd_rh_tc.svg",
+        title_suffix=" without Ru, Pd, Rh, Tc",
+    )
+
+    output_names = sorted({name for case_history in output_histories for name in case_history})
+    thermo_names = sorted({name for case_history in thermo_histories for name in case_history})
+
     output_profiles: dict[str, np.ndarray] = {}
-    for name in output_histories[0]:
+    for name in output_names:
         aligned_series = []
         for case_history in output_histories:
             if name in case_history:
@@ -854,7 +1002,7 @@ def plot_radial_profiles(
         output_profiles[name] = np.vstack(aligned_series)
 
     thermo_profiles: dict[str, np.ndarray] = {}
-    for name in thermo_histories[0]:
+    for name in thermo_names:
         aligned_series = []
         for case_history in thermo_histories:
             if name in case_history:
@@ -967,12 +1115,10 @@ def plot_radial_profiles(
             out=np.zeros_like(mo_residual_profile),
             where=mo_produced_profile > 0.0,
         )
-        if np.any(np.abs(mo_residual_fraction) > 0.01):
-            print("Check residual")
         quantity_panels = [
             ("Mo produced", mo_produced_profile),
             ("Mo oxide in liquid MOO4", mo_liquid_moo4_profile),
-            ("Mo oxide in solid CS2MOO4", mo_solid_cs2moo4_profile),
+            ("Mo oxide in solid Cs2MoO4", mo_solid_cs2moo4_profile),
             ("Mo metal in HCP_A3", mo_hcp_profile),
             #("Mo residual", mo_residual_profile),
         ]
@@ -985,7 +1131,7 @@ def plot_radial_profiles(
                     profile[:, index],
                     color=color,
                     marker="o",
-                    label=f"{reference_burnup[index]:.1f} MWd/kg$_{{MOX}}$",
+                    label=f"{reference_burnup[index]:.1f} {BURNUP_UNIT}",
                 )
             axis.set_title(title)
             axis.set_ylabel("Concentration (mol m$^{-3}$)")
@@ -1013,10 +1159,10 @@ def plot_radial_profiles(
                 mo_oxide_over_produced[:, index],
                 color=color,
                 marker="o",
-                label=f"{reference_burnup[index]:.1f} MWd/kg$_{{MOX}}$",
+                label=f"{reference_burnup[index]:.1f} {BURNUP_UNIT}",
             )
         axis.set_xlabel("Radius (mm)")
-        axis.set_ylabel("Mo in CS2MOO4 / Mo produced (-)")
+        axis.set_ylabel("Mo in solid Cs2MoO4 / Mo produced (-)")
         axis.set_ylim(bottom=0.0)
         axis.legend(loc="best")
         save_figure(fig, PLOTS_DIR / "Mo_oxide_fraction_by_radius.png", saved_paths)
@@ -1036,7 +1182,7 @@ def plot_radial_profiles(
                 mo_metal_over_produced[:, index],
                 color=color,
                 marker="o",
-                label=f"{reference_burnup[index]:.1f} MWd/kg$_{{MOX}}$",
+                label=f"{reference_burnup[index]:.1f} {BURNUP_UNIT}",
             )
         axis.set_xlabel("Radius (mm)")
         axis.set_ylabel("Mo in HCP_A3 / Mo produced (-)")
@@ -1060,7 +1206,7 @@ def plot_radial_profiles(
                     mo_hcp_over_ru_hcp[:, index],
                     color=color,
                     marker="o",
-                    label=f"{reference_burnup[index]:.1f} MWd/kg$_{{MOX}}$",
+                    label=f"{reference_burnup[index]:.1f} {BURNUP_UNIT}",
                 )
             axis.set_xlabel("Radius (mm)")
             axis.set_ylabel("Mo / Ru in HCP_A3 (-)")
@@ -1077,7 +1223,7 @@ def plot_radial_profiles(
                 temperature_c_profiles[:, index],
                 color=color,
                 marker="o",
-                label=f"{reference_burnup[index]:.1f} MWd/kg$_{{MOX}}$",
+                label=f"{reference_burnup[index]:.1f} {BURNUP_UNIT}",
             )
         axis.set_xlabel("Radius (mm)")
         axis.set_xlim([0, 3.0])
@@ -1092,7 +1238,7 @@ def plot_radial_profiles(
             case_burnup = case_history[BURNUP_LABEL]
             pressure_bar = case_history["System pressure (Pa)"] * 1.0e-5
             axis.plot(case_burnup, pressure_bar, label=f"r = {radius_mm:.3f} mm", alpha=0.9)
-        axis.set_xlabel("Burnup (MWd/kg$_{MOX}$)")
+        axis.set_xlabel(BURNUP_LABEL)
         axis.set_ylim([0,100])
         axis.set_ylabel("Pressure (bar)")
         axis.legend(loc="upper left")
@@ -1108,7 +1254,7 @@ def plot_radial_profiles(
                 label=f"r = {radius_mm:.1f} mm",
                 alpha=0.9,
             )
-        axis.set_xlabel("Burnup (MWd/kg$_{MOX}$)")
+        axis.set_xlabel(BURNUP_LABEL)
         axis.set_ylabel("Oxygen-to-Metal ratio (-)")
         axis.legend(loc="lower right")
         save_figure(fig, PLOTS_DIR / "Stoichiometry.png", saved_paths)
@@ -1120,7 +1266,7 @@ def plot_radial_profiles(
                 2.0 + output_profiles["Stoichiometry deviation (/)"][:, index],
                 color=color,
                 marker="o",
-                label=f"{reference_burnup[index]:.1f} MWd/kg$_{{MOX}}$",
+                label=f"{reference_burnup[index]:.1f} {BURNUP_UNIT}",
             )
         axis.set_xlabel("Radius (mm)")
         axis.set_xlim([0, 3.0])
@@ -1150,7 +1296,7 @@ def plot_radial_profiles(
             linewidth=2.5,
             label="Radial average",
         )
-        axis.set_xlabel("Burnup (MWd/kg$_{MOX}$)")
+        axis.set_xlabel(BURNUP_LABEL)
         axis.set_ylabel("Fission Gas Release (/)")
         axis.legend(loc="upper left")
         save_figure(fig, PLOTS_DIR / "FGR.png", saved_paths)
@@ -1165,7 +1311,7 @@ def plot_radial_profiles(
                 label=f"r = {radius_mm:.1f} mm",
                 alpha=0.9,
             )
-        axis.set_xlabel("Burnup (MWd/kg$_{MOX}$)")
+        axis.set_xlabel(BURNUP_LABEL)
         axis.set_ylabel("Pu / (U  + Pu)")
         axis.set_ylim(0.20, 0.24)
         axis.legend(loc="upper left")
@@ -1181,8 +1327,8 @@ def plot_radial_profiles(
                 label=f"r = {radius_mm:.1f} mm",
                 alpha=0.9,
             )
-        axis.set_xlabel("Burnup (MWd/kg$_{MOX}$)")
-        axis.set_ylabel("Fuel oxygen potential (KJ/mol O$_2$)")
+        axis.set_xlabel(BURNUP_LABEL)
+        axis.set_ylabel("Fuel oxygen potential (kJ/mol O$_2$)")
         axis.legend(loc="upper left")
         save_figure(fig, PLOTS_DIR / "oxygenpotential.png", saved_paths)
 
@@ -1195,8 +1341,8 @@ def plot_radial_profiles(
                 label=f"r = {radius_mm:.1f} mm",
                 alpha=0.9,
             )
-        axis.set_xlabel("Burnup (MWd/kg$_{MOX}$)")
-        axis.set_ylabel("Oxygen potential (KJ/mol O)")
+        axis.set_xlabel(BURNUP_LABEL)
+        axis.set_ylabel("Oxygen potential (kJ/mol O)")
         axis.legend(loc="upper left")
         save_figure(fig, PLOTS_DIR / "oxygenpotential_2.png", saved_paths)
 
@@ -1243,74 +1389,62 @@ def plot_radial_profiles(
             for boundary in cumulative_histories:
                 axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
 
-        axis.set_xlabel("Burnup (MWd/kg$_{MOX}$)")
+        axis.set_xlabel(BURNUP_LABEL)
         axis.set_ylabel("Mass concentration (g m$^{-3}$)")
         add_capped_legend(axis, loc="upper left")
         save_figure(fig, PLOTS_DIR / "Thermochemistry_No_Gas.png", saved_paths)
     
-    if "JOG (/)" in output_profiles:
+    jog_columns = sorted_jog_columns(output_profiles)
+    if jog_columns:
+        jog_stack_columns = [
+            column for column in jog_columns
+            if column != "JOG (/)"
+        ]
+        if "JOG (/)" in jog_columns:
+            jog_total_profile = output_profiles["JOG (/)"]
+        else:
+            jog_total_profile = np.sum(
+                np.stack([output_profiles[column] for column in jog_stack_columns], axis=0),
+                axis=0,
+            )
         jog_total_thickness_over_time_um = radial_integral_over_radius(
-            output_profiles["JOG (/)"],
+            jog_total_profile,
             radii_m_array,
         ) * 1.0e6
 
-        jog_liquid_thickness_over_time_um = None
-        if "JOG from liquid (/)" in output_profiles:
-            jog_liquid_thickness_over_time_um = radial_integral_over_radius(
-                output_profiles["JOG from liquid (/)"],
-                radii_m_array,
-            ) * 1.0e6
         melis_fima, melis_thickness = load_experimental_jog_data(EXP_DATA_DIR / "Melis1993.txt")
         tourasse_fima, tourasse_thickness = load_experimental_jog_data(EXP_DATA_DIR / "Tourasse1992.txt")
 
         def fima_to_burnup(fima_values: np.ndarray) -> np.ndarray:
             return np.interp(fima_values, reference_fima, reference_burnup)
 
-        condensed_contribution_columns = [
-            ("CS2MOO4_S2", "JOG from CS2MOO4_S2 (/)"),
-            ("CS2MOO4_S1", "JOG from CS2MOO4_S1 (/)"),
-            ("CS2MO3O10", "JOG from CS2MO3O10 (/)"),
-            ("CS2MO4O13", "JOG from CS2MO4O13 (/)"),
-        ]
-        condensed_entries: list[tuple[str, np.ndarray, object]] = []
-        for index, (label, column_name) in enumerate(condensed_contribution_columns):
-            if column_name not in output_profiles:
-                continue
+        jog_entries: list[tuple[str, np.ndarray, object]] = []
+        jog_colors = assign_distinct_colors([jog_label(column) for column in jog_stack_columns])
+        for index, column_name in enumerate(jog_stack_columns):
+            label = jog_label(column_name)
             series = radial_integral_over_radius(output_profiles[column_name], radii_m_array) * 1.0e6
             if is_all_zero(series):
                 continue
-            condensed_entries.append((label, series, species_colors.get(label, plt.cm.tab20(index / max(1, len(condensed_contribution_columns))))))
+            jog_entries.append((label, series, jog_colors.get(label, plt.cm.tab20(index / max(1, len(jog_stack_columns))))))
 
-        # Put CS2MOO4_S2 at the base inside the condensed stack ordering.
-        condensed_entries.sort(key=lambda item: (item[0] != "CS2MOO4_S2", item[0]))
-        gb_labels = []
-        gb_radial_histories = []
-        gb_colors = []
-
-        gb_labels.extend(item[0] for item in condensed_entries)
-        gb_radial_histories.extend(item[1] for item in condensed_entries)
-        gb_colors.extend(item[2] for item in condensed_entries)
-
-        # Keep liquid at the base of the stack when available.
-        if jog_liquid_thickness_over_time_um is not None and not is_all_zero(jog_liquid_thickness_over_time_um):
-            gb_labels.append("LIQUID")
-            gb_radial_histories.append(jog_liquid_thickness_over_time_um)
-            gb_colors.append("#f97316")
+        jog_labels = [item[0] for item in jog_entries]
+        jog_histories = [item[1] for item in jog_entries]
+        jog_plot_colors = [item[2] for item in jog_entries]
 
         fig, axis = plt.subplots()
-        if gb_radial_histories:
+        if jog_histories:
             axis.stackplot(
                 reference_burnup,
-                *gb_radial_histories,
-                colors=gb_colors,
-                labels=gb_labels,
+                *jog_histories,
+                colors=jog_plot_colors,
+                labels=jog_labels,
                 alpha=0.9,
             )
-            cumulative_histories = np.cumsum(np.vstack(gb_radial_histories), axis=0)
+            cumulative_histories = np.cumsum(np.vstack(jog_histories), axis=0)
             for boundary in cumulative_histories:
                 axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
+        axis.plot(reference_burnup, jog_total_thickness_over_time_um, color="#111827", label="Total")
 
-        # axis.plot(reference_burnup, jog_total_thickness_over_time_um, color="#111827", label="Total")
         axis.scatter(
             fima_to_burnup(melis_fima),
             melis_thickness,
@@ -1327,8 +1461,8 @@ def plot_radial_profiles(
             label="Tourasse et al. (1992)",
             zorder=3,
         )
-        axis.set_xlabel("Burnup (MWd/kg$_{MOX}$)")
-        axis.set_ylabel("JOG thickness (um)")
+        axis.set_xlabel(BURNUP_LABEL)
+        axis.set_ylabel("JOG thickness ($\\mu$m)")
         axis.legend(loc="upper left")
         save_figure(fig, PLOTS_DIR / "JOG.png", saved_paths)
 
@@ -1338,23 +1472,14 @@ def plot_radial_profiles(
         ]
         if len(outer_indices) >= 2:
             outer_jog_total_thickness_over_time_um = radial_integral_masked_to_full_radius(
-                output_profiles["JOG (/)"],
+                jog_total_profile,
                 radii_m_array,
                 outer_indices,
             ) * 1.0e6
 
-            outer_jog_liquid_thickness_over_time_um = None
-            if "JOG from liquid (/)" in output_profiles:
-                outer_jog_liquid_thickness_over_time_um = radial_integral_masked_to_full_radius(
-                    output_profiles["JOG from liquid (/)"],
-                    radii_m_array,
-                    outer_indices,
-                ) * 1.0e6
-
             outer_entries: list[tuple[str, np.ndarray, object]] = []
-            for index, (label, column_name) in enumerate(condensed_contribution_columns):
-                if column_name not in output_profiles:
-                    continue
+            for index, column_name in enumerate(jog_stack_columns):
+                label = jog_label(column_name)
                 series = radial_integral_masked_to_full_radius(
                     output_profiles[column_name],
                     radii_m_array,
@@ -1365,18 +1490,12 @@ def plot_radial_profiles(
                 outer_entries.append((
                     label,
                     series,
-                    species_colors.get(label, plt.cm.tab20(index / max(1, len(condensed_contribution_columns)))),
+                    jog_colors.get(label, plt.cm.tab20(index / max(1, len(jog_stack_columns)))),
                 ))
 
-            outer_entries.sort(key=lambda item: (item[0] != "CS2MOO4_S2", item[0]))
             outer_labels = [item[0] for item in outer_entries]
             outer_histories = [item[1] for item in outer_entries]
             outer_colors = [item[2] for item in outer_entries]
-
-            if outer_jog_liquid_thickness_over_time_um is not None and not is_all_zero(outer_jog_liquid_thickness_over_time_um):
-                outer_labels.append("LIQUID")
-                outer_histories.append(outer_jog_liquid_thickness_over_time_um)
-                outer_colors.append("#f97316")
 
             fig, axis = plt.subplots()
             if outer_histories:
@@ -1408,10 +1527,10 @@ def plot_radial_profiles(
                 label="Tourasse et al. (1992)",
                 zorder=3,
             )
-            axis.set_xlabel("Burnup (MWd/kg$_{MOX}$)")
-            axis.set_ylabel("JOG thickness (um)")
+            axis.set_xlabel(BURNUP_LABEL)
+            axis.set_ylabel("JOG thickness ($\\mu$m)")
             axis.legend(loc="upper left")
-            save_figure(fig, PLOTS_DIR / "JOG_radii_18_20.png", saved_paths)
+            save_figure(fig, PLOTS_DIR / "JOG_outer_radii.png", saved_paths)
         
 
 def main() -> int:

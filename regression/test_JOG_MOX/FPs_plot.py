@@ -185,12 +185,17 @@ def draw_bubble_plot() -> None:
         for x, entry in zip(group_x_positions[group], entries):
             radius = radius_from_yield(entry.yield_percent_fp_per_fission)
 
+
+            alpha = 0.1
+            if entry.element in ["Kr", "Xe", "Cs", "Mo", "Tc", "Ru", "Rh", "Pd"]:
+                alpha = 0.7
+
             bubble = Circle(
                 (x, y),
                 radius,
                 facecolor=style["color"],
                 edgecolor=style["edge"],
-                alpha=0.7,
+                alpha=alpha,
                 zorder=2,
             )
             axis.add_patch(bubble)
