@@ -336,7 +336,7 @@ def write_radial_input_histories(
     """
     hydrostatic_stress_mpa = 0.0
     pressure_start_pa = 1.0e5
-    pressure_end_pa = 7.0e6
+    pressure_end_pa = 1.0e5
     pressure_pa = np.linspace(pressure_start_pa, pressure_end_pa, len(time_hours))
 
     output_root.mkdir(parents=True, exist_ok=True)

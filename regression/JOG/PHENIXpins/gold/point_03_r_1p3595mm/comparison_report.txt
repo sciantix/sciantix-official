@@ -1,0 +1,11 @@
+Comparing /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/gold/point_03_r_1p3595mm/output.txt -> /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/point_03_r_1p3595mm/output.txt
+Rows: 1102 -> 901
+Columns: 115 -> 115
+
+Cannot compare common columns: row counts differ.
+
+Comparing /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/gold/point_03_r_1p3595mm/thermochemistry_output.txt -> /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/point_03_r_1p3595mm/thermochemistry_output.txt
+Rows: 1102 -> 901
+Columns: 98 -> 98
+
+Cannot compare common columns: row counts differ.
