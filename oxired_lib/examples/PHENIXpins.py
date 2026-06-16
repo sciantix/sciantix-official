@@ -29,24 +29,32 @@ from oxired import CylinderGeometry, OxiRedCylinder, PolynomialProfile
 from oxired.constants import diffusion_coefficient
 from oxired.fission_yields import fission_yield_for_element
 
+
+PAPER_PALETTE = [
+    "#736F3F", "#BFAE56", "#B29DA6", "#D9AF32", "#A66226", "#733426",
+    "#737675", "#9D6953", "#363726",  "#785C2D",
+]
+
 plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update({
     "figure.figsize": (10, 7),
-    "font.size": 12,
-    "axes.labelsize": 15,
-    "axes.titlesize": 12,
-    "xtick.labelsize": 12,
-    "ytick.labelsize": 12,
-    "legend.fontsize": 11,
+    "font.family": "serif",
+    "font.serif": ["Times New Roman", "Times", "Nimbus Roman", "DejaVu Serif"],
+    "mathtext.fontset": "dejavuserif",
+    "font.size": 20,
+    "axes.labelsize": 20,
+    "axes.titlesize": 20,
+    "xtick.labelsize": 20,
+    "ytick.labelsize": 20,
+    "legend.fontsize": 20,
     "figure.dpi": 300,
     "axes.grid": True,
     "grid.alpha": 0.5,
     "grid.linestyle": "--",
-    "lines.linewidth": 2,
+    "lines.linewidth": 3,
     "lines.markersize": 6,
     "legend.frameon": False,
 })
-
 
 FractionLaw = float | Callable[[float], float]
 
@@ -327,8 +335,8 @@ def write_radial_input_histories(
         hydrostatic_stress[MPa], pressure[Pa], O/M
     """
     hydrostatic_stress_mpa = 0.0
-    pressure_start_pa = 2.0e5
-    pressure_end_pa = 4.0e6
+    pressure_start_pa = 1.0e5
+    pressure_end_pa = 7.0e6
     pressure_pa = np.linspace(pressure_start_pa, pressure_end_pa, len(time_hours))
 
     output_root.mkdir(parents=True, exist_ok=True)
@@ -353,11 +361,10 @@ def main() -> None:
     # =========================
     initial_om = 1.975
     pu_fraction = 0.22
-    r_outer = 2.7e-3
+    r_outer = 2.719e-3
     burnup_final = 13.28
-    max_time_hours = 20560.0
-    heavy_metal_atoms_per_m3 = 2.35376139e28
-    fission_rate = (burnup_final / 100.0) * heavy_metal_atoms_per_m3 / (max_time_hours * 3600.0)
+    max_time_hours = 25200
+    fission_rate = 3.45e19
 
     # Requested SCIANTIX radial histories.
     n_radial_points = 5
@@ -384,7 +391,7 @@ def main() -> None:
 
     # Temperature profile used by the Python thermodiffusion solve.
     profile = PolynomialProfile(
-        r_inner=0.4e-3,
+        r_inner=0.4e-3, # HP from superfact-1
         r_outer=r_outer,
         t_center=2000.0,
         t_surface=600.0,
@@ -412,7 +419,7 @@ def main() -> None:
     ])
 
     # Output root for generated SCIANTIX point folders and comparison plots.
-    output_root = Path(__file__).resolve().parent / "radial_input_histories_ioxire4"
+    output_root = Path(__file__).resolve().parent / "PHENIXpins_history"
     output_root.mkdir(parents=True, exist_ok=True)
 
     print("Model-based radial O/M history")
@@ -504,7 +511,6 @@ def main() -> None:
     om_profiles = np.asarray(om_profiles)
     average_oms = np.asarray(average_oms)
     free_surplus_profiles = np.asarray(free_surplus_profiles)
-    om_before_profiles = np.asarray([state.om_before_redistribution for state in states])
     released_profiles = np.asarray([state.released_oxygen_per_metal for state in states])
     fixed_sink_profiles = np.asarray([state.fixed_sink_oxygen_per_metal for state in states])
     ba_sink_profiles = np.asarray([state.ba_sink_oxygen_per_metal for state in states])
@@ -514,7 +520,7 @@ def main() -> None:
         free_surplus_profiles[0],
         np.diff(free_surplus_profiles, axis=0),
     ])
-    target_average_oms = np.asarray([state.target_average_om for state in states])
+    
     ioxire1_target_average_oms = np.minimum(initial_om + 0.005 * average_burnup, 2.0)
     ioxire1_target_om_profiles = solve_radial_profiles_from_average_om(
         solver,
@@ -553,6 +559,19 @@ def main() -> None:
         + matrix_uptake_average
         + free_surplus_delta_average
     )
+    released_cumulative_average = np.cumsum(released_average)
+    fixed_sink_cumulative_average = np.cumsum(fixed_sink_average)
+    ba_sink_cumulative_average = np.cumsum(ba_sink_average)
+    mo_sink_cumulative_average = np.cumsum(mo_sink_average)
+    matrix_uptake_cumulative_average = np.cumsum(matrix_uptake_average)
+    free_surplus_cumulative_average = np.cumsum(free_surplus_delta_average)
+    balance_residual_cumulative_average = released_cumulative_average - (
+        fixed_sink_cumulative_average
+        + ba_sink_cumulative_average
+        + mo_sink_cumulative_average
+        + matrix_uptake_cumulative_average
+        + free_surplus_cumulative_average
+    )
 
     write_radial_input_histories(
         output_root=output_root,
@@ -563,158 +582,82 @@ def main() -> None:
         fission_rate=fission_rate,
     )
 
-    plt.figure(figsize=(7, 5))
-    plt.plot(radius_mm, temperature, marker="o")
-    plt.xlabel("Radius (mm)")
-    plt.ylabel("Temperature (K)")
-    plt.title("Radial temperature profile")
+    fig, axis = plt.subplots(1,1, figsize=(5,5))
+    axis.plot(radius_mm*1e-3/r_outer, temperature, marker="o", color=PAPER_PALETTE[0])
+    axis.set_xlabel("R/Ro")
+    axis.set_ylabel("Temperature (K)")
+    plt.tight_layout()
     plt.savefig(output_root / "Tprofile.png")
 
-    plt.figure(figsize=(8, 6))
-    for idx in np.linspace(0, len(average_burnup) - 1, 8, dtype=int):
-        plt.plot(
-            radius_mm,
+    fig, axis = plt.subplots(1,1, figsize=(9,5))
+    for idx in np.linspace(0, len(average_burnup) - 1, 6, dtype=int):
+        axis.plot(
+            radius_mm *1e-3/ r_outer,
             om_profiles[idx],
             marker="o",
-            label=f"BU = {average_burnup[idx]:.1f} at.%",
+            label=f"BU = {average_burnup[idx]:.0f} at.%",
+            color=PAPER_PALETTE[idx]
         )
-    plt.xlabel("Radius (mm)")
-    plt.ylabel("O/M")
-    plt.title("Radial O/M profiles from model balance")
-    plt.legend()
+    axis.set_xlabel("R/Ro")
+    axis.set_ylabel("Oxygen-to-Metal ratio")
+    axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
+    plt.tight_layout()
     plt.savefig(output_root / "OMprofile.png")
 
-    plt.figure(figsize=(7, 5))
-    plt.plot(
+    fig, axis = plt.subplots(1,1, figsize=(5+4,5))
+    axis.plot(
         average_burnup,
         ioxire1_like_average_oms,
         marker="^",
-        label="IOXIRE = 1, deltaO/M=0.005 %Bu",
+        label="Δ(O/M) = 0.005 %Bu",
+        color=PAPER_PALETTE[0]
     )
-    plt.plot(average_burnup, average_oms, marker="s", label="IOXIRE = 4")
-    plt.xlabel("Average burnup (at.%)")
-    plt.ylabel("Average O/M")
-    plt.title("Average O/M comparison")
-    plt.legend()
-    plt.savefig(output_root / "EvolutionOMIoxire1Comparison.png")
+    axis.plot(average_burnup, average_oms, marker="s", label="This work", color=PAPER_PALETTE[1])
+    axis.set_xlabel("Average burnup (at.%)")
+    axis.set_ylabel("Average Oxygen-to-Metal ratio")
+    axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
+    plt.tight_layout()
+    plt.savefig(output_root / "OMAverage.png")
 
-    plt.figure(figsize=(7, 5))
-    plt.plot(
-        average_burnup,
-        ioxire1_like_average_oms - average_oms,
-        marker="s",
-        label="IOXIRE = 1 - IOXIRE = 4",
-    )
-    plt.axhline(0.0, color="k", linewidth=1.0)
-    plt.xlabel("Average burnup (at.%)")
-    plt.ylabel("O/M difference")
-    plt.title("Average O/M difference")
-    plt.legend()
-    plt.savefig(output_root / "EvolutionOMIoxire1Difference.png")
-
-    plt.figure(figsize=(8, 6))
-    for idx in np.linspace(0, len(average_burnup) - 1, 5, dtype=int):
-        plt.plot(
-            radius_mm,
-            om_profiles[idx],
-            marker="o",
-            label=f"IOXIRE = 4 BU = {average_burnup[idx]:.1f}",
-        )
-        plt.plot(
-            radius_mm,
-            ioxire1_like_om_profiles[idx],
-            marker="s",
-            linestyle="-.",
-            label=f"IOXIRE = 1 BU = {average_burnup[idx]:.1f}",
-        )
-    plt.xlabel("Radius (mm)")
-    plt.ylabel("O/M")
-    plt.title("Radial O/M profiles: IOXIRE = 4 vs IOXIRE = 1")
-    plt.legend(ncol=2)
-    plt.savefig(output_root / "RadialOMIoxire1Comparison.png")
-
-
-    plt.figure(figsize=(8, 6))
-    plt.plot(average_burnup, released_average, marker="o", label="Released")
-    plt.plot(average_burnup, fixed_sink_average, marker="o", label="Fixed sinks")
-    plt.plot(average_burnup, ba_sink_average, marker="o", label="Ba sink")
-    plt.plot(average_burnup, mo_sink_average, marker="o", label="Mo sink")
-    plt.plot(average_burnup, matrix_uptake_average, marker="o", label="Matrix uptake")
-    plt.plot(average_burnup, free_surplus_delta_average, marker="o", label="Free O increment")
-    plt.plot(average_burnup, balance_residual_average, marker="x", linestyle="--", label="Residual")
-    plt.xlabel("Average burnup (at.%)")
-    plt.ylabel("Oxygen / initial metal")
-    plt.title("Area-averaged incremental oxygen balance")
-    plt.legend()
+    fig, axis = plt.subplots(1,1, figsize=(5+4,5))
+    axis.plot(average_burnup, released_cumulative_average*100, marker="o", label="Released", color=PAPER_PALETTE[0])
+    axis.plot(average_burnup, fixed_sink_cumulative_average*100, marker="o", label="Fixed sinks", color=PAPER_PALETTE[1])
+    axis.plot(average_burnup, ba_sink_cumulative_average*100, marker="o", label="Ba sink", color=PAPER_PALETTE[2])
+    axis.plot(average_burnup, mo_sink_cumulative_average*100, marker="o", label="Mo sink", color=PAPER_PALETTE[3])
+    axis.plot(average_burnup, matrix_uptake_cumulative_average*100, marker="o", label="Matrix uptake", color=PAPER_PALETTE[4])
+    axis.plot(average_burnup, free_surplus_cumulative_average*100, marker="o", label="Free O", color=PAPER_PALETTE[5])
+    axis.plot(average_burnup, balance_residual_cumulative_average*100, marker="x", linestyle="--", label="Residual", color=PAPER_PALETTE[6])
+    axis.set_xlabel("Average burnup (at.%)")
+    axis.set_ylabel("Oxygen to Initial Metal (%)")
+    axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
+    plt.tight_layout()
     plt.savefig(output_root / "EvolutionOxygenBalance.png")
 
-    plt.figure(figsize=(8, 6))
+    fig, axis = plt.subplots(1,1, figsize=(5+4,5))
     positive_terms = [
-        fixed_sink_average,
-        ba_sink_average,
-        mo_sink_average,
-        matrix_uptake_average,
-        free_surplus_delta_average,
+        fixed_sink_cumulative_average,
+        ba_sink_cumulative_average,
+        mo_sink_cumulative_average,
+        matrix_uptake_cumulative_average,
+        free_surplus_cumulative_average,
     ]
     labels = [
         "Fixed sinks",
         "Ba sink",
         "Mo sink",
         "Matrix uptake",
-        "Free O increment",
+        "Free oxygen",
     ]
     bottom = np.zeros_like(average_burnup)
-    for values, label in zip(positive_terms, labels):
-        plt.bar(average_burnup, values, bottom=bottom, width=0.35, label=label)
+    for i, values, label in zip([0, 1, 2, 3, 4], positive_terms, labels):
+        axis.bar(average_burnup, values, bottom=bottom, width=0.5, label=label, color=PAPER_PALETTE[i])
         bottom = bottom + values
-    plt.plot(average_burnup, released_average, marker="o", color="k", label="Released")
-    plt.xlabel("Average burnup (at.%)")
-    plt.ylabel("Oxygen / initial metal")
-    plt.title("Incremental oxygen balance closure")
-    plt.legend()
+    axis.plot(average_burnup, released_cumulative_average, marker="o", color="k", label="Released")
+    axis.set_xlabel("Average burnup (at.%)")
+    axis.set_ylabel("Oxygen to Initial Metal (%)")
+    axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
+    plt.tight_layout()
     plt.savefig(output_root / "EvolutionOxygenBalanceClosure.png")
-
-    plt.figure(figsize=(8, 6))
-    for i, r_mm in enumerate(radius_mm):
-        plt.plot(
-            time_hours,
-            local_burnup[:, i],
-            marker="o",
-            label=f"r = {r_mm:.3f} mm",
-        )
-    plt.xlabel("Time (h)")
-    plt.ylabel("Local burnup (at.%)")
-    plt.title("Local burnup histories")
-    plt.legend()
-    plt.savefig(output_root / "LocalBurnupHistories.png")
-
-    plt.figure(figsize=(8, 6))
-    for i, r_mm in enumerate(radius_mm):
-        plt.plot(
-            average_burnup,
-            free_surplus_profiles[:, i],
-            marker="o",
-            label=f"r = {r_mm:.3f} mm",
-        )
-    plt.xlabel("Average burnup (at.%)")
-    plt.ylabel("Free surplus oxygen / initial metal")
-    plt.title("Conserved free oxygen inventory")
-    plt.legend()
-    plt.savefig(output_root / "EvolutionFreeOxygen.png")
-
-    plt.figure(figsize=(8, 5))
-    image = plt.imshow(
-        free_surplus_profiles.T,
-        aspect="auto",
-        origin="lower",
-        extent=[average_burnup[0], average_burnup[-1], radius_mm[0], radius_mm[-1]],
-    )
-    plt.colorbar(image, label="Free surplus oxygen / initial metal")
-    plt.xlabel("Average burnup (at.%)")
-    plt.ylabel("Radius (mm)")
-    plt.title("Free surplus oxygen map")
-    plt.savefig(output_root / "FreeOxygenMap.png")
-    plt.close("all")
 
     print(f"Generated Sciantix input histories in: {output_root}")
 
