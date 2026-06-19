@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 """
-Generate stand-alone SCIANTIX radial histories. It's implementation was done in 
-parallel to the TRANSURANUS implementation of oxired model 4. Refer to:
+Generate stand-alone SCIANTIX radial histories. 
+It's implementation was done in parallel to the TRANSURANUS implementation of 
+oxired model 4. Refer to:
 
   - Subroutine RadialOxygen:
       builds the local oxygen balance, updates matrix O/M up to O/M = 2,
@@ -122,8 +123,7 @@ def fixed_oxygen_sink_contributions() -> dict[str, float]:
 
         yield_percent / 100 * valence / 2
 
-    Ba and Mo are intentionally excluded because they are handled as local
-    oxide-fraction sinks below.
+    Ba and Mo are excluded because they are handled as local and variable oxygen sinks.
     """
     contributions = {}
     for element in FIXED_OXYGEN_SINK_ELEMENTS:
@@ -133,6 +133,7 @@ def fixed_oxygen_sink_contributions() -> dict[str, float]:
 
 
 def fixed_oxygen_per_at_percent() -> float:
+    """Sum of the oxygen sink contributions"""
     return sum(fixed_oxygen_sink_contributions().values())
 
 
@@ -140,6 +141,7 @@ def solve_radial_profiles_from_average_om(
     solver: OxiRedCylinder,
     average_om_history: np.ndarray,
 ) -> np.ndarray:
+    """ """
     profiles = []
     for average_om in average_om_history:
         if average_om >= 2.0 - 1.0e-10:
@@ -155,17 +157,18 @@ def solve_radial_profiles_from_average_om(
     return np.asarray(profiles)
 
 
-def time_constant_like_ioxire1(
+def time_constant(
     edges: np.ndarray,
     radius: np.ndarray,
     temperature: np.ndarray,
 ) -> float:
+    """"""
     temperature_average = area_average(edges, temperature)
     diffusion_average = diffusion_coefficient(temperature_average)
     return (radius[-1] ** 2 - radius[0] ** 2) / (17.2 * diffusion_average)
 
 
-def solve_ioxire1_like_transient_profiles(
+def solve_transient_profiles(
     edges: np.ndarray,
     radius: np.ndarray,
     temperature: np.ndarray,
@@ -173,7 +176,8 @@ def solve_ioxire1_like_transient_profiles(
     initial_om_profile: np.ndarray,
     steady_target_profiles: np.ndarray,
 ) -> tuple[np.ndarray, float]:
-    tau = time_constant_like_ioxire1(edges, radius, temperature)
+    """"""
+    tau = time_constant(edges, radius, temperature)
     profiles = [initial_om_profile.copy()]
 
     for i in range(1, len(time_hours)):
@@ -381,8 +385,6 @@ def main() -> None:
 
     # Stand-alone assumption: no CALPHAD feedback.  The oxide fraction is a
     # fixed burnup law.  Valence +6 is consistent with Cs2MoO4 formation.
-    # def mo_oxide_fraction(burnup_at_percent: float) -> float:
-    #     return min(1.0, 0.0 * burnup_at_percent)
     mo_oxide_fraction = 0.6
     mo_valence = 6.0
 
@@ -526,7 +528,7 @@ def main() -> None:
         solver,
         ioxire1_target_average_oms,
     )
-    ioxire1_like_om_profiles, ioxire1_like_tau = solve_ioxire1_like_transient_profiles(
+    ioxire1_like_om_profiles, ioxire1_like_tau = solve_transient_profiles(
         edges,
         radius,
         temperature,

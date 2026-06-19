@@ -4,9 +4,6 @@ Small Python helper package for generating radial O/M histories for SCIANTIX.
 
 ## Scope
 
-The package keeps only what is needed by
-`examples/example_usage_model.py`:
-
 - a cylindrical radial mesh (`CylinderGeometry`)
 - a hypostoichiometric steady-state OXIRED redistribution solver (`OxiRedCylinder`)
 - a polynomial radial temperature profile (`PolynomialProfile`)
