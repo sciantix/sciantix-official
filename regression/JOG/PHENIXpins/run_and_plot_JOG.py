@@ -39,7 +39,6 @@ HCP_A3_COMPARISON_ELEMENTS = ("MO", "PD", "RH", "RU", "TC")
 SHARED_INPUT_FILES = (
     "input_settings.txt",
     "input_initial_conditions.txt",
-    "input_scaling_factors.txt",
     "input_thermochemistry.txt",
     "input_thermochemistry_settings.txt",
 )
@@ -1175,6 +1174,46 @@ def plot_case(
             axis.legend(loc="upper left")
     save_figure(fig, case_plot_dir / "inventory_fission_products.png", saved_paths)
 
+    oxide_fraction_columns = [
+        ("Mo in oxide fraction (/)", "Mo in oxide", COLORS[0]),
+        ("Ba in oxide fraction (/)", "Ba in oxide", COLORS[1]),
+    ]
+    oxide_valence_columns = [
+        ("Mo oxide valence (/)", "Mo valence", COLORS[0]),
+        ("Ba oxide valence (/)", "Ba valence", COLORS[1]),
+    ]
+    available_fraction_columns = [
+        item for item in oxide_fraction_columns
+        if item[0] in columns
+    ]
+    available_valence_columns = [
+        item for item in oxide_valence_columns
+        if item[0] in columns
+    ]
+    if available_fraction_columns or available_valence_columns:
+        fig, axes = plt.subplots(2, 1, figsize=(10, 5), sharex=True)
+
+        axis = axes[0]
+        for column_name, label, color in available_fraction_columns:
+            axis.plot(burnup, values[:, columns[column_name]], color=color, label=label)
+        axis.set_ylabel("Fraction in oxide (-)")
+        axis.set_ylim(-0.05, 1.05)
+        axis.set_xlim(0.0, max(burnup))
+        if axis.get_legend_handles_labels()[0]:
+            axis.legend(loc="best")
+
+        axis = axes[1]
+        for column_name, label, color in available_valence_columns:
+            axis.plot(burnup, values[:, columns[column_name]], color=color, label=label)
+        axis.set_xlabel(BURNUP_LABEL)
+        axis.set_ylabel("Mean oxide valence (-)")
+        axis.set_xlim(0.0, max(burnup))
+        axis.set_ylim(-0.2, 6.2)
+        if axis.get_legend_handles_labels()[0]:
+            axis.legend(loc="best")
+
+        save_figure(fig, case_plot_dir / "oxide_fraction_valence.png", saved_paths)
+
     total_mass = np.zeros_like(burnup)
 
     def add_atom_inventory(column_name: str, atomic_mass: float) -> None:
@@ -1750,6 +1789,77 @@ def plot_radial_profiles(
         axis.set_ylim(0,100)
         axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
         save_figure(fig, PLOTS_DIR / "JOG.png", saved_paths)
+
+        outer_two_indices = list(range(max(0, len(radii_m_array) - 2), len(radii_m_array)))
+        jog_outer_two_total_thickness_um = radial_integral_masked_to_full_radius(
+            jog_total_profile,
+            radii_m_array,
+            outer_two_indices,
+        ) * 1.0e6
+
+        jog_outer_two_entries: list[tuple[str, np.ndarray, object]] = []
+        for index, column_name in enumerate(jog_stack_columns):
+            label = jog_label(column_name)
+            series = radial_integral_masked_to_full_radius(
+                output_profiles[column_name],
+                radii_m_array,
+                outer_two_indices,
+            ) * 1.0e6
+            if is_all_zero(series):
+                continue
+            jog_outer_two_entries.append(
+                (label, series, jog_colors.get(label, PAPER_PALETTE[index % len(PAPER_PALETTE)]))
+            )
+
+        jog_outer_two_histories = [item[1] for item in jog_outer_two_entries]
+        jog_outer_two_colors = [item[2] for item in jog_outer_two_entries]
+        jog_outer_two_labels = [item[0] for item in jog_outer_two_entries]
+
+        fig, axis = plt.subplots(1,1,figsize=(10,5))
+
+        if jog_outer_two_histories:
+            axis.stackplot(
+                reference_burnup,
+                *jog_outer_two_histories,
+                colors=jog_outer_two_colors,
+                labels=jog_outer_two_labels,
+                alpha=0.9,
+            )
+            cumulative_histories = np.cumsum(np.vstack(jog_outer_two_histories), axis=0)
+            for boundary in cumulative_histories:
+                axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
+
+        axis.plot(
+            reference_burnup,
+            jog_outer_two_total_thickness_um,
+            color="#111827",
+            linewidth=2.6,
+            label="Total, outer two radial nodes",
+        )
+        axis.scatter(
+            fima_to_burnup(melis_fima),
+            melis_thickness,
+            edgecolors=COLORS[6], facecolors="none",
+            marker="o",
+            label="Melis et al. (1993)",
+            zorder=3,
+            linewidths=1.6,
+        )
+        axis.scatter(
+            fima_to_burnup(tourasse_fima),
+            tourasse_thickness,
+            edgecolors=COLORS[7], facecolors="none",
+            marker="D",
+            label="Tourasse et al. (1992)",
+            zorder=3,
+            linewidths=1.6,
+        )
+        axis.set_xlabel(BURNUP_LABEL)
+        axis.set_xlim(0,max(reference_burnup))
+        axis.set_ylabel("JOG thickness ($\\mu$m)")
+        axis.set_ylim(0,100)
+        axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
+        save_figure(fig, PLOTS_DIR / "JOG_outer_two_nodes.png", saved_paths)
         
 
 def main() -> int:

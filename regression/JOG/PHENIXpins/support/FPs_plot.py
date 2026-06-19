@@ -187,7 +187,7 @@ def draw_bubble_plot() -> None:
 
 
             alpha = 0.1
-            if entry.element in ["Kr", "Xe", "Cs", "Mo", "Tc", "Ru", "Rh", "Pd"]:
+            if entry.element in ["Kr", "Xe", "Cs", "Mo", "Tc", "Ru", "Rh", "Pd", "Ba"]:
                 alpha = 0.7
 
             bubble = Circle(
