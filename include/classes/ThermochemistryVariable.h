@@ -41,6 +41,7 @@ protected:
     std::string location;
     std::string phase;
     std::map <std::string, double> composition;
+    std::map<int, std::map<std::string, double>> sublattice_composition;
     bool to_output;
 
 public:
@@ -132,6 +133,18 @@ public:
      * @return The composition as a map.
      */
     std::map <std::string, double> getComposition();
+
+    /**
+     * @brief Sets the dynamic constituent fractions by sublattice.
+     * @param composition_map The map from sublattice index to constituent fractions.
+     */
+    void setSublatticeComposition(std::map<int, std::map<std::string, double>> composition_map);
+
+    /**
+     * @brief Retrieves the dynamic constituent fractions by sublattice.
+     * @return The sublattice composition map.
+     */
+    std::map<int, std::map<std::string, double>> getSublatticeComposition();
 
     /**
      * @brief Calculates the molar mass from the compound stoichiometry.

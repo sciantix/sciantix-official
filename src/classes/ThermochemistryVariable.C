@@ -184,6 +184,16 @@ std::map <std::string, double> ThermochemistryVariable::getComposition()
     return composition;
 }
 
+void ThermochemistryVariable::setSublatticeComposition(std::map<int, std::map<std::string, double>> composition_map)
+{
+    sublattice_composition = composition_map;
+}
+
+std::map<int, std::map<std::string, double>> ThermochemistryVariable::getSublatticeComposition()
+{
+    return sublattice_composition;
+}
+
 void ThermochemistryVariable::setConstant()
 {
     final_value = initial_value;
@@ -234,6 +244,7 @@ double ThermochemistryVariable::getMolarMass()
     static const std::map<std::string, double> atomic_masses = {
         {"Cs", 132.90545196},
         {"I", 126.90447},
+        {"Ba", 137.327},
         {"Mo", 95.95},
         {"O", 15.999},
         {"Te", 127.60},

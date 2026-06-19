@@ -185,6 +185,7 @@ std::map<int, std::string> update_sciantix_variable = {
     //
     {190, "JOG (Cs2MoO4)"},
     {191, "JOG (BaMoO4)"},
+    {192, "JOG (liquid)"},
 };
  
 // CODE DEVELOPMENT: DIFFUSION MODES FROM 17 TO 26
