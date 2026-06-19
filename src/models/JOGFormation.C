@@ -31,23 +31,53 @@ void Simulation::JOGFormation()
     
     // Data on Cs2MoO4 from Wallez et al., Journal of Solid State Chemistry 215 (2014) 225-230.
 
-    // Reference unit-cell parameters
-    const double a_o_ref = 0.8477e-9; // m
-    const double b_o_ref = 0.6840e-9; // m
-    const double c_o_ref = 2 * 2 * b_o_ref; // m
+    // The polynomial fits give the mean relative linear expansion,
+    // eps_l = Delta l / l0, as a function of temperature in degree Celsius.
 
-    // Polynomial fits are relative linear expansions versus temperature in degree Celsius.
-    double alpha = -7.12e-4 + 2.57e-5 * temperature_celsius + 4.03e-8 * std::pow(temperature_celsius, 2.0);
-    if (temperature_celsius > 568) // Transition temperature
-        alpha = -0.0102 + 8.50e-5 * temperature_celsius - 2.13e-8 * std::pow(temperature_celsius, 2.0);
+    // Reference density from Wallez et al. at 675 °C:
+    // rho = 3.89 g/cm3 = 3890 kg/m3
 
-    const double V_cell = (a_o_ref * b_o_ref * c_o_ref)*(1.0 + 3 * alpha)/ (4.0); // 4.0 = Z in orthorombic
+    // Transition temperature, °C
+    const double T_transition = 568.0;
 
-    const double theoretical_density = 425.76 / (avogadro_number * V_cell); // g/m3
+    // Reference state: h-Cs2MoO4 at 675 °C
+    const double T_ref = 675.0;
+    const double rho_ref = 3.89 ; // g/cm3
 
-    sciantix_variable["Phase std density"].setFinalValue(theoretical_density);
+    auto epsilon_orthorhombic = [](double T)
+    {
+        return  - 7.12e-4
+                + 2.57e-5 * T
+                + 4.03e-8 * std::pow(T, 2.0);
+    };
+
+    auto epsilon_hexagonal = [](double T)
+    {
+        return -0.0102
+               + 8.50e-5 * T
+               - 2.13e-8 * std::pow(T, 2.0);
+    };
+
+    // Relative linear expansion at the reference temperature
+    const double eps_ref = epsilon_hexagonal(T_ref);
+
+    // Relative linear expansion at current temperature
+    double eps_T;
+
+    if (temperature_celsius < T_transition)
+        eps_T = epsilon_orthorhombic(temperature_celsius);
+    else
+        eps_T = epsilon_hexagonal(temperature_celsius);
+
+    // Density from mass conservation:
+    // V(T) / V_ref = [(1 + eps_T) / (1 + eps_ref)]^3
+    double theoretical_density =
+        1e6 * rho_ref * std::pow((1.0 + eps_ref) / (1.0 + eps_T), 3.0); // g/m3
+
+    sciantix_variable["Phase std density"].setFinalValue(theoretical_density); // g/m3
     double JOG_Cs2MoO4 = 0.0;
     double JOG_BaMoO4 = 0.0;
+    double JOG_liquid = 0.0;
 
     double total_mo_moles = 0.0;
     double oxide_mo_moles = 0.0;
@@ -55,6 +85,12 @@ void Simulation::JOGFormation()
     double total_ba_moles = 0.0;
     double oxide_ba_moles = 0.0;
     double oxide_ba_valence_sum = 0.0;
+    constexpr double oxide_stoichiometry_tolerance = 1.0e-8;
+    constexpr double minimum_mo_oxide_valence = 2.0;
+    constexpr double minimum_molybdate_site_fraction = 1.0e-12;
+    constexpr double minimum_molybdate_oxygen_to_mo = 3.0;
+    constexpr double minimum_molybdate_valence = 5.0;
+    constexpr double mo_valence_tolerance = 1.0e-6;
 
     auto normalizeElementName = [](std::string element)
     {
@@ -84,13 +120,18 @@ void Simulation::JOGFormation()
     {
         static const std::map<std::string, double> atomic_masses = {
             {"Cs", 132.90545196},
+            {"I", 126.90447},
             {"Ba", 137.327},
             {"Mo", 95.95},
             {"O", 15.999},
+            {"Te", 127.60},
+            {"U", 238.02891},
+            {"Pu", 239.052},
+            {"Va", 0.0},
             {"Pd", 106.42},
-            {"Rh", 102.9055},
+            {"Rh", 102.91},
             {"Ru", 101.07},
-            {"Tc", 98.9063},
+            {"Tc", 98.906},
         };
 
         double value = 0.0;
@@ -123,14 +164,81 @@ void Simulation::JOGFormation()
         return std::max(0.0, std::min(6.0, valence));
     };
 
+    auto isOxidizedElement = [&getElementAmount, oxide_stoichiometry_tolerance](
+                                 const std::map<std::string, double>& composition,
+                                 const std::string&                   element)
+    {
+        const double element_stoichiometry = getElementAmount(composition, element);
+        if (element_stoichiometry <= 0.0)
+            return false;
+
+        // OpenCalphad can leave tiny oxygen site fractions in metallic phases.
+        // Treat only meaningful O/element ratios as oxidized inventory.
+        const double oxygen_stoichiometry = getElementAmount(composition, "O");
+        return oxygen_stoichiometry / element_stoichiometry > oxide_stoichiometry_tolerance;
+    };
+
+    auto isOxidizedMo = [&effectiveMoValence, minimum_mo_oxide_valence, mo_valence_tolerance](
+                            const std::map<std::string, double>& composition)
+    {
+        return effectiveMoValence(composition) >= minimum_mo_oxide_valence - mo_valence_tolerance;
+    };
+
+    auto normalizeSublatticeConstituent = [](std::string constituent)
+    {
+        std::transform(constituent.begin(), constituent.end(), constituent.begin(), [](unsigned char c) {
+            return static_cast<char>(std::toupper(c));
+        });
+
+        const size_t charge_pos = constituent.find_first_of("+-");
+        if (charge_pos != std::string::npos)
+            constituent = constituent.substr(0, charge_pos);
+
+        return constituent;
+    };
+
+    auto hasMolybdateSecondSublattice =
+        [minimum_molybdate_site_fraction, &normalizeSublatticeConstituent](
+            const std::map<int, std::map<std::string, double>>& sublattice_composition)
+    {
+        const auto second_sublattice = sublattice_composition.find(2);
+        if (second_sublattice == sublattice_composition.end())
+            return false;
+
+        for (const auto& constituent_entry : second_sublattice->second)
+        {
+            if (constituent_entry.second > minimum_molybdate_site_fraction &&
+                normalizeSublatticeConstituent(constituent_entry.first) == "MOO4")
+                return true;
+        }
+
+        return false;
+    };
+
+    auto isMolybdateLiquidByStoichiometry =
+        [&getElementAmount,
+         &effectiveMoValence,
+         minimum_molybdate_oxygen_to_mo,
+         minimum_molybdate_valence,
+         mo_valence_tolerance](const std::map<std::string, double>& composition)
+    {
+        const double mo_stoichiometry = getElementAmount(composition, "Mo");
+        if (mo_stoichiometry <= 0.0)
+            return false;
+
+        const double oxygen_to_mo = getElementAmount(composition, "O") / mo_stoichiometry;
+        if (oxygen_to_mo < minimum_molybdate_oxygen_to_mo)
+            return false;
+
+        return effectiveMoValence(composition) >= minimum_molybdate_valence - mo_valence_tolerance;
+    };
 
     auto accumulateOxidePhase = [&](const std::map<std::string, double>& composition,
                                     double phase_molar_mass,
-                                    double mass,
-                                    double thickness)
+                                    double mass)
     {
         const double mo_stoichiometry = getElementAmount(composition, "Mo");
-        if (mo_stoichiometry > 0.0 && phase_molar_mass > 0.0)
+        if (mo_stoichiometry > 0.0 && phase_molar_mass > 0.0 && isOxidizedMo(composition))
         {
             const double mo_moles = mass * mo_stoichiometry / phase_molar_mass;
             oxide_mo_moles += mo_moles;
@@ -138,7 +246,7 @@ void Simulation::JOGFormation()
         }
 
         const double ba_stoichiometry = getElementAmount(composition, "Ba");
-        if (ba_stoichiometry > 0.0 && phase_molar_mass > 0.0)
+        if (ba_stoichiometry > 0.0 && phase_molar_mass > 0.0 && isOxidizedElement(composition, "Ba"))
         {
             const double ba_moles = mass * ba_stoichiometry / phase_molar_mass;
             oxide_ba_moles += ba_moles;
@@ -156,11 +264,12 @@ void Simulation::JOGFormation()
             continue;
 
         const std::string phase = variable.getPhase();
-        if (phase != "condensed" && phase != "liquid" && phase != "ionic_liquid")
+        if (phase != "condensed" && phase != "liquid" && phase != "ionic_liquid" && phase != "liquid_ionic")
             continue;
 
         const std::string variable_name = variable.getName();
-        if ((phase == "liquid" || phase == "ionic_liquid") && variable_name.rfind("LIQUID (", 0) != 0)
+        const bool is_liquid_phase = phase == "liquid" || phase == "ionic_liquid" || phase == "liquid_ionic";
+        if (is_liquid_phase && variable_name.rfind("LIQUID (", 0) != 0)
             continue;
 
         const std::map<std::string, double> composition = variable.getComposition();
@@ -183,10 +292,18 @@ void Simulation::JOGFormation()
         double contribution = mass / theoretical_density;
             
 
-        if (getElementAmount(composition, "O") > 0.0)
-            accumulateOxidePhase(composition, phase_molar_mass, mass, contribution);
+        accumulateOxidePhase(composition, phase_molar_mass, mass);
 
-        if (variable_name == "CS2MOO4_S1 (condensed, at grain boundary)")
+        const std::map<int, std::map<std::string, double>> sublattice_composition =
+            variable.getSublatticeComposition();
+        const bool is_molybdate_liquid =
+            !sublattice_composition.empty()
+                ? hasMolybdateSecondSublattice(sublattice_composition)
+                : isMolybdateLiquidByStoichiometry(composition);
+
+        if (is_liquid_phase && is_molybdate_liquid)
+            JOG_liquid += contribution;
+        else if (variable_name == "CS2MOO4_S1 (condensed, at grain boundary)")
             JOG_Cs2MoO4 += contribution;
         else if (variable_name == "CS2MOO4_S2 (condensed, at grain boundary)")
             JOG_Cs2MoO4 += contribution;
@@ -225,6 +342,7 @@ void Simulation::JOGFormation()
 
     sciantix_variable["JOG (Cs2MoO4)"].setFinalValue(JOG_Cs2MoO4);
     sciantix_variable["JOG (BaMoO4)"].setFinalValue(JOG_BaMoO4);
+    sciantix_variable["JOG (liquid)"].setFinalValue(JOG_liquid);
     sciantix_variable["Mo in oxide fraction"].setFinalValue(
         total_mo_moles > 0.0 ? oxide_mo_moles / total_mo_moles : 0.0);
     sciantix_variable["Mo oxide valence"].setFinalValue(

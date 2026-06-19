@@ -81,13 +81,13 @@ std::vector<SciantixVariable> initializeHistoryVariable(
         SciantixVariable("Time step number", "(/)", Sciantix_history[8], Sciantix_history[8], 0),
         SciantixVariable("Temperature",
                          "(K)",
-                         Sciantix_history[0] * Sciantix_scaling_factors[4],
-                         Sciantix_history[1] * Sciantix_scaling_factors[4],
+                         Sciantix_history[0],
+                         Sciantix_history[1],
                          1),
         SciantixVariable("Fission rate",
                          "(fiss / m3 s)",
-                         Sciantix_history[2] * Sciantix_scaling_factors[5],
-                         Sciantix_history[3] * Sciantix_scaling_factors[5],
+                         Sciantix_history[2],
+                         Sciantix_history[3],
                          1),
         SciantixVariable("Hydrostatic stress", "(MPa)", Sciantix_history[4], Sciantix_history[5], 1),
         SciantixVariable("Steam pressure", "(atm)", Sciantix_history[9], Sciantix_history[10], toOutputStoichiometryDeviation),
@@ -512,7 +512,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[166] > 0.0 ? Sciantix_variables[166] : 1.0,
                          toOutputThermochimica),
         SciantixVariable("Pu content", "(mol/m3)", Sciantix_variables[163], Sciantix_variables[163],  toOutputThermochimica && toOutputMOX),
-        SciantixVariable("Phase std density", "(g/m3)", Sciantix_variables[165], Sciantix_variables[165], 0),
+        SciantixVariable("Phase std density", "(g/m3)", Sciantix_variables[165], Sciantix_variables[165], toOutputThermochimica),
         // CODE DEVELOPMENT : JOG VARIABLES - TO BE REDUCED, ONLY FOR PURPOSE OF MODELLING
         SciantixVariable("Mo/Ru in HCP_A3", "(/)", Sciantix_variables[180], Sciantix_variables[180], toOutputThermochimica),
         SciantixVariable("Mo in oxide fraction", "(/)", Sciantix_variables[181], Sciantix_variables[181], toOutputThermochimica),
@@ -522,6 +522,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("Ba oxide valence", "(/)", Sciantix_variables[185], Sciantix_variables[185], toOutputThermochimica),
         SciantixVariable("JOG (Cs2MoO4)", "(/)", Sciantix_variables[190], Sciantix_variables[190], toOutputThermochimica),
         SciantixVariable("JOG (BaMoO4)", "(/)", Sciantix_variables[191], Sciantix_variables[191], toOutputThermochimica),
+        SciantixVariable("JOG (liquid)", "(/)", Sciantix_variables[192], Sciantix_variables[192], toOutputThermochimica),
     };
         
     return init_sciantix_variable;
@@ -560,7 +561,7 @@ std::vector<std::string> getScalingFactorsNames()
         "Fabricated porosity",
         "Atoms per vacancy",
         "Grain-edge angle",
-        "Dummy 0",
+        "Cs production",
         "Dummy 1",
         "Dummy 2",
         "Dummy 3",

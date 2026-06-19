@@ -475,7 +475,7 @@ System Cs_in_MOX(SciantixArray<Matrix> &matrices, SciantixArray<FissionProducts>
     system_.setVolatileFP(volatile_fp["Cs"]);
     system_.setMatrix(matrices["MOX"]);
     system_.setRestructuredMatrix(0);
-    system_.setYield(0.170); // Cs from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
+    system_.setYield(0.170 * scaling_factors["Cs production"].getValue()); // Cs from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
     system_.setRadiusInLattice(0.21e-9);
     system_.setVolumeInLattice(matrices["MOX"].getSchottkyVolume());
     system_.setHenryConstant(0.0);

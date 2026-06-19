@@ -348,7 +348,7 @@ void InputReading(int                  Sciantix_options[],
 		Sciantix_scaling_factors[1] = ReadOneParameter("sf_fabricated_porosity", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[2] = ReadOneParameter("sf_atoms_per_vacancy", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[3] = ReadOneParameter("sf_grain_edge_angle", input_scaling_factors, input_check);
-		Sciantix_scaling_factors[4] = ReadOneParameter("sf_dummy_0", input_scaling_factors, input_check);
+		Sciantix_scaling_factors[4] = ReadOneParameter("sf_cs_production", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[5] = ReadOneParameter("sf_dummy_1", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[6] = ReadOneParameter("sf_dummy_2", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[7] = ReadOneParameter("sf_dummy_3", input_scaling_factors, input_check);
