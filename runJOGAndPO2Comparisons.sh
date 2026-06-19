@@ -21,7 +21,7 @@ python3 regression/test_MOX_pO2_verification/sciantix_verification/compare_scian
 python3 regression/test_MOX_pO2_verification/sciantix_verification/compare_sciantix_with_oc_csv.py
 
 echo "===== JOG COMPARISON MOX ====="
-python3 regression/test_JOG_MOX/run_and_plot.py
+python3 regression/JOG/PHENIXpins/run_and_plot_JOG.py
 
 echo "===== DONE ====="
 
