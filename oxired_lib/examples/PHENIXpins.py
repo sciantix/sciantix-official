@@ -352,9 +352,9 @@ def write_radial_input_histories(
         lines = []
         for j, t_h in enumerate(time_hours):
             lines.append(
-                f"{t_h:.4f}   {temperature_k[i]:.6e}   {fission_rate:.6e}   "
-                f"{hydrostatic_stress_mpa:.6e}   {pressure_pa[j]:.6e}   "
-                f"{om_profiles[j, i]:.6e}"
+                f"{t_h:.4f}   {temperature_k[i]:.0f}   {fission_rate:.2e}   "
+                f"{hydrostatic_stress_mpa:.2e}   {pressure_pa[j]:.2e}   "
+                f"{om_profiles[j, i]:.3e}"
             )
 
         (case_dir / "input_history.txt").write_text("\n".join(lines) + "\n")

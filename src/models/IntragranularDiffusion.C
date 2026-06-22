@@ -44,7 +44,17 @@ void Simulation::IntragranularDiffusion() // qui tutti i gas e i volatili, cerca
     // Model resolution
     for (auto& system : sciantix_system)
     {
-        if (!system.isGasOrVolatileFP())
+        if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
+        {
+            sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(
+                sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " released"].getInitialValue());
+
+            if (sciantix_variable[system.getFissionProductName() + " reacted"].getFinalValue() < 0.0)
+                sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(0.0);
+        }
+
+        if (!system.isGasFP())
             continue;
 
         switch (int(input_variable["iDiffusionSolver"].getValue()))
@@ -167,21 +177,6 @@ void Simulation::IntragranularDiffusion() // qui tutti i gas e i volatili, cerca
                 sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(0.0);
         }
         
-        if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
-        {            
-            sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(
-                sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
-                sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
-                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue() -
-                sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getFissionProductName() + " released"].getInitialValue());
-
-            
-            if (sciantix_variable[system.getFissionProductName() + " reacted"].getFinalValue() < 0.0)
-                sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(0.0);
-
-        }
-        // 
     }
 
     /**
@@ -193,20 +188,17 @@ void Simulation::IntragranularDiffusion() // qui tutti i gas e i volatili, cerca
     {
         for (auto& system : sciantix_system)
         {
-            if (system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+            if (system.getRestructuredMatrix() == 0 && system.isGasFP())
             {
-                {
-                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].setInitialValue(0.0);
-                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(0.0);
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].setInitialValue(0.0);
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(0.0);
 
-                    sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(
-                        sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
-                        sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
-                        sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue()
-                    );
-                }
+                sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(
+                    sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
+                    sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
+                    sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue()
+                );
             }
-            //
         }
     }
 }
@@ -217,7 +209,7 @@ void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system, Sc
 
     for (auto& system : sciantix_system)
     {
-        if (!system.isGasOrVolatileFP())
+        if (!system.isGasFP())
             continue;
 
         Model model_;
@@ -251,7 +243,7 @@ void defineSpectralDiffusion2Equations(SciantixArray<System>& sciantix_system, S
 
     for (auto& system : sciantix_system)
     {
-        if (!system.isGasOrVolatileFP())
+        if (!system.isGasFP())
             continue;
 
         Model model_;
