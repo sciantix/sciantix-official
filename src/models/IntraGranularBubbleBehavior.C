@@ -125,7 +125,7 @@ void Simulation::IntraGranularBubbleBehavior() // qui i gas e i volatili, cerca 
     // Atom per bubbles and bubble radius
     for (auto& system : sciantix_system)
     {
-        if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+        if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasFP())
         {
             if (sciantix_variable["Intragranular bubble concentration"].getFinalValue() > 0.0)
                 sciantix_variable["Intragranular " + system.getFissionProductName() + " atoms per bubble"].setFinalValue(

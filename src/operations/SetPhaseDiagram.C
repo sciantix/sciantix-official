@@ -113,6 +113,13 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
                 sciantix_system,
                 total_input_content,
                 location);
+
+        if (total_input_content <= 0.0 || components.empty())
+        {
+            moveFissionProductsWithoutThermochemistry();
+            return;
+        }
+
         std::set<std::string> active_elements;
         for (const auto& component : components)
             active_elements.insert(component.name);

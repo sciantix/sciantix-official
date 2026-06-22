@@ -1199,8 +1199,6 @@ std::vector<InputComponent> buildInputComponents(
             {
                 double atoms_available =
                     sciantix_variable[element_name + " produced"].getFinalValue() -
-                    sciantix_variable[element_name + " decayed"].getFinalValue() -
-                    sciantix_variable[element_name + " in grain"].getFinalValue() -
                     sciantix_variable[element_name + " released"].getInitialValue();
 
                 component.content = std::max(0.0, atoms_available / avogadro_number);
@@ -1408,15 +1406,6 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
                 clear_equilibrium = false;
             }
 
-            #if !defined(COUPLING_TU)
-            const bool checked_equilibrium_ready = oc.calculateEquilibriumChecked();
-            if (!checked_equilibrium_ready)
-            {
-                std::cerr << "Warning: OpenCalphad checked equilibrium calculation failed" << std::endl;
-                clear_equilibrium = false;
-            }
-            #endif
-
             oc.listResults(2);
 
             const bool extracted = oc.extractResults(output_data);
@@ -1572,9 +1561,11 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
 {
     auto setThermochemistryMass = [](ThermochemistryVariable& variable,
                                      double                   mass,
-                                     const std::map<std::string, double>& composition)
+                                     const std::map<std::string, double>& composition,
+                                     const std::map<int, std::map<std::string, double>>& sublattice_composition)
     {
         variable.setComposition(composition);
+        variable.setSublatticeComposition(sublattice_composition);
         variable.setFinalValue(mass);
     };
 
@@ -1586,6 +1577,18 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
 
         for (const auto& element_entry : phase_data.elements)
             composition[element_entry.first] = std::max(0.0, element_entry.second) / phase_data.moles;
+
+        return composition;
+    };
+
+    auto computeSublatticeComposition = [](const std::vector<OCSublatticeData>& sublattices)
+    {
+        std::map<int, std::map<std::string, double>> composition;
+        for (const auto& sublattice : sublattices)
+        {
+            for (const auto& constituent_entry : sublattice.composition)
+                composition[sublattice.index][constituent_entry.first] += constituent_entry.second;
+        }
 
         return composition;
     };
@@ -1611,7 +1614,8 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                     setThermochemistryMass(
                         thermochemistry_variable[liquid_variable_name],
                         phase_data.mass * content_scaling_factor,
-                        composition);
+                        composition,
+                        computeSublatticeComposition(phase_data.sublattices));
             }
         }
 
@@ -1635,7 +1639,8 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                         setThermochemistryMass(
                             thermochemistry_variable[variable_name],
                             species_entry.second.mass * content_scaling_factor,
-                            composition);
+                            composition,
+                            {});
                     }
                 }
             }
@@ -1659,7 +1664,8 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                         thermochemistry_variable[variable_name],
                         (element_mass != phase_data.element_masses.end() ? element_mass->second : 0.0) *
                             content_scaling_factor,
-                        {{element_entry.first, 1.0}});
+                        {{element_entry.first, 1.0}},
+                        {});
                 }
                 else if (has_uppercase_variable)
                 {
@@ -1668,7 +1674,8 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                         thermochemistry_variable[uppercase_variable_name],
                         (element_mass != phase_data.element_masses.end() ? element_mass->second : 0.0) *
                             content_scaling_factor,
-                        {{element_entry.first, 1.0}});
+                        {{element_entry.first, 1.0}},
+                        {});
                 }
             }
             continue;
@@ -1690,7 +1697,8 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                     thermochemistry_variable[variable_name],
                     (element_mass != phase_data.element_masses.end() ? element_mass->second : 0.0) *
                         content_scaling_factor,
-                    {{element_entry.first, 1.0}});
+                    {{element_entry.first, 1.0}},
+                    {});
             }
             else if (thermochemistry_variable.isElementPresent(uppercase_variable_name))
             {
@@ -1699,13 +1707,16 @@ void updateThermochemistryVariablesFromOutput(const std::map<std::string, OCPhas
                     thermochemistry_variable[uppercase_variable_name],
                     (element_mass != phase_data.element_masses.end() ? element_mass->second : 0.0) *
                         content_scaling_factor,
-                    {{element_entry.first, 1.0}});
+                    {{element_entry.first, 1.0}},
+                    {});
             }
         }
     }
 
+#if !defined(COUPLING_TU)
     if (location == "at grain boundary")
         sciantix_variable["O available content"].setFinalValue(oxygen_with_fps);
+#endif
 }
 
 void updateMatrixFromOutput(const OCOutputData&              output_data,
@@ -1755,16 +1766,46 @@ void updateGrainBoundaryFromOutput(const std::map<std::string, OCPhaseData>& sol
 
         if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
         {
-            const double available = (
+            const double fuel_available = std::max(0.0,
                 sciantix_variable[element + " produced"].getFinalValue() -
-                sciantix_variable[element + " decayed"].getFinalValue() -
-                sciantix_variable[element + " in grain"].getFinalValue() -
                 sciantix_variable[element + " released"].getInitialValue()
             );
 
-            const double updated_atoms = std::min(available, gas_moles * avogadro_number);
-            sciantix_variable[element + " at grain boundary"].setFinalValue(updated_atoms);
-            sciantix_variable[element + " reacted"].setFinalValue(available - updated_atoms);
+            double gap_available = 0.0;
+            bool has_gap_caesium = false;
+#if defined(COUPLING_TU)
+            has_gap_caesium = element == "Cs" && sciantix_variable.isElementPresent("Cs in the gap");
+            if (has_gap_caesium)
+                gap_available = std::max(0.0, sciantix_variable["Cs in the gap"].getInitialValue());
+#endif
+
+            const double available = fuel_available + gap_available;
+            const double gas_atoms =
+                std::min(available, std::max(0.0, gas_moles * avogadro_number));
+
+#if defined(COUPLING_TU)
+            if (has_gap_caesium)
+            {
+                const double reacted_total = available - gas_atoms;
+                const double gap_reacted = std::min(gap_available, reacted_total);
+                const double fuel_reacted = reacted_total - gap_reacted;
+                const double fuel_remaining = fuel_available - fuel_reacted;
+
+                sciantix_variable[element + " at grain boundary"].setFinalValue(
+                    std::max(0.0, fuel_remaining));
+                sciantix_variable[element + " reacted"].setFinalValue(
+                    std::max(0.0, fuel_reacted));
+                // Gap Cs is released inventory, regardless of whether OC places it
+                // in a gas or condensed phase. It is included in OC, then removed
+                // from the local fuel-node balance above.
+                sciantix_variable["Cs in the gap"].setFinalValue(
+                    gap_available);
+                continue;
+            }
+#endif
+
+            sciantix_variable[element + " at grain boundary"].setFinalValue(gas_atoms);
+            sciantix_variable[element + " reacted"].setFinalValue(available - gas_atoms);
         }
         else if (system.getRestructuredMatrix() == 0 && (system.isMetallicFP() || system.isCeramicFP()))
         {
