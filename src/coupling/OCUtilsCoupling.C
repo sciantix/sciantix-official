@@ -104,6 +104,9 @@ namespace OCASIAdapter
         void reset(bool clear_database);
 
     private:
+        int currentErrorCode() const;
+        void resetErrorCode();
+        bool consumeErrorCode(const std::string &operation);
         int getComponentIndex(const std::string &component_name) const;
         int currentElementCount() const;
         char* currentComponentName(int index) const;
@@ -244,6 +247,8 @@ extern "C"
     // static database data but owns independent conditions and results.
     void c_tqcceq(char *, int *, void **, void **);
     void c_tqselceq(char *, void **);
+    int c_errors_number();
+    void c_reset_errors_number();
 
     void gb_c_tqini(int, void *);
     void gb_c_tqrpfil(char *, int, char **, void *);
@@ -264,6 +269,8 @@ extern "C"
     void gb_c_reset_conditions(char *, void *);
     void gb_c_tqcceq(char *, int *, void **, void **);
     void gb_c_tqselceq(char *, void **);
+    int gb_c_errors_number();
+    void gb_c_reset_errors_number();
 }
 
 #define OCASI_CALL(symbol, ...)                         \
@@ -523,6 +530,31 @@ namespace OCASIAdapter
         // avoid calling back into OC from the C++ singleton destructor.
     }
 
+    int OpenCalphadInterface::currentErrorCode() const
+    {
+        return use_prefixed_symbols_ ? gb_c_errors_number() : c_errors_number();
+    }
+
+    void OpenCalphadInterface::resetErrorCode()
+    {
+        if (use_prefixed_symbols_)
+            gb_c_reset_errors_number();
+        else
+            c_reset_errors_number();
+    }
+
+    bool OpenCalphadInterface::consumeErrorCode(const std::string &operation)
+    {
+        const int error_code = currentErrorCode();
+        if (error_code == 0)
+            return true;
+
+        std::cerr << "Warning: OpenCalphad " << operation
+                  << " returned error code " << error_code << std::endl;
+        resetErrorCode();
+        return false;
+    }
+
     // Return the one-based OpenCalphad component index for a loaded element.
     // OpenCalphad returns zero/negative indices for missing components, so this
     // wrapper returns 0 when the element is not part of the selected system.
@@ -651,6 +683,7 @@ namespace OCASIAdapter
                                              double pressure,
                                              const std::map<std::string, double> &components)
     {
+        resetErrorCode();
         int condition_number = 0;
 
         // Set temperature (in Kelvin)
@@ -674,7 +707,7 @@ namespace OCASIAdapter
             OCASI_CALL(c_tqsetc, component_condition, component_index, 0, comp.second, &condition_number, &ceq_);
         }
 
-        return true;
+        return consumeErrorCode("condition setup");
     }
 
     bool OpenCalphadInterface::setReferenceState(const std::string &component_name,
@@ -690,8 +723,9 @@ namespace OCASIAdapter
         std::strncpy(phase, upperCopy(phase_name).c_str(), sizeof(phase) - 1);
 
         double reference_temperature_pressure[2] = {temperature, pressure};
+        resetErrorCode();
         OCASI_CALL(c_Set_Reference_State, component_index, phase, reference_temperature_pressure, &ceq_);
-        return true;
+        return consumeErrorCode("reference-state setup");
     }
 
     bool OpenCalphadInterface::setComponentPotential(const std::string &component_name, double chemical_potential)
@@ -705,9 +739,10 @@ namespace OCASIAdapter
 
         int condition_number = 0;
         char condition_name[] = "MU";
+        resetErrorCode();
         OCASI_CALL(c_tqsetc, condition_name, component_index, 0, chemical_potential, &condition_number, &ceq_);
 
-        return true;
+        return consumeErrorCode("component-potential setup");
     }
 
     bool OpenCalphadInterface::setPhaseStatus(const std::string &phase_name,
@@ -721,8 +756,9 @@ namespace OCASIAdapter
         std::strncpy(ph_name, phase_name.c_str(), sizeof(ph_name) - 1);
         ph_name[sizeof(ph_name) - 1] = '\0';
 
+        resetErrorCode();
         OCASI_CALL(c_Change_Status_Phase, ph_name, status, value, &ceq_);
-        return true;
+        return consumeErrorCode("phase-status setup");
     }
 
     bool OpenCalphadInterface::calculateEquilibrium(int grid_minimizer)
@@ -732,18 +768,20 @@ namespace OCASIAdapter
             
         char target[] = "";
         double g_val = 0.0;
+        resetErrorCode();
         OCASI_CALL(c_tqce, target, grid_minimizer, 0, &g_val, &ceq_);
 
-        return true;
+        return consumeErrorCode("equilibrium calculation");
     }
 
     bool OpenCalphadInterface::calculateEquilibriumChecked()
     {
         if (!ceq_ || !database_loaded_)
             return false;
+        resetErrorCode();
         OCASI_CALL(c_tqce_with_check_after, &ceq_);
 
-        return true;
+        return consumeErrorCode("checked equilibrium calculation");
     }
 
     bool OpenCalphadInterface::listResults(int output_mode)
@@ -751,9 +789,10 @@ namespace OCASIAdapter
         if (!ceq_ || !database_loaded_)
             return false;
 
+        resetErrorCode();
         OCASI_CALL(c_tqlr, output_mode, &ceq_);
 
-        return true;
+        return consumeErrorCode("result listing");
     }
 
     bool OpenCalphadInterface::isPhaseTupleStable(int phase_tuple_index)
@@ -1066,6 +1105,160 @@ namespace OCASIAdapter
 
 namespace OCUtilsCoupling
 {
+
+constexpr int recovery_start_search_iterations = 20;
+constexpr double recovery_bidirectional_max_target_k = 550.0;
+constexpr double recovery_max_target_k = 900.0;
+constexpr double recovery_min_temperature_k = 273.15;
+
+template <typename ApplyConditions, typename SolveEquilibrium>
+bool solveWithTemperatureSweep(double target_temperature,
+                               const std::string& location,
+                               ApplyConditions apply_conditions,
+                               SolveEquilibrium solve_equilibrium)
+{
+    if (!std::isfinite(target_temperature) ||
+        target_temperature <= 0.0 ||
+        target_temperature > recovery_max_target_k)
+    {
+        return false;
+    }
+
+    std::vector<double> start_candidates;
+    const auto add_start_candidate = [&start_candidates](double temperature)
+    {
+        if (!std::isfinite(temperature) || temperature <= 0.0)
+            return;
+
+        const auto already_present = std::find_if(
+            start_candidates.begin(),
+            start_candidates.end(),
+            [temperature](double existing_temperature)
+            {
+                return std::abs(existing_temperature - temperature) < 1.0e-6;
+            });
+        if (already_present == start_candidates.end())
+            start_candidates.push_back(temperature);
+    };
+
+    const bool bidirectional_search =
+        target_temperature <= recovery_bidirectional_max_target_k;
+    const double step_fraction = bidirectional_search ? 0.02 : 0.01;
+    const double search_step = std::max(
+        8.0,
+        target_temperature * step_fraction);
+    const double search_span =
+        bidirectional_search
+            ? std::max(160.0, target_temperature * 0.5)
+            : recovery_start_search_iterations * search_step;
+
+    for (int iteration = 1; iteration <= recovery_start_search_iterations; ++iteration)
+    {
+        const double offset = iteration * search_step;
+        const double hotter_candidate = target_temperature + offset;
+        const double colder_candidate = target_temperature - offset;
+
+        if (hotter_candidate <= target_temperature + search_span)
+            add_start_candidate(hotter_candidate);
+        if (bidirectional_search &&
+            colder_candidate >= recovery_min_temperature_k)
+        {
+            add_start_candidate(colder_candidate);
+        }
+    }
+
+    if (start_candidates.empty())
+        return false;
+
+    for (double start_temperature : start_candidates)
+    {
+        std::cerr << "Warning: probing OpenCalphad " << location
+                  << " recovery start at " << start_temperature
+                  << " K for target " << target_temperature
+                  << " K" << std::endl;
+
+        if (!apply_conditions(start_temperature))
+        {
+            std::cerr << "Warning: OpenCalphad recovery start could not set "
+                      << location << " conditions at "
+                      << start_temperature << " K" << std::endl;
+            continue;
+        }
+
+        if (!solve_equilibrium())
+        {
+            std::cerr << "Warning: OpenCalphad recovery start failed for "
+                      << location << " at "
+                      << start_temperature << " K" << std::endl;
+            continue;
+        }
+
+        const double sweep_delta_temperature =
+            std::abs(target_temperature - start_temperature);
+        const int sweep_intervals = std::min(
+            16,
+            std::max(
+                4,
+                static_cast<int>(std::ceil(
+                    sweep_delta_temperature / 10.0))));
+
+        std::cerr << "Warning: retrying OpenCalphad " << location
+                  << " equilibrium with temperature sweep from "
+                  << start_temperature << " K to " << target_temperature
+                  << " K" << std::endl;
+
+        bool sweep_ready = true;
+        for (int step = 1; step <= sweep_intervals; ++step)
+        {
+            const double fraction =
+                static_cast<double>(step) / static_cast<double>(sweep_intervals);
+            const double sweep_temperature =
+                start_temperature + fraction * (target_temperature - start_temperature);
+
+            if (!apply_conditions(sweep_temperature))
+            {
+                std::cerr << "Warning: OpenCalphad recovery sweep could not set "
+                          << location << " conditions at "
+                          << sweep_temperature << " K" << std::endl;
+                sweep_ready = false;
+                break;
+            }
+
+            if (!solve_equilibrium())
+            {
+                std::cerr << "Warning: OpenCalphad recovery sweep failed for "
+                          << location << " at "
+                          << sweep_temperature << " K" << std::endl;
+                sweep_ready = false;
+                break;
+            }
+        }
+
+        if (sweep_ready)
+            return true;
+    }
+
+    return false;
+}
+
+template <typename ApplyConditions, typename SolveEquilibrium>
+bool solveAtTargetOrWithTemperatureSweep(double target_temperature,
+                                         const std::string& location,
+                                         ApplyConditions apply_conditions,
+                                         SolveEquilibrium solve_equilibrium)
+{
+    if (!apply_conditions(target_temperature))
+        return false;
+
+    if (solve_equilibrium())
+        return true;
+
+    return solveWithTemperatureSweep(
+        target_temperature,
+        location,
+        apply_conditions,
+        solve_equilibrium);
+}
     
 bool fileExists(const std::string& file_path)
 {
@@ -1374,46 +1567,70 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
                 components_map[comp.name] = comp.fraction;
             }
 
-            const bool conditions_ready = oc.setConditions(
-                temperature,
-                pressure,
-                components_map);
-            if (!conditions_ready)
-            {
-                std::cerr << "Error: Failed to set OpenCalphad conditions" << std::endl;
-                return false;
-            }
-
             const double oxygen_potential_j_per_mol_o = oxygen_potential_kj_per_mol_o2 * 1.0e3 / 2.0;
-            const bool oxygen_potential_ready = oc.setComponentPotential("O", oxygen_potential_j_per_mol_o);
-            if (!oxygen_potential_ready)
+            auto apply_conditions = [&](double calculation_temperature)
             {
-                std::cerr << "Error: Failed to set OpenCalphad oxygen potential condition" << std::endl;
+                const bool conditions_ready = oc.setConditions(
+                    calculation_temperature,
+                    pressure,
+                    components_map);
+                if (!conditions_ready)
+                {
+                    std::cerr << "Error: Failed to set OpenCalphad conditions at "
+                              << calculation_temperature << " K" << std::endl;
+                    return false;
+                }
+
+                const bool oxygen_potential_ready =
+                    oc.setComponentPotential("O", oxygen_potential_j_per_mol_o);
+                if (!oxygen_potential_ready)
+                    std::cerr << "Error: Failed to set OpenCalphad oxygen potential condition" << std::endl;
+                return oxygen_potential_ready;
+            };
+
+            auto solve_equilibrium = [&]()
+            {
+                const bool initial_equilibrium_ready = oc.calculateEquilibrium(0);
+                if (!initial_equilibrium_ready)
+                    std::cerr << "Warning: Initial OpenCalphad equilibrium calculation failed" << std::endl;
+                return initial_equilibrium_ready;
+            };
+
+            const bool equilibrium_ready = solveAtTargetOrWithTemperatureSweep(
+                temperature,
+                location,
+                apply_conditions,
+                solve_equilibrium);
+            if (!equilibrium_ready)
+            {
+                output_data.solution_phases.clear();
+                output_data.components.clear();
                 return false;
             }
 
-            bool clear_equilibrium = true;
-
-            const bool initial_equilibrium_ready =
-#if defined(COUPLING_TU)
-                oc.calculateEquilibrium(-1);
-#else
-                oc.calculateEquilibrium(0);
-#endif
-            if (!initial_equilibrium_ready)
+            auto extract_and_validate = [&]()
             {
-                std::cerr << "Warning: Initial OpenCalphad equilibrium calculation failed" << std::endl;
-                clear_equilibrium = false;
+                output_data.solution_phases.clear();
+                output_data.components.clear();
+                const bool extracted = oc.extractResults(output_data);
+                return extracted && validateOpenCalphadOutput(output_data, components, location);
+            };
+
+            if (extract_and_validate())
+                return true;
+
+            std::cerr << "Warning: OpenCalphad output failed validation for "
+                      << location << "; retrying with temperature sweep" << std::endl;
+
+            if (solveWithTemperatureSweep(temperature, location, apply_conditions, solve_equilibrium) &&
+                extract_and_validate())
+            {
+                return true;
             }
 
-            oc.listResults(2);
-
-            const bool extracted = oc.extractResults(output_data);
-
-            const bool output_valid =
-                extracted && validateOpenCalphadOutput(output_data, components, location);
-
-            return clear_equilibrium && output_valid;
+            output_data.solution_phases.clear();
+            output_data.components.clear();
+            return false;
         }
         else
         {
