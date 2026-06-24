@@ -1106,7 +1106,7 @@ namespace OCASIAdapter
 namespace OCUtilsCoupling
 {
 
-constexpr int recovery_start_search_iterations = 20;
+constexpr int recovery_start_search_iterations = 10;
 constexpr double recovery_bidirectional_max_target_k = 550.0;
 constexpr double recovery_max_target_k = 900.0;
 constexpr double recovery_min_temperature_k = 273.15;
