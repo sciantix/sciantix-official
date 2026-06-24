@@ -15,11 +15,12 @@ from matplotlib.patches import Circle
 plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update({
     "figure.figsize": (10, 7),
+    "font.family": "serif",
+    "font.serif": ["Times New Roman", "Times", "Nimbus Roman", "DejaVu Serif"],
+    "mathtext.fontset": "dejavuserif",
     "font.size": 20,
     "axes.labelsize": 20,
-    "axes.labelweight": "bold",
     "axes.titlesize": 20,
-    "axes.titleweight": "bold",
     "xtick.labelsize": 20,
     "ytick.labelsize": 20,
     "legend.fontsize": 20,
@@ -27,13 +28,14 @@ plt.rcParams.update({
     "axes.grid": True,
     "grid.alpha": 0.5,
     "grid.linestyle": "--",
-    "lines.linewidth": 2,
+    "lines.linewidth": 3,
     "lines.markersize": 6,
     "legend.frameon": False,
 })
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parents[1]
+WSL_ROOT = SCRIPT_DIR.parents[5]
 sys.path.insert(0, str(PROJECT_ROOT / "oxired_lib"))
 
 from oxired.fission_yields import (  # noqa: E402
@@ -45,16 +47,14 @@ from oxired.fission_yields import (  # noqa: E402
 )
 
 
-OUTPUT_STEM = SCRIPT_DIR / "fission_product_yield_bubbles"
-PIE_OUTPUT_STEM = SCRIPT_DIR / "atomic_percent_pie"
+OUTPUT_STEM = WSL_ROOT / "OverLeaf/JOGSCIANTIX/Images" / "fission_product_yield_bubbles"
+PIE_OUTPUT_STEM = WSL_ROOT / "OverLeaf/JOGSCIANTIX/Images" / "atomic_percent_pie"
 ELEMENT_GAP = 0.4
 CATEGORY_SPACING = 2.0
 
 DISTINCT_COLOR_VALUES = [
-    "#6baed6", "#fd8d3c", "#74c476", "#9e9ac8", "#e377c2", "#8c564b",
-    "#17becf", "#bcbd22", "#c7a9d9", "#fdae6b", "#a1d99b", "#bcbddc",
-    "#fdd0a2", "#9ecae1", "#c994c7", "#bdbdbd", "#66c2a5", "#fc8d62",
-    "#8da0cb", "#e78ac3", "#a6d854", "#ffd92f", "#e5c494", "#b3b3b3",
+    "#736F3F", "#BFAE56", "#B29DA6", "#D9AF32", "#A66226", "#733426",
+    "#737675", "#9D6953", "#363726",  "#785C2D",
 ]
 
 
@@ -62,8 +62,8 @@ CATEGORY_STYLE = {
     SOLID_SOLUTION: {
         "label": "Solid solution",
         "heading": "Solid\nsolution",
-        "color": DISTINCT_COLOR_VALUES[0],
-        "edge": DISTINCT_COLOR_VALUES[0],
+        "color": DISTINCT_COLOR_VALUES[4],
+        "edge": DISTINCT_COLOR_VALUES[4],
     },
     OXIDE_PRECIPITATES: {
         "label": "Oxide precipitates",
@@ -158,7 +158,7 @@ def draw_bubble_plot() -> None:
     ]
     max_row_width = max(row_widths)
 
-    fig_width = max(10.5, max_row_width + 3.2)
+    fig_width = max(10.5, max_row_width)
     fig_height = 7
 
     fig, axis = plt.subplots(figsize=(fig_width, fig_height), constrained_layout=True)
@@ -207,7 +207,7 @@ def draw_bubble_plot() -> None:
                 ha="center",
                 va="center",
                 fontweight="bold",
-                fontsize=18,
+                fontsize=20,
                 color="#171717",
                 zorder=4,
             )
@@ -225,7 +225,7 @@ def draw_bubble_plot() -> None:
                 )
 
     axis.set_title(
-        "Elemental fission-product yields in Phenix MOX fuel\nData: Samuelsson et al., Journal of Nuclear Materials 532 (2020) 151969.",
+        "Fission-product yields in MOX fuel", #\nData extracted from K. Samuelsson et al. / Journal of Nuclear Materials 532 (2020) 151969.",
         fontweight="bold",
         y =1.02,
         loc="center"
@@ -236,7 +236,7 @@ def draw_bubble_plot() -> None:
     axis.set_aspect("equal", adjustable="box")
     axis.axis("off")
 
-    fig.savefig(f"{OUTPUT_STEM}.svg", facecolor=fig.get_facecolor())
+    fig.savefig(f"{OUTPUT_STEM}.png", facecolor=fig.get_facecolor())
     plt.close(fig)
 
 
@@ -311,7 +311,7 @@ def draw_atomic_percent_pie() -> None:
         )
 
     axis.set_title(
-        "JOG atomic composition",
+        "JOG composition",
         fontweight="bold",
         y=0.94,
         loc="center",
@@ -319,7 +319,7 @@ def draw_atomic_percent_pie() -> None:
     axis.set_aspect("equal")
     fig.tight_layout()
 
-    fig.savefig(f"{PIE_OUTPUT_STEM}.svg", facecolor=fig.get_facecolor())
+    fig.savefig(f"{PIE_OUTPUT_STEM}.png", facecolor=fig.get_facecolor())
     plt.close(fig)
 
 
