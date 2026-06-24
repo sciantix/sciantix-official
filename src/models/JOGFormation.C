@@ -78,6 +78,7 @@ void Simulation::JOGFormation()
     double JOG_Cs2MoO4 = 0.0;
     double JOG_BaMoO4 = 0.0;
     double JOG_liquid = 0.0;
+    double JOG_Pd = 0.0;
 
     double total_mo_moles = 0.0;
     double oxide_mo_moles = 0.0;
@@ -91,6 +92,7 @@ void Simulation::JOGFormation()
     constexpr double minimum_molybdate_oxygen_to_mo = 3.0;
     constexpr double minimum_molybdate_valence = 5.0;
     constexpr double mo_valence_tolerance = 1.0e-6;
+    constexpr double palladium_atomic_mass = 106.42;
 
     auto normalizeElementName = [](std::string element)
     {
@@ -309,6 +311,12 @@ void Simulation::JOGFormation()
             JOG_Cs2MoO4 += contribution;
         else if (variable_name == "BAMOO4 (condensed, at grain boundary)")
             JOG_BaMoO4 += contribution;
+        else if (variable_name == "FCC_A1 (condensed, at grain boundary)" && phase_molar_mass > 0.0)
+        {
+            const double pd_mass_fraction =
+                getElementAmount(composition, "Pd") * palladium_atomic_mass / phase_molar_mass;
+            JOG_Pd += contribution * pd_mass_fraction;
+        }
         else if (variable_name == "HCP_A3 (condensed, at grain boundary)")
         {
 
@@ -343,6 +351,7 @@ void Simulation::JOGFormation()
     sciantix_variable["JOG (Cs2MoO4)"].setFinalValue(JOG_Cs2MoO4);
     sciantix_variable["JOG (BaMoO4)"].setFinalValue(JOG_BaMoO4);
     sciantix_variable["JOG (liquid)"].setFinalValue(JOG_liquid);
+    sciantix_variable["JOG (Pd)"].setFinalValue(JOG_Pd);
     sciantix_variable["Mo in oxide fraction"].setFinalValue(
         total_mo_moles > 0.0 ? oxide_mo_moles / total_mo_moles : 0.0);
     sciantix_variable["Mo oxide valence"].setFinalValue(

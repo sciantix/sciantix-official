@@ -523,6 +523,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("JOG (Cs2MoO4)", "(/)", Sciantix_variables[190], Sciantix_variables[190], toOutputThermochimica),
         SciantixVariable("JOG (BaMoO4)", "(/)", Sciantix_variables[191], Sciantix_variables[191], toOutputThermochimica),
         SciantixVariable("JOG (liquid)", "(/)", Sciantix_variables[192], Sciantix_variables[192], toOutputThermochimica),
+        SciantixVariable("JOG (Pd)", "(/)", Sciantix_variables[193], Sciantix_variables[193], toOutputThermochimica),
     };
         
     return init_sciantix_variable;
