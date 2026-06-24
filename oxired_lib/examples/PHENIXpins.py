@@ -16,6 +16,7 @@ The SCIANTIX output written here uses the redistributed matrix O/M profile.
 """
 
 import os
+import shutil
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable
@@ -332,6 +333,9 @@ def write_radial_input_histories(
     temperature_k: np.ndarray,
     om_profiles: np.ndarray,
     fission_rate: float,
+    cooldown_hours: float = 24.0,
+    cooldown_temperature_k: float = 300.0,
+    om_simplification_decimals: int = 3,
 ) -> None:
     """Write one SCIANTIX ``input_history.txt`` file per radial point.
 
@@ -349,15 +353,56 @@ def write_radial_input_histories(
         case_dir = output_root / make_case_dir_name(i + 1, float(r_mm))
         case_dir.mkdir(parents=True, exist_ok=True)
 
+        rounded_om = np.round(om_profiles[:, i], om_simplification_decimals)
+        change_indices = np.flatnonzero(rounded_om[1:] != rounded_om[:-1])
+        keep_history_point = np.zeros(len(time_hours), dtype=bool)
+        keep_history_point[0] = True
+        keep_history_point[-1] = True
+        keep_history_point[change_indices] = True
+        keep_history_point[change_indices + 1] = True
+        history_indices = np.flatnonzero(keep_history_point)
+
         lines = []
-        for j, t_h in enumerate(time_hours):
+        for j in history_indices:
+            t_h = time_hours[j]
             lines.append(
                 f"{t_h:.4f}   {temperature_k[i]:.0f}   {fission_rate:.2e}   "
                 f"{hydrostatic_stress_mpa:.2e}   {pressure_pa[j]:.2e}   "
                 f"{om_profiles[j, i]:.3e}"
             )
 
+        if cooldown_hours > 0.0:
+            shutdown_time_h = time_hours[-1] + 1.0e-4
+            cooldown_end_time_h = time_hours[-1] + cooldown_hours
+            cooldown_points = (
+                (shutdown_time_h, temperature_k[i]),
+                (cooldown_end_time_h, cooldown_temperature_k),
+            )
+            for t_h, temp_k in cooldown_points:
+                lines.append(
+                    f"{t_h:.4f}   {temp_k:.0f}   {0.0:.2e}   "
+                    f"{hydrostatic_stress_mpa:.2e}   {pressure_pa[-1]:.2e}   "
+                    f"{om_profiles[-1, i]:.3e}"
+                )
+
         (case_dir / "input_history.txt").write_text("\n".join(lines) + "\n")
+
+
+def copy_radial_input_histories_to_regression(history_root: Path, regression_root: Path) -> int:
+    """Copy generated radial histories into the matching regression point folders."""
+    copied = 0
+    for history_file in sorted(history_root.glob("point_*/input_history.txt")):
+        target_case_dir = regression_root / history_file.parent.name
+        if not target_case_dir.is_dir():
+            raise FileNotFoundError(f"Missing regression case directory: {target_case_dir}")
+
+        shutil.copy2(history_file, target_case_dir / "input_history.txt")
+        copied += 1
+
+    if copied == 0:
+        raise FileNotFoundError(f"No generated input histories found in {history_root}")
+
+    return copied
 
 def main() -> None:
     # =========================
@@ -372,7 +417,7 @@ def main() -> None:
 
     # Requested SCIANTIX radial histories.
     n_radial_points = 5
-    n_time_points = 10
+    n_time_points = 100
 
     # Oxygen atoms consumed by fixed sinks per 100 initial metal atoms per at.% FIMA.
     # Ba and Mo are excluded and handled separately.
@@ -431,6 +476,8 @@ def main() -> None:
     print(f"initial O/M:                   {initial_om:.6f}")
     print(f"final average burnup:          {burnup_final:.6f} at.%")
     print(f"fission rate:                  {fission_rate:.6e} fiss/m3/s")
+    print("history O/M simplification:    3 decimal places")
+    print("zero-fission cooldown:         24.000000 h to 300 K")
     print(f"fixed O sink per at.%:         {fixed_oxygen_per_at_percent_value:.6f}")
     print(f"Ba oxide fraction:             {ba_oxide_fraction:.6f}")
     print(f"Ba valence:                    {ba_valence:.6f}")
@@ -554,13 +601,7 @@ def main() -> None:
         area_average(edges, row)
         for row in free_surplus_delta_profiles
     ])
-    balance_residual_average = released_average - (
-        fixed_sink_average
-        + ba_sink_average
-        + mo_sink_average
-        + matrix_uptake_average
-        + free_surplus_delta_average
-    )
+
     released_cumulative_average = np.cumsum(released_average)
     fixed_sink_cumulative_average = np.cumsum(fixed_sink_average)
     ba_sink_cumulative_average = np.cumsum(ba_sink_average)
@@ -583,38 +624,46 @@ def main() -> None:
         om_profiles=om_profiles,
         fission_rate=fission_rate,
     )
+    regression_root = Path(__file__).resolve().parents[2] / "regression" / "JOG" / "PHENIXpins"
+    copied_histories = copy_radial_input_histories_to_regression(output_root, regression_root)
 
-    fig, axis = plt.subplots(1,1, figsize=(5,5))
-    axis.plot(radius_mm*1e-3/r_outer, temperature, marker="o", color=PAPER_PALETTE[0])
-    axis.set_xlabel("R/Ro")
-    axis.set_ylabel("Temperature (K)")
-    plt.tight_layout()
-    plt.savefig(output_root / "Tprofile.png")
-
-    fig, axis = plt.subplots(1,1, figsize=(9,5))
-    for idx in np.linspace(0, len(average_burnup) - 1, 6, dtype=int):
+    fig, axis = plt.subplots(1,1, figsize=(13,5))
+    for color_index, idx in enumerate(np.linspace(0, len(average_burnup) - 1, 5, dtype=int)):
         axis.plot(
             radius_mm *1e-3/ r_outer,
             om_profiles[idx],
             marker="o",
-            label=f"BU = {average_burnup[idx]:.0f} at.%",
-            color=PAPER_PALETTE[idx]
+            label=f"Burnup = {average_burnup[idx]:.0f} at.%",
+            color=PAPER_PALETTE[color_index % len(PAPER_PALETTE)]
         )
+    secondary_axis = axis.twinx()
+    secondary_axis.plot(radius_mm*1e-3/r_outer, temperature, marker="^", color=PAPER_PALETTE[-1])
     axis.set_xlabel("R/Ro")
-    axis.set_ylabel("Oxygen-to-Metal ratio")
-    axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
+    axis.set_xlim(0.0-0.1, 1.0+0.1)
+    axis.set_xticks(np.linspace(0.0, 1.0, 6))
+    axis.set_ylim(1.92, 2.01)
+    secondary_axis.set_ylim(700.0, 2100.0)
+    secondary_axis.grid(False)
+    axis.set_ylabel("Oxygen-to-Metal ratio (-)")
+    axis.set_yticks([1.92, 1.94, 1.96, 1.98, 2.00])
+    axis.tick_params(axis="y")
+    secondary_axis.tick_params(axis="y", labelcolor=PAPER_PALETTE[-1])
+    secondary_axis.set_yticks(np.linspace(700.0, 2100.0, 8))
+    secondary_axis.set_ylabel("Temperature (K)", color=PAPER_PALETTE[-1])
+    axis.legend(loc="center left", ncol=1, bbox_to_anchor=(1.3, 0.5))
     plt.tight_layout()
-    plt.savefig(output_root / "OMprofile.png")
+    
+    SCRIPT_DIR = Path(__file__).resolve().parent
+    plt.savefig(SCRIPT_DIR.parents[3] / "OverLeaf/JOGSCIANTIX/Images/Oprofile.png")
 
     fig, axis = plt.subplots(1,1, figsize=(5+4,5))
     axis.plot(
         average_burnup,
         ioxire1_like_average_oms,
-        marker="^",
         label="Δ(O/M) = 0.005 %Bu",
         color=PAPER_PALETTE[0]
     )
-    axis.plot(average_burnup, average_oms, marker="s", label="This work", color=PAPER_PALETTE[1])
+    axis.plot(average_burnup, average_oms, label="This work", color=PAPER_PALETTE[1])
     axis.set_xlabel("Average burnup (at.%)")
     axis.set_ylabel("Average Oxygen-to-Metal ratio")
     axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
@@ -622,13 +671,13 @@ def main() -> None:
     plt.savefig(output_root / "OMAverage.png")
 
     fig, axis = plt.subplots(1,1, figsize=(5+4,5))
-    axis.plot(average_burnup, released_cumulative_average*100, marker="o", label="Released", color=PAPER_PALETTE[0])
-    axis.plot(average_burnup, fixed_sink_cumulative_average*100, marker="o", label="Fixed sinks", color=PAPER_PALETTE[1])
-    axis.plot(average_burnup, ba_sink_cumulative_average*100, marker="o", label="Ba sink", color=PAPER_PALETTE[2])
-    axis.plot(average_burnup, mo_sink_cumulative_average*100, marker="o", label="Mo sink", color=PAPER_PALETTE[3])
-    axis.plot(average_burnup, matrix_uptake_cumulative_average*100, marker="o", label="Matrix uptake", color=PAPER_PALETTE[4])
-    axis.plot(average_burnup, free_surplus_cumulative_average*100, marker="o", label="Free O", color=PAPER_PALETTE[5])
-    axis.plot(average_burnup, balance_residual_cumulative_average*100, marker="x", linestyle="--", label="Residual", color=PAPER_PALETTE[6])
+    axis.plot(average_burnup, released_cumulative_average*100, label="Released", color=PAPER_PALETTE[0])
+    axis.plot(average_burnup, fixed_sink_cumulative_average*100, label="Fixed sinks", color=PAPER_PALETTE[1])
+    axis.plot(average_burnup, ba_sink_cumulative_average*100, label="Ba sink", color=PAPER_PALETTE[2])
+    axis.plot(average_burnup, mo_sink_cumulative_average*100, label="Mo sink", color=PAPER_PALETTE[3])
+    axis.plot(average_burnup, matrix_uptake_cumulative_average*100, label="Matrix uptake", color=PAPER_PALETTE[4])
+    axis.plot(average_burnup, free_surplus_cumulative_average*100, label="Free O", color=PAPER_PALETTE[5])
+    axis.plot(average_burnup, balance_residual_cumulative_average*100, linestyle="--", label="Residual", color=PAPER_PALETTE[6])
     axis.set_xlabel("Average burnup (at.%)")
     axis.set_ylabel("Oxygen to Initial Metal (%)")
     axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
@@ -654,7 +703,7 @@ def main() -> None:
     for i, values, label in zip([0, 1, 2, 3, 4], positive_terms, labels):
         axis.bar(average_burnup, values, bottom=bottom, width=0.5, label=label, color=PAPER_PALETTE[i])
         bottom = bottom + values
-    axis.plot(average_burnup, released_cumulative_average, marker="o", color="k", label="Released")
+    axis.plot(average_burnup, released_cumulative_average, color="k", label="Released")
     axis.set_xlabel("Average burnup (at.%)")
     axis.set_ylabel("Oxygen to Initial Metal (%)")
     axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
@@ -662,6 +711,7 @@ def main() -> None:
     plt.savefig(output_root / "EvolutionOxygenBalanceClosure.png")
 
     print(f"Generated Sciantix input histories in: {output_root}")
+    print(f"Copied {copied_histories} input histories to: {regression_root}")
 
 
 if __name__ == "__main__":
