@@ -1,14 +1,12 @@
 Run summary
 
-point_01_r_0p2719mm: returncode=0
-point_02_r_0p8157mm: returncode=0
-point_03_r_1p3595mm: returncode=0
-point_04_r_1p9033mm: returncode=0
-point_05_r_2p4471mm: returncode=0
+point_01_r_0p3399mm: returncode=0
+point_02_r_1p0196mm: returncode=0
+point_03_r_1p6994mm: returncode=0
+point_04_r_2p3791mm: returncode=0
 
 Gold comparison summary
-point_01_r_0p2719mm: OK, report=gold/point_01_r_0p2719mm/comparison_report.txt
-point_02_r_0p8157mm: DIFF, report=gold/point_02_r_0p8157mm/comparison_report.txt
-point_03_r_1p3595mm: DIFF, report=gold/point_03_r_1p3595mm/comparison_report.txt
-point_04_r_1p9033mm: DIFF, report=gold/point_04_r_1p9033mm/comparison_report.txt
-point_05_r_2p4471mm: DIFF, report=gold/point_05_r_2p4471mm/comparison_report.txt
+point_01_r_0p3399mm: DIFF, report=gold/point_01_r_0p3399mm/comparison_report.txt
+point_02_r_1p0196mm: DIFF, report=gold/point_02_r_1p0196mm/comparison_report.txt
+point_03_r_1p6994mm: DIFF, report=gold/point_03_r_1p6994mm/comparison_report.txt
+point_04_r_2p3791mm: OK, report=gold/point_04_r_2p3791mm/comparison_report.txt

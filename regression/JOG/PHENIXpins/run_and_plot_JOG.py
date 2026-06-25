@@ -1939,6 +1939,9 @@ def plot_radial_profiles(
             out=np.zeros_like(mo_hcp_profile),
             where=ru_hcp_profile > 0.0,
         )
+        def fima_to_reference_burnup(fima_values: np.ndarray) -> np.ndarray:
+            return np.interp(fima_values, reference_fima, reference_burnup)
+
         if not is_all_zero(mo_hcp_over_ru_hcp):
             fig, axis = plt.subplots(1, 1, figsize=(9, 5))
             for color, (index, snapshot_label) in zip(snapshot_colors, snapshot_entries):
@@ -1982,7 +1985,7 @@ def plot_radial_profiles(
                     label="This work",
                 )
                 axis.scatter(
-                    tourasse_burnup_mo_ru,
+                    fima_to_reference_burnup(tourasse_fima),
                     tourasse_burnup_mo_ru,
                     edgecolors=COLORS[7],
                     facecolors="none",
@@ -1992,7 +1995,7 @@ def plot_radial_profiles(
                     linewidths=1.6,
                 )
                 axis.scatter(
-                    fayette_burnup_mo_ru,
+                    fima_to_reference_burnup(fayette_fima),
                     fayette_burnup_mo_ru,
                     edgecolors=COLORS[6],
                     facecolors="none",
@@ -2002,7 +2005,7 @@ def plot_radial_profiles(
                     linewidths=1.6,
                 )
                 axis.hlines(21.9/19.8, min(reference_burnup), max(reference_burnup), color="black", label="Theoretical yield ratio")
-                configure_time_axis(axis, reference_burnup, reference_burnup)
+                configure_burnup_axis(axis, reference_burnup)
                 axis.set_ylabel("Mo / Ru in FMP (-)")
                 axis.set_ylim(0,1.25)
                 axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
