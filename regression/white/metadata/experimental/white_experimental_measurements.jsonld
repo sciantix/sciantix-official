@@ -21,7 +21,7 @@
   "dcterms:identifier": "white-2004-intergranular-swelling-validation-targets",
   "dcterms:title": "White intergranular swelling validation targets for SCIANTIX regression cases",
   "dcterms:description": "Case-level intergranular gas swelling values used by the SCIANTIX White regression parity workflow.",
-  "generatedAt": "2026-06-25T20:42:49.844070+00:00",
+  "generatedAt": "2026-06-25T21:12:00.563025+00:00",
   "source": [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld"

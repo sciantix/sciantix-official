@@ -8,7 +8,10 @@ import shutil
 import multiprocessing
 from regression.core.common import clean_case_dir, run_sciantix, load_output, load_gold
 from regression.core.compare import compare_outputs
-from regression.white.semantic_export import export_white_case_semantic_outputs
+from regression.white.semantic_export import (
+    export_white_case_semantic_outputs,
+    export_white_experimental_measurements,
+)
 
 
 def run_single_case(args):
@@ -95,6 +98,9 @@ def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1):
         return []
 
     print(f"Running {len(tasks)} cases in {group_name} with {jobs} threads...")
+
+    if group_name == "white":
+        export_white_experimental_measurements(base)
 
     results = []
     
