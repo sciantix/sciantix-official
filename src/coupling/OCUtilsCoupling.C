@@ -1105,160 +1105,6 @@ namespace OCASIAdapter
 
 namespace OCUtilsCoupling
 {
-
-constexpr int recovery_start_search_iterations = 10;
-constexpr double recovery_bidirectional_max_target_k = 550.0;
-constexpr double recovery_max_target_k = 900.0;
-constexpr double recovery_min_temperature_k = 273.15;
-
-template <typename ApplyConditions, typename SolveEquilibrium>
-bool solveWithTemperatureSweep(double target_temperature,
-                               const std::string& location,
-                               ApplyConditions apply_conditions,
-                               SolveEquilibrium solve_equilibrium)
-{
-    if (!std::isfinite(target_temperature) ||
-        target_temperature <= 0.0 ||
-        target_temperature > recovery_max_target_k)
-    {
-        return false;
-    }
-
-    std::vector<double> start_candidates;
-    const auto add_start_candidate = [&start_candidates](double temperature)
-    {
-        if (!std::isfinite(temperature) || temperature <= 0.0)
-            return;
-
-        const auto already_present = std::find_if(
-            start_candidates.begin(),
-            start_candidates.end(),
-            [temperature](double existing_temperature)
-            {
-                return std::abs(existing_temperature - temperature) < 1.0e-6;
-            });
-        if (already_present == start_candidates.end())
-            start_candidates.push_back(temperature);
-    };
-
-    const bool bidirectional_search =
-        target_temperature <= recovery_bidirectional_max_target_k;
-    const double step_fraction = bidirectional_search ? 0.02 : 0.01;
-    const double search_step = std::max(
-        8.0,
-        target_temperature * step_fraction);
-    const double search_span =
-        bidirectional_search
-            ? std::max(160.0, target_temperature * 0.5)
-            : recovery_start_search_iterations * search_step;
-
-    for (int iteration = 1; iteration <= recovery_start_search_iterations; ++iteration)
-    {
-        const double offset = iteration * search_step;
-        const double hotter_candidate = target_temperature + offset;
-        const double colder_candidate = target_temperature - offset;
-
-        if (hotter_candidate <= target_temperature + search_span)
-            add_start_candidate(hotter_candidate);
-        if (bidirectional_search &&
-            colder_candidate >= recovery_min_temperature_k)
-        {
-            add_start_candidate(colder_candidate);
-        }
-    }
-
-    if (start_candidates.empty())
-        return false;
-
-    for (double start_temperature : start_candidates)
-    {
-        std::cerr << "Warning: probing OpenCalphad " << location
-                  << " recovery start at " << start_temperature
-                  << " K for target " << target_temperature
-                  << " K" << std::endl;
-
-        if (!apply_conditions(start_temperature))
-        {
-            std::cerr << "Warning: OpenCalphad recovery start could not set "
-                      << location << " conditions at "
-                      << start_temperature << " K" << std::endl;
-            continue;
-        }
-
-        if (!solve_equilibrium())
-        {
-            std::cerr << "Warning: OpenCalphad recovery start failed for "
-                      << location << " at "
-                      << start_temperature << " K" << std::endl;
-            continue;
-        }
-
-        const double sweep_delta_temperature =
-            std::abs(target_temperature - start_temperature);
-        const int sweep_intervals = std::min(
-            16,
-            std::max(
-                4,
-                static_cast<int>(std::ceil(
-                    sweep_delta_temperature / 10.0))));
-
-        std::cerr << "Warning: retrying OpenCalphad " << location
-                  << " equilibrium with temperature sweep from "
-                  << start_temperature << " K to " << target_temperature
-                  << " K" << std::endl;
-
-        bool sweep_ready = true;
-        for (int step = 1; step <= sweep_intervals; ++step)
-        {
-            const double fraction =
-                static_cast<double>(step) / static_cast<double>(sweep_intervals);
-            const double sweep_temperature =
-                start_temperature + fraction * (target_temperature - start_temperature);
-
-            if (!apply_conditions(sweep_temperature))
-            {
-                std::cerr << "Warning: OpenCalphad recovery sweep could not set "
-                          << location << " conditions at "
-                          << sweep_temperature << " K" << std::endl;
-                sweep_ready = false;
-                break;
-            }
-
-            if (!solve_equilibrium())
-            {
-                std::cerr << "Warning: OpenCalphad recovery sweep failed for "
-                          << location << " at "
-                          << sweep_temperature << " K" << std::endl;
-                sweep_ready = false;
-                break;
-            }
-        }
-
-        if (sweep_ready)
-            return true;
-    }
-
-    return false;
-}
-
-template <typename ApplyConditions, typename SolveEquilibrium>
-bool solveAtTargetOrWithTemperatureSweep(double target_temperature,
-                                         const std::string& location,
-                                         ApplyConditions apply_conditions,
-                                         SolveEquilibrium solve_equilibrium)
-{
-    if (!apply_conditions(target_temperature))
-        return false;
-
-    if (solve_equilibrium())
-        return true;
-
-    return solveWithTemperatureSweep(
-        target_temperature,
-        location,
-        apply_conditions,
-        solve_equilibrium);
-}
     
 bool fileExists(const std::string& file_path)
 {
@@ -1596,17 +1442,20 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
                 return initial_equilibrium_ready;
             };
 
-            const bool equilibrium_ready = solveAtTargetOrWithTemperatureSweep(
-                temperature,
-                location,
-                apply_conditions,
-                solve_equilibrium);
+            bool equilibrium_ready = false;            
+            if (apply_conditions(temperature))
+                if (solve_equilibrium())
+                    equilibrium_ready = true;
+
             if (!equilibrium_ready)
             {
+                std::cerr << "Warning: OpenCalphad equilibrium calculation failed at "
+                          << temperature << " K;"<<std::endl;
                 output_data.solution_phases.clear();
                 output_data.components.clear();
                 return false;
             }
+            oc.listResults(2);
 
             auto extract_and_validate = [&]()
             {
@@ -1621,13 +1470,6 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
 
             std::cerr << "Warning: OpenCalphad output failed validation for "
                       << location << "; retrying with temperature sweep" << std::endl;
-
-            if (solveWithTemperatureSweep(temperature, location, apply_conditions, solve_equilibrium) &&
-                extract_and_validate())
-            {
-                return true;
-            }
-
             output_data.solution_phases.clear();
             output_data.components.clear();
             return false;
