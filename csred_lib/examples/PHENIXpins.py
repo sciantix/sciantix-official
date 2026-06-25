@@ -68,7 +68,7 @@ def main() -> None:
     burnup_final = 13.28
     max_time_hours = 25200
 
-    n_radial_points = 5
+    n_radial_points = 4
     n_time_points = 10
     # Cs production is assumed practically flat. The radial redistribution
     # factor comes from the temperature-dependent concentration profile.
@@ -104,7 +104,8 @@ def main() -> None:
     ) / area_average(edges, result.produced)
 
     fig, axis = plt.subplots(1,1, figsize=(8,5))
-    axis.plot(radius_mm*1e-3/r_outer, result.scaling_factor, marker="o", color=PAPER_PALETTE[0]) 
+    
+    axis.plot(radius_mm*1e-3/r_outer, result.scaling_factor, marker="o", color=PAPER_PALETTE[2]) 
     secondary_axis = axis.twinx()
     secondary_axis.plot(radius_mm*1e-3/r_outer, temperature, marker="^", color=PAPER_PALETTE[-1])
     axis.set_xlabel("R/Ro")
@@ -113,9 +114,9 @@ def main() -> None:
     axis.set_ylim(0.0, 3.0)
     secondary_axis.set_ylim(700.0, 2100.0)
     secondary_axis.grid(False)
-    axis.set_ylabel("Cs redistribution (-)", color=PAPER_PALETTE[0])
+    axis.set_ylabel("Cs redistribution (-)", color=PAPER_PALETTE[2])
     axis.set_yticks(np.linspace(0.0, 3.0, 7))
-    axis.tick_params(axis="y", labelcolor=PAPER_PALETTE[0])
+    axis.tick_params(axis="y", labelcolor=PAPER_PALETTE[2])
     secondary_axis.tick_params(axis="y", labelcolor=PAPER_PALETTE[-1])
     secondary_axis.set_yticks(np.linspace(700.0, 2100.0, 8))
     secondary_axis.set_ylabel("Temperature (K)", color=PAPER_PALETTE[-1])

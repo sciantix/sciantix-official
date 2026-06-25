@@ -77,6 +77,8 @@ void Simulation::JOGFormation()
     sciantix_variable["Phase std density"].setFinalValue(theoretical_density); // g/m3
     double JOG_Cs2MoO4 = 0.0;
     double JOG_BaMoO4 = 0.0;
+    double JOG_Ba3MoO6 = 0.0;
+    double JOG_Ba2MoO5 = 0.0;
     double JOG_liquid = 0.0;
     double JOG_Pd = 0.0;
 
@@ -311,6 +313,10 @@ void Simulation::JOGFormation()
             JOG_Cs2MoO4 += contribution;
         else if (variable_name == "BAMOO4 (condensed, at grain boundary)")
             JOG_BaMoO4 += contribution;
+        else if (variable_name == "BA3MOO6 (condensed, at grain boundary)")
+            JOG_Ba3MoO6 += contribution;
+        else if (variable_name == "BA2MOO5 (condensed, at grain boundary)")
+            JOG_Ba2MoO5 += contribution;
         else if (variable_name == "FCC_A1 (condensed, at grain boundary)" && phase_molar_mass > 0.0)
         {
             const double pd_mass_fraction =
@@ -350,6 +356,8 @@ void Simulation::JOGFormation()
 
     sciantix_variable["JOG (Cs2MoO4)"].setFinalValue(JOG_Cs2MoO4);
     sciantix_variable["JOG (BaMoO4)"].setFinalValue(JOG_BaMoO4);
+    sciantix_variable["JOG (Ba3MoO6)"].setFinalValue(JOG_Ba3MoO6);
+    sciantix_variable["JOG (Ba2MoO5)"].setFinalValue(JOG_Ba2MoO5);
     sciantix_variable["JOG (liquid)"].setFinalValue(JOG_liquid);
     sciantix_variable["JOG (Pd)"].setFinalValue(JOG_Pd);
     sciantix_variable["Mo in oxide fraction"].setFinalValue(

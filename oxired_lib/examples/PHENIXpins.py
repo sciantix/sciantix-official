@@ -368,7 +368,7 @@ def write_radial_input_histories(
             lines.append(
                 f"{t_h:.4f}   {temperature_k[i]:.0f}   {fission_rate:.2e}   "
                 f"{hydrostatic_stress_mpa:.2e}   {pressure_pa[j]:.2e}   "
-                f"{om_profiles[j, i]:.3e}"
+                f"{om_profiles[j, i]:.3f}"
             )
 
         if cooldown_hours > 0.0:
@@ -382,7 +382,7 @@ def write_radial_input_histories(
                 lines.append(
                     f"{t_h:.4f}   {temp_k:.0f}   {0.0:.2e}   "
                     f"{hydrostatic_stress_mpa:.2e}   {pressure_pa[-1]:.2e}   "
-                    f"{om_profiles[-1, i]:.3e}"
+                    f"{om_profiles[-1, i]:.3f}"
                 )
 
         (case_dir / "input_history.txt").write_text("\n".join(lines) + "\n")
@@ -416,8 +416,8 @@ def main() -> None:
     fission_rate = 3.45e19
 
     # Requested SCIANTIX radial histories.
-    n_radial_points = 5
-    n_time_points = 100
+    n_radial_points = 4
+    n_time_points = 1000
 
     # Oxygen atoms consumed by fixed sinks per 100 initial metal atoms per at.% FIMA.
     # Ba and Mo are excluded and handled separately.
@@ -625,7 +625,7 @@ def main() -> None:
         fission_rate=fission_rate,
     )
     regression_root = Path(__file__).resolve().parents[2] / "regression" / "JOG" / "PHENIXpins"
-    copied_histories = copy_radial_input_histories_to_regression(output_root, regression_root)
+    #copied_histories = copy_radial_input_histories_to_regression(output_root, regression_root)
 
     fig, axis = plt.subplots(1,1, figsize=(13,5))
     for color_index, idx in enumerate(np.linspace(0, len(average_burnup) - 1, 5, dtype=int)):
@@ -641,11 +641,11 @@ def main() -> None:
     axis.set_xlabel("R/Ro")
     axis.set_xlim(0.0-0.1, 1.0+0.1)
     axis.set_xticks(np.linspace(0.0, 1.0, 6))
-    axis.set_ylim(1.92, 2.01)
+    axis.set_ylim(1.90, 2.01)
     secondary_axis.set_ylim(700.0, 2100.0)
     secondary_axis.grid(False)
     axis.set_ylabel("Oxygen-to-Metal ratio (-)")
-    axis.set_yticks([1.92, 1.94, 1.96, 1.98, 2.00])
+    axis.set_yticks([1.90, 1.92, 1.94, 1.96, 1.98, 2.00])
     axis.tick_params(axis="y")
     secondary_axis.tick_params(axis="y", labelcolor=PAPER_PALETTE[-1])
     secondary_axis.set_yticks(np.linspace(700.0, 2100.0, 8))
@@ -711,7 +711,6 @@ def main() -> None:
     plt.savefig(output_root / "EvolutionOxygenBalanceClosure.png")
 
     print(f"Generated Sciantix input histories in: {output_root}")
-    print(f"Copied {copied_histories} input histories to: {regression_root}")
 
 
 if __name__ == "__main__":
