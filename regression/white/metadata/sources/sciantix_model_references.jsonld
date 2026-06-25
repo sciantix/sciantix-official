@@ -42,7 +42,7 @@
     {
       "@id": "model-ref:cappellari-2025",
       "@type": "dcterms:BibliographicResource",
-      "dcterms:identifier": "doi:10.2139/ssrn.5153233",
+      "dcterms:identifier": "doi:10.1016/j.jnucmat.2025.156116",
       "dcterms:title": "On a Physics-Based Model of Grain-Boundary Bubbles Overpressurisation and its Effects on Fuel Fragmentation",
       "dcterms:creator": [
         "E. Cappellari",
@@ -55,7 +55,7 @@
         "L. Luzzi"
       ],
       "dcterms:issued": "2025",
-      "dcterms:source": "https://doi.org/10.2139/ssrn.5153233",
+      "dcterms:source": "https://doi.org/10.1016/j.jnucmat.2025.156116",
       "dcterms:type": "Text"
     },
     {
