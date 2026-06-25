@@ -8,6 +8,7 @@ import shutil
 import multiprocessing
 from regression.core.common import clean_case_dir, run_sciantix, load_output, load_gold
 from regression.core.compare import compare_outputs
+from regression.white.semantic_export import export_white_case_semantic_outputs
 
 
 def run_single_case(args):
@@ -25,6 +26,14 @@ def run_single_case(args):
         # run phase
         if mode_gold in (0, 1):
             run_sciantix(case)
+
+            # White-only exports for SCIANTIX-DIVA: keep original txt files, add JSON/JSON-LD.
+            if group_name == "white":
+                try:
+                    export_white_case_semantic_outputs(case)
+                except Exception as err:
+                    print(f"[WARNING] White semantic export failed for {test_id}: {err}")
+
             clean_case_dir(case, 0)
 
         # gold rewrite mode

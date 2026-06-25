@@ -1,0 +1,95 @@
+{
+  "@context": {
+    "dcterms": "http://purl.org/dc/terms/",
+    "nmkos": "https://w3id.org/nm-kos/terms#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "caseId": "dcterms:identifier",
+    "generatedAt": {
+      "@id": "dcterms:created",
+      "@type": "xsd:dateTime"
+    },
+    "source": {
+      "@id": "dcterms:source",
+      "@type": "@id"
+    },
+    "software": "nmkos:software",
+    "modelCatalog": {
+      "@id": "nmkos:modelCatalog",
+      "@type": "@id"
+    },
+    "modelReferenceSource": {
+      "@id": "nmkos:modelReferenceSource",
+      "@type": "@id"
+    },
+    "softwareSource": {
+      "@id": "nmkos:softwareSource",
+      "@type": "@id"
+    },
+    "inputFile": "nmkos:inputFile",
+    "outputFile": "nmkos:outputFile",
+    "role": "nmkos:role",
+    "path": "nmkos:path",
+    "sha256": "nmkos:sha256",
+    "sizeBytes": "nmkos:sizeBytes"
+  },
+  "@type": "nmkos:SimulationCase",
+  "caseId": "test_White2004_4005-4",
+  "generatedAt": "2026-06-25T19:27:46.822354+00:00",
+  "source": [
+    "../metadata/sources/white2004.jsonld",
+    "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
+  ],
+  "modelCatalog": "../metadata/models/sciantix_physical_models.jsonld",
+  "modelReferenceSource": "../metadata/sources/sciantix_model_references.jsonld",
+  "softwareSource": "../metadata/sources/sciantix_software_sources.jsonld",
+  "software": {
+    "name": "SCIANTIX",
+    "role": "simulation code"
+  },
+  "inputFile": [
+    {
+      "role": "settings",
+      "path": "input_settings.txt",
+      "sha256": "187601b196f902e3214cf3d7cf6f6e5f51ab4a35bcb43120e00e530b53effade",
+      "size_bytes": 2478
+    },
+    {
+      "role": "history",
+      "path": "input_history.txt",
+      "sha256": "38ba53d70d305c7d1381a906dd4b1ac60b8a251716675a84c352c2d5b0ea1e89",
+      "size_bytes": 396
+    },
+    {
+      "role": "initial_conditions",
+      "path": "input_initial_conditions.txt",
+      "sha256": "ea8bc93e423b7efc6c5b37a2f1a47d98dd7f1818e0c7e24bfd75522974d72970",
+      "size_bytes": 1176
+    },
+    {
+      "role": "structured_input",
+      "path": "input.json",
+      "sha256": "f4aba84631f8e44dff893bb6cc9e47bc0f977cb34ddbf66fcda1cfe6eb2d2b10",
+      "size_bytes": 12628
+    }
+  ],
+  "outputFile": [
+    {
+      "role": "native_output",
+      "path": "output.txt",
+      "sha256": "21022e1a90f5108ffeb073c8c83d9c5767a7cc69a06f6372b4c293e5e4888c8e",
+      "size_bytes": 238142
+    },
+    {
+      "role": "structured_output",
+      "path": "output.json",
+      "sha256": "5f753694ece93e9c0d31bd82f518672e1a1f0076dba040c2d87e0467caaa96b0",
+      "size_bytes": 436864
+    },
+    {
+      "role": "semantic_output",
+      "path": "output.jsonld",
+      "sha256": "04380db87d66145c795cfc3365bd54077e0abc6120ee1b4fc78d5cf54b0e0177",
+      "size_bytes": 393484
+    }
+  ]
+}

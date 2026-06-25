@@ -1,0 +1,16 @@
+{
+  "@context": {
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@type": "dcterms:Dataset",
+  "dcterms:identifier": "IFPE/CAGR-UOX-SWELL",
+  "dcterms:title": "Fuel Swelling Data Obtained from the AGR/Halden Ramp Test Programme",
+  "dcterms:creator": [
+    "OECD/NEA"
+  ],
+  "dcterms:publisher": "OECD Nuclear Energy Agency",
+  "dcterms:source": "https://www.oecd-nea.org/science/ifpe/",
+  "dcterms:description": "Authoritative experimental dataset used in White regression validation.",
+  "dcterms:language": "en",
+  "dcterms:type": "Dataset"
+}

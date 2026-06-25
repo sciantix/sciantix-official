@@ -1,0 +1,16 @@
+{
+  "@context": {
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@type": "dcterms:BibliographicResource",
+  "dcterms:identifier": "doi:10.1016/j.jnucmat.2004.06.005",
+  "dcterms:title": "The development of grain-face porosity in irradiated oxide fuel",
+  "dcterms:creator": [
+    "R. J. White"
+  ],
+  "dcterms:issued": "2004",
+  "dcterms:isPartOf": "Journal of Nuclear Materials",
+  "dcterms:source": "https://doi.org/10.1016/j.jnucmat.2004.06.005",
+  "dcterms:language": "en",
+  "dcterms:type": "Text"
+}

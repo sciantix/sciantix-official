@@ -1,0 +1,511 @@
+{
+  "format_version": "0.1.0",
+  "schema": "metadata/schema/input.schema.json",
+  "case_id": "test_White2004_4135-3",
+  "generated_at_utc": "2026-06-25T19:27:48.648287+00:00",
+  "dcterms_sources": [
+    "../metadata/sources/white2004.jsonld",
+    "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
+  ],
+  "input_files": {
+    "settings": {
+      "role": "settings",
+      "path": "input_settings.txt",
+      "sha256": "187601b196f902e3214cf3d7cf6f6e5f51ab4a35bcb43120e00e530b53effade",
+      "size_bytes": 2478
+    },
+    "history": {
+      "role": "history",
+      "path": "input_history.txt",
+      "sha256": "6a22e07c8a288fe90f850ec9a3055c1b2d478e5303f8729ca4348810fd1bcea7",
+      "size_bytes": 401
+    },
+    "initial_conditions": {
+      "role": "initial_conditions",
+      "path": "input_initial_conditions.txt",
+      "sha256": "5998764e0a1af19f29f4e42283505c81a8f56f58bd47153a6ef737cf33a605f8",
+      "size_bytes": 1176
+    }
+  },
+  "settings": [
+    {
+      "index": 0,
+      "name": "iGrainGrowth",
+      "value": 1,
+      "description": "iGrainGrowth (0= no grain growth, 1= Ainscough et al. (1973), 2= Van Uffelen et al. (2013))",
+      "source_line": 1,
+      "related_models": [
+        "model:grain-growth"
+      ],
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+    },
+    {
+      "index": 1,
+      "name": "iFissionGasDiffusivity",
+      "value": 1,
+      "description": "iFissionGasDiffusivity (0= constant value, 1= Turnbull et al. (1988))",
+      "source_line": 2,
+      "related_models": [
+        "model:gas-diffusion"
+      ],
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+    },
+    {
+      "index": 2,
+      "name": "iDiffusionSolver",
+      "value": 2,
+      "description": "iDiffusionSolver (1= SDA with quasi-stationary hypothesis, 2= SDA without quasi-stationary hypothesis)",
+      "source_line": 3,
+      "related_models": [
+        "model:gas-diffusion"
+      ],
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+    },
+    {
+      "index": 3,
+      "name": "iIntraGranularBubbleBehavior",
+      "value": 1,
+      "description": "iIntraGranularBubbleBehavior (1= Pizzocri et al. (2018))",
+      "source_line": 4,
+      "related_models": [
+        "model:intragranular-bubble-behaviour"
+      ],
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+    },
+    {
+      "index": 4,
+      "name": "iResolutionRate",
+      "value": 1,
+      "description": "iResolutionRate (0= constant value, 1= Turnbull (1971), 2= Losonen (2000), 3= thermal resolution, Cognini et al. (2021))",
+      "source_line": 5,
+      "related_models": [
+        "model:intragranular-bubble-behaviour"
+      ],
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+    },
+    {
+      "index": 5,
+      "name": "iTrappingRate",
+      "value": 1,
+      "description": "iTrappingRate (0= constant value, 1= Ham (1958))",
+      "source_line": 6,
+      "related_models": [
+        "model:intragranular-bubble-behaviour"
+      ],
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+    },
+    {
+      "index": 6,
+      "name": "iNucleationRate",
+      "value": 1,
+      "description": "iNucleationRate (0= constant value, 1= Olander, Wongsawaeng (2006))",
+      "source_line": 7,
+      "related_models": [
+        "model:intragranular-bubble-behaviour"
+      ],
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+    },
+    {
+      "index": 7,
+      "name": "iOutput",
+      "value": 1,
+      "description": "iOutput (1= default output files)",
+      "source_line": 8
+    },
+    {
+      "index": 8,
+      "name": "iGrainBoundaryVacancyDiffusivity",
+      "value": 1,
+      "description": "iGrainBoundaryVacancyDiffusivity (0= constant value, 1= Reynolds and Burton (1979), 2= White (2004))",
+      "source_line": 9,
+      "related_models": [
+        "model:intergranular-bubble-behavior"
+      ],
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+    },
+    {
+      "index": 9,
+      "name": "iGrainBoundaryBehaviour",
+      "value": 1,
+      "description": "iGrainBoundaryBehaviour (0= no grain boundary bubbles, 1= Pastore et al (2013))",
+      "source_line": 10,
+      "related_models": [
+        "model:intergranular-bubble-behavior"
+      ],
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+    },
+    {
+      "index": 10,
+      "name": "iGrainBoundaryMicroCracking",
+      "value": 1,
+      "description": "iGrainBoundaryMicroCracking (0= no model considered, 1= Barani et al. (2017), 2= Cappellari et al. (2025))",
+      "source_line": 11,
+      "related_models": [
+        "model:grain-boundary-micro-cracking"
+      ],
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+    },
+    {
+      "index": 11,
+      "name": "iFuelMatrix",
+      "value": 0,
+      "description": "iFuelMatrix (0= UO2, 1= UO2 + HBS)",
+      "source_line": 12
+    },
+    {
+      "index": 12,
+      "name": "iGrainBoundaryVenting",
+      "value": 0,
+      "description": "iGrainBoundaryVenting (0= no model considered, 1= Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE, 2 = Claisse and Van Uffelen (2015), 3= Pagani et al.(2025))",
+      "source_line": 13,
+      "related_models": [
+        "model:grain-boundary-venting"
+      ],
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+    },
+    {
+      "index": 13,
+      "name": "iRadioactiveFissionGas",
+      "value": 0,
+      "description": "iRadioactiveFissionGas (0= not considered)",
+      "source_line": 14
+    },
+    {
+      "index": 14,
+      "name": "iHelium",
+      "value": 0,
+      "description": "iHelium (0= not considered)",
+      "source_line": 15
+    },
+    {
+      "index": 15,
+      "name": "iHeDiffusivity",
+      "value": 0,
+      "description": "iHeDiffusivity (0= null value, 1= limited lattice damage, Luzzi et al. (2018), 2= significant lattice damage, Luzzi et al. (2018))",
+      "source_line": 16
+    },
+    {
+      "index": 16,
+      "name": "iGrainBoundarySweeping",
+      "value": 0,
+      "description": "iGrainBoundarySweeping (0= no model considered, 1= TRANSURANUS swept volume model)",
+      "source_line": 17
+    },
+    {
+      "index": 17,
+      "name": "iHighBurnupStructureFormation",
+      "value": 0,
+      "description": "iHighBurnupStructureFormation (0= no model considered, 1= fraction of HBS-restructured volume from Barani et al. (2020))",
+      "source_line": 18
+    },
+    {
+      "index": 18,
+      "name": "iHighBurnupStructurePorosity",
+      "value": 0,
+      "description": "iHighBurnupStructurePorosity (0= no evolution of HBS porosity, 1= HBS porosity evolution based on Spino et al. (2006) data)",
+      "source_line": 19
+    },
+    {
+      "index": 19,
+      "name": "iHeliumProductionRate",
+      "value": 0,
+      "description": "iHeliumProductionRate (0= zero production rate, 1= helium from ternary fissions, 2= linear with burnup (FR))",
+      "source_line": 20
+    },
+    {
+      "index": 20,
+      "name": "iStoichiometryDeviation",
+      "value": 0,
+      "description": "iStoichiometryDeviation (0= not considered, 1= Cox et al. 1986, 2= Bittel et al. 1969, 3= Abrefah et al. 1994, 4= Imamura et al. 1997, 5= Langmuir-based approach)",
+      "source_line": 21
+    },
+    {
+      "index": 21,
+      "name": "iBubbleDiffusivity",
+      "value": 0,
+      "description": "iBubbleDiffusivity (0= not considered, 1= volume diffusivity)",
+      "source_line": 22
+    },
+    {
+      "index": 22,
+      "name": "iChromiumSolubility",
+      "value": 0,
+      "description": "iChromiumSolubility",
+      "source_line": 23
+    },
+    {
+      "index": 23,
+      "name": "iDensification",
+      "value": 0,
+      "description": "iDensification (0 = not considered, 1 = Fit from Van Uffelen, P. (2002), PhD thesis.)",
+      "source_line": 24,
+      "related_models": [
+        "model:densification"
+      ],
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+    },
+    {
+      "index": 24,
+      "name": "iReleaseMode",
+      "value": 0,
+      "description": "iReleaseMode (0 = coalescence by White (2004), saturation threshold of fractional coverage Pastore et al (2013), 1= coalescence by Pastore et al (2013), Cappellari et al. (2025))",
+      "source_line": 25,
+      "related_models": [
+        "model:intergranular-bubble-behavior"
+      ],
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+    }
+  ],
+  "history": {
+    "columns": [
+      {
+        "index": 0,
+        "name": "Time (h)",
+        "label": "Time",
+        "unit": "h"
+      },
+      {
+        "index": 1,
+        "name": "Temperature (K)",
+        "label": "Temperature",
+        "unit": "K"
+      },
+      {
+        "index": 2,
+        "name": "Fission rate (fiss / m3 s)",
+        "label": "Fission rate",
+        "unit": "fiss / m3 s"
+      },
+      {
+        "index": 3,
+        "name": "Hydrostatic stress (MPa)",
+        "label": "Hydrostatic stress",
+        "unit": "MPa"
+      }
+    ],
+    "rows": [
+      [
+        0,
+        1324,
+        4.9e+18,
+        -1.28
+      ],
+      [
+        21735.6164,
+        1324,
+        4.9e+18,
+        -1.28
+      ],
+      [
+        21903.6164,
+        1324,
+        4.9e+18,
+        -1.28
+      ],
+      [
+        21904.6998,
+        2036,
+        9.77e+18,
+        -9.27
+      ],
+      [
+        21904.7109,
+        1121,
+        3.44e+18,
+        -0.95
+      ],
+      [
+        21904.8442,
+        1121,
+        3.44e+18,
+        -0.95
+      ],
+      [
+        21904.8553,
+        2039,
+        9.77e+18,
+        -11.04
+      ],
+      [
+        21904.8775,
+        2039,
+        9.77e+18,
+        -11.04
+      ],
+      [
+        21904.8887,
+        1492,
+        3.44e+18,
+        -1.31
+      ],
+      [
+        21904.8998,
+        2039,
+        9.77e+18,
+        -9.03
+      ],
+      [
+        21904.922,
+        2039,
+        9.77e+18,
+        -9.03
+      ],
+      [
+        21904.9331,
+        1249,
+        4.37e+18,
+        -0.67
+      ],
+      [
+        22576.9331,
+        1249,
+        4.37e+18,
+        -0.67
+      ],
+      [
+        22582.9331,
+        573,
+        0,
+        0
+      ]
+    ]
+  },
+  "initial_conditions": [
+    {
+      "index": 0,
+      "values": [
+        8.32e-06
+      ],
+      "description": "initial grain radius (m)",
+      "source_line": 1
+    },
+    {
+      "index": 1,
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "description": "initial Xe (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released",
+      "source_line": 3
+    },
+    {
+      "index": 2,
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "description": "initial Kr (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released",
+      "source_line": 5
+    },
+    {
+      "index": 3,
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "description": "initial He (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released",
+      "source_line": 7
+    },
+    {
+      "index": 4,
+      "values": [
+        0.0,
+        0.0
+      ],
+      "description": "initial intragranular bubble concentration (at/m3), radius (m)",
+      "source_line": 9
+    },
+    {
+      "index": 5,
+      "values": [
+        0.0
+      ],
+      "description": "initial fuel burn-up (MWd/kgUO2)",
+      "source_line": 11
+    },
+    {
+      "index": 6,
+      "values": [
+        0.0
+      ],
+      "description": "initial fuel effective burn-up (MWd/kgUO2)",
+      "source_line": 13
+    },
+    {
+      "index": 7,
+      "values": [
+        0.0
+      ],
+      "description": "initial irradiation time (h)",
+      "source_line": 15
+    },
+    {
+      "index": 8,
+      "values": [
+        10421.5
+      ],
+      "description": "initial fuel density (kg/m3)",
+      "source_line": 17
+    },
+    {
+      "index": 9,
+      "values": [
+        0.0,
+        4.0,
+        0.0,
+        0.0,
+        96.0
+      ],
+      "description": "initial U234 U235 U236 U237 U238 (% of heavy atoms) content",
+      "source_line": 19
+    },
+    {
+      "index": 10,
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "description": "initial Xe133 (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released",
+      "source_line": 21
+    },
+    {
+      "index": 11,
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "description": "initial Kr85m (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released",
+      "source_line": 23
+    },
+    {
+      "index": 12,
+      "values": [
+        0.0
+      ],
+      "description": "initial fuel stoichiometry deviation (\\)",
+      "source_line": 25
+    }
+  ]
+}

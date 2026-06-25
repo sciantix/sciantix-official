@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sciantix.org/schema/white/output.schema.json",
+  "title": "SCIANTIX White Output Export",
+  "description": "Minimum schema for machine-readable White output sidecars.",
+  "type": "object",
+  "required": [
+    "format_version",
+    "case_id",
+    "generated_at_utc",
+    "dcterms_sources",
+    "table"
+  ],
+  "properties": {
+    "format_version": {
+      "type": "string"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "generated_at_utc": {
+      "type": "string"
+    },
+    "dcterms_sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "table": {
+      "type": "object",
+      "required": [
+        "columns",
+        "rows"
+      ],
+      "properties": {
+        "columns": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "index",
+              "name",
+              "label",
+              "unit"
+            ],
+            "properties": {
+              "index": { "type": "integer", "minimum": 0 },
+              "name": { "type": "string" },
+              "label": { "type": "string" },
+              "unit": { "type": "string" }
+            }
+          }
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "array"
+          }
+        }
+      }
+    }
+  }
+}

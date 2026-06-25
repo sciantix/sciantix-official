@@ -1,0 +1,32 @@
+{
+  "@context": {
+    "dcterms": "http://purl.org/dc/terms/",
+    "schema": "https://schema.org/"
+  },
+  "@graph": [
+    {
+      "@id": "software-source:sciantix-official-repository",
+      "@type": "schema:SoftwareSourceCode",
+      "dcterms:title": "SCIANTIX official GitHub repository",
+      "dcterms:source": "https://github.com/sciantix/sciantix-official",
+      "dcterms:issued": "2025",
+      "dcterms:type": "SoftwareSourceCode"
+    },
+    {
+      "@id": "software-source:sciantix-neo4mat-diva-branch",
+      "@type": "schema:SoftwareSourceCode",
+      "dcterms:title": "SCIANTIX official GitHub repository branch project/NEO4MAT_DIVA",
+      "dcterms:source": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
+      "dcterms:issued": "2025",
+      "dcterms:type": "SoftwareSourceCode"
+    },
+    {
+      "@id": "software-source:sciantix-documentation",
+      "@type": "schema:CreativeWork",
+      "dcterms:title": "SCIANTIX official documentation - physical models description",
+      "dcterms:source": "https://sciantix.github.io/sciantix-official/models.html",
+      "dcterms:issued": "2025",
+      "dcterms:type": "Documentation"
+    }
+  ]
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sciantix.org/schema/white/input.schema.json",
+  "title": "SCIANTIX White Input Export",
+  "description": "Minimum schema for machine-readable White input exports.",
+  "type": "object",
+  "required": [
+    "format_version",
+    "case_id",
+    "generated_at_utc",
+    "dcterms_sources",
+    "input_files",
+    "settings",
+    "history",
+    "initial_conditions"
+  ],
+  "properties": {
+    "format_version": {
+      "type": "string"
+    },
+    "case_id": {
+      "type": "string"
+    },
+    "generated_at_utc": {
+      "type": "string"
+    },
+    "dcterms_sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "input_files": {
+      "type": "object"
+    },
+    "settings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "index",
+          "name",
+          "value",
+          "description",
+          "source_line"
+        ],
+        "properties": {
+          "index": { "type": "integer", "minimum": 0 },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "source_line": { "type": "integer", "minimum": 1 },
+          "related_models": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "model_catalog": { "type": "string" }
+        }
+      }
+    },
+    "history": {
+      "type": "object",
+      "required": [
+        "columns",
+        "rows"
+      ],
+      "properties": {
+        "columns": {
+          "type": "array",
+          "minItems": 1
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "array"
+          }
+        }
+      }
+    },
+    "initial_conditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "index",
+          "values",
+          "description",
+          "source_line"
+        ]
+      }
+    }
+  }
+}
