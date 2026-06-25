@@ -2,7 +2,7 @@
   "format_version": "0.1.0",
   "schema": "metadata/schema/input.schema.json",
   "case_id": "test_White2004_4135-2",
-  "generated_at_utc": "2026-06-25T19:27:48.604690+00:00",
+  "generated_at_utc": "2026-06-25T20:42:57.525665+00:00",
   "dcterms_sources": [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
@@ -37,7 +37,8 @@
       "related_models": [
         "model:grain-growth"
       ],
-      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld",
+      "model_reference_source": "../metadata/sources/sciantix_model_references.jsonld"
     },
     {
       "index": 1,
@@ -48,7 +49,8 @@
       "related_models": [
         "model:gas-diffusion"
       ],
-      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld",
+      "model_reference_source": "../metadata/sources/sciantix_model_references.jsonld"
     },
     {
       "index": 2,
@@ -59,7 +61,8 @@
       "related_models": [
         "model:gas-diffusion"
       ],
-      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld",
+      "model_reference_source": "../metadata/sources/sciantix_model_references.jsonld"
     },
     {
       "index": 3,
@@ -70,7 +73,8 @@
       "related_models": [
         "model:intragranular-bubble-behaviour"
       ],
-      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld",
+      "model_reference_source": "../metadata/sources/sciantix_model_references.jsonld"
     },
     {
       "index": 4,
@@ -81,7 +85,8 @@
       "related_models": [
         "model:intragranular-bubble-behaviour"
       ],
-      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld",
+      "model_reference_source": "../metadata/sources/sciantix_model_references.jsonld"
     },
     {
       "index": 5,
@@ -92,7 +97,8 @@
       "related_models": [
         "model:intragranular-bubble-behaviour"
       ],
-      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld",
+      "model_reference_source": "../metadata/sources/sciantix_model_references.jsonld"
     },
     {
       "index": 6,
@@ -103,7 +109,8 @@
       "related_models": [
         "model:intragranular-bubble-behaviour"
       ],
-      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld",
+      "model_reference_source": "../metadata/sources/sciantix_model_references.jsonld"
     },
     {
       "index": 7,
@@ -121,7 +128,8 @@
       "related_models": [
         "model:intergranular-bubble-behavior"
       ],
-      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld",
+      "model_reference_source": "../metadata/sources/sciantix_model_references.jsonld"
     },
     {
       "index": 9,
@@ -132,7 +140,8 @@
       "related_models": [
         "model:intergranular-bubble-behavior"
       ],
-      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld",
+      "model_reference_source": "../metadata/sources/sciantix_model_references.jsonld"
     },
     {
       "index": 10,
@@ -143,7 +152,8 @@
       "related_models": [
         "model:grain-boundary-micro-cracking"
       ],
-      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld",
+      "model_reference_source": "../metadata/sources/sciantix_model_references.jsonld"
     },
     {
       "index": 11,
@@ -161,7 +171,8 @@
       "related_models": [
         "model:grain-boundary-venting"
       ],
-      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld",
+      "model_reference_source": "../metadata/sources/sciantix_model_references.jsonld"
     },
     {
       "index": 13,
@@ -242,7 +253,8 @@
       "related_models": [
         "model:densification"
       ],
-      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld",
+      "model_reference_source": "../metadata/sources/sciantix_model_references.jsonld"
     },
     {
       "index": 24,
@@ -253,7 +265,8 @@
       "related_models": [
         "model:intergranular-bubble-behavior"
       ],
-      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld"
+      "model_catalog": "../metadata/models/sciantix_physical_models.jsonld",
+      "model_reference_source": "../metadata/sources/sciantix_model_references.jsonld"
     }
   ],
   "history": {

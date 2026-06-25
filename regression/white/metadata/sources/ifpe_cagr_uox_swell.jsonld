@@ -9,8 +9,8 @@
     "OECD/NEA"
   ],
   "dcterms:publisher": "OECD Nuclear Energy Agency",
-  "dcterms:source": "https://www.oecd-nea.org/science/ifpe/",
-  "dcterms:description": "Authoritative experimental dataset used in White regression validation.",
+  "dcterms:source": "https://www.oecd-nea.org/tools/abstract/detail/nea-1705",
+  "dcterms:description": "Authoritative experimental dataset used in White regression validation. The dataset contains fuel swelling data obtained from the AGR/Halden ramp test programme and supports the case-level intergranular swelling validation targets used by the SCIANTIX White regression workflow.",
   "dcterms:language": "en",
   "dcterms:type": "Dataset"
 }

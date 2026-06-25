@@ -21,7 +21,7 @@
   },
   "@type": "nmkos:SimulationOutput",
   "caseId": "test_White2004_4163-1",
-  "generatedAt": "2026-06-25T19:27:48.472447+00:00",
+  "generatedAt": "2026-06-25T20:43:01.093533+00:00",
   "source": [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld"

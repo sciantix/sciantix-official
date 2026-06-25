@@ -10,6 +10,7 @@
       "dcterms:title": "SCIANTIX official GitHub repository",
       "dcterms:source": "https://github.com/sciantix/sciantix-official",
       "dcterms:issued": "2025",
+      "schema:softwareVersion": "2.2.1",
       "dcterms:type": "SoftwareSourceCode"
     },
     {
@@ -18,6 +19,7 @@
       "dcterms:title": "SCIANTIX official GitHub repository branch project/NEO4MAT_DIVA",
       "dcterms:source": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
       "dcterms:issued": "2025",
+      "schema:softwareVersion": "2.2.1",
       "dcterms:type": "SoftwareSourceCode"
     },
     {

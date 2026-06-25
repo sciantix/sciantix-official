@@ -25,6 +25,11 @@
       "@id": "nmkos:softwareSource",
       "@type": "@id"
     },
+    "experimentalDataset": {
+      "@id": "nmkos:experimentalDataset",
+      "@type": "@id"
+    },
+    "validationTarget": "nmkos:validationTarget",
     "inputFile": "nmkos:inputFile",
     "outputFile": "nmkos:outputFile",
     "role": "nmkos:role",
@@ -34,7 +39,7 @@
   },
   "@type": "nmkos:SimulationCase",
   "caseId": "test_White2004_4065-3",
-  "generatedAt": "2026-06-25T19:27:47.721302+00:00",
+  "generatedAt": "2026-06-25T20:42:56.296868+00:00",
   "source": [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
@@ -42,9 +47,24 @@
   "modelCatalog": "../metadata/models/sciantix_physical_models.jsonld",
   "modelReferenceSource": "../metadata/sources/sciantix_model_references.jsonld",
   "softwareSource": "../metadata/sources/sciantix_software_sources.jsonld",
+  "experimentalDataset": "../metadata/experimental/white_experimental_measurements.jsonld",
+  "validationTarget": {
+    "@id": "white-measurement:test_White2004_4065-3",
+    "quantity": "Intergranular gas swelling",
+    "value": 0.97,
+    "unit": "%",
+    "source": "../metadata/experimental/white_experimental_measurements.jsonld"
+  },
   "software": {
     "name": "SCIANTIX",
-    "role": "simulation code"
+    "version": "2.2.1",
+    "role": "simulation code",
+    "repository": "https://github.com/sciantix/sciantix-official",
+    "project_branch_url": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
+    "documentation": "https://sciantix.github.io/sciantix-official/models.html",
+    "repository_branch": "project/NEO4MAT_DIVA",
+    "repository_commit": "ace479cf1373f11d26a8b6085073edc3ecae099e",
+    "repository_is_dirty": true
   },
   "inputFile": [
     {
@@ -68,8 +88,8 @@
     {
       "role": "structured_input",
       "path": "input.json",
-      "sha256": "6adea8854dddd0696ef393d2b14afa4f323a9258fc56f44119d9f377427081ae",
-      "size_bytes": 12547
+      "sha256": "517e7d58f762697b35dd6f1d875c0904edd03a411a712cff156699f309edeabc",
+      "size_bytes": 13691
     }
   ],
   "outputFile": [
@@ -82,13 +102,13 @@
     {
       "role": "structured_output",
       "path": "output.json",
-      "sha256": "9a7934f70c292753646c96fb8f1fd6a13a7ea98e571356567d17976008e4dadc",
+      "sha256": "693c24ebfa2dae9746a26cd9eb204bf06c6195579064b63166058bf92dac749b",
       "size_bytes": 364125
     },
     {
       "role": "semantic_output",
       "path": "output.jsonld",
-      "sha256": "68de6bc6f0f086f2d6f7e20b704073376aba1fd4d6734c0fba823c5959c42b12",
+      "sha256": "b3f0a853e2a95c057e56043c559f9e50bc68db9b03549cc27245d9ee81239d12",
       "size_bytes": 327945
     }
   ]

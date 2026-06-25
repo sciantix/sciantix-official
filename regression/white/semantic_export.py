@@ -9,10 +9,12 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 from datetime import datetime, timezone
 from typing import Dict, List, Tuple
 
 
+_SCIANTIX_VERSION = "2.2.1"
 _DCTERMS_SOURCES = [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld",
@@ -20,9 +22,11 @@ _DCTERMS_SOURCES = [
 _MODEL_CATALOG = "../metadata/models/sciantix_physical_models.jsonld"
 _MODEL_REFERENCES = "../metadata/sources/sciantix_model_references.jsonld"
 _SOFTWARE_SOURCES = "../metadata/sources/sciantix_software_sources.jsonld"
+_EXPERIMENTAL_MEASUREMENTS = "../metadata/experimental/white_experimental_measurements.jsonld"
 
 _SCHEMA_RELATIVE_PATH = "metadata/schema/output.schema.json"
 _INPUT_SCHEMA_RELATIVE_PATH = "metadata/schema/input.schema.json"
+_EXPERIMENTAL_SWELLING_FILE = "data/ig_swelling.txt"
 _INPUT_FILES = {
     "settings": "input_settings.txt",
     "history": "input_history.txt",
@@ -98,6 +102,38 @@ def _sha256(path: str) -> str:
     return digest.hexdigest()
 
 
+def _git_value(args: List[str], cwd: str) -> str:
+    try:
+        result = subprocess.run(
+            ["git"] + args,
+            cwd=cwd,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except Exception:
+        return "unknown"
+    return result.stdout.strip() or "unknown"
+
+
+def _software_provenance(case_dir: str) -> dict:
+    repo_root = _git_value(["rev-parse", "--show-toplevel"], case_dir)
+    git_cwd = repo_root if repo_root != "unknown" else case_dir
+    dirty = _git_value(["status", "--porcelain"], git_cwd)
+
+    return {
+        "name": "SCIANTIX",
+        "version": _SCIANTIX_VERSION,
+        "role": "simulation code",
+        "repository": "https://github.com/sciantix/sciantix-official",
+        "project_branch_url": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
+        "documentation": "https://sciantix.github.io/sciantix-official/models.html",
+        "repository_branch": _git_value(["rev-parse", "--abbrev-ref", "HEAD"], git_cwd),
+        "repository_commit": _git_value(["rev-parse", "HEAD"], git_cwd),
+        "repository_is_dirty": dirty != "",
+    }
+
+
 def _file_record(case_dir: str, filename: str, role: str) -> dict:
     path = os.path.join(case_dir, filename)
     return {
@@ -106,6 +142,77 @@ def _file_record(case_dir: str, filename: str, role: str) -> dict:
         "sha256": _sha256(path),
         "size_bytes": os.path.getsize(path),
     }
+
+
+def _case_measurement_id(case_id: str) -> str:
+    return f"white-measurement:{case_id}"
+
+
+def _load_experimental_swelling(white_root: str) -> Dict[str, float]:
+    path = os.path.join(white_root, _EXPERIMENTAL_SWELLING_FILE)
+    measurements = {}
+    with open(path, "r", encoding="utf-8") as handle:
+        for line in handle:
+            raw = line.strip()
+            if not raw:
+                continue
+            case_id, value = raw.split()[:2]
+            measurements[case_id] = float(value)
+    return measurements
+
+
+def export_white_experimental_measurements(white_root: str) -> str:
+    """Export White validation measurements used by the regression workflow."""
+    measurements = _load_experimental_swelling(white_root)
+    output_dir = os.path.join(white_root, "metadata", "experimental")
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, "white_experimental_measurements.jsonld")
+    exported_at = datetime.now(timezone.utc).isoformat()
+
+    payload = {
+        "@context": {
+            "dcterms": "http://purl.org/dc/terms/",
+            "nmkos": "https://w3id.org/nm-kos/terms#",
+            "xsd": "http://www.w3.org/2001/XMLSchema#",
+            "caseId": "dcterms:identifier",
+            "source": {
+                "@id": "dcterms:source",
+                "@type": "@id",
+            },
+            "generatedAt": {
+                "@id": "dcterms:created",
+                "@type": "xsd:dateTime",
+            },
+            "quantity": "nmkos:quantity",
+            "value": "nmkos:value",
+            "unit": "nmkos:unit",
+            "measurement": "nmkos:measurement",
+        },
+        "@type": "nmkos:ExperimentalDataset",
+        "dcterms:identifier": "white-2004-intergranular-swelling-validation-targets",
+        "dcterms:title": "White intergranular swelling validation targets for SCIANTIX regression cases",
+        "dcterms:description": "Case-level intergranular gas swelling values used by the SCIANTIX White regression parity workflow.",
+        "generatedAt": exported_at,
+        "source": _DCTERMS_SOURCES,
+        "dcterms:relation": _EXPERIMENTAL_SWELLING_FILE,
+        "measurement": [
+            {
+                "@id": _case_measurement_id(case_id),
+                "@type": "nmkos:ExperimentalMeasurement",
+                "caseId": case_id,
+                "quantity": "Intergranular gas swelling",
+                "value": value,
+                "unit": "%",
+            }
+            for case_id, value in sorted(measurements.items())
+        ],
+    }
+
+    with open(output_path, "w", encoding="utf-8") as handle:
+        json.dump(payload, handle, indent=2)
+        handle.write("\n")
+
+    return output_path
 
 
 def _load_output_tsv(output_path: str) -> Tuple[List[str], List[List[object]]]:
@@ -155,6 +262,7 @@ def _parse_settings(settings_path: str) -> List[dict]:
             if related_models:
                 setting["related_models"] = related_models
                 setting["model_catalog"] = _MODEL_CATALOG
+                setting["model_reference_source"] = _MODEL_REFERENCES
             settings.append(setting)
     return settings
 
@@ -322,6 +430,8 @@ def _build_case_metadata(
     exported_at: str,
     input_files: Dict[str, dict],
     output_files: Dict[str, dict],
+    software: dict,
+    experimental_measurement: dict,
 ) -> dict:
     return {
         "@context": {
@@ -350,6 +460,11 @@ def _build_case_metadata(
                 "@id": "nmkos:softwareSource",
                 "@type": "@id",
             },
+            "experimentalDataset": {
+                "@id": "nmkos:experimentalDataset",
+                "@type": "@id",
+            },
+            "validationTarget": "nmkos:validationTarget",
             "inputFile": "nmkos:inputFile",
             "outputFile": "nmkos:outputFile",
             "role": "nmkos:role",
@@ -364,10 +479,9 @@ def _build_case_metadata(
         "modelCatalog": _MODEL_CATALOG,
         "modelReferenceSource": _MODEL_REFERENCES,
         "softwareSource": _SOFTWARE_SOURCES,
-        "software": {
-            "name": "SCIANTIX",
-            "role": "simulation code",
-        },
+        "experimentalDataset": _EXPERIMENTAL_MEASUREMENTS,
+        "validationTarget": experimental_measurement,
+        "software": software,
         "inputFile": list(input_files.values()),
         "outputFile": list(output_files.values()),
     }
@@ -390,6 +504,10 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
     columns = _build_columns(header)
     exported_at = datetime.now(timezone.utc).isoformat()
     case_id = os.path.basename(os.path.normpath(case_dir))
+    white_root = os.path.dirname(__file__)
+    experimental_swelling = _load_experimental_swelling(white_root).get(case_id)
+    if experimental_swelling is None:
+        raise ValueError(f"Missing experimental swelling value for case: {case_id}")
 
     payload_input_json = {
         "format_version": "0.1.0",
@@ -474,6 +592,14 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
         exported_at,
         metadata_input_files,
         output_files,
+        _software_provenance(case_dir),
+        {
+            "@id": _case_measurement_id(case_id),
+            "quantity": "Intergranular gas swelling",
+            "value": experimental_swelling,
+            "unit": "%",
+            "source": _EXPERIMENTAL_MEASUREMENTS,
+        },
     )
 
     with open(case_metadata_jsonld, "w", encoding="utf-8") as handle:
@@ -497,6 +623,7 @@ def _discover_white_cases(white_root: str) -> List[str]:
 def main() -> int:
     white_root = os.path.dirname(__file__)
     exported = 0
+    export_white_experimental_measurements(white_root)
 
     for case_dir in _discover_white_cases(white_root):
         output_txt = os.path.join(case_dir, "output.txt")

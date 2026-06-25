@@ -1,0 +1,376 @@
+{
+  "@context": {
+    "dcterms": "http://purl.org/dc/terms/",
+    "nmkos": "https://w3id.org/nm-kos/terms#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "caseId": "dcterms:identifier",
+    "source": {
+      "@id": "dcterms:source",
+      "@type": "@id"
+    },
+    "generatedAt": {
+      "@id": "dcterms:created",
+      "@type": "xsd:dateTime"
+    },
+    "quantity": "nmkos:quantity",
+    "value": "nmkos:value",
+    "unit": "nmkos:unit",
+    "measurement": "nmkos:measurement"
+  },
+  "@type": "nmkos:ExperimentalDataset",
+  "dcterms:identifier": "white-2004-intergranular-swelling-validation-targets",
+  "dcterms:title": "White intergranular swelling validation targets for SCIANTIX regression cases",
+  "dcterms:description": "Case-level intergranular gas swelling values used by the SCIANTIX White regression parity workflow.",
+  "generatedAt": "2026-06-25T20:42:49.844070+00:00",
+  "source": [
+    "../metadata/sources/white2004.jsonld",
+    "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
+  ],
+  "dcterms:relation": "data/ig_swelling.txt",
+  "measurement": [
+    {
+      "@id": "white-measurement:test_White2004_4000-1",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4000-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.97,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4000-2",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4000-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.68,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4000-3",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4000-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.53,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4000-4",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4000-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.46,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4000-5",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4000-5",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.17,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4004-1",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4004-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.62,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4004-2",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4004-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.7,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4004-3",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4004-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.44,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4004-4",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4004-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.56,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4004-5",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4004-5",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.27,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4004-6",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4004-6",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.16,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4005-1",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4005-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.94,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4005-2",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4005-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.57,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4005-3",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4005-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.42,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4005-4",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4005-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.54,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4005-5",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4005-5",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.27,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-1",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4064-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 1.07,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-2",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4064-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.86,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-3",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4064-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.63,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-4",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4064-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.74,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-5",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4064-5",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.59,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4065-1",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4065-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 1.25,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4065-2",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4065-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 1.35,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4065-3",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4065-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.97,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4065-4",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4065-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.79,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4065-5",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4065-5",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.21,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4135-1",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4135-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.42,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4135-2",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4135-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.16,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4135-3",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4135-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.09,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4136-1",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4136-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.6,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4136-2",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4136-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.62,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4136-3",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4136-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.26,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4136-4",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4136-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.11,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4140-1",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4140-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.26,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4140-2",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4140-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.18,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4162-1",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4162-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.7,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4162-2",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4162-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.46,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4162-3",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4162-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.43,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4162-4",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4162-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.43,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4163-1",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4163-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.6,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4163-2",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4163-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.59,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4163-3",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4163-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.35,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4163-4",
+      "@type": "nmkos:ExperimentalMeasurement",
+      "caseId": "test_White2004_4163-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.4,
+      "unit": "%"
+    }
+  ]
+}
