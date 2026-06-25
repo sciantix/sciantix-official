@@ -39,7 +39,7 @@
   },
   "@type": "nmkos:SimulationCase",
   "caseId": "test_White2004_4140-1",
-  "generatedAt": "2026-06-25T20:42:59.426111+00:00",
+  "generatedAt": "2026-06-25T21:22:06+00:00",
   "source": [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
@@ -63,8 +63,8 @@
     "project_branch_url": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
     "documentation": "https://sciantix.github.io/sciantix-official/models.html",
     "repository_branch": "project/NEO4MAT_DIVA",
-    "repository_commit": "ace479cf1373f11d26a8b6085073edc3ecae099e",
-    "repository_is_dirty": true
+    "repository_commit": "844a123f5c58c398efe4583863345f3ff67d3f5e",
+    "repository_is_dirty": false
   },
   "inputFile": [
     {
@@ -88,8 +88,8 @@
     {
       "role": "structured_input",
       "path": "input.json",
-      "sha256": "0b53fd6ecee953b470235cb2f930794bd46a149c1f945bc68d6760855883e4b9",
-      "size_bytes": 13774
+      "sha256": "a08ea5a1dc7b307f9a3069609e3cde987d2770461992b06da35e656282e9fd9e",
+      "size_bytes": 13770
     }
   ],
   "outputFile": [
@@ -102,14 +102,14 @@
     {
       "role": "structured_output",
       "path": "output.json",
-      "sha256": "15b2fe6d26dbb3d903e1f74a4faebed82e3632dd39390f811ff2b02e450f7ac2",
-      "size_bytes": 433959
+      "sha256": "3454f5647304f253d6feedab3df07a1c98f299e565ef6f60bcc78eedcda0ab5c",
+      "size_bytes": 433955
     },
     {
       "role": "semantic_output",
       "path": "output.jsonld",
-      "sha256": "0e4c3224cb146dc52e2c957aa0bc72696fbbf136723d0498df96bd5c45453e11",
-      "size_bytes": 390579
+      "sha256": "da08f2e86292e465e6a1dd6cf9d7bd7a67b59006cbc3a042895e82f8d81a4f54",
+      "size_bytes": 390572
     }
   ]
 }

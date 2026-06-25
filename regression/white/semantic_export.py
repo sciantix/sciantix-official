@@ -24,9 +24,18 @@ _MODEL_REFERENCES = "../metadata/sources/sciantix_model_references.jsonld"
 _SOFTWARE_SOURCES = "../metadata/sources/sciantix_software_sources.jsonld"
 _EXPERIMENTAL_MEASUREMENTS = "../metadata/experimental/white_experimental_measurements.jsonld"
 
-_SCHEMA_RELATIVE_PATH = "metadata/schema/output.schema.json"
-_INPUT_SCHEMA_RELATIVE_PATH = "metadata/schema/input.schema.json"
+_SCHEMA_RELATIVE_PATH = "../metadata/schema/output.schema.json"
+_INPUT_SCHEMA_RELATIVE_PATH = "../metadata/schema/input.schema.json"
 _EXPERIMENTAL_SWELLING_FILE = "data/ig_swelling.txt"
+_GENERATED_SIDECAR_FILENAMES = {
+    "input.json",
+    "output.json",
+    "output.jsonld",
+    "case_metadata.jsonld",
+}
+_GENERATED_METADATA_PATHS = {
+    "regression/white/metadata/experimental/white_experimental_measurements.jsonld",
+}
 _INPUT_FILES = {
     "settings": "input_settings.txt",
     "history": "input_history.txt",
@@ -116,10 +125,64 @@ def _git_value(args: List[str], cwd: str) -> str:
     return result.stdout.strip() or "unknown"
 
 
+def _timestamp_from_git(git_cwd: str) -> str:
+    value = _git_value(["show", "-s", "--format=%cI", "HEAD"], git_cwd)
+    if value == "unknown":
+        return datetime.now(timezone.utc).isoformat()
+    try:
+        return datetime.fromisoformat(value).astimezone(timezone.utc).isoformat()
+    except ValueError:
+        return datetime.now(timezone.utc).isoformat()
+
+
+def _exported_at_utc(path: str) -> str:
+    override = os.environ.get("SCIANTIX_SEMANTIC_GENERATED_AT_UTC")
+    if override:
+        return datetime.fromisoformat(override).astimezone(timezone.utc).isoformat()
+
+    repo_root = _git_value(["rev-parse", "--show-toplevel"], path)
+    git_cwd = repo_root if repo_root != "unknown" else path
+    return _timestamp_from_git(git_cwd)
+
+
+def _is_generated_semantic_path(path: str) -> bool:
+    normalized = path.strip().replace("\\", "/")
+    if normalized in _GENERATED_METADATA_PATHS:
+        return True
+    parts = normalized.split("/")
+    return (
+        len(parts) == 4
+        and parts[0] == "regression"
+        and parts[1] == "white"
+        and parts[2].startswith("test_White")
+        and parts[3] in _GENERATED_SIDECAR_FILENAMES
+    )
+
+
+def _repository_is_dirty_for_provenance(git_cwd: str) -> bool:
+    status = _git_value(["status", "--porcelain"], git_cwd)
+    if status == "unknown":
+        return True
+
+    for line in status.splitlines():
+        if not line:
+            continue
+        path = line[3:] if len(line) > 3 else ""
+        if " -> " in path:
+            path = path.rsplit(" -> ", 1)[1]
+        if not _is_generated_semantic_path(path):
+            return True
+    return False
+
+
 def _software_provenance(case_dir: str) -> dict:
     repo_root = _git_value(["rev-parse", "--show-toplevel"], case_dir)
     git_cwd = repo_root if repo_root != "unknown" else case_dir
-    dirty = _git_value(["status", "--porcelain"], git_cwd)
+    dirty_override = os.environ.get("SCIANTIX_SEMANTIC_REPOSITORY_IS_DIRTY")
+    if dirty_override is None:
+        repository_is_dirty = _repository_is_dirty_for_provenance(git_cwd)
+    else:
+        repository_is_dirty = dirty_override.strip().lower() in {"1", "true", "yes"}
 
     return {
         "name": "SCIANTIX",
@@ -129,8 +192,9 @@ def _software_provenance(case_dir: str) -> dict:
         "project_branch_url": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
         "documentation": "https://sciantix.github.io/sciantix-official/models.html",
         "repository_branch": _git_value(["rev-parse", "--abbrev-ref", "HEAD"], git_cwd),
-        "repository_commit": _git_value(["rev-parse", "HEAD"], git_cwd),
-        "repository_is_dirty": dirty != "",
+        "repository_commit": os.environ.get("SCIANTIX_SEMANTIC_REPOSITORY_COMMIT")
+        or _git_value(["rev-parse", "HEAD"], git_cwd),
+        "repository_is_dirty": repository_is_dirty,
     }
 
 
@@ -167,7 +231,7 @@ def export_white_experimental_measurements(white_root: str) -> str:
     output_dir = os.path.join(white_root, "metadata", "experimental")
     os.makedirs(output_dir, exist_ok=True)
     output_path = os.path.join(output_dir, "white_experimental_measurements.jsonld")
-    exported_at = datetime.now(timezone.utc).isoformat()
+    exported_at = _exported_at_utc(white_root)
 
     payload = {
         "@context": {
@@ -368,6 +432,10 @@ def _validate_export_payload(payload_json: dict) -> None:
         if key not in payload_json:
             raise ValueError(f"Missing top-level key in output.json: {key}")
 
+    schema = payload_json.get("schema")
+    if schema and not schema.startswith(("http://", "https://", "../")):
+        raise ValueError(f"Schema path must be a URI or relative to the case directory: {schema}")
+
     table = payload_json["table"]
     if not isinstance(table, dict):
         raise ValueError("'table' must be an object")
@@ -412,6 +480,10 @@ def _validate_input_payload(payload_json: dict) -> None:
     for key in required_top:
         if key not in payload_json:
             raise ValueError(f"Missing top-level key in input.json: {key}")
+
+    schema = payload_json.get("schema")
+    if schema and not schema.startswith(("http://", "https://", "../")):
+        raise ValueError(f"Schema path must be a URI or relative to the case directory: {schema}")
 
     history = payload_json["history"]
     if "columns" not in history or "rows" not in history:
@@ -502,7 +574,7 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
     input_payload = _load_input_payload(case_dir)
     header, rows = _load_output_tsv(output_txt)
     columns = _build_columns(header)
-    exported_at = datetime.now(timezone.utc).isoformat()
+    exported_at = _exported_at_utc(case_dir)
     case_id = os.path.basename(os.path.normpath(case_dir))
     white_root = os.path.dirname(__file__)
     experimental_swelling = _load_experimental_swelling(white_root).get(case_id)
@@ -629,11 +701,8 @@ def main() -> int:
         output_txt = os.path.join(case_dir, "output.txt")
         if not os.path.isfile(output_txt):
             continue
-        try:
-            export_white_case_semantic_outputs(case_dir)
-            exported += 1
-        except Exception as err:  # pragma: no cover - utility path
-            print(f"[WARNING] Semantic export failed for {case_dir}: {err}")
+        export_white_case_semantic_outputs(case_dir)
+        exported += 1
 
     print(f"Exported machine-readable files for {exported} White case(s).")
     return 0

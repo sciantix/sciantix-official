@@ -32,10 +32,7 @@ def run_single_case(args):
 
             # White-only exports for SCIANTIX-DIVA: keep original txt files, add JSON/JSON-LD.
             if group_name == "white":
-                try:
-                    export_white_case_semantic_outputs(case)
-                except Exception as err:
-                    print(f"[WARNING] White semantic export failed for {test_id}: {err}")
+                export_white_case_semantic_outputs(case)
 
             clean_case_dir(case, 0)
 

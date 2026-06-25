@@ -1,8 +1,8 @@
 {
   "format_version": "0.1.0",
-  "schema": "metadata/schema/output.schema.json",
+  "schema": "../metadata/schema/output.schema.json",
   "case_id": "test_White2004_4004-5",
-  "generated_at_utc": "2026-06-25T20:42:52.522141+00:00",
+  "generated_at_utc": "2026-06-25T21:22:06+00:00",
   "dcterms_sources": [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
