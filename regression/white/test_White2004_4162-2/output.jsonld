@@ -1,7 +1,10 @@
 {
   "@context": {
+    "csvw": "http://www.w3.org/ns/csvw#",
     "dcterms": "http://purl.org/dc/terms/",
-    "nmkos": "https://w3id.org/nm-kos/terms#",
+    "qudt": "https://qudt.org/schema/qudt/",
+    "schema": "https://schema.org/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "caseId": "dcterms:identifier",
     "generatedAt": {
@@ -12,14 +15,14 @@
       "@id": "dcterms:source",
       "@type": "@id"
     },
-    "columns": "nmkos:columns",
-    "rows": "nmkos:rows",
-    "label": "nmkos:label",
-    "unit": "nmkos:unit",
-    "index": "nmkos:index",
-    "name": "nmkos:name"
+    "columns": "csvw:column",
+    "rows": "csvw:row",
+    "label": "skos:prefLabel",
+    "unit": "qudt:unit",
+    "index": "schema:position",
+    "name": "schema:name"
   },
-  "@type": "nmkos:SimulationOutput",
+  "@type": "csvw:Table",
   "caseId": "test_White2004_4162-2",
   "generatedAt": "2026-06-25T21:22:06+00:00",
   "source": [

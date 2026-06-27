@@ -13,6 +13,8 @@ import subprocess
 from datetime import datetime, timezone
 from typing import Dict, List, Tuple
 
+from regression.white.variable_metadata_export import export_variable_catalog
+
 
 _SCIANTIX_VERSION = "2.2.1"
 _DCTERMS_SOURCES = [
@@ -23,6 +25,7 @@ _MODEL_CATALOG = "../metadata/models/sciantix_physical_models.jsonld"
 _MODEL_REFERENCES = "../metadata/sources/sciantix_model_references.jsonld"
 _SOFTWARE_SOURCES = "../metadata/sources/sciantix_software_sources.jsonld"
 _EXPERIMENTAL_MEASUREMENTS = "../metadata/experimental/white_experimental_measurements.jsonld"
+_VARIABLE_CATALOG = "../metadata/variables/sciantix_variable_catalog.jsonld"
 
 _SCHEMA_RELATIVE_PATH = "../metadata/schema/output.schema.json"
 _INPUT_SCHEMA_RELATIVE_PATH = "../metadata/schema/input.schema.json"
@@ -35,6 +38,7 @@ _GENERATED_SIDECAR_FILENAMES = {
 }
 _GENERATED_METADATA_PATHS = {
     "regression/white/metadata/experimental/white_experimental_measurements.jsonld",
+    "regression/white/metadata/variables/sciantix_variable_catalog.jsonld",
 }
 _INPUT_FILES = {
     "settings": "input_settings.txt",
@@ -185,6 +189,7 @@ def _software_provenance(case_dir: str) -> dict:
         repository_is_dirty = dirty_override.strip().lower() in {"1", "true", "yes"}
 
     return {
+        "@type": ["prov:SoftwareAgent", "schema:SoftwareApplication"],
         "name": "SCIANTIX",
         "version": _SCIANTIX_VERSION,
         "role": "simulation code",
@@ -235,8 +240,10 @@ def export_white_experimental_measurements(white_root: str) -> str:
 
     payload = {
         "@context": {
+            "dcat": "http://www.w3.org/ns/dcat#",
             "dcterms": "http://purl.org/dc/terms/",
-            "nmkos": "https://w3id.org/nm-kos/terms#",
+            "qudt": "https://qudt.org/schema/qudt/",
+            "sosa": "http://www.w3.org/ns/sosa/",
             "xsd": "http://www.w3.org/2001/XMLSchema#",
             "caseId": "dcterms:identifier",
             "source": {
@@ -247,12 +254,12 @@ def export_white_experimental_measurements(white_root: str) -> str:
                 "@id": "dcterms:created",
                 "@type": "xsd:dateTime",
             },
-            "quantity": "nmkos:quantity",
-            "value": "nmkos:value",
-            "unit": "nmkos:unit",
-            "measurement": "nmkos:measurement",
+            "quantity": "sosa:observedProperty",
+            "value": "sosa:hasSimpleResult",
+            "unit": "qudt:unit",
+            "measurement": "dcterms:hasPart",
         },
-        "@type": "nmkos:ExperimentalDataset",
+        "@type": "dcat:Dataset",
         "dcterms:identifier": "white-2004-intergranular-swelling-validation-targets",
         "dcterms:title": "White intergranular swelling validation targets for SCIANTIX regression cases",
         "dcterms:description": "Case-level intergranular gas swelling values used by the SCIANTIX White regression parity workflow.",
@@ -262,7 +269,7 @@ def export_white_experimental_measurements(white_root: str) -> str:
         "measurement": [
             {
                 "@id": _case_measurement_id(case_id),
-                "@type": "nmkos:ExperimentalMeasurement",
+                "@type": "sosa:Observation",
                 "caseId": case_id,
                 "quantity": "Intergranular gas swelling",
                 "value": value,
@@ -507,8 +514,12 @@ def _build_case_metadata(
 ) -> dict:
     return {
         "@context": {
+            "dcat": "http://www.w3.org/ns/dcat#",
             "dcterms": "http://purl.org/dc/terms/",
             "nmkos": "https://w3id.org/nm-kos/terms#",
+            "prov": "http://www.w3.org/ns/prov#",
+            "schema": "https://schema.org/",
+            "sosa": "http://www.w3.org/ns/sosa/",
             "xsd": "http://www.w3.org/2001/XMLSchema#",
             "caseId": "dcterms:identifier",
             "generatedAt": {
@@ -519,38 +530,44 @@ def _build_case_metadata(
                 "@id": "dcterms:source",
                 "@type": "@id",
             },
-            "software": "nmkos:software",
+            "software": "prov:wasAssociatedWith",
             "modelCatalog": {
-                "@id": "nmkos:modelCatalog",
+                "@id": "dcterms:references",
                 "@type": "@id",
             },
             "modelReferenceSource": {
-                "@id": "nmkos:modelReferenceSource",
+                "@id": "dcterms:source",
                 "@type": "@id",
             },
             "softwareSource": {
-                "@id": "nmkos:softwareSource",
+                "@id": "dcterms:source",
+                "@type": "@id",
+            },
+            "variableCatalog": {
+                "@id": "dcterms:references",
                 "@type": "@id",
             },
             "experimentalDataset": {
-                "@id": "nmkos:experimentalDataset",
+                "@id": "dcterms:relation",
                 "@type": "@id",
             },
-            "validationTarget": "nmkos:validationTarget",
-            "inputFile": "nmkos:inputFile",
-            "outputFile": "nmkos:outputFile",
-            "role": "nmkos:role",
-            "path": "nmkos:path",
+            "validationTarget": "sosa:hasResult",
+            "inputFile": "prov:used",
+            "outputFile": "prov:generated",
+            "role": "dcterms:type",
+            "path": "schema:contentUrl",
             "sha256": "nmkos:sha256",
-            "sizeBytes": "nmkos:sizeBytes",
+            "sizeBytes": "dcat:byteSize",
+            "size_bytes": "dcat:byteSize",
         },
-        "@type": "nmkos:SimulationCase",
+        "@type": ["prov:Activity", "dcat:Dataset"],
         "caseId": case_id,
         "generatedAt": exported_at,
         "source": _DCTERMS_SOURCES,
         "modelCatalog": _MODEL_CATALOG,
         "modelReferenceSource": _MODEL_REFERENCES,
         "softwareSource": _SOFTWARE_SOURCES,
+        "variableCatalog": _VARIABLE_CATALOG,
         "experimentalDataset": _EXPERIMENTAL_MEASUREMENTS,
         "validationTarget": experimental_measurement,
         "software": software,
@@ -619,8 +636,11 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
 
     payload_jsonld = {
         "@context": {
+            "csvw": "http://www.w3.org/ns/csvw#",
             "dcterms": "http://purl.org/dc/terms/",
-            "nmkos": "https://w3id.org/nm-kos/terms#",
+            "qudt": "https://qudt.org/schema/qudt/",
+            "schema": "https://schema.org/",
+            "skos": "http://www.w3.org/2004/02/skos/core#",
             "xsd": "http://www.w3.org/2001/XMLSchema#",
             "caseId": "dcterms:identifier",
             "generatedAt": {
@@ -631,14 +651,14 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
                 "@id": "dcterms:source",
                 "@type": "@id",
             },
-            "columns": "nmkos:columns",
-            "rows": "nmkos:rows",
-            "label": "nmkos:label",
-            "unit": "nmkos:unit",
-            "index": "nmkos:index",
-            "name": "nmkos:name",
+            "columns": "csvw:column",
+            "rows": "csvw:row",
+            "label": "skos:prefLabel",
+            "unit": "qudt:unit",
+            "index": "schema:position",
+            "name": "schema:name",
         },
-        "@type": "nmkos:SimulationOutput",
+        "@type": "csvw:Table",
         "caseId": case_id,
         "generatedAt": exported_at,
         "source": _DCTERMS_SOURCES,
@@ -696,6 +716,7 @@ def main() -> int:
     white_root = os.path.dirname(__file__)
     exported = 0
     export_white_experimental_measurements(white_root)
+    export_variable_catalog(white_root)
 
     for case_dir in _discover_white_cases(white_root):
         output_txt = os.path.join(case_dir, "output.txt")

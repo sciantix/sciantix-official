@@ -1,24 +1,25 @@
 {
   "@context": {
     "dcterms": "http://purl.org/dc/terms/",
-    "nmkos": "https://w3id.org/nm-kos/terms#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
     "model": "https://w3id.org/nm-kos/sciantix/model#",
-    "category": "nmkos:category",
-    "targetDescription": "nmkos:targetDescription",
-    "mainAssumptions": "nmkos:mainAssumptions",
+    "modelEntry": "skos:member",
+    "category": "dcterms:type",
+    "targetDescription": "skos:definition",
+    "mainAssumptions": "skos:scopeNote",
     "reference": {
       "@id": "dcterms:references",
       "@type": "@id"
     }
   },
-  "@type": "nmkos:ModelCatalog",
+  "@type": "skos:ConceptScheme",
   "dcterms:identifier": "sciantix-white-physical-models",
   "dcterms:title": "SCIANTIX physical models relevant to the White case study",
   "dcterms:source": "../sources/sciantix_model_references.jsonld",
-  "nmkos:model": [
+  "modelEntry": [
     {
       "@id": "model:densification",
-      "@type": "nmkos:PhysicalModel",
+      "@type": "skos:Concept",
       "dcterms:title": "Densification",
       "category": "Microstructure, semiempirical",
       "targetDescription": "Burnup driven fuel densification, represented as a progressive reduction of the fabrication porosity towards a residual porosity.",
@@ -27,7 +28,7 @@
     },
     {
       "@id": "model:grain-growth",
-      "@type": "nmkos:PhysicalModel",
+      "@type": "skos:Concept",
       "dcterms:title": "Grain growth",
       "category": "Microstructure, physics-based model",
       "targetDescription": "Grain radius growth during irradiation as a function of temperature, burnup and grain-boundary mobility.",
@@ -36,7 +37,7 @@
     },
     {
       "@id": "model:gas-production",
-      "@type": "nmkos:PhysicalModel",
+      "@type": "skos:Concept",
       "dcterms:title": "Gas production",
       "category": "Fission gas behaviour, physics-based model",
       "targetDescription": "Production of gaseous species from fission, calculated via local fission rate and gas fission yields.",
@@ -45,7 +46,7 @@
     },
     {
       "@id": "model:gas-diffusion",
-      "@type": "nmkos:PhysicalModel",
+      "@type": "skos:Concept",
       "dcterms:title": "Gas diffusion",
       "category": "Fission gas behaviour, physics-based model",
       "targetDescription": "Intra-granular fission gas diffusion solving for gas concentration in intragranular solution and in intragranular bubbles.",
@@ -54,7 +55,7 @@
     },
     {
       "@id": "model:intragranular-bubble-behaviour",
-      "@type": "nmkos:PhysicalModel",
+      "@type": "skos:Concept",
       "dcterms:title": "Intragranular bubble behaviour",
       "category": "Fission gas behaviour, physics-based model",
       "targetDescription": "Intragranular bubble population, atoms per bubble, bubble radius, and intragranular gaseous swelling. Intragranular bubble concentration is evolved with a simple source-decay law; bubble radius and volume are inferred from gas inventories stored in intragranular bubbles.",
@@ -63,7 +64,7 @@
     },
     {
       "@id": "model:intergranular-bubble-behavior",
-      "@type": "nmkos:PhysicalModel",
+      "@type": "skos:Concept",
       "dcterms:title": "Intergranular bubble behavior",
       "category": "Fission gas behaviour, physics-based model",
       "targetDescription": "Intergranular bubble evolution, including bubble volume, radius, area, fractional coverage, bubble pressure, intergranular gas swelling, and released inventories.",
@@ -72,7 +73,7 @@
     },
     {
       "@id": "model:grain-boundary-micro-cracking",
-      "@type": "nmkos:PhysicalModel",
+      "@type": "skos:Concept",
       "dcterms:title": "Grain-boundary micro-cracking",
       "category": "Fission gas behaviour, physics-based model",
       "targetDescription": "Degradation of grain-boundary integrity during transients and progressive healing with burnup.",
@@ -84,7 +85,7 @@
     },
     {
       "@id": "model:grain-boundary-venting",
-      "@type": "nmkos:PhysicalModel",
+      "@type": "skos:Concept",
       "dcterms:title": "Grain-boundary venting",
       "category": "Fission gas behaviour, physics-based model",
       "targetDescription": "Venting of gases from grain-boundary edges to the free volume, given the fuel open porosity.",

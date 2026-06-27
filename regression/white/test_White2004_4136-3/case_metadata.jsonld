@@ -1,7 +1,11 @@
 {
   "@context": {
+    "dcat": "http://www.w3.org/ns/dcat#",
     "dcterms": "http://purl.org/dc/terms/",
     "nmkos": "https://w3id.org/nm-kos/terms#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/",
+    "sosa": "http://www.w3.org/ns/sosa/",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "caseId": "dcterms:identifier",
     "generatedAt": {
@@ -12,32 +16,40 @@
       "@id": "dcterms:source",
       "@type": "@id"
     },
-    "software": "nmkos:software",
+    "software": "prov:wasAssociatedWith",
     "modelCatalog": {
-      "@id": "nmkos:modelCatalog",
+      "@id": "dcterms:references",
       "@type": "@id"
     },
     "modelReferenceSource": {
-      "@id": "nmkos:modelReferenceSource",
+      "@id": "dcterms:source",
       "@type": "@id"
     },
     "softwareSource": {
-      "@id": "nmkos:softwareSource",
+      "@id": "dcterms:source",
+      "@type": "@id"
+    },
+    "variableCatalog": {
+      "@id": "dcterms:references",
       "@type": "@id"
     },
     "experimentalDataset": {
-      "@id": "nmkos:experimentalDataset",
+      "@id": "dcterms:relation",
       "@type": "@id"
     },
-    "validationTarget": "nmkos:validationTarget",
-    "inputFile": "nmkos:inputFile",
-    "outputFile": "nmkos:outputFile",
-    "role": "nmkos:role",
-    "path": "nmkos:path",
+    "validationTarget": "sosa:hasResult",
+    "inputFile": "prov:used",
+    "outputFile": "prov:generated",
+    "role": "dcterms:type",
+    "path": "schema:contentUrl",
     "sha256": "nmkos:sha256",
-    "sizeBytes": "nmkos:sizeBytes"
+    "sizeBytes": "dcat:byteSize",
+    "size_bytes": "dcat:byteSize"
   },
-  "@type": "nmkos:SimulationCase",
+  "@type": [
+    "prov:Activity",
+    "dcat:Dataset"
+  ],
   "caseId": "test_White2004_4136-3",
   "generatedAt": "2026-06-25T21:22:06+00:00",
   "source": [
@@ -47,6 +59,7 @@
   "modelCatalog": "../metadata/models/sciantix_physical_models.jsonld",
   "modelReferenceSource": "../metadata/sources/sciantix_model_references.jsonld",
   "softwareSource": "../metadata/sources/sciantix_software_sources.jsonld",
+  "variableCatalog": "../metadata/variables/sciantix_variable_catalog.jsonld",
   "experimentalDataset": "../metadata/experimental/white_experimental_measurements.jsonld",
   "validationTarget": {
     "@id": "white-measurement:test_White2004_4136-3",
@@ -56,6 +69,10 @@
     "source": "../metadata/experimental/white_experimental_measurements.jsonld"
   },
   "software": {
+    "@type": [
+      "prov:SoftwareAgent",
+      "schema:SoftwareApplication"
+    ],
     "name": "SCIANTIX",
     "version": "2.2.1",
     "role": "simulation code",
@@ -63,8 +80,8 @@
     "project_branch_url": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
     "documentation": "https://sciantix.github.io/sciantix-official/models.html",
     "repository_branch": "project/NEO4MAT_DIVA",
-    "repository_commit": "844a123f5c58c398efe4583863345f3ff67d3f5e",
-    "repository_is_dirty": false
+    "repository_commit": "d9d99c2b478558a0f8ce4107046d5826d19f1a55",
+    "repository_is_dirty": true
   },
   "inputFile": [
     {
@@ -108,8 +125,8 @@
     {
       "role": "semantic_output",
       "path": "output.jsonld",
-      "sha256": "e3bc403e876368c4d76023ff3e6f5ea6d1eb1b932cc41f37fe0814e91451a197",
-      "size_bytes": 457833
+      "sha256": "b3e88e00b03cf897271d3f18e644963bf2c23352fb8bdc7df38419fb0bce18a7",
+      "size_bytes": 457953
     }
   ]
 }

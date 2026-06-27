@@ -12,6 +12,7 @@ from regression.white.semantic_export import (
     export_white_case_semantic_outputs,
     export_white_experimental_measurements,
 )
+from regression.white.variable_metadata_export import export_variable_catalog
 
 
 def run_single_case(args):
@@ -98,6 +99,7 @@ def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1):
 
     if group_name == "white":
         export_white_experimental_measurements(base)
+        export_variable_catalog(base)
 
     results = []
     

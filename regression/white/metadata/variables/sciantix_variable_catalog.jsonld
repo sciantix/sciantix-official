@@ -1,0 +1,4637 @@
+{
+  "@context": {
+    "dcterms": "http://purl.org/dc/terms/",
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "nmkos": "https://w3id.org/nm-kos/terms#",
+    "model": "https://w3id.org/nm-kos/sciantix/model#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "qudt": "https://qudt.org/schema/qudt/",
+    "schema": "https://schema.org/",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "sosa": "http://www.w3.org/ns/sosa/",
+    "ssn": "http://www.w3.org/ns/ssn/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "identifier": "dcterms:identifier",
+    "title": "dcterms:title",
+    "description": "dcterms:description",
+    "source": "dcterms:source",
+    "references": {
+      "@id": "dcterms:references",
+      "@type": "@id"
+    },
+    "variable": "ssn:hasProperty",
+    "category": "dcterms:type",
+    "name": "schema:name",
+    "label": "skos:prefLabel",
+    "unit": "qudt:unit",
+    "sourceFile": "nmkos:sourceFile",
+    "sourceFunction": "nmkos:sourceFunction",
+    "sourceClass": "nmkos:sourceClass",
+    "sourceArray": "nmkos:sourceArray",
+    "sourceArrayIndex": "nmkos:sourceArrayIndex",
+    "sourceArrayReferences": "nmkos:sourceArrayReferences",
+    "outputFlagExpression": "nmkos:outputFlagExpression",
+    "cppType": "nmkos:cppType",
+    "generatedAt": {
+      "@id": "dcterms:created",
+      "@type": "xsd:dateTime"
+    }
+  },
+  "@type": "dcat:Dataset",
+  "dcterms:identifier": "sciantix-variable-catalog",
+  "dcterms:title": "SCIANTIX variable metadata catalog",
+  "dcterms:description": "Machine-readable catalog of SCIANTIX input settings, scaling factors, history variables, state variables, and Material/Matrix/Gas/System class properties used to support RDF-mappable case-study metadata.",
+  "dcterms:references": "../models/sciantix_physical_models.jsonld",
+  "generatedAt": "2026-06-25T21:22:06+00:00",
+  "variable": [
+    {
+      "@id": "sciantix-variable:input_setting:igraingrowth",
+      "@type": "prov:Entity",
+      "identifier": "iGrainGrowth",
+      "title": "iGrainGrowth",
+      "description": "SCIANTIX input setting 'iGrainGrowth', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iGrainGrowth",
+      "label": "iGrainGrowth",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 0,
+      "references": [
+        "model:grain-growth"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:input_setting:ifissiongasdiffusivity",
+      "@type": "prov:Entity",
+      "identifier": "iFissionGasDiffusivity",
+      "title": "iFissionGasDiffusivity",
+      "description": "SCIANTIX input setting 'iFissionGasDiffusivity', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iFissionGasDiffusivity",
+      "label": "iFissionGasDiffusivity",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 1,
+      "references": [
+        "model:gas-diffusion"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:input_setting:idiffusionsolver",
+      "@type": "prov:Entity",
+      "identifier": "iDiffusionSolver",
+      "title": "iDiffusionSolver",
+      "description": "SCIANTIX input setting 'iDiffusionSolver', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iDiffusionSolver",
+      "label": "iDiffusionSolver",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 2,
+      "references": [
+        "model:gas-diffusion"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:input_setting:iintragranularbubblebehavior",
+      "@type": "prov:Entity",
+      "identifier": "iIntraGranularBubbleBehavior",
+      "title": "iIntraGranularBubbleBehavior",
+      "description": "SCIANTIX input setting 'iIntraGranularBubbleBehavior', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iIntraGranularBubbleBehavior",
+      "label": "iIntraGranularBubbleBehavior",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 3,
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:input_setting:iresolutionrate",
+      "@type": "prov:Entity",
+      "identifier": "iResolutionRate",
+      "title": "iResolutionRate",
+      "description": "SCIANTIX input setting 'iResolutionRate', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iResolutionRate",
+      "label": "iResolutionRate",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 4,
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:input_setting:itrappingrate",
+      "@type": "prov:Entity",
+      "identifier": "iTrappingRate",
+      "title": "iTrappingRate",
+      "description": "SCIANTIX input setting 'iTrappingRate', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iTrappingRate",
+      "label": "iTrappingRate",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 5,
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:input_setting:inucleationrate",
+      "@type": "prov:Entity",
+      "identifier": "iNucleationRate",
+      "title": "iNucleationRate",
+      "description": "SCIANTIX input setting 'iNucleationRate', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iNucleationRate",
+      "label": "iNucleationRate",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 6,
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:input_setting:ioutput",
+      "@type": "prov:Entity",
+      "identifier": "iOutput",
+      "title": "iOutput",
+      "description": "SCIANTIX input setting 'iOutput', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iOutput",
+      "label": "iOutput",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 7
+    },
+    {
+      "@id": "sciantix-variable:input_setting:igrainboundaryvacancydiffusivity",
+      "@type": "prov:Entity",
+      "identifier": "iGrainBoundaryVacancyDiffusivity",
+      "title": "iGrainBoundaryVacancyDiffusivity",
+      "description": "SCIANTIX input setting 'iGrainBoundaryVacancyDiffusivity', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iGrainBoundaryVacancyDiffusivity",
+      "label": "iGrainBoundaryVacancyDiffusivity",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 8,
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:input_setting:igrainboundarybehaviour",
+      "@type": "prov:Entity",
+      "identifier": "iGrainBoundaryBehaviour",
+      "title": "iGrainBoundaryBehaviour",
+      "description": "SCIANTIX input setting 'iGrainBoundaryBehaviour', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iGrainBoundaryBehaviour",
+      "label": "iGrainBoundaryBehaviour",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 9,
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:input_setting:igrainboundarymicrocracking",
+      "@type": "prov:Entity",
+      "identifier": "iGrainBoundaryMicroCracking",
+      "title": "iGrainBoundaryMicroCracking",
+      "description": "SCIANTIX input setting 'iGrainBoundaryMicroCracking', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iGrainBoundaryMicroCracking",
+      "label": "iGrainBoundaryMicroCracking",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 10,
+      "references": [
+        "model:grain-boundary-micro-cracking"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:input_setting:ifuelmatrix",
+      "@type": "prov:Entity",
+      "identifier": "iFuelMatrix",
+      "title": "iFuelMatrix",
+      "description": "SCIANTIX input setting 'iFuelMatrix', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iFuelMatrix",
+      "label": "iFuelMatrix",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 11
+    },
+    {
+      "@id": "sciantix-variable:input_setting:igrainboundaryventing",
+      "@type": "prov:Entity",
+      "identifier": "iGrainBoundaryVenting",
+      "title": "iGrainBoundaryVenting",
+      "description": "SCIANTIX input setting 'iGrainBoundaryVenting', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iGrainBoundaryVenting",
+      "label": "iGrainBoundaryVenting",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 12,
+      "references": [
+        "model:grain-boundary-venting"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:input_setting:iradioactivefissiongas",
+      "@type": "prov:Entity",
+      "identifier": "iRadioactiveFissionGas",
+      "title": "iRadioactiveFissionGas",
+      "description": "SCIANTIX input setting 'iRadioactiveFissionGas', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iRadioactiveFissionGas",
+      "label": "iRadioactiveFissionGas",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 13
+    },
+    {
+      "@id": "sciantix-variable:input_setting:ihelium",
+      "@type": "prov:Entity",
+      "identifier": "iHelium",
+      "title": "iHelium",
+      "description": "SCIANTIX input setting 'iHelium', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iHelium",
+      "label": "iHelium",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 14
+    },
+    {
+      "@id": "sciantix-variable:input_setting:ihediffusivity",
+      "@type": "prov:Entity",
+      "identifier": "iHeDiffusivity",
+      "title": "iHeDiffusivity",
+      "description": "SCIANTIX input setting 'iHeDiffusivity', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iHeDiffusivity",
+      "label": "iHeDiffusivity",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 15
+    },
+    {
+      "@id": "sciantix-variable:input_setting:igrainboundarysweeping",
+      "@type": "prov:Entity",
+      "identifier": "iGrainBoundarySweeping",
+      "title": "iGrainBoundarySweeping",
+      "description": "SCIANTIX input setting 'iGrainBoundarySweeping', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iGrainBoundarySweeping",
+      "label": "iGrainBoundarySweeping",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 16
+    },
+    {
+      "@id": "sciantix-variable:input_setting:ihighburnupstructureformation",
+      "@type": "prov:Entity",
+      "identifier": "iHighBurnupStructureFormation",
+      "title": "iHighBurnupStructureFormation",
+      "description": "SCIANTIX input setting 'iHighBurnupStructureFormation', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iHighBurnupStructureFormation",
+      "label": "iHighBurnupStructureFormation",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 17
+    },
+    {
+      "@id": "sciantix-variable:input_setting:ihighburnupstructureporosity",
+      "@type": "prov:Entity",
+      "identifier": "iHighBurnupStructurePorosity",
+      "title": "iHighBurnupStructurePorosity",
+      "description": "SCIANTIX input setting 'iHighBurnupStructurePorosity', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iHighBurnupStructurePorosity",
+      "label": "iHighBurnupStructurePorosity",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 18
+    },
+    {
+      "@id": "sciantix-variable:input_setting:iheliumproductionrate",
+      "@type": "prov:Entity",
+      "identifier": "iHeliumProductionRate",
+      "title": "iHeliumProductionRate",
+      "description": "SCIANTIX input setting 'iHeliumProductionRate', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iHeliumProductionRate",
+      "label": "iHeliumProductionRate",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 19
+    },
+    {
+      "@id": "sciantix-variable:input_setting:istoichiometrydeviation",
+      "@type": "prov:Entity",
+      "identifier": "iStoichiometryDeviation",
+      "title": "iStoichiometryDeviation",
+      "description": "SCIANTIX input setting 'iStoichiometryDeviation', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iStoichiometryDeviation",
+      "label": "iStoichiometryDeviation",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 20
+    },
+    {
+      "@id": "sciantix-variable:input_setting:ibubblediffusivity",
+      "@type": "prov:Entity",
+      "identifier": "iBubbleDiffusivity",
+      "title": "iBubbleDiffusivity",
+      "description": "SCIANTIX input setting 'iBubbleDiffusivity', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iBubbleDiffusivity",
+      "label": "iBubbleDiffusivity",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 21
+    },
+    {
+      "@id": "sciantix-variable:input_setting:ichromiumsolubility",
+      "@type": "prov:Entity",
+      "identifier": "iChromiumSolubility",
+      "title": "iChromiumSolubility",
+      "description": "SCIANTIX input setting 'iChromiumSolubility', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iChromiumSolubility",
+      "label": "iChromiumSolubility",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 22
+    },
+    {
+      "@id": "sciantix-variable:input_setting:idensification",
+      "@type": "prov:Entity",
+      "identifier": "iDensification",
+      "title": "iDensification",
+      "description": "SCIANTIX input setting 'iDensification', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iDensification",
+      "label": "iDensification",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 23,
+      "references": [
+        "model:densification"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:input_setting:ireleasemode",
+      "@type": "prov:Entity",
+      "identifier": "iReleaseMode",
+      "title": "iReleaseMode",
+      "description": "SCIANTIX input setting 'iReleaseMode', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "input_setting",
+      "name": "iReleaseMode",
+      "label": "iReleaseMode",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getInputVariableNames",
+      "sourceArrayIndex": 24,
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:history_variable:time",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Time",
+      "title": "Time",
+      "description": "SCIANTIX history variable 'Time', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "history_variable",
+      "name": "Time",
+      "label": "Time",
+      "unit": "h",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeHistoryVariable",
+      "sourceArrayIndex": 0,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_history",
+          "sourceArrayIndex": 7
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:history_variable:time-step-number",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Time step number",
+      "title": "Time step number",
+      "description": "SCIANTIX history variable 'Time step number', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "history_variable",
+      "name": "Time step number",
+      "label": "Time step number",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeHistoryVariable",
+      "sourceArrayIndex": 1,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_history",
+          "sourceArrayIndex": 8
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:history_variable:temperature",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Temperature",
+      "title": "Temperature",
+      "description": "SCIANTIX history variable 'Temperature', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "history_variable",
+      "name": "Temperature",
+      "label": "Temperature",
+      "unit": "K",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeHistoryVariable",
+      "sourceArrayIndex": 2,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_history",
+          "sourceArrayIndex": 0
+        },
+        {
+          "sourceArray": "Sciantix_history",
+          "sourceArrayIndex": 1
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:history_variable:fission-rate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Fission rate",
+      "title": "Fission rate",
+      "description": "SCIANTIX history variable 'Fission rate', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "history_variable",
+      "name": "Fission rate",
+      "label": "Fission rate",
+      "unit": "fiss / m3 s",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeHistoryVariable",
+      "sourceArrayIndex": 3,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_history",
+          "sourceArrayIndex": 2
+        },
+        {
+          "sourceArray": "Sciantix_history",
+          "sourceArrayIndex": 3
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:history_variable:hydrostatic-stress",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Hydrostatic stress",
+      "title": "Hydrostatic stress",
+      "description": "SCIANTIX history variable 'Hydrostatic stress', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "history_variable",
+      "name": "Hydrostatic stress",
+      "label": "Hydrostatic stress",
+      "unit": "MPa",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeHistoryVariable",
+      "sourceArrayIndex": 4,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_history",
+          "sourceArrayIndex": 4
+        },
+        {
+          "sourceArray": "Sciantix_history",
+          "sourceArrayIndex": 5
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:history_variable:steam-pressure",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Steam pressure",
+      "title": "Steam pressure",
+      "description": "SCIANTIX history variable 'Steam pressure', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "history_variable",
+      "name": "Steam pressure",
+      "label": "Steam pressure",
+      "unit": "atm",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeHistoryVariable",
+      "sourceArrayIndex": 5,
+      "outputFlagExpression": "toOutput",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_history",
+          "sourceArrayIndex": 9
+        },
+        {
+          "sourceArray": "Sciantix_history",
+          "sourceArrayIndex": 10
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:grain-radius",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Grain radius",
+      "title": "Grain radius",
+      "description": "SCIANTIX state variable 'Grain radius', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Grain radius",
+      "label": "Grain radius",
+      "unit": "m",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 0,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 0
+        }
+      ],
+      "references": [
+        "model:grain-growth"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe-produced",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe produced",
+      "title": "Xe produced",
+      "description": "SCIANTIX state variable 'Xe produced', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe produced",
+      "label": "Xe produced",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 1,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 1
+        }
+      ],
+      "references": [
+        "model:gas-production"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe-produced-in-hbs",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe produced in HBS",
+      "title": "Xe produced in HBS",
+      "description": "SCIANTIX state variable 'Xe produced in HBS', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe produced in HBS",
+      "label": "Xe produced in HBS",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 2,
+      "outputFlagExpression": "toOutputHighBurnupStructure",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 100
+        }
+      ],
+      "references": [
+        "model:gas-production"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe-in-grain",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe in grain",
+      "title": "Xe in grain",
+      "description": "SCIANTIX state variable 'Xe in grain', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe in grain",
+      "label": "Xe in grain",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 3,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 2
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe-in-grain-hbs",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe in grain HBS",
+      "title": "Xe in grain HBS",
+      "description": "SCIANTIX state variable 'Xe in grain HBS', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe in grain HBS",
+      "label": "Xe in grain HBS",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 4,
+      "outputFlagExpression": "toOutputHighBurnupStructure",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 92
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe-in-intragranular-solution",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe in intragranular solution",
+      "title": "Xe in intragranular solution",
+      "description": "SCIANTIX state variable 'Xe in intragranular solution', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe in intragranular solution",
+      "label": "Xe in intragranular solution",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 5,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 3
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe-in-intragranular-bubbles",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe in intragranular bubbles",
+      "title": "Xe in intragranular bubbles",
+      "description": "SCIANTIX state variable 'Xe in intragranular bubbles', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe in intragranular bubbles",
+      "label": "Xe in intragranular bubbles",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 6,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 4
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe-at-grain-boundary",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe at grain boundary",
+      "title": "Xe at grain boundary",
+      "description": "SCIANTIX state variable 'Xe at grain boundary', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe at grain boundary",
+      "label": "Xe at grain boundary",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 7,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 5
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe-released",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe released",
+      "title": "Xe released",
+      "description": "SCIANTIX state variable 'Xe released', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe released",
+      "label": "Xe released",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 8,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 6
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe-decayed",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe decayed",
+      "title": "Xe decayed",
+      "description": "SCIANTIX state variable 'Xe decayed', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe decayed",
+      "label": "Xe decayed",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 9,
+      "outputFlagExpression": "0"
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr-produced",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr produced",
+      "title": "Kr produced",
+      "description": "SCIANTIX state variable 'Kr produced', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr produced",
+      "label": "Kr produced",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 10,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 7
+        }
+      ],
+      "references": [
+        "model:gas-production"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr-in-grain",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr in grain",
+      "title": "Kr in grain",
+      "description": "SCIANTIX state variable 'Kr in grain', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr in grain",
+      "label": "Kr in grain",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 11,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 8
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr-in-intragranular-solution",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr in intragranular solution",
+      "title": "Kr in intragranular solution",
+      "description": "SCIANTIX state variable 'Kr in intragranular solution', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr in intragranular solution",
+      "label": "Kr in intragranular solution",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 12,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 9
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr-in-intragranular-bubbles",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr in intragranular bubbles",
+      "title": "Kr in intragranular bubbles",
+      "description": "SCIANTIX state variable 'Kr in intragranular bubbles', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr in intragranular bubbles",
+      "label": "Kr in intragranular bubbles",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 13,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 10
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr-at-grain-boundary",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr at grain boundary",
+      "title": "Kr at grain boundary",
+      "description": "SCIANTIX state variable 'Kr at grain boundary', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr at grain boundary",
+      "label": "Kr at grain boundary",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 14,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 11
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr-released",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr released",
+      "title": "Kr released",
+      "description": "SCIANTIX state variable 'Kr released', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr released",
+      "label": "Kr released",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 15,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 12
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr-decayed",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr decayed",
+      "title": "Kr decayed",
+      "description": "SCIANTIX state variable 'Kr decayed', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr decayed",
+      "label": "Kr decayed",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 16,
+      "outputFlagExpression": "0"
+    },
+    {
+      "@id": "sciantix-variable:state_variable:fission-gas-release",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Fission gas release",
+      "title": "Fission gas release",
+      "description": "SCIANTIX state variable 'Fission gas release', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Fission gas release",
+      "label": "Fission gas release",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 17,
+      "outputFlagExpression": "1"
+    },
+    {
+      "@id": "sciantix-variable:state_variable:he-produced",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "He produced",
+      "title": "He produced",
+      "description": "SCIANTIX state variable 'He produced', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "He produced",
+      "label": "He produced",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 18,
+      "outputFlagExpression": "toOutputHelium",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 13
+        }
+      ],
+      "references": [
+        "model:gas-production"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:he-in-grain",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "He in grain",
+      "title": "He in grain",
+      "description": "SCIANTIX state variable 'He in grain', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "He in grain",
+      "label": "He in grain",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 19,
+      "outputFlagExpression": "toOutputHelium",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 14
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:he-in-intragranular-solution",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "He in intragranular solution",
+      "title": "He in intragranular solution",
+      "description": "SCIANTIX state variable 'He in intragranular solution', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "He in intragranular solution",
+      "label": "He in intragranular solution",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 20,
+      "outputFlagExpression": "toOutputHelium",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 15
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:he-in-intragranular-bubbles",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "He in intragranular bubbles",
+      "title": "He in intragranular bubbles",
+      "description": "SCIANTIX state variable 'He in intragranular bubbles', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "He in intragranular bubbles",
+      "label": "He in intragranular bubbles",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 21,
+      "outputFlagExpression": "toOutputHelium",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 16
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:he-at-grain-boundary",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "He at grain boundary",
+      "title": "He at grain boundary",
+      "description": "SCIANTIX state variable 'He at grain boundary', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "He at grain boundary",
+      "label": "He at grain boundary",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 22,
+      "outputFlagExpression": "toOutputHelium",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 17
+        },
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 71
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:he-released",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "He released",
+      "title": "He released",
+      "description": "SCIANTIX state variable 'He released', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "He released",
+      "label": "He released",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 23,
+      "outputFlagExpression": "toOutputHelium",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 18
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:he-decayed",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "He decayed",
+      "title": "He decayed",
+      "description": "SCIANTIX state variable 'He decayed', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "He decayed",
+      "label": "He decayed",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 24,
+      "outputFlagExpression": "0"
+    },
+    {
+      "@id": "sciantix-variable:state_variable:he-fractional-release",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "He fractional release",
+      "title": "He fractional release",
+      "description": "SCIANTIX state variable 'He fractional release', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "He fractional release",
+      "label": "He fractional release",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 25,
+      "outputFlagExpression": "toOutputHelium"
+    },
+    {
+      "@id": "sciantix-variable:state_variable:he-release-rate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "He release rate",
+      "title": "He release rate",
+      "description": "SCIANTIX state variable 'He release rate', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "He release rate",
+      "label": "He release rate",
+      "unit": "at/m3 s",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 26,
+      "outputFlagExpression": "toOutputHelium"
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe133-produced",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe133 produced",
+      "title": "Xe133 produced",
+      "description": "SCIANTIX state variable 'Xe133 produced', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe133 produced",
+      "label": "Xe133 produced",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 27,
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 48
+        }
+      ],
+      "references": [
+        "model:gas-production"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe133-in-grain",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe133 in grain",
+      "title": "Xe133 in grain",
+      "description": "SCIANTIX state variable 'Xe133 in grain', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe133 in grain",
+      "label": "Xe133 in grain",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 28,
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 49
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe133-in-intragranular-solution",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe133 in intragranular solution",
+      "title": "Xe133 in intragranular solution",
+      "description": "SCIANTIX state variable 'Xe133 in intragranular solution', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe133 in intragranular solution",
+      "label": "Xe133 in intragranular solution",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 29,
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 50
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe133-in-intragranular-bubbles",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe133 in intragranular bubbles",
+      "title": "Xe133 in intragranular bubbles",
+      "description": "SCIANTIX state variable 'Xe133 in intragranular bubbles', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe133 in intragranular bubbles",
+      "label": "Xe133 in intragranular bubbles",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 30,
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 51
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe133-decayed",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe133 decayed",
+      "title": "Xe133 decayed",
+      "description": "SCIANTIX state variable 'Xe133 decayed', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe133 decayed",
+      "label": "Xe133 decayed",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 31,
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 52
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe133-at-grain-boundary",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe133 at grain boundary",
+      "title": "Xe133 at grain boundary",
+      "description": "SCIANTIX state variable 'Xe133 at grain boundary', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe133 at grain boundary",
+      "label": "Xe133 at grain boundary",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 32,
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 53
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe133-released",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe133 released",
+      "title": "Xe133 released",
+      "description": "SCIANTIX state variable 'Xe133 released', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe133 released",
+      "label": "Xe133 released",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 33,
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 54
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe133-r-b",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe133 R/B",
+      "title": "Xe133 R/B",
+      "description": "SCIANTIX state variable 'Xe133 R/B', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe133 R/B",
+      "label": "Xe133 R/B",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 34,
+      "outputFlagExpression": "toOutputRadioactiveFG"
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr85m-produced",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr85m produced",
+      "title": "Kr85m produced",
+      "description": "SCIANTIX state variable 'Kr85m produced', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr85m produced",
+      "label": "Kr85m produced",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 35,
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 57
+        }
+      ],
+      "references": [
+        "model:gas-production"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr85m-in-grain",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr85m in grain",
+      "title": "Kr85m in grain",
+      "description": "SCIANTIX state variable 'Kr85m in grain', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr85m in grain",
+      "label": "Kr85m in grain",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 36,
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 58
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr85m-in-intragranular-solution",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr85m in intragranular solution",
+      "title": "Kr85m in intragranular solution",
+      "description": "SCIANTIX state variable 'Kr85m in intragranular solution', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr85m in intragranular solution",
+      "label": "Kr85m in intragranular solution",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 37,
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 59
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr85m-in-intragranular-bubbles",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr85m in intragranular bubbles",
+      "title": "Kr85m in intragranular bubbles",
+      "description": "SCIANTIX state variable 'Kr85m in intragranular bubbles', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr85m in intragranular bubbles",
+      "label": "Kr85m in intragranular bubbles",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 38,
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 60
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr85m-decayed",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr85m decayed",
+      "title": "Kr85m decayed",
+      "description": "SCIANTIX state variable 'Kr85m decayed', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr85m decayed",
+      "label": "Kr85m decayed",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 39,
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 61
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr85m-at-grain-boundary",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr85m at grain boundary",
+      "title": "Kr85m at grain boundary",
+      "description": "SCIANTIX state variable 'Kr85m at grain boundary', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr85m at grain boundary",
+      "label": "Kr85m at grain boundary",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 40,
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 62
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr85m-released",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr85m released",
+      "title": "Kr85m released",
+      "description": "SCIANTIX state variable 'Kr85m released', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr85m released",
+      "label": "Kr85m released",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 41,
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 63
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:kr85m-r-b",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Kr85m R/B",
+      "title": "Kr85m R/B",
+      "description": "SCIANTIX state variable 'Kr85m R/B', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Kr85m R/B",
+      "label": "Kr85m R/B",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 42,
+      "outputFlagExpression": "toOutputRadioactiveFG"
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intragranular-bubble-concentration",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intragranular bubble concentration",
+      "title": "Intragranular bubble concentration",
+      "description": "SCIANTIX state variable 'Intragranular bubble concentration', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intragranular bubble concentration",
+      "label": "Intragranular bubble concentration",
+      "unit": "bub/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 43,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 19
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intragranular-bubble-radius",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intragranular bubble radius",
+      "title": "Intragranular bubble radius",
+      "description": "SCIANTIX state variable 'Intragranular bubble radius', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intragranular bubble radius",
+      "label": "Intragranular bubble radius",
+      "unit": "m",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 44,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 20
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intragranular-bubble-volume",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intragranular bubble volume",
+      "title": "Intragranular bubble volume",
+      "description": "SCIANTIX state variable 'Intragranular bubble volume', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intragranular bubble volume",
+      "label": "Intragranular bubble volume",
+      "unit": "m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 45,
+      "outputFlagExpression": "0",
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intragranular-xe-atoms-per-bubble",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intragranular Xe atoms per bubble",
+      "title": "Intragranular Xe atoms per bubble",
+      "description": "SCIANTIX state variable 'Intragranular Xe atoms per bubble', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intragranular Xe atoms per bubble",
+      "label": "Intragranular Xe atoms per bubble",
+      "unit": "at/bub",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 46,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 21
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intragranular-kr-atoms-per-bubble",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intragranular Kr atoms per bubble",
+      "title": "Intragranular Kr atoms per bubble",
+      "description": "SCIANTIX state variable 'Intragranular Kr atoms per bubble', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intragranular Kr atoms per bubble",
+      "label": "Intragranular Kr atoms per bubble",
+      "unit": "at/bub",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 47,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 22
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intragranular-he-atoms-per-bubble",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intragranular He atoms per bubble",
+      "title": "Intragranular He atoms per bubble",
+      "description": "SCIANTIX state variable 'Intragranular He atoms per bubble', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intragranular He atoms per bubble",
+      "label": "Intragranular He atoms per bubble",
+      "unit": "at/bub",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 48,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 23
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intragranular-atoms-per-bubble",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intragranular atoms per bubble",
+      "title": "Intragranular atoms per bubble",
+      "description": "SCIANTIX state variable 'Intragranular atoms per bubble', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intragranular atoms per bubble",
+      "label": "Intragranular atoms per bubble",
+      "unit": "at/bub",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 49,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 21
+        },
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 22
+        },
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 23
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intragranular-gas-bubble-swelling",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intragranular gas bubble swelling",
+      "title": "Intragranular gas bubble swelling",
+      "description": "SCIANTIX state variable 'Intragranular gas bubble swelling', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intragranular gas bubble swelling",
+      "label": "Intragranular gas bubble swelling",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 50,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 24
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intragranular-gas-solution-swelling",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intragranular gas solution swelling",
+      "title": "Intragranular gas solution swelling",
+      "description": "SCIANTIX state variable 'Intragranular gas solution swelling', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intragranular gas solution swelling",
+      "label": "Intragranular gas solution swelling",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 51,
+      "outputFlagExpression": "toOutputHighBurnupStructure",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 68
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-bubble-concentration",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular bubble concentration",
+      "title": "Intergranular bubble concentration",
+      "description": "SCIANTIX state variable 'Intergranular bubble concentration', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular bubble concentration",
+      "label": "Intergranular bubble concentration",
+      "unit": "bub/m2",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 52,
+      "outputFlagExpression": "toOutputGrainBoundary",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 25
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-xe-atoms-per-bubble",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular Xe atoms per bubble",
+      "title": "Intergranular Xe atoms per bubble",
+      "description": "SCIANTIX state variable 'Intergranular Xe atoms per bubble', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular Xe atoms per bubble",
+      "label": "Intergranular Xe atoms per bubble",
+      "unit": "at/bub",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 53,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 26
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-kr-atoms-per-bubble",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular Kr atoms per bubble",
+      "title": "Intergranular Kr atoms per bubble",
+      "description": "SCIANTIX state variable 'Intergranular Kr atoms per bubble', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular Kr atoms per bubble",
+      "label": "Intergranular Kr atoms per bubble",
+      "unit": "at/bub",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 54,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 27
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-he-atoms-per-bubble",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular He atoms per bubble",
+      "title": "Intergranular He atoms per bubble",
+      "description": "SCIANTIX state variable 'Intergranular He atoms per bubble', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular He atoms per bubble",
+      "label": "Intergranular He atoms per bubble",
+      "unit": "at/bub",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 55,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 28
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-atoms-per-bubble",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular atoms per bubble",
+      "title": "Intergranular atoms per bubble",
+      "description": "SCIANTIX state variable 'Intergranular atoms per bubble', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular atoms per bubble",
+      "label": "Intergranular atoms per bubble",
+      "unit": "at/bub",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 56,
+      "outputFlagExpression": "toOutputGrainBoundary",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 29
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-vacancies-per-bubble",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular vacancies per bubble",
+      "title": "Intergranular vacancies per bubble",
+      "description": "SCIANTIX state variable 'Intergranular vacancies per bubble', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular vacancies per bubble",
+      "label": "Intergranular vacancies per bubble",
+      "unit": "vac/bub",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 57,
+      "outputFlagExpression": "toOutputGrainBoundary",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 30
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-bubble-pressure",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular bubble pressure",
+      "title": "Intergranular bubble pressure",
+      "description": "SCIANTIX state variable 'Intergranular bubble pressure', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular bubble pressure",
+      "label": "Intergranular bubble pressure",
+      "unit": "MPa",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 58,
+      "outputFlagExpression": "0",
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:critical-intergranular-bubble-pressure",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Critical intergranular bubble pressure",
+      "title": "Critical intergranular bubble pressure",
+      "description": "SCIANTIX state variable 'Critical intergranular bubble pressure', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Critical intergranular bubble pressure",
+      "label": "Critical intergranular bubble pressure",
+      "unit": "MPa",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 59,
+      "outputFlagExpression": "0",
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-bubble-radius",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular bubble radius",
+      "title": "Intergranular bubble radius",
+      "description": "SCIANTIX state variable 'Intergranular bubble radius', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular bubble radius",
+      "label": "Intergranular bubble radius",
+      "unit": "m",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 60,
+      "outputFlagExpression": "toOutputGrainBoundary",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 31
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-bubble-area",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular bubble area",
+      "title": "Intergranular bubble area",
+      "description": "SCIANTIX state variable 'Intergranular bubble area', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular bubble area",
+      "label": "Intergranular bubble area",
+      "unit": "m2",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 61,
+      "outputFlagExpression": "toOutputGrainBoundary",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 32
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-bubble-volume",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular bubble volume",
+      "title": "Intergranular bubble volume",
+      "description": "SCIANTIX state variable 'Intergranular bubble volume', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular bubble volume",
+      "label": "Intergranular bubble volume",
+      "unit": "m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 62,
+      "outputFlagExpression": "toOutputGrainBoundary",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 33
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-fractional-coverage",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular fractional coverage",
+      "title": "Intergranular fractional coverage",
+      "description": "SCIANTIX state variable 'Intergranular fractional coverage', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular fractional coverage",
+      "label": "Intergranular fractional coverage",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 63,
+      "outputFlagExpression": "toOutputGrainBoundary",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 34
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-saturation-fractional-coverage",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular saturation fractional coverage",
+      "title": "Intergranular saturation fractional coverage",
+      "description": "SCIANTIX state variable 'Intergranular saturation fractional coverage', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular saturation fractional coverage",
+      "label": "Intergranular saturation fractional coverage",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 64,
+      "outputFlagExpression": "toOutputGrainBoundary",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 35
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-gas-swelling",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular gas swelling",
+      "title": "Intergranular gas swelling",
+      "description": "SCIANTIX state variable 'Intergranular gas swelling', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular gas swelling",
+      "label": "Intergranular gas swelling",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 65,
+      "outputFlagExpression": "toOutputGrainBoundary",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 36
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-fractional-intactness",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular fractional intactness",
+      "title": "Intergranular fractional intactness",
+      "description": "SCIANTIX state variable 'Intergranular fractional intactness', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular fractional intactness",
+      "label": "Intergranular fractional intactness",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 66,
+      "outputFlagExpression": "toOutputCracking",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 37
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior",
+        "model:grain-boundary-micro-cracking"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:burnup",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Burnup",
+      "title": "Burnup",
+      "description": "SCIANTIX state variable 'Burnup', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Burnup",
+      "label": "Burnup",
+      "unit": "MWd/kgUO2",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 67,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 38
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:fima",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "FIMA",
+      "title": "FIMA",
+      "description": "SCIANTIX state variable 'FIMA', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "FIMA",
+      "label": "FIMA",
+      "unit": "%",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 68,
+      "outputFlagExpression": "toOutputHighBurnupStructure || toOutputChromiumContent",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 69
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:effective-burnup",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Effective burnup",
+      "title": "Effective burnup",
+      "description": "SCIANTIX state variable 'Effective burnup', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Effective burnup",
+      "label": "Effective burnup",
+      "unit": "MWd/kgUO2",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 69,
+      "outputFlagExpression": "toOutputHighBurnupStructure",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 39
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:irradiation-time",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Irradiation time",
+      "title": "Irradiation time",
+      "description": "SCIANTIX state variable 'Irradiation time', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Irradiation time",
+      "label": "Irradiation time",
+      "unit": "h",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 70,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 65
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:fuel-density",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Fuel density",
+      "title": "Fuel density",
+      "description": "SCIANTIX state variable 'Fuel density', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Fuel density",
+      "label": "Fuel density",
+      "unit": "kg/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 71,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 40
+        }
+      ],
+      "references": [
+        "model:densification"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:u",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "U",
+      "title": "U",
+      "description": "SCIANTIX state variable 'U', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "U",
+      "label": "U",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 72,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 41
+        },
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 42
+        },
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 43
+        },
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 44
+        },
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 45
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:u234",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "U234",
+      "title": "U234",
+      "description": "SCIANTIX state variable 'U234', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "U234",
+      "label": "U234",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 73,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 41
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:u235",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "U235",
+      "title": "U235",
+      "description": "SCIANTIX state variable 'U235', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "U235",
+      "label": "U235",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 74,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 42
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:u236",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "U236",
+      "title": "U236",
+      "description": "SCIANTIX state variable 'U236', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "U236",
+      "label": "U236",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 75,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 43
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:u237",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "U237",
+      "title": "U237",
+      "description": "SCIANTIX state variable 'U237', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "U237",
+      "label": "U237",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 76,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 44
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:u238",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "U238",
+      "title": "U238",
+      "description": "SCIANTIX state variable 'U238', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "U238",
+      "label": "U238",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 77,
+      "outputFlagExpression": "1",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 45
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-vented-fraction",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular vented fraction",
+      "title": "Intergranular vented fraction",
+      "description": "SCIANTIX state variable 'Intergranular vented fraction', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular vented fraction",
+      "label": "Intergranular vented fraction",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 78,
+      "outputFlagExpression": "toOutputVenting",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 46
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior",
+        "model:grain-boundary-venting"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intergranular-venting-probability",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intergranular venting probability",
+      "title": "Intergranular venting probability",
+      "description": "SCIANTIX state variable 'Intergranular venting probability', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intergranular venting probability",
+      "label": "Intergranular venting probability",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 79,
+      "outputFlagExpression": "toOutputVenting",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 47
+        }
+      ],
+      "references": [
+        "model:intergranular-bubble-behavior",
+        "model:grain-boundary-venting"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:porosity",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Porosity",
+      "title": "Porosity",
+      "description": "SCIANTIX state variable 'Porosity', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Porosity",
+      "label": "Porosity",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 80,
+      "outputFlagExpression": "toOutputVenting",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 70
+        }
+      ],
+      "references": [
+        "model:densification"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:fabrication-porosity",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Fabrication porosity",
+      "title": "Fabrication porosity",
+      "description": "SCIANTIX state variable 'Fabrication porosity', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Fabrication porosity",
+      "label": "Fabrication porosity",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 81,
+      "outputFlagExpression": "toOutputVenting",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 71
+        }
+      ],
+      "references": [
+        "model:densification"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:open-porosity",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Open porosity",
+      "title": "Open porosity",
+      "description": "SCIANTIX state variable 'Open porosity', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Open porosity",
+      "label": "Open porosity",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 82,
+      "outputFlagExpression": "toOutputVenting",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 72
+        }
+      ],
+      "references": [
+        "model:densification"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:residual-porosity",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Residual porosity",
+      "title": "Residual porosity",
+      "description": "SCIANTIX state variable 'Residual porosity', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Residual porosity",
+      "label": "Residual porosity",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 83,
+      "outputFlagExpression": "toOutputVenting",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 73
+        }
+      ],
+      "references": [
+        "model:densification"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:densification-factor",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Densification factor",
+      "title": "Densification factor",
+      "description": "SCIANTIX state variable 'Densification factor', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Densification factor",
+      "label": "Densification factor",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 84,
+      "outputFlagExpression": "toOutputVenting",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 74
+        }
+      ],
+      "references": [
+        "model:densification"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:restructured-volume-fraction",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Restructured volume fraction",
+      "title": "Restructured volume fraction",
+      "description": "SCIANTIX state variable 'Restructured volume fraction', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Restructured volume fraction",
+      "label": "Restructured volume fraction",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 85,
+      "outputFlagExpression": "toOutputHighBurnupStructure",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 55
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:intragranular-similarity-ratio",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Intragranular similarity ratio",
+      "title": "Intragranular similarity ratio",
+      "description": "SCIANTIX state variable 'Intragranular similarity ratio', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Intragranular similarity ratio",
+      "label": "Intragranular similarity ratio",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 86,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 64
+        }
+      ],
+      "references": [
+        "model:intragranular-bubble-behaviour"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:gap-oxygen-partial-pressure",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Gap oxygen partial pressure",
+      "title": "Gap oxygen partial pressure",
+      "description": "SCIANTIX state variable 'Gap oxygen partial pressure', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Gap oxygen partial pressure",
+      "label": "Gap oxygen partial pressure",
+      "unit": "MPa",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 87,
+      "outputFlagExpression": "toOutputStoichiometryDeviation"
+    },
+    {
+      "@id": "sciantix-variable:state_variable:stoichiometry-deviation",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Stoichiometry deviation",
+      "title": "Stoichiometry deviation",
+      "description": "SCIANTIX state variable 'Stoichiometry deviation', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Stoichiometry deviation",
+      "label": "Stoichiometry deviation",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 88,
+      "outputFlagExpression": "toOutputStoichiometryDeviation",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 66
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:equilibrium-stoichiometry-deviation",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Equilibrium stoichiometry deviation",
+      "title": "Equilibrium stoichiometry deviation",
+      "description": "SCIANTIX state variable 'Equilibrium stoichiometry deviation', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Equilibrium stoichiometry deviation",
+      "label": "Equilibrium stoichiometry deviation",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 89,
+      "outputFlagExpression": "toOutputStoichiometryDeviation"
+    },
+    {
+      "@id": "sciantix-variable:state_variable:fuel-oxygen-partial-pressure",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Fuel oxygen partial pressure",
+      "title": "Fuel oxygen partial pressure",
+      "description": "SCIANTIX state variable 'Fuel oxygen partial pressure', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Fuel oxygen partial pressure",
+      "label": "Fuel oxygen partial pressure",
+      "unit": "MPa",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 90,
+      "outputFlagExpression": "toOutputStoichiometryDeviation",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 67
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:fuel-oxygen-potential",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Fuel oxygen potential",
+      "title": "Fuel oxygen potential",
+      "description": "SCIANTIX state variable 'Fuel oxygen potential', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Fuel oxygen potential",
+      "label": "Fuel oxygen potential",
+      "unit": "KJ/mol",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 91,
+      "outputFlagExpression": "toOutputStoichiometryDeviation"
+    },
+    {
+      "@id": "sciantix-variable:state_variable:specific-power",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Specific power",
+      "title": "Specific power",
+      "description": "SCIANTIX state variable 'Specific power', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Specific power",
+      "label": "Specific power",
+      "unit": "MW/kg",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 92,
+      "outputFlagExpression": "0"
+    },
+    {
+      "@id": "sciantix-variable:state_variable:hbs-porosity",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "HBS porosity",
+      "title": "HBS porosity",
+      "description": "SCIANTIX state variable 'HBS porosity', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "HBS porosity",
+      "label": "HBS porosity",
+      "unit": "/",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 93,
+      "outputFlagExpression": "toOutputHighBurnupStructure",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 56
+        }
+      ],
+      "references": [
+        "model:densification"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:hbs-pore-density",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "HBS pore density",
+      "title": "HBS pore density",
+      "description": "SCIANTIX state variable 'HBS pore density', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "HBS pore density",
+      "label": "HBS pore density",
+      "unit": "pores/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 94,
+      "outputFlagExpression": "toOutputHighBurnupStructure",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 80
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:hbs-pore-volume",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "HBS pore volume",
+      "title": "HBS pore volume",
+      "description": "SCIANTIX state variable 'HBS pore volume', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "HBS pore volume",
+      "label": "HBS pore volume",
+      "unit": "m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 95,
+      "outputFlagExpression": "toOutputHighBurnupStructure",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 81
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:hbs-pore-radius",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "HBS pore radius",
+      "title": "HBS pore radius",
+      "description": "SCIANTIX state variable 'HBS pore radius', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "HBS pore radius",
+      "label": "HBS pore radius",
+      "unit": "m",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 96,
+      "outputFlagExpression": "toOutputHighBurnupStructure",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 82
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe-in-hbs-pores",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe in HBS pores",
+      "title": "Xe in HBS pores",
+      "description": "SCIANTIX state variable 'Xe in HBS pores', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe in HBS pores",
+      "label": "Xe in HBS pores",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 97,
+      "outputFlagExpression": "toOutputHighBurnupStructure",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 83
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe-in-hbs-pores-variance",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe in HBS pores - variance",
+      "title": "Xe in HBS pores - variance",
+      "description": "SCIANTIX state variable 'Xe in HBS pores - variance', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe in HBS pores - variance",
+      "label": "Xe in HBS pores - variance",
+      "unit": "at^2/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 98,
+      "outputFlagExpression": "toOutputHighBurnupStructure",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 85
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe-atoms-per-hbs-pore",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe atoms per HBS pore",
+      "title": "Xe atoms per HBS pore",
+      "description": "SCIANTIX state variable 'Xe atoms per HBS pore', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe atoms per HBS pore",
+      "label": "Xe atoms per HBS pore",
+      "unit": "at/pore",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 99,
+      "outputFlagExpression": "toOutputHighBurnupStructure",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 86
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:xe-atoms-per-hbs-pore-variance",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Xe atoms per HBS pore - variance",
+      "title": "Xe atoms per HBS pore - variance",
+      "description": "SCIANTIX state variable 'Xe atoms per HBS pore - variance', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Xe atoms per HBS pore - variance",
+      "label": "Xe atoms per HBS pore - variance",
+      "unit": "at^2/pore",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 100,
+      "outputFlagExpression": "toOutputHighBurnupStructure",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 88
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:chromium-content",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Chromium content",
+      "title": "Chromium content",
+      "description": "SCIANTIX state variable 'Chromium content', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Chromium content",
+      "label": "Chromium content",
+      "unit": "\u00b5g/g",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 101,
+      "outputFlagExpression": "toOutputChromiumContent",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 150
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:lattice-parameter",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Lattice parameter",
+      "title": "Lattice parameter",
+      "description": "SCIANTIX state variable 'Lattice parameter', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Lattice parameter",
+      "label": "Lattice parameter",
+      "unit": "m",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 102,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 151
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:theoretical-density",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Theoretical density",
+      "title": "Theoretical density",
+      "description": "SCIANTIX state variable 'Theoretical density', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Theoretical density",
+      "label": "Theoretical density",
+      "unit": "kg/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 103,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 152
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:chromium-solubility",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Chromium solubility",
+      "title": "Chromium solubility",
+      "description": "SCIANTIX state variable 'Chromium solubility', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Chromium solubility",
+      "label": "Chromium solubility",
+      "unit": "% weight/UO2",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 104,
+      "outputFlagExpression": "toOutputChromiumContent",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 153
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:chromia-solubility",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Chromia solubility",
+      "title": "Chromia solubility",
+      "description": "SCIANTIX state variable 'Chromia solubility', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Chromia solubility",
+      "label": "Chromia solubility",
+      "unit": "% weight/UO2",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 105,
+      "outputFlagExpression": "toOutputChromiumContent",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 154
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:chromium-solution",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Chromium solution",
+      "title": "Chromium solution",
+      "description": "SCIANTIX state variable 'Chromium solution', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Chromium solution",
+      "label": "Chromium solution",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 106,
+      "outputFlagExpression": "toOutputChromiumContent",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 155
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:chromium-precipitate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Chromium precipitate",
+      "title": "Chromium precipitate",
+      "description": "SCIANTIX state variable 'Chromium precipitate', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Chromium precipitate",
+      "label": "Chromium precipitate",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 107,
+      "outputFlagExpression": "toOutputChromiumContent",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 156
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:chromia-solution",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Chromia solution",
+      "title": "Chromia solution",
+      "description": "SCIANTIX state variable 'Chromia solution', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Chromia solution",
+      "label": "Chromia solution",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 108,
+      "outputFlagExpression": "toOutputChromiumContent",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 157
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:chromia-precipitate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Chromia precipitate",
+      "title": "Chromia precipitate",
+      "description": "SCIANTIX state variable 'Chromia precipitate', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Chromia precipitate",
+      "label": "Chromia precipitate",
+      "unit": "at/m3",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 109,
+      "outputFlagExpression": "toOutputChromiumContent",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 158
+        }
+      ]
+    },
+    {
+      "@id": "sciantix-variable:state_variable:diffusion-coefficient",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Diffusion coefficient",
+      "title": "Diffusion coefficient",
+      "description": "SCIANTIX state variable 'Diffusion coefficient', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "state_variable",
+      "name": "Diffusion coefficient",
+      "label": "Diffusion coefficient",
+      "unit": "m2/s",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "initializeSciantixVariable",
+      "sourceArrayIndex": 110,
+      "outputFlagExpression": "0",
+      "sourceArrayReferences": [
+        {
+          "sourceArray": "Sciantix_variables",
+          "sourceArrayIndex": 160
+        }
+      ],
+      "references": [
+        "model:gas-diffusion"
+      ]
+    },
+    {
+      "@id": "sciantix-variable:scaling_factor:resolution-rate",
+      "@type": "prov:Entity",
+      "identifier": "Resolution rate",
+      "title": "Resolution rate",
+      "description": "SCIANTIX scaling factor 'Resolution rate', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "scaling_factor",
+      "name": "Resolution rate",
+      "label": "Resolution rate",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getScalingFactorsNames",
+      "sourceArrayIndex": 0
+    },
+    {
+      "@id": "sciantix-variable:scaling_factor:trapping-rate",
+      "@type": "prov:Entity",
+      "identifier": "Trapping rate",
+      "title": "Trapping rate",
+      "description": "SCIANTIX scaling factor 'Trapping rate', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "scaling_factor",
+      "name": "Trapping rate",
+      "label": "Trapping rate",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getScalingFactorsNames",
+      "sourceArrayIndex": 1
+    },
+    {
+      "@id": "sciantix-variable:scaling_factor:nucleation-rate",
+      "@type": "prov:Entity",
+      "identifier": "Nucleation rate",
+      "title": "Nucleation rate",
+      "description": "SCIANTIX scaling factor 'Nucleation rate', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "scaling_factor",
+      "name": "Nucleation rate",
+      "label": "Nucleation rate",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getScalingFactorsNames",
+      "sourceArrayIndex": 2
+    },
+    {
+      "@id": "sciantix-variable:scaling_factor:diffusivity",
+      "@type": "prov:Entity",
+      "identifier": "Diffusivity",
+      "title": "Diffusivity",
+      "description": "SCIANTIX scaling factor 'Diffusivity', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "scaling_factor",
+      "name": "Diffusivity",
+      "label": "Diffusivity",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getScalingFactorsNames",
+      "sourceArrayIndex": 3
+    },
+    {
+      "@id": "sciantix-variable:scaling_factor:diffusivity2",
+      "@type": "prov:Entity",
+      "identifier": "Diffusivity2",
+      "title": "Diffusivity2",
+      "description": "SCIANTIX scaling factor 'Diffusivity2', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "scaling_factor",
+      "name": "Diffusivity2",
+      "label": "Diffusivity2",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getScalingFactorsNames",
+      "sourceArrayIndex": 4
+    },
+    {
+      "@id": "sciantix-variable:scaling_factor:temperature",
+      "@type": "prov:Entity",
+      "identifier": "Temperature",
+      "title": "Temperature",
+      "description": "SCIANTIX scaling factor 'Temperature', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "scaling_factor",
+      "name": "Temperature",
+      "label": "Temperature",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getScalingFactorsNames",
+      "sourceArrayIndex": 5
+    },
+    {
+      "@id": "sciantix-variable:scaling_factor:fission-rate",
+      "@type": "prov:Entity",
+      "identifier": "Fission rate",
+      "title": "Fission rate",
+      "description": "SCIANTIX scaling factor 'Fission rate', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "scaling_factor",
+      "name": "Fission rate",
+      "label": "Fission rate",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getScalingFactorsNames",
+      "sourceArrayIndex": 6
+    },
+    {
+      "@id": "sciantix-variable:scaling_factor:helium-production-rate",
+      "@type": "prov:Entity",
+      "identifier": "Helium production rate",
+      "title": "Helium production rate",
+      "description": "SCIANTIX scaling factor 'Helium production rate', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "scaling_factor",
+      "name": "Helium production rate",
+      "label": "Helium production rate",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getScalingFactorsNames",
+      "sourceArrayIndex": 7
+    },
+    {
+      "@id": "sciantix-variable:scaling_factor:dummy",
+      "@type": "prov:Entity",
+      "identifier": "Dummy",
+      "title": "Dummy",
+      "description": "SCIANTIX scaling factor 'Dummy', generated from the source-code definition in src/operations/SetVariablesFunctions.C.",
+      "category": "scaling_factor",
+      "name": "Dummy",
+      "label": "Dummy",
+      "unit": "dimensionless",
+      "source": "src/operations/SetVariablesFunctions.C",
+      "sourceFile": "src/operations/SetVariablesFunctions.C",
+      "sourceFunction": "getScalingFactorsNames",
+      "sourceArrayIndex": 8
+    },
+    {
+      "@id": "sciantix-variable:material_property:material-name",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Material.name",
+      "title": "name",
+      "description": "SCIANTIX material property 'name', generated from the source-code definition in include/classes/Material.h.",
+      "category": "material_property",
+      "name": "name",
+      "label": "name",
+      "unit": "unspecified",
+      "cppType": "std::string",
+      "source": "include/classes/Material.h",
+      "sourceFile": "include/classes/Material.h",
+      "sourceClass": "Material"
+    },
+    {
+      "@id": "sciantix-variable:material_property:material-reference",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Material.reference",
+      "title": "reference",
+      "description": "SCIANTIX material property 'reference', generated from the source-code definition in include/classes/Material.h.",
+      "category": "material_property",
+      "name": "reference",
+      "label": "reference",
+      "unit": "unspecified",
+      "cppType": "std::string",
+      "source": "include/classes/Material.h",
+      "sourceFile": "include/classes/Material.h",
+      "sourceClass": "Material"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-matrix-density",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.matrix_density",
+      "title": "matrix density",
+      "description": "SCIANTIX matrix property 'matrix_density', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "matrix_density",
+      "label": "matrix density",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-lattice-parameter",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.lattice_parameter",
+      "title": "lattice parameter",
+      "description": "SCIANTIX matrix property 'lattice_parameter', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "lattice_parameter",
+      "label": "lattice parameter",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-grain-boundary-mobility",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.grain_boundary_mobility",
+      "title": "grain boundary mobility",
+      "description": "SCIANTIX matrix property 'grain_boundary_mobility', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "grain_boundary_mobility",
+      "label": "grain boundary mobility",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-ff-range",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.ff_range",
+      "title": "ff range",
+      "description": "SCIANTIX matrix property 'ff_range', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "ff_range",
+      "label": "ff range",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-ff-influence-radius",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.ff_influence_radius",
+      "title": "ff influence radius",
+      "description": "SCIANTIX matrix property 'ff_influence_radius', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "ff_influence_radius",
+      "label": "ff influence radius",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-surface-tension",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.surface_tension",
+      "title": "surface tension",
+      "description": "SCIANTIX matrix property 'surface_tension', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "surface_tension",
+      "label": "surface tension",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-schottky-defect-volume",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.schottky_defect_volume",
+      "title": "schottky defect volume",
+      "description": "SCIANTIX matrix property 'schottky_defect_volume', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "schottky_defect_volume",
+      "label": "schottky defect volume",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-ois-volume",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.ois_volume",
+      "title": "ois volume",
+      "description": "SCIANTIX matrix property 'ois_volume', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "ois_volume",
+      "label": "ois volume",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-grain-boundary-thickness",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.grain_boundary_thickness",
+      "title": "grain boundary thickness",
+      "description": "SCIANTIX matrix property 'grain_boundary_thickness', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "grain_boundary_thickness",
+      "label": "grain boundary thickness",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-grain-boundary-diffusivity",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.grain_boundary_diffusivity",
+      "title": "grain boundary diffusivity",
+      "description": "SCIANTIX matrix property 'grain_boundary_diffusivity', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "grain_boundary_diffusivity",
+      "label": "grain boundary diffusivity",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-semidihedral-angle",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.semidihedral_angle",
+      "title": "semidihedral angle",
+      "description": "SCIANTIX matrix property 'semidihedral_angle', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "semidihedral_angle",
+      "label": "semidihedral angle",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-lenticular-shape-factor",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.lenticular_shape_factor",
+      "title": "lenticular shape factor",
+      "description": "SCIANTIX matrix property 'lenticular_shape_factor', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "lenticular_shape_factor",
+      "label": "lenticular shape factor",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-grain-radius",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.grain_radius",
+      "title": "grain radius",
+      "description": "SCIANTIX matrix property 'grain_radius', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "grain_radius",
+      "label": "grain radius",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-healing-temperature-threshold",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.healing_temperature_threshold",
+      "title": "healing temperature threshold",
+      "description": "SCIANTIX matrix property 'healing_temperature_threshold', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "healing_temperature_threshold",
+      "label": "healing temperature threshold",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-nucleation-rate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.nucleation_rate",
+      "title": "nucleation rate",
+      "description": "SCIANTIX matrix property 'nucleation_rate', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "nucleation_rate",
+      "label": "nucleation rate",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-pore-nucleation-rate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.pore_nucleation_rate",
+      "title": "pore nucleation rate",
+      "description": "SCIANTIX matrix property 'pore_nucleation_rate', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "pore_nucleation_rate",
+      "label": "pore nucleation rate",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-pore-resolution-rate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.pore_resolution_rate",
+      "title": "pore resolution rate",
+      "description": "SCIANTIX matrix property 'pore_resolution_rate', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "pore_resolution_rate",
+      "label": "pore resolution rate",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-pore-trapping-rate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.pore_trapping_rate",
+      "title": "pore trapping rate",
+      "description": "SCIANTIX matrix property 'pore_trapping_rate', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "pore_trapping_rate",
+      "label": "pore trapping rate",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-chromium-content",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.chromium_content",
+      "title": "chromium content",
+      "description": "SCIANTIX matrix property 'chromium_content', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "chromium_content",
+      "label": "chromium content",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-chromium-solubility",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.chromium_solubility",
+      "title": "chromium solubility",
+      "description": "SCIANTIX matrix property 'chromium_solubility', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "chromium_solubility",
+      "label": "chromium solubility",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-cr2o3-solubility",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.Cr2O3_solubility",
+      "title": "Cr2O3 solubility",
+      "description": "SCIANTIX matrix property 'Cr2O3_solubility', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "Cr2O3_solubility",
+      "label": "Cr2O3 solubility",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-chromium-solution",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.chromium_solution",
+      "title": "chromium solution",
+      "description": "SCIANTIX matrix property 'chromium_solution', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "chromium_solution",
+      "label": "chromium solution",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-chromium-precipitate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.chromium_precipitate",
+      "title": "chromium precipitate",
+      "description": "SCIANTIX matrix property 'chromium_precipitate', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "chromium_precipitate",
+      "label": "chromium precipitate",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-chromia-solution",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.chromia_solution",
+      "title": "chromia solution",
+      "description": "SCIANTIX matrix property 'chromia_solution', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "chromia_solution",
+      "label": "chromia solution",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-chromia-precipitate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.chromia_precipitate",
+      "title": "chromia precipitate",
+      "description": "SCIANTIX matrix property 'chromia_precipitate', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "chromia_precipitate",
+      "label": "chromia precipitate",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-elastic-modulus",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.elastic_modulus",
+      "title": "elastic modulus",
+      "description": "SCIANTIX matrix property 'elastic_modulus', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "elastic_modulus",
+      "label": "elastic modulus",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-poisson-ratio",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.poisson_ratio",
+      "title": "poisson ratio",
+      "description": "SCIANTIX matrix property 'poisson_ratio', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "poisson_ratio",
+      "label": "poisson ratio",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-grain-boundary-fracture-energy",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.grain_boundary_fracture_energy",
+      "title": "grain boundary fracture energy",
+      "description": "SCIANTIX matrix property 'grain_boundary_fracture_energy', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "grain_boundary_fracture_energy",
+      "label": "grain boundary fracture energy",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:matrix_property:matrix-shear-modulus",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Matrix.shear_modulus",
+      "title": "shear modulus",
+      "description": "SCIANTIX matrix property 'shear_modulus', generated from the source-code definition in include/classes/Matrix.h.",
+      "category": "matrix_property",
+      "name": "shear_modulus",
+      "label": "shear modulus",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Matrix.h",
+      "sourceFile": "include/classes/Matrix.h",
+      "sourceClass": "Matrix"
+    },
+    {
+      "@id": "sciantix-variable:gas_property:gas-atomic-number",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Gas.atomic_number",
+      "title": "atomic number",
+      "description": "SCIANTIX gas property 'atomic_number', generated from the source-code definition in include/classes/Gas.h.",
+      "category": "gas_property",
+      "name": "atomic_number",
+      "label": "atomic number",
+      "unit": "unspecified",
+      "cppType": "int",
+      "source": "include/classes/Gas.h",
+      "sourceFile": "include/classes/Gas.h",
+      "sourceClass": "Gas"
+    },
+    {
+      "@id": "sciantix-variable:gas_property:gas-mass-number",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Gas.mass_number",
+      "title": "mass number",
+      "description": "SCIANTIX gas property 'mass_number', generated from the source-code definition in include/classes/Gas.h.",
+      "category": "gas_property",
+      "name": "mass_number",
+      "label": "mass number",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Gas.h",
+      "sourceFile": "include/classes/Gas.h",
+      "sourceClass": "Gas"
+    },
+    {
+      "@id": "sciantix-variable:gas_property:gas-van-der-waals-volume",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Gas.van_der_waals_volume",
+      "title": "van der waals volume",
+      "description": "SCIANTIX gas property 'van_der_waals_volume', generated from the source-code definition in include/classes/Gas.h.",
+      "category": "gas_property",
+      "name": "van_der_waals_volume",
+      "label": "van der waals volume",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Gas.h",
+      "sourceFile": "include/classes/Gas.h",
+      "sourceClass": "Gas"
+    },
+    {
+      "@id": "sciantix-variable:gas_property:gas-decay-rate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Gas.decay_rate",
+      "title": "decay rate",
+      "description": "SCIANTIX gas property 'decay_rate', generated from the source-code definition in include/classes/Gas.h.",
+      "category": "gas_property",
+      "name": "decay_rate",
+      "label": "decay rate",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Gas.h",
+      "sourceFile": "include/classes/Gas.h",
+      "sourceClass": "Gas"
+    },
+    {
+      "@id": "sciantix-variable:gas_property:gas-precursor-factor",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "Gas.precursor_factor",
+      "title": "precursor factor",
+      "description": "SCIANTIX gas property 'precursor_factor', generated from the source-code definition in include/classes/Gas.h.",
+      "category": "gas_property",
+      "name": "precursor_factor",
+      "label": "precursor factor",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/Gas.h",
+      "sourceFile": "include/classes/Gas.h",
+      "sourceClass": "Gas"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-reference",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.reference",
+      "title": "reference",
+      "description": "SCIANTIX system property 'reference', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "reference",
+      "label": "reference",
+      "unit": "unspecified",
+      "cppType": "std::string",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-name",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.name",
+      "title": "name",
+      "description": "SCIANTIX system property 'name', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "name",
+      "label": "name",
+      "unit": "unspecified",
+      "cppType": "std::string",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-yield",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.yield",
+      "title": "yield",
+      "description": "SCIANTIX system property 'yield', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "yield",
+      "label": "yield",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-radius-in-lattice",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.radius_in_lattice",
+      "title": "radius in lattice",
+      "description": "SCIANTIX system property 'radius_in_lattice', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "radius_in_lattice",
+      "label": "radius in lattice",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-volume-in-lattice",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.volume_in_lattice",
+      "title": "volume in lattice",
+      "description": "SCIANTIX system property 'volume_in_lattice', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "volume_in_lattice",
+      "label": "volume in lattice",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-diffusivity",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.diffusivity",
+      "title": "diffusivity",
+      "description": "SCIANTIX system property 'diffusivity', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "diffusivity",
+      "label": "diffusivity",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-bubble-diffusivity",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.bubble_diffusivity",
+      "title": "bubble diffusivity",
+      "description": "SCIANTIX system property 'bubble_diffusivity', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "bubble_diffusivity",
+      "label": "bubble diffusivity",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-henry-constant",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.henry_constant",
+      "title": "henry constant",
+      "description": "SCIANTIX system property 'henry_constant', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "henry_constant",
+      "label": "henry constant",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-resolution-rate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.resolution_rate",
+      "title": "resolution rate",
+      "description": "SCIANTIX system property 'resolution_rate', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "resolution_rate",
+      "label": "resolution rate",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-trapping-rate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.trapping_rate",
+      "title": "trapping rate",
+      "description": "SCIANTIX system property 'trapping_rate', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "trapping_rate",
+      "label": "trapping rate",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-nucleation-rate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.nucleation_rate",
+      "title": "nucleation rate",
+      "description": "SCIANTIX system property 'nucleation_rate', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "nucleation_rate",
+      "label": "nucleation rate",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-pore-nucleation-rate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.pore_nucleation_rate",
+      "title": "pore nucleation rate",
+      "description": "SCIANTIX system property 'pore_nucleation_rate', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "pore_nucleation_rate",
+      "label": "pore nucleation rate",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-modes",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.modes",
+      "title": "modes",
+      "description": "SCIANTIX system property 'modes', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "modes",
+      "label": "modes",
+      "unit": "unspecified",
+      "cppType": "std::vector<double>",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-production-rate",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.production_rate",
+      "title": "production rate",
+      "description": "SCIANTIX system property 'production_rate', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "production_rate",
+      "label": "production rate",
+      "unit": "unspecified",
+      "cppType": "double",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-restructured-matrix",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.restructured_matrix",
+      "title": "restructured matrix",
+      "description": "SCIANTIX system property 'restructured_matrix', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "restructured_matrix",
+      "label": "restructured matrix",
+      "unit": "unspecified",
+      "cppType": "bool",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-gas",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.gas",
+      "title": "gas",
+      "description": "SCIANTIX system property 'gas', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "gas",
+      "label": "gas",
+      "unit": "unspecified",
+      "cppType": "Gas",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    },
+    {
+      "@id": "sciantix-variable:system_property:system-matrix",
+      "@type": [
+        "ssn:Property",
+        "prov:Entity"
+      ],
+      "identifier": "System.matrix",
+      "title": "matrix",
+      "description": "SCIANTIX system property 'matrix', generated from the source-code definition in include/classes/System.h.",
+      "category": "system_property",
+      "name": "matrix",
+      "label": "matrix",
+      "unit": "unspecified",
+      "cppType": "Matrix",
+      "source": "include/classes/System.h",
+      "sourceFile": "include/classes/System.h",
+      "sourceClass": "System"
+    }
+  ]
+}
