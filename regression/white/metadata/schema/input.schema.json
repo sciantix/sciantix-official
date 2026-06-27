@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sciantix.org/schema/white/input.schema.json",
+  "$id": "./input.schema.json",
   "title": "SCIANTIX White Input Export",
   "description": "Minimum schema for machine-readable White input exports.",
   "type": "object",

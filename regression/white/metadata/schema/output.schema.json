@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://sciantix.org/schema/white/output.schema.json",
+  "$id": "./output.schema.json",
   "title": "SCIANTIX White Output Export",
   "description": "Minimum schema for machine-readable White output sidecars.",
   "type": "object",

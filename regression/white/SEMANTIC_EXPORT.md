@@ -88,6 +88,110 @@ Project-specific terms remain under the preliminary `nmkos` namespace only where
 The following namespaces are placeholders in this demonstrator:
 - `https://w3id.org/nm-kos/terms#`: preliminary project vocabulary for nuclear-materials and simulation-data terms not covered by Dublin Core.
 - `https://w3id.org/nm-kos/sciantix/model#`: preliminary SCIANTIX model identifier namespace used to connect variables and input settings to the local physical-model catalog.
-- `https://sciantix.org/schema/white/input.schema.json` and `https://sciantix.org/schema/white/output.schema.json`: provisional schema identifiers for the White input/output JSON structures.
+- `metadata/schema/input.schema.json` and `metadata/schema/output.schema.json`: local JSON Schema files for the White input/output JSON structures.
 
-These placeholders can later be replaced by project ontology terms and published schema URIs.
+These local schema identifiers can later be replaced by published schema URIs if the project decides to expose them through a stable web location.
+
+
+Modified files:
+regression/core/generic_runner.py 
+    --> added automatic run of 
+            - regression/white/semantic_export.py
+            - regression/white/variable_metadata_export.py
+        Purpose: export semantic outputs and variable catalog for White case study
+
+
+Added: 
+
+regression/white/__init__.py
+regression/white/SEMANTIC_EXPORT.md
+regression/white/semantic_export.py
+regression/white/variable_metadata_export.py
+
+regression/white/metadata/experimental/white_experimental_measurements.jsonld
+    --> added semantic export of White experimental measurements
+    --> generated each time from the semantic_export.py script.
+    --> use of the following libraries:
+        - dcterms: Dublin Core Terms
+        - dcat: Data Catalog Vocabulary
+        - qudt: Quantities, Units, Dimensions and Data Types Ontologies
+        - sosa: Semantic Sensor Network Ontology
+        - xsd: XML Schema Definition
+
+regression/white/metadata/models/sciantix_physical_models.jsonld
+    --> added physical models metadata.
+    --> not generated automatically, but can be updated manually.
+    --> use of the following libraries:
+        - dcterms: Dublin Core Terms
+        - skos: Simple Knowledge Organization System
+        - nm-kos (placeholder): NEO4MAT Knowledge Organization System
+
+regression/white/metadata/variables/sciantix_variable_catalog.jsonld
+    --> added variable catalog for White case study.
+    --> generated each time.
+    --> use of the following libraries:
+        - dcterms: Dublin Core Terms
+        - dcat: Data Catalog Vocabulary
+        - nm-kos (placeholder): NEO4MAT Knowledge Organization System
+        - model (placeholder): under nm-kos, SCIANTIX model
+        - prov: W3C Provenance Ontology
+        - qudt: Quantities, Units, Dimensions and Data Types Ontologies
+        - schema: Schema.org
+        - sosa: Semantic Sensor Network Ontology
+        - ssn: Semantic Sensor Network Ontology
+        - xsd: XML Schema Definition
+        - skos: Simple Knowledge Organization System
+    --> generated each time from the variable_metadata_export.py script.
+
+regression/white/metadata/sources/ifpe_cagr_uox_swell.jsonld
+    --> added source metadata for IFPE CAgr UOX Swelling data.
+    --> not generated automatically, but can be updated manually.
+    --> only dcterms.
+regression/white/metadata/sources/sciantix_model_references.jsonld
+    --> added source metadata for SCIANTIX model references.
+    --> not generated automatically, but can be updated manually.
+    --> only dcterms and schema.org.
+regression/white/metadata/sources/sciantix_software_sources.jsonld
+    --> added source metadata for SCIANTIX software sources.
+    --> not generated automatically, but can be updated manually.
+    --> only dcterms and schema.org.
+regression/white/metadata/sources/white2004.jsonld
+    --> added source metadata for White 2004 data.
+    --> not generated automatically, but can be updated manually.
+    --> only dcterms.
+
+regression/white/metadata/schema/input.schema.json
+    --> added input schema for White case study.
+    --> not generated automatically, but can be updated manually.
+regression/white/metadata/schema/output.schema.json
+    --> added output schema for White case study.
+    --> not generated automatically, but can be updated manually.
+
+regression/white/test_White2004*/case_metadata.jsonld
+    --> added case metadata for White 2004 test cases.
+    --> generated each time from the semantic_export.py script.
+    --> use of the following libraries:
+        - dcterms: Dublin Core Terms
+        - dcat: Data Catalog Vocabulary
+        - nm-kos (placeholder): NEO4MAT Knowledge Organization System
+        - prov: W3C Provenance Ontology
+        - schema: Schema.org
+        - sosa: Semantic Sensor Network Ontology
+        - xsd: XML Schema Definition
+regression/white/test_White2004*/input.json
+    --> added input.json for White 2004 test cases.
+    --> generated each time from the semantic_export.py script.
+    --> use of the input schema defined in regression/white/metadata/schema/input.schema.json
+regression/white/test_White2004*/output.json
+    --> added output.json for White 2004 test cases.
+    --> generated each time from the semantic_export.py script.
+    --> use of the output schema defined in regression/white/metadata/schema/output.schema.json
+regression/white/test_White2004*/output.jsonld
+    --> added output.jsonld for White 2004 test cases.
+    --> generated each time from the semantic_export.py script.
+    --> use of the following libraries:
+        - dcterms: Dublin Core Terms
+        - csvw: CSV on the Web
+        - qudt: Quantities, Units, Dimensions and Data Types Ontologies
+        - skos: Simple Knowledge Organization System
+        - xsd: XML Schema Definition
