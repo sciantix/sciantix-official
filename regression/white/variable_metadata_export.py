@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Generate a SCIANTIX variable metadata catalog for the White case study."""
+"""### NEO4MAT - SCIANTIX-DIVA: SCIANTIX variable catalog export.
+
+This module generates a global JSON-LD catalog of SCIANTIX variables and
+material/system properties used by the White case-study metadata. The catalog
+is derived from source-code declarations so it can stay aligned with SCIANTIX
+without manual intervention.
+"""
 
 import json
 import os
@@ -74,15 +80,18 @@ _SETTING_MODEL_MAP = {
 
 
 def _repo_root_from_white_root(white_root: str) -> str:
+    """Return the SCIANTIX repository root from ``regression/white``."""
     return os.path.abspath(os.path.join(white_root, "..", ".."))
 
 
 def _read_repo_file(repo_root: str, relative_path: str) -> str:
+    """Read a repository file using a path relative to the repo root."""
     with open(os.path.join(repo_root, relative_path), "r", encoding="utf-8") as handle:
         return handle.read()
 
 
 def _git_value(args: List[str], cwd: str) -> str:
+    """Run a Git query and return ``unknown`` when provenance is unavailable."""
     try:
         result = subprocess.run(
             ["git"] + args,
@@ -97,6 +106,12 @@ def _git_value(args: List[str], cwd: str) -> str:
 
 
 def _generated_at_utc(repo_root: str) -> str:
+    """Return the catalog generation timestamp.
+
+    By default the timestamp is the current Git commit time, which avoids
+    unnecessary diffs when regenerating identical metadata. The environment
+    variable ``SCIANTIX_SEMANTIC_GENERATED_AT_UTC`` can override it.
+    """
     override = os.environ.get("SCIANTIX_SEMANTIC_GENERATED_AT_UTC")
     if override:
         return datetime.fromisoformat(override).astimezone(timezone.utc).isoformat()
@@ -111,11 +126,13 @@ def _generated_at_utc(repo_root: str) -> str:
 
 
 def _slug(value: str) -> str:
+    """Create a stable lowercase identifier fragment from a variable name."""
     slug = re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
     return slug or "unnamed"
 
 
 def _strip_cpp_string(value: str) -> str:
+    """Remove surrounding C++ string quotes when present."""
     value = value.strip()
     if len(value) >= 2 and value[0] == '"' and value[-1] == '"':
         return value[1:-1]
@@ -123,6 +140,7 @@ def _strip_cpp_string(value: str) -> str:
 
 
 def _normalize_unit(unit: str) -> str:
+    """Normalize SCIANTIX constructor units such as ``(m)`` to ``m``."""
     unit = _strip_cpp_string(unit).strip()
     if unit.startswith("(") and unit.endswith(")"):
         unit = unit[1:-1].strip()
@@ -130,10 +148,17 @@ def _normalize_unit(unit: str) -> str:
 
 
 def _compact_expression(value: str) -> str:
+    """Collapse whitespace in C++ expressions recorded as metadata."""
     return re.sub(r"\s+", " ", value.strip())
 
 
 def _find_function_body(source: str, function_name: str) -> str:
+    """Extract a C++ function body with balanced-brace parsing.
+
+    Regex alone is fragile for function bodies. This scanner handles strings
+    and nested braces well enough for the SCIANTIX initializer functions used
+    by the catalog.
+    """
     match = re.search(r"\b" + re.escape(function_name) + r"\s*\([^)]*\)", source)
     if not match:
         raise ValueError(f"Cannot find function: {function_name}")
@@ -168,6 +193,7 @@ def _find_function_body(source: str, function_name: str) -> str:
 
 
 def _split_top_level_commas(value: str) -> List[str]:
+    """Split constructor arguments while respecting nested expressions."""
     parts = []
     start = 0
     depth_round = 0
@@ -213,6 +239,7 @@ def _split_top_level_commas(value: str) -> List[str]:
 
 
 def _extract_constructor_args(body: str, constructor_name: str) -> List[List[str]]:
+    """Extract argument lists for constructor calls inside a C++ body."""
     args = []
     search = constructor_name + "("
     idx = 0
@@ -247,10 +274,12 @@ def _extract_constructor_args(body: str, constructor_name: str) -> List[List[str
 
 
 def _extract_string_list(function_body: str) -> List[str]:
+    """Extract quoted names from simple C++ string-vector initializers."""
     return re.findall(r'"([^"]+)"', function_body)
 
 
 def _source_array_refs(args: List[str]) -> List[Dict[str, int]]:
+    """Find ``Sciantix_variables[...]`` and ``Sciantix_history[...]`` refs."""
     refs = []
     seen = set()
     for arg in args:
@@ -264,10 +293,12 @@ def _source_array_refs(args: List[str]) -> List[Dict[str, int]]:
 
 
 def _variable_id(category: str, name: str) -> str:
+    """Build a stable local variable IRI from category and name."""
     return f"sciantix-variable:{category}:{_slug(name)}"
 
 
 def _source_code_description(category: str, name: str, source: str) -> str:
+    """Create a short human-readable description for generated entries."""
     return (
         f"SCIANTIX {category.replace('_', ' ')} '{name}', generated from the "
         f"source-code definition in {source}."
@@ -275,6 +306,12 @@ def _source_code_description(category: str, name: str, source: str) -> str:
 
 
 def _state_variable_models(name: str) -> List[str]:
+    """Infer conservative physical-model links from state-variable names.
+
+    These links support navigation from variables to the local model catalog.
+    They are intentionally pattern-based and conservative; ambiguous variables
+    are left unlinked rather than over-interpreted.
+    """
     lower = name.lower()
     models = []
 
@@ -299,12 +336,14 @@ def _state_variable_models(name: str) -> List[str]:
 
 
 def _add_model_links(variable: dict, model_ids: List[str]) -> None:
+    """Attach model references to a variable entry when available."""
     if not model_ids:
         return
     variable["references"] = model_ids
 
 
 def _input_setting_variables(body: str) -> List[dict]:
+    """Generate metadata entries for SCIANTIX input setting names."""
     variables = []
     for index, name in enumerate(_extract_string_list(body)):
         variables.append(
@@ -331,6 +370,7 @@ def _input_setting_variables(body: str) -> List[dict]:
 
 
 def _scaling_factor_variables(body: str) -> List[dict]:
+    """Generate metadata entries for SCIANTIX scaling factor names."""
     variables = []
     for index, name in enumerate(_extract_string_list(body)):
         variables.append(
@@ -356,6 +396,11 @@ def _scaling_factor_variables(body: str) -> List[dict]:
 
 
 def _sciantix_variables(body: str, category: str, function_name: str) -> List[dict]:
+    """Generate metadata for history or state ``SciantixVariable`` entries.
+
+    The parser records the declared label, unit, output flag expression, and
+    array references used by each constructor call.
+    """
     variables = []
     for ordinal, args in enumerate(_extract_constructor_args(body, "SciantixVariable")):
         if len(args) < 5:
@@ -387,6 +432,7 @@ def _sciantix_variables(body: str, category: str, function_name: str) -> List[di
 
 
 def _class_member_variables(repo_root: str, class_name: str, relative_path: str, category: str) -> List[dict]:
+    """Generate metadata for simple Material/Matrix/Gas/System fields."""
     source = _read_repo_file(repo_root, relative_path)
     members = []
     for match in re.finditer(
@@ -418,6 +464,7 @@ def _class_member_variables(repo_root: str, class_name: str, relative_path: str,
 
 
 def build_variable_catalog(white_root: str) -> dict:
+    """Build the complete SCIANTIX variable catalog JSON-LD payload."""
     repo_root = _repo_root_from_white_root(white_root)
     source = _read_repo_file(repo_root, _SET_VARIABLES_SOURCE)
     variables = []
@@ -459,6 +506,7 @@ def build_variable_catalog(white_root: str) -> dict:
 
 
 def export_variable_catalog(white_root: str) -> str:
+    """Write the SCIANTIX variable catalog under ``metadata/variables``."""
     output_dir = os.path.join(white_root, "metadata", "variables")
     os.makedirs(output_dir, exist_ok=True)
     output_path = os.path.join(output_dir, "sciantix_variable_catalog.jsonld")
@@ -471,6 +519,7 @@ def export_variable_catalog(white_root: str) -> str:
 
 
 def main() -> int:
+    """CLI entry point for regenerating only the variable catalog."""
     white_root = os.path.dirname(__file__)
     output_path = export_variable_catalog(white_root)
     print(f"Exported SCIANTIX variable catalog: {output_path}")
