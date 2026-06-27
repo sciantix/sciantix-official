@@ -64,9 +64,11 @@ The following files are not regenerated from the case outputs and can be updated
 
 
 - `metadata/models/sciantix_physical_models.jsonld`
+
 --> The physical-model catalog represents SCIANTIX models as SKOS concepts and links each model to its category, target description, main assumptions, and supporting reference. 
 
 
 - `metadata/schema/input.schema.json`
 - `metadata/schema/output.schema.json`
+
 --> local JSON Schema files for the SCIANTIX input/output JSON structures. These local schema identifiers can later be replaced by published schema.

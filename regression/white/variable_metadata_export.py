@@ -48,6 +48,8 @@ _CONTEXT = {
     "sourceArrayReferences": "nmkos:sourceArrayReferences",
     "outputFlagExpression": "nmkos:outputFlagExpression",
     "cppType": "nmkos:cppType",
+    "value": "schema:value",
+    "valueSource": "nmkos:valueSource",
     "generatedAt": {
         "@id": "dcterms:created",
         "@type": "xsd:dateTime",
@@ -77,6 +79,257 @@ _SETTING_MODEL_MAP = {
     "iGrainBoundaryMicroCracking": ["model:grain-boundary-micro-cracking"],
     "iGrainBoundaryVenting": ["model:grain-boundary-venting"],
 }
+
+_SET_SOURCES = {
+    "Matrix": "src/operations/SetMatrix.C",
+    "Gas":    "src/operations/SetGas.C",
+    "System": "src/operations/SetSystem.C",
+}
+
+# Units not annotated with an inline comment in Set*.C source files.
+_UNIT_FALLBACK: Dict[str, str] = {
+    "Matrix.lattice_parameter":            "m",
+    "Matrix.lenticular_shape_factor":      "/",
+    "Matrix.grain_boundary_mobility":      "unspecified",
+    "Matrix.grain_boundary_diffusivity":   "m2/s",
+    "Matrix.grain_radius":                 "m",
+    "Matrix.nucleation_rate":              "1/s",
+    "Matrix.pore_nucleation_rate":         "1/s",
+    "Matrix.pore_resolution_rate":         "1/s",
+    "Matrix.pore_trapping_rate":           "1/s",
+    "Matrix.chromium_content":             "ug/g",
+    "Matrix.chromium_solubility":          "% weight/UO2",
+    "Matrix.Cr2O3_solubility":             "% weight/UO2",
+    "Matrix.chromium_solution":            "at/m3",
+    "Matrix.chromium_precipitate":         "at/m3",
+    "Matrix.chromia_solution":             "at/m3",
+    "Matrix.chromia_precipitate":          "at/m3",
+    "Matrix.elastic_modulus":              "MPa",
+    "Matrix.shear_modulus":                "MPa",
+    "Gas.atomic_number":                   "/",
+    "Gas.mass_number":                     "u",
+    "Gas.van_der_waals_volume":            "m3",
+    "Gas.decay_rate":                      "1/s",
+    "Gas.precursor_factor":                "/",
+    "System.yield":                        "at/fission",
+    "System.radius_in_lattice":            "m",
+    "System.volume_in_lattice":            "m3",
+    "System.henry_constant":               "unspecified",
+    "System.diffusivity":                  "m2/s",
+    "System.bubble_diffusivity":           "m2/s",
+    "System.resolution_rate":              "1/s",
+    "System.trapping_rate":                "1/s",
+    "System.nucleation_rate":              "1/s",
+    "System.pore_nucleation_rate":         "1/s",
+    "System.production_rate":              "unspecified",
+    "System.modes":                        "/",
+}
+
+
+def _setter_to_label(setter_name: str) -> str:
+    """Convert 'setFissionFragmentRange' → 'Fission fragment range'."""
+    without_set = re.sub(r'^set', '', setter_name)
+    words = re.sub(r'([A-Z])', r' \1', without_set).strip().split()
+    if not words:
+        return setter_name
+    return words[0] + (' ' + ' '.join(w.lower() for w in words[1:]) if len(words) > 1 else '')
+
+
+def _unit_from_comment(comment: str) -> str:
+    """Extract unit string from a C++ inline comment (text after //).
+
+    Handles two common patterns used in SCIANTIX:
+    - Parenthesized unit: ``// (kg/m3) optional description``
+    - Bare unit symbol:   ``// K``
+    """
+    comment = comment.strip()
+    m = re.match(r'\(([^)]+)\)', comment)
+    if m:
+        return m.group(1).strip()
+    m = re.match(r'^([A-Za-z][A-Za-z0-9/*^.%]*)(?:\s|$)', comment)
+    if m:
+        candidate = m.group(1)
+        if (len(candidate) <= 8
+                and candidate.lower() not in {
+                    'from', 'the', 'this', 'note', 'see', 'ref', 'value', 'number'
+                }):
+            return candidate
+    return ""
+
+
+def _parse_literal_setter_calls(body: str, obj_var: str):
+    """Yield (setter_name, numeric_value, comment) for ``obj_var.setXxx(literal)`` calls."""
+    pattern = re.compile(
+        r'\b' + re.escape(obj_var) + r'\.(set[A-Za-z0-9_]+)\s*\(\s*'
+        r'([+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?)\s*\)\s*;'
+        r'[ \t]*(?://\s*(.*))?',
+    )
+    for m in pattern.finditer(body):
+        setter  = m.group(1)
+        val_str = m.group(2)
+        comment = (m.group(3) or '').strip()
+        val = float(val_str) if ('.' in val_str or 'e' in val_str.lower()) else int(val_str)
+        yield setter, val, comment
+
+
+def _parse_setter_to_field_map(source: str) -> Dict[str, str]:
+    """Map setter method name → member field name from setter implementations.
+
+    Works for both inline header setters and ``ClassName::setter`` definitions.
+    """
+    result: Dict[str, str] = {}
+    sig_re = re.compile(
+        r'void\s+(?:\w+::)?(set[A-Z][A-Za-z0-9_]*)\s*\(\s*\w+\s+(\w+)\s*\)'
+    )
+    for m in sig_re.finditer(source):
+        setter = m.group(1)
+        param  = m.group(2)
+        try:
+            body = _find_function_body(source, setter)
+        except ValueError:
+            continue
+        assign = re.search(
+            r'\b([a-z_][a-z0-9_]*)\s*=\s*' + re.escape(param) + r'\b',
+            body,
+        )
+        if assign:
+            result[setter] = assign.group(1)
+    return result
+
+
+def _parse_factory_constants(
+    source: str,
+    obj_var: str,
+    factory_re: re.Pattern,
+    setter_map: Dict[str, str],
+    source_path: str,
+) -> Dict[str, Dict]:
+    """Parse per-instance constant values from named factory functions in Set*.C.
+
+    Each factory function (e.g. ``UO2(...)``, ``Xe_in_UO2(...)``) creates one
+    named instance; the instance name comes from ``obj_var.setName(\"...\")``.
+    """
+    constants: Dict[str, Dict] = {}
+    for func_match in factory_re.finditer(source):
+        func_name = func_match.group(1)
+        try:
+            # Slice the source from the definition site so _find_function_body
+            # cannot accidentally match an earlier call-site occurrence.
+            body = _find_function_body(source[func_match.start():], func_name)
+        except ValueError:
+            continue
+        name_m = re.search(
+            r'\b' + re.escape(obj_var) + r'\.setName\s*\(\s*"([^"]+)"', body
+        )
+        instance = name_m.group(1) if name_m else func_name
+        for setter, value, comment in _parse_literal_setter_calls(body, obj_var):
+            field = setter_map.get(setter)
+            if field is None:
+                continue
+            label = _setter_to_label(setter)
+            unit  = _unit_from_comment(comment)
+            if field not in constants:
+                constants[field] = {
+                    "label": label,
+                    "instances": {},
+                    "unit": unit,
+                    "valueSource": source_path,
+                }
+            constants[field]["instances"][instance] = value
+            if unit and not constants[field]["unit"]:
+                constants[field]["unit"] = unit
+    return constants
+
+
+def _parse_gas_constants(
+    source: str,
+    setter_map: Dict[str, str],
+    source_path: str,
+) -> Dict[str, Dict]:
+    """Parse gas species constant values from SetGas.C.
+
+    The source is split at every ``gas.push(gas_)`` call; each preceding
+    segment corresponds to one named gas species.
+    """
+    constants: Dict[str, Dict] = {}
+    segments = re.split(r'gas\.push\s*\(\s*gas_\s*\)', source)
+    for seg in segments[:-1]:
+        name_m   = re.search(r'gas_\.setName\s*\(\s*"([^"]+)"', seg)
+        instance = name_m.group(1) if name_m else "unknown"
+        for setter, value, comment in _parse_literal_setter_calls(seg, "gas_"):
+            field = setter_map.get(setter)
+            if field is None:
+                continue
+            label = _setter_to_label(setter)
+            unit  = _unit_from_comment(comment)
+            if field not in constants:
+                constants[field] = {
+                    "label": label,
+                    "instances": {},
+                    "unit": unit,
+                    "valueSource": source_path,
+                }
+            constants[field]["instances"][instance] = value
+            if unit and not constants[field]["unit"]:
+                constants[field]["unit"] = unit
+    return constants
+
+
+def _parse_all_class_constants(repo_root: str) -> Dict[str, Dict]:
+    """Parse constant property values from Set*.C and class implementation files.
+
+    Returns a dict ``{class_name: {field_name: {label, instances, unit, valueSource}}}``
+    derived entirely from the C++ source without hardcoding.
+    """
+    header_sources = {
+        cn: _read_repo_file(repo_root, path)
+        for cn, (path, _) in _CLASS_SOURCES.items()
+    }
+    try:
+        system_c = _read_repo_file(repo_root, "src/classes/System.C")
+    except OSError:
+        system_c = ""
+
+    setter_maps = {
+        "Matrix":   _parse_setter_to_field_map(header_sources["Matrix"]),
+        "Gas":      _parse_setter_to_field_map(header_sources["Gas"]),
+        "System":   _parse_setter_to_field_map(system_c),
+        "Material": _parse_setter_to_field_map(header_sources["Material"]),
+    }
+
+    result: Dict[str, Dict] = {}
+
+    try:
+        matrix_src = _read_repo_file(repo_root, _SET_SOURCES["Matrix"])
+        result["Matrix"] = _parse_factory_constants(
+            matrix_src, "matrix_",
+            re.compile(r'\bMatrix\s+(\w+)\s*\('),
+            setter_maps["Matrix"],
+            _SET_SOURCES["Matrix"],
+        )
+    except OSError:
+        result["Matrix"] = {}
+
+    try:
+        gas_src = _read_repo_file(repo_root, _SET_SOURCES["Gas"])
+        result["Gas"] = _parse_gas_constants(
+            gas_src, setter_maps["Gas"], _SET_SOURCES["Gas"]
+        )
+    except OSError:
+        result["Gas"] = {}
+
+    try:
+        system_src = _read_repo_file(repo_root, _SET_SOURCES["System"])
+        result["System"] = _parse_factory_constants(
+            system_src, "system_",
+            re.compile(r'\bSystem\s+(\w+)\s*\('),
+            setter_maps["System"],
+            _SET_SOURCES["System"],
+        )
+    except OSError:
+        result["System"] = {}
+
+    return result
 
 
 def _repo_root_from_white_root(white_root: str) -> str:
@@ -431,8 +684,19 @@ def _sciantix_variables(body: str, category: str, function_name: str) -> List[di
     return variables
 
 
-def _class_member_variables(repo_root: str, class_name: str, relative_path: str, category: str) -> List[dict]:
-    """Generate metadata for simple Material/Matrix/Gas/System fields."""
+def _class_member_variables(
+    repo_root: str,
+    class_name: str,
+    relative_path: str,
+    category: str,
+    parsed_constants: Dict[str, Dict],
+) -> List[dict]:
+    """Generate metadata for Material/Matrix/Gas/System class fields.
+
+    Unit, label and constant value are derived automatically from the C++
+    Set*.C source files; a fallback table covers properties whose source
+    comments do not include a unit annotation.
+    """
     source = _read_repo_file(repo_root, relative_path)
     members = []
     for match in re.finditer(
@@ -441,25 +705,39 @@ def _class_member_variables(repo_root: str, class_name: str, relative_path: str,
         source,
         flags=re.MULTILINE,
     ):
-        cpp_type = match.group("type")
-        name = match.group("name")
-        members.append(
-            {
-                "@id": _variable_id(category, f"{class_name}.{name}"),
-                "@type": ["ssn:Property", "prov:Entity"],
-                "identifier": f"{class_name}.{name}",
-                "title": name.replace("_", " "),
-                "description": _source_code_description(category, name, relative_path),
-                "category": category,
-                "name": name,
-                "label": name.replace("_", " "),
-                "unit": "unspecified",
-                "cppType": cpp_type,
-                "source": relative_path,
-                "sourceFile": relative_path,
-                "sourceClass": class_name,
-            }
-        )
+        cpp_type     = match.group("type")
+        name         = match.group("name")
+        property_key = f"{class_name}.{name}"
+        field_data   = parsed_constants.get(name, {})
+
+        unit  = field_data.get("unit") or _UNIT_FALLBACK.get(property_key, "unspecified")
+        label = field_data.get("label") or name.replace("_", " ")
+
+        member: dict = {
+            "@id":         _variable_id(category, property_key),
+            "@type":       ["ssn:Property", "prov:Entity"],
+            "identifier":  property_key,
+            "title":       label,
+            "description": _source_code_description(category, name, relative_path),
+            "category":    category,
+            "name":        name,
+            "label":       label,
+            "unit":        unit,
+            "cppType":     cpp_type,
+            "source":      relative_path,
+            "sourceFile":  relative_path,
+            "sourceClass": class_name,
+        }
+
+        instances = field_data.get("instances", {})
+        if instances:
+            vals = list(instances.values())
+            unique = {round(v, 15) if isinstance(v, float) else v for v in vals}
+            member["value"] = vals[0] if len(unique) == 1 else dict(instances)
+            if field_data.get("valueSource"):
+                member["valueSource"] = field_data["valueSource"]
+
+        members.append(member)
     return members
 
 
@@ -486,8 +764,14 @@ def build_variable_catalog(white_root: str) -> dict:
     )
     variables.extend(_scaling_factor_variables(_find_function_body(source, "getScalingFactorsNames")))
 
+    class_constants = _parse_all_class_constants(repo_root)
     for class_name, (relative_path, category) in _CLASS_SOURCES.items():
-        variables.extend(_class_member_variables(repo_root, class_name, relative_path, category))
+        variables.extend(
+            _class_member_variables(
+                repo_root, class_name, relative_path, category,
+                class_constants.get(class_name, {}),
+            )
+        )
 
     return {
         "@context": _CONTEXT,

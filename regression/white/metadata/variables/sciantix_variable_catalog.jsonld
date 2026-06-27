@@ -32,6 +32,8 @@
     "sourceArrayReferences": "nmkos:sourceArrayReferences",
     "outputFlagExpression": "nmkos:outputFlagExpression",
     "cppType": "nmkos:cppType",
+    "value": "schema:value",
+    "valueSource": "nmkos:valueSource",
     "generatedAt": {
       "@id": "dcterms:created",
       "@type": "xsd:dateTime"
@@ -42,7 +44,7 @@
   "dcterms:title": "SCIANTIX variable metadata catalog",
   "dcterms:description": "Machine-readable catalog of SCIANTIX input settings, scaling factors, history variables, state variables, and Material/Matrix/Gas/System class properties used to support RDF-mappable case-study metadata.",
   "dcterms:references": "../models/sciantix_physical_models.jsonld",
-  "generatedAt": "2026-06-27T13:12:45+00:00",
+  "generatedAt": "2026-06-27T15:31:33+00:00",
   "variable": [
     {
       "@id": "sciantix-variable:input_setting:igraingrowth",
@@ -3722,16 +3724,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.matrix_density",
-      "title": "matrix density",
+      "title": "Theoretical density",
       "description": "SCIANTIX matrix property 'matrix_density', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "matrix_density",
-      "label": "matrix density",
-      "unit": "unspecified",
+      "label": "Theoretical density",
+      "unit": "kg/m3",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 10960.0,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-lattice-parameter",
@@ -3740,16 +3744,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.lattice_parameter",
-      "title": "lattice parameter",
+      "title": "Lattice parameter",
       "description": "SCIANTIX matrix property 'lattice_parameter', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "lattice_parameter",
-      "label": "lattice parameter",
-      "unit": "unspecified",
+      "label": "Lattice parameter",
+      "unit": "m",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 5.47e-10,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-grain-boundary-mobility",
@@ -3776,16 +3782,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.ff_range",
-      "title": "ff range",
+      "title": "Fission fragment range",
       "description": "SCIANTIX matrix property 'ff_range', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "ff_range",
-      "label": "ff range",
-      "unit": "unspecified",
+      "label": "Fission fragment range",
+      "unit": "m",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 6e-06,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-ff-influence-radius",
@@ -3794,16 +3802,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.ff_influence_radius",
-      "title": "ff influence radius",
+      "title": "Fission fragment influence radius",
       "description": "SCIANTIX matrix property 'ff_influence_radius', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "ff_influence_radius",
-      "label": "ff influence radius",
-      "unit": "unspecified",
+      "label": "Fission fragment influence radius",
+      "unit": "m",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 1e-09,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-surface-tension",
@@ -3812,16 +3822,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.surface_tension",
-      "title": "surface tension",
+      "title": "Surface tension",
       "description": "SCIANTIX matrix property 'surface_tension', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "surface_tension",
-      "label": "surface tension",
-      "unit": "unspecified",
+      "label": "Surface tension",
+      "unit": "N/m",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 0.7,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-schottky-defect-volume",
@@ -3830,16 +3842,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.schottky_defect_volume",
-      "title": "schottky defect volume",
+      "title": "Schottky volume",
       "description": "SCIANTIX matrix property 'schottky_defect_volume', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "schottky_defect_volume",
-      "label": "schottky defect volume",
-      "unit": "unspecified",
+      "label": "Schottky volume",
+      "unit": "m3",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 4.09e-29,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-ois-volume",
@@ -3848,16 +3862,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.ois_volume",
-      "title": "ois volume",
+      "title": "Octahedral interstitial site",
       "description": "SCIANTIX matrix property 'ois_volume', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "ois_volume",
-      "label": "ois volume",
-      "unit": "unspecified",
+      "label": "Octahedral interstitial site",
+      "unit": "m3",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 7.8e-30,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-grain-boundary-thickness",
@@ -3866,16 +3882,21 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.grain_boundary_thickness",
-      "title": "grain boundary thickness",
+      "title": "Grain boundary thickness",
       "description": "SCIANTIX matrix property 'grain_boundary_thickness', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "grain_boundary_thickness",
-      "label": "grain boundary thickness",
-      "unit": "unspecified",
+      "label": "Grain boundary thickness",
+      "unit": "m",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": {
+        "UO2": 5e-10,
+        "UO2HBS": 0.0
+      },
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-grain-boundary-diffusivity",
@@ -3889,7 +3910,7 @@
       "category": "matrix_property",
       "name": "grain_boundary_diffusivity",
       "label": "grain boundary diffusivity",
-      "unit": "unspecified",
+      "unit": "m2/s",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
@@ -3902,16 +3923,21 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.semidihedral_angle",
-      "title": "semidihedral angle",
+      "title": "Semidihedral angle",
       "description": "SCIANTIX matrix property 'semidihedral_angle', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "semidihedral_angle",
-      "label": "semidihedral angle",
-      "unit": "unspecified",
+      "label": "Semidihedral angle",
+      "unit": "rad",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": {
+        "UO2": 0.872664626,
+        "UO2HBS": 0.0
+      },
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-lenticular-shape-factor",
@@ -3920,16 +3946,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.lenticular_shape_factor",
-      "title": "lenticular shape factor",
+      "title": "Lenticular shape factor",
       "description": "SCIANTIX matrix property 'lenticular_shape_factor', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "lenticular_shape_factor",
-      "label": "lenticular shape factor",
-      "unit": "unspecified",
+      "label": "Lenticular shape factor",
+      "unit": "/",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 0.168610764,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-grain-radius",
@@ -3938,16 +3966,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.grain_radius",
-      "title": "grain radius",
+      "title": "Grain radius",
       "description": "SCIANTIX matrix property 'grain_radius', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "grain_radius",
-      "label": "grain radius",
-      "unit": "unspecified",
+      "label": "Grain radius",
+      "unit": "m",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 1.5e-07,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-healing-temperature-threshold",
@@ -3956,16 +3986,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.healing_temperature_threshold",
-      "title": "healing temperature threshold",
+      "title": "Healing temperature threshold",
       "description": "SCIANTIX matrix property 'healing_temperature_threshold', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "healing_temperature_threshold",
-      "label": "healing temperature threshold",
-      "unit": "unspecified",
+      "label": "Healing temperature threshold",
+      "unit": "K",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 1273.15,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-nucleation-rate",
@@ -3979,7 +4011,7 @@
       "category": "matrix_property",
       "name": "nucleation_rate",
       "label": "nucleation rate",
-      "unit": "unspecified",
+      "unit": "1/s",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
@@ -3997,7 +4029,7 @@
       "category": "matrix_property",
       "name": "pore_nucleation_rate",
       "label": "pore nucleation rate",
-      "unit": "unspecified",
+      "unit": "1/s",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
@@ -4015,7 +4047,7 @@
       "category": "matrix_property",
       "name": "pore_resolution_rate",
       "label": "pore resolution rate",
-      "unit": "unspecified",
+      "unit": "1/s",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
@@ -4033,7 +4065,7 @@
       "category": "matrix_property",
       "name": "pore_trapping_rate",
       "label": "pore trapping rate",
-      "unit": "unspecified",
+      "unit": "1/s",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
@@ -4051,7 +4083,7 @@
       "category": "matrix_property",
       "name": "chromium_content",
       "label": "chromium content",
-      "unit": "unspecified",
+      "unit": "ug/g",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
@@ -4064,16 +4096,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.chromium_solubility",
-      "title": "chromium solubility",
+      "title": "Chromium solubility",
       "description": "SCIANTIX matrix property 'chromium_solubility', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "chromium_solubility",
-      "label": "chromium solubility",
-      "unit": "unspecified",
+      "label": "Chromium solubility",
+      "unit": "weight%/UO2",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 0,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-cr2o3-solubility",
@@ -4087,7 +4121,7 @@
       "category": "matrix_property",
       "name": "Cr2O3_solubility",
       "label": "Cr2O3 solubility",
-      "unit": "unspecified",
+      "unit": "% weight/UO2",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
@@ -4100,16 +4134,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.chromium_solution",
-      "title": "chromium solution",
+      "title": "Chromium solution",
       "description": "SCIANTIX matrix property 'chromium_solution', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "chromium_solution",
-      "label": "chromium solution",
-      "unit": "unspecified",
+      "label": "Chromium solution",
+      "unit": "at/m3",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 0,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-chromium-precipitate",
@@ -4118,16 +4154,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.chromium_precipitate",
-      "title": "chromium precipitate",
+      "title": "Chromium precipitate",
       "description": "SCIANTIX matrix property 'chromium_precipitate', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "chromium_precipitate",
-      "label": "chromium precipitate",
-      "unit": "unspecified",
+      "label": "Chromium precipitate",
+      "unit": "at/m3",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 0,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-chromia-solution",
@@ -4136,16 +4174,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.chromia_solution",
-      "title": "chromia solution",
+      "title": "Chromia solution",
       "description": "SCIANTIX matrix property 'chromia_solution', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "chromia_solution",
-      "label": "chromia solution",
-      "unit": "unspecified",
+      "label": "Chromia solution",
+      "unit": "at/m3",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 0,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-chromia-precipitate",
@@ -4154,16 +4194,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.chromia_precipitate",
-      "title": "chromia precipitate",
+      "title": "Chromia precipitate",
       "description": "SCIANTIX matrix property 'chromia_precipitate', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "chromia_precipitate",
-      "label": "chromia precipitate",
-      "unit": "unspecified",
+      "label": "Chromia precipitate",
+      "unit": "at/m3",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 0,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-elastic-modulus",
@@ -4177,7 +4219,7 @@
       "category": "matrix_property",
       "name": "elastic_modulus",
       "label": "elastic modulus",
-      "unit": "unspecified",
+      "unit": "MPa",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
@@ -4190,16 +4232,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.poisson_ratio",
-      "title": "poisson ratio",
+      "title": "Poisson ratio",
       "description": "SCIANTIX matrix property 'poisson_ratio', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "poisson_ratio",
-      "label": "poisson ratio",
-      "unit": "unspecified",
+      "label": "Poisson ratio",
+      "unit": "/",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 0.32,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-grain-boundary-fracture-energy",
@@ -4208,16 +4252,18 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.grain_boundary_fracture_energy",
-      "title": "grain boundary fracture energy",
+      "title": "Grain boundary fracture energy",
       "description": "SCIANTIX matrix property 'grain_boundary_fracture_energy', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "grain_boundary_fracture_energy",
-      "label": "grain boundary fracture energy",
-      "unit": "unspecified",
+      "label": "Grain boundary fracture energy",
+      "unit": "J/m2",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "value": 2,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-shear-modulus",
@@ -4231,7 +4277,7 @@
       "category": "matrix_property",
       "name": "shear_modulus",
       "label": "shear modulus",
-      "unit": "unspecified",
+      "unit": "MPa",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
@@ -4244,16 +4290,22 @@
         "prov:Entity"
       ],
       "identifier": "Gas.atomic_number",
-      "title": "atomic number",
+      "title": "Atomic number",
       "description": "SCIANTIX gas property 'atomic_number', generated from the source-code definition in include/classes/Gas.h.",
       "category": "gas_property",
       "name": "atomic_number",
-      "label": "atomic number",
-      "unit": "unspecified",
+      "label": "Atomic number",
+      "unit": "/",
       "cppType": "int",
       "source": "include/classes/Gas.h",
       "sourceFile": "include/classes/Gas.h",
-      "sourceClass": "Gas"
+      "sourceClass": "Gas",
+      "value": {
+        "Xe": 54,
+        "Kr": 36,
+        "He": 2
+      },
+      "valueSource": "src/operations/SetGas.C"
     },
     {
       "@id": "sciantix-variable:gas_property:gas-mass-number",
@@ -4262,16 +4314,22 @@
         "prov:Entity"
       ],
       "identifier": "Gas.mass_number",
-      "title": "mass number",
+      "title": "Mass number",
       "description": "SCIANTIX gas property 'mass_number', generated from the source-code definition in include/classes/Gas.h.",
       "category": "gas_property",
       "name": "mass_number",
-      "label": "mass number",
-      "unit": "unspecified",
+      "label": "Mass number",
+      "unit": "u",
       "cppType": "double",
       "source": "include/classes/Gas.h",
       "sourceFile": "include/classes/Gas.h",
-      "sourceClass": "Gas"
+      "sourceClass": "Gas",
+      "value": {
+        "Xe": 135,
+        "Xe133": 133,
+        "Kr85m": 85
+      },
+      "valueSource": "src/operations/SetGas.C"
     },
     {
       "@id": "sciantix-variable:gas_property:gas-van-der-waals-volume",
@@ -4280,16 +4338,18 @@
         "prov:Entity"
       ],
       "identifier": "Gas.van_der_waals_volume",
-      "title": "van der waals volume",
+      "title": "Van der waals volume",
       "description": "SCIANTIX gas property 'van_der_waals_volume', generated from the source-code definition in include/classes/Gas.h.",
       "category": "gas_property",
       "name": "van_der_waals_volume",
-      "label": "van der waals volume",
-      "unit": "unspecified",
+      "label": "Van der waals volume",
+      "unit": "m3",
       "cppType": "double",
       "source": "include/classes/Gas.h",
       "sourceFile": "include/classes/Gas.h",
-      "sourceClass": "Gas"
+      "sourceClass": "Gas",
+      "value": 8.48e-29,
+      "valueSource": "src/operations/SetGas.C"
     },
     {
       "@id": "sciantix-variable:gas_property:gas-decay-rate",
@@ -4298,16 +4358,24 @@
         "prov:Entity"
       ],
       "identifier": "Gas.decay_rate",
-      "title": "decay rate",
+      "title": "Decay rate",
       "description": "SCIANTIX gas property 'decay_rate', generated from the source-code definition in include/classes/Gas.h.",
       "category": "gas_property",
       "name": "decay_rate",
-      "label": "decay rate",
-      "unit": "unspecified",
+      "label": "Decay rate",
+      "unit": "1/s",
       "cppType": "double",
       "source": "include/classes/Gas.h",
       "sourceFile": "include/classes/Gas.h",
-      "sourceClass": "Gas"
+      "sourceClass": "Gas",
+      "value": {
+        "Xe": 0.0,
+        "Xe133": 1.53e-06,
+        "Kr": 0.0,
+        "Kr85m": 4.3e-05,
+        "He": 0.0
+      },
+      "valueSource": "src/operations/SetGas.C"
     },
     {
       "@id": "sciantix-variable:gas_property:gas-precursor-factor",
@@ -4316,16 +4384,24 @@
         "prov:Entity"
       ],
       "identifier": "Gas.precursor_factor",
-      "title": "precursor factor",
+      "title": "Precursor factor",
       "description": "SCIANTIX gas property 'precursor_factor', generated from the source-code definition in include/classes/Gas.h.",
       "category": "gas_property",
       "name": "precursor_factor",
-      "label": "precursor factor",
-      "unit": "unspecified",
+      "label": "Precursor factor",
+      "unit": "/",
       "cppType": "double",
       "source": "include/classes/Gas.h",
       "sourceFile": "include/classes/Gas.h",
-      "sourceClass": "Gas"
+      "sourceClass": "Gas",
+      "value": {
+        "Xe": 1.0,
+        "Xe133": 1.25,
+        "Kr": 1.0,
+        "Kr85m": 1.31,
+        "He": 1.0
+      },
+      "valueSource": "src/operations/SetGas.C"
     },
     {
       "@id": "sciantix-variable:system_property:system-reference",
@@ -4370,16 +4446,25 @@
         "prov:Entity"
       ],
       "identifier": "System.yield",
-      "title": "yield",
+      "title": "Yield",
       "description": "SCIANTIX system property 'yield', generated from the source-code definition in include/classes/System.h.",
       "category": "system_property",
       "name": "yield",
-      "label": "yield",
-      "unit": "unspecified",
+      "label": "Yield",
+      "unit": "at/fission",
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
-      "sourceClass": "System"
+      "sourceClass": "System",
+      "value": {
+        "Xe in UO2": 0.24,
+        "Xe in UO2HBS": 0.24,
+        "Kr in UO2": 0.03,
+        "He in UO2": 0.0022,
+        "Xe133 in UO2": 0.066534,
+        "Kr85m in UO2": 0.013027
+      },
+      "valueSource": "src/operations/SetSystem.C"
     },
     {
       "@id": "sciantix-variable:system_property:system-radius-in-lattice",
@@ -4388,16 +4473,25 @@
         "prov:Entity"
       ],
       "identifier": "System.radius_in_lattice",
-      "title": "radius in lattice",
+      "title": "Radius in lattice",
       "description": "SCIANTIX system property 'radius_in_lattice', generated from the source-code definition in include/classes/System.h.",
       "category": "system_property",
       "name": "radius_in_lattice",
-      "label": "radius in lattice",
-      "unit": "unspecified",
+      "label": "Radius in lattice",
+      "unit": "m",
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
-      "sourceClass": "System"
+      "sourceClass": "System",
+      "value": {
+        "Xe in UO2": 2.1e-10,
+        "Xe in UO2HBS": 2.1e-10,
+        "Kr in UO2": 2.1e-10,
+        "He in UO2": 4.73e-11,
+        "Xe133 in UO2": 2.1e-10,
+        "Kr85m in UO2": 2.1e-10
+      },
+      "valueSource": "src/operations/SetSystem.C"
     },
     {
       "@id": "sciantix-variable:system_property:system-volume-in-lattice",
@@ -4411,7 +4505,7 @@
       "category": "system_property",
       "name": "volume_in_lattice",
       "label": "volume in lattice",
-      "unit": "unspecified",
+      "unit": "m3",
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
@@ -4429,7 +4523,7 @@
       "category": "system_property",
       "name": "diffusivity",
       "label": "diffusivity",
-      "unit": "unspecified",
+      "unit": "m2/s",
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
@@ -4447,7 +4541,7 @@
       "category": "system_property",
       "name": "bubble_diffusivity",
       "label": "bubble diffusivity",
-      "unit": "unspecified",
+      "unit": "m2/s",
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
@@ -4460,16 +4554,18 @@
         "prov:Entity"
       ],
       "identifier": "System.henry_constant",
-      "title": "henry constant",
+      "title": "Henry constant",
       "description": "SCIANTIX system property 'henry_constant', generated from the source-code definition in include/classes/System.h.",
       "category": "system_property",
       "name": "henry_constant",
-      "label": "henry constant",
+      "label": "Henry constant",
       "unit": "unspecified",
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
-      "sourceClass": "System"
+      "sourceClass": "System",
+      "value": 0.0,
+      "valueSource": "src/operations/SetSystem.C"
     },
     {
       "@id": "sciantix-variable:system_property:system-resolution-rate",
@@ -4483,7 +4579,7 @@
       "category": "system_property",
       "name": "resolution_rate",
       "label": "resolution rate",
-      "unit": "unspecified",
+      "unit": "1/s",
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
@@ -4501,7 +4597,7 @@
       "category": "system_property",
       "name": "trapping_rate",
       "label": "trapping rate",
-      "unit": "unspecified",
+      "unit": "1/s",
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
@@ -4519,7 +4615,7 @@
       "category": "system_property",
       "name": "nucleation_rate",
       "label": "nucleation rate",
-      "unit": "unspecified",
+      "unit": "1/s",
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
@@ -4537,7 +4633,7 @@
       "category": "system_property",
       "name": "pore_nucleation_rate",
       "label": "pore nucleation rate",
-      "unit": "unspecified",
+      "unit": "1/s",
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
@@ -4555,7 +4651,7 @@
       "category": "system_property",
       "name": "modes",
       "label": "modes",
-      "unit": "unspecified",
+      "unit": "/",
       "cppType": "std::vector<double>",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
@@ -4586,16 +4682,25 @@
         "prov:Entity"
       ],
       "identifier": "System.restructured_matrix",
-      "title": "restructured matrix",
+      "title": "Restructured matrix",
       "description": "SCIANTIX system property 'restructured_matrix', generated from the source-code definition in include/classes/System.h.",
       "category": "system_property",
       "name": "restructured_matrix",
-      "label": "restructured matrix",
+      "label": "Restructured matrix",
       "unit": "unspecified",
       "cppType": "bool",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
-      "sourceClass": "System"
+      "sourceClass": "System",
+      "value": {
+        "Xe in UO2": 0,
+        "Xe in UO2HBS": 1,
+        "Kr in UO2": 0,
+        "He in UO2": 0,
+        "Xe133 in UO2": 0,
+        "Kr85m in UO2": 0
+      },
+      "valueSource": "src/operations/SetSystem.C"
     },
     {
       "@id": "sciantix-variable:system_property:system-gas",
