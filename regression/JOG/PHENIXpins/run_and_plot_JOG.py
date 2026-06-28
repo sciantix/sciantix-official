@@ -15,7 +15,6 @@ os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib import colors as mcolors
-from matplotlib.lines import Line2D
 
 TEST_DIR = Path(__file__).resolve().parent
 RUN_LOG = "sciantix.log"
@@ -25,7 +24,7 @@ MAIN_OUTPUT_NAME = "output.txt"
 THERMO_OUTPUT_NAME = "thermochemistry_output.txt"
 PHASE_SUBLATTICE_OUTPUT_NAME = "phase_sublattice_composition.txt"
 THERMOCHEMISTRY_MANIFEST_FILE = TEST_DIR / "input_thermochemistry.txt"
-PLOTS_DIR = TEST_DIR / "plots"
+PLOTS_DIR = TEST_DIR.parents[4] / "OverLeaf/JOGSCIANTIX/Images/SCIANTIX"
 GOLD_DIR = TEST_DIR / "gold"
 EXP_DATA_DIR = TEST_DIR / "exp_data"
 PELLET_RADIUS_M = 2.719e-3
@@ -48,7 +47,6 @@ JOG_OUTER_NODE_COUNT = 1
 SNAPSHOT_BURNUP_COUNT = 7
 TOURASSE_OUTER_DIAMETER_UM = 5430.0
 HCP_A3_COMPARISON_ELEMENTS = ("MO", "PD", "RH", "RU", "TC")
-NON_OXIDE_PHASE_NAMES = {"GAS", "FCC_A1", "HCP_A3", "MOPD2"}
 
 SHARED_INPUT_FILES = (
     "input_settings.txt",
@@ -70,6 +68,40 @@ PAPER_PALETTE = [
     "#737675", "#9D6953", "#363726",  "#785C2D",
 ]
 
+PAPER_PALETTE = [
+    "#736F3F",  # olive
+    "#BFAE56",  # muted mustard
+    "#B29DA6",  # dusty mauve
+    "#D9AF32",  # muted gold
+    "#A66226",  # burnt orange
+    "#733426",  # dark terracotta
+    "#737675",  # warm grey
+    "#9D6953",  # muted clay
+    "#363726",  # dark olive
+    "#785C2D",  # earthy brown
+
+    "#789174",  # sage green
+    "#657D8A",  # dusty blue
+    "#6F918B",  # muted teal
+    "#765D78",  # muted plum
+    "#A9797F",  # dusty rose
+    "#BD8460",  # soft copper
+    "#8B7966",  # warm taupe
+    "#668278",  # eucalyptus
+    "#596B7B",  # slate blue
+    "#91869B",  # lavender grey
+
+    "#A88A4F",  # antique ochre
+    "#59634C",  # moss green
+    "#81959D",  # blue grey
+    "#925548",  # muted rust
+    "#B8A98C",  # warm sand
+    "#575A57",  # charcoal grey
+    "#B67768",  # muted coral
+    "#70969A",  # desaturated cyan
+    "#704D59",  # muted wine
+    "#9A9B68",  # pale olive
+]
 plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update({
     "figure.figsize": (10, 7),
@@ -387,7 +419,7 @@ def grain_boundary_phase_styles(variables: list[str]) -> tuple[list[str], list[s
     phase_hatch = {
         "gas": "...",
         "liquid": "///",
-        "condensed": "xx",
+        "condensed": "",
         "unknown": "\\\\\\",
     }
     labels = []
@@ -411,6 +443,11 @@ def save_figure(fig: plt.Figure, path: Path, saved_paths: list[Path]) -> None:
         warnings.filterwarnings(
             "ignore",
             message="The figure layout has changed to tight",
+            category=UserWarning,
+        )
+        warnings.filterwarnings(
+            "ignore",
+            message="This figure includes Axes that are not compatible with tight_layout",
             category=UserWarning,
         )
         fig.tight_layout()
@@ -772,12 +809,14 @@ def build_thermochemistry_color_map(case_directories: list[Path]) -> dict[str, o
     for case_dir in case_directories:
         thermo_file = case_dir / THERMO_OUTPUT_NAME
         ensure_output_file(thermo_file)
-        thermochemistry_headers, _ = load_output_data(thermo_file)
+        thermochemistry_headers, values = load_output_data(thermo_file)
+        thermochemistry_columns = column_map(thermochemistry_headers)
 
         gb_labels.extend(
             header
             for header in thermochemistry_headers
             if is_grain_boundary_amount_column(header)
+            and not is_all_zero(values[:, thermochemistry_columns[header]], atol=1e-8)
         )
 
     return build_label_color_map(gb_labels, palette=PAPER_PALETTE)
@@ -965,11 +1004,6 @@ def normalize_atomic_percent(elements: dict[str, float]) -> dict[str, float]:
         for element, value in positive_elements.items()
     }
 
-
-def is_oxide_phase(phase: str) -> bool:
-    return phase.strip().upper() not in NON_OXIDE_PHASE_NAMES
-
-
 def hcp_a3_element_atomic_percent(case_dir: Path, target_time: float, side: str) -> dict[str, float]:
     sublattice_file = case_dir / PHASE_SUBLATTICE_OUTPUT_NAME
     if not sublattice_file.exists():
@@ -1108,7 +1142,7 @@ def plot_outer_node_atomic_percent_pie(
     snapshot_label: str,
     nodes: int = JOG_OUTER_NODE_COUNT,
     excluded_elements: set[str] | None = None,
-    output_name: str = "outer_radial_node_atomic_percent_pie.svg",
+    output_name: str = "outer_radial_node_atomic_percent_pie.png",
     title_suffix: str = "",
 ) -> None:
     if isinstance(case_source, Path):
@@ -1223,7 +1257,7 @@ def add_atomic_percent_pie(
 
     for wedge, element, value in zip(wedges, labels, values):
         theta = math.radians((wedge.theta1 + wedge.theta2) / 2.0)
-        if value >= 10.0:
+        if value >= 1.0:
             radius = 0.58 * pie_radius
             text_color = readable_text_color(wedge.get_facecolor())
             axis.text(
@@ -1244,28 +1278,6 @@ def add_atomic_percent_pie(
                 va="center",
                 fontsize=11,
                 color=text_color,
-            )
-        else:
-            radius = 1.22 * pie_radius
-            axis.annotate(
-                element,
-                xy=(pie_radius * math.cos(theta), pie_radius * math.sin(theta)),
-                xytext=(radius * math.cos(theta), radius * math.sin(theta)),
-                ha="center",
-                va="center",
-                fontsize=11,
-                fontweight="bold",
-                color="#171717",
-                arrowprops={"arrowstyle": "-", "lw": 0.7, "color": "#444444"},
-            )
-            axis.text(
-                radius * math.cos(theta),
-                radius * math.sin(theta) - 0.12,
-                f"{value:.1f}%",
-                ha="center",
-                va="center",
-                fontsize=10,
-                color="#171717",
             )
 
     axis.set_xlim(-1.35 * pie_radius, 1.35 * pie_radius)
@@ -1353,6 +1365,328 @@ def plot_hcp_a3_comparison_pies(
 
     fig.suptitle(f"White phase (HCP) composition, {snapshot_label}", y=0.95, fontweight="bold")
     fig.subplots_adjust(wspace=0.02, hspace=0.02, left=0.03, right=0.99, top=0.90, bottom=0.06)
+    save_figure(fig, PLOTS_DIR / output_name, saved_paths)
+
+
+def phase_element_moles_at_snapshot(
+    case_dir: Path,
+    target_time: float,
+    side: str,
+) -> dict[str, dict[str, float]]:
+    sublattice_file = case_dir / PHASE_SUBLATTICE_OUTPUT_NAME
+    if not sublattice_file.exists():
+        return {}
+
+    rows = [
+        row
+        for row in load_phase_sublattice_rows(sublattice_file)
+        if row["location"] == "at grain boundary"
+    ]
+    if not rows:
+        return {}
+
+    _, snapshot_rows = phase_rows_at_snapshot(rows, target_time, side)
+    phase_elements: dict[str, dict[str, float]] = defaultdict(lambda: defaultdict(float))
+    for row in snapshot_rows:
+        phase_moles = float(row["phase_moles"])
+        phase_form_units = float(row["phase_form_units"])
+        site_fraction = float(row["site_fraction"])
+        if phase_moles <= 0.0 or phase_form_units <= 0.0 or site_fraction <= 0.0:
+            continue
+
+        element_counts = constituent_element_counts(str(row["constituent"]))
+        if not element_counts:
+            continue
+
+        phase_label = display_phase_label(str(row["phase"]), str(row["phase_instance"]))
+        constituent_moles = phase_form_units * float(row["sites"]) * site_fraction
+        for element, count in element_counts.items():
+            phase_elements[phase_label][element] += constituent_moles * count
+
+    return {
+        phase: dict(elements)
+        for phase, elements in phase_elements.items()
+    }
+
+
+def phase_fraction_profile_entries(
+    case_directories: list[Path],
+    target_time: float,
+    side: str,
+    *,
+    min_fraction: float = 1.0e-3,
+    max_entries: int = 15,
+    max_elements_per_phase: int = 5,
+) -> list[tuple[str, np.ndarray, tuple[str, ...]]]:
+    phase_elements_by_case = [
+        phase_element_moles_at_snapshot(case_dir, target_time, side)
+        for case_dir in case_directories
+    ]
+    if not any(phase_elements_by_case):
+        return []
+
+    total_elements_by_case: list[dict[str, float]] = []
+    for phase_elements in phase_elements_by_case:
+        totals: dict[str, float] = defaultdict(float)
+        for elements in phase_elements.values():
+            for element, moles in elements.items():
+                totals[element] += moles
+        total_elements_by_case.append(dict(totals))
+
+    phase_names = sorted({
+        phase
+        for phase_elements in phase_elements_by_case
+        for phase in phase_elements
+    })
+    candidate_entries: list[tuple[str, np.ndarray, tuple[str, ...], float]] = []
+    for phase in phase_names:
+        element_scores: dict[str, float] = {}
+        for phase_elements, total_elements in zip(phase_elements_by_case, total_elements_by_case):
+            for element, moles in phase_elements.get(phase, {}).items():
+                total = total_elements.get(element, 0.0)
+                if total > 0.0:
+                    element_scores[element] = max(element_scores.get(element, 0.0), moles / total)
+
+        selected_elements = tuple(
+            element
+            for element, score in sorted(
+                element_scores.items(),
+                key=lambda item: item[1],
+                reverse=True,
+            )
+            if score >= min_fraction
+        )[:max_elements_per_phase]
+        if not selected_elements:
+            continue
+
+        fractions = []
+        for phase_elements, total_elements in zip(phase_elements_by_case, total_elements_by_case):
+            numerator = sum(phase_elements.get(phase, {}).get(element, 0.0) for element in selected_elements)
+            denominator = sum(total_elements.get(element, 0.0) for element in selected_elements)
+            fractions.append(numerator / denominator if denominator > 0.0 else 0.0)
+
+        values = np.array(fractions, dtype=float)
+        max_fraction = float(np.nanmax(values)) if values.size else 0.0
+        if max_fraction >= min_fraction:
+            candidate_entries.append((phase, values, selected_elements, max_fraction))
+
+    candidate_entries.sort(key=lambda entry: entry[3], reverse=True)
+    return [
+        (phase, values, selected_elements)
+        for phase, values, selected_elements, _ in candidate_entries[:max_entries]
+    ]
+
+
+def phase_moles_at_snapshot(
+    case_dir: Path,
+    target_time: float,
+    side: str,
+) -> dict[str, float]:
+    sublattice_file = case_dir / PHASE_SUBLATTICE_OUTPUT_NAME
+    if not sublattice_file.exists():
+        return {}
+
+    rows = [
+        row
+        for row in load_phase_sublattice_rows(sublattice_file)
+        if row["location"] == "at grain boundary"
+    ]
+    if not rows:
+        return {}
+
+    _, snapshot_rows = phase_rows_at_snapshot(rows, target_time, side)
+    phase_moles: dict[str, float] = {}
+    for row in snapshot_rows:
+        moles = float(row["phase_moles"])
+        if moles <= 0.0:
+            continue
+
+        phase_label = display_phase_label(str(row["phase"]), str(row["phase_instance"]))
+        phase_moles[phase_label] = max(phase_moles.get(phase_label, 0.0), moles)
+
+    return phase_moles
+
+
+def phase_mole_fraction_profile_entries(
+    case_directories: list[Path],
+    target_time: float,
+    side: str,
+    *,
+    min_fraction: float = 1.0e-4,
+    max_entries: int = 12,
+) -> list[tuple[str, np.ndarray]]:
+    phase_moles_by_case = [
+        phase_moles_at_snapshot(case_dir, target_time, side)
+        for case_dir in case_directories
+    ]
+    if not any(phase_moles_by_case):
+        return []
+
+    phase_names = sorted({
+        phase
+        for phase_moles in phase_moles_by_case
+        for phase in phase_moles
+    })
+    candidate_entries: list[tuple[str, np.ndarray, float]] = []
+    for phase in phase_names:
+        fractions = []
+        for phase_moles in phase_moles_by_case:
+            total_moles = sum(phase_moles.values())
+            fractions.append(phase_moles.get(phase, 0.0) / total_moles if total_moles > 0.0 else 0.0)
+
+        values = np.array(fractions, dtype=float)
+        max_fraction = float(np.nanmax(values)) if values.size else 0.0
+        if max_fraction >= min_fraction:
+            candidate_entries.append((phase, values, max_fraction))
+
+    candidate_entries.sort(key=lambda entry: entry[2], reverse=True)
+    return [(phase, values) for phase, values, _ in candidate_entries[:max_entries]]
+
+
+def plot_radial_phase_fraction_snapshot(
+    case_directories: list[Path],
+    radii_m_array: np.ndarray,
+    output_profiles: dict[str, np.ndarray],
+    reference_time: np.ndarray,
+    saved_paths: list[Path],
+    *,
+    target_time: float,
+    side: str,
+    snapshot_label: str,
+    output_name: str,
+) -> None:
+    entries = phase_fraction_profile_entries(case_directories, target_time, side)
+    if not entries or TEMPERATURE_LABEL not in output_profiles:
+        return
+
+    snapshot = snapshot_index(reference_time, target_time, side)
+    r_over_ro = radii_m_array / PELLET_RADIUS_M
+    temperature = output_profiles[TEMPERATURE_LABEL][:, snapshot]
+    om_ratio = None
+    if "O/M ratio (/)" in output_profiles:
+        om_ratio = output_profiles["O/M ratio (/)"][:, snapshot]
+    elif "Stoichiometry deviation (/)" in output_profiles:
+        om_ratio = 2.0 + output_profiles["Stoichiometry deviation (/)"][:, snapshot]
+
+    fig, axes = plt.subplots(
+        2,
+        1,
+        figsize=(9, 6.8),
+        sharex=True,
+        gridspec_kw={"height_ratios": [1.15, 1.0], "hspace": 0.08},
+    )
+    phase_axis, state_axis = axes
+
+    marker_cycle = ["o", "s", "D", "^", "v", "P", "X", "<", ">"]
+    color_map = build_label_color_map([phase for phase, _, _ in entries], palette=PAPER_PALETTE)
+    for index, (phase, values, elements) in enumerate(entries):
+        plotted_values = np.where(values > 0.0, values, np.nan)
+        label = f"{phase}({','.join(elements)})"
+        phase_axis.plot(
+            r_over_ro,
+            plotted_values,
+            color=color_map[phase],
+            marker=marker_cycle[index % len(marker_cycle)],
+            linestyle=(0, (2.0, 2.5)),
+            linewidth=1.4,
+            markersize=5.5,
+            label=label,
+        )
+
+    phase_axis.set_yscale("log")
+    phase_axis.set_ylabel("Fraction of elements in phase")
+    phase_axis.set_ylim(1.0e-2, 1.2)
+    phase_axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1, fontsize=12)
+    phase_axis.set_title(snapshot_label)
+
+    temperature_color = COLORS[3]
+    om_color = COLORS[2]
+    state_axis.plot(r_over_ro, temperature, color=temperature_color, linewidth=2.8)
+    state_axis.set_ylabel("Temperature (K)", color=temperature_color)
+    state_axis.tick_params(axis="y", labelcolor=temperature_color)
+    state_axis.set_xlabel("r/R")
+
+    if om_ratio is not None:
+        om_axis = state_axis.twinx()
+        om_axis.plot(r_over_ro, om_ratio, color=om_color, linewidth=2.8)
+        om_axis.set_ylabel("O/M ratio (-)", color=om_color)
+        om_axis.set_ylim(1.95, 2.01)
+        om_axis.set_yticks(np.arange(1.96, 2.0, 0.01))
+        om_axis.tick_params(axis="y", labelcolor=om_color)
+
+    save_figure(fig, PLOTS_DIR / output_name, saved_paths)
+
+
+def plot_radial_phase_mole_fraction_snapshot(
+    case_directories: list[Path],
+    radii_m_array: np.ndarray,
+    output_profiles: dict[str, np.ndarray],
+    reference_time: np.ndarray,
+    saved_paths: list[Path],
+    *,
+    target_time: float,
+    side: str,
+    snapshot_label: str,
+    output_name: str,
+) -> None:
+    entries = phase_mole_fraction_profile_entries(case_directories, target_time, side)
+    if not entries or TEMPERATURE_LABEL not in output_profiles:
+        return
+
+    snapshot = snapshot_index(reference_time, target_time, side)
+    r_over_ro = radii_m_array / PELLET_RADIUS_M
+    temperature = output_profiles[TEMPERATURE_LABEL][:, snapshot]
+    om_ratio = None
+    if "O/M ratio (/)" in output_profiles:
+        om_ratio = output_profiles["O/M ratio (/)"][:, snapshot]
+    elif "Stoichiometry deviation (/)" in output_profiles:
+        om_ratio = 2.0 + output_profiles["Stoichiometry deviation (/)"][:, snapshot]
+
+    fig, axes = plt.subplots(
+        2,
+        1,
+        figsize=(9, 6.8),
+        sharex=True,
+        gridspec_kw={"height_ratios": [1.15, 1.0], "hspace": 0.08},
+    )
+    phase_axis, state_axis = axes
+
+    marker_cycle = ["o", "s", "D", "^", "v", "P", "X", "<", ">"]
+    color_map = build_label_color_map([phase for phase, _ in entries], palette=PAPER_PALETTE)
+    for index, (phase, values) in enumerate(entries):
+        plotted_values = np.where(values > 0.0, values, np.nan)
+        phase_axis.plot(
+            r_over_ro,
+            plotted_values,
+            color=color_map[phase],
+            marker=marker_cycle[index % len(marker_cycle)],
+            linestyle=(0, (2.0, 2.5)),
+            linewidth=1.4,
+            markersize=5.5,
+            label=phase,
+        )
+
+    phase_axis.set_yscale("log")
+    phase_axis.set_ylabel("Phase moles / total GB phase moles")
+    phase_axis.set_ylim(1.0e-4, 1.2)
+    phase_axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1, fontsize=12)
+    phase_axis.set_title(snapshot_label)
+
+    temperature_color = COLORS[3]
+    om_color = COLORS[2]
+    state_axis.plot(r_over_ro, temperature, color=temperature_color, linewidth=2.8)
+    state_axis.set_ylabel("Temperature (K)", color=temperature_color)
+    state_axis.tick_params(axis="y", labelcolor=temperature_color)
+    state_axis.set_xlabel("r/R")
+
+    if om_ratio is not None:
+        om_axis = state_axis.twinx()
+        om_axis.plot(r_over_ro, om_ratio, color=om_color, linewidth=2.8)
+        om_axis.set_ylabel("O/M ratio (-)", color=om_color)
+        om_axis.set_ylim(1.95, 2.01)
+        om_axis.set_yticks(np.arange(1.96, 2.0, 0.01))
+        om_axis.tick_params(axis="y", labelcolor=om_color)
+
     save_figure(fig, PLOTS_DIR / output_name, saved_paths)
 
 
@@ -1499,7 +1833,7 @@ def plot_case(
     axis.set_xlabel(BURNUP_LABEL)
     axis.set_xlim(0.0, max(burnup))
     axis.set_xticks(np.arange(0.0, max(burnup) + 1.0, 20.0))
-    axis.set_ylim(0, 9e4)
+    axis.set_ylim(0, 10e4)
     axis.set_ylabel("Concentration (mol m$^{-3}$)")
     axis.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
     axis.legend(loc="upper left")
@@ -1512,7 +1846,7 @@ def plot_case(
     axis.set_xlabel(BURNUP_LABEL)
     axis.set_xlim(0.0, max(burnup))
     axis.set_xticks(np.arange(0.0, max(burnup) + 1.0, 20.0))
-    axis.set_ylim(0, 9e4)
+    axis.set_ylim(0, 10e4)
     axis.set_ylabel("Concentration (mol m$^{-3}$)")
     axis.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
     axis.legend(loc="upper left")
@@ -1539,6 +1873,8 @@ def plot_case(
     for axis_index, (axis, species) in enumerate(zip(axes, fp_species)):
         for label, color, suffix in fp_suffixes:
             column_name = f"{species}{suffix}"
+            if column_name in columns and is_all_zero(values[:, columns[column_name]]):
+                continue
             if column_name in columns:
                 axis.plot(
                     burnup,
@@ -1568,6 +1904,8 @@ def plot_case(
             species_max = 0.0
             for label, color, suffix in fp_suffixes:
                 column_name = f"{species}{suffix}"
+                if column_name in columns and is_all_zero(values[:, columns[column_name]]):
+                    continue
                 if column_name not in columns:
                     continue
                 inventory = values[:, columns[column_name]] / AVOGADRO_NUMBER
@@ -1776,7 +2114,6 @@ def plot_case(
                 axis.set_xlim(float(np.nanmin(cooldown_x)), float(np.nanmax(cooldown_x)))
                 axis.set_ylabel("Mass per fuel volume (g m$^{-3}$)")
                 axis.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
-                axis.set_yticks(np.linspace(0.0, cooldown_ymax, num=6))
                 handles, labels = axis.get_legend_handles_labels()
                 axis.legend(handles, labels, loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
                 save_figure(fig, case_plot_dir / "thermochemistry_cooldown_temperature.png", saved_paths)
@@ -1821,7 +2158,6 @@ def plot_radial_profiles(
     reference_time = output_histories[0]["Time (h)"]
     reference_burnup = burnup_from_history(output_histories[0])
     reference_fima = output_histories[0]["FIMA (%)"]
-    reference_before_cooldown = before_cooldown_mask(reference_time)
 
     for snapshot_slug, snapshot_name, target_time, side in COOLDOWN_SNAPSHOTS:
         snapshot_label = f"{snapshot_name} ({format_time_label(target_time)})"
@@ -1832,18 +2168,7 @@ def plot_radial_profiles(
             side=side,
             snapshot_label=snapshot_label,
             nodes=JOG_OUTER_NODE_COUNT,
-            output_name=f"outer_radial_node_atomic_percent_pie_{snapshot_slug}.svg",
-        )
-        plot_outer_node_atomic_percent_pie(
-            ordered_case_directories,
-            saved_paths,
-            target_time=target_time,
-            side=side,
-            snapshot_label=snapshot_label,
-            nodes=JOG_OUTER_NODE_COUNT,
-            excluded_elements=METALLIC_ELEMENTS_EXCLUDED_FROM_FILTERED_PIE,
-            output_name=f"outer_radial_node_atomic_percent_pie_without_ru_pd_rh_tc_{snapshot_slug}.svg",
-            title_suffix=" w/o Ru, Pd, Rh, Tc",
+            output_name=f"outer_radial_node_atomic_percent_pie_{snapshot_slug}.png",
         )
         plot_hcp_a3_comparison_pies(
             ordered_case_directories,
@@ -1877,6 +2202,31 @@ def plot_radial_profiles(
             else:
                 aligned_series.append(np.zeros_like(reference_time))
         thermo_profiles[name] = np.vstack(aligned_series)
+
+    for snapshot_slug, snapshot_name, target_time, side in COOLDOWN_SNAPSHOTS:
+        snapshot_label = f"{snapshot_name} ({format_time_label(target_time)})"
+        plot_radial_phase_fraction_snapshot(
+            ordered_case_directories,
+            radii_m_array,
+            output_profiles,
+            reference_time,
+            saved_paths,
+            target_time=target_time,
+            side=side,
+            snapshot_label=snapshot_label,
+            output_name=f"radial_phase_element_fraction_{snapshot_slug}.png",
+        )
+        plot_radial_phase_mole_fraction_snapshot(
+            ordered_case_directories,
+            radii_m_array,
+            output_profiles,
+            reference_time,
+            saved_paths,
+            target_time=target_time,
+            side=side,
+            snapshot_label=snapshot_label,
+            output_name=f"radial_phase_mole_fraction_{snapshot_slug}.png",
+        )
 
     def aligned_inventory_profile(inventory_key: str) -> np.ndarray:
         aligned_series = []
@@ -1921,26 +2271,15 @@ def plot_radial_profiles(
     snapshot_entries = radial_snapshot_entries(reference_time, reference_burnup)
     snapshot_colors = evenly_spaced_colors(len(snapshot_entries))
     r_over_ro_array = radii_m_array / PELLET_RADIUS_M
-    columnar_min_r_over_ro, columnar_max_r_over_ro = COLUMNAR_GRAIN_R_OVER_RO_RANGE
-    columnar_region_mask = (
-        (r_over_ro_array >= columnar_min_r_over_ro)
-        & (r_over_ro_array <= columnar_max_r_over_ro)
-    )
-
     if "Mo produced (at/m3)" in output_profiles:
         tourasse_fmp_data = load_experimental_fmp_mo_ru_data(EXP_DATA_DIR / "Tourasse1992_FMP.txt")
         tourasse_radial_r_over_ro, tourasse_radial_mo_ru = tourasse_fmp_data["radial"]
-        tourasse_fima, tourasse_burnup_mo_ru = tourasse_fmp_data["burnup"]
-        fayette_fmp_data = load_experimental_fmp_mo_ru_data(EXP_DATA_DIR / "Fayette2026_FMP.txt")
-        fayette_fima, fayette_burnup_mo_ru = fayette_fmp_data["burnup"]
         mo_hcp_over_ru_hcp = np.divide(
             mo_hcp_profile,
             ru_hcp_profile,
             out=np.zeros_like(mo_hcp_profile),
             where=ru_hcp_profile > 0.0,
         )
-        def fima_to_reference_burnup(fima_values: np.ndarray) -> np.ndarray:
-            return np.interp(fima_values, reference_fima, reference_burnup)
 
         if not is_all_zero(mo_hcp_over_ru_hcp):
             fig, axis = plt.subplots(1, 1, figsize=(9, 5))
@@ -1975,51 +2314,6 @@ def plot_radial_profiles(
             axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
             save_figure(fig, PLOTS_DIR / "Mo_Ru_ratio_HCP_A3.png", saved_paths)
 
-            fig, axis = plt.subplots(1,1, figsize=(9,5))
-            if np.any(columnar_region_mask):
-                columnar_mo_ru = np.mean(mo_hcp_over_ru_hcp[columnar_region_mask, :], axis=0)
-                axis.plot(
-                    reference_burnup,
-                    columnar_mo_ru,
-                    color=COLORS[0],
-                    label="This work",
-                )
-                axis.scatter(
-                    fima_to_reference_burnup(tourasse_fima),
-                    tourasse_burnup_mo_ru,
-                    edgecolors=COLORS[7],
-                    facecolors="none",
-                    marker="D",
-                    label="Tourasse et al. (1992)",
-                    zorder=3,
-                    linewidths=1.6,
-                )
-                axis.scatter(
-                    fima_to_reference_burnup(fayette_fima),
-                    fayette_burnup_mo_ru,
-                    edgecolors=COLORS[6],
-                    facecolors="none",
-                    marker="s",
-                    label="Fayette et al. (2025)",
-                    zorder=3,
-                    linewidths=1.6,
-                )
-                axis.hlines(21.9/19.8, min(reference_burnup), max(reference_burnup), color="black", label="Theoretical yield ratio")
-                configure_burnup_axis(axis, reference_burnup)
-                axis.set_ylabel("Mo / Ru in FMP (-)")
-                axis.set_ylim(0,1.25)
-                axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
-            else:
-                axis.text(
-                    0.5,
-                    0.5,
-                    "No radial nodes fall in the columnar region for this mesh.",
-                    ha="center",
-                    va="center",
-                    transform=axis.transAxes,
-                )
-                axis.set_axis_off()
-            save_figure(fig, PLOTS_DIR / "Mo_Ru_ratio_HCP_A3_burnup.png", saved_paths)
 
     if "Temperature (K)" in output_profiles:
         fig, axis = plt.subplots(1,1,figsize=(9,5))
@@ -2076,7 +2370,7 @@ def plot_radial_profiles(
         item for item in oxygen_potential_columns
         if item[0] in output_profiles and not is_all_zero(output_profiles[item[0]])
     ]
-    if available_oxygen_columns:
+    if available_oxygen_columns and "Temperature (K)" in output_profiles:
         fig, axis = plt.subplots(1,1,figsize=(9,5.5))
         preferred_oxygen_column = next(
             (item for item in available_oxygen_columns if "CALPHAD" in item[0]),
@@ -2088,203 +2382,90 @@ def plot_radial_profiles(
             float(entry["burnup_fima"])
             for entry in experimental_mu_o_entries
         })
-        burnup_colors = assign_distinct_colors(
-            [f"{burnup:.1f}" for burnup in experimental_burnups],
-            palette=PAPER_PALETTE,
-        )
+        highest_experimental_burnup = experimental_burnups[-1]
+        high_burnup_entries = [
+            entry
+            for entry in experimental_mu_o_entries
+            if np.isclose(float(entry["burnup_fima"]), highest_experimental_burnup)
+        ]
         location_to_marker = {
             "Centre": "o",
             "Edge": "D",
             "Average": "s",
         }
+        location_to_color = {
+            "Centre": COLORS[0],
+            "Edge": COLORS[1],
+            "Average": COLORS[6],
+        }
 
-        for burnup in experimental_burnups:
-            burnup_label = f"{burnup:.1f}"
-            color = burnup_colors[burnup_label]
-            nearest_index = int(np.argmin(np.abs(reference_fima - burnup)))
-            radial_temperatures_k = output_profiles["Temperature (K)"][:, nearest_index]
-            radial_mu_o2 = output_profiles[oxygen_column_name][:, nearest_index]
-            radial_order = np.argsort(radial_temperatures_k)
+        cooldown = cooldown_mask(reference_time)
+        node_entries = [
+            (0, "SCIANTIX node: 0.1Ro", COLORS[0], "-"),
+            (1, "SCIANTIX node: 0.4Ro", COLORS[1], "-"),
+            (2, "SCIANTIX node: 0.7Ro", COLORS[2], "-"),
+            (3, "SCIANTIX node: 0.9Ro", COLORS[3], "-"),
+        ]
+        for node_index, label, color, linestyle in node_entries:
+            temperature_k = output_profiles["Temperature (K)"][node_index, cooldown]
+            mu_o2 = output_profiles[oxygen_column_name][node_index, cooldown]
+            valid = (
+                np.isfinite(temperature_k)
+                & np.isfinite(mu_o2)
+                & ~np.isclose(mu_o2, 0.0)
+            )
+            if np.count_nonzero(valid) < 2:
+                continue
+            order = np.argsort(temperature_k[valid])
             axis.plot(
-                radial_temperatures_k[radial_order],
-                radial_mu_o2[radial_order],
+                temperature_k[valid][order],
+                mu_o2[valid][order],
                 color=color,
+                linestyle=linestyle,
                 linewidth=2.8,
                 alpha=0.95,
+                label=label,
             )
 
-            for location in ("Centre", "Edge", "Average"):
-                location_entries = [
-                    entry for entry in experimental_mu_o_entries
-                    if np.isclose(float(entry["burnup_fima"]), burnup)
-                    and str(entry["location"]) == location
-                ]
-                if not location_entries:
-                    continue
+        for location in ("Centre", "Edge", "Average"):
+            location_entries = [
+                entry for entry in high_burnup_entries
+                if str(entry["location"]) == location
+            ]
+            if not location_entries:
+                continue
 
-                temperatures_k = np.array(
-                    [float(entry["temperature_k"]) for entry in location_entries],
-                    dtype=float,
-                )
-                mu_o2_values = np.array(
-                    [float(entry["mu_o2_kj_mol"]) for entry in location_entries],
-                    dtype=float,
-                )
-                order = np.argsort(temperatures_k)
-                axis.scatter(
-                    temperatures_k[order],
-                    mu_o2_values[order],
-                    facecolors="none",
-                    edgecolors=color,
-                    marker=location_to_marker.get(location, "s"),
-                    linewidths=1.6,
-                    s=85,
-                    zorder=3,
-                )
+            temperatures_k = np.array(
+                [float(entry["temperature_k"]) for entry in location_entries],
+                dtype=float,
+            )
+            mu_o2_values = np.array(
+                [float(entry["mu_o2_kj_mol"]) for entry in location_entries],
+                dtype=float,
+            )
+            order = np.argsort(temperatures_k)
+            color = location_to_color.get(location, "#171717")
+            axis.scatter(
+                temperatures_k[order],
+                mu_o2_values[order],
+                facecolors="none",
+                edgecolors=color,
+                marker=location_to_marker.get(location, "s"),
+                linewidths=1.6,
+                s=85,
+                zorder=3,
+                label=f"Matzke {location}\n({highest_experimental_burnup:.1f}% FIMA)",
+            )
 
         axis.set_xlabel("Temperature (K)")
         axis.set_ylim(-650, -200)
         axis.set_ylabel("Fuel oxygen potential (kJ/mol O$_2$)")
-        burnup_handles = [
-            Line2D([0], [0], color=burnup_colors[f"{burnup:.1f}"], linewidth=2.5, label=f"{burnup:.1f}% FIMA")
-            for burnup in experimental_burnups
-        ]
-        source_handles = [
-            Line2D([0], [0], color="#171717", linewidth=2.8, label="SCIANTIX radial profile"),
-            Line2D([0], [0], marker="o", color="#171717", markerfacecolor="none", linestyle="None", markersize=7, label="Matzke Centre"),
-            Line2D([0], [0], marker="D", color="#171717", markerfacecolor="none", linestyle="None", markersize=7, label="Matzke Edge"),
-            Line2D([0], [0], marker="s", color="#171717", markerfacecolor="none", linestyle="None", markersize=7, label="Matzke Average"),
-        ]
-        burnup_legend = axis.legend(
-            handles=burnup_handles,
-            title="Burnup",
+        axis.legend(
             loc="upper left",
             bbox_to_anchor=(1.02, 1.0),
             ncol=1,
         )
-        axis.add_artist(burnup_legend)
-        axis.legend(
-            handles=source_handles,
-            title="Series",
-            loc="upper left",
-            bbox_to_anchor=(1.02, 0.45),
-            ncol=1,
-        )
         save_figure(fig, PLOTS_DIR / "oxygenpotential.png", saved_paths)
-
-    gb_variables = [
-        header
-        for header in thermo_profiles
-        if is_grain_boundary_amount_column(header)
-        and not is_all_zero(thermo_profiles[header][:, reference_before_cooldown], 1)
-    ]
-    gb_sorted_variables = sorted(
-        gb_variables,
-        key=lambda variable: float(np.nanmax(
-            radial_volume_average(thermo_profiles[variable], radii_m_array)[reference_before_cooldown]
-        )),
-        reverse=True,
-    )
-
-    if gb_sorted_variables:
-        summary_entries: list[tuple[str, str, np.ndarray]] = []
-        for variable in gb_sorted_variables:
-            species = grain_boundary_species(variable)
-            phase = grain_boundary_phase(variable)
-            if phase == "gas":
-                continue
-            series = radial_volume_average(thermo_profiles[variable], radii_m_array)
-            summary_entries.append((variable, species, series))
-
-        fig, axis = plt.subplots(1, 1, figsize=(9, 5))
-        gb_labels = [species for _, species, _ in summary_entries]
-        gb_radial_histories = [series for _, _, series in summary_entries]
-        gb_colors = [gb_color_map[variable] for variable, _, _ in summary_entries]
-
-        if gb_radial_histories:
-            axis.stackplot(
-                reference_burnup[reference_before_cooldown],
-                [series[reference_before_cooldown] for series in gb_radial_histories],
-                colors=gb_colors,
-                labels=gb_labels,
-                alpha=0.9,
-            )
-
-            cumulative_histories = np.cumsum(
-                np.vstack([series[reference_before_cooldown] for series in gb_radial_histories]),
-                axis=0,
-            )
-            for boundary in cumulative_histories:
-                axis.plot(
-                    reference_burnup[reference_before_cooldown],
-                    boundary,
-                    color="#111827",
-                    linewidth=0.25,
-                    alpha=0.40,
-                )
-
-        configure_burnup_axis(axis, reference_burnup[reference_before_cooldown])
-        axis.set_ylabel("Mass concentration (g m$^{-3}$)")
-        handles, labels = axis.get_legend_handles_labels()
-        axis.legend(handles, labels, loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
-        axis.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
-
-        save_figure(fig, PLOTS_DIR / "Thermochemistry_No_Gas.png", saved_paths)
-
-        if TEMPERATURE_LABEL in output_profiles:
-            radial_temperature = radial_volume_average(output_profiles[TEMPERATURE_LABEL], radii_m_array)
-            cooldown = cooldown_mask(reference_time)
-            if np.any(cooldown) and summary_entries:
-                cooldown_stack_total = np.sum(
-                    np.vstack([series[cooldown] for _, _, series in summary_entries]),
-                    axis=0,
-                )
-                cooldown_valid = np.zeros_like(cooldown, dtype=bool)
-                cooldown_indices = np.where(cooldown)[0]
-                cooldown_valid[cooldown_indices] = cooldown_stack_total > 1.0e-12
-                cooldown = cooldown_valid
-            cooldown_temperature = radial_temperature[cooldown]
-            if np.count_nonzero(cooldown) >= 2 and np.unique(cooldown_temperature).size >= 2:
-                cooldown_entries = [
-                    (variable, species, series)
-                    for variable, species, series in summary_entries
-                    if not is_all_zero(series[cooldown], 1.0e-12)
-                ]
-                if cooldown_entries:
-                    order = np.argsort(cooldown_temperature)
-                    cooldown_x = cooldown_temperature[order]
-                    cooldown_labels = [species for _, species, _ in cooldown_entries]
-                    cooldown_histories = [series[cooldown][order] for _, _, series in cooldown_entries]
-                    cooldown_colors = [gb_color_map[variable] for variable, _, _ in cooldown_entries]
-
-                    fig, axis = plt.subplots(1, 1, figsize=(9, 5))
-                    axis.stackplot(
-                        cooldown_x,
-                        cooldown_histories,
-                        colors=cooldown_colors,
-                        labels=cooldown_labels,
-                        alpha=0.9,
-                    )
-                    cumulative_histories = np.cumsum(np.vstack(cooldown_histories), axis=0)
-                    for boundary in cumulative_histories:
-                        axis.plot(cooldown_x, boundary, color="#111827", linewidth=0.25, alpha=0.40)
-                    cooldown_total = np.sum(np.vstack(cooldown_histories), axis=0)
-                    axis.plot(
-                        cooldown_x,
-                        cooldown_total,
-                        color="black",
-                        linewidth=1.0,
-                        label="Plotted stack",
-                    )
-                    if cooldown_total.size and float(np.nanmax(cooldown_total)) > 0.0:
-                        axis.set_ylim(0.0, float(np.nanmax(cooldown_total)) * 1.05)
-                    axis.set_xlabel(TEMPERATURE_LABEL)
-                    axis.set_xlim(float(np.nanmin(cooldown_x)), float(np.nanmax(cooldown_x)))
-                    axis.set_ylabel("Mass concentration (g m$^{-3}$)")
-                    handles, labels = axis.get_legend_handles_labels()
-                    axis.legend(handles, labels, loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
-                    axis.ticklabel_format(axis="y", style="sci", scilimits=(0, 0))
-                    save_figure(fig, PLOTS_DIR / "Thermochemistry_No_Gas_cooldown_temperature.png", saved_paths)
 
     jog_columns = sorted_jog_columns(output_profiles)
     if jog_columns:
@@ -2349,7 +2530,6 @@ def plot_radial_profiles(
             linewidth=2.6,
             label="Total, outer radial node",
         )
-
         axis.scatter(
             fima_to_burnup(melis_fima),
             melis_thickness,
@@ -2374,77 +2554,6 @@ def plot_radial_profiles(
         axis.set_ylim(0,100)
         axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
         save_figure(fig, PLOTS_DIR / "JOG.png", saved_paths)
-
-        nodes = JOG_OUTER_NODE_COUNT
-        outer_node_indices = list(range(max(0, len(radii_m_array) - nodes), len(radii_m_array)))
-        jog_outer_nodes_total_thickness_um = radial_integral_masked_to_full_radius(
-            jog_total_profile,
-            radii_m_array,
-            outer_node_indices,
-        ) * 1.0e6
-
-        jog_outer_nodes_entries: list[tuple[str, np.ndarray, object]] = []
-        for index, column_name in enumerate(jog_stack_columns):
-            label = jog_label(column_name)
-            series = radial_integral_masked_to_full_radius(
-                output_profiles[column_name],
-                radii_m_array,
-                outer_node_indices,
-            ) * 1.0e6
-            if is_all_zero(series):
-                continue
-            jog_outer_nodes_entries.append(
-                (label, series, jog_colors.get(label, PAPER_PALETTE[index % len(PAPER_PALETTE)]))
-            )
-
-        jog_outer_nodes_histories = [item[1] for item in jog_outer_nodes_entries]
-        jog_outer_nodes_colors = [item[2] for item in jog_outer_nodes_entries]
-        jog_outer_nodes_labels = [item[0] for item in jog_outer_nodes_entries]
-
-        fig, axis = plt.subplots(1,1,figsize=(10,5))
-
-        if jog_outer_nodes_histories:
-            axis.stackplot(
-                reference_burnup,
-                *jog_outer_nodes_histories,
-                colors=jog_outer_nodes_colors,
-                labels=jog_outer_nodes_labels,
-                alpha=0.9,
-            )
-            cumulative_histories = np.cumsum(np.vstack(jog_outer_nodes_histories), axis=0)
-            for boundary in cumulative_histories:
-                axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
-
-        axis.plot(
-            reference_burnup,
-            jog_outer_nodes_total_thickness_um,
-            color="#111827",
-            linewidth=2.6,
-            label="Total, outer radial nodes",
-        )
-        axis.scatter(
-            fima_to_burnup(melis_fima),
-            melis_thickness,
-            edgecolors=COLORS[6], facecolors="none",
-            marker="o",
-            label="Melis et al. (1993)",
-            zorder=3,
-            linewidths=1.6,
-        )
-        axis.scatter(
-            fima_to_burnup(tourasse_fima),
-            tourasse_thickness,
-            edgecolors=COLORS[7], facecolors="none",
-            marker="D",
-            label="Tourasse et al. (1992)",
-            zorder=3,
-            linewidths=1.6,
-        )
-        axis.set_xlabel(BURNUP_LABEL)
-        axis.set_ylabel("JOG thickness ($\\mu$m)")
-        axis.set_ylim(0,100)
-        axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
-        save_figure(fig, PLOTS_DIR / "JOG_outer_nodes.png", saved_paths)
 
 
 def main() -> int:
@@ -2484,7 +2593,7 @@ def main() -> int:
     if not args.run:
         case_directories = completed_case_dirs(case_directories)
 
-    PLOTS_DIR.mkdir(exist_ok=True)
+    PLOTS_DIR.mkdir(parents=True, exist_ok=True)
     saved_paths: list[Path] = []
     case_results: list[tuple[Path, int]] = []
     comparison_results: list[tuple[Path, bool, Path]] = []
@@ -2547,7 +2656,7 @@ def main() -> int:
         saved_paths.extend(case_saved_paths)
         print(
             f"Generated {len(case_saved_paths)} plots for {case_dir.name} "
-            f"in {(PLOTS_DIR / case_dir.name).relative_to(TEST_DIR)}",
+            f"in {(PLOTS_DIR / case_dir.name).relative_to(PLOTS_DIR.parent)}",
             flush=True,
         )
 
