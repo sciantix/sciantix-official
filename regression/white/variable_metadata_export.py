@@ -40,6 +40,14 @@ _CONTEXT = {
     "name": "schema:name",
     "label": "skos:prefLabel",
     "unit": "qudt:unit",
+    "unitURI": {
+        "@id": "qudt:unit",
+        "@type": "@id",
+    },
+    "catalogVariable": {
+        "@id": "dcterms:references",
+        "@type": "@id",
+    },
     "sourceFile": "nmkos:sourceFile",
     "sourceFunction": "nmkos:sourceFunction",
     "sourceClass": "nmkos:sourceClass",
@@ -55,6 +63,59 @@ _CONTEXT = {
         "@type": "xsd:dateTime",
     },
 }
+
+# ---------------------------------------------------------------------------
+# Unit URI map: QUDT vocabulary for standard SI/physical units; nmkos/unit#
+# for SCIANTIX domain-specific units that have no QUDT equivalent yet.
+# ---------------------------------------------------------------------------
+_NMKOS_UNIT_BASE = "https://w3id.org/nm-kos/unit#"
+
+UNIT_URI_MAP: Dict[str, str] = {
+    # Standard SI / physical units  →  QUDT vocab unit IRI
+    "h":             "https://qudt.org/vocab/unit/HR",
+    "K":             "https://qudt.org/vocab/unit/K",
+    "m":             "https://qudt.org/vocab/unit/M",
+    "m2":            "https://qudt.org/vocab/unit/M2",
+    "m3":            "https://qudt.org/vocab/unit/M3",
+    "m2/s":          "https://qudt.org/vocab/unit/M2-PER-SEC",
+    "kg/m3":         "https://qudt.org/vocab/unit/KiloGM-PER-M3",
+    "MPa":           "https://qudt.org/vocab/unit/MegaPA",
+    "atm":           "https://qudt.org/vocab/unit/ATM",
+    "J/m2":          "https://qudt.org/vocab/unit/J-PER-M2",
+    "N/m":           "https://qudt.org/vocab/unit/N-PER-M",
+    "1/s":           "https://qudt.org/vocab/unit/PER-SEC",
+    "dimensionless": "https://qudt.org/vocab/unit/UNITLESS",
+    "/":             "https://qudt.org/vocab/unit/UNITLESS",
+    "%":             "https://qudt.org/vocab/unit/PERCENT",
+    "u":             "https://qudt.org/vocab/unit/AMU",
+    "ug/g":          "https://qudt.org/vocab/unit/MicroGM-PER-GM",
+    "µg/g":          "https://qudt.org/vocab/unit/MicroGM-PER-GM",
+    "rad":           "https://qudt.org/vocab/unit/RAD",
+    "KJ/mol":        "https://qudt.org/vocab/unit/KiloJ-PER-MOL",
+    "MW/kg":         "https://qudt.org/vocab/unit/MegaW-PER-KiloGM",
+    # SCIANTIX domain-specific units  →  nmkos/unit# (preliminary)
+    "at/m3":         _NMKOS_UNIT_BASE + "AtomPerM3",
+    "at/m3 s":       _NMKOS_UNIT_BASE + "AtomPerM3PerSec",
+    "at/bub":        _NMKOS_UNIT_BASE + "AtomPerBubble",
+    "at/pore":       _NMKOS_UNIT_BASE + "AtomPerPore",
+    "at^2/m3":       _NMKOS_UNIT_BASE + "Atom2PerM3",
+    "at^2/pore":     _NMKOS_UNIT_BASE + "Atom2PerPore",
+    "bub/m2":        _NMKOS_UNIT_BASE + "BubblePerM2",
+    "bub/m3":        _NMKOS_UNIT_BASE + "BubblePerM3",
+    "pores/m3":      _NMKOS_UNIT_BASE + "PorePerM3",
+    "vac/bub":       _NMKOS_UNIT_BASE + "VacancyPerBubble",
+    "fiss / m3 s":   _NMKOS_UNIT_BASE + "FissionPerM3PerSec",
+    "at/fission":    _NMKOS_UNIT_BASE + "AtomPerFission",
+    "MWd/kgUO2":     _NMKOS_UNIT_BASE + "MWdPerKgUO2",
+    "% weight/UO2":  _NMKOS_UNIT_BASE + "WeightPercentPerUO2",
+    "weight%/UO2":   _NMKOS_UNIT_BASE + "WeightPercentPerUO2",
+}
+
+
+def unit_uri(unit_label: str) -> str:
+    """Return a QUDT or nmkos unit URI for *unit_label*, or empty string if unknown."""
+    return UNIT_URI_MAP.get(unit_label, "")
+
 
 _SET_VARIABLES_SOURCE = "src/operations/SetVariablesFunctions.C"
 _CLASS_SOURCES = {
@@ -612,6 +673,7 @@ def _input_setting_variables(body: str) -> List[dict]:
                 "name": name,
                 "label": name,
                 "unit": "dimensionless",
+                "unitURI": unit_uri("dimensionless"),
                 "source": _SET_VARIABLES_SOURCE,
                 "sourceFile": _SET_VARIABLES_SOURCE,
                 "sourceFunction": "getInputVariableNames",
@@ -639,6 +701,7 @@ def _scaling_factor_variables(body: str) -> List[dict]:
                 "name": name,
                 "label": name,
                 "unit": "dimensionless",
+                "unitURI": unit_uri("dimensionless"),
                 "source": _SET_VARIABLES_SOURCE,
                 "sourceFile": _SET_VARIABLES_SOURCE,
                 "sourceFunction": "getScalingFactorsNames",
@@ -659,6 +722,7 @@ def _sciantix_variables(body: str, category: str, function_name: str) -> List[di
         if len(args) < 5:
             continue
         name = _strip_cpp_string(args[0])
+        unit_label = _normalize_unit(args[1])
         variable = {
             "@id": _variable_id(category, name),
             "@type": ["ssn:Property", "prov:Entity"],
@@ -668,13 +732,16 @@ def _sciantix_variables(body: str, category: str, function_name: str) -> List[di
             "category": category,
             "name": name,
             "label": name,
-            "unit": _normalize_unit(args[1]),
+            "unit": unit_label,
             "source": _SET_VARIABLES_SOURCE,
             "sourceFile": _SET_VARIABLES_SOURCE,
             "sourceFunction": function_name,
             "sourceArrayIndex": ordinal,
             "outputFlagExpression": _compact_expression(args[4]),
         }
+        _uri = unit_uri(unit_label)
+        if _uri:
+            variable["unitURI"] = _uri
         refs = _source_array_refs(args[2:4])
         if refs:
             variable["sourceArrayReferences"] = refs
@@ -728,6 +795,9 @@ def _class_member_variables(
             "sourceFile":  relative_path,
             "sourceClass": class_name,
         }
+        _uri = unit_uri(unit)
+        if _uri:
+            member["unitURI"] = _uri
 
         instances = field_data.get("instances", {})
         if instances:

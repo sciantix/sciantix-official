@@ -25,7 +25,9 @@ Project-specific `nmkos` terms used in the catalog: `nmkos:sourceFile`, `nmkos:s
 For each case folder (for example `test_White2004_4000-1/`), the workflow can generate:
 - `input.json`: structured input extracted from `input_settings.txt`, `input_history.txt`, and `input_initial_conditions.txt`. It points to the local schema `metadata/schema/input.schema.json`. The `history` section uses a fixed four-column schema (Time, Temperature, Fission rate, Hydrostatic stress); `initial_conditions` entries pair raw values with the inline comment from the source file.
 - `output.json`: structured tabular copy of the native `output.txt`. It points to the local schema `metadata/schema/output.schema.json`.
-- `output.jsonld`: RDF-mappable table metadata for the same output data, typed as `csvw:Table`, using CSVW/QUDT/SKOS/Schema.org terms where applicable.
+- `output.jsonld`: RDF-mappable table metadata for the same output data, typed as `csvw:Table`, using CSVW/QUDT/SKOS/Schema.org terms where applicable. Each column entry carries:
+  - `unitURI`: a QUDT vocab IRI (e.g., `https://qudt.org/vocab/unit/M2-PER-SEC`) for standard SI/physical units, or a preliminary `https://w3id.org/nm-kos/unit#` IRI for SCIANTIX domain-specific units (e.g., `AtomPerM3`, `BubblePerM2`); mapped to `qudt:unit` with `@type: @id`.
+  - `catalogVariable`: the `@id` of the corresponding state or history variable in `sciantix_variable_catalog.jsonld`; mapped to `dcterms:references`.
 - `case_metadata.jsonld`: typed as both `prov:Activity` and `dcat:Dataset`. It links native inputs (`prov:used`), generated outputs (`prov:generated`), SCIANTIX software provenance, source metadata, model catalogs, the variable catalog, and the White validation target. The `software` block includes repository branch, commit hash, and a dirty repository flag which is relevant for code developers.
 - `metadata/experimental/white_experimental_measurements.jsonld`: JSON-LD dataset of the White intergranular swelling measurements (validation targets), sourced from `data/ig_swelling.txt`.
 
@@ -38,7 +40,7 @@ For each case folder (for example `test_White2004_4000-1/`), the workflow can ge
     - `include/classes/Gas.h` for gas property fields.
     - `include/classes/System.h` for gas-matrix system property fields.
 
-For state and history variables, the catalog records the declared label, unit, source function, output-flag expression, and source-array indexes where available. For scaling factors and input settings, the catalog records the name and array index from `getScalingFactorsNames` / `getInputVariableNames` defined in the SCIANTIX code; input settings that control documented physical models also carry `dcterms:references` links to the local model catalog.
+For state and history variables, the catalog records the declared label, unit, `unitURI` (QUDT or nmkos IRI, absent for `unspecified` units), source function, output-flag expression, and source-array indexes where available. For scaling factors and input settings, the catalog records the name and array index from `getScalingFactorsNames` / `getInputVariableNames` defined in the SCIANTIX code; input settings that control documented physical models also carry `dcterms:references` links to the local model catalog.
 
 For Material/Matrix/Gas/System class properties, the catalog records the C++ type, source class, and source file (header). Units are extracted from inline comments in `SetMatrix.C`, `SetGas.C`, and `SetSystem.C`; a fallback table in `variable_metadata_export.py` supplements properties whose source comments omit a unit. Constant values are also parsed from functions in `Set*.C` and stored in the `value` field (a scalar when all instances share the same value, a per-instance dict otherwise, e.g the fission yield of fission gases is a property which is defined as a dictionary because it has a different value for each gas); `nmkos:valueSource` records the Set*.C file from which the value was extracted.
 

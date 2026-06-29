@@ -19,12 +19,20 @@
     "rows": "csvw:row",
     "label": "skos:prefLabel",
     "unit": "qudt:unit",
+    "unitURI": {
+      "@id": "qudt:unit",
+      "@type": "@id"
+    },
+    "catalogVariable": {
+      "@id": "dcterms:references",
+      "@type": "@id"
+    },
     "index": "schema:position",
     "name": "schema:name"
   },
   "@type": "csvw:Table",
   "caseId": "test_White2004_4064-3",
-  "generatedAt": "2026-06-27T13:12:45+00:00",
+  "generatedAt": "2026-06-29T00:00:00+00:00",
   "source": [
     "../metadata/sources/white2004.jsonld",
     "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
@@ -34,205 +42,273 @@
       "index": 0,
       "name": "Time (h)",
       "label": "Time",
-      "unit": "h"
+      "unit": "h",
+      "unitURI": "https://qudt.org/vocab/unit/HR",
+      "catalogVariable": "sciantix-variable:history_variable:time"
     },
     {
       "index": 1,
       "name": "Temperature (K)",
       "label": "Temperature",
-      "unit": "K"
+      "unit": "K",
+      "unitURI": "https://qudt.org/vocab/unit/K",
+      "catalogVariable": "sciantix-variable:history_variable:temperature"
     },
     {
       "index": 2,
       "name": "Fission rate (fiss / m3 s)",
       "label": "Fission rate",
-      "unit": "fiss / m3 s"
+      "unit": "fiss / m3 s",
+      "unitURI": "https://w3id.org/nm-kos/unit#FissionPerM3PerSec",
+      "catalogVariable": "sciantix-variable:history_variable:fission-rate"
     },
     {
       "index": 3,
       "name": "Hydrostatic stress (MPa)",
       "label": "Hydrostatic stress",
-      "unit": "MPa"
+      "unit": "MPa",
+      "unitURI": "https://qudt.org/vocab/unit/MegaPA",
+      "catalogVariable": "sciantix-variable:history_variable:hydrostatic-stress"
     },
     {
       "index": 4,
       "name": "Grain radius (m)",
       "label": "Grain radius",
-      "unit": "m"
+      "unit": "m",
+      "unitURI": "https://qudt.org/vocab/unit/M",
+      "catalogVariable": "sciantix-variable:state_variable:grain-radius"
     },
     {
       "index": 5,
       "name": "Xe produced (at/m3)",
       "label": "Xe produced",
-      "unit": "at/m3"
+      "unit": "at/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
+      "catalogVariable": "sciantix-variable:state_variable:xe-produced"
     },
     {
       "index": 6,
       "name": "Xe in grain (at/m3)",
       "label": "Xe in grain",
-      "unit": "at/m3"
+      "unit": "at/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
+      "catalogVariable": "sciantix-variable:state_variable:xe-in-grain"
     },
     {
       "index": 7,
       "name": "Xe in intragranular solution (at/m3)",
       "label": "Xe in intragranular solution",
-      "unit": "at/m3"
+      "unit": "at/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
+      "catalogVariable": "sciantix-variable:state_variable:xe-in-intragranular-solution"
     },
     {
       "index": 8,
       "name": "Xe in intragranular bubbles (at/m3)",
       "label": "Xe in intragranular bubbles",
-      "unit": "at/m3"
+      "unit": "at/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
+      "catalogVariable": "sciantix-variable:state_variable:xe-in-intragranular-bubbles"
     },
     {
       "index": 9,
       "name": "Xe at grain boundary (at/m3)",
       "label": "Xe at grain boundary",
-      "unit": "at/m3"
+      "unit": "at/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
+      "catalogVariable": "sciantix-variable:state_variable:xe-at-grain-boundary"
     },
     {
       "index": 10,
       "name": "Xe released (at/m3)",
       "label": "Xe released",
-      "unit": "at/m3"
+      "unit": "at/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
+      "catalogVariable": "sciantix-variable:state_variable:xe-released"
     },
     {
       "index": 11,
       "name": "Kr produced (at/m3)",
       "label": "Kr produced",
-      "unit": "at/m3"
+      "unit": "at/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
+      "catalogVariable": "sciantix-variable:state_variable:kr-produced"
     },
     {
       "index": 12,
       "name": "Kr in grain (at/m3)",
       "label": "Kr in grain",
-      "unit": "at/m3"
+      "unit": "at/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
+      "catalogVariable": "sciantix-variable:state_variable:kr-in-grain"
     },
     {
       "index": 13,
       "name": "Kr in intragranular solution (at/m3)",
       "label": "Kr in intragranular solution",
-      "unit": "at/m3"
+      "unit": "at/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
+      "catalogVariable": "sciantix-variable:state_variable:kr-in-intragranular-solution"
     },
     {
       "index": 14,
       "name": "Kr in intragranular bubbles (at/m3)",
       "label": "Kr in intragranular bubbles",
-      "unit": "at/m3"
+      "unit": "at/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
+      "catalogVariable": "sciantix-variable:state_variable:kr-in-intragranular-bubbles"
     },
     {
       "index": 15,
       "name": "Kr at grain boundary (at/m3)",
       "label": "Kr at grain boundary",
-      "unit": "at/m3"
+      "unit": "at/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
+      "catalogVariable": "sciantix-variable:state_variable:kr-at-grain-boundary"
     },
     {
       "index": 16,
       "name": "Kr released (at/m3)",
       "label": "Kr released",
-      "unit": "at/m3"
+      "unit": "at/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
+      "catalogVariable": "sciantix-variable:state_variable:kr-released"
     },
     {
       "index": 17,
       "name": "Fission gas release (/)",
       "label": "Fission gas release",
-      "unit": "/"
+      "unit": "/",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
+      "catalogVariable": "sciantix-variable:state_variable:fission-gas-release"
     },
     {
       "index": 18,
       "name": "Intragranular bubble concentration (bub/m3)",
       "label": "Intragranular bubble concentration",
-      "unit": "bub/m3"
+      "unit": "bub/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#BubblePerM3",
+      "catalogVariable": "sciantix-variable:state_variable:intragranular-bubble-concentration"
     },
     {
       "index": 19,
       "name": "Intragranular bubble radius (m)",
       "label": "Intragranular bubble radius",
-      "unit": "m"
+      "unit": "m",
+      "unitURI": "https://qudt.org/vocab/unit/M",
+      "catalogVariable": "sciantix-variable:state_variable:intragranular-bubble-radius"
     },
     {
       "index": 20,
       "name": "Intragranular gas bubble swelling (/)",
       "label": "Intragranular gas bubble swelling",
-      "unit": "/"
+      "unit": "/",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
+      "catalogVariable": "sciantix-variable:state_variable:intragranular-gas-bubble-swelling"
     },
     {
       "index": 21,
       "name": "Intergranular bubble concentration (bub/m2)",
       "label": "Intergranular bubble concentration",
-      "unit": "bub/m2"
+      "unit": "bub/m2",
+      "unitURI": "https://w3id.org/nm-kos/unit#BubblePerM2",
+      "catalogVariable": "sciantix-variable:state_variable:intergranular-bubble-concentration"
     },
     {
       "index": 22,
       "name": "Intergranular atoms per bubble (at/bub)",
       "label": "Intergranular atoms per bubble",
-      "unit": "at/bub"
+      "unit": "at/bub",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerBubble",
+      "catalogVariable": "sciantix-variable:state_variable:intergranular-atoms-per-bubble"
     },
     {
       "index": 23,
       "name": "Intergranular vacancies per bubble (vac/bub)",
       "label": "Intergranular vacancies per bubble",
-      "unit": "vac/bub"
+      "unit": "vac/bub",
+      "unitURI": "https://w3id.org/nm-kos/unit#VacancyPerBubble",
+      "catalogVariable": "sciantix-variable:state_variable:intergranular-vacancies-per-bubble"
     },
     {
       "index": 24,
       "name": "Intergranular bubble radius (m)",
       "label": "Intergranular bubble radius",
-      "unit": "m"
+      "unit": "m",
+      "unitURI": "https://qudt.org/vocab/unit/M",
+      "catalogVariable": "sciantix-variable:state_variable:intergranular-bubble-radius"
     },
     {
       "index": 25,
       "name": "Intergranular bubble area (m2)",
       "label": "Intergranular bubble area",
-      "unit": "m2"
+      "unit": "m2",
+      "unitURI": "https://qudt.org/vocab/unit/M2",
+      "catalogVariable": "sciantix-variable:state_variable:intergranular-bubble-area"
     },
     {
       "index": 26,
       "name": "Intergranular bubble volume (m3)",
       "label": "Intergranular bubble volume",
-      "unit": "m3"
+      "unit": "m3",
+      "unitURI": "https://qudt.org/vocab/unit/M3",
+      "catalogVariable": "sciantix-variable:state_variable:intergranular-bubble-volume"
     },
     {
       "index": 27,
       "name": "Intergranular fractional coverage (/)",
       "label": "Intergranular fractional coverage",
-      "unit": "/"
+      "unit": "/",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
+      "catalogVariable": "sciantix-variable:state_variable:intergranular-fractional-coverage"
     },
     {
       "index": 28,
       "name": "Intergranular saturation fractional coverage (/)",
       "label": "Intergranular saturation fractional coverage",
-      "unit": "/"
+      "unit": "/",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
+      "catalogVariable": "sciantix-variable:state_variable:intergranular-saturation-fractional-coverage"
     },
     {
       "index": 29,
       "name": "Intergranular gas swelling (/)",
       "label": "Intergranular gas swelling",
-      "unit": "/"
+      "unit": "/",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
+      "catalogVariable": "sciantix-variable:state_variable:intergranular-gas-swelling"
     },
     {
       "index": 30,
       "name": "Intergranular fractional intactness (/)",
       "label": "Intergranular fractional intactness",
-      "unit": "/"
+      "unit": "/",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
+      "catalogVariable": "sciantix-variable:state_variable:intergranular-fractional-intactness"
     },
     {
       "index": 31,
       "name": "Burnup (MWd/kgUO2)",
       "label": "Burnup",
-      "unit": "MWd/kgUO2"
+      "unit": "MWd/kgUO2",
+      "unitURI": "https://w3id.org/nm-kos/unit#MWdPerKgUO2",
+      "catalogVariable": "sciantix-variable:state_variable:burnup"
     },
     {
       "index": 32,
       "name": "U235 (at/m3)",
       "label": "U235",
-      "unit": "at/m3"
+      "unit": "at/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
+      "catalogVariable": "sciantix-variable:state_variable:u235"
     },
     {
       "index": 33,
       "name": "U238 (at/m3)",
       "label": "U238",
-      "unit": "at/m3"
+      "unit": "at/m3",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
+      "catalogVariable": "sciantix-variable:state_variable:u238"
     }
   ],
   "rows": [

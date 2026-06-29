@@ -24,6 +24,14 @@
     "name": "schema:name",
     "label": "skos:prefLabel",
     "unit": "qudt:unit",
+    "unitURI": {
+      "@id": "qudt:unit",
+      "@type": "@id"
+    },
+    "catalogVariable": {
+      "@id": "dcterms:references",
+      "@type": "@id"
+    },
     "sourceFile": "nmkos:sourceFile",
     "sourceFunction": "nmkos:sourceFunction",
     "sourceClass": "nmkos:sourceClass",
@@ -44,7 +52,7 @@
   "dcterms:title": "SCIANTIX variable metadata catalog",
   "dcterms:description": "Machine-readable catalog of SCIANTIX input settings, scaling factors, history variables, state variables, and Material/Matrix/Gas/System class properties used to support RDF-mappable case-study metadata.",
   "dcterms:references": "../models/sciantix_physical_models.jsonld",
-  "generatedAt": "2026-06-27T15:31:33+00:00",
+  "generatedAt": "2026-06-29T00:00:00+00:00",
   "variable": [
     {
       "@id": "sciantix-variable:input_setting:igraingrowth",
@@ -56,6 +64,7 @@
       "name": "iGrainGrowth",
       "label": "iGrainGrowth",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -74,6 +83,7 @@
       "name": "iFissionGasDiffusivity",
       "label": "iFissionGasDiffusivity",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -92,6 +102,7 @@
       "name": "iDiffusionSolver",
       "label": "iDiffusionSolver",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -110,6 +121,7 @@
       "name": "iIntraGranularBubbleBehavior",
       "label": "iIntraGranularBubbleBehavior",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -128,6 +140,7 @@
       "name": "iResolutionRate",
       "label": "iResolutionRate",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -146,6 +159,7 @@
       "name": "iTrappingRate",
       "label": "iTrappingRate",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -164,6 +178,7 @@
       "name": "iNucleationRate",
       "label": "iNucleationRate",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -182,6 +197,7 @@
       "name": "iOutput",
       "label": "iOutput",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -197,6 +213,7 @@
       "name": "iGrainBoundaryVacancyDiffusivity",
       "label": "iGrainBoundaryVacancyDiffusivity",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -215,6 +232,7 @@
       "name": "iGrainBoundaryBehaviour",
       "label": "iGrainBoundaryBehaviour",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -233,6 +251,7 @@
       "name": "iGrainBoundaryMicroCracking",
       "label": "iGrainBoundaryMicroCracking",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -251,6 +270,7 @@
       "name": "iFuelMatrix",
       "label": "iFuelMatrix",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -266,6 +286,7 @@
       "name": "iGrainBoundaryVenting",
       "label": "iGrainBoundaryVenting",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -284,6 +305,7 @@
       "name": "iRadioactiveFissionGas",
       "label": "iRadioactiveFissionGas",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -299,6 +321,7 @@
       "name": "iHelium",
       "label": "iHelium",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -314,6 +337,7 @@
       "name": "iHeDiffusivity",
       "label": "iHeDiffusivity",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -329,6 +353,7 @@
       "name": "iGrainBoundarySweeping",
       "label": "iGrainBoundarySweeping",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -344,6 +369,7 @@
       "name": "iHighBurnupStructureFormation",
       "label": "iHighBurnupStructureFormation",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -359,6 +385,7 @@
       "name": "iHighBurnupStructurePorosity",
       "label": "iHighBurnupStructurePorosity",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -374,6 +401,7 @@
       "name": "iHeliumProductionRate",
       "label": "iHeliumProductionRate",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -389,6 +417,7 @@
       "name": "iStoichiometryDeviation",
       "label": "iStoichiometryDeviation",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -404,6 +433,7 @@
       "name": "iBubbleDiffusivity",
       "label": "iBubbleDiffusivity",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -419,6 +449,7 @@
       "name": "iChromiumSolubility",
       "label": "iChromiumSolubility",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -434,6 +465,7 @@
       "name": "iDensification",
       "label": "iDensification",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -452,6 +484,7 @@
       "name": "iReleaseMode",
       "label": "iReleaseMode",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getInputVariableNames",
@@ -478,6 +511,7 @@
       "sourceFunction": "initializeHistoryVariable",
       "sourceArrayIndex": 0,
       "outputFlagExpression": "1",
+      "unitURI": "https://qudt.org/vocab/unit/HR",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_history",
@@ -503,6 +537,7 @@
       "sourceFunction": "initializeHistoryVariable",
       "sourceArrayIndex": 1,
       "outputFlagExpression": "0",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_history",
@@ -528,6 +563,7 @@
       "sourceFunction": "initializeHistoryVariable",
       "sourceArrayIndex": 2,
       "outputFlagExpression": "1",
+      "unitURI": "https://qudt.org/vocab/unit/K",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_history",
@@ -557,6 +593,7 @@
       "sourceFunction": "initializeHistoryVariable",
       "sourceArrayIndex": 3,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#FissionPerM3PerSec",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_history",
@@ -586,6 +623,7 @@
       "sourceFunction": "initializeHistoryVariable",
       "sourceArrayIndex": 4,
       "outputFlagExpression": "1",
+      "unitURI": "https://qudt.org/vocab/unit/MegaPA",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_history",
@@ -615,6 +653,7 @@
       "sourceFunction": "initializeHistoryVariable",
       "sourceArrayIndex": 5,
       "outputFlagExpression": "toOutput",
+      "unitURI": "https://qudt.org/vocab/unit/ATM",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_history",
@@ -644,6 +683,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 0,
       "outputFlagExpression": "1",
+      "unitURI": "https://qudt.org/vocab/unit/M",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -672,6 +712,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 1,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -700,6 +741,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 2,
       "outputFlagExpression": "toOutputHighBurnupStructure",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -728,6 +770,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 3,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -756,6 +799,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 4,
       "outputFlagExpression": "toOutputHighBurnupStructure",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -784,6 +828,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 5,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -812,6 +857,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 6,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -840,6 +886,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 7,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -868,6 +915,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 8,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -895,7 +943,8 @@
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 9,
-      "outputFlagExpression": "0"
+      "outputFlagExpression": "0",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3"
     },
     {
       "@id": "sciantix-variable:state_variable:kr-produced",
@@ -915,6 +964,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 10,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -943,6 +993,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 11,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -971,6 +1022,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 12,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -999,6 +1051,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 13,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1027,6 +1080,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 14,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1055,6 +1109,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 15,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1082,7 +1137,8 @@
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 16,
-      "outputFlagExpression": "0"
+      "outputFlagExpression": "0",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3"
     },
     {
       "@id": "sciantix-variable:state_variable:fission-gas-release",
@@ -1101,7 +1157,8 @@
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 17,
-      "outputFlagExpression": "1"
+      "outputFlagExpression": "1",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS"
     },
     {
       "@id": "sciantix-variable:state_variable:he-produced",
@@ -1121,6 +1178,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 18,
       "outputFlagExpression": "toOutputHelium",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1149,6 +1207,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 19,
       "outputFlagExpression": "toOutputHelium",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1177,6 +1236,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 20,
       "outputFlagExpression": "toOutputHelium",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1205,6 +1265,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 21,
       "outputFlagExpression": "toOutputHelium",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1233,6 +1294,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 22,
       "outputFlagExpression": "toOutputHelium",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1265,6 +1327,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 23,
       "outputFlagExpression": "toOutputHelium",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1292,7 +1355,8 @@
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 24,
-      "outputFlagExpression": "0"
+      "outputFlagExpression": "0",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3"
     },
     {
       "@id": "sciantix-variable:state_variable:he-fractional-release",
@@ -1311,7 +1375,8 @@
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 25,
-      "outputFlagExpression": "toOutputHelium"
+      "outputFlagExpression": "toOutputHelium",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS"
     },
     {
       "@id": "sciantix-variable:state_variable:he-release-rate",
@@ -1330,7 +1395,8 @@
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 26,
-      "outputFlagExpression": "toOutputHelium"
+      "outputFlagExpression": "toOutputHelium",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3PerSec"
     },
     {
       "@id": "sciantix-variable:state_variable:xe133-produced",
@@ -1350,6 +1416,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 27,
       "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1378,6 +1445,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 28,
       "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1406,6 +1474,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 29,
       "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1434,6 +1503,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 30,
       "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1462,6 +1532,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 31,
       "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1487,6 +1558,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 32,
       "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1515,6 +1587,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 33,
       "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1542,7 +1615,8 @@
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 34,
-      "outputFlagExpression": "toOutputRadioactiveFG"
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS"
     },
     {
       "@id": "sciantix-variable:state_variable:kr85m-produced",
@@ -1562,6 +1636,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 35,
       "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1590,6 +1665,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 36,
       "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1618,6 +1694,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 37,
       "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1646,6 +1723,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 38,
       "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1674,6 +1752,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 39,
       "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1699,6 +1778,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 40,
       "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1727,6 +1807,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 41,
       "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1754,7 +1835,8 @@
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 42,
-      "outputFlagExpression": "toOutputRadioactiveFG"
+      "outputFlagExpression": "toOutputRadioactiveFG",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS"
     },
     {
       "@id": "sciantix-variable:state_variable:intragranular-bubble-concentration",
@@ -1774,6 +1856,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 43,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#BubblePerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1802,6 +1885,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 44,
       "outputFlagExpression": "1",
+      "unitURI": "https://qudt.org/vocab/unit/M",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1830,6 +1914,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 45,
       "outputFlagExpression": "0",
+      "unitURI": "https://qudt.org/vocab/unit/M3",
       "references": [
         "model:intragranular-bubble-behaviour"
       ]
@@ -1852,6 +1937,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 46,
       "outputFlagExpression": "0",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerBubble",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1880,6 +1966,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 47,
       "outputFlagExpression": "0",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerBubble",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1908,6 +1995,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 48,
       "outputFlagExpression": "0",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerBubble",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1936,6 +2024,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 49,
       "outputFlagExpression": "0",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerBubble",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -1972,6 +2061,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 50,
       "outputFlagExpression": "1",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2000,6 +2090,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 51,
       "outputFlagExpression": "toOutputHighBurnupStructure",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2028,6 +2119,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 52,
       "outputFlagExpression": "toOutputGrainBoundary",
+      "unitURI": "https://w3id.org/nm-kos/unit#BubblePerM2",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2056,6 +2148,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 53,
       "outputFlagExpression": "0",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerBubble",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2084,6 +2177,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 54,
       "outputFlagExpression": "0",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerBubble",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2112,6 +2206,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 55,
       "outputFlagExpression": "0",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerBubble",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2140,6 +2235,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 56,
       "outputFlagExpression": "toOutputGrainBoundary",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerBubble",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2168,6 +2264,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 57,
       "outputFlagExpression": "toOutputGrainBoundary",
+      "unitURI": "https://w3id.org/nm-kos/unit#VacancyPerBubble",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2196,6 +2293,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 58,
       "outputFlagExpression": "0",
+      "unitURI": "https://qudt.org/vocab/unit/MegaPA",
       "references": [
         "model:intergranular-bubble-behavior"
       ]
@@ -2218,6 +2316,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 59,
       "outputFlagExpression": "0",
+      "unitURI": "https://qudt.org/vocab/unit/MegaPA",
       "references": [
         "model:intergranular-bubble-behavior"
       ]
@@ -2240,6 +2339,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 60,
       "outputFlagExpression": "toOutputGrainBoundary",
+      "unitURI": "https://qudt.org/vocab/unit/M",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2268,6 +2368,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 61,
       "outputFlagExpression": "toOutputGrainBoundary",
+      "unitURI": "https://qudt.org/vocab/unit/M2",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2296,6 +2397,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 62,
       "outputFlagExpression": "toOutputGrainBoundary",
+      "unitURI": "https://qudt.org/vocab/unit/M3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2324,6 +2426,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 63,
       "outputFlagExpression": "toOutputGrainBoundary",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2352,6 +2455,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 64,
       "outputFlagExpression": "toOutputGrainBoundary",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2380,6 +2484,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 65,
       "outputFlagExpression": "toOutputGrainBoundary",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2408,6 +2513,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 66,
       "outputFlagExpression": "toOutputCracking",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2437,6 +2543,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 67,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#MWdPerKgUO2",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2462,6 +2569,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 68,
       "outputFlagExpression": "toOutputHighBurnupStructure || toOutputChromiumContent",
+      "unitURI": "https://qudt.org/vocab/unit/PERCENT",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2487,6 +2595,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 69,
       "outputFlagExpression": "toOutputHighBurnupStructure",
+      "unitURI": "https://w3id.org/nm-kos/unit#MWdPerKgUO2",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2512,6 +2621,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 70,
       "outputFlagExpression": "0",
+      "unitURI": "https://qudt.org/vocab/unit/HR",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2537,6 +2647,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 71,
       "outputFlagExpression": "0",
+      "unitURI": "https://qudt.org/vocab/unit/KiloGM-PER-M3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2565,6 +2676,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 72,
       "outputFlagExpression": "0",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2606,6 +2718,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 73,
       "outputFlagExpression": "0",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2631,6 +2744,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 74,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2656,6 +2770,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 75,
       "outputFlagExpression": "0",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2681,6 +2796,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 76,
       "outputFlagExpression": "0",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2706,6 +2822,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 77,
       "outputFlagExpression": "1",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2731,6 +2848,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 78,
       "outputFlagExpression": "toOutputVenting",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2760,6 +2878,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 79,
       "outputFlagExpression": "toOutputVenting",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2789,6 +2908,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 80,
       "outputFlagExpression": "toOutputVenting",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2817,6 +2937,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 81,
       "outputFlagExpression": "toOutputVenting",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2845,6 +2966,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 82,
       "outputFlagExpression": "toOutputVenting",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2873,6 +2995,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 83,
       "outputFlagExpression": "toOutputVenting",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2901,6 +3024,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 84,
       "outputFlagExpression": "toOutputVenting",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2929,6 +3053,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 85,
       "outputFlagExpression": "toOutputHighBurnupStructure",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2954,6 +3079,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 86,
       "outputFlagExpression": "0",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -2981,7 +3107,8 @@
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 87,
-      "outputFlagExpression": "toOutputStoichiometryDeviation"
+      "outputFlagExpression": "toOutputStoichiometryDeviation",
+      "unitURI": "https://qudt.org/vocab/unit/MegaPA"
     },
     {
       "@id": "sciantix-variable:state_variable:stoichiometry-deviation",
@@ -3001,6 +3128,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 88,
       "outputFlagExpression": "toOutputStoichiometryDeviation",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3025,7 +3153,8 @@
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 89,
-      "outputFlagExpression": "toOutputStoichiometryDeviation"
+      "outputFlagExpression": "toOutputStoichiometryDeviation",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS"
     },
     {
       "@id": "sciantix-variable:state_variable:fuel-oxygen-partial-pressure",
@@ -3045,6 +3174,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 90,
       "outputFlagExpression": "toOutputStoichiometryDeviation",
+      "unitURI": "https://qudt.org/vocab/unit/MegaPA",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3069,7 +3199,8 @@
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 91,
-      "outputFlagExpression": "toOutputStoichiometryDeviation"
+      "outputFlagExpression": "toOutputStoichiometryDeviation",
+      "unitURI": "https://qudt.org/vocab/unit/KiloJ-PER-MOL"
     },
     {
       "@id": "sciantix-variable:state_variable:specific-power",
@@ -3088,7 +3219,8 @@
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 92,
-      "outputFlagExpression": "0"
+      "outputFlagExpression": "0",
+      "unitURI": "https://qudt.org/vocab/unit/MegaW-PER-KiloGM"
     },
     {
       "@id": "sciantix-variable:state_variable:hbs-porosity",
@@ -3108,6 +3240,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 93,
       "outputFlagExpression": "toOutputHighBurnupStructure",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3136,6 +3269,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 94,
       "outputFlagExpression": "toOutputHighBurnupStructure",
+      "unitURI": "https://w3id.org/nm-kos/unit#PorePerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3161,6 +3295,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 95,
       "outputFlagExpression": "toOutputHighBurnupStructure",
+      "unitURI": "https://qudt.org/vocab/unit/M3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3186,6 +3321,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 96,
       "outputFlagExpression": "toOutputHighBurnupStructure",
+      "unitURI": "https://qudt.org/vocab/unit/M",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3211,6 +3347,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 97,
       "outputFlagExpression": "toOutputHighBurnupStructure",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3236,6 +3373,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 98,
       "outputFlagExpression": "toOutputHighBurnupStructure",
+      "unitURI": "https://w3id.org/nm-kos/unit#Atom2PerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3261,6 +3399,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 99,
       "outputFlagExpression": "toOutputHighBurnupStructure",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerPore",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3286,6 +3425,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 100,
       "outputFlagExpression": "toOutputHighBurnupStructure",
+      "unitURI": "https://w3id.org/nm-kos/unit#Atom2PerPore",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3311,6 +3451,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 101,
       "outputFlagExpression": "toOutputChromiumContent",
+      "unitURI": "https://qudt.org/vocab/unit/MicroGM-PER-GM",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3336,6 +3477,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 102,
       "outputFlagExpression": "0",
+      "unitURI": "https://qudt.org/vocab/unit/M",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3361,6 +3503,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 103,
       "outputFlagExpression": "0",
+      "unitURI": "https://qudt.org/vocab/unit/KiloGM-PER-M3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3386,6 +3529,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 104,
       "outputFlagExpression": "toOutputChromiumContent",
+      "unitURI": "https://w3id.org/nm-kos/unit#WeightPercentPerUO2",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3411,6 +3555,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 105,
       "outputFlagExpression": "toOutputChromiumContent",
+      "unitURI": "https://w3id.org/nm-kos/unit#WeightPercentPerUO2",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3436,6 +3581,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 106,
       "outputFlagExpression": "toOutputChromiumContent",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3461,6 +3607,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 107,
       "outputFlagExpression": "toOutputChromiumContent",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3486,6 +3633,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 108,
       "outputFlagExpression": "toOutputChromiumContent",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3511,6 +3659,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 109,
       "outputFlagExpression": "toOutputChromiumContent",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3536,6 +3685,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 110,
       "outputFlagExpression": "0",
+      "unitURI": "https://qudt.org/vocab/unit/M2-PER-SEC",
       "sourceArrayReferences": [
         {
           "sourceArray": "Sciantix_variables",
@@ -3556,6 +3706,7 @@
       "name": "Resolution rate",
       "label": "Resolution rate",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getScalingFactorsNames",
@@ -3571,6 +3722,7 @@
       "name": "Trapping rate",
       "label": "Trapping rate",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getScalingFactorsNames",
@@ -3586,6 +3738,7 @@
       "name": "Nucleation rate",
       "label": "Nucleation rate",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getScalingFactorsNames",
@@ -3601,6 +3754,7 @@
       "name": "Diffusivity",
       "label": "Diffusivity",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getScalingFactorsNames",
@@ -3616,6 +3770,7 @@
       "name": "Diffusivity2",
       "label": "Diffusivity2",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getScalingFactorsNames",
@@ -3631,6 +3786,7 @@
       "name": "Temperature",
       "label": "Temperature",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getScalingFactorsNames",
@@ -3646,6 +3802,7 @@
       "name": "Fission rate",
       "label": "Fission rate",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getScalingFactorsNames",
@@ -3661,6 +3818,7 @@
       "name": "Helium production rate",
       "label": "Helium production rate",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getScalingFactorsNames",
@@ -3676,6 +3834,7 @@
       "name": "Dummy",
       "label": "Dummy",
       "unit": "dimensionless",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "source": "src/operations/SetVariablesFunctions.C",
       "sourceFile": "src/operations/SetVariablesFunctions.C",
       "sourceFunction": "getScalingFactorsNames",
@@ -3734,6 +3893,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/KiloGM-PER-M3",
       "value": 10960.0,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -3754,6 +3914,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/M",
       "value": 5.47e-10,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -3792,6 +3953,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/M",
       "value": 6e-06,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -3812,6 +3974,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/M",
       "value": 1e-09,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -3832,6 +3995,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/N-PER-M",
       "value": 0.7,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -3852,6 +4016,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/M3",
       "value": 4.09e-29,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -3872,6 +4037,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/M3",
       "value": 7.8e-30,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -3892,6 +4058,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/M",
       "value": {
         "UO2": 5e-10,
         "UO2HBS": 0.0
@@ -3914,7 +4081,8 @@
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/M2-PER-SEC"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-semidihedral-angle",
@@ -3933,6 +4101,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/RAD",
       "value": {
         "UO2": 0.872664626,
         "UO2HBS": 0.0
@@ -3956,6 +4125,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "value": 0.168610764,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -3976,6 +4146,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/M",
       "value": 1.5e-07,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -3996,6 +4167,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/K",
       "value": 1273.15,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -4015,7 +4187,8 @@
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/PER-SEC"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-pore-nucleation-rate",
@@ -4033,7 +4206,8 @@
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/PER-SEC"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-pore-resolution-rate",
@@ -4051,7 +4225,8 @@
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/PER-SEC"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-pore-trapping-rate",
@@ -4069,7 +4244,8 @@
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/PER-SEC"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-chromium-content",
@@ -4087,7 +4263,8 @@
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/MicroGM-PER-GM"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-chromium-solubility",
@@ -4106,6 +4283,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://w3id.org/nm-kos/unit#WeightPercentPerUO2",
       "value": 0,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -4125,7 +4303,8 @@
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "unitURI": "https://w3id.org/nm-kos/unit#WeightPercentPerUO2"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-chromium-solution",
@@ -4144,6 +4323,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "value": 0,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -4164,6 +4344,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "value": 0,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -4184,6 +4365,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "value": 0,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -4204,6 +4386,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3",
       "value": 0,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -4223,7 +4406,8 @@
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/MegaPA"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-poisson-ratio",
@@ -4242,6 +4426,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "value": 0.32,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -4262,6 +4447,7 @@
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/J-PER-M2",
       "value": 2,
       "valueSource": "src/operations/SetMatrix.C"
     },
@@ -4281,7 +4467,8 @@
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
-      "sourceClass": "Matrix"
+      "sourceClass": "Matrix",
+      "unitURI": "https://qudt.org/vocab/unit/MegaPA"
     },
     {
       "@id": "sciantix-variable:gas_property:gas-atomic-number",
@@ -4300,6 +4487,7 @@
       "source": "include/classes/Gas.h",
       "sourceFile": "include/classes/Gas.h",
       "sourceClass": "Gas",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "value": {
         "Xe": 54,
         "Kr": 36,
@@ -4324,6 +4512,7 @@
       "source": "include/classes/Gas.h",
       "sourceFile": "include/classes/Gas.h",
       "sourceClass": "Gas",
+      "unitURI": "https://qudt.org/vocab/unit/AMU",
       "value": {
         "Xe": 135,
         "Xe133": 133,
@@ -4348,6 +4537,7 @@
       "source": "include/classes/Gas.h",
       "sourceFile": "include/classes/Gas.h",
       "sourceClass": "Gas",
+      "unitURI": "https://qudt.org/vocab/unit/M3",
       "value": 8.48e-29,
       "valueSource": "src/operations/SetGas.C"
     },
@@ -4368,6 +4558,7 @@
       "source": "include/classes/Gas.h",
       "sourceFile": "include/classes/Gas.h",
       "sourceClass": "Gas",
+      "unitURI": "https://qudt.org/vocab/unit/PER-SEC",
       "value": {
         "Xe": 0.0,
         "Xe133": 1.53e-06,
@@ -4394,6 +4585,7 @@
       "source": "include/classes/Gas.h",
       "sourceFile": "include/classes/Gas.h",
       "sourceClass": "Gas",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
       "value": {
         "Xe": 1.0,
         "Xe133": 1.25,
@@ -4456,6 +4648,7 @@
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
       "sourceClass": "System",
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerFission",
       "value": {
         "Xe in UO2": 0.24,
         "Xe in UO2HBS": 0.24,
@@ -4483,6 +4676,7 @@
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
       "sourceClass": "System",
+      "unitURI": "https://qudt.org/vocab/unit/M",
       "value": {
         "Xe in UO2": 2.1e-10,
         "Xe in UO2HBS": 2.1e-10,
@@ -4509,7 +4703,8 @@
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
-      "sourceClass": "System"
+      "sourceClass": "System",
+      "unitURI": "https://qudt.org/vocab/unit/M3"
     },
     {
       "@id": "sciantix-variable:system_property:system-diffusivity",
@@ -4527,7 +4722,8 @@
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
-      "sourceClass": "System"
+      "sourceClass": "System",
+      "unitURI": "https://qudt.org/vocab/unit/M2-PER-SEC"
     },
     {
       "@id": "sciantix-variable:system_property:system-bubble-diffusivity",
@@ -4545,7 +4741,8 @@
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
-      "sourceClass": "System"
+      "sourceClass": "System",
+      "unitURI": "https://qudt.org/vocab/unit/M2-PER-SEC"
     },
     {
       "@id": "sciantix-variable:system_property:system-henry-constant",
@@ -4583,7 +4780,8 @@
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
-      "sourceClass": "System"
+      "sourceClass": "System",
+      "unitURI": "https://qudt.org/vocab/unit/PER-SEC"
     },
     {
       "@id": "sciantix-variable:system_property:system-trapping-rate",
@@ -4601,7 +4799,8 @@
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
-      "sourceClass": "System"
+      "sourceClass": "System",
+      "unitURI": "https://qudt.org/vocab/unit/PER-SEC"
     },
     {
       "@id": "sciantix-variable:system_property:system-nucleation-rate",
@@ -4619,7 +4818,8 @@
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
-      "sourceClass": "System"
+      "sourceClass": "System",
+      "unitURI": "https://qudt.org/vocab/unit/PER-SEC"
     },
     {
       "@id": "sciantix-variable:system_property:system-pore-nucleation-rate",
@@ -4637,7 +4837,8 @@
       "cppType": "double",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
-      "sourceClass": "System"
+      "sourceClass": "System",
+      "unitURI": "https://qudt.org/vocab/unit/PER-SEC"
     },
     {
       "@id": "sciantix-variable:system_property:system-modes",
@@ -4655,7 +4856,8 @@
       "cppType": "std::vector<double>",
       "source": "include/classes/System.h",
       "sourceFile": "include/classes/System.h",
-      "sourceClass": "System"
+      "sourceClass": "System",
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS"
     },
     {
       "@id": "sciantix-variable:system_property:system-production-rate",

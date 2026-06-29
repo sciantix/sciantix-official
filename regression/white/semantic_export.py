@@ -13,7 +13,7 @@ import subprocess
 from datetime import datetime, timezone
 from typing import Dict, List, Tuple
 
-from regression.white.variable_metadata_export import export_variable_catalog
+from regression.white.variable_metadata_export import export_variable_catalog, unit_uri
 
 
 _SCIANTIX_VERSION = "2.2.1"
@@ -470,20 +470,54 @@ def _load_input_payload(case_dir: str) -> dict:
     }
 
 
-def _build_columns(header: List[str]):
-    """Build column metadata from the native SCIANTIX output header."""
+def _build_columns(header: List[str], label_map: Dict[str, str] = None):
+    """Build column metadata from the native SCIANTIX output header.
+
+    When *label_map* is provided, each column entry is enriched with:
+    - ``unitURI``: a QUDT or nmkos unit IRI for the column unit;
+    - ``catalogVariable``: the variable catalog ``@id`` for the corresponding
+      state or history variable.
+    """
+    if label_map is None:
+        label_map = {}
     columns = []
     for idx, raw_name in enumerate(header):
         label, unit = _parse_label_and_unit(raw_name)
-        columns.append(
-            {
-                "index": idx,
-                "name": raw_name,
-                "label": label,
-                "unit": unit,
-            }
-        )
+        col: dict = {
+            "index": idx,
+            "name": raw_name,
+            "label": label,
+            "unit": unit,
+        }
+        _uri = unit_uri(unit)
+        if _uri:
+            col["unitURI"] = _uri
+        var_id = label_map.get(label)
+        if var_id:
+            col["catalogVariable"] = var_id
+        columns.append(col)
     return columns
+
+
+def _load_variable_label_map(white_root: str) -> Dict[str, str]:
+    """Return a ``{label: @id}`` map for state and history variables from the catalog.
+
+    Used by ``_build_columns`` to attach ``catalogVariable`` links to each
+    output column, closing the gap between simulation output and the variable
+    metadata layer.
+    """
+    catalog_path = os.path.join(
+        white_root, "metadata", "variables", "sciantix_variable_catalog.jsonld"
+    )
+    if not os.path.isfile(catalog_path):
+        return {}
+    with open(catalog_path, "r", encoding="utf-8") as handle:
+        catalog = json.load(handle)
+    return {
+        v["label"]: v["@id"]
+        for v in catalog.get("variable", [])
+        if v.get("category") in ("state_variable", "history_variable")
+    }
 
 
 def _validate_export_payload(payload_json: dict) -> None:
@@ -661,7 +695,9 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
 
     input_payload = _load_input_payload(case_dir)
     header, rows = _load_output_tsv(output_txt)
-    columns = _build_columns(header)
+    white_root = os.path.dirname(__file__)
+    label_map = _load_variable_label_map(white_root)
+    columns = _build_columns(header, label_map)
     exported_at = _exported_at_utc(case_dir)
     case_id = os.path.basename(os.path.normpath(case_dir))
     white_root = os.path.dirname(__file__)
@@ -726,6 +762,14 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
             "rows": "csvw:row",
             "label": "skos:prefLabel",
             "unit": "qudt:unit",
+            "unitURI": {
+                "@id": "qudt:unit",
+                "@type": "@id",
+            },
+            "catalogVariable": {
+                "@id": "dcterms:references",
+                "@type": "@id",
+            },
             "index": "schema:position",
             "name": "schema:name",
         },
