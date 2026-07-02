@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -35,10 +35,13 @@ void Simulation::GasRelease()
     }
 
     // Intergranular gaseous swelling
-    sciantix_variable["Intergranular gas swelling"].setFinalValue(
-        3 / sciantix_variable["Grain radius"].getFinalValue() *
-        sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
-        sciantix_variable["Intergranular bubble volume"].getFinalValue());
+    if (sciantix_variable["Grain radius"].getFinalValue() > 0.0)
+        sciantix_variable["Intergranular gas swelling"].setFinalValue(
+            3 / sciantix_variable["Grain radius"].getFinalValue() *
+            sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
+            sciantix_variable["Intergranular bubble volume"].getFinalValue());
+    else
+        sciantix_variable["Intergranular gas swelling"].setFinalValue(0.0);
 
     // Fission gas release
     if (sciantix_variable["Xe produced"].getFinalValue() + sciantix_variable["Kr produced"].getFinalValue() > 0.0)
@@ -50,6 +53,11 @@ void Simulation::GasRelease()
 
     // Release-to-birth ratio: Xe133
     // Note that R/B is not defined with a null fission rate.
+    // At radioactive equilibrium in the intra-granular Booth limit, this cumulative ratio
+    // is identically equal to the Turnbull / ANS-5.4 rate-ratio R/B = Rdot / yF, because
+    // (produced - decayed) tends to yF/lambda and `released` is closed by mass balance
+    // (GasDiffusion.C) so the global decay accounting in `decayed` applies to it as well.
+    // See R_B.md for the proof and the numerical verification on test_CONTACT1.
     if (sciantix_variable["Xe133 produced"].getFinalValue() - sciantix_variable["Xe133 decayed"].getFinalValue() > 0.0)
         sciantix_variable["Xe133 R/B"].setFinalValue(
             sciantix_variable["Xe133 released"].getFinalValue() /
@@ -59,6 +67,7 @@ void Simulation::GasRelease()
 
     // Release-to-birth ratio: Kr85m
     // Note that R/B is not defined with a null fission rate.
+    // Same Turnbull-equivalence argument as for Xe133 R/B above; see R_B.md.
     if (sciantix_variable["Kr85m produced"].getFinalValue() - sciantix_variable["Kr85m decayed"].getFinalValue() > 0.0)
         sciantix_variable["Kr85m R/B"].setFinalValue(
             sciantix_variable["Kr85m released"].getFinalValue() /

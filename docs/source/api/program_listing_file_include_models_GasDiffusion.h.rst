@@ -19,8 +19,8 @@ Program Listing for File GasDiffusion.h
    //                                                                                  //
    //  Originally developed by D. Pizzocri & T. Barani                                 //
    //                                                                                  //
-   //  Version: 2.2.1                                                                    //
-   //  Year: 2025                                                                      //
+   //  Version: 2.2.1                                                                  //
+   //  Year: 2026                                                                      //
    //  Authors: D. Pizzocri, G. Zullo.                                                 //
    //                                                                                  //
    
@@ -29,11 +29,9 @@ Program Listing for File GasDiffusion.h
    
    #include "Simulation.h"
    
-   void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system,
-                                         SciantixArray<Model>& model, int n_modes);
+   void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes);
    
-   void defineSpectralDiffusion2Equations(SciantixArray<System>& sciantix_system,
-                                          SciantixArray<Model>& model, int n_modes);
+   void defineSpectralDiffusion2Equations(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes);
    
    void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_system,
                                           SciantixArray<Model>&           model,

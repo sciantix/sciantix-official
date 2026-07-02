@@ -19,8 +19,8 @@ Program Listing for File StoichiometryDeviation.h
    //                                                                                  //
    //  Originally developed by D. Pizzocri & T. Barani                                 //
    //                                                                                  //
-   //  Version: 2.2.1                                                                    //
-   //  Year: 2025                                                                      //
+   //  Version: 2.2.1                                                                  //
+   //  Year: 2026                                                                      //
    //  Authors: D. Pizzocri, G. Zullo.                                                 //
    //                                                                                  //
    
@@ -29,7 +29,8 @@ Program Listing for File StoichiometryDeviation.h
    
    #include "Simulation.h"
    
-   double BlackburnThermochemicalModel(double stoichiometry_deviation, double temperature,
+   double BlackburnThermochemicalModel(double                           stoichiometry_deviation,
+                                       double                           temperature,
                                        SciantixArray<SciantixVariable>& sciantix_variable);
    
    #endif  // STOICHIOMETRY_DEVIATION_H

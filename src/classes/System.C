@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -450,8 +450,7 @@ void System::setFissionGasDiffusivity(int                              input_val
 
             // linear fitting of amorphous Cr doped-UO2 data
             double activation_energy = scaling_factors["Diffusivity"].getValue() * (Cr_content - 173.3) / (-532.3);
-            double Pre_exponential_factor =
-                scaling_factors["Diffusivity2"].getValue() * (Cr_content - 41.93) / (-1.376e+9);
+            double Pre_exponential_factor = (Cr_content - 41.93) / (-1.376e+9);
 
             diffusivity =
                 Pre_exponential_factor *
@@ -776,7 +775,6 @@ void System::setResolutionRate(int                              input_value,
             ErrorMessages::Switch(__FILE__, "iResolutionRate", input_value);
             break;
     }
-    resolution_rate *= scaling_factors["Resolution rate"].getValue();
 }
 
 double System::getResolutionRate()

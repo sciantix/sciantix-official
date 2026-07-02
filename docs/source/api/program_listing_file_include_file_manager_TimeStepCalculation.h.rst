@@ -19,8 +19,8 @@ Program Listing for File TimeStepCalculation.h
    //                                                                                  //
    //  Originally developed by D. Pizzocri & T. Barani                                 //
    //                                                                                  //
-   //  Version: 2.2.1                                                                    //
-   //  Year: 2025                                                                      //
+   //  Version: 2.2.1                                                                  //
+   //  Year: 2026                                                                      //
    //  Authors: D. Pizzocri, G. Zullo.                                                 //
    //                                                                                  //
    
@@ -29,7 +29,9 @@ Program Listing for File TimeStepCalculation.h
    
    #include <vector>
    
-   double TimeStepCalculation(int Input_history_points, double Time_h, std::vector<double> Time_input,
-                              double Number_of_time_steps_per_interval);
+   double TimeStepCalculation(int                 Input_history_points,
+                              double              Time_h,
+                              std::vector<double> Time_input,
+                              double              Number_of_time_steps_per_interval);
    
    #endif  // TIME_STEP_CALCULATION_H

@@ -19,8 +19,8 @@ Program Listing for File InputVariable.h
    //                                                                                  //
    //  Originally developed by D. Pizzocri & T. Barani                                 //
    //                                                                                  //
-   //  Version: 2.2.1                                                                    //
-   //  Year: 2025                                                                      //
+   //  Version: 2.2.1                                                                  //
+   //  Year: 2026                                                                      //
    //  Authors: D. Pizzocri, G. Zullo.                                                 //
    //                                                                                  //
    
@@ -48,9 +48,13 @@ Program Listing for File InputVariable.h
            return value;
        }
    
-       InputVariable() {}
+       InputVariable()
+       {
+       }
    
-       ~InputVariable() {}
+       ~InputVariable()
+       {
+       }
    
      protected:
        double value;

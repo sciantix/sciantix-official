@@ -19,8 +19,8 @@ Program Listing for File Simulation.h
    //                                                                                  //
    //  Originally developed by D. Pizzocri & T. Barani                                 //
    //                                                                                  //
-   //  Version: 2.2.1                                                                    //
-   //  Year: 2025                                                                      //
+   //  Version: 2.2.1                                                                  //
+   //  Year: 2026                                                                      //
    //  Authors: D. Pizzocri, G. Zullo.                                                 //
    //                                                                                  //
    
@@ -65,23 +65,29 @@ Program Listing for File Simulation.h
        }
    
      public:
-       ~Simulation() {}
+       ~Simulation()
+       {
+       }
    
        static Simulation* getInstance();
    
-       void setVariables(int Sciantix_options[], double Sciantix_history[],
-                         double Sciantix_variables[], double Sciantix_scaling_factors[],
+       void setVariables(int    Sciantix_options[],
+                         double Sciantix_history[],
+                         double Sciantix_variables[],
+                         double Sciantix_scaling_factors[],
                          double Sciantix_diffusion_modes[]);
    
        void setGas();
        void setMatrix();
        void setSystem();
    
-       void setGPVariables(int Sciantix_options[], double Sciantix_history[],
-                           double Sciantix_variables[]);
+       void setGPVariables(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[]);
    
-       void initialize(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[],
-                       double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
+       void initialize(int    Sciantix_options[],
+                       double Sciantix_history[],
+                       double Sciantix_variables[],
+                       double Sciantix_scaling_factors[],
+                       double Sciantix_diffusion_modes[]);
    
        void execute();
    
@@ -117,10 +123,6 @@ Program Listing for File Simulation.h
    
        double openPorosity(double fabrication_porosity);
    
-       double athermalVentingFactor(double open_porosity, double theta, double porosity,
-                                    double grain_edge_lenght, double burnup, double temperature,
-                                    double fission_rate);
-   
        void HighBurnupStructureFormation();
    
        void HighBurnupStructurePorosity();
@@ -154,8 +156,8 @@ Program Listing for File Simulation.h
    
            else
            {
-               std::cerr << "Error: Invalid gas name \"" << gas_name
-                         << "\" in Simulation::getDiffusionModes." << std::endl;
+               std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModes."
+                         << std::endl;
                return nullptr;
            }
        }
@@ -181,8 +183,8 @@ Program Listing for File Simulation.h
                return &modes_initial_conditions[16 * 40];
            else
            {
-               std::cerr << "Error: Invalid gas name \"" << gas_name
-                         << "\" in Simulation::getDiffusionModesSolution." << std::endl;
+               std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesSolution."
+                         << std::endl;
                return nullptr;
            }
        }
@@ -206,8 +208,8 @@ Program Listing for File Simulation.h
    
            else
            {
-               std::cerr << "Error: Invalid gas name \"" << gas_name
-                         << "\" in Simulation::getDiffusionModesBubbles." << std::endl;
+               std::cerr << "Error: Invalid gas name \"" << gas_name << "\" in Simulation::getDiffusionModesBubbles."
+                         << std::endl;
                return nullptr;
            }
        }

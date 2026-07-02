@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -74,8 +74,8 @@ void Simulation::GrainBoundarySweeping()
         {
             for (int i = 0; i < n_modes; ++i)
             {
-                modes_initial_conditions[6 * 40 + i] =
-                    solver.Decay(modes_initial_conditions[6 * 40 + i],
+                modes_initial_conditions[6 * n_modes + i] =
+                    solver.Decay(modes_initial_conditions[6 * n_modes + i],
                                  1.0,
                                  0.0,
                                  model["Grain-boundary sweeping"].getParameter().at(0));
@@ -87,14 +87,14 @@ void Simulation::GrainBoundarySweeping()
         {
             for (int i = 0; i < n_modes; ++i)
             {
-                modes_initial_conditions[7 * 40 + i] =
-                    solver.Decay(modes_initial_conditions[7 * 40 + i],
+                modes_initial_conditions[7 * n_modes + i] =
+                    solver.Decay(modes_initial_conditions[7 * n_modes + i],
                                  1.0,
                                  0.0,
                                  model["Grain-boundary sweeping"].getParameter().at(0));
 
-                modes_initial_conditions[8 * 40 + i] =
-                    solver.Decay(modes_initial_conditions[8 * 40 + i],
+                modes_initial_conditions[8 * n_modes + i] =
+                    solver.Decay(modes_initial_conditions[8 * n_modes + i],
                                  1.0,
                                  0.0,
                                  model["Grain-boundary sweeping"].getParameter().at(0));

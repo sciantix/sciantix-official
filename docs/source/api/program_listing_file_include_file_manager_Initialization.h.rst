@@ -19,8 +19,8 @@ Program Listing for File Initialization.h
    //                                                                                  //
    //  Originally developed by D. Pizzocri & T. Barani                                 //
    //                                                                                  //
-   //  Version: 2.2.1                                                                    //
-   //  Year: 2025                                                                      //
+   //  Version: 2.2.1                                                                  //
+   //  Year: 2026                                                                      //
    //  Authors: D. Pizzocri, G. Zullo.                                                 //
    //                                                                                  //
    
@@ -31,8 +31,10 @@ Program Listing for File Initialization.h
    #include <iostream>
    #include <vector>
    
-   void Initialization(double Sciantix_history[], double Sciantix_variables[],
-                       double Sciantix_diffusion_modes[], std::vector<double> Temperature_input,
+   void Initialization(double              Sciantix_history[],
+                       double              Sciantix_variables[],
+                       double              Sciantix_diffusion_modes[],
+                       std::vector<double> Temperature_input,
                        std::vector<double> Fissionrate_input,
                        std::vector<double> Hydrostaticstress_input,
                        std::vector<double> Steampressure_input);

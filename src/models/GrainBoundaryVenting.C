@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ void Simulation::GrainBoundaryVenting()
                                       history_variable["Temperature"].getFinalValue(),
                                       history_variable["Fission rate"].getFinalValue()));
 
-            reference = ": Pagani et al., JNM, (2025, under review)";
+            reference = ": None";
             break;
         }
 
