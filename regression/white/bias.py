@@ -54,6 +54,7 @@ from regression.core.common import run_sciantix, load_output, load_gold
 FACTORS = {
     "diffusivity":     [0.5, 0.75, 1.0, 1.25, 1.5],
     "resolution rate": [0.5, 1.0, 2.0],
+    "nucleation rate":   [0.2, 0.5, 1.0],
 }
 # NOTE: the number of runs is (product of grid sizes) x (number of cases), so
 # keep the grids small when biasing several factors at once.
@@ -69,9 +70,9 @@ SF_NAMES = [
     "trapping rate",
     "nucleation rate",
     "diffusivity",
-    "screw parameter",
-    "span parameter",
-    "cent parameter",
+    "temperature",
+    "fission rate",
+    "diffusion-based release",
     "helium production rate",
     "dummy",
 ]
