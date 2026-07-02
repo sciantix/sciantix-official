@@ -24,7 +24,8 @@ def compare_arrays(a: np.ndarray, b: np.ndarray,
     diff = np.abs(a - b)
     rel = diff / np.maximum(abs_tol, np.abs(b))
 
-    bad_mask = (diff > abs_tol) & (rel > rel_tol)
+    one_sided_nan = np.isnan(a) ^ np.isnan(b)
+    bad_mask = ((diff > abs_tol) & (rel > rel_tol)) | one_sided_nan
     ok = not np.any(bad_mask)
 
     return ok, diff, bad_mask
@@ -46,6 +47,16 @@ def compare_outputs(out, gold,
     Returns:
         bool: True if match within tolerance
     """
+
+    if not np.array_equal(out.header, gold.header):
+        if verbose:
+            print("[compare] Header mismatch:")
+            for i in range(max(len(out.header), len(gold.header))):
+                o = out.header[i] if i < len(out.header) else "<missing>"
+                g = gold.header[i] if i < len(gold.header) else "<missing>"
+                if o != g:
+                    print(f"  col={i}, output={o!r}, gold={g!r}")
+        return False
 
     if out.data.shape != gold.data.shape:
         if verbose:

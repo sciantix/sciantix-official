@@ -19,8 +19,8 @@ Program Listing for File Model.h
    //                                                                                  //
    //  Originally developed by D. Pizzocri & T. Barani                                 //
    //                                                                                  //
-   //  Version: 2.2.1                                                                    //
-   //  Year: 2025                                                                      //
+   //  Version: 2.2.1                                                                  //
+   //  Year: 2026                                                                      //
    //  Authors: D. Pizzocri, G. Zullo.                                                 //
    //                                                                                  //
    
@@ -54,9 +54,13 @@ Program Listing for File Model.h
            return parameter;
        }
    
-       Model() {}
+       Model()
+       {
+       }
    
-       ~Model() {}
+       ~Model()
+       {
+       }
    };
    
    #endif  // MODEL_H

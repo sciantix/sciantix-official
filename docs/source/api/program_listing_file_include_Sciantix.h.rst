@@ -19,8 +19,8 @@ Program Listing for File Sciantix.h
    //                                                                                  //
    //  Originally developed by D. Pizzocri & T. Barani                                 //
    //                                                                                  //
-   //  Version: 2.2.1                                                                    //
-   //  Year: 2025                                                                      //
+   //  Version: 2.2.1                                                                  //
+   //  Year: 2026                                                                      //
    //  Authors: D. Pizzocri, G. Zullo.                                                 //
    //                                                                                  //
    
@@ -29,7 +29,10 @@ Program Listing for File Sciantix.h
    
    #include "Simulation.h"
    
-   void Sciantix(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[],
-                 double Sciantix_scaling_factors[], double Sciantix_diffusion_modes[]);
+   void Sciantix(int    Sciantix_options[],
+                 double Sciantix_history[],
+                 double Sciantix_variables[],
+                 double Sciantix_scaling_factors[],
+                 double Sciantix_diffusion_modes[]);
    
    #endif  // SCIANTIX_H

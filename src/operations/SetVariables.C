@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -27,7 +27,7 @@ void Simulation::setVariables(int    Sciantix_options[],
     if (input_variable.empty())
     {
         std::vector<std::string> name_list = getInputVariableNames();
-        for (int i = 0; i < name_list.size(); i++)
+        for (size_t i = 0; i < name_list.size(); i++)
         {
             input_variable.push(InputVariable(name_list[i], Sciantix_options[i]));
         }
@@ -81,7 +81,7 @@ void Simulation::setVariables(int    Sciantix_options[],
     // Diffusion modes
     for (int i = 0; i < n_modes; ++i)
     {
-        for (int j = 0; j <= 17; j++)
+        for (int j = 0; j < N_MODE_BLOCKS; j++)
         {
             modes_initial_conditions[j * n_modes + i] = Sciantix_diffusion_modes[j * n_modes + i];
         }

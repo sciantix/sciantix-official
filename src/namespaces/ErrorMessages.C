@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -39,8 +39,37 @@ namespace ErrorMessages
 
     void Switch(std::string routine, std::string variable_name, int variable)
     {
-        errorMessages << "Warning in " << routine << "." << std::endl;
-        errorMessages << "The input setting " << variable_name << " = " << variable << " is out of range." << std::endl;
+        std::string error_message = "ERROR in " + routine + ": the input setting " + variable_name + " = " +
+                                    std::to_string(variable) + " is out of range.\n";
+        error_message += "Execution aborted.\n";
+
+        std::ofstream Error_log(TestPath + Error_file_name, std::ios::app);
+        Error_log << error_message;
+
+        std::cerr << error_message;
+        exit(1);
+    }
+
+    void Fatal(std::string routine, std::string message)
+    {
+        std::string error_message = "ERROR in " + routine + ": " + message + "\n";
+        error_message += "Execution aborted.\n";
+
+        std::ofstream Error_log(TestPath + Error_file_name, std::ios::app);
+        Error_log << error_message;
+
+        std::cerr << error_message;
+        exit(1);
+    }
+
+    void Warning(std::string routine, std::string message)
+    {
+        std::string warning_message = "Warning in " + routine + ": " + message + "\n";
+
+        std::ofstream Error_log(TestPath + Error_file_name, std::ios::app);
+        Error_log << warning_message;
+
+        std::cerr << warning_message;
     }
 
     void writeErrorLog()

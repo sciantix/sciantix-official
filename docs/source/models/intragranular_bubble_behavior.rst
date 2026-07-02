@@ -1,5 +1,5 @@
-Intragranular Bubble Behavior
-=============================
+Intragranular Bubble Behaviour
+==============================
 
 This model updates the intragranular bubble population and derived quantities
 such as atoms per bubble, bubble radius, and intragranular gaseous swelling.

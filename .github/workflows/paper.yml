@@ -6,11 +6,6 @@ on:
       - "paper.md"
       - "paper.bib"
       - ".github/workflows/paper.yml"
-  pull_request:
-    paths:
-      - "paper.md"
-      - "paper.bib"
-      - ".github/workflows/paper.yml"
 
 jobs:
   paper:

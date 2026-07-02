@@ -19,8 +19,8 @@ Program Listing for File InputInterpolation.h
    //                                                                                  //
    //  Originally developed by D. Pizzocri & T. Barani                                 //
    //                                                                                  //
-   //  Version: 2.2.1                                                                    //
-   //  Year: 2025                                                                      //
+   //  Version: 2.2.1                                                                  //
+   //  Year: 2026                                                                      //
    //  Authors: D. Pizzocri, G. Zullo.                                                 //
    //                                                                                  //
    
@@ -29,7 +29,6 @@ Program Listing for File InputInterpolation.h
    
    #include <vector>
    
-   double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy,
-                             unsigned short int n);
+   double InputInterpolation(double x, std::vector<double> xx, std::vector<double> yy, unsigned short int n);
    
    #endif

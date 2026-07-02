@@ -19,8 +19,8 @@ Program Listing for File InputReading.h
    //                                                                                  //
    //  Originally developed by D. Pizzocri & T. Barani                                 //
    //                                                                                  //
-   //  Version: 2.2.1                                                                    //
-   //  Year: 2025                                                                      //
+   //  Version: 2.2.1                                                                  //
+   //  Year: 2026                                                                      //
    //  Authors: D. Pizzocri, G. Zullo.                                                 //
    //                                                                                  //
    
@@ -33,16 +33,19 @@ Program Listing for File InputReading.h
    #include <string>
    #include <vector>
    
-   void InputReading(int Sciantix_options[], double Sciantix_variables[],
-                     double Sciantix_scaling_factors[], int& Input_history_points,
-                     std::vector<double>& Time_input, std::vector<double>& Temperature_input,
+   void InputReading(int                  Sciantix_options[],
+                     double               Sciantix_variables[],
+                     double               Sciantix_scaling_factors[],
+                     int&                 Input_history_points,
+                     std::vector<double>& Time_input,
+                     std::vector<double>& Temperature_input,
                      std::vector<double>& Fissionrate_input,
                      std::vector<double>& Hydrostaticstress_input,
-                     std::vector<double>& Steampressure_input, double& Time_end_h, double& Time_end_s);
+                     std::vector<double>& Steampressure_input,
+                     double&              Time_end_h,
+                     double&              Time_end_s);
    
-   unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& input_file,
-                                     std::ofstream& output_file);
-   double             ReadOneParameter(std::string variable_name, std::ifstream& input_file,
-                                       std::ofstream& output_file);
+   unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
+   double             ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
    
    #endif  // INPUT_READING_H

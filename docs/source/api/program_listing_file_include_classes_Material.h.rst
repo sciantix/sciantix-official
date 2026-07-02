@@ -19,8 +19,8 @@ Program Listing for File Material.h
    //                                                                                  //
    //  Originally developed by D. Pizzocri & T. Barani                                 //
    //                                                                                  //
-   //  Version: 2.2.1                                                                    //
-   //  Year: 2025                                                                      //
+   //  Version: 2.2.1                                                                  //
+   //  Year: 2026                                                                      //
    //  Authors: D. Pizzocri, G. Zullo.                                                 //
    //                                                                                  //
    
@@ -32,9 +32,13 @@ Program Listing for File Material.h
    class Material
    {
      public:
-       Material() {}
+       Material()
+       {
+       }
    
-       ~Material() {}
+       ~Material()
+       {
+       }
    
        void setName(std::string n)
        {

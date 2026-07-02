@@ -33,7 +33,9 @@ Program Listing for File SetGPVariables.h
    #include "SciantixArray.h"
    #include "SetVariablesFunctions.h"
    
-   void SetGPVariables(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[],
+   void SetGPVariables(int                              Sciantix_options[],
+                       double                           Sciantix_history[],
+                       double                           Sciantix_variables[],
                        SciantixArray<InputVariable>&    input_variable,
                        SciantixArray<SciantixVariable>& history_variable,
                        SciantixArray<SciantixVariable>& sciantix_variable,

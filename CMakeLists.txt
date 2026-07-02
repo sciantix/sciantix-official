@@ -36,6 +36,13 @@ endfunction()
 # Enable C++ compiler
 enable_language (CXX)
 
+# Language standard and warnings
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(-Wall -Wextra)
+endif()
+
 # Set option for coupling with TU
 option (COUPLING_TU OFF)
 
@@ -52,7 +59,7 @@ add_subdirectory_includes(${PROJECT_SOURCE_DIR}/include)
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.C)
 
 # Set custom object file directory (to have all object files in the obj directory)
-set(CMAKE_OBJECT_PATH_PREFIX ${PROJECTSOUR}/obj/)
+set(CMAKE_OBJECT_PATH_PREFIX ${PROJECT_SOURCE_DIR}/obj/)
 
 # Add executable sciantix.x (or .exe) or create static library
 if(COUPLING_TU)
@@ -63,6 +70,17 @@ else()
     if (UNIX)
         set(CMAKE_EXECUTABLE_SUFFIX ".x")
     endif()
+endif()
+
+# Unit tests (run with: ctest --test-dir build)
+if(BUILD_TESTING AND NOT COUPLING_TU)
+    add_executable(unit_tests
+        ${PROJECT_SOURCE_DIR}/tests/unit_tests.C
+        ${PROJECT_SOURCE_DIR}/src/classes/Solver.C
+        ${PROJECT_SOURCE_DIR}/src/namespaces/ErrorMessages.C
+        ${PROJECT_SOURCE_DIR}/src/MainVariables.C
+    )
+    add_test(NAME unit_tests COMMAND unit_tests)
 endif()
 
 # Copy all object files in obj directory by using a custom command

@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -49,15 +49,32 @@ namespace ErrorMessages
     void MissingInputFile(const char* missing_file);
 
     /**
-     * @brief Accumulates a warning message about an out-of-range input setting.
+     * @brief Logs an error about an out-of-range input setting and exits the program.
      * @param routine The name of the routine where the error occurred.
      * @param variable_name The name of the variable that is out of range.
-     * @param variable The value of the variable that triggered the warning.
+     * @param variable The value of the variable that triggered the error.
      *
-     * This function stores the error message in a stringstream to be written later,
-     * thus minimizing file I/O operations during runtime.
+     * Writes a message to both the error log file and STDERR, then exits the program.
+     * An out-of-range model selection would otherwise leave the model state
+     * uninitialised, so execution cannot continue.
      */
-    void Switch(std::string routine, std::string variable_name, int variable);
+    [[noreturn]] void Switch(std::string routine, std::string variable_name, int variable);
+
+    /**
+     * @brief Logs a fatal internal error and exits the program.
+     * @param routine The name of the routine where the error occurred.
+     * @param message Description of the error.
+     *
+     * Writes a message to both the error log file and STDERR, then exits the program.
+     */
+    [[noreturn]] void Fatal(std::string routine, std::string message);
+
+    /**
+     * @brief Logs a non-fatal warning to the error log file and STDERR.
+     * @param routine The name of the routine where the warning originated.
+     * @param message Description of the warning.
+     */
+    void Warning(std::string routine, std::string message);
 
     /**
      * @brief Writes all accumulated error messages to the error log file.

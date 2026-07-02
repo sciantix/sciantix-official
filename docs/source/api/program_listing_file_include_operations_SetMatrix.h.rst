@@ -19,8 +19,8 @@ Program Listing for File SetMatrix.h
    //                                                                                  //
    //  Originally developed by D. Pizzocri & T. Barani                                 //
    //                                                                                  //
-   //  Version: 2.2.1                                                                    //
-   //  Year: 2025                                                                      //
+   //  Version: 2.2.1                                                                  //
+   //  Year: 2026                                                                      //
    //  Authors: D. Pizzocri, G. Zullo.                                                 //
    //                                                                                  //
    
@@ -29,12 +29,14 @@ Program Listing for File SetMatrix.h
    
    #include "Simulation.h"
    
-   Matrix UO2(SciantixArray<Matrix>& matrices, SciantixArray<SciantixVariable>& sciantix_variable,
+   Matrix UO2(SciantixArray<Matrix>&           matrices,
+              SciantixArray<SciantixVariable>& sciantix_variable,
               SciantixArray<SciantixVariable>& history_variable,
               SciantixArray<InputVariable>&    input_variable,
               SciantixArray<InputVariable>&    scaling_factor);
    
-   Matrix UO2HBS(SciantixArray<Matrix>& matrices, SciantixArray<SciantixVariable>& sciantix_variable,
+   Matrix UO2HBS(SciantixArray<Matrix>&           matrices,
+                 SciantixArray<SciantixVariable>& sciantix_variable,
                  SciantixArray<SciantixVariable>& history_variable,
                  SciantixArray<InputVariable>&    input_variable);
    

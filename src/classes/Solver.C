@@ -8,12 +8,14 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#include "Constants.h"
+#include "ErrorMessages.h"
 #include "Solver.h"
 
 double Solver::Integrator(double initial_value, double parameter, double increment)
@@ -354,7 +356,7 @@ double Solver::QuarticEquation(std::vector<double> parameter)
     double                   y1(0.0);
     unsigned short int       iter(0);
     const double             tol(1.0e-3);
-    const unsigned short int max_iter(5);
+    const unsigned short int max_iter(50);
 
     double y0 = parameter.at(0);
     double a  = parameter.at(1);
@@ -371,11 +373,14 @@ double Solver::QuarticEquation(std::vector<double> parameter)
         y1 = y0 - function / derivative;
         y0 = y1;
 
-        if (function < tol)
+        if (std::fabs(function) < tol)
             return y1;
 
         iter++;
     }
+    ErrorMessages::Warning("Solver.C",
+                           "QuarticEquation did not converge within " + std::to_string(max_iter) +
+                               " iterations (|f| = " + std::to_string(std::fabs(function)) + ")");
     return y1;
 }
 
@@ -417,17 +422,23 @@ double Solver::NewtonBlackburn(std::vector<double> parameter)
 
     double a = parameter.at(0);
     double b = parameter.at(1);
-    double c = log(parameter.at(2));
 
-    if (parameter.at(2) == 0)
-        std::cout << "Warning: check NewtonBlackburn solver!" << std::endl;
+    if (parameter.at(2) <= 0.0)
+    {
+        ErrorMessages::Warning("Solver.C",
+                               "non-positive argument in NewtonBlackburn; returning the initial value unchanged");
+        return a;
+    }
+
+    double c = log(parameter.at(2));
 
     if (a == 0.0)
         a = 1.0e-7;
 
     while (iter < max_iter)
     {
-        fun = 2.0 * log(a * (a + 2.0) / (1.0 - a)) + 108.0 * pow(a, 2.0) - 32700.0 / b + 9.92 - c;
+        fun =
+            2.0 * log(a * (a + 2.0) / (1.0 - a)) + 108.0 * pow(a, 2.0) - blackburn_enthalpy / b + blackburn_entropy - c;
 
         deriv = 216.0 * a + 2.0 * (pow(a, 2.0) - 2.0 * a - 2.0) / ((a - 1.0) * a * (2.0 + a));
 
@@ -439,6 +450,9 @@ double Solver::NewtonBlackburn(std::vector<double> parameter)
 
         iter++;
     }
+    ErrorMessages::Warning("Solver.C",
+                           "NewtonBlackburn did not converge within " + std::to_string(max_iter) +
+                               " iterations (|f| = " + std::to_string(std::fabs(fun)) + ")");
     return x1;
 }
 
@@ -471,5 +485,8 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
 
         iter++;
     }
+    ErrorMessages::Warning("Solver.C",
+                           "NewtonLangmuirBasedModel did not converge within " + std::to_string(max_iter) +
+                               " iterations (|f| = " + std::to_string(std::fabs(fun)) + ")");
     return x1;
 }

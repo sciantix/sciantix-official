@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                    //
-//  Year: 2025                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -368,10 +368,14 @@ void Simulation::InterGranularBubbleBehavior()
                 -sciantix_variable["Intergranular bubble area"].getInitialValue();
             grainboundary_statematrix[4 + 4 + 4 + 3] = 1.0;
 
+            int nan_count = 0;
             for (int i = 0; i < 4 * 4; ++i)
             {
                 if (std::isnan(grainboundary_statematrix[i]))
+                {
                     grainboundary_statematrix[i] = 0.0;
+                    ++nan_count;
+                }
             }
 
             // Initial values of bubble volume, area, concentration, and grain-face coverage
@@ -403,7 +407,19 @@ void Simulation::InterGranularBubbleBehavior()
             for (int i = 0; i < 4; ++i)
             {
                 if (std::isnan(grainboundary_input[i]))
+                {
                     grainboundary_input[i] = 0.0;
+                    ++nan_count;
+                }
+            }
+
+            static bool nan_warning_issued = false;
+            if (nan_count > 0 && !nan_warning_issued)
+            {
+                ErrorMessages::Warning("InterGranularBubbleBehavior.C",
+                                       "NaN entries in the grain-boundary bubble system were replaced with 0 "
+                                       "(reported once per run)");
+                nan_warning_issued = true;
             }
 
             // Solve for the finale values of bubble volume, area, concentration, and grain-face
@@ -630,7 +646,6 @@ void Simulation::InterGranularBubbleBehavior()
             if (release_fraction_increment < 0.0)
                 release_fraction_increment = 0.0;
 
-            double n_bub(0.0), n_tot(0.0);
             vol = 0.0;
             for (auto& system : sciantix_system)
             {
