@@ -258,7 +258,7 @@ void Simulation::StoichiometryDeviation()
             else
                 beta = 0.0;
 
-            double alpha = 57 / 2;
+            double alpha = 57.0 / 2.0;
             double K     = tau_inv * theta;
 
             parameter.push_back(K);
@@ -318,7 +318,7 @@ void Simulation::StoichiometryDeviation()
             else
                 beta = 0.0;
 
-            double alpha = 57 / 2;
+            double alpha = 57.0 / 2.0;
             double K     = tau_inv * theta;
 
             parameter.push_back(K);

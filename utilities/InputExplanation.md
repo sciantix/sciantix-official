@@ -109,7 +109,7 @@ This file contains the scaling factors applied to various model parameters durin
 1.0
 # scaling factor - fission rate
 1.0
-# scaling factor - cent parameter
+# scaling factor - diffusion-based release
 1.0
 # scaling factor - helium production rate
 1.0

@@ -8,10 +8,10 @@
 > Maintainers: G. Zullo, E. Cappellari, G. Nicodemo, A. Zayat, D. Pizzocri, L. Luzzi
 > (Politecnico di Milano, Nuclear Engineering Division).
 >
-> **Last audit: 2026-06-11** — clean rebuild OK with `-Wall -Wextra` (zero warnings);
-> full regression suite **109/109 PASS** (atol 1e-8 / rtol 1e-6); unit tests pass
-> (`ctest --test-dir build`). Most audit findings were fixed the same day; §9 records
-> what was fixed and what remains open.
+> **Last audit: 2026-07-02** (previous: 2026-06-11) — clean rebuild OK with `-Wall
+> -Wextra` (zero warnings); full regression suite **109/109 PASS** (atol 1e-8 /
+> rtol 1e-6); unit tests pass (`ctest --test-dir build`). §9 records what each audit
+> fixed and what remains open.
 
 ---
 
@@ -43,11 +43,11 @@ src/                 implementation (.C)
   namespaces/          ErrorMessages
 include/               headers, mirrors src/ layout (several classes are header-only)
 regression/            Python regression suite + validation cases (§7)
-utilities/             InputExplanation.md + input-template generators
+tests/                 unit tests (unit_tests.C, run via CTest — see §7)
+utilities/             InputExplanation.md + input-template generators + this file
 docs/                  Sphinx/Doxygen source for the online docs
 references/            references.md (bibliography of the underlying models)
 build/                 cmake build dir → sciantix.x (created by Allmake.sh)
-context/               this file
 ```
 
 ---
@@ -251,8 +251,8 @@ scaling-factor combinations over the White (2004) cases and reports parity stati
 
 **CI** (`.github/workflows/`): `ci.yml` builds `sciantix.x` and runs the regression
 suite on push/PR; `clang-format-auto.yml` auto-formats C++; `pages.yml` deploys the
-Sphinx docs; `paper.yml` builds the JOSS paper. There are **no unit tests** — the
-regression suite is the only automated verification (see §9.4).
+Sphinx docs; `paper.yml` builds the JOSS paper. Since 2026-07, `ci.yml` also triggers
+on `pull_request`, runs `ctest` after the build, and has job timeouts.
 
 ---
 
@@ -319,7 +319,89 @@ the TU-coupling library build verified.
   QuarticEquation, SpectralDiffusion sanity, SciantixArray semantics), wired into
   CTest.
 
-### 9.2 Still open
+### 9.2 Fixed in the 2026-07-02 review
+
+A four-agent review (models / numerical core / I-O wiring / tooling) found and fixed:
+
+- **Resolution-rate scaling factor applied twice (sf²)** — `System::setResolutionRate`
+  multiplied by `scaling_factors["Resolution rate"]` inside every switch case *and*
+  again after the switch. Any run with sf ≠ 1 (i.e. `bias.py` sweeps) actually used
+  sf². Post-switch duplicate removed; gold-neutral (all regression sf = 1).
+  **Resolution-rate sensitivity results produced before this fix used sf² and must be
+  re-run.**
+- **"He at grain boundary" final value wired to `Sciantix_variables[71]`** (fabrication
+  porosity) instead of `[17]` — digit-swap typo in `SetVariablesFunctions.C`. Masked on
+  all validated paths (GasDiffusion overwrites the final value before consumers read
+  it), hence gold-neutral, but a live state-corruption hazard.
+- **Grain-boundary venting applied twice to each gas with the HBS matrix active** —
+  the venting loop lacked the `getRestructuredMatrix() == 0` guard every sibling loop
+  has, so with `iFuelMatrix = 1` the shared `[gas] at grain boundary` variable was
+  vented once per system. Guard added. Gold-neutral (no regression case combines
+  venting with HBS) — but it affected HBS + venting runs, e.g. on the porosity branch.
+- **Scaling-factor slot layout unified** — `InputReading.C`/`TUSrcCoupling.C` labelled
+  slots 4/5/6 `sf_diffusivity2`/`sf_temperature`/`sf_fission_rate` while every input
+  file (and the index-based consumption) used temperature / fission rate /
+  diffusion-based release; `bias.py` and the input generator used legacy
+  "screw/span/cent parameter" names. All unified on the file convention (code labels,
+  `getScalingFactorsNames()`, `bias.py`, generator, `InputExplanation.md`). The Cr
+  diffusivity pre-exponential no longer reads the phantom "Diffusivity2" knob (it was
+  actually reading the temperature factor); it is now unscaled. Note: the
+  "diffusion-based release" factor (slot 6, Cappellari et al. 2025) is read but
+  **consumed nowhere** in this branch.
+- **`57 / 2` integer division** in `StoichiometryDeviation.C` cases 5 and 6 — the
+  Massih/Langmuir exponent α was 28 instead of 28.5. **Gold regenerated** for the two
+  Cox oxidation cases and Vercors5 (stoichiometry deviation shifts ~1.8%, oxygen
+  partial pressure up to ~20%).
+- **HBS pore-variance equation used `matrices["UO2"]` rates** while the mean used
+  `matrices["UO2HBS"]` — copy-paste slip. **Gold regenerated** for `test_UO2HBS`
+  (variance columns shift ~2%; means unchanged).
+- **`System.h` shadowed `Material::name`/`reference`** — every system reference string
+  was written to the shadow and lost; `overview.txt` printed empty references. Shadow
+  members removed; overview now shows full per-system references (not gold-compared).
+- **NaN silently passed the regression comparison** — `compare.py`'s tolerance mask is
+  False for NaN. One-sided NaN is now a failure (both-NaN stays equal — the trailing
+  empty output column parses to NaN on both sides); column headers are now compared too.
+- **CI hardening** — `pull_request` trigger, `ctest` step, `timeout-minutes`,
+  checkout/setup-python action bumps.
+- `GrainBoundarySweeping.C` mode offsets use `n_modes` instead of literal `40`
+  (behaviour-identical).
+
+### 9.3 Still open (2026-06 + 2026-07 findings)
+
+New in 2026-07 (see the review conversation for file/line detail):
+
+- **GB sweeping only sweeps He mode blocks** (6/7/8) — Xe/Kr intragranular modes are
+  never swept although the model doc describes a fission-gas mechanism. Physics-intent
+  decision needed (changing it alters validated results).
+- **Densification compounds the (1 − f) reduction every time step** — result depends
+  on step count, not just burnup. Intent check against the reference model needed.
+- Input-parsing robustness: malformed tokens in `input_settings.txt` silently zero all
+  subsequent options (no `.fail()` checks); short lines in
+  `input_initial_conditions.txt` cause out-of-bounds vector reads; a 4-column history
+  with `iStoichiometryDeviation > 0` interleaves times/pressures; a history not
+  starting at t = 0 causes a dt = 0 infinite loop; `InputInterpolation.C` uses `short`
+  indices (UB past 32 767 rows) and NaNs on a duplicated final time point.
+- Solver guards: `Laplace` (4×4) lacks the determinant check its 2×2/3×3 siblings
+  have (and the caller's NaN sweep passes ±inf); `BinaryInteraction` denominator can
+  cross zero for negative increments; Newton solvers can return NaN after the
+  non-convergence warning; unqualified `abs()` on doubles at `Solver.C:448,483`;
+  C-style VLAs in `Laplace`/`det` (GCC extension).
+- `iReleaseMode` switch has no `default:` error (invalid values silently freeze GB
+  bubble state); the T < 1000 K pO2 cutoff in `StoichiometryDeviation.C` is dead code
+  (unconditionally overwritten); `GapPartialPressure` model never `model.push`ed;
+  unguarded division by total U in `Burnup.C`; wrong lookup key (missing `i` prefix)
+  in the HBS porosity error branch.
+- Time loop: FP accumulation can skip the final sub-step (1-ulp overshoot of
+  `Time_end_h`); `TimeStepCalculation` returns a negative dt past the last history
+  point (currently unreachable).
+- TU coupling: settings read from CWD but scaling factors from `TestPath`; history
+  slots 7/8 double-booked (Time/step-number vs Burnup) under `COUPLING_TU`.
+- Tooling: `--pulse` runs the whole suite (`runner.py` group-selection bug); missing
+  test groups vanish silently; no subprocess timeout in `common.py`; the auto-format
+  workflow pushes commits that never run CI; `error_log.txt` is not cleaned between
+  runs; legacy `utilities/` scripts ignore exit codes.
+
+### 9.4 Still open (from 2026-06)
 
 - **Initial conditions are wired by hardcoded index** (e.g. `Sciantix_variables[54]`,
   `[66]`, `[150]` in `InputReading.C`) with matching hardcoded indices in

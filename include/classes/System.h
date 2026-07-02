@@ -38,9 +38,6 @@
 class System : virtual public Material
 {
   protected:
-    std::string reference;
-    std::string name;
-
     double              yield;
     double              radius_in_lattice;
     double              volume_in_lattice;
