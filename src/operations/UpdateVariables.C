@@ -186,7 +186,6 @@ std::map<int, std::string> update_sciantix_variable = {
     {190, "JOG (Cs2MoO4)"},
     {191, "JOG (BaMoO4)"},
     {192, "JOG (liquid)"},
-    {193, "JOG (Pd)"},
     {194, "JOG (Ba3MoO6)"},
     {195, "JOG (Ba2MoO5)"},
 };

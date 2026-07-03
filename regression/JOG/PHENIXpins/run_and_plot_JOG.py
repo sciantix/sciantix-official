@@ -47,6 +47,8 @@ JOG_OUTER_NODE_COUNT = 1
 SNAPSHOT_BURNUP_COUNT = 7
 TOURASSE_OUTER_DIAMETER_UM = 5430.0
 HCP_A3_COMPARISON_ELEMENTS = ("MO", "PD", "RH", "RU", "TC")
+METALLIC_INCLUSION_ELEMENTS = HCP_A3_COMPARISON_ELEMENTS
+METALLIC_INCLUSION_ELEMENT_SET = set(METALLIC_INCLUSION_ELEMENTS)
 
 SHARED_INPUT_FILES = (
     "input_settings.txt",
@@ -920,9 +922,9 @@ def load_phase_sublattice_rows(path: Path) -> list[dict[str, object]]:
 def load_phase_sublattice_inventory(path: Path) -> dict[float, dict[str, object]]:
     inventory: dict[float, dict[str, object]] = defaultdict(
         lambda: {
-            "hcp_constituents": defaultdict(float),
-            "mo_hcp": 0.0,
-            "ru_hcp": 0.0,
+            "metallic_constituents": defaultdict(float),
+            "mo_metallic": 0.0,
+            "ru_metallic": 0.0,
         }
     )
 
@@ -937,17 +939,22 @@ def load_phase_sublattice_inventory(path: Path) -> dict[float, dict[str, object]
 
         time_h = float(row["time"])
         location = str(row["location"])
-        phase = str(row["phase"])
         constituent_moles = phase_form_units * sites * site_fraction
         time_inventory = inventory[time_h]
 
-        if location == "at grain boundary" and phase == "HCP_A3":
-            normalized_constituent = "MO" if constituent.upper() == "MO" else constituent.upper()
-            time_inventory["hcp_constituents"][normalized_constituent] += constituent_moles
-            if normalized_constituent == "MO":
-                time_inventory["mo_hcp"] += constituent_moles
-            if normalized_constituent == "RU":
-                time_inventory["ru_hcp"] += constituent_moles
+        if location == "at grain boundary":
+            metallic_counts = {
+                element: count
+                for element, count in constituent_element_counts(constituent).items()
+                if element in METALLIC_INCLUSION_ELEMENT_SET
+            }
+            if not metallic_counts:
+                continue
+
+            normalized_constituent = constituent.upper()
+            time_inventory["metallic_constituents"][normalized_constituent] += constituent_moles
+            time_inventory["mo_metallic"] += constituent_moles * metallic_counts.get("MO", 0)
+            time_inventory["ru_metallic"] += constituent_moles * metallic_counts.get("RU", 0)
 
     return dict(inventory)
 
@@ -1013,15 +1020,20 @@ def hcp_a3_element_atomic_percent(case_dir: Path, target_time: float, side: str)
     rows = [
         row
         for row in load_phase_sublattice_rows(sublattice_file)
-        if row["location"] == "at grain boundary" and row["phase"] == "HCP_A3"
+        if row["location"] == "at grain boundary"
     ]
     if not rows:
         return {}
 
     _, snapshot_rows = phase_rows_at_snapshot(rows, target_time, side)
     for row in snapshot_rows:
-        element = normalize_constituent_element(str(row["constituent"]))
-        if element is None or element not in HCP_A3_COMPARISON_ELEMENTS:
+        element_counts = constituent_element_counts(str(row["constituent"]))
+        metallic_counts = {
+            element: count
+            for element, count in element_counts.items()
+            if element in METALLIC_INCLUSION_ELEMENT_SET
+        }
+        if not metallic_counts:
             continue
 
         constituent_moles = (
@@ -1030,7 +1042,8 @@ def hcp_a3_element_atomic_percent(case_dir: Path, target_time: float, side: str)
             * float(row["site_fraction"])
         )
         if constituent_moles > 0.0:
-            element_moles[element] += constituent_moles
+            for element, count in metallic_counts.items():
+                element_moles[element] += constituent_moles * count
 
     return normalize_atomic_percent(element_moles)
 
@@ -1065,7 +1078,13 @@ def outer_node_jog_pie_element_moles(
         row
         for row in load_phase_sublattice_rows(sublattice_file)
         if row["location"] == "at grain boundary"
-        and is_outer_node_jog_pie_phase(str(row["phase"]), str(row["phase_instance"]))
+        and (
+            is_outer_node_jog_pie_phase(str(row["phase"]), str(row["phase_instance"]))
+            or any(
+                element in METALLIC_INCLUSION_ELEMENT_SET
+                for element in constituent_element_counts(str(row["constituent"]))
+            )
+        )
     ]
     if not rows:
         return {}
@@ -1080,14 +1099,18 @@ def outer_node_jog_pie_element_moles(
         if constituent_moles <= 0.0:
             continue
 
-        phase_name = str(row["phase"]).strip().upper()
-        phase_instance_name = str(row["phase_instance"]).strip().upper()
-        if phase_name == "FCC_A1" or phase_instance_name == "FCC_A1":
-            included_elements = {"PD"}
+        element_counts = constituent_element_counts(str(row["constituent"]))
+        metallic_counts = {
+            element: count
+            for element, count in element_counts.items()
+            if element in METALLIC_INCLUSION_ELEMENT_SET
+        }
+        if metallic_counts:
+            included_elements = METALLIC_INCLUSION_ELEMENT_SET
         else:
             included_elements = {"CS", "BA", "MO", "O"}
 
-        for element, count in constituent_element_counts(str(row["constituent"])).items():
+        for element, count in element_counts.items():
             if element in included_elements:
                 element_moles[element] += constituent_moles * count
 
@@ -1363,7 +1386,7 @@ def plot_hcp_a3_comparison_pies(
             f"Experiment\nR/Ro = {float(exp_entry['r_over_ro']):.2f}",
         )
 
-    fig.suptitle(f"White phase (HCP) composition, {snapshot_label}", y=0.95, fontweight="bold")
+    fig.suptitle(f"Metallic inclusions composition, {snapshot_label}", y=0.95, fontweight="bold")
     fig.subplots_adjust(wspace=0.02, hspace=0.02, left=0.03, right=0.99, top=0.90, bottom=0.06)
     save_figure(fig, PLOTS_DIR / output_name, saved_paths)
 
@@ -2177,7 +2200,7 @@ def plot_radial_profiles(
             target_time=target_time,
             side=side,
             snapshot_label=snapshot_label,
-            output_name=f"HCP_A3_comparison_pies_{snapshot_slug}.png",
+            output_name=f"metallic_inclusions_comparison_pies_{snapshot_slug}.png",
         )
 
     output_names = sorted({name for case_history in output_histories for name in case_history})
@@ -2243,14 +2266,14 @@ def plot_radial_profiles(
             aligned_series.append(np.interp(reference_time, inventory_times, values))
         return np.vstack(aligned_series)
 
-    hcp_constituents = sorted({
+    metallic_constituents = sorted({
         constituent
         for case_history in phase_inventory_histories
         for time_inventory in case_history.values()
-        for constituent in time_inventory["hcp_constituents"]
+        for constituent in time_inventory["metallic_constituents"]
     })
-    hcp_profiles: dict[str, np.ndarray] = {}
-    for constituent in hcp_constituents:
+    metallic_profiles: dict[str, np.ndarray] = {}
+    for constituent in metallic_constituents:
         aligned_series = []
         for case_history in phase_inventory_histories:
             if not case_history:
@@ -2259,14 +2282,14 @@ def plot_radial_profiles(
 
             inventory_times = np.array(sorted(case_history), dtype=float)
             values = np.array([
-                float(case_history[time_h]["hcp_constituents"].get(constituent, 0.0))
+                float(case_history[time_h]["metallic_constituents"].get(constituent, 0.0))
                 for time_h in inventory_times
             ])
             aligned_series.append(np.interp(reference_time, inventory_times, values))
-        hcp_profiles[constituent] = np.vstack(aligned_series)
+        metallic_profiles[constituent] = np.vstack(aligned_series)
 
-    mo_hcp_profile = aligned_inventory_profile("mo_hcp")
-    ru_hcp_profile = aligned_inventory_profile("ru_hcp")
+    mo_metallic_profile = aligned_inventory_profile("mo_metallic")
+    ru_metallic_profile = aligned_inventory_profile("ru_metallic")
 
     snapshot_entries = radial_snapshot_entries(reference_time, reference_burnup)
     snapshot_colors = evenly_spaced_colors(len(snapshot_entries))
@@ -2274,23 +2297,23 @@ def plot_radial_profiles(
     if "Mo produced (at/m3)" in output_profiles:
         tourasse_fmp_data = load_experimental_fmp_mo_ru_data(EXP_DATA_DIR / "Tourasse1992_FMP.txt")
         tourasse_radial_r_over_ro, tourasse_radial_mo_ru = tourasse_fmp_data["radial"]
-        mo_hcp_over_ru_hcp = np.divide(
-            mo_hcp_profile,
-            ru_hcp_profile,
-            out=np.zeros_like(mo_hcp_profile),
-            where=ru_hcp_profile > 0.0,
+        mo_metallic_over_ru_metallic = np.divide(
+            mo_metallic_profile,
+            ru_metallic_profile,
+            out=np.zeros_like(mo_metallic_profile),
+            where=ru_metallic_profile > 0.0,
         )
 
-        if not is_all_zero(mo_hcp_over_ru_hcp):
+        if not is_all_zero(mo_metallic_over_ru_metallic):
             fig, axis = plt.subplots(1, 1, figsize=(9, 5))
             for color, (index, snapshot_label) in zip(snapshot_colors, snapshot_entries):
-                if is_all_zero(mo_hcp_over_ru_hcp[:, index]):
+                if is_all_zero(mo_metallic_over_ru_metallic[:, index]):
                     continue
                 if reference_burnup[index] < 1:
                     continue
                 axis.plot(
                     r_over_ro_array,
-                    mo_hcp_over_ru_hcp[:, index],
+                    mo_metallic_over_ru_metallic[:, index],
                     color=color,
                     marker="o",
                     label=snapshot_label,
@@ -2309,10 +2332,10 @@ def plot_radial_profiles(
             axis.hlines(21.9/19.8, 0, 1, color="black", label="Theoretical yield ratio")
 
             axis.set_xlabel("R/Ro")
-            axis.set_ylabel("Mo / Ru in FMP (-)")
+            axis.set_ylabel("Mo / Ru in metallic inclusions (-)")
             axis.set_ylim(0,1.25)
             axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
-            save_figure(fig, PLOTS_DIR / "Mo_Ru_ratio_HCP_A3.png", saved_paths)
+            save_figure(fig, PLOTS_DIR / "Mo_Ru_ratio_metallic_inclusions.png", saved_paths)
 
 
     if "Temperature (K)" in output_profiles:

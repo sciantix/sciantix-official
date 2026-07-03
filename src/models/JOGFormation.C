@@ -75,12 +75,47 @@ void Simulation::JOGFormation()
         1e6 * rho_ref * std::pow((1.0 + eps_ref) / (1.0 + eps_T), 3.0); // g/m3
 
     sciantix_variable["Phase std density"].setFinalValue(theoretical_density); // g/m3
+    std::cout << "JOGFormation: theoretical density = " << theoretical_density << " g/m3" << std::endl;
+    
+    // Theoretical densities from crystallographic data (Z = 4):
+    // rho = Z * M / (N_A * V_cell)
+    // BaMoO4: I41/a, a = 0.5571 nm, c = 1.2783 nm (ref. [31])
+    // Ba2MoO5: Pnma, a = 0.7412 nm, b = 0.5769 nm, c = 1.1380 nm (ref. [32])
+    // Ba3MoO6: Fm-3m, a = 0.8600 nm
+    // https://doi.org/10.1016/j.jeurceramsoc.2021.01.010 Smith, 2021
+
+    auto crystalDensityFromCell = [](double molar_mass_g_per_mol,
+                                     double z_formula_units,
+                                     double cell_volume_nm3)
+    {
+        constexpr double nm3_to_cm3 = 1.0e-21;
+        return 1.0e6 * z_formula_units * molar_mass_g_per_mol /
+               (avogadro_number * cell_volume_nm3 * nm3_to_cm3); // g/m3
+    };
+
+    const double theoretical_density_BaMoO4 = crystalDensityFromCell(
+        137.327 + 95.95 + 4.0 * 15.999,
+        4.0,
+        0.5571 * 0.5571 * 1.2783);
+    std::cout << "JOGFormation: theoretical density BaMoO4 = " << theoretical_density_BaMoO4 << " g/m3" << std::endl;
+
+    const double theoretical_density_Ba2MoO5 = crystalDensityFromCell(
+        2.0 * 137.327 + 95.95 + 5.0 * 15.999,
+        4.0,
+        0.7412 * 0.5769 * 1.1380);
+    std::cout << "JOGFormation: theoretical density Ba2MoO5 = " << theoretical_density_Ba2MoO5 << " g/m3" << std::endl;
+
+    const double theoretical_density_Ba3MoO6 = crystalDensityFromCell(
+        3.0 * 137.327 + 95.95 + 6.0 * 15.999,
+        4.0,
+        0.8600 * 0.8600 * 0.8600);
+    std::cout << "JOGFormation: theoretical density Ba3MoO6 = " << theoretical_density_Ba3MoO6 << " g/m3" << std::endl;
+    
     double JOG_Cs2MoO4 = 0.0;
     double JOG_BaMoO4 = 0.0;
     double JOG_Ba3MoO6 = 0.0;
     double JOG_Ba2MoO5 = 0.0;
     double JOG_liquid = 0.0;
-    double JOG_Pd = 0.0;
 
     double total_mo_moles = 0.0;
     double oxide_mo_moles = 0.0;
@@ -94,7 +129,6 @@ void Simulation::JOGFormation()
     constexpr double minimum_molybdate_oxygen_to_mo = 3.0;
     constexpr double minimum_molybdate_valence = 5.0;
     constexpr double mo_valence_tolerance = 1.0e-6;
-    constexpr double palladium_atomic_mass = 106.42;
 
     auto normalizeElementName = [](std::string element)
     {
@@ -293,7 +327,6 @@ void Simulation::JOGFormation()
         }
 
         const double mass = variable.getMass();
-        double contribution = mass / theoretical_density;
             
 
         accumulateOxidePhase(composition, phase_molar_mass, mass);
@@ -306,23 +339,17 @@ void Simulation::JOGFormation()
                 : isMolybdateLiquidByStoichiometry(composition);
 
         if (is_liquid_phase && is_molybdate_liquid)
-            JOG_liquid += contribution;
+            JOG_liquid += mass / theoretical_density;
         else if (variable_name == "CS2MOO4_S1 (condensed, at grain boundary)")
-            JOG_Cs2MoO4 += contribution;
+            JOG_Cs2MoO4 += mass / theoretical_density;
         else if (variable_name == "CS2MOO4_S2 (condensed, at grain boundary)")
-            JOG_Cs2MoO4 += contribution;
+            JOG_Cs2MoO4 += mass / theoretical_density;
         else if (variable_name == "BAMOO4 (condensed, at grain boundary)")
-            JOG_BaMoO4 += contribution;
+            JOG_BaMoO4 += mass / theoretical_density_BaMoO4;
         else if (variable_name == "BA3MOO6 (condensed, at grain boundary)")
-            JOG_Ba3MoO6 += contribution;
+            JOG_Ba3MoO6 += mass / theoretical_density_Ba3MoO6;
         else if (variable_name == "BA2MOO5 (condensed, at grain boundary)")
-            JOG_Ba2MoO5 += contribution;
-        else if (variable_name == "FCC_A1 (condensed, at grain boundary)" && phase_molar_mass > 0.0)
-        {
-            const double pd_mass_fraction =
-                getElementAmount(composition, "Pd") * palladium_atomic_mass / phase_molar_mass;
-            JOG_Pd += contribution * pd_mass_fraction;
-        }
+            JOG_Ba2MoO5 += mass / theoretical_density_Ba2MoO5;
         else if (variable_name == "HCP_A3 (condensed, at grain boundary)")
         {
 
@@ -359,7 +386,6 @@ void Simulation::JOGFormation()
     sciantix_variable["JOG (Ba3MoO6)"].setFinalValue(JOG_Ba3MoO6);
     sciantix_variable["JOG (Ba2MoO5)"].setFinalValue(JOG_Ba2MoO5);
     sciantix_variable["JOG (liquid)"].setFinalValue(JOG_liquid);
-    sciantix_variable["JOG (Pd)"].setFinalValue(JOG_Pd);
     sciantix_variable["Mo in oxide fraction"].setFinalValue(
         total_mo_moles > 0.0 ? oxide_mo_moles / total_mo_moles : 0.0);
     sciantix_variable["Mo oxide valence"].setFinalValue(
