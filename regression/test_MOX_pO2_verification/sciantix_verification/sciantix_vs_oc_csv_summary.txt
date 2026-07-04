@@ -2,23 +2,32 @@ SCIANTIX-CALPHAD vs Thermo-Calc (MOX)
 ===============================================
 
 Comparison ranges: T = 753-2550 K, Pu/M = 0.10-0.32, O/M = 1.92-2.08
-Sciantix source points: 12010
-Sciantix points outside comparison ranges: 6241
+Sciantix source points: 36030
+Sciantix points outside comparison ranges: 18723
 OC source points: 3090
 OC points outside comparison ranges: 1643
-OC points outside SCIANTIX interpolation overlap: 970
-Compared points: 477
-Near O/M = 2.0 compared points: 9
-Mean absolute log10(pO2/p_ref) error: 3.782640e-02
-Max absolute log10(pO2/p_ref) error: 5.776856e+00
-Mean relative log10(pO2/p_ref) error (%): 2.859495e-01
-Max relative log10(pO2/p_ref) error (%): 1.845506e+01
-Max absolute oxygen-potential error (KJ/mol): 8.847721e+01
+OC points outside SCIANTIX interpolation overlap: 11
+Compared points: 1436
+Near O/M = 2.0 compared points: 27
+Mean absolute log10(pO2/p_ref) error: 3.826866e-02
+Max absolute log10(pO2/p_ref) error: 6.979477e+00
+Mean relative log10(pO2/p_ref) error (%): 3.210519e-01
+Max relative log10(pO2/p_ref) error (%): 2.863066e+01
+Max absolute oxygen-potential error (KJ/mol): 1.068963e+02
 
 Per-(q, temperature) summary:
  q key (-)  Temperature key (K)  count  mean_abs_log_error  max_abs_log_error  mean_abs_potential_error  max_abs_potential_error
+       0.1                  800     54            0.141913           6.979477                  2.173510               106.896319
+       0.1                 1000     54            0.082810           3.767191                  1.585386                72.121960
+       0.1                 1200     53            0.071946           1.657830                  1.652863                38.086494
+       0.1                 1400     54            0.033129           0.478994                  0.887952                12.838313
+       0.1                 1600     54            0.019573           0.140142                  0.599553                 4.292790
+       0.1                 1800     53            0.017625           0.135211                  0.607367                 4.659430
+       0.1                 2000     53            0.015778           0.173597                  0.604136                 6.646952
+       0.1                 2200     53            0.020665           0.188386                  0.870375                 7.934522
+       0.1                 2400     53            0.021860           0.232378                  1.004416                10.677186
        0.2                  800     53            0.116545           5.776856                  1.784979                88.477208
-       0.2                 1000     53            0.063018           2.884259                  1.206459                55.218443
+       0.2                 1000     53            0.063017           2.884259                  1.206441                55.218443
        0.2                 1200     53            0.049241           1.052705                  1.131250                24.184538
        0.2                 1400     53            0.023758           0.278989                  0.636770                 7.477645
        0.2                 1600     53            0.012494           0.092695                  0.382725                 2.839386
@@ -26,3 +35,12 @@ Per-(q, temperature) summary:
        0.2                 2000     53            0.016657           0.267517                  0.637785                10.243086
        0.2                 2200     53            0.028450           0.230392                  1.198277                 9.703737
        0.2                 2400     53            0.019228           0.154182                  0.883482                 7.084268
+       0.3                  800     53            0.088927           4.501632                  1.361986                68.946127
+       0.3                 1000     53            0.042302           1.950889                  0.809857                37.349300
+       0.3                 1200     53            0.031563           0.545528                  0.725116                12.532806
+       0.3                 1400     53            0.017204           0.184608                  0.461110                 4.947974
+       0.3                 1600     53            0.009447           0.056806                  0.289389                 1.740050
+       0.3                 1800     53            0.008903           0.043469                  0.306797                 1.497978
+       0.3                 2000     53            0.021843           0.237118                  0.836353                 9.079143
+       0.3                 2200     53            0.035137           0.319617                  1.479899                13.461794
+       0.3                 2400     54            0.010373           0.047253                  0.476593                 2.171174

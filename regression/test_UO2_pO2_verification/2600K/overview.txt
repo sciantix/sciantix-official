@@ -12,6 +12,7 @@ Model	Fission product production - Cs in UO2
 Model	Fission product production - I in UO2	 
 Model	Fission product production - Te in UO2	 
 Model	Fission product production - Mo in UO2	 
+Model	Fission product production - Ba in UO2	 
 Model	Fission product production - Tc in UO2	 
 Model	Fission product production - Rh in UO2	 
 Model	Fission product production - Ru in UO2	 
@@ -22,9 +23,6 @@ Model	Intragranular diffusion - Kr in UO2
 Model	Intragranular diffusion - He in UO2	
 Model	Intragranular diffusion - Xe133 in UO2	
 Model	Intragranular diffusion - Kr85m in UO2	
-Model	Intragranular diffusion - Cs in UO2	
-Model	Intragranular diffusion - I in UO2	
-Model	Intragranular diffusion - Te in UO2	
 Model	Intergranular bubble behavior	: No model for grain-boundary bubble evolution.
 Model	Release mode	 coalescence from White, JNM, 325 (2004), 61-77; release from Pastore et al., NED, 256 (2013), 75-86.
 
@@ -42,6 +40,7 @@ System	Cs in UO2
 System	I in UO2	
 System	Te in UO2	
 System	Mo in UO2	
+System	Ba in UO2	
 System	Tc in UO2	
 System	Rh in UO2	
 System	Ru in UO2	

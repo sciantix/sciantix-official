@@ -35,13 +35,13 @@ plt.rcParams.update({
     "grid.alpha": 0.5,
     "grid.linestyle": "--",
     "lines.linewidth": 2,
-    "lines.markersize": 6,
+    "lines.markersize": 4,
     "legend.frameon": False,
 })
 
 TEMPERATURES_K = list(range(800, 2800, 200))
 REFERENCE_PRESSURE_MPA = 0.1 # 1 bar
-Q_VALUES = [0.2]
+Q_VALUES = [0.1, 0.2, 0.3]
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 BUILD_BINARY = SCRIPT_DIR.parent.parent / "build" / "sciantix.x"
@@ -53,7 +53,7 @@ PRESSURE_PLOT_NAME_2 = "fuel_oxygen_partial_pressures_vs_ou_ratio_2"
 POTENTIAL_PLOT_NAME = "fuel_oxygen_potentials_vs_ou_ratio"
 COMPARE_SCRIPT = SCRIPT_DIR / "sciantix_verification" / "compare_sciantix_with_kato.py"
 COMPARE_OC_SCRIPT = SCRIPT_DIR / "sciantix_verification" / "compare_sciantix_with_oc_csv.py"
-PLOT_MARKER_SIZE = 6
+PLOT_MARKER_SIZE = 4
 OM_AXIS_LIMITS = (1.92, 2.08)
 LOG_PRESSURE_AXIS_LIMITS = (-30, 0)
 DELTA_LOG_AXIS_LIMITS = (-1.0, 1.0)
