@@ -3,6 +3,13 @@ opencalphad.path = /home/ecappellari/transparant/opencalphad/
 kc = false
 langmuir = false
 
+# Force OpenCalphad re-equilibration at every time step: the O/M ramp moves the
+# composition by ~3e-5 (relative) per step, below the default reuse tolerances,
+# which would hold the cached pO2 for up to 20 steps (staircase artefacts).
+coupling.max_stale_steps = 0
+coupling.composition_tolerance = 0
+coupling.temperature_tolerance = 0
+
 fission_products.module = NO
 fission_products.gap_settings = false
 

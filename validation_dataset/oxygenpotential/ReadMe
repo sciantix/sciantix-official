@@ -1,0 +1,88 @@
+# Data from RECOMMENDATIONS ON FUEL PROPERTIES FOR FUEL PERFORMANCE CODES, NEA/NSC/R(2024)1
+
+In some cases, the original data values were not available, and estimates were therefore
+obtained instead by digitised measurement of the figures in the original source using
+Engage Digitiser, which adds a further uncertainty up to 2% to the values. 
+
+4.1868 has also been used as the conversion factor from kcal to kJ.
+
+## Regarding the reduced dataset for q from 15 to 25.
+
+(Javed, 1972) 
+- Lattice parameter @ room temperature
+- NO burnup
+
+(Johnson, 1973)
+- Pu/M ratio (prior to irradiation) 
+- O/M ratio (prior to irradiation) 
+- Fract.Porosity (prior to irradiation) 
+- Pellet radius (from the centre)
+O/M vs radius was only plotted for one irradiated pin but it was noted that this could vary significantly depending on assumptions regarding fission product valency.
+- SI burnup
+
+(Woodley, 1973)
+- No burnup
+
+(Adamson and Carney, 1974)
+- Comparison with the data tables in (Chilton and Kirkham, 1975) for Chilton and Kirkham’s own data shows that the assumption of the O/M being half the U valency becomes much less accurate at high O/M
+- No burnup, excluded in the folder
+
+(Sørensen, 1975)
+- includes also q = 10%
+
+(Swanson, 1975)
+
+(Tetenbaum, 1975)
+
+(Mari, 1977)
+
+(Tetenbaum, 1977)
+- * Crude SIM fuel (Ce only) with the effective irradiated residual Pu at burn-up (valid for 5%CeO2, those with burnup). Note that the equivalent unirradiated Pu content
+has not been calculated.
+
+(Edwards, 1978)
+
+(Woodley, 1978) 
+- *SIM fuel, quoted with effective irradiated residual Pu at burn-up, for an unirradiated Pu content of 25% (those with burnup)
+- initial crude (U0.75,Pu0.225,Ce0.025)O2 simulated high-burn-up fuel (SIMFUEL) data not included in favour of subsequent more sophisticated SIMFUEL reproduced
+above
+- burn-up not stated to be average or maximum
+
+(Chilton, 1979)
+
+(Ewart, 1979a)
+- Pu/M ratio (before irradiation) = 30% left because one of the few irradiations
+- O/M ratio (post irradiation) 
+- Fract. porosity (Average before irradiation) 
+- Burn-up (Maximum) 
+The samples were irradiated in the Dounreay fast reactor (DFR) in the United Kingdom. Drilling was used to remove the samples with measurements taken at different radii in the pellet using the technique that was first checked by Mari (Mari, 1977) with unirradiated fuel. It was noted that in the uranium, 235U enrichment was 93% and so not very representative of a modern fast reactor MOX fuel and that the density was quite low. It was also noted that values measured following quenching after heating would have been more reliable.
+
+(Ewart, 1979b)
+- O/M ratio (Post-irradiation) 
+- Fract. porosity (Presumed preirradiation) 
+- Burn-up (Average or maximum not stated) 
+- samples presumed to be homogeneous as material produced by co-precipitation.
+Fuel density stated to be 10.4 g/cm3. Therefore, considering TDs of 11.44 g/cm3
+for PuO2 and 10.96 g/cm3 for UO2 and using Vegard's Correlation, this is
+11.08 g/cm3 for (U0.75,Pu0.25)O2 and thus the fuel can be calculated to have been
+93.9% TD.
+
+(Woodley, 1979)
+
+(Ewart, 1984)
+- O/M ratio (Post irradiation) 
+- Fract. porosity (Prior to irradiation) 
+-  Irradiated in the high flux reactor (HFR) in the Netherlands with detailed postirradiation
+examination (PIE) performed of the pellet structure.
+- Quenched fuel results were potentially more representative. However, irradiation was not performed in a true fast reactor, although the microstructure seems representative. Authors noted that the results of (Woodley, 1978, 1979 and 1981) were used to calculate O/M, particularly the (Woodley, 1978) SIM fuel data.
+
+(Edwards, 1985)
+
+(Matzke, 1988)
+- Pu/M ratio (before irradiation)
+- O/M ratio (Average or maximum not stated)
+
+(Rao, 2006)
+
+
+(Kato, 2011a)
