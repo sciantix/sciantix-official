@@ -87,6 +87,7 @@ namespace OCASIAdapter
                                   const std::vector<std::string> &selected_elements);
         bool prepareCalculationRecord(const std::string &record_name,
                                       bool reuse_existing_record);
+        bool prepareRecoveryRecord(const std::string &record_name);
         bool deleteCalculationRecord(const std::string &record_name);
         bool syncRecordFractionsInto(const std::string &target_record_name);
         bool setConditions(double temperature,
@@ -690,6 +691,32 @@ namespace OCASIAdapter
         ceq_ = new_ceq;
         known_equilibrium_records_.insert(bounded_name);
         return true;
+    }
+
+    bool OpenCalphadInterface::prepareRecoveryRecord(const std::string &record_name)
+    {
+        if (!base_ceq_ || !database_loaded_)
+            return false;
+
+        const std::string bounded_name = record_name.substr(0, 23);
+        const bool already_exists =
+            !bounded_name.empty() && known_equilibrium_records_.count(bounded_name) > 0;
+
+        if (!prepareCalculationRecord(record_name, true))
+            return false;
+
+        if (!already_exists)
+            return true;  // freshly created via tqcceq: already a copy of base_ceq_
+
+        // Reuse the existing record instead of deleting and recreating it: each
+        // tqcceq call consumes one slot from OpenCalphad's fixed-size (900-entry,
+        // see ocparam.F90 maxeq) equilibrium-record pool, which sustained
+        // recovery-retry pressure can exhaust over a long simulation. Reset its
+        // constitution back to the pristine database-load state instead -- the
+        // same source tqcceq would have copied from on creation.
+        resetErrorCode();
+        OCASI_CALL(c_copyfracs, &base_ceq_, &ceq_);
+        return consumeErrorCode("reset recovery record from base equilibrium");
     }
 
     bool OpenCalphadInterface::deleteCalculationRecord(const std::string &record_name)
@@ -1334,6 +1361,14 @@ std::vector<InputComponent> buildInputComponents(
                 double atoms_available =
                     sciantix_variable[element_name + " produced"].getFinalValue() -
                     sciantix_variable[element_name + " released"].getInitialValue();
+                
+                #if defined(COUPLING_TU)
+                                if (element_name == "Cs" &&
+                                    sciantix_variable.isElementPresent("Cs in the gap"))
+                                {
+                                    atoms_available += sciantix_variable["Cs in the gap"].getInitialValue();
+                                }
+                #endif
 
                 component.content = std::max(0.0, atoms_available / avogadro_number);
             }
@@ -1488,36 +1523,43 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             }
 
             const std::string record_name = equilibriumRecordName(location, solve_mode);
-            if (solve_mode == OpenCalphadSolveMode::FreshRecordRecovery)
-            {
-                // Recovery
-                if (!oc.deleteCalculationRecord(record_name))
-                    std::cerr << "Warning: could not reset the OpenCalphad recovery record" << std::endl;
-            }
-
+            // FreshRecordRecovery reuses its equilibrium record across attempts (see
+            // prepareRecoveryRecord) instead of deleting and recreating it every time,
+            // to avoid exhausting OpenCalphad's fixed-size equilibrium-record pool.
             const bool reuse_existing_record = solve_mode == OpenCalphadSolveMode::SaveReadWarmStart;
             const bool record_ready =
-                oc.prepareCalculationRecord(record_name, reuse_existing_record);
+                (solve_mode == OpenCalphadSolveMode::FreshRecordRecovery)
+                    ? oc.prepareRecoveryRecord(record_name)
+                    : oc.prepareCalculationRecord(record_name, reuse_existing_record);
             if (!record_ready)
             {
                 std::cerr << "Error: Failed to prepare OpenCalphad equilibrium record" << std::endl;
                 return false;
             }
             oc.reset(false);
-            const bool reference_state_ready =
+            // Standalone SCIANTIX imposes the matrix oxygen potential as an open
+            // OpenCalphad component-potential condition on O. In TU coupling, O is
+            // instead supplied as a fixed "O available content" (closed system), so
+            // none of the potential machinery below applies there.
+            #if !defined(COUPLING_TU)
+                const bool reference_state_ready =
                 oc.setReferenceState("O", "GAS", -1.0, reference_oxygen_pressure_bar * 1.0e6);
-            if (!reference_state_ready)
-                std::cerr << "Warning: Failed to set OpenCalphad oxygen gas reference state" << std::endl;
+                if (!reference_state_ready)
+                    std::cerr << "Warning: Failed to set OpenCalphad oxygen gas reference state" << std::endl;
+            #endif
 
             std::map<std::string, double> components_map;
             for (const auto& comp : components)
             {
-                if (toUpperCopy(comp.name) == "O")
-                    continue;
+                #if !defined(COUPLING_TU)
+                    if (toUpperCopy(comp.name) == "O")
+                        continue;
+                #endif
                 components_map[comp.name] = comp.fraction;
             }
-
-            const double oxygen_potential_j_per_mol_o = oxygen_potential_kj_per_mol_o2 * 1.0e3 / 2.0;
+            #if !defined(COUPLING_TU)
+                const double oxygen_potential_j_per_mol_o = oxygen_potential_kj_per_mol_o2 * 1.0e3 / 2.0;
+            #endif
             auto apply_conditions = [&](double calculation_temperature)
             {
                 const bool conditions_ready = oc.setConditions(
@@ -1530,12 +1572,17 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
                               << calculation_temperature << " K" << std::endl;
                     return false;
                 }
-
-                const bool oxygen_potential_ready =
-                    oc.setComponentPotential("O", oxygen_potential_j_per_mol_o);
-                if (!oxygen_potential_ready)
-                    std::cerr << "Error: Failed to set OpenCalphad oxygen potential condition" << std::endl;
-                return oxygen_potential_ready;
+                #if !defined(COUPLING_TU)
+                    const bool oxygen_potential_ready =
+                        oc.setComponentPotential("O", oxygen_potential_j_per_mol_o);
+                    if (!oxygen_potential_ready)
+                    {
+                        std::cerr << "Error: Failed to set OpenCalphad oxygen potential at "
+                                  << calculation_temperature << " K" << std::endl;
+                        return false;
+                    }
+                #endif
+                return true;
             };
 
             auto solve_equilibrium = [&]()

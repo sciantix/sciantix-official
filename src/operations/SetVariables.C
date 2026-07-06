@@ -37,6 +37,11 @@ void Simulation::setVariables(int    Sciantix_options[],
             input_variable.push(InputVariable(name_list[i], Sciantix_options[i]));
         }
     }
+    // iThermochimicaOuterNode varies every call (per radial node, set by
+    // FisPro3.f95): input_variable entries are otherwise only initialized once
+    // for the whole run (see the empty() guard above), so this one needs an
+    // explicit refresh on every call instead of relying on the one-time push.
+    input_variable["iThermochimicaOuterNode"].setValue(Sciantix_options[26]);
 
     // toOutput flags
     bool toOutputRadioactiveFG          = input_variable["iRadioactiveFissionGas"].getValue() != 0,

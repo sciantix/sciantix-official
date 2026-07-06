@@ -126,7 +126,7 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
         {
             if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
             {
-                sciantix_variable[system.getFissionProductName() + " at grain boundary"].addValue(
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(
                     sciantix_variable[system.getFissionProductName() + " reacted"].getFinalValue());
                 sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(0.0);
             }
@@ -139,7 +139,22 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
         }
     };
 
-    if (input_variable["iThermochimica"].getValue() == 0 || thermochemistry_settings == nullptr)
+    // iThermochimica, exactly as set in input_settings.txt: 0 = off, 1 = smart
+    // mode (all radial nodes of the outer/last axial slice run full
+    // OpenCalphad, every other axial slice uses the simplified fixed
+    // speciation in JOGFormation()), 2 = full OpenCalphad at every node.
+    // Which call this is for comes from the separate iThermochimicaOuterNode
+    // flag (set per call by FisPro3.f95).
+    #if defined(COUPLING_TU)
+        const int  thermochimica_mode = (int)input_variable["iThermochimica"].getValue();
+        const bool is_outer_node       = input_variable["iThermochimicaOuterNode"].getValue() != 0;
+        const bool run_full_opencalphad =
+            thermochimica_mode == 2 || (thermochimica_mode == 1 && is_outer_node);
+    #else
+        const bool run_full_opencalphad = true;
+    #endif
+
+    if (!run_full_opencalphad || thermochemistry_settings == nullptr)
     {
         moveFissionProductsWithoutThermochemistry();
         return;

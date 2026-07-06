@@ -25,7 +25,23 @@
 
 void Simulation::JOGFormation()
 {
-    if (input_variable["iThermochimica"].getValue() == 0) return;
+    const int thermochimica_mode = (int)input_variable["iThermochimica"].getValue();
+    if (thermochimica_mode == 0) return;
+
+    const bool is_outer_node = input_variable["iThermochimicaOuterNode"].getValue() != 0;
+    if (thermochimica_mode == 1 && !is_outer_node)
+    {
+        // Simplified fixed-speciation assumption, used on interior radial nodes
+        // (handled by SCIANTIX alone) when iThermochimica = 1 -- the outer/rim
+        // node runs the full OpenCalphad equilibrium instead (see SetPhaseDiagram()).
+        // Ba assumed completely oxidized as BaO (fBa = 1, vBa = 2); Mo at a
+        // prescribed oxidized fraction fMo = 0.6, vMo = 6, remainder metallic.
+        sciantix_variable["Mo in oxide fraction"].setFinalValue(0.6);
+        sciantix_variable["Mo oxide valence"].setFinalValue(6.0);
+        sciantix_variable["Ba in oxide fraction"].setFinalValue(1.0);
+        sciantix_variable["Ba oxide valence"].setFinalValue(2.0);
+        return;
+    }
 
     const double temperature_celsius = history_variable["Temperature"].getFinalValue() - 273.15;
     
@@ -75,8 +91,7 @@ void Simulation::JOGFormation()
         1e6 * rho_ref * std::pow((1.0 + eps_ref) / (1.0 + eps_T), 3.0); // g/m3
 
     sciantix_variable["Phase std density"].setFinalValue(theoretical_density); // g/m3
-    std::cout << "JOGFormation: theoretical density = " << theoretical_density << " g/m3" << std::endl;
-    
+
     // Theoretical densities from crystallographic data (Z = 4):
     // rho = Z * M / (N_A * V_cell)
     // BaMoO4: I41/a, a = 0.5571 nm, c = 1.2783 nm (ref. [31])
@@ -97,20 +112,17 @@ void Simulation::JOGFormation()
         137.327 + 95.95 + 4.0 * 15.999,
         4.0,
         0.5571 * 0.5571 * 1.2783);
-    std::cout << "JOGFormation: theoretical density BaMoO4 = " << theoretical_density_BaMoO4 << " g/m3" << std::endl;
 
     const double theoretical_density_Ba2MoO5 = crystalDensityFromCell(
         2.0 * 137.327 + 95.95 + 5.0 * 15.999,
         4.0,
         0.7412 * 0.5769 * 1.1380);
-    std::cout << "JOGFormation: theoretical density Ba2MoO5 = " << theoretical_density_Ba2MoO5 << " g/m3" << std::endl;
 
     const double theoretical_density_Ba3MoO6 = crystalDensityFromCell(
         3.0 * 137.327 + 95.95 + 6.0 * 15.999,
         4.0,
         0.8600 * 0.8600 * 0.8600);
-    std::cout << "JOGFormation: theoretical density Ba3MoO6 = " << theoretical_density_Ba3MoO6 << " g/m3" << std::endl;
-    
+
     double JOG_Cs2MoO4 = 0.0;
     double JOG_BaMoO4 = 0.0;
     double JOG_Ba3MoO6 = 0.0;
