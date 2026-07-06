@@ -1,12 +1,8 @@
 Comparing /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/gold/point_02_r_1p0196mm/output.txt -> /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/point_02_r_1p0196mm/output.txt
-Rows: 13865 -> 13865
-Columns: 118 -> 120
+Rows: 16177 -> 16177
+Columns: 119 -> 119
 
-Columns only in new output:
-  + JOG (Ba3MoO6) (/)
-  + JOG (Ba2MoO5) (/)
-
-Common columns compared: 118
+Common columns compared: 119
 Columns outside tolerance: 0
 
 Top 20 column differences:
@@ -32,7 +28,7 @@ Top 20 column differences:
   Kr released (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
 
 Comparing /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/gold/point_02_r_1p0196mm/thermochemistry_output.txt -> /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/point_02_r_1p0196mm/thermochemistry_output.txt
-Rows: 13865 -> 13865
+Rows: 16177 -> 16177
 Columns: 98 -> 98
 
 Common columns compared: 98

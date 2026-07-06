@@ -6,8 +6,8 @@
 # scaling factor - Atoms per vacancy
 1.0
 # scaling factor - Grain edge angle
-0.07
-# scaling factor - Cs
+0.072244
+# scaling factor - Cs production
 1.0
 # scaling factor - Dummy 1
 1.0

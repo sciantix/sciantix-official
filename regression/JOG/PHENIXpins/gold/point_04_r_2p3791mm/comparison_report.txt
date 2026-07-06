@@ -1,8 +1,8 @@
 Comparing /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/gold/point_04_r_2p3791mm/output.txt -> /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/point_04_r_2p3791mm/output.txt
-Rows: 504 -> 504
-Columns: 120 -> 120
+Rows: 2921 -> 2921
+Columns: 119 -> 119
 
-Common columns compared: 120
+Common columns compared: 119
 Columns outside tolerance: 0
 
 Top 20 column differences:
@@ -28,7 +28,7 @@ Top 20 column differences:
   Kr released (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
 
 Comparing /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/gold/point_04_r_2p3791mm/thermochemistry_output.txt -> /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/point_04_r_2p3791mm/thermochemistry_output.txt
-Rows: 504 -> 504
+Rows: 2921 -> 2921
 Columns: 98 -> 98
 
 Common columns compared: 98

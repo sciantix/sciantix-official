@@ -6,7 +6,7 @@ point_03_r_1p6994mm: returncode=0
 point_04_r_2p3791mm: returncode=0
 
 Gold comparison summary
-point_01_r_0p3399mm: DIFF, report=gold/point_01_r_0p3399mm/comparison_report.txt
-point_02_r_1p0196mm: DIFF, report=gold/point_02_r_1p0196mm/comparison_report.txt
-point_03_r_1p6994mm: DIFF, report=gold/point_03_r_1p6994mm/comparison_report.txt
+point_01_r_0p3399mm: OK, report=gold/point_01_r_0p3399mm/comparison_report.txt
+point_02_r_1p0196mm: OK, report=gold/point_02_r_1p0196mm/comparison_report.txt
+point_03_r_1p6994mm: OK, report=gold/point_03_r_1p6994mm/comparison_report.txt
 point_04_r_2p3791mm: OK, report=gold/point_04_r_2p3791mm/comparison_report.txt
