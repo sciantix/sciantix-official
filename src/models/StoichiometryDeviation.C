@@ -394,9 +394,22 @@ void Simulation::StoichiometryDeviation()
             reference += " : Under development, E.Cappellari, prescribed O/M history.";
 
             // Prescribed O/M is converted to stoichiometry deviation as x = O/M - 2.
-            parameter.push_back(history_variable["O/M ratio"].getFinalValue() - 2.0);
-            parameter.push_back(history_variable["O/M ratio"].getInitialValue() - 2.0);
-            
+            // The prescribed O/M is capped at max_prescribed_om_ratio (< 2.0) even if
+            // input_history.txt gives exactly 2.0: evaluating the grain-boundary
+            // OpenCalphad equilibrium exactly on the hypo/hyper-stoichiometric phase
+            // boundary makes it fail to converge (see JOG PHENIXpins point_04, the
+            // coldest radial point, which the OXIRED model saturates to O/M = 2.0
+            // early and keeps there for the rest of the irradiation and cooldown).
+            double prescribed_om_final   = history_variable["O/M ratio"].getFinalValue();
+            double prescribed_om_initial = history_variable["O/M ratio"].getInitialValue();
+            if (prescribed_om_final > max_prescribed_om_ratio)
+                prescribed_om_final = max_prescribed_om_ratio;
+            if (prescribed_om_initial > max_prescribed_om_ratio)
+                prescribed_om_initial = max_prescribed_om_ratio;
+
+            parameter.push_back(prescribed_om_final - 2.0);
+            parameter.push_back(prescribed_om_initial - 2.0);
+
             // // MOX : from Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). Simulation of the chemical state of high burnup (U,Pu)O2 fuel in fast reactors based on thermodynamic calculations. Journal of Nuclear Materials, 532(1), 151969. https://doi.org/10.1016/j.jnucmat.2019.151969)
             // if (sciantix_variable["q"].getFinalValue() > 0.0)
             //     parameter.push_back(0.71); 

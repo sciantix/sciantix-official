@@ -40,5 +40,6 @@ const double calorie               = 4.186;          // J
 const double gas_constant          = 8.3143;         // J/(mol K)
 const double reference_oxygen_pressure_atm = 0.1013;  // MPa
 const double reference_oxygen_pressure_bar = 0.1;     // MPa
+const double max_prescribed_om_ratio = 1.999;         // (/) keep prescribed O/M strictly below stoichiometry (2.0)
 
 #endif

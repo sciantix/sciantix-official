@@ -111,6 +111,12 @@ ThermochemistrySettings loadThermochemistrySettings(const std::string& path)
             settings.langmuir_coefficient = std::stod(value);
         else if (key == "output.phase_sublattice_composition")
             settings.output_phase_sublattice_composition = parseBool(value);
+        else if (key == "coupling.temperature_tolerance")
+            settings.coupling_temperature_tolerance = std::stod(value);
+        else if (key == "coupling.composition_tolerance")
+            settings.coupling_composition_tolerance = std::stod(value);
+        else if (key == "coupling.max_stale_steps")
+            settings.coupling_max_stale_steps = std::stoi(value);
         else if (key == "fission_products.module")
             settings.fission_products.module = value;
         else if (key == "fission_products.database")
