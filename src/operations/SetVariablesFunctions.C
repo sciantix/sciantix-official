@@ -55,7 +55,11 @@ std::vector<std::string> getInputVariableNames()
                                       "iDensification",
                                       "iReleaseMode",
                                       // CODE DEVELOPMENT : flags
-                                      "iThermochimica"};
+                                      "iThermochimica",
+                                      // Set per call (per radial node) by FisPro3.f95, not read
+                                      // from input_settings.txt: 1 if this call is the outer
+                                      // (rim) radial node of its axial slice, 0 otherwise.
+                                      "iThermochimicaOuterNode"};
 
     return names;
 }
@@ -506,11 +510,15 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         // WITH RESPECT TO THE AT/M3 THESE ARE ALLOWED TO CHANGE WITH BURNUP
         SciantixVariable("U content", "(mol/m3)", Sciantix_variables[161], Sciantix_variables[161],  toOutputThermochimica),
         SciantixVariable("O content", "(mol/m3)", Sciantix_variables[162], Sciantix_variables[162],  toOutputThermochimica),
-        SciantixVariable("O available content",
-                         "(mol/m3)",
-                         Sciantix_variables[166] > 0.0 ? Sciantix_variables[166] : 0.001,
-                         Sciantix_variables[166] > 0.0 ? Sciantix_variables[166] : 0.001,
-                         toOutputThermochimica),
+        #if defined(COUPLING_TU)
+            SciantixVariable("O available content", "(mol/m3)", Sciantix_variables[166], Sciantix_variables[166], toOutputThermochimica),
+        #else
+            SciantixVariable("O available content",
+                            "(mol/m3)",
+                            Sciantix_variables[166] > 0.0 ? Sciantix_variables[166] : 0.001,
+                            Sciantix_variables[166] > 0.0 ? Sciantix_variables[166] : 0.001,
+                            toOutputThermochimica),
+        #endif
         SciantixVariable("Pu content", "(mol/m3)", Sciantix_variables[163], Sciantix_variables[163],  toOutputThermochimica && toOutputMOX),
         SciantixVariable("Phase std density", "(g/m3)", Sciantix_variables[165], Sciantix_variables[165], toOutputThermochimica),
         // CODE DEVELOPMENT : JOG VARIABLES - TO BE REDUCED, ONLY FOR PURPOSE OF MODELLING
