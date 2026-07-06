@@ -20,12 +20,105 @@
 #include "OCUtilsCoupling.h"
 #include "ThermochemistrySettings.h"
 
+#include <algorithm>
+#include <cmath>
 #include <iostream>
+#include <map>
 #include <set>
 #include <string>
 #include <vector>
 
-void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas. 
+namespace
+{
+// Caches the last OpenCalphad equilibrium actually solved for a location, so 
+// SetPhaseDiagram() can skip the GEM on timesteps where the driving conditions 
+// have not moved meaningfully.
+//
+struct PhaseDiagramCache
+{
+    bool                           has_result = false;
+    std::string                    database;
+    double                         temperature = 0.0;
+    double                         pressure = 0.0;
+    double                         oxygen_potential = 0.0;
+    std::map<std::string, double>  fractions;
+    OCOutputData                   output_data;  // normalized, NOT scaled by total content
+    int                            stale_steps = 0;
+};
+
+PhaseDiagramCache matrix_cache;
+PhaseDiagramCache grain_boundary_cache;
+
+bool withinTolerance(double current_value, double cached_value, double relative_tolerance)
+{
+    const double reference = std::max(std::abs(current_value), std::abs(cached_value));
+    if (reference <= 0.0)
+        return true;
+
+    return std::abs(current_value - cached_value) <= relative_tolerance * reference;
+}
+
+bool compositionMatches(const std::map<std::string, double>& cached_fractions,
+                        const std::vector<InputComponent>&   current_components,
+                        double                                tolerance)
+{
+    if (cached_fractions.size() != current_components.size())
+        return false;
+
+    for (const auto& component : current_components)
+    {
+        const auto cached_fraction = cached_fractions.find(component.name);
+        if (cached_fraction == cached_fractions.end())
+            return false;
+
+        if (!withinTolerance(component.fraction, cached_fraction->second, tolerance))
+            return false;
+    }
+
+    return true;
+}
+
+std::map<std::string, double> fractionsOf(const std::vector<InputComponent>& components)
+{
+    std::map<std::string, double> fractions;
+    for (const auto& component : components)
+        fractions[component.name] = component.fraction;
+    return fractions;
+}
+
+bool cacheIsFresh(const PhaseDiagramCache&            cache,
+                  const std::string&                   database,
+                  double                                temperature,
+                  double                                pressure,
+                  double                                oxygen_potential,
+                  bool                                  oxygen_potential_matters,
+                  const std::vector<InputComponent>&   components,
+                  const ThermochemistrySettings&        settings)
+{
+    if (!cache.has_result)
+        return false;
+
+    if (cache.database != database)
+        return false;
+
+    if (cache.stale_steps >= settings.coupling_max_stale_steps)
+        return false;
+
+    if (std::abs(temperature - cache.temperature) > settings.coupling_temperature_tolerance)
+        return false;
+
+    if (!withinTolerance(pressure, cache.pressure, settings.coupling_composition_tolerance))
+        return false;
+
+    if (oxygen_potential_matters &&
+        !withinTolerance(oxygen_potential, cache.oxygen_potential, settings.coupling_composition_tolerance))
+        return false;
+
+    return compositionMatches(cache.fractions, components, settings.coupling_composition_tolerance);
+}
+}  // namespace
+
+void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
 {
     auto moveFissionProductsWithoutThermochemistry = [&]()
     {
@@ -50,7 +143,7 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
     {
         moveFissionProductsWithoutThermochemistry();
         return;
-    } 
+    }
 
     const ThermochemistrySettings& Sciantix_thermochemistry_settings = *thermochemistry_settings;
 
@@ -89,6 +182,8 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
                 }
                 location_settings = &Sciantix_thermochemistry_settings.fission_products;
                 location = "at grain boundary";
+
+                solvers.push_back(OCSolver::FreshRecordRecovery);
                 break;
         }
 
@@ -103,8 +198,6 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
         const std::string data_path =
             Sciantix_thermochemistry_settings.opencalphad_path + "data/" + location_settings->database;
 
-        bool solved = false;
-        OCOutputData output_data;
         double total_input_content = 0.0;
         std::vector<InputComponent> components =
             OCUtilsCoupling::buildInputComponents(
@@ -125,32 +218,78 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
             active_elements.insert(component.name);
         const std::vector<std::string> valid_elements(active_elements.begin(), active_elements.end());
 
-        for (const auto& solver : solvers)
+        PhaseDiagramCache& cache =
+            (location_case == PhaseDiagramLocation::Matrix) ? matrix_cache : grain_boundary_cache;
+
+        const double current_temperature      = history_variable["Temperature"].getFinalValue();
+        const double current_pressure         = history_variable["System pressure"].getFinalValue();
+        const double current_oxygen_potential = sciantix_variable["Fuel oxygen potential"].getFinalValue();
+        const bool oxygen_potential_matters = (location == "at grain boundary");
+
+        bool solved = false;
+        OCOutputData output_data;
+
+        if (cacheIsFresh(cache, location_settings->database, current_temperature, current_pressure,
+                        current_oxygen_potential, oxygen_potential_matters, components,
+                        Sciantix_thermochemistry_settings))
         {
-            output_data.solution_phases.clear();
-            output_data.components.clear();
-
-            const bool case_success = OCUtilsCoupling::runOpenCalphadCaseOCASI(
-                data_path,
-                history_variable["Temperature"].getFinalValue(),
-                history_variable["System pressure"].getFinalValue(),
-                components,
-                valid_elements,
-                solver,
-                location,
-                sciantix_variable["Fuel oxygen potential"].getFinalValue(),
-                output_data);
-            const bool has_usable_output = !output_data.solution_phases.empty();
-
-            if (case_success && has_usable_output)
+            // Reuse the cached, normalized equilibrium as-is: it will be rescaled by the
+            // *current* total_input_content below, exactly like a fresh solve would be.
+            output_data = cache.output_data;
+            solved = true;
+            ++cache.stale_steps;
+        }
+        else
+        {
+            for (const auto& solver : solvers)
             {
-                solved = true;
-                break;
+                output_data.solution_phases.clear();
+                output_data.components.clear();
+
+                const bool case_success = OCUtilsCoupling::runOpenCalphadCaseOCASI(
+                    data_path,
+                    current_temperature,
+                    current_pressure,
+                    components,
+                    valid_elements,
+                    solver,
+                    location,
+                    current_oxygen_potential,
+                    output_data);
+                const bool has_usable_output = !output_data.solution_phases.empty();
+
+                if (case_success && has_usable_output)
+                {
+                    solved = true;
+                    break;
+                }
+            }
+
+            if (solved)
+            {
+                cache.has_result      = true;
+                cache.database         = location_settings->database;
+                cache.temperature      = current_temperature;
+                cache.pressure         = current_pressure;
+                cache.oxygen_potential = current_oxygen_potential;
+                cache.fractions        = fractionsOf(components);
+                cache.output_data      = output_data;
+                cache.stale_steps      = 0;
+            }
+            else
+            {
+                // The cache may only be reused while the last real solve succeeded.
+                cache = PhaseDiagramCache{};
             }
         }
 
         if (!solved)
+        {
             std::cerr << "Warning: all OpenCalphad attempts failed for " << location << std::endl;
+            if (location_case == PhaseDiagramLocation::Matrix)
+                continue;
+        }
+
         if (Sciantix_thermochemistry_settings.output_phase_sublattice_composition)
         {
             const std::string sublattice_output_path =
@@ -179,7 +318,7 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
             case PhaseDiagramLocation::Matrix:
                 OCUtilsCoupling::updateMatrixFromOutput(
                     output_data,
-                    history_variable["Temperature"].getFinalValue(),
+                    current_temperature,
                     sciantix_variable);
                 break;
 

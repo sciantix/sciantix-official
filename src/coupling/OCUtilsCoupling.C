@@ -58,6 +58,8 @@ std::string equilibriumRecordName(const std::string& location,
             return location_prefix + "_GLOBAL";
         case OCSolver::OnlyC1MO2:
             return location_prefix + "_C1MO2";
+        case OCSolver::FreshRecordRecovery:
+            return location_prefix + "_RECOV";
     }
 
     return location_prefix + "_UNKNOWN";
@@ -85,6 +87,8 @@ namespace OCASIAdapter
                                   const std::vector<std::string> &selected_elements);
         bool prepareCalculationRecord(const std::string &record_name,
                                       bool reuse_existing_record);
+        bool deleteCalculationRecord(const std::string &record_name);
+        bool syncRecordFractionsInto(const std::string &target_record_name);
         bool setConditions(double temperature,
                            double pressure,
                            const std::map<std::string, double> &components);
@@ -98,6 +102,7 @@ namespace OCASIAdapter
                             int status,
                             double value);
         bool calculateEquilibrium(int grid_minimizer);
+        bool calculateEquilibriumAllowingMarginalPhase(int grid_minimizer);
         bool calculateEquilibriumChecked();
         bool listResults(int output_mode);
         bool extractResults(OCOutputData &output_data);
@@ -247,6 +252,11 @@ extern "C"
     // static database data but owns independent conditions and results.
     void c_tqcceq(char *, int *, void **, void **);
     void c_tqselceq(char *, void **);
+    void c_tqdceq(char *);
+    // Copy phase amounts/constitution from one existing equilibrium into
+    // another existing one, in place (no new record created).
+    // (source ceq, target ceq)
+    void c_copyfracs(void **, void **);
     int c_errors_number();
     void c_reset_errors_number();
 
@@ -269,6 +279,8 @@ extern "C"
     void gb_c_reset_conditions(char *, void *);
     void gb_c_tqcceq(char *, int *, void **, void **);
     void gb_c_tqselceq(char *, void **);
+    void gb_c_tqdceq(char *);
+    void gb_c_copyfracs(void **, void **);
     int gb_c_errors_number();
     void gb_c_reset_errors_number();
 }
@@ -660,6 +672,7 @@ namespace OCASIAdapter
         std::copy(bounded_name.begin(), bounded_name.end(), ceq_name.begin());
         ceq_name.back() = '\0';
 
+        (void)reuse_existing_record;
         const bool known_record = known_equilibrium_records_.count(bounded_name) > 0;
 
         if (known_record)
@@ -677,6 +690,60 @@ namespace OCASIAdapter
         ceq_ = new_ceq;
         known_equilibrium_records_.insert(bounded_name);
         return true;
+    }
+
+    bool OpenCalphadInterface::deleteCalculationRecord(const std::string &record_name)
+    {
+        if (!base_ceq_ || !database_loaded_)
+            return false;
+
+        std::string bounded_name = record_name.substr(0, 23);
+        if (bounded_name.empty())
+            return false;
+        if (known_equilibrium_records_.count(bounded_name) == 0)
+            return true;  // nothing to delete: the next prepare creates it fresh
+
+        // OpenCalphad can only delete trailing records,
+        // so this is safe only for a record that is guaranteed to be the last one
+        // created in this interface instance.
+        std::vector<char> ceq_name(25, ' ');
+        std::copy(bounded_name.begin(), bounded_name.end(), ceq_name.begin());
+        ceq_name.back() = '\0';
+
+        resetErrorCode();
+        OCASI_CALL(c_tqdceq, ceq_name.data());
+        if (!consumeErrorCode("delete equilibrium record"))
+            return false;
+
+        known_equilibrium_records_.erase(bounded_name);
+        ceq_ = nullptr;
+        return true;
+    }
+
+    bool OpenCalphadInterface::syncRecordFractionsInto(const std::string &target_record_name)
+    {
+        if (!ceq_ || !base_ceq_ || !database_loaded_)
+            return false;
+
+        // ceq_ currently holds the equilibrium just solved (the source); prepare/select
+        // target_record_name (creating it on first use, exactly like any other record)
+        // without disturbing the source, then copy the solved phase amounts/constitution
+        // into it in place. Unlike deleteCalculationRecord + recreate, this does not rely
+        // on target_record_name being the trailing (most recently created) record.
+        void *source_ceq = ceq_;
+
+        if (!prepareCalculationRecord(target_record_name, true))
+        {
+            ceq_ = source_ceq;
+            return false;
+        }
+
+        resetErrorCode();
+        OCASI_CALL(c_copyfracs, &source_ceq, &ceq_);
+        const bool copied = consumeErrorCode("copy phase fractions into warm-start record");
+
+        ceq_ = source_ceq;  // restore the caller's current selection
+        return copied;
     }
 
     bool OpenCalphadInterface::setConditions(double temperature,
@@ -770,6 +837,34 @@ namespace OCASIAdapter
         double g_val = 0.0;
         resetErrorCode();
         OCASI_CALL(c_tqce, target, grid_minimizer, 0, &g_val, &ceq_);
+
+        return consumeErrorCode("equilibrium calculation");
+    }
+
+    bool OpenCalphadInterface::calculateEquilibriumAllowingMarginalPhase(int grid_minimizer)
+    {
+        if (!ceq_ || !database_loaded_)
+            return false;
+
+        char target[] = "";
+        double g_val = 0.0;
+        resetErrorCode();
+        OCASI_CALL(c_tqce, target, grid_minimizer, 0, &g_val, &ceq_);
+
+        // Error 4363 ("a restored phase wants to be stable") flags a converged
+        // Gibbs solution with a marginal competing phase -- the typical situation
+        // right on a phase boundary (e.g. Cs2MoO4 saturation in the JOG window).
+        // OpenCalphad itself resets this code and continues during step/map
+        // (matsmin.F90). Accept the converged solution here; the caller still
+        // validates the extracted inventories before using it.
+        const int error_code = currentErrorCode();
+        if (error_code == 4363)
+        {
+            std::cerr << "Info: accepting OpenCalphad equilibrium with a marginal "
+                         "competing phase (error 4363) on the recovery attempt" << std::endl;
+            resetErrorCode();
+            return true;
+        }
 
         return consumeErrorCode("equilibrium calculation");
     }
@@ -1348,7 +1443,8 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             }
 
             if (solve_mode == OpenCalphadSolveMode::SaveReadWarmStart ||
-                solve_mode == OpenCalphadSolveMode::GlobalEquilibrium)
+                solve_mode == OpenCalphadSolveMode::GlobalEquilibrium ||
+                solve_mode == OpenCalphadSolveMode::FreshRecordRecovery)
             {
                 const bool checked_equilibrium_ready = oc.calculateEquilibriumChecked();
                 if (!checked_equilibrium_ready)
@@ -1391,9 +1487,17 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
                 return false;
             }
 
+            const std::string record_name = equilibriumRecordName(location, solve_mode);
+            if (solve_mode == OpenCalphadSolveMode::FreshRecordRecovery)
+            {
+                // Recovery
+                if (!oc.deleteCalculationRecord(record_name))
+                    std::cerr << "Warning: could not reset the OpenCalphad recovery record" << std::endl;
+            }
+
             const bool reuse_existing_record = solve_mode == OpenCalphadSolveMode::SaveReadWarmStart;
             const bool record_ready =
-                oc.prepareCalculationRecord(equilibriumRecordName(location, solve_mode), reuse_existing_record);
+                oc.prepareCalculationRecord(record_name, reuse_existing_record);
             if (!record_ready)
             {
                 std::cerr << "Error: Failed to prepare OpenCalphad equilibrium record" << std::endl;
@@ -1436,7 +1540,10 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
 
             auto solve_equilibrium = [&]()
             {
-                const bool initial_equilibrium_ready = oc.calculateEquilibrium(0);
+                const bool initial_equilibrium_ready =
+                    (solve_mode == OpenCalphadSolveMode::FreshRecordRecovery)
+                        ? oc.calculateEquilibriumAllowingMarginalPhase(0)
+                        : oc.calculateEquilibrium(0);
                 if (!initial_equilibrium_ready)
                     std::cerr << "Warning: Initial OpenCalphad equilibrium calculation failed" << std::endl;
                 return initial_equilibrium_ready;
@@ -1466,7 +1573,23 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             };
 
             if (extract_and_validate())
+            {
+                // Keep the warm-start record in step with whichever solver actually
+                // produced the accepted equilibrium: otherwise SaveReadWarmStart keeps
+                // resuming from an increasingly stale phase assemblage whenever a
+                // fallback solver (GlobalEquilibrium/FreshRecordRecovery) had to be used,
+                // which is what causes the accepted phase set to flicker between
+                // near-degenerate competing phases step to step.
+                if (solve_mode != OpenCalphadSolveMode::SaveReadWarmStart)
+                {
+                    const std::string warm_start_record =
+                        equilibriumRecordName(location, OpenCalphadSolveMode::SaveReadWarmStart);
+                    if (!oc.syncRecordFractionsInto(warm_start_record))
+                        std::cerr << "Warning: could not sync warm-start record for "
+                                  << location << std::endl;
+                }
                 return true;
+            }
 
             std::cerr << "Warning: OpenCalphad output failed validation for "
                       << location << "; retrying with temperature sweep" << std::endl;

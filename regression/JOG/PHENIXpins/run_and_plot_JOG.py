@@ -4,6 +4,7 @@ import csv
 import math
 import os
 import re
+import sys
 import warnings
 import shutil
 import subprocess
@@ -18,7 +19,14 @@ from matplotlib import colors as mcolors
 
 TEST_DIR = Path(__file__).resolve().parent
 RUN_LOG = "sciantix.log"
-BUILD_EXECUTABLE = TEST_DIR.parents[2] / "build" / "sciantix.x"
+REPO_ROOT = TEST_DIR.parents[2]
+BUILD_DIR = REPO_ROOT / "build"
+BUILD_EXECUTABLE = BUILD_DIR / "sciantix.x"
+ALLMAKE_OC_SCRIPT = REPO_ROOT / "Allmake_OC.sh"
+OXIRED_SCRIPT = REPO_ROOT / "oxired_lib" / "examples" / "PHENIXpins.py"
+OXIRED_HISTORY_DIR = OXIRED_SCRIPT.parent / "PHENIXpins_history"
+CSRED_SCRIPT = REPO_ROOT / "csred_lib" / "examples" / "PHENIXpins.py"
+CS_PRODUCTION_SCALING_FACTOR_INDEX = 4
 RUN_SUMMARY = TEST_DIR / "run_summary.txt"
 MAIN_OUTPUT_NAME = "output.txt"
 THERMO_OUTPUT_NAME = "thermochemistry_output.txt"
@@ -843,6 +851,130 @@ def run_sciantix_case(case_dir: Path) -> subprocess.CompletedProcess[bytes]:
 
 def decode_process_output(output: bytes) -> str:
     return output.decode("utf-8", errors="replace")
+
+
+def run_subprocess_or_raise(command: list[str], cwd: Path, step_name: str) -> None:
+    completed = subprocess.run(command, cwd=cwd, capture_output=True, check=False)
+    print(decode_process_output(completed.stdout), end="")
+    if completed.returncode != 0:
+        raise RuntimeError(
+            f"{step_name} failed (returncode={completed.returncode}):\n"
+            + decode_process_output(completed.stderr)
+        )
+
+
+def build_sciantix() -> None:
+    """Rebuild OpenCalphad/OC coupling and the SCIANTIX executable via Allmake_OC.sh."""
+    print(f"Building SCIANTIX + OC ({ALLMAKE_OC_SCRIPT})...", flush=True)
+    run_subprocess_or_raise(
+        [str(ALLMAKE_OC_SCRIPT)],
+        cwd=REPO_ROOT,
+        step_name="Allmake_OC.sh",
+    )
+
+
+def generate_oxired_input_histories(case_directories: list[Path]) -> None:
+    """Regenerate radial O/M histories with OXIRED and copy them into each case."""
+    print(f"Running OXIRED PHENIX history generation ({OXIRED_SCRIPT})...", flush=True)
+    run_subprocess_or_raise(
+        [sys.executable, str(OXIRED_SCRIPT)],
+        cwd=OXIRED_SCRIPT.parent,
+        step_name="OXIRED PHENIX history generation",
+    )
+    for case_dir in case_directories:
+        source = OXIRED_HISTORY_DIR / case_dir.name / "input_history.txt"
+        if not source.exists():
+            raise FileNotFoundError(f"OXIRED did not produce {source}")
+        shutil.copy2(source, case_dir / "input_history.txt")
+
+
+def csred_radial_burnup_profile(
+    average_burnup_at_percent: float,
+    edges: np.ndarray,
+    radius: np.ndarray,
+    r_outer: float,
+    rim_to_center_factor: float,
+) -> np.ndarray:
+    """Same normalized local-burnup shape used as the CSRED Cs-production proxy."""
+    from csred import area_average as csred_area_average
+
+    normalized_radius = radius / r_outer
+    shape = 1.0 + (rim_to_center_factor - 1.0) * normalized_radius**2
+    shape /= csred_area_average(edges, shape)
+    return average_burnup_at_percent * shape
+
+
+def solve_csred_cs_production_scaling_factors() -> tuple[np.ndarray, np.ndarray]:
+    """Solve the radial Cs-production scaling factor with the CSRED model.
+
+    Geometry, burnup, and time settings mirror csred_lib/examples/PHENIXpins.py
+    and oxired_lib/examples/PHENIXpins.py so the radial mesh lines up with the
+    OXIRED-generated point_* cases.
+    """
+    from csred import CsRedCylinder, CylinderGeometry, PolynomialProfile
+
+    r_outer = PELLET_RADIUS_M
+    burnup_final = 13.28
+    max_time_hours = 25200
+    n_radial_points = 4
+    n_time_points = 10
+    rim_to_center_burnup_factor = 1.0
+
+    profile = PolynomialProfile(
+        r_inner=0.4e-3,
+        r_outer=r_outer,
+        t_center=2000.0,
+        t_surface=600.0,
+        power=2.0,
+    )
+    solver = CsRedCylinder(
+        geometry=CylinderGeometry(r_outer=r_outer),
+        temperature_profile=profile,
+        n_cells=n_radial_points,
+    )
+    edges, radius = solver.mesh()
+    time_hours = np.linspace(0.0, max_time_hours, n_time_points)
+    average_burnup = np.linspace(0.0, burnup_final, n_time_points)
+    local_burnup = np.asarray([
+        csred_radial_burnup_profile(bu, edges, radius, r_outer, rim_to_center_burnup_factor)
+        for bu in average_burnup
+    ])
+
+    result = solver.solve_history(time_hours * 3600.0, local_burnup)
+    return radius, result.scaling_factor
+
+
+def update_scaling_factor_value(path: Path, index: int, value: float, comment: str | None = None) -> None:
+    """Overwrite one value line (and optionally its comment) of an input_scaling_factors.txt file."""
+    lines = path.read_text().splitlines()
+    value_line_indices = [i for i, line in enumerate(lines) if not line.strip().startswith("#")]
+    value_index = value_line_indices[index]
+    lines[value_index] = f"{value:.6f}"
+    if comment is not None and value_index + 1 < len(lines) and lines[value_index + 1].strip().startswith("#"):
+        lines[value_index + 1] = f"# scaling factor - {comment}"
+    path.write_text("\n".join(lines) + "\n")
+
+
+def generate_csred_scaling_factors(case_directories: list[Path]) -> None:
+    """Regenerate the CSRED plot, compute per-radius Cs-production scaling factors, and apply them."""
+    print(f"Running CSRED PHENIX scaling-factor generation ({CSRED_SCRIPT})...", flush=True)
+    run_subprocess_or_raise(
+        [sys.executable, str(CSRED_SCRIPT)],
+        cwd=CSRED_SCRIPT.parent,
+        step_name="CSRED PHENIX scaling-factor generation",
+    )
+    print("Solving CSRED Cs-production scaling factors...", flush=True)
+    radius, scaling_factor = solve_csred_cs_production_scaling_factors()
+    for case_dir in case_directories:
+        target_radius_m = parse_radius_mm(case_dir) * 1.0e-3
+        nearest_index = int(np.argmin(np.abs(radius - target_radius_m)))
+        scaling_factors_path = case_dir / "input_scaling_factors.txt"
+        update_scaling_factor_value(
+            scaling_factors_path,
+            index=CS_PRODUCTION_SCALING_FACTOR_INDEX,
+            value=float(scaling_factor[nearest_index]),
+            comment="Cs production",
+        )
 
 
 def safe_plot_name(text: str) -> str:
@@ -2592,6 +2724,15 @@ def main() -> int:
         action="store_true",
         help="Regenerate plots from existing point outputs only.",
     )
+    mode.add_argument(
+        "--full-pipeline",
+        action="store_true",
+        help=(
+            "Build OpenCalphad + SCIANTIX with Allmake_OC.sh, regenerate OXIRED "
+            "input histories and CSRED scaling factors (and their plots) for "
+            "every point_* case, then run the SCIANTIX cases and regenerate plots."
+        ),
+    )
     parser.add_argument(
         "--runnode",
         action="store_true",
@@ -2613,15 +2754,20 @@ def main() -> int:
             raise ValueError("--runnode requires --number")
         case_directories = filter_case_dirs(case_directories, args.number)
 
-    if not args.run:
+    run_cases = args.run or args.full_pipeline
+    if not run_cases:
         case_directories = completed_case_dirs(case_directories)
+
+    if args.full_pipeline:
+        build_sciantix()
+        generate_oxired_input_histories(case_directories)
+        generate_csred_scaling_factors(case_directories)
 
     PLOTS_DIR.mkdir(parents=True, exist_ok=True)
     saved_paths: list[Path] = []
     case_results: list[tuple[Path, int]] = []
     comparison_results: list[tuple[Path, bool, Path]] = []
 
-    run_cases = args.run
     if run_cases:
         ensure_executable(BUILD_EXECUTABLE)
         delete_file_if_exists(RUN_SUMMARY)

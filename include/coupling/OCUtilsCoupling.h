@@ -86,7 +86,13 @@ enum class OpenCalphadSolveMode
 {
     SaveReadWarmStart,
     GlobalEquilibrium,
-    OnlyC1MO2
+    OnlyC1MO2,
+    // Last-chance fallback: solve on a dedicated record that is deleted and
+    // recreated from the pristine base equilibrium before every attempt, so the
+    // retry is not biased by the failed history of the reused records. Intended
+    // for the grain-boundary context, whose record pool guarantees the recovery
+    // record stays last (OpenCalphad can only delete trailing records).
+    FreshRecordRecovery
 };
 
 bool fileExists(const std::string& file_path);

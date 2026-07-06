@@ -336,11 +336,17 @@ def write_radial_input_histories(
     cooldown_hours: float = 24.0,
     cooldown_temperature_k: float = 300.0,
     om_simplification_decimals: int = 3,
+    max_history_gap_hours: float = 1000.0,
 ) -> None:
     """Write one SCIANTIX ``input_history.txt`` file per radial point.
 
         time[h], temperature[K], fission_rate[fiss/m3/s],
         hydrostatic_stress[MPa], pressure[Pa], O/M
+
+    History lines are kept where the rounded O/M changes, plus a uniform
+    subsampling so that no gap between consecutive lines exceeds
+    ``max_history_gap_hours``: denser histories give SCIANTIX finer time
+    stepping, which keeps the per-step composition jumps small.
     """
     hydrostatic_stress_mpa = 0.0
     pressure_start_pa = 1.0e5
@@ -360,6 +366,15 @@ def write_radial_input_histories(
         keep_history_point[-1] = True
         keep_history_point[change_indices] = True
         keep_history_point[change_indices + 1] = True
+
+        if max_history_gap_hours > 0.0:
+            time_span = time_hours[-1] - time_hours[0]
+            if time_span > max_history_gap_hours:
+                stride = max(1, int(np.floor(
+                    len(time_hours) * max_history_gap_hours / time_span
+                )))
+                keep_history_point[::stride] = True
+
         history_indices = np.flatnonzero(keep_history_point)
 
         lines = []
