@@ -167,7 +167,6 @@ std::map<int, std::string> update_sciantix_variable = {
     {162, "O content"}, // added
     {163, "Pu content"}, // added
     {164, "Fuel oxygen potential"}, // added
-    {165, "Phase std density"}, // added
     {166, "O available content"}, // added
     {171, "Pu238"}, // added
     {172, "Pu239"}, // added
@@ -212,8 +211,26 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
     if (thermochemistry_variable.empty())
         return;
 
+    // Theoretical densities are packed at the same manifest index, offset by
+    // thermochemistry_density_offset, in the same shared Sciantix_thermochemistry
+    // array (read by TU as sciantix_thermochemistry(itb + 123), see
+    // SetTUVariablesfromSciantix.f95). The offset must be >= the manifest's
+    // entry count (indices are contiguous from 0, enforced in
+    // ThermochemistryManifest.C) so a variable's own value slot never
+    // collides with another variable's density slot.
+    constexpr int thermochemistry_density_offset = 123;
+    constexpr int thermochemistry_array_size = 300;
+
     for (auto& variable : thermochemistry_variable)
     {
         Sciantix_thermochemistry[variable.getIndex()] = variable.getFinalValue();
+
+        // Entries without a meaningful density (e.g. the derived
+        // liquid-composition site fractions) still get a slot reserved by
+        // the offset above; guard against overrunning Sciantix_thermochemistry
+        // if the manifest ever grows close to its 300-slot budget.
+        const int density_index = variable.getIndex() + thermochemistry_density_offset;
+        if (density_index < thermochemistry_array_size)
+            Sciantix_thermochemistry[density_index] = variable.getTheoreticalDensity();
     }
 }

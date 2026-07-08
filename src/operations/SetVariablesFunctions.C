@@ -56,9 +56,10 @@ std::vector<std::string> getInputVariableNames()
                                       "iReleaseMode",
                                       // CODE DEVELOPMENT : flags
                                       "iThermochimica",
-                                      // Set per call (per radial node) by FisPro3.f95, not read
-                                      // from input_settings.txt: 1 if this call is the outer
-                                      // (rim) radial node of its axial slice, 0 otherwise.
+                                      // CODE DEVELOPMENT : THERMOCHEMISTRY OUTER-NODE FLAG
+                                      // Set per call by FisPro3.f95, not read from
+                                      // input_settings.txt: 1 if this call is for a radial
+                                      // node of the outer (last) axial slice, 0 otherwise.
                                       "iThermochimicaOuterNode"};
 
     return names;
@@ -520,7 +521,6 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                             toOutputThermochimica),
         #endif
         SciantixVariable("Pu content", "(mol/m3)", Sciantix_variables[163], Sciantix_variables[163],  toOutputThermochimica && toOutputMOX),
-        SciantixVariable("Phase std density", "(g/m3)", Sciantix_variables[165], Sciantix_variables[165], toOutputThermochimica),
         // CODE DEVELOPMENT : JOG VARIABLES - TO BE REDUCED, ONLY FOR PURPOSE OF MODELLING
         SciantixVariable("Mo/Ru in HCP_A3", "(/)", Sciantix_variables[180], Sciantix_variables[180], toOutputThermochimica),
         SciantixVariable("Mo in oxide fraction", "(/)", Sciantix_variables[181], Sciantix_variables[181], toOutputThermochimica),
@@ -533,6 +533,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("JOG (liquid)", "(/)", Sciantix_variables[192], Sciantix_variables[192], toOutputThermochimica),
         SciantixVariable("JOG (Ba3MoO6)", "(/)", Sciantix_variables[194], Sciantix_variables[194], toOutputThermochimica),
         SciantixVariable("JOG (Ba2MoO5)", "(/)", Sciantix_variables[195], Sciantix_variables[195], toOutputThermochimica),
+        SciantixVariable("JOG (other phases)", "(/)", Sciantix_variables[196], Sciantix_variables[196], toOutputThermochimica),
     };
         
     return init_sciantix_variable;
@@ -557,7 +558,8 @@ std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
                                                                            final_value,
                                                                            entry.phase,
                                                                            entry.location,
-                                                                           entry.output));
+                                                                           entry.output,
+                                                                           entry.density * 1.0e6));
     }
 
     return init_thermochemistry_variable;

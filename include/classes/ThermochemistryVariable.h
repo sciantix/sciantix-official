@@ -43,10 +43,11 @@ protected:
     std::map <std::string, double> composition;
     std::map<int, std::map<std::string, double>> sublattice_composition;
     bool to_output;
+    double theoretical_density;
 
 public:
 
-    ThermochemistryVariable(int index, std::string name, std::string uom, double initial_value, double final_value, std::string  phase, std::string  location, bool output)
+    ThermochemistryVariable(int index, std::string name, std::string uom, double initial_value, double final_value, std::string  phase, std::string  location, bool output, double theoretical_density = 0.0)
     {
         this->index = index;
         this->name = name;
@@ -56,6 +57,7 @@ public:
         this->phase = phase;
         this->location = location;
         this->to_output = output;
+        this->theoretical_density = theoretical_density;
     }
 
     void setIndex(int i)
@@ -157,6 +159,24 @@ public:
      * @return The mass concentration in g/m3.
      */
     double getMass();
+
+    /**
+     * @brief Sets the theoretical (crystallographic) density of the compound.
+     * @param density The theoretical density in g/m3.
+     */
+    void setTheoreticalDensity(double density)
+    {
+        theoretical_density = density;
+    }
+
+    /**
+     * @brief Retrieves the theoretical (crystallographic) density of the compound.
+     * @return The theoretical density in g/m3, or 0.0 if not provided in the manifest.
+     */
+    double getTheoreticalDensity()
+    {
+        return theoretical_density;
+    }
 
     /**
      * @brief Sets the final value equal to the initial value, making the variable constant over time.

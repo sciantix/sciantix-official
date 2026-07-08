@@ -18,8 +18,10 @@
 #include "Constants.h"
 
 #include <algorithm>
+#include <vector>
 #include <cctype>
 #include <cmath>
+#include <iostream>
 #include <map>
 #include <string>
 
@@ -28,14 +30,12 @@ void Simulation::JOGFormation()
     const int thermochimica_mode = (int)input_variable["iThermochimica"].getValue();
     if (thermochimica_mode == 0) return;
 
+    // CODE DEVELOPMENT : THERMOCHEMISTRY OUTER-NODE MODE
     const bool is_outer_node = input_variable["iThermochimicaOuterNode"].getValue() != 0;
     if (thermochimica_mode == 1 && !is_outer_node)
     {
-        // Simplified fixed-speciation assumption, used on interior radial nodes
-        // (handled by SCIANTIX alone) when iThermochimica = 1 -- the outer/rim
-        // node runs the full OpenCalphad equilibrium instead (see SetPhaseDiagram()).
-        // Ba assumed completely oxidized as BaO (fBa = 1, vBa = 2); Mo at a
-        // prescribed oxidized fraction fMo = 0.6, vMo = 6, remainder metallic.
+        // Simplified fixed-speciation assumption, used on every axial slice
+        // other than the outer/last one in TRANSURANUS-SCIANTIX-OC calculations.
         sciantix_variable["Mo in oxide fraction"].setFinalValue(0.6);
         sciantix_variable["Mo oxide valence"].setFinalValue(6.0);
         sciantix_variable["Ba in oxide fraction"].setFinalValue(1.0);
@@ -59,75 +59,32 @@ void Simulation::JOGFormation()
     // Reference state: h-Cs2MoO4 at 675 °C
     const double T_ref = 675.0;
     const double rho_ref = 3.89 ; // g/cm3
-
-    auto epsilon_orthorhombic = [](double T)
-    {
-        return  - 7.12e-4
-                + 2.57e-5 * T
-                + 4.03e-8 * std::pow(T, 2.0);
-    };
-
-    auto epsilon_hexagonal = [](double T)
-    {
-        return -0.0102
-               + 8.50e-5 * T
-               - 2.13e-8 * std::pow(T, 2.0);
-    };
-
     // Relative linear expansion at the reference temperature
-    const double eps_ref = epsilon_hexagonal(T_ref);
+    const double eps_ref = -0.0102 + 8.50e-5 * T_ref - 2.13e-8 * std::pow(T_ref, 2.0);
 
     // Relative linear expansion at current temperature
     double eps_T;
 
     if (temperature_celsius < T_transition)
-        eps_T = epsilon_orthorhombic(temperature_celsius);
+        eps_T = - 7.12e-4 + 2.57e-5 * temperature_celsius + 4.03e-8 * std::pow(temperature_celsius, 2.0);
     else
-        eps_T = epsilon_hexagonal(temperature_celsius);
+        eps_T = -0.0102 + 8.50e-5 * temperature_celsius - 2.13e-8 * std::pow(temperature_celsius, 2.0);
 
     // Density from mass conservation:
     // V(T) / V_ref = [(1 + eps_T) / (1 + eps_ref)]^3
     double theoretical_density =
         1e6 * rho_ref * std::pow((1.0 + eps_ref) / (1.0 + eps_T), 3.0); // g/m3
 
-    sciantix_variable["Phase std density"].setFinalValue(theoretical_density); // g/m3
-
-    // Theoretical densities from crystallographic data (Z = 4):
-    // rho = Z * M / (N_A * V_cell)
-    // BaMoO4: I41/a, a = 0.5571 nm, c = 1.2783 nm (ref. [31])
-    // Ba2MoO5: Pnma, a = 0.7412 nm, b = 0.5769 nm, c = 1.1380 nm (ref. [32])
-    // Ba3MoO6: Fm-3m, a = 0.8600 nm
-    // https://doi.org/10.1016/j.jeurceramsoc.2021.01.010 Smith, 2021
-
-    auto crystalDensityFromCell = [](double molar_mass_g_per_mol,
-                                     double z_formula_units,
-                                     double cell_volume_nm3)
-    {
-        constexpr double nm3_to_cm3 = 1.0e-21;
-        return 1.0e6 * z_formula_units * molar_mass_g_per_mol /
-               (avogadro_number * cell_volume_nm3 * nm3_to_cm3); // g/m3
-    };
-
-    const double theoretical_density_BaMoO4 = crystalDensityFromCell(
-        137.327 + 95.95 + 4.0 * 15.999,
-        4.0,
-        0.5571 * 0.5571 * 1.2783);
-
-    const double theoretical_density_Ba2MoO5 = crystalDensityFromCell(
-        2.0 * 137.327 + 95.95 + 5.0 * 15.999,
-        4.0,
-        0.7412 * 0.5769 * 1.1380);
-
-    const double theoretical_density_Ba3MoO6 = crystalDensityFromCell(
-        3.0 * 137.327 + 95.95 + 6.0 * 15.999,
-        4.0,
-        0.8600 * 0.8600 * 0.8600);
+    // Theoretical densities for BaMoO4, Ba2MoO5 and Ba3MoO6 (and any other
+    // condensed/liquid grain-boundary phase) are supplied via the optional
+    // density column of input_thermochemistry.txt.
 
     double JOG_Cs2MoO4 = 0.0;
     double JOG_BaMoO4 = 0.0;
     double JOG_Ba3MoO6 = 0.0;
     double JOG_Ba2MoO5 = 0.0;
     double JOG_liquid = 0.0;
+    double JOG_other = 0.0;
 
     double total_mo_moles = 0.0;
     double oxide_mo_moles = 0.0;
@@ -135,12 +92,6 @@ void Simulation::JOGFormation()
     double total_ba_moles = 0.0;
     double oxide_ba_moles = 0.0;
     double oxide_ba_valence_sum = 0.0;
-    constexpr double oxide_stoichiometry_tolerance = 1.0e-8;
-    constexpr double minimum_mo_oxide_valence = 2.0;
-    constexpr double minimum_molybdate_site_fraction = 1.0e-12;
-    constexpr double minimum_molybdate_oxygen_to_mo = 3.0;
-    constexpr double minimum_molybdate_valence = 5.0;
-    constexpr double mo_valence_tolerance = 1.0e-6;
 
     auto normalizeElementName = [](std::string element)
     {
@@ -166,36 +117,6 @@ void Simulation::JOGFormation()
         return amount;
     };
 
-    auto molarMass = [&normalizeElementName](const std::map<std::string, double>& composition)
-    {
-        static const std::map<std::string, double> atomic_masses = {
-            {"Cs", 132.90545196},
-            {"I", 126.90447},
-            {"Ba", 137.327},
-            {"Mo", 95.95},
-            {"O", 15.999},
-            {"Te", 127.60},
-            {"U", 238.02891},
-            {"Pu", 239.052},
-            {"Va", 0.0},
-            {"Pd", 106.42},
-            {"Rh", 102.91},
-            {"Ru", 101.07},
-            {"Tc", 98.906},
-        };
-
-        double value = 0.0;
-        for (const auto& entry : composition)
-        {
-            const auto atomic_mass = atomic_masses.find(normalizeElementName(entry.first));
-            if (atomic_mass == atomic_masses.end())
-                return 0.0;
-
-            value += entry.second * atomic_mass->second;
-        }
-        return value;
-    };
-
     auto effectiveMoValence = [&getElementAmount](const std::map<std::string, double>& composition)
     {
         const double mo = getElementAmount(composition, "Mo");
@@ -214,7 +135,7 @@ void Simulation::JOGFormation()
         return std::max(0.0, std::min(6.0, valence));
     };
 
-    auto isOxidizedElement = [&getElementAmount, oxide_stoichiometry_tolerance](
+    auto isOxidizedElement = [&getElementAmount](
                                  const std::map<std::string, double>& composition,
                                  const std::string&                   element)
     {
@@ -225,13 +146,13 @@ void Simulation::JOGFormation()
         // OpenCalphad can leave tiny oxygen site fractions in metallic phases.
         // Treat only meaningful O/element ratios as oxidized inventory.
         const double oxygen_stoichiometry = getElementAmount(composition, "O");
-        return oxygen_stoichiometry / element_stoichiometry > oxide_stoichiometry_tolerance;
+        return oxygen_stoichiometry / element_stoichiometry > 1.0e-8;
     };
 
-    auto isOxidizedMo = [&effectiveMoValence, minimum_mo_oxide_valence, mo_valence_tolerance](
+    auto isOxidizedMo = [&effectiveMoValence](
                             const std::map<std::string, double>& composition)
     {
-        return effectiveMoValence(composition) >= minimum_mo_oxide_valence - mo_valence_tolerance;
+        return effectiveMoValence(composition) >= 2.0 - 1.0e-6;
     };
 
     auto normalizeSublatticeConstituent = [](std::string constituent)
@@ -245,42 +166,6 @@ void Simulation::JOGFormation()
             constituent = constituent.substr(0, charge_pos);
 
         return constituent;
-    };
-
-    auto hasMolybdateSecondSublattice =
-        [minimum_molybdate_site_fraction, &normalizeSublatticeConstituent](
-            const std::map<int, std::map<std::string, double>>& sublattice_composition)
-    {
-        const auto second_sublattice = sublattice_composition.find(2);
-        if (second_sublattice == sublattice_composition.end())
-            return false;
-
-        for (const auto& constituent_entry : second_sublattice->second)
-        {
-            if (constituent_entry.second > minimum_molybdate_site_fraction &&
-                normalizeSublatticeConstituent(constituent_entry.first) == "MOO4")
-                return true;
-        }
-
-        return false;
-    };
-
-    auto isMolybdateLiquidByStoichiometry =
-        [&getElementAmount,
-         &effectiveMoValence,
-         minimum_molybdate_oxygen_to_mo,
-         minimum_molybdate_valence,
-         mo_valence_tolerance](const std::map<std::string, double>& composition)
-    {
-        const double mo_stoichiometry = getElementAmount(composition, "Mo");
-        if (mo_stoichiometry <= 0.0)
-            return false;
-
-        const double oxygen_to_mo = getElementAmount(composition, "O") / mo_stoichiometry;
-        if (oxygen_to_mo < minimum_molybdate_oxygen_to_mo)
-            return false;
-
-        return effectiveMoValence(composition) >= minimum_molybdate_valence - mo_valence_tolerance;
     };
 
     auto accumulateOxidePhase = [&](const std::map<std::string, double>& composition,
@@ -314,54 +199,171 @@ void Simulation::JOGFormation()
             continue;
 
         const std::string phase = variable.getPhase();
-        if (phase != "condensed" && phase != "liquid" && phase != "ionic_liquid" && phase != "liquid_ionic")
+        const bool is_liquid_phase = phase == "liquid" || phase == "ionic_liquid" || phase == "liquid_ionic";
+        if (phase != "condensed" && !is_liquid_phase)
             continue;
 
         const std::string variable_name = variable.getName();
-        const bool is_liquid_phase = phase == "liquid" || phase == "ionic_liquid" || phase == "liquid_ionic";
-        if (is_liquid_phase && variable_name.rfind("LIQUID (", 0) != 0)
-            continue;
-
         const std::map<std::string, double> composition = variable.getComposition();
-        const double phase_molar_mass = molarMass(composition);
+        const std::map<int, std::map<std::string, double>> sublattice_composition = variable.getSublatticeComposition();
+        const double phase_molar_mass = variable.getMolarMass();
+        const double mass = variable.getMass();
+        const double manifest_density = variable.getTheoreticalDensity();
+
         const double mo_stoichiometry = getElementAmount(composition, "Mo");
         if (mo_stoichiometry > 0.0 && phase_molar_mass > 0.0)
         {
-            const double mo_moles = variable.getMass() * mo_stoichiometry / phase_molar_mass;
+            const double mo_moles = mass * mo_stoichiometry / phase_molar_mass;
             total_mo_moles += mo_moles;
         }
 
         const double ba_stoichiometry = getElementAmount(composition, "Ba");
         if (ba_stoichiometry > 0.0 && phase_molar_mass > 0.0)
         {
-            const double ba_moles = variable.getMass() * ba_stoichiometry / phase_molar_mass;
+            const double ba_moles = mass * ba_stoichiometry / phase_molar_mass;
             total_ba_moles += ba_moles;
         }
 
-        const double mass = variable.getMass();
-            
-
         accumulateOxidePhase(composition, phase_molar_mass, mass);
 
-        const std::map<int, std::map<std::string, double>> sublattice_composition =
-            variable.getSublatticeComposition();
-        const bool is_molybdate_liquid =
-            !sublattice_composition.empty()
-                ? hasMolybdateSecondSublattice(sublattice_composition)
-                : isMolybdateLiquidByStoichiometry(composition);
+        auto hasOxideSecondSublattice =
+            [&normalizeSublatticeConstituent](
+            const std::map<int, std::map<std::string, double>>& sublattice_composition)
+        {
+            const auto second_sublattice = sublattice_composition.find(2);
+            if (second_sublattice == sublattice_composition.end())
+                return false;
 
-        if (is_liquid_phase && is_molybdate_liquid)
-            JOG_liquid += mass / theoretical_density;
+            for (const auto& constituent_entry : second_sublattice->second)
+            {
+                if (constituent_entry.second > 1.0e-3 &&
+                    normalizeSublatticeConstituent(constituent_entry.first) == "VA")
+                    return false;
+            }
+            return true;
+        };
+
+        const bool is_oxide_liquid =
+            !sublattice_composition.empty()
+                ? hasOxideSecondSublattice(sublattice_composition)
+                : false;
+
+        double liquid_density_estimate = 0.0;
+
+        if (is_liquid_phase)
+        {
+            // Store every constituent of the liquid's two sublattices
+            static const std::vector<std::string> first_sublattice_species = {
+                "BA+2", "CS+", "MO+4", "PD+2", "RH+3", "RU+4", "TC+4"};
+            static const std::vector<std::string> second_sublattice_species = {
+                "MOO4-2", "O-2", "VA", "CSO2", "MOO3", "O"};
+
+            auto sublatticeFraction = [&sublattice_composition](int sublattice_index, const std::string& species)
+            {
+                const auto sublattice = sublattice_composition.find(sublattice_index);
+                if (sublattice == sublattice_composition.end())
+                    return 0.0;
+
+                const auto constituent = sublattice->second.find(species);
+                return constituent != sublattice->second.end() ? constituent->second : 0.0;
+            };
+
+            auto storeSublatticeSpecies = [this, &sublatticeFraction](
+                                               int sublattice_index, const std::vector<std::string>& species_names)
+            {
+                for (const auto& species : species_names)
+                    thermochemistry_variable[species + " (liquid, derived)"].setFinalValue(
+                        sublatticeFraction(sublattice_index, species));
+            };
+
+            storeSublatticeSpecies(1, first_sublattice_species);
+            storeSublatticeSpecies(2, second_sublattice_species);
+
+            // Exploratory: estimate the liquid density from its sublattice site
+            // fractions via the volume-additivity mixing rule
+            // (1/rho_mix = sum x_i/rho_i), treated as a 2x2 reciprocal system
+            // of the two cations and two anions with a known condensed-phase
+            // density on file: Cs2MoO4 (CS+ & MOO4-2, temperature-dependent
+            // density from the Wallez et al. model above), BaMoO4 (BA+2 &
+            // MOO4-2, fixed manifest density - Ba2+ pairs preferentially with
+            // MoO4-2 over O-2, so this pair matters more than BaO/halite for a
+            // Cs2MoO4-Ba(Mo)Ox liquid) and BaO/halite (BA+2 & O-2, fixed
+            // manifest density). Each pair's "mole fraction" is approximated as
+            // the product of its cation and anion site fractions (a
+            // reciprocal-system approximation, not exact without full
+            // charge-balance stoichiometry), renormalized over the three known
+            // pairs so they sum to 1. Cs2O (CS+ & O-2) completes the reciprocal
+            // square but has no known density and is left out of the mixture.
+            const double y_cs   = sublatticeFraction(1, "CS+");
+            const double y_ba   = sublatticeFraction(1, "BA+2");
+            const double y_moo4 = sublatticeFraction(2, "MOO4-2");
+            const double y_o    = sublatticeFraction(2, "O-2");
+
+            const double halite_density =
+                thermochemistry_variable["HALITE (condensed, at grain boundary)"].getTheoreticalDensity();
+            const double bamoo4_density =
+                thermochemistry_variable["BAMOO4 (condensed, at grain boundary)"].getTheoreticalDensity();
+
+            const double cs2moo4_pair_fraction = y_cs * y_moo4;
+            const double bamoo4_pair_fraction  = y_ba * y_moo4;
+            const double bao_pair_fraction     = y_ba * y_o;
+            const double pair_fraction_total =
+                cs2moo4_pair_fraction + bamoo4_pair_fraction + bao_pair_fraction;
+
+            if (pair_fraction_total > 0.0 && halite_density > 0.0 && bamoo4_density > 0.0)
+            {
+                const double x_cs2moo4 = cs2moo4_pair_fraction / pair_fraction_total;
+                const double x_bamoo4  = bamoo4_pair_fraction / pair_fraction_total;
+                const double x_bao     = bao_pair_fraction / pair_fraction_total;
+                const double estimate =
+                    1.0 / (x_cs2moo4 / theoretical_density + x_bamoo4 / bamoo4_density + x_bao / halite_density);
+
+                // Sanity range for a Cs-Ba-Mo-O molten oxide, 1-10 g/cm3
+                // (1e6-1e7 g/m3); outside this range the reciprocal-system
+                // approximation is discarded in favour of the Cs2MoO4 density.
+                const double min_plausible_density = 1.0e6;
+                const double max_plausible_density = 1.0e7;
+                if (estimate > min_plausible_density && estimate < max_plausible_density)
+                    liquid_density_estimate = estimate;
+            }
+        }
+
+        // Cs2MoO4 has no crystallographic unit-cell density on file (it is
+        // derived from the temperature-dependent thermal-expansion model
+        // above); the manifest can still override it if supplied.
+        const double cs2moo4_density = manifest_density > 0.0 ? manifest_density : theoretical_density;
+
+        if (is_liquid_phase && is_oxide_liquid)
+        {
+            const double liquid_density = liquid_density_estimate > 0.0 ? liquid_density_estimate : cs2moo4_density;
+            variable.setTheoreticalDensity(liquid_density);
+            JOG_liquid += mass / liquid_density;
+        }
         else if (variable_name == "CS2MOO4_S1 (condensed, at grain boundary)")
-            JOG_Cs2MoO4 += mass / theoretical_density;
+        {
+            variable.setTheoreticalDensity(cs2moo4_density);
+            JOG_Cs2MoO4 += mass / cs2moo4_density;
+        }
         else if (variable_name == "CS2MOO4_S2 (condensed, at grain boundary)")
-            JOG_Cs2MoO4 += mass / theoretical_density;
+        {
+            variable.setTheoreticalDensity(cs2moo4_density);
+            JOG_Cs2MoO4 += mass / cs2moo4_density;
+        }
         else if (variable_name == "BAMOO4 (condensed, at grain boundary)")
-            JOG_BaMoO4 += mass / theoretical_density_BaMoO4;
+        {
+            if (manifest_density > 0.0)
+                JOG_BaMoO4 += mass / manifest_density;
+        }
         else if (variable_name == "BA3MOO6 (condensed, at grain boundary)")
-            JOG_Ba3MoO6 += mass / theoretical_density_Ba3MoO6;
+        {
+            if (manifest_density > 0.0)
+                JOG_Ba3MoO6 += mass / manifest_density;
+        }
         else if (variable_name == "BA2MOO5 (condensed, at grain boundary)")
-            JOG_Ba2MoO5 += mass / theoretical_density_Ba2MoO5;
+        {
+            if (manifest_density > 0.0)
+                JOG_Ba2MoO5 += mass / manifest_density;
+        }
         else if (variable_name == "HCP_A3 (condensed, at grain boundary)")
         {
 
@@ -391,6 +393,8 @@ void Simulation::JOGFormation()
             else
                 sciantix_variable["Mo/Ru in HCP_A3"].setFinalValue(0.0);
         }
+        else if (manifest_density > 0.0)
+            JOG_other += mass / manifest_density;
     }
 
     sciantix_variable["JOG (Cs2MoO4)"].setFinalValue(JOG_Cs2MoO4);
@@ -398,6 +402,7 @@ void Simulation::JOGFormation()
     sciantix_variable["JOG (Ba3MoO6)"].setFinalValue(JOG_Ba3MoO6);
     sciantix_variable["JOG (Ba2MoO5)"].setFinalValue(JOG_Ba2MoO5);
     sciantix_variable["JOG (liquid)"].setFinalValue(JOG_liquid);
+    sciantix_variable["JOG (other phases)"].setFinalValue(JOG_other);
     sciantix_variable["Mo in oxide fraction"].setFinalValue(
         total_mo_moles > 0.0 ? oxide_mo_moles / total_mo_moles : 0.0);
     sciantix_variable["Mo oxide valence"].setFinalValue(
