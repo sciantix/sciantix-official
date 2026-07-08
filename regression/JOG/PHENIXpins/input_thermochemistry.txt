@@ -1,4 +1,4 @@
-# index | category | phase | compound | location | uom | output
+# index | category | phase | compound | location | uom | output | density (g/cm3)
 0 | fission_products | gas | BA2 | at grain boundary | (g/m3) | 1
 1 | fission_products | gas | BA2O | at grain boundary | (g/m3) | 1
 2 | fission_products | gas | BA2O2 | at grain boundary | (g/m3) | 1
@@ -28,18 +28,18 @@
 26 | fission_products | gas | RU | at grain boundary | (g/m3) | 1
 27 | fission_products | gas | TC | at grain boundary | (g/m3) | 1
 28 | fission_products | liquid | LIQUID | at grain boundary | (g/m3) | 1
-29 | fission_products | condensed | BA2MOO5 | at grain boundary | (g/m3) | 1
-30 | fission_products | condensed | BA3MOO6 | at grain boundary | (g/m3) | 1
+29 | fission_products | condensed | BA2MOO5 | at grain boundary | (g/m3) | 1 | 6.1507
+30 | fission_products | condensed | BA3MOO6 | at grain boundary | (g/m3) | 1 | 6.3066
 31 | fission_products | condensed | BAMO2O7 | at grain boundary | (g/m3) | 1
-32 | fission_products | condensed | BAMO3O10 | at grain boundary | (g/m3) | 1
-33 | fission_products | condensed | BAMOO4 | at grain boundary | (g/m3) | 1
+32 | fission_products | condensed | BAMO3O10 | at grain boundary | (g/m3) | 1 | 5.1021
+33 | fission_products | condensed | BAMOO4 | at grain boundary | (g/m3) | 1 | 4.9770
 34 | fission_products | condensed | HCP_ORD | at grain boundary | (g/m3) | 1
-35 | fission_products | condensed | CS2MO2O7_S1 | at grain boundary | (g/m3) | 1
-36 | fission_products | condensed | CS2MO2O7_S2 | at grain boundary | (g/m3) | 1
-37 | fission_products | condensed | CS2MO3O10 | at grain boundary | (g/m3) | 1
-38 | fission_products | condensed | CS2MO4O13 | at grain boundary | (g/m3) | 1
-39 | fission_products | condensed | CS2MO5O16 | at grain boundary | (g/m3) | 1
-40 | fission_products | condensed | CS2MO7O22 | at grain boundary | (g/m3) | 1
+35 | fission_products | condensed | CS2MO2O7_S1 | at grain boundary | (g/m3) | 1 | 4.4340
+36 | fission_products | condensed | CS2MO2O7_S2 | at grain boundary | (g/m3) | 1 | 4.2198
+37 | fission_products | condensed | CS2MO3O10 | at grain boundary | (g/m3) | 1 | 4.1560
+38 | fission_products | condensed | CS2MO4O13 | at grain boundary | (g/m3) | 1 | 4.5145 
+39 | fission_products | condensed | CS2MO5O16 | at grain boundary | (g/m3) | 1 | 4.6258
+40 | fission_products | condensed | CS2MO7O22 | at grain boundary | (g/m3) | 1 | 4.5106
 41 | fission_products | condensed | CS2MOO4_S1 | at grain boundary | (g/m3) | 1
 42 | fission_products | condensed | CS2MOO4_S2 | at grain boundary | (g/m3) | 1
 43 | fission_products | condensed | CS2O1 | at grain boundary | (g/m3) | 1
@@ -50,7 +50,7 @@
 48 | fission_products | condensed | CS7O2 | at grain boundary | (g/m3) | 1
 49 | fission_products | condensed | CSO2 | at grain boundary | (g/m3) | 1
 50 | fission_products | condensed | CSO3 | at grain boundary | (g/m3) | 1
-51 | fission_products | condensed | HALITE | at grain boundary | (g/m3) | 1
+51 | fission_products | condensed | HALITE | at grain boundary | (g/m3) | 1 | 6.04
 52 | fission_products | condensed | MO2_C11A | at grain boundary | (g/m3) | 1
 53 | fission_products | condensed | MO4O11 | at grain boundary | (g/m3) | 1
 54 | fission_products | condensed | MO8O23 | at grain boundary | (g/m3) | 1
@@ -109,3 +109,16 @@
 107 | matrix | condensed | TETRAGONAL_A6 | matrix | (g/m3) | 0
 108 | matrix | condensed | TETRAGONAL_U | matrix | (g/m3) | 0
 109 | matrix | condensed | ZETA_PHASE | matrix | (g/m3) | 0
+110 | liquid_composition | liquid | BA+2 | derived | (-) | 1
+111 | liquid_composition | liquid | CS+ | derived | (-) | 1
+112 | liquid_composition | liquid | MO+4 | derived | (-) | 1
+113 | liquid_composition | liquid | PD+2 | derived | (-) | 1
+114 | liquid_composition | liquid | RH+3 | derived | (-) | 1
+115 | liquid_composition | liquid | RU+4 | derived | (-) | 1
+116 | liquid_composition | liquid | TC+4 | derived | (-) | 1
+117 | liquid_composition | liquid | MOO4-2 | derived | (-) | 1
+118 | liquid_composition | liquid | O-2 | derived | (-) | 1
+119 | liquid_composition | liquid | VA | derived | (-) | 1
+120 | liquid_composition | liquid | CSO2 | derived | (-) | 1
+121 | liquid_composition | liquid | MOO3 | derived | (-) | 1
+122 | liquid_composition | liquid | O | derived | (-) | 1

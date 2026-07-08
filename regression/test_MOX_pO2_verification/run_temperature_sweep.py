@@ -18,25 +18,49 @@ from pathlib import Path
 
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+import matplotlib.colors as mcolors
 import pandas as pd
 
+PAPER_PALETTE = [
+    "#736F3F", "#BFAE56", "#B29DA6", "#D9AF32", "#A66226", "#733426",
+    "#737675", "#9D6953", "#363726", "#785C2D",
+]
+
+# Fixed normalization range shared across every MOXSCIANTIX verification plot so a
+# given temperature always renders as the same viridis color in every figure.
+VERIFICATION_TEMPERATURE_MIN_K = 800.0
+VERIFICATION_TEMPERATURE_MAX_K = 2600.0
+
+
+def temperature_color_map(temperatures_k):
+    """Assign a viridis color to each temperature, shared across the paper's figures."""
+    norm = mcolors.Normalize(vmin=VERIFICATION_TEMPERATURE_MIN_K, vmax=VERIFICATION_TEMPERATURE_MAX_K)
+    cmap = matplotlib.colormaps["viridis"]
+    return {temperature_k: cmap(norm(temperature_k)) for temperature_k in temperatures_k}
+
+plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update({
     "figure.figsize": (10, 7),
-    "font.size": 12,
-    "axes.labelsize": 15,
-    "axes.titlesize": 12,
-    "xtick.labelsize": 12,
-    "ytick.labelsize": 12,
-    "legend.fontsize": 12,
+    "font.family": "serif",
+    "font.serif": ["Times New Roman", "Times", "Nimbus Roman", "DejaVu Serif"],
+    "mathtext.fontset": "dejavuserif",
+    "font.size": 20,
+    "axes.labelsize": 20,
+    "axes.titlesize": 20,
+    "xtick.labelsize": 20,
+    "ytick.labelsize": 20,
+    "legend.fontsize": 20,
     "figure.dpi": 300,
     "axes.grid": True,
     "grid.alpha": 0.5,
     "grid.linestyle": "--",
-    "lines.linewidth": 2,
-    "lines.markersize": 4,
+    "lines.linewidth": 3,
+    "lines.markersize": 6,
     "legend.frameon": False,
+    "axes.prop_cycle": plt.cycler(color=PAPER_PALETTE),
 })
 
 TEMPERATURES_K = list(range(800, 2800, 200))
@@ -195,8 +219,7 @@ def collect_case(case_dir: Path, temperature_k: int, q_value: float) -> pd.DataF
 
 def style_maps():
     """Create consistent color and line encodings across all plots."""
-    cmap = plt.get_cmap("turbo", len(TEMPERATURES_K))
-    colors = {temperature_k: cmap(index) for index, temperature_k in enumerate(TEMPERATURES_K)}
+    colors = temperature_color_map(TEMPERATURES_K)
     linestyles = {
         "SCIANTIX + Kato model": None,
         "SCIANTIX + OpenCalphad": None,

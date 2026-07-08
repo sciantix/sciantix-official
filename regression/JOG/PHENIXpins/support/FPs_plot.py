@@ -57,6 +57,26 @@ DISTINCT_COLOR_VALUES = [
     "#737675", "#9D6953", "#363726",  "#785C2D",
 ]
 
+# Fixed element -> color assignment shared with run_and_plot_JOG.py's
+# ELEMENT_COLORS, so the JOG composition pie here uses the same color for an
+# element as the SCIANTIX/GERMINAL comparison pies do. Keep both in sync.
+ELEMENT_COLORS = {
+    "Cs": "#BFAE56",
+    "O": "#A66226",
+    "Mo": "#B29DA6",
+    "Ba": "#D9AF32",
+    "I": "#733426",
+    "Rb": "#737675",
+    "Zr": "#9D6953",
+    "Fe": "#363726",
+    "Co": "#785C2D",
+    "Pd": "#736F3F",
+    "Rh": "#4F6D5A",
+    "Ru": "#5B7A99",
+    "Tc": "#8A4F7D",
+    "Te": "#C1666B",
+}
+
 
 CATEGORY_STYLE = {
     SOLID_SOLUTION: {
@@ -240,12 +260,94 @@ def draw_bubble_plot() -> None:
     plt.close(fig)
 
 
-def draw_atomic_percent_pie() -> None:
-    elements = [element for element, _ in ATOMIC_PERCENT_COMPOSITION]
-    values = [value for _, value in ATOMIC_PERCENT_COMPOSITION]
-    colors = DISTINCT_COLOR_VALUES[: len(values)]
-    outside_labels = ["" for _ in ATOMIC_PERCENT_COMPOSITION]
+def place_pie_wedge_labels(
+    axis: plt.Axes,
+    wedges: list,
+    elements: list[str],
+    values: list[float],
+    value_labels: list[str],
+    pie_radius: float,
+    *,
+    element_fontsize: float = 16,
+    value_fontsize: float = 14,
+    small_value_threshold: float = 2.0,
+) -> None:
+    """Label every wedge outside the pie with a leader line.
 
+    ``elements``/``values``/``value_labels`` must be sorted value-descending
+    (matching the order the wedges were drawn in), so wedges below
+    ``small_value_threshold`` end up consecutive at the end of the sequence:
+    they are all narrow and close together in angle, so instead of placing
+    them purely by angle (which makes them overlap) they are stacked as an
+    evenly spaced label column.
+    """
+    n_wedges = len(wedges)
+    cluster_start = n_wedges
+    for index in range(n_wedges - 1, -1, -1):
+        if values[index] < small_value_threshold:
+            cluster_start = index
+        else:
+            break
+
+    thetas = [math.radians((wedge.theta1 + wedge.theta2) / 2.0) for wedge in wedges]
+    cluster_size = n_wedges - cluster_start
+    cluster_sign = 1.0
+    cluster_center_y = 0.0
+    line_spacing = 0.24
+    if cluster_size > 0:
+        cluster_sign = 1.0 if sum(math.cos(t) for t in thetas[cluster_start:]) >= 0.0 else -1.0
+        cluster_center_y = sum(math.sin(t) for t in thetas[cluster_start:]) / cluster_size
+
+    for index, (wedge, element, value, value_label, theta) in enumerate(
+        zip(wedges, elements, values, value_labels, thetas)
+    ):
+        x, y = math.cos(theta), math.sin(theta)
+
+        if index >= cluster_start:
+            cluster_index = index - cluster_start
+            text_x = pie_radius * 1.62 * cluster_sign
+            text_y = (
+                cluster_center_y
+                + line_spacing * (cluster_size - 1) / 2.0
+                - line_spacing * cluster_index
+            )
+        else:
+            sign = 1.0 if x >= 0.0 else -1.0
+            anchor_radius = pie_radius * (1.32 if index % 2 == 0 else 1.58)
+            text_x = anchor_radius * sign
+            text_y = anchor_radius * y
+
+        ha = "left" if text_x >= 0.0 else "right"
+        axis.annotate(
+            "",
+            xy=(pie_radius * x, pie_radius * y),
+            xytext=(text_x, text_y),
+            arrowprops=dict(
+                arrowstyle="-",
+                color="#8a8a83",
+                lw=1.0,
+                connectionstyle=f"angle,angleA=0,angleB={math.degrees(theta):.1f}",
+            ),
+            zorder=3,
+        )
+        axis.text(
+            text_x, text_y + 0.065, element,
+            ha=ha, va="center", fontsize=element_fontsize, fontweight="bold", color="#171717",
+        )
+        axis.text(
+            text_x, text_y - 0.065, value_label,
+            ha=ha, va="center", fontsize=value_fontsize, color="#171717",
+        )
+
+
+def draw_atomic_percent_pie() -> None:
+    filtered_composition = [(element, value) for element, value in ATOMIC_PERCENT_COMPOSITION if value >= 1.0]
+    elements = [element for element, _ in filtered_composition]
+    values = [value for _, value in filtered_composition]
+    colors = [ELEMENT_COLORS.get(element, "#999999") for element in elements]
+    outside_labels = ["" for _ in filtered_composition]
+
+    pie_radius = 1.0
     fig, axis = plt.subplots(figsize=(8.5, 7.0), constrained_layout=True)
     wedges, labels = axis.pie(
         values,
@@ -256,66 +358,16 @@ def draw_atomic_percent_pie() -> None:
         wedgeprops={
             "alpha": 0.7,
         },
-        textprops={
-            "fontweight": "bold",
-            "color": "#171717",
-        },
+        radius=pie_radius,
     )
 
-    external_labels = []
-    for wedge, element, value in zip(wedges, elements, values):
-        theta = math.radians((wedge.theta1 + wedge.theta2) / 2.0)
-        if value <= 2.0:
-            external_labels.append(
-                {
-                    "element": element,
-                    "x": math.cos(theta),
-                    "y": math.sin(theta),
-                }
-            )
-            continue
-
-        radius = 0.75
-        axis.text(
-            radius * math.cos(theta),
-            radius * math.sin(theta)+0.05,
-            f"{element}",
-            ha="center",
-            va="center",
-            fontweight="bold",
-            color="#171717",
-        )
-        axis.text(
-            radius * math.cos(theta),
-            radius * math.sin(theta)-0.05,
-            f"{value:.0f}%",
-            ha="center",
-            va="center",
-            color="#171717",
-        )
-
-    for label in external_labels:
-        radius = 1.08
-        offset = 0.0
-        if label["element"] == "Co":
-            offset = -0.03
-        axis.text(
-            radius * label["x"],
-            radius * label["y"] + offset,
-            label["element"],
-            ha="center",
-            va="center",
-            fontweight="bold",
-            fontsize=16,
-            color="#171717",
-        )
-
-    axis.set_title(
-        "JOG composition",
-        fontweight="bold",
-        y=0.94,
-        loc="center",
+    place_pie_wedge_labels(
+        axis, wedges, elements, values, [f"{value:.0f}%" for value in values], pie_radius,
+        element_fontsize=15, value_fontsize=13,
     )
+
+    axis.set_xlim(-2.1 * pie_radius, 2.1 * pie_radius)
+    axis.set_ylim(-1.75 * pie_radius, 1.75 * pie_radius)
     axis.set_aspect("equal")
     fig.tight_layout()
 

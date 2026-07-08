@@ -8,21 +8,31 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 
+PAPER_PALETTE = [
+    "#736F3F", "#BFAE56", "#B29DA6", "#D9AF32", "#A66226", "#733426",
+    "#737675", "#9D6953", "#363726", "#785C2D",
+]
+
+plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update({
     "figure.figsize": (10, 7),
-    "font.size": 12,
-    "axes.labelsize": 15,
-    "axes.titlesize": 12,
-    "xtick.labelsize": 12,
-    "ytick.labelsize": 12,
-    "legend.fontsize": 12,
+    "font.family": "serif",
+    "font.serif": ["Times New Roman", "Times", "Nimbus Roman", "DejaVu Serif"],
+    "mathtext.fontset": "dejavuserif",
+    "font.size": 20,
+    "axes.labelsize": 20,
+    "axes.titlesize": 20,
+    "xtick.labelsize": 20,
+    "ytick.labelsize": 20,
+    "legend.fontsize": 20,
     "figure.dpi": 300,
     "axes.grid": True,
     "grid.alpha": 0.5,
     "grid.linestyle": "--",
-    "lines.linewidth": 2,
-    "lines.markersize": 4,
+    "lines.linewidth": 3,
+    "lines.markersize": 6,
     "legend.frameon": False,
+    "axes.prop_cycle": plt.cycler(color=PAPER_PALETTE),
 })
 
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -152,7 +162,7 @@ def plot_parity(points: list[dict[str, float | str]], folder) -> None:
     limits = [lower - margin, upper + margin]
 
     fig, ax = plt.subplots()
-    scatter = ax.scatter(exp, sci, c=temperatures, cmap="turbo", s=18, alpha=0.8)
+    scatter = ax.scatter(exp, sci, c=temperatures, cmap="viridis", s=18, alpha=0.8)
     ax.plot(limits, limits, color="0.25", linewidth=1.4, label="1:1")
     ax.set_xlim(limits)
     ax.set_ylim(limits)

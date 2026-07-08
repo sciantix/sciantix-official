@@ -74,16 +74,17 @@ def main() -> None:
     # factor comes from the temperature-dependent concentration profile.
     rim_to_center_burnup_factor = 1.0
 
+    r_inner = 0.8e-3 # central hole (Inspyre deliverable 7.3)
     profile = PolynomialProfile(
-        r_inner=0.4e-3,
+        r_inner=r_inner,
         r_outer=r_outer,
-        t_center=2000.0,
-        t_surface=600.0,
+        t_center=2200.0,
+        t_surface=800.0,
         power=2.0,
     )
 
     solver = CsRedCylinder(
-        geometry=CylinderGeometry(r_outer=r_outer),
+        geometry=CylinderGeometry(r_outer=r_outer, r_inner=r_inner),
         temperature_profile=profile,
         n_cells=n_radial_points,
     )
@@ -103,22 +104,61 @@ def main() -> None:
         result.scaling_factor * result.produced,
     ) / area_average(edges, result.produced)
 
+    # Region colors: one per radial node, so the reader can see which shell
+    # of the pellet (edges[i] to edges[i+1]) each SCIANTIX node represents.
+    REGION_COLORS = ["#2a78d6", "#1baf7a", "#eda100", "#008300"]
+    edges_over_ro = edges / r_outer
+    n_regions = len(edges_over_ro) - 1
+
     fig, axis = plt.subplots(1,1, figsize=(8,5))
-    
-    axis.plot(radius_mm*1e-3/r_outer, result.scaling_factor, marker="o", color=PAPER_PALETTE[2]) 
+
+    for i in range(n_regions):
+        axis.axvspan(
+            edges_over_ro[i], edges_over_ro[i + 1],
+            color=REGION_COLORS[i % len(REGION_COLORS)],
+            alpha=0.15, zorder=0, linewidth=0,
+        )
+        axis.text(
+            0.5 * (edges_over_ro[i] + edges_over_ro[i + 1]), 0.97,
+            f"Point {i + 1}", ha="center", va="top", fontsize=13, color="#3a3a3a",
+            transform=axis.get_xaxis_transform(),
+        )
+
+    # Continuous curve over the full inner-to-outer radius: the node values
+    # are held flat to the domain edges and linearly interpolated in between.
+    radius_full = np.concatenate(([edges[0]], radius, [edges[-1]]))
+    scaling_factor_full = np.concatenate((
+        [result.scaling_factor[0]], result.scaling_factor, [result.scaling_factor[-1]],
+    ))
+    axis.plot(
+        radius_full / r_outer, scaling_factor_full,
+        color=PAPER_PALETTE[2], linewidth=3, zorder=2,
+    )
+    # Dots mark only the radii where a SCIANTIX calculation was performed.
+    axis.scatter(
+        radius_mm * 1e-3 / r_outer, result.scaling_factor,
+        marker="o", s=70, color=PAPER_PALETTE[2], zorder=3,
+    )
     secondary_axis = axis.twinx()
-    secondary_axis.plot(radius_mm*1e-3/r_outer, temperature, marker="^", color=PAPER_PALETTE[-1])
+    # The temperature profile is analytic, so the full inner-to-outer curve
+    # is the real evaluated profile, not an extrapolation.
+    temperature_full = profile(radius_full)
+    secondary_axis.plot(radius_full / r_outer, temperature_full, color=PAPER_PALETTE[-1], linewidth=3, zorder=2)
+    secondary_axis.scatter(
+        radius_mm * 1e-3 / r_outer, temperature,
+        marker="^", s=70, color=PAPER_PALETTE[-1], zorder=3,
+    )
     axis.set_xlabel("R/Ro")
     axis.set_xlim(0.0-0.1, 1.0+0.1)
     axis.set_xticks(np.linspace(0.0, 1.0, 6))
     axis.set_ylim(0.0, 3.0)
-    secondary_axis.set_ylim(700.0, 2100.0)
+    secondary_axis.set_ylim(700.0, 2300.0)
     secondary_axis.grid(False)
     axis.set_ylabel("Cs redistribution (-)", color=PAPER_PALETTE[2])
     axis.set_yticks(np.linspace(0.0, 3.0, 7))
     axis.tick_params(axis="y", labelcolor=PAPER_PALETTE[2])
     secondary_axis.tick_params(axis="y", labelcolor=PAPER_PALETTE[-1])
-    secondary_axis.set_yticks(np.linspace(700.0, 2100.0, 8))
+    secondary_axis.set_yticks(np.linspace(700.0, 2300.0, 9))
     secondary_axis.set_ylabel("Temperature (K)", color=PAPER_PALETTE[-1])
     plt.tight_layout()
     

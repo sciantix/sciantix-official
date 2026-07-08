@@ -30,6 +30,7 @@ struct ThermochemistryManifestEntry
     std::string                location;
     std::string                uom;
     bool                       output;
+    double                     density = 0.0;  // theoretical density, g/cm3; 0.0 if not provided
     std::map<std::string, int> stoichiometry;
 
     std::string getLabel() const;

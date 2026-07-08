@@ -20,8 +20,10 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 os.environ.setdefault("MPLCONFIGDIR", str(SCRIPT_DIR / ".matplotlib"))
 
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+import matplotlib.colors as mcolors
 import numpy as np
 import pandas as pd
 
@@ -52,23 +54,40 @@ EXPLICIT_POINTS_PATH = SCRIPT_DIR / "sciantix_vs_kato_points.tsv"
 LEGACY_EXPLICIT_POINTS_PATH = SCRIPT_DIR / "kato_explicit_points.tsv"
 
 
+PAPER_PALETTE = [
+    "#736F3F", "#BFAE56", "#B29DA6", "#D9AF32", "#A66226", "#733426",
+    "#737675", "#9D6953", "#363726", "#785C2D",
+]
+
+plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update({
     "figure.figsize": (10, 7),
-    "font.size": 12,
-    "axes.labelsize": 15,
-    "axes.titlesize": 12,
-    "xtick.labelsize": 12,
-    "ytick.labelsize": 12,
-    "legend.fontsize": 12,
+    "font.family": "serif",
+    "font.serif": ["Times New Roman", "Times", "Nimbus Roman", "DejaVu Serif"],
+    "mathtext.fontset": "dejavuserif",
+    "font.size": 20,
+    "axes.labelsize": 20,
+    "axes.titlesize": 20,
+    "xtick.labelsize": 20,
+    "ytick.labelsize": 20,
+    "legend.fontsize": 20,
     "figure.dpi": 300,
     "axes.grid": True,
     "grid.alpha": 0.5,
     "grid.linestyle": "--",
-    "lines.linewidth": 0.5,
-    "lines.markersize": 4,
+    "lines.linewidth": 3,
+    "lines.markersize": 6,
     "legend.frameon": False,
+    "axes.prop_cycle": plt.cycler(color=PAPER_PALETTE),
 })
 PLOT_MARKER_SIZE = 4
+
+# Fixed normalization range shared across every MOXSCIANTIX verification plot so a
+# given temperature always renders as the same viridis color in every figure.
+VERIFICATION_TEMPERATURE_MIN_K = 800.0
+VERIFICATION_TEMPERATURE_MAX_K = 2600.0
+SCIANTIX_KATO_MARKER = "^"
+MODEL_CURVE_MARKEVERY = 0.06
 
 
 def effective_pu_content(q_pu: float, q_am: float = 0.0, q_np: float = 0.0) -> float:
@@ -331,15 +350,10 @@ def write_summary_report(frame: pd.DataFrame) -> None:
 
 
 def temperature_color_map(temperatures_k: list[int]) -> dict[int, object]:
-    """Assign a stable plotting color to each verification temperature."""
-    cmap = plt.get_cmap("turbo", len(temperatures_k))
-    return {temperature_k: cmap(index) for index, temperature_k in enumerate(temperatures_k)}
-
-
-def temperature_marker_map(temperatures_k: list[int]) -> dict[int, str]:
-    """Assign marker styles to temperatures when a temperature marker map is needed."""
-    markers = ["o", "s", "^", "D", "v", "P", "X", "*"]
-    return {temperature_k: markers[index % len(markers)] for index, temperature_k in enumerate(temperatures_k)}
+    """Assign a viridis color to each temperature, shared across the paper's figures."""
+    norm = mcolors.Normalize(vmin=VERIFICATION_TEMPERATURE_MIN_K, vmax=VERIFICATION_TEMPERATURE_MAX_K)
+    cmap = matplotlib.colormaps["viridis"]
+    return {temperature_k: cmap(norm(temperature_k)) for temperature_k in temperatures_k}
 
 
 def q_marker_map(q_values: list[float]) -> dict[float, str]:
@@ -352,15 +366,20 @@ def q_tag(q_value: float) -> str:
     """Convert a q value into the filename tag used by the saved figures."""
     return f"{q_value:.2f}".replace(".", "p")
 
-def add_model_legends(ax, temperatures_k: list[int], temperature_colors: dict[int, object]) -> None:
+def add_model_legends(
+    ax,
+    temperatures_k: list[int],
+    temperature_colors: dict[int, object],
+    reference_marker: str = "o",
+) -> None:
     """Add separate legends for temperatures and for SCIANTIX/reference sources."""
     temperature_handles = [
         Line2D([0], [0], color=temperature_colors[temperature_k], label=f"{int(round(temperature_k))} K")
         for temperature_k in temperatures_k
     ]
     source_handles = [
-        Line2D([0], [0], color="black", linestyle="-", label="SCIANTIX + Kato model"),
-        Line2D([0], [0], color="black", linestyle="None", marker="o", label="Analytical Kato formula"),
+        Line2D([0], [0], color="black", linestyle="-", marker=SCIANTIX_KATO_MARKER, label="SCIANTIX + Kato model"),
+        Line2D([0], [0], color="black", linestyle="None", marker=reference_marker, label="Analytical Kato formula"),
     ]
 
     temperature_legend = ax.legend(
@@ -402,6 +421,9 @@ def make_pressure_plot(frame: pd.DataFrame) -> None:
                 subset["Kato log10(p/reference)"],
                 color=temperature_colors[temperature_k],
                 linestyle="-",
+                marker=SCIANTIX_KATO_MARKER,
+                markevery=MODEL_CURVE_MARKEVERY,
+                markersize=6,
             )
             ax.scatter(
                 subset["O/M ratio (/)"],
@@ -418,7 +440,7 @@ def make_pressure_plot(frame: pd.DataFrame) -> None:
         ax.set_ylim([-30, 0])
         ax.set_yticks(range(-30, 0, 2))
         ax.grid(True, alpha=0.3)
-        add_model_legends(ax, temperatures_k, temperature_colors)
+        add_model_legends(ax, temperatures_k, temperature_colors, reference_marker="o")
         fig.tight_layout()
         fig.savefig(PLOTS_DIR / f"fuel_oxygen_partial_pressure_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
         plt.close(fig)
@@ -543,6 +565,9 @@ def make_potential_plot(frame: pd.DataFrame) -> None:
                 subset["Fuel oxygen potential - Kato (KJ/mol)"],
                 color=temperature_colors[temperature_k],
                 linestyle="-",
+                marker=SCIANTIX_KATO_MARKER,
+                markevery=MODEL_CURVE_MARKEVERY,
+                markersize=6,
             )
             ax.scatter(
                 subset["O/M ratio (/)"],
@@ -557,7 +582,7 @@ def make_potential_plot(frame: pd.DataFrame) -> None:
         ax.set_ylabel("Oxygen potential (kJ/mol)")
         ax.set_xlim([OM_MIN, OM_MAX])
         ax.grid(True, alpha=0.3)
-        add_model_legends(ax, temperatures_k, temperature_colors)
+        add_model_legends(ax, temperatures_k, temperature_colors, reference_marker=q_markers[q_value])
         fig.tight_layout()
         fig.savefig(PLOTS_DIR / f"fuel_oxygen_potential_vs_om_ratio_kato_q_{q_tag(q_value)}.png")
         plt.close(fig)

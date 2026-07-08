@@ -126,6 +126,12 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
         {
             if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
             {
+                // "reacted" is recomputed every step as the full cumulative
+                // (produced - released), not a per-step delta (see
+                // IntragranularDiffusion.C). "at grain boundary" must therefore
+                // be set to this current snapshot, not accumulated onto --
+                // addValue() here would re-add nearly the whole cumulative
+                // inventory every timestep.
                 sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(
                     sciantix_variable[system.getFissionProductName() + " reacted"].getFinalValue());
                 sciantix_variable[system.getFissionProductName() + " reacted"].setFinalValue(0.0);
@@ -139,6 +145,7 @@ void Simulation::SetPhaseDiagram() // qui tutti eccetto i gas.
         }
     };
 
+    // CODE DEVELOPMENT : THERMOCHEMISTRY OUTER-NODE MODE
     // iThermochimica, exactly as set in input_settings.txt: 0 = off, 1 = smart
     // mode (all radial nodes of the outer/last axial slice run full
     // OpenCalphad, every other axial slice uses the simplified fixed

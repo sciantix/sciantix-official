@@ -62,18 +62,31 @@ class CsRedCylinder:
         temperature_profile: Callable[[np.ndarray], np.ndarray],
         n_cells: int = 200,
         heat_of_transport: float = CS_HEAT_OF_TRANSPORT,
+        radii: np.ndarray | None = None,
     ) -> None:
         self.geometry = geometry
         self.temperature_profile = temperature_profile
-        self.n_cells = int(n_cells)
+        self.radii = None if radii is None else np.sort(np.asarray(radii, dtype=float))
+        self.n_cells = len(self.radii) if self.radii is not None else int(n_cells)
         self.heat_of_transport = float(heat_of_transport)
 
         if self.n_cells < 2:
             raise ValueError("n_cells must be at least 2")
+        if self.radii is not None and (
+            np.any(self.radii <= self.geometry.r_inner) or np.any(self.radii >= self.geometry.r_outer)
+        ):
+            raise ValueError("radii must lie strictly between r_inner and r_outer")
         if not np.isfinite(self.heat_of_transport):
             raise ValueError("heat_of_transport must be finite")
 
     def mesh(self) -> tuple[np.ndarray, np.ndarray]:
+        if self.radii is not None:
+            centers = self.radii
+            edges = np.empty(len(centers) + 1)
+            edges[0] = self.geometry.r_inner
+            edges[-1] = self.geometry.r_outer
+            edges[1:-1] = 0.5 * (centers[:-1] + centers[1:])
+            return edges, centers
         edges = np.linspace(self.geometry.r_inner, self.geometry.r_outer, self.n_cells + 1)
         centers = 0.5 * (edges[:-1] + edges[1:])
         return edges, centers

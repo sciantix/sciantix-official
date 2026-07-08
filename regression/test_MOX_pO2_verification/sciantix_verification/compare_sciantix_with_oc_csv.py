@@ -15,24 +15,35 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+import matplotlib.colors as mcolors
 import numpy as np
 import pandas as pd
 
+PAPER_PALETTE = [
+    "#736F3F", "#BFAE56", "#B29DA6", "#D9AF32", "#A66226", "#733426",
+    "#737675", "#9D6953", "#363726", "#785C2D",
+]
+
+plt.style.use("seaborn-v0_8-whitegrid")
 plt.rcParams.update({
     "figure.figsize": (10, 7),
-    "font.size": 12,
-    "axes.labelsize": 15,
-    "axes.titlesize": 12,
-    "xtick.labelsize": 12,
-    "ytick.labelsize": 12,
-    "legend.fontsize": 12,
+    "font.family": "serif",
+    "font.serif": ["Times New Roman", "Times", "Nimbus Roman", "DejaVu Serif"],
+    "mathtext.fontset": "dejavuserif",
+    "font.size": 20,
+    "axes.labelsize": 20,
+    "axes.titlesize": 20,
+    "xtick.labelsize": 20,
+    "ytick.labelsize": 20,
+    "legend.fontsize": 20,
     "figure.dpi": 300,
     "axes.grid": True,
     "grid.alpha": 0.5,
     "grid.linestyle": "--",
-    "lines.linewidth": 0.5,
-    "lines.markersize": 4,
+    "lines.linewidth": 3,
+    "lines.markersize": 6,
     "legend.frameon": False,
+    "axes.prop_cycle": plt.cycler(color=PAPER_PALETTE),
 })
 
 REFERENCE_PRESSURE_PA = 1e5
@@ -48,6 +59,13 @@ OM_MIN = 1.92
 OM_MAX = 2.08
 NEAR_STOICHIOMETRY_TOLERANCE = 1.0e-3
 PLOT_MARKER_SIZE = 4
+
+# Fixed normalization range shared across every MOXSCIANTIX verification plot so a
+# given temperature always renders as the same viridis color in every figure.
+VERIFICATION_TEMPERATURE_MIN_K = 800.0
+VERIFICATION_TEMPERATURE_MAX_K = 2600.0
+SCIANTIX_OC_MARKER = "s"
+MODEL_CURVE_MARKEVERY = 0.06
 
 COMPARISON_PATH = SCRIPT_DIR / 'sciantix_vs_oc_csv_comparison.tsv'
 SUMMARY_OUTPUT_PATH = SCRIPT_DIR / 'sciantix_vs_oc_csv_summary.tsv'
@@ -391,8 +409,10 @@ def write_summary_report(frame: pd.DataFrame, summary: pd.DataFrame) -> None:
 
 
 def temperature_color_map(temperatures_k: list[int]) -> dict[int, object]:
-    cmap = plt.get_cmap('turbo', len(temperatures_k))
-    return {temperature_k: cmap(index) for index, temperature_k in enumerate(temperatures_k)}
+    """Assign a viridis color to each temperature, shared across the paper's figures."""
+    norm = mcolors.Normalize(vmin=VERIFICATION_TEMPERATURE_MIN_K, vmax=VERIFICATION_TEMPERATURE_MAX_K)
+    cmap = matplotlib.colormaps["viridis"]
+    return {temperature_k: cmap(norm(temperature_k)) for temperature_k in temperatures_k}
 
 
 def q_marker_map(q_values: list[float]) -> dict[float, str]:
@@ -400,14 +420,19 @@ def q_marker_map(q_values: list[float]) -> dict[float, str]:
     return {q_value: markers[index % len(markers)] for index, q_value in enumerate(q_values)}
 
 
-def add_model_legends(ax, temperatures_k: list[int], temperature_colors: dict[int, object]) -> None:
+def add_model_legends(
+    ax,
+    temperatures_k: list[int],
+    temperature_colors: dict[int, object],
+    reference_marker: str = 'o',
+) -> None:
     temperature_handles = [
         Line2D([0], [0], color=temperature_colors[temp], label=f'{int(round(temp))} K')
         for temp in temperatures_k
     ]
     model_handles = [
-        Line2D([0], [0], color='black', linestyle='-', label='SCIANTIX + OpenCalphad'),
-        Line2D([0], [0], color='black', marker='o', linestyle='None', label='Thermo-Calc'),
+        Line2D([0], [0], color='black', linestyle='-', marker=SCIANTIX_OC_MARKER, label='SCIANTIX + OpenCalphad'),
+        Line2D([0], [0], color='black', marker=reference_marker, linestyle='None', label='Thermo-Calc'),
     ]
     first = ax.legend(handles=temperature_handles, loc='lower right', ncol=2, title='Temperature')
     ax.add_artist(first)
@@ -446,6 +471,9 @@ def make_pressure_plot(sciantix_frame: pd.DataFrame, oc_frame: pd.DataFrame) -> 
                     sci_subset['SCIANTIX CALPHAD log10(pO2/p_ref)'],
                     color=temperature_colors[temperature_k],
                     linestyle='-',
+                    marker=SCIANTIX_OC_MARKER,
+                    markevery=MODEL_CURVE_MARKEVERY,
+                    markersize=6,
                 )
 
             oc_subset = oc_q_frame[oc_q_frame[TEMPERATURE_KEY_COL] == temperature_k].sort_values('O/M ratio (/)')
@@ -483,7 +511,7 @@ def make_pressure_plot(sciantix_frame: pd.DataFrame, oc_frame: pd.DataFrame) -> 
             ax.set_ylim([y_min - y_pad, y_max + y_pad])
 
         ax.grid(True, alpha=0.3)
-        add_model_legends(ax, temperatures_k, temperature_colors)
+        add_model_legends(ax, temperatures_k, temperature_colors, reference_marker=q_markers[q_value])
         fig.tight_layout()
         fig.savefig(PLOTS_DIR / f'sciantix_vs_oc_csv_partial_pressure_q_{q_tag(q_value)}.png')
         plt.close(fig)
@@ -509,6 +537,9 @@ def make_potential_plot(sciantix_frame: pd.DataFrame, oc_frame: pd.DataFrame) ->
                     sci_subset['SCIANTIX CALPHAD oxygen potential (KJ/mol)'],
                     color=temperature_colors[temperature_k],
                     linestyle='-',
+                    marker=SCIANTIX_OC_MARKER,
+                    markevery=MODEL_CURVE_MARKEVERY,
+                    markersize=6,
                     zorder=2,
                 )
 
@@ -550,7 +581,7 @@ def make_potential_plot(sciantix_frame: pd.DataFrame, oc_frame: pd.DataFrame) ->
             ax.set_ylim([y_min - y_pad, y_max + y_pad])
 
         ax.grid(True, alpha=0.3)
-        add_model_legends(ax, temperatures_k, temperature_colors)
+        add_model_legends(ax, temperatures_k, temperature_colors, reference_marker=q_markers[q_value])
         fig.tight_layout()
         fig.savefig(PLOTS_DIR / f'fuel_oxygen_potential_vs_om_ratio_oc_csv_q_{q_tag(q_value)}.png')
         plt.close(fig)

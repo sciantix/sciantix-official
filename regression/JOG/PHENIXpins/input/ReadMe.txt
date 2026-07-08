@@ -7,7 +7,7 @@ Design parameters
 Mean LHR at ppn: 25.7 kW/m
 EOL peak burnup: 13.28 at.%
 Pellet outer radius: 2.719 mm
-Pellet EOL inner radius: 0.4 mm from GERMINAL in D7.3 for SUPERFACT
+Pellet EOL inner radius: 0.8 mm (~1.6 mm central hole diameter), NESTOR-3 measured value, D7.3
 Radial gap 0.106 m              % not used
 Grain diameter 10 um            % assumption
 TD 94.72%TD                     % where TD = 11159 kg/m3  see notebook mox_crystal_properties.ipynb
@@ -54,7 +54,7 @@ GERMINAL after 420 days of irradiation sees a decrease in temperature
     after that the gap size follows the jog thickness evolution.
 Central hole in the first days.
 FCT 1500°C-2000°C with TRANSURANUS providing the highest temperature regimes. 
-    --> Fuel temperature ranging 600 to 2000K
+    --> Fuel temperature ranging 800 to 2200K
 The fission gas release increases rapidly after the high-power cycles at the beginning 
     of irradiation and after approximately 330 days. 
 EOL Pressure estimated by GERMINAL: 70 bar.

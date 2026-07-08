@@ -87,6 +87,7 @@ namespace OCASIAdapter
                                   const std::vector<std::string> &selected_elements);
         bool prepareCalculationRecord(const std::string &record_name,
                                       bool reuse_existing_record);
+        // CODE DEVELOPMENT : THERMOCHEMISTRY EQUILIBRIUM-RECORD RECOVERY (E.Cappellari)
         bool prepareRecoveryRecord(const std::string &record_name);
         bool deleteCalculationRecord(const std::string &record_name);
         bool syncRecordFractionsInto(const std::string &target_record_name);
@@ -254,6 +255,7 @@ extern "C"
     void c_tqcceq(char *, int *, void **, void **);
     void c_tqselceq(char *, void **);
     void c_tqdceq(char *);
+    // CODE DEVELOPMENT : THERMOCHEMISTRY EQUILIBRIUM-RECORD RECOVERY (E.Cappellari)
     // Copy phase amounts/constitution from one existing equilibrium into
     // another existing one, in place (no new record created).
     // (source ceq, target ceq)
@@ -693,6 +695,7 @@ namespace OCASIAdapter
         return true;
     }
 
+    // CODE DEVELOPMENT : THERMOCHEMISTRY EQUILIBRIUM-RECORD RECOVERY (E.Cappellari)
     bool OpenCalphadInterface::prepareRecoveryRecord(const std::string &record_name)
     {
         if (!base_ceq_ || !database_loaded_)
@@ -747,6 +750,7 @@ namespace OCASIAdapter
         return true;
     }
 
+    // CODE DEVELOPMENT : THERMOCHEMISTRY WARM-START RECORD SYNC (E.Cappellari)
     bool OpenCalphadInterface::syncRecordFractionsInto(const std::string &target_record_name)
     {
         if (!ceq_ || !base_ceq_ || !database_loaded_)
@@ -1523,6 +1527,7 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
             }
 
             const std::string record_name = equilibriumRecordName(location, solve_mode);
+            // CODE DEVELOPMENT : THERMOCHEMISTRY EQUILIBRIUM-RECORD RECOVERY (E.Cappellari)
             // FreshRecordRecovery reuses its equilibrium record across attempts (see
             // prepareRecoveryRecord) instead of deleting and recreating it every time,
             // to avoid exhausting OpenCalphad's fixed-size equilibrium-record pool.
@@ -1621,6 +1626,7 @@ bool runOpenCalphadCaseOCASI(const std::string& database_path,
 
             if (extract_and_validate())
             {
+                // CODE DEVELOPMENT : THERMOCHEMISTRY WARM-START RECORD SYNC (E.Cappellari)
                 // Keep the warm-start record in step with whichever solver actually
                 // produced the accepted equilibrium: otherwise SaveReadWarmStart keeps
                 // resuming from an increasingly stale phase assemblage whenever a
@@ -2012,29 +2018,17 @@ void updateGrainBoundaryFromOutput(const std::map<std::string, OCPhaseData>& sol
             const double gas_atoms =
                 std::min(available, std::max(0.0, gas_moles * avogadro_number));
 
-#if defined(COUPLING_TU)
-            if (has_gap_caesium)
-            {
-                const double reacted_total = available - gas_atoms;
-                const double gap_reacted = std::min(gap_available, reacted_total);
-                const double fuel_reacted = reacted_total - gap_reacted;
-                const double fuel_remaining = fuel_available - fuel_reacted;
+            // The node's own Cs mass balance (produced/at grain boundary/reacted)
+            // must be identical to the case without gap Cs: gap Cs only supplies
+            // extra atoms to the OC equilibrium so that grain-boundary phases can
+            // form with more mass than fuel-produced Cs alone would allow; it must
+            // not be counted as fuel inventory that gets produced/released/reacted.
+            const double gas_atoms_fuel_only =
+                std::min(fuel_available, std::max(0.0, gas_moles * avogadro_number));
 
-                sciantix_variable[element + " at grain boundary"].setFinalValue(
-                    std::max(0.0, fuel_remaining));
-                sciantix_variable[element + " reacted"].setFinalValue(
-                    std::max(0.0, fuel_reacted));
-                // Gap Cs is released inventory, regardless of whether OC places it
-                // in a gas or condensed phase. It is included in OC, then removed
-                // from the local fuel-node balance above.
-                sciantix_variable["Cs in the gap"].setFinalValue(
-                    gap_available);
-                continue;
-            }
-#endif
+            sciantix_variable[element + " at grain boundary"].setFinalValue(gas_atoms_fuel_only);
+            sciantix_variable[element + " reacted"].setFinalValue(fuel_available - gas_atoms_fuel_only);
 
-            sciantix_variable[element + " at grain boundary"].setFinalValue(gas_atoms);
-            sciantix_variable[element + " reacted"].setFinalValue(available - gas_atoms);
         }
         else if (system.getRestructuredMatrix() == 0 && (system.isMetallicFP() || system.isCeramicFP()))
         {

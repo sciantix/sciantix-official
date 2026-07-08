@@ -37,6 +37,7 @@ void Simulation::setVariables(int    Sciantix_options[],
             input_variable.push(InputVariable(name_list[i], Sciantix_options[i]));
         }
     }
+    // CODE DEVELOPMENT : THERMOCHEMISTRY OUTER-NODE FLAG
     // iThermochimicaOuterNode varies every call (per radial node, set by
     // FisPro3.f95): input_variable entries are otherwise only initialized once
     // for the whole run (see the empty() guard above), so this one needs an

@@ -75,7 +75,7 @@ std::vector<ThermochemistryManifestEntry> loadThermochemistryManifest(const std:
             continue;
 
         const std::vector<std::string> fields = split(line, '|');
-        if (fields.size() != 7)
+        if (fields.size() != 7 && fields.size() != 8)
         {
             std::cerr << "Error: Invalid thermochemistry manifest line " << line_number << ": " << line << std::endl;
             exit(1);
@@ -89,6 +89,9 @@ std::vector<ThermochemistryManifestEntry> loadThermochemistryManifest(const std:
         entry.location      = fields[4];
         entry.uom           = fields[5];
         entry.output        = std::stoi(fields[6]) != 0;
+        // Optional 8th column: theoretical density (g/cm3). Defaults to 0.0
+        // (unknown) for manifest lines/files that do not provide it.
+        entry.density       = fields.size() == 8 && !fields[7].empty() ? std::stod(fields[7]) : 0.0;
 
         manifest.push_back(entry);
     }
