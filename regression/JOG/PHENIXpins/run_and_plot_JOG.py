@@ -594,6 +594,61 @@ def load_experimental_fmp_mo_ru_data(data_file: Path) -> dict[str, tuple[np.ndar
     return parsed_data
 
 
+def load_matzke_oxygen_potential_data(data_file: Path) -> dict[str, np.ndarray]:
+    temperatures: list[float] = []
+    burnup_values: list[float] = []
+    oxygen_potentials: list[float] = []
+    radial_positions: list[str] = []
+    germinal_temperatures: list[float] = []
+    germinal_oxygen_potentials: list[float] = []
+    in_germinal_section = False
+
+    with data_file.open() as handle:
+        for raw_line in handle:
+            line = raw_line.strip()
+            if not line:
+                continue
+
+            if line.startswith("#"):
+                in_germinal_section = "GERMINAL" in line.upper()
+                continue
+
+            if in_germinal_section and ";" in line:
+                parts = [item.strip() for item in line.split(";")]
+                if len(parts) >= 2:
+                    try:
+                        germinal_temperatures.append(float(parts[0].replace(",", ".")))
+                        germinal_oxygen_potentials.append(float(parts[1].replace(",", ".")))
+                    except ValueError:
+                        pass
+                continue
+
+            fields = line.split()
+            if len(fields) < 5:
+                continue
+
+            try:
+                temperatures.append(float(fields[0].replace(",", ".")))
+                burnup_values.append(float(fields[3].replace(",", ".")))
+                oxygen_potentials.append(float(fields[4].replace(",", ".")))
+            except ValueError:
+                continue
+
+            radial_positions.append(fields[5].strip().lower() if len(fields) >= 6 else "unspecified")
+
+    if not temperatures:
+        raise ValueError(f"No oxygen potential points parsed from {data_file}")
+
+    return {
+        "temperature": np.array(temperatures, dtype=float),
+        "burnup": np.array(burnup_values, dtype=float),
+        "oxygen_potential": np.array(oxygen_potentials, dtype=float),
+        "radial_position": np.array(radial_positions, dtype=object),
+        "germinal_temperature": np.array(germinal_temperatures, dtype=float),
+        "germinal_oxygen_potential": np.array(germinal_oxygen_potentials, dtype=float),
+    }
+
+
 def is_all_zero(series: np.ndarray, atol=1e-8) -> bool:
     return np.allclose(series, 0.0, atol=atol)
 
@@ -2473,6 +2528,95 @@ def plot_radial_profiles(
         axis.set_title(oxygen_column_label)
         axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
         save_figure(fig, PLOTS_DIR / "OxygenPotentialRadial.png", saved_paths)
+
+        cooldown = cooldown_mask(reference_time)
+        if TEMPERATURE_LABEL in output_profiles and np.count_nonzero(cooldown) >= 2:
+            fig, axis = plt.subplots(1, 1, figsize=(9.5, 6.0))
+
+            matzke_data = load_matzke_oxygen_potential_data(EXP_DATA_DIR / "Matzke1988_muO.txt")
+            exp_temperature = matzke_data["temperature"]
+            exp_burnup = matzke_data["burnup"]
+            exp_oxygen_potential = matzke_data["oxygen_potential"]
+            exp_radial_position = matzke_data["radial_position"]
+            germinal_temperature = matzke_data["germinal_temperature"]
+            germinal_oxygen_potential = matzke_data["germinal_oxygen_potential"]
+
+            burnup_color_map = {
+                0.0: COLORS[8],
+                3.8: COLORS[6],
+                7.0: COLORS[7],
+                11.2: COLORS[9],
+            }
+            position_marker_map = {
+                "edge": "s",
+                "centre": "o",
+                "unspecified": "^",
+            }
+
+            unique_burnup_values = sorted(set(float(value) for value in exp_burnup))
+            for exp_burnup_level in unique_burnup_values:
+                burnup_mask = np.isclose(exp_burnup, exp_burnup_level, atol=1.0e-6)
+                burnup_color = burnup_color_map.get(exp_burnup_level, COLORS[5])
+                for position_name in ("edge", "centre", "unspecified"):
+                    position_mask = exp_radial_position == position_name
+                    combined_mask = burnup_mask & position_mask
+                    if not np.any(combined_mask):
+                        continue
+                    if position_name != "edge":
+                        continue
+
+                    axis.scatter(
+                        exp_temperature[combined_mask],
+                        exp_oxygen_potential[combined_mask],
+                        marker=position_marker_map[position_name],
+                        facecolors=burnup_color,
+                        edgecolors=burnup_color,
+                        zorder=2,
+                        label=f"Matzke {exp_burnup_level:.1f}% FIMA, {position_name}",
+                    )
+
+            if germinal_temperature.size and germinal_oxygen_potential.size:
+                axis.plot(
+                    germinal_temperature,
+                    germinal_oxygen_potential,
+                    color=COLORS[1],
+                    linestyle="--",
+                    zorder=3,
+                    label="GERMINAL 13.3% FIMA",
+                )
+
+            cooldown_temperature_profiles = output_profiles[TEMPERATURE_LABEL][:, cooldown]
+            cooldown_oxygen_profiles = output_profiles[oxygen_column_name][:, cooldown]
+            eol_fima = float(reference_fima[-1])
+
+            for point_index, (temperature_profile, oxygen_profile) in enumerate(
+                zip(cooldown_temperature_profiles, cooldown_oxygen_profiles),
+                start=1,
+            ):
+                finite_mask = np.isfinite(temperature_profile) & np.isfinite(oxygen_profile)
+                if np.count_nonzero(finite_mask) < 2:
+                    continue
+                if point_index != 3:
+                    continue
+
+                x = temperature_profile[finite_mask]
+                y = oxygen_profile[finite_mask]
+                order = np.argsort(x)
+                axis.plot(
+                    x[order],
+                    y[order],
+                    color=RADIAL_POINT_REGION_COLORS[(point_index - 1) % len(RADIAL_POINT_REGION_COLORS)],
+                    zorder=3,
+                    label=f"SCIANTIX {eol_fima:.1f}% FIMA, edge",
+                )
+            
+            axis.set_xlim(900,1500)
+            axis.set_ylim(-600, -350)    
+
+            axis.set_xlabel(TEMPERATURE_LABEL)
+            axis.set_ylabel("Fuel oxygen potential (kJ/mol O$_2$)")
+            axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1, fontsize=12)
+            save_figure(fig, PLOTS_DIR / "OxygenPotentialCooldownEOL.png", saved_paths)
 
     jog_columns = sorted_jog_columns(output_profiles)
     if jog_columns:
