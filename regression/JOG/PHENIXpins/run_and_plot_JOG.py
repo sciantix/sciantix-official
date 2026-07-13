@@ -1143,7 +1143,7 @@ def solve_csred_cs_production_scaling_factors() -> tuple[np.ndarray, np.ndarray]
     profile = PolynomialProfile(
         r_inner=r_inner,
         r_outer=r_outer,
-        t_center=2000.0,
+        t_center=2200.0,
         t_surface=800.0,
         power=2.0,
     )
@@ -1227,6 +1227,73 @@ def phase_instance_plot_suffix(phase: str, phase_instance: str) -> str:
         return ""
     match = re.search(r"#(.+)$", phase_instance)
     return match.group(1).strip() if match else phase_instance
+
+
+# Two-letter symbols first so the greedy formula parser prefers "MO" over "M"+"O".
+PRETTY_ELEMENTS = ["BA", "CS", "MO", "PD", "RH", "RU", "TC", "HE", "XE", "KR", "O"]
+
+PRETTY_PHASE_NAMES = {
+    "GAS": "Gas",
+    "LIQUID": "Liquid",
+    "HALITE": "BaO (halite)",
+    "HCP_A3": "HCP",
+    "HCP_ORD": "HCP (ord.)",
+    "HCP_DIS": "HCP (dis.)",
+    "FCC_A1": "FCC",
+    "BCC_A2": "BCC",
+    "PEROVSKITE": "Perovskite",
+}
+
+
+def pretty_formula(formula: str) -> str | None:
+    """Render an uppercase chemical formula (e.g. CS2MOO4) with mathtext subscripts."""
+    parts: list[tuple[str, str]] = []
+    i = 0
+    while i < len(formula):
+        for element in PRETTY_ELEMENTS:
+            if formula.startswith(element, i):
+                i += len(element)
+                digits = ""
+                while i < len(formula) and formula[i].isdigit():
+                    digits += formula[i]
+                    i += 1
+                parts.append((element.capitalize(), digits))
+                break
+        else:
+            return None
+    return "".join(f"{element}$_{{{digits}}}$" if digits else element for element, digits in parts)
+
+
+def pretty_constituent(raw: str) -> str:
+    """Human-readable constituent name: BA+2 -> Ba$^{2+}$, MOO4-2 -> MoO$_4^{2-}$, RU -> Ru."""
+    token = raw.strip().upper()
+    if token == "VA":
+        return "Va"
+    match = re.match(r"^([A-Z0-9]+?)([+-]\d*)?$", token)
+    if not match:
+        return raw
+    formula = pretty_formula(match.group(1))
+    if formula is None:
+        return raw
+    charge = match.group(2) or ""
+    if charge:
+        sign = charge[0]
+        magnitude = charge[1:]
+        formula += f"$^{{{magnitude}{sign}}}$" if magnitude else f"$^{sign}$"
+    return formula
+
+
+def pretty_phase_name(phase: str) -> str:
+    """Human-readable phase name: CS2MOO4_S1 -> Cs$_2$MoO$_4$ (S1), LIQUID -> Liquid."""
+    key = phase.strip().upper()
+    if key in PRETTY_PHASE_NAMES:
+        return PRETTY_PHASE_NAMES[key]
+    match = re.match(r"^([A-Z0-9]+?)(?:_S(\d+))?$", key)
+    if match:
+        formula = pretty_formula(match.group(1))
+        if formula is not None:
+            return f"{formula} (S{match.group(2)})" if match.group(2) else formula
+    return phase
 
 
 def load_phase_sublattice_rows(path: Path) -> list[dict[str, object]]:
@@ -1643,8 +1710,8 @@ def phase_moles_at_snapshot(
         if moles <= 0.0:
             continue
 
-        base_label = display_phase_label(phase, phase_instance)
-        top_constituents = top_phase_constituents(instance_rows)
+        base_label = pretty_phase_name(phase)
+        top_constituents = [pretty_constituent(name) for name in top_phase_constituents(instance_rows)]
         phase_label = f"{base_label} ({', '.join(top_constituents)})" if top_constituents else base_label
         phase_moles[phase_label] = max(phase_moles.get(phase_label, 0.0), moles)
 
@@ -1716,12 +1783,9 @@ def add_radial_point_regions(axis: plt.Axes, n_cells: int, *, show_labels: bool 
             alpha=0.12, zorder=0, linewidth=0,
         )
         if show_labels:
-            # Alternate the label height so narrow adjacent regions (e.g. the
-            # outermost shells) don't collide horizontally.
-            label_y = 0.97 if i % 2 == 0 else 0.88
             axis.text(
-                0.5 * (edges[i] + edges[i + 1]), label_y,
-                f"Point {i + 1}", ha="center", va="top", fontsize=10, color="#3a3a3a",
+                0.5 * (edges[i] + edges[i + 1]), 0.97,
+                f"Point {i + 1}", ha="center", va="top", fontsize=13, color="#3a3a3a",
                 transform=axis.get_xaxis_transform(), zorder=1,
             )
     axis.set_xlim(edges[0], edges[-1])
@@ -1789,13 +1853,13 @@ def plot_radial_phase_mole_fraction_snapshot(
             marker=marker_cycle[index % len(marker_cycle)],
             linestyle=(0, (2.0, 2.5)),
             linewidth=1.4,
-            markersize=5.5,
+            markersize=8.0,
             label=phase,
             zorder=2,
         )
 
     phase_axis.set_yscale("log")
-    phase_axis.set_ylabel("GB phase fraction (mol/mol)")
+    phase_axis.set_ylabel("Phase fraction")
     phase_axis.set_ylim(1.0e-3, 1.5)
     phase_axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1, fontsize=12)
     phase_axis.set_title(snapshot_label)
@@ -1806,6 +1870,7 @@ def plot_radial_phase_mole_fraction_snapshot(
     state_axis.set_ylabel("Temperature (K)", color=temperature_color)
     state_axis.tick_params(axis="y", labelcolor=temperature_color)
     state_axis.set_xlabel("R/Ro")
+    state_axis.set_xlim(0.0, 1.0)
 
     if om_ratio is not None:
         om_axis = state_axis.twinx()
@@ -2703,15 +2768,17 @@ def plot_radial_profiles(
             zorder=3,
             linewidths=1.6,
         )
-        samuelsson_markers = {"GERMINAL correlation": "P", "OC stand-alone + TAFID": "X"}
-        samuelsson_colors = {"GERMINAL correlation": COLORS[8], "OC stand-alone + TAFID": COLORS[9]}
+        samuelsson_markers = {"\nGERMINAL correlation": "s", "\nOC stand-alone + TAF-ID": "^"}
+        samuelsson_colors = {"\nGERMINAL correlation": COLORS[8], "\nOC stand-alone + TAF-ID": COLORS[9]}
+        samuelsson_linestyles = {"\nGERMINAL correlation": "--", "\nOC stand-alone + TAF-ID": ":"}
         for section_label, (fima_values, thickness_values) in samuelsson_simulation_data.items():
             axis.plot(
                 fima_to_burnup(fima_values),
                 thickness_values,
                 color=samuelsson_colors.get(section_label, COLORS[10 % len(COLORS)]),
                 marker=samuelsson_markers.get(section_label, "x"),
-                linestyle="--",
+                markerfacecolor="none",
+                linestyle=samuelsson_linestyles.get(section_label, "--"),
                 label=f"Samuelsson et al. (2020), {section_label}",
                 zorder=3,
                 linewidth=1.6,
@@ -2756,7 +2823,20 @@ def main() -> int:
         type=int,
         help="Point number to process when --runnode is set, for example 1 for point_01.",
     )
+    parser.add_argument(
+        "--all-nodes",
+        action="store_true",
+        help=(
+            "Treat every radial node as JOG-feeding (instead of only the "
+            "outermost ones) and save all plots into a separate *_allnodes folder."
+        ),
+    )
     args = parser.parse_args()
+
+    if args.all_nodes:
+        global PLOTS_DIR, JOG_OUTER_NODE_COUNT
+        PLOTS_DIR = PLOTS_DIR.parent / (PLOTS_DIR.name + "_allnodes")
+        JOG_OUTER_NODE_COUNT = 10**6
 
     case_directories = bootstrap_case_dirs_if_missing()
 
