@@ -28,18 +28,18 @@
 26 | fission_products | gas | RU | at grain boundary | (g/m3) | 1
 27 | fission_products | gas | TC | at grain boundary | (g/m3) | 1
 28 | fission_products | liquid | LIQUID | at grain boundary | (g/m3) | 1
-29 | fission_products | condensed | BA2MOO5 | at grain boundary | (g/m3) | 1 | 6.1507
-30 | fission_products | condensed | BA3MOO6 | at grain boundary | (g/m3) | 1 | 6.3066
+29 | fission_products | condensed | BA2MOO5 | at grain boundary | (g/m3) | 1
+30 | fission_products | condensed | BA3MOO6 | at grain boundary | (g/m3) | 1 | 6.31
 31 | fission_products | condensed | BAMO2O7 | at grain boundary | (g/m3) | 1
-32 | fission_products | condensed | BAMO3O10 | at grain boundary | (g/m3) | 1 | 5.1021
-33 | fission_products | condensed | BAMOO4 | at grain boundary | (g/m3) | 1 | 4.9770
+32 | fission_products | condensed | BAMO3O10 | at grain boundary | (g/m3) | 1
+33 | fission_products | condensed | BAMOO4 | at grain boundary | (g/m3) | 1 | 4.93
 34 | fission_products | condensed | HCP_ORD | at grain boundary | (g/m3) | 1
-35 | fission_products | condensed | CS2MO2O7_S1 | at grain boundary | (g/m3) | 1 | 4.4340
-36 | fission_products | condensed | CS2MO2O7_S2 | at grain boundary | (g/m3) | 1 | 4.2198
-37 | fission_products | condensed | CS2MO3O10 | at grain boundary | (g/m3) | 1 | 4.1560
-38 | fission_products | condensed | CS2MO4O13 | at grain boundary | (g/m3) | 1 | 4.5145 
-39 | fission_products | condensed | CS2MO5O16 | at grain boundary | (g/m3) | 1 | 4.6258
-40 | fission_products | condensed | CS2MO7O22 | at grain boundary | (g/m3) | 1 | 4.5106
+35 | fission_products | condensed | CS2MO2O7_S1 | at grain boundary | (g/m3) | 1
+36 | fission_products | condensed | CS2MO2O7_S2 | at grain boundary | (g/m3) | 1
+37 | fission_products | condensed | CS2MO3O10 | at grain boundary | (g/m3) | 1
+38 | fission_products | condensed | CS2MO4O13 | at grain boundary | (g/m3) | 1
+39 | fission_products | condensed | CS2MO5O16 | at grain boundary | (g/m3) | 1
+40 | fission_products | condensed | CS2MO7O22 | at grain boundary | (g/m3) | 1
 41 | fission_products | condensed | CS2MOO4_S1 | at grain boundary | (g/m3) | 1
 42 | fission_products | condensed | CS2MOO4_S2 | at grain boundary | (g/m3) | 1
 43 | fission_products | condensed | CS2O1 | at grain boundary | (g/m3) | 1
@@ -55,9 +55,9 @@
 53 | fission_products | condensed | MO4O11 | at grain boundary | (g/m3) | 1
 54 | fission_products | condensed | MO8O23 | at grain boundary | (g/m3) | 1
 55 | fission_products | condensed | MO9O26 | at grain boundary | (g/m3) | 1
-56 | fission_products | condensed | MOO2 | at grain boundary | (g/m3) | 1
+56 | fission_products | condensed | MOO2 | at grain boundary | (g/m3) | 1 | 7.73
 57 | fission_products | condensed | MOO3 | at grain boundary | (g/m3) | 1
-58 | fission_products | condensed | PEROVSKITE | at grain boundary | (g/m3) | 1
+58 | fission_products | condensed | PEROVSKITE | at grain boundary | (g/m3) | 1 | 7.06
 59 | fission_products | condensed | ZRO2_TETR | at grain boundary | (g/m3) | 1
 60 | fission_products | condensed | A15_CR3SI | at grain boundary | (g/m3) | 1
 61 | fission_products | condensed | BCC_A2 | at grain boundary | (g/m3) | 1
@@ -70,7 +70,7 @@
 68 | fission_products | condensed | HCP_DIS | at grain boundary | (g/m3) | 1
 69 | fission_products | condensed | MC_ETA | at grain boundary | (g/m3) | 1
 70 | fission_products | condensed | MO3TE4 | at grain boundary | (g/m3) | 1
-71 | fission_products | condensed | MOPD2 | at grain boundary | (g/m3) | 1
+71 | fission_products | condensed | MOPD2 | at grain boundary | (g/m3) | 1 | 11.62
 72 | fission_products | condensed | MOTE2_A | at grain boundary | (g/m3) | 1
 73 | fission_products | condensed | MOTE2_B | at grain boundary | (g/m3) | 1
 74 | fission_products | condensed | ORTHORHOMBIC_A20 | at grain boundary | (g/m3) | 1

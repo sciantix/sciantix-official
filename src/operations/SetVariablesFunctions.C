@@ -530,10 +530,17 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("Ba oxide valence", "(/)", Sciantix_variables[185], Sciantix_variables[185], toOutputThermochimica),
         SciantixVariable("JOG (Cs2MoO4)", "(/)", Sciantix_variables[190], Sciantix_variables[190], toOutputThermochimica),
         SciantixVariable("JOG (BaMoO4)", "(/)", Sciantix_variables[191], Sciantix_variables[191], toOutputThermochimica),
-        SciantixVariable("JOG (liquid)", "(/)", Sciantix_variables[192], Sciantix_variables[192], toOutputThermochimica),
+        SciantixVariable("JOG (liquid oxide)", "(/)", Sciantix_variables[192], Sciantix_variables[192], toOutputThermochimica),
+        SciantixVariable("JOG (Perovskite)", "(/)", Sciantix_variables[193], Sciantix_variables[193], toOutputThermochimica),
         SciantixVariable("JOG (Ba3MoO6)", "(/)", Sciantix_variables[194], Sciantix_variables[194], toOutputThermochimica),
-        SciantixVariable("JOG (Ba2MoO5)", "(/)", Sciantix_variables[195], Sciantix_variables[195], toOutputThermochimica),
+        SciantixVariable("JOG (BaO)", "(/)", Sciantix_variables[195], Sciantix_variables[195], toOutputThermochimica),
         SciantixVariable("JOG (other phases)", "(/)", Sciantix_variables[196], Sciantix_variables[196], toOutputThermochimica),
+        SciantixVariable("JOG (HCP)", "(/)", Sciantix_variables[197], Sciantix_variables[197], toOutputThermochimica),
+        SciantixVariable("JOG (MoPd2)", "(/)", Sciantix_variables[198], Sciantix_variables[198], toOutputThermochimica),
+        SciantixVariable("JOG (FCC)", "(/)", Sciantix_variables[199], Sciantix_variables[199], toOutputThermochimica),
+        SciantixVariable("JOG (liquid metallic)", "(/)", Sciantix_variables[200], Sciantix_variables[200], toOutputThermochimica),
+        SciantixVariable("JOG (MoO2)", "(/)", Sciantix_variables[201], Sciantix_variables[201], toOutputThermochimica),
+        SciantixVariable("JOG (Sigma)", "(/)", Sciantix_variables[202], Sciantix_variables[202], toOutputThermochimica),
     };
         
     return init_sciantix_variable;

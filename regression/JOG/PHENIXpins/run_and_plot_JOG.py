@@ -27,6 +27,7 @@ OXIRED_HISTORY_DIR = OXIRED_SCRIPT.parent / "PHENIXpins_history"
 CSRED_SCRIPT = REPO_ROOT / "csred_lib" / "examples" / "PHENIXpins.py"
 CS_PRODUCTION_SCALING_FACTOR_INDEX = 4
 RUN_SUMMARY = TEST_DIR / "run_summary.txt"
+RESULTS_SUMMARY = TEST_DIR / "results_summary.txt"
 MAIN_OUTPUT_NAME = "output.txt"
 THERMO_OUTPUT_NAME = "thermochemistry_output.txt"
 PHASE_SUBLATTICE_OUTPUT_NAME = "phase_sublattice_composition.txt"
@@ -1658,6 +1659,50 @@ def plot_cappia_sciantix_germinal_comparison_pies(
     save_figure(fig, PLOTS_DIR / output_name, saved_paths)
 
 
+def phase_sublattice_site_fractions(rows: list[dict[str, object]]) -> list[list[tuple[str, float]]]:
+    """Per-sublattice (constituent, site fraction) pairs for one phase instance's
+    rows at a snapshot, sorted by descending site fraction, dropping vacancies/
+    empties. Site fractions are already normalized within their own sublattice
+    by OpenCalphad, so this directly gives the per-sublattice ionic/atomic
+    composition quoted in the paper (e.g. Ru0.29Mo0.27Pd0.27Rh0.09Tc0.08).
+
+    `phase_rows_at_snapshot`'s tolerance-based time match can pull in several
+    near-duplicate rows for the same constituent (consecutive timesteps close
+    to the snapshot time), so fractions are averaged per constituent rather
+    than listed once per matching row."""
+    by_sublattice: dict[int, dict[str, list[float]]] = defaultdict(lambda: defaultdict(list))
+    for row in rows:
+        constituent = str(row["constituent"])
+        if constituent in ("<empty>", "VA"):
+            continue
+        site_fraction = float(row["site_fraction"])
+        if site_fraction <= 1.0e-3:
+            continue
+        by_sublattice[int(row["sublattice"])][pretty_constituent(constituent)].append(site_fraction)
+
+    return [
+        sorted(
+            ((name, float(np.mean(fractions))) for name, fractions in by_sublattice[sublattice_index].items()),
+            key=lambda item: item[1],
+            reverse=True,
+        )
+        for sublattice_index in sorted(by_sublattice)
+    ]
+
+
+def format_phase_sublattice_composition(rows: list[dict[str, object]]) -> str:
+    """E.g. 'Ru0.29Mo0.27Pd0.27Rh0.09Tc0.08' for a single-sublattice metallic
+    phase, or 'Ba1.00 | O0.70MoO4_0.29' (sublattices joined by ' | ') for an
+    ionic liquid/compound with more than one sublattice."""
+    sublattices = phase_sublattice_site_fractions(rows)
+    if not sublattices:
+        return ""
+    return " | ".join(
+        "".join(f"{name}{fraction:.2f}" for name, fraction in sublattice)
+        for sublattice in sublattices
+    )
+
+
 def top_phase_constituents(rows: list[dict[str, object]], *, top_n: int = PHASE_LABEL_TOP_CONSTITUENTS) -> list[str]:
     """Names of the top-`top_n` constituents of a phase (by amount), for the legend label."""
     amounts: dict[str, float] = defaultdict(float)
@@ -1752,6 +1797,151 @@ def phase_mole_fraction_profile_entries(
 
     candidate_entries.sort(key=lambda entry: entry[2], reverse=True)
     return [(phase, values) for phase, values, _ in candidate_entries[:max_entries]]
+
+
+def build_phase_summary_lines(
+    ordered_case_directories: list[Path],
+    radii_mm_array: np.ndarray,
+    target_time: float,
+    side: str,
+    snapshot_name: str,
+    *,
+    min_mol_percent: float = 0.5,
+) -> list[str]:
+    """Per-point grain-boundary phase mole fractions and compositions at one
+    snapshot, in the form needed to write the Results section (e.g. 'HCP_A3
+    (Ru0.29Mo0.27Pd0.27Rh0.09Tc0.08): 42.1 mol%')."""
+    lines = [f"Grain-boundary phases, {snapshot_name}:"]
+    any_point = False
+    for point_index, case_dir in enumerate(ordered_case_directories, start=1):
+        sublattice_file = case_dir / PHASE_SUBLATTICE_OUTPUT_NAME
+        if not sublattice_file.exists():
+            continue
+
+        rows = [
+            row for row in load_phase_sublattice_rows(sublattice_file)
+            if row["location"] == "at grain boundary"
+        ]
+        if not rows:
+            continue
+
+        _, snapshot_rows = phase_rows_at_snapshot(rows, target_time, side)
+        if not snapshot_rows:
+            continue
+
+        phase_keys = sorted({(str(row["phase"]), str(row["phase_instance"])) for row in snapshot_rows})
+        phase_entries: list[tuple[str, str, float, list[dict[str, object]]]] = []
+        for phase, phase_instance in phase_keys:
+            instance_rows = [
+                row for row in snapshot_rows
+                if row["phase"] == phase and row["phase_instance"] == phase_instance
+            ]
+            moles = max((float(row["phase_moles"]) for row in instance_rows), default=0.0)
+            if moles <= 0.0:
+                continue
+            phase_entries.append((phase, phase_instance, moles, instance_rows))
+
+        total_moles = sum(entry[2] for entry in phase_entries)
+        if total_moles <= 0.0:
+            continue
+
+        any_point = True
+        lines.append(f"  Point {point_index} ({radii_mm_array[point_index - 1]:.2f} mm):")
+        for phase, phase_instance, moles, instance_rows in sorted(
+            phase_entries, key=lambda entry: entry[2], reverse=True
+        ):
+            mol_percent = 100.0 * moles / total_moles
+            if mol_percent < min_mol_percent:
+                continue
+            label = display_phase_label(pretty_phase_name(phase), phase_instance)
+            composition = format_phase_sublattice_composition(instance_rows)
+            composition_suffix = f" ({composition})" if composition else ""
+            lines.append(f"    {label}{composition_suffix}: {mol_percent:.1f} mol%")
+
+    if not any_point:
+        return []
+    lines.append("")
+    return lines
+
+
+def build_jog_thickness_summary_lines(
+    output_profiles: dict[str, np.ndarray],
+    radii_m_array: np.ndarray,
+    reference_burnup: np.ndarray,
+    metallic_jog_columns: set[str],
+) -> list[str]:
+    """End-of-life JOG thickness, split by contribution, plus each
+    contribution's onset burnup (first burnup at which it exceeds 5% of its
+    own end-of-life value). Mirrors the oxide-only stack of JOG.png
+    (metallic contributions excluded, matching the Melis/Tourasse/Samuelsson
+    references this figure is compared against)."""
+    jog_columns = sorted_jog_columns(output_profiles)
+    oxide_columns = [column for column in jog_columns if column not in metallic_jog_columns and column != "JOG (/)"]
+    if not oxide_columns:
+        return []
+
+    outer_node_count = min(JOG_OUTER_NODE_COUNT, len(radii_m_array))
+    outer_indices = list(range(len(radii_m_array) - outer_node_count, len(radii_m_array)))
+
+    total_profile = np.sum(np.stack([output_profiles[column] for column in oxide_columns], axis=0), axis=0)
+    total_series_um = radial_integral_masked_to_full_radius(total_profile, radii_m_array, outer_indices) * 1.0e6
+    eol_total_um = float(total_series_um[-1])
+
+    lines = [
+        f"JOG thickness (oxide contributions only, outer {outer_node_count} node(s)):",
+        f"  End of life ({reference_burnup[-1]:.1f} {BURNUP_UNIT}): total = {eol_total_um:.1f} um",
+    ]
+    for column in oxide_columns:
+        series_um = radial_integral_masked_to_full_radius(
+            output_profiles[column], radii_m_array, outer_indices
+        ) * 1.0e6
+        eol_value_um = float(series_um[-1])
+        if is_all_zero(series_um) or eol_value_um <= 0.0:
+            continue
+
+        onset_mask = series_um > 0.05 * eol_value_um
+        onset_burnup = float(reference_burnup[int(np.argmax(onset_mask))]) if np.any(onset_mask) else float("nan")
+        lines.append(
+            f"    {jog_label(column)}: {eol_value_um:.1f} um at EOL "
+            f"({100.0 * eol_value_um / eol_total_um:.0f}% of total), "
+            f"onset at burnup ~{onset_burnup:.1f} {BURNUP_UNIT}"
+        )
+    lines.append("")
+    return lines
+
+
+def build_outer_node_composition_summary_lines(ordered_case_directories: list[Path]) -> list[str]:
+    """Mediated outer-node JOG atomic composition before/after the final
+    cooldown, and the derived Cs/Mo ratio, matching the pie-chart data."""
+    sciantix_nodes = (
+        ordered_case_directories[-JOG_OUTER_NODE_COUNT:]
+        if JOG_OUTER_NODE_COUNT > 0
+        else ordered_case_directories
+    )
+
+    lines = ["JOG outer-node atomic composition (mediated over outer node(s)):"]
+    any_snapshot = False
+    for _, snapshot_name, target_time, side in COOLDOWN_SNAPSHOTS:
+        composition = mediated_outer_node_atomic_percent(sciantix_nodes, target_time, side)
+        if not composition:
+            continue
+
+        any_snapshot = True
+        composition_text = ", ".join(
+            f"{element.capitalize()} {value:.1f}"
+            for element, value in sorted(composition.items(), key=lambda item: -item[1])
+        )
+        lines.append(f"  {snapshot_name}: {composition_text} at.%")
+
+        cs = composition.get("CS", composition.get("Cs", 0.0))
+        mo = composition.get("MO", composition.get("Mo", 0.0))
+        if mo > 0.0:
+            lines.append(f"    Cs/Mo = {cs / mo:.2f}")
+
+    if not any_snapshot:
+        return []
+    lines.append("")
+    return lines
 
 
 RADIAL_POINT_REGION_COLORS = ["#2a78d6", "#1baf7a", "#eda100", "#008300"]
@@ -2321,7 +2511,7 @@ def plot_radial_profiles(
     case_directories: list[Path],
     saved_paths: list[Path],
     gb_color_map: dict[str, object],
-) -> None:
+) -> list[str]:
     radii_mm: list[float] = []
     output_histories: list[dict[str, np.ndarray]] = []
     thermo_histories: list[dict[str, np.ndarray]] = []
@@ -2683,8 +2873,23 @@ def plot_radial_profiles(
             axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1, fontsize=12)
             save_figure(fig, PLOTS_DIR / "OxygenPotentialCooldownEOL.png", saved_paths)
 
-    jog_columns = sorted_jog_columns(output_profiles)
-    if jog_columns:
+    # Metallic ("white metal") precipitate phases carry their own volume
+    # contribution to the JOG mixture but are optionally excluded from the
+    # plot so the oxide-only picture (comparable to the historical
+    # Melis/Tourasse/Samuelsson references, which do not report a metallic
+    # contribution) can be shown alongside the fuller oxides+metallics view.
+    METALLIC_JOG_COLUMNS = {
+        "JOG (HCP) (/)", "JOG (FCC) (/)", "JOG (Sigma) (/)", "JOG (MoPd2) (/)",
+        "JOG (liquid metallic) (/)",
+    }
+
+    def plot_jog_figure(filename: str, include_metallics: bool, cooldown: bool = False) -> None:
+        jog_columns = sorted_jog_columns(output_profiles)
+        if not include_metallics:
+            jog_columns = [column for column in jog_columns if column not in METALLIC_JOG_COLUMNS]
+        if not jog_columns:
+            return
+
         jog_stack_columns = [
             column for column in jog_columns
             if column != "JOG (/)"
@@ -2704,15 +2909,21 @@ def plot_radial_profiles(
             outer_indices,
         ) * 1.0e6
 
-        melis_fima, melis_thickness = load_experimental_jog_data(EXP_DATA_DIR / "Melis1993.txt")
-        tourasse_fima, tourasse_thickness = load_experimental_jog_data(EXP_DATA_DIR / "Tourasse1992_JOG.txt")
-        samuelsson_simulation_data = load_samuelsson_simulation_jog_data(
-            EXP_DATA_DIR / "Samuellson2020_simulation.txt"
-        )
+        if cooldown:
+            time_mask = cooldown_mask(reference_time)
+            if np.count_nonzero(time_mask) < 2 or TEMPERATURE_LABEL not in output_profiles:
+                return
+            x_values = output_profiles[TEMPERATURE_LABEL][outer_indices[-1]]
+        else:
+            time_mask = np.ones_like(reference_burnup, dtype=bool)
+            x_values = reference_burnup
 
-        def fima_to_burnup(fima_values: np.ndarray) -> np.ndarray:
-            return np.interp(fima_values, reference_fima, reference_burnup)
+        x_masked = x_values[time_mask]
+        jog_total_series = jog_total_thickness_over_time_um[time_mask]
 
+        # Only phases with a non-zero contribution within the plotted window
+        # (burnup range, or cooldown window) are stacked and shown in the
+        # legend; a phase absent throughout that window is dropped entirely.
         jog_entries: list[tuple[str, np.ndarray, object]] = []
         jog_colors = assign_distinct_colors([jog_label(column) for column in jog_stack_columns])
         for index, column_name in enumerate(jog_stack_columns):
@@ -2721,10 +2932,13 @@ def plot_radial_profiles(
                 output_profiles[column_name],
                 radii_m_array,
                 outer_indices,
-            ) * 1.0e6
+            )[time_mask] * 1.0e6
             if is_all_zero(series):
                 continue
             jog_entries.append((label, series, jog_colors.get(label, PAPER_PALETTE[index % len(PAPER_PALETTE)])))
+
+        if not jog_entries:
+            return
 
         jog_labels = [item[0] for item in jog_entries]
         jog_histories = [item[1] for item in jog_entries]
@@ -2732,63 +2946,101 @@ def plot_radial_profiles(
 
         fig, axis = plt.subplots(1, 1, figsize=(10, 5))
 
-        if jog_histories:
-            axis.stackplot(
-                reference_burnup,
-                *jog_histories,
-                colors=jog_plot_colors,
-                labels=jog_labels,
-                alpha=0.9,
-            )
-            cumulative_histories = np.cumsum(np.vstack(jog_histories), axis=0)
-            for boundary in cumulative_histories:
-                axis.plot(reference_burnup, boundary, color="#111827", linewidth=0.25, alpha=0.40)
+        axis.stackplot(
+            x_masked,
+            *jog_histories,
+            colors=jog_plot_colors,
+            labels=jog_labels,
+            alpha=0.9,
+        )
+        cumulative_histories = np.cumsum(np.vstack(jog_histories), axis=0)
+        for boundary in cumulative_histories:
+            axis.plot(x_masked, boundary, color="#111827", linewidth=0.25, alpha=0.40)
         axis.plot(
-            reference_burnup,
-            jog_total_thickness_over_time_um,
+            x_masked,
+            jog_total_series,
             color="#111827",
             linewidth=2.6,
             label="Total",
         )
-        axis.scatter(
-            fima_to_burnup(melis_fima),
-            melis_thickness,
-            edgecolors=COLORS[6], facecolors="none",
-            marker="o",
-            label="Melis et al. (1993)",
-            zorder=3,
-            linewidths=1.6,
-        )
-        axis.scatter(
-            fima_to_burnup(tourasse_fima),
-            tourasse_thickness,
-            edgecolors=COLORS[7], facecolors="none",
-            marker="D",
-            label="Tourasse et al. (1992)",
-            zorder=3,
-            linewidths=1.6,
-        )
-        samuelsson_markers = {"\nGERMINAL correlation": "s", "\nOC stand-alone + TAF-ID": "^"}
-        samuelsson_colors = {"\nGERMINAL correlation": COLORS[8], "\nOC stand-alone + TAF-ID": COLORS[9]}
-        samuelsson_linestyles = {"\nGERMINAL correlation": "--", "\nOC stand-alone + TAF-ID": ":"}
-        for section_label, (fima_values, thickness_values) in samuelsson_simulation_data.items():
-            axis.plot(
-                fima_to_burnup(fima_values),
-                thickness_values,
-                color=samuelsson_colors.get(section_label, COLORS[10 % len(COLORS)]),
-                marker=samuelsson_markers.get(section_label, "x"),
-                markerfacecolor="none",
-                linestyle=samuelsson_linestyles.get(section_label, "--"),
-                label=f"Samuelsson et al. (2020), {section_label}",
-                zorder=3,
-                linewidth=1.6,
+
+        if not cooldown:
+            melis_fima, melis_thickness = load_experimental_jog_data(EXP_DATA_DIR / "Melis1993.txt")
+            tourasse_fima, tourasse_thickness = load_experimental_jog_data(EXP_DATA_DIR / "Tourasse1992_JOG.txt")
+            samuelsson_simulation_data = load_samuelsson_simulation_jog_data(
+                EXP_DATA_DIR / "Samuellson2020_simulation.txt"
             )
-        axis.set_xlabel(BURNUP_LABEL)
-        axis.set_xlim(0,max(reference_burnup))
+
+            def fima_to_burnup(fima_values: np.ndarray) -> np.ndarray:
+                return np.interp(fima_values, reference_fima, reference_burnup)
+
+            axis.scatter(
+                fima_to_burnup(melis_fima),
+                melis_thickness,
+                edgecolors=COLORS[6], facecolors="none",
+                marker="o",
+                label="Melis et al. (1993)",
+                zorder=3,
+                linewidths=1.6,
+            )
+            axis.scatter(
+                fima_to_burnup(tourasse_fima),
+                tourasse_thickness,
+                edgecolors=COLORS[7], facecolors="none",
+                marker="D",
+                label="Tourasse et al. (1992)",
+                zorder=3,
+                linewidths=1.6,
+            )
+            samuelsson_markers = {"\nGERMINAL correlation": "s", "\nOC stand-alone + TAF-ID": "^"}
+            samuelsson_colors = {"\nGERMINAL correlation": COLORS[8], "\nOC stand-alone + TAF-ID": COLORS[9]}
+            samuelsson_linestyles = {"\nGERMINAL correlation": "--", "\nOC stand-alone + TAF-ID": ":"}
+            for section_label, (fima_values, thickness_values) in samuelsson_simulation_data.items():
+                axis.plot(
+                    fima_to_burnup(fima_values),
+                    thickness_values,
+                    color=samuelsson_colors.get(section_label, COLORS[10 % len(COLORS)]),
+                    marker=samuelsson_markers.get(section_label, "x"),
+                    markerfacecolor="none",
+                    linestyle=samuelsson_linestyles.get(section_label, "--"),
+                    label=f"Samuelsson et al. (2020), {section_label}",
+                    zorder=3,
+                    linewidth=1.6,
+                )
+            axis.set_xlabel(BURNUP_LABEL)
+            axis.set_xlim(0, max(reference_burnup))
+            axis.set_ylim(0, 100)
+        else:
+            axis.set_xlabel(TEMPERATURE_LABEL)
+            axis.set_xlim(float(np.nanmax(x_masked)), float(np.nanmin(x_masked)))
+            axis.set_ylim(0, max(float(np.nanmax(jog_total_series)) * 1.1, 1.0e-6))
+
         axis.set_ylabel("JOG thickness ($\\mu$m)")
-        axis.set_ylim(0,100)
         axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
-        save_figure(fig, PLOTS_DIR / "JOG.png", saved_paths)
+        save_figure(fig, PLOTS_DIR / filename, saved_paths)
+
+    plot_jog_figure("JOG.png", include_metallics=False)
+    plot_jog_figure("JOG_oxides_metallics.png", include_metallics=True)
+    plot_jog_figure("JOG_cooldown.png", include_metallics=True, cooldown=True)
+
+    # ------------------------------------------------------------------
+    # Numeric results summary for the paper's Results section: phase mole
+    # fractions/compositions at each snapshot, the JOG thickness
+    # contributions (end-of-life split and onset burnup), and the outer-node
+    # JOG atomic composition. Written to RESULTS_SUMMARY and printed by main().
+    # ------------------------------------------------------------------
+    results_summary_lines: list[str] = []
+    for snapshot_slug, snapshot_name, target_time, side in radial_phase_snapshots:
+        results_summary_lines.extend(
+            build_phase_summary_lines(ordered_case_directories, radii_mm_array, target_time, side, snapshot_name)
+        )
+    results_summary_lines.extend(
+        build_jog_thickness_summary_lines(
+            output_profiles, radii_m_array, reference_burnup, METALLIC_JOG_COLUMNS
+        )
+    )
+    results_summary_lines.extend(build_outer_node_composition_summary_lines(ordered_case_directories))
+    return results_summary_lines
 
 
 def main() -> int:
@@ -2920,11 +3172,16 @@ def main() -> int:
             flush=True,
         )
 
-    plot_radial_profiles(case_directories, saved_paths, gb_color_map)
+    results_summary_lines = plot_radial_profiles(case_directories, saved_paths, gb_color_map)
 
-    print("Generated plots:")
-    for path in saved_paths:
-        print(path)
+    print(f"Generated {len(saved_paths)} plots in {PLOTS_DIR}")
+
+    results_summary_text = "\n".join(results_summary_lines)
+    RESULTS_SUMMARY.write_text(results_summary_text)
+    print("")
+    print(f"Results summary (also written to {RESULTS_SUMMARY}):")
+    print("")
+    print(results_summary_text)
 
     return 0
 
