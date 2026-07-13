@@ -174,19 +174,6 @@ std::map<int, std::string> update_sciantix_variable = {
     {174, "Pu241"}, // added
     {175, "Pu242"}, // added
     {177, "q"}, // added
-    // 
-    {180, "Mo/Ru in HCP_A3"},
-    {181, "Mo in oxide fraction"},
-    {182, "Mo oxide valence"},
-    {183, "Ba/Mo in oxide compounds"},
-    {184, "Ba in oxide fraction"},
-    {185, "Ba oxide valence"},
-    //
-    {190, "JOG (Cs2MoO4)"},
-    {191, "JOG (BaMoO4)"},
-    {192, "JOG (liquid)"},
-    {194, "JOG (Ba3MoO6)"},
-    {195, "JOG (Ba2MoO5)"},
 };
  
 // CODE DEVELOPMENT: DIFFUSION MODES FROM 17 TO 26
