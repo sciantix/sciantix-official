@@ -34,8 +34,9 @@ PHASE_SUBLATTICE_OUTPUT_NAME = "phase_sublattice_composition.txt"
 THERMOCHEMISTRY_MANIFEST_FILE = TEST_DIR / "input_thermochemistry.txt"
 
 # Number of top constituents (by amount) shown in parentheses next to each
-# phase's legend label in the radial phase-fraction plot.
-PHASE_LABEL_TOP_CONSTITUENTS = 5
+# phase's legend label in the radial phase-fraction plot. Kept short so the
+# legend fits inside the plot area without covering the point-1 markers.
+PHASE_LABEL_TOP_CONSTITUENTS = 3
 PLOTS_DIR = TEST_DIR.parents[4] / "OverLeaf/JOGSCIANTIX/Images/SCIANTIX"
 GOLD_DIR = TEST_DIR / "gold"
 EXP_DATA_DIR = TEST_DIR / "exp_data"
@@ -1638,23 +1639,22 @@ def plot_cappia_sciantix_germinal_comparison_pies(
         axes[0],
         cappia_composition,
         color_map,
-        "Cappia et al. (2020)\nEPMA, JOG",
+        "EPMA, FFTF JOG\nCappia et al., 2020",
     )
 
     add_atomic_percent_pie(
         axes[1],
         sciantix_atomic_percent,
         color_map,
-        f"SCIANTIX\nOuter radial node, {snapshot_label}",
+        "SCIANTIX, NESTOR-3 JOG\nThis work, post-cooldown",
     )
     add_atomic_percent_pie(
         axes[2],
         germinal_composition,
         color_map,
-        "GERMINAL\nJOG-NESTOR3 (Oulfarsi et al., 2024)",
+        "GERMINAL, NESTOR-3 JOG\nOulfarsi et al., 2024",
     )
 
-    fig.suptitle(f"JOG atomic composition comparison, {snapshot_label}", y=0.98, fontweight="bold")
     fig.subplots_adjust(wspace=0.15, left=0.02, right=0.98, top=0.82, bottom=0.05)
     save_figure(fig, PLOTS_DIR / output_name, saved_paths)
 
@@ -1868,13 +1868,14 @@ def build_jog_thickness_summary_lines(
     output_profiles: dict[str, np.ndarray],
     radii_m_array: np.ndarray,
     reference_burnup: np.ndarray,
+    reference_time: np.ndarray,
     metallic_jog_columns: set[str],
 ) -> list[str]:
-    """End-of-life JOG thickness, split by contribution, plus each
-    contribution's onset burnup (first burnup at which it exceeds 5% of its
-    own end-of-life value). Mirrors the oxide-only stack of JOG.png
-    (metallic contributions excluded, matching the Melis/Tourasse/Samuelsson
-    references this figure is compared against)."""
+    """JOG thickness split by contribution at the end of irradiation
+    (pre-cooldown) and after the final cooldown, plus each contribution's
+    onset burnup (first burnup at which it exceeds 5% of its own end-of-life
+    value). The pre-cooldown split mirrors the during-irradiation stack of
+    JOG.png; the post-cooldown split is the state comparable to PIE."""
     jog_columns = sorted_jog_columns(output_profiles)
     oxide_columns = [column for column in jog_columns if column not in metallic_jog_columns and column != "JOG (/)"]
     if not oxide_columns:
@@ -1883,30 +1884,48 @@ def build_jog_thickness_summary_lines(
     outer_node_count = min(JOG_OUTER_NODE_COUNT, len(radii_m_array))
     outer_indices = list(range(len(radii_m_array) - outer_node_count, len(radii_m_array)))
 
-    total_profile = np.sum(np.stack([output_profiles[column] for column in oxide_columns], axis=0), axis=0)
-    total_series_um = radial_integral_masked_to_full_radius(total_profile, radii_m_array, outer_indices) * 1.0e6
-    eol_total_um = float(total_series_um[-1])
+    pre_mask = before_cooldown_mask(reference_time)
+    pre_index = int(np.max(np.nonzero(pre_mask)[0]))
 
-    lines = [
-        f"JOG thickness (oxide contributions only, outer {outer_node_count} node(s)):",
-        f"  End of life ({reference_burnup[-1]:.1f} {BURNUP_UNIT}): total = {eol_total_um:.1f} um",
-    ]
-    for column in oxide_columns:
-        series_um = radial_integral_masked_to_full_radius(
-            output_profiles[column], radii_m_array, outer_indices
-        ) * 1.0e6
-        eol_value_um = float(series_um[-1])
-        if is_all_zero(series_um) or eol_value_um <= 0.0:
-            continue
+    def column_groups() -> list[tuple[str, list[str]]]:
+        metallic_present = [column for column in jog_columns if column in metallic_jog_columns]
+        groups = [("oxide contributions only", oxide_columns)]
+        if metallic_present:
+            groups.append(("oxides + metallics", oxide_columns + metallic_present))
+        return groups
 
-        onset_mask = series_um > 0.05 * eol_value_um
-        onset_burnup = float(reference_burnup[int(np.argmax(onset_mask))]) if np.any(onset_mask) else float("nan")
-        lines.append(
-            f"    {jog_label(column)}: {eol_value_um:.1f} um at EOL "
-            f"({100.0 * eol_value_um / eol_total_um:.0f}% of total), "
-            f"onset at burnup ~{onset_burnup:.1f} {BURNUP_UNIT}"
-        )
-    lines.append("")
+    lines: list[str] = []
+    for group_name, group_columns in column_groups():
+        total_profile = np.sum(np.stack([output_profiles[column] for column in group_columns], axis=0), axis=0)
+        total_series_um = radial_integral_masked_to_full_radius(total_profile, radii_m_array, outer_indices) * 1.0e6
+        pre_total_um = float(total_series_um[pre_index])
+        post_total_um = float(total_series_um[-1])
+
+        lines.extend([
+            f"JOG thickness ({group_name}, outer {outer_node_count} node(s)):",
+            f"  End of irradiation, pre-cooldown ({reference_burnup[pre_index]:.1f} {BURNUP_UNIT}): "
+            f"total = {pre_total_um:.1f} um",
+            f"  Post-cooldown: total = {post_total_um:.1f} um",
+        ])
+        for column in group_columns:
+            series_um = radial_integral_masked_to_full_radius(
+                output_profiles[column], radii_m_array, outer_indices
+            ) * 1.0e6
+            pre_value_um = float(series_um[pre_index])
+            post_value_um = float(series_um[-1])
+            if is_all_zero(series_um) or max(pre_value_um, post_value_um) <= 0.0:
+                continue
+
+            onset_mask = series_um > 0.05 * max(pre_value_um, post_value_um)
+            onset_burnup = float(reference_burnup[int(np.argmax(onset_mask))]) if np.any(onset_mask) else float("nan")
+            pre_share = 100.0 * pre_value_um / pre_total_um if pre_total_um > 0.0 else 0.0
+            post_share = 100.0 * post_value_um / post_total_um if post_total_um > 0.0 else 0.0
+            lines.append(
+                f"    {jog_label(column)}: pre-cooldown {pre_value_um:.1f} um ({pre_share:.0f}%), "
+                f"post-cooldown {post_value_um:.1f} um ({post_share:.0f}%), "
+                f"onset at burnup ~{onset_burnup:.1f} {BURNUP_UNIT}"
+            )
+        lines.append("")
     return lines
 
 
@@ -2026,7 +2045,7 @@ def plot_radial_phase_mole_fraction_snapshot(
         1,
         figsize=(9, 6.8),
         sharex=True,
-        gridspec_kw={"height_ratios": [1.15, 1.0], "hspace": 0.08},
+        gridspec_kw={"height_ratios": [1.15, 1.0], "hspace": 0.28},
     )
     phase_axis, state_axis = axes
     add_radial_point_regions(phase_axis, len(r_over_ro), show_labels=True)
@@ -2051,19 +2070,42 @@ def plot_radial_phase_mole_fraction_snapshot(
     phase_axis.set_yscale("log")
     phase_axis.set_ylabel("Phase fraction")
     phase_axis.set_ylim(1.0e-3, 1.5)
-    phase_axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1, fontsize=12)
+    # Legend inside the empty left band (R/Ro < ~0.3, inward of point 1) so
+    # the pre- and post-cooldown figures render at identical sizes.
+    phase_axis.legend(
+        loc="center left",
+        bbox_to_anchor=(0.005, 0.5),
+        ncol=1,
+        fontsize=11.5,
+        framealpha=0.85,
+        frameon=True,
+        edgecolor="none",
+        facecolor="white",
+        handlelength=1.4,
+        handletextpad=0.5,
+        borderaxespad=0.2,
+        labelspacing=0.4,
+    )
     phase_axis.set_title(snapshot_label)
 
     temperature_color = COLORS[3]
     om_color = COLORS[2]
     state_axis.plot(r_over_ro, temperature, color=temperature_color, linewidth=2.8, zorder=2)
     state_axis.set_ylabel("Temperature (K)", color=temperature_color)
+    # Common, fixed temperature scale for the pre- and post-cooldown
+    # snapshots, so the two figures are directly comparable (the
+    # post-cooldown profile is flat at room temperature).
+    state_axis.set_ylim(200.0, 2400.0)
+    state_axis.set_yticks(np.arange(400.0, 2401.0, 400.0))
+    # No horizontal grid in the temperature panel (vertical grid kept).
+    state_axis.grid(False, axis="y")
     state_axis.tick_params(axis="y", labelcolor=temperature_color)
     state_axis.set_xlabel("R/Ro")
     state_axis.set_xlim(0.0, 1.0)
 
     if om_ratio is not None:
         om_axis = state_axis.twinx()
+        om_axis.grid(False)
         om_axis.plot(r_over_ro, om_ratio, color=om_color, linewidth=2.8)
         om_axis.set_ylabel("O/M ratio (-)", color=om_color)
         om_axis.set_ylim(1.95, 2.01)
@@ -2543,7 +2585,8 @@ def plot_radial_profiles(
     reference_fima = output_histories[0]["FIMA (%)"]
 
     for snapshot_slug, snapshot_name, target_time, side in COOLDOWN_SNAPSHOTS:
-        snapshot_label = f"{snapshot_name} ({format_time_label(target_time)})"
+        fima_at_snapshot = float(np.interp(target_time, reference_time, reference_fima))
+        snapshot_label = f"{snapshot_name} ({fima_at_snapshot:.1f} at.%)"
         plot_cappia_sciantix_germinal_comparison_pies(
             ordered_case_directories,
             saved_paths,
@@ -2582,8 +2625,8 @@ def plot_radial_profiles(
         ("mid_irradiation", "mid-irradiation", mid_irradiation_time, "before"),
     ]
     for snapshot_slug, snapshot_name, target_time, side in radial_phase_snapshots:
-        burnup_at_snapshot = float(np.interp(target_time, reference_time, reference_burnup))
-        snapshot_label = f"{snapshot_name} ({burnup_at_snapshot:.0f} {BURNUP_UNIT})"
+        fima_at_snapshot = float(np.interp(target_time, reference_time, reference_fima))
+        snapshot_label = f"{snapshot_name} ({fima_at_snapshot:.1f} at.%)"
         plot_radial_phase_mole_fraction_snapshot(
             ordered_case_directories,
             radii_m_array,
@@ -2827,7 +2870,7 @@ def plot_radial_profiles(
                         facecolors=burnup_color,
                         edgecolors=burnup_color,
                         zorder=2,
-                        label=f"Matzke {exp_burnup_level:.1f}% FIMA, {position_name}",
+                        label=f"Matzke {exp_burnup_level:.1f} at.%",
                     )
 
             if germinal_temperature.size and germinal_oxygen_potential.size:
@@ -2837,7 +2880,7 @@ def plot_radial_profiles(
                     color=COLORS[1],
                     linestyle="--",
                     zorder=3,
-                    label="GERMINAL 13.3% FIMA",
+                    label="GERMINAL 13.3 at.%",
                 )
 
             cooldown_temperature_profiles = output_profiles[TEMPERATURE_LABEL][:, cooldown]
@@ -2862,7 +2905,7 @@ def plot_radial_profiles(
                     y[order],
                     color=RADIAL_POINT_REGION_COLORS[(point_index - 1) % len(RADIAL_POINT_REGION_COLORS)],
                     zorder=3,
-                    label=f"SCIANTIX {eol_fima:.1f}% FIMA, edge",
+                    label=f"SCIANTIX {eol_fima:.1f} at.%",
                 )
             
             axis.set_xlim(900,1500)
@@ -2870,7 +2913,7 @@ def plot_radial_profiles(
 
             axis.set_xlabel(TEMPERATURE_LABEL)
             axis.set_ylabel("Fuel oxygen potential (kJ/mol O$_2$)")
-            axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1, fontsize=12)
+            axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
             save_figure(fig, PLOTS_DIR / "OxygenPotentialCooldownEOL.png", saved_paths)
 
     # Metallic ("white metal") precipitate phases carry their own volume
@@ -2915,7 +2958,10 @@ def plot_radial_profiles(
                 return
             x_values = output_profiles[TEMPERATURE_LABEL][outer_indices[-1]]
         else:
-            time_mask = np.ones_like(reference_burnup, dtype=bool)
+            # During-irradiation figure: stop at the end of irradiation so
+            # phases that only appear during the final cooldown (BaMoO4,
+            # MoO2, ...) do not enter the stack or the legend.
+            time_mask = before_cooldown_mask(reference_time)
             x_values = reference_burnup
 
         x_masked = x_values[time_mask]
@@ -3036,7 +3082,7 @@ def plot_radial_profiles(
         )
     results_summary_lines.extend(
         build_jog_thickness_summary_lines(
-            output_profiles, radii_m_array, reference_burnup, METALLIC_JOG_COLUMNS
+            output_profiles, radii_m_array, reference_burnup, reference_time, METALLIC_JOG_COLUMNS
         )
     )
     results_summary_lines.extend(build_outer_node_composition_summary_lines(ordered_case_directories))

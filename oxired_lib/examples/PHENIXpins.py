@@ -649,7 +649,7 @@ def main() -> None:
     edges_over_ro = edges / r_outer
     n_regions = len(edges_over_ro) - 1
 
-    fig, axis = plt.subplots(1,1, figsize=(13,5))
+    fig, axis = plt.subplots(1,1, figsize=(8,5))
 
     for i in range(n_regions):
         axis.axvspan(
@@ -700,9 +700,9 @@ def main() -> None:
     secondary_axis.tick_params(axis="y", labelcolor=PAPER_PALETTE[-1])
     secondary_axis.set_yticks(np.linspace(700.0, 2300.0, 9))
     secondary_axis.set_ylabel("Temperature (K)", color=PAPER_PALETTE[-1])
-    axis.legend(loc="center left", ncol=1, bbox_to_anchor=(1.3, 0.5))
+    axis.legend(loc="lower left", ncol=1, fontsize=14)
     plt.tight_layout()
-    
+
     SCRIPT_DIR = Path(__file__).resolve().parent
     plt.savefig(SCRIPT_DIR.parents[3] / "OverLeaf/JOGSCIANTIX/Images/Oprofile.png")
 
