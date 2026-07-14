@@ -3,38 +3,44 @@ Rows: 2921 -> 2921
 Columns: 126 -> 126
 
 Common columns compared: 126
-Columns outside tolerance: 0
+Columns outside tolerance: 29
 
 Top 20 column differences:
-  Time (h): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Temperature (K): row=0, gold=1.12800000e+03, new=1.12800000e+03, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Fission rate (fiss / m3 s): row=0, gold=3.45000000e+19, new=3.45000000e+19, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Hydrostatic stress (MPa): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Steam pressure (atm): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  System pressure (Pa): row=0, gold=1.00000000e+05, new=1.00000000e+05, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  O/M ratio (/): row=0, gold=1.97500000e+00, new=1.97500000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Grain radius (m): row=0, gold=1.00000000e-05, new=1.00000000e-05, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Xe produced (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Xe in grain (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Xe in intragranular solution (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Xe in intragranular bubbles (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Xe at grain boundary (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Xe released (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr produced (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr in grain (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr in intragranular solution (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr in intragranular bubbles (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr at grain boundary (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  Kr released (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
+  Xe at grain boundary (at/m3): row=2663, gold=1.49579200e+25, new=3.85553700e+25, abs=2.35974500e+25, rel=1.57758900e+00, bad_rows=2303
+  Xe released (at/m3): row=2663, gold=3.24502200e+26, new=3.00904800e+26, abs=2.35974000e+25, rel=7.27187674e-02, bad_rows=2303
+  Kr released (at/m3): row=2663, gold=2.35749500e+25, new=2.18606000e+25, abs=1.71435000e+24, rel=7.27191362e-02, bad_rows=2303
+  Kr at grain boundary (at/m3): row=2663, gold=1.08668700e+24, new=2.80103100e+24, abs=1.71434400e+24, rel=1.57758766e+00, bad_rows=2303
+  Intergranular bubble concentration (bub/m2): row=2484, gold=6.36714000e+12, new=6.45128900e+12, abs=8.41490000e+10, rel=1.32161379e-02, bad_rows=2302
+  Intergranular atoms per bubble (at/bub): row=2663, gold=9.55356200e+06, new=2.46371600e+07, abs=1.50835980e+07, rel=1.57884546e+00, bad_rows=2303
+  Intergranular vacancies per bubble (vac/bub): row=2654, gold=2.76871900e+07, new=2.73193100e+07, abs=3.67880000e+05, rel=1.32870111e-02, bad_rows=2302
+  O available content (mol/m3): row=2855, gold=4.96993200e+03, new=0.00000000e+00, abs=4.96993200e+03, rel=1.00000000e+00, bad_rows=2806
+  Fuel oxygen potential (KJ/mol): row=2829, gold=-4.81129400e+02, new=-4.04860600e+02, abs=7.62688000e+01, rel=1.58520348e-01, bad_rows=2824
+  Fuel oxygen potential - Kato (KJ/mol): row=2829, gold=-4.81129400e+02, new=-4.04860600e+02, abs=7.62688000e+01, rel=1.58520348e-01, bad_rows=2824
+  U content (mol/m3): row=100, gold=3.01649300e+04, new=3.01513600e+04, abs=1.35700000e+01, rel=4.49860152e-04, bad_rows=2824
+  Mo oxide valence (/): row=2855, gold=6.00000000e+00, new=0.00000000e+00, abs=6.00000000e+00, rel=1.00000000e+00, bad_rows=1
+  Pu content (mol/m3): row=100, gold=8.45189800e+03, new=8.44809500e+03, abs=3.80300000e+00, rel=4.49958104e-04, bad_rows=2824
+  Ba oxide valence (/): row=2855, gold=2.00000000e+00, new=0.00000000e+00, abs=2.00000000e+00, rel=1.00000000e+00, bad_rows=1
+  Mo in oxide fraction (/): row=2855, gold=1.00000000e+00, new=0.00000000e+00, abs=1.00000000e+00, rel=1.00000000e+00, bad_rows=516
+  Ba in oxide fraction (/): row=2855, gold=1.00000000e+00, new=0.00000000e+00, abs=1.00000000e+00, rel=1.00000000e+00, bad_rows=1
+  Intergranular fractional intactness (/): row=2654, gold=2.75871700e-01, new=9.99180400e-01, abs=7.23308700e-01, rel=2.62190250e+00, bad_rows=2303
+  Ba/Mo in oxide compounds (/): row=2855, gold=4.52059200e-01, new=0.00000000e+00, abs=4.52059200e-01, rel=1.00000000e+00, bad_rows=2746
+  Fission gas release (/): row=619, gold=1.47638600e-01, new=7.89077200e-03, abs=1.39747828e-01, rel=9.46553462e-01, bad_rows=2303
+  JOG (Cs2MoO4) (/): row=2855, gold=1.10399300e-01, new=0.00000000e+00, abs=1.10399300e-01, rel=1.00000000e+00, bad_rows=2809
 
 Comparing /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/gold/point_04_r_2p4791mm/thermochemistry_output.txt -> /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/point_04_r_2p4791mm/thermochemistry_output.txt
 Rows: 2921 -> 2921
 Columns: 111 -> 111
 
 Common columns compared: 111
-Columns outside tolerance: 0
+Columns outside tolerance: 6
 
 Top 20 column differences:
+  CS2MOO4_S1 (condensed, at grain boundary) (g/m3): row=2855, gold=4.43100000e+05, new=0.00000000e+00, abs=4.43100000e+05, rel=1.00000000e+00, bad_rows=39
+  HCP_A3 (condensed, at grain boundary) (g/m3): row=2855, gold=1.63700000e+05, new=0.00000000e+00, abs=1.63700000e+05, rel=1.00000000e+00, bad_rows=2794
+  FCC_A1 (condensed, at grain boundary) (g/m3): row=2855, gold=1.08600000e+05, new=0.00000000e+00, abs=1.08600000e+05, rel=1.00000000e+00, bad_rows=2794
+  BA3MOO6 (condensed, at grain boundary) (g/m3): row=2855, gold=5.88000000e+04, new=0.00000000e+00, abs=5.88000000e+04, rel=1.00000000e+00, bad_rows=2804
+  HALITE (condensed, at grain boundary) (g/m3): row=2855, gold=3.41100000e+04, new=0.00000000e+00, abs=3.41100000e+04, rel=1.00000000e+00, bad_rows=2805
+  CS2MOO4_S2 (condensed, at grain boundary) (g/m3): row=2824, gold=4.36400000e+05, new=4.49700000e+05, abs=1.33000000e+04, rel=3.04766269e-02, bad_rows=2758
   Time (h): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Temperature (K): row=0, gold=1.12800000e+03, new=1.12800000e+03, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Fission rate (fiss / m3 s): row=0, gold=3.45000000e+19, new=3.45000000e+19, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
@@ -49,9 +55,3 @@ Top 20 column differences:
   BAO (gas, at grain boundary) (g/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   CS (gas, at grain boundary) (g/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   CS2 (gas, at grain boundary) (g/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  CS2MOO4 (gas, at grain boundary) (g/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  CS2O (gas, at grain boundary) (g/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  CS2O2 (gas, at grain boundary) (g/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  CSO (gas, at grain boundary) (g/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  HE (gas, at grain boundary) (g/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
-  MO (gas, at grain boundary) (g/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
