@@ -2985,7 +2985,7 @@ def plot_radial_profiles(
         jog_histories = [item[1] for item in jog_entries]
         jog_plot_colors = [item[2] for item in jog_entries]
 
-        fig, axis = plt.subplots(1, 1, figsize=(11.5, 5))
+        fig, axis = plt.subplots(1, 1, figsize=(11.5, 6))
 
         axis.stackplot(
             x_masked,
@@ -3028,7 +3028,7 @@ def plot_radial_profiles(
                     axis.scatter(
                         exp_fima[jog_mask],
                         exp_thickness[jog_mask],
-                        edgecolors=color, facecolors=color,
+                        edgecolors="black", facecolors=color,
                         marker=marker,
                         label="_nolegend_",
                         zorder=3,
@@ -3038,7 +3038,7 @@ def plot_radial_profiles(
                     axis.scatter(
                         exp_fima[~jog_mask],
                         exp_thickness[~jog_mask],
-                        edgecolors=color, facecolors="none",
+                        edgecolors="black", facecolors="none",
                         marker=marker,
                         label="_nolegend_",
                         zorder=3,
@@ -3049,7 +3049,7 @@ def plot_radial_profiles(
                         [], [],
                         marker=marker,
                         linestyle="",
-                        markeredgecolor=color,
+                        markeredgecolor="black",
                         markerfacecolor=color,
                         markerfacecoloralt="none",
                         fillstyle="left",
