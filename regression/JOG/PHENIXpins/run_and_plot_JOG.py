@@ -14,6 +14,7 @@ from pathlib import Path
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 import numpy as np
 
 TEST_DIR = Path(__file__).resolve().parent
@@ -48,7 +49,7 @@ BURNUP_COLUMN_LABELS = (BURNUP_LABEL, BURNUP_DATA_LABEL)
 BURNUP_UNIT = "MWd/kgMOX"
 TIME_LABEL = "Time (h)"
 TEMPERATURE_LABEL = "Temperature (K)"
-FIMA_LABEL = "FIMA (%)"
+FIMA_LABEL = "Burnup (%FIMA)"
 COOLDOWN_START = 25200.0
 COOLDOWN_END = 25224.0
 COOLDOWN_SNAPSHOTS = (
@@ -865,74 +866,67 @@ def place_pie_wedge_labels(
     *,
     element_fontsize: float = 16,
     value_fontsize: float = 14,
-    small_value_threshold: float = 2.0,
+    min_spacing: float = 0.42,
 ) -> None:
     """Label every wedge outside the pie with a leader line.
 
-    ``elements``/``values``/``value_labels`` must be sorted value-descending
-    (matching the order the wedges were drawn in), so wedges below
-    ``small_value_threshold`` end up consecutive at the end of the sequence:
-    they are all narrow and close together in angle, so instead of placing
-    them purely by angle (which makes them overlap) they are stacked as an
-    evenly spaced label column.
+    Labels are gathered into two columns (left/right of the pie, chosen by
+    each wedge's mid-angle), sorted by the wedge's vertical position, and
+    then decluttered top-down so that consecutive labels never sit closer
+    than ``min_spacing``. This keeps every label legible regardless of how
+    many narrow wedges are adjacent in angle.
     """
-    n_wedges = len(wedges)
-    cluster_start = n_wedges
-    for index in range(n_wedges - 1, -1, -1):
-        if values[index] < small_value_threshold:
-            cluster_start = index
-        else:
-            break
-
     thetas = [math.radians((wedge.theta1 + wedge.theta2) / 2.0) for wedge in wedges]
-    cluster_size = n_wedges - cluster_start
-    cluster_sign = 1.0
-    cluster_center_y = 0.0
-    line_spacing = 0.24
-    if cluster_size > 0:
-        cluster_sign = 1.0 if sum(math.cos(t) for t in thetas[cluster_start:]) >= 0.0 else -1.0
-        cluster_center_y = sum(math.sin(t) for t in thetas[cluster_start:]) / cluster_size
+    column_x = pie_radius * 1.45
 
-    for index, (wedge, element, value, value_label, theta) in enumerate(
-        zip(wedges, elements, values, value_labels, thetas)
-    ):
-        x, y = math.cos(theta), math.sin(theta)
+    for side in (1.0, -1.0):
+        side_items = [
+            (theta, index)
+            for index, theta in enumerate(thetas)
+            if (1.0 if math.cos(theta) >= 0.0 else -1.0) == side
+        ]
+        if not side_items:
+            continue
+        # Sort by desired vertical position, top first.
+        side_items.sort(key=lambda item: -math.sin(item[0]))
+        desired_ys = [pie_radius * 1.30 * math.sin(theta) for theta, _ in side_items]
+        top_limit = pie_radius * 1.55
+        # Declutter: push labels down when they would overlap the one above.
+        placed_ys: list[float] = []
+        for desired_y in desired_ys:
+            y = min(desired_y, top_limit if not placed_ys else placed_ys[-1] - min_spacing)
+            placed_ys.append(y)
+        # If the column ran too low, shift it up as a block within the limits.
+        bottom_limit = -pie_radius * 1.55
+        overshoot = bottom_limit - placed_ys[-1]
+        if overshoot > 0.0:
+            shift = min(overshoot, top_limit - placed_ys[0])
+            placed_ys = [y + shift for y in placed_ys]
 
-        if index >= cluster_start:
-            cluster_index = index - cluster_start
-            text_x = pie_radius * 1.62 * cluster_sign
-            text_y = (
-                cluster_center_y
-                + line_spacing * (cluster_size - 1) / 2.0
-                - line_spacing * cluster_index
+        for (theta, index), text_y in zip(side_items, placed_ys):
+            x, y = math.cos(theta), math.sin(theta)
+            text_x = column_x * side
+            ha = "left" if side > 0.0 else "right"
+            axis.annotate(
+                "",
+                xy=(pie_radius * x, pie_radius * y),
+                xytext=(text_x, text_y),
+                arrowprops=dict(
+                    arrowstyle="-",
+                    color="#8a8a83",
+                    lw=1.0,
+                    connectionstyle=f"angle,angleA=0,angleB={math.degrees(theta):.1f}",
+                ),
+                zorder=3,
             )
-        else:
-            sign = 1.0 if x >= 0.0 else -1.0
-            anchor_radius = pie_radius * (1.32 if index % 2 == 0 else 1.58)
-            text_x = anchor_radius * sign
-            text_y = anchor_radius * y
-
-        ha = "left" if text_x >= 0.0 else "right"
-        axis.annotate(
-            "",
-            xy=(pie_radius * x, pie_radius * y),
-            xytext=(text_x, text_y),
-            arrowprops=dict(
-                arrowstyle="-",
-                color="#8a8a83",
-                lw=1.0,
-                connectionstyle=f"angle,angleA=0,angleB={math.degrees(theta):.1f}",
-            ),
-            zorder=3,
-        )
-        axis.text(
-            text_x, text_y + 0.065, element,
-            ha=ha, va="center", fontsize=element_fontsize, fontweight="bold", color="#171717",
-        )
-        axis.text(
-            text_x, text_y - 0.065, value_label,
-            ha=ha, va="center", fontsize=value_fontsize, color="#171717",
-        )
+            axis.text(
+                text_x + 0.04 * side, text_y, f"{elements[index]} ",
+                ha=ha, va="center", fontsize=element_fontsize, fontweight="bold", color="#171717",
+            )
+            axis.text(
+                text_x + 0.04 * side, text_y - 0.10, value_labels[index],
+                ha=ha, va="top", fontsize=value_fontsize, color="#171717",
+            )
 
 
 def assign_distinct_colors(labels: list[str], palette: list[str] = PAPER_PALETTE) -> dict[str, object]:
@@ -1531,7 +1525,13 @@ def add_atomic_percent_pie(
     color_map: dict[str, object],
     title: str,
 ) -> None:
-    labels = sorted(composition, key=composition.get, reverse=True)
+    # Drop essentially-zero entries (e.g. Ba at 0.0 at.% in the GERMINAL
+    # composition): a wedge of zero width only clutters the labelling.
+    labels = [
+        label
+        for label in sorted(composition, key=composition.get, reverse=True)
+        if composition[label] >= 0.05
+    ]
     if not labels:
         axis.axis("off")
         return
@@ -1862,7 +1862,7 @@ def build_phase_summary_lines(
 def build_jog_thickness_summary_lines(
     output_profiles: dict[str, np.ndarray],
     radii_m_array: np.ndarray,
-    reference_burnup: np.ndarray,
+    reference_fima: np.ndarray,
     reference_time: np.ndarray,
     metallic_jog_columns: set[str],
 ) -> list[str]:
@@ -1898,7 +1898,7 @@ def build_jog_thickness_summary_lines(
 
         lines.extend([
             f"JOG thickness ({group_name}, outer {outer_node_count} node(s)):",
-            f"  End of irradiation, pre-cooldown ({reference_burnup[pre_index]:.1f} {BURNUP_UNIT}): "
+            f"  End of irradiation, pre-cooldown ({reference_fima[pre_index]:.1f} %FIMA): "
             f"total = {pre_total_um:.1f} um",
             f"  Post-cooldown: total = {post_total_um:.1f} um",
         ])
@@ -1912,13 +1912,13 @@ def build_jog_thickness_summary_lines(
                 continue
 
             onset_mask = series_um > 0.05 * max(pre_value_um, post_value_um)
-            onset_burnup = float(reference_burnup[int(np.argmax(onset_mask))]) if np.any(onset_mask) else float("nan")
+            onset_fima = float(reference_fima[int(np.argmax(onset_mask))]) if np.any(onset_mask) else float("nan")
             pre_share = 100.0 * pre_value_um / pre_total_um if pre_total_um > 0.0 else 0.0
             post_share = 100.0 * post_value_um / post_total_um if post_total_um > 0.0 else 0.0
             lines.append(
                 f"    {jog_label(column)}: pre-cooldown {pre_value_um:.1f} um ({pre_share:.0f}%), "
                 f"post-cooldown {post_value_um:.1f} um ({post_share:.0f}%), "
-                f"onset at burnup ~{onset_burnup:.1f} {BURNUP_UNIT}"
+                f"onset at burnup ~{onset_fima:.1f} %FIMA"
             )
         lines.append("")
     return lines
@@ -2957,7 +2957,7 @@ def plot_radial_profiles(
             # phases that only appear during the final cooldown (BaMoO4,
             # MoO2, ...) do not enter the stack or the legend.
             time_mask = before_cooldown_mask(reference_time)
-            x_values = reference_burnup
+            x_values = reference_fima
 
         x_masked = x_values[time_mask]
         jog_total_series = jog_total_thickness_over_time_um[time_mask]
@@ -2985,7 +2985,7 @@ def plot_radial_profiles(
         jog_histories = [item[1] for item in jog_entries]
         jog_plot_colors = [item[2] for item in jog_entries]
 
-        fig, axis = plt.subplots(1, 1, figsize=(10, 5))
+        fig, axis = plt.subplots(1, 1, figsize=(11.5, 5))
 
         axis.stackplot(
             x_masked,
@@ -3012,33 +3012,57 @@ def plot_radial_profiles(
                 EXP_DATA_DIR / "Samuellson2020_simulation.txt"
             )
 
-            def fima_to_burnup(fima_values: np.ndarray) -> np.ndarray:
-                return np.interp(fima_values, reference_fima, reference_burnup)
-
-            axis.scatter(
-                fima_to_burnup(melis_fima),
-                melis_thickness,
-                edgecolors=COLORS[6], facecolors="none",
-                marker="o",
-                label="Melis et al. (1993)",
-                zorder=3,
-                linewidths=1.6,
-            )
-            axis.scatter(
-                fima_to_burnup(tourasse_fima),
-                tourasse_thickness,
-                edgecolors=COLORS[7], facecolors="none",
-                marker="D",
-                label="Tourasse et al. (1992)",
-                zorder=3,
-                linewidths=1.6,
-            )
+            # Below ~4 %FIMA the measured fuel-cladding gap is likely still
+            # open (not yet filled by JOG): those points stay hollow, while
+            # measurements at and above the threshold use filled symbols.
+            # Each dataset gets a single legend entry with a half-filled
+            # marker standing for both point styles.
+            open_gap_fima_threshold = 4.0
+            experimental_handles: list[Line2D] = []
+            for name, exp_fima, exp_thickness, marker, color in (
+                ("Melis et al. (1993)", melis_fima, melis_thickness, "o", COLORS[6]),
+                ("Tourasse et al. (1992)", tourasse_fima, tourasse_thickness, "D", COLORS[7]),
+            ):
+                jog_mask = exp_fima >= open_gap_fima_threshold
+                if np.any(jog_mask):
+                    axis.scatter(
+                        exp_fima[jog_mask],
+                        exp_thickness[jog_mask],
+                        edgecolors=color, facecolors=color,
+                        marker=marker,
+                        label="_nolegend_",
+                        zorder=3,
+                        linewidths=1.6,
+                    )
+                if np.any(~jog_mask):
+                    axis.scatter(
+                        exp_fima[~jog_mask],
+                        exp_thickness[~jog_mask],
+                        edgecolors=color, facecolors="none",
+                        marker=marker,
+                        label="_nolegend_",
+                        zorder=3,
+                        linewidths=1.6,
+                    )
+                experimental_handles.append(
+                    Line2D(
+                        [], [],
+                        marker=marker,
+                        linestyle="",
+                        markeredgecolor=color,
+                        markerfacecolor=color,
+                        markerfacecoloralt="none",
+                        fillstyle="left",
+                        markersize=9,
+                        label=name,
+                    )
+                )
             samuelsson_markers = {"\nGERMINAL correlation": "s", "\nOC stand-alone + TAF-ID": "^"}
             samuelsson_colors = {"\nGERMINAL correlation": COLORS[8], "\nOC stand-alone + TAF-ID": COLORS[9]}
-            samuelsson_linestyles = {"\nGERMINAL correlation": "--", "\nOC stand-alone + TAF-ID": ":"}
+            samuelsson_linestyles = {"\nGERMINAL correlation": "--", "\nOC stand-alone + TAF-ID": "-."}
             for section_label, (fima_values, thickness_values) in samuelsson_simulation_data.items():
                 axis.plot(
-                    fima_to_burnup(fima_values),
+                    fima_values,
                     thickness_values,
                     color=samuelsson_colors.get(section_label, COLORS[10 % len(COLORS)]),
                     marker=samuelsson_markers.get(section_label, "x"),
@@ -3046,10 +3070,15 @@ def plot_radial_profiles(
                     linestyle=samuelsson_linestyles.get(section_label, "--"),
                     label=f"Samuelsson et al. (2020), {section_label}",
                     zorder=3,
-                    linewidth=1.6,
+                    linewidth=2.6,
                 )
-            axis.set_xlabel(BURNUP_LABEL)
-            axis.set_xlim(0, max(reference_burnup))
+            axis.set_xlabel(FIMA_LABEL)
+            eol_fima = float(np.nanmax(reference_fima))
+            axis.set_xlim(0, eol_fima)
+            # Explicit final tick so the end-of-life burnup (13.3 %FIMA) is
+            # readable directly on the axis.
+            ticks = [tick for tick in np.arange(0.0, eol_fima, 2.0) if tick <= eol_fima - 1.0]
+            axis.set_xticks(ticks + [round(eol_fima, 1)])
             axis.set_ylim(0, 100)
         else:
             axis.set_xlabel(TEMPERATURE_LABEL)
@@ -3057,8 +3086,29 @@ def plot_radial_profiles(
             axis.set_ylim(0, max(float(np.nanmax(jog_total_series)) * 1.1, 1.0e-6))
 
         axis.set_ylabel("JOG thickness ($\\mu$m)")
-        axis.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), ncol=1)
-        save_figure(fig, PLOTS_DIR / filename, saved_paths)
+        legend_handles, _ = axis.get_legend_handles_labels()
+        if not cooldown:
+            # Insert the half-filled experimental markers between the model
+            # stack entries and the Samuelsson curves.
+            insert_at = len(legend_handles) - len(samuelsson_simulation_data)
+            legend_handles[insert_at:insert_at] = experimental_handles
+        axis.legend(
+            handles=legend_handles,
+            loc="center left",
+            bbox_to_anchor=(1.02, 0.5),
+            ncol=1,
+            fontsize=13,
+            labelspacing=0.5,
+        )
+        # Fixed layout and no tight bounding box: the oxide-only and
+        # oxide+metallic figures must have identical canvas and axes sizes
+        # regardless of how many legend entries each one carries.
+        fig.subplots_adjust(left=0.07, right=0.58, top=0.95, bottom=0.13)
+        output_path = PLOTS_DIR / filename
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        fig.savefig(output_path)
+        plt.close(fig)
+        saved_paths.append(output_path)
 
     plot_jog_figure("JOG.png", include_metallics=False)
     plot_jog_figure("JOG_oxides_metallics.png", include_metallics=True)
@@ -3077,7 +3127,7 @@ def plot_radial_profiles(
         )
     results_summary_lines.extend(
         build_jog_thickness_summary_lines(
-            output_profiles, radii_m_array, reference_burnup, reference_time, METALLIC_JOG_COLUMNS
+            output_profiles, radii_m_array, reference_fima, reference_time, METALLIC_JOG_COLUMNS
         )
     )
     results_summary_lines.extend(build_outer_node_composition_summary_lines(ordered_case_directories))
