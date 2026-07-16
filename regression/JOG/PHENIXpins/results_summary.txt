@@ -66,26 +66,26 @@ Grain-boundary phases, mid-irradiation:
     BaO (halite) #2 (Ba$^{2+}$1.00 | O$^{2-}$1.00): 4.7 mol%
 
 JOG thickness (oxide contributions only, outer 2 node(s)):
-  End of irradiation, pre-cooldown (106.9 MWd/kgMOX): total = 36.7 um
-  Post-cooldown: total = 34.7 um
-    Ba3MoO6: pre-cooldown 1.3 um (4%), post-cooldown 1.3 um (4%), onset at burnup ~1.3 MWd/kgMOX
-    BaMoO4: pre-cooldown 0.0 um (0%), post-cooldown 8.5 um (24%), onset at burnup ~106.9 MWd/kgMOX
-    BaO: pre-cooldown 1.1 um (3%), post-cooldown 1.2 um (3%), onset at burnup ~6.0 MWd/kgMOX
-    Cs2MoO4: pre-cooldown 20.1 um (55%), post-cooldown 21.7 um (62%), onset at burnup ~5.8 MWd/kgMOX
-    MoO2: pre-cooldown 0.0 um (0%), post-cooldown 2.1 um (6%), onset at burnup ~106.9 MWd/kgMOX
-    liquid oxide: pre-cooldown 14.1 um (39%), post-cooldown 0.0 um (0%), onset at burnup ~6.3 MWd/kgMOX
+  End of irradiation, pre-cooldown (106.9 MWd/kgMOX): total = 47.4 um
+  Post-cooldown: total = 44.9 um
+    Ba3MoO6: pre-cooldown 1.7 um (4%), post-cooldown 1.6 um (4%), onset at burnup ~1.3 MWd/kgMOX
+    BaMoO4: pre-cooldown 0.0 um (0%), post-cooldown 10.9 um (24%), onset at burnup ~106.9 MWd/kgMOX
+    BaO: pre-cooldown 1.5 um (3%), post-cooldown 1.6 um (3%), onset at burnup ~6.0 MWd/kgMOX
+    Cs2MoO4: pre-cooldown 26.0 um (55%), post-cooldown 28.1 um (62%), onset at burnup ~5.8 MWd/kgMOX
+    MoO2: pre-cooldown 0.0 um (0%), post-cooldown 2.7 um (6%), onset at burnup ~106.9 MWd/kgMOX
+    liquid oxide: pre-cooldown 18.3 um (39%), post-cooldown 0.0 um (0%), onset at burnup ~6.3 MWd/kgMOX
 
 JOG thickness (oxides + metallics, outer 2 node(s)):
-  End of irradiation, pre-cooldown (106.9 MWd/kgMOX): total = 47.5 um
-  Post-cooldown: total = 44.4 um
-    Ba3MoO6: pre-cooldown 1.3 um (3%), post-cooldown 1.3 um (3%), onset at burnup ~1.3 MWd/kgMOX
-    BaMoO4: pre-cooldown 0.0 um (0%), post-cooldown 8.5 um (19%), onset at burnup ~106.9 MWd/kgMOX
-    BaO: pre-cooldown 1.1 um (2%), post-cooldown 1.2 um (3%), onset at burnup ~6.0 MWd/kgMOX
-    Cs2MoO4: pre-cooldown 20.1 um (42%), post-cooldown 21.7 um (49%), onset at burnup ~5.8 MWd/kgMOX
-    MoO2: pre-cooldown 0.0 um (0%), post-cooldown 2.1 um (5%), onset at burnup ~106.9 MWd/kgMOX
-    liquid oxide: pre-cooldown 14.1 um (30%), post-cooldown 0.0 um (0%), onset at burnup ~6.3 MWd/kgMOX
-    FCC: pre-cooldown 3.1 um (7%), post-cooldown 3.8 um (9%), onset at burnup ~13.3 MWd/kgMOX
-    HCP: pre-cooldown 7.7 um (16%), post-cooldown 5.8 um (13%), onset at burnup ~4.2 MWd/kgMOX
+  End of irradiation, pre-cooldown (106.9 MWd/kgMOX): total = 61.6 um
+  Post-cooldown: total = 57.6 um
+    Ba3MoO6: pre-cooldown 1.7 um (3%), post-cooldown 1.6 um (3%), onset at burnup ~1.3 MWd/kgMOX
+    BaMoO4: pre-cooldown 0.0 um (0%), post-cooldown 10.9 um (19%), onset at burnup ~106.9 MWd/kgMOX
+    BaO: pre-cooldown 1.5 um (2%), post-cooldown 1.6 um (3%), onset at burnup ~6.0 MWd/kgMOX
+    Cs2MoO4: pre-cooldown 26.0 um (42%), post-cooldown 28.1 um (49%), onset at burnup ~5.8 MWd/kgMOX
+    MoO2: pre-cooldown 0.0 um (0%), post-cooldown 2.7 um (5%), onset at burnup ~106.9 MWd/kgMOX
+    liquid oxide: pre-cooldown 18.3 um (30%), post-cooldown 0.0 um (0%), onset at burnup ~6.3 MWd/kgMOX
+    FCC: pre-cooldown 4.1 um (7%), post-cooldown 5.1 um (9%), onset at burnup ~13.3 MWd/kgMOX
+    HCP: pre-cooldown 10.1 um (16%), post-cooldown 7.6 um (13%), onset at burnup ~4.2 MWd/kgMOX
 
 JOG outer-node atomic composition (mediated over outer node(s)):
   pre-cooldown: O 60.8, Cs 16.4, Mo 15.3, Ba 7.4 at.%

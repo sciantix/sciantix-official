@@ -715,19 +715,14 @@ def radial_integral_over_radius(profile: np.ndarray, radii_m_array: np.ndarray) 
         shell_thickness_m = 2.0 * shell_half_width
         if shell_thickness_m <= 0.0:
             return np.zeros(profile.shape[1], dtype=float)
-        return profile[0, :] * shell_thickness_m / 2.0
+        return profile[0, :] * float(radii_m_array[0]) * shell_thickness_m / PELLET_RADIUS_M
 
-    r_inner_m = radii_m_array[0]
-    r_outer_m = radii_m_array[-1]
-    annulus_thickness_m = r_outer_m - r_inner_m
-    annulus_area_factor = (r_outer_m ** 2 - r_inner_m ** 2)
-    if annulus_thickness_m <= 0.0 or annulus_area_factor <= 0.0:
-        return np.zeros(profile.shape[1], dtype=float)
-
-    # Area-average on annulus: <f> = 2/(ro^2-ri^2) * integral(f*r dr)
-    # Equivalent half-thickness scaling for hollow domain: <f> * (ro-ri)/2.
+    # Volume-conserving equivalent layer at the pellet outer surface:
+    # V_JOG per unit length = 2*pi * integral(f*r dr); deposited as a thin
+    # annulus at r = PELLET_RADIUS_M, its thickness is
+    # t = V_JOG / (2*pi*r_fuel_outer) = integral(f*r dr) / r_fuel_outer.
     integral = np.trapezoid(profile * radii_m_array[:, np.newaxis], x=radii_m_array, axis=0)
-    return integral * annulus_thickness_m / annulus_area_factor
+    return integral / PELLET_RADIUS_M
 
 
 def radial_volume_average(profile: np.ndarray, radii_m_array: np.ndarray) -> np.ndarray:
@@ -2043,9 +2038,9 @@ def plot_radial_phase_mole_fraction_snapshot(
     fig, axes = plt.subplots(
         2,
         1,
-        figsize=(9, 6.8),
+        figsize=(10, 7.5),
         sharex=True,
-        gridspec_kw={"height_ratios": [1.15, 1.0], "hspace": 0.28},
+        gridspec_kw={"height_ratios": [1.15, 0.85], "hspace": 0.28},
     )
     phase_axis, state_axis = axes
     add_radial_point_regions(phase_axis, len(r_over_ro), show_labels=True)
@@ -2080,7 +2075,7 @@ def plot_radial_phase_mole_fraction_snapshot(
         framealpha=0.85,
         frameon=True,
         edgecolor="none",
-        facecolor="white",
+        facecolor="none",
         handlelength=1.4,
         handletextpad=0.5,
         borderaxespad=0.2,
@@ -2108,8 +2103,8 @@ def plot_radial_phase_mole_fraction_snapshot(
         om_axis.grid(False)
         om_axis.plot(r_over_ro, om_ratio, color=om_color, linewidth=2.8)
         om_axis.set_ylabel("O/M ratio (-)", color=om_color)
-        om_axis.set_ylim(1.95, 2.01)
-        om_axis.set_yticks(np.arange(1.96, 2.0, 0.01))
+        om_axis.set_ylim(1.975, 2.01)
+        om_axis.set_yticks(np.arange(1.975, 2.01, 0.01))
         om_axis.tick_params(axis="y", labelcolor=om_color)
 
     save_figure(fig, PLOTS_DIR / output_name, saved_paths)
