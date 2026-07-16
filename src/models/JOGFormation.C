@@ -106,11 +106,14 @@ namespace
     /// liquid.
     double estimateElementalMixDensity(const std::map<std::string, double>& composition)
     {
-        // Atomic mass (g/mol) and pure-element density (g/cm3) of the
-        // noble-metal fission products dissolved in the metallic phases.
+        // Atomic mass (g/mol) and density (g/cm3) of the stable
+        // room-temperature elemental structures of the noble-metal fission
+        // products dissolved in the metallic phases, from the Materials
+        // Project: Mo mp-129 (BCC Im-3m), Tc mp-113 (HCP P6_3/mmc),
+        // Ru mp-33 (HCP P6_3/mmc), Rh mp-74 (FCC Fm-3m), Pd mp-2 (FCC Fm-3m).
         static const std::vector<std::tuple<std::string, double, double>> metallic_elements = {
-            {"Mo", 95.95, 10.28}, {"Tc", 98.00, 11.50}, {"Ru", 101.07, 12.45},
-            {"Rh", 102.91, 12.41}, {"Pd", 106.42, 12.02}};
+            {"Mo", 95.95, 10.02}, {"Tc", 98.00, 11.42}, {"Ru", 101.07, 12.38},
+            {"Rh", 102.91, 12.40}, {"Pd", 106.42, 11.76}};
 
         double total_mass = 0.0;
         double volume_per_mass = 0.0;
