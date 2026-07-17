@@ -3,12 +3,9 @@ Rows: 3321 -> 3321
 Columns: 126 -> 126
 
 Common columns compared: 126
-Columns outside tolerance: 3
+Columns outside tolerance: 0
 
 Top 20 column differences:
-  JOG (FCC) (/): row=3284, gold=1.41700000e-02, new=1.44486300e-02, abs=2.78630000e-04, rel=1.96633733e-02, bad_rows=2757
-  JOG (HCP) (/): row=2719, gold=2.04165500e-02, new=2.06875000e-02, abs=2.70950000e-04, rel=1.32710962e-02, bad_rows=3319
-  JOG (liquid metallic) (/): row=182, gold=5.80439500e-04, new=5.95500800e-04, abs=1.50613000e-05, rel=2.59480962e-02, bad_rows=85
   Time (h): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Temperature (K): row=0, gold=1.65300000e+03, new=1.65300000e+03, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Fission rate (fiss / m3 s): row=0, gold=3.45000000e+19, new=3.45000000e+19, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
@@ -26,6 +23,9 @@ Top 20 column differences:
   Kr produced (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Kr in grain (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Kr in intragranular solution (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
+  Kr in intragranular bubbles (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
+  Kr at grain boundary (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
+  Kr released (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
 
 Comparing /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/gold/point_03_r_1p9994mm/thermochemistry_output.txt -> /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/point_03_r_1p9994mm/thermochemistry_output.txt
 Rows: 3321 -> 3321
