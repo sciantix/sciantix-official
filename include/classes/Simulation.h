@@ -8,23 +8,26 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
-#include "ErrorMessages.h"
+#include "MainVariables.h"
 #include "Matrix.h"
 #include "Model.h"
 #include "SciantixArray.h"
 #include "SciantixVariable.h"
 #include "Solver.h"
 #include "System.h"
-#include <cmath>
+#include "ThermochemistrySettings.h"
+#include "ThermochemistryVariable.h"
+#include <iostream>
+#include <string>
 #include <vector>
 
 /**
@@ -45,19 +48,26 @@ class Simulation
     SciantixArray<SciantixVariable> sciantix_variable;
     SciantixArray<SciantixVariable> history_variable;
     SciantixArray<SciantixVariable> physics_variable;
-
+    SciantixArray<ThermochemistryVariable> thermochemistry_variable;
+    
     SciantixArray<Model>  model;
     SciantixArray<System> sciantix_system;
     SciantixArray<Matrix> matrices;
-    SciantixArray<Gas>    gas;
+    SciantixArray<FissionProducts>    gas_fp;
+    SciantixArray<FissionProducts>    volatile_fp;
+    SciantixArray<FissionProducts>    metallic_fp;
+    SciantixArray<FissionProducts>    ceramic_fp;
 
     SciantixArray<InputVariable> input_variable;
     SciantixArray<InputVariable> scaling_factors;
+    const ThermochemistrySettings* thermochemistry_settings;
 
     int                 n_modes;
     std::vector<double> modes_initial_conditions;
 
     Solver solver;
+
+    static Simulation* instance;
 
     /**
      * @brief Default constructor for the Simulation class
@@ -66,6 +76,7 @@ class Simulation
     {
         n_modes = N_DIFFUSION_MODES;
         modes_initial_conditions.resize(SCIANTIX_DIFFUSION_MODES_SIZE);
+        thermochemistry_settings = nullptr;
     }
 
   public:
@@ -82,9 +93,12 @@ class Simulation
                       double Sciantix_history[],
                       double Sciantix_variables[],
                       double Sciantix_scaling_factors[],
-                      double Sciantix_diffusion_modes[]);
+                      double Sciantix_diffusion_modes[],
+                      double Sciantix_thermochemistry[],
+                      const ThermochemistrySettings* Sciantix_thermochemistry_settings
+    );
 
-    void setGas();
+    void setFissionProducts();
     void setMatrix();
     void setSystem();
 
@@ -94,11 +108,14 @@ class Simulation
                     double Sciantix_history[],
                     double Sciantix_variables[],
                     double Sciantix_scaling_factors[],
-                    double Sciantix_diffusion_modes[]);
+                    double Sciantix_diffusion_modes[],
+                    double Sciantix_thermochemistry[],
+                    const ThermochemistrySettings* Sciantix_thermochemistry_settings
+    );
 
     void execute();
 
-    void update(double Sciantix_variables[], double Sciantix_diffusion_modes[]);
+    void update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[]);
 
     void output();
 
@@ -133,30 +150,32 @@ class Simulation
     void EffectiveBurnup();
 
     /**
-     * @brief GasProduction computes the gas produced from the production rate.
+     * @brief FissionProductProduction computes the fission products produced from the production rate.
      *
      * @author D. Pizzocri
      * @author T. Barani
      * @author G. Zullo
+     * @author E. Cappellari
      *
      */
-    void GasProduction();
+    void FissionProductProduction();
 
     /**
-     * @brief Calculates the decayed amount of radioactive gases.
+     * @brief Calculates the decayed amount of radioactive fission products.
      *
      * @author G. Zullo
+     * @author E. Cappellari
      *
      */
-    void GasDecay();
+    void FissionProductDecay();
 
     /**
-     * @brief Calculates the gas released to the rod free volume.
+     * @brief Calculates the fission products released to the rod free volume.
      *
      * @author E. Cappellari
      *
      */
-    void GasRelease();
+    void FissionProductRelease();
 
     /**
      * @brief Handles the intragranular gas diffusion problem.
@@ -164,9 +183,20 @@ class Simulation
      * @author D. Pizzocri
      * @author T. Barani
      * @author G. Zullo
+     * @author E. Cappellari
+
      *
      */
-    void GasDiffusion();
+    void IntragranularDiffusion();
+
+    /**
+     * @brief Function to couple SCIANTIX with a Thermochemistry module.
+     * It writes the input, runs the code, reads and store the output in SCIANTIX thermochemistry variables.
+     * 
+     * @author E. Cappellari
+     * 
+     */
+    void SetPhaseDiagram();
 
     /**
      * @brief Grain growth based on specific model parameters affecting the system's materials.
@@ -214,7 +244,7 @@ class Simulation
      *
      * @ref White, JNM, 325 (2004) 61-77
      * @ref Pastore, NED, (2013)
-     * @ref Cappellari, JNM (2025, under review)
+     * @ref Cappellari, JNM, (2025)
      *
      * @author D. Pizzocri
      * @author T. Barani
@@ -237,7 +267,7 @@ class Simulation
 
     /**
      * @brief Calculates the fraction of cracked/healed grain-boundary faces after temperature
-     * transients, and the corresponding fission gas released.
+     * transients, and the corresponding fission products released.
      *
      * @author D. Pizzocri
      * @author T. Barani
@@ -257,7 +287,7 @@ class Simulation
     void Densification();
 
     /**
-     * @brief Calculates the amount of gas released due to venting processes.
+     * @brief Calculates the amount of fission product released due to venting processes.
      *
      * @author D. Pizzocri
      * @author T. Barani
@@ -278,8 +308,8 @@ class Simulation
      */
     double openPorosity(double fabrication_porosity);
 
-    /**
-     * @brief Calculates a corrective factor for the athermal fission gas release.
+        /**
+     * @brief Calculates a corrective factor for the athermal fission product release.
      * @param open_porosity the open porosity of the fuel.
      * @param theta the grain-edge inclination angle.
      * @param porosity the as-fabricated porosity.
@@ -287,9 +317,9 @@ class Simulation
      * @param burnup the fuel burn-up.
      * @param temperature the fuel temperature given as input.
      * @param fission_rate the fission rate given as input.
-     * @return the athermal venting factor to correct athermal release for the real shape of gas
-     * flux within the grain including its dependency on the grain-edge inclination angle.
-     *
+     * @return the athermal venting factor to correct athermal release for the real shape of gas flux within the grain
+     *          including its dependency on the grain-edge inclination angle.
+     * 
      * @author A. Pagani
      * @author E. Cappellari
      */
@@ -300,7 +330,7 @@ class Simulation
                                  double burnup,
                                  double temperature,
                                  double fission_rate);
-
+    
     /**
      * @brief Calculates the formation of high burnup structures within the nuclear fuel.
      *
@@ -327,6 +357,7 @@ class Simulation
      *
      * @author G. Petrosillo
      * @author G. Zullo
+     * @author E. Cappellari
      *
      */
     void StoichiometryDeviation();
@@ -360,8 +391,16 @@ class Simulation
     void UO2Thermochemistry();
 
     /**
-     * @brief This function defines the Sciantix model *ChromiumSolubility*.
-     *
+     * @brief JOG formation module.
+     * 
+     * @author E. Cappellari
+     * 
+     */
+    void JOGFormation();
+
+	/**
+	 * @brief This function defines the Sciantix model *ChromiumSolubility*.
+	 * 
      * @details
      * The model ChromiumSolubility is used to evaluate the chromium solubility accordingly to the
      * temperature and the oxygen content. Then the number of oxide chromium atoms is evaluated,
@@ -383,99 +422,103 @@ class Simulation
     void ChromiumSolubility();
 
     /**
-     * @brief The model Microstructure is used to evaluate the lattice parameter and the theoretical
-     * density, accordingly to chromium content.
-     *
-     * @author G. Nicodemo
-     *
-     * @ref <a href="https://www.sciencedirect.com/science/article/pii/S0022311512000943"
-     * target="_blank">T. Cardinaels et al (2012), Journal of Nuclear Materials, 424 252-260.</a>
-     */
-
-    void Microstructure();
-
-    /**
      * @brief This method returns a pointer to the array of diffusion modes corresponding to the
-     * specified gas.
-     * @param gas_name The name of the gas for which diffusion modes are required.
+     * specified gas/volatile FP.
+     * @param name The name of the gas/volatile FP for which diffusion modes are required.
      * @return A pointer to the array of diffusion modes for the specified gas, or nullptr for
      * invalid gas names.
      */
-    double* getDiffusionModes(std::string gas_name)
+    double* getDiffusionModes(std::string name)
     {
-        if (gas_name == "Xe")
+        if (name == "Xe")
             return &modes_initial_conditions[0];
-        else if (gas_name == "Kr")
+        else if (name == "Kr")
             return &modes_initial_conditions[3 * n_modes];
-        else if (gas_name == "He")
+        else if (name == "He")
             return &modes_initial_conditions[6 * n_modes];
-        else if (gas_name == "Xe133")
+        else if (name == "Xe133")
             return &modes_initial_conditions[9 * n_modes];
 
-        else if (gas_name == "Kr85m")
+        else if (name == "Kr85m")
             return &modes_initial_conditions[12 * n_modes];
 
-        else if (gas_name == "Xe in HBS")
+        else if (name == "Xe in HBS")
             return &modes_initial_conditions[15 * n_modes];
 
         else
-            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + gas_name + "\" in getDiffusionModes");
+        {
+            std::cerr << "Error: Invalid gas name \"" << name << "\" in Simulation::getDiffusionModes."
+                      << std::endl;
+            return nullptr;
+        }
     }
 
     /**
-     * @brief Retrieves diffusion modes related to solutions for a specified gas.
-     * @param gas_name Name of the gas.
+     * @brief Retrieves diffusion modes related to solutions for a specified gas/volatile FP.
+     * @param name Name of the gas/volatile FP.
      * @return Pointer to the array of diffusion modes for solutions, or nullptr for invalid gas
      * names.
      */
-    double* getDiffusionModesSolution(std::string gas_name)
+    double* getDiffusionModesSolution(std::string name)
     {
-        if (gas_name == "Xe")
+        if (name == "Xe")
             return &modes_initial_conditions[1 * n_modes];
 
-        else if (gas_name == "Kr")
+        else if (name == "Kr")
             return &modes_initial_conditions[4 * n_modes];
 
-        else if (gas_name == "He")
+        else if (name == "He")
             return &modes_initial_conditions[7 * n_modes];
 
-        else if (gas_name == "Xe133")
+        else if (name == "Xe133")
             return &modes_initial_conditions[10 * n_modes];
 
-        else if (gas_name == "Kr85m")
+        else if (name == "Kr85m")
             return &modes_initial_conditions[13 * n_modes];
 
-        else if (gas_name == "Xe in HBS")
+        else if (name == "Xe in HBS")
             return &modes_initial_conditions[16 * n_modes];
+
         else
-            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + gas_name + "\" in getDiffusionModesSolution");
+        {
+            std::cerr << "Error: Invalid gas name \"" << name << "\" in Simulation::getDiffusionModesSolution."
+                      << std::endl;
+            return nullptr;
+        }
     }
 
     /**
-     * @brief Retrieves diffusion modes related to bubbles for a specified gas.
-     * @param gas_name Name of the gas.
+     * @brief Retrieves diffusion modes related to bubbles for a specified gas/volatile FP.
+     * @param name Name of the gas/volatile FP.
      * @return Pointer to the array of diffusion modes for bubbles, or nullptr for invalid gas
      * names.
      */
-    double* getDiffusionModesBubbles(std::string gas_name)
+    double* getDiffusionModesBubbles(std::string name)
     {
-        if (gas_name == "Xe")
+        if (name == "Xe")
             return &modes_initial_conditions[2 * n_modes];
 
-        else if (gas_name == "Kr")
+        else if (name == "Kr")
             return &modes_initial_conditions[5 * n_modes];
 
-        else if (gas_name == "He")
+        else if (name == "He")
             return &modes_initial_conditions[8 * n_modes];
 
-        else if (gas_name == "Xe133")
+        else if (name == "Xe133")
             return &modes_initial_conditions[11 * n_modes];
 
-        else if (gas_name == "Kr85m")
+        else if (name == "Kr85m")
             return &modes_initial_conditions[14 * n_modes];
-
+        
+        else if (name == "Xe in HBS")
+            return &modes_initial_conditions[17 * n_modes];
+            
         else
-            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + gas_name + "\" in getDiffusionModesBubbles");
+        {
+            std::cerr << "Error: Invalid gas name \"" << name << "\" in Simulation::getDiffusionModesBubbles."
+                      << std::endl;
+            return nullptr;
+        }
     }
 };
 

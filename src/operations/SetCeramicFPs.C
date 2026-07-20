@@ -10,29 +10,27 @@
 //                                                                                  //
 //  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari                                   //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef STOICHIOMETRY_DEVIATION_H
-#define STOICHIOMETRY_DEVIATION_H
+#include "SetFissionProducts.h"
 
-#include "Simulation.h"
+static void barium(SciantixArray<FissionProducts>& ceramic_fp);
 
-/**
- * @brief Evaluates the deviation in stoichiometry within the nuclear material and its effects.
- *
- * @author G. Petrosillo
- * @author G. Zullo
- * @author E. Cappellari
- * @author C. Besio
- *
- */
+void SetCeramicFPs(SciantixArray<FissionProducts>& ceramic_fp)
+{
+    barium(ceramic_fp);
+}
 
-double BlackburnThermochemicalModel(double                           stoichiometry_deviation,
-                                    double                           temperature,
-                                    SciantixArray<SciantixVariable>& sciantix_variable);
-
-double KatoThermochemicalModel(double stoichiometry_deviation, double temperature, SciantixArray<SciantixVariable> &sciantix_variable);
-
-#endif  // STOICHIOMETRY_DEVIATION_H
+static void barium(SciantixArray<FissionProducts>& ceramic_fp)
+{
+    FissionProducts ceramic_;
+    ceramic_.setName("Ba");
+    ceramic_.setAtomicNumber(56);
+    ceramic_.setMassNumber(138);
+    ceramic_.setDecayRate(0.0);
+    ceramic_.setChemicallyActive(1.00);
+    ceramic_.setPrecursorFactor(1.00);
+    ceramic_fp.push(ceramic_);
+}

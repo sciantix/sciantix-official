@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -53,6 +53,6 @@ void Simulation::Burnup()
 
     sciantix_variable["FIMA"].setFinalValue(solver.Integrator(sciantix_variable["FIMA"].getInitialValue(),
                                                               history_variable["Fission rate"].getFinalValue() * 3.6e5 /
-                                                                  sciantix_variable["U"].getFinalValue(),
+                                                                  (sciantix_variable["U"].getFinalValue() + sciantix_variable["Pu"].getFinalValue()),
                                                               sciantix_variable["Irradiation time"].getIncrement()));
 }

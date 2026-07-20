@@ -10,29 +10,19 @@
 //                                                                                  //
 //  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
+//  Authors: D. Pizzocri, G. Zullo, E.Cappellari                                    //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef STOICHIOMETRY_DEVIATION_H
-#define STOICHIOMETRY_DEVIATION_H
+#ifndef SET_FISSION_PRODUCTS_H
+#define SET_FISSION_PRODUCTS_H
 
-#include "Simulation.h"
+#include "FissionProducts.h"
+#include "SciantixArray.h"
 
-/**
- * @brief Evaluates the deviation in stoichiometry within the nuclear material and its effects.
- *
- * @author G. Petrosillo
- * @author G. Zullo
- * @author E. Cappellari
- * @author C. Besio
- *
- */
+void SetGasFPs(SciantixArray<FissionProducts>& gas_fp);
+void SetVolatileFPs(SciantixArray<FissionProducts>& volatile_fp);
+void SetMetallicFPs(SciantixArray<FissionProducts>& metallic_fp);
+void SetCeramicFPs(SciantixArray<FissionProducts>& ceramic_fp);
 
-double BlackburnThermochemicalModel(double                           stoichiometry_deviation,
-                                    double                           temperature,
-                                    SciantixArray<SciantixVariable>& sciantix_variable);
-
-double KatoThermochemicalModel(double stoichiometry_deviation, double temperature, SciantixArray<SciantixVariable> &sciantix_variable);
-
-#endif  // STOICHIOMETRY_DEVIATION_H
+#endif  // SET_FISSION_PRODUCTS_H

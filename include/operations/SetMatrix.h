@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -38,6 +38,11 @@ Matrix UO2(SciantixArray<Matrix>&           matrices,
            SciantixArray<InputVariable>&    scaling_factor);
 
 Matrix UO2HBS(SciantixArray<Matrix>&           matrices,
+              SciantixArray<SciantixVariable>& sciantix_variable,
+              SciantixArray<SciantixVariable>& history_variable,
+              SciantixArray<InputVariable>&    input_variable);
+
+Matrix MOX(SciantixArray<Matrix>&              matrices,
               SciantixArray<SciantixVariable>& sciantix_variable,
               SciantixArray<SciantixVariable>& history_variable,
               SciantixArray<InputVariable>&    input_variable);

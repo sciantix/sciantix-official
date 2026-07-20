@@ -8,32 +8,30 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari                                   //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef SET_GAS_H
-#define SET_GAS_H
+#include "SetFissionProducts.h"
 
-#include "Gas.h"
-#include "SciantixArray.h"
-#include <vector>
+static void caesium(SciantixArray<FissionProducts>& volatile_fp);
 
-/**
- * @brief Sets up the gas properties in the simulation.
- *
- * This function initializes and maps properties for Xenon, Krypton, and Helium gases
- * used in the simulation. Each gas is set up with specific attributes and then mapped
- * for easy access throughout the simulation.
- *
- * @author G. Zullo
- * @author F. Bastien
- */
+void SetVolatileFPs(SciantixArray<FissionProducts>& volatile_fp)
+{
+    caesium(volatile_fp);
+}
 
-void xenon(SciantixArray<Gas>& gas);
-void krypton(SciantixArray<Gas>& gas);
-void helium(SciantixArray<Gas>& gas);
-
-#endif  // SET_GAS_H
+static void caesium(SciantixArray<FissionProducts>& volatile_fp)
+{
+    FissionProducts volatile_;
+    volatile_.setName("Cs");
+    volatile_.setAtomicNumber(55);
+    volatile_.setVanDerWaalsVolume(1.69e-28); // 4/3 * PI * pow(343e-12, 3) from the van der waals radius
+    volatile_.setDecayRate(0.0); // stable
+    volatile_.setMassNumber(133);
+    volatile_.setChemicallyActive(1.0);
+    volatile_.setPrecursorFactor(1.00);
+    volatile_fp.push(volatile_);
+}

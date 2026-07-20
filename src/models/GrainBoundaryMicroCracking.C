@@ -8,13 +8,17 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "Constants.h"
+#include "ErrorMessages.h"
+
+#include <cmath>
 
 // Uranium mass fraction in UO2, value as published in Barani et al. (2017)
 // (~238.03/270.03; GrainGrowth.C uses 0.8815 for the same ratio). Converts
@@ -80,13 +84,13 @@ void Simulation::GrainBoundaryMicroCracking()
             // Material properties
             double E  = fuel_.getElasticModulus() * 1e6;  // Pa
             double nu = fuel_.getPoissonRatio();
-            double G  = fuel_.getGrainBoundaryFractureEnergy();  // J/m2
+			double G =  fuel_.getGrainBoundaryFractureEnergy() * scaling_factors["Grain-boundary energy"].getValue(); // J/m2
 
             if (sciantix_variable["Intergranular bubble radius"].getFinalValue() == 0)
             {
                 parameter.push_back(0.0);
                 parameter.push_back(0.0);
-                parameter.push_back(1.0 / uranium_mass_fraction);
+                parameter.push_back(1.0 / uranium_mass_fraction);  // 1 / (u * burnup)
                 break;
             };  // m
 
@@ -258,24 +262,24 @@ void Simulation::GrainBoundaryMicroCracking()
 
             for (auto& system : sciantix_system)
             {
-                if (gas[system.getGasName()].getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-                    sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"].rescaleInitialValue(
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                    sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].rescaleInitialValue(
                         pow(similarity_ratio, 1.5));
             }
 
             double n_at(0);
             for (auto& system : sciantix_system)
             {
-                if (gas[system.getGasName()].getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
-                    n_at += sciantix_variable["Intergranular " + system.getGasName() + " atoms per bubble"]
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                    n_at += sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
                                 .getInitialValue();
             }
             sciantix_variable["Intergranular atoms per bubble"].setInitialValue(n_at);
 
             for (auto& system : sciantix_system)
             {
-                if (system.getRestructuredMatrix() == 0)
-                    sciantix_variable[system.getGasName() + " at grain boundary"].rescaleFinalValue(
+                if (system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                    sciantix_variable[system.getFissionProductName() + " at grain boundary"].rescaleFinalValue(
                         pow(similarity_ratio, 2.5));
             }
         }

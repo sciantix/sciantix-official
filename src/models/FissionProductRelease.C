@@ -8,40 +8,52 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
 
-void Simulation::GasRelease()
+void Simulation::FissionProductRelease()
 {
-    // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
+    // Calculation of the fission product concentration arrived at the grain boundary, by mass balance.
     for (auto& system : sciantix_system)
     {
-        if (system.getRestructuredMatrix() == 0)
+        if (system.getRestructuredMatrix() == 0 && system.isGasFP())
         {
-            sciantix_variable[system.getGasName() + " released"].setFinalValue(
-                sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue());
+            sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(
+                sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue()
+            );
 
-            if (sciantix_variable[system.getGasName() + " released"].getFinalValue() < 0.0)
-                sciantix_variable[system.getGasName() + " released"].setFinalValue(0.0);
+            if (sciantix_variable[system.getFissionProductName() + " released"].getFinalValue() < 0.0)
+                sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(0.0);
         }
+        if (system.getRestructuredMatrix() == 0 && system.isVolatileFP())
+        {
+            sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(
+                sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " reacted"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue() -
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue()
+            );
+
+            if (sciantix_variable[system.getFissionProductName() + " released"].getFinalValue() < 0.0)
+                sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(0.0);
+        }
+        //
     }
 
     // Intergranular gaseous swelling
-    if (sciantix_variable["Grain radius"].getFinalValue() > 0.0)
-        sciantix_variable["Intergranular gas swelling"].setFinalValue(
-            3 / sciantix_variable["Grain radius"].getFinalValue() *
-            sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
-            sciantix_variable["Intergranular bubble volume"].getFinalValue());
-    else
-        sciantix_variable["Intergranular gas swelling"].setFinalValue(0.0);
+    sciantix_variable["Intergranular gas swelling"].setFinalValue(
+        3 / sciantix_variable["Grain radius"].getFinalValue() *
+        sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
+        sciantix_variable["Intergranular bubble volume"].getFinalValue());
 
     // Fission gas release
     if (sciantix_variable["Xe produced"].getFinalValue() + sciantix_variable["Kr produced"].getFinalValue() > 0.0)
@@ -67,7 +79,6 @@ void Simulation::GasRelease()
 
     // Release-to-birth ratio: Kr85m
     // Note that R/B is not defined with a null fission rate.
-    // Same Turnbull-equivalence argument as for Xe133 R/B above; see R_B.md.
     if (sciantix_variable["Kr85m produced"].getFinalValue() - sciantix_variable["Kr85m decayed"].getFinalValue() > 0.0)
         sciantix_variable["Kr85m R/B"].setFinalValue(
             sciantix_variable["Kr85m released"].getFinalValue() /

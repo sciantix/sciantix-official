@@ -8,13 +8,17 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "Constants.h"
+#include "ErrorMessages.h"
+
+#include <cmath>
 
 void Simulation::ChromiumSolubility()
 {
@@ -217,12 +221,12 @@ void Simulation::ChromiumSolubility()
     sciantix_variable["Chromia solution"].setFinalValue(Cr203_solution);
     sciantix_variable["Chromia precipitate"].setFinalValue(Cr2O3_precipitate);
 
-    matrices["UO2"].setChromiumSolubility(Cr_solubility);
-    matrices["UO2"].setChromiaSolubility(Cr2O3_solubility);
-    matrices["UO2"].setChromiumSolution(Cr_solution);
-    matrices["UO2"].setChromiumPrecipitate(Cr_precipitate);
-    matrices["UO2"].setChromiaSolution(Cr203_solution);
-    matrices["UO2"].setChromiaPrecipitate(Cr2O3_precipitate);
+    matrices[0].setChromiumSolubility(Cr_solubility);
+    matrices[0].setChromiaSolubility(Cr2O3_solubility);
+    matrices[0].setChromiumSolution(Cr_solution);
+    matrices[0].setChromiumPrecipitate(Cr_precipitate);
+    matrices[0].setChromiaSolution(Cr203_solution);
+    matrices[0].setChromiaPrecipitate(Cr2O3_precipitate);
 
     model_.setRef(reference);
 }
