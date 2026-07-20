@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -244,6 +244,20 @@ class Solver : virtual public InputVariable
      * @return The solution to the ODE.
      */
     double NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment);
+
+    /**
+     * @brief Solver for the non-linear equation (Kato's equation, NEA 2024) using the Bisection method.
+     * It calculates the oxygen partial pressure (p_O2) in MOX fuel given Temperature, Pu content (q), and O/M ratio.
+     * * @param parameter A vector containing the parameters of the equation.
+     * 
+     * parameter[0] = Temperature (K)
+     * parameter[1] = Plutonium content (q)
+     * parameter[2] = Oxygen-to-Metal Ratio (O/M)
+     * parameter[3] = Americium content fraction (q_Am)
+     * 
+     * * @return The oxygen partial pressure (p_O2) in atm.
+     */
+    double BisectionKato(std::vector<double> parameter);
 
     /**
      * @brief Constructor

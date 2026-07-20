@@ -14,25 +14,13 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef STOICHIOMETRY_DEVIATION_H
-#define STOICHIOMETRY_DEVIATION_H
-
+#include "SetFissionProducts.h"
 #include "Simulation.h"
 
-/**
- * @brief Evaluates the deviation in stoichiometry within the nuclear material and its effects.
- *
- * @author G. Petrosillo
- * @author G. Zullo
- * @author E. Cappellari
- * @author C. Besio
- *
- */
-
-double BlackburnThermochemicalModel(double                           stoichiometry_deviation,
-                                    double                           temperature,
-                                    SciantixArray<SciantixVariable>& sciantix_variable);
-
-double KatoThermochemicalModel(double stoichiometry_deviation, double temperature, SciantixArray<SciantixVariable> &sciantix_variable);
-
-#endif  // STOICHIOMETRY_DEVIATION_H
+void Simulation::setFissionProducts()
+{
+    SetGasFPs(gas_fp);
+    SetVolatileFPs(volatile_fp);
+    SetMetallicFPs(metallic_fp);
+    SetCeramicFPs(ceramic_fp);
+}

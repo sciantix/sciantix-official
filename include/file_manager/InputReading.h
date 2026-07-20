@@ -8,18 +8,20 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #ifndef INPUT_READING_H
 #define INPUT_READING_H
 
+#include "ThermochemistrySettings.h"
 #include "ErrorMessages.h"
 #include <numeric>
 #include <sstream>
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -37,14 +39,18 @@
 void InputReading(int                  Sciantix_options[],
                   double               Sciantix_variables[],
                   double               Sciantix_scaling_factors[],
-                  int&                 Input_history_points,
-                  std::vector<double>& Time_input,
-                  std::vector<double>& Temperature_input,
-                  std::vector<double>& Fissionrate_input,
-                  std::vector<double>& Hydrostaticstress_input,
-                  std::vector<double>& Steampressure_input,
-                  double&              Time_end_h,
-                  double&              Time_end_s);
+                  double               Sciantix_thermochemistry[],
+                  ThermochemistrySettings *&Sciantix_thermochemistry_settings,
+                  int &Input_history_points,
+                  std::vector<double> &Time_input,
+                  std::vector<double> &Temperature_input,
+                  std::vector<double> &Fissionrate_input,
+                  std::vector<double> &Hydrostaticstress_input,
+                  std::vector<double> &Steampressure_input,
+                  std::vector<double> &Systempressure_input,
+                  std::vector<double> &OMratio_input,
+                  double &Time_end_h,
+                  double &Time_end_s);
 
 unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);
 double             ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file);

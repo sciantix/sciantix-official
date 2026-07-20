@@ -8,13 +8,16 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "ErrorMessages.h"
+
+#include <cmath>
 
 void Simulation::IntraGranularBubbleBehavior()
 {
@@ -122,19 +125,19 @@ void Simulation::IntraGranularBubbleBehavior()
     // Atom per bubbles and bubble radius
     for (auto& system : sciantix_system)
     {
-        if (system.getGas().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0)
+        if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasFP())
         {
             if (sciantix_variable["Intragranular bubble concentration"].getFinalValue() > 0.0)
-                sciantix_variable["Intragranular " + system.getGasName() + " atoms per bubble"].setFinalValue(
-                    sciantix_variable[system.getGasName() + " in intragranular bubbles"].getFinalValue() /
+                sciantix_variable["Intragranular " + system.getFissionProductName() + " atoms per bubble"].setFinalValue(
+                    sciantix_variable[system.getFissionProductName() + " in intragranular bubbles"].getFinalValue() /
                     sciantix_variable["Intragranular bubble concentration"].getFinalValue());
 
             else
-                sciantix_variable["Intragranular " + system.getGasName() + " atoms per bubble"].setFinalValue(0.0);
+                sciantix_variable["Intragranular " + system.getFissionProductName() + " atoms per bubble"].setFinalValue(0.0);
 
             sciantix_variable["Intragranular bubble volume"].addValue(
                 system.getVolumeInLattice() *
-                sciantix_variable["Intragranular " + system.getGasName() + " atoms per bubble"].getFinalValue());
+                sciantix_variable["Intragranular " + system.getFissionProductName() + " atoms per bubble"].getFinalValue());
         }
     }
 

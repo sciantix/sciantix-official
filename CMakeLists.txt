@@ -7,7 +7,7 @@
 # by setting this file as startup element.
 # More information here: (https://learn.microsoft.com/it-it/cpp/build/configure-cmake-debugging-sessions?view=msvc-170)
 #
-# Author: G. Zullo (giovanni.zullo@polimi.it)
+# Author: G. Zullo (giovanni.zullo@polimi.it), E. Cappellari (elisa.cappellari@polimi.it)
 
 cmake_minimum_required(VERSION 3.5.0)
 
@@ -46,6 +46,25 @@ endif()
 # Set option for coupling with TU
 option (COUPLING_TU OFF)
 
+# Optional coupling with OpenCalphad: 
+# auto-detected if a "opencalphad" directory has been built with Allmake_OC.sh next to this repository, e.g.
+#   workspace/
+#   |-- sciantix-official/
+#   `-- opencalphad/ 
+# Override with -DCOUPLING_OC=ON/OFF to force it on or off regardless of detection.
+if(EXISTS "${CMAKE_SOURCE_DIR}/../opencalphad/liboctq-isoc.a" AND
+   EXISTS "${CMAKE_SOURCE_DIR}/../opencalphad/liboctq-isoc-gb.a")
+    set(COUPLING_OC_DEFAULT ON)
+else()
+    set(COUPLING_OC_DEFAULT OFF)
+endif()
+option(COUPLING_OC "Enable OpenCalphad coupling" ${COUPLING_OC_DEFAULT})
+if(COUPLING_OC)
+    message(STATUS "OpenCalphad coupling enabled")
+else()
+    message(STATUS "OpenCalphad coupling disabled (built ../opencalphad libraries not found and COUPLING_OC not forced ON)")
+endif()
+
 # Include CTest
 include(CTest)
 enable_testing()
@@ -58,6 +77,11 @@ add_subdirectory_includes(${PROJECT_SOURCE_DIR}/include)
 # Include source files
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.C)
 
+# OCUtilsCoupling.C links directly against OpenCalphad's compiled OCASI libraries.
+if(NOT COUPLING_OC)
+    list(REMOVE_ITEM SOURCES ${PROJECT_SOURCE_DIR}/src/coupling/OCUtilsCoupling.C)
+endif()
+
 # Set custom object file directory (to have all object files in the obj directory)
 set(CMAKE_OBJECT_PATH_PREFIX ${PROJECT_SOURCE_DIR}/obj/)
 
@@ -65,8 +89,18 @@ set(CMAKE_OBJECT_PATH_PREFIX ${PROJECT_SOURCE_DIR}/obj/)
 if(COUPLING_TU)
     add_library(sciantix STATIC ${SOURCES})
     set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
+    if(COUPLING_OC)
+        target_compile_definitions(sciantix PRIVATE USE_OPENCALPHAD)
+    endif()
 else()
     add_executable(sciantix ${SOURCES})
+    if(COUPLING_OC)
+        target_compile_definitions(sciantix PRIVATE USE_OPENCALPHAD)
+        target_link_libraries(sciantix
+            ${PROJECT_SOURCE_DIR}/../opencalphad/liboctq-isoc.a
+            ${PROJECT_SOURCE_DIR}/../opencalphad/liboctq-isoc-gb.a
+            gfortran quadmath gomp)
+    endif()
     if (UNIX)
         set(CMAKE_EXECUTABLE_SUFFIX ".x")
     endif()

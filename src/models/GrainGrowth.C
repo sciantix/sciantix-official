@@ -8,13 +8,16 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "ErrorMessages.h"
+
+#include <cmath>
 
 void Simulation::GrainGrowth()
 {
@@ -66,7 +69,7 @@ void Simulation::GrainGrowth()
 
             if (sciantix_variable["Grain radius"].getInitialValue() < limiting_grain_radius / burnup_factor)
             {
-                double rate_constant = matrices["UO2"].getGrainBoundaryMobility();
+                double rate_constant = matrices[0].getGrainBoundaryMobility();
                 rate_constant *= (1.0 - burnup_factor / (limiting_grain_radius /
                                                          (sciantix_variable["Grain radius"].getFinalValue())));
 
@@ -108,7 +111,7 @@ void Simulation::GrainGrowth()
 
             if (sciantix_variable["Grain radius"].getInitialValue() < limiting_grain_radius)
             {
-                double rate_constant = matrices["UO2"].getGrainBoundaryMobility();
+                double rate_constant = matrices[0].getGrainBoundaryMobility();
 
                 parameter.push_back(sciantix_variable["Grain radius"].getInitialValue());
                 parameter.push_back(1.0);
@@ -142,5 +145,5 @@ void Simulation::GrainGrowth()
     // Model resolution
     sciantix_variable["Grain radius"].setFinalValue(solver.QuarticEquation(model["Grain growth"].getParameter()));
 
-    matrices["UO2"].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
+    matrices[0].setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());
 }

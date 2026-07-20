@@ -8,7 +8,7 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo, G. Nicodemo                                     //
 //                                                                                  //
@@ -19,6 +19,9 @@
 
 #include <vector>
 
+#include <cmath>
+#include <fstream>
+#include <sstream>
 #include "InputVariable.h"
 #include "SciantixArray.h"
 #include "SetVariablesFunctions.h"

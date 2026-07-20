@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -44,5 +44,9 @@ const double gas_constant          = 8.3143;         // J/(mol K)
 // Used in Solver::NewtonBlackburn and StoichiometryDeviation.
 const double blackburn_enthalpy = 32700.0;  // (K)
 const double blackburn_entropy  = 9.92;     // (/)
+
+const double reference_oxygen_pressure_atm = 0.1013;  // MPa
+const double reference_oxygen_pressure_bar = 0.1;     // MPa
+const double max_prescribed_om_ratio = 1.9999;        // (/) keep prescribed O/M strictly below stoichiometry (2.0)
 
 #endif

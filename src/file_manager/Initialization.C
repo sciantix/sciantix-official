@@ -8,9 +8,9 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -19,10 +19,14 @@
 void Initialization(double              Sciantix_history[],
                     double              Sciantix_variables[],
                     double              Sciantix_diffusion_modes[],
+                    double              /* Sciantix_thermochemistry */[],
                     std::vector<double> Temperature_input,
                     std::vector<double> Fissionrate_input,
                     std::vector<double> Hydrostaticstress_input,
-                    std::vector<double> Steampressure_input)
+                    std::vector<double> Steampressure_input,
+                    std::vector<double> Systempressure_input,
+                    std::vector<double> OMratio_input
+)
 {
     // Sciantix_history initialization
     Sciantix_history[0] = Temperature_input[0];
@@ -36,27 +40,52 @@ void Initialization(double              Sciantix_history[],
     Sciantix_history[9]  = Steampressure_input[0];
     Sciantix_history[10] = Steampressure_input[0];
 
+    Sciantix_history[11] = Systempressure_input[0];
+	Sciantix_history[12] = Systempressure_input[0];
+    Sciantix_history[13] = OMratio_input[0];
+    Sciantix_history[14] = OMratio_input[0];
+
     // Sciantix_variables initialization
     Sciantix_variables[25] = 2.0e+13;  // Intergranular_bubble_concentration[0]
     Sciantix_variables[35] = 0.5;      // Intergranular_saturation_fractional_coverage[0]
     Sciantix_variables[37] = 1.0;      // Intergranular_fractional_intactness[0]
 
+    const double density_mix = Sciantix_variables[40];
+    const double q = Sciantix_variables[177];
+    const double avogadro_number = 6.022e23;
+
     // https://pubchem.ncbi.nlm.nih.gov/compound/Uranium-235
-    Sciantix_variables[41] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 234.04095;  // U-234
-    Sciantix_variables[42] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 235.04393;  // U-235
-    Sciantix_variables[43] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 236.04557;  // U-236
-    Sciantix_variables[44] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 237.04873;  // U-237
-    Sciantix_variables[45] *= Sciantix_variables[40] * 6.022e+24 * 0.8815 / 238.05079;  // U-238
+    Sciantix_variables[41] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 234.04095;
+    Sciantix_variables[42] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 235.04393; 
+    Sciantix_variables[43] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 236.04557;  
+    Sciantix_variables[44] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 237.04873; 
+    Sciantix_variables[45] *= density_mix * (1.0 - q) * avogadro_number * 10.0 * 0.8815 / 238.05079; 
+
+    Sciantix_variables[171] *= density_mix * q * avogadro_number * 10.0 * 0.8815 / 238.04956;
+    Sciantix_variables[172] *= density_mix * q * avogadro_number * 10.0 * 0.8815 / 239.05216;
+    Sciantix_variables[173] *= density_mix * q * avogadro_number * 10.0 * 0.8815 / 240.05381;
+    Sciantix_variables[174] *= density_mix * q * avogadro_number * 10.0 * 0.8815 / 241.05685;
+    Sciantix_variables[175] *= density_mix * q * avogadro_number * 10.0 * 0.8815 / 242.05874;
+
+    double total_U = Sciantix_variables[41] + Sciantix_variables[42] + Sciantix_variables[43] +
+                     Sciantix_variables[44] + Sciantix_variables[45];
+    double total_Pu = Sciantix_variables[171] + Sciantix_variables[172] + Sciantix_variables[173] +
+                      Sciantix_variables[174] + Sciantix_variables[175];
 
     // Intragranular similarity ratio
     Sciantix_variables[64] = 1.0;
+
 
     // Fabrication porosity = Porosity
     Sciantix_variables[71] = Sciantix_variables[70] = 1.0 - Sciantix_variables[40] / 10960.0;
 
     // Residual porosity
     Sciantix_variables[73] = 0.75 * Sciantix_variables[71];
-
+    
+    Sciantix_variables[161] = total_U / avogadro_number;
+    Sciantix_variables[163] = total_Pu / avogadro_number;
+	Sciantix_variables[162] = (2.0 + Sciantix_variables[66]) * (Sciantix_variables[161] + Sciantix_variables[163]);
+	
     // Projection on diffusion modes of the initial conditions
     double initial_condition(0.0);
     double projection_remainder(0.0);

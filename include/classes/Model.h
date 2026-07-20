@@ -8,7 +8,7 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
@@ -17,13 +17,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "Gas.h"
-#include "InputVariable.h"
 #include "Material.h"
-#include "Matrix.h"
-#include "System.h"
-#include <iterator>
-#include <map>
 #include <string>
 #include <vector>
 

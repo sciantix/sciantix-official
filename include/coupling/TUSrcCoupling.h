@@ -8,11 +8,13 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
+//  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
+
+#include "ThermochemistrySettings.h"
 
 /**
  * @brief This is a file required for TRANSURANUS-SCIANTIX coupling.
@@ -32,12 +34,14 @@
 extern "C"
 {
 #endif
-    void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[]);
+    void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[],double Sciantix_thermochemistry[], ThermochemistrySettings **Sciantix_thermochemistry_settings);
     void callSciantix(int    Sciantix_options[],
                       double Sciantix_history[],
                       double Sciantix_variables[],
                       double Sciantix_scaling_factors[],
-                      double Sciantix_diffusion_modes[]);
+                      double Sciantix_diffusion_modes[],
+                      double Sciantix_thermochemistry[],
+                      const ThermochemistrySettings* Sciantix_thermochemistry_options);
 
 #ifdef __cplusplus
 }
