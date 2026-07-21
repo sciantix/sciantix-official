@@ -525,7 +525,12 @@ std::vector<ThermochemistryVariable> initializeThermochemistryVariable(
 
     for (const auto& entry : manifest)
     {
-        double final_value = (entry.location == "matrix") ? Sciantix_thermochemistry[entry.index] : 0.0;
+        // Seed final_value from the persisted array for every location, not just "matrix":
+        // updateThermochemistryVariablesFromOutput() only calls setFinalValue() for phases
+        // OpenCalphad actually reports in solution_phases this step, so a species the manifest
+        // tracks but OC transiently omits must keep its last known value instead of being reset
+        // to 0.0 and then persisted as 0.0 by UpdateVariables.C.
+        double final_value = Sciantix_thermochemistry[entry.index];
 
         init_thermochemistry_variable.emplace_back(ThermochemistryVariable(entry.index,
                                                                            entry.getLabel(),

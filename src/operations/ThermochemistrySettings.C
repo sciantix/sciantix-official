@@ -10,43 +10,26 @@
 //                                                                                  //
 //  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo, E.Cappellari                                    //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "ThermochemistrySettings.h"
+#include "ThermochemistryParsingUtils.h"
 
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
+using namespace ThermochemistryParsingUtils;
+
 namespace ThermochemistrySettingsDetail
 {
-std::string trim(const std::string& input)
+// Comma-separated list fields (elements, locations) drop empty tokens, unlike the
+// pipe-delimited manifest fields, which keep them to preserve column positions.
+std::vector<std::string> splitList(const std::string& input, const char delimiter)
 {
-    const std::string whitespace = " \t\r\n";
-    const size_t      begin      = input.find_first_not_of(whitespace);
-    if (begin == std::string::npos)
-        return "";
-
-    const size_t end = input.find_last_not_of(whitespace);
-    return input.substr(begin, end - begin + 1);
-}
-
-std::vector<std::string> split(const std::string& input, const char delimiter)
-{
-    std::vector<std::string> parts;
-    std::stringstream        stream(input);
-    std::string              item;
-
-    while (std::getline(stream, item, delimiter))
-    {
-        item = trim(item);
-        if (!item.empty())
-            parts.push_back(item);
-    }
-
-    return parts;
+    return split(input, delimiter, /* skip_empty = */ true);
 }
 
 bool parseBool(const std::string& input)
@@ -66,7 +49,7 @@ bool parseBool(const std::string& input)
 
 using namespace ThermochemistrySettingsDetail;
 
-ThermochemistrySettings loadThermochemistrySettings(const std::string& path)
+ThermochemistrySettings LoadThermochemistrySettings(const std::string& path)
 {
     std::ifstream input(path);
     if (!input)
@@ -124,9 +107,9 @@ ThermochemistrySettings loadThermochemistrySettings(const std::string& path)
         else if (key == "fission_products.database")
             settings.fission_products.database = value;
         else if (key == "fission_products.elements")
-            settings.fission_products.elements = split(value, ',');
+            settings.fission_products.elements = splitList(value, ',');
         else if (key == "fission_products.locations")
-            settings.fission_products.locations = split(value, ',');
+            settings.fission_products.locations = splitList(value, ',');
         else if (key == "fission_products.gap_settings")
             settings.fission_products.gap_settings = parseBool(value);
         else if (key == "fission_products.gap_temperature")
@@ -138,9 +121,9 @@ ThermochemistrySettings loadThermochemistrySettings(const std::string& path)
         else if (key == "matrix.database")
             settings.matrix.database = value;
         else if (key == "matrix.elements")
-            settings.matrix.elements = split(value, ',');
+            settings.matrix.elements = splitList(value, ',');
         else if (key == "matrix.locations")
-            settings.matrix.locations = split(value, ',');
+            settings.matrix.locations = splitList(value, ',');
         else if (key == "matrix.gap_settings")
             settings.matrix.gap_settings = parseBool(value);
         else if (key == "matrix.gap_temperature")

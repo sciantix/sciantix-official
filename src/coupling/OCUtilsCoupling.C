@@ -10,7 +10,7 @@
 //                                                                                  //
 //  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo, E.Cappellari                                    //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -387,24 +387,8 @@ namespace OCASIAdapter
 
         double atomicMass(const std::string& element_name)
         {
-            static const std::map<std::string, double> atomic_masses = {
-                {"Cs", 132.90545196},
-                {"I", 126.90447},
-                {"Mo", 95.95},
-                {"Ba", 137.327},
-                {"O", 15.999},
-                {"Te", 127.60},
-                {"U", 238.02891},
-                {"Pu", 239.052},
-                {"Va", 0.0},
-                {"Pd", 106.42},
-                {"Rh", 102.91},
-                {"Ru", 101.07},
-                {"Tc", 98.906}
-            };
-
-            const auto atomic_mass = atomic_masses.find(ElementName(element_name));
-            if (atomic_mass == atomic_masses.end())
+            const auto atomic_mass = thermochemistry_atomic_masses.find(ElementName(element_name));
+            if (atomic_mass == thermochemistry_atomic_masses.end())
                 throw std::runtime_error("Atomic mass not available for element " + element_name);
 
             return atomic_mass->second;

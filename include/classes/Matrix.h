@@ -79,12 +79,6 @@ class Matrix : virtual public Material
     double mox_pu_enrichment; // Pu fraction in the MOX fuel
 
     /**
-     * @brief Sets the theoretical density of the matrix from the current fuel state.
-     * @param sciantix_variable The SciantixArray of SciantixVariable objects.
-     */
-    void setTheoreticalDensity(SciantixArray<SciantixVariable> &sciantix_variable);
-
-    /**
      * @brief Updates the lattice parameter and theoretical density from the current fuel state.
      * @param sciantix_variable The SciantixArray of SciantixVariable objects.
      */
@@ -99,11 +93,6 @@ class Matrix : virtual public Material
         return matrix_density;
     }
 
-    /**
-     * @brief Sets the lattice parameter of the matrix from the current fuel state.
-     * @param sciantix_variable The SciantixArray of SciantixVariable objects.
-     */
-    void setLatticeParameter(SciantixArray<SciantixVariable> &sciantix_variable);
     /**
      * @brief Retrieves the lattice parameter of the matrix.
      * @return The lattice parameter of the matrix.

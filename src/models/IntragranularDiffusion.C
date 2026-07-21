@@ -158,8 +158,7 @@ void Simulation::IntragranularDiffusion()
         sciantix_variable["Intragranular gas solution swelling"].setFinalValue(
             (sciantix_variable["Xe in intragranular solution"].getFinalValue() +
              sciantix_variable["Xe in grain HBS"].getFinalValue()) *
-             // CODE DEVELOPMENT : GENERALIZATION FROM UO2 TO ALL MATRICES
-            pow(matrices["UO2"].getLatticeParameter(), 3) / 4);
+            pow(matrices[0].getLatticeParameter(), 3) / 4);
     }
 
     // Calculation of the fission product concentration at grain boundary, by mass balance

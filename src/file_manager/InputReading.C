@@ -400,6 +400,6 @@ void InputReading(int                  Sciantix_options[],
 	if (Sciantix_options[25] > 0)
 	{
 		Sciantix_thermochemistry_settings =
-		    new ThermochemistrySettings(loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt"));
+		    new ThermochemistrySettings(LoadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt"));
 	}
 }

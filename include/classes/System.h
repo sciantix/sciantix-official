@@ -57,11 +57,14 @@ class System : virtual public Material
     double              production_rate;
     bool                restructured_matrix;
 
-    FissionProducts gas_fp;
-    FissionProducts volatile_fp;
-    FissionProducts metallic_fp;
-    FissionProducts ceramic_fp;
+    // A System is associated with exactly one fission-product species at a time; the category
+    // records which of setGas/setVolatileFP/setMetallicFP/setCeramicFP was last called.
+    enum class FissionProductCategory { None, Gas, Volatile, Metallic, Ceramic };
+    FissionProducts        fission_product;
+    FissionProductCategory fission_product_category = FissionProductCategory::None;
     Matrix matrix;
+
+    void setFissionProductCategory(FissionProducts fp, FissionProductCategory category);
 
   public:
     /**
