@@ -36,11 +36,10 @@ void Simulation::setVariables(int    Sciantix_options[],
             input_variable.push(InputVariable(name_list[i], Sciantix_options[i]));
         }
     }
-    // CODE DEVELOPMENT : THERMOCHEMISTRY OUTER-NODE FLAG
+
     // iThermochimicaOuterNode varies every call (per radial node, set by
     // FisPro3.f95): input_variable entries are otherwise only initialized once
-    // for the whole run (see the empty() guard above), so this one needs an
-    // explicit refresh on every call instead of relying on the one-time push.
+    // for the whole run, so this one needs an explicit refresh.
     input_variable["iThermochimicaOuterNode"].setValue(Sciantix_options[26]);
 
     // toOutput flags
@@ -97,17 +96,12 @@ void Simulation::setVariables(int    Sciantix_options[],
     std::vector<ThermochemistryVariable> values_th;
     if (toOutputThermochimica)
     {
-        // The manifest describes static structure (indices, phases, uom, locations) parsed
-        // from a file on disk, unlike Sciantix_thermochemistry which holds the actual evolving
-        // state; load it from disk once per run and reuse it on every subsequent call instead
-        // of reopening/reparsing the file every timestep.
+        // The manifest describes static structure, not evolving.
         if (thermochemistry_manifest.empty())
         {
             thermochemistry_manifest = LoadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
         }
-        // Keep the full manifest for output variables so parsed phases/species that are
-        // not part of the selected solve inputs can still be stored when OpenCalphad
-        // reports them in the equilibrium result.
+        // Keep the full manifest for output variables.
         values_th = initializeThermochemistryVariable(
                 thermochemistry_manifest,
                 Sciantix_thermochemistry
