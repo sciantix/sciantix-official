@@ -374,7 +374,7 @@ void Simulation::StoichiometryDeviation()
 
         case 8:
         {
-            reference += " : Under development, E.Cappellari, OC - po2 verification";
+            reference += " : E.Cappellari, OC - po2 verification";
 
             // Unphysical shift, adopted only for verification purposes.
             // x = x0 + 0.001 * t[h]
@@ -392,15 +392,10 @@ void Simulation::StoichiometryDeviation()
         }
         case 9:
         {
-            reference += " : Under development, E.Cappellari, prescribed O/M history.";
+            reference += " : E.Cappellari, prescribed O/M history.";
 
             // Prescribed O/M is converted to stoichiometry deviation as x = O/M - 2.
-            // The prescribed O/M is capped at max_prescribed_om_ratio (< 2.0) even if
-            // input_history.txt gives exactly 2.0: evaluating the grain-boundary
-            // OpenCalphad equilibrium exactly on the hypo/hyper-stoichiometric phase
-            // boundary makes it fail to converge (see JOG PHENIXpins point_04, the
-            // coldest radial point, which the OXIRED model saturates to O/M = 2.0
-            // early and keeps there for the rest of the irradiation and cooldown).
+
             double prescribed_om_final   = history_variable["O/M ratio"].getFinalValue();
             double prescribed_om_initial = history_variable["O/M ratio"].getInitialValue();
             if (prescribed_om_final > max_prescribed_om_ratio)

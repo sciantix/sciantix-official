@@ -240,7 +240,7 @@ void InputReading(int                  Sciantix_options[],
 
         Sciantix_variables[150] = ReadOneParameter("Chromium content", input_initial_conditions, input_check);
 
-        // MOX INITIAL CONDITIONS READER
+        // MOX
         if (Sciantix_options[11] == 2)
         {
             std::vector<double> initial_composition_Pu = ReadSeveralParameters("Initial composition Pu", input_initial_conditions, input_check);
@@ -366,7 +366,7 @@ void InputReading(int                  Sciantix_options[],
 
         // sf_grain_boundary_energy / sf_fabricated_porosity / sf_cs_production are not
         // present in older input_scaling_factors.txt files (9 entries instead of 11):
-        // default the missing ones to 1.0 (no scaling), not 0.0, once the stream runs out.
+        // default the missing ones to 1.0 (no scaling).
         Sciantix_scaling_factors[8] = input_scaling_factors.eof() ? 1.0 :
             ReadOneParameter("sf_grain_boundary_energy", input_scaling_factors, input_check);
 		Sciantix_scaling_factors[9] = input_scaling_factors.eof() ? 1.0 :
