@@ -14,35 +14,46 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef THERMOCHEMISTRY_MANIFEST_H
-#define THERMOCHEMISTRY_MANIFEST_H
+#ifndef THERMOCHEMISTRY_PARSING_UTILS_H
+#define THERMOCHEMISTRY_PARSING_UTILS_H
 
-#include <map>
+#include <sstream>
 #include <string>
 #include <vector>
 
-// Theoretical densities are packed at the same manifest index, offset by this value, in the
-// shared Sciantix_thermochemistry array (read by TU as sciantix_thermochemistry(itb + 123), see
-// SetTUVariablesfromSciantix.f95). Manifest indices are contiguous from 0 (enforced in
-// LoadThermochemistryManifest), so the manifest must never grow to more entries than this offset,
-// or a variable's own value slot would collide with another variable's density slot.
-constexpr int thermochemistry_density_offset = 123;
-
-struct ThermochemistryManifestEntry
+/**
+ * @brief Shared whitespace-trim and delimiter-split helpers used when parsing the
+ * pipe/key-value thermochemistry input files (manifest and settings), so the two
+ * parsers cannot silently drift apart on basic tokenization behavior.
+ */
+namespace ThermochemistryParsingUtils
 {
-    int                        index;
-    std::string                category;
-    std::string                phase;
-    std::string                compound;
-    std::string                location;
-    std::string                uom;
-    bool                       output;
-    double                     density = 0.0;  // theoretical density, g/cm3; 0.0 if not provided
-    std::map<std::string, int> stoichiometry;
+inline std::string trim(const std::string& input)
+{
+    const std::string whitespace = " \t\r\n";
+    const size_t      begin      = input.find_first_not_of(whitespace);
+    if (begin == std::string::npos)
+        return "";
 
-    std::string getLabel() const;
-};
+    const size_t end = input.find_last_not_of(whitespace);
+    return input.substr(begin, end - begin + 1);
+}
 
-std::vector<ThermochemistryManifestEntry> LoadThermochemistryManifest(const std::string& path);
+inline std::vector<std::string> split(const std::string& input, const char delimiter, bool skip_empty = false)
+{
+    std::vector<std::string> parts;
+    std::stringstream        stream(input);
+    std::string              item;
+
+    while (std::getline(stream, item, delimiter))
+    {
+        item = trim(item);
+        if (!skip_empty || !item.empty())
+            parts.push_back(item);
+    }
+
+    return parts;
+}
+}  // namespace ThermochemistryParsingUtils
 
 #endif

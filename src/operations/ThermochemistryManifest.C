@@ -10,11 +10,12 @@
 //                                                                                  //
 //  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo, E.Cappellari                                    //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "ThermochemistryManifest.h"
+#include "ThermochemistryParsingUtils.h"
 
 #include <algorithm>
 #include <cctype>
@@ -22,40 +23,14 @@
 #include <iostream>
 #include <sstream>
 
-namespace ThermochemistryManifestDetail
-{
-std::string trim(const std::string& input)
-{
-    const std::string whitespace = " \t\r\n";
-    const size_t      begin      = input.find_first_not_of(whitespace);
-    if (begin == std::string::npos)
-        return "";
-
-    const size_t end = input.find_last_not_of(whitespace);
-    return input.substr(begin, end - begin + 1);
-}
-
-std::vector<std::string> split(const std::string& input, const char delimiter)
-{
-    std::vector<std::string> parts;
-    std::stringstream        stream(input);
-    std::string              item;
-
-    while (std::getline(stream, item, delimiter))
-        parts.push_back(trim(item));
-
-    return parts;
-}
-}  // namespace ThermochemistryManifestDetail
-
-using namespace ThermochemistryManifestDetail;
+using namespace ThermochemistryParsingUtils;
 
 std::string ThermochemistryManifestEntry::getLabel() const
 {
     return compound + " (" + phase + ", " + location + ")";
 }
 
-std::vector<ThermochemistryManifestEntry> loadThermochemistryManifest(const std::string& path)
+std::vector<ThermochemistryManifestEntry> LoadThermochemistryManifest(const std::string& path)
 {
     std::ifstream manifest_file(path);
     if (!manifest_file)
@@ -111,6 +86,16 @@ std::vector<ThermochemistryManifestEntry> loadThermochemistryManifest(const std:
             std::cerr << "Error: Thermochemistry manifest indices must be contiguous starting from zero." << std::endl;
             exit(1);
         }
+    }
+
+    if (manifest.size() > static_cast<size_t>(thermochemistry_density_offset))
+    {
+        std::cerr << "Error: Thermochemistry manifest has " << manifest.size()
+                   << " entries, exceeding thermochemistry_density_offset ("
+                   << thermochemistry_density_offset
+                   << "). A variable's own value slot would collide with another variable's "
+                      "density slot in Sciantix_thermochemistry." << std::endl;
+        exit(1);
     }
 
     return manifest;

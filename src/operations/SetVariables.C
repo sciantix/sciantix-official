@@ -97,13 +97,19 @@ void Simulation::setVariables(int    Sciantix_options[],
     std::vector<ThermochemistryVariable> values_th;
     if (toOutputThermochimica)
     {
+        // The manifest describes static structure (indices, phases, uom, locations) parsed
+        // from a file on disk, unlike Sciantix_thermochemistry which holds the actual evolving
+        // state; load it from disk once per run and reuse it on every subsequent call instead
+        // of reopening/reparsing the file every timestep.
+        if (thermochemistry_manifest.empty())
+        {
+            thermochemistry_manifest = LoadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
+        }
         // Keep the full manifest for output variables so parsed phases/species that are
         // not part of the selected solve inputs can still be stored when OpenCalphad
         // reports them in the equilibrium result.
-        const std::vector<ThermochemistryManifestEntry> manifest =
-            loadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
         values_th = initializeThermochemistryVariable(
-                manifest,
+                thermochemistry_manifest,
                 Sciantix_thermochemistry
         );
     }

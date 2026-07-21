@@ -84,11 +84,12 @@ Matrix UO2(SciantixArray<Matrix>&           matrices,
     matrix_.setChromiaPrecipitate(0);   // (at/m3)
 
     // Mechanical properties
+    const double porosity_from_density = 1 - sciantix_variable["Fuel density"].getFinalValue() / 10960;
     matrix_.setElasticModulus(
-        2.237e5 * (1 - 2.6 * (1 - sciantix_variable["Fuel density"].getFinalValue() / 10960)) * 
-        (1 - 1.394e-4 * (history_variable["Temperature"].getFinalValue() - 273 - 20)) * 
+        2.237e5 * (1 - 2.6 * porosity_from_density) *
+        (1 - 1.394e-4 * (history_variable["Temperature"].getFinalValue() - 273 - 20)) *
         (1 - 0.1506 * (1 - exp(-0.035*sciantix_variable["Burnup"].getFinalValue())))); // (MPa) TU
-	
+
     matrix_.setPoissonRatio(0.32);              // (/) TRANSURANUS manual
     matrix_.setGrainBoundaryFractureEnergy(2);  // (J/m2) Jernkvist, L.O. (2020). A review of analytical criteria for
                                                 // fission gas induced fragmentation of oxide fuel in accident

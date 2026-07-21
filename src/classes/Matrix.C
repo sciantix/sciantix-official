@@ -288,13 +288,3 @@ void Matrix::setCrystalProperties(SciantixArray<SciantixVariable> &sciantix_vari
         matrix_density = (4.0 * M_fu * 1e-3) / (avogadro_number * std::pow(lattice_parameter, 3)); // kg/m3
     }
 }
-
-void Matrix::setLatticeParameter(SciantixArray<SciantixVariable> &sciantix_variable)
-{
-    setCrystalProperties(sciantix_variable);
-}
-
-void Matrix::setTheoreticalDensity(SciantixArray<SciantixVariable> &sciantix_variable)
-{
-    setCrystalProperties(sciantix_variable);
-}

@@ -10,7 +10,7 @@
 //                                                                                  //
 //  Version: 2.5                                                                    //
 //  Year: 2026                                                                      //
-//  Authors: D. Pizzocri, G. Zullo, E.Cappellari                                    //
+//  Authors: D. Pizzocri, G. Zullo, E. Cappellari.                                  //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -50,6 +50,6 @@ struct ThermochemistrySettings
     int                          coupling_max_stale_steps       = 20;
 };
 
-ThermochemistrySettings loadThermochemistrySettings(const std::string& path);
+ThermochemistrySettings LoadThermochemistrySettings(const std::string& path);
 
 #endif

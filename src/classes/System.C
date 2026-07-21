@@ -50,56 +50,50 @@ double System::getRadiusInLattice()
     return radius_in_lattice;
 }
 
+void System::setFissionProductCategory(FissionProducts fp, FissionProductCategory category)
+{
+    fission_product          = fp;
+    fission_product_category = category;
+}
+
 void System::setGas(FissionProducts g_fp)
 {
-    gas_fp = g_fp;
-    volatile_fp = FissionProducts();
-    metallic_fp = FissionProducts();
-    ceramic_fp = FissionProducts();
+    setFissionProductCategory(g_fp, FissionProductCategory::Gas);
 }
 
 void System::setVolatileFP(FissionProducts v_fp)
 {
-    gas_fp = FissionProducts();
-    volatile_fp = v_fp;
-    metallic_fp = FissionProducts();
-    ceramic_fp = FissionProducts();
+    setFissionProductCategory(v_fp, FissionProductCategory::Volatile);
 }
 
 void System::setMetallicFP(FissionProducts m_fp)
 {
-    gas_fp = FissionProducts();
-    volatile_fp = FissionProducts();
-    metallic_fp = m_fp;
-    ceramic_fp = FissionProducts();
+    setFissionProductCategory(m_fp, FissionProductCategory::Metallic);
 }
 
 void System::setCeramicFP(FissionProducts c_fp)
 {
-    gas_fp = FissionProducts();
-    volatile_fp = FissionProducts();
-    metallic_fp = FissionProducts();
-    ceramic_fp = c_fp;
+    setFissionProductCategory(c_fp, FissionProductCategory::Ceramic);
 }
 
 bool System::isGasFP()
 {
-    return !gas_fp.getName().empty();
+    return fission_product_category == FissionProductCategory::Gas;
 }
 
 bool System::isVolatileFP()
 {
-    return !volatile_fp.getName().empty();
+    return fission_product_category == FissionProductCategory::Volatile;
 }
 
 bool System::isMetallicFP()
 {
-    return !metallic_fp.getName().empty();
+    return fission_product_category == FissionProductCategory::Metallic;
 }
 
 bool System::isCeramicFP()
 {
-    return !ceramic_fp.getName().empty();
+    return fission_product_category == FissionProductCategory::Ceramic;
 }
 
 bool System::isGasOrVolatileFP()
@@ -109,24 +103,12 @@ bool System::isGasOrVolatileFP()
 
 FissionProducts System::getFissionProduct()
 {
-    if (!gas_fp.getName().empty())
-        return gas_fp;
-    if (!volatile_fp.getName().empty())
-        return volatile_fp;
-    if (!metallic_fp.getName().empty())
-        return metallic_fp;
-    return ceramic_fp;
+    return fission_product;
 }
 
 std::string System::getFissionProductName()
 {
-    if (!gas_fp.getName().empty())
-        return gas_fp.getName();
-    if (!volatile_fp.getName().empty())
-        return volatile_fp.getName();
-    if (!metallic_fp.getName().empty())
-        return metallic_fp.getName();
-    return ceramic_fp.getName();
+    return fission_product.getName();
 }
 
 void System::setMatrix(Matrix m)

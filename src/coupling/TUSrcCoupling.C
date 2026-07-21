@@ -119,6 +119,6 @@ void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[
     if (Sciantix_options[25] > 0)
 	{
 		*Sciantix_thermochemistry_settings =
-		    new ThermochemistrySettings(loadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt"));
+		    new ThermochemistrySettings(LoadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt"));
 	}
 }

@@ -24,6 +24,7 @@
 #include "SciantixVariable.h"
 #include "Solver.h"
 #include "System.h"
+#include "ThermochemistryManifest.h"
 #include "ThermochemistrySettings.h"
 #include "ThermochemistryVariable.h"
 #include <iostream>
@@ -61,6 +62,7 @@ class Simulation
     SciantixArray<InputVariable> input_variable;
     SciantixArray<InputVariable> scaling_factors;
     const ThermochemistrySettings* thermochemistry_settings;
+    std::vector<ThermochemistryManifestEntry> thermochemistry_manifest;
 
     int                 n_modes;
     std::vector<double> modes_initial_conditions;
@@ -425,8 +427,8 @@ class Simulation
      * @brief This method returns a pointer to the array of diffusion modes corresponding to the
      * specified gas/volatile FP.
      * @param name The name of the gas/volatile FP for which diffusion modes are required.
-     * @return A pointer to the array of diffusion modes for the specified gas, or nullptr for
-     * invalid gas names.
+     * @return A pointer to the array of diffusion modes for the specified gas. Aborts via
+     * ErrorMessages::Fatal for invalid gas names.
      */
     double* getDiffusionModes(std::string name)
     {
@@ -446,18 +448,14 @@ class Simulation
             return &modes_initial_conditions[15 * n_modes];
 
         else
-        {
-            std::cerr << "Error: Invalid gas name \"" << name << "\" in Simulation::getDiffusionModes."
-                      << std::endl;
-            return nullptr;
-        }
+            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + name + "\" in getDiffusionModes");
     }
 
     /**
      * @brief Retrieves diffusion modes related to solutions for a specified gas/volatile FP.
      * @param name Name of the gas/volatile FP.
-     * @return Pointer to the array of diffusion modes for solutions, or nullptr for invalid gas
-     * names.
+     * @return Pointer to the array of diffusion modes for solutions. Aborts via
+     * ErrorMessages::Fatal for invalid gas names.
      */
     double* getDiffusionModesSolution(std::string name)
     {
@@ -480,18 +478,14 @@ class Simulation
             return &modes_initial_conditions[16 * n_modes];
 
         else
-        {
-            std::cerr << "Error: Invalid gas name \"" << name << "\" in Simulation::getDiffusionModesSolution."
-                      << std::endl;
-            return nullptr;
-        }
+            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + name + "\" in getDiffusionModesSolution");
     }
 
     /**
      * @brief Retrieves diffusion modes related to bubbles for a specified gas/volatile FP.
      * @param name Name of the gas/volatile FP.
-     * @return Pointer to the array of diffusion modes for bubbles, or nullptr for invalid gas
-     * names.
+     * @return Pointer to the array of diffusion modes for bubbles. Aborts via
+     * ErrorMessages::Fatal for invalid gas names.
      */
     double* getDiffusionModesBubbles(std::string name)
     {
@@ -514,11 +508,7 @@ class Simulation
             return &modes_initial_conditions[17 * n_modes];
             
         else
-        {
-            std::cerr << "Error: Invalid gas name \"" << name << "\" in Simulation::getDiffusionModesBubbles."
-                      << std::endl;
-            return nullptr;
-        }
+            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + name + "\" in getDiffusionModesBubbles");
     }
 };
 

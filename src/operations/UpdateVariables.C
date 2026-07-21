@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Simulation.h"
+#include "ThermochemistryManifest.h"
 
 std::map<int, std::string> update_sciantix_variable = {
     {0, "Grain radius"},
@@ -177,14 +178,10 @@ void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_m
     if (thermochemistry_variable.empty())
         return;
 
-    // Theoretical densities are packed at the same manifest index, offset by
-    // thermochemistry_density_offset, in the same shared Sciantix_thermochemistry
-    // array (read by TU as sciantix_thermochemistry(itb + 123), see
-    // SetTUVariablesfromSciantix.f95). The offset must be >= the manifest's
-    // entry count (indices are contiguous from 0, enforced in
-    // ThermochemistryManifest.C) so a variable's own value slot never
-    // collides with another variable's density slot.
-    constexpr int thermochemistry_density_offset = 123;
+    // thermochemistry_density_offset (declared in ThermochemistryManifest.h, enforced against
+    // the manifest's entry count in LoadThermochemistryManifest) packs theoretical densities at
+    // the same manifest index, offset by that value, in the same shared Sciantix_thermochemistry
+    // array (read by TU as sciantix_thermochemistry(itb + 123), see SetTUVariablesfromSciantix.f95).
     constexpr int thermochemistry_array_size = 300;
 
     for (auto& variable : thermochemistry_variable)
