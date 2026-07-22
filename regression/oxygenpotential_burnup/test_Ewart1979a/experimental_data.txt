@@ -1,0 +1,11 @@
+# Table 8.18. Selected data on oxygen potential for MOX fuels (fresh and irradiated) – Data source: (Ewart, 1979a)
+Temperature Pu/M ratio (before irradiation) O/M ratio (post irradiation) Fract. porosity (Average before irradiation) Burn-up (Maximum) μ(O2) Radial position
+K % % %FIMA kJ/mol R/R0
+1100 30 1,997 12,6 5,4 -548 0.76
+1100 30 1,994 12,6 5,4 -574 0.69
+1100 30 1,999 12,6 5,4 -519 0.69
+1100 30 1,996 12,6 5,4 -557 0.59
+1100 30 1,997 12,6 5,4 -548 0.57
+1100 30 1,995 12,6 5,4 -565 0.48
+1100 30 1,995 12,6 5,4 -561 0.42
+1100 30 1,996 12,6 5,4 -557 0.34

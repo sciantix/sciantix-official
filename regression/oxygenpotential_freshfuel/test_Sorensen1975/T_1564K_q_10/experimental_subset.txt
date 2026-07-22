@@ -1,0 +1,4 @@
+Temperature_K	Pu_M_percent	O_M_ratio	mu_O2_kJ_mol
+1564	10	1.99	-441.5
+1564	10	1.997	-383.5
+1564	10	1.998	-353.4
