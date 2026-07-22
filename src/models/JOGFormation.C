@@ -14,16 +14,16 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "Simulation.h"
 #include "Constants.h"
+#include "Simulation.h"
 
 #include <algorithm>
-#include <vector>
 #include <cctype>
 #include <cmath>
 #include <iostream>
 #include <map>
 #include <string>
+#include <vector>
 
 namespace JOGFormationDetail
 {
@@ -36,9 +36,10 @@ namespace JOGFormationDetail
         if (element.empty())
             return element;
 
-        std::transform(element.begin(), element.end(), element.begin(), [](unsigned char c) {
-            return static_cast<char>(std::tolower(c));
-        });
+        std::transform(element.begin(),
+                       element.end(),
+                       element.begin(),
+                       [](unsigned char c) { return static_cast<char>(std::tolower(c)); });
         element[0] = static_cast<char>(std::toupper(static_cast<unsigned char>(element[0])));
         return element;
     }
@@ -61,9 +62,9 @@ namespace JOGFormationDetail
         if (mo <= 0.0)
             return 0.0;
 
-        const double oxygen = getElementAmount(composition, "O");
+        const double oxygen             = getElementAmount(composition, "O");
         const double monovalent_cations = getElementAmount(composition, "Cs");
-        const double divalent_cations = getElementAmount(composition, "Ba");
+        const double divalent_cations   = getElementAmount(composition, "Ba");
 
         const double valence = (2.0 * oxygen - monovalent_cations - 2.0 * divalent_cations) / mo;
         return std::max(0.0, std::min(6.0, valence));
@@ -88,9 +89,10 @@ namespace JOGFormationDetail
 
     std::string normalizeSublatticeConstituent(std::string constituent)
     {
-        std::transform(constituent.begin(), constituent.end(), constituent.begin(), [](unsigned char c) {
-            return static_cast<char>(std::toupper(c));
-        });
+        std::transform(constituent.begin(),
+                       constituent.end(),
+                       constituent.begin(),
+                       [](unsigned char c) { return static_cast<char>(std::toupper(c)); });
 
         const size_t charge_pos = constituent.find_first_of("+-");
         if (charge_pos != std::string::npos)
@@ -111,11 +113,13 @@ namespace JOGFormationDetail
         // products dissolved in the metallic phases, from the Materials
         // Project: Mo mp-129 (BCC Im-3m), Tc mp-113 (HCP P6_3/mmc),
         // Ru mp-33 (HCP P6_3/mmc), Rh mp-74 (FCC Fm-3m), Pd mp-2 (FCC Fm-3m).
-        static const std::vector<std::tuple<std::string, double, double>> metallic_elements = {
-            {"Mo", 95.95, 10.02}, {"Tc", 98.00, 11.42}, {"Ru", 101.07, 12.38},
-            {"Rh", 102.91, 12.40}, {"Pd", 106.42, 11.76}};
+        static const std::vector<std::tuple<std::string, double, double>> metallic_elements = {{"Mo", 95.95, 10.02},
+                                                                                               {"Tc", 98.00, 11.42},
+                                                                                               {"Ru", 101.07, 12.38},
+                                                                                               {"Rh", 102.91, 12.40},
+                                                                                               {"Pd", 106.42, 11.76}};
 
-        double total_mass = 0.0;
+        double total_mass      = 0.0;
         double volume_per_mass = 0.0;
         for (const auto& [element, atomic_mass, element_density] : metallic_elements)
         {
@@ -131,7 +135,7 @@ namespace JOGFormationDetail
         if (total_mass <= 0.0 || volume_per_mass <= 0.0)
             return 0.0;
 
-        return 1.0e6 * total_mass / volume_per_mass; // g/m3
+        return 1.0e6 * total_mass / volume_per_mass;  // g/m3
     }
 
     /// ThermochemistryVariable builds its variable name as "<PHASE_NAME>
@@ -163,8 +167,8 @@ namespace JOGFormationDetail
     }
 
     double sublatticeFraction(const std::map<int, std::map<std::string, double>>& sublattice_composition,
-                               int sublattice_index,
-                               const std::string& species)
+                              int                                                 sublattice_index,
+                              const std::string&                                  species)
     {
         const auto sublattice = sublattice_composition.find(sublattice_index);
         if (sublattice == sublattice_composition.end())
@@ -191,9 +195,9 @@ namespace JOGFormationDetail
     /// Returns 0.0 if the estimate cannot be formed or falls outside the
     /// plausible range for a Cs-Ba-Mo-O molten oxide, 1-10 g/cm3.
     double estimateOxideLiquidDensity(const std::map<int, std::map<std::string, double>>& sublattice_composition,
-                                       double cs2moo4_density,
-                                       double bamoo4_density,
-                                       double halite_density)
+                                      double                                              cs2moo4_density,
+                                      double                                              bamoo4_density,
+                                      double                                              halite_density)
     {
         const double y_cs   = sublatticeFraction(sublattice_composition, 1, "CS+");
         const double y_ba   = sublatticeFraction(sublattice_composition, 1, "BA+2");
@@ -203,7 +207,7 @@ namespace JOGFormationDetail
         const double cs2moo4_pair_fraction = y_cs * y_moo4;
         const double bamoo4_pair_fraction  = y_ba * y_moo4;
         const double bao_pair_fraction     = y_ba * y_o;
-        const double pair_fraction_total = cs2moo4_pair_fraction + bamoo4_pair_fraction + bao_pair_fraction;
+        const double pair_fraction_total   = cs2moo4_pair_fraction + bamoo4_pair_fraction + bao_pair_fraction;
 
         if (pair_fraction_total <= 0.0 || halite_density <= 0.0 || bamoo4_density <= 0.0)
             return 0.0;
@@ -214,8 +218,8 @@ namespace JOGFormationDetail
         const double estimate =
             1.0 / (x_cs2moo4 / cs2moo4_density + x_bamoo4 / bamoo4_density + x_bao / halite_density);
 
-        const double min_plausible_density = 1.0e6; // g/m3
-        const double max_plausible_density = 1.0e7; // g/m3
+        const double min_plausible_density = 1.0e6;  // g/m3
+        const double max_plausible_density = 1.0e7;  // g/m3
         return (estimate > min_plausible_density && estimate < max_plausible_density) ? estimate : 0.0;
     }
 
@@ -227,18 +231,19 @@ namespace JOGFormationDetail
     /// beta<->h transition at 568 degC.
     double cs2moo4TheoreticalDensity(double temperature_celsius)
     {
-        const double T_transition = 568.0; // degC
-        const double T_ref = 675.0;        // degC
-        const double rho_ref = 3.89;       // g/cm3
+        const double T_transition = 568.0;  // degC
+        const double T_ref        = 675.0;  // degC
+        const double rho_ref      = 3.89;   // g/cm3
 
         const double eps_ref = -0.0102 + 8.50e-5 * T_ref - 2.13e-8 * std::pow(T_ref, 2.0);
 
-        const double eps_T = temperature_celsius < T_transition
-            ? -7.12e-4 + 2.57e-5 * temperature_celsius + 4.03e-8 * std::pow(temperature_celsius, 2.0)
-            : -0.0102 + 8.50e-5 * temperature_celsius - 2.13e-8 * std::pow(temperature_celsius, 2.0);
+        const double eps_T =
+            temperature_celsius < T_transition
+                ? -7.12e-4 + 2.57e-5 * temperature_celsius + 4.03e-8 * std::pow(temperature_celsius, 2.0)
+                : -0.0102 + 8.50e-5 * temperature_celsius - 2.13e-8 * std::pow(temperature_celsius, 2.0);
 
         // Density from mass conservation: V(T) / V_ref = [(1 + eps_T) / (1 + eps_ref)]^3
-        return 1e6 * rho_ref * std::pow((1.0 + eps_ref) / (1.0 + eps_T), 3.0); // g/m3
+        return 1e6 * rho_ref * std::pow((1.0 + eps_ref) / (1.0 + eps_T), 3.0);  // g/m3
     }
 
     /// Phases whose density is a fixed physical property, read from the
@@ -273,7 +278,8 @@ using namespace JOGFormationDetail;
 void Simulation::JOGFormation()
 {
     const int thermochimica_mode = (int)input_variable["iThermochimica"].getValue();
-    if (thermochimica_mode == 0) return;
+    if (thermochimica_mode == 0)
+        return;
 
     // CODE DEVELOPMENT : THERMOCHEMISTRY OUTER-NODE MODE
     const bool is_outer_node = input_variable["iThermochimicaOuterNode"].getValue() != 0;
@@ -288,36 +294,36 @@ void Simulation::JOGFormation()
         return;
     }
 
-    const double temperature_celsius = history_variable["Temperature"].getFinalValue() - 273.15;
+    const double temperature_celsius         = history_variable["Temperature"].getFinalValue() - 273.15;
     const double cs2moo4_theoretical_density = cs2moo4TheoreticalDensity(temperature_celsius);
-    const double fallback_other_density = 4.0e6; // g/m3 (4 g/cm3 placeholder)
+    const double fallback_other_density      = 4.0e6;  // g/m3 (4 g/cm3 placeholder)
 
     // Theoretical densities for BaMoO4, Ba3MoO6, BaO (halite), MoPd2, MoO2
     // and perovskite are supplied via the optional density column of
     // input_thermochemistry.txt.
 
-    double JOG_Cs2MoO4 = 0.0;
-    double JOG_BaMoO4 = 0.0;
-    double JOG_Ba3MoO6 = 0.0;
-    double JOG_BaO = 0.0;
-    double JOG_liquid_oxide = 0.0;
+    double JOG_Cs2MoO4         = 0.0;
+    double JOG_BaMoO4          = 0.0;
+    double JOG_Ba3MoO6         = 0.0;
+    double JOG_BaO             = 0.0;
+    double JOG_liquid_oxide    = 0.0;
     double JOG_liquid_metallic = 0.0;
-    double JOG_other = 0.0;
-    double JOG_HCP_A3 = 0.0;
-    double JOG_FCC_A1 = 0.0;
-    double JOG_Sigma = 0.0;
-    double JOG_MoPd2 = 0.0;
-    double JOG_MoO2 = 0.0;
-    double JOG_Perovskite = 0.0;
+    double JOG_other           = 0.0;
+    double JOG_HCP_A3          = 0.0;
+    double JOG_FCC_A1          = 0.0;
+    double JOG_Sigma           = 0.0;
+    double JOG_MoPd2           = 0.0;
+    double JOG_MoO2            = 0.0;
+    double JOG_Perovskite      = 0.0;
 
-    double total_mo_moles = 0.0;
-    double oxide_mo_moles = 0.0;
+    double total_mo_moles       = 0.0;
+    double oxide_mo_moles       = 0.0;
     double oxide_mo_valence_sum = 0.0;
-    double total_ba_moles = 0.0;
-    double oxide_ba_moles = 0.0;
+    double total_ba_moles       = 0.0;
+    double oxide_ba_moles       = 0.0;
     double oxide_ba_valence_sum = 0.0;
-    double hcp_mo_moles = 0.0;
-    double hcp_ru_moles = 0.0;
+    double hcp_mo_moles         = 0.0;
+    double hcp_ru_moles         = 0.0;
 
     for (auto& variable : thermochemistry_variable)
     {
@@ -327,18 +333,18 @@ void Simulation::JOGFormation()
         if (variable.getFinalValue() <= 0.0)
             continue;
 
-        const std::string phase = variable.getPhase();
-        const bool is_liquid_phase = phase == "liquid" || phase == "ionic_liquid" || phase == "liquid_ionic";
+        const std::string phase           = variable.getPhase();
+        const bool        is_liquid_phase = phase == "liquid" || phase == "ionic_liquid" || phase == "liquid_ionic";
         if (phase != "condensed" && !is_liquid_phase)
             continue;
 
-        const std::string variable_name = variable.getName();
-        const std::string base_name = basePhaseName(variable_name);
-        const std::map<std::string, double> composition = variable.getComposition();
+        const std::string                                  variable_name          = variable.getName();
+        const std::string                                  base_name              = basePhaseName(variable_name);
+        const std::map<std::string, double>                composition            = variable.getComposition();
         const std::map<int, std::map<std::string, double>> sublattice_composition = variable.getSublatticeComposition();
-        const double phase_molar_mass = variable.getMolarMass();
-        const double mass = variable.getMass();
-        const double manifest_density = variable.getTheoreticalDensity();
+        const double                                       phase_molar_mass       = variable.getMolarMass();
+        const double                                       mass                   = variable.getMass();
+        const double                                       manifest_density       = variable.getTheoreticalDensity();
 
         // Accumulates this phase's volume into `accumulator` using
         // `density_value` when available (>0), otherwise falls back to the
@@ -374,7 +380,7 @@ void Simulation::JOGFormation()
         {
             const double ba_moles = mass * ba_stoichiometry / phase_molar_mass;
             oxide_ba_moles += ba_moles;
-            oxide_ba_valence_sum += ba_moles * 2; // Valence fixed to +2
+            oxide_ba_valence_sum += ba_moles * 2;  // Valence fixed to +2
         }
 
         const bool is_oxide_liquid =
@@ -426,9 +432,12 @@ void Simulation::JOGFormation()
         }
         else if (isManifestDensityPhase(base_name))
         {
-            static const std::map<std::string, double*> manifest_phase_accumulators = {
-                {"BAMOO4", &JOG_BaMoO4}, {"BA3MOO6", &JOG_Ba3MoO6}, {"HALITE", &JOG_BaO},
-                {"MOPD2", &JOG_MoPd2}, {"MOO2", &JOG_MoO2}, {"PEROVSKITE", &JOG_Perovskite}};
+            static const std::map<std::string, double*> manifest_phase_accumulators = {{"BAMOO4", &JOG_BaMoO4},
+                                                                                       {"BA3MOO6", &JOG_Ba3MoO6},
+                                                                                       {"HALITE", &JOG_BaO},
+                                                                                       {"MOPD2", &JOG_MoPd2},
+                                                                                       {"MOO2", &JOG_MoO2},
+                                                                                       {"PEROVSKITE", &JOG_Perovskite}};
             accumulateFixed(manifest_density, *manifest_phase_accumulators.at(base_name));
         }
         else if (isMetallicSolidSolutionPhase(base_name))
@@ -448,7 +457,7 @@ void Simulation::JOGFormation()
             {
                 accumulateFixed(estimateElementalMixDensity(composition), JOG_FCC_A1);
             }
-            else // SIGMA
+            else  // SIGMA
             {
                 accumulateFixed(estimateElementalMixDensity(composition), JOG_Sigma);
             }
@@ -473,14 +482,14 @@ void Simulation::JOGFormation()
     sciantix_variable["JOG (MoPd2)"].setFinalValue(JOG_MoPd2);
     sciantix_variable["JOG (MoO2)"].setFinalValue(JOG_MoO2);
     sciantix_variable["JOG (Perovskite)"].setFinalValue(JOG_Perovskite);
-    sciantix_variable["Mo in oxide fraction"].setFinalValue(
-        total_mo_moles > 0.0 ? oxide_mo_moles / total_mo_moles : 0.0);
-    sciantix_variable["Mo oxide valence"].setFinalValue(
-        oxide_mo_moles > 0.0 ? oxide_mo_valence_sum / oxide_mo_moles : 0.0);
-    sciantix_variable["Ba/Mo in oxide compounds"].setFinalValue(
-        oxide_mo_moles > 0.0 ? oxide_ba_moles / oxide_mo_moles : 0.0);
-    sciantix_variable["Ba in oxide fraction"].setFinalValue(
-        total_ba_moles > 0.0 ? oxide_ba_moles / total_ba_moles : 0.0);
-    sciantix_variable["Ba oxide valence"].setFinalValue(
-        oxide_ba_moles > 0.0 ? oxide_ba_valence_sum / oxide_ba_moles : 0.0);
+    sciantix_variable["Mo in oxide fraction"].setFinalValue(total_mo_moles > 0.0 ? oxide_mo_moles / total_mo_moles
+                                                                                 : 0.0);
+    sciantix_variable["Mo oxide valence"].setFinalValue(oxide_mo_moles > 0.0 ? oxide_mo_valence_sum / oxide_mo_moles
+                                                                             : 0.0);
+    sciantix_variable["Ba/Mo in oxide compounds"].setFinalValue(oxide_mo_moles > 0.0 ? oxide_ba_moles / oxide_mo_moles
+                                                                                     : 0.0);
+    sciantix_variable["Ba in oxide fraction"].setFinalValue(total_ba_moles > 0.0 ? oxide_ba_moles / total_ba_moles
+                                                                                 : 0.0);
+    sciantix_variable["Ba oxide valence"].setFinalValue(oxide_ba_moles > 0.0 ? oxide_ba_valence_sum / oxide_ba_moles
+                                                                             : 0.0);
 }

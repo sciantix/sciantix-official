@@ -118,9 +118,9 @@ std::map<int, std::string> update_sciantix_variable = {
     {130, "Mo produced"},
     {131, "Mo in solution"},
     {132, "Mo reacted"},
-    {133, "Ba produced"}, 
+    {133, "Ba produced"},
     {134, "Ba in solution"},
-    {135, "Ba reacted"}, 
+    {135, "Ba reacted"},
     {136, "Tc produced"},
     {137, "Tc in solution"},
     {138, "Tc reacted"},
@@ -157,8 +157,10 @@ std::map<int, std::string> update_sciantix_variable = {
     {175, "Pu242"},
     {177, "q"},
 };
- 
-void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[], double Sciantix_thermochemistry[])
+
+void Simulation::update(double Sciantix_variables[],
+                        double Sciantix_diffusion_modes[],
+                        double Sciantix_thermochemistry[])
 {
     for (int i = 0; i < n_modes; ++i)
     {

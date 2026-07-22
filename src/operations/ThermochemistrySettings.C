@@ -14,8 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "ThermochemistrySettings.h"
 #include "ThermochemistryParsingUtils.h"
+#include "ThermochemistrySettings.h"
 
 #include <fstream>
 #include <iostream>
@@ -25,26 +25,26 @@ using namespace ThermochemistryParsingUtils;
 
 namespace ThermochemistrySettingsDetail
 {
-// Comma-separated list fields (elements, locations) drop empty tokens, unlike the
-// pipe-delimited manifest fields, which keep them to preserve column positions.
-std::vector<std::string> splitList(const std::string& input, const char delimiter)
-{
-    return split(input, delimiter, /* skip_empty = */ true);
-}
+    // Comma-separated list fields (elements, locations) drop empty tokens, unlike the
+    // pipe-delimited manifest fields, which keep them to preserve column positions.
+    std::vector<std::string> splitList(const std::string& input, const char delimiter)
+    {
+        return split(input, delimiter, /* skip_empty = */ true);
+    }
 
-bool parseBool(const std::string& input)
-{
-    const std::string value = trim(input);
+    bool parseBool(const std::string& input)
+    {
+        const std::string value = trim(input);
 
-    if (value == "true" || value == "1" || value == "TRUE" || value == "True")
-        return true;
+        if (value == "true" || value == "1" || value == "TRUE" || value == "True")
+            return true;
 
-    if (value == "false" || value == "0" || value == "FALSE" || value == "False")
-        return false;
+        if (value == "false" || value == "0" || value == "FALSE" || value == "False")
+            return false;
 
-    std::cerr << "Error: Invalid thermochemistry settings boolean value: " << input << std::endl;
-    exit(1);
-}
+        std::cerr << "Error: Invalid thermochemistry settings boolean value: " << input << std::endl;
+        exit(1);
+    }
 }  // namespace ThermochemistrySettingsDetail
 
 using namespace ThermochemistrySettingsDetail;

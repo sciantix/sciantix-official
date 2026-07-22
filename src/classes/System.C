@@ -347,8 +347,9 @@ void System::setFissionProductDiffusivity(int                              input
             if (matrices[0].getName() == "MOX")
             {
                 diffusivity *= 1.75;
-                reference += "MOX, scaling factor 1.75: Lanning, D. D., Beyer, C. E., & Geelhood, K. J. (2005). FRAPCON-3 Updates, Including Mixed Oxide Fuel Properties.\n\t";
-            } 
+                reference += "MOX, scaling factor 1.75: Lanning, D. D., Beyer, C. E., & Geelhood, K. J. (2005). "
+                             "FRAPCON-3 Updates, Including Mixed Oxide Fuel Properties.\n\t";
+            }
 
             diffusivity *= scaling_factors["Diffusivity"].getValue();
 
@@ -500,7 +501,7 @@ void System::setFissionProductDiffusivity(int                              input
             double Cr_content = Cr_atoms / (Cr_atoms + U_content) * 100;            // at.%
 
             // linear fitting of amorphous Cr doped-UO2 data
-            double activation_energy = scaling_factors["Diffusivity"].getValue() * (Cr_content - 173.3) / (-532.3);
+            double activation_energy      = scaling_factors["Diffusivity"].getValue() * (Cr_content - 173.3) / (-532.3);
             double Pre_exponential_factor = (Cr_content - 41.93) / (-1.376e+9);
 
             diffusivity =
@@ -772,9 +773,8 @@ void System::setResolutionRate(int                              input_value,
             /// compressibility_factor
             double helium_hard_sphere_diameter =
                 2.973e-10 * (0.8414 - 0.05 * log(history_variable["Temperature"].getFinalValue() / 10.985));  // (m)
-            double helium_volume_in_bubble =
-                matrices[0].getOctahedralInterstitialSite();  // 7.8e-30, approximation of
-                                                                  // saturated nanobubbles
+            double helium_volume_in_bubble = matrices[0].getOctahedralInterstitialSite();  // 7.8e-30, approximation of
+                                                                                           // saturated nanobubbles
             double y = M_PI * pow(helium_hard_sphere_diameter, 3) / (6.0 * helium_volume_in_bubble);
             double compressibility_factor = (1.0 + y + pow(y, 2) - pow(y, 3)) / (pow(1.0 - y, 3));
 

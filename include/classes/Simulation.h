@@ -46,22 +46,22 @@
 class Simulation
 {
   private:
-    SciantixArray<SciantixVariable> sciantix_variable;
-    SciantixArray<SciantixVariable> history_variable;
-    SciantixArray<SciantixVariable> physics_variable;
+    SciantixArray<SciantixVariable>        sciantix_variable;
+    SciantixArray<SciantixVariable>        history_variable;
+    SciantixArray<SciantixVariable>        physics_variable;
     SciantixArray<ThermochemistryVariable> thermochemistry_variable;
-    
-    SciantixArray<Model>  model;
-    SciantixArray<System> sciantix_system;
-    SciantixArray<Matrix> matrices;
-    SciantixArray<FissionProducts>    gas_fp;
-    SciantixArray<FissionProducts>    volatile_fp;
-    SciantixArray<FissionProducts>    metallic_fp;
-    SciantixArray<FissionProducts>    ceramic_fp;
 
-    SciantixArray<InputVariable> input_variable;
-    SciantixArray<InputVariable> scaling_factors;
-    const ThermochemistrySettings* thermochemistry_settings;
+    SciantixArray<Model>           model;
+    SciantixArray<System>          sciantix_system;
+    SciantixArray<Matrix>          matrices;
+    SciantixArray<FissionProducts> gas_fp;
+    SciantixArray<FissionProducts> volatile_fp;
+    SciantixArray<FissionProducts> metallic_fp;
+    SciantixArray<FissionProducts> ceramic_fp;
+
+    SciantixArray<InputVariable>              input_variable;
+    SciantixArray<InputVariable>              scaling_factors;
+    const ThermochemistrySettings*            thermochemistry_settings;
     std::vector<ThermochemistryManifestEntry> thermochemistry_manifest;
 
     int                 n_modes;
@@ -91,14 +91,13 @@ class Simulation
 
     static Simulation* getInstance();
 
-    void setVariables(int    Sciantix_options[],
-                      double Sciantix_history[],
-                      double Sciantix_variables[],
-                      double Sciantix_scaling_factors[],
-                      double Sciantix_diffusion_modes[],
-                      double Sciantix_thermochemistry[],
-                      const ThermochemistrySettings* Sciantix_thermochemistry_settings
-    );
+    void setVariables(int                            Sciantix_options[],
+                      double                         Sciantix_history[],
+                      double                         Sciantix_variables[],
+                      double                         Sciantix_scaling_factors[],
+                      double                         Sciantix_diffusion_modes[],
+                      double                         Sciantix_thermochemistry[],
+                      const ThermochemistrySettings* Sciantix_thermochemistry_settings);
 
     void setFissionProducts();
     void setMatrix();
@@ -106,14 +105,13 @@ class Simulation
 
     void setGPVariables(int Sciantix_options[], double Sciantix_history[], double Sciantix_variables[]);
 
-    void initialize(int    Sciantix_options[],
-                    double Sciantix_history[],
-                    double Sciantix_variables[],
-                    double Sciantix_scaling_factors[],
-                    double Sciantix_diffusion_modes[],
-                    double Sciantix_thermochemistry[],
-                    const ThermochemistrySettings* Sciantix_thermochemistry_settings
-    );
+    void initialize(int                            Sciantix_options[],
+                    double                         Sciantix_history[],
+                    double                         Sciantix_variables[],
+                    double                         Sciantix_scaling_factors[],
+                    double                         Sciantix_diffusion_modes[],
+                    double                         Sciantix_thermochemistry[],
+                    const ThermochemistrySettings* Sciantix_thermochemistry_settings);
 
     void execute();
 
@@ -194,9 +192,9 @@ class Simulation
     /**
      * @brief Function to couple SCIANTIX with a Thermochemistry module.
      * It writes the input, runs the code, reads and store the output in SCIANTIX thermochemistry variables.
-     * 
+     *
      * @author E. Cappellari
-     * 
+     *
      */
     void SetPhaseDiagram();
 
@@ -310,7 +308,7 @@ class Simulation
      */
     double openPorosity(double fabrication_porosity);
 
-        /**
+    /**
      * @brief Calculates a corrective factor for the athermal fission product release.
      * @param open_porosity the open porosity of the fuel.
      * @param theta the grain-edge inclination angle.
@@ -321,7 +319,7 @@ class Simulation
      * @param fission_rate the fission rate given as input.
      * @return the athermal venting factor to correct athermal release for the real shape of gas flux within the grain
      *          including its dependency on the grain-edge inclination angle.
-     * 
+     *
      * @author A. Pagani
      * @author E. Cappellari
      */
@@ -332,7 +330,7 @@ class Simulation
                                  double burnup,
                                  double temperature,
                                  double fission_rate);
-    
+
     /**
      * @brief Calculates the formation of high burnup structures within the nuclear fuel.
      *
@@ -394,15 +392,15 @@ class Simulation
 
     /**
      * @brief JOG formation module.
-     * 
+     *
      * @author E. Cappellari
-     * 
+     *
      */
     void JOGFormation();
 
-	/**
-	 * @brief This function defines the Sciantix model *ChromiumSolubility*.
-	 * 
+    /**
+     * @brief This function defines the Sciantix model *ChromiumSolubility*.
+     *
      * @details
      * The model ChromiumSolubility is used to evaluate the chromium solubility accordingly to the
      * temperature and the oxygen content. Then the number of oxide chromium atoms is evaluated,
@@ -503,10 +501,10 @@ class Simulation
 
         else if (name == "Kr85m")
             return &modes_initial_conditions[14 * n_modes];
-        
+
         else if (name == "Xe in HBS")
             return &modes_initial_conditions[17 * n_modes];
-            
+
         else
             ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + name + "\" in getDiffusionModesBubbles");
     }

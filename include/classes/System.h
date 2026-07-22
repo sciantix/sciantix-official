@@ -59,10 +59,17 @@ class System : virtual public Material
 
     // A System is associated with exactly one fission-product species at a time; the category
     // records which of setGas/setVolatileFP/setMetallicFP/setCeramicFP was last called.
-    enum class FissionProductCategory { None, Gas, Volatile, Metallic, Ceramic };
+    enum class FissionProductCategory
+    {
+        None,
+        Gas,
+        Volatile,
+        Metallic,
+        Ceramic
+    };
     FissionProducts        fission_product;
     FissionProductCategory fission_product_category = FissionProductCategory::None;
-    Matrix matrix;
+    Matrix                 matrix;
 
     void setFissionProductCategory(FissionProducts fp, FissionProductCategory category);
 
@@ -124,7 +131,7 @@ class System : virtual public Material
      * @return Gas, volatile, or metallic species name.
      */
     std::string getFissionProductName();
-    
+
     /**
      * @brief Sets the name of the matrix.
      * @param n Name of the matrix to set.
@@ -186,10 +193,10 @@ class System : virtual public Material
      * @param input_value The model selection index for fission product diffusivity.
      */
     void setFissionProductDiffusivity(int                              input_value,
-                                  SciantixArray<SciantixVariable>& sciantix_variable,
-                                  SciantixArray<SciantixVariable>& history_variable,
-                                  SciantixArray<InputVariable>&    scaling_factors,
-                                  SciantixArray<Matrix>&           matrices);
+                                      SciantixArray<SciantixVariable>& sciantix_variable,
+                                      SciantixArray<SciantixVariable>& history_variable,
+                                      SciantixArray<InputVariable>&    scaling_factors,
+                                      SciantixArray<Matrix>&           matrices);
 
     /**
      * @brief Retrieves the diffusivity of fission products within the matrix.

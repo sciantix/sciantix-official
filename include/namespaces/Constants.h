@@ -50,23 +50,21 @@ const double blackburn_entropy  = 9.92;     // (/)
 
 const double reference_oxygen_pressure_atm = 0.1013;  // MPa
 const double reference_oxygen_pressure_bar = 0.1;     // MPa
-const double max_prescribed_om_ratio = 1.9999;        // (/) keep prescribed O/M strictly below stoichiometry (2.0)
+const double max_prescribed_om_ratio       = 1.9999;  // (/) keep prescribed O/M strictly below stoichiometry (2.0)
 
 // Atomic masses (g/mol) of the elements/species.
-const std::map<std::string, double> thermochemistry_atomic_masses = {
-    {"Cs", 132.90545196},
-    {"I", 126.90447},
-    {"Mo", 95.95},
-    {"Ba", 137.327},
-    {"O", 15.999},
-    {"Te", 127.60},
-    {"U", 238.02891},
-    {"Pu", 239.052},
-    {"Va", 0.0},
-    {"Pd", 106.42},
-    {"Rh", 102.91},
-    {"Ru", 101.07},
-    {"Tc", 98.906}
-};
+const std::map<std::string, double> thermochemistry_atomic_masses = {{"Cs", 132.90545196},
+                                                                     {"I", 126.90447},
+                                                                     {"Mo", 95.95},
+                                                                     {"Ba", 137.327},
+                                                                     {"O", 15.999},
+                                                                     {"Te", 127.60},
+                                                                     {"U", 238.02891},
+                                                                     {"Pu", 239.052},
+                                                                     {"Va", 0.0},
+                                                                     {"Pd", 106.42},
+                                                                     {"Rh", 102.91},
+                                                                     {"Ru", 101.07},
+                                                                     {"Tc", 98.906}};
 
 #endif
