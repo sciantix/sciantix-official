@@ -1,0 +1,21 @@
+# Experimental data extracted from Table 3 in
+# Samuelsson, K., Dumas, J. C., Sundman, B., Lamontagne, J., & Guéneau, C. (2020). 
+# Simulation of the chemical state of high burnup (U, Pu) O2 fuel in fast reactors 
+# based on thermodynamic calculations. Journal of Nuclear Materials, 532, 151969.
+#
+# Measured (exp) composition of the HCP metallic precipitate. Values are given in atomic percent.
+# 
+# The most common metallic precipitates (sometimes called “white phase” [21]) consisted of the 
+# elements Mo, Ru, Rh, Tc, and Pd. These could be found over the whole radius between grains, 
+# suggesting that they did not migrate to any relevant extent after leaving the grains. 
+# A more detailed description of the composition can be found in Table 3. 
+# 
+# One much less commonly occurring metallic precipitate was found to consist of the elements Te, Pd, Ag, and Rh. 
+# They were observed to be concentrated around 0.48R-0.25R.
+# --> this justifies the lower Pd in the measurements, in SCIANTIX I do not account for this.
+#
+# Data: measured HCP_A3 composition at different radial positions at end of life.
+R-to-Ro(-);Temperature(K);Mo(at%);Pd(at%);Rh(at%);Ru(at%);Tc(at%)
+0.60;1746;15.85;10.22;12.52;50.31;11.10
+0.48;1879;14.19;10.33;15.39;50.00;10.09
+0.25;2050;13.03;10.05;14.89;49.68;12.35

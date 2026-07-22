@@ -1,0 +1,17 @@
+# Thermochemistry settings
+opencalphad.path = /home/ecappellari/trial/opencalphad/
+kc = false
+langmuir = false
+output.phase_sublattice_composition = true
+
+fission_products.module = OPENCALPHAD
+fission_products.database = BaMoO_CsMoO_MoPdRhRuTc_merged.TDB
+fission_products.elements = Ba, Cs, Mo, O, Pd, Rh, Ru, Tc
+fission_products.locations = at grain boundary
+fission_products.gap_settings = false
+
+matrix.module = NO
+matrix.database = upuo-v21
+matrix.elements = U, Pu, O
+matrix.locations = matrix
+matrix.gap_settings = false
