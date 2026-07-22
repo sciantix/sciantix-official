@@ -26,18 +26,11 @@ struct ThermochemistryPhaseSettings
     std::string              database;
     std::vector<std::string> elements;
     std::vector<std::string> locations;
-    bool                     gap_settings    = false;
-    double                   gap_temperature = 0.0;
-    double                   gap_pressure    = 0.0;
 };
 
 struct ThermochemistrySettings
 {
     std::string                  opencalphad_path                    = "";
-    bool                         kc                                  = false;
-    double                       kc_time                             = 0.0;
-    bool                         langmuir                            = false;
-    double                       langmuir_coefficient                = 0.0;
     bool                         output_phase_sublattice_composition = false;
     ThermochemistryPhaseSettings fission_products;
     ThermochemistryPhaseSettings matrix;

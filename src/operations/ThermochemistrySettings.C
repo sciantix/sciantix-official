@@ -20,6 +20,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <unistd.h>
 
 using namespace ThermochemistryParsingUtils;
 
@@ -30,6 +31,39 @@ namespace ThermochemistrySettingsDetail
     std::vector<std::string> splitList(const std::string& input, const char delimiter)
     {
         return split(input, delimiter, /* skip_empty = */ true);
+    }
+
+    std::string parentDirectory(const std::string& path)
+    {
+        const size_t separator = path.find_last_of('/');
+        return separator == std::string::npos ? "" : path.substr(0, separator);
+    }
+
+    // OpenCalphad is always checked out as a sibling of sciantix-official (the same
+    // layout Allmake_OC.sh assumes: OC_ROOT="${SCI_ROOT}/../opencalphad").
+    std::string resolveOpenCalphadPath()
+    {
+        char          buffer[4096];
+        const ssize_t length = readlink("/proc/self/exe", buffer, sizeof(buffer) - 1);
+        if (length <= 0)
+        {
+            std::cerr << "Error: Cannot resolve the SCIANTIX executable path to locate OpenCalphad." << std::endl;
+            exit(1);
+        }
+        buffer[length] = '\0';
+
+        // buffer   = <repo_root>/sciantix-official/<build_dir>/sciantix.x
+        const std::string executable_dir = parentDirectory(std::string(buffer));  // .../sciantix-official/<build_dir>
+        const std::string sciantix_root  = parentDirectory(executable_dir);       // .../sciantix-official
+        const std::string repo_root      = parentDirectory(sciantix_root);        // <repo_root>
+
+        if (repo_root.empty())
+        {
+            std::cerr << "Error: Cannot determine OpenCalphad path from executable path: " << buffer << std::endl;
+            exit(1);
+        }
+
+        return repo_root + "/opencalphad/";
     }
 
     bool parseBool(const std::string& input)
@@ -84,17 +118,7 @@ ThermochemistrySettings LoadThermochemistrySettings(const std::string& path)
         const std::string key   = trim(line.substr(0, separator));
         const std::string value = trim(line.substr(separator + 1));
 
-        if (key == "opencalphad.path")
-            settings.opencalphad_path = value;
-        else if (key == "kc")
-            settings.kc = parseBool(value);
-        else if (key == "kc_time")
-            settings.kc_time = std::stod(value);
-        else if (key == "langmuir")
-            settings.langmuir = parseBool(value);
-        else if (key == "langmuir_coefficient")
-            settings.langmuir_coefficient = std::stod(value);
-        else if (key == "output.phase_sublattice_composition")
+        if (key == "output.phase_sublattice_composition")
             settings.output_phase_sublattice_composition = parseBool(value);
         else if (key == "coupling.temperature_tolerance")
             settings.coupling_temperature_tolerance = std::stod(value);
@@ -110,12 +134,6 @@ ThermochemistrySettings LoadThermochemistrySettings(const std::string& path)
             settings.fission_products.elements = splitList(value, ',');
         else if (key == "fission_products.locations")
             settings.fission_products.locations = splitList(value, ',');
-        else if (key == "fission_products.gap_settings")
-            settings.fission_products.gap_settings = parseBool(value);
-        else if (key == "fission_products.gap_temperature")
-            settings.fission_products.gap_temperature = std::stod(value);
-        else if (key == "fission_products.gap_pressure")
-            settings.fission_products.gap_pressure = std::stod(value);
         else if (key == "matrix.module")
             settings.matrix.module = value;
         else if (key == "matrix.database")
@@ -124,18 +142,14 @@ ThermochemistrySettings LoadThermochemistrySettings(const std::string& path)
             settings.matrix.elements = splitList(value, ',');
         else if (key == "matrix.locations")
             settings.matrix.locations = splitList(value, ',');
-        else if (key == "matrix.gap_settings")
-            settings.matrix.gap_settings = parseBool(value);
-        else if (key == "matrix.gap_temperature")
-            settings.matrix.gap_temperature = std::stod(value);
-        else if (key == "matrix.gap_pressure")
-            settings.matrix.gap_pressure = std::stod(value);
         else
         {
             std::cerr << "Error: Unknown thermochemistry settings key: " << key << std::endl;
             exit(1);
         }
     }
+
+    settings.opencalphad_path = resolveOpenCalphadPath();
 
     return settings;
 }
