@@ -14,8 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "Simulation.h"
 #include "ErrorMessages.h"
+#include "Simulation.h"
 
 #include <cmath>
 
@@ -133,11 +133,13 @@ void Simulation::IntraGranularBubbleBehavior()
                     sciantix_variable["Intragranular bubble concentration"].getFinalValue());
 
             else
-                sciantix_variable["Intragranular " + system.getFissionProductName() + " atoms per bubble"].setFinalValue(0.0);
+                sciantix_variable["Intragranular " + system.getFissionProductName() + " atoms per bubble"].setFinalValue(
+                    0.0);
 
             sciantix_variable["Intragranular bubble volume"].addValue(
                 system.getVolumeInLattice() *
-                sciantix_variable["Intragranular " + system.getFissionProductName() + " atoms per bubble"].getFinalValue());
+                sciantix_variable["Intragranular " + system.getFissionProductName() + " atoms per bubble"]
+                    .getFinalValue());
         }
     }
 

@@ -33,11 +33,11 @@ struct ThermochemistryPhaseSettings
 
 struct ThermochemistrySettings
 {
-    std::string                  opencalphad_path      = "";
-    bool                         kc                   = false;
-    double                       kc_time              = 0.0;
-    bool                         langmuir             = false;
-    double                       langmuir_coefficient = 0.0;
+    std::string                  opencalphad_path                    = "";
+    bool                         kc                                  = false;
+    double                       kc_time                             = 0.0;
+    bool                         langmuir                            = false;
+    double                       langmuir_coefficient                = 0.0;
     bool                         output_phase_sublattice_composition = false;
     ThermochemistryPhaseSettings fission_products;
     ThermochemistryPhaseSettings matrix;
@@ -45,9 +45,9 @@ struct ThermochemistrySettings
     // Lazy re-equilibration: SetPhaseDiagram() skips the OpenCalphad solve and reuses the
     // last converged (normalized) result whenever the driving conditions have not moved
     // by more than these tolerances since that solve, up to coupling_max_stale_steps.
-    double                       coupling_temperature_tolerance = 5.0;    // K, absolute
-    double                       coupling_composition_tolerance = 1.0e-3; // relative
-    int                          coupling_max_stale_steps       = 20;
+    double coupling_temperature_tolerance = 5.0;     // K, absolute
+    double coupling_composition_tolerance = 1.0e-3;  // relative
+    int    coupling_max_stale_steps       = 20;
 };
 
 ThermochemistrySettings LoadThermochemistrySettings(const std::string& path);

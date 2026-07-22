@@ -14,8 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "ThermochemistryVariable.h"
 #include "Constants.h"
+#include "ThermochemistryVariable.h"
 
 #include <algorithm>
 #include <cctype>
@@ -24,15 +24,15 @@
 
 namespace ThermochemistryVariableDetail
 {
-std::string normalizeElementName(std::string element)
-{
-    if (element.empty())
-        return element;
+    std::string normalizeElementName(std::string element)
+    {
+        if (element.empty())
+            return element;
 
-    std::transform(element.begin(), element.end(), element.begin(), [](unsigned char c) { return std::tolower(c); });
-    element[0] = static_cast<char>(std::toupper(static_cast<unsigned char>(element[0])));
-    return element;
-}
+        std::transform(element.begin(), element.end(), element.begin(), [](unsigned char c) { return std::tolower(c); });
+        element[0] = static_cast<char>(std::toupper(static_cast<unsigned char>(element[0])));
+        return element;
+    }
 }  // namespace ThermochemistryVariableDetail
 
 using namespace ThermochemistryVariableDetail;
@@ -57,12 +57,12 @@ std::string ThermochemistryVariable::getPhase()
     return phase;
 }
 
-void ThermochemistryVariable::setComposition(std::map <std::string, double> composition_map)
+void ThermochemistryVariable::setComposition(std::map<std::string, double> composition_map)
 {
     composition = composition_map;
 }
 
-std::map <std::string, double> ThermochemistryVariable::getComposition()
+std::map<std::string, double> ThermochemistryVariable::getComposition()
 {
     return composition;
 }
@@ -102,8 +102,8 @@ double ThermochemistryVariable::getMolarMass()
         return molar_mass;
     }
     else
-        std::cerr << "Error in computing the molar mass of variable: "<< name << ". No composition available." << std::endl;
-
+        std::cerr << "Error in computing the molar mass of variable: " << name << ". No composition available."
+                  << std::endl;
 
     return molar_mass;
 }
