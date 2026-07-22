@@ -148,7 +148,7 @@ def main() -> None:
         radius_mm * 1e-3 / r_outer, temperature,
         marker="^", s=70, color=PAPER_PALETTE[-1], zorder=3,
     )
-    axis.set_xlabel("R/Ro")
+    axis.set_xlabel("R/R$_0$")
     axis.set_xlim(0.0-0.1, 1.0+0.1)
     axis.set_xticks(np.linspace(0.0, 1.0, 6))
     axis.set_ylim(0.0, 3.0)

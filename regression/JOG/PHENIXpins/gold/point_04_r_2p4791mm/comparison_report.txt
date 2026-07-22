@@ -1,4 +1,4 @@
-Comparing /home/ecappellari/trial/sciantix-official/regression/JOG/PHENIXpins/gold/point_04_r_2p4791mm/output.txt -> /home/ecappellari/trial/sciantix-official/regression/JOG/PHENIXpins/point_04_r_2p4791mm/output.txt
+Comparing /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/gold/point_04_r_2p4791mm/output.txt -> /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/point_04_r_2p4791mm/output.txt
 Rows: 2921 -> 2921
 Columns: 112 -> 112
 
@@ -27,7 +27,7 @@ Top 20 column differences:
   Kr at grain boundary (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
   Kr released (at/m3): row=0, gold=0.00000000e+00, new=0.00000000e+00, abs=0.00000000e+00, rel=0.00000000e+00, bad_rows=0
 
-Comparing /home/ecappellari/trial/sciantix-official/regression/JOG/PHENIXpins/gold/point_04_r_2p4791mm/thermochemistry_output.txt -> /home/ecappellari/trial/sciantix-official/regression/JOG/PHENIXpins/point_04_r_2p4791mm/thermochemistry_output.txt
+Comparing /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/gold/point_04_r_2p4791mm/thermochemistry_output.txt -> /home/ecappellari/transparant/sciantix-official/regression/JOG/PHENIXpins/point_04_r_2p4791mm/thermochemistry_output.txt
 Rows: 2921 -> 2921
 Columns: 111 -> 111
 

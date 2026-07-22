@@ -1858,17 +1858,37 @@ def plot_radial_phase_mole_fraction_snapshot(
 
     marker_cycle = ["o", "s", "D", "^", "v", "P", "X", "<", ">"]
     color_map = build_label_color_map([phase for phase, _ in entries], palette=PAPER_PALETTE)
-    for index, (phase, values) in enumerate(entries):
+
+    def short_label(phase: str) -> str:
+        # Strip the trailing top-constituents parenthetical (kept only in
+        # the plotted phase key, used for colour grouping): the full
+        # composition at each point is already given in the Results text,
+        # so the legend only needs to identify the phase, not repeat it.
+        return re.sub(r"\s*\([^()]*\)\s*$", "", phase)
+
+    # Marker shape is keyed by the short label too, in order of first
+    # appearance, so every entry sharing a legend row (e.g. several
+    # distinct Liquid compositions) is drawn with the same symbol as well
+    # as the same colour (colour is already species-grouped by
+    # build_label_color_map).
+    marker_map: dict[str, str] = {}
+    for phase, _ in entries:
+        label = short_label(phase)
+        if label not in marker_map:
+            marker_map[label] = marker_cycle[len(marker_map) % len(marker_cycle)]
+
+    for phase, values in entries:
         plotted_values = np.where(values > 0.0, values, np.nan)
+        label = short_label(phase)
         phase_axis.plot(
             r_over_ro,
             plotted_values,
             color=color_map[phase],
-            marker=marker_cycle[index % len(marker_cycle)],
+            marker=marker_map[label],
             linestyle=(0, (2.0, 2.5)),
             linewidth=1.4,
             markersize=8.0,
-            label=phase,
+            label=label,
             zorder=2,
         )
 
@@ -1877,7 +1897,13 @@ def plot_radial_phase_mole_fraction_snapshot(
     phase_axis.set_ylim(1.0e-3, 1.5)
     # Legend inside the empty left band (R/Ro < ~0.3, inward of point 1) so
     # the pre- and post-cooldown figures render at identical sizes.
+    # Deduplicated so phases sharing a short label (and now also a colour
+    # and marker) appear as a single legend row.
+    legend_handles, legend_labels = phase_axis.get_legend_handles_labels()
+    unique_legend = dict(zip(legend_labels, legend_handles))
     phase_axis.legend(
+        unique_legend.values(),
+        unique_legend.keys(),
         loc="center left",
         bbox_to_anchor=(0.005, 0.5),
         ncol=1,
