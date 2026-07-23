@@ -17,10 +17,10 @@
 #include "ThermochemistryParsingUtils.h"
 #include "ThermochemistrySettings.h"
 
+#include <unistd.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <unistd.h>
 
 using namespace ThermochemistryParsingUtils;
 
