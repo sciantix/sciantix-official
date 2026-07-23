@@ -19,7 +19,9 @@ The validation database and regression suite are available in the `regression/` 
 # Training
 
 Training material — tutorials, hands-on cases, and the OperaHPC online training —
-is maintained in a dedicated repository: [sciantix-training](https://github.com/sciantix/sciantix-training)
+is maintained in a dedicated repository: 
+- [sciantix-training](https://github.com/sciantix/sciantix-training)
+- [OperaHPC Online Training](https://github.com/sciantix/sciantix-training/tree/main/training/OperaHPC_online_training)
 
 # Installation
 
