@@ -1,0 +1,27 @@
+# Extracted from Fig. 21. Mo/Ru in metallic fission product precipitates 
+# comparisons between CAPRIX, NESTOR 3 and with a wider data base [24,31].
+#
+# Fayette, L., Chauvin, N., Lamontagne, J., Blanc, V., Martin, F., Reboul, S., 
+# ... & Noirot, J. (2025). Post-irradiation examinations on a Fast Reactor MOX 
+# fuel pin with high Pu content irradiated at high burnup in PHENIX. 
+# Journal of Nuclear Materials, 156245. in 10.1016/j.jnucmat.2025.156245
+FIMA(%);Mo-to-Ru(-)
+4.80;0.79
+4.91;0.85
+6.42;0.77
+6.92;0.87
+8.91;0.20
+9.01;0.65
+10.41;0.05
+10.71;0.14
+11.13;0.35
+11.21;0.24
+12.52;0.45
+12.72;0.16
+12.75;0.25
+13.39;0.26
+#13.62;0.08
+#15.52;0.10
+#16.85;0.13
+#18.94;0.05
+#22.54;0.09
