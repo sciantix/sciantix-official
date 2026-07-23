@@ -206,7 +206,9 @@ Model literature is catalogued in `references/references.md` and the headers' Do
 
 ## 7. Build & regression
 
-**Build** (`Allmake.sh` → `build/` → `cmake .. && make -j`):
+**Build** (`Allmake.sh` → `build/` → `cmake .. && make -j`; `Allmake.sh --oc` first
+builds the OpenCalphad thermochemistry coupling from `../opencalphad-for-sciantix`,
+then builds sciantix against it):
 
 - Default target: executable `build/sciantix.x`. C++17 is set explicitly; `-Wall
   -Wextra` are enabled (GNU/Clang) and the tree is warning-clean — keep it that way.
@@ -244,6 +246,7 @@ regression.runner --all -j $(nproc)`):
 | `chromium` | Cr-doped fuel solubility + microstructure |
 | `contact` | contact / mechanics case |
 | `analytics`/`gpr` | analytic power-pulse checks (`pulse` is an alias for `analytics`); GPR series |
+| `jog` | OpenCalphad-coupled JOG cases (`test_PHENIXpins_point_*`); excluded from plain `--all`/CI since it needs `Allmake.sh --oc` — run it  via `--oc`/`./runRegression.sh --oc` |
 
 `regression/white/bias.py` is a parameter-selection utility (not a test): it sweeps
 scaling-factor combinations over the White (2004) cases and reports parity statistics
