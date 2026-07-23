@@ -47,7 +47,7 @@ namespace ThermochemistrySettingsDetail
     }
 
     // OpenCalphad is always checked out as a sibling of sciantix-official (the same
-    // layout Allmake_OC.sh assumes: OC_ROOT="${SCI_ROOT}/../opencalphad-for-sciantix").
+    // layout Allmake.sh --oc assumes: OC_ROOT="${SCI_ROOT}/../opencalphad-for-sciantix").
     std::string resolveOpenCalphadPath()
     {
         char          buffer[4096];
