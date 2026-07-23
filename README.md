@@ -36,6 +36,12 @@ Recommended requirements:
    ```
    The compiled executable `sciantix.x` will be located in the `build/` directory.
 
+   For the optional OpenCalphad thermochemistry coupling (checked out as
+   `../opencalphad-for-sciantix`, next to this repository), build with:
+   ```bash
+   ./Allmake.sh --oc
+   ```
+
 ## Manual installation
 
 If you prefer to build manually or need custom CMake flags:
@@ -81,6 +87,11 @@ To verify the installation and physics:
 Alternatively, run the runner directly:
 ```bash
 python3 -m regression.runner --all -j $(nproc)
+```
+
+JOG test (`regression/jog/`) needs the OC build above, so it is excluded from plain `--all`. `--oc` builds with OpenCalphad and runs every standard group plus jog:
+```bash
+./runRegression.sh --oc
 ```
 
 # Documentation

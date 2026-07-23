@@ -43,4 +43,8 @@ echo "=== Running Talip plot ==="
 python3 regression/talip/plot.py
 
 echo ""
+echo "=== Running JOG plot ==="
+python3 regression/jog/PHENIXpins/plot_JOG.py
+
+echo ""
 echo "=== Done ==="
