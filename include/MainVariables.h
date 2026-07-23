@@ -43,12 +43,12 @@ constexpr int N_MODE_BLOCKS                 = 18;
 constexpr int SCIANTIX_DIFFUSION_MODES_SIZE = N_MODE_BLOCKS * N_DIFFUSION_MODES;
 constexpr int SCIANTIX_THERMOCHEMISTRY_SIZE = 300;
 
-extern int    Sciantix_options[SCIANTIX_OPTIONS_SIZE];
-extern double Sciantix_history[SCIANTIX_HISTORY_SIZE];
-extern double Sciantix_variables[SCIANTIX_VARIABLES_SIZE];
-extern double Sciantix_scaling_factors[SCIANTIX_SCALING_FACTORS_SIZE];
-extern double Sciantix_diffusion_modes[SCIANTIX_DIFFUSION_MODES_SIZE];
-extern double Sciantix_thermochemistry[SCIANTIX_THERMOCHEMISTRY_SIZE];
+extern int                      Sciantix_options[SCIANTIX_OPTIONS_SIZE];
+extern double                   Sciantix_history[SCIANTIX_HISTORY_SIZE];
+extern double                   Sciantix_variables[SCIANTIX_VARIABLES_SIZE];
+extern double                   Sciantix_scaling_factors[SCIANTIX_SCALING_FACTORS_SIZE];
+extern double                   Sciantix_diffusion_modes[SCIANTIX_DIFFUSION_MODES_SIZE];
+extern double                   Sciantix_thermochemistry[SCIANTIX_THERMOCHEMISTRY_SIZE];
 extern ThermochemistrySettings* Sciantix_thermochemistry_settings;
 
 extern long long int Time_step_number;

@@ -28,32 +28,32 @@
  */
 namespace ThermochemistryParsingUtils
 {
-inline std::string trim(const std::string& input)
-{
-    const std::string whitespace = " \t\r\n";
-    const size_t      begin      = input.find_first_not_of(whitespace);
-    if (begin == std::string::npos)
-        return "";
-
-    const size_t end = input.find_last_not_of(whitespace);
-    return input.substr(begin, end - begin + 1);
-}
-
-inline std::vector<std::string> split(const std::string& input, const char delimiter, bool skip_empty = false)
-{
-    std::vector<std::string> parts;
-    std::stringstream        stream(input);
-    std::string              item;
-
-    while (std::getline(stream, item, delimiter))
+    inline std::string trim(const std::string& input)
     {
-        item = trim(item);
-        if (!skip_empty || !item.empty())
-            parts.push_back(item);
+        const std::string whitespace = " \t\r\n";
+        const size_t      begin      = input.find_first_not_of(whitespace);
+        if (begin == std::string::npos)
+            return "";
+
+        const size_t end = input.find_last_not_of(whitespace);
+        return input.substr(begin, end - begin + 1);
     }
 
-    return parts;
-}
+    inline std::vector<std::string> split(const std::string& input, const char delimiter, bool skip_empty = false)
+    {
+        std::vector<std::string> parts;
+        std::stringstream        stream(input);
+        std::string              item;
+
+        while (std::getline(stream, item, delimiter))
+        {
+            item = trim(item);
+            if (!skip_empty || !item.empty())
+                parts.push_back(item);
+        }
+
+        return parts;
+    }
 }  // namespace ThermochemistryParsingUtils
 
 #endif

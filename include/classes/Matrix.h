@@ -75,14 +75,14 @@ class Matrix : virtual public Material
 
     // MOX
     std::vector<double> initial_uranium_composition;
-    std::vector<double> initial_plutonium_composition; // Isotopic vector for plutonium (Pu238–Pu242)
-    double mox_pu_enrichment; // Pu fraction in the MOX fuel
+    std::vector<double> initial_plutonium_composition;  // Isotopic vector for plutonium (Pu238–Pu242)
+    double              mox_pu_enrichment;              // Pu fraction in the MOX fuel
 
     /**
      * @brief Updates the lattice parameter and theoretical density from the current fuel state.
      * @param sciantix_variable The SciantixArray of SciantixVariable objects.
      */
-    void setCrystalProperties(SciantixArray<SciantixVariable> &sciantix_variable);
+    void setCrystalProperties(SciantixArray<SciantixVariable>& sciantix_variable);
 
     /**
      * @brief Retrieves the theoretical density of the matrix.
@@ -570,7 +570,7 @@ class Matrix : virtual public Material
     {
         return mox_pu_enrichment;
     }
-    
+
     /**
      * @brief Constructor
      */

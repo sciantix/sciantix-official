@@ -20,7 +20,6 @@
 #include "SciantixVariable.h"
 #include <map>
 
-
 /**
  * @class ThermochemistryVariable
  * @brief A specialized variable class that extends SciantixVariable with the additional physical
@@ -35,22 +34,29 @@
  */
 class ThermochemistryVariable : public SciantixVariable
 {
-protected:
-    int index;
-    std::string location;
-    std::string phase;
-    std::map <std::string, double> composition;
+  protected:
+    int                                          index;
+    std::string                                  location;
+    std::string                                  phase;
+    std::map<std::string, double>                composition;
     std::map<int, std::map<std::string, double>> sublattice_composition;
-    double theoretical_density;
+    double                                       theoretical_density;
 
-public:
-
-    ThermochemistryVariable(int index, std::string name, std::string uom, double initial_value, double final_value, std::string  phase, std::string  location, bool output, double theoretical_density = 0.0) :
-        SciantixVariable(name, uom, initial_value, final_value, output)
+  public:
+    ThermochemistryVariable(int         index,
+                            std::string name,
+                            std::string uom,
+                            double      initial_value,
+                            double      final_value,
+                            std::string phase,
+                            std::string location,
+                            bool        output,
+                            double      theoretical_density = 0.0)
+        : SciantixVariable(name, uom, initial_value, final_value, output)
     {
-        this->index = index;
-        this->phase = phase;
-        this->location = location;
+        this->index               = index;
+        this->phase               = phase;
+        this->location            = location;
         this->theoretical_density = theoretical_density;
     }
 
@@ -92,13 +98,13 @@ public:
      * @brief Sets the dynamic composition for the compound from thermochemistry outputs.
      * @param composition_map The map representing composition ratios per element.
      */
-    void setComposition(std::map <std::string, double> composition_map);
+    void setComposition(std::map<std::string, double> composition_map);
 
     /**
      * @brief Retrieves the dynamic composition of the compound.
      * @return The composition as a map.
      */
-    std::map <std::string, double> getComposition();
+    std::map<std::string, double> getComposition();
 
     /**
      * @brief Sets the dynamic constituent fractions by sublattice.
@@ -145,12 +151,16 @@ public:
     /**
      * @brief Constructor
      */
-    ThermochemistryVariable() {}
-    
+    ThermochemistryVariable()
+    {
+    }
+
     /**
      * @brief Destructor
      */
-    ~ThermochemistryVariable() {}
+    ~ThermochemistryVariable()
+    {
+    }
 };
 
 #endif

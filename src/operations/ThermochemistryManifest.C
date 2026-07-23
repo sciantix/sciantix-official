@@ -59,25 +59,24 @@ std::vector<ThermochemistryManifestEntry> LoadThermochemistryManifest(const std:
         }
 
         ThermochemistryManifestEntry entry;
-        entry.index         = std::stoi(fields[0]);
-        entry.category      = fields[1];
-        entry.phase         = fields[2];
-        entry.compound      = fields[3];
-        entry.location      = fields[4];
-        entry.uom           = fields[5];
-        entry.output        = std::stoi(fields[6]) != 0;
+        entry.index    = std::stoi(fields[0]);
+        entry.category = fields[1];
+        entry.phase    = fields[2];
+        entry.compound = fields[3];
+        entry.location = fields[4];
+        entry.uom      = fields[5];
+        entry.output   = std::stoi(fields[6]) != 0;
         // Optional 8th column: theoretical density (g/cm3). Defaults to 0.0
         // (unknown) for manifest lines/files that do not provide it.
-        entry.density       = fields.size() == 8 && !fields[7].empty() ? std::stod(fields[7]) : 0.0;
+        entry.density = fields.size() == 8 && !fields[7].empty() ? std::stod(fields[7]) : 0.0;
 
         manifest.push_back(entry);
     }
 
     std::sort(manifest.begin(),
               manifest.end(),
-              [](const ThermochemistryManifestEntry& lhs, const ThermochemistryManifestEntry& rhs) {
-                  return lhs.index < rhs.index;
-              });
+              [](const ThermochemistryManifestEntry& lhs, const ThermochemistryManifestEntry& rhs)
+              { return lhs.index < rhs.index; });
 
     for (size_t i = 0; i < manifest.size(); ++i)
     {
@@ -91,10 +90,10 @@ std::vector<ThermochemistryManifestEntry> LoadThermochemistryManifest(const std:
     if (manifest.size() > static_cast<size_t>(thermochemistry_density_offset))
     {
         std::cerr << "Error: Thermochemistry manifest has " << manifest.size()
-                   << " entries, exceeding thermochemistry_density_offset ("
-                   << thermochemistry_density_offset
-                   << "). A variable's own value slot would collide with another variable's "
-                      "density slot in Sciantix_thermochemistry." << std::endl;
+                  << " entries, exceeding thermochemistry_density_offset (" << thermochemistry_density_offset
+                  << "). A variable's own value slot would collide with another variable's "
+                     "density slot in Sciantix_thermochemistry."
+                  << std::endl;
         exit(1);
     }
 

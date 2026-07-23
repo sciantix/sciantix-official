@@ -23,11 +23,12 @@ void Simulation::FissionProductDecay()
     {
         if (system.getFissionProduct().getDecayRate() > 0.0 && system.getRestructuredMatrix() == 0)
         {
-            sciantix_variable[system.getFissionProductName() + " decayed"].setFinalValue(solver.Decay(
-                sciantix_variable[system.getFissionProductName() + " decayed"].getInitialValue(),
-                system.getFissionProduct().getDecayRate(),
-                system.getFissionProduct().getDecayRate() * sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue(),
-                physics_variable["Time step"].getFinalValue()));
+            sciantix_variable[system.getFissionProductName() + " decayed"].setFinalValue(
+                solver.Decay(sciantix_variable[system.getFissionProductName() + " decayed"].getInitialValue(),
+                             system.getFissionProduct().getDecayRate(),
+                             system.getFissionProduct().getDecayRate() *
+                                 sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue(),
+                             physics_variable["Time step"].getFinalValue()));
         }
     }
 }

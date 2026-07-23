@@ -14,9 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "Simulation.h"
 #include "Constants.h"
 #include "ErrorMessages.h"
+#include "Simulation.h"
 
 #include <cmath>
 
@@ -84,7 +84,8 @@ void Simulation::GrainBoundaryMicroCracking()
             // Material properties
             double E  = fuel_.getElasticModulus() * 1e6;  // Pa
             double nu = fuel_.getPoissonRatio();
-			double G =  fuel_.getGrainBoundaryFractureEnergy() * scaling_factors["Grain-boundary energy"].getValue(); // J/m2
+            double G =
+                fuel_.getGrainBoundaryFractureEnergy() * scaling_factors["Grain-boundary energy"].getValue();  // J/m2
 
             if (sciantix_variable["Intergranular bubble radius"].getFinalValue() == 0)
             {
@@ -262,15 +263,17 @@ void Simulation::GrainBoundaryMicroCracking()
 
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
-                    sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"].rescaleInitialValue(
-                        pow(similarity_ratio, 1.5));
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
+                    sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
+                        .rescaleInitialValue(pow(similarity_ratio, 1.5));
             }
 
             double n_at(0);
             for (auto& system : sciantix_system)
             {
-                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 && system.isGasOrVolatileFP())
+                if (system.getFissionProduct().getDecayRate() == 0.0 && system.getRestructuredMatrix() == 0 &&
+                    system.isGasOrVolatileFP())
                     n_at += sciantix_variable["Intergranular " + system.getFissionProductName() + " atoms per bubble"]
                                 .getInitialValue();
             }

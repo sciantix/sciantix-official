@@ -92,21 +92,21 @@ ReadSeveralParameters(std::string variable_name, std::ifstream& input_file, std:
     return vector_read;
 }
 
-void InputReading(int                  Sciantix_options[],
-                  double               Sciantix_variables[],
-                  double               Sciantix_scaling_factors[],
+void InputReading(int    Sciantix_options[],
+                  double Sciantix_variables[],
+                  double Sciantix_scaling_factors[],
                   double /* Sciantix_thermochemistry */[],
-	              ThermochemistrySettings *&Sciantix_thermochemistry_settings,
-                  int&                 Input_history_points,
-                  std::vector<double>& Time_input,
-                  std::vector<double>& Temperature_input,
-                  std::vector<double>& Fissionrate_input,
-                  std::vector<double>& Hydrostaticstress_input,
-                  std::vector<double>& Steampressure_input,
-                  std::vector<double> &Systempressure_input,
-                  std::vector<double> &OMratio_input,
-                  double&              Time_end_h,
-                  double&              Time_end_s)
+                  ThermochemistrySettings*& Sciantix_thermochemistry_settings,
+                  int&                      Input_history_points,
+                  std::vector<double>&      Time_input,
+                  std::vector<double>&      Temperature_input,
+                  std::vector<double>&      Fissionrate_input,
+                  std::vector<double>&      Hydrostaticstress_input,
+                  std::vector<double>&      Steampressure_input,
+                  std::vector<double>&      Systempressure_input,
+                  std::vector<double>&      OMratio_input,
+                  double&                   Time_end_h,
+                  double&                   Time_end_s)
 {
     /**
      * Besides the two input files, this routines creates an input_check.txt file
@@ -158,7 +158,7 @@ void InputReading(int                  Sciantix_options[],
     Sciantix_options[22] = ReadOneSetting("iChromiumSolubility", input_settings, input_check);
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
-    Sciantix_options[25] = ReadOneSetting("iThermochimica",input_settings,input_check);
+    Sciantix_options[25] = ReadOneSetting("iThermochimica", input_settings, input_check);
 
     if (!input_initial_conditions.fail())
     {
@@ -243,7 +243,8 @@ void InputReading(int                  Sciantix_options[],
         // MOX
         if (Sciantix_options[11] == 2)
         {
-            std::vector<double> initial_composition_Pu = ReadSeveralParameters("Initial composition Pu", input_initial_conditions, input_check);
+            std::vector<double> initial_composition_Pu =
+                ReadSeveralParameters("Initial composition Pu", input_initial_conditions, input_check);
 
             Sciantix_variables[171] = initial_composition_Pu[0];
             Sciantix_variables[172] = initial_composition_Pu[1];
@@ -255,9 +256,9 @@ void InputReading(int                  Sciantix_options[],
         }
     }
 
-    const bool needs_steam_pressure = Sciantix_options[20] > 0 && Sciantix_options[20] < 7;
+    const bool needs_steam_pressure  = Sciantix_options[20] > 0 && Sciantix_options[20] < 7;
     const bool needs_system_pressure = Sciantix_options[25] != 0;
-    const bool needs_OM_ratio = Sciantix_options[20] == 9;
+    const bool needs_OM_ratio        = Sciantix_options[20] == 9;
 
     Time_input.clear();
     Temperature_input.clear();
@@ -267,18 +268,21 @@ void InputReading(int                  Sciantix_options[],
     Systempressure_input.clear();
     OMratio_input.clear();
 
-    double time_in(0.0), temperature_in(0.0), fissionrate_in(0.0), hydrostaticstress_in(0.0), steampressure_in(0.0), systempressure_in(0.0), omratio_in(0.0);
+    double time_in(0.0), temperature_in(0.0), fissionrate_in(0.0), hydrostaticstress_in(0.0), steampressure_in(0.0),
+        systempressure_in(0.0), omratio_in(0.0);
 
-	while (input_history >> time_in >> temperature_in >> fissionrate_in >> hydrostaticstress_in)
-	{
-		if (needs_steam_pressure)
-		{
-			if (!(input_history >> steampressure_in))
-			{
-                std::cerr << "ERROR: Missing steam pressure in input_history.txt while iStoichiometryDeviation requires it." << std::endl;
+    while (input_history >> time_in >> temperature_in >> fissionrate_in >> hydrostaticstress_in)
+    {
+        if (needs_steam_pressure)
+        {
+            if (!(input_history >> steampressure_in))
+            {
+                std::cerr
+                    << "ERROR: Missing steam pressure in input_history.txt while iStoichiometryDeviation requires it."
+                    << std::endl;
                 exit(1);
-			}
-		}
+            }
+        }
         else
             steampressure_in = 0.0;
 
@@ -286,7 +290,8 @@ void InputReading(int                  Sciantix_options[],
         {
             if (!(input_history >> systempressure_in))
             {
-                std::cerr << "ERROR: Missing systempressure in input_history.txt while iThermochimica is enabled." << std::endl;
+                std::cerr << "ERROR: Missing systempressure in input_history.txt while iThermochimica is enabled."
+                          << std::endl;
                 exit(1);
             }
         }
@@ -297,7 +302,8 @@ void InputReading(int                  Sciantix_options[],
         {
             if (!(input_history >> omratio_in))
             {
-                std::cerr << "ERROR: Missing O/M ratio in input_history.txt while iStoichiometryDeviation = 9." << std::endl;
+                std::cerr << "ERROR: Missing O/M ratio in input_history.txt while iStoichiometryDeviation = 9."
+                          << std::endl;
                 exit(1);
             }
         }
@@ -315,24 +321,24 @@ void InputReading(int                  Sciantix_options[],
         if (needs_OM_ratio)
             OMratio_input.push_back(omratio_in);
 
-		input_check << time_in << "\t";
-		input_check << temperature_in << "\t";
-		input_check << fissionrate_in << "\t";
-		input_check << hydrostaticstress_in << "\t";
+        input_check << time_in << "\t";
+        input_check << temperature_in << "\t";
+        input_check << fissionrate_in << "\t";
+        input_check << hydrostaticstress_in << "\t";
 
-		if (needs_steam_pressure)
-			input_check << steampressure_in << "\t";
-		
-		if (needs_system_pressure)
-		    input_check << systempressure_in << "\t";
+        if (needs_steam_pressure)
+            input_check << steampressure_in << "\t";
+
+        if (needs_system_pressure)
+            input_check << systempressure_in << "\t";
 
         if (needs_OM_ratio)
             input_check << omratio_in << "\t";
 
-		input_check << std::endl;
+        input_check << std::endl;
 
         Input_history_points = static_cast<int>(Time_input.size());
-	}
+    }
 
     if (Input_history_points == 0)
         ErrorMessages::Fatal("InputReading.C", "input_history.txt is empty or its first row is malformed");
@@ -344,7 +350,7 @@ void InputReading(int                  Sciantix_options[],
     // Without the system-pressure column the history is interpolated as identically zero
     if (needs_system_pressure == false)
         Systempressure_input.assign(Input_history_points, 0.0);
-    
+
     // Without the oxygen column the history is interpolated as identically 2.0 + stoichiometry deviation
     if (needs_OM_ratio == false)
         OMratio_input.assign(Input_history_points, 2.0 + Sciantix_variables[66]);
@@ -352,7 +358,7 @@ void InputReading(int                  Sciantix_options[],
     Time_end_h = Time_input[Input_history_points - 1];
     Time_end_s = Time_end_h * 3600.0;
 
-	if (!input_scaling_factors.fail())
+    if (!input_scaling_factors.fail())
     {
         Sciantix_scaling_factors[0] = ReadOneParameter("sf_resolution_rate", input_scaling_factors, input_check);
         Sciantix_scaling_factors[1] = ReadOneParameter("sf_trapping_rate", input_scaling_factors, input_check);
@@ -371,41 +377,46 @@ void InputReading(int                  Sciantix_options[],
         // value has been consumed, so whitespace must be skipped explicitly first to
         // detect "nothing left to read" before attempting each optional read.
         input_scaling_factors >> std::ws;
-        Sciantix_scaling_factors[8] = input_scaling_factors.eof() ? 1.0 :
-            ReadOneParameter("sf_grain_boundary_energy", input_scaling_factors, input_check);
-		input_scaling_factors >> std::ws;
-		Sciantix_scaling_factors[9] = input_scaling_factors.eof() ? 1.0 :
-		    ReadOneParameter("sf_fabricated_porosity", input_scaling_factors, input_check);
-		input_scaling_factors >> std::ws;
-		Sciantix_scaling_factors[10] = input_scaling_factors.eof() ? 1.0 :
-		    ReadOneParameter("sf_cs_production", input_scaling_factors, input_check);
-	}
-	else
-	{
-		Sciantix_scaling_factors[0] = 1.0;
-		Sciantix_scaling_factors[1] = 1.0;
-		Sciantix_scaling_factors[2] = 1.0;
-		Sciantix_scaling_factors[3] = 1.0;
-		Sciantix_scaling_factors[4] = 1.0;
-		Sciantix_scaling_factors[5] = 1.0;
-		Sciantix_scaling_factors[6] = 1.0;
-		Sciantix_scaling_factors[7] = 1.0;
-		Sciantix_scaling_factors[8] = 1.0;
-		Sciantix_scaling_factors[9] = 1.0;
+        Sciantix_scaling_factors[8] =
+            input_scaling_factors.eof()
+                ? 1.0
+                : ReadOneParameter("sf_grain_boundary_energy", input_scaling_factors, input_check);
+        input_scaling_factors >> std::ws;
+        Sciantix_scaling_factors[9] =
+            input_scaling_factors.eof()
+                ? 1.0
+                : ReadOneParameter("sf_fabricated_porosity", input_scaling_factors, input_check);
+        input_scaling_factors >> std::ws;
+        Sciantix_scaling_factors[10] = input_scaling_factors.eof()
+                                           ? 1.0
+                                           : ReadOneParameter("sf_cs_production", input_scaling_factors, input_check);
+    }
+    else
+    {
+        Sciantix_scaling_factors[0]  = 1.0;
+        Sciantix_scaling_factors[1]  = 1.0;
+        Sciantix_scaling_factors[2]  = 1.0;
+        Sciantix_scaling_factors[3]  = 1.0;
+        Sciantix_scaling_factors[4]  = 1.0;
+        Sciantix_scaling_factors[5]  = 1.0;
+        Sciantix_scaling_factors[6]  = 1.0;
+        Sciantix_scaling_factors[7]  = 1.0;
+        Sciantix_scaling_factors[8]  = 1.0;
+        Sciantix_scaling_factors[9]  = 1.0;
         Sciantix_scaling_factors[10] = 1.0;
-	}
+    }
 
-	input_check.close();
-	input_settings.close();
-	input_initial_conditions.close();
-	input_history.close();
-	input_scaling_factors.close();
+    input_check.close();
+    input_settings.close();
+    input_initial_conditions.close();
+    input_history.close();
+    input_scaling_factors.close();
 
     delete Sciantix_thermochemistry_settings;
     Sciantix_thermochemistry_settings = nullptr;
-	if (Sciantix_options[25] > 0)
-	{
-		Sciantix_thermochemistry_settings =
-		    new ThermochemistrySettings(LoadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt"));
-	}
+    if (Sciantix_options[25] > 0)
+    {
+        Sciantix_thermochemistry_settings =
+            new ThermochemistrySettings(LoadThermochemistrySettings(TestPath + "input_thermochemistry_settings.txt"));
+    }
 }

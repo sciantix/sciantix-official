@@ -14,8 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "Simulation.h"
 #include "ErrorMessages.h"
+#include "Simulation.h"
 
 #include <cmath>
 
@@ -81,20 +81,19 @@ void Simulation::GrainBoundaryVenting()
 
         case 3:
         {
-            double open_porosity = openPorosity(sciantix_variable["Fabrication porosity"].getFinalValue()* scaling_factors["Fabricated porosity"].getValue());
+            double open_porosity = openPorosity(sciantix_variable["Fabrication porosity"].getFinalValue() *
+                                                scaling_factors["Fabricated porosity"].getValue());
             sciantix_variable["Open porosity"].setFinalValue(open_porosity);
 
             sciantix_variable["Intergranular venting probability"].setFinalValue(
-                    athermalVentingFactor(
-                    open_porosity,
-                    2.0 / 3.0 * 3.14,
-                    sciantix_variable["Fabrication porosity"].getFinalValue() * scaling_factors["Fabricated porosity"].getValue(),
-                    1.0 / 3.0 * 1.1 * 2.0 * sciantix_variable["Grain radius"].getFinalValue(),
-                    sciantix_variable["Burnup"].getFinalValue(),
-                    history_variable["Temperature"].getFinalValue(),
-                    history_variable["Fission rate"].getFinalValue()
-                )
-            );
+                athermalVentingFactor(open_porosity,
+                                      2.0 / 3.0 * 3.14,
+                                      sciantix_variable["Fabrication porosity"].getFinalValue() *
+                                          scaling_factors["Fabricated porosity"].getValue(),
+                                      1.0 / 3.0 * 1.1 * 2.0 * sciantix_variable["Grain radius"].getFinalValue(),
+                                      sciantix_variable["Burnup"].getFinalValue(),
+                                      history_variable["Temperature"].getFinalValue(),
+                                      history_variable["Fission rate"].getFinalValue()));
 
             reference = ": Pagani et al., JNM, (2025, under review)";
             break;
