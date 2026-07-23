@@ -27,22 +27,22 @@ void Simulation::MetallicFissionProducts()
     // assumiamo yield efficace per una 5MP, non 5 metalli separati
     const double y = 0.6;
 
-    // Tassi di precipitazione (1/s) da calibrare su micrografie
-    // k_intra: precipitazione dentro i grani
-    // k_gb:    precipitazione ai bordi grano
-
-    // EC 04.06.2026: introduzione scaling factors per calibrazione più flessibile
-    const double k_intra = 0.241313858 * scaling_factors["MFP precipitation rate intragranular"].getValue();
-    const double k_gb    = 0.944860042 * scaling_factors["MFP precipitation rate grain boundary"].getValue();
-    const double k_res   = 6.799 * pow(10, -19) * scaling_factors["MFP resolution rate"].getValue();
-    // END EC 04.06.2026
-
     // Fission rate al passo attuale (fiss/m3/s)
     // Già letto automaticamente dal file di input ad ogni passo
     double fission_rate = history_variable["Fission rate"].getFinalValue();
 
     // Passo temporale (s)
     double dt = physics_variable["Time step"].getFinalValue();
+
+    // Tassi di precipitazione (1/s) da calibrare su micrografie
+    // k_intra: precipitazione dentro i grani
+    // k_gb:    precipitazione ai bordi grano
+
+    const double k_intra = 0.241313858 * 1.100694171252e-01 * 9.261187281288e-01 * 1.047128548051e+00 * scaling_factors["MFP precipitation rate intragranular"].getValue();
+    const double k_gb    = 0.944860042 * 4.641588833612e-02 * 8.413951416452e-01 * 9.120108393559e-01 * scaling_factors["MFP precipitation rate grain boundary"].getValue();
+    const double k_res_ref = 6.799e-19;   // s^-1, value used in the present calibration
+    const double fission_rate_ref = 1.48e+19;  // fission rate used in the calibration
+    const double k_res = k_res_ref * (fission_rate / fission_rate_ref) * scaling_factors["MFP resolution rate"].getValue();
 
     // CONCENTRAZIONE TOTALE Cm
 
@@ -65,36 +65,11 @@ void Simulation::MetallicFissionProducts()
 
     // Aggiornamento Cm - EULERO IMPLICITO ALTRIMENTI DIVERGE
     // dCm_matrix/dt = y * F - (k_intra + k_gb) * cm_matrix + k_res * (C_prec_intra + C_prec_inter)
-    double cm_matrix_new = (cm_matrix_old + dt * (y * fission_rate + k_res * (cm_prec_intra_old + cm_prec_gb_old))) /
-                           (1.0 + dt * (k_intra + k_gb));
-
-    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb
-    // sciantix_variable["Cm matrix"].setFinalValue(cm_matrix_new);
-
-    // Cm PRECIPIATTA INTRAGRANO
-
-    // Aggiornamento della variabile
     // dCm_prec_intragr/dt = + (k_intra) * cm_matrix - k_res Cm_prec_intra
-    double cm_prec_intra_new = (cm_prec_intra_old + dt * k_intra * cm_matrix_new) / (1.0 + dt * k_res);
-    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb
-    // sciantix_variable["Cm precipitated intragranular"].setFinalValue(cm_prec_intra_new);
-
-    // Aggiornamento della variabile
     // dCm_prec_intergr/dy = + (k_gb) * cm_matrix - k_res * Cm_prec_inter
-    double cm_prec_gb_new = (cm_prec_gb_old + dt * k_gb * cm_matrix_new) / (1.0 + dt * k_res);
-    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb
-    // sciantix_variable["Cm precipitated grain boundary"].setFinalValue(cm_prec_gb_new);
-
-    // Definizione Cm_eq (mx solubility)
-    // Da the chemical state of the fission products in oxide fuels, H. KLEYKAMP
-    // e Da Solubility and clustering of ruthenium fission products in uranium dioxide
-    // as determined by density functional theory, Minki Hong
-    // sensato in prima approx porre C_eq=0
-    const double Cm_eq = 0.0;
+    
 
     // nucleation rate MFPs
-    // EQUATION 1: v = k_nucl * (f_disl*dislocation density + f_bub*sink_strenght_bub) * exp(-dG/kT) * (C_matrix -
-    // C_eq)^2 EQUATION 2: v = k_nucl * (f_disl*dislocation density + f_bub*sink_strenght_bub) * exp(-dG/kT)
     // Hp) heterogeneous nucleation mainly due to dislocation and bubbles
     // dislocation density (m^(-2)) to check,
     // Ref: Modelling dislocation density evolution of UO2 under irradiation, Aleksandar Djonovic
@@ -102,57 +77,48 @@ void Simulation::MetallicFissionProducts()
     double intra_bubble_radius  = sciantix_variable["Intragranular bubble radius"].getFinalValue();
     double bubble_sink_strenght = (4 * M_PI * intra_bubble_density * intra_bubble_radius);  // m^(-2)
     double temperature          = history_variable["Temperature"].getFinalValue();
-    double dislocation_density  = 0.0;
-    if (temperature < 673.15)  // Hp) 400°C come thershold ma potremmo farne più casi, oppure
-                               // introdurre dislocation_density come sciantix_variable
+    double dislocation_density = 0.0;
+    if (temperature < 573.15)           // < 300°C
     {
-        dislocation_density = 5.0 * pow(10, 15);
+        dislocation_density = 1.0e16;
     }
-    else
+    else if (temperature < 673.15)      // 300-400°C
     {
-        dislocation_density = 5.0 * pow(10, 14);
+        dislocation_density = 5.0e15;
     }
-    const double f_dislocation = 0.5;  // coeff che pesa la nucleazione eterogenea sulle dislocazioni, da calibrare
-    const double f_bubbles     = 0.5;  // coeff che pesa la nucleazione eterogenea su bolle di gas, da calibrare
+    else if (temperature < 873.15)      // 400-600°C
+    {
+        dislocation_density = 2.0e15;
+    }
+    else if (temperature < 1073.15)     // 600-800°C
+    {
+        dislocation_density = 5.0e14;
+    }
+    else                                // > 800°C
+    {
+        dislocation_density = 2.0e14;
+    }
+
+    const double f_dislocation = 0.67;  // coeff che pesa la nucleazione eterogenea sulle dislocazioni, da calibrare
+    const double f_bubbles     = 0.33;  // coeff che pesa la nucleazione eterogenea su bolle di gas, da calibrare
     const double Kb            = boltzmann_constant_eV;
-    const double dG_nucleation = 2.9;  // energy barrier (eV), da calibrazione Excel con k_intra ottimizzato
+    const double dG_nucleation = 2.9 * 9.500000000000e-01 * scaling_factors["MFP nucleation energy barrier"].getValue();  // energy barrier (eV), da calibrazione Excel con k_intra ottimizzato
 
     // k_nucl coefficient - calculation through n and k_intra
-    double N_current = sciantix_variable["Intragranular 5MPs concentration"].getFinalValue();
-    double n_old     = 0.0;
+    // introduzione scaling factor
+    double k_nucl = 3.995668086708020e18 * 7.498942093325e-02 * 7.498942093325e-01 * 1.819783131708e-01 * scaling_factors["MFP nucleation rate"].getValue();  // atm/(m*s)
 
-    // Inizializza n se ci sono bolle ma n è ancora zero
-    // altrimenti avremmo diviso 0
-
-    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb
-    //
-    // if (N_current > 0.0 && n_old == 0.0)
-    // {
-    //     n_old = 2.0;
-    //     sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_old);
-    // }
-    // else
-    // {
-    //     n_old = sciantix_variable["Intragranular atom per 5MP"].getFinalValue();
-    // }
-    // END EC 04.06.2026
-
-    // tenendo la sovrasaturazione (EQ 1) k_nucl = 1.87731949315681E-34; // (m^5)/(atm^2)(s), calibrato su Excel
-    // senza sovrasaturazione (EQ 2): k_nucl = 3995668086708020000; // atm/(m*s)
-    // EC 04.06.2026: introduzione scaling factor per calibrazione più flessibile
-    double k_nucl = 3995668086708020000 * scaling_factors["MFP nucleation rate"].getValue();  // atm/(m*s)
-
-    // definizione nucleation rate for EQ 1
-    // double nucleation_rate_m = (k_nucl*(f_dislocation * dislocation_density + f_bubbles *
-    // bubble_sink_strenght)*(exp(-dG_nucleation/(Kb*temperature)))*pow((cm_matrix_new - Cm_eq) , 2.0)); definizione
-    // nucleation rate for EQ 2
+    // definizione nucleation rate 
     double nucleation_rate_m = (k_nucl * (f_dislocation * dislocation_density + f_bubbles * bubble_sink_strenght) *
                                 (exp(-dG_nucleation / (Kb * temperature))));
 
-    // Intragranular 5MPs concentration N
-    // discrtizzazione equazione
-    // EULERO ESPLICITO
-    double dN = nucleation_rate_m * dt;
+    // parametri utili
+    const double V_eff_5M = 1.44123e-29;           // volume atomico efficace pesato per una 5M (m^3)
+    const double R_eff_M  = 1.365 * pow(10, -10);  // raggio atomico efficace di un metallo generico delle 5M
+    // Intragranular 5MP radius
+    double n_old = sciantix_variable["Intragranular atom per 5MP"].getInitialValue();
+    double R_5M = pow((3.0 / (M_PI * 4.0)) * (V_eff_5M)*n_old, 1.0 / 3.0);
+
 
     // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb con
     // eulero implicito
@@ -160,8 +126,11 @@ void Simulation::MetallicFissionProducts()
     double b_matrix[3]   = {0};
     double k_nucleazione = k_nucl * dt * exp(-dG_nucleation / (Kb * temperature));
     double N_iniziale    = sciantix_variable["Intragranular 5MPs concentration"].getInitialValue();
+    double S_siti = dislocation_density + bubble_sink_strenght;
+    double S_FMP= 4.0 * M_PI * R_5M * N_iniziale;
+    double disponibili = (R_5M > 0.0) ? std::max(S_siti - S_FMP, 0.0) : S_siti;
     double Nucleazione =
-        (k_nucleazione * (f_dislocation * dislocation_density + f_bubbles * bubble_sink_strenght) + N_iniziale) /
+        (k_nucleazione * (f_dislocation * dislocation_density + f_bubbles * bubble_sink_strenght)*(disponibili) + N_iniziale) /
         (1.0 + k_nucleazione);
     sciantix_variable["Intragranular 5MPs concentration"].setFinalValue(Nucleazione);
 
@@ -191,52 +160,6 @@ void Simulation::MetallicFissionProducts()
         n_media = 0.0;
     sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_media);
     // END EC 04.06.2026
-
-    // resolution rate coefficient definition
-    // const double b = k_res; // parametro da calibrare
-    // valore attuale con Sakib, 2025
-    // double b = b_0 * fission_rate; // resolution coefficient
-    const double b = k_res;
-
-    // trapping rate coefficient g - diffusione verso una sfera
-    const double V_eff_5M = 1.44123e-29;           // volume atomico efficace pesato per una 5M (m^3)
-    const double R_eff_M  = 1.365 * pow(10, -10);  // raggio atomico efficace di un metallo generico delle 5M
-
-    // diffusion coefficient of a Mt in UO2
-    // D_Ru4+ taken from: Diffusion of solid fission products in UO2 and UO2+x, Xi Zhou
-    // double D_m_Ru4+ = 7.5 * pow(10, -15) * exp(-4.63/(Kb * temperature)); // m2/s
-    // nuovi valori di D_Mt calibrati da esperimenti di annealing
-    // Q in eV e D_0 m^2/s
-    // RELEASE OF FISSION PRODUCTS (Xe, I, Te, Cs, MO AND Tc) FROM POLYLYCRYSTALLINE U02
-    // by S.G. PRUSSIN, D.R. OLANDER, W.K. LAU and L. HANSSON
-    double D_Ru = 2.717089493 * exp(-6.76486202 / (Kb * temperature));
-    double D_Pd = D_Ru;
-    double D_Rh = D_Ru;
-    double D_Tc = 54.83368418 * exp(-8.51626727 / (Kb * temperature));
-    double D_Mo = 0.0;
-    if (temperature <= 2000)
-    {
-        D_Mo = 1.40736E+43 * exp(-25.29793853 / (Kb * temperature));
-    }
-    else
-    {
-        D_Mo = 14509643.57 * exp(-11.00540754 / (Kb * temperature));
-    }
-    double D_m = 0.4 * D_Mo + 0.3 * D_Ru + 0.1 * D_Tc + 0.15 * D_Pd + 0.05 * D_Rh;
-
-    // Intragranular 5MP radius
-    double R_5M = pow((3.0 / (M_PI * 4.0)) * (V_eff_5M)*n_old, 1.0 / 3.0);
-
-    // trapping coefficient g
-    double g = ((4.0 * M_PI) * (R_5M + R_eff_M) * (D_m));
-
-    // Intragranular atom per 5MP
-    // dn/dt = (g)*(c_matrix) - b * n
-
-    double source_n = g * cm_matrix_new;
-    double n_new    = (n_old + source_n * dt) / (1.0 + b * dt);
-    // EC 04.06.2026: soluzione matrice 3x3 per aggiornamento simultaneo di Cm matrix, Cm_prec_intra e Cm_prec_gb
-    // sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_new);
 
     // Verifica interna: Cm_prec_intra deve essere uguale a N * n
     double N             = sciantix_variable["Intragranular 5MPs concentration"].getFinalValue();

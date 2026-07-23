@@ -1,0 +1,9 @@
+venv/
+work/
+saved_results/
+__pycache__/
+*.pyc
+calibration_results.csv
+best_comparison.csv
+hierarchical_eligible_results.csv
+log_*.txt

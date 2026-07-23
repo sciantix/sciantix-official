@@ -281,6 +281,8 @@ void InputReading(int                  Sciantix_options[],
         Sciantix_scaling_factors[10] = 1.0;
         Sciantix_scaling_factors[11] = 1.0;
         Sciantix_scaling_factors[12] = 1.0;
+        // VB 11.07.2026
+        Sciantix_scaling_factors[13] = 1.0; 
 
         input_scaling_factors >> std::ws;
         if (input_scaling_factors.peek() != EOF)
@@ -302,6 +304,11 @@ void InputReading(int                  Sciantix_options[],
             Sciantix_scaling_factors[12] =
                 ReadOneParameter("sf_mfp_resolution_rate", input_scaling_factors, input_check);
         // END EC 04.06.2026
+        input_scaling_factors >> std::ws;
+        if (input_scaling_factors.peek() != EOF)
+            Sciantix_scaling_factors[13] =
+                ReadOneParameter("sf_mfp_nucleation_energy_barrier", input_scaling_factors, input_check);
+        // END VB 11.07.2026
     }
     else
     {
@@ -320,6 +327,9 @@ void InputReading(int                  Sciantix_options[],
         Sciantix_scaling_factors[11] = 1.0;
         Sciantix_scaling_factors[12] = 1.0;
         // END EC 04.06.2026
+        // VB 11.07.2026
+        Sciantix_scaling_factors[13] = 1.0;
+        // VB 11.07.2026 
     }
 
     input_check.close();

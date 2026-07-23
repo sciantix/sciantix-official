@@ -427,6 +427,7 @@ std::vector<std::string> getScalingFactorsNames()
         "MFP precipitation rate intragranular",
         "MFP precipitation rate grain boundary",
         "MFP resolution rate",
+        "MFP nucleation energy barrier",
     };
 
     return names;
