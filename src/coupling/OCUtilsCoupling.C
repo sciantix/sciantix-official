@@ -533,7 +533,6 @@ namespace OCASIAdapter
         if (error_code == 0)
             return true;
 
-        std::cerr << "Warning: OpenCalphad " << operation << " returned error code " << error_code << std::endl;
         resetErrorCode();
         return false;
     }
@@ -1416,10 +1415,7 @@ namespace OCUtilsCoupling
 
                 const bool initial_equilibrium_ready = oc.calculateEquilibrium(-1);
                 if (!initial_equilibrium_ready)
-                {
-                    std::cerr << "Warning: Initial OpenCalphad equilibrium calculation failed" << std::endl;
                     clear_equilibrium = false;
-                }
 
                 if (solve_mode == OpenCalphadSolveMode::SaveReadWarmStart ||
                     solve_mode == OpenCalphadSolveMode::GlobalEquilibrium ||
@@ -1526,8 +1522,6 @@ namespace OCUtilsCoupling
                     const bool initial_equilibrium_ready = (solve_mode == OpenCalphadSolveMode::FreshRecordRecovery)
                                                                ? oc.calculateEquilibriumAllowingMarginalPhase(0)
                                                                : oc.calculateEquilibrium(0);
-                    if (!initial_equilibrium_ready)
-                        std::cerr << "Warning: Initial OpenCalphad equilibrium calculation failed" << std::endl;
                     return initial_equilibrium_ready;
                 };
 
@@ -1538,8 +1532,6 @@ namespace OCUtilsCoupling
 
                 if (!equilibrium_ready)
                 {
-                    std::cerr << "Warning: OpenCalphad equilibrium calculation failed at " << temperature << " K;"
-                              << std::endl;
                     output_data.solution_phases.clear();
                     output_data.components.clear();
                     return false;

@@ -310,7 +310,6 @@ void Simulation::SetPhaseDiagram()
 
         if (!solved)
         {
-            std::cerr << "Warning: all OpenCalphad attempts failed for " << location << std::endl;
             if (location_case == PhaseDiagramLocation::Matrix)
                 continue;
         }
