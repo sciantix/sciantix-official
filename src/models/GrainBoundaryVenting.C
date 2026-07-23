@@ -95,7 +95,7 @@ void Simulation::GrainBoundaryVenting()
                                       history_variable["Temperature"].getFinalValue(),
                                       history_variable["Fission rate"].getFinalValue()));
 
-            reference = ": Pagani et al., JNM, (2025, under review)";
+            reference = ": Pagani et al., JNM, (2026)";
             break;
         }
 

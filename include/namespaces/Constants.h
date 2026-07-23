@@ -50,7 +50,7 @@ const double blackburn_entropy  = 9.92;     // (/)
 
 const double reference_oxygen_pressure_atm = 0.1013;  // MPa
 const double reference_oxygen_pressure_bar = 0.1;     // MPa
-const double max_prescribed_om_ratio       = 1.9999;  // (/) keep prescribed O/M strictly below stoichiometry (2.0)
+const double max_prescribed_om_ratio       = 1.9999;  // (/)
 
 // Atomic masses (g/mol) of the elements/species.
 const std::map<std::string, double> thermochemistry_atomic_masses = {{"Cs", 132.90545196},

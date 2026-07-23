@@ -371,11 +371,7 @@ void InputReading(int    Sciantix_options[],
         Sciantix_scaling_factors[7] = ReadOneParameter("sf_helium_production_rate", input_scaling_factors, input_check);
 
         // sf_grain_boundary_energy / sf_fabricated_porosity / sf_cs_production are not
-        // present in older input_scaling_factors.txt files (9 entries instead of 11):
-        // default the missing ones to 1.0 (no scaling).
-        // Note: eof() only becomes true after a failed read, not merely after the last
-        // value has been consumed, so whitespace must be skipped explicitly first to
-        // detect "nothing left to read" before attempting each optional read.
+        // present in older input_scaling_factors.txt: default the missing ones to 1.0.
         input_scaling_factors >> std::ws;
         Sciantix_scaling_factors[8] =
             input_scaling_factors.eof()

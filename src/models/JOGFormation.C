@@ -281,7 +281,7 @@ void Simulation::JOGFormation()
     if (thermochimica_mode == 0)
         return;
 
-    // CODE DEVELOPMENT : THERMOCHEMISTRY OUTER-NODE MODE
+    // THERMOCHEMISTRY OUTER-NODE MODE
     const bool is_outer_node = input_variable["iThermochimicaOuterNode"].getValue() != 0;
     if (thermochimica_mode == 1 && !is_outer_node)
     {

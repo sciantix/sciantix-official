@@ -91,7 +91,7 @@ void Simulation::GrainBoundaryMicroCracking()
             {
                 parameter.push_back(0.0);
                 parameter.push_back(0.0);
-                parameter.push_back(1.0 / uranium_mass_fraction);  // 1 / (u * burnup)
+                parameter.push_back(1.0 / uranium_mass_fraction);
                 break;
             };  // m
 

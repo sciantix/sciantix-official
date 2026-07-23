@@ -180,20 +180,12 @@ void Simulation::update(double Sciantix_variables[],
     if (thermochemistry_variable.empty())
         return;
 
-    // thermochemistry_density_offset (declared in ThermochemistryManifest.h, enforced against
-    // the manifest's entry count in LoadThermochemistryManifest) packs theoretical densities at
-    // the same manifest index, offset by that value, in the same shared Sciantix_thermochemistry
-    // array (read by TU as sciantix_thermochemistry(itb + 123), see SetTUVariablesfromSciantix.f95).
     constexpr int thermochemistry_array_size = 300;
 
     for (auto& variable : thermochemistry_variable)
     {
         Sciantix_thermochemistry[variable.getIndex()] = variable.getFinalValue();
 
-        // Entries without a meaningful density (e.g. the derived
-        // liquid-composition site fractions) still get a slot reserved by
-        // the offset above; guard against overrunning Sciantix_thermochemistry
-        // if the manifest ever grows close to its 300-slot budget.
         const int density_index = variable.getIndex() + thermochemistry_density_offset;
         if (density_index < thermochemistry_array_size)
             Sciantix_thermochemistry[density_index] = variable.getTheoreticalDensity();

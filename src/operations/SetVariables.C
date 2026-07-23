@@ -36,9 +36,8 @@ void Simulation::setVariables(int                            Sciantix_options[],
         }
     }
 
-    // iThermochimicaOuterNode varies every call (per radial node, set by
-    // FisPro3.f95): input_variable entries are otherwise only initialized once
-    // for the whole run, so this one needs an explicit refresh.
+    // iThermochimicaOuterNode varies every call in the coupling with TU
+    // (per radial node, set by FisPro3.f95).
     input_variable["iThermochimicaOuterNode"].setValue(Sciantix_options[26]);
 
     // toOutput flags
@@ -92,12 +91,10 @@ void Simulation::setVariables(int                            Sciantix_options[],
     std::vector<ThermochemistryVariable> values_th;
     if (toOutputThermochimica)
     {
-        // The manifest describes static structure, not evolving.
         if (thermochemistry_manifest.empty())
         {
             thermochemistry_manifest = LoadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
         }
-        // Keep the full manifest for output variables.
         values_th = initializeThermochemistryVariable(thermochemistry_manifest, Sciantix_thermochemistry);
     }
 
