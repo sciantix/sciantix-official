@@ -17,6 +17,7 @@
 #include "ThermochemistryParsingUtils.h"
 #include "ThermochemistrySettings.h"
 
+#include <sys/stat.h>
 #include <unistd.h>
 #include <fstream>
 #include <iostream>
@@ -39,8 +40,14 @@ namespace ThermochemistrySettingsDetail
         return separator == std::string::npos ? "" : path.substr(0, separator);
     }
 
+    bool isDirectory(const std::string& path)
+    {
+        struct stat info;
+        return stat(path.c_str(), &info) == 0 && S_ISDIR(info.st_mode);
+    }
+
     // OpenCalphad is always checked out as a sibling of sciantix-official (the same
-    // layout Allmake_OC.sh assumes: OC_ROOT="${SCI_ROOT}/../opencalphad").
+    // layout Allmake_OC.sh assumes: OC_ROOT="${SCI_ROOT}/../opencalphad-for-sciantix").
     std::string resolveOpenCalphadPath()
     {
         char          buffer[4096];
@@ -52,18 +59,18 @@ namespace ThermochemistrySettingsDetail
         }
         buffer[length] = '\0';
 
-        // buffer   = <repo_root>/sciantix-official/<build_dir>/sciantix.x
-        const std::string executable_dir = parentDirectory(std::string(buffer));  // .../sciantix-official/<build_dir>
-        const std::string sciantix_root  = parentDirectory(executable_dir);       // .../sciantix-official
-        const std::string repo_root      = parentDirectory(sciantix_root);        // <repo_root>
-
-        if (repo_root.empty())
+        for (std::string directory = parentDirectory(std::string(buffer)); !directory.empty();
+             directory              = parentDirectory(directory))
         {
-            std::cerr << "Error: Cannot determine OpenCalphad path from executable path: " << buffer << std::endl;
-            exit(1);
+            const std::string candidate = parentDirectory(directory) + "/opencalphad-for-sciantix/";
+            if (isDirectory(candidate))
+                return candidate;
         }
 
-        return repo_root + "/opencalphad/";
+        std::cerr << "Error: Cannot locate the opencalphad-for-sciantix checkout as a sibling of "
+                     "sciantix-official (searched upward from executable path: "
+                  << buffer << ")" << std::endl;
+        exit(1);
     }
 
     bool parseBool(const std::string& input)

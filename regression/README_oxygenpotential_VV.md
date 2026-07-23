@@ -136,8 +136,9 @@ cd regression/oxygenpotential_burnup   && python3 plot.py
 ## Notes
 
 - These groups are standalone: they are not part of `python -m regression.runner`.
-- `opencalphad.path` in the template `input_thermochemistry_settings.txt`
-  must point to an OpenCalphad checkout whose `data/` contains `upuo-v21.TDB`.
+- The OpenCalphad checkout is located automatically as `../opencalphad-for-sciantix`
+  next to `sciantix-official` (see `Allmake_OC.sh`); its `data/` must contain
+  `upuo-v21.TDB`.
 - The template inputs are the single source of truth: changing
   `input_thermochemistry_settings.txt` there propagates to every regenerated
   validation case.

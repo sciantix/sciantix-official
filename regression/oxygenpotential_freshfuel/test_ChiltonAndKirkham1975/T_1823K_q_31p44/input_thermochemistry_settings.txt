@@ -1,7 +1,4 @@
 # Thermochemistry settings
-opencalphad.path = /home/ecappellari/trial/opencalphad/
-kc = false
-langmuir = false
 
 # Force OpenCalphad re-equilibration at every time step: the O/M ramp moves the
 # composition by ~3e-5 (relative) per step, below the default reuse tolerances,
@@ -11,10 +8,8 @@ coupling.composition_tolerance = 0
 coupling.temperature_tolerance = 0
 
 fission_products.module = NO
-fission_products.gap_settings = false
 
 matrix.module = OPENCALPHAD
 matrix.database = upuo-v21
 matrix.elements = U, Pu, O
 matrix.locations = matrix
-matrix.gap_settings = false
