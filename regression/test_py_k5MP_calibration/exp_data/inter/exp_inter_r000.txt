@@ -1,0 +1,1 @@
+Inclusions	Average_inclusion_radius	Standard_Deviation_of_inclusion_radius	SP0.072081662	0.0142812	0.013765188	0.330713736
