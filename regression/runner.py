@@ -33,6 +33,7 @@ def main():
     parser.add_argument("--pulse", action="store_true")
     parser.add_argument("--analytics", action="store_true")
     parser.add_argument("--gpr", action="store_true")
+    parser.add_argument("--oc", action="store_true")
     parser.add_argument("--all", action="store_true")
 
     parser.add_argument(
@@ -79,6 +80,10 @@ def main():
 
     results = []
 
+    # --oc runs the full standard suite (like --all) plus jog, in one build:
+    if args.oc:
+        args.all = True
+
     # Selected groups map
     explicit_selection = any([getattr(args, g, False) for g in available_groups if hasattr(args, g)])
     explicit_selection = explicit_selection or bool(targeted)
@@ -97,6 +102,7 @@ def main():
         ("vercors", "test_Vercors"),
         ("analytics", "test_"), # 'pulse'/'analytics' arg; broad prefix covers all analytics cases
         ("gpr", "test_GPR"),
+        ("jog", "test_PHENIXpins"),
     ]
 
     if not explicit_selection and not args.all:
@@ -111,7 +117,10 @@ def main():
             group_flag = getattr(args, group, False)
 
         group_only = targeted.get(group)
-        should_run = args.all or group_flag or bool(group_only)
+        if group == "jog":
+            should_run = args.oc or bool(group_only)
+        else:
+            should_run = args.all or group_flag or bool(group_only)
 
         if should_run:
             results.extend(run_group(group, prefix, args.mode_gold, args.jobs, only=group_only))

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+"""Regenerate JOG paper figures and results_summary.txt from already-run
+regression/jog/test_PHENIXpins_point_* cases."""
 import argparse
 import csv
 import math
@@ -6,8 +8,6 @@ import os
 import re
 import sys
 import warnings
-import shutil
-import subprocess
 from collections import defaultdict
 from pathlib import Path
 
@@ -18,32 +18,18 @@ from matplotlib.lines import Line2D
 import numpy as np
 
 TEST_DIR = Path(__file__).resolve().parent
-RUN_LOG = "sciantix.log"
+CASES_DIR = TEST_DIR.parent
 REPO_ROOT = TEST_DIR.parents[2]
-BUILD_DIR = REPO_ROOT / "build"
-BUILD_EXECUTABLE = BUILD_DIR / "sciantix.x"
-ALLMAKE_OC_SCRIPT = REPO_ROOT / "Allmake_OC.sh"
-OXIRED_SCRIPT = REPO_ROOT / "preprocessing" / "oxired_lib" / "examples" / "PHENIXpins.py"
-OXIRED_HISTORY_DIR = OXIRED_SCRIPT.parent / "PHENIXpins_history"
-CSRED_SCRIPT = REPO_ROOT / "preprocessing" / "csred_lib" / "examples" / "PHENIXpins.py"
-# Index into the (non-comment) value lines of input_scaling_factors.txt.
-# main's 11-slot layout ends with grain_boundary_energy, fabricated_porosity,
-# cs_production (index 10) -- was index 4 under JOG's old 10-slot layout.
-CS_PRODUCTION_SCALING_FACTOR_INDEX = 10
-SCALING_FACTORS_TEMPLATE = TEST_DIR / "input_scaling_factors.txt"
-RUN_SUMMARY = TEST_DIR / "run_summary.txt"
 RESULTS_SUMMARY = TEST_DIR / "results_summary.txt"
 MAIN_OUTPUT_NAME = "output.txt"
 THERMO_OUTPUT_NAME = "thermochemistry_output.txt"
 PHASE_SUBLATTICE_OUTPUT_NAME = "phase_sublattice_composition.txt"
-THERMOCHEMISTRY_MANIFEST_FILE = TEST_DIR / "input_thermochemistry.txt"
 
 # Number of top constituents (by amount) shown in parentheses next to each
 # phase's legend label in the radial phase-fraction plot. Kept short so the
 # legend fits inside the plot area without covering the point-1 markers.
 PHASE_LABEL_TOP_CONSTITUENTS = 3
 PLOTS_DIR = TEST_DIR / "plots"
-GOLD_DIR = TEST_DIR / "gold"
 EXP_DATA_DIR = TEST_DIR / "exp_data"
 PELLET_RADIUS_M = 2.719e-3
 AVOGADRO_NUMBER = 6.02214076e23
@@ -64,21 +50,6 @@ JOG_OUTER_NODE_COUNT = 2
 HCP_A3_COMPARISON_ELEMENTS = ("MO", "PD", "RH", "RU", "TC")
 METALLIC_INCLUSION_ELEMENTS = HCP_A3_COMPARISON_ELEMENTS
 METALLIC_INCLUSION_ELEMENT_SET = set(METALLIC_INCLUSION_ELEMENTS)
-
-SHARED_INPUT_FILES = (
-    "input_settings.txt",
-    "input_initial_conditions.txt",
-    "input_thermochemistry.txt",
-    "input_thermochemistry_settings.txt",
-)
-CASE_TEMPORARY_FILES = SHARED_INPUT_FILES + (
-    "execution.txt",
-    "overview.txt",
-    "OCinput_matrix.OCM",
-    "OCinput_grain_boundary.OCM",
-    "OCoutput_matrix.DAT",
-    "OCoutput_grain_boundary.DAT",
-)
 
 PAPER_PALETTE = [
     "#736F3F", "#BFAE56", "#B29DA6", "#D9AF32", "#A66226", "#733426",
@@ -176,13 +147,6 @@ def element_pie_color(element: str) -> str:
     return ELEMENT_COLORS.get(element, "#999999")
 
 
-def ensure_executable(path: Path) -> None:
-    if not path.exists():
-        raise FileNotFoundError(f"SCIANTIX executable not found: {path}")
-    if not path.is_file():
-        raise FileNotFoundError(f"SCIANTIX executable path is not a file: {path}")
-
-
 def ensure_output_file(path: Path) -> None:
     if not path.exists():
         raise FileNotFoundError(f"Required file not found: {path}")
@@ -203,106 +167,6 @@ def load_output_data(output_file: Path) -> tuple[list[str], np.ndarray]:
     if values.ndim != 2 or values.shape[1] != len(headers):
         raise ValueError(f"Malformed SCIANTIX output in {output_file}")
     return headers, values
-
-
-def relative_difference(diff: np.ndarray, reference: np.ndarray, abs_tol: float) -> np.ndarray:
-    return diff / np.maximum(abs_tol, np.abs(reference))
-
-
-def compare_tabular_outputs(
-    old_path: Path,
-    new_path: Path,
-    abs_tol: float = 1e-8,
-    rel_tol: float = 1e-6,
-    top: int = 20,
-) -> tuple[bool, list[str]]:
-    old_header, old_data = load_output_data(old_path)
-    new_header, new_data = load_output_data(new_path)
-
-    old_cols = {name: index for index, name in enumerate(old_header)}
-    new_cols = {name: index for index, name in enumerate(new_header)}
-
-    removed = [name for name in old_header if name not in new_cols]
-    added = [name for name in new_header if name not in old_cols]
-    common = [name for name in old_header if name in new_cols]
-
-    lines = [
-        f"Comparing {old_path} -> {new_path}",
-        f"Rows: {old_data.shape[0]} -> {new_data.shape[0]}",
-        f"Columns: {len(old_header)} -> {len(new_header)}",
-    ]
-
-    if removed:
-        lines.append("")
-        lines.append("Columns only in gold output:")
-        lines.extend(f"  - {name}" for name in removed)
-
-    if added:
-        lines.append("")
-        lines.append("Columns only in new output:")
-        lines.extend(f"  + {name}" for name in added)
-
-    if old_data.shape[0] != new_data.shape[0]:
-        lines.append("")
-        lines.append("Cannot compare common columns: row counts differ.")
-        return False, lines
-
-    differences = []
-    failing = []
-    for name in common:
-        old_values = old_data[:, old_cols[name]]
-        new_values = new_data[:, new_cols[name]]
-        diff = np.abs(new_values - old_values)
-        rel = relative_difference(diff, old_values, abs_tol)
-        finite = np.isfinite(diff) & np.isfinite(rel)
-
-        if not np.any(finite):
-            row = -1
-            max_abs = np.nan
-            max_rel = np.nan
-        else:
-            scored = np.where(finite, diff, -np.inf)
-            row = int(np.argmax(scored))
-            max_abs = float(diff[row])
-            max_rel = float(rel[row])
-
-        bad = (diff > abs_tol) & (rel > rel_tol)
-        n_bad = int(np.count_nonzero(bad))
-        if n_bad:
-            failing.append(name)
-
-        differences.append({
-            "name": name,
-            "row": row,
-            "max_abs": max_abs,
-            "max_rel": max_rel,
-            "n_bad": n_bad,
-            "old": float(old_values[row]) if row >= 0 else np.nan,
-            "new": float(new_values[row]) if row >= 0 else np.nan,
-        })
-
-    differences.sort(
-        key=lambda item: (
-            item["n_bad"] > 0,
-            np.nan_to_num(item["max_abs"], nan=-1.0),
-        ),
-        reverse=True,
-    )
-
-    lines.append("")
-    lines.append(f"Common columns compared: {len(common)}")
-    lines.append(f"Columns outside tolerance: {len(failing)}")
-    lines.append("")
-    lines.append(f"Top {min(top, len(differences))} column differences:")
-    for item in differences[:top]:
-        lines.append(
-            f"  {item['name']}: row={item['row']}, "
-            f"gold={item['old']:.8e}, new={item['new']:.8e}, "
-            f"abs={item['max_abs']:.8e}, rel={item['max_rel']:.8e}, "
-            f"bad_rows={item['n_bad']}"
-        )
-
-    return not removed and not added and not failing, lines
 
 
 def burnup_column_name(columns: dict[str, int] | dict[str, np.ndarray]) -> str:
@@ -501,57 +365,6 @@ def is_all_zero(series: np.ndarray, atol=1e-8) -> bool:
     return np.allclose(series, 0.0, atol=atol)
 
 
-def delete_file_if_exists(path: Path) -> None:
-    if path.exists() and path.is_file():
-        path.unlink()
-
-
-def save_gold_outputs(case_dir: Path) -> Path:
-    gold_case_dir = GOLD_DIR / case_dir.name
-    gold_case_dir.mkdir(parents=True, exist_ok=True)
-
-    for filename in (MAIN_OUTPUT_NAME, THERMO_OUTPUT_NAME):
-        source = case_dir / filename
-        if source.exists():
-            shutil.copy2(source, gold_case_dir / filename)
-
-    return gold_case_dir
-
-
-def compare_case_outputs_with_gold(case_dir: Path, gold_case_dir: Path) -> tuple[bool, Path]:
-    report_lines: list[str] = []
-    ok = True
-
-    for filename in (MAIN_OUTPUT_NAME, THERMO_OUTPUT_NAME):
-        old_path = gold_case_dir / filename
-        new_path = case_dir / filename
-        if not old_path.exists():
-            report_lines.append(f"No gold {filename} available for {case_dir.name}.")
-            report_lines.append("")
-            continue
-        if not new_path.exists():
-            report_lines.append(f"No new {filename} produced for {case_dir.name}.")
-            report_lines.append("")
-            ok = False
-            continue
-
-        file_ok, lines = compare_tabular_outputs(old_path, new_path)
-        ok = ok and file_ok
-        report_lines.extend(lines)
-        report_lines.append("")
-
-    report_path = gold_case_dir / "comparison_report.txt"
-    report_path.write_text("\n".join(report_lines))
-    return ok, report_path
-
-
-def cleanup_case_directory(case_dir: Path) -> None:
-    for filename in CASE_TEMPORARY_FILES:
-        delete_file_if_exists(case_dir / filename)
-
-
-
-
 
 def radial_integral_over_radius(profile: np.ndarray, radii_m_array: np.ndarray) -> np.ndarray:
     if radii_m_array.size == 1:
@@ -581,51 +394,7 @@ def radial_integral_masked_to_full_radius(
     return radial_integral_over_radius(masked_profile, radii_m_array)
 
 def case_dirs() -> list[Path]:
-    return sorted(path for path in TEST_DIR.glob("point_*") if path.is_dir())
-
-
-def bootstrap_case_dirs_if_missing() -> list[Path]:
-    case_directories = case_dirs()
-    if case_directories:
-        return case_directories
-
-    print(f"No point_* directories found in {TEST_DIR}; bootstrapping cases from OXIRED histories.", flush=True)
-
-    history_case_dirs = sorted(path for path in OXIRED_HISTORY_DIR.glob("point_*") if path.is_dir())
-    if not history_case_dirs:
-        print(f"No OXIRED history folders found in {OXIRED_HISTORY_DIR}; running {OXIRED_SCRIPT}.", flush=True)
-        run_subprocess_or_raise(
-            [sys.executable, str(OXIRED_SCRIPT)],
-            cwd=OXIRED_SCRIPT.parent,
-            step_name="OXIRED PHENIX history generation (bootstrap)",
-        )
-        history_case_dirs = sorted(path for path in OXIRED_HISTORY_DIR.glob("point_*") if path.is_dir())
-
-    if not history_case_dirs:
-        raise FileNotFoundError(f"No generated point_* histories found in {OXIRED_HISTORY_DIR}")
-
-    if not SCALING_FACTORS_TEMPLATE.exists():
-        raise FileNotFoundError(f"Missing template scaling factors file: {SCALING_FACTORS_TEMPLATE}")
-
-    for history_case_dir in history_case_dirs:
-        history_file = history_case_dir / "input_history.txt"
-        if not history_file.exists():
-            raise FileNotFoundError(f"Missing generated OXIRED history file: {history_file}")
-
-        case_dir = TEST_DIR / history_case_dir.name
-        case_dir.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(history_file, case_dir / "input_history.txt")
-
-        case_scaling_factors = case_dir / "input_scaling_factors.txt"
-        if not case_scaling_factors.exists():
-            shutil.copy2(SCALING_FACTORS_TEMPLATE, case_scaling_factors)
-
-    case_directories = case_dirs()
-    if not case_directories:
-        raise FileNotFoundError(f"No point_* directories found in {TEST_DIR} after bootstrap")
-
-    print(f"Prepared {len(case_directories)} point_* case directories in {TEST_DIR}.", flush=True)
-    return case_directories
+    return sorted(path for path in CASES_DIR.glob("test_PHENIXpins_point_*") if path.is_dir())
 
 
 def filter_case_dirs(case_directories: list[Path], number: int | None) -> list[Path]:
@@ -800,236 +569,6 @@ def sorted_jog_columns(output_profiles: dict[str, np.ndarray]) -> list[str]:
         return (2, name)
 
     return sorted(columns, key=sort_key)
-
-
-def read_scaling_factor_entries(path: Path) -> list[tuple[float, str]]:
-    """Parse an input_scaling_factors.txt file into (value, label) pairs.
-
-    SCIANTIX reads these values purely by position (see InputReading.C), so the
-    "# scaling factor - <label>" comments are cosmetic as far as the solver is
-    concerned. They're still useful here to recognize a specific factor -- e.g.
-    Cs production -- across schema versions where its position has shifted.
-    """
-    lines = path.read_text().splitlines()
-    entries: list[tuple[float, str]] = []
-    for index, line in enumerate(lines):
-        stripped = line.strip()
-        if not stripped or stripped.startswith("#"):
-            continue
-        label = ""
-        if index + 1 < len(lines) and lines[index + 1].strip().startswith("#"):
-            label = re.sub(
-                r"^#?\s*scaling factor\s*-\s*", "", lines[index + 1].strip(), flags=re.IGNORECASE
-            )
-        entries.append((float(stripped), label))
-    return entries
-
-
-def sync_case_scaling_factors(case_dir: Path) -> None:
-    """Keep a case's input_scaling_factors.txt aligned with the current schema.
-
-    A per-case file left over from an older schema silently misassigns every
-    value once new scaling factors are inserted ahead of the existing ones --
-    this previously caused an old case's "Cs production" value to be read back
-    as "Temperature", corrupting an entire run. Resync structure from the
-    shared template whenever the entry count no longer matches it, carrying
-    forward the case-specific Cs production value (the only field CSRED
-    customizes per radius) by matching its label rather than its position.
-    """
-    case_path = case_dir / "input_scaling_factors.txt"
-    template_entries = read_scaling_factor_entries(SCALING_FACTORS_TEMPLATE)
-
-    cs_production_value = None
-    if case_path.exists():
-        case_entries = read_scaling_factor_entries(case_path)
-        if len(case_entries) == len(template_entries):
-            return
-        cs_production_value = next(
-            (value for value, label in case_entries if "cs production" in label.lower()),
-            None,
-        )
-
-    shutil.copy2(SCALING_FACTORS_TEMPLATE, case_path)
-    if cs_production_value is not None:
-        update_scaling_factor_value(
-            case_path,
-            index=CS_PRODUCTION_SCALING_FACTOR_INDEX,
-            value=cs_production_value,
-            comment="Cs production",
-        )
-
-
-def prepare_case_inputs(case_dir: Path) -> None:
-    sync_case_scaling_factors(case_dir)
-    for filename in SHARED_INPUT_FILES:
-        source = TEST_DIR / filename
-        target = case_dir / filename
-        if source.exists():
-            shutil.copy2(source, target)
-
-
-def run_sciantix_case(case_dir: Path) -> subprocess.CompletedProcess[bytes]:
-    return subprocess.run(
-        [str(BUILD_EXECUTABLE)],
-        cwd=case_dir,
-        capture_output=True,
-        check=False,
-    )
-
-
-def decode_process_output(output: bytes) -> str:
-    return output.decode("utf-8", errors="replace")
-
-
-def run_subprocess_or_raise(command: list[str], cwd: Path, step_name: str) -> None:
-    completed = subprocess.run(command, cwd=cwd, capture_output=True, check=False)
-    print(decode_process_output(completed.stdout), end="")
-    if completed.returncode != 0:
-        raise RuntimeError(
-            f"{step_name} failed (returncode={completed.returncode}):\n"
-            + decode_process_output(completed.stderr)
-        )
-
-
-def build_sciantix() -> None:
-    """Rebuild OpenCalphad/OC coupling and the SCIANTIX executable via Allmake_OC.sh."""
-    print(f"Building SCIANTIX + OC ({ALLMAKE_OC_SCRIPT})...", flush=True)
-    run_subprocess_or_raise(
-        [str(ALLMAKE_OC_SCRIPT)],
-        cwd=REPO_ROOT,
-        step_name="Allmake_OC.sh",
-    )
-
-
-def generate_oxired_input_histories(case_directories: list[Path]) -> None:
-    """Regenerate radial O/M histories with OXIRED and copy them into each case."""
-    print(f"Running OXIRED PHENIX history generation ({OXIRED_SCRIPT})...", flush=True)
-    run_subprocess_or_raise(
-        [sys.executable, str(OXIRED_SCRIPT)],
-        cwd=OXIRED_SCRIPT.parent,
-        step_name="OXIRED PHENIX history generation",
-    )
-
-    history_case_dirs = sorted(path for path in OXIRED_HISTORY_DIR.glob("point_*") if path.is_dir())
-    if not history_case_dirs:
-        raise FileNotFoundError(f"OXIRED did not produce any point_* directories in {OXIRED_HISTORY_DIR}")
-
-    history_by_name = {path.name: path for path in history_case_dirs}
-    history_by_index: dict[int, Path] = {}
-    for history_case_dir in history_case_dirs:
-        match = re.match(r"point_(\d+)", history_case_dir.name)
-        if match:
-            history_by_index[int(match.group(1))] = history_case_dir
-
-    for case_dir in case_directories:
-        history_case_dir = history_by_name.get(case_dir.name)
-        if history_case_dir is None:
-            match = re.match(r"point_(\d+)", case_dir.name)
-            if match:
-                history_case_dir = history_by_index.get(int(match.group(1)))
-
-        if history_case_dir is None:
-            available = ", ".join(path.name for path in history_case_dirs)
-            raise FileNotFoundError(
-                "No OXIRED point_* history directory matches "
-                f"{case_dir.name}. Available OXIRED directories: {available}"
-            )
-
-        source = history_case_dir / "input_history.txt"
-        if not source.exists():
-            raise FileNotFoundError(f"OXIRED did not produce {source}")
-        shutil.copy2(source, case_dir / "input_history.txt")
-
-
-def csred_radial_burnup_profile(
-    average_burnup_at_percent: float,
-    edges: np.ndarray,
-    radius: np.ndarray,
-    r_outer: float,
-    rim_to_center_factor: float,
-) -> np.ndarray:
-    """Same normalized local-burnup shape used as the CSRED Cs-production proxy."""
-    from csred import area_average as csred_area_average
-
-    normalized_radius = radius / r_outer
-    shape = 1.0 + (rim_to_center_factor - 1.0) * normalized_radius**2
-    shape /= csred_area_average(edges, shape)
-    return average_burnup_at_percent * shape
-
-
-def solve_csred_cs_production_scaling_factors() -> tuple[np.ndarray, np.ndarray]:
-    """Solve the radial Cs-production scaling factor with the CSRED model.
-
-    Geometry, burnup, and time settings mirror csred_lib/examples/PHENIXpins.py
-    and oxired_lib/examples/PHENIXpins.py so the radial mesh lines up with the
-    OXIRED-generated point_* cases.
-    """
-    from csred import CsRedCylinder, CylinderGeometry, PolynomialProfile
-
-    r_outer = PELLET_RADIUS_M
-    burnup_final = 13.28
-    max_time_hours = 25200
-    n_radial_points = 4
-    n_time_points = 10
-    rim_to_center_burnup_factor = 1.0
-
-    r_inner = 0.8e-3 # central hole (Inspyre deliverable 7.3)
-
-    profile = PolynomialProfile(
-        r_inner=r_inner,
-        r_outer=r_outer,
-        t_center=2200.0,
-        t_surface=800.0,
-        power=2.0,
-    )
-    solver = CsRedCylinder(
-        geometry=CylinderGeometry(r_outer=r_outer, r_inner=r_inner),
-        temperature_profile=profile,
-        n_cells=n_radial_points,
-    )
-    edges, radius = solver.mesh()
-    time_hours = np.linspace(0.0, max_time_hours, n_time_points)
-    average_burnup = np.linspace(0.0, burnup_final, n_time_points)
-    local_burnup = np.asarray([
-        csred_radial_burnup_profile(bu, edges, radius, r_outer, rim_to_center_burnup_factor)
-        for bu in average_burnup
-    ])
-
-    result = solver.solve_history(time_hours * 3600.0, local_burnup)
-    return radius, result.scaling_factor
-
-
-def update_scaling_factor_value(path: Path, index: int, value: float, comment: str | None = None) -> None:
-    """Overwrite one value line (and optionally its comment) of an input_scaling_factors.txt file."""
-    lines = path.read_text().splitlines()
-    value_line_indices = [i for i, line in enumerate(lines) if not line.strip().startswith("#")]
-    value_index = value_line_indices[index]
-    lines[value_index] = f"{value:.6f}"
-    if comment is not None and value_index + 1 < len(lines) and lines[value_index + 1].strip().startswith("#"):
-        lines[value_index + 1] = f"# scaling factor - {comment}"
-    path.write_text("\n".join(lines) + "\n")
-
-
-def generate_csred_scaling_factors(case_directories: list[Path]) -> None:
-    """Regenerate the CSRED plot, compute per-radius Cs-production scaling factors, and apply them."""
-    print(f"Running CSRED PHENIX scaling-factor generation ({CSRED_SCRIPT})...", flush=True)
-    run_subprocess_or_raise(
-        [sys.executable, str(CSRED_SCRIPT)],
-        cwd=CSRED_SCRIPT.parent,
-        step_name="CSRED PHENIX scaling-factor generation",
-    )
-    print("Solving CSRED Cs-production scaling factors...", flush=True)
-    radius, scaling_factor = solve_csred_cs_production_scaling_factors()
-    for case_dir in case_directories:
-        target_radius_m = parse_radius_mm(case_dir) * 1.0e-3
-        nearest_index = int(np.argmin(np.abs(radius - target_radius_m)))
-        scaling_factors_path = case_dir / "input_scaling_factors.txt"
-        update_scaling_factor_value(
-            scaling_factors_path,
-            index=CS_PRODUCTION_SCALING_FACTOR_INDEX,
-            value=float(scaling_factor[nearest_index]),
-            comment="Cs production",
-        )
 
 
 def phase_instance_from_row(row: dict[str, str]) -> str:
@@ -2368,26 +1907,12 @@ def plot_radial_profiles(
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser()
-    mode = parser.add_mutually_exclusive_group()
-    mode.add_argument(
-        "--run",
-        action="store_true",
-        help="Run the SCIANTIX cases before regenerating plots.",
-    )
-    mode.add_argument(
-        "--plot-only",
-        action="store_true",
-        help="Regenerate plots from existing point outputs only.",
-    )
-    mode.add_argument(
-        "--full-pipeline",
-        action="store_true",
-        help=(
-            "Build OpenCalphad + SCIANTIX with Allmake_OC.sh, regenerate OXIRED "
-            "input histories and CSRED scaling factors (and their plots) for "
-            "every point_* case, then run the SCIANTIX cases and regenerate plots."
-        ),
+    parser = argparse.ArgumentParser(
+        description=(
+            "Regenerate JOG paper figures and results_summary.txt from already-run "
+            "regression/jog/test_PHENIXpins_point_* cases. Run the cases first with "
+            "`./runRegression.sh --oc` (or `python3 -m regression.runner --oc`)."
+        )
     )
     parser.add_argument(
         "--runnode",
@@ -2414,73 +1939,22 @@ def main() -> int:
         PLOTS_DIR = PLOTS_DIR.parent / (PLOTS_DIR.name + "_allnodes")
         JOG_OUTER_NODE_COUNT = 10**6
 
-    case_directories = bootstrap_case_dirs_if_missing()
+    case_directories = case_dirs()
+    if not case_directories:
+        raise FileNotFoundError(
+            f"No test_PHENIXpins_point_* directories found in {CASES_DIR}. "
+            "Run the JOG regression cases first, e.g. `./runRegression.sh --oc`."
+        )
 
     if args.runnode:
         if args.number is None:
             raise ValueError("--runnode requires --number")
         case_directories = filter_case_dirs(case_directories, args.number)
 
-    run_cases = args.run or args.full_pipeline
-    if not run_cases:
-        case_directories = completed_case_dirs(case_directories)
-
-    if args.full_pipeline:
-        build_sciantix()
-        generate_oxired_input_histories(case_directories)
-        generate_csred_scaling_factors(case_directories)
+    case_directories = completed_case_dirs(case_directories)
 
     PLOTS_DIR.mkdir(parents=True, exist_ok=True)
     saved_paths: list[Path] = []
-    case_results: list[tuple[Path, int]] = []
-    comparison_results: list[tuple[Path, bool, Path]] = []
-
-    if run_cases:
-        ensure_executable(BUILD_EXECUTABLE)
-        delete_file_if_exists(RUN_SUMMARY)
-        for case_dir in case_directories:
-            print(f"Running {case_dir.name}...", flush=True)
-            gold_case_dir = save_gold_outputs(case_dir)
-            cleanup_case_directory(case_dir)
-            prepare_case_inputs(case_dir)
-            completed = run_sciantix_case(case_dir)
-            RUN_LOG_case = case_dir / RUN_LOG
-            RUN_LOG_case.write_text(
-                decode_process_output(completed.stdout) + decode_process_output(completed.stderr),
-                encoding="utf-8",
-            )
-            case_results.append((case_dir, completed.returncode))
-            if completed.returncode != 0:
-                cleanup_case_directory(case_dir)
-                raise RuntimeError(f"SCIANTIX failed for {case_dir}")
-            comparison_ok, comparison_report = compare_case_outputs_with_gold(case_dir, gold_case_dir)
-            comparison_results.append((case_dir, comparison_ok, comparison_report))
-            status = "OK" if comparison_ok else "DIFF"
-            print(
-                f"Compared {case_dir.name} with gold: {status} "
-                f"({comparison_report.relative_to(TEST_DIR)})",
-                flush=True,
-            )
-
-            # Plotting is performed only after all point_* cases have run,
-            # so one global thermochemistry color map can be used everywhere.
-            cleanup_case_directory(case_dir)
-
-        summary_lines = ["Run summary", ""]
-        for case_dir, returncode in case_results:
-            summary_lines.append(f"{case_dir.name}: returncode={returncode}")
-        summary_lines.append("")
-        summary_lines.append("Gold comparison summary")
-        for case_dir, comparison_ok, comparison_report in comparison_results:
-            status = "OK" if comparison_ok else "DIFF"
-            summary_lines.append(
-                f"{case_dir.name}: {status}, report={comparison_report.relative_to(TEST_DIR)}"
-            )
-        RUN_SUMMARY.write_text("\n".join(summary_lines))
-    else:
-        for case_dir in case_directories:
-            ensure_output_file(case_dir / MAIN_OUTPUT_NAME)
-            ensure_output_file(case_dir / THERMO_OUTPUT_NAME)
 
     results_summary_lines = plot_radial_profiles(case_directories, saved_paths)
 
