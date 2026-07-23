@@ -123,7 +123,10 @@ def main():
             should_run = args.all or group_flag or bool(group_only)
 
         if should_run:
-            results.extend(run_group(group, prefix, args.mode_gold, args.jobs, only=group_only))
+            # OC-coupled cases also carry a thermochemistry_output.txt
+            extra_outputs = ("thermochemistry_output.txt",) if group == "jog" else ()
+            results.extend(run_group(group, prefix, args.mode_gold, args.jobs,
+                                      only=group_only, extra_outputs=extra_outputs))
 
     print("\n=== RESULTS ===")
     for name, ok, msg in results:

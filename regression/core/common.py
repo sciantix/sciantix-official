@@ -22,8 +22,9 @@ def clean_case_dir(case_dir: str, mode_gold: int):
         - *.tmp
 
     Removed only when appropriate:
-        - output.txt          (always removed before a new run)
-        - output_gold.txt     (removed only in gold-writing modes 1 or 3)
+        - *_gold.txt   (any gold reference, e.g. output_gold.txt or
+                         thermochemistry_output_gold.txt -- removed only in
+                         gold-writing modes 1 or 3)
     """
 
     patterns_always = [
@@ -34,7 +35,7 @@ def clean_case_dir(case_dir: str, mode_gold: int):
         "*.tmp",
     ]
 
-    patterns_gold = ["output_gold.txt"] if mode_gold in (1, 3) else []
+    patterns_gold = ["*_gold.txt"] if mode_gold in (1, 3) else []
 
     for pattern in patterns_always + patterns_gold:
         for path in glob.glob(os.path.join(case_dir, pattern)):
@@ -70,11 +71,22 @@ def run_sciantix(case_dir: str):
     return os.path.join(case_dir, "output.txt")
 
 
-def load_output(case_dir):
-    """Load case_dir/output.txt as a SciantixOutput object."""
-    return SciantixOutput(os.path.join(case_dir, "output.txt"))
+def gold_name_for(filename: str) -> str:
+    """output.txt -> output_gold.txt; thermochemistry_output.txt -> thermochemistry_output_gold.txt"""
+    stem, ext = os.path.splitext(filename)
+    return f"{stem}_gold{ext}"
 
 
-def load_gold(case_dir):
-    """Load case_dir/gold.txt as a SciantixOutput object."""
-    return SciantixOutput(os.path.join(case_dir, "output_gold.txt"))
+def load_named(case_dir, filename):
+    """Load case_dir/<filename> as a SciantixOutput object."""
+    return SciantixOutput(os.path.join(case_dir, filename))
+
+
+def load_output(case_dir, filename="output.txt"):
+    """Load case_dir/<filename> (default output.txt) as a SciantixOutput object."""
+    return load_named(case_dir, filename)
+
+
+def load_gold(case_dir, filename="output.txt"):
+    """Load case_dir/<gold name for filename> (default output_gold.txt) as a SciantixOutput object."""
+    return load_named(case_dir, gold_name_for(filename))

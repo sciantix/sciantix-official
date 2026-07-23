@@ -6,7 +6,7 @@ author: Giovanni Zullo
 import os
 import shutil
 import multiprocessing
-from regression.core.common import clean_case_dir, run_sciantix, load_output, load_gold
+from regression.core.common import clean_case_dir, run_sciantix, load_named, gold_name_for
 from regression.core.compare import compare_outputs
 
 
@@ -14,12 +14,15 @@ def run_single_case(args):
     """
     Worker function for parallel execution.
     Args:
-        args: tuple (group_name, name, case_path, mode_gold)
+        args: tuple (group_name, name, case_path, mode_gold, extra_outputs)
+            extra_outputs: output filenames beyond "output.txt" to gold-compare
+                too, e.g. ("thermochemistry_output.txt",) for OC-coupled groups.
     Returns:
         (test_id, ok, error_msg)
     """
-    group_name, name, case, mode_gold = args
+    group_name, name, case, mode_gold, extra_outputs = args
     test_id = f"{group_name}/{name}"
+    output_files = ["output.txt", *extra_outputs]
 
     try:
         # run phase
@@ -29,25 +32,29 @@ def run_single_case(args):
 
         # gold rewrite mode
         if mode_gold in (1, 3):
-            shutil.copy(os.path.join(case, "output.txt"),
-                        os.path.join(case, "output_gold.txt"))
+            for filename in output_files:
+                shutil.copy(os.path.join(case, filename),
+                            os.path.join(case, gold_name_for(filename)))
             return (test_id, True, None)
 
         # compare
-        out = load_output(case)
-        gold = load_gold(case)
+        mismatched = []
+        for filename in output_files:
+            out = load_named(case, filename)
+            gold = load_named(case, gold_name_for(filename))
+            if not compare_outputs(out, gold, abs_tol=1e-8, rel_tol=1e-6):
+                mismatched.append(filename)
 
-        ok = compare_outputs(out, gold, abs_tol=1e-8, rel_tol=1e-6)
-        if not ok:
-            return (test_id, False, "Mismatch with gold standard")
-        
+        if mismatched:
+            return (test_id, False, f"Mismatch with gold standard: {', '.join(mismatched)}")
+
         return (test_id, True, None)
 
     except Exception as e:
         return (test_id, False, str(e))
 
 
-def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1, only=None):
+def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1, only=None, extra_outputs=()):
     """
     Generic runner for any regression group.
 
@@ -62,6 +69,8 @@ def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1, only=
         jobs: number of parallel threads
         only: optional iterable of case names/substrings; when given, only
               matching test folders in the group are run
+        extra_outputs: output filenames beyond "output.txt" to gold-compare
+              too (see run_single_case)
 
     Returns:
         list of (test_name, ok)
@@ -84,7 +93,7 @@ def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1, only=
         case = os.path.join(base, name)
         if not os.path.isdir(case):
             continue
-        tasks.append((group_name, name, case, mode_gold))
+        tasks.append((group_name, name, case, mode_gold, extra_outputs))
 
     if not tasks:
         if only:
