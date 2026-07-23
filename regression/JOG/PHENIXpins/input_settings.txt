@@ -21,6 +21,6 @@
 9    #    iStoichiometryDeviation (0= not considered, 1= Cox et al. 1986, 2= Bittel et al. 1969, 3= Abrefah et al. 1994, 4= Imamura et al. 1997, 5= Langmuir-based approach, 8= prescribed O/M history)
 0    #    iBubbleDiffusivity (0= not considered, 1= volume diffusivity)
 0    #    iChromiumSolubility
-0    #    iDensification
+1    #    iDensification
 2    #    iReleaseMode
 2    #    iThermochimica

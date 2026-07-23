@@ -14,10 +14,9 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "SetGPVariables.h"
 #include "MainVariables.h"
+#include "SetGPVariables.h"
 #include "Simulation.h"
-
 
 // -----------------------------------------------------------------------------------------------
 // Functions for GPs

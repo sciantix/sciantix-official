@@ -1,0 +1,60 @@
+Metadata-Version: 2.4
+Name: oxired
+Version: 0.1.0
+Summary: OXIRED solver
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy>=1.24
+Provides-Extra: test
+Requires-Dist: pytest>=7; extra == "test"
+
+# oxired
+
+Small Python helper package for generating radial O/M histories for SCIANTIX.
+
+## Scope
+
+- a cylindrical radial mesh (`CylinderGeometry`)
+- a hypostoichiometric steady-state OXIRED redistribution solver (`OxiRedCylinder`)
+- a polynomial radial temperature profile (`PolynomialProfile`)
+- PHENIX fission-yield lookup
+- fixed oxygen sink calculation from the fission-yield table and valences
+
+
+## Main Example
+
+Run from this directory:
+
+```bash
+python3 examples/example_usage_model.py
+```
+
+The script writes five radial SCIANTIX input folders to:
+
+```text
+examples/radial_input_histories_ioxire4/
+```
+
+Each point folder contains an `input_history.txt` with:
+
+```text
+time[h]  temperature[K]  fission_rate[fiss/m3/s]  hydrostatic_stress[MPa]  pressure[Pa]  O/M
+```
+
+The same folder also contains plots for temperature, radial O/M profiles,
+average O/M, oxygen sinks, matrix uptake, free surplus oxygen, and burnup.
+
+The fixed oxygen sink is computed as `yield_percent / 100 * valence / 2` for the fixed-sink elements. Ba and Mo are excluded from that sum and handled separately
+through their oxide fractions.
+
+## Install
+
+```bash
+pip install -e .
+```
+
+## Test
+
+```bash
+pytest
+```

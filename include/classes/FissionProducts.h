@@ -37,7 +37,7 @@ class FissionProducts : virtual public Material
     double van_der_waals_volume;
     double decay_rate;
     double precursor_factor;
-    bool chemically_active;
+    bool   chemically_active;
 
   public:
     /**
@@ -161,6 +161,5 @@ class FissionProducts : virtual public Material
     {
     }
 };
-
 
 #endif  // FISSION_PRODUCTS_H

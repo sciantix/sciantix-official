@@ -27,8 +27,7 @@ void Simulation::FissionProductRelease()
                 sciantix_variable[system.getFissionProductName() + " produced"].getFinalValue() -
                 sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
                 sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue()
-            );
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue());
 
             if (sciantix_variable[system.getFissionProductName() + " released"].getFinalValue() < 0.0)
                 sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(0.0);
@@ -40,8 +39,7 @@ void Simulation::FissionProductRelease()
                 sciantix_variable[system.getFissionProductName() + " decayed"].getFinalValue() -
                 sciantix_variable[system.getFissionProductName() + " reacted"].getFinalValue() -
                 sciantix_variable[system.getFissionProductName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue()
-            );
+                sciantix_variable[system.getFissionProductName() + " at grain boundary"].getFinalValue());
 
             if (sciantix_variable[system.getFissionProductName() + " released"].getFinalValue() < 0.0)
                 sciantix_variable[system.getFissionProductName() + " released"].setFinalValue(0.0);

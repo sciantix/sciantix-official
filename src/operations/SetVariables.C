@@ -14,18 +14,17 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "SetVariables.h"
 #include "MainVariables.h"
+#include "SetVariables.h"
 #include "Simulation.h"
 
-void Simulation::setVariables(int    Sciantix_options[],
-                              double Sciantix_history[],
-                              double Sciantix_variables[],
-                              double Sciantix_scaling_factors[],
-                              double Sciantix_diffusion_modes[],
-                              double Sciantix_thermochemistry[],
-                              const ThermochemistrySettings* Sciantix_thermochemistry_settings
-)
+void Simulation::setVariables(int                            Sciantix_options[],
+                              double                         Sciantix_history[],
+                              double                         Sciantix_variables[],
+                              double                         Sciantix_scaling_factors[],
+                              double                         Sciantix_diffusion_modes[],
+                              double                         Sciantix_thermochemistry[],
+                              const ThermochemistrySettings* Sciantix_thermochemistry_settings)
 {
     // Input variable
     if (input_variable.empty())
@@ -59,14 +58,12 @@ void Simulation::setVariables(int    Sciantix_options[],
     physics_variable.push(SciantixVariable("Time step", "(s)", Sciantix_history[6], Sciantix_history[6], 0));
 
     // History variable
-    std::vector<SciantixVariable> values = initializeHistoryVariable(
-        Sciantix_history,
-        Sciantix_scaling_factors,
-        toOutputStoichiometryDeviation,
-        toOutputThermochimica,
-        toOutputPrescribedOMRatio
-    );
-    
+    std::vector<SciantixVariable> values = initializeHistoryVariable(Sciantix_history,
+                                                                     Sciantix_scaling_factors,
+                                                                     toOutputStoichiometryDeviation,
+                                                                     toOutputThermochimica,
+                                                                     toOutputPrescribedOMRatio);
+
     for (SciantixVariable initial_value : values)
     {
         history_variable.push(initial_value);
@@ -83,8 +80,7 @@ void Simulation::setVariables(int    Sciantix_options[],
                                         toOutputStoichiometryDeviation,
                                         toOutputChromiumContent,
                                         toOutputThermochimica,
-                                        toOutputMOX
-                                    );
+                                        toOutputMOX);
 
     for (SciantixVariable initial_value : values)
     {
@@ -102,19 +98,15 @@ void Simulation::setVariables(int    Sciantix_options[],
             thermochemistry_manifest = LoadThermochemistryManifest(TestPath + "input_thermochemistry.txt");
         }
         // Keep the full manifest for output variables.
-        values_th = initializeThermochemistryVariable(
-                thermochemistry_manifest,
-                Sciantix_thermochemistry
-        );
+        values_th = initializeThermochemistryVariable(thermochemistry_manifest, Sciantix_thermochemistry);
     }
-    
+
     for (ThermochemistryVariable initial_value : values_th)
     {
         thermochemistry_variable.push(initial_value);
     }
-    
 
-    #if defined(COUPLING_TU)
+#if defined(COUPLING_TU)
 
     sciantix_variable["Burnup"].setInitialValue(Sciantix_history[7]);
     sciantix_variable["Burnup"].setFinalValue(Sciantix_history[8]);

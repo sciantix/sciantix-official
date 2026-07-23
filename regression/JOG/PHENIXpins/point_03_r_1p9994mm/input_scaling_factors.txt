@@ -18,5 +18,5 @@
 # scaling factor - Grain boundary energy
 0.8
 # scaling factor - Fabricated porosity
-0.348471
+0.455100
 # scaling factor - Cs production
