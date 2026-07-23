@@ -47,7 +47,7 @@ endif()
 option (COUPLING_TU OFF)
 
 # Optional coupling with OpenCalphad:
-# auto-detected if a "opencalphad-for-sciantix" directory has been built with Allmake_OC.sh next to this repository, e.g.
+# auto-detected if a "opencalphad-for-sciantix" directory has been built with Allmake.sh --oc next to this repository, e.g.
 #   workspace/
 #   |-- sciantix-official/
 #   `-- opencalphad-for-sciantix/
