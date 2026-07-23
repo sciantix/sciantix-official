@@ -502,9 +502,6 @@ class Simulation
         else if (name == "Kr85m")
             return &modes_initial_conditions[14 * n_modes];
 
-        else if (name == "Xe in HBS")
-            return &modes_initial_conditions[17 * n_modes];
-
         else
             ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + name + "\" in getDiffusionModesBubbles");
     }

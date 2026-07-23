@@ -149,13 +149,10 @@ void Simulation::SetPhaseDiagram()
         }
     };
 
-// CODE DEVELOPMENT : THERMOCHEMISTRY OUTER-NODE MODE
-// iThermochimica, exactly as set in input_settings.txt: 0 = off, 1 = smart
-// mode (all radial nodes of the outer/last axial slice run full
-// OpenCalphad, every other axial slice uses the simplified fixed
-// speciation in JOGFormation()), 2 = full OpenCalphad at every node.
-// Which call this is for comes from the separate iThermochimicaOuterNode
-// flag (set per call by FisPro3.f95).
+// THERMOCHEMISTRY OUTER-NODE MODE
+// iThermochimica, exactly as set in input_settings.txt: 
+// 0 = off, 1 = all radial nodes of the outer/last axial slice 
+// 2 = full OpenCalphad at every node.
 #if defined(COUPLING_TU) && defined(USE_OPENCALPHAD)
     const int  thermochimica_mode   = (int)input_variable["iThermochimica"].getValue();
     const bool is_outer_node        = input_variable["iThermochimicaOuterNode"].getValue() != 0;
@@ -163,8 +160,7 @@ void Simulation::SetPhaseDiagram()
 #elif defined(USE_OPENCALPHAD)
     const bool run_full_opencalphad = true;
 #else
-    // Built without OpenCalphad (no sibling "opencalphad-for-sciantix" directory / COUPLING_OC=OFF):
-    // fall back to the non-thermochemistry fission product bookkeeping.
+    // Built without OpenCalphad
     const bool run_full_opencalphad = false;
 #endif
 

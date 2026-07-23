@@ -236,7 +236,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable(
             "Cs in the gap", "(at/m3)", Sciantix_variables[110], Sciantix_variables[110], toOutputThermochimica),
 #endif
-        // CODE DEVELOPMENT : METALS
+        // METALS
         SciantixVariable(
             "Mo produced", "(at/m3)", Sciantix_variables[130], Sciantix_variables[130], toOutputThermochimica),
         SciantixVariable(
@@ -375,7 +375,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
         SciantixVariable("U237", "(at/m3)", Sciantix_variables[44], Sciantix_variables[44], 0),
         SciantixVariable("U238", "(at/m3)", Sciantix_variables[45], Sciantix_variables[45], 1),
 
-        // CODE DEVELOPMENT : MOX FUEL VARIABLES
+        // MOX FUEL VARIABLES
         SciantixVariable("Pu",
                          "(at/m3)",
                          Sciantix_variables[171] + Sciantix_variables[172] + Sciantix_variables[173] +
@@ -421,7 +421,6 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[67],
                          Sciantix_variables[67],
                          toOutputStoichiometryDeviation || toOutputThermochimica),
-        // CODE DEVELOPMENT : FUEL OXYGEN PARTIAL PRESSURE - TO BE REDUCED, ONLY FOR PURPOSE OF VERIFICATION
         SciantixVariable("Fuel oxygen partial pressure - Blackburn", "(MPa)", 0.0, 0.0, toOutputThermochimica),
         SciantixVariable("Fuel oxygen partial pressure - Kato", "(MPa)", 0.0, 0.0, toOutputMOX),
         SciantixVariable("Fuel oxygen partial pressure - CALPHAD", "(MPa)", 0.0, 0.0, toOutputThermochimica),
@@ -490,8 +489,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
 
         SciantixVariable("Diffusion coefficient", "(m2/s)", Sciantix_variables[160], Sciantix_variables[160], 0),
 
-        // CODE DEVELOPMENT : U, PU, OX CONTENT VARIABLES
-        // WITH RESPECT TO THE AT/M3 THESE ARE ALLOWED TO CHANGE WITH BURNUP
+        // U, PU, OX CONTENT VARIABLES
         SciantixVariable("U content",
                          "(mol/m3)",
                          Sciantix_variables[161],
@@ -517,7 +515,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
                          Sciantix_variables[163],
                          Sciantix_variables[163],
                          toOutputThermochimica && toOutputMOX),
-        // CODE DEVELOPMENT : JOG VARIABLES - TO BE REDUCED, ONLY FOR PURPOSE OF MODELLING
+        // JOG
         SciantixVariable(
             "Mo/Ru in HCP_A3", "(/)", Sciantix_variables[180], Sciantix_variables[180], toOutputThermochimica),
         SciantixVariable(
@@ -554,7 +552,7 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
     return init_sciantix_variable;
 }
 
-// CODE DEVELOPMENT : THERMOCHEMISTRY VARIABLES
+// THERMOCHEMISTRY VARIABLES
 std::vector<ThermochemistryVariable>
 initializeThermochemistryVariable(const std::vector<ThermochemistryManifestEntry>& manifest,
                                   double                                           Sciantix_thermochemistry[])

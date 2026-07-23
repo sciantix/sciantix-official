@@ -57,8 +57,6 @@ class System : virtual public Material
     double              production_rate;
     bool                restructured_matrix;
 
-    // A System is associated with exactly one fission-product species at a time; the category
-    // records which of setGas/setVolatileFP/setMetallicFP/setCeramicFP was last called.
     enum class FissionProductCategory
     {
         None,
@@ -121,14 +119,14 @@ class System : virtual public Material
     bool isGasOrVolatileFP();
 
     /**
-     * @brief Gets the active fission product for this system.
-     * @return Gas, volatile, or metallic species depending on system category.
+     * @brief Gets the fission product for this system.
+     * @return Gas, volatile, metallic, or ceramic species depending on system category.
      */
     FissionProducts getFissionProduct();
 
     /**
-     * @brief Gets the active fission product name for this system.
-     * @return Gas, volatile, or metallic species name.
+     * @brief Gets the fission product name for this system.
+     * @return Name of the fission product.
      */
     std::string getFissionProductName();
 

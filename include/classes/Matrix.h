@@ -554,8 +554,8 @@ class Matrix : virtual public Material
     }
 
     /**
-     * @brief Sets the PuO₂ enrichment in the MOX fuel (e.g., 0.20 = 20% PuO₂).
-     * @param enrichment Fraction of PuO₂ in MOX.
+     * @brief Sets the PuO2 enrichment in the MOX fuel (e.g., 0.20 = 20% PuO2).
+     * @param enrichment Fraction of PuO2 in MOX.
      */
     void setMoxPuEnrichment(double enrichment)
     {
@@ -563,8 +563,8 @@ class Matrix : virtual public Material
     }
 
     /**
-     * @brief Gets the PuO₂ enrichment in the MOX fuel.
-     * @return Fraction of PuO₂ in MOX.
+     * @brief Gets the PuO2 enrichment in the MOX fuel.
+     * @return Fraction of PuO2 in MOX.
      */
     double getMoxPuEnrichment()
     {

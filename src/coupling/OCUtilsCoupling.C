@@ -85,7 +85,6 @@ namespace OCASIAdapter
         bool loadDatabase(const std::string& tdb_file_path, const std::vector<std::string>& selected_elements);
         bool ensureDatabaseLoaded(const std::string& tdb_file_path, const std::vector<std::string>& selected_elements);
         bool prepareCalculationRecord(const std::string& record_name, bool reuse_existing_record);
-        // CODE DEVELOPMENT : THERMOCHEMISTRY EQUILIBRIUM-RECORD RECOVERY (E.Cappellari)
         bool prepareRecoveryRecord(const std::string& record_name);
         bool deleteCalculationRecord(const std::string& record_name);
         bool syncRecordFractionsInto(const std::string& target_record_name);
@@ -247,10 +246,6 @@ extern "C"
     void c_tqcceq(char*, int*, void**, void**);
     void c_tqselceq(char*, void**);
     void c_tqdceq(char*);
-    // CODE DEVELOPMENT : THERMOCHEMISTRY EQUILIBRIUM-RECORD RECOVERY (E.Cappellari)
-    // Copy phase amounts/constitution from one existing equilibrium into
-    // another existing one, in place (no new record created).
-    // (source ceq, target ceq)
     void c_copyfracs(void**, void**);
     int  c_errors_number();
     void c_reset_errors_number();
@@ -663,7 +658,6 @@ namespace OCASIAdapter
         return true;
     }
 
-    // CODE DEVELOPMENT : THERMOCHEMISTRY EQUILIBRIUM-RECORD RECOVERY (E.Cappellari)
     bool OpenCalphadInterface::prepareRecoveryRecord(const std::string& record_name)
     {
         if (!base_ceq_ || !database_loaded_)
@@ -717,7 +711,6 @@ namespace OCASIAdapter
         return true;
     }
 
-    // CODE DEVELOPMENT : THERMOCHEMISTRY WARM-START RECORD SYNC (E.Cappellari)
     bool OpenCalphadInterface::syncRecordFractionsInto(const std::string& target_record_name)
     {
         if (!ceq_ || !base_ceq_ || !database_loaded_)
@@ -1474,10 +1467,6 @@ namespace OCUtilsCoupling
                 }
 
                 const std::string record_name = equilibriumRecordName(location, solve_mode);
-                // CODE DEVELOPMENT : THERMOCHEMISTRY EQUILIBRIUM-RECORD RECOVERY (E.Cappellari)
-                // FreshRecordRecovery reuses its equilibrium record across attempts (see
-                // prepareRecoveryRecord) instead of deleting and recreating it every time,
-                // to avoid exhausting OpenCalphad's fixed-size equilibrium-record pool.
                 const bool reuse_existing_record = solve_mode == OpenCalphadSolveMode::SaveReadWarmStart;
                 const bool record_ready          = (solve_mode == OpenCalphadSolveMode::FreshRecordRecovery)
                                                        ? oc.prepareRecoveryRecord(record_name)
@@ -1567,13 +1556,6 @@ namespace OCUtilsCoupling
 
                 if (extract_and_validate())
                 {
-                    // CODE DEVELOPMENT : THERMOCHEMISTRY WARM-START RECORD SYNC (E.Cappellari)
-                    // Keep the warm-start record in step with whichever solver actually
-                    // produced the accepted equilibrium: otherwise SaveReadWarmStart keeps
-                    // resuming from an increasingly stale phase assemblage whenever a
-                    // fallback solver (GlobalEquilibrium/FreshRecordRecovery) had to be used,
-                    // which is what causes the accepted phase set to flicker between
-                    // near-degenerate competing phases step to step.
                     if (solve_mode != OpenCalphadSolveMode::SaveReadWarmStart)
                     {
                         const std::string warm_start_record =
