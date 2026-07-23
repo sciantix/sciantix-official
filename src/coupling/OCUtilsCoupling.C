@@ -1466,11 +1466,11 @@ namespace OCUtilsCoupling
                     return false;
                 }
 
-                const std::string record_name = equilibriumRecordName(location, solve_mode);
-                const bool reuse_existing_record = solve_mode == OpenCalphadSolveMode::SaveReadWarmStart;
-                const bool record_ready          = (solve_mode == OpenCalphadSolveMode::FreshRecordRecovery)
-                                                       ? oc.prepareRecoveryRecord(record_name)
-                                                       : oc.prepareCalculationRecord(record_name, reuse_existing_record);
+                const std::string record_name           = equilibriumRecordName(location, solve_mode);
+                const bool        reuse_existing_record = solve_mode == OpenCalphadSolveMode::SaveReadWarmStart;
+                const bool        record_ready          = (solve_mode == OpenCalphadSolveMode::FreshRecordRecovery)
+                                                              ? oc.prepareRecoveryRecord(record_name)
+                                                              : oc.prepareCalculationRecord(record_name, reuse_existing_record);
                 if (!record_ready)
                 {
                     std::cerr << "Error: Failed to prepare OpenCalphad equilibrium record" << std::endl;

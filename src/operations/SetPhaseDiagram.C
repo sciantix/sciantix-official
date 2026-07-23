@@ -150,8 +150,8 @@ void Simulation::SetPhaseDiagram()
     };
 
 // THERMOCHEMISTRY OUTER-NODE MODE
-// iThermochimica, exactly as set in input_settings.txt: 
-// 0 = off, 1 = all radial nodes of the outer/last axial slice 
+// iThermochimica, exactly as set in input_settings.txt:
+// 0 = off, 1 = all radial nodes of the outer/last axial slice
 // 2 = full OpenCalphad at every node.
 #if defined(COUPLING_TU) && defined(USE_OPENCALPHAD)
     const int  thermochimica_mode   = (int)input_variable["iThermochimica"].getValue();
