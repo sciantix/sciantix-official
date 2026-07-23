@@ -163,7 +163,7 @@ void Simulation::SetPhaseDiagram()
 #elif defined(USE_OPENCALPHAD)
     const bool run_full_opencalphad = true;
 #else
-    // Built without OpenCalphad (no sibling "opencalphad" directory / COUPLING_OC=OFF):
+    // Built without OpenCalphad (no sibling "opencalphad-for-sciantix" directory / COUPLING_OC=OFF):
     // fall back to the non-thermochemistry fission product bookkeeping.
     const bool run_full_opencalphad = false;
 #endif

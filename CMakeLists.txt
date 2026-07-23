@@ -46,14 +46,14 @@ endif()
 # Set option for coupling with TU
 option (COUPLING_TU OFF)
 
-# Optional coupling with OpenCalphad: 
-# auto-detected if a "opencalphad" directory has been built with Allmake_OC.sh next to this repository, e.g.
+# Optional coupling with OpenCalphad:
+# auto-detected if a "opencalphad-for-sciantix" directory has been built with Allmake_OC.sh next to this repository, e.g.
 #   workspace/
 #   |-- sciantix-official/
-#   `-- opencalphad/ 
+#   `-- opencalphad-for-sciantix/
 # Override with -DCOUPLING_OC=ON/OFF to force it on or off regardless of detection.
-if(EXISTS "${CMAKE_SOURCE_DIR}/../opencalphad/liboctq-isoc.a" AND
-   EXISTS "${CMAKE_SOURCE_DIR}/../opencalphad/liboctq-isoc-gb.a")
+if(EXISTS "${CMAKE_SOURCE_DIR}/../opencalphad-for-sciantix/build/liboctq-isoc.a" AND
+   EXISTS "${CMAKE_SOURCE_DIR}/../opencalphad-for-sciantix/build/liboctq-isoc-gb.a")
     set(COUPLING_OC_DEFAULT ON)
 else()
     set(COUPLING_OC_DEFAULT OFF)
@@ -62,7 +62,7 @@ option(COUPLING_OC "Enable OpenCalphad coupling" ${COUPLING_OC_DEFAULT})
 if(COUPLING_OC)
     message(STATUS "OpenCalphad coupling enabled")
 else()
-    message(STATUS "OpenCalphad coupling disabled (built ../opencalphad libraries not found and COUPLING_OC not forced ON)")
+    message(STATUS "OpenCalphad coupling disabled (built ../opencalphad-for-sciantix libraries not found and COUPLING_OC not forced ON)")
 endif()
 
 # Include CTest
@@ -97,8 +97,8 @@ else()
     if(COUPLING_OC)
         target_compile_definitions(sciantix PRIVATE USE_OPENCALPHAD)
         target_link_libraries(sciantix
-            ${PROJECT_SOURCE_DIR}/../opencalphad/liboctq-isoc.a
-            ${PROJECT_SOURCE_DIR}/../opencalphad/liboctq-isoc-gb.a
+            ${PROJECT_SOURCE_DIR}/../opencalphad-for-sciantix/build/liboctq-isoc.a
+            ${PROJECT_SOURCE_DIR}/../opencalphad-for-sciantix/build/liboctq-isoc-gb.a
             gfortran quadmath gomp)
     endif()
     if (UNIX)
