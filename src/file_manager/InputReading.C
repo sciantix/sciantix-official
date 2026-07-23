@@ -282,7 +282,7 @@ void InputReading(int                  Sciantix_options[],
         Sciantix_scaling_factors[11] = 1.0;
         Sciantix_scaling_factors[12] = 1.0;
         // VB 11.07.2026
-        Sciantix_scaling_factors[13] = 1.0; 
+        Sciantix_scaling_factors[13] = 1.0;
 
         input_scaling_factors >> std::ws;
         if (input_scaling_factors.peek() != EOF)
@@ -329,7 +329,7 @@ void InputReading(int                  Sciantix_options[],
         // END EC 04.06.2026
         // VB 11.07.2026
         Sciantix_scaling_factors[13] = 1.0;
-        // VB 11.07.2026 
+        // VB 11.07.2026
     }
 
     input_check.close();
