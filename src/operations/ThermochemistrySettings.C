@@ -60,7 +60,7 @@ namespace ThermochemistrySettingsDetail
         buffer[length] = '\0';
 
         for (std::string directory = parentDirectory(std::string(buffer)); !directory.empty();
-             directory              = parentDirectory(directory))
+             directory             = parentDirectory(directory))
         {
             const std::string candidate = parentDirectory(directory) + "/opencalphad-for-sciantix/";
             if (isDirectory(candidate))
