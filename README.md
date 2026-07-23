@@ -16,6 +16,11 @@ Currently, SCIANTIX is validated against experimental data for:
 
 The validation database and regression suite are available in the `regression/` directory.
 
+# Training
+
+Training material — tutorials, hands-on cases, and the OperaHPC online training —
+is maintained in a dedicated repository: [sciantix-training](https://github.com/sciantix/sciantix-training)
+
 # Installation
 
 Recommended requirements:
