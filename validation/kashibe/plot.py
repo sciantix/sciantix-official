@@ -1,5 +1,5 @@
 """
-sciantix regression suite
+sciantix testing suite
 author: Elisa Cappellari, Giovanni Zullo
 """
 
@@ -9,10 +9,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import glob
 
-# Add the project root to path so we can import regression.core
+# Add the project root to path so we can import testing.core
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from regression.core.common import load_output
+from testing.core.common import load_output
 
 # ==========================================
 # 1990 PLOTTING LOGIC
@@ -365,8 +365,8 @@ def do_plot_1991(datasets, exp_iso, exp_cyc, time_ref, outname, outdir):
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    regression_dir = script_dir 
-    figures_dir = os.path.join(regression_dir, "figures")
+    group_dir = script_dir 
+    figures_dir = os.path.join(group_dir, "figures")
     os.makedirs(figures_dir, exist_ok=True)
 
     # ------------------------------------------
@@ -377,7 +377,7 @@ def main():
     
     sim_fgr = np.zeros(8)
     sim_swelling = np.zeros(8)
-    test_dirs_1990 = glob.glob(os.path.join(regression_dir, "test_Kashibe1990_*"))
+    test_dirs_1990 = glob.glob(os.path.join(group_dir, "test_Kashibe1990_*"))
     found_1990 = False
     
     for test_dir in test_dirs_1990:
@@ -419,7 +419,7 @@ def main():
     found_1993 = False
     
     for idx, dir_name in enumerate(target_dirs_1993):
-        test_dir = os.path.join(regression_dir, dir_name)
+        test_dir = os.path.join(group_dir, dir_name)
         if not os.path.isdir(test_dir): continue
         try:
             output = load_output(test_dir)
@@ -441,8 +441,8 @@ def main():
     cyc23 = parse_xy(CYCLE23_DATA)
     time_ref_23 = 18395
     
-    dir_cyc_23 = os.path.join(regression_dir, "test_Kashibe1991_1673K_23_Multiple")
-    dir_iso_23 = os.path.join(regression_dir, "test_Kashibe1991_1673K_23_Single")
+    dir_cyc_23 = os.path.join(group_dir, "test_Kashibe1991_1673K_23_Multiple")
+    dir_iso_23 = os.path.join(group_dir, "test_Kashibe1991_1673K_23_Single")
     
     datasets_23 = []
     if os.path.isdir(dir_cyc_23):
@@ -465,8 +465,8 @@ def main():
     cyc28 = parse_xy(CYCLE28_DATA)
     time_ref_28 = 22410
     
-    dir_cyc_28 = os.path.join(regression_dir, "test_Kashibe1991_1673K_28_Multiple")
-    dir_iso_28 = os.path.join(regression_dir, "test_Kashibe1991_1673K_28_Single")
+    dir_cyc_28 = os.path.join(group_dir, "test_Kashibe1991_1673K_28_Multiple")
+    dir_iso_28 = os.path.join(group_dir, "test_Kashibe1991_1673K_28_Single")
     
     datasets_28 = []
     if os.path.isdir(dir_cyc_28):

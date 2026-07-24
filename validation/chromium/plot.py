@@ -1,5 +1,5 @@
 """
-sciantix regression suite
+sciantix testing suite
 author: Giovanni Zullo
 """
 
@@ -9,10 +9,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import glob
 
-# Add the project root to path so we can import regression.core
+# Add the project root to path so we can import testing.core
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from regression.core.common import load_output
+from testing.core.common import load_output
 
 def load_xy(filepath):
     """
@@ -115,7 +115,7 @@ def plot_solubility(output, exp_data, test_name, outdir):
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    regression_dir = script_dir 
+    group_dir = script_dir 
     
     # Identify test directories
     # Case 1: Killeen
@@ -123,7 +123,7 @@ def main():
     # Case 3: solubility2
     
     # Create figures directory
-    figures_dir = os.path.join(regression_dir, "figures")
+    figures_dir = os.path.join(group_dir, "figures")
     os.makedirs(figures_dir, exist_ok=True)
     
     # List of tuples: (TestDirName, ExpFileName, PlotFunction)
@@ -134,7 +134,7 @@ def main():
     ]
 
     for dir_name, exp_file, plot_func in test_cases:
-        test_dir = os.path.join(regression_dir, dir_name)
+        test_dir = os.path.join(group_dir, dir_name)
         if not os.path.isdir(test_dir):
             print(f"Directory not found: {test_dir}")
             continue

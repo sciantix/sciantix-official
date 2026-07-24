@@ -1,5 +1,5 @@
 """
-sciantix regression suite
+sciantix testing suite
 author: Giovanni Zullo
 """
 
@@ -9,10 +9,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import glob
 
-# Add the project root to path so we can import regression.core
+# Add the project root to path so we can import testing.core
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from regression.core.common import load_output
+from testing.core.common import load_output
 
 def do_plot(heReleasedTalip14000_data, heReleasedRateTalip14000_data, time, temperature, heReleasedFrac, heReleaseRate,
             test_name, outdir):
@@ -73,17 +73,17 @@ def load_xy(filepath):
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    regression_dir = script_dir # The script is in regression/talip/
+    group_dir = script_dir # The script is in validation/talip/
     
     # Find all test folders
-    test_dirs = sorted([d for d in glob.glob(os.path.join(regression_dir, "test_Talip*")) if os.path.isdir(d)])
+    test_dirs = sorted([d for d in glob.glob(os.path.join(group_dir, "test_Talip*")) if os.path.isdir(d)])
     
     if not test_dirs:
         print("No test directories found.")
         return
 
     # Create figures directory
-    figures_dir = os.path.join(regression_dir, "figures")
+    figures_dir = os.path.join(group_dir, "figures")
     os.makedirs(figures_dir, exist_ok=True)
 
     for test_dir in test_dirs:

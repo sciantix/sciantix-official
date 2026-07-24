@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Regenerate JOG paper figures and results_summary.txt from already-run
-regression/jog/test_PHENIXpins_point_* cases."""
+validation/jog/test_PHENIXpins_point_* cases."""
 import argparse
 import csv
 import math
@@ -1910,8 +1910,8 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description=(
             "Regenerate JOG paper figures and results_summary.txt from already-run "
-            "regression/jog/test_PHENIXpins_point_* cases. Run the cases first with "
-            "`./runRegression.sh --oc` (or `python3 -m regression.runner --oc`)."
+            "validation/jog/test_PHENIXpins_point_* cases. Run the cases first with "
+            "`./runTesting.sh --oc` (or `python3 -m testing.runner --oc`)."
         )
     )
     parser.add_argument(
@@ -1943,7 +1943,7 @@ def main() -> int:
     if not case_directories:
         raise FileNotFoundError(
             f"No test_PHENIXpins_point_* directories found in {CASES_DIR}. "
-            "Run the JOG regression cases first, e.g. `./runRegression.sh --oc`."
+            "Run the JOG test cases first, e.g. `./runTesting.sh --oc`."
         )
 
     if args.runnode:
