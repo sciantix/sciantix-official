@@ -212,7 +212,14 @@ def main():
         ))
 
     if mox_po2_selected:
-        results.extend(mox_po2_runner.check_accuracy(oc_status, "verification"))
+        accuracy_id, accuracy_ok, accuracy_msg, _ = mox_po2_runner.check_accuracy(oc_status, "verification")[0]
+        accuracy_status = "PASS" if accuracy_ok else ("SKIP" if accuracy_ok is None else "FAIL")
+        accuracy_note = f"accuracy check {accuracy_status}: {accuracy_msg}"
+        results = [
+            (name, ok, f"{msg}; {accuracy_note}" if msg else accuracy_note, suite)
+            if name.startswith("mox-po2/T_") else (name, ok, msg, suite)
+            for name, ok, msg, suite in results
+        ]
 
     print("\n=== RESULTS ===")
     for name, ok, msg, suite in results:
