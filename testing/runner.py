@@ -204,24 +204,24 @@ def main():
             cli_name, base_dir, prefix, args.mode_gold, args.jobs,
             only=group_only, extra_outputs=extra_outputs,
             ignore_columns=ignore_columns, skip_reason=skip_reason,
-            skip_is_failure=skip_is_failure,
+            skip_is_failure=skip_is_failure, suite=suite,
         ))
 
     mox_po2_selected = run_everything or args.verification or args.mox_po2
     if mox_po2_selected:
-        results.extend(mox_po2_runner.run(args.mode_gold, oc_status))
+        results.extend(mox_po2_runner.run(args.mode_gold, oc_status, "verification"))
 
     print("\n=== RESULTS ===")
-    for name, ok, msg in results:
+    for name, ok, msg, suite in results:
         status = "PASS" if ok else ("SKIP" if ok is None else "FAIL")
-        line = f"{name:<60} {status}"
+        line = f"{name:<60} {suite:<13} {status}"
         if msg:
             line += f"  ({msg})"
         print(line)
 
-    passed = sum(1 for _, ok, _ in results if ok is True)
-    failed = sum(1 for _, ok, _ in results if ok is False)
-    skipped = sum(1 for _, ok, _ in results if ok is None)
+    passed = sum(1 for _, ok, _, _ in results if ok is True)
+    failed = sum(1 for _, ok, _, _ in results if ok is False)
+    skipped = sum(1 for _, ok, _, _ in results if ok is None)
     print(f"\n{passed} passed, {failed} failed, {skipped} skipped")
 
     # Generate Report

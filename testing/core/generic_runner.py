@@ -14,16 +14,18 @@ def run_single_case(args):
     """
     Worker function for parallel execution.
     Args:
-        args: tuple (cli_name, name, case, mode_gold, extra_outputs, ignore_columns)
+        args: tuple (cli_name, name, case, mode_gold, extra_outputs, ignore_columns, suite)
             extra_outputs: output filenames beyond "output.txt" to gold-compare
                 too, e.g. ("thermochemistry_output.txt",) for OC-coupled groups.
             ignore_columns: substrings; any column whose header name contains
                 one of these is excluded from every compared file (e.g.
                 ["CALPHAD"] when OpenCalphad is unavailable).
+            suite: "verification" or "validation", carried through to the result
+                for report display.
     Returns:
-        (test_id, ok, msg) -- ok is True/False/None (None = skipped)
+        (test_id, ok, msg, suite) -- ok is True/False/None (None = skipped)
     """
-    cli_name, name, case, mode_gold, extra_outputs, ignore_columns = args
+    cli_name, name, case, mode_gold, extra_outputs, ignore_columns, suite = args
     test_id = f"{cli_name}/{name}"
     output_files = ["output.txt", *extra_outputs]
 
@@ -38,7 +40,7 @@ def run_single_case(args):
             for filename in output_files:
                 shutil.copy(os.path.join(case, filename),
                             os.path.join(case, gold_name_for(filename)))
-            return (test_id, True, None)
+            return (test_id, True, None, suite)
 
         # compare
         mismatched = []
@@ -50,14 +52,14 @@ def run_single_case(args):
                 mismatched.append(filename)
 
         if mismatched:
-            return (test_id, False, f"Mismatch with gold standard: {', '.join(mismatched)}")
+            return (test_id, False, f"Mismatch with gold standard: {', '.join(mismatched)}", suite)
 
         note = (f"OC unavailable: excluded column(s) matching {list(ignore_columns)}"
                 if ignore_columns else None)
-        return (test_id, True, note)
+        return (test_id, True, note, suite)
 
     except Exception as e:
-        return (test_id, False, str(e))
+        return (test_id, False, str(e), suite)
 
 
 def discover_cases(base, prefix):
@@ -92,7 +94,7 @@ def discover_cases(base, prefix):
 
 def run_group(cli_name: str, base_dir: str, prefix: str, mode_gold: int, jobs: int = 1,
               only=None, extra_outputs=(), ignore_columns=(), skip_reason=None,
-              skip_is_failure=False):
+              skip_is_failure=False, suite=None):
     """
     Generic runner for any test group.
 
@@ -121,9 +123,11 @@ def run_group(cli_name: str, base_dir: str, prefix: str, mode_gold: int, jobs: i
               FAILED if skip_is_failure is also set
         skip_is_failure: when skip_reason is set, report ok=False instead of
               ok=None (used for --oc strict mode and gold-rewrite refusal)
+        suite: "verification" or "validation", carried through to every
+              result for report display
 
     Returns:
-        list of (test_name, ok, msg) -- ok is True/False/None
+        list of (test_name, ok, msg, suite) -- ok is True/False/None
     """
 
     if not os.path.isdir(base_dir):
@@ -142,9 +146,9 @@ def run_group(cli_name: str, base_dir: str, prefix: str, mode_gold: int, jobs: i
 
     if skip_reason:
         status = False if skip_is_failure else None
-        return [(f"{cli_name}/{name}", status, skip_reason) for name, _ in cases]
+        return [(f"{cli_name}/{name}", status, skip_reason, suite) for name, _ in cases]
 
-    tasks = [(cli_name, name, path, mode_gold, extra_outputs, ignore_columns)
+    tasks = [(cli_name, name, path, mode_gold, extra_outputs, ignore_columns, suite)
              for name, path in cases]
 
     print(f"Running {len(tasks)} cases in {cli_name} with {jobs} threads...")

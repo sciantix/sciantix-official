@@ -2,8 +2,7 @@
 sciantix testing suite
 author: Elisa Cappellari
 
-Dispatches verification/test_MOX_po2, which is script-driven (it generates
-ephemeral per-(T,q) case directories via run_temperature_sweep.py, runs them,
+Dispatches verification/test_MOX_po2, which is script-driven (it generates (T,q) case directories via run_temperature_sweep.py, runs them,
 and deletes them again) rather than folder-scanned like every other
 registered group, so it can't go through generic_runner.run_group().
 
@@ -37,6 +36,9 @@ OC_MIN_TEMPERATURE_K = 1000.0
 REQUIRED_DATABASES = ["upuo-v21.TDB"]
 
 TEST_ID = "mox-po2/test_MOX_po2"
+
+TEMPERATURES_K = [1400, 1800, 2200]
+Q_VALUES = [0.10, 0.20, 0.30]
 
 
 def _read_tsv(path):
@@ -76,28 +78,33 @@ def _check_calphad():
                     f"mean_abs_log_error={float(worst['mean_abs_log_error']):.3e})")
 
 
-def run(mode_gold: int, oc_status):
+def run(mode_gold: int, oc_status, suite="verification"):
     """
     Run the MOX pO2 verification sweep and evaluate both acceptance criteria.
 
-    Returns a single-element list [(test_id, ok, msg)], ok in
+    Returns a single-element list [(test_id, ok, msg, suite)], ok in
     {True, False, None} (None = skipped entirely, only for unsupported
     mode_gold values -- there is no committed gold file for this group to
     rewrite; the reference is the Kato equation and independent Thermo-Calc
     tables, not output_gold.txt).
     """
     if not os.path.isfile(SWEEP_SCRIPT):
-        return [(TEST_ID, None, f"{SWEEP_SCRIPT} not found -- group excluded from this run")]
+        return [(TEST_ID, None, f"{SWEEP_SCRIPT} not found -- group excluded from this run", suite)]
 
     if mode_gold != 0:
         return [(TEST_ID, None,
                   "mode-gold only supports 0 (run+compare) for this script-driven group "
-                  "-- no output_gold.txt to rewrite/compare against")]
+                  "-- no output_gold.txt to rewrite/compare against", suite)]
 
+    sweep_args = [
+        sys.executable, SWEEP_SCRIPT,
+        "--temperatures", ",".join(str(t) for t in TEMPERATURES_K),
+        "--q-values", ",".join(f"{q:.2f}" for q in Q_VALUES),
+    ]
     try:
-        subprocess.run([sys.executable, SWEEP_SCRIPT], cwd=MOX_PO2_DIR, check=True)
+        subprocess.run(sweep_args, cwd=MOX_PO2_DIR, check=True)
     except subprocess.CalledProcessError as e:
-        return [(TEST_ID, False, f"run_temperature_sweep.py failed: {e}")]
+        return [(TEST_ID, False, f"run_temperature_sweep.py failed: {e}", suite)]
 
     try:
         kato_ok, kato_msg = _check_kato()
@@ -108,7 +115,7 @@ def run(mode_gold: int, oc_status):
             calphad_ok = True
             calphad_msg = f"CALPHAD check skipped: {oc_status.reason_for(REQUIRED_DATABASES)}"
     except (FileNotFoundError, KeyError, ValueError) as e:
-        return [(TEST_ID, False, f"Could not evaluate verification metrics: {e}")]
+        return [(TEST_ID, False, f"Could not evaluate verification metrics: {e}", suite)]
 
     ok = kato_ok and calphad_ok
     if ok:
@@ -116,4 +123,4 @@ def run(mode_gold: int, oc_status):
     else:
         msg = "; ".join(m for m, passed in ((kato_msg, kato_ok), (calphad_msg, calphad_ok)) if not passed)
 
-    return [(TEST_ID, ok, msg)]
+    return [(TEST_ID, ok, msg, suite)]

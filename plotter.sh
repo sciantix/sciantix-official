@@ -47,4 +47,14 @@ echo "=== Running JOG plot ==="
 python3 validation/jog/PHENIXpins/plot_JOG.py
 
 echo ""
+echo "=== Running oxygen-potential plot ==="
+python3 validation/oxygenpotential/freshfuel/plot.py
+python3 validation/oxygenpotential/burnup/plot.py
+
+echo ""
+echo "=== Running MOX pO2 verification sweep + plots ==="
+python3 verification/test_MOX_po2/run_temperature_sweep.py \
+    --temperatures 1400,1800,2200 --q-values 0.10,0.20,0.30
+
+echo ""
 echo "=== Done ==="

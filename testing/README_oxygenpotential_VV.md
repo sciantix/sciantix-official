@@ -51,7 +51,8 @@ python3 run_temperature_sweep.py            # full sweep + comparisons + plots
 python3 run_temperature_sweep.py --temperatures 1600 --q-values 0.2   # subset
 ```
 
-Outputs: `temperature_sweep_summary.tsv`, plots in `plots/`, residual metrics
+Outputs: `temperature_sweep_summary.tsv`, plots in `figures/` (matching every
+other group's convention), residual metrics
 in `sciantix_verification/sciantix_vs_kato_summary.txt` and
 `sciantix_vs_oc_csv_summary.txt` (+ `.tsv` per-(q,T) tables).
 
