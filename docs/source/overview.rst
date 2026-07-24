@@ -225,7 +225,7 @@ SCIANTIX employs several strategies to balance accuracy and computational effici
 
 **Validation**
 
-The code is validated against experimental data through a comprehensive regression testing suite covering:
+The code is validated against experimental data through a comprehensive testing suite covering:
 
 - Intragranular and intergranular swelling experiments
 - Helium behaviour under annealing
@@ -240,5 +240,5 @@ For detailed information on specific models, solvers, and usage, refer to:
 - :doc:`models`: Physics-based models implemented in SCIANTIX
 - :doc:`solvers`: Numerical solution methods and verification
 - :doc:`examples`: Practical examples and use cases
-- :doc:`regression`: Validation against experimental data
+- :doc:`testing`: Verification and validation against experimental data
 - :doc:`api/index_api`: Application Programming Interface documentation

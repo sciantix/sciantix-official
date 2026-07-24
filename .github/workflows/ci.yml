@@ -1,4 +1,4 @@
-name: Build and regression tests
+name: Build and testing
 
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
           name: sciantix-build
           path: build/
 
-  regression:
+  testing:
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -53,12 +53,12 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install regression dependencies
+      - name: Install testing dependencies
         run: |
           python3 -m pip install --upgrade pip
           pip install numpy matplotlib scipy scikit-learn pandas
 
-      - name: Run regression tests
+      - name: Run tests
         run: |
           export PATH=$PATH:$(pwd)/build
-          python3 -m regression.runner --all --mode-gold 0
+          python3 -m testing.runner --mode-gold 0

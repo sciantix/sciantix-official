@@ -183,16 +183,15 @@ Verification and Testing
 
 To verify that SCIANTIX is correctly installed and functioning:
 
-**Method 1: Run Regression Tests**
+**Method 1: Run Tests**
 
-The repository includes a comprehensive regression testing suite:
+The repository includes a comprehensive testing suite:
 
 .. code-block:: bash
 
-    cd regression
-    python3 regression.py
+    python3 -m testing.runner
 
-This executes all validation tests and compares results against established benchmarks. Successful completion indicates a correct installation.
+This executes all verification and validation tests and compares results against established benchmarks. Successful completion indicates a correct installation.
 
 **Method 2: Run a Single Example**
 
@@ -200,7 +199,7 @@ Navigate to one of the provided example directories and run a single simulation:
 
 .. code-block:: bash
 
-    cd regression/baker
+    cd validation/baker
     ../../build/sciantix.x
 
 Check the output files to verify correct execution.
@@ -250,7 +249,7 @@ Verify your compiler supports C++17. Update your compiler if necessary:
     sudo apt update
     sudo apt install g++-9  # or later version
 
-**Python regression tests fail**
+**Python tests fail**
 
 Ensure Python 3 is installed:
 
@@ -267,7 +266,7 @@ After successful installation:
 
 1. Review the :doc:`overview` section for conceptual understanding
 2. Examine the :doc:`examples` for practical usage
-3. Run the :doc:`regression` tests to validate your installation
+3. Run the :doc:`testing` tests to validate your installation
 4. Refer to the :doc:`models` documentation for model details
 
 Contributing & development workflow
@@ -286,12 +285,12 @@ to SCIANTIX. A concise development workflow is provided here for convenience:
 
 3. **Make small, focused commits** describing the changes you implemented.
 
-4. **Run regression tests** before opening a Pull Request to ensure no
+4. **Run the tests** before opening a Pull Request to ensure no
     regressions are introduced:
 
 .. code-block:: bash
 
-     python3 regression/regression.py
+     python3 -m testing.runner
 
 5. **Build the documentation locally** to verify formatting and links:
 
@@ -310,7 +309,7 @@ to SCIANTIX. A concise development workflow is provided here for convenience:
 7. **Pull Request checklist** (recommended):
 
 - Ensure the code compiles on the supported platforms (C++17).
-- Ensure regression tests pass (or failures are justified and documented).
+- Ensure tests pass (or failures are justified and documented).
 - Document new models, input options, and variables in Doxygen and the
   `docs/` directory.
 - Use clear commit messages and reference any related issue numbers.

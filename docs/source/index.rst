@@ -24,7 +24,7 @@ SCIANTIX documentation
     .. grid-item-card::  Open Science
         :icon: eye
         
-        Open-source development with comprehensive regression testing and physical verification.
+        Open-source development with comprehensive testing and physical verification.
 
 Quick Start
 -----------
@@ -41,11 +41,10 @@ To get started with SCIANTIX, follow these steps:
       ./Allmake.sh
 
 3. **Run a Test Case**:
-   
+
    .. code-block:: bash
 
-      cd regression
-      python3 runner.py --baker
+      python3 -m testing.runner --baker
 
 Next Steps
 ----------
@@ -57,7 +56,7 @@ Next Steps
    overview
    installation
    examples
-   regression
+   testing
    references
 
 .. toctree::

@@ -4,47 +4,47 @@
 cd "$(dirname "$0")"
 
 echo "=== Running Baker parity plot ==="
-python3 regression/baker/parity_plot.py
+python3 validation/baker/parity_plot.py
 
 echo ""
 echo "=== Running White parity plot ==="
-python3 regression/white/parity_plot.py
+python3 validation/white/parity_plot.py
 
 echo ""
 echo "=== Running GPR parity plot ==="
-python3 regression/gpr/parity_plot.py
+python3 verification/test_gpr/parity_plot.py
 
 echo ""
 echo "=== Running Chromium plot ==="
-python3 regression/chromium/plot.py
+python3 validation/chromium/plot.py
 
 echo ""
 echo "=== Running Contact plot ==="
-python3 regression/contact/plot.py
+python3 validation/contact/plot.py
 
 echo ""
 echo "=== Running Cornell plot ==="
-python3 regression/cornell/parity_plot.py
+python3 validation/cornell/parity_plot.py
 
 echo ""
 echo "=== Running HBS plot ==="
-python3 regression/hbs/plot.py
+python3 validation/hbs/plot.py
 
 echo ""
 echo "=== Running Kashibe plot ==="
-python3 regression/kashibe/plot.py
+python3 validation/kashibe/plot.py
 
 echo ""
 echo "=== Running Oxidation plot ==="
-python3 regression/oxidation/plot.py
+python3 verification/test_oxidation/plot.py
 
 echo ""
 echo "=== Running Talip plot ==="
-python3 regression/talip/plot.py
+python3 validation/talip/plot.py
 
 echo ""
 echo "=== Running JOG plot ==="
-python3 regression/jog/PHENIXpins/plot_JOG.py
+python3 validation/jog/PHENIXpins/plot_JOG.py
 
 echo ""
 echo "=== Done ==="
