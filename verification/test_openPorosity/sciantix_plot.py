@@ -31,7 +31,7 @@ import sys
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from regression.core.common import load_output, load_gold
 
