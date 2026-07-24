@@ -23,7 +23,7 @@ def extract_last(output, column):
 
 def load_experimental(basename):
     """
-    Load experimental data from regression/gpr/data/ (T, value).
+    Load experimental data from verification/test_gpr/data/ (T, value).
     """
     root = os.path.dirname(__file__)
     fpath = os.path.join(root, "data", basename)
