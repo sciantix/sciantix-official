@@ -1,6 +1,6 @@
 """
 sciantix testing suite
-author: Giovanni Zullo
+author: Giovanni Zullo, Elisa Cappellari
 
 Open-porosity / porosity-evolution plots (Baker 1977, 1273 K conditions).
 

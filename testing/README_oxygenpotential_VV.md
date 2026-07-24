@@ -10,18 +10,25 @@ potential implemented in SCIANTIX, covering both computation paths:
   (`src/coupling/OCUtilsCoupling.C`), Gibbs-energy minimization on the U-Pu-O
   CALPHAD database `upuo-v21.TDB`, enabled by `iThermochimica = 2`.
 
-Run everything with a single command (binary in `build/sciantix.x` required):
+Run everything through the regular testing runner (binary in
+`build/sciantix.x` required):
 
 ```bash
-python3 regression/run_oxygenpotential_vv.py
+python3 -m testing.runner --mox-po2 --oxygenpotential   # verification + validation
+python3 -m testing.runner --mox-po2                     # verification only
+python3 -m testing.runner --oxygenpotential              # validation only
 ```
 
-Stages can be skipped with `--skip-verification`, `--skip-validation`,
-`--skip-plots`.
+For figures, run each group's `plot.py` directly (see §3) — it isn't part of
+`testing.runner`, since plotting doesn't produce a pass/fail result.
+
+If OpenCalphad isn't linked (no `--oc` build) or `upuo-v21.TDB` isn't found
+next to it, both the verification and validation stages degrade gracefully
+instead of failing — see "Graceful degradation without OpenCalphad" below.
 
 ---
 
-## 1. Verification — `regression/test_MOX_pO2_verification/`
+## 1. Verification — `verification/test_MOX_po2/`
 
 Checks that SCIANTIX reproduces its own reference models exactly:
 
@@ -39,7 +46,7 @@ time, `x = x0 + 0.001 t[h]`), so each transient sweeps O/M at fixed T and q.
 Comparison domain: T = 753-2550 K, Pu/M = 0.10-0.32, O/M = 1.92-2.08.
 
 ```bash
-cd regression/test_MOX_pO2_verification
+cd verification/test_MOX_po2
 python3 run_temperature_sweep.py            # full sweep + comparisons + plots
 python3 run_temperature_sweep.py --temperatures 1600 --q-values 0.2   # subset
 ```
@@ -100,16 +107,22 @@ python3 validation_dataset/generate_cases.py --write-gold
 
 For every source, the points are grouped by (temperature, Pu/M); each group
 becomes a case `test_<Source>/T_<T>K_q_<Pu>/` containing the template inputs
-of `test_MOX_pO2_verification` with `iStoichiometryDeviation = 9` (prescribed
+of `test_MOX_po2` with `iStoichiometryDeviation = 9` (prescribed
 O/M history sweeping the group's O/M range at fixed T) and the group's
 `experimental_subset.txt`. `--write-gold` runs SCIANTIX in every case and
 refreshes `output_gold.txt`.
 
-The generator splits the sources into two regression groups:
+**Note:** the `validation_dataset/` generator referenced above is not present
+in this checkout (it produced the two groups below once, then was removed);
+regenerating cases from raw digitized data is not currently supported and is
+not needed for normal use — the generated case directories and their
+`output_gold.txt` already exist and are what `testing.runner` runs.
 
-- `regression/oxygenpotential_freshfuel/` — 23 sources on unirradiated fuel
+The generator split the sources into two test groups:
+
+- `validation/oxygenpotential/freshfuel/` — 23 sources on unirradiated fuel
   (Markin1965 ... Hirooka2022, Kato2005/2011a/2011b, ...);
-- `regression/oxygenpotential_burnup/` — 8 sources on irradiated or simulated
+- `validation/oxygenpotential/burnup/` — 8 sources on irradiated or simulated
   high-burnup fuel: Ewart1979a, Ewart1979b, Ewart1984, Johnson1973,
   Matzke1988, Sato1997, Tetenbaum1977, Woodley1978 (classification per the
   dataset `ReadMe`).
@@ -129,16 +142,37 @@ CALPHAD (`figures_OC/`) columns of `output.txt`:
   T, Pu/M, O/M, exp/calc potential, residual).
 
 ```bash
-cd regression/oxygenpotential_freshfuel && python3 plot.py
-cd regression/oxygenpotential_burnup   && python3 plot.py
+cd validation/oxygenpotential/freshfuel && python3 plot.py
+cd validation/oxygenpotential/burnup   && python3 plot.py
 ```
+
+## Graceful degradation without OpenCalphad
+
+Both groups are integrated into `python -m testing.runner` and run by
+default (no flags needed), whether or not OpenCalphad is linked:
+
+- **`verification/test_MOX_po2`**: the Kato-path acceptance check (§ above)
+  never needs OpenCalphad and always runs. The CALPHAD-path check runs only
+  if OpenCalphad is linked and `upuo-v21.TDB` is found; otherwise it's
+  skipped with a warning explaining why, and the case still passes on the
+  strength of the Kato check alone.
+- **`validation/oxygenpotential/{freshfuel,burnup}`**: each case's
+  `output.txt` carries Kato-path and CALPHAD-path columns side by side. Without
+  OpenCalphad, the CALPHAD columns default to `0.0` (a different physical
+  treatment, not a crash), so the runner excludes them from the gold
+  comparison and prints a warning instead of reporting a false failure; the
+  Kato-path columns and every other output are still compared normally.
+- Passing `--oc` to the runner asserts OpenCalphad is expected to be
+  available: if it turns out not to be, these groups fail loudly instead of
+  degrading, so a forgotten `Allmake.sh --oc` build doesn't silently produce
+  a green run.
 
 ## Notes
 
-- These groups are standalone: they are not part of `python -m regression.runner`.
 - The OpenCalphad checkout is located automatically as `../opencalphad-for-sciantix`
-  next to `sciantix-official` (see `Allmake_OC.sh`); its `data/` must contain
-  `upuo-v21.TDB`.
+  next to `sciantix-official` (see `Allmake.sh --oc`); its `data/` should contain
+  `upuo-v21.TDB` for full CALPHAD-path coverage (see graceful degradation above
+  for what happens when it doesn't).
 - The template inputs are the single source of truth: changing
   `input_thermochemistry_settings.txt` there propagates to every regenerated
   validation case.

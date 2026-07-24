@@ -2,29 +2,32 @@
     <!DOCTYPE html>
     <html>
     <head>
-        <title>SCIANTIX Regression Report</title>
+        <title>SCIANTIX Testing Report</title>
         <style>
             body { font-family: sans-serif; margin: 20px; }
             h1 { color: #333; }
             .summary { margin-bottom: 20px; padding: 10px; background-color: #f0f0f0; border-radius: 5px; }
+            .oc-summary { margin-bottom: 20px; padding: 10px; background-color: #fff8e1; border-radius: 5px; }
             table { border-collapse: collapse; width: 100%; }
             th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
             th { background-color: #f2f2f2; }
             tr:nth-child(even) { background-color: #f9f9f9; }
             .pass { color: green; font-weight: bold; }
             .fail { color: red; font-weight: bold; }
+            .skip { color: #b8860b; font-weight: bold; }
         </style>
     </head>
     <body>
-        <h1>SCIANTIX Regression Report</h1>
-        
+        <h1>SCIANTIX Testing Report</h1>
+
         <div class="summary">
-            <p><strong>Date:</strong> 2026-07-23 14:49:30</p>
-            <p><strong>Total Tests:</strong> 114</p>
+            <p><strong>Date:</strong> 2026-07-24 15:05:18</p>
+            <p><strong>Total Tests:</strong> 115</p>
             <p><strong>Passed:</strong> <span class="pass">114</span></p>
             <p><strong>Failed:</strong> <span class="fail">0</span></p>
+            <p><strong>Skipped:</strong> <span class="skip">1</span></p>
         </div>
-
+        
         <table>
             <thead>
                 <tr>
@@ -35,6 +38,102 @@
             </thead>
             <tbody>
     
+                <tr>
+                    <td>openPorosity/test_openPorosity</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>powerPulse/test_powerPulse</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>oxidation/test_UO2_oxidation_Cox_et_al_data_1273K</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>oxidation/test_UO2_oxidation_Cox_et_al_data_1473K</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>oxidation/test_UO2_oxidation_Imamura_and_Une_data</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>oxidation/test_UO2_oxidation_PS-623C</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>vercors/test_vercors5</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>gpr/test_GPR__1273K</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>gpr/test_GPR__1373K</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>gpr/test_GPR__1473K</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>gpr/test_GPR__1573K</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>gpr/test_GPR__1673K</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>gpr/test_GPR__1773K</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>gpr/test_GPR__1873K</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>gpr/test_GPR__1973K</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
+                <tr>
+                    <td>gpr/test_GPR__2073K</td>
+                    <td class="pass">PASS</td>
+                    <td></td>
+                </tr>
+        
                 <tr>
                     <td>baker/test_Baker1977__1273K</td>
                     <td class="pass">PASS</td>
@@ -570,30 +669,6 @@
                 </tr>
         
                 <tr>
-                    <td>oxidation/test_UO2_oxidation_Cox_et_al_data_1273K</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
-                    <td>oxidation/test_UO2_oxidation_Cox_et_al_data_1473K</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
-                    <td>oxidation/test_UO2_oxidation_Imamura_and_Une_data</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
-                    <td>oxidation/test_UO2_oxidation_PS-623C</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
                     <td>chromium/test_Chromium_Killeen</td>
                     <td class="pass">PASS</td>
                     <td></td>
@@ -624,78 +699,6 @@
                 </tr>
         
                 <tr>
-                    <td>vercors/test_Vercors5</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
-                    <td>analytics/test_openPorosity</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
-                    <td>analytics/test_powerPulse</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
-                    <td>gpr/test_GPR__1273K</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
-                    <td>gpr/test_GPR__1373K</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
-                    <td>gpr/test_GPR__1473K</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
-                    <td>gpr/test_GPR__1573K</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
-                    <td>gpr/test_GPR__1673K</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
-                    <td>gpr/test_GPR__1773K</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
-                    <td>gpr/test_GPR__1873K</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
-                    <td>gpr/test_GPR__1973K</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
-                    <td>gpr/test_GPR__2073K</td>
-                    <td class="pass">PASS</td>
-                    <td></td>
-                </tr>
-        
-                <tr>
                     <td>jog/test_PHENIXpins_point_01_r_1p0399mm</td>
                     <td class="pass">PASS</td>
                     <td></td>
@@ -717,6 +720,12 @@
                     <td>jog/test_PHENIXpins_point_04_r_2p4791mm</td>
                     <td class="pass">PASS</td>
                     <td></td>
+                </tr>
+        
+                <tr>
+                    <td>mox-po2/test_MOX_po2</td>
+                    <td class="skip">SKIP</td>
+                    <td>/home/ecappellari/trial/sciantix-official/verification/test_MOX_po2/run_temperature_sweep.py not found -- group excluded from this run</td>
                 </tr>
         
             </tbody>

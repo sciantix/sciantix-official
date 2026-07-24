@@ -1,6 +1,6 @@
 """
-sciantix regression suite
-author: Giovanni Zullo
+sciantix testing suite
+author: Giovanni Zullo, Elisa Cappellari
 """
 
 import numpy as np

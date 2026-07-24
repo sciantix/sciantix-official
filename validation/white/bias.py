@@ -30,7 +30,7 @@ the numbers are directly comparable.
 
 Requires a built executable at ``build/sciantix.x`` (run ``./Allmake.sh`` first).
 
-author: Giovanni Zullo
+author: Giovanni Zullo, Elisa Cappellari
 """
 
 import itertools

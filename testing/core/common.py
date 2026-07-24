@@ -1,13 +1,13 @@
 """
-sciantix regression suite
-author: Giovanni Zullo
+sciantix testing suite
+author: Giovanni Zullo, Elisa Cappellari
 """
 
 
 import os
 import subprocess
 import glob
-from regression.core.parser import SciantixOutput
+from testing.core.parser import SciantixOutput
 
 
 def clean_case_dir(case_dir: str, mode_gold: int):
@@ -52,8 +52,8 @@ def run_sciantix(case_dir: str):
         path to output.txt
     """
     # sciantix.x built inside build/
-    # __file__ = regression/core/common.py
-    # .. = regression
+    # __file__ = testing/core/common.py
+    # .. = testing
     # .. = root
     # root/build/sciantix.x
     exe = os.path.abspath(
