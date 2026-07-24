@@ -91,7 +91,7 @@ def load_xy(filepath):
 
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    regression_dir = script_dir # The script is in regression/oxidation/
+    regression_dir = script_dir # The script is in verification/test_oxidation/
     
     # Find all test folders (exclude figures and hidden)
     # Assuming test folders start with "test_" or are just directories that are not 'figures'
