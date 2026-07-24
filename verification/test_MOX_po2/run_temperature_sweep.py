@@ -115,10 +115,13 @@ def ensure_local_binary() -> None:
     shutil.copy2(BUILD_BINARY, LOCAL_BINARY)
 
 def template_input_files() -> list[Path]:
-    """Return the template input files that are replicated for each case."""
+    """Return the template input files that are replicated for each case.
+
+    These live under templates/, shared with generate_cases.py (see there for
+    why they aren't directly in this directory)."""
     return sorted(
         path
-        for path in SCRIPT_DIR.glob("input_*")
+        for path in (SCRIPT_DIR / "templates").glob("input_*")
         if path.is_file()
     )
 

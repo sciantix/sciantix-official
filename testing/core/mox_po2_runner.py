@@ -2,29 +2,39 @@
 sciantix testing suite
 author: Elisa Cappellari
 
-Dispatches verification/test_MOX_po2, which is script-driven (it generates (T,q) case directories via run_temperature_sweep.py, runs them,
-and deletes them again) rather than folder-scanned like every other
-registered group, so it can't go through generic_runner.run_group().
-
-Evaluates the two acceptance criteria documented in
-testing/README_oxygenpotential_VV.md:
+Evaluates the MOX pO2 accuracy check documented in
+testing/README_oxygenpotential_VV.md, on top of the ordinary gold-diff that
+generic_runner.run_group() already performs for the 9 persistent
+verification/test_MOX_po2/T_<T>K_q_<Pu>/ cases (registered like any other
+verification group -- see runner.py's REGISTRY):
   - Kato path (never needs OpenCalphad): max abs log10(pO2/p_ref) error < 1e-3
     over the whole domain.
   - CALPHAD path (needs OpenCalphad + upuo-v21.TDB): mean abs log10(pO2/p_ref)
     error < 0.05 and mean abs oxygen-potential error < 2 kJ/mol, per (q, T)
     group for T >= 1000 K. Skipped (not failed) when OC is unavailable.
+
+This module does not run sciantix.x itself -- it reads the output.txt that
+run_group() already produced for each case, concatenates them into the
+temperature_sweep_summary.tsv the comparison scripts expect, and invokes
+those scripts. If the group wasn't actually run (e.g. cases not selected, or
+mode-gold 3), it skips gracefully.
 """
 
 import csv
+import glob
 import os
 import subprocess
 import sys
 
+import pandas as pd
+
 MOX_PO2_DIR = os.path.abspath(os.path.join(
     os.path.dirname(__file__), "..", "..", "verification", "test_MOX_po2"
 ))
-SWEEP_SCRIPT = os.path.join(MOX_PO2_DIR, "run_temperature_sweep.py")
 VERIFICATION_DIR = os.path.join(MOX_PO2_DIR, "sciantix_verification")
+SUMMARY_TSV = os.path.join(MOX_PO2_DIR, "temperature_sweep_summary.tsv")
+COMPARE_KATO_SCRIPT = os.path.join(VERIFICATION_DIR, "compare_sciantix_with_kato.py")
+COMPARE_OC_SCRIPT = os.path.join(VERIFICATION_DIR, "compare_sciantix_with_oc_csv.py")
 KATO_RESIDUALS_TSV = os.path.join(VERIFICATION_DIR, "sciantix_vs_kato_residuals.tsv")
 OC_SUMMARY_TSV = os.path.join(VERIFICATION_DIR, "sciantix_vs_oc_csv_summary.tsv")
 
@@ -35,10 +45,7 @@ OC_MIN_TEMPERATURE_K = 1000.0
 
 REQUIRED_DATABASES = ["upuo-v21.TDB"]
 
-TEST_ID = "mox-po2/test_MOX_po2"
-
-TEMPERATURES_K = [1400, 1800, 2200]
-Q_VALUES = [0.10, 0.20, 0.30]
+TEST_ID = "mox-po2/accuracy-check"
 
 
 def _read_tsv(path):
@@ -78,44 +85,51 @@ def _check_calphad():
                     f"mean_abs_log_error={float(worst['mean_abs_log_error']):.3e})")
 
 
-def run(mode_gold: int, oc_status, suite="verification"):
+def _build_summary():
+    """Concatenate every persistent case's output.txt into temperature_sweep_summary.tsv."""
+    case_outputs = sorted(glob.glob(os.path.join(MOX_PO2_DIR, "T_*_q_*", "output.txt")))
+    if not case_outputs:
+        return None
+
+    frames = [pd.read_csv(path, sep="\t") for path in case_outputs]
+    summary = pd.concat(frames, ignore_index=True)
+    summary.to_csv(SUMMARY_TSV, sep="\t", index=False)
+    return len(case_outputs)
+
+
+def check_accuracy(oc_status, suite="verification"):
     """
-    Run the MOX pO2 verification sweep and evaluate both acceptance criteria.
+    Evaluate the Kato/CALPHAD accuracy thresholds against the persistent
+    T_<T>K_q_<Pu>/ cases' output.txt (already produced by run_group()'s
+    gold-diff dispatch -- this function never runs sciantix.x itself).
 
     Returns a single-element list [(test_id, ok, msg, suite)], ok in
-    {True, False, None} (None = skipped entirely, only for unsupported
-    mode_gold values -- there is no committed gold file for this group to
-    rewrite; the reference is the Kato equation and independent Thermo-Calc
-    tables, not output_gold.txt).
+    {True, False, None} (None = skipped, e.g. cases weren't actually run).
     """
-    if not os.path.isfile(SWEEP_SCRIPT):
-        return [(TEST_ID, None, f"{SWEEP_SCRIPT} not found -- group excluded from this run", suite)]
-
-    if mode_gold != 0:
-        return [(TEST_ID, None,
-                  "mode-gold only supports 0 (run+compare) for this script-driven group "
-                  "-- no output_gold.txt to rewrite/compare against", suite)]
-
-    sweep_args = [
-        sys.executable, SWEEP_SCRIPT,
-        "--temperatures", ",".join(str(t) for t in TEMPERATURES_K),
-        "--q-values", ",".join(f"{q:.2f}" for q in Q_VALUES),
-    ]
     try:
-        subprocess.run(sweep_args, cwd=MOX_PO2_DIR, check=True)
+        n_cases = _build_summary()
+    except Exception as e:
+        return [(TEST_ID, False, f"Could not build temperature_sweep_summary.tsv: {e}", suite)]
+
+    if not n_cases:
+        return [(TEST_ID, None, "no case output.txt found -- group excluded from this run", suite)]
+
+    try:
+        subprocess.run([sys.executable, COMPARE_KATO_SCRIPT], cwd=MOX_PO2_DIR, check=True)
     except subprocess.CalledProcessError as e:
-        return [(TEST_ID, False, f"run_temperature_sweep.py failed: {e}", suite)]
+        return [(TEST_ID, False, f"compare_sciantix_with_kato.py failed: {e}", suite)]
 
     try:
         kato_ok, kato_msg = _check_kato()
 
         if oc_status.available_for(REQUIRED_DATABASES):
+            subprocess.run([sys.executable, COMPARE_OC_SCRIPT], cwd=MOX_PO2_DIR, check=True)
             calphad_ok, calphad_msg = _check_calphad()
         else:
             calphad_ok = True
             calphad_msg = f"CALPHAD check skipped: {oc_status.reason_for(REQUIRED_DATABASES)}"
-    except (FileNotFoundError, KeyError, ValueError) as e:
-        return [(TEST_ID, False, f"Could not evaluate verification metrics: {e}", suite)]
+    except (FileNotFoundError, KeyError, ValueError, subprocess.CalledProcessError) as e:
+        return [(TEST_ID, False, f"Could not evaluate accuracy metrics: {e}", suite)]
 
     ok = kato_ok and calphad_ok
     if ok:

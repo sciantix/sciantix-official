@@ -4,9 +4,9 @@ SCIANTIX-CALPHAD vs Thermo-Calc (MOX)
 Comparison ranges: T = 753-2550 K, Pu/M = 0.10-0.32, O/M = 1.92-2.08
 Sciantix source points: 12627
 Sciantix points outside comparison ranges: 5040
-OC source points: 3090
-OC points outside comparison ranges: 1643
-OC points outside SCIANTIX interpolation overlap: 969
+OC source points: 925
+OC points outside comparison ranges: 445
+OC points outside SCIANTIX interpolation overlap: 2
 Compared points: 478
 Near O/M = 2.0 compared points: 9
 Mean absolute log10(pO2/p_ref) error: 2.174925e-02

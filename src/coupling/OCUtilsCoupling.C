@@ -1423,10 +1423,7 @@ namespace OCUtilsCoupling
                 {
                     const bool checked_equilibrium_ready = oc.calculateEquilibriumChecked();
                     if (!checked_equilibrium_ready)
-                    {
-                        std::cerr << "Warning: OpenCalphad checked equilibrium calculation failed" << std::endl;
                         clear_equilibrium = false;
-                    }
                 }
                 else if (solve_mode == OpenCalphadSolveMode::OnlyC1MO2)
                 {
@@ -1434,17 +1431,12 @@ namespace OCUtilsCoupling
                     oc.setPhaseStatus("GAS", 0, 1.0);
                     const bool gas_only_ready = oc.calculateEquilibrium(-1);
                     if (!gas_only_ready)
-                    {
-                        std::cerr << "Warning: OpenCalphad gas-only equilibrium calculation failed" << std::endl;
                         clear_equilibrium = false;
-                    }
+                    
                     oc.setPhaseStatus("C1_MO2", 0, 1.0);
                     const bool c1_mo2_ready = oc.calculateEquilibrium(-1) && oc.calculateEquilibriumChecked();
                     if (!c1_mo2_ready)
-                    {
-                        std::cerr << "Warning: OpenCalphad fixed C1_MO2 equilibrium failed" << std::endl;
                         clear_equilibrium = false;
-                    }
                 }
 
                 oc.extractResults(output_data);
@@ -1558,8 +1550,6 @@ namespace OCUtilsCoupling
                     return true;
                 }
 
-                std::cerr << "Warning: OpenCalphad output failed validation for " << location
-                          << "; retrying with temperature sweep" << std::endl;
                 output_data.solution_phases.clear();
                 output_data.components.clear();
                 return false;
