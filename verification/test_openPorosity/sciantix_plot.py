@@ -1,5 +1,5 @@
 """
-sciantix regression suite
+sciantix testing suite
 author: Giovanni Zullo
 
 Open-porosity / porosity-evolution plots (Baker 1977, 1273 K conditions).
@@ -17,12 +17,12 @@ The figures are built to make those choices legible:
     * overview.png                both stories side by side (for reports).
 
 Run from the repository root:
-    python3 -m regression.analytics.test_openPorosity.sciantix_plot
+    python3 verification/test_openPorosity/sciantix_plot.py
 
 or directly inside this folder:
     python3 sciantix_plot.py
 
-Execution and gold comparison are handled by the regression runner; this
+Execution and gold comparison are handled by the testing runner; this
 script only reads output.txt / output_gold.txt and draws the figures.
 """
 
@@ -33,7 +33,7 @@ from matplotlib.lines import Line2D
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from regression.core.common import load_output, load_gold
+from testing.core.common import load_output, load_gold
 
 # active model settings, annotated on the figures
 SETTINGS_NOTE = (

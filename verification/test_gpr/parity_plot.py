@@ -5,8 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from regression.core.common import load_output, load_gold
-from regression.core.plot import parity_plot
+from testing.core.common import load_output, load_gold
+from testing.core.plot import parity_plot
 
 
 # ------------------------------------------------------------

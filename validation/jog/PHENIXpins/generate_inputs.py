@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Manual preprocessing step for the JOG PHENIXpins regression cases.
+"""Manual preprocessing step for the JOG PHENIXpins test cases.
 
-Regenerates regression/jog/test_PHENIXpins_point_*/input_history.txt (via OXIRED)
+Regenerates validation/jog/test_PHENIXpins_point_*/input_history.txt (via OXIRED)
 and the Cs-production entry of input_scaling_factors.txt (via CSRED), using the
 preprocessing packages under utilities/preprocessing/. 
-Not run automatically by the regression suite.
+Not run automatically by the testing suite.
 """
 import re
 import subprocess

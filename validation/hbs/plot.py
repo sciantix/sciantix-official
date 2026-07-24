@@ -1,5 +1,5 @@
 """
-sciantix regression suite
+sciantix testing suite
 author: Giovanni Zullo
 """
 
@@ -8,11 +8,11 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 
-# Add the project root to path so we can import regression.core
+# Add the project root to path so we can import testing.core
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from regression.core.common import load_output
-from regression.core.plot import history_plot
+from testing.core.common import load_output
+from testing.core.plot import history_plot
 
 def load_experimental_xy(filepath):
     """

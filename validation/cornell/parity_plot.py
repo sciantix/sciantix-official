@@ -4,8 +4,8 @@ import sys
 import numpy as np
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from regression.core.common import load_output, load_gold
-from regression.core.plot import parity_plot
+from testing.core.common import load_output, load_gold
+from testing.core.plot import parity_plot
 
 
 # ------------------------------------------------------------
@@ -22,7 +22,7 @@ def extract_last(output, column):
 
 def load_experimental(basename):
     """
-    Load experimental data from regression/cornell/data/ (T, value).
+    Load experimental data from validation/cornell/data/ (T, value).
     """
     root = os.path.dirname(__file__)
     fpath = os.path.join(root, "data", basename)

@@ -42,7 +42,7 @@ import matplotlib.pyplot as plt
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from regression.core.common import run_sciantix, load_output, load_gold
+from testing.core.common import run_sciantix, load_output, load_gold
 
 # ------------------------------------------------------------
 # configuration
