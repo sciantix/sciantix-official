@@ -6,7 +6,7 @@ This section presents typical usage examples of SCIANTIX.
 Baker (1977) Benchmark
 ----------------------
 
-This example corresponds to the regression test ``test_Baker1977__1273K`` found in ``regression/baker/``. It represents an isothermal annealing experiment.
+This example corresponds to the test case ``test_Baker1977__1273K`` found in ``validation/baker/``. It represents an isothermal annealing experiment.
 
 Input Settings
 ~~~~~~~~~~~~~~
@@ -58,7 +58,7 @@ Key output variables for this case include:
 - **Grain boundary coverage**
 - **Fission gas release**
 
-You can find the reference results in ``output_gold.txt`` within the regression folder.
+You can find the reference results in ``output_gold.txt`` within the test case folder.
 
 Input Files Structure
 ---------------------
@@ -105,4 +105,4 @@ SCIANTIX expects a set of plain-text input files. The following templates show t
     1.0
     # scaling factor - trapping rate
 
-For complete guidance and more examples, consult the `utilities/InputExplanation.md` file or the regression examples in the `regression/` folder.
+For complete guidance and more examples, consult the `utilities/InputExplanation.md` file or the test cases in the `verification/` and `validation/` folders.

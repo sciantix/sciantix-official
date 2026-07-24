@@ -14,7 +14,7 @@ $$\left(\frac{R}{B}\right)_{\text{Turnbull}} \;=\; \frac{\text{release rate}\,(\
 
 at radioactive equilibrium.
 
-The two definitions look different - one is a ratio of cumulative quantities, the other is a ratio of rates - and the equivalence is not obvious. This document proves analytically that the two are **identical at radioactive equilibrium in the intra-granular Booth limit**, and verifies the result numerically using the SCIANTIX regression case `test_CONTACT1`.
+The two definitions look different - one is a ratio of cumulative quantities, the other is a ratio of rates - and the equivalence is not obvious. This document proves analytically that the two are **identical at radioactive equilibrium in the intra-granular Booth limit**, and verifies the result numerically using the SCIANTIX test case `test_CONTACT1`.
 
 ## 2. SCIANTIX accounting
 
@@ -109,7 +109,7 @@ For direct comparison with CONTACT R/B data, the recommended approach is therefo
 
 ## 6. Numerical verification
 
-The proof has been verified numerically by running [`regression/contact/test_CONTACT1`](regression/contact/test_CONTACT1) with `iGrainBoundaryBehaviour` switched from 1 to 0. The Xe-133 and Kr-85m R/B output columns are constant in time during periods of constant temperature and fission rate, exactly as Turnbull predicts:
+The proof has been verified numerically by running [`validation/contact/test_CONTACT1`](../validation/contact/test_CONTACT1) with `iGrainBoundaryBehaviour` switched from 1 to 0. The Xe-133 and Kr-85m R/B output columns are constant in time during periods of constant temperature and fission rate, exactly as Turnbull predicts:
 
 **Xe-133** at `T ≈ 1100 K`, plateau between 20 d and 144 d (`λt` from 2.6 to 19, more than 16 half-lives apart):
 

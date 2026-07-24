@@ -16,8 +16,8 @@ fi
 JOBS=$(nproc 2>/dev/null || echo 4)
 
 echo ""
-echo "===== RUNNING REGRESSION TESTS (using $JOBS threads) ====="
-python3 -m regression.runner -j "$JOBS" "$@"
+echo "===== RUNNING TESTS (using $JOBS threads) ====="
+python3 -m testing.runner -j "$JOBS" "$@"
 
 echo ""
 echo "===== DONE ====="

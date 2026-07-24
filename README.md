@@ -14,14 +14,14 @@ Currently, SCIANTIX is validated against experimental data for:
 - Helium behavior and release under annealing conditions
 - High-burnup structure (HBS) formation and porosity evolution
 
-The validation database and regression suite are available in the `regression/` directory.
+The validation database and testing suite are available in the `verification/` and `validation/` directories.
 
 # Installation
 
 Recommended requirements:
 - C++17 compatible compiler (tested: GCC ≥ 9, Clang ≥ 10)
 - CMake ≥ 3.6
-- Python 3.8+ (for regression suite)
+- Python 3.8+ (for the testing suite)
 
 ## Quick installation (Linux/WSL2)
 
@@ -78,20 +78,25 @@ python3 utilities/inputExample/print_input_initial_conditions.py
 python3 utilities/inputExample/print_input_scaling_factors.py
 ```
 
-# Regression tests
+# Tests
+
+Test cases live in two top-level directories: 
+-  `verification/` (to test specific models) 
+-  `validation/` (to test comparison with experimental data)
 
 To verify the installation and physics:
 ```bash
-./runRegression.sh
+./runTesting.sh
 ```
-Alternatively, run the runner directly:
+Alternatively, run the runner directly (no flags = run everything):
 ```bash
-python3 -m regression.runner --all -j $(nproc)
+python3 -m testing.runner -j $(nproc)
 ```
 
-JOG test (`regression/jog/`) needs the OC build above, so it is excluded from plain `--all`. `--oc` builds with OpenCalphad and runs every standard group plus jog:
+Some groups use the OpenCalphad coupling; they're attempted on every run and degrade gracefully if it isn't built. 
+`--oc` builds with OpenCalphad and asserts it's expected to be available, so any of these groups that still can't use it fails loudly instead of degrading:
 ```bash
-./runRegression.sh --oc
+./runTesting.sh --oc
 ```
 
 # Documentation
