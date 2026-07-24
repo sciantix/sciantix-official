@@ -9,7 +9,7 @@
 > (Politecnico di Milano, Nuclear Engineering Division).
 >
 > **Last audit: 2026-07-02** (previous: 2026-06-11) — clean rebuild OK with `-Wall
-> -Wextra` (zero warnings); full regression suite **109/109 PASS** (atol 1e-8 /
+> -Wextra` (zero warnings); full test suite **109/109 PASS** (atol 1e-8 /
 > rtol 1e-6); unit tests pass (`ctest --test-dir build`). §9 records what each audit
 > fixed and what remains open.
 
@@ -24,7 +24,7 @@ rate-theory models** rather than empirical correlations, so it couples cleanly t
 lower-length-scale calculations and runs both standalone and as an embedded module
 in fuel performance codes (TRANSURANUS, FRAPCON/FRAPTRAN, OFFBEAT).
 
-Language: **C++17**. Build: **CMake ≥ 3.6**. Regression suite: **Python 3.8+**.
+Language: **C++17**. Build: **CMake ≥ 3.6**. Testing suite: **Python 3.8+**.
 
 ---
 
@@ -42,7 +42,9 @@ src/                 implementation (.C)
   coupling/            TUSrcCoupling.C — TRANSURANUS coupling glue
   namespaces/          ErrorMessages
 include/               headers, mirrors src/ layout (several classes are header-only)
-regression/            Python regression suite + validation cases (§7)
+testing/               Python testing suite engine (runner.py, core/) (§7)
+verification/          test cases checked against SCIANTIX's own reference model (§7)
+validation/            test cases checked against real experimental data (§7)
 tests/                 unit tests (unit_tests.C, run via CTest — see §7)
 utilities/             InputExplanation.md + input-template generators + this file
 docs/                  Sphinx/Doxygen source for the online docs
@@ -204,7 +206,7 @@ Model literature is catalogued in `references/references.md` and the headers' Do
 
 ---
 
-## 7. Build & regression
+## 7. Build & testing
 
 **Build** (`Allmake.sh` → `build/` → `cmake .. && make -j`; `Allmake.sh --oc` first
 builds the OpenCalphad thermochemistry coupling from `../opencalphad-for-sciantix`,
@@ -220,39 +222,53 @@ then builds sciantix against it):
 - `Allclean.sh` removes `build/`, `obj/`, the executable, and `__pycache__`.
 - `CMakeLists.txt` globs all `src/**/*.C` and `include/**`; object files copied to `obj/`.
 
-**Regression** (`runRegression.sh` = clean + build + run; or `python3 -m
-regression.runner --all -j $(nproc)`):
+**Testing** (`runTesting.sh` = clean + build + run; or `python3 -m
+testing.runner -j $(nproc)`, no flags = run everything):
 
-- Each case is a directory (e.g. `regression/white/test_White2004_4000-1/`) holding the
-  three `input_*.txt` files plus a golden reference `output_gold.txt`.
+- Test cases live under two top-level siblings of `testing/`: `verification/`
+  (checked against SCIANTIX's own reference model) and `validation/` (checked
+  against real experimental data).
+- Each case is a directory (e.g. `validation/white/test_White2004_4000-1/`) holding the three `input_*.txt` files plus a golden reference `output_gold.txt`.
 - Runner executes `sciantix.x <case>/`, then compares `output.txt` vs `output_gold.txt`
   element-wise with **atol 1e-8 / rtol 1e-6**.
 - `--mode-gold`: `0` run+compare (default), `1` run+rewrite gold, `2` compare only,
   `3` rewrite gold only. **Regenerate gold deliberately**, never to paper over a diff.
-- Core logic: `regression/core/{generic_runner,compare,parser,common,report}.py`;
-  an HTML report is written to `regression/report.html`. Plots via `plotter.sh`.
+  OC-dependent groups refuse modes `1`/`3` when OpenCalphad is unavailable, to avoid silently overwriting real CALPHAD gold values.
+- Core logic: `testing/core/{generic_runner,compare,parser,common,report,
+  oc_status,mox_po2_runner}.py`;
+  An HTML report is written to `testing/report.html`. Plots via `plotter.sh`.
 
-**Validation groups** (each ↔ an experimental dataset / phenomenon):
+**Groups** (each ↔ an experimental dataset / phenomenon, or a self-consistency check for verification):
 
-| Group | Dataset / phenomenon |
-|---|---|
-| `baker`, `cornell` | early FGR datasets (Baker 1977; Cornell 1969) |
-| `white` | White (2004) GB bubble / FGR model validation |
-| `kashibe` | Kashibe (1990s) burnup/restructuring experiments |
-| `talip` | Talip (2014) He behaviour / annealing |
-| `vercors` | VERCORS severe-accident release campaign |
-| `hbs` | UO₂ high burnup structure porosity (`test_UO2HBS_*`) |
-| `oxidation` | UO₂ oxidation / stoichiometry deviation |
-| `chromium` | Cr-doped fuel solubility + microstructure |
-| `contact` | contact / mechanics case |
-| `analytics`/`gpr` | analytic power-pulse checks (`pulse` is an alias for `analytics`); GPR series |
-| `jog` | OpenCalphad-coupled JOG cases (`test_PHENIXpins_point_*`); excluded from plain `--all`/CI since it needs `Allmake.sh --oc` — run it  via `--oc`/`./runRegression.sh --oc` |
+| Group | Suite | Dataset / phenomenon |
+|---|---|---|
+| `openPorosity`, `powerPulse` | verification | analytic self-consistency checks (`pulse`/`analytics` alias covers both) |
+| `oxidation` | verification | UO₂ oxidation / stoichiometry deviation (Cox et al., Imamura and Une) |
+| `vercors` | verification | VERCORS-5 severe-accident release campaign |
+| `gpr` | verification | Gaussian Process Regression integration tests |
+| `mox-po2` | verification | MOX oxygen-potential verification vs. the Kato equation (always) and Thermo-Calc tables (needs OC — degrades gracefully, see below); script-driven, not folder-scanned |
+| `baker`, `cornell` | validation | early FGR datasets (Baker 1977; Cornell 1969) |
+| `white` | validation | White (2004) GB bubble / FGR model validation |
+| `kashibe` | validation | Kashibe (1990s) burnup/restructuring experiments |
+| `talip` | validation | Talip (2014) He behaviour / annealing |
+| `hbs` | validation | UO₂ high burnup structure porosity (`test_UO2HBS_*`) |
+| `chromium` | validation | Cr-doped fuel solubility + microstructure |
+| `contact` | validation | contact / mechanics case |
+| `jog` | validation | OpenCalphad-coupled JOG cases (`test_PHENIXpins_point_*`); needs OC — no non-OC analog, so the whole group is skipped (not just degraded) when OC is unavailable |
+| `oxygenpotential-freshfuel`, `oxygenpotential-burnup` | validation | MOX oxygen-potential validation vs. digitized experimental data (`--oxygenpotential` runs both); needs OC for the CALPHAD-path `output.txt` columns — degrades to Kato-path-only comparison when unavailable |
 
-`regression/white/bias.py` is a parameter-selection utility (not a test): it sweeps
+All OC-dependent groups (`jog`, `oxygenpotential-*`, `mox-po2`) are attempted on
+every run regardless of `--oc` — they degrade or skip gracefully (with a printed
+`[WARN]`/`[SKIP]`) when OpenCalphad/its required `.TDB` isn't available
+(`testing/core/oc_status.py` detects this once per run). Passing `--oc` turns
+that into a hard `[FAIL]` instead — an explicit assertion that OC is expected to
+work, so a forgotten `Allmake.sh --oc` build doesn't silently produce a green run.
+
+`validation/white/bias.py` is a parameter-selection utility (not a test): it sweeps
 scaling-factor combinations over the White (2004) cases and reports parity statistics
 (BIAS/RMSE/MAD) to support sensitivity-guided effective-parameter selection.
 
-**CI** (`.github/workflows/`): `ci.yml` builds `sciantix.x` and runs the regression
+**CI** (`.github/workflows/`): `ci.yml` builds `sciantix.x` and runs the test
 suite on push/PR; `clang-format-auto.yml` auto-formats C++; `pages.yml` deploys the
 Sphinx docs; `paper.yml` builds the JOSS paper. Since 2026-07, `ci.yml` also triggers
 on `pull_request`, runs `ctest` after the build, and has job timeouts.
@@ -266,7 +282,7 @@ on `pull_request`, runs `ctest` after the build, and has job timeouts.
   `input_settings.txt`, wired into the `execute()` order in `src/classes/Simulation.C`.
 - Add/expose state via `SciantixVariable` (set `to_output`/`uom`) in the `operations/`
   setup, not as loose globals.
-- **Any physics change must be reflected in the regression gold** — run the suite,
+- **Any physics change must be reflected in the test gold** — run the suite,
   inspect diffs, and only regenerate gold when the change is intended and understood.
 - Prose / documentation style for the HBS paper follows the locked-in rules recorded in
   memory (UK English; "high burnup" no hyphen; porosity symbol **ξ**; "parameter
@@ -277,7 +293,7 @@ on `pull_request`, runs `ctest` after the build, and has job timeouts.
 ## 9. Audit findings & remediation (2026-06-11)
 
 The 2026-06-11 audit found the weaknesses below; most were fixed the same day with
-the full regression suite staying at 109/109 PASS (all fixes are gold-neutral) and
+the full test suite staying at 109/109 PASS (all fixes are gold-neutral) and
 the TU-coupling library build verified.
 
 ### 9.1 Fixed
@@ -297,7 +313,7 @@ the TU-coupling library build verified.
   argument). **`QuarticEquation` had a real bug** — `if (function < tol)` accepted any
   negative residual as converged, returning a wrong root after one step when Newton
   approaches from below (caught by the new unit test); now `fabs(function) < tol`,
-  `max_iter` 5 → 50. No regression case changed (the bug never fired on validated
+  `max_iter` 5 → 50. No test case changed (the bug never fired on validated
   paths). Tolerances stay at 1e-3 to keep gold unchanged.
 - **NaN zeroing in `InterGranularBubbleBehavior.C`** now emits a once-per-run warning
   instead of being fully silent.
@@ -329,7 +345,7 @@ A four-agent review (models / numerical core / I-O wiring / tooling) found and f
 - **Resolution-rate scaling factor applied twice (sf²)** — `System::setResolutionRate`
   multiplied by `scaling_factors["Resolution rate"]` inside every switch case *and*
   again after the switch. Any run with sf ≠ 1 (i.e. `bias.py` sweeps) actually used
-  sf². Post-switch duplicate removed; gold-neutral (all regression sf = 1).
+  sf². Post-switch duplicate removed; gold-neutral (all test-suite sf = 1).
   **Resolution-rate sensitivity results produced before this fix used sf² and must be
   re-run.**
 - **"He at grain boundary" final value wired to `Sciantix_variables[71]`** (fabrication
@@ -339,7 +355,7 @@ A four-agent review (models / numerical core / I-O wiring / tooling) found and f
 - **Grain-boundary venting applied twice to each gas with the HBS matrix active** —
   the venting loop lacked the `getRestructuredMatrix() == 0` guard every sibling loop
   has, so with `iFuelMatrix = 1` the shared `[gas] at grain boundary` variable was
-  vented once per system. Guard added. Gold-neutral (no regression case combines
+  vented once per system. Guard added. Gold-neutral (no test case combines
   venting with HBS) — but it affected HBS + venting runs, e.g. on the porosity branch.
 - **Scaling-factor slot layout unified** — `InputReading.C`/`TUSrcCoupling.C` labelled
   slots 4/5/6 `sf_diffusivity2`/`sf_temperature`/`sf_fission_rate` while every input
@@ -361,7 +377,7 @@ A four-agent review (models / numerical core / I-O wiring / tooling) found and f
 - **`System.h` shadowed `Material::name`/`reference`** — every system reference string
   was written to the shadow and lost; `overview.txt` printed empty references. Shadow
   members removed; overview now shows full per-system references (not gold-compared).
-- **NaN silently passed the regression comparison** — `compare.py`'s tolerance mask is
+- **NaN silently passed the gold comparison** — `compare.py`'s tolerance mask is
   False for NaN. One-sided NaN is now a failure (both-NaN stays equal — the trailing
   empty output column parses to NaN on both sides); column headers are now compared too.
 - **CI hardening** — `pull_request` trigger, `ctest` step, `timeout-minutes`,
@@ -399,8 +415,7 @@ New in 2026-07 (see the review conversation for file/line detail):
   point (currently unreachable).
 - TU coupling: settings read from CWD but scaling factors from `TestPath`; history
   slots 7/8 double-booked (Time/step-number vs Burnup) under `COUPLING_TU`.
-- Tooling: `--pulse` runs the whole suite (`runner.py` group-selection bug); missing
-  test groups vanish silently; no subprocess timeout in `common.py`; the auto-format
+- Tooling: no subprocess timeout in `common.py`; the auto-format
   workflow pushes commits that never run CI; `error_log.txt` is not cleaned between
   runs; legacy `utilities/` scripts ignore exit codes.
 
@@ -412,13 +427,13 @@ New in 2026-07 (see the review conversation for file/line detail):
   variables risks silent index drift. A proper fix is an index-constants header (or
   name-based wiring) used by both sides.
 - **Vercors5 hits a NewtonBlackburn divergence** — the new non-convergence warning
-  fires once in `regression/vercors/test_Vercors5` with `|f| = nan` (Blackburn
+  fires once in `verification/test_vercors5` with `|f| = nan` (Blackburn
   thermochemistry outside its validity range during the severe-accident transient).
   The case still matches gold; the divergence is pre-existing physics behaviour now
   made visible. Worth investigating before extending the oxidation models.
 - Newton tolerances (1e-3, absolute) are loose and unscaled — kept for gold
   compatibility; revisit alongside a deliberate gold regeneration.
-- The regression suite remains end-to-end; unit tests cover `Solver`/`SciantixArray`
+- The test suite remains end-to-end; unit tests cover `Solver`/`SciantixArray`
   only, not the models or the input parser.
 - `CMakeLists.txt` still uses `GLOB_RECURSE` for sources and has no `install()`
   target (deliberate project conventions, low risk).
@@ -426,6 +441,6 @@ New in 2026-07 (see the review conversation for file/line detail):
 ---
 
 *Maintenance: update this file when the model `execute()` order, the I/O file set, the
-class architecture, or the regression layout changes. Re-run the §9 audit (build +
-unit tests + full regression + spot checks) when touching Solver, InputReading, or
+class architecture, or the testing layout changes. Re-run the §9 audit (build +
+unit tests + full test run + spot checks) when touching Solver, InputReading, or
 MainVariables.*

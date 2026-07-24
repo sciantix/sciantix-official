@@ -1,6 +1,6 @@
 """
 sciantix testing suite
-author: Giovanni Zullo
+author: Giovanni Zullo, Elisa Cappellari
 """
 
 import os

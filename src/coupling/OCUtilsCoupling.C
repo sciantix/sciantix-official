@@ -105,7 +105,7 @@ namespace OCASIAdapter
       private:
         int   currentErrorCode() const;
         void  resetErrorCode();
-        bool  consumeErrorCode(const std::string& operation);
+        bool  consumeErrorCode();
         int   getComponentIndex(const std::string& component_name) const;
         int   currentElementCount() const;
         char* currentComponentName(int index) const;
@@ -527,7 +527,7 @@ namespace OCASIAdapter
             c_reset_errors_number();
     }
 
-    bool OpenCalphadInterface::consumeErrorCode(const std::string& operation)
+    bool OpenCalphadInterface::consumeErrorCode()
     {
         const int error_code = currentErrorCode();
         if (error_code == 0)
@@ -679,7 +679,7 @@ namespace OCASIAdapter
         // same source tqcceq would have copied from on creation.
         resetErrorCode();
         OCASI_CALL(c_copyfracs, &base_ceq_, &ceq_);
-        return consumeErrorCode("reset recovery record from base equilibrium");
+        return consumeErrorCode();
     }
 
     bool OpenCalphadInterface::deleteCalculationRecord(const std::string& record_name)
@@ -702,7 +702,7 @@ namespace OCASIAdapter
 
         resetErrorCode();
         OCASI_CALL(c_tqdceq, ceq_name.data());
-        if (!consumeErrorCode("delete equilibrium record"))
+        if (!consumeErrorCode())
             return false;
 
         known_equilibrium_records_.erase(bounded_name);
@@ -730,7 +730,7 @@ namespace OCASIAdapter
 
         resetErrorCode();
         OCASI_CALL(c_copyfracs, &source_ceq, &ceq_);
-        const bool copied = consumeErrorCode("copy phase fractions into warm-start record");
+        const bool copied = consumeErrorCode();
 
         ceq_ = source_ceq;  // restore the caller's current selection
         return copied;
@@ -765,7 +765,7 @@ namespace OCASIAdapter
             OCASI_CALL(c_tqsetc, component_condition, component_index, 0, comp.second, &condition_number, &ceq_);
         }
 
-        return consumeErrorCode("condition setup");
+        return consumeErrorCode();
     }
 
     bool OpenCalphadInterface::setReferenceState(const std::string& component_name,
@@ -783,7 +783,7 @@ namespace OCASIAdapter
         double reference_temperature_pressure[2] = {temperature, pressure};
         resetErrorCode();
         OCASI_CALL(c_Set_Reference_State, component_index, phase, reference_temperature_pressure, &ceq_);
-        return consumeErrorCode("reference-state setup");
+        return consumeErrorCode();
     }
 
     bool OpenCalphadInterface::setComponentPotential(const std::string& component_name, double chemical_potential)
@@ -800,7 +800,7 @@ namespace OCASIAdapter
         resetErrorCode();
         OCASI_CALL(c_tqsetc, condition_name, component_index, 0, chemical_potential, &condition_number, &ceq_);
 
-        return consumeErrorCode("component-potential setup");
+        return consumeErrorCode();
     }
 
     bool OpenCalphadInterface::setPhaseStatus(const std::string& phase_name, int status, double value)
@@ -814,7 +814,7 @@ namespace OCASIAdapter
 
         resetErrorCode();
         OCASI_CALL(c_Change_Status_Phase, ph_name, status, value, &ceq_);
-        return consumeErrorCode("phase-status setup");
+        return consumeErrorCode();
     }
 
     bool OpenCalphadInterface::calculateEquilibrium(int grid_minimizer)
@@ -827,7 +827,7 @@ namespace OCASIAdapter
         resetErrorCode();
         OCASI_CALL(c_tqce, target, grid_minimizer, 0, &g_val, &ceq_);
 
-        return consumeErrorCode("equilibrium calculation");
+        return consumeErrorCode();
     }
 
     bool OpenCalphadInterface::calculateEquilibriumAllowingMarginalPhase(int grid_minimizer)
@@ -856,7 +856,7 @@ namespace OCASIAdapter
             return true;
         }
 
-        return consumeErrorCode("equilibrium calculation");
+        return consumeErrorCode();
     }
 
     bool OpenCalphadInterface::calculateEquilibriumChecked()
@@ -866,7 +866,7 @@ namespace OCASIAdapter
         resetErrorCode();
         OCASI_CALL(c_tqce_with_check_after, &ceq_);
 
-        return consumeErrorCode("checked equilibrium calculation");
+        return consumeErrorCode();
     }
 
     bool OpenCalphadInterface::listResults(int output_mode)
@@ -877,7 +877,7 @@ namespace OCASIAdapter
         resetErrorCode();
         OCASI_CALL(c_tqlr, output_mode, &ceq_);
 
-        return consumeErrorCode("result listing");
+        return consumeErrorCode();
     }
 
     bool OpenCalphadInterface::isPhaseTupleStable(int phase_tuple_index)
