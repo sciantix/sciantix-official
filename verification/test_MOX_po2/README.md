@@ -1,7 +1,20 @@
 # MOX pO2 Verification
 
 This directory runs a MOX oxygen partial pressure and oxygen-potential
-verification sweep for SCIANTIX. 
+verification sweep for SCIANTIX.
+
+**Two ways to run this, don't confuse them:**
+
+- **Routine (fast, ~2 min)**: `python3 -m testing.runner --mox-po2` runs the 9
+  persistent, committed `T_<T>K_q_<Pu>/` cases (1400/1800/2200 K x
+  0.10/0.20/0.30 -- see `generate_cases.py`) through the ordinary gold-diff,
+  then the accuracy check below via `testing/core/mox_po2_runner.py`. This is
+  what's described in `testing/README_oxygenpotential_VV.md`.
+- **Full/exploratory (slow, ~15 min with OC)**: everything described in this
+  file below (`run_temperature_sweep.py`, the full 800-2600 K x 3-q grid,
+  ephemeral case generation) -- useful for re-examining the low-T CALPHAD
+  mismatch or producing paper figures, unrelated to the routine path above.
+
 ## Scope
 
 The default sweep covers:

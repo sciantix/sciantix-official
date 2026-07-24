@@ -44,6 +44,8 @@ OCRequirement = namedtuple("OCRequirement", ["kind", "databases", "markers"])
 
 # (cli_name, suite, relpath_under_suite, case_prefix, extra_outputs, oc_requirement)
 REGISTRY = [
+    ("mox-po2", "verification", "test_MOX_po2", "T_",
+        (), OCRequirement("column_degrade", ("upuo-v21.TDB",), ("CALPHAD",))),
     ("openPorosity", "verification", "test_openPorosity", "", (), None),
     ("powerPulse",   "verification", "test_powerPulse",   "", (), None),
     ("oxidation",    "verification", "test_oxidation",    "test_UO2_oxidation", (), None),
@@ -87,8 +89,6 @@ def build_parser():
                          help="Alias for openPorosity + powerPulse")
     parser.add_argument("--oxygenpotential", action="store_true",
                          help="Alias for oxygenpotential-freshfuel + oxygenpotential-burnup")
-    parser.add_argument("--mox-po2", action="store_true",
-                         help="Run the MOX pO2 verification sweep (verification/test_MOX_po2)")
 
     parser.add_argument("--oc", action="store_true",
                          help="Strict mode: OpenCalphad is expected to be linked and every "
@@ -148,7 +148,7 @@ def main():
     targeted = parse_targeted(extras)
 
     explicit_selection = (
-        args.verification or args.validation or args.mox_po2
+        args.verification or args.validation
         or args.pulse or args.analytics or args.oxygenpotential
         or any(getattr(args, cli_dest(cli_name), False) for cli_name, *_ in REGISTRY)
         or bool(targeted)
@@ -163,10 +163,14 @@ def main():
 
     results = []
     oc_notes = []
+    mox_po2_selected = False
 
     for cli_name, suite, relpath, prefix, extra_outputs, oc_req in REGISTRY:
         if not is_selected(cli_name, suite, args, targeted, run_everything):
             continue
+
+        if cli_name == "mox-po2":
+            mox_po2_selected = True
 
         base_dir = os.path.join(SUITE_ROOTS[suite], *relpath.split("/"))
         group_only = targeted.get(cli_name)
@@ -207,9 +211,8 @@ def main():
             skip_is_failure=skip_is_failure, suite=suite,
         ))
 
-    mox_po2_selected = run_everything or args.verification or args.mox_po2
     if mox_po2_selected:
-        results.extend(mox_po2_runner.run(args.mode_gold, oc_status, "verification"))
+        results.extend(mox_po2_runner.check_accuracy(oc_status, "verification"))
 
     print("\n=== RESULTS ===")
     for name, ok, msg, suite in results:
