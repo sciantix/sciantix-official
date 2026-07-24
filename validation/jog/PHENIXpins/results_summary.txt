@@ -1,0 +1,95 @@
+Grain-boundary phases, pre-cooldown:
+  Point 1 (1.04 mm):
+    HCP (HCP_A3) (Ru0.31Pd0.29Mo0.22Rh0.09Tc0.08Cs0.00): 53.8 mol%
+    Liquid #2 (Ba$^{2+}$0.84Cs$^+$0.16 | MoO$_{4}$$^{2-}$0.63O$^{2-}$0.37): 40.6 mol%
+    Liquid #3 (Cs$^+$0.84Ba$^{2+}$0.16 | MoO$_{4}$$^{2-}$0.99O$^{2-}$0.00): 5.6 mol%
+  Point 2 (1.52 mm):
+    HCP (HCP_A3) (Ru0.32Pd0.30Mo0.20Rh0.09Tc0.08): 50.1 mol%
+    Liquid #2 (Ba$^{2+}$0.86Cs$^+$0.14 | MoO$_{4}$$^{2-}$0.70O$^{2-}$0.30): 37.7 mol%
+    Liquid #3 (Cs$^+$0.75Ba$^{2+}$0.25 | MoO$_{4}$$^{2-}$1.00O$^{2-}$0.00): 12.2 mol%
+  Point 3 (2.00 mm):
+    Liquid #2 (Ba$^{2+}$0.56Cs$^+$0.44 | MoO$_{4}$$^{2-}$0.96MoO$_{3}$0.04): 60.7 mol%
+    HCP (HCP_A3) (Ru0.43Pd0.22Mo0.14Rh0.12Tc0.10): 29.1 mol%
+    FCC (FCC_A1) (Pd0.66Ru0.11Mo0.10Tc0.08Rh0.05): 10.2 mol%
+  Point 4 (2.48 mm):
+    Cs$_{2}$MoO$_{4}$ (S2) (CS2MOO4_S2) (Cs1.00 | Mo1.00 | O1.00): 61.8 mol%
+    HCP (HCP_A3) (Ru0.65Rh0.17Tc0.16Pd0.02Cs0.00): 14.1 mol%
+    Ba$_{3}$MoO$_{6}$ (BA3MOO6) (Ba1.00 | Mo1.00 | O1.00): 14.0 mol%
+    FCC (FCC_A1) (Pd0.92Rh0.04Tc0.03Ru0.01Cs0.00): 9.2 mol%
+    BaO (halite) #2 (Ba$^{2+}$1.00 | O$^{2-}$1.00): 0.9 mol%
+
+Grain-boundary phases, post-cooldown:
+  Point 1 (1.04 mm):
+    BaMoO$_{4}$ (BAMOO4) (Ba1.00 | Mo1.00 | O1.00): 37.0 mol%
+    HCP (HCP_A3) (Ru0.71Tc0.19Rh0.10): 19.3 mol%
+    MoO$_{2}$ (MOO2) (Mo1.00 | O1.00): 19.2 mol%
+    FCC (FCC_A1) (Pd0.97Mo0.03): 12.5 mol%
+    Cs$_{2}$MoO$_{4}$ (S1) (CS2MOO4_S1) (Cs1.00 | Mo1.00 | O1.00): 7.4 mol%
+    HCP (ord.) (HCP_ORD) (Rh1.00 | Mo1.00 | Rh1.00 | Rh1.00): 4.6 mol%
+  Point 2 (1.52 mm):
+    BaMoO$_{4}$ (BAMOO4) (Ba1.00 | Mo1.00 | O1.00): 36.9 mol%
+    HCP (HCP_A3) (Ru0.70Tc0.19Rh0.11): 19.2 mol%
+    MoO$_{2}$ (MOO2) (Mo1.00 | O1.00): 18.3 mol%
+    FCC (FCC_A1) (Pd0.98Mo0.02): 12.2 mol%
+    Cs$_{2}$MoO$_{4}$ (S1) (CS2MOO4_S1) (Cs1.00 | Mo1.00 | O1.00): 9.2 mol%
+    HCP (ord.) #2 (Mo1.00 | Rh1.00 | Rh1.00 | Rh1.00): 4.1 mol%
+  Point 3 (2.00 mm):
+    BaMoO$_{4}$ (BAMOO4) (Ba1.00 | Mo1.00 | O1.00): 36.9 mol%
+    HCP (HCP_A3) (Ru0.64Rh0.19Tc0.17): 19.3 mol%
+    Cs$_{2}$MoO$_{4}$ (S1) (CS2MOO4_S1) (Cs1.00 | Mo1.00 | O1.00): 16.8 mol%
+    MoO$_{2}$ (MOO2) (Mo1.00 | O1.00): 15.2 mol%
+    FCC (FCC_A1) (Pd1.00): 11.8 mol%
+  Point 4 (2.48 mm):
+    Cs$_{2}$MoO$_{4}$ (S1) (CS2MOO4_S1) (Cs1.00 | Mo1.00 | O1.00): 62.0 mol%
+    HCP (HCP_A3) (Ru0.64Rh0.19Tc0.17): 14.5 mol%
+    Ba$_{3}$MoO$_{6}$ (BA3MOO6) (Ba1.00 | Mo1.00 | O1.00): 13.6 mol%
+    FCC (FCC_A1) (Pd1.00): 8.8 mol%
+    BaO (halite) #1 (Ba$^{2+}$1.00 | O$^{2-}$1.00): 1.1 mol%
+
+Grain-boundary phases, mid-irradiation:
+  Point 1 (1.04 mm):
+    HCP (HCP_A3) (Ru0.28Pd0.27Mo0.26Rh0.08Tc0.08Cs0.03): 65.3 mol%
+    Liquid #2 (Ba$^{2+}$0.90Cs$^+$0.10 | O$^{2-}$0.63MoO$_{4}$$^{2-}$0.37): 34.7 mol%
+  Point 2 (1.52 mm):
+    HCP (HCP_A3) (Ru0.28Pd0.27Mo0.25Rh0.08Tc0.08Cs0.03): 64.3 mol%
+    Liquid #2 (Ba$^{2+}$0.87Cs$^+$0.13 | O$^{2-}$0.63MoO$_{4}$$^{2-}$0.37): 34.7 mol%
+    Liquid #3 (Cs$^+$0.99Ba$^{2+}$0.01 | MoO$_{4}$$^{2-}$0.79O$^{2-}$0.00): 0.9 mol%
+  Point 3 (2.00 mm):
+    Liquid #2 (Cs$^+$0.53Ba$^{2+}$0.47 | MoO$_{4}$$^{2-}$1.00O$^{2-}$0.00): 45.1 mol%
+    HCP (HCP_A3) (Ru0.39Pd0.25Mo0.16Rh0.11Tc0.09): 33.4 mol%
+    Liquid #3 (Ba$^{2+}$0.87Cs$^+$0.13 | MoO$_{4}$$^{2-}$0.82O$^{2-}$0.18): 13.7 mol%
+    FCC (FCC_A1) (Pd0.65Mo0.11Ru0.11Tc0.09Rh0.05): 7.8 mol%
+  Point 4 (2.48 mm):
+    Cs$_{2}$MoO$_{4}$ (S2) (CS2MOO4_S2) (Cs1.00 | Mo1.00 | O1.00): 61.7 mol%
+    HCP (HCP_A3) (Ru0.65Rh0.17Tc0.16Pd0.02Cs0.00): 14.2 mol%
+    Ba$_{3}$MoO$_{6}$ (BA3MOO6) (Ba1.00 | Mo1.00 | O1.00): 14.1 mol%
+    FCC (FCC_A1) (Pd0.92Rh0.04Tc0.03Ru0.01Cs0.01): 9.3 mol%
+    BaO (halite) #2 (Ba$^{2+}$1.00 | O$^{2-}$1.00): 0.8 mol%
+
+JOG thickness (oxide contributions only, outer 2 node(s)):
+  End of irradiation, pre-cooldown (13.3 %FIMA): total = 48.0 um
+  Post-cooldown: total = 45.0 um
+    Ba3MoO6: pre-cooldown 3.3 um (7%), post-cooldown 3.2 um (7%), onset at burnup ~0.2 %FIMA
+    BaMoO4: pre-cooldown 0.0 um (0%), post-cooldown 10.9 um (24%), onset at burnup ~13.3 %FIMA
+    BaO: pre-cooldown 0.3 um (1%), post-cooldown 0.3 um (1%), onset at burnup ~1.2 %FIMA
+    Cs2MoO4: pre-cooldown 24.2 um (50%), post-cooldown 28.1 um (62%), onset at burnup ~0.8 %FIMA
+    MoO2: pre-cooldown 0.0 um (0%), post-cooldown 2.5 um (5%), onset at burnup ~13.3 %FIMA
+    liquid oxide: pre-cooldown 20.3 um (42%), post-cooldown 0.0 um (0%), onset at burnup ~0.8 %FIMA
+
+JOG thickness (oxides + metallics, outer 2 node(s)):
+  End of irradiation, pre-cooldown (13.3 %FIMA): total = 62.0 um
+  Post-cooldown: total = 57.7 um
+    Ba3MoO6: pre-cooldown 3.3 um (5%), post-cooldown 3.2 um (5%), onset at burnup ~0.2 %FIMA
+    BaMoO4: pre-cooldown 0.0 um (0%), post-cooldown 10.9 um (19%), onset at burnup ~13.3 %FIMA
+    BaO: pre-cooldown 0.3 um (0%), post-cooldown 0.3 um (1%), onset at burnup ~1.2 %FIMA
+    Cs2MoO4: pre-cooldown 24.2 um (39%), post-cooldown 28.1 um (49%), onset at burnup ~0.8 %FIMA
+    MoO2: pre-cooldown 0.0 um (0%), post-cooldown 2.5 um (4%), onset at burnup ~13.3 %FIMA
+    liquid oxide: pre-cooldown 20.3 um (33%), post-cooldown 0.0 um (0%), onset at burnup ~0.8 %FIMA
+    FCC: pre-cooldown 4.4 um (7%), post-cooldown 5.1 um (9%), onset at burnup ~1.4 %FIMA
+    HCP: pre-cooldown 9.6 um (15%), post-cooldown 7.6 um (13%), onset at burnup ~0.5 %FIMA
+
+JOG outer-node atomic composition (mediated over outer node(s)):
+  pre-cooldown: O 60.3, Cs 16.2, Mo 14.9, Ba 8.6 at.%
+    Cs/Mo = 1.09
+  post-cooldown: O 60.7, Cs 16.2, Mo 14.7, Ba 8.4 at.%
+    Cs/Mo = 1.10
