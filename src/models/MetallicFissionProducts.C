@@ -38,10 +38,10 @@ void Simulation::MetallicFissionProducts()
     // k_intra: precipitazione dentro i grani
     // k_gb:    precipitazione ai bordi grano
 
-    const double k_intra          = 0.241313858 * 1.100694171252e-01 * 9.261187281288e-01 * 1.047128548051e+00 *
-                                    scaling_factors["MFP precipitation rate intragranular"].getValue();
-    const double k_gb             = 0.944860042 * 4.641588833612e-02 * 8.413951416452e-01 * 9.120108393559e-01 *
-                                    scaling_factors["MFP precipitation rate grain boundary"].getValue();
+    const double k_intra = 0.241313858 * 1.100694171252e-01 * 9.261187281288e-01 * 1.047128548051e+00 *
+                           scaling_factors["MFP precipitation rate intragranular"].getValue();
+    const double k_gb = 0.944860042 * 4.641588833612e-02 * 8.413951416452e-01 * 9.120108393559e-01 *
+                        scaling_factors["MFP precipitation rate grain boundary"].getValue();
     const double k_res_ref        = 6.799e-19;  // s^-1, value used in the present calibration
     const double fission_rate_ref = 1.48e+19;   // fission rate used in the calibration
     const double k_res =
@@ -137,12 +137,12 @@ void Simulation::MetallicFissionProducts()
     sciantix_variable["Cm precipitated grain boundary"].setFinalValue(b_matrix[2]);
 
     // PROVA (in discussione con Vittoria, D4).
-    const double n_min = 2.0;
-    double N_candidate = N_iniziale + k_nucleazione *
+    const double n_min       = 2.0;
+    double       N_candidate = N_iniziale + k_nucleazione *
                                           (f_dislocation * dislocation_density + f_bubbles * bubble_sink_strenght) *
                                           disponibili;
-    double N_cap       = b_matrix[1] / n_min; // minimo numero di atomi per 5MP
-    double N_final     = std::max(std::min(N_candidate, N_cap), N_iniziale);
+    double N_cap   = b_matrix[1] / n_min;  // minimo numero di atomi per 5MP
+    double N_final = std::max(std::min(N_candidate, N_cap), N_iniziale);
     sciantix_variable["Intragranular 5MPs concentration"].setFinalValue(N_final);
 
     double n_media = (N_final > 0.0) ? (b_matrix[1] / N_final) : 0.0;
