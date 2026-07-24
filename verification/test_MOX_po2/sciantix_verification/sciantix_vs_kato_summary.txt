@@ -1,0 +1,27 @@
+SCIANTIX MOX verification vs explicit NEA Kato equation
+======================================================
+
+Comparison ranges: T = 753-2550 K, Pu/M = 0.10-0.32, O/M = 1.92-2.08
+Source points: 12627
+Compared points: 7224
+Excluded points outside comparison ranges: 5040
+Excluded points outside explicit Kato O/M interpolation range: 363
+Exact O/M = 2.0 compared points: 18
+Mean signed log10(p/reference) error: 7.024730e-06
+Mean absolute log10(p/reference) error: 1.213657e-05
+Maximum absolute log10(p/reference) error: 1.499236e-04
+Mean relative log10(p/reference) error (%): 1.764112e-04
+Max relative log10(p/reference) error (%): 1.545311e-03
+Maximum absolute oxygen-potential error (KJ/mol): 6.099589e-03
+
+Per-(q, temperature) summary:
+ q compared (-)  Temperature compared (K)  count  mean_abs_log_error  max_abs_log_error
+       0.099514                      1400    722            0.000034           0.000144
+       0.099514                      1800    722            0.000031           0.000150
+       0.099514                      2200    722            0.000027           0.000145
+       0.199135                      1400    843            0.000004           0.000009
+       0.199135                      1800    843            0.000004           0.000009
+       0.199135                      2200    843            0.000004           0.000009
+       0.298864                      1400    843            0.000005           0.000009
+       0.298864                      1800    843            0.000004           0.000009
+       0.298864                      2200    843            0.000004           0.000009

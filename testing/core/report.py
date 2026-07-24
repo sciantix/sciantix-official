@@ -11,8 +11,9 @@ def generate_html_report(results, output_dir, oc_summary=None):
     Generate an HTML report for test results.
 
     Args:
-        results: list of tuples (test_name, ok, message), ok in
-            {True, False, None} (None = skipped)
+        results: list of tuples (test_name, ok, message, suite), ok in
+            {True, False, None} (None = skipped); suite is
+            "verification" or "validation"
         output_dir: directory to save report.html
         oc_summary: optional string (one note per line) describing groups
             that were degraded or skipped for lack of OpenCalphad/a required
@@ -50,6 +51,9 @@ def generate_html_report(results, output_dir, oc_summary=None):
             .pass {{ color: green; font-weight: bold; }}
             .fail {{ color: red; font-weight: bold; }}
             .skip {{ color: #b8860b; font-weight: bold; }}
+            .suite {{ display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 0.85em; }}
+            .suite-verification {{ background-color: #e3f2fd; color: #1565c0; }}
+            .suite-validation {{ background-color: #f3e5f5; color: #7b1fa2; }}
         </style>
     </head>
     <body>
@@ -67,6 +71,7 @@ def generate_html_report(results, output_dir, oc_summary=None):
             <thead>
                 <tr>
                     <th>Test Case</th>
+                    <th>Suite</th>
                     <th>Status</th>
                     <th>Message</th>
                 </tr>
@@ -74,14 +79,16 @@ def generate_html_report(results, output_dir, oc_summary=None):
             <tbody>
     """
 
-    for name, ok, msg in results:
+    for name, ok, msg, suite in results:
         status_class = "pass" if ok is True else ("skip" if ok is None else "fail")
         status_text = "PASS" if ok is True else ("SKIP" if ok is None else "FAIL")
         message = msg if msg else ""
+        suite_text = (suite or "").capitalize()
 
         html += f"""
                 <tr>
                     <td>{name}</td>
+                    <td><span class="suite suite-{suite}">{suite_text}</span></td>
                     <td class="{status_class}">{status_text}</td>
                     <td>{message}</td>
                 </tr>
