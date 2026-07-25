@@ -44,8 +44,7 @@ To get started with SCIANTIX, follow these steps:
    
    .. code-block:: bash
 
-      cd regression
-      python3 runner.py --baker
+      python3 -m regression.runner --baker
 
 Next Steps
 ----------

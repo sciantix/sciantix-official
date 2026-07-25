@@ -1,7 +1,7 @@
 project = 'SCIANTIX'
 copyright = '2025, giozu'
 author = 'giozu'
-release = '2.1'
+release = '2.2.1'
 templates_path = ['_templates']
 exclude_patterns = []
 html_static_path = []

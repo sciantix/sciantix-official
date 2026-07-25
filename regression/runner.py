@@ -67,7 +67,7 @@ def main():
     
     if os.path.isdir(regression_root):
         for entry in os.scandir(regression_root):
-            if entry.is_dir() and entry.name not in ("core", "__pycache__", "analytics"): # analytics often handled separately or is empty
+            if entry.is_dir() and entry.name not in ("core", "__pycache__"):
                 # Check if it has at least one test_ folder
                 has_tests = False
                 for sub in os.scandir(entry.path):
@@ -79,9 +79,11 @@ def main():
 
     results = []
 
-    # Selected groups map
+    # Selected groups map. --pulse is an alias for --analytics and has no folder of its
+    # own, so it has to be checked explicitly: otherwise selecting it leaves
+    # explicit_selection False and the whole suite is run instead of the chosen group.
     explicit_selection = any([getattr(args, g, False) for g in available_groups if hasattr(args, g)])
-    explicit_selection = explicit_selection or bool(targeted)
+    explicit_selection = explicit_selection or args.pulse or bool(targeted)
 
     # Hardcoded runners list for compatibility and precise prefixes
     runners = [

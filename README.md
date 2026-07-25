@@ -27,7 +27,7 @@ is maintained in a dedicated repository:
 
 Recommended requirements:
 - C++17 compatible compiler (tested: GCC ≥ 9, Clang ≥ 10)
-- CMake ≥ 3.6
+- CMake ≥ 3.10
 - Python 3.8+ (for regression suite)
 
 ## Quick installation (Linux/WSL2)

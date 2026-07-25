@@ -15,6 +15,36 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "InputReading.h"
+#include <limits>
+
+/**
+ * @brief Discards the remainder of the current line.
+ *
+ * The inline comment that follows every entry has no length limit: bounding the skip
+ * (as a fixed ignore(256) does) leaves the tail of a long comment in the stream, the
+ * next extraction then fails and every remaining entry is silently read as zero.
+ */
+static void skipRestOfLine(std::ifstream& input_file)
+{
+    input_file.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
+/**
+ * @brief Aborts if an extraction failed on malformed content rather than at end of file.
+ * @param variable_name The name of the entry being read, reported in the error message.
+ * @param input_file The stream to inspect.
+ *
+ * A failed extraction leaves the value at zero and latches failbit, so without this check
+ * a single malformed token silently zeroes every entry that follows it. Reaching the end
+ * of the file is *not* treated as an error: the input files are allowed to stop early and
+ * leave the trailing entries at their default of zero, which the whole validation database
+ * relies on (no case supplies the last one or two blocks).
+ */
+static void checkMalformedEntry(const std::string& variable_name, std::ifstream& input_file)
+{
+    if (input_file.fail() && !input_file.eof())
+        ErrorMessages::Fatal("InputReading.C", "malformed value for the input entry \"" + variable_name + "\"");
+}
 
 /**
  * @brief Read a single setting from the input file.
@@ -25,12 +55,13 @@
  */
 unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
 {
-    char               comment;
-    unsigned short int variable;
+    char               comment('\0');
+    unsigned short int variable(0);
     input_file >> variable;
+    checkMalformedEntry(variable_name, input_file);
     input_file >> comment;
     if (comment == '#')
-        input_file.ignore(256, '\n');
+        skipRestOfLine(input_file);
     output_file << variable_name << " = " << variable << std::endl;
     return variable;
 }
@@ -44,12 +75,13 @@ unsigned short int ReadOneSetting(std::string variable_name, std::ifstream& inpu
  */
 double ReadOneParameter(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
 {
-    char   comment;
-    double variable;
+    char   comment('\0');
+    double variable(0.0);
     input_file >> variable;
+    checkMalformedEntry(variable_name, input_file);
     input_file >> comment;
     if (comment == '#')
-        input_file.ignore(256, '\n');
+        skipRestOfLine(input_file);
     output_file << variable_name << " = " << variable << std::endl;
     return variable;
 }
@@ -64,8 +96,8 @@ double ReadOneParameter(std::string variable_name, std::ifstream& input_file, st
 std::vector<double>
 ReadSeveralParameters(std::string variable_name, std::ifstream& input_file, std::ofstream& output_file)
 {
-    char      comment;
-    double    variable;
+    char      comment('\0');
+    double    variable(0.0);
     short int K(0);
 
     std::vector<double> vector_read;
@@ -83,7 +115,7 @@ ReadSeveralParameters(std::string variable_name, std::ifstream& input_file, std:
     input_file >> comment;
 
     if (comment == '#')
-        input_file.ignore(256, '\n');
+        skipRestOfLine(input_file);
 
     return vector_read;
 }

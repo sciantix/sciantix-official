@@ -109,10 +109,13 @@ void Simulation::GrainBoundaryVenting()
 
     for (auto& system : sciantix_system)
     {
-        sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
-            solver.Integrator(sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue(),
-                              -sciantix_variable["Intergranular venting probability"].getFinalValue(),
-                              sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement()));
+        if (system.getRestructuredMatrix() == 0)
+        {
+            sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
+                solver.Integrator(sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue(),
+                                  -sciantix_variable["Intergranular venting probability"].getFinalValue(),
+                                  sciantix_variable[system.getGasName() + " at grain boundary"].getIncrement()));
+        }
     }
 }
 

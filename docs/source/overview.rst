@@ -153,7 +153,7 @@ SCIANTIX requires three main input files that define the simulation setup, histo
    
    A single-column text file with integer flags selecting which physics models and numerical methods to use. Example structure:
    
-   .. code-block:: plaintext
+   .. code-block:: text
    
        1    #    iGrainGrowth (0= no, 1= Ainscough, 2= Van Uffelen)
        1    #    iFissionGasDiffusivity (0= constant, 1= Turnbull et al.)
@@ -167,7 +167,7 @@ SCIANTIX requires three main input files that define the simulation setup, histo
    
    A four-column text file defining the simulation history with linear interpolation between specified points:
    
-   .. code-block:: plaintext
+   .. code-block:: text
    
        Time(h)    Temperature(K)    FissionRate(fiss/m³-s)    HydrostaticStress(MPa)
        0          1273              1e19                      0
@@ -179,7 +179,7 @@ SCIANTIX requires three main input files that define the simulation setup, histo
    
    A structured text file with values followed by comments:
    
-   .. code-block:: plaintext
+   .. code-block:: text
    
        5.0e-06
        # initial grain radius (m)
@@ -197,7 +197,7 @@ SCIANTIX requires three main input files that define the simulation setup, histo
    
    A single-column text file with scaling factors applied to model parameters:
    
-   .. code-block:: plaintext
+   .. code-block:: text
    
        1.0
        # scaling factor - resolution rate
