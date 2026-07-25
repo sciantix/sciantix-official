@@ -156,7 +156,9 @@ ThermochemistrySettings LoadThermochemistrySettings(const std::string& path)
         }
     }
 
+#ifdef USE_OPENCALPHAD
     settings.opencalphad_path = resolveOpenCalphadPath();
+#endif
 
     return settings;
 }
