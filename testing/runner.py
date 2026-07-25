@@ -42,10 +42,17 @@ OCRequirement = namedtuple("OCRequirement", ["kind", "databases", "markers"])
 # kind: "column_degrade" -- still run, excluding `markers`-matching columns from comparison
 #       "skip_group"     -- OC affects nearly every column with no non-OC analog; skip entirely
 
+# "Fuel oxygen partial pressure"/"potential" (no suffix) are the "selected" columns:
+# SetPhaseDiagram.C/OCUtilsCoupling.C's updateMatrixFromOutput() overwrites them with the
+# CALPHAD solve whenever it succeeds, so their gold gets recorded as the CALPHAD value; the
+# suffixed variants (" - Kato (MPa)", " - CALPHAD (MPa)", etc.) are unaffected and stay
+# comparable, so the marker must match only the exact unsuffixed header, not those.
+OXYGEN_POTENTIAL_MARKERS = ("CALPHAD", "Fuel oxygen partial pressure (MPa)", "Fuel oxygen potential (KJ/mol)")
+
 # (cli_name, suite, relpath_under_suite, case_prefix, extra_outputs, oc_requirement)
 REGISTRY = [
     ("mox-po2", "verification", "test_MOX_po2", "T_",
-        (), OCRequirement("column_degrade", ("upuo-v21.TDB",), ("CALPHAD",))),
+        (), OCRequirement("column_degrade", ("upuo-v21.TDB",), OXYGEN_POTENTIAL_MARKERS)),
     ("openPorosity", "verification", "test_openPorosity", "", (), None),
     ("powerPulse",   "verification", "test_powerPulse",   "", (), None),
     ("oxidation",    "verification", "test_oxidation",    "test_UO2_oxidation", (), None),
@@ -63,9 +70,9 @@ REGISTRY = [
     ("jog", "validation", "jog", "test_PHENIXpins", ("thermochemistry_output.txt",),
         OCRequirement("skip_group", ("BaMoO_CsMoO_MoPdRhRuTc_merged.TDB",), ())),
     ("oxygenpotential-freshfuel", "validation", "oxygenpotential/freshfuel", "test_",
-        (), OCRequirement("column_degrade", ("upuo-v21.TDB",), ("CALPHAD",))),
+        (), OCRequirement("column_degrade", ("upuo-v21.TDB",), OXYGEN_POTENTIAL_MARKERS)),
     ("oxygenpotential-burnup", "validation", "oxygenpotential/burnup", "test_",
-        (), OCRequirement("column_degrade", ("upuo-v21.TDB",), ("CALPHAD",))),
+        (), OCRequirement("column_degrade", ("upuo-v21.TDB",), OXYGEN_POTENTIAL_MARKERS)),
 ]
 
 def cli_dest(cli_name):
