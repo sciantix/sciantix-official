@@ -57,6 +57,9 @@ docs/doxygen/
 docs/source/api/
 latex/
 
+# Written by the regression runner on every run
+regression/report.html
+
 
 ########################################
 # Python

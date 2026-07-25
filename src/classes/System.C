@@ -449,7 +449,7 @@ void System::setFissionGasDiffusivity(int                              input_val
             double Cr_content = Cr_atoms / (Cr_atoms + U_content) * 100;            // at.%
 
             // linear fitting of amorphous Cr doped-UO2 data
-            double activation_energy = scaling_factors["Diffusivity"].getValue() * (Cr_content - 173.3) / (-532.3);
+            double activation_energy      = scaling_factors["Diffusivity"].getValue() * (Cr_content - 173.3) / (-532.3);
             double Pre_exponential_factor = (Cr_content - 41.93) / (-1.376e+9);
 
             diffusivity =

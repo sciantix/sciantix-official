@@ -16,12 +16,12 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install clang-format
-        run: sudo apt-get update && sudo apt-get install -y clang-format
+        run: sudo apt-get update && sudo apt-get install -y clang-format-18
 
       - name: Format C++ code
         run: |
           echo "Formatting SCIANTIX code..."
-          clang-format -i $(find src include -name "*.C" -o -name "*.h")
+          clang-format-18 -i $(find src include -name "*.C" -o -name "*.h")
 
       - name: Commit formatted code
         run: |

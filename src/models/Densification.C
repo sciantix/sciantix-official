@@ -92,8 +92,7 @@ void Simulation::Densification()
         residual_porosity * (1.0 - residual_porosity_fraction) / residual_porosity_fraction;
 
     sciantix_variable["Fabrication porosity"].setFinalValue(
-        residual_porosity +
-        densifiable_porosity * (1.0 - sciantix_variable["Densification factor"].getFinalValue()));
+        residual_porosity + densifiable_porosity * (1.0 - sciantix_variable["Densification factor"].getFinalValue()));
 
     sciantix_variable["Porosity"].addValue(sciantix_variable["Fabrication porosity"].getIncrement());
 }
