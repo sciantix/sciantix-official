@@ -8,8 +8,8 @@
 > Maintainers: G. Zullo, E. Cappellari, G. Nicodemo, A. Zayat, D. Pizzocri, L. Luzzi
 > (Politecnico di Milano, Nuclear Engineering Division).
 >
-> **Last audit: 2026-07-02** (previous: 2026-06-11) — clean rebuild OK with `-Wall
-> -Wextra` (zero warnings); full regression suite **109/109 PASS** (atol 1e-8 /
+> **Last audit: 2026-07-25** (previous: 2026-07-02, 2026-06-11) — clean rebuild OK with
+> `-Wall -Wextra` (zero warnings); full regression suite **110/110 PASS** (atol 1e-8 /
 > rtol 1e-6); unit tests pass (`ctest --test-dir build`). §9 records what each audit
 > fixed and what remains open.
 
@@ -24,7 +24,7 @@ rate-theory models** rather than empirical correlations, so it couples cleanly t
 lower-length-scale calculations and runs both standalone and as an embedded module
 in fuel performance codes (TRANSURANUS, FRAPCON/FRAPTRAN, OFFBEAT).
 
-Language: **C++17**. Build: **CMake ≥ 3.6**. Regression suite: **Python 3.8+**.
+Language: **C++17**. Build: **CMake ≥ 3.10**. Regression suite: **Python 3.8+**.
 
 ---
 
@@ -375,8 +375,7 @@ New in 2026-07 (see the review conversation for file/line detail):
   decision needed (changing it alters validated results).
 - **Densification compounds the (1 − f) reduction every time step** — result depends
   on step count, not just burnup. Intent check against the reference model needed.
-- Input-parsing robustness: malformed tokens in `input_settings.txt` silently zero all
-  subsequent options (no `.fail()` checks); short lines in
+- Input-parsing robustness (partly closed on 2026-07-25, see §9.5): short lines in
   `input_initial_conditions.txt` cause out-of-bounds vector reads; a 4-column history
   with `iStoichiometryDeviation > 0` interleaves times/pressures; a history not
   starting at t = 0 causes a dt = 0 infinite loop; `InputInterpolation.C` uses `short`
@@ -396,10 +395,9 @@ New in 2026-07 (see the review conversation for file/line detail):
   point (currently unreachable).
 - TU coupling: settings read from CWD but scaling factors from `TestPath`; history
   slots 7/8 double-booked (Time/step-number vs Burnup) under `COUPLING_TU`.
-- Tooling: `--pulse` runs the whole suite (`runner.py` group-selection bug); missing
-  test groups vanish silently; no subprocess timeout in `common.py`; the auto-format
-  workflow pushes commits that never run CI; `error_log.txt` is not cleaned between
-  runs; legacy `utilities/` scripts ignore exit codes.
+- Tooling: missing test groups vanish silently; no subprocess timeout in `common.py`;
+  the auto-format workflow pushes commits that never run CI; `error_log.txt` is not
+  cleaned between runs; legacy `utilities/` scripts ignore exit codes.
 
 ### 9.4 Still open (from 2026-06)
 
@@ -419,6 +417,50 @@ New in 2026-07 (see the review conversation for file/line detail):
   only, not the models or the input parser.
 - `CMakeLists.txt` still uses `GLOB_RECURSE` for sources and has no `install()`
   target (deliberate project conventions, low risk).
+
+### 9.5 Fixed in the 2026-07-25 review
+
+Full suite 110/110 PASS after each change (the suite grew from 109 to 110 with
+`analytics/test_openPorosity`); all fixes below are gold-neutral.
+
+- **The grain-boundary venting guard added in §9.2 had been lost again.** The
+  `getRestructuredMatrix() == 0` guard in `GrainBoundaryVenting.C` was reintroduced in
+  commit `c21e418a` and dropped by the merge `8f66f7dd`, so with `iFuelMatrix = 1` the
+  shared `[gas] at grain boundary` variable was again vented once per system. Restored,
+  this time with a comment stating why it is there. Measured on `test_UO2HBS` with
+  `iGrainBoundaryVenting = 1`: Xe at grain boundary +18%, intergranular swelling +18%,
+  intergranular atoms per bubble +45%, 14 of 55 output columns affected. **Results
+  produced on the porosity branch with venting active must be re-run.**
+- **`ReadOneSetting`/`ReadOneParameter` truncated the inline comment** at 256
+  characters (`ignore(256, '\n')`). A longer comment left its tail in the stream and
+  every following entry was read as zero, with no diagnostic: a 400-character comment
+  on `test_openPorosity` silently disabled `iDensification` and shifted the final FGR by
+  12 % while exiting 0. The skip is now unbounded.
+- **A malformed value is now a fatal error** naming the entry, instead of latching
+  failbit and zeroing everything after it. The check is deliberately `fail() && !eof()`:
+  reaching the end of the file stays legal, because no case in the validation database
+  supplies all 14 initial-condition blocks (95 supply 12, 15 supply 13) and the trailing
+  defaults of zero come precisely from that tolerance. Making plain `fail()` fatal would
+  break all 110 cases.
+- `comment` and `variable` are now initialised in the three read helpers; the
+  `comment == '#'` test previously read an indeterminate value when extraction failed.
+- **The input generators no longer emit files the parser misreads.**
+  `print_input_settings.py` was missing the trailing newlines and the
+  `iChromiumSolubility`/`iReleaseMode` entries (so `iDensification` landed in the wrong
+  slot); `print_input_initial_conditions.py` was missing the `Chromium content` block.
+  Both now assert their own completeness, and `utilities/InputExplanation.md` documents
+  templates verified byte-identical to their output.
+- `--pulse` / `--analytics` now run only the analytics group: `analytics` was excluded
+  from the runner's group discovery, so selecting it left `explicit_selection` False and
+  the whole suite ran.
+- `UpdateVariables.C` uses `N_MODE_BLOCKS` instead of the literal `j <= 17`, completing
+  the §9.1 cleanup (behaviour-identical).
+- Documentation aligned with the code: the regression invocations quoted in
+  `index.rst`, `installation.rst` and `CONTRIBUTING.md` pointed at a `regression.py`
+  that no longer exists; `regression.rst` mis-described four validation suites (White is
+  intergranular swelling from White 2004, Talip is helium annealing, CONTACT is the
+  Xe133/Kr85m R/B experiment, Cornell is intragranular bubbles) and `--mode-gold 3`;
+  `conf.py` still declared release 2.1.
 
 ---
 

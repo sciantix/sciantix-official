@@ -11,7 +11,10 @@ This example corresponds to the regression test ``test_Baker1977__1273K`` found 
 Input Settings
 ~~~~~~~~~~~~~~
 
-The ``input_settings.txt`` file defines the active physical models.
+The ``input_settings.txt`` file defines the active physical models. Only the first
+14 of the 25 entries are shown here; the file must always contain all of them, in
+the order given in ``utilities/InputExplanation.md``, because they are read
+positionally.
 
 .. code-block:: text
 
@@ -29,6 +32,7 @@ The ``input_settings.txt`` file defines the active physical models.
     0    #    iFuelMatrix (0= UO2)
     0    #    iGrainBoundaryVenting (0= no model considered)
     0    #    iRadioactiveFissionGas (0= not considered)
+    ...
 
 Input History
 ~~~~~~~~~~~~~

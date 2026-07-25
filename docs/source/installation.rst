@@ -11,7 +11,7 @@ SCIANTIX requires the following minimum specifications:
   - GCC ≥ 9
   - Clang ≥ 10
 
-- **Build System**: CMake ≥ 3.6
+- **Build System**: CMake ≥ 3.10
 
 - **Operating System**:
   
@@ -76,9 +76,9 @@ To speed up compilation using multiple cores:
 
 .. code-block:: bash
 
-    make -j
+    make -jN
 
-where `` is the number of cores to use (e.g., `make -j4` for 4 cores or `make -j` to use all available cores).
+where `N` is the number of cores to use (e.g., `make -j4` for 4 cores, or `make -j` to use all available cores).
 
 **Step 5: Verify the Build**
 
@@ -185,23 +185,27 @@ To verify that SCIANTIX is correctly installed and functioning:
 
 **Method 1: Run Regression Tests**
 
-The repository includes a comprehensive regression testing suite:
+The repository includes a comprehensive regression testing suite. From the repository root:
 
 .. code-block:: bash
 
-    cd regression
-    python3 regression.py
+    python3 -m regression.runner --all -j $(nproc)
+
+or, equivalently, the wrapper that rebuilds first:
+
+.. code-block:: bash
+
+    ./runRegression.sh
 
 This executes all validation tests and compares results against established benchmarks. Successful completion indicates a correct installation.
 
 **Method 2: Run a Single Example**
 
-Navigate to one of the provided example directories and run a single simulation:
+Pass the directory of a single test case to the executable:
 
 .. code-block:: bash
 
-    cd regression/baker
-    ../../build/sciantix.x
+    ./build/sciantix.x regression/baker/test_Baker1977__1273K/
 
 Check the output files to verify correct execution.
 
@@ -269,9 +273,10 @@ After successful installation:
 2. Examine the :doc:`examples` for practical usage
 3. Run the :doc:`regression` tests to validate your installation
 4. Refer to the :doc:`models` documentation for model details
+5. Check the :doc:`api/index_api` for API information
 
 Contributing & development workflow
-----------------------------------
+-----------------------------------
 
 Follow the repository `CONTRIBUTING.md` guidance when contributing changes
 to SCIANTIX. A concise development workflow is provided here for convenience:
@@ -291,7 +296,7 @@ to SCIANTIX. A concise development workflow is provided here for convenience:
 
 .. code-block:: bash
 
-     python3 regression/regression.py
+     python3 -m regression.runner --all -j $(nproc)
 
 5. **Build the documentation locally** to verify formatting and links:
 
@@ -317,4 +322,3 @@ to SCIANTIX. A concise development workflow is provided here for convenience:
 
 If you are unsure about the scope of a change, open an issue first to discuss
 the proposal with the maintainers.
-5. Check the :doc:`api/index_api` for API information

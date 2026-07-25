@@ -89,7 +89,7 @@ where :math:`I^{n+1}` is the final value of ``Intergranular fractional intactnes
 Reference: Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE.
 
 Model Option 2: Open porosity-based (Claisse & Van Uffelen)
-----------------------------------------------------------
+-----------------------------------------------------------
 
 For ``iGrainBoundaryVenting = 2``, the probability depends on the open porosity $p_{\mathrm{open}}$:
 

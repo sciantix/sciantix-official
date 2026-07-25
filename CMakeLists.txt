@@ -9,7 +9,7 @@
 #
 # Author: G. Zullo (giovanni.zullo@polimi.it)
 
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.10)
 
 if(APPLE)
     message(STATUS "Configuring on macOS, setting custom compilers...")

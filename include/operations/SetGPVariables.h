@@ -24,17 +24,9 @@
 #include "SetVariablesFunctions.h"
 
 /**
- * @brief Updates gas properties from GPR.
+ * @brief Include-only header for the Gaussian-process variable set-up.
  *
  * @author G. Nicodemo
  */
-
-void SetGPVariables(int                              Sciantix_options[],
-                    double                           Sciantix_history[],
-                    double                           Sciantix_variables[],
-                    SciantixArray<InputVariable>&    input_variable,
-                    SciantixArray<SciantixVariable>& history_variable,
-                    SciantixArray<SciantixVariable>& sciantix_variable,
-                    SciantixArray<SciantixVariable>& physics_variable);
 
 #endif

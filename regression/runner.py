@@ -31,6 +31,7 @@ def main():
     parser.add_argument("--hbs", action="store_true")
     parser.add_argument("--vercors", action="store_true")
     parser.add_argument("--pulse", action="store_true")
+    parser.add_argument("--analytics", action="store_true")
     parser.add_argument("--gpr", action="store_true")
     parser.add_argument("--all", action="store_true")
 
@@ -48,7 +49,16 @@ def main():
         help="Number of parallel threads (default=1)"
     )
 
-    args = parser.parse_args()
+    args, extras = parser.parse_known_args()
+
+    targeted = {}  # group -> set of case names/substrings
+    for tok in extras:
+        if tok.startswith("--") and "." in tok:
+            group, _, case = tok[2:].partition(".")
+            if group and case:
+                targeted.setdefault(group, set()).add(case)
+        else:
+            print(f"[WARN] Ignoring unrecognized argument: {tok}")
 
     # Dynamic discovery of regression groups
     # We look for folders in regression/ that contain test cases (folders starting with test_)
@@ -57,7 +67,7 @@ def main():
     
     if os.path.isdir(regression_root):
         for entry in os.scandir(regression_root):
-            if entry.is_dir() and entry.name not in ("core", "__pycache__", "analytics"): # analytics often handled separately or is empty
+            if entry.is_dir() and entry.name not in ("core", "__pycache__"):
                 # Check if it has at least one test_ folder
                 has_tests = False
                 for sub in os.scandir(entry.path):
@@ -68,10 +78,13 @@ def main():
                     available_groups.append(entry.name)
 
     results = []
-    
-    # Selected groups map
+
+    # Selected groups map. --pulse is an alias for --analytics and has no folder of its
+    # own, so it has to be checked explicitly: otherwise selecting it leaves
+    # explicit_selection False and the whole suite is run instead of the chosen group.
     explicit_selection = any([getattr(args, g, False) for g in available_groups if hasattr(args, g)])
-    
+    explicit_selection = explicit_selection or args.pulse or bool(targeted)
+
     # Hardcoded runners list for compatibility and precise prefixes
     runners = [
         ("baker", "test_Baker"),
@@ -84,7 +97,7 @@ def main():
         ("contact", "test_CONTACT"),
         ("hbs", "test_UO2HBS"),
         ("vercors", "test_Vercors"),
-        ("analytics", "test_powerPulse"), # 'pulse' arg maps to 'analytics' group
+        ("analytics", "test_"), # 'pulse'/'analytics' arg; broad prefix covers all analytics cases
         ("gpr", "test_GPR"),
     ]
 
@@ -93,13 +106,17 @@ def main():
 
     for group, prefix in runners:
         # Check if this group is requested
-        # The arg name might differ from group name (e.g. pulse vs analytics)
-        arg_name = group if group != "analytics" else "pulse"
-        
-        should_run = args.all or getattr(args, arg_name, False)
-        
+        # The 'analytics' group is reachable via --pulse or --analytics
+        if group == "analytics":
+            group_flag = args.pulse or args.analytics
+        else:
+            group_flag = getattr(args, group, False)
+
+        group_only = targeted.get(group)
+        should_run = args.all or group_flag or bool(group_only)
+
         if should_run:
-            results.extend(run_group(group, prefix, args.mode_gold, args.jobs))
+            results.extend(run_group(group, prefix, args.mode_gold, args.jobs, only=group_only))
 
     print("\n=== RESULTS ===")
     for name, ok, msg in results:
