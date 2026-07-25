@@ -737,6 +737,10 @@ void Simulation::InterGranularBubbleBehavior()
 
             break;
         }
+
+        default:
+            ErrorMessages::Switch(__FILE__, "iReleaseMode", int(input_variable["iReleaseMode"].getValue()));
+            break;
     }
 
     model2_.setRef(reference2);
