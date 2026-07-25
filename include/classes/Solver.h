@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -17,11 +17,12 @@
 #ifndef SOLVER_h
 #define SOLVER_h
 
-#include <vector>
-#include <string>
-#include <cmath>
 #include "InputVariable.h"
 #include "Source.h"
+
+#include <cmath>
+#include <string>
+#include <vector>
 
 /**
  * @brief Class providing solver methods for the SCIANTIX simulation framework.
@@ -29,19 +30,20 @@
  * The Solver class contains various numerical methods to solve differential equations
  * and other mathematical problems encountered in the simulation. These solvers are
  * used in conjunction with models within the Simulation class.
- * 
+ *
  * @author D. Pizzocri
  * @author T. Barani
  * @author G. Zullo
- * 
- * @ref <a href="https://www.sciencedirect.com/science/article/pii/S0022311517315039" target="_blank">Pizzocri D. et al (2018). Journal of Nuclear Materials, 502, 323-330.</a>
- * @ref <a href="https://www.sciencedirect.com/science/article/pii/S1738573321006148" target="_blank">Zullo G. et al (2022). Nuclear Engineering and Technology, 54, 1195-1205.</a>
- * 
+ *
+ * @ref <a href="https://www.sciencedirect.com/science/article/pii/S0022311517315039"
+ * target="_blank">Pizzocri D. et al (2018). Journal of Nuclear Materials, 502, 323-330.</a>
+ * @ref <a href="https://www.sciencedirect.com/science/article/pii/S1738573321006148"
+ * target="_blank">Zullo G. et al (2022). Nuclear Engineering and Technology, 54, 1195-1205.</a>
+ *
  */
 class Solver : virtual public InputVariable
 {
-public:
-
+  public:
     /**
      * @brief Integrates the ODE y' = + S.
      *
@@ -52,7 +54,6 @@ public:
      */
     double Integrator(double initial_value, double parameter, double increment);
 
-
     /**
      * @brief Solves the ODE y' = k / y + S using a limited growth model.
      *
@@ -62,7 +63,6 @@ public:
      * @return The updated value after solving the ODE.
      */
     double LimitedGrowth(double initial_value, std::vector<double> parameter, double increment);
-
 
     /**
      * @brief Solves the ODE y' = - L y + S using a decay model.
@@ -75,7 +75,6 @@ public:
      */
     double Decay(double initial_condition, double decay_rate, double source_term, double increment);
 
-
     /**
      * @brief Solves the ODE y' = -k y**2 using a binary interaction model.
      *
@@ -86,14 +85,13 @@ public:
      */
     double BinaryInteraction(double initial_condition, double interaction_coefficient, double increment);
 
-
     /**
-     * @brief Solves the spatially averaged PDE dy/dt = D div grad y + S - L y using a spectral approach.
-     * This updated version solves for a linear source S(r) = A * r + B.
-     * Putting A = 0, we revert back to the default spectral diffusion solver.
-     * We apply a spectral approach in space, projecting the equation on the eigenfunctions of the laplacian operator.
-     * We use the first order backward Euler solver in time.
-     * The number of terms in the expansion, N, is fixed a priori.
+     * @brief Solves the spatially averaged PDE dy/dt = D div grad y + S - L y using a spectral
+     * approach. We apply a spectral approach in space, projecting the equation on the
+     * eigenfunctions of the laplacian operator. We use the first order backward Euler solver in
+     * time. The number of terms in the expansion, N, is fixed a priori.
+     * This version solves for a linear source S(r) = A * r + B; with A = 0 it reduces to the
+     * default spectral diffusion solver.
      *
      * @param initial_condition The initial conditions for the diffusion modes.
      * @param parameter A vector containing the parameters for the diffusion equation.
@@ -109,8 +107,7 @@ public:
      * 4: production (intercept)
      * 5 :loss rate
      */
-    double SpectralDiffusion(double *initial_condition, std::vector<double> parameter, double increment);
-
+    double SpectralDiffusion(double* initial_condition, std::vector<double> parameter, double increment);
 
     /**
      * @brief Function to compute the dot product between two arrays (v and u) of size n
@@ -121,7 +118,6 @@ public:
      * @return The dot product result.
      */
     double dotProduct1D(std::vector<double> u, double v[], int n);
-
 
     /**
      * @brief Computes the dot product of a 2D matrix and a 1D array.
@@ -144,8 +140,12 @@ public:
      * @param parameter A vector containing the parameters for the diffusion equations.
      * @param increment The time increment.
      */
-    void SpectralDiffusion2equations(double &gas_1, double &gas_2, double *initial_condition_gas_1, double *initial_condition_gas_2, std::vector<double> parameter, double increment);
-
+    void SpectralDiffusion2equations(double&             gas_1,
+                                     double&             gas_2,
+                                     double*             initial_condition_gas_1,
+                                     double*             initial_condition_gas_2,
+                                     std::vector<double> parameter,
+                                     double              increment);
 
     /**
      * @brief Solves three coupled diffusion equations using a spectral approach.
@@ -159,15 +159,22 @@ public:
      * @param parameter A vector containing the parameters for the diffusion equations.
      * @param increment The time increment.
      */
-    void SpectralDiffusion3equations(double &gas_1, double &gas_2, double &gas_3, double *initial_condition_gas_1, double *initial_condition_gas_2, double *initial_condition_gas_3, std::vector<double> parameter, double increment);
+    void SpectralDiffusion3equations(double&             gas_1,
+                                     double&             gas_2,
+                                     double&             gas_3,
+                                     double*             initial_condition_gas_1,
+                                     double*             initial_condition_gas_2,
+                                     double*             initial_condition_gas_3,
+                                     std::vector<double> parameter,
+                                     double              increment);
 
-// Newly Added Solver for a Non Uniform Source (Quasi-stationary hypothesis)
+    // Newly Added Solver for a Non Uniform Source (Quasi-stationary hypothesis)
     /**
      * @brief Solves the spatially averaged PDE dy/dt = D div grad y + S - L y using a spectral approach.
-     * The difference from the SpectralDiffusion Solver is that it solves for a non uniform source S(r) that is a combination of piecewise linear and piecewise constant functions.
-     * We apply a spectral approach in space, projecting the equation on the eigenfunctions of the laplacian operator.
-     * We use the first order backward Euler solver in time.
-     * The number of terms in the expansion, N, is fixed a priori.
+     * The difference from the SpectralDiffusion Solver is that it solves for a non uniform source S(r) that is a
+     * combination of piecewise linear and piecewise constant functions. We apply a spectral approach in space,
+     * projecting the equation on the eigenfunctions of the laplacian operator. We use the first order backward Euler
+     * solver in time. The number of terms in the expansion, N, is fixed a priori.
      *
      * @param initial_condition The initial conditions for the diffusion modes.
      * @param parameter A vector containing the parameters for the diffusion equation.
@@ -182,14 +189,18 @@ public:
      * 1 : D
      * 2 : a - Grain Radius
      * 3 : Loss term
-     * 
+     *
      * Source : [time, Domain, Slopes, Intercepts]
      * time : at which we have the current source
      * Domain: [0,rho1,rho2, 1] (example)
      * Slopes: [A1,A2,A3] (example)
      * Intercepts [B1,B2,B3] (example)
      */
-    double SpectralDiffusionNUS(double *initial_condition, std::vector<double> parameter, Source non_uniform_source ,double increment, int factor);
+    double SpectralDiffusionNUS(double*             initial_condition,
+                                std::vector<double> parameter,
+                                Source              non_uniform_source,
+                                double              increment,
+                                int                 factor);
 
     /**
      * @brief Solves a system of two linear equations using Cramer's method.
@@ -199,7 +210,6 @@ public:
      */
     void Laplace2x2(double A[], double b[]);
 
-
     /**
      * @brief Solves a system of three linear equations according to Cramer's method.
      *
@@ -207,7 +217,6 @@ public:
      * @param b The constant terms vector.
      */
     void Laplace3x3(double A[], double b[]);
-
 
     /**
      * @brief Computes the determinant of a NxN matrix according to Cramer's method.
@@ -249,12 +258,13 @@ public:
      * @param mode_initial_condition The initial condition for the modes.
      * @param diffusion_modes The diffusion modes array.
      */
-    void modeInitialization(int n_modes, double mode_initial_condition, double *diffusion_modes);
+    void modeInitialization(int n_modes, double mode_initial_condition, double* diffusion_modes);
 
     /**
-     * @brief Solver for the non-linear equation (Blackburn's thermochemical urania model) log(PO2(x)) = 2.0*log(x*(x+2.0)/(1.0-x)) + 108.0*pow(x,2.0) - 32700.0/T + 9.92
-     * with the iterative Newton's method.
-     * 
+     * @brief Solver for the non-linear equation (Blackburn's thermochemical urania model)
+     * log(PO2(x)) = 2.0*log(x*(x+2.0)/(1.0-x)) + 108.0*pow(x,2.0) - 32700.0/T + 9.92 with the
+     * iterative Newton's method.
+     *
      * @param parameter A vector containing the parameters of the equation.
      * @return The solution to the equation.
      */
@@ -265,16 +275,16 @@ public:
      * @param initial_value The initial value of the dependent variable.
      * @param parameter A vector containing the parameters of the ODE.
      * @param increment The time increment.
-     * 
+     *
      * parameter[0] = K
      * parameter[1] = beta
      * parameter[2] = alpha
-     * 
+     *
      * @return The solution to the ODE.
      */
     double NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment);
 
-//Newly Added Function SourceProjection
+    // Newly Added Function SourceProjection
     /**
      * @brief Gives the projection of the linear source present in a certain domain on the spatial mode i.
      *
@@ -286,7 +296,10 @@ public:
      * @author A. Zayat
 
      */
-    double SourceProjection_i(double GrainRadius, std::vector<double> Domain, std::vector<double> Source_Function, double SpatialMode_i);
+    double SourceProjection_i(double              GrainRadius,
+                              std::vector<double> Domain,
+                              std::vector<double> Source_Function,
+                              double              SpatialMode_i);
 
     /**
      * @brief Function only used for the purpose of Rodeo Pilot Project
@@ -295,15 +308,19 @@ public:
 
      */
     double NonSym(int input);
-    
+
     /**
      * @brief Constructor
      */
-    Solver() {}
+    Solver()
+    {
+    }
     /**
      * @brief Destructor
      */
-    ~Solver() {}
+    ~Solver()
+    {
+    }
 };
 
-#endif // SOLVER_H
+#endif  // SOLVER_H

@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -89,36 +89,47 @@ std::map<int, std::string> update_sciantix_variable = {
     {66, "Stoichiometry deviation"},
     {67, "Fuel oxygen partial pressure"},
     {69, "FIMA"},
+    {70, "Porosity"},
+    {71, "Fabrication porosity"},
+    {72, "Open porosity"},
+    {73, "Residual porosity"},
+    {74, "Densification factor"},
     {80, "HBS pore density"},
     {81, "HBS pore volume"},
     {82, "HBS pore radius"},
     {83, "Xe in HBS pores"},
     {85, "Xe in HBS pores - variance"},
     {86, "Xe atoms per HBS pore"},
-    {88, "Xe atoms per HBS pore - variance"}
+    {88, "Xe atoms per HBS pore - variance"},
+    {150, "Chromium content"},
+    {151, "Lattice parameter"},
+    {152, "Theoretical density"},
+    {153, "Chromium solubility"},
+    {154, "Chromia solubility"},
+    {155, "Chromium solution"},
+    {156, "Chromium precipitate"},
+    {157, "Chromia solution"},
+    {158, "Chromia precipitate"},
+    {160, "Diffusion coefficient"},
 };
 
-void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[],double Sciantix_diffusion_modes_NUS[])
+void Simulation::update(double Sciantix_variables[],
+                        double Sciantix_diffusion_modes[],
+                        double Sciantix_diffusion_modes_NUS[])
 {
-    for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin(); it != update_sciantix_variable.end(); it++)
+    for (int i = 0; i < n_modes; ++i)
     {
-        Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
+        for (int j = 0; j < N_MODE_BLOCKS; j++)
+        {
+            Sciantix_diffusion_modes[j * n_modes + i]     = modes_initial_conditions[j * n_modes + i];
+            Sciantix_diffusion_modes_NUS[j * n_modes + i] = modes_initial_conditions_NUS[j * n_modes + i];
+        }
     }
 
-    for (int i = 0; i < n_modes; ++i)
+    for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin();
+         it != update_sciantix_variable.end();
+         it++)
     {
-        for (int j = 0; j <= 17; j++)
-        {
-            Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];	
-        }
-    }
-   
-    //NUS
-    for (int i = 0; i < n_modes; ++i)
-    {
-        for (int j = 0; j <= 17; j++)
-        {
-            Sciantix_diffusion_modes_NUS[j * n_modes + i] = modes_initial_conditions_NUS[j * n_modes + i];	
-        }
+        Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
     }
 }

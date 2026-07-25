@@ -1,5 +1,5 @@
 # This CMakeLists.txt file is useful when compiling SCIANTIX with the cmake tool
-# 
+#
 # output:
 #   > build directory with executable in build/sciantix.x
 #
@@ -9,7 +9,15 @@
 #
 # Author: G. Zullo (giovanni.zullo@polimi.it)
 
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.10)
+
+if(APPLE)
+    message(STATUS "Configuring on macOS, setting custom compilers...")
+    set(CMAKE_C_COMPILER /opt/homebrew/bin/gcc-14)
+    set(CMAKE_CXX_COMPILER /opt/homebrew/bin/g++-14)
+else()
+    message(STATUS "Not on macOS, using default compilers.")
+endif()
 
 # Name of the project created / existent in visual studio
 project(sciantix)
@@ -28,6 +36,17 @@ endfunction()
 # Enable C++ compiler
 enable_language (CXX)
 
+# Language standard and warnings
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(-Wall -Wextra)
+endif()
+
+# Set option for coupling with TU
+option (COUPLING_TU OFF)
+
+# Include CTest
 include(CTest)
 enable_testing()
 
@@ -40,12 +59,28 @@ add_subdirectory_includes(${PROJECT_SOURCE_DIR}/include)
 file(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.C)
 
 # Set custom object file directory (to have all object files in the obj directory)
-set(CMAKE_OBJECT_PATH_PREFIX ${PROJECTSOUR}/obj/)
+set(CMAKE_OBJECT_PATH_PREFIX ${PROJECT_SOURCE_DIR}/obj/)
 
-# Add executable sciantix.x (or .exe)
-add_executable(sciantix ${SOURCES})
-if (UNIX)
-    set(CMAKE_EXECUTABLE_SUFFIX ".x")
+# Add executable sciantix.x (or .exe) or create static library
+if(COUPLING_TU)
+    add_library(sciantix STATIC ${SOURCES})
+    set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
+else()
+    add_executable(sciantix ${SOURCES})
+    if (UNIX)
+        set(CMAKE_EXECUTABLE_SUFFIX ".x")
+    endif()
+endif()
+
+# Unit tests (run with: ctest --test-dir build)
+if(BUILD_TESTING AND NOT COUPLING_TU)
+    add_executable(unit_tests
+        ${PROJECT_SOURCE_DIR}/tests/unit_tests.C
+        ${PROJECT_SOURCE_DIR}/src/classes/Solver.C
+        ${PROJECT_SOURCE_DIR}/src/namespaces/ErrorMessages.C
+        ${PROJECT_SOURCE_DIR}/src/MainVariables.C
+    )
+    add_test(NAME unit_tests COMMAND unit_tests)
 endif()
 
 # Copy all object files in obj directory by using a custom command

@@ -8,24 +8,24 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "GasDiffusion.h"
-#include "SourceReader.h"
-#include "SourceHandler.h"
 #include "Solver.h"
+#include "SourceHandler.h"
+#include "SourceReader.h"
 
 void Simulation::GasDiffusion()
 {
     // Model declaration
     switch (static_cast<int>(input_variable["iDiffusionSolver"].getValue()))
     {
-        case 1: // Updated to account for a linear source S(r) = A * r + B; A = 0 => SDA 1.0
-            defineSpectralDiffusion1Equation(sciantix_system, model, n_modes); // SDA 2.0
+        case 1:  // Updated to account for a linear source S(r) = A * r + B; A = 0 => SDA 1.0
+            defineSpectralDiffusion1Equation(sciantix_system, model, n_modes);  // SDA 2.0
             break;
 
         case 2:
@@ -36,7 +36,7 @@ void Simulation::GasDiffusion()
             defineSpectralDiffusion3Equations(sciantix_system, model, sciantix_variable, physics_variable, n_modes);
             break;
 
-         case 4: //New One Added | SDA for a Non Uniform Source
+        case 4:  // New One Added | SDA for a Non Uniform Source
             defineSpectralDiffusionNUS1Equation(sciantix_system, model, n_modes);
             break;
 
@@ -46,146 +46,141 @@ void Simulation::GasDiffusion()
     }
 
     // Model resolution
-    for (auto &system : sciantix_system)
+    for (auto& system : sciantix_system)
     {
         switch (int(input_variable["iDiffusionSolver"].getValue()))
         {
-        case 1:
-        { 
-            if (system.getRestructuredMatrix() == 0)
+            case 1:
             {
-                sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
-                    solver.SpectralDiffusion(
-                        getDiffusionModes(system.getGasName()),
-                        model["Gas diffusion - " + system.getName()].getParameter(),
-                        physics_variable["Time step"].getFinalValue()
-                    )
-                );
-
-                double equilibrium_fraction(1.0);
-                if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
-                    equilibrium_fraction = system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
-
-                sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
-                    equilibrium_fraction * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
-                );
-
-                sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
-                    (1.0 - equilibrium_fraction) * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
-                );
-            }
-
-            else if (system.getRestructuredMatrix() == 1)
-            {
-                sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(
-                    solver.SpectralDiffusion(
-                        getDiffusionModes(system.getGasName() + " in HBS"),
-                        model["Gas diffusion - " + system.getName()].getParameter(),
-                        physics_variable["Time step"].getFinalValue()
-                    )
-                );
-            }
-
-            break;
-        }
-
-        case 2:
-        {
-            double initial_value_solution(0.0), initial_value_bubbles(0.0);
-
-            if (system.getRestructuredMatrix() == 0)
-            {
-                initial_value_solution = sciantix_variable[system.getGasName() + " in intragranular solution"].getFinalValue();
-                initial_value_bubbles = sciantix_variable[system.getGasName() + " in intragranular bubbles"].getFinalValue();
-                
-                solver.SpectralDiffusion2equations(
-                    initial_value_solution,
-                    initial_value_bubbles,
-                    getDiffusionModesSolution(system.getGasName()),
-                    getDiffusionModesBubbles(system.getGasName()),
-                    model["Gas diffusion - " + system.getName()].getParameter(),
-                    physics_variable["Time step"].getFinalValue()
-                );
-
-                sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(initial_value_solution);
-                sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(initial_value_bubbles);
-                sciantix_variable[system.getGasName() + " in grain"].setFinalValue(initial_value_solution + initial_value_bubbles);
-            }
-            else if (system.getRestructuredMatrix() == 1)
-            {
-                sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(0.0);
-            }
-            break;
-        }
-
-        case 3:
-            break;
-        
-        case 4:
-        {
-            if (visualization == 1)
-            {
-                writeToFile(sources_interp, sciantix_variable["Grain radius"].getFinalValue());
-                computeAndSaveSourcesToFile(sources_input, TestPath + "source_shape.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
-                computeAndSaveICToFile(initial_distribution, TestPath + "ic_shape.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
-                
-
-                if (animation == 1)
+                if (system.getRestructuredMatrix() == 0)
                 {
-                    computeAndSaveSourcesToFile(sources_interp, TestPath + "source_gif.txt", 0.001, sciantix_variable["Grain radius"].getFinalValue());
+                    sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
+                        solver.SpectralDiffusion(getDiffusionModes(system.getGasName()),
+                                                 model["Gas diffusion - " + system.getName()].getParameter(),
+                                                 physics_variable["Time step"].getFinalValue()));
+
+                    double equilibrium_fraction(1.0);
+                    if ((system.getResolutionRate() + system.getTrappingRate()) > 0.0)
+                        equilibrium_fraction =
+                            system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate());
+
+                    sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
+                        equilibrium_fraction * sciantix_variable[system.getGasName() + " in grain"].getFinalValue());
+
+                    sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
+                        (1.0 - equilibrium_fraction) *
+                        sciantix_variable[system.getGasName() + " in grain"].getFinalValue());
                 }
-            }
-            if (system.getRestructuredMatrix() == 0)
-            {    
-            
-                sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
-                    solver.SpectralDiffusionNUS(
-                        getDiffusionModes_NUS(system.getGasName()),
-                        model["Gas diffusion - " + system.getName()].getParameter(),
-                        system.getProductionRateNUS(), //Source
-                        physics_variable["Time step"].getFinalValue(),
-                        iNonSym //NonSym factor
-                    )
-                );
-               
-                // ✅ Add the gas resolved from grain boundary
-                sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
-                    sciantix_variable[system.getGasName() + " in grain"].getFinalValue() + GBresolve);
 
+                else if (system.getRestructuredMatrix() == 1)
+                {
+                    sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(
+                        solver.SpectralDiffusion(getDiffusionModes(system.getGasName() + " in HBS"),
+                                                 model["Gas diffusion - " + system.getName()].getParameter(),
+                                                 physics_variable["Time step"].getFinalValue()));
+                }
 
-                double equilibrium_fraction(1.0);
-                if ((system.getResolutionRateNUS() + system.getTrappingRate()) > 0.0)
-                    equilibrium_fraction = system.getResolutionRateNUS() / (system.getResolutionRateNUS() + system.getTrappingRate());
-
-                sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
-                    equilibrium_fraction * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
-                );
-                
-                sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
-                    (1.0 - equilibrium_fraction) * sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
-                );
+                break;
             }
 
-            else if (system.getRestructuredMatrix() == 1)
+            case 2:
             {
-                sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(
-                    solver.SpectralDiffusionNUS(
-                        getDiffusionModes_NUS(system.getGasName() + " in HBS"),
-                        model["Gas diffusion - " + system.getName()].getParameter(),
-                        system.getProductionRateNUS(),
-                        physics_variable["Time step"].getFinalValue(),
-                        iNonSym //NonSym factor
-                    )
-                );
+                double initial_value_solution(0.0), initial_value_bubbles(0.0);
+
+                if (system.getRestructuredMatrix() == 0)
+                {
+                    initial_value_solution =
+                        sciantix_variable[system.getGasName() + " in intragranular solution"].getFinalValue();
+                    initial_value_bubbles =
+                        sciantix_variable[system.getGasName() + " in intragranular bubbles"].getFinalValue();
+
+                    solver.SpectralDiffusion2equations(initial_value_solution,
+                                                       initial_value_bubbles,
+                                                       getDiffusionModesSolution(system.getGasName()),
+                                                       getDiffusionModesBubbles(system.getGasName()),
+                                                       model["Gas diffusion - " + system.getName()].getParameter(),
+                                                       physics_variable["Time step"].getFinalValue());
+
+                    sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
+                        initial_value_solution);
+                    sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
+                        initial_value_bubbles);
+                    sciantix_variable[system.getGasName() + " in grain"].setFinalValue(initial_value_solution +
+                                                                                       initial_value_bubbles);
+                }
+                else if (system.getRestructuredMatrix() == 1)
+                {
+                    sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(0.0);
+                }
+                break;
             }
 
-            break;
+            case 3:
+                break;
 
-        }
+            case 4:
+            {
+                if (visualization == 1)
+                {
+                    writeToFile(sources_interp, sciantix_variable["Grain radius"].getFinalValue());
+                    computeAndSaveSourcesToFile(sources_input,
+                                                TestPath + "source_shape.txt",
+                                                0.001,
+                                                sciantix_variable["Grain radius"].getFinalValue());
+                    computeAndSaveICToFile(initial_distribution,
+                                           TestPath + "ic_shape.txt",
+                                           0.001,
+                                           sciantix_variable["Grain radius"].getFinalValue());
 
-        default:
-            ErrorMessages::Switch(__FILE__, "iDiffusionSolver", int(input_variable["iDiffusionSolver"].getValue()));
-            break;
+                    if (animation == 1)
+                        computeAndSaveSourcesToFile(sources_interp,
+                                                    TestPath + "source_gif.txt",
+                                                    0.001,
+                                                    sciantix_variable["Grain radius"].getFinalValue());
+                }
+
+                if (system.getRestructuredMatrix() == 0)
+                {
+                    sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
+                        solver.SpectralDiffusionNUS(getDiffusionModes_NUS(system.getGasName()),
+                                                    model["Gas diffusion - " + system.getName()].getParameter(),
+                                                    system.getProductionRateNUS(),
+                                                    physics_variable["Time step"].getFinalValue(),
+                                                    iNonSym));
+
+                    // Gas re-solved from the grain boundary
+                    sciantix_variable[system.getGasName() + " in grain"].setFinalValue(
+                        sciantix_variable[system.getGasName() + " in grain"].getFinalValue() + GBresolve);
+
+                    double equilibrium_fraction(1.0);
+                    if ((system.getResolutionRateNUS() + system.getTrappingRate()) > 0.0)
+                        equilibrium_fraction =
+                            system.getResolutionRateNUS() / (system.getResolutionRateNUS() + system.getTrappingRate());
+
+                    sciantix_variable[system.getGasName() + " in intragranular solution"].setFinalValue(
+                        equilibrium_fraction * sciantix_variable[system.getGasName() + " in grain"].getFinalValue());
+
+                    sciantix_variable[system.getGasName() + " in intragranular bubbles"].setFinalValue(
+                        (1.0 - equilibrium_fraction) *
+                        sciantix_variable[system.getGasName() + " in grain"].getFinalValue());
+                }
+
+                else if (system.getRestructuredMatrix() == 1)
+                {
+                    sciantix_variable[system.getGasName() + " in grain HBS"].setFinalValue(
+                        solver.SpectralDiffusionNUS(getDiffusionModes_NUS(system.getGasName() + " in HBS"),
+                                                    model["Gas diffusion - " + system.getName()].getParameter(),
+                                                    system.getProductionRateNUS(),
+                                                    physics_variable["Time step"].getFinalValue(),
+                                                    iNonSym));
+                }
+
+                break;
+            }
+
+            default:
+                ErrorMessages::Switch(__FILE__, "iDiffusionSolver", int(input_variable["iDiffusionSolver"].getValue()));
+                break;
         }
     }
 
@@ -194,19 +189,17 @@ void Simulation::GasDiffusion()
         double initial_value_solution(0.0), initial_value_bubbles(0.0), initial_value_hbs(0.0);
 
         initial_value_solution = sciantix_variable["Xe in intragranular solution"].getFinalValue();
-        initial_value_bubbles = sciantix_variable["Xe in intragranular bubbles"].getFinalValue();
-        initial_value_hbs = sciantix_variable["Xe in grain HBS"].getFinalValue();
+        initial_value_bubbles  = sciantix_variable["Xe in intragranular bubbles"].getFinalValue();
+        initial_value_hbs      = sciantix_variable["Xe in grain HBS"].getFinalValue();
 
-        solver.SpectralDiffusion3equations(
-            initial_value_solution,
-            initial_value_bubbles,
-            initial_value_hbs,
-            getDiffusionModesSolution("Xe"),
-            getDiffusionModesBubbles("Xe"),
-            getDiffusionModes("Xe in HBS"),
-            model["Gas diffusion - Xe in UO2 with HBS"].getParameter(),
-            physics_variable["Time step"].getFinalValue()
-        );
+        solver.SpectralDiffusion3equations(initial_value_solution,
+                                           initial_value_bubbles,
+                                           initial_value_hbs,
+                                           getDiffusionModesSolution("Xe"),
+                                           getDiffusionModesBubbles("Xe"),
+                                           getDiffusionModes("Xe in HBS"),
+                                           model["Gas diffusion - Xe in UO2 with HBS"].getParameter(),
+                                           physics_variable["Time step"].getFinalValue());
 
         sciantix_variable["Xe in grain"].setFinalValue(initial_value_solution + initial_value_bubbles);
         sciantix_variable["Xe in intragranular solution"].setFinalValue(initial_value_solution);
@@ -214,28 +207,27 @@ void Simulation::GasDiffusion()
         sciantix_variable["Xe in grain HBS"].setFinalValue(initial_value_hbs);
 
         sciantix_variable["Intragranular gas solution swelling"].setFinalValue(
-            (sciantix_variable["Xe in intragranular solution"].getFinalValue() + sciantix_variable["Xe in grain HBS"].getFinalValue()) * pow(matrices["UO2"].getLatticeParameter(), 3) / 4
-        );
+            (sciantix_variable["Xe in intragranular solution"].getFinalValue() +
+             sciantix_variable["Xe in grain HBS"].getFinalValue()) *
+            pow(matrices["UO2"].getLatticeParameter(), 3) / 4);
     }
 
-    
     // Calculation of the gas concentration at grain boundary, by mass balance
-    for (auto &system : sciantix_system)
+    for (auto& system : sciantix_system)
     {
         if (system.getRestructuredMatrix() == 0)
-        {   
+        {
             sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(
                 sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " released"].getInitialValue() -
-                0);
-            
+                sciantix_variable[system.getGasName() + " released"].getInitialValue() - 0);
+
             if (sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() < 0.0)
                 sciantix_variable[system.getGasName() + " at grain boundary"].setFinalValue(0.0);
         }
     }
-    
+
     /**
      * @brief If **iGrainBoundaryBehaviour = 0** (e.g., no grain-boundary bubbles),
      * fission gases at grain boundary is immediately released.
@@ -243,7 +235,7 @@ void Simulation::GasDiffusion()
      */
     if (input_variable["iGrainBoundaryBehaviour"].getValue() == 0)
     {
-        for (auto &system : sciantix_system)
+        for (auto& system : sciantix_system)
         {
             if (system.getRestructuredMatrix() == 0)
             {
@@ -254,15 +246,14 @@ void Simulation::GasDiffusion()
                     sciantix_variable[system.getGasName() + " released"].setFinalValue(
                         sciantix_variable[system.getGasName() + " produced"].getFinalValue() -
                         sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
-                        sciantix_variable[system.getGasName() + " in grain"].getFinalValue()
-                    );
+                        sciantix_variable[system.getGasName() + " in grain"].getFinalValue());
                 }
             }
         }
     }
 }
 
-void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
+void defineSpectralDiffusion1Equation(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes)
 {
     std::string reference;
 
@@ -278,9 +269,10 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
         if (system.getResolutionRate() + system.getTrappingRate() == 0)
             gasDiffusivity = system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor();
         else
-            gasDiffusivity = 
-                (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
-                (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) * system.getBubbleDiffusivity();
+            gasDiffusivity = (system.getResolutionRate() / (system.getResolutionRate() + system.getTrappingRate())) *
+                                 system.getFissionGasDiffusivity() * system.getGas().getPrecursorFactor() +
+                             (system.getTrappingRate() / (system.getResolutionRate() + system.getTrappingRate())) *
+                                 system.getBubbleDiffusivity();
 
         parameters.push_back(gasDiffusivity);
         parameters.push_back(system.getMatrix().getGrainRadius());
@@ -292,7 +284,7 @@ void defineSpectralDiffusion1Equation(SciantixArray<System> &sciantix_system, Sc
     }
 }
 
-void defineSpectralDiffusion2Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
+void defineSpectralDiffusion2Equations(SciantixArray<System>& sciantix_system, SciantixArray<Model>& model, int n_modes)
 {
     std::string reference;
 
@@ -319,7 +311,11 @@ void defineSpectralDiffusion2Equations(SciantixArray<System> &sciantix_system, S
     }
 }
 
-void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, SciantixArray<SciantixVariable> sciantix_variable, SciantixArray<SciantixVariable> physics_variable, int n_modes)
+void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_system,
+                                       SciantixArray<Model>&           model,
+                                       SciantixArray<SciantixVariable> sciantix_variable,
+                                       SciantixArray<SciantixVariable> physics_variable,
+                                       int                             n_modes)
 {
     std::string reference;
 
@@ -334,12 +330,14 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
     System xe_in_uo2_(sciantix_system["Xe in UO2"]);
     System xe_in_uo2hbs_(sciantix_system["Xe in UO2HBS"]);
 
-    parameters.push_back(xe_in_uo2_.getGas().getPrecursorFactor() * xe_in_uo2_.getFissionGasDiffusivity() / (pow(xe_in_uo2_.getMatrix().getGrainRadius(),2)));
+    parameters.push_back(xe_in_uo2_.getGas().getPrecursorFactor() * xe_in_uo2_.getFissionGasDiffusivity() /
+                         (pow(xe_in_uo2_.getMatrix().getGrainRadius(), 2)));
     parameters.push_back(0.0);
-    parameters.push_back(xe_in_uo2hbs_.getFissionGasDiffusivity() / (pow(xe_in_uo2hbs_.getMatrix().getGrainRadius(),2)));
-    
+    parameters.push_back(xe_in_uo2hbs_.getFissionGasDiffusivity() /
+                         (pow(xe_in_uo2hbs_.getMatrix().getGrainRadius(), 2)));
+
     parameters.push_back(1.0);
-    
+
     parameters.push_back(xe_in_uo2_.getProductionRate());
     parameters.push_back(0.0);
     parameters.push_back(xe_in_uo2hbs_.getProductionRate());
@@ -349,8 +347,10 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
     parameters.push_back(xe_in_uo2_.getGas().getDecayRate());
 
     double sweeping_term(0.0);
-    if(physics_variable["Time step"].getFinalValue())
-        sweeping_term = 1./(1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) * sciantix_variable["Restructured volume fraction"].getIncrement() / physics_variable["Time step"].getFinalValue();
+    if (physics_variable["Time step"].getFinalValue())
+        sweeping_term = 1. / (1. - sciantix_variable["Restructured volume fraction"].getFinalValue()) *
+                        sciantix_variable["Restructured volume fraction"].getIncrement() /
+                        physics_variable["Time step"].getFinalValue();
 
     if (std::isinf(sweeping_term) || std::isnan(sweeping_term))
         sweeping_term = 0.0;
@@ -365,7 +365,9 @@ void defineSpectralDiffusion3Equations(SciantixArray<System> &sciantix_system, S
 
 // Non Uniform Source
 
-void defineSpectralDiffusionNUS1Equation(SciantixArray<System> &sciantix_system, SciantixArray<Model> &model, int n_modes)
+void defineSpectralDiffusionNUS1Equation(SciantixArray<System>& sciantix_system,
+                                         SciantixArray<Model>&  model,
+                                         int                    n_modes)
 {
     std::string reference;
     // Parameters {n, D, a, l, f}
@@ -382,17 +384,17 @@ void defineSpectralDiffusionNUS1Equation(SciantixArray<System> &sciantix_system,
         if (system.getResolutionRateNUS() + system.getTrappingRate() == 0)
             gasDiffusivity = system.getFissionGasDiffusivityNUS() * system.getGas().getPrecursorFactor();
         else
-            gasDiffusivity = 
-                (system.getResolutionRateNUS() / (system.getResolutionRateNUS() + system.getTrappingRate())) * system.getFissionGasDiffusivityNUS() * system.getGas().getPrecursorFactor() +
-                (system.getTrappingRate() / (system.getResolutionRateNUS() + system.getTrappingRate())) * system.getBubbleDiffusivity();
+            gasDiffusivity =
+                (system.getResolutionRateNUS() / (system.getResolutionRateNUS() + system.getTrappingRate())) *
+                    system.getFissionGasDiffusivityNUS() * system.getGas().getPrecursorFactor() +
+                (system.getTrappingRate() / (system.getResolutionRateNUS() + system.getTrappingRate())) *
+                    system.getBubbleDiffusivity();
 
         parameters.push_back(gasDiffusivity);
         parameters.push_back(system.getMatrix().getGrainRadius());
         parameters.push_back(system.getGas().getDecayRate());
         model_.setParameter(parameters);
         model.push(model_);
-
-
     }
 }
 

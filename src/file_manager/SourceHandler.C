@@ -14,16 +14,16 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include <iostream>
-#include <vector>
+#include "MainVariables.h"
+#include "SourceHandler.h"
 #include <cmath>
 #include <fstream>
+#include <iomanip>  // for setting precision
+#include <iostream>
 #include <sstream>
-#include <iomanip> // for setting precision
-#include "SourceHandler.h"
-#include "MainVariables.h"
+#include <vector>
 
-void loadSourcesFromFile(const std::string &filePath, std::vector<Source> &sources)
+void loadSourcesFromFile(const std::string& filePath, std::vector<Source>& sources)
 {
     std::ifstream source_file(TestPath + filePath, std::ios::in);
 
@@ -40,7 +40,7 @@ void loadSourcesFromFile(const std::string &filePath, std::vector<Source> &sourc
     {
         std::stringstream ss(line);
 
-        Source non_uniform_source; // Create a new Source object for each line
+        Source non_uniform_source;  // Create a new Source object for each line
 
         // Parse the time
         std::getline(ss, token, '#');
@@ -49,7 +49,7 @@ void loadSourcesFromFile(const std::string &filePath, std::vector<Source> &sourc
         // Parse Normalized Domain
         std::getline(ss, token, '#');
         std::stringstream NormalizedDomainStream(token);
-        double value;
+        double            value;
         while (NormalizedDomainStream >> value)
         {
             non_uniform_source.NormalizedDomain.push_back(value);
@@ -76,7 +76,7 @@ void loadSourcesFromFile(const std::string &filePath, std::vector<Source> &sourc
     }
 }
 
-void loadICFromFile(const std::string &filePath, std::vector<Source> &ics, bool &fileFound)
+void loadICFromFile(const std::string& filePath, std::vector<Source>& ics, bool& fileFound)
 {
     std::ifstream source_file(TestPath + filePath, std::ios::in);
 
@@ -93,7 +93,7 @@ void loadICFromFile(const std::string &filePath, std::vector<Source> &ics, bool 
     while (std::getline(source_file, line))
     {
         std::stringstream ss(line);
-        Source ic;
+        Source            ic;
 
         // Parse the time
         std::getline(ss, token, '#');
@@ -102,7 +102,7 @@ void loadICFromFile(const std::string &filePath, std::vector<Source> &ics, bool 
         // Parse Normalized Domain
         std::getline(ss, token, '#');
         std::stringstream NormalizedDomainStream(token);
-        double value;
+        double            value;
         while (NormalizedDomainStream >> value)
         {
             ic.NormalizedDomain.push_back(value);
@@ -128,8 +128,7 @@ void loadICFromFile(const std::string &filePath, std::vector<Source> &ics, bool 
     }
 }
 
-
-std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int points_per_interval)
+std::vector<Source> sourceInterpolation(const std::vector<Source>& sources, int points_per_interval)
 {
     std::vector<Source> interpolated_sources;
     if (sources.empty() || points_per_interval < 1)
@@ -137,11 +136,10 @@ std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int 
 
     for (size_t i = 0; i < sources.size() - 1; ++i)
     {
-        const Source &start = sources[i];
-        const Source &end = sources[i + 1];
+        const Source& start = sources[i];
+        const Source& end   = sources[i + 1];
 
-        if (start.Slopes.size() != end.Slopes.size() ||
-            start.Intercepts.size() != end.Intercepts.size() ||
+        if (start.Slopes.size() != end.Slopes.size() || start.Intercepts.size() != end.Intercepts.size() ||
             start.NormalizedDomain.size() != end.NormalizedDomain.size())
         {
             std::cerr << "[ERROR] Mismatched source segment sizes at t = " << start.time << "\n";
@@ -149,11 +147,11 @@ std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int 
         }
 
         double delta_time = end.time - start.time;
-        double time_step = delta_time / points_per_interval;
+        double time_step  = delta_time / points_per_interval;
 
         for (int j = 0; j <= points_per_interval; ++j)  // include both start and end
         {
-            double t = start.time + j * time_step;
+            double t     = start.time + j * time_step;
             double alpha = (t - start.time) / delta_time;
 
             Source s;
@@ -162,14 +160,15 @@ std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int 
             size_t n = start.NormalizedDomain.size();
             s.NormalizedDomain.resize(n);
             for (size_t k = 0; k < n; ++k)
-                s.NormalizedDomain[k] = start.NormalizedDomain[k] + alpha * (end.NormalizedDomain[k] - start.NormalizedDomain[k]);
+                s.NormalizedDomain[k] =
+                    start.NormalizedDomain[k] + alpha * (end.NormalizedDomain[k] - start.NormalizedDomain[k]);
 
             size_t m = start.Slopes.size();
             s.Slopes.resize(m);
             s.Intercepts.resize(m);
             for (size_t k = 0; k < m; ++k)
             {
-                s.Slopes[k] = start.Slopes[k] + alpha * (end.Slopes[k] - start.Slopes[k]);
+                s.Slopes[k]     = start.Slopes[k] + alpha * (end.Slopes[k] - start.Slopes[k]);
                 s.Intercepts[k] = start.Intercepts[k] + alpha * (end.Intercepts[k] - start.Intercepts[k]);
             }
 
@@ -180,29 +179,27 @@ std::vector<Source> sourceInterpolation(const std::vector<Source> &sources, int 
     return interpolated_sources;
 }
 
-
-
-void printSources(const std::vector<Source> &sources)
+void printSources(const std::vector<Source>& sources)
 {
-    for (const auto &source : sources)
+    for (const auto& source : sources)
     {
         std::cout << "Time: " << source.time << std::endl;
         std::cout << "Normalized Domain: ";
-        for (const auto &val : source.NormalizedDomain)
+        for (const auto& val : source.NormalizedDomain)
         {
             std::cout << val << " ";
         }
         std::cout << std::endl;
 
         std::cout << "Slopes: ";
-        for (const auto &val : source.Slopes)
+        for (const auto& val : source.Slopes)
         {
             std::cout << val << " ";
         }
         std::cout << std::endl;
 
         std::cout << "Intercepts: ";
-        for (const auto &val : source.Intercepts)
+        for (const auto& val : source.Intercepts)
         {
             std::cout << val << " ";
         }
@@ -210,33 +207,33 @@ void printSources(const std::vector<Source> &sources)
     }
 }
 
-void printSource(const Source &source)
+void printSource(const Source& source)
 {
     std::cout << "Time: " << source.time << std::endl;
 
     std::cout << "Normalized Domain: ";
-    for (const auto &val : source.NormalizedDomain)
+    for (const auto& val : source.NormalizedDomain)
     {
         std::cout << val << " ";
     }
     std::cout << std::endl;
 
     std::cout << "Slopes: ";
-    for (const auto &val : source.Slopes)
+    for (const auto& val : source.Slopes)
     {
         std::cout << val << " ";
     }
     std::cout << std::endl;
 
     std::cout << "Intercepts: ";
-    for (const auto &val : source.Intercepts)
+    for (const auto& val : source.Intercepts)
     {
         std::cout << val << " ";
     }
     std::cout << std::endl;
 }
 
-void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRadius)
+void writeToFile(const std::vector<Source>& interpolatedSources, double GrainRadius)
 {
     // Define the output file path using the TestPath
     std::string outputFile = TestPath + "source_output.txt";
@@ -254,7 +251,7 @@ void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRad
     outFile << "t (h)\tNormalized Domain (-)\tSlopes (at/m2.s)\tIntercepts (at/m3.s)\tVolume Average (at/m3.s)\n";
 
     // Loop through the interpolated sources and write the data to the file
-    for (const auto &source : interpolatedSources)
+    for (const auto& source : interpolatedSources)
     {
         // Compute volume average
         double volumeAverage = Source_Volume_Average(GrainRadius, source);
@@ -267,7 +264,7 @@ void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRad
         {
             outFile << source.NormalizedDomain[i];
             if (i != source.NormalizedDomain.size() - 1)
-                outFile << " "; // Separate values with space
+                outFile << " ";  // Separate values with space
         }
         outFile << "\t";
 
@@ -276,7 +273,7 @@ void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRad
         {
             outFile << source.Slopes[i];
             if (i != source.Slopes.size() - 1)
-                outFile << " "; // Separate values with space
+                outFile << " ";  // Separate values with space
         }
         outFile << "\t";
 
@@ -285,7 +282,7 @@ void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRad
         {
             outFile << source.Intercepts[i];
             if (i != source.Intercepts.size() - 1)
-                outFile << " "; // Separate values with space
+                outFile << " ";  // Separate values with space
         }
 
         // Write volume average in the last column
@@ -296,7 +293,10 @@ void writeToFile(const std::vector<Source> &interpolatedSources, double GrainRad
     outFile.close();
 }
 
-void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::string &outputFilePath, double step, double GrainRadius)
+void computeAndSaveSourcesToFile(const std::vector<Source>& sources,
+                                 const std::string&         outputFilePath,
+                                 double                     step,
+                                 double                     GrainRadius)
 {
     std::ofstream outFile(outputFilePath);
     if (!outFile.is_open())
@@ -312,26 +312,26 @@ void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::
 
     // Prepare S(r, t) table
     std::vector<std::vector<double>> S_table(r_values.size(), std::vector<double>(sources.size(), 0.0));
-    std::vector<double> volumeAverages(sources.size());
+    std::vector<double>              volumeAverages(sources.size());
 
     for (size_t t_idx = 0; t_idx < sources.size(); ++t_idx)
     {
-        const auto &source = sources[t_idx];
+        const auto& source    = sources[t_idx];
         volumeAverages[t_idx] = Source_Volume_Average(GrainRadius, source);
 
         for (size_t seg = 0; seg < source.Slopes.size(); ++seg)
         {
             double nd_start = source.NormalizedDomain[seg];
-            double nd_end = source.NormalizedDomain[seg + 1];
-            double A = source.Slopes[seg];
-            double B = source.Intercepts[seg];
+            double nd_end   = source.NormalizedDomain[seg + 1];
+            double A        = source.Slopes[seg];
+            double B        = source.Intercepts[seg];
 
             for (size_t i = 0; i < r_values.size(); ++i)
             {
                 double nd = r_values[i] / (GrainRadius * 1e6);
                 if (nd >= nd_start && nd <= nd_end + 1e-12)
                 {
-                    double r_m = r_values[i] * 1e-6;
+                    double r_m        = r_values[i] * 1e-6;
                     S_table[i][t_idx] = A * r_m + B;
                 }
             }
@@ -344,8 +344,7 @@ void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::
     for (size_t t_idx = 0; t_idx < sources.size(); ++t_idx)
     {
         outFile << "\tS(t=" << std::fixed << std::setprecision(2) << sources[t_idx].time
-                << " hr, avg=" << std::scientific << std::setprecision(3)
-                << volumeAverages[t_idx] << ")";
+                << " hr, avg=" << std::scientific << std::setprecision(3) << volumeAverages[t_idx] << ")";
     }
     outFile << "\n";
 
@@ -363,16 +362,30 @@ void computeAndSaveSourcesToFile(const std::vector<Source> &sources, const std::
     outFile.close();
 }
 
-void computeAndSaveICToFile(const std::vector<Source> &ics, const std::string &outputFilePath, double step, double GrainRadius)
+void computeAndSaveICToFile(const std::vector<Source>& ics,
+                            const std::string&         outputFilePath,
+                            double                     step,
+                            double                     GrainRadius)
 {
-    const std::vector<std::string> elementNames = {"Xe", "Kr", "He", "Xe133", "Kr85", "XeHBS"};
-    const std::vector<std::string> componentNames = {
-        "grain", "solution", "bubble",
-        "grain", "solution", "bubble",
-        "grain", "solution", "bubble",
-        "grain", "solution", "bubble",
-        "grain", "solution", "bubble",
-        "HBS", "solution", "bubble"};
+    const std::vector<std::string> elementNames   = {"Xe", "Kr", "He", "Xe133", "Kr85", "XeHBS"};
+    const std::vector<std::string> componentNames = {"grain",
+                                                     "solution",
+                                                     "bubble",
+                                                     "grain",
+                                                     "solution",
+                                                     "bubble",
+                                                     "grain",
+                                                     "solution",
+                                                     "bubble",
+                                                     "grain",
+                                                     "solution",
+                                                     "bubble",
+                                                     "grain",
+                                                     "solution",
+                                                     "bubble",
+                                                     "HBS",
+                                                     "solution",
+                                                     "bubble"};
 
     std::ofstream outFile(outputFilePath);
     if (!outFile.is_open())
@@ -387,26 +400,26 @@ void computeAndSaveICToFile(const std::vector<Source> &ics, const std::string &o
         r_values.push_back(nd * GrainRadius * 1e6);
 
     std::vector<std::vector<double>> C_table(r_values.size(), std::vector<double>(18, 0.0));
-    std::vector<double> volumeAverages(18);
+    std::vector<double>              volumeAverages(18);
 
     for (size_t idx = 0; idx < ics.size(); ++idx)
     {
-        const auto &ic = ics[idx];
+        const auto& ic      = ics[idx];
         volumeAverages[idx] = Source_Volume_Average(GrainRadius, ic);
 
         for (size_t seg = 0; seg < ic.Slopes.size(); ++seg)
         {
             double nd_start = ic.NormalizedDomain[seg];
-            double nd_end = ic.NormalizedDomain[seg + 1];
-            double A = ic.Slopes[seg];
-            double B = ic.Intercepts[seg];
+            double nd_end   = ic.NormalizedDomain[seg + 1];
+            double A        = ic.Slopes[seg];
+            double B        = ic.Intercepts[seg];
 
             for (size_t i = 0; i < r_values.size(); ++i)
             {
                 double nd = r_values[i] / (GrainRadius * 1e6);
                 if (nd >= nd_start && nd <= nd_end + 1e-12)
                 {
-                    double r_m = r_values[i] * 1e-6;
+                    double r_m      = r_values[i] * 1e-6;
                     C_table[i][idx] = A * r_m + B;
                 }
             }
@@ -418,10 +431,9 @@ void computeAndSaveICToFile(const std::vector<Source> &ics, const std::string &o
     outFile << "r (micron)";
     for (size_t idx = 0; idx < ics.size(); ++idx)
     {
-        std::string element = elementNames[idx / 3];
+        std::string element   = elementNames[idx / 3];
         std::string component = componentNames[idx];
-        outFile << "\tC_" << element << "_" << component
-                << " (avg=" << std::scientific << std::setprecision(3)
+        outFile << "\tC_" << element << "_" << component << " (avg=" << std::scientific << std::setprecision(3)
                 << volumeAverages[idx] << ")";
     }
     outFile << "\n";
@@ -442,15 +454,18 @@ void computeAndSaveICToFile(const std::vector<Source> &ics, const std::string &o
 
 double Source_Volume_Average(double GrainRadius, Source source)
 {
-    size_t NumberofRegions = source.Slopes.size(); // Number of regions
-    double VA = 0.0;  // Initialize the volume average
-    double totalVolume = 0.0;
+    size_t NumberofRegions = source.Slopes.size();  // Number of regions
+    double VA              = 0.0;                   // Initialize the volume average
+    double totalVolume     = 0.0;
 
-    if (NumberofRegions < 1) return 0.0; // Early exit for invalid input
+    if (NumberofRegions < 1)
+        return 0.0;  // Early exit for invalid input
 
     // Convert normalized domain to actual radii
     std::vector<double> domain(source.NormalizedDomain.size());
-    std::transform(source.NormalizedDomain.begin(), source.NormalizedDomain.end(), domain.begin(),
+    std::transform(source.NormalizedDomain.begin(),
+                   source.NormalizedDomain.end(),
+                   domain.begin(),
                    [GrainRadius](double x) { return x * GrainRadius; });
 
     // Compute volume integral and total volume
@@ -463,7 +478,7 @@ double Source_Volume_Average(double GrainRadius, Source source)
         double B = source.Intercepts[j];
 
         double integral = A * (pow(r1, 4) - pow(r0, 4)) / 4.0 + B * (pow(r1, 3) - pow(r0, 3)) / 3.0;
-        double volume = (pow(r1, 3) - pow(r0, 3)) / 3.0;
+        double volume   = (pow(r1, 3) - pow(r0, 3)) / 3.0;
 
         VA += integral;
         totalVolume += volume;
@@ -491,7 +506,7 @@ std::vector<Source> subtractResolutionFromSource(const std::vector<Source>& full
             double seg_start = src.NormalizedDomain[i];
             if (seg_start >= r_start)
             {
-                src.Slopes[i] = src.Slopes[0];
+                src.Slopes[i]     = src.Slopes[0];
                 src.Intercepts[i] = src.Intercepts[0];
             }
         }
