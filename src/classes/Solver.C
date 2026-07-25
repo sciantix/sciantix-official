@@ -8,12 +8,14 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#include "Constants.h"
+#include "ErrorMessages.h"
 #include "Solver.h"
 
 using namespace std;
@@ -25,7 +27,8 @@ double Solver::Integrator(double initial_value, double parameter, double increme
 
 double Solver::LimitedGrowth(double initial_value, std::vector<double> parameter, double increment)
 {
-    return 0.5 * ((initial_value + parameter[1] * increment) + sqrt(pow(initial_value + parameter[1] * increment, 2) + 4.0 * parameter[0] * increment));
+    return 0.5 * ((initial_value + parameter[1] * increment) +
+                  sqrt(pow(initial_value + parameter[1] * increment, 2) + 4.0 * parameter[0] * increment));
 }
 
 double Solver::Decay(double initial_condition, double decay_rate, double source_term, double increment)
@@ -38,10 +41,9 @@ double Solver::BinaryInteraction(double initial_condition, double interaction_co
     return initial_condition / (1.0 + interaction_coefficient * initial_condition * increment);
 }
 
-
-double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> parameter, double increment)
+double Solver::SpectralDiffusion(double* initial_condition, std::vector<double> parameter, double increment)
 {
-    size_t n;
+    size_t             n;
     unsigned short int np1(1);
 
     double diffusion_rate_coeff(0.0);
@@ -52,16 +54,16 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
     double solution(0.0);
 
     diffusion_rate_coeff = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(2), 2);
-    projection_coeff = -2.0 * sqrt(2.0 / M_PI);
-    source_rate_coeff = projection_coeff * parameter.at(3);
+    projection_coeff     = -2.0 * sqrt(2.0 / M_PI);
+    source_rate_coeff    = projection_coeff * parameter.at(3);
 
     for (n = 0; n < parameter.at(0); n++)
     {
-        np1 = n + 1;
+        np1                  = n + 1;
         const double n_coeff = pow(-1.0, np1) / np1;
 
         diffusion_rate = diffusion_rate_coeff * pow(np1, 2) + parameter.at(4);
-        source_rate = source_rate_coeff * n_coeff;
+        source_rate    = source_rate_coeff * n_coeff;
 
         initial_condition[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);
 
@@ -71,64 +73,63 @@ double Solver::SpectralDiffusion(double *initial_condition, std::vector<double> 
     return solution;
 }
 
-//New Added Solver
-double Solver::SpectralDiffusionNUS(double *initial_condition, std::vector<double> parameter, Source non_uniform_source ,double increment, int factor)
+// New Added Solver
+double Solver::SpectralDiffusionNUS(
+    double* initial_condition, std::vector<double> parameter, Source non_uniform_source, double increment, int factor)
 {
     // parameter [N_modes, D, a, l]
     // Non Uniform Source is of class Source that has: NormalizedDomain, Slopes and Intercepts
     // NormalizedDomain is of size N while the slopes and intercepts are of size N-1
-    
-    size_t n;
+
+    size_t             n;
     unsigned short int np1(1);
 
     double diffusion_rate_coeff(0.0);
     double diffusion_rate(0.0);
-    double source_rate_coeff(0.0);
     double source_rate(0.0);
     double projection_coeff(0.0);
     double solution(0.0);
     double n_coeff = 0;
 
-    double NumberofRegions = non_uniform_source.Slopes.size(); // Obtains the number of regions
+    double NumberofRegions = non_uniform_source.Slopes.size();  // Obtains the number of regions
 
-    std::vector<std::vector<double>> Full_Domain(NumberofRegions, std::vector<double>(2)); 
+    std::vector<std::vector<double>> Full_Domain(NumberofRegions, std::vector<double>(2));
     std::vector<std::vector<double>> Full_Source(NumberofRegions, std::vector<double>(2));
 
     // Fill Full_Source
-    for (size_t i = 0; i < NumberofRegions; ++i) 
+    for (size_t i = 0; i < NumberofRegions; ++i)
     {
-        Full_Source[i][0] = non_uniform_source.Slopes[i];     // A
-        Full_Source[i][1] = non_uniform_source.Intercepts[i]; // B
+        Full_Source[i][0] = non_uniform_source.Slopes[i];      // A
+        Full_Source[i][1] = non_uniform_source.Intercepts[i];  // B
     }
 
     // Fill Full_Domain
-    for (size_t i = 0; i < NumberofRegions; ++i) 
+    for (size_t i = 0; i < NumberofRegions; ++i)
     {
-        Full_Domain[i][0] = parameter.at(2) * non_uniform_source.NormalizedDomain[i]; // edge1
-        Full_Domain[i][1] = parameter.at(2) * non_uniform_source.NormalizedDomain[i+1]; // edge2
+        Full_Domain[i][0] = parameter.at(2) * non_uniform_source.NormalizedDomain[i];      // edge1
+        Full_Domain[i][1] = parameter.at(2) * non_uniform_source.NormalizedDomain[i + 1];  // edge2
     }
 
-
     diffusion_rate_coeff = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(2), 2);
-    projection_coeff = sqrt(8.0 / M_PI);
+    projection_coeff     = sqrt(8.0 / M_PI);
 
     for (n = 0; n < parameter.at(0); n++)
     {
         np1 = n + 1;
-        
+
         n_coeff = 0;
-        for (size_t k = 0; k < NumberofRegions; ++k) 
+        for (size_t k = 0; k < NumberofRegions; ++k)
         {
             n_coeff += SourceProjection_i(parameter.at(2), Full_Domain[k], Full_Source[k], np1);
         }
-        const double n_c = - pow(-1.0, np1) / np1;
+        const double n_c = -pow(-1.0, np1) / np1;
 
         diffusion_rate = diffusion_rate_coeff * pow(np1, 2) + parameter.at(3);
-        source_rate = projection_coeff * n_coeff;
+        source_rate    = projection_coeff * n_coeff;
 
         initial_condition[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);
 
-        solution += NonSym(factor)* projection_coeff * n_c * initial_condition[n] / ((4. / 3.) * M_PI);
+        solution += NonSym(factor) * projection_coeff * n_c * initial_condition[n] / ((4. / 3.) * M_PI);
     }
 
     return solution;
@@ -141,7 +142,6 @@ double Solver::dotProduct1D(std::vector<double> u, double v[], int n)
         result += u[i] * v[i];
     return result;
 }
-
 
 void Solver::dotProduct2D(double A[], double v[], int n_rows, const int n_col, double result[])
 {
@@ -157,9 +157,14 @@ void Solver::dotProduct2D(double A[], double v[], int n_rows, const int n_col, d
     }
 }
 
-void Solver::SpectralDiffusion2equations(double &gas_1, double &gas_2, double *initial_condition_gas_1, double *initial_condition_gas_2, std::vector<double> parameter, double increment)
+void Solver::SpectralDiffusion2equations(double&             gas_1,
+                                         double&             gas_2,
+                                         double*             initial_condition_gas_1,
+                                         double*             initial_condition_gas_2,
+                                         std::vector<double> parameter,
+                                         double              increment)
 {
-    size_t n;
+    size_t             n;
     unsigned short int np1(1);
 
     double diffusion_rate1(0.0);
@@ -182,24 +187,24 @@ void Solver::SpectralDiffusion2equations(double &gas_1, double &gas_2, double *i
     double coeff_matrix[4];
     double initial_conditions[2];
 
-    diffusion_rate_coeff1 = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(3), 2); // pi^2 * D1 / a^2
-    diffusion_rate_coeff2 = pow(M_PI, 2) * parameter.at(2) / pow(parameter.at(3), 2); // pi^2 * D2 / a^2
+    diffusion_rate_coeff1 = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(3), 2);  // pi^2 * D1 / a^2
+    diffusion_rate_coeff2 = pow(M_PI, 2) * parameter.at(2) / pow(parameter.at(3), 2);  // pi^2 * D2 / a^2
 
     projection_coeff = -2.0 * sqrt(2.0 / M_PI);
 
-    source_rate_coeff_1 = projection_coeff * parameter.at(4); // - 2 sqrt(2/pi) * S1
-    source_rate_coeff_2 = projection_coeff * parameter.at(5); // - 2 sqrt(2/pi) * S2
+    source_rate_coeff_1 = projection_coeff * parameter.at(4);  // - 2 sqrt(2/pi) * S1
+    source_rate_coeff_2 = projection_coeff * parameter.at(5);  // - 2 sqrt(2/pi) * S2
 
     for (n = 0; n < parameter.at(0); n++)
     {
-        np1 = n + 1;
+        np1                  = n + 1;
         const double n_coeff = pow(-1.0, np1) / np1;
 
-        diffusion_rate1 = diffusion_rate_coeff1 * pow(np1, 2); // pi^2 * D1 * n^2 / a^2
-        diffusion_rate2 = diffusion_rate_coeff2 * pow(np1, 2); // pi^2 * D2 * n^2 / a^2
+        diffusion_rate1 = diffusion_rate_coeff1 * pow(np1, 2);  // pi^2 * D1 * n^2 / a^2
+        diffusion_rate2 = diffusion_rate_coeff2 * pow(np1, 2);  // pi^2 * D2 * n^2 / a^2
 
-        source_rate1 = source_rate_coeff_1 * n_coeff; // - 2 sqrt(2/pi) * S1 * (-1)^n/n
-        source_rate2 = source_rate_coeff_2 * n_coeff; // - 2 sqrt(2/pi) * S2 * (-1)^n/n
+        source_rate1 = source_rate_coeff_1 * n_coeff;  // - 2 sqrt(2/pi) * S1 * (-1)^n/n
+        source_rate2 = source_rate_coeff_2 * n_coeff;  // - 2 sqrt(2/pi) * S2 * (-1)^n/n
 
         coeff_matrix[0] = 1.0 + (diffusion_rate1 + parameter.at(7) + parameter.at(8)) * increment;
         coeff_matrix[1] = -parameter.at(6) * increment;
@@ -221,9 +226,16 @@ void Solver::SpectralDiffusion2equations(double &gas_1, double &gas_2, double *i
     gas_2 = gas_2_solution;
 }
 
-void Solver::SpectralDiffusion3equations(double &gas_1, double &gas_2, double &gas_3, double *initial_condition_gas_1, double *initial_condition_gas_2, double *initial_condition_gas_3, std::vector<double> parameter, double increment)
+void Solver::SpectralDiffusion3equations(double&             gas_1,
+                                         double&             gas_2,
+                                         double&             gas_3,
+                                         double*             initial_condition_gas_1,
+                                         double*             initial_condition_gas_2,
+                                         double*             initial_condition_gas_3,
+                                         std::vector<double> parameter,
+                                         double              increment)
 {
-    size_t n;
+    size_t             n;
     unsigned short int np1(1);
 
     double diffusion_rate1(0.0);
@@ -251,26 +263,26 @@ void Solver::SpectralDiffusion3equations(double &gas_1, double &gas_2, double &g
     double coeff_matrix[9];
     double initial_conditions[3];
 
-    diffusion_rate_coeff1 = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(4), 2); // pi^2 * D1 / a^2
-    diffusion_rate_coeff2 = pow(M_PI, 2) * parameter.at(2) / pow(parameter.at(4), 2); // pi^2 * D2 / a^2
-    diffusion_rate_coeff3 = pow(M_PI, 2) * parameter.at(3) / pow(parameter.at(4), 2); // pi^2 * D3 / a^2
+    diffusion_rate_coeff1 = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(4), 2);  // pi^2 * D1 / a^2
+    diffusion_rate_coeff2 = pow(M_PI, 2) * parameter.at(2) / pow(parameter.at(4), 2);  // pi^2 * D2 / a^2
+    diffusion_rate_coeff3 = pow(M_PI, 2) * parameter.at(3) / pow(parameter.at(4), 2);  // pi^2 * D3 / a^2
 
     projection_coeff = -2.0 * sqrt(2.0 / M_PI);
 
-    source_rate_coeff_1 = projection_coeff * parameter.at(5); // - 2 sqrt(2/pi) * S1
-    source_rate_coeff_2 = projection_coeff * parameter.at(6); // - 2 sqrt(2/pi) * S2
-    source_rate_coeff_3 = projection_coeff * parameter.at(7); // - 2 sqrt(2/pi) * S3
+    source_rate_coeff_1 = projection_coeff * parameter.at(5);  // - 2 sqrt(2/pi) * S1
+    source_rate_coeff_2 = projection_coeff * parameter.at(6);  // - 2 sqrt(2/pi) * S2
+    source_rate_coeff_3 = projection_coeff * parameter.at(7);  // - 2 sqrt(2/pi) * S3
 
     for (n = 0; n < parameter.at(0); n++)
     {
-        np1 = n + 1;
+        np1                  = n + 1;
         const double n_coeff = pow(-1.0, np1) / np1;
 
-        diffusion_rate1 = diffusion_rate_coeff1 * pow(np1, 2); // pi^2 * D1 * n^2 / a^2
-        diffusion_rate2 = diffusion_rate_coeff2 * pow(np1, 2); // pi^2 * D2 * n^2 / a^2
-        diffusion_rate3 = diffusion_rate_coeff3 * pow(np1, 2); // pi^2 * D3 * n^2 / a^2
+        diffusion_rate1 = diffusion_rate_coeff1 * pow(np1, 2);  // pi^2 * D1 * n^2 / a^2
+        diffusion_rate2 = diffusion_rate_coeff2 * pow(np1, 2);  // pi^2 * D2 * n^2 / a^2
+        diffusion_rate3 = diffusion_rate_coeff3 * pow(np1, 2);  // pi^2 * D3 * n^2 / a^2
 
-        source_rate1 = source_rate_coeff_1 * n_coeff; // - 2 sqrt(2/pi) * S * (-1)^n/n
+        source_rate1 = source_rate_coeff_1 * n_coeff;  // - 2 sqrt(2/pi) * S * (-1)^n/n
         source_rate2 = source_rate_coeff_2 * n_coeff;
         source_rate3 = source_rate_coeff_3 * n_coeff;
 
@@ -322,13 +334,17 @@ void Solver::Laplace2x2(double A[], double b[])
 void Solver::Laplace3x3(double A[], double b[])
 {
     double detX(0.0), detY(0.0), detZ(0.0);
-    double detA = A[0] * (A[4] * A[8] - A[5] * A[7]) - A[1] * (A[3] * A[8] - A[5] * A[6]) + A[2] * (A[3] * A[7] - A[4] * A[6]);
+    double detA =
+        A[0] * (A[4] * A[8] - A[5] * A[7]) - A[1] * (A[3] * A[8] - A[5] * A[6]) + A[2] * (A[3] * A[7] - A[4] * A[6]);
 
     if (detA != 0.0)
     {
-        detX = b[0] * (A[4] * A[8] - A[5] * A[7]) - A[1] * (b[1] * A[8] - A[5] * b[2]) + A[2] * (b[1] * A[7] - A[4] * b[2]);
-        detY = A[0] * (b[1] * A[8] - A[5] * b[2]) - b[0] * (A[3] * A[8] - A[5] * A[6]) + A[2] * (A[3] * b[2] - b[1] * A[6]);
-        detZ = A[0] * (A[4] * b[2] - b[1] * A[7]) - A[1] * (A[3] * b[2] - b[1] * A[6]) + b[0] * (A[3] * A[7] - A[4] * A[6]);
+        detX = b[0] * (A[4] * A[8] - A[5] * A[7]) - A[1] * (b[1] * A[8] - A[5] * b[2]) +
+               A[2] * (b[1] * A[7] - A[4] * b[2]);
+        detY = A[0] * (b[1] * A[8] - A[5] * b[2]) - b[0] * (A[3] * A[8] - A[5] * A[6]) +
+               A[2] * (A[3] * b[2] - b[1] * A[6]);
+        detZ = A[0] * (A[4] * b[2] - b[1] * A[7]) - A[1] * (A[3] * b[2] - b[1] * A[6]) +
+               b[0] * (A[3] * A[7] - A[4] * A[6]);
         b[0] = detX / detA;
         b[1] = detY / detA;
         b[2] = detZ / detA;
@@ -369,7 +385,7 @@ double Solver::det(int N, double A[])
 
 void Solver::Laplace(int N, double A[], double b[])
 {
-    int dim = N * N;
+    int    dim  = N * N;
     double detA = det(N, A);
     double M[dim];
     double detX = 0.0;
@@ -399,43 +415,58 @@ void Solver::Laplace(int N, double A[], double b[])
 
 double Solver::QuarticEquation(std::vector<double> parameter)
 {
-    double function(0.0);
-    double derivative(0.0);
-    double y1(0.0);
-    unsigned short int iter(0);
-    const double tol(1.0e-3);
-    const unsigned short int max_iter(5);
+    double                   function(0.0);
+    double                   derivative(0.0);
+    double                   y1(0.0);
+    unsigned short int       iter(0);
+    const double             tol(1.0e-3);
+    const unsigned short int max_iter(50);
 
     double y0 = parameter.at(0);
-    double a = parameter.at(1);
-    double b = parameter.at(2);
-    double c = parameter.at(3);
-    double d = parameter.at(4);
-    double e = parameter.at(5);
+    double a  = parameter.at(1);
+    double b  = parameter.at(2);
+    double c  = parameter.at(3);
+    double d  = parameter.at(4);
+    double e  = parameter.at(5);
+
+    // See NewtonBlackburn: a diverged iterate is kept out of the returned value.
+    double last_valid = y0;
 
     while (iter < max_iter)
     {
-        function = a * pow(y0, 4) + b * pow(y0, 3) + c * pow(y0, 2) + d * y0 + e;
+        function   = a * pow(y0, 4) + b * pow(y0, 3) + c * pow(y0, 2) + d * y0 + e;
         derivative = 4.0 * a * pow(y0, 3) + 3.0 * b * pow(y0, 2) + 2.0 * c * y0 + d;
 
-        y1 = y0 - function / derivative;
-        y0 = y1;
+        if (!std::isfinite(function) || !std::isfinite(derivative) || derivative == 0.0)
+            break;
 
-        if (function < tol)
+        y1 = y0 - function / derivative;
+
+        if (!std::isfinite(y1))
+            break;
+
+        y0         = y1;
+        last_valid = y1;
+
+        if (std::fabs(function) < tol)
             return y1;
 
         iter++;
     }
-    return y1;
+    ErrorMessages::Warning("Solver.C",
+                           "QuarticEquation did not converge within " + std::to_string(max_iter) +
+                               " iterations (|f| = " + std::to_string(std::fabs(function)) +
+                               "); returning the last finite iterate");
+    return last_valid;
 }
 
-void Solver::modeInitialization(int n_modes, double mode_initial_condition, double *diffusion_modes)
+void Solver::modeInitialization(int n_modes, double mode_initial_condition, double* diffusion_modes)
 {
     // projection on diffusion modes of the initial conditions
     double initial_condition(0.0);
     double projection_remainder(0.0);
     double reconstructed_solution(0.0);
-    int iteration(0), iteration_max(20), n(0), np1(1);
+    int    iteration(0), iteration_max(20), n(0), np1(1);
     double projection_coeff(0.0);
     projection_coeff = -sqrt(8.0 / M_PI);
 
@@ -447,7 +478,7 @@ void Solver::modeInitialization(int n_modes, double mode_initial_condition, doub
         reconstructed_solution = 0.0;
         for (n = 0; n < n_modes; ++n)
         {
-            np1 = n + 1;
+            np1                  = n + 1;
             const double n_coeff = pow(-1.0, np1) / np1;
             diffusion_modes[n] += projection_coeff * n_coeff * projection_remainder;
             reconstructed_solution += projection_coeff * n_coeff * diffusion_modes[n] * 3.0 / (4.0 * M_PI);
@@ -458,54 +489,80 @@ void Solver::modeInitialization(int n_modes, double mode_initial_condition, doub
 
 double Solver::NewtonBlackburn(std::vector<double> parameter)
 {
-    double fun(0.0);
-    double deriv(0.0);
-    double x1(0.0);
-    unsigned short int iter(0);
-    const double tol(1.0e-3);
+    double                   fun(0.0);
+    double                   deriv(0.0);
+    double                   x1(0.0);
+    unsigned short int       iter(0);
+    const double             tol(1.0e-3);
     const unsigned short int max_iter(50);
 
     double a = parameter.at(0);
     double b = parameter.at(1);
-    double c = log(parameter.at(2));
 
-    if (parameter.at(2) == 0)
-        std::cout << "Warning: check NewtonBlackburn solver!" << std::endl;
+    if (parameter.at(2) <= 0.0)
+    {
+        ErrorMessages::Warning("Solver.C",
+                               "non-positive argument in NewtonBlackburn; returning the initial value unchanged");
+        return a;
+    }
+
+    double c = log(parameter.at(2));
 
     if (a == 0.0)
         a = 1.0e-7;
 
+    // Last iterate that was still a usable number. Returning it instead of a diverged one
+    // keeps a failed iteration local: a NaN handed back here propagates into the oxygen
+    // partial pressure and potential, and from there into every model that reads them.
+    double last_valid = a;
+
     while (iter < max_iter)
     {
-        fun = 2.0 * log(a * (a + 2.0) / (1.0 - a)) + 108.0 * pow(a, 2.0) - 32700.0 / b + 9.92 - c;
+        fun =
+            2.0 * log(a * (a + 2.0) / (1.0 - a)) + 108.0 * pow(a, 2.0) - blackburn_enthalpy / b + blackburn_entropy - c;
 
         deriv = 216.0 * a + 2.0 * (pow(a, 2.0) - 2.0 * a - 2.0) / ((a - 1.0) * a * (2.0 + a));
 
-        x1 = a - fun / deriv;
-        a = x1;
+        if (!std::isfinite(fun) || !std::isfinite(deriv) || deriv == 0.0)
+            break;
 
-        if (abs(fun) < tol)
+        x1 = a - fun / deriv;
+
+        if (!std::isfinite(x1))
+            break;
+
+        a          = x1;
+        last_valid = x1;
+
+        if (std::fabs(fun) < tol)
             return x1;
 
         iter++;
     }
-    return x1;
+    ErrorMessages::Warning("Solver.C",
+                           "NewtonBlackburn did not converge within " + std::to_string(max_iter) +
+                               " iterations (|f| = " + std::to_string(std::fabs(fun)) +
+                               "); returning the last finite iterate");
+    return last_valid;
 }
 
 double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment)
 {
-    double K = parameter.at(0);
-    double beta = parameter.at(1);
+    double K     = parameter.at(0);
+    double beta  = parameter.at(1);
     double alpha = parameter.at(2);
-    double x0 = initial_value;
-    double x00 = initial_value;
+    double x0    = initial_value;
+    double x00   = initial_value;
 
-    double fun(0.0);
-    double deriv(0.0);
-    double x1(0.0);
-    unsigned short int iter(0);
-    const double tol(1.0e-3);
+    double                   fun(0.0);
+    double                   deriv(0.0);
+    double                   x1(0.0);
+    unsigned short int       iter(0);
+    const double             tol(1.0e-3);
     const unsigned short int max_iter(50);
+
+    // See NewtonBlackburn: a diverged iterate is kept out of the returned value.
+    double last_valid = x0;
 
     while (iter < max_iter)
     {
@@ -513,47 +570,57 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
 
         deriv = 1.0 + K * beta * alpha * exp(alpha * x0) * increment;
 
-        x1 = x0 - fun / deriv;
-        x0 = x1;
+        if (!std::isfinite(fun) || !std::isfinite(deriv) || deriv == 0.0)
+            break;
 
-        if (abs(fun) < tol)
+        x1 = x0 - fun / deriv;
+
+        if (!std::isfinite(x1))
+            break;
+
+        x0         = x1;
+        last_valid = x1;
+
+        if (std::fabs(fun) < tol)
             return x1;
 
         iter++;
     }
-    return x1;
+    ErrorMessages::Warning("Solver.C",
+                           "NewtonLangmuirBasedModel did not converge within " + std::to_string(max_iter) +
+                               " iterations (|f| = " + std::to_string(std::fabs(fun)) +
+                               "); returning the last finite iterate");
+    return last_valid;
 }
 
-
-//New Source Projection Function on the spatial mode i
-double Solver::SourceProjection_i(double GrainRadius, std::vector<double> Domain, std::vector<double> Source_Function, double SpatialMode_i)
+// New Source Projection Function on the spatial mode i
+double Solver::SourceProjection_i(double              GrainRadius,
+                                  std::vector<double> Domain,
+                                  std::vector<double> Source_Function,
+                                  double              SpatialMode_i)
 {
-    if (!GrainRadius) {
-        // Handle error: GrainRadius cannot be zero.
-        //SCIANTIX will not run of the GrainRadius provided is 0
-        std::cerr << "Error: Grain radius cannot be zero." << std::endl;
-        std::exit(EXIT_FAILURE);
-    }
-    
-    int i = SpatialMode_i;
-    double a = GrainRadius;
-    double A = Source_Function[0];
-    double B = Source_Function[1];
+    if (GrainRadius <= 0.0)
+        ErrorMessages::Fatal("Solver.C", "SourceProjection_i: the grain radius must be strictly positive");
+
+    int    i  = SpatialMode_i;
+    double a  = GrainRadius;
+    double A  = Source_Function[0];
+    double B  = Source_Function[1];
     double r0 = Domain[0];
     double r1 = Domain[1];
     double pi = M_PI;
 
     // First term calculation (proj0)
-    double proj0 = (2 * A * a * a * std::cos(pi * i * r0 / a) +
-                    pi * a * i * (2 * A * r0 + B) * std::sin(pi * i * r0 / a) -
-                    pi * pi * i * i * r0 * (A * r0 + B) * std::cos(pi * i * r0 / a)) /
-                   (a * pi * pi * i * i * i);
+    double proj0 =
+        (2 * A * a * a * std::cos(pi * i * r0 / a) + pi * a * i * (2 * A * r0 + B) * std::sin(pi * i * r0 / a) -
+         pi * pi * i * i * r0 * (A * r0 + B) * std::cos(pi * i * r0 / a)) /
+        (a * pi * pi * i * i * i);
 
     // Second term calculation (proj1)
-    double proj1 = (2 * A * a * a * std::cos(pi * i * r1 / a) +
-                    pi * a * i * (2 * A * r1 + B) * std::sin(pi * i * r1 / a) -
-                    pi * pi * i * i * r1 * (A * r1 + B) * std::cos(pi * i * r1 / a)) /
-                   (a * pi * pi * i * i * i);
+    double proj1 =
+        (2 * A * a * a * std::cos(pi * i * r1 / a) + pi * a * i * (2 * A * r1 + B) * std::sin(pi * i * r1 / a) -
+         pi * pi * i * i * r1 * (A * r1 + B) * std::cos(pi * i * r1 / a)) /
+        (a * pi * pi * i * i * i);
 
     return proj1 - proj0;
 }
@@ -562,8 +629,8 @@ double Solver::NonSym(int input)
 {
     double theta1 = 0;
     double theta2 = M_PI;
-    double phi1 = 0;
-    double phi2 = M_PI / 8;
+    double phi1   = 0;
+    double phi2   = M_PI / 8;
 
     double f = (cos(theta1) - cos(theta2)) * (phi2 - phi1) / (4 * M_PI);
 

@@ -1,3 +1,6 @@
+# Brief script to compute the correlation term between burnup and swelling due to solid fission products
+# Author: G. Zullo
+
 import numpy as np
 
 # Olander 1976 - Formula for swelling due to solid FPs

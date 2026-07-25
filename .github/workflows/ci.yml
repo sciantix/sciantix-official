@@ -1,0 +1,64 @@
+name: Build and regression tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build SCIANTIX
+        run: |
+          echo "Compiling SCIANTIX"
+          mkdir build
+          cd build
+          cmake ..
+          make -j
+
+      - name: Run unit tests
+        run: ctest --test-dir build --output-on-failure
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sciantix-build
+          path: build/
+
+  regression:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Download compiled SCIANTIX
+        uses: actions/download-artifact@v4
+        with:
+          name: sciantix-build
+          path: build
+
+      - name: Make binary executable
+        run: chmod +x build/sciantix.x
+
+      - name: Set up python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install regression dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install numpy matplotlib scipy scikit-learn pandas
+
+      - name: Run regression tests
+        run: |
+          export PATH=$PATH:$(pwd)/build
+          python3 -m regression.runner --all --mode-gold 0
