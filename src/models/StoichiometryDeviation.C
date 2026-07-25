@@ -382,6 +382,27 @@ double BlackburnThermochemicalModel(double                           stoichiomet
                                     double                           temperature,
                                     SciantixArray<SciantixVariable>& sciantix_variable)
 {
+    // Blackburn describes the hyperstoichiometric branch, UO(2+x), and the logarithm takes a
+    // non-positive argument outside 0 < x < 1, returning a NaN that propagates into the
+    // oxygen partial pressure and potential.
+    //
+    // The two ends are not symmetric. As x -> 0+ the pressure tends to zero, so a
+    // non-positive deviation - which occurs as numerical noise about a vanishing one - is
+    // mapped onto that limit. As x -> 1- the pressure diverges instead, so returning zero
+    // there would invert the physics; that range is outside the correlation altogether
+    // (x = 1 is UO3, far above the x < 0.25 the oxidation models cover) and is reported.
+    if (stoichiometry_deviation <= 0.0)
+        return 0.0;
+
+    if (stoichiometry_deviation >= 1.0)
+    {
+        ErrorMessages::Warning("StoichiometryDeviation.C",
+                               "stoichiometry deviation x = " + std::to_string(stoichiometry_deviation) +
+                                   " is outside the Blackburn correlation, where the oxygen partial pressure "
+                                   "diverges; the fuel oxygen partial pressure is left unevaluated");
+        return 0.0;
+    }
+
     double ln_p =
         2.0 * log(stoichiometry_deviation * (2.0 + stoichiometry_deviation) / (1.0 - stoichiometry_deviation)) +
         108.0 * pow(sciantix_variable["Stoichiometry deviation"].getFinalValue(), 2.0) -

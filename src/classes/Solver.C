@@ -365,13 +365,24 @@ double Solver::QuarticEquation(std::vector<double> parameter)
     double d  = parameter.at(4);
     double e  = parameter.at(5);
 
+    // See NewtonBlackburn: a diverged iterate is kept out of the returned value.
+    double last_valid = y0;
+
     while (iter < max_iter)
     {
         function   = a * pow(y0, 4) + b * pow(y0, 3) + c * pow(y0, 2) + d * y0 + e;
         derivative = 4.0 * a * pow(y0, 3) + 3.0 * b * pow(y0, 2) + 2.0 * c * y0 + d;
 
+        if (!std::isfinite(function) || !std::isfinite(derivative) || derivative == 0.0)
+            break;
+
         y1 = y0 - function / derivative;
-        y0 = y1;
+
+        if (!std::isfinite(y1))
+            break;
+
+        y0         = y1;
+        last_valid = y1;
 
         if (std::fabs(function) < tol)
             return y1;
@@ -380,8 +391,9 @@ double Solver::QuarticEquation(std::vector<double> parameter)
     }
     ErrorMessages::Warning("Solver.C",
                            "QuarticEquation did not converge within " + std::to_string(max_iter) +
-                               " iterations (|f| = " + std::to_string(std::fabs(function)) + ")");
-    return y1;
+                               " iterations (|f| = " + std::to_string(std::fabs(function)) +
+                               "); returning the last finite iterate");
+    return last_valid;
 }
 
 void Solver::modeInitialization(int n_modes, double mode_initial_condition, double* diffusion_modes)
@@ -435,6 +447,11 @@ double Solver::NewtonBlackburn(std::vector<double> parameter)
     if (a == 0.0)
         a = 1.0e-7;
 
+    // Last iterate that was still a usable number. Returning it instead of a diverged one
+    // keeps a failed iteration local: a NaN handed back here propagates into the oxygen
+    // partial pressure and potential, and from there into every model that reads them.
+    double last_valid = a;
+
     while (iter < max_iter)
     {
         fun =
@@ -442,18 +459,27 @@ double Solver::NewtonBlackburn(std::vector<double> parameter)
 
         deriv = 216.0 * a + 2.0 * (pow(a, 2.0) - 2.0 * a - 2.0) / ((a - 1.0) * a * (2.0 + a));
 
-        x1 = a - fun / deriv;
-        a  = x1;
+        if (!std::isfinite(fun) || !std::isfinite(deriv) || deriv == 0.0)
+            break;
 
-        if (abs(fun) < tol)
+        x1 = a - fun / deriv;
+
+        if (!std::isfinite(x1))
+            break;
+
+        a          = x1;
+        last_valid = x1;
+
+        if (std::fabs(fun) < tol)
             return x1;
 
         iter++;
     }
     ErrorMessages::Warning("Solver.C",
                            "NewtonBlackburn did not converge within " + std::to_string(max_iter) +
-                               " iterations (|f| = " + std::to_string(std::fabs(fun)) + ")");
-    return x1;
+                               " iterations (|f| = " + std::to_string(std::fabs(fun)) +
+                               "); returning the last finite iterate");
+    return last_valid;
 }
 
 double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double> parameter, double increment)
@@ -471,22 +497,34 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
     const double             tol(1.0e-3);
     const unsigned short int max_iter(50);
 
+    // See NewtonBlackburn: a diverged iterate is kept out of the returned value.
+    double last_valid = x0;
+
     while (iter < max_iter)
     {
         fun = x0 - x00 - K * increment + K * beta * exp(alpha * x0) * increment;
 
         deriv = 1.0 + K * beta * alpha * exp(alpha * x0) * increment;
 
-        x1 = x0 - fun / deriv;
-        x0 = x1;
+        if (!std::isfinite(fun) || !std::isfinite(deriv) || deriv == 0.0)
+            break;
 
-        if (abs(fun) < tol)
+        x1 = x0 - fun / deriv;
+
+        if (!std::isfinite(x1))
+            break;
+
+        x0         = x1;
+        last_valid = x1;
+
+        if (std::fabs(fun) < tol)
             return x1;
 
         iter++;
     }
     ErrorMessages::Warning("Solver.C",
                            "NewtonLangmuirBasedModel did not converge within " + std::to_string(max_iter) +
-                               " iterations (|f| = " + std::to_string(std::fabs(fun)) + ")");
-    return x1;
+                               " iterations (|f| = " + std::to_string(std::fabs(fun)) +
+                               "); returning the last finite iterate");
+    return last_valid;
 }
