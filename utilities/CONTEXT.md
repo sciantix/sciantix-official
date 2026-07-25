@@ -370,11 +370,6 @@ A four-agent review (models / numerical core / I-O wiring / tooling) found and f
 
 New in 2026-07 (see the review conversation for file/line detail):
 
-- **GB sweeping only sweeps He mode blocks** (6/7/8) — Xe/Kr intragranular modes are
-  never swept although the model doc describes a fission-gas mechanism. Physics-intent
-  decision needed (changing it alters validated results).
-- **Densification compounds the (1 − f) reduction every time step** — result depends
-  on step count, not just burnup. Intent check against the reference model needed.
 - Input-parsing robustness (partly closed on 2026-07-25, see §9.5): short lines in
   `input_initial_conditions.txt` cause out-of-bounds vector reads; a 4-column history
   with `iStoichiometryDeviation > 0` interleaves times/pressures; a history not
@@ -421,7 +416,9 @@ New in 2026-07 (see the review conversation for file/line detail):
 ### 9.5 Fixed in the 2026-07-25 review
 
 Full suite 110/110 PASS after each change (the suite grew from 109 to 110 with
-`analytics/test_openPorosity`); all fixes below are gold-neutral.
+`analytics/test_openPorosity`). Every fix below is gold-neutral except the
+densification one, which changed the physics and required a deliberate gold
+regeneration.
 
 - **The grain-boundary venting guard added in §9.2 had been lost again.** The
   `getRestructuredMatrix() == 0` guard in `GrainBoundaryVenting.C` was reintroduced in
@@ -461,6 +458,29 @@ Full suite 110/110 PASS after each change (the suite grew from 109 to 110 with
   intergranular swelling from White 2004, Talip is helium annealing, CONTACT is the
   Xe133/Kr85m R/B experiment, Cornell is intragranular bubbles) and `--mode-gold 3`;
   `conf.py` still declared release 2.1.
+- **Densification depended on the number of time steps, not on burnup** (the §9.3 item
+  is now closed; **gold regenerated**). `Densification.C` reduced the fabrication
+  porosity by applying `(1 - f_dens)` to its *running* value once per step, so the
+  excess over the residual porosity decayed as `x0 * (1 - f_eq)^N` with `N` the step
+  count. It was not an inaccurate integration but a scheme with no continuum limit: as
+  the step size goes to zero `f_eq` stays finite, so the porosity collapses onto the
+  residual floor instantly, whatever the burnup. Changing only
+  `Number_of_time_steps_per_interval` from 25 to 400 moved the final porosity by 11.9 %
+  and the FGR by 10 %; refining the history rows gave the same. `f_dens` is cumulative,
+  so the porosity is now evaluated in closed form from the as-fabricated value, obtained
+  from `Residual porosity` — the only quantity of that family that is written once and
+  never modified. The ODE for `f_dens` is unchanged, and the reference constants are
+  unaffected because they were fitted on the experimental points outside the code.
+  Final porosity is now identical to 1e-8 across step counts. Gold for
+  `test_openPorosity`: porosity +30.9 % (it no longer collapses onto the floor), venting
+  probability +14.8 %, FGR +11.8 %. Two divergences from Pagani et al. (2026) are
+  recorded in the source: Eq. (8) is printed as a growth equation, and the text calls
+  `f_dens` the fraction of the original fabrication porosity whereas it is the fraction
+  of the densifiable part — a factor four.
+- **GB sweeping acting on the He mode blocks only is intended** (the §9.3 item is closed
+  as a decision, not a defect): confirmed as physically correct by the maintainers.
+  `docs/source/models/grain_boundary_sweeping.rst` still describes a generic fission-gas
+  mechanism and is worth aligning.
 
 ---
 
