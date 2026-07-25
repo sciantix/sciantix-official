@@ -1,0 +1,35 @@
+---
+title: SCIANTIX() call sequence -- Sciantix.C + Simulation::initialize/execute/update/output
+---
+flowchart TB
+    C_BEGIN(["BEGIN"])
+    setVariables["SET VARIABLES"]
+    setFissionProducts["SET FISSION PRODUCTS"]
+    setMatrix["SET FUEL MATRIX"]
+    setSystem["SET SYSTEM"]
+    setGPVariables["SET GP VARIABLES"]
+    execute["EXECUTE PHYSICS SEQUENCE<br/>see: execute-sequence diagram"]
+    update["UPDATE VARIABLES"]
+    output[/"OUTPUT"/]
+    C_END(["END"])
+
+    C_BEGIN --> setVariables --> setFissionProducts --> setMatrix --> setSystem --> setGPVariables --> execute --> update --> output --> C_END
+
+    setFissionProducts_note["gas: Xe, Kr<br/>volatile: Cs<br/>metallic: Mo, Pd, Ru, Rh, Tc<br/>ceramic: Ba"]
+    setFissionProducts --> setFissionProducts_note
+    setMatrix_note["UO2, MOX"]
+    setMatrix --> setMatrix_note
+    setSystem_note["FPs in fuel matrix"]
+    setSystem --> setSystem_note
+    setGPVariables_note["only active for iFissionProductDiffusivity == 90<br/>(GP-regression Xe diffusivity)"]
+    setGPVariables --> setGPVariables_note
+
+    classDef terminal fill:#E8C4BE,stroke:#7A1F1F,stroke-width:1.5px,color:#3a0d0d;
+    classDef process fill:#E8C4BE,stroke:#7A1F1F,stroke-width:1.5px,color:#3a0d0d;
+    classDef note fill:#F6E9D9,stroke:#7A1F1F,stroke-width:1px,color:#3a0d0d;
+    classDef highlight fill:#7A1F1F,stroke:#3a0d0d,stroke-width:2.5px,color:#ffffff;
+
+    class C_BEGIN,C_END terminal;
+    class setVariables,setFissionProducts,setMatrix,setSystem,setGPVariables,update,output process;
+    class execute highlight;
+    class setFissionProducts_note,setMatrix_note,setSystem_note,setGPVariables_note note;

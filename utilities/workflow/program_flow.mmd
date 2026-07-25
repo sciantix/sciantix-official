@@ -1,0 +1,45 @@
+---
+title: Program flow -- MainSCIANTIX.C
+---
+flowchart TB
+    subgraph INPUTS["input files"]
+        direction TB
+        I_HIST>"HISTORY<br/>(t, T, $\dot{F}$, σ_h, p, O/M)"]
+        I_OPT>"MODELS' OPTION"]
+        I_IC>"INITIAL CONDITIONS"]
+        I_SF>"SCALING FACTORS"]
+        I_TCOPT>"THERMOCHEMISTRY OPTION"]
+        I_TCDB>"THERMOCHEMISTRY DATABASE"]
+        I_HIST ~~~ I_OPT ~~~ I_IC ~~~ I_SF ~~~ I_TCOPT ~~~ I_TCDB
+    end
+
+    subgraph MAIN["MainSCIANTIX.C"]
+        direction TB
+        M_BEGIN(["BEGIN"])
+        M_INPUT[/"INPUT<br/>(InputReading)"/]
+        M_INIT["INITIALIZATION"]
+        M_LOOP{"TIME LOOP<br/>t ≤ t_end ?"}
+        M_INTERP["INPUT INTERPOLATION"]
+        M_CALL["SCIANTIX()<br/>see: call-sequence diagram"]
+        M_STEP["TIME-STEP CALCULATION"]
+        M_END(["END"])
+
+        M_BEGIN --> M_INPUT --> M_INIT --> M_LOOP
+        M_LOOP -- yes --> M_INTERP --> M_CALL --> M_STEP --> M_LOOP
+        M_LOOP -- no --> M_END
+    end
+
+    I_HIST --> M_INPUT
+    I_OPT --> M_INPUT
+    I_IC --> M_INPUT
+    I_SF --> M_INPUT
+    I_TCOPT --> M_INPUT
+    I_TCDB --> M_INPUT
+
+    classDef loopbox fill:#E6E1EA,stroke:#5b5766,stroke-width:1.5px,color:#28252e;
+    classDef input fill:#F0D77B,stroke:#8a6d1f,stroke-width:1.5px,color:#3a2e0d;
+    classDef highlight fill:#7A1F1F,stroke:#3a0d0d,stroke-width:2px,color:#ffffff;
+
+    class M_BEGIN,M_END,M_INPUT,M_INIT,M_LOOP,M_INTERP,M_STEP loopbox;
+    class M_CALL highlight;
+    class I_HIST,I_OPT,I_IC,I_SF,I_TCOPT,I_TCDB input;

@@ -1,0 +1,22 @@
+---
+title: OC coupling (thermochemistry) -- src/operations/SetPhaseDiagram.C + src/coupling/OCUtilsCoupling.C
+---
+flowchart TB
+    O1{"run full OpenCalphad?<br/>(iThermochimica mode, COUPLING_TU)"}
+    Oskip["CARRY FP INVENTORY<br/>WITHOUT THERMOCHEMISTRY"]
+    O2["FOR EACH LOCATION<br/>(matrix, grain boundary)"]
+    O3["BUILD INPUT COMPONENTS<br/>(elements + composition)"]
+    O4{"cached equilibrium<br/>still fresh?"}
+    O5["REUSE CACHED<br/>EQUILIBRIUM"]
+    O6["SOLVE EQUILIBRIUM<br/>(retry solver modes)"]
+    O7["WRITE THERMOCHEMISTRY<br/>VARIABLES"]
+    O8["UPDATE MATRIX /<br/>GRAIN-BOUNDARY FP INVENTORY"]
+
+    O1 -- no --> Oskip
+    O1 -- yes --> O2 --> O3 --> O4
+    O4 -- yes --> O5 --> O7
+    O4 -- no --> O6 --> O7
+    O7 --> O8
+
+    classDef simOc fill:#F3D9C4,stroke:#8A4A2A,stroke-width:1.5px,color:#3a1f0d;
+    class O1,Oskip,O2,O3,O4,O5,O6,O7,O8 simOc;
