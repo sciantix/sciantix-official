@@ -61,6 +61,10 @@ latex/
 regression/report.html
 
 # Written by ErrorMessages next to the case that produced it
+# Templates written by the generators in utilities/inputExample/. Scoped to that folder:
+# input_settings.txt and friends are real, tracked inputs everywhere else.
+utilities/inputExample/*.txt
+
 # SCIANTIX run artefacts: regenerated on every execution, never meant to be committed
 error_log.txt
 input_check.txt
