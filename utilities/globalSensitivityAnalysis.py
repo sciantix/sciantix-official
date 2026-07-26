@@ -11,12 +11,12 @@ The one-factor-at-a-time counterpart is `utilities/singleSensitivityAnalysis.py`
 
     python3 utilities/globalSensitivityAnalysis.py
 
-Runs are carried out on copies under `utilities/GSA_runs/`, never in the regression case
+Runs are carried out on copies under `build/GSA/runs/`, never in the regression case
 directories themselves — the analysis rewrites `input_scaling_factors.txt` on every
 sample, and doing that in place would leave the validation database modified.
 
-Results (.npy) are cached under `utilities/GSA_output_files/`; set RUN_SENSITIVITY to
-False to re-plot from the cache without re-running SCIANTIX.
+Figures, the report and the cached arrays land in `build/GSA/results/`; set
+RUN_SENSITIVITY to False to re-plot from the cache without re-running SCIANTIX.
 """
 
 import os
@@ -36,8 +36,13 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, ".."))
 EXECUTABLE = os.path.join(ROOT, "build", "sciantix.x")
 
-RUNS_ROOT = os.path.join(HERE, "GSA_runs")
-CACHE_ROOT = os.path.join(HERE, "GSA_output_files")
+# Everything this writes is generated, so it goes under build/, the repo's generated
+# area: scratch case copies, the cached arrays and the report. utilities/ stays a folder
+# of tools. Allclean.sh removes build/, which takes the cache with it -- a full run is
+# seconds, so that is a fair trade.
+OUTPUT_ROOT = os.path.join(ROOT, "build", "GSA")
+RUNS_ROOT = os.path.join(OUTPUT_ROOT, "runs")
+CACHE_ROOT = os.path.join(OUTPUT_ROOT, "results")
 
 # --- what to analyse -------------------------------------------------------------
 # GROUP is the regression group directory, CASE_PREFIX selects cases inside it.
@@ -296,7 +301,8 @@ class GlobalSensitivityAnalysis:
         return score
 
     def write_report(self, score):
-        path = os.path.join(HERE, "GSA_report.txt")
+        os.makedirs(CACHE_ROOT, exist_ok=True)
+        path = os.path.join(CACHE_ROOT, "report.txt")
         with open(path, "w") as f:
             f.write(f"Global sensitivity analysis — {os.path.basename(self.group_dir)}\n")
             f.write(f"Variable: {self.variable_name}\n")

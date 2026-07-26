@@ -67,10 +67,6 @@ input_check.txt
 execution.txt
 overview.txt
 
-# global sensitivity analysis: scratch runs, cached arrays and report
-utilities/GSA_runs/
-utilities/GSA_output_files/
-utilities/GSA_report.txt
 
 
 ########################################
