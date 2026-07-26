@@ -293,10 +293,11 @@ regression.runner --all -j $(nproc)`):
   `plotter.sh` at the repo root. These are diagnostics, not tests: the runner never
   calls them. They write into `<group>/figures/`, which is **gitignored** — the figures
   are regenerable artefacts, rebuilt by `plotter.sh` in about a minute.
-- `utilities/regression_scripts/` is the **pre-`runner.py` driver and does not run** —
-  it assumes the old flat `regression/test_*` layout and an executable path that does
-  not exist. It is kept only because its plotting logic is not fully ported; see the
-  README there before writing new plots or deleting it.
+- The pre-`runner.py` drivers under `utilities/regression_scripts/` were removed on
+  2026-07-26 (see §9.6): they assumed the flat `regression/test_*` layout, could not
+  run, and their experimental-comparison plotting is covered by the per-group scripts.
+  Sensitivity analysis lives in `utilities/singleSensitivityAnalysis.py`, the
+  deterministic grid sweep `regression/white/bias.py` refers to.
 - `output.txt` is **tracked alongside `output_gold.txt`** in every case and the two are
   byte-identical. Do not delete it as a run artefact.
 
@@ -587,6 +588,16 @@ Resolved during the merge:
   inputs and were regenerated; `test_NewSolver` also had an extra zero in its history
   (550000 h instead of 5500 h), and with that corrected its regenerated gold came out
   bit-identical to the pre-merge one.
+
+Also removed: `utilities/regression_scripts/`, nineteen scripts superseded by
+`runner.py`. Deprecating them first looked safer on a line-count argument — 1132 lines
+against 487 for Kashibe — but that difference is driver boilerplate, and reading the
+replacements showed `regression/kashibe/plot.py` covers the 1990, 1991 *and* 1993
+series and `regression/baker/plot.py` does load and compare the experimental data.
+`Summary_of_results.py` and `globalSensitivityAnalysis.py` looked worth keeping and
+were not: the first imports the deleted drivers at module level, the second copies
+`../../bin/sciantix.x` from a build layout that predates `build/`. Both went too. The
+lot is in history.
 
 Cross-checks worth repeating after touching the solver: the NUS path with a uniform
 source reproduces `SpectralDiffusion` bit-identically, and `regression/nus/studies/`
