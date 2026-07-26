@@ -296,8 +296,12 @@ regression.runner --all -j $(nproc)`):
 - The pre-`runner.py` drivers under `utilities/regression_scripts/` were removed on
   2026-07-26 (see §9.6): they assumed the flat `regression/test_*` layout, could not
   run, and their experimental-comparison plotting is covered by the per-group scripts.
-  Sensitivity analysis lives in `utilities/singleSensitivityAnalysis.py`, the
-  deterministic grid sweep `regression/white/bias.py` refers to.
+  Sensitivity analysis lives in `utilities/`: `singleSensitivityAnalysis.py` varies one
+  scaling factor at a time, `globalSensitivityAnalysis.py` perturbs them all at once and
+  ranks them by Spearman correlation against a chosen output, and
+  `regression/white/bias.py` is a deterministic grid sweep over a chosen pair. The global
+  one runs on copies under `utilities/GSA_runs/` so the validation database is never
+  modified.
 - `output.txt` is **tracked alongside `output_gold.txt`** in every case and the two are
   byte-identical. Do not delete it as a run artefact.
 
@@ -594,10 +598,10 @@ Also removed: `utilities/regression_scripts/`, nineteen scripts superseded by
 against 487 for Kashibe — but that difference is driver boilerplate, and reading the
 replacements showed `regression/kashibe/plot.py` covers the 1990, 1991 *and* 1993
 series and `regression/baker/plot.py` does load and compare the experimental data.
-`Summary_of_results.py` and `globalSensitivityAnalysis.py` looked worth keeping and
-were not: the first imports the deleted drivers at module level, the second copies
-`../../bin/sciantix.x` from a build layout that predates `build/`. Both went too. The
-lot is in history.
+`Summary_of_results.py` went with them: it imports the deleted drivers at module level,
+so it does not even import. `globalSensitivityAnalysis.py` was removed too and then
+restored and repaired — it was broken, not redundant, and nothing else in the repo ranks
+scaling factors against each other. The lot is in history.
 
 Cross-checks worth repeating after touching the solver: the NUS path with a uniform
 source reproduces `SpectralDiffusion` bit-identically, and `regression/nus/studies/`

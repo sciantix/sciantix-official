@@ -10,7 +10,7 @@ calculated vs experimental swelling) respond. This supports the selection of an
 effective set of scaling-factor values.
 
 It is a *deterministic grid sweep*, complementary to (not a replacement for) the
-per-parameter sweep in ``utilities/singleSensitivityAnalysis.py``.
+random-sampling sensitivity ranking in ``utilities/globalSensitivityAnalysis.py``.
 
 It produces a single parity figure in which the **gold** points stay fixed (the
 reference ``output_gold.txt`` swelling) and each **test** point carries a vertical
