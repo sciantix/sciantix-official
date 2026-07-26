@@ -1,205 +1,261 @@
+"""
+Single-parameter sensitivity analysis for SCIANTIX scaling factors.
+
+One scaling factor is perturbed at a time, sampled at random around unity, and the
+response of a chosen output variable is measured against a reference run with every
+factor at 1. The reported sensitivity coefficient is the normalised finite difference
+
+    k = (1 / y_ref) * (y_ref - y) / (1 - sf)
+
+so it answers "how strongly does this parameter move the result", not "which value fits
+the data" — no experimental comparison is involved.
+
+The companions:
+  utilities/globalSensitivityAnalysis.py  perturbs every factor at once and ranks them
+  regression/white/bias.py                sweeps a grid and scores it against experiment
+
+    python3 utilities/singleSensitivityAnalysis.py
+
+Runs happen on copies under `build/SSA/runs/`, never in the regression case itself.
+Figures and the report land in `build/SSA/results/`.
+"""
+
 import os
 import random
 import shutil
+import subprocess
+import sys
+
 import numpy as np
-import pandas as pd
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-def findSciantixVariablePosition(output, variable_name):
-  """
-  This function gets the output.txt file and the variable name,
-  giving back its column index in the ndarray
-  """
-  i,j = np.where(output == variable_name)
-  return int(j)
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.abspath(os.path.join(HERE, ".."))
+EXECUTABLE = os.path.join(ROOT, "build", "sciantix.x")
 
-class singleSensitivityAnalysis():
-    def __init__(self):
-        self.current_folder = os.getcwd()
-        self.file_name = 'input_scaling_factors.txt'
-        self.file_path = os.path.join(self.current_folder, self.file_name)
+OUTPUT_ROOT = os.path.join(ROOT, "build", "SSA")
+RUNS_ROOT = os.path.join(OUTPUT_ROOT, "runs")
+RESULTS_ROOT = os.path.join(OUTPUT_ROOT, "results")
 
-    def readFile_inputScalingFactors(self):
+# --- what to analyse -------------------------------------------------------------
+GROUP = "baker"
+CASE = "test_Baker1977__1473K"
+FACTOR = "resolution rate"
+SCIANTIX_VARIABLE = "Intragranular gas bubble swelling (/)"
+SAMPLINGS = 40
+DEVIATION = 0.5  # sampled uniformly in [1 - DEVIATION, 1 + DEVIATION]
+SEED = 20260726  # fixed so a rerun reproduces the same sampling
 
-        print(f"\nRunning: readFile_inputScalingFactors")
-        print(f"Looking for input_scaling_factors.txt file in {os.getcwd()}")
+# input_scaling_factors.txt is optional — only 52 of the 113 cases ship one — so this is
+# the fallback. The order matters and the comments do not: InputReading.C reads the
+# values positionally and skips the comment line.
+DEFAULT_SCALING_FACTORS = [
+    "resolution rate",
+    "trapping rate",
+    "nucleation rate",
+    "diffusivity",
+    "temperature",
+    "fission rate",
+    "diffusion-based release",
+    "helium production rate",
+    "dummy",
+]
 
-        self.scaling_factors = {}
-        with open(self.file_path, 'r') as file:
-            lines = file.readlines()
-            i = 0
-            while i < len(lines):
-                value = float(lines[i].strip())
-                name = lines[i + 1].strip()[len("# scaling factor - "):]
-                self.scaling_factors[name] = value
-                i += 2
 
-        print("\nScaling factor dictionary:")
-        print(self.scaling_factors)
+def read_scaling_factors(path):
+    """Parse input_scaling_factors.txt into an ordered {name: value} dict."""
+    factors = {}
+    with open(path) as f:
+        lines = [line.rstrip("\n") for line in f if line.strip()]
+    for i in range(0, len(lines) - 1, 2):
+        name = lines[i + 1].strip()
+        prefix = "# scaling factor - "
+        if not name.startswith(prefix):
+            continue
+        factors[name[len(prefix) :]] = float(lines[i].strip())
+    return factors
 
-    def setSensitivityParameters(self):
-        print("\nSCIANTIX uncertainty analysis:")
-        print("------------------------------")
-        print("Given these scaling factors:", self.scaling_factors)
 
-        while True:
-            self.bias_name = str(input("Enter the name of the scaling factor to vary: "))
+def write_scaling_factors(path, factors):
+    with open(path, "w") as f:
+        for name, value in factors.items():
+            f.write(f"{value}\n")
+            f.write(f"# scaling factor - {name}\n")
 
-            if self.bias_name in self.scaling_factors:
-                print(f"The key '{self.bias_name}' exists in the dictionary.")
-                break
-            else:
-                print(f"The key '{self.bias_name}' does not exist in the dictionary. Please try again.")
 
-        self.sample_number = int(input("Enter the number of samplings: "))
-        self.deviation = float(input("Enter the desider standard deviation: "))
+def column_index(header, variable_name):
+    """Column of a variable in an output.txt header row, or None when absent."""
+    matches = np.flatnonzero(header == variable_name)
+    return int(matches[0]) if matches.size else None
 
-    def execute_sensitivityAnalysis(self):
-        self.scaling_factor_value = np.zeros(self.sample_number)
 
-        for i in range(self.sample_number):
-
-            ####################
-            # Generating folders
-            ####################
-
-            folder_name = f"case_{i+1}"
-
-            if not os.path.exists(folder_name):
-                os.makedirs(folder_name)
-                print(f"Folder '{folder_name}' created.")
-            else:
-                shutil.rmtree(folder_name)
-                os.makedirs(folder_name)
-                print(f"Folder '{folder_name}' already exists. Re-created.")
-
-            os.chdir(folder_name)  
-            shutil.copy("../sciantix.x", os.getcwd())
-            shutil.copy("../input_initial_conditions.txt", os.getcwd())
-            shutil.copy("../input_settings.txt", os.getcwd())
-            shutil.copy("../input_history.txt", os.getcwd())
-
-            bias = random.uniform(1 - self.deviation, 1 + self.deviation)
-            self.scaling_factors[self.bias_name] = bias
-
-            with open("input_scaling_factors.txt", 'w') as file:
-
-                for key, value in self.scaling_factors.items():
-                    file.write(f'{value}\n')
-                    file.write(f'# scaling factor - {key}\n')
-
-            os.system("./sciantix.x")
-            os.chdir('..')
-
-        ##################
-        # Reference folder
-        ##################
-
-        folder_name = f"case_0"
-
-        if not os.path.exists(folder_name):
-            os.makedirs(folder_name)
-            print(f"Folder '{folder_name}' created.")
-        else:
-            shutil.rmtree(folder_name)
-            os.makedirs(folder_name)
-            print(f"Folder '{folder_name}' already exists. Re-created.")
-
-        os.chdir(folder_name)  
-        shutil.copy("../sciantix.x", os.getcwd())
-        shutil.copy("../input_initial_conditions.txt", os.getcwd())
-        shutil.copy("../input_settings.txt", os.getcwd())
-        shutil.copy("../input_history.txt", os.getcwd())
-
-        os.system("./sciantix.x")
-        os.chdir('..')
-
-    def readFolders(self, variable_name):
-
+class SingleSensitivityAnalysis:
+    def __init__(self, group, case, factor, variable_name, samplings, deviation):
+        self.case_dir = os.path.join(ROOT, "regression", group, case)
+        self.case = case
+        self.factor = factor
         self.variable_name = variable_name
-        self.variable_value = np.zeros(self.sample_number)
-        self.scaling_factor_value = np.zeros(self.sample_number)
+        self.samplings = samplings
+        self.deviation = deviation
 
-        for j in range(self.sample_number):
-            
-            # changing folder
-            folder_name = f"case_{j+1}"
-            os.chdir(folder_name)
+        if not os.path.isdir(self.case_dir):
+            raise FileNotFoundError(f"case not found: {self.case_dir}")
 
-            # reading scaling factors
-            scaling_factors = {}
-            self.file_path = os.path.join(os.getcwd(), self.file_name)
-            with open(self.file_path, 'r') as file:
-                lines = file.readlines()
-                i = 0
-                while i < len(lines):
-                    value = float(lines[i].strip())
-                    name = lines[i + 1].strip()[len("# scaling factor - "):]
-                    scaling_factors[name] = value
-                    i += 2
+        shipped = os.path.join(self.case_dir, "input_scaling_factors.txt")
+        if os.path.isfile(shipped):
+            self.scaling_factors = read_scaling_factors(shipped)
+        else:
+            print(f"{case} ships no input_scaling_factors.txt, using the default list")
+            self.scaling_factors = {name: 1.0 for name in DEFAULT_SCALING_FACTORS}
 
-            self.scaling_factor_value[j] = scaling_factors[self.bias_name]
+        if factor not in self.scaling_factors:
+            raise KeyError(
+                f"{factor!r} is not a scaling factor. Available: {list(self.scaling_factors)}"
+            )
 
-            # reading output.txt
-            data = np.genfromtxt('output.txt', dtype= 'str', delimiter='\t')
-            
-            variable_position = findSciantixVariablePosition(data, variable_name)
-            self.variable_value[j] = (data[-1,variable_position].astype(float))
+        self.sampled_factor = np.zeros(samplings)
+        self.variable_value = np.zeros(samplings)
+        self.sensitivity = np.full(samplings, np.nan)
+        self.reference_value = np.nan
 
-            os.chdir('..')
+    def _prepare(self, name):
+        """Copy the case into the scratch tree; the regression case is never written to."""
+        target = os.path.join(RUNS_ROOT, name)
+        if os.path.isdir(target):
+            shutil.rmtree(target)
+        os.makedirs(target)
+        for filename in os.listdir(self.case_dir):
+            if filename.startswith("input_"):
+                shutil.copy(os.path.join(self.case_dir, filename), target)
+        return target
 
-        print(self.scaling_factor_value)
+    def _run(self, run_dir):
+        result = subprocess.run([EXECUTABLE, run_dir + os.sep], capture_output=True, text=True)
+        if result.returncode != 0:
+            raise RuntimeError(f"SCIANTIX failed in {run_dir} (exit {result.returncode})")
 
-    def sensitivityCoefficient(self):
-        self.sensitivity_coefficient = np.zeros(self.sample_number)
+        data = np.genfromtxt(os.path.join(run_dir, "output.txt"), dtype="str", delimiter="\t")
+        index = column_index(data[0], self.variable_name)
+        if index is None:
+            raise KeyError(f"{self.variable_name!r} is not an output column of {run_dir}")
+        return float(data[-1, index])
 
-        # Reference value
-        folder_name = f"case_0"
-        os.chdir(folder_name)  
-        data = np.genfromtxt('output.txt', dtype= 'str', delimiter='\t')
-        variable_position = findSciantixVariablePosition(data, self.variable_name)
-        ref_variable_value = (data[-1,variable_position].astype(float))
+    def execute(self):
+        print(f"\nCase:     {self.case}")
+        print(f"Factor:   {self.factor} sampled in [{1 - self.deviation:g}, {1 + self.deviation:g}]")
+        print(f"Variable: {self.variable_name}")
+        print(f"Samples:  {self.samplings}   seed: {SEED}\n")
 
-        os.chdir('..')
+        random.seed(SEED)
 
-        for i in range(self.sample_number):
-            
-            folder_name = f"case_{i+1}"
-            os.chdir(folder_name)  
+        # Reference: every factor at unity.
+        reference_dir = self._prepare("reference")
+        factors = {name: 1.0 for name in self.scaling_factors}
+        write_scaling_factors(os.path.join(reference_dir, "input_scaling_factors.txt"), factors)
+        self.reference_value = self._run(reference_dir)
+        print(f"  reference {self.variable_name} = {self.reference_value:.6e}")
 
-            data = np.genfromtxt('output.txt', dtype= 'str', delimiter='\t')
-            
-            variable_position = findSciantixVariablePosition(data, self.variable_name)
-            self.variable_value[i] = (data[-1,variable_position].astype(float))
+        if self.reference_value == 0.0:
+            raise ValueError(
+                f"the reference value of {self.variable_name!r} is zero, so the normalised "
+                f"sensitivity coefficient is undefined for this case"
+            )
 
-            self.sensitivity_coefficient[i] = ((1/ref_variable_value)*((ref_variable_value - self.variable_value[i])/(1 - self.scaling_factor_value[i])))
+        for i in range(self.samplings):
+            bias = random.uniform(1 - self.deviation, 1 + self.deviation)
+            factors[self.factor] = bias
 
-            os.chdir('..')
+            run_dir = self._prepare(f"sample_{i + 1:03d}")
+            write_scaling_factors(os.path.join(run_dir, "input_scaling_factors.txt"), factors)
 
-    def plot_sensitivityAnalysis(self):
-        fig, ax = plt.subplots(1,2)
+            self.sampled_factor[i] = bias
+            self.variable_value[i] = self._run(run_dir)
 
-        ax[0].scatter(self.scaling_factor_value, self.variable_value, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20)
-        ax[0].set_xlabel(self.bias_name)
-        ax[0].set_ylabel(self.variable_name)
+            # k = (1/y_ref) (y_ref - y) / (1 - sf); a sample landing exactly on unity has
+            # no finite difference to take, so it is left out rather than dividing by zero.
+            if bias != 1.0:
+                self.sensitivity[i] = (
+                    (self.reference_value - self.variable_value[i])
+                    / (1.0 - bias)
+                    / self.reference_value
+                )
 
-        ax[1].scatter(self.scaling_factor_value, self.sensitivity_coefficient, c = '#98E18D', edgecolors= '#999AA2', marker = 'o', s=20)
-        ax[1].set_xlabel(self.bias_name)
-        ax[1].set_ylabel("Sensitivity coefficient")
+        spread = self.variable_value
+        print(f"  spread over samples: [{spread.min():.6e}, {spread.max():.6e}]")
 
-        plt.show()
+    def report(self):
+        finite = self.sensitivity[np.isfinite(self.sensitivity)]
+        mean = finite.mean() if finite.size else float("nan")
 
-    def removeFolders(self):
-        for i in range(self.sample_number+1):
-            folder_name = f"case_{i}"
-            shutil.rmtree(folder_name)
+        print(f"\n  mean sensitivity coefficient: {mean:+.6f}")
+        print(f"  spread of the coefficient:    [{finite.min():+.6f}, {finite.max():+.6f}]")
 
-# single analysis
-scaling_factors = singleSensitivityAnalysis()
-scaling_factors.readFile_inputScalingFactors()
-scaling_factors.setSensitivityParameters()
-scaling_factors.execute_sensitivityAnalysis()
-scaling_factors.readFolders("Intragranular gas bubble swelling (/)")
-scaling_factors.sensitivityCoefficient()
-scaling_factors.plot_sensitivityAnalysis()
-scaling_factors.removeFolders()
+        os.makedirs(RESULTS_ROOT, exist_ok=True)
+        path = os.path.join(RESULTS_ROOT, "report.txt")
+        with open(path, "w") as f:
+            f.write(f"Single-parameter sensitivity analysis — {self.case}\n")
+            f.write(f"Factor:   {self.factor}\n")
+            f.write(f"Variable: {self.variable_name}\n")
+            f.write(f"Samples:  {self.samplings}   deviation: {self.deviation}   seed: {SEED}\n\n")
+            f.write(f"reference value            {self.reference_value:.6e}\n")
+            f.write(f"mean sensitivity           {mean:+.6f}\n")
+            f.write(f"sensitivity range          [{finite.min():+.6f}, {finite.max():+.6f}]\n")
+            f.write(f"output range               [{self.variable_value.min():.6e}, "
+                    f"{self.variable_value.max():.6e}]\n\n")
+            f.write(f"  {'scaling factor':>16}{'output':>16}{'sensitivity':>16}\n")
+            for sf, value, k in zip(self.sampled_factor, self.variable_value, self.sensitivity):
+                shown = f"{k:+.6f}" if np.isfinite(k) else "n/a"
+                f.write(f"  {sf:>16.6f}{value:>16.6e}{shown:>16}\n")
+        print(f"Report written to {path}")
+
+    def plot(self):
+        os.makedirs(RESULTS_ROOT, exist_ok=True)
+        fig, axes = plt.subplots(1, 2, figsize=(10, 4.5))
+
+        axes[0].scatter(self.sampled_factor, self.variable_value, c="#98E18D",
+                        edgecolors="#999AA2", marker="o", s=25)
+        axes[0].axhline(self.reference_value, color="black", ls="--", linewidth=1.0,
+                        label="reference")
+        axes[0].axvline(1.0, color="grey", ls=":", linewidth=1.0)
+        axes[0].set_xlabel(self.factor)
+        axes[0].set_ylabel(self.variable_name, fontsize=9)
+        axes[0].legend(fontsize=8)
+        axes[0].grid(True, ls=":")
+
+        finite = np.isfinite(self.sensitivity)
+        axes[1].scatter(self.sampled_factor[finite], self.sensitivity[finite], c="#98E18D",
+                        edgecolors="#999AA2", marker="o", s=25)
+        axes[1].axvline(1.0, color="grey", ls=":", linewidth=1.0)
+        axes[1].set_xlabel(self.factor)
+        axes[1].set_ylabel("Sensitivity coefficient")
+        axes[1].grid(True, ls=":")
+
+        fig.suptitle(f"{self.case} — {self.factor}", fontsize=11)
+        fig.tight_layout(rect=(0, 0, 1, 0.96))
+
+        outpath = os.path.join(RESULTS_ROOT, "sensitivity.png")
+        fig.savefig(outpath, dpi=160)
+        plt.close(fig)
+        print("Saved:", outpath)
+
+
+def main():
+    if not os.path.isfile(EXECUTABLE):
+        print(f"Error: {EXECUTABLE} not found. Build it first:")
+        print(f"    cmake -S {ROOT} -B {ROOT}/build && cmake --build {ROOT}/build -j")
+        return 1
+
+    analysis = SingleSensitivityAnalysis(
+        GROUP, CASE, FACTOR, SCIANTIX_VARIABLE, SAMPLINGS, DEVIATION
+    )
+    analysis.execute()
+    analysis.report()
+    analysis.plot()
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
