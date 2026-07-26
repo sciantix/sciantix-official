@@ -291,6 +291,10 @@ regression.runner --all -j $(nproc)`):
   an HTML report is written to `regression/report.html`.
 - Each group may carry its own plotting script, run by `plotter.sh` at the repo root.
   These are diagnostics, not tests: the runner never calls them.
+- `utilities/regression_scripts/` is the **pre-`runner.py` driver and does not run** —
+  it assumes the old flat `regression/test_*` layout and an executable path that does
+  not exist. It is kept only because its plotting logic is not fully ported; see the
+  README there before writing new plots or deleting it.
 - `output.txt` is **tracked alongside `output_gold.txt`** in every case and the two are
   byte-identical. Do not delete it as a run artefact.
 
