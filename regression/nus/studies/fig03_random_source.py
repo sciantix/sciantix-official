@@ -21,7 +21,7 @@ slope A uniformly over the range that keeps S(r) non-negative across the grain, 
 the intercept B from the volume-average constraint. Every instant therefore produces gas
 at the same rate as the uniform reference, and only the radial distribution varies.
 
-    python3 utilities/NUS_studies/fig03_random_source.py
+    python3 regression/nus/studies/fig03_random_source.py
 """
 
 import os

@@ -20,7 +20,7 @@ derived from the grain-boundary inventory. The lambda dependence and the directi
 the effect are therefore meaningful, the absolute size of the shift is only as good as
 that prescription. Wiring S2 to c_GB would remove the caveat.
 
-    python3 utilities/NUS_studies/fig05_gb_resolution.py
+    python3 regression/nus/studies/fig05_gb_resolution.py
 """
 
 import os

@@ -15,7 +15,7 @@ boundary with the first steeper, two rising -- without giving the slopes; the fi
 span the range over which S(r) stays non-negative across the grain, so they bracket what
 a linear profile can physically do rather than sampling it arbitrarily.
 
-    python3 utilities/NUS_studies/fig01_source_shape.py
+    python3 regression/nus/studies/fig01_source_shape.py
 """
 
 import os
