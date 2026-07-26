@@ -95,6 +95,9 @@ Testing/
 
 bin/
 out/
+# Figures are regenerable artefacts, not documentation: every regression group writes
+# its plots into <group>/figures/ and plotter.sh rebuilds the lot. Nothing under a
+# figures/ directory is meant to be committed.
 *.png
 # NUS parametric studies: generated cases and their outputs
 regression/nus/studies/runs/

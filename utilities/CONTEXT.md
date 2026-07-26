@@ -289,8 +289,10 @@ regression.runner --all -j $(nproc)`):
   `3` rewrite gold only. **Regenerate gold deliberately**, never to paper over a diff.
 - Core logic: `regression/core/{generic_runner,compare,parser,common,report}.py`;
   an HTML report is written to `regression/report.html`.
-- Each group may carry its own plotting script, run by `plotter.sh` at the repo root.
-  These are diagnostics, not tests: the runner never calls them.
+- Each group may carry its own plotting script, `regression/<group>/plot.py`, run by
+  `plotter.sh` at the repo root. These are diagnostics, not tests: the runner never
+  calls them. They write into `<group>/figures/`, which is **gitignored** — the figures
+  are regenerable artefacts, rebuilt by `plotter.sh` in about a minute.
 - `utilities/regression_scripts/` is the **pre-`runner.py` driver and does not run** —
   it assumes the old flat `regression/test_*` layout and an executable path that does
   not exist. It is kept only because its plotting logic is not fully ported; see the
