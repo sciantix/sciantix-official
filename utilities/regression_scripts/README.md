@@ -20,8 +20,7 @@ under `regression/test_<case>/`. `main` reorganised the cases into thematic grou
     python3 -m regression.runner --all -j $(nproc)
 
 with the shared logic in `regression/core/` and one optional plotting script per group
-(`regression/<group>/plot.py` or `parity_plot.py`, all run by `plotter.sh` at the repo
-root). See §7 of `utilities/CONTEXT.md`.
+(`regression/<group>/plot.py`, all run by `plotter.sh` at the repo root). See §7 of `utilities/CONTEXT.md`.
 
 ## What has not been ported
 
