@@ -296,12 +296,16 @@ regression.runner --all -j $(nproc)`):
 - The pre-`runner.py` drivers under `utilities/regression_scripts/` were removed on
   2026-07-26 (see §9.6): they assumed the flat `regression/test_*` layout, could not
   run, and their experimental-comparison plotting is covered by the per-group scripts.
-  Sensitivity analysis lives in `utilities/`: `singleSensitivityAnalysis.py` varies one
-  scaling factor at a time, `globalSensitivityAnalysis.py` perturbs them all at once and
-  ranks them by Spearman correlation against a chosen output, and
-  `regression/white/bias.py` is a deterministic grid sweep over a chosen pair. The global
-  one runs on copies under `utilities/GSA_runs/` so the validation database is never
-  modified.
+  Three sensitivity tools, answering three different questions.
+  `utilities/singleSensitivityAnalysis.py` perturbs **one** factor and measures the
+  response against a reference run — a normalised finite difference, no experimental
+  data involved. `utilities/globalSensitivityAnalysis.py` perturbs **all** of them at
+  once and ranks them by Spearman correlation. `regression/white/bias.py` sweeps a
+  deterministic grid over one or more factors and scores each combination against the
+  White (2004) experimental swelling with BIAS/RMSE/MAD, which is a calibration question
+  rather than a sensitivity one. All three leave the validation database untouched: the
+  first two run on copies under `build/SSA/` and `build/GSA/`, the third restores each
+  case byte-for-byte in a `finally`.
 - `output.txt` is **tracked alongside `output_gold.txt`** in every case and the two are
   byte-identical. Do not delete it as a run artefact.
 
