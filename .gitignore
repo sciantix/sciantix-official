@@ -96,3 +96,5 @@ Testing/
 bin/
 out/
 *.png
+# NUS parametric studies: generated cases and their outputs
+utilities/NUS_studies/runs/
