@@ -87,6 +87,18 @@ void computeAndSaveICToFile(const std::vector<Source>& ics,
  */
 double Source_Volume_Average(double GrainRadius, Source source);
 
-std::vector<Source> subtractResolutionFromSource(const std::vector<Source>& fullSource, double a, double delta);
+/**
+ * @brief Strips the grain-boundary resolution contribution from a total source profile.
+ *
+ * The total source read from non_uniform_source.txt is S1 + S2: a fission source over the whole
+ * grain plus a resolution source confined to the outermost interval, of width lambda. This returns
+ * the S1-only profile, obtained by overwriting the outermost interval with the innermost one, and
+ * it is what feeds the gas production term so that re-solved gas is not counted as fresh fission.
+ *
+ * lambda is taken from the source geometry itself -- it is the last interval of NormalizedDomain --
+ * which is the same convention Simulation::GrainBoundarySource() uses. Sources with a single
+ * interval carry no resolution term and are returned unchanged.
+ */
+std::vector<Source> subtractResolutionFromSource(const std::vector<Source>& fullSource);
 
 #endif  // SOURCEHANDLER_H

@@ -112,7 +112,7 @@ int main(int argc, char** argv)
     timer = clock();
 
     sources_interp  = sourceInterpolation(sources_input, Number_of_time_steps_per_interval);
-    sources_correct = subtractResolutionFromSource(sources_interp, Sciantix_variables[0], 1e-7);
+    sources_correct = subtractResolutionFromSource(sources_interp);
 
     while (Time_h <= Time_end_h)
     {

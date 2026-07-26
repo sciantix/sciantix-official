@@ -14,6 +14,7 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
+#include "ErrorMessages.h"
 #include "MainVariables.h"
 #include "SourceHandler.h"
 #include <cmath>
@@ -487,7 +488,7 @@ double Source_Volume_Average(double GrainRadius, Source source)
     return (totalVolume != 0.0) ? (VA / totalVolume) : 0.0;
 }
 
-std::vector<Source> subtractResolutionFromSource(const std::vector<Source>& fullSource, double a, double delta)
+std::vector<Source> subtractResolutionFromSource(const std::vector<Source>& fullSource)
 {
     std::vector<Source> corrected = fullSource;
 
@@ -495,21 +496,22 @@ std::vector<Source> subtractResolutionFromSource(const std::vector<Source>& full
     {
         if (src.NormalizedDomain.size() < 2 || src.Slopes.size() != src.Intercepts.size())
         {
-            std::cerr << "[ERROR] Mismatched source segment sizes at t = " << src.time << std::endl;
+            ErrorMessages::Warning("SourceHandler.C",
+                                   "mismatched source segment sizes at t = " + std::to_string(src.time) +
+                                       "; the resolution term was not stripped");
             continue;
         }
 
-        double r_start = (a - delta) / a;
+        // A single interval carries no resolution shell: nothing to strip.
+        if (src.Slopes.size() < 2)
+            continue;
 
-        for (size_t i = 0; i < src.Slopes.size(); ++i)
-        {
-            double seg_start = src.NormalizedDomain[i];
-            if (seg_start >= r_start)
-            {
-                src.Slopes[i]     = src.Slopes[0];
-                src.Intercepts[i] = src.Intercepts[0];
-            }
-        }
+        // The resolution shell is the outermost interval, of width lambda; replacing it with the
+        // fission source leaves S1 alone. Deriving the shell from the geometry keeps lambda in one
+        // place -- the source file -- instead of a constant that silently stops matching it.
+        const size_t last    = src.Slopes.size() - 1;
+        src.Slopes[last]     = src.Slopes[0];
+        src.Intercepts[last] = src.Intercepts[0];
     }
 
     return corrected;
