@@ -35,8 +35,9 @@ plt.rcParams.update({
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parents[1]
+REPO_ROOT = SCRIPT_DIR.parents[3]
 WSL_ROOT = SCRIPT_DIR.parents[5]
-sys.path.insert(0, str(PROJECT_ROOT / "oxired_lib"))
+sys.path.insert(0, str(REPO_ROOT / "utilities" / "preprocessing" / "oxired_lib"))
 
 from oxired.fission_yields import (  # noqa: E402
     GASES_AND_VOLATILE_FPS,
