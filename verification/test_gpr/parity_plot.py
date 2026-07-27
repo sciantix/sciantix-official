@@ -38,7 +38,7 @@ def load_experimental(basename):
 # ------------------------------------------------------------
 def main():
     root = os.path.dirname(__file__)
-    gpr_root = os.path.abspath(os.path.join(root, "..", "gpr"))
+    gpr_root = os.path.abspath(os.path.join(root, "..", "test_gpr"))
     outdir = os.path.join(root, "figures")
     os.makedirs(outdir, exist_ok=True)
 
