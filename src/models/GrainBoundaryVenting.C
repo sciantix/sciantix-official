@@ -111,7 +111,7 @@ void Simulation::GrainBoundaryVenting()
 
     for (auto& system : sciantix_system)
     {
-        if ((!system.isGasOrVolatileFP()) & (system.getRestructuredMatrix() != 0))
+        if (!system.isGasOrVolatileFP() || system.getRestructuredMatrix() != 0)
             continue;
 
         sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(
