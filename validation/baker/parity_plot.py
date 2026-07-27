@@ -1,3 +1,7 @@
+"""
+sciantix testing suite
+author: Giovanni Zullo, Elisa Cappellari
+"""
 #!/usr/bin/env python3
 import os
 import sys

@@ -446,7 +446,7 @@ class Simulation
             return &modes_initial_conditions[15 * n_modes];
 
         else
-            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + name + "\" in getDiffusionModes");
+            ErrorMessages::Fatal("Simulation.h", "invalid name \"" + name + "\" in getDiffusionModes");
     }
 
     /**
@@ -476,7 +476,7 @@ class Simulation
             return &modes_initial_conditions[16 * n_modes];
 
         else
-            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + name + "\" in getDiffusionModesSolution");
+            ErrorMessages::Fatal("Simulation.h", "invalid name \"" + name + "\" in getDiffusionModesSolution");
     }
 
     /**
@@ -503,7 +503,7 @@ class Simulation
             return &modes_initial_conditions[14 * n_modes];
 
         else
-            ErrorMessages::Fatal("Simulation.h", "invalid gas name \"" + name + "\" in getDiffusionModesBubbles");
+            ErrorMessages::Fatal("Simulation.h", "invalid name \"" + name + "\" in getDiffusionModesBubbles");
     }
 };
 

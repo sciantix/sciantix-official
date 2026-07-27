@@ -563,9 +563,7 @@ initializeThermochemistryVariable(const std::vector<ThermochemistryManifestEntry
     {
         // updateThermochemistryVariablesFromOutput() only calls setFinalValue() for phases
         // OpenCalphad actually reports in solution_phases this step. For "matrix", seed from
-        // the persisted array so a phase OC omits keeps its last known value; for every other
-        // location (e.g. "at grain boundary") reset to 0.0, so a phase OC no longer reports
-        // this step is correctly zeroed instead of sticking at a stale nonzero value.
+        // the persisted array so a phase OC omits keeps its last known value.
         double final_value = (entry.location == "matrix") ? Sciantix_thermochemistry[entry.index] : 0.0;
 
         init_thermochemistry_variable.emplace_back(ThermochemistryVariable(entry.index,

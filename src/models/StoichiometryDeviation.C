@@ -14,11 +14,8 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "Constants.h"
-#include "ErrorMessages.h"
 #include "Simulation.h"
 #include "StoichiometryDeviation.h"
-#include <cmath>
 
 void Simulation::StoichiometryDeviation()
 {
@@ -498,13 +495,6 @@ void Simulation::StoichiometryDeviation()
     if (total > 0.0)
         sciantix_variable["q"].setFinalValue(plutonium_content / total);
 
-    // CODE DEVELOPMENT : this has not the dimensionality of a pressure if not multiplied to the reference one
-    // it is not coherent with the oxygen potential also, modified by * reference pressure
-    // changed like this not to fail regressions for models developed before.
-    double coeff(1.0);
-    if (input_variable["iStoichiometryDeviation"].getValue() > 6)
-        coeff = reference_oxygen_pressure_atm;
-
     const double x = sciantix_variable["Stoichiometry deviation"].getFinalValue();
     double       q = sciantix_variable["q"].getFinalValue();
 
@@ -517,7 +507,7 @@ void Simulation::StoichiometryDeviation()
     if (q > 0.0)
     {
         sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
-            coeff * KatoThermochemicalModel(x, history_variable["Temperature"].getFinalValue(), sciantix_variable));
+            reference_oxygen_pressure_atm * KatoThermochemicalModel(x, history_variable["Temperature"].getFinalValue(), sciantix_variable));
 
         sciantix_variable["Fuel oxygen partial pressure - Kato"].setFinalValue(
             sciantix_variable["Fuel oxygen partial pressure"].getFinalValue());
@@ -525,7 +515,7 @@ void Simulation::StoichiometryDeviation()
     else
     {
         sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
-            coeff * BlackburnThermochemicalModel(x, history_variable["Temperature"].getFinalValue(), sciantix_variable));
+            reference_oxygen_pressure_atm * BlackburnThermochemicalModel(x, history_variable["Temperature"].getFinalValue(), sciantix_variable));
 
         sciantix_variable["Fuel oxygen partial pressure - Blackburn"].setFinalValue(
             sciantix_variable["Fuel oxygen partial pressure"].getFinalValue());
@@ -555,6 +545,27 @@ double BlackburnThermochemicalModel(double                           stoichiomet
                                     double                           temperature,
                                     SciantixArray<SciantixVariable>& sciantix_variable)
 {
+    // Blackburn describes the hyperstoichiometric branch, UO(2+x), and the logarithm takes a
+    // non-positive argument outside 0 < x < 1, returning a NaN that propagates into the
+    // oxygen partial pressure and potential.
+    //
+    // The two ends are not symmetric. As x -> 0+ the pressure tends to zero, so a
+    // non-positive deviation - which occurs as numerical noise about a vanishing one - is
+    // mapped onto that limit. As x -> 1- the pressure diverges instead, so returning zero
+    // there would invert the physics; that range is outside the correlation altogether
+    // (x = 1 is UO3, far above the x < 0.25 the oxidation models cover) and is reported.
+    if (stoichiometry_deviation <= 0.0)
+        return 0.0;
+
+    if (stoichiometry_deviation >= 1.0)
+    {
+        ErrorMessages::Warning("StoichiometryDeviation.C",
+                               "stoichiometry deviation x = " + std::to_string(stoichiometry_deviation) +
+                                   " is outside the Blackburn correlation, where the oxygen partial pressure "
+                                   "diverges; the fuel oxygen partial pressure is left unevaluated");
+        return 0.0;
+    }
+
     double ln_p =
         2.0 * log(stoichiometry_deviation * (2.0 + stoichiometry_deviation) / (1.0 - stoichiometry_deviation)) +
         108.0 * pow(sciantix_variable["Stoichiometry deviation"].getFinalValue(), 2.0) -

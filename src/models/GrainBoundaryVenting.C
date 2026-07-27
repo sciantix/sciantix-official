@@ -14,10 +14,7 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "ErrorMessages.h"
 #include "Simulation.h"
-
-#include <cmath>
 
 void Simulation::GrainBoundaryVenting()
 {
@@ -114,7 +111,7 @@ void Simulation::GrainBoundaryVenting()
 
     for (auto& system : sciantix_system)
     {
-        if (!system.isGasOrVolatileFP())
+        if ((!system.isGasOrVolatileFP()) & (system.getRestructuredMatrix() != 0))
             continue;
 
         sciantix_variable[system.getFissionProductName() + " at grain boundary"].setFinalValue(

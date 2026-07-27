@@ -14,10 +14,7 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "ErrorMessages.h"
 #include "Simulation.h"
-
-#include <cmath>
 
 void Simulation::HighBurnupStructurePorosity()
 {
@@ -71,8 +68,9 @@ void Simulation::HighBurnupStructurePorosity()
         }
 
         default:
-            ErrorMessages::Switch(
-                __FILE__, "HighBurnupStructurePorosity", int(input_variable["HighBurnupStructurePorosity"].getValue()));
+            ErrorMessages::Switch(__FILE__,
+                                  "iHighBurnupStructurePorosity",
+                                  int(input_variable["iHighBurnupStructurePorosity"].getValue()));
             break;
     }
 

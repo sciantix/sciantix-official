@@ -15,11 +15,8 @@ def run_single_case(args):
     Worker function for parallel execution.
     Args:
         args: tuple (cli_name, name, case, mode_gold, extra_outputs, ignore_columns, suite)
-            extra_outputs: output filenames beyond "output.txt" to gold-compare
-                too, e.g. ("thermochemistry_output.txt",) for OC-coupled groups.
-            ignore_columns: substrings; any column whose header name contains
-                one of these is excluded from every compared file (e.g.
-                ["CALPHAD"] when OpenCalphad is unavailable).
+            extra_outputs: e.g. ("thermochemistry_output.txt",) for OC-coupled groups.
+            ignore_columns: substrings.
             suite: "verification" or "validation", carried through to the result
                 for report display.
     Returns:
@@ -65,17 +62,9 @@ def run_single_case(args):
 def discover_cases(base, prefix):
     """
     Find every case directory under `base` (any directory directly containing
-    input_settings.txt), at any depth. Flat groups (e.g. baker/test_Baker*)
-    and nested groups (e.g. oxygenpotential/freshfuel/test_*/T_*_q_*) both
-    work without special-casing -- once a case directory is found, its
-    subtree isn't descended into further.
+    input_settings.txt), at any depth.
 
-    Returns a sorted list of (relative_name, absolute_path). relative_name
-    uses "/" between path components (e.g. "test_Kato2005/T_1273K_q_30" for a
-    nested case, or just "test_Baker1977__1273K" for a flat one), filtered to
-    those starting with `prefix`. If `base` itself is directly a case (used
-    for singleton groups like test_openPorosity, whose whole "group" is one
-    case directory), relative_name falls back to base's own folder name.
+    Returns a sorted list of (relative_name, absolute_path).
     """
     found = []
     for dirpath, dirnames, filenames in os.walk(base):
@@ -99,11 +88,9 @@ def run_group(cli_name: str, base_dir: str, prefix: str, mode_gold: int, jobs: i
     Generic runner for any test group.
 
     Args:
-        cli_name: display name for results/report/test-ids (e.g. 'baker',
-              'oxygenpotential-freshfuel')
+        cli_name: folder under verification/ or validation/ (e.g. 'baker')
         base_dir: absolute path to the group's directory
-        prefix: case-name prefix filter (e.g. 'test_Baker', or the broad
-              'test_' used by groups like 'analytics' or 'oxygenpotential')
+        prefix: test folder prefix (e.g. 'test_Baker')
         mode_gold:
             0 = run + compare
             1 = run + rewrite gold
@@ -111,20 +98,13 @@ def run_group(cli_name: str, base_dir: str, prefix: str, mode_gold: int, jobs: i
             3 = rewrite gold only
         jobs: number of parallel threads
         only: optional iterable of case names/substrings; when given, only
-              matching cases are run
+              matching test folders in the group are run
         extra_outputs: output filenames beyond "output.txt" to gold-compare
-              too (see run_single_case)
-        ignore_columns: substrings of column names to exclude from every
-              comparison (see compare.compare_outputs); used to drop
-              OpenCalphad-derived columns when OC is unavailable
-        skip_reason: if given, no case is run at all -- every discovered case
-              is reported as SKIPPED (ok=None) with this reason instead (e.g.
-              'jog' when OpenCalphad/its database isn't available), or as
-              FAILED if skip_is_failure is also set
+        ignore_columns: substrings of column names to exclude from every comparison
+        skip_reason: if given, no case is run at all 
         skip_is_failure: when skip_reason is set, report ok=False instead of
               ok=None (used for --oc strict mode and gold-rewrite refusal)
-        suite: "verification" or "validation", carried through to every
-              result for report display
+        suite: "verification" or "validation"
 
     Returns:
         list of (test_name, ok, msg, suite) -- ok is True/False/None

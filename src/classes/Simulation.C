@@ -21,9 +21,7 @@ Simulation* Simulation::instance = nullptr;
 Simulation* Simulation::getInstance()
 {
     if (instance == nullptr)
-    {
         instance = new Simulation;
-    }
     return instance;
 }
 

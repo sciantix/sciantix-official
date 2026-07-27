@@ -10,13 +10,12 @@ python3 -m testing.runner --white --mode-gold 0
 python3 -m testing.runner --white --mode-gold 1
 python3 -m testing.runner --verification
 python3 -m testing.runner --validation
-python3 -m testing.runner --oc            # build/checkout is expected to have OpenCalphad
-                                              # linked; any group that still can't use it fails
-                                              # loudly instead of skipping
-
+python3 -m testing.runner --oc            # Expected to have OpenCalphad linked; 
+										  # any group that can't use it fails loudly
+										  
 Test groups live under two top-level directories
-- verification/ (does SCIANTIX reproduce its reference model?) 
-- validation/   (does it match real experimental data?)
+- verification/ (to verify a specific model implementation) 
+- validation/   (to validate the model against experimental data)
 
 Every group is attempted on every run; groups that need OpenCalphad/a
 specific CALPHAD database degrade gracefully when it isn't available.
@@ -39,14 +38,9 @@ SUITE_ROOTS = {
 }
 
 OCRequirement = namedtuple("OCRequirement", ["kind", "databases", "markers"])
-# kind: "column_degrade" -- still run, excluding `markers`-matching columns from comparison
-#       "skip_group"     -- OC affects nearly every column with no non-OC analog; skip entirely
+# kind: "column_degrade" -- still run, excluding `markers` columns from comparison
+#       "skip_group"     -- skip entirely the simulation
 
-# "Fuel oxygen partial pressure"/"potential" (no suffix) are the "selected" columns:
-# SetPhaseDiagram.C/OCUtilsCoupling.C's updateMatrixFromOutput() overwrites them with the
-# CALPHAD solve whenever it succeeds, so their gold gets recorded as the CALPHAD value; the
-# suffixed variants (" - Kato (MPa)", " - CALPHAD (MPa)", etc.) are unaffected and stay
-# comparable, so the marker must match only the exact unsuffixed header, not those.
 OXYGEN_POTENTIAL_MARKERS = ("CALPHAD", "Fuel oxygen partial pressure (MPa)", "Fuel oxygen potential (KJ/mol)")
 
 # (cli_name, suite, relpath_under_suite, case_prefix, extra_outputs, oc_requirement)
@@ -89,13 +83,6 @@ def build_parser():
 
     for cli_name, _, _, _, _, _ in REGISTRY:
         parser.add_argument(f"--{cli_name}", action="store_true")
-
-    parser.add_argument("--pulse", action="store_true",
-                         help="Alias for openPorosity + powerPulse")
-    parser.add_argument("--analytics", action="store_true",
-                         help="Alias for openPorosity + powerPulse")
-    parser.add_argument("--oxygenpotential", action="store_true",
-                         help="Alias for oxygenpotential-freshfuel + oxygenpotential-burnup")
 
     parser.add_argument("--oc", action="store_true",
                          help="Strict mode: OpenCalphad is expected to be linked and every "
@@ -143,10 +130,6 @@ def is_selected(cli_name, suite, args, targeted, run_everything):
         return True
     if cli_name in targeted:
         return True
-    if cli_name in ("openPorosity", "powerPulse") and (args.pulse or args.analytics):
-        return True
-    if cli_name in ("oxygenpotential-freshfuel", "oxygenpotential-burnup") and args.oxygenpotential:
-        return True
     return False
 
 
@@ -156,7 +139,6 @@ def main():
 
     explicit_selection = (
         args.verification or args.validation
-        or args.pulse or args.analytics or args.oxygenpotential
         or any(getattr(args, cli_dest(cli_name), False) for cli_name, *_ in REGISTRY)
         or bool(targeted)
     )
