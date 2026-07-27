@@ -15,9 +15,8 @@ def generate_html_report(results, output_dir, oc_summary=None):
             {True, False, None} (None = skipped); suite is
             "verification" or "validation"
         output_dir: directory to save report.html
-        oc_summary: optional string (one note per line) describing groups
-            that were degraded or skipped for lack of OpenCalphad/a required
-            database, surfaced in its own report section
+        oc_summary: optional string describing groups that were degraded 
+        	or skipped for lack of OpenCalphad/a required database
     """
 
     passed = len([r for r in results if r[1] is True])

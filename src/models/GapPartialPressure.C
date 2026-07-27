@@ -16,8 +16,6 @@
 
 #include "Simulation.h"
 
-#include <cmath>
-
 void Simulation::GapPartialPressure()
 {
     if ((input_variable["iStoichiometryDeviation"].getValue() == 0) |
@@ -38,4 +36,5 @@ void Simulation::GapPartialPressure()
 
     std::string reference = "Lewis et al. JNM 227 (1995) 83-109, D.R. Olander, Nucl. Technol. 74 (1986) 215.";
     model_.setRef(reference);
+    model.push(model_);
 }

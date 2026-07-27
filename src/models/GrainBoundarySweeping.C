@@ -14,7 +14,6 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "ErrorMessages.h"
 #include "Simulation.h"
 
 void Simulation::GrainBoundarySweeping()

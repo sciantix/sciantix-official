@@ -65,10 +65,7 @@ def compare_outputs(out, gold,
         abs_tol, rel_tol: tolerances
         verbose: print mismatch locations
         ignore_columns: substrings; any column whose header name contains one
-            of these is excluded from the comparison before it runs (e.g.
-            ["CALPHAD"] to skip OpenCalphad-derived columns when OC is
-            unavailable). Empty by default -- compares every column, as
-            before.
+            of these is excluded from the comparison before it runs.
 
     Returns:
         bool: True if match within tolerance

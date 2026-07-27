@@ -14,10 +14,7 @@
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
 
-#include "ErrorMessages.h"
 #include "IntragranularDiffusion.h"
-
-#include <cmath>
 
 void Simulation::IntragranularDiffusion()
 {

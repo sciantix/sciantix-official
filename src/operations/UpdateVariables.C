@@ -164,7 +164,7 @@ void Simulation::update(double Sciantix_variables[],
 {
     for (int i = 0; i < n_modes; ++i)
     {
-        for (int j = 0; j <= 17; j++)
+        for (int j = 0; j < N_MODE_BLOCKS; j++)
         {
             Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];
         }
@@ -180,14 +180,12 @@ void Simulation::update(double Sciantix_variables[],
     if (thermochemistry_variable.empty())
         return;
 
-    constexpr int thermochemistry_array_size = 300;
-
     for (auto& variable : thermochemistry_variable)
     {
         Sciantix_thermochemistry[variable.getIndex()] = variable.getFinalValue();
 
         const int density_index = variable.getIndex() + thermochemistry_density_offset;
-        if (density_index < thermochemistry_array_size)
+        if (density_index < SCIANTIX_THERMOCHEMISTRY_SIZE)
             Sciantix_thermochemistry[density_index] = variable.getTheoreticalDensity();
     }
 }
