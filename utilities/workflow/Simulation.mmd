@@ -14,7 +14,7 @@ flowchart TB
 
     subgraph FP["Fission product behaviour"]
         direction TB
-        GrainBoundarySweeping["GRAIN-BOUNDARY SWEEPING"] --> FissionProductProduction["FP PRODUCTION"] --> FissionProductDecay["FP DECAY"] --> IntraGranularBubbleBehavior["INTRAGRANULAR BUBBLE BEHAVIOUR"] --> IntragranularDiffusion["INTRAGRANULAR DIFFUSION"] --> SetPhaseDiagram["SET PHASE DIAGRAM<br/>see: OC-coupling diagram"] --> GrainBoundaryMicroCracking["GRAIN-BOUNDARY MICROCRACKING"] --> GrainBoundaryVenting["GRAIN-BOUNDARY VENTING"] --> InterGranularBubbleBehavior["INTERGRANULAR BUBBLE BEHAVIOUR"] --> FissionProductRelease["FP RELEASE"]
+        GrainBoundarySweeping["GRAIN-BOUNDARY SWEEPING"] --> FissionProductProduction["FP PRODUCTION"] --> FissionProductDecay["FP DECAY"] --> IntraGranularBubbleBehavior["INTRAGRANULAR BUBBLE BEHAVIOUR"] --> IntragranularDiffusion["INTRAGRANULAR DIFFUSION"] --> SetPhaseDiagram["THERMOCHEMISTRY EQUILIBRIUM<br/>see: thermochemistry-module diagram"] --> GrainBoundaryMicroCracking["GRAIN-BOUNDARY MICROCRACKING"] --> GrainBoundaryVenting["GRAIN-BOUNDARY VENTING"] --> InterGranularBubbleBehavior["INTERGRANULAR BUBBLE BEHAVIOUR"] --> FissionProductRelease["FP RELEASE"]
     end
 
     subgraph GAP["Gap behaviour"]
@@ -26,14 +26,9 @@ flowchart TB
     StoichiometryDeviation --> GrainBoundarySweeping
     FissionProductRelease --> JOGFormation
 
-    TUNote["dashed fill = not considered when TRANSURANUS coupling is active"]
-    
     classDef note fill:#F6E9D9,stroke:#7A1F1F,stroke-width:1px,color:#3a0d0d;
     classDef simProcess fill:#D9D9B8,stroke:#6B6B3A,stroke-width:1.5px,color:#2b2b16;
-    classDef simCouplingSkip fill:#D9D9B8,stroke:#6B6B3A,stroke-width:1.5px,stroke-dasharray: 5 3,color:#2b2b16;
     classDef simHighlight fill:#D9D9B8,stroke:#8A4A2A,stroke-width:2.5px,color:#2b2b16;
 
-    class Burnup,EffectiveBurnup,Densification,GapPartialPressure,UO2Thermochemistry simCouplingSkip;
-    class HighBurnupStructureFormation,HighBurnupStructurePorosity,GrainGrowth,ChromiumSolubility,StoichiometryDeviation,GrainBoundarySweeping,FissionProductProduction,FissionProductDecay,IntraGranularBubbleBehavior,IntragranularDiffusion,GrainBoundaryMicroCracking,GrainBoundaryVenting,InterGranularBubbleBehavior,FissionProductRelease,JOGFormation simProcess;
+    class Burnup,EffectiveBurnup,Densification,GapPartialPressure,UO2Thermochemistry,HighBurnupStructureFormation,HighBurnupStructurePorosity,GrainGrowth,ChromiumSolubility,StoichiometryDeviation,GrainBoundarySweeping,FissionProductProduction,FissionProductDecay,IntraGranularBubbleBehavior,IntragranularDiffusion,GrainBoundaryMicroCracking,GrainBoundaryVenting,InterGranularBubbleBehavior,FissionProductRelease,JOGFormation simProcess;
     class SetPhaseDiagram simHighlight;
-    class TUNote,ModelNote note;
