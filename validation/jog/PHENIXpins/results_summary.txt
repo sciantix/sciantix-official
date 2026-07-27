@@ -25,7 +25,7 @@ Grain-boundary phases, post-cooldown:
     MoO$_{2}$ (MOO2) (Mo1.00 | O1.00): 19.2 mol%
     FCC (FCC_A1) (Pd0.97Mo0.03): 12.5 mol%
     Cs$_{2}$MoO$_{4}$ (S1) (CS2MOO4_S1) (Cs1.00 | Mo1.00 | O1.00): 7.4 mol%
-    HCP (ord.) (HCP_ORD) (Rh1.00 | Mo1.00 | Rh1.00 | Rh1.00): 4.6 mol%
+    HCP (ord.) #2 (Mo1.00 | Rh1.00 | Rh1.00 | Rh1.00): 4.6 mol%
   Point 2 (1.52 mm):
     BaMoO$_{4}$ (BAMOO4) (Ba1.00 | Mo1.00 | O1.00): 36.9 mol%
     HCP (HCP_A3) (Ru0.70Tc0.19Rh0.11): 19.2 mol%
