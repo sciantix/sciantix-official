@@ -1,0 +1,4 @@
+Warning in Solver.C: NewtonBlackburn did not converge within 50 iterations (|f| = nan); returning the last finite iterate
+Warning in Solver.C: NewtonBlackburn did not converge within 50 iterations (|f| = nan); returning the last finite iterate
+Warning in Solver.C: NewtonBlackburn did not converge within 50 iterations (|f| = nan); returning the last finite iterate
+Warning in Solver.C: NewtonBlackburn did not converge within 50 iterations (|f| = nan); returning the last finite iterate
