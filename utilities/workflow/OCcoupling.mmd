@@ -2,13 +2,13 @@
 title: OC coupling (thermochemistry) -- src/operations/SetPhaseDiagram.C + src/coupling/OCUtilsCoupling.C
 ---
 flowchart TB
-    O1{"run full OpenCalphad?<br/>(iThermochimica mode, COUPLING_TU)"}
+    O1{"run OpenCalphad?<br/>(iThermochimica mode)"}
     Oskip["CARRY FP INVENTORY<br/>WITHOUT THERMOCHEMISTRY"]
     O2["FOR EACH LOCATION<br/>(matrix, grain boundary)"]
-    O3["BUILD INPUT COMPONENTS<br/>(elements + composition)"]
-    O4{"cached equilibrium<br/>still fresh?"}
+    O3["BUILD INPUT COMPONENTS<br/>(elements + T, p)"]
+    O4{"last equilibrium<br/>still fresh?"}
     O5["REUSE CACHED<br/>EQUILIBRIUM"]
-    O6["SOLVE EQUILIBRIUM<br/>(retry solver modes)"]
+    O6["SOLVE GLOBAL<br/>EQUILIBRIUM"]
     O7["WRITE THERMOCHEMISTRY<br/>VARIABLES"]
     O8["UPDATE MATRIX /<br/>GRAIN-BOUNDARY FP INVENTORY"]
 

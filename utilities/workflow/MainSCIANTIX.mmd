@@ -2,25 +2,30 @@
 title: Program flow -- MainSCIANTIX.C
 ---
 flowchart TB
-    subgraph INPUTS["input files"]
+    subgraph INPUTS["Input files"]
         direction TB
-        I_HIST>"HISTORY<br/>(t, T, $\dot{F}$, σ_h, p, O/M)"]
+        I_HIST>"HISTORY<br/>(t, T, F, σh, p, O/M)"]
         I_OPT>"MODELS' OPTION"]
         I_IC>"INITIAL CONDITIONS"]
         I_SF>"SCALING FACTORS"]
         I_TCOPT>"THERMOCHEMISTRY OPTION"]
         I_TCDB>"THERMOCHEMISTRY DATABASE"]
-        I_HIST ~~~ I_OPT ~~~ I_IC ~~~ I_SF ~~~ I_TCOPT ~~~ I_TCDB
+        I_HIST  
+        I_OPT 
+        I_IC
+        I_SF
+        I_TCOPT
+        I_TCDB
     end
 
     subgraph MAIN["MainSCIANTIX.C"]
         direction TB
         M_BEGIN(["BEGIN"])
-        M_INPUT[/"INPUT<br/>(InputReading)"/]
+        M_INPUT[/"INPUT<br/>READING"/]
         M_INIT["INITIALIZATION"]
         M_LOOP{"TIME LOOP<br/>t ≤ t_end ?"}
         M_INTERP["INPUT INTERPOLATION"]
-        M_CALL["SCIANTIX()<br/>see: call-sequence diagram"]
+        M_CALL["SCIANTIX()<br/>see: SCIANTIX diagram"]
         M_STEP["TIME-STEP CALCULATION"]
         M_END(["END"])
 
