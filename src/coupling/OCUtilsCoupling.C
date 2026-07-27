@@ -1432,7 +1432,7 @@ namespace OCUtilsCoupling
                     const bool gas_only_ready = oc.calculateEquilibrium(-1);
                     if (!gas_only_ready)
                         clear_equilibrium = false;
-                    
+
                     oc.setPhaseStatus("C1_MO2", 0, 1.0);
                     const bool c1_mo2_ready = oc.calculateEquilibrium(-1) && oc.calculateEquilibriumChecked();
                     if (!c1_mo2_ready)
