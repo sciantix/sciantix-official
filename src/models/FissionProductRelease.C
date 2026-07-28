@@ -49,10 +49,10 @@ void Simulation::FissionProductRelease()
 
     // Intergranular gaseous swelling
     if (sciantix_variable["Grain radius"].getFinalValue() > 0.0)
-	    sciantix_variable["Intergranular gas swelling"].setFinalValue(
-	        3 / sciantix_variable["Grain radius"].getFinalValue() *
-	        sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
-	        sciantix_variable["Intergranular bubble volume"].getFinalValue());
+        sciantix_variable["Intergranular gas swelling"].setFinalValue(
+            3 / sciantix_variable["Grain radius"].getFinalValue() *
+            sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
+            sciantix_variable["Intergranular bubble volume"].getFinalValue());
     else
         sciantix_variable["Intergranular gas swelling"].setFinalValue(0.0);
 

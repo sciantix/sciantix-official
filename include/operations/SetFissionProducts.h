@@ -24,7 +24,7 @@
  *
  * This function initializes and maps properties for fission products
  * used in the simulation. Each fission product is set up with specific attributes
- * and divided by its chemical behavior. 
+ * and divided by its chemical behavior.
  * Each fission product is mapped for easy access throughout the simulation.
  *
  * @author G. Zullo

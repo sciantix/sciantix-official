@@ -507,7 +507,8 @@ void Simulation::StoichiometryDeviation()
     if (q > 0.0)
     {
         sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
-            reference_oxygen_pressure_atm * KatoThermochemicalModel(x, history_variable["Temperature"].getFinalValue(), sciantix_variable));
+            reference_oxygen_pressure_atm *
+            KatoThermochemicalModel(x, history_variable["Temperature"].getFinalValue(), sciantix_variable));
 
         sciantix_variable["Fuel oxygen partial pressure - Kato"].setFinalValue(
             sciantix_variable["Fuel oxygen partial pressure"].getFinalValue());
@@ -515,7 +516,8 @@ void Simulation::StoichiometryDeviation()
     else
     {
         sciantix_variable["Fuel oxygen partial pressure"].setFinalValue(
-            reference_oxygen_pressure_atm * BlackburnThermochemicalModel(x, history_variable["Temperature"].getFinalValue(), sciantix_variable));
+            reference_oxygen_pressure_atm *
+            BlackburnThermochemicalModel(x, history_variable["Temperature"].getFinalValue(), sciantix_variable));
 
         sciantix_variable["Fuel oxygen partial pressure - Blackburn"].setFinalValue(
             sciantix_variable["Fuel oxygen partial pressure"].getFinalValue());
