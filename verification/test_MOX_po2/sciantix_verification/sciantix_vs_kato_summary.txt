@@ -2,26 +2,40 @@ SCIANTIX MOX verification vs explicit NEA Kato equation
 ======================================================
 
 Comparison ranges: T = 753-2550 K, Pu/M = 0.10-0.32, O/M = 1.92-2.08
-Source points: 12627
-Compared points: 7224
-Excluded points outside comparison ranges: 5040
-Excluded points outside explicit Kato O/M interpolation range: 363
-Exact O/M = 2.0 compared points: 18
-Mean signed log10(p/reference) error: 7.024730e-06
-Mean absolute log10(p/reference) error: 1.213657e-05
-Maximum absolute log10(p/reference) error: 1.499236e-04
-Mean relative log10(p/reference) error (%): 1.764112e-04
-Max relative log10(p/reference) error (%): 1.545311e-03
-Maximum absolute oxygen-potential error (KJ/mol): 6.099589e-03
+Source points: 33672
+Compared points: 19264
+Excluded points outside comparison ranges: 13440
+Excluded points outside explicit Kato O/M interpolation range: 968
+Exact O/M = 2.0 compared points: 48
+Mean signed oxygen-potential error (KJ/mol): 2.287151e-04
+Mean absolute oxygen-potential error (KJ/mol): 3.996664e-04
+Maximum absolute oxygen-potential error (KJ/mol): 6.842126e-03
+Mean relative oxygen-potential error (%): 1.711378e-04
+Max relative oxygen-potential error (%): 1.684444e-03
 
 Per-(q, temperature) summary:
- q compared (-)  Temperature compared (K)  count  mean_abs_log_error  max_abs_log_error
-       0.099514                      1400    722            0.000034           0.000144
-       0.099514                      1800    722            0.000031           0.000150
-       0.099514                      2200    722            0.000027           0.000145
-       0.199135                      1400    843            0.000004           0.000009
-       0.199135                      1800    843            0.000004           0.000009
-       0.199135                      2200    843            0.000004           0.000009
-       0.298864                      1400    843            0.000005           0.000009
-       0.298864                      1800    843            0.000004           0.000009
-       0.298864                      2200    843            0.000004           0.000009
+ q compared (-)  Temperature compared (K)  count  mean_abs_potential_error  max_abs_potential_error
+       0.099514                      1000    722                  0.000663                 0.002781
+       0.099514                      1200    722                  0.000786                 0.003106
+       0.099514                      1400    722                  0.000904                 0.003911
+       0.099514                      1600    722                  0.001038                 0.004246
+       0.099514                      1800    722                  0.001077                 0.005186
+       0.099514                      2000    722                  0.001098                 0.005766
+       0.099514                      2200    722                  0.001144                 0.006100
+       0.099514                      2400    722                  0.001286                 0.006842
+       0.199135                      1000    843                  0.000122                 0.000296
+       0.199135                      1200    843                  0.000103                 0.000258
+       0.199135                      1400    843                  0.000118                 0.000294
+       0.199135                      1600    843                  0.000136                 0.000325
+       0.199135                      1800    843                  0.000141                 0.000362
+       0.199135                      2000    843                  0.000145                 0.000402
+       0.199135                      2200    843                  0.000153                 0.000435
+       0.199135                      2400    843                  0.000178                 0.000462
+       0.298864                      1000    843                  0.000119                 0.000285
+       0.298864                      1200    843                  0.000110                 0.000261
+       0.298864                      1400    843                  0.000129                 0.000298
+       0.298864                      1600    843                  0.000147                 0.000332
+       0.298864                      1800    843                  0.000154                 0.000370
+       0.298864                      2000    843                  0.000160                 0.000400
+       0.298864                      2200    843                  0.000178                 0.000429
+       0.298864                      2400    843                  0.000191                 0.000462

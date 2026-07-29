@@ -1,10 +1,18 @@
 ---
-title: Simulation::execute() physics sequence -- src/classes/Simulation.C
+title: Simulation::execute() sequence   
 ---
 flowchart TB
     subgraph BURN["Burn-up & microstructure"]
         direction TB
-        Burnup["BURNUP"] --> EffectiveBurnup["EFFECTIVE BURNUP"] --> Densification["DENSIFICATION"] --> HighBurnupStructureFormation["HBS FORMATION"] --> HighBurnupStructurePorosity["HBS POROSITY"] --> GrainGrowth["GRAIN GROWTH"]
+        subgraph BURN_R1[" "]
+            direction LR
+            Burnup["BURNUP"] --> EffectiveBurnup["EFFECTIVE BURNUP"] --> Densification["DENSIFICATION"]
+        end
+        subgraph BURN_R2[" "]
+            direction RL
+            HighBurnupStructureFormation["HBS FORMATION"] --> HighBurnupStructurePorosity["HBS POROSITY"] --> GrainGrowth["GRAIN GROWTH"]
+        end
+        Densification --> HighBurnupStructureFormation
     end
 
     subgraph CHEM["Fuel matrix chemistry"]
@@ -14,7 +22,15 @@ flowchart TB
 
     subgraph FP["Fission product behaviour"]
         direction TB
-        GrainBoundarySweeping["GRAIN-BOUNDARY SWEEPING"] --> FissionProductProduction["FP PRODUCTION"] --> FissionProductDecay["FP DECAY"] --> IntraGranularBubbleBehavior["INTRAGRANULAR BUBBLE BEHAVIOUR"] --> IntragranularDiffusion["INTRAGRANULAR DIFFUSION"] --> SetPhaseDiagram["THERMOCHEMISTRY EQUILIBRIUM<br/>see: thermochemistry-module diagram"] --> GrainBoundaryMicroCracking["GRAIN-BOUNDARY MICROCRACKING"] --> GrainBoundaryVenting["GRAIN-BOUNDARY VENTING"] --> InterGranularBubbleBehavior["INTERGRANULAR BUBBLE BEHAVIOUR"] --> FissionProductRelease["FP RELEASE"]
+        subgraph FP_R1[" "]
+            direction LR
+            GrainBoundarySweeping["GRAIN-BOUNDARY SWEEPING"] --> FissionProductProduction["FP PRODUCTION"] --> FissionProductDecay["FP DECAY"] --> IntraGranularBubbleBehavior["INTRAGRANULAR BUBBLE BEHAVIOUR"] --> IntragranularDiffusion["INTRAGRANULAR DIFFUSION"]
+        end
+        subgraph FP_R2[" "]
+            direction RL
+            SetPhaseDiagram["THERMOCHEMISTRY EQUILIBRIUM<br/>see: thermochemistry-module diagram"] --> GrainBoundaryMicroCracking["GRAIN-BOUNDARY MICROCRACKING"] --> GrainBoundaryVenting["GRAIN-BOUNDARY VENTING"] --> InterGranularBubbleBehavior["INTERGRANULAR BUBBLE BEHAVIOUR"] --> FissionProductRelease["FP RELEASE"]
+        end
+        IntragranularDiffusion --> SetPhaseDiagram
     end
 
     subgraph GAP["Gap behaviour"]
@@ -29,6 +45,8 @@ flowchart TB
     classDef note fill:#F6E9D9,stroke:#7A1F1F,stroke-width:1px,color:#3a0d0d;
     classDef simProcess fill:#D9D9B8,stroke:#6B6B3A,stroke-width:1.5px,color:#2b2b16;
     classDef simHighlight fill:#D9D9B8,stroke:#8A4A2A,stroke-width:2.5px,color:#2b2b16;
+    classDef rowGroup fill:none,stroke:none;
 
     class Burnup,EffectiveBurnup,Densification,GapPartialPressure,UO2Thermochemistry,HighBurnupStructureFormation,HighBurnupStructurePorosity,GrainGrowth,ChromiumSolubility,StoichiometryDeviation,GrainBoundarySweeping,FissionProductProduction,FissionProductDecay,IntraGranularBubbleBehavior,IntragranularDiffusion,GrainBoundaryMicroCracking,GrainBoundaryVenting,InterGranularBubbleBehavior,FissionProductRelease,JOGFormation simProcess;
     class SetPhaseDiagram simHighlight;
+    class BURN_R1,BURN_R2,FP_R1,FP_R2 rowGroup;

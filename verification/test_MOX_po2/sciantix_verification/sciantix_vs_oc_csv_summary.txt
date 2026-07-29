@@ -2,27 +2,41 @@ SCIANTIX-CALPHAD vs Thermo-Calc (MOX)
 ===============================================
 
 Comparison ranges: T = 753-2550 K, Pu/M = 0.10-0.32, O/M = 1.92-2.08
-Sciantix source points: 12627
-Sciantix points outside comparison ranges: 5040
-OC source points: 925
-OC points outside comparison ranges: 445
-OC points outside SCIANTIX interpolation overlap: 2
-Compared points: 478
-Near O/M = 2.0 compared points: 9
-Mean absolute log10(pO2/p_ref) error: 2.174925e-02
-Max absolute log10(pO2/p_ref) error: 4.698712e-01
-Mean relative log10(pO2/p_ref) error (%): 2.621571e-01
-Max relative log10(pO2/p_ref) error (%): 3.252149e+00
-Max absolute oxygen-potential error (KJ/mol): 1.346179e+01
+Sciantix source points: 33672
+Sciantix points outside comparison ranges: 13440
+OC source points: 2781
+OC points outside comparison ranges: 1334
+OC points outside SCIANTIX interpolation overlap: 171
+Compared points: 1276
+Near O/M = 2.0 compared points: 24
+Mean absolute oxygen-potential error (KJ/mol): 8.172164e-01
+Max absolute oxygen-potential error (KJ/mol): 7.179260e+01
+Mean relative oxygen-potential error (%): 3.152574e-01
+Max relative oxygen-potential error (%): 2.858877e+01
 
 Per-(q, temperature) summary:
  q key (-)  Temperature key (K)  count  mean_abs_log_error  max_abs_log_error  mean_abs_potential_error  max_abs_potential_error
+       0.1                 1000     54            0.082478           3.749987                  1.579026                71.792598
+       0.1                 1200     53            0.071555           1.637466                  1.643873                37.618676
        0.1                 1400     54            0.032952           0.469871                  0.883201                12.593799
+       0.1                 1600     54            0.019522           0.137939                  0.597976                 4.225301
        0.1                 1800     53            0.017601           0.134512                  0.606548                 4.635354
+       0.1                 2000     53            0.015762           0.173032                  0.603525                 6.625321
        0.1                 2200     53            0.020654           0.188380                  0.869916                 7.934292
+       0.1                 2400     53            0.021850           0.232378                  1.003972                10.677186
+       0.2                 1000     53            0.062949           2.881586                  1.205139                55.167259
+       0.2                 1200     53            0.049191           1.050564                  1.130092                24.135342
        0.2                 1400     53            0.023702           0.277685                  0.635274                 7.442696
+       0.2                 1600     53            0.012466           0.091897                  0.381839                 2.814963
        0.2                 1800     53            0.011027           0.030847                  0.379998                 1.062999
+       0.2                 2000     53            0.016668           0.267547                  0.638203                10.244259
        0.2                 2200     53            0.028439           0.230392                  1.197812                 9.703737
+       0.2                 2400     53            0.019217           0.154182                  0.882980                 7.084268
+       0.3                 1000     53            0.041911           1.931294                  0.802381                36.974156
+       0.3                 1200     53            0.031367           0.535669                  0.720608                12.306298
        0.3                 1400     53            0.017129           0.184589                  0.459093                 4.947476
+       0.3                 1600     53            0.009401           0.056113                  0.287961                 1.718834
        0.3                 1800     53            0.008905           0.044048                  0.306867                 1.517930
+       0.3                 2000     53            0.021845           0.237122                  0.836447                 9.079296
        0.3                 2200     53            0.035123           0.319617                  1.479327                13.461794
+       0.3                 2400     54            0.010362           0.047253                  0.476089                 2.171174

@@ -1,5 +1,5 @@
 ---
-title: SCIANTIX() call sequence -- Sciantix.C + Simulation::initialize/execute/update/output
+title: SCIANTIX() call sequence
 ---
 flowchart TB
     C_BEGIN(["BEGIN"])
@@ -15,7 +15,7 @@ flowchart TB
 
     C_BEGIN --> setVariables --> setGPVariables --> setFissionProducts --> setMatrix --> setSystem --> execute --> update --> output --> C_END
 
-    setGPVariables_note["active for iFissionProductDiffusivity == 90"]
+    setGPVariables_note["optional: data-driven<br/>property correlations"]
     setGPVariables --> setGPVariables_note
     setFissionProducts_note["gas: Xe, Kr<br/>volatile: Cs<br/>metallic: Mo, Pd, Ru, Rh, Tc<br/>ceramic: Ba"]
     setFissionProducts --> setFissionProducts_note
@@ -26,12 +26,10 @@ flowchart TB
 
     classDef terminal fill:#E8C4BE,stroke:#7A1F1F,stroke-width:1.5px,color:#3a0d0d;
     classDef process fill:#E8C4BE,stroke:#7A1F1F,stroke-width:1.5px,color:#3a0d0d;
-    classDef gpvar fill:#C9DDE8,stroke:#1F4A7A,stroke-width:1.5px,color:#0d2340;
     classDef note fill:#F6E9D9,stroke:#7A1F1F,stroke-width:1px,color:#3a0d0d;
     classDef highlight fill:#7A1F1F,stroke:#3a0d0d,stroke-width:2.5px,color:#ffffff;
 
     class C_BEGIN,C_END terminal;
-    class setVariables,setFissionProducts,setMatrix,setSystem,update,output process;
-    class setGPVariables gpvar;
+    class setVariables,setGPVariables,setFissionProducts,setMatrix,setSystem,update,output process;
     class execute highlight;
     class setFissionProducts_note,setMatrix_note,setSystem_note,setGPVariables_note note;

@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 """
 Generates the persistent verification/test_MOX_po2/T_<T>K_q_<Pu>/ case
-directories (input files + output_gold.txt) for the reduced default sweep
-(3 temperatures x 3 q-values = 9 cases) used by python -m testing.runner.
+directories (input files + output_gold.txt) for the default sweep
+(8 temperatures x 3 q-values = 24 cases) used by python -m testing.runner.
 
 Cases are generated, never edited by hand -- re-run this (with --write-gold)
 if the template inputs change. Matches the T_<T>K_q_<Pu>/ naming convention
 used by validation/oxygenpotential/{freshfuel,burnup}.
 
-The full 10x3 exploratory/manual sweep (any temperature/q, not just this
-routine subset) remains run_temperature_sweep.py, unaffected by this script.
+These same 24 cases are the only source of truth for this V&V: running them
+through `python -m testing.runner --mox-po2` produces both the gold-diff and
+the paper figures (see sciantix_verification/compare_sciantix_with_kato.py
+and compare_sciantix_with_oc_csv.py) -- there is no separate exploratory case
+set.
 """
 from __future__ import annotations
 
@@ -21,13 +24,13 @@ from pathlib import Path
 SCRIPT_DIR = Path(__file__).resolve().parent
 BUILD_BINARY = SCRIPT_DIR.parent.parent / "build" / "sciantix.x"
 
-TEMPERATURES_K = [1400, 1800, 2200]
+TEMPERATURES_K = [1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400]
 Q_VALUES = [0.10, 0.20, 0.30]
 
 
 def format_q_tag(q_value: float) -> str:
     """Format a plutonium-content tag matching oxygenpotential's T_<T>K_q_<Pu> convention."""
-    return str(int(round(q_value * 100)))
+    return str(round(q_value * 100))
 
 
 def case_dir_path(temperature_k: int, q_value: float) -> Path:
