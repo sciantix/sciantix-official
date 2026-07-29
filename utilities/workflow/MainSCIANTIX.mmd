@@ -1,6 +1,7 @@
 ---
-title: Program flow -- MainSCIANTIX.C
+title: Program flow -- Main SCIANTIX
 ---
+%%{init: {"themeVariables": {"fontSize": "20px"}} }%%
 flowchart LR
 
     subgraph INPUTS["Input files"]
@@ -22,7 +23,7 @@ flowchart LR
         M_INIT["INITIALIZATION"]
         M_LOOP{"TIME LOOP<br/>t ≤ t_end ?"}
         M_INTERP["INPUT INTERPOLATION"]
-        M_CALL["SCIANTIX()<br/>see: SCIANTIX diagram"]
+        M_CALL["SCIANTIX()"]
         M_STEP["TIME-STEP CALCULATION"]
         M_END(["END"])
 

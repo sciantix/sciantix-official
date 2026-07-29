@@ -1,6 +1,7 @@
 ---
-title: SCIANTIX() call sequence
+title: SCIANTIX() diagram
 ---
+%%{init: {"themeVariables": {"fontSize": "20px"}} }%%
 flowchart TB
     C_BEGIN(["BEGIN"])
     setVariables["SET VARIABLES"]
@@ -8,7 +9,7 @@ flowchart TB
     setFissionProducts["SET FISSION PRODUCTS"]
     setMatrix["SET FUEL MATRIX"]
     setSystem["SET SYSTEM"]
-    execute["SIMULATION EXECUTION<br/>see: Simulation diagram"]
+    execute["SIMULATION EXECUTION"]
     update["UPDATE VARIABLES"]
     output[/"OUTPUT"/]
     C_END(["END"])
