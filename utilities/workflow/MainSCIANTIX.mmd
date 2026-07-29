@@ -1,7 +1,8 @@
 ---
 title: Program flow -- MainSCIANTIX.C
 ---
-flowchart TB
+flowchart LR
+
     subgraph INPUTS["Input files"]
         direction TB
         I_HIST>"HISTORY<br/>(t, T, F, σh, p, O/M)"]
@@ -10,14 +11,10 @@ flowchart TB
         I_SF>"SCALING FACTORS"]
         I_TCOPT>"THERMOCHEMISTRY OPTION"]
         I_TCDB>"THERMOCHEMISTRY DATABASE"]
-        I_HIST  
-        I_OPT 
-        I_IC
-        I_SF
-        I_TCOPT
-        I_TCDB
-    end
 
+        I_HIST ~~~ I_OPT ~~~ I_IC ~~~ I_SF ~~~ I_TCOPT ~~~ I_TCDB
+    end
+    
     subgraph MAIN["MainSCIANTIX.C"]
         direction TB
         M_BEGIN(["BEGIN"])
@@ -35,11 +32,6 @@ flowchart TB
     end
 
     I_HIST --> M_INPUT
-    I_OPT --> M_INPUT
-    I_IC --> M_INPUT
-    I_SF --> M_INPUT
-    I_TCOPT --> M_INPUT
-    I_TCDB --> M_INPUT
 
     classDef loopbox fill:#E6E1EA,stroke:#5b5766,stroke-width:1.5px,color:#28252e;
     classDef input fill:#F0D77B,stroke:#8a6d1f,stroke-width:1.5px,color:#3a2e0d;

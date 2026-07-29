@@ -59,11 +59,13 @@ OM_MIN = 1.92
 OM_MAX = 2.08
 NEAR_STOICHIOMETRY_TOLERANCE = 1.0e-3
 PLOT_MARKER_SIZE = 4
+THERMOCALC_MARKER = 'D'
+THERMOCALC_MARKER_SIZE = 70
 
 # Fixed normalization range shared across every MOXSCIANTIX verification plot so a
 # given temperature always renders as the same viridis color in every figure.
-VERIFICATION_TEMPERATURE_MIN_K = 800.0
-VERIFICATION_TEMPERATURE_MAX_K = 2600.0
+VERIFICATION_TEMPERATURE_MIN_K = 1000.0
+VERIFICATION_TEMPERATURE_MAX_K = 2400.0
 SCIANTIX_OC_MARKER = "s"
 MODEL_CURVE_MARKEVERY = 0.06
 
@@ -376,11 +378,10 @@ def write_summary_report(frame: pd.DataFrame, summary: pd.DataFrame) -> None:
         atol=NEAR_STOICHIOMETRY_TOLERANCE,
         rtol=0.0,
     ).sum())
-    max_abs_log = frame['Absolute delta log10(pO2/p_ref)'].max()
-    mean_abs_log = frame['Absolute delta log10(pO2/p_ref)'].mean()
-    mean_rel_log = frame['Relative delta log10(pO2/p_ref) (%)'].mean()
-    max_rel_log = frame['Relative delta log10(pO2/p_ref) (%)'].max()
+    mean_abs_potential = frame['Absolute delta oxygen potential (KJ/mol)'].mean()
     max_abs_potential = frame['Absolute delta oxygen potential (KJ/mol)'].max()
+    mean_rel_potential = frame['Relative delta oxygen potential (%)'].mean()
+    max_rel_potential = frame['Relative delta oxygen potential (%)'].max()
 
     lines = [
         'SCIANTIX-CALPHAD vs Thermo-Calc (MOX)',
@@ -395,17 +396,29 @@ def write_summary_report(frame: pd.DataFrame, summary: pd.DataFrame) -> None:
         f"OC points outside SCIANTIX interpolation overlap: {frame.attrs.get('oc_overlap_excluded_points', 'unknown')}",
         f'Compared points: {overall_count}',
         f'Near O/M = 2.0 compared points: {near_stoichiometry_points}',
-        f'Mean absolute log10(pO2/p_ref) error: {mean_abs_log:.6e}',
-        f'Max absolute log10(pO2/p_ref) error: {max_abs_log:.6e}',
-        f'Mean relative log10(pO2/p_ref) error (%): {mean_rel_log:.6e}',
-        f'Max relative log10(pO2/p_ref) error (%): {max_rel_log:.6e}',
+        f'Mean absolute oxygen-potential error (KJ/mol): {mean_abs_potential:.6e}',
         f'Max absolute oxygen-potential error (KJ/mol): {max_abs_potential:.6e}',
+        f'Mean relative oxygen-potential error (%): {mean_rel_potential:.6e}',
+        f'Max relative oxygen-potential error (%): {max_rel_potential:.6e}',
         '',
         'Per-(q, temperature) summary:',
         summary.to_string(index=False),
         '',
     ]
     SUMMARY_REPORT_PATH.write_text('\n'.join(lines))
+
+
+DISPLAY_TEMPERATURES_K = {1000, 1200, 1400, 1600, 1800, 2000, 2200, 2400}
+
+
+def select_display_temperatures(temperatures_k: list[int]) -> list[int]:
+    """Curated subset shown in multi-temperature curve plots, to keep them readable.
+
+    The underlying statistics (aligned_frame / build_metric_summary) are unaffected:
+    this only trims which temperature curves are drawn.
+    """
+    filtered = [t for t in temperatures_k if t in DISPLAY_TEMPERATURES_K]
+    return filtered if filtered else temperatures_k
 
 
 def temperature_color_map(temperatures_k: list[int]) -> dict[int, object]:
@@ -441,85 +454,17 @@ def add_model_legends(
 
 def add_temperature_legend(ax, temperatures_k: list[int], temperature_colors: dict[int, object]) -> None:
     handles = [
-        Line2D([0], [0], color=temperature_colors[temp], label=f'{int(round(temp))} K')
+        Line2D([0], [0], color=temperature_colors[temp], label=f'{round(temp)} K')
         for temp in temperatures_k
     ]
     ax.legend(handles=handles, loc='upper left', ncol=2, title='Temperature')
 
 
-def _finite_series(series: pd.Series) -> pd.Series:
-    return pd.to_numeric(series, errors='coerce').replace([np.inf, -np.inf], np.nan).dropna()
-
-
-def make_pressure_plot(sciantix_frame: pd.DataFrame, oc_frame: pd.DataFrame) -> None:
-    q_values = sorted(oc_frame[Q_KEY_COL].dropna().unique())
-    temperatures_k = sorted(oc_frame[TEMPERATURE_KEY_COL].dropna().unique())
-    temperature_colors = temperature_color_map(temperatures_k)
-    q_markers = q_marker_map(q_values)
-
-    for q_value in q_values:
-        fig, ax = plt.subplots()
-        sci_q_frame = sciantix_frame[sciantix_frame[Q_KEY_COL] == q_value]
-        oc_q_frame = oc_frame[oc_frame[Q_KEY_COL] == q_value]
-
-        for temperature_k in temperatures_k:
-            sci_subset = sci_q_frame[sci_q_frame[TEMPERATURE_KEY_COL] == temperature_k].sort_values('O/M ratio (/)')
-            sci_subset = sci_subset.dropna(subset=['SCIANTIX CALPHAD log10(pO2/p_ref)'])
-            if not sci_subset.empty:
-                ax.plot(
-                    sci_subset['O/M ratio (/)'],
-                    sci_subset['SCIANTIX CALPHAD log10(pO2/p_ref)'],
-                    color=temperature_colors[temperature_k],
-                    linestyle='-',
-                    marker=SCIANTIX_OC_MARKER,
-                    markevery=MODEL_CURVE_MARKEVERY,
-                    markersize=6,
-                )
-
-            oc_subset = oc_q_frame[oc_q_frame[TEMPERATURE_KEY_COL] == temperature_k].sort_values('O/M ratio (/)')
-            oc_subset = oc_subset.dropna(subset=['OC log10(pO2/p_ref)'])
-            if oc_subset.empty:
-                continue
-
-            ax.scatter(
-                oc_subset['O/M ratio (/)'],
-                oc_subset['OC log10(pO2/p_ref)'],
-                color=temperature_colors[temperature_k],
-                marker=q_markers[q_value],
-                s=PLOT_MARKER_SIZE,
-            )
-
-        ax.set_title(f'q = {q_value:.2f}')
-        ax.set_xlabel('O/M ratio (-)')
-        ax.set_ylabel(r'$\log_{10}(p_{O_2}/p_{ref})$ (-)')
-
-        y_values = pd.concat(
-            [
-                sci_q_frame['SCIANTIX CALPHAD log10(pO2/p_ref)'],
-                oc_q_frame['OC log10(pO2/p_ref)'],
-            ],
-            ignore_index=True,
-        ).dropna()
-
-        ax.set_xlim([OM_MIN, OM_MAX])
-
-        if not y_values.empty:
-            y_min = float(y_values.min())
-            y_max = float(y_values.max())
-            y_span = max(y_max - y_min, 1.0e-6)
-            y_pad = 0.06 * y_span
-            ax.set_ylim([y_min - y_pad, y_max + y_pad])
-
-        ax.grid(True, alpha=0.3)
-        add_model_legends(ax, temperatures_k, temperature_colors, reference_marker=q_markers[q_value])
-        fig.tight_layout()
-        fig.savefig(PLOTS_DIR / f'sciantix_vs_oc_csv_partial_pressure_q_{q_tag(q_value)}.png')
-        plt.close(fig)
-
 
 def make_potential_plot(sciantix_frame: pd.DataFrame, oc_frame: pd.DataFrame) -> None:
     q_values = sorted(oc_frame[Q_KEY_COL].dropna().unique())
     temperatures_k = sorted(oc_frame[TEMPERATURE_KEY_COL].dropna().unique())
+    temperatures_k = select_display_temperatures(temperatures_k)
     temperature_colors = temperature_color_map(temperatures_k)
     q_markers = q_marker_map(q_values)
 
@@ -531,6 +476,10 @@ def make_potential_plot(sciantix_frame: pd.DataFrame, oc_frame: pd.DataFrame) ->
         for temperature_k in temperatures_k:
             sci_subset = sci_q_frame[sci_q_frame[TEMPERATURE_KEY_COL] == temperature_k].sort_values('O/M ratio (/)')
             sci_subset = sci_subset.dropna(subset=['SCIANTIX CALPHAD oxygen potential (KJ/mol)'])
+            # A potential of exactly 0 means "not computed at this step" (unconverged
+            # OpenCalphad equilibrium), not a real 0 kJ/mol -- same convention as
+            # validation/oxygenpotential/*/plot.py's read_output_curve.
+            sci_subset = sci_subset[sci_subset['SCIANTIX CALPHAD oxygen potential (KJ/mol)'] != 0.0]
             if not sci_subset.empty:
                 ax.plot(
                     sci_subset['O/M ratio (/)'],
@@ -553,9 +502,9 @@ def make_potential_plot(sciantix_frame: pd.DataFrame, oc_frame: pd.DataFrame) ->
                 oc_subset['OC oxygen potential (KJ/mol)'],
                 facecolors='white',
                 edgecolors=temperature_colors[temperature_k],
-                linewidths=0.9,
-                marker=q_markers[q_value],
-                s=PLOT_MARKER_SIZE,
+                linewidths=1.4,
+                marker=THERMOCALC_MARKER,
+                s=THERMOCALC_MARKER_SIZE,
                 zorder=3,
             )
 
@@ -581,15 +530,16 @@ def make_potential_plot(sciantix_frame: pd.DataFrame, oc_frame: pd.DataFrame) ->
             ax.set_ylim([y_min - y_pad, y_max + y_pad])
 
         ax.grid(True, alpha=0.3)
-        add_model_legends(ax, temperatures_k, temperature_colors, reference_marker=q_markers[q_value])
+        add_model_legends(ax, temperatures_k, temperature_colors, reference_marker=THERMOCALC_MARKER)
         fig.tight_layout()
         fig.savefig(PLOTS_DIR / f'fuel_oxygen_potential_vs_om_ratio_oc_csv_q_{q_tag(q_value)}.png')
         plt.close(fig)
 
 
-def make_signed_log_error_plot(frame: pd.DataFrame) -> None:
+def make_signed_potential_error_plot(frame: pd.DataFrame) -> None:
     q_values = sorted(frame[Q_KEY_COL].dropna().unique())
     temperatures_k = sorted(frame[TEMPERATURE_KEY_COL].dropna().unique())
+    temperatures_k = select_display_temperatures(temperatures_k)
     temperature_colors = temperature_color_map(temperatures_k)
 
     for q_value in q_values:
@@ -598,98 +548,82 @@ def make_signed_log_error_plot(frame: pd.DataFrame) -> None:
 
         for temperature_k in temperatures_k:
             subset = q_frame[q_frame[TEMPERATURE_KEY_COL] == temperature_k].sort_values('O/M ratio (/)')
-            subset = subset.dropna(subset=['Delta log10(pO2/p_ref)'])
+            subset = subset.dropna(subset=['Delta oxygen potential (KJ/mol)'])
             if subset.empty:
                 continue
 
-            ax.plot(
+            ax.scatter(
                 subset['O/M ratio (/)'],
-                subset['Delta log10(pO2/p_ref)'],
+                subset['Delta oxygen potential (KJ/mol)'],
                 color=temperature_colors[temperature_k],
                 marker='o',
-                markersize=2,
+                s=10,
             )
 
         ax.axhline(0.0, color='black', linestyle='--')
         ax.set_title(f'q = {q_value:.2f}')
         ax.set_xlabel('O/M ratio (-)')
-        ax.set_ylabel(r'$\Delta\log_{10}(p_{O_2}/p_{ref})$ (-)')
+        ax.set_ylabel(r'$\Delta \bar{G}_{O_2}$ (kJ/mol)')
         ax.set_xlim([OM_MIN, OM_MAX])
-        ax.set_ylim([-1.0, 1.0])
         ax.grid(True, alpha=0.3)
         add_temperature_legend(ax, temperatures_k, temperature_colors)
         fig.tight_layout()
-        fig.savefig(PLOTS_DIR / f'sciantix_vs_oc_csv_log_pO2_error_q_{q_tag(q_value)}.png')
+        fig.savefig(PLOTS_DIR / f'sciantix_vs_oc_csv_potential_error_q_{q_tag(q_value)}.png')
         plt.close(fig)
 
 
-def make_absolute_log_error_plot(frame: pd.DataFrame) -> None:
+def make_combined_error_plot(frame: pd.DataFrame) -> None:
+    """Absolute and relative oxygen-potential error, stacked vertically, dots only (no connecting line).
+
+    Reported in kJ/mol (and %), matching the units used for the code's oxygen
+    potential itself and for the experimental validation, rather than log10(pO2).
+    """
     q_values = sorted(frame[Q_KEY_COL].dropna().unique())
     temperatures_k = sorted(frame[TEMPERATURE_KEY_COL].dropna().unique())
+    temperatures_k = select_display_temperatures(temperatures_k)
     temperature_colors = temperature_color_map(temperatures_k)
 
     for q_value in q_values:
-        fig, ax = plt.subplots()
+        fig, (ax_abs, ax_rel) = plt.subplots(2, 1, figsize=(8, 7), sharex=True)
         q_frame = frame[frame[Q_KEY_COL] == q_value]
 
         for temperature_k in temperatures_k:
             subset = q_frame[q_frame[TEMPERATURE_KEY_COL] == temperature_k].sort_values('O/M ratio (/)')
-            subset = subset.dropna(subset=['Absolute delta log10(pO2/p_ref)'])
-            if subset.empty:
-                continue
 
-            ax.plot(
-                subset['O/M ratio (/)'],
-                subset['Absolute delta log10(pO2/p_ref)'],
-                color=temperature_colors[temperature_k],
-                marker='o',
-                markersize=2,
-            )
+            abs_subset = subset.dropna(subset=['Absolute delta oxygen potential (KJ/mol)'])
+            if not abs_subset.empty:
+                ax_abs.scatter(
+                    abs_subset['O/M ratio (/)'],
+                    abs_subset['Absolute delta oxygen potential (KJ/mol)'],
+                    color=temperature_colors[temperature_k],
+                    marker='s',
+                    s=15,
+                )
 
-        ax.set_title(f'q = {q_value:.2f}')
-        ax.set_xlabel('O/M ratio (-)')
-        ax.set_ylabel(r'$|\Delta\log_{10}(p_{O_2}/p_{ref})|$ (-)')
-        ax.set_xlim([OM_MIN, OM_MAX])
-        ax.set_ylim([0.0, 1.0])
-        ax.grid(True, alpha=0.3)
-        add_temperature_legend(ax, temperatures_k, temperature_colors)
+            rel_subset = subset.dropna(subset=['Relative delta oxygen potential (%)'])
+            if not rel_subset.empty:
+                ax_rel.scatter(
+                    rel_subset['O/M ratio (/)'],
+                    rel_subset['Relative delta oxygen potential (%)'],
+                    color=temperature_colors[temperature_k],
+                    marker='s',
+                    s=15,
+                )
+
+        ax_abs.set_title(f'q = {q_value:.2f},  absolute error')
+        ax_abs.set_ylabel(r'$|\Delta G_{O_2}|$ (kJ/mol)')
+        ax_abs.set_xlim([OM_MIN, OM_MAX])
+        ax_abs.grid(True, alpha=0.3)
+        add_temperature_legend(ax_abs, temperatures_k, temperature_colors)
+
+        ax_rel.set_title(f'q = {q_value:.2f}, relative error')
+        ax_rel.set_xlabel('O/M ratio (-)')
+        ax_rel.set_ylabel(r'Relative $|\Delta G_{O_2}|$ (%)')
+        ax_rel.set_xlim([OM_MIN, OM_MAX])
+        ax_rel.grid(True, alpha=0.3)
+
         fig.tight_layout()
-        fig.savefig(PLOTS_DIR / f'sciantix_vs_oc_csv_log_pO2_error_absolute_q_{q_tag(q_value)}.png')
-        plt.close(fig)
-
-
-def make_relative_log_error_plot(frame: pd.DataFrame) -> None:
-    q_values = sorted(frame[Q_KEY_COL].dropna().unique())
-    temperatures_k = sorted(frame[TEMPERATURE_KEY_COL].dropna().unique())
-    temperature_colors = temperature_color_map(temperatures_k)
-
-    for q_value in q_values:
-        fig, ax = plt.subplots()
-        q_frame = frame[frame[Q_KEY_COL] == q_value]
-
-        for temperature_k in temperatures_k:
-            subset = q_frame[q_frame[TEMPERATURE_KEY_COL] == temperature_k].sort_values('O/M ratio (/)')
-            subset = subset.dropna(subset=['Relative delta log10(pO2/p_ref) (%)'])
-            if subset.empty:
-                continue
-
-            ax.plot(
-                subset['O/M ratio (/)'],
-                subset['Relative delta log10(pO2/p_ref) (%)'],
-                color=temperature_colors[temperature_k],
-                marker='o',
-                markersize=2,
-            )
-
-        ax.set_title(f'q = {q_value:.2f}')
-        ax.set_xlabel('O/M ratio (-)')
-        ax.set_ylabel(r'Relative $|\Delta \log_{10}(p_{O_2}/p_{ref})|$ (%)')
-        ax.set_xlim([OM_MIN, OM_MAX])
-        ax.set_ylim([0.0, 100])
-        ax.grid(True, alpha=0.3)
-        add_temperature_legend(ax, temperatures_k, temperature_colors)
-        fig.tight_layout()
-        fig.savefig(PLOTS_DIR / f'sciantix_vs_oc_csv_log_pO2_error_relative_percent_q_{q_tag(q_value)}.png')
+        fig.savefig(PLOTS_DIR / f'sciantix_vs_oc_csv_potential_error_combined_q_{q_tag(q_value)}.png')
         plt.close(fig)
 
 
@@ -704,11 +638,9 @@ def main() -> None:
     summary.to_csv(SUMMARY_OUTPUT_PATH, sep='\t', index=False)
     write_summary_report(aligned_frame, summary)
 
-    make_pressure_plot(sciantix_frame, oc_frame)
     make_potential_plot(sciantix_frame, oc_frame)
-    make_signed_log_error_plot(aligned_frame)
-    make_absolute_log_error_plot(aligned_frame)
-    make_relative_log_error_plot(aligned_frame)
+    make_signed_potential_error_plot(aligned_frame)
+    make_combined_error_plot(aligned_frame)
 
 
 if __name__ == '__main__':

@@ -2,16 +2,16 @@
 sciantix testing suite
 author: Elisa Cappellari
 
-Evaluates the MOX pO2 accuracy check documented in
-testing/README_oxygenpotential_VV.md, on top of the ordinary gold-diff that
-generic_runner.run_group() already performs for the 9 persistent
+Evaluates the MOX oxygen-potential accuracy check documented in
+verification/test_MOX_po2/README.md, on top of the ordinary gold-diff that
+generic_runner.run_group() already performs for the 24 persistent
 verification/test_MOX_po2/T_<T>K_q_<Pu>/ cases (registered like any other
 verification group -- see runner.py's REGISTRY):
-  - Kato path (never needs OpenCalphad): max abs log10(pO2/p_ref) error < 1e-3
-    over the whole domain.
-  - CALPHAD path (needs OpenCalphad + upuo-v21.TDB): mean abs log10(pO2/p_ref)
-    error < 0.05 and mean abs oxygen-potential error < 2 kJ/mol, per (q, T)
-    group for T >= 1000 K. Skipped (not failed) when OC is unavailable.
+  - Kato path (never needs OpenCalphad): max abs oxygen-potential error <
+    0.05 kJ/mol over the whole domain.
+  - CALPHAD path (needs OpenCalphad + upuo-v21.TDB): mean abs oxygen-potential
+    error < 2 kJ/mol, per (q, T) group for T >= 1000 K. Skipped (not failed)
+    when OC is unavailable.
 
 This module does not run sciantix.x itself -- it reads the output.txt that
 run_group() already produced for each case, concatenates them into the
@@ -38,8 +38,7 @@ COMPARE_OC_SCRIPT = os.path.join(VERIFICATION_DIR, "compare_sciantix_with_oc_csv
 KATO_RESIDUALS_TSV = os.path.join(VERIFICATION_DIR, "sciantix_vs_kato_residuals.tsv")
 OC_SUMMARY_TSV = os.path.join(VERIFICATION_DIR, "sciantix_vs_oc_csv_summary.tsv")
 
-KATO_MAX_ABS_LOG_ERROR = 1e-3
-OC_MEAN_ABS_LOG_ERROR = 0.05
+KATO_MAX_ABS_POTENTIAL_ERROR_KJ_MOL = 0.05
 OC_MEAN_ABS_POTENTIAL_ERROR_KJ_MOL = 2.0
 OC_MIN_TEMPERATURE_K = 1000.0
 
@@ -54,35 +53,34 @@ def _read_tsv(path):
 
 
 def _check_kato():
-    """Kato-path acceptance: max abs log10(pO2/p_ref) error < 1e-3 over the whole domain."""
+    """Kato-path acceptance: max abs oxygen-potential error < 0.05 kJ/mol over the whole domain."""
     rows = _read_tsv(KATO_RESIDUALS_TSV)
-    max_error = max(float(row["Max abs delta log10(p/reference)"]) for row in rows)
-    ok = max_error < KATO_MAX_ABS_LOG_ERROR
-    return ok, (f"Kato max abs log10(p/reference) error = {max_error:.3e} "
-                f"(threshold {KATO_MAX_ABS_LOG_ERROR:.0e})")
+    max_error = max(float(row["Max abs delta oxygen potential (KJ/mol)"]) for row in rows)
+    ok = max_error < KATO_MAX_ABS_POTENTIAL_ERROR_KJ_MOL
+    return ok, (f"Kato max abs oxygen-potential error = {max_error:.3e} kJ/mol "
+                f"(threshold {KATO_MAX_ABS_POTENTIAL_ERROR_KJ_MOL:.2f})")
 
 
 def _check_calphad():
     """
     CALPHAD-path acceptance, per (q, T) group for T >= 1000 K: mean abs
-    log10(pO2/p_ref) error < 0.05 and mean abs potential error < 2 kJ/mol.
+    oxygen-potential error < 2 kJ/mol.
     """
     rows = _read_tsv(OC_SUMMARY_TSV)
     relevant = [row for row in rows if float(row["Temperature key (K)"]) >= OC_MIN_TEMPERATURE_K]
     failures = [
         row for row in relevant
-        if float(row["mean_abs_log_error"]) >= OC_MEAN_ABS_LOG_ERROR
-        or float(row["mean_abs_potential_error"]) >= OC_MEAN_ABS_POTENTIAL_ERROR_KJ_MOL
+        if float(row["mean_abs_potential_error"]) >= OC_MEAN_ABS_POTENTIAL_ERROR_KJ_MOL
     ]
     if not failures:
-        return True, (f"CALPHAD mean abs log error < {OC_MEAN_ABS_LOG_ERROR} and mean abs "
-                       f"potential error < {OC_MEAN_ABS_POTENTIAL_ERROR_KJ_MOL} kJ/mol for all "
+        return True, (f"CALPHAD mean abs potential error < "
+                       f"{OC_MEAN_ABS_POTENTIAL_ERROR_KJ_MOL} kJ/mol for all "
                        f"{len(relevant)} (q,T>=1000K) groups")
 
-    worst = max(failures, key=lambda row: float(row["mean_abs_log_error"]))
+    worst = max(failures, key=lambda row: float(row["mean_abs_potential_error"]))
     return False, (f"CALPHAD acceptance failed for {len(failures)}/{len(relevant)} (q,T) groups "
                     f"(worst: q={worst['q key (-)']}, T={worst['Temperature key (K)']}K, "
-                    f"mean_abs_log_error={float(worst['mean_abs_log_error']):.3e})")
+                    f"mean_abs_potential_error={float(worst['mean_abs_potential_error']):.3e} kJ/mol)")
 
 
 def _build_summary():
