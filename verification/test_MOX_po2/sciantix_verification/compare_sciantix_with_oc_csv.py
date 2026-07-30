@@ -15,6 +15,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+from matplotlib.ticker import MaxNLocator
 import matplotlib.colors as mcolors
 import numpy as np
 import pandas as pd
@@ -60,7 +61,7 @@ OM_MAX = 2.08
 NEAR_STOICHIOMETRY_TOLERANCE = 1.0e-3
 PLOT_MARKER_SIZE = 4
 THERMOCALC_MARKER = 'D'
-THERMOCALC_MARKER_SIZE = 70
+THERMOCALC_MARKER_SIZE = 20
 
 # Fixed normalization range shared across every MOXSCIANTIX verification plot so a
 # given temperature always renders as the same viridis color in every figure.
@@ -444,7 +445,7 @@ def add_model_legends(
         for temp in temperatures_k
     ]
     model_handles = [
-        Line2D([0], [0], color='black', linestyle='-', marker=SCIANTIX_OC_MARKER, label='SCIANTIX + OpenCalphad'),
+        Line2D([0], [0], color='black', linestyle='-', label='SCIANTIX + OpenCalphad'),
         Line2D([0], [0], color='black', marker=reference_marker, linestyle='None', label='Thermo-Calc'),
     ]
     first = ax.legend(handles=temperature_handles, loc='lower right', ncol=2, title='Temperature')
@@ -486,9 +487,6 @@ def make_potential_plot(sciantix_frame: pd.DataFrame, oc_frame: pd.DataFrame) ->
                     sci_subset['SCIANTIX CALPHAD oxygen potential (KJ/mol)'],
                     color=temperature_colors[temperature_k],
                     linestyle='-',
-                    marker=SCIANTIX_OC_MARKER,
-                    markevery=MODEL_CURVE_MARKEVERY,
-                    markersize=6,
                     zorder=2,
                 )
 
@@ -584,7 +582,9 @@ def make_combined_error_plot(frame: pd.DataFrame) -> None:
     temperature_colors = temperature_color_map(temperatures_k)
 
     for q_value in q_values:
-        fig, (ax_abs, ax_rel) = plt.subplots(2, 1, figsize=(8, 7), sharex=True)
+        fig, (ax_abs, ax_rel) = plt.subplots(
+            2, 1, figsize=(8, 8), sharex=True, gridspec_kw={'height_ratios': [1.15, 1]},
+        )
         q_frame = frame[frame[Q_KEY_COL] == q_value]
 
         for temperature_k in temperatures_k:
@@ -613,17 +613,29 @@ def make_combined_error_plot(frame: pd.DataFrame) -> None:
         ax_abs.set_title(f'q = {q_value:.2f},  absolute error')
         ax_abs.set_ylabel(r'$|\Delta G_{O_2}|$ (kJ/mol)')
         ax_abs.set_xlim([OM_MIN, OM_MAX])
+        ax_abs.yaxis.set_major_locator(MaxNLocator(nbins=9, integer=False))
         ax_abs.grid(True, alpha=0.3)
-        add_temperature_legend(ax_abs, temperatures_k, temperature_colors)
 
         ax_rel.set_title(f'q = {q_value:.2f}, relative error')
         ax_rel.set_xlabel('O/M ratio (-)')
         ax_rel.set_ylabel(r'Relative $|\Delta G_{O_2}|$ (%)')
         ax_rel.set_xlim([OM_MIN, OM_MAX])
+        ax_rel.yaxis.set_major_locator(MaxNLocator(nbins=8, integer=False))
         ax_rel.grid(True, alpha=0.3)
 
+        # Single legend for the whole figure, outside both axes on the right -- avoids
+        # covering data points in the crowded low-error band where most points sit.
+        handles = [
+            Line2D([0], [0], color=temperature_colors[temp], marker='s', linestyle='None',
+                   markersize=8, label=f'{round(temp)} K')
+            for temp in temperatures_k
+        ]
+        fig.legend(handles=handles, loc='center left', bbox_to_anchor=(1.0, 0.5),
+                   ncol=1, title='Temperature', frameon=False)
+
         fig.tight_layout()
-        fig.savefig(PLOTS_DIR / f'sciantix_vs_oc_csv_potential_error_combined_q_{q_tag(q_value)}.png')
+        fig.savefig(PLOTS_DIR / f'sciantix_vs_oc_csv_potential_error_combined_q_{q_tag(q_value)}.png',
+                    bbox_inches='tight')
         plt.close(fig)
 
 
