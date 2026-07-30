@@ -47,6 +47,7 @@ GROUPS = [("freshfuel", "Fresh fuel", "o"), ("burnup", "Irradiated fuel", "^")]
 ROUTES = [("Kato", "figures_Kato", "Kato correlation"), ("OC", "figures_OC", "OpenCalphad + U-Pu-O database from TAF-ID")]
 OUT_DIR = SCRIPT_DIR / "figures_combined"
 MARKER_SIZE = 55
+NEA_UNCERTAINTY_KJ_MOL = 50.0  # NEA/NSC/R(2024)1 Sec. 8.4, recommended uncertainty on oxygen potential
 
 
 def read_points(path: Path) -> list[dict[str, float | str]]:
@@ -76,6 +77,12 @@ def plot_route(route_label: str, subdir: str, title: str) -> None:
                        markersize=12, label=group_label)
         )
 
+    band_x = np.array(limits)
+    ax.fill_between(
+        band_x, band_x - NEA_UNCERTAINTY_KJ_MOL, band_x + NEA_UNCERTAINTY_KJ_MOL,
+        color="0.6", alpha=0.25, zorder=0,
+        label=f"$\\pm${NEA_UNCERTAINTY_KJ_MOL:.0f} kJ/mol (NEA)",
+    )
     ax.plot(limits, limits, color="0.25", linewidth=1.4, label="1:1")
     ax.set_xlim(limits)
     ax.set_ylim(limits)
@@ -84,6 +91,8 @@ def plot_route(route_label: str, subdir: str, title: str) -> None:
     ax.set_ylabel("Calculated oxygen potential (kJ/mol)")
     ax.grid(True, linestyle=":", alpha=0.6)
     handles.append(plt.Line2D([0], [0], color="0.25", linewidth=1.4, label="1:1"))
+    handles.append(plt.Rectangle((0, 0), 1, 1, facecolor="0.6", alpha=0.25,
+                                  label=f"$\\pm${NEA_UNCERTAINTY_KJ_MOL:.0f} kJ/mol (NEA)"))
     ax.legend(handles=handles, loc="upper left")
     colorbar = fig.colorbar(scatter, ax=ax)
     colorbar.set_label("Temperature (K)")

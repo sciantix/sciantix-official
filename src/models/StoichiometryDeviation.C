@@ -397,18 +397,24 @@ void Simulation::StoichiometryDeviation()
 
             // Prescribed O/M is converted to stoichiometry deviation as x = O/M - 2.
 
-            double prescribed_om_final   = history_variable["O/M ratio"].getFinalValue();
-            double prescribed_om_initial = history_variable["O/M ratio"].getInitialValue();
-            if (prescribed_om_final > max_prescribed_om_ratio)
-                prescribed_om_final = max_prescribed_om_ratio;
-            if (prescribed_om_initial > max_prescribed_om_ratio)
-                prescribed_om_initial = max_prescribed_om_ratio;
+            double       prescribed_om_final   = history_variable["O/M ratio"].getFinalValue();
+            double       prescribed_om_initial = history_variable["O/M ratio"].getInitialValue();
+            const double q_prescribed          = sciantix_variable["q"].getFinalValue();
+            double      om = 2 + sciantix_variable["Stoichiometry deviation"].getFinalValue();
+
+            if (om < 2.0)
+            {
+                if (prescribed_om_final > max_prescribed_om_ratio)
+                    prescribed_om_final = max_prescribed_om_ratio;
+                if (prescribed_om_initial > max_prescribed_om_ratio)
+                    prescribed_om_initial = max_prescribed_om_ratio;
+            }
 
             parameter.push_back(prescribed_om_final - 2.0);
             parameter.push_back(prescribed_om_initial - 2.0);
 
             // constant q
-            parameter.push_back(1.0 - sciantix_variable["q"].getFinalValue());
+            parameter.push_back(1.0 - q_prescribed);
 
             model_.setParameter(parameter);
             model_.setRef(reference);
