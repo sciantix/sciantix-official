@@ -400,7 +400,7 @@ void Simulation::StoichiometryDeviation()
             double       prescribed_om_final   = history_variable["O/M ratio"].getFinalValue();
             double       prescribed_om_initial = history_variable["O/M ratio"].getInitialValue();
             const double q_prescribed          = sciantix_variable["q"].getFinalValue();
-            double      om = 2 + sciantix_variable["Stoichiometry deviation"].getFinalValue();
+            double       om                    = 2 + sciantix_variable["Stoichiometry deviation"].getFinalValue();
 
             if (om < 2.0)
             {
