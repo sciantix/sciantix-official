@@ -439,11 +439,14 @@ class Simulation
         else if (name == "Xe133")
             return &modes_initial_conditions[9 * n_modes];
 
+#if !defined(COUPLING_TU)
+        // Standalone-SCIANTIX only
         else if (name == "Kr85m")
             return &modes_initial_conditions[12 * n_modes];
 
         else if (name == "Xe in HBS")
             return &modes_initial_conditions[15 * n_modes];
+#endif
 
         else
             ErrorMessages::Fatal("Simulation.h", "invalid name \"" + name + "\" in getDiffusionModes");
@@ -469,11 +472,13 @@ class Simulation
         else if (name == "Xe133")
             return &modes_initial_conditions[10 * n_modes];
 
+#if !defined(COUPLING_TU)
         else if (name == "Kr85m")
             return &modes_initial_conditions[13 * n_modes];
 
         else if (name == "Xe in HBS")
             return &modes_initial_conditions[16 * n_modes];
+#endif
 
         else
             ErrorMessages::Fatal("Simulation.h", "invalid name \"" + name + "\" in getDiffusionModesSolution");
@@ -499,8 +504,10 @@ class Simulation
         else if (name == "Xe133")
             return &modes_initial_conditions[11 * n_modes];
 
+#if !defined(COUPLING_TU)
         else if (name == "Kr85m")
             return &modes_initial_conditions[14 * n_modes];
+#endif
 
         else
             ErrorMessages::Fatal("Simulation.h", "invalid name \"" + name + "\" in getDiffusionModesBubbles");
