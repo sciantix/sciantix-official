@@ -1311,13 +1311,6 @@ namespace OCUtilsCoupling
                     double atoms_available = sciantix_variable[element_name + " produced"].getFinalValue() -
                                              sciantix_variable[element_name + " released"].getInitialValue();
 
-#if defined(COUPLING_TU)
-                    if (element_name == "Cs" && sciantix_variable.isElementPresent("Cs in the gap"))
-                    {
-                        atoms_available += sciantix_variable["Cs in the gap"].getInitialValue();
-                    }
-#endif
-
                     component.content = std::max(0.0, atoms_available / avogadro_number);
                 }
                 else if (system.getRestructuredMatrix() == 0 && (system.isMetallicFP() || system.isCeramicFP()))

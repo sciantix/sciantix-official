@@ -29,9 +29,13 @@ void Simulation::IntragranularDiffusion()
             defineSpectralDiffusion2Equations(sciantix_system, model, n_modes);
             break;
 
+#if !defined(COUPLING_TU)
+        // iDiffusionSolver = 3 (3-equation Xe-in-UO2-with-HBS) needs the
+        // "Xe in HBS" diffusion-mode block, which TRANSURANUS does not track yet.
         case 3:
             defineSpectralDiffusion3Equations(sciantix_system, model, sciantix_variable, physics_variable, n_modes);
             break;
+#endif
 
         default:
             errorHandling(input_variable);
@@ -132,6 +136,7 @@ void Simulation::IntragranularDiffusion()
         }
     }
 
+#if !defined(COUPLING_TU)
     if (int(input_variable["iDiffusionSolver"].getValue()) == 3)
     {
         double initial_value_solution(0.0), initial_value_bubbles(0.0), initial_value_hbs(0.0);
@@ -159,6 +164,7 @@ void Simulation::IntragranularDiffusion()
              sciantix_variable["Xe in grain HBS"].getFinalValue()) *
             pow(matrices[0].getLatticeParameter(), 3) / 4);
     }
+#endif
 
     // Calculation of the fission product concentration at grain boundary, by mass balance
     for (auto& system : sciantix_system)

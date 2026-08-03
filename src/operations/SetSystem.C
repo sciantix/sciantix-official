@@ -32,15 +32,21 @@ void Simulation::setSystem()
                 He_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(
                 Xe133_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+#if !defined(COUPLING_TU)
+            // Kr85m diffusion modes (blocks 12-14) are not tracked by TRANSURANUS.
             sciantix_system.push(
                 Kr85m_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+#endif
             break;
 
         case 1:
             sciantix_system.push(
                 Xe_in_UO2(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+#if !defined(COUPLING_TU)
+            // Xe-in-HBS diffusion modes (blocks 15-17) are not tracked by TRANSURANUS.
             sciantix_system.push(
                 Xe_in_UO2HBS(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+#endif
             break;
 
         case 2:
@@ -52,8 +58,11 @@ void Simulation::setSystem()
                 He_in_MOX(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
             sciantix_system.push(
                 Xe133_in_MOX(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+#if !defined(COUPLING_TU)
+            // Kr85m diffusion modes (blocks 12-14) are not tracked by TRANSURANUS.
             sciantix_system.push(
                 Kr85m_in_MOX(matrices, gas_fp, input_variable, sciantix_variable, history_variable, scaling_factors));
+#endif
 
             if ((int)input_variable["iThermochimica"].getValue() == 0)
                 break;
