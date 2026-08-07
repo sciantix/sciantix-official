@@ -52,19 +52,17 @@ OMEGA_5MP = 1.06651e-29
 
 
 # range sensati per i coefficienti
-SF_K_INTRA_VALUES = np.array([1.0])
-SF_K_GB_VALUES    = np.array([1.0])
-SF_K_NUCL_VALUES  = np.array([1.0])
-SF_K_RES_VALUES   = np.array([1.0])
-
-# dG in eV, sensitivity: es. [1.5, 2.0, 2.5, 3.0]
-DG_NUCLEATION_VALUES = np.array([2.9])
-
+SF_K_INTRA_VALUES = np.array([0.01, 0.1, 1.0, 10.0, 100.0])
+SF_K_GB_VALUES    = np.array([0.01, 0.1, 1.0, 10.0, 100.0])
+SF_K_NUCL_VALUES  = np.array([0.01, 0.1, 1.0, 10.0, 100.0])
+SF_K_RES_VALUES = np.array([1.0])
+SF_DG_NUCLEATION_VALUES = np.array([0.1, 1.0, 10.0])
 
 # Pesi nella funzione errore
 WEIGHT_INTRA_FRACTION = 1.0
 WEIGHT_INTRA_RADIUS = 1.0
 WEIGHT_INTER_FRACTION = 1.0
+WEIGHT_INTER_RADIUS = 1.0
 
 # Colonne sperimentali
 EXP_COL_INCLUSIONS = "Inclusions"
@@ -77,6 +75,8 @@ COL_CM_PREC_INTRA = "Cm precipitated intragranular (at/m3)"
 COL_CM_PREC_GB = "Cm precipitated grain boundary (at/m3)"
 COL_INTRA_5MP_CONC = "Intragranular 5MPs concentration (5MP/m3)"
 COL_ATOMS_PER_5MP = "Intragranular atom per 5MP (at/5MP)"
+COL_INTER_5MP_CONC = "Intergranular 5MPs concentration (5MP/m3)"
+COL_INTER_ATOMS_PER_5MP = "Intergranular atom per 5MP (at/5MP)"
 
 
 # EXPERIMENTAL CONDITIONS
@@ -230,6 +230,7 @@ def prepare_run_folder(condition, params):
     "{{SF_K_GB}}": f"{params['sf_k_GB']:.12e}",
     "{{SF_K_NUCL}}": f"{params['sf_k_nucl']:.12e}",
     "{{SF_K_RES}}": f"{params['sf_k_res']:.12e}",
+    "{{SF_DG_NUCLEATION}}": f"{params['sf_dG_nucleation']:.12e}",
     }
     
 
@@ -297,48 +298,48 @@ def read_sciantix_output(run_dir, burnup_exp):
 
     N_intra = float(df.loc[idx, COL_INTRA_5MP_CONC])
     atoms_per_5MP = float(df.loc[idx, COL_ATOMS_PER_5MP])
+    N_inter = float(df.loc[idx, COL_INTER_5MP_CONC])
+    atoms_per_5MP_inter = float(df.loc[idx, COL_INTER_ATOMS_PER_5MP])
 
-    # Experimental Inclusions is an area fraction.
-    # Model comparison should therefore use the precipitate volume fraction.
+    # Experimental Inclusions is area fraction.
+    # Model comparison uses precipitated volume fraction.
     # Stereological approximation: area fraction ≈ volume fraction.
-    #
-    # For the intragranular fraction, use the particle population:
-    #
-    #   f_intra = N_5MP * atoms_per_5MP * Omega_5MP
-    #
-    # This is equivalent to:
-    #
-    #   f_intra = N_5MP * (4/3) * pi * R_5MP^3
-    #
-    # if R_5MP is computed consistently from atoms_per_5MP.
-    # This avoids using only Cm_prec_intra, which may be nearly identical
-    # among radial positions if the same fission rate is imposed.
-    if N_intra > 0.0 and atoms_per_5MP > 0.0:
-        f_intra_model = N_intra * atoms_per_5MP * OMEGA_5MP
+    f_intra_model = Cm_prec_intra * OMEGA_5MP
+    f_GB_model = Cm_prec_GB * OMEGA_5MP
 
+    # Intragranular mean radius from atoms per 5MP.
+    if atoms_per_5MP > 0.0:
         R_intra_model = (
             (3.0 * atoms_per_5MP * OMEGA_5MP)
             / (4.0 * math.pi)
         ) ** (1.0 / 3.0)
 
-    # Fallback: reconstruct the same quantities from precipitated concentration
-    # if particle-population outputs are not available.
+    # Fallback: same radius reconstructed from precipitated concentration and number density.
     elif N_intra > 0.0 and Cm_prec_intra > 0.0:
-        f_intra_model = Cm_prec_intra * OMEGA_5MP
-
         R_intra_model = (
             (3.0 * Cm_prec_intra * OMEGA_5MP)
             / (4.0 * math.pi * N_intra)
         ) ** (1.0 / 3.0)
 
     else:
-        f_intra_model = 0.0
         R_intra_model = 0.0
 
-    # For the grain-boundary/intergranular contribution, no particle number
-    # density is available in the current output, so the volume fraction is
-    # still reconstructed from the precipitated metallic concentration.
-    f_GB_model = Cm_prec_GB * OMEGA_5MP
+    # Intergranular mean radius from atoms per 5MP.
+    if atoms_per_5MP_inter > 0.0:
+        R_inter_model = (
+            (3.0 * atoms_per_5MP_inter * OMEGA_5MP)
+            / (4.0 * math.pi)
+        ) ** (1.0 / 3.0)
+
+    # Fallback: same radius reconstructed from precipitated concentration and number density.
+    elif N_inter > 0.0 and Cm_prec_GB > 0.0:
+        R_inter_model = (
+            (3.0 * Cm_prec_GB * OMEGA_5MP)
+            / (4.0 * math.pi * N_inter)
+        ) ** (1.0 / 3.0)
+
+    else:
+        R_inter_model = 0.0
 
     selected_burnup = None
     if BURNUP_COLUMN is not None:
@@ -349,50 +350,58 @@ def read_sciantix_output(run_dir, burnup_exp):
         "f_intra": f_intra_model,
         "R_intra": R_intra_model,
         "f_GB": f_GB_model,
-        "f_intra_Cm_based": Cm_prec_intra * OMEGA_5MP,
+        "R_inter": R_inter_model,
         "Cm_prec_intra": Cm_prec_intra,
         "Cm_prec_GB": Cm_prec_GB,
         "N_intra": N_intra,
         "atoms_per_5MP": atoms_per_5MP,
+        "N_inter": N_inter,
+        "atoms_per_5MP_inter": atoms_per_5MP_inter,
     }
 
 
 # ERROR FUNCTION
-def relative_error_squared(model_value, exp_value):
+def relative_error(model_value, exp_value):
     if exp_value is None or exp_value <= 0.0:
         return 0.0
 
-    return ((model_value - exp_value) / exp_value) ** 2
+    return abs(model_value - exp_value) / exp_value
 
 
 def compute_condition_error(model, exp_intra, exp_inter):
-    err_intra_fraction = relative_error_squared(
+    err_intra_fraction = relative_error(
         model["f_intra"],
         exp_intra["inclusions"]
     )
 
-    err_intra_radius = relative_error_squared(
+    err_intra_radius = relative_error(
         model["R_intra"],
         exp_intra["radius"]
     )
 
-    err_inter_fraction = relative_error_squared(
+    err_inter_fraction = relative_error(
         model["f_GB"],
         exp_inter["inclusions"]
     )
 
-    total = (
-        WEIGHT_INTRA_FRACTION * err_intra_fraction
-        + WEIGHT_INTRA_RADIUS * err_intra_radius
-        + WEIGHT_INTER_FRACTION * err_inter_fraction
+    err_inter_radius = relative_error(
+        model["R_inter"],
+        exp_inter["radius"]
     )
 
-    return total, {
+    condition_error = (
+        err_intra_fraction
+        + err_intra_radius
+        + err_inter_fraction
+        + err_inter_radius
+    )
+
+    return condition_error, {
         "err_intra_fraction": err_intra_fraction,
         "err_intra_radius": err_intra_radius,
         "err_inter_fraction": err_inter_fraction,
+        "err_inter_radius": err_inter_radius,
     }
-
 
 # PARAMETER EVALUATION
 def evaluate_parameter_set(params, sci_exe):
@@ -431,17 +440,25 @@ def evaluate_parameter_set(params, sci_exe):
             "exp_inter_inclusions": exp_inter["inclusions"],
             "model_GB_fraction": model["f_GB"],
 
+            "exp_inter_radius_m": exp_inter["radius"],
+            "model_inter_radius_m": model["R_inter"],
+
             "err_intra_fraction": error_terms["err_intra_fraction"],
             "err_intra_radius": error_terms["err_intra_radius"],
             "err_inter_fraction": error_terms["err_inter_fraction"],
+            "err_inter_radius": error_terms["err_inter_radius"],
             "condition_error": condition_error,
 
             "Cm_prec_intra": model["Cm_prec_intra"],
             "Cm_prec_GB": model["Cm_prec_GB"],
             "N_intra": model["N_intra"],
             "atoms_per_5MP": model["atoms_per_5MP"],
-            "model_intra_fraction_Cm_based_check": model["f_intra_Cm_based"],
+            "N_inter": model["N_inter"],
+            "atoms_per_5MP_inter": model["atoms_per_5MP_inter"],
         })
+
+    number_of_error_terms = len(conditions) * 4  #4 posizioni × 4 osservabili = 16
+    total_error /= number_of_error_terms
 
     return total_error, comparison_rows
 
@@ -465,20 +482,18 @@ def main():
 
     run_counter = 0
 
-    for dG in DG_NUCLEATION_VALUES:
-        print(f"===== Sensitivity value: dG_nucleation = {dG:.6e} =====")
-
-        for sf_k_intra in SF_K_INTRA_VALUES:
-            for sf_k_GB in SF_K_GB_VALUES:
-                for sf_k_nucl in SF_K_NUCL_VALUES:
-                    for sf_k_res in SF_K_RES_VALUES:
+    for sf_k_intra in SF_K_INTRA_VALUES:
+        for sf_k_GB in SF_K_GB_VALUES:
+            for sf_k_nucl in SF_K_NUCL_VALUES:
+                for sf_k_res in SF_K_RES_VALUES:
+                    for sf_dG_nucleation in SF_DG_NUCLEATION_VALUES:
 
                         params = {
-                                    "sf_k_intra": float(sf_k_intra),
-                                    "sf_k_GB": float(sf_k_GB),
-                                    "sf_k_nucl": float(sf_k_nucl),
-                                    "sf_k_res":float(sf_k_res),
-                                    "dG_nucleation": float(dG),
+                            "sf_k_intra": float(sf_k_intra),
+                            "sf_k_GB": float(sf_k_GB),
+                            "sf_k_nucl": float(sf_k_nucl),
+                            "sf_k_res": float(sf_k_res),
+                            "sf_dG_nucleation": float(sf_dG_nucleation),
                         }
 
                         run_counter += 1
@@ -496,7 +511,7 @@ def main():
                                 f"sf_k_GB={sf_k_GB:.3e}  "
                                 f"sf_k_nucl={sf_k_nucl:.3e}  "
                                 f"sf_k_res={sf_k_res:.3e}  "
-                                f"dG={dG:.3e} -> {e}"
+                                f"sf_dG={sf_dG_nucleation:.3e}  "
                             )
                             continue
 
@@ -505,7 +520,7 @@ def main():
                             "sf_k_GB": sf_k_GB,
                             "sf_k_nucl": sf_k_nucl,
                             "sf_k_res": sf_k_res,
-                            "dG_nucleation": dG,
+                            "sf_dG_nucleation": sf_dG_nucleation,
                             "total_error": total_error,
                         })
 
@@ -515,7 +530,7 @@ def main():
                             f"sf_k_GB={sf_k_GB:.3e}  "
                             f"sf_k_nucl={sf_k_nucl:.3e}  "
                             f"sf_k_res={sf_k_res:.3e}  "
-                            f"dG={dG:.3e}  "
+                            f"sf_dG={sf_dG_nucleation:.3e}  "
                             f"error={total_error:.6e}"
                         )
 
@@ -544,7 +559,7 @@ def main():
     print(f"sf_k_GB       = {best['params']['sf_k_GB']:.12e}")
     print(f"sf_k_nucl     = {best['params']['sf_k_nucl']:.12e}")
     print(f"sf_k_res      = {best['params']['sf_k_res']:.12e}")
-    print(f"dG_nucleation = {best['params']['dG_nucleation']:.12e}")
+    print(f"sf_dG_nucleation = {best['params']['sf_dG_nucleation']:.12e}")
     print(f"total_error   = {best['error']:.12e}")
     print()
 

@@ -1,4 +1,4 @@
-# Modello Cm / 5MP (Metallic Fission Products) — Equazioni e domande per Vittoria
+# Modello Cm / 5MP (Metallic Fission Products)
 
 File di riferimento: `src/models/MetallicFissionProducts.C`
 Flag di attivazione: `iCm` (in `input_settings.txt`)
@@ -9,27 +9,34 @@ Il modello segue il seguente percorso per i prodotti di fissione metallici (5MP)
 
 ```
 produzione (fissione)
-        │
-        ▼
-   Cm (totale, monotono crescente)          [riga 55-60]
-        │
-        ▼
-   Cm_matrix (frazione libera in matrice) ──┬──► Cm_precipitated_intragranular
-        │  ▲                                │         │
-        │  │ k_res (rientro in soluzione)   │         ▼  (n atomi/particella)
-        │  └────────────────────────────────┘   Intragranular atom per 5MP (n)
-        └──────────────────────────────────► Cm_precipitated_grain_boundary
+          │
+          ▼
+   Cm (totale, monotono crescente)
+          |                                                                   
+          └────────────────────────────┬──► Cm_matrix (frazione libera in matrice)
+           ▲                           |                                                              
+           |                           └────► Cm_precipitated_intragranular  --> Intragranular atom per 5MP (n)
+           |                           |                                     --> Intragranular 5MPs concentration (N)
+           |                           └────► Cm_precipitated_grain_boundary --> Intergranular atom per 5MP (n_gb)
+           |                           |                                     --> Intragranular 5MPs concentration (N_gb)
+           |                           |                              
+           ▲                           │         
+           │                           |
+           └───────────────────────────┘   
+            k_res (rientro in soluzione)
 
-   Intragranular 5MPs concentration (N)
+   
 ```
 
-Variabili di stato in at/m³
-- `Cm` — produzione cumulata totale
-- `Cm matrix` — concentrazione libera in soluzione nella matrice
-- `Cm precipitated intragranular` — precipitato dentro i grani
-- `Cm precipitated grain boundary` — precipitato ai bordi grano
-- `Intragranular 5MPs concentration` (N) — densità numerica di particelle 5MP nucleate, 1/m³
-- `Intragranular atom per 5MP` (n) — atomi medi per particella, adimensionale
+Variabili di stato 
+- `Cm` — produzione cumulata totale, at/m³
+- `Cm matrix` — concentrazione libera in soluzione nella matrice, at/m³
+- `Cm precipitated intragranular` — precipitato dentro i grani, at/m³
+- `Cm precipitated grain boundary` — precipitato ai bordi grano, at/m³
+- `Intragranular 5MPs concentration` (N) — densità numerica di particelle 5MP nucleate in un grano, 1/m³
+- `Intragranular atom per 5MP` (n) — atomi medi per particella intragranulare, adimensionale
+- `Intragranular 5MPs concentration` (N_gb) — densità numerica di particelle 5MP nucleate a bordo grano, 1/m³
+- `Intergranular atom per 5MP` (n_gb) — atomi medi per particella intergranulare, adimensionale
 
 ### 2. Equazioni
 
@@ -41,11 +48,11 @@ $$
 C_m(t+\Delta t) = C_m(t) + y \, F \, \Delta t
 $$
 
-- $y = 0.6$ — fission yield efficace per una "5MP".
+- $y = 0.2$ — fission yield efficace per una "5MP".
 - $F$ = `history_variable["Fission rate"]` (fiss/m³/s).
 - $\Delta t$ = `physics_variable["Time step"]`.
 
-#### 2.2 Sistema Cm_matrix / precipitati — Eulero implicito 3×3  (righe 109-140)
+#### 2.2 Sistema Cm_matrix / precipitati — Eulero implicito 3×3
 
 $$
 \begin{aligned}
@@ -73,57 +80,106 @@ risolto da `solver.Laplace3x3(A_matrix, b_matrix)`.
 Coefficienti:
 
 $$
-k_{intra} = \underbrace{0.241313858 \times 1.100694 \times 10^{-1} \times 9.261187\times10^{-1} \times 1.047129}_{\text{= } 2.5758\times10^{-2}\ \text{s}^{-1}} \times sf_{intra}
+k_{intra} = \underbrace{1}_{\text{s}^{-1}} \times sf_{intra}
 $$
 
 $$
-k_{gb} = \underbrace{0.944860042 \times 4.641589\times10^{-2} \times 8.413951\times10^{-1} \times 9.120108\times10^{-1}}_{\text{= } 3.3654\times10^{-2}\ \text{s}^{-1}} \times sf_{gb}
+k_{gb} = \underbrace{1}_{\text{s}^{-1}} \times sf_{gb}
 $$
 
 $$
-k_{res} = \underbrace{6.799\times10^{-19}}_{k_{res,ref}} \cdot \frac{F}{\underbrace{1.48\times10^{19}}_{F_{ref}}} \times sf_{res}
+k_{res} = \underbrace{6.799\times10^{-19}}_{k_{res,ref;\text{s}^{-1}}} \cdot \frac{F}{\underbrace{1.48\times10^{19}}_{F_{ref}}} \times sf_{res}
 $$
 
-#### 2.3 Nucleazione eterogenea — `Intragranular 5MPs concentration` (N)
 
-Siti di nucleazione (dislocazioni + bolle intragranulari), densità pesata:
 
-$$
-S_{siti} = \rho_{disl} + S_{bub}, \qquad S_{bub} = 4\pi \, n_{bub}\, r_{bub} \ \ (\text{m}^{-2})
-$$
+#### 2.3 Nucleazione eterogenea 
+##### `Intragranular 5MPs concentration` (N_intra)
 
-con densità di dislocazioni a gradino in funzione della temperatura.
-
-Siti già "occupati" dalle particelle 5MP esistenti (raggio $R_{5M}$ dal volume atomico efficace $V_{eff,5M}$ e da $n$ al passo precedente):
+equazione
 
 $$
-R_{5M} = \left(\frac{3}{4\pi} V_{eff,5M}\, n^{\,i}\right)^{1/3},
-\qquad
-S_{5MP} = 4\pi R_{5M}\, N^{\,i}
+\frac{dN_{intra}}{dt} = {k_{intra}} \times {Siti     \ disponibili}
+$$
+
+dove i siti disponibili sono aggiornati ogni volta sottraendo il numero di siti già occupati da una 5MP:
+
+Siti disponibili per nuova nucleazione:
+$$
+{Siti     \ disponibili} = (Siti_{tot} - N_{iniziale_{intra}})
+$$
+
+- Siti di nucleazione (dislocazioni + bolle intragranulari), densità pesata con coefficienti ricavati da Imagej tramite analisi immagini sperimentali (sovrapposizione maschere Mo e Xe):
+
+     $$
+     Siti_{tot} = \rho_{disl}\times f_{disl} + \rho_{bubble_{intra}}\times f_{bubble_{intra}}, \ \ (\text{m}^{-3})
+     $$
+     $$
+     (f_{disl}=0.67,\ f_{bub}=0.33)
+     $$
+
+     - densità di dislocazioni descritta da funzione continua in funzione di burnup e temperatura
+       (*Modelling dislocation density evolution of UO2 under irradiation*, A. Djonovic) in \text{m}^{-2}, resa poi una densità effettiva dividendo per una lunghezza caratteristica \text lambda, \text {m}, (quante 5MPs possono nucleare lungo una dislocazione)
+
+       $$ 
+       \lambda = \text 15 \times {10}^{-9} 
+       $$ 
+       
+       la lunghezza caratteristica è assunta 2 volte il raggio della 5MP più grande (ottenuto dalle osservazione sperimentali). \
+       Il limite è l'impenetrabilità tra 2 5MPs
+     - bubble density calcolata da sciantix
+
+- Siti già "occupati" dalle particelle 5MP esistenti (numero 5MPs al passo precedente, indicato con n):
+
+     $$
+     N_{iniziale_{intra}} = N_{intra}^{n}
+     $$
+
+
+Il coefficiente di nucleazione ha forma Arrhenius
+
+$$
+k_{nucl} = \underbrace{1}_{\text{s}^{-1}} \times sf_{nucl}
 $$
 
 $$
-\text{disponibili} = \max\!\big(S_{siti} - S_{5MP},\ 0\big)
-$$
-
-Tasso di nucleazione e aggiornamento implicito di $N$:
-
-$$
-k_{nucl} = \underbrace{3.995668\times10^{18} \times 7.498942\times10^{-2} \times 7.498942\times10^{-1} \times 1.819783\times10^{-1}}_{\text{= } 4.0889\times10^{16}\ \text{atm/(m s)}} \times sf_{nucl}
+\Delta G_{nucl} = \underbrace{1}_{\text{eV}} \times sf_{\Delta G}
 $$
 
 $$
-\Delta G_{nucl} = \underbrace{2.9 \times 0.95}_{\text{= } 2.755\ \text{eV}} \times sf_{\Delta G}
+k_{nucleazione} = k_{nucl}\,\Delta t \, \exp\!\left(-\frac{\Delta G_{nucl}}{k_B T}\right)
 $$
 
-$$
-k' = k_{nucl}\,\Delta t \, \exp\!\left(-\frac{\Delta G_{nucl}}{k_B T}\right)
-$$
+Aggiornamento implicito di ${N_{intra}}$
 
 $$
-N^{n+1} = \frac{k'\,\big(f_{disl}\,\rho_{disl} + f_{bub}\,S_{bub}\big)\cdot\text{disponibili} \;+\; N^{n}}{1 + k'}
-\qquad (f_{disl}=0.67,\ f_{bub}=0.33)
+N_{intra}^{n+1} = \frac{k_{nucleazione} \times {Siti_{tot}} \times dt \;+\; N_{intra}^{n}}{1 + k_{nucleazione}\times dt}
 $$
+
+risolto da `solver.Decay`.
+
+##### `Intergranular 5MPs concentration` (N_inter)
+
+Stessa logica. Cambiano i isti disponibili
+- Siti di nucleazione (bolle intergranulari, da sciantix):
+
+     $$
+     Siti_{tot} = \rho_{bubble_{inter}}, \ \ (\text{m}^{-3})
+     $$
+
+- Siti già occupati
+
+     $$
+     N_{iniziale_{inter}}=N_{inter}^{n}
+     $$
+
+Aggiornamento implicito di ${N_{inter}}$
+
+$$
+N_{inter}^{n+1} = \frac{k_{nucleazione} \times {Siti_{tot}} \times dt \;+\; N_{inter}^{n}}{1 + k_{nucleazione}\times dt}
+$$
+
+risolto da `solver.Decay`.
 
 #### 2.4 Numero medio di atomi per particella — `Intragranular atom per 5MP` (n)
 
@@ -141,73 +197,45 @@ $$
 | 12 | MFP resolution rate | `sf_mfp_resolution_rate` | $k_{res}$ | 1.0 |
 | 13 | MFP nucleation energy barrier | `sf_mfp_nucleation_energy_barrier` | $\Delta G_{nucl}$ | 1.0 |
 
----
-### 4. Domande per Vittoria
 
-#### D1. Riferimenti bibliografici mancanti
-- $y = 0.6$
-- $V_{eff,5M} = 1.44123\times10^{-29}\ \text{m}^3$
+#### 4. Vincoli fisici
 
-#### D2. Fattori di calibrazione concatenati
-In $k_{intra}$, $k_{gb}$, $k_{nucl}$ e $\Delta G_{nucl}$ compaiono più fattori moltiplicativi in fila senza commento. Cosa rappresenta ciascun fattore? Sarebbe utile un commento (o un unico coefficiente consolidato, con riferimento al file di risultati corrispondente in `regression/test_py_k5MP_calibration/results/`) per poter tracciare e riprodurre la calibrazione in futuro.
+Sia per 5MPs intragranulari che per 5MPs a bordo grano:
 
-#### D3. Densità di dislocazioni a gradini
-$\rho_{disl}(T)$ è stata inserita come funzione a gradini. Nella referenza citata (*Modelling dislocation density evolution of UO2 under irradiation*, A. Djonovic) la dipendenza è una curva continua. Possiamo fornirti una funzione più continua e anche dipendente dal fission rate, se utile.
-
-#### D4. Aggiornamento di N — denominatore e densità di siti — instabile
-Nell'aggiornamento implicito di $N$:
-
-$$
-N^{n+1} = \frac{k'\,(f_{disl}\rho_{disl}+f_{bub}S_{bub})\cdot\text{disponibili} + N^{n}}{1+k'}
-$$
-
-- Il denominatore $(1+k')$ agisce come un termine di perdita per $N$, ma l'equazione dichiarata è solo $dN/dt = \text{tasso di nucleazione}$, senza meccanismo di perdita per $N$. È voluto? Corretto piu avanti.
-- Nella stessa equazione, $S_{siti}$ compare due volte: non pesata dentro "disponibili" e   pesata ($f_{disl}$, $f_{bub}$) come prefattore del tasso. Forse era stato inserito per stabilizzare la soluzione (se i siti disponibili calano, cala anche il tasso di nucleazione, ricordo un nostro discorso a riguardo) ma vale la pena confermarlo.
-
-**Oscillazioni** (`regression/test_Cm/output.txt`): $N$ e $n$ oscillano per tutta la durata della simulazione. Bisogna risolverlo prima di continuare la calibrazione. 
-
-Due vincoli fisici mancanti nella formulazione:
 1. **N non dovrebbe mai scendere** — cresce per nucleazione, e può scendere solo se un'intera particella si ridissolve (meccanismo non modellato).
 2. **n non ha senso sotto 2 atomi/particella**.
 
-Riscritta la fine di `MetallicFissionProducts.C` (dopo la soluzione del sistema 3×3, così il
-cap può usare `Cm_precipitated_intragranular` appena calcolato):
-
 ```cpp
-const double n_min = 2.0;
-double N_candidate = N_iniziale +
-    k_nucleazione * (f_dislocation*dislocation_density + f_bubbles*bubble_sink_strenght) * disponibili;
-double N_cap   = b_matrix[1] / n_min;                       // Cm_precipitated_intragranular / n_min
-double N_final = std::max(std::min(N_candidate, N_cap), N_iniziale);  // mai sotto N_iniziale
-sciantix_variable["Intragranular 5MPs concentration"].setFinalValue(N_final);
+ const double n_min       = 2.0;
+    double       N_candidate_intra = solver.Decay(
+                                        N_iniziale_intra,
+                                        k_nucleazione,
+                                        k_nucleazione* (f_dislocation * dislocation_sites + f_bubbles * bubble_sites_intra),
+                                        physics_variable["Time step"].getFinalValue()
+    );
 
-double n_media = (N_final > 0.0) ? (b_matrix[1] / N_final) : 0.0;
-sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_media);
+    double       N_candidate_inter = solver.Decay(
+                                        N_iniziale_inter,
+                                        k_nucleazione,
+                                        k_nucleazione*bubble_sites_inter,
+                                        physics_variable["Time step"].getFinalValue()
+    );
+
+    double N_cap_intra   = b_matrix[1] / n_min;  // minimo numero di atomi per 5MP
+    double N_final_intra = std::max(std::min(N_candidate_intra, N_cap_intra), N_iniziale_intra);
+    sciantix_variable["Intragranular 5MPs concentration"].setFinalValue(N_final_intra);
+
+    double N_cap_inter   = b_matrix[2] / n_min;  // minimo numero di atomi per 5MP
+    double N_final_inter = std::max(std::min(N_candidate_inter, N_cap_inter), N_iniziale_inter);
+    sciantix_variable["Intergranular 5MPs concentration"].setFinalValue(N_final_inter);
+
+    double n_media_intra = (N_final_intra > 0.0) ? (b_matrix[1] / N_final_intra) : 0.0;
+    sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_media_intra);
+    double n_media_inter = (N_final_inter > 0.0) ? (b_matrix[2] / N_final_inter) : 0.0;
+    sciantix_variable["Intergranular atom per 5MP"].setFinalValue(n_media_inter);
+
 ```
 
-N cresce solo per accumulo ed è comunque vincolata dal basso da `N_iniziale` (mai decrescente) e dall'alto da `Cm_precipitated_intragranular / n_min` (mai un numero medio di atomi/particella sotto 2). Il vecchio limite "siti disponibili" resta nel calcolo di `N_candidate` (quanto *vorrebbe* crescere N), ma il vero tetto ora è fisico e dimensionalmente coerente (entrambi in 5MP/m³).
+N cresce solo per accumulo ed è comunque vincolata dal basso da `N_iniziale` (mai decrescente) e dall'alto da `Cm_precipitated_intragranular / n_min` (mai un numero medio di atomi/particella sotto 2). 
 
-Risultato di questo cambiamento: nuclea una popolazione nei primi momenti, poi la nucleazione si ferma del tutto (i siti si saturano) e tutta la produzione successiva fa crescere le particelle esistenti, non ne nuclea di nuove. Probabilmente riflette $k_{nucl}$ troppo grande: con $k_{nucl}$ calibrato più basso, ci si aspetterebbe una nucleazione più graduale nel tempo invece che quasi istantanea. 
-
-#### D6. `S_siti` mischia due grandezze fisiche diverse — proposta
-
-$S_{siti} = \rho_{disl} + S_{bub}$, con $S_{bub} = 4\pi\,n_{bub}\,r_{bub}$ (§2.3), non è
-dimensionalmente/concettualmente corretto:
-
-- $\rho_{disl}$ (m⁻²) è una densità di **lunghezza di linea** di dislocazione per volume.
-- $S_{bub} = 4\pi R N$ è invece la **sink strength** della teoria del trapping per diffusione (F.S. Ham, 1958: `g = 4π·D_s·(R_b+r_reticolo)·N_b`). Nel
-  modello Cm manca proprio `D_s`, quello che resta è solo il pezzo geometrico. Ma anche aggiungendo `D_s`, resterebbe concettualmente sbagliato, non descrive quanti siti di nucleazione offrono le bolle".
-
-Proposta: portare entrambi i termini a una vera densità di siti per volume (m⁻³), così si possono sommare in modo dimensionalmente corretto:
-
-$$
-N_{siti} = f_{disl}\cdot\frac{\rho_{disl}}{\lambda} + f_{bub}\cdot n_{bub}
-$$
-
-- Per le bolle: usare direttamente `sciantix_variable["Intragranular bubble concentration"]` in bub/m³.
-- Per le dislocazioni: dividere $\rho_{disl}$ (m⁻²) per una spaziatura caratteristica $\lambda$ (m) tra siti di nucleazione favorevoli lungo la linea di dislocazione, per ottenere anche qui un vero conteggio di siti per volume (m⁻²/m = m⁻³).
-
-Nota: cambiando le unità dei due termini sommati, probabilmente anche $f_{disl}=0.67$ e $f_{bub}=0.33$ (e forse $k_{nucl}$ stesso) andranno ricalibrati? Non ancora implementato nel codice, fammi sapere cosa ne pensi.
-
-#### D7. Script di calibrazione duplicati
-`regression/test_py_k5MP_calibration/test2.py`, `test2_equal_weight_final_backup.py` e `test2_particle_fraction.py` sono tre script molto simili. Qual è la versione da mantenere? Le altre due possiamo toglierle?
+Risultato: nuclea una popolazione nei primi momenti, poi la nucleazione si ferma del tutto (i siti si saturano) e tutta la produzione successiva fa crescere le particelle esistenti, non ne nuclea di nuove. 

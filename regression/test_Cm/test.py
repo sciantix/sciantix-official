@@ -112,6 +112,28 @@ def plot_N_n() -> None:
     fig.savefig(TEST_DIR / "5MPs_N_n.png", dpi=180)
     print("Saved: 5MPs_N_n.png", flush=True)
 
+def plot_N_n() -> None:
+    time_h, N_gb = load_columns(OUTPUT_FILE, "Time (h)", "Intergranular 5MPs concentration (5MP/m3)")
+    time_h, n_gb = load_columns(OUTPUT_FILE, "Time (h)", "Intergranular atom per 5MP (at/5MP)")
+
+    fig, (ax3, ax4) = plt.subplots(1, 2, figsize=(12, 5))
+
+    ax3.plot(time_h, N_gb, color="purple", linewidth=1.5)
+    ax3.set_xlabel("Time (h)")
+    ax3.set_ylabel("N_gb (5MPs/m3)")
+    ax3.set_title("5MPs intergranular concentration")
+    ax3.grid(True, which="both", linestyle=":", linewidth=0.8)
+
+    ax4.plot(time_h, n_gb, color="orange", linewidth=1.5)
+    ax4.set_xlabel("Time (h)")
+    ax4.set_ylabel("n_gb (at/5MP)")
+    ax4.set_title("Atoms per 5MP")
+    ax4.grid(True, which="both", linestyle=":", linewidth=0.8)
+
+    fig.tight_layout()
+    fig.savefig(TEST_DIR / "5MPs_N_n_gb.png", dpi=180)
+    print("Saved: 5MPs_N_n_gb.png", flush=True)
+    
 
 def plot_consistency() -> None:
     time_h, cm_intra = load_columns(OUTPUT_FILE, "Time (h)", "Cm precipitated intragranular (at/m3)")
@@ -130,6 +152,22 @@ def plot_consistency() -> None:
     fig.savefig(TEST_DIR / "consistency_N_n.png", dpi=180)
     print("Saved: consistency_N_n.png", flush=True)
 
+def plot_consistency_gb() -> None:
+    time_h, cm_gb = load_columns(OUTPUT_FILE, "Time (h)", "Cm precipitated intergranular (at/m3)")
+    time_h, N_gb        = load_columns(OUTPUT_FILE, "Time (h)", "Intergranular 5MPs concentration (5MP/m3)")
+    time_h, n_gb        = load_columns(OUTPUT_FILE, "Time (h)", "Intergranular atom per 5MP (at/5MP)")
+
+    fig, ax = plt.subplots(figsize=(9, 6))
+    ax.plot(time_h, N_gb * n_gb,      label="N_gb · n_gb", color="blue",  linewidth=2)
+    ax.plot(time_h, cm_gb,   label="Cm prec. intragranular", color="green", linewidth=1.5, linestyle="--")
+    ax.set_xlabel("Time (h)")
+    ax.set_ylabel("Concentration_gb (at/m3)")
+    ax.set_title("Consistency check: N_gb·n_gb vs Cm precipitated intergranular")
+    ax.legend()
+    ax.grid(True, which="both", linestyle=":", linewidth=0.8)
+    fig.tight_layout()
+    fig.savefig(TEST_DIR / "consistency_N_n_gb.png", dpi=180)
+    print("Saved: consistency_N_n_gb.png", flush=True)
 
 def check_mass_conservation() -> None:
     time_h, cm       = load_columns(OUTPUT_FILE, "Time (h)", "Cm (at/m3)")

@@ -71,19 +71,27 @@ Initial composition Kr85m5 = 0
 Initial composition Kr85m6 = 0
 Initial stoichiometry deviation[0] = 0
 Chromium content = 4.94066e-324
-0	1157	4.15e+20	-0.21	
-20000	1157	4.15e+20	-0.21	
-40000	1157	4.15e+20	-0.21	
-60000	1157	4.15e+20	-0.21	
-80000	1157	4.15e+20	-0.21	
-83450	1157	4.15e+20	-0.21	
-90000	1157	4.15e+20	-0.21	
-100000	1157	4.15e+20	-0.21	
-104500	1157	4.15e+20	-0.21	
-110000	1157	4.15e+20	-0.21	
-110288	1157	4.15e+20	-0.21	
-110288	2048	1.08e+20	-14.8	
-110288	2048	1.08e+20	-14.8	
-110288	1157	4.15e+20	-0.21	
-110290	1157	4.15e+20	-0.21	
-110290	573	0	0	
+0	869	1.48e+19	0	
+6000	869	1.48e+19	0	
+6000	886	1.6e+19	0	
+12000	886	1.6e+19	0	
+12000	873	1.52e+19	0	
+18000	873	1.52e+19	0	
+18000	842	1.31e+19	0	
+24000	842	1.31e+19	0	
+24000	843	1.32e+19	0	
+30000	843	1.32e+19	0	
+sf_resolution_rate = 1
+sf_trapping_rate = 1
+sf_nucleation_rate = 1
+sf_diffusivity = 1
+sf_diffusivity2 = 1
+sf_temperature = 1
+sf_fission_rate = 1
+sf_helium_production_rate = 1
+sf_dummy = 1
+sf_mfp_nucleation_rate = 1
+sf_mfp_precipitation_rate_intragranular = 1
+sf_mfp_precipitation_rate_grain_boundary = 1
+sf_mfp_resolution_rate = 1
+sf_mfp_nucleation_energy_barrier = 1

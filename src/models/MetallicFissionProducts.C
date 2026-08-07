@@ -25,7 +25,7 @@ void Simulation::MetallicFissionProducts()
     // Fission yield dei prodotti metallici di fissione, Hp) costante
     // Da cambiare e verificare tramite fonte bibliografica
     // assumiamo yield efficace per una 5MP, non 5 metalli separati
-    const double y = 0.6;
+    const double y = 0.2;
 
     // Fission rate al passo attuale (fiss/m3/s)
     // Già letto automaticamente dal file di input ad ogni passo
@@ -34,13 +34,15 @@ void Simulation::MetallicFissionProducts()
     // Passo temporale (s)
     double dt = physics_variable["Time step"].getFinalValue();
 
+    double temperature = history_variable["Temperature"].getFinalValue();
+
     // Tassi di precipitazione (1/s) da calibrare su micrografie
     // k_intra: precipitazione dentro i grani
     // k_gb:    precipitazione ai bordi grano
 
-    const double k_intra = 0.241313858 * 1.100694171252e-01 * 9.261187281288e-01 * 1.047128548051e+00 *
+    const double k_intra = 1 *
                            scaling_factors["MFP precipitation rate intragranular"].getValue();
-    const double k_gb = 0.944860042 * 4.641588833612e-02 * 8.413951416452e-01 * 9.120108393559e-01 *
+    const double k_gb = 1 *
                         scaling_factors["MFP precipitation rate grain boundary"].getValue();
     const double k_res_ref        = 6.799e-19;  // s^-1, value used in the present calibration
     const double fission_rate_ref = 1.48e+19;   // fission rate used in the calibration
@@ -63,48 +65,43 @@ void Simulation::MetallicFissionProducts()
 
     // nucleation rate MFPs
     // Hp) heterogeneous nucleation mainly due to dislocation and bubbles
-    // dislocation density (m^(-2)) to check,
+    // dislocation density (m^(-2)),
     // Ref: Modelling dislocation density evolution of UO2 under irradiation, Aleksandar Djonovic
-    double bubble_sink_strenght = (4 * M_PI * sciantix_variable["Intragranular bubble concentration"].getFinalValue() *
-                                   sciantix_variable["Intragranular bubble radius"].getFinalValue());  // m^(-2)
-    double temperature          = history_variable["Temperature"].getFinalValue();
-    double dislocation_density  = 0.0;
-    if (temperature < 573.15)  // < 300°C
-    {
-        dislocation_density = 1.0e16;
-    }
-    else if (temperature < 673.15)  // 300-400°C
-    {
-        dislocation_density = 5.0e15;
-    }
-    else if (temperature < 873.15)  // 400-600°C
-    {
-        dislocation_density = 2.0e15;
-    }
-    else if (temperature < 1073.15)  // 600-800°C
-    {
-        dislocation_density = 5.0e14;
-    }
-    else  // > 800°C
-    {
-        dislocation_density = 2.0e14;
-    }
+    double bubble_sites_intra = sciantix_variable["Intragranular bubble concentration"].getFinalValue();
+    double bubble_sites_inter = sciantix_variable["Intergranular bubble concentration"].getFinalValue();
+    const double lambda = 15e-9;
+    double dislocation_density = 0.0;
 
-    const double f_dislocation = 0.67;  // coeff che pesa la nucleazione eterogenea sulle dislocazioni, da calibrare
-    const double f_bubbles     = 0.33;  // coeff che pesa la nucleazione eterogenea su bolle di gas, da calibrare
-    const double dG_nucleation = 2.9 * 9.500000000000e-01 *
-                                 scaling_factors["MFP nucleation energy barrier"]
-                                     .getValue();  // energy barrier (eV), da calibrazione Excel con k_intra ottimizzato
+    double burnup=sciantix_variable["Burnup"].getFinalValue();
 
-    // k_nucl coefficient - calculation through n and k_intra
+    const double A     = 6.545e12;
+    const double n     = 1.151;
+    const double A_inf = 0.608;
+    const double T_c   = 1109.0;
+    const double dT    = 25.8;
+    const double fT    = A_inf + (1.0 - A_inf) / (1.0 + exp((temperature - T_c) / dT));
+
+    if (burnup <= 0.0 || temperature <= 0.0)
+        dislocation_density = 0.0;
+    else
+        dislocation_density = A * pow(burnup, n) * fT;
+
+    double dislocation_sites = dislocation_density / lambda;
+    //Veshchunov 2009 dislocation-density correlation, dependent on burnup and temperature.
+
+    //for intragranular nucleation
+    const double f_dislocation = 0.67;  // coeff che pesa la nucleazione eterogenea sulle dislocazioni, Imagej
+    const double f_bubbles     = 0.33;  // coeff che pesa la nucleazione eterogenea su bolle di gas, Imagej
+
+    const double dG_nucleation = 1 *
+                                 scaling_factors["MFP nucleation energy barrier"].getValue();  // energy barrier (eV)
+
+    // k_nucl coefficient
     // introduzione scaling factor
-    double k_nucl = 3.995668086708020e18 * 7.498942093325e-02 * 7.498942093325e-01 * 1.819783131708e-01 *
-                    scaling_factors["MFP nucleation rate"].getValue();  // atm/(m*s)
+    double k_nucl = 1 * scaling_factors["MFP nucleation rate"].getValue();  // atm/(m*s)
 
     // Intragranular 5MP radius
-    const double V_eff_5M = 1.44123e-29;  // volume atomico efficace pesato per una 5M (m^3)
-    double       R_5M     = pow(
-        (3.0 / (M_PI * 4.0)) * (V_eff_5M)*sciantix_variable["Intragranular atom per 5MP"].getInitialValue(), 1.0 / 3.0);
+    const double V_eff_5M = 1.44123e-29;  // volume atomico efficace pesato per una 5M (m^3), Excel
 
     // Aggiornamento Cm - EULERO IMPLICITO ALTRIMENTI DIVERGE
     // dCm_matrix/dt = y * F - (k_intra + k_gb) * cm_matrix + k_res * (C_prec_intra + C_prec_inter)
@@ -112,11 +109,9 @@ void Simulation::MetallicFissionProducts()
     // dCm_prec_intergr/dt = + (k_gb) * cm_matrix - k_res * Cm_prec_inter
     double A_matrix[9]   = {0};
     double b_matrix[3]   = {0};
-    double k_nucleazione = k_nucl * dt * exp(-dG_nucleation / (boltzmann_constant_eV * temperature));
-    double N_iniziale    = sciantix_variable["Intragranular 5MPs concentration"].getInitialValue();
-    double S_siti        = dislocation_density + bubble_sink_strenght;
-    double S_FMP         = 4.0 * M_PI * R_5M * N_iniziale;
-    double disponibili   = (R_5M > 0.0) ? std::max(S_siti - S_FMP, 0.0) : S_siti;
+    double k_nucleazione = k_nucl * exp(-dG_nucleation / (boltzmann_constant_eV * temperature));
+    double N_iniziale_intra    = sciantix_variable["Intragranular 5MPs concentration"].getInitialValue();
+    double N_iniziale_inter    = sciantix_variable["Intergranular 5MPs concentration"].getInitialValue();
 
     A_matrix[0] = 1 + (k_intra + k_gb) * dt;
     A_matrix[1] = -k_res * dt;
@@ -138,13 +133,31 @@ void Simulation::MetallicFissionProducts()
 
     // PROVA (in discussione con Vittoria, D4).
     const double n_min       = 2.0;
-    double       N_candidate = N_iniziale + k_nucleazione *
-                                          (f_dislocation * dislocation_density + f_bubbles * bubble_sink_strenght) *
-                                          disponibili;
-    double N_cap   = b_matrix[1] / n_min;  // minimo numero di atomi per 5MP
-    double N_final = std::max(std::min(N_candidate, N_cap), N_iniziale);
-    sciantix_variable["Intragranular 5MPs concentration"].setFinalValue(N_final);
+    double       N_candidate_intra = solver.Decay(
+                                        N_iniziale_intra,
+                                        k_nucleazione,
+                                        k_nucleazione* (f_dislocation * dislocation_sites + f_bubbles * bubble_sites_intra),
+                                        physics_variable["Time step"].getFinalValue()
+    );
 
-    double n_media = (N_final > 0.0) ? (b_matrix[1] / N_final) : 0.0;
-    sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_media);
+    double       N_candidate_inter = solver.Decay(
+                                        N_iniziale_inter,
+                                        k_nucleazione,
+                                        k_nucleazione*bubble_sites_inter,
+                                        physics_variable["Time step"].getFinalValue()
+    );
+
+    double N_cap_intra   = b_matrix[1] / n_min;  // minimo numero di atomi per 5MP
+    double N_final_intra = std::max(std::min(N_candidate_intra, N_cap_intra), N_iniziale_intra);
+    sciantix_variable["Intragranular 5MPs concentration"].setFinalValue(N_final_intra);
+
+    double N_cap_inter   = b_matrix[2] / n_min;  // minimo numero di atomi per 5MP
+    double N_final_inter = std::max(std::min(N_candidate_inter, N_cap_inter), N_iniziale_inter);
+    sciantix_variable["Intergranular 5MPs concentration"].setFinalValue(N_final_inter);
+
+    double n_media_intra = (N_final_intra > 0.0) ? (b_matrix[1] / N_final_intra) : 0.0;
+    sciantix_variable["Intragranular atom per 5MP"].setFinalValue(n_media_intra);
+    double n_media_inter = (N_final_inter > 0.0) ? (b_matrix[2] / N_final_inter) : 0.0;
+    sciantix_variable["Intergranular atom per 5MP"].setFinalValue(n_media_inter);
+
 }
