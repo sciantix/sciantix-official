@@ -399,6 +399,10 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
             "Intragranular 5MPs concentration", "(5MP/m3)", Sciantix_variables[175], Sciantix_variables[175], toOutputCm),
         SciantixVariable(
             "Intragranular atom per 5MP", "(at/5MP)", Sciantix_variables[176], Sciantix_variables[176], toOutputCm),
+        SciantixVariable(
+            "Intergranular atom per 5MP", "(at/5MP)", Sciantix_variables[177], Sciantix_variables[177], toOutputCm),
+        SciantixVariable(
+            "Intergranular 5MPs concentration", "(5MP/m3)", Sciantix_variables[178], Sciantix_variables[178], toOutputCm),
 
     };
 

@@ -118,6 +118,8 @@ std::map<int, std::string> update_sciantix_variable = {
     {174, "Cm precipitated grain boundary"},
     {175, "Intragranular 5MPs concentration"},
     {176, "Intragranular atom per 5MP"},
+    {177, "Intergranular atom per 5MP"},
+    {178, "Intergranular 5MPs concentration"},
 
 };
 
