@@ -39,7 +39,7 @@ void Simulation::setVariables(int    Sciantix_options[],
          toOutputHelium                 = input_variable["iHelium"].getValue() != 0,
          toOutputCracking               = input_variable["iGrainBoundaryMicroCracking"].getValue() != 0,
          toOutputGrainBoundary          = input_variable["iGrainBoundaryBehaviour"].getValue() == 1,
-         toOutputHighBurnupStructure    = input_variable["iHighBurnupStructureFormation"].getValue() == 1,
+         toOutputHighBurnupStructure    = input_variable["iHighBurnupStructureFormation"].getValue() != 0,
          toOutputStoichiometryDeviation = input_variable["iStoichiometryDeviation"].getValue() > 0,
          toOutputChromiumContent        = input_variable["iChromiumSolubility"].getValue() > 0;
 

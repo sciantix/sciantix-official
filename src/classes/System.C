@@ -973,9 +973,12 @@ void System::setProductionRate(int                              input_value,
 
             double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
 
+            // When iFuelMatrix==1 (UO2 + UO2HBS two-phase), the base xenon yield stored
+            // in System (~0.24 at/fiss) is rescaled by 1.125 to recover the true cumulative
+            // Xe yield of 0.27 at/fiss used for HBS calculations.
             double sf(1.0);
             if (input_variable["iFuelMatrix"].getValue() == 1)
-                sf = 1.25;
+                sf = 1.125;
 
             reference += "Production rate = cumulative yield * fission rate density * (1 - alpha).\n\t";
             production_rate =
@@ -1043,7 +1046,7 @@ void System::setProductionRate(int                              input_value,
             double alpha = sciantix_variable["Restructured volume fraction"].getFinalValue();
 
             reference += "Production rate = cumulative yield * fission rate density * alpha.\n\t";
-            production_rate = 1.25 * yield * history_variable["Fission rate"].getFinalValue() * alpha;  // (at/m3s)
+            production_rate = 1.125 * yield * history_variable["Fission rate"].getFinalValue() * alpha;  // (at/m3s)
             break;
         }
 

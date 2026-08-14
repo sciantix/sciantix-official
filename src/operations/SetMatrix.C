@@ -29,7 +29,7 @@ void Simulation::setMatrix()
         case 1:
         {
             matrices.push(UO2(matrices, sciantix_variable, history_variable, input_variable, scaling_factors));
-            matrices.push(UO2HBS(matrices, sciantix_variable, history_variable, input_variable));
+            matrices.push(UO2HBS(matrices, sciantix_variable, history_variable, input_variable, scaling_factors));
             break;
         }
 
@@ -43,7 +43,7 @@ Matrix UO2(SciantixArray<Matrix>&           matrices,
            SciantixArray<SciantixVariable>& sciantix_variable,
            SciantixArray<SciantixVariable>& history_variable,
            SciantixArray<InputVariable>&    input_variable,
-           SciantixArray<InputVariable>& /* scaling_factor */)
+           SciantixArray<InputVariable>&    scaling_factor)
 {
     Matrix matrix_;
 
@@ -63,10 +63,12 @@ Matrix UO2(SciantixArray<Matrix>&           matrices,
     matrix_.setGrainRadius(sciantix_variable["Grain radius"].getFinalValue());  // (m)
     matrix_.setHealingTemperatureThreshold(1273.15);                            // K
     matrix_.setGrainBoundaryVacancyDiffusivity(int(input_variable["iGrainBoundaryVacancyDiffusivity"].getValue()),
-                                               history_variable);  // (m2/s)
+                                               history_variable,
+                                               sciantix_variable);                          // (m2/s)
+    matrix_.setGrainBoundarySingleAtomDiffusivity(1, history_variable, sciantix_variable);  // (m2/s)
     matrix_.setPoreNucleationRate(sciantix_variable);
-    matrix_.setPoreResolutionRate(sciantix_variable, history_variable);
-    matrix_.setPoreTrappingRate(matrices, sciantix_variable);
+    matrix_.setPoreResolutionRate(sciantix_variable, history_variable, scaling_factor);
+    matrix_.setPoreTrappingRate(matrices, sciantix_variable, scaling_factor);
     matrix_.setChromiumSolubility(0);   // (weight%/UO2)
     matrix_.setChromiaSolubility(0);    // (weight%/UO2)
     matrix_.setChromiumSolution(0);     // (at/m3)
@@ -98,7 +100,8 @@ Matrix UO2(SciantixArray<Matrix>&           matrices,
 Matrix UO2HBS(SciantixArray<Matrix>&           matrices,
               SciantixArray<SciantixVariable>& sciantix_variable,
               SciantixArray<SciantixVariable>& history_variable,
-              SciantixArray<InputVariable>& /* input_variable */)
+              SciantixArray<InputVariable>& /* input_variable */,
+              SciantixArray<InputVariable>& scaling_factor)
 {
     Matrix matrix_;
 
@@ -107,20 +110,21 @@ Matrix UO2HBS(SciantixArray<Matrix>&           matrices,
     matrix_.setTheoreticalDensity(10960.0);  // (kg/m3)
     matrix_.setLatticeParameter(5.47e-10);
     matrix_.setGrainBoundaryMobility(0, history_variable);
-    matrix_.setSurfaceTension(0.7);                     // (N/m)
+    matrix_.setSurfaceTension(1.1);                     // (N/m)
     matrix_.setFissionFragmentInfluenceRadius(1.0e-9);  // (m)
     matrix_.setFissionFragmentRange(6.0e-6);            // (m)
     matrix_.setSchottkyVolume(4.09e-29);
     matrix_.setOctahedralInterstitialSite(7.8e-30);
     matrix_.setSemidihedralAngle(0.0);
-    matrix_.setGrainBoundaryThickness(0.0);
+    matrix_.setGrainBoundaryThickness(1e-9);
     matrix_.setLenticularShapeFactor(0.168610764);
-    matrix_.setGrainRadius(150e-9);                                   // (m)
-    matrix_.setHealingTemperatureThreshold(1273.15);                  // K
-    matrix_.setGrainBoundaryVacancyDiffusivity(5, history_variable);  // (m2/s)
+    matrix_.setGrainRadius(150e-9);                                                         // (m)
+    matrix_.setHealingTemperatureThreshold(1273.15);                                        // K
+    matrix_.setGrainBoundaryVacancyDiffusivity(3, history_variable, sciantix_variable);     // (m2/s)
+    matrix_.setGrainBoundarySingleAtomDiffusivity(1, history_variable, sciantix_variable);  // (m2/s)
     matrix_.setPoreNucleationRate(sciantix_variable);
-    matrix_.setPoreResolutionRate(sciantix_variable, history_variable);
-    matrix_.setPoreTrappingRate(matrices, sciantix_variable);
+    matrix_.setPoreResolutionRate(sciantix_variable, history_variable, scaling_factor);
+    matrix_.setPoreTrappingRate(matrices, sciantix_variable, scaling_factor);
 
     // Mechanical properties
     matrix_.setElasticModulus(

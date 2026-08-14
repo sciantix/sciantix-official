@@ -48,15 +48,16 @@ void Simulation::execute()
     Densification();
 #endif
 
+    // The HBS models straddle the gas-behaviour block: the restructured volume fraction is
+    // needed before anything else consumes it, while the porosity model consumes the grain
+    // boundary inventory that GasDiffusion produces in the same time step.
+    HighBurnupStructureFormation();
+
     GapPartialPressure();
 
     UO2Thermochemistry();
 
     StoichiometryDeviation();
-
-    HighBurnupStructureFormation();
-
-    HighBurnupStructurePorosity();
 
     Microstructure();
 
@@ -73,6 +74,8 @@ void Simulation::execute()
     IntraGranularBubbleBehavior();
 
     GasDiffusion();
+
+    HighBurnupStructurePorosity();
 
     GrainBoundaryMicroCracking();
 

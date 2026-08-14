@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.2.1                                                                  //
-//  Year: 2026                                                                      //
+//  Version: 2.1                                                                    //
+//  Year: 2024                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -48,13 +48,15 @@ void Matrix::setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVar
     }
 }
 
-void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable>& history_variable)
+void Matrix::setGrainBoundaryVacancyDiffusivity(int                              input_value,
+                                                SciantixArray<SciantixVariable>& history_variable,
+                                                SciantixArray<SciantixVariable>& sciantix_variable)
 {
     switch (input_value)
     {
         case 0:
         {
-            grain_boundary_diffusivity = 1e-30;
+            grain_boundary_vacancy_diffusivity = 1e-30;
             reference += "iGrainBoundaryVacancyDiffusivity: constant value (1e-30 m^2/s).\n\t";
 
             break;
@@ -62,35 +64,86 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
 
         case 1:
         {
-            grain_boundary_diffusivity =
+            grain_boundary_vacancy_diffusivity =
                 6.9e-04 * exp(-5.35e-19 / (boltzmann_constant * history_variable["Temperature"].getFinalValue()));
-            reference += "iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 "
-                         "(1979) 22-25.\n\t";
+            reference += "iGrainBoundaryVacancyDiffusivity: from Reynolds and Burton, JNM, 82 (1979) 22-25.\n\t";
 
             break;
         }
 
         case 2:
         {
-            grain_boundary_diffusivity =
+            grain_boundary_vacancy_diffusivity =
                 3.5 / 5 * 8.86e-6 * exp(-4.17e4 / history_variable["Temperature"].getFinalValue());
             reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.\n\t";
 
             break;
         }
 
-        case 5:
+        case 4:
         {
-            grain_boundary_diffusivity =
-                (1.3e-7 * exp(-4.52e-19 / (boltzmann_constant * history_variable["Temperature"].getFinalValue())));
+            // Same White (2004) correlation as case 2, with the activation energy written
+            // in joules instead of the rounded 4.17e4 K lumped into the exponent. The two
+            // differ by a few per cent, enough to move a gold: case 2 is what the UO2
+            // validation database was produced with, case 4 what the HBS cases use.
+            grain_boundary_vacancy_diffusivity =
+                3.5 / 5.0 * 8.86e-6 *
+                exp(-5.75e-19 / (boltzmann_constant * history_variable["Temperature"].getFinalValue()));
+            reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004)\n\t";
 
-            reference += "iGrainBoundaryVacancyDiffusivity: HBS case, from Barani et al., JNM 563 "
-                         "(2022) 153627.\n\t";
+            break;
+        }
+
+        case 3:
+        {
+            // Base D_gb^v (White 2004 + a-thermal term).
+            grain_boundary_vacancy_diffusivity =
+                8.86e-6 * exp(-5.75e-19 / (boltzmann_constant * history_variable["Temperature"].getFinalValue())) +
+                1e-39 * history_variable["Fission rate"].getFinalValue();
+            reference +=
+                "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77 / BARANI HBS part 2, 2022\n\t";
+
             break;
         }
 
         default:
             ErrorMessages::Switch(__FILE__, "iGrainBoundaryVacancyDiffusivity", input_value);
+            break;
+    }
+}
+
+void Matrix::setGrainBoundarySingleAtomDiffusivity(int                              input_value,
+                                                   SciantixArray<SciantixVariable>& history_variable,
+                                                   SciantixArray<SciantixVariable>& sciantix_variable)
+{
+    switch (input_value)
+    {
+        case 0:
+        {
+            grain_boundary_single_atom_diffusivity = 1e-30;
+            reference += "GrainBoundarySingleAtomDiffusivity: constant value (1e-30 m^2/s).\n\t";
+
+            break;
+        }
+
+        case 1:
+        {
+            // Barani et al. 2022, HBS part II uses the Olander-Van Uffelen
+            // "low D" (1.3e-7 * exp(-2.82/kT_eV)), which at T = 723 K leads to
+            // a catch-22 between trapping and re-solution (2-atom nuclei
+            // destroyed before gaining atoms). Substituted here by Xia 2022,
+            // which delivers a mobility large enough to sustain nucleation.
+            // Xia et al. (2022) https://www.mdpi.com/2075-4701/12/5/763
+            // delivers a fit of Cappia data through the full burnup range.
+            grain_boundary_single_atom_diffusivity =
+                (2.0e-8 * exp(-1.4 / (8.62e-5 * history_variable["Temperature"].getFinalValue())));
+
+            reference += "GrainBoundarySingleAtomDiffusivity: Xia et al., Metals 12 (2022) 763, as calibrated by "
+                         "Frattini MSc thesis (2025).\n\t";
+            break;
+        }
+
+        default:
             break;
     }
 }
@@ -105,30 +158,42 @@ void Matrix::setPoreNucleationRate(SciantixArray<SciantixVariable>& sciantix_var
 
     double sf_nucleation_rate_porosity = 1.25e-6;  // from dburnup to dtime
 
-    pore_nucleation_rate =
-        (5.0e17 * 2.77e-7 * 3.54 * (1.0 - sciantix_variable["Restructured volume fraction"].getFinalValue()) *
-         pow(sciantix_variable["Effective burnup"].getFinalValue(), 2.54));
+    double avrami_constant(3.54);
+    double transformation_rate(2.77e-7);
+
+    pore_nucleation_rate = (5.0e17 * transformation_rate * avrami_constant *
+                            (1.0 - sciantix_variable["Restructured volume fraction"].getFinalValue()) *
+                            pow(sciantix_variable["Effective burnup"].getFinalValue() / 0.8814, avrami_constant - 1.));
 
     pore_nucleation_rate *= sf_nucleation_rate_porosity;
 }
 
 void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable>& sciantix_variable,
-                                   SciantixArray<SciantixVariable>& history_variable)
+                                   SciantixArray<SciantixVariable>& history_variable,
+                                   SciantixArray<InputVariable>&    scaling_factors)
 {
-    double correction_coefficient =
-        (1.0 - exp(pow(-sciantix_variable["HBS pore radius"].getFinalValue() / (9.0e-9), 3)));
+    double correction_coefficient = (1.0 - exp(pow(-sciantix_variable["HBS pore radius"].getFinalValue() / (9e-9), 3)));
     double b0(2.0e-23 * history_variable["Fission rate"].getFinalValue());
 
     pore_resolution_rate = b0 * correction_coefficient *
                            (3.0 * 1.0e-9 / (3.0 * 1.0e-9 + sciantix_variable["HBS pore radius"].getFinalValue())) *
                            (1.0e-9 / (1.0e-9 + sciantix_variable["HBS pore radius"].getFinalValue()));
+
+    // ponytail: slot 7 of input_scaling_factors.txt, called "Cent parameter" on the porosity
+    // branch and "Diffusion-based release" on main. The two names are the same slot, so the
+    // sensitivity sweeps keep working, but the slot now has two meanings — give the HBS pore
+    // re-solution knob a slot of its own if Cappellari's release model starts reading this one.
+    pore_resolution_rate *= scaling_factors["Diffusion-based release"].getValue();
 }
 
-void Matrix::setPoreTrappingRate(SciantixArray<Matrix>& /* matrices */,
-                                 SciantixArray<SciantixVariable>& sciantix_variable)
+void Matrix::setPoreTrappingRate(SciantixArray<Matrix>&           matrices,
+                                 SciantixArray<SciantixVariable>& sciantix_variable,
+                                 SciantixArray<InputVariable>&    scaling_factors)
 {
-    pore_trapping_rate = 4.0 * M_PI * grain_boundary_diffusivity *
-                         sciantix_variable["Xe at grain boundary"].getFinalValue() *
+    pore_trapping_rate = 4.0 * M_PI * grain_boundary_single_atom_diffusivity *
+                         sciantix_variable["Xe at grain boundary HBS"].getFinalValue() *
                          sciantix_variable["HBS pore radius"].getFinalValue() *
                          (1.0 + 1.8 * pow(sciantix_variable["HBS porosity"].getFinalValue(), 1.3));
+
+    pore_trapping_rate *= scaling_factors["Dummy"].getValue();
 }

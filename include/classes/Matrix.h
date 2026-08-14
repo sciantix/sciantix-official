@@ -21,6 +21,7 @@
 
 #include "Constants.h"
 #include "ErrorMessages.h"
+#include "InputVariable.h"
 #include "Material.h"
 #include "SciantixArray.h"
 #include "SciantixVariable.h"
@@ -48,7 +49,8 @@ class Matrix : virtual public Material
     double schottky_defect_volume;
     double ois_volume;
     double grain_boundary_thickness;
-    double grain_boundary_diffusivity;
+    double grain_boundary_vacancy_diffusivity;
+    double grain_boundary_single_atom_diffusivity;
     double semidihedral_angle;
     double lenticular_shape_factor;
     double grain_radius;
@@ -253,7 +255,9 @@ class Matrix : virtual public Material
      * @brief Sets the diffusivity of vacancies on the grain boundaries based on the input model.
      * @param input_value The model selection for grain boundary vacancy diffusivity.
      */
-    void setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable>& history_variable);
+    void setGrainBoundaryVacancyDiffusivity(int                              input_value,
+                                            SciantixArray<SciantixVariable>& history_variable,
+                                            SciantixArray<SciantixVariable>& sciantix_variable);
 
     /**
      * @brief Retrieves the vacancy diffusivity on the grain boundaries.
@@ -261,7 +265,24 @@ class Matrix : virtual public Material
      */
     double getGrainBoundaryVacancyDiffusivity()
     {
-        return grain_boundary_diffusivity;
+        return grain_boundary_vacancy_diffusivity;
+    }
+
+    /**
+     * @brief Sets the diffusivity of single atoms on the grain boundaries based on the input model.
+     * @param input_value The model selection for grain boundary single atoms diffusivity.
+     */
+    void setGrainBoundarySingleAtomDiffusivity(int                              input_value,
+                                               SciantixArray<SciantixVariable>& history_variable,
+                                               SciantixArray<SciantixVariable>& sciantix_variable);
+
+    /**
+     * @brief Retrieves the single atom diffusivity on the grain boundaries.
+     * @return The grain boundary single atom diffusivity.
+     */
+    double getGrainBoundarySingleAtomDiffusivity()
+    {
+        return grain_boundary_single_atom_diffusivity;
     }
 
     /**
@@ -330,7 +351,8 @@ class Matrix : virtual public Material
      * Barani et al., JNM 563 (2022) 153627.
      */
     void setPoreResolutionRate(SciantixArray<SciantixVariable>& sciantix_variable,
-                               SciantixArray<SciantixVariable>& history_variable);
+                               SciantixArray<SciantixVariable>& history_variable,
+                               SciantixArray<InputVariable>&    scaling_factors);
 
     /**
      * @brief Retrieves the resolution rate of gas atoms from pores.
@@ -347,7 +369,9 @@ class Matrix : virtual public Material
      * The trapping rate is calculated based on current simulation parameters and a model from
      * Barani et al., JNM 563 (2022) 153627.
      */
-    void setPoreTrappingRate(SciantixArray<Matrix>& matrices, SciantixArray<SciantixVariable>& sciantix_variable);
+    void setPoreTrappingRate(SciantixArray<Matrix>&           matrices,
+                             SciantixArray<SciantixVariable>& sciantix_variable,
+                             SciantixArray<InputVariable>&    scaling_factors);
 
     /**
      * @brief Retrieves the trapping rate of gas atoms in pores.
