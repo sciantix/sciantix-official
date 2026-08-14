@@ -274,19 +274,28 @@ void Simulation::InterGranularBubbleBehavior()
         sciantix_variable["Intergranular bubble pressure"].setFinalValue(0.0);
 
     // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
+    // The HBS reservoirs are declared only for the gas that is also tracked in
+    // the restructured matrix (Xe). For every other gas they do not exist, so
+    // they enter the balance as zero instead of being looked up.
+    auto hbsInventory = [&](const std::string &variable_name)
+    {
+        return sciantix_variable.isElementPresent(variable_name) ?
+            sciantix_variable[variable_name].getFinalValue() : 0.0;
+    };
+
     for (auto &system : sciantix_system)
     {
         if (system.getRestructuredMatrix() == 0)
         {
             sciantix_variable[system.getGasName() + " released"].setFinalValue(
                 sciantix_variable[system.getGasName() + " produced"].getFinalValue() +
-                sciantix_variable[system.getGasName() + " produced in HBS"].getFinalValue() -
+                hbsInventory(system.getGasName() + " produced in HBS") -
                 sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
                 sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " in grain HBS"].getFinalValue() -
-                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() - 
-                sciantix_variable[system.getGasName() + " at grain boundary HBS"].getFinalValue() - 
-                sciantix_variable[system.getGasName() + " in HBS pores"].getFinalValue()
+                hbsInventory(system.getGasName() + " in grain HBS") -
+                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() -
+                hbsInventory(system.getGasName() + " at grain boundary HBS") -
+                hbsInventory(system.getGasName() + " in HBS pores")
             );
 
             if (sciantix_variable[system.getGasName() + " released"].getFinalValue() < 0.0)

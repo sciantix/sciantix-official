@@ -506,16 +506,22 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot,
     # ------------------------------------------------------------------
     fig, ax1 = plt.subplots()
 
+    # Solid-fission-product prefactor, quoted as such in the manuscript.
+    # Single source of truth: the plotted breakdown curve and the total must
+    # use the same value, otherwise the dashed curves do not add up to the
+    # solid one.
+    SOLID_FP_COEFF = 0.00303
+
     # Reference test: single total-swelling curve.
     if sd_reference is not None:
         total_ref = (sd_reference["swe_igs"] + sd_reference["swe_igb"]
-                     + 0.0032 * sd_reference["fima"])
+                     + SOLID_FP_COEFF * sd_reference["fima"])
         ax1.plot(sd_reference["bu"] / 0.8814, total_ref,
                  "-", color=COLOR_REFERENCE, linewidth=LINEWIDTH_MODEL,
                  label=label_reference + " (total)")
 
     # Primary test: keep the full breakdown.
-    ax1.plot(sd_primary["bu"] / 0.8814, 0.00303 * sd_primary["fima"],
+    ax1.plot(sd_primary["bu"] / 0.8814, SOLID_FP_COEFF * sd_primary["fima"],
              "-.", color=COLOR_SPINO, linewidth=LINEWIDTH_REF,
              label="Solid fission products (Olander)")
     ax1.plot(sd_primary["bu"] / 0.8814, sd_primary["swe_igs"],
@@ -525,7 +531,7 @@ def regression_hbs(wpath, mode_HBS, mode_gold, mode_plot,
              "-.", color=COLOR_CURRENT, linewidth=LINEWIDTH_REF,
              label="Intra-granular gas in bubbles")
     total_primary = (sd_primary["swe_igs"] + sd_primary["swe_igb"]
-                     + 0.0032 * sd_primary["fima"])
+                     + SOLID_FP_COEFF * sd_primary["fima"])
     ax1.plot(sd_primary["bu"] / 0.8814, total_primary,
              "-", color="#1a365d", linewidth=LINEWIDTH_MODEL,
              label=label_primary + " (total)")
