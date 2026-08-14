@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -20,6 +20,7 @@
  * These two functions are also defined in TRANSURANUS, and are essentially required to create the
  * communication channel between the two codes.
  *
+ * @author M. Di Gennaro
  * @author E. Travaglia
  *
  */
@@ -30,13 +31,16 @@
 #ifdef __cplusplus
 extern "C"
 {
-  #endif
-  void getSciantixOptions(int options[], double scaling_factors[]);
-  void callSciantix(int options[], double history[], double variables[],
-                    double scaling_factors[], double diffusion_modes[]);
+#endif
+    void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[]);
+    void callSciantix(int    Sciantix_options[],
+                      double Sciantix_history[],
+                      double Sciantix_variables[],
+                      double Sciantix_scaling_factors[],
+                      double Sciantix_diffusion_modes[]);
 
-  #ifdef __cplusplus
+#ifdef __cplusplus
 }
 #endif
 
-#endif // TUSRCCOUPLING_H
+#endif  // TUSRCCOUPLING_H

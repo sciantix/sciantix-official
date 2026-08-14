@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -19,25 +19,27 @@
 
 #include <cmath>
 
-#include "Material.h"
 #include "Constants.h"
 #include "ErrorMessages.h"
+#include "InputVariable.h"
+#include "Material.h"
 #include "SciantixArray.h"
 #include "SciantixVariable.h"
-#include "InputVariable.h"
 
 /**
  * @class Matrix
- * @brief Represents the fuel matrix material such as UO2, UO2-HBS, or MOX, derived from the Material class.
+ * @brief Represents the fuel matrix material such as UO2, UO2-HBS, or MOX, derived from the
+ * Material class.
  *
- * This class extends the Material class to incorporate properties specific to nuclear fuel matrices,
- * including physical and nuclear properties like lattice parameters, grain boundary properties, and fission fragment characteristics.
- * 
+ * This class extends the Material class to incorporate properties specific to nuclear fuel
+ * matrices, including physical and nuclear properties like lattice parameters, grain boundary
+ * properties, and fission fragment characteristics.
+ *
  * @author G. Zullo
  */
 class Matrix : virtual public Material
 {
-public:
+  public:
     double matrix_density;
     double lattice_parameter;
     double grain_boundary_mobility;
@@ -57,6 +59,19 @@ public:
     double pore_nucleation_rate;
     double pore_resolution_rate;
     double pore_trapping_rate;
+    double chromium_content;
+    double chromium_solubility;
+    double Cr2O3_solubility;
+    double chromium_solution;
+    double chromium_precipitate;
+    double chromia_solution;
+    double chromia_precipitate;
+
+    // Mechanical properties
+    double elastic_modulus;
+    double poisson_ratio;
+    double grain_boundary_fracture_energy;
+    double shear_modulus;
 
     /**
      * @brief Sets the theoretical density of the matrix.
@@ -153,7 +168,7 @@ public:
      *
      * @param input_value The model selection for grain boundary mobility.
      */
-    void setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVariable> &history_variable);
+    void setGrainBoundaryMobility(int input_value, SciantixArray<SciantixVariable>& history_variable);
 
     /**
      * @brief Retrieves the mobility of the grain boundaries of the matrix.
@@ -240,7 +255,9 @@ public:
      * @brief Sets the diffusivity of vacancies on the grain boundaries based on the input model.
      * @param input_value The model selection for grain boundary vacancy diffusivity.
      */
-    void setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<SciantixVariable> &sciantix_variable);
+    void setGrainBoundaryVacancyDiffusivity(int                              input_value,
+                                            SciantixArray<SciantixVariable>& history_variable,
+                                            SciantixArray<SciantixVariable>& sciantix_variable);
 
     /**
      * @brief Retrieves the vacancy diffusivity on the grain boundaries.
@@ -255,7 +272,9 @@ public:
      * @brief Sets the diffusivity of single atoms on the grain boundaries based on the input model.
      * @param input_value The model selection for grain boundary single atoms diffusivity.
      */
-    void setGrainBoundarySingleAtomDiffusivity(int input_value, SciantixArray<SciantixVariable> &history_variable, SciantixArray<SciantixVariable> &sciantix_variable);
+    void setGrainBoundarySingleAtomDiffusivity(int                              input_value,
+                                               SciantixArray<SciantixVariable>& history_variable,
+                                               SciantixArray<SciantixVariable>& sciantix_variable);
 
     /**
      * @brief Retrieves the single atom diffusivity on the grain boundaries.
@@ -306,15 +325,19 @@ public:
      * @brief Sets the nucleation rate of pores in high burnup structures (HBS).
      *
      * Calculates the nucleation rate based on current simulation parameters and a predefined model.
-     * The model used is defined by @ref <a href="https://www.sciencedirect.com/science/article/pii/S0022311522001234" target="_blank">Barani T. et al (2022). Journal of Nuclear Materials, 563, 153627.</a>
+     * The model used is defined by @ref <a
+     * href="https://www.sciencedirect.com/science/article/pii/S0022311522001234"
+     * target="_blank">Barani T. et al (2022). Journal of Nuclear Materials, 563, 153627.</a>
      */
-    void setPoreNucleationRate(SciantixArray<SciantixVariable> &sciantix_variable);
+    void setPoreNucleationRate(SciantixArray<SciantixVariable>& sciantix_variable);
 
     /**
      * @brief Retrieves the nucleation rate of pores.
      * @return The pore nucleation rate (1/s).
-     * 
-     * The model used is defined by @ref <a href="https://www.sciencedirect.com/science/article/pii/S0022311522001234" target="_blank">Barani T. et al (2022). Journal of Nuclear Materials, 563, 153627.</a>
+     *
+     * The model used is defined by @ref <a
+     * href="https://www.sciencedirect.com/science/article/pii/S0022311522001234"
+     * target="_blank">Barani T. et al (2022). Journal of Nuclear Materials, 563, 153627.</a>
      */
     double getPoreNucleationRate()
     {
@@ -327,7 +350,9 @@ public:
      * The re-solution rate is calculated based on current simulation parameters and a model from
      * Barani et al., JNM 563 (2022) 153627.
      */
-    void setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<SciantixVariable> &history_variable, SciantixArray<InputVariable> &scaling_factors);
+    void setPoreResolutionRate(SciantixArray<SciantixVariable>& sciantix_variable,
+                               SciantixArray<SciantixVariable>& history_variable,
+                               SciantixArray<InputVariable>&    scaling_factors);
 
     /**
      * @brief Retrieves the resolution rate of gas atoms from pores.
@@ -344,7 +369,9 @@ public:
      * The trapping rate is calculated based on current simulation parameters and a model from
      * Barani et al., JNM 563 (2022) 153627.
      */
-    void setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors);
+    void setPoreTrappingRate(SciantixArray<Matrix>&           matrices,
+                             SciantixArray<SciantixVariable>& sciantix_variable,
+                             SciantixArray<InputVariable>&    scaling_factors);
 
     /**
      * @brief Retrieves the trapping rate of gas atoms in pores.
@@ -367,14 +394,15 @@ public:
     /**
      * @brief Retrieves the grain radius of the matrix.
      * @return The grain radius.
-    */
+     */
     double getGrainRadius()
     {
         return grain_radius;
     }
 
     /**
-     * @brief Sets the temperature limit for complete healing of extended defects in the fuel matrix.
+     * @brief Sets the temperature limit for complete healing of extended defects in the fuel
+     * matrix.
      * @param t The temperature threshold to set (K).
      */
     void setHealingTemperatureThreshold(double t)
@@ -391,15 +419,146 @@ public:
         return healing_temperature_threshold;
     }
 
+    void setChromiumContent(double cc)
+    {
+        chromium_content = cc;
+    }
+
+    double getChromiumContent()
+    {
+        /// Member function to set the chromium content (µg/g)
+        return chromium_content;
+    }
+
+    void setChromiumSolubility(double cs)
+    {
+        chromium_solubility = cs;
+    }
+
+    double getChroimumSolubility()
+    {
+        /// Member function to set the chromium solubility (weight%/UO2)
+        return chromium_solubility;
+    }
+
+    void setChromiaSolubility(double crs)
+    {
+        Cr2O3_solubility = crs;
+    }
+
+    double getChromiaSolubility()
+    {
+        /// Member function to set the chromia (Cr2O3) solubility (weight%/UO2)
+        return Cr2O3_solubility;
+    }
+
+    void setChromiumSolution(double cr_sol)
+    {
+        chromium_solution = cr_sol;
+    }
+
+    double getChromiumSolution()
+    {
+        /// Member function to set the chromium solution (kg)
+        return chromium_solution;
+    }
+
+    void setChromiumPrecipitate(double cr_p)
+    {
+        chromium_precipitate = cr_p;
+    }
+
+    double getChromiumPrecipitate()
+    {
+        /// Member function to set the chromium precipitate (kg)
+        return chromium_precipitate;
+    }
+
+    void setChromiaSolution(double chromia_sol)
+    {
+        chromia_solution = chromia_sol;
+    }
+
+    double getChromiaSolution()
+    {
+        /// Member function to set the chromia (Cr2O3) solution (kg)
+        return chromia_solution;
+    }
+
+    void setChromiaPrecipitate(double chromia_p)
+    {
+        chromia_precipitate = chromia_p;
+    }
+
+    double getChromiaPrecipitate()
+    {
+        /// Member function to set the chromia (Cr2O3) precipitate (kg)
+        return chromia_precipitate;
+    }
+
+    void setElasticModulus(double e)
+    {
+        // Member function to set the elastic (Young) modulus of the material (MPa)
+        elastic_modulus = e;
+    }
+
+    double getElasticModulus()
+    {
+        // Member function to return the elastic (Young) modulus of the material (MPa)
+        return elastic_modulus;
+    }
+
+    // Poisson ratio
+    void setPoissonRatio(double v)
+    {
+        // Member function to set the Poisson ratio of the material
+        poisson_ratio = v;
+    }
+
+    double getPoissonRatio()
+    {
+        // Member function to return the Poisson ratio of the material
+        return poisson_ratio;
+    }
+
+    // Grain-boundary fracture energy
+    void setGrainBoundaryFractureEnergy(double v)
+    {
+        // Member function to set the grain-boundary fracture energy of the material (J/m2)
+        grain_boundary_fracture_energy = v;
+    }
+
+    double getGrainBoundaryFractureEnergy()
+    {
+        // Member function to return the grain-boundary fracture energy of the material (J/m2)
+        return grain_boundary_fracture_energy;
+    }
+
+    void setShearModulus(double g)
+    {
+        // Member function to set the shear modulus of the material (MPa)
+        shear_modulus = g;
+    }
+
+    double getShearModulus()
+    {
+        // Member function to return the shear modulus of the material (MPa)
+        return shear_modulus;
+    }
+
     /**
      * @brief Constructor
      */
-    Matrix() {}
+    Matrix()
+    {
+    }
 
     /**
      * @brief Destructor
      */
-    ~Matrix() {}
+    ~Matrix()
+    {
+    }
 };
 
-#endif // MATRIX_H
+#endif  // MATRIX_H

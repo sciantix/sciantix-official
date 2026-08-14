@@ -8,8 +8,8 @@
 //                                                                                  //
 //  Originally developed by D. Pizzocri & T. Barani                                 //
 //                                                                                  //
-//  Version: 2.1                                                                    //
-//  Year: 2024                                                                      //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
 //  Authors: D. Pizzocri, G. Zullo.                                                 //
 //                                                                                  //
 //////////////////////////////////////////////////////////////////////////////////////
@@ -25,9 +25,7 @@ std::map<int, std::string> update_sciantix_variable = {
     {3, "Xe in intragranular solution"},
     {4, "Xe in intragranular bubbles"},
     {5, "Xe at grain boundary"},
-    {123, "Xe at grain boundary HBS"},
     {6, "Xe released"},
-    {83,"Xe in HBS pores"},
     {7, "Kr produced"},
     {8, "Kr in grain"},
     {9, "Kr in intragranular solution"},
@@ -78,7 +76,6 @@ std::map<int, std::string> update_sciantix_variable = {
     {53, "Xe133 at grain boundary"},
     {54, "Xe133 released"},
     {55, "Restructured volume fraction"},
-    {70, "Dislocation density"},
     {56, "HBS porosity"},
     {57, "Kr85m produced"},
     {58, "Kr85m in grain"},
@@ -92,30 +89,51 @@ std::map<int, std::string> update_sciantix_variable = {
     {66, "Stoichiometry deviation"},
     {67, "Fuel oxygen partial pressure"},
     {69, "FIMA"},
+    {70, "Porosity"},
+    {71, "Fabrication porosity"},
+    {72, "Open porosity"},
+    {73, "Residual porosity"},
+    {74, "Densification factor"},
     {80, "HBS pore density"},
     {81, "HBS pore volume"},
     {82, "HBS pore radius"},
+    {83, "Xe in HBS pores"},
     {85, "Xe in HBS pores - variance"},
     {86, "Xe atoms per HBS pore"},
     {88, "Xe atoms per HBS pore - variance"},
     {120, "trapping rate hbs"},
     {121, "nucleation rate hbs"},
     {122, "re-solution rate hbs"},
-    {200, "Vacancies per HBS pore"}
-
+    {123, "Xe at grain boundary HBS"},
+    {150, "Chromium content"},
+    {151, "Lattice parameter"},
+    {152, "Theoretical density"},
+    {153, "Chromium solubility"},
+    {154, "Chromia solubility"},
+    {155, "Chromium solution"},
+    {156, "Chromium precipitate"},
+    {157, "Chromia solution"},
+    {158, "Chromia precipitate"},
+    {160, "Diffusion coefficient"},
+    {200, "Vacancies per HBS pore"},
+    // 70 is taken by "Porosity" on the main line of development, so the HBS dislocation
+    // density, which used to live there on the porosity branch, is stored at 201.
+    {201, "Dislocation density"},
 };
 
 void Simulation::update(double Sciantix_variables[], double Sciantix_diffusion_modes[])
 {
     for (int i = 0; i < n_modes; ++i)
     {
-        for (int j = 0; j <= 17; j++)
+        for (int j = 0; j < N_MODE_BLOCKS; j++)
         {
-            Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];	
+            Sciantix_diffusion_modes[j * n_modes + i] = modes_initial_conditions[j * n_modes + i];
         }
     }
 
-    for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin(); it != update_sciantix_variable.end(); it++)
+    for (std::map<int, std::string>::iterator it = update_sciantix_variable.begin();
+         it != update_sciantix_variable.end();
+         it++)
     {
         Sciantix_variables[it->first] = sciantix_variable[it->second].getFinalValue();
     }

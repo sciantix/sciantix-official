@@ -9,36 +9,53 @@ This folder contains the essential input files required by SCIANTIX:
 
 Below is a detailed description of each file.
 
+Ready-to-use templates are produced by the scripts in `utilities/inputExample/`, which are
+kept aligned with the parser in `src/file_manager/InputReading.C`:
+
+```bash
+python3 utilities/inputExample/print_input_settings.py
+python3 utilities/inputExample/print_input_initial_conditions.py
+python3 utilities/inputExample/print_input_scaling_factors.py
+```
+
 ---
 
 ## Input settings
 
-The following settings define the models and methods used for the simulation.
+The following settings define the models and methods used for the simulation. **All 25 entries
+must be present, in this exact order**: they are read positionally, so a missing or reordered
+line shifts every setting that follows it.
 
 ```plaintext
 1    #    iGrainGrowth (0= no grain growth, 1= Ainscough et al. (1973), 2= Van Uffelen et al. (2013))
-1    #    iFissionGasDiffusivity (0= constant value, 1= Turnbull et al. (1988))
-1    #    iDiffusionSolver (1= SDA with quasi-stationary hypothesis, 2= SDA without quasi-stationary hypothesis)
-1    #    iIntraGranularBubbleBehavior (1= Pizzocri et al. (2018))
-1    #    iResolutionRate (0= constant value, 1= Turnbull (1971), 2= Losonen (2000), 3= thermal resolution, Cognini et al. (2021))
-1    #    iTrappingRate (0= constant value, 1= Ham (1958))
-1    #    iNucleationRate (0= constant value, 1= Olander, Wongsawaeng (2006))
-1    #    iOutput (1= default output files)
-1    #    iGrainBoundaryVacancyDiffusivity (0= constant value, 1= Reynolds and Burton (1979), 2= White (2004))
-1    #    iGrainBoundaryBehaviour (0= no grain boundary bubbles, 1= Pastore et al (2013))
-1    #    iGrainBoundaryMicroCracking (0= no model considered, 1= Barani et al. (2017))
+1    #    iFissionGasDiffusivity (0= constant value, 1= Turnbull (1988), 2= Matzke (1980), 3= Turnbull (2010), 4= Ronchi (2007), 5= UO2-HBS, 6= stoichiometry-dependent, 7-8-10= UO2-Cr, 9= Cooper (2021), 90= GPR-updated, 99= null value)
+1    #    iDiffusionSolver (1= SDA with quasi-stationary hypothesis, 2= SDA without quasi-stationary hypothesis, 3= SDA with three coupled equations (UO2 + HBS))
+1    #    iIntraGranularBubbleBehavior (0= constant concentration and radius, 1= Pizzocri et al. (2018), 2= White and Tucker (1983), 3= annealing / helium similarity ratio, 99= no intragranular bubbles)
+1    #    iResolutionRate (0= constant value, 1= Turnbull (1971), 2= Losonen (2002), 3= thermal resolution, Cognini et al. (2021), 99= null value)
+1    #    iTrappingRate (0= constant value, 1= Ham (1958), 99= null value)
+1    #    iNucleationRate (0= constant value, 1= Olander, Wongsawaeng (2006), 99= null value)
+1    #    iOutput (1= default output files, 2= output with all the variables)
+1    #    iGrainBoundaryVacancyDiffusivity (0= constant value, 1= Reynolds and Burton (1979), 2= White (2004), 5= HBS case, Barani et al. (2022))
+1    #    iGrainBoundaryBehaviour (0= no grain boundary bubbles, 1= Pastore et al. (2013))
+1    #    iGrainBoundaryMicroCracking (0= no model considered, 1= Barani et al. (2017), 2= Cappellari et al. (2025))
 0    #    iFuelMatrix (0= UO2, 1= UO2 + HBS)
-0    #    iGrainBoundaryVenting (0= no model considered, 1= Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE)
-0    #    iRadioactiveFissionGas (0= not considered)
-0    #    iHelium (0= not considered)
-0    #    iHeDiffusivity (0= null value, 1= limited lattice damage, Luzzi et al. (2018), 2= significant lattice damage, Luzzi et al. (2018))
+0    #    iGrainBoundaryVenting (0= no model considered, 1= Pizzocri et al., D6.4 (2020), H2020 Project INSPYRE, 2= Claisse and Van Uffelen (2015), 3= Pagani et al. (2025))
+0    #    iRadioactiveFissionGas (0= not considered, 1= considered (Xe133, Kr85m))
+0    #    iHelium (0= not considered, 1= considered)
+0    #    iHeDiffusivity (0= constant value, 1= limited lattice damage, Luzzi et al. (2018), 2= significant lattice damage, Luzzi et al. (2018), 3= Talip et al. (2014), 99= null value)
 0    #    iGrainBoundarySweeping (0= no model considered, 1= TRANSURANUS swept volume model)
 0    #    iHighBurnupStructureFormation (0= no model considered, 1= fraction of HBS-restructured volume from Barani et al. (2020))
 0    #    iHighBurnupStructurePorosity (0= no evolution of HBS porosity, 1= HBS porosity evolution based on Spino et al. (2006) data)
-0    #    iHeliumProductionRate (0= zero production rate, 1= helium from ternary fissions, 2= linear with burnup (FR))
-0    #    iStoichiometryDeviation (0= not considered, 1= Cox et al. 1986, 2= Bittel et al. 1969, 3= Abrefah et al. 1994, 4= Imamura et al. 1997, 5= Langmuir-based approach)
+0    #    iHeliumProductionRate (0= zero production rate, 1= helium from ternary fissions, 2= linear with burnup (FR), 3= constant production rate)
+0    #    iStoichiometryDeviation (0= not considered, 1= Cox et al. (1986), 2= Bittel et al. (1969), 3= Abrefah et al. (1994), 4= Imamura and Une (1997), 5= Langmuir-based approach, Massih (2018), 6= as 5, with fixed S/V)
 0    #    iBubbleDiffusivity (0= not considered, 1= volume diffusivity)
+0    #    iChromiumSolubility (0= Riglet-Martial et al. (2014), 1= optimised coefficients)
+0    #    iDensification (0= not considered, 1= fit from Van Uffelen, P. (2002), PhD thesis)
+0    #    iReleaseMode (0= White (2004) coalescence, saturation threshold from Pastore et al. (2013), 1= Pastore et al. (2013) coalescence, Cappellari et al. (2025) release, 2= White (2004) coalescence, Cappellari et al. (2025) release)
 ```
+
+**Note**: the inline comment must stay shorter than 256 characters. A longer comment leaves its
+tail in the stream and every setting that follows it is read as zero.
 
 ---
 
@@ -52,48 +69,60 @@ Between the given rows, the code linearly interpolates with a fixed number of ti
 5500	1273	1e19	0
 ```
 
+**Note**: when `iStoichiometryDeviation > 0` a fifth column is read, the steam pressure (atm).
+Without that setting the column must be absent, otherwise times and pressures are interleaved.
+
 ---
 
 ## Input initial conditions
 
-This file sets the initial conditions for various parameters within the simulation.
+This file sets the initial conditions for various parameters within the simulation. Like the
+settings, the blocks are read positionally and each value line must be followed by its comment
+line.
 
 ```plaintext
 5.0e-06
-# initial grain radius (m)
-0.0 0.0 0.0 0.0 0.0 0.0
-# initial Xe (at/m³) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
-0.0 0.0 0.0 0.0 0.0 0.0
-# initial Kr (at/m³) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
-0.0 0.0
-# initial He (at/m³) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
-0.0 0.0
-# initial intragranular bubble concentration (at/m³), radius (m)
+#	initial grain radius (m)
+0.0	0.0	0.0	0.0	0.0	0.0
+#	initial Xe (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
+0.0	0.0	0.0	0.0	0.0	0.0
+#	initial Kr (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
+0.0	0.0	0.0	0.0	0.0	0.0
+#	initial He (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, grain boundary, released
+0.0	0.0
+#	initial intragranular bubble concentration (bub/m3), radius (m)
 0.0
-# initial fuel burn-up (MWd/kgUO2)
+#	initial fuel burn-up (MWd/kgUO2)
 0.0
-# initial fuel effective burn-up (MWd/kgUO2)
+#	initial fuel effective burn-up (MWd/kgUO2)
 0.0
-# initial irradiation time (h)
+#	initial irradiation time (h)
 10641.0
-# initial fuel density (kg/m³)
-0.0 3.0 0.0 0.0 97.0
-# initial U234 U235 U236 U237 U238 (% of heavy atoms) content
-0.0 0.0 0.0 0.0 0.0 0.0 0.0
-# initial Xe133 (at/m³) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
-0.0 0.0 0.0 0.0 0.0 0.0 0.0
-# initial Kr85m (at/m³) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
+#	initial fuel density (kg/m3)
+0.0	3.0	0.0	0.0	97.0
+#	initial U234 U235 U236 U237 U238 (% of heavy atoms) content
+0.0	0.0	0.0	0.0	0.0	0.0	0.0
+#	initial Xe133 (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
+0.0	0.0	0.0	0.0	0.0	0.0	0.0
+#	initial Kr85m (at/m3) produced, intragranular, intragranular in solution, intragranular in bubbles, decayed, grain boundary, released
 0.0
-# initial fuel stoichiometry deviation (\)
+#	initial fuel stoichiometry deviation (/)
+0.0
+#	initial chromium content (ppm)
 ```
 
 **Note**: Ensure that the comment symbol (`#`) is placed **below** each data series. This is mandatory.
+
+**Note**: a file that stops early is accepted and the trailing blocks are left at zero. This is
+deliberate — most cases in the validation database omit the last one or two blocks — but it also
+means that an accidentally missing block produces no diagnostic.
 
 ---
 
 ## Input scaling factors
 
 This file contains the scaling factors applied to various model parameters during the simulation.
+It is optional: when absent, every factor defaults to 1.0.
 
 ```plaintext
 1.0
@@ -109,12 +138,14 @@ This file contains the scaling factors applied to various model parameters durin
 1.0
 # scaling factor - fission rate
 1.0
-# scaling factor - cent parameter
+# scaling factor - diffusion-based release
 1.0
 # scaling factor - helium production rate
 1.0
 # scaling factor - dummy
 ```
+
+**Note**: the *diffusion-based release* factor is read but currently consumed by no model.
 
 ---
 

@@ -71,7 +71,20 @@ void Matrix::setGrainBoundaryVacancyDiffusivity(int input_value, SciantixArray<S
 
         case 2:
         {
-            grain_boundary_vacancy_diffusivity = 3.5/5.0 * 8.86e-6 * exp(- 5.75e-19 / ( boltzmann_constant * history_variable["Temperature"].getFinalValue()));
+            grain_boundary_vacancy_diffusivity = 3.5/5 * 8.86e-6 * exp(- 4.17e4 / history_variable["Temperature"].getFinalValue());
+            reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004), 61-77.\n\t";
+
+            break;
+        }
+
+        case 4:
+        {
+            // Same White (2004) correlation as case 2, with the activation energy written
+            // in joules instead of the rounded 4.17e4 K lumped into the exponent. The two
+            // differ by a few per cent, enough to move a gold: case 2 is what the UO2
+            // validation database was produced with, case 4 what the HBS cases use.
+            grain_boundary_vacancy_diffusivity = 3.5 / 5.0 * 8.86e-6 *
+                exp(- 5.75e-19 / (boltzmann_constant * history_variable["Temperature"].getFinalValue()));
             reference += "iGrainBoundaryVacancyDiffusivity: from White, JNM, 325 (2004)\n\t";
 
             break;
@@ -155,7 +168,11 @@ void Matrix::setPoreResolutionRate(SciantixArray<SciantixVariable> &sciantix_var
         (3.0 * 1.0e-9 / (3.0 * 1.0e-9 + sciantix_variable["HBS pore radius"].getFinalValue())) *
         (1.0e-9 / (1.0e-9 + sciantix_variable["HBS pore radius"].getFinalValue()));
 
-    pore_resolution_rate *= scaling_factors["Cent parameter"].getValue();
+    // ponytail: slot 7 of input_scaling_factors.txt, called "Cent parameter" on the porosity
+    // branch and "Diffusion-based release" on main. The two names are the same slot, so the
+    // sensitivity sweeps keep working, but the slot now has two meanings — give the HBS pore
+    // re-solution knob a slot of its own if Cappellari's release model starts reading this one.
+    pore_resolution_rate *= scaling_factors["Diffusion-based release"].getValue();
 }
  
 void Matrix::setPoreTrappingRate(SciantixArray<Matrix> &matrices, SciantixArray<SciantixVariable> &sciantix_variable, SciantixArray<InputVariable> &scaling_factors)
