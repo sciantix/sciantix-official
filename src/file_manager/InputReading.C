@@ -145,7 +145,37 @@ void InputReading(
 	Sciantix_options[19] = ReadOneSetting("iHeliumProductionRate", input_settings, input_check);
 	Sciantix_options[20] = ReadOneSetting("iStoichiometryDeviation", input_settings, input_check);
 	Sciantix_options[21] = ReadOneSetting("iBubbleDiffusivity",input_settings,input_check);
-	
+
+	// Optional entry: "<value> # Number_of_time_steps_per_interval".
+	// It is looked up by name in a separate pass, not read positionally, so that its
+	// position in the file is irrelevant and the entries added to input_settings.txt
+	// over time cannot shift it. A case that does not declare it keeps the default set
+	// in MainVariables.C. The entry must be placed after every positional entry, since
+	// the positional pass above would otherwise consume it as the setting it precedes.
+	{
+		std::ifstream settings_lookup(TestPath + "input_settings.txt", std::ios::in);
+		std::string line;
+		while (std::getline(settings_lookup, line))
+		{
+			if (line.find("Number_of_time_steps_per_interval") == std::string::npos) continue;
+
+			std::istringstream line_stream(line);
+			double steps_per_interval(0.0);
+			if (line_stream >> steps_per_interval && steps_per_interval > 0.0)
+				Number_of_time_steps_per_interval = steps_per_interval;
+			else
+			{
+				// Not a warning: silently falling back to the default would run the case at
+				// the wrong time resolution and still produce a plausible output file.
+				std::cerr << "ERROR: malformed value for the input entry 'Number_of_time_steps_per_interval'\n"
+				          << "Expected '<positive value> # Number_of_time_steps_per_interval', found:\n"
+				          << line << "\nExecution aborted\n";
+				exit(1);
+			}
+		}
+	}
+	input_check << "Number_of_time_steps_per_interval = " << Number_of_time_steps_per_interval << std::endl;
+
 	if (!input_initial_conditions.fail())
 	{
 		Sciantix_variables[0] = ReadOneParameter("Grain radius[0]", input_initial_conditions, input_check);
