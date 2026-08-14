@@ -659,7 +659,7 @@ void Simulation::HighBurnupStructurePorosity()
         }
 
         default:
-            ErrorMessages::Switch(__FILE__, "HighBurnupStructurePorosity", int(input_variable["HighBurnupStructurePorosity"].getValue()));
+            ErrorMessages::Switch(__FILE__, "iHighBurnupStructurePorosity", int(input_variable["iHighBurnupStructurePorosity"].getValue()));
             break;
     }
 
@@ -758,7 +758,7 @@ void Simulation::HighBurnupStructurePorosity()
             break;
 
         default:
-            ErrorMessages::Switch(__FILE__, "HighBurnupStructurePorosity", int(input_variable["HighBurnupStructurePorosity"].getValue()));
+            ErrorMessages::Switch(__FILE__, "iHighBurnupStructurePorosity", int(input_variable["iHighBurnupStructurePorosity"].getValue()));
             break;
     }
 

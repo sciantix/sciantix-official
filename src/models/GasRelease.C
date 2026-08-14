@@ -1,0 +1,101 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//       _______.  ______  __       ___      .__   __. .___________. __  ___   ___  //
+//      /       | /      ||  |     /   \     |  \ |  | |           ||  | \  \ /  /  //
+//     |   (----`|  ,----'|  |    /  ^  \    |   \|  | `---|  |----`|  |  \  V  /   //
+//      \   \    |  |     |  |   /  /_\  \   |  . `  |     |  |     |  |   >   <    //
+//  .----)   |   |  `----.|  |  /  _____  \  |  |\   |     |  |     |  |  /  .  \   //
+//  |_______/     \______||__| /__/     \__\ |__| \__|     |__|     |__| /__/ \__\  //
+//                                                                                  //
+//  Originally developed by D. Pizzocri & T. Barani                                 //
+//                                                                                  //
+//  Version: 2.2.1                                                                  //
+//  Year: 2026                                                                      //
+//  Authors: D. Pizzocri, G. Zullo.                                                 //
+//                                                                                  //
+//////////////////////////////////////////////////////////////////////////////////////
+
+#include "Simulation.h"
+
+void Simulation::GasRelease()
+{
+    // The HBS reservoirs are declared only for the gas that is also tracked in
+    // the restructured matrix (Xe). For every other gas they do not exist, so
+    // they enter the balance as zero instead of being looked up.
+    auto hbsInventory = [&](const std::string& variable_name)
+    { return sciantix_variable.isElementPresent(variable_name) ? sciantix_variable[variable_name].getFinalValue() : 0.0; };
+
+    // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
+    for (auto& system : sciantix_system)
+    {
+        if (system.getRestructuredMatrix() == 0)
+        {
+            sciantix_variable[system.getGasName() + " released"].setFinalValue(
+                sciantix_variable[system.getGasName() + " produced"].getFinalValue() +
+                hbsInventory(system.getGasName() + " produced in HBS") -
+                sciantix_variable[system.getGasName() + " decayed"].getFinalValue() -
+                sciantix_variable[system.getGasName() + " in grain"].getFinalValue() -
+                hbsInventory(system.getGasName() + " in grain HBS") -
+                sciantix_variable[system.getGasName() + " at grain boundary"].getFinalValue() -
+                hbsInventory(system.getGasName() + " at grain boundary HBS") -
+                hbsInventory(system.getGasName() + " in HBS pores"));
+
+            if (sciantix_variable[system.getGasName() + " released"].getFinalValue() < 0.0)
+                sciantix_variable[system.getGasName() + " released"].setFinalValue(0.0);
+        }
+    }
+
+    // Intergranular gaseous swelling
+    if (sciantix_variable["Grain radius"].getFinalValue() > 0.0)
+        sciantix_variable["Intergranular gas swelling"].setFinalValue(
+            3 / sciantix_variable["Grain radius"].getFinalValue() *
+            sciantix_variable["Intergranular bubble concentration"].getFinalValue() *
+            sciantix_variable["Intergranular bubble volume"].getFinalValue());
+    else
+        sciantix_variable["Intergranular gas swelling"].setFinalValue(0.0);
+
+    // Fission gas release
+    if (sciantix_variable["Xe produced"].getFinalValue() + sciantix_variable["Kr produced"].getFinalValue() > 0.0)
+        sciantix_variable["Fission gas release"].setFinalValue(
+            (sciantix_variable["Xe released"].getFinalValue() + sciantix_variable["Kr released"].getFinalValue()) /
+            (sciantix_variable["Xe produced"].getFinalValue() + sciantix_variable["Kr produced"].getFinalValue()));
+    else
+        sciantix_variable["Fission gas release"].setFinalValue(0.0);
+
+    // Release-to-birth ratio: Xe133
+    // Note that R/B is not defined with a null fission rate.
+    // At radioactive equilibrium in the intra-granular Booth limit, this cumulative ratio
+    // is identically equal to the Turnbull / ANS-5.4 rate-ratio R/B = Rdot / yF, because
+    // (produced - decayed) tends to yF/lambda and `released` is closed by mass balance
+    // (GasDiffusion.C) so the global decay accounting in `decayed` applies to it as well.
+    // See R_B.md for the proof and the numerical verification on test_CONTACT1.
+    if (sciantix_variable["Xe133 produced"].getFinalValue() - sciantix_variable["Xe133 decayed"].getFinalValue() > 0.0)
+        sciantix_variable["Xe133 R/B"].setFinalValue(
+            sciantix_variable["Xe133 released"].getFinalValue() /
+            (sciantix_variable["Xe133 produced"].getFinalValue() - sciantix_variable["Xe133 decayed"].getFinalValue()));
+    else
+        sciantix_variable["Xe133 R/B"].setFinalValue(0.0);
+
+    // Release-to-birth ratio: Kr85m
+    // Note that R/B is not defined with a null fission rate.
+    // Same Turnbull-equivalence argument as for Xe133 R/B above; see R_B.md.
+    if (sciantix_variable["Kr85m produced"].getFinalValue() - sciantix_variable["Kr85m decayed"].getFinalValue() > 0.0)
+        sciantix_variable["Kr85m R/B"].setFinalValue(
+            sciantix_variable["Kr85m released"].getFinalValue() /
+            (sciantix_variable["Kr85m produced"].getFinalValue() - sciantix_variable["Kr85m decayed"].getFinalValue()));
+    else
+        sciantix_variable["Kr85m R/B"].setFinalValue(0.0);
+
+    // Helium fractional release
+    if (sciantix_variable["He produced"].getFinalValue() > 0.0)
+        sciantix_variable["He fractional release"].setFinalValue(sciantix_variable["He released"].getFinalValue() /
+                                                                 sciantix_variable["He produced"].getFinalValue());
+    else
+        sciantix_variable["He fractional release"].setFinalValue(0.0);
+
+    // Helium release rate
+    if (physics_variable["Time step"].getFinalValue() > 0.0)
+        sciantix_variable["He release rate"].setFinalValue(sciantix_variable["He released"].getIncrement() /
+                                                           physics_variable["Time step"].getFinalValue());
+    else
+        sciantix_variable["He release rate"].setFinalValue(0.0);
+}
