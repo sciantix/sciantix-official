@@ -163,3 +163,8 @@ SCIANTIX is developed and maintained by:
 - Lelio Luzzi
 
 Politecnico di Milano, Nuclear Engineering Division.
+
+# Non-uniform source (NUS) solver
+
+Mini guide for the generalized spectral diffusion solver with non-uniform source:
+https://polimi365-my.sharepoint.com/:b:/g/personal/10884872_polimi_it/EUT-2KKVWdBNgbRhSLts3LYB44YjGkc51bAKPb6uTe0oHg?e=YH19AK

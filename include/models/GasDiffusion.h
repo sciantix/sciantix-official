@@ -17,10 +17,11 @@
 #ifndef GAS_DIFFUSION_H
 #define GAS_DIFFUSION_H
 
-#include "Simulation.h"
+#include "Simulation.h"  //Already includes source and solver
 
 /**
  * @brief Defines diffusion models using the spectral diffusion with one equation.
+ * Handles a generic radial source S(r) = A * r + B.
  *
  * @author D. Pizzocri
  * @author T. Barani
@@ -54,6 +55,18 @@ void defineSpectralDiffusion3Equations(SciantixArray<System>&          sciantix_
                                        SciantixArray<SciantixVariable> sciantix_variable,
                                        SciantixArray<SciantixVariable> physics_variable,
                                        int                             n_modes);
+
+// Newly Added
+
+/**
+ * @brief Defines diffusion models using the spectral diffusion with one equation for a non uniform source case
+ *
+ * @author A. Zayat
+ *
+ */
+void defineSpectralDiffusionNUS1Equation(SciantixArray<System>& sciantix_system,
+                                         SciantixArray<Model>&  model,
+                                         int                    n_modes);
 
 /**
  * @brief Handles unsupported diffusion solver options.

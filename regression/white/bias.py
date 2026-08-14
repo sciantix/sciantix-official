@@ -10,8 +10,7 @@ calculated vs experimental swelling) respond. This supports the selection of an
 effective set of scaling-factor values.
 
 It is a *deterministic grid sweep*, complementary to (not a replacement for) the
-random-sampling sensitivity ranking in
-``utilities/regression_scripts/globalSensitivityAnalysis.py``.
+random-sampling sensitivity ranking in ``utilities/globalSensitivityAnalysis.py``.
 
 It produces a single parity figure in which the **gold** points stay fixed (the
 reference ``output_gold.txt`` swelling) and each **test** point carries a vertical
@@ -25,7 +24,7 @@ defaults to 1.0). For each combination this script writes a temporary
 and restores the case byte-for-byte afterwards (output.txt snapshot + removal of
 the temporary scaling file and the stray run artifacts).
 
-The BIAS / RMSE / MAD definitions match those printed by ``parity_plot.py`` so
+The BIAS / RMSE / MAD definitions match those printed by ``plot.py`` so
 the numbers are directly comparable.
 
 Requires a built executable at ``build/sciantix.x`` (run ``./Allmake.sh`` first).
@@ -129,7 +128,7 @@ def restore_case(case_dir, original_output):
 
 
 def parity_stats(test_arr, exp_arr):
-    """BIAS / RMSE / MAD of (test - exp), matching parity_plot.py definitions."""
+    """BIAS / RMSE / MAD of (test - exp), matching plot.py definitions."""
     err = test_arr - exp_arr
     return {
         "BIAS": np.median(err),

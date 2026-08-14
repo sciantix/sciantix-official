@@ -18,6 +18,8 @@
 #include "ErrorMessages.h"
 #include "Solver.h"
 
+using namespace std;
+
 double Solver::Integrator(double initial_value, double parameter, double increment)
 {
     return initial_value + parameter * increment;
@@ -66,6 +68,68 @@ double Solver::SpectralDiffusion(double* initial_condition, std::vector<double> 
         initial_condition[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);
 
         solution += projection_coeff * n_coeff * initial_condition[n] / ((4. / 3.) * M_PI);
+    }
+
+    return solution;
+}
+
+// New Added Solver
+double Solver::SpectralDiffusionNUS(
+    double* initial_condition, std::vector<double> parameter, Source non_uniform_source, double increment, int factor)
+{
+    // parameter [N_modes, D, a, l]
+    // Non Uniform Source is of class Source that has: NormalizedDomain, Slopes and Intercepts
+    // NormalizedDomain is of size N while the slopes and intercepts are of size N-1
+
+    size_t             n;
+    unsigned short int np1(1);
+
+    double diffusion_rate_coeff(0.0);
+    double diffusion_rate(0.0);
+    double source_rate(0.0);
+    double projection_coeff(0.0);
+    double solution(0.0);
+    double n_coeff = 0;
+
+    double NumberofRegions = non_uniform_source.Slopes.size();  // Obtains the number of regions
+
+    std::vector<std::vector<double>> Full_Domain(NumberofRegions, std::vector<double>(2));
+    std::vector<std::vector<double>> Full_Source(NumberofRegions, std::vector<double>(2));
+
+    // Fill Full_Source
+    for (size_t i = 0; i < NumberofRegions; ++i)
+    {
+        Full_Source[i][0] = non_uniform_source.Slopes[i];      // A
+        Full_Source[i][1] = non_uniform_source.Intercepts[i];  // B
+    }
+
+    // Fill Full_Domain
+    for (size_t i = 0; i < NumberofRegions; ++i)
+    {
+        Full_Domain[i][0] = parameter.at(2) * non_uniform_source.NormalizedDomain[i];      // edge1
+        Full_Domain[i][1] = parameter.at(2) * non_uniform_source.NormalizedDomain[i + 1];  // edge2
+    }
+
+    diffusion_rate_coeff = pow(M_PI, 2) * parameter.at(1) / pow(parameter.at(2), 2);
+    projection_coeff     = sqrt(8.0 / M_PI);
+
+    for (n = 0; n < parameter.at(0); n++)
+    {
+        np1 = n + 1;
+
+        n_coeff = 0;
+        for (size_t k = 0; k < NumberofRegions; ++k)
+        {
+            n_coeff += SourceProjection_i(parameter.at(2), Full_Domain[k], Full_Source[k], np1);
+        }
+        const double n_c = -pow(-1.0, np1) / np1;
+
+        diffusion_rate = diffusion_rate_coeff * pow(np1, 2) + parameter.at(3);
+        source_rate    = projection_coeff * n_coeff;
+
+        initial_condition[n] = Solver::Decay(initial_condition[n], diffusion_rate, source_rate, increment);
+
+        solution += NonSym(factor) * projection_coeff * n_c * initial_condition[n] / ((4. / 3.) * M_PI);
     }
 
     return solution;
@@ -527,4 +591,48 @@ double Solver::NewtonLangmuirBasedModel(double initial_value, std::vector<double
                                " iterations (|f| = " + std::to_string(std::fabs(fun)) +
                                "); returning the last finite iterate");
     return last_valid;
+}
+
+// New Source Projection Function on the spatial mode i
+double Solver::SourceProjection_i(double              GrainRadius,
+                                  std::vector<double> Domain,
+                                  std::vector<double> Source_Function,
+                                  double              SpatialMode_i)
+{
+    if (GrainRadius <= 0.0)
+        ErrorMessages::Fatal("Solver.C", "SourceProjection_i: the grain radius must be strictly positive");
+
+    int    i  = SpatialMode_i;
+    double a  = GrainRadius;
+    double A  = Source_Function[0];
+    double B  = Source_Function[1];
+    double r0 = Domain[0];
+    double r1 = Domain[1];
+    double pi = M_PI;
+
+    // First term calculation (proj0)
+    double proj0 =
+        (2 * A * a * a * std::cos(pi * i * r0 / a) + pi * a * i * (2 * A * r0 + B) * std::sin(pi * i * r0 / a) -
+         pi * pi * i * i * r0 * (A * r0 + B) * std::cos(pi * i * r0 / a)) /
+        (a * pi * pi * i * i * i);
+
+    // Second term calculation (proj1)
+    double proj1 =
+        (2 * A * a * a * std::cos(pi * i * r1 / a) + pi * a * i * (2 * A * r1 + B) * std::sin(pi * i * r1 / a) -
+         pi * pi * i * i * r1 * (A * r1 + B) * std::cos(pi * i * r1 / a)) /
+        (a * pi * pi * i * i * i);
+
+    return proj1 - proj0;
+}
+
+double Solver::NonSym(int input)
+{
+    double theta1 = 0;
+    double theta2 = M_PI;
+    double phi1   = 0;
+    double phi2   = M_PI / 8;
+
+    double f = (cos(theta1) - cos(theta2)) * (phi2 - phi1) / (4 * M_PI);
+
+    return input ? f : 1.0;
 }

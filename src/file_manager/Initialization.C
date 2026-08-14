@@ -15,10 +15,15 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "Initialization.h"
+#include "MainVariables.h"
+#include "Solver.h"
+#include "Source.h"
+#include "SourceHandler.h"
 
 void Initialization(double              Sciantix_history[],
                     double              Sciantix_variables[],
                     double              Sciantix_diffusion_modes[],
+                    double              Sciantix_diffusion_modes_NUS[],
                     std::vector<double> Temperature_input,
                     std::vector<double> Fissionrate_input,
                     std::vector<double> Hydrostaticstress_input,
@@ -61,6 +66,16 @@ void Initialization(double              Sciantix_history[],
     double initial_condition(0.0);
     double projection_remainder(0.0);
     double reconstructed_solution(0.0);
+
+    // Companion state for the non-uniform-source projection: the initial condition is a Source,
+    // hence the explicit null initialization.
+    Source null_source;
+    null_source.time = 0;
+    null_source.NormalizedDomain.resize(2, 0.0);
+    null_source.Slopes.resize(1, 0.0);
+    null_source.Intercepts.resize(1, 0.0);
+
+    Source initial_condition_NUS = null_source;
     int    iteration(0), iteration_max(20), n(0), np1(1), n_modes(40), k(0), K(18);
     double projection_coeff(0.0);
     projection_coeff = -sqrt(8.0 / M_PI);
@@ -149,6 +164,125 @@ void Initialization(double              Sciantix_history[],
                     projection_coeff * n_coeff * Sciantix_diffusion_modes[k * n_modes + n] * 3.0 / (4.0 * M_PI);
             }
             projection_remainder = initial_condition - reconstructed_solution;
+        }
+    }
+
+    // NUS SOLVER
+    if (Sciantix_options[2] == 4)
+    {
+        for (k = 0; k < K; ++k)
+        {
+            if (ICfile)
+            {
+                initial_condition_NUS =
+                    (static_cast<size_t>(k) < initial_distribution.size()) ? initial_distribution.at(k) : null_source;
+
+                const size_t                     NumberofRegions = initial_condition_NUS.Slopes.size();
+                std::vector<std::vector<double>> domain(NumberofRegions, std::vector<double>(2));
+                std::vector<std::vector<double>> source(NumberofRegions, std::vector<double>(2));
+                Solver                           solver;
+
+                for (size_t i = 0; i < NumberofRegions; ++i)
+                {
+                    source[i][0] = initial_condition_NUS.Slopes[i];
+                    source[i][1] = initial_condition_NUS.Intercepts[i];
+                    domain[i][0] = Sciantix_variables[0] * initial_condition_NUS.NormalizedDomain[i];
+                    domain[i][1] = Sciantix_variables[0] * initial_condition_NUS.NormalizedDomain[i + 1];
+                }
+
+                for (n = 0; n < n_modes; ++n)
+                {
+                    np1        = n + 1;
+                    double n_c = 0.0;
+                    for (size_t x = 0; x < NumberofRegions; ++x)
+                    {
+                        n_c += solver.SourceProjection_i(Sciantix_variables[0], domain[x], source[x], np1);
+                    }
+                    Sciantix_diffusion_modes_NUS[k * n_modes + n] = -projection_coeff * n_c;
+                }
+            }
+            else
+            {
+                // fallback: use uniform initial condition
+                switch (k)
+                {
+                    case 0:
+                        initial_condition = Sciantix_variables[2];
+                        break;
+                    case 1:
+                        initial_condition = Sciantix_variables[3];
+                        break;
+                    case 2:
+                        initial_condition = Sciantix_variables[4];
+                        break;
+                    case 3:
+                        initial_condition = Sciantix_variables[8];
+                        break;
+                    case 4:
+                        initial_condition = Sciantix_variables[9];
+                        break;
+                    case 5:
+                        initial_condition = Sciantix_variables[10];
+                        break;
+                    case 6:
+                        initial_condition = Sciantix_variables[14];
+                        break;
+                    case 7:
+                        initial_condition = Sciantix_variables[15];
+                        break;
+                    case 8:
+                        initial_condition = Sciantix_variables[16];
+                        break;
+                    case 9:
+                        initial_condition = Sciantix_variables[49];
+                        break;
+                    case 10:
+                        initial_condition = Sciantix_variables[50];
+                        break;
+                    case 11:
+                        initial_condition = Sciantix_variables[51];
+                        break;
+                    case 12:
+                        initial_condition = Sciantix_variables[58];
+                        break;
+                    case 13:
+                        initial_condition = Sciantix_variables[59];
+                        break;
+                    case 14:
+                        initial_condition = Sciantix_variables[60];
+                        break;
+                    case 15:
+                        initial_condition = Sciantix_variables[92];
+                        break;
+                    case 16:
+                        initial_condition = Sciantix_variables[93];
+                        break;
+                    case 17:
+                        initial_condition = Sciantix_variables[94];
+                        break;
+                    default:
+                        initial_condition = 0.0;
+                        break;
+                }
+
+                projection_remainder = initial_condition;
+                for (iteration = 0; iteration < iteration_max; ++iteration)
+                {
+                    reconstructed_solution = 0.0;
+                    for (n = 0; n < n_modes; ++n)
+                    {
+                        if (iteration == 0)
+                            Sciantix_diffusion_modes_NUS[k * n_modes + n] = 0;
+                        np1                  = n + 1;
+                        const double n_coeff = pow(-1.0, np1) / np1;
+                        Sciantix_diffusion_modes_NUS[k * n_modes + n] +=
+                            projection_coeff * n_coeff * projection_remainder;
+                        reconstructed_solution += projection_coeff * n_coeff *
+                                                  Sciantix_diffusion_modes_NUS[k * n_modes + n] * 3.0 / (4.0 * M_PI);
+                    }
+                    projection_remainder = initial_condition - reconstructed_solution;
+                }
+            }
         }
     }
 

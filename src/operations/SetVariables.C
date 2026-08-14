@@ -21,7 +21,8 @@ void Simulation::setVariables(int    Sciantix_options[],
                               double Sciantix_history[],
                               double Sciantix_variables[],
                               double Sciantix_scaling_factors[],
-                              double Sciantix_diffusion_modes[])
+                              double Sciantix_diffusion_modes[],
+                              double Sciantix_diffusion_modes_NUS[])
 {
     // Input variable
     if (input_variable.empty())
@@ -87,6 +88,15 @@ void Simulation::setVariables(int    Sciantix_options[],
         }
     }
 
+    // Diffusion modes NUS
+    for (int i = 0; i < n_modes; ++i)
+    {
+        for (int j = 0; j <= 17; j++)
+        {
+            modes_initial_conditions_NUS[j * n_modes + i] = Sciantix_diffusion_modes_NUS[j * n_modes + i];
+        }
+    }
+
     // Scaling factors
     int index = 0;
     for (std::string name : getScalingFactorsNames())
@@ -94,4 +104,11 @@ void Simulation::setVariables(int    Sciantix_options[],
         scaling_factors.push(InputVariable(name, Sciantix_scaling_factors[index]));
         index++;
     }
+
+    // Source profiles seen by the NUS solver: the grain-boundary re-solution model consumes the
+    // corrected profiles, everything else the interpolated ones.
+    if (input_variable["iGrainBoundaryResolution"].getValue() == 1)
+        sourcesinput = sources_correct;
+    else
+        sourcesinput = sources_interp;
 }

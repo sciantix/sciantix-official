@@ -17,6 +17,8 @@
 #ifndef MAIN_VARIABLES_H
 #define MAIN_VARIABLES_H
 
+#include "Source.h"
+
 #include <fstream>
 #include <vector>
 
@@ -47,6 +49,9 @@ extern double Sciantix_variables[SCIANTIX_VARIABLES_SIZE];
 extern double Sciantix_scaling_factors[SCIANTIX_SCALING_FACTORS_SIZE];
 extern double Sciantix_diffusion_modes[SCIANTIX_DIFFUSION_MODES_SIZE];
 
+// Companion mode array used by the non-uniform-source (NUS) spectral solver.
+extern double Sciantix_diffusion_modes_NUS[SCIANTIX_DIFFUSION_MODES_SIZE];
+
 extern long long int Time_step_number;
 extern double        Time_h, dTime_h, Time_end_h;
 extern double        Time_s, Time_end_s;
@@ -70,5 +75,15 @@ extern std::vector<double> Temperature_input;
 extern std::vector<double> Fissionrate_input;
 extern std::vector<double> Hydrostaticstress_input;
 extern std::vector<double> Steampressure_input;
+extern std::vector<Source> sources_input;
+extern std::vector<Source> sources_interp;
+extern std::vector<Source> sources_correct;
+
+extern std::vector<Source> initial_distribution;
+extern bool                ICfile;
+extern double              visualization;
+extern double              animation;
+extern double              iNonSym;
+extern double              GBresolve;
 
 #endif

@@ -2,19 +2,23 @@
 This is a python script to write the SCIANTIX default input file "input_settings.txt".
 @author G. Zullo
 
-Two constraints are enforced by src/file_manager/InputReading.C and are checked below:
+The settings are positional: they are written in the order in which InputReading.C fills
+Sciantix_options[0..28]. Adding, removing or reordering an entry here without doing the
+same there silently shifts every following option, so the count is asserted below.
 
-1. The settings are positional: they are written in the order in which InputReading.C
-   fills Sciantix_options[0..24]. Adding, removing or reordering an entry here without
-   doing the same there silently shifts every following option.
+A settings file may legally stop early — ReadOneSetting() leaves the remaining options at
+zero, since reaching end of file is not an extraction error. That is what lets a file
+written for an older version keep working, and it is also why a missing option produces
+no diagnostic.
 
-2. ReadOneSetting() skips the inline comment with ignore(256, '\\n'), so the text after
-   '#' must stay shorter than 256 characters. A longer comment leaves its tail in the
-   stream, the next extraction fails, and every remaining option is silently read as 0.
+The inline comment used to be capped: ReadOneSetting() skipped it with ignore(256, '\\n'),
+so a comment longer than 256 characters left its tail in the stream and every option after
+it was read as zero. skipRestOfLine() now ignores to the newline without a bound, so the
+cap is gone and comments can be as long as they need to be.
 """
 
-# ReadOneSetting() skips at most 256 characters after '#'; keep a margin.
-MAX_COMMENT_LENGTH = 240
+# Options consumed by InputReading.C, from iGrainGrowth to iGrainBoundaryResolution.
+EXPECTED_OPTIONS = 29
 
 # (default value, option name, available models)
 SETTINGS = [
@@ -25,7 +29,8 @@ SETTINGS = [
      '5= UO2-HBS, 6= stoichiometry-dependent, 7-8-10= UO2-Cr, 9= Cooper (2021), 90= GPR-updated, 99= null value'),
     (1, 'iDiffusionSolver',
      '1= SDA with quasi-stationary hypothesis, 2= SDA without quasi-stationary hypothesis, '
-     '3= SDA with three coupled equations (UO2 + HBS)'),
+     '3= SDA with three coupled equations (UO2 + HBS), '
+     '4= generalized SDA with non-uniform source, Zayat et al.'),
     (1, 'iIntraGranularBubbleBehavior',
      '0= constant concentration and radius, 1= Pizzocri et al. (2018), 2= White and Tucker (1983), '
      '3= annealing / helium similarity ratio, 99= no intragranular bubbles'),
@@ -78,18 +83,26 @@ SETTINGS = [
      '0= White (2004) coalescence, saturation threshold from Pastore et al. (2013), '
      '1= Pastore et al. (2013) coalescence, Cappellari et al. (2025) release, '
      '2= White (2004) coalescence, Cappellari et al. (2025) release'),
+    (0, 'iNUSOutput',
+     '0= visualization disabled, 1= write the source and initial-condition shapes '
+     '(iDiffusionSolver = 4 only)'),
+    (0, 'iNUSAnimation',
+     '0= visualization disabled, 1= write the time-resolved source shape '
+     '(requires iNUSOutput = 1)'),
+    (0, 'iNonSym',
+     '0= sphere, 1= implantation geometry (iDiffusionSolver = 4 only)'),
+    (0, 'iGrainBoundaryResolution',
+     '0= off, 1= grain-boundary re-solution as a localized source in the outer shell '
+     '(iDiffusionSolver = 4 only)'),
 ]
 
-lines = [f'{value}    #    {name} ({models})\n' for value, name, models in SETTINGS]
+if len(SETTINGS) != EXPECTED_OPTIONS:
+    raise ValueError(
+        f'{len(SETTINGS)} options declared here against the {EXPECTED_OPTIONS} that '
+        f'InputReading.C reads — the two must stay in step, and in the same order'
+    )
 
-# Refuse to write a file the parser would misread (see note 2 in the docstring).
-for line in lines:
-    comment = line[line.index('#') + 1:].rstrip('\n')
-    if len(comment) > MAX_COMMENT_LENGTH:
-        raise ValueError(
-            f'comment is {len(comment)} characters, above the {MAX_COMMENT_LENGTH} limit '
-            f'imposed by ReadOneSetting(): {line.split()[2]}'
-        )
+lines = [f'{value}    #    {name} ({models})\n' for value, name, models in SETTINGS]
 
 with open('input_settings.txt', 'w') as file:
     file.writelines(lines)

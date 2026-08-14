@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "InputReading.h"
+#include "MainVariables.h"
 #include "Sciantix.h"
 #include "Simulation.h"
 #include "TUSrcCoupling.h"
@@ -28,12 +29,18 @@ void callSciantix(int    Sciantix_options[],
 {
     Simulation* simulation = Simulation::getInstance();
 
-    simulation->initialize(
-        Sciantix_options, Sciantix_history, Sciantix_variables, Sciantix_scaling_factors, Sciantix_diffusion_modes);
+    // The TU coupling exposes the uniform-source interface only; the NUS mode array is the
+    // global one and stays untouched when iDiffusionSolver != 4.
+    simulation->initialize(Sciantix_options,
+                           Sciantix_history,
+                           Sciantix_variables,
+                           Sciantix_scaling_factors,
+                           Sciantix_diffusion_modes,
+                           ::Sciantix_diffusion_modes_NUS);
 
     simulation->execute();
 
-    simulation->update(Sciantix_variables, Sciantix_diffusion_modes);
+    simulation->update(Sciantix_variables, Sciantix_diffusion_modes, ::Sciantix_diffusion_modes_NUS);
 }
 
 void getSciantixOptions(int Sciantix_options[], double Sciantix_scaling_factors[])

@@ -21,6 +21,7 @@ double Sciantix_history[SCIANTIX_HISTORY_SIZE];
 double Sciantix_variables[SCIANTIX_VARIABLES_SIZE];
 double Sciantix_scaling_factors[SCIANTIX_SCALING_FACTORS_SIZE];
 double Sciantix_diffusion_modes[SCIANTIX_DIFFUSION_MODES_SIZE];
+double Sciantix_diffusion_modes_NUS[SCIANTIX_DIFFUSION_MODES_SIZE];
 
 long long int Time_step_number(0);
 double        Time_h(0.0), dTime_h(0.0), Time_end_h(0.0);  // (h)
@@ -45,3 +46,14 @@ std::vector<double> Temperature_input;
 std::vector<double> Fissionrate_input;
 std::vector<double> Hydrostaticstress_input;
 std::vector<double> Steampressure_input;
+
+std::vector<Source> sources_input;
+std::vector<Source> sources_interp;
+std::vector<Source> sources_correct;
+std::vector<Source> initial_distribution;
+
+bool   ICfile;
+double visualization;
+double animation;
+double iNonSym;
+double GBresolve;

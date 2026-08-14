@@ -15,6 +15,7 @@
 //////////////////////////////////////////////////////////////////////////////////////
 
 #include "InputReading.h"
+#include "SourceHandler.h"
 #include <limits>
 
 /**
@@ -130,7 +131,9 @@ void InputReading(int                  Sciantix_options[],
                   std::vector<double>& Hydrostaticstress_input,
                   std::vector<double>& Steampressure_input,
                   double&              Time_end_h,
-                  double&              Time_end_s)
+                  double&              Time_end_s,
+                  std::vector<Source>& sources_input,
+                  std::vector<Source>& initial_distribution)
 {
     /**
      * Besides the two input files, this routines creates an input_check.txt file
@@ -182,6 +185,29 @@ void InputReading(int                  Sciantix_options[],
     Sciantix_options[22] = ReadOneSetting("iChromiumSolubility", input_settings, input_check);
     Sciantix_options[23] = ReadOneSetting("iDensification", input_settings, input_check);
     Sciantix_options[24] = ReadOneSetting("iReleaseMode", input_settings, input_check);
+
+    // Non-uniform-source (NUS) options. Absent from the settings file they read back as zero,
+    // which is the inactive value for all four.
+    Sciantix_options[25] = ReadOneSetting("iNUSOutput", input_settings, input_check);
+    Sciantix_options[26] = ReadOneSetting("iNUSAnimation", input_settings, input_check);
+    Sciantix_options[27] = ReadOneSetting("iNonSym", input_settings, input_check);
+    Sciantix_options[28] = ReadOneSetting("iGrainBoundaryResolution", input_settings, input_check);
+
+    visualization = Sciantix_options[25];
+    animation     = Sciantix_options[26];
+    iNonSym       = Sciantix_options[27];
+
+    // The radial source profile is mandatory only for the NUS solver; loading it unconditionally
+    // would abort every case that does not ship a non_uniform_source.txt.
+    if (Sciantix_options[2] == 4)
+    {
+        loadSourcesFromFile("non_uniform_source.txt", sources_input);
+        loadICFromFile("initial_distribution.txt", initial_distribution, ICfile);
+    }
+    else
+    {
+        ICfile = false;
+    }
 
     if (!input_initial_conditions.fail())
     {

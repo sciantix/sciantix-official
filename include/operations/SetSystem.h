@@ -20,7 +20,10 @@
 #include "InputVariable.h"
 #include "Matrix.h"
 #include "SciantixArray.h"
+#include "Source.h"
 #include "System.h"
+
+#include <vector>
 
 /**
  * @brief Sets up the system properties in the simulation.
@@ -35,41 +38,47 @@ System Xe_in_UO2(SciantixArray<Matrix>&           matrices,
                  SciantixArray<InputVariable>&    input_variable,
                  SciantixArray<SciantixVariable>& sciantix_variable,
                  SciantixArray<SciantixVariable>& history_variable,
-                 SciantixArray<InputVariable>&    scaling_factors);
+                 SciantixArray<InputVariable>&    scaling_factors,
+                 std::vector<Source>&             sources_input);
 
 System Xe_in_UO2HBS(SciantixArray<Matrix>&           matrices,
                     SciantixArray<Gas>&              gas,
                     SciantixArray<InputVariable>&    input_variable,
                     SciantixArray<SciantixVariable>& sciantix_variable,
                     SciantixArray<SciantixVariable>& history_variable,
-                    SciantixArray<InputVariable>&    scaling_factors);
+                    SciantixArray<InputVariable>&    scaling_factors,
+                    std::vector<Source>&             sources_input);
 
 System Kr_in_UO2(SciantixArray<Matrix>&           matrices,
                  SciantixArray<Gas>&              gas,
                  SciantixArray<InputVariable>&    input_variable,
                  SciantixArray<SciantixVariable>& sciantix_variable,
                  SciantixArray<SciantixVariable>& history_variable,
-                 SciantixArray<InputVariable>&    scaling_factors);
+                 SciantixArray<InputVariable>&    scaling_factors,
+                 std::vector<Source>&             sources_input);
 
 System He_in_UO2(SciantixArray<Matrix>&           matrices,
                  SciantixArray<Gas>&              gas,
                  SciantixArray<InputVariable>&    input_variable,
                  SciantixArray<SciantixVariable>& sciantix_variable,
                  SciantixArray<SciantixVariable>& history_variable,
-                 SciantixArray<InputVariable>&    scaling_factors);
+                 SciantixArray<InputVariable>&    scaling_factors,
+                 std::vector<Source>&             sources_input);
 
 System Xe133_in_UO2(SciantixArray<Matrix>&           matrices,
                     SciantixArray<Gas>&              gas,
                     SciantixArray<InputVariable>&    input_variable,
                     SciantixArray<SciantixVariable>& sciantix_variable,
                     SciantixArray<SciantixVariable>& history_variable,
-                    SciantixArray<InputVariable>&    scaling_factors);
+                    SciantixArray<InputVariable>&    scaling_factors,
+                    std::vector<Source>&             sources_input);
 
 System Kr85m_in_UO2(SciantixArray<Matrix>&           matrices,
                     SciantixArray<Gas>&              gas,
                     SciantixArray<InputVariable>&    input_variable,
                     SciantixArray<SciantixVariable>& sciantix_variable,
                     SciantixArray<SciantixVariable>& history_variable,
-                    SciantixArray<InputVariable>&    scaling_factors);
+                    SciantixArray<InputVariable>&    scaling_factors,
+                    std::vector<Source>&             sources_input);
 
 #endif  // SETSYSTEM_H
