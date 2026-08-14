@@ -18,14 +18,15 @@
 
 void Simulation::HighBurnupStructureFormation()
 {
-    if (!int(input_variable["iHighBurnupStructureFormation"].getValue())) return;
+    if (!int(input_variable["iHighBurnupStructureFormation"].getValue()))
+        return;
 
     // Model declaration
     Model model_;
 
     model_.setName("High-burnup structure formation");
 
-    std::string reference;
+    std::string         reference;
     std::vector<double> parameter;
 
     switch (int(input_variable["iHighBurnupStructureFormation"].getValue()))
@@ -43,13 +44,14 @@ void Simulation::HighBurnupStructureFormation()
 
         case 1:
         {
-            reference += ": Barani et al. Journal of Nuclear Materials 539 (2020) 152296 (original KJMA, no incubation burnup)";
+            reference +=
+                ": Barani et al. Journal of Nuclear Materials 539 (2020) 152296 (original KJMA, no incubation burnup)";
 
             double avrami_constant(3.54);
             double transformation_rate(2.77e-7);
-            double resolution_layer_thickness = 1.0e-9; // (m)
-            double resolution_critical_distance = 1.0e-9; // (m)
-            double hbs_incubation_burnup = 0.0; // MWd/kgHM
+            double resolution_layer_thickness   = 1.0e-9;  // (m)
+            double resolution_critical_distance = 1.0e-9;  // (m)
+            double hbs_incubation_burnup        = 0.0;     // MWd/kgHM
 
             parameter.push_back(avrami_constant);
             parameter.push_back(transformation_rate);
@@ -60,21 +62,22 @@ void Simulation::HighBurnupStructureFormation()
             break;
         }
 
-
         case 2:
         {
-            reference += ": Barani et al. Journal of Nuclear Materials 539 (2020) 152296; incubation burnup bu_inc = 15 MWd/kgHM from Biswas & Aagesen Comput. Mater. Sci. 258 (2025) 114052, Eq. 45; parameter selection Zullo (2026)";
+            reference += ": Barani et al. Journal of Nuclear Materials 539 (2020) 152296; incubation burnup bu_inc = "
+                         "15 MWd/kgHM from Biswas & Aagesen Comput. Mater. Sci. 258 (2025) 114052, Eq. 45; parameter "
+                         "selection Zullo (2026)";
 
             double avrami_constant(3.54);
             double transformation_rate(2.77e-7);
-            double resolution_layer_thickness = 1.0e-9; // (m)
-            double resolution_critical_distance = 1.0e-9; // (m)
+            double resolution_layer_thickness   = 1.0e-9;  // (m)
+            double resolution_critical_distance = 1.0e-9;  // (m)
             // HBS-formation incubation burnup (MWd/kgHM). Below this value
             // neither grain sub-division (alpha_r) nor pore nucleation (nu_P)
             // are active, following the modified KJMA formulation of Biswas &
             // Aagesen 2025 (Comput. Mater. Sci. 258, 114052, Eq. 45) derived
             // from the dislocation-energy vs subgrain-formation-energy balance.
-            double hbs_incubation_burnup = 15.0; // MWd/kgHM
+            double hbs_incubation_burnup = 15.0;  // MWd/kgHM
 
             parameter.push_back(avrami_constant);
             parameter.push_back(transformation_rate);
@@ -92,17 +95,18 @@ void Simulation::HighBurnupStructureFormation()
             //      nucleation threshold rho_crit
             // Zullo (2026), KJMA(rho_d) calibration on PIE data from
             // Gerczak (2018) and Noirot (2015) -> K_rho, gamma_rho
-            reference += ": dislocation-density KJMA, Veshchunov & Shestak J. Nucl. Mater. 384 (2009) 12-18; fit Zullo (2026)";
+            reference +=
+                ": dislocation-density KJMA, Veshchunov & Shestak J. Nucl. Mater. 384 (2009) 12-18; fit Zullo (2026)";
 
-            double A_fit     = 6.545e12; // (m^-2) / (MWd/kgHM)^n prefactor
-            double n_fit     = 1.151;    // burnup exponent
-            double A_inf     = 0.608;    // high-T plateau of temperature factor
-            double Tc        = 1109.0;   // (K) sigmoid centre
-            double dT        = 25.8;     // (K) sigmoid width
-            double rho_crit  = 6.0e14;   // (m^-2) HBS nucleation threshold (Veshchunov 2009)
-            double rho_scale = 1.0e15;   // (m^-2) normalization so that xi is dimensionless and O(1)
-            double K_rho     = 2.597;    // (-) KJMA(rho) prefactor, fit on PIE (Zullo 2026)
-            double gamma_rho = 1.104;    // (-) KJMA(rho) exponent, fit on PIE (Zullo 2026)
+            double A_fit     = 6.545e12;  // (m^-2) / (MWd/kgHM)^n prefactor
+            double n_fit     = 1.151;     // burnup exponent
+            double A_inf     = 0.608;     // high-T plateau of temperature factor
+            double Tc        = 1109.0;    // (K) sigmoid centre
+            double dT        = 25.8;      // (K) sigmoid width
+            double rho_crit  = 6.0e14;    // (m^-2) HBS nucleation threshold (Veshchunov 2009)
+            double rho_scale = 1.0e15;    // (m^-2) normalization so that xi is dimensionless and O(1)
+            double K_rho     = 2.597;     // (-) KJMA(rho) prefactor, fit on PIE (Zullo 2026)
+            double gamma_rho = 1.104;     // (-) KJMA(rho) exponent, fit on PIE (Zullo 2026)
 
             parameter.push_back(A_fit);
             parameter.push_back(n_fit);
@@ -118,7 +122,9 @@ void Simulation::HighBurnupStructureFormation()
         }
 
         default:
-            ErrorMessages::Switch(__FILE__, "iHighBurnupStructureFormation", int(input_variable["iHighBurnupStructureFormation"].getValue()));
+            ErrorMessages::Switch(__FILE__,
+                                  "iHighBurnupStructureFormation",
+                                  int(input_variable["iHighBurnupStructureFormation"].getValue()));
             break;
     }
 
@@ -137,16 +143,16 @@ void Simulation::HighBurnupStructureFormation()
         //   alpha_r = 0                                        otherwise
         // Unlike the Decay ODE solver, the analytic form is robust across the
         // bu_inc crossing, where dalpha_r/dbu is formally discontinuous.
-        double n_avrami = model["High-burnup structure formation"].getParameter().at(0);
+        double n_avrami         = model["High-burnup structure formation"].getParameter().at(0);
         double K_transformation = model["High-burnup structure formation"].getParameter().at(1);
-        double bu_inc = model["High-burnup structure formation"].getParameter().at(4);
-        double bu_eff_U = sciantix_variable["Effective burnup"].getFinalValue() / 0.8814;
+        double bu_inc           = model["High-burnup structure formation"].getParameter().at(4);
+        double bu_eff_U         = sciantix_variable["Effective burnup"].getFinalValue() / 0.8814;
 
         double alpha_r_new = 0.0;
         if (bu_eff_U > bu_inc)
         {
             double bu_delta = bu_eff_U - bu_inc;
-            alpha_r_new = 1.0 - exp(- K_transformation * pow(bu_delta, n_avrami));
+            alpha_r_new     = 1.0 - exp(-K_transformation * pow(bu_delta, n_avrami));
         }
         sciantix_variable["Restructured volume fraction"].setFinalValue(alpha_r_new);
     }
@@ -185,23 +191,23 @@ void Simulation::HighBurnupStructureFormation()
         double gamma_rho = model["High-burnup structure formation"].getParameter().at(8);
 
         double bu_local_HM = sciantix_variable["Burnup"].getFinalValue() / 0.8814;
-        double T = history_variable["Temperature"].getFinalValue();
+        double T           = history_variable["Temperature"].getFinalValue();
 
         double rho_d = 0.0;
         if (bu_local_HM > 0.0)
         {
             double temp_factor = A_inf + (1.0 - A_inf) / (1.0 + exp((T - Tc) / dT));
-            rho_d = A_fit * pow(bu_local_HM, n_fit) * temp_factor;
+            rho_d              = A_fit * pow(bu_local_HM, n_fit) * temp_factor;
         }
 
-        double xi = std::max((rho_d - rho_crit) / rho_scale, 0.0);
+        double xi        = std::max((rho_d - rho_crit) / rho_scale, 0.0);
         double f_instant = 1.0 - std::exp(-K_rho * std::pow(xi, gamma_rho));
 
         // Cap strictly below 1 to preserve KJMA asymptotic behaviour and
         // protect the downstream porosity sweeping term, which computes
         // 1/(1 - alpha) and would produce inf/NaN if alpha reached exactly 1.
         const double f_max = 1.0 - 1.0e-9;
-        f_instant = std::min(f_max, f_instant);
+        f_instant          = std::min(f_max, f_instant);
 
         double alpha_r_old = sciantix_variable["Restructured volume fraction"].getInitialValue();
         double alpha_r_new = std::min(f_max, std::max(alpha_r_old, f_instant));

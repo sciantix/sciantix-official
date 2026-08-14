@@ -374,10 +374,16 @@ std::vector<SciantixVariable> initializeSciantixVariable(double Sciantix_variabl
 
         SciantixVariable(
             "trapping rate hbs", "(1/s)", Sciantix_variables[120], Sciantix_variables[120], toOutputHighBurnupStructure),
-        SciantixVariable(
-            "nucleation rate hbs", "(1/s)", Sciantix_variables[121], Sciantix_variables[121], toOutputHighBurnupStructure),
-        SciantixVariable(
-            "re-solution rate hbs", "(1/s)", Sciantix_variables[122], Sciantix_variables[122], toOutputHighBurnupStructure),
+        SciantixVariable("nucleation rate hbs",
+                         "(1/s)",
+                         Sciantix_variables[121],
+                         Sciantix_variables[121],
+                         toOutputHighBurnupStructure),
+        SciantixVariable("re-solution rate hbs",
+                         "(1/s)",
+                         Sciantix_variables[122],
+                         Sciantix_variables[122],
+                         toOutputHighBurnupStructure),
 
         SciantixVariable(
             "Chromium content", "(µg/g)", Sciantix_variables[150], Sciantix_variables[150], toOutputChromiumContent),
