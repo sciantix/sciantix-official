@@ -21,8 +21,10 @@ void Simulation::GasRelease()
     // The HBS reservoirs are declared only for the gas that is also tracked in
     // the restructured matrix (Xe). For every other gas they do not exist, so
     // they enter the balance as zero instead of being looked up.
-    auto hbsInventory = [&](const std::string& variable_name)
-    { return sciantix_variable.isElementPresent(variable_name) ? sciantix_variable[variable_name].getFinalValue() : 0.0; };
+    auto hbsInventory = [&](const std::string& variable_name) {
+        return sciantix_variable.isElementPresent(variable_name) ? sciantix_variable[variable_name].getFinalValue()
+                                                                 : 0.0;
+    };
 
     // Calculation of the gas concentration arrived at the grain boundary, by mass balance.
     for (auto& system : sciantix_system)
