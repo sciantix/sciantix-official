@@ -284,8 +284,10 @@ void Simulation::HighBurnupStructurePorosity()
                 // Barani 2022 Eq. 7: alpha-weighted tilt-angle correction on the
                 // grain-boundary vacancy diffusivity. angle_deg was computed at
                 // the top of case 2 from the current restructured volume fraction.
-                // saturation_factor modulates D_gb^v via percolation (same t=2
-                // exponent as for D_gb^SA at the top of case 2).
+                // saturation_factor modulates D_gb^v via percolation, with the t=2
+                // exponent. It is applied here only: the single-atom diffusivity
+                // D_gb^SA feeding the trapping term is left unmodulated in this
+                // case, whereas case 3 modulates it as well.
                 double tilt_factor = sin(angle_deg * M_PI / 180.0) / sin(4.0 * M_PI / 180.0);
                 double D_gb_v_eff = fuel_.getGrainBoundaryVacancyDiffusivity() * tilt_factor * saturation_factor;
 
@@ -312,7 +314,7 @@ void Simulation::HighBurnupStructurePorosity()
             );
         
             // HBS pore volume - update with vacancy contribution.
-            // TEST VARIANT: post-hoc cap on the total increment dV (gas + vac).
+            // Post-hoc cap on the total increment dV (gas + vac).
             // V_pore is set to V_old + saturation_factor * dV_uncapped; the
             // uncapped dV is retained for the coalescence step below so that
             // BinaryInteraction still sees the physical driving force.
@@ -354,7 +356,7 @@ void Simulation::HighBurnupStructurePorosity()
             );
         
             // Conservation (atoms and vacancies) + capped-volume preservation.
-            // TEST VARIANT: instead of recomputing V_pore from n_Xe and n_vac
+            // Instead of recomputing V_pore from n_Xe and n_vac
             // (which would restore the EoS identity and wipe out the cap
             // applied above), V_pore per pore is rescaled by N_before/N_after
             // so that the total capped volume Sum(V_p) is conserved through
