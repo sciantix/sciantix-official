@@ -13,7 +13,12 @@ import subprocess
 from datetime import datetime, timezone
 from typing import Dict, List, Tuple
 
-from regression.white.variable_metadata_export import export_variable_catalog, unit_uri
+from regression.white.variable_metadata_export import (
+    export_variable_catalog,
+    unit_uri,
+    # Single source of truth: this map used to be duplicated verbatim here.
+    _SETTING_MODEL_MAP,
+)
 
 
 _SCIANTIX_VERSION = "2.2.1"
@@ -35,6 +40,8 @@ _GENERATED_SIDECAR_FILENAMES = {
     "output.json",
     "output.jsonld",
     "case_metadata.jsonld",
+    # Rewritten by every SCIANTIX run; not a source modification.
+    "output.txt",
 }
 _GENERATED_METADATA_PATHS = {
     "regression/white/metadata/experimental/white_experimental_measurements.jsonld",
@@ -61,21 +68,6 @@ _HISTORY_COLUMNS = [
         "unit": "MPa",
     },
 ]
-_SETTING_MODEL_MAP = {
-    "iDensification": ["model:densification"],
-    "iGrainGrowth": ["model:grain-growth"],
-    "iFissionGasDiffusivity": ["model:gas-diffusion"],
-    "iDiffusionSolver": ["model:gas-diffusion"],
-    "iIntraGranularBubbleBehavior": ["model:intragranular-bubble-behaviour"],
-    "iResolutionRate": ["model:intragranular-bubble-behaviour"],
-    "iTrappingRate": ["model:intragranular-bubble-behaviour"],
-    "iNucleationRate": ["model:intragranular-bubble-behaviour"],
-    "iGrainBoundaryVacancyDiffusivity": ["model:intergranular-bubble-behavior"],
-    "iGrainBoundaryBehaviour": ["model:intergranular-bubble-behavior"],
-    "iReleaseMode": ["model:intergranular-bubble-behavior"],
-    "iGrainBoundaryMicroCracking": ["model:grain-boundary-micro-cracking"],
-    "iGrainBoundaryVenting": ["model:grain-boundary-venting"],
-}
 
 
 def _split_tsv_line(line: str) -> List[str]:
@@ -189,8 +181,22 @@ def _is_generated_semantic_path(path: str) -> bool:
     )
 
 
+# Untracked files only affect the built code if they live in the compiled tree.
+_SOURCE_TREE_PREFIXES = ("src/", "include/")
+
+
 def _repository_is_dirty_for_provenance(git_cwd: str) -> bool:
-    """Report whether non-generated files were modified during export."""
+    """Report whether the *source* of the running code differs from the commit.
+
+    Only two things make the provenance record dirty:
+
+    * a modification to a tracked file that is not a generated artifact, and
+    * an untracked file inside the compiled tree (``src/``, ``include/``).
+
+    Untracked files elsewhere (scratch directories, local notes, unrelated
+    work such as ``verification/``) do not change the code that produced the
+    results, so they must not flip the flag for all cases.
+    """
     status = _git_value(["status", "--porcelain"], git_cwd)
     if status == "unknown":
         return True
@@ -198,11 +204,16 @@ def _repository_is_dirty_for_provenance(git_cwd: str) -> bool:
     for line in status.splitlines():
         if not line:
             continue
+        code = line[:2]
         path = line[3:] if len(line) > 3 else ""
         if " -> " in path:
             path = path.rsplit(" -> ", 1)[1]
-        if not _is_generated_semantic_path(path):
-            return True
+        path = path.strip().strip('"').replace("\\", "/")
+        if _is_generated_semantic_path(path):
+            continue
+        if code == "??" and not path.startswith(_SOURCE_TREE_PREFIXES):
+            continue
+        return True
     return False
 
 
@@ -229,6 +240,33 @@ def _software_provenance(case_dir: str) -> dict:
         or _git_value(["rev-parse", "HEAD"], git_cwd),
         "repository_is_dirty": repository_is_dirty,
     }
+
+
+def freeze_repository_provenance(path: str) -> dict:
+    """Resolve the repository state once and pin it for all subsequent exports.
+
+    ``_software_provenance`` is called once per case. When cases run in a
+    multiprocessing pool each worker queried Git independently, which (a) spawned
+    hundreds of subprocesses per run and (b) allowed cases from the same run to
+    record different states if the working tree changed mid-run.
+
+    Calling this once before the pool forks resolves commit and dirty flag a
+    single time and exports them through the environment, which child processes
+    inherit. Values already set by the caller are left untouched, so an explicit
+    override still wins.
+    """
+    repo_root = _git_value(["rev-parse", "--show-toplevel"], path)
+    git_cwd = repo_root if repo_root != "unknown" else path
+
+    resolved = {
+        "SCIANTIX_SEMANTIC_REPOSITORY_COMMIT": _git_value(["rev-parse", "HEAD"], git_cwd),
+        "SCIANTIX_SEMANTIC_REPOSITORY_IS_DIRTY": str(
+            _repository_is_dirty_for_provenance(git_cwd)
+        ).lower(),
+    }
+    for key, value in resolved.items():
+        os.environ.setdefault(key, value)
+    return resolved
 
 
 def _file_record(case_dir: str, filename: str, role: str) -> dict:
@@ -700,10 +738,15 @@ def export_white_case_semantic_outputs(case_dir: str) -> Tuple[str, str, str, st
     columns = _build_columns(header, label_map)
     exported_at = _exported_at_utc(case_dir)
     case_id = os.path.basename(os.path.normpath(case_dir))
-    white_root = os.path.dirname(__file__)
     experimental_swelling = _load_experimental_swelling(white_root).get(case_id)
     if experimental_swelling is None:
-        raise ValueError(f"Missing experimental swelling value for case: {case_id}")
+        # A case with no entry in data/ig_swelling.txt is a metadata gap, not a
+        # physics failure: emit the case without a validation target and warn.
+        print(
+            f"WARNING: no experimental swelling value for {case_id}; "
+            f"case_metadata.jsonld will omit validationTarget "
+            f"(add the case to {_EXPERIMENTAL_SWELLING_FILE} to restore it)."
+        )
 
     payload_input_json = {
         "format_version": "0.1.0",

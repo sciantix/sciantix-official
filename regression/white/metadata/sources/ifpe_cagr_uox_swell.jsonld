@@ -1,8 +1,9 @@
 {
   "@context": {
-    "dcterms": "http://purl.org/dc/terms/"
+    "dcterms": "http://purl.org/dc/terms/",
+    "dcmitype": "http://purl.org/dc/dcmitype/"
   },
-  "@type": "dcterms:Dataset",
+  "@type": "dcmitype:Dataset",
   "dcterms:identifier": "IFPE/CAGR-UOX-SWELL",
   "dcterms:title": "Fuel Swelling Data Obtained from the AGR/Halden Ramp Test Programme",
   "dcterms:creator": [
@@ -12,5 +13,5 @@
   "dcterms:source": "https://www.oecd-nea.org/tools/abstract/detail/nea-1705",
   "dcterms:description": "Authoritative experimental dataset used in White regression validation. The dataset contains fuel swelling data obtained from the AGR/Halden ramp test programme and supports the case-level intergranular swelling validation targets used by the SCIANTIX White regression workflow.",
   "dcterms:language": "en",
-  "dcterms:type": "Dataset"
+  "dcterms:type": {"@id": "dcmitype:Dataset"}
 }

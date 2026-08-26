@@ -158,9 +158,9 @@ _UNIT_FALLBACK: Dict[str, str] = {
     "Matrix.pore_nucleation_rate":         "1/s",
     "Matrix.pore_resolution_rate":         "1/s",
     "Matrix.pore_trapping_rate":           "1/s",
-    "Matrix.chromium_content":             "ug/g",
-    "Matrix.chromium_solubility":          "% weight/UO2",
-    "Matrix.Cr2O3_solubility":             "% weight/UO2",
+    "Matrix.chromium_content":             "µg/g",
+    "Matrix.chromium_solubility":          "weight%/UO2",
+    "Matrix.Cr2O3_solubility":             "weight%/UO2",
     "Matrix.chromium_solution":            "at/m3",
     "Matrix.chromium_precipitate":         "at/m3",
     "Matrix.chromia_solution":             "at/m3",
@@ -250,7 +250,7 @@ def _parse_setter_to_field_map(source: str) -> Dict[str, str]:
         except ValueError:
             continue
         assign = re.search(
-            r'\b([a-z_][a-z0-9_]*)\s*=\s*' + re.escape(param) + r'\b',
+            r'\b([A-Za-z_][A-Za-z0-9_]*)\s*=\s*' + re.escape(param) + r'\b',
             body,
         )
         if assign:
@@ -565,6 +565,7 @@ def _extract_constructor_args(body: str, constructor_name: str) -> List[List[str
         depth = 1
         in_string = False
         escaped = False
+        closed = False
         while pos < len(body):
             char = body[pos]
             if in_string:
@@ -583,8 +584,13 @@ def _extract_constructor_args(body: str, constructor_name: str) -> List[List[str
                 if depth == 0:
                     args.append(_split_top_level_commas(body[start + len(search) : pos]))
                     idx = pos + 1
+                    closed = True
                     break
             pos += 1
+        if not closed:
+            # Unbalanced parentheses: skip this occurrence rather than rescanning
+            # it forever (the outer loop would otherwise never advance ``idx``).
+            idx = start + len(search)
 
 
 def _extract_string_list(function_body: str) -> List[str]:

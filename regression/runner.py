@@ -88,18 +88,34 @@ def main():
         ("gpr", "test_GPR"),
     ]
 
-    if not explicit_selection and not args.all:
-        args.all = True
+    ### NEO4MAT - SCIANTIX-DIVA
+    # Default group set is the White (2004) case study, which is the only case
+    # study declared in NEO4MAT deliverable ID4.6.1.1. Running the suite with no
+    # arguments therefore reproduces exactly the declared deliverable.
+    # Use --all for the complete SCIANTIX regression suite, or any individual
+    # group flag (--baker, --kashibe, ...) as before.
+    default_groups = ["white"]
+    ###
 
+    if not explicit_selection and not args.all:
+        for group in default_groups:
+            setattr(args, group, True)
+
+    selected = []
     for group, prefix in runners:
-        # Check if this group is requested
         # The arg name might differ from group name (e.g. pulse vs analytics)
         arg_name = group if group != "analytics" else "pulse"
-        
-        should_run = args.all or getattr(args, arg_name, False)
-        
-        if should_run:
-            results.extend(run_group(group, prefix, args.mode_gold, args.jobs))
+        if args.all or getattr(args, arg_name, False):
+            selected.append((group, prefix))
+
+    if not explicit_selection and not args.all:
+        print(f"Running default group set (NEO4MAT case study): "
+              f"{', '.join(g for g, _ in selected)}. Use --all for the full suite.")
+    else:
+        print(f"Running groups: {', '.join(g for g, _ in selected)}")
+
+    for group, prefix in selected:
+        results.extend(run_group(group, prefix, args.mode_gold, args.jobs))
 
     print("\n=== RESULTS ===")
     for name, ok, msg in results:

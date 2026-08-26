@@ -74,10 +74,23 @@ python3 utilities/inputExample/print_input_scaling_factors.py
 
 # Regression tests
 
-To verify the installation and physics:
+By default the suite runs the **White (2004) case study** (43 cases), which is the case study
+declared in NEO4MAT deliverable ID4.6.1.1:
 ```bash
 ./runRegression.sh
 ```
+
+To run the complete regression suite (12 groups, 109 cases):
+```bash
+./runRegression.sh --all
+```
+
+Individual groups can be selected with their own flag, and combined:
+```bash
+./runRegression.sh --baker
+./runRegression.sh --white --kashibe
+```
+
 Alternatively, run the runner directly:
 ```bash
 python3 -m regression.runner --all -j $(nproc)

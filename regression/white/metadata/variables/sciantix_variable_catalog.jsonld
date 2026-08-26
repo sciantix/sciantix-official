@@ -52,7 +52,7 @@
   "dcterms:title": "SCIANTIX variable metadata catalog",
   "dcterms:description": "Machine-readable catalog of SCIANTIX input settings, scaling factors, history variables, state variables, and Material/Matrix/Gas/System class properties used to support RDF-mappable case-study metadata.",
   "dcterms:references": "../models/sciantix_physical_models.jsonld",
-  "generatedAt": "2026-06-29T00:00:00+00:00",
+  "generatedAt": "2026-06-29T08:05:18+00:00",
   "variable": [
     {
       "@id": "sciantix-variable:input_setting:igraingrowth",
@@ -4259,7 +4259,7 @@
       "category": "matrix_property",
       "name": "chromium_content",
       "label": "chromium content",
-      "unit": "ug/g",
+      "unit": "\u00b5g/g",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
@@ -4294,17 +4294,19 @@
         "prov:Entity"
       ],
       "identifier": "Matrix.Cr2O3_solubility",
-      "title": "Cr2O3 solubility",
+      "title": "Chromia solubility",
       "description": "SCIANTIX matrix property 'Cr2O3_solubility', generated from the source-code definition in include/classes/Matrix.h.",
       "category": "matrix_property",
       "name": "Cr2O3_solubility",
-      "label": "Cr2O3 solubility",
-      "unit": "% weight/UO2",
+      "label": "Chromia solubility",
+      "unit": "weight%/UO2",
       "cppType": "double",
       "source": "include/classes/Matrix.h",
       "sourceFile": "include/classes/Matrix.h",
       "sourceClass": "Matrix",
-      "unitURI": "https://w3id.org/nm-kos/unit#WeightPercentPerUO2"
+      "unitURI": "https://w3id.org/nm-kos/unit#WeightPercentPerUO2",
+      "value": 0,
+      "valueSource": "src/operations/SetMatrix.C"
     },
     {
       "@id": "sciantix-variable:matrix_property:matrix-chromium-solution",

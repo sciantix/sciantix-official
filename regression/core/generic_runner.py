@@ -9,13 +9,6 @@ import multiprocessing
 from regression.core.common import clean_case_dir, run_sciantix, load_output, load_gold
 from regression.core.compare import compare_outputs
 
-### NEO4MAT - SCIANTIX-DIVA: export semantic outputs and variable catalog for White case study
-from regression.white.semantic_export import (
-    export_white_case_semantic_outputs,
-    export_white_experimental_measurements,
-)
-from regression.white.variable_metadata_export import export_variable_catalog
-###
 
 def run_single_case(args):
     """
@@ -34,9 +27,17 @@ def run_single_case(args):
             run_sciantix(case)
 
             ### NEO4MAT - SCIANTIX-DIVA
+            # Kept outside the physics try/except: a metadata problem must never
+            # be reported as a failed regression test.
             if group_name == "white":
-                export_white_case_semantic_outputs(case)
-            ### 
+                try:
+                    from regression.white.semantic_export import (
+                        export_white_case_semantic_outputs,
+                    )
+                    export_white_case_semantic_outputs(case)
+                except Exception as semantic_error:
+                    print(f"WARNING: semantic export failed for {test_id} -> {semantic_error}")
+            ###
 
             clean_case_dir(case, 0)
 
@@ -102,8 +103,21 @@ def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1):
 
     ### NEO4MAT - SCIANTIX-DIVA
     if group_name == "white":
-        export_white_experimental_measurements(base)
-        export_variable_catalog(base)
+        try:
+            from regression.white.semantic_export import (
+                export_white_experimental_measurements,
+                freeze_repository_provenance,
+            )
+            from regression.white.variable_metadata_export import export_variable_catalog
+
+            # Resolve the repository state once, before the pool forks, so every
+            # case records the same commit and dirty flag. Without this each
+            # worker queried git independently and results could disagree.
+            freeze_repository_provenance(base)
+            export_white_experimental_measurements(base)
+            export_variable_catalog(base)
+        except Exception as semantic_error:
+            print(f"WARNING: semantic catalog export failed -> {semantic_error}")
     ###
 
     results = []
