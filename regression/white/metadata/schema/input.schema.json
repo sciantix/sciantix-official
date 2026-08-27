@@ -54,8 +54,7 @@
             "type": "array",
             "items": { "type": "string" }
           },
-          "model_catalog": { "type": "string" },
-          "model_reference_source": { "type": "string" }
+          "model_catalog": { "type": "string" }
         }
       }
     },

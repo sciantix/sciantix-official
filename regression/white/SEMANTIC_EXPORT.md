@@ -56,13 +56,14 @@ Project-specific terms remain under the preliminary `nmkos` namespace: source fu
 
 ## Other metadata: authoritative sources, models and schema
 
-The following files are not regenerated from the case outputs and can be updated manually if needed:
-- `metadata/sources/white2004.jsonld`
-- `metadata/sources/ifpe_cagr_uox_swell.jsonld`
-- `metadata/sources/sciantix_model_references.jsonld`
-- `metadata/sources/sciantix_software_sources.jsonld`
+One file, not regenerated from the case outputs, describes every source this case study relies on:
+- `metadata/sources/[CONNECT-NM]NEO4MAT-CS-POLIMI_01_Authoritative_Source.jsonld`
 
---> These files use Dublin Core Terms (`dcterms`) to describe the scientific article, the IFPE dataset, the model references, and the SCIANTIX GitHub/documentation sources supporting the case study.
+--> This is CONNECT-NM deliverable ID4.6.2.1 (subtask ST4.6.2): 29 records, each identified by a resolvable DOI or URL, using `dcterms`, `dcmitype` and the EMMO `neo` namespace for INIS keywords.
+
+--> Four local files previously held partial, overlapping copies of the same bibliography and were removed once the deliverable existed: `white2004.jsonld`, `ifpe_cagr_uox_swell.jsonld`, `sciantix_model_references.jsonld` and `sciantix_software_sources.jsonld`
+
+--> Sources are now referenced **by identifier, not by file path**. The case-level `source` / `dcterms_sources` fields carry the DOI of White (2004) and the OECD-NEA URL of IFPE/CAGR-UOX-SWELL; `softwareSource` carries the repository URL; and each model in `sciantix_physical_models.jsonld` cites its own publication by DOI. A consumer that loads the deliverable alongside the case files gets one node per source, with the description coming from the deliverable and the relations from the catalogs. 
 
 
 - `metadata/models/sciantix_physical_models.jsonld`

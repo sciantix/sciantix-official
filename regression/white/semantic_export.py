@@ -22,13 +22,17 @@ from regression.white.variable_metadata_export import (
 
 
 _SCIANTIX_VERSION = "2.2.1"
+# The two literature sources of this case study, referenced by their own
+# persistent identifiers rather than by a path to a local description file.
+# Both are described once, in the ID4.6.2.1 authoritative-sources record.
 _DCTERMS_SOURCES = [
-    "../metadata/sources/white2004.jsonld",
-    "../metadata/sources/ifpe_cagr_uox_swell.jsonld",
+    "https://doi.org/10.1016/j.jnucmat.2003.10.008",            # White (2004)
+    "https://www.oecd-nea.org/tools/abstract/detail/nea-1705",  # IFPE/CAGR-UOX-SWELL
 ]
 _MODEL_CATALOG = "../metadata/models/sciantix_physical_models.jsonld"
-_MODEL_REFERENCES = "../metadata/sources/sciantix_model_references.jsonld"
-_SOFTWARE_SOURCES = "../metadata/sources/sciantix_software_sources.jsonld"
+# The SCIANTIX source repository, identified by its own URL. It is described
+# once, in the ID4.6.2.1 authoritative-sources record.
+_SOFTWARE_SOURCES = "https://github.com/sciantix/sciantix-official"
 _EXPERIMENTAL_MEASUREMENTS = "../metadata/experimental/white_experimental_measurements.jsonld"
 _VARIABLE_CATALOG = "../metadata/variables/sciantix_variable_catalog.jsonld"
 
@@ -417,7 +421,6 @@ def _parse_settings(settings_path: str) -> List[dict]:
             if related_models:
                 setting["related_models"] = related_models
                 setting["model_catalog"] = _MODEL_CATALOG
-                setting["model_reference_source"] = _MODEL_REFERENCES
             settings.append(setting)
     return settings
 
@@ -672,10 +675,6 @@ def _build_case_metadata(
                 "@id": "dcterms:references",
                 "@type": "@id",
             },
-            "modelReferenceSource": {
-                "@id": "dcterms:source",
-                "@type": "@id",
-            },
             "softwareSource": {
                 "@id": "dcterms:source",
                 "@type": "@id",
@@ -702,7 +701,6 @@ def _build_case_metadata(
         "generatedAt": exported_at,
         "source": _DCTERMS_SOURCES,
         "modelCatalog": _MODEL_CATALOG,
-        "modelReferenceSource": _MODEL_REFERENCES,
         "softwareSource": _SOFTWARE_SOURCES,
         "variableCatalog": _VARIABLE_CATALOG,
         "experimentalDataset": _EXPERIMENTAL_MEASUREMENTS,

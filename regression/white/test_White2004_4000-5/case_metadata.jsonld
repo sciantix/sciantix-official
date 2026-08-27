@@ -21,10 +21,6 @@
       "@id": "dcterms:references",
       "@type": "@id"
     },
-    "modelReferenceSource": {
-      "@id": "dcterms:source",
-      "@type": "@id"
-    },
     "softwareSource": {
       "@id": "dcterms:source",
       "@type": "@id"
@@ -51,14 +47,13 @@
     "dcat:Dataset"
   ],
   "caseId": "test_White2004_4000-5",
-  "generatedAt": "2026-06-29T08:05:18+00:00",
+  "generatedAt": "2026-08-26T09:50:14+00:00",
   "source": [
-    "../metadata/sources/white2004.jsonld",
-    "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
+    "https://doi.org/10.1016/j.jnucmat.2003.10.008",
+    "https://www.oecd-nea.org/tools/abstract/detail/nea-1705"
   ],
   "modelCatalog": "../metadata/models/sciantix_physical_models.jsonld",
-  "modelReferenceSource": "../metadata/sources/sciantix_model_references.jsonld",
-  "softwareSource": "../metadata/sources/sciantix_software_sources.jsonld",
+  "softwareSource": "https://github.com/sciantix/sciantix-official",
   "variableCatalog": "../metadata/variables/sciantix_variable_catalog.jsonld",
   "experimentalDataset": "../metadata/experimental/white_experimental_measurements.jsonld",
   "validationTarget": {
@@ -80,7 +75,7 @@
     "project_branch_url": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
     "documentation": "https://sciantix.github.io/sciantix-official/models.html",
     "repository_branch": "project/NEO4MAT_DIVA",
-    "repository_commit": "2d198a470699210051016bd6c0959a24cce9b60c",
+    "repository_commit": "a79989ddba96b7993dcff25e1e74a97b93da11f1",
     "repository_is_dirty": true
   },
   "inputFile": [
@@ -105,8 +100,8 @@
     {
       "role": "structured_input",
       "path": "input.json",
-      "sha256": "239ab772f24fa23b7af73a990575d7d54224915b2a12b7e08a838b0c1c0efb05",
-      "size_bytes": 13855
+      "sha256": "ec80eb014d6ec6fab9b6d0d696c1ad965a7e481e2921d094faae9a169a1dd8a4",
+      "size_bytes": 12729
     }
   ],
   "outputFile": [
@@ -119,14 +114,14 @@
     {
       "role": "structured_output",
       "path": "output.json",
-      "sha256": "f7a19c2eb51778de60bddff4d3902da63e06b17c968e47da6ed0b248b29d93b7",
-      "size_bytes": 517389
+      "sha256": "1acef20839504ea0806e4e1f967e12abd07e4506a2cbfc1ae46a34e520f5fe15",
+      "size_bytes": 517407
     },
     {
       "role": "semantic_output",
       "path": "output.jsonld",
-      "sha256": "8b5c4feb3341c34a7f7e5b2bb7c249604147bc99d372cd3380322e642666500c",
-      "size_bytes": 466661
+      "sha256": "263a61f0f9a070e09c68a2ab5bbc831238f2288baa99a2d8ae69a3948140e0de",
+      "size_bytes": 466679
     }
   ]
 }

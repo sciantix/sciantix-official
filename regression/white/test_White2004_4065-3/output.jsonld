@@ -32,10 +32,10 @@
   },
   "@type": "csvw:Table",
   "caseId": "test_White2004_4065-3",
-  "generatedAt": "2026-06-29T08:05:18+00:00",
+  "generatedAt": "2026-08-26T09:50:14+00:00",
   "source": [
-    "../metadata/sources/white2004.jsonld",
-    "../metadata/sources/ifpe_cagr_uox_swell.jsonld"
+    "https://doi.org/10.1016/j.jnucmat.2003.10.008",
+    "https://www.oecd-nea.org/tools/abstract/detail/nea-1705"
   ],
   "columns": [
     {

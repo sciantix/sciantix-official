@@ -15,7 +15,6 @@
   "@type": "skos:ConceptScheme",
   "dcterms:identifier": "sciantix-white-physical-models",
   "dcterms:title": "SCIANTIX physical models relevant to the White case study",
-  "dcterms:source": "../sources/sciantix_model_references.jsonld",
   "modelEntry": [
     {
       "@id": "model:densification",
@@ -24,7 +23,7 @@
       "category": "Microstructure, semiempirical",
       "targetDescription": "Burnup driven fuel densification, represented as a progressive reduction of the fabrication porosity towards a residual porosity.",
       "mainAssumptions": "Empirical fit, temperature and burnup dependent only.",
-      "reference": "model-ref:van-uffelen-2002"
+      "reference": "https://www.oecd-nea.org/science/wprs/fuel/Thesis_Van_Uffelen_BLG.pdf"
     },
     {
       "@id": "model:grain-growth",
@@ -33,7 +32,7 @@
       "category": "Microstructure, physics-based model",
       "targetDescription": "Grain radius growth during irradiation as a function of temperature, burnup and grain-boundary mobility.",
       "mainAssumptions": "Pinning effect of secondary phases is neglected.",
-      "reference": "model-ref:ainscough-1973"
+      "reference": "https://doi.org/10.1016/0022-3115(73)90001-9"
     },
     {
       "@id": "model:gas-production",
@@ -41,8 +40,7 @@
       "dcterms:title": "Gas production",
       "category": "Fission gas behaviour, physics-based model",
       "targetDescription": "Production of gaseous species from fission, calculated via local fission rate and gas fission yields.",
-      "mainAssumptions": "Constant fission yields.",
-      "reference": "model-ref:standard-fission-gas-production-law"
+      "mainAssumptions": "Constant fission yields."
     },
     {
       "@id": "model:gas-diffusion",
@@ -50,8 +48,7 @@
       "dcterms:title": "Gas diffusion",
       "category": "Fission gas behaviour, physics-based model",
       "targetDescription": "Intra-granular fission gas diffusion solving for gas concentration in intragranular solution and in intragranular bubbles.",
-      "mainAssumptions": "Spherical grains with uniform temperature; quasi-steady-state between gas atoms and bubbles.",
-      "reference": "model-ref:standard-spectral-diffusion-law"
+      "mainAssumptions": "Spherical grains with uniform temperature; quasi-steady-state between gas atoms and bubbles."
     },
     {
       "@id": "model:intragranular-bubble-behaviour",
@@ -60,7 +57,7 @@
       "category": "Fission gas behaviour, physics-based model",
       "targetDescription": "Intragranular bubble population, atoms per bubble, bubble radius, and intragranular gaseous swelling. Intragranular bubble concentration is evolved with a simple source-decay law; bubble radius and volume are inferred from gas inventories stored in intragranular bubbles.",
       "mainAssumptions": "Stationary bubbles; uncertainties in bubble nucleation, gas-atom trapping, and resolution models.",
-      "reference": "model-ref:pizzocri-2018"
+      "reference": "https://doi.org/10.1016/j.jnucmat.2018.02.024"
     },
     {
       "@id": "model:intergranular-bubble-behavior",
@@ -69,7 +66,7 @@
       "category": "Fission gas behaviour, physics-based model",
       "targetDescription": "Intergranular bubble evolution, including bubble volume, radius, area, fractional coverage, bubble pressure, intergranular gas swelling, and released inventories.",
       "mainAssumptions": "Standard bubble shape.",
-      "reference": "model-ref:pastore-2013"
+      "reference": "https://doi.org/10.1016/j.nucengdes.2012.12.002"
     },
     {
       "@id": "model:grain-boundary-micro-cracking",
@@ -79,8 +76,8 @@
       "targetDescription": "Degradation of grain-boundary integrity during transients and progressive healing with burnup.",
       "mainAssumptions": "Unique bubble size, pressure, and shape; grain-boundary healing is empirically derived from burnup.",
       "reference": [
-        "model-ref:barani-2017",
-        "model-ref:cappellari-2025"
+        "https://doi.org/10.1016/j.jnucmat.2016.10.051",
+        "https://doi.org/10.1016/j.jnucmat.2025.156116"
       ]
     },
     {
@@ -90,7 +87,7 @@
       "category": "Fission gas behaviour, physics-based model",
       "targetDescription": "Venting of gases from grain-boundary edges to the free volume, given the fuel open porosity.",
       "mainAssumptions": "Strongly dependent on the densification model.",
-      "reference": "model-ref:claisse-2015"
+      "reference": "https://doi.org/10.1016/j.jnucmat.2015.08.022"
     }
   ]
 }

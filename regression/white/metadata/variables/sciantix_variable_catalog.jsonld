@@ -52,7 +52,7 @@
   "dcterms:title": "SCIANTIX variable metadata catalog",
   "dcterms:description": "Machine-readable catalog of SCIANTIX input settings, scaling factors, history variables, state variables, and Material/Matrix/Gas/System class properties used to support RDF-mappable case-study metadata.",
   "dcterms:references": "../models/sciantix_physical_models.jsonld",
-  "generatedAt": "2026-06-29T08:05:18+00:00",
+  "generatedAt": "2026-08-26T09:50:14+00:00",
   "variable": [
     {
       "@id": "sciantix-variable:input_setting:igraingrowth",
