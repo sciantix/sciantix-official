@@ -12,7 +12,7 @@ import os
 import re
 import subprocess
 from datetime import datetime, timezone
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 
 _CONTEXT = {
@@ -58,10 +58,6 @@ _CONTEXT = {
     "cppType": "nmkos:cppType",
     "value": "schema:value",
     "valueSource": "nmkos:valueSource",
-    "generatedAt": {
-        "@id": "dcterms:created",
-        "@type": "xsd:dateTime",
-    },
 }
 
 # ---------------------------------------------------------------------------
@@ -419,26 +415,6 @@ def _git_value(args: List[str], cwd: str) -> str:
     return result.stdout.strip() or "unknown"
 
 
-def _generated_at_utc(repo_root: str) -> str:
-    """Return the catalog generation timestamp.
-
-    By default the timestamp is the current Git commit time, which avoids
-    unnecessary diffs when regenerating identical metadata. The environment
-    variable ``SCIANTIX_SEMANTIC_GENERATED_AT_UTC`` can override it.
-    """
-    override = os.environ.get("SCIANTIX_SEMANTIC_GENERATED_AT_UTC")
-    if override:
-        return datetime.fromisoformat(override).astimezone(timezone.utc).isoformat()
-
-    value = _git_value(["show", "-s", "--format=%cI", "HEAD"], repo_root)
-    if value == "unknown":
-        return datetime.now(timezone.utc).isoformat()
-    try:
-        return datetime.fromisoformat(value).astimezone(timezone.utc).isoformat()
-    except ValueError:
-        return datetime.now(timezone.utc).isoformat()
-
-
 def _slug(value: str) -> str:
     """Create a stable lowercase identifier fragment from a variable name."""
     slug = re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
@@ -625,34 +601,89 @@ def _source_code_description(category: str, name: str, source: str) -> str:
     )
 
 
-def _state_variable_models(name: str) -> List[str]:
-    """Infer conservative physical-model links from state-variable names.
+# Which catalog concept each physical-model source file implements. Only the
+# eight concepts that exist in metadata/models/sciantix_physical_models.jsonld
+# appear here; the other model files under src/models/ have no concept yet, so
+# the variables they compute are deliberately left unlinked rather than guessed.
+_MODEL_CONCEPT_BY_SOURCE_FILE = {
+    "Densification.C": "model:densification",
+    "GrainGrowth.C": "model:grain-growth",
+    "GasProduction.C": "model:gas-production",
+    "GasDiffusion.C": "model:gas-diffusion",
+    "IntraGranularBubbleBehavior.C": "model:intragranular-bubble-behaviour",
+    "InterGranularBubbleBehavior.C": "model:intergranular-bubble-behavior",
+    "GrainBoundaryMicroCracking.C": "model:grain-boundary-micro-cracking",
+    "GrainBoundaryVenting.C": "model:grain-boundary-venting",
+    # GasRelease.C carries no model_.setName() of its own: it computes the
+    # released inventories that the intergranular concept declares as its
+    # target ("... intergranular gas swelling, and released inventories").
+    "GasRelease.C": "model:intergranular-bubble-behavior",
+}
 
-    These links support navigation from variables to the local model catalog.
-    They are intentionally pattern-based and conservative; ambiguous variables
-    are left unlinked rather than over-interpreted.
+# A model writes a state variable either by literal name,
+#   sciantix_variable["Grain radius"].setFinalValue(...)
+# or by composing the name at run time from the gas species,
+#   sciantix_variable[system.getGasName() + " released"].setFinalValue(...)
+_VARIABLE_WRITE_LITERAL = re.compile(
+    r'sciantix_variable\["([^"]+)"\]\.'
+    r"(?:setFinalValue|setInitialValue|rescaleFinalValue|rescaleInitialValue|addValue|setConstant)"
+)
+_VARIABLE_WRITE_SUFFIX = re.compile(
+    r'sciantix_variable\[[^\]"]*\+\s*"([^"]+)"\]\.'
+    r"(?:setFinalValue|setInitialValue|rescaleFinalValue|rescaleInitialValue|addValue|setConstant)"
+)
+
+_model_links_cache: Dict[str, Tuple[Dict[str, List[str]], Dict[str, List[str]]]] = {}
+
+
+def _derive_model_variable_links(repo_root: str):
+    """Read src/models/ and record which model computes which state variable.
+
+    The mapping is derived from the C++ itself — every assignment a model makes
+    to a ``sciantix_variable`` — rather than inferred from the variable's name.
+    Name-based inference was both incomplete and wrong: it missed
+    "Fission gas release" because it tested for the substring "released", and it
+    attached "Xe in grain" to the intragranular *bubble* model on the strength of
+    the substring "in grain", when that quantity is a total inventory.
+
+    Returns two maps, one keyed by exact variable name and one by the suffix a
+    model composes at run time (e.g. " released" for "Xe released").
     """
-    lower = name.lower()
-    models = []
+    if repo_root in _model_links_cache:
+        return _model_links_cache[repo_root]
 
-    if "grain radius" in lower:
-        models.append("model:grain-growth")
-    if "produced" in lower and any(gas in lower for gas in ("xe", "kr", "he")):
-        models.append("model:gas-production")
-    if "diffusion coefficient" in lower:
-        models.append("model:gas-diffusion")
-    if "intragranular" in lower or "in grain" in lower:
-        models.append("model:intragranular-bubble-behaviour")
-    if "intergranular" in lower or "grain boundary" in lower or "released" in lower:
-        models.append("model:intergranular-bubble-behavior")
-    if "intactness" in lower:
-        models.append("model:grain-boundary-micro-cracking")
-    if "vent" in lower:
-        models.append("model:grain-boundary-venting")
-    if "porosity" in lower or "densification" in lower or "fuel density" in lower:
-        models.append("model:densification")
+    exact: Dict[str, List[str]] = {}
+    suffix: Dict[str, List[str]] = {}
+    models_dir = os.path.join(repo_root, "src", "models")
+    for filename, concept in sorted(_MODEL_CONCEPT_BY_SOURCE_FILE.items()):
+        path = os.path.join(models_dir, filename)
+        try:
+            with open(path, "r", encoding="utf-8", errors="ignore") as handle:
+                source = handle.read()
+        except OSError:
+            continue
+        for name in _VARIABLE_WRITE_LITERAL.findall(source):
+            exact.setdefault(name, [])
+            if concept not in exact[name]:
+                exact[name].append(concept)
+        for tail in _VARIABLE_WRITE_SUFFIX.findall(source):
+            suffix.setdefault(tail, [])
+            if concept not in suffix[tail]:
+                suffix[tail].append(concept)
 
-    return list(dict.fromkeys(models))
+    _model_links_cache[repo_root] = (exact, suffix)
+    return exact, suffix
+
+
+def _state_variable_models(name: str, repo_root: str) -> List[str]:
+    """Return the catalog concepts of the models that compute this variable."""
+    exact, suffix = _derive_model_variable_links(repo_root)
+    if name in exact:
+        return list(exact[name])
+    for tail, concepts in suffix.items():
+        if name.endswith(tail):
+            return list(concepts)
+    return []
 
 
 def _add_model_links(variable: dict, model_ids: List[str]) -> None:
@@ -717,7 +748,7 @@ def _scaling_factor_variables(body: str) -> List[dict]:
     return variables
 
 
-def _sciantix_variables(body: str, category: str, function_name: str) -> List[dict]:
+def _sciantix_variables(body: str, category: str, function_name: str, repo_root: str = "") -> List[dict]:
     """Generate metadata for history or state ``SciantixVariable`` entries.
 
     The parser records the declared label, unit, output flag expression, and
@@ -752,7 +783,7 @@ def _sciantix_variables(body: str, category: str, function_name: str) -> List[di
         if refs:
             variable["sourceArrayReferences"] = refs
         if category == "state_variable":
-            _add_model_links(variable, _state_variable_models(name))
+            _add_model_links(variable, _state_variable_models(name, repo_root))
         variables.append(variable)
     return variables
 
@@ -836,6 +867,7 @@ def build_variable_catalog(white_root: str) -> dict:
             _find_function_body(source, "initializeSciantixVariable"),
             "state_variable",
             "initializeSciantixVariable",
+            repo_root,
         )
     )
     variables.extend(_scaling_factor_variables(_find_function_body(source, "getScalingFactorsNames")))
@@ -860,7 +892,6 @@ def build_variable_catalog(white_root: str) -> dict:
             "properties used to support RDF-mappable case-study metadata."
         ),
         "dcterms:references": _MODEL_CATALOG,
-        "generatedAt": _generated_at_utc(repo_root),
         "variable": variables,
     }
 

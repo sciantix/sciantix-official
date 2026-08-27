@@ -2,7 +2,6 @@
   "format_version": "0.1.0",
   "schema": "../metadata/schema/output.schema.json",
   "case_id": "test_White2004_4163-2",
-  "generated_at_utc": "2026-08-26T09:50:14+00:00",
   "dcterms_sources": [
     "https://doi.org/10.1016/j.jnucmat.2003.10.008",
     "https://www.oecd-nea.org/tools/abstract/detail/nea-1705"

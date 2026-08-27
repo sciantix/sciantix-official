@@ -106,14 +106,9 @@ def run_group(group_name: str, prefix: str, mode_gold: int, jobs: int = 1):
         try:
             from regression.white.semantic_export import (
                 export_white_experimental_measurements,
-                freeze_repository_provenance,
             )
             from regression.white.variable_metadata_export import export_variable_catalog
 
-            # Resolve the repository state once, before the pool forks, so every
-            # case records the same commit and dirty flag. Without this each
-            # worker queried git independently and results could disagree.
-            freeze_repository_provenance(base)
             export_white_experimental_measurements(base)
             export_variable_catalog(base)
         except Exception as semantic_error:

@@ -8,10 +8,6 @@
     "sosa": "http://www.w3.org/ns/sosa/",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "caseId": "dcterms:identifier",
-    "generatedAt": {
-      "@id": "dcterms:created",
-      "@type": "xsd:dateTime"
-    },
     "source": {
       "@id": "dcterms:source",
       "@type": "@id"
@@ -47,7 +43,6 @@
     "dcat:Dataset"
   ],
   "caseId": "test_White2004_4000-2",
-  "generatedAt": "2026-08-26T09:50:14+00:00",
   "source": [
     "https://doi.org/10.1016/j.jnucmat.2003.10.008",
     "https://www.oecd-nea.org/tools/abstract/detail/nea-1705"
@@ -74,9 +69,7 @@
     "repository": "https://github.com/sciantix/sciantix-official",
     "project_branch_url": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
     "documentation": "https://sciantix.github.io/sciantix-official/models.html",
-    "repository_branch": "project/NEO4MAT_DIVA",
-    "repository_commit": "a79989ddba96b7993dcff25e1e74a97b93da11f1",
-    "repository_is_dirty": true
+    "repository_branch": "project/NEO4MAT_DIVA"
   },
   "inputFile": [
     {
@@ -100,8 +93,8 @@
     {
       "role": "structured_input",
       "path": "input.json",
-      "sha256": "e4877a93292c29287f542b91a7984b032a179b27cced151b329355f92db0f014",
-      "size_bytes": 12734
+      "sha256": "c42a16af7ffbb5b0871deb435a66e8268ae216d1180d84af2906020b04497035",
+      "size_bytes": 12683
     }
   ],
   "outputFile": [
@@ -114,14 +107,14 @@
     {
       "role": "structured_output",
       "path": "output.json",
-      "sha256": "7244f46299fbaaef26df341daec95c5e5523e4f106a5b4b6ece4ac7e59c04e8c",
-      "size_bytes": 518139
+      "sha256": "53fe4af8470f656c2647c3794cd14a279da4c18d72464b62073cbe49d82b4e24",
+      "size_bytes": 518088
     },
     {
       "role": "semantic_output",
       "path": "output.jsonld",
-      "sha256": "3b1998a6e3a4dea13c7b74c6108a139f966e151b7e16ba611a85337442fe17a9",
-      "size_bytes": 467483
+      "sha256": "f33134f1b852b8dded87b25127be3a86fca03b2449651e7fa24dc11ca2ff1864",
+      "size_bytes": 467347
     }
   ]
 }

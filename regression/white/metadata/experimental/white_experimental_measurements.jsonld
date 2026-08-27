@@ -10,10 +10,6 @@
       "@id": "dcterms:source",
       "@type": "@id"
     },
-    "generatedAt": {
-      "@id": "dcterms:created",
-      "@type": "xsd:dateTime"
-    },
     "quantity": "sosa:observedProperty",
     "value": "sosa:hasSimpleResult",
     "unit": "qudt:unit",
@@ -23,7 +19,6 @@
   "dcterms:identifier": "white-2004-intergranular-swelling-validation-targets",
   "dcterms:title": "White intergranular swelling validation targets for SCIANTIX regression cases",
   "dcterms:description": "Case-level intergranular gas swelling values used by the SCIANTIX White regression parity workflow.",
-  "generatedAt": "2026-08-26T09:50:14+00:00",
   "source": [
     "https://doi.org/10.1016/j.jnucmat.2003.10.008",
     "https://www.oecd-nea.org/tools/abstract/detail/nea-1705"

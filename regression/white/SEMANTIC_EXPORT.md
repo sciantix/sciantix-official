@@ -88,11 +88,7 @@ Since the White case study is the one declared in NEO4MAT deliverable ID4.6.1.1,
 
 ## Provenance semantics and known limitations
 
-**`repository_commit` records the *generating* commit, by design.** When the generated artifacts are committed afterwards, the recorded hash is therefore the parent of the commit that stores them. This is correct: the artifact was produced by the code at that commit. It is not an off-by-one error.
-
-**`generatedAt` is derived from the commit timestamp, not from the wall clock.** Because the sidecars are tracked in git, a wall-clock timestamp would produce a timestamp-only diff across 43 directories on every run. `SCIANTIX_SEMANTIC_GENERATED_AT_UTC` overrides it when regenerating without introducing diffs; note that a value set by hand is asserted as `dcterms:created`, so use it deliberately.
-
-**`repository_is_dirty` reflects source modifications only.** It counts modifications to tracked files, plus untracked files under `src/` and `include/`. Untracked files elsewhere (scratch directories, unrelated work) do not change the code that produced the results and so do not set the flag. The state is resolved once per group run by `freeze_repository_provenance()` before the worker pool forks, and exported through `SCIANTIX_SEMANTIC_REPOSITORY_COMMIT` and `SCIANTIX_SEMANTIC_REPOSITORY_IS_DIRTY`; previously each case queried git independently and cases in the same run could disagree.
+**What provenance the artifacts carry.** A SHA-256 and a byte size for every input and output file, the repository URL, the branch, the project branch URL, the documentation URL and the SCIANTIX version. All of these are stable across runs.
 
 **A missing experimental value is not a regression failure.** A case absent from
 `data/ig_swelling.txt` is exported without `validationTarget` and prints a warning. The semantic export runs outside the physics `try` block in `regression/core/generic_runner.py`, so a metadata problem is never reported as a failed physics test.

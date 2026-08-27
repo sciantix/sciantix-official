@@ -7,7 +7,6 @@
   "required": [
     "format_version",
     "case_id",
-    "generated_at_utc",
     "dcterms_sources",
     "input_files",
     "settings",
@@ -19,9 +18,6 @@
       "type": "string"
     },
     "case_id": {
-      "type": "string"
-    },
-    "generated_at_utc": {
       "type": "string"
     },
     "dcterms_sources": {
@@ -46,15 +42,29 @@
           "source_line"
         ],
         "properties": {
-          "index": { "type": "integer", "minimum": 0 },
-          "name": { "type": "string" },
-          "description": { "type": "string" },
-          "source_line": { "type": "integer", "minimum": 1 },
+          "index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "source_line": {
+            "type": "integer",
+            "minimum": 1
+          },
           "related_models": {
             "type": "array",
-            "items": { "type": "string" }
+            "items": {
+              "type": "string"
+            }
           },
-          "model_catalog": { "type": "string" }
+          "model_catalog": {
+            "type": "string"
+          }
         }
       }
     },

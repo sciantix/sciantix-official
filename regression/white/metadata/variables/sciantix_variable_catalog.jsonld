@@ -41,18 +41,13 @@
     "outputFlagExpression": "nmkos:outputFlagExpression",
     "cppType": "nmkos:cppType",
     "value": "schema:value",
-    "valueSource": "nmkos:valueSource",
-    "generatedAt": {
-      "@id": "dcterms:created",
-      "@type": "xsd:dateTime"
-    }
+    "valueSource": "nmkos:valueSource"
   },
   "@type": "dcat:Dataset",
   "dcterms:identifier": "sciantix-variable-catalog",
   "dcterms:title": "SCIANTIX variable metadata catalog",
   "dcterms:description": "Machine-readable catalog of SCIANTIX input settings, scaling factors, history variables, state variables, and Material/Matrix/Gas/System class properties used to support RDF-mappable case-study metadata.",
   "dcterms:references": "../models/sciantix_physical_models.jsonld",
-  "generatedAt": "2026-08-26T09:50:14+00:00",
   "variable": [
     {
       "@id": "sciantix-variable:input_setting:igraingrowth",
@@ -778,7 +773,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -807,7 +802,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -836,7 +831,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -865,7 +860,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -894,6 +889,9 @@
         }
       ],
       "references": [
+        "model:gas-diffusion",
+        "model:grain-boundary-micro-cracking",
+        "model:grain-boundary-venting",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -923,6 +921,7 @@
         }
       ],
       "references": [
+        "model:gas-diffusion",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -1001,7 +1000,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -1030,7 +1029,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -1059,7 +1058,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -1088,6 +1087,9 @@
         }
       ],
       "references": [
+        "model:gas-diffusion",
+        "model:grain-boundary-micro-cracking",
+        "model:grain-boundary-venting",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -1117,6 +1119,7 @@
         }
       ],
       "references": [
+        "model:gas-diffusion",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -1158,7 +1161,10 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 17,
       "outputFlagExpression": "1",
-      "unitURI": "https://qudt.org/vocab/unit/UNITLESS"
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
     },
     {
       "@id": "sciantix-variable:state_variable:he-produced",
@@ -1215,7 +1221,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -1244,7 +1250,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -1273,7 +1279,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -1306,6 +1312,9 @@
         }
       ],
       "references": [
+        "model:gas-diffusion",
+        "model:grain-boundary-micro-cracking",
+        "model:grain-boundary-venting",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -1335,6 +1344,7 @@
         }
       ],
       "references": [
+        "model:gas-diffusion",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -1376,7 +1386,10 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 25,
       "outputFlagExpression": "toOutputHelium",
-      "unitURI": "https://qudt.org/vocab/unit/UNITLESS"
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
     },
     {
       "@id": "sciantix-variable:state_variable:he-release-rate",
@@ -1396,7 +1409,10 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 26,
       "outputFlagExpression": "toOutputHelium",
-      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3PerSec"
+      "unitURI": "https://w3id.org/nm-kos/unit#AtomPerM3PerSec",
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
     },
     {
       "@id": "sciantix-variable:state_variable:xe133-produced",
@@ -1453,7 +1469,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -1482,7 +1498,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -1511,7 +1527,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -1566,6 +1582,9 @@
         }
       ],
       "references": [
+        "model:gas-diffusion",
+        "model:grain-boundary-micro-cracking",
+        "model:grain-boundary-venting",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -1595,6 +1614,7 @@
         }
       ],
       "references": [
+        "model:gas-diffusion",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -1616,7 +1636,10 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 34,
       "outputFlagExpression": "toOutputRadioactiveFG",
-      "unitURI": "https://qudt.org/vocab/unit/UNITLESS"
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
     },
     {
       "@id": "sciantix-variable:state_variable:kr85m-produced",
@@ -1673,7 +1696,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -1702,7 +1725,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -1731,7 +1754,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -1786,6 +1809,9 @@
         }
       ],
       "references": [
+        "model:gas-diffusion",
+        "model:grain-boundary-micro-cracking",
+        "model:grain-boundary-venting",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -1815,6 +1841,7 @@
         }
       ],
       "references": [
+        "model:gas-diffusion",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -1836,7 +1863,10 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 42,
       "outputFlagExpression": "toOutputRadioactiveFG",
-      "unitURI": "https://qudt.org/vocab/unit/UNITLESS"
+      "unitURI": "https://qudt.org/vocab/unit/UNITLESS",
+      "references": [
+        "model:intergranular-bubble-behavior"
+      ]
     },
     {
       "@id": "sciantix-variable:state_variable:intragranular-bubble-concentration",
@@ -1943,9 +1973,6 @@
           "sourceArray": "Sciantix_variables",
           "sourceArrayIndex": 21
         }
-      ],
-      "references": [
-        "model:intragranular-bubble-behaviour"
       ]
     },
     {
@@ -1972,9 +1999,6 @@
           "sourceArray": "Sciantix_variables",
           "sourceArrayIndex": 22
         }
-      ],
-      "references": [
-        "model:intragranular-bubble-behaviour"
       ]
     },
     {
@@ -2001,9 +2025,6 @@
           "sourceArray": "Sciantix_variables",
           "sourceArrayIndex": 23
         }
-      ],
-      "references": [
-        "model:intragranular-bubble-behaviour"
       ]
     },
     {
@@ -2098,7 +2119,7 @@
         }
       ],
       "references": [
-        "model:intragranular-bubble-behaviour"
+        "model:gas-diffusion"
       ]
     },
     {
@@ -2127,6 +2148,7 @@
         }
       ],
       "references": [
+        "model:grain-boundary-micro-cracking",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -2154,9 +2176,6 @@
           "sourceArray": "Sciantix_variables",
           "sourceArrayIndex": 26
         }
-      ],
-      "references": [
-        "model:intergranular-bubble-behavior"
       ]
     },
     {
@@ -2183,9 +2202,6 @@
           "sourceArray": "Sciantix_variables",
           "sourceArrayIndex": 27
         }
-      ],
-      "references": [
-        "model:intergranular-bubble-behavior"
       ]
     },
     {
@@ -2212,9 +2228,6 @@
           "sourceArray": "Sciantix_variables",
           "sourceArrayIndex": 28
         }
-      ],
-      "references": [
-        "model:intergranular-bubble-behavior"
       ]
     },
     {
@@ -2243,6 +2256,7 @@
         }
       ],
       "references": [
+        "model:grain-boundary-micro-cracking",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -2272,6 +2286,7 @@
         }
       ],
       "references": [
+        "model:grain-boundary-micro-cracking",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -2316,10 +2331,7 @@
       "sourceFunction": "initializeSciantixVariable",
       "sourceArrayIndex": 59,
       "outputFlagExpression": "0",
-      "unitURI": "https://qudt.org/vocab/unit/MegaPA",
-      "references": [
-        "model:intergranular-bubble-behavior"
-      ]
+      "unitURI": "https://qudt.org/vocab/unit/MegaPA"
     },
     {
       "@id": "sciantix-variable:state_variable:intergranular-bubble-radius",
@@ -2347,6 +2359,7 @@
         }
       ],
       "references": [
+        "model:grain-boundary-micro-cracking",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -2376,6 +2389,7 @@
         }
       ],
       "references": [
+        "model:grain-boundary-micro-cracking",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -2405,6 +2419,7 @@
         }
       ],
       "references": [
+        "model:grain-boundary-micro-cracking",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -2434,6 +2449,7 @@
         }
       ],
       "references": [
+        "model:grain-boundary-micro-cracking",
         "model:intergranular-bubble-behavior"
       ]
     },
@@ -2463,7 +2479,7 @@
         }
       ],
       "references": [
-        "model:intergranular-bubble-behavior"
+        "model:grain-boundary-micro-cracking"
       ]
     },
     {
@@ -2521,7 +2537,6 @@
         }
       ],
       "references": [
-        "model:intergranular-bubble-behavior",
         "model:grain-boundary-micro-cracking"
       ]
     },
@@ -2653,9 +2668,6 @@
           "sourceArray": "Sciantix_variables",
           "sourceArrayIndex": 40
         }
-      ],
-      "references": [
-        "model:densification"
       ]
     },
     {
@@ -2856,7 +2868,6 @@
         }
       ],
       "references": [
-        "model:intergranular-bubble-behavior",
         "model:grain-boundary-venting"
       ]
     },
@@ -2886,7 +2897,6 @@
         }
       ],
       "references": [
-        "model:intergranular-bubble-behavior",
         "model:grain-boundary-venting"
       ]
     },
@@ -2974,7 +2984,7 @@
         }
       ],
       "references": [
-        "model:densification"
+        "model:grain-boundary-venting"
       ]
     },
     {
@@ -3001,9 +3011,6 @@
           "sourceArray": "Sciantix_variables",
           "sourceArrayIndex": 73
         }
-      ],
-      "references": [
-        "model:densification"
       ]
     },
     {
@@ -3246,9 +3253,6 @@
           "sourceArray": "Sciantix_variables",
           "sourceArrayIndex": 56
         }
-      ],
-      "references": [
-        "model:densification"
       ]
     },
     {
@@ -3691,9 +3695,6 @@
           "sourceArray": "Sciantix_variables",
           "sourceArrayIndex": 160
         }
-      ],
-      "references": [
-        "model:gas-diffusion"
       ]
     },
     {

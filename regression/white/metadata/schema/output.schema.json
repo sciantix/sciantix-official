@@ -7,7 +7,6 @@
   "required": [
     "format_version",
     "case_id",
-    "generated_at_utc",
     "dcterms_sources",
     "table"
   ],
@@ -16,9 +15,6 @@
       "type": "string"
     },
     "case_id": {
-      "type": "string"
-    },
-    "generated_at_utc": {
       "type": "string"
     },
     "dcterms_sources": {
@@ -47,10 +43,19 @@
               "unit"
             ],
             "properties": {
-              "index": { "type": "integer", "minimum": 0 },
-              "name": { "type": "string" },
-              "label": { "type": "string" },
-              "unit": { "type": "string" }
+              "index": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "name": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "unit": {
+                "type": "string"
+              }
             }
           }
         },
