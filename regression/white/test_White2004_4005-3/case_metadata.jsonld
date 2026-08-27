@@ -1,0 +1,120 @@
+{
+  "@context": {
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "nmkos": "https://w3id.org/nm-kos/terms#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/",
+    "sosa": "http://www.w3.org/ns/sosa/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "caseId": "dcterms:identifier",
+    "source": {
+      "@id": "dcterms:source",
+      "@type": "@id"
+    },
+    "software": "prov:wasAssociatedWith",
+    "modelCatalog": {
+      "@id": "dcterms:references",
+      "@type": "@id"
+    },
+    "softwareSource": {
+      "@id": "dcterms:source",
+      "@type": "@id"
+    },
+    "variableCatalog": {
+      "@id": "dcterms:references",
+      "@type": "@id"
+    },
+    "experimentalDataset": {
+      "@id": "dcterms:relation",
+      "@type": "@id"
+    },
+    "validationTarget": "sosa:hasResult",
+    "inputFile": "prov:used",
+    "outputFile": "prov:generated",
+    "role": "dcterms:type",
+    "path": "schema:contentUrl",
+    "sha256": "nmkos:sha256",
+    "sizeBytes": "dcat:byteSize",
+    "size_bytes": "dcat:byteSize"
+  },
+  "@type": [
+    "prov:Activity",
+    "dcat:Dataset"
+  ],
+  "caseId": "test_White2004_4005-3",
+  "source": [
+    "https://doi.org/10.1016/j.jnucmat.2003.10.008",
+    "https://www.oecd-nea.org/tools/abstract/detail/nea-1705"
+  ],
+  "modelCatalog": "../metadata/models/sciantix_physical_models.jsonld",
+  "softwareSource": "https://github.com/sciantix/sciantix-official",
+  "variableCatalog": "../metadata/variables/sciantix_variable_catalog.jsonld",
+  "experimentalDataset": "../metadata/experimental/white_experimental_measurements.jsonld",
+  "validationTarget": {
+    "@id": "white-measurement:test_White2004_4005-3",
+    "quantity": "Intergranular gas swelling",
+    "value": 0.42,
+    "unit": "%",
+    "source": "../metadata/experimental/white_experimental_measurements.jsonld"
+  },
+  "software": {
+    "@type": [
+      "prov:SoftwareAgent",
+      "schema:SoftwareApplication"
+    ],
+    "name": "SCIANTIX",
+    "version": "2.2.1",
+    "role": "simulation code",
+    "repository": "https://github.com/sciantix/sciantix-official",
+    "project_branch_url": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
+    "documentation": "https://sciantix.github.io/sciantix-official/models.html",
+    "repository_branch": "project/NEO4MAT_DIVA"
+  },
+  "inputFile": [
+    {
+      "role": "settings",
+      "path": "input_settings.txt",
+      "sha256": "187601b196f902e3214cf3d7cf6f6e5f51ab4a35bcb43120e00e530b53effade",
+      "size_bytes": 2478
+    },
+    {
+      "role": "history",
+      "path": "input_history.txt",
+      "sha256": "605c143d7e349e9a30c522119fc3d5979c1a03fce0d7e9ec528bba0527e996fe",
+      "size_bytes": 396
+    },
+    {
+      "role": "initial_conditions",
+      "path": "input_initial_conditions.txt",
+      "sha256": "0b3ff2b317b334131d9730ca8ef836fcaccffc330d19ffb77299265d68b49fb1",
+      "size_bytes": 1176
+    },
+    {
+      "role": "structured_input",
+      "path": "input.json",
+      "sha256": "f5d28dc969516ebb06f88b802ebc593a163dfd6e860c7a70d86b5f519c6d708f",
+      "size_bytes": 12593
+    }
+  ],
+  "outputFile": [
+    {
+      "role": "native_output",
+      "path": "output.txt",
+      "sha256": "0814af29ce8b4738fb2acf68fc1f3d842318599e8f703a40592ef075ec114446",
+      "size_bytes": 238849
+    },
+    {
+      "role": "structured_output",
+      "path": "output.json",
+      "sha256": "d28165024b00a20fcfa2fde4e054aa7195260aaa38d15292eed94685034ebfca",
+      "size_bytes": 442150
+    },
+    {
+      "role": "semantic_output",
+      "path": "output.jsonld",
+      "sha256": "9bb2cba68dcf88bdac2f42a7c9f6f67953b27ce92beb842226c1a19a4989c55a",
+      "size_bytes": 398825
+    }
+  ]
+}

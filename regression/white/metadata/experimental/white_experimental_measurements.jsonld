@@ -1,0 +1,373 @@
+{
+  "@context": {
+    "dcat": "http://www.w3.org/ns/dcat#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "qudt": "https://qudt.org/schema/qudt/",
+    "sosa": "http://www.w3.org/ns/sosa/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "caseId": "dcterms:identifier",
+    "source": {
+      "@id": "dcterms:source",
+      "@type": "@id"
+    },
+    "quantity": "sosa:observedProperty",
+    "value": "sosa:hasSimpleResult",
+    "unit": "qudt:unit",
+    "measurement": "dcterms:hasPart"
+  },
+  "@type": "dcat:Dataset",
+  "dcterms:identifier": "white-2004-intergranular-swelling-validation-targets",
+  "dcterms:title": "White intergranular swelling validation targets for SCIANTIX regression cases",
+  "dcterms:description": "Case-level intergranular gas swelling values used by the SCIANTIX White regression parity workflow.",
+  "source": [
+    "https://doi.org/10.1016/j.jnucmat.2003.10.008",
+    "https://www.oecd-nea.org/tools/abstract/detail/nea-1705"
+  ],
+  "dcterms:relation": "data/ig_swelling.txt",
+  "measurement": [
+    {
+      "@id": "white-measurement:test_White2004_4000-1",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4000-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.97,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4000-2",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4000-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.68,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4000-3",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4000-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.53,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4000-4",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4000-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.46,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4000-5",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4000-5",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.17,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4004-1",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4004-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.62,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4004-2",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4004-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.7,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4004-3",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4004-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.44,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4004-4",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4004-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.56,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4004-5",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4004-5",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.27,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4004-6",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4004-6",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.16,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4005-1",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4005-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.94,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4005-2",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4005-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.57,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4005-3",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4005-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.42,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4005-4",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4005-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.54,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4005-5",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4005-5",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.27,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-1",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4064-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 1.07,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-2",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4064-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.86,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-3",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4064-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.63,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-4",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4064-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.74,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4064-5",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4064-5",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.59,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4065-1",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4065-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 1.25,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4065-2",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4065-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 1.35,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4065-3",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4065-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.97,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4065-4",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4065-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.79,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4065-5",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4065-5",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.21,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4135-1",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4135-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.42,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4135-2",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4135-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.16,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4135-3",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4135-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.09,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4136-1",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4136-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.6,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4136-2",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4136-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.62,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4136-3",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4136-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.26,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4136-4",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4136-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.11,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4140-1",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4140-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.26,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4140-2",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4140-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.18,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4162-1",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4162-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.7,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4162-2",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4162-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.46,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4162-3",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4162-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.43,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4162-4",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4162-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.43,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4163-1",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4163-1",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.6,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4163-2",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4163-2",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.59,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4163-3",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4163-3",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.35,
+      "unit": "%"
+    },
+    {
+      "@id": "white-measurement:test_White2004_4163-4",
+      "@type": "sosa:Observation",
+      "caseId": "test_White2004_4163-4",
+      "quantity": "Intergranular gas swelling",
+      "value": 0.4,
+      "unit": "%"
+    }
+  ]
+}
