@@ -1,0 +1,1075 @@
+{
+  "@context": {
+    "dcterms": "http://purl.org/dc/terms/",
+    "dcmitype": "http://purl.org/dc/dcmitype/",
+    "neo": "https://w3id.org/emmo/domain/neo#"
+  },
+  "@graph": [
+    {
+      "@id": "https://doi.org/10.1016/0022-3115(73)90001-9",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/0022-3115(73)90001-9",
+        "doi:10.1016/0022-3115(73)90001-9"
+      ],
+      "dcterms:title": "Isothermal grain growth kinetics in sintered UO2 pellets",
+      "dcterms:description": "Grain growth rates measured on twelve types of UO2 specimen, mainly between 1300 and 1500 °C, interpreted with a Burke-type rate equation in which growth continues only up to a temperature-dependent limiting grain size. The correlation is extended to irradiated UO2 by letting the limiting size decrease with burn-up.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "J. B. Ainscough",
+        "B. W. Oldfield",
+        "J. O. Ware"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Ainscough, J. B., Oldfield, B. W., & Ware, J. O. (1973). Isothermal grain growth kinetics in sintered UO2 pellets. Journal of Nuclear Materials, 49(2), 117-128. https://doi.org/10.1016/0022-3115(73)90001-9"
+      ],
+      "dcterms:issued": "1973",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "URANIUM DIOXIDE",
+        "GRAIN GROWTH",
+        "SINTERING",
+        "FUEL PELLETS",
+        "NUCLEAR FUELS"
+      ],
+      "dcterms:subject": [
+        "isothermal grain growth kinetics",
+        "limiting grain size",
+        "UO2 microstructure"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/j.jnucmat.2016.10.051",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/j.jnucmat.2016.10.051",
+        "doi:10.1016/j.jnucmat.2016.10.051"
+      ],
+      "dcterms:title": "Analysis of transient fission gas behaviour in oxide fuel using BISON and TRANSURANUS",
+      "dcterms:description": "Presents and assesses a model for transient fission gas behaviour in oxide fuel that introduces burst release on top of conventional diffusion-based models. Implemented in BISON and TRANSURANUS and assessed against 19 LWR fuel rod irradiation experiments from the OECD/NEA IFPE database.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "https://orcid.org/0000-0002-6771-9461",
+        "E. Bruschi",
+        "https://orcid.org/0000-0003-2256-8409",
+        "https://orcid.org/0000-0003-2812-506X",
+        "https://orcid.org/0000-0001-9560-6598",
+        "https://orcid.org/0000-0001-7734-3632",
+        "https://orcid.org/0000-0002-9754-4535"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Barani, T., Bruschi, E., Pizzocri, D., Pastore, G., Van Uffelen, P., Williamson, R. L., & Luzzi, L. (2017). Analysis of transient fission gas behaviour in oxide fuel using BISON and TRANSURANUS. Journal of Nuclear Materials, 486, 96-110. https://doi.org/10.1016/j.jnucmat.2016.10.051"
+      ],
+      "dcterms:issued": "2017",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "FISSION PRODUCT RELEASE",
+        "FISSION PRODUCTS",
+        "URANIUM DIOXIDE",
+        "GRAIN BOUNDARIES",
+        "COMPUTERIZED SIMULATION",
+        "TRANSIENTS"
+      ],
+      "dcterms:subject": [
+        "grain-boundary micro-cracking",
+        "transient fission gas release",
+        "BISON",
+        "TRANSURANUS",
+        "fuel performance codes"
+      ]
+    },
+    {
+      "@id": "https://publications.jrc.ec.europa.eu/repository/handle/JRC83894",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://publications.jrc.ec.europa.eu/repository/handle/JRC83894"
+      ],
+      "dcterms:title": "Improvement of computer codes used for fuel behaviour simulation (FUMEX-III): report of a coordinated research project 2008-2012",
+      "dcterms:description": "Final report of the IAEA FUMEX-III coordinated research project. Assesses the maturity and predictive capability of participating fuel performance codes, supports the associated OECD/NEA validation database, and gives guidance on code quality assurance and licensing.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "S. Boneva",
+        "R. Calabrese",
+        "G. Chassie",
+        "D. Chulkin",
+        "A. Denis",
+        "B. K. Dutta",
+        "T. Hirose",
+        "G. Horhoianu",
+        "Y. Jiao",
+        "K. Kamimura",
+        "https://orcid.org/0000-0001-8587-1179",
+        "J. Killeen",
+        "H. Kishita",
+        "J. Klousal",
+        "K. Kulascy",
+        "W. Li",
+        "V. Likhanskii",
+        "https://orcid.org/0000-0002-9754-4535",
+        "A. Marino",
+        "https://orcid.org/0000-0003-2812-506X",
+        "G. Rossiter",
+        "A. Schubert",
+        "M. Sperlich",
+        "V. Tulkki",
+        "J. A. Turnbull",
+        "Z. Umidova",
+        "https://orcid.org/0000-0001-9560-6598",
+        "https://orcid.org/0000-0001-7734-3632",
+        "V. Zborovskij",
+        "J. Zhang"
+      ],
+      "dcterms:publisher": "International Atomic Energy Agency",
+      "dcterms:bibliographicCitation": [
+        "Boneva, S., Calabrese, R., Chassie, G., Chulkin, D., Denis, A., Dutta, B. K., ... Zhang, J. (2013). Improvement of computer codes used for fuel behaviour simulation (FUMEX-III): report of a coordinated research project 2008-2012. International Atomic Energy Agency."
+      ],
+      "dcterms:issued": "2013",
+      "dcterms:accessRights": "Open Access",
+      "neo:referenceINIS": [
+        "NUCLEAR FUELS",
+        "COMPUTER CODES",
+        "BENCHMARKS",
+        "FISSION PRODUCT RELEASE",
+        "FUEL ELEMENTS"
+      ],
+      "dcterms:subject": [
+        "FUMEX-III",
+        "code benchmarking",
+        "fuel performance code validation",
+        "coordinated research project"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/j.jnucmat.2025.156116",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/j.jnucmat.2025.156116",
+        "doi:10.1016/j.jnucmat.2025.156116"
+      ],
+      "dcterms:title": "On a physics-based model of grain-boundary bubbles overpressurisation and its effects on fuel fragmentation",
+      "dcterms:description": "Physics-based model of the overpressurisation of grain-boundary bubbles and pores, considered a main driver of oxide fuel fragmentation and fission gas release during transients, together with its assessment.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "https://orcid.org/0009-0000-2638-8419",
+        "https://orcid.org/0000-0003-2256-8409",
+        "https://orcid.org/0000-0002-9139-2454",
+        "https://orcid.org/0009-0009-3916-4639",
+        "https://orcid.org/0000-0001-9560-6598",
+        "A. Schubert",
+        "https://orcid.org/0009-0006-5099-7234",
+        "https://orcid.org/0000-0002-9754-4535"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Cappellari, E., Pizzocri, D., Zullo, G., Nicodemo, G., Van Uffelen, P., Schubert, A., Deanesi, S., & Luzzi, L. (2025). On a physics-based model of grain-boundary bubbles overpressurisation and its effects on fuel fragmentation. Journal of Nuclear Materials, 617, 156116. https://doi.org/10.1016/j.jnucmat.2025.156116"
+      ],
+      "dcterms:issued": "2025",
+      "dcterms:accessRights": "Open Access",
+      "dcterms:license": "https://creativecommons.org/licenses/by/4.0/",
+      "neo:referenceINIS": [
+        "FISSION PRODUCTS",
+        "GRAIN BOUNDARIES",
+        "BUBBLES",
+        "URANIUM DIOXIDE",
+        "FRAGMENTATION",
+        "NUCLEAR FUELS"
+      ],
+      "dcterms:subject": [
+        "grain-boundary bubble overpressurisation",
+        "fuel fragmentation",
+        "bubble pressure model",
+        "loss-of-coolant accident"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/j.jnucmat.2015.08.022",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/j.jnucmat.2015.08.022",
+        "doi:10.1016/j.jnucmat.2015.08.022"
+      ],
+      "dcterms:title": "Towards the inclusion of open fabrication porosity in a fission gas release model",
+      "dcterms:description": "Proposes a mechanistic model for fission product release in oxide fuel that accounts for open fabrication porosity, adapting the description of open porosity used for the sintering of crystalline solids. Presents the mathematical framework, assumptions and limitations.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "A. Claisse",
+        "https://orcid.org/0000-0001-9560-6598"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Claisse, A., & Van Uffelen, P. (2015). Towards the inclusion of open fabrication porosity in a fission gas release model. Journal of Nuclear Materials, 466, 351-356. https://doi.org/10.1016/j.jnucmat.2015.08.022"
+      ],
+      "dcterms:issued": "2015",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "FISSION PRODUCT RELEASE",
+        "POROSITY",
+        "NUCLEAR FUELS",
+        "FISSION PRODUCTS"
+      ],
+      "dcterms:subject": [
+        "open fabrication porosity",
+        "grain-boundary venting",
+        "fission gas release model"
+      ]
+    },
+    {
+      "@id": "https://www.oecd-nea.org/tools/abstract/detail/nea-1705",
+      "@type": "dcmitype:Dataset",
+      "dcterms:identifier": [
+        "https://www.oecd-nea.org/tools/abstract/detail/nea-1705",
+        "IFPE/CAGR-UOX-SWELL",
+        "NEA-1705"
+      ],
+      "dcterms:title": "IFPE/CAGR-UOX-SWELL: Fuel swelling data obtained from the AGR/Halden Ramp Test Programme",
+      "dcterms:description": "OECD/NEA IFPE database entry collecting fuel swelling data measured on oxide fuel ramp-tested in the Halden reactor within the AGR/Halden ramp test programme. Distributed as NEA-1705.",
+      "dcterms:format": "Multi-format data package (ASCII, TIFF, PDF, Excel)",
+      "dcterms:creator": [
+        "OECD Nuclear Energy Agency"
+      ],
+      "dcterms:publisher": "OECD Nuclear Energy Agency",
+      "dcterms:bibliographicCitation": [
+        "IFPE/CAGR-UOX-SWELL, Fuel swelling data obtained from the AGR/Halden Ramp Test Programme. OECD Nuclear Energy Agency, NEA-1705."
+      ],
+      "dcterms:issued": "2006",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "URANIUM DIOXIDE",
+        "SWELLING",
+        "NUCLEAR FUELS",
+        "POST-IRRADIATION EXAMINATION",
+        "GAS COOLED REACTORS",
+        "EXPERIMENTAL DATA"
+      ],
+      "dcterms:subject": [
+        "intergranular swelling",
+        "AGR/Halden ramp test programme",
+        "grain-face porosity",
+        "validation dataset",
+        "IFPE database"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1017/CBO9780511760396",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1017/CBO9780511760396",
+        "doi:10.1017/CBO9780511760396",
+        "urn:isbn:9780521113601"
+      ],
+      "dcterms:title": "Verification and Validation in Scientific Computing",
+      "dcterms:description": "Textbook giving a systematic treatment of the concepts, principles and procedures of verification and validation for modelling and simulation in engineering, science and public policy.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "W. L. Oberkampf",
+        "C. J. Roy"
+      ],
+      "dcterms:publisher": "Cambridge University Press",
+      "dcterms:bibliographicCitation": [
+        "Oberkampf, W. L., & Roy, C. J. (2010). Verification and Validation in Scientific Computing. Cambridge University Press."
+      ],
+      "dcterms:issued": "2010",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "COMPUTERIZED SIMULATION",
+        "VALIDATION",
+        "MATHEMATICAL MODELS",
+        "ERRORS"
+      ],
+      "dcterms:subject": [
+        "verification and validation",
+        "code verification",
+        "solution verification",
+        "predictive capability",
+        "uncertainty quantification"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/j.nucengdes.2012.12.002",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/j.nucengdes.2012.12.002",
+        "doi:10.1016/j.nucengdes.2012.12.002"
+      ],
+      "dcterms:title": "Physics-based modelling of fission gas swelling and release in UO2 applied to integral fuel rod analysis",
+      "dcterms:description": "Develops a physics-based model of the coupled phenomena of fission gas swelling and release in UO2 during irradiation, at a level of complexity suitable for integral fuel rod analysis and consistent with the uncertainties of the parameters involved.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "https://orcid.org/0000-0003-2812-506X",
+        "https://orcid.org/0000-0002-9754-4535",
+        "V. Di Marcello",
+        "https://orcid.org/0000-0001-9560-6598"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Pastore, G., Luzzi, L., Di Marcello, V., & Van Uffelen, P. (2013). Physics-based modelling of fission gas swelling and release in UO2 applied to integral fuel rod analysis. Nuclear Engineering and Design, 256, 75-86. https://doi.org/10.1016/j.nucengdes.2012.12.002"
+      ],
+      "dcterms:issued": "2013",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "FISSION PRODUCT RELEASE",
+        "FISSION PRODUCTS",
+        "SWELLING",
+        "URANIUM DIOXIDE",
+        "GRAIN BOUNDARIES",
+        "BUBBLES"
+      ],
+      "dcterms:subject": [
+        "intergranular bubble behaviour",
+        "fractional coverage",
+        "grain-face bubbles",
+        "integral fuel rod analysis"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/j.jnucmat.2020.152042",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/j.jnucmat.2020.152042",
+        "doi:10.1016/j.jnucmat.2020.152042"
+      ],
+      "dcterms:title": "SCIANTIX: A new open source multi-scale code for fission gas behaviour modelling designed for nuclear fuel performance codes",
+      "dcterms:description": "Presents SCIANTIX, an open-source 0D stand-alone code for fission gas behaviour designed to be coupled as a module within existing fuel performance codes, bridging lower length-scale calculations and engineering-scale simulation.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "https://orcid.org/0000-0003-2256-8409",
+        "https://orcid.org/0000-0002-6771-9461",
+        "https://orcid.org/0000-0002-9754-4535"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Pizzocri, D., Barani, T., & Luzzi, L. (2020). SCIANTIX: A new open source multi-scale code for fission gas behaviour modelling designed for nuclear fuel performance codes. Journal of Nuclear Materials, 532, 152042. https://doi.org/10.1016/j.jnucmat.2020.152042"
+      ],
+      "dcterms:issued": "2020",
+      "dcterms:accessRights": "Open Access",
+      "dcterms:license": "https://creativecommons.org/licenses/by/4.0/",
+      "neo:referenceINIS": [
+        "FISSION PRODUCT RELEASE",
+        "FISSION PRODUCTS",
+        "COMPUTER CODES",
+        "NUCLEAR FUELS",
+        "COMPUTERIZED SIMULATION",
+        "URANIUM DIOXIDE"
+      ],
+      "dcterms:subject": [
+        "SCIANTIX",
+        "mesoscale modelling",
+        "rate theory",
+        "fuel performance codes",
+        "open source software"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/j.jnucmat.2018.02.024",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/j.jnucmat.2018.02.024",
+        "doi:10.1016/j.jnucmat.2018.02.024"
+      ],
+      "dcterms:title": "A model describing intra-granular fission gas behaviour in oxide fuel for advanced engineering tools",
+      "dcterms:description": "Presents a model describing the evolution of intra-granular fission gas bubbles in oxide fuel in terms of bubble number density and average size, intended for use in engineering-scale fuel performance tools.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "https://orcid.org/0000-0003-2256-8409",
+        "https://orcid.org/0000-0003-2812-506X",
+        "https://orcid.org/0000-0002-6771-9461",
+        "https://orcid.org/0000-0002-7449-1020",
+        "https://orcid.org/0000-0002-9754-4535",
+        "https://orcid.org/0000-0001-9560-6598",
+        "https://orcid.org/0000-0002-4299-6606",
+        "A. Alfonsi",
+        "https://orcid.org/0000-0003-0836-0476"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Pizzocri, D., Pastore, G., Barani, T., Magni, A., Luzzi, L., Van Uffelen, P., Pitts, S. A., Alfonsi, A., & Hales, J. D. (2018). A model describing intra-granular fission gas behaviour in oxide fuel for advanced engineering tools. Journal of Nuclear Materials, 502, 323-330. https://doi.org/10.1016/j.jnucmat.2018.02.024"
+      ],
+      "dcterms:issued": "2018",
+      "dcterms:accessRights": "Open Access",
+      "dcterms:license": "https://creativecommons.org/licenses/by/4.0/",
+      "neo:referenceINIS": [
+        "FISSION PRODUCTS",
+        "BUBBLES",
+        "URANIUM DIOXIDE",
+        "DIFFUSION",
+        "SWELLING"
+      ],
+      "dcterms:subject": [
+        "intragranular bubbles",
+        "bubble number density",
+        "intragranular gaseous swelling",
+        "gas atom trapping"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/j.nucengdes.2024.113741",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/j.nucengdes.2024.113741",
+        "doi:10.1016/j.nucengdes.2024.113741",
+        "doi:10.1016/J.NUCENGDES.2024.113741"
+      ],
+      "dcterms:title": "A multi-fidelity multi-scale methodology to accelerate development of fuel performance codes",
+      "dcterms:description": "Proposes a multi-fidelity methodology for coupling a meso-scale fission gas module (SCIANTIX) to a fuel performance code (FRAPCON) when a required input, the local hydrostatic stress, is not predicted by that code. A neural network trained on TRANSURANUS results fills the gap; demonstrated on the Risø AN3 irradiation experiment.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "https://orcid.org/0000-0003-2256-8409",
+        "https://orcid.org/0000-0002-9139-2454",
+        "G. Petrosillo",
+        "https://orcid.org/0000-0002-9754-4535",
+        "https://orcid.org/0000-0001-7194-2853",
+        "https://orcid.org/0000-0002-3431-1291"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Pizzocri, D., Zullo, G., Petrosillo, G., Luzzi, L., Feria, F., & Herranz, L. E. (2025). A multi-fidelity multi-scale methodology to accelerate development of fuel performance codes. Nuclear Engineering and Design, 432, 113741. https://doi.org/10.1016/j.nucengdes.2024.113741"
+      ],
+      "dcterms:issued": "2025",
+      "dcterms:accessRights": "Open Access",
+      "dcterms:license": "https://creativecommons.org/licenses/by/4.0/",
+      "neo:referenceINIS": [
+        "COMPUTER CODES",
+        "NUCLEAR FUELS",
+        "COMPUTERIZED SIMULATION",
+        "MATHEMATICAL MODELS"
+      ],
+      "dcterms:subject": [
+        "multi-fidelity modelling",
+        "multi-scale methodology",
+        "fuel performance code development"
+      ]
+    },
+    {
+      "@id": "https://www.oecd-nea.org/jcms/pl_107583/recommendations-on-fuel-properties-for-fuel-performance-codes",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://www.oecd-nea.org/jcms/pl_107583/recommendations-on-fuel-properties-for-fuel-performance-codes"
+      ],
+      "dcterms:title": "Recommendations on Fuel Properties for Fuel Performance Codes",
+      "dcterms:description": "Report of the NEA Expert Group on Innovative Fuel Elements (EGIFE), under the Working Party on Scientific Issues of the Fuel Cycle. Presents recommended oxide and metal fuel property correlations for use in fuel performance codes, established from selected data.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "OECD Nuclear Energy Agency"
+      ],
+      "dcterms:publisher": "OECD Publishing",
+      "dcterms:bibliographicCitation": [
+        "NEA (2025). Recommendations on Fuel Properties for Fuel Performance Codes. OECD Publishing, Paris."
+      ],
+      "dcterms:issued": "2025",
+      "dcterms:accessRights": "Open Access",
+      "dcterms:license": "https://creativecommons.org/licenses/by/4.0/",
+      "neo:referenceINIS": [
+        "NUCLEAR FUELS",
+        "PHYSICAL PROPERTIES",
+        "COMPUTER CODES",
+        "URANIUM DIOXIDE"
+      ],
+      "dcterms:subject": [
+        "fuel property correlations",
+        "material property library",
+        "recommended values"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/j.jnucmat.2018.08.019",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/j.jnucmat.2018.08.019",
+        "doi:10.1016/j.jnucmat.2018.08.019"
+      ],
+      "dcterms:title": "Fission gas release from UO2 nuclear fuel: a review",
+      "dcterms:description": "Review of the generation, transport and release of gaseous fission products in UO2 fuel. Summarises the basic mechanisms of fission gas release during normal operation, including the accelerated release observed at high burn-up, and identifies areas needing further work.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "J. Rest",
+        "M. W. D. Cooper",
+        "J. Spino",
+        "J. A. Turnbull",
+        "https://orcid.org/0000-0001-9560-6598",
+        "C. T. Walker"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Rest, J., Cooper, M. W. D., Spino, J., Turnbull, J. A., Van Uffelen, P., & Walker, C. T. (2019). Fission gas release from UO2 nuclear fuel: a review. Journal of Nuclear Materials, 513, 310-345. https://doi.org/10.1016/j.jnucmat.2018.08.019"
+      ],
+      "dcterms:issued": "2019",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "FISSION PRODUCT RELEASE",
+        "FISSION PRODUCTS",
+        "URANIUM DIOXIDE",
+        "NUCLEAR FUELS",
+        "REVIEWS",
+        "DIFFUSION"
+      ],
+      "dcterms:subject": [
+        "fission gas release review",
+        "gas atom diffusion",
+        "bubble nucleation",
+        "high burnup structure"
+      ]
+    },
+    {
+      "@id": "https://sciantix.github.io/sciantix-official/models.html",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://sciantix.github.io/sciantix-official/models.html"
+      ],
+      "dcterms:title": "SCIANTIX official documentation: physical models description",
+      "dcterms:description": "Official online documentation of the physical models implemented in SCIANTIX, including the governing equations, model options and per-model references.",
+      "dcterms:format": "text/html",
+      "dcterms:creator": [
+        "https://orcid.org/0000-0002-9139-2454",
+        "https://orcid.org/0009-0000-2638-8419",
+        "https://orcid.org/0009-0009-3916-4639",
+        "https://orcid.org/0000-0003-2256-8409",
+        "https://orcid.org/0000-0002-9754-4535"
+      ],
+      "dcterms:publisher": "Politecnico di Milano",
+      "dcterms:bibliographicCitation": [
+        "SCIANTIX official documentation. Physical models description (2025). https://sciantix.github.io/sciantix-official/models.html"
+      ],
+      "dcterms:issued": "2025",
+      "dcterms:accessRights": "Open Access",
+      "dcterms:license": "https://opensource.org/licenses/MIT",
+      "neo:referenceINIS": [
+        "COMPUTER CODES",
+        "DOCUMENTATION",
+        "NUCLEAR FUELS",
+        "MATHEMATICAL MODELS"
+      ],
+      "dcterms:subject": [
+        "SCIANTIX",
+        "physical model documentation",
+        "model options",
+        "software documentation"
+      ]
+    },
+    {
+      "@id": "https://github.com/sciantix/sciantix-official",
+      "@type": "dcmitype:Software",
+      "dcterms:identifier": [
+        "https://github.com/sciantix/sciantix-official",
+        "https://doi.org/10.5281/zenodo.17748425",
+        "doi:10.5281/zenodo.17748425"
+      ],
+      "dcterms:title": "SCIANTIX official GitHub repository",
+      "dcterms:description": "Source repository of the SCIANTIX code, an open-source code developed at Politecnico di Milano to simulate fission gas behaviour in nuclear fuels. The repository contains the source code, documentation, and examples for the SCIANTIX code.",
+      "dcterms:format": "Git source code repository",
+      "dcterms:creator": [
+        "https://orcid.org/0000-0002-9139-2454",
+        "https://orcid.org/0009-0000-2638-8419",
+        "https://orcid.org/0009-0009-3916-4639",
+        "https://orcid.org/0000-0003-2256-8409",
+        "https://orcid.org/0000-0002-9754-4535"
+      ],
+      "dcterms:publisher": "Politecnico di Milano",
+      "dcterms:bibliographicCitation": [
+        "SCIANTIX official GitHub repository (2025). https://github.com/sciantix/sciantix-official"
+      ],
+      "dcterms:issued": "2025",
+      "dcterms:accessRights": "Open Access",
+      "dcterms:license": "https://opensource.org/licenses/MIT",
+      "neo:referenceINIS": [
+        "COMPUTER CODES",
+        "NUCLEAR FUELS",
+        "FISSION PRODUCT RELEASE",
+        "COMPUTERIZED SIMULATION"
+      ],
+      "dcterms:subject": [
+        "SCIANTIX",
+        "open source software",
+        "source code repository",
+        "MIT licence",
+        "version 2.2.1"
+      ]
+    },
+    {
+      "@id": "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA",
+      "@type": "dcmitype:Software",
+      "dcterms:identifier": [
+        "https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA"
+      ],
+      "dcterms:title": "SCIANTIX official GitHub repository, branch project/NEO4MAT_DIVA",
+      "dcterms:description": "Dedicated branch of the SCIANTIX repository frozen for the full duration of the NEO4MAT project, ensuring traceability and reproducibility of the case study simulations.",
+      "dcterms:format": "Git source code repository",
+      "dcterms:creator": [
+        "https://orcid.org/0009-0000-2638-8419",
+        "https://orcid.org/0000-0003-2256-8409"
+      ],
+      "dcterms:publisher": "Politecnico di Milano",
+      "dcterms:bibliographicCitation": [
+        "SCIANTIX official GitHub repository branch project/NEO4MAT_DIVA (2025). https://github.com/sciantix/sciantix-official/tree/project/NEO4MAT_DIVA"
+      ],
+      "dcterms:issued": "2025",
+      "dcterms:accessRights": "Open Access",
+      "dcterms:license": "https://opensource.org/licenses/MIT",
+      "neo:referenceINIS": [
+        "COMPUTER CODES",
+        "NUCLEAR FUELS",
+        "COMPUTERIZED SIMULATION"
+      ],
+      "dcterms:subject": [
+        "SCIANTIX",
+        "NEO4MAT",
+        "frozen code version",
+        "reproducibility",
+        "semantic export"
+      ]
+    },
+    {
+      "@id": "https://www.oecd-nea.org/science/wprs/fuel/Thesis_Van_Uffelen_BLG.pdf",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://www.oecd-nea.org/science/wprs/fuel/Thesis_Van_Uffelen_BLG.pdf",
+        "BLG-907"
+      ],
+      "dcterms:title": "Contribution to the modelling of fission gas release in light water reactor fuel",
+      "dcterms:description": "Doctoral thesis on the modelling of fission gas release in light water reactor fuel.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "https://orcid.org/0000-0001-9560-6598"
+      ],
+      "dcterms:publisher": "Université de Liège",
+      "dcterms:bibliographicCitation": [
+        "Van Uffelen, P. (2002). Contribution to the modelling of fission gas release in light water reactor fuel. Université de Liège. PhD thesis, SCK-CEN Reports No. BLG-907."
+      ],
+      "dcterms:issued": "2002",
+      "dcterms:accessRights": "Open Access",
+      "neo:referenceINIS": [
+        "FISSION PRODUCT RELEASE",
+        "FISSION PRODUCTS",
+        "WATER COOLED REACTORS",
+        "WATER MODERATED REACTORS",
+        "NUCLEAR FUELS"
+      ],
+      "dcterms:subject": [
+        "fission gas release modelling",
+        "fuel densification",
+        "doctoral thesis"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/j.jnucmat.2018.12.037",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/j.jnucmat.2018.12.037",
+        "doi:10.1016/j.jnucmat.2018.12.037"
+      ],
+      "dcterms:title": "A review of fuel performance modelling",
+      "dcterms:description": "Review of the fuel performance codes most relevant to the nuclear industry, restricted to LWR fuel. Covers the tools available worldwide, the historical development of their thermal, mechanical, chemical, neutronic and microstructural models, current trends including multi-physics coupling and uncertainty analysis, and verification and validation strategy.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "https://orcid.org/0000-0001-9560-6598",
+        "https://orcid.org/0000-0003-0836-0476",
+        "W. Li",
+        "G. Rossiter",
+        "https://orcid.org/0000-0001-7734-3632"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Van Uffelen, P., Hales, J., Li, W., Rossiter, G., & Williamson, R. (2019). A review of fuel performance modelling. Journal of Nuclear Materials, 516, 373-412. https://doi.org/10.1016/j.jnucmat.2018.12.037"
+      ],
+      "dcterms:issued": "2019",
+      "dcterms:accessRights": "Open Access",
+      "dcterms:license": "https://creativecommons.org/licenses/by/4.0/",
+      "neo:referenceINIS": [
+        "NUCLEAR FUELS",
+        "COMPUTER CODES",
+        "REVIEWS",
+        "COMPUTERIZED SIMULATION",
+        "FUEL ELEMENTS"
+      ],
+      "dcterms:subject": [
+        "fuel performance modelling",
+        "review",
+        "coupled thermal-mechanical analysis"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/j.jnucmat.2003.10.008",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/j.jnucmat.2003.10.008",
+        "doi:10.1016/j.jnucmat.2003.10.008"
+      ],
+      "dcterms:title": "The development of grain-face porosity in irradiated oxide fuel",
+      "dcterms:description": "Describes the development of gas-filled porosity on grain faces in irradiated oxide fuel, from the initial precipitation of small lenticular bubbles through their growth and coalescence, in the context of fission gas release by atomic diffusion to grain boundaries.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "R. J. White"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "White, R. J. (2004). The development of grain-face porosity in irradiated oxide fuel. Journal of Nuclear Materials, 325(1), 61-77. https://doi.org/10.1016/j.jnucmat.2003.10.008"
+      ],
+      "dcterms:issued": "2004",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "URANIUM DIOXIDE",
+        "POROSITY",
+        "GRAIN BOUNDARIES",
+        "SWELLING",
+        "POST-IRRADIATION EXAMINATION",
+        "BUBBLES"
+      ],
+      "dcterms:subject": [
+        "grain-face porosity",
+        "intergranular swelling",
+        "bubble coalescence",
+        "AGR/Halden ramp tests",
+        "separate-effect validation"
+      ]
+    },
+    {
+      "@id": "https://www.oecd-nea.org/tools/abstract/detail/nea-1705#R-T-NG-EXT-REP-0206-02",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://www.oecd-nea.org/tools/abstract/detail/nea-1705#R-T-NG-EXT-REP-0206-02",
+        "R&T/NG/EXT/REP/0206/02"
+      ],
+      "dcterms:title": "A Summary of Swelling Data Obtained from the AGR/Halden Ramp Test Programme",
+      "dcterms:description": "Summarises fuel swelling measurements on oxide fuel ramp-tested in the Halden reactor within the AGR/Halden ramp test programme, originally undertaken to study pellet-cladding interaction mechanisms in AGR fuel.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "R. J. White",
+        "R. C. Corcoran",
+        "P. J. Barnes"
+      ],
+      "dcterms:publisher": "British Energy",
+      "dcterms:bibliographicCitation": [
+        "White, R. J., Corcoran, R. C., & Barnes, P. J. (2006). A Summary of Swelling Data Obtained from the AGR/Halden Ramp Test Programme, R&T/NG/EXT/REP/0206/02 - Issue 5 April 2006."
+      ],
+      "dcterms:issued": "2006",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "SWELLING",
+        "URANIUM DIOXIDE",
+        "POST-IRRADIATION EXAMINATION",
+        "GAS COOLED REACTORS",
+        "EXPERIMENTAL DATA",
+        "NUCLEAR FUELS"
+      ],
+      "dcterms:subject": [
+        "AGR/Halden ramp test programme",
+        "swelling data summary",
+        "power ramp",
+        "experimental database"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/0022-3115(83)90176-9",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/0022-3115(83)90176-9",
+        "doi:10.1016/0022-3115(83)90176-9"
+      ],
+      "dcterms:title": "A new fission-gas release model",
+      "dcterms:description": "Presents the poly-granular-aggregate model for the release of unstable fission products from irradiated UO2, in which release occurs by direct diffusion to grain boundaries and by transfer through an intermittently open grain-edge tunnel network. Compared against the Turnbull-Friskney release-rate experiments.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "R. J. White",
+        "M. O. Tucker"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "White, R. J., & Tucker, M. O. (1983). A new fission-gas release model. Journal of Nuclear Materials, 118(1), 1-38. https://doi.org/10.1016/0022-3115(83)90176-9"
+      ],
+      "dcterms:issued": "1983",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "FISSION PRODUCT RELEASE",
+        "FISSION PRODUCTS",
+        "NUCLEAR FUELS",
+        "MATHEMATICAL MODELS",
+        "BUBBLES"
+      ],
+      "dcterms:subject": [
+        "fission gas release model",
+        "intragranular bubbles",
+        "gas diffusion"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/j.jnucmat.2023.154744",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/j.jnucmat.2023.154744",
+        "doi:10.1016/j.jnucmat.2023.154744"
+      ],
+      "dcterms:title": "The SCIANTIX code for fission gas behaviour: Status, upgrades, separate-effect validation, and future developments",
+      "dcterms:description": "Reports the status of SCIANTIX, a 0D open-source code modelling inert gas behaviour in nuclear fuel at grain scale through kinetic rate-theory models, together with recent upgrades, separate-effect validation and planned developments.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "https://orcid.org/0000-0002-9139-2454",
+        "https://orcid.org/0000-0003-2256-8409",
+        "https://orcid.org/0000-0002-9754-4535"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Zullo, G., Pizzocri, D., & Luzzi, L. (2023). The SCIANTIX code for fission gas behaviour: Status, upgrades, separate-effect validation, and future developments. Journal of Nuclear Materials, 587, 154744. https://doi.org/10.1016/j.jnucmat.2023.154744"
+      ],
+      "dcterms:issued": "2023",
+      "dcterms:accessRights": "Open Access",
+      "dcterms:license": "https://creativecommons.org/licenses/by/4.0/",
+      "neo:referenceINIS": [
+        "FISSION PRODUCT RELEASE",
+        "FISSION PRODUCTS",
+        "COMPUTER CODES",
+        "VALIDATION",
+        "NUCLEAR FUELS"
+      ],
+      "dcterms:subject": [
+        "SCIANTIX",
+        "separate-effect validation",
+        "code upgrades",
+        "validation matrix"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/j.jnucmat.2024.155305",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/j.jnucmat.2024.155305",
+        "doi:10.1016/j.jnucmat.2024.155305"
+      ],
+      "dcterms:title": "Integral-scale validation of the SCIANTIX code for Light Water Reactor fuel rods",
+      "dcterms:description": "Reports the integral-scale validation of SCIANTIX coupled with fuel performance codes to simulate light water reactor fuel rods, comparing integral fission gas release against an initial integral validation database.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "https://orcid.org/0000-0002-9139-2454",
+        "https://orcid.org/0000-0003-2256-8409",
+        "https://orcid.org/0000-0001-9701-529X",
+        "https://orcid.org/0000-0001-9560-6598",
+        "https://orcid.org/0000-0001-7194-2853",
+        "https://orcid.org/0000-0002-3431-1291",
+        "https://orcid.org/0000-0002-9754-4535"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Zullo, G., Pizzocri, D., Scolaro, A., Van Uffelen, P., Feria, F., Herranz, L. E., & Luzzi, L. (2024). Integral-scale validation of the SCIANTIX code for Light Water Reactor fuel rods. Journal of Nuclear Materials, 601, 155305. https://doi.org/10.1016/j.jnucmat.2024.155305"
+      ],
+      "dcterms:issued": "2024",
+      "dcterms:accessRights": "Open Access",
+      "dcterms:license": "https://creativecommons.org/licenses/by/4.0/",
+      "neo:referenceINIS": [
+        "FISSION PRODUCT RELEASE",
+        "WATER COOLED REACTORS",
+        "WATER MODERATED REACTORS",
+        "FUEL ELEMENTS",
+        "VALIDATION",
+        "COMPUTER CODES"
+      ],
+      "dcterms:subject": [
+        "SCIANTIX",
+        "integral-scale validation",
+        "fuel rod analysis",
+        "code coupling"
+      ]
+    },
+    {
+      "@id": "https://inis.iaea.org/records/p0nd1-d5c88",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://inis.iaea.org/records/p0nd1-d5c88",
+        "IWGFPT-32",
+        "INIS RN:21003206"
+      ],
+      "dcterms:title": "The diffusion coefficient for fission gas atoms in uranium dioxide",
+      "dcterms:description": "Re-appraises the diffusion coefficient of xenon and krypton in uranium dioxide from published data, with particular attention to its application to high burn-up fuel, and re-evaluates earlier AERE Harwell experiments.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "J. A. Turnbull",
+        "R. J. White",
+        "C. Wise"
+      ],
+      "dcterms:publisher": "International Atomic Energy Agency",
+      "dcterms:bibliographicCitation": [
+        "Turnbull, J. A., et al. (1988). The diffusion coefficient for fission gas atoms in uranium dioxide. IWGFPT-32, Preston, UK, Sep 18-22."
+      ],
+      "dcterms:issued": "1988",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "URANIUM DIOXIDE",
+        "FISSION PRODUCTS",
+        "DIFFUSION",
+        "XENON",
+        "NUCLEAR FUELS"
+      ],
+      "dcterms:subject": [
+        "fission gas diffusion coefficient",
+        "intragranular diffusion",
+        "athermal and thermal diffusion regimes"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/0022-3115(71)90075-4",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/0022-3115(71)90075-4",
+        "doi:10.1016/0022-3115(71)90075-4"
+      ],
+      "dcterms:title": "The re-solution of fission-gas atoms from bubbles during the irradiation of UO2 at an elevated temperature",
+      "dcterms:description": "Reports annealing and re-irradiation experiments on UO2 containing a uniform distribution of fission-gas bubbles, comparing bubble distributions with and without a second low-dose irradiation in order to characterise re-solution.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "J. A. Turnbull"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Turnbull, J. A. (1971). The re-solution of fission-gas atoms from bubbles during the irradiation of UO2 at an elevated temperature. Journal of Nuclear Materials, 38, 203."
+      ],
+      "dcterms:issued": "1971",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "URANIUM DIOXIDE",
+        "FISSION PRODUCTS",
+        "BUBBLES",
+        "IRRADIATION",
+        "NUCLEAR FUELS"
+      ],
+      "dcterms:subject": [
+        "fission gas re-solution",
+        "irradiation-induced re-solution rate",
+        "intragranular bubbles"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/0022-3697(58)90053-2",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/0022-3697(58)90053-2",
+        "doi:10.1016/0022-3697(58)90053-2"
+      ],
+      "dcterms:title": "Theory of diffusion-limited precipitation",
+      "dcterms:description": "Develops a theory of diffusion-limited precipitation from a supersaturated solution onto an array of particles, giving the time dependence of the unprecipitated solute fraction for small spherical, spheroidal and cylindrical particles.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "F. S. Ham"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Ham, F. S. (1958). Theory of diffusion-limited precipitation. Journal of Physics and Chemistry of Solids, 6, 335-351."
+      ],
+      "dcterms:issued": "1958",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "DIFFUSION",
+        "PRECIPITATION",
+        "MATHEMATICAL MODELS",
+        "NUCLEATION"
+      ],
+      "dcterms:subject": [
+        "diffusion-limited precipitation",
+        "trapping rate",
+        "sink strength",
+        "Ham's theory"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/j.jnucmat.2006.03.010",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/j.jnucmat.2006.03.010",
+        "doi:10.1016/j.jnucmat.2006.03.010"
+      ],
+      "dcterms:title": "Re-solution of fission gas - A review: Part I. Intragranular bubbles",
+      "dcterms:description": "Reviews the theories of fission-fragment-driven re-solution of fission gas atoms from intragranular bubbles in irradiated UO2, covering the heterogeneous and homogeneous mechanisms and the single-size and bubble-distribution approaches to the resulting bubble population.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "D. R. Olander",
+        "D. Wongsawaeng"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Olander, D. R., & Wongsawaeng, D. (2006). Re-solution of fission gas - A review: Part I. Intragranular bubbles. Journal of Nuclear Materials, 354, 94-109."
+      ],
+      "dcterms:issued": "2006",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "FISSION PRODUCTS",
+        "BUBBLES",
+        "NUCLEATION",
+        "REVIEWS",
+        "NUCLEAR FUELS"
+      ],
+      "dcterms:subject": [
+        "fission gas re-solution",
+        "bubble nucleation rate",
+        "intragranular bubbles",
+        "review"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/0022-3115(79)90035-7",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/0022-3115(79)90035-7",
+        "doi:10.1016/0022-3115(79)90035-7"
+      ],
+      "dcterms:title": "Grain-boundary diffusion in uranium dioxide: The correlation between sintering and creep and a reinterpretation of creep mechanism",
+      "dcterms:description": "Correlates published final-stage sintering kinetics of stoichiometric uranium dioxide with a reinterpretation of low-stress creep data on the same material, identifying the rate-controlling diffusional flux common to both processes.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "G. L. Reynolds",
+        "B. Burton"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Reynolds, G. L., & Burton, B. (1979). Grain-boundary diffusion in uranium dioxide: The correlation between sintering and creep and a reinterpretation of creep mechanism. Journal of Nuclear Materials, 82, 22-25."
+      ],
+      "dcterms:issued": "1979",
+      "dcterms:accessRights": "Restricted Access",
+      "neo:referenceINIS": [
+        "URANIUM DIOXIDE",
+        "GRAIN BOUNDARIES",
+        "DIFFUSION",
+        "SINTERING",
+        "CREEP"
+      ],
+      "dcterms:subject": [
+        "grain-boundary diffusion",
+        "vacancy diffusivity",
+        "sintering-creep correlation"
+      ]
+    },
+    {
+      "@id": "https://doi.org/10.1016/j.net.2021.10.028",
+      "@type": "dcmitype:Text",
+      "dcterms:identifier": [
+        "https://doi.org/10.1016/j.net.2021.10.028",
+        "doi:10.1016/j.net.2021.10.028"
+      ],
+      "dcterms:title": "On the use of spectral algorithms for the prediction of short-lived volatile fission product release: Methodology for bounding numerical error",
+      "dcterms:description": "Examines spectral diffusion algorithms, which project the solution onto the eigenfunctions of the Laplacian, for predicting short-lived volatile fission product release. Derives an upper bound on the numerical error in constant and time-varying conditions, as a function of the number of modes and of the time discretisation.",
+      "dcterms:format": "application/pdf",
+      "dcterms:creator": [
+        "https://orcid.org/0000-0002-9139-2454",
+        "https://orcid.org/0000-0003-2256-8409",
+        "https://orcid.org/0000-0002-9754-4535"
+      ],
+      "dcterms:publisher": "Elsevier",
+      "dcterms:bibliographicCitation": [
+        "Zullo, G., Pizzocri, D., & Luzzi, L. (2022). On the use of spectral algorithms for the prediction of short-lived volatile fission product release: Methodology for bounding numerical error. Nuclear Engineering and Technology, 54, 1195-1205. https://doi.org/10.1016/j.net.2021.10.028"
+      ],
+      "dcterms:issued": "2022",
+      "dcterms:accessRights": "Open Access",
+      "dcterms:license": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+      "neo:referenceINIS": [
+        "FISSION PRODUCT RELEASE",
+        "DIFFUSION",
+        "NUMERICAL SOLUTION",
+        "ALGORITHMS",
+        "ERRORS"
+      ],
+      "dcterms:subject": [
+        "spectral diffusion algorithm",
+        "numerical error bounding",
+        "Booth formulation",
+        "short-lived fission products"
+      ]
+    }
+  ]
+}
